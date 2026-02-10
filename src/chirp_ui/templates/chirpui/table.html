@@ -1,0 +1,55 @@
+{#- chirp-ui: Table component
+    Responsive table with header configuration and row helper.
+
+    Usage:
+        {% from "chirpui/table" import table, row %}
+
+        {% call table(headers=["Name", "Email", "Role"]) %}
+            {{ row("Alice", "alice@example.com", "Admin") }}
+            {{ row("Bob", "bob@example.com", "User") }}
+        {% end %}
+
+        {# With sortable headers #}
+        {% call table(headers=["Name", "Email"], sortable=true,
+                      sort_url="/users", hx_target="#user-table") %}
+            {% for user in users %}
+                {{ row(user.name, user.email) }}
+            {% end %}
+        {% end %}
+-#}
+
+{% def table(headers=none, sortable=false, sort_url=none, hx_target=none,
+             striped=false, cls="") %}
+<div class="chirpui-table-wrap">
+    <table class="chirpui-table{{ " chirpui-table--striped" if striped else "" }}{{ " " ~ cls if cls else "" }}">
+        {% if headers %}
+            <thead class="chirpui-table__head">
+                <tr>
+                    {% for header in headers %}
+                        <th class="chirpui-table__th"
+                            {% if sortable and sort_url %}
+                                hx-get="{{ sort_url }}?sort={{ header | lower }}"
+                                {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
+                                hx-swap="innerHTML"
+                                style="cursor: pointer"
+                            {% end %}>
+                            {{ header }}
+                        </th>
+                    {% end %}
+                </tr>
+            </thead>
+        {% end %}
+        <tbody class="chirpui-table__body">
+            {% slot %}
+        </tbody>
+    </table>
+</div>
+{% end %}
+
+{% def row(*cells, cls="") %}
+<tr class="chirpui-table__row{{ " " ~ cls if cls else "" }}">
+    {% for cell in cells %}
+        <td class="chirpui-table__td">{{ cell }}</td>
+    {% end %}
+</tr>
+{% end %}

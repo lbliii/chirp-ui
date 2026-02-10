@@ -1,0 +1,40 @@
+{#- chirp-ui: Tabs component
+    htmx-powered tab switching with active state tracking.
+
+    Usage:
+        {% from "chirpui/tabs" import tabs, tab %}
+
+        {# Simple tabs with htmx content loading #}
+        {% call tabs(active="overview") %}
+            {{ tab("overview", "Overview", url="/tabs/overview", hx_target="#tab-content") }}
+            {{ tab("details", "Details", url="/tabs/details", hx_target="#tab-content") }}
+            {{ tab("history", "History", url="/tabs/history", hx_target="#tab-content") }}
+        {% end %}
+        <div id="tab-content">
+            {# Tab content loaded here via htmx #}
+        </div>
+-#}
+
+{% def tabs(active=none, cls="") %}
+<nav class="chirpui-tabs{{ " " ~ cls if cls else "" }}" role="tablist">
+    {% slot %}
+</nav>
+{% end %}
+
+{% def tab(id, label, url=none, hx_target=none, active=false, cls="") %}
+<a class="chirpui-tab{{ " chirpui-tab--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
+   id="tab-{{ id }}"
+   role="tab"
+   aria-selected="{{ "true" if active else "false" }}"
+   {% if url %}
+       href="{{ url }}"
+       {% if hx_target %}
+           hx-get="{{ url }}"
+           hx-target="{{ hx_target }}"
+           hx-swap="innerHTML"
+           hx-push-url="false"
+       {% end %}
+   {% end %}>
+    {{ label }}
+</a>
+{% end %}

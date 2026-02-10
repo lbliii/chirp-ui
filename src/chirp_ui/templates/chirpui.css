@@ -1,0 +1,411 @@
+/* chirp-ui — Minimal structural CSS for chirp-ui components.
+ *
+ * All values use CSS custom properties with sensible defaults.
+ * Override any --chirpui-* variable in your own CSS to customize.
+ *
+ * No reset, no normalize, no colors beyond borders/backgrounds.
+ * Users bring their own palette.
+ */
+
+/* ==========================================================================
+   Tokens (custom properties)
+   ========================================================================== */
+
+:root {
+    --chirpui-border: #e5e7eb;
+    --chirpui-radius: 0.5rem;
+    --chirpui-radius-sm: 0.25rem;
+    --chirpui-spacing: 1rem;
+    --chirpui-spacing-sm: 0.5rem;
+    --chirpui-spacing-xs: 0.25rem;
+    --chirpui-font-sm: 0.875rem;
+    --chirpui-transition: 150ms ease;
+    --chirpui-modal-width: 32rem;
+    --chirpui-modal-width-sm: 24rem;
+    --chirpui-modal-width-lg: 48rem;
+    --chirpui-toast-width: 24rem;
+    --chirpui-bg-subtle: #f9fafb;
+    --chirpui-text-muted: #6b7280;
+    --chirpui-alert-info-bg: #eff6ff;
+    --chirpui-alert-info-border: #bfdbfe;
+    --chirpui-alert-success-bg: #f0fdf4;
+    --chirpui-alert-success-border: #bbf7d0;
+    --chirpui-alert-warning-bg: #fffbeb;
+    --chirpui-alert-warning-border: #fde68a;
+    --chirpui-alert-error-bg: #fef2f2;
+    --chirpui-alert-error-border: #fecaca;
+}
+
+/* ==========================================================================
+   Card
+   ========================================================================== */
+
+.chirpui-card {
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    overflow: hidden;
+}
+
+.chirpui-card__header {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    font-weight: 600;
+    border-bottom: 1px solid var(--chirpui-border);
+}
+
+.chirpui-card__body {
+    padding: var(--chirpui-spacing);
+}
+
+.chirpui-card__footer {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border-top: 1px solid var(--chirpui-border);
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-card--collapsible summary {
+    cursor: pointer;
+    list-style: none;
+}
+
+.chirpui-card--collapsible summary::before {
+    content: "\25B6";
+    display: inline-block;
+    margin-right: var(--chirpui-spacing-xs);
+    transition: transform var(--chirpui-transition);
+    font-size: 0.75em;
+}
+
+.chirpui-card--collapsible[open] summary::before {
+    transform: rotate(90deg);
+}
+
+/* ==========================================================================
+   Modal
+   ========================================================================== */
+
+.chirpui-modal {
+    max-width: var(--chirpui-modal-width);
+    width: 100%;
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    padding: 0;
+}
+
+.chirpui-modal--small { max-width: var(--chirpui-modal-width-sm); }
+.chirpui-modal--large { max-width: var(--chirpui-modal-width-lg); }
+
+.chirpui-modal::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.chirpui-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border-bottom: 1px solid var(--chirpui-border);
+}
+
+.chirpui-modal__title {
+    margin: 0;
+    font-size: 1.125rem;
+}
+
+.chirpui-modal__close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 var(--chirpui-spacing-xs);
+}
+
+.chirpui-modal__body {
+    padding: var(--chirpui-spacing);
+}
+
+/* ==========================================================================
+   Tabs
+   ========================================================================== */
+
+.chirpui-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--chirpui-border);
+}
+
+.chirpui-tab {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    font-size: var(--chirpui-font-sm);
+    transition: border-color var(--chirpui-transition);
+    cursor: pointer;
+}
+
+.chirpui-tab:hover {
+    border-bottom-color: var(--chirpui-border);
+}
+
+.chirpui-tab--active {
+    border-bottom-color: currentColor;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Dropdown
+   ========================================================================== */
+
+.chirpui-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.chirpui-dropdown__trigger {
+    cursor: pointer;
+    list-style: none;
+}
+
+.chirpui-dropdown__menu {
+    position: absolute;
+    z-index: 10;
+    min-width: 10rem;
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    background: white;
+    padding: var(--chirpui-spacing-xs) 0;
+    margin-top: var(--chirpui-spacing-xs);
+}
+
+.chirpui-dropdown__menu a,
+.chirpui-dropdown__menu button {
+    display: block;
+    width: 100%;
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing);
+    text-decoration: none;
+    color: inherit;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-dropdown__menu a:hover,
+.chirpui-dropdown__menu button:hover {
+    background: var(--chirpui-bg-subtle);
+}
+
+/* ==========================================================================
+   Toast
+   ========================================================================== */
+
+.chirpui-toast-container {
+    position: fixed;
+    top: var(--chirpui-spacing);
+    right: var(--chirpui-spacing);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-sm);
+    max-width: var(--chirpui-toast-width);
+}
+
+.chirpui-toast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    background: white;
+    font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-toast--info    { border-color: var(--chirpui-alert-info-border); background: var(--chirpui-alert-info-bg); }
+.chirpui-toast--success { border-color: var(--chirpui-alert-success-border); background: var(--chirpui-alert-success-bg); }
+.chirpui-toast--warning { border-color: var(--chirpui-alert-warning-border); background: var(--chirpui-alert-warning-bg); }
+.chirpui-toast--error   { border-color: var(--chirpui-alert-error-border); background: var(--chirpui-alert-error-bg); }
+
+.chirpui-toast__close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    line-height: 1;
+    margin-left: var(--chirpui-spacing-sm);
+    padding: 0;
+}
+
+/* ==========================================================================
+   Table
+   ========================================================================== */
+
+.chirpui-table-wrap {
+    overflow-x: auto;
+}
+
+.chirpui-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.chirpui-table__th,
+.chirpui-table__td {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    text-align: left;
+    border-bottom: 1px solid var(--chirpui-border);
+}
+
+.chirpui-table__th {
+    font-weight: 600;
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-table--striped .chirpui-table__row:nth-child(even) {
+    background: var(--chirpui-bg-subtle);
+}
+
+/* ==========================================================================
+   Pagination
+   ========================================================================== */
+
+.chirpui-pagination {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-pagination__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 var(--chirpui-spacing-xs);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    text-decoration: none;
+    color: inherit;
+    font-size: var(--chirpui-font-sm);
+    transition: background var(--chirpui-transition);
+}
+
+.chirpui-pagination__link:hover:not(.chirpui-pagination__link--disabled):not(.chirpui-pagination__link--active) {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-pagination__link--active {
+    font-weight: 600;
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-pagination__link--disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.chirpui-pagination__ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    color: var(--chirpui-text-muted);
+}
+
+/* ==========================================================================
+   Alert
+   ========================================================================== */
+
+.chirpui-alert {
+    display: flex;
+    align-items: flex-start;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-alert--info    { border-color: var(--chirpui-alert-info-border); background: var(--chirpui-alert-info-bg); }
+.chirpui-alert--success { border-color: var(--chirpui-alert-success-border); background: var(--chirpui-alert-success-bg); }
+.chirpui-alert--warning { border-color: var(--chirpui-alert-warning-border); background: var(--chirpui-alert-warning-bg); }
+.chirpui-alert--error   { border-color: var(--chirpui-alert-error-border); background: var(--chirpui-alert-error-bg); }
+
+.chirpui-alert__body {
+    flex: 1;
+}
+
+.chirpui-alert__close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    line-height: 1;
+    margin-left: var(--chirpui-spacing-sm);
+    padding: 0;
+}
+
+/* ==========================================================================
+   Form Fields
+   ========================================================================== */
+
+.chirpui-field {
+    margin-bottom: var(--chirpui-spacing);
+}
+
+.chirpui-field__label {
+    display: block;
+    margin-bottom: var(--chirpui-spacing-xs);
+    font-weight: 500;
+    font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-field__label--inline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    cursor: pointer;
+}
+
+.chirpui-field__required {
+    color: var(--chirpui-alert-error-border);
+}
+
+.chirpui-field__input {
+    display: block;
+    width: 100%;
+    padding: var(--chirpui-spacing-sm);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    font: inherit;
+}
+
+.chirpui-field--error .chirpui-field__input {
+    border-color: var(--chirpui-alert-error-border);
+}
+
+.chirpui-field__hint {
+    display: block;
+    margin-top: var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-field__error {
+    display: block;
+    margin-top: var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-sm);
+    color: #dc2626;
+}
+
+.chirpui-field__checkbox {
+    width: auto;
+}
+
+.chirpui-field--checkbox {
+    margin-bottom: var(--chirpui-spacing-sm);
+}

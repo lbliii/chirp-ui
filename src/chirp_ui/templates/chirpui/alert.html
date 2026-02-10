@@ -1,0 +1,31 @@
+{#- chirp-ui: Alert component
+    Status alerts with variant styling and optional dismiss.
+
+    Usage:
+        {% from "chirpui/alert" import alert %}
+
+        {% call alert(variant="success") %}
+            <strong>Done!</strong> Your changes have been saved.
+        {% end %}
+
+        {% call alert(variant="error", dismissible=true) %}
+            Something went wrong. Please try again.
+        {% end %}
+
+    Variants: info (default), success, warning, error
+-#}
+
+{% def alert(variant="info", dismissible=false, cls="") %}
+<div class="chirpui-alert chirpui-alert--{{ variant }}{{ " " ~ cls if cls else "" }}"
+     role="alert">
+    <div class="chirpui-alert__body">
+        {% slot %}
+    </div>
+    {% if dismissible %}
+        <button class="chirpui-alert__close"
+                type="button"
+                aria-label="Dismiss"
+                onclick="this.closest('.chirpui-alert').remove()">&times;</button>
+    {% end %}
+</div>
+{% end %}

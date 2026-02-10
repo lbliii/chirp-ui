@@ -1,0 +1,63 @@
+{#- chirp-ui: Pagination component
+    htmx-powered page navigation.
+
+    Usage:
+        {% from "chirpui/pagination" import pagination %}
+
+        {{ pagination(current=3, total=10, url_pattern="/items?page={page}",
+                      hx_target="#item-list") }}
+-#}
+
+{% def pagination(current, total, url_pattern, hx_target=none, window=2, cls="") %}
+{% if total > 1 %}
+<nav class="chirpui-pagination{{ " " ~ cls if cls else "" }}" aria-label="Pagination">
+    {# Previous #}
+    {% if current > 1 %}
+        <a class="chirpui-pagination__link chirpui-pagination__prev"
+           href="{{ url_pattern | replace("{page}", current - 1) }}"
+           {% if hx_target %}
+               hx-get="{{ url_pattern | replace("{page}", current - 1) }}"
+               hx-target="{{ hx_target }}"
+               hx-swap="innerHTML"
+           {% end %}
+           aria-label="Previous page">&laquo;</a>
+    {% else %}
+        <span class="chirpui-pagination__link chirpui-pagination__prev chirpui-pagination__link--disabled"
+              aria-disabled="true">&laquo;</span>
+    {% end %}
+
+    {# Page numbers #}
+    {% for page in range(1, total + 1) %}
+        {% if page == current %}
+            <span class="chirpui-pagination__link chirpui-pagination__link--active"
+                  aria-current="page">{{ page }}</span>
+        {% elif page == 1 or page == total or (page >= current - window and page <= current + window) %}
+            <a class="chirpui-pagination__link"
+               href="{{ url_pattern | replace("{page}", page) }}"
+               {% if hx_target %}
+                   hx-get="{{ url_pattern | replace("{page}", page) }}"
+                   hx-target="{{ hx_target }}"
+                   hx-swap="innerHTML"
+               {% end %}>{{ page }}</a>
+        {% elif page == current - window - 1 or page == current + window + 1 %}
+            <span class="chirpui-pagination__ellipsis">&hellip;</span>
+        {% end %}
+    {% end %}
+
+    {# Next #}
+    {% if current < total %}
+        <a class="chirpui-pagination__link chirpui-pagination__next"
+           href="{{ url_pattern | replace("{page}", current + 1) }}"
+           {% if hx_target %}
+               hx-get="{{ url_pattern | replace("{page}", current + 1) }}"
+               hx-target="{{ hx_target }}"
+               hx-swap="innerHTML"
+           {% end %}
+           aria-label="Next page">&raquo;</a>
+    {% else %}
+        <span class="chirpui-pagination__link chirpui-pagination__next chirpui-pagination__link--disabled"
+              aria-disabled="true">&raquo;</span>
+    {% end %}
+</nav>
+{% end %}
+{% end %}

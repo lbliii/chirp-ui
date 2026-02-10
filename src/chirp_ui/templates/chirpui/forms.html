@@ -1,0 +1,124 @@
+{#- chirp-ui: Form field macros
+    Extended field macros with BEM styling. These complement (and can replace)
+    Chirp's built-in form macros from "chirp/forms".
+
+    Usage:
+        {% from "chirpui/forms" import text_field, textarea_field, select_field %}
+
+        {{ text_field("title", value=form.title, label="Title",
+                      errors=errors, required=true) }}
+        {{ textarea_field("description", value=form.description,
+                          label="Description", rows=6) }}
+        {{ select_field("status", options=statuses, selected=form.status,
+                        label="Status") }}
+        {{ checkbox_field("active", checked=form.active, label="Active") }}
+        {{ hidden_field("id", value=form.id) }}
+
+    Note: The ``field_errors`` filter is provided by Chirp. When using chirp-ui
+    without Chirp, define your own ``field_errors`` filter or pass errors=none.
+-#}
+
+{# Text input with label and error display #}
+{% def text_field(name, value="", label=none, errors=none, type="text",
+                  required=false, placeholder="", hint=none, attrs="") %}
+<div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <label class="chirpui-field__label" for="{{ name }}">
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+        </label>
+    {% end %}
+    <input class="chirpui-field__input"
+           type="{{ type }}" id="{{ name }}" name="{{ name }}"
+           value="{{ value }}"
+           {% if required %}required{% end %}
+           {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
+           {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+           {{ attrs }}>
+    {% if hint and not (errors and errors | field_errors(name)) %}
+        <span class="chirpui-field__hint">{{ hint }}</span>
+    {% end %}
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
+{# Textarea with label and error display #}
+{% def textarea_field(name, value="", label=none, errors=none,
+                      rows=4, required=false, placeholder="", hint=none) %}
+<div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <label class="chirpui-field__label" for="{{ name }}">
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+        </label>
+    {% end %}
+    <textarea class="chirpui-field__input"
+              id="{{ name }}" name="{{ name }}" rows="{{ rows }}"
+              {% if required %}required{% end %}
+              {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
+              {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>{{ value }}</textarea>
+    {% if hint and not (errors and errors | field_errors(name)) %}
+        <span class="chirpui-field__hint">{{ hint }}</span>
+    {% end %}
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
+{# Select dropdown with label and error display #}
+{% def select_field(name, options, selected="", label=none, errors=none,
+                    required=false, hint=none) %}
+<div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <label class="chirpui-field__label" for="{{ name }}">
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+        </label>
+    {% end %}
+    <select class="chirpui-field__input"
+            id="{{ name }}" name="{{ name }}"
+            {% if required %}required{% end %}
+            {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+        {% for opt in options %}
+            <option value="{{ opt.value }}"
+                    {% if opt.value == selected %}selected{% end %}>
+                {{ opt.label }}
+            </option>
+        {% end %}
+    </select>
+    {% if hint and not (errors and errors | field_errors(name)) %}
+        <span class="chirpui-field__hint">{{ hint }}</span>
+    {% end %}
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
+{# Checkbox with label #}
+{% def checkbox_field(name, checked=false, label=none, errors=none) %}
+<div class="chirpui-field chirpui-field--checkbox{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    <label class="chirpui-field__label chirpui-field__label--inline">
+        <input class="chirpui-field__checkbox"
+               type="checkbox" id="{{ name }}" name="{{ name }}"
+               {% if checked %}checked{% end %}>
+        {{ label if label else name }}
+    </label>
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
+{# Hidden field #}
+{% def hidden_field(name, value="") %}
+<input type="hidden" name="{{ name }}" value="{{ value }}">
+{% end %}

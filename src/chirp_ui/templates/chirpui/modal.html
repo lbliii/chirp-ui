@@ -1,0 +1,36 @@
+{#- chirp-ui: Modal component
+    Dialog-based modal using native <dialog> element.
+
+    Usage:
+        {% from "chirpui/modal" import modal, modal_trigger %}
+
+        {{ modal_trigger("my-modal", label="Open Settings") }}
+
+        {% call modal("my-modal", title="Settings") %}
+            <p>Modal body content.</p>
+        {% end %}
+-#}
+
+{% def modal(id, title=none, size="medium", cls="") %}
+<dialog id="{{ id }}" class="chirpui-modal chirpui-modal--{{ size }}{{ " " ~ cls if cls else "" }}">
+    {% if title %}
+        <header class="chirpui-modal__header">
+            <h2 class="chirpui-modal__title">{{ title }}</h2>
+            <form method="dialog">
+                <button class="chirpui-modal__close" aria-label="Close">&times;</button>
+            </form>
+        </header>
+    {% end %}
+    <div class="chirpui-modal__body">
+        {% slot %}
+    </div>
+</dialog>
+{% end %}
+
+{% def modal_trigger(target, label="Open", cls="") %}
+<button class="chirpui-modal-trigger{{ " " ~ cls if cls else "" }}"
+        type="button"
+        onclick="document.getElementById('{{ target }}').showModal()">
+    {{ label }}
+</button>
+{% end %}

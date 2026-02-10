@@ -1,0 +1,34 @@
+{#- chirp-ui: Toast component
+    htmx OOB toast notifications.
+
+    Usage:
+        {% from "chirpui/toast" import toast, toast_container %}
+
+        {# Place the container once in your base template #}
+        {{ toast_container() }}
+
+        {# Return a toast from any htmx response (OOB swap) #}
+        {{ toast("Item saved successfully!", variant="success") }}
+        {{ toast("Something went wrong.", variant="error", dismissible=true) }}
+-#}
+
+{% def toast_container(id="chirpui-toasts", cls="") %}
+<div id="{{ id }}" class="chirpui-toast-container{{ " " ~ cls if cls else "" }}" aria-live="polite">
+</div>
+{% end %}
+
+{% def toast(message, variant="info", id=none, dismissible=true, oob=true, container_id="chirpui-toasts", cls="") %}
+<div {% if oob %}hx-swap-oob="beforeend:#{{ container_id }}"{% end %}>
+    <div {% if id %}id="{{ id }}"{% end %}
+         class="chirpui-toast chirpui-toast--{{ variant }}{{ " " ~ cls if cls else "" }}"
+         role="alert">
+        <span class="chirpui-toast__message">{{ message }}</span>
+        {% if dismissible %}
+            <button class="chirpui-toast__close"
+                    type="button"
+                    aria-label="Dismiss"
+                    onclick="this.parentElement.remove()">&times;</button>
+        {% end %}
+    </div>
+</div>
+{% end %}

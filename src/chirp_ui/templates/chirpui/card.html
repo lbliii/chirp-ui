@@ -1,0 +1,42 @@
+{#- chirp-ui: Card component
+    Headless card with optional header, footer, and collapsible variant.
+
+    Usage:
+        {% from "chirpui/card" import card %}
+
+        {% call card(title="My Card") %}
+            <p>Card body content.</p>
+        {% end %}
+
+        {% call card(title="Details", footer="Last updated today", collapsible=true) %}
+            <p>Collapsible content using native &lt;details&gt;.</p>
+        {% end %}
+-#}
+
+{% def card(title=none, footer=none, collapsible=false, open=false, cls="") %}
+{% if collapsible %}
+<details class="chirpui-card chirpui-card--collapsible{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
+    {% if title %}
+        <summary class="chirpui-card__header">{{ title }}</summary>
+    {% end %}
+    <div class="chirpui-card__body">
+        {% slot %}
+    </div>
+    {% if footer %}
+        <footer class="chirpui-card__footer">{{ footer }}</footer>
+    {% end %}
+</details>
+{% else %}
+<article class="chirpui-card{{ " " ~ cls if cls else "" }}">
+    {% if title %}
+        <header class="chirpui-card__header">{{ title }}</header>
+    {% end %}
+    <div class="chirpui-card__body">
+        {% slot %}
+    </div>
+    {% if footer %}
+        <footer class="chirpui-card__footer">{{ footer }}</footer>
+    {% end %}
+</article>
+{% end %}
+{% end %}

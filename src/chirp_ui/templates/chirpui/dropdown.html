@@ -1,0 +1,21 @@
+{#- chirp-ui: Dropdown component
+    Native <details>/<summary> dropdown — zero JavaScript.
+
+    Usage:
+        {% from "chirpui/dropdown" import dropdown %}
+
+        {% call dropdown(label="Options") %}
+            <a href="/settings">Settings</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+        {% end %}
+-#}
+
+{% def dropdown(label, cls="") %}
+<details class="chirpui-dropdown{{ " " ~ cls if cls else "" }}">
+    <summary class="chirpui-dropdown__trigger">{{ label }}</summary>
+    <div class="chirpui-dropdown__menu">
+        {% slot %}
+    </div>
+</details>
+{% end %}
