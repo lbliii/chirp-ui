@@ -1,0 +1,183 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chirp-ui"
+version = "0.1.0"
+description = "Reusable Kida component library for Chirp — headless, htmx-native, zero JavaScript"
+readme = "README.md"
+requires-python = ">=3.14"
+license = "MIT"
+authors = [{ name = "Bengal Contributors", email = "lbeezr@icloud.com" }]
+keywords = [
+    "components",
+    "ui",
+    "htmx",
+    "kida",
+    "chirp",
+    "templates",
+    "web",
+    "html",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Typing :: Typed",
+]
+dependencies = [
+    "kida-templates>=0.1.2",  # Template engine (only runtime dependency)
+]
+
+[project.urls]
+Homepage = "https://github.com/lbliii/chirp-ui"
+Repository = "https://github.com/lbliii/chirp-ui"
+
+# =============================================================================
+# uv — Local source overrides for unpublished ecosystem packages
+# =============================================================================
+
+[tool.uv.sources]
+kida-templates = { path = "../kida", editable = true }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+chirp_ui = ["py.typed", "templates/**/*.html", "templates/**/*.css"]
+
+# =============================================================================
+# Ruff — Linter & Formatter
+# =============================================================================
+# Matches bengal/kida/chirp rule set
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes (unused imports, variables, etc.)
+    "UP",   # pyupgrade — Python modernization
+    "B",    # flake8-bugbear — common bugs and design problems
+    "SIM",  # flake8-simplify — simplify code
+    "I",    # isort — import sorting
+    "N",    # pep8-naming — naming conventions
+    "PIE",  # misc lints (unnecessary pass, duplicate dict keys, etc.)
+    "PERF", # perflint — performance anti-patterns
+    "C4",   # unnecessary comprehensions/list()/dict() calls
+    "RUF",  # Ruff-specific (unused noqa, mutable class defaults, etc.)
+    "PT",   # flake8-pytest-style — pytest best practices
+]
+ignore = [
+    "E501",   # line too long — handled by formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]    # Allow unused imports in __init__ files (re-exports)
+"tests/**/*.py" = ["S101"]  # Allow assert in tests
+
+# =============================================================================
+# ty — Type Checker (Rust-based, Astral)
+# =============================================================================
+
+[tool.ty.environment]
+python-version = "3.14"
+
+[tool.ty.src]
+exclude = ["dist/", "build/", "tests/"]
+
+[tool.ty.rules]
+unused-ignore-comment = "warn"
+
+# =============================================================================
+# Pytest
+# =============================================================================
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = ["-ra", "-q", "--strict-markers", "--import-mode=importlib"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: integration tests requiring full app setup",
+]
+
+# =============================================================================
+# Coverage
+# =============================================================================
+
+[tool.coverage.run]
+source = ["src/chirp_ui"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+precision = 1
+fail_under = 80
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@overload",
+    "def __repr__",
+]
+
+# =============================================================================
+# Development Dependencies (PEP 735 — install with: uv sync --group dev)
+# =============================================================================
+
+[dependency-groups]
+dev = [
+    # Testing
+    "pytest>=9.0.2",
+    "pytest-cov>=6.0.0",
+    "pytest-timeout>=2.3.0",
+    # Type Checking
+    "ty>=0.0.11",
+    # Linting & Formatting
+    "ruff>=0.14.0",
+    # Pre-commit
+    "pre-commit>=4.0.0",
+]
+
+# =============================================================================
+# Task Runner (poethepoet) — use: poe <task>
+# =============================================================================
+
+[tool.poe.tasks]
+# Testing
+test = { cmd = "pytest", help = "Run full test suite" }
+test-fast = { cmd = "pytest tests/ -x -q --timeout=10", help = "Fast feedback loop" }
+test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov-report=term-missing", help = "Run tests with coverage" }
+
+# Type Checking
+ty = { cmd = "ty check src/chirp_ui/", help = "Run ty type checker" }
+ty-strict = { cmd = "ty check src/chirp_ui/ --error-on-warning", help = "Strict type checking" }
+
+# Linting & Formatting
+lint = { cmd = "ruff check .", help = "Run ruff linter" }
+lint-fix = { cmd = "ruff check . --fix", help = "Run ruff linter with auto-fix" }
+format = { cmd = "ruff format .", help = "Format code with ruff" }
+format-check = { cmd = "ruff format . --check", help = "Check formatting" }
+
+# CI Pipeline
+ci = { sequence = ["lint", "format-check", "ty", "test"], help = "Full CI check" }
+check = { sequence = ["lint", "format-check", "ty"], help = "Quick check (no tests)" }
+
+# Cleanup
+clean.shell = """
+rm -rf dist build .pytest_cache .coverage htmlcov .ruff_cache .ty_cache
+find . -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true
+"""
+clean.help = "Remove build artifacts and caches"
