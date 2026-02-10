@@ -2,13 +2,13 @@
     Dialog-based modal using native <dialog> element.
 
     Usage:
-        {% from "chirpui/modal" import modal, modal_trigger %}
+        from "chirpui/modal.html" import modal, modal_trigger
 
-        {{ modal_trigger("my-modal", label="Open Settings") }}
+        modal_trigger("my-modal", label="Open Settings")
 
-        {% call modal("my-modal", title="Settings") %}
+        call modal("my-modal", title="Settings")
             <p>Modal body content.</p>
-        {% end %}
+        end
 -#}
 
 {% def modal(id, title=none, size="medium", cls="") %}

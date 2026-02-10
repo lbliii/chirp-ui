@@ -13,9 +13,9 @@ When used with Chirp, components are auto-detected — no configuration needed.
 ## Usage
 
 ```html
-{% from "chirpui/card" import card %}
-{% from "chirpui/modal" import modal, modal_trigger %}
-{% from "chirpui/alert" import alert %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/modal.html" import modal, modal_trigger %}
+{% from "chirpui/alert.html" import alert %}
 
 {% call card(title="Recent Orders") %}
     <p>Card body content goes here.</p>
@@ -36,15 +36,15 @@ Include the structural CSS in your base template:
 
 | Component | Import | Features |
 |-----------|--------|----------|
-| **card** | `chirpui/card` | Header, body (slot), footer, collapsible |
-| **modal** | `chirpui/modal` | Dialog-based, trigger button, close |
-| **tabs** | `chirpui/tabs` | htmx tab switching, active state |
-| **dropdown** | `chirpui/dropdown` | Native `<details>`-based |
-| **toast** | `chirpui/toast` | htmx OOB notifications |
-| **table** | `chirpui/table` | Headers, row helper, sortable |
-| **pagination** | `chirpui/pagination` | htmx page navigation |
-| **alert** | `chirpui/alert` | Info, success, warning, error variants |
-| **forms** | `chirpui/forms` | Field macros with error display |
+| **card** | `chirpui/card.html` | Header, body (slot), footer, collapsible |
+| **modal** | `chirpui/modal.html` | Dialog-based, trigger button, close |
+| **tabs** | `chirpui/tabs.html` | htmx tab switching, active state |
+| **dropdown** | `chirpui/dropdown.html` | Native `<details>`-based |
+| **toast** | `chirpui/toast.html` | htmx OOB notifications |
+| **table** | `chirpui/table.html` | Headers, row helper, sortable |
+| **pagination** | `chirpui/pagination.html` | htmx page navigation |
+| **alert** | `chirpui/alert.html` | Info, success, warning, error variants |
+| **forms** | `chirpui/forms.html` | Field macros with error display |
 
 ## Design Principles
 

@@ -2,13 +2,12 @@
     Native <details>/<summary> dropdown — zero JavaScript.
 
     Usage:
-        {% from "chirpui/dropdown" import dropdown %}
+        from "chirpui/dropdown.html" import dropdown
 
-        {% call dropdown(label="Options") %}
+        call dropdown(label="Options")
             <a href="/settings">Settings</a>
             <a href="/profile">Profile</a>
-            <a href="/logout">Logout</a>
-        {% end %}
+        end
 -#}
 
 {% def dropdown(label, cls="") %}

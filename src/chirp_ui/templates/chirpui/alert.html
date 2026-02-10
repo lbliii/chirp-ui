@@ -2,15 +2,15 @@
     Status alerts with variant styling and optional dismiss.
 
     Usage:
-        {% from "chirpui/alert" import alert %}
+        from "chirpui/alert.html" import alert
 
-        {% call alert(variant="success") %}
-            <strong>Done!</strong> Your changes have been saved.
-        {% end %}
+        call alert(variant="success")
+            Done! Your changes have been saved.
+        end
 
-        {% call alert(variant="error", dismissible=true) %}
+        call alert(variant="error", dismissible=true)
             Something went wrong. Please try again.
-        {% end %}
+        end
 
     Variants: info (default), success, warning, error
 -#}

@@ -2,17 +2,14 @@
     htmx-powered tab switching with active state tracking.
 
     Usage:
-        {% from "chirpui/tabs" import tabs, tab %}
+        from "chirpui/tabs.html" import tabs, tab
 
-        {# Simple tabs with htmx content loading #}
-        {% call tabs(active="overview") %}
-            {{ tab("overview", "Overview", url="/tabs/overview", hx_target="#tab-content") }}
-            {{ tab("details", "Details", url="/tabs/details", hx_target="#tab-content") }}
-            {{ tab("history", "History", url="/tabs/history", hx_target="#tab-content") }}
-        {% end %}
-        <div id="tab-content">
-            {# Tab content loaded here via htmx #}
-        </div>
+        call tabs(active="overview")
+            tab("overview", "Overview", url="/tabs/overview", hx_target="#content")
+            tab("details", "Details", url="/tabs/details", hx_target="#content")
+        end
+
+        <div id="tab-content"> ... tab content loaded via htmx ... </div>
 -#}
 
 {% def tabs(active=none, cls="") %}

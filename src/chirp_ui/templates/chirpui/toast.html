@@ -2,14 +2,14 @@
     htmx OOB toast notifications.
 
     Usage:
-        {% from "chirpui/toast" import toast, toast_container %}
+        from "chirpui/toast.html" import toast, toast_container
 
-        {# Place the container once in your base template #}
-        {{ toast_container() }}
+        Place the container once in your base template:
+            toast_container()
 
-        {# Return a toast from any htmx response (OOB swap) #}
-        {{ toast("Item saved successfully!", variant="success") }}
-        {{ toast("Something went wrong.", variant="error", dismissible=true) }}
+        Return a toast from any htmx response (OOB swap):
+            toast("Item saved successfully!", variant="success")
+            toast("Something went wrong.", variant="error", dismissible=true)
 -#}
 
 {% def toast_container(id="chirpui-toasts", cls="") %}

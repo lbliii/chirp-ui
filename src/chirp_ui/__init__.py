@@ -4,8 +4,8 @@ Headless, htmx-native, zero JavaScript. Install and import::
 
     pip install chirp-ui
 
-    {%% from "chirpui/card" import card %%}
-    {%% from "chirpui/modal" import modal, modal_trigger %%}
+    {%% from "chirpui/card.html" import card %%}
+    {%% from "chirpui/modal.html" import modal, modal_trigger %%}
 
 When used with Chirp, components are auto-detected via ``PackageLoader``.
 For standalone Kida usage, call :func:`get_loader`.

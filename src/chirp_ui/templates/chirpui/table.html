@@ -2,20 +2,18 @@
     Responsive table with header configuration and row helper.
 
     Usage:
-        {% from "chirpui/table" import table, row %}
+        from "chirpui/table.html" import table, row
 
-        {% call table(headers=["Name", "Email", "Role"]) %}
-            {{ row("Alice", "alice@example.com", "Admin") }}
-            {{ row("Bob", "bob@example.com", "User") }}
-        {% end %}
+        call table(headers=["Name", "Email", "Role"])
+            row("Alice", "alice@example.com", "Admin")
+            row("Bob", "bob@example.com", "User")
+        end
 
-        {# With sortable headers #}
-        {% call table(headers=["Name", "Email"], sortable=true,
-                      sort_url="/users", hx_target="#user-table") %}
-            {% for user in users %}
-                {{ row(user.name, user.email) }}
-            {% end %}
-        {% end %}
+        Sortable headers:
+        call table(headers=["Name", "Email"], sortable=true,
+                   sort_url="/users", hx_target="#user-table")
+            row(user.name, user.email)
+        end
 -#}
 
 {% def table(headers=none, sortable=false, sort_url=none, hx_target=none,
@@ -46,8 +44,8 @@
 </div>
 {% end %}
 
-{% def row(*cells, cls="") %}
-<tr class="chirpui-table__row{{ " " ~ cls if cls else "" }}">
+{% def row(*cells) %}
+<tr class="chirpui-table__row">
     {% for cell in cells %}
         <td class="chirpui-table__td">{{ cell }}</td>
     {% end %}

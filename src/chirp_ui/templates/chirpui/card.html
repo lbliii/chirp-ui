@@ -2,15 +2,15 @@
     Headless card with optional header, footer, and collapsible variant.
 
     Usage:
-        {% from "chirpui/card" import card %}
+        from "chirpui/card.html" import card
 
-        {% call card(title="My Card") %}
+        call card(title="My Card")
             <p>Card body content.</p>
-        {% end %}
+        end
 
-        {% call card(title="Details", footer="Last updated today", collapsible=true) %}
-            <p>Collapsible content using native &lt;details&gt;.</p>
-        {% end %}
+        call card(title="Details", footer="Last updated", collapsible=true)
+            <p>Collapsible content.</p>
+        end
 -#}
 
 {% def card(title=none, footer=none, collapsible=false, open=false, cls="") %}

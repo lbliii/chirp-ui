@@ -2,10 +2,10 @@
     htmx-powered page navigation.
 
     Usage:
-        {% from "chirpui/pagination" import pagination %}
+        from "chirpui/pagination.html" import pagination
 
-        {{ pagination(current=3, total=10, url_pattern="/items?page={page}",
-                      hx_target="#item-list") }}
+        pagination(current=3, total=10, url_pattern="/items?page=...",
+                   hx_target="#item-list")
 -#}
 
 {% def pagination(current, total, url_pattern, hx_target=none, window=2, cls="") %}
@@ -14,9 +14,9 @@
     {# Previous #}
     {% if current > 1 %}
         <a class="chirpui-pagination__link chirpui-pagination__prev"
-           href="{{ url_pattern | replace("{page}", current - 1) }}"
+           href="{{ url_pattern | replace("{page}", (current - 1) | string) }}"
            {% if hx_target %}
-               hx-get="{{ url_pattern | replace("{page}", current - 1) }}"
+               hx-get="{{ url_pattern | replace("{page}", (current - 1) | string) }}"
                hx-target="{{ hx_target }}"
                hx-swap="innerHTML"
            {% end %}
@@ -33,9 +33,9 @@
                   aria-current="page">{{ page }}</span>
         {% elif page == 1 or page == total or (page >= current - window and page <= current + window) %}
             <a class="chirpui-pagination__link"
-               href="{{ url_pattern | replace("{page}", page) }}"
+               href="{{ url_pattern | replace("{page}", page | string) }}"
                {% if hx_target %}
-                   hx-get="{{ url_pattern | replace("{page}", page) }}"
+                   hx-get="{{ url_pattern | replace("{page}", page | string) }}"
                    hx-target="{{ hx_target }}"
                    hx-swap="innerHTML"
                {% end %}>{{ page }}</a>
@@ -47,9 +47,9 @@
     {# Next #}
     {% if current < total %}
         <a class="chirpui-pagination__link chirpui-pagination__next"
-           href="{{ url_pattern | replace("{page}", current + 1) }}"
+           href="{{ url_pattern | replace("{page}", (current + 1) | string) }}"
            {% if hx_target %}
-               hx-get="{{ url_pattern | replace("{page}", current + 1) }}"
+               hx-get="{{ url_pattern | replace("{page}", (current + 1) | string) }}"
                hx-target="{{ hx_target }}"
                hx-swap="innerHTML"
            {% end %}
