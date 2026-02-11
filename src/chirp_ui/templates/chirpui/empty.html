@@ -1,0 +1,27 @@
+{#- chirp-ui: Empty State component
+    Placeholder for empty lists, collections, or search results.
+
+    Usage:
+        from "chirpui/empty.html" import empty_state
+
+        call empty_state(icon="✧", title="No Projects")
+            <p>Create your first project to get started.</p>
+            <button class="btn">+ New Project</button>
+        end
+
+        call empty_state(title="No Results")
+            <p>Try adjusting your search filters.</p>
+        end
+-#}
+
+{% def empty_state(icon=none, title="No items", cls="") %}
+<div class="chirpui-empty-state{{ " " ~ cls if cls else "" }}">
+    {% if icon %}
+        <div class="chirpui-empty-state__icon">{{ icon }}</div>
+    {% end %}
+    <h2 class="chirpui-empty-state__title">{{ title }}</h2>
+    <div class="chirpui-empty-state__body">
+        {% slot %}
+    </div>
+</div>
+{% end %}

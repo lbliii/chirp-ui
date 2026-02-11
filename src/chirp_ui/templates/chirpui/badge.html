@@ -1,0 +1,20 @@
+{#- chirp-ui: Badge component
+    Small status indicators with semantic variants and optional icons.
+
+    Usage:
+        from "chirpui/badge.html" import badge
+
+        badge("Active", variant="success")
+        badge("Pending", variant="warning", icon="◆")
+        badge("Error", variant="error", icon="⚠")
+        badge("Default", variant="primary", icon="✦")
+-#}
+
+{% def badge(text, variant="primary", icon=none, cls="") %}
+<span class="chirpui-badge chirpui-badge--{{ variant }}{{ " " ~ cls if cls else "" }}">
+    {% if icon %}
+        <span class="chirpui-badge__icon">{{ icon }}</span>
+    {% end %}
+    <span class="chirpui-badge__text">{{ text }}</span>
+</span>
+{% end %}

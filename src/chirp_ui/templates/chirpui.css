@@ -409,3 +409,265 @@
 .chirpui-field--checkbox {
     margin-bottom: var(--chirpui-spacing-sm);
 }
+/* ==========================================================================
+   Badge
+   ========================================================================== */
+
+.chirpui-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--chirpui-radius-sm);
+    font-size: var(--chirpui-font-sm);
+    font-weight: 500;
+    line-height: 1;
+    border: 1px solid;
+}
+
+.chirpui-badge__icon {
+    font-size: 1em;
+    line-height: 1;
+}
+
+.chirpui-badge__text {
+    line-height: 1;
+}
+
+/* Badge variants - minimal styling, override with themes */
+.chirpui-badge--primary {
+    background: rgba(91, 156, 245, 0.1);
+    color: #5b9cf5;
+    border-color: #5b9cf5;
+}
+
+.chirpui-badge--success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+    border-color: #22c55e;
+}
+
+.chirpui-badge--warning {
+    background: rgba(245, 158, 91, 0.1);
+    color: #f59e5b;
+    border-color: #f59e5b;
+}
+
+.chirpui-badge--error {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+    border-color: #dc2626;
+}
+
+/* ==========================================================================
+   Spinner
+   ========================================================================== */
+
+.chirpui-spinner {
+    display: inline-block;
+    line-height: 1;
+    font-size: 1rem;
+}
+
+.chirpui-spinner--sm { font-size: 0.75rem; }
+.chirpui-spinner--md { font-size: 1rem; }
+.chirpui-spinner--lg { font-size: 1.5rem; }
+
+.chirpui-spinner__mote {
+    display: inline-block;
+    animation: chirpui-mote-pulse 0.9s ease-in-out infinite;
+}
+
+@keyframes chirpui-mote-pulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    33% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+    66% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+.chirpui-spinner-thinking {
+    display: inline-block;
+    line-height: 1;
+    font-size: 1rem;
+}
+
+.chirpui-spinner-thinking--sm { font-size: 0.75rem; }
+.chirpui-spinner-thinking--md { font-size: 1rem; }
+.chirpui-spinner-thinking--lg { font-size: 1.5rem; }
+
+.chirpui-spinner-thinking__char {
+    display: inline-block;
+    animation: chirpui-spiral-rotate 0.6s steps(4) infinite;
+}
+
+@keyframes chirpui-spiral-rotate {
+    0% { content: "◜"; }
+    25% { content: "◝"; }
+    50% { content: "◞"; }
+    75% { content: "◟"; }
+}
+
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-spinner__mote,
+    .chirpui-spinner-thinking__char {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   Empty State
+   ========================================================================== */
+
+.chirpui-empty-state {
+    text-align: center;
+    padding: var(--chirpui-spacing) calc(var(--chirpui-spacing) * 2);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-empty-state__icon {
+    font-size: 3rem;
+    line-height: 1;
+    margin-bottom: var(--chirpui-spacing);
+    opacity: 0.6;
+}
+
+.chirpui-empty-state__title {
+    margin: 0 0 var(--chirpui-spacing-sm) 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.chirpui-empty-state__body {
+    font-size: var(--chirpui-font-sm);
+}
+
+/* ==========================================================================
+   Progress Bar
+   ========================================================================== */
+
+.chirpui-progress-bar {
+    position: relative;
+    width: 100%;
+}
+
+.chirpui-progress-bar--sm { height: 0.25rem; }
+.chirpui-progress-bar--md { height: 0.5rem; }
+.chirpui-progress-bar--lg { height: 1rem; }
+
+.chirpui-progress-bar__track {
+    width: 100%;
+    height: 100%;
+    background: var(--chirpui-bg-subtle);
+    border-radius: var(--chirpui-radius-sm);
+    overflow: hidden;
+}
+
+.chirpui-progress-bar__fill {
+    height: 100%;
+    background: currentColor;
+    transition: width 300ms ease;
+    border-radius: var(--chirpui-radius-sm);
+}
+
+/* Progress bar variants */
+.chirpui-progress-bar--gold .chirpui-progress-bar__fill {
+    background: #c9a227;
+}
+
+.chirpui-progress-bar--radiant .chirpui-progress-bar__fill {
+    background: linear-gradient(90deg, #c9a227, #ffd700);
+}
+
+.chirpui-progress-bar--success .chirpui-progress-bar__fill {
+    background: #22c55e;
+}
+
+.chirpui-progress-bar__label {
+    display: block;
+    margin-top: var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-sm);
+    text-align: center;
+    color: var(--chirpui-text-muted);
+}
+
+/* ==========================================================================
+   Status Indicator
+   ========================================================================== */
+
+.chirpui-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--chirpui-radius-sm);
+    font-size: var(--chirpui-font-sm);
+    font-weight: 500;
+}
+
+.chirpui-status-indicator__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.chirpui-status-indicator__icon {
+    font-size: 1em;
+    line-height: 1;
+}
+
+.chirpui-status-indicator__label {
+    line-height: 1;
+}
+
+/* Status variants - minimal styling, override with themes */
+.chirpui-status-indicator--default {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+.chirpui-status-indicator--success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.chirpui-status-indicator--warning {
+    background: rgba(245, 158, 91, 0.1);
+    color: #f59e5b;
+}
+
+.chirpui-status-indicator--error {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+}
+
+/* Pulsing animation */
+.chirpui-status-indicator--pulse .chirpui-status-indicator__dot {
+    animation: chirpui-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes chirpui-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-status-indicator--pulse .chirpui-status-indicator__dot {
+        animation: none;
+    }
+}

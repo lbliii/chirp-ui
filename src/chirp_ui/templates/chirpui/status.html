@@ -1,0 +1,22 @@
+{#- chirp-ui: Status Indicator component
+    Visual status with dot or icon and label.
+
+    Usage:
+        from "chirpui/status.html" import status_indicator
+
+        status_indicator("Running", variant="success")
+        status_indicator("Error", variant="error", icon="⚠")
+        status_indicator("Processing", variant="warning", pulse=true)
+        status_indicator("Idle", variant="default")
+-#}
+
+{% def status_indicator(label, variant="default", icon=none, pulse=false, cls="") %}
+<div class="chirpui-status-indicator chirpui-status-indicator--{{ variant }}{{ " chirpui-status-indicator--pulse" if pulse else "" }}{{ " " ~ cls if cls else "" }}">
+    {% if icon %}
+        <span class="chirpui-status-indicator__icon">{{ icon }}</span>
+    {% else %}
+        <span class="chirpui-status-indicator__dot"></span>
+    {% end %}
+    <span class="chirpui-status-indicator__label">{{ label }}</span>
+</div>
+{% end %}

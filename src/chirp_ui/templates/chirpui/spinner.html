@@ -1,0 +1,28 @@
+{#- chirp-ui: Spinner component
+    Loading indicators with Holy Light animations.
+
+    Usage:
+        from "chirpui/spinner.html" import spinner, spinner_thinking
+
+        spinner()  # Mote pulse animation
+        spinner(size="sm")  # Small size
+        spinner(size="lg")  # Large size
+
+        spinner_thinking()  # Spiral rotation animation
+-#}
+
+{% def spinner(size="md", cls="") %}
+<span class="chirpui-spinner chirpui-spinner--{{ size }}{{ " " ~ cls if cls else "" }}"
+      role="status"
+      aria-label="Loading">
+    <span class="chirpui-spinner__mote">✦</span>
+</span>
+{% end %}
+
+{% def spinner_thinking(size="md", cls="") %}
+<span class="chirpui-spinner-thinking chirpui-spinner-thinking--{{ size }}{{ " " ~ cls if cls else "" }}"
+      role="status"
+      aria-label="Processing">
+    <span class="chirpui-spinner__char">◜</span>
+</span>
+{% end %}

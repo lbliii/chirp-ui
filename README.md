@@ -32,7 +32,22 @@ Include the structural CSS in your base template:
 <link rel="stylesheet" href="/static/chirpui.css">
 ```
 
-## Components (v0.1)
+### Themes
+
+chirp-ui ships with the **Holy Light** theme inspired by WoW's Blood Elf aesthetic:
+
+```html
+<link rel="stylesheet" href="/static/chirpui.css">
+<link rel="stylesheet" href="/static/themes/holy-light.css">
+```
+
+The Holy Light theme features:
+- Gold/radiant colors for active/positive states (#ffd700, #c9a227)
+- Void purple/indigo for errors/warnings (#7c3aed, #4f46e5)
+- Dark obsidian canvas (#0d0d0d background)
+- Unicode character animations (mote pulse ✦, spiral thinking ◜)
+
+## Components (v0.2)
 
 | Component | Import | Features |
 |-----------|--------|----------|
@@ -45,6 +60,11 @@ Include the structural CSS in your base template:
 | **pagination** | `chirpui/pagination.html` | htmx page navigation |
 | **alert** | `chirpui/alert.html` | Info, success, warning, error variants |
 | **forms** | `chirpui/forms.html` | Field macros with error display |
+| **badge** | `chirpui/badge.html` | Status indicators with icons |
+| **spinner** | `chirpui/spinner.html` | Loading animations (mote pulse, spiral) |
+| **empty** | `chirpui/empty.html` | Empty state placeholders |
+| **progress** | `chirpui/progress.html` | Progress bars with gradients |
+| **status** | `chirpui/status.html` | Status indicators with dots/icons |
 
 ## Design Principles
 
