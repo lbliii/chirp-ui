@@ -21,7 +21,7 @@ _Py_mod_gil = 0
 
 __version__ = "0.2.0"
 
-__all__ = ["static_path", "get_loader", "register_filters"]
+__all__ = ["get_loader", "register_filters", "static_path"]
 
 
 def static_path() -> Path:
