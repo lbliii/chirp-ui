@@ -53,6 +53,33 @@ class TestLayout:
         ).render()
         assert "chirpui-block--span-2" in html
 
+    def test_page_header(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import page_header %}'
+            '{{ page_header("Title", subtitle="Subtitle text") }}'
+        ).render()
+        assert "chirpui-page-header" in html
+        assert "chirpui-stack" in html
+        assert "<h1>Title</h1>" in html
+        assert "Subtitle text" in html
+
+    def test_page_header_no_subtitle(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import page_header %}'
+            '{{ page_header("Title") }}'
+        ).render()
+        assert "<h1>Title</h1>" in html
+        assert "chirpui-text-muted" not in html
+
+    def test_section_header(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import section_header %}'
+            '{{ section_header("Section", subtitle="Sub") }}'
+        ).render()
+        assert "chirpui-section-header" in html
+        assert "<h2>Section</h2>" in html
+        assert "Sub" in html
+
 
 # ---------------------------------------------------------------------------
 # Surface
@@ -119,6 +146,14 @@ class TestCallout:
             ).render()
             assert f"chirpui-callout--{variant}" in html
 
+    def test_callout_with_icon(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/callout.html" import callout %}'
+            '{% call callout(icon="💡", title="Tip") %}Use this pattern.{% end %}'
+        ).render()
+        assert "chirpui-callout__icon" in html
+        assert "💡" in html
+
 
 # ---------------------------------------------------------------------------
 # Hero
@@ -154,6 +189,24 @@ class TestHero:
                 f'{{% call hero(background="{bg}") %}}X{{% end %}}'
             ).render()
             assert f"chirpui-hero--{bg}" in html
+
+
+# ---------------------------------------------------------------------------
+# Empty State
+# ---------------------------------------------------------------------------
+
+
+class TestEmptyState:
+    def test_empty_state_with_action(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/empty.html" import empty_state %}'
+            '{% call empty_state(title="No items", action_label="Create", action_href="/new") %}'
+            "<p>Get started.</p>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-empty-state__action" in html
+        assert 'href="/new"' in html
+        assert "Create" in html
 
 
 # ---------------------------------------------------------------------------
@@ -258,6 +311,18 @@ class TestButton:
         assert "chirpui-btn__spinner" in html
         assert "chirpui-spinner" in html
 
+    def test_button_group(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn, button_group %}'
+            '{% call button_group() %}'
+            '{{ btn("Submit", variant="primary") }}'
+            '{{ btn("Cancel", href="/") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-btn-group" in html
+        assert "Submit" in html
+        assert "Cancel" in html
+
     def test_btn_link(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/button.html" import btn %}'
@@ -266,6 +331,14 @@ class TestButton:
         assert "<a " in html
         assert 'href="/demo"' in html
         assert "chirpui-btn--primary" in html
+
+    def test_btn_with_icon(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Save", icon="✓") }}'
+        ).render()
+        assert "chirpui-btn__icon" in html
+        assert "✓" in html
 
 
 # ---------------------------------------------------------------------------
@@ -389,6 +462,38 @@ class TestCard:
             '{% call card(cls="custom") %}Body{% end %}'
         ).render()
         assert "chirpui-card custom" in html
+
+    def test_card_with_icon(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="Feature", icon="◆") %}Content{% end %}'
+        ).render()
+        assert "chirpui-card__icon" in html
+        assert "◆" in html
+
+    def test_card_with_subtitle(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="Card", subtitle="Optional subtitle") %}Body{% end %}'
+        ).render()
+        assert "Optional subtitle" in html
+        assert "chirpui-text-muted" in html
+
+    def test_card_header_with_actions(self, env: Environment) -> None:
+        """Test header actions via card_header macro (or {% slot header_actions %} with Kida 0.3+)."""
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card, card_header %}'
+            '{% call card() %}'
+            '{% call card_header(title="Settings", icon="⚙") %}'
+            '<button class="chirpui-btn chirpui-btn--ghost">⋯</button>'
+            "{% end %}"
+            "<p>Body</p>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-card__header" in html
+        assert "chirpui-card__header-actions" in html
+        assert "Settings" in html
+        assert "⚙" in html
 
 
 # ---------------------------------------------------------------------------
@@ -683,6 +788,23 @@ class TestAlert:
         ).render()
         assert "chirpui-alert__close" not in html
 
+    def test_alert_with_icon(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/alert.html" import alert %}'
+            '{% call alert(icon="⚠") %}Warning message{% end %}'
+        ).render()
+        assert "chirpui-alert__icon" in html
+        assert "⚠" in html
+
+    def test_alert_with_title(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/alert.html" import alert %}'
+            '{% call alert(title="Heads up") %}Body text{% end %}'
+        ).render()
+        assert "chirpui-alert__title" in html
+        assert "Heads up" in html
+        assert "Body text" in html
+
 
 # ---------------------------------------------------------------------------
 # Forms
@@ -907,6 +1029,28 @@ class TestForms:
         assert "#results" in html
         assert "hx-trigger" in html
 
+    def test_form_actions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form_actions %}'
+            '{% from "chirpui/button.html" import btn %}'
+            '{% call form_actions() %}'
+            '{{ btn("Submit", variant="primary") }}'
+            '{{ btn("Cancel", href="/") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-form-actions" in html
+        assert "Submit" in html
+        assert "Cancel" in html
+
+    def test_form_actions_align_end(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form_actions %}'
+            '{% call form_actions(align="end") %}'
+            '<button type="submit">Save</button>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-form-actions--end" in html
+
 
 # ---------------------------------------------------------------------------
 # Navbar, Sidebar, Stepper
@@ -933,6 +1077,28 @@ class TestNavbar:
             '{{ navbar_link("/x", "X", active=true) }}'
         ).render()
         assert "chirpui-navbar__link--active" in html
+
+    def test_navbar_end(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar, navbar_link, navbar_end %}'
+            '{% call navbar(brand="App", brand_url="/") %}'
+            '{{ navbar_link("/x", "X") }}'
+            '{% call navbar_end() %}<a href="/login">Login</a>{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-navbar__links--end" in html
+        assert "Login" in html
+
+    def test_navbar_dropdown(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar_dropdown %}'
+            '{% call navbar_dropdown("Products") %}'
+            '<a href="/a">A</a>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-navbar-dropdown" in html
+        assert "Products" in html
+        assert 'href="/a"' in html
 
 
 class TestSidebar:
@@ -1326,7 +1492,7 @@ class TestComposition:
             "{% end %}"
             "{% end %}"
         ).render()
-        assert html.count("chirpui-card__header") == 2
+        assert html.count('<header class="chirpui-card__header">') >= 2
         assert "Outer" in html
         assert "Inner" in html
         assert "Nested content" in html

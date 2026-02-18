@@ -15,7 +15,10 @@
 {% def playlist(title=none, cls="") %}
 <div class="chirpui-playlist{{ " " ~ cls if cls else "" }}">
     {% if title %}
-    <h3 class="chirpui-playlist__title">{{ title }}</h3>
+    <div class="chirpui-playlist__header">
+        <h3 class="chirpui-playlist__title">{{ title }}</h3>
+        <div class="chirpui-playlist__header-actions">{% slot header_actions %}</div>
+    </div>
     {% end %}
     <ol class="chirpui-playlist__list">
         {% slot %}

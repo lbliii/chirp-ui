@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/modal.html" import modal, modal_trigger %}
 {% from "chirpui/dropdown.html" import dropdown %}
@@ -11,12 +11,7 @@
 
 {% call container() %}
 {% call stack() %}
-<header class="chirpui-stack chirpui-stack--sm">
-  <h1>Animation & Motion</h1>
-  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    Motion tokens, micro-feedback, skeleton, View Transitions — Polished interactions.
-  </p>
-</header>
+{{ page_header("Animation & Motion", subtitle="Motion tokens, micro-feedback, skeleton, View Transitions — Polished interactions.") }}
 
 <h2>Card entrance</h2>
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">

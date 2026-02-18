@@ -1,17 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block %}
-{% from "chirpui/forms.html" import text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
+{% from "chirpui/forms.html" import text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field, form_actions %}
 
 {% call container() %}
 {% call stack() %}
-<header class="chirpui-stack chirpui-stack--sm">
-  <h1>Forms</h1>
-  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    text_field, textarea_field, select_field, checkbox_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field — Form inputs with labels and errors.
-  </p>
-</header>
+{{ page_header("Forms", subtitle="text_field, textarea_field, select_field, checkbox_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field — Form inputs with labels and errors.") }}
 
 <h2>Text Fields</h2>
 {% call grid(cols=2) %}
@@ -102,7 +97,9 @@
     {{ text_field("name", value="", label="Name", placeholder="Your name", required=true) }}
     {{ text_field("email", value="", label="Email", type="email", placeholder="you@example.com", required=true) }}
   </div>
+  {% call form_actions() %}
   <button type="submit" class="chirpui-btn chirpui-btn--primary">Submit</button>
+  {% end %}
 </form>
 <p class="chirpui-text-muted chirpui-font-sm">
   Server-side validation: required fields, email format. On error: ValidationError fragment. On success: FormAction + toast.

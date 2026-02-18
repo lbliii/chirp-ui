@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/modal.html" import modal, modal_trigger %}
 {% from "chirpui/confirm.html" import confirm_dialog, confirm_trigger %}
 {% from "chirpui/drawer.html" import drawer, drawer_trigger %}
@@ -16,12 +16,7 @@
 
 {% call container() %}
 {% call stack() %}
-<header class="chirpui-stack chirpui-stack--sm">
-  <h1>UI Components</h1>
-  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    modal, confirm_dialog, drawer, dropdown, tabs, badge, toast — Interactive elements.
-  </p>
-</header>
+{{ page_header("UI Components", subtitle="modal, confirm_dialog, drawer, dropdown, tabs, badge, toast — Interactive elements.") }}
 
 <h2>Modal</h2>
 <div class="chirpui-block">

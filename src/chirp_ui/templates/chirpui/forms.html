@@ -214,7 +214,7 @@
 </div>
 {% end %}
 
-{# Input with prefix/suffix #}
+{# Input with prefix/suffix. Use prefix/suffix params for text, or slot prefix/suffix for custom content (icons, etc). #}
 {% def input_group(name, prefix=none, suffix=none, value="", label=none,
                    errors=none, type="text", required=false, placeholder="",
                    hint=none, attrs="") %}
@@ -227,6 +227,8 @@
     <div class="chirpui-input-group">
         {% if prefix %}
         <span class="chirpui-input-group__prefix">{{ prefix }}</span>
+        {% else %}
+        <span class="chirpui-input-group__prefix">{% slot prefix %}</span>
         {% end %}
         <input class="chirpui-input-group__input"
                type="{{ type }}" id="{{ name }}" name="{{ name }}"
@@ -237,6 +239,8 @@
                {{ attrs }}>
         {% if suffix %}
         <span class="chirpui-input-group__suffix">{{ suffix }}</span>
+        {% else %}
+        <span class="chirpui-input-group__suffix">{% slot suffix %}</span>
         {% end %}
     </div>
     {% if hint and not (errors and errors | field_errors(name)) %}
@@ -294,4 +298,12 @@
 {# Hidden field #}
 {% def hidden_field(name, value="") %}
 <input type="hidden" name="{{ name }}" value="{{ value }}">
+{% end %}
+
+{# Form actions — submit/cancel button row. Use align="end" for right-aligned. #}
+{% def form_actions(align="start", cls="") %}
+{% set align_class = " chirpui-form-actions--end" if align == "end" else "" %}
+<div class="chirpui-form-actions{{ align_class }}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
 {% end %}

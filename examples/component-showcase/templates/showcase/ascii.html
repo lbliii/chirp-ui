@@ -1,18 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/ascii_icon.html" import ascii_icon %}
 {% from "chirpui/spinner.html" import spinner, spinner_thinking %}
 
 {% call container() %}
 {% call stack() %}
-<header class="chirpui-stack chirpui-stack--sm">
-  <h1>ASCII Icons</h1>
-  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    Unicode symbols as primary icons — blink, pulse, shrink, rotate, spin, bounce, throb, wiggle, glow.
-  </p>
-</header>
+{{ page_header("ASCII Icons", subtitle="Unicode symbols as primary icons — blink, pulse, shrink, rotate, spin, bounce, throb, wiggle, glow.") }}
 
 <h2>Animation states</h2>
 <p class="chirpui-text-muted" style="margin-top: -0.5rem;">

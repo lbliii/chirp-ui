@@ -43,13 +43,12 @@ Homepage = "https://github.com/lbliii/chirp-ui"
 Repository = "https://github.com/lbliii/chirp-ui"
 
 # =============================================================================
-# uv — Workspace sources (resolved by workspace root pyproject.toml)
+# uv — Workspace development
 # =============================================================================
-# When inside the b-stack workspace, kida-templates resolves as workspace member.
-# Standalone (PyPI) installs use published versions.
-
-[tool.uv.sources]
-kida-templates = { workspace = true }
+# For local development with kida in a workspace, add to workspace root:
+#   [tool.uv.workspace]
+#   members = ["chirp-ui", "path/to/kida"]
+# Standalone installs and CI use kida-templates from PyPI.
 
 [tool.setuptools.packages.find]
 where = ["src"]

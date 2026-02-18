@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/avatar.html" import avatar %}
 {% from "chirpui/message_thread.html" import message_thread %}
 {% from "chirpui/message_bubble.html" import message_bubble %}
@@ -14,12 +14,7 @@
 
 {% call container() %}
 {% call stack() %}
-<header class="chirpui-stack chirpui-stack--sm">
-  <h1>Messenger & Chat</h1>
-  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    message_bubble, message_thread, typing_indicator, chat_input, conversation_list, reaction_pill.
-  </p>
-</header>
+{{ page_header("Messenger & Chat", subtitle="message_bubble, message_thread, typing_indicator, chat_input, conversation_list, reaction_pill.") }}
 
 {% call grid(cols=2) %}
 {% call block() %}

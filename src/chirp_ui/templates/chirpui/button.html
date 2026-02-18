@@ -2,7 +2,7 @@
 
 {% from "chirpui/spinner.html" import spinner %}
 
-{% def btn(label, variant="", loading=false, type="submit", href=none, cls="", attrs="") %}
+{% def btn(label, variant="", loading=false, type="submit", href=none, icon=none, cls="", attrs="") %}
 {% set variant_class = " chirpui-btn--" ~ variant if variant else "" %}
 {% set loading_class = " chirpui-btn--loading" if loading else "" %}
 {% set base_class = "chirpui-btn" ~ variant_class ~ loading_class %}
@@ -11,12 +11,20 @@
 {% end %}
 {% if href %}
 <a class="{{ base_class }}" href="{{ href }}" {{ attrs }}>
+    {% if icon %}<span class="chirpui-btn__icon">{{ icon }}</span>{% end %}
     <span class="chirpui-btn__label">{{ label }}</span>
 </a>
 {% else %}
 <button type="{{ type }}" class="{{ base_class }}" {% if loading %}aria-busy="true"{% end %} {{ attrs }}>
+    {% if icon %}<span class="chirpui-btn__icon">{{ icon }}</span>{% end %}
     <span class="chirpui-btn__label">{{ label }}</span>
     <span class="chirpui-btn__spinner" aria-hidden="true">{{ spinner(size="sm") }}</span>
 </button>
 {% end %}
+{% end %}
+
+{% def button_group(cls="") %}
+<div class="chirpui-btn-group{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
 {% end %}

@@ -1,6 +1,8 @@
 {#- chirp-ui: Card component
     Headless card with optional header, footer, collapsible, and variants.
 
+    Named slots: header_actions, media, default (body).
+
     Usage:
         from "chirpui/card.html" import card
 
@@ -8,23 +10,32 @@
             <p>Card body content.</p>
         end
 
-        call card(title="Details", footer="Last updated", collapsible=true)
-            <p>Collapsible content.</p>
+        call card(title="Settings", icon="⚙")
+            {% slot header_actions %}<button>⋯</button>{% end %}
+            <p>Body content.</p>
         end
 
         call card(title="Feature", variant="feature")
-            media_slot: <img src="..." alt="...">
+            {% slot media %}<img src="..." alt="...">{% end %}
             <p>Body content.</p>
         end
 -#}
 
-{% def card(title=none, footer=none, collapsible=false, open=false, variant="", cls="") %}
+{% def card(title=none, subtitle=none, footer=none, collapsible=false, open=false, variant="", icon=none, cls="") %}
 {% set variant_class = " chirpui-card--" ~ variant if variant else "" %}
 {% if collapsible %}
 <details class="chirpui-card chirpui-card--collapsible{{ variant_class }}{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
     {% if title %}
-        <summary class="chirpui-card__header">{{ title }}</summary>
+        <summary class="chirpui-card__header">
+            {% if icon %}<span class="chirpui-card__icon">{{ icon }}</span>{% end %}
+            <div class="chirpui-card__header-content">
+                <span class="chirpui-card__title">{{ title }}</span>
+                {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
+            </div>
+            <div class="chirpui-card__header-actions">{% slot header_actions %}</div>
+        </summary>
     {% end %}
+    <div class="chirpui-card__media">{% slot media %}</div>
     <div class="chirpui-card__body">
         {% slot %}
     </div>
@@ -35,8 +46,16 @@
 {% else %}
 <article class="chirpui-card{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     {% if title %}
-        <header class="chirpui-card__header">{{ title }}</header>
+        <header class="chirpui-card__header">
+            {% if icon %}<span class="chirpui-card__icon">{{ icon }}</span>{% end %}
+            <div class="chirpui-card__header-content">
+                <span class="chirpui-card__title">{{ title }}</span>
+                {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
+            </div>
+            <div class="chirpui-card__header-actions">{% slot header_actions %}</div>
+        </header>
     {% end %}
+    <div class="chirpui-card__media">{% slot media %}</div>
     <div class="chirpui-card__body">
         {% slot %}
     </div>
@@ -45,6 +64,19 @@
     {% end %}
 </article>
 {% end %}
+{% end %}
+
+{% def card_header(title, subtitle=none, icon=none, cls="") %}
+<header class="chirpui-card__header{{ " " ~ cls if cls else "" }}">
+    {% if icon %}<span class="chirpui-card__icon">{{ icon }}</span>{% end %}
+    <div class="chirpui-card__header-content">
+        <span class="chirpui-card__title">{{ title }}</span>
+        {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
+    </div>
+    <div class="chirpui-card__header-actions">
+        {% slot %}
+    </div>
+</header>
 {% end %}
 
 {% def card_media(cls="") %}

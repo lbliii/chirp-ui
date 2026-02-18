@@ -1,28 +1,26 @@
 {#- chirp-ui: Sidebar component
     Vertical sidebar navigation for dashboards and admin panels.
 
+    Named slots: header, footer, default (nav content).
+
     Usage:
         from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section
 
         call sidebar()
+            {% slot header %}<div class="chirpui-sidebar__brand">My App</div>{% end %}
             sidebar_section("Main")
             sidebar_link("/dashboard", "Dashboard", active=true)
-            sidebar_link("/settings", "Settings")
-            sidebar_section("Admin")
-            sidebar_link("/users", "Users")
-        end
-
-        Or with slot for custom items:
-        call sidebar()
-            <a href="/custom" class="chirpui-sidebar__link">Custom</a>
+            {% slot footer %}sidebar_link("/help", "Help"){% end %}
         end
 -#}
 
 {% def sidebar(cls="") %}
 <aside class="chirpui-sidebar{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-sidebar__header">{% slot header %}</div>
     <nav class="chirpui-sidebar__nav">
         {% slot %}
     </nav>
+    <div class="chirpui-sidebar__footer">{% slot footer %}</div>
 </aside>
 {% end %}
 

@@ -1,12 +1,16 @@
 {#- chirp-ui: Dropdown component
     Native <details>/<summary> dropdown — zero JavaScript.
 
+    Named slots: header, footer, default (menu items).
+
     Usage:
         from "chirpui/dropdown.html" import dropdown
 
         call dropdown(label="Options")
+            {% slot header %}<div class="chirpui-dropdown__header">Signed in as alice</div>{% end %}
             <a href="/settings">Settings</a>
             <a href="/profile">Profile</a>
+            {% slot footer %}<a href="/logout">Log out</a>{% end %}
         end
 -#}
 
@@ -14,7 +18,9 @@
 <details class="chirpui-dropdown{{ " " ~ cls if cls else "" }}">
     <summary class="chirpui-dropdown__trigger">{{ label }}</summary>
     <div class="chirpui-dropdown__menu">
+        <div class="chirpui-dropdown__header">{% slot header %}</div>
         {% slot %}
+        <div class="chirpui-dropdown__footer">{% slot footer %}</div>
     </div>
 </details>
 {% end %}

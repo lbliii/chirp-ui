@@ -1,6 +1,8 @@
 {#- chirp-ui: Callout component
     Inset box for tips, notes, warnings — distinct from alert (no dismiss, more editorial).
 
+    Named slot: header_actions.
+
     Usage:
         from "chirpui/callout.html" import callout
 
@@ -8,18 +10,21 @@
             This is an informational callout with a title.
         end
 
-        call callout(variant="warning")
-            No title — just the body content.
+        call callout(variant="warning", title="Tip")
+            {% slot header_actions %}<button>Copy</button>{% end %}
+            Body content.
         end
 
     Variants: info, success, warning, error, neutral
 -#}
 
-{% def callout(variant="info", title=none, cls="") %}
+{% def callout(variant="info", title=none, icon=none, cls="") %}
 <aside class="chirpui-callout chirpui-callout--{{ variant }}{{ " " ~ cls if cls else "" }}">
-    {% if title %}
-    <div class="chirpui-callout__title">{{ title }}</div>
-    {% end %}
+    <div class="chirpui-callout__header">
+        {% if icon %}<span class="chirpui-callout__icon">{{ icon }}</span>{% end %}
+        {% if title %}<div class="chirpui-callout__title">{{ title }}</div>{% end %}
+        <div class="chirpui-callout__header-actions">{% slot header_actions %}</div>
+    </div>
     <div class="chirpui-callout__body">
         {% slot %}
     </div>

@@ -1,19 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/navbar.html" import navbar, navbar_link %}
 {% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
 {% from "chirpui/stepper.html" import stepper %}
 
 {% call container() %}
 {% call stack() %}
-<header class="chirpui-stack chirpui-stack--sm">
-  <h1>Navigation</h1>
-  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    navbar, sidebar, stepper — Top nav, side nav, and multi-step indicators.
-  </p>
-</header>
+{{ page_header("Navigation", subtitle="navbar, sidebar, stepper — Top nav, side nav, and multi-step indicators.") }}
 
 <h2>Navbar</h2>
 {% call block() %}
@@ -46,7 +41,7 @@
 <h2>Stepper</h2>
 {% call block() %}
 {{ stepper(steps=[{"id": "1", "label": "Details"}, {"id": "2", "label": "Review"}, {"id": "3", "label": "Confirm"}], current=2) }}
-<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 1rem;">
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: var(--chirpui-spacing);">
   Multi-step forms: current=2 shows step 2 active, step 1 completed.
 </p>
 {% end %}

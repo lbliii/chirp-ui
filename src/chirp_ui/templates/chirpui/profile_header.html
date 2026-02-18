@@ -1,31 +1,44 @@
 {#- chirp-ui: Profile Header component
     Cover image, avatar, name, bio, stats, action button.
 
-    Usage:
-        from "chirpui/profile_header.html" import profile_header, profile_header_avatar, profile_header_stats, profile_header_action
+    Named slots (Kida 0.3+, use_slots=true): avatar, bio, stats, action.
 
-        call profile_header(name="Alice", cover_url="/cover.jpg")
-            call profile_header_avatar()
-                avatar(src="...", alt="Alice", size="lg")
-            end
-            <p class="chirpui-profile-header__bio">Developer & designer</p>
-            call profile_header_stats()
-                stat(value="1.2K", label="Followers")
-                stat(value="42", label="Following")
-            end
-            call profile_header_action()
-                btn("Follow", variant="primary")
-            end
+    Usage:
+        from "chirpui/profile_header.html" import profile_header, profile_header_avatar, ...
+
+        call profile_header(name="Alice", cover_url="/cover.jpg", use_slots=true)
+            {% slot avatar %}avatar(initials="AC", alt="Alice", size="lg"){% end %}
+            {% slot bio %}<p class="chirpui-profile-header__bio">Developer & designer</p>{% end %}
+            {% slot stats %}stat(value="1.2K", label="Followers") stat(value="42", label="Following"){% end %}
+            {% slot action %}btn("Follow", variant="primary"){% end %}
         end
+
+    Legacy (default): profile_header_avatar, profile_header_info, profile_header_stats, profile_header_action
 -#}
 
-{% def profile_header(name, cover_url=none, href=none, cls="") %}
+{% def profile_header(name=none, cover_url=none, href=none, cls="", use_slots=false) %}
 <header class="chirpui-profile-header{{ " " ~ cls if cls else "" }}">
     {% if cover_url %}
     <div class="chirpui-profile-header__cover" style="background-image: url({{ cover_url }})"></div>
     {% end %}
     <div class="chirpui-profile-header__content">
+        {% if use_slots %}
+        <div class="chirpui-profile-header__avatar">{% slot avatar %}</div>
+        <div class="chirpui-profile-header__info">
+            {% if name %}
+            {% if href %}
+            <h1 class="chirpui-profile-header__name"><a href="{{ href }}">{{ name }}</a></h1>
+            {% else %}
+            <h1 class="chirpui-profile-header__name">{{ name }}</h1>
+            {% end %}
+            {% end %}
+            <div class="chirpui-profile-header__bio">{% slot bio %}</div>
+            <div class="chirpui-profile-header__stats">{% slot stats %}</div>
+            <div class="chirpui-profile-header__action">{% slot action %}</div>
+        </div>
+        {% else %}
         {% slot %}
+        {% end %}
     </div>
 </header>
 {% end %}

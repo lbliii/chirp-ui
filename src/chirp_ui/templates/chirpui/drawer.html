@@ -18,6 +18,7 @@
         {% if title %}
         <header class="chirpui-drawer__header">
             <h2 class="chirpui-drawer__title">{{ title }}</h2>
+            <div class="chirpui-drawer__header-actions">{% slot header_actions %}</div>
             <form method="dialog">
                 <button class="chirpui-drawer__close" aria-label="Close">&times;</button>
             </form>

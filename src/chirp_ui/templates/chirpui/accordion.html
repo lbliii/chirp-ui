@@ -25,7 +25,10 @@
 <details class="chirpui-accordion__item{{ " " ~ cls if cls else "" }}"
          name="{{ name }}"
          {% if open %}open{% end %}>
-    <summary class="chirpui-accordion__trigger">{{ title }}</summary>
+    <summary class="chirpui-accordion__trigger">
+        <span class="chirpui-accordion__trigger-text">{{ title }}</span>
+        <div class="chirpui-accordion__trigger-actions">{% slot header_actions %}</div>
+    </summary>
     <div class="chirpui-accordion__content">
         {% slot %}
     </div>

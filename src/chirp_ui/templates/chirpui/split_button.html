@@ -35,7 +35,9 @@
     <details class="chirpui-split-btn__dropdown">
         <summary class="chirpui-split-btn__trigger" aria-label="More options">▾</summary>
         <div class="chirpui-split-btn__menu">
+            <div class="chirpui-split-btn__menu-header">{% slot header %}</div>
             {% slot %}
+            <div class="chirpui-split-btn__menu-footer">{% slot footer %}</div>
         </div>
     </details>
 </div>

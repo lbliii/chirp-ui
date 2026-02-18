@@ -1,19 +1,13 @@
 {#- chirp-ui: Video Card component
     Thumbnail, duration badge, title, channel, views, date.
 
+    Named slot: actions (overlay e.g. menu button on thumbnail).
+
     Usage:
         from "chirpui/video_card.html" import video_card
 
-        call video_card(
-            href="/watch/1",
-            thumbnail="/thumb.jpg",
-            duration="4:32",
-            title="How to build with Chirp",
-            channel="Dev Channel",
-            channel_href="/channel/1",
-            views="1.2M",
-            date="2 days ago"
-        )
+        call video_card(href="/watch/1", thumbnail="/thumb.jpg", duration="4:32", title="...")
+            {% slot actions %}<button class="chirpui-video-card__menu">⋯</button>{% end %}
         end
 -#}
 
@@ -23,6 +17,7 @@
         <figure class="chirpui-video-card__thumbnail">
             <img src="{{ thumbnail }}" alt="{{ title }}" loading="lazy">
             <span class="chirpui-video-card__duration">{{ duration }}</span>
+            <span class="chirpui-video-card__actions">{% slot actions %}</span>
         </figure>
         <div class="chirpui-video-card__body">
             <h3 class="chirpui-video-card__title">{{ title }}</h3>

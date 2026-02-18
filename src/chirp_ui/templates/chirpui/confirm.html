@@ -15,18 +15,23 @@
     Cancel closes the dialog via form method="dialog".
 -#}
 
-{% def confirm_dialog(id, title, message, confirm_label="Confirm", cancel_label="Cancel",
+{% def confirm_dialog(id, title, message=none, confirm_label="Confirm", cancel_label="Cancel",
                      variant="default", confirm_url=none, confirm_method="POST", cls="") %}
 <dialog id="{{ id }}" class="chirpui-confirm chirpui-modal chirpui-modal--small{{ " chirpui-confirm--" ~ variant if variant else "" }}{{ " " ~ cls if cls else "" }}"
         closedby="any">
     <header class="chirpui-modal__header">
         <h2 class="chirpui-modal__title">{{ title }}</h2>
+        <div class="chirpui-modal__header-actions">{% slot header_actions %}</div>
         <form method="dialog">
             <button class="chirpui-modal__close" aria-label="Close">&times;</button>
         </form>
     </header>
     <div class="chirpui-modal__body">
+        {% if message %}
         <p class="chirpui-confirm__message">{{ message }}</p>
+        {% else %}
+        <div class="chirpui-confirm__message">{% slot message %}</div>
+        {% end %}
         <footer class="chirpui-confirm__footer">
             <form method="dialog">
                 <button type="submit" class="chirpui-btn">{{ cancel_label }}</button>

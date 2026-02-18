@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/divider.html" import divider %}
@@ -15,12 +15,7 @@
 
 {% call container() %}
 {% call stack() %}
-<header class="chirpui-stack chirpui-stack--sm">
-  <h1>Layout</h1>
-  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    container, grid, stack, block, surface, callout, hero, overlay — Tetris-inspired layouts and backgrounds.
-  </p>
-</header>
+{{ page_header("Layout", subtitle="container, grid, stack, block, surface, callout, hero, overlay — Tetris-inspired layouts and backgrounds.") }}
 
 <h2>Breadcrumbs</h2>
 {% call block() %}
@@ -95,9 +90,12 @@ Your changes have been saved. Use callout for static tips; alert for dynamic sta
 {% call callout(variant="warning") %}
 Callout without title — just the body content.
 {% end %}
+{% call callout(variant="info", icon="💡", title="Tip") %}
+Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
+{% end %}
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
-  callout(variant="info|success|warning|error|neutral", title=none)
+  callout(variant="info|success|warning|error|neutral", title=none, icon=none)
 </p>
 {% end %}
 

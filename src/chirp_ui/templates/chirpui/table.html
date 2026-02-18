@@ -9,6 +9,7 @@
             row("Bob", "bob@example.com", "User")
         end
 
+        Slots: caption (table caption).
         Sortable headers:
         call table(headers=["Name", "Email"], sortable=true,
                    sort_url="/users", hx_target="#user-table")
@@ -20,6 +21,7 @@
              striped=false, cls="") %}
 <div class="chirpui-table-wrap">
     <table class="chirpui-table{{ " chirpui-table--striped" if striped else "" }}{{ " " ~ cls if cls else "" }}">
+        <caption class="chirpui-table__caption">{% slot caption %}</caption>
         {% if headers %}
             <thead class="chirpui-table__head">
                 <tr>

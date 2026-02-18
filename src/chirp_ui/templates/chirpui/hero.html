@@ -1,15 +1,14 @@
 {#- chirp-ui: Hero component
     Full-width section with background for landing pages, headers.
 
+    Named slot: action (primary CTA, separate from content).
+
     Usage:
         from "chirpui/hero.html" import hero
 
         call hero(title="Welcome", subtitle="Build something great.", background="solid")
-            <a href="/start" class="chirpui-btn chirpui-btn--primary">Get started</a>
-        end
-
-        call hero(background="gradient")
-            Custom slot content only.
+            <p>Some intro text.</p>
+            {% slot action %}<a href="/start" class="chirpui-btn chirpui-btn--primary">Get started</a>{% end %}
         end
 
     Backgrounds: solid, muted, gradient
@@ -27,6 +26,7 @@
         <div class="chirpui-hero__content">
             {% slot %}
         </div>
+        <div class="chirpui-hero__action">{% slot action %}</div>
     </div>
 </section>
 {% end %}

@@ -40,3 +40,33 @@
     {% slot %}
 </div>
 {% end %}
+
+{#- page_header: title, subtitle, actions slot for right-aligned content -#}
+{% def page_header(title, subtitle=none, cls="") %}
+<header class="chirpui-stack chirpui-stack--sm chirpui-page-header{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-page-header__top">
+        <div>
+            <h1>{{ title }}</h1>
+            {% if subtitle %}
+            <p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>
+            {% end %}
+        </div>
+        <div class="chirpui-page-header__actions">{% slot actions %}</div>
+    </div>
+</header>
+{% end %}
+
+{#- section_header: title, subtitle, actions slot -#}
+{% def section_header(title, subtitle=none, cls="") %}
+<div class="chirpui-section-header{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-section-header__top">
+        <div>
+            <h2>{{ title }}</h2>
+            {% if subtitle %}
+            <p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>
+            {% end %}
+        </div>
+        <div class="chirpui-section-header__actions">{% slot actions %}</div>
+    </div>
+</div>
+{% end %}

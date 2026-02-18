@@ -12,7 +12,10 @@
 {% def collapse(trigger, open=false, cls="") %}
 <details class="chirpui-collapse{{ " " ~ cls if cls else "" }}"
          {% if open %}open{% end %}>
-    <summary class="chirpui-collapse__trigger">{{ trigger }}</summary>
+    <summary class="chirpui-collapse__trigger">
+        <span class="chirpui-collapse__trigger-text">{{ trigger }}</span>
+        <div class="chirpui-collapse__trigger-actions">{% slot header_actions %}</div>
+    </summary>
     <div class="chirpui-collapse__content">
         {% slot %}
     </div>

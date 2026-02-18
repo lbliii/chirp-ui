@@ -2,27 +2,30 @@
     Media (img/video) + body + optional actions.
     Classic OOCSS pattern for lists, cards, etc.
 
-    Usage:
-        from "chirpui/media_object.html" import media_object, media_object_media, media_object_body, media_object_actions
+    Named slots: media, body (default), actions.
 
-        call media_object()
-            call media_object_media()
-                <img src="..." alt="...">
-            end
-            call media_object_body()
-                <h3>Title</h3>
-                <p>Description.</p>
-            end
-            call media_object_actions()
-                <button>Action</button>
-            end
+    Usage:
+        from "chirpui/media_object.html" import media_object, media_object_media, ...
+
+        call media_object(align="start")
+            {% slot media %}<img src="..." alt="...">{% end %}
+            {% slot body %}<h3>Title</h3><p>Description.</p>{% end %}
+            {% slot actions %}<button>Action</button>{% end %}
         end
+
+    Legacy: media_object_media, media_object_body, media_object_actions
 -#}
 
-{% def media_object(align="start", cls="") %}
+{% def media_object(align="start", cls="", use_slots=false) %}
 {% set align_class = " chirpui-media-object--align-" ~ align if align else "" %}
 <div class="chirpui-media-object{{ align_class }}{{ " " ~ cls if cls else "" }}">
+    {% if use_slots %}
+    <div class="chirpui-media-object__media">{% slot media %}</div>
+    <div class="chirpui-media-object__body">{% slot %}</div>
+    <div class="chirpui-media-object__actions">{% slot actions %}</div>
+    {% else %}
     {% slot %}
+    {% end %}
 </div>
 {% end %}
 

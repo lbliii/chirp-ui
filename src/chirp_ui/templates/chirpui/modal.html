@@ -17,6 +17,7 @@
     {% if title %}
         <header class="chirpui-modal__header">
             <h2 class="chirpui-modal__title">{{ title }}</h2>
+            <div class="chirpui-modal__header-actions">{% slot header_actions %}</div>
             <form method="dialog">
                 <button class="chirpui-modal__close" aria-label="Close">&times;</button>
             </form>

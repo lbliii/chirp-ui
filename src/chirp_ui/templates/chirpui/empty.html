@@ -2,20 +2,22 @@
     Placeholder for empty lists, collections, or search results.
     Optional illustration slot for custom graphics.
 
+    Named slot: action (custom CTA when not using action_label/action_href).
+
     Usage:
         from "chirpui/empty.html" import empty_state
 
         call empty_state(icon="✧", title="No Projects")
             <p>Create your first project to get started.</p>
-            <button class="chirpui-btn chirpui-btn--primary">+ New Project</button>
+            {% slot action %}btn("New Project", variant="primary"){% end %}
         end
 
-        call empty_state(title="No messages", illustration="💬")
-            <p>Start a conversation.</p>
+        call empty_state(title="No items", action_label="Create", action_href="/new")
+            <p>Get started by creating your first item.</p>
         end
 -#}
 
-{% def empty_state(icon=none, title="No items", illustration=none, cls="") %}
+{% def empty_state(icon=none, title="No items", illustration=none, action_label=none, action_href=none, cls="") %}
 <div class="chirpui-empty-state{{ " " ~ cls if cls else "" }}">
     {% if illustration %}
     <div class="chirpui-empty-state__illustration">{{ illustration }}</div>
@@ -25,6 +27,11 @@
     <h2 class="chirpui-empty-state__title">{{ title }}</h2>
     <div class="chirpui-empty-state__body">
         {% slot %}
+        {% if action_label and action_href %}
+        <a href="{{ action_href }}" class="chirpui-btn chirpui-btn--primary chirpui-empty-state__action">{{ action_label }}</a>
+        {% else %}
+        <div class="chirpui-empty-state__action">{% slot action %}</div>
+        {% end %}
     </div>
 </div>
 {% end %}

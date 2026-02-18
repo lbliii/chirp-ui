@@ -1,17 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, stack, block %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
 {% from "chirpui/streaming.html" import model_card %}
 
 {% call container() %}
 {% call stack() %}
-<header class="chirpui-stack chirpui-stack--sm">
-  <h1>Unified Demo</h1>
-  <p class="chirpui-text-muted">
-    Form submit → Fragment (card) → SSE stream → OOB toast. Full Chirp stack in one flow.
-  </p>
-</header>
+{{ page_header("Unified Demo", subtitle="Form submit → Fragment (card) → SSE stream → OOB toast. Full Chirp stack in one flow.") }}
 
 <div id="demo_content" class="chirpui-stack chirpui-stack--sm">
   <form hx-post="/demo/submit"

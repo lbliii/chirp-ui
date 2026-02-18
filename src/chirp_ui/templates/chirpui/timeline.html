@@ -46,9 +46,12 @@
         <div class="chirpui-timeline__header">
             <span class="chirpui-timeline__title">{{ title }}</span>
             <span class="chirpui-timeline__date">{{ date }}</span>
+            <div class="chirpui-timeline__header-actions">{% slot header_actions %}</div>
         </div>
         {% if content %}
         <div class="chirpui-timeline__body">{{ content }}</div>
+        {% else %}
+        <div class="chirpui-timeline__body">{% slot content %}</div>
         {% end %}
     </div>
 </div>

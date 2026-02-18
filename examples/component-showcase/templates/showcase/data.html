@@ -124,9 +124,14 @@
 
 <h2>Empty State</h2>
 {% call block() %}
+{% call stack(gap="sm") %}
 {% call empty_state(icon="✧", title="No Projects") %}
 <p>Create your first project to get started.</p>
 <button type="button">+ New Project</button>
+{% end %}
+{% call empty_state(title="No items yet", action_label="Create item", action_href="/new") %}
+<p>Use <code>action_label</code> and <code>action_href</code> for a primary CTA.</p>
+{% end %}
 {% end %}
 {% end %}
 

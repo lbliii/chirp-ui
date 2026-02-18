@@ -1,6 +1,8 @@
 {#- chirp-ui: Alert component
     Status alerts with variant styling and optional dismiss.
 
+    Named slot: actions (e.g. Retry button).
+
     Usage:
         from "chirpui/alert.html" import alert
 
@@ -9,17 +11,25 @@
         end
 
         call alert(variant="error", dismissible=true)
-            Something went wrong. Please try again.
+            Something went wrong.
+            {% slot actions %}<button>Retry</button>{% end %}
         end
 
     Variants: info (default), success, warning, error
 -#}
 
-{% def alert(variant="info", dismissible=false, cls="") %}
+{% def alert(variant="info", dismissible=false, icon=none, title=none, cls="") %}
 <div class="{{ "alert" | bem(variant=variant, cls=cls) }}"
      role="alert">
+    {% if icon %}
+        <span class="chirpui-alert__icon">{{ icon }}</span>
+    {% end %}
     <div class="chirpui-alert__body">
+        {% if title %}
+            <div class="chirpui-alert__title">{{ title }}</div>
+        {% end %}
         {% slot %}
+        <div class="chirpui-alert__actions">{% slot actions %}</div>
     </div>
     {% if dismissible %}
         <button class="chirpui-alert__close"

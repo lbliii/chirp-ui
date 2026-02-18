@@ -1,32 +1,52 @@
 {#- chirp-ui: Navbar component
     Top navigation bar with brand and links.
 
-    Usage:
-        from "chirpui/navbar.html" import navbar, navbar_link
+    Named slots (Kida 0.3+, use_slots=true): default (links), end (right-aligned).
 
-        call navbar(brand="My App", brand_url="/")
+    Usage:
+        from "chirpui/navbar.html" import navbar, navbar_link, navbar_end, navbar_dropdown
+
+        call navbar(brand="My App", brand_url="/", use_slots=true)
             navbar_link("/docs", "Docs")
             navbar_link("/about", "About", active=true)
+            {% slot end %}btn("Login", href="/login"){% end %}
         end
 
-        Or with slot for custom content:
-        call navbar(brand="App", brand_url="/")
-            <a href="/custom">Custom</a>
-        end
+    Legacy: wrap right-aligned content in navbar_end(). Add cls="chirpui-navbar--sticky" for sticky nav.
 -#}
 
-{% def navbar(brand=none, brand_url="/", cls="") %}
+{% def navbar(brand=none, brand_url="/", cls="", use_slots=false) %}
 <nav class="chirpui-navbar{{ " " ~ cls if cls else "" }}">
     {% if brand %}
     <a class="chirpui-navbar__brand" href="{{ brand_url }}">{{ brand }}</a>
     {% end %}
+    {% if use_slots %}
+    <div class="chirpui-navbar__links">{% slot %}</div>
+    <div class="chirpui-navbar__links chirpui-navbar__links--end">{% slot end %}</div>
+    {% else %}
     <div class="chirpui-navbar__links">
         {% slot %}
     </div>
+    {% end %}
 </nav>
 {% end %}
 
 {% def navbar_link(href, label, active=false, cls="") %}
 <a class="chirpui-navbar__link{{ " chirpui-navbar__link--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
    href="{{ href }}">{{ label }}</a>
+{% end %}
+
+{% def navbar_end(cls="") %}
+<div class="chirpui-navbar__links chirpui-navbar__links--end{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def navbar_dropdown(label, active=false, cls="") %}
+<details class="chirpui-navbar-dropdown{{ " " ~ cls if cls else "" }}">
+    <summary class="chirpui-navbar-dropdown__trigger chirpui-navbar__link{{ " chirpui-navbar__link--active" if active else "" }}">{{ label }}</summary>
+    <div class="chirpui-navbar-dropdown__menu chirpui-dropdown__menu">
+        {% slot %}
+    </div>
+</details>
 {% end %}

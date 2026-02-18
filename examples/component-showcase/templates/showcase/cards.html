@@ -1,18 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/alert.html" import alert %}
+{% from "chirpui/button.html" import btn %}
 
 {% call container() %}
 {% call stack() %}
-<header class="chirpui-stack chirpui-stack--sm">
-  <h1>Cards & Alerts</h1>
-  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    card, alert — Content containers and status messages.
-  </p>
-</header>
+{{ page_header("Cards & Alerts", subtitle="card, alert — Content containers and status messages.") }}
 
 <h2>Cards</h2>
 {% call grid(cols=2) %}
@@ -24,6 +20,24 @@
 {% call block() %}
 {% call card(title="With Footer", footer="Last updated today") %}
 <p>Card with header and footer.</p>
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Cards with Icons</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call card(title="With Icon", subtitle="Optional subtitle", icon="◆") %}
+<p>Card with <code>icon</code> and <code>subtitle</code> params.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card(title="Settings", icon="⚙") %}
+{% slot header_actions %}
+{{ btn("⋯", variant="ghost", cls="chirpui-btn--sm") }}
+{% end %}
+<p>Use <code>{% slot header_actions %}</code> for header actions.</p>
+{% end %}
 {% end %}
 {% end %}
 {% end %}
@@ -51,6 +65,9 @@
 {% end %}
 {% call alert(variant="info", dismissible=true) %}
 <strong>Dismissible.</strong> Click × to close.
+{% end %}
+{% call alert(variant="warning", icon="⚠", title="Heads up") %}
+This alert has an icon and title. Use <code>icon</code> and <code>title</code> params.
 {% end %}
 {% end %}
 

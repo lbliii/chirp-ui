@@ -13,9 +13,12 @@
         end
 
         description_list(items=..., variant="horizontal") for term left, detail right layout.
+    Slots: header (content above the list).
 -#}
 
 {% def description_list(items=none, variant="stacked", cls="") %}
+<div class="chirpui-dl-wrap">
+    <div class="chirpui-dl__header">{% slot header %}</div>
 <dl class="chirpui-dl chirpui-dl--{{ variant }}{{ " " ~ cls if cls else "" }}">
     {% if items %}
         {% for item in items %}
@@ -28,6 +31,7 @@
         {% slot %}
     {% end %}
 </dl>
+</div>
 {% end %}
 
 {% def description_item(term, detail, cls="") %}

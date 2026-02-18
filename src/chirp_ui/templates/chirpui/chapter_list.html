@@ -9,11 +9,16 @@
             chapter_item(title="Setup", timestamp="2:34", href="/watch/1#t=154")
             chapter_item(title="Demo", timestamp="5:12", href="/watch/1#t=312")
         end
+
+    Slots: summary_actions (actions next to summary).
 -#}
 
 {% def chapter_list(summary="Chapters", open=false, cls="") %}
 <details class="chirpui-chapter-list{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
-    <summary class="chirpui-chapter-list__summary">{{ summary }}</summary>
+    <summary class="chirpui-chapter-list__summary">
+        <span class="chirpui-chapter-list__summary-text">{{ summary }}</span>
+        <span class="chirpui-chapter-list__summary-actions">{% slot summary_actions %}</span>
+    </summary>
     <ol class="chirpui-chapter-list__list">
         {% slot %}
     </ol>

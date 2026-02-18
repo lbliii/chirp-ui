@@ -1,12 +1,15 @@
 {#- chirp-ui: Conversation Item component
     Single row: avatar, name, last message, unread count, timestamp.
 
+    Named slot: actions (e.g. mute, archive - add onclick="event.preventDefault()" to prevent nav).
+
     Usage:
         from "chirpui/conversation_item.html" import conversation_item
         from "chirpui/avatar.html" import avatar
 
         call conversation_item(href="/chat/1", name="Alice", preview="Hey!", unread=3, time="2m")
             avatar(src="/alice.jpg", alt="Alice", size="sm")
+            {% slot actions %}<button>⋯</button>{% end %}
         end
 -#}
 
@@ -28,5 +31,6 @@
     {% if unread is not none and unread > 0 %}
     <span class="chirpui-conversation-item__unread">{{ unread }}</span>
     {% end %}
+    <span class="chirpui-conversation-item__actions">{% slot actions %}</span>
 </a>
 {% end %}

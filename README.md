@@ -1,29 +1,98 @@
 # chirp-ui
 
-**HTML over the wire, CSS without apology.**
+[![PyPI version](https://img.shields.io/pypi/v/chirp-ui.svg)](https://pypi.org/project/chirp-ui/)
+[![Tests](https://github.com/lbliii/chirp-ui/actions/workflows/tests.yml/badge.svg)](https://github.com/lbliii/chirp-ui/actions/workflows/tests.yml)
+[![Python 3.14+](https://img.shields.io/badge/python-3.14+-blue.svg)](https://pypi.org/project/chirp-ui/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Status: Alpha](https://img.shields.io/badge/status-alpha-orange.svg)](https://pypi.org/project/chirp-ui/)
 
-A love letter to the web platform — reusable [Kida](https://github.com/lbliii/kida) components for [Chirp](https://github.com/lbliii/chirp). Gorgeous by default. Server-rendered fragments. Zero JavaScript for layout. Unapologetically modern CSS.
+**Reusable Kida components for Chirp — gorgeous by default, htmx-native.**
 
-## Philosophy
-
-chirp-ui celebrates what the web can do when you lean into it:
-
-- **HTML over the wire** — Components render as blocks for htmx swaps, SSE streams, and view transitions. The server is the source of truth.
-- **CSS as the design language** — Modern features (`:has()`, `aspect-ratio`, `clamp()`, `text-wrap: balance`) used where they add value.
-- **Gorgeous by default** — Beautiful out of the box. Override `--chirpui-*` custom properties to customize.
-- **Pushing the limits** — Container queries, fluid typography, intrinsic layouts. First impression: *"This is what the web can do?"*
-
-## Install
-
-```bash
-pip install chirp-ui
+```python
+pip install chirp chirp-ui
 ```
 
-When used with Chirp, components are auto-detected — no configuration needed.
+```html
+{% from "chirpui/layout.html" import container, grid, block %}
+{% from "chirpui/card.html" import card %}
 
-## Component Showcase
+{% call container() %}
+    {% call grid(cols=2) %}
+        {% call block() %}{% call card(title="Hello") %}<p>Card one.</p>{% end %}{% end %}
+        {% call block() %}{% call card(title="World") %}<p>Card two.</p>{% end %}{% end %}
+    {% end %}
+{% end %}
+```
 
-Spin up a demo to browse all components:
+---
+
+## What is chirp-ui?
+
+chirp-ui is a component library for [Chirp](https://github.com/lbliii/chirp). It provides [Kida](https://github.com/lbliii/kida) template macros — cards, modals, forms, layouts — that render as HTML. Use them with htmx for swaps, SSE for streaming, and View Transitions for polish. Zero JavaScript for layout.
+
+**What's good about it:**
+
+- **Gorgeous by default** — Full visual design out of the box. Override `--chirpui-*` CSS variables to customize.
+- **htmx-native** — Interactive components use htmx or native HTML (`<dialog>`, `<details>`). No client-side framework.
+- **Composable** — `{% slot %}` for content injection. Components nest freely.
+- **Modern CSS** — `:has()`, container queries, fluid typography, `prefers-color-scheme` dark mode.
+
+---
+
+## Installation
+
+```bash
+# pip
+pip install chirp-ui
+
+# uv
+uv add chirp-ui
+```
+
+Requires Python 3.14+. When used with Chirp, components are auto-detected — no configuration needed.
+
+---
+
+## Quick Start
+
+| Step | Action |
+|------|--------|
+| 1 | Install Chirp and chirp-ui: `pip install chirp chirp-ui` |
+| 2 | Serve static assets from the package (CSS, themes) |
+| 3 | Import macros in templates: `{% from "chirpui/card.html" import card %}` |
+| 4 | Include CSS: `<link rel="stylesheet" href="/static/chirpui.css">` |
+
+**Serve assets:**
+
+```python
+from chirp.middleware.static import StaticFiles
+import chirp_ui
+
+app.add_middleware(StaticFiles(
+    directory=str(chirp_ui.static_path()),
+    prefix="/static"
+))
+```
+
+---
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **Layout** | container, grid, stack, block, page_header, section_header, divider, breadcrumbs, navbar, navbar_end, navbar_dropdown, sidebar, hero, surface, callout |
+| **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group |
+| **Forms** | text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, form_actions |
+| **Data display** | badge, spinner, skeleton, progress, description_list, timeline, tree_view, calendar |
+| **Streaming** | streaming_block, copy_btn, model_card — for htmx SSE and LLM UIs |
+| **Theming** | `--chirpui-*` CSS variables, dark mode, optional Holy Light theme |
+
+---
+
+## Usage
+
+<details>
+<summary><strong>Component Showcase</strong> — Browse all components</summary>
 
 ```bash
 pip install chirp chirp-ui
@@ -32,142 +101,12 @@ python examples/component-showcase/app.py
 
 Open http://localhost:8000
 
-## Quick Start
+</details>
 
-```html
-{% from "chirpui/layout.html" import container, grid, block %}
-{% from "chirpui/card.html" import card %}
+<details>
+<summary><strong>Theming</strong> — Override CSS variables</summary>
 
-{% call container() %}
-    {% call grid(cols=2) %}
-        {% call block() %}
-            {% call card(title="Hello") %}
-                <p>Card one.</p>
-            {% end %}
-        {% end %}
-        {% call block() %}
-            {% call card(title="World") %}
-                <p>Card two.</p>
-            {% end %}
-        {% end %}
-    {% end %}
-{% end %}
-```
-
-Include the CSS in your base template. Serve assets from the package (recommended):
-
-```python
-from chirp.middleware.static import StaticFiles
-import chirp_ui
-app.add_middleware(StaticFiles(
-    directory=str(chirp_ui.static_path()),
-    prefix="/static"
-))
-```
-
-Then in your base template:
-
-```html
-<link rel="stylesheet" href="/static/chirpui.css">
-```
-
-## Typography utilities
-
-Use `--chirpui-*` tokens via utility classes:
-
-| Class | Purpose |
-|-------|---------|
-| `chirpui-font-xs`, `chirpui-font-sm`, `chirpui-font-base`, `chirpui-font-lg`, `chirpui-font-xl`, `chirpui-font-2xl` | Font size |
-| `chirpui-text-muted` | Muted text color |
-
-## Layout
-
-Tetris-inspired block system for responsive desktop-to-mobile layouts:
-
-| Macro | Purpose |
-|-------|---------|
-| `container` | Max-width wrapper, centered. `max_width`, `padding` params. |
-| `grid` | Auto-fit responsive grid. `cols` (2, 3, 4) for tighter columns. |
-| `stack` | Vertical flex with gap. `gap` ("sm", "lg") for spacing. |
-| `block` | Grid child. `span` (1, 2, 3, "full") for column span. |
-
-```html
-{% from "chirpui/layout.html" import container, grid, stack, block %}
-
-{% call container() %}
-    {% call stack() %}
-        <h1>Title</h1>
-        {% call grid(cols=3) %}
-            {% call block() %}...{% end %}
-            {% call block(span=2) %}...{% end %}
-        {% end %}
-    {% end %}
-{% end %}
-```
-
-## Components
-
-### Layout
-| Component | Import | Features |
-|-----------|--------|----------|
-| **container** | `chirpui/layout.html` | Max-width, centered, responsive padding |
-| **grid** | `chirpui/layout.html` | Auto-fit grid, cols 2–4 |
-| **stack** | `chirpui/layout.html` | Vertical stack with gap |
-| **block** | `chirpui/layout.html` | Grid child with span |
-| **divider** | `chirpui/divider.html` | Visual separator, optional text, vertical/horizontal |
-| **breadcrumbs** | `chirpui/breadcrumbs.html` | Navigation trail |
-| **list_group** | `chirpui/list.html` | Vertical list, items or slot |
-| **link** | `chirpui/link.html` | Styled link with underline |
-| **navbar** | `chirpui/navbar.html` | Top nav with brand, links |
-| **sidebar** | `chirpui/sidebar.html` | Vertical side nav with sections |
-| **stepper** | `chirpui/stepper.html` | Multi-step form indicators |
-| **surface** | `chirpui/surface.html` | Container with background (default, muted, elevated, accent, glass, frosted, smoke) |
-| **callout** | `chirpui/callout.html` | Inset box for tips, notes (info, success, warning, error, neutral) |
-| **hero** | `chirpui/hero.html` | Full-width section with background (solid, muted, gradient) |
-| **overlay** | `chirpui/overlay.html` | Dark/gradient layer for text-on-image contrast |
-| **carousel** | `chirpui/carousel.html` | Horizontal swipe carousel (compact, page), scroll-snap |
-
-### UI
-| Component | Import | Features |
-|-----------|--------|----------|
-| **card** | `chirpui/card.html` | Header, body (slot), footer, collapsible |
-| **modal** | `chirpui/modal.html` | Dialog-based, trigger, close |
-| **confirm_dialog** | `chirpui/confirm.html` | Destructive action confirmation |
-| **drawer** | `chirpui/drawer.html` | Slide-out panel, left/right |
-| **tabs** | `chirpui/tabs.html` | htmx tab switching |
-| **accordion** | `chirpui/accordion.html` | Expandable sections, one open at a time |
-| **collapse** | `chirpui/collapse.html` | Single expand/collapse |
-| **tooltip** | `chirpui/tooltip.html` | Hover hint (pure CSS) |
-| **dropdown** | `chirpui/dropdown.html` | Native `<details>`-based |
-| **split_button** | `chirpui/split_button.html` | Primary action + dropdown menu |
-| **popover** | `chirpui/popover.html` | Floating panel, slot for content |
-| **toast** | `chirpui/toast.html` | htmx OOB notifications |
-| **table** | `chirpui/table.html` | Headers, row helper, sortable |
-| **pagination** | `chirpui/pagination.html` | htmx page navigation |
-| **alert** | `chirpui/alert.html` | Info, success, warning, error |
-| **forms** | `chirpui/forms.html` | text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field |
-| **badge** | `chirpui/badge.html` | Status indicators with icons |
-| **spinner** | `chirpui/spinner.html` | Loading animations |
-| **empty** | `chirpui/empty.html` | Empty state placeholders |
-| **skeleton** | `chirpui/skeleton.html` | Loading placeholders with shimmer |
-| **progress** | `chirpui/progress.html` | Progress bars |
-| **status** | `chirpui/status.html` | Status indicators |
-| **description_list** | `chirpui/description_list.html` | Key-value pairs, stacked/horizontal |
-| **timeline** | `chirpui/timeline.html` | Activity feed, order tracking |
-| **tag_input** | `chirpui/tag_input.html` | Chips with add/remove forms |
-| **tree_view** | `chirpui/tree_view.html` | Hierarchical expand/collapse |
-| **calendar** | `chirpui/calendar.html` | Month grid with prev/next nav |
-
-### Streaming & AI
-| Component | Import | Features |
-|-----------|--------|----------|
-| **streaming_block** | `chirpui/streaming.html` | SSE content wrapper, cursor, aria-live |
-| **copy_btn** | `chirpui/streaming.html` | Copy button with `data-copy-text` |
-| **model_card** | `chirpui/streaming.html` | Card for LLM model comparison |
-
-## Theming
-
-chirp-ui ships with a gorgeous default: warm light mode, automatic dark mode via `prefers-color-scheme`. Override any `--chirpui-*` variable:
+chirp-ui uses `prefers-color-scheme` for dark mode. Override any `--chirpui-*` variable:
 
 ```css
 :root {
@@ -176,112 +115,14 @@ chirp-ui ships with a gorgeous default: warm light mode, automatic dark mode via
 }
 ```
 
-### Holy Light (optional)
+For manual light/dark toggle, set `data-theme="light"` or `data-theme="dark"` on `<html>`.
 
-WoW Blood Elf–inspired theme:
+Optional theme: `<link rel="stylesheet" href="/static/themes/holy-light.css">`
 
-```html
-<link rel="stylesheet" href="/static/chirpui.css">
-<link rel="stylesheet" href="/static/themes/holy-light.css">
-```
+</details>
 
-### Theme toggle
-
-chirp-ui uses `prefers-color-scheme` by default. For manual light/dark switching, set `data-theme="light"` or `data-theme="dark"` on `<html>`. Example script:
-
-```html
-<script>
-(function(){
-  function apply(){ var t=localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme=t; }
-  function toggle(){
-    var next=document.documentElement.dataset.theme==='dark'?'light':'dark';
-    document.documentElement.dataset.theme=next;
-    localStorage.setItem('theme',next);
-  }
-  document.addEventListener('DOMContentLoaded',apply);
-  document.addEventListener('click',function(e){ if(e.target.closest('.theme-toggle')){ e.preventDefault(); toggle(); } });
-})();
-</script>
-```
-
-Add `class="theme-toggle"` to your toggle button. Ensure your CSS respects `[data-theme="light"]` and `[data-theme="dark"]` on `:root`.
-
-## Animation and View Transitions
-
-chirp-ui uses CSS-only motion: consistent timing, entrance/exit animations, and micro-feedback on interaction. All animations respect `prefers-reduced-motion: reduce`.
-
-### Motion tokens
-
-| Token | Value | Use |
-|-------|-------|-----|
-| `--chirpui-transition-fast` | 100ms | Micro-feedback (button press) |
-| `--chirpui-transition` | 150ms | Default transitions |
-| `--chirpui-transition-slow` | 250ms | Entrances, toggles |
-| `--chirpui-ease-out` | cubic-bezier | Entrances |
-| `--chirpui-ease-in-out` | cubic-bezier | Toggles |
-| `--chirpui-ease-spring` | cubic-bezier | Playful feedback |
-
-### Animation utilities
-
-Opt-in classes for elements (work best with `@starting-style` or View Transitions):
-
-- `chirpui-animate-fade-in` — opacity 0→1
-- `chirpui-animate-slide-up` — translateY(8px)→0
-- `chirpui-animate-scale-in` — scale(0.98)→1
-
-### View Transitions (htmx swaps)
-
-Enable Chirp's View Transitions for automatic htmx swap animations:
-
-```python
-from chirp import AppConfig
-app = AppConfig(view_transitions=True)
-```
-
-Use `hx-swap="... transition:true"` for View Transitions on specific swaps. Override `::view-transition-old(root)` and `::view-transition-new(root)` in your CSS for custom effects.
-
-Optional chirp-ui polish (slide-up + fade):
-
-```html
-<link rel="stylesheet" href="/static/chirpui.css">
-<link rel="stylesheet" href="/static/chirpui-transitions.css">
-```
-
-### Component micro-feedback
-
-- **Buttons** — Use `chirpui-btn` and `chirpui-btn--primary` for hover lift, active press, focus ring
-- **Modal** — Entrance: scale + fade via `@starting-style`
-- **Dropdown** — Menu entrance: opacity + translateY
-- **Forms** — Error fields get a subtle shake when `.chirpui-field--error` is applied
-
-### Skeleton loading
-
-```html
-{% from "chirpui/skeleton.html" import skeleton %}
-{{ skeleton() }}
-{{ skeleton(width="200px", height="2rem") }}
-```
-
-## SSE Patterns
-
-For htmx SSE with streaming content:
-
-- **streaming_block** — Use `sse_swap_target=true` to add `sse-swap="fragment" hx-target="this"` on the inner div. The slot is the placeholder; SSE fragments replace it.
-- **model_card** — Use `sse_connect=url`, `sse_streaming=true` for LLM comparison UIs. Renders the full card with SSE wiring. See Chirp LLM playground.
-- **hx-disinherit** — Use `hx-disinherit="hx-target hx-swap"` on the `sse-connect` element for isolated swaps when multiple SSE streams share a parent.
-- **sse-close** — Set `sse-close="done"` (or your event name) so htmx closes the connection when the server sends that event.
-- **copy_btn** — Returns HTML; use `{{ copy_btn(label="Copy", copy_text=text) }}`. When used inside htmx-swapped content, enable event delegation (e.g. `AppConfig(delegation=True)` in Chirp) so the copy handler works on dynamically inserted buttons.
-
-Canonical examples: Chirp [RAG demo](https://github.com/lbliii/chirp/tree/main/examples/rag_demo) and [LLM playground](https://github.com/lbliii/chirp/tree/main/examples/llm_playground).
-
-## Design Principles
-
-- **Gorgeous by default** — Full visual design out of the box
-- **htmx-native** — Interactive components use htmx or native HTML
-- **Composable** — `{% slot %}` for content injection, components nest freely
-- **Customizable** — Override `--chirpui-*` for colors, spacing, typography
-
-## Manual Registration (without Chirp)
+<details>
+<summary><strong>Manual registration</strong> — Use with Kida without Chirp</summary>
 
 ```python
 from kida import ChoiceLoader, Environment, FileSystemLoader
@@ -295,10 +136,108 @@ env = Environment(
 )
 ```
 
+Call `chirp_ui.register_filters(app)` if using Chirp for form/field helpers.
+
+</details>
+
+<details>
+<summary><strong>SSE and streaming</strong> — htmx + Server-Sent Events</summary>
+
+- **streaming_block** — Use `sse_swap_target=true` for htmx SSE fragment swaps.
+- **model_card** — Use `sse_connect=url`, `sse_streaming=true` for LLM comparison UIs.
+- **copy_btn** — Copy button with `data-copy-text`. Enable `AppConfig(delegation=True)` for dynamically inserted buttons.
+
+See Chirp [RAG demo](https://github.com/lbliii/chirp/tree/main/examples/rag_demo) and [LLM playground](https://github.com/lbliii/chirp/tree/main/examples/llm_playground).
+
+</details>
+
+<details>
+<summary><strong>Icons and ergonomics</strong></summary>
+
+Many components support Unicode icons via the `icon` param:
+
+```html
+{% from "chirpui/alert.html" import alert %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/callout.html" import callout %}
+
+{% call alert(variant="warning", icon="⚠", title="Heads up") %}Body text{% end %}
+{% call card(title="Feature", subtitle="Optional subtitle", icon="◆") %}Content{% end %}
+{{ btn("Save", icon="✓") }}
+{% call callout(icon="💡", title="Tip") %}Use Unicode for icons.{% end %}
+```
+
+For animated icons, use `ascii_icon()` in the component slot. For custom headers with actions, use the `header_actions` named slot (Kida 0.3+):
+
+```html
+{% from "chirpui/card.html" import card %}
+{% call card(title="Settings", icon="⚙") %}
+{% slot header_actions %}
+<button class="chirpui-btn chirpui-btn--ghost">⋯</button>
+{% end %}
+<p>Body content.</p>
+{% end %}
+```
+
+`empty_state` supports `action_label` and `action_href` for a primary CTA button.
+
+</details>
+
+---
+
+## Key Ideas
+
+- **HTML over the wire.** Components render as blocks for htmx swaps, SSE streams, and View Transitions. The server is the source of truth.
+- **CSS as the design language.** Modern features (`:has()`, `aspect-ratio`, `clamp()`) used where they add value. All animations respect `prefers-reduced-motion`.
+- **Composable.** `{% slot %}` for content injection. Components nest freely. No wrapper classes.
+- **Minimal dependency.** `kida-templates` only. Chirp optional for auto-registration.
+
+---
+
 ## Requirements
 
 - Python >= 3.14
-- kida-templates >= 0.1.2
+- kida-templates >= 0.2.0
+
+---
+
+## Development
+
+```bash
+git clone https://github.com/lbliii/chirp-ui.git
+cd chirp-ui
+uv sync --group dev
+pytest
+```
+
+| Task | Command |
+|------|---------|
+| Run tests | `uv run pytest` or `poe test` |
+| Type check | `uv run ty check src/chirp_ui/` or `poe ty` |
+| Lint | `uv run ruff check .` or `poe lint` |
+| Full CI | `poe ci` |
+
+---
+
+## The Bengal Ecosystem
+
+A structured reactive stack — every layer written in pure Python for 3.14t free-threading.
+
+| | | | |
+|--:|---|---|---|
+| **ᓚᘏᗢ** | [Bengal](https://github.com/lbliii/bengal) | Static site generator | [Docs](https://lbliii.github.io/bengal/) |
+| **∿∿** | [Purr](https://github.com/lbliii/purr) | Content runtime | — |
+| **⌁⌁** | [Chirp](https://github.com/lbliii/chirp) | Web framework | [Docs](https://lbliii.github.io/chirp/) |
+| **ʘ** | **chirp-ui** | Component library ← You are here | — |
+| **=^..^=** | [Pounce](https://github.com/lbliii/pounce) | ASGI server | [Docs](https://lbliii.github.io/pounce/) |
+| **)彡** | [Kida](https://github.com/lbliii/kida) | Template engine | [Docs](https://lbliii.github.io/kida/) |
+| **ฅᨐฅ** | [Patitas](https://github.com/lbliii/patitas) | Markdown parser | [Docs](https://lbliii.github.io/patitas/) |
+| **⌾⌾⌾** | [Rosettes](https://github.com/lbliii/rosettes) | Syntax highlighter | [Docs](https://lbliii.github.io/rosettes/) |
+
+Python-native. Free-threading ready. No npm required.
+
+---
 
 ## License
 

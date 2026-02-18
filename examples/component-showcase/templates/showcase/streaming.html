@@ -1,17 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/streaming.html" import streaming_block, copy_btn, model_card %}
 
 {% call container() %}
 {% call stack() %}
-<header class="chirpui-stack chirpui-stack--sm">
-  <h1>Streaming & AI</h1>
-  <p class="chirpui-text-muted">
-    streaming_block, copy_btn, model_card — SSE and LLM patterns.
-  </p>
-</header>
+{{ page_header("Streaming & AI", subtitle="streaming_block, copy_btn, model_card — SSE and LLM patterns.") }}
 
 <h2>Streaming Block (idle)</h2>
 {% call block() %}
