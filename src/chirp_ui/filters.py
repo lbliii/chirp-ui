@@ -34,19 +34,19 @@ def bem(block: str, variant: str = "", modifier: str = "", cls: str = "") -> str
     return " ".join(parts)
 
 
-def field_errors(errors: object, field_name: str) -> list[str]:
+def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]:
     """Extract error messages for a field from a ValidationError-style dict.
 
     Returns empty list if errors is None or field has no errors.
     """
     if errors is None:
         return []
-    if not isinstance(errors, dict):
-        return []
     val = errors.get(field_name)
     if val is None:
         return []
-    return list(val) if isinstance(val, (list, tuple)) else []
+    if isinstance(val, (list, tuple)):
+        return [str(x) for x in val]
+    return []
 
 
 def register_filters(app: TemplateFilterApp) -> None:

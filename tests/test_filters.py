@@ -31,11 +31,6 @@ class TestFieldErrors:
     def test_errors_none_returns_empty(self) -> None:
         assert field_errors(None, "email") == []
 
-    def test_non_dict_returns_empty(self) -> None:
-        assert field_errors("not a dict", "email") == []
-        assert field_errors([], "email") == []
-        assert field_errors(42, "email") == []
-
     def test_dict_without_field_returns_empty(self) -> None:
         assert field_errors({"other": ["err"]}, "email") == []
 
