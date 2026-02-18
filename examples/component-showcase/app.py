@@ -35,6 +35,7 @@ app = App(
         debug=False,
         view_transitions=True,
         delegation=True,
+        islands=True,
     )
 )
 try:
@@ -158,6 +159,16 @@ async def ui() -> Template:
 @app.route("/ui/tab/{name}", methods=["GET"])
 async def ui_tab(request: Request, name: str) -> Fragment:
     return Fragment("showcase/_tab_content.html", "tab_content", active_tab=name)
+
+
+@app.route("/islands", template="showcase/islands.html")
+async def islands_demo() -> Template:
+    return Template("showcase/islands.html")
+
+
+@app.route("/islands/remount", methods=["GET"])
+async def islands_remount() -> Fragment:
+    return Fragment("showcase/islands.html", "island_mount")
 
 
 @app.route("/streaming", template="showcase/streaming.html")
