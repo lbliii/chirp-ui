@@ -2,7 +2,8 @@
 
 {% block content %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
-{% from "chirpui/forms.html" import text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field, form_actions %}
+{% from "chirpui/forms.html" import csrf_hidden, password_field, text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field, form_actions %}
+{% from "chirpui/auth.html" import login_form %}
 
 {% call container() %}
 {% call stack() %}
@@ -16,6 +17,13 @@
 {% call block() %}
 {{ text_field("email", value="", label="Email", type="email", placeholder="you@example.com") }}
 {% end %}
+{% end %}
+
+<h2>Auth Helpers</h2>
+{% call block() %}
+{{ password_field("account_password", label="Password", autocomplete="new-password", hint="Use at least 12 characters.") }}
+{{ csrf_hidden("demo-token") }}
+{{ login_form(action="/auth/demo", csrf="demo-token") }}
 {% end %}
 
 <h2>Textarea</h2>

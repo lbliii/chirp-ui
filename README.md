@@ -82,7 +82,7 @@ app.add_middleware(StaticFiles(
 |---------|-------------|
 | **Layout** | container, grid, stack, block, page_header, section_header, divider, breadcrumbs, navbar, navbar_end, navbar_dropdown, sidebar, hero, surface, callout |
 | **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group, island_root, state primitives |
-| **Forms** | text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, form_actions |
+| **Forms** | text_field, password_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, csrf_hidden, form_actions, login_form, signup_form |
 | **Data display** | badge, spinner, skeleton, progress, description_list, timeline, tree_view, calendar |
 | **Streaming** | streaming_block, copy_btn, model_card — for htmx SSE and LLM UIs |
 | **Theming** | `--chirpui-*` CSS variables, dark mode, optional Holy Light theme |

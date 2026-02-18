@@ -1,17 +1,14 @@
 """Shared fixtures for chirp-ui tests."""
 
-from __future__ import annotations
-
-from collections.abc import Sequence
 import html
 import json
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
 import pytest
 from kida import Environment, FileSystemLoader
 from kida.template import Markup
-
 
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates"
 

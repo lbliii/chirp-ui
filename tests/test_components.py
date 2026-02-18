@@ -6,10 +6,7 @@ Each test verifies:
 - Slot content injection where applicable
 """
 
-from __future__ import annotations
-
 from kida import Environment
-
 
 # ---------------------------------------------------------------------------
 # Layout
@@ -134,6 +131,35 @@ class TestStatePrimitives:
         assert 'data-island="upload_state"' in html
         assert 'data-island-src="/static/islands/upload_state.js"' in html
         assert "avatar_upload" in html
+
+
+class TestAuthPrimitives:
+    def test_password_field_macro(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import password_field %}'
+            '{{ password_field("password", label="Password", autocomplete="new-password") }}'
+        ).render()
+        assert 'type="password"' in html
+        assert 'autocomplete="new-password"' in html
+
+    def test_csrf_hidden_macro_with_explicit_token(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import csrf_hidden %}'
+            '{{ csrf_hidden("token-123") }}'
+        ).render()
+        assert 'type="hidden"' in html
+        assert 'name="_csrf_token"' in html
+        assert 'value="token-123"' in html
+
+    def test_login_form_macro(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/auth.html" import login_form %}'
+            '{{ login_form(action="/login", csrf="abc") }}'
+        ).render()
+        assert '<form method="post" action="/login"' in html
+        assert 'name="_csrf_token"' in html
+        assert 'type="password"' in html
+        assert 'autocomplete="current-password"' in html
 
 
 # ---------------------------------------------------------------------------
@@ -1462,7 +1488,9 @@ class TestList:
         ).render()
         assert "chirpui-list" in html
         assert "chirpui-list__item" in html
-        assert "A" in html and "B" in html and "C" in html
+        assert "A" in html
+        assert "B" in html
+        assert "C" in html
 
     def test_list_with_slot(self, env: Environment) -> None:
         html = env.from_string(
@@ -1617,7 +1645,10 @@ class TestAsciiIcon:
         assert "chirpui-ascii__char--2" in html
         assert "chirpui-ascii__char--3" in html
         assert "chirpui-ascii__char--4" in html
-        assert "◜" in html and "◝" in html and "◞" in html and "◟" in html
+        assert "◜" in html
+        assert "◝" in html
+        assert "◞" in html
+        assert "◟" in html
 
     def test_sizes(self, env: Environment) -> None:
         for size in ("sm", "md", "lg", "xl"):

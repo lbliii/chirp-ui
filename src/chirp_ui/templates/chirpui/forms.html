@@ -61,6 +61,21 @@
 {% end %}
 {% end %}
 
+{# Password field with secure browser autocomplete defaults #}
+{% def password_field(name="password", value="", label=none, errors=none, required=true,
+                     placeholder="", hint=none, autocomplete="current-password", attrs="") %}
+{% call field_wrapper(name, label, errors, required, hint) %}
+<input class="chirpui-field__input"
+       type="password" id="{{ name }}" name="{{ name }}"
+       value="{{ value }}"
+       {% if required %}required{% end %}
+       {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
+       {% if autocomplete %}autocomplete="{{ autocomplete }}"{% end %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {{ attrs }}>
+{% end %}
+{% end %}
+
 {# Textarea with label and error display #}
 {% def textarea_field(name, value="", label=none, errors=none,
                       rows=4, required=false, placeholder="", hint=none) %}
@@ -298,6 +313,15 @@
 {# Hidden field #}
 {% def hidden_field(name, value="") %}
 <input type="hidden" name="{{ name }}" value="{{ value }}">
+{% end %}
+
+{# CSRF hidden field helper. Pass token for non-Chirp environments. #}
+{% def csrf_hidden(token=none, field_name="_csrf_token") %}
+{% if token is not none %}
+<input type="hidden" name="{{ field_name }}" value="{{ token }}">
+{% else %}
+{{ csrf_token() }}
+{% end %}
 {% end %}
 
 {# Form actions — submit/cancel button row. Use align="end" for right-aligned. #}
