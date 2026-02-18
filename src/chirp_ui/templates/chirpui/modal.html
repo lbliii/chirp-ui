@@ -12,7 +12,8 @@
 -#}
 
 {% def modal(id, title=none, size="medium", cls="") %}
-<dialog id="{{ id }}" class="chirpui-modal chirpui-modal--{{ size }}{{ " " ~ cls if cls else "" }}">
+<dialog id="{{ id }}" class="chirpui-modal chirpui-modal--{{ size }}{{ " " ~ cls if cls else "" }}"
+        closedby="any">
     {% if title %}
         <header class="chirpui-modal__header">
             <h2 class="chirpui-modal__title">{{ title }}</h2>
@@ -30,6 +31,8 @@
 {% def modal_trigger(target, label="Open", cls="") %}
 <button class="chirpui-modal-trigger{{ " " ~ cls if cls else "" }}"
         type="button"
+        commandfor="{{ target }}"
+        command="show-modal"
         onclick="document.getElementById('{{ target }}').showModal()">
     {{ label }}
 </button>

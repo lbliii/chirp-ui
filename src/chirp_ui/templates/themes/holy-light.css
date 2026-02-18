@@ -9,6 +9,7 @@
 :root {
     /* ========================================
        Holy Spectrum - Light, positive, active
+       Hex fallback; oklch when supported.
        ======================================== */
     --chirpui-color-radiant: #ffd700;
     --chirpui-color-gold: #c9a227;
@@ -85,6 +86,24 @@
     /* Transitions */
     --chirpui-transition-fast: 150ms ease;
     --chirpui-transition-normal: 250ms ease;
+}
+
+@supports (color: oklch(0 0 0)) {
+    :root {
+        --chirpui-color-radiant: oklch(0.91 0.17 95);
+        --chirpui-color-gold: oklch(0.72 0.15 95);
+        --chirpui-color-gold-dim: oklch(0.55 0.08 85);
+        --chirpui-color-success: oklch(0.65 0.19 145);
+        --chirpui-color-void-purple: oklch(0.55 0.25 295);
+        --chirpui-color-void-indigo: oklch(0.5 0.22 265);
+        --chirpui-color-void-deep: oklch(0.22 0.12 295);
+        --chirpui-bg: oklch(0.14 0 0);
+        --chirpui-surface: oklch(0.18 0 0);
+        --chirpui-surface-elevated: oklch(0.22 0 0);
+        --chirpui-border: oklch(0.28 0 0);
+        --chirpui-text: oklch(0.92 0.005 260);
+        --chirpui-text-muted: oklch(0.72 0.01 260);
+    }
 }
 
 /* ========================================
@@ -218,10 +237,10 @@ body {
    Form Enhancements
    ======================================== */
 
-input:focus,
-textarea:focus,
-select:focus,
-button:focus {
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
     outline: none;
     box-shadow: 0 0 0 3px var(--chirpui-focus-ring);
 }
