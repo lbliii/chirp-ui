@@ -19,7 +19,7 @@ from kida import PackageLoader
 # Declare free-threading support (PEP 703)
 _Py_mod_gil = 0
 
-__version__ = "0.2.0"
+__version__ = "0.1.0"
 
 __all__ = ["get_loader", "register_filters", "static_path"]
 

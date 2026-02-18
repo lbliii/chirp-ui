@@ -19,7 +19,7 @@ sdist = { url = "https://files.pythonhosted.org/packages/da/4c/7eb0fc3158d340e15
 
 [[package]]
 name = "chirp-ui"
-version = "0.2.0"
+version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "kida-templates" },
