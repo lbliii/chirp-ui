@@ -7,12 +7,12 @@ Run: python app.py
 import asyncio
 import calendar as cal_mod
 import csv
+import inspect
 import io
 import re
 from pathlib import Path
 from urllib.parse import quote
 
-import chirp_ui
 from chirp import (
     App,
     AppConfig,
@@ -27,19 +27,24 @@ from chirp import (
 )
 from chirp.middleware.static import StaticFiles
 
+import chirp_ui
+
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
-app = App(
-    AppConfig(
-        template_dir=TEMPLATES_DIR,
-        debug=False,
-        view_transitions=True,
-        delegation=True,
-        islands=True,
-    )
-)
+# Build config with only params supported by installed Chirp (islands added in newer versions)
+_config_kwargs: dict[str, object] = {
+    "template_dir": TEMPLATES_DIR,
+    "debug": False,
+    "view_transitions": True,
+    "delegation": True,
+    "islands": True,
+}
+_sig = inspect.signature(AppConfig)
+_allowed = {k: v for k, v in _config_kwargs.items() if k in _sig.parameters}
+app = App(AppConfig(**_allowed))
 try:
     from chirp import use_chirp_ui
+
     use_chirp_ui(app)
 except ImportError:
     app.add_middleware(StaticFiles(directory=str(chirp_ui.static_path()), prefix="/static"))
@@ -196,7 +201,7 @@ async def streaming_demo(request: Request) -> EventStream:
     """Mock SSE stream: yields fragments word-by-word, no LLM required."""
 
     async def generate():
-        words = "The quick brown fox jumps over the lazy dog.".split()
+        words = ["The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog."]
         text = ""
         for word in words:
             text = f"{text} {word}".strip() if text else word
@@ -238,7 +243,8 @@ def _filter_table_data(
     col_map = {"name": 0, "email": 1, "role": 2, "status": 3, "last_active": 4}
     sort_idx = col_map.get(sort_col, 0)
     filtered = [
-        r for r in TABLE_DATA
+        r
+        for r in TABLE_DATA
         if (not q or q in r[0].lower() or q in r[1].lower() or q in r[2].lower())
         and (not role or r[2] == role)
     ]
@@ -311,9 +317,8 @@ async def data_export(request: Request) -> Response:
     writer.writerows((r[0], r[1], r[2], r[3], r[4]) for r in sorted_data)
     body = buf.getvalue().encode("utf-8")
 
-    return (
-        Response(body=body, content_type="text/csv; charset=utf-8")
-        .with_header("Content-Disposition", 'attachment; filename="team-roster.csv"')
+    return Response(body=body, content_type="text/csv; charset=utf-8").with_header(
+        "Content-Disposition", 'attachment; filename="team-roster.csv"'
     )
 
 

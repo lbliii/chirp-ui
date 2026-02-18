@@ -23,6 +23,7 @@ def showcase_app():
     if str(_SHOWCASE_DIR) not in sys.path:
         sys.path.insert(0, str(_SHOWCASE_DIR))
     from app import app
+
     return app
 
 

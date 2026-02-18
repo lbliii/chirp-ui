@@ -60,7 +60,9 @@ def _island_attrs_stub(
     if cls:
         attrs.append(f' class="{html.escape(cls, quote=True)}"')
     if props is not None:
-        payload = html.escape(json.dumps(props, separators=(",", ":"), ensure_ascii=True), quote=True)
+        payload = html.escape(
+            json.dumps(props, separators=(",", ":"), ensure_ascii=True), quote=True
+        )
         attrs.append(f' data-island-props="{payload}"')
     return Markup("".join(attrs))
 

@@ -68,5 +68,4 @@ Thumbs.db
 *.db-shm
 *.db-wal
 
-# uv
-uv.lock
+# uv (uv.lock committed for reproducible builds)

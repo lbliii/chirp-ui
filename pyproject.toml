@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chirp-ui"
-version = "1.0.0"
+version = "0.1.0"
 description = "A love letter to CSS and HTML over the wire — gorgeous Chirp components, htmx-native, zero JavaScript"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -32,7 +32,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "kida-templates>=0.2.0",  # Template engine (PackageLoader added in 0.2.0)
+    "kida-templates>=0.2.2",  # Template engine (PackageLoader added in 0.2.0)
 ]
 
 [project.optional-dependencies]
