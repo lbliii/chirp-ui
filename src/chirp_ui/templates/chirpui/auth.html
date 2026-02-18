@@ -1,0 +1,28 @@
+{# chirp-ui: Auth form compositions
+   Lightweight wrappers built on chirpui/forms macros.
+#}
+
+{% from "chirpui/forms.html" import csrf_hidden, form_actions, password_field, text_field %}
+
+{% def login_form(action="/login", username_name="username", password_name="password", csrf=none, submit_label="Sign in") %}
+<form method="post" action="{{ action }}" class="chirpui-stack chirpui-stack--sm">
+    {{ csrf_hidden(csrf) }}
+    {{ text_field(username_name, label="Username", required=true, attrs='autocomplete="username"') }}
+    {{ password_field(password_name, label="Password", required=true, autocomplete="current-password") }}
+    {% call form_actions() %}
+    <button type="submit" class="chirpui-btn chirpui-btn--primary">{{ submit_label }}</button>
+    {% end %}
+</form>
+{% end %}
+
+{% def signup_form(action="/signup", username_name="username", email_name="email", password_name="password", csrf=none, submit_label="Create account") %}
+<form method="post" action="{{ action }}" class="chirpui-stack chirpui-stack--sm">
+    {{ csrf_hidden(csrf) }}
+    {{ text_field(username_name, label="Username", required=true, attrs='autocomplete="username"') }}
+    {{ text_field(email_name, label="Email", type="email", required=true, attrs='autocomplete="email"') }}
+    {{ password_field(password_name, label="Password", required=true, autocomplete="new-password") }}
+    {% call form_actions() %}
+    <button type="submit" class="chirpui-btn chirpui-btn--primary">{{ submit_label }}</button>
+    {% end %}
+</form>
+{% end %}
