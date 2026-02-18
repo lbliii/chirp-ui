@@ -11,13 +11,18 @@
     mount_id=none,
     version="1",
     src=none,
+    primitive=none,
     cls="",
     raw_attrs=none
 ) %}
 {% if raw_attrs is not none %}
 <section{{ raw_attrs | safe }}>
 {% else %}
+{% if primitive is not none %}
+<section{{ primitive_attrs(primitive, props=props, mount_id=mount_id, version=version, src=src, cls=cls) }}>
+{% else %}
 <section{{ island_attrs(name, props=props, mount_id=mount_id, version=version, src=src, cls=cls) }}>
+{% end %}
 {% end %}
     <div class="chirpui-island-fallback">
         {% slot %}

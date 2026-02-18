@@ -3,15 +3,16 @@
 {% block content %}
 {% from "chirpui/layout.html" import container, stack, block, page_header %}
 {% from "chirpui/islands.html" import island_root %}
+{% from "chirpui/state_primitives.html" import state_sync, action_queue, draft_store, error_boundary %}
 
 {% call container() %}
 {% call stack() %}
-{{ page_header("Islands", subtitle="Framework-agnostic mount roots with SSR fallback and htmx remounts.") }}
+{{ page_header("Islands + State Primitives", subtitle="No-build high-state primitives on top of framework-agnostic islands.") }}
 
 {% call block() %}
 <p class="chirpui-text-muted">
-  This page demonstrates the V1 islands contract:
-  <code>data-island</code>, <code>data-island-props</code>, and remount lifecycle after htmx swaps.
+  This page demonstrates foundational primitives: <code>state_sync</code>, <code>action_queue</code>,
+  <code>draft_store</code>, and <code>error_boundary</code>.
 </p>
 
 <button
@@ -23,6 +24,12 @@
 >
   Trigger htmx remount
 </button>
+
+<p style="margin-top: 0.75rem;">
+  <a href="/islands/grid-state">grid_state →</a> |
+  <a href="/islands/wizard-state">wizard_state →</a> |
+  <a href="/islands/upload-state">upload_state →</a>
+</p>
 
 <div id="island-events" class="chirpui-stack chirpui-stack--sm" style="margin-top: 1rem;"></div>
 {% end %}
@@ -37,24 +44,82 @@
   src="/static/islands/counter.js",
   cls="chirpui-card"
 ) %}
-  <h3>SSR Fallback</h3>
-  <p>If a client runtime is missing, this fallback remains visible.</p>
-  <p class="chirpui-text-muted">Mount id: <code>counter-widget-root</code></p>
+  <h3>Counter island (custom adapter)</h3>
+  <p class="chirpui-text-muted">Mounted by /static/islands/counter.js</p>
+  <p><strong data-counter-value>0</strong></p>
+  <div style="display:flex; gap:0.5rem;">
+    <button type="button" class="chirpui-btn chirpui-btn--secondary" data-counter-minus>-1</button>
+    <button type="button" class="chirpui-btn chirpui-btn--primary" data-counter-plus>+1</button>
+  </div>
 {% end %}
 </div>
+{% end %}
+
+{% call block() %}
+<h3>state_sync</h3>
+{% call state_sync("search_text", query_param="q", initial="", mount_id="state-sync-root", cls="chirpui-card") %}
+<label class="chirpui-font-sm">Query</label>
+<input data-state-field type="text" placeholder="Type to sync URL..." style="width:100%;">
+{% end %}
+{% end %}
+
+{% call block() %}
+<h3>action_queue</h3>
+{% call action_queue("save_profile", mount_id="action-queue-root", cls="chirpui-card") %}
+<button type="button" class="chirpui-btn chirpui-btn--primary" data-action-trigger>
+  Run action
+</button>
+<p class="chirpui-text-muted" data-action-status>Ready.</p>
+{% end %}
+{% end %}
+
+{% call block() %}
+<h3>draft_store</h3>
+{% call draft_store("profile_draft", mount_id="draft-store-root", cls="chirpui-card") %}
+<label>Name</label>
+<input name="name" data-draft-field type="text" style="width:100%;">
+<label style="margin-top:0.5rem; display:block;">Bio</label>
+<textarea name="bio" data-draft-field rows="3" style="width:100%;"></textarea>
+<p class="chirpui-text-muted">Last saved: <span data-draft-saved-at>never</span></p>
+{% end %}
+{% end %}
+
+{% call block() %}
+<h3>error_boundary</h3>
+{% call error_boundary("profile-boundary", mount_id="boundary-root", cls="chirpui-card") %}
+<div data-error-body>
+  <p>Healthy content region.</p>
+  <button type="button"
+          class="chirpui-btn chirpui-btn--secondary"
+          onclick="document.dispatchEvent(new CustomEvent('chirp:island:error', {detail: {id: 'boundary-root', reason: 'demo'}}))">
+    Trigger boundary error
+  </button>
+</div>
+<div data-error-fallback hidden>
+  <p>Fallback active due to runtime error.</p>
+  <button type="button" class="chirpui-btn chirpui-btn--primary" data-error-reset>Reset</button>
+</div>
+{% end %}
 {% end %}
 
 <script>
 (() => {
   const log = document.getElementById("island-events");
   if (!log) return;
-  const events = ["chirp:island:mount", "chirp:island:unmount", "chirp:island:remount"];
+  const events = [
+    "chirp:island:mount",
+    "chirp:island:unmount",
+    "chirp:island:remount",
+    "chirp:island:state",
+    "chirp:island:action",
+    "chirp:island:error",
+  ];
   events.forEach((name) => {
     document.addEventListener(name, (event) => {
       const d = event.detail || {};
       const item = document.createElement("p");
       item.className = "chirpui-text-muted";
-      item.textContent = `${name}: ${d.name || "unknown"} (${d.id || "no-id"})`;
+      item.textContent = `${name}: ${d.name || "unknown"} (${d.id || "no-id"}) ${d.status || d.reason || ""}`.trim();
       log.prepend(item);
     });
   });

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/state_primitives.html" import upload_state %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("upload_state", subtitle="Queued upload progress state for common file workflows.") }}
+
+{% call block() %}
+{% call upload_state("avatar_upload", "/upload/mock", mount_id="upload-state-root", cls="chirpui-card") %}
+<input type="file" data-upload-input multiple>
+<div style="display:flex; gap:0.5rem; margin-top:0.75rem;">
+  <button type="button" class="chirpui-btn chirpui-btn--primary" data-upload-start>Start upload</button>
+</div>
+<progress data-upload-progress max="100" value="0" style="width:100%; margin-top:0.75rem;"></progress>
+<p class="chirpui-text-muted" data-upload-status>Idle</p>
+{% end %}
+{% end %}
+
+<p><a href="/islands">← Back to islands</a></p>
+{% end %}
+{% end %}
+{% end %}
