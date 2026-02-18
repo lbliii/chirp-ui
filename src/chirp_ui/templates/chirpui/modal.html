@@ -33,7 +33,7 @@
         type="button"
         commandfor="{{ target }}"
         command="show-modal"
-        onclick="document.getElementById('{{ target }}').showModal()">
+        onclick="(function(){var d=document.getElementById('{{ target }}');if(!d.open)d.showModal();})()">
     {{ label }}
 </button>
 {% end %}

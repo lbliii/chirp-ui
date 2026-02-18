@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/alert.html" import alert %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Cards & Alerts</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    card, alert — Content containers and status messages.
+  </p>
+</header>
+
+<h2>Cards</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call card(title="Simple Card") %}
+<p>Card body content goes here.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card(title="With Footer", footer="Last updated today") %}
+<p>Card with header and footer.</p>
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Collapsible Card</h2>
+{% call block() %}
+{% call card(title="Click to expand", collapsible=true, open=true) %}
+<p>This content is inside a native <code>&lt;details&gt;</code> element. No JavaScript.</p>
+{% end %}
+{% end %}
+
+<h2>Alerts</h2>
+{% call stack(gap="sm") %}
+{% call alert(variant="info") %}
+<strong>Info.</strong> This is an informational message.
+{% end %}
+{% call alert(variant="success") %}
+<strong>Success.</strong> Your changes have been saved.
+{% end %}
+{% call alert(variant="warning") %}
+<strong>Warning.</strong> Please review before continuing.
+{% end %}
+{% call alert(variant="error") %}
+<strong>Error.</strong> Something went wrong. Please try again.
+{% end %}
+{% call alert(variant="info", dismissible=true) %}
+<strong>Dismissible.</strong> Click × to close.
+{% end %}
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

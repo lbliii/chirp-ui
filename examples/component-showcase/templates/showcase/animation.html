@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/modal.html" import modal, modal_trigger %}
+{% from "chirpui/dropdown.html" import dropdown %}
+{% from "chirpui/skeleton.html" import skeleton %}
+{% from "chirpui/forms.html" import text_field %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Animation & Motion</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    Motion tokens, micro-feedback, skeleton, View Transitions — Polished interactions.
+  </p>
+</header>
+
+<h2>Card entrance</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Cards use <code>@starting-style</code> for opacity + translateY on first paint.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call card(title="Animated card") %}
+<p>This card animates in when the page loads.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card(title="Another card") %}
+<p>Cards share the same entrance animation.</p>
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Button press states</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  <code>chirpui-btn</code> and <code>chirpui-btn--primary</code> — hover lift, active press.
+</p>
+{% call block() %}
+<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+<button type="button" class="chirpui-btn">Default</button>
+<button type="button" class="chirpui-btn chirpui-btn--primary">Primary</button>
+</div>
+{% end %}
+
+<h2>Modal entrance</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Modal panel scales in with <code>@starting-style</code>.
+</p>
+{% call block() %}
+{{ modal_trigger("anim-modal", label="Open modal") }}
+{% call modal("anim-modal", title="Animated modal") %}
+<p>Opens with scale + fade. Native <code>&lt;dialog&gt;</code>.</p>
+{% end %}
+{% end %}
+
+<h2>Dropdown entrance</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Dropdown menu animates opacity + translateY when opened.
+</p>
+{% call block() %}
+{% call dropdown(label="Open dropdown") %}
+<a href="/" class="chirpui-dropdown__item">Home</a>
+<a href="/animation" class="chirpui-dropdown__item">Animation</a>
+<a href="/ui" class="chirpui-dropdown__item">UI</a>
+{% end %}
+{% end %}
+
+<h2>Skeleton loading</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Shimmer placeholder. Respects <code>prefers-reduced-motion</code>.
+</p>
+{% call block() %}
+<div class="chirpui-stack chirpui-stack--sm" style="max-width: 20rem;">
+{{ skeleton(height="1.5em") }}
+{{ skeleton(width="75%", height="1em") }}
+{{ skeleton(width="50%", height="1em") }}
+</div>
+{% end %}
+
+<h2>htmx swap with View Transitions</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Click to swap content. Uses <code>hx-swap="innerHTML transition:true"</code>.
+</p>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.25rem;">
+  Named transitions: <code>view-transition-name</code> on <code>.chirpui-modal</code> enables intentional shared-element transitions when swapping.
+</p>
+{% call block() %}
+<div id="swap-demo" class="chirpui-card">
+  <div class="chirpui-card__body"
+       hx-get="/animation/swap-demo"
+       hx-trigger="click"
+       hx-swap="innerHTML transition:true"
+       hx-target="this"
+       style="cursor: pointer;">
+    <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0;">
+      Click to load content (View Transition)
+    </p>
+  </div>
+</div>
+{% end %}
+
+<h2>Form error shake</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Fields with <code>.chirpui-field--error</code> get a subtle shake.
+</p>
+{% call block() %}
+<form style="max-width: 20rem;">
+  {{ text_field("demo", "Email", type="email", errors={"demo": ["Invalid email"]}) }}
+</form>
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

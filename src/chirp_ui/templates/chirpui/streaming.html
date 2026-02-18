@@ -1,0 +1,61 @@
+{#- chirp-ui: Streaming and AI components
+    For LLM Playground, RAG demo, and SSE-driven UIs.
+    Works with htmx SSE and event delegation for copy buttons.
+
+    Usage:
+        {% from "chirpui/streaming.html" import streaming_block, copy_btn, prose %}
+
+        {% call streaming_block(streaming=true) %}
+            Content or thinking...
+        {% end %}
+
+        {% call copy_btn(text="Copy", copy_text=answer_text) %}
+
+        <div class="chirpui-prose">{{ content | markdown | safe }}</div>
+-#}
+
+{% def streaming_block(streaming=false, sse_swap_target=false, cls="") %}
+<div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}{{ " " ~ cls if cls else "" }}"
+     {% if sse_swap_target %}sse-swap="fragment" hx-target="this" {% end %}aria-live="polite"
+     aria-atomic="true">
+    {% slot %}
+    {% if streaming %}
+    <span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
+    {% end %}
+</div>
+{% end %}
+
+{% def copy_btn(label="Copy", copy_text="", cls="") %}
+<button type="button"
+        class="chirpui-copy-btn{{ " " ~ cls if cls else "" }}"
+        title="{{ label }}"
+        data-copy-text="{{ copy_text | e }}"
+        aria-label="{{ label }}">
+    {{ label }}
+</button>
+{% end %}
+
+{% def model_card(title, badge=none, footer=none, cls="", sse_connect=none, sse_close="done", sse_streaming=false) %}
+<article class="chirpui-model-card chirpui-card{{ " " ~ cls if cls else "" }}"
+         {% if sse_connect %}hx-ext="sse" sse-connect="{{ sse_connect }}" sse-close="{{ sse_close }}" hx-disinherit="hx-target hx-swap" {% end %}aria-label="{{ title }} response">
+    <header class="chirpui-card__header chirpui-model-card__header">
+        <span class="chirpui-model-card__title">{{ title }}</span>
+        {% if badge %}
+        <span class="chirpui-model-card__badge">{{ badge }}</span>
+        {% end %}
+    </header>
+    <div class="chirpui-card__body chirpui-model-card__body">
+        {% if sse_streaming %}
+        {% call streaming_block(streaming=true, sse_swap_target=true) %}
+        {% end %}
+        {% else %}
+        {% slot %}
+        {% end %}
+    </div>
+    {% if footer %}
+    <footer class="chirpui-card__footer chirpui-model-card__footer">
+        {{ footer }}
+    </footer>
+    {% end %}
+</article>
+{% end %}

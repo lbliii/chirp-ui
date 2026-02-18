@@ -1,0 +1,11 @@
+{#- Fragment for RTL/LTR toggle — direction-aware layout demo #}
+{% block dir_block %}
+<div dir="{{ direction }}" style="padding-inline: 1rem; margin-inline: 0.5rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); background: var(--chirpui-bg-subtle);">
+  <p style="margin: 0 0 0.5rem;"><strong>{{ direction | upper }}</strong> — padding-inline and margin-inline flip with direction.</p>
+  <ul style="margin: 0; padding-inline-start: 1.5rem;">
+    <li>First item</li>
+    <li>Second item</li>
+    <li>Third item</li>
+  </ul>
+</div>
+{% end %}

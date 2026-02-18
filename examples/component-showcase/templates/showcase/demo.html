@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, block %}
+{% from "chirpui/streaming.html" import model_card %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Unified Demo</h1>
+  <p class="chirpui-text-muted">
+    Form submit → Fragment (card) → SSE stream → OOB toast. Full Chirp stack in one flow.
+  </p>
+</header>
+
+<div id="demo_content" class="chirpui-stack chirpui-stack--sm">
+  <form hx-post="/demo/submit"
+        hx-target="#demo_content"
+        hx-swap="innerHTML"
+        class="chirpui-stack chirpui-stack--sm"
+        style="max-width: 24rem;">
+    <label class="chirpui-field__label" for="prompt">Prompt</label>
+    <input class="chirpui-field__input" id="prompt" name="prompt" type="text"
+           placeholder="Type something..." value="Hello">
+    <button type="submit" class="chirpui-btn chirpui-btn--primary">Submit</button>
+  </form>
+</div>
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

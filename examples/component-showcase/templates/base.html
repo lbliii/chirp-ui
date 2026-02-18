@@ -1,0 +1,11 @@
+{% extends "chirp/layouts/boost.html" %}
+{% block title %}{{ title | default("chirp-ui Component Showcase") }}{% end %}
+{% block head %}
+<link rel="stylesheet" href="/static/chirpui.css">
+<link rel="stylesheet" href="/static/themes/holy-light.css">
+<link rel="stylesheet" href="/static/chirpui-transitions.css">
+{% end %}
+{% block body_after %}
+{% from "chirpui/toast.html" import toast_container %}
+{{ toast_container() }}
+{% end %}

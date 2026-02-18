@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chirp-ui"
-version = "0.2.0"
-description = "Reusable Kida component library for Chirp — headless, htmx-native, zero JavaScript"
+version = "1.0.0"
+description = "A love letter to CSS and HTML over the wire — gorgeous Chirp components, htmx-native, zero JavaScript"
 readme = "README.md"
 requires-python = ">=3.14"
 license = "MIT"
@@ -32,19 +32,24 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "kida-templates>=0.1.2",  # Template engine (only runtime dependency)
+    "kida-templates>=0.2.0",  # Template engine (PackageLoader added in 0.2.0)
 ]
+
+[project.optional-dependencies]
+showcase = ["chirp>=0.1.0"]  # For examples/component-showcase
 
 [project.urls]
 Homepage = "https://github.com/lbliii/chirp-ui"
 Repository = "https://github.com/lbliii/chirp-ui"
 
 # =============================================================================
-# uv — Local source overrides for unpublished ecosystem packages
+# uv — Workspace sources (resolved by workspace root pyproject.toml)
 # =============================================================================
+# When inside the b-stack workspace, kida-templates resolves as workspace member.
+# Standalone (PyPI) installs use published versions.
 
 [tool.uv.sources]
-kida-templates = { path = "../kida", editable = true }
+kida-templates = { workspace = true }
 
 [tool.setuptools.packages.find]
 where = ["src"]

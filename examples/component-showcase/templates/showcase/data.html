@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/table.html" import table, row %}
+{% from "chirpui/pagination.html" import pagination %}
+{% from "chirpui/empty.html" import empty_state %}
+{% from "chirpui/progress.html" import progress_bar %}
+{% from "chirpui/status.html" import status_indicator %}
+{% from "chirpui/spinner.html" import spinner, spinner_thinking %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Data Display</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    table, pagination, empty, progress, status, spinner — Lists and indicators.
+  </p>
+</header>
+
+<h2>Table (htmx-driven)</h2>
+{% call block() %}
+<div id="data_table_content"
+     hx-get="/data/table?page=1&sort=name"
+     hx-trigger="load"
+     hx-swap="innerHTML">
+  <p class="chirpui-text-muted">Loading…</p>
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  Pagination and column sort via Fragment routes. No full page reload.
+</p>
+{% end %}
+
+<h2>Striped Table</h2>
+{% call block() %}
+{% call table(headers=["Item", "Status"], striped=true) %}
+{{ row("Task 1", "Done") }}
+{{ row("Task 2", "In progress") }}
+{{ row("Task 3", "Pending") }}
+{% end %}
+{% end %}
+
+<h2>Pagination</h2>
+{% call block() %}
+{{ pagination(current=3, total=10, url_pattern="/data?page={page}") }}
+{% end %}
+
+<h2>Empty State</h2>
+{% call block() %}
+{% call empty_state(icon="✧", title="No Projects") %}
+<p>Create your first project to get started.</p>
+<button type="button">+ New Project</button>
+{% end %}
+{% end %}
+
+<h2>Progress Bars</h2>
+{% call stack(gap="sm") %}
+{{ progress_bar(value=60, max=100) }}
+{{ progress_bar(value=60, max=100, label="60%") }}
+{{ progress_bar(value=3, max=5, variant="radiant", label="3 of 5 tasks") }}
+{{ progress_bar(value=75, max=100, variant="success") }}
+{% end %}
+
+<h2>Status Indicators</h2>
+{% call block() %}
+<div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+{{ status_indicator("Running", variant="success") }}
+{{ status_indicator("Error", variant="error", icon="⚠") }}
+{{ status_indicator("Processing", variant="warning", pulse=true) }}
+{{ status_indicator("Idle", variant="default") }}
+</div>
+{% end %}
+
+<h2>Spinners</h2>
+{% call block() %}
+<div style="display: flex; align-items: center; gap: 2rem;">
+{{ spinner(size="sm") }}
+{{ spinner() }}
+{{ spinner(size="lg") }}
+{{ spinner_thinking() }}
+</div>
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

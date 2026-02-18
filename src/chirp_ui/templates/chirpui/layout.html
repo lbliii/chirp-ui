@@ -1,0 +1,42 @@
+{#- chirp-ui: Layout primitives — Tetris-inspired block system
+    Responsive container, grid, stack, and block macros for desktop-to-mobile layouts.
+
+    Usage:
+        {% from "chirpui/layout.html" import container, grid, stack, block %}
+
+        {% call container() %}
+            {% call grid(cols=2) %}
+                {% call block() %}...{% end %}
+                {% call block() %}...{% end %}
+            {% end %}
+        {% end %}
+
+        {% call stack() %}
+            <p>Vertical stack with gap.</p>
+        {% end %}
+-#}
+
+{% def container(max_width="72rem", padding=true, cls="") %}
+<div class="chirpui-container{{ " " ~ cls if cls else "" }}"
+     style="--chirpui-container-max: {{ max_width }}{% if not padding %}; padding-inline: 0{% end %}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def grid(cols=none, cls="") %}
+<div class="chirpui-grid{% if cols == 2 %} chirpui-grid--cols-2{% elif cols == 3 %} chirpui-grid--cols-3{% elif cols == 4 %} chirpui-grid--cols-4{% end %}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def stack(gap=none, cls="") %}
+<div class="chirpui-stack{% if gap == "sm" %} chirpui-stack--sm{% elif gap == "lg" %} chirpui-stack--lg{% end %}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def block(span=1, cls="") %}
+<div class="chirpui-block{% if span == 2 %} chirpui-block--span-2{% elif span == 3 %} chirpui-block--span-3{% elif span == "full" %} chirpui-block--span-full{% end %}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}

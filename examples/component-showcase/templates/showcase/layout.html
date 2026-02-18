@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/badge.html" import badge %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Layout</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    container, grid, stack, block — Tetris-inspired responsive layouts.
+  </p>
+</header>
+
+<h2>Stack — vertical flow with gap</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Stacks arrange content vertically. Use <code>gap="sm"</code>, default, or <code>gap="lg"</code>.
+</p>
+
+{% call stack() %}
+{% call card(title="Feature list", footer="stack(gap=default)") %}
+{% call stack(gap="sm") %}
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+  <span style="font-size: 1.25rem;">◆</span>
+  <div>
+    <strong>Responsive grid</strong>
+    {{ badge("New", variant="success") }}
+    <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">Auto-fit columns with minmax. Resize to see it adapt.</p>
+  </div>
+</div>
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+  <span style="font-size: 1.25rem;">◇</span>
+  <div>
+    <strong>Container queries</strong>
+    {{ badge("CSS", variant="primary") }}
+    <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">@container for component-level breakpoints.</p>
+  </div>
+</div>
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+  <span style="font-size: 1.25rem;">○</span>
+  <div>
+    <strong>Direction-aware</strong>
+    {{ badge("RTL", variant="warning") }}
+    <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">padding-inline, margin-inline for i18n.</p>
+  </div>
+</div>
+{% end %}
+{% end %}
+
+{% call card(title="Profile card", footer="stack(gap=sm)") %}
+{% call stack(gap="sm") %}
+<div style="display: flex; align-items: center; gap: 0.75rem;">
+  <div style="width: 3rem; height: 3rem; border-radius: 50%; background: var(--chirpui-accent); opacity: 0.3; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">◇</div>
+  <div>
+    <strong>Alex Chen</strong>
+    {{ badge("Active", variant="success", icon="●") }}
+    <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0; font-size: 0.875rem;">Engineer · San Francisco</p>
+  </div>
+</div>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 0.875rem; margin: 0;">
+  Stacks nest naturally. This card body is a stack of avatar+info, then a caption.
+</p>
+{% end %}
+{% end %}
+
+{% call card(title="Step list", footer="stack(gap=lg)") %}
+{% call stack(gap="lg") %}
+<div style="display: flex; gap: 0.75rem;">
+  <span style="flex-shrink: 0; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--chirpui-accent); color: var(--chirpui-surface); font-size: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 600;">1</span>
+  <div><strong>Research</strong> — Gather requirements and constraints.</div>
+</div>
+<div style="display: flex; gap: 0.75rem;">
+  <span style="flex-shrink: 0; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--chirpui-accent); color: var(--chirpui-surface); font-size: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
+  <div><strong>Design</strong> — Draft the layout and components.</div>
+</div>
+<div style="display: flex; gap: 0.75rem;">
+  <span style="flex-shrink: 0; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--chirpui-accent); color: var(--chirpui-surface); font-size: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 600;">3</span>
+  <div><strong>Build</strong> — Implement with stack, grid, block.</div>
+</div>
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Grid — responsive columns</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Grids use <code>cols=2</code>, <code>cols=3</code>, or <code>cols=4</code>. Blocks can <code>span=2</code> or more.
+</p>
+
+<h3>Grid (cols=2)</h3>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call card(title="12.4k", footer="Users") %}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 0.875rem;">+1.2k this month</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card(title="98%", footer="Uptime") %}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 0.875rem;">Last 30 days</p>
+{% end %}
+{% end %}
+{% end %}
+
+<h3>Grid (cols=3) with span</h3>
+{% call grid(cols=3) %}
+{% call block() %}
+{% call card(title="Compact", footer="1 col") %}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 0.875rem;">Single column block.</p>
+{% end %}
+{% end %}
+{% call block(span=2) %}
+{% call card(title="Wide block", footer="span=2") %}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 0.875rem;">This block spans two columns. On narrow viewports it collapses to one.</p>
+{% end %}
+{% end %}
+{% end %}
+
+<h3>Grid (cols=4)</h3>
+{% call grid(cols=4) %}
+{% call block() %}
+{% call card() %}
+<div style="text-align: center;">
+  <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">◆</div>
+  <strong>Layout</strong>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card() %}
+<div style="text-align: center;">
+  <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">◇</div>
+  <strong>Forms</strong>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card() %}
+<div style="text-align: center;">
+  <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">○</div>
+  <strong>Data</strong>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card() %}
+<div style="text-align: center;">
+  <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">▸</div>
+  <strong>UI</strong>
+</div>
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Resize demo — @container</h2>
+{% call block() %}
+<div style="container-type: inline-size; min-width: 12rem; max-width: 100%; resize: horizontal; overflow: auto; border: 1px dashed var(--chirpui-border); padding: 1rem; border-radius: var(--chirpui-radius);">
+  <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0 0 0.5rem;">Resize me → inner grid reflows with <code>container-type: inline-size</code>.</p>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr)); gap: 0.5rem;">
+    <div style="background: var(--chirpui-accent); opacity: 0.2; padding: 0.5rem; border-radius: var(--chirpui-radius-sm); text-align: center;">1</div>
+    <div style="background: var(--chirpui-accent); opacity: 0.2; padding: 0.5rem; border-radius: var(--chirpui-radius-sm); text-align: center;">2</div>
+    <div style="background: var(--chirpui-accent); opacity: 0.2; padding: 0.5rem; border-radius: var(--chirpui-radius-sm); text-align: center;">3</div>
+    <div style="background: var(--chirpui-accent); opacity: 0.2; padding: 0.5rem; border-radius: var(--chirpui-radius-sm); text-align: center;">4</div>
+    <div style="background: var(--chirpui-accent); opacity: 0.2; padding: 0.5rem; border-radius: var(--chirpui-radius-sm); text-align: center;">5</div>
+  </div>
+</div>
+{% end %}
+
+<h2>RTL toggle</h2>
+{% call block() %}
+<div class="chirpui-stack chirpui-stack--sm">
+  <div style="display: flex; gap: 0.5rem;">
+    <button type="button" class="chirpui-btn chirpui-btn--primary"
+            hx-get="/layout/dir?dir=ltr"
+            hx-target="#rtl_demo_content"
+            hx-swap="innerHTML">LTR</button>
+    <button type="button" class="chirpui-btn chirpui-btn--secondary"
+            hx-get="/layout/dir?dir=rtl"
+            hx-target="#rtl_demo_content"
+            hx-swap="innerHTML">RTL</button>
+  </div>
+  <div id="rtl_demo_content">
+    <div dir="ltr" style="padding-inline: 1rem; margin-inline: 0.5rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); background: var(--chirpui-bg-subtle);">
+      <p style="margin: 0 0 0.5rem;"><strong>LTR</strong> — padding-inline and margin-inline flip with direction.</p>
+      <ul style="margin: 0; padding-inline-start: 1.5rem;">
+        <li>First item</li>
+        <li>Second item</li>
+        <li>Third item</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  Click LTR or RTL to swap the block. Uses <code>dir</code>, <code>padding-inline</code>, <code>margin-inline</code>.
+</p>
+{% end %}
+
+<h2>Gap comparison</h2>
+{% call block() %}
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+  <div>
+    <p class="chirpui-font-sm chirpui-text-muted" style="margin: 0 0 0.25rem;"><strong>gap=sm</strong></p>
+    {% call stack(gap="sm") %}
+    <div style="background: var(--chirpui-bg-subtle); padding: 0.5rem; border-radius: var(--chirpui-radius-sm);">A</div>
+    <div style="background: var(--chirpui-bg-subtle); padding: 0.5rem; border-radius: var(--chirpui-radius-sm);">B</div>
+    <div style="background: var(--chirpui-bg-subtle); padding: 0.5rem; border-radius: var(--chirpui-radius-sm);">C</div>
+    {% end %}
+  </div>
+  <div>
+    <p class="chirpui-font-sm chirpui-text-muted" style="margin: 0 0 0.25rem;"><strong>default</strong></p>
+    {% call stack() %}
+    <div style="background: var(--chirpui-bg-subtle); padding: 0.5rem; border-radius: var(--chirpui-radius-sm);">A</div>
+    <div style="background: var(--chirpui-bg-subtle); padding: 0.5rem; border-radius: var(--chirpui-radius-sm);">B</div>
+    <div style="background: var(--chirpui-bg-subtle); padding: 0.5rem; border-radius: var(--chirpui-radius-sm);">C</div>
+    {% end %}
+  </div>
+  <div>
+    <p class="chirpui-font-sm chirpui-text-muted" style="margin: 0 0 0.25rem;"><strong>gap=lg</strong></p>
+    {% call stack(gap="lg") %}
+    <div style="background: var(--chirpui-bg-subtle); padding: 0.5rem; border-radius: var(--chirpui-radius-sm);">A</div>
+    <div style="background: var(--chirpui-bg-subtle); padding: 0.5rem; border-radius: var(--chirpui-radius-sm);">B</div>
+    <div style="background: var(--chirpui-bg-subtle); padding: 0.5rem; border-radius: var(--chirpui-radius-sm);">C</div>
+    {% end %}
+  </div>
+</div>
+{% end %}
+
+<h2>Stack + Grid combined</h2>
+{% call grid(cols=3) %}
+{% call block() %}
+{% call card(title="Sidebar", footer="stack inside block") %}
+{% call stack(gap="sm") %}
+<a href="/cards" style="color: var(--chirpui-accent); text-decoration: none;">Cards</a>
+<a href="/forms" style="color: var(--chirpui-accent); text-decoration: none;">Forms</a>
+<a href="/ui" style="color: var(--chirpui-accent); text-decoration: none;">UI Components</a>
+<a href="/data" style="color: var(--chirpui-accent); text-decoration: none;">Data Display</a>
+{% end %}
+{% end %}
+{% end %}
+{% call block(span=2) %}
+{% call card(title="Main content", footer="grid cols=2 inside block") %}
+{% call grid(cols=2) %}
+{% call block() %}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0;">Stacks and grids compose. Put a grid inside a block, or stack cards in a grid.</p>
+{% end %}
+{% call block() %}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0;">Resize the viewport to see @container queries collapse spans and reflow columns.</p>
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

@@ -12,6 +12,110 @@ from kida import Environment
 
 
 # ---------------------------------------------------------------------------
+# Layout
+# ---------------------------------------------------------------------------
+
+
+class TestLayout:
+    def test_container(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import container %}'
+            "{% call container() %}Content{% end %}"
+        ).render()
+        assert "chirpui-container" in html
+        assert "Content" in html
+
+    def test_grid(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            "{% call grid() %}A{% end %}"
+        ).render()
+        assert "chirpui-grid" in html
+
+    def test_grid_cols_2(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(cols=2) %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--cols-2" in html
+
+    def test_stack(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import stack %}'
+            "{% call stack() %}A{% end %}"
+        ).render()
+        assert "chirpui-stack" in html
+
+    def test_block(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import block %}'
+            '{% call block(span=2) %}A{% end %}'
+        ).render()
+        assert "chirpui-block--span-2" in html
+
+
+# ---------------------------------------------------------------------------
+# Streaming
+# ---------------------------------------------------------------------------
+
+
+class TestStreaming:
+    def test_streaming_block(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_block %}'
+            "{% call streaming_block() %}Content{% end %}"
+        ).render()
+        assert "chirpui-streaming-block" in html
+        assert "Content" in html
+        assert "aria-live" in html
+
+    def test_streaming_block_active(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_block %}'
+            '{% call streaming_block(streaming=true) %}Partial{% end %}'
+        ).render()
+        assert "chirpui-streaming-block--active" in html
+        assert "chirpui-streaming-block__cursor" in html
+
+    def test_streaming_block_sse_swap_target(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_block %}'
+            '{% call streaming_block(streaming=true, sse_swap_target=true) %}{% end %}'
+        ).render()
+        assert "sse-swap=\"fragment\"" in html
+        assert "hx-target=\"this\"" in html
+
+    def test_copy_btn(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import copy_btn %}'
+            '{{ copy_btn(label="Copy", copy_text="hello") }}'
+        ).render()
+        assert "chirpui-copy-btn" in html
+        assert 'data-copy-text="hello"' in html
+
+    def test_model_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import model_card %}'
+            '{% call model_card(title="Llama 3", badge="42ms") %}Answer{% end %}'
+        ).render()
+        assert "chirpui-model-card" in html
+        assert "Llama 3" in html
+        assert "42ms" in html
+        assert "Answer" in html
+
+    def test_model_card_sse_streaming(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import model_card %}'
+            '{% call model_card("llama3", badge="A", sse_connect="/stream", sse_streaming=true) %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-model-card" in html
+        assert 'sse-connect="/stream"' in html
+        assert "hx-ext=\"sse\"" in html
+        assert "sse-swap=\"fragment\"" in html
+
+
+# ---------------------------------------------------------------------------
 # Card
 # ---------------------------------------------------------------------------
 
@@ -496,6 +600,106 @@ class TestComposition:
 
 
 # ---------------------------------------------------------------------------
+# ASCII Icon
+# ---------------------------------------------------------------------------
+
+
+class TestAsciiIcon:
+    def test_static_icon(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_icon.html" import ascii_icon %}'
+            '{{ ascii_icon("✦") }}'
+        ).render()
+        assert "chirpui-ascii" in html
+        assert "chirpui-ascii--md" in html
+        assert "chirpui-ascii__char" in html
+        assert "✦" in html
+        assert 'aria-hidden="true"' in html
+
+    def test_animation_variants(self, env: Environment) -> None:
+        for anim in ("blink", "pulse", "shrink", "grow", "spin", "bounce", "throb", "wiggle", "glow"):
+            html = env.from_string(
+                '{% from "chirpui/ascii_icon.html" import ascii_icon %}'
+                f'{{{{ ascii_icon("◆", animation="{anim}") }}}}'
+            ).render()
+            assert f"chirpui-ascii--{anim}" in html
+            assert "chirpui-ascii__char" in html
+            assert "◆" in html
+
+    def test_rotate_produces_four_spans(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_icon.html" import ascii_icon %}'
+            '{{ ascii_icon("x", animation="rotate") }}'
+        ).render()
+        assert "chirpui-ascii--rotate" in html
+        for i in range(1, 5):
+            assert f"chirpui-ascii__char--{i}" in html
+        assert "chirpui-ascii__char--2" in html
+        assert "chirpui-ascii__char--3" in html
+        assert "chirpui-ascii__char--4" in html
+        assert "◜" in html and "◝" in html and "◞" in html and "◟" in html
+
+    def test_sizes(self, env: Environment) -> None:
+        for size in ("sm", "md", "lg", "xl"):
+            html = env.from_string(
+                '{% from "chirpui/ascii_icon.html" import ascii_icon %}'
+                f'{{{{ ascii_icon("●", size="{size}") }}}}'
+            ).render()
+            assert f"chirpui-ascii--{size}" in html
+
+    def test_no_animation_class_when_none(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_icon.html" import ascii_icon %}'
+            '{{ ascii_icon("★", animation="none") }}'
+        ).render()
+        assert "chirpui-ascii--none" not in html
+        assert "chirpui-ascii--blink" not in html
+
+    def test_custom_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_icon.html" import ascii_icon %}'
+            '{{ ascii_icon("◇", cls="my-icon") }}'
+        ).render()
+        assert "my-icon" in html
+
+
+# ---------------------------------------------------------------------------
+# Spinner
+# ---------------------------------------------------------------------------
+
+
+class TestSpinner:
+    def test_spinner_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/spinner.html" import spinner %}'
+            "{{ spinner() }}"
+        ).render()
+        assert "chirpui-spinner" in html
+        assert "chirpui-spinner__mote" in html
+        assert "✦" in html
+        assert 'role="status"' in html
+        assert 'aria-label="Loading"' in html
+
+    def test_spinner_sizes(self, env: Environment) -> None:
+        for size in ("sm", "md", "lg"):
+            html = env.from_string(
+                '{% from "chirpui/spinner.html" import spinner %}'
+                f'{{{{ spinner(size="{size}") }}}}'
+            ).render()
+            assert f"chirpui-spinner--{size}" in html
+
+    def test_spinner_thinking(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/spinner.html" import spinner_thinking %}'
+            "{{ spinner_thinking() }}"
+        ).render()
+        assert "chirpui-spinner-thinking" in html
+        assert "chirpui-spinner__char" in html
+        assert "◜" in html
+        assert 'aria-label="Processing"' in html
+
+
+# ---------------------------------------------------------------------------
 # CSS file
 # ---------------------------------------------------------------------------
 
@@ -525,3 +729,24 @@ class TestCSS:
         assert ".chirpui-pagination" in content
         assert ".chirpui-alert" in content
         assert ".chirpui-field" in content
+        assert ".chirpui-ascii" in content
+        assert ".chirpui-spinner" in content
+
+    def test_ascii_animation_classes_exist(self) -> None:
+        """All ascii animation variants must have matching CSS."""
+        from pathlib import Path
+
+        css_path = (
+            Path(__file__).resolve().parent.parent
+            / "src"
+            / "chirp_ui"
+            / "templates"
+            / "chirpui.css"
+        )
+        content = css_path.read_text()
+        animations = ("blink", "pulse", "shrink", "grow", "spin", "bounce", "throb", "wiggle", "glow", "rotate")
+        for anim in animations:
+            assert f".chirpui-ascii--{anim}" in content, f"Missing CSS for ascii animation: {anim}"
+        assert "@keyframes chirpui-ascii-blink" in content
+        assert "@keyframes chirpui-ascii-pulse" in content
+        assert "@keyframes chirpui-ascii-rotate-cycle" in content

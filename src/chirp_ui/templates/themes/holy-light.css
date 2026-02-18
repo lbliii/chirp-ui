@@ -1,5 +1,6 @@
 /* chirp-ui Holy Light Theme
  * Sunwell's signature gold/void color palette.
+ * Token-only: override CSS variables; no component overrides.
  *
  * Usage:
  *   <link rel="stylesheet" href="/static/chirpui.css">
@@ -7,38 +8,53 @@
  */
 
 :root {
-    /* ========================================
-       Holy Spectrum - Light, positive, active
-       Hex fallback; oklch when supported.
-       ======================================== */
-    --chirpui-color-radiant: #ffd700;
-    --chirpui-color-gold: #c9a227;
-    --chirpui-color-gold-dim: #8a7235;
-    --chirpui-color-success: #22c55e;
-
-    /* ========================================
-       Void Spectrum - Shadow, danger, unknown
-       ======================================== */
-    --chirpui-color-void-purple: #7c3aed;
-    --chirpui-color-void-indigo: #4f46e5;
-    --chirpui-color-void-deep: #2e1065;
-
-    /* ========================================
-       Neutral - The canvas
-       ======================================== */
+    color-scheme: dark;
+    /* Core palette */
     --chirpui-bg: #0d0d0d;
+    --chirpui-bg-subtle: #1a1a1a;
     --chirpui-surface: #1a1a1a;
+    --chirpui-surface-alt: #1a1a1a;
     --chirpui-surface-elevated: #262626;
     --chirpui-border: #333333;
     --chirpui-text: #e5e5e5;
     --chirpui-text-muted: #a8a8a8;
 
-    /* ========================================
-       Component Overrides
-       ======================================== */
+    /* Accent — gold spectrum (accent-dim, accent-bright derived when oklch supported) */
+    --chirpui-accent: #c9a227;
+    --chirpui-accent-hover: #8a7235;
+    --chirpui-accent-dim: #8a7235;
+    --chirpui-accent-bright: #ffd700;
 
-    /* Base */
-    --chirpui-bg-subtle: var(--chirpui-surface);
+    /* Semantic — map success to green; warning/error to void palette */
+    --chirpui-primary: #c9a227;
+    --chirpui-success: #22c55e;
+    --chirpui-warning: #4f46e5;
+    --chirpui-error: #7c3aed;
+    --chirpui-muted: #a8a8a8;
+
+    /* Optional — card accents */
+    --chirpui-card-header-color: #c9a227;
+    --chirpui-card-hover-border: #c9a227;
+    --chirpui-card-hover-shadow: 0 4px 12px rgba(255, 215, 0, 0.15);
+
+    /* Focus & interactive */
+    --chirpui-focus-ring: rgba(255, 215, 0, 0.3);
+
+    /* Alerts — gold info, void warning/error */
+    --chirpui-alert-info-bg: rgba(201, 162, 39, 0.15);
+    --chirpui-alert-info-border: #8a7235;
+    --chirpui-alert-info-color: #c9a227;
+    --chirpui-alert-success-bg: rgba(34, 197, 94, 0.15);
+    --chirpui-alert-success-border: #22c55e;
+    --chirpui-alert-success-color: #22c55e;
+    --chirpui-alert-warning-bg: rgba(79, 70, 229, 0.15);
+    --chirpui-alert-warning-border: #4f46e5;
+    --chirpui-alert-warning-color: #4f46e5;
+    --chirpui-alert-error-bg: rgba(124, 58, 237, 0.15);
+    --chirpui-alert-error-border: #7c3aed;
+    --chirpui-alert-error-color: #7c3aed;
+
+    /* Layout */
     --chirpui-radius: 0.5rem;
     --chirpui-radius-sm: 0.25rem;
     --chirpui-spacing: 1rem;
@@ -46,315 +62,31 @@
     --chirpui-spacing-xs: 0.25rem;
     --chirpui-font-sm: 0.875rem;
     --chirpui-transition: 150ms ease;
-
-    /* Cards */
-    --chirpui-card-bg: var(--chirpui-surface);
-    --chirpui-card-border: var(--chirpui-border);
-    --chirpui-card-header-color: var(--chirpui-color-gold);
-
-    /* Modals */
-    --chirpui-modal-bg: var(--chirpui-surface-elevated);
-    --chirpui-modal-border: var(--chirpui-color-gold-dim);
-    --chirpui-modal-width: 32rem;
-    --chirpui-modal-width-sm: 24rem;
-    --chirpui-modal-width-lg: 48rem;
-
-    /* Alerts */
-    --chirpui-alert-info-bg: rgba(201, 162, 39, 0.15);
-    --chirpui-alert-info-border: var(--chirpui-color-gold-dim);
-    --chirpui-alert-info-color: var(--chirpui-color-gold);
-
-    --chirpui-alert-success-bg: rgba(34, 197, 94, 0.15);
-    --chirpui-alert-success-border: var(--chirpui-color-success);
-    --chirpui-alert-success-color: var(--chirpui-color-success);
-
-    --chirpui-alert-warning-bg: rgba(79, 70, 229, 0.15);
-    --chirpui-alert-warning-border: var(--chirpui-color-void-indigo);
-    --chirpui-alert-warning-color: var(--chirpui-color-void-indigo);
-
-    --chirpui-alert-error-bg: rgba(124, 58, 237, 0.15);
-    --chirpui-alert-error-border: var(--chirpui-color-void-purple);
-    --chirpui-alert-error-color: var(--chirpui-color-void-purple);
-
-    /* Toast */
-    --chirpui-toast-width: 24rem;
-
-    /* Interactive States */
-    --chirpui-focus-ring: rgba(255, 215, 0, 0.3);
-    --chirpui-hover-bg: var(--chirpui-surface-elevated);
-
-    /* Transitions */
-    --chirpui-transition-fast: 150ms ease;
-    --chirpui-transition-normal: 250ms ease;
 }
 
 @supports (color: oklch(0 0 0)) {
     :root {
-        --chirpui-color-radiant: oklch(0.91 0.17 95);
-        --chirpui-color-gold: oklch(0.72 0.15 95);
-        --chirpui-color-gold-dim: oklch(0.55 0.08 85);
-        --chirpui-color-success: oklch(0.65 0.19 145);
-        --chirpui-color-void-purple: oklch(0.55 0.25 295);
-        --chirpui-color-void-indigo: oklch(0.5 0.22 265);
-        --chirpui-color-void-deep: oklch(0.22 0.12 295);
         --chirpui-bg: oklch(0.14 0 0);
+        --chirpui-bg-subtle: oklch(0.18 0 0);
         --chirpui-surface: oklch(0.18 0 0);
+        --chirpui-surface-alt: oklch(0.18 0 0);
         --chirpui-surface-elevated: oklch(0.22 0 0);
         --chirpui-border: oklch(0.28 0 0);
         --chirpui-text: oklch(0.92 0.005 260);
         --chirpui-text-muted: oklch(0.72 0.01 260);
+        --chirpui-accent: oklch(0.72 0.15 95);
+        --chirpui-accent-hover: oklch(0.55 0.08 85);
+        --chirpui-accent-dim: oklch(0.55 0.08 85);
+        --chirpui-accent-bright: oklch(0.91 0.17 95);
+        --chirpui-primary: oklch(0.72 0.15 95);
+        --chirpui-success: oklch(0.65 0.19 145);
+        --chirpui-warning: oklch(0.5 0.22 265);
+        --chirpui-error: oklch(0.55 0.25 295);
+        --chirpui-muted: oklch(0.72 0.01 260);
     }
 }
-
-/* ========================================
-   Global Styles
-   ======================================== */
 
 body {
     background: var(--chirpui-bg);
     color: var(--chirpui-text);
-}
-
-/* ========================================
-   Card Enhancements
-   ======================================== */
-
-.chirpui-card {
-    background: var(--chirpui-card-bg);
-    border-color: var(--chirpui-card-border);
-    transition: all var(--chirpui-transition-normal);
-}
-
-.chirpui-card:hover {
-    border-color: var(--chirpui-color-gold);
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.15);
-}
-
-.chirpui-card__header {
-    color: var(--chirpui-card-header-color);
-    background: rgba(255, 215, 0, 0.05);
-}
-
-.chirpui-card__footer {
-    background: var(--chirpui-surface);
-}
-
-/* ========================================
-   Modal Enhancements
-   ======================================== */
-
-.chirpui-modal {
-    background: var(--chirpui-modal-bg);
-    border: 1px solid var(--chirpui-modal-border);
-    color: var(--chirpui-text);
-}
-
-.chirpui-modal__title {
-    color: var(--chirpui-color-radiant);
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-}
-
-.chirpui-modal__close {
-    color: var(--chirpui-text-muted);
-    transition: color var(--chirpui-transition-fast);
-}
-
-.chirpui-modal__close:hover {
-    color: var(--chirpui-color-radiant);
-}
-
-/* Modal backdrop */
-.chirpui-modal::backdrop {
-    background: rgba(0, 0, 0, 0.8);
-}
-
-/* ========================================
-   Alert Enhancements
-   ======================================== */
-
-.chirpui-alert--info {
-    background: var(--chirpui-alert-info-bg);
-    border-color: var(--chirpui-alert-info-border);
-    color: var(--chirpui-alert-info-color);
-}
-
-.chirpui-alert--success {
-    background: var(--chirpui-alert-success-bg);
-    border-color: var(--chirpui-alert-success-border);
-    color: var(--chirpui-alert-success-color);
-}
-
-.chirpui-alert--warning {
-    background: var(--chirpui-alert-warning-bg);
-    border-color: var(--chirpui-alert-warning-border);
-    color: var(--chirpui-alert-warning-color);
-}
-
-.chirpui-alert--error {
-    background: var(--chirpui-alert-error-bg);
-    border-color: var(--chirpui-alert-error-border);
-    color: var(--chirpui-alert-error-color);
-}
-
-/* ========================================
-   Table Enhancements
-   ======================================== */
-
-.chirpui-table {
-    background: var(--chirpui-surface);
-    color: var(--chirpui-text);
-}
-
-.chirpui-table__th {
-    background: var(--chirpui-surface-elevated);
-    color: var(--chirpui-color-gold);
-    border-bottom: 2px solid var(--chirpui-color-gold-dim);
-}
-
-.chirpui-table__th[hx-get] {
-    cursor: pointer;
-    transition: background var(--chirpui-transition-fast);
-}
-
-.chirpui-table__th[hx-get]:hover {
-    background: rgba(255, 215, 0, 0.1);
-    color: var(--chirpui-color-radiant);
-}
-
-.chirpui-table__td {
-    border-bottom: 1px solid var(--chirpui-border);
-}
-
-.chirpui-table--striped .chirpui-table__row:nth-child(even) {
-    background: rgba(255, 215, 0, 0.03);
-}
-
-.chirpui-table__row:hover {
-    background: rgba(255, 215, 0, 0.08);
-}
-
-/* ========================================
-   Form Enhancements
-   ======================================== */
-
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-button:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--chirpui-focus-ring);
-}
-
-input,
-textarea,
-select {
-    background: var(--chirpui-surface-elevated);
-    border: 1px solid var(--chirpui-border);
-    color: var(--chirpui-text);
-}
-
-input:hover,
-textarea:hover,
-select:hover {
-    border-color: var(--chirpui-color-gold-dim);
-}
-
-/* ========================================
-   Tab Enhancements
-   ======================================== */
-
-.chirpui-tab {
-    color: var(--chirpui-text-muted);
-    transition: all var(--chirpui-transition-fast);
-}
-
-.chirpui-tab:hover {
-    color: var(--chirpui-color-gold);
-    background: rgba(255, 215, 0, 0.05);
-}
-
-.chirpui-tab--active {
-    color: var(--chirpui-color-radiant);
-    border-bottom-color: var(--chirpui-color-gold);
-    background: rgba(255, 215, 0, 0.1);
-}
-
-/* ========================================
-   Dropdown Enhancements
-   ======================================== */
-
-.chirpui-dropdown summary {
-    color: var(--chirpui-text);
-    background: var(--chirpui-surface-elevated);
-    border: 1px solid var(--chirpui-border);
-}
-
-.chirpui-dropdown summary:hover {
-    border-color: var(--chirpui-color-gold-dim);
-    background: rgba(255, 215, 0, 0.05);
-}
-
-.chirpui-dropdown[open] summary {
-    border-color: var(--chirpui-color-gold);
-}
-
-.chirpui-dropdown__content {
-    background: var(--chirpui-surface-elevated);
-    border: 1px solid var(--chirpui-border);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-/* ========================================
-   Toast Enhancements
-   ======================================== */
-
-.chirpui-toast {
-    background: var(--chirpui-surface-elevated);
-    border: 1px solid var(--chirpui-color-gold);
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
-    color: var(--chirpui-text);
-}
-
-.chirpui-toast--info {
-    border-color: var(--chirpui-color-gold);
-}
-
-.chirpui-toast--success {
-    border-color: var(--chirpui-color-success);
-}
-
-.chirpui-toast--warning {
-    border-color: var(--chirpui-color-void-indigo);
-}
-
-.chirpui-toast--error {
-    border-color: var(--chirpui-color-void-purple);
-}
-
-/* ========================================
-   Pagination Enhancements
-   ======================================== */
-
-.chirpui-pagination__link {
-    color: var(--chirpui-text-muted);
-    background: var(--chirpui-surface-elevated);
-    border: 1px solid var(--chirpui-border);
-}
-
-.chirpui-pagination__link:hover {
-    color: var(--chirpui-color-gold);
-    border-color: var(--chirpui-color-gold-dim);
-    background: rgba(255, 215, 0, 0.1);
-}
-
-.chirpui-pagination__link--active {
-    color: var(--chirpui-color-radiant);
-    border-color: var(--chirpui-color-gold);
-    background: rgba(255, 215, 0, 0.15);
-}
-
-.chirpui-pagination__link:disabled {
-    color: var(--chirpui-text-muted);
-    opacity: 0.3;
-    cursor: not-allowed;
 }

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/modal.html" import modal, modal_trigger %}
+{% from "chirpui/dropdown.html" import dropdown %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/toast.html" import toast %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>UI Components</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    modal, dropdown, tabs, badge, toast — Interactive elements.
+  </p>
+</header>
+
+<h2>Modal</h2>
+<div class="chirpui-block">
+<button type="button" onclick="document.getElementById('demo-modal').showModal()">Open Modal</button>
+<dialog id="demo-modal" class="chirpui-modal">
+  <header class="chirpui-modal__header">
+    <h2 class="chirpui-modal__title">Settings</h2>
+    <form method="dialog"><button class="chirpui-modal__close" aria-label="Close">&times;</button></form>
+  </header>
+  <div class="chirpui-modal__body">
+    <p>Modal body content. Uses native <code>&lt;dialog&gt;</code>. Close with × or Escape.</p>
+  </div>
+</dialog>
+</div>
+
+<h2>Dropdown</h2>
+<div class="chirpui-block">
+{% call dropdown(label="Options") %}
+<a href="/" class="chirpui-dropdown__item">Home</a>
+<a href="/layout" class="chirpui-dropdown__item">Layout</a>
+<a href="/cards" class="chirpui-dropdown__item">Cards</a>
+{% end %}
+</div>
+
+<h2>Tabs</h2>
+<div class="chirpui-block">
+{% from "showcase/_tab_content.html" import tab_section %}
+{{ tab_section("overview") }}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  Click tabs to swap content via htmx. No full page reload.
+</p>
+</div>
+
+<h2>Badges</h2>
+{% call block() %}
+<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+{{ badge("Primary", variant="primary") }}
+{{ badge("Success", variant="success") }}
+{{ badge("Warning", variant="warning") }}
+{{ badge("Error", variant="error") }}
+{{ badge("With icon", variant="primary", icon="◆") }}
+{{ badge("Active", variant="success", icon="✓") }}
+</div>
+{% end %}
+
+<h2>Toast</h2>
+{% call block() %}
+<button type="button"
+        hx-post="/toast"
+        hx-swap="none"
+        hx-headers='{"HX-Request": "true"}'>
+  Show toast
+</button>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  Toast appears via htmx OOB swap. Check top-right after clicking.
+</p>
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

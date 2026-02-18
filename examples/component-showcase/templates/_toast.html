@@ -1,0 +1,4 @@
+{% block toast_demo %}
+{% from "chirpui/toast.html" import toast %}
+{{ toast(message | default("Toast notification! Click × to dismiss."), variant="success") }}
+{% end %}

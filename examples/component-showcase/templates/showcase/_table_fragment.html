@@ -1,0 +1,40 @@
+{#- Fragment for htmx-driven data table — rows, sortable headers, pagination #}
+{% from "chirpui/table.html" import row %}
+{% from "chirpui/pagination.html" import pagination %}
+{% block table_content %}
+<div class="chirpui-table-wrap">
+  <table class="chirpui-table chirpui-table--striped">
+    <thead class="chirpui-table__head">
+      <tr>
+        <th class="chirpui-table__th">
+          <button type="button" class="chirpui-table__sort"
+                  hx-get="/data/table?page={{ page }}&sort=name"
+                  hx-target="#data_table_content"
+                  hx-swap="innerHTML"
+                  hx-push-url="true">Name</button>
+        </th>
+        <th class="chirpui-table__th">
+          <button type="button" class="chirpui-table__sort"
+                  hx-get="/data/table?page={{ page }}&sort=email"
+                  hx-target="#data_table_content"
+                  hx-swap="innerHTML"
+                  hx-push-url="true">Email</button>
+        </th>
+        <th class="chirpui-table__th">
+          <button type="button" class="chirpui-table__sort"
+                  hx-get="/data/table?page={{ page }}&sort=role"
+                  hx-target="#data_table_content"
+                  hx-swap="innerHTML"
+                  hx-push-url="true">Role</button>
+        </th>
+      </tr>
+    </thead>
+    <tbody class="chirpui-table__body">
+      {% for r in rows %}
+      {{ row(r[0], r[1], r[2]) }}
+      {% end %}
+    </tbody>
+  </table>
+</div>
+{{ pagination(current=page, total=total_pages, url_pattern="/data/table?page={page}&sort=" ~ sort_col, hx_target="#data_table_content", hx_push_url=true) }}
+{% end %}

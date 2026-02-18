@@ -11,12 +11,29 @@ When used with Chirp, components are auto-detected via ``PackageLoader``.
 For standalone Kida usage, call :func:`get_loader`.
 """
 
+from pathlib import Path
+
 from kida import PackageLoader
 
 # Declare free-threading support (PEP 703)
 _Py_mod_gil = 0
 
 __version__ = "0.2.0"
+
+
+def static_path() -> Path:
+    """Path to chirp-ui templates (chirpui.css, themes/).
+
+    Use with StaticFiles to serve CSS and themes from the package::
+
+        from chirp.middleware.static import StaticFiles
+        import chirp_ui
+        app.add_middleware(StaticFiles(
+            directory=str(chirp_ui.static_path()),
+            prefix="/static"
+        ))
+    """
+    return Path(__file__).parent / "templates"
 
 
 def get_loader() -> PackageLoader:

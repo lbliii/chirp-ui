@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+
+{% call container() %}
+{% call stack() %}
+<section class="chirpui-stack chirpui-stack--sm" style="text-align: center; padding: 2rem 0;">
+  <h1 style="font-size: 1.75rem; margin: 0;">chirp-ui Component Showcase</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 1.125rem; margin: 0.5rem 0 1rem;">
+    HTML over the wire. CSS without apology.
+  </p>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;">
+    <span class="chirpui-badge chirpui-badge--primary">0 JS frameworks</span>
+    <span class="chirpui-badge chirpui-badge--primary">HTML over the wire</span>
+    <span class="chirpui-badge chirpui-badge--primary">View Transitions</span>
+  </div>
+  <p style="margin-top: 1rem;">
+    <a href="/demo" class="chirpui-btn chirpui-btn--primary">Quick demo</a>
+  </p>
+</section>
+
+<header class="chirpui-stack chirpui-stack--sm">
+  <h2 style="font-size: 1.25rem;">Components</h2>
+</header>
+
+{% call grid(cols=2) %}
+{% call block() %}
+<a href="/layout" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
+  <header class="chirpui-card__header">Layout</header>
+  <div class="chirpui-card__body">
+    <p>Responsive grid, stack, RTL toggle, @container resize demo.</p>
+  </div>
+</a>
+{% end %}
+{% call block() %}
+<a href="/cards" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
+  <header class="chirpui-card__header">Cards & Alerts</header>
+  <div class="chirpui-card__body">
+    <p>card, alert — Content containers and status messages.</p>
+  </div>
+</a>
+{% end %}
+{% call block() %}
+<a href="/forms" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
+  <header class="chirpui-card__header">Forms</header>
+  <div class="chirpui-card__body">
+    <p>FormAction, ValidationError — live server-side validation, toast on success.</p>
+  </div>
+</a>
+{% end %}
+{% call block() %}
+<a href="/ui" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
+  <header class="chirpui-card__header">UI Components</header>
+  <div class="chirpui-card__body">
+    <p>modal, dropdown, tabs, badge, toast — Interactive elements.</p>
+  </div>
+</a>
+{% end %}
+{% call block() %}
+<a href="/streaming" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
+  <header class="chirpui-card__header">Streaming & AI</header>
+  <div class="chirpui-card__body">
+    <p>EventStream, model_card — live SSE demo, no LLM required.</p>
+  </div>
+</a>
+{% end %}
+{% call block() %}
+<a href="/data" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
+  <header class="chirpui-card__header">Data Display</header>
+  <div class="chirpui-card__body">
+    <p>Fragment pagination, sortable table — htmx-driven, no full reload.</p>
+  </div>
+</a>
+{% end %}
+{% call block() %}
+<a href="/animation" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
+  <header class="chirpui-card__header">Animation & Motion</header>
+  <div class="chirpui-card__body">
+    <p>Motion tokens, micro-feedback, skeleton, View Transitions — Polished interactions.</p>
+  </div>
+</a>
+{% end %}
+{% call block() %}
+<a href="/ascii" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
+  <header class="chirpui-card__header">ASCII Icons</header>
+  <div class="chirpui-card__body">
+    <p>Unicode symbols as primary icons — blink, pulse, shrink, rotate, spin, bounce, throb.</p>
+  </div>
+</a>
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

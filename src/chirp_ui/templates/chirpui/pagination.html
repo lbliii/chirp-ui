@@ -8,7 +8,7 @@
                    hx_target="#item-list")
 -#}
 
-{% def pagination(current, total, url_pattern, hx_target=none, window=2, cls="") %}
+{% def pagination(current, total, url_pattern, hx_target=none, hx_push_url=false, window=2, cls="") %}
 {% if total > 1 %}
 <nav class="chirpui-pagination{{ " " ~ cls if cls else "" }}" aria-label="Pagination">
     {# Previous #}
@@ -19,6 +19,7 @@
                hx-get="{{ url_pattern | replace("{page}", (current - 1) | string) }}"
                hx-target="{{ hx_target }}"
                hx-swap="innerHTML"
+               {% if hx_push_url %}hx-push-url="true"{% end %}
            {% end %}
            aria-label="Previous page">&laquo;</a>
     {% else %}
@@ -38,6 +39,7 @@
                    hx-get="{{ url_pattern | replace("{page}", page | string) }}"
                    hx-target="{{ hx_target }}"
                    hx-swap="innerHTML"
+                   {% if hx_push_url %}hx-push-url="true"{% end %}
                {% end %}>{{ page }}</a>
         {% elif page == current - window - 1 or page == current + window + 1 %}
             <span class="chirpui-pagination__ellipsis">&hellip;</span>
@@ -52,6 +54,7 @@
                hx-get="{{ url_pattern | replace("{page}", (current + 1) | string) }}"
                hx-target="{{ hx_target }}"
                hx-swap="innerHTML"
+               {% if hx_push_url %}hx-push-url="true"{% end %}
            {% end %}
            aria-label="Next page">&raquo;</a>
     {% else %}

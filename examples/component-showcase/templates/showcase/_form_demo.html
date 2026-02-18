@@ -1,0 +1,6 @@
+{#- Form demo fragment — form fields with errors, swapped on ValidationError #}
+{% from "chirpui/forms.html" import text_field %}
+{% block form_body %}
+{{ text_field("name", value=name | default(""), label="Name", placeholder="Your name", required=true, errors=errors | default({})) }}
+{{ text_field("email", value=email | default(""), label="Email", type="email", placeholder="you@example.com", required=true, errors=errors | default({})) }}
+{% end %}

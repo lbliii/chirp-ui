@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/ascii_icon.html" import ascii_icon %}
+{% from "chirpui/spinner.html" import spinner, spinner_thinking %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>ASCII Icons</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    Unicode symbols as primary icons — blink, pulse, shrink, rotate, spin, bounce, throb, wiggle, glow.
+  </p>
+</header>
+
+<h2>Animation states</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Each symbol can be animated. Respects <code>prefers-reduced-motion</code>.
+</p>
+
+{% call block() %}
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 1.5rem;">
+  <div style="text-align: center; padding: 1rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{{ ascii_icon("✦", animation="blink") }}</div>
+    <code class="chirpui-font-sm">blink</code>
+  </div>
+  <div style="text-align: center; padding: 1rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{{ ascii_icon("◆", animation="pulse") }}</div>
+    <code class="chirpui-font-sm">pulse</code>
+  </div>
+  <div style="text-align: center; padding: 1rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{{ ascii_icon("●", animation="shrink") }}</div>
+    <code class="chirpui-font-sm">shrink</code>
+  </div>
+  <div style="text-align: center; padding: 1rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{{ ascii_icon("◇", animation="grow") }}</div>
+    <code class="chirpui-font-sm">grow</code>
+  </div>
+  <div style="text-align: center; padding: 1rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{{ ascii_icon("◜", animation="rotate") }}</div>
+    <code class="chirpui-font-sm">rotate</code>
+  </div>
+  <div style="text-align: center; padding: 1rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{{ ascii_icon("▸", animation="spin") }}</div>
+    <code class="chirpui-font-sm">spin</code>
+  </div>
+  <div style="text-align: center; padding: 1rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{{ ascii_icon("★", animation="bounce") }}</div>
+    <code class="chirpui-font-sm">bounce</code>
+  </div>
+  <div style="text-align: center; padding: 1rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{{ ascii_icon("○", animation="throb") }}</div>
+    <code class="chirpui-font-sm">throb</code>
+  </div>
+  <div style="text-align: center; padding: 1rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{{ ascii_icon("✧", animation="wiggle") }}</div>
+    <code class="chirpui-font-sm">wiggle</code>
+  </div>
+  <div style="text-align: center; padding: 1rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{{ ascii_icon("✦", animation="glow") }}</div>
+    <code class="chirpui-font-sm">glow</code>
+  </div>
+</div>
+{% end %}
+
+<h2>Symbol palette</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Static symbols — use as icons in badges, cards, lists.
+</p>
+{% call block() %}
+<div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 1.5rem;">
+  {{ ascii_icon("✦") }}
+  {{ ascii_icon("✧") }}
+  {{ ascii_icon("◆") }}
+  {{ ascii_icon("◇") }}
+  {{ ascii_icon("●") }}
+  {{ ascii_icon("○") }}
+  {{ ascii_icon("▸") }}
+  {{ ascii_icon("▷") }}
+  {{ ascii_icon("★") }}
+  {{ ascii_icon("☆") }}
+  {{ ascii_icon("▪") }}
+  {{ ascii_icon("▫") }}
+  {{ ascii_icon("◉") }}
+  {{ ascii_icon("◎") }}
+</div>
+{% end %}
+
+<h2>Sizes</h2>
+{% call block() %}
+<div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+  {{ ascii_icon("◆", animation="pulse", size="sm") }}
+  {{ ascii_icon("◆", animation="pulse", size="md") }}
+  {{ ascii_icon("◆", animation="pulse", size="lg") }}
+  {{ ascii_icon("◆", animation="pulse", size="xl") }}
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  <code>size="sm"</code> · <code>md</code> · <code>lg</code> · <code>xl</code>
+</p>
+{% end %}
+
+<h2>Spinners (existing)</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Mote pulse and spiral rotate — same family, built-in loading states.
+</p>
+{% call block() %}
+<div style="display: flex; align-items: center; gap: 2rem;">
+  {{ spinner(size="sm") }}
+  {{ spinner() }}
+  {{ spinner(size="lg") }}
+  {{ spinner_thinking() }}
+</div>
+{% end %}
+
+<h2>In context</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Animated icons in buttons, status lines, empty states.
+</p>
+{% call block() %}
+<div class="chirpui-stack chirpui-stack--sm" style="max-width: 24rem;">
+  <button type="button" class="chirpui-btn chirpui-btn--primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+    {{ ascii_icon("✦", animation="pulse") }}
+    Processing…
+  </button>
+  <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--chirpui-text-muted);">
+    {{ ascii_icon("◜", animation="rotate") }}
+    <span>Thinking…</span>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    {{ ascii_icon("●", animation="throb") }}
+    <span>Live</span>
+  </div>
+</div>
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

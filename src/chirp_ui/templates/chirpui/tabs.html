@@ -18,7 +18,7 @@
 </nav>
 {% end %}
 
-{% def tab(id, label, url=none, hx_target=none, active=false, cls="") %}
+{% def tab(id, label, url=none, hx_target=none, hx_swap="innerHTML", active=false, cls="") %}
 <a class="chirpui-tab{{ " chirpui-tab--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
    id="tab-{{ id }}"
    role="tab"
@@ -28,7 +28,7 @@
        {% if hx_target %}
            hx-get="{{ url }}"
            hx-target="{{ hx_target }}"
-           hx-swap="innerHTML"
+           hx-swap="{{ hx_swap }}"
            hx-push-url="false"
        {% end %}
    {% end %}>

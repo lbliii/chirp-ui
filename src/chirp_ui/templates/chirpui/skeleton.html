@@ -1,0 +1,14 @@
+{#- chirp-ui: Skeleton component
+    Loading placeholder with optional shimmer animation.
+
+    Usage:
+        from "chirpui/skeleton.html" import skeleton
+
+        skeleton()
+        skeleton(width="200px", height="2rem")
+        skeleton(height="1.5em", cls="chirpui-mt-sm")
+-#}
+
+{% def skeleton(width="100%", height="1em", cls="") %}
+<span class="chirpui-skeleton{{ " " ~ cls if cls else "" }}" style="width: {{ width }}; height: {{ height }}"></span>
+{% end %}

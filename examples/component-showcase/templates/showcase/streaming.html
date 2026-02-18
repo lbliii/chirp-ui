@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/streaming.html" import streaming_block, copy_btn, model_card %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Streaming & AI</h1>
+  <p class="chirpui-text-muted">
+    streaming_block, copy_btn, model_card — SSE and LLM patterns.
+  </p>
+</header>
+
+<h2>Streaming Block (idle)</h2>
+{% call block() %}
+{% call streaming_block(streaming=false) %}
+<p>Content that would stream in. No cursor when idle.</p>
+{% end %}
+{% end %}
+
+<h2>Streaming Block (active)</h2>
+{% call block() %}
+{% call streaming_block(streaming=true) %}
+Partial response text that is still streaming...
+{% end %}
+{% end %}
+
+<h2>Streaming Block (SSE swap target)</h2>
+{% call block() %}
+{% call streaming_block(streaming=true, sse_swap_target=true) %}
+Use with htmx SSE: sse-swap="fragment" hx-target="this" on the inner div.
+{% end %}
+{% end %}
+
+<h2>Copy Button</h2>
+{% call block() %}
+{{ copy_btn(label="Copy", copy_text="Hello, world!") }}
+<p class="chirpui-text-muted" style="margin-top: 0.5rem;">
+  Requires event delegation when used inside htmx-swapped content.
+</p>
+{% end %}
+
+<h2>Model Card</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call model_card(title="llama3.2", badge="Default") %}
+<p>Fast, capable model for general use.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call model_card(title="mistral", badge="7B", footer="~4GB VRAM") %}
+<p>Efficient smaller model.</p>
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Model Card (SSE streaming)</h2>
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm">
+  Use <code>sse_connect</code>, <code>sse_streaming=true</code> for LLM comparison UIs. Requires backend SSE routes. See Chirp <a href="https://github.com/lbliii/chirp/tree/main/examples/llm_playground">LLM playground</a> or <a href="https://github.com/lbliii/chirp/tree/main/examples/rag_demo">RAG demo</a> for working examples.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call model_card("llama3.2", badge="A") %}
+<p>With <code>sse_connect="/stream/a"</code> and <code>sse_streaming=true</code>, this would connect to an SSE endpoint and stream tokens into the card body.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call model_card("mistral", badge="B") %}
+<p>Same pattern for model B. Each card needs its own <code>sse-connect</code> URL.</p>
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Try it — Live SSE Demo</h2>
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm">
+  No LLM required. Click to connect; tokens stream word-by-word via Chirp EventStream.
+</p>
+{% call model_card(title="Mock Stream", badge="Demo", sse_connect="/streaming/demo", sse_streaming=true) %}
+{% end %}
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

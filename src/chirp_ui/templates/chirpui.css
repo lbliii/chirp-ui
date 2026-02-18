@@ -44,6 +44,25 @@
     --chirpui-accent-hover: light-dark(#0369a1, #7dd3fc);
     --chirpui-bg: light-dark(#f8fafc, #0f172a);
     --chirpui-bg-subtle: light-dark(#f1f5f9, #1e293b);
+    --chirpui-surface-elevated: var(--chirpui-surface-alt);
+    --chirpui-focus-ring: color-mix(in srgb, var(--chirpui-accent) 30%, transparent);
+
+    /* Semantic — badges, status, progress, errors (derive muted from base when supported) */
+    --chirpui-primary: #5b9cf5;
+    --chirpui-primary-muted: rgba(91, 156, 245, 0.1);
+    --chirpui-success: #22c55e;
+    --chirpui-success-muted: rgba(34, 197, 94, 0.1);
+    --chirpui-warning: #f59e5b;
+    --chirpui-warning-muted: rgba(245, 158, 91, 0.1);
+    --chirpui-error: #dc2626;
+    --chirpui-error-muted: rgba(220, 38, 38, 0.1);
+    --chirpui-muted: #6b7280;
+    --chirpui-muted-bg: rgba(107, 114, 128, 0.1);
+
+    /* Optional — themes can set for dimension (accent-dim, accent-bright, card accents) */
+    --chirpui-card-header-color: var(--chirpui-text);
+    --chirpui-card-hover-border: var(--chirpui-border);
+    --chirpui-card-hover-shadow: var(--chirpui-shadow-md);
 
     /* Depth — shadow scale (adapts to light/dark via light-dark) */
     /* Motion */
@@ -142,6 +161,34 @@
         --chirpui-alert-warning-border: oklch(0.9 0.1 85);
         --chirpui-alert-error-bg: oklch(0.975 0.02 25);
         --chirpui-alert-error-border: oklch(0.88 0.08 25);
+        --chirpui-primary: oklch(0.55 0.15 250);
+        --chirpui-success: oklch(0.6 0.18 145);
+        --chirpui-warning: oklch(0.72 0.15 65);
+        --chirpui-error: oklch(0.55 0.2 25);
+        --chirpui-muted: oklch(0.55 0.02 260);
+    }
+
+    [data-theme="dark"] {
+        --chirpui-primary: oklch(0.65 0.15 250);
+        --chirpui-success: oklch(0.7 0.18 145);
+        --chirpui-warning: oklch(0.8 0.15 65);
+        --chirpui-error: oklch(0.65 0.2 25);
+        --chirpui-muted: oklch(0.6 0.02 260);
+    }
+}
+
+/* Derive color layers from base tokens (oklch relative colors) — themes get dimension from one hue */
+@supports (color: oklch(from red l c h)) {
+    :root {
+        --chirpui-accent-hover: oklch(from var(--chirpui-accent) calc(l - 0.08) c h);
+        --chirpui-accent-dim: oklch(from var(--chirpui-accent) calc(l - 0.12) calc(c * 0.6) h);
+        --chirpui-accent-bright: oklch(from var(--chirpui-accent) calc(l + 0.12) calc(c * 1.1) h);
+        --chirpui-primary-muted: oklch(from var(--chirpui-primary) calc(l + 0.25) 0.08 h);
+        --chirpui-success-muted: oklch(from var(--chirpui-success) calc(l + 0.25) 0.08 h);
+        --chirpui-warning-muted: oklch(from var(--chirpui-warning) calc(l + 0.25) 0.08 h);
+        --chirpui-error-muted: oklch(from var(--chirpui-error) calc(l + 0.25) 0.08 h);
+        --chirpui-muted-bg: oklch(from var(--chirpui-muted) calc(l + 0.2) 0.05 h);
+        --chirpui-focus-ring: color-mix(in oklch, var(--chirpui-accent) 30%, transparent);
     }
 }
 
@@ -417,8 +464,8 @@ html {
     border-radius: var(--chirpui-radius);
     overflow: hidden;
     box-shadow: var(--chirpui-shadow-sm);
-    transition: box-shadow var(--chirpui-transition), transform var(--chirpui-transition),
-        opacity var(--chirpui-transition);
+    transition: border-color var(--chirpui-transition), box-shadow var(--chirpui-transition),
+        transform var(--chirpui-transition), opacity var(--chirpui-transition);
     @starting-style {
         opacity: 0;
         transform: translateY(8px);
@@ -426,14 +473,15 @@ html {
 }
 
 .chirpui-card:hover {
-    box-shadow: var(--chirpui-shadow-md);
+    border-color: var(--chirpui-card-hover-border);
+    box-shadow: var(--chirpui-card-hover-shadow);
 }
 
 .chirpui-card__header {
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     font-weight: 600;
     font-size: var(--chirpui-font-lg);
-    color: var(--chirpui-text);
+    color: var(--chirpui-card-header-color);
     border-bottom: 1px solid var(--chirpui-border);
 }
 
@@ -473,14 +521,25 @@ html {
    Modal
    ========================================================================== */
 
+dialog.chirpui-modal,
 .chirpui-modal {
     max-width: var(--chirpui-modal-width);
     width: 100%;
     background: var(--chirpui-surface);
+    color: var(--chirpui-text, inherit);
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius);
     padding: 0;
     box-shadow: var(--chirpui-shadow-lg);
+}
+
+/* Top layer: ensure descendants inherit modal text color (avoids black-on-black) */
+dialog.chirpui-modal * {
+    color: inherit;
+}
+
+dialog.chirpui-modal a {
+    color: var(--chirpui-accent);
 }
 
 .chirpui-modal--small { max-width: var(--chirpui-modal-width-sm); }
@@ -507,6 +566,7 @@ html {
 .chirpui-modal__close {
     background: none;
     border: none;
+    color: inherit;
     font-size: 1.5rem;
     cursor: pointer;
     line-height: 1;
@@ -526,6 +586,14 @@ html {
 
 .chirpui-modal__body {
     padding: var(--chirpui-spacing);
+    color: inherit;
+}
+
+.chirpui-modal__body code {
+    color: inherit;
+    background: var(--chirpui-bg-subtle);
+    padding: 0.125em 0.25em;
+    border-radius: var(--chirpui-radius-sm);
 }
 
 /* ==========================================================================
@@ -674,6 +742,19 @@ html {
     font-weight: 600;
     font-size: var(--chirpui-font-sm);
     color: var(--chirpui-text-muted);
+}
+
+.chirpui-table__sort {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.chirpui-table__sort:hover {
+    text-decoration: underline;
 }
 
 .chirpui-table--striped .chirpui-table__row:nth-child(even) {
@@ -844,7 +925,7 @@ html {
     display: block;
     margin-top: var(--chirpui-spacing-xs);
     font-size: var(--chirpui-font-sm);
-    color: #dc2626;
+    color: var(--chirpui-error);
 }
 
 .chirpui-field__checkbox {
@@ -854,6 +935,137 @@ html {
 .chirpui-field--checkbox {
     margin-bottom: var(--chirpui-spacing-sm);
 }
+
+/* ==========================================================================
+   Button
+   ========================================================================== */
+
+.chirpui-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    font-size: var(--chirpui-font-sm);
+    font-weight: 500;
+    line-height: 1.25;
+    text-decoration: none;
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    background: var(--chirpui-surface);
+    color: var(--chirpui-text);
+    cursor: pointer;
+    box-shadow: var(--chirpui-shadow-sm);
+    transition: background var(--chirpui-transition), border-color var(--chirpui-transition),
+        color var(--chirpui-transition), transform var(--chirpui-transition),
+        box-shadow var(--chirpui-transition);
+}
+
+.chirpui-btn:hover:not(:disabled) {
+    background: var(--chirpui-bg-subtle);
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-btn:active:not(:disabled) {
+    background: var(--chirpui-border);
+}
+
+.chirpui-btn:focus-visible {
+    outline: 2px solid var(--chirpui-accent);
+    outline-offset: 2px;
+}
+
+.chirpui-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Primary variant */
+.chirpui-btn--primary {
+    background: var(--chirpui-accent);
+    border-color: var(--chirpui-accent);
+    color: white;
+}
+
+.chirpui-btn--primary:hover:not(:disabled) {
+    background: var(--chirpui-accent-hover);
+    border-color: var(--chirpui-accent-hover);
+}
+
+.chirpui-btn--primary:active:not(:disabled) {
+    background: var(--chirpui-accent-hover);
+    border-color: var(--chirpui-accent-hover);
+}
+
+/* Secondary variant */
+.chirpui-btn--secondary {
+    background: var(--chirpui-bg-subtle);
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-btn--secondary:hover:not(:disabled) {
+    background: var(--chirpui-border);
+}
+
+.chirpui-btn--secondary:active:not(:disabled) {
+    background: var(--chirpui-border);
+}
+
+/* Ghost variant */
+.chirpui-btn--ghost {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.chirpui-btn--ghost:hover:not(:disabled) {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-btn--ghost:active:not(:disabled) {
+    background: var(--chirpui-border);
+}
+
+/* Danger variant */
+.chirpui-btn--danger {
+    background: var(--chirpui-error);
+    border-color: var(--chirpui-error);
+    color: white;
+}
+
+.chirpui-btn--danger:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-error) 85%, black);
+    border-color: color-mix(in srgb, var(--chirpui-error) 85%, black);
+}
+
+.chirpui-btn--danger:active:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-error) 75%, black);
+    border-color: color-mix(in srgb, var(--chirpui-error) 75%, black);
+}
+
+/* Hover lift and active press — only when motion is preferred */
+@media (prefers-reduced-motion: no-preference) {
+    .chirpui-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: var(--chirpui-shadow-md);
+    }
+
+    .chirpui-btn:active:not(:disabled) {
+        transition: none;
+        transform: translateY(0);
+        box-shadow: var(--chirpui-shadow-sm);
+    }
+
+    .chirpui-btn--ghost:hover:not(:disabled) {
+        box-shadow: none;
+    }
+
+    .chirpui-btn--ghost:active:not(:disabled) {
+        box-shadow: none;
+    }
+}
+
 /* ==========================================================================
    Badge
    ========================================================================== */
@@ -881,27 +1093,27 @@ html {
 
 /* Badge variants - minimal styling, override with themes */
 .chirpui-badge--primary {
-    background: rgba(91, 156, 245, 0.1);
-    color: #5b9cf5;
-    border-color: #5b9cf5;
+    background: var(--chirpui-primary-muted);
+    color: var(--chirpui-primary);
+    border-color: var(--chirpui-primary);
 }
 
 .chirpui-badge--success {
-    background: rgba(34, 197, 94, 0.1);
-    color: #22c55e;
-    border-color: #22c55e;
+    background: var(--chirpui-success-muted);
+    color: var(--chirpui-success);
+    border-color: var(--chirpui-success);
 }
 
 .chirpui-badge--warning {
-    background: rgba(245, 158, 91, 0.1);
-    color: #f59e5b;
-    border-color: #f59e5b;
+    background: var(--chirpui-warning-muted);
+    color: var(--chirpui-warning);
+    border-color: var(--chirpui-warning);
 }
 
 .chirpui-badge--error {
-    background: rgba(220, 38, 38, 0.1);
-    color: #dc2626;
-    border-color: #dc2626;
+    background: var(--chirpui-error-muted);
+    color: var(--chirpui-error);
+    border-color: var(--chirpui-error);
 }
 
 /* ==========================================================================
@@ -971,6 +1183,169 @@ html {
 }
 
 /* ==========================================================================
+   ASCII Icons — Unicode symbols as primary icons
+   ========================================================================== */
+
+.chirpui-ascii {
+    display: inline-block;
+    line-height: 1;
+    font-size: 1rem;
+}
+
+.chirpui-ascii--sm { font-size: 0.75rem; }
+.chirpui-ascii--md { font-size: 1rem; }
+.chirpui-ascii--lg { font-size: 1.5rem; }
+.chirpui-ascii--xl { font-size: 2rem; }
+
+.chirpui-ascii__char {
+    display: inline-block;
+}
+
+/* Rotate: 4 overlapping chars, cycle opacity */
+.chirpui-ascii--rotate {
+    position: relative;
+    width: 1em;
+    height: 1em;
+    text-align: center;
+}
+
+.chirpui-ascii--rotate .chirpui-ascii__char {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: chirpui-ascii-rotate-cycle 0.8s steps(1) infinite;
+}
+
+.chirpui-ascii--rotate .chirpui-ascii__char--1 { animation-delay: 0s; }
+.chirpui-ascii--rotate .chirpui-ascii__char--2 { animation-delay: -0.6s; }
+.chirpui-ascii--rotate .chirpui-ascii__char--3 { animation-delay: -0.4s; }
+.chirpui-ascii--rotate .chirpui-ascii__char--4 { animation-delay: -0.2s; }
+
+@keyframes chirpui-ascii-rotate-cycle {
+    0%, 24% { opacity: 1; }
+    25%, 100% { opacity: 0; }
+}
+
+/* Blink */
+.chirpui-ascii--blink .chirpui-ascii__char {
+    animation: chirpui-ascii-blink 0.8s step-end infinite;
+}
+
+@keyframes chirpui-ascii-blink {
+    50% { opacity: 0; }
+}
+
+/* Pulse — opacity + scale */
+.chirpui-ascii--pulse .chirpui-ascii__char {
+    animation: chirpui-ascii-pulse 1s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-pulse {
+    0%, 100% { opacity: 0.6; scale: 0.9; }
+    50% { opacity: 1; scale: 1.1; }
+}
+
+/* Shrink — scale down and back */
+.chirpui-ascii--shrink .chirpui-ascii__char {
+    animation: chirpui-ascii-shrink 1.2s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-shrink {
+    0%, 100% { scale: 1; }
+    50% { scale: 0.6; }
+}
+
+/* Grow — scale up and back */
+.chirpui-ascii--grow .chirpui-ascii__char {
+    animation: chirpui-ascii-grow 1.2s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-grow {
+    0%, 100% { scale: 1; }
+    50% { scale: 1.4; }
+}
+
+/* Spin — full rotation */
+.chirpui-ascii--spin .chirpui-ascii__char {
+    animation: chirpui-ascii-spin 1s linear infinite;
+}
+
+@keyframes chirpui-ascii-spin {
+    to { rotate: 360deg; }
+}
+
+/* Bounce — translateY */
+.chirpui-ascii--bounce .chirpui-ascii__char {
+    animation: chirpui-ascii-bounce 0.6s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-bounce {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -0.25em; }
+}
+
+/* Throb — opacity only, gentle */
+.chirpui-ascii--throb .chirpui-ascii__char {
+    animation: chirpui-ascii-throb 1.5s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-throb {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* Wiggle — small rotation wobble */
+.chirpui-ascii--wiggle .chirpui-ascii__char {
+    animation: chirpui-ascii-wiggle 0.5s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-wiggle {
+    0%, 100% { rotate: 0deg; }
+    25% { rotate: -12deg; }
+    75% { rotate: 12deg; }
+}
+
+/* Glow — text-shadow pulse */
+.chirpui-ascii--glow .chirpui-ascii__char {
+    animation: chirpui-ascii-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 2px currentColor);
+        opacity: 0.8;
+    }
+    50% {
+        filter: drop-shadow(0 0 8px currentColor);
+        opacity: 1;
+    }
+}
+
+/* Accessibility: Reduced motion for ASCII icons */
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii--blink .chirpui-ascii__char,
+    .chirpui-ascii--pulse .chirpui-ascii__char,
+    .chirpui-ascii--shrink .chirpui-ascii__char,
+    .chirpui-ascii--grow .chirpui-ascii__char,
+    .chirpui-ascii--spin .chirpui-ascii__char,
+    .chirpui-ascii--bounce .chirpui-ascii__char,
+    .chirpui-ascii--throb .chirpui-ascii__char,
+    .chirpui-ascii--wiggle .chirpui-ascii__char,
+    .chirpui-ascii--glow .chirpui-ascii__char,
+    .chirpui-ascii--rotate .chirpui-ascii__char {
+        animation: none;
+        opacity: 1;
+        scale: 1;
+        rotate: 0;
+        translate: 0 0;
+        filter: none;
+    }
+}
+
+/* ==========================================================================
    Empty State
    ========================================================================== */
 
@@ -1027,15 +1402,19 @@ html {
 
 /* Progress bar variants */
 .chirpui-progress-bar--gold .chirpui-progress-bar__fill {
-    background: #c9a227;
+    background: var(--chirpui-accent-dim, var(--chirpui-accent));
 }
 
 .chirpui-progress-bar--radiant .chirpui-progress-bar__fill {
-    background: linear-gradient(90deg, #c9a227, #ffd700);
+    background: linear-gradient(
+        90deg,
+        var(--chirpui-accent-dim, var(--chirpui-accent)),
+        var(--chirpui-accent-bright, var(--chirpui-accent))
+    );
 }
 
 .chirpui-progress-bar--success .chirpui-progress-bar__fill {
-    background: #22c55e;
+    background: var(--chirpui-success);
 }
 
 .chirpui-progress-bar__label {
@@ -1078,23 +1457,23 @@ html {
 
 /* Status variants - minimal styling, override with themes */
 .chirpui-status-indicator--default {
-    background: rgba(107, 114, 128, 0.1);
-    color: #6b7280;
+    background: var(--chirpui-muted-bg);
+    color: var(--chirpui-muted);
 }
 
 .chirpui-status-indicator--success {
-    background: rgba(34, 197, 94, 0.1);
-    color: #22c55e;
+    background: var(--chirpui-success-muted);
+    color: var(--chirpui-success);
 }
 
 .chirpui-status-indicator--warning {
-    background: rgba(245, 158, 91, 0.1);
-    color: #f59e5b;
+    background: var(--chirpui-warning-muted);
+    color: var(--chirpui-warning);
 }
 
 .chirpui-status-indicator--error {
-    background: rgba(220, 38, 38, 0.1);
-    color: #dc2626;
+    background: var(--chirpui-error-muted);
+    color: var(--chirpui-error);
 }
 
 /* Pulsing animation */

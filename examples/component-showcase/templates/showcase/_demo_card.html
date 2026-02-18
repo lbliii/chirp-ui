@@ -1,0 +1,5 @@
+{#- Fragment for unified demo — model_card with SSE, swapped after form submit #}
+{% block demo_card %}
+{% call model_card(title="Stream", badge="Demo", sse_connect=stream_url, sse_streaming=true) %}
+{% end %}
+{% end %}

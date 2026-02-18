@@ -1,0 +1,26 @@
+{#- chirp-ui: ASCII Icon component
+    Unicode symbols as primary icons — blink, pulse, rotate, etc.
+
+    Usage:
+        from "chirpui/ascii_icon.html" import ascii_icon
+
+        ascii_icon("✦")                    # Static
+        ascii_icon("✦", animation="blink")
+        ascii_icon("◆", animation="pulse", size="lg")
+        ascii_icon("◜", animation="rotate") # Spiral cycle (◜◝◞◟)
+-#}
+
+{% def ascii_icon(char, animation="none", size="md", cls="") %}
+<span class="chirpui-ascii chirpui-ascii--{{ size }}{{ " chirpui-ascii--" ~ animation if animation != "none" else "" }}{{ " " ~ cls if cls else "" }}"
+      aria-hidden="true">
+    {% if animation == "rotate" %}
+    {#- Spiral: cycle ◜ ◝ ◞ ◟ via opacity on 4 spans #}
+    <span class="chirpui-ascii__char chirpui-ascii__char--1">◜</span>
+    <span class="chirpui-ascii__char chirpui-ascii__char--2">◝</span>
+    <span class="chirpui-ascii__char chirpui-ascii__char--3">◞</span>
+    <span class="chirpui-ascii__char chirpui-ascii__char--4">◟</span>
+    {% else %}
+    <span class="chirpui-ascii__char">{{ char }}</span>
+    {% end %}
+</span>
+{% end %}
