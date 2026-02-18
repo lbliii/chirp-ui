@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/state_primitives.html" import wizard_state %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("wizard_state", subtitle="Step state, guards, and progress UI without an SPA shell.") }}
+
+{% call block() %}
+{% call wizard_state("signup_wizard", ["account", "profile", "confirm"], mount_id="wizard-state-root", cls="chirpui-card") %}
+<p class="chirpui-text-muted" data-wizard-status></p>
+<section data-wizard-step data-step-id="account">
+  <h3>Account</h3>
+  <p>Create account credentials.</p>
+</section>
+<section data-wizard-step data-step-id="profile" hidden>
+  <h3>Profile</h3>
+  <p>Fill profile details.</p>
+</section>
+<section data-wizard-step data-step-id="confirm" hidden>
+  <h3>Confirm</h3>
+  <p>Review and submit.</p>
+</section>
+<div style="display:flex; gap:0.5rem; margin-top:0.75rem;">
+  <button type="button" class="chirpui-btn chirpui-btn--secondary" data-wizard-prev>Previous</button>
+  <button type="button" class="chirpui-btn chirpui-btn--primary" data-wizard-next>Next</button>
+</div>
+{% end %}
+{% end %}
+
+<p><a href="/islands">← Back to islands</a></p>
+{% end %}
+{% end %}
+{% end %}

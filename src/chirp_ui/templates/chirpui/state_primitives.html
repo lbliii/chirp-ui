@@ -1,0 +1,97 @@
+{#- chirp-ui: No-build high-state primitive wrappers.
+    These macros mount framework-agnostic islands with sensible defaults.
+-#}
+
+{% from "chirpui/islands.html" import island_root %}
+
+{% def state_sync(state_key, query_param=none, initial="", mount_id=none, cls="") %}
+{% set props = {"stateKey": state_key, "queryParam": query_param or state_key, "initial": initial} %}
+{% call island_root(
+    "state_sync",
+    props=props,
+    mount_id=mount_id,
+    src="/static/islands/state_sync.js",
+    cls=cls,
+    primitive="state_sync"
+) %}
+    {% slot %}
+{% end %}
+{% end %}
+
+{% def action_queue(action_id, mount_id=none, cls="") %}
+{% call island_root(
+    "action_queue",
+    props={"actionId": action_id},
+    mount_id=mount_id,
+    src="/static/islands/action_queue.js",
+    cls=cls,
+    primitive="action_queue"
+) %}
+    {% slot %}
+{% end %}
+{% end %}
+
+{% def draft_store(draft_key, mount_id=none, cls="") %}
+{% call island_root(
+    "draft_store",
+    props={"draftKey": draft_key},
+    mount_id=mount_id,
+    src="/static/islands/draft_store.js",
+    cls=cls,
+    primitive="draft_store"
+) %}
+    {% slot %}
+{% end %}
+{% end %}
+
+{% def error_boundary(boundary_id, mount_id=none, cls="") %}
+{% call island_root(
+    "error_boundary",
+    props={"boundaryId": boundary_id},
+    mount_id=mount_id,
+    src="/static/islands/error_boundary.js",
+    cls=cls,
+    primitive="error_boundary"
+) %}
+    {% slot %}
+{% end %}
+{% end %}
+
+{% def grid_state(state_key, columns, mount_id=none, cls="") %}
+{% call island_root(
+    "grid_state",
+    props={"stateKey": state_key, "columns": columns},
+    mount_id=mount_id,
+    src="/static/islands/grid_state.js",
+    cls=cls,
+    primitive="grid_state"
+) %}
+    {% slot %}
+{% end %}
+{% end %}
+
+{% def wizard_state(state_key, steps, mount_id=none, cls="") %}
+{% call island_root(
+    "wizard_state",
+    props={"stateKey": state_key, "steps": steps},
+    mount_id=mount_id,
+    src="/static/islands/wizard_state.js",
+    cls=cls,
+    primitive="wizard_state"
+) %}
+    {% slot %}
+{% end %}
+{% end %}
+
+{% def upload_state(state_key, endpoint, mount_id=none, cls="") %}
+{% call island_root(
+    "upload_state",
+    props={"stateKey": state_key, "endpoint": endpoint},
+    mount_id=mount_id,
+    src="/static/islands/upload_state.js",
+    cls=cls,
+    primitive="upload_state"
+) %}
+    {% slot %}
+{% end %}
+{% end %}

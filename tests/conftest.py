@@ -68,6 +68,28 @@ def _island_attrs_stub(
     return Markup("".join(attrs))
 
 
+def _primitive_attrs_stub(
+    primitive: str,
+    props: dict[str, Any] | None = None,
+    *,
+    mount_id: str | None = None,
+    version: str = "1",
+    src: str | None = None,
+    cls: str = "",
+) -> Markup:
+    data = dict(props or {})
+    data.setdefault("primitive", primitive)
+    base = _island_attrs_stub(
+        primitive,
+        props=data,
+        mount_id=mount_id,
+        version=version,
+        src=src,
+        cls=cls,
+    )
+    return Markup(f'{base} data-island-primitive="{html.escape(primitive, quote=True)}"')
+
+
 @pytest.fixture
 def env() -> Environment:
     """Kida environment with chirp-ui templates loaded via FileSystemLoader."""
@@ -78,4 +100,5 @@ def env() -> Environment:
     # Register stubs for Chirp filters (field_errors, bem) used by chirp-ui
     e.update_filters({"field_errors": _field_errors_stub, "bem": _bem_stub})
     e.add_global("island_attrs", _island_attrs_stub)
+    e.add_global("primitive_attrs", _primitive_attrs_stub)
     return e

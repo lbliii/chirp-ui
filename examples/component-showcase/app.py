@@ -171,6 +171,21 @@ async def islands_remount() -> Fragment:
     return Fragment("showcase/islands.html", "island_mount")
 
 
+@app.route("/islands/grid-state", template="showcase/islands_grid_state.html")
+async def islands_grid_state() -> Template:
+    return Template("showcase/islands_grid_state.html")
+
+
+@app.route("/islands/wizard-state", template="showcase/islands_wizard_state.html")
+async def islands_wizard_state() -> Template:
+    return Template("showcase/islands_wizard_state.html")
+
+
+@app.route("/islands/upload-state", template="showcase/islands_upload_state.html")
+async def islands_upload_state() -> Template:
+    return Template("showcase/islands_upload_state.html")
+
+
 @app.route("/streaming", template="showcase/streaming.html")
 async def streaming() -> Template:
     return Template("showcase/streaming.html")

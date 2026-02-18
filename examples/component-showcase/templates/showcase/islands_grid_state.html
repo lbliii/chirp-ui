@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/state_primitives.html" import grid_state %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("grid_state", subtitle="Client-side grid state without build tooling.") }}
+
+{% call block() %}
+{% call grid_state("team_grid", ["name", "role"], mount_id="grid-state-root", cls="chirpui-card") %}
+<div style="display:flex; gap:0.5rem; margin-bottom:0.75rem;">
+  <input data-grid-filter type="text" placeholder="Filter rows..." style="flex:1;">
+  <button type="button" class="chirpui-btn chirpui-btn--secondary" data-grid-sort>Toggle sort</button>
+</div>
+<table class="chirpui-table">
+  <thead>
+    <tr><th></th><th>Name</th><th>Role</th></tr>
+  </thead>
+  <tbody data-grid-body>
+    <tr data-grid-row data-grid-id="alice"><td><input data-grid-select type="checkbox"></td><td>Alice</td><td>Admin</td></tr>
+    <tr data-grid-row data-grid-id="bob"><td><input data-grid-select type="checkbox"></td><td>Bob</td><td>User</td></tr>
+    <tr data-grid-row data-grid-id="carol"><td><input data-grid-select type="checkbox"></td><td>Carol</td><td>User</td></tr>
+  </tbody>
+</table>
+{% end %}
+{% end %}
+
+<p><a href="/islands">← Back to islands</a></p>
+{% end %}
+{% end %}
+{% end %}

@@ -106,6 +106,36 @@ class TestIslands:
         assert "Body" in html
 
 
+class TestStatePrimitives:
+    def test_state_sync_macro(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/state_primitives.html" import state_sync %}'
+            '{% call state_sync("search", mount_id="search-sync") %}<input data-state-field>{% end %}'
+        ).render()
+        assert 'data-island="state_sync"' in html
+        assert 'data-island-primitive="state_sync"' in html
+        assert 'data-island-src="/static/islands/state_sync.js"' in html
+
+    def test_grid_state_macro(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/state_primitives.html" import grid_state %}'
+            '{% call grid_state("team_grid", ["name", "role"], mount_id="grid-root") %}<div>{% end %}'
+        ).render()
+        assert 'data-island="grid_state"' in html
+        assert 'data-island-primitive="grid_state"' in html
+        assert 'id="grid-root"' in html
+        assert "team_grid" in html
+
+    def test_upload_state_macro(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/state_primitives.html" import upload_state %}'
+            '{% call upload_state("avatar_upload", "/upload", mount_id="upload-root") %}<div>{% end %}'
+        ).render()
+        assert 'data-island="upload_state"' in html
+        assert 'data-island-src="/static/islands/upload_state.js"' in html
+        assert "avatar_upload" in html
+
+
 # ---------------------------------------------------------------------------
 # Surface
 # ---------------------------------------------------------------------------
