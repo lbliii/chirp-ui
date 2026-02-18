@@ -16,6 +16,8 @@ from pathlib import Path
 
 from kida import PackageLoader
 
+from chirp_ui.filters import TemplateFilterApp
+
 # Declare free-threading support (PEP 703)
 _Py_mod_gil = 0
 
@@ -57,7 +59,7 @@ def get_loader() -> PackageLoader:
     return PackageLoader("chirp_ui", "templates")
 
 
-def register_filters(app: object) -> None:
+def register_filters(app: TemplateFilterApp) -> None:
     """Register chirp-ui filters (bem, field_errors) on a Chirp app.
 
     Call after App creation so chirp-ui components render correctly::
