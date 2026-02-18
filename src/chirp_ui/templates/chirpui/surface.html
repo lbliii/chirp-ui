@@ -1,0 +1,22 @@
+{#- chirp-ui: Surface component
+    Generic container with background. Replaces ad-hoc inline background styles.
+
+    Usage:
+        from "chirpui/surface.html" import surface
+
+        call surface(variant="muted")
+            <p>Content on muted background.</p>
+        end
+
+        call surface(variant="elevated", full_width=true)
+            Hero section content.
+        end
+
+    Variants: default, muted, elevated, accent, glass, frosted, smoke
+-#}
+
+{% def surface(variant="default", full_width=false, padding=true, cls="") %}
+<div class="chirpui-surface chirpui-surface--{{ variant }}{% if full_width %} chirpui-surface--full{% end %}{% if not padding %} chirpui-surface--no-padding{% end %}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}

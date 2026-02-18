@@ -1,0 +1,42 @@
+{#- chirp-ui: Split button component
+    Primary action + dropdown of secondary actions.
+
+    Usage:
+        from "chirpui/split_button.html" import split_button
+
+        call split_button("Save", primary_href="/save", variant="primary")
+            <a href="/save-as">Save as...</a>
+            <a href="/export">Export</a>
+        end
+
+        Inside a form (primary = submit):
+        call split_button("Submit", primary_submit=true, variant="primary")
+            <button type="button" formaction="/draft">Save draft</button>
+        end
+-#}
+
+{% def split_button(primary_label, primary_href=none, primary_submit=false,
+                   variant="primary", cls="") %}
+{% set variant_class = " chirpui-btn--" ~ variant if variant else "" %}
+<div class="chirpui-split-btn{{ " " ~ cls if cls else "" }}">
+    {% if primary_href %}
+    <a class="chirpui-btn chirpui-split-btn__primary{{ variant_class }}" href="{{ primary_href }}">
+        {{ primary_label }}
+    </a>
+    {% elif primary_submit %}
+    <button type="submit" class="chirpui-btn chirpui-split-btn__primary{{ variant_class }}">
+        {{ primary_label }}
+    </button>
+    {% else %}
+    <button type="button" class="chirpui-btn chirpui-split-btn__primary{{ variant_class }}">
+        {{ primary_label }}
+    </button>
+    {% end %}
+    <details class="chirpui-split-btn__dropdown">
+        <summary class="chirpui-split-btn__trigger" aria-label="More options">▾</summary>
+        <div class="chirpui-split-btn__menu">
+            {% slot %}
+        </div>
+    </details>
+</div>
+{% end %}

@@ -1,0 +1,38 @@
+{#- chirp-ui: Description list component
+    Key-value pairs for settings, profile info, metadata.
+
+    Usage:
+        from "chirpui/description_list.html" import description_list, description_item
+
+        description_list(items=[{"term": "Name", "detail": "Alice"}, {"term": "Email", "detail": "alice@example.com"}])
+
+        Or with slot:
+        call description_list()
+            description_item("Name", "Alice")
+            description_item("Email", "alice@example.com")
+        end
+
+        description_list(items=..., variant="horizontal") for term left, detail right layout.
+-#}
+
+{% def description_list(items=none, variant="stacked", cls="") %}
+<dl class="chirpui-dl chirpui-dl--{{ variant }}{{ " " ~ cls if cls else "" }}">
+    {% if items %}
+        {% for item in items %}
+        <div class="chirpui-dl__row">
+            <dt class="chirpui-dl__term">{{ item.term }}</dt>
+            <dd class="chirpui-dl__detail">{{ item.detail }}</dd>
+        </div>
+        {% end %}
+    {% else %}
+        {% slot %}
+    {% end %}
+</dl>
+{% end %}
+
+{% def description_item(term, detail, cls="") %}
+<div class="chirpui-dl__row{{ " " ~ cls if cls else "" }}">
+    <dt class="chirpui-dl__term">{{ term }}</dt>
+    <dd class="chirpui-dl__detail">{{ detail }}</dd>
+</div>
+{% end %}

@@ -1,0 +1,54 @@
+{#- chirp-ui: Confirm dialog component
+    Modal for destructive actions or confirmations.
+
+    Usage:
+        from "chirpui/confirm.html" import confirm_dialog, confirm_trigger
+
+        confirm_trigger("del-dlg", label="Delete")
+
+        call confirm_dialog("del-dlg", title="Delete item?", message="This cannot be undone.",
+                           confirm_label="Delete", cancel_label="Cancel", variant="danger",
+                           confirm_url="/items/1/delete", confirm_method="POST")
+        end
+
+    When confirm_url is provided, confirm submits the form (htmx or native).
+    Cancel closes the dialog via form method="dialog".
+-#}
+
+{% def confirm_dialog(id, title, message, confirm_label="Confirm", cancel_label="Cancel",
+                     variant="default", confirm_url=none, confirm_method="POST", cls="") %}
+<dialog id="{{ id }}" class="chirpui-confirm chirpui-modal chirpui-modal--small{{ " chirpui-confirm--" ~ variant if variant else "" }}{{ " " ~ cls if cls else "" }}"
+        closedby="any">
+    <header class="chirpui-modal__header">
+        <h2 class="chirpui-modal__title">{{ title }}</h2>
+        <form method="dialog">
+            <button class="chirpui-modal__close" aria-label="Close">&times;</button>
+        </form>
+    </header>
+    <div class="chirpui-modal__body">
+        <p class="chirpui-confirm__message">{{ message }}</p>
+        <footer class="chirpui-confirm__footer">
+            <form method="dialog">
+                <button type="submit" class="chirpui-btn">{{ cancel_label }}</button>
+            </form>
+            {% if confirm_url %}
+            <form method="{{ confirm_method }}" action="{{ confirm_url }}">
+                <button type="submit" class="chirpui-btn chirpui-btn--{{ variant if variant == "danger" else "primary" }}">{{ confirm_label }}</button>
+            </form>
+            {% else %}
+            <form method="dialog">
+                <button type="submit" class="chirpui-btn chirpui-btn--{{ variant if variant == "danger" else "primary" }}">{{ confirm_label }}</button>
+            </form>
+            {% end %}
+        </footer>
+    </div>
+</dialog>
+{% end %}
+
+{% def confirm_trigger(target, label="Confirm", cls="") %}
+<button class="chirpui-modal-trigger chirpui-confirm-trigger{{ " " ~ cls if cls else "" }}"
+        type="button"
+        onclick="(function(){var d=document.getElementById('{{ target }}');if(d&&!d.open)d.showModal();})()">
+    {{ label }}
+</button>
+{% end %}

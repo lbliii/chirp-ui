@@ -1,0 +1,42 @@
+{#- chirp-ui: Calendar component
+    Month grid. Server must pass weeks (list of 7-day rows; 0 = empty cell).
+
+    Usage:
+        from "chirpui/calendar.html" import calendar
+
+        calendar(weeks=[[0,0,1,2,3,4,5],[6,7,8,...],...],
+                 month_label="January 2025",
+                 prev_url="/calendar/2024/12", next_url="/calendar/2025/2")
+
+    weeks: from calendar.monthcalendar(year, month) — 0 = empty cell.
+-#}
+
+{% def calendar(weeks, month_label, prev_url=none, next_url=none, cls="") %}
+<div class="chirpui-calendar{{ " " ~ cls if cls else "" }}">
+    <header class="chirpui-calendar__header">
+        <h3 class="chirpui-calendar__title">{{ month_label }}</h3>
+        <nav class="chirpui-calendar__nav">
+            {% if prev_url %}
+            <a href="{{ prev_url }}" class="chirpui-calendar__nav-link" aria-label="Previous month">←</a>
+            {% end %}
+            {% if next_url %}
+            <a href="{{ next_url }}" class="chirpui-calendar__nav-link" aria-label="Next month">→</a>
+            {% end %}
+        </nav>
+    </header>
+    <div class="chirpui-calendar__weekdays">
+        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+    </div>
+    <div class="chirpui-calendar__grid">
+        {% for week in weeks %}
+        {% for day in week %}
+        <div class="chirpui-calendar__day{{ " chirpui-calendar__day--empty" if day == 0 else "" }}">
+            {% if day != 0 %}
+            <span class="chirpui-calendar__day-num">{{ day }}</span>
+            {% end %}
+        </div>
+        {% end %}
+        {% end %}
+    </div>
+</div>
+{% end %}

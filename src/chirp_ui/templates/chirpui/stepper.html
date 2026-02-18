@@ -1,0 +1,35 @@
+{#- chirp-ui: Stepper component
+    Horizontal step indicators for multi-step flows.
+
+    Usage:
+        from "chirpui/stepper.html" import stepper
+
+        stepper(steps=[{"id": "1", "label": "Details"}, {"id": "2", "label": "Review"}, {"id": "3", "label": "Confirm"}], current=2)
+
+    Steps: list of {id, label}. current: 1-based index of active step.
+-#}
+
+{% def stepper(steps, current=1, cls="") %}
+<nav class="chirpui-stepper{{ " " ~ cls if cls else "" }}" aria-label="Progress">
+    <ol class="chirpui-stepper__list">
+        {% for step in steps %}
+        {% set idx = loop.index %}
+        {% set status = "completed" if idx < current else ("active" if idx == current else "pending") %}
+        <li class="chirpui-stepper__item chirpui-stepper__item--{{ status }}"
+            {% if idx == current %}aria-current="step"{% end %}>
+            <span class="chirpui-stepper__indicator">
+                {% if status == "completed" %}
+                <span class="chirpui-stepper__check" aria-hidden="true">✓</span>
+                {% else %}
+                <span class="chirpui-stepper__number">{{ idx }}</span>
+                {% end %}
+            </span>
+            <span class="chirpui-stepper__label">{{ step.label }}</span>
+            {% if not loop.last %}
+            <span class="chirpui-stepper__connector" aria-hidden="true"></span>
+            {% end %}
+        </li>
+        {% end %}
+    </ol>
+</nav>
+{% end %}

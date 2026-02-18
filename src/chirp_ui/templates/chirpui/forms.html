@@ -2,6 +2,30 @@
     Extended field macros with BEM styling. These complement (and can replace)
     Chirp's built-in form macros from "chirp/forms".
 
+    Internal: field_wrapper provides label, hint, error display. Standard fields
+    use it; checkbox/toggle/radio/range/input_group have custom layouts.
+-#}
+
+{# Shared wrapper: label, slot (control), hint, errors. modifier adds chirpui-field--X. #}
+{% def field_wrapper(name, label=none, errors=none, required=false, hint=none, modifier="") %}
+<div class="chirpui-field{{ " chirpui-field--" ~ modifier if modifier else "" }}{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <label class="chirpui-field__label" for="{{ name }}">
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+        </label>
+    {% end %}
+    {% slot %}
+    {% if hint and not (errors and errors | field_errors(name)) %}
+        <span class="chirpui-field__hint">{{ hint }}</span>
+    {% end %}
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
     Usage:
         from "chirpui/forms.html" import text_field, textarea_field, select_field
 
@@ -13,6 +37,10 @@
                      label="Status")
         checkbox_field("active", checked=form.active, label="Active")
         toggle_field("notifications", checked=true, label="Enable notifications")
+        radio_field("plan", options=plans, selected=form.plan, label="Plan")
+        file_field("avatar", label="Avatar", accept="image/*")
+        date_field("birthday", value=form.birthday, label="Birthday")
+        range_field("volume", value=50, min=0, max=100, label="Volume", show_value=true)
         hidden_field("id", value=form.id)
 
     Note: The field_errors filter is provided by Chirp. When using chirp-ui
@@ -22,84 +50,45 @@
 {# Text input with label and error display #}
 {% def text_field(name, value="", label=none, errors=none, type="text",
                   required=false, placeholder="", hint=none, attrs="") %}
-<div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
-    {% if label %}
-        <label class="chirpui-field__label" for="{{ name }}">
-            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
-        </label>
-    {% end %}
-    <input class="chirpui-field__input"
-           type="{{ type }}" id="{{ name }}" name="{{ name }}"
-           value="{{ value }}"
-           {% if required %}required{% end %}
-           {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
-           {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
-           {{ attrs }}>
-    {% if hint and not (errors and errors | field_errors(name)) %}
-        <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
-    {% if errors %}
-        {% for msg in errors | field_errors(name) %}
-            <span class="chirpui-field__error">{{ msg }}</span>
-        {% end %}
-    {% end %}
-</div>
+{% call field_wrapper(name, label, errors, required, hint) %}
+<input class="chirpui-field__input"
+       type="{{ type }}" id="{{ name }}" name="{{ name }}"
+       value="{{ value }}"
+       {% if required %}required{% end %}
+       {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {{ attrs }}>
+{% end %}
 {% end %}
 
 {# Textarea with label and error display #}
 {% def textarea_field(name, value="", label=none, errors=none,
                       rows=4, required=false, placeholder="", hint=none) %}
-<div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
-    {% if label %}
-        <label class="chirpui-field__label" for="{{ name }}">
-            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
-        </label>
-    {% end %}
-    <textarea class="chirpui-field__input"
-              id="{{ name }}" name="{{ name }}" rows="{{ rows }}"
-              {% if required %}required{% end %}
-              {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
-              {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>{{ value }}</textarea>
-    {% if hint and not (errors and errors | field_errors(name)) %}
-        <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
-    {% if errors %}
-        {% for msg in errors | field_errors(name) %}
-            <span class="chirpui-field__error">{{ msg }}</span>
-        {% end %}
-    {% end %}
-</div>
+{% call field_wrapper(name, label, errors, required, hint) %}
+<textarea class="chirpui-field__input"
+          id="{{ name }}" name="{{ name }}" rows="{{ rows }}"
+          {% if required %}required{% end %}
+          {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
+          {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>{{ value }}</textarea>
+{% end %}
 {% end %}
 
 {# Select dropdown with label and error display #}
 {% def select_field(name, options, selected="", label=none, errors=none,
                     required=false, hint=none) %}
-<div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
-    {% if label %}
-        <label class="chirpui-field__label" for="{{ name }}">
-            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
-        </label>
+{% call field_wrapper(name, label, errors, required, hint) %}
+<select class="chirpui-field__input"
+        id="{{ name }}" name="{{ name }}"
+        {% if required %}required{% end %}
+        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+    {% for opt in options %}
+        <option value="{{ opt.value }}"
+                {% if opt.value == selected %}selected{% end %}>
+            {{ opt.label }}
+        </option>
     {% end %}
-    <select class="chirpui-field__input"
-            id="{{ name }}" name="{{ name }}"
-            {% if required %}required{% end %}
-            {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
-        {% for opt in options %}
-            <option value="{{ opt.value }}"
-                    {% if opt.value == selected %}selected{% end %}>
-                {{ opt.label }}
-            </option>
-        {% end %}
-    </select>
-    {% if hint and not (errors and errors | field_errors(name)) %}
-        <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
-    {% if errors %}
-        {% for msg in errors | field_errors(name) %}
-            <span class="chirpui-field__error">{{ msg }}</span>
-        {% end %}
-    {% end %}
-</div>
+</select>
+{% end %}
 {% end %}
 
 {# Checkbox with label #}
@@ -130,6 +119,170 @@
         <span class="chirpui-toggle__track" aria-hidden="true"></span>
         <span class="chirpui-toggle__label">{{ label if label else name }}</span>
     </label>
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
+{# Radio group with label and error display #}
+{% def radio_field(name, options, selected="", label=none, errors=none,
+                   required=false, hint=none, layout="vertical") %}
+<fieldset class="chirpui-field chirpui-field--radio chirpui-field--radio-{{ layout }}{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <legend class="chirpui-field__label">
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+        </legend>
+    {% end %}
+    <div class="chirpui-field__radio-group">
+        {% for opt in options %}
+        <label class="chirpui-field__radio-option">
+            <input class="chirpui-field__input"
+                   type="radio" name="{{ name }}" value="{{ opt.value }}"
+                   {% if opt.value == selected %}checked{% end %}
+                   {% if required %}required{% end %}
+                   {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+            <span class="chirpui-field__radio-label">{{ opt.label }}</span>
+        </label>
+        {% end %}
+    </div>
+    {% if hint and not (errors and errors | field_errors(name)) %}
+        <span class="chirpui-field__hint">{{ hint }}</span>
+    {% end %}
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</fieldset>
+{% end %}
+
+{# File input with label and error display #}
+{% def file_field(name, label=none, errors=none, accept="", multiple=false,
+                  required=false, hint=none) %}
+{% call field_wrapper(name, label, errors, required, hint, modifier="file") %}
+<input class="chirpui-field__file"
+       type="file" id="{{ name }}" name="{{ name }}"
+       {% if accept %}accept="{{ accept }}"{% end %}
+       {% if multiple %}multiple{% end %}
+       {% if required %}required{% end %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+{% end %}
+{% end %}
+
+{# Date input with label and error display #}
+{% def date_field(name, value="", label=none, errors=none, required=false,
+                  min=none, max=none, hint=none) %}
+{% call field_wrapper(name, label, errors, required, hint) %}
+<input class="chirpui-field__input"
+       type="date" id="{{ name }}" name="{{ name }}" value="{{ value }}"
+       {% if required %}required{% end %}
+       {% if min %}min="{{ min }}"{% end %}
+       {% if max %}max="{{ max }}"{% end %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+{% end %}
+{% end %}
+
+{# Range slider with label and error display #}
+{% def range_field(name, value=50, min=0, max=100, step=1, label=none,
+                   errors=none, hint=none, show_value=false) %}
+<div class="chirpui-field chirpui-field--range{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label or show_value %}
+    <div class="chirpui-field__range-header">
+        {% if label %}
+            <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
+        {% end %}
+        {% if show_value %}
+            <output class="chirpui-field__range-value" for="{{ name }}">{{ value }}</output>
+        {% end %}
+    </div>
+    {% end %}
+    <input class="chirpui-field__range"
+           type="range" id="{{ name }}" name="{{ name }}"
+           value="{{ value }}" min="{{ min }}" max="{{ max }}" step="{{ step }}"
+           {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+    {% if hint and not (errors and errors | field_errors(name)) %}
+        <span class="chirpui-field__hint">{{ hint }}</span>
+    {% end %}
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
+{# Input with prefix/suffix #}
+{% def input_group(name, prefix=none, suffix=none, value="", label=none,
+                   errors=none, type="text", required=false, placeholder="",
+                   hint=none, attrs="") %}
+<div class="chirpui-field chirpui-field--input-group{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <label class="chirpui-field__label" for="{{ name }}">
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+        </label>
+    {% end %}
+    <div class="chirpui-input-group">
+        {% if prefix %}
+        <span class="chirpui-input-group__prefix">{{ prefix }}</span>
+        {% end %}
+        <input class="chirpui-input-group__input"
+               type="{{ type }}" id="{{ name }}" name="{{ name }}"
+               value="{{ value }}"
+               {% if required %}required{% end %}
+               {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
+               {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+               {{ attrs }}>
+        {% if suffix %}
+        <span class="chirpui-input-group__suffix">{{ suffix }}</span>
+        {% end %}
+    </div>
+    {% if hint and not (errors and errors | field_errors(name)) %}
+        <span class="chirpui-field__hint">{{ hint }}</span>
+    {% end %}
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
+{# Multi-select dropdown with label and error display #}
+{% def multi_select_field(name, options, selected=[], label=none, errors=none,
+                          required=false, hint=none, size=4) %}
+{% call field_wrapper(name, label, errors, required, hint) %}
+<select class="chirpui-field__input chirpui-field__input--multi"
+        id="{{ name }}" name="{{ name }}" multiple size="{{ size }}"
+        {% if required %}required{% end %}
+        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+    {% for opt in options %}
+        <option value="{{ opt.value }}"
+                {% if opt.value in selected %}selected{% end %}>
+            {{ opt.label }}
+        </option>
+    {% end %}
+</select>
+{% end %}
+{% end %}
+
+{# Search input with optional htmx debounced search #}
+{% def search_field(name, value="", label=none, search_url=none, search_target=none,
+                    search_trigger="keyup changed delay:300ms", search_include=none,
+                    placeholder="Search...", errors=none, attrs="") %}
+{% set search_attrs = ('hx-get="' ~ search_url ~ '" hx-trigger="' ~ search_trigger ~ '" hx-target="' ~ search_target ~ '" hx-swap="innerHTML"' ~ (' hx-include="' ~ search_include ~ '"' if search_include else '')) if (search_url and search_target) else '' %}
+<div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
+    {% end %}
+    <input class="chirpui-field__input"
+           type="search" id="{{ name }}" name="{{ name }}"
+           value="{{ value }}"
+           placeholder="{{ placeholder }}"
+           {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+           {{ search_attrs | safe }} {{ attrs }}>
     {% if errors %}
         {% for msg in errors | field_errors(name) %}
             <span class="chirpui-field__error">{{ msg }}</span>

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, stack %}
+{% from "chirpui/carousel.html" import carousel, carousel_slide %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/hero.html" import hero %}
+{% from "chirpui/button.html" import btn %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Carousel</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    Horizontal swipe/scroll carousel. CSS scroll-snap, zero-JS. Native touch swipe.
+  </p>
+</header>
+
+<h2>Compact (card strip)</h2>
+{% call carousel(variant="compact", slide_count=4, show_dots=true) %}
+{% call carousel_slide(1) %}
+{% call card(title="Slide 1", footer="Card") %}
+<p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted); font-size: 0.875rem;">Swipe or scroll horizontally. Dots jump to slide.</p>
+{% end %}
+{% end %}
+{% call carousel_slide(2) %}
+{% call card(title="Slide 2", footer="Card") %}
+<p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted); font-size: 0.875rem;">Multiple slides visible on wide viewports.</p>
+{% end %}
+{% end %}
+{% call carousel_slide(3) %}
+{% call card(title="Slide 3", footer="Card") %}
+<p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted); font-size: 0.875rem;">Touch swipe works natively.</p>
+{% end %}
+{% end %}
+{% call carousel_slide(4) %}
+{% call card(title="Slide 4", footer="Card") %}
+<p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted); font-size: 0.875rem;">No JavaScript required.</p>
+{% end %}
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  carousel(variant="compact", slide_count=4, show_dots=true)
+</p>
+
+<h2>Page (hero)</h2>
+{% call carousel(variant="page", slide_count=3, show_dots=true) %}
+{% call carousel_slide(1) %}
+{% call hero(title="Welcome", subtitle="Build something great.", background="solid") %}
+{{ btn("Get started", variant="primary", href="/") }}
+{% end %}
+{% end %}
+{% call carousel_slide(2) %}
+{% call hero(title="Feature one", subtitle="CSS scroll-snap. Native touch.", background="muted") %}
+{{ btn("Learn more", variant="secondary", href="/layout") }}
+{% end %}
+{% end %}
+{% call carousel_slide(3) %}
+{% call hero(title="Feature two", subtitle="Zero JavaScript. Dots for navigation.", background="gradient") %}
+{{ btn("View demo", variant="primary", href="/") }}
+{% end %}
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  carousel(variant="page", slide_count=3, show_dots=true)
+</p>
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

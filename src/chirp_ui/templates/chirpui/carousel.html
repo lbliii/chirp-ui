@@ -1,0 +1,39 @@
+{#- chirp-ui: Carousel component
+    Horizontal swipe/scroll carousel. CSS scroll-snap, zero-JS. Native touch swipe.
+
+    Usage:
+        from "chirpui/carousel.html" import carousel, carousel_slide
+
+        call carousel(variant="compact", slide_count=4, show_dots=true)
+            call carousel_slide(1)
+                <div class="chirpui-card">...</div>
+            end
+            call carousel_slide(2)
+                ...
+            end
+        end
+
+    Variants: compact (card strip), page (hero, one per viewport)
+-#}
+
+{% def carousel(variant="compact", slide_count=0, show_dots=false, cls="") %}
+<div class="chirpui-carousel chirpui-carousel--{{ variant }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-carousel__track" role="region" aria-label="Carousel">
+        {% slot %}
+    </div>
+    {% if show_dots and slide_count and slide_count > 0 %}
+    <nav class="chirpui-carousel__dots" aria-label="Slide navigation">
+        {% for i in range(1, slide_count + 1) %}
+        <a href="#slide-{{ i }}" class="chirpui-carousel__dot" aria-label="Slide {{ i }}"></a>
+        {% end %}
+    </nav>
+    {% end %}
+</div>
+{% end %}
+
+{% def carousel_slide(id, cls="") %}
+<div id="slide-{{ id }}" class="chirpui-carousel__slide{{ " " ~ cls if cls else "" }}"
+     role="group" aria-roledescription="slide">
+    {% slot %}
+</div>
+{% end %}

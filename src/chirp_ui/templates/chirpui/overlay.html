@@ -1,0 +1,22 @@
+{#- chirp-ui: Overlay component
+    Gradient or dark layer over an image so text remains readable.
+    Place as sibling to image inside a position: relative parent.
+
+    Usage:
+        from "chirpui/overlay.html" import overlay
+
+        <div style="position:relative;">
+            <img src="hero.jpg" alt="...">
+            {{ overlay("dark") }}
+            <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:1rem;">
+                <h2>Text on image</h2>
+            </div>
+        </div>
+
+    Variants: dark, gradient-bottom, gradient-top
+-#}
+
+{% def overlay(variant="dark", cls="") %}
+<div class="chirpui-overlay chirpui-overlay--{{ variant }}{{ " " ~ cls if cls else "" }}"
+     aria-hidden="true"></div>
+{% end %}

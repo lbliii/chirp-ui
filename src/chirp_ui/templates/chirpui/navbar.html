@@ -1,0 +1,32 @@
+{#- chirp-ui: Navbar component
+    Top navigation bar with brand and links.
+
+    Usage:
+        from "chirpui/navbar.html" import navbar, navbar_link
+
+        call navbar(brand="My App", brand_url="/")
+            navbar_link("/docs", "Docs")
+            navbar_link("/about", "About", active=true)
+        end
+
+        Or with slot for custom content:
+        call navbar(brand="App", brand_url="/")
+            <a href="/custom">Custom</a>
+        end
+-#}
+
+{% def navbar(brand=none, brand_url="/", cls="") %}
+<nav class="chirpui-navbar{{ " " ~ cls if cls else "" }}">
+    {% if brand %}
+    <a class="chirpui-navbar__brand" href="{{ brand_url }}">{{ brand }}</a>
+    {% end %}
+    <div class="chirpui-navbar__links">
+        {% slot %}
+    </div>
+</nav>
+{% end %}
+
+{% def navbar_link(href, label, active=false, cls="") %}
+<a class="chirpui-navbar__link{{ " chirpui-navbar__link--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
+   href="{{ href }}">{{ label }}</a>
+{% end %}

@@ -11,7 +11,7 @@
 -#}
 
 {% def badge(text, variant="primary", icon=none, cls="") %}
-<span class="chirpui-badge chirpui-badge--{{ variant }}{{ " " ~ cls if cls else "" }}">
+<span class="{{ "badge" | bem(variant=variant, cls=cls) }}">
     {% if icon %}
         <span class="chirpui-badge__icon">{{ icon }}</span>
     {% end %}

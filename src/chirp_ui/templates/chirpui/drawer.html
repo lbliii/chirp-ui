@@ -1,0 +1,39 @@
+{#- chirp-ui: Drawer component
+    Slide-out panel from left or right. Uses native <dialog>.
+
+    Usage:
+        from "chirpui/drawer.html" import drawer, drawer_trigger
+
+        drawer_trigger("side-drawer", label="Open panel")
+
+        call drawer("side-drawer", title="Filters", side="right")
+            <p>Drawer content.</p>
+        end
+-#}
+
+{% def drawer(id, title=none, side="right", cls="") %}
+<dialog id="{{ id }}" class="chirpui-drawer chirpui-drawer--{{ side }}{{ " " ~ cls if cls else "" }}"
+        closedby="any">
+    <div class="chirpui-drawer__panel">
+        {% if title %}
+        <header class="chirpui-drawer__header">
+            <h2 class="chirpui-drawer__title">{{ title }}</h2>
+            <form method="dialog">
+                <button class="chirpui-drawer__close" aria-label="Close">&times;</button>
+            </form>
+        </header>
+        {% end %}
+        <div class="chirpui-drawer__body">
+            {% slot %}
+        </div>
+    </div>
+</dialog>
+{% end %}
+
+{% def drawer_trigger(target, label="Open", cls="") %}
+<button class="chirpui-drawer-trigger{{ " " ~ cls if cls else "" }}"
+        type="button"
+        onclick="(function(){var d=document.getElementById('{{ target }}');if(d&&!d.open)d.showModal();})()">
+    {{ label }}
+</button>
+{% end %}

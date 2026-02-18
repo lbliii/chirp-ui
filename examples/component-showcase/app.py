@@ -5,6 +5,7 @@ Run: python app.py
 """
 
 import asyncio
+import calendar as cal_mod
 import csv
 import io
 import re
@@ -27,24 +28,22 @@ from chirp import (
 from chirp.middleware.static import StaticFiles
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
-CHIRPUI_TEMPLATES = Path(chirp_ui.__file__).parent / "templates"
 
 app = App(
     AppConfig(
         template_dir=TEMPLATES_DIR,
-        component_dirs=(str(CHIRPUI_TEMPLATES),),
         debug=False,
         view_transitions=True,
         delegation=True,
     )
 )
-app.add_middleware(
-    StaticFiles(
-        directory=str(CHIRPUI_TEMPLATES),
-        prefix="/static",
-        cache_control="no-cache",
-    )
-)
+try:
+    from chirp import use_chirp_ui
+    use_chirp_ui(app)
+except ImportError:
+    app.add_middleware(StaticFiles(directory=str(chirp_ui.static_path()), prefix="/static"))
+
+chirp_ui.register_filters(app)
 
 
 @app.route("/toast", methods=["POST"])
@@ -89,6 +88,11 @@ async def demo_stream(request: Request) -> EventStream:
     return EventStream(generate())
 
 
+@app.route("/navigation", template="showcase/navigation.html")
+async def navigation() -> Template:
+    return Template("showcase/navigation.html")
+
+
 @app.route("/layout", template="showcase/layout.html")
 async def layout() -> Template:
     return Template("showcase/layout.html")
@@ -99,6 +103,11 @@ async def layout_dir(request: Request) -> Fragment:
     """Return Fragment with dir block for RTL/LTR toggle."""
     direction = request.query.get("dir", "ltr")
     return Fragment("showcase/_layout_dir.html", "dir_block", direction=direction)
+
+
+@app.route("/carousel", template="showcase/carousel.html")
+async def carousel_page() -> Template:
+    return Template("showcase/carousel.html")
 
 
 @app.route("/cards", template="showcase/cards.html")
@@ -279,6 +288,38 @@ async def data_export(request: Request) -> Response:
     return (
         Response(body=body, content_type="text/csv; charset=utf-8")
         .with_header("Content-Disposition", 'attachment; filename="team-roster.csv"')
+    )
+
+
+@app.route("/data-display", template="showcase/data-display.html")
+async def data_display() -> Template:
+    return Template("showcase/data-display.html")
+
+
+@app.route("/calendar", template="showcase/calendar.html")
+@app.route("/calendar/{year}/{month}", template="showcase/calendar.html")
+async def calendar_view(year: int | str | None = None, month: int | str | None = None) -> Template:
+    from datetime import date
+
+    today = date.today()
+    year = int(year) if year is not None else today.year
+    month = int(month) if month is not None else today.month
+    cal = cal_mod.Calendar(firstweekday=cal_mod.SUNDAY)
+    weeks = cal.monthdayscalendar(year, month)
+    month_name = cal_mod.month_name[month]
+    month_label = f"{month_name} {year}"
+    prev_month = month - 1 or 12
+    prev_year = year if month > 1 else year - 1
+    next_month = month + 1 if month < 12 else 1
+    next_year = year if month < 12 else year + 1
+    prev_url = f"/calendar/{prev_year}/{prev_month}"
+    next_url = f"/calendar/{next_year}/{next_month}"
+    return Template(
+        "showcase/calendar.html",
+        weeks=weeks,
+        month_label=month_label,
+        prev_url=prev_url,
+        next_url=next_url,
     )
 
 

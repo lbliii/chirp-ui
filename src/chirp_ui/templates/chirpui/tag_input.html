@@ -1,0 +1,43 @@
+{#- chirp-ui: Tag input component
+    Display tags as chips; add/remove via forms (server-rendered, zero-JS).
+
+    Usage:
+        from "chirpui/tag_input.html" import tag_input
+
+        tag_input("tags", tags=["python", "rust"], label="Tags",
+                  add_url="/tags/add", remove_url="/tags/remove",
+                  placeholder="Add tag...")
+
+    When add_url/remove_url provided, renders add form and remove buttons.
+    Server: add_url accepts POST with "tag" param; remove_url accepts POST with "tag" param.
+-#}
+
+{% def tag_input(name, tags=[], label=none, add_url=none, remove_url=none,
+                 placeholder="Add tag...", cls="") %}
+<div class="chirpui-tag-input{{ " " ~ cls if cls else "" }}">
+    {% if label %}
+    <label class="chirpui-field__label chirpui-tag-input__label">{{ label }}</label>
+    {% end %}
+    <div class="chirpui-tag-input__chips">
+        {% for tag in tags %}
+        <span class="chirpui-tag">
+            {{ tag }}
+            {% if remove_url %}
+            <form method="post" action="{{ remove_url }}" class="chirpui-tag__remove"
+                  style="display:inline;">
+                <input type="hidden" name="{{ name }}" value="{{ tag }}">
+                <button type="submit" class="chirpui-tag__remove-btn" aria-label="Remove {{ tag }}">&times;</button>
+            </form>
+            {% end %}
+        </span>
+        {% end %}
+        {% if add_url %}
+        <form method="post" action="{{ add_url }}" class="chirpui-tag-input__add">
+            <input type="text" name="{{ name }}" placeholder="{{ placeholder }}"
+                   class="chirpui-tag-input__add-field" autocomplete="off">
+            <button type="submit" class="chirpui-btn chirpui-btn--secondary">Add</button>
+        </form>
+        {% end %}
+    </div>
+</div>
+{% end %}

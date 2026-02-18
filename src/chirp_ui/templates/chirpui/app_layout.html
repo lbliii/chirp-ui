@@ -1,0 +1,26 @@
+{#- chirp-ui: App layout — extends chirp boost with CSS and toast.
+
+    Extend this instead of chirp/layouts/boost.html when using chirp-ui.
+    Provides: chirpui.css, holy-light theme, chirpui-transitions.css, toast_container.
+
+    Import layout macros per-page: {% from "chirpui/layout.html" import container, grid, stack, block %}
+
+    Usage:
+        {% extends "chirpui/app_layout.html" %}
+        {% block title %}My App{% end %}
+        {% block content %}
+            {% call container() %}
+                {% call stack() %}...{% end %}
+            {% end %}
+        {% end %}
+-#}
+{% extends "chirp/layouts/boost.html" %}
+{% block head %}
+<link rel="stylesheet" href="/static/chirpui.css">
+<link rel="stylesheet" href="/static/themes/holy-light.css">
+<link rel="stylesheet" href="/static/chirpui-transitions.css">
+{% end %}
+{% block body_after %}
+{% from "chirpui/toast.html" import toast_container %}
+{{ toast_container() }}
+{% end %}

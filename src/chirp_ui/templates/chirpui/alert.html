@@ -16,7 +16,7 @@
 -#}
 
 {% def alert(variant="info", dismissible=false, cls="") %}
-<div class="chirpui-alert chirpui-alert--{{ variant }}{{ " " ~ cls if cls else "" }}"
+<div class="{{ "alert" | bem(variant=variant, cls=cls) }}"
      role="alert">
     <div class="chirpui-alert__body">
         {% slot %}

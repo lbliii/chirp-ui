@@ -27,6 +27,18 @@ def _field_errors_stub(errors: Any, field_name: str) -> Sequence[str]:
     return []
 
 
+def _bem_stub(block: str, variant: str = "", modifier: str = "", cls: str = "") -> str:
+    """Stub for Chirp's ``bem`` filter (chirpui BEM class builder)."""
+    parts = [f"chirpui-{block}"]
+    if variant:
+        parts.append(f"chirpui-{block}--{variant}")
+    if modifier:
+        parts.append(f"chirpui-{block}--{modifier}")
+    if cls:
+        parts.append(cls)
+    return " ".join(parts)
+
+
 @pytest.fixture
 def env() -> Environment:
     """Kida environment with chirp-ui templates loaded via FileSystemLoader."""
@@ -34,6 +46,6 @@ def env() -> Environment:
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
         autoescape=True,
     )
-    # Register stub for Chirp's field_errors filter (used by forms.html)
-    e.update_filters({"field_errors": _field_errors_stub})
+    # Register stubs for Chirp filters (field_errors, bem) used by chirp-ui
+    e.update_filters({"field_errors": _field_errors_stub, "bem": _bem_stub})
     return e

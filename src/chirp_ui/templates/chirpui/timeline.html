@@ -1,0 +1,55 @@
+{#- chirp-ui: Timeline component
+    Vertical timeline for activity feeds, order tracking, audit logs.
+
+    Usage:
+        from "chirpui/timeline.html" import timeline, timeline_item
+
+        timeline(items=[
+            {"title": "Created", "date": "Jan 1", "content": "Order placed"},
+            {"title": "Shipped", "date": "Jan 3", "content": "In transit"}
+        ])
+
+        Or with slot:
+        call timeline()
+            timeline_item("Created", "Jan 1", "Order placed")
+            timeline_item("Shipped", "Jan 3", "In transit")
+        end
+-#}
+
+{% def timeline(items=none, cls="") %}
+<div class="chirpui-timeline{{ " " ~ cls if cls else "" }}">
+    {% if items %}
+        {% for item in items %}
+        <div class="chirpui-timeline__item">
+            <div class="chirpui-timeline__dot" aria-hidden="true"></div>
+            <div class="chirpui-timeline__content">
+                <div class="chirpui-timeline__header">
+                    <span class="chirpui-timeline__title">{{ item.title }}</span>
+                    <span class="chirpui-timeline__date">{{ item.date }}</span>
+                </div>
+                {% if item.content %}
+                <div class="chirpui-timeline__body">{{ item.content }}</div>
+                {% end %}
+            </div>
+        </div>
+        {% end %}
+    {% else %}
+        {% slot %}
+    {% end %}
+</div>
+{% end %}
+
+{% def timeline_item(title, date, content=none, cls="") %}
+<div class="chirpui-timeline__item{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-timeline__dot" aria-hidden="true"></div>
+    <div class="chirpui-timeline__content">
+        <div class="chirpui-timeline__header">
+            <span class="chirpui-timeline__title">{{ title }}</span>
+            <span class="chirpui-timeline__date">{{ date }}</span>
+        </div>
+        {% if content %}
+        <div class="chirpui-timeline__body">{{ content }}</div>
+        {% end %}
+    </div>
+</div>
+{% end %}

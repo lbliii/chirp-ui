@@ -1,0 +1,27 @@
+{#- chirp-ui: Callout component
+    Inset box for tips, notes, warnings — distinct from alert (no dismiss, more editorial).
+
+    Usage:
+        from "chirpui/callout.html" import callout
+
+        call callout(variant="info", title="Note")
+            This is an informational callout with a title.
+        end
+
+        call callout(variant="warning")
+            No title — just the body content.
+        end
+
+    Variants: info, success, warning, error, neutral
+-#}
+
+{% def callout(variant="info", title=none, cls="") %}
+<aside class="chirpui-callout chirpui-callout--{{ variant }}{{ " " ~ cls if cls else "" }}">
+    {% if title %}
+    <div class="chirpui-callout__title">{{ title }}</div>
+    {% end %}
+    <div class="chirpui-callout__body">
+        {% slot %}
+    </div>
+</aside>
+{% end %}

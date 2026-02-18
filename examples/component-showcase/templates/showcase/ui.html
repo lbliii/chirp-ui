@@ -3,6 +3,10 @@
 {% block content %}
 {% from "chirpui/layout.html" import container, grid, stack, block %}
 {% from "chirpui/modal.html" import modal, modal_trigger %}
+{% from "chirpui/confirm.html" import confirm_dialog, confirm_trigger %}
+{% from "chirpui/drawer.html" import drawer, drawer_trigger %}
+{% from "chirpui/split_button.html" import split_button %}
+{% from "chirpui/popover.html" import popover %}
 {% from "chirpui/dropdown.html" import dropdown %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/toast.html" import toast %}
@@ -15,7 +19,7 @@
 <header class="chirpui-stack chirpui-stack--sm">
   <h1>UI Components</h1>
   <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    modal, dropdown, tabs, badge, toast — Interactive elements.
+    modal, confirm_dialog, drawer, dropdown, tabs, badge, toast — Interactive elements.
   </p>
 </header>
 
@@ -25,6 +29,48 @@
 {% call modal("demo-modal", title="Settings") %}
 <p>Modal body content. Uses native <code>&lt;dialog&gt;</code>. Close with × or Escape.</p>
 {% end %}
+</div>
+
+<h2>Confirm Dialog</h2>
+<div class="chirpui-block">
+{{ confirm_trigger("del-dlg", label="Delete item") }}
+{{ confirm_dialog("del-dlg", title="Delete item?", message="This action cannot be undone.", confirm_label="Delete", cancel_label="Cancel", variant="danger") }}
+<p class="chirpui-text-muted" style="margin-top: 0.5rem;">
+  Destructive actions. variant="danger" for red confirm button.
+</p>
+</div>
+
+<h2>Drawer</h2>
+<div class="chirpui-block">
+{{ drawer_trigger("side-drawer", label="Open drawer") }}
+{% call drawer("side-drawer", title="Filters", side="right") %}
+<p>Slide-out panel content. Use for filters, settings, or secondary nav.</p>
+{% end %}
+<p class="chirpui-text-muted" style="margin-top: 0.5rem;">
+  side="left" or side="right". Native <code>&lt;dialog&gt;</code>.
+</p>
+</div>
+
+<h2>Split Button</h2>
+<div class="chirpui-block">
+{% call split_button("Save", primary_href="/", variant="primary") %}
+<a href="/save-as">Save as...</a>
+<a href="/export">Export</a>
+{% end %}
+<p class="chirpui-text-muted" style="margin-top: 0.5rem;">
+  Primary action + dropdown. Use primary_submit=true inside a form.
+</p>
+</div>
+
+<h2>Popover</h2>
+<div class="chirpui-block">
+{% call popover(trigger_label="Filters") %}
+<p style="margin: 0 0 0.5rem;">Filter by status:</p>
+<button type="button" class="chirpui-btn chirpui-btn--primary chirpui-font-sm">Apply</button>
+{% end %}
+<p class="chirpui-text-muted" style="margin-top: 0.5rem;">
+  Floating panel for forms, actions. Same HTML as dropdown, different styling.
+</p>
 </div>
 
 <h2>Dropdown</h2>

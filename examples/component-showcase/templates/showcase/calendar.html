@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, block %}
+{% from "chirpui/calendar.html" import calendar %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Calendar</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    Month grid with prev/next navigation. Server computes weeks via calendar.monthdayscalendar().
+  </p>
+</header>
+
+{% call block() %}
+{{ calendar(weeks=weeks, month_label=month_label, prev_url=prev_url, next_url=next_url) }}
+{% end %}
+
+<p><a href="/data-display">← Back to Data Display</a></p>
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

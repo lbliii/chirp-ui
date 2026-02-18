@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/navbar.html" import navbar, navbar_link %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% from "chirpui/stepper.html" import stepper %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Navigation</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    navbar, sidebar, stepper — Top nav, side nav, and multi-step indicators.
+  </p>
+</header>
+
+<h2>Navbar</h2>
+{% call block() %}
+{% call navbar(brand="chirp-ui", brand_url="/") %}
+{{ navbar_link("/layout", "Layout") }}
+{{ navbar_link("/forms", "Forms") }}
+{{ navbar_link("/ui", "UI", active=true) }}
+{% end %}
+{% end %}
+
+<h2>Sidebar</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call sidebar() %}
+{{ sidebar_section("Main") }}
+{{ sidebar_link("/dashboard", "Dashboard", active=true) }}
+{{ sidebar_link("/settings", "Settings") }}
+{{ sidebar_section("Admin") }}
+{{ sidebar_link("/users", "Users") }}
+{{ sidebar_link("/reports", "Reports") }}
+{% end %}
+{% end %}
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm">
+  Sidebar with sections. Use with grid(cols=2) for sidebar + main content layout.
+</p>
+{% end %}
+{% end %}
+
+<h2>Stepper</h2>
+{% call block() %}
+{{ stepper(steps=[{"id": "1", "label": "Details"}, {"id": "2", "label": "Review"}, {"id": "3", "label": "Confirm"}], current=2) }}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 1rem;">
+  Multi-step forms: current=2 shows step 2 active, step 1 completed.
+</p>
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

@@ -118,28 +118,45 @@ Tetris-inspired block system for responsive desktop-to-mobile layouts:
 | **breadcrumbs** | `chirpui/breadcrumbs.html` | Navigation trail |
 | **list_group** | `chirpui/list.html` | Vertical list, items or slot |
 | **link** | `chirpui/link.html` | Styled link with underline |
+| **navbar** | `chirpui/navbar.html` | Top nav with brand, links |
+| **sidebar** | `chirpui/sidebar.html` | Vertical side nav with sections |
+| **stepper** | `chirpui/stepper.html` | Multi-step form indicators |
+| **surface** | `chirpui/surface.html` | Container with background (default, muted, elevated, accent, glass, frosted, smoke) |
+| **callout** | `chirpui/callout.html` | Inset box for tips, notes (info, success, warning, error, neutral) |
+| **hero** | `chirpui/hero.html` | Full-width section with background (solid, muted, gradient) |
+| **overlay** | `chirpui/overlay.html` | Dark/gradient layer for text-on-image contrast |
+| **carousel** | `chirpui/carousel.html` | Horizontal swipe carousel (compact, page), scroll-snap |
 
 ### UI
 | Component | Import | Features |
 |-----------|--------|----------|
 | **card** | `chirpui/card.html` | Header, body (slot), footer, collapsible |
 | **modal** | `chirpui/modal.html` | Dialog-based, trigger, close |
+| **confirm_dialog** | `chirpui/confirm.html` | Destructive action confirmation |
+| **drawer** | `chirpui/drawer.html` | Slide-out panel, left/right |
 | **tabs** | `chirpui/tabs.html` | htmx tab switching |
 | **accordion** | `chirpui/accordion.html` | Expandable sections, one open at a time |
 | **collapse** | `chirpui/collapse.html` | Single expand/collapse |
 | **tooltip** | `chirpui/tooltip.html` | Hover hint (pure CSS) |
 | **dropdown** | `chirpui/dropdown.html` | Native `<details>`-based |
+| **split_button** | `chirpui/split_button.html` | Primary action + dropdown menu |
+| **popover** | `chirpui/popover.html` | Floating panel, slot for content |
 | **toast** | `chirpui/toast.html` | htmx OOB notifications |
 | **table** | `chirpui/table.html` | Headers, row helper, sortable |
 | **pagination** | `chirpui/pagination.html` | htmx page navigation |
 | **alert** | `chirpui/alert.html` | Info, success, warning, error |
-| **forms** | `chirpui/forms.html` | text_field, textarea_field, select_field, checkbox_field, toggle_field |
+| **forms** | `chirpui/forms.html` | text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field |
 | **badge** | `chirpui/badge.html` | Status indicators with icons |
 | **spinner** | `chirpui/spinner.html` | Loading animations |
 | **empty** | `chirpui/empty.html` | Empty state placeholders |
 | **skeleton** | `chirpui/skeleton.html` | Loading placeholders with shimmer |
 | **progress** | `chirpui/progress.html` | Progress bars |
 | **status** | `chirpui/status.html` | Status indicators |
+| **description_list** | `chirpui/description_list.html` | Key-value pairs, stacked/horizontal |
+| **timeline** | `chirpui/timeline.html` | Activity feed, order tracking |
+| **tag_input** | `chirpui/tag_input.html` | Chips with add/remove forms |
+| **tree_view** | `chirpui/tree_view.html` | Hierarchical expand/collapse |
+| **calendar** | `chirpui/calendar.html` | Month grid with prev/next nav |
 
 ### Streaming & AI
 | Component | Import | Features |

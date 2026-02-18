@@ -9,6 +9,7 @@ Headless, htmx-native, zero JavaScript. Install and import::
 
 When used with Chirp, components are auto-detected via ``PackageLoader``.
 For standalone Kida usage, call :func:`get_loader`.
+Call :func:`register_filters` to ensure bem/field_errors filters are available.
 """
 
 from pathlib import Path
@@ -19,6 +20,8 @@ from kida import PackageLoader
 _Py_mod_gil = 0
 
 __version__ = "0.2.0"
+
+__all__ = ["static_path", "get_loader", "register_filters"]
 
 
 def static_path() -> Path:
@@ -52,3 +55,18 @@ def get_loader() -> PackageLoader:
         )
     """
     return PackageLoader("chirp_ui", "templates")
+
+
+def register_filters(app: object) -> None:
+    """Register chirp-ui filters (bem, field_errors) on a Chirp app.
+
+    Call after App creation so chirp-ui components render correctly::
+
+        from chirp import App
+        import chirp_ui
+        app = App(...)
+        chirp_ui.register_filters(app)
+    """
+    from chirp_ui.filters import register_filters as _register
+
+    _register(app)

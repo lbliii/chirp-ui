@@ -1,0 +1,38 @@
+{#- chirp-ui: Sidebar component
+    Vertical sidebar navigation for dashboards and admin panels.
+
+    Usage:
+        from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section
+
+        call sidebar()
+            sidebar_section("Main")
+            sidebar_link("/dashboard", "Dashboard", active=true)
+            sidebar_link("/settings", "Settings")
+            sidebar_section("Admin")
+            sidebar_link("/users", "Users")
+        end
+
+        Or with slot for custom items:
+        call sidebar()
+            <a href="/custom" class="chirpui-sidebar__link">Custom</a>
+        end
+-#}
+
+{% def sidebar(cls="") %}
+<aside class="chirpui-sidebar{{ " " ~ cls if cls else "" }}">
+    <nav class="chirpui-sidebar__nav">
+        {% slot %}
+    </nav>
+</aside>
+{% end %}
+
+{% def sidebar_section(title, cls="") %}
+<div class="chirpui-sidebar__section{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-sidebar__section-title">{{ title }}</span>
+</div>
+{% end %}
+
+{% def sidebar_link(href, label, active=false, cls="") %}
+<a class="chirpui-sidebar__link{{ " chirpui-sidebar__link--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
+   href="{{ href }}">{{ label }}</a>
+{% end %}

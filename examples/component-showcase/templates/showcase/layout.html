@@ -4,15 +4,184 @@
 {% from "chirpui/layout.html" import container, grid, stack, block %}
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/badge.html" import badge %}
+{% from "chirpui/divider.html" import divider %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/list.html" import list_group, list_item %}
+{% from "chirpui/link.html" import link %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/callout.html" import callout %}
+{% from "chirpui/hero.html" import hero %}
+{% from "chirpui/overlay.html" import overlay %}
 
 {% call container() %}
 {% call stack() %}
 <header class="chirpui-stack chirpui-stack--sm">
   <h1>Layout</h1>
   <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    container, grid, stack, block — Tetris-inspired responsive layouts.
+    container, grid, stack, block, surface, callout, hero, overlay — Tetris-inspired layouts and backgrounds.
   </p>
 </header>
+
+<h2>Breadcrumbs</h2>
+{% call block() %}
+{{ breadcrumbs([
+    {"label": "Home", "href": "/"},
+    {"label": "Layout", "href": "/layout"},
+    {"label": "Breadcrumbs demo"}
+]) }}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  Navigation trail. Last item is current page (no href).
+</p>
+{% end %}
+
+<h2>Surface</h2>
+{% call block() %}
+{% call grid(cols=2) %}
+{% call block() %}
+{% call surface(variant="default") %}
+<p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted);">surface(variant="default") — primary surface</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call surface(variant="muted") %}
+<p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted);">surface(variant="muted") — subtle background</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call surface(variant="elevated") %}
+<p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted);">surface(variant="elevated") — with shadow</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call surface(variant="accent") %}
+<p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted);">surface(variant="accent") — accent tint</p>
+{% end %}
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0.5rem 0 0.25rem;">Glass variants (blur over content):</p>
+<div style="position: relative; padding: 2rem; background: linear-gradient(135deg, var(--chirpui-accent) 0%, var(--chirpui-primary) 50%, var(--chirpui-success) 100%); border-radius: var(--chirpui-radius);">
+{% call grid(cols=3) %}
+{% call block() %}
+{% call surface(variant="glass") %}
+<p class="chirpui-font-sm" style="margin: 0; color: var(--chirpui-text);">glass — subtle blur</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call surface(variant="frosted") %}
+<p class="chirpui-font-sm" style="margin: 0; color: var(--chirpui-text);">frosted — stronger blur</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call surface(variant="smoke") %}
+<p class="chirpui-font-sm" style="margin: 0; color: var(--chirpui-text);">smoke — dark tint</p>
+{% end %}
+{% end %}
+{% end %}
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  surface(variant="default|muted|elevated|accent|glass|frosted|smoke", full_width=false, padding=true)
+</p>
+{% end %}
+
+<h2>Callout</h2>
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call callout(variant="info", title="Note") %}
+Editorial callout for tips and notes. No dismiss button — distinct from alert.
+{% end %}
+{% call callout(variant="success", title="Success") %}
+Your changes have been saved. Use callout for static tips; alert for dynamic status.
+{% end %}
+{% call callout(variant="warning") %}
+Callout without title — just the body content.
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  callout(variant="info|success|warning|error|neutral", title=none)
+</p>
+{% end %}
+
+<h2>Hero</h2>
+{% call block() %}
+{% call hero(title="Welcome to chirp-ui", subtitle="HTML over the wire. CSS without apology.", background="gradient") %}
+<a href="/" class="chirpui-btn chirpui-btn--primary">Get started</a>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  hero(title=none, subtitle=none, background="solid|muted|gradient")
+</p>
+{% end %}
+
+<h2>Overlay</h2>
+{% call block() %}
+<p class="chirpui-text-muted" style="margin-bottom: 0.5rem; color: var(--chirpui-text-muted);">
+  Place overlay as sibling to image inside a <code>position: relative</code> parent.
+</p>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+  <div style="position: relative; aspect-ratio: 16/9; border-radius: var(--chirpui-radius); overflow: hidden; background: var(--chirpui-accent);">
+    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #1e293b 0%, #334155 100%);"></div>
+    {{ overlay("dark") }}
+    <div style="position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 1rem;">
+      <span style="color: white; font-weight: 600;">dark</span>
+    </div>
+  </div>
+  <div style="position: relative; aspect-ratio: 16/9; border-radius: var(--chirpui-radius); overflow: hidden; background: var(--chirpui-accent);">
+    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #1e293b 0%, #334155 100%);"></div>
+    {{ overlay("gradient-bottom") }}
+    <div style="position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 1rem;">
+      <span style="color: white; font-weight: 600;">gradient-bottom</span>
+    </div>
+  </div>
+  <div style="position: relative; aspect-ratio: 16/9; border-radius: var(--chirpui-radius); overflow: hidden; background: var(--chirpui-accent);">
+    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #1e293b 0%, #334155 100%);"></div>
+    {{ overlay("gradient-top") }}
+    <div style="position: absolute; inset: 0; display: flex; align-items: flex-start; padding: 1rem;">
+      <span style="color: white; font-weight: 600;">gradient-top</span>
+    </div>
+  </div>
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  overlay(variant="dark|gradient-bottom|gradient-top")
+</p>
+{% end %}
+
+<h2>Divider</h2>
+{% call block() %}
+<div class="chirpui-stack chirpui-stack--sm">
+  {% call surface(variant="muted") %}
+  <div style="text-align: center;">Content above</div>
+  {% end %}
+  {{ divider("OR") }}
+  {% call surface(variant="muted") %}
+  <div style="text-align: center;">Content below</div>
+  {% end %}
+</div>
+<div class="chirpui-stack chirpui-stack--sm" style="margin-top: 1rem;">
+  {{ divider() }}
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  divider(), divider("OR"), divider("OR", horizontal=true), divider("OR", variant="accent")
+</p>
+{% end %}
+
+<h2>List</h2>
+{% call block() %}
+{% call list_group(bordered=true) %}
+{% call list_item() %}First item — use list_item() for custom content{% end %}
+{% call list_item() %}Second item{% end %}
+{% call list_item() %}Third item{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  list_group(items=[...]) for simple lists; list_group(bordered=true) with list_item() for custom rows.
+</p>
+{% end %}
+
+<h2>Link</h2>
+{% call block() %}
+{{ link("chirp-ui docs", href="/") }} · {{ link("Layout", href="/layout") }}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  Styled links with underline. Or use class="chirpui-link" on any anchor.
+</p>
+{% end %}
 
 <h2>Stack — vertical flow with gap</h2>
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
@@ -249,9 +418,9 @@
 {% end %}
 {% end %}
 {% end %}
-{% end %}
 
 <p><a href="/">← Back to index</a></p>
+{% end %}
 {% end %}
 {% end %}
 {% end %}

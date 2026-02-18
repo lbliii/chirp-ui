@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/description_list.html" import description_list, description_item %}
+{% from "chirpui/timeline.html" import timeline, timeline_item %}
+{% from "chirpui/tag_input.html" import tag_input %}
+{% from "chirpui/tree_view.html" import tree_view %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Data Display</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    description_list, timeline, tag_input, tree_view, calendar — Key-value pairs, activity feeds, tags, trees.
+  </p>
+</header>
+
+<h2>Tag Input</h2>
+{% call block() %}
+{{ tag_input("tags", tags=["python", "rust", "html"], label="Tags (read-only demo)", placeholder="Add tag...") }}
+{% end %}
+
+<h2>Tree View</h2>
+{% call block() %}
+{{ tree_view(nodes=[{"id": "1", "label": "Docs", "children": [{"id": "1a", "label": "API", "children": []}, {"id": "1b", "label": "Guide", "children": []}]}, {"id": "2", "label": "Source", "children": []}]) }}
+{% end %}
+
+<h2>Calendar</h2>
+{% call block() %}
+<p><a href="/calendar" class="chirpui-btn chirpui-btn--secondary">View Calendar</a></p>
+{% end %}
+
+<h2>Description List (stacked)</h2>
+{% call block() %}
+{{ description_list(items=[{"term": "Name", "detail": "Alice Chen"}, {"term": "Email", "detail": "alice@example.com"}, {"term": "Role", "detail": "Admin"}]) }}
+{% end %}
+
+<h2>Description List (horizontal)</h2>
+{% call block() %}
+{{ description_list(items=[{"term": "Status", "detail": "Active"}, {"term": "Last login", "detail": "2 hours ago"}], variant="horizontal") }}
+{% end %}
+
+<h2>Timeline</h2>
+{% call block() %}
+{{ timeline(items=[{"title": "Order placed", "date": "Jan 15, 10:30", "content": "Order #1234 created"}, {"title": "Payment received", "date": "Jan 15, 10:32", "content": "Card ending in 4242"}, {"title": "Shipped", "date": "Jan 16, 09:00", "content": "Tracking: 1Z999AA10123456784"}]) }}
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

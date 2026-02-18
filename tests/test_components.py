@@ -55,6 +55,177 @@ class TestLayout:
 
 
 # ---------------------------------------------------------------------------
+# Surface
+# ---------------------------------------------------------------------------
+
+
+class TestSurface:
+    def test_surface_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            "{% call surface() %}Content{% end %}"
+        ).render()
+        assert "chirpui-surface" in html
+        assert "chirpui-surface--default" in html
+        assert "Content" in html
+
+    def test_surface_variants(self, env: Environment) -> None:
+        for variant in ("muted", "elevated", "accent", "glass", "frosted", "smoke"):
+            html = env.from_string(
+                '{% from "chirpui/surface.html" import surface %}'
+                f'{{% call surface(variant="{variant}") %}}X{{% end %}}'
+            ).render()
+            assert f"chirpui-surface--{variant}" in html
+
+    def test_surface_full_width_no_padding(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% call surface(full_width=true, padding=false) %}X{% end %}'
+        ).render()
+        assert "chirpui-surface--full" in html
+        assert "chirpui-surface--no-padding" in html
+
+
+# ---------------------------------------------------------------------------
+# Callout
+# ---------------------------------------------------------------------------
+
+
+class TestCallout:
+    def test_callout_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/callout.html" import callout %}'
+            "{% call callout() %}Tip content{% end %}"
+        ).render()
+        assert "chirpui-callout" in html
+        assert "chirpui-callout--info" in html
+        assert "chirpui-callout__body" in html
+        assert "Tip content" in html
+
+    def test_callout_with_title(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/callout.html" import callout %}'
+            '{% call callout(title="Note") %}Body{% end %}'
+        ).render()
+        assert "chirpui-callout__title" in html
+        assert "Note" in html
+        assert "Body" in html
+
+    def test_callout_variants(self, env: Environment) -> None:
+        for variant in ("success", "warning", "error", "neutral"):
+            html = env.from_string(
+                '{% from "chirpui/callout.html" import callout %}'
+                f'{{% call callout(variant="{variant}") %}}X{{% end %}}'
+            ).render()
+            assert f"chirpui-callout--{variant}" in html
+
+
+# ---------------------------------------------------------------------------
+# Hero
+# ---------------------------------------------------------------------------
+
+
+class TestHero:
+    def test_hero_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero.html" import hero %}'
+            "{% call hero() %}Content{% end %}"
+        ).render()
+        assert "chirpui-hero" in html
+        assert "chirpui-hero--solid" in html
+        assert "chirpui-hero__inner" in html
+        assert "Content" in html
+
+    def test_hero_with_title_subtitle(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero.html" import hero %}'
+            '{% call hero(title="Welcome", subtitle="Build something.") %}CTA{% end %}'
+        ).render()
+        assert "chirpui-hero__title" in html
+        assert "Welcome" in html
+        assert "chirpui-hero__subtitle" in html
+        assert "Build something." in html
+        assert "CTA" in html
+
+    def test_hero_backgrounds(self, env: Environment) -> None:
+        for bg in ("muted", "gradient"):
+            html = env.from_string(
+                '{% from "chirpui/hero.html" import hero %}'
+                f'{{% call hero(background="{bg}") %}}X{{% end %}}'
+            ).render()
+            assert f"chirpui-hero--{bg}" in html
+
+
+# ---------------------------------------------------------------------------
+# Overlay
+# ---------------------------------------------------------------------------
+
+
+class TestOverlay:
+    def test_overlay_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/overlay.html" import overlay %}'
+            '{{ overlay() }}'
+        ).render()
+        assert "chirpui-overlay" in html
+        assert "chirpui-overlay--dark" in html
+        assert 'aria-hidden="true"' in html
+
+    def test_overlay_variants(self, env: Environment) -> None:
+        for variant in ("gradient-bottom", "gradient-top"):
+            html = env.from_string(
+                '{% from "chirpui/overlay.html" import overlay %}'
+                f'{{{{ overlay("{variant}") }}}}'
+            ).render()
+            assert f"chirpui-overlay--{variant}" in html
+
+
+# ---------------------------------------------------------------------------
+# Carousel
+# ---------------------------------------------------------------------------
+
+
+class TestCarousel:
+    def test_carousel_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/carousel.html" import carousel, carousel_slide %}'
+            "{% call carousel() %}"
+            "{% call carousel_slide(1) %}A{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-carousel" in html
+        assert "chirpui-carousel--compact" in html
+        assert "chirpui-carousel__track" in html
+        assert "chirpui-carousel__slide" in html
+        assert 'id="slide-1"' in html
+        assert "A" in html
+
+    def test_carousel_page_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/carousel.html" import carousel, carousel_slide %}'
+            '{% call carousel(variant="page") %}'
+            '{% call carousel_slide(1) %}X{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-carousel--page" in html
+
+    def test_carousel_with_dots(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/carousel.html" import carousel, carousel_slide %}'
+            '{% call carousel(slide_count=3, show_dots=true) %}'
+            '{% call carousel_slide(1) %}A{% end %}'
+            '{% call carousel_slide(2) %}B{% end %}'
+            '{% call carousel_slide(3) %}C{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-carousel__dots" in html
+        assert "chirpui-carousel__dot" in html
+        assert 'href="#slide-1"' in html
+        assert 'href="#slide-2"' in html
+        assert 'href="#slide-3"' in html
+
+
+# ---------------------------------------------------------------------------
 # Button
 # ---------------------------------------------------------------------------
 
@@ -604,6 +775,390 @@ class TestForms:
         assert "chirpui-toggle__track" in html
         assert "Notifications" in html
         assert "checked" in html
+
+    def test_radio_field(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import radio_field %}'
+            '{% set opts = [{"value": "a", "label": "Alpha"},'
+            ' {"value": "b", "label": "Beta"}] %}'
+            '{{ radio_field("plan", options=opts, selected="b", label="Plan") }}'
+        ).render()
+        assert "<fieldset" in html
+        assert "chirpui-field--radio" in html
+        assert "chirpui-field__radio-group" in html
+        assert "Alpha" in html
+        assert "Beta" in html
+        assert 'value="b"' in html
+        assert "checked" in html
+        assert "Plan" in html
+
+    def test_radio_field_horizontal(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import radio_field %}'
+            '{% set opts = [{"value": "x", "label": "X"}] %}'
+            '{{ radio_field("opt", options=opts, layout="horizontal") }}'
+        ).render()
+        assert "chirpui-field--radio-horizontal" in html
+
+    def test_radio_field_with_errors(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import radio_field %}'
+            '{% set opts = [{"value": "a", "label": "A"}] %}'
+            '{{ radio_field("x", options=opts, errors={"x": ["Required"]}) }}'
+        ).render()
+        assert "chirpui-field--error" in html
+        assert "Required" in html
+
+    def test_file_field(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import file_field %}'
+            '{{ file_field("avatar", label="Avatar", accept="image/*") }}'
+        ).render()
+        assert "chirpui-field--file" in html
+        assert 'type="file"' in html
+        assert 'name="avatar"' in html
+        assert 'accept="image/*"' in html
+        assert "Avatar" in html
+
+    def test_file_field_multiple(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import file_field %}'
+            '{{ file_field("files", multiple=true) }}'
+        ).render()
+        assert "multiple" in html
+
+    def test_date_field(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import date_field %}'
+            '{{ date_field("birthday", value="1990-01-15", label="Birthday") }}'
+        ).render()
+        assert 'type="date"' in html
+        assert 'name="birthday"' in html
+        assert 'value="1990-01-15"' in html
+        assert "Birthday" in html
+
+    def test_date_field_min_max(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import date_field %}'
+            '{{ date_field("d", min="2020-01-01", max="2030-12-31") }}'
+        ).render()
+        assert 'min="2020-01-01"' in html
+        assert 'max="2030-12-31"' in html
+
+    def test_range_field(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import range_field %}'
+            '{{ range_field("volume", value=75, min=0, max=100, label="Volume") }}'
+        ).render()
+        assert 'type="range"' in html
+        assert 'name="volume"' in html
+        assert 'value="75"' in html
+        assert 'min="0"' in html
+        assert 'max="100"' in html
+        assert "Volume" in html
+
+    def test_range_field_show_value(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import range_field %}'
+            '{{ range_field("vol", value=50, show_value=true) }}'
+        ).render()
+        assert "chirpui-field__range-value" in html
+        assert "50" in html
+
+    def test_input_group(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import input_group %}'
+            '{{ input_group("price", prefix="$", suffix=".00", value="10", label="Price") }}'
+        ).render()
+        assert "chirpui-input-group" in html
+        assert "chirpui-input-group__prefix" in html
+        assert "chirpui-input-group__suffix" in html
+        assert "$" in html
+        assert ".00" in html
+        assert 'value="10"' in html
+
+    def test_multi_select_field(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import multi_select_field %}'
+            '{% set opts = [{"value": "a", "label": "A"}, {"value": "b", "label": "B"}] %}'
+            '{{ multi_select_field("x", options=opts, selected=["a"]) }}'
+        ).render()
+        assert "multiple" in html
+        assert "chirpui-field__input--multi" in html
+        assert "A" in html
+        assert "B" in html
+        assert "selected" in html
+
+    def test_search_field(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_field %}'
+            '{{ search_field("q", value="", placeholder="Search...") }}'
+        ).render()
+        assert 'type="search"' in html
+        assert "Search..." in html
+
+    def test_search_field_with_htmx(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_field %}'
+            '{{ search_field("q", search_url="/search", search_target="#results") }}'
+        ).render()
+        assert "hx-get" in html
+        assert "hx-target" in html
+        assert "#results" in html
+        assert "hx-trigger" in html
+
+
+# ---------------------------------------------------------------------------
+# Navbar, Sidebar, Stepper
+# ---------------------------------------------------------------------------
+
+
+class TestNavbar:
+    def test_navbar_with_brand(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar, navbar_link %}'
+            '{% call navbar(brand="App", brand_url="/") %}'
+            '{{ navbar_link("/docs", "Docs") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-navbar" in html
+        assert "chirpui-navbar__brand" in html
+        assert "App" in html
+        assert 'href="/"' in html
+        assert "Docs" in html
+
+    def test_navbar_link_active(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar_link %}'
+            '{{ navbar_link("/x", "X", active=true) }}'
+        ).render()
+        assert "chirpui-navbar__link--active" in html
+
+
+class TestSidebar:
+    def test_sidebar_with_links(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import sidebar, sidebar_link %}'
+            '{% call sidebar() %}'
+            '{{ sidebar_link("/dash", "Dashboard", active=true) }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-sidebar" in html
+        assert "chirpui-sidebar__nav" in html
+        assert "chirpui-sidebar__link--active" in html
+        assert "Dashboard" in html
+
+    def test_sidebar_section(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import sidebar, sidebar_section %}'
+            '{% call sidebar() %}'
+            '{{ sidebar_section("Main") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-sidebar__section" in html
+        assert "Main" in html
+
+
+class TestStepper:
+    def test_stepper_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/stepper.html" import stepper %}'
+            '{% set steps = [{"id": "1", "label": "One"}, {"id": "2", "label": "Two"}] %}'
+            '{{ stepper(steps=steps, current=1) }}'
+        ).render()
+        assert "chirpui-stepper" in html
+        assert "chirpui-stepper__list" in html
+        assert "One" in html
+        assert "Two" in html
+        assert 'aria-current="step"' in html
+
+    def test_stepper_completed(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/stepper.html" import stepper %}'
+            '{% set steps = [{"id": "1", "label": "A"}, {"id": "2", "label": "B"}] %}'
+            '{{ stepper(steps=steps, current=2) }}'
+        ).render()
+        assert "chirpui-stepper__item--completed" in html
+        assert "chirpui-stepper__item--active" in html
+
+
+class TestDescriptionList:
+    def test_description_list_items(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/description_list.html" import description_list %}'
+            '{% set items = [{"term": "A", "detail": "1"}, {"term": "B", "detail": "2"}] %}'
+            '{{ description_list(items=items) }}'
+        ).render()
+        assert "chirpui-dl" in html
+        assert "A" in html
+        assert "1" in html
+
+    def test_description_list_horizontal(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/description_list.html" import description_list %}'
+            '{% set items = [{"term": "X", "detail": "Y"}] %}'
+            '{{ description_list(items=items, variant="horizontal") }}'
+        ).render()
+        assert "chirpui-dl--horizontal" in html
+
+
+class TestTimeline:
+    def test_timeline_items(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline %}'
+            '{% set items = [{"title": "Step 1", "date": "Jan 1", "content": "Done"}] %}'
+            '{{ timeline(items=items) }}'
+        ).render()
+        assert "chirpui-timeline" in html
+        assert "Step 1" in html
+        assert "Jan 1" in html
+        assert "Done" in html
+
+    def test_timeline_item(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline, timeline_item %}'
+            '{% call timeline() %}'
+            '{{ timeline_item("T", "D", "C") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-timeline__item" in html
+        assert "T" in html
+
+
+class TestConfirmDialog:
+    def test_confirm_dialog(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/confirm.html" import confirm_dialog %}'
+            '{{ confirm_dialog("d", title="Delete?", message="Sure?") }}'
+        ).render()
+        assert '<dialog id="d"' in html
+        assert "chirpui-confirm" in html
+        assert "Delete?" in html
+        assert "Sure?" in html
+
+    def test_confirm_dialog_danger(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/confirm.html" import confirm_dialog %}'
+            '{{ confirm_dialog("d", title="X", message="Y", variant="danger") }}'
+        ).render()
+        assert "chirpui-confirm--danger" in html
+
+    def test_confirm_trigger(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/confirm.html" import confirm_trigger %}'
+            '{{ confirm_trigger("d", label="Delete") }}'
+        ).render()
+        assert "chirpui-confirm-trigger" in html
+        assert "Delete" in html
+
+
+class TestDrawer:
+    def test_drawer(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/drawer.html" import drawer %}'
+            '{% call drawer("d", title="Panel", side="right") %}Content{% end %}'
+        ).render()
+        assert '<dialog id="d"' in html
+        assert "chirpui-drawer" in html
+        assert "chirpui-drawer--right" in html
+        assert "Panel" in html
+        assert "Content" in html
+
+    def test_drawer_trigger(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/drawer.html" import drawer_trigger %}'
+            '{{ drawer_trigger("d", label="Open") }}'
+        ).render()
+        assert "chirpui-drawer-trigger" in html
+        assert "Open" in html
+
+
+class TestSplitButton:
+    def test_split_button_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/split_button.html" import split_button %}'
+            '{% call split_button("Save", primary_href="/save") %}'
+            '<a href="/export">Export</a>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-split-btn" in html
+        assert "Save" in html
+        assert 'href="/save"' in html
+        assert "Export" in html
+
+    def test_split_button_submit(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/split_button.html" import split_button %}'
+            '{% call split_button("Submit", primary_submit=true) %}'
+            "{% end %}"
+        ).render()
+        assert 'type="submit"' in html
+
+
+class TestPopover:
+    def test_popover(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/popover.html" import popover %}'
+            '{% call popover(trigger_label="Filters") %}Content{% end %}'
+        ).render()
+        assert "chirpui-popover" in html
+        assert "chirpui-popover__panel" in html
+        assert "Filters" in html
+        assert "Content" in html
+
+
+class TestTagInput:
+    def test_tag_input(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tag_input.html" import tag_input %}'
+            '{{ tag_input("tags", tags=["a", "b"], label="Tags") }}'
+        ).render()
+        assert "chirpui-tag-input" in html
+        assert "a" in html
+        assert "b" in html
+
+    def test_tag_input_with_add_remove(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tag_input.html" import tag_input %}'
+            '{{ tag_input("t", tags=["x"], add_url="/add", remove_url="/remove") }}'
+        ).render()
+        assert 'action="/remove"' in html
+        assert 'action="/add"' in html
+
+
+class TestTreeView:
+    def test_tree_view(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tree_view.html" import tree_view %}'
+            '{% set nodes = [{"id": "1", "label": "Root", "children": []}] %}'
+            '{{ tree_view(nodes=nodes) }}'
+        ).render()
+        assert "chirpui-tree" in html
+        assert "Root" in html
+
+    def test_tree_view_with_children(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tree_view.html" import tree_view %}'
+            '{% set nodes = [{"id": "1", "label": "Parent", '
+            '"children": [{"id": "2", "label": "Child", "children": []}]}] %}'
+            '{{ tree_view(nodes=nodes) }}'
+        ).render()
+        assert "Parent" in html
+        assert "Child" in html
+        assert "<details" in html
+
+
+class TestCalendar:
+    def test_calendar(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/calendar.html" import calendar %}'
+            '{% set weeks = [[0,0,1,2,3,4,5],[6,7,8,9,10,11,12]] %}'
+            '{{ calendar(weeks=weeks, month_label="January 2025") }}'
+        ).render()
+        assert "chirpui-calendar" in html
+        assert "January 2025" in html
+        assert "1" in html
+        assert "12" in html
 
 
 # ---------------------------------------------------------------------------

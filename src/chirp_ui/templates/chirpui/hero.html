@@ -1,0 +1,32 @@
+{#- chirp-ui: Hero component
+    Full-width section with background for landing pages, headers.
+
+    Usage:
+        from "chirpui/hero.html" import hero
+
+        call hero(title="Welcome", subtitle="Build something great.", background="solid")
+            <a href="/start" class="chirpui-btn chirpui-btn--primary">Get started</a>
+        end
+
+        call hero(background="gradient")
+            Custom slot content only.
+        end
+
+    Backgrounds: solid, muted, gradient
+-#}
+
+{% def hero(title=none, subtitle=none, background="solid", cls="") %}
+<section class="chirpui-hero chirpui-hero--{{ background }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-hero__inner">
+        {% if title %}
+        <h1 class="chirpui-hero__title">{{ title }}</h1>
+        {% end %}
+        {% if subtitle %}
+        <p class="chirpui-hero__subtitle">{{ subtitle }}</p>
+        {% end %}
+        <div class="chirpui-hero__content">
+            {% slot %}
+        </div>
+    </div>
+</section>
+{% end %}

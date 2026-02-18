@@ -2,7 +2,7 @@
 
 {% block content %}
 {% from "chirpui/layout.html" import container, grid, stack, block %}
-
+{% from "chirpui/card.html" import card_link %}
 {% call container() %}
 {% call stack() %}
 <section class="chirpui-stack chirpui-stack--sm" style="text-align: center; padding: 2rem 0;">
@@ -26,92 +26,74 @@
 
 {% call grid(cols=2) %}
 {% call block() %}
-<a href="/layout" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">Layout</header>
-  <div class="chirpui-card__body">
-    <p>Grid, stack, divider, breadcrumbs, list, link — RTL, @container resize.</p>
-  </div>
-</a>
+{% call card_link("/navigation", "Navigation") %}
+<p>navbar, sidebar, stepper — Top nav, side nav, multi-step forms.</p>
+{% end %}
 {% end %}
 {% call block() %}
-<a href="/cards" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">Cards & Alerts</header>
-  <div class="chirpui-card__body">
-    <p>card, alert — Content containers and status messages.</p>
-  </div>
-</a>
+{% call card_link("/layout", "Layout") %}
+<p>Grid, stack, surface, callout, hero, overlay, divider, breadcrumbs, list, link — RTL, @container resize.</p>
+{% end %}
 {% end %}
 {% call block() %}
-<a href="/forms" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">Forms</header>
-  <div class="chirpui-card__body">
-    <p>text, textarea, select, checkbox, toggle — live validation, toast on success.</p>
-  </div>
-</a>
+{% call card_link("/carousel", "Carousel") %}
+<p>Compact and page variants. CSS scroll-snap, native touch swipe, zero-JS.</p>
+{% end %}
 {% end %}
 {% call block() %}
-<a href="/ui" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">UI Components</header>
-  <div class="chirpui-card__body">
-    <p>modal, dropdown, tabs, accordion, collapse, tooltip, badge, toast.</p>
-  </div>
-</a>
+{% call card_link("/cards", "Cards & Alerts") %}
+<p>card, alert — Content containers and status messages.</p>
+{% end %}
 {% end %}
 {% call block() %}
-<a href="/streaming" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">Streaming & AI</header>
-  <div class="chirpui-card__body">
-    <p>EventStream, model_card — live SSE demo, no LLM required.</p>
-  </div>
-</a>
+{% call card_link("/forms", "Forms") %}
+<p>text, textarea, select, checkbox, toggle — live validation, toast on success.</p>
+{% end %}
 {% end %}
 {% call block() %}
-<a href="/data" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">Data Display — Team Roster</header>
-  <div class="chirpui-card__body">
-    <p>Search, filter, sort, pagination, bulk select, export CSV — HTML over the wire.</p>
-  </div>
-</a>
+{% call card_link("/ui", "UI Components") %}
+<p>modal, dropdown, tabs, accordion, collapse, tooltip, badge, toast.</p>
+{% end %}
 {% end %}
 {% call block() %}
-<a href="/animation" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">Animation & Motion</header>
-  <div class="chirpui-card__body">
-    <p>Motion tokens, micro-feedback, skeleton, View Transitions — Polished interactions.</p>
-  </div>
-</a>
+{% call card_link("/streaming", "Streaming & AI") %}
+<p>EventStream, model_card — live SSE demo, no LLM required.</p>
+{% end %}
 {% end %}
 {% call block() %}
-<a href="/ascii" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">ASCII Icons</header>
-  <div class="chirpui-card__body">
-    <p>Unicode symbols as primary icons — blink, pulse, shrink, rotate, spin, bounce, throb.</p>
-  </div>
-</a>
+{% call card_link("/data-display", "Data Display") %}
+<p>description_list, timeline, tag_input, tree_view, calendar — Key-value pairs, activity feeds, tags, trees.</p>
+{% end %}
 {% end %}
 {% call block() %}
-<a href="/messenger" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">Messenger & Chat</header>
-  <div class="chirpui-card__body">
-    <p>message_bubble, message_thread, typing_indicator, chat_input, conversation_list.</p>
-  </div>
-</a>
+{% call card_link("/data", "Data — Team Roster") %}
+<p>Search, filter, sort, pagination, bulk select, export CSV — HTML over the wire.</p>
+{% end %}
 {% end %}
 {% call block() %}
-<a href="/social" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">Social Media</header>
-  <div class="chirpui-card__body">
-    <p>post_card, comment, profile_header, avatar_stack, trending_tag, mention.</p>
-  </div>
-</a>
+{% call card_link("/animation", "Animation & Motion") %}
+<p>Motion tokens, micro-feedback, skeleton, View Transitions — Polished interactions.</p>
+{% end %}
 {% end %}
 {% call block() %}
-<a href="/video" class="chirpui-card chirpui-card--link" style="display: block; text-decoration: none; color: inherit;">
-  <header class="chirpui-card__header">Video Platform</header>
-  <div class="chirpui-card__body">
-    <p>video_card, channel_card, video_thumbnail, live_badge, playlist, chapter_list.</p>
-  </div>
-</a>
+{% call card_link("/ascii", "ASCII Icons") %}
+<p>Unicode symbols as primary icons — blink, pulse, shrink, rotate, spin, bounce, throb.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card_link("/messenger", "Messenger & Chat") %}
+<p>message_bubble, message_thread, typing_indicator, chat_input, conversation_list.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card_link("/social", "Social Media") %}
+<p>post_card, comment, profile_header, avatar_stack, trending_tag, mention.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card_link("/video", "Video Platform") %}
+<p>video_card, channel_card, video_thumbnail, live_badge, playlist, chapter_list.</p>
+{% end %}
 {% end %}
 {% end %}
 {% end %}

@@ -1,0 +1,33 @@
+{#- chirp-ui: Tree view component
+    Hierarchical data with expand/collapse via native details/summary.
+
+    Usage:
+        from "chirpui/tree_view.html" import tree_view
+
+        tree_view(nodes=[
+            {"id": "1", "label": "Docs", "children": [
+                {"id": "1a", "label": "API", "children": []},
+                {"id": "1b", "label": "Guide", "children": []}
+            ]},
+            {"id": "2", "label": "Source", "children": []}
+        ])
+
+    nodes: list of {id, label, children} where children is list of same structure.
+-#}
+
+{% def tree_view(nodes, cls="") %}
+<ul class="chirpui-tree{{ " " ~ cls if cls else "" }}">
+    {% for node in nodes %}
+    <li class="chirpui-tree__item">
+        {% if node.children %}
+        <details class="chirpui-tree__node">
+            <summary class="chirpui-tree__label">{{ node.label }}</summary>
+            {{ tree_view(node.children) }}
+        </details>
+        {% else %}
+        <span class="chirpui-tree__label chirpui-tree__label--leaf">{{ node.label }}</span>
+        {% end %}
+    </li>
+    {% end %}
+</ul>
+{% end %}

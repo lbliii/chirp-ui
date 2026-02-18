@@ -52,3 +52,13 @@
     {% slot %}
 </div>
 {% end %}
+
+{# Link-styled card for navigation/index grids #}
+{% def card_link(href, title, cls="") %}
+<a href="{{ href }}" class="chirpui-card chirpui-card--link{{ " " ~ cls if cls else "" }}" style="display: block; text-decoration: none; color: inherit;">
+    <header class="chirpui-card__header">{{ title }}</header>
+    <div class="chirpui-card__body">
+        {% slot %}
+    </div>
+</a>
+{% end %}

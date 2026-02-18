@@ -1,0 +1,20 @@
+{#- chirp-ui: Popover component
+    Floating panel with interactive content. Same structure as dropdown but styled as popover.
+
+    Usage:
+        from "chirpui/popover.html" import popover
+
+        call popover(trigger_label="Filters")
+            <form>...</form>
+            <button>Apply</button>
+        end
+-#}
+
+{% def popover(trigger_label, cls="") %}
+<details class="chirpui-popover{{ " " ~ cls if cls else "" }}">
+    <summary class="chirpui-popover__trigger">{{ trigger_label }}</summary>
+    <div class="chirpui-popover__panel">
+        {% slot %}
+    </div>
+</details>
+{% end %}
