@@ -1,0 +1,45 @@
+{#- chirp-ui: Media Object layout primitive
+    Media (img/video) + body + optional actions.
+    Classic OOCSS pattern for lists, cards, etc.
+
+    Usage:
+        from "chirpui/media_object.html" import media_object, media_object_media, media_object_body, media_object_actions
+
+        call media_object()
+            call media_object_media()
+                <img src="..." alt="...">
+            end
+            call media_object_body()
+                <h3>Title</h3>
+                <p>Description.</p>
+            end
+            call media_object_actions()
+                <button>Action</button>
+            end
+        end
+-#}
+
+{% def media_object(align="start", cls="") %}
+{% set align_class = " chirpui-media-object--align-" ~ align if align else "" %}
+<div class="chirpui-media-object{{ align_class }}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def media_object_media(cls="") %}
+<div class="chirpui-media-object__media{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def media_object_body(cls="") %}
+<div class="chirpui-media-object__body{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def media_object_actions(cls="") %}
+<div class="chirpui-media-object__actions{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}

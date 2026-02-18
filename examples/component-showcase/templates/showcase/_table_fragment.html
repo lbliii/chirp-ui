@@ -1,40 +1,79 @@
 {#- Fragment for htmx-driven data table — rows, sortable headers, pagination #}
-{% from "chirpui/table.html" import row %}
 {% from "chirpui/pagination.html" import pagination %}
+{% from "chirpui/empty.html" import empty_state %}
+{% from "chirpui/status.html" import status_indicator %}
 {% block table_content %}
+<div id="data_bulk_bar" hx-swap-oob="true"></div>
+{% set pagination_base = "/data/table?page={page}&sort=" ~ sort_col ~ "&dir=" ~ sort_dir ~ "&q=" ~ (q | e) ~ "&role=" ~ (role | e) ~ "&density=" ~ (density | default("comfortable") | e) %}
+{% if total_rows > 0 %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-bottom: 0.5rem;">
+  Showing {{ start_row }}–{{ end_row }} of {{ total_rows }}
+</p>
+{% end %}
+{% if rows %}
+<form id="data_table_form">
 <div class="chirpui-table-wrap">
-  <table class="chirpui-table chirpui-table--striped">
+  <table class="chirpui-table chirpui-table--striped chirpui-table--{{ density | default("comfortable") }}">
     <thead class="chirpui-table__head">
       <tr>
+        <th class="chirpui-table__th" style="width: 2.5rem;"></th>
         <th class="chirpui-table__th">
           <button type="button" class="chirpui-table__sort"
-                  hx-get="/data/table?page={{ page }}&sort=name"
+                  hx-boost="false"
+                  hx-get="/data/table?page=1&sort=name&dir={{ "desc" if sort_col == "name" and sort_dir == "asc" else "asc" }}&q={{ q | e }}&role={{ role | e }}&density={{ density | default("comfortable") | e }}"
                   hx-target="#data_table_content"
-                  hx-swap="innerHTML"
-                  hx-push-url="true">Name</button>
+                  hx-swap="innerHTML transition:true"
+                  hx-push-url="true">Name{{ " ↑" if sort_col == "name" and sort_dir == "asc" else " ↓" if sort_col == "name" and sort_dir == "desc" else "" }}</button>
         </th>
         <th class="chirpui-table__th">
           <button type="button" class="chirpui-table__sort"
-                  hx-get="/data/table?page={{ page }}&sort=email"
+                  hx-boost="false"
+                  hx-get="/data/table?page=1&sort=email&dir={{ "desc" if sort_col == "email" and sort_dir == "asc" else "asc" }}&q={{ q | e }}&role={{ role | e }}&density={{ density | default("comfortable") | e }}"
                   hx-target="#data_table_content"
-                  hx-swap="innerHTML"
-                  hx-push-url="true">Email</button>
+                  hx-swap="innerHTML transition:true"
+                  hx-push-url="true">Email{{ " ↑" if sort_col == "email" and sort_dir == "asc" else " ↓" if sort_col == "email" and sort_dir == "desc" else "" }}</button>
         </th>
         <th class="chirpui-table__th">
           <button type="button" class="chirpui-table__sort"
-                  hx-get="/data/table?page={{ page }}&sort=role"
+                  hx-boost="false"
+                  hx-get="/data/table?page=1&sort=role&dir={{ "desc" if sort_col == "role" and sort_dir == "asc" else "asc" }}&q={{ q | e }}&role={{ role | e }}&density={{ density | default("comfortable") | e }}"
                   hx-target="#data_table_content"
-                  hx-swap="innerHTML"
-                  hx-push-url="true">Role</button>
+                  hx-swap="innerHTML transition:true"
+                  hx-push-url="true">Role{{ " ↑" if sort_col == "role" and sort_dir == "asc" else " ↓" if sort_col == "role" and sort_dir == "desc" else "" }}</button>
         </th>
+        <th class="chirpui-table__th">Status</th>
+        <th class="chirpui-table__th">Last active</th>
       </tr>
     </thead>
     <tbody class="chirpui-table__body">
       {% for r in rows %}
-      {{ row(r[0], r[1], r[2]) }}
+      <tr class="chirpui-table__row">
+        <td class="chirpui-table__td">
+          <input type="checkbox" name="selected" value="{{ r[1] | e }}"
+                 hx-get="/data/bulk-bar"
+                 hx-trigger="change"
+                 hx-include="#data_table_form"
+                 hx-target="#data_bulk_bar"
+                 hx-swap="innerHTML">
+        </td>
+        <td class="chirpui-table__td">
+          <span class="chirpui-table__avatar" aria-hidden="true">{{ r[5] }}</span>
+          {{ r[0] }}
+        </td>
+        <td class="chirpui-table__td">{{ r[1] }}</td>
+        <td class="chirpui-table__td">{{ r[2] }}</td>
+        <td class="chirpui-table__td">{{ status_indicator({"success": "Active", "warning": "Away", "default": "Offline"}[r[3]], variant=r[3]) }}</td>
+        <td class="chirpui-table__td chirpui-text-muted chirpui-font-sm">{{ r[4] }}</td>
+      </tr>
       {% end %}
     </tbody>
   </table>
 </div>
-{{ pagination(current=page, total=total_pages, url_pattern="/data/table?page={page}&sort=" ~ sort_col, hx_target="#data_table_content", hx_push_url=true) }}
+{{ pagination(current=page, total=total_pages, url_pattern=pagination_base, hx_target="#data_table_content", hx_push_url=true, hx_swap="innerHTML transition:true") }}
+</form>
+{% else %}
+{% call empty_state(icon="✧", title="No results") %}
+<p>Try adjusting your search or filters.</p>
+{% end %}
+{% end %}
 {% end %}

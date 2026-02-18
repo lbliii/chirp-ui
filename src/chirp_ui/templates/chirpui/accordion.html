@@ -1,0 +1,33 @@
+{#- chirp-ui: Accordion component
+    Expandable sections; only one open at a time (native details/name behavior).
+    Use accordion_item for each section.
+
+    Usage:
+        {% from "chirpui/accordion.html" import accordion, accordion_item %}
+
+        {% call accordion(name="faq") %}
+            {% call accordion_item("How do I sign up?", open=true) %}
+                Click the Sign Up button and follow the steps.
+            {% end %}
+            {% call accordion_item("How do I reset my password?") %}
+                Use the Forgot Password link on the login page.
+            {% end %}
+        {% end %}
+-#}
+
+{% def accordion(name="accordion", cls="") %}
+<div class="chirpui-accordion{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def accordion_item(title, open=false, name="accordion", cls="") %}
+<details class="chirpui-accordion__item{{ " " ~ cls if cls else "" }}"
+         name="{{ name }}"
+         {% if open %}open{% end %}>
+    <summary class="chirpui-accordion__trigger">{{ title }}</summary>
+    <div class="chirpui-accordion__content">
+        {% slot %}
+    </div>
+</details>
+{% end %}

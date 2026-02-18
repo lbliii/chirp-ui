@@ -1,0 +1,21 @@
+{#- chirp-ui: Message Thread component
+    Vertical stack of bubbles with alternating alignment.
+
+    Usage:
+        from "chirpui/message_thread.html" import message_thread, message_bubble
+
+        call message_thread()
+            call message_bubble(align="left")
+                ...
+            end
+            call message_bubble(align="right")
+                ...
+            end
+        end
+-#}
+
+{% def message_thread(cls="") %}
+<ul class="chirpui-message-thread{{ " " ~ cls if cls else "" }}" role="list">
+    {% slot %}
+</ul>
+{% end %}

@@ -1,0 +1,28 @@
+{#- chirp-ui: Trending Tag component
+    Hashtag with count/trend indicator.
+
+    Usage:
+        from "chirpui/trending_tag.html" import trending_tag
+
+        trending_tag(tag="python", href="/tag/python", count="12.5K")
+        trending_tag(tag="webdev", count="8.2K", trend="up")
+-#}
+
+{% def trending_tag(tag, href=none, count=none, trend=none, cls="") %}
+{% set tag_class = " chirpui-trending-tag--" ~ trend if trend else "" %}
+{% if href %}
+<a href="{{ href }}" class="chirpui-trending-tag{{ tag_class }}{{ " " ~ cls if cls else "" }}">
+{% else %}
+<span class="chirpui-trending-tag{{ tag_class }}{{ " " ~ cls if cls else "" }}">
+{% end %}
+    <span class="chirpui-trending-tag__hash">#</span>
+    <span class="chirpui-trending-tag__name">{{ tag }}</span>
+    {% if count %}
+    <span class="chirpui-trending-tag__count">{{ count }}</span>
+    {% end %}
+{% if href %}
+</a>
+{% else %}
+</span>
+{% end %}
+{% end %}

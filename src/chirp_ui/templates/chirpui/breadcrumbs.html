@@ -1,0 +1,28 @@
+{#- chirp-ui: Breadcrumbs component
+    Navigation trail. Items: list of {label, href?}. Last item (current) has no href.
+
+    Usage:
+        {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+
+        breadcrumbs([
+            {"label": "Home", "href": "/"},
+            {"label": "Docs", "href": "/docs"},
+            {"label": "Getting Started"}
+        ])
+-#}
+
+{% def breadcrumbs(items, cls="") %}
+<nav class="chirpui-breadcrumbs{{ " " ~ cls if cls else "" }}" aria-label="Breadcrumb">
+    <ol class="chirpui-breadcrumbs__list">
+        {% for item in items %}
+        <li class="chirpui-breadcrumbs__item">
+            {% if item.get("href") %}
+                <a href="{{ item.href }}" class="chirpui-breadcrumbs__link">{{ item.label }}</a>
+            {% else %}
+                <span class="chirpui-breadcrumbs__current" aria-current="page">{{ item.label }}</span>
+            {% end %}
+        </li>
+        {% end %}
+    </ol>
+</nav>
+{% end %}

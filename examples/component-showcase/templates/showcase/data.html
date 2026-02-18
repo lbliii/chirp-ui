@@ -8,26 +8,102 @@
 {% from "chirpui/progress.html" import progress_bar %}
 {% from "chirpui/status.html" import status_indicator %}
 {% from "chirpui/spinner.html" import spinner, spinner_thinking %}
+{% from "chirpui/skeleton.html" import skeleton %}
 
 {% call container() %}
 {% call stack() %}
 <header class="chirpui-stack chirpui-stack--sm">
-  <h1>Data Display</h1>
+  <h1>Data Display — Team Roster</h1>
   <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    table, pagination, empty, progress, status, spinner — Lists and indicators.
+    Search, filter, sort, pagination, bulk selection, export — HTML over the wire.
   </p>
 </header>
 
 <h2>Table (htmx-driven)</h2>
 {% call block() %}
+<div id="data_bulk_bar" class="chirpui-bulk-bar-wrapper" style="margin-bottom: 0.5rem;"></div>
+<form id="data_filters" class="chirpui-stack chirpui-stack--sm" style="margin-bottom: 1rem; flex-direction: row; flex-wrap: wrap; gap: 0.75rem; align-items: flex-end;">
+  <div style="flex: 1; min-width: 12rem;">
+    <label class="chirpui-field__label" for="data_search">Search</label>
+    <input class="chirpui-field__input" id="data_search" name="q" type="search"
+           placeholder="Name, email, role..."
+           hx-get="/data/table"
+           hx-trigger="keyup changed delay:200ms"
+           hx-target="#data_table_content"
+           hx-include="#data_filters"
+           hx-swap="innerHTML transition:true"
+           hx-vals='{"page": "1"}'>
+  </div>
+  <div style="min-width: 8rem;">
+    <label class="chirpui-field__label" for="data_role">Role</label>
+    <select class="chirpui-field__input" id="data_role" name="role"
+            hx-get="/data/table"
+            hx-trigger="change"
+            hx-target="#data_table_content"
+            hx-include="#data_filters"
+            hx-swap="innerHTML transition:true"
+            hx-vals='{"page": "1"}'>
+      <option value="">All</option>
+      <option value="Admin">Admin</option>
+      <option value="User">User</option>
+      <option value="Guest">Guest</option>
+    </select>
+  </div>
+  <div style="min-width: 8rem;">
+    <label class="chirpui-field__label" for="data_density">Density</label>
+    <select class="chirpui-field__input" id="data_density" name="density"
+            hx-get="/data/table"
+            hx-trigger="change"
+            hx-target="#data_table_content"
+            hx-include="#data_filters"
+            hx-swap="innerHTML transition:true">
+      <option value="comfortable">Comfortable</option>
+      <option value="compact">Compact</option>
+    </select>
+  </div>
+  <button type="submit" form="data_filters" formaction="/data/export"
+          formtarget="_blank" class="chirpui-btn chirpui-btn--secondary"
+          style="align-self: flex-end;">
+    Export CSV
+  </button>
+  <input type="hidden" name="page" value="1">
+  <input type="hidden" name="sort" value="name">
+  <input type="hidden" name="dir" value="asc">
+</form>
 <div id="data_table_content"
-     hx-get="/data/table?page=1&sort=name"
+     hx-get="/data/table"
      hx-trigger="load"
-     hx-swap="innerHTML">
-  <p class="chirpui-text-muted">Loading…</p>
+     hx-include="#data_filters"
+     hx-swap="innerHTML transition:true">
+  <div class="chirpui-table-wrap">
+    <table class="chirpui-table chirpui-table--striped">
+      <thead class="chirpui-table__head">
+        <tr>
+          <th class="chirpui-table__th" style="width: 2.5rem;"></th>
+          <th class="chirpui-table__th">Name</th>
+          <th class="chirpui-table__th">Email</th>
+          <th class="chirpui-table__th">Role</th>
+          <th class="chirpui-table__th">Status</th>
+          <th class="chirpui-table__th">Last active</th>
+        </tr>
+      </thead>
+      <tbody class="chirpui-table__body">
+        {% for _ in range(5) %}
+        <tr class="chirpui-table__row">
+          <td class="chirpui-table__td">{{ skeleton(width="1rem", height="1rem") }}</td>
+          <td class="chirpui-table__td">{{ skeleton(width="60%", height="1em") }}</td>
+          <td class="chirpui-table__td">{{ skeleton(width="80%", height="1em") }}</td>
+          <td class="chirpui-table__td">{{ skeleton(width="40%", height="1em") }}</td>
+          <td class="chirpui-table__td">{{ skeleton(width="3rem", height="1em") }}</td>
+          <td class="chirpui-table__td">{{ skeleton(width="4rem", height="1em") }}</td>
+        </tr>
+        {% end %}
+      </tbody>
+    </table>
+  </div>
 </div>
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
-  Pagination and column sort via Fragment routes. No full page reload.
+  Search, filter, pagination, and column sort via Fragment routes. No full page reload.
 </p>
 {% end %}
 

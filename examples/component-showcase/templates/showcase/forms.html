@@ -2,7 +2,7 @@
 
 {% block content %}
 {% from "chirpui/layout.html" import container, grid, stack, block %}
-{% from "chirpui/forms.html" import text_field, textarea_field, select_field, checkbox_field %}
+{% from "chirpui/forms.html" import text_field, textarea_field, select_field, checkbox_field, toggle_field %}
 
 {% call container() %}
 {% call stack() %}
@@ -36,6 +36,15 @@
 <h2>Checkbox</h2>
 {% call block() %}
 {{ checkbox_field("newsletter", checked=true, label="Subscribe to newsletter") }}
+{% end %}
+
+<h2>Toggle</h2>
+{% call block() %}
+{{ toggle_field("notifications", checked=true, label="Enable notifications") }}
+{{ toggle_field("dark_mode", checked=false, label="Dark mode") }}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  Switch-style checkbox. Use toggle_field for settings UIs.
+</p>
 {% end %}
 
 <h2>With Errors (demo)</h2>

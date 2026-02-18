@@ -1,0 +1,30 @@
+{#- chirp-ui: Share Menu component
+    Dropdown with copy link, share to X/FB/etc (links).
+    Extends dropdown.
+
+    Usage:
+        from "chirpui/share_menu.html" import share_menu
+
+        share_menu(label="Share", share_url="https://example.com/post/1")
+        # Or with custom links:
+        call share_menu(label="Share")
+            <a href="https://twitter.com/intent/tweet?url=...">Share on X</a>
+            <a href="https://facebook.com/sharer/sharer.php?u=...">Share on Facebook</a>
+        end
+-#}
+
+{% from "chirpui/dropdown.html" import dropdown %}
+
+{% def share_menu(label="Share", share_url=none, cls="") %}
+{% if share_url and caller is not defined %}
+{% call dropdown(label=label, cls="chirpui-share-menu " ~ (cls or "")) %}
+<a href="#" class="chirpui-share-menu__copy" data-copy-url="{{ share_url }}">Copy link</a>
+<a href="https://twitter.com/intent/tweet?url={{ share_url | e }}" target="_blank" rel="noopener">Share on X</a>
+<a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url | e }}" target="_blank" rel="noopener">Share on Facebook</a>
+{% end %}
+{% else %}
+{% call dropdown(label=label, cls="chirpui-share-menu " ~ (cls or "")) %}
+{% slot %}
+{% end %}
+{% end %}
+{% end %}

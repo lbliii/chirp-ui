@@ -8,7 +8,7 @@
                    hx_target="#item-list")
 -#}
 
-{% def pagination(current, total, url_pattern, hx_target=none, hx_push_url=false, window=2, cls="") %}
+{% def pagination(current, total, url_pattern, hx_target=none, hx_push_url=false, hx_swap="innerHTML", window=2, cls="") %}
 {% if total > 1 %}
 <nav class="chirpui-pagination{{ " " ~ cls if cls else "" }}" aria-label="Pagination">
     {# Previous #}
@@ -16,9 +16,10 @@
         <a class="chirpui-pagination__link chirpui-pagination__prev"
            href="{{ url_pattern | replace("{page}", (current - 1) | string) }}"
            {% if hx_target %}
+               hx-boost="false"
                hx-get="{{ url_pattern | replace("{page}", (current - 1) | string) }}"
                hx-target="{{ hx_target }}"
-               hx-swap="innerHTML"
+               hx-swap="{{ hx_swap }}"
                {% if hx_push_url %}hx-push-url="true"{% end %}
            {% end %}
            aria-label="Previous page">&laquo;</a>
@@ -36,9 +37,10 @@
             <a class="chirpui-pagination__link"
                href="{{ url_pattern | replace("{page}", page | string) }}"
                {% if hx_target %}
+                   hx-boost="false"
                    hx-get="{{ url_pattern | replace("{page}", page | string) }}"
                    hx-target="{{ hx_target }}"
-                   hx-swap="innerHTML"
+                   hx-swap="{{ hx_swap }}"
                    {% if hx_push_url %}hx-push-url="true"{% end %}
                {% end %}>{{ page }}</a>
         {% elif page == current - window - 1 or page == current + window + 1 %}
@@ -51,9 +53,10 @@
         <a class="chirpui-pagination__link chirpui-pagination__next"
            href="{{ url_pattern | replace("{page}", (current + 1) | string) }}"
            {% if hx_target %}
+               hx-boost="false"
                hx-get="{{ url_pattern | replace("{page}", (current + 1) | string) }}"
                hx-target="{{ hx_target }}"
-               hx-swap="innerHTML"
+               hx-swap="{{ hx_swap }}"
                {% if hx_push_url %}hx-push-url="true"{% end %}
            {% end %}
            aria-label="Next page">&raquo;</a>

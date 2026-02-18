@@ -1,0 +1,20 @@
+{#- chirp-ui: Collapse component
+    Single expand/collapse section. Native <details>/<summary>.
+
+    Usage:
+        {% from "chirpui/collapse.html" import collapse %}
+
+        {% call collapse(trigger="Click to expand", open=false) %}
+            Hidden content here.
+        {% end %}
+-#}
+
+{% def collapse(trigger, open=false, cls="") %}
+<details class="chirpui-collapse{{ " " ~ cls if cls else "" }}"
+         {% if open %}open{% end %}>
+    <summary class="chirpui-collapse__trigger">{{ trigger }}</summary>
+    <div class="chirpui-collapse__content">
+        {% slot %}
+    </div>
+</details>
+{% end %}

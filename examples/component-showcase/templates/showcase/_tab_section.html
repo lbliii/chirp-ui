@@ -1,0 +1,21 @@
+{% def tab_section(active_tab="overview") %}
+<div id="tab-demo">
+{% from "chirpui/tabs.html" import tabs, tab %}
+{% call tabs(active=active_tab) %}
+{{ tab("overview", "Overview", url="/ui/tab/overview", hx_target="#tab-demo", hx_swap="outerHTML", active=(active_tab == "overview")) }}
+{{ tab("details", "Details", url="/ui/tab/details", hx_target="#tab-demo", hx_swap="outerHTML", active=(active_tab == "details")) }}
+{{ tab("settings", "Settings", url="/ui/tab/settings", hx_target="#tab-demo", hx_swap="outerHTML", active=(active_tab == "settings")) }}
+{% end %}
+<div class="chirpui-tab-content" style="padding: var(--chirpui-spacing) 0;">
+  {% if active_tab == "overview" %}
+  <p>Overview content. Tabs use htmx to swap this content without a full page reload.</p>
+  {% elif active_tab == "details" %}
+  <p>Details content. Each tab loads its content via <code>hx-get</code> and <code>hx-target</code>.</p>
+  {% elif active_tab == "settings" %}
+  <p>Settings content. The active tab state is updated when you click — the server returns the full tab bar with the correct selection.</p>
+  {% else %}
+  <p>Tab content for {{ active_tab }}.</p>
+  {% end %}
+</div>
+</div>
+{% end %}

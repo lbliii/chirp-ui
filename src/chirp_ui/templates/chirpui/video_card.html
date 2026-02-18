@@ -1,0 +1,48 @@
+{#- chirp-ui: Video Card component
+    Thumbnail, duration badge, title, channel, views, date.
+
+    Usage:
+        from "chirpui/video_card.html" import video_card
+
+        call video_card(
+            href="/watch/1",
+            thumbnail="/thumb.jpg",
+            duration="4:32",
+            title="How to build with Chirp",
+            channel="Dev Channel",
+            channel_href="/channel/1",
+            views="1.2M",
+            date="2 days ago"
+        )
+        end
+-#}
+
+{% def video_card(href, thumbnail, duration, title, channel=none, channel_href=none, views=none, date=none, cls="") %}
+<article class="chirpui-video-card{{ " " ~ cls if cls else "" }}">
+    <a href="{{ href }}" class="chirpui-video-card__link">
+        <figure class="chirpui-video-card__thumbnail">
+            <img src="{{ thumbnail }}" alt="{{ title }}" loading="lazy">
+            <span class="chirpui-video-card__duration">{{ duration }}</span>
+        </figure>
+        <div class="chirpui-video-card__body">
+            <h3 class="chirpui-video-card__title">{{ title }}</h3>
+            {% if channel %}
+            <p class="chirpui-video-card__channel">
+                {% if channel_href %}
+                <a href="{{ channel_href }}" class="chirpui-video-card__channel-link">{{ channel }}</a>
+                {% else %}
+                {{ channel }}
+                {% end %}
+            </p>
+            {% end %}
+            {% if views or date %}
+            <p class="chirpui-video-card__meta">
+                {% if views %}<span>{{ views }} views</span>{% end %}
+                {% if views and date %} · {% end %}
+                {% if date %}<span>{{ date }}</span>{% end %}
+            </p>
+            {% end %}
+        </div>
+    </a>
+</article>
+{% end %}

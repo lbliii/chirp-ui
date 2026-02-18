@@ -7,6 +7,7 @@
 {% from "chirpui/dropdown.html" import dropdown %}
 {% from "chirpui/skeleton.html" import skeleton %}
 {% from "chirpui/forms.html" import text_field %}
+{% from "chirpui/button.html" import btn %}
 
 {% call container() %}
 {% call stack() %}
@@ -36,12 +37,17 @@
 
 <h2>Button press states</h2>
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
-  <code>chirpui-btn</code> and <code>chirpui-btn--primary</code> — hover lift, active press.
+  <code>chirpui-btn</code> — hover lift, active press. Respects <code>prefers-reduced-motion</code>.
 </p>
 {% call block() %}
-<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-<button type="button" class="chirpui-btn">Default</button>
-<button type="button" class="chirpui-btn chirpui-btn--primary">Primary</button>
+<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+  <button type="button" class="chirpui-btn">Default</button>
+  <button type="button" class="chirpui-btn chirpui-btn--primary">Primary</button>
+  <button type="button" class="chirpui-btn chirpui-btn--secondary">Secondary</button>
+  <button type="button" class="chirpui-btn chirpui-btn--ghost">Ghost</button>
+  <button type="button" class="chirpui-btn chirpui-btn--danger">Danger</button>
+  <button type="button" class="chirpui-btn" disabled>Disabled</button>
+  {{ btn("Loading", variant="primary", loading=true, type="button") }}
 </div>
 {% end %}
 

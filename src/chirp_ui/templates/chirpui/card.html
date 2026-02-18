@@ -1,5 +1,5 @@
 {#- chirp-ui: Card component
-    Headless card with optional header, footer, and collapsible variant.
+    Headless card with optional header, footer, collapsible, and variants.
 
     Usage:
         from "chirpui/card.html" import card
@@ -11,11 +11,17 @@
         call card(title="Details", footer="Last updated", collapsible=true)
             <p>Collapsible content.</p>
         end
+
+        call card(title="Feature", variant="feature")
+            media_slot: <img src="..." alt="...">
+            <p>Body content.</p>
+        end
 -#}
 
-{% def card(title=none, footer=none, collapsible=false, open=false, cls="") %}
+{% def card(title=none, footer=none, collapsible=false, open=false, variant="", cls="") %}
+{% set variant_class = " chirpui-card--" ~ variant if variant else "" %}
 {% if collapsible %}
-<details class="chirpui-card chirpui-card--collapsible{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
+<details class="chirpui-card chirpui-card--collapsible{{ variant_class }}{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
     {% if title %}
         <summary class="chirpui-card__header">{{ title }}</summary>
     {% end %}
@@ -27,7 +33,7 @@
     {% end %}
 </details>
 {% else %}
-<article class="chirpui-card{{ " " ~ cls if cls else "" }}">
+<article class="chirpui-card{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     {% if title %}
         <header class="chirpui-card__header">{{ title }}</header>
     {% end %}
@@ -39,4 +45,10 @@
     {% end %}
 </article>
 {% end %}
+{% end %}
+
+{% def card_media(cls="") %}
+<div class="chirpui-card__media{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
 {% end %}

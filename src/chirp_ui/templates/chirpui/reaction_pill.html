@@ -1,0 +1,28 @@
+{#- chirp-ui: Reaction Pill component
+    Emoji reaction with count (e.g. 👍 3).
+
+    Usage:
+        from "chirpui/reaction_pill.html" import reaction_pill, message_reactions
+
+        call message_reactions()
+            reaction_pill(emoji="👍", count=3)
+            reaction_pill(emoji="❤", count=1)
+        end
+-#}
+
+{% def reaction_pill(emoji, count=1, active=false, cls="") %}
+{% set active_class = " chirpui-reaction-pill--active" if active else "" %}
+<button type="button" class="chirpui-reaction-pill{{ active_class }}{{ " " ~ cls if cls else "" }}"
+        aria-label="React {{ emoji }}">
+    <span class="chirpui-reaction-pill__emoji">{{ emoji }}</span>
+    {% if count > 0 %}
+    <span class="chirpui-reaction-pill__count">{{ count }}</span>
+    {% end %}
+</button>
+{% end %}
+
+{% def message_reactions(cls="") %}
+<div class="chirpui-message-reactions{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}

@@ -1,0 +1,19 @@
+{#- chirp-ui: Live Badge component
+    "LIVE" pill with optional viewer count.
+
+    Usage:
+        from "chirpui/live_badge.html" import live_badge
+
+        live_badge()
+        live_badge(viewers="2.4K")
+-#}
+
+{% def live_badge(viewers=none, cls="") %}
+<span class="chirpui-live-badge{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-live-badge__dot" aria-hidden="true"></span>
+    <span class="chirpui-live-badge__text">LIVE</span>
+    {% if viewers %}
+    <span class="chirpui-live-badge__viewers">{{ viewers }}</span>
+    {% end %}
+</span>
+{% end %}

@@ -1,0 +1,20 @@
+{#- Fragment for bulk action bar — shown when rows selected #}
+{% block bulk_bar %}
+{% if count > 0 %}
+<div class="chirpui-bulk-bar" role="toolbar" aria-label="Bulk actions">
+  <span class="chirpui-bulk-bar__count">{{ count }} selected</span>
+  <a href="/data/export?selected={{ selected | join(",") | e }}" class="chirpui-btn chirpui-btn--sm chirpui-btn--secondary"
+     target="_blank">
+    Export selected
+  </a>
+  <a href="#" class="chirpui-btn chirpui-btn--sm chirpui-btn--secondary"
+     hx-boost="false"
+     hx-get="/data/table"
+     hx-include="#data_filters"
+     hx-target="#data_table_content"
+     hx-swap="innerHTML transition:true">
+    Clear
+  </a>
+</div>
+{% end %}
+{% end %}

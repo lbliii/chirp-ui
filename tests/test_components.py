@@ -55,6 +55,49 @@ class TestLayout:
 
 
 # ---------------------------------------------------------------------------
+# Button
+# ---------------------------------------------------------------------------
+
+
+class TestButton:
+    def test_btn_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Click me") }}'
+        ).render()
+        assert "chirpui-btn" in html
+        assert "Click me" in html
+        assert "chirpui-btn__label" in html
+        assert "<button" in html
+
+    def test_btn_primary(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Submit", variant="primary") }}'
+        ).render()
+        assert "chirpui-btn--primary" in html
+
+    def test_btn_loading(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Save", variant="primary", loading=true) }}'
+        ).render()
+        assert "chirpui-btn--loading" in html
+        assert 'aria-busy="true"' in html
+        assert "chirpui-btn__spinner" in html
+        assert "chirpui-spinner" in html
+
+    def test_btn_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Demo", variant="primary", href="/demo") }}'
+        ).render()
+        assert "<a " in html
+        assert 'href="/demo"' in html
+        assert "chirpui-btn--primary" in html
+
+
+# ---------------------------------------------------------------------------
 # Streaming
 # ---------------------------------------------------------------------------
 
@@ -551,6 +594,167 @@ class TestForms:
         assert 'name="id"' in html
         assert 'value="42"' in html
 
+    def test_toggle_field(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import toggle_field %}'
+            '{{ toggle_field("notify", label="Notifications", checked=true) }}'
+        ).render()
+        assert "chirpui-field--toggle" in html
+        assert "chirpui-toggle" in html
+        assert "chirpui-toggle__track" in html
+        assert "Notifications" in html
+        assert "checked" in html
+
+
+# ---------------------------------------------------------------------------
+# Wave 1: Divider, Link, Breadcrumbs, List, Accordion, Collapse, Tooltip
+# ---------------------------------------------------------------------------
+
+
+class TestDivider:
+    def test_divider_line_only(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/divider.html" import divider %}'
+            "{{ divider() }}"
+        ).render()
+        assert "chirpui-divider" in html
+        assert 'role="separator"' in html
+
+    def test_divider_with_text(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/divider.html" import divider %}'
+            '{{ divider("OR") }}'
+        ).render()
+        assert "chirpui-divider__text" in html
+        assert "OR" in html
+
+    def test_divider_horizontal(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/divider.html" import divider %}'
+            '{{ divider("OR", horizontal=true) }}'
+        ).render()
+        assert "chirpui-divider--horizontal" in html
+
+    def test_divider_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/divider.html" import divider %}'
+            '{{ divider("OR", variant="primary") }}'
+        ).render()
+        assert "chirpui-divider--primary" in html
+
+
+class TestLink:
+    def test_link_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/link.html" import link %}'
+            '{{ link("Home", href="/") }}'
+        ).render()
+        assert "chirpui-link" in html
+        assert 'href="/"' in html
+        assert "Home" in html
+
+    def test_link_external(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/link.html" import link %}'
+            '{{ link("Docs", href="https://example.com", external=true) }}'
+        ).render()
+        assert 'target="_blank"' in html
+        assert 'rel="noopener noreferrer"' in html
+
+
+class TestBreadcrumbs:
+    def test_breadcrumbs_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/breadcrumbs.html" import breadcrumbs %}'
+            '{% set items = [{"label": "Home", "href": "/"}, {"label": "Current"}] %}'
+            "{{ breadcrumbs(items) }}"
+        ).render()
+        assert "chirpui-breadcrumbs" in html
+        assert 'aria-label="Breadcrumb"' in html
+        assert "Home" in html
+        assert "Current" in html
+        assert 'href="/"' in html
+        assert 'aria-current="page"' in html
+
+
+class TestList:
+    def test_list_with_items(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/list.html" import list_group %}'
+            '{% set items = ["A", "B", "C"] %}'
+            '{{ list_group(items) }}'
+        ).render()
+        assert "chirpui-list" in html
+        assert "chirpui-list__item" in html
+        assert "A" in html and "B" in html and "C" in html
+
+    def test_list_with_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/list.html" import list_group, list_item %}'
+            "{% call list_group() %}"
+            '{% call list_item() %}Row one{% end %}'
+            '{% call list_item() %}Row two{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-list" in html
+        assert "Row one" in html
+        assert "Row two" in html
+
+    def test_list_bordered(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/list.html" import list_group %}'
+            '{% set items = ["A"] %}'
+            '{{ list_group(items, bordered=true) }}'
+        ).render()
+        assert "chirpui-list--bordered" in html
+
+
+class TestAccordion:
+    def test_accordion_item(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/accordion.html" import accordion_item %}'
+            '{% call accordion_item("Title", name="faq") %}Content{% end %}'
+        ).render()
+        assert "<details" in html
+        assert 'name="faq"' in html
+        assert "chirpui-accordion__item" in html
+        assert "chirpui-accordion__trigger" in html
+        assert "chirpui-accordion__content" in html
+        assert "Title" in html
+        assert "Content" in html
+
+    def test_accordion_item_open(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/accordion.html" import accordion_item %}'
+            '{% call accordion_item("Q", open=true) %}A{% end %}'
+        ).render()
+        assert "open" in html
+
+
+class TestCollapse:
+    def test_collapse_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/collapse.html" import collapse %}'
+            '{% call collapse(trigger="Expand") %}Hidden{% end %}'
+        ).render()
+        assert "<details" in html
+        assert "chirpui-collapse" in html
+        assert "chirpui-collapse__trigger" in html
+        assert "Expand" in html
+        assert "Hidden" in html
+
+
+class TestTooltip:
+    def test_tooltip_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tooltip.html" import tooltip %}'
+            '{% call tooltip(hint="Help text") %}Hover me{% end %}'
+        ).render()
+        assert "chirpui-tooltip" in html
+        assert 'data-tooltip="Help text"' in html
+        assert 'title="Help text"' in html
+        assert "Hover me" in html
+
 
 # ---------------------------------------------------------------------------
 # Composition / Nesting
@@ -700,6 +904,45 @@ class TestSpinner:
 
 
 # ---------------------------------------------------------------------------
+# Avatar
+# ---------------------------------------------------------------------------
+
+
+class TestAvatar:
+    def test_avatar_initials(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/avatar.html" import avatar %}'
+            '{{ avatar(initials="AB", alt="Alice") }}'
+        ).render()
+        assert "chirpui-avatar" in html
+        assert "chirpui-avatar__initials" in html
+        assert "AB" in html
+
+    def test_avatar_size_variants(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/avatar.html" import avatar %}'
+            '{{ avatar(initials="X", size="lg") }}'
+        ).render()
+        assert "chirpui-avatar--lg" in html
+
+
+# ---------------------------------------------------------------------------
+# Video Card
+# ---------------------------------------------------------------------------
+
+
+class TestVideoCard:
+    def test_video_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/video_card.html" import video_card %}'
+            '{{ video_card(href="/v", thumbnail="/t.jpg", duration="4:32", title="Test") }}'
+        ).render()
+        assert "chirpui-video-card" in html
+        assert "4:32" in html
+        assert "Test" in html
+
+
+# ---------------------------------------------------------------------------
 # CSS file
 # ---------------------------------------------------------------------------
 
@@ -729,8 +972,16 @@ class TestCSS:
         assert ".chirpui-pagination" in content
         assert ".chirpui-alert" in content
         assert ".chirpui-field" in content
+        assert ".chirpui-btn" in content
         assert ".chirpui-ascii" in content
         assert ".chirpui-spinner" in content
+        assert ".chirpui-divider" in content
+        assert ".chirpui-breadcrumbs" in content
+        assert ".chirpui-list" in content
+        assert ".chirpui-accordion" in content
+        assert ".chirpui-collapse" in content
+        assert ".chirpui-tooltip" in content
+        assert ".chirpui-toggle" in content
 
     def test_ascii_animation_classes_exist(self) -> None:
         """All ascii animation variants must have matching CSS."""

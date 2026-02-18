@@ -5,6 +5,8 @@ Run: python app.py
 """
 
 import asyncio
+import csv
+import io
 import re
 from pathlib import Path
 from urllib.parse import quote
@@ -17,6 +19,7 @@ from chirp import (
     FormAction,
     Fragment,
     Request,
+    Response,
     SSEEvent,
     Template,
     ValidationError,
@@ -36,7 +39,11 @@ app = App(
     )
 )
 app.add_middleware(
-    StaticFiles(directory=str(CHIRPUI_TEMPLATES), prefix="/static")
+    StaticFiles(
+        directory=str(CHIRPUI_TEMPLATES),
+        prefix="/static",
+        cache_control="no-cache",
+    )
 )
 
 
@@ -165,30 +172,42 @@ async def streaming_demo(request: Request) -> EventStream:
     return EventStream(generate())
 
 
-# Mock data for data table (15 rows, 5 per page)
-TABLE_DATA: list[tuple[str, str, str]] = [
-    ("Alice", "alice@example.com", "Admin"),
-    ("Bob", "bob@example.com", "User"),
-    ("Carol", "carol@example.com", "User"),
-    ("Dave", "dave@example.com", "Admin"),
-    ("Eve", "eve@example.com", "User"),
-    ("Frank", "frank@example.com", "Guest"),
-    ("Grace", "grace@example.com", "Admin"),
-    ("Henry", "henry@example.com", "User"),
-    ("Ivy", "ivy@example.com", "User"),
-    ("Jack", "jack@example.com", "Guest"),
-    ("Kate", "kate@example.com", "Admin"),
-    ("Leo", "leo@example.com", "User"),
-    ("Mia", "mia@example.com", "User"),
-    ("Noah", "noah@example.com", "Guest"),
-    ("Oscar", "oscar@example.com", "Admin"),
+# Team roster: name, email, role, status, last_active, avatar
+TABLE_DATA: list[tuple[str, str, str, str, str, str]] = [
+    ("Alice", "alice@example.com", "Admin", "success", "2h ago", "◇"),
+    ("Bob", "bob@example.com", "User", "warning", "1d ago", "◆"),
+    ("Carol", "carol@example.com", "User", "success", "5m ago", "○"),
+    ("Dave", "dave@example.com", "Admin", "default", "3d ago", "△"),
+    ("Eve", "eve@example.com", "User", "success", "1h ago", "□"),
+    ("Frank", "frank@example.com", "Guest", "default", "1w ago", "▷"),
+    ("Grace", "grace@example.com", "Admin", "success", "30m ago", "◇"),
+    ("Henry", "henry@example.com", "User", "warning", "2d ago", "◆"),
+    ("Ivy", "ivy@example.com", "User", "success", "4h ago", "○"),
+    ("Jack", "jack@example.com", "Guest", "default", "5d ago", "△"),
+    ("Kate", "kate@example.com", "Admin", "success", "15m ago", "□"),
+    ("Leo", "leo@example.com", "User", "success", "1h ago", "▷"),
+    ("Mia", "mia@example.com", "User", "warning", "6h ago", "◇"),
+    ("Noah", "noah@example.com", "Guest", "default", "2w ago", "◆"),
+    ("Oscar", "oscar@example.com", "Admin", "success", "45m ago", "○"),
 ]
 PAGE_SIZE = 5
 
 
-@app.route("/data", template="showcase/data.html")
-async def data() -> Template:
-    return Template("showcase/data.html")
+def _filter_table_data(
+    q: str,
+    role: str,
+    sort_col: str,
+    sort_dir: str,
+) -> list[tuple[str, str, str, str, str, str]]:
+    """Filter and sort TABLE_DATA by query, role, and sort params."""
+    col_map = {"name": 0, "email": 1, "role": 2, "status": 3, "last_active": 4}
+    sort_idx = col_map.get(sort_col, 0)
+    filtered = [
+        r for r in TABLE_DATA
+        if (not q or q in r[0].lower() or q in r[1].lower() or q in r[2].lower())
+        and (not role or r[2] == role)
+    ]
+    return sorted(filtered, key=lambda r: str(r[sort_idx]).lower(), reverse=(sort_dir == "desc"))
 
 
 @app.route("/data/table", methods=["GET"])
@@ -196,15 +215,20 @@ async def data_table(request: Request) -> Fragment:
     """Return table rows + pagination fragment for htmx-driven data page."""
     page = max(1, int(request.query.get("page", 1)))
     sort_col = request.query.get("sort", "name")
+    sort_dir = request.query.get("dir", "asc")
+    q = (request.query.get("q") or "").strip().lower()
+    role = (request.query.get("role") or "").strip()
+    density = request.query.get("density", "comfortable")
 
-    col_map = {"name": 0, "email": 1, "role": 2}
-    sort_idx = col_map.get(sort_col, 0)
-    sorted_data = sorted(TABLE_DATA, key=lambda r: r[sort_idx].lower())
+    sorted_data = _filter_table_data(q, role, sort_col, sort_dir)
 
-    total_pages = (len(sorted_data) + PAGE_SIZE - 1) // PAGE_SIZE
-    page = min(page, max(1, total_pages))
+    total_rows = len(sorted_data)
+    total_pages = max(1, (total_rows + PAGE_SIZE - 1) // PAGE_SIZE)
+    page = min(page, total_pages)
     start = (page - 1) * PAGE_SIZE
     rows = sorted_data[start : start + PAGE_SIZE]
+    start_row = start + 1 if total_rows else 0
+    end_row = min(start + len(rows), total_rows)
 
     return Fragment(
         "showcase/_table_fragment.html",
@@ -212,8 +236,55 @@ async def data_table(request: Request) -> Fragment:
         rows=rows,
         page=page,
         total_pages=total_pages,
+        total_rows=total_rows,
+        start_row=start_row,
+        end_row=end_row,
         sort_col=sort_col,
+        sort_dir=sort_dir,
+        q=q,
+        role=role,
+        density=density,
     )
+
+
+@app.route("/data/bulk-bar", methods=["GET"])
+async def data_bulk_bar(request: Request) -> Fragment:
+    """Return bulk action bar fragment when rows are selected."""
+    selected = request.query.getlist("selected")
+    if not selected:
+        return Fragment("showcase/_bulk_bar.html", "bulk_bar", count=0)
+    return Fragment("showcase/_bulk_bar.html", "bulk_bar", count=len(selected), selected=selected)
+
+
+@app.route("/data/export", methods=["GET"])
+async def data_export(request: Request) -> Response:
+    """Export filtered table data as CSV. Use ?selected= to export only selected rows."""
+    q = (request.query.get("q") or "").strip().lower()
+    role = (request.query.get("role") or "").strip()
+    sort_col = request.query.get("sort", "name")
+    sort_dir = request.query.get("dir", "asc")
+    selected = request.query.getlist("selected")
+
+    sorted_data = _filter_table_data(q, role, sort_col, sort_dir)
+    if selected:
+        emails = set(selected)
+        sorted_data = [r for r in sorted_data if r[1] in emails]
+
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(["Name", "Email", "Role", "Status", "Last active"])
+    writer.writerows((r[0], r[1], r[2], r[3], r[4]) for r in sorted_data)
+    body = buf.getvalue().encode("utf-8")
+
+    return (
+        Response(body=body, content_type="text/csv; charset=utf-8")
+        .with_header("Content-Disposition", 'attachment; filename="team-roster.csv"')
+    )
+
+
+@app.route("/data", template="showcase/data.html")
+async def data() -> Template:
+    return Template("showcase/data.html")
 
 
 @app.route("/animation", template="showcase/animation.html")
@@ -229,6 +300,21 @@ async def ascii_icons() -> Template:
 @app.route("/animation/swap-demo", methods=["GET"])
 async def animation_swap_demo(request: Request) -> Fragment:
     return Fragment("showcase/_swap_content.html", "swap_demo")
+
+
+@app.route("/messenger", template="showcase/messenger.html")
+async def messenger() -> Template:
+    return Template("showcase/messenger.html")
+
+
+@app.route("/social", template="showcase/social.html")
+async def social() -> Template:
+    return Template("showcase/social.html")
+
+
+@app.route("/video", template="showcase/video.html")
+async def video() -> Template:
+    return Template("showcase/video.html")
 
 
 if __name__ == "__main__":

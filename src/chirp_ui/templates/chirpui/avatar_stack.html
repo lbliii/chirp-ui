@@ -1,0 +1,29 @@
+{#- chirp-ui: Avatar Stack component
+    Overlapping avatars (e.g. "3 people liked").
+
+    Usage:
+        from "chirpui/avatar_stack.html" import avatar_stack
+        from "chirpui/avatar.html" import avatar
+
+        call avatar_stack(max_visible=3)
+            avatar(src="/a.jpg", alt="Alice", size="sm")
+            avatar(src="/b.jpg", alt="Bob", size="sm")
+            avatar(src="/c.jpg", alt="Carol", size="sm")
+        end
+
+        call avatar_stack(max_visible=3, total=5)
+            avatar(...)
+            avatar(...)
+            avatar(...)
+        end
+        # Shows 3 avatars + "+2" overlay
+-#}
+
+{% def avatar_stack(max_visible=4, total=none, cls="") %}
+<div class="chirpui-avatar-stack{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+    {% if total is not none and total > max_visible %}
+    <span class="chirpui-avatar-stack__more">+{{ total - max_visible }}</span>
+    {% end %}
+</div>
+{% end %}

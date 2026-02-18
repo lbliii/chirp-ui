@@ -1,0 +1,17 @@
+{#- chirp-ui: Mention component
+    @username link styling.
+
+    Usage:
+        from "chirpui/mention.html" import mention
+
+        mention("alice", href="/user/alice")
+        mention("bob")  # span if no href
+-#}
+
+{% def mention(username, href=none, cls="") %}
+{% if href %}
+<a href="{{ href }}" class="chirpui-mention{{ " " ~ cls if cls else "" }}">@{{ username }}</a>
+{% else %}
+<span class="chirpui-mention{{ " " ~ cls if cls else "" }}">@{{ username }}</span>
+{% end %}
+{% end %}

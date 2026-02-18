@@ -1,0 +1,29 @@
+{#- chirp-ui: Chat Input component
+    Composer with optional attach button, character count.
+
+    Usage:
+        from "chirpui/chat_input.html" import chat_input
+
+        call chat_input(action="/send", name="message", placeholder="Type a message...")
+            <button type="submit" class="chirpui-btn chirpui-btn--primary">Send</button>
+        end
+
+        Or without footer:
+        chat_input(action="/send", name="message", placeholder="Type a message...")
+-#}
+
+{% def chat_input(action="", name="message", placeholder="Type a message...", rows=2, maxlength=none, cls="") %}
+<form class="chirpui-chat-input{{ " " ~ cls if cls else "" }}" action="{{ action }}" method="post">
+    <div class="chirpui-chat-input__composer">
+        <textarea class="chirpui-chat-input__field" name="{{ name }}" rows="{{ rows }}"
+            placeholder="{{ placeholder }}"
+            {% if maxlength %}maxlength="{{ maxlength }}"{% end %}
+            aria-label="{{ placeholder }}"></textarea>
+    </div>
+    {% if caller is defined %}
+    <footer class="chirpui-chat-input__footer">
+        {% slot %}
+    </footer>
+    {% end %}
+</form>
+{% end %}

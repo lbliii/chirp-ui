@@ -1,0 +1,33 @@
+{#- chirp-ui: Video Thumbnail component
+    Image with play overlay, duration badge, progress bar (watched).
+
+    Usage:
+        from "chirpui/video_thumbnail.html" import video_thumbnail
+
+        video_thumbnail(href="/watch/1", src="/thumb.jpg", alt="Video title", duration="4:32")
+        video_thumbnail(src="/thumb.jpg", duration="4:32", watched_pct=75)
+-#}
+
+{% def video_thumbnail(href=none, src="", alt="", duration=none, watched_pct=none, cls="") %}
+{% set tag = "a" if href else "figure" %}
+{% if href %}
+<a href="{{ href }}" class="chirpui-video-thumbnail{{ " " ~ cls if cls else "" }}">
+{% else %}
+<figure class="chirpui-video-thumbnail{{ " " ~ cls if cls else "" }}">
+{% end %}
+    <span class="chirpui-video-thumbnail__img-wrap">
+        <img src="{{ src }}" alt="{{ alt }}" loading="lazy">
+        <span class="chirpui-video-thumbnail__play" aria-hidden="true">▶</span>
+        {% if duration %}
+        <span class="chirpui-video-thumbnail__duration">{{ duration }}</span>
+        {% end %}
+        {% if watched_pct is not none and watched_pct > 0 %}
+        <span class="chirpui-video-thumbnail__progress" style="width: {{ watched_pct }}%"></span>
+        {% end %}
+    </span>
+{% if href %}
+</a>
+{% else %}
+</figure>
+{% end %}
+{% end %}

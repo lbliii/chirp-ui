@@ -1,0 +1,21 @@
+{#- chirp-ui: Tooltip component
+    Hover hint. Uses native title for accessibility; data-tooltip for styled tooltip.
+
+    Usage:
+        {% from "chirpui/tooltip.html" import tooltip %}
+
+        {% call tooltip(hint="This is the tooltip text") %}
+            Hover for hint
+        {% end %}
+        {% call tooltip(hint="Helpful hint", tag="button") %}
+            Click me
+        {% end %}
+-#}
+
+{% def tooltip(hint, tag="span", cls="") %}
+<{{ tag }} class="chirpui-tooltip{{ " " ~ cls if cls else "" }}"
+     data-tooltip="{{ hint }}"
+     title="{{ hint }}">
+    {% slot %}
+</{{ tag }}>
+{% end %}

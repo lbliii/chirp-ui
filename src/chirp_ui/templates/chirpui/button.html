@@ -1,0 +1,22 @@
+{#- chirp-ui: Button component. Use chirpui-btn with variants. Supports loading state for htmx. -#}
+
+{% from "chirpui/spinner.html" import spinner %}
+
+{% def btn(label, variant="", loading=false, type="submit", href=none, cls="", attrs="") %}
+{% set variant_class = " chirpui-btn--" ~ variant if variant else "" %}
+{% set loading_class = " chirpui-btn--loading" if loading else "" %}
+{% set base_class = "chirpui-btn" ~ variant_class ~ loading_class %}
+{% if cls %}
+{% set base_class = base_class ~ " " ~ cls %}
+{% end %}
+{% if href %}
+<a class="{{ base_class }}" href="{{ href }}" {{ attrs }}>
+    <span class="chirpui-btn__label">{{ label }}</span>
+</a>
+{% else %}
+<button type="{{ type }}" class="{{ base_class }}" {% if loading %}aria-busy="true"{% end %} {{ attrs }}>
+    <span class="chirpui-btn__label">{{ label }}</span>
+    <span class="chirpui-btn__spinner" aria-hidden="true">{{ spinner(size="sm") }}</span>
+</button>
+{% end %}
+{% end %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/video_card.html" import video_card %}
+{% from "chirpui/channel_card.html" import channel_card %}
+{% from "chirpui/video_thumbnail.html" import video_thumbnail %}
+{% from "chirpui/live_badge.html" import live_badge %}
+{% from "chirpui/playlist.html" import playlist, playlist_item %}
+{% from "chirpui/chapter_list.html" import chapter_list, chapter_item %}
+{% from "chirpui/progress.html" import progress_bar %}
+{% from "chirpui/button.html" import btn %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Video Platform</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    video_card, channel_card, video_thumbnail, live_badge, playlist, chapter_list, progress (watched).
+  </p>
+</header>
+
+<h2>Video Cards</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{{ video_card(
+    href="/video",
+    thumbnail="https://placehold.co/320x180/1e293b/64748b?text=Video",
+    duration="4:32",
+    title="How to build with ChirpUI",
+    channel="Dev Channel",
+    channel_href="/channel/1",
+    views="1.2M",
+    date="2 days ago"
+) }}
+{% end %}
+{% call block() %}
+{{ video_card(
+    href="/video",
+    thumbnail="https://placehold.co/320x180/1e293b/64748b?text=Live",
+    duration="LIVE",
+    title="Live coding session",
+    channel="Dev Channel",
+    views="2.4K",
+    date="Streaming now"
+) }}
+{% end %}
+{% end %}
+
+<h2>Video Thumbnail & Live Badge</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{{ video_thumbnail(href="/video", src="https://placehold.co/320x180/1e293b/64748b?text=Play", alt="Video", duration="8:15") }}
+{% end %}
+{% call block() %}
+{{ video_thumbnail(src="https://placehold.co/320x180/1e293b/64748b?text=Watched", alt="Video", duration="4:32", watched_pct=75) }}
+<p class="chirpui-text-muted chirpui-font-sm">With watched progress bar</p>
+{% end %}
+{% end %}
+<p>{{ live_badge() }} {{ live_badge(viewers="2.4K") }}</p>
+
+<h2>Channel Card</h2>
+{% call block() %}
+{% call channel_card(href="/channel/1", name="Dev Channel", avatar_initials="DC", subscribers="12.5K") %}
+{{ btn("Subscribe", variant="primary") }}
+{% end %}
+{% end %}
+
+<h2>Playlist</h2>
+{% call block() %}
+{% call playlist(title="Up next") %}
+{{ playlist_item(href="/video", title="Introduction to ChirpUI", duration="4:32", active=true) }}
+{{ playlist_item(href="/video", title="Building a chat interface", duration="8:15") }}
+{{ playlist_item(href="/video", title="Advanced patterns", duration="12:00") }}
+{% end %}
+{% end %}
+
+<h2>Chapter List</h2>
+{% call block() %}
+{% call chapter_list(summary="Chapters", open=true) %}
+{{ chapter_item(title="Introduction", timestamp="0:00", href="/video#t=0") }}
+{{ chapter_item(title="Setup", timestamp="2:34", href="/video#t=154") }}
+{{ chapter_item(title="Demo", timestamp="5:12", href="/video#t=312") }}
+{% end %}
+{% end %}
+
+<h2>Progress (watched variant)</h2>
+{% call block() %}
+{{ progress_bar(value=45, max=100, variant="watched", label="45% watched") }}
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

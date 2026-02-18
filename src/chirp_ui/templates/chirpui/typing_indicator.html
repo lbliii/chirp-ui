@@ -1,0 +1,17 @@
+{#- chirp-ui: Typing Indicator component
+    Animated dots for "user is typing" — CSS only, no JS.
+
+    Usage:
+        from "chirpui/typing_indicator.html" import typing_indicator
+
+        typing_indicator()
+        typing_indicator(cls="chirpui-ml-sm")
+-#}
+
+{% def typing_indicator(cls="") %}
+<span class="chirpui-typing-indicator{{ " " ~ cls if cls else "" }}" aria-label="Typing">
+    <span class="chirpui-typing-indicator__dot"></span>
+    <span class="chirpui-typing-indicator__dot"></span>
+    <span class="chirpui-typing-indicator__dot"></span>
+</span>
+{% end %}

@@ -1,0 +1,26 @@
+{#- chirp-ui: Avatar component
+    Circular image with optional status ring and size variants.
+    Reusable across messenger, social, video.
+
+    Usage:
+        from "chirpui/avatar.html" import avatar
+
+        avatar(src="/img/user.jpg", alt="Alice")
+        avatar(src="/img/user.jpg", alt="Alice", size="lg", status="online")
+        avatar(initials="AB", alt="Alice Brown")  # fallback when no src
+-#}
+
+{% def avatar(src=none, initials=none, alt="", size="md", status=none, cls="") %}
+{% set size_class = " chirpui-avatar--" ~ size if size else "" %}
+{% set status_class = " chirpui-avatar--" ~ status if status else "" %}
+<span class="chirpui-avatar{{ size_class }}{{ status_class }}{{ " " ~ cls if cls else "" }}"
+      role="img" aria-label="{{ alt or 'Avatar' }}">
+    {% if src %}
+    <img class="chirpui-avatar__img" src="{{ src }}" alt="{{ alt }}" loading="lazy">
+    {% elif initials %}
+    <span class="chirpui-avatar__initials">{{ initials }}</span>
+    {% else %}
+    <span class="chirpui-avatar__placeholder" aria-hidden="true">?</span>
+    {% end %}
+</span>
+{% end %}

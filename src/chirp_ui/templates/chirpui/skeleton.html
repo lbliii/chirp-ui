@@ -1,14 +1,35 @@
 {#- chirp-ui: Skeleton component
     Loading placeholder with optional shimmer animation.
+    Variants: avatar, text, card.
 
     Usage:
         from "chirpui/skeleton.html" import skeleton
 
         skeleton()
         skeleton(width="200px", height="2rem")
-        skeleton(height="1.5em", cls="chirpui-mt-sm")
+        skeleton(variant="avatar")
+        skeleton(variant="text", lines=3)
+        skeleton(variant="card")
 -#}
 
-{% def skeleton(width="100%", height="1em", cls="") %}
-<span class="chirpui-skeleton{{ " " ~ cls if cls else "" }}" style="width: {{ width }}; height: {{ height }}"></span>
+{% def skeleton(width=none, height=none, variant="", lines=1, cls="") %}
+{% set variant_class = " chirpui-skeleton--" ~ variant if variant else "" %}
+{% if variant == "avatar" %}
+<span class="chirpui-skeleton chirpui-skeleton--avatar{{ " " ~ cls if cls else "" }}"></span>
+{% elif variant == "card" %}
+<div class="chirpui-skeleton chirpui-skeleton--card{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-skeleton chirpui-skeleton--card-img"></span>
+    {% for i in range(lines) %}
+    <span class="chirpui-skeleton chirpui-skeleton--card-line"></span>
+    {% endfor %}
+</div>
+{% elif variant == "text" %}
+<div class="chirpui-skeleton chirpui-skeleton--text{{ " " ~ cls if cls else "" }}">
+    {% for i in range(lines) %}
+    <span class="chirpui-skeleton chirpui-skeleton__line"></span>
+    {% endfor %}
+</div>
+{% else %}
+<span class="chirpui-skeleton{{ variant_class }}{{ " " ~ cls if cls else "" }}" style="width: {{ width or '100%' }}; height: {{ height or '1em' }}"></span>
+{% end %}
 {% end %}

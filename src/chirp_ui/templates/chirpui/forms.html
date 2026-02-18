@@ -12,6 +12,7 @@
         select_field("status", options=statuses, selected=form.status,
                      label="Status")
         checkbox_field("active", checked=form.active, label="Active")
+        toggle_field("notifications", checked=true, label="Enable notifications")
         hidden_field("id", value=form.id)
 
     Note: The field_errors filter is provided by Chirp. When using chirp-ui
@@ -109,6 +110,25 @@
                type="checkbox" id="{{ name }}" name="{{ name }}"
                {% if checked %}checked{% end %}>
         {{ label if label else name }}
+    </label>
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
+{# Toggle (switch-style checkbox) #}
+{% def toggle_field(name, checked=false, label=none, errors=none) %}
+<div class="chirpui-field chirpui-field--toggle{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    <label class="chirpui-field__label chirpui-field__label--inline chirpui-toggle-wrap">
+        <input class="chirpui-toggle chirpui-visually-hidden"
+               type="checkbox" id="{{ name }}" name="{{ name }}"
+               {% if checked %}checked{% end %}
+               {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+        <span class="chirpui-toggle__track" aria-hidden="true"></span>
+        <span class="chirpui-toggle__label">{{ label if label else name }}</span>
     </label>
     {% if errors %}
         {% for msg in errors | field_errors(name) %}

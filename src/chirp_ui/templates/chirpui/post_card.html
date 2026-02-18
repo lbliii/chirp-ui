@@ -1,0 +1,66 @@
+{#- chirp-ui: Post Card component
+    Full social post: avatar, name, handle, timestamp, content, media, actions.
+
+    Usage:
+        from "chirpui/post_card.html" import post_card, post_card_header, post_card_body, post_card_media, post_card_actions
+
+        call post_card()
+            call post_card_header(name="Alice", handle="@alice", time="2h ago")
+                avatar(src="...", alt="Alice", size="md")
+            end
+            call post_card_body()
+                <p>Check out this amazing sunset! 🌅</p>
+            end
+            call post_card_media()
+                <img src="sunset.jpg" alt="Sunset">
+            end
+            call post_card_actions()
+                action_bar_item(icon="♥", label="Like", count=42)
+            end
+        end
+-#}
+
+{% def post_card(cls="") %}
+<article class="chirpui-post-card{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</article>
+{% end %}
+
+{% def post_card_header(name, handle=none, time=none, href=none, cls="") %}
+<header class="chirpui-post-card__header{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-post-card__author">
+        <span class="chirpui-post-card__avatar">{% slot %}</span>
+        <div class="chirpui-post-card__meta">
+            {% if href %}
+            <a href="{{ href }}" class="chirpui-post-card__name">{{ name }}</a>
+            {% else %}
+            <span class="chirpui-post-card__name">{{ name }}</span>
+            {% end %}
+            {% if handle %}
+            <span class="chirpui-post-card__handle">{{ handle }}</span>
+            {% end %}
+            {% if time %}
+            <time class="chirpui-post-card__time">{{ time }}</time>
+            {% end %}
+        </div>
+    </div>
+</header>
+{% end %}
+
+{% def post_card_body(cls="") %}
+<div class="chirpui-post-card__body{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def post_card_media(cls="") %}
+<div class="chirpui-post-card__media{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def post_card_actions(cls="") %}
+<footer class="chirpui-post-card__actions{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</footer>
+{% end %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/avatar.html" import avatar %}
+{% from "chirpui/message_thread.html" import message_thread %}
+{% from "chirpui/message_bubble.html" import message_bubble %}
+{% from "chirpui/typing_indicator.html" import typing_indicator %}
+{% from "chirpui/chat_input.html" import chat_input %}
+{% from "chirpui/conversation_list.html" import conversation_list %}
+{% from "chirpui/conversation_item.html" import conversation_item %}
+{% from "chirpui/reaction_pill.html" import reaction_pill, message_reactions %}
+{% from "chirpui/button.html" import btn %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Messenger & Chat</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    message_bubble, message_thread, typing_indicator, chat_input, conversation_list, reaction_pill.
+  </p>
+</header>
+
+{% call grid(cols=2) %}
+{% call block() %}
+<h2>Conversation List</h2>
+{% call conversation_list() %}
+{% call conversation_item(href="/messenger", name="Alice", preview="Hey there! How are you?", time="2m", unread=2) %}
+{{ avatar(initials="A", alt="Alice", size="sm") }}
+{% end %}
+{% call conversation_item(href="/messenger", name="Bob", preview="See you tomorrow", time="1h", muted=true) %}
+{{ avatar(initials="B", alt="Bob", size="sm") }}
+{% end %}
+{% call conversation_item(href="/messenger", name="Carol", preview="Thanks for the update!", time="5m") %}
+{{ avatar(initials="C", alt="Carol", size="sm") }}
+{% end %}
+{% end %}
+{% end %}
+{% call block() %}
+<h2>Message Thread</h2>
+{% call message_thread() %}
+{% call message_bubble(align="left") %}
+{{ avatar(initials="A", alt="Alice", size="sm") }}
+<div>
+  <p>Hey! How's the project going?</p>
+  <time class="chirpui-font-xs chirpui-text-muted">2:34 PM</time>
+</div>
+{% end %}
+{% call message_bubble(align="right") %}
+<div>
+  <p>Going well! Almost done with the UI.</p>
+  <time class="chirpui-font-xs" style="opacity: 0.9;">2:35 PM</time>
+</div>
+{% end %}
+{% call message_bubble(align="left") %}
+{{ avatar(initials="A", alt="Alice", size="sm") }}
+<div>
+  <p>Nice! 👍</p>
+  {% call message_reactions() %}
+  {{ reaction_pill(emoji="👍", count=1, active=true) }}
+  {% end %}
+  <time class="chirpui-font-xs chirpui-text-muted">2:36 PM</time>
+</div>
+{% end %}
+{% end %}
+<p>{{ typing_indicator() }} Alice is typing...</p>
+{% end %}
+{% end %}
+
+<h2>Chat Input</h2>
+{% call block() %}
+{% call chat_input(action="/messenger", name="message", placeholder="Type a message...") %}
+{{ btn("Send", variant="primary", type="submit") }}
+{% end %}
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

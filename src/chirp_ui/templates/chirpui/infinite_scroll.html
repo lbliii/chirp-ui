@@ -1,0 +1,31 @@
+{#- chirp-ui: Infinite Scroll component
+    Container with htmx hx-trigger="revealed" + loading indicator.
+
+    Usage:
+        from "chirpui/infinite_scroll.html" import infinite_scroll
+
+        call infinite_scroll(load_url="/feed?page=2", target="this", swap="beforeend")
+            ... existing items ...
+        end
+-#}
+
+{% def infinite_scroll(load_url, target="this", swap="beforeend", loading_html=none, cls="") %}
+<div class="chirpui-infinite-scroll{{ " " ~ cls if cls else "" }}"
+     hx-get="{{ load_url }}"
+     hx-trigger="revealed"
+     hx-target="{{ target }}"
+     hx-swap="{{ swap }}"
+     hx-indicator=".chirpui-infinite-scroll__loading">
+    {% slot %}
+    {% if loading_html %}
+    <div class="chirpui-infinite-scroll__loading" hx-indicator>
+        {{ loading_html }}
+    </div>
+    {% else %}
+    <div class="chirpui-infinite-scroll__loading chirpui-infinite-scroll__loading--skeleton" hx-indicator>
+        {% from "chirpui/skeleton.html" import skeleton %}
+        {{ skeleton(variant="card") }}
+    </div>
+    {% end %}
+</div>
+{% end %}

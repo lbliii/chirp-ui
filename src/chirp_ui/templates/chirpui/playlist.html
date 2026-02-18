@@ -1,0 +1,36 @@
+{#- chirp-ui: Playlist component
+    Vertical list of video items.
+
+    Usage:
+        from "chirpui/playlist.html" import playlist, playlist_item
+
+        call playlist(title="Up next")
+            call playlist_item(href="/watch/1", title="Video 1", duration="4:32", active=true)
+            end
+            call playlist_item(href="/watch/2", title="Video 2", duration="8:15")
+            end
+        end
+-#}
+
+{% def playlist(title=none, cls="") %}
+<div class="chirpui-playlist{{ " " ~ cls if cls else "" }}">
+    {% if title %}
+    <h3 class="chirpui-playlist__title">{{ title }}</h3>
+    {% end %}
+    <ol class="chirpui-playlist__list">
+        {% slot %}
+    </ol>
+</div>
+{% end %}
+
+{% def playlist_item(href, title, duration=none, active=false, cls="") %}
+{% set active_class = " chirpui-playlist-item--active" if active else "" %}
+<li class="chirpui-playlist-item{{ active_class }}{{ " " ~ cls if cls else "" }}">
+    <a href="{{ href }}" class="chirpui-playlist-item__link">
+        <span class="chirpui-playlist-item__title">{{ title }}</span>
+        {% if duration %}
+        <span class="chirpui-playlist-item__duration">{{ duration }}</span>
+        {% end %}
+    </a>
+</li>
+{% end %}

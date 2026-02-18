@@ -1,0 +1,18 @@
+{#- chirp-ui: Link component
+    Styled link with underline. Use class="chirpui-link" for inline styling,
+    or this macro for convenience.
+
+    Usage:
+        {% from "chirpui/link.html" import link %}
+
+        link("Home", href="/")
+        link("Docs", href="/docs", external=true)
+-#}
+
+{% def link(text, href, external=false, cls="") %}
+<a href="{{ href }}"
+   class="chirpui-link{{ " " ~ cls if cls else "" }}"
+   {% if external %}target="_blank" rel="noopener noreferrer"{% end %}>
+    {{ text }}
+</a>
+{% end %}

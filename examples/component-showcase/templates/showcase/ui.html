@@ -6,6 +6,9 @@
 {% from "chirpui/dropdown.html" import dropdown %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/toast.html" import toast %}
+{% from "chirpui/accordion.html" import accordion, accordion_item %}
+{% from "chirpui/collapse.html" import collapse %}
+{% from "chirpui/tooltip.html" import tooltip %}
 
 {% call container() %}
 {% call stack() %}
@@ -18,30 +21,22 @@
 
 <h2>Modal</h2>
 <div class="chirpui-block">
-<button type="button" onclick="document.getElementById('demo-modal').showModal()">Open Modal</button>
-<dialog id="demo-modal" class="chirpui-modal">
-  <header class="chirpui-modal__header">
-    <h2 class="chirpui-modal__title">Settings</h2>
-    <form method="dialog"><button class="chirpui-modal__close" aria-label="Close">&times;</button></form>
-  </header>
-  <div class="chirpui-modal__body">
-    <p>Modal body content. Uses native <code>&lt;dialog&gt;</code>. Close with × or Escape.</p>
-  </div>
-</dialog>
+{{ modal_trigger("demo-modal", label="Open Modal") }}
+{% call modal("demo-modal", title="Settings") %}
+<p>Modal body content. Uses native <code>&lt;dialog&gt;</code>. Close with × or Escape.</p>
+{% end %}
 </div>
 
 <h2>Dropdown</h2>
-<div class="chirpui-block">
 {% call dropdown(label="Options") %}
 <a href="/" class="chirpui-dropdown__item">Home</a>
 <a href="/layout" class="chirpui-dropdown__item">Layout</a>
 <a href="/cards" class="chirpui-dropdown__item">Cards</a>
 {% end %}
-</div>
 
 <h2>Tabs</h2>
 <div class="chirpui-block">
-{% from "showcase/_tab_content.html" import tab_section %}
+{% from "showcase/_tab_section.html" import tab_section %}
 {{ tab_section("overview") }}
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
   Click tabs to swap content via htmx. No full page reload.
@@ -58,6 +53,44 @@
 {{ badge("With icon", variant="primary", icon="◆") }}
 {{ badge("Active", variant="success", icon="✓") }}
 </div>
+{% end %}
+
+<h2>Accordion</h2>
+{% call block() %}
+{% call accordion(name="faq") %}
+{% call accordion_item("How do I sign up?", open=true, name="faq") %}
+Click the Sign Up button in the top right and follow the registration steps.
+{% end %}
+{% call accordion_item("How do I reset my password?", name="faq") %}
+Use the Forgot Password link on the login page. We'll email you a reset link.
+{% end %}
+{% call accordion_item("How do I update my profile?", name="faq") %}
+Go to Settings → Profile to edit your name, email, and preferences.
+{% end %}
+{% end %}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  Native <code>&lt;details&gt;</code> with <code>name</code> — only one open at a time.
+</p>
+{% end %}
+
+<h2>Collapse</h2>
+{% call block() %}
+{% call collapse(trigger="Click to expand", open=false) %}
+<p style="margin: 0;">Hidden content. Single expand/collapse section.</p>
+{% end %}
+{% end %}
+
+<h2>Tooltip</h2>
+{% call block() %}
+{% call tooltip(hint="This is a helpful hint on hover") %}
+<span class="chirpui-badge chirpui-badge--primary">Hover me</span>
+{% end %}
+{% call tooltip(hint="Keyboard shortcut: ⌘K") %}
+<button type="button" class="chirpui-btn chirpui-btn--secondary">Search</button>
+{% end %}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  Pure CSS tooltip. Uses <code>title</code> for accessibility.
+</p>
 {% end %}
 
 <h2>Toast</h2>

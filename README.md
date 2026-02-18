@@ -114,6 +114,10 @@ Tetris-inspired block system for responsive desktop-to-mobile layouts:
 | **grid** | `chirpui/layout.html` | Auto-fit grid, cols 2–4 |
 | **stack** | `chirpui/layout.html` | Vertical stack with gap |
 | **block** | `chirpui/layout.html` | Grid child with span |
+| **divider** | `chirpui/divider.html` | Visual separator, optional text, vertical/horizontal |
+| **breadcrumbs** | `chirpui/breadcrumbs.html` | Navigation trail |
+| **list_group** | `chirpui/list.html` | Vertical list, items or slot |
+| **link** | `chirpui/link.html` | Styled link with underline |
 
 ### UI
 | Component | Import | Features |
@@ -121,12 +125,15 @@ Tetris-inspired block system for responsive desktop-to-mobile layouts:
 | **card** | `chirpui/card.html` | Header, body (slot), footer, collapsible |
 | **modal** | `chirpui/modal.html` | Dialog-based, trigger, close |
 | **tabs** | `chirpui/tabs.html` | htmx tab switching |
+| **accordion** | `chirpui/accordion.html` | Expandable sections, one open at a time |
+| **collapse** | `chirpui/collapse.html` | Single expand/collapse |
+| **tooltip** | `chirpui/tooltip.html` | Hover hint (pure CSS) |
 | **dropdown** | `chirpui/dropdown.html` | Native `<details>`-based |
 | **toast** | `chirpui/toast.html` | htmx OOB notifications |
 | **table** | `chirpui/table.html` | Headers, row helper, sortable |
 | **pagination** | `chirpui/pagination.html` | htmx page navigation |
 | **alert** | `chirpui/alert.html` | Info, success, warning, error |
-| **forms** | `chirpui/forms.html` | Field macros with error display |
+| **forms** | `chirpui/forms.html` | text_field, textarea_field, select_field, checkbox_field, toggle_field |
 | **badge** | `chirpui/badge.html` | Status indicators with icons |
 | **spinner** | `chirpui/spinner.html` | Loading animations |
 | **empty** | `chirpui/empty.html` | Empty state placeholders |

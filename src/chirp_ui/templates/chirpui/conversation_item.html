@@ -1,0 +1,32 @@
+{#- chirp-ui: Conversation Item component
+    Single row: avatar, name, last message, unread count, timestamp.
+
+    Usage:
+        from "chirpui/conversation_item.html" import conversation_item
+        from "chirpui/avatar.html" import avatar
+
+        call conversation_item(href="/chat/1", name="Alice", preview="Hey!", unread=3, time="2m")
+            avatar(src="/alice.jpg", alt="Alice", size="sm")
+        end
+-#}
+
+{% def conversation_item(href, name, preview, time=none, unread=none, muted=false, cls="") %}
+{% set muted_class = " chirpui-conversation-item--muted" if muted else "" %}
+<a href="{{ href }}" class="chirpui-conversation-item{{ muted_class }}{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-conversation-item__avatar">
+        {% slot %}
+    </span>
+    <div class="chirpui-conversation-item__body">
+        <div class="chirpui-conversation-item__meta">
+            <span class="chirpui-conversation-item__name">{{ name }}</span>
+            {% if time %}
+            <span class="chirpui-conversation-item__time">{{ time }}</span>
+            {% end %}
+        </div>
+        <p class="chirpui-conversation-item__preview">{{ preview }}</p>
+    </div>
+    {% if unread is not none and unread > 0 %}
+    <span class="chirpui-conversation-item__unread">{{ unread }}</span>
+    {% end %}
+</a>
+{% end %}

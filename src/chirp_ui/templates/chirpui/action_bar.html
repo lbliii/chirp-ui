@@ -1,0 +1,38 @@
+{#- chirp-ui: Action Bar component
+    Horizontal row of icon buttons (like, share, comment, etc.).
+
+    Usage:
+        from "chirpui/action_bar.html" import action_bar, action_bar_item
+
+        call action_bar()
+            call action_bar_item(icon="♥", label="Like", count=42)
+            call action_bar_item(icon="💬", label="Comment", count=12)
+            call action_bar_item(icon="↗", label="Share")
+        end
+-#}
+
+{% def action_bar(cls="") %}
+<nav class="chirpui-action-bar{{ " " ~ cls if cls else "" }}" role="toolbar" aria-label="Post actions">
+    {% slot %}
+</nav>
+{% end %}
+
+{% def action_bar_item(icon, label, count=none, href=none, active=false, cls="") %}
+{% set active_class = " chirpui-action-bar__item--active" if active else "" %}
+{% if href %}
+<a href="{{ href }}" class="chirpui-action-bar__item{{ active_class }}{{ " " ~ cls if cls else "" }}"
+   aria-label="{{ label }}" title="{{ label }}">
+{% else %}
+<button type="button" class="chirpui-action-bar__item{{ active_class }}{{ " " ~ cls if cls else "" }}"
+        aria-label="{{ label }}" title="{{ label }}">
+{% end %}
+    <span class="chirpui-action-bar__icon">{{ icon }}</span>
+    {% if count is not none %}
+    <span class="chirpui-action-bar__count">{{ count }}</span>
+    {% end %}
+{% if href %}
+</a>
+{% else %}
+</button>
+{% end %}
+{% end %}

@@ -1,0 +1,37 @@
+{#- chirp-ui: Chapter List component
+    Expandable list of video chapters with timestamps.
+
+    Usage:
+        from "chirpui/chapter_list.html" import chapter_list, chapter_item
+
+        call chapter_list(summary="Chapters")
+            chapter_item(title="Introduction", timestamp="0:00", href="/watch/1#t=0")
+            chapter_item(title="Setup", timestamp="2:34", href="/watch/1#t=154")
+            chapter_item(title="Demo", timestamp="5:12", href="/watch/1#t=312")
+        end
+-#}
+
+{% def chapter_list(summary="Chapters", open=false, cls="") %}
+<details class="chirpui-chapter-list{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
+    <summary class="chirpui-chapter-list__summary">{{ summary }}</summary>
+    <ol class="chirpui-chapter-list__list">
+        {% slot %}
+    </ol>
+</details>
+{% end %}
+
+{% def chapter_item(title, timestamp, href=none, cls="") %}
+<li class="chirpui-chapter-item{{ " " ~ cls if cls else "" }}">
+    {% if href %}
+    <a href="{{ href }}" class="chirpui-chapter-item__link">
+        <span class="chirpui-chapter-item__timestamp">{{ timestamp }}</span>
+        <span class="chirpui-chapter-item__title">{{ title }}</span>
+    </a>
+    {% else %}
+    <span class="chirpui-chapter-item__link">
+        <span class="chirpui-chapter-item__timestamp">{{ timestamp }}</span>
+        <span class="chirpui-chapter-item__title">{{ title }}</span>
+    </span>
+    {% end %}
+</li>
+{% end %}

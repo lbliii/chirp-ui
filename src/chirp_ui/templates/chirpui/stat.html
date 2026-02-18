@@ -1,0 +1,19 @@
+{#- chirp-ui: Stat component
+    Label + value pair for followers, views, KPIs, etc.
+
+    Usage:
+        from "chirpui/stat.html" import stat
+
+        stat(value="1.2K", label="Followers")
+        stat(value="42", label="Videos", icon="▶")
+-#}
+
+{% def stat(value, label, icon=none, cls="") %}
+<div class="chirpui-stat{{ " " ~ cls if cls else "" }}">
+    {% if icon %}
+    <span class="chirpui-stat__icon">{{ icon }}</span>
+    {% end %}
+    <span class="chirpui-stat__value">{{ value }}</span>
+    <span class="chirpui-stat__label">{{ label }}</span>
+</div>
+{% end %}

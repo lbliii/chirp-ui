@@ -1,0 +1,24 @@
+{#- chirp-ui: Divider component
+    Visual separator between content. Vertical (default) or horizontal.
+    Optional text in the middle.
+
+    Usage:
+        {% from "chirpui/divider.html" import divider, divider_text %}
+
+        divider()  — line only
+        divider("OR")  — line with text
+        divider("OR", horizontal=true)
+        divider("OR", variant="primary")
+-#}
+
+{% def divider(text=none, horizontal=false, variant="", cls="") %}
+{% set variant_class = " chirpui-divider--" ~ variant if variant else "" %}
+{% set horiz_class = " chirpui-divider--horizontal" if horizontal else "" %}
+<div class="chirpui-divider{{ variant_class }}{{ horiz_class }}{{ " " ~ cls if cls else "" }}"
+     role="separator"
+     {% if text %}aria-label="{{ text }}"{% end %}>
+    {% if text %}
+        <span class="chirpui-divider__text">{{ text }}</span>
+    {% end %}
+</div>
+{% end %}

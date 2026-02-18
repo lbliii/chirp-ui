@@ -1,0 +1,35 @@
+{#- chirp-ui: Channel Card component
+    Avatar, name, subscriber count, subscribe button.
+
+    Usage:
+        from "chirpui/channel_card.html" import channel_card
+        from "chirpui/avatar.html" import avatar
+        from "chirpui/button.html" import btn
+
+        call channel_card(
+            href="/channel/1",
+            name="Dev Channel",
+            avatar_src="/avatar.jpg",
+            subscribers="12.5K"
+        )
+            btn("Subscribe", variant="primary")
+        end
+-#}
+
+{% def channel_card(href, name, avatar_src=none, avatar_initials=none, subscribers=none, cls="") %}
+<article class="chirpui-channel-card{{ " " ~ cls if cls else "" }}">
+    <a href="{{ href }}" class="chirpui-channel-card__link">
+        {% from "chirpui/avatar.html" import avatar %}
+        {{ avatar(src=avatar_src, initials=avatar_initials, alt=name, size="lg") }}
+        <div class="chirpui-channel-card__info">
+            <h3 class="chirpui-channel-card__name">{{ name }}</h3>
+            {% if subscribers %}
+            <p class="chirpui-channel-card__subscribers">{{ subscribers }} subscribers</p>
+            {% end %}
+        </div>
+    </a>
+    <div class="chirpui-channel-card__actions">
+        {% slot %}
+    </div>
+</article>
+{% end %}

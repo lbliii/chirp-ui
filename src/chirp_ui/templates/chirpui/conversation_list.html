@@ -1,0 +1,19 @@
+{#- chirp-ui: Conversation List component
+    Sidebar list of chats with conversation_item children.
+
+    Usage:
+        from "chirpui/conversation_list.html" import conversation_list, conversation_item
+
+        call conversation_list()
+            call conversation_item(href="/chat/1", name="Alice", preview="Hey there!", unread=2, time="2m")
+            end
+            call conversation_item(href="/chat/2", name="Bob", preview="See you tomorrow", muted=true)
+            end
+        end
+-#}
+
+{% def conversation_list(cls="") %}
+<nav class="chirpui-conversation-list{{ " " ~ cls if cls else "" }}" aria-label="Conversations">
+    {% slot %}
+</nav>
+{% end %}

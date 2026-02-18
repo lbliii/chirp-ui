@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/avatar.html" import avatar %}
+{% from "chirpui/post_card.html" import post_card, post_card_header, post_card_body, post_card_media, post_card_actions %}
+{% from "chirpui/action_bar.html" import action_bar, action_bar_item %}
+{% from "chirpui/comment.html" import comment, comment_thread %}
+{% from "chirpui/profile_header.html" import profile_header, profile_header_avatar, profile_header_info, profile_header_stats, profile_header_action %}
+{% from "chirpui/avatar_stack.html" import avatar_stack %}
+{% from "chirpui/stat.html" import stat %}
+{% from "chirpui/trending_tag.html" import trending_tag %}
+{% from "chirpui/mention.html" import mention %}
+{% from "chirpui/share_menu.html" import share_menu %}
+{% from "chirpui/button.html" import btn %}
+
+{% call container() %}
+{% call stack() %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <h1>Social Media</h1>
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    post_card, comment, profile_header, avatar_stack, trending_tag, mention, share_menu.
+  </p>
+</header>
+
+<h2>Profile Header</h2>
+{% call block() %}
+{% call profile_header(name="Alice Chen", cover_url="") %}
+{% call profile_header_avatar() %}
+{{ avatar(initials="AC", alt="Alice", size="lg") }}
+{% end %}
+{% call profile_header_info(name="Alice Chen") %}
+<p class="chirpui-profile-header__bio">Developer & designer. Building with Chirp.</p>
+{% call profile_header_stats() %}
+{{ stat(value="1.2K", label="Followers") }}
+{{ stat(value="42", label="Following") }}
+{% end %}
+{% call profile_header_action() %}
+{{ btn("Follow", variant="primary") }}
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Post Card</h2>
+{% call block() %}
+{% call post_card() %}
+{% call post_card_header(name="Alice Chen", handle="@alice", time="2h ago") %}
+{{ avatar(initials="AC", alt="Alice", size="md") }}
+{% end %}
+{% call post_card_body() %}
+<p>Check out this amazing sunset from the office today! {{ mention("chirpui", href="/") }} is making UI so much easier. 🌅</p>
+{% end %}
+{% call post_card_media() %}
+<div style="height: 12rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius-sm); display: flex; align-items: center; justify-content: center; color: var(--chirpui-text-muted);">[Image placeholder]</div>
+{% end %}
+{% call post_card_actions() %}
+{% call action_bar() %}
+{{ action_bar_item(icon="♥", label="Like", count=42) }}
+{{ action_bar_item(icon="💬", label="Comment", count=12) }}
+{{ action_bar_item(icon="↗", label="Share") }}
+{% end %}
+{{ share_menu(label="Share", share_url="https://example.com/post/1") }}
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Comments</h2>
+{% call block() %}
+{% call comment_thread() %}
+{% call comment(author="Bob", time="1h ago", avatar_initials="B") %}
+<p>Great post! Thanks for sharing.</p>
+{% end %}
+{% call comment(author="Carol", time="45m ago", avatar_initials="C", replies_url="#", replies_count=3) %}
+<p>I agree — ChirpUI is fantastic!</p>
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Trending & Mention</h2>
+{% call block() %}
+<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+{{ trending_tag(tag="python", href="/tag/python", count="12.5K") }}
+{{ trending_tag(tag="webdev", count="8.2K", trend="up") }}
+{{ mention("alice", href="/user/alice") }}
+</div>
+{% end %}
+
+<h2>Avatar Stack</h2>
+{% call block() %}
+{% call avatar_stack(max_visible=3, total=5) %}
+{{ avatar(initials="A", alt="Alice", size="sm") }}
+{{ avatar(initials="B", alt="Bob", size="sm") }}
+{{ avatar(initials="C", alt="Carol", size="sm") }}
+{% end %}
+<span class="chirpui-text-muted">5 people liked this</span>
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}

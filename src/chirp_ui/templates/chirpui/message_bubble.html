@@ -1,0 +1,22 @@
+{#- chirp-ui: Message Bubble component
+    Single message with sender, timestamp, status (sent/read/pending).
+
+    Usage:
+        from "chirpui/message_bubble.html" import message_bubble
+
+        call message_bubble(align="left", status="read")
+            call avatar_slot()
+                avatar(src="...", alt="Alice", size="sm")
+            end
+            <p>Hello! How are you?</p>
+            <time>2:34 PM</time>
+        end
+-#}
+
+{% def message_bubble(align="left", status=none, cls="") %}
+{% set align_class = " chirpui-message-bubble--" ~ align %}
+{% set status_class = " chirpui-message-bubble--" ~ status if status else "" %}
+<article class="chirpui-message-bubble{{ align_class }}{{ status_class }}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</article>
+{% end %}

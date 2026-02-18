@@ -1,0 +1,44 @@
+{#- chirp-ui: List component
+    Vertical layout for rows of information. Use list_item() for custom content,
+    or list(items) for simple text rows.
+
+    Usage:
+        {% from "chirpui/list.html" import list, list_item %}
+
+        {% call list_group() %}
+            {% call list_item() %}Row one{% end %}
+            {% call list_item() %}Row two{% end %}
+        {% end %}
+
+        list_group(["Item 1", "Item 2", "Item 3"])
+        list_group([{"label": "A", "href": "/a"}, {"label": "B"}], linked=true)
+-#}
+
+{% def list_group(items=none, linked=false, bordered=false, cls="") %}
+{% set bordered_class = " chirpui-list--bordered" if bordered else "" %}
+{% if items is not none %}
+<ul class="chirpui-list{{ bordered_class }}{{ " " ~ cls if cls else "" }}">
+    {% for item in items %}
+    <li class="chirpui-list__item">
+        {% if linked and item is mapping and item.get("href") %}
+            <a href="{{ item.href }}" class="chirpui-list__link">{{ item.get("label", item) }}</a>
+        {% elif item is mapping %}
+            {{ item.get("label", item) }}
+        {% else %}
+            {{ item }}
+        {% end %}
+    </li>
+    {% end %}
+</ul>
+{% else %}
+<ul class="chirpui-list{{ bordered_class }}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</ul>
+{% end %}
+{% end %}
+
+{% def list_item(cls="") %}
+<li class="chirpui-list__item{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</li>
+{% end %}

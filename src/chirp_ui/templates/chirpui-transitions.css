@@ -1,15 +1,11 @@
 /* chirp-ui View Transitions — optional polish for htmx swaps
    Include after chirpui.css when using AppConfig(view_transitions=True).
 
-   Names #main so the browser can correlate old/new states (reduces blink).
-   Named modal enables intentional shared-element transitions.
-   Simple crossfade — override in app CSS if you want slide effects.
+   Avoid view-transition-name on #main when it's the htmx-boost swap target:
+   full-page responses create duplicate #main during transition. Use root
+   (default) instead. Named modal enables intentional shared-element transitions.
    See: https://piccalil.li/blog/why-are-my-view-transitions-blinking/
 */
-
-#main {
-    view-transition-name: page-content;
-}
 
 /* Modal — typically one at a time; enables intentional transitions */
 dialog.chirpui-modal,
@@ -43,10 +39,6 @@ dialog.chirpui-modal,
 }
 
 @media (prefers-reduced-motion: reduce) {
-    #main {
-        view-transition-name: none;
-    }
-
     ::view-transition-old(page-content),
     ::view-transition-old(root),
     ::view-transition-new(page-content),

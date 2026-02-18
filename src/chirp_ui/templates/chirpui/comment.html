@@ -1,0 +1,48 @@
+{#- chirp-ui: Comment component
+    Nested comment with avatar, author, body, optional replies link.
+
+    Usage:
+        from "chirpui/comment.html" import comment, comment_thread
+        from "chirpui/avatar.html" import avatar
+
+        call comment(author="Alice", time="1h ago", avatar_src="/a.jpg")
+            <p>Great post! Thanks for sharing.</p>
+        end
+
+        call comment(author="Bob", time="2h ago", replies_url="/post/1?replies=1", replies_count=3)
+            <p>I agree with this.</p>
+        end
+-#}
+
+{% def comment(author, time=none, href=none, avatar_src=none, avatar_initials=none, replies_url=none, replies_count=none, cls="") %}
+<article class="chirpui-comment{{ " " ~ cls if cls else "" }}">
+    <header class="chirpui-comment__header">
+        {% from "chirpui/avatar.html" import avatar %}
+        <span class="chirpui-comment__avatar">{{ avatar(src=avatar_src, initials=avatar_initials, alt=author, size="sm") }}</span>
+        <div class="chirpui-comment__meta">
+            {% if href %}
+            <a href="{{ href }}" class="chirpui-comment__author">{{ author }}</a>
+            {% else %}
+            <span class="chirpui-comment__author">{{ author }}</span>
+            {% end %}
+            {% if time %}
+            <time class="chirpui-comment__time">{{ time }}</time>
+            {% end %}
+        </div>
+    </header>
+    <div class="chirpui-comment__body">
+        {% slot %}
+    </div>
+    {% if replies_url and replies_count %}
+    <footer class="chirpui-comment__replies">
+        <a href="{{ replies_url }}" class="chirpui-comment__replies-link">View {{ replies_count }} {{ "reply" if replies_count == 1 else "replies" }}</a>
+    </footer>
+    {% end %}
+</article>
+{% end %}
+
+{% def comment_thread(cls="") %}
+<ul class="chirpui-comment-thread{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</ul>
+{% end %}
