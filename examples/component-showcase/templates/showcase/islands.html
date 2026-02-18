@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/islands.html" import island_root %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Islands", subtitle="Framework-agnostic mount roots with SSR fallback and htmx remounts.") }}
+
+{% call block() %}
+<p class="chirpui-text-muted">
+  This page demonstrates the V1 islands contract:
+  <code>data-island</code>, <code>data-island-props</code>, and remount lifecycle after htmx swaps.
+</p>
+
+<button
+  type="button"
+  class="chirpui-btn chirpui-btn--secondary"
+  hx-get="/islands/remount"
+  hx-target="#island-shell"
+  hx-swap="outerHTML"
+>
+  Trigger htmx remount
+</button>
+
+<div id="island-events" class="chirpui-stack chirpui-stack--sm" style="margin-top: 1rem;"></div>
+{% end %}
+
+{% block island_mount %}
+<div id="island-shell">
+{% call island_root(
+  "counter-widget",
+  props={"seed": 3, "updated_at": "server-rendered"},
+  mount_id="counter-widget-root",
+  version="1",
+  src="/static/islands/counter.js",
+  cls="chirpui-card"
+) %}
+  <h3>SSR Fallback</h3>
+  <p>If a client runtime is missing, this fallback remains visible.</p>
+  <p class="chirpui-text-muted">Mount id: <code>counter-widget-root</code></p>
+{% end %}
+</div>
+{% end %}
+
+<script>
+(() => {
+  const log = document.getElementById("island-events");
+  if (!log) return;
+  const events = ["chirp:island:mount", "chirp:island:unmount", "chirp:island:remount"];
+  events.forEach((name) => {
+    document.addEventListener(name, (event) => {
+      const d = event.detail || {};
+      const item = document.createElement("p");
+      item.className = "chirpui-text-muted";
+      item.textContent = `${name}: ${d.name || "unknown"} (${d.id || "no-id"})`;
+      log.prepend(item);
+    });
+  });
+})();
+</script>
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

@@ -81,7 +81,7 @@ app.add_middleware(StaticFiles(
 | Feature | Description |
 |---------|-------------|
 | **Layout** | container, grid, stack, block, page_header, section_header, divider, breadcrumbs, navbar, navbar_end, navbar_dropdown, sidebar, hero, surface, callout |
-| **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group |
+| **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group, island_root |
 | **Forms** | text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, form_actions |
 | **Data display** | badge, spinner, skeleton, progress, description_list, timeline, tree_view, calendar |
 | **Streaming** | streaming_block, copy_btn, model_card — for htmx SSE and LLM UIs |
@@ -137,6 +137,35 @@ env = Environment(
 ```
 
 Call `chirp_ui.register_filters(app)` if using Chirp for form/field helpers.
+
+</details>
+
+<details>
+<summary><strong>Islands (framework-agnostic)</strong> — Isolate high-state widgets</summary>
+
+chirp-ui stays server-rendered by default. For complex client-state widgets
+(editors, canvases, advanced grids), mount isolated islands on dedicated roots.
+
+```html
+{% from "chirpui/islands.html" import island_root %}
+
+{% call island_root("editor", props={"doc_id": doc.id}, mount_id="editor-root") %}
+<p>Fallback editor UI (SSR) if JavaScript is unavailable.</p>
+{% end %}
+```
+
+In Chirp, enable runtime lifecycle hooks:
+
+```python
+from chirp import App, AppConfig
+
+app = App(AppConfig(islands=True, islands_contract_strict=True))
+```
+
+Lifecycle events emitted in the browser:
+- `chirp:island:mount`
+- `chirp:island:unmount`
+- `chirp:island:remount`
 
 </details>
 

@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+import html
+import json
 from pathlib import Path
 from typing import Any
 
 import pytest
 from kida import Environment, FileSystemLoader
+from kida.template import Markup
 
 
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates"
@@ -39,6 +42,32 @@ def _bem_stub(block: str, variant: str = "", modifier: str = "", cls: str = "") 
     return " ".join(parts)
 
 
+def _island_attrs_stub(
+    name: str,
+    props: Any | None = None,
+    *,
+    mount_id: str | None = None,
+    version: str = "1",
+    src: str | None = None,
+    cls: str = "",
+) -> Markup:
+    """Stub for Chirp's island mount attribute helper."""
+    attrs = [
+        f' data-island="{html.escape(name, quote=True)}"',
+        f' data-island-version="{html.escape(version, quote=True)}"',
+    ]
+    if mount_id:
+        attrs.append(f' id="{html.escape(mount_id, quote=True)}"')
+    if src:
+        attrs.append(f' data-island-src="{html.escape(src, quote=True)}"')
+    if cls:
+        attrs.append(f' class="{html.escape(cls, quote=True)}"')
+    if props is not None:
+        payload = html.escape(json.dumps(props, separators=(",", ":"), ensure_ascii=True), quote=True)
+        attrs.append(f' data-island-props="{payload}"')
+    return Markup("".join(attrs))
+
+
 @pytest.fixture
 def env() -> Environment:
     """Kida environment with chirp-ui templates loaded via FileSystemLoader."""
@@ -48,4 +77,5 @@ def env() -> Environment:
     )
     # Register stubs for Chirp filters (field_errors, bem) used by chirp-ui
     e.update_filters({"field_errors": _field_errors_stub, "bem": _bem_stub})
+    e.add_global("island_attrs", _island_attrs_stub)
     return e

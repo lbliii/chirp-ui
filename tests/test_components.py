@@ -81,6 +81,31 @@ class TestLayout:
         assert "Sub" in html
 
 
+class TestIslands:
+    def test_island_root_with_props(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/islands.html" import island_root %}'
+            '{% call island_root("editor", props={"doc_id": 42}, mount_id="editor-root") %}'
+            "<p>Fallback</p>"
+            "{% end %}"
+        ).render()
+        assert 'data-island="editor"' in html
+        assert 'id="editor-root"' in html
+        assert "data-island-props=" in html
+        assert "chirpui-island-fallback" in html
+        assert "Fallback" in html
+
+    def test_island_root_with_raw_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/islands.html" import island_root %}'
+            '{% call island_root("editor", raw_attrs=\' data-island="editor" id="raw-root"\') %}'
+            "Body"
+            "{% end %}"
+        ).render()
+        assert 'id="raw-root"' in html
+        assert "Body" in html
+
+
 # ---------------------------------------------------------------------------
 # Surface
 # ---------------------------------------------------------------------------
