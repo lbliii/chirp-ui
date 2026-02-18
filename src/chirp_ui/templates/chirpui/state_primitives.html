@@ -13,7 +13,9 @@
     src="/static/islands/state_sync.js",
     cls=cls,
     primitive="state_sync"
-) %}{% end %}
+) %}
+    {% slot %}{{ caller() }}{% end %}
+{% end %}
 {% end %}
 
 {% def action_queue(action_id, mount_id=none, cls="") %}
@@ -24,7 +26,9 @@
     src="/static/islands/action_queue.js",
     cls=cls,
     primitive="action_queue"
-) %}{% end %}
+) %}
+    {% slot %}{{ caller() }}{% end %}
+{% end %}
 {% end %}
 
 {% def draft_store(draft_key, mount_id=none, cls="") %}
@@ -35,7 +39,9 @@
     src="/static/islands/draft_store.js",
     cls=cls,
     primitive="draft_store"
-) %}{% end %}
+) %}
+    {% slot %}{{ caller() }}{% end %}
+{% end %}
 {% end %}
 
 {% def error_boundary(boundary_id, mount_id=none, cls="") %}
@@ -46,7 +52,9 @@
     src="/static/islands/error_boundary.js",
     cls=cls,
     primitive="error_boundary"
-) %}{% end %}
+) %}
+    {% slot %}{{ caller() }}{% end %}
+{% end %}
 {% end %}
 
 {% def grid_state(state_key, columns, mount_id=none, cls="") %}
@@ -57,7 +65,9 @@
     src="/static/islands/grid_state.js",
     cls=cls,
     primitive="grid_state"
-) %}{% end %}
+) %}
+    {% slot %}{{ caller() }}{% end %}
+{% end %}
 {% end %}
 
 {% def wizard_state(state_key, steps, mount_id=none, cls="") %}
@@ -68,7 +78,9 @@
     src="/static/islands/wizard_state.js",
     cls=cls,
     primitive="wizard_state"
-) %}{% end %}
+) %}
+    {% slot %}{{ caller() }}{% end %}
+{% end %}
 {% end %}
 
 {% def upload_state(state_key, endpoint, mount_id=none, cls="") %}
@@ -79,5 +91,7 @@
     src="/static/islands/upload_state.js",
     cls=cls,
     primitive="upload_state"
-) %}{% end %}
+) %}
+    {% slot %}{{ caller() }}{% end %}
+{% end %}
 {% end %}
