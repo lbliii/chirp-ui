@@ -32,11 +32,11 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "kida-templates>=0.2.2",  # Template engine (PackageLoader added in 0.2.0)
+    "kida-templates>=0.2.2", # Template engine (PackageLoader added in 0.2.0)
 ]
 
 [project.optional-dependencies]
-showcase = ["chirp>=0.1.0"]  # For examples/component-showcase
+showcase = ["chirp>=0.1.2"] # For examples/component-showcase
 
 [project.urls]
 Homepage = "https://github.com/lbliii/chirp-ui"
@@ -82,12 +82,12 @@ select = [
     "PT",   # flake8-pytest-style — pytest best practices
 ]
 ignore = [
-    "E501",   # line too long — handled by formatter
+    "E501", # line too long — handled by formatter
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]    # Allow unused imports in __init__ files (re-exports)
-"tests/**/*.py" = ["S101"]  # Allow assert in tests
+"__init__.py" = ["F401"]   # Allow unused imports in __init__ files (re-exports)
+"tests/**/*.py" = ["S101"] # Allow assert in tests
 
 # =============================================================================
 # ty — Type Checker (Rust-based, Astral)
@@ -150,7 +150,7 @@ dev = [
     # Type Checking
     "ty>=0.0.11",
     # Linting & Formatting
-    "ruff>=0.15.1",  # 0.15.1+ fixes except-parenthesis bug (PEP 758 + as clause)
+    "ruff>=0.15.1", # 0.15.1+ fixes except-parenthesis bug (PEP 758 + as clause)
     # Pre-commit
     "pre-commit>=4.0.0",
 ]
@@ -176,8 +176,17 @@ format = { cmd = "ruff format .", help = "Format code with ruff" }
 format-check = { cmd = "ruff format . --check", help = "Check formatting" }
 
 # CI Pipeline
-ci = { sequence = ["lint", "format-check", "ty", "test"], help = "Full CI check" }
-check = { sequence = ["lint", "format-check", "ty"], help = "Quick check (no tests)" }
+ci = { sequence = [
+    "lint",
+    "format-check",
+    "ty",
+    "test",
+], help = "Full CI check" }
+check = { sequence = [
+    "lint",
+    "format-check",
+    "ty",
+], help = "Quick check (no tests)" }
 
 # Cleanup
 clean.shell = """

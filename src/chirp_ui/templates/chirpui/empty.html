@@ -15,9 +15,15 @@
         call empty_state(title="No items", action_label="Create", action_href="/new")
             <p>Get started by creating your first item.</p>
         end
+
+        call empty_state(title="No results", code="query", search_hint="Try a different search term")
+            <p>No matches found.</p>
+        end
+
+    Docs wave extras: code, suggestions, search_hint (all data-in).
 -#}
 
-{% def empty_state(icon=none, title="No items", illustration=none, action_label=none, action_href=none, cls="") %}
+{% def empty_state(icon=none, title="No items", illustration=none, action_label=none, action_href=none, code=none, suggestions=none, search_hint=none, cls="") %}
 <div class="chirpui-empty-state{{ " " ~ cls if cls else "" }}">
     {% if illustration %}
     <div class="chirpui-empty-state__illustration">{{ illustration }}</div>
@@ -25,8 +31,21 @@
     <div class="chirpui-empty-state__icon">{{ icon }}</div>
     {% end %}
     <h2 class="chirpui-empty-state__title">{{ title }}</h2>
+    {% if code %}
+    <div class="chirpui-empty-state__code"><code>{{ code }}</code></div>
+    {% end %}
     <div class="chirpui-empty-state__body">
         {% slot %}
+        {% if search_hint %}
+        <p class="chirpui-empty-state__search-hint">{{ search_hint }}</p>
+        {% end %}
+        {% if suggestions %}
+        <ul class="chirpui-empty-state__suggestions">
+            {% for item in suggestions %}
+            <li>{{ item }}</li>
+            {% end %}
+        </ul>
+        {% end %}
         {% if action_label and action_href %}
         <a href="{{ action_href }}" class="chirpui-btn chirpui-btn--primary chirpui-empty-state__action">{{ action_label }}</a>
         {% else %}

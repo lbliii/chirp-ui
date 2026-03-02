@@ -263,6 +263,19 @@ class TestHero:
             ).render()
             assert f"chirpui-hero--{bg}" in html
 
+    def test_page_hero(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero.html" import page_hero %}'
+            '{% call page_hero(title="API Reference", subtitle="Explore.", variant="editorial") %}'
+            "Body"
+            "{% end %}"
+        ).render()
+        assert "chirpui-hero--page" in html
+        assert "chirpui-hero--page-editorial" in html
+        assert "API Reference" in html
+        assert "Explore." in html
+        assert "Body" in html
+
 
 # ---------------------------------------------------------------------------
 # Empty State
@@ -280,6 +293,106 @@ class TestEmptyState:
         assert "chirpui-empty-state__action" in html
         assert 'href="/new"' in html
         assert "Create" in html
+
+    def test_empty_state_with_code_and_suggestions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/empty.html" import empty_state %}'
+            '{% call empty_state(title="No results", code="query", '
+            'search_hint="Try different terms", suggestions=["Tip 1", "Tip 2"]) %}'
+            "<p>Nothing found.</p>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-empty-state__code" in html
+        assert "query" in html
+        assert "chirpui-empty-state__search-hint" in html
+        assert "Try different terms" in html
+        assert "chirpui-empty-state__suggestions" in html
+        assert "Tip 1" in html
+
+
+# ---------------------------------------------------------------------------
+# Nav tree
+# ---------------------------------------------------------------------------
+
+
+class TestNavTree:
+    def test_nav_tree_flat(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{% call nav_tree(items=[{"title": "Home", "href": "/"}, '
+            '{"title": "Docs", "href": "/docs", "active": True}]) %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-nav-tree" in html
+        assert 'href="/"' in html
+        assert 'href="/docs"' in html
+        assert 'aria-current="page"' in html
+
+    def test_nav_tree_nested(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{% call nav_tree(items=[{"title": "API", "href": "/api", '
+            '"children": [{"title": "Ref", "href": "/api/ref", "children": []}]}]) %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-nav-tree__node" in html
+        assert "API" in html
+        assert "Ref" in html
+
+
+# ---------------------------------------------------------------------------
+# Params table
+# ---------------------------------------------------------------------------
+
+
+class TestParamsTable:
+    def test_params_table(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/params_table.html" import params_table %}'
+            '{{ params_table(rows=[{"name": "x", "type": "int", "default": "0", '
+            '"description": "A number"}], title="Parameters") }}'
+        ).render()
+        assert "chirpui-params-table" in html
+        assert "Parameters" in html
+        assert "x" in html
+        assert "int" in html
+        assert "0" in html
+        assert "A number" in html
+
+
+# ---------------------------------------------------------------------------
+# Signature
+# ---------------------------------------------------------------------------
+
+
+class TestSignature:
+    def test_signature(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/signature.html" import signature %}'
+            '{{ signature(text="def foo(): pass", language="python") }}'
+        ).render()
+        assert "chirpui-signature" in html
+        assert "def foo(): pass" in html
+        assert 'data-language="python"' in html
+
+
+# ---------------------------------------------------------------------------
+# Index card
+# ---------------------------------------------------------------------------
+
+
+class TestIndexCard:
+    def test_index_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/index_card.html" import index_card %}'
+            '{{ index_card(href="/api/foo", title="foo", description="Does something.", badge="function") }}'
+        ).render()
+        assert "chirpui-index-card" in html
+        assert 'href="/api/foo"' in html
+        assert "foo" in html
+        assert "Does something." in html
+        assert "chirpui-index-card__badge" in html
+        assert "function" in html
 
 
 # ---------------------------------------------------------------------------

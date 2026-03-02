@@ -1,0 +1,25 @@
+{#- chirp-ui: Index card component
+    Link card for index/listing pages (commands, modules, API members).
+    Data-in: {href, title, description?, badge?}.
+    Works for Bengal autodoc, Chirp API index, Docusaurus-style listings.
+
+    Usage:
+        from "chirpui/index_card.html" import index_card
+
+        index_card(href="/api/foo", title="foo", description="Does something.", badge="function")
+        index_card(href="/docs/start", title="Getting Started", description="Quick start guide.")
+-#}
+
+{% def index_card(href, title, description=none, badge=none, cls="") %}
+<a href="{{ href }}" class="chirpui-index-card{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-index-card__header">
+        {% if badge %}
+        <span class="chirpui-index-card__badge">{{ badge }}</span>
+        {% end %}
+        <span class="chirpui-index-card__title">{{ title }}</span>
+    </div>
+    {% if description %}
+    <p class="chirpui-index-card__description">{{ description }}</p>
+    {% end %}
+</a>
+{% end %}
