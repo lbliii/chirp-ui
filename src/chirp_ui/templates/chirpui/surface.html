@@ -12,11 +12,11 @@
             Hero section content.
         end
 
-    Variants: default, muted, elevated, accent, glass, frosted, smoke
+    Variants: default, muted, elevated, accent, gradient-subtle, gradient-accent, gradient-border, gradient-mesh, glass, frosted, smoke
 -#}
 
 {% def surface(variant="default", full_width=false, padding=true, cls="") %}
-{% set variant = variant | validate_variant(("default","muted","elevated","accent","glass","frosted","smoke"), "default") %}
+{% set variant = variant | validate_variant(("default","muted","elevated","accent","gradient-subtle","gradient-accent","gradient-border","gradient-mesh","glass","frosted","smoke"), "default") %}
 <div class="chirpui-surface chirpui-surface--{{ variant }}{% if full_width %} chirpui-surface--full{% end %}{% if not padding %} chirpui-surface--no-padding{% end %}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>

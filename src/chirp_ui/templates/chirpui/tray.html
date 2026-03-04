@@ -1,0 +1,39 @@
+{#- chirp-ui: Tray (slide-out panel)
+    Use tray_trigger to open, tray for content. Requires chirpui.js for behavior.
+    Position: left | right | bottom.
+
+    Usage:
+        from "chirpui/tray.html" import tray, tray_trigger
+
+        {{ tray_trigger("filters", "Filters", icon="⚙") }}
+        {% call tray("filters", "Filters", position="right") %}
+            <form>...</form>
+        {% end %}
+-#}
+
+{% def tray_trigger(id, label, icon=none) %}
+<button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm"
+        data-chirpui-tray-trigger data-tray-id="{{ id }}"
+        aria-controls="tray-{{ id }}" aria-expanded="false">
+    {% if icon %}<span aria-hidden="true">{{ icon }}</span>{% endif %}
+    {{ label }}
+</button>
+{% end %}
+
+{% def tray(id, title, position="right") %}
+<div class="chirpui-tray chirpui-tray--{{ position }} chirpui-tray--closed" id="tray-{{ id }}"
+     data-chirpui-tray data-tray-id="{{ id }}" role="dialog" aria-modal="true"
+     aria-labelledby="tray-{{ id }}-title" aria-hidden="true">
+    <div class="chirpui-tray__backdrop" data-chirpui-tray-backdrop></div>
+    <div class="chirpui-tray__panel">
+        <header class="chirpui-tray__header">
+            <h2 class="chirpui-tray__title" id="tray-{{ id }}-title">{{ title }}</h2>
+            <button type="button" class="chirpui-tray__close" data-chirpui-tray-close
+                    aria-label="Close">×</button>
+        </header>
+        <div class="chirpui-tray__body">
+            {% slot %}
+        </div>
+    </div>
+</div>
+{% end %}

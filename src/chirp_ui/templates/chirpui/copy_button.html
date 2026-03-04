@@ -1,0 +1,16 @@
+{#- chirp-ui: Copy button
+    Copies text to clipboard, shows feedback. Requires chirpui.js for behavior.
+
+    Usage:
+        from "chirpui/copy_button.html" import copy_button
+        {{ copy_button("text to copy", label="Copy") }}
+-#}
+
+{% def copy_button(text, label="Copy") %}
+<button type="button" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-copy-btn"
+        data-chirpui-copy data-copy-text="{{ text | e }}"
+        aria-label="{{ label }}">
+    <span class="chirpui-copy-btn__label">{{ label }}</span>
+    <span class="chirpui-copy-btn__done" hidden>Copied!</span>
+</button>
+{% end %}

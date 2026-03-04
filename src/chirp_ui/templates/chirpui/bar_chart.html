@@ -1,0 +1,48 @@
+{#- chirpui: Bar Chart component
+    CSS-only horizontal bar chart. No JavaScript required.
+
+    Usage:
+        from "chirpui/bar_chart.html" import bar_chart
+
+        bar_chart(items=[
+            {"label": "create-rule", "value": 42},
+            {"label": "debug-agent", "value": 18},
+        ], max=50)
+
+        bar_chart(items=tag_counts, max=10, show_value=true, variant="gold")
+        bar_chart(items=..., label_href=lambda i: f"/skills?tag={i['label']}")
+
+    items: list of {label, value} or {label, value, href?}
+    max: scale for bar width (default: max of values)
+    show_value: show numeric value after bar (default: true)
+    variant: gold, radiant, success, muted (default: gold)
+    size: sm, md, lg (default: md)
+-#}
+
+{% def bar_chart(items, max=none, show_value=true, variant="gold", size="md", cls="") %}
+{% set variant = variant | validate_variant(("gold","radiant","success","muted"), "gold") %}
+{% set size = size | validate_variant(("sm","md","lg"), "md") %}
+{% set _max = max if max is not none and max > 0 else ((items | map(attribute="value") | list | max) if items else 1) %}
+<div class="chirpui-bar-chart chirpui-bar-chart--{{ variant }} chirpui-bar-chart--{{ size }}{{ " " ~ cls if cls else "" }}"
+     role="img"
+     aria-label="Bar chart with {{ items | length }} items">
+    {% for item in items or [] %}
+    <div class="chirpui-bar-chart__row">
+        <span class="chirpui-bar-chart__label">
+        {% if item.get("href") %}
+        <a href="{{ item.get('href') }}" class="chirpui-bar-chart__label-link">{{ item.label }}</a>
+        {% else %}
+        {{ item.label }}
+        {% end %}
+        </span>
+        <div class="chirpui-bar-chart__track">
+            <div class="chirpui-bar-chart__bar"
+                 style="width: {{ (item.value / _max * 100) if _max > 0 else 0 }}%"></div>
+        </div>
+        {% if show_value %}
+        <span class="chirpui-bar-chart__value">{{ item.value }}</span>
+        {% end %}
+    </div>
+    {% end %}
+</div>
+{% end %}

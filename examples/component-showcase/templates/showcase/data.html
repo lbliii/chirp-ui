@@ -2,6 +2,8 @@
 
 {% block content %}
 {% from "chirpui/layout.html" import container, grid, stack, block %}
+{% from "chirpui/filter_bar.html" import filter_bar %}
+{% from "chirpui/forms.html" import search_bar %}
 {% from "chirpui/table.html" import table, row %}
 {% from "chirpui/pagination.html" import pagination %}
 {% from "chirpui/empty.html" import empty_state %}
@@ -22,54 +24,54 @@
 <h2>Table (htmx-driven)</h2>
 {% call block() %}
 <div id="data_bulk_bar" class="chirpui-bulk-bar-wrapper" style="margin-bottom: 0.5rem;"></div>
-<form id="data_filters" class="chirpui-stack chirpui-stack--sm" style="margin-bottom: 1rem; flex-direction: row; flex-wrap: wrap; gap: 0.75rem; align-items: flex-end;">
-  <div style="flex: 1; min-width: 12rem;">
-    <label class="chirpui-field__label" for="data_search">Search</label>
-    <input class="chirpui-field__input" id="data_search" name="q" type="search"
-           placeholder="Name, email, role..."
-           hx-get="/data/table"
-           hx-trigger="keyup changed delay:200ms"
-           hx-target="#data_table_content"
-           hx-include="#data_filters"
-           hx-swap="innerHTML transition:true"
-           hx-vals='{"page": "1"}'>
+{% call filter_bar("/data/export", attrs='id="data_filters" style="margin-bottom: 1rem;"') %}
+  <div class="chirpui-action-strip__primary">
+    {{ search_bar(
+        "q",
+        label="Search",
+        variant="solo",
+        placeholder="Name, email, role...",
+        attrs='id="data_search" hx-get="/data/table" hx-trigger="keyup changed delay:200ms" hx-target="#data_table_content" hx-include="#data_filters" hx-swap="innerHTML transition:true" hx-vals=\'{"page":"1"}\''
+    ) }}
   </div>
-  <div style="min-width: 8rem;">
-    <label class="chirpui-field__label" for="data_role">Role</label>
-    <select class="chirpui-field__input" id="data_role" name="role"
-            hx-get="/data/table"
-            hx-trigger="change"
-            hx-target="#data_table_content"
-            hx-include="#data_filters"
-            hx-swap="innerHTML transition:true"
-            hx-vals='{"page": "1"}'>
-      <option value="">All</option>
-      <option value="Admin">Admin</option>
-      <option value="User">User</option>
-      <option value="Guest">Guest</option>
-    </select>
+  <div class="chirpui-action-strip__controls">
+    <div style="min-width: 8rem;">
+      <label class="chirpui-field__label" for="data_role">Role</label>
+      <select class="chirpui-field__input" id="data_role" name="role"
+              hx-get="/data/table"
+              hx-trigger="change"
+              hx-target="#data_table_content"
+              hx-include="#data_filters"
+              hx-swap="innerHTML transition:true"
+              hx-vals='{"page":"1"}'>
+        <option value="">All</option>
+        <option value="Admin">Admin</option>
+        <option value="User">User</option>
+        <option value="Guest">Guest</option>
+      </select>
+    </div>
+    <div style="min-width: 8rem;">
+      <label class="chirpui-field__label" for="data_density">Density</label>
+      <select class="chirpui-field__input" id="data_density" name="density"
+              hx-get="/data/table"
+              hx-trigger="change"
+              hx-target="#data_table_content"
+              hx-include="#data_filters"
+              hx-swap="innerHTML transition:true">
+        <option value="comfortable">Comfortable</option>
+        <option value="compact">Compact</option>
+      </select>
+    </div>
+    <input type="hidden" name="page" value="1">
+    <input type="hidden" name="sort" value="name">
+    <input type="hidden" name="dir" value="asc">
   </div>
-  <div style="min-width: 8rem;">
-    <label class="chirpui-field__label" for="data_density">Density</label>
-    <select class="chirpui-field__input" id="data_density" name="density"
-            hx-get="/data/table"
-            hx-trigger="change"
-            hx-target="#data_table_content"
-            hx-include="#data_filters"
-            hx-swap="innerHTML transition:true">
-      <option value="comfortable">Comfortable</option>
-      <option value="compact">Compact</option>
-    </select>
+  <div class="chirpui-action-strip__actions">
+    <button type="submit" formtarget="_blank" class="chirpui-btn chirpui-btn--secondary">
+      Export CSV
+    </button>
   </div>
-  <button type="submit" form="data_filters" formaction="/data/export"
-          formtarget="_blank" class="chirpui-btn chirpui-btn--secondary"
-          style="align-self: flex-end;">
-    Export CSV
-  </button>
-  <input type="hidden" name="page" value="1">
-  <input type="hidden" name="sort" value="name">
-  <input type="hidden" name="dir" value="asc">
-</form>
+{% end %}
 <div id="data_table_content"
      hx-get="/data/table"
      hx-trigger="load"

@@ -1,0 +1,32 @@
+{#- chirp-ui: Config Card component
+    Key-value card for settings/config display. Icon in header, no media.
+    Uses description_list with type-aware semantic styling.
+
+    Usage:
+        from "chirpui/config_card.html" import config_card
+
+        config_card(title="Logs", icon="⟳", items=[
+            {"term": "retention_days", "detail": "14", "type": "number"},
+            {"term": "max_entries_per_day", "detail": "500", "type": "number"},
+        ])
+
+        config_card(title="ACP", icon="◇", items=[
+            {"term": "enabled", "detail": "Yes", "type": "bool"},
+            {"term": "endpoint", "detail": "http://...", "type": "url"},
+            {"term": "api_key", "detail": "(not set)", "type": "unset"},
+        ])
+
+    Item types: bool (badge), url (monospace+truncate), number (right-align), unset (muted italic)
+-#}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/description_list.html" import description_list %}
+
+{% def config_card(title, icon=none, items=none, cls="") %}
+{% call card(title=title, icon=icon) %}
+{% if items %}
+{{ description_list(items=items, variant="horizontal") }}
+{% else %}
+{% slot %}
+{% end %}
+{% end %}
+{% end %}

@@ -466,6 +466,77 @@
 </div>
 {% end %}
 
+{# Search bar — composite search input with layout variants. Use inside a form.
+   variant: "solo" (input only, for live search), "with-button" (input + compact submit),
+   "with-icon" (input with ⌕ prefix). With with-button, input flexes; button stays compact. #}
+{% def search_bar(name, value="", variant="solo", label=none, search_url=none, search_target=none,
+                  search_trigger="keyup changed delay:300ms", search_include=none,
+                  placeholder="Search...", button_label="Search", button_icon="⌕",
+                  errors=none, attrs="") %}
+{% set search_attrs = ('hx-get="' ~ search_url ~ '" hx-trigger="' ~ search_trigger ~ '" hx-target="' ~ search_target ~ '" hx-swap="innerHTML"' ~ (' hx-include="' ~ search_include ~ '"' if search_include else '')) if (search_url and search_target) else '' %}
+<div class="chirpui-field chirpui-search-bar chirpui-search-bar--{{ variant }}{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
+    {% end %}
+    <div class="chirpui-search-bar__inner">
+        {% if variant == "with-icon" %}
+        <span class="chirpui-search-bar__icon" aria-hidden="true">{{ button_icon }}</span>
+        {% end %}
+        <input class="chirpui-search-bar__input"
+               type="search" id="{{ name }}" name="{{ name }}"
+               value="{{ value }}"
+               placeholder="{{ placeholder }}"
+               {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+               {{ search_attrs | safe }} {{ attrs | safe }}>
+        {% if variant == "with-button" %}
+        <button type="submit" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm chirpui-search-bar__btn">
+            <span class="chirpui-btn__icon">{{ button_icon }}</span>
+            <span class="chirpui-btn__label">{{ button_label }}</span>
+        </button>
+        {% end %}
+    </div>
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
+{# Key-value form — inline key + value inputs + submit. For "Set config value" etc. -#}
+{% def key_value_form(action, method="post", key_placeholder="", value_placeholder="",
+                      submit_label="Set", key_options=none, key_name="key", value_name="value",
+                      attrs="", cls="") %}
+{% call form(action, method=method, attrs=attrs, cls="chirpui-key-value-form" ~ (" " ~ cls if cls else "")) %}
+<div class="chirpui-key-value-form__row">
+    <div class="chirpui-field chirpui-key-value-form__key">
+        <label class="chirpui-field__label" for="{{ key_name }}">Key</label>
+        {% if key_options %}
+        <input class="chirpui-field__input" type="text" id="{{ key_name }}" name="{{ key_name }}"
+               list="key-value-form-datalist-{{ key_name }}" placeholder="{{ key_placeholder }}">
+        <datalist id="key-value-form-datalist-{{ key_name }}">
+            {% for opt in key_options %}
+            <option value="{{ opt['value'] if opt is mapping else opt }}">{{ opt['label'] if opt is mapping else opt }}</option>
+            {% end %}
+        </datalist>
+        {% else %}
+        <input class="chirpui-field__input" type="text" id="{{ key_name }}" name="{{ key_name }}"
+               placeholder="{{ key_placeholder }}">
+        {% end %}
+    </div>
+    <div class="chirpui-field chirpui-key-value-form__value">
+        <label class="chirpui-field__label" for="{{ value_name }}">Value</label>
+        <input class="chirpui-field__input" type="text" id="{{ value_name }}" name="{{ value_name }}"
+               placeholder="{{ value_placeholder }}">
+    </div>
+    <div class="chirpui-key-value-form__submit">
+        {% from "chirpui/button.html" import btn %}
+        {{ btn(submit_label, type="submit", variant="primary") }}
+    </div>
+</div>
+{% end %}
+{% end %}
+
 {# Hidden field #}
 {% def hidden_field(name, value="") %}
 <input type="hidden" name="{{ name }}" value="{{ value }}">

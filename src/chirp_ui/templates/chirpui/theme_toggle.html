@@ -1,0 +1,38 @@
+{#- chirp-ui: Theme + style toggles
+    Persists in localStorage. Requires data-theme/data-style on <html>.
+    Include chirpui.js for behavior.
+
+    Usage:
+        from "chirpui/theme_toggle.html" import theme_toggle, style_toggle, style_select
+        {{ theme_toggle() }}
+        {{ style_toggle() }}
+-#}
+
+{% def theme_toggle() %}
+<button type="button"
+        class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-theme-toggle"
+        data-chirpui-theme-toggle
+        aria-label="Toggle theme (light, dark, system)"
+        title="Toggle theme">
+    <span class="chirpui-theme-toggle__icon" data-chirpui-theme-icon aria-hidden="true">◐</span>
+</button>
+{% end %}
+
+{% def style_toggle() %}
+<button type="button"
+        class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-style-toggle"
+        data-chirpui-style-toggle
+        aria-label="Toggle style (default, neumorphic)"
+        title="Toggle style">
+    <span class="chirpui-style-toggle__icon" data-chirpui-style-icon aria-hidden="true">▣</span>
+</button>
+{% end %}
+
+{% def style_select(name="chirpui-style", cls="") %}
+<label class="chirpui-field__label chirpui-inline-flex {{ cls }}">Style
+    <select name="{{ name }}" class="chirpui-field__input chirpui-field__input--sm" data-chirpui-style-select>
+        <option value="default">Default</option>
+        <option value="neumorphic">Neumorphic</option>
+    </select>
+</label>
+{% end %}

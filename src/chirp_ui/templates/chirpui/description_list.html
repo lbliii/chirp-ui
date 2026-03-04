@@ -16,16 +16,27 @@
     Slots: header (content above the list).
 -#}
 
-{% def description_list(items=none, variant="stacked", cls="") %}
+{% def description_list(items=none, variant="stacked", compact=false, cls="") %}
 {% set variant = variant | validate_variant(("stacked","horizontal"), "stacked") %}
+{% set compact_class = " chirpui-dl--compact" if compact else "" %}
 <div class="chirpui-dl-wrap">
     <div class="chirpui-dl__header">{% slot header %}</div>
-<dl class="chirpui-dl chirpui-dl--{{ variant }}{{ " " ~ cls if cls else "" }}">
+<dl class="chirpui-dl chirpui-dl--{{ variant }}{{ compact_class }}{{ " " ~ cls if cls else "" }}">
     {% if items %}
         {% for item in items %}
+        {% set item_type = item.get('type', '') %}
         <div class="chirpui-dl__row">
             <dt class="chirpui-dl__term">{{ item.term }}</dt>
-            <dd class="chirpui-dl__detail">{{ item.detail }}</dd>
+            <dd class="chirpui-dl__detail{{ " chirpui-dl__detail--" ~ item_type if item_type in ("bool","url","number","unset") else "" }}">
+            {% if item_type == "bool" %}
+                {% from "chirpui/badge.html" import badge %}
+                {{ badge(item.detail, variant="success" if item.detail in ("Yes", "true", "1", "on") else "muted") }}
+            {% elif item_type == "unset" %}
+                <span class="chirpui-dl__detail-unset">{{ item.detail }}</span>
+            {% else %}
+                {{ item.detail }}
+            {% end %}
+            </dd>
         </div>
         {% end %}
     {% else %}
@@ -35,9 +46,20 @@
 </div>
 {% end %}
 
-{% def description_item(term, detail, cls="") %}
+{% def description_item(term, detail, type=none, cls="") %}
+{% set type_class = " chirpui-dl__detail--" ~ type if type else "" %}
+{% set type_valid = type | validate_variant(("bool","url","number","unset"), "") %}
 <div class="chirpui-dl__row{{ " " ~ cls if cls else "" }}">
     <dt class="chirpui-dl__term">{{ term }}</dt>
-    <dd class="chirpui-dl__detail">{{ detail }}</dd>
+    <dd class="chirpui-dl__detail{{ type_class if type_valid else "" }}">
+    {% if type_valid == "bool" %}
+        {% from "chirpui/badge.html" import badge %}
+        {{ badge(detail, variant="success" if detail in ("Yes", "true", "1", "on") else "muted") }}
+    {% elif type_valid == "unset" %}
+        <span class="chirpui-dl__detail-unset">{{ detail }}</span>
+    {% else %}
+        {{ detail }}
+    {% end %}
+    </dd>
 </div>
 {% end %}

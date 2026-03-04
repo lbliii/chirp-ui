@@ -44,6 +44,9 @@ Used by `.chirpui-prose`, headings, paragraphs, captions.
 | `--chirpui-prose-xl` | h3 | clamp(1.25rem, 3vw, 1.5rem) |
 | `--chirpui-prose-2xl` | h2 | clamp(1.5rem, 4vw, 1.75rem) |
 | `--chirpui-prose-3xl` | h1 | clamp(1.75rem, 5vw, 2rem) |
+| `--chirpui-prose-4xl` | Display heading | clamp(2rem, 6vw, 2.5rem) |
+| `--chirpui-prose-5xl` | Hero heading | clamp(2.5rem, 8vw, 3rem) |
+| `--chirpui-prose-max-width` | Readable line length | 65ch |
 
 ### Family & weight
 
@@ -168,7 +171,7 @@ Used by `code`, `pre`, `.chirpui-code`, `.chirpui-code-block`. Override for docs
 
 | Token | Purpose | Default |
 |-------|---------|---------|
-| `--chirpui-pre-padding` | Padding for `pre` and `.chirpui-code-block` | var(--chirpui-spacing) |
+| `--chirpui-pre-padding` | Padding for `pre` and `.chirpui-code-block` | var(--chirpui-spacing-sm) |
 
 ### Override examples
 

@@ -1312,6 +1312,93 @@ class TestForms:
 
 
 # ---------------------------------------------------------------------------
+# Action Containers
+# ---------------------------------------------------------------------------
+
+
+class TestActionContainers:
+    def test_action_strip_default_slot_backwards_compatible(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/action_strip.html" import action_strip %}'
+            "{% call action_strip() %}"
+            '<button class="chirpui-btn">Go</button>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-action-strip" in html
+        assert "chirpui-action-strip__inner" in html
+        assert "Go" in html
+
+    def test_action_strip_composed_zones(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/action_strip.html" import action_strip %}'
+            '{% call action_strip(density="sm", wrap="scroll") %}'
+            '<div class="chirpui-action-strip__primary"><input type="search"></div>'
+            '<div class="chirpui-action-strip__controls"><button>Filters</button></div>'
+            '<div class="chirpui-action-strip__actions"><button>Create</button></div>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-action-strip--sm" in html
+        assert "chirpui-action-strip--scroll" in html
+        assert "chirpui-action-strip__primary" in html
+        assert "Filters" in html
+        assert "Create" in html
+
+    def test_filter_bar(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_bar %}'
+            '{% call filter_bar("/items") %}'
+            '<div class="chirpui-action-strip__primary"><input name="q" type="search"></div>'
+            '<div class="chirpui-action-strip__controls"><select name="role"><option>All</option></select></div>'
+            '<div class="chirpui-action-strip__actions"><button type="submit">Apply</button></div>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-filter-bar" in html
+        assert 'action="/items"' in html
+        assert 'name="q"' in html
+        assert "Apply" in html
+
+    def test_command_bar(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_bar.html" import command_bar %}'
+            "{% call command_bar() %}"
+            '<div class="chirpui-action-strip__controls"><button>Bulk edit</button></div>'
+            '<div class="chirpui-action-strip__actions"><button>Create</button></div>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-command-bar" in html
+        assert 'role="toolbar"' in html
+        assert "Bulk edit" in html
+        assert "Create" in html
+
+    def test_search_header(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/search_header.html" import search_header %}'
+            '{{ search_header("People", "/people", query="alice", subtitle="Directory") }}'
+        ).render()
+        assert "chirpui-search-header" in html
+        assert "chirpui-search-header__strip" in html
+        assert 'action="/people"' in html
+        assert 'value="alice"' in html
+        assert "Directory" in html
+
+    def test_selection_bar_renders_when_count_positive(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/selection_bar.html" import selection_bar %}'
+            "{% call selection_bar(count=2) %}<button>Clear</button>{% end %}"
+        ).render()
+        assert "chirpui-selection-bar" in html
+        assert "2 selected" in html
+        assert "Clear" in html
+
+    def test_selection_bar_hidden_when_no_selection(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/selection_bar.html" import selection_bar %}'
+            "{% call selection_bar(count=0) %}<button>Clear</button>{% end %}"
+        ).render()
+        assert "chirpui-selection-bar" not in html
+
+
+# ---------------------------------------------------------------------------
 # Navbar, Sidebar, Stepper
 # ---------------------------------------------------------------------------
 
@@ -1358,6 +1445,91 @@ class TestNavbar:
         assert "chirpui-navbar-dropdown" in html
         assert "Products" in html
         assert 'href="/a"' in html
+
+    def test_navbar_brand_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar, navbar_link %}'
+            '{% from "chirpui/logo.html" import logo %}'
+            '{% call navbar(brand_url="/", use_slots=true, brand_slot=true) %}'
+            '{% slot brand %}{{ logo(text="ChirpUI", image_src="/static/logo.svg", variant="both") }}{% end %}'
+            '{{ navbar_link("/docs", "Docs") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-navbar__brand" in html
+        assert "chirpui-logo" in html
+        assert 'src="/static/logo.svg"' in html
+
+
+class TestAppShell:
+    def test_app_shell_brand_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% from "chirpui/logo.html" import logo %}'
+            '{% call app_shell(brand_url="/", brand_slot=true) %}'
+            '{% slot brand %}{{ logo(text="Brand", image_src="/static/logo.svg", variant="both") }}{% end %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell" in html
+        assert "chirpui-app-shell__brand" in html
+        assert "chirpui-logo" in html
+        assert 'src="/static/logo.svg"' in html
+        assert "Main" in html
+
+
+class TestLogo:
+    def test_logo_text_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(text="ChirpUI", variant="text") }}'
+        ).render()
+        assert "chirpui-logo" in html
+        assert "chirpui-logo--text" in html
+        assert "chirpui-logo__text" in html
+        assert "ChirpUI" in html
+        assert "<img" not in html
+
+    def test_logo_image_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(image_src="/static/logo.svg", image_alt="ChirpUI", variant="image") }}'
+        ).render()
+        assert "chirpui-logo--image" in html
+        assert 'src="/static/logo.svg"' in html
+        assert 'alt="ChirpUI"' in html
+        assert "chirpui-logo__img" in html
+        assert "<a " not in html
+
+    def test_logo_both_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(text="ChirpUI", image_src="/static/logo.svg", variant="both", size="lg", align="start") }}'
+        ).render()
+        assert "chirpui-logo--both" in html
+        assert "chirpui-logo--lg" in html
+        assert "chirpui-logo--start" in html
+        assert "chirpui-logo__img" in html
+        assert "chirpui-logo__text" in html
+
+    def test_logo_renders_link_root_when_href_is_set(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(text="Home", image_src="/static/logo.svg", href="/", variant="both") }}'
+        ).render()
+        assert '<a class="chirpui-logo' in html
+        assert 'href="/"' in html
+        assert "</a>" in html
+
+    def test_logo_image_variant_uses_hidden_text_when_alt_missing(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(text="Accessible brand", image_src="/static/logo.svg", variant="image") }}'
+        ).render()
+        assert "chirpui-logo--image" in html
+        assert 'alt=""' in html
+        assert "chirpui-visually-hidden" in html
+        assert "Accessible brand" in html
 
 
 class TestSidebar:

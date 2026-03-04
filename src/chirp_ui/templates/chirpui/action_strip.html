@@ -1,0 +1,41 @@
+{#- chirp-ui: Action Strip component
+    Canonical container for search/filter/action rows on list and index pages.
+    Distinct from action_bar (social actions: like, share, comment).
+
+    Modifiers:
+      - density: sm | md
+      - wrap: wrap | scroll | collapse
+
+    Usage:
+        from "chirpui/action_strip.html" import action_strip
+
+        call action_strip()
+            {{ btn("Validate", variant="default", icon="◎", ...) }}
+            {{ btn("Migrate", href="/migrate", ...) }}
+        end
+
+        call action_strip(density="sm", wrap="scroll")
+            slot primary
+            {{ search_bar("q", variant="with-button") }}
+            end
+            slot controls
+            {{ btn("Filters", variant="default", size="sm") }}
+            end
+            slot actions
+            {{ btn("Create", variant="primary", size="sm") }}
+            end
+        end
+-#}
+
+{% def action_strip(surface_variant="muted", density="md", wrap="wrap", sticky=false, role="region", aria_label="Actions and filters", cls="") %}
+{% set surface_variant = surface_variant | validate_variant(("default","muted","elevated","accent","gradient-subtle","gradient-accent","gradient-border","gradient-mesh","glass","frosted","smoke"), "muted") %}
+{% set density = density | validate_variant(("sm","md"), "md") %}
+{% set wrap = wrap | validate_variant(("wrap","scroll","collapse"), "wrap") %}
+<div class="chirpui-surface chirpui-surface--{{ surface_variant }}">
+<div class="chirpui-action-strip chirpui-action-strip--{{ density }} chirpui-action-strip--{{ wrap }}{{ " chirpui-action-strip--sticky" if sticky else "" }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-action-strip__inner" role="{{ role }}" aria-label="{{ aria_label }}">
+        {{ caller() }}
+    </div>
+</div>
+</div>
+{% end %}

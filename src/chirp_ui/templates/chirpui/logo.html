@@ -1,0 +1,50 @@
+{#- chirp-ui: Logo component
+    Reusable brand mark with text/image variants and optional link wrapper.
+
+    Usage:
+        from "chirpui/logo.html" import logo
+
+        {{ logo(text="ChirpUI", variant="text") }}
+        {{ logo(image_src="/static/logo.svg", image_alt="ChirpUI", variant="image") }}
+        {{ logo(text="ChirpUI", image_src="/static/logo.svg", href="/", variant="both") }}
+
+    Variants: text, image, both
+    Sizes: sm, md, lg
+    Align: start, center, end
+-#}
+
+{% def logo(text="", image_src="", image_alt="", href=none, variant="both", size="md", align="center", cls="") %}
+{% set variant = variant | validate_variant(("text", "image", "both"), "both") %}
+{% set size = size | validate_variant(("sm", "md", "lg"), "md") %}
+{% set align = align | validate_variant(("start", "center", "end"), "center") %}
+{% set has_text = text | trim %}
+{% set has_image = image_src | trim %}
+{% set root_cls = "chirpui-logo chirpui-logo--" ~ variant ~ " chirpui-logo--" ~ size ~ " chirpui-logo--" ~ align ~ (" " ~ cls if cls else "") %}
+{% set should_show_image = (variant in ("image", "both")) and has_image %}
+{% set should_show_text = (variant in ("text", "both")) and has_text %}
+{% set has_accessible_text_fallback = variant == "image" and (not image_alt | trim) and has_text %}
+{% set resolved_alt = image_alt if image_alt | trim else "" %}
+{% if href %}
+<a class="{{ root_cls }}" href="{{ href }}">
+    {% if should_show_image %}
+    <img class="chirpui-logo__img" src="{{ image_src }}" alt="{{ resolved_alt }}">
+    {% end %}
+    {% if should_show_text %}
+    <span class="chirpui-logo__text">{{ text }}</span>
+    {% elif has_accessible_text_fallback %}
+    <span class="chirpui-visually-hidden">{{ text }}</span>
+    {% end %}
+</a>
+{% else %}
+<span class="{{ root_cls }}">
+    {% if should_show_image %}
+    <img class="chirpui-logo__img" src="{{ image_src }}" alt="{{ resolved_alt }}">
+    {% end %}
+    {% if should_show_text %}
+    <span class="chirpui-logo__text">{{ text }}</span>
+    {% elif has_accessible_text_fallback %}
+    <span class="chirpui-visually-hidden">{{ text }}</span>
+    {% end %}
+</span>
+{% end %}
+{% end %}

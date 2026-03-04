@@ -2,12 +2,31 @@
 
 {% block content %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
-{% from "chirpui/forms.html" import csrf_hidden, password_field, text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field, form_actions %}
+{% from "chirpui/forms.html" import csrf_hidden, password_field, text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field, search_bar, form_actions %}
 {% from "chirpui/auth.html" import login_form %}
+{% from "chirpui/action_strip.html" import action_strip %}
+{% from "chirpui/filter_bar.html" import filter_bar %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/search_header.html" import search_header %}
+{% from "chirpui/selection_bar.html" import selection_bar %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/theme_toggle.html" import theme_toggle, style_toggle, style_select %}
 
 {% call container() %}
 {% call stack() %}
-{{ page_header("Forms", subtitle="text_field, textarea_field, select_field, checkbox_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field — Form inputs with labels and errors.") }}
+{{ page_header("Forms", subtitle="text_field, textarea_field, select_field, checkbox_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field, search_bar — Form inputs with labels and errors.") }}
+
+<h2>Theme and Style Controls</h2>
+{% call block() %}
+<div class="chirpui-row" style="gap: var(--chirpui-spacing-sm); align-items: center;">
+  {{ theme_toggle() }}
+  {{ style_toggle() }}
+  {{ style_select(cls="chirpui-grow") }}
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  Try <code>data-style="neumorphic"</code> with both light and dark themes.
+</p>
+{% end %}
 
 <h2>Text Fields</h2>
 {% call grid(cols=2) %}
@@ -84,10 +103,80 @@
 
 <h2>Search</h2>
 {% call block() %}
-{{ search_field("q", placeholder="Search...") }}
-<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
-  With search_url and search_target, adds htmx debounced search (keyup delay:300ms).
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-bottom: 0.75rem;">
+  search_bar variants: solo (input only), with-button (input + compact submit), with-icon (input with ⌕ prefix).
 </p>
+<form class="chirpui-stack chirpui-stack--sm" style="max-width: 24rem;">
+  {{ search_bar("q1", variant="solo", placeholder="Live search (solo)...") }}
+</form>
+<form class="chirpui-stack chirpui-stack--sm" style="max-width: 24rem;">
+  {{ search_bar("q2", variant="with-button", placeholder="Search skills...", button_label="Search") }}
+</form>
+<form class="chirpui-stack chirpui-stack--sm" style="max-width: 24rem;">
+  {{ search_bar("q3", variant="with-icon", placeholder="Search with icon...") }}
+</form>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  search_field: raw input. With search_url and search_target, adds htmx debounced search (keyup delay:300ms).
+</p>
+{{ search_field("q", placeholder="Search...") }}
+{% end %}
+
+<h2>Action Containers</h2>
+{% call block() %}
+{% call stack(gap="sm") %}
+<p class="chirpui-text-muted chirpui-font-sm">
+  Family: action_strip (default), filter_bar, command_bar, search_header, selection_bar.
+</p>
+{% call action_strip(surface_variant="muted", density="sm") %}
+  <div class="chirpui-action-strip__primary">
+    <form style="min-width: 14rem; max-width: 22rem;">
+      {{ search_bar("q_actions", variant="with-button", placeholder="Search users...") }}
+    </form>
+  </div>
+  <div class="chirpui-action-strip__controls">
+    {{ btn("Status: all", variant="default", size="sm") }}
+    {{ btn("Sort", variant="default", size="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ btn("Invite user", variant="primary", size="sm") }}
+  </div>
+{% end %}
+{% call filter_bar("/forms", density="sm") %}
+  <div class="chirpui-action-strip__primary">
+    {{ search_bar("q_filter", variant="with-icon", placeholder="Filter form fields...") }}
+  </div>
+  <div class="chirpui-action-strip__controls">
+    {{ btn("Required only", variant="default", size="sm") }}
+    {{ btn("With errors", variant="default", size="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ btn("Apply", variant="primary", size="sm", type="submit") }}
+  </div>
+{% end %}
+{% call command_bar(surface_variant="default", density="sm") %}
+  <div class="chirpui-action-strip__controls">
+    {{ btn("Bulk edit", variant="default", size="sm") }}
+    {{ btn("Archive", variant="default", size="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ btn("Create", variant="primary", size="sm") }}
+    {{ btn("Export", variant="secondary", size="sm") }}
+  </div>
+{% end %}
+{% call search_header("Search Header", "/forms", query="", subtitle="Search-first list header with optional controls.", search_placeholder="Search forms...") %}
+  <div class="chirpui-action-strip__controls">
+    {{ btn("Sort", variant="default", size="sm") }}
+    {{ btn("View", variant="default", size="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ btn("New form", variant="primary", size="sm") }}
+  </div>
+{% end %}
+{% call selection_bar(count=3, live_region=true) %}
+  {{ btn("Export selected", variant="secondary", size="sm") }}
+  {{ btn("Clear", variant="default", size="sm") }}
+{% end %}
+{% end %}
 {% end %}
 
 <h2>With Errors (demo)</h2>

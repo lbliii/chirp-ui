@@ -15,6 +15,8 @@
             <p>Vertical stack with gap.</p>
         {% end %}
 -#}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
 
 {% def container(max_width="72rem", padding=true, cls="") %}
 <div class="chirpui-container{{ " " ~ cls if cls else "" }}"
@@ -41,14 +43,20 @@
 </div>
 {% end %}
 
-{#- page_header: title, subtitle, actions slot for right-aligned content -#}
-{% def page_header(title, subtitle=none, cls="") %}
+{#- page_header: title, subtitle, meta, breadcrumb_items, actions slot -#}
+{% def page_header(title, subtitle=none, meta=none, breadcrumb_items=none, cls="") %}
 <header class="chirpui-stack chirpui-stack--sm chirpui-page-header{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-page-header__top">
         <div>
+            {% if breadcrumb_items %}
+            {{ breadcrumbs(breadcrumb_items, cls="chirpui-page-header__breadcrumbs") }}
+            {% end %}
             <h1>{{ title }}</h1>
             {% if subtitle %}
             <p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>
+            {% end %}
+            {% if meta %}
+            <p class="chirpui-text-muted chirpui-font-sm chirpui-page-header__meta">{{ meta | safe }}</p>
             {% end %}
         </div>
         <div class="chirpui-page-header__actions">{% slot actions %}</div>
@@ -69,4 +77,46 @@
         <div class="chirpui-section-header__actions">{% slot actions %}</div>
     </div>
 </div>
+{% end %}
+
+{#- section_header_inline: compact h2 + actions on one line, no subtitle — for dense forms -#}
+{% def section_header_inline(title, cls="") %}
+<div class="chirpui-section-header chirpui-section-header--inline{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-section-header__top">
+        <h2 class="chirpui-section-header__title-inline">{{ title }}</h2>
+        <div class="chirpui-section-header__actions">{% slot %}</div>
+    </div>
+</div>
+{% end %}
+
+{#- section: composite surface + section_header + content. Reduces boilerplate.
+    full_width=true wraps in chirpui-blade for edge-to-edge blade-style sections.
+    parallax=true adds subtle scroll-driven background motion (Chrome 115+). -#}
+{% def section(title, subtitle=none, surface_variant="muted", full_width=false, parallax=false, cls="") %}
+{% set surface_variant = surface_variant | validate_variant(("default","muted","elevated","accent","gradient-subtle","gradient-accent","gradient-border","gradient-mesh","glass","frosted","smoke"), "muted") %}
+{% if full_width %}
+<div class="chirpui-blade{{ " chirpui-blade--parallax" if parallax else "" }}{{ " " ~ cls if cls else "" }}">
+{% end %}
+{% call surface(variant=surface_variant, full_width=full_width) %}
+{{ section_header(title, subtitle) }}
+{% slot %}
+{% end %}
+{% if full_width %}
+</div>
+{% end %}
+{% end %}
+{% end %}
+
+{#- section_collapsible: details/summary with section_header as summary. For "Advanced" config. -#}
+{% def section_collapsible(title, open=false, surface_variant="muted", cls="") %}
+{% set surface_variant = surface_variant | validate_variant(("default","muted","elevated","accent","gradient-subtle","gradient-accent","gradient-border","gradient-mesh","glass","frosted","smoke"), "muted") %}
+<details class="chirpui-section-collapsible{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
+    <summary class="chirpui-section-collapsible__summary">
+        {% call section_header_inline(title) %}{% end %}
+    </summary>
+    {% call surface(variant=surface_variant) %}
+    {% slot %}
+    {% end %}
+    {% end %}
+</details>
 {% end %}

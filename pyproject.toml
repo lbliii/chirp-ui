@@ -54,7 +54,7 @@ Repository = "https://github.com/lbliii/chirp-ui"
 where = ["src"]
 
 [tool.setuptools.package-data]
-chirp_ui = ["py.typed", "templates/**/*.html", "templates/**/*.css"]
+chirp_ui = ["py.typed", "templates/**/*.html", "templates/**/*.css", "templates/**/*.js"]
 
 # =============================================================================
 # Ruff — Linter & Formatter
@@ -147,6 +147,7 @@ dev = [
     "pytest>=9.0.2",
     "pytest-cov>=6.0.0",
     "pytest-timeout>=2.3.0",
+    "tinycss2>=1.4.0",
     # Type Checking
     "ty>=0.0.11",
     # Linting & Formatting
@@ -174,17 +175,26 @@ lint = { cmd = "ruff check .", help = "Run ruff linter" }
 lint-fix = { cmd = "ruff check . --fix", help = "Run ruff linter with auto-fix" }
 format = { cmd = "ruff format .", help = "Format code with ruff" }
 format-check = { cmd = "ruff format . --check", help = "Check formatting" }
+css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS parses cleanly" }
+css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }
+css-transition-check = { cmd = "pytest tests/test_transition_tokens.py -q", help = "Check transitions use motion tokens" }
 
 # CI Pipeline
 ci = { sequence = [
     "lint",
     "format-check",
+    "css-check",
+    "css-contract-check",
+    "css-transition-check",
     "ty",
     "test",
 ], help = "Full CI check" }
 check = { sequence = [
     "lint",
     "format-check",
+    "css-check",
+    "css-contract-check",
+    "css-transition-check",
     "ty",
 ], help = "Quick check (no tests)" }
 

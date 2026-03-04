@@ -3,8 +3,11 @@
 {% block content %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/navbar.html" import navbar, navbar_link %}
+{% from "chirpui/logo.html" import logo %}
 {% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
 {% from "chirpui/stepper.html" import stepper %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/button.html" import btn %}
 
 {% call container() %}
 {% call stack() %}
@@ -12,11 +15,22 @@
 
 <h2>Navbar</h2>
 {% call block() %}
-{% call navbar(brand="chirp-ui", brand_url="/") %}
+{% call navbar(brand_url="/", use_slots=true, brand_slot=true) %}
+{% slot brand %}
+{{ logo(text="chirp-ui", image_src="/static/chirpui-logo.svg", variant="both") }}
+{% end %}
 {{ navbar_link("/layout", "Layout") }}
 {{ navbar_link("/forms", "Forms") }}
 {{ navbar_link("/ui", "UI", active=true) }}
 {% end %}
+{% end %}
+
+{% call block() %}
+<div class="chirpui-stack chirpui-stack--sm">
+  {{ logo(text="Text only", variant="text") }}
+  {{ logo(image_src="/static/chirpui-logo.svg", image_alt="chirp-ui", variant="image") }}
+  {{ logo(text="chirp-ui", image_src="/static/chirpui-logo.svg", href="/", variant="both") }}
+</div>
 {% end %}
 
 <h2>Sidebar</h2>
@@ -44,6 +58,21 @@
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: var(--chirpui-spacing);">
   Multi-step forms: current=2 shows step 2 active, step 1 completed.
 </p>
+{% end %}
+
+<h2>Command Bar</h2>
+{% call block() %}
+{% call command_bar(surface_variant="muted", density="sm", aria_label="Navigation commands") %}
+  <div class="chirpui-action-strip__controls">
+    {{ btn("Overview", variant="default", size="sm") }}
+    {{ btn("Routes", variant="default", size="sm") }}
+    {{ btn("Permissions", variant="default", size="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ btn("New route", variant="primary", size="sm") }}
+    {{ btn("Export", variant="secondary", size="sm") }}
+  </div>
+{% end %}
 {% end %}
 
 <p><a href="/">← Back to index</a></p>

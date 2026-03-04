@@ -3,7 +3,7 @@
     The main area uses hx-boost to swap only #main on navigation,
     keeping the sidebar and topbar persistent.
 
-    Named slots: topbar, topbar_end, sidebar, default (main content).
+    Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar, default (main content).
 
     Usage:
         from "chirpui/app_shell.html" import app_shell
@@ -14,16 +14,40 @@
             {% slot sidebar %}call sidebar()...end{% end %}
             Page content here
         end
--#}
 
-{% def app_shell(brand="", brand_url="/", cls="") %}
-<div class="chirpui-app-shell{{ " " ~ cls if cls else "" }}">
-    <header class="chirpui-app-shell__topbar">
-        <a href="{{ brand_url }}" class="chirpui-app-shell__brand">{{ brand }}</a>
+        call app_shell(brand_url="/", brand_slot=true)
+            {% slot brand %}logo(text="My App", image_src="/static/logo.svg", variant="both"){% end %}
+            {% slot sidebar %}...{% end %}
+            Page content here
+        end
+
+        call app_shell(brand="My App", sidebar_collapsible=true)
+            ...
+        end
+-#}
+{% from "chirpui/sidebar.html" import sidebar_toggle %}
+
+{% def app_shell(brand="", brand_url="/", brand_slot=false, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", cls="") %}
+{% set topbar_variant = topbar_variant | validate_variant(("default","glass","gradient"), "default") %}
+{% set sidebar_variant = sidebar_variant | validate_variant(("default","glass","muted"), "default") %}
+{% set topbar_class = " chirpui-app-shell__topbar--" ~ topbar_variant if topbar_variant != "default" else "" %}
+{% set sidebar_class = " chirpui-app-shell__sidebar--" ~ sidebar_variant if sidebar_variant != "default" else "" %}
+<div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if sidebar_collapsible else "" }}{{ " " ~ cls if cls else "" }}">
+    <header class="chirpui-app-shell__topbar{{ topbar_class }}">
+        {% if sidebar_collapsible %}
+        <div class="chirpui-app-shell__topbar-start">{{ sidebar_toggle() }}</div>
+        {% end %}
+        <a href="{{ brand_url }}" class="chirpui-app-shell__brand">
+            {% if brand_slot %}
+            {% slot brand %}
+            {% else %}
+            {{ brand }}
+            {% end %}
+        </a>
         <div class="chirpui-app-shell__topbar-center">{% slot topbar %}</div>
         <div class="chirpui-app-shell__topbar-end">{% slot topbar_end %}</div>
     </header>
-    <aside class="chirpui-app-shell__sidebar">{% slot sidebar %}</aside>
+    <aside class="chirpui-app-shell__sidebar{{ sidebar_class }}">{% slot sidebar %}</aside>
     <main id="main" class="chirpui-app-shell__main" hx-boost="true" hx-target="#main"
           hx-swap="innerHTML transition:true" hx-select="#page-content">
         <div id="page-content">
@@ -31,4 +55,23 @@
         </div>
     </main>
 </div>
+{% if sidebar_collapsible %}
+<script>
+(function() {
+  const key = 'chirpui-sidebar-collapsed';
+  const shell = document.querySelector('.chirpui-app-shell');
+  const btn = document.querySelector('[data-chirpui-sidebar-toggle]');
+  if (!shell || !btn) return;
+  if (localStorage.getItem(key) === 'true') {
+    shell.classList.add('chirpui-app-shell--sidebar-collapsed');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+  btn.addEventListener('click', function() {
+    const collapsed = shell.classList.toggle('chirpui-app-shell--sidebar-collapsed');
+    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    localStorage.setItem(key, collapsed);
+  });
+})();
+</script>
+{% end %}
 {% end %}
