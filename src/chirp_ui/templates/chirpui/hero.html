@@ -11,10 +11,11 @@
             {% slot action %}<a href="/start" class="chirpui-btn chirpui-btn--primary">Get started</a>{% end %}
         end
 
-    Backgrounds: solid, muted, gradient
+    Backgrounds: solid, muted, gradient, mesh, animated-gradient
 -#}
 
 {% def hero(title=none, subtitle=none, background="solid", cls="") %}
+{% set background = background | validate_variant(("solid","muted","gradient","mesh","animated-gradient"), "solid") %}
 <section class="chirpui-hero chirpui-hero--{{ background }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-hero__inner">
         {% if title %}
@@ -27,6 +28,44 @@
             {% slot %}
         </div>
         <div class="chirpui-hero__action">{% slot action %}</div>
+    </div>
+</section>
+{% end %}
+
+{#- chirp-ui: Page Hero component
+    Enhanced hero for docs, marketing, app page headers.
+    Data-in: caller passes title, subtitle. Slots receive pre-rendered content.
+
+    Named slots: eyebrow, actions, metadata, footer.
+
+    Usage:
+        from "chirpui/hero.html" import page_hero
+
+        call page_hero(title="API Reference", subtitle="Explore the API.", variant="editorial")
+            slot eyebrow: breadcrumbs; slot actions: share; slot metadata: time; slot footer: badges
+        end
+
+    Variants: editorial, minimal
+-#}
+
+{% def page_hero(title=none, subtitle=none, variant="editorial", background="solid", cls="") %}
+{% set variant = variant | validate_variant(("editorial","minimal"), "editorial") %}
+{% set background = background | validate_variant(("solid","muted","gradient","mesh","animated-gradient"), "solid") %}
+<section class="chirpui-hero chirpui-hero--page chirpui-hero--page-{{ variant }} chirpui-hero--{{ background }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-hero__inner">
+        <div class="chirpui-hero__eyebrow">{% slot eyebrow %}</div>
+        {% if title %}
+        <h1 class="chirpui-hero__title">{{ title }}</h1>
+        {% end %}
+        {% if subtitle %}
+        <p class="chirpui-hero__subtitle">{{ subtitle }}</p>
+        {% end %}
+        <div class="chirpui-hero__actions">{% slot actions %}</div>
+        <div class="chirpui-hero__metadata">{% slot metadata %}</div>
+        <div class="chirpui-hero__content">
+            {% slot %}
+        </div>
+        <div class="chirpui-hero__footer">{% slot footer %}</div>
     </div>
 </section>
 {% end %}

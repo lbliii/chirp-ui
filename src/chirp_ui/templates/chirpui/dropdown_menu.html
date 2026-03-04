@@ -1,0 +1,121 @@
+{#- chirp-ui: Dropdown menu (items-based)
+    Trigger + items list. Items: {label, href?} or {label, action?, variant?, icon?, divider?}
+    Requires chirpui.js or dropdown script for behavior.
+
+    Usage:
+        from "chirpui/dropdown_menu.html" import dropdown_menu, dropdown_select, dropdown_split
+        from "chirpui/button.html" import btn
+
+        {{ dropdown_menu(btn("Actions", icon="▾"), items=[...]) }}
+-#}
+
+{% def dropdown_menu(trigger, items, id="chirpui-dropdown") %}
+{% set dropdown_id = id %}
+<div class="chirpui-dropdown" data-chirpui-dropdown id="{{ dropdown_id }}">
+    <div class="chirpui-dropdown__trigger" data-chirpui-dropdown-trigger
+         role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false"
+         aria-controls="{{ dropdown_id }}-menu">
+        {{ trigger }}
+    </div>
+    <div class="chirpui-dropdown__menu" id="{{ dropdown_id }}-menu" role="menu"
+         aria-orientation="vertical" hidden>
+        {% for item in items %}
+        {% if item.get("divider") %}
+        <div class="chirpui-dropdown__divider" role="separator"></div>
+        {% else %}
+        {% set href = item.get("href") %}
+        {% set action = item.get("action") %}
+        {% set variant = item.get("variant", "default") %}
+        {% set icon = item.get("icon", "") %}
+        {% if href %}
+        <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ href }}" role="menuitem">
+            {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
+            {{ item.get("label", "") }}
+        </a>
+        {% elif action %}
+        <button type="button" class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}"
+                data-action="{{ action }}" role="menuitem">
+            {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
+            {{ item.get("label", "") }}
+        </button>
+        {% else %}
+        <span class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" role="menuitem">
+            {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
+            {{ item.get("label", "") }}
+        </span>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% end %}
+
+{% def dropdown_select(trigger_label, items, selected=none, id="chirpui-dropdown-select") %}
+{% set sel = selected or (items[0].get("value", items[0].get("label")) if items else "") %}
+{% set display = items[0].get("label", items[0].get("value", "")) if items else "" %}
+{% for it in items %}
+{% if it.get("value") == sel or it.get("label") == sel %}
+{% set display = it.get("label", it.get("value", "")) %}
+{% endif %}
+{% endfor %}
+<div class="chirpui-dropdown chirpui-dropdown--select" data-chirpui-dropdown data-chirpui-dropdown-select
+     data-selected="{{ display }}" id="{{ id }}">
+    <div class="chirpui-dropdown__trigger chirpui-dropdown__trigger--select" data-chirpui-dropdown-trigger
+         role="combobox" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+        <span class="chirpui-dropdown__selected">{{ display }}</span>
+        <span class="chirpui-dropdown__caret" aria-hidden="true">▾</span>
+    </div>
+    <div class="chirpui-dropdown__menu" role="listbox" hidden>
+        {% for item in items %}
+        {% set val = item.get("value", item.get("label")) %}
+        <div class="chirpui-dropdown__item chirpui-dropdown__item--select{% if val == sel %} chirpui-dropdown__item--selected{% endif %}"
+             role="option" data-value="{{ val }}" tabindex="-1">
+            {% if item.get("icon") %}<span class="chirpui-dropdown__icon">{{ item.get("icon") }}</span>{% endif %}
+            {{ item.get("label", val) }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% end %}
+
+{% def dropdown_split(primary_label, primary_href=none, primary_action=none, items=[], icon=none) %}
+<div class="chirpui-dropdown chirpui-dropdown--split" data-chirpui-dropdown>
+    {% if primary_href %}
+    <a href="{{ primary_href }}" class="chirpui-dropdown__split-primary chirpui-btn chirpui-btn--primary chirpui-btn--sm">
+        {% if icon %}<span aria-hidden="true">{{ icon }}</span>{% endif %}
+        {{ primary_label }}
+    </a>
+    {% elif primary_action %}
+    <button type="button" class="chirpui-dropdown__split-primary chirpui-btn chirpui-btn--primary chirpui-btn--sm"
+            data-action="{{ primary_action }}">
+        {% if icon %}<span aria-hidden="true">{{ icon }}</span>{% endif %}
+        {{ primary_label }}
+    </button>
+    {% endif %}
+    <div class="chirpui-dropdown__trigger chirpui-dropdown__trigger--split" data-chirpui-dropdown-trigger
+         role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
+        <span class="chirpui-dropdown__caret" aria-hidden="true">▾</span>
+    </div>
+    <div class="chirpui-dropdown__menu" role="menu" hidden>
+        {% for item in items %}
+        {% if item.get("divider") %}
+        <div class="chirpui-dropdown__divider" role="separator"></div>
+        {% else %}
+        {% set variant = item.get("variant", "default") %}
+        {% if item.get("href") %}
+        <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ item.get('href') }}" role="menuitem">
+            {% if item.get("icon") %}<span class="chirpui-dropdown__icon">{{ item.get("icon") }}</span>{% endif %}
+            {{ item.get("label", "") }}
+        </a>
+        {% else %}
+        <button type="button" class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}"
+                data-action="{{ item.get('action', '') }}" role="menuitem">
+            {% if item.get("icon") %}<span class="chirpui-dropdown__icon">{{ item.get("icon") }}</span>{% endif %}
+            {{ item.get("label", "") }}
+        </button>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% end %}

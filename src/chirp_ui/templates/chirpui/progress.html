@@ -12,6 +12,8 @@
 -#}
 
 {% def progress_bar(value, max=100, label=none, variant="gold", size="md", cls="") %}
+{% set variant = variant | validate_variant(("gold","radiant","success","watched"), "gold") %}
+{% set size = size | validate_variant(("sm","md","lg"), "md") %}
 <div class="chirpui-progress-bar chirpui-progress-bar--{{ variant }} chirpui-progress-bar--{{ size }}{{ " " ~ cls if cls else "" }}"
      role="progressbar"
      aria-valuenow="{{ value }}"

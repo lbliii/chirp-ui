@@ -1,0 +1,21 @@
+{#- chirp-ui: Selection Bar
+    Stateful bulk-action container shown when list/table rows are selected.
+    If count <= 0, renders nothing.
+
+    Usage:
+        from "chirpui/selection_bar.html" import selection_bar
+
+        call selection_bar(count=3)
+            <a class="chirpui-btn chirpui-btn--sm chirpui-btn--secondary">Export selected</a>
+            <a class="chirpui-btn chirpui-btn--sm chirpui-btn--secondary">Clear</a>
+        end
+-#}
+
+{% def selection_bar(count=0, label="selected", live_region=false, aria_label="Bulk actions", cls="") %}
+{% if count > 0 %}
+<div class="chirpui-selection-bar{{ " " ~ cls if cls else "" }}" role="toolbar" aria-label="{{ aria_label }}">
+  <span class="chirpui-selection-bar__count"{% if live_region %} aria-live="polite" aria-atomic="true"{% end %}>{{ count }} {{ label }}</span>
+  <div class="chirpui-selection-bar__actions">{{ caller() }}</div>
+</div>
+{% end %}
+{% end %}

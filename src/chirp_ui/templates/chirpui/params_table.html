@@ -1,0 +1,57 @@
+{#- chirp-ui: Params table component
+    API parameters table (Name, Type, Default, Description).
+    Data-in: rows = [{name, type, default?, description}].
+    Standard for API docs (OpenAPI, Sphinx). Framework-agnostic.
+
+    Usage:
+        from "chirpui/params_table.html" import params_table
+
+        params_table(rows=params, title="Parameters")
+        params_table(rows=params, title="Returns", columns=["name", "type", "description"])
+-#}
+
+{% def params_table(rows, title=none, columns=none, cls="") %}
+{% set default_columns = ["name", "type", "default", "description"] %}
+{% set cols = columns if columns else default_columns %}
+<div class="chirpui-params-table{{ " " ~ cls if cls else "" }}">
+    {% if title %}
+    <h3 class="chirpui-params-table__title">{{ title }}</h3>
+    {% end %}
+    <div class="chirpui-params-table__wrap">
+        <table class="chirpui-params-table__table">
+            <thead class="chirpui-params-table__head">
+                <tr>
+                    {% for col in cols %}
+                    <th class="chirpui-params-table__th chirpui-params-table__th--{{ col }}">{{ col | capitalize }}</th>
+                    {% end %}
+                </tr>
+            </thead>
+            <tbody class="chirpui-params-table__body">
+                {% for row in rows %}
+                <tr class="chirpui-params-table__row">
+                    {% for col in cols %}
+                    <td class="chirpui-params-table__td chirpui-params-table__td--{{ col }}">
+                        {% if col == "name" %}
+                        <code class="chirpui-params-table__code">{{ row.get("name", "") }}</code>
+                        {% elif col == "type" %}
+                        <code class="chirpui-params-table__code">{{ row.get("type", "") }}</code>
+                        {% elif col == "default" %}
+                        {% if row.get("default") is not none and row.get("default") != "" %}
+                        <code class="chirpui-params-table__code chirpui-params-table__code--muted">{{ row.default }}</code>
+                        {% else %}
+                        <span class="chirpui-params-table__empty">—</span>
+                        {% end %}
+                        {% elif col == "description" %}
+                        {{ row.get("description", "") }}
+                        {% else %}
+                        {{ row.get(col, "") }}
+                        {% end %}
+                    </td>
+                    {% end %}
+                </tr>
+                {% end %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% end %}

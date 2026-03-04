@@ -1,0 +1,39 @@
+{#- chirp-ui: Modal overlay (div-based, for apps that prefer overlay over native dialog)
+    Use modal_trigger to open, modal for content. Requires chirpui.js for behavior.
+    Alternative to chirpui/modal.html which uses native <dialog>.
+
+    Usage:
+        from "chirpui/modal_overlay.html" import modal_overlay, modal_overlay_trigger
+
+        {{ modal_overlay_trigger("confirm", "Delete", variant="danger") }}
+        {% call modal_overlay("confirm", "Confirm delete") %}
+            <p>Are you sure?</p>
+        {% end %}
+-#}
+
+{% def modal_overlay_trigger(id, label, variant="default", icon=none) %}
+<button type="button" class="chirpui-btn chirpui-btn--{{ variant }} chirpui-btn--sm"
+        data-chirpui-modal-trigger data-modal-id="{{ id }}"
+        aria-controls="modal-{{ id }}" aria-expanded="false">
+    {% if icon %}<span aria-hidden="true">{{ icon }}</span>{% endif %}
+    {{ label }}
+</button>
+{% end %}
+
+{% def modal_overlay(id, title) %}
+<div class="chirpui-modal chirpui-modal--closed" id="modal-{{ id }}"
+     data-chirpui-modal data-modal-id="{{ id }}" role="dialog" aria-modal="true"
+     aria-labelledby="modal-{{ id }}-title" aria-hidden="true">
+    <div class="chirpui-modal__backdrop" data-chirpui-modal-backdrop></div>
+    <div class="chirpui-modal__panel">
+        <header class="chirpui-modal__header">
+            <h2 class="chirpui-modal__title" id="modal-{{ id }}-title">{{ title }}</h2>
+            <button type="button" class="chirpui-modal__close" data-chirpui-modal-close
+                    aria-label="Close">×</button>
+        </header>
+        <div class="chirpui-modal__body">
+            {% slot %}
+        </div>
+    </div>
+</div>
+{% end %}

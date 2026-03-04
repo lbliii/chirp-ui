@@ -18,6 +18,7 @@
 {% end %}
 
 {% def toast(message, variant="info", id=none, dismissible=true, oob=true, container_id="chirpui-toasts", cls="") %}
+{% set variant = variant | validate_variant(("info","success","warning","error"), "info") %}
 <div {% if oob %}hx-swap-oob="beforeend:#{{ container_id }}"{% end %}>
     <div {% if id %}id="{{ id }}"{% end %}
          class="chirpui-toast chirpui-toast--{{ variant }}{{ " " ~ cls if cls else "" }}"

@@ -1,0 +1,15 @@
+{#- chirp-ui: Signature component
+    Code block for function/method signatures.
+    Data-in: caller passes text (and optional language).
+    No syntax highlighting inside component — host can wrap with rosettes if desired.
+
+    Usage:
+        from "chirpui/signature.html" import signature
+
+        signature(text="def foo(x: int, y: str = '') -> bool:", language="python")
+        signature(text="GET /api/users")
+-#}
+
+{% def signature(text, language=none, cls="") %}
+<pre class="chirpui-signature{{ " " ~ cls if cls else "" }}"{% if language %} data-language="{{ language }}"{% end %}><code class="chirpui-signature__code">{{ text }}</code></pre>
+{% end %}

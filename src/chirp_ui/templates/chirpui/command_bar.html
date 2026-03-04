@@ -1,0 +1,11 @@
+{#- chirp-ui: Command Bar composite
+    Action-first bar for dense command clusters (create/export/bulk actions).
+    Built on action_strip with toolbar semantics.
+-#}
+{% from "chirpui/action_strip.html" import action_strip %}
+
+{% def command_bar(surface_variant="default", density="sm", wrap="wrap", sticky=false, aria_label="Command bar", cls="") %}
+{% call action_strip(surface_variant=surface_variant, density=density, wrap=wrap, sticky=sticky, role="toolbar", aria_label=aria_label, cls="chirpui-command-bar" ~ (" " ~ cls if cls else "")) %}
+{{ caller() }}
+{% end %}
+{% end %}

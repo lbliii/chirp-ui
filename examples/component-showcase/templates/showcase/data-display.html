@@ -6,15 +6,31 @@
 {% from "chirpui/timeline.html" import timeline, timeline_item %}
 {% from "chirpui/tag_input.html" import tag_input %}
 {% from "chirpui/tree_view.html" import tree_view %}
+{% from "chirpui/bar_chart.html" import bar_chart %}
+{% from "chirpui/donut.html" import donut %}
 
 {% call container() %}
 {% call stack() %}
 <header class="chirpui-stack chirpui-stack--sm">
   <h1>Data Display</h1>
   <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
-    description_list, timeline, tag_input, tree_view, calendar — Key-value pairs, activity feeds, tags, trees.
+    description_list, timeline, tag_input, tree_view, bar_chart, donut, calendar — Key-value pairs, activity feeds, tags, trees, charts.
   </p>
 </header>
+
+<h2>Bar Chart</h2>
+{% call block() %}
+{{ bar_chart(items=[{"label": "create-rule", "value": 42}, {"label": "debug-agent", "value": 18}, {"label": "confluence-export", "value": 12}], variant="gold") }}
+{% end %}
+
+<h2>Donut Chart</h2>
+{% call block() %}
+<div class="chirpui-flow" style="gap: var(--chirpui-spacing-md);">
+  {{ donut(value=75, max=100, label="75%") }}
+  {{ donut(value=3, max=5, label="3/5", variant="success") }}
+  {{ donut(value=42, max=100, size="lg") }}
+</div>
+{% end %}
 
 <h2>Tag Input</h2>
 {% call block() %}

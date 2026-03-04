@@ -1,0 +1,42 @@
+{#- chirp-ui: Command Palette component
+    Cmd+K search overlay using native <dialog>.
+    Results load via htmx into the results container.
+
+    Usage:
+        from "chirpui/command_palette.html" import command_palette, command_palette_trigger
+
+        command_palette_trigger()
+        command_palette(search_url="/search")
+-#}
+
+{% def command_palette(id="command-palette", search_url="/search", placeholder="Search...") %}
+<dialog id="{{ id }}" class="chirpui-command-palette" closedby="any">
+    <div class="chirpui-command-palette__inner">
+        <input type="search" class="chirpui-command-palette__input"
+               placeholder="{{ placeholder }}"
+               hx-get="{{ search_url }}" hx-trigger="input changed delay:200ms"
+               hx-target="#{{ id }}-results" hx-swap="innerHTML"
+               name="q" autocomplete="off" autofocus>
+        <div id="{{ id }}-results" class="chirpui-command-palette__results">
+            {% slot %}
+        </div>
+    </div>
+</dialog>
+<script>
+document.addEventListener("keydown", function(e) {
+    if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        var d = document.getElementById("{{ id }}");
+        if (!d.open) d.showModal();
+    }
+});
+</script>
+{% end %}
+
+{% def command_palette_trigger(target="command-palette", label="Search", cls="") %}
+<button type="button"
+        class="chirpui-command-palette__trigger{{ " " ~ cls if cls else "" }}"
+        onclick="document.getElementById('{{ target }}').showModal()">
+    {{ label }} <kbd class="chirpui-command-palette__kbd">⌘K</kbd>
+</button>
+{% end %}

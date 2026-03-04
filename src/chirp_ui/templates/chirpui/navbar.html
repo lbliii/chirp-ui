@@ -1,7 +1,8 @@
 {#- chirp-ui: Navbar component
     Top navigation bar with brand and links.
 
-    Named slots (Kida 0.3+, use_slots=true): default (links), end (right-aligned).
+    Named slots (Kida 0.3+, use_slots=true): default (links), end (right-aligned),
+    brand (brand area, when brand_slot=true).
 
     Usage:
         from "chirpui/navbar.html" import navbar, navbar_link, navbar_end, navbar_dropdown
@@ -12,13 +13,24 @@
             {% slot end %}btn("Login", href="/login"){% end %}
         end
 
+        call navbar(brand_url="/", use_slots=true, brand_slot=true)
+            {% slot brand %}logo(text="My App", image_src="/static/logo.svg", variant="both"){% end %}
+            navbar_link("/docs", "Docs")
+        end
+
     Legacy: wrap right-aligned content in navbar_end(). Add cls="chirpui-navbar--sticky" for sticky nav.
 -#}
 
-{% def navbar(brand=none, brand_url="/", cls="", use_slots=false) %}
+{% def navbar(brand=none, brand_url="/", cls="", use_slots=false, brand_slot=false) %}
 <nav class="chirpui-navbar{{ " " ~ cls if cls else "" }}">
-    {% if brand %}
-    <a class="chirpui-navbar__brand" href="{{ brand_url }}">{{ brand }}</a>
+    {% if brand or brand_slot %}
+    <a class="chirpui-navbar__brand" href="{{ brand_url }}">
+        {% if brand_slot %}
+        {% slot brand %}
+        {% else %}
+        {{ brand }}
+        {% end %}
+    </a>
     {% end %}
     {% if use_slots %}
     <div class="chirpui-navbar__links">{% slot %}</div>

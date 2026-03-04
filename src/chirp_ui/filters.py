@@ -4,8 +4,15 @@ These match Chirp's filter API so chirp-ui works with any Chirp version.
 Register via :func:`register_filters` when using Chirp.
 """
 
-from collections.abc import Callable
-from typing import Protocol
+import logging
+from collections.abc import Callable, Mapping
+from html import escape
+from json import dumps
+from typing import Any, Protocol
+
+from kida.template import Markup
+
+from chirp_ui.validation import VARIANT_REGISTRY, _is_strict
 
 
 class TemplateFilterApp(Protocol):
@@ -24,6 +31,17 @@ def bem(block: str, variant: str = "", modifier: str = "", cls: str = "") -> str
         class="{{ "alert" | bem(variant=variant, cls=cls) }}"
         → "chirpui-alert chirpui-alert--success my-class"
     """
+    if variant and block in VARIANT_REGISTRY and _is_strict():
+        allowed = VARIANT_REGISTRY[block]
+        if variant not in allowed:
+            log = logging.getLogger("chirp_ui")
+            log.warning(
+                'chirp-ui: %s variant "%s" invalid; valid: %s',
+                block,
+                variant,
+                ", ".join(allowed),
+            )
+            variant = allowed[0] if allowed else ""
     parts = [f"chirpui-{block}"]
     if variant:
         parts.append(f"chirpui-{block}--{variant}")
@@ -32,6 +50,24 @@ def bem(block: str, variant: str = "", modifier: str = "", cls: str = "") -> str
     if cls:
         parts.append(cls)
     return " ".join(parts)
+
+
+def validate_variant(
+    value: str,
+    allowed: tuple[str, ...],
+    default: str = "",
+) -> str:
+    """Return value if in allowed, else default. When strict, log warning."""
+    if value in allowed:
+        return value
+    if _is_strict():
+        log = logging.getLogger("chirp_ui")
+        log.warning(
+            'chirp-ui: variant "%s" invalid; valid: %s',
+            value,
+            ", ".join(allowed),
+        )
+    return default if default in allowed else (allowed[0] if allowed else "")
 
 
 def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]:
@@ -49,8 +85,42 @@ def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]
     return []
 
 
+def _serialize_attr_value(value: Any) -> str:
+    """Serialize structured attr values such as hx-vals payloads."""
+    if isinstance(value, (dict, list, tuple)):
+        return dumps(value, separators=(",", ":"), ensure_ascii=True)
+    return str(value)
+
+
+def html_attrs(value: Any) -> str | Markup:
+    """Render HTML attrs from mapping or legacy raw string."""
+    if value is None or value is False:
+        return ""
+
+    if isinstance(value, Mapping):
+        chunks: list[str] = []
+        for raw_key, raw_value in value.items():
+            key = str(raw_key).strip()
+            if not key or raw_value is None or raw_value is False:
+                continue
+            escaped_key = escape(key, quote=True)
+            if raw_value is True:
+                chunks.append(f" {escaped_key}")
+                continue
+            serialized = _serialize_attr_value(raw_value)
+            chunks.append(f' {escaped_key}="{escape(serialized, quote=True)}"')
+        return Markup("".join(chunks))
+
+    text = str(value).strip()
+    if not text:
+        return ""
+    if text.startswith(" "):
+        return Markup(text)
+    return Markup(f" {text}")
+
+
 def register_filters(app: TemplateFilterApp) -> None:
-    """Register chirp-ui filters (bem, field_errors) on a Chirp app.
+    """Register chirp-ui filters (bem, field_errors, html_attrs) on a Chirp app.
 
     Call after App creation. Ensures chirp-ui components render correctly
     regardless of Chirp version::
@@ -62,3 +132,5 @@ def register_filters(app: TemplateFilterApp) -> None:
     """
     app.template_filter("bem")(bem)
     app.template_filter("field_errors")(field_errors)
+    app.template_filter("html_attrs")(html_attrs)
+    app.template_filter("validate_variant")(validate_variant)

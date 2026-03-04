@@ -34,6 +34,32 @@ class TestLayout:
         ).render()
         assert "chirpui-grid--cols-2" in html
 
+    def test_grid_gap_sm(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}{% call grid(gap="sm") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--gap-sm" in html
+
+    def test_grid_gap_md(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}{% call grid(gap="md") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--gap-md" in html
+
+    def test_grid_gap_lg(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}{% call grid(gap="lg") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--gap-lg" in html
+
+    def test_grid_cols_and_gap(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(cols=3, gap="md") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--cols-3" in html
+        assert "chirpui-grid--gap-md" in html
+
     def test_stack(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import stack %}{% call stack() %}A{% end %}'
@@ -263,6 +289,19 @@ class TestHero:
             ).render()
             assert f"chirpui-hero--{bg}" in html
 
+    def test_page_hero(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero.html" import page_hero %}'
+            '{% call page_hero(title="API Reference", subtitle="Explore.", variant="editorial") %}'
+            "Body"
+            "{% end %}"
+        ).render()
+        assert "chirpui-hero--page" in html
+        assert "chirpui-hero--page-editorial" in html
+        assert "API Reference" in html
+        assert "Explore." in html
+        assert "Body" in html
+
 
 # ---------------------------------------------------------------------------
 # Empty State
@@ -280,6 +319,131 @@ class TestEmptyState:
         assert "chirpui-empty-state__action" in html
         assert 'href="/new"' in html
         assert "Create" in html
+
+    def test_empty_state_with_code_and_suggestions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/empty.html" import empty_state %}'
+            '{% call empty_state(title="No results", code="query", '
+            'search_hint="Try different terms", suggestions=["Tip 1", "Tip 2"]) %}'
+            "<p>Nothing found.</p>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-empty-state__code" in html
+        assert "query" in html
+        assert "chirpui-empty-state__search-hint" in html
+        assert "Try different terms" in html
+        assert "chirpui-empty-state__suggestions" in html
+        assert "Tip 1" in html
+
+
+# ---------------------------------------------------------------------------
+# Code
+# ---------------------------------------------------------------------------
+
+
+class TestCode:
+    def test_code_inline(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import code %}{{ code("path/to/file") }}'
+        ).render()
+        assert "chirpui-code" in html
+        assert "path/to/file" in html
+        assert "<code" in html
+
+    def test_code_block(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import code_block %}'
+            '{{ code_block("def foo():\\n    pass") }}'
+        ).render()
+        assert "chirpui-code-block" in html
+        assert "<pre" in html
+        assert "<code>" in html
+        assert "def foo():" in html
+
+
+# ---------------------------------------------------------------------------
+# Nav tree
+# ---------------------------------------------------------------------------
+
+
+class TestNavTree:
+    def test_nav_tree_flat(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{% call nav_tree(items=[{"title": "Home", "href": "/"}, '
+            '{"title": "Docs", "href": "/docs", "active": True}]) %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-nav-tree" in html
+        assert 'href="/"' in html
+        assert 'href="/docs"' in html
+        assert 'aria-current="page"' in html
+
+    def test_nav_tree_nested(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{% call nav_tree(items=[{"title": "API", "href": "/api", '
+            '"children": [{"title": "Ref", "href": "/api/ref", "children": []}]}]) %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-nav-tree__node" in html
+        assert "API" in html
+        assert "Ref" in html
+
+
+# ---------------------------------------------------------------------------
+# Params table
+# ---------------------------------------------------------------------------
+
+
+class TestParamsTable:
+    def test_params_table(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/params_table.html" import params_table %}'
+            '{{ params_table(rows=[{"name": "x", "type": "int", "default": "0", '
+            '"description": "A number"}], title="Parameters") }}'
+        ).render()
+        assert "chirpui-params-table" in html
+        assert "Parameters" in html
+        assert "x" in html
+        assert "int" in html
+        assert "0" in html
+        assert "A number" in html
+
+
+# ---------------------------------------------------------------------------
+# Signature
+# ---------------------------------------------------------------------------
+
+
+class TestSignature:
+    def test_signature(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/signature.html" import signature %}'
+            '{{ signature(text="def foo(): pass", language="python") }}'
+        ).render()
+        assert "chirpui-signature" in html
+        assert "def foo(): pass" in html
+        assert 'data-language="python"' in html
+
+
+# ---------------------------------------------------------------------------
+# Index card
+# ---------------------------------------------------------------------------
+
+
+class TestIndexCard:
+    def test_index_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/index_card.html" import index_card %}'
+            '{{ index_card(href="/api/foo", title="foo", description="Does something.", badge="function") }}'
+        ).render()
+        assert "chirpui-index-card" in html
+        assert 'href="/api/foo"' in html
+        assert "foo" in html
+        assert "Does something." in html
+        assert "chirpui-index-card__badge" in html
+        assert "function" in html
 
 
 # ---------------------------------------------------------------------------
@@ -407,6 +571,14 @@ class TestButton:
         ).render()
         assert "chirpui-btn__icon" in html
         assert "✓" in html
+
+    def test_btn_with_attrs_map(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Save", attrs_map={"hx-post": "/save", "hx-target": "#result"}) }}'
+        ).render()
+        assert 'hx-post="/save"' in html
+        assert 'hx-target="#result"' in html
 
 
 # ---------------------------------------------------------------------------
@@ -871,6 +1043,67 @@ class TestForms:
     These tests exercise the macros without error display (errors=none).
     """
 
+    def test_form_macro(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/submit", method="post") %}<input>{% end %}'
+        ).render()
+        assert "chirpui-form" in html
+        assert 'action="/submit"' in html
+        assert 'method="post"' in html
+        assert "<input>" in html
+
+    def test_form_macro_with_htmx_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", attrs=\'hx-post="/x" hx-target="#y" hx-swap="innerHTML"\') %}'
+            "Body"
+            "{% end %}"
+        ).render()
+        assert "chirpui-form" in html
+        assert "hx-post" in html
+        assert "hx-target" in html
+        assert "hx-swap" in html
+        assert "Body" in html
+
+    def test_form_macro_with_attrs_map(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", attrs_map={"hx-post": "/x", "hx-target": "#y", "hx-swap": "innerHTML"}) %}'
+            "Body"
+            "{% end %}"
+        ).render()
+        assert 'hx-post="/x"' in html
+        assert 'hx-target="#y"' in html
+        assert 'hx-swap="innerHTML"' in html
+
+    def test_form_macro_explicit_hx_params_override_attrs_map(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", attrs_map={"hx-target": "#old"}, hx_target="#new") %}'
+            "Body"
+            "{% end %}"
+        ).render()
+        assert 'hx-target="#new"' in html
+
+    def test_fieldset_macro(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import fieldset %}'
+            '{% call fieldset(legend="Options") %}Content{% end %}'
+        ).render()
+        assert "chirpui-fieldset" in html
+        assert "chirpui-fieldset__legend" in html
+        assert "Options" in html
+        assert "Content" in html
+
+    def test_fieldset_macro_no_legend(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import fieldset %}{% call fieldset() %}Content{% end %}'
+        ).render()
+        assert "chirpui-fieldset" in html
+        assert "chirpui-fieldset__legend" not in html
+        assert "Content" in html
+
     def test_text_field(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/forms.html" import text_field %}'
@@ -1106,6 +1339,93 @@ class TestForms:
 
 
 # ---------------------------------------------------------------------------
+# Action Containers
+# ---------------------------------------------------------------------------
+
+
+class TestActionContainers:
+    def test_action_strip_default_slot_backwards_compatible(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/action_strip.html" import action_strip %}'
+            "{% call action_strip() %}"
+            '<button class="chirpui-btn">Go</button>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-action-strip" in html
+        assert "chirpui-action-strip__inner" in html
+        assert "Go" in html
+
+    def test_action_strip_composed_zones(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/action_strip.html" import action_strip %}'
+            '{% call action_strip(density="sm", wrap="scroll") %}'
+            '<div class="chirpui-action-strip__primary"><input type="search"></div>'
+            '<div class="chirpui-action-strip__controls"><button>Filters</button></div>'
+            '<div class="chirpui-action-strip__actions"><button>Create</button></div>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-action-strip--sm" in html
+        assert "chirpui-action-strip--scroll" in html
+        assert "chirpui-action-strip__primary" in html
+        assert "Filters" in html
+        assert "Create" in html
+
+    def test_filter_bar(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_bar %}'
+            '{% call filter_bar("/items") %}'
+            '<div class="chirpui-action-strip__primary"><input name="q" type="search"></div>'
+            '<div class="chirpui-action-strip__controls"><select name="role"><option>All</option></select></div>'
+            '<div class="chirpui-action-strip__actions"><button type="submit">Apply</button></div>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-filter-bar" in html
+        assert 'action="/items"' in html
+        assert 'name="q"' in html
+        assert "Apply" in html
+
+    def test_command_bar(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_bar.html" import command_bar %}'
+            "{% call command_bar() %}"
+            '<div class="chirpui-action-strip__controls"><button>Bulk edit</button></div>'
+            '<div class="chirpui-action-strip__actions"><button>Create</button></div>'
+            "{% end %}"
+        ).render()
+        assert "chirpui-command-bar" in html
+        assert 'role="toolbar"' in html
+        assert "Bulk edit" in html
+        assert "Create" in html
+
+    def test_search_header(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/search_header.html" import search_header %}'
+            '{{ search_header("People", "/people", query="alice", subtitle="Directory") }}'
+        ).render()
+        assert "chirpui-search-header" in html
+        assert "chirpui-search-header__strip" in html
+        assert 'action="/people"' in html
+        assert 'value="alice"' in html
+        assert "Directory" in html
+
+    def test_selection_bar_renders_when_count_positive(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/selection_bar.html" import selection_bar %}'
+            "{% call selection_bar(count=2) %}<button>Clear</button>{% end %}"
+        ).render()
+        assert "chirpui-selection-bar" in html
+        assert "2 selected" in html
+        assert "Clear" in html
+
+    def test_selection_bar_hidden_when_no_selection(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/selection_bar.html" import selection_bar %}'
+            "{% call selection_bar(count=0) %}<button>Clear</button>{% end %}"
+        ).render()
+        assert "chirpui-selection-bar" not in html
+
+
+# ---------------------------------------------------------------------------
 # Navbar, Sidebar, Stepper
 # ---------------------------------------------------------------------------
 
@@ -1152,6 +1472,90 @@ class TestNavbar:
         assert "chirpui-navbar-dropdown" in html
         assert "Products" in html
         assert 'href="/a"' in html
+
+    def test_navbar_brand_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar, navbar_link %}'
+            '{% from "chirpui/logo.html" import logo %}'
+            '{% call navbar(brand_url="/", use_slots=true, brand_slot=true) %}'
+            '{% slot brand %}{{ logo(text="ChirpUI", image_src="/static/logo.svg", variant="both") }}{% end %}'
+            '{{ navbar_link("/docs", "Docs") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-navbar__brand" in html
+        assert "chirpui-logo" in html
+        assert 'src="/static/logo.svg"' in html
+
+
+class TestAppShell:
+    def test_app_shell_brand_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% from "chirpui/logo.html" import logo %}'
+            '{% call app_shell(brand_url="/", brand_slot=true) %}'
+            '{% slot brand %}{{ logo(text="Brand", image_src="/static/logo.svg", variant="both") }}{% end %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell" in html
+        assert "chirpui-app-shell__brand" in html
+        assert "chirpui-logo" in html
+        assert 'src="/static/logo.svg"' in html
+        assert "Main" in html
+
+
+class TestLogo:
+    def test_logo_text_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}{{ logo(text="ChirpUI", variant="text") }}'
+        ).render()
+        assert "chirpui-logo" in html
+        assert "chirpui-logo--text" in html
+        assert "chirpui-logo__text" in html
+        assert "ChirpUI" in html
+        assert "<img" not in html
+
+    def test_logo_image_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(image_src="/static/logo.svg", image_alt="ChirpUI", variant="image") }}'
+        ).render()
+        assert "chirpui-logo--image" in html
+        assert 'src="/static/logo.svg"' in html
+        assert 'alt="ChirpUI"' in html
+        assert "chirpui-logo__img" in html
+        assert "<a " not in html
+
+    def test_logo_both_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(text="ChirpUI", image_src="/static/logo.svg", variant="both", size="lg", align="start") }}'
+        ).render()
+        assert "chirpui-logo--both" in html
+        assert "chirpui-logo--lg" in html
+        assert "chirpui-logo--start" in html
+        assert "chirpui-logo__img" in html
+        assert "chirpui-logo__text" in html
+
+    def test_logo_renders_link_root_when_href_is_set(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(text="Home", image_src="/static/logo.svg", href="/", variant="both") }}'
+        ).render()
+        assert '<a class="chirpui-logo' in html
+        assert 'href="/"' in html
+        assert "</a>" in html
+
+    def test_logo_image_variant_uses_hidden_text_when_alt_missing(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(text="Accessible brand", image_src="/static/logo.svg", variant="image") }}'
+        ).render()
+        assert "chirpui-logo--image" in html
+        assert 'alt=""' in html
+        assert "chirpui-visually-hidden" in html
+        assert "Accessible brand" in html
 
 
 class TestSidebar:

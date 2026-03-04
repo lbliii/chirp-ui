@@ -17,6 +17,7 @@
 
 {% def confirm_dialog(id, title, message=none, confirm_label="Confirm", cancel_label="Cancel",
                      variant="default", confirm_url=none, confirm_method="POST", cls="") %}
+{% set variant = variant | validate_variant(("default","danger"), "default") %}
 <dialog id="{{ id }}" class="chirpui-confirm chirpui-modal chirpui-modal--small{{ " chirpui-confirm--" ~ variant if variant else "" }}{{ " " ~ cls if cls else "" }}"
         closedby="any">
     <header class="chirpui-modal__header">

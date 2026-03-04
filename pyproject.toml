@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chirp-ui"
-version = "0.1.0"
+version = "0.1.1"
 description = "A love letter to CSS and HTML over the wire — gorgeous Chirp components, htmx-native, zero JavaScript"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -32,11 +32,11 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "kida-templates>=0.2.2",  # Template engine (PackageLoader added in 0.2.0)
+    "kida-templates>=0.2.3", # Template engine (PackageLoader added in 0.2.0)
 ]
 
 [project.optional-dependencies]
-showcase = ["chirp>=0.1.0"]  # For examples/component-showcase
+showcase = ["chirp>=0.1.2"] # For examples/component-showcase
 
 [project.urls]
 Homepage = "https://github.com/lbliii/chirp-ui"
@@ -54,7 +54,12 @@ Repository = "https://github.com/lbliii/chirp-ui"
 where = ["src"]
 
 [tool.setuptools.package-data]
-chirp_ui = ["py.typed", "templates/**/*.html", "templates/**/*.css"]
+chirp_ui = [
+    "py.typed",
+    "templates/**/*.html",
+    "templates/**/*.css",
+    "templates/**/*.js",
+]
 
 # =============================================================================
 # Ruff — Linter & Formatter
@@ -82,12 +87,12 @@ select = [
     "PT",   # flake8-pytest-style — pytest best practices
 ]
 ignore = [
-    "E501",   # line too long — handled by formatter
+    "E501", # line too long — handled by formatter
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]    # Allow unused imports in __init__ files (re-exports)
-"tests/**/*.py" = ["S101"]  # Allow assert in tests
+"__init__.py" = ["F401"]   # Allow unused imports in __init__ files (re-exports)
+"tests/**/*.py" = ["S101"] # Allow assert in tests
 
 # =============================================================================
 # ty — Type Checker (Rust-based, Astral)
@@ -147,10 +152,11 @@ dev = [
     "pytest>=9.0.2",
     "pytest-cov>=6.0.0",
     "pytest-timeout>=2.3.0",
+    "tinycss2>=1.4.0",
     # Type Checking
     "ty>=0.0.11",
     # Linting & Formatting
-    "ruff>=0.15.1",  # 0.15.1+ fixes except-parenthesis bug (PEP 758 + as clause)
+    "ruff>=0.15.1", # 0.15.1+ fixes except-parenthesis bug (PEP 758 + as clause)
     # Pre-commit
     "pre-commit>=4.0.0",
 ]
@@ -174,10 +180,28 @@ lint = { cmd = "ruff check .", help = "Run ruff linter" }
 lint-fix = { cmd = "ruff check . --fix", help = "Run ruff linter with auto-fix" }
 format = { cmd = "ruff format .", help = "Format code with ruff" }
 format-check = { cmd = "ruff format . --check", help = "Check formatting" }
+css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS parses cleanly" }
+css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }
+css-transition-check = { cmd = "pytest tests/test_transition_tokens.py -q", help = "Check transitions use motion tokens" }
 
 # CI Pipeline
-ci = { sequence = ["lint", "format-check", "ty", "test"], help = "Full CI check" }
-check = { sequence = ["lint", "format-check", "ty"], help = "Quick check (no tests)" }
+ci = { sequence = [
+    "lint",
+    "format-check",
+    "css-check",
+    "css-contract-check",
+    "css-transition-check",
+    "ty",
+    "test",
+], help = "Full CI check" }
+check = { sequence = [
+    "lint",
+    "format-check",
+    "css-check",
+    "css-contract-check",
+    "css-transition-check",
+    "ty",
+], help = "Quick check (no tests)" }
 
 # Cleanup
 clean.shell = """

@@ -1,21 +1,17 @@
-{#- chirp-ui: Tooltip component
-    Hover hint. Uses native title for accessibility; data-tooltip for styled tooltip.
+{#- chirp-ui: Tooltip macro
+    Wraps child, shows content on hover. Uses data-tooltip and title fallback.
 
     Usage:
-        {% from "chirpui/tooltip.html" import tooltip %}
+        from "chirpui/tooltip.html" import tooltip
 
-        {% call tooltip(hint="This is the tooltip text") %}
-            Hover for hint
-        {% end %}
-        {% call tooltip(hint="Helpful hint", tag="button") %}
-            Click me
+        {% call tooltip("Copy to clipboard") %}
+            <button>Copy</button>
         {% end %}
 -#}
 
-{% def tooltip(hint, tag="span", cls="") %}
-<{{ tag }} class="chirpui-tooltip{{ " " ~ cls if cls else "" }}"
-     data-tooltip="{{ hint }}"
-     title="{{ hint }}">
+{% def tooltip(content=none, hint=none, position="top") %}
+{% set tooltip_text = hint if hint is not none else content %}
+<span class="chirpui-tooltip chirpui-tooltip--{{ position }}" data-chirpui-tooltip data-tooltip="{{ tooltip_text | e }}" title="{{ tooltip_text | e }}">
     {% slot %}
-</{{ tag }}>
+</span>
 {% end %}

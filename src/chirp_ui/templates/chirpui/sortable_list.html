@@ -1,0 +1,30 @@
+{#- chirp-ui: Sortable list macros
+    CSS-styled drag-to-reorder containers. Alpine wiring (@dragstart,
+    @drop, x-data) is left to the consumer — ChirpUI provides the
+    visual structure and drag affordances only.
+
+    Usage:
+        from "chirpui/sortable_list.html" import sortable_list, sortable_item
+
+        call sortable_list()
+          for step in steps
+            call sortable_item()
+              ...
+            end
+          end
+        end
+-#}
+
+{% def sortable_list(cls="", attrs="") %}
+<div class="chirpui-sortable{{ " " ~ cls if cls else "" }}"
+     role="listbox" {{ attrs | safe }}>
+    {% slot %}
+</div>
+{% end %}
+
+{% def sortable_item(cls="", attrs="") %}
+<div class="chirpui-sortable__item{{ " " ~ cls if cls else "" }}"
+     role="option" {{ attrs | safe }}>
+    {% slot %}
+</div>
+{% end %}

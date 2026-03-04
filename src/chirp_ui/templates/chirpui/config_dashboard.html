@@ -1,0 +1,62 @@
+{#- chirp-ui: Config Dashboard composite
+    Full settings page layout: page_header (with meta) + key_value_form + grid of config_cards + action_strip.
+    Slots: header_actions, form_result (for hx-target div), config_cards, action_strip.
+
+    Usage:
+        from "chirpui/config_dashboard.html" import config_dashboard
+        from "chirpui/config_card.html" import config_card
+
+        call config_dashboard(
+            title="Settings",
+            subtitle="DORI configuration",
+            meta="Config: " ~ config_path,
+            form_action="/config/set",
+            form_attrs_map={"hx-post": "/config/set", "hx-target": "#config-set-result", "hx-swap": "innerHTML"}
+        )
+            slot header_actions
+            {{ btn("Wizard", href="/settings/wizard", ...) }}
+            end
+            slot form_result
+            <div id="config-set-result" class="chirpui-mt-md"></div>
+            end
+            slot config_cards
+            config_card(title="Logs", icon="⟳", items=[...])
+            config_card(title="ACP", icon="◇", items=[...])
+            end
+            slot action_strip
+            {{ btn("Validate", ...) }}
+            end
+        end
+-#}
+{% from "chirpui/layout.html" import page_header, stack, grid, section %}
+{% from "chirpui/forms.html" import key_value_form %}
+{% from "chirpui/action_strip.html" import action_strip %}
+
+{% def config_dashboard(title, subtitle=none, meta=none, breadcrumb_items=none,
+                        form_action=none, form_attrs="", form_attrs_map=none, form_key_placeholder="", form_value_placeholder="",
+                        cls="") %}
+{% call stack(gap="lg") %}
+{% call page_header(title, subtitle=subtitle, meta=meta, breadcrumb_items=breadcrumb_items) %}
+{% slot header_actions %}
+{% end %}
+{% end %}
+
+{% if form_action %}
+{% call section("Set config value", surface_variant="muted") %}
+{{ key_value_form(form_action, attrs=form_attrs, attrs_map=form_attrs_map, key_placeholder=form_key_placeholder, value_placeholder=form_value_placeholder) }}
+{% slot form_result %}
+{% end %}
+{% end %}
+{% end %}
+
+{% call grid(cols=2, gap="md") %}
+{% slot config_cards %}
+{% end %}
+{% end %}
+
+{% call action_strip() %}
+{% slot action_strip %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

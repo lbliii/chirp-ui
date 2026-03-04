@@ -1,5 +1,6 @@
 {#- chirp-ui: Alert component
     Status alerts with variant styling and optional dismiss.
+    When collapsible=true, renders as <details>/<summary> (collapsed by default if open=false).
 
     Named slot: actions (e.g. Retry button).
 
@@ -15,12 +16,32 @@
             {% slot actions %}<button>Retry</button>{% end %}
         end
 
+        call alert(variant="warning", collapsible=true, open=false, icon="↑", title="Shortcut collisions")
+            Long warning content revealed on expand.
+        end
+
     Variants: info (default), success, warning, error
 -#}
 
-{% def alert(variant="info", dismissible=false, icon=none, title=none, cls="") %}
-<div class="{{ "alert" | bem(variant=variant, cls=cls) }}"
-     role="alert">
+{% def alert(variant="info", dismissible=false, icon=none, title=none, cls="", collapsible=false, open=true) %}
+{% set alert_class = "alert" | bem(variant=variant, cls=cls) %}
+{% if collapsible %}
+<details class="{{ alert_class }}" role="alert"{% if open %} open{% endif %}>
+    <summary class="chirpui-alert__body">
+        {% if icon %}<span class="chirpui-alert__icon">{{ icon }}</span>{% endif %}
+        {% if title %}<span class="chirpui-alert__title">{{ title }}</span>{% endif %}
+    </summary>
+    <div class="chirpui-alert__body chirpui-mt-sm">
+        {% slot %}
+        {% slot actions %}
+        {% if dismissible %}
+        <button type="button" class="chirpui-alert__close" aria-label="Dismiss"
+                onclick="this.closest('.chirpui-alert').remove()">&times;</button>
+        {% endif %}
+    </div>
+</details>
+{% else %}
+<div class="{{ alert_class }}" role="alert">
     {% if icon %}
         <span class="chirpui-alert__icon">{{ icon }}</span>
     {% end %}
@@ -38,4 +59,5 @@
                 onclick="this.closest('.chirpui-alert').remove()">&times;</button>
     {% end %}
 </div>
+{% endif %}
 {% end %}

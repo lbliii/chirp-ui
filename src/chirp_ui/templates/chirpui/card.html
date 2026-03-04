@@ -21,10 +21,12 @@
         end
 -#}
 
-{% def card(title=none, subtitle=none, footer=none, collapsible=false, open=false, variant="", icon=none, cls="") %}
+{% def card(title=none, subtitle=none, footer=none, collapsible=false, open=false, variant="", icon=none, border_variant="", header_variant="", cls="") %}
 {% set variant_class = " chirpui-card--" ~ variant if variant else "" %}
+{% set border_class = " chirpui-card--gradient-border" if border_variant == "gradient" else "" %}
+{% set header_class = " chirpui-card--gradient-header" if header_variant == "gradient" else "" %}
 {% if collapsible %}
-<details class="chirpui-card chirpui-card--collapsible{{ variant_class }}{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
+<details class="chirpui-card chirpui-card--collapsible{{ variant_class }}{{ border_class }}{{ header_class }}{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
     {% if title %}
         <summary class="chirpui-card__header">
             {% if icon %}<span class="chirpui-card__icon">{{ icon }}</span>{% end %}
@@ -44,7 +46,7 @@
     {% end %}
 </details>
 {% else %}
-<article class="chirpui-card{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+<article class="chirpui-card{{ variant_class }}{{ border_class }}{{ header_class }}{{ " " ~ cls if cls else "" }}">
     {% if title %}
         <header class="chirpui-card__header">
             {% if icon %}<span class="chirpui-card__icon">{{ icon }}</span>{% end %}
@@ -85,12 +87,21 @@
 </div>
 {% end %}
 
-{# Link-styled card for navigation/index grids #}
+{# Link-styled card for navigation/index grids.
+   Named slots: header_badge (top-left chip/badge), header_subtitle (beneath title, e.g. aliases),
+   footer (below hr, e.g. tags), default (body). #}
 {% def card_link(href, title, cls="") %}
-<a href="{{ href }}" class="chirpui-card chirpui-card--link{{ " " ~ cls if cls else "" }}" style="display: block; text-decoration: none; color: inherit;">
-    <header class="chirpui-card__header">{{ title }}</header>
+<a href="{{ href }}" class="chirpui-card chirpui-card--link{{ " " ~ cls if cls else "" }}">
+    <header class="chirpui-card__header">
+        <div class="chirpui-card__header-badges">{% slot header_badge %}</div>
+        <div class="chirpui-card__header-content">
+            <span class="chirpui-card__title">{{ title }}</span>
+            <div class="chirpui-card__header-subtitle">{% slot header_subtitle %}</div>
+        </div>
+    </header>
     <div class="chirpui-card__body">
         {% slot %}
     </div>
+    <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
 </a>
 {% end %}
