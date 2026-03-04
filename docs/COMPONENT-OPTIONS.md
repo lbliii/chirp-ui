@@ -504,7 +504,7 @@ chirp_ui.set_strict(True)
 
 For custom components with inline variants:
 
-```jinja2
+```html
 {% set variant = variant | validate_variant(("a","b","c"), "a") %}
 ```
 

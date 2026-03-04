@@ -32,7 +32,7 @@ def _extract_template_classes() -> set[str]:
         content = re.sub(r"\{#.*?#\}", "", content, flags=re.DOTALL)
         for match in class_attr_pattern.finditer(content):
             class_attr_value = match.group(2)
-            # Skip dynamic class attributes to avoid Jinja false positives.
+            # Skip dynamic class attributes to avoid Kida false positives.
             if "{{" in class_attr_value or "{%" in class_attr_value:
                 continue
             for class_match in class_name_pattern.finditer(class_attr_value):
