@@ -262,6 +262,37 @@
 </div>
 {% end %}
 
+{# Segmented control — connected button-group radio selector. #}
+{% def segmented_control(name, options, selected="", label=none, errors=none,
+                         required=false, hint=none, size="") %}
+<div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <label class="chirpui-field__label">
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+        </label>
+    {% end %}
+    <div class="chirpui-segmented{{ " chirpui-segmented--" ~ size if size else "" }}"
+         role="radiogroup" aria-label="{{ label or name }}">
+        {% for opt in options %}
+        <input class="chirpui-segmented__input" type="radio" name="{{ name }}"
+               value="{{ opt.value }}" id="{{ name }}-{{ opt.value }}"
+               {% if opt.value == selected %}checked{% end %}
+               {% if required %}required{% end %}
+               {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+        <label class="chirpui-segmented__label" for="{{ name }}-{{ opt.value }}">{{ opt.label }}</label>
+        {% end %}
+    </div>
+    {% if hint and not (errors and errors | field_errors(name)) %}
+        <span class="chirpui-field__hint">{{ hint }}</span>
+    {% end %}
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
 {# File input with label and error display #}
 {% def file_field(name, label=none, errors=none, accept="", multiple=false,
                   required=false, hint=none) %}
