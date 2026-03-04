@@ -16,6 +16,7 @@
 -#}
 
 {% def surface(variant="default", full_width=false, padding=true, cls="") %}
+{% set variant = variant | validate_variant(("default","muted","elevated","accent","glass","frosted","smoke"), "default") %}
 <div class="chirpui-surface chirpui-surface--{{ variant }}{% if full_width %} chirpui-surface--full{% end %}{% if not padding %} chirpui-surface--no-padding{% end %}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>

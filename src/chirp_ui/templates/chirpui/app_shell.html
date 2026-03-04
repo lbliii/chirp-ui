@@ -1,0 +1,33 @@
+{#- chirp-ui: App Shell component
+    Full-page shell with topbar, sidebar, and main content area.
+    The main area uses hx-boost to swap only #main on navigation,
+    keeping the sidebar and topbar persistent.
+
+    Named slots: topbar, topbar_end, sidebar, default (main content).
+
+    Usage:
+        from "chirpui/app_shell.html" import app_shell
+
+        call app_shell(brand="My App", brand_url="/")
+            {% slot topbar %}breadcrumbs(...){% end %}
+            {% slot topbar_end %}command_palette_trigger(){% end %}
+            {% slot sidebar %}call sidebar()...end{% end %}
+            Page content here
+        end
+-#}
+
+{% def app_shell(brand="", brand_url="/", cls="") %}
+<div class="chirpui-app-shell{{ " " ~ cls if cls else "" }}">
+    <header class="chirpui-app-shell__topbar">
+        <a href="{{ brand_url }}" class="chirpui-app-shell__brand">{{ brand }}</a>
+        <div class="chirpui-app-shell__topbar-center">{% slot topbar %}</div>
+        <div class="chirpui-app-shell__topbar-end">{% slot topbar_end %}</div>
+    </header>
+    <aside class="chirpui-app-shell__sidebar">{% slot sidebar %}</aside>
+    <main id="main" class="chirpui-app-shell__main" hx-boost="true" hx-target="#main" hx-swap="innerHTML transition:true">
+        <div hx-disinherit="hx-target hx-swap">
+            {% slot %}
+        </div>
+    </main>
+</div>
+{% end %}

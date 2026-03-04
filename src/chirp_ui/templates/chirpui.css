@@ -41,28 +41,97 @@
     --chirpui-surface-alt: light-dark(#f8fafc, #334155);
     --chirpui-border: light-dark(#e2e8f0, #475569);
     --chirpui-accent: light-dark(#0284c7, #38bdf8);
-    --chirpui-accent-hover: light-dark(#0369a1, #7dd3fc);
+    --chirpui-accent-hover: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-hover), black);
     --chirpui-bg: light-dark(#f8fafc, #0f172a);
     --chirpui-bg-subtle: light-dark(#f1f5f9, #1e293b);
     --chirpui-surface-elevated: var(--chirpui-surface-alt);
     --chirpui-focus-ring: color-mix(in srgb, var(--chirpui-accent) 30%, transparent);
 
-    /* Semantic — badges, status, progress, errors (derive muted from base when supported) */
+    /* Semantic — badges, status, progress, errors; *-muted use generic shade */
     --chirpui-primary: #5b9cf5;
-    --chirpui-primary-muted: rgba(91, 156, 245, 0.1);
     --chirpui-success: #22c55e;
-    --chirpui-success-muted: rgba(34, 197, 94, 0.1);
     --chirpui-warning: #f59e5b;
-    --chirpui-warning-muted: rgba(245, 158, 91, 0.1);
     --chirpui-error: #dc2626;
-    --chirpui-error-muted: rgba(220, 38, 38, 0.1);
     --chirpui-muted: #6b7280;
-    --chirpui-muted-bg: rgba(107, 114, 128, 0.1);
 
     /* Optional — themes can set for dimension (accent-dim, accent-bright, card accents) */
     --chirpui-card-header-color: var(--chirpui-text);
     --chirpui-card-hover-border: var(--chirpui-border);
     --chirpui-card-hover-shadow: var(--chirpui-shadow-md);
+
+    /* Card body links — titles/primary links in card content (no underline; card signals clickability) */
+    --chirpui-card-body-link-color: var(--chirpui-text);
+    --chirpui-card-body-link-decoration: none;
+    --chirpui-card-body-link-hover-color: var(--chirpui-accent);
+
+    /* Generic shade modifiers — apply to any color via color-mix(); themes override for global tuning */
+    --chirpui-shade-hover: 85%;
+    --chirpui-shade-active: 70%;
+    --chirpui-shade-light: 15%;
+    --chirpui-shade-dim: 40%;
+    --chirpui-shade-bright: 85%;
+    --chirpui-shade-muted: 15%;
+
+    /* Derived accent states — use generic shades; override base --chirpui-accent for all */
+    --chirpui-accent-dim: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-dim), black);
+    --chirpui-accent-bright: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-bright), white);
+    --chirpui-accent-light: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-light), white);
+    --chirpui-accent-active: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-active), black);
+
+    /* Semantic muted backgrounds — derived via generic shade */
+    --chirpui-primary-muted: color-mix(in srgb, var(--chirpui-primary) var(--chirpui-shade-muted), white);
+    --chirpui-success-muted: color-mix(in srgb, var(--chirpui-success) var(--chirpui-shade-muted), white);
+    --chirpui-warning-muted: color-mix(in srgb, var(--chirpui-warning) var(--chirpui-shade-muted), white);
+    --chirpui-error-muted: color-mix(in srgb, var(--chirpui-error) var(--chirpui-shade-muted), white);
+    --chirpui-muted-bg: color-mix(in srgb, var(--chirpui-muted) var(--chirpui-shade-muted), white);
+
+    /* Info semantic — for alerts, badges, docs */
+    --chirpui-info: light-dark(#0284c7, #38bdf8);
+
+    /* Alert/admonition text/icon colors — derive from semantic base */
+    --chirpui-alert-info-color: var(--chirpui-info);
+    --chirpui-alert-success-color: var(--chirpui-success);
+    --chirpui-alert-warning-color: var(--chirpui-warning);
+    --chirpui-alert-error-color: var(--chirpui-error);
+
+    /* Example/admonition — docs-style "Example" or "Note" blocks */
+    --chirpui-example: light-dark(#7c3aed, #a78bfa);
+    --chirpui-example-muted: color-mix(in srgb, var(--chirpui-example) var(--chirpui-shade-muted), white);
+    --chirpui-alert-example-bg: light-dark(#f5f3ff, #2e1065);
+    --chirpui-alert-example-border: light-dark(#c4b5fd, #7c3aed);
+    --chirpui-alert-example-color: var(--chirpui-example);
+
+    /* HTTP method tokens — API docs; map to semantic by default */
+    --chirpui-method-get: var(--chirpui-info);
+    --chirpui-method-get-bg: var(--chirpui-alert-info-bg);
+    --chirpui-method-get-border: var(--chirpui-alert-info-border);
+    --chirpui-method-post: var(--chirpui-success);
+    --chirpui-method-post-bg: var(--chirpui-alert-success-bg);
+    --chirpui-method-post-border: var(--chirpui-alert-success-border);
+    --chirpui-method-put: var(--chirpui-warning);
+    --chirpui-method-put-bg: var(--chirpui-alert-warning-bg);
+    --chirpui-method-put-border: var(--chirpui-alert-warning-border);
+    --chirpui-method-patch: var(--chirpui-warning);
+    --chirpui-method-patch-bg: var(--chirpui-alert-warning-bg);
+    --chirpui-method-patch-border: var(--chirpui-alert-warning-border);
+    --chirpui-method-delete: var(--chirpui-error);
+    --chirpui-method-delete-bg: var(--chirpui-alert-error-bg);
+    --chirpui-method-delete-border: var(--chirpui-alert-error-border);
+    --chirpui-method-head: var(--chirpui-muted);
+    --chirpui-method-head-bg: var(--chirpui-muted-bg);
+    --chirpui-method-head-border: var(--chirpui-border);
+    --chirpui-method-options: var(--chirpui-muted);
+    --chirpui-method-options-bg: var(--chirpui-muted-bg);
+    --chirpui-method-options-border: var(--chirpui-border);
+
+    /* Code syntax — inline code, code blocks, syntax highlighting */
+    --chirpui-code-bg: light-dark(#f1f5f9, #1e293b);
+    --chirpui-code-text: light-dark(#334155, #cbd5e1);
+    --chirpui-code-type: var(--chirpui-info);
+    --chirpui-code-type-bg: var(--chirpui-alert-info-bg);
+    --chirpui-code-keyword: light-dark(#7c3aed, #a78bfa);
+    --chirpui-code-string: light-dark(#059669, #34d399);
+    --chirpui-code-number: light-dark(#d97706, #fbbf24);
 
     /* Depth — shadow scale (adapts to light/dark via light-dark) */
     /* Motion */
@@ -158,7 +227,6 @@
     --chirpui-surface-alt: #f8fafc;
     --chirpui-border: #e2e8f0;
     --chirpui-accent: #0284c7;
-    --chirpui-accent-hover: #0369a1;
     --chirpui-bg: #f8fafc;
     --chirpui-bg-subtle: #f1f5f9;
     --chirpui-alert-info-bg: #eff6ff;
@@ -228,17 +296,20 @@
     }
 }
 
-/* Derive color layers from base tokens (oklch relative colors) — themes get dimension from one hue */
-@supports (color: oklch(from red l c h)) {
+/* Use oklch for color-mix when supported — better perceptual uniformity */
+@supports (color: oklch(0 0 0)) {
     :root {
-        --chirpui-accent-hover: oklch(from var(--chirpui-accent) calc(l - 0.08) c h);
-        --chirpui-accent-dim: oklch(from var(--chirpui-accent) calc(l - 0.12) calc(c * 0.6) h);
-        --chirpui-accent-bright: oklch(from var(--chirpui-accent) calc(l + 0.12) calc(c * 1.1) h);
-        --chirpui-primary-muted: oklch(from var(--chirpui-primary) calc(l + 0.25) 0.08 h);
-        --chirpui-success-muted: oklch(from var(--chirpui-success) calc(l + 0.25) 0.08 h);
-        --chirpui-warning-muted: oklch(from var(--chirpui-warning) calc(l + 0.25) 0.08 h);
-        --chirpui-error-muted: oklch(from var(--chirpui-error) calc(l + 0.25) 0.08 h);
-        --chirpui-muted-bg: oklch(from var(--chirpui-muted) calc(l + 0.2) 0.05 h);
+        --chirpui-accent-hover: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-hover), black);
+        --chirpui-accent-dim: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-dim), black);
+        --chirpui-accent-bright: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-bright), white);
+        --chirpui-accent-light: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-light), white);
+        --chirpui-accent-active: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-active), black);
+        --chirpui-primary-muted: color-mix(in oklch, var(--chirpui-primary) var(--chirpui-shade-muted), white);
+        --chirpui-success-muted: color-mix(in oklch, var(--chirpui-success) var(--chirpui-shade-muted), white);
+        --chirpui-warning-muted: color-mix(in oklch, var(--chirpui-warning) var(--chirpui-shade-muted), white);
+        --chirpui-error-muted: color-mix(in oklch, var(--chirpui-error) var(--chirpui-shade-muted), white);
+        --chirpui-muted-bg: color-mix(in oklch, var(--chirpui-muted) var(--chirpui-shade-muted), white);
+        --chirpui-example-muted: color-mix(in oklch, var(--chirpui-example) var(--chirpui-shade-muted), white);
         --chirpui-focus-ring: color-mix(in oklch, var(--chirpui-accent) 30%, transparent);
     }
 }
@@ -281,6 +352,10 @@ html {
 .chirpui-grid--cols-4 {
     grid-template-columns: repeat(auto-fit, minmax(min(calc(var(--chirpui-grid-min) * 0.5), 100%), 1fr));
 }
+
+.chirpui-grid--gap-sm { gap: var(--chirpui-spacing-sm); }
+.chirpui-grid--gap-md { gap: var(--chirpui-spacing-md); }
+.chirpui-grid--gap-lg { gap: var(--chirpui-spacing-lg); }
 
 .chirpui-stack {
     display: flex;
@@ -1656,6 +1731,40 @@ a.chirpui-trending-tag:hover {
     border-radius: var(--chirpui-radius-sm);
 }
 
+.chirpui-code {
+    font-size: 0.9em;
+    background: var(--chirpui-code-bg, var(--chirpui-bg-subtle));
+    color: var(--chirpui-code-text, var(--chirpui-text));
+    padding: 0.15em 0.35em;
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-code-block {
+    overflow-x: auto;
+    padding: var(--chirpui-spacing);
+    background: var(--chirpui-code-bg, var(--chirpui-bg-subtle));
+    border-radius: var(--chirpui-radius-sm);
+    margin-bottom: 0.75em;
+    white-space: pre-wrap;
+}
+
+.chirpui-code-block code {
+    background: none;
+    padding: 0;
+}
+
+.chirpui-fieldset {
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    padding: var(--chirpui-spacing);
+    margin: 0 0 var(--chirpui-spacing);
+}
+
+.chirpui-fieldset__legend {
+    padding: 0 0.5em;
+    font-weight: 600;
+}
+
 :where(.chirpui-prose) pre {
     overflow-x: auto;
     padding: var(--chirpui-spacing);
@@ -2150,8 +2259,31 @@ a.chirpui-trending-tag:hover {
     margin-inline-start: auto;
 }
 
+.chirpui-card__header-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    flex-shrink: 0;
+}
+
+.chirpui-card__header-badges:empty {
+    display: none;
+}
+
 .chirpui-card__body {
     padding: var(--chirpui-spacing);
+}
+
+/* Links in card body — no underline by default; card/title signals clickability */
+.chirpui-card__body a {
+    color: var(--chirpui-card-body-link-color);
+    text-decoration: var(--chirpui-card-body-link-decoration);
+    transition: color var(--chirpui-transition);
+}
+
+.chirpui-card__body a:hover {
+    color: var(--chirpui-card-body-link-hover-color);
 }
 
 .chirpui-card:has(.chirpui-card__footer) .chirpui-card__body {
@@ -4339,6 +4471,18 @@ a.chirpui-btn {
     border-color: var(--chirpui-error);
 }
 
+.chirpui-badge--muted {
+    background: var(--chirpui-muted-bg);
+    color: var(--chirpui-text-muted);
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-badge--info {
+    background: var(--chirpui-alert-info-bg);
+    color: var(--chirpui-info);
+    border-color: var(--chirpui-alert-info-border);
+}
+
 /* ==========================================================================
    Spinner
    ========================================================================== */
@@ -4848,4 +4992,196 @@ a.chirpui-btn {
     .chirpui-status-indicator--pulse .chirpui-status-indicator__dot {
         animation: none;
     }
+}
+
+/* ==========================================================================
+   App Shell
+   ========================================================================== */
+
+.chirpui-app-shell {
+    display: grid;
+    grid-template-columns: var(--chirpui-sidebar-width, 16rem) 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "topbar topbar" "sidebar main";
+    height: 100dvh;
+    overflow: hidden;
+}
+
+.chirpui-app-shell__topbar {
+    grid-area: topbar;
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border-bottom: 1px solid var(--chirpui-border);
+    background: var(--chirpui-surface);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.chirpui-app-shell__brand {
+    font-weight: 600;
+    font-size: var(--chirpui-font-lg);
+    color: var(--chirpui-text);
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.chirpui-app-shell__topbar-center {
+    flex: 1;
+}
+
+.chirpui-app-shell__topbar-end {
+    flex-shrink: 0;
+}
+
+.chirpui-app-shell__sidebar {
+    grid-area: sidebar;
+    overflow-y: auto;
+    border-right: 1px solid var(--chirpui-border);
+}
+
+.chirpui-app-shell__sidebar .chirpui-sidebar {
+    width: auto;
+    border-right: none;
+}
+
+.chirpui-app-shell__main {
+    grid-area: main;
+    overflow-y: auto;
+    padding: var(--chirpui-spacing-lg);
+}
+
+/* ==========================================================================
+   Sidebar — section links container
+   ========================================================================== */
+
+.chirpui-sidebar__section-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+    margin-top: var(--chirpui-spacing-xs);
+}
+
+/* Collapsible section (details/summary) */
+.chirpui-sidebar__section > summary {
+    cursor: pointer;
+    list-style: none;
+}
+
+.chirpui-sidebar__section > summary::-webkit-details-marker {
+    display: none;
+}
+
+/* ==========================================================================
+   Command Palette
+   ========================================================================== */
+
+.chirpui-command-palette {
+    border: none;
+    background: transparent;
+    padding: 0;
+    max-width: 40rem;
+    width: 90vw;
+    margin: 10vh auto auto;
+    border-radius: var(--chirpui-radius-lg);
+    overflow: hidden;
+}
+
+.chirpui-command-palette::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.chirpui-command-palette__inner {
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.chirpui-command-palette__input {
+    width: 100%;
+    padding: var(--chirpui-spacing) var(--chirpui-spacing-lg);
+    border: none;
+    border-bottom: 1px solid var(--chirpui-border);
+    background: transparent;
+    font-size: var(--chirpui-font-lg);
+    color: var(--chirpui-text);
+    outline: none;
+    font-family: inherit;
+}
+
+.chirpui-command-palette__input::placeholder {
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-command-palette__results {
+    max-height: 20rem;
+    overflow-y: auto;
+    padding: var(--chirpui-spacing-sm) 0;
+}
+
+.chirpui-command-palette__results:empty {
+    display: none;
+}
+
+.chirpui-command-palette__group-title {
+    font-size: var(--chirpui-font-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--chirpui-text-muted);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg);
+}
+
+.chirpui-command-palette__item {
+    display: block;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg);
+    color: var(--chirpui-text);
+    text-decoration: none;
+    transition: background var(--chirpui-transition);
+}
+
+.chirpui-command-palette__item:hover {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-command-palette__item-label {
+    font-weight: 500;
+}
+
+.chirpui-command-palette__item-hint {
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-command-palette__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    background: transparent;
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-font-sm);
+    cursor: pointer;
+    transition: color var(--chirpui-transition), border-color var(--chirpui-transition);
+    font-family: inherit;
+}
+
+.chirpui-command-palette__trigger:hover {
+    color: var(--chirpui-text);
+    border-color: var(--chirpui-text-muted);
+}
+
+.chirpui-command-palette__kbd {
+    font-size: var(--chirpui-font-xs);
+    padding: 0.1em 0.4em;
+    border-radius: var(--chirpui-radius-xs, 3px);
+    background: var(--chirpui-bg-subtle);
+    border: 1px solid var(--chirpui-border);
 }

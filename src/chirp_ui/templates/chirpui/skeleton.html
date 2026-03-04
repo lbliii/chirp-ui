@@ -13,6 +13,7 @@
 -#}
 
 {% def skeleton(width=none, height=none, variant="", lines=1, cls="") %}
+{% set variant = variant | validate_variant(("","avatar","text","card"), "") %}
 {% set variant_class = " chirpui-skeleton--" ~ variant if variant else "" %}
 {% if variant == "avatar" %}
 <span class="chirpui-skeleton chirpui-skeleton--avatar{{ " " ~ cls if cls else "" }}"></span>

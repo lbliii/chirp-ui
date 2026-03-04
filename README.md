@@ -87,6 +87,7 @@ app.add_middleware(StaticFiles(
 | **Docs** | page_hero, nav_tree, params_table, signature, index_card — framework-agnostic docs components |
 | **Streaming** | streaming_block, copy_btn, model_card — for htmx SSE and LLM UIs |
 | **Theming** | `--chirpui-*` CSS variables, dark mode, optional Holy Light theme |
+| **Component options** | [COMPONENT-OPTIONS.md](docs/COMPONENT-OPTIONS.md) — valid variants, sizes, strict mode |
 
 ---
 
@@ -107,14 +108,19 @@ Open http://localhost:8000
 <details>
 <summary><strong>Theming</strong> — Override CSS variables</summary>
 
-chirp-ui uses `prefers-color-scheme` for dark mode. Override any `--chirpui-*` variable:
+chirp-ui uses `prefers-color-scheme` for dark mode. Override any `--chirpui-*` variable. Base colors drive derived states (hover, active, light, muted) via `color-mix()`:
 
 ```css
 :root {
     --chirpui-accent: #7c3aed;
     --chirpui-container-max: 80rem;
+    /* Optional: tune shade ratios for all colors */
+    --chirpui-shade-hover: 85%;
+    --chirpui-shade-muted: 15%;
 }
 ```
+
+Advanced tokens: HTTP methods (`--chirpui-method-get`, etc.), code syntax (`--chirpui-code-keyword`, etc.), example/admonition (`--chirpui-alert-example-*`). Full token reference: [PLAN-theme-tokens.md](docs/PLAN-theme-tokens.md).
 
 For manual light/dark toggle, set `data-theme="light"` or `data-theme="dark"` on `<html>`.
 

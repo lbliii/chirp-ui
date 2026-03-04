@@ -39,6 +39,15 @@ def _bem_stub(block: str, variant: str = "", modifier: str = "", cls: str = "") 
     return " ".join(parts)
 
 
+def _validate_variant_stub(
+    value: str,
+    allowed: Sequence[str],
+    default: str = "",
+) -> str:
+    """Stub for chirp-ui ``validate_variant`` filter. Returns value if in allowed, else default."""
+    return value if value in allowed else default
+
+
 def _island_attrs_stub(
     name: str,
     props: Any | None = None,
@@ -96,8 +105,12 @@ def env() -> Environment:
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
         autoescape=True,
     )
-    # Register stubs for Chirp filters (field_errors, bem) used by chirp-ui
-    e.update_filters({"field_errors": _field_errors_stub, "bem": _bem_stub})
+    # Register stubs for Chirp/chirp-ui filters (field_errors, bem, validate_variant)
+    e.update_filters({
+        "field_errors": _field_errors_stub,
+        "bem": _bem_stub,
+        "validate_variant": _validate_variant_stub,
+    })
     e.add_global("island_attrs", _island_attrs_stub)
     e.add_global("primitive_attrs", _primitive_attrs_stub)
     return e

@@ -15,6 +15,7 @@
 -#}
 
 {% def hero(title=none, subtitle=none, background="solid", cls="") %}
+{% set background = background | validate_variant(("solid","muted","gradient"), "solid") %}
 <section class="chirpui-hero chirpui-hero--{{ background }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-hero__inner">
         {% if title %}
@@ -48,6 +49,8 @@
 -#}
 
 {% def page_hero(title=none, subtitle=none, variant="editorial", background="solid", cls="") %}
+{% set variant = variant | validate_variant(("editorial","minimal"), "editorial") %}
+{% set background = background | validate_variant(("solid","muted","gradient"), "solid") %}
 <section class="chirpui-hero chirpui-hero--page chirpui-hero--page-{{ variant }} chirpui-hero--{{ background }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-hero__inner">
         <div class="chirpui-hero__eyebrow">{% slot eyebrow %}</div>

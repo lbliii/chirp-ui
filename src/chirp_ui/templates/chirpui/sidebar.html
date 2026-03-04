@@ -8,29 +8,38 @@
 
         call sidebar()
             {% slot header %}<div class="chirpui-sidebar__brand">My App</div>{% end %}
-            sidebar_section("Main")
-            sidebar_link("/dashboard", "Dashboard", active=true)
-            {% slot footer %}sidebar_link("/help", "Help"){% end %}
+            call sidebar_section("Main")
+                sidebar_link("/dashboard", "Dashboard", active=true)
+            end
+            {% slot footer %}<span>v1.0</span>{% end %}
         end
 -#}
 
 {% def sidebar(cls="") %}
-<aside class="chirpui-sidebar{{ " " ~ cls if cls else "" }}">
+<nav class="chirpui-sidebar{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-sidebar__header">{% slot header %}</div>
-    <nav class="chirpui-sidebar__nav">
+    <div class="chirpui-sidebar__nav">
         {% slot %}
-    </nav>
+    </div>
     <div class="chirpui-sidebar__footer">{% slot footer %}</div>
-</aside>
+</nav>
 {% end %}
 
-{% def sidebar_section(title, cls="") %}
+{% def sidebar_section(title="", collapsible=false, cls="") %}
+{% if collapsible %}
+<details class="chirpui-sidebar__section{{ " " ~ cls if cls else "" }}" open>
+    <summary class="chirpui-sidebar__section-title">{{ title }}</summary>
+    <div class="chirpui-sidebar__section-links">{% slot %}</div>
+</details>
+{% else %}
 <div class="chirpui-sidebar__section{{ " " ~ cls if cls else "" }}">
-    <span class="chirpui-sidebar__section-title">{{ title }}</span>
+    {% if title %}<span class="chirpui-sidebar__section-title">{{ title }}</span>{% end %}
+    <div class="chirpui-sidebar__section-links">{% slot %}</div>
 </div>
 {% end %}
+{% end %}
 
-{% def sidebar_link(href, label, active=false, cls="") %}
+{% def sidebar_link(href, label, icon="", active=false, cls="") %}
 <a class="chirpui-sidebar__link{{ " chirpui-sidebar__link--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
-   href="{{ href }}">{{ label }}</a>
+   href="{{ href }}">{% if icon %}<span class="chirpui-sidebar__icon">{{ icon }}</span> {% end %}{{ label }}</a>
 {% end %}

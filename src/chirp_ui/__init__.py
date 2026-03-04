@@ -17,13 +17,14 @@ from pathlib import Path
 from kida import PackageLoader
 
 from chirp_ui.filters import TemplateFilterApp
+from chirp_ui.validation import set_strict
 
 # Declare free-threading support (PEP 703)
 _Py_mod_gil = 0
 
 __version__ = "0.1.0"
 
-__all__ = ["get_loader", "register_filters", "static_path"]
+__all__ = ["get_loader", "register_filters", "set_strict", "static_path"]
 
 
 def static_path() -> Path:

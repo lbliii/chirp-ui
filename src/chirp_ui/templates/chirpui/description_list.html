@@ -17,6 +17,7 @@
 -#}
 
 {% def description_list(items=none, variant="stacked", cls="") %}
+{% set variant = variant | validate_variant(("stacked","horizontal"), "stacked") %}
 <div class="chirpui-dl-wrap">
     <div class="chirpui-dl__header">{% slot header %}</div>
 <dl class="chirpui-dl chirpui-dl--{{ variant }}{{ " " ~ cls if cls else "" }}">

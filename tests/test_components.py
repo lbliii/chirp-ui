@@ -34,6 +34,32 @@ class TestLayout:
         ).render()
         assert "chirpui-grid--cols-2" in html
 
+    def test_grid_gap_sm(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}{% call grid(gap="sm") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--gap-sm" in html
+
+    def test_grid_gap_md(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}{% call grid(gap="md") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--gap-md" in html
+
+    def test_grid_gap_lg(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}{% call grid(gap="lg") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--gap-lg" in html
+
+    def test_grid_cols_and_gap(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(cols=3, gap="md") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--cols-3" in html
+        assert "chirpui-grid--gap-md" in html
+
     def test_stack(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import stack %}{% call stack() %}A{% end %}'
@@ -308,6 +334,31 @@ class TestEmptyState:
         assert "Try different terms" in html
         assert "chirpui-empty-state__suggestions" in html
         assert "Tip 1" in html
+
+
+# ---------------------------------------------------------------------------
+# Code
+# ---------------------------------------------------------------------------
+
+
+class TestCode:
+    def test_code_inline(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import code %}{{ code("path/to/file") }}'
+        ).render()
+        assert "chirpui-code" in html
+        assert "path/to/file" in html
+        assert "<code" in html
+
+    def test_code_block(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import code_block %}'
+            '{{ code_block("def foo():\\n    pass") }}'
+        ).render()
+        assert "chirpui-code-block" in html
+        assert "<pre" in html
+        assert "<code>" in html
+        assert "def foo():" in html
 
 
 # ---------------------------------------------------------------------------
@@ -983,6 +1034,48 @@ class TestForms:
     Note: ``field_errors`` filter is provided by Chirp, not chirp-ui.
     These tests exercise the macros without error display (errors=none).
     """
+
+    def test_form_macro(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/submit", method="post") %}<input>{% end %}'
+        ).render()
+        assert "chirpui-form" in html
+        assert 'action="/submit"' in html
+        assert 'method="post"' in html
+        assert "<input>" in html
+
+    def test_form_macro_with_htmx_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", attrs=\'hx-post="/x" hx-target="#y" hx-swap="innerHTML"\') %}'
+            "Body"
+            "{% end %}"
+        ).render()
+        assert "chirpui-form" in html
+        assert "hx-post" in html
+        assert "hx-target" in html
+        assert "hx-swap" in html
+        assert "Body" in html
+
+    def test_fieldset_macro(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import fieldset %}'
+            '{% call fieldset(legend="Options") %}Content{% end %}'
+        ).render()
+        assert "chirpui-fieldset" in html
+        assert "chirpui-fieldset__legend" in html
+        assert "Options" in html
+        assert "Content" in html
+
+    def test_fieldset_macro_no_legend(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import fieldset %}'
+            '{% call fieldset() %}Content{% end %}'
+        ).render()
+        assert "chirpui-fieldset" in html
+        assert "chirpui-fieldset__legend" not in html
+        assert "Content" in html
 
     def test_text_field(self, env: Environment) -> None:
         html = env.from_string(

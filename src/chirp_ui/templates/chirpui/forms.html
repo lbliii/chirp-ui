@@ -6,6 +6,22 @@
     use it; checkbox/toggle/radio/range/input_group have custom layouts.
 -#}
 
+{% def form(action, method="get", enctype=none, cls="", attrs="") %}
+<form action="{{ action }}" method="{{ method }}"
+      {% if enctype %}enctype="{{ enctype }}"{% end %}
+      class="chirpui-form{{ " " ~ cls if cls else "" }}"
+      {{ attrs }}>
+    {% slot %}
+</form>
+{% end %}
+
+{% def fieldset(legend=none, cls="") %}
+<fieldset class="chirpui-fieldset{{ " " ~ cls if cls else "" }}">
+    {% if legend %}<legend class="chirpui-fieldset__legend">{{ legend }}</legend>{% end %}
+    {% slot %}
+</fieldset>
+{% end %}
+
 {# Shared wrapper: label, slot (control), hint, errors. modifier adds chirpui-field--X. #}
 {% def field_wrapper(name, label=none, errors=none, required=false, hint=none, modifier="") %}
 <div class="chirpui-field{{ " chirpui-field--" ~ modifier if modifier else "" }}{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
@@ -270,8 +286,9 @@
 {% end %}
 
 {# Multi-select dropdown with label and error display #}
-{% def multi_select_field(name, options, selected=[], label=none, errors=none,
+{% def multi_select_field(name, options, selected=none, label=none, errors=none,
                           required=false, hint=none, size=4) %}
+{% set selected = selected or [] %}
 {% call field_wrapper(name, label, errors, required, hint) %}
 <select class="chirpui-field__input chirpui-field__input--multi"
         id="{{ name }}" name="{{ name }}" multiple size="{{ size }}"

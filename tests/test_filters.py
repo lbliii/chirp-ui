@@ -1,6 +1,9 @@
 """Unit tests for chirp-ui template filters."""
 
-from chirp_ui.filters import bem, field_errors, register_filters
+import pytest
+
+from chirp_ui.filters import bem, field_errors, register_filters, validate_variant
+from chirp_ui.validation import set_strict
 
 
 class TestBem:
@@ -40,6 +43,44 @@ class TestFieldErrors:
 
     def test_empty_dict_returns_empty(self) -> None:
         assert field_errors({}, "any") == []
+
+
+class TestValidateVariant:
+    """validate_variant returns value if allowed, else default."""
+
+    def test_valid_value_returned(self) -> None:
+        assert validate_variant("success", ("info", "success", "error")) == "success"
+
+    def test_invalid_returns_default_when_default_in_allowed(self) -> None:
+        assert validate_variant("bad", ("a", "b"), default="a") == "a"
+
+    def test_invalid_returns_first_allowed_when_default_not_in_allowed(self) -> None:
+        assert validate_variant("bad", ("a", "b"), default="x") == "a"
+
+    def test_invalid_empty_allowed_returns_empty_string(self) -> None:
+        assert validate_variant("bad", (), default="") == ""
+
+    def test_empty_string_valid_when_in_allowed(self) -> None:
+        assert validate_variant("", ("", "avatar", "text")) == ""
+
+
+class TestValidateVariantStrictMode:
+    """Strict mode logs warning on invalid variant and returns fallback."""
+
+    def setup_method(self) -> None:
+        set_strict(True)
+
+    def teardown_method(self) -> None:
+        set_strict(False)
+
+    def test_invalid_logs_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+        result = validate_variant("invalid", ("a", "b"))
+        assert result == "a"
+        assert "chirp_ui" in caplog.text or any("variant" in r.message for r in caplog.records)
+
+    def test_valid_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+        validate_variant("a", ("a", "b"))
+        assert not any("invalid" in (r.message or "") for r in caplog.records)
 
 
 class TestRegisterFilters:
