@@ -46,9 +46,11 @@
     </header>
     <div class="chirpui-card__body chirpui-model-card__body">
         {% if sse_streaming %}
-        {% call streaming_block(streaming=true, sse_swap_target=true) %}
-        {% slot %}
-        {% end %}
+        <div class="chirpui-streaming-block chirpui-streaming-block--active"
+             sse-swap="fragment" hx-target="this" aria-live="polite" aria-atomic="true">
+            {% slot %}
+            <span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
+        </div>
         {% else %}
         {% slot %}
         {% end %}

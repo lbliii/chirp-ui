@@ -9,8 +9,9 @@
         {% end %}
 -#}
 
-{% def tooltip(content, position="top") %}
-<span class="chirpui-tooltip chirpui-tooltip--{{ position }}" data-chirpui-tooltip data-tooltip="{{ content | e }}" title="{{ content | e }}">
+{% def tooltip(content=none, hint=none, position="top") %}
+{% set tooltip_text = hint if hint is not none else content %}
+<span class="chirpui-tooltip chirpui-tooltip--{{ position }}" data-chirpui-tooltip data-tooltip="{{ tooltip_text | e }}" title="{{ tooltip_text | e }}">
     {% slot %}
 </span>
 {% end %}
