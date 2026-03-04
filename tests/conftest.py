@@ -131,12 +131,14 @@ def env() -> Environment:
         autoescape=True,
     )
     # Register stubs for Chirp/chirp-ui filters (field_errors, bem, validate_variant)
-    e.update_filters({
-        "field_errors": _field_errors_stub,
-        "bem": _bem_stub,
-        "html_attrs": _html_attrs_stub,
-        "validate_variant": _validate_variant_stub,
-    })
+    e.update_filters(
+        {
+            "field_errors": _field_errors_stub,
+            "bem": _bem_stub,
+            "html_attrs": _html_attrs_stub,
+            "validate_variant": _validate_variant_stub,
+        }
+    )
     e.add_global("island_attrs", _island_attrs_stub)
     e.add_global("primitive_attrs", _primitive_attrs_stub)
     return e

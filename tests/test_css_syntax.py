@@ -13,10 +13,7 @@ def test_chirpui_css_has_no_parse_errors() -> None:
     )
     assert encoding.name == "utf-8"
 
-    parse_errors = [
-        token for token in rules if isinstance(token, tinycss2.ast.ParseError)
-    ]
-    assert not parse_errors, (
-        "CSS parse errors found in chirpui.css: "
-        + ", ".join(str(error.message) for error in parse_errors)
+    parse_errors = [token for token in rules if isinstance(token, tinycss2.ast.ParseError)]
+    assert not parse_errors, "CSS parse errors found in chirpui.css: " + ", ".join(
+        str(error.message) for error in parse_errors
     )

@@ -53,6 +53,6 @@ def test_target_template_classes_exist_in_css() -> None:
         for class_name in template_classes
         if class_name.startswith(TARGET_PREFIXES) and class_name not in css_classes
     )
-    assert not missing, (
-        "Shell/sidebar template classes missing CSS definitions: " + ", ".join(missing)
+    assert not missing, "Shell/sidebar template classes missing CSS definitions: " + ", ".join(
+        missing
     )

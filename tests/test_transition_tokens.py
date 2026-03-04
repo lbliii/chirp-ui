@@ -16,7 +16,11 @@ def test_transition_declarations_use_tokens() -> None:
             continue
         value = match.group(1)
         # Allow tokenized transitions and explicit disable.
-        if "none" in value or "var(--chirpui-transition" in value or "var(--chirpui-motion-" in value:
+        if (
+            "none" in value
+            or "var(--chirpui-transition" in value
+            or "var(--chirpui-motion-" in value
+        ):
             continue
         if duration_literal_pattern.search(value):
             hardcoded.append(f"{line_number}:{value.strip()}")

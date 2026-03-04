@@ -1098,8 +1098,7 @@ class TestForms:
 
     def test_fieldset_macro_no_legend(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/forms.html" import fieldset %}'
-            '{% call fieldset() %}Content{% end %}'
+            '{% from "chirpui/forms.html" import fieldset %}{% call fieldset() %}Content{% end %}'
         ).render()
         assert "chirpui-fieldset" in html
         assert "chirpui-fieldset__legend" not in html
@@ -1509,8 +1508,7 @@ class TestAppShell:
 class TestLogo:
     def test_logo_text_variant(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/logo.html" import logo %}'
-            '{{ logo(text="ChirpUI", variant="text") }}'
+            '{% from "chirpui/logo.html" import logo %}{{ logo(text="ChirpUI", variant="text") }}'
         ).render()
         assert "chirpui-logo" in html
         assert "chirpui-logo--text" in html
