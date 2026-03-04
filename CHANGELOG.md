@@ -9,9 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.1] — 2026-03-04
 
+### Added
+
+- **Form components** — `star_rating` (CSS-only star picker with hover preview, sm/lg sizes), `thumbs_up_down` (binary sentiment), `segmented_control` (connected radio button group), `number_scale` (NPS-style horizontal numbered radio with endpoint labels)
+- **Data display** — `sortable_list` (drag-to-reorder with handle, remove button, drag states), `bar_chart`, `donut`, `dropdown_menu`
+- **Layout & shell** — `app_shell`, `app_shell_layout`, `action_strip`, `filter_bar`, `search_header`, `selection_bar`, `tray`, `modal_overlay`
+- **Docs components** — `config_card`, `config_dashboard`, `index_card`, `nav_tree`, `params_table`, `signature`, `logo`, `command_bar`, `command_palette`
+- **code_block** — `copy=true` param for copy-to-clipboard with hover-reveal button and "Copied!" feedback
+- **Typography** — `--chirpui-ui-*` and `--chirpui-prose-*` tokens; utility classes (`.chirpui-ui-xs`, `.chirpui-ui-label`, etc.); page-header and section-header typography rules
+- **CSS utilities** — `.chirpui-card--link`, `.chirpui-flow` (badge/tag rows), `.chirpui-grid--auto-fill`
+- **theme_toggle** — Manual light/dark theme switch component
+- **chirpui.js** — Client-side utilities (copy, clipboard, etc.)
+- **validation.py** — Strict mode for component option validation
+- **Documentation** — `COMPONENT-OPTIONS.md` (variant/size reference, strict mode), `TOKENS.md`, `TYPOGRAPHY.md`; macro slot context section (slot content inherits caller context)
+- **Tests** — Component tests, CSS syntax validation, template–CSS contract checks, transition token checks
+
 ### Changed
 
-- **Formatting** — Ruff format applied to test files (conftest, test_components, test_css_syntax, test_template_css_contract, test_transition_tokens)
+- **streaming_block** — Pass slot content to block when `sse_streaming=true`
+- **Ruff** — Format applied to test files; lint rules updated
+
+### Fixed
+
+- **Form macros** — `attrs` param now marked safe; fixes double-quote escaping that broke HTMX selectors (e.g. `hx-target`, `hx-post`)
 
 [0.1.1]: https://github.com/lbliii/chirp-ui/releases/tag/v0.1.1
 
