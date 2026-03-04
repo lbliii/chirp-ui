@@ -47,6 +47,7 @@
     <div class="chirpui-card__body chirpui-model-card__body">
         {% if sse_streaming %}
         {% call streaming_block(streaming=true, sse_swap_target=true) %}
+        {% slot %}
         {% end %}
         {% else %}
         {% slot %}
