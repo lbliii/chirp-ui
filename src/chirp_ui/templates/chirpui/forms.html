@@ -10,7 +10,7 @@
 <form action="{{ action }}" method="{{ method }}"
       {% if enctype %}enctype="{{ enctype }}"{% end %}
       class="chirpui-form{{ " " ~ cls if cls else "" }}"
-      {{ attrs }}>
+      {{ attrs | safe }}>
     {% slot %}
 </form>
 {% end %}
@@ -73,7 +73,7 @@
        {% if required %}required{% end %}
        {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
-       {{ attrs }}>
+       {{ attrs | safe }}>
 {% end %}
 {% end %}
 
@@ -88,7 +88,7 @@
        {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
        {% if autocomplete %}autocomplete="{{ autocomplete }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
-       {{ attrs }}>
+       {{ attrs | safe }}>
 {% end %}
 {% end %}
 
@@ -267,7 +267,7 @@
                {% if required %}required{% end %}
                {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
                {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
-               {{ attrs }}>
+               {{ attrs | safe }}>
         {% if suffix %}
         <span class="chirpui-input-group__suffix">{{ suffix }}</span>
         {% else %}
@@ -318,7 +318,7 @@
            value="{{ value }}"
            placeholder="{{ placeholder }}"
            {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
-           {{ search_attrs | safe }} {{ attrs }}>
+           {{ search_attrs | safe }} {{ attrs | safe }}>
     {% if errors %}
         {% for msg in errors | field_errors(name) %}
             <span class="chirpui-field__error">{{ msg }}</span>
