@@ -293,6 +293,42 @@
 </div>
 {% end %}
 
+{# Number scale — horizontal numbered radio row (NPS-style 0-10 or 1-5). #}
+{% def number_scale(name, min=0, max=10, selected=none, label=none, errors=none,
+                    required=false, hint=none, low_label="", high_label="") %}
+<div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <label class="chirpui-field__label">
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+        </label>
+    {% end %}
+    <div class="chirpui-number-scale" role="radiogroup" aria-label="{{ label or name }}">
+        {% for i in range(min, max + 1) %}
+        <input class="chirpui-number-scale__input" type="radio" name="{{ name }}"
+               value="{{ i }}" id="{{ name }}-{{ i }}"
+               {% if selected is not none and i == selected %}checked{% end %}
+               {% if required %}required{% end %}
+               {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+        <label class="chirpui-number-scale__label" for="{{ name }}-{{ i }}">{{ i }}</label>
+        {% end %}
+    </div>
+    {% if low_label or high_label %}
+    <div class="chirpui-number-scale__labels">
+        <span class="chirpui-font-xs chirpui-text-muted">{{ low_label }}</span>
+        <span class="chirpui-font-xs chirpui-text-muted">{{ high_label }}</span>
+    </div>
+    {% end %}
+    {% if hint and not (errors and errors | field_errors(name)) %}
+        <span class="chirpui-field__hint">{{ hint }}</span>
+    {% end %}
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
 {# File input with label and error display #}
 {% def file_field(name, label=none, errors=none, accept="", multiple=false,
                   required=false, hint=none) %}

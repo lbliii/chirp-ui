@@ -4828,6 +4828,70 @@ input[type="date"].chirpui-field__input {
     font-size: var(--chirpui-prose-xs);
 }
 
+/* Number scale — horizontal numbered radio row (NPS-style) */
+.chirpui-number-scale {
+    display: inline-flex;
+    gap: 2px;
+}
+
+.chirpui-number-scale__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.chirpui-number-scale__label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    font-size: var(--chirpui-prose-sm);
+    font-weight: 500;
+    color: var(--chirpui-muted);
+    background: var(--chirpui-bg);
+    border: 1px solid var(--chirpui-border);
+    transition: background var(--chirpui-transition), color var(--chirpui-transition),
+                border-color var(--chirpui-transition), transform var(--chirpui-transition);
+    user-select: none;
+}
+
+.chirpui-number-scale__label:first-of-type {
+    border-radius: var(--chirpui-radius) 0 0 var(--chirpui-radius);
+}
+
+.chirpui-number-scale__label:last-of-type {
+    border-radius: 0 var(--chirpui-radius) var(--chirpui-radius) 0;
+}
+
+.chirpui-number-scale__label:hover {
+    background: var(--chirpui-bg-subtle);
+    color: var(--chirpui-text);
+}
+
+.chirpui-number-scale__input:checked + .chirpui-number-scale__label {
+    background: var(--chirpui-accent);
+    color: white;
+    border-color: var(--chirpui-accent);
+    transform: scale(1.08);
+    z-index: 1;
+}
+
+.chirpui-number-scale__input:focus-visible + .chirpui-number-scale__label {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 2px;
+    z-index: 2;
+}
+
+.chirpui-number-scale__labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+}
+
 /* Range slider */
 .chirpui-field--range {
     margin-bottom: var(--chirpui-spacing);
