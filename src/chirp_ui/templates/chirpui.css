@@ -3190,11 +3190,17 @@ a.chirpui-mention:focus-visible {
 }
 
 .chirpui-card--link {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     text-decoration: none;
     color: inherit;
     cursor: pointer;
     transition: box-shadow var(--chirpui-transition), border-color var(--chirpui-transition);
+}
+
+.chirpui-card--link .chirpui-card__body {
+    flex: 1;
 }
 
 .chirpui-card--link:hover {
@@ -5301,9 +5307,18 @@ a.chirpui-tag:active {
 
 [data-style="neumorphic"] {
     --chirpui-neu-surface: color-mix(in srgb, var(--chirpui-bg-subtle) 88%, var(--chirpui-surface));
+    --chirpui-neu-surface-alt: color-mix(in srgb, var(--chirpui-neu-surface) 82%, var(--chirpui-bg));
+    --chirpui-neu-raised-sm:
+        -4px -4px 10px color-mix(in srgb, white 78%, transparent),
+        5px 5px 11px color-mix(in srgb, black 14%, transparent);
+    --chirpui-neu-raised-md:
+        -6px -6px 14px color-mix(in srgb, white 76%, transparent),
+        8px 8px 16px color-mix(in srgb, black 17%, transparent);
+    --chirpui-neu-raised-lg:
+        -8px -8px 18px color-mix(in srgb, white 74%, transparent),
+        11px 11px 22px color-mix(in srgb, black 20%, transparent);
     --chirpui-neu-raised:
-        -6px -6px 14px color-mix(in srgb, white 78%, transparent),
-        7px 7px 15px color-mix(in srgb, black 16%, transparent);
+        var(--chirpui-neu-raised-md);
     --chirpui-neu-inset:
         inset -2px -2px 4px color-mix(in srgb, white 74%, transparent),
         inset 3px 3px 7px color-mix(in srgb, black 15%, transparent);
@@ -5315,15 +5330,15 @@ a.chirpui-tag:active {
     --chirpui-neu-chamfer: color-mix(in srgb, white 55%, transparent);
 
     /* Semantic remap for broad component adoption */
-    --chirpui-elevation-1: var(--chirpui-neu-raised);
-    --chirpui-elevation-2: var(--chirpui-neu-raised);
-    --chirpui-elevation-3: var(--chirpui-neu-raised);
-    --chirpui-elevation-4: var(--chirpui-neu-raised);
-    --chirpui-elevation-card-rest: var(--chirpui-neu-raised);
-    --chirpui-elevation-card-hover: var(--chirpui-neu-raised);
-    --chirpui-elevation-floating: var(--chirpui-neu-raised);
-    --chirpui-elevation-overlay: var(--chirpui-neu-raised);
-    --chirpui-elevation-topbar: var(--chirpui-neu-raised);
+    --chirpui-elevation-1: var(--chirpui-neu-raised-sm);
+    --chirpui-elevation-2: var(--chirpui-neu-raised-md);
+    --chirpui-elevation-3: var(--chirpui-neu-raised-lg);
+    --chirpui-elevation-4: var(--chirpui-neu-raised-lg);
+    --chirpui-elevation-card-rest: var(--chirpui-neu-raised-sm);
+    --chirpui-elevation-card-hover: var(--chirpui-neu-raised-md);
+    --chirpui-elevation-floating: var(--chirpui-neu-raised-md);
+    --chirpui-elevation-overlay: var(--chirpui-neu-raised-lg);
+    --chirpui-elevation-topbar: var(--chirpui-neu-raised-sm);
 
     --chirpui-state-surface-hover: color-mix(in srgb, var(--chirpui-neu-surface) 90%, var(--chirpui-bg));
     --chirpui-state-surface-active: color-mix(in srgb, var(--chirpui-neu-surface) 82%, var(--chirpui-bg));
@@ -5333,23 +5348,37 @@ a.chirpui-tag:active {
 
 [data-theme="dark"][data-style="neumorphic"] {
     --chirpui-neu-surface: color-mix(in srgb, var(--chirpui-surface) 88%, var(--chirpui-bg-subtle));
-    --chirpui-neu-raised:
-        -5px -5px 11px color-mix(in srgb, white 15%, transparent),
+    --chirpui-neu-surface-alt: color-mix(in srgb, var(--chirpui-neu-surface) 76%, var(--chirpui-bg));
+    --chirpui-neu-raised-sm:
+        -3px -3px 8px color-mix(in srgb, white 12%, transparent),
+        5px 5px 11px color-mix(in srgb, black 46%, transparent);
+    --chirpui-neu-raised-md:
+        -5px -5px 11px color-mix(in srgb, white 14%, transparent),
         7px 7px 15px color-mix(in srgb, black 50%, transparent);
+    --chirpui-neu-raised-lg:
+        -7px -7px 15px color-mix(in srgb, white 16%, transparent),
+        10px 10px 20px color-mix(in srgb, black 56%, transparent);
+    --chirpui-neu-raised:
+        var(--chirpui-neu-raised-md);
     --chirpui-neu-inset:
         inset -2px -2px 5px color-mix(in srgb, white 14%, transparent),
         inset 3px 3px 8px color-mix(in srgb, black 52%, transparent);
     --chirpui-neu-pressed:
         inset -3px -3px 7px color-mix(in srgb, white 11%, transparent),
         inset 4px 4px 10px color-mix(in srgb, black 58%, transparent);
-    --chirpui-neu-highlight-border: color-mix(in srgb, white 24%, var(--chirpui-border));
-    --chirpui-neu-lowlight-border: color-mix(in srgb, black 50%, var(--chirpui-border));
+    --chirpui-neu-highlight-border: color-mix(in srgb, white 14%, var(--chirpui-border));
+    --chirpui-neu-lowlight-border: color-mix(in srgb, black 36%, var(--chirpui-border));
+    --chirpui-state-surface-hover: color-mix(in srgb, var(--chirpui-neu-surface) 92%, var(--chirpui-bg));
+    --chirpui-state-surface-active: color-mix(in srgb, var(--chirpui-neu-surface) 84%, var(--chirpui-bg));
 }
 
 /* Foundations and layout containers */
-[data-style="neumorphic"] .chirpui-surface,
-[data-style="neumorphic"] .chirpui-card,
-[data-style="neumorphic"] .chirpui-stat,
+[data-style="neumorphic"] .chirpui-surface:not(.chirpui-surface--accent):not(
+        .chirpui-surface--gradient-subtle
+    ):not(.chirpui-surface--gradient-accent):not(.chirpui-surface--gradient-border):not(
+        .chirpui-surface--gradient-mesh
+    ):not(.chirpui-surface--glass):not(.chirpui-surface--frosted):not(.chirpui-surface--smoke),
+[data-style="neumorphic"] .chirpui-card:not(.chirpui-card--glass):not(.chirpui-card--gradient-border),
 [data-style="neumorphic"] .chirpui-app-shell__topbar,
 [data-style="neumorphic"] .chirpui-app-shell__sidebar,
 [data-style="neumorphic"] .chirpui-app-shell__main,
@@ -5358,19 +5387,155 @@ a.chirpui-tag:active {
 [data-style="neumorphic"] .chirpui-tray[data-tray-id] .chirpui-tray__panel,
 [data-style="neumorphic"] .chirpui-modal[data-modal-id] .chirpui-modal__panel,
 [data-style="neumorphic"] .chirpui-tooltip::after {
-    background: var(--chirpui-neu-surface);
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 30%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
     border: 1px solid var(--chirpui-neu-highlight-border);
     border-bottom-color: var(--chirpui-neu-lowlight-border);
     border-right-color: var(--chirpui-neu-lowlight-border);
     box-shadow: var(--chirpui-neu-raised);
 }
 
+[data-style="neumorphic"] .chirpui-stat {
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 24%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
+    border: 0;
+    box-shadow: var(--chirpui-neu-raised-sm);
+}
+
 [data-style="neumorphic"] .chirpui-app-shell__main {
-    background: color-mix(in srgb, var(--chirpui-neu-surface) 78%, var(--chirpui-bg));
+    background: color-mix(in srgb, var(--chirpui-neu-surface-alt) 80%, var(--chirpui-bg));
+}
+
+[data-style="neumorphic"] :is(.chirpui-app-shell__sidebar, .chirpui-sidebar) {
+    border-right-color: transparent;
+}
+
+[data-style="neumorphic"] .chirpui-app-shell__topbar {
+    border-bottom-color: transparent;
+}
+
+[data-style="neumorphic"] .chirpui-card :is(.chirpui-card__header, .chirpui-card__footer, .chirpui-card__footer-wrap) {
+    border-color: color-mix(in srgb, var(--chirpui-neu-lowlight-border) 40%, transparent);
+}
+
+[data-style="neumorphic"] .chirpui-app-shell__main {
+    padding: calc(var(--chirpui-spacing-lg) + var(--chirpui-spacing-xs));
+}
+
+[data-style="neumorphic"] .chirpui-sidebar__section {
+    padding: var(--chirpui-spacing) var(--chirpui-spacing);
+}
+
+[data-style="neumorphic"] .chirpui-sidebar__link {
+    padding-inline: var(--chirpui-spacing);
+    margin-inline-start: var(--chirpui-spacing);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+[data-theme="dark"][data-style="neumorphic"] :is(
+        .chirpui-surface:not(.chirpui-surface--accent):not(.chirpui-surface--gradient-subtle):not(
+                .chirpui-surface--gradient-accent
+            ):not(.chirpui-surface--gradient-border):not(.chirpui-surface--gradient-mesh):not(
+                .chirpui-surface--glass
+            ):not(.chirpui-surface--frosted):not(.chirpui-surface--smoke),
+        .chirpui-card:not(.chirpui-card--glass):not(.chirpui-card--gradient-border),
+        .chirpui-app-shell__topbar,
+        .chirpui-app-shell__sidebar,
+        .chirpui-app-shell__main,
+        .chirpui-dropdown__menu,
+        .chirpui-popover__panel,
+        .chirpui-tray[data-tray-id] .chirpui-tray__panel,
+        .chirpui-modal[data-modal-id] .chirpui-modal__panel,
+        .chirpui-tooltip::after
+    ) {
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 10%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
+}
+
+[data-theme="dark"][data-style="neumorphic"] .chirpui-stat {
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 8%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
+}
+
+/* Depth budget: avoid stacked raised shadows in nested containers */
+[data-style="neumorphic"] :is(.chirpui-card, .chirpui-surface, .chirpui-stat) > :is(
+        .chirpui-card,
+        .chirpui-surface,
+        .chirpui-stat
+    ) {
+    box-shadow: var(--chirpui-neu-inset);
+    background: color-mix(in srgb, var(--chirpui-neu-surface-alt) 88%, var(--chirpui-bg));
+    border-color: var(--chirpui-neu-lowlight-border);
+}
+
+[data-style="neumorphic"] .chirpui-card :is(.chirpui-card__footer, .chirpui-card__footer-wrap) {
+    background: transparent;
+}
+
+[data-style="neumorphic"] .chirpui-card__body {
+    background: transparent;
+}
+
+[data-style="neumorphic"] .chirpui-card__body :is(.chirpui-surface, .chirpui-card) {
+    box-shadow: none;
+    border-color: color-mix(in srgb, var(--chirpui-neu-lowlight-border) 45%, transparent);
+    background: color-mix(in srgb, var(--chirpui-neu-surface-alt) 94%, var(--chirpui-bg));
+}
+
+[data-style="neumorphic"] .chirpui-card__body .chirpui-stat {
+    background: transparent;
+    box-shadow: none;
+    border: 0;
+    min-height: 100%;
+    justify-content: center;
+}
+
+[data-style="neumorphic"] .chirpui-card .chirpui-surface {
+    border-color: var(--chirpui-neu-lowlight-border);
+}
+
+[data-style="neumorphic"] .chirpui-card .chirpui-stat {
+    border: 0;
+}
+
+[data-style="neumorphic"] .chirpui-card .chirpui-stat :is(.chirpui-card, .chirpui-surface, .chirpui-stat),
+[data-style="neumorphic"] .chirpui-surface .chirpui-stat :is(.chirpui-card, .chirpui-surface, .chirpui-stat) {
+    box-shadow: none;
+}
+
+[data-style="neumorphic"] .chirpui-card__body :is(
+        textarea.chirpui-field__input,
+        .chirpui-chat-input__field,
+        .chirpui-tag-input__add-field
+    ) {
+    background: color-mix(in srgb, var(--chirpui-neu-surface-alt) 90%, var(--chirpui-bg));
+    border-color: color-mix(in srgb, var(--chirpui-neu-lowlight-border) 50%, transparent);
+    box-shadow: inset 0 1px 2px color-mix(in srgb, black 18%, transparent);
+}
+
+[data-theme="dark"][data-style="neumorphic"] .chirpui-card__body :is(
+        textarea.chirpui-field__input,
+        .chirpui-chat-input__field,
+        .chirpui-tag-input__add-field
+    ) {
+    background: color-mix(in srgb, var(--chirpui-neu-surface-alt) 84%, var(--chirpui-bg));
+    border-color: color-mix(in srgb, var(--chirpui-neu-lowlight-border) 55%, transparent);
 }
 
 /* Controls and interactive elements */
-[data-style="neumorphic"] .chirpui-btn,
+[data-style="neumorphic"] .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger):not(.chirpui-btn--ghost),
 [data-style="neumorphic"] .chirpui-field__input,
 [data-style="neumorphic"] .chirpui-field__file,
 [data-style="neumorphic"] .chirpui-segmented,
@@ -5378,27 +5543,117 @@ a.chirpui-tag:active {
 [data-style="neumorphic"] .chirpui-tabs__tab,
 [data-style="neumorphic"] .chirpui-sidebar__link,
 [data-style="neumorphic"] .chirpui-sidebar-toggle,
+[data-style="neumorphic"] .chirpui-popover__trigger,
+[data-style="neumorphic"] .chirpui-split-btn__trigger,
 [data-style="neumorphic"] .chirpui-tag {
-    background: var(--chirpui-neu-surface);
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 24%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
     border-color: var(--chirpui-neu-highlight-border);
-    box-shadow: var(--chirpui-neu-raised);
+    box-shadow: var(--chirpui-neu-raised-sm);
 }
 
-[data-style="neumorphic"] .chirpui-btn:hover:not(:disabled),
+[data-theme="dark"][data-style="neumorphic"] :is(
+        .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger):not(.chirpui-btn--ghost),
+        .chirpui-field__input,
+        .chirpui-field__file,
+        .chirpui-segmented,
+        .chirpui-segmented__label,
+        .chirpui-tabs__tab,
+        .chirpui-sidebar__link,
+        .chirpui-sidebar-toggle,
+        .chirpui-popover__trigger,
+        .chirpui-split-btn__trigger,
+        .chirpui-tag
+    ) {
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 8%, var(--chirpui-neu-surface)),
+        color-mix(in srgb, var(--chirpui-neu-surface-alt) 92%, var(--chirpui-bg))
+    );
+}
+
+[data-style="neumorphic"] .chirpui-btn--primary,
+[data-style="neumorphic"] .chirpui-btn--danger,
+[data-style="neumorphic"] .chirpui-split-btn__primary.chirpui-btn--primary
+    + .chirpui-split-btn__dropdown
+    .chirpui-split-btn__trigger {
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, white 30%, transparent),
+        0 8px 14px color-mix(in srgb, black 28%, transparent);
+}
+
+[data-style="neumorphic"] .chirpui-btn--ghost {
+    box-shadow: none;
+    background: transparent;
+}
+
+[data-style="neumorphic"] .chirpui-tabs__tab {
+    border: 1px solid transparent;
+    border-radius: var(--chirpui-radius-sm);
+    margin-bottom: 0;
+}
+
+[data-style="neumorphic"] .chirpui-tabs__tab[aria-selected="true"],
+[data-style="neumorphic"] .chirpui-tabs__tab--active {
+    box-shadow: var(--chirpui-neu-pressed);
+    border-color: var(--chirpui-neu-lowlight-border);
+    border-bottom-color: var(--chirpui-neu-lowlight-border);
+    color: var(--chirpui-accent);
+}
+
+[data-style="neumorphic"] .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger):not(.chirpui-btn--ghost):hover:not(:disabled),
 [data-style="neumorphic"] .chirpui-field__input:hover:not(:disabled):not([readonly]),
+[data-style="neumorphic"] .chirpui-field__file:hover:not(:disabled):not([readonly]),
 [data-style="neumorphic"] .chirpui-tabs__tab:hover,
 [data-style="neumorphic"] .chirpui-sidebar__link:hover,
+[data-style="neumorphic"] .chirpui-sidebar-toggle:hover,
+[data-style="neumorphic"] .chirpui-popover__trigger:hover,
+[data-style="neumorphic"] .chirpui-split-btn__trigger:hover,
 [data-style="neumorphic"] .chirpui-tag:hover {
     border-color: var(--chirpui-neu-lowlight-border);
+    box-shadow: var(--chirpui-neu-raised-md);
 }
 
-[data-style="neumorphic"] .chirpui-btn:active:not(:disabled),
-[data-style="neumorphic"] .chirpui-btn[aria-pressed="true"],
+[data-style="neumorphic"] .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger):active:not(:disabled),
+[data-style="neumorphic"] .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger)[aria-pressed="true"],
 [data-style="neumorphic"] .chirpui-field__input:active:not(:disabled),
+[data-style="neumorphic"] .chirpui-field__file:active:not(:disabled),
 [data-style="neumorphic"] .chirpui-tabs__tab[aria-selected="true"],
 [data-style="neumorphic"] .chirpui-sidebar__link[aria-current="page"],
+[data-style="neumorphic"] .chirpui-sidebar__link--active,
+[data-style="neumorphic"] .chirpui-sidebar-toggle:active,
+[data-style="neumorphic"] .chirpui-popover__trigger:active,
+[data-style="neumorphic"] .chirpui-split-btn__trigger:active,
 [data-style="neumorphic"] a.chirpui-tag:active {
     box-shadow: var(--chirpui-neu-pressed);
+}
+
+[data-style="neumorphic"] :is(.chirpui-sidebar__link--active, .chirpui-sidebar__link[aria-current="page"]) {
+    background: color-mix(in srgb, var(--chirpui-accent) 16%, var(--chirpui-neu-surface-alt));
+    color: var(--chirpui-accent);
+    border-color: color-mix(in srgb, var(--chirpui-accent) 42%, var(--chirpui-neu-lowlight-border));
+}
+
+[data-style="neumorphic"] :is(.chirpui-tabs__tab--active, .chirpui-tabs__tab[aria-selected="true"]) {
+    background: color-mix(in srgb, var(--chirpui-accent) 12%, var(--chirpui-neu-surface-alt));
+}
+
+[data-style="neumorphic"] a.chirpui-tag {
+    background: color-mix(in srgb, var(--chirpui-accent) 9%, var(--chirpui-neu-surface-alt));
+    border-color: color-mix(in srgb, var(--chirpui-accent) 35%, var(--chirpui-neu-lowlight-border));
+    color: var(--chirpui-accent);
+}
+
+[data-style="neumorphic"] a.chirpui-tag:hover {
+    background: color-mix(in srgb, var(--chirpui-accent) 14%, var(--chirpui-neu-surface-alt));
+    border-color: color-mix(in srgb, var(--chirpui-accent) 52%, var(--chirpui-neu-lowlight-border));
+}
+
+[data-style="neumorphic"] a.chirpui-tag:active {
+    background: color-mix(in srgb, var(--chirpui-accent) 18%, var(--chirpui-neu-surface-alt));
 }
 
 [data-style="neumorphic"] .chirpui-toggle-wrap .chirpui-toggle__track {
@@ -5418,6 +5673,18 @@ a.chirpui-tag:active {
     background: color-mix(in srgb, var(--chirpui-neu-surface) 80%, var(--chirpui-bg));
     border: 1px solid var(--chirpui-neu-lowlight-border);
     box-shadow: var(--chirpui-neu-inset);
+}
+
+[data-theme="dark"][data-style="neumorphic"] :is(
+        .chirpui-progress__track,
+        .chirpui-bar-chart__track,
+        .chirpui-donut,
+        .chirpui-description-list
+    ) {
+    border-color: color-mix(in srgb, var(--chirpui-neu-lowlight-border) 60%, transparent);
+    box-shadow:
+        inset -1px -1px 3px color-mix(in srgb, white 8%, transparent),
+        inset 2px 2px 5px color-mix(in srgb, black 46%, transparent);
 }
 
 [data-style="neumorphic"] .chirpui-progress__fill,

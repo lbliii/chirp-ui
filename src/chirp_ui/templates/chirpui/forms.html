@@ -6,11 +6,30 @@
     use it; checkbox/toggle/radio/range/input_group have custom layouts.
 -#}
 
-{% def form(action, method="get", enctype=none, cls="", attrs="") %}
+{% def form(action, method="get", enctype=none, cls="", attrs="", attrs_map=none,
+           hx_get=none, hx_post=none, hx_put=none, hx_patch=none, hx_delete=none,
+           hx_target=none, hx_swap=none, hx_trigger=none, hx_include=none,
+           hx_select=none, hx_select_oob=none, hx_disabled_elt=none,
+           hx_ext=none, hx_vals=none) %}
 <form action="{{ action }}" method="{{ method }}"
       {% if enctype %}enctype="{{ enctype }}"{% end %}
       class="chirpui-form{{ " " ~ cls if cls else "" }}"
-      {{ attrs | safe }}>
+      {{ attrs | html_attrs }}
+      {{ attrs_map | html_attrs }}
+      {% if hx_get %}hx-get="{{ hx_get }}"{% end %}
+      {% if hx_post %}hx-post="{{ hx_post }}"{% end %}
+      {% if hx_put %}hx-put="{{ hx_put }}"{% end %}
+      {% if hx_patch %}hx-patch="{{ hx_patch }}"{% end %}
+      {% if hx_delete %}hx-delete="{{ hx_delete }}"{% end %}
+      {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
+      {% if hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
+      {% if hx_trigger %}hx-trigger="{{ hx_trigger }}"{% end %}
+      {% if hx_include %}hx-include="{{ hx_include }}"{% end %}
+      {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
+      {% if hx_select_oob %}hx-select-oob="{{ hx_select_oob }}"{% end %}
+      {% if hx_disabled_elt %}hx-disabled-elt="{{ hx_disabled_elt }}"{% end %}
+      {% if hx_ext %}hx-ext="{{ hx_ext }}"{% end %}
+      {% if hx_vals is not none %}hx-vals="{{ hx_vals }}"{% end %}>
     {% slot %}
 </form>
 {% end %}
@@ -446,8 +465,8 @@
 {# Search input with optional htmx debounced search #}
 {% def search_field(name, value="", label=none, search_url=none, search_target=none,
                     search_trigger="keyup changed delay:300ms", search_include=none,
-                    placeholder="Search...", errors=none, attrs="") %}
-{% set search_attrs = ('hx-get="' ~ search_url ~ '" hx-trigger="' ~ search_trigger ~ '" hx-target="' ~ search_target ~ '" hx-swap="innerHTML"' ~ (' hx-include="' ~ search_include ~ '"' if search_include else '')) if (search_url and search_target) else '' %}
+                    placeholder="Search...", errors=none, attrs="", attrs_map=none,
+                    search_attrs_map=none) %}
 <div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
@@ -457,7 +476,14 @@
            value="{{ value }}"
            placeholder="{{ placeholder }}"
            {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
-           {{ search_attrs | safe }} {{ attrs | safe }}>
+           {{ attrs | html_attrs }}
+           {{ attrs_map | html_attrs }}
+           {{ search_attrs_map | html_attrs }}
+           {% if search_url and search_target %}hx-get="{{ search_url }}"{% end %}
+           {% if search_url and search_target %}hx-trigger="{{ search_trigger }}"{% end %}
+           {% if search_url and search_target %}hx-target="{{ search_target }}"{% end %}
+           {% if search_url and search_target %}hx-swap="innerHTML"{% end %}
+           {% if search_url and search_target and search_include %}hx-include="{{ search_include }}"{% end %}>
     {% if errors %}
         {% for msg in errors | field_errors(name) %}
             <span class="chirpui-field__error">{{ msg }}</span>
@@ -472,8 +498,7 @@
 {% def search_bar(name, value="", variant="solo", label=none, search_url=none, search_target=none,
                   search_trigger="keyup changed delay:300ms", search_include=none,
                   placeholder="Search...", button_label="Search", button_icon="⌕",
-                  errors=none, attrs="") %}
-{% set search_attrs = ('hx-get="' ~ search_url ~ '" hx-trigger="' ~ search_trigger ~ '" hx-target="' ~ search_target ~ '" hx-swap="innerHTML"' ~ (' hx-include="' ~ search_include ~ '"' if search_include else '')) if (search_url and search_target) else '' %}
+                  errors=none, attrs="", attrs_map=none, search_attrs_map=none) %}
 <div class="chirpui-field chirpui-search-bar chirpui-search-bar--{{ variant }}{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
@@ -487,7 +512,14 @@
                value="{{ value }}"
                placeholder="{{ placeholder }}"
                {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
-               {{ search_attrs | safe }} {{ attrs | safe }}>
+               {{ attrs | html_attrs }}
+               {{ attrs_map | html_attrs }}
+               {{ search_attrs_map | html_attrs }}
+               {% if search_url and search_target %}hx-get="{{ search_url }}"{% end %}
+               {% if search_url and search_target %}hx-trigger="{{ search_trigger }}"{% end %}
+               {% if search_url and search_target %}hx-target="{{ search_target }}"{% end %}
+               {% if search_url and search_target %}hx-swap="innerHTML"{% end %}
+               {% if search_url and search_target and search_include %}hx-include="{{ search_include }}"{% end %}>
         {% if variant == "with-button" %}
         <button type="submit" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm chirpui-search-bar__btn">
             <span class="chirpui-btn__icon">{{ button_icon }}</span>
@@ -506,8 +538,8 @@
 {# Key-value form — inline key + value inputs + submit. For "Set config value" etc. -#}
 {% def key_value_form(action, method="post", key_placeholder="", value_placeholder="",
                       submit_label="Set", key_options=none, key_name="key", value_name="value",
-                      attrs="", cls="") %}
-{% call form(action, method=method, attrs=attrs, cls="chirpui-key-value-form" ~ (" " ~ cls if cls else "")) %}
+                      attrs="", attrs_map=none, cls="") %}
+{% call form(action, method=method, attrs=attrs, attrs_map=attrs_map, cls="chirpui-key-value-form" ~ (" " ~ cls if cls else "")) %}
 <div class="chirpui-key-value-form__row">
     <div class="chirpui-field chirpui-key-value-form__key">
         <label class="chirpui-field__label" for="{{ key_name }}">Key</label>

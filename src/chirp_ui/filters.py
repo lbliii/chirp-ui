@@ -5,8 +5,14 @@ Register via :func:`register_filters` when using Chirp.
 """
 
 import logging
+from collections.abc import Mapping
 from collections.abc import Callable
+from html import escape
+from json import dumps
 from typing import Protocol
+from typing import Any
+
+from kida.template import Markup
 
 from chirp_ui.validation import VARIANT_REGISTRY, _is_strict
 
@@ -81,8 +87,42 @@ def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]
     return []
 
 
+def _serialize_attr_value(value: Any) -> str:
+    """Serialize structured attr values such as hx-vals payloads."""
+    if isinstance(value, (dict, list, tuple)):
+        return dumps(value, separators=(",", ":"), ensure_ascii=True)
+    return str(value)
+
+
+def html_attrs(value: Any) -> str | Markup:
+    """Render HTML attrs from mapping or legacy raw string."""
+    if value is None or value is False:
+        return ""
+
+    if isinstance(value, Mapping):
+        chunks: list[str] = []
+        for raw_key, raw_value in value.items():
+            key = str(raw_key).strip()
+            if not key or raw_value is None or raw_value is False:
+                continue
+            escaped_key = escape(key, quote=True)
+            if raw_value is True:
+                chunks.append(f" {escaped_key}")
+                continue
+            serialized = _serialize_attr_value(raw_value)
+            chunks.append(f' {escaped_key}="{escape(serialized, quote=True)}"')
+        return Markup("".join(chunks))
+
+    text = str(value).strip()
+    if not text:
+        return ""
+    if text.startswith(" "):
+        return Markup(text)
+    return Markup(f" {text}")
+
+
 def register_filters(app: TemplateFilterApp) -> None:
-    """Register chirp-ui filters (bem, field_errors) on a Chirp app.
+    """Register chirp-ui filters (bem, field_errors, html_attrs) on a Chirp app.
 
     Call after App creation. Ensures chirp-ui components render correctly
     regardless of Chirp version::
@@ -94,4 +134,5 @@ def register_filters(app: TemplateFilterApp) -> None:
     """
     app.template_filter("bem")(bem)
     app.template_filter("field_errors")(field_errors)
+    app.template_filter("html_attrs")(html_attrs)
     app.template_filter("validate_variant")(validate_variant)

@@ -177,7 +177,7 @@ Inline key + value inputs + submit. For "Set config value" etc.
 
 ```html
 {% from "chirpui/forms.html" import key_value_form %}
-{{ key_value_form("/config/set", attrs='hx-post="/config/set" hx-target="#result" hx-swap="innerHTML"',
+{{ key_value_form("/config/set", attrs_map={"hx-post": "/config/set", "hx-target": "#result", "hx-swap": "innerHTML"},
                  key_placeholder="e.g. acp.endpoint", value_placeholder="e.g. https://...") }}
 ```
 
@@ -185,7 +185,8 @@ Inline key + value inputs + submit. For "Set config value" etc.
 |-------|-------------|
 | `action` | Form action URL |
 | `key_options` | Optional list of `{value, label}` for datalist suggestions |
-| `attrs` | Pass through for HTMX (hx-post, hx-target, etc.) |
+| `attrs_map` | Preferred structured attrs (`{"hx-post": "...", "hx-target": "#..."}`) |
+| `attrs` | Legacy raw attr string escape hatch |
 
 ---
 
@@ -238,7 +239,7 @@ Use the same inner zone classes as `action_strip`.
 {% from "chirpui/filter_bar.html" import filter_bar %}
 {% from "chirpui/forms.html" import search_bar %}
 
-{% call filter_bar("/skills", attrs='id="skills_filters"') %}
+{% call filter_bar("/skills", attrs_map={"id": "skills_filters"}) %}
   <div class="chirpui-action-strip__primary">
     {{ search_bar("q", variant="solo", placeholder="Search skills...") }}
   </div>
@@ -330,6 +331,19 @@ Composite for full settings pages: page_header + key_value_form + grid of config
 ---
 
 ## Usage Notes
+
+### Structured Attributes (recommended)
+
+All core form/button helpers now support both:
+- `attrs_map` for structured, escaped attributes (recommended),
+- `attrs` for legacy raw strings (escape hatch).
+
+```html
+{{ btn("Save", attrs_map={"hx-post": "/save", "hx-target": "#result"}) }}
+{% call form("/search", attrs_map={"id": "search_form", "hx-get": "/search", "hx-target": "#results"}) %}
+  {{ search_bar("q", variant="with-button") }}
+{% end %}
+```
 
 ### BEM-based components (alert, badge)
 

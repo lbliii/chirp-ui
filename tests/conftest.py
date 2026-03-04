@@ -48,6 +48,31 @@ def _validate_variant_stub(
     return value if value in allowed else default
 
 
+def _html_attrs_stub(value: Any) -> str | Markup:
+    """Stub for structured attrs filter used by chirp-ui macros."""
+    if value is None or value is False:
+        return ""
+    if isinstance(value, dict):
+        parts: list[str] = []
+        for key, raw in value.items():
+            if raw is None or raw is False:
+                continue
+            escaped_key = html.escape(str(key), quote=True)
+            if raw is True:
+                parts.append(f" {escaped_key}")
+                continue
+            if isinstance(raw, (dict, list, tuple)):
+                raw = json.dumps(raw, separators=(",", ":"), ensure_ascii=True)
+            parts.append(f' {escaped_key}="{html.escape(str(raw), quote=True)}"')
+        return Markup("".join(parts))
+    text = str(value).strip()
+    if not text:
+        return Markup("")
+    if text.startswith(" "):
+        return Markup(text)
+    return Markup(f" {text}")
+
+
 def _island_attrs_stub(
     name: str,
     props: Any | None = None,
@@ -109,6 +134,7 @@ def env() -> Environment:
     e.update_filters({
         "field_errors": _field_errors_stub,
         "bem": _bem_stub,
+        "html_attrs": _html_attrs_stub,
         "validate_variant": _validate_variant_stub,
     })
     e.add_global("island_attrs", _island_attrs_stub)

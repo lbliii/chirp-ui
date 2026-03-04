@@ -572,6 +572,14 @@ class TestButton:
         assert "chirpui-btn__icon" in html
         assert "✓" in html
 
+    def test_btn_with_attrs_map(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Save", attrs_map={"hx-post": "/save", "hx-target": "#result"}) }}'
+        ).render()
+        assert 'hx-post="/save"' in html
+        assert 'hx-target="#result"' in html
+
 
 # ---------------------------------------------------------------------------
 # Streaming
@@ -1057,6 +1065,26 @@ class TestForms:
         assert "hx-target" in html
         assert "hx-swap" in html
         assert "Body" in html
+
+    def test_form_macro_with_attrs_map(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", attrs_map={"hx-post": "/x", "hx-target": "#y", "hx-swap": "innerHTML"}) %}'
+            "Body"
+            "{% end %}"
+        ).render()
+        assert 'hx-post="/x"' in html
+        assert 'hx-target="#y"' in html
+        assert 'hx-swap="innerHTML"' in html
+
+    def test_form_macro_explicit_hx_params_override_attrs_map(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", attrs_map={"hx-target": "#old"}, hx_target="#new") %}'
+            "Body"
+            "{% end %}"
+        ).render()
+        assert 'hx-target="#new"' in html
 
     def test_fieldset_macro(self, env: Environment) -> None:
         html = env.from_string(

@@ -6,7 +6,7 @@
     Usage:
         from "chirpui/filter_bar.html" import filter_bar
 
-        call filter_bar("/skills", attrs='id="skills_filters"')
+        call filter_bar("/skills", attrs_map={"id": "skills_filters"})
             <div class="chirpui-action-strip__primary">...</div>
             <div class="chirpui-action-strip__controls">...</div>
             <div class="chirpui-action-strip__actions">...</div>
@@ -15,8 +15,8 @@
 {% from "chirpui/forms.html" import form %}
 {% from "chirpui/action_strip.html" import action_strip %}
 
-{% def filter_bar(action, method="get", attrs="", surface_variant="muted", density="sm", wrap="wrap", sticky=false, cls="") %}
-{% call form(action, method=method, attrs=attrs, cls="chirpui-filter-bar__form") %}
+{% def filter_bar(action, method="get", attrs="", attrs_map=none, surface_variant="muted", density="sm", wrap="wrap", sticky=false, cls="") %}
+{% call form(action, method=method, attrs=attrs, attrs_map=attrs_map, cls="chirpui-filter-bar__form") %}
 {% call action_strip(surface_variant=surface_variant, density=density, wrap=wrap, sticky=sticky, role="region", aria_label="Filter controls", cls="chirpui-filter-bar" ~ (" " ~ cls if cls else "")) %}
 {{ caller() }}
 {% end %}

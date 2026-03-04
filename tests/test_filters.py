@@ -2,7 +2,7 @@
 
 import pytest
 
-from chirp_ui.filters import bem, field_errors, register_filters, validate_variant
+from chirp_ui.filters import bem, field_errors, html_attrs, register_filters, validate_variant
 from chirp_ui.validation import set_strict
 
 
@@ -83,8 +83,27 @@ class TestValidateVariantStrictMode:
         assert not any("invalid" in (r.message or "") for r in caplog.records)
 
 
+class TestHtmlAttrs:
+    def test_mapping_renders_attrs(self) -> None:
+        rendered = str(html_attrs({"hx-post": "/x", "hx-target": "#y"}))
+        assert ' hx-post="/x"' in rendered
+        assert ' hx-target="#y"' in rendered
+
+    def test_mapping_omits_falsey_values(self) -> None:
+        rendered = str(html_attrs({"disabled": True, "hidden": False, "title": None}))
+        assert " disabled" in rendered
+        assert "hidden" not in rendered
+        assert "title" not in rendered
+
+    def test_string_passthrough(self) -> None:
+        rendered = str(html_attrs('hx-get="/q" hx-target="#r"'))
+        assert rendered.startswith(" ")
+        assert 'hx-get="/q"' in rendered
+        assert 'hx-target="#r"' in rendered
+
+
 class TestRegisterFilters:
-    def test_registers_bem_and_field_errors(self) -> None:
+    def test_registers_bem_field_errors_and_html_attrs(self) -> None:
         registered: dict[str, object] = {}
 
         class MockApp:
@@ -101,3 +120,5 @@ class TestRegisterFilters:
         assert registered["bem"] is bem
         assert "field_errors" in registered
         assert registered["field_errors"] is field_errors
+        assert "html_attrs" in registered
+        assert registered["html_attrs"] is html_attrs

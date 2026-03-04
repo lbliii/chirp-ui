@@ -53,3 +53,4 @@ class TestRegisterFilters:
         chirp_ui.register_filters(app)
         assert "bem" in registered
         assert "field_errors" in registered
+        assert "html_attrs" in registered
