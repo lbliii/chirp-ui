@@ -82,6 +82,55 @@
 </div>
 {% end %}
 
+<h2>Extended palette</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Chains, shortcuts, sequence, flow — all support blink, pulse, rotate, etc.
+</p>
+{% call block() %}
+<div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 1.5rem;">
+  {{ ascii_icon("⛓") }}
+  {{ ascii_icon("⌘") }}
+  {{ ascii_icon("⋯") }}
+  {{ ascii_icon("⇢") }}
+  {{ ascii_icon("⟶") }}
+  {{ ascii_icon("↻") }}
+  {{ ascii_icon("⌕") }}
+  {{ ascii_icon("◊") }}
+  {{ ascii_icon("↔") }}
+  {{ ascii_icon("⇒") }}
+  {{ ascii_icon("≡") }}
+  {{ ascii_icon("→") }}
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  ⛓ chains · ⌘ shortcut · ⋯ sequence · ⇢ flow · ⟶ pipeline · ↻ cycle · ⌕ search · ◊ link · ↔ compare · ⇒ strong action · ≡ settings
+</p>
+{% end %}
+
+<h2>Extended palette with states</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Animated variants for extended symbols.
+</p>
+{% call block() %}
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)); gap: 1rem;">
+  <div style="text-align: center; padding: 0.75rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 1.5rem;">{{ ascii_icon("⛓", animation="pulse") }}</div>
+    <code class="chirpui-font-xs">⛓ pulse</code>
+  </div>
+  <div style="text-align: center; padding: 0.75rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 1.5rem;">{{ ascii_icon("⌘", animation="blink") }}</div>
+    <code class="chirpui-font-xs">⌘ blink</code>
+  </div>
+  <div style="text-align: center; padding: 0.75rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 1.5rem;">{{ ascii_icon("↻", animation="spin") }}</div>
+    <code class="chirpui-font-xs">↻ spin</code>
+  </div>
+  <div style="text-align: center; padding: 0.75rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 1.5rem;">{{ ascii_icon("⋯", animation="pulse") }}</div>
+    <code class="chirpui-font-xs">⋯ pulse</code>
+  </div>
+</div>
+{% end %}
+
 <h2>Sizes</h2>
 {% call block() %}
 <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
@@ -125,6 +174,18 @@
   <div style="display: flex; align-items: center; gap: 0.5rem;">
     {{ ascii_icon("●", animation="throb") }}
     <span>Live</span>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    {{ ascii_icon("⛓", animation="pulse") }}
+    <span>Chains</span>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    {{ ascii_icon("⌘", animation="blink") }}
+    <span>Shortcut active</span>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    {{ ascii_icon("↻", animation="spin") }}
+    <span>Refreshing…</span>
   </div>
 </div>
 {% end %}

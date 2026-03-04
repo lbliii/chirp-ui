@@ -86,17 +86,20 @@
 {% end %}
 
 {# Link-styled card for navigation/index grids.
-   Named slots: header_badge (top-left chip/badge, e.g. aliases), default (body). #}
+   Named slots: header_badge (top-left chip/badge), header_subtitle (beneath title, e.g. aliases),
+   footer (below hr, e.g. tags), default (body). #}
 {% def card_link(href, title, cls="") %}
 <a href="{{ href }}" class="chirpui-card chirpui-card--link{{ " " ~ cls if cls else "" }}">
     <header class="chirpui-card__header">
         <div class="chirpui-card__header-badges">{% slot header_badge %}</div>
         <div class="chirpui-card__header-content">
             <span class="chirpui-card__title">{{ title }}</span>
+            <div class="chirpui-card__header-subtitle">{% slot header_subtitle %}</div>
         </div>
     </header>
     <div class="chirpui-card__body">
         {% slot %}
     </div>
+    <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
 </a>
 {% end %}

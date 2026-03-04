@@ -2593,6 +2593,16 @@ a.chirpui-mention:focus-visible {
     display: none;
 }
 
+.chirpui-card__header-subtitle {
+    margin-top: var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-card__header-subtitle:empty {
+    display: none;
+}
+
 .chirpui-card__body {
     padding: var(--chirpui-spacing);
 }
@@ -2608,13 +2618,21 @@ a.chirpui-mention:focus-visible {
     color: var(--chirpui-card-body-link-hover-color);
 }
 
-.chirpui-card:has(.chirpui-card__footer) .chirpui-card__body {
+.chirpui-card:has(.chirpui-card__footer) .chirpui-card__body,
+.chirpui-card:has(.chirpui-card__footer-wrap:not(:empty)) .chirpui-card__body {
     padding-bottom: var(--chirpui-spacing-sm);
 }
 
 .chirpui-card__footer {
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     border-top: 1px solid var(--chirpui-border);
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-card__footer-wrap:not(:empty) {
+    border-top: 1px solid var(--chirpui-border);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     font-size: var(--chirpui-font-sm);
     color: var(--chirpui-text-muted);
 }
@@ -4704,6 +4722,54 @@ input[type="date"].chirpui-field__input {
 
 .chirpui-star-rating--sm .chirpui-star-rating__label { font-size: 1.125rem; }
 .chirpui-star-rating--lg .chirpui-star-rating__label { font-size: 2rem; }
+
+/* Thumbs up/down — binary sentiment radio pair */
+.chirpui-thumbs {
+    display: inline-flex;
+    gap: 0.5rem;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.chirpui-thumbs__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.chirpui-thumbs__label {
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+    filter: grayscale(1);
+    opacity: 0.5;
+    transition: filter var(--chirpui-transition), opacity var(--chirpui-transition), transform var(--chirpui-transition);
+    user-select: none;
+}
+
+.chirpui-thumbs__label:hover {
+    filter: grayscale(0);
+    opacity: 0.8;
+    transform: scale(1.15);
+}
+
+.chirpui-thumbs__input:checked + .chirpui-thumbs__label {
+    filter: grayscale(0);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.chirpui-thumbs__input:focus-visible + .chirpui-thumbs__label {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-thumbs--sm .chirpui-thumbs__label { font-size: 1.125rem; }
+.chirpui-thumbs--lg .chirpui-thumbs__label { font-size: 2rem; }
 
 /* Range slider */
 .chirpui-field--range {
