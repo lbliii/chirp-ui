@@ -24,8 +24,9 @@
         <div class="chirpui-app-shell__topbar-end">{% slot topbar_end %}</div>
     </header>
     <aside class="chirpui-app-shell__sidebar">{% slot sidebar %}</aside>
-    <main id="main" class="chirpui-app-shell__main" hx-boost="true" hx-target="#main" hx-swap="innerHTML transition:true">
-        <div hx-disinherit="hx-target hx-swap">
+    <main id="main" class="chirpui-app-shell__main" hx-boost="true" hx-target="#main"
+          hx-swap="innerHTML transition:true" hx-select="#page-content">
+        <div id="page-content">
             {% slot %}
         </div>
     </main>

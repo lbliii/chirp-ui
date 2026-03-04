@@ -190,6 +190,41 @@
 </fieldset>
 {% end %}
 
+{# Star rating — interactive CSS-only 1-N star picker.
+   Renders radio inputs in reverse DOM order with row-reverse flex so the
+   CSS ~ sibling selector fills stars up to the hovered/checked one. #}
+{% def star_rating(name, count=5, selected=0, label=none, errors=none,
+                   required=false, hint=none, size="") %}
+<div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+    {% if label %}
+        <label class="chirpui-field__label">
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+        </label>
+    {% end %}
+    <fieldset class="chirpui-star-rating{{ " chirpui-star-rating--" ~ size if size else "" }}"
+              aria-label="{{ label or name }}">
+        {% for i in range(count, 0, -1) %}
+        <input class="chirpui-star-rating__input"
+               type="radio" name="{{ name }}" value="{{ i }}"
+               id="{{ name }}-{{ i }}"
+               {% if i == selected %}checked{% end %}
+               {% if required %}required{% end %}
+               {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+        <label class="chirpui-star-rating__label" for="{{ name }}-{{ i }}"
+               title="{{ i }} star{{ "s" if i != 1 else "" }}">&#9733;</label>
+        {% end %}
+    </fieldset>
+    {% if hint and not (errors and errors | field_errors(name)) %}
+        <span class="chirpui-field__hint">{{ hint }}</span>
+    {% end %}
+    {% if errors %}
+        {% for msg in errors | field_errors(name) %}
+            <span class="chirpui-field__error">{{ msg }}</span>
+        {% end %}
+    {% end %}
+</div>
+{% end %}
+
 {# File input with label and error display #}
 {% def file_field(name, label=none, errors=none, accept="", multiple=false,
                   required=false, hint=none) %}

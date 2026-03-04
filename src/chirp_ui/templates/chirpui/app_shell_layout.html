@@ -1,0 +1,49 @@
+{#- chirp-ui: App shell layout — extends chirp shell with ChirpUI structure
+
+    Use this for persistent app shells (topbar, sidebar). Extends chirp/layouts/shell.html
+    and fills in ChirpUI CSS, toast, and app shell structure.
+
+    Usage:
+        {% extends "chirpui/app_shell_layout.html" %}
+        {% block brand %}My App{% end %}
+        {% block sidebar %}
+          {% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+          {% call sidebar() %}
+            {% call sidebar_section("Main") %}
+              {{ sidebar_link("/", "Home") }}
+              {{ sidebar_link("/dashboard", "Dashboard") }}
+            {% end %}
+          {% end %}
+        {% end %}
+        {% block content %}
+          Page content here
+        {% end %}
+-#}
+{# target: body #}
+{% extends "chirp/layouts/shell.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/chirpui.css">
+<link rel="stylesheet" href="/static/chirpui-transitions.css">
+{% end %}
+
+{% block shell %}
+{% from "chirpui/sidebar.html" import sidebar %}
+{% from "chirpui/toast.html" import toast_container %}
+<div class="chirpui-app-shell">
+  <header class="chirpui-app-shell__topbar">
+    <a href="/" class="chirpui-app-shell__brand">{% block brand %}{% end %}</a>
+    <div class="chirpui-app-shell__topbar-center">{% block topbar_center %}{% end %}</div>
+    <div class="chirpui-app-shell__topbar-end">{% block topbar_end %}{% end %}</div>
+  </header>
+  <aside class="chirpui-app-shell__sidebar">{% block sidebar %}{% end %}</aside>
+  <main id="main" class="chirpui-app-shell__main"
+        hx-boost="true" hx-target="#main"
+        hx-swap="innerHTML transition:true" hx-select="#page-content">
+    <div id="page-content">
+      {% block content %}{% end %}
+    </div>
+  </main>
+</div>
+{{ toast_container() }}
+{% end %}
