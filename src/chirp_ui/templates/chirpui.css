@@ -2367,6 +2367,18 @@ a.chirpui-trending-tag:hover {
     backdrop-filter: blur(8px);
 }
 
+.chirpui-card--link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--chirpui-transition), border-color var(--chirpui-transition);
+}
+
+.chirpui-card--link:hover {
+    border-color: var(--chirpui-accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
 /* ==========================================================================
    Video Card
    ========================================================================== */
@@ -5184,4 +5196,25 @@ a.chirpui-btn {
     border-radius: var(--chirpui-radius-xs, 3px);
     background: var(--chirpui-bg-subtle);
     border: 1px solid var(--chirpui-border);
+}
+
+/* ==========================================================================
+   Utility: Inline flow (wrapping flex row for tags, badges, etc.)
+   ========================================================================== */
+
+.chirpui-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--chirpui-spacing-xs);
+    align-items: center;
+}
+
+/* ==========================================================================
+   Utility: Auto-fill grid (for tag filters, etc.)
+   ========================================================================== */
+
+.chirpui-grid--auto-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(6rem, auto));
+    gap: var(--chirpui-spacing-sm);
 }
