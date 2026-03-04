@@ -32,7 +32,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "kida-templates>=0.2.2", # Template engine (PackageLoader added in 0.2.0)
+    "kida-templates>=0.2.3", # Template engine (PackageLoader added in 0.2.0)
 ]
 
 [project.optional-dependencies]
@@ -54,7 +54,12 @@ Repository = "https://github.com/lbliii/chirp-ui"
 where = ["src"]
 
 [tool.setuptools.package-data]
-chirp_ui = ["py.typed", "templates/**/*.html", "templates/**/*.css", "templates/**/*.js"]
+chirp_ui = [
+    "py.typed",
+    "templates/**/*.html",
+    "templates/**/*.css",
+    "templates/**/*.js",
+]
 
 # =============================================================================
 # Ruff — Linter & Formatter

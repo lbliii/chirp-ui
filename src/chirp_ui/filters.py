@@ -5,12 +5,10 @@ Register via :func:`register_filters` when using Chirp.
 """
 
 import logging
-from collections.abc import Mapping
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from html import escape
 from json import dumps
-from typing import Protocol
-from typing import Any
+from typing import Any, Protocol
 
 from kida.template import Markup
 
