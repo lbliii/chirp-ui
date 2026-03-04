@@ -78,6 +78,10 @@ Define a minimal, standardized set of CSS custom properties that a user can fill
 - `--chirpui-code-bg`, `--chirpui-code-text`, `--chirpui-code-type`, `--chirpui-code-keyword`, etc.
 - `--chirpui-example`, `--chirpui-alert-example-bg`, `--chirpui-alert-example-border`, `--chirpui-alert-example-color`
 
+### Tier 6: Typography (UI vs. Prose)
+
+See [docs/TYPOGRAPHY.md](TYPOGRAPHY.md) for full reference. UI scale: `--chirpui-ui-xs` … `--chirpui-ui-xl`, `--chirpui-ui-font-family`, `--chirpui-ui-font-weight-*`. Prose scale: `--chirpui-prose-base` … `--chirpui-prose-3xl`, `--chirpui-prose-font-family`, `--chirpui-prose-font-weight-*`. Override independently for dashboard density vs. content readability.
+
 ---
 
 ## Generic Shade Derivation (color-mix)

@@ -33,6 +33,31 @@
     --chirpui-line-height-normal: 1.5;
     --chirpui-line-height-relaxed: 1.7;
 
+    /* UI typography — components (badges, cards, stats, labels) */
+    --chirpui-ui-xs: var(--chirpui-font-xs);
+    --chirpui-ui-sm: var(--chirpui-font-sm);
+    --chirpui-ui-base: var(--chirpui-font-base);
+    --chirpui-ui-lg: var(--chirpui-font-lg);
+    --chirpui-ui-xl: var(--chirpui-font-xl);
+    --chirpui-ui-font-family: ui-sans, system-ui, sans-serif;
+    --chirpui-ui-font-weight-normal: 400;
+    --chirpui-ui-font-weight-medium: 500;
+    --chirpui-ui-font-weight-semibold: 600;
+    --chirpui-ui-font-weight-bold: 700;
+
+    /* Prose typography — document content (body, headings) */
+    --chirpui-prose-base: var(--chirpui-font-base);
+    --chirpui-prose-sm: var(--chirpui-font-sm);
+    --chirpui-prose-lg: var(--chirpui-font-lg);
+    --chirpui-prose-xl: var(--chirpui-font-xl);
+    --chirpui-prose-2xl: var(--chirpui-font-2xl);
+    --chirpui-prose-3xl: clamp(1.75rem, 5vw, 2rem);
+    --chirpui-prose-font-family: ui-sans, system-ui, sans-serif;
+    --chirpui-prose-font-weight-normal: 400;
+    --chirpui-prose-font-weight-medium: 500;
+    --chirpui-prose-font-weight-heading: 600;
+    --chirpui-prose-font-weight-bold: 700;
+
     /* Color — semantic tokens; light-dark() for dark mode (no @media duplication) */
     color-scheme: light dark;
     --chirpui-text: light-dark(#1e293b, #f1f5f9);
@@ -403,6 +428,20 @@ html {
     display: none;
 }
 
+.chirpui-page-header h1 {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-lg);
+    font-weight: var(--chirpui-ui-font-weight-bold);
+    margin: 0;
+}
+
+.chirpui-section-header h2 {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-base);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    margin: 0;
+}
+
 /* ==========================================================================
    Divider
    ========================================================================== */
@@ -433,7 +472,9 @@ html {
 }
 
 .chirpui-divider__text {
-    font-size: var(--chirpui-font-sm);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
     color: var(--chirpui-text-muted);
     white-space: nowrap;
 }
@@ -488,20 +529,21 @@ html {
     overflow: hidden;
     background: var(--chirpui-bg-subtle);
     color: var(--chirpui-text-muted);
-    font-size: var(--chirpui-font-sm);
-    font-weight: 500;
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
 }
 
 .chirpui-avatar--sm {
     width: var(--chirpui-avatar-size-sm);
     height: var(--chirpui-avatar-size-sm);
-    font-size: var(--chirpui-font-xs);
+    font-size: var(--chirpui-ui-xs);
 }
 
 .chirpui-avatar--lg {
     width: var(--chirpui-avatar-size-lg);
     height: var(--chirpui-avatar-size-lg);
-    font-size: var(--chirpui-font-base);
+    font-size: var(--chirpui-ui-base);
 }
 
 .chirpui-avatar__img {
@@ -580,18 +622,21 @@ html {
 }
 
 .chirpui-stat__value {
-    font-size: var(--chirpui-font-lg);
-    font-weight: 600;
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-lg);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-text);
 }
 
 .chirpui-stat__label {
-    font-size: var(--chirpui-font-sm);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
     color: var(--chirpui-text-muted);
 }
 
 .chirpui-stat__icon {
-    font-size: var(--chirpui-font-xl);
+    font-size: var(--chirpui-ui-xl);
     color: var(--chirpui-text-muted);
 }
 
@@ -637,11 +682,14 @@ a.chirpui-action-bar__item {
 }
 
 .chirpui-action-bar__icon {
-    font-size: var(--chirpui-font-lg);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-lg);
 }
 
 .chirpui-action-bar__count {
-    font-size: var(--chirpui-font-sm);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
     color: inherit;
 }
 
@@ -789,18 +837,23 @@ a.chirpui-action-bar__item {
 }
 
 .chirpui-conversation-item__name {
-    font-weight: 600;
-    font-size: var(--chirpui-font-sm);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 .chirpui-conversation-item__time {
-    font-size: var(--chirpui-font-xs);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-normal);
     color: var(--chirpui-text-muted);
 }
 
 .chirpui-conversation-item__preview {
     margin: var(--chirpui-spacing-xs) 0 0;
-    font-size: var(--chirpui-font-sm);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-normal);
     color: var(--chirpui-text-muted);
     white-space: nowrap;
     overflow: hidden;
@@ -819,8 +872,9 @@ a.chirpui-action-bar__item {
     flex-shrink: 0;
     min-width: 1.25rem;
     padding: 0.125rem 0.35rem;
-    font-size: var(--chirpui-font-xs);
-    font-weight: 600;
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     text-align: center;
     background: var(--chirpui-accent);
     color: var(--chirpui-surface);
@@ -861,11 +915,13 @@ a.chirpui-action-bar__item {
 }
 
 .chirpui-reaction-pill__emoji {
-    font-size: var(--chirpui-font-sm);
+    font-size: var(--chirpui-ui-sm);
 }
 
 .chirpui-reaction-pill__count {
-    font-size: var(--chirpui-font-xs);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-medium);
     color: var(--chirpui-text-muted);
 }
 
@@ -1663,6 +1719,35 @@ a.chirpui-trending-tag:hover {
 .chirpui-font-2xl { font-size: var(--chirpui-font-2xl); }
 .chirpui-text-muted { color: var(--chirpui-text-muted); }
 
+/* UI typography utilities — size, weight, composite */
+.chirpui-ui-xs { font-size: var(--chirpui-ui-xs); }
+.chirpui-ui-sm { font-size: var(--chirpui-ui-sm); }
+.chirpui-ui-base { font-size: var(--chirpui-ui-base); }
+.chirpui-ui-lg { font-size: var(--chirpui-ui-lg); }
+.chirpui-ui-xl { font-size: var(--chirpui-ui-xl); }
+.chirpui-ui-normal { font-weight: var(--chirpui-ui-font-weight-normal); }
+.chirpui-ui-medium { font-weight: var(--chirpui-ui-font-weight-medium); }
+.chirpui-ui-semibold { font-weight: var(--chirpui-ui-font-weight-semibold); }
+.chirpui-ui-bold { font-weight: var(--chirpui-ui-font-weight-bold); }
+.chirpui-ui-label {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+}
+.chirpui-ui-title {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-base);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+}
+.chirpui-ui-meta {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-normal);
+}
+
+.chirpui-prose-sm { font-size: var(--chirpui-prose-sm); }
+.chirpui-prose-lg { font-size: var(--chirpui-prose-lg); }
+
 /* Link — underline styling for anchors */
 .chirpui-link {
     color: var(--chirpui-accent);
@@ -1696,7 +1781,9 @@ a.chirpui-trending-tag:hover {
 
 /* Typography — prose and headings */
 .chirpui-prose {
-    font-size: var(--chirpui-font-base);
+    font-family: var(--chirpui-prose-font-family);
+    font-size: var(--chirpui-prose-base);
+    font-weight: var(--chirpui-prose-font-weight-normal);
     line-height: var(--chirpui-line-height-relaxed);
     color: var(--chirpui-text);
 }
@@ -1705,14 +1792,15 @@ a.chirpui-trending-tag:hover {
 :where(.chirpui-prose) h2,
 :where(.chirpui-prose) h3 {
     text-wrap: balance;
-    font-weight: 600;
+    font-family: var(--chirpui-prose-font-family);
+    font-weight: var(--chirpui-prose-font-weight-heading);
     color: var(--chirpui-text);
     margin: 1em 0 0.5em;
 }
 
-:where(.chirpui-prose) h1 { font-size: var(--chirpui-font-2xl); }
-:where(.chirpui-prose) h2 { font-size: var(--chirpui-font-xl); }
-:where(.chirpui-prose) h3 { font-size: var(--chirpui-font-lg); }
+:where(.chirpui-prose) h1 { font-size: var(--chirpui-prose-3xl); }
+:where(.chirpui-prose) h2 { font-size: var(--chirpui-prose-2xl); }
+:where(.chirpui-prose) h3 { font-size: var(--chirpui-prose-xl); }
 
 :where(.chirpui-prose) h1:first-child,
 :where(.chirpui-prose) h2:first-child,
@@ -1872,7 +1960,9 @@ a.chirpui-trending-tag:hover {
 }
 
 .chirpui-model-card__badge {
-    font-size: var(--chirpui-font-xs);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-medium);
     padding: 0.15rem 0.4rem;
     background: var(--chirpui-bg-subtle);
     border-radius: var(--chirpui-radius-sm);
@@ -2232,8 +2322,9 @@ a.chirpui-trending-tag:hover {
     align-items: flex-start;
     gap: var(--chirpui-spacing-sm);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
-    font-weight: 600;
-    font-size: var(--chirpui-font-lg);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-card-header-color);
     border-bottom: 1px solid var(--chirpui-border);
 }
@@ -2250,6 +2341,8 @@ a.chirpui-trending-tag:hover {
 
 .chirpui-card__title {
     display: block;
+    font-size: var(--chirpui-ui-base);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 .chirpui-card__header-actions {
@@ -3776,7 +3869,9 @@ dialog.chirpui-modal a {
 .chirpui-index-card__badge {
     flex-shrink: 0;
     padding: 0.15rem 0.4rem;
-    font-size: var(--chirpui-font-xs);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-medium);
     font-weight: 600;
     text-transform: uppercase;
     background: var(--chirpui-bg-subtle);
@@ -4443,10 +4538,18 @@ a.chirpui-btn {
     gap: var(--chirpui-spacing-xs);
     padding: 0.25rem 0.5rem;
     border-radius: var(--chirpui-radius-sm);
-    font-size: var(--chirpui-font-sm);
-    font-weight: 500;
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
     line-height: 1;
     border: 1px solid;
+    text-decoration: none;
+}
+
+/* Badge as link — no underline; pill shape signals clickability */
+a.chirpui-badge:hover,
+a.chirpui-badge:focus {
+    text-decoration: none;
 }
 
 .chirpui-badge__icon {

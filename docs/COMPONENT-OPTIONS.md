@@ -123,3 +123,9 @@ For custom components with inline variants:
 ```jinja2
 {% set variant = variant | validate_variant(("a","b","c"), "a") %}
 ```
+
+---
+
+## Typography
+
+chirp-ui uses separate **UI** and **Prose** typography scales. Override `--chirpui-ui-*` and `--chirpui-prose-*` tokens to tune component vs. document typography. See [docs/TYPOGRAPHY.md](TYPOGRAPHY.md) for token reference and override examples.
