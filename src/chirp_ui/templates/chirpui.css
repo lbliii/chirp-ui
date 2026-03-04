@@ -2043,6 +2043,46 @@ a.chirpui-mention:focus-visible {
     color: var(--chirpui-code-text);
 }
 
+/* Code block copy button — revealed on hover, top-right corner */
+.chirpui-code-block-wrapper {
+    position: relative;
+}
+
+.chirpui-code-block-wrapper .chirpui-code-block {
+    margin-bottom: 0;
+}
+
+.chirpui-code-block__copy {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-family: var(--chirpui-font-family);
+    font-size: var(--chirpui-prose-xs);
+    line-height: 1.4;
+    color: var(--chirpui-code-text);
+    background: var(--chirpui-code-bg);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity var(--chirpui-transition), background var(--chirpui-transition);
+}
+
+.chirpui-code-block-wrapper:hover .chirpui-code-block__copy,
+.chirpui-code-block__copy:focus-visible {
+    opacity: 1;
+}
+
+.chirpui-code-block__copy:hover {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-code-block__copy:focus-visible {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 2px;
+}
+
 .chirpui-fieldset {
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-sm);
