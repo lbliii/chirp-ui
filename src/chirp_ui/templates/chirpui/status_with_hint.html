@@ -1,0 +1,22 @@
+{#- chirp-ui: Status with hint (badge + tooltip/popover)
+    Badge with optional tooltip or popover for details.
+
+    Usage:
+        from "chirpui/status_with_hint.html" import status_with_hint
+
+        status_with_hint("Active", variant="success", hint="Last active 2 hours ago")
+        status_with_hint("Pending", variant="warning", hint="Waiting for approval")
+-#}
+
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/tooltip.html" import tooltip %}
+
+{% def status_with_hint(text, variant="primary", hint=none, icon=none, cls="") %}
+{% if hint %}
+{% call tooltip(hint) %}
+{{ badge(text, variant=variant, icon=icon, cls=cls) }}
+{% end %}
+{% else %}
+{{ badge(text, variant=variant, icon=icon, cls=cls) }}
+{% end %}
+{% end %}

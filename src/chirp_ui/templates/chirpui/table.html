@@ -9,17 +9,20 @@
             row("Bob", "bob@example.com", "User")
         end
 
-        Slots: caption (table caption).
+        Slots: caption (table caption), row_actions (header cell for actions column).
         Sortable headers:
         call table(headers=["Name", "Email"], sortable=true,
                    sort_url="/users", hx_target="#user-table")
             row(user.name, user.email)
         end
+        Row with actions: pass row_actions(...) as last cell when actions_header=true
+        Sticky header:
+        call table(headers=[...], sticky_header=true)
 -#}
 
 {% def table(headers=none, sortable=false, sort_url=none, hx_target=none,
-             striped=false, cls="") %}
-<div class="chirpui-table-wrap">
+             striped=false, sticky_header=false, actions_header=false, cls="") %}
+<div class="chirpui-table-wrap{{ " chirpui-table-wrap--sticky" if sticky_header else "" }}">
     <table class="chirpui-table{{ " chirpui-table--striped" if striped else "" }}{{ " " ~ cls if cls else "" }}">
         <caption class="chirpui-table__caption">{% slot caption %}</caption>
         {% if headers %}
@@ -35,6 +38,9 @@
                             {% end %}>
                             {{ header }}
                         </th>
+                    {% end %}
+                    {% if actions_header %}
+                    <th class="chirpui-table__th chirpui-table__th--actions" scope="col"></th>
                     {% end %}
                 </tr>
             </thead>

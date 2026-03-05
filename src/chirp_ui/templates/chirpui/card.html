@@ -1,7 +1,7 @@
 {#- chirp-ui: Card component
     Headless card with optional header, footer, collapsible, and variants.
 
-    Named slots: header_actions, media, default (body).
+    Named slots: header_actions, media, body_actions (for list cards), default (body).
 
     Usage:
         from "chirpui/card.html" import card
@@ -39,7 +39,8 @@
     {% end %}
     <div class="chirpui-card__media">{% slot media %}</div>
     <div class="chirpui-card__body">
-        {% slot %}
+        <div class="chirpui-card__body-content">{% slot %}</div>
+        <div class="chirpui-card__body-actions">{% slot body_actions %}</div>
     </div>
     {% if footer %}
         <footer class="chirpui-card__footer">{{ footer }}</footer>
@@ -59,7 +60,8 @@
     {% end %}
     <div class="chirpui-card__media">{% slot media %}</div>
     <div class="chirpui-card__body">
-        {% slot %}
+        <div class="chirpui-card__body-content">{% slot %}</div>
+        <div class="chirpui-card__body-actions">{% slot body_actions %}</div>
     </div>
     {% if footer %}
         <footer class="chirpui-card__footer">{{ footer }}</footer>

@@ -928,6 +928,16 @@ class TestTable:
         assert "chirpui-table__th" not in html
         assert "chirpui-table__body" in html
 
+    def test_table_sticky_header_and_actions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table, row %}'
+            '{% call table(headers=["Name", "Email"], sticky_header=true, actions_header=true) %}'
+            '{{ row("Alice", "a@x.com") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-table-wrap--sticky" in html
+        assert "chirpui-table__th--actions" in html
+
     def test_row_renders_cells(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/table.html" import row %}{{ row("A", "B", "C") }}'
@@ -1646,6 +1656,59 @@ class TestTimeline:
         ).render()
         assert "chirpui-timeline__item" in html
         assert "T" in html
+
+
+class TestDashboardPrimitives:
+    def test_inline_edit_field_display(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/inline_edit_field.html" import inline_edit_field_display %}'
+            '{{ inline_edit_field_display(value="Alice", edit_url="/edit") }}'
+        ).render()
+        assert "chirpui-inline-edit" in html
+        assert "chirpui-inline-edit--display" in html
+        assert "Alice" in html
+        assert 'hx-get="/edit"' in html
+
+    def test_inline_edit_field_form(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/inline_edit_field.html" import inline_edit_field_form %}'
+            '{{ inline_edit_field_form(name="name", value="Bob", save_url="/save", cancel_url="/cancel") }}'
+        ).render()
+        assert "chirpui-inline-edit--edit" in html
+        assert 'name="name"' in html
+        assert 'value="Bob"' in html
+        assert 'action="/save"' in html
+
+    def test_row_actions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/row_actions.html" import row_actions %}'
+            '{{ row_actions(items=[{"label": "Edit", "href": "/edit"}, {"label": "Delete", "href": "/del", "variant": "danger"}]) }}'
+        ).render()
+        assert "chirpui-dropdown" in html
+        assert "chirpui-dropdown__trigger" in html
+        assert "Edit" in html
+        assert "Delete" in html
+
+    def test_status_with_hint(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/status_with_hint.html" import status_with_hint %}'
+            '{{ status_with_hint("Active", variant="success", hint="Last active 2h ago") }}'
+        ).render()
+        assert "chirpui-tooltip" in html
+        assert "chirpui-badge" in html
+        assert "Active" in html
+        assert "Last active 2h ago" in html
+
+    def test_entity_header(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/entity_header.html" import entity_header %}'
+            '{% call entity_header(title="Chain: My Workflow", meta="3 steps") %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-entity-header" in html
+        assert "chirpui-entity-header__title" in html
+        assert "Chain: My Workflow" in html
+        assert "3 steps" in html
 
 
 class TestConfirmDialog:

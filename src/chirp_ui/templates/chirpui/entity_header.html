@@ -1,0 +1,29 @@
+{#- chirp-ui: Entity header (dashboard-grade)
+    Title + meta + contextual actions for entity detail pages.
+    Compact alternative to page_header for detail views.
+
+    Usage:
+        from "chirpui/entity_header.html" import entity_header
+
+        call entity_header(title="Chain: My Workflow", meta="3 steps · Updated 2h ago")
+            {% slot actions %}
+            {{ btn("Edit", href="/chains/1/edit") }}
+            {{ confirm_trigger("del-chain", label="Delete") }}
+            {% end %}
+        end
+-#}
+
+{% def entity_header(title, meta=none, icon=none, cls="") %}
+<header class="chirpui-entity-header{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-entity-header__content">
+        {% if icon %}<span class="chirpui-entity-header__icon">{{ icon }}</span>{% end %}
+        <div>
+            <h1 class="chirpui-entity-header__title">{{ title }}</h1>
+            {% if meta %}
+            <p class="chirpui-text-muted chirpui-font-sm chirpui-entity-header__meta">{{ meta }}</p>
+            {% end %}
+        </div>
+    </div>
+    <div class="chirpui-entity-header__actions">{% slot actions %}</div>
+</header>
+{% end %}

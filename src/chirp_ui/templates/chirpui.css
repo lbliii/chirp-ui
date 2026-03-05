@@ -604,6 +604,93 @@ html {
 }
 
 /* ==========================================================================
+   Entity header (dashboard-grade)
+   ========================================================================== */
+
+.chirpui-entity-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--chirpui-spacing-md);
+    flex-wrap: wrap;
+}
+
+.chirpui-entity-header__content {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-entity-header__icon {
+    font-size: var(--chirpui-ui-lg);
+    line-height: 1;
+}
+
+.chirpui-entity-header__title {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-lg);
+    font-weight: var(--chirpui-ui-font-weight-bold);
+    margin: 0;
+}
+
+.chirpui-entity-header__meta {
+    margin-top: var(--chirpui-spacing-xs);
+    margin-bottom: 0;
+}
+
+.chirpui-entity-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-entity-header__actions:empty {
+    display: none;
+}
+
+/* ==========================================================================
+   Inline edit field
+   ========================================================================== */
+
+.chirpui-inline-edit {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-inline-edit--display .chirpui-inline-edit__value {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-base);
+}
+
+.chirpui-inline-edit--edit .chirpui-inline-edit__form {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-inline-edit__input {
+    min-width: 12ch;
+}
+
+.chirpui-inline-edit__actions {
+    display: flex;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-inline-edit__trigger {
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Row actions (kebab menu)
+   ========================================================================== */
+
+.chirpui-row-actions__trigger {
+    padding: var(--chirpui-spacing-xs);
+}
+
+/* ==========================================================================
    Divider
    ========================================================================== */
 
@@ -3060,6 +3147,17 @@ a.chirpui-mention:focus-visible {
     padding: var(--chirpui-spacing);
 }
 
+.chirpui-card__body-actions:empty {
+    display: none;
+}
+
+.chirpui-card__body-actions:not(:empty) {
+    margin-top: var(--chirpui-spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
 /* Links in card body — no underline by default; card/title signals clickability */
 .chirpui-card__body a {
     color: var(--chirpui-card-body-link-color);
@@ -4639,6 +4737,20 @@ a.chirpui-tag:active {
 
 .chirpui-table-wrap {
     overflow-x: auto;
+}
+
+.chirpui-table-wrap--sticky .chirpui-table__head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--chirpui-surface);
+}
+
+.chirpui-table__th--actions,
+.chirpui-table__td--actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
 }
 
 .chirpui-table__caption:empty {

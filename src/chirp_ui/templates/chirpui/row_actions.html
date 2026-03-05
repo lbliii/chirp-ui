@@ -1,0 +1,22 @@
+{#- chirp-ui: Row actions (kebab menu)
+    Dropdown action menu for table rows. Supports danger variant.
+    Uses dropdown_menu with kebab trigger. Items: {label, href?} or {label, action?, variant?, icon?}.
+
+    Usage:
+        from "chirpui/row_actions.html" import row_actions
+
+        row_actions(items=[
+            {"label": "Edit", "href": "/items/1/edit"},
+            {"label": "Duplicate", "action": "duplicate"},
+            {"divider": true},
+            {"label": "Delete", "href": "/items/1/delete", "variant": "danger", "icon": "✕"}
+        ], id="row-1-actions")
+-#}
+
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/button.html" import btn %}
+
+{% def row_actions(items, id="chirpui-row-actions") %}
+{% set kebab_trigger = btn("⋮", variant="ghost", cls="chirpui-btn--sm chirpui-row-actions__trigger") %}
+{{ dropdown_menu(kebab_trigger, items, id=id) }}
+{% end %}

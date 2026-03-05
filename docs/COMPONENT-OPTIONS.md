@@ -65,6 +65,42 @@ Use `| default()` for optional variables that may be unset on first load (e.g. `
 
 ---
 
+## Dashboard Primitives
+
+Dashboard-grade interaction components. See [DASHBOARD-MATURITY-CONTRACT.md](DASHBOARD-MATURITY-CONTRACT.md) for usage principles.
+
+| Component | Description |
+|-----------|-------------|
+| `inline_edit_field_display` | Display block with Edit trigger; swap target for HTMX |
+| `inline_edit_field_form` | Edit form with save/cancel; HTMX swap target |
+| `row_actions` | Kebab dropdown for table row actions (uses dropdown_menu) |
+| `status_with_hint` | Badge + tooltip for status with details |
+| `entity_header` | Title + meta + actions for entity detail pages |
+
+### inline_edit_field
+
+```html
+{% from "chirpui/inline_edit_field.html" import inline_edit_field_display, inline_edit_field_form %}
+{{ inline_edit_field_display(value=item.name, edit_url="/items/1/edit-name", swap_id="name-field") }}
+{{ inline_edit_field_form(name="name", value=item.name, save_url="/items/1/save-name", cancel_url="/items/1", swap_id="name-field") }}
+```
+
+### row_actions
+
+```html
+{% from "chirpui/row_actions.html" import row_actions %}
+{{ row_actions(items=[{"label": "Edit", "href": "/edit"}, {"label": "Delete", "href": "/del", "variant": "danger"}]) }}
+```
+
+### table enhancements
+
+| Param | Description |
+|-------|-------------|
+| `sticky_header` | Adds chirpui-table-wrap--sticky for sticky thead |
+| `actions_header` | Adds empty th for row actions column |
+
+---
+
 ## Card
 
 Use `card(title="...", icon="⟳")` for config/settings cards. The `icon` renders in the header; no media block is needed. Empty `chirpui-card__media` is hidden via CSS.
@@ -84,6 +120,8 @@ Use `card(title="...", icon="⟳")` for config/settings cards. The `icon` render
 | `variant` | Optional: feature, media, horizontal, stats |
 | `border_variant` | Optional: gradient (gradient border via background-clip) |
 | `header_variant` | Optional: gradient (gradient in header strip) |
+
+**Slots:** `header_actions`, `media`, `body_actions` (for list cards), default (body).
 
 ---
 

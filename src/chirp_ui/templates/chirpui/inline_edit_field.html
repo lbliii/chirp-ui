@@ -1,0 +1,53 @@
+{#- chirp-ui: Inline edit field
+    Display mode + edit mode with save/cancel. HTMX-friendly.
+    Use mode="display" for view, mode="edit" for form. Swap via HTMX.
+
+    Usage:
+        from "chirpui/inline_edit_field.html" import inline_edit_field_display, inline_edit_field_form
+
+        {# Display block — swap target for edit form #}
+        call inline_edit_field_display(value=item.name, edit_url="/items/1/edit-name",
+                                       swap_target="#name-field", swap_id="name-field")
+        end
+
+        {# Edit form — returned by edit_url handler, swaps into swap_target #}
+        call inline_edit_field_form(name="name", value=item.name, save_url="/items/1/save-name",
+                                   cancel_url="/items/1", swap_target="#name-field")
+        end
+-#}
+
+{% def inline_edit_field_display(value, edit_url, swap_target=none, swap_id=none, edit_label="Edit", cls="") %}
+{% set target = swap_target or ("#" ~ (swap_id or "inline-edit-field")) %}
+<div id="{{ swap_id or "inline-edit-field" }}" class="chirpui-inline-edit chirpui-inline-edit--display{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-inline-edit__value">{{ value }}</span>
+    <button type="button" class="chirpui-inline-edit__trigger chirpui-btn chirpui-btn--ghost chirpui-btn--sm"
+            hx-get="{{ edit_url }}"
+            hx-target="{{ target }}"
+            hx-swap="innerHTML"
+            aria-label="{{ edit_label }}">
+        {{ edit_label }}
+    </button>
+</div>
+{% end %}
+
+{% def inline_edit_field_form(name, value, save_url, cancel_url=none, swap_target=none, swap_id=none,
+                              save_label="Save", cancel_label="Cancel", cls="") %}
+{% set target = swap_target or ("#" ~ (swap_id or "inline-edit-field")) %}
+<div id="{{ swap_id or "inline-edit-field" }}" class="chirpui-inline-edit chirpui-inline-edit--edit{{ " " ~ cls if cls else "" }}">
+    <form class="chirpui-inline-edit__form" method="post" action="{{ save_url }}"
+          hx-post="{{ save_url }}"
+          hx-target="{{ target }}"
+          hx-swap="innerHTML">
+        <input type="text" name="{{ name }}" value="{{ value }}" class="chirpui-field__input chirpui-inline-edit__input"
+               autofocus>
+        <div class="chirpui-inline-edit__actions">
+            <button type="submit" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">{{ save_label }}</button>
+            <a href="{{ cancel_url }}" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm"
+               hx-get="{{ cancel_url }}"
+               hx-target="{{ target }}"
+               hx-swap="innerHTML"
+               hx-push-url="false">{{ cancel_label }}</a>
+        </div>
+    </form>
+</div>
+{% end %}

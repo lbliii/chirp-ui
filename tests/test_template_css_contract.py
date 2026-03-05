@@ -15,6 +15,9 @@ TARGET_PREFIXES = (
     "chirpui-command-bar",
     "chirpui-search-header",
     "chirpui-selection-bar",
+    "chirpui-entity-header",
+    "chirpui-inline-edit",
+    "chirpui-row-actions",
 )
 
 
