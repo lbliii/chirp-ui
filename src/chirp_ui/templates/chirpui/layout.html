@@ -102,11 +102,10 @@
 {% call section_header(title, subtitle) %}
 {% slot actions %}{% slot actions %}{% end %}
 {% end %}
-{% slot %}
+{% slot %}{% slot %}{% end %}
 {% end %}
 {% if full_width %}
 </div>
-{% end %}
 {% end %}
 {% end %}
 

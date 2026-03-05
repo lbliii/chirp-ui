@@ -110,6 +110,7 @@ class TestLayout:
         assert "chirpui-section-header" in html
         assert "<h2>Setup</h2>" in html
         assert "Refresh" in html
+        assert "Content" in html
 
 
 class TestIslands:
