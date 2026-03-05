@@ -84,6 +84,7 @@ app.add_middleware(StaticFiles(
 | **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group, island_root, state primitives |
 | **Forms** | text_field, password_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, csrf_hidden, form_actions, login_form, signup_form |
 | **Data display** | badge, spinner, skeleton, progress, description_list, timeline, tree_view, calendar |
+| **Dashboard** | inline_edit_field, row_actions, status_with_hint, entity_header, confirm_dialog — [DASHBOARD-MATURITY-CONTRACT](docs/DASHBOARD-MATURITY-CONTRACT.md) |
 | **Docs** | page_hero, nav_tree, params_table, signature, index_card — framework-agnostic docs components |
 | **Streaming** | streaming_block, copy_btn, model_card — for htmx SSE and LLM UIs |
 | **Theming** | `--chirpui-*` CSS variables, dark mode, optional Holy Light theme |

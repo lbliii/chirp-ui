@@ -3,6 +3,7 @@
 from kida import Environment, PackageLoader
 
 import chirp_ui
+from chirp_ui.filters import bem, field_errors, html_attrs, icon, validate_variant
 
 
 class TestStaticPath:
@@ -29,6 +30,15 @@ class TestGetLoader:
 
     def test_loader_can_load_template(self) -> None:
         env = Environment(loader=chirp_ui.get_loader(), autoescape=True)
+        env.filters.update(
+            {
+                "bem": bem,
+                "field_errors": field_errors,
+                "html_attrs": html_attrs,
+                "icon": icon,
+                "validate_variant": validate_variant,
+            }
+        )
         # card.html defines macros; import and call to verify loader resolves it
         html = env.from_string(
             '{% from "chirpui/card.html" import card %}{% call card() %}Body{% end %}'
@@ -54,3 +64,4 @@ class TestRegisterFilters:
         assert "bem" in registered
         assert "field_errors" in registered
         assert "html_attrs" in registered
+        assert "icon" in registered

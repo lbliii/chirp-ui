@@ -13,7 +13,7 @@
 {% def badge(text, variant="primary", icon=none, cls="") %}
 <span class="{{ "badge" | bem(variant=variant, cls=cls) }}">
     {% if icon %}
-        <span class="chirpui-badge__icon">{{ icon }}</span>
+        <span class="chirpui-badge__icon">{{ icon | icon }}</span>
     {% end %}
     <span class="chirpui-badge__text">{{ text }}</span>
 </span>

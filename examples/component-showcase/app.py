@@ -104,6 +104,11 @@ async def layout() -> Template:
     return Template("showcase/layout.html")
 
 
+@app.route("/sections", template="showcase/sections.html")
+async def sections() -> Template:
+    return Template("showcase/sections.html")
+
+
 @app.route("/layout/dir", methods=["GET"])
 async def layout_dir(request: Request) -> Fragment:
     """Return Fragment with dir block for RTL/LTR toggle."""

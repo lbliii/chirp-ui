@@ -64,15 +64,18 @@
 </header>
 {% end %}
 
-{#- section_header: title, subtitle, actions slot -#}
-{% def section_header(title, subtitle=none, cls="") %}
+{#- section_header: title, subtitle, icon, actions slot -#}
+{% def section_header(title, subtitle=none, icon=none, cls="") %}
 <div class="chirpui-section-header{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-section-header__top">
-        <div>
-            <h2>{{ title }}</h2>
-            {% if subtitle %}
-            <p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>
-            {% end %}
+        <div class="chirpui-section-header__title-block">
+            {% if icon %}<span class="chirpui-section-header__icon">{{ icon | icon }}</span>{% end %}
+            <div>
+                <h2>{{ title }}</h2>
+                {% if subtitle %}
+                <p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>
+                {% end %}
+            </div>
         </div>
         <div class="chirpui-section-header__actions">{% slot actions %}</div>
     </div>
@@ -80,10 +83,13 @@
 {% end %}
 
 {#- section_header_inline: compact h2 + actions on one line, no subtitle — for dense forms -#}
-{% def section_header_inline(title, cls="") %}
+{% def section_header_inline(title, icon=none, cls="") %}
 <div class="chirpui-section-header chirpui-section-header--inline{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-section-header__top">
-        <h2 class="chirpui-section-header__title-inline">{{ title }}</h2>
+        <div class="chirpui-section-header__title-block">
+            {% if icon %}<span class="chirpui-section-header__icon">{{ icon | icon }}</span>{% end %}
+            <h2 class="chirpui-section-header__title-inline">{{ title }}</h2>
+        </div>
         <div class="chirpui-section-header__actions">{% slot %}</div>
     </div>
 </div>
@@ -93,13 +99,13 @@
     Use {% slot actions %} for section-level buttons (Refresh, Auto-detect, etc.).
     full_width=true wraps in chirpui-blade for edge-to-edge blade-style sections.
     parallax=true adds subtle scroll-driven background motion (Chrome 115+). -#}
-{% def section(title, subtitle=none, surface_variant="muted", full_width=false, parallax=false, cls="") %}
+{% def section(title, subtitle=none, icon=none, surface_variant="muted", full_width=false, parallax=false, cls="") %}
 {% set surface_variant = surface_variant | validate_variant(("default","muted","elevated","accent","gradient-subtle","gradient-accent","gradient-border","gradient-mesh","glass","frosted","smoke"), "muted") %}
 {% if full_width %}
 <div class="chirpui-blade{{ " chirpui-blade--parallax" if parallax else "" }}{{ " " ~ cls if cls else "" }}">
 {% end %}
 {% call surface(variant=surface_variant, full_width=full_width) %}
-{% call section_header(title, subtitle) %}
+{% call section_header(title, subtitle, icon) %}
 {% slot actions %}{% slot actions %}{% end %}
 {% end %}
 {% slot %}{% slot %}{% end %}

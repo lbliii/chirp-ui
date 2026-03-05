@@ -1,0 +1,36 @@
+{#- chirp-ui: Fragment island primitive
+    HTMX-safe mutation region that isolates local updates from inherited
+    shell attributes (hx-select, hx-target, hx-swap). Use for add/delete/reorder
+    regions inside app shells with hx-boost or broad hx-select.
+
+    Usage:
+        from "chirpui/fragment_island.html" import fragment_island
+
+        call fragment_island("step-list")
+            ...mutation region content...
+        end
+
+        call fragment_island("my-list", hx_target="#my-list", hx_swap="outerHTML")
+            ...
+        end
+-#}
+
+{% def fragment_island(
+    id,
+    hx_target=none,
+    hx_swap=none,
+    hx_select=none,
+    cls="",
+    attrs=""
+) %}
+{% set disinherit = "hx-select hx-target hx-swap" %}
+<div id="{{ id }}"
+     class="chirpui-fragment-island{{ " " ~ cls if cls else "" }}"
+     hx-disinherit="{{ disinherit }}"
+     {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
+     {% if hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
+     {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
+     {{ attrs | safe }}>
+    {% slot %}
+</div>
+{% end %}

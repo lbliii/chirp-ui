@@ -1,0 +1,82 @@
+{#- chirp-ui: Drag-drop primitives
+    Behavior-ready row and board variants for sortable lists and kanban layouts.
+    Composes existing sortable structure; Alpine/HTMX wiring is left to the consumer.
+
+    Row variant (ordered lists: chains, todo, setup targets):
+        from "chirpui/dnd.html" import dnd_list, dnd_item, dnd_handle, dnd_drop_indicator
+
+        call dnd_list()
+          for item in items
+            call dnd_item()
+              call dnd_handle()
+              call dnd_drop_indicator()
+              ...content...
+            end
+          end
+        end
+
+    Board variant (kanban lanes with cross-column movement):
+        from "chirpui/dnd.html" import dnd_board, dnd_column, dnd_card
+
+        call dnd_board()
+          for col in columns
+            call dnd_column(title=col.name)
+              for card in col.cards
+                call dnd_card()
+                  ...card content...
+                end
+              end
+            end
+          end
+        end
+-#}
+
+{% def dnd_list(cls="", attrs="") %}
+<div class="chirpui-dnd chirpui-dnd--row{{ " " ~ cls if cls else "" }}"
+     role="listbox" {{ attrs | safe }}>
+    {% slot %}
+</div>
+{% end %}
+
+{% def dnd_item(cls="", attrs="") %}
+<div class="chirpui-dnd__item chirpui-dnd__item--row{{ " " ~ cls if cls else "" }}"
+     role="option" {{ attrs | safe }}>
+    {% slot %}
+</div>
+{% end %}
+
+{% def dnd_handle(cls="", attrs="") %}
+<span class="chirpui-dnd__handle{{ " " ~ cls if cls else "" }}"
+      aria-hidden="true" {{ attrs | safe }}>&#x2630;</span>
+{% end %}
+
+{% def dnd_drop_indicator(cls="", attrs="") %}
+<span class="chirpui-dnd__drop-indicator{{ " " ~ cls if cls else "" }}"
+      aria-hidden="true" {{ attrs | safe }}></span>
+{% end %}
+
+{% def dnd_board(cls="", attrs="") %}
+<div class="chirpui-dnd chirpui-dnd--board{{ " " ~ cls if cls else "" }}"
+     role="group" aria-label="Board" {{ attrs | safe }}>
+    {% slot %}
+</div>
+{% end %}
+
+{% def dnd_column(title=none, cls="", attrs="") %}
+<div class="chirpui-dnd__column{{ " " ~ cls if cls else "" }}"
+     role="group" {{ attrs | safe }}>
+    {% if title %}
+    <div class="chirpui-dnd__column-header">{{ title }}</div>
+    {% end %}
+    <div class="chirpui-dnd__column-body">
+        {% slot %}
+    </div>
+</div>
+{% end %}
+
+{% def dnd_card(cls="", attrs="") %}
+<div class="chirpui-dnd__card{{ " " ~ cls if cls else "" }}"
+     role="article" {{ attrs | safe }}>
+    {% slot %}
+</div>
+{% end %}

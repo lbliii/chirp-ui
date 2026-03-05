@@ -3,14 +3,15 @@
 
    Avoid view-transition-name on #main when it's the htmx-boost swap target:
    full-page responses create duplicate #main during transition. Use root
-   (default) instead. Named modal enables intentional shared-element transitions.
-   See: https://piccalil.li/blog/why-are-my-view-transitions-blinking/
+   (default) instead. Modals use view-transition-name: none (multiple dialogs
+   would duplicate names). See: https://piccalil.li/blog/why-are-my-view-transitions-blinking/
 */
 
-/* Modal — typically one at a time; enables intentional transitions */
+/* Modal — opt out of view transitions; multiple dialogs share the class,
+   so view-transition-name would duplicate. Overlays don't need page-transition. */
 dialog.chirpui-modal,
 .chirpui-modal {
-    view-transition-name: chirpui-modal;
+    view-transition-name: none;
 }
 
 ::view-transition-old(page-content),

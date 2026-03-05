@@ -86,7 +86,7 @@
   Click to swap content. Uses <code>hx-swap="innerHTML transition:true"</code>.
 </p>
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.25rem;">
-  Named transitions: <code>view-transition-name</code> on <code>.chirpui-modal</code> enables intentional shared-element transitions when swapping.
+  Modals use <code>view-transition-name: none</code> to avoid duplicate-name errors when multiple dialogs exist.
 </p>
 {% call block() %}
 <div id="swap-demo" class="chirpui-card">

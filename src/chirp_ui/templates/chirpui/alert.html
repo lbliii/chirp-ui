@@ -28,7 +28,7 @@
 {% if collapsible %}
 <details class="{{ alert_class }}" role="alert"{% if open %} open{% endif %}>
     <summary class="chirpui-alert__body">
-        {% if icon %}<span class="chirpui-alert__icon">{{ icon }}</span>{% endif %}
+        {% if icon %}<span class="chirpui-alert__icon">{{ icon | icon }}</span>{% endif %}
         {% if title %}<span class="chirpui-alert__title">{{ title }}</span>{% endif %}
     </summary>
     <div class="chirpui-alert__body chirpui-mt-sm">
@@ -43,7 +43,7 @@
 {% else %}
 <div class="{{ alert_class }}" role="alert">
     {% if icon %}
-        <span class="chirpui-alert__icon">{{ icon }}</span>
+        <span class="chirpui-alert__icon">{{ icon | icon }}</span>
     {% end %}
     <div class="chirpui-alert__body">
         {% if title %}

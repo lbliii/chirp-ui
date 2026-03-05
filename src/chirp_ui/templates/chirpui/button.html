@@ -29,7 +29,7 @@
    {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
    {% if hx_ext %}hx-ext="{{ hx_ext }}"{% end %}
    {% if hx_vals is not none %}hx-vals="{{ hx_vals }}"{% end %}>
-    {% if icon %}<span class="chirpui-btn__icon">{{ icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
     <span class="chirpui-btn__label">{{ label }}</span>
 </a>
 {% else %}
@@ -48,7 +48,7 @@
         {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
         {% if hx_ext %}hx-ext="{{ hx_ext }}"{% end %}
         {% if hx_vals is not none %}hx-vals="{{ hx_vals }}"{% end %}>
-    {% if icon %}<span class="chirpui-btn__icon">{{ icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
     <span class="chirpui-btn__label">{{ label }}</span>
     <span class="chirpui-btn__spinner" aria-hidden="true">{{ spinner(size="sm") }}</span>
 </button>

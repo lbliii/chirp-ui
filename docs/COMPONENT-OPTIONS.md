@@ -33,6 +33,44 @@ Use `| default()` for optional variables that may be unset on first load (e.g. `
 
 ---
 
+## Icon registry
+
+Components that accept an `icon` param (e.g. `section`, `card`, `btn`, `alert`, `badge`) resolve **semantic names** via the `icon` filter. Use names for consistency; raw glyphs still work.
+
+```html
+{% call section("System status", icon="status") %}
+{% call section("Validation", icon="validate") %}
+{{ btn("Refresh", icon="refresh") }}
+{{ config_card(title="Logs", icon="logs") }}
+```
+
+| Name | Glyph |
+|------|-------|
+| status, validate, run | ◎ |
+| home | ◉ |
+| shortcut | ⌘ |
+| skills | ✦ |
+| add | ＋ |
+| refresh | ↻ |
+| search | ⌕ |
+| arrow, migrate, config | ▸ |
+| wizard, diamond, settings | ◇ |
+| gear | ⚙ |
+| bullet | ● |
+| star | ★ |
+| spark | ✦ |
+| logs | ⟳ |
+| cloud | ☁ |
+| sources | ⊞ |
+| chain | ⛓ |
+| link | ⟶ |
+| alert | ↑ |
+| dots | ⋯ |
+
+Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates when needed.
+
+---
+
 ## Components with Variants
 
 | Component | Param | Valid values | Default |
@@ -170,7 +208,7 @@ Composite: surface + section_header + content. Reduces boilerplate. Use `{% slot
 ```html
 {% from "chirpui/layout.html" import section %}
 {% from "chirpui/button.html" import btn %}
-{% call section("Setup targets", surface_variant="muted") %}
+{% call section("Setup targets", icon="◎", surface_variant="muted") %}
 {% slot actions %}{{ btn("Refresh", attrs_map={"hx-get": "/status", "hx-target": "#targets"}) }}{% end %}
 <div id="targets">...</div>
 {% end %}
@@ -179,14 +217,17 @@ Composite: surface + section_header + content. Reduces boilerplate. Use `{% slot
 | Param | Description |
 |-------|-------------|
 | `title` | Section heading (h2) |
-| `subtitle` | Optional |
+| `subtitle` | Optional subtitle below title |
+| `icon` | Optional ASCII/Unicode icon left of title (aligns with card, entity_header) |
 | `surface_variant` | default, muted, elevated, accent, gradient-subtle, gradient-accent, gradient-border, gradient-mesh, glass, frosted, smoke (default: muted) |
 | `full_width` | If true, wraps in `chirpui-blade` for edge-to-edge layout (breaks out of container) |
 | `parallax` | If true with full_width, adds subtle scroll-driven animation (Chrome 115+); respects prefers-reduced-motion |
 
+**surface_variant usage:** muted (default) for subtle grouping; elevated for status/readiness emphasis; accent for action-oriented blocks (e.g. validation); default for form-focused sections. Glass, frosted, smoke need a colored background behind to show blur.
+
 ### section_header_inline
 
-Compact header for dense forms: h2 + actions on one line, no subtitle.
+Compact header for dense forms: h2 + actions on one line, no subtitle. Params: `title`, `icon` (optional), `cls`.
 
 ### section_collapsible
 
@@ -582,11 +623,14 @@ chirp_ui.set_strict(True)
 # ... render templates
 ```
 
+Invalid icon names also log warnings (pass-through unchanged).
+
 ---
 
 ## Filters
 
 - **`bem(block, variant="", modifier="", cls="")`** — Builds BEM class string; validates `variant` against `VARIANT_REGISTRY` when strict.
+- **`icon(name)`** — Resolves icon name to glyph; validates against `ICON_REGISTRY` when strict.
 - **`validate_variant(value, allowed, default="")`** — Returns `value` if in `allowed`, else `default`. Logs warning when strict and invalid.
 
 For custom components with inline variants:

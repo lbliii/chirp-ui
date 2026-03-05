@@ -3,6 +3,7 @@
 from kida import Environment
 
 import chirp_ui
+from chirp_ui.filters import bem, field_errors, html_attrs, icon, validate_variant
 
 
 def test_import_chirp_ui() -> None:
@@ -16,6 +17,15 @@ def test_import_chirp_ui() -> None:
 def test_get_loader_loads_template() -> None:
     """get_loader() returns a loader that can resolve chirp-ui templates."""
     env = Environment(loader=chirp_ui.get_loader(), autoescape=True)
+    env.filters.update(
+        {
+            "bem": bem,
+            "field_errors": field_errors,
+            "html_attrs": html_attrs,
+            "icon": icon,
+            "validate_variant": validate_variant,
+        }
+    )
     html = env.from_string(
         '{% from "chirpui/card.html" import card %}{% call card() %}Body{% end %}'
     ).render()

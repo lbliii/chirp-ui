@@ -1665,7 +1665,7 @@ class TestSettingsRow:
     def test_settings_row_list_and_row(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
-            '{% call settings_row_list() %}'
+            "{% call settings_row_list() %}"
             '{{ settings_row("Cursor IDE", status="Configured", detail="dori setup cursor") }}'
             '{{ settings_row("Skills dir", status="ok", detail="/path/to/skills") }}'
             "{% end %}"
@@ -1682,7 +1682,7 @@ class TestSettingsRow:
     def test_settings_row_detail_as_code(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
-            '{% call settings_row_list() %}'
+            "{% call settings_row_list() %}"
             '{{ settings_row("X", status="ok", detail="dori setup x") }}'
             "{% end %}"
         ).render()

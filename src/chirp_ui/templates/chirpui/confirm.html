@@ -41,6 +41,7 @@
             {% if confirm_url %}
             <form method="{{ confirm_method }}" action="{{ confirm_url }}"
                   {% if hx_target %}{% if confirm_method == "DELETE" %}hx-delete="{{ confirm_url }}"{% else %}hx-post="{{ confirm_url }}"{% end %} hx-target="{{ hx_target }}" hx-swap="{{ hx_swap }}"{% if hx_select %} hx-select="{{ hx_select }}"{% end %}{% if hx_push_url %} hx-push-url="{{ hx_push_url }}"{% end %}{% end %}>
+                {% slot form_content %}
                 <button type="submit" class="chirpui-btn chirpui-btn--{{ variant if variant == "danger" else "primary" }}">{{ confirm_label }}</button>
             </form>
             {% else %}

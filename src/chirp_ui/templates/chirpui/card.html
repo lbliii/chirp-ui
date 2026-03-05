@@ -29,7 +29,7 @@
 <details class="chirpui-card chirpui-card--collapsible{{ variant_class }}{{ border_class }}{{ header_class }}{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
     {% if title %}
         <summary class="chirpui-card__header">
-            {% if icon %}<span class="chirpui-card__icon">{{ icon }}</span>{% end %}
+            {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
             <div class="chirpui-card__header-content">
                 <span class="chirpui-card__title">{{ title }}</span>
                 {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
@@ -50,7 +50,7 @@
 <article class="chirpui-card{{ variant_class }}{{ border_class }}{{ header_class }}{{ " " ~ cls if cls else "" }}">
     {% if title %}
         <header class="chirpui-card__header">
-            {% if icon %}<span class="chirpui-card__icon">{{ icon }}</span>{% end %}
+            {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
             <div class="chirpui-card__header-content">
                 <span class="chirpui-card__title">{{ title }}</span>
                 {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
@@ -72,7 +72,7 @@
 
 {% def card_header(title, subtitle=none, icon=none, cls="") %}
 <header class="chirpui-card__header{{ " " ~ cls if cls else "" }}">
-    {% if icon %}<span class="chirpui-card__icon">{{ icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
     <div class="chirpui-card__header-content">
         <span class="chirpui-card__title">{{ title }}</span>
         {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}

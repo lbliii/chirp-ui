@@ -12,6 +12,8 @@ from typing import Any, Protocol
 
 from kida.template import Markup
 
+from chirp_ui.icons import ICON_REGISTRY
+from chirp_ui.icons import icon as _resolve_icon
 from chirp_ui.validation import VARIANT_REGISTRY, _is_strict
 
 
@@ -68,6 +70,19 @@ def validate_variant(
             ", ".join(allowed),
         )
     return default if default in allowed else (allowed[0] if allowed else "")
+
+
+def icon(name: str) -> str:
+    """Resolve icon name to glyph; unknown names pass through. When strict, log warning."""
+    result = _resolve_icon(name)
+    if name not in ICON_REGISTRY and _is_strict():
+        log = logging.getLogger("chirp_ui")
+        log.warning(
+            'chirp-ui: icon "%s" invalid; valid: %s',
+            name,
+            ", ".join(sorted(ICON_REGISTRY)),
+        )
+    return result
 
 
 def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]:
@@ -133,4 +148,5 @@ def register_filters(app: TemplateFilterApp) -> None:
     app.template_filter("bem")(bem)
     app.template_filter("field_errors")(field_errors)
     app.template_filter("html_attrs")(html_attrs)
+    app.template_filter("icon")(icon)
     app.template_filter("validate_variant")(validate_variant)

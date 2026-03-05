@@ -552,6 +552,14 @@ html {
     gap: var(--chirpui-spacing);
 }
 
+.chirpui-page-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
 .chirpui-page-header__actions:empty {
     display: none;
 }
@@ -565,11 +573,37 @@ html {
     margin-bottom: 0;
 }
 
+.chirpui-section-header {
+    margin-bottom: var(--chirpui-spacing-md);
+    padding-bottom: var(--chirpui-spacing-md);
+    border-bottom: 1px solid var(--chirpui-border-subtle);
+}
+
+.chirpui-section-header__title-block {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-section-header__icon {
+    font-size: 1em;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
 .chirpui-section-header__top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--chirpui-spacing);
+}
+
+.chirpui-section-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+    flex-wrap: wrap;
+    flex-shrink: 0;
 }
 
 .chirpui-section-header__actions:empty {
@@ -591,6 +625,10 @@ html {
 }
 
 .chirpui-section-header--inline .chirpui-section-header__top {
+    align-items: center;
+}
+
+.chirpui-section-header--inline .chirpui-section-header__title-block {
     align-items: center;
 }
 
@@ -652,7 +690,8 @@ html {
 .chirpui-entity-header__actions {
     display: flex;
     align-items: center;
-    gap: var(--chirpui-spacing-sm);
+    gap: var(--chirpui-spacing);
+    flex-shrink: 0;
 }
 
 .chirpui-entity-header__actions:empty {
@@ -2206,7 +2245,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-settings-row-list {
     display: grid;
     grid-template-columns: minmax(8rem, auto) minmax(6rem, auto) 1fr;
-    gap: var(--chirpui-spacing-sm) var(--chirpui-spacing-md);
+    gap: var(--chirpui-spacing-sm, 0.5rem) var(--chirpui-spacing-lg, 1.5rem);
     align-items: center;
 }
 
@@ -3786,6 +3825,11 @@ a.chirpui-chapter-item__link:focus-visible {
 /* ==========================================================================
    Modal
    ========================================================================== */
+
+/* Native <dialog>: must stay hidden until showModal() is called (theme-safe) */
+dialog.chirpui-modal:not([open]) {
+    display: none;
+}
 
 dialog.chirpui-modal,
 .chirpui-modal {

@@ -10,6 +10,8 @@ import pytest
 from kida import Environment, FileSystemLoader
 from kida.template import Markup
 
+from chirp_ui.icons import icon as icon_filter
+
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates"
 
 
@@ -130,12 +132,13 @@ def env() -> Environment:
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
         autoescape=True,
     )
-    # Register stubs for Chirp/chirp-ui filters (field_errors, bem, validate_variant)
+    # Register stubs for Chirp/chirp-ui filters (field_errors, bem, validate_variant, icon)
     e.update_filters(
         {
             "field_errors": _field_errors_stub,
             "bem": _bem_stub,
             "html_attrs": _html_attrs_stub,
+            "icon": icon_filter,
             "validate_variant": _validate_variant_stub,
         }
     )

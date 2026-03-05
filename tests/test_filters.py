@@ -2,7 +2,7 @@
 
 import pytest
 
-from chirp_ui.filters import bem, field_errors, html_attrs, register_filters, validate_variant
+from chirp_ui.filters import bem, field_errors, html_attrs, icon, register_filters, validate_variant
 from chirp_ui.validation import set_strict
 
 
@@ -102,6 +102,51 @@ class TestHtmlAttrs:
         assert 'hx-target="#r"' in rendered
 
 
+class TestIcon:
+    def test_resolves_registered_name(self) -> None:
+        assert icon("status") == "◎"
+        assert icon("add") == "＋"
+        assert icon("refresh") == "↻"
+        assert icon("search") == "⌕"
+        assert icon("logs") == "⟳"
+        assert icon("cloud") == "☁"
+
+    def test_unknown_name_passes_through(self) -> None:
+        assert icon("◎") == "◎"
+        assert icon("custom-glyph") == "custom-glyph"
+
+
+class TestIconStrictMode:
+    """Strict mode logs warning on invalid icon name and passes through unchanged."""
+
+    def setup_method(self) -> None:
+        set_strict(True)
+
+    def teardown_method(self) -> None:
+        set_strict(False)
+
+    def test_invalid_logs_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+        result = icon("statis")
+        assert result == "statis"
+        assert any(
+            "icon" in (r.message or "") and "invalid" in (r.message or "")
+            for r in caplog.records
+        )
+        assert any("statis" in (r.message or "") for r in caplog.records)
+
+    def test_valid_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+        icon("status")
+        assert not any(
+            "invalid" in (r.message or "") and "icon" in (r.message or "")
+            for r in caplog.records
+        )
+
+    def test_strict_false_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+        set_strict(False)
+        icon("statis")
+        assert not any("invalid" in (r.message or "") for r in caplog.records)
+
+
 class TestRegisterFilters:
     def test_registers_bem_field_errors_and_html_attrs(self) -> None:
         registered: dict[str, object] = {}
@@ -122,3 +167,4 @@ class TestRegisterFilters:
         assert registered["field_errors"] is field_errors
         assert "html_attrs" in registered
         assert registered["html_attrs"] is html_attrs
+        assert "icon" in registered

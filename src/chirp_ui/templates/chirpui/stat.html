@@ -11,7 +11,7 @@
 {% def stat(value, label, icon=none, cls="") %}
 <div class="chirpui-stat{{ " " ~ cls if cls else "" }}">
     {% if icon %}
-    <span class="chirpui-stat__icon">{{ icon }}</span>
+    <span class="chirpui-stat__icon">{{ icon | icon }}</span>
     {% end %}
     <span class="chirpui-stat__value">{{ value }}</span>
     <span class="chirpui-stat__label">{{ label }}</span>

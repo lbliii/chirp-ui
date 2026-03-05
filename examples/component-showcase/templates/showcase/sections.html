@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header, section %}
+{% from "chirpui/button.html" import btn %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Sections", subtitle="section — Surface + header + content with icon, actions, and surface variants.") }}
+
+<h2>Section with icon and actions</h2>
+{% call block() %}
+{% call section("System status", icon="◎", surface_variant="elevated") %}
+{% slot actions %}
+{{ btn("Refresh", variant="default", icon="↻", type="button") }}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Section with icon and header actions. Uses surface(variant="elevated").</p>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  section(title, icon=none, surface_variant="muted", ...) — icon left of title, slot actions for header buttons.
+</p>
+{% end %}
+
+<h2>Section with subtitle</h2>
+{% call block() %}
+{% call section("Validation center", subtitle="Run checks and view results", icon="◎", surface_variant="accent") %}
+{% slot actions %}
+{{ btn("Run validation", variant="primary", icon="◎", type="button") }}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Optional subtitle below the title.</p>
+{% end %}
+{% end %}
+
+<h2>Section without icon (backward compatible)</h2>
+{% call block() %}
+{% call section("Plain section", surface_variant="muted") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">icon=none — no icon rendered; layout unchanged.</p>
+{% end %}
+{% end %}
+
+<h2>Surface variants</h2>
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0 0 0.5rem;">
+  All 11 surface variants via surface_variant param. Default is muted.
+</p>
+{% call stack(gap="sm") %}
+{% call section("default", icon="◇", surface_variant="default") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Primary surface color.</p>
+{% end %}
+{% call section("muted", icon="◇", surface_variant="muted") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Subtle background (default).</p>
+{% end %}
+{% call section("elevated", icon="◇", surface_variant="elevated") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">With shadow.</p>
+{% end %}
+{% call section("accent", icon="◇", surface_variant="accent") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Accent tint.</p>
+{% end %}
+{% call section("gradient-subtle", icon="◇", surface_variant="gradient-subtle") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Soft gradient.</p>
+{% end %}
+{% call section("gradient-accent", icon="◇", surface_variant="gradient-accent") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Accent gradient.</p>
+{% end %}
+{% call section("gradient-border", icon="◇", surface_variant="gradient-border") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Gradient border, solid fill.</p>
+{% end %}
+{% call section("gradient-mesh", icon="◇", surface_variant="gradient-mesh") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Mesh-style gradient.</p>
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  Glass variants (glass, frosted, smoke) need a colored background behind to show blur — see Layout showcase.
+</p>
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

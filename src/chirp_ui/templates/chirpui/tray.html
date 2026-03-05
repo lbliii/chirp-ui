@@ -15,7 +15,7 @@
 <button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm"
         data-chirpui-tray-trigger data-tray-id="{{ id }}"
         aria-controls="tray-{{ id }}" aria-expanded="false">
-    {% if icon %}<span aria-hidden="true">{{ icon }}</span>{% endif %}
+    {% if icon %}<span aria-hidden="true">{{ icon | icon }}</span>{% endif %}
     {{ label }}
 </button>
 {% end %}
