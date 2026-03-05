@@ -48,7 +48,7 @@
 
 {% def description_item(term, detail, type=none, cls="") %}
 {% set type_class = " chirpui-dl__detail--" ~ type if type else "" %}
-{% set type_valid = type | validate_variant(("bool","url","number","unset"), "") %}
+{% set type_valid = (type or "") | validate_variant(("", "bool", "url", "number", "unset"), "") %}
 <div class="chirpui-dl__row{{ " " ~ cls if cls else "" }}">
     <dt class="chirpui-dl__term">{{ term }}</dt>
     <dd class="chirpui-dl__detail{{ type_class if type_valid else "" }}">

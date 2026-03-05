@@ -223,7 +223,18 @@ Composite: surface + section_header + content. Reduces boilerplate. Use `{% slot
 | `full_width` | If true, wraps in `chirpui-blade` for edge-to-edge layout (breaks out of container) |
 | `parallax` | If true with full_width, adds subtle scroll-driven animation (Chrome 115+); respects prefers-reduced-motion |
 
-**surface_variant usage:** muted (default) for subtle grouping; elevated for status/readiness emphasis; accent for action-oriented blocks (e.g. validation); default for form-focused sections. Glass, frosted, smoke need a colored background behind to show blur.
+**surface_variant usage (semantic convention):** Surface variants convey **section role**, not visual rhythm. The eye should scan hierarchy without reading a word.
+
+| Variant | Role | Use for |
+|---------|------|---------|
+| `elevated` | Look here first | Health checks, system status, version info, dashboard stats |
+| `accent` | Do this | Primary action area: validation, run buttons, auto-detect. Max one per page. |
+| `default` | Fill this in | Form input, neutral workspace: config forms, search, compare inputs |
+| `muted` | Reference | Background grouping, locations, catalogs, secondary detail |
+
+**When to skip:** Pages with 0–1 sections, or pages where cards already provide grouping (skill detail, collection detail), do not need surface_variant differentiation. Don't wrap content in a section just to apply a variant.
+
+Glass, frosted, smoke need a colored background behind to show blur.
 
 ### section_header_inline
 

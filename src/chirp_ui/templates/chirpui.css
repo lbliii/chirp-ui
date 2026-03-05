@@ -581,7 +581,7 @@ html {
 
 .chirpui-section-header__title-block {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--chirpui-spacing-sm);
 }
 
