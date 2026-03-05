@@ -732,6 +732,18 @@ class TestCard:
         assert "Settings" in html
         assert "⚙" in html
 
+    def test_card_body_actions_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="List") %}'
+            '{% slot body_actions %}<button class="chirpui-btn">Add</button>{% end %}'
+            "<p>Items</p>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-card__body-actions" in html
+        assert "Add" in html
+        assert "Items" in html
+
 
 # ---------------------------------------------------------------------------
 # Modal
@@ -1699,6 +1711,15 @@ class TestDashboardPrimitives:
         assert "Active" in html
         assert "Last active 2h ago" in html
 
+    def test_status_with_hint_no_hint(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/status_with_hint.html" import status_with_hint %}'
+            '{{ status_with_hint("Pending", variant="warning") }}'
+        ).render()
+        assert "chirpui-badge" in html
+        assert "Pending" in html
+        assert "chirpui-tooltip" not in html
+
     def test_entity_header(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/entity_header.html" import entity_header %}'
@@ -1736,6 +1757,29 @@ class TestConfirmDialog:
         ).render()
         assert "chirpui-confirm-trigger" in html
         assert "Delete" in html
+
+    def test_confirm_dialog_htmx_params(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/confirm.html" import confirm_dialog %}'
+            '{{ confirm_dialog("d", title="X", message="Y", confirm_url="/del", confirm_method="DELETE",'
+            ' hx_target="#main", hx_swap="innerHTML", hx_select="#content", hx_push_url="/list") }}'
+        ).render()
+        assert 'hx-delete="/del"' in html
+        assert 'hx-target="#main"' in html
+        assert 'hx-swap="innerHTML"' in html
+        assert 'hx-select="#content"' in html
+        assert 'hx-push-url="/list"' in html
+
+    def test_confirm_dialog_form_content_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/confirm.html" import confirm_dialog %}'
+            '{% call confirm_dialog("d", title="Uninstall?", message="Sure?", confirm_url="/uninstall", confirm_method="POST") %}'
+            '{% slot form_content %}<input type="hidden" name="name" value="my-collection">{% end %}'
+            "{% end %}"
+        ).render()
+        assert 'name="name"' in html
+        assert 'value="my-collection"' in html
+        assert "Uninstall?" in html
 
 
 class TestDrawer:

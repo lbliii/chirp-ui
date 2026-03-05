@@ -51,6 +51,7 @@ Use `| default()` for optional variables that may be unset on first load (e.g. `
 | **action_strip** | `wrap` | wrap, scroll, collapse | wrap |
 | **skeleton** | `variant` | *(empty)*, avatar, text, card | *(empty)* |
 | **confirm** | `variant` | default, danger | default |
+| **confirm_dialog** | `hx_target`, `hx_swap`, `hx_select`, `hx_push_url` | HTMX params for confirm form (when `confirm_url` set) | — |
 | **overlay** | `variant` | dark, gradient-bottom, gradient-top | dark |
 | **progress_bar** | `variant` | gold, radiant, success, watched | gold |
 | **progress_bar** | `size` | sm, md, lg | md |
@@ -62,6 +63,18 @@ Use `| default()` for optional variables that may be unset on first load (e.g. `
 | **logo** | `variant` | text, image, both | both |
 | **logo** | `size` | sm, md, lg | md |
 | **logo** | `align` | start, center, end | center |
+
+---
+
+## Fragment Island and DnD Primitives
+
+| Component | Description |
+|-----------|-------------|
+| `fragment_island` | HTMX-safe mutation region; wraps content with `hx-disinherit` to avoid inherited shell attributes |
+| `dnd_list`, `dnd_item`, `dnd_handle`, `dnd_drop_indicator` | Row drag-drop primitives |
+| `dnd_board`, `dnd_column`, `dnd_card` | Kanban board primitives |
+
+See [DND-FRAGMENT-ISLAND.md](DND-FRAGMENT-ISLAND.md) for cookbook examples and anti-footgun guidance.
 
 ---
 
@@ -90,6 +103,20 @@ Dashboard-grade interaction components. See [DASHBOARD-MATURITY-CONTRACT.md](DAS
 ```html
 {% from "chirpui/row_actions.html" import row_actions %}
 {{ row_actions(items=[{"label": "Edit", "href": "/edit"}, {"label": "Delete", "href": "/del", "variant": "danger"}]) }}
+```
+
+### confirm_dialog (HTMX)
+
+When `confirm_url` is set, add `hx_target`, `hx_swap`, `hx_select`, `hx_push_url` for HTMX form submission. Use `{% slot form_content %}` for hidden fields (e.g. entity id):
+
+```html
+{% from "chirpui/confirm.html" import confirm_dialog, confirm_trigger %}
+{% call confirm_dialog("del-dlg", title="Delete?", message="Cannot be undone.", confirm_label="Delete",
+   variant="danger", confirm_url="/items/1", confirm_method="DELETE",
+   hx_target="#main", hx_swap="innerHTML", hx_select="#page-content", hx_push_url="/items") %}
+{% slot form_content %}<input type="hidden" name="id" value="123">{% end %}
+{% end %}
+{{ confirm_trigger("del-dlg", label="Delete") }}
 ```
 
 ### table enhancements
