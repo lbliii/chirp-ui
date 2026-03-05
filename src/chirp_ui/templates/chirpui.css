@@ -212,6 +212,17 @@
     --chirpui-transition-slow: var(--chirpui-motion-slow) var(--chirpui-ease-standard);
     --chirpui-transition-emphasized: var(--chirpui-motion-base) var(--chirpui-ease-emphasized);
 
+    /* Drag-drop tactile polish */
+    --chirpui-dnd-lift-scale: 1.02;
+    --chirpui-dnd-lift-offset-y: -4px;
+    --chirpui-dnd-lift-shadow: var(--chirpui-shadow-lg);
+    --chirpui-dnd-drag-opacity: 0.5;
+    --chirpui-dnd-ghost-opacity: 0.4;
+    --chirpui-dnd-drop-indicator-color: var(--chirpui-accent);
+    --chirpui-dnd-drop-indicator-width: 2px;
+    --chirpui-dnd-transition: var(--chirpui-motion-base) var(--chirpui-ease-emphasized);
+    --chirpui-dnd-drag-transition: var(--chirpui-motion-fast) var(--chirpui-ease-standard);
+
     /* Avatar */
     --chirpui-avatar-size-sm: 2rem;
     --chirpui-avatar-size-md: 2.5rem;
@@ -2186,6 +2197,39 @@ a.chirpui-mention:focus-visible {
 .chirpui-dl__detail-unset {
     color: var(--chirpui-text-muted);
     font-style: italic;
+}
+
+/* ==========================================================================
+   Settings Row (label | status | detail)
+   ========================================================================== */
+
+.chirpui-settings-row-list {
+    display: grid;
+    grid-template-columns: minmax(8rem, auto) minmax(6rem, auto) 1fr;
+    gap: var(--chirpui-spacing-sm) var(--chirpui-spacing-md);
+    align-items: center;
+}
+
+.chirpui-settings-row {
+    display: contents;
+}
+
+.chirpui-settings-row__label {
+    flex-shrink: 0;
+}
+
+.chirpui-settings-row__status {
+    min-width: 0;
+}
+
+.chirpui-settings-row__detail {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chirpui-settings-row__detail code {
+    font-family: var(--chirpui-ascii-font, ui-monospace, monospace);
 }
 
 /* ==========================================================================
@@ -6326,6 +6370,172 @@ input[type="date"].chirpui-field__input {
 .chirpui-sortable__remove:focus-visible {
     outline: 2px solid var(--chirpui-focus-ring);
     outline-offset: var(--chirpui-state-focus-offset);
+}
+
+/* Fragment island — HTMX-safe mutation region */
+.chirpui-fragment-island {
+    /* No layout; just a wrapper for hx-disinherit */
+}
+
+/* DnD primitives — row and board variants */
+.chirpui-dnd {
+    display: flex;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-dnd--row {
+    flex-direction: column;
+    gap: 2px;
+}
+
+.chirpui-dnd--board {
+    flex-direction: row;
+    gap: var(--chirpui-spacing-md);
+    overflow-x: auto;
+    padding-bottom: var(--chirpui-spacing-sm);
+}
+
+.chirpui-dnd__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    background: var(--chirpui-bg);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    cursor: grab;
+    transition: transform var(--chirpui-dnd-transition),
+                box-shadow var(--chirpui-dnd-transition),
+                opacity var(--chirpui-dnd-drag-transition),
+                border-color var(--chirpui-dnd-transition);
+    user-select: none;
+}
+
+.chirpui-dnd__item:hover {
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-dnd__item:active {
+    cursor: grabbing;
+}
+
+.chirpui-dnd__item--dragging {
+    opacity: var(--chirpui-dnd-drag-opacity);
+    transform: scale(var(--chirpui-dnd-lift-scale))
+               translateY(var(--chirpui-dnd-lift-offset-y));
+    box-shadow: var(--chirpui-dnd-lift-shadow);
+}
+
+.chirpui-dnd__item--over {
+    border-top: var(--chirpui-dnd-drop-indicator-width) solid
+               var(--chirpui-dnd-drop-indicator-color);
+    padding-top: calc(0.625rem - var(--chirpui-dnd-drop-indicator-width));
+}
+
+.chirpui-dnd__handle {
+    flex-shrink: 0;
+    color: var(--chirpui-muted);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: grab;
+}
+
+.chirpui-dnd__handle:active {
+    cursor: grabbing;
+}
+
+.chirpui-dnd__handle:focus-visible {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-dnd__drop-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--chirpui-dnd-drop-indicator-width);
+    background: var(--chirpui-dnd-drop-indicator-color);
+    border-radius: var(--chirpui-radius-sm);
+    opacity: 0;
+    transition: opacity var(--chirpui-dnd-transition);
+    pointer-events: none;
+}
+
+.chirpui-dnd__item--over .chirpui-dnd__drop-indicator {
+    opacity: 1;
+}
+
+.chirpui-dnd__column {
+    flex-shrink: 0;
+    width: min(18rem, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-spacing);
+    background: var(--chirpui-bg-subtle);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+}
+
+.chirpui-dnd__column-header {
+    font-weight: 600;
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-dnd__column-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-sm);
+    min-height: 4rem;
+    border-radius: var(--chirpui-radius-sm);
+    transition: background var(--chirpui-dnd-transition);
+}
+
+.chirpui-dnd__column-body--over {
+    background: color-mix(in srgb, var(--chirpui-accent) 8%, transparent);
+}
+
+.chirpui-dnd__card {
+    padding: var(--chirpui-spacing);
+    background: var(--chirpui-bg);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    cursor: grab;
+    transition: box-shadow var(--chirpui-dnd-transition),
+                opacity var(--chirpui-dnd-drag-transition);
+    user-select: none;
+}
+
+.chirpui-dnd__card:hover {
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-dnd__card:active {
+    cursor: grabbing;
+}
+
+.chirpui-dnd__card--dragging {
+    opacity: var(--chirpui-dnd-drag-opacity);
+    box-shadow: var(--chirpui-dnd-lift-shadow);
+}
+
+.chirpui-dnd__column-body--over .chirpui-dnd__card {
+    border-color: var(--chirpui-dnd-drop-indicator-color);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-dnd__item,
+    .chirpui-dnd__card {
+        transition: none;
+    }
+
+    .chirpui-dnd__item--dragging {
+        transform: none;
+    }
 }
 
 /* Range slider */

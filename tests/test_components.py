@@ -98,6 +98,19 @@ class TestLayout:
         assert "<h2>Section</h2>" in html
         assert "Sub" in html
 
+    def test_section_with_actions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import section %}'
+            '{% from "chirpui/button.html" import btn %}'
+            '{% call section("Setup", subtitle="Configure") %}'
+            '{% slot actions %}{{ btn("Refresh") }}{% end %}'
+            "<p>Content</p>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-section-header" in html
+        assert "<h2>Setup</h2>" in html
+        assert "Refresh" in html
+
 
 class TestIslands:
     def test_island_root_with_props(self, env: Environment) -> None:
@@ -1645,6 +1658,43 @@ class TestDescriptionList:
             '{{ description_list(items=items, variant="horizontal") }}'
         ).render()
         assert "chirpui-dl--horizontal" in html
+
+
+class TestSettingsRow:
+    def test_settings_row_list_and_row(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
+            '{% call settings_row_list() %}'
+            '{{ settings_row("Cursor IDE", status="Configured", detail="dori setup cursor") }}'
+            '{{ settings_row("Skills dir", status="ok", detail="/path/to/skills") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-settings-row-list" in html
+        assert "chirpui-settings-row" in html
+        assert "Cursor IDE" in html
+        assert "Configured" in html
+        assert "dori setup cursor" in html
+        assert "Skills dir" in html
+        assert "ok" in html
+        assert "/path/to/skills" in html
+
+    def test_settings_row_detail_as_code(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
+            '{% call settings_row_list() %}'
+            '{{ settings_row("X", status="ok", detail="dori setup x") }}'
+            "{% end %}"
+        ).render()
+        assert "<code" in html
+        assert "dori setup x" in html
+
+    def test_settings_row_status_variant_override(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/settings_row.html" import settings_row %}'
+            '{{ settings_row("Test", status="Custom", status_variant="error") }}'
+        ).render()
+        assert "chirpui-badge--error" in html
+        assert "Custom" in html
 
 
 class TestTimeline:

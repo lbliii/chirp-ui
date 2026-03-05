@@ -67,6 +67,19 @@ Use `action_strip`, `command_bar`, `filter_bar` with zones: `chirpui-action-stri
 
 ---
 
+## Data Layout and Action Placement
+
+| Rule | When | Where |
+|------|------|-------|
+| **Section-level actions** | Primary action for the section (Refresh, Auto-detect, Run validation) | `section_header` actions slot (right of title) |
+| **Page-level actions** | Create, Install, bulk actions | `page_header` actions or `command_bar` |
+| **Field-set layout** | Label + status + value rows | `settings_row_list` + `settings_row` |
+| **Key-value only** | Term + detail, no status | `description_list` (horizontal or stacked) |
+
+Use `section` with `{% slot actions %}` for surface + header + content composites. Put section-level buttons in the actions slot, not beneath the content.
+
+---
+
 ## Density and Spacing Defaults
 
 - Use `--chirpui-*` tokens for consistent spacing and elevation

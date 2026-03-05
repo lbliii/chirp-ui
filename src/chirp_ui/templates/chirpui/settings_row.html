@@ -1,0 +1,45 @@
+{#- chirp-ui: Settings row — label | status badge | detail
+    Three-column field set for setup targets, health checks, validation summaries.
+    Use settings_row_list as container for aligned columns across rows.
+
+    Usage:
+        from "chirpui/settings_row.html" import settings_row_list, settings_row
+
+        call settings_row_list()
+            settings_row("Cursor IDE", status="Configured", detail="dori setup cursor")
+            settings_row("Skills directory", status="ok", detail="/path/to/skills")
+        end
+-#}
+{% from "chirpui/badge.html" import badge %}
+
+{% def settings_row_list(cls="") %}
+<div class="chirpui-settings-row-list{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def settings_row(label, status=none, detail=none, status_variant=none, cls="") %}
+{% set v = status_variant %}
+{% if v is none and status %}
+{% set v = "success" if (status | lower) in ("ok", "yes", "configured", "true", "1", "on") else ("error" if (status | lower) in ("error", "issues", "failed") else "muted") %}
+{% elif v is none %}
+{% set v = "muted" %}
+{% end %}
+<div class="chirpui-settings-row{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-settings-row__label chirpui-font-sm chirpui-font-medium">{{ label }}</span>
+    <span class="chirpui-settings-row__status">
+    {% if status %}
+    {{ badge(status, variant=v) }}
+    {% end %}
+    </span>
+    <span class="chirpui-settings-row__detail">
+    {% if detail %}
+    {% if "dori " in (detail | lower) %}
+    <code class="chirpui-font-xs">{{ detail }}</code>
+    {% else %}
+    <span class="chirpui-text-muted chirpui-font-sm">{{ detail }}</span>
+    {% end %}
+    {% end %}
+    </span>
+</div>
+{% end %}

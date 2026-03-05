@@ -90,6 +90,7 @@
 {% end %}
 
 {#- section: composite surface + section_header + content. Reduces boilerplate.
+    Use {% slot actions %} for section-level buttons (Refresh, Auto-detect, etc.).
     full_width=true wraps in chirpui-blade for edge-to-edge blade-style sections.
     parallax=true adds subtle scroll-driven background motion (Chrome 115+). -#}
 {% def section(title, subtitle=none, surface_variant="muted", full_width=false, parallax=false, cls="") %}
@@ -98,7 +99,9 @@
 <div class="chirpui-blade{{ " chirpui-blade--parallax" if parallax else "" }}{{ " " ~ cls if cls else "" }}">
 {% end %}
 {% call surface(variant=surface_variant, full_width=full_width) %}
-{{ section_header(title, subtitle) }}
+{% call section_header(title, subtitle) %}
+{% slot actions %}{% slot actions %}{% end %}
+{% end %}
 {% slot %}
 {% end %}
 {% if full_width %}

@@ -165,12 +165,14 @@ Use `card(title="...", icon="⟳")` for config/settings cards. The `icon` render
 
 ### section
 
-Composite: surface + section_header + content. Reduces boilerplate.
+Composite: surface + section_header + content. Reduces boilerplate. Use `{% slot actions %}` for section-level buttons (Refresh, Auto-detect, Run validation).
 
 ```html
 {% from "chirpui/layout.html" import section %}
-{% call section("Set config value", surface_variant="muted") %}
-  ...
+{% from "chirpui/button.html" import btn %}
+{% call section("Setup targets", surface_variant="muted") %}
+{% slot actions %}{{ btn("Refresh", attrs_map={"hx-get": "/status", "hx-target": "#targets"}) }}{% end %}
+<div id="targets">...</div>
 {% end %}
 ```
 
@@ -392,6 +394,26 @@ Composite for full settings pages: page_header + key_value_form + grid of config
 ### description_list compact
 
 `compact=true` for tighter line-height and smaller terms.
+
+### settings_row_list and settings_row
+
+Three-column field set for setup targets, health checks, validation summaries. Use when you have label + status badge + detail (e.g. command or path).
+
+```html
+{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}
+{% call settings_row_list() %}
+{{ settings_row("Cursor IDE", status="Configured", detail="dori setup cursor") }}
+{{ settings_row("Skills directory", status="ok", detail="/path/to/skills") }}
+{{ settings_row("Config", status="error", detail="File not found", status_variant="error") }}
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `label` | Row label (left column) |
+| `status` | Badge text (middle); variant inferred: ok/configured→success, error/issues→error, else muted |
+| `detail` | Right column; rendered as `<code>` when contains "dori " (command), else plain text |
+| `status_variant` | Override badge variant: success, error, muted, primary |
 
 ---
 
