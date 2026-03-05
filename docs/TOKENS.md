@@ -8,6 +8,64 @@ This document defines the token contract for `chirpui.css`.
 2. **Semantic tokens**: interaction/state semantics and theme-aware aliases.
 3. **Component aliases**: optional component-level defaults that map to semantic/core tokens.
 
+## Spacing tokens
+
+### Core spacing scale
+
+The raw spacing scale remains the base contract:
+
+- `--chirpui-spacing-xs`
+- `--chirpui-spacing-sm`
+- `--chirpui-spacing`
+- `--chirpui-spacing-md`
+- `--chirpui-spacing-lg`
+- `--chirpui-spacing-xl`
+- `--chirpui-spacing-2xl`
+- `--chirpui-spacing-3xl`
+
+Recommended usage by step:
+
+| Token | Typical role | Examples |
+| ------- | -------------- | ---------- |
+| `xs` | tight adjacency | badge/code clusters, icon-text spacing, compact meta |
+| `sm` | control grouping | button groups, compact stacks, inline forms |
+| `base` | default component rhythm | card body padding, standard stack/grid gaps |
+| `md` | section rhythm | section header spacing, result areas, denser page groups |
+| `lg` | page rhythm | page-level stacks, larger split layouts |
+| `xl+` | hero and shell breathing room | large bands, roomy shells, marketing/editorial layouts |
+
+### Semantic spacing aliases
+
+ChirpUI should prefer semantic aliases over raw steps when the spacing communicates intent.
+
+Current semantic spacing aliases:
+
+| Token | Purpose | Default |
+| ------- | --------- | --------- |
+| `--chirpui-space-inline-gap` | Tight inline adjacency | `spacing-xs` |
+| `--chirpui-space-control-gap` | Small control/button grouping | `spacing-sm` |
+| `--chirpui-space-cluster-gap` | Wrapping inline clusters | `spacing-xs` |
+| `--chirpui-space-stack-gap` | Default vertical layout rhythm | `spacing` |
+| `--chirpui-space-section-gap` | Section header/content separation | `spacing-md` |
+| `--chirpui-space-page-gap` | Page-level stack separation | `spacing-lg` |
+| `--chirpui-space-container-gutter` | Container inline padding | `spacing` |
+| `--chirpui-space-card-padding` | Card inset/padding | `spacing` |
+| `--chirpui-space-card-gap` | Card internal grouping | `spacing-sm` |
+| `--chirpui-space-surface-padding` | Surface inset/padding | `spacing` |
+| `--chirpui-space-result-gap` | Result/status follow-up spacing | `spacing-md` |
+
+### Spacing doctrine by layer
+
+- **Primitives**: `container`, `grid`, `stack`, and `cluster` expose reusable rhythm. Use these first.
+- **Components**: cards, surfaces, toolbars, and headers should consume semantic aliases like card/control/section spacing rather than hard-coded lengths.
+- **Sections**: section headers and section bodies should align to `section-gap`.
+- **Pages**: page shells and top-level stacks should align to `page-gap`.
+- **Utilities**: helper classes should be small, named by role, and mainly exist to bridge markup that does not need a dedicated component.
+
+### Micro-spacing
+
+Small optical adjustments are still allowed for tiny UI details such as inline code chips, cursors, or small glyph pairs, but they should stay exceptional. When a micro-pattern repeats across several components, promote it into a named alias instead of scattering raw values.
+
 ## Precedence
 
 Token resolution follows this order:

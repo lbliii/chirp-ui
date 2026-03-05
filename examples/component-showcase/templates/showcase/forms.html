@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
+{% from "chirpui/layout.html" import container, grid, stack, cluster, block, page_header %}
 {% from "chirpui/forms.html" import csrf_hidden, password_field, text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field, search_bar, form_actions %}
 {% from "chirpui/auth.html" import login_form %}
 {% from "chirpui/action_strip.html" import action_strip %}
@@ -18,12 +18,12 @@
 
 <h2>Theme and Style Controls</h2>
 {% call block() %}
-<div class="chirpui-row" style="gap: var(--chirpui-spacing-sm); align-items: center;">
+{% call cluster(gap="sm") %}
   {{ theme_toggle() }}
   {{ style_toggle() }}
-  {{ style_select(cls="chirpui-grow") }}
-</div>
-<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  <div class="chirpui-measure-sm">{{ style_select() }}</div>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
   Try <code>data-style="neumorphic"</code> with both light and dark themes.
 </p>
 {% end %}
@@ -64,7 +64,7 @@
 {% call block() %}
 {{ toggle_field("notifications", checked=true, label="Enable notifications") }}
 {{ toggle_field("dark_mode", checked=false, label="Dark mode") }}
-<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
   Switch-style checkbox. Use toggle_field for settings UIs.
 </p>
 {% end %}
@@ -103,19 +103,19 @@
 
 <h2>Search</h2>
 {% call block() %}
-<p class="chirpui-text-muted chirpui-font-sm" style="margin-bottom: 0.75rem;">
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mb-md">
   search_bar variants: solo (input only), with-button (input + compact submit), with-icon (input with ⌕ prefix).
 </p>
-<form class="chirpui-stack chirpui-stack--sm" style="max-width: 24rem;">
+<form class="chirpui-stack chirpui-stack--sm chirpui-measure-sm">
   {{ search_bar("q1", variant="solo", placeholder="Live search (solo)...") }}
 </form>
-<form class="chirpui-stack chirpui-stack--sm" style="max-width: 24rem;">
+<form class="chirpui-stack chirpui-stack--sm chirpui-measure-sm">
   {{ search_bar("q2", variant="with-button", placeholder="Search skills...", button_label="Search") }}
 </form>
-<form class="chirpui-stack chirpui-stack--sm" style="max-width: 24rem;">
+<form class="chirpui-stack chirpui-stack--sm chirpui-measure-sm">
   {{ search_bar("q3", variant="with-icon", placeholder="Search with icon...") }}
 </form>
-<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
   search_field: raw input. With search_url and search_target, adds htmx debounced search (keyup delay:300ms).
 </p>
 {{ search_field("q", placeholder="Search...") }}
@@ -129,7 +129,7 @@
 </p>
 {% call action_strip(surface_variant="muted", density="sm") %}
   <div class="chirpui-action-strip__primary">
-    <form style="min-width: 14rem; max-width: 22rem;">
+    <form class="chirpui-measure-sm">
       {{ search_bar("q_actions", variant="with-button", placeholder="Search users...") }}
     </form>
   </div>
@@ -164,13 +164,9 @@
   </div>
 {% end %}
 {% call search_header("Search Header", "/forms", query="", subtitle="Search-first list header with optional controls.", search_placeholder="Search forms...") %}
-  <div class="chirpui-action-strip__controls">
-    {{ btn("Sort", variant="default", size="sm") }}
-    {{ btn("View", variant="default", size="sm") }}
-  </div>
-  <div class="chirpui-action-strip__actions">
-    {{ btn("New form", variant="primary", size="sm") }}
-  </div>
+  {{ btn("Sort", variant="default", size="sm") }}
+  {{ btn("View", variant="default", size="sm") }}
+  {{ btn("New form", variant="primary", size="sm") }}
 {% end %}
 {% call selection_bar(count=3, live_region=true) %}
   {{ btn("Export selected", variant="secondary", size="sm") }}

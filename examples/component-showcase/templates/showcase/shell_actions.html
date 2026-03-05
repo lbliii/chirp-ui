@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/shell_actions.html" import shell_actions_bar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% from "chirpui/app_shell.html" import app_shell %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Shell Actions", subtitle="Route-scoped topbar actions for persistent app shells.") }}
+
+<h2>Renderer</h2>
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm">
+  Render the resolved action model directly inside a stable shell target.
+</p>
+{{ shell_actions_bar(shell_actions) }}
+{% end %}
+
+<h2>App Shell Preview</h2>
+{% call block() %}
+<div style="min-height: 26rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); overflow: hidden;">
+{% call app_shell(brand="Forum", shell_actions=shell_actions, cls="chirpui-showcase-shell-preview") %}
+  {% slot topbar %}
+  <span class="chirpui-text-muted chirpui-font-sm">forum / announcements / release-notes</span>
+  {% end %}
+  {% slot sidebar %}
+  {% call sidebar() %}
+    {% call sidebar_section("Forum") %}
+      {{ sidebar_link("/shell-actions", "Overview") }}
+      {{ sidebar_link("/forms", "New thread") }}
+      {{ sidebar_link("/data", "Moderation queue") }}
+    {% end %}
+  {% end %}
+  {% end %}
+  <div class="chirpui-stack chirpui-stack--sm">
+    <h3 style="margin: 0;">Persistent shell, route-specific actions</h3>
+    <p class="chirpui-text-muted" style="margin: 0;">
+      Use route context to contribute actions and let Chirp refresh only the shell target during boosted navigation.
+    </p>
+    <p style="margin: 0;">
+      Parent routes can provide broad actions, child routes can override or clear them, and overflow actions collapse into a menu.
+    </p>
+  </div>
+{% end %}
+</div>
+{% end %}
+
+<h2>Pattern Notes</h2>
+{% call block() %}
+<ul class="chirpui-stack chirpui-stack--sm" style="margin: 0; padding-inline-start: 1.25rem;">
+  <li>Use a stable shell target like <code>chirp-shell-actions</code> inside <code>app_shell</code>.</li>
+  <li>Let route <code>_context.py</code> files contribute <code>ShellActions</code> instead of hand-authoring topbar HTML per page.</li>
+  <li>Boosted navigation updates the main content and refreshes the shell target with an OOB fragment when actions change.</li>
+</ul>
+{% end %}
+
+<p><a href="/">← Back to index</a></p>
+{% end %}
+{% end %}
+{% end %}

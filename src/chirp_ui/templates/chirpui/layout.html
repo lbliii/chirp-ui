@@ -2,7 +2,7 @@
     Responsive container, grid, stack, and block macros for desktop-to-mobile layouts.
 
     Usage:
-        {% from "chirpui/layout.html" import container, grid, stack, block %}
+        {% from "chirpui/layout.html" import container, grid, stack, cluster, block %}
 
         {% call container() %}
             {% call grid(cols=2, gap="md") %}
@@ -13,6 +13,12 @@
 
         {% call stack() %}
             <p>Vertical stack with gap.</p>
+        {% end %}
+
+        {% call cluster(gap="sm") %}
+            <span>Inline</span>
+            <span>wrapping</span>
+            <span>cluster</span>
         {% end %}
 -#}
 {% from "chirpui/surface.html" import surface %}
@@ -32,7 +38,13 @@
 {% end %}
 
 {% def stack(gap=none, cls="") %}
-<div class="chirpui-stack{% if gap == "sm" %} chirpui-stack--sm{% elif gap == "lg" %} chirpui-stack--lg{% end %}{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-stack{% if gap == "xs" %} chirpui-stack--xs{% elif gap == "sm" %} chirpui-stack--sm{% elif gap == "md" %} chirpui-stack--md{% elif gap == "lg" %} chirpui-stack--lg{% elif gap == "xl" %} chirpui-stack--xl{% end %}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def cluster(gap=none, cls="") %}
+<div class="chirpui-cluster{% if gap == "xs" %} chirpui-cluster--xs{% elif gap == "sm" %} chirpui-cluster--sm{% elif gap == "md" %} chirpui-cluster--md{% elif gap == "lg" %} chirpui-cluster--lg{% end %}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
 {% end %}

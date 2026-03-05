@@ -32,9 +32,11 @@
 
 {% block shell %}
 {% from "chirpui/sidebar.html" import sidebar, sidebar_toggle %}
+{% from "chirpui/shell_actions.html" import shell_actions_bar %}
 {% from "chirpui/toast.html" import toast_container %}
 {% set _sidebar_collapsible = self.sidebar_collapsible() | trim %}
 {% set _collapsible = _sidebar_collapsible and _sidebar_collapsible != "false" %}
+{% set _shell_actions_target = shell_actions.target if shell_actions is defined and shell_actions else "chirp-shell-actions" %}
 <div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}">
   <header class="chirpui-app-shell__topbar">
     {% if _collapsible %}
@@ -42,7 +44,14 @@
     {% end %}
     <a href="/" class="chirpui-app-shell__brand">{% block brand %}{% end %}</a>
     <div class="chirpui-app-shell__topbar-center">{% block topbar_center %}{% end %}</div>
-    <div class="chirpui-app-shell__topbar-end">{% block topbar_end %}{% end %}</div>
+    <div class="chirpui-app-shell__topbar-end">
+      <div id="{{ _shell_actions_target }}" class="chirpui-app-shell__shell-actions">
+        {% if shell_actions is defined %}
+        {{ shell_actions_bar(shell_actions) }}
+        {% end %}
+      </div>
+      {% block topbar_end %}{% end %}
+    </div>
   </header>
   <aside class="chirpui-app-shell__sidebar">{% block sidebar %}{% end %}</aside>
   <main id="main" class="chirpui-app-shell__main"

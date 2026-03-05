@@ -22,6 +22,9 @@ from chirp import (
     Request,
     Response,
     SSEEvent,
+    ShellAction,
+    ShellActions,
+    ShellActionZone,
     Template,
     ValidationError,
 )
@@ -102,6 +105,35 @@ async def navigation() -> Template:
 @app.route("/layout", template="showcase/layout.html")
 async def layout() -> Template:
     return Template("showcase/layout.html")
+
+
+@app.route("/shell-actions", template="showcase/shell_actions.html")
+async def shell_actions() -> Template:
+    actions = ShellActions(
+        primary=ShellActionZone(
+            items=(
+                ShellAction(
+                    id="new-thread",
+                    label="New thread",
+                    href="/forms",
+                    variant="primary",
+                ),
+            )
+        ),
+        controls=ShellActionZone(
+            items=(
+                ShellAction(id="sort", label="Latest", href="/data", variant="default"),
+                ShellAction(id="watch", label="Watch", action="watch-thread", variant="secondary"),
+            )
+        ),
+        overflow=ShellActionZone(
+            items=(
+                ShellAction(id="share", label="Share", href="/social"),
+                ShellAction(id="archive", label="Archive", action="archive-thread"),
+            )
+        ),
+    )
+    return Template("showcase/shell_actions.html", shell_actions=actions)
 
 
 @app.route("/sections", template="showcase/sections.html")

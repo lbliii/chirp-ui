@@ -2,6 +2,7 @@
     Headless card with optional header, footer, collapsible, and variants.
 
     Named slots: header_actions, media, body_actions (for list cards), default (body).
+    Link variants also expose header_badge, header_subtitle, top_meta, and footer.
 
     Usage:
         from "chirpui/card.html" import card
@@ -106,4 +107,25 @@
     </div>
     <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
 </a>
+{% end %}
+
+{# Partially linked card for list grids with independent source/footer links.
+   Named slots: top_meta (above main link), header_badge, header_subtitle, footer, default (body). #}
+{% def card_main_link(href, title, cls="") %}
+<article class="chirpui-card chirpui-card--linked{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-card__top-meta">{% slot top_meta %}</div>
+    <a href="{{ href }}" class="chirpui-card__main-link">
+        <header class="chirpui-card__header">
+            <div class="chirpui-card__header-badges">{% slot header_badge %}</div>
+            <div class="chirpui-card__header-content">
+                <span class="chirpui-card__title">{{ title }}</span>
+                <div class="chirpui-card__header-subtitle">{% slot header_subtitle %}</div>
+            </div>
+        </header>
+        <div class="chirpui-card__body">
+            {% slot %}
+        </div>
+    </a>
+    <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
+</article>
 {% end %}

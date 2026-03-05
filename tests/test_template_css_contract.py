@@ -5,6 +5,7 @@ from pathlib import Path
 
 TEMPLATES_DIR = Path(__file__).resolve().parents[1] / "src/chirp_ui/templates/chirpui"
 CSS_PATH = Path(__file__).resolve().parents[1] / "src/chirp_ui/templates/chirpui.css"
+EXAMPLES_DIR = Path(__file__).resolve().parents[1] / "examples/component-showcase/templates"
 
 
 TARGET_PREFIXES = (
@@ -20,8 +21,21 @@ TARGET_PREFIXES = (
     "chirpui-row-actions",
 )
 
+EXAMPLE_LAYOUT_PREFIXES = (
+    "chirpui-action-strip",
+    "chirpui-cluster",
+    "chirpui-flow",
+    "chirpui-grid",
+    "chirpui-inline",
+    "chirpui-mb-",
+    "chirpui-measure",
+    "chirpui-mt-",
+    "chirpui-result-slot",
+    "chirpui-stack",
+)
 
-def _extract_template_classes() -> set[str]:
+
+def _extract_template_classes(base_dir: Path) -> set[str]:
     class_attr_pattern = re.compile(
         r"""\bclass\s*=\s*(["'])(.*?)\1""",
         re.IGNORECASE | re.DOTALL,
@@ -29,7 +43,7 @@ def _extract_template_classes() -> set[str]:
     class_name_pattern = re.compile(r"[a-zA-Z_][a-zA-Z0-9_-]*")
     classes: set[str] = set()
 
-    for template_file in TEMPLATES_DIR.rglob("*.html"):
+    for template_file in base_dir.rglob("*.html"):
         content = template_file.read_text(encoding="utf-8")
         content = re.sub(r"\{#.*?#\}", "", content, flags=re.DOTALL)
         for match in class_attr_pattern.finditer(content):
@@ -49,7 +63,7 @@ def _extract_css_defined_classes() -> set[str]:
 
 
 def test_target_template_classes_exist_in_css() -> None:
-    template_classes = _extract_template_classes()
+    template_classes = _extract_template_classes(TEMPLATES_DIR)
     css_classes = _extract_css_defined_classes()
     missing = sorted(
         class_name
@@ -59,3 +73,14 @@ def test_target_template_classes_exist_in_css() -> None:
     assert not missing, "Shell/sidebar template classes missing CSS definitions: " + ", ".join(
         missing
     )
+
+
+def test_example_chirpui_classes_exist_in_css() -> None:
+    template_classes = _extract_template_classes(EXAMPLES_DIR)
+    css_classes = _extract_css_defined_classes()
+    missing = sorted(
+        class_name
+        for class_name in template_classes
+        if class_name.startswith(EXAMPLE_LAYOUT_PREFIXES) and class_name not in css_classes
+    )
+    assert not missing, "Example templates reference missing spacing/layout classes: " + ", ".join(missing)

@@ -6,7 +6,67 @@ Each test verifies:
 - Slot content injection where applicable
 """
 
+from dataclasses import dataclass, field
+
 from kida import Environment
+
+
+@dataclass(frozen=True, slots=True)
+class ShellMenuItemStub:
+    label: str = ""
+    href: str | None = None
+    action: str | None = None
+    variant: str = "default"
+    icon: str | None = None
+    divider: bool = False
+
+    def get(self, key: str, default: object = None) -> object:
+        value = getattr(self, key, default)
+        return default if value is None else value
+
+
+@dataclass(frozen=True, slots=True)
+class ShellActionStub:
+    id: str
+    label: str
+    kind: str = "link"
+    href: str | None = None
+    action: str | None = None
+    variant: str = "default"
+    icon: str | None = None
+    size: str = "sm"
+    disabled: bool = False
+    menu_items: tuple[ShellMenuItemStub, ...] = ()
+
+    def as_menu_item(self) -> ShellMenuItemStub:
+        return ShellMenuItemStub(
+            label=self.label,
+            href=self.href,
+            action=self.action,
+            variant=self.variant,
+            icon=self.icon,
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class ShellActionZoneStub:
+    items: tuple[ShellActionStub, ...] = ()
+
+    @property
+    def overflow_items(self) -> tuple[ShellMenuItemStub, ...]:
+        return tuple(item.as_menu_item() for item in self.items)
+
+
+@dataclass(frozen=True, slots=True)
+class ShellActionsStub:
+    primary: ShellActionZoneStub = field(default_factory=ShellActionZoneStub)
+    controls: ShellActionZoneStub = field(default_factory=ShellActionZoneStub)
+    overflow: ShellActionZoneStub = field(default_factory=ShellActionZoneStub)
+    target: str = "chirp-shell-actions"
+
+    @property
+    def has_items(self) -> bool:
+        return bool(self.primary.items or self.controls.items or self.overflow.items)
 
 # ---------------------------------------------------------------------------
 # Layout
@@ -65,6 +125,25 @@ class TestLayout:
             '{% from "chirpui/layout.html" import stack %}{% call stack() %}A{% end %}'
         ).render()
         assert "chirpui-stack" in html
+
+    def test_stack_gap_variants(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import stack %}'
+            '{% call stack(gap="xs") %}A{% end %}'
+            '{% call stack(gap="md") %}B{% end %}'
+            '{% call stack(gap="xl") %}C{% end %}'
+        ).render()
+        assert "chirpui-stack--xs" in html
+        assert "chirpui-stack--md" in html
+        assert "chirpui-stack--xl" in html
+
+    def test_cluster(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import cluster %}'
+            '{% call cluster(gap="sm") %}<span>A</span><span>B</span>{% end %}'
+        ).render()
+        assert "chirpui-cluster" in html
+        assert "chirpui-cluster--sm" in html
 
     def test_block(self, env: Environment) -> None:
         html = env.from_string(
@@ -594,6 +673,21 @@ class TestButton:
         assert 'hx-post="/save"' in html
         assert 'hx-target="#result"' in html
 
+    def test_btn_small(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}{{ btn("Small", size="sm") }}'
+        ).render()
+        assert "chirpui-btn--sm" in html
+
+    def test_btn_disabled_link_strips_href_and_htmx_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Disabled", href="/demo", hx_get="/demo", disabled=true) }}'
+        ).render()
+        assert 'aria-disabled="true"' in html
+        assert 'href="/demo"' not in html
+        assert 'hx-get="/demo"' not in html
+
 
 # ---------------------------------------------------------------------------
 # Streaming
@@ -757,6 +851,25 @@ class TestCard:
         assert "chirpui-card__body-actions" in html
         assert "Add" in html
         assert "Items" in html
+
+    def test_card_main_link_supports_independent_meta_and_footer_links(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card_main_link %}'
+            '{% call card_main_link("/skill/demo", "Demo") %}'
+            '{% slot top_meta %}<a href="/collections/demo">demo</a>{% end %}'
+            '{% slot header_subtitle %}<code>alias-demo</code>{% end %}'
+            "<p>Description</p>"
+            '{% slot footer %}<a href="/tags/demo">tag</a>{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-card--linked" in html
+        assert "chirpui-card__top-meta" in html
+        assert 'href="/skill/demo"' in html
+        assert 'href="/collections/demo"' in html
+        assert 'href="/tags/demo"' in html
+        assert "alias-demo" in html
 
 
 # ---------------------------------------------------------------------------
@@ -1524,6 +1637,24 @@ class TestNavbar:
 
 
 class TestAppShell:
+    def test_shell_actions_renderer(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/shell_actions.html" import shell_actions_bar %}'
+            "{{ shell_actions_bar(shell_actions) }}"
+        ).render(
+            shell_actions=ShellActionsStub(
+                primary=ShellActionZoneStub(
+                    items=(ShellActionStub(id="new", label="New", href="/new", variant="primary"),)
+                ),
+                overflow=ShellActionZoneStub(
+                    items=(ShellActionStub(id="archive", label="Archive", action="archive"),)
+                ),
+            )
+        )
+        assert "chirpui-shell-actions" in html
+        assert 'href="/new"' in html
+        assert "chirpui-dropdown" in html
+
     def test_app_shell_brand_slot(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/app_shell.html" import app_shell %}'
@@ -1539,6 +1670,37 @@ class TestAppShell:
         assert "chirpui-logo" in html
         assert 'src="/static/logo.svg"' in html
         assert "Main" in html
+
+    def test_app_shell_renders_shell_actions_target(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            "{% call app_shell(brand='Brand', shell_actions=shell_actions) %}"
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render(
+            shell_actions=ShellActionsStub(
+                primary=ShellActionZoneStub(
+                    items=(ShellActionStub(id="compose", label="Compose", href="/compose"),)
+                ),
+                controls=ShellActionZoneStub(
+                    items=(ShellActionStub(id="filter", label="Filter", action="filter"),)
+                ),
+                overflow=ShellActionZoneStub(
+                    items=(
+                        ShellActionStub(
+                            id="more",
+                            label="More",
+                            kind="menu",
+                            menu_items=(ShellMenuItemStub(label="Archive", action="archive"),),
+                        ),
+                    )
+                ),
+            )
+        )
+        assert 'id="chirp-shell-actions"' in html
+        assert "Compose" in html
+        assert "Filter" in html
 
 
 class TestLogo:

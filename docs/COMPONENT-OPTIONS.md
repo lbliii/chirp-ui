@@ -98,6 +98,7 @@ Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates w
 | **donut** | `variant` | gold, success, muted | gold |
 | **donut** | `size` | sm, md, lg | md |
 | **btn** | `variant` | *(empty)*, default, primary, ghost, danger, success, warning | *(empty)* |
+| **btn** | `size` | `sm` or omitted | omitted |
 | **logo** | `variant` | text, image, both | both |
 | **logo** | `size` | sm, md, lg | md |
 | **logo** | `align` | start, center, end | center |
@@ -200,6 +201,60 @@ Use `card(title="...", icon="⟳")` for config/settings cards. The `icon` render
 | `subtitle` | Optional subtitle |
 | `meta` | Optional meta line (e.g. config path) — muted, below subtitle |
 | `breadcrumb_items` | Optional list of `{label, href?}` for breadcrumbs above title |
+
+### shell_actions_bar
+
+Canonical renderer for route-scoped shell actions resolved by Chirp. Use it in
+persistent shells and target the containing element with `id="chirp-shell-actions"`
+or another stable id that matches `shell_actions.target`.
+
+```html
+{% from "chirpui/shell_actions.html" import shell_actions_bar %}
+<div id="chirp-shell-actions">
+  {{ shell_actions_bar(shell_actions) }}
+</div>
+```
+
+The renderer expects a resolved action object with `primary`, `controls`, and
+`overflow` zones. `overflow` items render as a compact dropdown in the top bar.
+
+### container
+
+Responsive page-width wrapper. `padding=true` keeps the standard container gutter; set `padding=false` only when a nested surface or blade owns the edge spacing.
+
+### grid
+
+Responsive layout grid for cards and sections.
+
+| Param | Description |
+|-------|-------------|
+| `cols` | `2`, `3`, `4`, or omitted for auto-fit |
+| `gap` | `sm`, `md`, `lg` |
+| `cls` | Optional additional classes |
+
+Use `grid()` for two-dimensional layout rhythm. Prefer `gap="md"` for page content and `gap="sm"` for denser internal layouts.
+
+### stack
+
+Vertical layout primitive.
+
+| Param | Description |
+|-------|-------------|
+| `gap` | `xs`, `sm`, `md`, `lg`, `xl` |
+| `cls` | Optional additional classes |
+
+Use `stack()` for most page and component vertical rhythm. `gap="lg"` is the default page-level cadence; `sm` and `xs` are for denser local groupings.
+
+### cluster
+
+Wrapping inline layout primitive for badges, aliases, chips, and compact action groups.
+
+| Param | Description |
+|-------|-------------|
+| `gap` | `xs`, `sm`, `md`, `lg` |
+| `cls` | Optional additional classes |
+
+Use `cluster()` when content should wrap horizontally but remain visually grouped. This is the preferred primitive for badge/tag rows; `chirpui-flow` remains as the compatibility utility class.
 
 ### section
 
@@ -393,11 +448,15 @@ Use the same inner zone classes as `action_strip`.
 #### search_header
 
 Search-first page header composite (`page_header` + `action_strip` + `search_bar`).
-Optional controls/actions are passed in the default slot using action-strip zone classes.
+Pass optional controls in the default slot; the macro places them inside the controls zone for you.
 
 ```html
 {% from "chirpui/search_header.html" import search_header %}
-{{ search_header("Skills", "/skills", query=q, subtitle="Search and filter skills") }}
+{% from "chirpui/button.html" import btn %}
+{% call search_header("Skills", "/skills", query=q, subtitle="Search and filter skills") %}
+  {{ btn("Sort", variant="default", size="sm") }}
+  {{ btn("View", variant="default", size="sm") }}
+{% end %}
 ```
 
 #### selection_bar
@@ -429,6 +488,12 @@ Item `type`: `bool` (badge), `url` (monospace+truncate), `number` (right-align),
 ### config_dashboard
 
 Composite for full settings pages: page_header + key_value_form + grid of config_cards + action_strip. Slots: `header_actions`, `form_result`, `config_cards`, `action_strip`.
+
+Spacing guidance:
+
+- Put result fragments in `.chirpui-result-slot` or `.chirpui-result-slot--sm` instead of ad hoc margin utilities.
+- Use `.chirpui-measure-sm|md|lg` on forms and narrow content blocks that need a maximum readable width.
+- Prefer `stack()` or `cluster()` before adding inline `style="gap: ..."` overrides.
 
 ---
 
@@ -466,6 +531,21 @@ Three-column field set for setup targets, health checks, validation summaries. U
 | `status` | Badge text (middle); variant inferred: ok/configured→success, error/issues→error, else muted |
 | `detail` | Right column; rendered as `<code>` when contains "dori " (command), else plain text |
 | `status_variant` | Override badge variant: success, error, muted, primary |
+
+---
+
+## Spacing Utilities
+
+These helpers exist for lightweight markup where a dedicated component would be overkill.
+
+| Class | Purpose |
+|-------|---------|
+| `chirpui-flow` | Wrapping inline cluster utility |
+| `chirpui-inline` | Non-wrapping inline group |
+| `chirpui-measure-sm|md|lg` | Readable max-width utilities |
+| `chirpui-result-slot` | Standard margin before streamed/results content |
+| `chirpui-result-slot--sm` | Compact result spacing |
+| `chirpui-placeholder-inline` | Inline placeholder row for loading/thinking states |
 
 ---
 

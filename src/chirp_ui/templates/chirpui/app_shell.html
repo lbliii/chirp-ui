@@ -26,12 +26,14 @@
         end
 -#}
 {% from "chirpui/sidebar.html" import sidebar_toggle %}
+{% from "chirpui/shell_actions.html" import shell_actions_bar %}
 
-{% def app_shell(brand="", brand_url="/", brand_slot=false, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", cls="") %}
+{% def app_shell(brand="", brand_url="/", brand_slot=false, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, cls="") %}
 {% set topbar_variant = topbar_variant | validate_variant(("default","glass","gradient"), "default") %}
 {% set sidebar_variant = sidebar_variant | validate_variant(("default","glass","muted"), "default") %}
 {% set topbar_class = " chirpui-app-shell__topbar--" ~ topbar_variant if topbar_variant != "default" else "" %}
 {% set sidebar_class = " chirpui-app-shell__sidebar--" ~ sidebar_variant if sidebar_variant != "default" else "" %}
+{% set shell_actions_target = shell_actions.target if shell_actions else "chirp-shell-actions" %}
 <div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if sidebar_collapsible else "" }}{{ " " ~ cls if cls else "" }}">
     <header class="chirpui-app-shell__topbar{{ topbar_class }}">
         {% if sidebar_collapsible %}
@@ -45,7 +47,14 @@
             {% end %}
         </a>
         <div class="chirpui-app-shell__topbar-center">{% slot topbar %}</div>
-        <div class="chirpui-app-shell__topbar-end">{% slot topbar_end %}</div>
+        <div class="chirpui-app-shell__topbar-end">
+            <div id="{{ shell_actions_target }}" class="chirpui-app-shell__shell-actions">
+                {% if shell_actions %}
+                {{ shell_actions_bar(shell_actions) }}
+                {% end %}
+            </div>
+            {% slot topbar_end %}
+        </div>
     </header>
     <aside class="chirpui-app-shell__sidebar{{ sidebar_class }}">{% slot sidebar %}</aside>
     <main id="main" class="chirpui-app-shell__main" hx-boost="true" hx-target="#main"

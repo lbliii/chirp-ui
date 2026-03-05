@@ -1,0 +1,53 @@
+{#- chirp-ui: Shell actions renderer
+    Renders resolved route-scoped shell actions into topbar-friendly controls.
+
+    Usage:
+        {% from "chirpui/shell_actions.html" import shell_actions_bar %}
+        {{ shell_actions_bar(shell_actions) }}
+-#}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+
+{% def shell_action(action) %}
+{% if action.kind == "menu" %}
+{{ dropdown_menu(
+    btn(action.label, variant=action.variant, size=action.size, type="button", icon=action.icon, disabled=action.disabled),
+    items=action.menu_items,
+    id="chirpui-shell-action-" ~ action.id
+) }}
+{% elif action.href %}
+{{ btn(action.label, variant=action.variant, size=action.size, href=action.href, icon=action.icon, disabled=action.disabled, data_action=action.action) }}
+{% else %}
+{{ btn(action.label, variant=action.variant, size=action.size, type="button", icon=action.icon, disabled=action.disabled, data_action=action.action) }}
+{% end %}
+{% end %}
+
+{% def shell_actions_bar(shell_actions, cls="") %}
+{% if shell_actions and shell_actions.has_items %}
+<div class="chirpui-shell-actions{{ " " ~ cls if cls else "" }}">
+    {% if shell_actions.primary.items %}
+    <div class="chirpui-shell-actions__group chirpui-shell-actions__group--primary">
+        {% for action in shell_actions.primary.items %}
+        {{ shell_action(action) }}
+        {% end %}
+    </div>
+    {% end %}
+    {% if shell_actions.controls.items %}
+    <div class="chirpui-shell-actions__group chirpui-shell-actions__group--controls">
+        {% for action in shell_actions.controls.items %}
+        {{ shell_action(action) }}
+        {% end %}
+    </div>
+    {% end %}
+    {% if shell_actions.overflow.items %}
+    <div class="chirpui-shell-actions__group chirpui-shell-actions__group--overflow">
+        {{ dropdown_menu(
+            btn("More", variant="default", size="sm", type="button", icon="▾"),
+            items=shell_actions.overflow.overflow_items,
+            id=shell_actions.target ~ "-overflow"
+        ) }}
+    </div>
+    {% end %}
+</div>
+{% end %}
+{% end %}

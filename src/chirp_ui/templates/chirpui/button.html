@@ -2,38 +2,45 @@
 
 {% from "chirpui/spinner.html" import spinner %}
 
-{% def btn(label, variant="", loading=false, type="submit", href=none, icon=none, cls="",
+{% def btn(label, variant="", size=none, loading=false, type="submit", href=none, icon=none, cls="",
            attrs="", attrs_map=none, hx_get=none, hx_post=none, hx_put=none,
            hx_patch=none, hx_delete=none, hx_target=none, hx_swap=none,
            hx_trigger=none, hx_include=none, hx_select=none, hx_ext=none,
-           hx_vals=none) %}
+           hx_vals=none, disabled=false, data_action=none, aria_label=none) %}
 {% set variant_class = " chirpui-btn--" ~ variant if variant else "" %}
+{% set size_class = " chirpui-btn--" ~ size if size else "" %}
 {% set loading_class = " chirpui-btn--loading" if loading else "" %}
-{% set base_class = "chirpui-btn" ~ variant_class ~ loading_class %}
+{% set base_class = "chirpui-btn" ~ variant_class ~ size_class ~ loading_class %}
 {% if cls %}
 {% set base_class = base_class ~ " " ~ cls %}
 {% end %}
 {% if href %}
-<a class="{{ base_class }}" href="{{ href }}"
+<a class="{{ base_class }}"{% if not disabled %} href="{{ href }}"{% endif %}
+   {% if aria_label %}aria-label="{{ aria_label }}"{% end %}
+   {% if data_action %}data-action="{{ data_action }}"{% end %}
+   {% if disabled %}aria-disabled="true" tabindex="-1"{% end %}
    {{ attrs | html_attrs }}
    {{ attrs_map | html_attrs }}
-   {% if hx_get %}hx-get="{{ hx_get }}"{% end %}
-   {% if hx_post %}hx-post="{{ hx_post }}"{% end %}
-   {% if hx_put %}hx-put="{{ hx_put }}"{% end %}
-   {% if hx_patch %}hx-patch="{{ hx_patch }}"{% end %}
-   {% if hx_delete %}hx-delete="{{ hx_delete }}"{% end %}
-   {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
-   {% if hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
-   {% if hx_trigger %}hx-trigger="{{ hx_trigger }}"{% end %}
-   {% if hx_include %}hx-include="{{ hx_include }}"{% end %}
-   {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
-   {% if hx_ext %}hx-ext="{{ hx_ext }}"{% end %}
-   {% if hx_vals is not none %}hx-vals="{{ hx_vals }}"{% end %}>
+   {% if not disabled and hx_get %}hx-get="{{ hx_get }}"{% end %}
+   {% if not disabled and hx_post %}hx-post="{{ hx_post }}"{% end %}
+   {% if not disabled and hx_put %}hx-put="{{ hx_put }}"{% end %}
+   {% if not disabled and hx_patch %}hx-patch="{{ hx_patch }}"{% end %}
+   {% if not disabled and hx_delete %}hx-delete="{{ hx_delete }}"{% end %}
+   {% if not disabled and hx_target %}hx-target="{{ hx_target }}"{% end %}
+   {% if not disabled and hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
+   {% if not disabled and hx_trigger %}hx-trigger="{{ hx_trigger }}"{% end %}
+   {% if not disabled and hx_include %}hx-include="{{ hx_include }}"{% end %}
+   {% if not disabled and hx_select %}hx-select="{{ hx_select }}"{% end %}
+   {% if not disabled and hx_ext %}hx-ext="{{ hx_ext }}"{% end %}
+   {% if not disabled and hx_vals is not none %}hx-vals="{{ hx_vals }}"{% end %}>
     {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
     <span class="chirpui-btn__label">{{ label }}</span>
 </a>
 {% else %}
 <button type="{{ type }}" class="{{ base_class }}" {% if loading %}aria-busy="true"{% end %}
+        {% if aria_label %}aria-label="{{ aria_label }}"{% end %}
+        {% if data_action %}data-action="{{ data_action }}"{% end %}
+        {% if disabled %}disabled{% end %}
         {{ attrs | html_attrs }}
         {{ attrs_map | html_attrs }}
         {% if hx_get %}hx-get="{{ hx_get }}"{% end %}
