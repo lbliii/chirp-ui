@@ -68,6 +68,7 @@ class ShellActionsStub:
     def has_items(self) -> bool:
         return bool(self.primary.items or self.controls.items or self.overflow.items)
 
+
 # ---------------------------------------------------------------------------
 # Layout
 # ---------------------------------------------------------------------------
@@ -859,7 +860,7 @@ class TestCard:
             '{% from "chirpui/card.html" import card_main_link %}'
             '{% call card_main_link("/skill/demo", "Demo") %}'
             '{% slot top_meta %}<a href="/collections/demo">demo</a>{% end %}'
-            '{% slot header_subtitle %}<code>alias-demo</code>{% end %}'
+            "{% slot header_subtitle %}<code>alias-demo</code>{% end %}"
             "<p>Description</p>"
             '{% slot footer %}<a href="/tags/demo">tag</a>{% end %}'
             "{% end %}"
@@ -875,9 +876,9 @@ class TestCard:
         html = env.from_string(
             '{% from "chirpui/card.html" import resource_card %}'
             '{% call resource_card("/skills/demo", "Demo", description="Summary", top_meta="builtin") %}'
-            '{% slot badges %}<span>badge</span>{% end %}'
-            '{% slot subtitle %}<code>::demo</code>{% end %}'
-            '{% slot footer %}<span>tag</span>{% end %}'
+            "{% slot badges %}<span>badge</span>{% end %}"
+            "{% slot subtitle %}<code>::demo</code>{% end %}"
+            "{% slot footer %}<span>tag</span>{% end %}"
             "{% end %}"
         ).render()
         assert "chirpui-resource-card" in html
@@ -1625,9 +1626,9 @@ class TestActionContainers:
             'filter_action="/skills", filter_label="Tag filters", selected_count=2, '
             'results_layout="grid", results_cols=2'
             ") %}"
-            '{% slot toolbar_controls %}<button>Filters</button>{% end %}'
+            "{% slot toolbar_controls %}<button>Filters</button>{% end %}"
             '{% slot filter_actions %}<button type="submit">Clear</button>{% end %}'
-            '{% slot selection %}<a>python x</a>{% end %}'
+            "{% slot selection %}<a>python x</a>{% end %}"
             "<article>Skill A</article>"
             "{% end %}"
         ).render()
@@ -1807,9 +1808,7 @@ class TestAppShell:
         assert "data-chirpui-sidebar-toggle" in html
         assert "chirpui-app-shell__sidebar-resize" in html
 
-    def test_app_shell_without_toggle_handle_when_not_collapsible(
-        self, env: Environment
-    ) -> None:
+    def test_app_shell_without_toggle_handle_when_not_collapsible(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/app_shell.html" import app_shell %}'
             "{% call app_shell(brand='Brand', sidebar_collapsible=false) %}"
@@ -1931,7 +1930,7 @@ class TestWizardForm:
             "{{ caller() }}"
             "{% end %}"
             "{% end %}"
-            '{% call wrapper() %}Content{% end %}'
+            "{% call wrapper() %}Content{% end %}"
         ).render()
         assert "Content" in html
 

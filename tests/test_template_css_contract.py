@@ -90,4 +90,6 @@ def test_example_chirpui_classes_exist_in_css() -> None:
         for class_name in template_classes
         if class_name.startswith(EXAMPLE_LAYOUT_PREFIXES) and class_name not in css_classes
     )
-    assert not missing, "Example templates reference missing spacing/layout classes: " + ", ".join(missing)
+    assert not missing, "Example templates reference missing spacing/layout classes: " + ", ".join(
+        missing
+    )
