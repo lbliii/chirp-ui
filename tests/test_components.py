@@ -1865,6 +1865,32 @@ class TestStepper:
         assert "chirpui-stepper__item--active" in html
 
 
+class TestWizardForm:
+    def test_wizard_form_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/wizard_form.html" import wizard_form %}'
+            '{% set steps = [{"id": "1", "label": "Details"}, {"id": "2", "label": "Review"}] %}'
+            '{% call wizard_form("checkout", steps=steps, current=1) %}'
+            "<p>Form content</p>"
+            "{% end %}"
+        ).render()
+        assert 'id="checkout"' in html
+        assert "chirpui-wizard-form" in html
+        assert "chirpui-stepper" in html
+        assert "chirpui-wizard-form__body" in html
+        assert "hx-disinherit" in html
+        assert "Form content" in html
+
+    def test_wizard_form_includes_stepper(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/wizard_form.html" import wizard_form %}'
+            '{% set steps = [{"id": "1", "label": "Step 1"}] %}'
+            '{% call wizard_form("wiz", steps=steps, current=1) %}x{% end %}'
+        ).render()
+        assert "chirpui-stepper__item--active" in html
+        assert "Step 1" in html
+
+
 class TestDescriptionList:
     def test_description_list_items(self, env: Environment) -> None:
         html = env.from_string(

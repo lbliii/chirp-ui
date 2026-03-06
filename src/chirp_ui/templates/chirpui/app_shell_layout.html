@@ -34,14 +34,13 @@
 {% from "chirpui/sidebar.html" import sidebar, sidebar_toggle %}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
 {% from "chirpui/toast.html" import toast_container %}
-{% set _sidebar_collapsible = self.sidebar_collapsible() | trim %}
+{% set _sidebar_collapsible = "false" %}
 {% set _collapsible = _sidebar_collapsible and _sidebar_collapsible != "false" %}
 {% set _shell_actions_target = shell_actions.target if shell_actions is defined and shell_actions else "chirp-shell-actions" %}
-<div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}">
+<div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}"
+     data-sidebar-collapsible="{% block sidebar_collapsible %}false{% end %}">
   <header class="chirpui-app-shell__topbar">
-    {% if _collapsible %}
-    <div class="chirpui-app-shell__topbar-start">{{ sidebar_toggle() }}</div>
-    {% end %}
+    <div class="chirpui-app-shell__topbar-start" data-chirpui-sidebar-toggle-wrap hidden>{{ sidebar_toggle() }}</div>
     <a href="/" class="chirpui-app-shell__brand">{% block brand %}{% end %}</a>
     <div class="chirpui-app-shell__topbar-center">{% block topbar_center %}{% end %}</div>
     <div class="chirpui-app-shell__topbar-end">
@@ -62,13 +61,17 @@
     </div>
   </main>
 </div>
-{% if _collapsible %}
 <script>
 (function() {
   const key = 'chirpui-sidebar-collapsed';
   const shell = document.querySelector('.chirpui-app-shell');
+  const toggleWrap = document.querySelector('[data-chirpui-sidebar-toggle-wrap]');
   const btn = document.querySelector('[data-chirpui-sidebar-toggle]');
-  if (!shell || !btn) return;
+  if (!shell || !btn || !toggleWrap) return;
+  const collapsible = (shell.dataset.sidebarCollapsible || '').trim();
+  if (!collapsible || collapsible === 'false') return;
+  shell.classList.add('chirpui-app-shell--sidebar-collapsible');
+  toggleWrap.hidden = false;
   if (localStorage.getItem(key) === 'true') {
     shell.classList.add('chirpui-app-shell--sidebar-collapsed');
     btn.setAttribute('aria-expanded', 'false');
@@ -80,8 +83,5 @@
   });
 })();
 </script>
-{% end %}
 {{ toast_container() }}
 {% end %}
-
-{% block sidebar_collapsible %}{% end %}
