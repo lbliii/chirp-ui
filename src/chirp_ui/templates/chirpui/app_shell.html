@@ -59,9 +59,7 @@
     <aside class="chirpui-app-shell__sidebar{{ sidebar_class }}">{% slot sidebar %}</aside>
     <main id="main" class="chirpui-app-shell__main" hx-boost="true" hx-target="#main"
           hx-swap="innerHTML transition:true" hx-select="#page-content">
-        <div id="page-content">
-            {% slot %}
-        </div>
+        {% slot %}
     </main>
 </div>
 {% if sidebar_collapsible %}

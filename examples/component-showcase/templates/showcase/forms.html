@@ -9,6 +9,8 @@
 {% from "chirpui/command_bar.html" import command_bar %}
 {% from "chirpui/search_header.html" import search_header %}
 {% from "chirpui/selection_bar.html" import selection_bar %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/card.html" import resource_card %}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/theme_toggle.html" import theme_toggle, style_toggle, style_select %}
 
@@ -171,6 +173,34 @@
 {% call selection_bar(count=3, live_region=true) %}
   {{ btn("Export selected", variant="secondary", size="sm") }}
   {{ btn("Clear", variant="default", size="sm") }}
+{% end %}
+{% call resource_index(
+  "Resource Index",
+  "/forms",
+  query="",
+  subtitle="Search-first browse surface with optional filters and results.",
+  filter_action="/forms",
+  filter_label="Status filters",
+  selected_count=2,
+  selected_label="filters selected",
+  results_layout="grid",
+  results_cols=2
+) %}
+  {% slot toolbar_controls %}
+  {{ btn("Filters", variant="default", size="sm") }}
+  {% end %}
+  {% slot filter_controls %}
+  {{ btn("Open filters", variant="default", size="sm") }}
+  {% end %}
+  {% slot filter_actions %}
+  {{ btn("Clear all", variant="default", size="sm") }}
+  {% end %}
+  {% slot selection %}
+  <a class="chirpui-badge chirpui-badge--primary">draft ×</a>
+  <a class="chirpui-badge chirpui-badge--primary">owned ×</a>
+  {% end %}
+  {{ resource_card("/forms/demo", "Feedback form", description="Collects product feedback with tags and status badges.", top_meta="forms") }}
+  {{ resource_card("/forms/survey", "Launch survey", description="Reusable browse result card inside the resource index.") }}
 {% end %}
 {% end %}
 {% end %}

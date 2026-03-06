@@ -138,5 +138,6 @@ With Chirp debug mode (`app.debug=True`), the HTMX overlay warns when:
 
 - **Empty hx-select**: Response has no element matching the selector.
 - **Broad inherited target**: Mutating request inherits `#main` or `#page-content` without explicit `hx-target`.
+- **Load-trigger targets #main**: `hx-trigger="load"` with inherited `hx-target="#main"` — the request will replace the page on load. Use `fragment_island` (which applies `hx-disinherit`) or explicit `hx-target="this"`.
 
 Static contract checks suggest `fragment_island()` when mutation targets lack `hx-disinherit`.

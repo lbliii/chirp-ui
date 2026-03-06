@@ -1,0 +1,112 @@
+{#- chirp-ui: Config row — label | control (toggle, select, editable)
+    Two-column field set for config dashboards. Use config_row_list as container.
+    Mirrors settings_row_list pattern but with interactive controls.
+
+    Usage:
+        from "chirpui/config_row.html" import config_row_list, config_row_toggle, config_row_select, config_row_editable
+
+        call config_row_list()
+            config_row_toggle("acp.enabled", "ACP enabled", checked=config.acp.enabled, form_action="/config/set", attrs_map={...})
+            config_row_select("logs.level", "Log level", options=[...], selected=config.logs.level, form_action="/config/set", attrs_map={...})
+            config_row_editable("endpoint", config.acp.endpoint, edit_url="/config/edit/acp.endpoint", swap_id="acp-endpoint")
+        end
+-#}
+{% from "chirpui/inline_edit_field.html" import inline_edit_field_display %}
+
+{% def config_row_list(cls="") %}
+<div class="chirpui-config-row-list{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def config_row_toggle(name, label, checked=false, form_action=none, attrs_map=none, errors=none, cls="") %}
+<div class="chirpui-config-row{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-config-row__label chirpui-font-sm chirpui-font-medium">{{ label }}</span>
+    <span class="chirpui-config-row__control">
+    {% if form_action and attrs_map %}
+    <form method="post" action="{{ form_action }}" class="chirpui-config-row__form" {{ attrs_map | html_attrs }}>
+        <input type="hidden" name="key" value="{{ name }}">
+        <input type="hidden" name="value" value="false">
+        <label class="chirpui-field chirpui-field--toggle chirpui-config-row__toggle-wrap{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+            <input class="chirpui-toggle chirpui-visually-hidden"
+                   type="checkbox" id="{{ name }}" name="value" value="true"
+                   {% if checked %}checked{% end %}
+                   {% if attrs_map.get("hx-post") %}hx-post="{{ attrs_map.get("hx-post") }}"{% end %}
+                   {% if attrs_map.get("hx-target") %}hx-target="{{ attrs_map.get("hx-target") }}"{% end %}
+                   {% if attrs_map.get("hx-swap") %}hx-swap="{{ attrs_map.get("hx-swap") }}"{% end %}
+                   hx-trigger="change"
+                   hx-include="[name='key'],[name='value']"
+                   {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+            <span class="chirpui-toggle__track" aria-hidden="true"></span>
+        </label>
+    </form>
+    {% else %}
+    <div class="chirpui-field chirpui-field--toggle{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+        <label class="chirpui-toggle-wrap">
+            <input class="chirpui-toggle chirpui-visually-hidden"
+                   type="checkbox" id="{{ name }}" name="{{ name }}"
+                   {% if checked %}checked{% end %}
+                   {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+            <span class="chirpui-toggle__track" aria-hidden="true"></span>
+        </label>
+    </div>
+    {% end %}
+    </span>
+</div>
+{% end %}
+
+{% def config_row_select(name, label, options, selected="", form_action=none, attrs_map=none, errors=none, cls="") %}
+<div class="chirpui-config-row{{ " " ~ cls if cls else "" }}">
+    <label class="chirpui-config-row__label chirpui-font-sm chirpui-font-medium" for="{{ name }}">{{ label }}</label>
+    <span class="chirpui-config-row__control">
+    {% if form_action and attrs_map %}
+    <form method="post" action="{{ form_action }}" class="chirpui-config-row__form" {{ attrs_map | html_attrs }}>
+        <input type="hidden" name="key" value="{{ name }}">
+        <select class="chirpui-field__input chirpui-config-row__select"
+                id="{{ name }}" name="value"
+                {% if attrs_map.get("hx-post") %}hx-post="{{ attrs_map.get("hx-post") }}"{% end %}
+                {% if attrs_map.get("hx-target") %}hx-target="{{ attrs_map.get("hx-target") }}"{% end %}
+                {% if attrs_map.get("hx-swap") %}hx-swap="{{ attrs_map.get("hx-swap") }}"{% end %}
+                hx-trigger="change"
+                hx-include="[name='key']"
+                {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+            {% for opt in options %}
+            <option value="{{ opt.value if opt is mapping else opt }}"
+                    {% if (opt.value if opt is mapping else opt) == selected %}selected{% end %}>
+                {{ opt.label if opt is mapping else opt }}
+            </option>
+            {% end %}
+        </select>
+    </form>
+    {% else %}
+    <select class="chirpui-field__input chirpui-config-row__select"
+            id="{{ name }}" name="{{ name }}"
+            {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+        {% for opt in options %}
+        <option value="{{ opt.value if opt is mapping else opt }}"
+                {% if (opt.value if opt is mapping else opt) == selected %}selected{% end %}>
+            {{ opt.label if opt is mapping else opt }}
+        </option>
+        {% end %}
+    </select>
+    {% end %}
+    </span>
+</div>
+{% end %}
+
+{% def config_row_display(term, detail, cls="") %}
+<div class="chirpui-config-row chirpui-config-row--display{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-config-row__label chirpui-font-sm chirpui-font-medium">{{ term }}</span>
+    <span class="chirpui-config-row__control chirpui-text-muted">{{ detail }}</span>
+</div>
+{% end %}
+
+{% def config_row_editable(term, value, edit_url, swap_id=none, edit_label="Edit", cls="") %}
+{% set sid = swap_id or ("config-row-" ~ term | replace(".", "-")) %}
+<div class="chirpui-config-row chirpui-config-row--editable{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-config-row__label chirpui-font-sm chirpui-font-medium">{{ term }}</span>
+    <span class="chirpui-config-row__control">
+    {{ inline_edit_field_display(value=value, edit_url=edit_url, swap_target="#" ~ sid, swap_id=sid, edit_label=edit_label, cls="chirpui-config-row__editable") }}
+    </span>
+</div>
+{% end %}

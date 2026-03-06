@@ -209,6 +209,7 @@
 
     /* Code typography — font, size, line-height */
     --chirpui-code-font-family: ui-monospace, ui-serif, "Cascadia Code", "Fira Code", "JetBrains Mono", "SF Mono", Consolas, monospace;
+    --chirpui-mono-font-family: var(--chirpui-code-font-family);
     --chirpui-code-font-size-inline: 0.9em;
     --chirpui-code-font-size-block: var(--chirpui-prose-sm);
     --chirpui-code-line-height: 1.6;
@@ -968,6 +969,31 @@ html {
 .chirpui-stat__icon {
     font-size: var(--chirpui-ui-xl);
     color: var(--chirpui-text-muted);
+}
+
+.chirpui-metric-grid {
+    align-items: stretch;
+}
+
+.chirpui-metric-card {
+    height: 100%;
+}
+
+.chirpui-metric-card__stat {
+    align-items: flex-start;
+    text-align: start;
+}
+
+.chirpui-metric-card__trend,
+.chirpui-metric-card__hint {
+    margin: 0;
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-metric-card__trend {
+    margin-top: var(--chirpui-space-card-gap);
+    font-weight: var(--chirpui-ui-font-weight-medium);
 }
 
 /* ==========================================================================
@@ -2252,7 +2278,8 @@ a.chirpui-mention:focus-visible {
     font-size: var(--chirpui-font-xs);
 }
 
-.chirpui-dl__detail--url {
+.chirpui-dl__detail--url,
+.chirpui-dl__detail--path {
     font-family: var(--chirpui-mono-font-family);
     font-size: var(--chirpui-font-sm);
     overflow: hidden;
@@ -2300,6 +2327,48 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-settings-row__detail code {
     font-family: var(--chirpui-ascii-font, ui-monospace, monospace);
+}
+
+/* ==========================================================================
+   Config Row (label | control)
+   ========================================================================== */
+
+.chirpui-config-row-list {
+    display: grid;
+    grid-template-columns: minmax(8rem, auto) 1fr;
+    gap: var(--chirpui-spacing-sm, 0.5rem) var(--chirpui-spacing-lg, 1.5rem);
+    align-items: center;
+}
+
+.chirpui-config-row {
+    display: contents;
+}
+
+.chirpui-config-row__label {
+    flex-shrink: 0;
+}
+
+.chirpui-config-row__control {
+    min-width: 0;
+}
+
+.chirpui-config-row__form {
+    display: flex;
+    align-items: center;
+}
+
+.chirpui-config-row__toggle-wrap {
+    margin: 0;
+}
+
+.chirpui-config-row__select {
+    max-width: 20rem;
+}
+
+.chirpui-config-row__editable {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
 }
 
 /* ==========================================================================
@@ -2442,6 +2511,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-font-base { font-size: var(--chirpui-font-base); }
 .chirpui-font-lg { font-size: var(--chirpui-font-lg); }
 .chirpui-font-xl { font-size: var(--chirpui-font-xl); }
+.chirpui-font-mono { font-family: var(--chirpui-mono-font-family); }
 .chirpui-font-2xl { font-size: var(--chirpui-font-2xl); }
 .chirpui-text-muted { color: var(--chirpui-text-muted); }
 
@@ -3322,6 +3392,14 @@ a.chirpui-mention:focus-visible {
     text-decoration: none;
 }
 
+.chirpui-resource-card {
+    height: 100%;
+}
+
+.chirpui-resource-card__description {
+    margin: 0;
+}
+
 .chirpui-card--collapsible summary {
     cursor: pointer;
     list-style: none;
@@ -3436,6 +3514,16 @@ a.chirpui-mention:focus-visible {
     flex-direction: column;
     height: 100%;
     transition: box-shadow var(--chirpui-transition), border-color var(--chirpui-transition);
+}
+
+.chirpui-resource-index {
+    width: 100%;
+}
+
+.chirpui-resource-index__search,
+.chirpui-resource-index__filters,
+.chirpui-resource-index__results {
+    width: 100%;
 }
 
 .chirpui-card--link .chirpui-card__body {
@@ -5282,8 +5370,16 @@ a.chirpui-tag:active {
     margin-top: var(--chirpui-space-result-gap);
 }
 
+.chirpui-result-slot:empty {
+    margin-top: 0;
+}
+
 .chirpui-result-slot--sm {
     margin-top: var(--chirpui-space-control-gap);
+}
+
+.chirpui-result-slot--sm:empty {
+    margin-top: 0;
 }
 
 /* ==========================================================================
@@ -6930,18 +7026,32 @@ input[type="date"].chirpui-field__input {
     gap: var(--chirpui-spacing-md);
 }
 
-.chirpui-key-value-form__key {
+.chirpui-key-value-form__key,
+.chirpui-key-value-form__value {
     flex: 1;
     min-width: 10rem;
+    margin-bottom: 0;
 }
 
 .chirpui-key-value-form__value {
-    flex: 1;
     min-width: 12rem;
+}
+
+/* Match input and button heights for clean alignment */
+.chirpui-key-value-form__row .chirpui-field__input {
+    height: 2.25rem;
+    box-sizing: border-box;
 }
 
 .chirpui-key-value-form__submit {
     flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+}
+
+.chirpui-key-value-form__submit .chirpui-btn {
+    height: 2.25rem;
+    box-sizing: border-box;
 }
 
 @media (max-width: 40rem) {
@@ -7102,8 +7212,9 @@ a.chirpui-btn {
     }
 }
 
-/* Loading state — use with htmx hx-indicator or class swap */
-.chirpui-btn--loading {
+/* Loading state — use with loading=true or htmx (adds htmx-request to trigger) */
+.chirpui-btn--loading,
+.chirpui-btn.htmx-request {
     cursor: wait;
     pointer-events: none;
 }
@@ -7128,11 +7239,15 @@ a.chirpui-btn {
     justify-content: center;
 }
 
-.chirpui-btn--loading .chirpui-btn__label {
+.chirpui-btn--loading .chirpui-btn__icon,
+.chirpui-btn--loading .chirpui-btn__label,
+.chirpui-btn.htmx-request .chirpui-btn__icon,
+.chirpui-btn.htmx-request .chirpui-btn__label {
     opacity: 0;
 }
 
-.chirpui-btn--loading .chirpui-btn__spinner {
+.chirpui-btn--loading .chirpui-btn__spinner,
+.chirpui-btn.htmx-request .chirpui-btn__spinner {
     display: inline-flex;
 }
 

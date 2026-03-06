@@ -871,6 +871,34 @@ class TestCard:
         assert 'href="/tags/demo"' in html
         assert "alias-demo" in html
 
+    def test_resource_card_full_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import resource_card %}'
+            '{% call resource_card("/skills/demo", "Demo", description="Summary", top_meta="builtin") %}'
+            '{% slot badges %}<span>badge</span>{% end %}'
+            '{% slot subtitle %}<code>::demo</code>{% end %}'
+            '{% slot footer %}<span>tag</span>{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-resource-card" in html
+        assert "chirpui-card--link" in html
+        assert "Summary" in html
+        assert "builtin" in html
+        assert "::demo" in html
+        assert "tag" in html
+
+    def test_resource_card_main_link_keeps_meta_link_separate(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import resource_card %}'
+            '{% call resource_card("/skills/demo", "Demo", description="Summary", top_meta="collection", top_meta_href="/collections/demo", link_mode="main") %}'
+            '{% slot footer %}<a href="/tags/demo">tag</a>{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-card--linked" in html
+        assert 'href="/skills/demo"' in html
+        assert 'href="/collections/demo"' in html
+        assert 'href="/tags/demo"' in html
+
 
 # ---------------------------------------------------------------------------
 # Modal
@@ -1557,6 +1585,40 @@ class TestActionContainers:
         assert 'value="alice"' in html
         assert "Directory" in html
 
+    def test_resource_index_grid_results(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/resource_index.html" import resource_index %}'
+            "{% call resource_index("
+            '"Skills", "/skills", query="doc", subtitle="Browse skills", '
+            'filter_action="/skills", filter_label="Tag filters", selected_count=2, '
+            'results_layout="grid", results_cols=2'
+            ") %}"
+            '{% slot toolbar_controls %}<button>Filters</button>{% end %}'
+            '{% slot filter_actions %}<button type="submit">Clear</button>{% end %}'
+            '{% slot selection %}<a>python ×</a>{% end %}'
+            "<article>Skill A</article>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-resource-index" in html
+        assert "chirpui-search-header" in html
+        assert "chirpui-filter-bar" in html
+        assert "chirpui-selection-bar" in html
+        assert "chirpui-grid--cols-2" in html
+        assert "Skill A" in html
+
+    def test_resource_index_empty_state(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/resource_index.html" import resource_index %}'
+            "{% call resource_index("
+            '"Skills", "/skills", has_results=false, empty_title="No skills", empty_hint="python", '
+            'empty_message="Try a different filter."'
+            ") %}"
+            "{% end %}"
+        ).render()
+        assert "No skills" in html
+        assert "Try a different filter." in html
+        assert "chirpui-empty-state" in html
+
     def test_selection_bar_renders_when_count_positive(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/selection_bar.html" import selection_bar %}'
@@ -1848,7 +1910,7 @@ class TestSettingsRow:
             '{{ settings_row("X", status="ok", detail="dori setup x") }}'
             "{% end %}"
         ).render()
-        assert "<code" in html
+        assert "chirpui-font-mono" in html
         assert "dori setup x" in html
 
     def test_settings_row_status_variant_override(self, env: Environment) -> None:
@@ -1858,6 +1920,60 @@ class TestSettingsRow:
         ).render()
         assert "chirpui-badge--error" in html
         assert "Custom" in html
+
+
+class TestConfigRow:
+    def test_config_row_list_renders_grid_with_slot_content(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/config_row.html" import config_row_list, config_row_toggle %}'
+            "{% call config_row_list() %}"
+            '{{ config_row_toggle("acp.enabled", "ACP enabled", checked=true) }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-config-row-list" in html
+        assert "chirpui-config-row" in html
+        assert "ACP enabled" in html
+        assert "chirpui-toggle" in html
+
+    def test_config_row_toggle_renders_label_and_toggle_with_form_when_attrs_map(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/config_row.html" import config_row_toggle %}'
+            '{{ config_row_toggle("x", "Label", checked=false, form_action="/set", '
+            'attrs_map={"hx-post": "/set", "hx-target": "#r", "hx-swap": "innerHTML"}) }}'
+        ).render()
+        assert "chirpui-config-row__label" in html
+        assert "Label" in html
+        assert "chirpui-config-row__form" in html
+        assert 'hx-post="/set"' in html
+        assert 'name="key" value="x"' in html
+
+    def test_config_row_select_renders_label_and_select(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/config_row.html" import config_row_select %}'
+            '{{ config_row_select("level", "Log level", options=[{"value": "info", "label": "Info"}, '
+            '{"value": "debug", "label": "Debug"}], selected="info") }}'
+        ).render()
+        assert "chirpui-config-row__label" in html
+        assert "Log level" in html
+        assert "chirpui-config-row__select" in html
+        assert "Info" in html
+        assert "Debug" in html
+        assert 'value="info"' in html
+
+    def test_config_row_editable_renders_display_mode_with_edit_trigger(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/config_row.html" import config_row_editable %}'
+            '{{ config_row_editable("endpoint", "https://api.example.com", edit_url="/edit") }}'
+        ).render()
+        assert "chirpui-config-row__label" in html
+        assert "endpoint" in html
+        assert "https://api.example.com" in html
+        assert "Edit" in html
+        assert 'hx-get="/edit"' in html
 
 
 class TestTimeline:
@@ -1978,6 +2094,7 @@ class TestConfirmDialog:
             ' hx_target="#main", hx_swap="innerHTML", hx_select="#content", hx_push_url="/list") }}'
         ).render()
         assert 'hx-delete="/del"' in html
+        assert 'hx-disinherit="hx-select hx-target hx-swap"' in html
         assert 'hx-target="#main"' in html
         assert 'hx-swap="innerHTML"' in html
         assert 'hx-select="#content"' in html
@@ -2232,6 +2349,28 @@ class TestStat:
         ).render()
         assert "chirpui-stat__icon" in html
         assert "▶" in html
+
+
+class TestMetricGrid:
+    def test_metric_grid(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_grid, metric_card %}'
+            "{% call metric_grid() %}"
+            '{{ metric_card(value=128, label="Tasks", icon="status") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-metric-grid" in html
+        assert "chirpui-metric-card" in html
+        assert "Tasks" in html
+
+    def test_metric_card_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value="99.9%", label="Uptime", href="/status", hint="This week") }}'
+        ).render()
+        assert 'href="/status"' in html
+        assert "chirpui-card--link" in html
+        assert "This week" in html
 
 
 class TestAppLayout:

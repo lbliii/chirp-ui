@@ -2,9 +2,12 @@
 
 {% block content %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
-{% from "chirpui/card.html" import card %}
+{% from "chirpui/layout.html" import cluster %}
+{% from "chirpui/card.html" import card, resource_card %}
 {% from "chirpui/alert.html" import alert %}
 {% from "chirpui/button.html" import btn %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/metric_grid.html" import metric_card, metric_grid %}
 
 {% call container() %}
 {% call stack() %}
@@ -46,6 +49,46 @@
 {% call block() %}
 {% call card(title="Click to expand", collapsible=true, open=true) %}
 <p>This content is inside a native <code>&lt;details&gt;</code> element. No JavaScript.</p>
+{% end %}
+{% end %}
+
+<h2>Resource Cards</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call resource_card("/skills/doc-help", "doc-help", description="Draft documentation from existing code and tests.", top_meta="builtin") %}
+  {% slot subtitle %}
+  {% call cluster() %}
+    <code>::help</code>
+    <code>/draft</code>
+  {% end %}
+  {% end %}
+  {% slot footer %}
+  {% call cluster() %}
+    {{ badge("docs", variant="muted") }}
+    {{ badge("analysis", variant="muted") }}
+  {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% call block() %}
+{% call resource_card("/tasks/42", "Polish dashboard overview", description="Main card link with independent footer actions.", top_meta="Sprint 12", top_meta_href="/boards/current", link_mode="main") %}
+  {% slot badges %}{{ badge("In progress", variant="primary") }}{% end %}
+  {% slot footer %}
+  {% call cluster() %}
+    <a href="/tasks/42/comments" class="chirpui-badge chirpui-badge--muted">4 comments</a>
+    <a href="/tasks/42/watch" class="chirpui-badge chirpui-badge--muted">Watch</a>
+  {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Metric Cards</h2>
+{% call block() %}
+{% call metric_grid() %}
+  {{ metric_card(value=128, label="Open tasks", icon="status", href="/tasks", hint="Assigned to your team") }}
+  {{ metric_card(value="99.9%", label="Uptime", icon="status", trend="+0.2% this week") }}
+  {{ metric_card(value=42, label="Threads", icon="sources", hint="Active this hour") }}
 {% end %}
 {% end %}
 

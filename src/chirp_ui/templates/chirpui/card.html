@@ -129,3 +129,57 @@
     <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
 </article>
 {% end %}
+
+{# Opinionated list/index card for app resources.
+   Named slots: badges, subtitle, footer, default (body extras).
+   link_mode="all" uses a whole-card link; link_mode="main" keeps top/footer content independently interactive. #}
+{% def resource_card(href, title, description=none, top_meta=none, top_meta_href=none, top_meta_title=none, cls="", link_mode="all") %}
+{% set link_mode = link_mode | validate_variant(("all", "main"), "all") %}
+{% if link_mode == "main" %}
+<article class="chirpui-card chirpui-card--linked chirpui-resource-card{{ " " ~ cls if cls else "" }}">
+    {% if top_meta %}
+    <div class="chirpui-card__top-meta">
+        {% if top_meta_href %}
+        <a href="{{ top_meta_href }}" class="chirpui-font-xs chirpui-text-muted chirpui-font-mono"{% if top_meta_title %} title="{{ top_meta_title }}"{% endif %}>{{ top_meta }}</a>
+        {% else %}
+        <span class="chirpui-font-xs chirpui-text-muted chirpui-font-mono">{{ top_meta }}</span>
+        {% endif %}
+    </div>
+    {% endif %}
+    <a href="{{ href }}" class="chirpui-card__main-link">
+        <header class="chirpui-card__header">
+            <div class="chirpui-card__header-badges">{% slot badges %}</div>
+            <div class="chirpui-card__header-content">
+                <span class="chirpui-card__title">{{ title }}</span>
+                <div class="chirpui-card__header-subtitle">{% slot subtitle %}</div>
+            </div>
+        </header>
+        <div class="chirpui-card__body">
+            {% if description %}<p class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description">{{ description }}</p>{% endif %}
+            {% slot %}
+        </div>
+    </a>
+    <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
+</article>
+{% else %}
+<a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-resource-card{{ " " ~ cls if cls else "" }}">
+    {% if top_meta %}
+    <div class="chirpui-card__top-meta">
+        <span class="chirpui-font-xs chirpui-text-muted chirpui-font-mono"{% if top_meta_title %} title="{{ top_meta_title }}"{% endif %}>{{ top_meta }}</span>
+    </div>
+    {% endif %}
+    <header class="chirpui-card__header">
+        <div class="chirpui-card__header-badges">{% slot badges %}</div>
+        <div class="chirpui-card__header-content">
+            <span class="chirpui-card__title">{{ title }}</span>
+            <div class="chirpui-card__header-subtitle">{% slot subtitle %}</div>
+        </div>
+    </header>
+    <div class="chirpui-card__body">
+        {% if description %}<p class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description">{{ description }}</p>{% endif %}
+        {% slot %}
+    </div>
+    <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
+</a>
+{% endif %}
+{% end %}

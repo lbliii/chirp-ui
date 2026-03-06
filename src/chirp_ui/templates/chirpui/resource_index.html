@@ -1,0 +1,83 @@
+{#- chirp-ui: Resource Index composite
+    Search/filter/result wrapper for browse pages.
+
+    Slots:
+      - toolbar_controls: extra controls placed beside the main search field
+      - filter_primary: extra leading filter content after the built-in label/query state
+      - filter_controls: middle filter controls
+      - filter_actions: trailing filter actions
+      - selection: content inside the applied-selection bar
+      - filters_panel: optional tray/panel rendered after the selection bar
+      - empty: custom empty-state body
+      - default: result items/cards/rows
+-#}
+{% from "chirpui/layout.html" import section_header, stack %}
+{% from "chirpui/forms.html" import hidden_field %}
+{% from "chirpui/empty.html" import empty_state %}
+{% from "chirpui/filter_bar.html" import filter_bar %}
+{% from "chirpui/search_header.html" import search_header %}
+{% from "chirpui/selection_bar.html" import selection_bar %}
+
+{% def resource_index(title, search_action, query="", subtitle=none, search_name="q", search_placeholder="Search...", button_label="Search", button_icon="⌕", search_method="get", filter_action=none, filter_method="get", filter_surface_variant="default", filter_density="sm", filter_label=none, filter_state_name=none, filter_state_value=none, selected_count=0, selected_label="filters selected", selected_aria_label=none, results_title=none, results_subtitle=none, results_layout="stack", results_cols=2, results_gap="md", has_results=true, empty_title="No results found", empty_icon="search", empty_hint=none, empty_message=none, cls="") %}
+{% set results_layout = results_layout | validate_variant(("stack", "grid"), "stack") %}
+{% call stack(gap="lg", cls="chirpui-resource-index" ~ (" " ~ cls if cls else "")) %}
+{% call search_header(title, search_action, query=query, search_name=search_name, subtitle=subtitle, form_method=search_method, search_placeholder=search_placeholder, button_label=button_label, button_icon=button_icon, cls="chirpui-resource-index__search") %}
+{% if filter_state_name and filter_state_value %}
+{{ hidden_field(filter_state_name, value=filter_state_value) }}
+{% endif %}
+{% slot toolbar_controls %}
+{% end %}
+{% end %}
+
+{% if filter_action %}
+{% call filter_bar(filter_action, method=filter_method, surface_variant=filter_surface_variant, density=filter_density, cls="chirpui-resource-index__filters") %}
+<div class="chirpui-action-strip__primary">
+    {% if filter_label %}
+    <span class="chirpui-font-sm chirpui-text-muted">{{ filter_label }}</span>
+    {% endif %}
+    {% if query %}
+    {{ hidden_field(search_name, value=query) }}
+    {% endif %}
+    {% slot filter_primary %}
+    {% end %}
+</div>
+<div class="chirpui-action-strip__controls">
+    {% slot filter_controls %}
+    {% end %}
+</div>
+<div class="chirpui-action-strip__actions">
+    {% slot filter_actions %}
+    {% end %}
+</div>
+{% end %}
+{% endif %}
+
+{% call selection_bar(count=selected_count, label=selected_label, aria_label=selected_aria_label or selected_label) %}
+{% slot selection %}
+{% end %}
+{% end %}
+
+{% slot filters_panel %}
+{% end %}
+
+{% if results_title or results_subtitle %}
+{{ section_header(results_title or "Results", subtitle=results_subtitle) }}
+{% endif %}
+
+{% if has_results %}
+{% if results_layout == "grid" %}
+<div class="chirpui-grid{% if results_cols == 2 %} chirpui-grid--cols-2{% elif results_cols == 3 %} chirpui-grid--cols-3{% elif results_cols == 4 %} chirpui-grid--cols-4{% end %}{% if results_gap == "sm" %} chirpui-grid--gap-sm{% elif results_gap == "md" %} chirpui-grid--gap-md{% elif results_gap == "lg" %} chirpui-grid--gap-lg{% end %} chirpui-resource-index__results">
+    {{ caller() }}
+</div>
+{% else %}
+<div class="chirpui-stack{% if results_gap == "xs" %} chirpui-stack--xs{% elif results_gap == "sm" %} chirpui-stack--sm{% elif results_gap == "md" %} chirpui-stack--md{% elif results_gap == "lg" %} chirpui-stack--lg{% elif results_gap == "xl" %} chirpui-stack--xl{% end %} chirpui-resource-index__results">
+    {{ caller() }}
+</div>
+{% endif %}
+{% else %}
+{% call empty_state(title=empty_title, icon=empty_icon, search_hint=empty_hint) %}
+{% if empty_message %}<p class="chirpui-text-muted">{{ empty_message }}</p>{% endif %}
+{% end %}
+{% endif %}
+{% end %}
+{% end %}

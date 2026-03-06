@@ -12,12 +12,17 @@ TARGET_PREFIXES = (
     "chirpui-app-shell",
     "chirpui-sidebar",
     "chirpui-action-strip",
+    "chirpui-config-row",
     "chirpui-filter-bar",
     "chirpui-command-bar",
+    "chirpui-resource-index",
+    "chirpui-resource-card",
     "chirpui-search-header",
     "chirpui-selection-bar",
     "chirpui-entity-header",
     "chirpui-inline-edit",
+    "chirpui-metric-card",
+    "chirpui-metric-grid",
     "chirpui-row-actions",
 )
 
@@ -29,7 +34,9 @@ EXAMPLE_LAYOUT_PREFIXES = (
     "chirpui-inline",
     "chirpui-mb-",
     "chirpui-measure",
+    "chirpui-metric-",
     "chirpui-mt-",
+    "chirpui-resource-",
     "chirpui-result-slot",
     "chirpui-stack",
 )

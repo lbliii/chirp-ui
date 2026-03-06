@@ -8,7 +8,7 @@ See [Strict mode](#strict-mode) for setup.
 
 ## Macro Slot Context
 
-Components that use `{% slot %}` (e.g. `form`, `card`, `card_link`, `field_wrapper`) render slot content in the **caller's context**. Page variables passed to the handler (e.g. `selected_tags`, `q`) are available inside macro slots without `| default()`.
+Components that use `{% slot %}` (e.g. `form`, `card`, `card_link`, `resource_index`, `resource_card`, `field_wrapper`) render slot content in the **caller's context**. Page variables passed to the handler (e.g. `selected_tags`, `q`) are available inside macro slots without `| default()`.
 
 ```html
 {% call form("/search", method="get") %}
@@ -188,6 +188,31 @@ Use `card(title="...", icon="⟳")` for config/settings cards. The `icon` render
 | `header_variant` | Optional: gradient (gradient in header strip) |
 
 **Slots:** `header_actions`, `media`, `body_actions` (for list cards), default (body).
+
+### resource_card
+
+Opinionated list/index card for app resources. Prefer this when a card represents a browseable thing such as a skill, chain, thread, task, playlist, project, or user.
+
+```html
+{% from "chirpui/card.html" import resource_card %}
+{% call resource_card("/skills/doc-help", "doc-help", description="Draft docs from code", top_meta="builtin") %}
+  {% slot subtitle %}<code>::help</code>{% end %}
+  {% slot footer %}<span class="chirpui-badge chirpui-badge--muted">docs</span>{% end %}
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `href` | Primary destination for the resource |
+| `title` | Resource title |
+| `description` | Optional summary paragraph in the card body |
+| `top_meta` | Optional compact meta row above the title |
+| `top_meta_href` | Optional href for `top_meta` when `link_mode="main"` |
+| `top_meta_title` | Optional tooltip/title for the top meta row |
+| `link_mode` | `all` for full-card link, `main` when footer/meta need independent links |
+| `cls` | Optional additional classes |
+
+**Slots:** `badges`, `subtitle`, `footer`, default (extra body content).
 
 ---
 
@@ -459,6 +484,47 @@ Pass optional controls in the default slot; the macro places them inside the con
 {% end %}
 ```
 
+#### resource_index
+
+High-level browse/index composite that wraps `search_header`, optional `filter_bar`, optional `selection_bar`, optional filter/tray panel, and either results or an empty state.
+
+```html
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/card.html" import resource_card %}
+{% call resource_index(
+  "Skills",
+  "/skills",
+  query=q,
+  subtitle="Browse installed skills",
+  filter_action="/skills",
+  filter_label="Tag filters",
+  selected_count=selected_tags | length,
+  has_results=skills | length > 0,
+  results_layout="grid",
+  results_cols=2
+) %}
+  {% slot toolbar_controls %}{{ btn("Filters", variant="default", size="sm") }}{% end %}
+  {% slot selection %}<a class="chirpui-badge chirpui-badge--primary">python ×</a>{% end %}
+  {% for skill in skills %}
+    {{ resource_card("/skill/" ~ skill.name, skill.name, description=skill.description or "—") }}
+  {% end %}
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `title`, `subtitle` | Discovery page header |
+| `search_action`, `query`, `search_name` | Search form configuration |
+| `filter_action` | Enables the filter bar when provided |
+| `filter_label` | Leading summary label in the filter bar |
+| `filter_state_name`, `filter_state_value` | Hidden state preserved through search submissions |
+| `selected_count`, `selected_label`, `selected_aria_label` | Applied-filter/selection bar configuration |
+| `results_layout` | `stack` or `grid` |
+| `results_cols`, `results_gap` | Result wrapper layout options |
+| `has_results`, `empty_title`, `empty_icon`, `empty_hint`, `empty_message` | Empty-state behavior |
+
+**Slots:** `toolbar_controls`, `filter_primary`, `filter_controls`, `filter_actions`, `selection`, `filters_panel`, default (results).
+
 #### selection_bar
 
 Stateful bulk-actions bar shown when rows/items are selected. Renders nothing when `count <= 0`.
@@ -494,6 +560,25 @@ Spacing guidance:
 - Put result fragments in `.chirpui-result-slot` or `.chirpui-result-slot--sm` instead of ad hoc margin utilities.
 - Use `.chirpui-measure-sm|md|lg` on forms and narrow content blocks that need a maximum readable width.
 - Prefer `stack()` or `cluster()` before adding inline `style="gap: ..."` overrides.
+
+### metric_grid and metric_card
+
+Use these for dashboard KPIs and overview decks instead of hand-assembling a grid of generic cards around `stat()`.
+
+```html
+{% from "chirpui/metric_grid.html" import metric_grid, metric_card %}
+{% call metric_grid() %}
+  {{ metric_card(value=128, label="Open tasks", icon="status", href="/tasks", hint="Assigned to your team") }}
+  {{ metric_card(value="99.9%", label="Uptime", icon="status", trend="+0.2% this week") }}
+{% end %}
+```
+
+| Macro | Param | Description |
+|-------|-------|-------------|
+| `metric_grid` | `cols`, `gap`, `cls` | Responsive wrapper for metric cards |
+| `metric_card` | `value`, `label`, `icon` | Core KPI content |
+| `metric_card` | `trend`, `hint` | Optional supporting context |
+| `metric_card` | `href` | Optional clickable KPI destination |
 
 ---
 
@@ -531,6 +616,33 @@ Three-column field set for setup targets, health checks, validation summaries. U
 | `status` | Badge text (middle); variant inferred: ok/configured→success, error/issues→error, else muted |
 | `detail` | Right column; rendered as `<code>` when contains "dori " (command), else plain text |
 | `status_variant` | Override badge variant: success, error, muted, primary |
+
+### config_row_list and config_row_* (toggle, select, editable)
+
+Two-column field set for config dashboards with interactive controls. Use inside `card` or `section` for editable config sections.
+
+```html
+{% from "chirpui/config_row.html" import config_row_list, config_row_toggle, config_row_select, config_row_editable %}
+{% call config_row_list() %}
+{{ config_row_toggle("acp.enabled", "ACP enabled", checked=config.acp.enabled,
+    form_action="/config/set", attrs_map={"hx-post": "/config/set", "hx-target": "#result", "hx-swap": "innerHTML"}) }}
+{{ config_row_select("logs.level", "Log level", options=[{"value": "info", "label": "Info"}, {"value": "debug", "label": "Debug"}],
+    selected=config.logs.level, form_action="/config/set", attrs_map={...}) }}
+{{ config_row_editable("endpoint", config.acp.endpoint, edit_url="/config/edit/acp.endpoint", swap_id="acp-endpoint") }}
+{% end %}
+```
+
+| Macro | Param | Description |
+|-------|-------|-------------|
+| `config_row_list` | `cls` | Container grid; slot for rows |
+| `config_row_toggle` | `name`, `label`, `checked` | Config key, label, initial state |
+| `config_row_toggle` | `form_action`, `attrs_map` | When both set, wrap in HTMX form (submit on change) |
+| `config_row_select` | `name`, `label`, `options`, `selected` | Options: `[{value, label}, ...]` |
+| `config_row_select` | `form_action`, `attrs_map` | HTMX form wrapper when provided |
+| `config_row_editable` | `term`, `value`, `edit_url` | Display + Edit trigger; edit_url handler returns `inline_edit_field_form` |
+| `config_row_editable` | `swap_id`, `edit_label` | Swap target id; Edit button label |
+
+Toggle with HTMX sends `key` + `value` (true/false). Select sends `key` + `value` (selected option). The edit_url handler returns `inline_edit_field_form` with save/cancel URLs.
 
 ---
 

@@ -34,11 +34,7 @@
     </span>
     <span class="chirpui-settings-row__detail">
     {% if detail %}
-    {% if "dori " in (detail | lower) %}
-    <code class="chirpui-font-xs">{{ detail }}</code>
-    {% else %}
-    <span class="chirpui-text-muted chirpui-font-sm">{{ detail }}</span>
-    {% end %}
+    <span class="chirpui-text-muted chirpui-font-sm chirpui-font-mono">{{ detail }}</span>
     {% end %}
     </span>
 </div>

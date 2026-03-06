@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Status: Alpha](https://img.shields.io/badge/status-alpha-orange.svg)](https://pypi.org/project/chirp-ui/)
 
-**Reusable Kida components for Chirp — gorgeous by default, htmx-native.**
+**An optional, opinionated UI layer for Chirp — gorgeous by default, htmx-native.**
 
 ```python
 pip install chirp chirp-ui
@@ -28,7 +28,7 @@ pip install chirp chirp-ui
 
 ## What is chirp-ui?
 
-chirp-ui is a component library for [Chirp](https://github.com/lbliii/chirp). It provides [Kida](https://github.com/lbliii/kida) template macros — cards, modals, forms, layouts — that render as HTML. Use them with htmx for swaps, SSE for streaming, and View Transitions for polish. Zero JavaScript for layout.
+chirp-ui is an optional companion design system for [Chirp](https://github.com/lbliii/chirp). It provides [Kida](https://github.com/lbliii/kida) template macros — cards, modals, forms, layouts — that render as HTML. It is one polished, opinionated way to build Chirp apps, not the framework itself and not the only way to use Chirp. Use it with htmx for swaps, SSE for streaming, and View Transitions for polish. No client-side framework required for layout.
 
 **What's good about it:**
 
@@ -51,13 +51,15 @@ uv add chirp-ui
 
 Requires Python 3.14+. When used with Chirp, components are auto-detected — no configuration needed.
 
+You do not need `chirp-ui` to use Chirp. Use it when you want the companion component library, default design language, and app-shell patterns.
+
 ---
 
 ## Quick Start
 
 | Step | Action |
 |------|--------|
-| 1 | Install Chirp and chirp-ui: `pip install chirp chirp-ui` |
+| 1 | Install Chirp and chirp-ui if you want the companion UI layer: `pip install chirp chirp-ui` |
 | 2 | Serve static assets from the package (CSS, themes) |
 | 3 | Import macros in templates: `{% from "chirpui/card.html" import card %}` |
 | 4 | Include CSS: `<link rel="stylesheet" href="/static/chirpui.css">` |
@@ -248,6 +250,7 @@ For animated icons, use `ascii_icon()` in the component slot. For custom headers
 ## Key Ideas
 
 - **HTML over the wire.** Components render as blocks for htmx swaps, SSE streams, and View Transitions. The server is the source of truth.
+- **Companion, not core.** `chirp-ui` is an optional layer on top of Chirp, not a requirement for using the framework.
 - **CSS as the design language.** Modern features (`:has()`, `aspect-ratio`, `clamp()`) used where they add value. All animations respect `prefers-reduced-motion`.
 - **Composable.** `{% slot %}` for content injection. Components nest freely. No wrapper classes.
 - **Minimal dependency.** `kida-templates` only. Chirp optional for auto-registration.
@@ -281,14 +284,14 @@ pytest
 
 ## The Bengal Ecosystem
 
-A structured reactive stack — every layer written in pure Python for 3.14t free-threading.
+A structured reactive stack written in pure Python for 3.14t free-threading. Chirp is the framework; `chirp-ui` is one optional UI layer built on top of it.
 
 | | | | |
 |--:|---|---|---|
 | **ᓚᘏᗢ** | [Bengal](https://github.com/lbliii/bengal) | Static site generator | [Docs](https://lbliii.github.io/bengal/) |
 | **∿∿** | [Purr](https://github.com/lbliii/purr) | Content runtime | — |
 | **⌁⌁** | [Chirp](https://github.com/lbliii/chirp) | Web framework | [Docs](https://lbliii.github.io/chirp/) |
-| **ʘ** | **chirp-ui** | Component library ← You are here | — |
+| **ʘ** | **chirp-ui** | Optional companion UI layer ← You are here | — |
 | **=^..^=** | [Pounce](https://github.com/lbliii/pounce) | ASGI server | [Docs](https://lbliii.github.io/pounce/) |
 | **)彡** | [Kida](https://github.com/lbliii/kida) | Template engine | [Docs](https://lbliii.github.io/kida/) |
 | **ฅᨐฅ** | [Patitas](https://github.com/lbliii/patitas) | Markdown parser | [Docs](https://lbliii.github.io/patitas/) |

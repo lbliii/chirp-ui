@@ -10,6 +10,7 @@ import csv
 import inspect
 import io
 import re
+from dataclasses import dataclass, field
 from pathlib import Path
 from urllib.parse import quote
 
@@ -22,15 +23,71 @@ from chirp import (
     Request,
     Response,
     SSEEvent,
-    ShellAction,
-    ShellActions,
-    ShellActionZone,
     Template,
     ValidationError,
 )
 from chirp.middleware.static import StaticFiles
 
 import chirp_ui
+
+try:
+    from chirp import ShellAction, ShellActions, ShellActionZone
+except ImportError:
+    @dataclass(frozen=True, slots=True)
+    class _ShellMenuItem:
+        label: str = ""
+        href: str | None = None
+        action: str | None = None
+        variant: str = "default"
+        icon: str | None = None
+
+        def get(self, key: str, default: object = None) -> object:
+            value = getattr(self, key, default)
+            return default if value is None else value
+
+
+    @dataclass(frozen=True, slots=True)
+    class ShellAction:
+        id: str
+        label: str
+        kind: str = "link"
+        href: str | None = None
+        action: str | None = None
+        variant: str = "default"
+        icon: str | None = None
+        size: str = "sm"
+        disabled: bool = False
+        menu_items: tuple[_ShellMenuItem, ...] = ()
+
+        def as_menu_item(self) -> _ShellMenuItem:
+            return _ShellMenuItem(
+                label=self.label,
+                href=self.href,
+                action=self.action,
+                variant=self.variant,
+                icon=self.icon,
+            )
+
+
+    @dataclass(frozen=True, slots=True)
+    class ShellActionZone:
+        items: tuple[ShellAction, ...] = ()
+
+        @property
+        def overflow_items(self) -> tuple[_ShellMenuItem, ...]:
+            return tuple(item.as_menu_item() for item in self.items)
+
+
+    @dataclass(frozen=True, slots=True)
+    class ShellActions:
+        primary: ShellActionZone = field(default_factory=ShellActionZone)
+        controls: ShellActionZone = field(default_factory=ShellActionZone)
+        overflow: ShellActionZone = field(default_factory=ShellActionZone)
+        target: str = "chirp-shell-actions"
+
+        @property
+        def has_items(self) -> bool:
+            return bool(self.primary.items or self.controls.items or self.overflow.items)
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 

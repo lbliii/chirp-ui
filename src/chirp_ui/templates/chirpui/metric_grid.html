@@ -1,0 +1,30 @@
+{#- chirp-ui: Metric grid/card
+    Overview/KPI wrappers for dashboard-style pages.
+-#}
+{% from "chirpui/layout.html" import grid %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/stat.html" import stat %}
+
+{% def metric_grid(cols=3, gap="md", cls="") %}
+{% call grid(cols=cols, gap=gap, cls="chirpui-metric-grid" ~ (" " ~ cls if cls else "")) %}
+{{ caller() }}
+{% end %}
+{% end %}
+
+{% def metric_card(value, label, icon=none, trend=none, hint=none, href=none, cls="") %}
+{% if href %}
+<a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-metric-card{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-card__body">
+        {{ stat(value=value, label=label, icon=icon, cls="chirpui-metric-card__stat") }}
+        {% if trend %}<p class="chirpui-metric-card__trend">{{ trend }}</p>{% endif %}
+        {% if hint %}<p class="chirpui-metric-card__hint">{{ hint }}</p>{% endif %}
+    </div>
+</a>
+{% else %}
+{% call card(cls="chirpui-metric-card" ~ (" " ~ cls if cls else "")) %}
+{{ stat(value=value, label=label, icon=icon, cls="chirpui-metric-card__stat") }}
+{% if trend %}<p class="chirpui-metric-card__trend">{{ trend }}</p>{% endif %}
+{% if hint %}<p class="chirpui-metric-card__hint">{{ hint }}</p>{% endif %}
+{% end %}
+{% endif %}
+{% end %}

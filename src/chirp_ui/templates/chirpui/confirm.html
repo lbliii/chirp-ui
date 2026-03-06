@@ -19,6 +19,7 @@
                      variant="default", confirm_url=none, confirm_method="POST",
                      hx_target=none, hx_swap="innerHTML", hx_select=none, hx_push_url=none, cls="") %}
 {% set variant = variant | validate_variant(("default","danger"), "default") %}
+{% set hx_disinherit = "hx-select hx-target hx-swap" if hx_target else none %}
 <dialog id="{{ id }}" class="chirpui-confirm chirpui-modal chirpui-modal--small{{ " chirpui-confirm--" ~ variant if variant else "" }}{{ " " ~ cls if cls else "" }}"
         closedby="any">
     <header class="chirpui-modal__header">
@@ -40,7 +41,7 @@
             </form>
             {% if confirm_url %}
             <form method="{{ confirm_method }}" action="{{ confirm_url }}"
-                  {% if hx_target %}{% if confirm_method == "DELETE" %}hx-delete="{{ confirm_url }}"{% else %}hx-post="{{ confirm_url }}"{% end %} hx-target="{{ hx_target }}" hx-swap="{{ hx_swap }}"{% if hx_select %} hx-select="{{ hx_select }}"{% end %}{% if hx_push_url %} hx-push-url="{{ hx_push_url }}"{% end %}{% end %}>
+                  {% if hx_target %}{% if confirm_method == "DELETE" %}hx-delete="{{ confirm_url }}"{% else %}hx-post="{{ confirm_url }}"{% end %} hx-disinherit="{{ hx_disinherit }}" hx-target="{{ hx_target }}" hx-swap="{{ hx_swap }}"{% if hx_select %} hx-select="{{ hx_select }}"{% end %}{% if hx_push_url %} hx-push-url="{{ hx_push_url }}"{% end %}{% end %}>
                 {% slot form_content %}
                 <button type="submit" class="chirpui-btn chirpui-btn--{{ variant if variant == "danger" else "primary" }}">{{ confirm_label }}</button>
             </form>
