@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] — 2026-03-06
+
+### Fixed
+
+- **RUF001** — Replace ambiguous Unicode in icons and tests: `＋` (FULLWIDTH PLUS SIGN) → `+`, `×` (MULTIPLICATION SIGN) → `x` in test strings
+
+[0.1.2]: https://github.com/lbliii/chirp-ui/releases/tag/v0.1.2
+
 ## [0.1.1] — 2026-03-04
 
 ### Added

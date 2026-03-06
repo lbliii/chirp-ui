@@ -105,7 +105,7 @@ class TestHtmlAttrs:
 class TestIcon:
     def test_resolves_registered_name(self) -> None:
         assert icon("status") == "◎"
-        assert icon("add") == "＋"
+        assert icon("add") == "+"
         assert icon("refresh") == "↻"
         assert icon("search") == "⌕"
         assert icon("logs") == "⟳"
@@ -129,16 +129,14 @@ class TestIconStrictMode:
         result = icon("statis")
         assert result == "statis"
         assert any(
-            "icon" in (r.message or "") and "invalid" in (r.message or "")
-            for r in caplog.records
+            "icon" in (r.message or "") and "invalid" in (r.message or "") for r in caplog.records
         )
         assert any("statis" in (r.message or "") for r in caplog.records)
 
     def test_valid_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
         icon("status")
         assert not any(
-            "invalid" in (r.message or "") and "icon" in (r.message or "")
-            for r in caplog.records
+            "invalid" in (r.message or "") and "icon" in (r.message or "") for r in caplog.records
         )
 
     def test_strict_false_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:

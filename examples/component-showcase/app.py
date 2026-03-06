@@ -33,6 +33,7 @@ import chirp_ui
 try:
     from chirp import ShellAction, ShellActions, ShellActionZone
 except ImportError:
+
     @dataclass(frozen=True, slots=True)
     class _ShellMenuItem:
         label: str = ""
@@ -44,7 +45,6 @@ except ImportError:
         def get(self, key: str, default: object = None) -> object:
             value = getattr(self, key, default)
             return default if value is None else value
-
 
     @dataclass(frozen=True, slots=True)
     class ShellAction:
@@ -68,7 +68,6 @@ except ImportError:
                 icon=self.icon,
             )
 
-
     @dataclass(frozen=True, slots=True)
     class ShellActionZone:
         items: tuple[ShellAction, ...] = ()
@@ -76,7 +75,6 @@ except ImportError:
         @property
         def overflow_items(self) -> tuple[_ShellMenuItem, ...]:
             return tuple(item.as_menu_item() for item in self.items)
-
 
     @dataclass(frozen=True, slots=True)
     class ShellActions:
@@ -88,6 +86,7 @@ except ImportError:
         @property
         def has_items(self) -> bool:
             return bool(self.primary.items or self.controls.items or self.overflow.items)
+
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
