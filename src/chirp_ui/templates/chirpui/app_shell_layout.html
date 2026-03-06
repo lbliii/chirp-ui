@@ -62,6 +62,14 @@
   </main>
 </div>
 <script>
+document.body.addEventListener('htmx:beforeSwap', function(evt) {
+  var target = evt.detail.target;
+  if (target && target.id !== 'main') {
+    evt.detail.selectOverride = '';
+  }
+});
+</script>
+<script>
 (function() {
   const key = 'chirpui-sidebar-collapsed';
   const shell = document.querySelector('.chirpui-app-shell');

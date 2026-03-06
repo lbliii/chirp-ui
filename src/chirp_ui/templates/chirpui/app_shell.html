@@ -62,6 +62,14 @@
         {% slot %}
     </main>
 </div>
+<script>
+document.body.addEventListener('htmx:beforeSwap', function(evt) {
+  var target = evt.detail.target;
+  if (target && target.id !== 'main') {
+    evt.detail.selectOverride = '';
+  }
+});
+</script>
 {% if sidebar_collapsible %}
 <script>
 (function() {
