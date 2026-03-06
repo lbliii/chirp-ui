@@ -43,6 +43,6 @@
     attrs=""
 ) %}
 {% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs=attrs) %}
-    {% slot %}
+{{ caller() }}
 {% end %}
 {% end %}
