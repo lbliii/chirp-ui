@@ -16,7 +16,7 @@
         end
 -#}
 
-{% def inline_edit_field_display(value, edit_url, swap_target=none, swap_id=none, edit_label="Edit", cls="") %}
+{% def inline_edit_field_display(value, edit_url, swap_target=none, swap_id=none, edit_label="Edit", edit_icon=true, cls="") %}
 {% set target = swap_target or ("#" ~ (swap_id or "inline-edit-field")) %}
 <div id="{{ swap_id or "inline-edit-field" }}" class="chirpui-inline-edit chirpui-inline-edit--display{{ " " ~ cls if cls else "" }}">
     <span class="chirpui-inline-edit__value">{{ value }}</span>
@@ -24,7 +24,9 @@
             hx-get="{{ edit_url }}"
             hx-target="{{ target }}"
             hx-swap="innerHTML"
+            title="{{ edit_label }}"
             aria-label="{{ edit_label }}">
+        {% if edit_icon %}<span class="chirpui-inline-edit__icon" aria-hidden="true">&#9998;</span>{% end %}
         {{ edit_label }}
     </button>
 </div>
