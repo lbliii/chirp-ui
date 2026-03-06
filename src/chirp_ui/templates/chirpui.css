@@ -52,6 +52,8 @@
     --chirpui-sidebar-section-gap: var(--chirpui-spacing-md);
     --chirpui-sidebar-link-gap: var(--chirpui-spacing-xs);
     --chirpui-sidebar-collapsed-width: 4rem;
+    --chirpui-sidebar-expanded-width: 16rem;
+    --chirpui-sidebar-max-width: 20rem;
 
     /* Radius */
     --chirpui-radius-sm: 0.25rem;
@@ -8235,6 +8237,7 @@ body:has(> .chirpui-app-shell) {
 
 .chirpui-app-shell__sidebar {
     grid-area: sidebar;
+    position: relative;
     min-height: 0;
     overflow-y: auto;
     border-right: 1px solid var(--chirpui-border);
@@ -8258,6 +8261,38 @@ body:has(> .chirpui-app-shell) {
 .chirpui-app-shell__sidebar .chirpui-sidebar {
     width: auto;
     border-right: none;
+}
+
+.chirpui-app-shell__sidebar-resize {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    cursor: pointer;
+    z-index: 20;
+    user-select: none;
+}
+
+.chirpui-app-shell__sidebar-resize::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--chirpui-border);
+    opacity: 0.6;
+}
+
+.chirpui-app-shell__sidebar-resize:hover::before,
+.chirpui-app-shell__sidebar-resize:active::before {
+    background: var(--chirpui-accent);
+    opacity: 1;
+}
+
+.chirpui-app-shell__sidebar-resize:hover {
+    background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
 }
 
 /* Sidebar collapsed (icon-only) */

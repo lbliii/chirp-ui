@@ -260,7 +260,7 @@ For animated icons, use `ascii_icon()` in the component slot. For custom headers
 ## Requirements
 
 - Python >= 3.14
-- kida-templates >= 0.2.0
+- kida-templates >= 0.2.4
 
 ---
 

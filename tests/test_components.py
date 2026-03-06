@@ -1796,6 +1796,30 @@ class TestAppShell:
         assert "Compose" in html
         assert "Filter" in html
 
+    def test_app_shell_sidebar_collapsible_renders_toggle_handle(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            "{% call app_shell(brand='Brand', sidebar_collapsible=true) %}"
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "data-chirpui-sidebar-toggle" in html
+        assert "chirpui-app-shell__sidebar-resize" in html
+
+    def test_app_shell_without_toggle_handle_when_not_collapsible(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            "{% call app_shell(brand='Brand', sidebar_collapsible=false) %}"
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "data-chirpui-sidebar-toggle" not in html
+        assert "chirpui-app-shell__sidebar-resize" not in html
+
 
 class TestLogo:
     def test_logo_text_variant(self, env: Environment) -> None:
@@ -1898,6 +1922,36 @@ class TestStepper:
 
 
 class TestWizardForm:
+    def test_wizard_form_safe_region_caller_scoping(self, env: Environment) -> None:
+        """Minimal test: def→call safe_region→caller() must resolve to def's caller."""
+        html = env.from_string(
+            '{% from "chirpui/fragment_island.html" import safe_region %}'
+            "{% def wrapper() %}"
+            '{% call safe_region("x") %}'
+            "{{ caller() }}"
+            "{% end %}"
+            "{% end %}"
+            '{% call wrapper() %}Content{% end %}'
+        ).render()
+        assert "Content" in html
+
+    def test_wizard_form_safe_region_with_stepper(self, env: Environment) -> None:
+        """Same as wizard_form: safe_region + stepper + caller()."""
+        html = env.from_string(
+            '{% from "chirpui/stepper.html" import stepper %}'
+            '{% from "chirpui/fragment_island.html" import safe_region %}'
+            "{% def wrapper(id, steps, current) %}"
+            '{% call safe_region(id, cls="wizard") %}'
+            "{{ stepper(steps=steps, current=current) }}"
+            '<div class="body">{{ caller() }}</div>'
+            "{% end %}"
+            "{% end %}"
+            '{% set steps = [{"id": "1", "label": "Step 1"}] %}'
+            '{% call wrapper("wiz", steps=steps, current=1) %}Form{% end %}'
+        ).render()
+        assert "Form" in html
+        assert "Step 1" in html
+
     def test_wizard_form_basic(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/wizard_form.html" import wizard_form %}'

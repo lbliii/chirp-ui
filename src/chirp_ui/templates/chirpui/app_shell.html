@@ -26,7 +26,6 @@
         end
 -#}
 {% from "chirpui/shell_frame.html" import shell_outlet, shell_outlet_attrs %}
-{% from "chirpui/sidebar.html" import sidebar_toggle %}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
 
 {% def app_shell(brand="", brand_url="/", brand_slot=false, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, cls="") %}
@@ -37,9 +36,6 @@
 {% set shell_actions_target = shell_actions.target if shell_actions else "chirp-shell-actions" %}
 <div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if sidebar_collapsible else "" }}{{ " " ~ cls if cls else "" }}">
     <header class="chirpui-app-shell__topbar{{ topbar_class }}">
-        {% if sidebar_collapsible %}
-        <div class="chirpui-app-shell__topbar-start">{{ sidebar_toggle() }}</div>
-        {% end %}
         <a href="{{ brand_url }}" class="chirpui-app-shell__brand">
             {% if brand_slot %}
             {% slot brand %}
@@ -57,7 +53,13 @@
             {% slot topbar_end %}
         </div>
     </header>
-    <aside class="chirpui-app-shell__sidebar{{ sidebar_class }}">{% slot sidebar %}</aside>
+    <aside class="chirpui-app-shell__sidebar{{ sidebar_class }}">
+        {% slot sidebar %}
+        {% if sidebar_collapsible %}
+        <div class="chirpui-app-shell__sidebar-resize" data-chirpui-sidebar-toggle
+             role="button" tabindex="0" aria-label="Toggle sidebar"></div>
+        {% end %}
+    </aside>
     <main id="main" class="chirpui-app-shell__main" {{ shell_outlet_attrs() }}>
         <div id="page-content" class="chirpui-shell-outlet">{% slot %}</div>
     </main>
@@ -73,19 +75,68 @@ document.body.addEventListener('htmx:beforeSwap', function(evt) {
 {% if sidebar_collapsible %}
 <script>
 (function() {
-  const key = 'chirpui-sidebar-collapsed';
+  const COLLAPSED_KEY = 'chirpui-sidebar-collapsed';
+  const OLD_WIDTH_KEY = 'chirpui-sidebar-width';
   const shell = document.querySelector('.chirpui-app-shell');
-  const btn = document.querySelector('[data-chirpui-sidebar-toggle]');
-  if (!shell || !btn) return;
-  if (localStorage.getItem(key) === 'true') {
-    shell.classList.add('chirpui-app-shell--sidebar-collapsed');
-    btn.setAttribute('aria-expanded', 'false');
+  const handle = document.querySelector('[data-chirpui-sidebar-toggle]');
+  if (!shell) return;
+
+  function setCollapsed(collapsed) {
+    shell.classList.toggle('chirpui-app-shell--sidebar-collapsed', collapsed);
+    shell.style.removeProperty('--chirpui-sidebar-width');
+    localStorage.setItem(COLLAPSED_KEY, collapsed ? 'true' : 'false');
+    if (handle) handle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
   }
-  btn.addEventListener('click', function() {
-    const collapsed = shell.classList.toggle('chirpui-app-shell--sidebar-collapsed');
-    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-    localStorage.setItem(key, collapsed);
-  });
+
+  function toggle() {
+    const collapsed = shell.classList.contains('chirpui-app-shell--sidebar-collapsed');
+    setCollapsed(!collapsed);
+  }
+
+  if (handle) {
+    handle.addEventListener('mousedown', function(evt) {
+      evt.preventDefault();
+      var startX = evt.clientX;
+      var startCollapsed = shell.classList.contains('chirpui-app-shell--sidebar-collapsed');
+      var lastX = startX;
+      function onMove(e) {
+        lastX = e.clientX;
+      }
+      function onUp() {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        document.body.style.userSelect = '';
+        var delta = lastX - startX;
+        if (Math.abs(delta) >= 5) {
+          if (delta < 0 && !startCollapsed) setCollapsed(true);
+          else if (delta > 0 && startCollapsed) setCollapsed(false);
+        } else {
+          toggle();
+        }
+      }
+      document.body.style.userSelect = 'none';
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+    handle.addEventListener('keydown', function(evt) {
+      if (evt.key === 'Enter' || evt.key === ' ') {
+        evt.preventDefault();
+        toggle();
+      }
+    });
+  }
+
+  var stored = localStorage.getItem(COLLAPSED_KEY);
+  if (stored === null) {
+    var oldWidth = localStorage.getItem(OLD_WIDTH_KEY);
+    if (oldWidth) {
+      var m = oldWidth.match(/^(\d+)(px|rem)$/);
+      var px = m ? (m[2] === 'rem' ? parseInt(m[1], 10) * 16 : parseInt(m[1], 10)) : null;
+      stored = px !== null && px <= 96 ? 'true' : 'false';
+      localStorage.removeItem(OLD_WIDTH_KEY);
+    }
+  }
+  setCollapsed(stored === 'true');
 })();
 </script>
 {% end %}
