@@ -105,7 +105,7 @@ class TestHtmlAttrs:
 class TestIcon:
     def test_resolves_registered_name(self) -> None:
         assert icon("status") == "◎"
-        assert icon("add") == "＋"
+        assert icon("add") == "+"
         assert icon("refresh") == "↻"
         assert icon("search") == "⌕"
         assert icon("logs") == "⟳"

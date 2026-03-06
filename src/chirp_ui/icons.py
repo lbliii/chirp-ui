@@ -10,7 +10,7 @@ ICON_REGISTRY: dict[str, str] = {
     "validate": "◎",
     "run": "◎",
     # Actions
-    "add": "＋",
+    "add": "+",
     "refresh": "↻",
     "search": "⌕",
     "arrow": "▸",

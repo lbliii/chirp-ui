@@ -1627,7 +1627,7 @@ class TestActionContainers:
             ") %}"
             '{% slot toolbar_controls %}<button>Filters</button>{% end %}'
             '{% slot filter_actions %}<button type="submit">Clear</button>{% end %}'
-            '{% slot selection %}<a>python ×</a>{% end %}'
+            '{% slot selection %}<a>python x</a>{% end %}'
             "<article>Skill A</article>"
             "{% end %}"
         ).render()

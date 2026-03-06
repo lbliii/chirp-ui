@@ -51,7 +51,7 @@ Components that accept an `icon` param (e.g. `section`, `card`, `btn`, `alert`, 
 | home | ◉ |
 | shortcut | ⌘ |
 | skills | ✦ |
-| add | ＋ |
+| add | + |
 | refresh | ↻ |
 | search | ⌕ |
 | arrow, migrate, config | ▸ |
@@ -517,7 +517,7 @@ High-level browse/index composite that wraps `search_header`, optional `filter_b
   results_cols=2
 ) %}
   {% slot toolbar_controls %}{{ btn("Filters", variant="default", size="sm") }}{% end %}
-  {% slot selection %}<a class="chirpui-badge chirpui-badge--primary">python ×</a>{% end %}
+  {% slot selection %}<a class="chirpui-badge chirpui-badge--primary">python x</a>{% end %}
   {% for skill in skills %}
     {{ resource_card("/skill/" ~ skill.name, skill.name, description=skill.description or "—") }}
   {% end %}
