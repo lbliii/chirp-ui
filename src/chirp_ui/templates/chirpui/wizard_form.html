@@ -1,32 +1,26 @@
 {#- chirp-ui: Wizard form component
     Server-driven multi-step form wrapper. Bundles stepper + swap target + form slot.
     Use for HTMX fragment-style wizards: forms submit and replace the entire wrapper
-    so the step indicator stays in sync. Applies hx-disinherit so forms inside
-    do not inherit shell-level hx-target/hx-swap.
+    so the step indicator stays in sync. Uses safe_region for hx-disinherit.
 
     Usage:
-        from "chirpui/wizard_form.html" import wizard_form
+        {% from "chirpui/wizard_form.html" import wizard_form %}
 
-        call wizard_form("checkout", steps=steps, current=step)
-            form hx-post="/wizard/step2" hx-target="#checkout" hx-swap="outerHTML"
+        {% call wizard_form("checkout", steps=steps, current=step) %}
+            <form hx-post="/wizard/step2" hx-target="#checkout" hx-swap="outerHTML">
                 ...fields...
-            end
-        end
+            </form>
+        {% end %}
 
     Backend: return the full wizard_form wrapper for fragment requests.
 -#}
 
 {% from "chirpui/stepper.html" import stepper %}
+{% from "chirpui/fragment_island.html" import safe_region %}
 
 {% def wizard_form(id, steps, current=1, cls="", attrs="") %}
-{% set disinherit = "hx-select hx-target hx-swap" %}
-<div id="{{ id }}"
-     class="chirpui-wizard-form{{ " " ~ cls if cls else "" }}"
-     hx-disinherit="{{ disinherit }}"
-     {{ attrs | safe }}>
+{% call safe_region(id, cls="chirpui-wizard-form " ~ cls, attrs=attrs) %}
     {{ stepper(steps=steps, current=current) }}
-    <div class="chirpui-wizard-form__body">
-        {% slot %}
-    </div>
-</div>
+    <div class="chirpui-wizard-form__body">{{ caller() }}</div>
+{% end %}
 {% end %}

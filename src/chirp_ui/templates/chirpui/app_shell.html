@@ -25,6 +25,7 @@
             ...
         end
 -#}
+{% from "chirpui/shell_frame.html" import shell_outlet, shell_outlet_attrs %}
 {% from "chirpui/sidebar.html" import sidebar_toggle %}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
 
@@ -57,9 +58,8 @@
         </div>
     </header>
     <aside class="chirpui-app-shell__sidebar{{ sidebar_class }}">{% slot sidebar %}</aside>
-    <main id="main" class="chirpui-app-shell__main" hx-boost="true" hx-target="#main"
-          hx-swap="innerHTML transition:true" hx-select="#page-content">
-        {% slot %}
+    <main id="main" class="chirpui-app-shell__main" {{ shell_outlet_attrs() }}>
+        <div id="page-content" class="chirpui-shell-outlet">{% slot %}</div>
     </main>
 </div>
 <script>

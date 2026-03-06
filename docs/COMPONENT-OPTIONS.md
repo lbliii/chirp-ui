@@ -26,8 +26,9 @@ Components that use `{% slot %}` (e.g. `form`, `card`, `card_link`, `resource_in
 | `variant` | `solo` (input only, for live search), `with-button` (input + compact submit), `with-icon` (input with ⌕ prefix) |
 | `button_label` | Submit button text when `variant="with-button"` (default: "Search") |
 | `button_icon` | Icon for button or prefix when `variant="with-icon"` (default: "⌕") |
+| `search_sync` | When `search_url`/`search_target` set, defaults to `this:replace` for live search. Override or pass `""` to disable. |
 
-With `with-button`, the input flexes to fill space; the button stays compact.
+With `with-button`, the input flexes to fill space; the button stays compact. Live search with `search_url`/`search_target` uses `hx-sync="this:replace"` by default to prevent stale results when typing rapidly.
 
 Use `| default()` for optional variables that may be unset on first load (e.g. `selected_tags | default([])` when the handler may omit the key). Variables used inside macro slots must be in the page context — Chirp passes handler context through to `render_block()`.
 
@@ -105,11 +106,21 @@ Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates w
 
 ---
 
+## Shell Frame and Safe Regions
+
+| Component | Description |
+|-----------|-------------|
+| `shell_outlet` | Main content swap target; wraps content in `#page-content` for hx-select |
+| `shell_outlet_attrs` | Standard hx-boost/hx-target/hx-swap/hx-select attributes for main |
+| `shell_region` | Persistent region container (id for OOB updates) |
+| `safe_region` | HTMX-safe mutation region; `hx-disinherit` to avoid inherited shell attributes |
+| `fragment_island` | Alias for `safe_region`; use either |
+
 ## Fragment Island and DnD Primitives
 
 | Component | Description |
 |-----------|-------------|
-| `fragment_island` | HTMX-safe mutation region; wraps content with `hx-disinherit` to avoid inherited shell attributes |
+| `fragment_island` | Alias for `safe_region`; HTMX-safe mutation region |
 | `dnd_list`, `dnd_item`, `dnd_handle`, `dnd_drop_indicator` | Row drag-drop primitives |
 | `dnd_board`, `dnd_column`, `dnd_card` | Kanban board primitives |
 
@@ -136,6 +147,8 @@ Dashboard-grade interaction components. See [DASHBOARD-MATURITY-CONTRACT.md](DAS
 {{ inline_edit_field_display(value=item.name, edit_url="/items/1/edit-name", swap_id="name-field") }}
 {{ inline_edit_field_form(name="name", value=item.name, save_url="/items/1/save-name", cancel_url="/items/1", swap_id="name-field") }}
 ```
+
+Uses `hx-sync` internally: form aborts when Cancel link fires; Cancel aborts when form submits; Edit trigger uses `this:replace` for rapid clicks.
 
 ### row_actions
 
@@ -675,6 +688,10 @@ All core form/button helpers now support both:
   {{ search_bar("q", variant="with-button") }}
 {% end %}
 ```
+
+Forms with `hx-post`/`hx-put`/`hx-patch`/`hx-delete` (via params or `attrs_map`) reset on successful response by default. Use `hx_reset_on_success=false` to opt out. See [htmx reset user input](https://htmx.org/examples/reset-user-input/).
+
+For forms with htmx, add `hx_sync="this:replace"` (or via `attrs_map`) to prevent double-submit. See [htmx synchronization](https://htmx.org/docs/#synchronization).
 
 ### BEM-based components (alert, badge)
 

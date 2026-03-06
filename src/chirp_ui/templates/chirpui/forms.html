@@ -9,13 +9,23 @@
 {% def form(action, method="get", enctype=none, cls="", attrs="", attrs_map=none,
            hx_get=none, hx_post=none, hx_put=none, hx_patch=none, hx_delete=none,
            hx_target=none, hx_swap=none, hx_trigger=none, hx_include=none,
-           hx_select=none, hx_select_oob=none, hx_disabled_elt=none,
-           hx_ext=none, hx_vals=none) %}
+           hx_select=none, hx_select_oob=none, hx_disabled_elt=none, hx_sync=none,
+           hx_ext=none, hx_vals=none, hx_reset_on_success=none) %}
+{#- hx_reset_on_success: when true, form resets after successful htmx response (2xx).
+   Defaults to true when form has hx-post/put/patch/delete (via params or attrs_map).
+   See https://htmx.org/examples/reset-user-input/
+   hx_sync: pass explicitly or via attrs_map to prevent double-submit; e.g. "this:replace".
+   See https://htmx.org/docs/#synchronization -#}
+{% set _has_hx = hx_post or hx_put or hx_patch or hx_delete or (attrs_map or {}).get("hx-post") or (attrs_map or {}).get("hx-put") or (attrs_map or {}).get("hx-patch") or (attrs_map or {}).get("hx-delete") %}
+{% set _reset = hx_reset_on_success if hx_reset_on_success is not none else _has_hx %}
+{% set _sync_from_attrs = (attrs_map or {}).get("hx-sync") %}
+{% set _sync = hx_sync if hx_sync is not none else _sync_from_attrs %}
 <form action="{{ action }}" method="{{ method }}"
       {% if enctype %}enctype="{{ enctype }}"{% end %}
       class="chirpui-form{{ " " ~ cls if cls else "" }}"
       {{ attrs | html_attrs }}
       {{ attrs_map | html_attrs }}
+      {% if _reset %}hx-on::after-request="if(event.detail.successful) this.reset()"{% end %}
       {% if hx_get %}hx-get="{{ hx_get }}"{% end %}
       {% if hx_post %}hx-post="{{ hx_post }}"{% end %}
       {% if hx_put %}hx-put="{{ hx_put }}"{% end %}
@@ -28,6 +38,7 @@
       {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
       {% if hx_select_oob %}hx-select-oob="{{ hx_select_oob }}"{% end %}
       {% if hx_disabled_elt %}hx-disabled-elt="{{ hx_disabled_elt }}"{% end %}
+      {% if _sync %}hx-sync="{{ _sync }}"{% end %}
       {% if hx_ext %}hx-ext="{{ hx_ext }}"{% end %}
       {% if hx_vals is not none %}hx-vals="{{ hx_vals }}"{% end %}>
     {% slot %}
@@ -465,7 +476,7 @@
 {# Search input with optional htmx debounced search #}
 {% def search_field(name, value="", label=none, search_url=none, search_target=none,
                     search_trigger="keyup changed delay:300ms", search_include=none,
-                    placeholder="Search...", errors=none, attrs="", attrs_map=none,
+                    search_sync=none, placeholder="Search...", errors=none, attrs="", attrs_map=none,
                     search_attrs_map=none) %}
 <div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
     {% if label %}
@@ -483,7 +494,9 @@
            {% if search_url and search_target %}hx-trigger="{{ search_trigger }}"{% end %}
            {% if search_url and search_target %}hx-target="{{ search_target }}"{% end %}
            {% if search_url and search_target %}hx-swap="innerHTML"{% end %}
-           {% if search_url and search_target and search_include %}hx-include="{{ search_include }}"{% end %}>
+           {% if search_url and search_target and search_include %}hx-include="{{ search_include }}"{% end %}
+           {% set _search_sync = search_sync if search_sync is not none else ("this:replace" if (search_url and search_target) else none) %}
+           {% if _search_sync %}hx-sync="{{ _search_sync }}"{% end %}>
     {% if errors %}
         {% for msg in errors | field_errors(name) %}
             <span class="chirpui-field__error">{{ msg }}</span>
@@ -496,7 +509,7 @@
    variant: "solo" (input only, for live search), "with-button" (input + compact submit),
    "with-icon" (input with ⌕ prefix). With with-button, input flexes; button stays compact. #}
 {% def search_bar(name, value="", variant="solo", label=none, search_url=none, search_target=none,
-                  search_trigger="keyup changed delay:300ms", search_include=none,
+                  search_trigger="keyup changed delay:300ms", search_include=none, search_sync=none,
                   placeholder="Search...", button_label="Search", button_icon="⌕",
                   errors=none, attrs="", attrs_map=none, search_attrs_map=none) %}
 <div class="chirpui-field chirpui-search-bar chirpui-search-bar--{{ variant }}{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
@@ -519,7 +532,9 @@
                {% if search_url and search_target %}hx-trigger="{{ search_trigger }}"{% end %}
                {% if search_url and search_target %}hx-target="{{ search_target }}"{% end %}
                {% if search_url and search_target %}hx-swap="innerHTML"{% end %}
-               {% if search_url and search_target and search_include %}hx-include="{{ search_include }}"{% end %}>
+               {% if search_url and search_target and search_include %}hx-include="{{ search_include }}"{% end %}
+               {% set _search_sync = search_sync if search_sync is not none else ("this:replace" if (search_url and search_target) else none) %}
+               {% if _search_sync %}hx-sync="{{ _search_sync }}"{% end %}>
         {% if variant == "with-button" %}
         <button type="submit" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm chirpui-search-bar__btn">
             <span class="chirpui-btn__icon">{{ button_icon }}</span>

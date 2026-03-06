@@ -1263,6 +1263,38 @@ class TestForms:
         ).render()
         assert 'hx-target="#new"' in html
 
+    def test_form_macro_reset_on_success_default_for_hx_forms(self, env: Environment) -> None:
+        """Forms with hx-post/put/patch/delete get reset-on-success by default."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", hx_post="/x", hx_target="#y") %}Body{% end %}'
+        ).render()
+        assert 'hx-on::after-request="if(event.detail.successful) this.reset()"' in html
+
+    def test_form_macro_reset_on_success_via_attrs_map(self, env: Environment) -> None:
+        """Forms with hx-post in attrs_map get reset-on-success by default."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", attrs_map={"hx-post": "/x", "hx-target": "#y"}) %}Body{% end %}'
+        ).render()
+        assert 'hx-on::after-request="if(event.detail.successful) this.reset()"' in html
+
+    def test_form_macro_reset_on_success_opt_out(self, env: Environment) -> None:
+        """hx_reset_on_success=false disables form reset."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", hx_post="/x", hx_reset_on_success=false) %}Body{% end %}'
+        ).render()
+        assert "hx-on::after-request" not in html
+
+    def test_form_macro_no_reset_without_hx(self, env: Environment) -> None:
+        """Forms without hx attributes do not get reset-on-success."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/submit", method="post") %}<input>{% end %}'
+        ).render()
+        assert "hx-on::after-request" not in html
+
     def test_fieldset_macro(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/forms.html" import fieldset %}'

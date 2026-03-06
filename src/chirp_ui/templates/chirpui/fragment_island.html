@@ -1,21 +1,20 @@
-{#- chirp-ui: Fragment island primitive
+{#- chirp-ui: Safe region / Fragment island primitives
     HTMX-safe mutation region that isolates local updates from inherited
     shell attributes (hx-select, hx-target, hx-swap). Use for add/delete/reorder
     regions inside app shells with hx-boost or broad hx-select.
 
+    safe_region: Semantic name for the framework contract.
+    fragment_island: Alias; use either.
+
     Usage:
-        from "chirpui/fragment_island.html" import fragment_island
+        {% from "chirpui/fragment_island.html" import safe_region %}
+        {% call safe_region("step-list") %}...{% end %}
 
-        call fragment_island("step-list")
-            ...mutation region content...
-        end
-
-        call fragment_island("my-list", hx_target="#my-list", hx_swap="outerHTML")
-            ...
-        end
+        {% from "chirpui/fragment_island.html" import fragment_island %}
+        {% call fragment_island("my-list", hx_target="#my-list", hx_swap="outerHTML") %}...{% end %}
 -#}
 
-{% def fragment_island(
+{% def safe_region(
     id,
     hx_target=none,
     hx_swap=none,
@@ -33,4 +32,17 @@
      {{ attrs | safe }}>
     {% slot %}
 </div>
+{% end %}
+
+{% def fragment_island(
+    id,
+    hx_target=none,
+    hx_swap=none,
+    hx_select=none,
+    cls="",
+    attrs=""
+) %}
+{% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs=attrs) %}
+    {% slot %}
+{% end %}
 {% end %}

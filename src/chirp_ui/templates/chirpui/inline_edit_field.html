@@ -24,6 +24,7 @@
             hx-get="{{ edit_url }}"
             hx-target="{{ target }}"
             hx-swap="innerHTML"
+            hx-sync="this:replace"
             title="{{ edit_label }}"
             aria-label="{{ edit_label }}">
         {% if edit_icon %}<span class="chirpui-inline-edit__icon" aria-hidden="true">&#9998;</span>{% end %}
@@ -39,7 +40,8 @@
     <form class="chirpui-inline-edit__form" method="post" action="{{ save_url }}"
           hx-post="{{ save_url }}"
           hx-target="{{ target }}"
-          hx-swap="innerHTML">
+          hx-swap="innerHTML"
+          hx-sync="a[href]:abort">
         <input type="text" name="{{ name }}" value="{{ value }}" class="chirpui-field__input chirpui-inline-edit__input"
                autofocus>
         <div class="chirpui-inline-edit__actions">
@@ -48,7 +50,8 @@
                hx-get="{{ cancel_url }}"
                hx-target="{{ target }}"
                hx-swap="innerHTML"
-               hx-push-url="false">{{ cancel_label }}</a>
+               hx-push-url="false"
+               hx-sync="closest form:abort">{{ cancel_label }}</a>
         </div>
     </form>
 </div>
