@@ -8,6 +8,7 @@
 {% from "chirpui/skeleton.html" import skeleton %}
 {% from "chirpui/forms.html" import text_field %}
 {% from "chirpui/button.html" import btn %}
+{% from "chirpui/reveal_on_scroll.html" import reveal_on_scroll %}
 
 {% call container() %}
 {% call stack() %}
@@ -101,6 +102,30 @@
     </p>
   </div>
 </div>
+{% end %}
+
+<h2>Reveal on scroll</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Content animates in when scrolled into view. Uses Alpine Intersect (<code>x-intersect.once</code>).
+</p>
+{% call block() %}
+{% call stack(gap="md") %}
+{% call reveal_on_scroll() %}
+{% call card(title="Revealed card 1") %}
+<p>Scroll down to see this card animate in.</p>
+{% end %}
+{% end %}
+{% call reveal_on_scroll() %}
+{% call card(title="Revealed card 2") %}
+<p>Each block reveals when it enters the viewport.</p>
+{% end %}
+{% end %}
+{% call reveal_on_scroll() %}
+{% call card(title="Revealed card 3") %}
+<p>Uses <code>reveal_on_scroll</code> from chirpui.</p>
+{% end %}
+{% end %}
+{% end %}
 {% end %}
 
 <h2>Form error shake</h2>

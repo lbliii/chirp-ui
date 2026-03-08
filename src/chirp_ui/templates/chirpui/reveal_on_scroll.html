@@ -1,0 +1,28 @@
+{#- chirp-ui: Reveal on scroll — animate content when it enters the viewport
+
+    Uses Alpine Intersect plugin. Content is hidden until scrolled into view,
+    then fades/slides in. .once modifier ensures animation runs only the first time.
+
+    Outer div stays in layout (min-height) so Intersection Observer can fire;
+    inner div uses x-show + x-transition for the reveal animation.
+
+    Usage:
+        from "chirpui/reveal_on_scroll.html" import reveal_on_scroll
+
+        call reveal_on_scroll()
+            <p>This content animates in when you scroll it into view.</p>
+        end
+
+    See https://alpinejs.dev/plugins/intersect
+-#}
+
+{% def reveal_on_scroll(cls="") %}
+<div class="chirpui-reveal-on-scroll{{ " " ~ cls if cls else "" }}"
+     x-data="{ shown: false }"
+     x-intersect.once="shown = true"
+     style="min-height: 1px;">
+    <div x-show="shown" x-transition>
+        {% slot %}
+    </div>
+</div>
+{% end %}

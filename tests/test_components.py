@@ -2447,6 +2447,27 @@ class TestBadge:
         assert "◆" in html
 
 
+class TestRevealOnScroll:
+    def test_reveal_on_scroll_renders_intersect_directives(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/reveal_on_scroll.html" import reveal_on_scroll %}'
+            "{% call reveal_on_scroll() %}<p>Content</p>{% end %}"
+        ).render()
+        assert "chirpui-reveal-on-scroll" in html
+        assert "x-intersect.once" in html
+        assert "x-data" in html
+        assert "x-show" in html
+        assert "x-transition" in html
+        assert "Content" in html
+
+    def test_reveal_on_scroll_with_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/reveal_on_scroll.html" import reveal_on_scroll %}'
+            '{% call reveal_on_scroll(cls="my-class") %}x{% end %}'
+        ).render()
+        assert "chirpui-reveal-on-scroll my-class" in html
+
+
 class TestSkeleton:
     def test_skeleton_default(self, env: Environment) -> None:
         html = env.from_string(
