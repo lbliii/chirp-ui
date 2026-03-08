@@ -3,6 +3,10 @@
     Use for pagination, breadcrumbs, or interlinked content pages that should
     swap without a full page reload.
 
+    Uses hx-boost on the link itself so the server receives HX-Boosted and
+    renders the page_block (not the narrow fragment). Boost on a leaf <a>
+    element cannot leak to children.
+
     Plain <a> tags work fine for most links. Use nav_link only when you want
     the smooth SPA transition effect within the app shell.
 
@@ -14,12 +18,10 @@
         {% call nav_link("/details") %}View details{% end %}
 -#}
 
-{% def nav_link(href, label="", target="#main", select="#page-content", cls="") %}
+{% def nav_link(href, label="", cls="") %}
 <a class="{{ cls }}"
    href="{{ href }}"
-   hx-get="{{ href }}"
-   hx-target="{{ target }}"
-   hx-swap="innerHTML transition:true"
-   hx-select="{{ select }}"
-   hx-push-url="true">{% if label %}{{ label }}{% else %}{% slot %}{% end %}</a>
+   hx-boost="true"
+   hx-target="#main"
+   hx-swap="innerHTML transition:true">{% if label %}{{ label }}{% else %}{% slot %}{% end %}</a>
 {% end %}
