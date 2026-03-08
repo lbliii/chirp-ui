@@ -34,7 +34,8 @@
 {% def drawer_trigger(target, label="Open", cls="") %}
 <button class="chirpui-drawer-trigger{{ " " ~ cls if cls else "" }}"
         type="button"
-        onclick="(function(){var d=document.getElementById('{{ target }}');if(d&&!d.open)d.showModal();})()">
+        x-data="{}"
+        @click="document.getElementById('{{ target }}')?.showModal()">
     {{ label }}
 </button>
 {% end %}
