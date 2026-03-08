@@ -1,0 +1,25 @@
+{#- chirp-ui: SPA-style link for content areas
+    Opt-in navigation link with explicit HTMX attributes for SPA transitions.
+    Use for pagination, breadcrumbs, or interlinked content pages that should
+    swap without a full page reload.
+
+    Plain <a> tags work fine for most links. Use nav_link only when you want
+    the smooth SPA transition effect within the app shell.
+
+    Usage:
+        {% from "chirpui/nav_link.html" import nav_link %}
+
+        {{ nav_link("/page-2", "Next page") }}
+
+        {% call nav_link("/details") %}View details{% end %}
+-#}
+
+{% def nav_link(href, label="", target="#main", select="#page-content", cls="") %}
+<a class="{{ cls }}"
+   href="{{ href }}"
+   hx-get="{{ href }}"
+   hx-target="{{ target }}"
+   hx-swap="innerHTML transition:true"
+   hx-select="{{ select }}"
+   hx-push-url="true">{% if label %}{{ label }}{% else %}{% slot %}{% end %}</a>
+{% end %}
