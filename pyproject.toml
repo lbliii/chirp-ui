@@ -32,11 +32,11 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "kida-templates>=0.2.4", # Template engine (PackageLoader added in 0.2.0)
+    "kida-templates>=0.2.5", # Template engine (PackageLoader added in 0.2.0)
 ]
 
 [project.optional-dependencies]
-showcase = ["chirp>=0.1.2"] # For examples/component-showcase
+showcase = ["bengal-chirp>=0.1.6"] # For examples/component-showcase
 
 [project.urls]
 Homepage = "https://github.com/lbliii/chirp-ui"

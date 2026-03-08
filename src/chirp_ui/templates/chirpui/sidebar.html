@@ -39,9 +39,16 @@
 {% end %}
 {% end %}
 
-{% def sidebar_link(href, label, icon="", active=false, cls="") %}
+{% def sidebar_link(href, label, icon="", active=false, boost=true, cls="") %}
 <a class="chirpui-sidebar__link{{ " chirpui-sidebar__link--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
-   href="{{ href }}" title="{{ label }}">{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span></a>
+   href="{{ href }}" title="{{ label }}"
+   {% if boost %}
+   hx-get="{{ href }}"
+   hx-target="#main"
+   hx-swap="innerHTML transition:true"
+   hx-select="#page-content"
+   hx-push-url="true"
+   {% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span></a>
 {% end %}
 
 {% def sidebar_toggle(cls="") %}
