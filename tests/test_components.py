@@ -1014,6 +1014,49 @@ class TestDropdown:
 
 
 # ---------------------------------------------------------------------------
+# Alpine magics and chirpui:* events
+# ---------------------------------------------------------------------------
+
+
+class TestAlpineMagics:
+    """Verify dropdown_menu, tabs_panels, tray, modal_overlay emit chirpui:* events."""
+
+    def test_dropdown_menu_emits_dispatch(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_menu %}'
+            '{{ dropdown_menu("<span>X</span>", items=[{"label": "A", "href": "/a"}]) }}'
+        ).render()
+        assert "chirpui:dropdown-selected" in html
+        assert 'x-ref="trigger"' in html
+        assert 'x-ref="panel"' in html
+
+    def test_tabs_panels_emits_dispatch(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tabs_panels.html" import tabs_container, tab, tab_panel %}'
+            '{% call tabs_container(active="a") %}'
+            '{{ tab("a", "A") }}{{ tab("b", "B") }}'
+            '{% call tab_panel("a") %}x{% end %}{% call tab_panel("b") %}y{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui:tab-changed" in html
+        assert 'x-id="[\'tab\'' in html or "x-id=" in html
+
+    def test_tray_emits_dispatch(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tray.html" import tray %}'
+            '{% call tray("filters", "Filters") %}content{% end %}'
+        ).render()
+        assert "chirpui:tray-closed" in html
+
+    def test_modal_overlay_emits_dispatch(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/modal_overlay.html" import modal_overlay %}'
+            '{% call modal_overlay("confirm", "Confirm") %}content{% end %}'
+        ).render()
+        assert "chirpui:modal-closed" in html
+
+
+# ---------------------------------------------------------------------------
 # Toast
 # ---------------------------------------------------------------------------
 

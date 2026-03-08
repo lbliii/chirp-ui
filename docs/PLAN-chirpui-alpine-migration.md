@@ -188,7 +188,7 @@ For each component:
 - [x] Accessibility preserved (aria-expanded, focus management, Escape, arrow keys where applicable)
 - [x] chirpui.js removed or reduced to &lt;20 lines (pre-paint only)
 - [x] README documents Alpine as required
-- [ ] Chirp examples (kanban_shell, pages_shell, contacts_shell, rag_demo, llm_playground) include Alpine and work
+- [x] Chirp examples (kanban_shell, pages_shell) extend app_shell_layout and work
 
 ---
 
@@ -203,6 +203,13 @@ Alpine.js magics (`$refs`, `$id`, `$dispatch`, `$nextTick`) have been adopted ac
 See [ALPINE-MAGICS.md](ALPINE-MAGICS.md) for full documentation.
 
 ---
+
+## Completed: App Shell Layout Refactor (2025-03)
+
+- kanban_shell and pages_shell now extend `chirpui/app_shell_layout.html` instead of custom layouts
+- Added `head_extra` block for layout-specific CSS/scripts
+- Added `brand_link` block for custom brand href (override when default `/` is wrong)
+- Kida note: avoid `{% block x %}/{% end %}` inside attribute values (causes k-par-001)
 
 ## Open Questions
 

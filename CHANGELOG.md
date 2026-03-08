@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Alpine magics** — `$refs`, `$id`, `$dispatch`, `$nextTick` for dropdown focus management, unique ARIA IDs, and cross-component events
+- **Custom events** — `chirpui:dropdown-selected`, `chirpui:tab-changed`, `chirpui:tray-closed`, `chirpui:modal-closed` for app-level handling (HTMX, analytics)
+- **Dropdown accessibility** — Escape/click-outside with focus return; arrow-key navigation for dropdown_select; `x-ref` trigger/panel
+- **docs/ALPINE-MAGICS.md** — Reference for magics and events
+
 ## [0.1.2] — 2026-03-06
 
 ### Fixed
