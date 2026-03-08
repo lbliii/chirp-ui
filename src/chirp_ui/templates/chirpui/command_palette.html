@@ -31,7 +31,7 @@
 {% def command_palette_trigger(target="command-palette", label="Search", cls="") %}
 <button type="button"
         class="chirpui-command-palette__trigger{{ " " ~ cls if cls else "" }}"
-        x-data="{}"
+        x-data
         @click="document.getElementById('{{ target }}').showModal()">
     {{ label }} <kbd class="chirpui-command-palette__kbd">⌘K</kbd>
 </button>

@@ -17,6 +17,9 @@
    -> @supports capability overrides (oklch, color-mix in oklch)
    ========================================================================== */
 
+/* Alpine x-cloak — hide until Alpine initializes */
+[x-cloak] { display: none !important; }
+
 :root {
     font-optical-sizing: var(--chirpui-font-optical-sizing, auto);
 

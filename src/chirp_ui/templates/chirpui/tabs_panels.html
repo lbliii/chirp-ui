@@ -1,6 +1,5 @@
 {#- chirp-ui: Tab panels (button-based, client-side switching)
-    Use tab() for each button, tab_panel() for each content. Requires chirpui.js for behavior.
-    Alternative to chirpui/tabs.html which is link-based for htmx.
+    Use tab() for each button, tab_panel() for each content. Requires Alpine.js.
 
     Usage:
         from "chirpui/tabs_panels.html" import tabs_container, tab, tab_panel
@@ -18,24 +17,25 @@
 -#}
 
 {% def tab(id, label, active=false) %}
-<button type="button" class="chirpui-tabs__tab{% if active %} chirpui-tabs__tab--active{% endif %}"
-        role="tab" aria-selected="{{ 'true' if active else 'false' }}"
+<button type="button" class="chirpui-tabs__tab"
+        :class="{ 'chirpui-tabs__tab--active': active === '{{ id }}' }"
+        role="tab" :aria-selected="active === '{{ id }}'"
         aria-controls="panel-{{ id }}" id="tab-{{ id }}"
-        data-tab-trigger="{{ id }}">
+        @click="active = '{{ id }}'">
     {{ label }}
 </button>
 {% end %}
 
 {% def tab_panel(id, active=false) %}
 <div class="chirpui-tab-panel" id="panel-{{ id }}" role="tabpanel"
-     aria-labelledby="tab-{{ id }}" data-tab-panel="{{ id }}"
-     {% if not active %}hidden{% endif %}>
+     aria-labelledby="tab-{{ id }}"
+     x-show="active === '{{ id }}'" x-cloak x-transition>
     {% slot %}
 </div>
 {% end %}
 
 {% def tabs_container(active=none) %}
-<div class="chirpui-tabs" data-chirpui-tabs data-active="{{ active or '' }}">
+<div class="chirpui-tabs" x-data="{ active: '{{ active or '' }}' }">
     {% slot %}
 </div>
 {% end %}

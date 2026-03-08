@@ -12,7 +12,7 @@
 
 {% def modal_overlay_trigger(id, label, variant="default", icon=none) %}
 <button type="button" class="chirpui-btn chirpui-btn--{{ variant }} chirpui-btn--sm"
-        x-data="{}"
+        x-data
         @click="$store.modals['{{ id }}'] = true"
         aria-controls="modal-{{ id }}" :aria-expanded="$store.modals['{{ id }}']">
     {% if icon %}<span aria-hidden="true">{{ icon }}</span>{% endif %}

@@ -32,7 +32,7 @@
 {% def modal_trigger(target, label="Open", cls="") %}
 <button class="chirpui-modal-trigger{{ " " ~ cls if cls else "" }}"
         type="button"
-        x-data="{}"
+        x-data
         @click="document.getElementById('{{ target }}')?.showModal()">
     {{ label }}
 </button>

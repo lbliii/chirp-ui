@@ -12,7 +12,7 @@
 
 {% def tray_trigger(id, label, icon=none) %}
 <button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm"
-        x-data="{}"
+        x-data
         @click="$store.trays['{{ id }}'] = true"
         aria-controls="tray-{{ id }}" :aria-expanded="$store.trays['{{ id }}']">
     {% if icon %}<span aria-hidden="true">{{ icon | icon }}</span>{% endif %}
