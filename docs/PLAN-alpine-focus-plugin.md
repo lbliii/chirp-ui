@@ -161,6 +161,10 @@ Same pattern as tray:
 
 ---
 
+## Chirp Apps (Dori, etc.)
+
+Apps using Chirp's `alpine=True` injection get Alpine from Chirp (not from app_shell_layout). Chirp's `alpine_snippet` now includes @alpinejs/focus before Alpine core, so tray and modal_overlay work in Dori and any Chirp app with alpine=True. No app changes needed.
+
 ## References
 
 - [Alpine Focus Plugin](https://alpinejs.dev/plugins/focus)
