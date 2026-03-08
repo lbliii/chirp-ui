@@ -33,7 +33,7 @@
 {% block shell %}
 {% from "chirpui/sidebar.html" import sidebar, sidebar_toggle %}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
-{% from "chirpui/shell_frame.html" import shell_outlet, shell_outlet_attrs %}
+{% from "chirpui/shell_frame.html" import shell_outlet %}
 {% from "chirpui/toast.html" import toast_container %}
 {% set _sidebar_collapsible = "false" %}
 {% set _collapsible = _sidebar_collapsible and _sidebar_collapsible != "false" %}
@@ -54,7 +54,7 @@
     </div>
   </header>
   <aside class="chirpui-app-shell__sidebar">{% block sidebar %}{% end %}</aside>
-  <main id="main" class="chirpui-app-shell__main" {{ shell_outlet_attrs() }}>
+  <main id="main" class="chirpui-app-shell__main">
     <div id="page-content" class="chirpui-shell-outlet">{% block content %}{% end %}</div>
   </main>
 </div>

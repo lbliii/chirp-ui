@@ -34,7 +34,9 @@
 </div>
 {% end %}
 
-{#- Standard hx-* attributes for boosted main content area. Use on <main> or content wrapper. -#}
+{#- Retained for backward compatibility. Navigation is now driven by explicit
+    hx-get on sidebar_link (boost=true) rather than inherited hx-boost on <main>.
+    Custom shells that called shell_outlet_attrs() will get an empty expansion;
+    remove the call when convenient. -#}
 {% def shell_outlet_attrs(outlet_id="page-content") %}
-hx-boost="true" hx-target="#main" hx-swap="innerHTML transition:true" hx-select="#{{ outlet_id }}"
 {% end %}
