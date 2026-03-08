@@ -1,43 +1,20 @@
-{#- chirp-ui: Shell frame primitives — one content outlet, one persistent-region contract
+{#- chirp-ui: Shell frame primitives — persistent-region contract
 
     Maps to Chirp's PageComposition model. Use shell_region for OOB targets
-    (shell_actions, badges, breadcrumbs). Use shell_outlet for the main content
-    swap target. Reduces duplicated HTMX logic across app templates.
+    (shell_actions, badges, breadcrumbs).
 
     Usage:
-        {% from "chirpui/shell_frame.html" import shell_region, shell_outlet %}
+        {% from "chirpui/shell_frame.html" import shell_region %}
 
         <div id="{{ shell_actions_target }}" class="chirpui-app-shell__shell-actions">
           {% call shell_region(shell_actions_target) %}
             {{ shell_actions_bar(shell_actions) }}
           {% end %}
         </div>
-
-        <main id="main" ...>
-          {% call shell_outlet() %}
-            {% block content %}{% end %}
-          {% end %}
-        </main>
-
-    Or use shell_outlet_attrs for the main element's hx-* attributes.
 -#}
 
 {% def shell_region(id, cls="") %}
 <div id="{{ id }}" class="chirpui-shell-region{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
-
-{#- Retained for backward compatibility. The page-content wrapper div is no
-    longer needed — content renders directly inside <main>. Existing callers
-    get a plain pass-through; remove {% call shell_outlet() %} when convenient. -#}
-{% def shell_outlet(id="page-content", cls="") %}
-{% slot %}
-{% end %}
-
-{#- Retained for backward compatibility. Navigation is now driven by explicit
-    hx-get on sidebar_link (boost=true) rather than inherited hx-boost on <main>.
-    Custom shells that called shell_outlet_attrs() will get an empty expansion;
-    remove the call when convenient. -#}
-{% def shell_outlet_attrs(outlet_id="page-content") %}
 {% end %}
