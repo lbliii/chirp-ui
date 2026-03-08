@@ -20,22 +20,22 @@
 <button type="button" class="chirpui-tabs__tab"
         :class="{ 'chirpui-tabs__tab--active': active === '{{ id }}' }"
         role="tab" :aria-selected="active === '{{ id }}'"
-        aria-controls="panel-{{ id }}" id="tab-{{ id }}"
-        @click="active = '{{ id }}'">
+        :aria-controls="$id('tabpanel', '{{ id }}')" :id="$id('tab', '{{ id }}')"
+        @click="active = '{{ id }}'; $dispatch('chirpui:tab-changed', { tab: '{{ id }}' })">
     {{ label }}
 </button>
 {% end %}
 
 {% def tab_panel(id, active=false) %}
-<div class="chirpui-tab-panel" id="panel-{{ id }}" role="tabpanel"
-     aria-labelledby="tab-{{ id }}"
+<div class="chirpui-tab-panel" :id="$id('tabpanel', '{{ id }}')" role="tabpanel"
+     :aria-labelledby="$id('tab', '{{ id }}')"
      x-show="active === '{{ id }}'" x-cloak x-transition>
     {% slot %}
 </div>
 {% end %}
 
 {% def tabs_container(active=none) %}
-<div class="chirpui-tabs" x-data="{ active: '{{ active or '' }}' }">
+<div class="chirpui-tabs" x-id="['tab', 'tabpanel']" x-data="{ active: '{{ active or '' }}' }">
     {% slot %}
 </div>
 {% end %}

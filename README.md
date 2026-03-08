@@ -33,7 +33,7 @@ chirp-ui is an optional companion design system for [Chirp](https://github.com/l
 **What's good about it:**
 
 - **Gorgeous by default** — Full visual design out of the box. Override `--chirpui-*` CSS variables to customize.
-- **htmx-native** — Interactive components use htmx or native HTML (`<dialog>`, `<details>`). No client-side framework.
+- **htmx-native** — Interactive components use htmx or Alpine.js. Dropdown, modal, tray, tabs, theme toggle, copy button use Alpine for declarative behavior.
 - **Composable** — `{% slot %}` for content injection. Components nest freely.
 - **Modern CSS** — `:has()`, container queries, fluid typography, `prefers-color-scheme` dark mode.
 
@@ -63,6 +63,7 @@ You do not need `chirp-ui` to use Chirp. Use it when you want the companion comp
 | 2 | Serve static assets from the package (CSS, themes) |
 | 3 | Import macros in templates: `{% from "chirpui/card.html" import card %}` |
 | 4 | Include CSS: `<link rel="stylesheet" href="/static/chirpui.css">` |
+| 5 | For interactive components (dropdown, modal, tray, tabs, theme toggle): use `chirpui/app_shell_layout.html` or `chirpui/app_layout.html` — both include Alpine.js |
 
 **Serve assets:**
 
@@ -213,6 +214,42 @@ See Chirp [RAG demo](https://github.com/lbliii/chirp/tree/main/examples/rag_demo
 </details>
 
 <details>
+<summary><strong>Alpine Magics & Events</strong></summary>
+
+chirp-ui uses Alpine.js magics for accessibility and cross-component communication:
+
+| Magic | Use |
+|-------|-----|
+| `$el` | Current element (e.g. `$el.dataset.label`, `$el.value`) |
+| `$refs` | DOM refs for focus management (dropdown trigger/panel) |
+| `$store` | Global state (`modals`, `trays`) for overlay components |
+| `$id` | Unique IDs for ARIA (dropdown, tabs) |
+| `$watch` | Reactive sync (theme/style select) |
+| `$dispatch` | Custom events for app-level handling |
+| `$nextTick` | Post-render focus (dropdown_select) |
+
+**Custom events** — Listen for `chirpui:*` events on `document` or a parent:
+
+| Event | When | Detail |
+|-------|------|--------|
+| `chirpui:dropdown-selected` | Dropdown item clicked | `{ label, href? }` or `{ label, action? }` or `{ label, value? }` |
+| `chirpui:tab-changed` | Tab clicked | `{ tab }` |
+| `chirpui:tray-closed` | Tray backdrop/close clicked | `{ id }` |
+| `chirpui:modal-closed` | Modal backdrop/close clicked | `{ id }` |
+
+Example: run HTMX or analytics when a dropdown item is selected:
+
+```javascript
+document.addEventListener('chirpui:dropdown-selected', (e) => {
+  if (e.detail.action) htmx.ajax('POST', '/api/action', { values: { action: e.detail.action } });
+});
+```
+
+Full reference: [docs/ALPINE-MAGICS.md](docs/ALPINE-MAGICS.md)
+
+</details>
+
+<details>
 <summary><strong>Icons and ergonomics</strong></summary>
 
 Many components support Unicode icons via the `icon` param:
@@ -261,6 +298,8 @@ For animated icons, use `ascii_icon()` in the component slot. For custom headers
 
 - Python >= 3.14
 - kida-templates >= 0.2.4
+
+**Interactive components** (dropdown, modal, tray, tabs, theme toggle, copy button) require [Alpine.js](https://alpinejs.dev/) 3.x. The `chirpui/app_shell_layout.html` and `chirpui/app_layout.html` layouts include Alpine via CDN. For custom layouts, add Alpine before using these components.
 
 ---
 
