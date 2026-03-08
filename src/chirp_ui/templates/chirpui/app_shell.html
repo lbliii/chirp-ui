@@ -1,7 +1,7 @@
 {#- chirp-ui: App Shell component
     Full-page shell with topbar, sidebar, and main content area.
-    The main area uses hx-boost to swap only #main on navigation,
-    keeping the sidebar and topbar persistent.
+    Navigation is driven by explicit hx-boost on sidebar_link/nav_link,
+    targeting #main to keep the sidebar and topbar persistent.
 
     Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar, default (main content).
 
@@ -25,7 +25,6 @@
             ...
         end
 -#}
-{% from "chirpui/shell_frame.html" import shell_outlet, shell_outlet_attrs %}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
 
 {% def app_shell(brand="", brand_url="/", brand_slot=false, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, cls="") %}
@@ -60,18 +59,10 @@
              role="button" tabindex="0" aria-label="Toggle sidebar"></div>
         {% end %}
     </aside>
-    <main id="main" class="chirpui-app-shell__main" {{ shell_outlet_attrs() }}>
-        <div id="page-content" class="chirpui-shell-outlet">{% slot %}</div>
+    <main id="main" class="chirpui-app-shell__main">
+        {% slot %}
     </main>
 </div>
-<script>
-document.body.addEventListener('htmx:beforeSwap', function(evt) {
-  var target = evt.detail.target;
-  if (target && target.id !== 'main') {
-    evt.detail.selectOverride = '';
-  }
-});
-</script>
 {% if sidebar_collapsible %}
 <script>
 (function() {

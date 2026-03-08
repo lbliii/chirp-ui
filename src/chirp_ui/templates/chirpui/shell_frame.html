@@ -28,10 +28,11 @@
 </div>
 {% end %}
 
+{#- Retained for backward compatibility. The page-content wrapper div is no
+    longer needed — content renders directly inside <main>. Existing callers
+    get a plain pass-through; remove {% call shell_outlet() %} when convenient. -#}
 {% def shell_outlet(id="page-content", cls="") %}
-<div id="{{ id }}" class="chirpui-shell-outlet{{ " " ~ cls if cls else "" }}">
-    {% slot %}
-</div>
+{% slot %}
 {% end %}
 
 {#- Retained for backward compatibility. Navigation is now driven by explicit
