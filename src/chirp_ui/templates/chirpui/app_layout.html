@@ -19,6 +19,21 @@
 <link rel="stylesheet" href="/static/chirpui.css">
 <link rel="stylesheet" href="/static/themes/holy-light.css">
 <link rel="stylesheet" href="/static/chirpui-transitions.css">
+<script>
+(function(){var t=localStorage.getItem("chirpui-theme")||"system";var s=localStorage.getItem("chirpui-style")||"default";document.documentElement.setAttribute("data-theme",t);document.documentElement.setAttribute("data-style",s);})();
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.14.0/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+<script>
+document.addEventListener("alpine:init",function(){
+  Alpine.store("modals",{});
+  Alpine.store("trays",{});
+  Alpine.effect(function(){
+    var any=Object.values(Alpine.store("modals")).some(Boolean)||Object.values(Alpine.store("trays")).some(Boolean);
+    document.body.style.overflow=any?"hidden":"";
+  });
+});
+</script>
 {% end %}
 {% block body_after %}
 {% from "chirpui/toast.html" import toast_container %}

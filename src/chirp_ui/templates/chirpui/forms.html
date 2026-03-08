@@ -88,6 +88,10 @@
         date_field("birthday", value=form.birthday, label="Birthday")
         range_field("volume", value=50, min=0, max=100, label="Volume", show_value=true)
         hidden_field("id", value=form.id)
+        phone_field("phone", value=form.phone, label="Phone")
+        money_field("amount", value=form.amount, label="Amount")
+        masked_field("ssn", mask="999-99-9999", label="SSN")
+        masked_field("expiry", mask="99/99", label="Card expiry")
 
     Note: The field_errors filter is provided by Chirp. When using chirp-ui
     without Chirp, define your own field_errors filter or pass errors=none.
@@ -452,6 +456,59 @@
         {% end %}
     {% end %}
 </div>
+{% end %}
+
+{# Masked text input — uses Alpine Mask plugin. Pass mask (static) or mask_dynamic (expression).
+   Requires @alpinejs/mask loaded before Alpine core. See https://alpinejs.dev/plugins/mask
+   mask: static pattern, e.g. "99/99/9999", "999-99-9999"
+   mask_dynamic: Alpine expression with $input, e.g. "$money($input)" or credit card logic #}
+{% def masked_field(name, value="", label=none, errors=none, mask=none, mask_dynamic=none,
+                   required=false, placeholder="", hint=none, attrs="") %}
+{% call field_wrapper(name, label, errors, required, hint, modifier="masked") %}
+<input class="chirpui-field__input"
+       type="text" id="{{ name }}" name="{{ name }}"
+       value="{{ value }}"
+       {% if mask %}x-mask="{{ mask }}"{% end %}
+       {% if mask_dynamic %}x-mask:dynamic="{{ mask_dynamic }}"{% end %}
+       {% if required %}required{% end %}
+       {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {{ attrs | safe }}>
+{% end %}
+{% end %}
+
+{# Phone field — US format (999) 999-9999 by default. Use masked_field for other formats. #}
+{% def phone_field(name, value="", label=none, errors=none, format="us",
+                   required=false, placeholder="", hint=none, attrs="") %}
+{% set _mask = "(999) 999-9999" if format == "us" else "9999 999 9999" if format == "uk" else "+9 999 999 9999" if format == "intl" else "(999) 999-9999" %}
+{% call field_wrapper(name, label, errors, required, hint, modifier="phone") %}
+<input class="chirpui-field__input"
+       type="tel" id="{{ name }}" name="{{ name }}"
+       value="{{ value }}"
+       x-mask="{{ _mask }}"
+       {% if required %}required{% end %}
+       {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {{ attrs | safe }}>
+{% end %}
+{% end %}
+
+{# Money/currency field — uses Alpine $money(). decimal_sep, thousands_sep, precision optional.
+   $money($input, decimal, thousands, precision) — default ".", ",", 2 #}
+{% def money_field(name, value="", label=none, errors=none,
+                  decimal_sep=".", thousands_sep=",", precision=2,
+                  required=false, placeholder="", hint=none, attrs="") %}
+{% set _money_expr = "$money($input, '" ~ decimal_sep ~ "', '" ~ thousands_sep ~ "', " ~ precision ~ ")" %}
+{% call field_wrapper(name, label, errors, required, hint, modifier="money") %}
+<input class="chirpui-field__input"
+       type="text" inputmode="decimal" id="{{ name }}" name="{{ name }}"
+       value="{{ value }}"
+       x-mask:dynamic="{{ _money_expr }}"
+       {% if required %}required{% end %}
+       {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {{ attrs | safe }}>
+{% end %}
 {% end %}
 
 {# Multi-select dropdown with label and error display #}

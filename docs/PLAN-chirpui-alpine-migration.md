@@ -41,6 +41,7 @@ Alpine evaluates after DOM ready. We need a tiny inline script (or Alpine's `x-i
 ## Dependencies
 
 - **Alpine.js** v3.x (defer or standard)
+- **@alpinejs/mask** — for phone_field, money_field, masked_field (load before Alpine core)
 - **HTMX** (already required)
 - Apps using chirp-ui must include Alpine before chirp-ui components render
 
@@ -48,6 +49,7 @@ Alpine evaluates after DOM ready. We need a tiny inline script (or Alpine's `x-i
 
 - Add Alpine to chirp-ui README as a peer/required dependency
 - Document in app_shell_layout and layout docs: "Include Alpine.js for dropdown, modal, tray, tabs, theme toggle"
+- Mask plugin: app_shell_layout and app_layout include @alpinejs/mask before Alpine core for masked form fields
 - Consider: chirp-ui could bundle a minimal Alpine build or document CDN/install
 
 ---

@@ -1039,7 +1039,7 @@ class TestAlpineMagics:
             "{% end %}"
         ).render()
         assert "chirpui:tab-changed" in html
-        assert 'x-id="[\'tab\'' in html or "x-id=" in html
+        assert "x-id=\"['tab'" in html or "x-id=" in html
 
     def test_tray_emits_dispatch(self, env: Environment) -> None:
         html = env.from_string(
@@ -1384,6 +1384,49 @@ class TestForms:
         ).render()
         assert "chirpui-field__hint" in html
         assert "Enter your full name" in html
+
+    def test_masked_field_static(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import masked_field %}'
+            '{{ masked_field("ssn", mask="999-99-9999", label="SSN") }}'
+        ).render()
+        assert "chirpui-field" in html
+        assert 'name="ssn"' in html
+        assert 'x-mask="999-99-9999"' in html
+
+    def test_masked_field_dynamic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import masked_field %}'
+            '{{ masked_field("amt", mask_dynamic="$money($input)", label="Amount") }}'
+        ).render()
+        assert "chirpui-field" in html
+        assert 'x-mask:dynamic="$money($input)"' in html
+
+    def test_phone_field(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import phone_field %}'
+            '{{ phone_field("phone", label="Phone") }}'
+        ).render()
+        assert "chirpui-field" in html
+        assert 'type="tel"' in html
+        assert 'x-mask="(999) 999-9999"' in html
+
+    def test_phone_field_uk_format(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import phone_field %}'
+            '{{ phone_field("phone", format="uk", label="Phone") }}'
+        ).render()
+        assert 'x-mask="9999 999 9999"' in html
+
+    def test_money_field(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import money_field %}'
+            '{{ money_field("amount", label="Amount") }}'
+        ).render()
+        assert "chirpui-field" in html
+        assert 'inputmode="decimal"' in html
+        assert "x-mask:dynamic" in html
+        assert "$money($input" in html
 
     def test_textarea_field(self, env: Environment) -> None:
         html = env.from_string(

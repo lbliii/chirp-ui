@@ -21,13 +21,38 @@
 
     Collapsible sidebar (override block with "true"):
         {% block sidebar_collapsible %}{% end %}
+
+    Custom brand link (override brand_link for non-/ href):
+        {% block brand_link %}<a href="/projects" class="chirpui-app-shell__brand">My App</a>{% end %}
+
+    Alpine: app_shell_layout includes Alpine.js. Use AppConfig(alpine=False) (default)
+    when extending this layout to avoid duplicate Alpine injection.
 -#}
 {# target: body #}
 {% extends "chirp/layouts/shell.html" %}
 
 {% block head %}
+{% if csrf_token is defined %}
+<meta name="csrf-token" content="{{ csrf_token() }}">
+{% end %}
 <link rel="stylesheet" href="/static/chirpui.css">
 <link rel="stylesheet" href="/static/chirpui-transitions.css">
+<script>
+(function(){var t=localStorage.getItem("chirpui-theme")||"system";var s=localStorage.getItem("chirpui-style")||"default";document.documentElement.setAttribute("data-theme",t);document.documentElement.setAttribute("data-style",s);})();
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.14.0/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+<script>
+document.addEventListener("alpine:init",function(){
+  Alpine.store("modals",{});
+  Alpine.store("trays",{});
+  Alpine.effect(function(){
+    var any=Object.values(Alpine.store("modals")).some(Boolean)||Object.values(Alpine.store("trays")).some(Boolean);
+    document.body.style.overflow=any?"hidden":"";
+  });
+});
+</script>
+{% block head_extra %}{% end %}
 {% end %}
 
 {% block shell %}
@@ -38,10 +63,11 @@
 {% set _collapsible = _sidebar_collapsible and _sidebar_collapsible != "false" %}
 {% set _shell_actions_target = shell_actions.target if shell_actions is defined and shell_actions else "chirp-shell-actions" %}
 <div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}"
-     data-sidebar-collapsible="{% block sidebar_collapsible %}false{% end %}">
+     x-data="{ collapsible: {{ 'true' if _collapsible else 'false' }}, collapsed: localStorage.getItem('chirpui-sidebar-collapsed') === 'true', toggle() { this.collapsed = !this.collapsed; localStorage.setItem('chirpui-sidebar-collapsed', this.collapsed); } }"
+     :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsible && collapsed }">
   <header class="chirpui-app-shell__topbar">
-    <div class="chirpui-app-shell__topbar-start" data-chirpui-sidebar-toggle-wrap hidden>{{ sidebar_toggle() }}</div>
-    <a href="/" class="chirpui-app-shell__brand">{% block brand %}{% end %}</a>
+    {% if _collapsible %}<div class="chirpui-app-shell__topbar-start">{{ sidebar_toggle() }}</div>{% endif %}
+    {% block brand_link %}<a href="/" class="chirpui-app-shell__brand">{% block brand %}{% end %}</a>{% end %}
     <div class="chirpui-app-shell__topbar-center">{% block topbar_center %}{% end %}</div>
     <div class="chirpui-app-shell__topbar-end">
       <div id="{{ _shell_actions_target }}" class="chirpui-app-shell__shell-actions">
@@ -58,26 +84,10 @@
   </main>
 </div>
 <script>
-(function() {
-  const key = 'chirpui-sidebar-collapsed';
-  const shell = document.querySelector('.chirpui-app-shell');
-  const toggleWrap = document.querySelector('[data-chirpui-sidebar-toggle-wrap]');
-  const btn = document.querySelector('[data-chirpui-sidebar-toggle]');
-  if (!shell || !btn || !toggleWrap) return;
-  const collapsible = (shell.dataset.sidebarCollapsible || '').trim();
-  if (!collapsible || collapsible === 'false') return;
-  shell.classList.add('chirpui-app-shell--sidebar-collapsible');
-  toggleWrap.hidden = false;
-  if (localStorage.getItem(key) === 'true') {
-    shell.classList.add('chirpui-app-shell--sidebar-collapsed');
-    btn.setAttribute('aria-expanded', 'false');
-  }
-  btn.addEventListener('click', function() {
-    const collapsed = shell.classList.toggle('chirpui-app-shell--sidebar-collapsed');
-    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-    localStorage.setItem(key, collapsed);
-  });
-})();
+document.body.addEventListener("htmx:configRequest", function(event) {
+  var meta = document.querySelector('meta[name="csrf-token"]');
+  if (meta) { event.detail.headers["X-CSRF-Token"] = meta.content; }
+});
 </script>
 {{ toast_container() }}
 {% end %}

@@ -2,7 +2,7 @@
 
 {% block content %}
 {% from "chirpui/layout.html" import container, grid, stack, cluster, block, page_header %}
-{% from "chirpui/forms.html" import csrf_hidden, password_field, text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, multi_select_field, search_field, search_bar, form_actions %}
+{% from "chirpui/forms.html" import csrf_hidden, password_field, text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, masked_field, phone_field, money_field, multi_select_field, search_field, search_bar, form_actions %}
 {% from "chirpui/auth.html" import login_form %}
 {% from "chirpui/action_strip.html" import action_strip %}
 {% from "chirpui/filter_bar.html" import filter_bar %}
@@ -96,6 +96,23 @@
 {% call block() %}
 {{ input_group("price", prefix="$", suffix=".00", value="0", label="Price") }}
 {{ input_group("username", prefix="@", placeholder="jane", label="Username") }}
+{% end %}
+
+<h2>Masked Fields (Alpine Mask)</h2>
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mb-md">
+  phone_field, money_field, masked_field — use Alpine Mask plugin for formatting as you type.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{{ phone_field("phone", value="", label="Phone", placeholder="(555) 123-4567") }}
+{% end %}
+{% call block() %}
+{{ money_field("amount", value="", label="Amount", placeholder="0.00") }}
+{% end %}
+{% end %}
+{{ masked_field("ssn", value="", label="SSN", mask="999-99-9999", placeholder="XXX-XX-XXXX") }}
+{{ masked_field("expiry", value="", label="Card expiry", mask="99/99", placeholder="MM/YY") }}
 {% end %}
 
 <h2>Multi-Select</h2>
