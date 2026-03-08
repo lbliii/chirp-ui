@@ -42,15 +42,12 @@
 </script>
 <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.14.0/dist/cdn.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.14.0/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.14.0/dist/cdn.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
 <script>
 document.addEventListener("alpine:init",function(){
   Alpine.store("modals",{});
   Alpine.store("trays",{});
-  Alpine.effect(function(){
-    var any=Object.values(Alpine.store("modals")).some(Boolean)||Object.values(Alpine.store("trays")).some(Boolean);
-    document.body.style.overflow=any?"hidden":"";
-  });
 });
 </script>
 {% block head_extra %}{% end %}

@@ -28,7 +28,7 @@
      :aria-hidden="!$store.trays['{{ id }}']"
      x-data>
     <div class="chirpui-tray__backdrop" @click="$store.trays['{{ id }}'] = false; $dispatch('chirpui:tray-closed', { id: '{{ id }}' })"></div>
-    <div class="chirpui-tray__panel">
+    <div class="chirpui-tray__panel" x-trap.inert.noscroll="$store.trays['{{ id }}']">
         <header class="chirpui-tray__header">
             <h2 class="chirpui-tray__title" id="tray-{{ id }}-title">{{ title }}</h2>
             <button type="button" class="chirpui-tray__close"

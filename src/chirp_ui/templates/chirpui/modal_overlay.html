@@ -28,7 +28,7 @@
      :aria-hidden="!$store.modals['{{ id }}']"
      x-data>
     <div class="chirpui-modal__backdrop" @click="$store.modals['{{ id }}'] = false; $dispatch('chirpui:modal-closed', { id: '{{ id }}' })"></div>
-    <div class="chirpui-modal__panel">
+    <div class="chirpui-modal__panel" x-trap.inert.noscroll="$store.modals['{{ id }}']">
         <header class="chirpui-modal__header">
             <h2 class="chirpui-modal__title" id="modal-{{ id }}-title">{{ title }}</h2>
             <button type="button" class="chirpui-modal__close"

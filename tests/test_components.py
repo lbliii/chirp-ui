@@ -1047,6 +1047,7 @@ class TestAlpineMagics:
             '{% call tray("filters", "Filters") %}content{% end %}'
         ).render()
         assert "chirpui:tray-closed" in html
+        assert 'x-trap.inert.noscroll' in html
 
     def test_modal_overlay_emits_dispatch(self, env: Environment) -> None:
         html = env.from_string(
@@ -1054,6 +1055,7 @@ class TestAlpineMagics:
             '{% call modal_overlay("confirm", "Confirm") %}content{% end %}'
         ).render()
         assert "chirpui:modal-closed" in html
+        assert 'x-trap.inert.noscroll' in html
 
 
 # ---------------------------------------------------------------------------

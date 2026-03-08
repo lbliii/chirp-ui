@@ -43,6 +43,7 @@ Alpine evaluates after DOM ready. We need a tiny inline script (or Alpine's `x-i
 - **Alpine.js** v3.x (defer or standard)
 - **@alpinejs/mask** — for phone_field, money_field, masked_field (load before Alpine core)
 - **@alpinejs/intersect** — for reveal_on_scroll, x-intersect in app templates (load before Alpine core)
+- **@alpinejs/focus** — for x-trap on tray and modal_overlay (focus containment, scroll lock)
 - **HTMX** (already required)
 - Apps using chirp-ui must include Alpine before chirp-ui components render
 
@@ -52,6 +53,7 @@ Alpine evaluates after DOM ready. We need a tiny inline script (or Alpine's `x-i
 - Document in app_shell_layout and layout docs: "Include Alpine.js for dropdown, modal, tray, tabs, theme toggle"
 - Mask plugin: app_shell_layout and app_layout include @alpinejs/mask before Alpine core for masked form fields
 - Intersect plugin: same layouts include @alpinejs/intersect for reveal_on_scroll and x-intersect use cases
+- Focus plugin: same layouts include @alpinejs/focus; tray and modal_overlay use x-trap.inert.noscroll for accessibility
 - Consider: chirp-ui could bundle a minimal Alpine build or document CDN/install
 
 ---
