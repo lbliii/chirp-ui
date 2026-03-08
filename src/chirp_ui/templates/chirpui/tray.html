@@ -1,6 +1,5 @@
 {#- chirp-ui: Tray (slide-out panel)
-    Use tray_trigger to open, tray for content. Requires chirpui.js for behavior.
-    Position: left | right | bottom.
+    Use tray_trigger to open, tray for content. Requires Alpine.js (Alpine.store('trays')).
 
     Usage:
         from "chirpui/tray.html" import tray, tray_trigger
@@ -13,22 +12,27 @@
 
 {% def tray_trigger(id, label, icon=none) %}
 <button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm"
-        data-chirpui-tray-trigger data-tray-id="{{ id }}"
-        aria-controls="tray-{{ id }}" aria-expanded="false">
+        x-data="{}"
+        @click="$store.trays['{{ id }}'] = true"
+        aria-controls="tray-{{ id }}" :aria-expanded="$store.trays['{{ id }}']">
     {% if icon %}<span aria-hidden="true">{{ icon | icon }}</span>{% endif %}
     {{ label }}
 </button>
 {% end %}
 
 {% def tray(id, title, position="right") %}
-<div class="chirpui-tray chirpui-tray--{{ position }} chirpui-tray--closed" id="tray-{{ id }}"
-     data-chirpui-tray data-tray-id="{{ id }}" role="dialog" aria-modal="true"
-     aria-labelledby="tray-{{ id }}-title" aria-hidden="true">
-    <div class="chirpui-tray__backdrop" data-chirpui-tray-backdrop></div>
+<div class="chirpui-tray chirpui-tray--{{ position }}" id="tray-{{ id }}"
+     :class="{ 'chirpui-tray--closed': !$store.trays['{{ id }}'], 'chirpui-tray--open': $store.trays['{{ id }}'] }"
+     role="dialog" aria-modal="true"
+     aria-labelledby="tray-{{ id }}-title"
+     :aria-hidden="!$store.trays['{{ id }}']"
+     x-data>
+    <div class="chirpui-tray__backdrop" @click="$store.trays['{{ id }}'] = false"></div>
     <div class="chirpui-tray__panel">
         <header class="chirpui-tray__header">
             <h2 class="chirpui-tray__title" id="tray-{{ id }}-title">{{ title }}</h2>
-            <button type="button" class="chirpui-tray__close" data-chirpui-tray-close
+            <button type="button" class="chirpui-tray__close"
+                    @click="$store.trays['{{ id }}'] = false"
                     aria-label="Close">×</button>
         </header>
         <div class="chirpui-tray__body">
