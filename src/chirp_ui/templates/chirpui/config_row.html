@@ -68,7 +68,7 @@
                 {% if attrs_map.get("hx-target") %}hx-target="{{ attrs_map.get("hx-target") }}"{% end %}
                 {% if attrs_map.get("hx-swap") %}hx-swap="{{ attrs_map.get("hx-swap") }}"{% end %}
                 hx-trigger="change"
-                hx-include="[name='key']"
+                hx-include="[name='key'],[name='value']"
                 {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
             {% for opt in options %}
             <option value="{{ opt.value if opt is mapping else opt }}"

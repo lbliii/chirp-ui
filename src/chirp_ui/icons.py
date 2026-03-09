@@ -26,6 +26,8 @@ ICON_REGISTRY: dict[str, str] = {
     "spark": "✦",
     # Domain / nav
     "home": "◉",
+    "grid": "⊞",
+    "user": "⊙",
     "shortcut": "⌘",
     "skills": "✦",
     "logs": "⟳",

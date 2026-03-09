@@ -22,13 +22,13 @@
 <div {% if oob %}hx-swap-oob="beforeend:#{{ container_id }}"{% end %}>
     <div {% if id %}id="{{ id }}"{% end %}
          class="chirpui-toast chirpui-toast--{{ variant }}{{ " " ~ cls if cls else "" }}"
-         role="alert">
+         role="alert" x-data>
         <span class="chirpui-toast__message">{{ message }}</span>
         {% if dismissible %}
             <button class="chirpui-toast__close"
                     type="button"
                     aria-label="Dismiss"
-                    onclick="this.parentElement.remove()">&times;</button>
+                    @click="$el.parentElement.remove()">&times;</button>
         {% end %}
     </div>
 </div>

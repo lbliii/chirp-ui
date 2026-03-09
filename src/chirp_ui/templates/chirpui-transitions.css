@@ -14,6 +14,18 @@ dialog.chirpui-modal,
     view-transition-name: none;
 }
 
+/* OOB shell regions — exclude from view transition and suppress outline flash.
+   Sidebar and breadcrumbs update via hx-swap-oob; aria-live can trigger a brief
+   focus ring when content updates. These are layout containers; links inside
+   keep their own focus styles for keyboard nav. */
+.chirpui-app-shell__sidebar,
+#chirpui-topbar-breadcrumbs,
+#chirpui-sidebar-nav {
+    view-transition-name: none;
+    outline: none;
+    box-shadow: none;
+}
+
 ::view-transition-old(page-content),
 ::view-transition-old(root) {
     animation: chirpui-vt-fade-out 0.12s ease-out forwards;

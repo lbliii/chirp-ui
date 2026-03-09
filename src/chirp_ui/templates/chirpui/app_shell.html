@@ -58,7 +58,7 @@
             {{ brand }}
             {% end %}
         </a>
-        <div id="chirpui-topbar-breadcrumbs" class="chirpui-app-shell__topbar-center">{% slot topbar %}</div>
+        <div id="chirpui-topbar-breadcrumbs" class="chirpui-app-shell__topbar-center" aria-live="polite" aria-atomic="true">{% slot topbar %}</div>
         <div class="chirpui-app-shell__topbar-end">
             <div id="{{ shell_actions_target }}" class="chirpui-app-shell__shell-actions">
                 {% if shell_actions %}
@@ -69,7 +69,7 @@
         </div>
     </header>
     <aside class="chirpui-app-shell__sidebar{{ sidebar_class }}">
-        <div id="chirpui-sidebar-nav">{% slot sidebar %}</div>
+        <div id="chirpui-sidebar-nav" aria-live="polite" aria-atomic="true">{% slot sidebar %}</div>
         {% if sidebar_collapsible %}
         <div class="chirpui-app-shell__sidebar-resize" data-chirpui-sidebar-toggle
              role="button" tabindex="0" aria-label="Toggle sidebar"

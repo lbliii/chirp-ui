@@ -51,8 +51,8 @@
 
 {% def sidebar_toggle(cls="") %}
 <button type="button" class="chirpui-sidebar-toggle{{ " " ~ cls if cls else "" }}"
-        aria-label="Toggle sidebar" aria-expanded="true"
-        data-chirpui-sidebar-toggle>
+        aria-label="Toggle sidebar" :aria-expanded="!collapsed"
+        @click="toggle()">
   <span class="chirpui-sidebar-toggle__icon">◀</span>
 </button>
 {% end %}

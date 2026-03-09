@@ -1,5 +1,5 @@
 {#- chirp-ui: Copy button
-    Copies text to clipboard, shows feedback. Requires chirpui.js for behavior.
+    Copies text to clipboard, shows feedback. Requires Alpine.js.
 
     Usage:
         from "chirpui/copy_button.html" import copy_button
@@ -8,9 +8,11 @@
 
 {% def copy_button(text, label="Copy") %}
 <button type="button" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-copy-btn"
-        data-chirpui-copy data-copy-text="{{ text | e }}"
+        x-data="{ copied: false }"
+        data-copy-text="{{ text | e }}"
+        @click="navigator.clipboard?.writeText($el.dataset.copyText||'').then(() => { copied = true; setTimeout(() => copied = false, 1500) })"
         aria-label="{{ label }}">
-    <span class="chirpui-copy-btn__label">{{ label }}</span>
-    <span class="chirpui-copy-btn__done" hidden>Copied!</span>
+    <span class="chirpui-copy-btn__label" x-show="!copied">{{ label }}</span>
+    <span class="chirpui-copy-btn__done" x-show="copied">Copied!</span>
 </button>
 {% end %}

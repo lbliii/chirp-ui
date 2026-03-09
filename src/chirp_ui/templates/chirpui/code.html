@@ -8,11 +8,15 @@
 
 {% def code_block(text, cls="", copy=false) %}
 {% if copy %}
-<div class="chirpui-code-block-wrapper{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-code-block-wrapper{{ " " ~ cls if cls else "" }}"
+     x-data="{ copied: false }">
     <pre class="chirpui-code-block"><code>{{ text }}</code></pre>
     <button type="button" class="chirpui-code-block__copy"
-            onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent).then(function(){var b=event.currentTarget;b.textContent='Copied!';setTimeout(function(){b.textContent='Copy'},2000)})"
-            aria-label="Copy code">Copy</button>
+            @click="navigator.clipboard?.writeText($el.previousElementSibling.textContent).then(() => { copied = true; setTimeout(() => copied = false, 2000) })"
+            aria-label="Copy code">
+        <span x-show="!copied">Copy</span>
+        <span x-show="copied">Copied!</span>
+    </button>
 </div>
 {% else %}
 <pre class="chirpui-code-block{{ " " ~ cls if cls else "" }}"><code>{{ text }}</code></pre>
