@@ -1,0 +1,14 @@
+# App Shell
+
+URL: /docs/app-shell/
+Section: app-shell
+
+--------------------------------------------------------------------------------
+
+App Shell Quick start: Extend chirpui/app_shell_layout.html and fill the blocks. No manual HTML boilerplate. &#123;% extends &quot;chirpui/app_shell_layout.html&quot; %&#125; &#123;% block brand %&#125;My App&#123;% end %&#125; &#123;% block sidebar %&#125; &#123;% from &quot;chirpui/sidebar.html&quot; import sidebar, sidebar_link, sidebar_section %&#125; &#123;% call sidebar() %&#125; &#123;% call sidebar_section(&quot;Main&quot;) %&#125; {{ sidebar_link(&quot;/&quot;, &quot;Home&quot;) }} {{ sidebar_link(&quot;/items&quot;, &quot;Items&quot;) }} &#123;% end %&#125; &#123;% end %&#125; &#123;% end %&#125; Components sidebar — Collapsible navigation with sections breadcrumbs — Path navigation command_palette — Cmd+K search toast_container — Toast notifications See Chirp's chirp-ui guide for full app-shell patterns and htmx integration.
+
+--------------------------------------------------------------------------------
+
+Metadata:
+- Word Count: 92
+- Reading Time: 1 minutes

@@ -147,6 +147,10 @@ exclude_lines = [
 # =============================================================================
 
 [dependency-groups]
+docs = [
+    "bengal>=0.2.0",
+    "lunr>=0.7.0",
+]
 dev = [
     # Testing
     "pytest>=9.0.2",
@@ -183,6 +187,10 @@ format-check = { cmd = "ruff format . --check", help = "Check formatting" }
 css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS parses cleanly" }
 css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }
 css-transition-check = { cmd = "pytest tests/test_transition_tokens.py -q", help = "Check transitions use motion tokens" }
+
+# Documentation
+docs-serve = { cmd = "uv run bengal site serve site", help = "Serve docs site locally" }
+docs-build = { cmd = "uv run bengal site build site", help = "Build docs site" }
 
 # CI Pipeline
 ci = { sequence = [

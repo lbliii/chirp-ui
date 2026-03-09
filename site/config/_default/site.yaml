@@ -1,0 +1,10 @@
+# Site Configuration
+# ==================
+
+site:
+  title: "chirp-ui"
+  logo_text: "ʘ"
+  description: "Gorgeous Chirp components — htmx-native, Kida macros, Alpine.js for interactivity"
+  language: "en"
+
+template_engine: kida

@@ -1,0 +1,10 @@
+# Output Configuration
+# ====================
+
+outputs:
+  html:
+    enabled: true
+  json:
+    enabled: true
+  txt:
+    enabled: true

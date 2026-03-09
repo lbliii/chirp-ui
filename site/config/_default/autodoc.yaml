@@ -1,0 +1,29 @@
+# Autodoc Configuration
+# ======================
+# chirp-ui is primarily templates/CSS; autodoc optional for icons module
+
+autodoc:
+  github_repo: "lbliii/chirp-ui"
+  github_branch: "main"
+  python:
+    enabled: true
+    source_dirs:
+      - ../src/chirp_ui
+    docstring_style: auto
+    output_prefix: "api"
+    display_name: "chirp-ui API Reference"
+    exclude:
+      - "*/__pycache__/*"
+      - "*/.pytest_cache/*"
+      - "*/build/*"
+      - "*/dist/*"
+      - "*.egg-info/*"
+      - "*/.venv/*"
+      - "*/venv/*"
+      - "*/.*"
+    include_private: false
+    include_special: false
+  cli:
+    enabled: false
+  openapi:
+    enabled: false

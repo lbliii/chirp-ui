@@ -1,0 +1,7 @@
+# Custom Parameters
+# =================
+
+params:
+  project_status: "alpha"
+  repo_url: "https://github.com/lbliii/chirp-ui"
+  min_python: "3.14"

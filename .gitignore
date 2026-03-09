@@ -68,4 +68,9 @@ Thumbs.db
 *.db-shm
 *.db-wal
 
+# Bengal docs site
+site/.bengal/
+.bengal/
+.bengal.pid
+
 # uv (uv.lock committed for reproducible builds)

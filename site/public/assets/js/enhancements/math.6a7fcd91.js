@@ -1,0 +1,1 @@
+(function(){if(typeof katex==='undefined')return;document.querySelectorAll('.math, .math-block').forEach(function(el){try{var displayMode=el.classList.contains('math-block');katex.render(el.textContent.trim(),el,{throwOnError:false,displayMode:displayMode,});}catch(e){}});})();

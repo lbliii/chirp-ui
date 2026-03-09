@@ -1,0 +1,13 @@
+# Production Environment
+# =======================
+
+site:
+  baseurl: "/chirp-ui"
+
+build:
+  incremental: true
+  strict_mode: true
+
+assets:
+  minify: true
+  fingerprint: true

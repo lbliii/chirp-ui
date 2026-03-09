@@ -1,0 +1,13 @@
+{
+  "build_mode": "cold",
+  "build_time_human": "3.9s",
+  "build_time_ms": 3880.92303276062,
+  "cpu_count": 11,
+  "incremental": true,
+  "parallel": true,
+  "rendering_time_ms": 612.2341156005859,
+  "timestamp": "2026-03-09T16:54:56.211592",
+  "total_assets": 314,
+  "total_pages": 17,
+  "worker_count": 8
+}

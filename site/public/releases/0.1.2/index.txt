@@ -1,0 +1,15 @@
+# chirp-ui 0.1.2
+
+URL: /releases/0.1.2/
+Section: releases
+Date: 2025-01-01
+
+--------------------------------------------------------------------------------
+
+chirp-ui 0.1.2 Install pip install chirp-ui==0.1.2 # or uv add chirp-ui==0.1.2 With Chirp: pip install &quot;bengal-chirp[ui]&quot; Links PyPI GitHub
+
+--------------------------------------------------------------------------------
+
+Metadata:
+- Word Count: 19
+- Reading Time: 1 minutes

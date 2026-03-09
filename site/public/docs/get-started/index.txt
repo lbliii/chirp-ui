@@ -1,0 +1,14 @@
+# Get Started
+
+URL: /docs/get-started/
+Section: get-started
+
+--------------------------------------------------------------------------------
+
+Get Started with chirp-ui chirp-ui is an optional companion for Chirp. Install it when you want the component library, default design language, and app-shell patterns.
+
+--------------------------------------------------------------------------------
+
+Metadata:
+- Word Count: 25
+- Reading Time: 1 minutes
