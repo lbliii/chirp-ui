@@ -297,7 +297,7 @@ For animated icons, use `ascii_icon()` in the component slot. For custom headers
 ## Requirements
 
 - Python >= 3.14
-- kida-templates >= 0.2.4
+- kida-templates >= 0.2.5
 
 **Interactive components** (dropdown, modal, tray, tabs, theme toggle, copy button) require [Alpine.js](https://alpinejs.dev/) 3.x. The `chirpui/app_shell_layout.html` and `chirpui/app_layout.html` layouts include Alpine via CDN. For custom layouts, add Alpine before using these components.
 
