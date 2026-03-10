@@ -2,9 +2,21 @@
 
 These match Chirp's filter API so chirp-ui works with any Chirp version.
 Register via :func:`register_filters` when using Chirp.
+
+Everything not in __all__ is internal and may change without notice.
 """
 
 import logging
+
+__all__ = [
+    "bem",
+    "field_errors",
+    "html_attrs",
+    "icon",
+    "validate_size",
+    "validate_variant",
+    "validate_variant_block",
+]
 from collections.abc import Callable, Mapping
 from html import escape
 from json import dumps
@@ -14,7 +26,7 @@ from kida.template import Markup
 
 from chirp_ui.icons import ICON_REGISTRY
 from chirp_ui.icons import icon as _resolve_icon
-from chirp_ui.validation import VARIANT_REGISTRY, _is_strict
+from chirp_ui.validation import SIZE_REGISTRY, VARIANT_REGISTRY, _is_strict
 
 
 class TemplateFilterApp(Protocol):
@@ -72,6 +84,32 @@ def validate_variant(
     return default if default in allowed else (allowed[0] if allowed else "")
 
 
+def validate_variant_block(value: str, block: str, default: str = "") -> str:
+    """Return value if in VARIANT_REGISTRY for block, else default. When strict, log warning."""
+    allowed = VARIANT_REGISTRY.get(block, ())
+    return validate_variant(value, allowed, default)
+
+
+def validate_size(
+    value: str,
+    block: str,
+    default: str = "",
+) -> str:
+    """Return value if in SIZE_REGISTRY for block, else default. When strict, log warning."""
+    allowed = SIZE_REGISTRY.get(block, ())
+    if value in allowed:
+        return value
+    if _is_strict() and allowed:
+        log = logging.getLogger("chirp_ui")
+        log.warning(
+            'chirp-ui: %s size "%s" invalid; valid: %s',
+            block,
+            value,
+            ", ".join(allowed),
+        )
+    return default if default in allowed else (allowed[0] if allowed else "")
+
+
 def icon(name: str) -> str:
     """Resolve icon name to glyph; unknown names pass through. When strict, log warning."""
     result = _resolve_icon(name)
@@ -88,9 +126,9 @@ def icon(name: str) -> str:
 def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]:
     """Extract error messages for a field from a ValidationError-style dict.
 
-    Returns empty list if errors is None or field has no errors.
+    Returns empty list if errors is None, not a dict, or field has no errors.
     """
-    if errors is None:
+    if errors is None or not isinstance(errors, Mapping):
         return []
     val = errors.get(field_name)
     if val is None:
@@ -150,3 +188,5 @@ def register_filters(app: TemplateFilterApp) -> None:
     app.template_filter("html_attrs")(html_attrs)
     app.template_filter("icon")(icon)
     app.template_filter("validate_variant")(validate_variant)
+    app.template_filter("validate_variant_block")(validate_variant_block)
+    app.template_filter("validate_size")(validate_size)

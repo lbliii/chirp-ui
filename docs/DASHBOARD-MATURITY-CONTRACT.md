@@ -103,7 +103,7 @@ Use `section` with `{% slot actions %}` for surface + header + content composite
 ## Phase Completion Criteria
 
 - **Phase 0**: Product principles and quality gates documented and approved ✓
-- **Phase 1**: New primitives implemented, documented, and test-covered
+- **Phase 1**: New primitives implemented, documented, and test-covered ✓ (hardening complete)
 - **Phase 2**: Chirp guide examples reflect benchmark-aligned patterns
 - **Phase 3**: Dori (and similar apps) no longer rely on ad-hoc interaction patterns for core workflows
 - **Phase 4**: All quality gates pass for targeted pages

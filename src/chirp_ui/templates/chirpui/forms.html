@@ -229,6 +229,7 @@
    CSS ~ sibling selector fills stars up to the hovered/checked one. #}
 {% def star_rating(name, count=5, selected=0, label=none, errors=none,
                    required=false, hint=none, size="") %}
+{% set size = size | validate_size("star-rating", "") %}
 <div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
     {% if label %}
         <label class="chirpui-field__label">
@@ -262,6 +263,7 @@
 {# Thumbs up/down — binary sentiment input (radio pair). #}
 {% def thumbs(name, selected="", label=none, errors=none,
               required=false, hint=none, size="") %}
+{% set size = size | validate_size("thumbs", "") %}
 <div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
     {% if label %}
         <label class="chirpui-field__label">
@@ -299,6 +301,7 @@
 {# Segmented control — connected button-group radio selector. #}
 {% def segmented_control(name, options, selected="", label=none, errors=none,
                          required=false, hint=none, size="") %}
+{% set size = size | validate_size("segmented", "") %}
 <div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
     {% if label %}
         <label class="chirpui-field__label">

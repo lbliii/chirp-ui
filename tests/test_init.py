@@ -3,7 +3,15 @@
 from kida import Environment, PackageLoader
 
 import chirp_ui
-from chirp_ui.filters import bem, field_errors, html_attrs, icon, validate_variant
+from chirp_ui.filters import (
+    bem,
+    field_errors,
+    html_attrs,
+    icon,
+    validate_size,
+    validate_variant,
+    validate_variant_block,
+)
 
 
 class TestStaticPath:
@@ -37,6 +45,8 @@ class TestGetLoader:
                 "html_attrs": html_attrs,
                 "icon": icon,
                 "validate_variant": validate_variant,
+                "validate_variant_block": validate_variant_block,
+                "validate_size": validate_size,
             }
         )
         # card.html defines macros; import and call to verify loader resolves it
@@ -65,3 +75,6 @@ class TestRegisterFilters:
         assert "field_errors" in registered
         assert "html_attrs" in registered
         assert "icon" in registered
+        assert "validate_variant" in registered
+        assert "validate_variant_block" in registered
+        assert "validate_size" in registered

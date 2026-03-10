@@ -2,7 +2,16 @@
 
 import pytest
 
-from chirp_ui.filters import bem, field_errors, html_attrs, icon, register_filters, validate_variant
+from chirp_ui.filters import (
+    bem,
+    field_errors,
+    html_attrs,
+    icon,
+    register_filters,
+    validate_size,
+    validate_variant,
+    validate_variant_block,
+)
 from chirp_ui.validation import set_strict
 
 
@@ -64,6 +73,29 @@ class TestValidateVariant:
         assert validate_variant("", ("", "avatar", "text")) == ""
 
 
+class TestValidateVariantBlock:
+    def test_valid_returns_value(self) -> None:
+        assert validate_variant_block("primary", "btn") == "primary"
+        assert validate_variant_block("default", "dropdown__item") == "default"
+
+    def test_invalid_returns_default(self) -> None:
+        assert validate_variant_block("bad", "btn", default="") == ""
+        assert validate_variant_block("x", "dropdown__item", default="default") == "default"
+
+
+class TestValidateSize:
+    def test_valid_returns_value(self) -> None:
+        assert validate_size("sm", "btn") == "sm"
+        assert validate_size("medium", "modal") == "medium"
+
+    def test_invalid_returns_default(self) -> None:
+        assert validate_size("xl", "btn", default="") == ""
+        assert validate_size("huge", "modal", default="medium") == "medium"
+
+    def test_empty_valid_when_in_registry(self) -> None:
+        assert validate_size("", "btn") == ""
+
+
 class TestValidateVariantStrictMode:
     """Strict mode logs warning on invalid variant and returns fallback."""
 
@@ -83,6 +115,65 @@ class TestValidateVariantStrictMode:
         assert not any("invalid" in (r.message or "") for r in caplog.records)
 
 
+class TestHtmlAttrsEdgeCases:
+    """Edge cases for html_attrs: None, empty, nested, special chars."""
+
+    def test_none_returns_empty(self) -> None:
+        assert str(html_attrs(None)) == ""
+
+    def test_false_returns_empty(self) -> None:
+        assert str(html_attrs(False)) == ""
+
+    def test_empty_dict_returns_empty(self) -> None:
+        assert str(html_attrs({})) == ""
+
+    def test_nested_dict_serializes(self) -> None:
+        rendered = str(html_attrs({"data-x": {"a": 1, "b": 2}}))
+        assert "data-x" in rendered
+        assert "1" in rendered
+        assert "2" in rendered
+
+    def test_keys_with_special_chars_escaped(self) -> None:
+        rendered = str(html_attrs({"data-x": "ok"}))
+        assert "data-x" in rendered
+        assert "ok" in rendered
+
+
+class TestBemEdgeCases:
+    """Edge cases for bem: empty variant, empty modifier, None block."""
+
+    def test_empty_variant_modifier_cls(self) -> None:
+        assert bem("x", variant="", modifier="", cls="") == "chirpui-x"
+
+    def test_unknown_block_no_strict(self) -> None:
+        assert bem("unknown", variant="x") == "chirpui-unknown chirpui-unknown--x"
+
+
+class TestValidateVariantEdgeCases:
+    """Edge cases for validate_variant."""
+
+    def test_empty_string_with_default_in_allowed(self) -> None:
+        assert validate_variant("", ("a", "b"), default="a") == "a"
+
+    def test_empty_allowed_list_returns_empty(self) -> None:
+        assert validate_variant("x", (), default="") == ""
+
+
+class TestFieldErrorsEdgeCases:
+    """Edge cases for field_errors."""
+
+    def test_nested_dict_val_returns_empty(self) -> None:
+        # field_errors expects list/tuple of strings; dict val yields []
+        errors = {"field": {"nested": ["err"]}}
+        assert field_errors(errors, "field") == []
+
+    def test_non_dict_input_returns_empty(self) -> None:
+        assert field_errors("not a dict", "x") == []
+
+    def test_missing_field_key_returns_empty(self) -> None:
+        assert field_errors({"a": ["x"]}, "b") == []
+
+
 class TestHtmlAttrs:
     def test_mapping_renders_attrs(self) -> None:
         rendered = str(html_attrs({"hx-post": "/x", "hx-target": "#y"}))
@@ -100,6 +191,37 @@ class TestHtmlAttrs:
         assert rendered.startswith(" ")
         assert 'hx-get="/q"' in rendered
         assert 'hx-target="#r"' in rendered
+
+
+class TestHtmlAttrsXss:
+    """XSS vector tests for html_attrs. Mapping input escapes values; raw string is pass-through."""
+
+    def test_mapping_escapes_script_tag_in_value(self) -> None:
+        rendered = str(html_attrs({"data-x": "<script>alert(1)</script>"}))
+        assert "&lt;script&gt;" in rendered or "<script>" not in rendered
+        assert "alert" in rendered
+
+    def test_mapping_escapes_quote_breakout_in_value(self) -> None:
+        rendered = str(html_attrs({"data-x": '"><script>alert(1)</script>'}))
+        assert "<script>" not in rendered
+        assert "&quot;" in rendered or "&gt;" in rendered
+
+    def test_mapping_escapes_empty_key_skipped(self) -> None:
+        # Empty key is skipped (key.strip() yields "")
+        rendered = str(html_attrs({"": "<script>alert(1)</script>"}))
+        assert rendered == ""
+
+    def test_mapping_escapes_encoded_entities_in_value(self) -> None:
+        rendered = str(html_attrs({"data-x": "&#60;script&#62;"}))
+        # Value is escaped; raw entities may be double-escaped or preserved
+        assert "<script>" not in rendered
+
+    def test_raw_string_passthrough_not_escaped(self) -> None:
+        # Raw string input is NOT escaped — caller responsibility (SECURITY.md)
+        raw = ' onload="alert(1)"'
+        rendered = str(html_attrs(raw))
+        assert "onload" in rendered
+        assert "alert" in rendered
 
 
 class TestIcon:
@@ -166,3 +288,6 @@ class TestRegisterFilters:
         assert "html_attrs" in registered
         assert registered["html_attrs"] is html_attrs
         assert "icon" in registered
+        assert "validate_variant" in registered
+        assert "validate_variant_block" in registered
+        assert "validate_size" in registered

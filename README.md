@@ -53,6 +53,16 @@ Requires Python 3.14+. When used with Chirp, components are auto-detected — no
 
 You do not need `chirp-ui` to use Chirp. Use it when you want the companion component library, default design language, and app-shell patterns.
 
+**Version compatibility:**
+
+| chirp-ui | Kida | Python | Chirp (optional) |
+|----------|------|--------|-------------------|
+| 0.1.x    | >= 0.2.6 | >= 3.14 | >= 0.1.6 for `use_chirp_ui` |
+
+**What's stable:** Core macros (layout, card, modal, forms, alert, badge), filters (`bem`, `html_attrs`, `validate_variant`, `validate_size`), `VARIANT_REGISTRY`/`SIZE_REGISTRY`, static path, `get_loader`, `register_filters`. See [SECURITY.md](SECURITY.md) for `| safe` usage.
+
+**What may change:** New component variants/sizes, API surface of `__all__`-excluded internals, Alpine.js migration patterns.
+
 ---
 
 ## Quick Start

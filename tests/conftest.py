@@ -50,6 +50,22 @@ def _validate_variant_stub(
     return value if value in allowed else default
 
 
+def _validate_variant_block_stub(value: str, block: str, default: str = "") -> str:
+    """Stub for chirp-ui ``validate_variant_block`` filter."""
+    from chirp_ui.validation import VARIANT_REGISTRY
+
+    allowed = VARIANT_REGISTRY.get(block, ())
+    return value if value in allowed else default
+
+
+def _validate_size_stub(value: str, block: str, default: str = "") -> str:
+    """Stub for chirp-ui ``validate_size`` filter."""
+    from chirp_ui.validation import SIZE_REGISTRY
+
+    allowed = SIZE_REGISTRY.get(block, ())
+    return value if value in allowed else default
+
+
 def _html_attrs_stub(value: Any) -> str | Markup:
     """Stub for structured attrs filter used by chirp-ui macros."""
     if value is None or value is False:
@@ -132,7 +148,7 @@ def env() -> Environment:
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
         autoescape=True,
     )
-    # Register stubs for Chirp/chirp-ui filters (field_errors, bem, validate_variant, icon)
+    # Register stubs for Chirp/chirp-ui filters
     e.update_filters(
         {
             "field_errors": _field_errors_stub,
@@ -140,6 +156,8 @@ def env() -> Environment:
             "html_attrs": _html_attrs_stub,
             "icon": icon_filter,
             "validate_variant": _validate_variant_stub,
+            "validate_variant_block": _validate_variant_block_stub,
+            "validate_size": _validate_size_stub,
         }
     )
     e.add_global("island_attrs", _island_attrs_stub)

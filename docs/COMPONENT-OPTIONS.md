@@ -116,6 +116,26 @@ Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates w
 | `safe_region` | HTMX-safe mutation region; `hx-disinherit` to avoid inherited shell attributes |
 | `fragment_island` | Alias for `safe_region`; use either |
 
+## JavaScript Dependencies
+
+Interactive components require **Alpine.js** (loaded before chirp-ui components). Use `chirpui.js` for theme/style init only.
+
+| Template / Component | Required JS | Notes |
+|---------------------|-------------|-------|
+| `dropdown_menu.html` | Alpine.js | `x-data`, `x-show`, `@click.outside`, `x-transition` |
+| `modal.html` | Alpine.js (optional) | `modal_trigger` uses `@click`; native `<dialog>` for modal |
+| `modal_overlay.html` | Alpine.js | Overlay behavior |
+| `tray.html` | Alpine.js | Slide-in panel |
+| `tabs_panels.html` | Alpine.js | Tab switching |
+| `theme_toggle.html` | Alpine.js | Theme/style persistence |
+| `copy_button.html` | Alpine.js | Copy-to-clipboard |
+| `forms.html` (masked_field, phone_field, money_field) | Alpine.js + @alpinejs/mask | `x-mask`, `x-mask:dynamic` |
+| `chirpui.js` | — | Pre-paint theme/style init only |
+
+**Static path:** Include `chirpui.css` and `chirpui.js` from `chirp_ui.static_path()`. Use `use_chirp_ui(app)` with Chirp for automatic registration.
+
+---
+
 ## Fragment Island and DnD Primitives
 
 | Component | Description |

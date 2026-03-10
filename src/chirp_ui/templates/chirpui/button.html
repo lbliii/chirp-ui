@@ -7,6 +7,8 @@
            hx_patch=none, hx_delete=none, hx_target=none, hx_swap=none,
            hx_trigger=none, hx_include=none, hx_select=none, hx_ext=none,
            hx_vals=none, disabled=false, data_action=none, aria_label=none) %}
+{% set variant = variant | validate_variant_block("btn", "") %}
+{% set size = (size or "") | validate_size("btn", "") %}
 {% set variant_class = " chirpui-btn--" ~ variant if variant else "" %}
 {% set size_class = " chirpui-btn--" ~ size if size else "" %}
 {% set loading_class = " chirpui-btn--loading" if loading else "" %}

@@ -36,7 +36,7 @@
         {% else %}
         {% set href = item.get("href") %}
         {% set action = item.get("action") %}
-        {% set variant = item.get("variant", "default") %}
+        {% set variant = item.get("variant", "default") | validate_variant_block("dropdown__item", "default") %}
         {% set icon = item.get("icon", "") %}
         {% if href %}
         <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ href }}" role="menuitem"
@@ -150,7 +150,7 @@
         {% if item.get("divider") %}
         <div class="chirpui-dropdown__divider" role="separator"></div>
         {% else %}
-        {% set variant = item.get("variant", "default") %}
+        {% set variant = item.get("variant", "default") | validate_variant_block("dropdown__item", "default") %}
         {% if item.get("href") %}
         <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ item.get('href') }}" role="menuitem"
            @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', href: '{{ item.get("href", "") | e }}' })">
