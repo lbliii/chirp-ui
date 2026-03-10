@@ -1751,7 +1751,7 @@ class TestActionContainers:
             "{% end %}"
         ).render()
         assert 'id="update-result"' in html
-        assert "aria-live=\"polite\"" in html
+        assert 'aria-live="polite"' in html
         assert "Skill A" in html
         # Div must appear before caller content (co-located in results block)
         idx_result = html.find('id="update-result"')
@@ -2050,7 +2050,7 @@ class TestWizardForm:
         ).render()
         assert 'id="collections-results"' in html
         assert 'id="update-result"' in html
-        assert "aria-live=\"polite\"" in html
+        assert 'aria-live="polite"' in html
         assert "Form content" in html
         # Result div must appear before caller content
         idx_result = html.find('id="update-result"')
