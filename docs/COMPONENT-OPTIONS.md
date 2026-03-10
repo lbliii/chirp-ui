@@ -535,8 +535,11 @@ High-level browse/index composite that wraps `search_header`, optional `filter_b
 | `results_layout` | `stack` or `grid` |
 | `results_cols`, `results_gap` | Result wrapper layout options |
 | `has_results`, `empty_title`, `empty_icon`, `empty_hint`, `empty_message` | Empty-state behavior |
+| `mutation_result_id` | Optional. Id for a result div rendered at the start of the results block. Use when forms in the results target a mutation result; keeps target co-located. |
 
 **Slots:** `toolbar_controls`, `filter_primary`, `filter_controls`, `filter_actions`, `selection`, `filters_panel`, default (results).
+
+**Mutation targets:** If the default slot (results) loads via HTMX and contains forms that target a result div, use `mutation_result_id` or put that div **inside** the results content, not in `filters_panel`. Otherwise the target may be missing when the form fires.
 
 #### selection_bar
 

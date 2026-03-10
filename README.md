@@ -87,7 +87,7 @@ app.add_middleware(StaticFiles(
 | **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group, island_root, state primitives |
 | **Forms** | text_field, password_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, csrf_hidden, form_actions, login_form, signup_form |
 | **Data display** | badge, spinner, skeleton, progress, description_list, timeline, tree_view, calendar |
-| **Dashboard** | inline_edit_field, row_actions, status_with_hint, entity_header, confirm_dialog — [DASHBOARD-MATURITY-CONTRACT](docs/DASHBOARD-MATURITY-CONTRACT.md) |
+| **Dashboard** | inline_edit_field, row_actions, status_with_hint, entity_header, confirm_dialog, confirm_trigger, fragment_island, poll_trigger — [DASHBOARD-MATURITY-CONTRACT](docs/DASHBOARD-MATURITY-CONTRACT.md) |
 | **Docs** | page_hero, nav_tree, params_table, signature, index_card — framework-agnostic docs components |
 | **Streaming** | streaming_block, copy_btn, model_card — for htmx SSE and LLM UIs |
 | **Theming** | `--chirpui-*` CSS variables, dark mode, optional Holy Light theme |
@@ -210,6 +210,29 @@ Included no-build primitives:
 - **copy_btn** — Copy button with `data-copy-text`. Enable `AppConfig(delegation=True)` for dynamically inserted buttons.
 
 See Chirp [RAG demo](https://github.com/lbliii/chirp/tree/main/examples/rag_demo) and [LLM playground](https://github.com/lbliii/chirp/tree/main/examples/llm_playground).
+
+</details>
+
+<details>
+<summary><strong>Dashboard refresh patterns</strong> — fragment islands, confirm flows, polling</summary>
+
+For server-driven admin and settings pages, chirp-ui includes dashboard helpers
+that remove a lot of repeated htmx markup:
+
+- `fragment_island(...)` and `fragment_island_with_result(...)` for isolated
+  refresh regions
+- `confirm_dialog(...)` and `confirm_trigger(...)` for confirmation flows
+- `poll_trigger(url, target, delay=...)` for hidden load/delay polling
+
+```html
+{% from "chirpui/fragment_island.html" import poll_trigger %}
+
+<div id="collections-results"></div>
+{{ poll_trigger("/collections/status?refresh=1", "#collections-results", delay="1s") }}
+```
+
+These are especially useful in app-shell layouts where one panel refreshes in
+place while the rest of the shell stays stable.
 
 </details>
 

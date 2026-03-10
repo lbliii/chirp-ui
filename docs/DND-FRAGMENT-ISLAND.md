@@ -46,6 +46,35 @@ When using `app_shell` or any layout with `hx-boost` or broad `hx-select`:
 - **Or** add `hx-disinherit="hx-select"` (or equivalent) on the target element.
 - Mutating forms/buttons must have explicit `hx-target`, `hx-swap`, and `hx-select` when they differ from the island.
 
+### Anti-footgun: Target must be co-located with form
+
+When forms live inside content that loads via HTMX (e.g. `hx-get` + `hx-swap="innerHTML"`):
+
+- The `hx-target` element **must be in the same DOM subtree** as the form.
+- If the target is in a sibling (e.g. `filters_panel`) and the form is in content that gets replaced by HTMX, the target may not exist when the form fires.
+- **Fix:** Put the target div inside the same fragment that contains the mutating forms.
+
+### fragment_island_with_result: Co-located mutation target
+
+Use `fragment_island_with_result()` when the island content includes forms that target a result div. The macro renders the result div at the top of the island, guaranteeing it is in the same DOM subtree as the forms.
+
+```html
+{% from "chirpui/fragment_island.html" import fragment_island_with_result %}
+
+{% call fragment_island_with_result("collections-results", "update-result",
+    attrs='hx-get="/collections/status" hx-trigger="load, every 5m" hx-target="this" hx-swap="innerHTML"') %}
+  {% include "collections/_status_summary.html" %}
+{% end %}
+```
+
+Forms inside the included content use `hx-target="#update-result"`; the target is always present because it is rendered inside the same island.
+
+| Param | Description |
+|-------|-------------|
+| `id` | **Required.** Stable root id for the island. |
+| `mutation_result_id` | **Required.** Id for the result div. Forms use `hx-target="#mutation_result_id"`. |
+| `hx_target`, `hx_swap`, `hx_select`, `cls`, `attrs` | Same as `fragment_island()`. |
+
 ---
 
 ## DnD Row Primitive (ordered lists)

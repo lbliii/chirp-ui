@@ -1740,6 +1740,24 @@ class TestActionContainers:
         assert "Try a different filter." in html
         assert "chirpui-empty-state" in html
 
+    def test_resource_index_mutation_result_id_renders_div(self, env: Environment) -> None:
+        """mutation_result_id renders co-located result div at start of results block."""
+        html = env.from_string(
+            '{% from "chirpui/resource_index.html" import resource_index %}'
+            "{% call resource_index("
+            '"Skills", "/skills", mutation_result_id="update-result"'
+            ") %}"
+            "<article>Skill A</article>"
+            "{% end %}"
+        ).render()
+        assert 'id="update-result"' in html
+        assert "aria-live=\"polite\"" in html
+        assert "Skill A" in html
+        # Div must appear before caller content (co-located in results block)
+        idx_result = html.find('id="update-result"')
+        idx_content = html.find("Skill A")
+        assert idx_result < idx_content
+
     def test_selection_bar_renders_when_count_positive(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/selection_bar.html" import selection_bar %}'
@@ -2021,6 +2039,35 @@ class TestWizardForm:
             "{% call wrapper() %}Content{% end %}"
         ).render()
         assert "Content" in html
+
+    def test_fragment_island_with_result_renders_mutation_div(self, env: Environment) -> None:
+        """fragment_island_with_result renders co-located mutation result div at top of island."""
+        html = env.from_string(
+            '{% from "chirpui/fragment_island.html" import fragment_island_with_result %}'
+            '{% call fragment_island_with_result("collections-results", "update-result") %}'
+            "<p>Form content</p>"
+            "{% end %}"
+        ).render()
+        assert 'id="collections-results"' in html
+        assert 'id="update-result"' in html
+        assert "aria-live=\"polite\"" in html
+        assert "Form content" in html
+        # Result div must appear before caller content
+        idx_result = html.find('id="update-result"')
+        idx_content = html.find("Form content")
+        assert idx_result < idx_content
+
+    def test_poll_trigger_renders_hidden_htmx_button(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/fragment_island.html" import poll_trigger %}'
+            '{{ poll_trigger("/status", "#collections-results", delay="2s") }}'
+        ).render()
+        assert 'type="button"' in html
+        assert 'hx-get="/status"' in html
+        assert 'hx-trigger="load delay:2s"' in html
+        assert 'hx-target="#collections-results"' in html
+        assert 'class="chirpui-sr-only"' in html
+        assert 'aria-hidden="true"' in html
 
     def test_wizard_form_safe_region_with_stepper(self, env: Environment) -> None:
         """Same as wizard_form: safe_region + stepper + caller()."""

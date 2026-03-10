@@ -12,7 +12,29 @@
 
         {% from "chirpui/fragment_island.html" import fragment_island %}
         {% call fragment_island("my-list", hx_target="#my-list", hx_swap="outerHTML") %}...{% end %}
+
+        {% from "chirpui/fragment_island.html" import fragment_island_with_result %}
+        {% call fragment_island_with_result("collections-results", "update-result", attrs='hx-get="/status" hx-trigger="load" hx-target="this" hx-swap="innerHTML"') %}
+        ...forms with hx-target="#update-result"...
+        {% end %}
+
+        {% from "chirpui/fragment_island.html" import poll_trigger %}
+        {{ poll_trigger("/status", "#collections-results", delay="2s") }}
 -#}
+
+{% def poll_trigger(url, target, delay=none, swap="innerHTML", select=none, cls="chirpui-sr-only", attrs="") %}
+<button type="button"
+        class="{{ cls }}"
+        hidden
+        tabindex="-1"
+        hx-get="{{ url }}"
+        hx-trigger="{{ "load delay:" ~ delay if delay else "load" }}"
+        hx-target="{{ target }}"
+        hx-swap="{{ swap }}"
+        {% if select %}hx-select="{{ select }}"{% end %}
+        aria-hidden="true"
+        {{ attrs | safe }}></button>
+{% end %}
 
 {% def safe_region(
     id,
@@ -43,6 +65,21 @@
     attrs=""
 ) %}
 {% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs=attrs) %}
+{{ caller() }}
+{% end %}
+{% end %}
+
+{% def fragment_island_with_result(
+    id,
+    mutation_result_id,
+    hx_target=none,
+    hx_swap=none,
+    hx_select=none,
+    cls="",
+    attrs=""
+) %}
+{% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs=attrs) %}
+<div id="{{ mutation_result_id }}" class="chirpui-fragment-island chirpui-mb-sm" aria-live="polite"></div>
 {{ caller() }}
 {% end %}
 {% end %}
