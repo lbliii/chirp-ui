@@ -19,24 +19,22 @@
 </div>
 {% end %}
 
-{% def config_row_toggle(name, label, checked=false, form_action=none, attrs_map=none, errors=none, cls="") %}
-<div class="chirpui-config-row{{ " " ~ cls if cls else "" }}">
+{% def config_row_toggle(name, label, checked=false, form_action=none, attrs_map=none, errors=none, cls="", swap_id=none, oob=false) %}
+{% set row_id = swap_id or ("config-row-" ~ name | replace(".", "-")) %}
+<div id="{{ row_id }}" class="chirpui-config-row{{ " " ~ cls if cls else "" }}"{{ " hx-swap-oob=\"true\"" if oob else "" }}>
     <span class="chirpui-config-row__label chirpui-font-sm chirpui-font-medium">{{ label }}</span>
     <span class="chirpui-config-row__control">
     {% if form_action and attrs_map %}
     <form method="post" action="{{ form_action }}" class="chirpui-config-row__form" {{ attrs_map | html_attrs }}>
         <input type="hidden" name="key" value="{{ name }}">
         <input type="hidden" name="value" value="false">
-        <label class="chirpui-field chirpui-field--toggle chirpui-config-row__toggle-wrap{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
+        <label class="chirpui-field chirpui-field--toggle chirpui-toggle-wrap chirpui-config-row__toggle-wrap{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
             <input class="chirpui-toggle chirpui-visually-hidden"
                    type="checkbox" id="{{ name }}" name="value" value="true"
-                   {% if checked %}checked{% end %}
-                   {% if attrs_map.get("hx-post") %}hx-post="{{ attrs_map.get("hx-post") }}"{% end %}
-                   {% if attrs_map.get("hx-target") %}hx-target="{{ attrs_map.get("hx-target") }}"{% end %}
-                   {% if attrs_map.get("hx-swap") %}hx-swap="{{ attrs_map.get("hx-swap") }}"{% end %}
+                   {% if checked %}checked {% end %}{% if attrs_map.get("hx-post") %}hx-post="{{ attrs_map.get("hx-post") }}" {% end %}{% if attrs_map.get("hx-target") %}hx-target="{{ attrs_map.get("hx-target") }}" {% end %}{% if attrs_map.get("hx-swap") %}hx-swap="{{ attrs_map.get("hx-swap") }}" {% end %}
                    hx-trigger="change"
                    hx-include="[name='key'],[name='value']"
-                   {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+                   {% if errors and errors | field_errors(name) %} aria-invalid="true"{% end %}>
             <span class="chirpui-toggle__track" aria-hidden="true"></span>
         </label>
     </form>
@@ -45,7 +43,7 @@
         <label class="chirpui-toggle-wrap">
             <input class="chirpui-toggle chirpui-visually-hidden"
                    type="checkbox" id="{{ name }}" name="{{ name }}"
-                   {% if checked %}checked{% end %}
+                   {% if checked %}checked {% end %}
                    {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
             <span class="chirpui-toggle__track" aria-hidden="true"></span>
         </label>
