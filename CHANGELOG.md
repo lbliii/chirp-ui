@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] — 2026-03-10
+
 ### Added
 
 - **fragment_island_with_result** — Macro that renders a co-located mutation result div at the top of the island. Use when forms inside HTMX-loaded content target a result div; guarantees target and form are in the same DOM subtree.
 - **resource_index mutation_result_id** — Optional param to render a mutation result div at the start of the results block. Ensures target is co-located with HTMX-loaded content that contains mutating forms.
 - **Anti-footgun docs** — DND-FRAGMENT-ISLAND.md: "Target must be co-located with form" guidance. COMPONENT-OPTIONS.md: mutation targets note for resource_index.
+
+[0.1.4]: https://github.com/lbliii/chirp-ui/releases/tag/v0.1.4
 
 ## [0.1.3] — 2026-03-09
 
