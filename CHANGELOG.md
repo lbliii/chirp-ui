@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] — 2026-03-10
+
+### Added
+
+- **SECURITY.md** — `| safe` usage audit, `html_attrs` filter behavior (mapping vs raw string), XSS vector tests in `test_filters.py`
+- **docs/ANTI-FOOTGUNS.md** — Common pitfalls: fragment island target matching, Alpine `x-data` placement, registration order, static path, CSRF, `attrs_map` over `attrs`
+- **docs/COMPONENT-OPTIONS.md** — JavaScript Dependencies section (Alpine.js, chirpui.js) and static path guidance
+- **README** — Version compatibility table, stability notes, SECURITY.md link
+- **filters `__all__`** — Public API surface: `bem`, `field_errors`, `html_attrs`, `icon`, `validate_size`, `validate_variant`, `validate_variant_block`
+- **Test env** — `validate_variant_block` and `validate_size` stubs for Chirp/chirp-ui filter parity
+- **Template CSS contract** — Dynamic BEM modifiers (btn, modal, dropdown, star-rating, thumbs, segmented) verified against CSS
+
+### Changed
+
+- **config_row** — Template tweaks
+- **DASHBOARD-MATURITY-CONTRACT** — Phase 1 marked complete ✓ (hardening)
+
+### Fixed
+
+- **Filter edge cases** — `html_attrs` (None, False, nested dict, special chars), `bem` (empty variant/modifier), `validate_variant` (empty allowed list), `field_errors` (nested dict, non-dict input)
+
+[0.1.5]: https://github.com/lbliii/chirp-ui/releases/tag/v0.1.5
+
 ## [0.1.4] — 2026-03-10
 
 ### Added
