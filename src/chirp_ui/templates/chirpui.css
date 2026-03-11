@@ -5423,6 +5423,68 @@ a.chirpui-tag:active {
 }
 
 /* ==========================================================================
+   Route tabs — subsection navigation (route-backed, HTMX swap)
+   ========================================================================== */
+
+.chirpui-route-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--chirpui-spacing-sm);
+    border-bottom: 1px solid var(--chirpui-border);
+    padding-bottom: 0;
+}
+.chirpui-route-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    color: var(--chirpui-text-muted);
+    text-decoration: none;
+    font-size: var(--chirpui-font-sm);
+    font-weight: 500;
+    border-radius: var(--chirpui-radius-sm) var(--chirpui-radius-sm) 0 0;
+    border: 1px solid transparent;
+    border-bottom: none;
+    margin-bottom: -1px;
+    background: transparent;
+    transition: color var(--chirpui-transition), background var(--chirpui-transition),
+        border-color var(--chirpui-transition);
+}
+.chirpui-route-tab:hover {
+    color: var(--chirpui-text);
+    background: var(--chirpui-surface-alt);
+}
+.chirpui-route-tab--active,
+.chirpui-route-tab[aria-current="page"] {
+    color: var(--chirpui-accent);
+    background: var(--chirpui-primary-muted);
+    border-color: var(--chirpui-border);
+    border-bottom-color: var(--chirpui-bg);
+    box-shadow: 0 -1px 0 0 var(--chirpui-accent);
+}
+.chirpui-route-tab__label {
+    /* Inherits from parent; explicit for BEM consistency */
+}
+.chirpui-route-tab__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    opacity: 0.85;
+}
+.chirpui-route-tab--active .chirpui-route-tab__icon,
+.chirpui-route-tab[aria-current="page"] .chirpui-route-tab__icon {
+    opacity: 1;
+}
+.chirpui-route-tab__badge {
+    font-size: var(--chirpui-font-xs);
+    padding: 0.125rem 0.375rem;
+    background: var(--chirpui-surface-alt);
+    border-radius: 9999px;
+}
+
+/* ==========================================================================
    Theme toggle
    ========================================================================== */
 
@@ -8381,6 +8443,25 @@ body:has(> .chirpui-app-shell) {
     min-width: 0;
     overflow-y: auto;
     padding: var(--chirpui-spacing-lg);
+}
+
+/* Fragment targets — vertical spacing. Tabs topmost; title/actions/content below. */
+#page-root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-lg);
+}
+
+#page-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-md);
+}
+
+#page-content-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-md);
 }
 
 /* ==========================================================================

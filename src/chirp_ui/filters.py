@@ -190,3 +190,7 @@ def register_filters(app: TemplateFilterApp) -> None:
     app.template_filter("validate_variant")(validate_variant)
     app.template_filter("validate_variant_block")(validate_variant_block)
     app.template_filter("validate_size")(validate_size)
+    if hasattr(app, "template_global"):
+        from chirp_ui.route_tabs import tab_is_active
+
+        app.template_global("tab_is_active")(tab_is_active)

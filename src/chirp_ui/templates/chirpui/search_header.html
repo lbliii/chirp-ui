@@ -8,7 +8,7 @@
 
 {% def search_header(title, form_action, query="", search_name="q", subtitle=none, meta=none, breadcrumb_items=none, form_method="get", form_attrs="", form_attrs_map=none, search_placeholder="Search...", button_label="Search", button_icon="⌕", surface_variant="muted", density="md", wrap="wrap", sticky=false, cls="") %}
 {% call stack(gap="sm", cls="chirpui-search-header" ~ (" " ~ cls if cls else "")) %}
-{{ page_header(title, subtitle=subtitle, meta=meta, breadcrumb_items=breadcrumb_items) }}
+{% if title %}{{ page_header(title, subtitle=subtitle, meta=meta, breadcrumb_items=breadcrumb_items) }}{% end %}
 {% call form(form_action, method=form_method, attrs=form_attrs, attrs_map=form_attrs_map, cls="chirpui-search-header__form") %}
 {% call action_strip(surface_variant=surface_variant, density=density, wrap=wrap, sticky=sticky, role="region", aria_label="Search and controls", cls="chirpui-search-header__strip") %}
 <div class="chirpui-action-strip__primary">

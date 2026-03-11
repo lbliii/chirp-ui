@@ -1,0 +1,36 @@
+{#- chirp-ui: Tabbed page layout macro
+    Structure: container → stack → #page-root → #page-content (route-tabs + page-content-inner).
+    Layout order: Tabs topmost → Title → Actions → Content.
+    Slots: page_header, page_toolbar, page_content.
+    When tabs is provided, renders route_tabs above page_content_inner.
+
+    Usage:
+        {% from "chirpui/tabbed_page_layout.html" import tabbed_page_layout %}
+        {% call tabbed_page_layout(tabs=route_tabs, current_path=current_path) %}
+          {% slot page_header %}{{ page_header("Section Title") }}{% end %}
+          {% slot page_toolbar %}{% end %}
+          {% slot page_content %}...{% end %}
+        {% end %}
+-#}
+{% from "chirpui/layout.html" import container, stack %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% def tabbed_page_layout(tabs=none, current_path="/") %}
+{% call container() %}
+{% call stack(gap="lg") %}
+<div id="page-root">
+<div id="page-content">
+{% if tabs %}
+<div id="route-tabs">
+{{ route_tabs(tabs, current_path) }}
+</div>
+{% end %}
+<div id="page-content-inner">
+{% slot page_header %}{% end %}
+{% slot page_toolbar %}{% end %}
+{% slot page_content %}{% end %}
+</div>
+</div>
+</div>
+{% end %}
+{% end %}
+{% end %}

@@ -11,6 +11,7 @@ EXAMPLES_DIR = Path(__file__).resolve().parents[1] / "examples/component-showcas
 
 TARGET_PREFIXES = (
     "chirpui-app-shell",
+    "chirpui-route-tab",
     "chirpui-sidebar",
     "chirpui-action-strip",
     "chirpui-config-row",

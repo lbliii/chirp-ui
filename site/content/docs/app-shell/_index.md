@@ -38,7 +38,7 @@ category: app-shell
 ### shell_actions
 
 Route-scoped topbar actions (buttons, links, menus) that update automatically
-when navigating between pages via htmx boost.
+when navigating via htmx boost (sidebar) or tab clicks (hx-target #main or #page-root).
 
 When extending `chirpui/app_shell_layout.html`, `shell_actions` is provided by
 the layout chain from Chirp's merged `_context.py` results. When using the
@@ -55,7 +55,45 @@ The rendering macro is `shell_actions_bar(shell_actions)` from
 for the full cascade/override pattern (primary, controls, overflow zones;
 `remove=`; `mode="replace"`).
 
+**Design:** Prefer shell_actions for actions that apply across the whole section (e.g. "New Chain" on Discover). Page-level action strips are better for actions that only apply to the current tab. Avoid duplicating the same action in both.
+
+**Tabbed layout:** Tabs are topmost. Put title, action strips, and content underneath (inside page_content). Order: Tabs → Title → Actions → Content.
+
+### route_tabs and tabbed_page_layout
+
+For route-backed subsection tabs (e.g. Workspace → Analytics, Events, Logs), use `route_tabs` from `chirpui/route_tabs.html`:
+
+```html
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{{ route_tabs(tabs, current_path, target="#page-root") }}
+```
+
+Tab items: `{label, href, icon?, badge?, match?}`. `match`: `"exact"` or `"prefix"`. ChirpUI registers `tab_is_active` as a template global via `use_chirp_ui()`.
+
+For the full tabbed layout structure (container → #page-root → route-tabs + page-content-inner), use `tabbed_page_layout` from `chirpui/tabbed_page_layout.html`:
+
+```html
+{% from "chirpui/tabbed_page_layout.html" import tabbed_page_layout %}
+{% call tabbed_page_layout(tabs=route_tabs, current_path=current_path) %}
+  {% slot page_header %}{{ page_header("Section Title") }}{% end %}
+  {% slot page_toolbar %}{% end %}
+  {% slot page_content %}...{% end %}
+{% end %}
+```
+
 See [Chirp's chirp-ui guide](https://lbliii.github.io/chirp/docs/guides/chirp-ui/) for full app-shell patterns and htmx integration.
+
+### HTMX fragment targets
+
+ChirpUI registers three fragment targets via `use_chirp_ui()`. When an HTMX request includes `HX-Target`, Chirp uses the registry to choose which template block to render:
+
+| Target | Block | Use case |
+|--------|-------|----------|
+| `#main` | `page_root` | Sidebar navigation (full content + tabs) |
+| `#page-root` | `page_root_inner` | Tab clicks (tabs + content) |
+| `#page-content-inner` | `page_content` | Narrow content swaps |
+
+Sidebar links use `hx-target="#main"` by default. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
 
 ### Polling shell regions
 
