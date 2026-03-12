@@ -60,8 +60,7 @@ def test_render_route_tabs_macro_renders_htmx_attrs(env: Environment) -> None:
 def test_route_tabs_alias_still_renders(env: Environment) -> None:
     env.add_global("tab_is_active", tab_is_active)
     html = env.from_string(
-        '{% from "chirpui/route_tabs.html" import route_tabs %}'
-        '{{ route_tabs(tabs, current_path) }}'
+        '{% from "chirpui/route_tabs.html" import route_tabs %}{{ route_tabs(tabs, current_path) }}'
     ).render(
         tabs=({"label": "Workspace", "href": "/workspace"},),
         current_path="/workspace",
@@ -75,9 +74,9 @@ def test_tabbed_page_layout_template_exposes_contract_blocks(env: Environment) -
     env.add_global("tab_is_active", tab_is_active)
     html = env.from_string(
         '{% extends "chirpui/tabbed_page_layout.html" %}'
-        '{% block page_header %}<h1>Header</h1>{% end %}'
+        "{% block page_header %}<h1>Header</h1>{% end %}"
         '{% block page_toolbar %}<div class="toolbar">Toolbar</div>{% end %}'
-        '{% block page_content %}<p>Body</p>{% end %}'
+        "{% block page_content %}<p>Body</p>{% end %}"
     ).render(
         tab_items=(
             {"label": "Workspace", "href": "/workspace"},

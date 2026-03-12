@@ -5,7 +5,9 @@ from pathlib import Path
 
 TEMPLATES_DIR = Path(__file__).resolve().parents[1] / "src/chirp_ui/templates/chirpui"
 CSS_PATH = Path(__file__).resolve().parents[1] / "src/chirp_ui/templates/chirpui.css"
-TRANSITIONS_CSS_PATH = Path(__file__).resolve().parents[1] / "src/chirp_ui/templates/chirpui-transitions.css"
+TRANSITIONS_CSS_PATH = (
+    Path(__file__).resolve().parents[1] / "src/chirp_ui/templates/chirpui-transitions.css"
+)
 EXAMPLES_DIR = Path(__file__).resolve().parents[1] / "examples/component-showcase/templates"
 
 
