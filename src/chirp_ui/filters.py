@@ -7,6 +7,7 @@ Everything not in __all__ is internal and may change without notice.
 """
 
 import logging
+from pathlib import PurePath
 
 __all__ = [
     "bem",
@@ -16,6 +17,7 @@ __all__ = [
     "validate_size",
     "validate_variant",
     "validate_variant_block",
+    "value_type",
 ]
 from collections.abc import Callable, Mapping
 from html import escape
@@ -88,6 +90,22 @@ def validate_variant_block(value: str, block: str, default: str = "") -> str:
     """Return value if in VARIANT_REGISTRY for block, else default. When strict, log warning."""
     allowed = VARIANT_REGISTRY.get(block, ())
     return validate_variant(value, allowed, default)
+
+
+def value_type(value: Any) -> str:
+    """Map Python types to ChirpUI CSS variant names for description_item.
+
+    Returns: "unset" | "bool" | "number" | "path" | "" (plain string).
+    """
+    if value is None:
+        return "unset"
+    if isinstance(value, bool):
+        return "bool"
+    if isinstance(value, (int, float)):
+        return "number"
+    if isinstance(value, PurePath):
+        return "path"
+    return ""
 
 
 def validate_size(
@@ -190,6 +208,7 @@ def register_filters(app: TemplateFilterApp) -> None:
     app.template_filter("validate_variant")(validate_variant)
     app.template_filter("validate_variant_block")(validate_variant_block)
     app.template_filter("validate_size")(validate_size)
+    app.template_filter("value_type")(value_type)
     if hasattr(app, "template_global"):
         from chirp_ui.route_tabs import tab_is_active
 

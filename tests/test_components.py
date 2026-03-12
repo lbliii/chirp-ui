@@ -2130,6 +2130,36 @@ class TestDescriptionList:
         ).render()
         assert "chirpui-dl--horizontal" in html
 
+    def test_description_item_auto_type_bool(self, env: Environment) -> None:
+        """Pass Python bool to description_item; badge with Yes/No appears."""
+        html = env.from_string(
+            '{% from "chirpui/description_list.html" import description_item %}'
+            '{{ description_item("Initialized", True) }}'
+        ).render()
+        assert "chirpui-dl__detail--bool" in html
+        assert "Yes" in html
+
+    def test_description_item_auto_type_path(self, env: Environment) -> None:
+        """Pass Path to description_item; --path class applied."""
+        from pathlib import Path
+
+        html = env.from_string(
+            '{% from "chirpui/description_list.html" import description_item %}'
+            '{{ description_item("Workspace", workspace_root) }}'
+        ).render(workspace_root=Path("/home/project"))
+        assert "chirpui-dl__detail--path" in html
+        assert "/home/project" in html
+
+    def test_description_list_items_auto_type_bool(self, env: Environment) -> None:
+        """Items with bool detail get auto-detected type and badge."""
+        html = env.from_string(
+            '{% from "chirpui/description_list.html" import description_list %}'
+            '{% set items = [{"term": "Ready", "detail": True}] %}'
+            "{{ description_list(items=items) }}"
+        ).render()
+        assert "chirpui-dl__detail--bool" in html
+        assert "Yes" in html
+
 
 class TestSettingsRow:
     def test_settings_row_list_and_row(self, env: Environment) -> None:
