@@ -92,3 +92,24 @@ Without the token, the server may reject the request with 403.
 ## Prefer `attrs_map` over `attrs`
 
 Raw `attrs` strings are passed through unescaped. Use `attrs_map` (a dict) for structured attributes; it is escaped by the `html_attrs` filter, reducing XSS risk. See [SECURITY.md](../SECURITY.md).
+
+---
+
+## Kida Macros
+
+### Macro and context variable must not share the same name
+
+When a macro and a context variable have the same name (e.g. both `route_tabs`), the macro shadows the variable. On pages where the variable is not in context, `{% if route_tabs | default([]) %}` resolves to the macro (truthy), so the block runs and passes the macro as the first argument. Inside the macro, `{% for tab in tabs %}` then tries to iterate over the macro → "MacroWrapper object is not iterable".
+
+**Fix:** Use verb-prefixed names for macros and noun-like names for context variables:
+
+```kida
+{% from "_route_tabs.html" import render_route_tabs %}
+{% if route_tabs | default([]) %}
+    {{ render_route_tabs(route_tabs, current_path) }}
+{% end %}
+```
+
+| Macros | Context variables |
+|--------|-------------------|
+| `render_route_tabs`, `format_date`, `render_nav` | `route_tabs`, `items`, `skills` |

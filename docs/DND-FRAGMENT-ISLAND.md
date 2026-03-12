@@ -77,21 +77,73 @@ Forms inside the included content use `hx-target="#update-result"`; the target i
 
 ---
 
+## Sortable List Reorder (sortable_list + HTMX)
+
+For chains, todo lists, setup targets: use `sortable_list` and `sortable_item` with a **hidden form** for reliable HTMX submission. Alpine 3 removed `$parent`, so use `dataset.draggingIdx` on the list element to pass the source index to the drop handler.
+
+**Key patterns:**
+- Hidden form with `hx-post`, `hx-target`, `hx-select`, `hx-swap` — ensures correct form encoding and fragment extraction
+- `dataset.draggingIdx` on the list — stores source index across Alpine scopes (no `$parent`)
+- Per-item `overCount` — prevents drop-indicator flicker when hovering over child elements
+- `@dragend` on the list — cleans up state when drag is cancelled (dropped outside)
+
+```html
+{% from "chirpui/sortable_list.html" import sortable_list, sortable_item %}
+
+<div id="step-list">
+<form id="reorder-form" method="post" action="/chains/{{ chain_id }}/reorder"
+      hx-post="/chains/{{ chain_id }}/reorder" hx-target="#step-list" hx-select="#step-list" hx-swap="outerHTML"
+      style="display:none">
+  <input type="hidden" name="from_idx" value="">
+  <input type="hidden" name="to_idx" value="">
+</form>
+{% call sortable_list(attrs='x-data
+    @dragend="delete $el.dataset.draggingIdx; $el.querySelectorAll(\'.chirpui-sortable__item--dragging, .chirpui-sortable__item--over\').forEach(el => el.classList.remove(\'chirpui-sortable__item--dragging\', \'chirpui-sortable__item--over\'))"') %}
+{% for step in steps %}
+{% call sortable_item(attrs='x-data="{ overCount: 0 }" draggable="true"
+    @dragstart="$el.closest(\'.chirpui-sortable\').dataset.draggingIdx = \'' ~ loop.index0 ~ '\'; $el.classList.add(\'chirpui-sortable__item--dragging\')"
+    @dragover.prevent
+    @dragenter="overCount++; if (overCount === 1) $el.classList.add(\'chirpui-sortable__item--over\')"
+    @dragleave="overCount--; if (overCount === 0) $el.classList.remove(\'chirpui-sortable__item--over\')"
+    @drop.prevent="overCount = 0; $el.classList.remove(\'chirpui-sortable__item--over\');
+        const list = $el.closest(\'.chirpui-sortable\');
+        const form = document.getElementById(\'reorder-form\');
+        if (form) { form.elements[\'from_idx\'].value = list.dataset.draggingIdx; form.elements[\'to_idx\'].value = \'' ~ loop.index0 ~ '\'; htmx.trigger(form, \'submit\'); }"') %}
+  <span class="chirpui-sortable__handle">&#x2630;</span>
+  <div class="chirpui-sortable__content">{{ step.name }}</div>
+{% end %}
+{% end %}
+{% end %}
+</div>
+```
+
+**Backend:** Return `Fragment("chains/_step_list.html", "step_list", chain=updated, chain_id=name)` so the response contains `#step-list`. Use `hx-select="#step-list"` to extract it when the response is a full page.
+
+### Anti-footgun: Alpine 3 and $parent
+
+Alpine 3 removed `$parent`. Do not use `$parent.dragging` — it will throw. Use `$el.closest('.chirpui-sortable').dataset.draggingIdx` instead.
+
+### Anti-footgun: htmx.ajax values vs form submission
+
+`htmx.ajax(..., {values: {...}})` can fail to send form-encoded data correctly in some setups. Prefer a hidden form + `htmx.trigger(form, 'submit')` for reliable reorder requests.
+
+---
+
 ## DnD Row Primitive (ordered lists)
 
-For chains, todo lists, setup targets: use `dnd_list`, `dnd_item`, `dnd_handle`, `dnd_drop_indicator`.
+For richer row styling (handle, drop indicator): use `dnd_list`, `dnd_item`, `dnd_handle`, `dnd_drop_indicator`. Apply the same Alpine patterns as above (dataset for source index, per-item overCount, form submission).
 
 ```html
 {% from "chirpui/dnd.html" import dnd_list, dnd_item, dnd_handle, dnd_drop_indicator %}
 
-{% call dnd_list(attrs='x-data="{ dragging: null }"') %}
+{% call dnd_list(attrs='x-data') %}
 {% for item in items %}
-{% call dnd_item(attrs='draggable="true"
-    @dragstart="dragging = ' ~ loop.index0 ~ '"
+{% call dnd_item(attrs='x-data="{ overCount: 0 }" draggable="true"
+    @dragstart="$el.closest(\'.chirpui-dnd\').dataset.draggingIdx = \'' ~ loop.index0 ~ '\'; $el.classList.add(\'chirpui-dnd__item--dragging\')"
     @dragover.prevent
-    @dragenter="$el.classList.add(`chirpui-dnd__item--over`)"
-    @dragleave="$el.classList.remove(`chirpui-dnd__item--over`)"
-    @drop.prevent="...reorder logic..."') %}
+    @dragenter="overCount++; if (overCount === 1) $el.classList.add(\'chirpui-dnd__item--over\')"
+    @dragleave="overCount--; if (overCount === 0) $el.classList.remove(\'chirpui-dnd__item--over\')"
+    @drop.prevent="...form submit..."') %}
   {{ dnd_handle() }}
   {{ dnd_drop_indicator() }}
   <div class="chirpui-dnd__content">{{ item.name }}</div>

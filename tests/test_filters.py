@@ -11,6 +11,7 @@ from chirp_ui.filters import (
     validate_size,
     validate_variant,
     validate_variant_block,
+    value_type,
 )
 from chirp_ui.validation import set_strict
 
@@ -267,6 +268,36 @@ class TestIconStrictMode:
         assert not any("invalid" in (r.message or "") for r in caplog.records)
 
 
+class TestValueType:
+    """value_type maps Python types to ChirpUI CSS variant names."""
+
+    def test_bool(self) -> None:
+        assert value_type(True) == "bool"
+        assert value_type(False) == "bool"
+
+    def test_int(self) -> None:
+        assert value_type(42) == "number"
+
+    def test_float(self) -> None:
+        assert value_type(3.14) == "number"
+
+    def test_path(self) -> None:
+        from pathlib import Path, PurePosixPath
+
+        assert value_type(Path("/foo")) == "path"
+        assert value_type(PurePosixPath("/bar")) == "path"
+
+    def test_none(self) -> None:
+        assert value_type(None) == "unset"
+
+    def test_str(self) -> None:
+        assert value_type("hello") == ""
+
+    def test_bool_before_int(self) -> None:
+        """bool is subclass of int; value_type must return 'bool' for bool values."""
+        assert value_type(True) == "bool"
+
+
 class TestRegisterFilters:
     def test_registers_bem_field_errors_and_html_attrs(self) -> None:
         registered: dict[str, object] = {}
@@ -291,3 +322,5 @@ class TestRegisterFilters:
         assert "validate_variant" in registered
         assert "validate_variant_block" in registered
         assert "validate_size" in registered
+        assert "value_type" in registered
+        assert registered["value_type"] is value_type
