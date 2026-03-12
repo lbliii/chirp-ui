@@ -214,6 +214,6 @@ def register_filters(app: TemplateFilterApp) -> None:
 
         tg = cast(
             Callable[[str | None], Callable[[Callable[..., object]], Callable[..., object]]],
-            getattr(app, "template_global"),
+            app.template_global,
         )
         tg("tab_is_active")(tab_is_active)
