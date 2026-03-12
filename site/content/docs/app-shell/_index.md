@@ -35,6 +35,61 @@ category: app-shell
 - **toast_container** — Toast notifications
 - **shell_actions** — Route-scoped topbar actions that update automatically on navigation
 
+## Golden Path
+
+The recommended app path is now:
+
+1. Call `use_chirp_ui(app)` so Chirp registers the canonical shell contract.
+2. Keep one section descriptor source in Python for sidebar groups, tab families, and breadcrumb prefixes.
+3. Extend `chirpui/tabbed_page_layout.html` for route-backed pages and pass `tab_items` plus `current_path`.
+4. Return `Page(..., "page_content", page_block_name="page_root", ...)` or `PageComposition(..., fragment_block="page_content", page_block="page_root", ...)`.
+5. Let Chirp validate that your leaf pages actually provide the required shell blocks.
+
+That gives you one shell, one tab model, one set of fragment targets, and predictable OOB updates without app-local wrapper glue.
+
+## Reference Pattern
+
+This is the smallest durable pattern for a dashboard-style app:
+
+```python
+from chirp import App, AppConfig, Page, Request, use_chirp_ui
+
+app = App(AppConfig(template_dir="templates"))
+use_chirp_ui(app)
+
+
+@app.get("/projects")
+def projects(request: Request) -> Page:
+    tab_items = (
+        {"label": "Overview", "href": "/projects", "match": "exact"},
+        {"label": "Runs", "href": "/projects/runs", "match": "prefix"},
+    )
+    return Page(
+        "projects/page.html",
+        "page_content",
+        page_block_name="page_root",
+        page_title="Projects",
+        current_path=request.path,
+        tab_items=tab_items,
+        breadcrumb_items=[
+            {"label": "Home", "href": "/"},
+            {"label": "Projects"},
+        ],
+    )
+```
+
+```html
+{% extends "chirpui/tabbed_page_layout.html" %}
+{% from "chirpui/layout.html" import page_header %}
+
+{% block page_header %}{{ page_header("Projects") }}{% end %}
+{% block page_content %}
+<p>Project content.</p>
+{% end %}
+```
+
+If you need persistent sidebar, breadcrumbs, and shell actions, layer this under your app shell layout and keep the page-level template focused on `page_header`, `page_toolbar`, and `page_content`.
+
 ### shell_actions
 
 Route-scoped topbar actions (buttons, links, menus) that update automatically
@@ -61,31 +116,32 @@ for the full cascade/override pattern (primary, controls, overflow zones;
 
 ### route_tabs and tabbed_page_layout
 
-For route-backed subsection tabs (e.g. Workspace → Analytics, Events, Logs), use `route_tabs` from `chirpui/route_tabs.html`:
+For route-backed subsection tabs (e.g. Workspace → Analytics, Events, Logs), the canonical macro is `render_route_tabs` from `chirpui/route_tabs.html`:
 
 ```html
-{% from "chirpui/route_tabs.html" import route_tabs %}
-{{ route_tabs(tabs, current_path, target="#page-root") }}
+{% from "chirpui/route_tabs.html" import render_route_tabs %}
+{{ render_route_tabs(tab_items, current_path, target="#page-root") }}
 ```
 
-Tab items: `{label, href, icon?, badge?, match?}`. `match`: `"exact"` or `"prefix"`. ChirpUI registers `tab_is_active` as a template global via `use_chirp_ui()`.
+Tab items: `{label, href, icon?, badge?, match?}`. `match`: `"exact"` or `"prefix"`. ChirpUI registers `tab_is_active` as a template global via `use_chirp_ui()`. The older `route_tabs(...)` name still works as a compatibility alias, but `render_route_tabs(...)` avoids the common macro/context name collision footgun.
 
-For the full tabbed layout structure (container → #page-root → route-tabs + page-content-inner), use `tabbed_page_layout` from `chirpui/tabbed_page_layout.html`:
+For the full tabbed layout structure, prefer extending `chirpui/tabbed_page_layout.html` so the template itself exposes Chirp's `page_root`, `page_root_inner`, and `page_content` contract blocks:
 
 ```html
-{% from "chirpui/tabbed_page_layout.html" import tabbed_page_layout %}
-{% call tabbed_page_layout(tabs=route_tabs, current_path=current_path) %}
-  {% slot page_header %}{{ page_header("Section Title") }}{% end %}
-  {% slot page_toolbar %}{% end %}
-  {% slot page_content %}...{% end %}
-{% end %}
+{% extends "chirpui/tabbed_page_layout.html" %}
+
+{% block page_header %}{{ page_header("Section Title") }}{% end %}
+{% block page_toolbar %}{% end %}
+{% block page_content %}...{% end %}
 ```
+
+Pass `tab_items` and `current_path` in page context. ChirpUI also keeps the older `tabbed_page_layout(...)` macro for compatibility, but extending the template is the recommended path for apps that use Chirp fragment targets.
 
 See [Chirp's chirp-ui guide](https://lbliii.github.io/chirp/docs/guides/chirp-ui/) for full app-shell patterns and htmx integration.
 
 ### HTMX fragment targets
 
-ChirpUI registers three fragment targets via `use_chirp_ui()`. When an HTMX request includes `HX-Target`, Chirp uses the registry to choose which template block to render:
+ChirpUI registers its page shell contract via `use_chirp_ui()`. That contract maps the built-in fragment targets to explicit template blocks, and Chirp validates those blocks for leaf page templates during app contract checks:
 
 | Target | Block | Use case |
 |--------|-------|----------|
@@ -94,6 +150,18 @@ ChirpUI registers three fragment targets via `use_chirp_ui()`. When an HTMX requ
 | `#page-content-inner` | `page_content` | Narrow content swaps |
 
 Sidebar links use `hx-target="#main"` by default. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
+
+## Debugging
+
+When shell navigation behaves strangely, check these first:
+
+- If sidebar navigation fails, verify the page provides `page_root`.
+- If tab clicks fail, verify the page provides `page_root_inner`.
+- If a narrow mutation fails, verify the target maps to `page_content` or another registered fragment block.
+- Run Chirp contract checks in tests or startup so missing blocks fail before a user clicks around.
+- Prefer `tab_items` and `render_route_tabs(...)` over the older `route_tabs(...)` naming to avoid macro/context collisions.
+
+The best mental model is: target id -> registered fragment block -> block exists on the leaf page template. Once those three line up, HTMX navigation and OOB shell updates become routine.
 
 ### Polling shell regions
 

@@ -4159,6 +4159,22 @@ dialog.chirpui-modal a {
     justify-content: flex-end;
 }
 
+.chirpui-confirm--danger {
+    border-left: 3px solid var(--chirpui-error);
+}
+
+.chirpui-confirm--danger .chirpui-modal__header {
+    background: color-mix(in srgb, var(--chirpui-error) 8%, var(--chirpui-surface));
+}
+
+.chirpui-confirm--danger .chirpui-modal__title {
+    color: var(--chirpui-error);
+}
+
+.chirpui-confirm--danger .chirpui-confirm__icon {
+    margin-right: 0.5em;
+}
+
 .chirpui-confirm--danger .chirpui-btn--danger {
     background: var(--chirpui-error);
     color: white;

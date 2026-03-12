@@ -1,13 +1,13 @@
 {#- chirp-ui: Route-backed subsection tabs
     Route-backed nav links with aria-current="page".
     Use role="navigation", not role="tablist" — each tab loads a new URL.
-    Requires: tab_is_active (template global), current_path, tabs.
+    Requires: tab_is_active (template global), current_path, tab_items.
     Tab item: {label, href, icon?, badge?, match?} — match: "exact" | "prefix"
 -#}
-{% def route_tabs(tabs, current_path, target="#page-root", is_active=none) %}
+{% def render_route_tabs(tab_items, current_path, target="#page-root", is_active=none) %}
 {% set _is_active = is_active if is_active is not none else tab_is_active %}
 <nav role="navigation" aria-label="Subsection navigation" class="chirpui-route-tabs">
-  {% for tab in tabs %}
+  {% for tab in tab_items %}
   <a href="{{ tab.href }}"
      class="chirpui-route-tab{% if _is_active(tab, current_path) %} chirpui-route-tab--active{% end %}"
      {% if _is_active(tab, current_path) %}aria-current="page"{% end %}
@@ -21,4 +21,8 @@
   </a>
   {% end %}
 </nav>
+{% end %}
+
+{% def route_tabs(tabs, current_path, target="#page-root", is_active=none) %}
+{{ render_route_tabs(tabs, current_path, target=target, is_active=is_active) }}
 {% end %}

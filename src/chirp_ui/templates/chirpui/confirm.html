@@ -23,7 +23,11 @@
 <dialog id="{{ id }}" class="chirpui-confirm chirpui-modal chirpui-modal--small{{ " chirpui-confirm--" ~ variant if variant else "" }}{{ " " ~ cls if cls else "" }}"
         closedby="any">
     <header class="chirpui-modal__header">
+        {% if variant == "danger" %}
+        <h2 class="chirpui-modal__title"><span class="chirpui-confirm__icon" aria-hidden="true">&#x26A0;</span> {{ title }}</h2>
+        {% else %}
         <h2 class="chirpui-modal__title">{{ title }}</h2>
+        {% end %}
         <div class="chirpui-modal__header-actions">{% slot header_actions %}</div>
         <form method="dialog">
             <button class="chirpui-modal__close" aria-label="Close">&times;</button>

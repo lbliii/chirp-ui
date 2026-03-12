@@ -1,10 +1,15 @@
 {#- chirp-ui: Tabbed page layout macro
-    Structure: container → stack → #page-root → #page-content (route-tabs + page-content-inner).
+    Contract-aware tabbed page layout.
+    Structure: container → stack → page_root → page_root_inner → page_content.
     Layout order: Tabs topmost → Title → Actions → Content.
-    Slots: page_header, page_toolbar, page_content.
-    When tabs is provided, renders route_tabs above page_content_inner.
 
-    Usage:
+    Recommended usage:
+        {% extends "chirpui/tabbed_page_layout.html" %}
+        {% block page_header %}{{ page_header("Section Title") }}{% end %}
+        {% block page_toolbar %}{% end %}
+        {% block page_content %}...{% end %}
+
+    Backwards-compatible macro usage:
         {% from "chirpui/tabbed_page_layout.html" import tabbed_page_layout %}
         {% call tabbed_page_layout(tabs=route_tabs, current_path=current_path) %}
           {% slot page_header %}{{ page_header("Section Title") }}{% end %}
@@ -13,20 +18,49 @@
         {% end %}
 -#}
 {% from "chirpui/layout.html" import container, stack %}
-{% from "chirpui/route_tabs.html" import route_tabs %}
-{% def tabbed_page_layout(tabs=none, current_path="/") %}
+{% from "chirpui/route_tabs.html" import render_route_tabs %}
+
+{% set _tab_items = tab_items if tab_items is defined and tab_items is not none else tabs | default(none) %}
+{% set _current_path = current_path | default("/") %}
+{% set _tab_target = tab_target | default("#page-root") %}
+
+{% block page_root %}
+{% call container() %}
+{% call stack(gap="lg") %}
+<div id="page-root">
+{% block page_root_inner %}
+<div id="page-content">
+{% if _tab_items %}
+<div id="route-tabs">
+{{ render_route_tabs(_tab_items, _current_path, target=_tab_target) }}
+</div>
+{% end %}
+{% block page_header %}{% end %}
+{% block page_toolbar %}{% end %}
+<div id="page-content-inner">
+{% block page_content %}{% end %}
+</div>
+</div>
+{% endblock %}
+</div>
+{% end %}
+{% end %}
+{% end %}
+
+{% def tabbed_page_layout(tab_items=none, tabs=none, current_path="/", tab_target="#page-root") %}
+{% set _tab_items = tab_items if tab_items is not none else tabs %}
 {% call container() %}
 {% call stack(gap="lg") %}
 <div id="page-root">
 <div id="page-content">
-{% if tabs %}
+{% if _tab_items %}
 <div id="route-tabs">
-{{ route_tabs(tabs, current_path) }}
+{{ render_route_tabs(_tab_items, current_path, target=tab_target) }}
 </div>
 {% end %}
-<div id="page-content-inner">
 {% slot page_header %}{% end %}
 {% slot page_toolbar %}{% end %}
+<div id="page-content-inner">
 {% slot page_content %}{% end %}
 </div>
 </div>
