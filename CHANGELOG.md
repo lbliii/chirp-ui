@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] — 2026-03-12
+
+### Added
+
+- **route_tabs** — Route-family tab components: `render_route_tabs`, `route_tabs` macros; `tabbed_page_layout` for route-backed pages with `tab_items` and `current_path`
+- **tab_is_active** — Template global (registered when Chirp has `template_global`); supports `exact`/`prefix` match for tab hrefs
+- **value_type** filter — Infer type from value (bool, number, str, path, etc.); added to filters `__all__`
+- **description_list** — Auto-detect item type via `value_type` when `item.type` is missing
+- **chirpui.css** — Route tab styles
+- **Docs** — PLAN-primitives-and-components, PLAN-route-tabs-and-tabbed-layout; app-shell golden path (tabbed_page_layout); type-aware-rendering; DND-FRAGMENT-ISLAND updates
+
+### Changed
+
+- **register_filters** — Registers `value_type` and `tab_is_active` (template global when available)
+
+### Fixed
+
+- **B009** — Replace `getattr(app, "template_global")` with `app.template_global` (ruff)
+
+[0.1.6]: https://github.com/lbliii/chirp-ui/releases/tag/v0.1.6
+
 ## [0.1.5] — 2026-03-10
 
 ### Added
