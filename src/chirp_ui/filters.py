@@ -22,7 +22,7 @@ __all__ = [
 from collections.abc import Callable, Mapping
 from html import escape
 from json import dumps
-from typing import Any, Protocol
+from typing import Any, Protocol, cast
 
 from kida.template import Markup
 
@@ -212,4 +212,8 @@ def register_filters(app: TemplateFilterApp) -> None:
     if hasattr(app, "template_global"):
         from chirp_ui.route_tabs import tab_is_active
 
-        app.template_global("tab_is_active")(tab_is_active)
+        tg = cast(
+            Callable[[str | None], Callable[[Callable[..., object]], Callable[..., object]]],
+            getattr(app, "template_global"),
+        )
+        tg("tab_is_active")(tab_is_active)

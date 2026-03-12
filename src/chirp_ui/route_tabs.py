@@ -3,12 +3,16 @@
 Tab item: dict or object with href, match (optional, default "exact").
 """
 
+from typing import Any, cast
 
-def _get_attr(tab: dict | object, key: str, default: str = "") -> str:
+
+def _get_attr(tab: dict[str, Any] | object, key: str, default: str = "") -> str:
     """Get href or match from tab (dict or object)."""
     if isinstance(tab, dict):
-        return tab.get(key, default)
-    return getattr(tab, key, default)
+        d: dict[str, Any] = cast(dict[str, Any], tab)
+        val = d.get(key, default)
+        return default if val is None else str(val)
+    return str(getattr(tab, key, default))
 
 
 def tab_is_active(tab: dict | object, current_path: str) -> bool:
