@@ -20,7 +20,7 @@ chirp-ui provides Kida macros organized by category. Import from `chirpui/` and 
 | **Layout** | container, grid, stack, block, page_header, section_header, divider, breadcrumbs, navbar, sidebar, hero, surface, callout |
 | **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group |
 | **Forms** | text_field, password_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field |
-| **Data display** | badge, spinner, skeleton, progress, description_list, timeline, tree_view, calendar |
+| **Data display** | badge, spinner, skeleton, progress, [description_list](./type-aware-rendering.md) (type-aware), timeline, tree_view, calendar |
 | **Streaming** | streaming_block, copy_btn, model_card — for htmx SSE and LLM UIs |
 | **Mutation helpers** | fragment_island, fragment_island_with_result, poll_trigger, confirm_dialog, confirm_trigger |
 
