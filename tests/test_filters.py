@@ -298,6 +298,103 @@ class TestValueType:
         assert value_type(True) == "bool"
 
 
+class TestBemStrictMode:
+    """bem() in strict mode: invalid variant for a registered block logs and falls back."""
+
+    def setup_method(self) -> None:
+        set_strict(True)
+
+    def teardown_method(self) -> None:
+        set_strict(False)
+
+    def test_invalid_variant_falls_back_to_first_allowed(
+        self, caplog: pytest.LogCaptureFixture
+    ) -> None:
+        result = bem("alert", variant="bogus")
+        first_allowed = ("info", "success", "warning", "error")[0]
+        assert f"chirpui-alert--{first_allowed}" in result
+        assert "chirpui-alert" in result
+        assert any("invalid" in r.message for r in caplog.records)
+
+    def test_valid_variant_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+        result = bem("alert", variant="success")
+        assert "chirpui-alert--success" in result
+        assert not any("invalid" in r.message for r in caplog.records)
+
+    def test_unknown_block_no_strict_validation(self, caplog: pytest.LogCaptureFixture) -> None:
+        result = bem("custom-block", variant="whatever")
+        assert "chirpui-custom-block--whatever" in result
+        assert not any("invalid" in r.message for r in caplog.records)
+
+    def test_empty_variant_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+        result = bem("alert", variant="")
+        assert result == "chirpui-alert"
+        assert not any("invalid" in r.message for r in caplog.records)
+
+
+class TestValidateSizeStrictMode:
+    """validate_size in strict mode: invalid size logs warning and returns fallback."""
+
+    def setup_method(self) -> None:
+        set_strict(True)
+
+    def teardown_method(self) -> None:
+        set_strict(False)
+
+    def test_invalid_size_logs_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+        result = validate_size("xl", "btn")
+        assert result == ""  # first allowed for btn is ""
+        assert any("size" in r.message and "invalid" in r.message for r in caplog.records)
+
+    def test_valid_size_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+        result = validate_size("sm", "btn")
+        assert result == "sm"
+        assert not any("invalid" in r.message for r in caplog.records)
+
+    def test_unknown_block_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+        result = validate_size("xl", "unknown-block")
+        assert result == ""
+        assert not any("invalid" in r.message for r in caplog.records)
+
+    def test_invalid_with_valid_default(self, caplog: pytest.LogCaptureFixture) -> None:
+        result = validate_size("xl", "btn", default="md")
+        assert result == "md"
+        assert any("invalid" in r.message for r in caplog.records)
+
+
+class TestHtmlAttrsListTupleValues:
+    """html_attrs with list/tuple values serializes to JSON via _serialize_attr_value."""
+
+    def test_list_value_serialized_as_json(self) -> None:
+        rendered = str(html_attrs({"data-items": [1, 2, 3]}))
+        assert "data-items" in rendered
+        assert "[1,2,3]" in rendered
+
+    def test_tuple_value_serialized_as_json(self) -> None:
+        rendered = str(html_attrs({"data-pair": (10, 20)}))
+        assert "data-pair" in rendered
+        assert "[10,20]" in rendered
+
+    def test_nested_dict_value_serialized_as_json(self) -> None:
+        rendered = str(html_attrs({"hx-vals": {"name": "test", "id": 1}}))
+        assert "hx-vals" in rendered
+        assert "&quot;" in rendered or '"' not in rendered
+
+    def test_mixed_value_types(self) -> None:
+        rendered = str(html_attrs({
+            "disabled": True,
+            "data-list": [1, 2],
+            "title": "hello",
+            "hidden": False,
+        }))
+        assert " disabled" in rendered
+        assert "data-list" in rendered
+        assert "[1,2]" in rendered
+        assert "title" in rendered
+        assert "hello" in rendered
+        assert "hidden" not in rendered
+
+
 class TestRegisterFilters:
     def test_registers_bem_field_errors_and_html_attrs(self) -> None:
         registered: dict[str, object] = {}
@@ -324,3 +421,49 @@ class TestRegisterFilters:
         assert "validate_size" in registered
         assert "value_type" in registered
         assert registered["value_type"] is value_type
+
+
+class TestRegisterFiltersWithTemplateGlobal:
+    """register_filters with an app that has template_global registers tab_is_active."""
+
+    def test_tab_is_active_registered_as_global(self) -> None:
+        registered_filters: dict[str, object] = {}
+        registered_globals: dict[str, object] = {}
+
+        class MockAppWithGlobal:
+            def template_filter(self, name: str):
+                def decorator(fn: object) -> object:
+                    registered_filters[name] = fn
+                    return fn
+
+                return decorator
+
+            def template_global(self, name: str):
+                def decorator(fn: object) -> object:
+                    registered_globals[name] = fn
+                    return fn
+
+                return decorator
+
+        app = MockAppWithGlobal()
+        register_filters(app)
+
+        assert "tab_is_active" in registered_globals
+        from chirp_ui.route_tabs import tab_is_active
+        assert registered_globals["tab_is_active"] is tab_is_active
+
+    def test_without_template_global_no_error(self) -> None:
+        registered: dict[str, object] = {}
+
+        class MockAppNoGlobal:
+            def template_filter(self, name: str):
+                def decorator(fn: object) -> object:
+                    registered[name] = fn
+                    return fn
+
+                return decorator
+
+        app = MockAppNoGlobal()
+        register_filters(app)
+        assert "bem" in registered
+        assert "tab_is_active" not in registered

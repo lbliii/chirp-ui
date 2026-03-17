@@ -14,6 +14,21 @@
         <div class="chirpui-prose">{{ content | markdown | safe }}</div>
 -#}
 
+{% def streaming_bubble(role="assistant", streaming=true, sse_swap_target=false, sse_connect=none, sse_close="done", cls="") %}
+{% set role_valid = role | validate_variant_block("message_bubble", default="assistant") %}
+{% set role_class = " chirpui-message-bubble--" ~ role_valid if role_valid != "default" else "" %}
+<article class="chirpui-message-bubble{{ role_class }}{{ " " ~ cls if cls else "" }}"
+         {% if sse_connect %}hx-ext="sse" sse-connect="{{ sse_connect }}" sse-close="{{ sse_close }}" hx-disinherit="hx-target hx-swap" {% end %}aria-label="{{ role_valid }} response">
+    <div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}"
+         {% if sse_connect or sse_swap_target %}sse-swap="fragment" hx-target="this" hx-swap="beforeend" {% end %}aria-live="polite" aria-atomic="true">
+        {% slot %}
+        {% if streaming %}
+        <span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
+        {% end %}
+    </div>
+</article>
+{% end %}
+
 {% def streaming_block(streaming=false, sse_swap_target=false, cls="") %}
 <div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}{{ " " ~ cls if cls else "" }}"
      {% if sse_swap_target %}sse-swap="fragment" hx-target="this" {% end %}aria-live="polite"

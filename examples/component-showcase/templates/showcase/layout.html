@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header, cluster %}
+{% from "chirpui/chat_layout.html" import chat_layout %}
+{% from "chirpui/message_bubble.html" import message_bubble %}
+{% from "chirpui/panel.html" import panel %}
+{% from "chirpui/file_tree.html" import file_tree %}
+{% from "chirpui/split_layout.html" import split_layout %}
+{% from "chirpui/workspace_shell.html" import workspace_shell %}
+{% from "chirpui/document_header.html" import document_header %}
+{% from "chirpui/empty_panel_state.html" import empty_panel_state %}
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/divider.html" import divider %}
@@ -16,6 +24,159 @@
 {% call container() %}
 {% call stack() %}
 {{ page_header("Layout", subtitle="container, grid, stack, block, surface, callout, hero, overlay — Tetris-inspired layouts and backgrounds.") }}
+
+<h2>Compact header bar</h2>
+{% call block() %}
+{% call page_header("App Title", variant="compact") %}
+{% slot actions %}
+{% call cluster(gap="sm") %}
+<span class="chirpui-badge chirpui-badge--muted">v1.0</span>
+<span class="chirpui-badge chirpui-badge--success">LIVE</span>
+{% end %}
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  page_header(title, variant="compact") — dense header for chat apps, dashboards.
+</p>
+{% end %}
+
+<h2>Chat layout</h2>
+{% call block() %}
+{% call chat_layout(show_activity=true) %}
+{% slot messages %}
+<div class="chirpui-message-thread" style="min-height: 120px;">
+  {% call message_bubble(role="user") %}
+  <p style="margin: 0;">Hello, show me the chat layout.</p>
+  {% end %}
+  {% call message_bubble(role="assistant") %}
+  <p style="margin: 0;">This is chat_layout(show_activity=true) with messages, input, and activity slots.</p>
+  {% end %}
+</div>
+{% end %}
+{% slot input %}
+<div class="chirpui-chat-input" style="padding: var(--chirpui-spacing-sm);">
+  <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Input slot — form, textarea, send button.</p>
+</div>
+{% end %}
+{% slot activity %}
+<div class="chirpui-surface chirpui-surface--muted" style="padding: var(--chirpui-spacing-md); border-radius: var(--chirpui-radius);">
+  <p class="chirpui-font-sm chirpui-text-muted" style="margin: 0;">Activity slot — tool calls, suggestions.</p>
+</div>
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  chat_layout(show_activity=true) — messages + input + optional activity sidebar.
+</p>
+{% end %}
+
+<h2>Panel</h2>
+{% call block() %}
+{% call panel(title="Tool Activity", subtitle="Inspector and feed chrome", scroll_body=true) %}
+{% slot actions %}
+{{ badge("LIVE", variant="success") }}
+{% end %}
+{% call stack(gap="sm") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Use panel for activity rails, file explorers, inspectors, and embedded side panes.</p>
+{% call surface(variant="default") %}
+<p style="margin: 0;">Panel body can hold any content, including nested surfaces.</p>
+{% end %}
+{% end %}
+{% slot footer %}
+<span class="chirpui-text-muted chirpui-font-sm">Footer slot for status, hints, or secondary actions.</span>
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  panel(title=none, subtitle=none, surface_variant="muted", scroll_body=false)
+</p>
+{% end %}
+
+<h2>File tree</h2>
+{% call block() %}
+{% call file_tree(items=[
+  {"title": "docs", "open": true, "icon": "folder", "children": [
+    {"title": "README.md", "href": "#", "active": true, "icon": "docs"},
+    {"title": "ROADMAP.md", "href": "#", "icon": "docs"}
+  ]},
+  {"title": "src", "open": true, "icon": "folder", "children": [
+    {"title": "app.py", "href": "#", "icon": "code"},
+    {"title": "theme.css", "href": "#", "icon": "brush"}
+  ]}
+], title="Files", subtitle="Explorer", show_icons=true) %}
+{% slot actions %}
+{{ badge("12", variant="muted") }}
+{% end %}
+{% slot header %}
+<input type="search" class="chirpui-input" placeholder="Filter files">
+{% end %}
+{% slot footer %}
+<span class="chirpui-text-muted chirpui-font-sm">2 folders, 4 files</span>
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  file_tree(items, title=none, subtitle=none, show_icons=false, surface_variant="muted", scroll_body=true)
+</p>
+{% end %}
+
+<h2>Split layout</h2>
+{% call block() %}
+{% call split_layout(ratio="sidebar") %}
+{% slot primary %}
+{% call file_tree(items=[
+  {"title": "docs", "open": true, "icon": "folder", "children": [
+    {"title": "README.md", "href": "#", "active": true, "icon": "docs"},
+    {"title": "guide.md", "href": "#", "icon": "docs"}
+  ]},
+  {"title": "src", "open": true, "icon": "folder", "children": [
+    {"title": "app.py", "href": "#", "icon": "code"}
+  ]}
+], title="Files", show_icons=true) %}
+{% end %}
+{% end %}
+{% slot secondary %}
+{% call panel(title="Editor", subtitle="Tree + content", surface_variant="default") %}
+{{ document_header("README.md", subtitle="Editing docs", path="docs/README.md", provenance="Forked from builtin/doc-help", status="Draft", meta_items=["Modified 2m ago", "Markdown"]) }}
+{% call empty_panel_state(title="No preview generated", icon="spark") %}
+<p>Split layouts pair naturally with `file_tree()` and `document_header()` for authoring surfaces.</p>
+{% slot action %}
+<button type="button" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Generate preview</button>
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  split_layout(direction="horizontal", ratio="sidebar|balanced|wide-primary|wide-secondary", gap="sm|md|lg") with file_tree + document_header + empty_panel_state
+</p>
+{% end %}
+
+<h2>Workspace shell</h2>
+{% call block() %}
+{% call workspace_shell("Authoring", subtitle="Small workbench composite", sidebar_title="Explorer", show_inspector=true, inspector_title="Preview") %}
+{% slot toolbar %}
+{{ badge("Draft", variant="warning") }}
+<button type="button" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Save</button>
+{% end %}
+{% slot sidebar %}
+{% call stack(gap="xs") %}
+<a href="#" class="chirpui-link">page.md</a>
+<a href="#" class="chirpui-link">sidebar.yml</a>
+<a href="#" class="chirpui-link">theme.css</a>
+{% end %}
+{% end %}
+{% call panel(title="Editor Surface", surface_variant="default") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Flagship workbench composite for file tree + editor + optional inspector rails.</p>
+{% end %}
+{% slot inspector %}
+<div class="chirpui-prose chirpui-font-sm">
+  <p style="margin-top: 0;">Preview or metadata goes here.</p>
+  <p style="margin-bottom: 0;">Useful for authoring and IDE-like pages inside `app_shell`.</p>
+</div>
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  workspace_shell(title=none, subtitle=none, sidebar_title=none, show_inspector=false, inspector_title=none)
+</p>
+{% end %}
 
 <h2>Breadcrumbs</h2>
 {% call block() %}

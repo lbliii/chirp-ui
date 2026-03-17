@@ -6,6 +6,25 @@ See [Strict mode](#strict-mode) for setup.
 
 ---
 
+## Slot Reference
+
+| Component | Slot name | Purpose | Required? |
+|-----------|-----------|---------|------------|
+| `page_header` | `actions` | Model selectors, badges, toggles — content outside the slot is the body | No |
+| `document_header` | `actions` | Document-level actions like Save, Preview, Compare | No |
+| `section_header` | `actions` | Section-level buttons (Refresh, Auto-detect) | No |
+| `section_header_inline` | default (unnamed) | Compact actions on one line with title | No |
+| `hero` | `action` | Primary CTA button | No |
+| `file_tree` | `header`, `actions`, `footer` | Explorer search/filter, toolbar actions, footer summary | No |
+| `page_hero` | `eyebrow`, `actions`, `metadata`, `footer` | Hero sub-regions | No |
+| `alert` | `actions` | Alert action buttons | No |
+| `sidebar` | `header`, `footer`, default (nav) | Sidebar regions | No |
+| `card` | `header_actions`, `media`, `body_actions`, default | Card regions | No |
+| `resource_card` | `badges`, `subtitle`, `footer`, default | Resource card regions | No |
+| `confirm_dialog` | `form_content` | Hidden fields when `confirm_url` set | No |
+
+**Note:** `section_header_inline` uses the **default** slot (not `actions`). This will be unified in a future release; use `section_header(variant="inline")` for the named `actions` slot.
+
 ## Macro Slot Context
 
 Components that use `{% slot %}` (e.g. `form`, `card`, `card_link`, `resource_index`, `resource_card`, `field_wrapper`) render slot content in the **caller's context**. Page variables passed to the handler (e.g. `selected_tags`, `q`) are available inside macro slots without `| default()`.
@@ -103,6 +122,10 @@ Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates w
 | **logo** | `variant` | text, image, both | both |
 | **logo** | `size` | sm, md, lg | md |
 | **logo** | `align` | start, center, end | center |
+| **page_header** | `variant` | default, compact | default |
+| **section_header** | `variant` | default, inline | default |
+| **message_bubble** | `role` | default, user, assistant, system | default |
+| **message_bubble** | `align` | left, right | left |
 
 ---
 
@@ -253,12 +276,25 @@ Opinionated list/index card for app resources. Prefer this when a card represent
 
 ### page_header
 
+Place model selectors, badges, and toggles in `{% slot actions %}`. Content outside the slot is the body.
+
+```html
+{% from "chirpui/layout.html" import page_header %}
+{% call page_header("Ollama Chat", variant="compact") %}
+{% slot actions %}
+  <select>...</select>
+  <span class="chirpui-badge">llama3</span>
+{% end %}
+{% end %}
+```
+
 | Param | Description |
 |-------|-------------|
 | `title` | Page title (h1) |
 | `subtitle` | Optional subtitle |
 | `meta` | Optional meta line (e.g. config path) — muted, below subtitle |
 | `breadcrumb_items` | Optional list of `{label, href?}` for breadcrumbs above title |
+| `variant` | `default` or `compact` — compact for dense header bars |
 
 ### shell_actions_bar
 
@@ -356,6 +392,169 @@ Compact header for dense forms: h2 + actions on one line, no subtitle. Params: `
 ### section_collapsible
 
 `details`/`summary` with section_header as summary. For "Advanced" config blocks.
+
+### panel
+
+Reusable titled pane for inspectors, activity feeds, file trees, and embedded side surfaces.
+
+```html
+{% from "chirpui/panel.html" import panel %}
+{% call panel(title="Tool Activity", subtitle="Inspector rail", scroll_body=true) %}
+  {% slot actions %}{{ btn("Clear", variant="ghost", size="sm") }}{% end %}
+  <div>Activity rows...</div>
+  {% slot footer %}<span class="chirpui-text-muted chirpui-ui-sm">Connected</span>{% end %}
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `title` | Optional panel title |
+| `subtitle` | Optional supporting line below title |
+| `surface_variant` | Surface styling for the panel shell; same values as `surface` |
+| `scroll_body` | Makes the body region independently scrollable |
+| `cls` | Optional additional classes |
+
+**Slots:** `actions`, default (body), `footer`.
+
+Use `panel()` when a region needs its own chrome and scroll behavior inside a larger page or workspace. This is the preferred primitive for activity rails, file explorers, and inspector panes.
+
+### file_tree
+
+Workbench-oriented file explorer that composes `panel()` and `nav_tree()` into one reusable primitive.
+
+```html
+{% from "chirpui/file_tree.html" import file_tree %}
+{% call file_tree(items=items, title="Files", show_icons=true) %}
+  {% slot actions %}{{ btn("Refresh", variant="ghost", size="sm") }}{% end %}
+  {% slot header %}<input type="search" placeholder="Filter files">{% end %}
+  {% slot footer %}<span class="chirpui-text-muted chirpui-ui-sm">12 files</span>{% end %}
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `items` | Tree items using the same shape as `nav_tree` (`title`, `href`, `children`, `active`, `open`, optional `icon`) |
+| `title` | Optional explorer title |
+| `subtitle` | Optional supporting line below the title |
+| `show_icons` | Renders `item.icon` values when present |
+| `surface_variant` | Surface styling for the outer panel |
+| `scroll_body` | Makes the explorer body independently scrollable |
+| `cls` | Optional additional classes |
+
+**Slots:** `header`, `actions`, `footer`.
+
+Use `file_tree()` for CMS and IDE-like explorer rails where you want panel chrome and tree behavior together. For raw tree markup without panel chrome, keep using `nav_tree()`.
+
+### split_layout
+
+Generic two-pane work surface for explorer/content, editor/preview, and content/inspector compositions.
+
+```html
+{% from "chirpui/split_layout.html" import split_layout %}
+{% call split_layout(ratio="sidebar") %}
+  {% slot primary %}<nav>Tree</nav>{% end %}
+  {% slot secondary %}<main>Editor</main>{% end %}
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `direction` | `horizontal` (default) or `vertical` |
+| `ratio` | `sidebar`, `balanced`, `wide-primary`, `wide-secondary` |
+| `gap` | `sm`, `md`, `lg` |
+| `cls` | Optional additional classes |
+
+**Slots:** `primary`, `secondary`.
+
+V1 is CSS-only and non-resizable. Prefer `ratio="sidebar"` for file trees and `wide-primary` for editor/preview layouts where the main surface should dominate.
+
+### workspace_shell
+
+Opinionated workbench composite for IDE-like and CMS-authoring pages inside an existing app shell.
+
+```html
+{% from "chirpui/workspace_shell.html" import workspace_shell %}
+{% call workspace_shell("Authoring", subtitle="Edit and preview", sidebar_title="Files",
+    show_inspector=true, inspector_title="Preview") %}
+  {% slot toolbar %}{{ btn("Save", variant="primary", size="sm") }}{% end %}
+  {% slot sidebar %}<nav>Tree</nav>{% end %}
+  <textarea></textarea>
+  {% slot inspector %}<div>Preview</div>{% end %}
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `title` | Optional workspace title |
+| `subtitle` | Optional workspace subtitle |
+| `sidebar_title` | Optional title for the sidebar panel |
+| `show_inspector` | Enables the right-hand inspector split |
+| `inspector_title` | Optional title for the inspector panel |
+| `sidebar_surface_variant` | Surface styling for the sidebar panel |
+| `inspector_surface_variant` | Surface styling for the inspector panel |
+| `cls` | Optional additional classes |
+
+**Slots:** `toolbar`, `sidebar`, default (main surface), `inspector`.
+
+Use `workspace_shell()` when you want one canonical composite for file tree + editor, file tree + viewer, or authoring + preview pages. It composes `panel()` and `split_layout()` for you.
+
+### document_header
+
+Document-oriented header for editor, preview, and detail surfaces inside a larger workspace.
+
+```html
+{% from "chirpui/document_header.html" import document_header %}
+{% call document_header("README.md", subtitle="Skill guide", path="docs/README.md",
+    provenance="Forked from builtin/doc-help", status="Draft") %}
+  {% slot actions %}{{ btn("Save", variant="primary", size="sm") }}{% end %}
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `title` | Document title |
+| `subtitle` | Optional supporting line below the title |
+| `meta` | Optional `page_header` meta line |
+| `breadcrumb_items` | Optional breadcrumbs passed through to `page_header` |
+| `eyebrow` | Optional small uppercase context label above the header |
+| `path` | Optional file/path pill |
+| `provenance` | Optional source/fork detail |
+| `status` | Optional inline status chip |
+| `meta_items` | Optional additional small metadata items |
+| `cls` | Optional additional classes |
+
+**Slots:** `actions`.
+
+Use `document_header()` when a surface needs document/file context without taking over app-shell title or breadcrumb regions.
+
+### empty_panel_state
+
+Compact empty-state wrapper for pane bodies and unloaded workbench surfaces.
+
+```html
+{% from "chirpui/empty_panel_state.html" import empty_panel_state %}
+{% call empty_panel_state(title="No file selected", icon="docs") %}
+  <p>Select a file from the explorer to start editing.</p>
+  {% slot action %}{{ btn("Browse", variant="primary", size="sm") }}{% end %}
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `icon` | Optional icon or glyph |
+| `title` | Empty-state title |
+| `illustration` | Optional richer illustration markup |
+| `action_label` | CTA label when using built-in link action |
+| `action_href` | CTA destination when using built-in link action |
+| `code` | Optional code/query pill |
+| `suggestions` | Optional list of suggestions |
+| `search_hint` | Optional search guidance line |
+| `compact` | Applies the panel-friendly compact treatment (default: `true`) |
+| `cls` | Optional additional classes |
+
+**Slots:** default body, `action`.
+
+Use `empty_panel_state()` for side rails, editor placeholders, and inspector panes where the full `empty_state()` treatment is too roomy.
 
 ---
 

@@ -1,0 +1,37 @@
+{#- chirp-ui: Chat Layout component
+    Structure for chat pages: messages panel + optional activity sidebar + input area.
+    Eliminates inline styles for common chat patterns.
+
+    Usage:
+        {% from "chirpui/chat_layout.html" import chat_layout %}
+
+        {% call chat_layout(show_activity=true) %}
+        {% slot messages %}
+            <ul class="chirpui-message-thread">...</ul>
+        {% end %}
+        {% slot input %}
+            <div class="chirpui-chat-input">...</div>
+        {% end %}
+        {% slot activity %}
+            <aside>Model info, suggestions...</aside>
+        {% end %}
+        {% end %}
+-#}
+
+{% def chat_layout(show_activity=false, cls="") %}
+<div class="chirpui-chat-layout{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-chat-layout__main">
+        <div class="chirpui-chat-layout__messages">
+            {% slot messages %}
+        </div>
+        <div class="chirpui-chat-layout__input">
+            {% slot input %}
+        </div>
+    </div>
+    {% if show_activity %}
+    <aside class="chirpui-chat-layout__activity">
+        {% slot activity %}
+    </aside>
+    {% end %}
+</div>
+{% end %}

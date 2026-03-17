@@ -28,7 +28,7 @@
 -#}
 
 {% def action_strip(surface_variant="muted", density="md", wrap="wrap", sticky=false, role="region", aria_label="Actions and filters", cls="") %}
-{% set surface_variant = surface_variant | validate_variant(("default","muted","elevated","accent","gradient-subtle","gradient-accent","gradient-border","gradient-mesh","glass","frosted","smoke"), "muted") %}
+{% set surface_variant = surface_variant | validate_variant_block("surface", default="muted") %}
 {% set density = density | validate_variant(("sm","md"), "md") %}
 {% set wrap = wrap | validate_variant(("wrap","scroll","collapse"), "wrap") %}
 <div class="chirpui-surface chirpui-surface--{{ surface_variant }}">
