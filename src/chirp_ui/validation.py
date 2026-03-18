@@ -55,6 +55,11 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     "sparkle": ("", "gold", "white", "rainbow"),
     "confetti": ("",),
     "wobble": ("wobble", "jello", "rubber-band", "bounce-in"),
+    # ASCII background effects
+    "symbol-rain": ("", "default", "accent", "gold", "muted"),
+    "holy-light": ("", "default", "gold", "silver", "holy"),
+    "rune-field": ("", "default", "arcane", "frost", "ember"),
+    "constellation": ("", "default", "warm", "cool", "mono"),
 }
 
 SIZE_REGISTRY: dict[str, tuple[str, ...]] = {

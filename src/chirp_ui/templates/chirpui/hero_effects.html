@@ -17,18 +17,39 @@
 {% from "chirpui/particle_bg.html" import particle_bg %}
 {% from "chirpui/meteor.html" import meteor %}
 {% from "chirpui/spotlight_card.html" import spotlight_card %}
+{% from "chirpui/symbol_rain.html" import symbol_rain %}
+{% from "chirpui/holy_light.html" import holy_light %}
+{% from "chirpui/rune_field.html" import rune_field %}
+{% from "chirpui/constellation.html" import constellation %}
 
 {% def hero_effects(effect="particles", variant="", cls="") %}
+{% set hero_cls = "chirpui-hero-effects " ~ cls if cls else "chirpui-hero-effects" %}
 {% if effect == "particles" %}
-    {% call particle_bg(variant=variant, cls="chirpui-hero-effects " ~ cls if cls else "chirpui-hero-effects") %}
+    {% call particle_bg(variant=variant, cls=hero_cls) %}
         {% slot %}
     {% end %}
 {% elif effect == "meteors" %}
-    {% call meteor(variant=variant, cls="chirpui-hero-effects " ~ cls if cls else "chirpui-hero-effects") %}
+    {% call meteor(variant=variant, cls=hero_cls) %}
         {% slot %}
     {% end %}
 {% elif effect == "spotlight" %}
-    {% call spotlight_card(variant=variant, cls="chirpui-hero-effects " ~ cls if cls else "chirpui-hero-effects") %}
+    {% call spotlight_card(variant=variant, cls=hero_cls) %}
+        {% slot %}
+    {% end %}
+{% elif effect == "symbol-rain" %}
+    {% call symbol_rain(variant=variant, cls=hero_cls) %}
+        {% slot %}
+    {% end %}
+{% elif effect == "holy-light" %}
+    {% call holy_light(variant=variant, cls=hero_cls) %}
+        {% slot %}
+    {% end %}
+{% elif effect == "runes" %}
+    {% call rune_field(variant=variant, cls=hero_cls) %}
+        {% slot %}
+    {% end %}
+{% elif effect == "constellation" %}
+    {% call constellation(variant=variant, cls=hero_cls) %}
         {% slot %}
     {% end %}
 {% else %}

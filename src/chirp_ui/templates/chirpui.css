@@ -9047,6 +9047,75 @@ body:has(> .chirpui-app-shell) {
     66% { transform: translate(20%, -30%) rotate(240deg) scale(0.85); }
 }
 
+/* --- Symbol Rain: cascading ASCII characters --- */
+@keyframes chirpui-symbol-rain-fall {
+    0% { transform: translateY(-100%) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(calc(100vh + 2rem)) rotate(45deg); opacity: 0; }
+}
+
+/* --- Holy Light: ascending divine sparkles with parallax --- */
+@keyframes chirpui-holy-rise-far {
+    0% { transform: translateY(0) scale(0.6); opacity: 0; }
+    15% { opacity: 0.3; }
+    85% { opacity: 0.3; }
+    100% { transform: translateY(-120px) scale(0.6); opacity: 0; }
+}
+@keyframes chirpui-holy-rise-mid {
+    0% { transform: translateY(0) scale(0.85); opacity: 0; }
+    15% { opacity: 0.6; }
+    50% { opacity: 0.8; }
+    85% { opacity: 0.5; }
+    100% { transform: translateY(-200px) scale(0.85); opacity: 0; }
+}
+@keyframes chirpui-holy-rise-near {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    10% { opacity: 0.9; }
+    50% { opacity: 1; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(-300px) scale(1); opacity: 0; }
+}
+@keyframes chirpui-holy-glow-pulse {
+    0%, 100% { filter: drop-shadow(0 0 3px var(--chirpui-holy-color)) brightness(1); }
+    50% { filter: drop-shadow(0 0 8px var(--chirpui-holy-color)) brightness(1.3); }
+}
+
+/* --- Rune Field: drifting mystical symbols with parallax --- */
+@keyframes chirpui-rune-drift-far {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(8px, -6px) rotate(5deg); }
+    50% { transform: translate(-4px, -12px) rotate(-3deg); }
+    75% { transform: translate(6px, -4px) rotate(2deg); }
+}
+@keyframes chirpui-rune-drift-mid {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-12px, 8px) rotate(-8deg); }
+    50% { transform: translate(10px, -15px) rotate(5deg); }
+    75% { transform: translate(-6px, 6px) rotate(-3deg); }
+}
+@keyframes chirpui-rune-drift-near {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(15px, -10px) rotate(10deg); }
+    50% { transform: translate(-8px, -20px) rotate(-6deg); }
+    75% { transform: translate(10px, -5px) rotate(4deg); }
+}
+@keyframes chirpui-rune-pulse {
+    0%, 100% { opacity: var(--chirpui-rune-opacity, 0.4); }
+    50% { opacity: calc(var(--chirpui-rune-opacity, 0.4) + 0.15); }
+}
+
+/* --- Constellation: twinkling starfield with gentle drift --- */
+@keyframes chirpui-star-twinkle {
+    0%, 100% { opacity: var(--chirpui-star-base-opacity, 0.3); transform: scale(1); }
+    50% { opacity: calc(var(--chirpui-star-base-opacity, 0.3) + 0.5); transform: scale(1.3); }
+}
+@keyframes chirpui-star-drift {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(3px, -2px); }
+    66% { transform: translate(-2px, 3px); }
+}
+
 /* --- Sparkle: star pop-in/pop-out --- */
 @keyframes chirpui-sparkle {
     0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
@@ -9129,7 +9198,11 @@ body:has(> .chirpui-app-shell) {
     .chirpui-wobble,
     .chirpui-jello,
     .chirpui-rubber-band,
-    .chirpui-bounce-in {
+    .chirpui-bounce-in,
+    .chirpui-symbol-rain__drop,
+    .chirpui-holy-light__mote,
+    .chirpui-rune-field__rune,
+    .chirpui-constellation__star {
         animation: none !important;
         transition: none !important;
     }
@@ -10321,3 +10394,250 @@ body:has(> .chirpui-app-shell) {
 /* Click-triggered (via :active or Alpine) */
 .chirpui-click-wobble:active { animation: chirpui-wobble 0.6s ease-in-out; }
 .chirpui-click-jello:active { animation: chirpui-jello 0.6s ease-in-out; }
+
+
+/* ==========================================================================
+   Symbol Rain — cascading ASCII characters
+   ========================================================================== */
+
+.chirpui-symbol-rain {
+    position: relative;
+    overflow: hidden;
+}
+.chirpui-symbol-rain__canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-symbol-rain__drop {
+    position: absolute;
+    top: 0;
+    font-family: var(--chirpui-ascii-font);
+    font-size: 0.875rem;
+    color: var(--chirpui-symbol-rain-color, var(--chirpui-accent));
+    opacity: 0;
+    animation: chirpui-symbol-rain-fall var(--chirpui-symbol-rain-speed, 4s) linear infinite;
+}
+.chirpui-symbol-rain__drop:nth-child(1) { animation-delay: 0s; animation-duration: 3.5s; }
+.chirpui-symbol-rain__drop:nth-child(2) { animation-delay: 0.7s; animation-duration: 4.2s; font-size: 0.75rem; }
+.chirpui-symbol-rain__drop:nth-child(3) { animation-delay: 1.3s; animation-duration: 3.8s; }
+.chirpui-symbol-rain__drop:nth-child(4) { animation-delay: 2.0s; animation-duration: 5s; font-size: 1rem; }
+.chirpui-symbol-rain__drop:nth-child(5) { animation-delay: 0.4s; animation-duration: 4.5s; font-size: 0.675rem; }
+.chirpui-symbol-rain__drop:nth-child(6) { animation-delay: 1.8s; animation-duration: 3.2s; }
+.chirpui-symbol-rain__content {
+    position: relative;
+    z-index: 1;
+}
+.chirpui-symbol-rain--accent .chirpui-symbol-rain__drop { --chirpui-symbol-rain-color: var(--chirpui-accent); }
+.chirpui-symbol-rain--gold .chirpui-symbol-rain__drop { --chirpui-symbol-rain-color: #ffd700; }
+.chirpui-symbol-rain--muted .chirpui-symbol-rain__drop { --chirpui-symbol-rain-color: var(--chirpui-text-muted); opacity: 0.4; }
+
+
+/* ==========================================================================
+   Holy Light — divine ascending sparkles with parallax
+   ========================================================================== */
+
+.chirpui-holy-light {
+    position: relative;
+    overflow: hidden;
+    --chirpui-holy-color: #ffd700;
+}
+.chirpui-holy-light__layers {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-holy-light__layer {
+    position: absolute;
+    inset: 0;
+}
+.chirpui-holy-light__mote {
+    position: absolute;
+    font-family: var(--chirpui-ascii-font);
+    color: var(--chirpui-holy-color);
+    opacity: 0;
+}
+
+/* Far layer — small, slow, faint */
+.chirpui-holy-light__layer--far .chirpui-holy-light__mote {
+    font-size: 0.5rem;
+    animation:
+        chirpui-holy-rise-far 8s ease-in-out infinite,
+        chirpui-holy-glow-pulse 3s ease-in-out infinite;
+}
+.chirpui-holy-light__layer--far .chirpui-holy-light__mote:nth-child(2) { animation-delay: 1.5s; }
+.chirpui-holy-light__layer--far .chirpui-holy-light__mote:nth-child(3) { animation-delay: 3s; }
+.chirpui-holy-light__layer--far .chirpui-holy-light__mote:nth-child(4) { animation-delay: 4.5s; }
+.chirpui-holy-light__layer--far .chirpui-holy-light__mote:nth-child(5) { animation-delay: 6s; }
+
+/* Mid layer — medium, moderate speed */
+.chirpui-holy-light__layer--mid .chirpui-holy-light__mote {
+    font-size: 0.875rem;
+    animation:
+        chirpui-holy-rise-mid 6s ease-in-out infinite,
+        chirpui-holy-glow-pulse 2.5s ease-in-out infinite;
+}
+.chirpui-holy-light__layer--mid .chirpui-holy-light__mote:nth-child(2) { animation-delay: 1.2s; }
+.chirpui-holy-light__layer--mid .chirpui-holy-light__mote:nth-child(3) { animation-delay: 2.4s; }
+.chirpui-holy-light__layer--mid .chirpui-holy-light__mote:nth-child(4) { animation-delay: 3.6s; }
+.chirpui-holy-light__layer--mid .chirpui-holy-light__mote:nth-child(5) { animation-delay: 4.8s; }
+
+/* Near layer — large, fast, bright */
+.chirpui-holy-light__layer--near .chirpui-holy-light__mote {
+    font-size: 1.25rem;
+    animation:
+        chirpui-holy-rise-near 4.5s ease-in-out infinite,
+        chirpui-holy-glow-pulse 2s ease-in-out infinite;
+}
+.chirpui-holy-light__layer--near .chirpui-holy-light__mote:nth-child(2) { animation-delay: 1s; }
+.chirpui-holy-light__layer--near .chirpui-holy-light__mote:nth-child(3) { animation-delay: 2.2s; }
+.chirpui-holy-light__layer--near .chirpui-holy-light__mote:nth-child(4) { animation-delay: 3.4s; }
+
+.chirpui-holy-light__content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Variants */
+.chirpui-holy-light--gold { --chirpui-holy-color: #ffd700; }
+.chirpui-holy-light--silver { --chirpui-holy-color: #c0c0c0; }
+.chirpui-holy-light--holy { --chirpui-holy-color: #fffacd; }
+
+/* Intensity */
+.chirpui-holy-light--intense .chirpui-holy-light__mote { filter: drop-shadow(0 0 6px var(--chirpui-holy-color)); }
+.chirpui-holy-light--subtle .chirpui-holy-light__layer--near .chirpui-holy-light__mote { font-size: 0.875rem; }
+.chirpui-holy-light--subtle .chirpui-holy-light__layer--mid .chirpui-holy-light__mote { font-size: 0.625rem; }
+
+
+/* ==========================================================================
+   Rune Field — mystical drifting symbols with parallax
+   ========================================================================== */
+
+.chirpui-rune-field {
+    position: relative;
+    overflow: hidden;
+    --chirpui-rune-color: var(--chirpui-accent);
+    --chirpui-rune-opacity: 0.4;
+}
+.chirpui-rune-field__layers {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-rune-field__layer {
+    position: absolute;
+    inset: 0;
+}
+.chirpui-rune-field__rune {
+    position: absolute;
+    font-family: var(--chirpui-ascii-font);
+    color: var(--chirpui-rune-color);
+}
+
+/* Far layer — tiny, slow drift, very faint */
+.chirpui-rune-field__layer--far .chirpui-rune-field__rune {
+    font-size: 0.625rem;
+    --chirpui-rune-opacity: 0.2;
+    animation:
+        chirpui-rune-drift-far 20s ease-in-out infinite,
+        chirpui-rune-pulse 4s ease-in-out infinite;
+}
+.chirpui-rune-field__layer--far .chirpui-rune-field__rune:nth-child(2) { animation-delay: 3s; }
+.chirpui-rune-field__layer--far .chirpui-rune-field__rune:nth-child(3) { animation-delay: 6s; }
+.chirpui-rune-field__layer--far .chirpui-rune-field__rune:nth-child(4) { animation-delay: 9s; }
+.chirpui-rune-field__layer--far .chirpui-rune-field__rune:nth-child(5) { animation-delay: 12s; }
+.chirpui-rune-field__layer--far .chirpui-rune-field__rune:nth-child(6) { animation-delay: 15s; }
+
+/* Mid layer — medium, moderate drift */
+.chirpui-rune-field__layer--mid .chirpui-rune-field__rune {
+    font-size: 1rem;
+    --chirpui-rune-opacity: 0.35;
+    animation:
+        chirpui-rune-drift-mid 14s ease-in-out infinite,
+        chirpui-rune-pulse 3s ease-in-out infinite;
+}
+.chirpui-rune-field__layer--mid .chirpui-rune-field__rune:nth-child(2) { animation-delay: 2.5s; }
+.chirpui-rune-field__layer--mid .chirpui-rune-field__rune:nth-child(3) { animation-delay: 5s; }
+.chirpui-rune-field__layer--mid .chirpui-rune-field__rune:nth-child(4) { animation-delay: 7.5s; }
+.chirpui-rune-field__layer--mid .chirpui-rune-field__rune:nth-child(5) { animation-delay: 10s; }
+
+/* Near layer — large, visible, pronounced drift */
+.chirpui-rune-field__layer--near .chirpui-rune-field__rune {
+    font-size: 1.5rem;
+    --chirpui-rune-opacity: 0.5;
+    animation:
+        chirpui-rune-drift-near 10s ease-in-out infinite,
+        chirpui-rune-pulse 2.5s ease-in-out infinite;
+}
+.chirpui-rune-field__layer--near .chirpui-rune-field__rune:nth-child(2) { animation-delay: 2s; }
+.chirpui-rune-field__layer--near .chirpui-rune-field__rune:nth-child(3) { animation-delay: 4.5s; }
+.chirpui-rune-field__layer--near .chirpui-rune-field__rune:nth-child(4) { animation-delay: 7s; }
+
+.chirpui-rune-field__content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Variants */
+.chirpui-rune-field--arcane { --chirpui-rune-color: #a855f7; }
+.chirpui-rune-field--frost { --chirpui-rune-color: #67e8f9; }
+.chirpui-rune-field--ember { --chirpui-rune-color: #fb923c; }
+
+
+/* ==========================================================================
+   Constellation — twinkling ASCII starfield
+   ========================================================================== */
+
+.chirpui-constellation {
+    position: relative;
+    overflow: hidden;
+    --chirpui-star-color: var(--chirpui-text);
+    --chirpui-star-base-opacity: 0.3;
+}
+.chirpui-constellation__field {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-constellation__star {
+    position: absolute;
+    font-family: var(--chirpui-ascii-font);
+    font-size: 0.75rem;
+    color: var(--chirpui-star-color);
+    opacity: var(--chirpui-star-base-opacity);
+    animation:
+        chirpui-star-twinkle var(--chirpui-star-twinkle-speed, 3s) ease-in-out infinite,
+        chirpui-star-drift 12s ease-in-out infinite;
+}
+.chirpui-constellation__star:nth-child(2) { animation-delay: 0.5s; font-size: 0.5rem; }
+.chirpui-constellation__star:nth-child(3) { animation-delay: 1.2s; font-size: 0.875rem; }
+.chirpui-constellation__star:nth-child(4) { animation-delay: 0.3s; }
+.chirpui-constellation__star:nth-child(5) { animation-delay: 1.8s; font-size: 0.625rem; }
+.chirpui-constellation__star:nth-child(6) { animation-delay: 0.9s; font-size: 1rem; }
+.chirpui-constellation__star:nth-child(7) { animation-delay: 2.1s; font-size: 0.5rem; }
+.chirpui-constellation__star:nth-child(8) { animation-delay: 1.5s; }
+.chirpui-constellation__star:nth-child(9) { animation-delay: 0.6s; font-size: 0.875rem; }
+.chirpui-constellation__star:nth-child(10) { animation-delay: 2.4s; font-size: 0.625rem; }
+.chirpui-constellation__star:nth-child(11) { animation-delay: 1.1s; }
+.chirpui-constellation__star:nth-child(12) { animation-delay: 0.2s; font-size: 1rem; }
+.chirpui-constellation__star:nth-child(13) { animation-delay: 1.7s; font-size: 0.5rem; }
+.chirpui-constellation__star:nth-child(14) { animation-delay: 2.8s; font-size: 0.875rem; }
+.chirpui-constellation__star:nth-child(15) { animation-delay: 0.8s; }
+.chirpui-constellation__star:nth-child(16) { animation-delay: 2.0s; font-size: 0.625rem; }
+.chirpui-constellation__content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Variants */
+.chirpui-constellation--warm { --chirpui-star-color: #fbbf24; }
+.chirpui-constellation--cool { --chirpui-star-color: #67e8f9; }
+.chirpui-constellation--mono { --chirpui-star-color: var(--chirpui-text-muted); }
+
+/* Density */
+.chirpui-constellation--dense { --chirpui-star-base-opacity: 0.4; --chirpui-star-twinkle-speed: 2s; }
+.chirpui-constellation--sparse { --chirpui-star-base-opacity: 0.2; --chirpui-star-twinkle-speed: 5s; }

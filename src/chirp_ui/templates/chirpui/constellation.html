@@ -1,0 +1,33 @@
+{#- chirp-ui: Constellation
+    Twinkling ASCII starfield background with gentle drift. Pure CSS.
+
+    Usage:
+        from "chirpui/constellation.html" import constellation
+
+        {% call constellation() %}
+            <h1>Starfield hero</h1>
+        {% end %}
+
+        {% call constellation(variant="warm", density="dense") %}
+            <p>Dense warm starfield</p>
+        {% end %}
+-#}
+
+{% def constellation(density="", variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "warm", "cool", "mono"), "") %}
+{% set density = density | validate_variant(("", "default", "sparse", "dense"), "") %}
+{% set variant_class = " chirpui-constellation--" ~ variant if variant else "" %}
+{% set density_class = " chirpui-constellation--" ~ density if density else "" %}
+{% set count = 16 if density == "dense" else (6 if density == "sparse" else 10) %}
+{% set glyphs = ["·", "✦", "·", "★", "·", "·", "✦", "·", "●", "·", "✦", "·", "·", "★", "·", "✦"] %}
+<div class="chirpui-constellation{{ variant_class }}{{ density_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-constellation__field" aria-hidden="true">
+        {% for i in range(count) %}
+        <span class="chirpui-constellation__star" style="left: {{ (i * 7 + 3) % 95 }}%; top: {{ (i * 11 + 5) % 92 }}%">{{ glyphs[i % 16] }}</span>
+        {% end %}
+    </div>
+    <div class="chirpui-constellation__content">
+        {% slot %}
+    </div>
+</div>
+{% end %}

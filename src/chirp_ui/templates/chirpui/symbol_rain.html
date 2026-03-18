@@ -1,0 +1,30 @@
+{#- chirp-ui: Symbol Rain
+    Matrix-style cascading ASCII characters. Pure CSS.
+
+    Usage:
+        from "chirpui/symbol_rain.html" import symbol_rain
+
+        {% call symbol_rain() %}
+            <h1>Hero content with falling symbols</h1>
+        {% end %}
+
+        {% call symbol_rain(variant="gold", count=8) %}
+            <p>Golden symbol cascade</p>
+        {% end %}
+-#}
+
+{% def symbol_rain(count=6, variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "gold", "muted"), "") %}
+{% set variant_class = " chirpui-symbol-rain--" ~ variant if variant else "" %}
+{% set glyphs = ["◇", "★", "✦", "⟳", "●", "◎", "⊞", "⚙", "◉", "⛓"] %}
+<div class="chirpui-symbol-rain{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-symbol-rain__canvas" aria-hidden="true">
+        {% for i in range(count) %}
+        <span class="chirpui-symbol-rain__drop" style="left: {{ (i * 15 + 8) % 92 }}%">{{ glyphs[i % 10] }}</span>
+        {% end %}
+    </div>
+    <div class="chirpui-symbol-rain__content">
+        {% slot %}
+    </div>
+</div>
+{% end %}
