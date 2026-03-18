@@ -1,0 +1,43 @@
+{#- chirp-ui: ASCII Badge
+    Inline status label framed with box-drawing characters.
+
+    Usage:
+        from "chirpui/ascii_badge.html" import ascii_badge
+
+        ascii_badge(text="deployed")                              {# ┤ deployed ├ #}
+        ascii_badge(text="deployed", glyph="✦")                   {# ┤ ✦ deployed ├ #}
+        ascii_badge(text="active", glyph="◎", frame="bracket")    {# [ ◎ active ] #}
+        ascii_badge(text="warning", variant="warning")             {# ┤ warning ├ #}
+
+    Variants: default, success, warning, error, accent, muted
+    Frames: pipe (default), bracket, angle, none
+-#}
+
+{% def ascii_badge(text="", glyph="", variant="", frame="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "success", "warning", "error", "accent", "muted"), "") %}
+{% set frame = frame if frame in ("pipe", "bracket", "angle", "none") else "pipe" %}
+{% set variant_class = " chirpui-ascii-badge--" ~ variant if variant and variant != "default" else "" %}
+{% set frame_class = " chirpui-ascii-badge--" ~ frame if frame else "" %}
+{% if frame == "pipe" or frame == "" %}
+    {% set tl = "┤" %}
+    {% set tr = "├" %}
+{% elif frame == "bracket" %}
+    {% set tl = "[" %}
+    {% set tr = "]" %}
+{% elif frame == "angle" %}
+    {% set tl = "‹" %}
+    {% set tr = "›" %}
+{% end %}
+<span class="chirpui-ascii-badge{{ variant_class }}{{ frame_class }}{{ " " ~ cls if cls else "" }}">
+    {% if frame != "none" %}
+    <span class="chirpui-ascii-badge__open" aria-hidden="true">{{ tl }}</span>
+    {% end %}
+    {% if glyph %}
+    <span class="chirpui-ascii-badge__glyph" aria-hidden="true">{{ glyph }}</span>
+    {% end %}
+    <span class="chirpui-ascii-badge__text">{{ text }}</span>
+    {% if frame != "none" %}
+    <span class="chirpui-ascii-badge__close" aria-hidden="true">{{ tr }}</span>
+    {% end %}
+</span>
+{% end %}

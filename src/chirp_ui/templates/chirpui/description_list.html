@@ -13,15 +13,26 @@
         end
 
         description_list(items=..., variant="horizontal") for term left, detail right layout.
+
+        Modifiers: hoverable=true (row highlight on hover), divided=true (border between rows),
+                   relaxed=true (more vertical spacing).
+        Icon support: description_item("Name", "Alice", icon="◇")
     Slots: header (content above the list).
 -#}
 
-{% def description_list(items=none, variant="stacked", compact=false, cls="") %}
+{% def description_list(items=none, variant="stacked", compact=false, relaxed=false,
+                        hoverable=false, divided=false, term_width="", detail_align="", cls="") %}
 {% set variant = variant | validate_variant(("stacked","horizontal"), "stacked") %}
 {% set compact_class = " chirpui-dl--compact" if compact else "" %}
+{% set relaxed_class = " chirpui-dl--relaxed" if relaxed else "" %}
+{% set hover_class = " chirpui-dl--hoverable" if hoverable else "" %}
+{% set divided_class = " chirpui-dl--divided" if divided else "" %}
+{% set align_class = " chirpui-dl--detail-" ~ detail_align if detail_align in ("left", "center", "right") else "" %}
+{% set style_attr = "" %}
+{% if term_width %}{% set style_attr = " style=\"--chirpui-dl-term-width: " ~ term_width ~ "\"" %}{% end %}
 <div class="chirpui-dl-wrap">
     <div class="chirpui-dl__header">{% slot header %}</div>
-<dl class="chirpui-dl chirpui-dl--{{ variant }}{{ compact_class }}{{ " " ~ cls if cls else "" }}">
+<dl class="chirpui-dl chirpui-dl--{{ variant }}{{ compact_class }}{{ relaxed_class }}{{ hover_class }}{{ divided_class }}{{ align_class }}{{ " " ~ cls if cls else "" }}"{{ style_attr }}>
     {% if items %}
         {% for item in items %}
         {% set item_type = item.get('type') or (item.detail | value_type) %}
@@ -46,12 +57,12 @@
 </div>
 {% end %}
 
-{% def description_item(term, detail, type=none, cls="") %}
+{% def description_item(term, detail, type=none, icon=none, cls="") %}
 {% set resolved_type = type if type else (detail | value_type) %}
 {% set type_class = " chirpui-dl__detail--" ~ resolved_type if resolved_type else "" %}
 {% set type_valid = (resolved_type or "") | validate_variant(("", "bool", "url", "path", "number", "unset"), "") %}
 <div class="chirpui-dl__row{{ " " ~ cls if cls else "" }}">
-    <dt class="chirpui-dl__term">{{ term }}</dt>
+    <dt class="chirpui-dl__term">{% if icon %}<span class="chirpui-dl__term-group"><span class="chirpui-dl__icon" aria-hidden="true">{{ icon }}</span>{{ term }}</span>{% else %}{{ term }}{% end %}</dt>
     <dd class="chirpui-dl__detail{{ type_class if type_valid else "" }}">
     {% if type_valid == "bool" %}
         {% from "chirpui/badge.html" import badge %}

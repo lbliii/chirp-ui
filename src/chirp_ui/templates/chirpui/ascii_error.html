@@ -1,0 +1,100 @@
+{#- chirp-ui: ASCII Error Page
+    Stylized error state with ASCII art compositions for common HTTP errors.
+
+    Usage:
+        from "chirpui/ascii_error.html" import ascii_error
+
+        {% call ascii_error(code="404") %}
+            <a href="/">Go home</a>
+        {% end %}
+
+        {% call ascii_error(code="500", heading="Something broke", description="We're looking into it.") %}
+        {% end %}
+
+    Codes: 404, 403, 500, 503, timeout, empty
+-#}
+
+{% def ascii_error(code="404", heading="", description="", cls="") %}
+{% if code == "404" %}
+    {% set default_heading = "Page not found" %}
+    {% set default_desc = "The page you're looking for doesn't exist or has been moved." %}
+    {% set art = [
+        "     ┌─────────┐     ",
+        "     │  4 ◇ 4  │     ",
+        "     └────┬────┘     ",
+        "          │          ",
+        "     ◇ ── ★ ── ◇    ",
+        "          │          ",
+        "        ·   ·        ",
+    ] %}
+{% elif code == "403" %}
+    {% set default_heading = "Access denied" %}
+    {% set default_desc = "You don't have permission to view this page." %}
+    {% set art = [
+        "       ╔═══╗         ",
+        "       ║ ⛓ ║         ",
+        "    ╔══╬═══╬══╗      ",
+        "    ║  ┃   ┃  ║      ",
+        "    ║  ┃ ◆ ┃  ║      ",
+        "    ╚══╩═══╩══╝      ",
+    ] %}
+{% elif code == "500" %}
+    {% set default_heading = "Internal server error" %}
+    {% set default_desc = "Something went wrong on our end." %}
+    {% set art = [
+        "    ·  ✦  · ★ ·      ",
+        "      ╱ ◇ ╲          ",
+        "     ╱ 5·0·0╲        ",
+        "    ╱ · · · · ╲      ",
+        "   ╱───────────╲     ",
+        "   · · ★ · ✦ · ·    ",
+    ] %}
+{% elif code == "503" %}
+    {% set default_heading = "Service unavailable" %}
+    {% set default_desc = "We're temporarily offline for maintenance." %}
+    {% set art = [
+        "    ┌──────────┐     ",
+        "    │ ⚙  ·  ⚙ │     ",
+        "    │    ◎     │     ",
+        "    │  ·╱ ╲·   │     ",
+        "    └──╱───╲───┘     ",
+        "     ▪ ▪ ▪ ▪ ▪      ",
+    ] %}
+{% elif code == "timeout" %}
+    {% set default_heading = "Request timed out" %}
+    {% set default_desc = "The server took too long to respond." %}
+    {% set art = [
+        "      ╭───╮          ",
+        "     ╱  ⟳  ╲         ",
+        "    │ · · · │        ",
+        "    │   ◎   │        ",
+        "     ╲ · · ╱         ",
+        "      ╰───╯          ",
+        "    ·  ·  ·  ·       ",
+    ] %}
+{% else %}
+    {% set default_heading = "Something went wrong" %}
+    {% set default_desc = "An unexpected error occurred." %}
+    {% set art = [
+        "       · ✦ ·         ",
+        "      ◇     ◇        ",
+        "     ·   ★   ·       ",
+        "      ◇     ◇        ",
+        "       · ✦ ·         ",
+    ] %}
+{% end %}
+{% set heading = heading if heading else default_heading %}
+{% set description = description if description else default_desc %}
+<div class="chirpui-ascii-error{{ " " ~ cls if cls else "" }}">
+    <pre class="chirpui-ascii-error__art" aria-hidden="true">{% for line in art %}{{ line }}
+{% end %}</pre>
+    {% if code != "empty" %}
+    <span class="chirpui-ascii-error__code">{{ code }}</span>
+    {% end %}
+    <h2 class="chirpui-ascii-error__heading">{{ heading }}</h2>
+    <p class="chirpui-ascii-error__desc">{{ description }}</p>
+    <div class="chirpui-ascii-error__action">
+        {% slot %}
+    </div>
+</div>
+{% end %}

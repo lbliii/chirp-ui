@@ -1,0 +1,25 @@
+{#- chirp-ui: ASCII Ticker
+    Scrolling text banner in a box-drawing frame, like a stock ticker or news crawler.
+
+    Usage:
+        from "chirpui/ascii_ticker.html" import ascii_ticker
+
+        ascii_ticker("System healthy — 99.97% uptime — 0 errors — Next deploy in 2h")
+        ascii_ticker("BREAKING: New version deployed to production", variant="warning")
+
+    Variants: default, accent, success, warning, error.
+    Speed: slow, default, fast.
+-#}
+
+{% def ascii_ticker(text, variant="", speed="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "success", "warning", "error"), "") %}
+{% set variant_class = " chirpui-ascii-ticker--" ~ variant if variant and variant != "default" else "" %}
+{% set speed_class = " chirpui-ascii-ticker--" ~ speed if speed in ("slow", "fast") else "" %}
+<div class="chirpui-ascii-ticker{{ variant_class }}{{ speed_class }}{{ " " ~ cls if cls else "" }}" role="marquee">
+    <span class="chirpui-ascii-ticker__bracket" aria-hidden="true">▐</span>
+    <div class="chirpui-ascii-ticker__track">
+        <span class="chirpui-ascii-ticker__text">{{ text }}&nbsp;&nbsp;&nbsp;◆&nbsp;&nbsp;&nbsp;{{ text }}&nbsp;&nbsp;&nbsp;◆&nbsp;&nbsp;&nbsp;</span>
+    </div>
+    <span class="chirpui-ascii-ticker__bracket" aria-hidden="true">▌</span>
+</div>
+{% end %}

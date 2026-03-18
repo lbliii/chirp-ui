@@ -1,0 +1,35 @@
+{#- chirp-ui: ASCII Spinner component
+    Loading spinner that cycles through Unicode character sets using CSS step animations.
+
+    Usage:
+        from "chirpui/ascii_spinner.html" import ascii_spinner
+
+        ascii_spinner()                              # Braille spinner (default)
+        ascii_spinner(charset="box")                 # Box corners spinner
+        ascii_spinner(charset="arrows", size="lg")   # Large arrow spinner
+        ascii_spinner(charset="dots", label="Loading data...")
+-#}
+
+{% def ascii_spinner(charset="braille", size="md", label="", cls="") %}
+{% set chars = {
+    "braille": ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
+    "box": ["◜", "◝", "◞", "◟"],
+    "dots": ["⠁", "⠂", "⠄", "⡀", "⢀", "⠠", "⠐", "⠈"],
+    "arrows": ["←", "↖", "↑", "↗", "→", "↘", "↓", "↙"],
+    "blocks": ["▖", "▘", "▝", "▗"]
+} %}
+{% set frames = chars[charset] if charset in chars else chars["braille"] %}
+{% set count = frames|length %}
+<span class="chirpui-ascii-spinner chirpui-ascii-spinner--{{ size }} chirpui-ascii-spinner--{{ charset }}{{ " " ~ cls if cls else "" }}"
+      role="status"
+      aria-label="{{ label if label else "Loading" }}">
+    <span class="chirpui-ascii-spinner__chars" aria-hidden="true">
+        {% for ch in frames %}
+        <span class="chirpui-ascii-spinner__char">{{ ch }}</span>
+        {% end %}
+    </span>
+    {% if label %}
+    <span class="chirpui-ascii-spinner__label">{{ label }}</span>
+    {% end %}
+</span>
+{% end %}

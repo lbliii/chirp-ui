@@ -1,0 +1,46 @@
+{#- chirp-ui: ASCII Border
+    Box-drawing character frame around content. Pure CSS, no images.
+
+    Usage:
+        from "chirpui/ascii_border.html" import ascii_border
+
+        {% call ascii_border() %}
+            <p>Content in a terminal-style frame</p>
+        {% end %}
+
+        {% call ascii_border(variant="double") %}
+            <h2>Double-line frame</h2>
+        {% end %}
+
+        {% call ascii_border(variant="rounded", glyph="✦") %}
+            <p>Rounded corners with a glyph accent</p>
+        {% end %}
+
+    Variants: single (default), double, rounded, heavy
+-#}
+
+{% def ascii_border(variant="", glyph="", cls="") %}
+{% set variant = variant | validate_variant(("", "single", "double", "rounded", "heavy"), "") %}
+{% set variant_class = " chirpui-ascii-border--" ~ variant if variant else "" %}
+{# Box-drawing character sets per variant #}
+{% if variant == "double" %}
+    {% set tl, h, tr, v, bl, br = "╔", "═", "╗", "║", "╚", "╝" %}
+{% elif variant == "rounded" %}
+    {% set tl, h, tr, v, bl, br = "╭", "─", "╮", "│", "╰", "╯" %}
+{% elif variant == "heavy" %}
+    {% set tl, h, tr, v, bl, br = "┏", "━", "┓", "┃", "┗", "┛" %}
+{% else %}
+    {% set tl, h, tr, v, bl, br = "┌", "─", "┐", "│", "└", "┘" %}
+{% end %}
+<div class="chirpui-ascii-border{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-ascii-border__top" aria-hidden="true"><span class="chirpui-ascii-border__corner">{{ tl }}</span><span class="chirpui-ascii-border__line">{% if glyph %}{{ h }}{{ h }} {{ glyph }} {{ h }}{{ h }}{% end %}</span><span class="chirpui-ascii-border__corner">{{ tr }}</span></div>
+    <div class="chirpui-ascii-border__mid">
+        <span class="chirpui-ascii-border__side" aria-hidden="true">{{ v }}</span>
+        <div class="chirpui-ascii-border__content">
+            {% slot %}
+        </div>
+        <span class="chirpui-ascii-border__side" aria-hidden="true">{{ v }}</span>
+    </div>
+    <div class="chirpui-ascii-border__bottom" aria-hidden="true"><span class="chirpui-ascii-border__corner">{{ bl }}</span><span class="chirpui-ascii-border__line"></span><span class="chirpui-ascii-border__corner">{{ br }}</span></div>
+</div>
+{% end %}

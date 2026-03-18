@@ -12,8 +12,12 @@
 -#}
 {% from "chirpui/badge.html" import badge %}
 
-{% def settings_row_list(cls="") %}
-<div class="chirpui-settings-row-list{{ " " ~ cls if cls else "" }}">
+{% def settings_row_list(cls="", hoverable=false, divided=false, relaxed=false) %}
+{% set mods = "" %}
+{% if hoverable %}{% set mods = mods ~ " chirpui-settings-row-list--hoverable" %}{% end %}
+{% if divided %}{% set mods = mods ~ " chirpui-settings-row-list--divided" %}{% end %}
+{% if relaxed %}{% set mods = mods ~ " chirpui-settings-row-list--relaxed" %}{% end %}
+<div class="chirpui-settings-row-list{{ mods }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
 {% end %}

@@ -1,0 +1,25 @@
+{#- chirp-ui: ASCII Divider
+    Glyph-centered horizontal separator using box-drawing characters.
+
+    Usage:
+        from "chirpui/ascii_divider.html" import ascii_divider
+
+        ascii_divider()                        {# ──────────────────── #}
+        ascii_divider(glyph="✦")               {# ──────── ✦ ──────── #}
+        ascii_divider(glyph="◇", variant="double")  {# ════════ ◇ ════════ #}
+        ascii_divider(glyph="★", variant="heavy")   {# ━━━━━━━━ ★ ━━━━━━━━ #}
+
+    Variants: single (default), double, heavy, dots
+-#}
+
+{% def ascii_divider(glyph="", variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "single", "double", "heavy", "dots"), "") %}
+{% set variant_class = " chirpui-ascii-divider--" ~ variant if variant else "" %}
+<div class="chirpui-ascii-divider{{ variant_class }}{{ " " ~ cls if cls else "" }}"
+     role="separator"
+     {% if glyph %}aria-label="{{ glyph }}"{% end %}>
+    {% if glyph %}
+    <span class="chirpui-ascii-divider__glyph" aria-hidden="true">{{ glyph }}</span>
+    {% end %}
+</div>
+{% end %}

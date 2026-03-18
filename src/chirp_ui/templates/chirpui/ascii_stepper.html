@@ -1,0 +1,36 @@
+{#- chirp-ui: ASCII Stepper
+    Pipeline/wizard progress indicator using box-drawing connectors.
+
+    Usage:
+        from "chirpui/ascii_stepper.html" import ascii_stepper
+
+        ascii_stepper(steps=["Build", "Test", "Deploy"], current=1)
+        ascii_stepper(steps=["Init", "Config", "Review", "Done"], current=2, variant="success")
+
+    current: 0-based index of active step. Steps before are complete, after are pending.
+    Variants: default, accent, success.
+
+    Visual:
+        [✓]───[✓]───[●]───[○]───[○]
+        Build  Test  Deploy Review Done
+-#}
+
+{% def ascii_stepper(steps, current=0, variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "success"), "") %}
+{% set variant_class = " chirpui-ascii-stepper--" ~ variant if variant and variant != "default" else "" %}
+<div class="chirpui-ascii-stepper{{ variant_class }}{{ " " ~ cls if cls else "" }}" role="navigation" aria-label="Progress">
+    <div class="chirpui-ascii-stepper__track">
+        {% for step in steps %}
+        {% set step_label = step.label if step is mapping else step %}
+        {% set state = "complete" if loop.index0 < current else ("active" if loop.index0 == current else "pending") %}
+        {% if not loop.first %}
+        <span class="chirpui-ascii-stepper__connector{{ " chirpui-ascii-stepper__connector--complete" if loop.index0 <= current else "" }}" aria-hidden="true">───</span>
+        {% end %}
+        <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--{{ state }}">
+            <span class="chirpui-ascii-stepper__node" aria-hidden="true">{% if state == "complete" %}[✓]{% elif state == "active" %}[●]{% else %}[○]{% end %}</span>
+            <span class="chirpui-ascii-stepper__label">{{ step_label }}</span>
+        </span>
+        {% end %}
+    </div>
+</div>
+{% end %}

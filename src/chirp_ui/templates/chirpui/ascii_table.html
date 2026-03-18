@@ -1,0 +1,58 @@
+{#- chirp-ui: ASCII Table
+    Tables rendered with box-drawing characters instead of CSS borders.
+
+    Usage:
+        from "chirpui/ascii_table.html" import ascii_table, ascii_row
+
+        call ascii_table(headers=["Name", "Status", "Latency"])
+            ascii_row("api-gateway", "Healthy", "23ms")
+            ascii_row("auth-service", "Healthy", "41ms")
+        end
+
+        Per-column alignment:
+        call ascii_table(headers=["Service", "Status", "Requests"],
+                         align=["left", "center", "right"])
+            ascii_row("api-gateway", "Healthy", "12,847")
+        end
+
+        Variants: single (default), double, heavy, rounded.
+        Compact mode: compact=true for tighter spacing.
+        Striped rows: striped=true.
+        Caption: use the caption slot.
+-#}
+
+{% def ascii_table(headers=none, variant="single", align=none, compact=false,
+                   striped=false, sticky_header=false, cls="") %}
+{% set variant = variant | validate_variant(("single", "double", "heavy", "rounded"), "single") %}
+{% set compact_class = " chirpui-ascii-table--compact" if compact else "" %}
+{% set striped_class = " chirpui-ascii-table--striped" if striped else "" %}
+{% set sticky_class = " chirpui-ascii-table--sticky" if sticky_header else "" %}
+<div class="chirpui-ascii-table chirpui-ascii-table--{{ variant }}{{ compact_class }}{{ striped_class }}{{ sticky_class }}{{ " " ~ cls if cls else "" }}"
+     role="table">
+    {% if headers %}
+    <div class="chirpui-ascii-table__head" role="rowgroup">
+        <div class="chirpui-ascii-table__border chirpui-ascii-table__border--top" aria-hidden="true"></div>
+        <div class="chirpui-ascii-table__row chirpui-ascii-table__row--header" role="row">
+            {% for header in headers %}
+            {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
+            <span class="chirpui-ascii-table__th{{ " chirpui-ascii-table__cell--" ~ col_align if col_align else "" }}" role="columnheader">{{ header }}</span>
+            {% end %}
+        </div>
+        <div class="chirpui-ascii-table__border chirpui-ascii-table__border--mid" aria-hidden="true"></div>
+    </div>
+    {% end %}
+    <div class="chirpui-ascii-table__body" role="rowgroup">
+        {% slot %}
+    </div>
+    <div class="chirpui-ascii-table__border chirpui-ascii-table__border--bottom" aria-hidden="true"></div>
+</div>
+{% end %}
+
+{% def ascii_row(*cells, align=none) %}
+<div class="chirpui-ascii-table__row" role="row">
+    {% for cell in cells %}
+    {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
+    <span class="chirpui-ascii-table__td{{ " chirpui-ascii-table__cell--" ~ col_align if col_align else "" }}" role="cell">{{ cell }}</span>
+    {% end %}
+</div>
+{% end %}

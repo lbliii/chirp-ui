@@ -1,0 +1,46 @@
+{#- chirp-ui: Holy Light
+    Divine ascending sparkles with parallax depth layers and golden glow. Pure CSS.
+
+    Usage:
+        from "chirpui/holy_light.html" import holy_light
+
+        {% call holy_light() %}
+            <h1>Radiant hero content</h1>
+        {% end %}
+
+        {% call holy_light(variant="silver", intensity="intense") %}
+            <p>Silver divine light</p>
+        {% end %}
+-#}
+
+{% def holy_light(intensity="", variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "gold", "silver", "holy"), "") %}
+{% set intensity = intensity | validate_variant(("", "default", "subtle", "intense"), "") %}
+{% set variant_class = " chirpui-holy-light--" ~ variant if variant else "" %}
+{% set intensity_class = " chirpui-holy-light--" ~ intensity if intensity else "" %}
+{% set far_glyphs = ["✦", "·", "✦", "·", "✦"] %}
+{% set mid_glyphs = ["★", "✦", "◇", "✦", "★"] %}
+{% set near_glyphs = ["✦", "★", "✦", "★"] %}
+<div class="chirpui-holy-light{{ variant_class }}{{ intensity_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-holy-light__layers" aria-hidden="true">
+        <div class="chirpui-holy-light__layer chirpui-holy-light__layer--far">
+            {% for i in range(5) %}
+            <span class="chirpui-holy-light__mote" style="left: {{ (i * 20 + 6) % 94 }}%; bottom: {{ (i * 13 + 5) % 40 }}%">{{ far_glyphs[i] }}</span>
+            {% end %}
+        </div>
+        <div class="chirpui-holy-light__layer chirpui-holy-light__layer--mid">
+            {% for i in range(5) %}
+            <span class="chirpui-holy-light__mote" style="left: {{ (i * 18 + 12) % 90 }}%; bottom: {{ (i * 17 + 8) % 50 }}%">{{ mid_glyphs[i] }}</span>
+            {% end %}
+        </div>
+        <div class="chirpui-holy-light__layer chirpui-holy-light__layer--near">
+            {% for i in range(4) %}
+            <span class="chirpui-holy-light__mote" style="left: {{ (i * 22 + 10) % 88 }}%; bottom: {{ (i * 19 + 3) % 45 }}%">{{ near_glyphs[i] }}</span>
+            {% end %}
+        </div>
+    </div>
+    <div class="chirpui-holy-light__content">
+        {% slot %}
+    </div>
+</div>
+{% end %}

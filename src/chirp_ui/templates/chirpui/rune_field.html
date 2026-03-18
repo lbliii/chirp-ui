@@ -1,0 +1,44 @@
+{#- chirp-ui: Rune Field
+    Mystical floating ASCII runes drifting in parallax depth layers. Pure CSS.
+
+    Usage:
+        from "chirpui/rune_field.html" import rune_field
+
+        {% call rune_field() %}
+            <h1>Mystical content</h1>
+        {% end %}
+
+        {% call rune_field(variant="arcane") %}
+            <p>Arcane styled runes</p>
+        {% end %}
+-#}
+
+{% def rune_field(variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "arcane", "frost", "ember"), "") %}
+{% set variant_class = " chirpui-rune-field--" ~ variant if variant else "" %}
+{% set far_runes = ["⊙", "◎", "⊞", "◎", "⊙", "⊞"] %}
+{% set mid_runes = ["◇", "⚙", "⛓", "◇", "⚙"] %}
+{% set near_runes = ["★", "⚡︎", "✦", "◇"] %}
+<div class="chirpui-rune-field{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-rune-field__layers" aria-hidden="true">
+        <div class="chirpui-rune-field__layer chirpui-rune-field__layer--far">
+            {% for i in range(6) %}
+            <span class="chirpui-rune-field__rune" style="left: {{ (i * 16 + 3) % 92 }}%; top: {{ (i * 14 + 8) % 85 }}%">{{ far_runes[i] }}</span>
+            {% end %}
+        </div>
+        <div class="chirpui-rune-field__layer chirpui-rune-field__layer--mid">
+            {% for i in range(5) %}
+            <span class="chirpui-rune-field__rune" style="left: {{ (i * 19 + 7) % 88 }}%; top: {{ (i * 18 + 12) % 80 }}%">{{ mid_runes[i] }}</span>
+            {% end %}
+        </div>
+        <div class="chirpui-rune-field__layer chirpui-rune-field__layer--near">
+            {% for i in range(4) %}
+            <span class="chirpui-rune-field__rune" style="left: {{ (i * 23 + 5) % 90 }}%; top: {{ (i * 21 + 10) % 78 }}%">{{ near_runes[i] }}</span>
+            {% end %}
+        </div>
+    </div>
+    <div class="chirpui-rune-field__content">
+        {% slot %}
+    </div>
+</div>
+{% end %}

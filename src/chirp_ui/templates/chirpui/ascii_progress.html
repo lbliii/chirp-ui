@@ -1,0 +1,29 @@
+{#- chirp-ui: ASCII Progress
+    Terminal-style progress bar using block characters and box-drawing.
+
+    Usage:
+        from "chirpui/ascii_progress.html" import ascii_progress
+
+        ascii_progress(value=75)
+        ascii_progress(value=40, variant="accent", label="Loading")
+        ascii_progress(value=100, variant="success")
+
+    Values: 0-100 (percentage)
+-#}
+
+{% def ascii_progress(value=0, label="", variant="", width=20, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "success", "warning"), "") %}
+{% set variant_class = " chirpui-ascii-progress--" ~ variant if variant else "" %}
+{% set filled = ((value / 100) * width) | int %}
+{% set empty = width - filled %}
+<div class="chirpui-ascii-progress{{ variant_class }}{{ " " ~ cls if cls else "" }}"
+     role="progressbar"
+     aria-valuenow="{{ value }}"
+     aria-valuemin="0"
+     aria-valuemax="100"
+     {% if label %}aria-label="{{ label }}"{% end %}>
+    {% if label %}<span class="chirpui-ascii-progress__label">{{ label }}</span>{% end %}
+    <span class="chirpui-ascii-progress__track" aria-hidden="true">{% for i in range(filled) %}<span class="chirpui-ascii-progress__filled">█</span>{% end %}{% for i in range(empty) %}<span class="chirpui-ascii-progress__empty">░</span>{% end %}</span>
+    <span class="chirpui-ascii-progress__value">{{ value }}%</span>
+</div>
+{% end %}

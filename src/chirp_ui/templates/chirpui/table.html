@@ -9,6 +9,16 @@
             row("Bob", "bob@example.com", "User")
         end
 
+        Per-column alignment:
+        call table(headers=["Name", "Status", "Count"],
+                   align=["left", "center", "right"])
+            row("Alice", "Active", "42")
+        end
+
+        Column widths (CSS values or proportions):
+        call table(headers=["Name", "Status"],
+                   widths=["2fr", "1fr"])
+
         Slots: caption (table caption), row_actions (header cell for actions column).
         Sortable headers:
         call table(headers=["Name", "Email"], sortable=true,
@@ -21,15 +31,25 @@
 -#}
 
 {% def table(headers=none, sortable=false, sort_url=none, hx_target=none,
-             striped=false, sticky_header=false, actions_header=false, cls="") %}
+             striped=false, sticky_header=false, actions_header=false,
+             align=none, widths=none, compact=false, cls="") %}
 <div class="chirpui-table-wrap{{ " chirpui-table-wrap--sticky" if sticky_header else "" }}">
-    <table class="chirpui-table{{ " chirpui-table--striped" if striped else "" }}{{ " " ~ cls if cls else "" }}">
+    <table class="chirpui-table{{ " chirpui-table--striped" if striped else "" }}{{ " chirpui-table--compact" if compact else "" }}{{ " " ~ cls if cls else "" }}">
         <caption class="chirpui-table__caption">{% slot caption %}</caption>
+        {% if widths %}
+        <colgroup>
+            {% for w in widths %}
+            <col style="width: {{ w }}">
+            {% end %}
+            {% if actions_header %}<col style="width: 1%">{% end %}
+        </colgroup>
+        {% end %}
         {% if headers %}
             <thead class="chirpui-table__head">
                 <tr>
                     {% for header in headers %}
-                        <th class="chirpui-table__th"
+                        {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
+                        <th class="chirpui-table__th{{ " chirpui-table__th--" ~ col_align if col_align else "" }}"
                             {% if sortable and sort_url %}
                                 hx-get="{{ sort_url }}?sort={{ header | lower }}"
                                 {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
@@ -57,5 +77,22 @@
     {% for cell in cells %}
         <td class="chirpui-table__td">{{ cell }}</td>
     {% end %}
+</tr>
+{% end %}
+
+{% def aligned_row(cells, align) %}
+<tr class="chirpui-table__row">
+    {% for cell in cells %}
+        {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
+        <td class="chirpui-table__td{{ " chirpui-table__td--" ~ col_align if col_align else "" }}">{{ cell }}</td>
+    {% end %}
+</tr>
+{% end %}
+
+{% def table_empty(message="No data available", icon="◇") %}
+<tr>
+    <td class="chirpui-table__empty" colspan="100">
+        <span aria-hidden="true">{{ icon }}</span> {{ message }}
+    </td>
 </tr>
 {% end %}
