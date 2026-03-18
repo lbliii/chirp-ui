@@ -13,8 +13,12 @@
 -#}
 {% from "chirpui/inline_edit_field.html" import inline_edit_field_display %}
 
-{% def config_row_list(cls="") %}
-<div class="chirpui-config-row-list{{ " " ~ cls if cls else "" }}">
+{% def config_row_list(cls="", hoverable=false, divided=false, relaxed=false) %}
+{% set mods = "" %}
+{% if hoverable %}{% set mods = mods ~ " chirpui-config-row-list--hoverable" %}{% end %}
+{% if divided %}{% set mods = mods ~ " chirpui-config-row-list--divided" %}{% end %}
+{% if relaxed %}{% set mods = mods ~ " chirpui-config-row-list--relaxed" %}{% end %}
+<div class="chirpui-config-row-list{{ mods }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
 {% end %}

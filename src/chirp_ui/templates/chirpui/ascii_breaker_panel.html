@@ -1,0 +1,72 @@
+{#- chirp-ui: ASCII Breaker Panel
+    A framed set of breaker switches with title, status indicators, and optional master switch.
+
+    Usage:
+        from "chirpui/ascii_breaker_panel.html" import breaker_panel, breaker
+
+        call breaker_panel(title="Services")
+            breaker("api", label="API", checked=true, variant="success")
+            breaker("db", label="DB", checked=true, variant="success")
+            breaker("cache", label="Cache", variant="danger")
+            breaker("queue", label="Queue")
+        end
+
+        With master switch (controls all):
+        call breaker_panel(title="Production", master="main_power")
+            breaker("web", label="Web", checked=true)
+            breaker("worker", label="Worker", checked=true)
+        end
+
+    Variants: default, heavy, double.
+    Size: sm, md (default).
+
+    Visual:
+        ╔══════════════════════╗
+        ║  PRODUCTION SYSTEMS  ║
+        ╠══════════════════════╣
+        ║  ┌───┐ ┌───┐ ┌───┐  ║
+        ║  │███│ │███│ │░░░│  ║
+        ║  │███│ │███│ │░░░│  ║
+        ║  │░░░│ │░░░│ │███│  ║
+        ║  │░░░│ │░░░│ │███│  ║
+        ║  └───┘ └───┘ └───┘  ║
+        ║   API    DB   Cache  ║
+        ║  ■ ON  ■ ON  ■ OFF  ║
+        ╚══════════════════════╝
+-#}
+
+{% from "chirpui/ascii_toggle.html" import ascii_switch %}
+
+{% def breaker_panel(title=none, variant="double", size="", master=none, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "double", "heavy"), "double") %}
+{% set frame = "double" if variant in ("double", "") else variant %}
+{% set size_class = " chirpui-ascii-breaker-panel--" ~ size if size in ("sm",) else "" %}
+<div class="chirpui-ascii-breaker-panel{{ size_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-ascii-border chirpui-ascii-border--{{ frame }}">
+        {% if title %}
+        <div class="chirpui-ascii-breaker-panel__title">{{ title }}</div>
+        <div class="chirpui-ascii-breaker-panel__divider" aria-hidden="true"></div>
+        {% end %}
+        {% if master %}
+        <div class="chirpui-ascii-breaker-panel__master">
+            {{ ascii_switch(master, label="MAIN", variant="danger", size=size or "") }}
+        </div>
+        <div class="chirpui-ascii-breaker-panel__divider" aria-hidden="true"></div>
+        {% end %}
+        <div class="chirpui-ascii-breaker-panel__switches">
+            {% slot %}
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% def breaker(name, label=none, checked=false, variant="", disabled=false) %}
+<div class="chirpui-ascii-breaker-panel__breaker">
+    {{ ascii_switch(name, checked=checked, label=label, variant=variant, disabled=disabled, size="sm") }}
+    <span class="chirpui-ascii-breaker-panel__status">
+        <span class="chirpui-ascii-indicator chirpui-ascii-indicator--{{ "success" if checked else "muted" }}{{ " chirpui-ascii-indicator--blink" if checked else "" }}">
+            <span class="chirpui-ascii-indicator__light">■</span>
+        </span>
+    </span>
+</div>
+{% end %}

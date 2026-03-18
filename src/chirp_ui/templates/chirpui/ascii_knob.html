@@ -1,0 +1,42 @@
+{#- chirp-ui: ASCII Knob / Rotary Selector
+    A rotary dial using Unicode arc characters for position indication.
+
+    Usage:
+        from "chirpui/ascii_knob.html" import ascii_knob
+
+        ascii_knob("volume", options=["Off", "Low", "Med", "High"], selected="Med")
+        ascii_knob("mode", options=["A", "B", "C"], selected="A", label="Mode")
+
+    The knob renders as a circular dial with a pointer:
+        ╭─╮
+        │◉│  ← current position indicator
+        ╰─╯
+    Options are displayed as radio buttons styled as dial positions.
+-#}
+
+{% def ascii_knob(name, options, selected=none, label=none, variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent"), "") %}
+{% set variant_class = " chirpui-ascii-knob--" ~ variant if variant and variant != "default" else "" %}
+<fieldset class="chirpui-ascii-knob{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    {% if label %}<legend class="chirpui-ascii-knob__legend">{{ label }}</legend>{% end %}
+    <div class="chirpui-ascii-knob__dial" aria-hidden="true">
+        <span class="chirpui-ascii-knob__frame">╭───╮</span>
+        <span class="chirpui-ascii-knob__frame">│ ◉ │</span>
+        <span class="chirpui-ascii-knob__frame">╰───╯</span>
+    </div>
+    <div class="chirpui-ascii-knob__positions">
+        {% for opt in options %}
+        <label class="chirpui-ascii-knob__position">
+            <input class="chirpui-ascii-knob__input chirpui-visually-hidden"
+                   type="radio" name="{{ name }}"
+                   value="{{ opt.value if opt is mapping else opt }}"
+                   {% if (opt.value if opt is mapping else opt) == selected %}checked{% end %}>
+            <span class="chirpui-ascii-knob__notch">
+                <span class="chirpui-ascii-knob__tick" aria-hidden="true">│</span>
+                <span class="chirpui-ascii-knob__value">{{ opt.label if opt is mapping else opt }}</span>
+            </span>
+        </label>
+        {% end %}
+    </div>
+</fieldset>
+{% end %}

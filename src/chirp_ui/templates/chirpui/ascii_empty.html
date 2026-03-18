@@ -1,0 +1,27 @@
+{#- chirp-ui: ASCII Empty State component
+    Centered "nothing here" state with ASCII glyph, heading, and optional description.
+
+    Usage:
+        from "chirpui/ascii_empty.html" import ascii_empty
+
+        call ascii_empty()
+        end
+
+        call ascii_empty(glyph="~", heading="No results", description="Try a different search.", variant="muted")
+            <button class="chirpui-button">Reset filters</button>
+        end
+
+    Variants: default, muted, accent
+-#}
+
+{% def ascii_empty(glyph="◇", heading="Nothing here", description="", variant="default", cls="") %}
+{% set variant = variant | validate_variant(("default","muted","accent"), "default") %}
+<div class="chirpui-ascii-empty chirpui-ascii-empty--{{ variant }}{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-ascii-empty__glyph" aria-hidden="true">{{ glyph }}</span>
+    <p class="chirpui-ascii-empty__heading">{{ heading }}</p>
+    {% if description %}
+    <p class="chirpui-ascii-empty__desc">{{ description }}</p>
+    {% end %}
+    <div class="chirpui-ascii-empty__action">{% slot %}</div>
+</div>
+{% end %}

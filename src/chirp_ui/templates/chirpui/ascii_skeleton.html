@@ -1,0 +1,48 @@
+{#- chirp-ui: ASCII Skeleton
+    Loading placeholder using cycling ASCII characters instead of shimmer blocks.
+
+    Usage:
+        from "chirpui/ascii_skeleton.html" import ascii_skeleton
+
+        ascii_skeleton()                                  {# Single line #}
+        ascii_skeleton(variant="text", lines=3)           {# Multi-line text block #}
+        ascii_skeleton(variant="card")                    {# Card with header + lines #}
+        ascii_skeleton(variant="avatar")                  {# Circular avatar #}
+        ascii_skeleton(variant="heading")                 {# Wide heading line #}
+
+    The skeleton fills its area with cycling braille/dot characters
+    that animate in a wave pattern, replacing the standard shimmer gradient.
+-#}
+
+{% def ascii_skeleton(variant="", lines=1, width="", cls="") %}
+{% set variant = variant | validate_variant(("", "text", "card", "avatar", "heading"), "") %}
+{% set variant_class = " chirpui-ascii-skeleton--" ~ variant if variant else "" %}
+{% set fill = "⠁⠂⠄⡀⢀⠠⠐⠈·⠁⠂⠄⡀⢀⠠⠐⠈·⠁⠂⠄⡀⢀⠠⠐⠈·⠁⠂⠄⡀⢀⠠⠐⠈·⠁⠂⠄⡀" %}
+{% set short_fill = "⠁⠂⠄⡀⢀⠠⠐⠈·⠁⠂⠄⡀⢀⠠⠐⠈·⠁⠂⠄⡀⢀⠠" %}
+{% if variant == "avatar" %}
+<span class="chirpui-ascii-skeleton chirpui-ascii-skeleton--avatar{{ " " ~ cls if cls else "" }}" aria-hidden="true">
+    <span class="chirpui-ascii-skeleton__fill">⊙</span>
+</span>
+{% elif variant == "card" %}
+<div class="chirpui-ascii-skeleton chirpui-ascii-skeleton--card{{ " " ~ cls if cls else "" }}" aria-hidden="true">
+    <span class="chirpui-ascii-skeleton__line chirpui-ascii-skeleton__line--header">{{ fill }}</span>
+    {% for i in range(lines if lines > 1 else 3) %}
+    <span class="chirpui-ascii-skeleton__line">{{ fill if not loop.last else short_fill }}</span>
+    {% end %}
+</div>
+{% elif variant == "text" %}
+<div class="chirpui-ascii-skeleton chirpui-ascii-skeleton--text{{ " " ~ cls if cls else "" }}" aria-hidden="true">
+    {% for i in range(lines) %}
+    <span class="chirpui-ascii-skeleton__line">{{ fill if not loop.last else short_fill }}</span>
+    {% end %}
+</div>
+{% elif variant == "heading" %}
+<span class="chirpui-ascii-skeleton chirpui-ascii-skeleton--heading{{ " " ~ cls if cls else "" }}" aria-hidden="true">
+    <span class="chirpui-ascii-skeleton__fill">{{ short_fill }}</span>
+</span>
+{% else %}
+<span class="chirpui-ascii-skeleton{{ " " ~ cls if cls else "" }}"{% if width %} style="width:{{ width }}"{% end %} aria-hidden="true">
+    <span class="chirpui-ascii-skeleton__fill">{{ fill }}</span>
+</span>
+{% end %}
+{% end %}

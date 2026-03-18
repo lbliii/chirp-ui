@@ -60,6 +60,21 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     "holy-light": ("", "default", "gold", "silver", "holy"),
     "rune-field": ("", "default", "arcane", "frost", "ember"),
     "constellation": ("", "default", "warm", "cool", "mono"),
+    # ASCII primitives
+    "ascii-border": ("", "single", "double", "rounded", "heavy", "spin"),
+    "ascii-divider": ("", "single", "double", "heavy", "dots", "spin", "spin-reverse", "spin-drift"),
+    "ascii-sparkline": ("", "default", "accent", "muted", "gradient"),
+    "ascii-progress": ("", "default", "accent", "success", "warning"),
+    "ascii-empty": ("", "default", "muted", "accent"),
+    "ascii-badge": ("", "default", "success", "warning", "error", "accent", "muted"),
+    "ascii-spinner": ("", "braille", "box", "dots", "arrows", "blocks"),
+    "ascii-skeleton": ("", "text", "card", "avatar", "heading"),
+    "ascii-toggle": ("", "default", "success", "danger", "accent"),
+    "ascii-switch": ("", "default", "success", "danger", "accent"),
+    "ascii-table": ("single", "double", "heavy", "rounded"),
+    "ascii-indicator": ("success", "warning", "error", "muted", "accent"),
+    "ascii-tile-btn": ("", "default", "success", "warning", "danger", "accent"),
+    "ascii-knob": ("", "default", "accent"),
 }
 
 SIZE_REGISTRY: dict[str, tuple[str, ...]] = {
@@ -81,6 +96,8 @@ SIZE_REGISTRY: dict[str, tuple[str, ...]] = {
     # Playful / decorative effects
     "orbit": ("", "sm", "lg", "xl"),
     "sparkle": ("", "sm", "md", "lg"),
+    "ascii-toggle": ("", "sm", "md", "lg"),
+    "ascii-switch": ("", "sm", "md", "lg"),
 }
 
 

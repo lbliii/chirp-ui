@@ -1,0 +1,56 @@
+{#- chirp-ui: ASCII Tile Button
+    Square pushbuttons inspired by mainframe control panels.
+    Light up when active/pressed, can toggle or momentary.
+
+    Usage:
+        from "chirpui/ascii_tile_btn.html" import tile_btn, tile_grid
+
+        tile_btn("F1", label="EXEC")
+        tile_btn("◆", label="PWR", variant="success", lit=true)
+        tile_btn("■", label="STOP", variant="danger")
+
+        Grid layout:
+        call tile_grid(cols=4)
+            tile_btn("1", label="CH1")
+            tile_btn("2", label="CH2")
+            tile_btn("3", label="CH3")
+            tile_btn("4", label="CH4")
+        end
+
+    Variants: default, success, warning, danger, accent.
+    lit=true starts in the "on" glow state.
+    toggle=true makes it a toggle button (checkbox).
+-#}
+
+{% def tile_btn(glyph="■", label=none, variant="", lit=false, toggle=false,
+                name=none, disabled=false, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "success", "warning", "danger", "accent"), "") %}
+{% set variant_class = " chirpui-ascii-tile-btn--" ~ variant if variant and variant != "default" else "" %}
+{% set lit_class = " chirpui-ascii-tile-btn--lit" if lit else "" %}
+{% if toggle %}
+<label class="chirpui-ascii-tile-btn{{ variant_class }}{{ lit_class }}{{ " chirpui-ascii-tile-btn--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
+    <input class="chirpui-ascii-tile-btn__input chirpui-visually-hidden"
+           type="checkbox" {% if name %}name="{{ name }}"{% end %}
+           {% if lit %}checked{% end %}
+           {% if disabled %}disabled{% end %}>
+    <span class="chirpui-ascii-tile-btn__face">
+        <span class="chirpui-ascii-tile-btn__glyph">{{ glyph }}</span>
+    </span>
+    {% if label %}<span class="chirpui-ascii-tile-btn__label">{{ label }}</span>{% end %}
+</label>
+{% else %}
+<button class="chirpui-ascii-tile-btn{{ variant_class }}{{ lit_class }}{{ " chirpui-ascii-tile-btn--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}"
+        type="button" {% if disabled %}disabled{% end %}>
+    <span class="chirpui-ascii-tile-btn__face">
+        <span class="chirpui-ascii-tile-btn__glyph">{{ glyph }}</span>
+    </span>
+    {% if label %}<span class="chirpui-ascii-tile-btn__label">{{ label }}</span>{% end %}
+</button>
+{% end %}
+{% end %}
+
+{% def tile_grid(cols=4, cls="") %}
+<div class="chirpui-ascii-tile-grid{{ " " ~ cls if cls else "" }}" style="--_tile-cols: {{ cols }}">
+    {% slot %}
+</div>
+{% end %}

@@ -1,0 +1,67 @@
+{#- chirp-ui: ASCII Toggle
+    Switch controls rendered with box-drawing characters and Unicode glyphs.
+
+    Horizontal (default):
+        from "chirpui/ascii_toggle.html" import ascii_toggle
+        ascii_toggle("dark_mode", label="Dark Mode")
+        ascii_toggle("notifications", checked=true, variant="success")
+
+    Vertical breaker switch:
+        from "chirpui/ascii_toggle.html" import ascii_switch
+        ascii_switch("power", label="Power")
+        ascii_switch("debug", checked=true, label="Debug", variant="danger")
+
+    Variants: default, success, danger, accent.
+    Sizes: sm, md (default), lg.
+
+    Horizontal visual:
+        OFF:  ╶───○       ON:  ●───╴
+
+    Vertical visual:
+        OFF:  ┌───┐       ON:  ┌───┐
+              │░░░│             │███│
+              │░░░│             │███│
+              │███│             │░░░│
+              │███│             │░░░│
+              └───┘             └───┘
+-#}
+
+{% def ascii_toggle(name, checked=false, label=none, variant="", size="",
+                    disabled=false, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "success", "danger", "accent"), "") %}
+{% set size_class = " chirpui-ascii-toggle--" ~ size if size in ("sm", "lg") else "" %}
+{% set variant_class = " chirpui-ascii-toggle--" ~ variant if variant and variant != "default" else "" %}
+<label class="chirpui-ascii-toggle{{ size_class }}{{ variant_class }}{{ " chirpui-ascii-toggle--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
+    <input class="chirpui-ascii-toggle__input chirpui-visually-hidden"
+           type="checkbox" name="{{ name }}" id="{{ name }}"
+           {% if checked %}checked{% end %}
+           {% if disabled %}disabled{% end %}>
+    <span class="chirpui-ascii-toggle__track" aria-hidden="true">
+        <span class="chirpui-ascii-toggle__rail">
+            <span class="chirpui-ascii-toggle__knob"></span>
+        </span>
+    </span>
+    {% if label %}<span class="chirpui-ascii-toggle__label">{{ label }}</span>{% end %}
+</label>
+{% end %}
+
+{% def ascii_switch(name, checked=false, label=none, variant="", size="",
+                    disabled=false, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "success", "danger", "accent"), "") %}
+{% set size_class = " chirpui-ascii-switch--" ~ size if size in ("sm", "lg") else "" %}
+{% set variant_class = " chirpui-ascii-switch--" ~ variant if variant and variant != "default" else "" %}
+<label class="chirpui-ascii-switch{{ size_class }}{{ variant_class }}{{ " chirpui-ascii-switch--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
+    <input class="chirpui-ascii-switch__input chirpui-visually-hidden"
+           type="checkbox" name="{{ name }}" id="{{ name }}"
+           {% if checked %}checked{% end %}
+           {% if disabled %}disabled{% end %}>
+    <span class="chirpui-ascii-switch__body" aria-hidden="true">
+        <span class="chirpui-ascii-switch__cap chirpui-ascii-switch__cap--top"></span>
+        <span class="chirpui-ascii-switch__slot">
+            <span class="chirpui-ascii-switch__lever"></span>
+        </span>
+        <span class="chirpui-ascii-switch__cap chirpui-ascii-switch__cap--bottom"></span>
+    </span>
+    {% if label %}<span class="chirpui-ascii-switch__label">{{ label }}</span>{% end %}
+</label>
+{% end %}

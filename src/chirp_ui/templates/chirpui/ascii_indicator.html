@@ -1,0 +1,38 @@
+{#- chirp-ui: ASCII Indicator Light
+    Blinking status lights like old mainframe LEDs.
+
+    Usage:
+        from "chirpui/ascii_indicator.html" import indicator, indicator_row
+
+        indicator("online", variant="success", blink=true)
+        indicator("error", variant="error", blink="fast")
+        indicator("standby", variant="muted")
+
+        call indicator_row()
+            indicator("PWR", variant="success", blink=true)
+            indicator("NET", variant="success")
+            indicator("ERR", variant="error", blink="fast")
+            indicator("SYS", variant="warning", blink=true)
+        end
+
+    Variants: success, warning, error, muted, accent.
+    Blink: true (steady pulse), "fast" (alarm), false (solid).
+    Glyph: ■ (default), ● (round), ◆ (diamond).
+-#}
+
+{% def indicator(label=none, variant="success", blink=false, glyph="square", cls="") %}
+{% set variant = variant | validate_variant(("success", "warning", "error", "muted", "accent"), "success") %}
+{% set blink_class = " chirpui-ascii-indicator--blink" if blink and blink != "fast" else "" %}
+{% set blink_fast = " chirpui-ascii-indicator--blink-fast" if blink == "fast" else "" %}
+{% set glyph_char = "●" if glyph == "round" else ("◆" if glyph == "diamond" else "■") %}
+<span class="chirpui-ascii-indicator chirpui-ascii-indicator--{{ variant }}{{ blink_class }}{{ blink_fast }}{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-ascii-indicator__light" aria-hidden="true">{{ glyph_char }}</span>
+    {% if label %}<span class="chirpui-ascii-indicator__label">{{ label }}</span>{% end %}
+</span>
+{% end %}
+
+{% def indicator_row(cls="") %}
+<div class="chirpui-ascii-indicator-row{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
