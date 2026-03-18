@@ -39,6 +39,27 @@
 {% end %}
 
 <h2>Surface variants</h2>
+<h2>Blade (full-width section)</h2>
+{% call block() %}
+{% call section("Edge-to-edge", subtitle="full_width=true wraps in chirpui-blade for bleeding sections.", icon="▸", full_width=true, surface_variant="gradient-accent") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">This section stretches edge-to-edge with a gradient accent surface.</p>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  section(title, full_width=true) — wraps content in <code>chirpui-blade</code>.
+</p>
+{% end %}
+
+<h2>Blade with parallax</h2>
+{% call block() %}
+{% call section("Scroll motion", subtitle="Subtle scroll-driven background shift (Chrome 115+).", icon="◎", full_width=true, parallax=true, surface_variant="gradient-mesh") %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">full_width + parallax adds <code>chirpui-blade--parallax</code> for scroll-driven motion. Falls back gracefully.</p>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  section(title, full_width=true, parallax=true) — progressive enhancement.
+</p>
+{% end %}
+
+<h2>Surface variants</h2>
 {% call block() %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0 0 0.5rem;">
   All 11 surface variants via surface_variant param. Default is muted.

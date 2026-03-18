@@ -76,7 +76,7 @@ Define a minimal, standardized set of CSS custom properties that a user can fill
 
 - `--chirpui-method-get`, `--chirpui-method-post`, etc. (color, bg, border)
 - `--chirpui-code-bg`, `--chirpui-code-text`, `--chirpui-code-type`, `--chirpui-code-keyword`, etc.
-- `--chirpui-example`, `--chirpui-alert-example-bg`, `--chirpui-alert-example-border`, `--chirpui-alert-example-color`
+- `--chirpui-accent-secondary`, `--chirpui-alert-secondary-bg`, `--chirpui-alert-secondary-border`, `--chirpui-alert-secondary-color`
 
 ### Tier 6: Typography (UI vs. Prose)
 

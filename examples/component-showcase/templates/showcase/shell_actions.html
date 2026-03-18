@@ -47,6 +47,48 @@
 </div>
 {% end %}
 
+<h2>Topbar Variants</h2>
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0 0 0.5rem;">
+  topbar_variant="default|glass|gradient" — style the topbar independently.
+</p>
+<div style="display: grid; gap: 1rem;">
+<div style="min-height: 8rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); overflow: hidden;">
+{% call app_shell(brand="Glass topbar", topbar_variant="glass", cls="chirpui-showcase-shell-preview") %}
+  {% slot sidebar %}<nav style="padding: 0.5rem;"><small class="chirpui-text-muted">topbar_variant="glass"</small></nav>{% end %}
+  <p class="chirpui-text-muted chirpui-font-sm" style="margin: 1rem;">Frosted-glass topbar with backdrop blur.</p>
+{% end %}
+</div>
+<div style="min-height: 8rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); overflow: hidden;">
+{% call app_shell(brand="Gradient topbar", topbar_variant="gradient", cls="chirpui-showcase-shell-preview") %}
+  {% slot sidebar %}<nav style="padding: 0.5rem;"><small class="chirpui-text-muted">topbar_variant="gradient"</small></nav>{% end %}
+  <p class="chirpui-text-muted chirpui-font-sm" style="margin: 1rem;">Gradient topbar background.</p>
+{% end %}
+</div>
+</div>
+{% end %}
+
+<h2>Sidebar Variants</h2>
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0 0 0.5rem;">
+  sidebar_variant="default|glass|muted" — style the sidebar independently.
+</p>
+<div style="display: grid; gap: 1rem;">
+<div style="min-height: 8rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); overflow: hidden;">
+{% call app_shell(brand="Glass sidebar", sidebar_variant="glass", cls="chirpui-showcase-shell-preview") %}
+  {% slot sidebar %}<nav style="padding: 0.5rem;"><small class="chirpui-text-muted">sidebar_variant="glass"</small></nav>{% end %}
+  <p class="chirpui-text-muted chirpui-font-sm" style="margin: 1rem;">Glass sidebar with backdrop blur.</p>
+{% end %}
+</div>
+<div style="min-height: 8rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); overflow: hidden;">
+{% call app_shell(brand="Muted sidebar", sidebar_variant="muted", cls="chirpui-showcase-shell-preview") %}
+  {% slot sidebar %}<nav style="padding: 0.5rem;"><small class="chirpui-text-muted">sidebar_variant="muted"</small></nav>{% end %}
+  <p class="chirpui-text-muted chirpui-font-sm" style="margin: 1rem;">Muted sidebar background.</p>
+{% end %}
+</div>
+</div>
+{% end %}
+
 <h2>Pattern Notes</h2>
 {% call block() %}
 <ul class="chirpui-stack chirpui-stack--sm" style="margin: 0; padding-inline-start: 1.25rem;">

@@ -105,7 +105,27 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 <a href="/" class="chirpui-btn chirpui-btn--primary">Get started</a>
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
-  hero(title=none, subtitle=none, background="solid|muted|gradient")
+  hero(title=none, subtitle=none, background="solid|muted|gradient|mesh|animated-gradient")
+</p>
+{% end %}
+
+<h2>Hero — Mesh Background</h2>
+{% call block() %}
+{% call hero(title="Mesh gradient", subtitle="Multi-point radial gradient backdrop.", background="mesh") %}
+<a href="/" class="chirpui-btn chirpui-btn--primary">Explore</a>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  background="mesh" — radial gradient mesh pattern.
+</p>
+{% end %}
+
+<h2>Hero — Animated Gradient</h2>
+{% call block() %}
+{% call hero(title="Animated gradient", subtitle="Smooth shifting gradient. Respects prefers-reduced-motion.", background="animated-gradient") %}
+<a href="/" class="chirpui-btn chirpui-btn--primary">Launch</a>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  background="animated-gradient" — CSS keyframe animation on the background.
 </p>
 {% end %}
 
