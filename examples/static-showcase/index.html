@@ -55,6 +55,7 @@
     <h3>Cards</h3>
     <a href="#cards">Cards</a>
     <a href="#card-variants">Card Variants</a>
+    <a href="#card-gradients">Gradient Cards</a>
     <a href="#effect-cards">Effect Cards</a>
     <a href="#metric-cards">Metric Cards</a>
     <h3>Data Display</h3>
@@ -84,6 +85,7 @@
     <a href="#stepper">Stepper</a>
     <h3>Layout</h3>
     <a href="#surfaces">Surfaces</a>
+    <a href="#gradient-surfaces">Gradient Surfaces</a>
     <a href="#layout-primitives">Grid / Stack / Cluster</a>
     <a href="#bento">Bento Grid</a>
     <a href="#split-panel">Split Panel</a>
@@ -94,6 +96,7 @@
     <a href="#accordion">Accordion</a>
     <h3>Content</h3>
     <a href="#hero">Hero</a>
+    <a href="#hero-backgrounds">Hero Backgrounds</a>
     <a href="#callout">Callout</a>
     <a href="#avatar">Avatars</a>
     <a href="#code">Code</a>
@@ -311,6 +314,29 @@
         <summary class="chirpui-card__header"><h3 class="chirpui-card__title">Click to collapse</h3></summary>
         <div class="chirpui-card__body"><p>This card body can be collapsed/expanded.</p></div>
     </details>
+</section>
+
+<section class="sc-section" id="card-gradients">
+    <h2>Gradient Cards</h2>
+    <p class="desc">Gradient border and gradient header variants.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid">
+        <article class="chirpui-card chirpui-card--gradient-border">
+            <header class="chirpui-card__header"><div class="chirpui-card__header-content"><h3 class="chirpui-card__title">Gradient Border</h3></div></header>
+            <div class="chirpui-card__body"><p>Animated gradient border via <code>border_variant="gradient"</code>.</p></div>
+        </article>
+        <article class="chirpui-card chirpui-card--gradient-header">
+            <header class="chirpui-card__header"><div class="chirpui-card__header-content"><h3 class="chirpui-card__title">Gradient Header</h3></div></header>
+            <div class="chirpui-card__body"><p>Gradient header background via <code>header_variant="gradient"</code>.</p></div>
+        </article>
+        <article class="chirpui-card chirpui-card--gradient-border chirpui-card--gradient-header">
+            <header class="chirpui-card__header">
+                <span class="chirpui-card__icon">◆</span>
+                <div class="chirpui-card__header-content"><h3 class="chirpui-card__title">Both Combined</h3></div>
+            </header>
+            <div class="chirpui-card__body"><p>Gradient border + gradient header together.</p></div>
+        </article>
+    </div>
 </section>
 
 <section class="sc-section" id="effect-cards">
@@ -629,7 +655,13 @@
 <section class="sc-section" id="breadcrumbs">
     <h2>Breadcrumbs</h2>
     <hr class="sc-divider">
-    <nav class="chirpui-breadcrumbs"><a class="chirpui-breadcrumbs__item" href="#">Home</a><span class="chirpui-breadcrumbs__sep">/</span><a class="chirpui-breadcrumbs__item" href="#">Components</a><span class="chirpui-breadcrumbs__sep">/</span><span class="chirpui-breadcrumbs__item chirpui-breadcrumbs__item--current">Buttons</span></nav>
+    <nav class="chirpui-breadcrumbs" aria-label="Breadcrumb">
+        <ol class="chirpui-breadcrumbs__list">
+            <li class="chirpui-breadcrumbs__item"><a href="#" class="chirpui-breadcrumbs__link">Home</a></li>
+            <li class="chirpui-breadcrumbs__item"><a href="#" class="chirpui-breadcrumbs__link">Components</a></li>
+            <li class="chirpui-breadcrumbs__item"><span class="chirpui-breadcrumbs__current" aria-current="page">Buttons</span></li>
+        </ol>
+    </nav>
 </section>
 
 <section class="sc-section" id="dock">
@@ -693,6 +725,26 @@
     </div>
 </section>
 
+<section class="sc-section" id="gradient-surfaces">
+    <h2>Gradient Surfaces</h2>
+    <p class="desc">Gradient, mesh, and glass surface variants.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid">
+        <div class="chirpui-surface chirpui-surface--gradient-subtle" style="padding:1rem"><div class="sc-label">Gradient Subtle</div>Soft gradient background.</div>
+        <div class="chirpui-surface chirpui-surface--gradient-accent" style="padding:1rem"><div class="sc-label">Gradient Accent</div>Accent-colored gradient.</div>
+        <div class="chirpui-surface chirpui-surface--gradient-border" style="padding:1rem"><div class="sc-label">Gradient Border</div>Gradient border, solid fill.</div>
+        <div class="chirpui-surface chirpui-surface--gradient-mesh" style="padding:1rem"><div class="sc-label">Gradient Mesh</div>Multi-point mesh gradient.</div>
+    </div>
+    <div class="sc-label" style="margin-top:1rem">Glass variants (over colored background)</div>
+    <div style="position:relative;padding:1.5rem;background:linear-gradient(135deg, var(--chirpui-accent) 0%, var(--chirpui-primary) 50%, var(--chirpui-success,var(--chirpui-accent)) 100%);border-radius:var(--chirpui-radius)">
+    <div class="sc-grid">
+        <div class="chirpui-surface chirpui-surface--glass" style="padding:1rem"><div class="sc-label">Glass</div>Subtle blur.</div>
+        <div class="chirpui-surface chirpui-surface--frosted" style="padding:1rem"><div class="sc-label">Frosted</div>Stronger blur.</div>
+        <div class="chirpui-surface chirpui-surface--smoke" style="padding:1rem"><div class="sc-label">Smoke</div>Dark tint.</div>
+    </div>
+    </div>
+</section>
+
 <section class="sc-section" id="layout-primitives">
     <h2>Grid / Stack / Cluster</h2>
     <hr class="sc-divider">
@@ -725,7 +777,7 @@
     <p class="desc">Resizable split panel with draggable handle.</p>
     <hr class="sc-divider">
     <div class="chirpui-split-panel" style="height:200px;border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius-lg);overflow:hidden" x-data="{split:40,dragging:false,startDrag(e){this.dragging=true;const m=(ev)=>{const r=$el.getBoundingClientRect();this.split=Math.min(80,Math.max(20,((ev.clientX-r.left)/r.width)*100))};const s=()=>{this.dragging=false;document.removeEventListener('mousemove',m);document.removeEventListener('mouseup',s)};document.addEventListener('mousemove',m);document.addEventListener('mouseup',s)}}" :class="{'chirpui-split-panel--dragging':dragging}">
-        <div class="chirpui-split-panel__pane chirpui-split-panel__pane--first" :style="'flex:0 0 '+split+'%'" style="padding:1rem;background:var(--chirpui-surface-alt)"><strong>Left</strong><p style="font-size:0.82rem;color:var(--chirpui-text-muted)">Sidebar or nav.</p></div>
+        <div class="chirpui-split-panel__pane chirpui-split-panel__pane--first" :style="'flex:0 0 '+split+'%;padding:1rem;background:var(--chirpui-surface-alt)'"><strong>Left</strong><p style="font-size:0.82rem;color:var(--chirpui-text-muted)">Sidebar or nav.</p></div>
         <div class="chirpui-split-panel__handle" @mousedown.prevent="startDrag($event)" role="separator"><span class="chirpui-split-panel__handle-grip"></span></div>
         <div class="chirpui-split-panel__pane chirpui-split-panel__pane--second" style="padding:1rem"><strong>Right</strong><p style="font-size:0.82rem;color:var(--chirpui-text-muted)">Main content area.</p></div>
     </div>
@@ -803,6 +855,23 @@
     <hr class="sc-divider">
     <div class="chirpui-hero chirpui-hero--muted" style="border-radius:var(--chirpui-radius-lg);min-height:200px;display:flex;align-items:center;justify-content:center;text-align:center">
         <div><h2 style="margin:0">Build beautiful interfaces</h2><p style="color:var(--chirpui-text-muted)">135 templates. Zero build step. Dark mode included.</p><button class="chirpui-btn chirpui-btn--primary" style="margin-top:0.75rem">Get Started</button></div>
+    </div>
+</section>
+
+<section class="sc-section" id="hero-backgrounds">
+    <h2>Hero Backgrounds</h2>
+    <p class="desc">All five hero background variants.</p>
+    <hr class="sc-divider">
+    <div style="display:grid;gap:1rem">
+        <div class="chirpui-hero chirpui-hero--gradient" style="border-radius:var(--chirpui-radius-lg);min-height:140px;display:flex;align-items:center;justify-content:center;text-align:center">
+            <div><h3 style="margin:0">Gradient</h3><p style="color:var(--chirpui-text-muted);margin:0.25rem 0 0">background="gradient"</p></div>
+        </div>
+        <div class="chirpui-hero chirpui-hero--mesh" style="border-radius:var(--chirpui-radius-lg);min-height:140px;display:flex;align-items:center;justify-content:center;text-align:center">
+            <div><h3 style="margin:0">Mesh</h3><p style="color:var(--chirpui-text-muted);margin:0.25rem 0 0">background="mesh" — multi-point radial gradient</p></div>
+        </div>
+        <div class="chirpui-hero chirpui-hero--animated-gradient" style="border-radius:var(--chirpui-radius-lg);min-height:140px;display:flex;align-items:center;justify-content:center;text-align:center">
+            <div><h3 style="margin:0">Animated Gradient</h3><p style="color:var(--chirpui-text-muted);margin:0.25rem 0 0">background="animated-gradient" — respects prefers-reduced-motion</p></div>
+        </div>
     </div>
 </section>
 

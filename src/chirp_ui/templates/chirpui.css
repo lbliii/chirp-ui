@@ -127,11 +127,11 @@
     --chirpui-focus-ring: color-mix(in srgb, var(--chirpui-accent) 30%, transparent);
 
     /* Semantic — badges, status, progress, errors; *-muted use generic shade */
-    --chirpui-primary: #5b9cf5;
-    --chirpui-success: #22c55e;
-    --chirpui-warning: #f59e5b;
-    --chirpui-error: #dc2626;
-    --chirpui-muted: #6b7280;
+    --chirpui-primary: light-dark(#5b9cf5, #93bbfc);
+    --chirpui-success: light-dark(#22c55e, #4ade80);
+    --chirpui-warning: light-dark(#f59e5b, #fbbf24);
+    --chirpui-error: light-dark(#dc2626, #f87171);
+    --chirpui-muted: light-dark(#6b7280, #9ca3af);
 
     /* Optional component aliases */
     --chirpui-card-header-color: var(--chirpui-text);
@@ -164,8 +164,8 @@
     --chirpui-error-muted: color-mix(in srgb, var(--chirpui-error) var(--chirpui-shade-muted), white);
     --chirpui-muted-bg: color-mix(in srgb, var(--chirpui-muted) var(--chirpui-shade-muted), white);
 
-    /* Info semantic — for alerts, badges, docs */
-    --chirpui-info: light-dark(#0284c7, #38bdf8);
+    /* Info semantic — alias of accent; override --chirpui-accent to change both */
+    --chirpui-info: var(--chirpui-accent);
 
     /* Alert/admonition text/icon colors — derive from semantic base */
     --chirpui-alert-info-color: var(--chirpui-info);
@@ -173,12 +173,12 @@
     --chirpui-alert-warning-color: var(--chirpui-warning);
     --chirpui-alert-error-color: var(--chirpui-error);
 
-    /* Example/admonition — docs-style "Example" or "Note" blocks */
-    --chirpui-example: light-dark(#7c3aed, #a78bfa);
-    --chirpui-example-muted: color-mix(in srgb, var(--chirpui-example) var(--chirpui-shade-muted), white);
-    --chirpui-alert-example-bg: light-dark(#f5f3ff, #2e1065);
-    --chirpui-alert-example-border: light-dark(#c4b5fd, #7c3aed);
-    --chirpui-alert-example-color: var(--chirpui-example);
+    /* Secondary accent — second brand color for gradients, docs blocks, code syntax */
+    --chirpui-accent-secondary: light-dark(#7c3aed, #a78bfa);
+    --chirpui-accent-secondary-muted: color-mix(in srgb, var(--chirpui-accent-secondary) var(--chirpui-shade-muted), white);
+    --chirpui-alert-secondary-bg: light-dark(#f5f3ff, #2e1065);
+    --chirpui-alert-secondary-border: light-dark(#c4b5fd, #7c3aed);
+    --chirpui-alert-secondary-color: var(--chirpui-accent-secondary);
 
     /* HTTP method tokens — API docs; map to semantic by default */
     --chirpui-method-get: var(--chirpui-info);
@@ -386,7 +386,7 @@
     --chirpui-gradient-border: linear-gradient(
         to right,
         var(--chirpui-accent),
-        var(--chirpui-example),
+        var(--chirpui-accent-secondary),
         var(--chirpui-accent)
     );
     --chirpui-gradient-split: linear-gradient(
@@ -404,7 +404,7 @@
         ),
         radial-gradient(
             ellipse 60% 80% at 80% 20%,
-            color-mix(in srgb, var(--chirpui-example) 20%, transparent),
+            color-mix(in srgb, var(--chirpui-accent-secondary) 20%, transparent),
             transparent
         ),
         var(--chirpui-bg);
@@ -428,6 +428,12 @@
     --chirpui-alert-warning-border: #fde68a;
     --chirpui-alert-error-bg: #fef2f2;
     --chirpui-alert-error-border: #fecaca;
+    --chirpui-primary: #5b9cf5;
+    --chirpui-success: #22c55e;
+    --chirpui-warning: #f59e5b;
+    --chirpui-error: #dc2626;
+    --chirpui-muted: #6b7280;
+    --chirpui-accent-secondary: #7c3aed;
     --chirpui-shadow-xs: 0 1px 1px rgba(0, 0, 0, 0.04);
     --chirpui-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
     --chirpui-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
@@ -502,7 +508,7 @@
         --chirpui-warning-muted: color-mix(in oklch, var(--chirpui-warning) var(--chirpui-shade-muted), white);
         --chirpui-error-muted: color-mix(in oklch, var(--chirpui-error) var(--chirpui-shade-muted), white);
         --chirpui-muted-bg: color-mix(in oklch, var(--chirpui-muted) var(--chirpui-shade-muted), white);
-        --chirpui-example-muted: color-mix(in oklch, var(--chirpui-example) var(--chirpui-shade-muted), white);
+        --chirpui-accent-secondary-muted: color-mix(in oklch, var(--chirpui-accent-secondary) var(--chirpui-shade-muted), white);
         --chirpui-focus-ring: color-mix(in oklch, var(--chirpui-accent) 30%, transparent);
         --chirpui-border-subtle: color-mix(in oklch, var(--chirpui-border) 70%, transparent);
     }
@@ -3313,7 +3319,7 @@ a.chirpui-mention:focus-visible {
             -45deg,
             var(--chirpui-bg-subtle),
             color-mix(in srgb, var(--chirpui-accent) 8%, var(--chirpui-bg)),
-            color-mix(in srgb, var(--chirpui-example) 6%, var(--chirpui-bg)),
+            color-mix(in srgb, var(--chirpui-accent-secondary) 6%, var(--chirpui-bg)),
             var(--chirpui-bg-subtle)
         );
         background-size: 400% 400%;

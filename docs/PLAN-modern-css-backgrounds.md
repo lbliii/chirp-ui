@@ -40,7 +40,7 @@ linear-gradient(to right, red 0%, red 50%, blue 50%, blue 100%)
 ```css
 .gradient-border {
   background: linear-gradient(var(--chirpui-surface), var(--chirpui-surface)),
-              linear-gradient(to right, var(--chirpui-accent), var(--chirpui-example));
+              linear-gradient(to right, var(--chirpui-accent), var(--chirpui-accent-secondary));
   background-origin: padding-box, border-box;
   background-repeat: no-repeat;
   border: 2px solid transparent;
@@ -140,7 +140,7 @@ CSS `mask` + gradients for zig-zag, wavy, or custom edge shapes. Hard stops defi
 --chirpui-gradient-border: linear-gradient(
   to right,
   var(--chirpui-accent),
-  var(--chirpui-example),
+  var(--chirpui-accent-secondary),
   var(--chirpui-accent)
 );
 

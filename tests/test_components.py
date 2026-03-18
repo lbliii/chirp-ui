@@ -192,6 +192,46 @@ class TestLayout:
         assert "Refresh" in html
         assert "Content" in html
 
+    def test_section_gradient_surface_variants(self, env: Environment) -> None:
+        for variant in (
+            "gradient-subtle",
+            "gradient-accent",
+            "gradient-border",
+            "gradient-mesh",
+        ):
+            html = env.from_string(
+                '{% from "chirpui/layout.html" import section %}'
+                f'{{% call section("Title", surface_variant="{variant}") %}}X{{% end %}}'
+            ).render()
+            assert f"chirpui-surface--{variant}" in html
+
+    def test_section_full_width_renders_blade(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import section %}'
+            '{% call section("Wide", full_width=true) %}Content{% end %}'
+        ).render()
+        assert "chirpui-blade" in html
+        assert "chirpui-surface--full" in html
+        assert "Content" in html
+
+    def test_section_parallax_renders_blade_modifier(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import section %}'
+            '{% call section("Motion", full_width=true, parallax=true) %}Content{% end %}'
+        ).render()
+        assert "chirpui-blade--parallax" in html
+
+    def test_section_collapsible_gradient_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import section_collapsible %}'
+            '{% call section_collapsible("Advanced", surface_variant="gradient-subtle") %}'
+            "Content"
+            "{% end %}"
+        ).render()
+        assert "chirpui-section-collapsible" in html
+        assert "chirpui-surface--gradient-subtle" in html
+        assert "Content" in html
+
 
 class TestIslands:
     def test_island_root_with_props(self, env: Environment) -> None:
@@ -306,6 +346,19 @@ class TestSurface:
         assert "chirpui-surface--full" in html
         assert "chirpui-surface--no-padding" in html
 
+    def test_surface_gradient_variants(self, env: Environment) -> None:
+        for variant in (
+            "gradient-subtle",
+            "gradient-accent",
+            "gradient-border",
+            "gradient-mesh",
+        ):
+            html = env.from_string(
+                '{% from "chirpui/surface.html" import surface %}'
+                f'{{% call surface(variant="{variant}") %}}X{{% end %}}'
+            ).render()
+            assert f"chirpui-surface--{variant}" in html
+
 
 # ---------------------------------------------------------------------------
 # Callout
@@ -382,6 +435,36 @@ class TestHero:
                 f'{{% call hero(background="{bg}") %}}X{{% end %}}'
             ).render()
             assert f"chirpui-hero--{bg}" in html
+
+    def test_hero_mesh_background(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero.html" import hero %}'
+            '{% call hero(background="mesh") %}Content{% end %}'
+        ).render()
+        assert "chirpui-hero--mesh" in html
+
+    def test_hero_animated_gradient_background(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero.html" import hero %}'
+            '{% call hero(background="animated-gradient") %}Content{% end %}'
+        ).render()
+        assert "chirpui-hero--animated-gradient" in html
+
+    def test_page_hero_mesh_background(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero.html" import page_hero %}'
+            '{% call page_hero(title="Docs", background="mesh") %}Body{% end %}'
+        ).render()
+        assert "chirpui-hero--mesh" in html
+        assert "chirpui-hero--page" in html
+
+    def test_page_hero_animated_gradient_background(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero.html" import page_hero %}'
+            '{% call page_hero(title="Docs", background="animated-gradient") %}Body{% end %}'
+        ).render()
+        assert "chirpui-hero--animated-gradient" in html
+        assert "chirpui-hero--page" in html
 
     def test_page_hero(self, env: Environment) -> None:
         html = env.from_string(
@@ -899,6 +982,36 @@ class TestCard:
         assert 'href="/skills/demo"' in html
         assert 'href="/collections/demo"' in html
         assert 'href="/tags/demo"' in html
+
+    def test_card_gradient_border(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(border_variant="gradient") %}Content{% end %}'
+        ).render()
+        assert "chirpui-card--gradient-border" in html
+
+    def test_card_gradient_header(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="Title", header_variant="gradient") %}Content{% end %}'
+        ).render()
+        assert "chirpui-card--gradient-header" in html
+
+    def test_card_gradient_border_and_header_combined(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="Title", border_variant="gradient", header_variant="gradient") %}Content{% end %}'
+        ).render()
+        assert "chirpui-card--gradient-border" in html
+        assert "chirpui-card--gradient-header" in html
+
+    def test_card_collapsible_gradient_border(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="Toggle", collapsible=true, border_variant="gradient") %}Body{% end %}'
+        ).render()
+        assert "<details" in html
+        assert "chirpui-card--gradient-border" in html
 
 
 # ---------------------------------------------------------------------------
@@ -1924,6 +2037,57 @@ class TestAppShell:
         ).render()
         assert "data-chirpui-sidebar-toggle" not in html
         assert "chirpui-app-shell__sidebar-resize" not in html
+
+    def test_app_shell_topbar_glass(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand", topbar_variant="glass") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell__topbar--glass" in html
+
+    def test_app_shell_topbar_gradient(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand", topbar_variant="gradient") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell__topbar--gradient" in html
+
+    def test_app_shell_sidebar_glass(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand", sidebar_variant="glass") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell__sidebar--glass" in html
+
+    def test_app_shell_sidebar_muted(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand", sidebar_variant="muted") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell__sidebar--muted" in html
+
+    def test_app_shell_default_variants_no_modifier_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell__topbar--" not in html
+        assert "chirpui-app-shell__sidebar--" not in html
 
 
 class TestLogo:

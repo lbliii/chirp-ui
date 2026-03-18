@@ -45,6 +45,30 @@
 {% end %}
 {% end %}
 
+<h2>Gradient Cards</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call card(title="Gradient Border", border_variant="gradient") %}
+<p>Card with <code>border_variant="gradient"</code> — animated gradient border.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card(title="Gradient Header", header_variant="gradient", icon="◆") %}
+<p>Card with <code>header_variant="gradient"</code> — gradient header background.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card(title="Both", border_variant="gradient", header_variant="gradient") %}
+<p>Combined <code>border_variant="gradient"</code> and <code>header_variant="gradient"</code>.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card(title="Collapsible + Gradient", collapsible=true, open=true, border_variant="gradient") %}
+<p>Collapsible card with gradient border. Works on <code>&lt;details&gt;</code> too.</p>
+{% end %}
+{% end %}
+{% end %}
+
 <h2>Collapsible Card</h2>
 {% call block() %}
 {% call card(title="Click to expand", collapsible=true, open=true) %}
