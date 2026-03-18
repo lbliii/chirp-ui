@@ -81,6 +81,8 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     "ascii-checkbox": ("", "default", "accent", "success", "danger"),
     "ascii-radio-group": ("", "default", "accent"),
     "ascii-stepper": ("", "default", "accent", "success"),
+    "split-flap": ("", "default", "amber", "green"),
+    "ascii-ticker": ("", "default", "accent", "success", "warning", "error"),
 }
 
 SIZE_REGISTRY: dict[str, tuple[str, ...]] = {

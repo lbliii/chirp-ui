@@ -1,0 +1,55 @@
+{#- chirp-ui: ASCII Split-Flap Display
+    Mechanical departure-board style display where characters "flip" into place.
+    Inspired by Solari boards at airports and train stations.
+
+    Usage:
+        from "chirpui/ascii_split_flap.html" import split_flap, split_flap_row, split_flap_board
+
+        Single display:
+        split_flap("HELLO WORLD")
+
+        Departure board:
+        call split_flap_board(title="DEPARTURES")
+            split_flap_row(cells=["08:42", "GRAND CENTRAL", "ON TIME", "TRACK 7"])
+            split_flap_row(cells=["09:15", "PENN STATION", "DELAYED", "TRACK 3"])
+        end
+
+    Variants: default, amber, green.
+    animate=true adds the flip-in stagger effect.
+-#}
+
+{% def split_flap(text, variant="", animate=true, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "amber", "green"), "") %}
+{% set variant_class = " chirpui-split-flap--" ~ variant if variant and variant != "default" else "" %}
+{% set anim_class = " chirpui-split-flap--animate" if animate else "" %}
+<span class="chirpui-split-flap{{ variant_class }}{{ anim_class }}{{ " " ~ cls if cls else "" }}">
+    {% for ch in text %}
+    <span class="chirpui-split-flap__char" style="{% if animate %}animation-delay: {{ loop.index0 * 0.06 }}s{% end %}">{{ ch if ch != " " else "&nbsp;" }}</span>
+    {% end %}
+</span>
+{% end %}
+
+{% def split_flap_row(cells, cls="") %}
+<div class="chirpui-split-flap-row{{ " " ~ cls if cls else "" }}">
+    {% for cell in cells %}
+    <span class="chirpui-split-flap chirpui-split-flap--animate">
+        {% for ch in cell %}
+        <span class="chirpui-split-flap__char" style="animation-delay: {{ loop.index0 * 0.06 }}s">{{ ch if ch != " " else "&nbsp;" }}</span>
+        {% end %}
+    </span>
+    {% end %}
+</div>
+{% end %}
+
+{% def split_flap_board(title=none, variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "amber", "green"), "") %}
+{% set variant_class = " chirpui-split-flap-board--" ~ variant if variant and variant != "default" else "" %}
+<div class="chirpui-split-flap-board{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    {% if title %}
+    <div class="chirpui-split-flap-board__title">{{ title }}</div>
+    {% end %}
+    <div class="chirpui-split-flap-board__body">
+        {% slot %}
+    </div>
+</div>
+{% end %}

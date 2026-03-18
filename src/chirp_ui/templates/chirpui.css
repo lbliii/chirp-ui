@@ -12419,6 +12419,232 @@ body:has(> .chirpui-app-shell) {
 .chirpui-ascii-stepper--success .chirpui-ascii-stepper__step--active .chirpui-ascii-stepper__node { color: var(--chirpui-success); }
 
 /* ================================================================
+   ASCII Split-Flap Display — Solari board / departure board
+   ================================================================ */
+
+@keyframes chirpui-split-flap-flip {
+    0% {
+        transform: scaleY(0.1) translateY(-40%);
+        opacity: 0;
+    }
+    30% {
+        transform: scaleY(1.05);
+        opacity: 1;
+    }
+    50% {
+        transform: scaleY(0.97);
+    }
+    100% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+.chirpui-split-flap {
+    display: inline-flex;
+    gap: 2px;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+}
+
+.chirpui-split-flap__char {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.1em;
+    height: 1.6em;
+    background: var(--chirpui-bg-subtle);
+    border: 1px solid var(--chirpui-border);
+    border-radius: 2px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--chirpui-text);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Center split line — the mechanical gap */
+.chirpui-split-flap__char::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--chirpui-border);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Flip animation */
+.chirpui-split-flap--animate .chirpui-split-flap__char {
+    animation: chirpui-split-flap-flip 0.4s ease-out both;
+}
+
+/* Amber variant — classic departure board */
+.chirpui-split-flap--amber .chirpui-split-flap__char {
+    background: #1a1400;
+    border-color: #3a3000;
+    color: #ffb300;
+    text-shadow: 0 0 4px #ffb30066;
+}
+.chirpui-split-flap--amber .chirpui-split-flap__char::after {
+    background: #3a3000;
+}
+
+/* Green variant — retro terminal */
+.chirpui-split-flap--green .chirpui-split-flap__char {
+    background: #001a00;
+    border-color: #003a00;
+    color: #33ff33;
+    text-shadow: 0 0 4px #33ff3366;
+}
+.chirpui-split-flap--green .chirpui-split-flap__char::after {
+    background: #003a00;
+}
+
+/* Row in a board */
+.chirpui-split-flap-row {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.35rem 0;
+}
+
+/* Board container */
+.chirpui-split-flap-board {
+    display: inline-flex;
+    flex-direction: column;
+    background: var(--chirpui-bg-subtle);
+    border: 2px solid var(--chirpui-border);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    gap: 0;
+}
+
+.chirpui-split-flap-board__title {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: var(--chirpui-font-xs, 0.6rem);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--chirpui-text-muted);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--chirpui-border);
+    margin-bottom: 0.25rem;
+}
+
+.chirpui-split-flap-board__body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Board color variants */
+.chirpui-split-flap-board--amber {
+    background: #0d0a00;
+    border-color: #3a3000;
+}
+.chirpui-split-flap-board--amber .chirpui-split-flap-board__title {
+    color: #ffb30088;
+    border-color: #3a3000;
+}
+.chirpui-split-flap-board--amber .chirpui-split-flap__char {
+    background: #1a1400;
+    border-color: #3a3000;
+    color: #ffb300;
+    text-shadow: 0 0 4px #ffb30066;
+}
+.chirpui-split-flap-board--amber .chirpui-split-flap__char::after {
+    background: #3a3000;
+}
+
+.chirpui-split-flap-board--green {
+    background: #000d00;
+    border-color: #003a00;
+}
+.chirpui-split-flap-board--green .chirpui-split-flap-board__title {
+    color: #33ff3388;
+    border-color: #003a00;
+}
+.chirpui-split-flap-board--green .chirpui-split-flap__char {
+    background: #001a00;
+    border-color: #003a00;
+    color: #33ff33;
+    text-shadow: 0 0 4px #33ff3366;
+}
+.chirpui-split-flap-board--green .chirpui-split-flap__char::after {
+    background: #003a00;
+}
+
+/* Divider between rows */
+.chirpui-split-flap-row + .chirpui-split-flap-row {
+    border-top: 1px solid var(--chirpui-border);
+}
+.chirpui-split-flap-board--amber .chirpui-split-flap-row + .chirpui-split-flap-row {
+    border-color: #3a3000;
+}
+.chirpui-split-flap-board--green .chirpui-split-flap-row + .chirpui-split-flap-row {
+    border-color: #003a00;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-split-flap--animate .chirpui-split-flap__char {
+        animation: none;
+    }
+}
+
+/* ================================================================
+   ASCII Ticker — scrolling text banner
+   ================================================================ */
+
+@keyframes chirpui-ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+.chirpui-ascii-ticker {
+    display: flex;
+    align-items: center;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: 0.8rem;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.chirpui-ascii-ticker__bracket {
+    color: var(--chirpui-text-muted);
+    opacity: 0.5;
+    flex-shrink: 0;
+}
+
+.chirpui-ascii-ticker__track {
+    overflow: hidden;
+    flex: 1;
+    min-width: 0;
+}
+
+.chirpui-ascii-ticker__text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: chirpui-ticker-scroll 20s linear infinite;
+    color: var(--chirpui-text);
+}
+
+/* Speeds */
+.chirpui-ascii-ticker--slow .chirpui-ascii-ticker__text { animation-duration: 35s; }
+.chirpui-ascii-ticker--fast .chirpui-ascii-ticker__text { animation-duration: 10s; }
+
+/* Variants */
+.chirpui-ascii-ticker--accent .chirpui-ascii-ticker__text { color: var(--chirpui-accent); }
+.chirpui-ascii-ticker--success .chirpui-ascii-ticker__text { color: var(--chirpui-success); }
+.chirpui-ascii-ticker--warning .chirpui-ascii-ticker__text { color: var(--chirpui-warning, #e6a700); }
+.chirpui-ascii-ticker--error .chirpui-ascii-ticker__text { color: var(--chirpui-error); }
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-ticker__text {
+        animation: none;
+    }
+}
+
+/* ================================================================
    ASCII Table — box-drawing character borders
    ================================================================ */
 
