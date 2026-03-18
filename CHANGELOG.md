@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-03-18
+
+### Added
+
+- **ASCII components** — 20+ new ASCII-art UI primitives: `ascii_7seg`, `ascii_badge`, `ascii_border`, `ascii_breaker_panel`, `ascii_checkbox`, `ascii_divider`, `ascii_empty`, `ascii_error`, `ascii_fader`, `ascii_indicator`, `ascii_knob`, `ascii_progress`, `ascii_radio`, `ascii_skeleton`, `ascii_sparkline`, `ascii_spinner`, `ascii_split_flap`, `ascii_stepper`, `ascii_table`, `ascii_ticker`, `ascii_tile_btn`, `ascii_toggle`, `ascii_vu_meter`
+- **Background effects** — `constellation`, `holy_light`, `rune_field`, `symbol_rain` — CSS-only animated backgrounds
+- **Gradient effects** — Blade sections and gradient hero effects
+- **Expanded showcase** — Static showcase with cards, sections, shell actions, and full component gallery
+
+### Changed
+
+- **Token naming** — Improved CSS custom property naming for theme tokens
+- **Component updates** — Refined `config_row`, `settings_row`, `description_list`, `table`, and `hero_effects` templates
+
+[0.2.0]: https://github.com/lbliii/chirp-ui/releases/tag/v0.2.0
+
 ## [0.1.6] — 2026-03-12
 
 ### Added
