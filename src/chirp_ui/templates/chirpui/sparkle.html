@@ -1,0 +1,24 @@
+{#- chirp-ui: Sparkle
+    Staggered star twinkle effect wrapping content.
+
+    Usage:
+        from "chirpui/sparkle.html" import sparkle
+
+        {% call sparkle() %}
+            <button>✨ Magic Button</button>
+        {% end %}
+
+        {% call sparkle(variant="gold", count=4) %}
+            <h2>Golden text</h2>
+        {% end %}
+-#}
+
+{% def sparkle(count=6, variant="", cls="") %}
+{% set variant_cls = " chirpui-sparkle--" ~ variant if variant in ("gold", "white", "rainbow") else "" %}
+<span class="chirpui-sparkle{{ variant_cls }}{{ " " ~ cls if cls else "" }}">
+    {% for i in range(count) %}
+    <span class="chirpui-sparkle__star" aria-hidden="true"></span>
+    {% end %}
+    {% slot %}
+</span>
+{% end %}

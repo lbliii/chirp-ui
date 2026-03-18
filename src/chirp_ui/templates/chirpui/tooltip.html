@@ -1,5 +1,5 @@
 {#- chirp-ui: Tooltip macro
-    Wraps child, shows content on hover. Uses data-tooltip and title fallback.
+    Wraps child, shows tooltip bubble on hover with arrow positioning. Pure CSS.
 
     Usage:
         from "chirpui/tooltip.html" import tooltip
@@ -7,11 +7,19 @@
         {% call tooltip("Copy to clipboard") %}
             <button>Copy</button>
         {% end %}
+
+        {% call tooltip("Below the element", position="bottom") %}
+            <span>Hover me</span>
+        {% end %}
+
+    Positions: top (default), bottom, left, right
 -#}
 
-{% def tooltip(content=none, hint=none, position="top") %}
+{% def tooltip(content=none, hint=none, position="top", cls="") %}
 {% set tooltip_text = hint if hint is not none else content %}
-<span class="chirpui-tooltip chirpui-tooltip--{{ position }}" data-chirpui-tooltip data-tooltip="{{ tooltip_text | e }}" title="{{ tooltip_text | e }}">
+{% set pos = position if position in ("top", "bottom", "left", "right") else "top" %}
+<span class="chirpui-tooltip chirpui-tooltip--{{ pos }}{{ " " ~ cls if cls else "" }}" data-chirpui-tooltip data-tooltip="{{ tooltip_text | e }}" title="{{ tooltip_text | e }}">
     {% slot %}
+    <span class="chirpui-tooltip__bubble" role="tooltip">{{ tooltip_text }}</span>
 </span>
 {% end %}

@@ -1,0 +1,25 @@
+{#- chirp-ui: Border Beam
+    Container with animated conic-gradient border beam effect.
+
+    Usage:
+        from "chirpui/border_beam.html" import border_beam
+
+        call border_beam()
+            <p>Content with glowing border</p>
+        end
+
+        call border_beam(variant="success")
+            <p>Success-colored beam</p>
+        end
+-#}
+
+{% def border_beam(variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "success", "warning"), "") %}
+{% set variant_class = " chirpui-border-beam--" ~ variant if variant else "" %}
+<div class="chirpui-border-beam{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-border-beam__beam" aria-hidden="true"></div>
+    <div class="chirpui-border-beam__content">
+        {% slot %}
+    </div>
+</div>
+{% end %}

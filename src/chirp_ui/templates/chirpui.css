@@ -225,9 +225,22 @@
     --chirpui-motion-base: 150ms;
     --chirpui-motion-slow: 250ms;
     --chirpui-motion-slower: 400ms;
+    --chirpui-motion-extra-slow: 600ms;
+    --chirpui-motion-crawl: 1500ms;
     --chirpui-ease-standard: ease;
     --chirpui-ease-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
     --chirpui-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --chirpui-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --chirpui-ease-decel: cubic-bezier(0, 0, 0.2, 1);
+    --chirpui-ease-accel: cubic-bezier(0.4, 0, 1, 1);
+
+    /* Effect colors — shimmer, ripple, glow, beam */
+    --chirpui-shimmer-from: color-mix(in srgb, var(--chirpui-border) 40%, transparent);
+    --chirpui-shimmer-via: color-mix(in srgb, var(--chirpui-surface) 80%, transparent);
+    --chirpui-shimmer-to: color-mix(in srgb, var(--chirpui-border) 40%, transparent);
+    --chirpui-ripple-color: color-mix(in srgb, var(--chirpui-accent) 25%, transparent);
+    --chirpui-beam-color: var(--chirpui-accent);
+    --chirpui-glow-color: color-mix(in srgb, var(--chirpui-accent) 40%, transparent);
 
     /* Backward-compatible motion aliases */
     --chirpui-transition: var(--chirpui-motion-base) var(--chirpui-ease-standard);
@@ -1022,7 +1035,47 @@ html {
 .chirpui-metric-card__trend {
     margin-top: var(--chirpui-space-card-gap);
     font-weight: var(--chirpui-ui-font-weight-medium);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-2xs);
 }
+.chirpui-metric-card__trend--up { color: var(--chirpui-success); }
+.chirpui-metric-card__trend--down { color: var(--chirpui-error); }
+.chirpui-metric-card__trend--neutral { color: var(--chirpui-text-muted); }
+.chirpui-metric-card__trend-arrow { font-size: 0.75em; }
+.chirpui-metric-card__top {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--chirpui-spacing-sm);
+}
+.chirpui-metric-card__icon-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--chirpui-radius);
+    flex-shrink: 0;
+    font-size: var(--chirpui-ui-base);
+    background: var(--chirpui-surface-alt);
+    color: var(--chirpui-text-muted);
+}
+.chirpui-metric-card__icon-badge--primary { background: var(--chirpui-primary-muted); color: var(--chirpui-primary); }
+.chirpui-metric-card__icon-badge--success { background: var(--chirpui-success-muted); color: var(--chirpui-success); }
+.chirpui-metric-card__icon-badge--warning { background: var(--chirpui-warning-muted); color: var(--chirpui-warning); }
+.chirpui-metric-card__icon-badge--error { background: var(--chirpui-error-muted); color: var(--chirpui-error); }
+.chirpui-metric-card__values { flex: 1; min-width: 0; }
+.chirpui-metric-card__footer {
+    display: block;
+    margin-top: var(--chirpui-spacing-sm);
+    padding-top: var(--chirpui-spacing-sm);
+    border-top: 1px solid var(--chirpui-border);
+    font-size: var(--chirpui-font-xs);
+    color: var(--chirpui-accent);
+    text-decoration: none;
+    transition: color var(--chirpui-transition);
+}
+.chirpui-metric-card__footer:hover { color: var(--chirpui-accent-hover); }
 
 /* ==========================================================================
    Action Bar
@@ -2180,72 +2233,95 @@ a.chirpui-mention:focus-visible {
     list-style: none;
     margin: 0;
     padding: 0;
+    counter-reset: stepper;
 }
 
 .chirpui-stepper__item {
     display: flex;
+    flex-direction: column;
     align-items: center;
     flex: 1;
     min-width: 0;
+    position: relative;
+    text-align: center;
+}
+
+/* Connector line between steps — drawn via ::before on all items except first */
+.chirpui-stepper__item + .chirpui-stepper__item::before {
+    content: "";
+    position: absolute;
+    top: 1rem; /* vertically center on the 2rem indicator */
+    right: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--chirpui-border);
+    z-index: 0;
+}
+
+.chirpui-stepper__item--completed + .chirpui-stepper__item::before {
+    background: var(--chirpui-accent);
 }
 
 .chirpui-stepper__indicator {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
-    background: var(--chirpui-border);
+    background: var(--chirpui-bg-subtle, var(--chirpui-border));
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
-    font-weight: 500;
+    font-weight: 600;
     flex-shrink: 0;
+    border: 2px solid var(--chirpui-border);
+    transition: all var(--chirpui-transition);
 }
 
 .chirpui-stepper__item--active .chirpui-stepper__indicator {
     background: var(--chirpui-accent);
     color: white;
-    box-shadow: 0 0 0 3px var(--chirpui-focus-ring);
+    border-color: var(--chirpui-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--chirpui-accent) 25%, transparent);
 }
 
 .chirpui-stepper__item--completed .chirpui-stepper__indicator {
     background: color-mix(in srgb, var(--chirpui-accent) 15%, transparent);
     color: var(--chirpui-accent);
-    border: 2px solid var(--chirpui-accent);
+    border-color: var(--chirpui-accent);
+}
+
+.chirpui-stepper__check {
+    font-size: 0.875rem;
+    line-height: 1;
+}
+
+.chirpui-stepper__label {
+    display: block;
+    margin-top: var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    padding: 0 var(--chirpui-spacing-xs);
+}
+
+.chirpui-stepper__item--active .chirpui-stepper__label {
+    color: var(--chirpui-text);
+    font-weight: 600;
 }
 
 .chirpui-stepper__item--completed .chirpui-stepper__label {
     color: var(--chirpui-text-muted);
 }
 
-.chirpui-stepper__check {
-    font-size: 0.875rem;
-}
-
-.chirpui-stepper__label {
-    margin-inline-start: var(--chirpui-spacing-sm);
-    font-size: var(--chirpui-font-sm);
-    color: var(--chirpui-text-muted);
-}
-
-.chirpui-stepper__item--active .chirpui-stepper__label {
-    color: var(--chirpui-text);
-    font-weight: 500;
-}
-
+/* Hide the old connector element — lines are now drawn via ::before */
 .chirpui-stepper__connector {
-    flex: 1;
-    height: 2px;
-    background: var(--chirpui-border);
-    margin: 0 var(--chirpui-spacing-sm);
-    margin-top: -1rem;
-    min-width: 1rem;
-}
-
-.chirpui-stepper__item--completed + .chirpui-stepper__item .chirpui-stepper__connector,
-.chirpui-stepper__item--completed .chirpui-stepper__connector {
-    background: var(--chirpui-accent);
+    display: none;
 }
 
 /* ==========================================================================
@@ -2432,8 +2508,8 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-timeline__dot {
     position: absolute;
-    left: calc(-1 * var(--chirpui-spacing-lg) - 5px);
-    top: 0.25rem;
+    left: calc(-1 * var(--chirpui-spacing-lg) - 4px);
+    top: 0.35rem;
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
@@ -2474,6 +2550,67 @@ a.chirpui-mention:focus-visible {
 .chirpui-timeline__body {
     font-size: var(--chirpui-font-sm);
     color: var(--chirpui-text-muted);
+}
+
+/* Timeline: icon/avatar variants */
+.chirpui-timeline__icon {
+    position: absolute;
+    left: calc(-1 * var(--chirpui-spacing-lg) - 10px);
+    top: 0.15rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--chirpui-surface);
+    border: 2px solid var(--chirpui-border);
+    font-size: 0.65rem;
+    color: var(--chirpui-text-muted);
+}
+.chirpui-timeline__avatar {
+    position: absolute;
+    left: calc(-1 * var(--chirpui-spacing-lg) - 10px);
+    top: 0.15rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.chirpui-timeline__time {
+    display: block;
+    font-size: var(--chirpui-font-xs);
+    color: var(--chirpui-text-muted);
+    margin-bottom: var(--chirpui-spacing-2xs);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Timeline: semantic dot colors */
+.chirpui-timeline__item--success .chirpui-timeline__dot,
+.chirpui-timeline__item--success .chirpui-timeline__icon { background: var(--chirpui-success); border-color: var(--chirpui-success); color: white; }
+.chirpui-timeline__item--warning .chirpui-timeline__dot,
+.chirpui-timeline__item--warning .chirpui-timeline__icon { background: var(--chirpui-warning); border-color: var(--chirpui-warning); color: white; }
+.chirpui-timeline__item--error .chirpui-timeline__dot,
+.chirpui-timeline__item--error .chirpui-timeline__icon { background: var(--chirpui-error); border-color: var(--chirpui-error); color: white; }
+.chirpui-timeline__item--info .chirpui-timeline__dot,
+.chirpui-timeline__item--info .chirpui-timeline__icon { background: var(--chirpui-info); border-color: var(--chirpui-info); color: white; }
+
+/* Timeline: hoverable rows */
+.chirpui-timeline--hoverable .chirpui-timeline__item {
+    border-radius: var(--chirpui-radius);
+    padding: var(--chirpui-spacing-xs);
+    transition: background var(--chirpui-transition);
+}
+.chirpui-timeline--hoverable .chirpui-timeline__item:hover {
+    background: var(--chirpui-surface-alt);
+}
+
+/* Timeline: clickable link overlay */
+.chirpui-timeline__item--link { position: relative; }
+.chirpui-timeline__link-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
 }
 
 /* ==========================================================================
@@ -3312,7 +3449,7 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-card__header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--chirpui-space-card-gap);
     padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
     font-family: var(--chirpui-ui-font-family);
@@ -4141,6 +4278,19 @@ dialog.chirpui-modal a {
     background: var(--chirpui-bg-subtle);
     padding: 0.125em 0.25em;
     border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-modal__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border-top: 1px solid var(--chirpui-border);
+}
+
+.chirpui-modal__footer:empty {
+    display: none;
 }
 
 /* Confirm dialog */
@@ -7126,6 +7276,36 @@ input[type="date"].chirpui-field__input {
     font-size: var(--chirpui-font-sm);
 }
 
+/* Toggle: size variants */
+.chirpui-toggle-wrap--sm .chirpui-toggle__track { width: 1.75rem; height: 0.875rem; }
+.chirpui-toggle-wrap--sm .chirpui-toggle__track::after { width: 0.625rem; height: 0.625rem; }
+.chirpui-toggle-wrap--sm:has(.chirpui-toggle:checked) .chirpui-toggle__track::after { transform: translateX(0.875rem); }
+.chirpui-toggle-wrap--lg .chirpui-toggle__track { width: 3.25rem; height: 1.625rem; }
+.chirpui-toggle-wrap--lg .chirpui-toggle__track::after { width: 1.375rem; height: 1.375rem; }
+.chirpui-toggle-wrap--lg:has(.chirpui-toggle:checked) .chirpui-toggle__track::after { transform: translateX(1.625rem); }
+
+/* Toggle: color variants */
+.chirpui-toggle-wrap--success:has(.chirpui-toggle:checked) .chirpui-toggle__track { background: var(--chirpui-success); }
+.chirpui-toggle-wrap--danger:has(.chirpui-toggle:checked) .chirpui-toggle__track { background: var(--chirpui-error); }
+.chirpui-toggle-wrap--accent:has(.chirpui-toggle:checked) .chirpui-toggle__track { background: var(--chirpui-accent); }
+
+/* Toggle: label inside track */
+.chirpui-toggle__track-label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    transition: opacity var(--chirpui-motion-fast);
+}
+.chirpui-toggle__track-label--on { left: 0.35rem; color: white; opacity: 0; }
+.chirpui-toggle__track-label--off { right: 0.35rem; color: var(--chirpui-text-muted); opacity: 1; }
+.chirpui-toggle-wrap:has(.chirpui-toggle:checked) .chirpui-toggle__track-label--on { opacity: 1; }
+.chirpui-toggle-wrap:has(.chirpui-toggle:checked) .chirpui-toggle__track-label--off { opacity: 0; }
+
 .chirpui-form-actions {
     display: flex;
     align-items: center;
@@ -7306,6 +7486,33 @@ a.chirpui-btn {
     display: flex;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
+}
+.chirpui-btn-group--end { justify-content: flex-end; }
+.chirpui-btn-group--between { justify-content: space-between; }
+.chirpui-btn-group--center { justify-content: center; }
+.chirpui-btn-group--stretch .chirpui-btn { flex: 1; }
+
+/* Actions bar — semantic wrapper for form/dialog/card button groups.
+   Use in modal footers, card footers, form buttons, confirmation dialogs. */
+.chirpui-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-spacing-sm) 0;
+}
+.chirpui-actions--start { justify-content: flex-start; }
+.chirpui-actions--center { justify-content: center; }
+.chirpui-actions--between { justify-content: space-between; }
+.chirpui-actions--stretch .chirpui-btn { flex: 1; }
+.chirpui-actions--stacked {
+    flex-direction: column;
+    align-items: stretch;
+}
+.chirpui-actions--bordered {
+    border-top: 1px solid var(--chirpui-border);
+    padding-top: var(--chirpui-spacing);
+    margin-top: var(--chirpui-spacing);
 }
 
 /* Hover lift and active press — only when motion is preferred */
@@ -8706,3 +8913,1405 @@ body:has(> .chirpui-app-shell) {
     min-height: 0;
     overflow-y: auto;
 }
+
+
+/* ==========================================================================
+   Effects Foundation — @property, @keyframes, reduced-motion
+   ========================================================================== */
+
+/* CSS Houdini custom properties for animatable values */
+@property --chirpui-beam-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+@property --chirpui-num {
+    syntax: "<integer>";
+    inherits: false;
+    initial-value: 0;
+}
+
+/* --- Shimmer: translating gradient highlight --- */
+@keyframes chirpui-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* --- Ripple: radial scale-out for click feedback --- */
+@keyframes chirpui-ripple-expand {
+    0% { transform: scale(0); opacity: 0.6; }
+    100% { transform: scale(4); opacity: 0; }
+}
+
+/* --- Border beam: conic gradient rotation --- */
+@keyframes chirpui-border-beam-rotate {
+    0% { --chirpui-beam-angle: 0deg; }
+    100% { --chirpui-beam-angle: 360deg; }
+}
+
+/* --- Pulse ring: expanding ring that fades --- */
+@keyframes chirpui-pulse-ring {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* --- Float: gentle vertical bob --- */
+@keyframes chirpui-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* --- Count up: CSS counter increment via @property --- */
+@keyframes chirpui-count-up {
+    from { --chirpui-num: 0; }
+}
+
+/* --- Meteor: diagonal streak --- */
+@keyframes chirpui-meteor {
+    0% { transform: rotate(215deg) translateX(0); opacity: 1; }
+    70% { opacity: 1; }
+    100% { transform: rotate(215deg) translateX(-600px); opacity: 0; }
+}
+
+/* --- Marquee: infinite horizontal scroll --- */
+@keyframes chirpui-marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* --- Text reveal: clip-path wipe --- */
+@keyframes chirpui-text-reveal {
+    0% { clip-path: inset(0 100% 0 0); }
+    100% { clip-path: inset(0 0 0 0); }
+}
+
+/* --- Spotlight rotate: radial gradient rotation --- */
+@keyframes chirpui-spotlight-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Typewriter: step-based text reveal with cursor --- */
+@keyframes chirpui-typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+}
+@keyframes chirpui-blink-caret {
+    0%, 100% { border-color: transparent; }
+    50% { border-color: currentColor; }
+}
+
+/* --- Glitch: offset pseudo-element distortion --- */
+@keyframes chirpui-glitch {
+    0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    20% { clip-path: inset(20% 0 40% 0); transform: translate(-2px, 1px); }
+    40% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+    60% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 2px); }
+    80% { clip-path: inset(50% 0 20% 0); transform: translate(1px, -2px); }
+}
+@keyframes chirpui-glitch-alt {
+    0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    20% { clip-path: inset(50% 0 20% 0); transform: translate(2px, -1px); }
+    40% { clip-path: inset(10% 0 60% 0); transform: translate(-2px, 2px); }
+    60% { clip-path: inset(40% 0 30% 0); transform: translate(1px, -1px); }
+    80% { clip-path: inset(70% 0 5% 0); transform: translate(-1px, 1px); }
+}
+
+/* --- Neon: pulsing glow flicker --- */
+@keyframes chirpui-neon-flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+    20%, 24%, 55% { opacity: 0.6; }
+}
+@keyframes chirpui-neon-pulse {
+    0%, 100% { text-shadow: 0 0 4px currentColor, 0 0 11px currentColor, 0 0 19px currentColor; }
+    50% { text-shadow: 0 0 4px currentColor, 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor; }
+}
+
+/* --- Aurora: drifting gradient blobs --- */
+@keyframes chirpui-aurora-drift-1 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25% { transform: translate(30%, -20%) rotate(90deg) scale(1.1); }
+    50% { transform: translate(-20%, 30%) rotate(180deg) scale(0.9); }
+    75% { transform: translate(20%, -10%) rotate(270deg) scale(1.05); }
+}
+@keyframes chirpui-aurora-drift-2 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    33% { transform: translate(-30%, 20%) rotate(120deg) scale(1.15); }
+    66% { transform: translate(20%, -30%) rotate(240deg) scale(0.85); }
+}
+
+/* --- Sparkle: star pop-in/pop-out --- */
+@keyframes chirpui-sparkle {
+    0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+
+/* --- Confetti: falling pieces --- */
+@keyframes chirpui-confetti-fall {
+    0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+@keyframes chirpui-confetti-sway {
+    0%, 100% { margin-left: 0; }
+    50% { margin-left: 30px; }
+}
+
+/* --- Orbit: circular rotation --- */
+@keyframes chirpui-orbit {
+    0% { transform: rotate(0deg) translateX(var(--chirpui-orbit-radius, 60px)) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(var(--chirpui-orbit-radius, 60px)) rotate(-360deg); }
+}
+
+/* --- Wobble: micro-interaction utilities --- */
+@keyframes chirpui-wobble {
+    0%, 100% { transform: translateX(0); }
+    15% { transform: translateX(-12px) rotate(-5deg); }
+    30% { transform: translateX(10px) rotate(3deg); }
+    45% { transform: translateX(-6px) rotate(-3deg); }
+    60% { transform: translateX(4px) rotate(2deg); }
+    75% { transform: translateX(-2px) rotate(-1deg); }
+}
+@keyframes chirpui-jello {
+    0%, 100% { transform: skewX(0deg) skewY(0deg); }
+    11.1% { transform: skewX(-12.5deg) skewY(-12.5deg); }
+    22.2% { transform: skewX(6.25deg) skewY(6.25deg); }
+    33.3% { transform: skewX(-3.125deg) skewY(-3.125deg); }
+    44.4% { transform: skewX(1.5625deg) skewY(1.5625deg); }
+    55.5% { transform: skewX(-0.78125deg) skewY(-0.78125deg); }
+    66.6% { transform: skewX(0.390625deg) skewY(0.390625deg); }
+}
+@keyframes chirpui-rubber-band {
+    0%, 100% { transform: scaleX(1) scaleY(1); }
+    30% { transform: scaleX(1.25) scaleY(0.75); }
+    40% { transform: scaleX(0.75) scaleY(1.25); }
+    50% { transform: scaleX(1.15) scaleY(0.85); }
+    65% { transform: scaleX(0.95) scaleY(1.05); }
+    75% { transform: scaleX(1.05) scaleY(0.95); }
+}
+@keyframes chirpui-bounce-in {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- Reduced motion: disable all new effect animations --- */
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-shimmer-btn__shimmer,
+    .chirpui-ripple-btn__ripple,
+    .chirpui-border-beam__beam,
+    .chirpui-notification-dot__ping,
+    .chirpui-marquee__track,
+    .chirpui-meteor__streak,
+    .chirpui-text-reveal,
+    .chirpui-number-ticker__value,
+    .chirpui-animated-counter__value,
+    .chirpui-particle-bg__dot,
+    .chirpui-glow-card__glow,
+    .chirpui-spotlight-card__spotlight,
+    .chirpui-dock__item,
+    .chirpui-typewriter__text,
+    .chirpui-glitch,
+    .chirpui-glitch::before,
+    .chirpui-glitch::after,
+    .chirpui-neon,
+    .chirpui-aurora__blob,
+    .chirpui-sparkle__star,
+    .chirpui-confetti__piece,
+    .chirpui-orbit__item,
+    .chirpui-wobble,
+    .chirpui-jello,
+    .chirpui-rubber-band,
+    .chirpui-bounce-in {
+        animation: none !important;
+        transition: none !important;
+    }
+    .chirpui-text-reveal { clip-path: none; }
+    .chirpui-number-ticker__value { --chirpui-num: var(--chirpui-num-target, 0); }
+    .chirpui-typewriter__text { width: 100%; border-color: transparent; }
+}
+
+
+/* ==========================================================================
+   Shimmer Button
+   ========================================================================== */
+
+.chirpui-shimmer-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: 500;
+    color: var(--chirpui-text);
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: background var(--chirpui-transition);
+}
+.chirpui-shimmer-btn:hover { background: var(--chirpui-surface-alt); }
+.chirpui-shimmer-btn__shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        var(--chirpui-shimmer-from),
+        var(--chirpui-shimmer-via),
+        var(--chirpui-shimmer-to)
+    );
+    animation: chirpui-shimmer 2s var(--chirpui-ease-standard) infinite;
+    pointer-events: none;
+}
+.chirpui-shimmer-btn--primary {
+    background: var(--chirpui-accent);
+    color: var(--chirpui-bg);
+    border-color: var(--chirpui-accent);
+}
+.chirpui-shimmer-btn--primary:hover { background: var(--chirpui-accent-hover); }
+.chirpui-shimmer-btn--sm { padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm); font-size: var(--chirpui-ui-xs); }
+.chirpui-shimmer-btn--lg { padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg); font-size: var(--chirpui-ui-base); }
+
+
+/* ==========================================================================
+   Ripple Button
+   ========================================================================== */
+
+.chirpui-ripple-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: 500;
+    color: var(--chirpui-text);
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: background var(--chirpui-transition);
+}
+.chirpui-ripple-btn:hover { background: var(--chirpui-surface-alt); }
+.chirpui-ripple-btn__ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--chirpui-ripple-color);
+    transform: scale(0);
+    animation: chirpui-ripple-expand var(--chirpui-motion-extra-slow) var(--chirpui-ease-decel) forwards;
+    pointer-events: none;
+}
+.chirpui-ripple-btn--primary {
+    background: var(--chirpui-accent);
+    color: var(--chirpui-bg);
+    border-color: var(--chirpui-accent);
+}
+.chirpui-ripple-btn--primary:hover { background: var(--chirpui-accent-hover); }
+.chirpui-ripple-btn--sm { padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm); font-size: var(--chirpui-ui-xs); }
+.chirpui-ripple-btn--lg { padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg); font-size: var(--chirpui-ui-base); }
+
+
+/* ==========================================================================
+   Border Beam
+   ========================================================================== */
+
+.chirpui-border-beam {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--chirpui-radius);
+    padding: 1px;
+}
+.chirpui-border-beam__beam {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: conic-gradient(from var(--chirpui-beam-angle, 0deg), transparent 60%, var(--chirpui-beam-color) 80%, transparent 100%);
+    animation: chirpui-border-beam-rotate var(--chirpui-motion-crawl) linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-border-beam__content {
+    position: relative;
+    background: var(--chirpui-surface);
+    border-radius: calc(var(--chirpui-radius) - 1px);
+    z-index: 1;
+}
+.chirpui-border-beam--accent .chirpui-border-beam__beam { --chirpui-beam-color: var(--chirpui-accent); }
+.chirpui-border-beam--success .chirpui-border-beam__beam { --chirpui-beam-color: var(--chirpui-success); }
+.chirpui-border-beam--warning .chirpui-border-beam__beam { --chirpui-beam-color: var(--chirpui-warning); }
+
+
+/* ==========================================================================
+   Notification Dot
+   ========================================================================== */
+
+.chirpui-notification-dot {
+    position: relative;
+    display: inline-flex;
+}
+.chirpui-notification-dot__dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--chirpui-error);
+    z-index: 1;
+}
+.chirpui-notification-dot__ping {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--chirpui-error);
+    animation: chirpui-pulse-ring 1.5s var(--chirpui-ease-decel) infinite;
+    z-index: 0;
+}
+.chirpui-notification-dot--success .chirpui-notification-dot__dot,
+.chirpui-notification-dot--success .chirpui-notification-dot__ping { background: var(--chirpui-success); }
+.chirpui-notification-dot--warning .chirpui-notification-dot__dot,
+.chirpui-notification-dot--warning .chirpui-notification-dot__ping { background: var(--chirpui-warning); }
+.chirpui-notification-dot--sm .chirpui-notification-dot__dot,
+.chirpui-notification-dot--sm .chirpui-notification-dot__ping { width: 6px; height: 6px; top: -1px; right: -1px; }
+.chirpui-notification-dot--lg .chirpui-notification-dot__dot,
+.chirpui-notification-dot--lg .chirpui-notification-dot__ping { width: 12px; height: 12px; top: -3px; right: -3px; }
+
+
+/* ==========================================================================
+   Number Ticker
+   ========================================================================== */
+
+.chirpui-number-ticker {
+    display: inline-block;
+}
+.chirpui-number-ticker__value {
+    font-variant-numeric: tabular-nums;
+    counter-reset: chirpui-num var(--chirpui-num);
+    animation: chirpui-count-up 1.5s var(--chirpui-ease-decel) forwards;
+}
+.chirpui-number-ticker__value::after {
+    content: counter(chirpui-num);
+}
+.chirpui-number-ticker--mono { font-family: var(--chirpui-font-mono, ui-monospace, monospace); }
+.chirpui-number-ticker--sm { font-size: var(--chirpui-ui-sm); }
+.chirpui-number-ticker--md { font-size: var(--chirpui-ui-base); }
+.chirpui-number-ticker--lg { font-size: var(--chirpui-ui-lg); }
+.chirpui-number-ticker--xl { font-size: var(--chirpui-prose-2xl); }
+
+
+/* ==========================================================================
+   Marquee
+   ========================================================================== */
+
+.chirpui-marquee {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+.chirpui-marquee__track {
+    display: flex;
+    gap: var(--chirpui-spacing-lg);
+    width: max-content;
+    animation: chirpui-marquee 20s linear infinite;
+}
+.chirpui-marquee--reverse .chirpui-marquee__track {
+    animation-direction: reverse;
+}
+.chirpui-marquee--fast .chirpui-marquee__track { animation-duration: 10s; }
+.chirpui-marquee--slow .chirpui-marquee__track { animation-duration: 40s; }
+.chirpui-marquee:hover .chirpui-marquee__track {
+    animation-play-state: paused;
+}
+.chirpui-marquee__fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4rem;
+    z-index: 1;
+    pointer-events: none;
+}
+.chirpui-marquee__fade--start {
+    left: 0;
+    background: linear-gradient(to right, var(--chirpui-bg), transparent);
+}
+.chirpui-marquee__fade--end {
+    right: 0;
+    background: linear-gradient(to left, var(--chirpui-bg), transparent);
+}
+
+
+/* ==========================================================================
+   Meteor Effect
+   ========================================================================== */
+
+.chirpui-meteor {
+    position: relative;
+    overflow: hidden;
+}
+.chirpui-meteor__streak {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--chirpui-beam-color), transparent);
+    border-radius: 999px;
+    animation: chirpui-meteor 3s linear infinite;
+    opacity: 0;
+}
+.chirpui-meteor__streak:nth-child(2) { animation-delay: 0.8s; left: 30%; height: 60px; }
+.chirpui-meteor__streak:nth-child(3) { animation-delay: 1.6s; left: 70%; height: 100px; }
+.chirpui-meteor__streak:nth-child(4) { animation-delay: 2.4s; left: 15%; height: 50px; }
+.chirpui-meteor--accent .chirpui-meteor__streak { --chirpui-beam-color: var(--chirpui-accent); }
+.chirpui-meteor--muted .chirpui-meteor__streak { --chirpui-beam-color: var(--chirpui-text-muted); }
+
+
+/* ==========================================================================
+   Text Reveal
+   ========================================================================== */
+
+.chirpui-text-reveal {
+    animation: chirpui-text-reveal 0.8s var(--chirpui-ease-decel) forwards;
+    clip-path: inset(0 100% 0 0);
+}
+.chirpui-text-reveal--gradient {
+    background: linear-gradient(90deg, var(--chirpui-accent), var(--chirpui-accent-bright));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+
+/* ==========================================================================
+   Gradient Text
+   ========================================================================== */
+
+.chirpui-gradient-text {
+    background: linear-gradient(135deg, var(--chirpui-accent), var(--chirpui-accent-bright));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline;
+}
+.chirpui-gradient-text--animated {
+    background-size: 200% 200%;
+    animation: chirpui-gradient-shift 3s ease infinite;
+}
+
+
+/* ==========================================================================
+   Glow Card
+   ========================================================================== */
+
+.chirpui-glow-card {
+    position: relative;
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    overflow: hidden;
+    padding: var(--chirpui-spacing-md);
+}
+.chirpui-glow-card__glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--chirpui-motion-slow) var(--chirpui-ease-standard);
+    background: radial-gradient(
+        circle at var(--chirpui-mouse-x, 50%) var(--chirpui-mouse-y, 50%),
+        var(--chirpui-glow-color),
+        transparent 60%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-glow-card:hover .chirpui-glow-card__glow { opacity: 1; }
+.chirpui-glow-card__content {
+    position: relative;
+    z-index: 1;
+}
+.chirpui-glow-card--accent { --chirpui-glow-color: color-mix(in srgb, var(--chirpui-accent) 30%, transparent); }
+.chirpui-glow-card--muted { --chirpui-glow-color: color-mix(in srgb, var(--chirpui-text-muted) 20%, transparent); }
+
+
+/* ==========================================================================
+   Spotlight Card
+   ========================================================================== */
+
+.chirpui-spotlight-card {
+    position: relative;
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    overflow: hidden;
+    padding: var(--chirpui-spacing-md);
+}
+.chirpui-spotlight-card__spotlight {
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(circle at 50% 50%, var(--chirpui-glow-color), transparent 50%);
+    animation: chirpui-spotlight-rotate 8s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+}
+.chirpui-spotlight-card__content {
+    position: relative;
+    z-index: 1;
+}
+.chirpui-spotlight-card--accent .chirpui-spotlight-card__spotlight {
+    background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--chirpui-accent) 40%, transparent), transparent 50%);
+}
+
+
+/* ==========================================================================
+   Particle Background
+   ========================================================================== */
+
+.chirpui-particle-bg {
+    position: relative;
+    overflow: hidden;
+}
+.chirpui-particle-bg__canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-particle-bg__dot {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--chirpui-glow-color);
+    opacity: 0.5;
+    animation: chirpui-float 4s var(--chirpui-ease-standard) infinite;
+}
+.chirpui-particle-bg__dot:nth-child(2) { animation-delay: 0.5s; animation-duration: 5s; }
+.chirpui-particle-bg__dot:nth-child(3) { animation-delay: 1.0s; animation-duration: 3.5s; }
+.chirpui-particle-bg__dot:nth-child(4) { animation-delay: 1.5s; animation-duration: 4.5s; }
+.chirpui-particle-bg__dot:nth-child(5) { animation-delay: 2.0s; animation-duration: 6s; }
+.chirpui-particle-bg__dot:nth-child(6) { animation-delay: 2.5s; animation-duration: 3s; }
+.chirpui-particle-bg__dot:nth-child(7) { animation-delay: 3.0s; animation-duration: 5.5s; }
+.chirpui-particle-bg__dot:nth-child(8) { animation-delay: 3.5s; animation-duration: 4s; }
+.chirpui-particle-bg__content {
+    position: relative;
+    z-index: 1;
+}
+.chirpui-particle-bg--accent .chirpui-particle-bg__dot { background: var(--chirpui-accent); }
+.chirpui-particle-bg--muted .chirpui-particle-bg__dot { background: var(--chirpui-text-muted); opacity: 0.3; }
+
+
+/* ==========================================================================
+   Animated Counter
+   ========================================================================== */
+
+.chirpui-animated-counter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-2xs);
+}
+.chirpui-animated-counter__value {
+    font-size: var(--chirpui-prose-2xl);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    counter-reset: chirpui-num var(--chirpui-num);
+    animation: chirpui-count-up 1.8s var(--chirpui-ease-decel) forwards;
+}
+.chirpui-animated-counter__value::after {
+    content: counter(chirpui-num);
+}
+.chirpui-animated-counter__prefix::after {
+    content: attr(data-prefix);
+}
+.chirpui-animated-counter__label {
+    font-size: var(--chirpui-ui-sm);
+    color: var(--chirpui-text-muted);
+}
+.chirpui-animated-counter--mono .chirpui-animated-counter__value {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+}
+
+
+/* ==========================================================================
+   Pulsing Button
+   ========================================================================== */
+
+.chirpui-pulsing-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: 500;
+    color: var(--chirpui-bg);
+    background: var(--chirpui-accent);
+    border: none;
+    border-radius: var(--chirpui-radius);
+    cursor: pointer;
+    transition: background var(--chirpui-transition);
+}
+.chirpui-pulsing-btn:hover { background: var(--chirpui-accent-hover); }
+.chirpui-pulsing-btn__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--chirpui-accent);
+    animation: chirpui-pulse-ring 2s var(--chirpui-ease-decel) infinite;
+    z-index: -1;
+}
+
+
+/* ==========================================================================
+   Bento Grid
+   ========================================================================== */
+
+.chirpui-bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--chirpui-spacing-md);
+}
+.chirpui-bento__item {
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    padding: var(--chirpui-spacing-md);
+    min-height: 120px;
+}
+.chirpui-bento__item--span-2 { grid-column: span 2; }
+.chirpui-bento__item--span-row { grid-row: span 2; }
+.chirpui-bento__item--span-full { grid-column: 1 / -1; }
+@media (max-width: 768px) {
+    .chirpui-bento { grid-template-columns: 1fr; }
+    .chirpui-bento__item--span-2 { grid-column: span 1; }
+}
+
+
+/* ==========================================================================
+   Floating Dock
+   ========================================================================== */
+
+.chirpui-dock {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-2xl);
+    box-shadow: var(--chirpui-shadow-lg);
+}
+.chirpui-dock__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--chirpui-radius);
+    color: var(--chirpui-text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform var(--chirpui-motion-fast) var(--chirpui-ease-spring),
+                color var(--chirpui-motion-fast);
+}
+.chirpui-dock__item:hover {
+    transform: scale(1.4) translateY(-8px);
+    color: var(--chirpui-text);
+}
+.chirpui-dock__item--active {
+    color: var(--chirpui-accent);
+}
+.chirpui-dock__indicator {
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--chirpui-accent);
+}
+.chirpui-dock--glass {
+    background: color-mix(in srgb, var(--chirpui-surface) 70%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+.chirpui-dock--sm .chirpui-dock__item { width: 32px; height: 32px; }
+.chirpui-dock--lg .chirpui-dock__item { width: 48px; height: 48px; }
+
+
+/* ==========================================================================
+   Animated Stat Card (composite)
+   ========================================================================== */
+
+.chirpui-animated-stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-md);
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+}
+.chirpui-animated-stat-card__trend {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-2xs);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: 500;
+    color: var(--chirpui-text-muted);
+}
+.chirpui-animated-stat-card__trend--up { color: var(--chirpui-success); }
+.chirpui-animated-stat-card__trend--down { color: var(--chirpui-error); }
+
+
+/* ==========================================================================
+   Hero Effects (composite wrapper)
+   ========================================================================== */
+
+.chirpui-hero-effects {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--chirpui-spacing-2xl) var(--chirpui-spacing-lg);
+}
+
+
+/* ==========================================================================
+   Marquee Item
+   ========================================================================== */
+
+.chirpui-marquee__item {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 0 var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-ui-sm);
+    color: var(--chirpui-text-muted);
+}
+
+
+/* ==========================================================================
+   Tooltip (enhanced with bubble + arrow)
+   ========================================================================== */
+
+.chirpui-tooltip {
+    position: relative;
+    display: inline-flex;
+}
+.chirpui-tooltip__bubble {
+    position: absolute;
+    z-index: 50;
+    padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-font-xs);
+    font-weight: 500;
+    color: var(--chirpui-bg);
+    background: var(--chirpui-text);
+    border-radius: var(--chirpui-radius-sm);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity var(--chirpui-motion-fast), transform var(--chirpui-motion-fast);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+.chirpui-tooltip__bubble::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--chirpui-text);
+    transform: rotate(45deg);
+}
+/* Ensure tooltip bubbles escape overflow:hidden ancestors */
+.chirpui-tooltip { overflow: visible; }
+.chirpui-tooltip:hover .chirpui-tooltip__bubble,
+.chirpui-tooltip:focus-within .chirpui-tooltip__bubble {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Tooltip positions */
+.chirpui-tooltip--top .chirpui-tooltip__bubble {
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+}
+.chirpui-tooltip--top:hover .chirpui-tooltip__bubble,
+.chirpui-tooltip--top:focus-within .chirpui-tooltip__bubble {
+    transform: translateX(-50%) scale(1);
+}
+.chirpui-tooltip--top .chirpui-tooltip__bubble::after {
+    bottom: -3px;
+    left: 50%;
+    margin-left: -3px;
+}
+
+.chirpui-tooltip--bottom .chirpui-tooltip__bubble {
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+}
+.chirpui-tooltip--bottom:hover .chirpui-tooltip__bubble,
+.chirpui-tooltip--bottom:focus-within .chirpui-tooltip__bubble {
+    transform: translateX(-50%) scale(1);
+}
+.chirpui-tooltip--bottom .chirpui-tooltip__bubble::after {
+    top: -3px;
+    left: 50%;
+    margin-left: -3px;
+}
+
+.chirpui-tooltip--left .chirpui-tooltip__bubble {
+    right: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%) scale(0.95);
+}
+.chirpui-tooltip--left:hover .chirpui-tooltip__bubble,
+.chirpui-tooltip--left:focus-within .chirpui-tooltip__bubble {
+    transform: translateY(-50%) scale(1);
+}
+.chirpui-tooltip--left .chirpui-tooltip__bubble::after {
+    right: -3px;
+    top: 50%;
+    margin-top: -3px;
+}
+
+.chirpui-tooltip--right .chirpui-tooltip__bubble {
+    left: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%) scale(0.95);
+}
+.chirpui-tooltip--right:hover .chirpui-tooltip__bubble,
+.chirpui-tooltip--right:focus-within .chirpui-tooltip__bubble {
+    transform: translateY(-50%) scale(1);
+}
+.chirpui-tooltip--right .chirpui-tooltip__bubble::after {
+    left: -3px;
+    top: 50%;
+    margin-top: -3px;
+}
+
+
+/* ==========================================================================
+   Icon Button
+   ========================================================================== */
+
+.chirpui-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--chirpui-radius);
+    border: 1px solid var(--chirpui-border);
+    background: var(--chirpui-surface);
+    color: var(--chirpui-text-muted);
+    cursor: pointer;
+    transition: background var(--chirpui-transition), color var(--chirpui-transition);
+    text-decoration: none;
+    font-size: var(--chirpui-ui-sm);
+    flex-shrink: 0;
+}
+.chirpui-icon-btn:hover { background: var(--chirpui-surface-alt); color: var(--chirpui-text); }
+.chirpui-icon-btn:focus-visible { box-shadow: 0 0 0 2px var(--chirpui-focus-ring); outline: none; }
+.chirpui-icon-btn:disabled, .chirpui-icon-btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+/* Icon button variants */
+.chirpui-icon-btn--primary { background: var(--chirpui-accent); color: var(--chirpui-bg); border-color: var(--chirpui-accent); }
+.chirpui-icon-btn--primary:hover { background: var(--chirpui-accent-hover); }
+.chirpui-icon-btn--ghost { background: transparent; border-color: transparent; }
+.chirpui-icon-btn--ghost:hover { background: var(--chirpui-surface-alt); }
+.chirpui-icon-btn--danger { background: transparent; border-color: transparent; color: var(--chirpui-error); }
+.chirpui-icon-btn--danger:hover { background: var(--chirpui-error-muted); }
+
+/* Icon button sizes */
+.chirpui-icon-btn--sm { width: 1.75rem; height: 1.75rem; font-size: var(--chirpui-ui-xs); }
+.chirpui-icon-btn--lg { width: 2.75rem; height: 2.75rem; font-size: var(--chirpui-ui-base); }
+
+
+/* ==========================================================================
+   Segmented Control
+   ========================================================================== */
+
+.chirpui-segmented {
+    display: inline-flex;
+    background: var(--chirpui-surface-alt);
+    border-radius: var(--chirpui-radius);
+    padding: 2px;
+    gap: 2px;
+}
+.chirpui-segmented__option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-2xs);
+    padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: 500;
+    color: var(--chirpui-text-muted);
+    border-radius: calc(var(--chirpui-radius) - 2px);
+    cursor: pointer;
+    transition: background var(--chirpui-transition), color var(--chirpui-transition),
+                box-shadow var(--chirpui-transition);
+    user-select: none;
+}
+.chirpui-segmented__option:hover { color: var(--chirpui-text); }
+.chirpui-segmented__option--active,
+.chirpui-segmented__option:has(input:checked) {
+    background: var(--chirpui-surface);
+    color: var(--chirpui-text);
+    box-shadow: var(--chirpui-shadow-sm);
+}
+.chirpui-segmented__icon { font-size: 0.85em; }
+
+/* Segmented sizes */
+.chirpui-segmented--sm .chirpui-segmented__option { padding: 1px var(--chirpui-spacing-xs); font-size: var(--chirpui-ui-xs); }
+.chirpui-segmented--lg .chirpui-segmented__option { padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md); font-size: var(--chirpui-ui-base); }
+
+
+/* ==========================================================================
+   Split Panel
+   ========================================================================== */
+
+.chirpui-split-panel {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+.chirpui-split-panel--vertical { flex-direction: column; }
+.chirpui-split-panel__pane {
+    overflow: auto;
+    min-width: 0;
+    min-height: 0;
+}
+.chirpui-split-panel__pane--second {
+    flex: 1;
+}
+.chirpui-split-panel__handle {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--chirpui-surface-alt);
+    transition: background var(--chirpui-motion-fast);
+    cursor: col-resize;
+    width: 6px;
+}
+.chirpui-split-panel--vertical .chirpui-split-panel__handle {
+    cursor: row-resize;
+    width: auto;
+    height: 6px;
+}
+.chirpui-split-panel__handle:hover { background: var(--chirpui-border); }
+.chirpui-split-panel--dragging .chirpui-split-panel__handle { background: var(--chirpui-accent); }
+.chirpui-split-panel__handle-grip {
+    width: 2px;
+    height: 20px;
+    border-radius: 1px;
+    background: var(--chirpui-text-muted);
+    opacity: 0.5;
+}
+.chirpui-split-panel--vertical .chirpui-split-panel__handle-grip {
+    width: 20px;
+    height: 2px;
+}
+.chirpui-split-panel--dragging { user-select: none; }
+
+
+/* ==========================================================================
+   Typewriter — step-based text reveal with blinking cursor
+   ========================================================================== */
+
+.chirpui-typewriter {
+    display: inline-block;
+}
+.chirpui-typewriter__text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid currentColor;
+    width: 0;
+    animation:
+        chirpui-typewriter var(--chirpui-typewriter-duration, 2s) steps(var(--chirpui-typewriter-steps, 30), end) forwards,
+        chirpui-blink-caret 0.75s step-end infinite;
+}
+.chirpui-typewriter--no-cursor .chirpui-typewriter__text {
+    border-right: none;
+}
+.chirpui-typewriter--delay-1 .chirpui-typewriter__text { animation-delay: 0.5s; }
+.chirpui-typewriter--delay-2 .chirpui-typewriter__text { animation-delay: 1s; }
+.chirpui-typewriter--delay-3 .chirpui-typewriter__text { animation-delay: 1.5s; }
+.chirpui-typewriter--fast .chirpui-typewriter__text { --chirpui-typewriter-duration: 1s; }
+.chirpui-typewriter--slow .chirpui-typewriter__text { --chirpui-typewriter-duration: 4s; }
+
+
+/* ==========================================================================
+   Glitch Text — RGB-split distortion effect
+   ========================================================================== */
+
+.chirpui-glitch {
+    position: relative;
+    display: inline-block;
+    font-weight: 700;
+    color: var(--chirpui-text);
+}
+.chirpui-glitch::before,
+.chirpui-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.chirpui-glitch::before {
+    color: #0ff;
+    animation: chirpui-glitch 3s infinite linear alternate-reverse;
+    mix-blend-mode: difference;
+}
+.chirpui-glitch::after {
+    color: #f0f;
+    animation: chirpui-glitch-alt 2s infinite linear alternate-reverse;
+    mix-blend-mode: difference;
+}
+.chirpui-glitch--subtle::before { opacity: 0.5; }
+.chirpui-glitch--subtle::after { opacity: 0.5; }
+.chirpui-glitch--intense::before,
+.chirpui-glitch--intense::after {
+    filter: blur(0.5px);
+}
+.chirpui-glitch--intense::before { animation-duration: 1.5s; }
+.chirpui-glitch--intense::after { animation-duration: 1s; }
+
+
+/* ==========================================================================
+   Neon Text — layered text-shadow glow
+   ========================================================================== */
+
+.chirpui-neon {
+    display: inline-block;
+    font-weight: 700;
+    color: #fff;
+    text-shadow:
+        0 0 4px currentColor,
+        0 0 11px currentColor,
+        0 0 19px currentColor,
+        0 0 40px var(--chirpui-neon-color, #0ff),
+        0 0 80px var(--chirpui-neon-color, #0ff),
+        0 0 90px var(--chirpui-neon-color, #0ff);
+}
+.chirpui-neon--cyan { --chirpui-neon-color: #0ff; }
+.chirpui-neon--magenta { --chirpui-neon-color: #f0f; }
+.chirpui-neon--green { --chirpui-neon-color: #0f0; }
+.chirpui-neon--orange { --chirpui-neon-color: #f80; }
+.chirpui-neon--blue { --chirpui-neon-color: #08f; }
+.chirpui-neon--red { --chirpui-neon-color: #f22; }
+.chirpui-neon--flicker {
+    animation: chirpui-neon-flicker 4s infinite;
+}
+.chirpui-neon--pulse {
+    animation: chirpui-neon-pulse 2s ease-in-out infinite;
+}
+
+
+/* ==========================================================================
+   Aurora Background — drifting gradient blobs
+   ========================================================================== */
+
+.chirpui-aurora {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+.chirpui-aurora__blobs {
+    position: absolute;
+    inset: -50%;
+    z-index: -1;
+    filter: blur(80px);
+    opacity: 0.5;
+}
+.chirpui-aurora__blob {
+    position: absolute;
+    border-radius: 50%;
+    width: 50%;
+    height: 50%;
+}
+.chirpui-aurora__blob:nth-child(1) {
+    top: 10%;
+    left: 20%;
+    background: var(--chirpui-aurora-1, color-mix(in srgb, var(--chirpui-accent) 60%, #0ff));
+    animation: chirpui-aurora-drift-1 15s ease-in-out infinite;
+}
+.chirpui-aurora__blob:nth-child(2) {
+    top: 40%;
+    left: 50%;
+    background: var(--chirpui-aurora-2, color-mix(in srgb, var(--chirpui-accent) 60%, #f0f));
+    animation: chirpui-aurora-drift-2 20s ease-in-out infinite;
+}
+.chirpui-aurora__blob:nth-child(3) {
+    top: 60%;
+    left: 10%;
+    background: var(--chirpui-aurora-3, color-mix(in srgb, var(--chirpui-accent) 40%, #0f0));
+    animation: chirpui-aurora-drift-1 25s ease-in-out infinite reverse;
+}
+.chirpui-aurora--intense .chirpui-aurora__blobs { opacity: 0.7; filter: blur(60px); }
+.chirpui-aurora--subtle .chirpui-aurora__blobs { opacity: 0.25; filter: blur(120px); }
+.chirpui-aurora__content {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* ==========================================================================
+   Scanline Overlay — CRT/retro line effect
+   ========================================================================== */
+
+.chirpui-scanline {
+    position: relative;
+    overflow: hidden;
+}
+.chirpui-scanline::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 1px,
+        rgba(0, 0, 0, 0.03) 1px,
+        rgba(0, 0, 0, 0.03) 2px
+    );
+    pointer-events: none;
+    z-index: 10;
+}
+.chirpui-scanline--heavy::after {
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 1px,
+        rgba(0, 0, 0, 0.08) 1px,
+        rgba(0, 0, 0, 0.08) 2px
+    );
+}
+.chirpui-scanline--crt::after {
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.05) 2px,
+        rgba(0, 0, 0, 0.05) 4px
+    );
+    mix-blend-mode: multiply;
+}
+.chirpui-scanline--crt {
+    border-radius: var(--chirpui-radius-lg);
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ==========================================================================
+   Grain Overlay — film grain texture
+   ========================================================================== */
+
+.chirpui-grain {
+    position: relative;
+    overflow: hidden;
+}
+.chirpui-grain::after {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 10;
+    mix-blend-mode: overlay;
+}
+.chirpui-grain--heavy::after { opacity: 0.18; }
+.chirpui-grain--subtle::after { opacity: 0.04; }
+.chirpui-grain--animated::after {
+    animation: chirpui-float 0.3s steps(2) infinite;
+}
+
+
+/* ==========================================================================
+   Orbit — items rotating around a center
+   ========================================================================== */
+
+.chirpui-orbit {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--chirpui-orbit-size, 200px);
+    height: var(--chirpui-orbit-size, 200px);
+}
+.chirpui-orbit__center {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chirpui-orbit__ring {
+    position: absolute;
+    inset: 0;
+    border: 1px dashed var(--chirpui-border);
+    border-radius: 50%;
+}
+.chirpui-orbit__item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -12px;
+    margin-left: -12px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    font-size: var(--chirpui-font-sm);
+    animation: chirpui-orbit var(--chirpui-orbit-duration, 12s) linear infinite;
+    --chirpui-orbit-radius: calc(var(--chirpui-orbit-size, 200px) / 2 - 12px);
+}
+.chirpui-orbit__item:nth-child(1) { animation-delay: 0s; }
+.chirpui-orbit__item:nth-child(2) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.25); }
+.chirpui-orbit__item:nth-child(3) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.5); }
+.chirpui-orbit__item:nth-child(4) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.75); }
+.chirpui-orbit__item:nth-child(5) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.2); }
+.chirpui-orbit__item:nth-child(6) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.4); }
+.chirpui-orbit__item:nth-child(7) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.6); }
+.chirpui-orbit__item:nth-child(8) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.8); }
+.chirpui-orbit--sm { --chirpui-orbit-size: 120px; }
+.chirpui-orbit--lg { --chirpui-orbit-size: 300px; }
+.chirpui-orbit--xl { --chirpui-orbit-size: 400px; }
+.chirpui-orbit--fast { --chirpui-orbit-duration: 6s; }
+.chirpui-orbit--slow { --chirpui-orbit-duration: 20s; }
+.chirpui-orbit--reverse .chirpui-orbit__item { animation-direction: reverse; }
+
+
+/* ==========================================================================
+   Sparkle — staggered star twinkles
+   ========================================================================== */
+
+.chirpui-sparkle {
+    position: relative;
+    display: inline-block;
+}
+.chirpui-sparkle__star {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    z-index: 2;
+    animation: chirpui-sparkle var(--chirpui-sparkle-duration, 1.5s) ease-in-out infinite;
+}
+.chirpui-sparkle__star::before,
+.chirpui-sparkle__star::after {
+    content: "";
+    position: absolute;
+    background: var(--chirpui-sparkle-color, var(--chirpui-accent));
+    border-radius: 2px;
+}
+.chirpui-sparkle__star::before {
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.chirpui-sparkle__star::after {
+    height: 100%;
+    width: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.chirpui-sparkle__star:nth-child(1) { top: 0; left: 10%; animation-delay: 0s; }
+.chirpui-sparkle__star:nth-child(2) { top: 20%; right: 5%; animation-delay: 0.4s; }
+.chirpui-sparkle__star:nth-child(3) { bottom: 10%; left: 30%; animation-delay: 0.8s; }
+.chirpui-sparkle__star:nth-child(4) { top: 40%; left: 60%; animation-delay: 1.2s; }
+.chirpui-sparkle__star:nth-child(5) { bottom: 30%; right: 15%; animation-delay: 0.2s; }
+.chirpui-sparkle__star:nth-child(6) { top: 5%; left: 70%; animation-delay: 0.6s; }
+.chirpui-sparkle--gold { --chirpui-sparkle-color: #ffd700; }
+.chirpui-sparkle--white { --chirpui-sparkle-color: #fff; }
+.chirpui-sparkle--rainbow .chirpui-sparkle__star:nth-child(1) { --chirpui-sparkle-color: #f44; }
+.chirpui-sparkle--rainbow .chirpui-sparkle__star:nth-child(2) { --chirpui-sparkle-color: #fa0; }
+.chirpui-sparkle--rainbow .chirpui-sparkle__star:nth-child(3) { --chirpui-sparkle-color: #0c0; }
+.chirpui-sparkle--rainbow .chirpui-sparkle__star:nth-child(4) { --chirpui-sparkle-color: #0cf; }
+.chirpui-sparkle--rainbow .chirpui-sparkle__star:nth-child(5) { --chirpui-sparkle-color: #c0f; }
+.chirpui-sparkle--rainbow .chirpui-sparkle__star:nth-child(6) { --chirpui-sparkle-color: #f0c; }
+
+
+/* ==========================================================================
+   Confetti — Alpine-triggered celebration burst
+   ========================================================================== */
+
+.chirpui-confetti {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+.chirpui-confetti__piece {
+    position: absolute;
+    top: -10%;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+}
+.chirpui-confetti__piece--active {
+    animation:
+        chirpui-confetti-fall var(--chirpui-confetti-duration, 3s) ease-in forwards,
+        chirpui-confetti-sway var(--chirpui-confetti-sway, 1.5s) ease-in-out infinite;
+}
+.chirpui-confetti__piece--square { border-radius: 0; }
+.chirpui-confetti__piece--circle { border-radius: 50%; }
+.chirpui-confetti__piece--strip {
+    width: 4px;
+    height: 14px;
+    border-radius: 2px;
+}
+
+
+/* ==========================================================================
+   Wobble/Jello/Rubber-band — micro-interaction utilities
+   ========================================================================== */
+
+.chirpui-wobble { animation: chirpui-wobble 1s ease-in-out; }
+.chirpui-jello { animation: chirpui-jello 1s ease-in-out; }
+.chirpui-rubber-band { animation: chirpui-rubber-band 1s ease-in-out; }
+.chirpui-bounce-in { animation: chirpui-bounce-in 0.6s ease-out; }
+
+/* Hover-triggered variants */
+.chirpui-hover-wobble:hover { animation: chirpui-wobble 1s ease-in-out; }
+.chirpui-hover-jello:hover { animation: chirpui-jello 1s ease-in-out; }
+.chirpui-hover-rubber:hover { animation: chirpui-rubber-band 1s ease-in-out; }
+
+/* Click-triggered (via :active or Alpine) */
+.chirpui-click-wobble:active { animation: chirpui-wobble 0.6s ease-in-out; }
+.chirpui-click-jello:active { animation: chirpui-jello 0.6s ease-in-out; }

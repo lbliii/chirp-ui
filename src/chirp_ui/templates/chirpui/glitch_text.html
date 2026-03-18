@@ -1,0 +1,14 @@
+{#- chirp-ui: Glitch Text Effect
+    RGB-split distortion text with pseudo-element layers.
+
+    Usage:
+        from "chirpui/glitch_text.html" import glitch_text
+
+        glitch_text("SYSTEM ERROR")
+        glitch_text("HACK THE PLANET", variant="intense", tag="h1")
+-#}
+
+{% def glitch_text(text, variant="", tag="span", cls="") %}
+{% set variant_cls = " chirpui-glitch--" ~ variant if variant in ("subtle", "intense") else "" %}
+<{{ tag }} class="chirpui-glitch{{ variant_cls }}{{ " " ~ cls if cls else "" }}" data-text="{{ text | e }}" aria-label="{{ text | e }}">{{ text }}</{{ tag }}>
+{% end %}

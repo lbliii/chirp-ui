@@ -1,0 +1,15 @@
+{#- chirp-ui: Text Reveal
+    Text with clip-path wipe reveal animation on load.
+
+    Usage:
+        from "chirpui/text_reveal.html" import text_reveal
+
+        text_reveal("Welcome to the future")
+        text_reveal("Bold statement", variant="gradient", tag="h1")
+-#}
+
+{% def text_reveal(text, variant="", tag="span", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "gradient"), "") %}
+{% set variant_class = " chirpui-text-reveal--" ~ variant if variant else "" %}
+<{{ tag }} class="chirpui-text-reveal{{ variant_class }}{{ " " ~ cls if cls else "" }}">{{ text }}</{{ tag }}>
+{% end %}

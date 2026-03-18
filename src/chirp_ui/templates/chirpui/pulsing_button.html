@@ -1,0 +1,28 @@
+{#- chirp-ui: Pulsing Button
+    Button with expanding ring pulse effect for attention/CTA.
+
+    Usage:
+        from "chirpui/pulsing_button.html" import pulsing_button
+
+        pulsing_button("Try Now")
+        pulsing_button("Go Live", icon="◎", href="/live")
+-#}
+
+{% def pulsing_button(text, variant="", icon=none, href=none, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "primary", "success", "danger"), "") %}
+{% set variant_class = " chirpui-pulsing-btn--" ~ variant if variant else "" %}
+{% set base = "chirpui-pulsing-btn" ~ variant_class ~ (" " ~ cls if cls else "") %}
+{% if href %}
+<a href="{{ href }}" class="{{ base }}">
+    <span class="chirpui-pulsing-btn__ring" aria-hidden="true"></span>
+    {% if icon %}<span class="chirpui-pulsing-btn__icon">{{ icon | icon }}</span>{% end %}
+    {{ text }}
+</a>
+{% else %}
+<button type="button" class="{{ base }}">
+    <span class="chirpui-pulsing-btn__ring" aria-hidden="true"></span>
+    {% if icon %}<span class="chirpui-pulsing-btn__icon">{{ icon | icon }}</span>{% end %}
+    {{ text }}
+</button>
+{% end %}
+{% end %}

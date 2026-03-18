@@ -14,15 +14,30 @@
             timeline_item("Created", "Jan 1", "Order placed")
             timeline_item("Shipped", "Jan 3", "In transit")
         end
+
+    Variants:
+        timeline_item("Deployed", "Now", icon="◎", variant="success")
+        timeline_item("Error", "12:05", variant="error", avatar="/img/user.jpg")
+        timeline(hoverable=true)
 -#}
 
-{% def timeline(items=none, cls="") %}
-<div class="chirpui-timeline{{ " " ~ cls if cls else "" }}">
+{% def timeline(items=none, hoverable=false, cls="") %}
+{% set hover_class = " chirpui-timeline--hoverable" if hoverable else "" %}
+<div class="chirpui-timeline{{ hover_class }}{{ " " ~ cls if cls else "" }}">
     {% if items %}
         {% for item in items %}
-        <div class="chirpui-timeline__item">
+        <div class="chirpui-timeline__item{% if item.variant %} chirpui-timeline__item--{{ item.variant }}{% end %}{% if item.href %} chirpui-timeline__item--link{% end %}">
+            {% if item.avatar %}
+            <img class="chirpui-timeline__avatar" src="{{ item.avatar }}" alt="" aria-hidden="true">
+            {% elif item.icon %}
+            <div class="chirpui-timeline__icon" aria-hidden="true">{{ item.icon | icon }}</div>
+            {% else %}
             <div class="chirpui-timeline__dot" aria-hidden="true"></div>
+            {% end %}
             <div class="chirpui-timeline__content">
+                {% if item.time %}
+                <span class="chirpui-timeline__time">{{ item.time }}</span>
+                {% end %}
                 <div class="chirpui-timeline__header">
                     <span class="chirpui-timeline__title">{{ item.title }}</span>
                     <span class="chirpui-timeline__date">{{ item.date }}</span>
@@ -31,6 +46,7 @@
                 <div class="chirpui-timeline__body">{{ item.content }}</div>
                 {% end %}
             </div>
+            {% if item.href %}<a href="{{ item.href }}" class="chirpui-timeline__link-overlay" aria-label="{{ item.title }}"></a>{% end %}
         </div>
         {% end %}
     {% else %}
@@ -39,10 +55,21 @@
 </div>
 {% end %}
 
-{% def timeline_item(title, date, content=none, cls="") %}
-<div class="chirpui-timeline__item{{ " " ~ cls if cls else "" }}">
+{% def timeline_item(title, date, content=none, icon=none, avatar=none, variant="", time=none, href=none, cls="") %}
+{% set variant_class = " chirpui-timeline__item--" ~ variant if variant else "" %}
+{% set link_class = " chirpui-timeline__item--link" if href else "" %}
+<div class="chirpui-timeline__item{{ variant_class }}{{ link_class }}{{ " " ~ cls if cls else "" }}">
+    {% if avatar %}
+    <img class="chirpui-timeline__avatar" src="{{ avatar }}" alt="" aria-hidden="true">
+    {% elif icon %}
+    <div class="chirpui-timeline__icon" aria-hidden="true">{{ icon | icon }}</div>
+    {% else %}
     <div class="chirpui-timeline__dot" aria-hidden="true"></div>
+    {% end %}
     <div class="chirpui-timeline__content">
+        {% if time %}
+        <span class="chirpui-timeline__time">{{ time }}</span>
+        {% end %}
         <div class="chirpui-timeline__header">
             <span class="chirpui-timeline__title">{{ title }}</span>
             <span class="chirpui-timeline__date">{{ date }}</span>
@@ -54,5 +81,6 @@
         <div class="chirpui-timeline__body">{% slot content %}</div>
         {% end %}
     </div>
+    {% if href %}<a href="{{ href }}" class="chirpui-timeline__link-overlay" aria-label="{{ title }}"></a>{% end %}
 </div>
 {% end %}

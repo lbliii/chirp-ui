@@ -1,0 +1,21 @@
+{#- chirp-ui: Number Ticker
+    CSS-animated number counter using @property and counter().
+
+    Usage:
+        from "chirpui/number_ticker.html" import number_ticker
+
+        number_ticker(1250)
+        number_ticker(99, prefix="$", suffix="+", variant="mono", size="xl")
+-#}
+
+{% def number_ticker(value, variant="", size="", prefix="", suffix="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "mono"), "") %}
+{% set size = size | validate_variant(("", "sm", "md", "lg", "xl"), "") %}
+{% set variant_class = " chirpui-number-ticker--" ~ variant if variant else "" %}
+{% set size_class = " chirpui-number-ticker--" ~ size if size else "" %}
+<span class="chirpui-number-ticker{{ variant_class }}{{ size_class }}{{ " " ~ cls if cls else "" }}">
+    {%- if prefix %}<span class="chirpui-number-ticker__prefix">{{ prefix }}</span>{% end -%}
+    <span class="chirpui-number-ticker__value" style="--chirpui-num: {{ value }}; --chirpui-num-target: {{ value }}" aria-label="{{ value }}"></span>
+    {%- if suffix %}<span class="chirpui-number-ticker__suffix">{{ suffix }}</span>{% end -%}
+</span>
+{% end %}

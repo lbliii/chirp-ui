@@ -1,0 +1,63 @@
+{#- chirp-ui: Split Panel
+    Resizable split panel layout with draggable handle.
+    Requires Alpine.js.
+
+    Usage:
+        from "chirpui/split_panel.html" import split_panel
+
+        call split_panel()
+            {% slot left %}
+                <nav>Sidebar</nav>
+            {% end %}
+            {% slot right %}
+                <main>Content</main>
+            {% end %}
+        end
+
+        call split_panel(direction="vertical", default_split=30, min_split=20, max_split=80)
+            {% slot left %}Top pane{% end %}
+            {% slot right %}Bottom pane{% end %}
+        end
+-#}
+
+{% def split_panel(direction="horizontal", default_split=50, min_split=10, max_split=90, cls="") %}
+{% set dir_class = " chirpui-split-panel--vertical" if direction == "vertical" else "" %}
+<div class="chirpui-split-panel{{ dir_class }}{{ " " ~ cls if cls else "" }}"
+     x-data="{
+         split: {{ default_split }},
+         dragging: false,
+         min: {{ min_split }},
+         max: {{ max_split }},
+         startDrag(e) {
+             this.dragging = true;
+             const move = (ev) => {
+                 const rect = $el.getBoundingClientRect();
+                 const pct = {{ "direction" == "vertical" }}
+                     ? ((ev.clientY - rect.top) / rect.height) * 100
+                     : ((ev.clientX - rect.left) / rect.width) * 100;
+                 this.split = Math.min(this.max, Math.max(this.min, pct));
+             };
+             const stop = () => { this.dragging = false; document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', stop); };
+             document.addEventListener('mousemove', move);
+             document.addEventListener('mouseup', stop);
+         }
+     }"
+     :class="{ 'chirpui-split-panel--dragging': dragging }">
+    <div class="chirpui-split-panel__pane chirpui-split-panel__pane--first"
+         :style="'flex: 0 0 ' + split + '%'">
+        {% slot left %}
+    </div>
+    <div class="chirpui-split-panel__handle"
+         @mousedown.prevent="startDrag($event)"
+         role="separator"
+         aria-orientation="{{ direction }}"
+         :aria-valuenow="Math.round(split)"
+         aria-valuemin="{{ min_split }}"
+         aria-valuemax="{{ max_split }}">
+        <span class="chirpui-split-panel__handle-grip" aria-hidden="true"></span>
+    </div>
+    <div class="chirpui-split-panel__pane chirpui-split-panel__pane--second">
+        {% slot right %}
+    </div>
+</div>
+{% end %}

@@ -1,0 +1,30 @@
+{#- chirp-ui: Marquee
+    Infinite horizontal scrolling content strip. Pauses on hover.
+
+    Usage:
+        from "chirpui/marquee.html" import marquee
+
+        marquee(items=["Acme Corp", "Globex", "Initech", "Umbrella"])
+        marquee(items=["Fast", "Reliable", "Secure"], speed="fast", reverse=true)
+-#}
+
+{% def marquee(items=none, speed="", reverse=false, pause_on_hover=true, cls="") %}
+{% set speed_class = " chirpui-marquee--" ~ speed if speed in ("fast", "slow") else "" %}
+{% set reverse_class = " chirpui-marquee--reverse" if reverse else "" %}
+<div class="chirpui-marquee{{ speed_class }}{{ reverse_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-marquee__fade chirpui-marquee__fade--start" aria-hidden="true"></div>
+    <div class="chirpui-marquee__track">
+        {% if items %}
+            {% for item in items %}
+            <span class="chirpui-marquee__item">{{ item }}</span>
+            {% end %}
+            {% for item in items %}
+            <span class="chirpui-marquee__item" aria-hidden="true">{{ item }}</span>
+            {% end %}
+        {% else %}
+            {% slot %}
+        {% end %}
+    </div>
+    <div class="chirpui-marquee__fade chirpui-marquee__fade--end" aria-hidden="true"></div>
+</div>
+{% end %}

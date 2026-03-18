@@ -1,0 +1,21 @@
+{#- chirp-ui: Scanline Overlay
+    CRT/retro repeating-gradient line overlay. Pure CSS.
+
+    Usage:
+        from "chirpui/scanline.html" import scanline
+
+        {% call scanline() %}
+            <p>Retro terminal text</p>
+        {% end %}
+
+        {% call scanline(variant="crt") %}
+            <div>Full CRT feel with rounded corners and vignette</div>
+        {% end %}
+-#}
+
+{% def scanline(variant="", cls="") %}
+{% set variant_cls = " chirpui-scanline--" ~ variant if variant in ("heavy", "crt") else "" %}
+<div class="chirpui-scanline{{ variant_cls }}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}

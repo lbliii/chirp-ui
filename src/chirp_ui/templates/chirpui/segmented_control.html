@@ -1,0 +1,34 @@
+{#- chirp-ui: Segmented Control
+    iOS-style mutually exclusive button group for mode/view switching.
+
+    Usage:
+        from "chirpui/segmented_control.html" import segmented_control
+
+        segmented_control(items=[
+            {"label": "Grid", "value": "grid", "active": true},
+            {"label": "List", "value": "list"},
+            {"label": "Table", "value": "table"},
+        ], name="view_mode")
+
+        segmented_control(items=[
+            {"label": "Day", "value": "day", "icon": "◎"},
+            {"label": "Week", "value": "week"},
+            {"label": "Month", "value": "month"},
+        ], name="range", size="sm")
+-#}
+
+{% def segmented_control(items, name="segmented", size="", cls="") %}
+{% set size = size | validate_size("segmented", "") %}
+{% set size_class = " chirpui-segmented--" ~ size if size else "" %}
+<div class="chirpui-segmented{{ size_class }}{{ " " ~ cls if cls else "" }}" role="radiogroup" aria-label="{{ name }}">
+    {% for item in items %}
+    <label class="chirpui-segmented__option{% if item.active %} chirpui-segmented__option--active{% end %}">
+        <input type="radio" name="{{ name }}" value="{{ item.value }}"
+               class="chirpui-visually-hidden"
+               {% if item.active %}checked{% end %}>
+        {% if item.icon %}<span class="chirpui-segmented__icon">{{ item.icon | icon }}</span>{% end %}
+        <span class="chirpui-segmented__label">{{ item.label }}</span>
+    </label>
+    {% end %}
+</div>
+{% end %}

@@ -1,0 +1,28 @@
+{#- chirp-ui: Aurora Background
+    Drifting gradient blobs behind content. Pure CSS.
+
+    Usage:
+        from "chirpui/aurora.html" import aurora
+
+        {% call aurora() %}
+            <h1>Content over aurora</h1>
+        {% end %}
+
+        {% call aurora(variant="intense") %}
+            <div>Vivid background</div>
+        {% end %}
+-#}
+
+{% def aurora(variant="", cls="") %}
+{% set variant_cls = " chirpui-aurora--" ~ variant if variant in ("intense", "subtle") else "" %}
+<div class="chirpui-aurora{{ variant_cls }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-aurora__blobs" aria-hidden="true">
+        <div class="chirpui-aurora__blob"></div>
+        <div class="chirpui-aurora__blob"></div>
+        <div class="chirpui-aurora__blob"></div>
+    </div>
+    <div class="chirpui-aurora__content">
+        {% slot %}
+    </div>
+</div>
+{% end %}

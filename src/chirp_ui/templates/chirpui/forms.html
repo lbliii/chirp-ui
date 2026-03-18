@@ -174,14 +174,22 @@
 {% end %}
 
 {# Toggle (switch-style checkbox) #}
-{% def toggle_field(name, checked=false, label=none, errors=none) %}
+{# Supports size (sm/md/lg), color variant (success/danger/accent), and label_inside for ON/OFF text #}
+{% def toggle_field(name, checked=false, label=none, errors=none, size="", variant="", label_inside=false) %}
+{% set size_class = " chirpui-toggle-wrap--" ~ size if size in ("sm", "lg") else "" %}
+{% set variant_class = " chirpui-toggle-wrap--" ~ variant if variant in ("success", "danger", "accent") else "" %}
 <div class="chirpui-field chirpui-field--toggle{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
-    <label class="chirpui-field__label chirpui-field__label--inline chirpui-toggle-wrap">
+    <label class="chirpui-field__label chirpui-field__label--inline chirpui-toggle-wrap{{ size_class }}{{ variant_class }}">
         <input class="chirpui-toggle chirpui-visually-hidden"
                type="checkbox" id="{{ name }}" name="{{ name }}"
                {% if checked %}checked{% end %}
                {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
-        <span class="chirpui-toggle__track" aria-hidden="true"></span>
+        <span class="chirpui-toggle__track" aria-hidden="true">
+            {% if label_inside %}
+            <span class="chirpui-toggle__track-label chirpui-toggle__track-label--on">ON</span>
+            <span class="chirpui-toggle__track-label chirpui-toggle__track-label--off">OFF</span>
+            {% end %}
+        </span>
         <span class="chirpui-toggle__label">{{ label if label else name }}</span>
     </label>
     {% if errors %}

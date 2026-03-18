@@ -8,6 +8,10 @@
 
         call modal("my-modal", title="Settings")
             <p>Modal body content.</p>
+            {% fill footer %}
+                <button class="chirpui-btn chirpui-btn--ghost" onclick="this.closest('dialog').close()">Cancel</button>
+                <button class="chirpui-btn chirpui-btn--primary">Save</button>
+            {% end %}
         end
 -#}
 
@@ -27,6 +31,9 @@
     <div class="chirpui-modal__body">
         {% slot %}
     </div>
+    <footer class="chirpui-modal__footer">
+        {% slot footer %}
+    </footer>
 </dialog>
 {% end %}
 
