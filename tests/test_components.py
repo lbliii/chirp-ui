@@ -3148,7 +3148,7 @@ class TestBorderBeam:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/border_beam.html" import border_beam %}'
-            '{% call border_beam() %}Content{% end %}'
+            "{% call border_beam() %}Content{% end %}"
         ).render()
         assert "chirpui-border-beam" in html
         assert "chirpui-border-beam__beam" in html
@@ -3167,7 +3167,7 @@ class TestNotificationDot:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/notification_dot.html" import notification_dot %}'
-            '{% call notification_dot() %}<button>Inbox</button>{% end %}'
+            "{% call notification_dot() %}<button>Inbox</button>{% end %}"
         ).render()
         assert "chirpui-notification-dot" in html
         assert "chirpui-notification-dot__dot" in html
@@ -3176,7 +3176,7 @@ class TestNotificationDot:
     def test_count(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/notification_dot.html" import notification_dot %}'
-            '{% call notification_dot(count=5) %}<span>Mail</span>{% end %}'
+            "{% call notification_dot(count=5) %}<span>Mail</span>{% end %}"
         ).render()
         assert "5" in html
 
@@ -3184,8 +3184,7 @@ class TestNotificationDot:
 class TestNumberTicker:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/number_ticker.html" import number_ticker %}'
-            '{{ number_ticker(1250) }}'
+            '{% from "chirpui/number_ticker.html" import number_ticker %}{{ number_ticker(1250) }}'
         ).render()
         assert "chirpui-number-ticker" in html
         assert "--chirpui-num: 1250" in html
@@ -3213,8 +3212,7 @@ class TestPulsingButton:
 class TestMarquee:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/marquee.html" import marquee %}'
-            '{{ marquee(items=["A", "B", "C"]) }}'
+            '{% from "chirpui/marquee.html" import marquee %}{{ marquee(items=["A", "B", "C"]) }}'
         ).render()
         assert "chirpui-marquee" in html
         assert "chirpui-marquee__track" in html
@@ -3233,8 +3231,7 @@ class TestMarquee:
 class TestMeteor:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/meteor.html" import meteor %}'
-            '{% call meteor() %}Hero{% end %}'
+            '{% from "chirpui/meteor.html" import meteor %}{% call meteor() %}Hero{% end %}'
         ).render()
         assert "chirpui-meteor" in html
         assert "chirpui-meteor__streak" in html
@@ -3280,7 +3277,7 @@ class TestGlowCard:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/glow_card.html" import glow_card %}'
-            '{% call glow_card() %}Feature{% end %}'
+            "{% call glow_card() %}Feature{% end %}"
         ).render()
         assert "chirpui-glow-card" in html
         assert "chirpui-glow-card__glow" in html
@@ -3293,7 +3290,7 @@ class TestSpotlightCard:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/spotlight_card.html" import spotlight_card %}'
-            '{% call spotlight_card() %}Content{% end %}'
+            "{% call spotlight_card() %}Content{% end %}"
         ).render()
         assert "chirpui-spotlight-card" in html
         assert "chirpui-spotlight-card__spotlight" in html
@@ -3303,7 +3300,7 @@ class TestParticleBg:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/particle_bg.html" import particle_bg %}'
-            '{% call particle_bg() %}Content{% end %}'
+            "{% call particle_bg() %}Content{% end %}"
         ).render()
         assert "chirpui-particle-bg" in html
         assert "chirpui-particle-bg__dot" in html
@@ -3312,7 +3309,7 @@ class TestParticleBg:
     def test_count(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/particle_bg.html" import particle_bg %}'
-            '{% call particle_bg(count=3) %}X{% end %}'
+            "{% call particle_bg(count=3) %}X{% end %}"
         ).render()
         assert html.count("chirpui-particle-bg__dot") == 3
 
@@ -3332,10 +3329,10 @@ class TestBentoGrid:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/bento_grid.html" import bento_grid, bento_item %}'
-            '{% call bento_grid() %}'
-            '{% call bento_item() %}A{% end %}'
-            '{% call bento_item(span=2) %}B{% end %}'
-            '{% end %}'
+            "{% call bento_grid() %}"
+            "{% call bento_item() %}A{% end %}"
+            "{% call bento_item(span=2) %}B{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-bento" in html
         assert "chirpui-bento__item" in html
@@ -3402,10 +3399,10 @@ class TestSegmentedControl:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/segmented_control.html" import segmented_control %}'
-            '{{ segmented_control(items=['
+            "{{ segmented_control(items=["
             '    {"label": "Grid", "value": "grid", "active": true},'
             '    {"label": "List", "value": "list"},'
-            ']) }}'
+            "]) }}"
         ).render()
         assert "chirpui-segmented" in html
         assert "chirpui-segmented__option" in html
@@ -3424,10 +3421,10 @@ class TestSplitPanel:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/split_panel.html" import split_panel %}'
-            '{% call split_panel() %}'
-            '{% slot left %}Left{% end %}'
-            '{% slot right %}Right{% end %}'
-            '{% end %}'
+            "{% call split_panel() %}"
+            "{% slot left %}Left{% end %}"
+            "{% slot right %}Right{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-split-panel" in html
         assert "chirpui-split-panel__handle" in html
@@ -3438,9 +3435,9 @@ class TestSplitPanel:
         html = env.from_string(
             '{% from "chirpui/split_panel.html" import split_panel %}'
             '{% call split_panel(direction="vertical") %}'
-            '{% slot left %}Top{% end %}'
-            '{% slot right %}Bottom{% end %}'
-            '{% end %}'
+            "{% slot left %}Top{% end %}"
+            "{% slot right %}Bottom{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-split-panel--vertical" in html
 
@@ -3483,7 +3480,7 @@ class TestTimelineEnhanced:
     def test_hoverable(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/timeline.html" import timeline %}'
-            '{% call timeline(hoverable=true) %}items{% end %}'
+            "{% call timeline(hoverable=true) %}items{% end %}"
         ).render()
         assert "chirpui-timeline--hoverable" in html
 
@@ -3562,8 +3559,7 @@ class TestMetricCardEnhanced:
 class TestTypewriter:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/typewriter.html" import typewriter %}'
-            '{{ typewriter("Hello World") }}'
+            '{% from "chirpui/typewriter.html" import typewriter %}{{ typewriter("Hello World") }}'
         ).render()
         assert "chirpui-typewriter" in html
         assert "chirpui-typewriter__text" in html
@@ -3603,8 +3599,7 @@ class TestTypewriter:
 class TestGlitchText:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/glitch_text.html" import glitch_text %}'
-            '{{ glitch_text("ERROR") }}'
+            '{% from "chirpui/glitch_text.html" import glitch_text %}{{ glitch_text("ERROR") }}'
         ).render()
         assert "chirpui-glitch" in html
         assert 'data-text="ERROR"' in html
@@ -3635,8 +3630,7 @@ class TestGlitchText:
 class TestNeonText:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/neon_text.html" import neon_text %}'
-            '{{ neon_text("OPEN") }}'
+            '{% from "chirpui/neon_text.html" import neon_text %}{{ neon_text("OPEN") }}'
         ).render()
         assert "chirpui-neon" in html
         assert "chirpui-neon--cyan" in html
@@ -3667,8 +3661,7 @@ class TestNeonText:
 class TestAurora:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/aurora.html" import aurora %}'
-            '{% call aurora() %}Content{% end %}'
+            '{% from "chirpui/aurora.html" import aurora %}{% call aurora() %}Content{% end %}'
         ).render()
         assert "chirpui-aurora" in html
         assert "chirpui-aurora__blobs" in html
@@ -3696,7 +3689,7 @@ class TestScanline:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/scanline.html" import scanline %}'
-            '{% call scanline() %}Terminal{% end %}'
+            "{% call scanline() %}Terminal{% end %}"
         ).render()
         assert "chirpui-scanline" in html
         assert "Terminal" in html
@@ -3719,8 +3712,7 @@ class TestScanline:
 class TestGrain:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/grain.html" import grain %}'
-            '{% call grain() %}Photo{% end %}'
+            '{% from "chirpui/grain.html" import grain %}{% call grain() %}Photo{% end %}'
         ).render()
         assert "chirpui-grain" in html
         assert "Photo" in html
@@ -3734,8 +3726,7 @@ class TestGrain:
 
     def test_animated(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/grain.html" import grain %}'
-            '{% call grain(animated=true) %}X{% end %}'
+            '{% from "chirpui/grain.html" import grain %}{% call grain(animated=true) %}X{% end %}'
         ).render()
         assert "chirpui-grain--animated" in html
 
@@ -3778,8 +3769,7 @@ class TestOrbit:
 class TestSparkle:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/sparkle.html" import sparkle %}'
-            '{% call sparkle() %}Magic{% end %}'
+            '{% from "chirpui/sparkle.html" import sparkle %}{% call sparkle() %}Magic{% end %}'
         ).render()
         assert "chirpui-sparkle" in html
         assert "chirpui-sparkle__star" in html
@@ -3802,8 +3792,7 @@ class TestSparkle:
 
     def test_custom_count(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/sparkle.html" import sparkle %}'
-            '{% call sparkle(count=3) %}X{% end %}'
+            '{% from "chirpui/sparkle.html" import sparkle %}{% call sparkle(count=3) %}X{% end %}'
         ).render()
         assert html.count("chirpui-sparkle__star") == 3
 
@@ -3811,8 +3800,7 @@ class TestSparkle:
 class TestConfetti:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/confetti.html" import confetti %}'
-            '{{ confetti() }}'
+            '{% from "chirpui/confetti.html" import confetti %}{{ confetti() }}'
         ).render()
         assert "chirpui-confetti" in html
         assert "chirpui-confetti__piece" in html
@@ -3828,8 +3816,7 @@ class TestConfetti:
 
     def test_custom_count(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/confetti.html" import confetti %}'
-            '{{ confetti(count=10) }}'
+            '{% from "chirpui/confetti.html" import confetti %}{{ confetti(count=10) }}'
         ).render()
         assert html.count("chirpui-confetti__piece") >= 10
 
@@ -3837,8 +3824,7 @@ class TestConfetti:
 class TestWobble:
     def test_wobble_load(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/wobble.html" import wobble %}'
-            '{% call wobble() %}Content{% end %}'
+            '{% from "chirpui/wobble.html" import wobble %}{% call wobble() %}Content{% end %}'
         ).render()
         assert "chirpui-wobble" in html
         assert "Content" in html
@@ -3852,8 +3838,7 @@ class TestWobble:
 
     def test_jello(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/wobble.html" import jello %}'
-            '{% call jello() %}Jello{% end %}'
+            '{% from "chirpui/wobble.html" import jello %}{% call jello() %}Jello{% end %}'
         ).render()
         assert "chirpui-jello" in html
 
@@ -3866,7 +3851,6 @@ class TestWobble:
 
     def test_bounce_in(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/wobble.html" import bounce_in %}'
-            '{% call bounce_in() %}Pop{% end %}'
+            '{% from "chirpui/wobble.html" import bounce_in %}{% call bounce_in() %}Pop{% end %}'
         ).render()
         assert "chirpui-bounce-in" in html
