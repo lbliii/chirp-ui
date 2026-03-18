@@ -36,7 +36,7 @@ ICON_REGISTRY: dict[str, str] = {
     "chain": "⛓",
     "link": "⟶",
     "chart": "▤",
-    "bolt": "⚡",
+    "bolt": "⚡︎",
     "chat": "◉",
     "list": "≡",
     # Alerts / flow
