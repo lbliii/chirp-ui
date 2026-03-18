@@ -1,0 +1,26 @@
+{#- chirp-ui: Spotlight Card
+    Card with auto-rotating spotlight glow effect. Pure CSS, no JS.
+
+    Usage:
+        from "chirpui/spotlight_card.html" import spotlight_card
+
+        call spotlight_card()
+            <h3>Highlighted</h3>
+            <p>This card has a rotating spotlight</p>
+        end
+
+        call spotlight_card(variant="accent")
+            <p>Accent spotlight</p>
+        end
+-#}
+
+{% def spotlight_card(variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent"), "") %}
+{% set variant_class = " chirpui-spotlight-card--" ~ variant if variant else "" %}
+<div class="chirpui-spotlight-card{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-spotlight-card__spotlight" aria-hidden="true"></div>
+    <div class="chirpui-spotlight-card__content">
+        {% slot %}
+    </div>
+</div>
+{% end %}

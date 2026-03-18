@@ -1,0 +1,50 @@
+{#- chirp-ui: Wobble / Jello / Rubber-band / Bounce-in
+    Micro-interaction animation utilities. Apply on hover, click, or one-shot.
+
+    Usage:
+        from "chirpui/wobble.html" import wobble, jello, rubber_band, bounce_in
+
+        {% call wobble(trigger="hover") %}
+            <button>Hover me</button>
+        {% end %}
+
+        {% call jello() %}
+            <div>Jello on load</div>
+        {% end %}
+
+        {% call rubber_band(trigger="hover") %}
+            <span>🎈 Stretch!</span>
+        {% end %}
+
+        {% call bounce_in() %}
+            <div class="chirpui-card">Appears with bounce</div>
+        {% end %}
+-#}
+
+{% def wobble(trigger="load", cls="") %}
+{% if trigger == "hover" %}
+<span class="chirpui-hover-wobble{{ " " ~ cls if cls else "" }}">{% slot %}</span>
+{% else %}
+<span class="chirpui-wobble{{ " " ~ cls if cls else "" }}">{% slot %}</span>
+{% end %}
+{% end %}
+
+{% def jello(trigger="load", cls="") %}
+{% if trigger == "hover" %}
+<span class="chirpui-hover-jello{{ " " ~ cls if cls else "" }}">{% slot %}</span>
+{% else %}
+<span class="chirpui-jello{{ " " ~ cls if cls else "" }}">{% slot %}</span>
+{% end %}
+{% end %}
+
+{% def rubber_band(trigger="load", cls="") %}
+{% if trigger == "hover" %}
+<span class="chirpui-hover-rubber{{ " " ~ cls if cls else "" }}">{% slot %}</span>
+{% else %}
+<span class="chirpui-rubber-band{{ " " ~ cls if cls else "" }}">{% slot %}</span>
+{% end %}
+{% end %}
+
+{% def bounce_in(cls="") %}
+<span class="chirpui-bounce-in{{ " " ~ cls if cls else "" }}">{% slot %}</span>
+{% end %}

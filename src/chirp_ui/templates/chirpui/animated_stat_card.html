@@ -1,0 +1,23 @@
+{#- chirp-ui: Animated Stat Card
+    Composite stat card with animated counter and optional visual effects.
+
+    Usage:
+        from "chirpui/animated_stat_card.html" import animated_stat_card
+
+        animated_stat_card(1250, label="Active Users", trend="+12%", trend_direction="up")
+        animated_stat_card(48, label="Revenue", prefix="$", suffix="M", effect="beam")
+-#}
+
+{% from "chirpui/animated_counter.html" import animated_counter %}
+
+{% def animated_stat_card(value, label="", prefix="", suffix="", trend="", trend_direction="", effect="", cls="") %}
+<div class="chirpui-animated-stat-card{{ " " ~ cls if cls else "" }}">
+    {{ animated_counter(value, label=label, prefix=prefix, suffix=suffix) }}
+    {% if trend %}
+    <span class="chirpui-animated-stat-card__trend chirpui-animated-stat-card__trend--{{ trend_direction if trend_direction else "neutral" }}">
+        {% if trend_direction == "up" %}↑{% elif trend_direction == "down" %}↓{% end %}
+        {{ trend }}
+    </span>
+    {% end %}
+</div>
+{% end %}

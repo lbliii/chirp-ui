@@ -1,0 +1,18 @@
+{#- chirp-ui: Typewriter Effect
+    CSS step-based text reveal with blinking cursor.
+
+    Usage:
+        from "chirpui/typewriter.html" import typewriter
+
+        typewriter("Hello, World!")
+        typewriter("Slower reveal", speed="slow", tag="h2")
+        typewriter("No cursor", cursor=false)
+-#}
+
+{% def typewriter(text, speed="", cursor=true, delay="", tag="span", cls="") %}
+{% set speed_cls = " chirpui-typewriter--" ~ speed if speed in ("fast", "slow") else "" %}
+{% set delay_cls = " chirpui-typewriter--delay-" ~ delay if delay in ("1", "2", "3") else "" %}
+{% set cursor_cls = "" if cursor else " chirpui-typewriter--no-cursor" %}
+{% set steps = text | length %}
+<{{ tag }} class="chirpui-typewriter{{ speed_cls }}{{ delay_cls }}{{ cursor_cls }}{{ " " ~ cls if cls else "" }}"><span class="chirpui-typewriter__text" style="--chirpui-typewriter-steps: {{ steps }}">{{ text }}</span></{{ tag }}>
+{% end %}

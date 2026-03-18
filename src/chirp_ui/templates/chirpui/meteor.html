@@ -1,0 +1,27 @@
+{#- chirp-ui: Meteor Effect
+    Decorative diagonal streak animation for backgrounds.
+
+    Usage:
+        from "chirpui/meteor.html" import meteor
+
+        call meteor()
+            <h1>Hero content with meteors</h1>
+        end
+
+        call meteor(count=6, variant="accent")
+            <p>More streaks, accent color</p>
+        end
+-#}
+
+{% def meteor(count=4, variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "muted"), "") %}
+{% set variant_class = " chirpui-meteor--" ~ variant if variant else "" %}
+<div class="chirpui-meteor{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    {% for i in range(count) %}
+    <span class="chirpui-meteor__streak" aria-hidden="true"></span>
+    {% end %}
+    <div class="chirpui-meteor__content">
+        {% slot %}
+    </div>
+</div>
+{% end %}

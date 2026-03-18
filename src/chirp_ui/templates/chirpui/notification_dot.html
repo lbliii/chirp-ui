@@ -1,0 +1,28 @@
+{#- chirp-ui: Notification Dot
+    Wraps any element with a pulsing notification indicator.
+
+    Usage:
+        from "chirpui/notification_dot.html" import notification_dot
+
+        call notification_dot()
+            <button>Inbox</button>
+        end
+
+        call notification_dot(variant="success", count=3)
+            <span>Messages</span>
+        end
+-#}
+
+{% def notification_dot(variant="", size="", count=none, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "error", "success", "warning"), "") %}
+{% set size = size | validate_variant(("", "sm", "md", "lg"), "") %}
+{% set variant_class = " chirpui-notification-dot--" ~ variant if variant else "" %}
+{% set size_class = " chirpui-notification-dot--" ~ size if size else "" %}
+<span class="chirpui-notification-dot{{ variant_class }}{{ size_class }}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+    <span class="chirpui-notification-dot__ping" aria-hidden="true"></span>
+    <span class="chirpui-notification-dot__dot" aria-label="{{ count if count else "notification" }}">
+        {%- if count %}{{ count }}{% end -%}
+    </span>
+</span>
+{% end %}

@@ -1,0 +1,39 @@
+{#- chirp-ui: Hero Effects
+    Enhanced hero section with optional particle/meteor/spotlight effects.
+
+    Usage:
+        from "chirpui/hero_effects.html" import hero_effects
+
+        call hero_effects(effect="particles")
+            <h1>Welcome</h1>
+            <p>Tagline with floating particles behind</p>
+        end
+
+        call hero_effects(effect="meteors", variant="accent")
+            <h1>Launch Day</h1>
+        end
+-#}
+
+{% from "chirpui/particle_bg.html" import particle_bg %}
+{% from "chirpui/meteor.html" import meteor %}
+{% from "chirpui/spotlight_card.html" import spotlight_card %}
+
+{% def hero_effects(effect="particles", variant="", cls="") %}
+{% if effect == "particles" %}
+    {% call particle_bg(variant=variant, cls="chirpui-hero-effects " ~ cls if cls else "chirpui-hero-effects") %}
+        {% slot %}
+    {% end %}
+{% elif effect == "meteors" %}
+    {% call meteor(variant=variant, cls="chirpui-hero-effects " ~ cls if cls else "chirpui-hero-effects") %}
+        {% slot %}
+    {% end %}
+{% elif effect == "spotlight" %}
+    {% call spotlight_card(variant=variant, cls="chirpui-hero-effects " ~ cls if cls else "chirpui-hero-effects") %}
+        {% slot %}
+    {% end %}
+{% else %}
+    <div class="chirpui-hero-effects{{ " " ~ cls if cls else "" }}">
+        {% slot %}
+    </div>
+{% end %}
+{% end %}

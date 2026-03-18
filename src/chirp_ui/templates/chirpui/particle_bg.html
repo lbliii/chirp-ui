@@ -1,0 +1,29 @@
+{#- chirp-ui: Particle Background
+    Decorative floating dot particles behind content.
+
+    Usage:
+        from "chirpui/particle_bg.html" import particle_bg
+
+        call particle_bg()
+            <h1>Hero with particles</h1>
+        end
+
+        call particle_bg(count=12, variant="accent")
+            <p>More particles, accent color</p>
+        end
+-#}
+
+{% def particle_bg(count=8, variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "muted"), "") %}
+{% set variant_class = " chirpui-particle-bg--" ~ variant if variant else "" %}
+<div class="chirpui-particle-bg{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-particle-bg__canvas" aria-hidden="true">
+        {% for i in range(count) %}
+        <span class="chirpui-particle-bg__dot" style="left: {{ (i * 12 + 5) % 95 }}%; top: {{ (i * 17 + 10) % 90 }}%"></span>
+        {% end %}
+    </div>
+    <div class="chirpui-particle-bg__content">
+        {% slot %}
+    </div>
+</div>
+{% end %}

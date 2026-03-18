@@ -3100,3 +3100,773 @@ class TestCSS:
         assert "@keyframes chirpui-ascii-blink" in content
         assert "@keyframes chirpui-ascii-pulse" in content
         assert "@keyframes chirpui-ascii-rotate-cycle" in content
+
+
+# ---------------------------------------------------------------------------
+# New Effects & Primitives
+# ---------------------------------------------------------------------------
+
+
+class TestShimmerButton:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/shimmer_button.html" import shimmer_button %}'
+            '{{ shimmer_button("Get Started") }}'
+        ).render()
+        assert "chirpui-shimmer-btn" in html
+        assert "chirpui-shimmer-btn__shimmer" in html
+        assert "Get Started" in html
+
+    def test_primary_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/shimmer_button.html" import shimmer_button %}'
+            '{{ shimmer_button("Go", variant="primary") }}'
+        ).render()
+        assert "chirpui-shimmer-btn--primary" in html
+
+    def test_as_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/shimmer_button.html" import shimmer_button %}'
+            '{{ shimmer_button("Link", href="/go") }}'
+        ).render()
+        assert "<a " in html
+        assert 'href="/go"' in html
+
+
+class TestRippleButton:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ripple_button.html" import ripple_button %}'
+            '{{ ripple_button("Click Me") }}'
+        ).render()
+        assert "chirpui-ripple-btn" in html
+        assert "x-data" in html
+        assert "Click Me" in html
+
+
+class TestBorderBeam:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/border_beam.html" import border_beam %}'
+            '{% call border_beam() %}Content{% end %}'
+        ).render()
+        assert "chirpui-border-beam" in html
+        assert "chirpui-border-beam__beam" in html
+        assert "chirpui-border-beam__content" in html
+        assert "Content" in html
+
+    def test_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/border_beam.html" import border_beam %}'
+            '{% call border_beam(variant="success") %}X{% end %}'
+        ).render()
+        assert "chirpui-border-beam--success" in html
+
+
+class TestNotificationDot:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/notification_dot.html" import notification_dot %}'
+            '{% call notification_dot() %}<button>Inbox</button>{% end %}'
+        ).render()
+        assert "chirpui-notification-dot" in html
+        assert "chirpui-notification-dot__dot" in html
+        assert "chirpui-notification-dot__ping" in html
+
+    def test_count(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/notification_dot.html" import notification_dot %}'
+            '{% call notification_dot(count=5) %}<span>Mail</span>{% end %}'
+        ).render()
+        assert "5" in html
+
+
+class TestNumberTicker:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/number_ticker.html" import number_ticker %}'
+            '{{ number_ticker(1250) }}'
+        ).render()
+        assert "chirpui-number-ticker" in html
+        assert "--chirpui-num: 1250" in html
+
+    def test_prefix_suffix(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/number_ticker.html" import number_ticker %}'
+            '{{ number_ticker(99, prefix="$", suffix="+") }}'
+        ).render()
+        assert "$" in html
+        assert "+" in html
+
+
+class TestPulsingButton:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/pulsing_button.html" import pulsing_button %}'
+            '{{ pulsing_button("Try Now") }}'
+        ).render()
+        assert "chirpui-pulsing-btn" in html
+        assert "chirpui-pulsing-btn__ring" in html
+        assert "Try Now" in html
+
+
+class TestMarquee:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/marquee.html" import marquee %}'
+            '{{ marquee(items=["A", "B", "C"]) }}'
+        ).render()
+        assert "chirpui-marquee" in html
+        assert "chirpui-marquee__track" in html
+        assert "chirpui-marquee__item" in html
+        # Items duplicated for seamless loop
+        assert html.count(">A<") >= 2
+
+    def test_reverse(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/marquee.html" import marquee %}'
+            '{{ marquee(items=["X"], reverse=true) }}'
+        ).render()
+        assert "chirpui-marquee--reverse" in html
+
+
+class TestMeteor:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/meteor.html" import meteor %}'
+            '{% call meteor() %}Hero{% end %}'
+        ).render()
+        assert "chirpui-meteor" in html
+        assert "chirpui-meteor__streak" in html
+        assert "chirpui-meteor__content" in html
+        assert "Hero" in html
+
+
+class TestTextReveal:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/text_reveal.html" import text_reveal %}'
+            '{{ text_reveal("Hello World") }}'
+        ).render()
+        assert "chirpui-text-reveal" in html
+        assert "Hello World" in html
+
+    def test_gradient(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/text_reveal.html" import text_reveal %}'
+            '{{ text_reveal("Bold", variant="gradient") }}'
+        ).render()
+        assert "chirpui-text-reveal--gradient" in html
+
+
+class TestGradientText:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/gradient_text.html" import gradient_text %}'
+            '{{ gradient_text("Premium") }}'
+        ).render()
+        assert "chirpui-gradient-text" in html
+        assert "Premium" in html
+
+    def test_animated(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/gradient_text.html" import gradient_text %}'
+            '{{ gradient_text("Shift", animated=true) }}'
+        ).render()
+        assert "chirpui-gradient-text--animated" in html
+
+
+class TestGlowCard:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/glow_card.html" import glow_card %}'
+            '{% call glow_card() %}Feature{% end %}'
+        ).render()
+        assert "chirpui-glow-card" in html
+        assert "chirpui-glow-card__glow" in html
+        assert "chirpui-glow-card__content" in html
+        assert "x-data" in html
+        assert "Feature" in html
+
+
+class TestSpotlightCard:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/spotlight_card.html" import spotlight_card %}'
+            '{% call spotlight_card() %}Content{% end %}'
+        ).render()
+        assert "chirpui-spotlight-card" in html
+        assert "chirpui-spotlight-card__spotlight" in html
+
+
+class TestParticleBg:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/particle_bg.html" import particle_bg %}'
+            '{% call particle_bg() %}Content{% end %}'
+        ).render()
+        assert "chirpui-particle-bg" in html
+        assert "chirpui-particle-bg__dot" in html
+        assert "chirpui-particle-bg__content" in html
+
+    def test_count(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/particle_bg.html" import particle_bg %}'
+            '{% call particle_bg(count=3) %}X{% end %}'
+        ).render()
+        assert html.count("chirpui-particle-bg__dot") == 3
+
+
+class TestAnimatedCounter:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/animated_counter.html" import animated_counter %}'
+            '{{ animated_counter(500, label="Users") }}'
+        ).render()
+        assert "chirpui-animated-counter" in html
+        assert "--chirpui-num: 500" in html
+        assert "Users" in html
+
+
+class TestBentoGrid:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/bento_grid.html" import bento_grid, bento_item %}'
+            '{% call bento_grid() %}'
+            '{% call bento_item() %}A{% end %}'
+            '{% call bento_item(span=2) %}B{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-bento" in html
+        assert "chirpui-bento__item" in html
+        assert "chirpui-bento__item--span-2" in html
+
+
+class TestDock:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dock.html" import dock %}'
+            '{{ dock(items=[{"icon": "home", "label": "Home", "href": "/"}]) }}'
+        ).render()
+        assert "chirpui-dock" in html
+        assert "chirpui-dock__item" in html
+        assert 'aria-label="Home"' in html
+        assert 'href="/"' in html
+
+    def test_glass_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dock.html" import dock %}'
+            '{{ dock(items=[{"icon": "home", "label": "Home"}], variant="glass") }}'
+        ).render()
+        assert "chirpui-dock--glass" in html
+
+
+class TestAnimatedStatCard:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/animated_stat_card.html" import animated_stat_card %}'
+            '{{ animated_stat_card(1250, label="Users", trend="+12%", trend_direction="up") }}'
+        ).render()
+        assert "chirpui-animated-stat-card" in html
+        assert "chirpui-animated-stat-card__trend--up" in html
+        assert "+12%" in html
+
+
+class TestIconBtn:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{{ icon_btn("✕", aria_label="Close") }}'
+        ).render()
+        assert "chirpui-icon-btn" in html
+        assert 'aria-label="Close"' in html
+
+    def test_variant_and_size(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{{ icon_btn("⚙", variant="ghost", size="lg", aria_label="Settings") }}'
+        ).render()
+        assert "chirpui-icon-btn--ghost" in html
+        assert "chirpui-icon-btn--lg" in html
+
+    def test_as_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{{ icon_btn("→", href="/next", aria_label="Next") }}'
+        ).render()
+        assert "<a " in html
+        assert 'href="/next"' in html
+
+
+class TestSegmentedControl:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/segmented_control.html" import segmented_control %}'
+            '{{ segmented_control(items=['
+            '    {"label": "Grid", "value": "grid", "active": true},'
+            '    {"label": "List", "value": "list"},'
+            ']) }}'
+        ).render()
+        assert "chirpui-segmented" in html
+        assert "chirpui-segmented__option" in html
+        assert "chirpui-segmented__option--active" in html
+        assert 'role="radiogroup"' in html
+
+    def test_size(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/segmented_control.html" import segmented_control %}'
+            '{{ segmented_control(items=[{"label": "A", "value": "a"}], size="sm") }}'
+        ).render()
+        assert "chirpui-segmented--sm" in html
+
+
+class TestSplitPanel:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/split_panel.html" import split_panel %}'
+            '{% call split_panel() %}'
+            '{% slot left %}Left{% end %}'
+            '{% slot right %}Right{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-split-panel" in html
+        assert "chirpui-split-panel__handle" in html
+        assert "chirpui-split-panel__pane" in html
+        assert 'role="separator"' in html
+
+    def test_vertical(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/split_panel.html" import split_panel %}'
+            '{% call split_panel(direction="vertical") %}'
+            '{% slot left %}Top{% end %}'
+            '{% slot right %}Bottom{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-split-panel--vertical" in html
+
+
+class TestTooltipEnhanced:
+    def test_bubble_present(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tooltip.html" import tooltip %}'
+            '{% call tooltip("Help text") %}<button>Hover</button>{% end %}'
+        ).render()
+        assert "chirpui-tooltip__bubble" in html
+        assert 'role="tooltip"' in html
+        assert "Help text" in html
+
+    def test_position(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tooltip.html" import tooltip %}'
+            '{% call tooltip("Below", position="bottom") %}<span>X</span>{% end %}'
+        ).render()
+        assert "chirpui-tooltip--bottom" in html
+
+
+class TestTimelineEnhanced:
+    def test_icon_timeline(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline_item %}'
+            '{{ timeline_item("Deploy", "Now", icon="◎", variant="success") }}'
+        ).render()
+        assert "chirpui-timeline__icon" in html
+        assert "chirpui-timeline__item--success" in html
+
+    def test_avatar_timeline(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline_item %}'
+            '{{ timeline_item("Comment", "12:05", avatar="/img/user.jpg") }}'
+        ).render()
+        assert "chirpui-timeline__avatar" in html
+        assert 'src="/img/user.jpg"' in html
+
+    def test_hoverable(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline %}'
+            '{% call timeline(hoverable=true) %}items{% end %}'
+        ).render()
+        assert "chirpui-timeline--hoverable" in html
+
+    def test_link_item(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline_item %}'
+            '{{ timeline_item("Click", "Jan 1", href="/detail") }}'
+        ).render()
+        assert "chirpui-timeline__link-overlay" in html
+        assert 'href="/detail"' in html
+
+    def test_time_column(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline_item %}'
+            '{{ timeline_item("Event", "Jan 1", time="12:05PM") }}'
+        ).render()
+        assert "chirpui-timeline__time" in html
+        assert "12:05PM" in html
+
+
+class TestToggleEnhanced:
+    def test_size_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import toggle_field %}'
+            '{{ toggle_field("dark_mode", size="sm") }}'
+        ).render()
+        assert "chirpui-toggle-wrap--sm" in html
+
+    def test_color_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import toggle_field %}'
+            '{{ toggle_field("active", variant="success") }}'
+        ).render()
+        assert "chirpui-toggle-wrap--success" in html
+
+    def test_label_inside(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import toggle_field %}'
+            '{{ toggle_field("power", label_inside=true) }}'
+        ).render()
+        assert "chirpui-toggle__track-label--on" in html
+        assert "chirpui-toggle__track-label--off" in html
+
+
+class TestMetricCardEnhanced:
+    def test_trend_direction(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value="1,250", label="Users", trend="+12%", trend_direction="up") }}'
+        ).render()
+        assert "chirpui-metric-card__trend--up" in html
+        assert "↑" in html
+
+    def test_icon_badge(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value="$48M", label="Revenue", icon="chart", icon_bg="success") }}'
+        ).render()
+        assert "chirpui-metric-card__icon-badge" in html
+        assert "chirpui-metric-card__icon-badge--success" in html
+
+    def test_footer_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value="72", label="Tasks", footer_label="View reports", footer_href="/reports") }}'
+        ).render()
+        assert "chirpui-metric-card__footer" in html
+        assert 'href="/reports"' in html
+
+
+# ==========================================================================
+# Playful / decorative effects
+# ==========================================================================
+
+
+class TestTypewriter:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/typewriter.html" import typewriter %}'
+            '{{ typewriter("Hello World") }}'
+        ).render()
+        assert "chirpui-typewriter" in html
+        assert "chirpui-typewriter__text" in html
+        assert "Hello World" in html
+        assert "--chirpui-typewriter-steps: 11" in html
+
+    def test_speed_fast(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/typewriter.html" import typewriter %}'
+            '{{ typewriter("Fast", speed="fast") }}'
+        ).render()
+        assert "chirpui-typewriter--fast" in html
+
+    def test_no_cursor(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/typewriter.html" import typewriter %}'
+            '{{ typewriter("No cursor", cursor=false) }}'
+        ).render()
+        assert "chirpui-typewriter--no-cursor" in html
+
+    def test_delay(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/typewriter.html" import typewriter %}'
+            '{{ typewriter("Delayed", delay="2") }}'
+        ).render()
+        assert "chirpui-typewriter--delay-2" in html
+
+    def test_custom_tag(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/typewriter.html" import typewriter %}'
+            '{{ typewriter("Title", tag="h1") }}'
+        ).render()
+        assert "<h1" in html
+        assert "</h1>" in html
+
+
+class TestGlitchText:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/glitch_text.html" import glitch_text %}'
+            '{{ glitch_text("ERROR") }}'
+        ).render()
+        assert "chirpui-glitch" in html
+        assert 'data-text="ERROR"' in html
+        assert "ERROR" in html
+
+    def test_intense(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/glitch_text.html" import glitch_text %}'
+            '{{ glitch_text("GLITCH", variant="intense") }}'
+        ).render()
+        assert "chirpui-glitch--intense" in html
+
+    def test_subtle(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/glitch_text.html" import glitch_text %}'
+            '{{ glitch_text("SOFT", variant="subtle") }}'
+        ).render()
+        assert "chirpui-glitch--subtle" in html
+
+    def test_custom_tag(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/glitch_text.html" import glitch_text %}'
+            '{{ glitch_text("BIG", tag="h1") }}'
+        ).render()
+        assert "<h1" in html
+
+
+class TestNeonText:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/neon_text.html" import neon_text %}'
+            '{{ neon_text("OPEN") }}'
+        ).render()
+        assert "chirpui-neon" in html
+        assert "chirpui-neon--cyan" in html
+        assert "OPEN" in html
+
+    def test_color_magenta(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/neon_text.html" import neon_text %}'
+            '{{ neon_text("LIVE", color="magenta") }}'
+        ).render()
+        assert "chirpui-neon--magenta" in html
+
+    def test_flicker_animation(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/neon_text.html" import neon_text %}'
+            '{{ neon_text("SIGN", animation="flicker") }}'
+        ).render()
+        assert "chirpui-neon--flicker" in html
+
+    def test_pulse_animation(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/neon_text.html" import neon_text %}'
+            '{{ neon_text("GLOW", animation="pulse") }}'
+        ).render()
+        assert "chirpui-neon--pulse" in html
+
+
+class TestAurora:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/aurora.html" import aurora %}'
+            '{% call aurora() %}Content{% end %}'
+        ).render()
+        assert "chirpui-aurora" in html
+        assert "chirpui-aurora__blobs" in html
+        assert "chirpui-aurora__blob" in html
+        assert "chirpui-aurora__content" in html
+        assert "Content" in html
+        assert html.count("chirpui-aurora__blob") >= 3
+
+    def test_intense(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/aurora.html" import aurora %}'
+            '{% call aurora(variant="intense") %}X{% end %}'
+        ).render()
+        assert "chirpui-aurora--intense" in html
+
+    def test_subtle(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/aurora.html" import aurora %}'
+            '{% call aurora(variant="subtle") %}X{% end %}'
+        ).render()
+        assert "chirpui-aurora--subtle" in html
+
+
+class TestScanline:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/scanline.html" import scanline %}'
+            '{% call scanline() %}Terminal{% end %}'
+        ).render()
+        assert "chirpui-scanline" in html
+        assert "Terminal" in html
+
+    def test_crt(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/scanline.html" import scanline %}'
+            '{% call scanline(variant="crt") %}CRT{% end %}'
+        ).render()
+        assert "chirpui-scanline--crt" in html
+
+    def test_heavy(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/scanline.html" import scanline %}'
+            '{% call scanline(variant="heavy") %}Bold{% end %}'
+        ).render()
+        assert "chirpui-scanline--heavy" in html
+
+
+class TestGrain:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/grain.html" import grain %}'
+            '{% call grain() %}Photo{% end %}'
+        ).render()
+        assert "chirpui-grain" in html
+        assert "Photo" in html
+
+    def test_heavy(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/grain.html" import grain %}'
+            '{% call grain(variant="heavy") %}X{% end %}'
+        ).render()
+        assert "chirpui-grain--heavy" in html
+
+    def test_animated(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/grain.html" import grain %}'
+            '{% call grain(animated=true) %}X{% end %}'
+        ).render()
+        assert "chirpui-grain--animated" in html
+
+
+class TestOrbit:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/orbit.html" import orbit %}'
+            '{% call orbit(items=["A", "B", "C"]) %}Center{% end %}'
+        ).render()
+        assert "chirpui-orbit" in html
+        assert "chirpui-orbit__ring" in html
+        assert "chirpui-orbit__center" in html
+        assert "chirpui-orbit__item" in html
+        assert "Center" in html
+        assert html.count("chirpui-orbit__item") == 3
+
+    def test_size_lg(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/orbit.html" import orbit %}'
+            '{% call orbit(items=["X"], size="lg") %}O{% end %}'
+        ).render()
+        assert "chirpui-orbit--lg" in html
+
+    def test_speed_fast(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/orbit.html" import orbit %}'
+            '{% call orbit(items=["X"], speed="fast") %}O{% end %}'
+        ).render()
+        assert "chirpui-orbit--fast" in html
+
+    def test_reverse(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/orbit.html" import orbit %}'
+            '{% call orbit(items=["X"], reverse=true) %}O{% end %}'
+        ).render()
+        assert "chirpui-orbit--reverse" in html
+
+
+class TestSparkle:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sparkle.html" import sparkle %}'
+            '{% call sparkle() %}Magic{% end %}'
+        ).render()
+        assert "chirpui-sparkle" in html
+        assert "chirpui-sparkle__star" in html
+        assert "Magic" in html
+        assert html.count("chirpui-sparkle__star") == 6
+
+    def test_gold(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sparkle.html" import sparkle %}'
+            '{% call sparkle(variant="gold") %}X{% end %}'
+        ).render()
+        assert "chirpui-sparkle--gold" in html
+
+    def test_rainbow(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sparkle.html" import sparkle %}'
+            '{% call sparkle(variant="rainbow") %}X{% end %}'
+        ).render()
+        assert "chirpui-sparkle--rainbow" in html
+
+    def test_custom_count(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sparkle.html" import sparkle %}'
+            '{% call sparkle(count=3) %}X{% end %}'
+        ).render()
+        assert html.count("chirpui-sparkle__star") == 3
+
+
+class TestConfetti:
+    def test_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/confetti.html" import confetti %}'
+            '{{ confetti() }}'
+        ).render()
+        assert "chirpui-confetti" in html
+        assert "chirpui-confetti__piece" in html
+        assert "x-data" in html
+
+    def test_trigger_button(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/confetti.html" import confetti_trigger %}'
+            '{{ confetti_trigger("Party!") }}'
+        ).render()
+        assert "Party!" in html
+        assert "$dispatch" in html
+
+    def test_custom_count(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/confetti.html" import confetti %}'
+            '{{ confetti(count=10) }}'
+        ).render()
+        assert html.count("chirpui-confetti__piece") >= 10
+
+
+class TestWobble:
+    def test_wobble_load(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/wobble.html" import wobble %}'
+            '{% call wobble() %}Content{% end %}'
+        ).render()
+        assert "chirpui-wobble" in html
+        assert "Content" in html
+
+    def test_wobble_hover(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/wobble.html" import wobble %}'
+            '{% call wobble(trigger="hover") %}Content{% end %}'
+        ).render()
+        assert "chirpui-hover-wobble" in html
+
+    def test_jello(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/wobble.html" import jello %}'
+            '{% call jello() %}Jello{% end %}'
+        ).render()
+        assert "chirpui-jello" in html
+
+    def test_rubber_band(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/wobble.html" import rubber_band %}'
+            '{% call rubber_band(trigger="hover") %}Stretch{% end %}'
+        ).render()
+        assert "chirpui-hover-rubber" in html
+
+    def test_bounce_in(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/wobble.html" import bounce_in %}'
+            '{% call bounce_in() %}Pop{% end %}'
+        ).render()
+        assert "chirpui-bounce-in" in html

@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>chirp-ui — Complete Component Showcase</title>
+    <link rel="stylesheet" href="../../src/chirp_ui/templates/chirpui.css">
+    <link rel="stylesheet" href="../../src/chirp_ui/templates/chirpui-transitions.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.14.3/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+    <style>
+        *,*::before,*::after{box-sizing:border-box}
+        body{font-family:system-ui,-apple-system,sans-serif;background:var(--chirpui-bg);color:var(--chirpui-text);margin:0;display:flex;min-height:100vh}
+
+        /* Sidebar */
+        .sc-sidebar{position:sticky;top:0;width:220px;height:100vh;overflow-y:auto;border-right:1px solid var(--chirpui-border);background:var(--chirpui-surface);padding:1rem 0;flex-shrink:0;font-size:0.78rem}
+        .sc-sidebar h3{padding:0 0.75rem;margin:1.25rem 0 0.35rem;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--chirpui-text-muted)}
+        .sc-sidebar h3:first-child{margin-top:0}
+        .sc-sidebar a{display:block;padding:0.2rem 0.75rem;color:var(--chirpui-text-muted);text-decoration:none;border-radius:var(--chirpui-radius-sm)}
+        .sc-sidebar a:hover{color:var(--chirpui-text);background:var(--chirpui-surface-alt)}
+
+        /* Main */
+        .sc-main{flex:1;min-width:0;overflow-x:hidden}
+        .sc-header{position:sticky;top:0;z-index:100;background:var(--chirpui-surface);border-bottom:1px solid var(--chirpui-border);padding:0.6rem 1.5rem;display:flex;align-items:center;gap:1rem;backdrop-filter:blur(8px)}
+        .sc-header strong{font-size:0.9rem}
+        .sc-section{max-width:1100px;padding:2rem 1.5rem;scroll-margin-top:3.5rem}
+        .sc-section h2{font-size:1.15rem;font-weight:600;margin:0 0 0.2rem;scroll-margin-top:3.5rem}
+        .sc-section .desc{font-size:0.82rem;color:var(--chirpui-text-muted);margin:0 0 1rem}
+        .sc-row{display:flex;flex-wrap:wrap;align-items:center;gap:0.75rem;margin-bottom:1.25rem}
+        .sc-stack{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.25rem}
+        .sc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0.75rem;margin-bottom:1.25rem}
+        .sc-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.25rem}
+        .sc-label{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--chirpui-text-muted);margin-bottom:0.4rem}
+        .sc-box{border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius-lg);padding:1rem;background:var(--chirpui-surface)}
+        .sc-divider{border:none;border-top:1px solid var(--chirpui-border);margin:0 0 1.5rem}
+        .sc-spacer{height:1rem}
+        /* Theme toggle */
+        .sc-theme{margin-left:auto;display:flex;gap:0.2rem}
+        .sc-theme button{padding:0.2rem 0.5rem;font-size:0.72rem;border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius);background:var(--chirpui-surface);color:var(--chirpui-text-muted);cursor:pointer}
+        .sc-theme button.active{background:var(--chirpui-accent);color:var(--chirpui-bg);border-color:var(--chirpui-accent)}
+        @media(max-width:768px){.sc-sidebar{display:none}.sc-grid-3{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR NAV -->
+<aside class="sc-sidebar">
+    <div style="padding:0 0.75rem 0.5rem;font-weight:700;font-size:0.9rem">chirp-ui</div>
+    <h3>Buttons</h3>
+    <a href="#buttons">Standard Buttons</a>
+    <a href="#icon-buttons">Icon Buttons</a>
+    <a href="#button-groups">Groups & Segmented</a>
+    <a href="#split-button">Split Button</a>
+    <a href="#effect-buttons">Effect Buttons</a>
+    <h3>Cards</h3>
+    <a href="#cards">Cards</a>
+    <a href="#card-variants">Card Variants</a>
+    <a href="#effect-cards">Effect Cards</a>
+    <a href="#metric-cards">Metric Cards</a>
+    <h3>Data Display</h3>
+    <a href="#badges">Badges & Status</a>
+    <a href="#progress">Progress & Charts</a>
+    <a href="#counters">Counters & Tickers</a>
+    <a href="#tables">Tables</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#description-list">Description List</a>
+    <a href="#pagination">Pagination</a>
+    <h3>Feedback</h3>
+    <a href="#alerts">Alerts</a>
+    <a href="#toast">Toast</a>
+    <a href="#skeleton">Skeleton</a>
+    <a href="#spinner">Spinner</a>
+    <a href="#tooltip">Tooltip</a>
+    <a href="#notification-dot">Notification Dot</a>
+    <h3>Forms</h3>
+    <a href="#text-fields">Text Fields</a>
+    <a href="#toggles">Toggles</a>
+    <a href="#checkboxes">Checkboxes & Radio</a>
+    <a href="#search">Search Bar</a>
+    <h3>Navigation</h3>
+    <a href="#tabs">Tabs</a>
+    <a href="#breadcrumbs">Breadcrumbs</a>
+    <a href="#dock">Floating Dock</a>
+    <a href="#stepper">Stepper</a>
+    <h3>Layout</h3>
+    <a href="#surfaces">Surfaces</a>
+    <a href="#layout-primitives">Grid / Stack / Cluster</a>
+    <a href="#bento">Bento Grid</a>
+    <a href="#split-panel">Split Panel</a>
+    <a href="#divider">Divider</a>
+    <h3>Overlays</h3>
+    <a href="#modal">Modal</a>
+    <a href="#dropdown">Dropdown</a>
+    <a href="#accordion">Accordion</a>
+    <h3>Content</h3>
+    <a href="#hero">Hero</a>
+    <a href="#callout">Callout</a>
+    <a href="#avatar">Avatars</a>
+    <a href="#code">Code</a>
+    <a href="#empty">Empty State</a>
+    <h3>Social</h3>
+    <a href="#post-card">Post Card</a>
+    <a href="#message">Messages</a>
+    <a href="#reactions">Reactions</a>
+    <a href="#live-badge">Live Badge</a>
+    <h3>Effects</h3>
+    <a href="#gradient-text">Typography Effects</a>
+    <a href="#typewriter">Typewriter</a>
+    <a href="#glitch">Glitch Text</a>
+    <a href="#neon">Neon Text</a>
+    <a href="#aurora">Aurora Background</a>
+    <a href="#scanline">Scanline / CRT</a>
+    <a href="#grain">Film Grain</a>
+    <a href="#orbit">Orbit</a>
+    <a href="#sparkle">Sparkle</a>
+    <a href="#confetti">Confetti</a>
+    <a href="#wobble">Wobble / Jello</a>
+    <a href="#marquee">Marquee</a>
+    <a href="#meteor">Meteor</a>
+    <a href="#particles">Particles</a>
+    <a href="#border-beam">Border Beam</a>
+    <h3>Dashboard</h3>
+    <a href="#stat-cards">Animated Stat Cards</a>
+    <a href="#config">Config Rows</a>
+    <a href="#bar-chart">Bar Chart</a>
+    <a href="#donut">Donut Chart</a>
+</aside>
+
+<div class="sc-main">
+
+<!-- HEADER -->
+<header class="sc-header">
+    <strong>Component Showcase</strong>
+    <span style="font-size:0.75rem;color:var(--chirpui-text-muted)">135 templates · 251 macros · 9,700+ lines CSS</span>
+    <div class="sc-theme" x-data="{ t: 'system' }">
+        <button :class="{ active: t==='light' }" @click="t='light'; document.documentElement.style.colorScheme='light'">Light</button>
+        <button :class="{ active: t==='dark' }" @click="t='dark'; document.documentElement.style.colorScheme='dark'">Dark</button>
+        <button :class="{ active: t==='system' }" @click="t='system'; document.documentElement.style.colorScheme=''">System</button>
+    </div>
+</header>
+
+<!-- ================================================================ -->
+<!--  BUTTONS                                                         -->
+<!-- ================================================================ -->
+<section class="sc-section" id="buttons">
+    <h2>Buttons</h2>
+    <p class="desc">Standard button variants, sizes, and states.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Variants</div>
+    <div class="sc-row">
+        <button class="chirpui-btn">Default</button>
+        <button class="chirpui-btn chirpui-btn--primary">Primary</button>
+        <button class="chirpui-btn chirpui-btn--ghost">Ghost</button>
+        <button class="chirpui-btn chirpui-btn--danger">Danger</button>
+        <button class="chirpui-btn chirpui-btn--success">Success</button>
+        <button class="chirpui-btn chirpui-btn--warning">Warning</button>
+    </div>
+    <div class="sc-label">Sizes</div>
+    <div class="sc-row">
+        <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Small</button>
+        <button class="chirpui-btn chirpui-btn--primary">Medium</button>
+        <button class="chirpui-btn chirpui-btn--primary chirpui-btn--lg">Large</button>
+    </div>
+    <div class="sc-label">With Icon</div>
+    <div class="sc-row">
+        <button class="chirpui-btn chirpui-btn--primary"><span class="chirpui-btn__icon">+</span><span class="chirpui-btn__label">Add Item</span></button>
+        <button class="chirpui-btn"><span class="chirpui-btn__icon">⚙</span><span class="chirpui-btn__label">Settings</span></button>
+        <button class="chirpui-btn chirpui-btn--ghost"><span class="chirpui-btn__icon">↻</span><span class="chirpui-btn__label">Refresh</span></button>
+    </div>
+    <div class="sc-label">Disabled & Loading</div>
+    <div class="sc-row">
+        <button class="chirpui-btn chirpui-btn--primary" disabled>Disabled</button>
+        <button class="chirpui-btn chirpui-btn--primary chirpui-btn--loading" aria-busy="true"><span class="chirpui-btn__label">Saving…</span><span class="chirpui-btn__spinner" aria-hidden="true"><span class="chirpui-spinner chirpui-spinner--sm"></span></span></button>
+    </div>
+</section>
+
+<section class="sc-section" id="icon-buttons">
+    <h2>Icon Buttons</h2>
+    <p class="desc">Square icon-only buttons for toolbars and dense UIs.</p>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <button class="chirpui-icon-btn chirpui-icon-btn--sm" aria-label="Close"><span class="chirpui-icon-btn__icon">✕</span></button>
+        <button class="chirpui-icon-btn" aria-label="Settings"><span class="chirpui-icon-btn__icon">⚙</span></button>
+        <button class="chirpui-icon-btn chirpui-icon-btn--lg" aria-label="Menu"><span class="chirpui-icon-btn__icon">≡</span></button>
+        <span style="width:1px;height:24px;background:var(--chirpui-border)"></span>
+        <button class="chirpui-icon-btn chirpui-icon-btn--primary" aria-label="Add"><span class="chirpui-icon-btn__icon">+</span></button>
+        <button class="chirpui-icon-btn chirpui-icon-btn--ghost" aria-label="Edit"><span class="chirpui-icon-btn__icon">✎</span></button>
+        <button class="chirpui-icon-btn chirpui-icon-btn--danger" aria-label="Delete"><span class="chirpui-icon-btn__icon">✕</span></button>
+    </div>
+</section>
+
+<section class="sc-section" id="button-groups">
+    <h2>Button Groups & Segmented Control</h2>
+    <hr class="sc-divider">
+    <div class="sc-label">Button Group (default)</div>
+    <div class="sc-row">
+        <div class="chirpui-btn-group"><button class="chirpui-btn">Left</button><button class="chirpui-btn">Center</button><button class="chirpui-btn">Right</button></div>
+    </div>
+    <div class="sc-label">Button Group — End aligned</div>
+    <div class="sc-row">
+        <div class="chirpui-btn-group chirpui-btn-group--end" style="width:100%"><button class="chirpui-btn chirpui-btn--ghost">Cancel</button><button class="chirpui-btn chirpui-btn--primary">Save</button></div>
+    </div>
+    <div class="sc-label">Button Group — Space Between</div>
+    <div class="sc-row">
+        <div class="chirpui-btn-group chirpui-btn-group--between" style="width:100%"><button class="chirpui-btn chirpui-btn--danger">Delete</button><div class="chirpui-btn-group"><button class="chirpui-btn chirpui-btn--ghost">Cancel</button><button class="chirpui-btn chirpui-btn--primary">Confirm</button></div></div>
+    </div>
+    <div class="sc-label">Actions Bar (semantic wrapper)</div>
+    <div class="sc-box" style="max-width:450px">
+        <p style="margin:0 0 0.5rem;font-size:0.85rem">Form content above the action bar...</p>
+        <div class="chirpui-actions chirpui-actions--bordered"><button class="chirpui-btn chirpui-btn--ghost">Reset</button><button class="chirpui-btn chirpui-btn--primary">Submit</button></div>
+    </div>
+    <div class="sc-spacer"></div>
+    <div class="sc-label">Actions — Stacked (mobile-friendly)</div>
+    <div class="sc-box" style="max-width:280px">
+        <div class="chirpui-actions chirpui-actions--stacked"><button class="chirpui-btn chirpui-btn--primary">Continue</button><button class="chirpui-btn chirpui-btn--ghost">Go back</button></div>
+    </div>
+    <div class="sc-label">Segmented Control</div>
+    <div class="sc-row">
+        <div class="chirpui-segmented" role="radiogroup">
+            <label class="chirpui-segmented__option chirpui-segmented__option--active"><input type="radio" name="v1" class="chirpui-visually-hidden" checked><span class="chirpui-segmented__label">Grid</span></label>
+            <label class="chirpui-segmented__option"><input type="radio" name="v1" class="chirpui-visually-hidden"><span class="chirpui-segmented__label">List</span></label>
+            <label class="chirpui-segmented__option"><input type="radio" name="v1" class="chirpui-visually-hidden"><span class="chirpui-segmented__label">Table</span></label>
+        </div>
+        <div class="chirpui-segmented chirpui-segmented--sm" role="radiogroup">
+            <label class="chirpui-segmented__option chirpui-segmented__option--active"><input type="radio" name="v2" class="chirpui-visually-hidden" checked><span class="chirpui-segmented__label">Day</span></label>
+            <label class="chirpui-segmented__option"><input type="radio" name="v2" class="chirpui-visually-hidden"><span class="chirpui-segmented__label">Week</span></label>
+            <label class="chirpui-segmented__option"><input type="radio" name="v2" class="chirpui-visually-hidden"><span class="chirpui-segmented__label">Month</span></label>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="split-button">
+    <h2>Split Button</h2>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <div class="chirpui-split-btn">
+            <button class="chirpui-btn chirpui-btn--primary"><span class="chirpui-btn__label">Save</span></button>
+            <details class="chirpui-split-btn__menu">
+                <summary class="chirpui-btn chirpui-btn--primary chirpui-split-btn__trigger">▾</summary>
+                <div class="chirpui-split-btn__dropdown">
+                    <button class="chirpui-dropdown__item">Save as Draft</button>
+                    <button class="chirpui-dropdown__item">Save & Close</button>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="effect-buttons">
+    <h2>Effect Buttons</h2>
+    <p class="desc">Shimmer, ripple, and pulsing effects for CTAs.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Shimmer</div>
+    <div class="sc-row">
+        <button class="chirpui-shimmer-btn"><span class="chirpui-shimmer-btn__shimmer"></span>Get Started</button>
+        <button class="chirpui-shimmer-btn chirpui-shimmer-btn--primary"><span class="chirpui-shimmer-btn__shimmer"></span>Subscribe</button>
+        <button class="chirpui-shimmer-btn chirpui-shimmer-btn--sm"><span class="chirpui-shimmer-btn__shimmer"></span>Small</button>
+        <button class="chirpui-shimmer-btn chirpui-shimmer-btn--primary chirpui-shimmer-btn--lg"><span class="chirpui-shimmer-btn__shimmer"></span>Large</button>
+    </div>
+    <div class="sc-label">Ripple (click me)</div>
+    <div class="sc-row">
+        <button class="chirpui-ripple-btn" x-data="{ripples:[]}" @click="const r=$el.getBoundingClientRect(),s=Math.max(r.width,r.height),x=$event.clientX-r.left-s/2,y=$event.clientY-r.top-s/2,id=Date.now();ripples.push({id,x,y,size:s});setTimeout(()=>ripples=ripples.filter(r=>r.id!==id),600)">
+            <template x-for="r in ripples" :key="r.id"><span class="chirpui-ripple-btn__ripple" :style="`left:${r.x}px;top:${r.y}px;width:${r.size}px;height:${r.size}px`"></span></template>Click Me</button>
+        <button class="chirpui-ripple-btn chirpui-ripple-btn--primary" x-data="{ripples:[]}" @click="const r=$el.getBoundingClientRect(),s=Math.max(r.width,r.height),x=$event.clientX-r.left-s/2,y=$event.clientY-r.top-s/2,id=Date.now();ripples.push({id,x,y,size:s});setTimeout(()=>ripples=ripples.filter(r=>r.id!==id),600)">
+            <template x-for="r in ripples" :key="r.id"><span class="chirpui-ripple-btn__ripple" :style="`left:${r.x}px;top:${r.y}px;width:${r.size}px;height:${r.size}px`"></span></template>Primary Ripple</button>
+    </div>
+    <div class="sc-label">Pulsing</div>
+    <div class="sc-row">
+        <button class="chirpui-pulsing-btn"><span class="chirpui-pulsing-btn__ring"></span>Try Now</button>
+        <button class="chirpui-pulsing-btn"><span class="chirpui-pulsing-btn__ring"></span>◎ Go Live</button>
+    </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  CARDS                                                           -->
+<!-- ================================================================ -->
+<section class="sc-section" id="cards">
+    <h2>Cards</h2>
+    <p class="desc">Standard cards with header, body, footer, and icon support.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid">
+        <article class="chirpui-card">
+            <header class="chirpui-card__header"><h3 class="chirpui-card__title">Basic Card</h3></header>
+            <div class="chirpui-card__body"><p>Standard card with header and body.</p></div>
+        </article>
+        <article class="chirpui-card">
+            <header class="chirpui-card__header">
+                <span class="chirpui-card__icon">◆</span>
+                <div class="chirpui-card__header-content"><h3 class="chirpui-card__title">With Icon</h3></div>
+                <span class="chirpui-badge chirpui-badge--success"><span class="chirpui-badge__text">Active</span></span>
+            </header>
+            <div class="chirpui-card__body"><p>Icon + badge in header, vertically centered.</p></div>
+            <footer class="chirpui-card__footer"><button class="chirpui-btn chirpui-btn--sm chirpui-btn--ghost">Learn More</button></footer>
+        </article>
+        <article class="chirpui-card">
+            <header class="chirpui-card__header">
+                <span class="chirpui-card__icon">⚙</span>
+                <div class="chirpui-card__header-content"><h3 class="chirpui-card__title">Settings</h3></div>
+                <div class="chirpui-card__header-actions"><button class="chirpui-icon-btn chirpui-icon-btn--sm chirpui-icon-btn--ghost" aria-label="More"><span class="chirpui-icon-btn__icon">⋯</span></button></div>
+            </header>
+            <div class="chirpui-card__body"><p>Card with header actions and icon.</p></div>
+        </article>
+    </div>
+</section>
+
+<section class="sc-section" id="card-variants">
+    <h2>Card Variants</h2>
+    <hr class="sc-divider">
+    <div class="sc-label">Collapsible Card</div>
+    <details class="chirpui-card chirpui-card--collapsible" open>
+        <summary class="chirpui-card__header"><h3 class="chirpui-card__title">Click to collapse</h3></summary>
+        <div class="chirpui-card__body"><p>This card body can be collapsed/expanded.</p></div>
+    </details>
+</section>
+
+<section class="sc-section" id="effect-cards">
+    <h2>Effect Cards</h2>
+    <p class="desc">Glow, spotlight, and border beam effects.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid">
+        <div class="chirpui-glow-card" x-data @mousemove="$el.style.setProperty('--chirpui-mouse-x',$event.offsetX+'px');$el.style.setProperty('--chirpui-mouse-y',$event.offsetY+'px')">
+            <div class="chirpui-glow-card__glow"></div>
+            <div class="chirpui-glow-card__content"><div class="sc-label">Glow Card</div><p style="margin:0;font-size:0.85rem">Mouse-following radial glow.</p></div>
+        </div>
+        <div class="chirpui-glow-card chirpui-glow-card--accent" x-data @mousemove="$el.style.setProperty('--chirpui-mouse-x',$event.offsetX+'px');$el.style.setProperty('--chirpui-mouse-y',$event.offsetY+'px')">
+            <div class="chirpui-glow-card__glow"></div>
+            <div class="chirpui-glow-card__content"><div class="sc-label">Accent Glow</div><p style="margin:0;font-size:0.85rem">Accent-colored variant.</p></div>
+        </div>
+        <div class="chirpui-spotlight-card">
+            <div class="chirpui-spotlight-card__spotlight"></div>
+            <div class="chirpui-spotlight-card__content"><div class="sc-label">Spotlight</div><p style="margin:0;font-size:0.85rem">Auto-rotating spotlight. Pure CSS.</p></div>
+        </div>
+    </div>
+    <div class="sc-label">Border Beam</div>
+    <div class="sc-grid">
+        <div class="chirpui-border-beam"><div class="chirpui-border-beam__beam"></div><div class="chirpui-border-beam__content" style="padding:1rem"><strong>Default</strong><p style="margin:0.25rem 0 0;font-size:0.82rem;color:var(--chirpui-text-muted)">Rotating conic gradient border.</p></div></div>
+        <div class="chirpui-border-beam chirpui-border-beam--success"><div class="chirpui-border-beam__beam"></div><div class="chirpui-border-beam__content" style="padding:1rem"><strong>Success</strong><p style="margin:0.25rem 0 0;font-size:0.82rem;color:var(--chirpui-text-muted)">Green beam variant.</p></div></div>
+        <div class="chirpui-border-beam chirpui-border-beam--warning"><div class="chirpui-border-beam__beam"></div><div class="chirpui-border-beam__content" style="padding:1rem"><strong>Warning</strong><p style="margin:0.25rem 0 0;font-size:0.82rem;color:var(--chirpui-text-muted)">Amber beam variant.</p></div></div>
+    </div>
+</section>
+
+<section class="sc-section" id="metric-cards">
+    <h2>Metric Cards</h2>
+    <p class="desc">KPI cards with icon badges, trend arrows, and footer links.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid-3">
+        <div class="chirpui-card chirpui-metric-card"><div class="chirpui-card__body">
+            <div class="chirpui-metric-card__top">
+                <span class="chirpui-metric-card__icon-badge chirpui-metric-card__icon-badge--primary">👥</span>
+                <div class="chirpui-metric-card__values"><div class="chirpui-stat"><span class="chirpui-stat__value">72,540</span><span class="chirpui-stat__label">Active Users</span></div></div>
+            </div>
+            <span class="chirpui-metric-card__trend chirpui-metric-card__trend--up"><span class="chirpui-metric-card__trend-arrow">↑</span> +12.5%</span>
+        </div></div>
+        <div class="chirpui-card chirpui-metric-card"><div class="chirpui-card__body">
+            <div class="chirpui-metric-card__top">
+                <span class="chirpui-metric-card__icon-badge chirpui-metric-card__icon-badge--success">💰</span>
+                <div class="chirpui-metric-card__values"><div class="chirpui-stat"><span class="chirpui-stat__value">$48.2M</span><span class="chirpui-stat__label">Revenue</span></div></div>
+            </div>
+            <span class="chirpui-metric-card__trend chirpui-metric-card__trend--up"><span class="chirpui-metric-card__trend-arrow">↑</span> +8.1%</span>
+            <a href="#" class="chirpui-metric-card__footer">View reports →</a>
+        </div></div>
+        <div class="chirpui-card chirpui-metric-card"><div class="chirpui-card__body">
+            <div class="chirpui-metric-card__top">
+                <span class="chirpui-metric-card__icon-badge chirpui-metric-card__icon-badge--error">⚠</span>
+                <div class="chirpui-metric-card__values"><div class="chirpui-stat"><span class="chirpui-stat__value">23</span><span class="chirpui-stat__label">Open Issues</span></div></div>
+            </div>
+            <span class="chirpui-metric-card__trend chirpui-metric-card__trend--down"><span class="chirpui-metric-card__trend-arrow">↓</span> -3.2%</span>
+        </div></div>
+    </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  DATA DISPLAY                                                    -->
+<!-- ================================================================ -->
+<section class="sc-section" id="badges">
+    <h2>Badges & Status</h2>
+    <hr class="sc-divider">
+    <div class="sc-label">Badges</div>
+    <div class="sc-row">
+        <span class="chirpui-badge chirpui-badge--primary"><span class="chirpui-badge__icon">✦</span><span class="chirpui-badge__text">Primary</span></span>
+        <span class="chirpui-badge chirpui-badge--success"><span class="chirpui-badge__text">Success</span></span>
+        <span class="chirpui-badge chirpui-badge--warning"><span class="chirpui-badge__text">Warning</span></span>
+        <span class="chirpui-badge chirpui-badge--error"><span class="chirpui-badge__text">Error</span></span>
+        <span class="chirpui-badge chirpui-badge--muted"><span class="chirpui-badge__text">Muted</span></span>
+        <span class="chirpui-badge chirpui-badge--info"><span class="chirpui-badge__text">Info</span></span>
+    </div>
+    <div class="sc-label">Status Indicators</div>
+    <div class="sc-row">
+        <span class="chirpui-status-indicator"><span class="chirpui-status-indicator__dot"></span><span class="chirpui-status-indicator__label">Online</span></span>
+        <span class="chirpui-status-indicator chirpui-status-indicator--success"><span class="chirpui-status-indicator__dot"></span><span class="chirpui-status-indicator__label">Healthy</span></span>
+        <span class="chirpui-status-indicator chirpui-status-indicator--pulse"><span class="chirpui-status-indicator__dot"></span><span class="chirpui-status-indicator__label">Live</span></span>
+    </div>
+    <div class="sc-label">Live Badge</div>
+    <div class="sc-row"><span class="chirpui-live-badge"><span class="chirpui-live-badge__dot"></span>LIVE</span></div>
+</section>
+
+<section class="sc-section" id="progress">
+    <h2>Progress & Charts</h2>
+    <hr class="sc-divider">
+    <div class="sc-label">Progress Bars</div>
+    <div class="sc-stack" style="max-width:400px">
+        <div><div class="sc-label" style="font-size:0.62rem">Gold · 75%</div><div class="chirpui-progress-bar chirpui-progress-bar--gold chirpui-progress-bar--md" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"><div class="chirpui-progress-bar__track"><div class="chirpui-progress-bar__fill" style="width:75%"></div></div></div></div>
+        <div><div class="sc-label" style="font-size:0.62rem">Success · 45%</div><div class="chirpui-progress-bar chirpui-progress-bar--success chirpui-progress-bar--md" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"><div class="chirpui-progress-bar__track"><div class="chirpui-progress-bar__fill" style="width:45%"></div></div></div></div>
+        <div><div class="sc-label" style="font-size:0.62rem">Radiant · 90%</div><div class="chirpui-progress-bar chirpui-progress-bar--radiant chirpui-progress-bar--md" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><div class="chirpui-progress-bar__track"><div class="chirpui-progress-bar__fill" style="width:90%"></div></div></div></div>
+        <div><div class="sc-label" style="font-size:0.62rem">Watched (sm)</div><div class="chirpui-progress-bar chirpui-progress-bar--watched chirpui-progress-bar--sm" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><div class="chirpui-progress-bar__track"><div class="chirpui-progress-bar__fill" style="width:60%"></div></div></div></div>
+    </div>
+</section>
+
+<section class="sc-section" id="counters">
+    <h2>Number Tickers & Counters</h2>
+    <p class="desc">CSS @property animated counters — count from 0 on load.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Number Tickers</div>
+    <div class="sc-row" style="font-size:1.5rem;font-weight:700">
+        <span class="chirpui-number-ticker chirpui-number-ticker--xl"><span class="chirpui-number-ticker__prefix">$</span><span class="chirpui-number-ticker__value" style="--chirpui-num:1250;--chirpui-num-target:1250"></span></span>
+        <span style="color:var(--chirpui-text-muted);font-size:0.8rem">•</span>
+        <span class="chirpui-number-ticker chirpui-number-ticker--xl chirpui-number-ticker--mono"><span class="chirpui-number-ticker__value" style="--chirpui-num:99;--chirpui-num-target:99"></span><span class="chirpui-number-ticker__suffix">%</span></span>
+    </div>
+    <div class="sc-label">Animated Counters</div>
+    <div class="sc-grid-3">
+        <div class="chirpui-animated-counter"><div class="chirpui-animated-counter__display"><span class="chirpui-animated-counter__value" style="--chirpui-num:72540;--chirpui-num-target:72540"></span></div><span class="chirpui-animated-counter__label">Active Users</span></div>
+        <div class="chirpui-animated-counter chirpui-animated-counter--mono"><div class="chirpui-animated-counter__display"><span class="chirpui-animated-counter__prefix">$</span><span class="chirpui-animated-counter__value" style="--chirpui-num:48;--chirpui-num-target:48"></span><span class="chirpui-animated-counter__suffix">M</span></div><span class="chirpui-animated-counter__label">Revenue</span></div>
+        <div class="chirpui-animated-counter"><div class="chirpui-animated-counter__display"><span class="chirpui-animated-counter__value" style="--chirpui-num:99;--chirpui-num-target:99"></span><span class="chirpui-animated-counter__suffix">%</span></div><span class="chirpui-animated-counter__label">Uptime</span></div>
+    </div>
+</section>
+
+<section class="sc-section" id="tables">
+    <h2>Tables</h2>
+    <hr class="sc-divider">
+    <div class="sc-box" style="overflow-x:auto">
+        <table class="chirpui-table">
+            <thead><tr><th>Name</th><th>Status</th><th>Role</th><th>Last Active</th></tr></thead>
+            <tbody>
+                <tr><td>Alice Chen</td><td><span class="chirpui-badge chirpui-badge--success"><span class="chirpui-badge__text">Active</span></span></td><td>Admin</td><td>2 min ago</td></tr>
+                <tr><td>Bob Smith</td><td><span class="chirpui-badge chirpui-badge--warning"><span class="chirpui-badge__text">Away</span></span></td><td>Editor</td><td>1 hour ago</td></tr>
+                <tr><td>Carol Davis</td><td><span class="chirpui-badge chirpui-badge--muted"><span class="chirpui-badge__text">Offline</span></span></td><td>Viewer</td><td>3 days ago</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="sc-section" id="timeline">
+    <h2>Timeline</h2>
+    <p class="desc">Enhanced with icons, avatars, semantic colors, time column, and hoverable rows.</p>
+    <hr class="sc-divider">
+    <div class="sc-box" style="max-width:500px">
+        <div class="chirpui-timeline">
+            <div class="chirpui-timeline__item chirpui-timeline__item--success">
+                <div class="chirpui-timeline__icon">✓</div>
+                <div class="chirpui-timeline__content"><span class="chirpui-timeline__time">2:30 PM</span><div class="chirpui-timeline__header"><span class="chirpui-timeline__title">Deployed to production</span><span class="chirpui-timeline__date">Today</span></div><div class="chirpui-timeline__body">Version 2.4.1 released</div></div>
+            </div>
+            <div class="chirpui-timeline__item chirpui-timeline__item--warning">
+                <div class="chirpui-timeline__icon">⚠</div>
+                <div class="chirpui-timeline__content"><span class="chirpui-timeline__time">1:15 PM</span><div class="chirpui-timeline__header"><span class="chirpui-timeline__title">Build warning</span><span class="chirpui-timeline__date">Today</span></div><div class="chirpui-timeline__body">3 deprecation warnings</div></div>
+            </div>
+            <div class="chirpui-timeline__item">
+                <div class="chirpui-timeline__dot"></div>
+                <div class="chirpui-timeline__content"><span class="chirpui-timeline__time">11:00 AM</span><div class="chirpui-timeline__header"><span class="chirpui-timeline__title">Tests passed</span><span class="chirpui-timeline__date">Today</span></div><div class="chirpui-timeline__body">All 397 tests green</div></div>
+            </div>
+            <div class="chirpui-timeline__item chirpui-timeline__item--error">
+                <div class="chirpui-timeline__icon">✕</div>
+                <div class="chirpui-timeline__content"><div class="chirpui-timeline__header"><span class="chirpui-timeline__title">Pipeline failed</span><span class="chirpui-timeline__date">Yesterday</span></div><div class="chirpui-timeline__body">Lint error in forms.html</div></div>
+            </div>
+            <div class="chirpui-timeline__item chirpui-timeline__item--info">
+                <div class="chirpui-timeline__icon">ℹ</div>
+                <div class="chirpui-timeline__content"><div class="chirpui-timeline__header"><span class="chirpui-timeline__title">Branch created</span><span class="chirpui-timeline__date">Monday</span></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="description-list">
+    <h2>Description List</h2>
+    <hr class="sc-divider">
+    <dl class="chirpui-description-list chirpui-description-list--horizontal">
+        <div class="chirpui-description-list__item"><dt class="chirpui-description-list__term">Name</dt><dd class="chirpui-description-list__detail">chirp-ui</dd></div>
+        <div class="chirpui-description-list__item"><dt class="chirpui-description-list__term">Version</dt><dd class="chirpui-description-list__detail">0.1.6</dd></div>
+        <div class="chirpui-description-list__item"><dt class="chirpui-description-list__term">License</dt><dd class="chirpui-description-list__detail">MIT</dd></div>
+    </dl>
+</section>
+
+<section class="sc-section" id="pagination">
+    <h2>Pagination</h2>
+    <hr class="sc-divider">
+    <nav class="chirpui-pagination">
+        <a class="chirpui-pagination__item" href="#">←</a>
+        <a class="chirpui-pagination__item" href="#">1</a>
+        <a class="chirpui-pagination__item chirpui-pagination__item--active" href="#">2</a>
+        <a class="chirpui-pagination__item" href="#">3</a>
+        <span class="chirpui-pagination__item chirpui-pagination__ellipsis">…</span>
+        <a class="chirpui-pagination__item" href="#">12</a>
+        <a class="chirpui-pagination__item" href="#">→</a>
+    </nav>
+</section>
+
+<!-- ================================================================ -->
+<!--  FEEDBACK                                                        -->
+<!-- ================================================================ -->
+<section class="sc-section" id="alerts">
+    <h2>Alerts</h2>
+    <hr class="sc-divider">
+    <div class="sc-stack" style="max-width:500px">
+        <div class="chirpui-alert chirpui-alert--info"><span class="chirpui-alert__icon">ℹ</span><div class="chirpui-alert__body"><strong>Info:</strong> A new version is available.</div></div>
+        <div class="chirpui-alert chirpui-alert--success"><span class="chirpui-alert__icon">✓</span><div class="chirpui-alert__body"><strong>Success:</strong> Changes saved.</div></div>
+        <div class="chirpui-alert chirpui-alert--warning"><span class="chirpui-alert__icon">⚠</span><div class="chirpui-alert__body"><strong>Warning:</strong> Rate limit approaching.</div></div>
+        <div class="chirpui-alert chirpui-alert--error"><span class="chirpui-alert__icon">✕</span><div class="chirpui-alert__body"><strong>Error:</strong> Database connection failed.</div></div>
+    </div>
+</section>
+
+<section class="sc-section" id="toast">
+    <h2>Toast</h2>
+    <hr class="sc-divider">
+    <div class="sc-stack" style="max-width:350px">
+        <div class="chirpui-toast chirpui-toast--success"><span class="chirpui-toast__icon">✓</span><span class="chirpui-toast__message">File uploaded successfully</span></div>
+        <div class="chirpui-toast chirpui-toast--error"><span class="chirpui-toast__icon">✕</span><span class="chirpui-toast__message">Upload failed</span></div>
+    </div>
+</section>
+
+<section class="sc-section" id="skeleton">
+    <h2>Skeleton</h2>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <div class="chirpui-skeleton" style="width:200px;height:1rem"></div>
+        <div class="chirpui-skeleton chirpui-skeleton--avatar" style="width:40px;height:40px"></div>
+        <div class="chirpui-skeleton" style="width:300px;height:0.75rem"></div>
+    </div>
+</section>
+
+<section class="sc-section" id="spinner">
+    <h2>Spinner</h2>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <span class="chirpui-spinner chirpui-spinner--sm" role="status" aria-label="Loading"><span class="chirpui-spinner__mote">✦</span></span>
+        <span class="chirpui-spinner chirpui-spinner--md" role="status" aria-label="Loading"><span class="chirpui-spinner__mote">✦</span></span>
+        <span class="chirpui-spinner chirpui-spinner--lg" role="status" aria-label="Loading"><span class="chirpui-spinner__mote">✦</span></span>
+    </div>
+</section>
+
+<section class="sc-section" id="tooltip">
+    <h2>Tooltip</h2>
+    <p class="desc">Pure CSS tooltips with 4 positions. Dark-mode aware.</p>
+    <hr class="sc-divider">
+    <div class="sc-row" style="gap:2rem;padding:1rem 0">
+        <span class="chirpui-tooltip chirpui-tooltip--top"><button class="chirpui-btn chirpui-btn--sm">Top</button><span class="chirpui-tooltip__bubble" role="tooltip">Tooltip above</span></span>
+        <span class="chirpui-tooltip chirpui-tooltip--bottom"><button class="chirpui-btn chirpui-btn--sm">Bottom</button><span class="chirpui-tooltip__bubble" role="tooltip">Tooltip below</span></span>
+        <span class="chirpui-tooltip chirpui-tooltip--left"><button class="chirpui-btn chirpui-btn--sm">Left</button><span class="chirpui-tooltip__bubble" role="tooltip">Tooltip left</span></span>
+        <span class="chirpui-tooltip chirpui-tooltip--right"><button class="chirpui-btn chirpui-btn--sm">Right</button><span class="chirpui-tooltip__bubble" role="tooltip">Tooltip right</span></span>
+    </div>
+</section>
+
+<section class="sc-section" id="notification-dot">
+    <h2>Notification Dot</h2>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <span class="chirpui-notification-dot"><button class="chirpui-btn chirpui-btn--sm">Inbox</button><span class="chirpui-notification-dot__ping"></span><span class="chirpui-notification-dot__dot"></span></span>
+        <span class="chirpui-notification-dot chirpui-notification-dot--success"><button class="chirpui-icon-btn" aria-label="Chat"><span class="chirpui-icon-btn__icon">◎</span></button><span class="chirpui-notification-dot__ping"></span><span class="chirpui-notification-dot__dot"></span></span>
+        <span class="chirpui-notification-dot chirpui-notification-dot--warning chirpui-notification-dot--lg"><button class="chirpui-btn chirpui-btn--sm chirpui-btn--ghost">Alerts</button><span class="chirpui-notification-dot__ping"></span><span class="chirpui-notification-dot__dot"></span></span>
+    </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  FORMS                                                           -->
+<!-- ================================================================ -->
+<section class="sc-section" id="text-fields">
+    <h2>Form Fields</h2>
+    <hr class="sc-divider">
+    <div class="sc-stack" style="max-width:350px">
+        <div class="chirpui-field"><label class="chirpui-field__label" for="f1">Email</label><input id="f1" class="chirpui-field__control" type="email" placeholder="you@example.com"></div>
+        <div class="chirpui-field"><label class="chirpui-field__label" for="f2">Password</label><input id="f2" class="chirpui-field__control" type="password" placeholder="••••••••"></div>
+        <div class="chirpui-field"><label class="chirpui-field__label" for="f3">Message</label><textarea id="f3" class="chirpui-field__control" rows="3" placeholder="Write something…"></textarea></div>
+        <div class="chirpui-field"><label class="chirpui-field__label" for="f4">Select</label><select id="f4" class="chirpui-field__control"><option>Option 1</option><option>Option 2</option></select></div>
+    </div>
+</section>
+
+<section class="sc-section" id="toggles">
+    <h2>Toggles</h2>
+    <p class="desc">Size, color variants, and label-inside-track.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Sizes</div>
+    <div class="sc-row">
+        <label class="chirpui-toggle-wrap chirpui-toggle-wrap--sm"><input type="checkbox" class="chirpui-toggle chirpui-visually-hidden" checked><span class="chirpui-toggle__track"></span><span class="chirpui-toggle__label">Small</span></label>
+        <label class="chirpui-toggle-wrap"><input type="checkbox" class="chirpui-toggle chirpui-visually-hidden" checked><span class="chirpui-toggle__track"></span><span class="chirpui-toggle__label">Default</span></label>
+        <label class="chirpui-toggle-wrap chirpui-toggle-wrap--lg"><input type="checkbox" class="chirpui-toggle chirpui-visually-hidden" checked><span class="chirpui-toggle__track"></span><span class="chirpui-toggle__label">Large</span></label>
+    </div>
+    <div class="sc-label">Colors</div>
+    <div class="sc-row">
+        <label class="chirpui-toggle-wrap chirpui-toggle-wrap--success"><input type="checkbox" class="chirpui-toggle chirpui-visually-hidden" checked><span class="chirpui-toggle__track"></span><span class="chirpui-toggle__label">Success</span></label>
+        <label class="chirpui-toggle-wrap chirpui-toggle-wrap--danger"><input type="checkbox" class="chirpui-toggle chirpui-visually-hidden" checked><span class="chirpui-toggle__track"></span><span class="chirpui-toggle__label">Danger</span></label>
+        <label class="chirpui-toggle-wrap chirpui-toggle-wrap--accent"><input type="checkbox" class="chirpui-toggle chirpui-visually-hidden" checked><span class="chirpui-toggle__track"></span><span class="chirpui-toggle__label">Accent</span></label>
+    </div>
+    <div class="sc-label">Label Inside Track</div>
+    <div class="sc-row">
+        <label class="chirpui-toggle-wrap chirpui-toggle-wrap--lg"><input type="checkbox" class="chirpui-toggle chirpui-visually-hidden" checked><span class="chirpui-toggle__track"><span class="chirpui-toggle__track-label chirpui-toggle__track-label--on">ON</span><span class="chirpui-toggle__track-label chirpui-toggle__track-label--off">OFF</span></span><span class="chirpui-toggle__label">Power</span></label>
+        <label class="chirpui-toggle-wrap chirpui-toggle-wrap--lg chirpui-toggle-wrap--success"><input type="checkbox" class="chirpui-toggle chirpui-visually-hidden"><span class="chirpui-toggle__track"><span class="chirpui-toggle__track-label chirpui-toggle__track-label--on">ON</span><span class="chirpui-toggle__track-label chirpui-toggle__track-label--off">OFF</span></span><span class="chirpui-toggle__label">Auto-deploy</span></label>
+    </div>
+</section>
+
+<section class="sc-section" id="checkboxes">
+    <h2>Checkboxes & Radio</h2>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <label class="chirpui-field__label chirpui-field__label--inline"><input type="checkbox" class="chirpui-checkbox" checked> Remember me</label>
+        <label class="chirpui-field__label chirpui-field__label--inline"><input type="checkbox" class="chirpui-checkbox"> Subscribe</label>
+    </div>
+</section>
+
+<section class="sc-section" id="search">
+    <h2>Search Bar</h2>
+    <hr class="sc-divider">
+    <div style="max-width:400px">
+        <div class="chirpui-search-bar"><span class="chirpui-search-bar__icon">⌕</span><input class="chirpui-search-bar__input" type="search" placeholder="Search components…"></div>
+    </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  NAVIGATION                                                      -->
+<!-- ================================================================ -->
+<section class="sc-section" id="tabs">
+    <h2>Tabs</h2>
+    <hr class="sc-divider">
+    <nav class="chirpui-tabs">
+        <a class="chirpui-tab chirpui-tab--active" href="#">Overview</a>
+        <a class="chirpui-tab" href="#">Activity</a>
+        <a class="chirpui-tab" href="#">Settings</a>
+        <a class="chirpui-tab" href="#">Members</a>
+    </nav>
+</section>
+
+<section class="sc-section" id="breadcrumbs">
+    <h2>Breadcrumbs</h2>
+    <hr class="sc-divider">
+    <nav class="chirpui-breadcrumbs"><a class="chirpui-breadcrumbs__item" href="#">Home</a><span class="chirpui-breadcrumbs__sep">/</span><a class="chirpui-breadcrumbs__item" href="#">Components</a><span class="chirpui-breadcrumbs__sep">/</span><span class="chirpui-breadcrumbs__item chirpui-breadcrumbs__item--current">Buttons</span></nav>
+</section>
+
+<section class="sc-section" id="dock">
+    <h2>Floating Dock</h2>
+    <p class="desc">macOS-style dock with magnification on hover.</p>
+    <hr class="sc-divider">
+    <div style="display:flex;justify-content:center;padding:2rem 0">
+        <nav class="chirpui-dock" aria-label="Dock">
+            <button class="chirpui-dock__item chirpui-dock__item--active" aria-label="Home">◉</button>
+            <button class="chirpui-dock__item" aria-label="Search">⌕</button>
+            <button class="chirpui-dock__item" aria-label="Settings">⚙</button>
+            <button class="chirpui-dock__item" aria-label="User">⊙</button>
+            <button class="chirpui-dock__item" aria-label="Chat">◎</button>
+        </nav>
+    </div>
+    <div style="display:flex;justify-content:center;padding:0 0 1rem">
+        <nav class="chirpui-dock chirpui-dock--glass" aria-label="Glass Dock">
+            <button class="chirpui-dock__item" aria-label="Home">◉</button>
+            <button class="chirpui-dock__item chirpui-dock__item--active" aria-label="Star">★</button>
+            <button class="chirpui-dock__item" aria-label="Bolt">⚡</button>
+        </nav>
+    </div>
+</section>
+
+<section class="sc-section" id="stepper">
+    <h2>Stepper</h2>
+    <hr class="sc-divider">
+    <nav class="chirpui-stepper" aria-label="Progress" style="max-width:500px">
+        <ol class="chirpui-stepper__list">
+            <li class="chirpui-stepper__item chirpui-stepper__item--completed">
+                <span class="chirpui-stepper__indicator"><span class="chirpui-stepper__check" aria-hidden="true">✓</span></span>
+                <span class="chirpui-stepper__label">Account</span>
+            </li>
+            <li class="chirpui-stepper__item chirpui-stepper__item--completed">
+                <span class="chirpui-stepper__indicator"><span class="chirpui-stepper__check" aria-hidden="true">✓</span></span>
+                <span class="chirpui-stepper__label">Profile</span>
+            </li>
+            <li class="chirpui-stepper__item chirpui-stepper__item--active" aria-current="step">
+                <span class="chirpui-stepper__indicator"><span class="chirpui-stepper__number">3</span></span>
+                <span class="chirpui-stepper__label">Review</span>
+            </li>
+            <li class="chirpui-stepper__item">
+                <span class="chirpui-stepper__indicator"><span class="chirpui-stepper__number">4</span></span>
+                <span class="chirpui-stepper__label">Confirm</span>
+            </li>
+        </ol>
+    </nav>
+</section>
+
+<!-- ================================================================ -->
+<!--  LAYOUT                                                          -->
+<!-- ================================================================ -->
+<section class="sc-section" id="surfaces">
+    <h2>Surfaces</h2>
+    <hr class="sc-divider">
+    <div class="sc-grid">
+        <div class="chirpui-surface chirpui-surface--default" style="padding:1rem"><div class="sc-label">Default</div>Base surface.</div>
+        <div class="chirpui-surface chirpui-surface--muted" style="padding:1rem"><div class="sc-label">Muted</div>Background grouping.</div>
+        <div class="chirpui-surface chirpui-surface--elevated" style="padding:1rem"><div class="sc-label">Elevated</div>Attention surface.</div>
+        <div class="chirpui-surface chirpui-surface--accent" style="padding:1rem"><div class="sc-label">Accent</div>Primary action.</div>
+    </div>
+</section>
+
+<section class="sc-section" id="layout-primitives">
+    <h2>Grid / Stack / Cluster</h2>
+    <hr class="sc-divider">
+    <div class="sc-label">Grid (3 cols)</div>
+    <div class="chirpui-grid" style="margin-bottom:1rem"><div class="sc-box">1</div><div class="sc-box">2</div><div class="sc-box">3</div></div>
+    <div class="sc-label">Stack</div>
+    <div class="chirpui-stack" style="margin-bottom:1rem;max-width:200px"><div class="sc-box">A</div><div class="sc-box">B</div><div class="sc-box">C</div></div>
+    <div class="sc-label">Cluster</div>
+    <div class="chirpui-cluster" style="margin-bottom:1rem">
+        <span class="chirpui-badge chirpui-badge--primary"><span class="chirpui-badge__text">Tag 1</span></span>
+        <span class="chirpui-badge chirpui-badge--success"><span class="chirpui-badge__text">Tag 2</span></span>
+        <span class="chirpui-badge chirpui-badge--warning"><span class="chirpui-badge__text">Tag 3</span></span>
+        <span class="chirpui-badge chirpui-badge--error"><span class="chirpui-badge__text">Tag 4</span></span>
+    </div>
+</section>
+
+<section class="sc-section" id="bento">
+    <h2>Bento Grid</h2>
+    <hr class="sc-divider">
+    <div class="chirpui-bento">
+        <div class="chirpui-bento__item chirpui-bento__item--span-2" style="display:flex;align-items:center;justify-content:center;color:var(--chirpui-text-muted)">Wide (span 2)</div>
+        <div class="chirpui-bento__item" style="display:flex;align-items:center;justify-content:center;color:var(--chirpui-text-muted)">Normal</div>
+        <div class="chirpui-bento__item" style="display:flex;align-items:center;justify-content:center;color:var(--chirpui-text-muted)">Normal</div>
+        <div class="chirpui-bento__item chirpui-bento__item--span-2" style="display:flex;align-items:center;justify-content:center;color:var(--chirpui-text-muted)">Wide (span 2)</div>
+    </div>
+</section>
+
+<section class="sc-section" id="split-panel">
+    <h2>Split Panel</h2>
+    <p class="desc">Resizable split panel with draggable handle.</p>
+    <hr class="sc-divider">
+    <div class="chirpui-split-panel" style="height:200px;border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius-lg);overflow:hidden" x-data="{split:40,dragging:false,startDrag(e){this.dragging=true;const m=(ev)=>{const r=$el.getBoundingClientRect();this.split=Math.min(80,Math.max(20,((ev.clientX-r.left)/r.width)*100))};const s=()=>{this.dragging=false;document.removeEventListener('mousemove',m);document.removeEventListener('mouseup',s)};document.addEventListener('mousemove',m);document.addEventListener('mouseup',s)}}" :class="{'chirpui-split-panel--dragging':dragging}">
+        <div class="chirpui-split-panel__pane chirpui-split-panel__pane--first" :style="'flex:0 0 '+split+'%'" style="padding:1rem;background:var(--chirpui-surface-alt)"><strong>Left</strong><p style="font-size:0.82rem;color:var(--chirpui-text-muted)">Sidebar or nav.</p></div>
+        <div class="chirpui-split-panel__handle" @mousedown.prevent="startDrag($event)" role="separator"><span class="chirpui-split-panel__handle-grip"></span></div>
+        <div class="chirpui-split-panel__pane chirpui-split-panel__pane--second" style="padding:1rem"><strong>Right</strong><p style="font-size:0.82rem;color:var(--chirpui-text-muted)">Main content area.</p></div>
+    </div>
+</section>
+
+<section class="sc-section" id="divider">
+    <h2>Divider</h2>
+    <hr class="sc-divider">
+    <div class="chirpui-divider"></div>
+    <div class="sc-spacer"></div>
+    <div class="chirpui-divider chirpui-divider--label"><span>or</span></div>
+</section>
+
+<!-- ================================================================ -->
+<!--  OVERLAYS                                                        -->
+<!-- ================================================================ -->
+<section class="sc-section" id="modal">
+    <h2>Modal</h2>
+    <hr class="sc-divider">
+    <button class="chirpui-btn chirpui-btn--primary" onclick="document.getElementById('demo-modal').showModal()">Open Modal</button>
+    <dialog id="demo-modal" class="chirpui-modal">
+        <header class="chirpui-modal__header">
+            <h3 class="chirpui-modal__title">Example Modal</h3>
+            <form method="dialog"><button class="chirpui-modal__close" aria-label="Close">&times;</button></form>
+        </header>
+        <div class="chirpui-modal__body">
+            <p style="margin:0">This is a native <code>&lt;dialog&gt;</code> modal. No JS framework needed.</p>
+            <p style="margin:0.75rem 0 0;color:var(--chirpui-text-muted);font-size:0.85rem">The footer has proper padding and a border separator. Buttons are spaced and right-aligned.</p>
+        </div>
+        <footer class="chirpui-modal__footer">
+            <button class="chirpui-btn chirpui-btn--ghost" onclick="this.closest('dialog').close()">Cancel</button>
+            <button class="chirpui-btn chirpui-btn--primary" onclick="this.closest('dialog').close()">Confirm</button>
+        </footer>
+    </dialog>
+</section>
+
+<section class="sc-section" id="dropdown">
+    <h2>Dropdown</h2>
+    <hr class="sc-divider">
+    <details class="chirpui-dropdown">
+        <summary class="chirpui-btn">Options ▾</summary>
+        <div class="chirpui-dropdown__menu">
+            <button class="chirpui-dropdown__item">Edit</button>
+            <button class="chirpui-dropdown__item">Duplicate</button>
+            <hr class="chirpui-dropdown__divider">
+            <button class="chirpui-dropdown__item chirpui-dropdown__item--danger">Delete</button>
+        </div>
+    </details>
+</section>
+
+<section class="sc-section" id="accordion">
+    <h2>Accordion</h2>
+    <hr class="sc-divider">
+    <div class="chirpui-accordion" style="max-width:500px">
+        <details class="chirpui-accordion__item" open>
+            <summary class="chirpui-accordion__trigger">What is chirp-ui?</summary>
+            <div class="chirpui-accordion__content"><p>A comprehensive CSS-first component library for server-rendered applications using Kida templates, Alpine.js, and htmx.</p></div>
+        </details>
+        <details class="chirpui-accordion__item">
+            <summary class="chirpui-accordion__trigger">Do I need a build step?</summary>
+            <div class="chirpui-accordion__content"><p>No. chirp-ui uses no build tools — just CSS, HTML templates, and optional Alpine.js.</p></div>
+        </details>
+        <details class="chirpui-accordion__item">
+            <summary class="chirpui-accordion__trigger">Does it support dark mode?</summary>
+            <div class="chirpui-accordion__content"><p>Yes. All components use semantic CSS custom properties that adapt via <code>prefers-color-scheme</code> and manual <code>data-theme</code> override.</p></div>
+        </details>
+    </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  CONTENT                                                         -->
+<!-- ================================================================ -->
+<section class="sc-section" id="hero">
+    <h2>Hero</h2>
+    <hr class="sc-divider">
+    <div class="chirpui-hero chirpui-hero--muted" style="border-radius:var(--chirpui-radius-lg);min-height:200px;display:flex;align-items:center;justify-content:center;text-align:center">
+        <div><h2 style="margin:0">Build beautiful interfaces</h2><p style="color:var(--chirpui-text-muted)">135 templates. Zero build step. Dark mode included.</p><button class="chirpui-btn chirpui-btn--primary" style="margin-top:0.75rem">Get Started</button></div>
+    </div>
+</section>
+
+<section class="sc-section" id="callout">
+    <h2>Callout</h2>
+    <hr class="sc-divider">
+    <div class="chirpui-callout" style="max-width:500px">
+        <span class="chirpui-callout__icon">💡</span>
+        <div class="chirpui-callout__body"><strong>Tip:</strong> All chirp-ui components respect <code>prefers-reduced-motion</code> automatically.</div>
+    </div>
+</section>
+
+<section class="sc-section" id="avatar">
+    <h2>Avatars</h2>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <span class="chirpui-avatar chirpui-avatar--sm"><span class="chirpui-avatar__initials">AC</span></span>
+        <span class="chirpui-avatar"><span class="chirpui-avatar__initials">BS</span></span>
+        <span class="chirpui-avatar chirpui-avatar--lg"><span class="chirpui-avatar__initials">CD</span></span>
+    </div>
+</section>
+
+<section class="sc-section" id="code">
+    <h2>Code</h2>
+    <hr class="sc-divider">
+    <p>Inline: <code class="chirpui-code">pip install chirp-ui</code></p>
+    <pre class="chirpui-code-block"><code>from chirp_ui import get_loader, register_filters
+
+app = App(...)
+register_filters(app)</code></pre>
+</section>
+
+<section class="sc-section" id="empty">
+    <h2>Empty State</h2>
+    <hr class="sc-divider">
+    <div class="chirpui-empty" style="max-width:400px;margin:0 auto;text-align:center;padding:2rem">
+        <div class="chirpui-empty__icon" style="font-size:2rem;margin-bottom:0.5rem">📭</div>
+        <h3 class="chirpui-empty__title">No results found</h3>
+        <p class="chirpui-empty__description" style="color:var(--chirpui-text-muted)">Try adjusting your search or filters.</p>
+        <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm" style="margin-top:0.75rem">Clear Filters</button>
+    </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  SOCIAL                                                          -->
+<!-- ================================================================ -->
+<section class="sc-section" id="post-card">
+    <h2>Post Card</h2>
+    <hr class="sc-divider">
+    <div class="sc-box" style="max-width:450px">
+        <div class="chirpui-post-card">
+            <div class="chirpui-post-card__header">
+                <span class="chirpui-avatar chirpui-avatar--sm"><span class="chirpui-avatar__initials">JD</span></span>
+                <div><strong>Jane Doe</strong> <span style="color:var(--chirpui-text-muted);font-size:0.82rem">@jane · 2h</span></div>
+            </div>
+            <div class="chirpui-post-card__body"><p>Just shipped the new chirp-ui component library! 135 templates, zero build step, and it looks great in dark mode. 🚀</p></div>
+            <div class="chirpui-post-card__actions">
+                <button class="chirpui-icon-btn chirpui-icon-btn--ghost chirpui-icon-btn--sm" aria-label="Reply"><span class="chirpui-icon-btn__icon">💬</span></button>
+                <button class="chirpui-icon-btn chirpui-icon-btn--ghost chirpui-icon-btn--sm" aria-label="Like"><span class="chirpui-icon-btn__icon">♡</span></button>
+                <button class="chirpui-icon-btn chirpui-icon-btn--ghost chirpui-icon-btn--sm" aria-label="Share"><span class="chirpui-icon-btn__icon">↗</span></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="message">
+    <h2>Message Bubbles</h2>
+    <hr class="sc-divider">
+    <div class="sc-stack" style="max-width:400px">
+        <div class="chirpui-message-bubble chirpui-message-bubble--received"><div class="chirpui-message-bubble__content">Hey! How's the new UI coming along?</div><span class="chirpui-message-bubble__meta">Alice · 2:30 PM</span></div>
+        <div class="chirpui-message-bubble chirpui-message-bubble--sent"><div class="chirpui-message-bubble__content">Just finished the showcase — 135 components! 🎉</div><span class="chirpui-message-bubble__meta">You · 2:31 PM</span></div>
+    </div>
+</section>
+
+<section class="sc-section" id="reactions">
+    <h2>Reactions & Mentions</h2>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <span class="chirpui-reaction-pill"><span class="chirpui-reaction-pill__emoji">👍</span><span class="chirpui-reaction-pill__count">12</span></span>
+        <span class="chirpui-reaction-pill"><span class="chirpui-reaction-pill__emoji">🎉</span><span class="chirpui-reaction-pill__count">5</span></span>
+        <span class="chirpui-reaction-pill"><span class="chirpui-reaction-pill__emoji">❤️</span><span class="chirpui-reaction-pill__count">8</span></span>
+        <span style="width:1px;height:20px;background:var(--chirpui-border)"></span>
+        <span class="chirpui-mention">@alice</span>
+        <span class="chirpui-mention">@bob</span>
+    </div>
+</section>
+
+<section class="sc-section" id="live-badge">
+    <h2>Live Badge & Typing</h2>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <span class="chirpui-live-badge"><span class="chirpui-live-badge__dot"></span>LIVE</span>
+        <span class="chirpui-typing-indicator"><span class="chirpui-typing-indicator__dot"></span><span class="chirpui-typing-indicator__dot"></span><span class="chirpui-typing-indicator__dot"></span></span>
+    </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  EFFECTS                                                         -->
+<!-- ================================================================ -->
+<section class="sc-section" id="gradient-text">
+    <h2>Typography Effects</h2>
+    <hr class="sc-divider">
+    <div class="sc-stack" style="gap:1.25rem">
+        <div><div class="sc-label">Gradient Text</div><span class="chirpui-gradient-text" style="font-size:2rem;font-weight:700">Premium Feature</span></div>
+        <div><div class="sc-label">Animated Gradient</div><span class="chirpui-gradient-text chirpui-gradient-text--animated" style="font-size:2rem;font-weight:700">Shifting Colors</span></div>
+        <div><div class="sc-label">Text Reveal (refresh to replay)</div><h2 class="chirpui-text-reveal" style="font-size:1.5rem;font-weight:700;margin:0">Welcome to the future</h2></div>
+        <div><div class="sc-label">Text Reveal — Gradient</div><h2 class="chirpui-text-reveal chirpui-text-reveal--gradient" style="font-size:1.5rem;font-weight:700;margin:0">Bold gradient statement</h2></div>
+    </div>
+</section>
+
+<section class="sc-section" id="typewriter">
+    <h2>Typewriter</h2>
+    <p class="desc">Step-based text reveal with blinking cursor. Pure CSS.</p>
+    <hr class="sc-divider">
+    <div class="sc-stack" style="gap:1.5rem">
+        <div>
+            <div class="sc-label">Default</div>
+            <span class="chirpui-typewriter"><span class="chirpui-typewriter__text" style="--chirpui-typewriter-steps: 28">Hello, welcome to chirp-ui!</span></span>
+        </div>
+        <div>
+            <div class="sc-label">Fast Speed</div>
+            <span class="chirpui-typewriter chirpui-typewriter--fast"><span class="chirpui-typewriter__text" style="--chirpui-typewriter-steps: 18">Rapid fire typing...</span></span>
+        </div>
+        <div>
+            <div class="sc-label">Heading Tag, No Cursor</div>
+            <h3 class="chirpui-typewriter chirpui-typewriter--no-cursor" style="margin:0"><span class="chirpui-typewriter__text" style="--chirpui-typewriter-steps: 20">The future is here.</span></h3>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="glitch">
+    <h2>Glitch Text</h2>
+    <p class="desc">RGB-split distortion with pseudo-element layers.</p>
+    <hr class="sc-divider">
+    <div class="sc-row" style="gap:2rem">
+        <div>
+            <div class="sc-label">Default</div>
+            <span class="chirpui-glitch" data-text="SYSTEM ERROR" style="font-size:1.8rem">SYSTEM ERROR</span>
+        </div>
+        <div>
+            <div class="sc-label">Subtle</div>
+            <span class="chirpui-glitch chirpui-glitch--subtle" data-text="SOFT GLITCH" style="font-size:1.8rem">SOFT GLITCH</span>
+        </div>
+        <div>
+            <div class="sc-label">Intense</div>
+            <span class="chirpui-glitch chirpui-glitch--intense" data-text="HACK THE PLANET" style="font-size:1.8rem">HACK THE PLANET</span>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="neon">
+    <h2>Neon Text</h2>
+    <p class="desc">Layered text-shadow glow with color and animation variants.</p>
+    <hr class="sc-divider">
+    <div style="background:#111;border-radius:var(--chirpui-radius-lg);padding:2rem;display:flex;flex-wrap:wrap;gap:2rem;align-items:center">
+        <span class="chirpui-neon chirpui-neon--cyan" style="font-size:2rem">OPEN</span>
+        <span class="chirpui-neon chirpui-neon--magenta chirpui-neon--pulse" style="font-size:2rem">LIVE</span>
+        <span class="chirpui-neon chirpui-neon--green chirpui-neon--flicker" style="font-size:2rem">ARCADE</span>
+        <span class="chirpui-neon chirpui-neon--orange" style="font-size:2rem">BAR</span>
+        <span class="chirpui-neon chirpui-neon--blue chirpui-neon--pulse" style="font-size:1.5rem">COCKTAILS</span>
+        <span class="chirpui-neon chirpui-neon--red chirpui-neon--flicker" style="font-size:1.5rem">HOT</span>
+    </div>
+</section>
+
+<section class="sc-section" id="aurora">
+    <h2>Aurora Background</h2>
+    <p class="desc">Drifting gradient blobs behind content. Great for hero sections.</p>
+    <hr class="sc-divider">
+    <div class="sc-stack" style="gap:1rem">
+        <div class="chirpui-aurora" style="border-radius:var(--chirpui-radius-lg);padding:3rem;text-align:center;min-height:200px;display:flex;align-items:center;justify-content:center">
+            <div class="chirpui-aurora__blobs" aria-hidden="true"><div class="chirpui-aurora__blob"></div><div class="chirpui-aurora__blob"></div><div class="chirpui-aurora__blob"></div></div>
+            <div class="chirpui-aurora__content"><h3 style="margin:0 0 0.25rem;font-size:1.5rem">Default Aurora</h3><p style="margin:0;color:var(--chirpui-text-muted)">Gentle drifting gradient blobs</p></div>
+        </div>
+        <div class="chirpui-aurora chirpui-aurora--intense" style="border-radius:var(--chirpui-radius-lg);padding:3rem;text-align:center;min-height:200px;display:flex;align-items:center;justify-content:center">
+            <div class="chirpui-aurora__blobs" aria-hidden="true"><div class="chirpui-aurora__blob"></div><div class="chirpui-aurora__blob"></div><div class="chirpui-aurora__blob"></div></div>
+            <div class="chirpui-aurora__content"><h3 style="margin:0 0 0.25rem;font-size:1.5rem">Intense Variant</h3><p style="margin:0;color:var(--chirpui-text-muted)">Stronger, less blurred</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="scanline">
+    <h2>Scanline / CRT Overlay</h2>
+    <p class="desc">Retro repeating-gradient line overlay. Pairs well with neon and glitch.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+        <div class="chirpui-scanline" style="background:#111;color:#0f0;font-family:monospace;padding:1.5rem;border-radius:var(--chirpui-radius-lg)">
+            <div style="font-size:0.85rem;line-height:1.6">
+                <span style="color:#0a0">&gt;</span> SYSTEM READY<br>
+                <span style="color:#0a0">&gt;</span> LOADING...<br>
+                <span style="color:#0a0">&gt;</span> WELCOME USER_
+            </div>
+        </div>
+        <div class="chirpui-scanline chirpui-scanline--crt" style="background:#111;color:#0ff;font-family:monospace;padding:1.5rem">
+            <div style="font-size:0.85rem;line-height:1.6">
+                <span style="color:#088">&gt;</span> CRT VARIANT<br>
+                <span style="color:#088">&gt;</span> ROUNDED + VIGNETTE<br>
+                <span style="color:#088">&gt;</span> RETRO VIBES_
+            </div>
+        </div>
+        <div class="chirpui-scanline chirpui-scanline--heavy" style="background:#222;color:#f80;font-family:monospace;padding:1.5rem;border-radius:var(--chirpui-radius-lg)">
+            <div style="font-size:0.85rem;line-height:1.6">
+                <span style="color:#a50">&gt;</span> HEAVY SCANLINES<br>
+                <span style="color:#a50">&gt;</span> MORE VISIBLE<br>
+                <span style="color:#a50">&gt;</span> WARNING MODE_
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="grain">
+    <h2>Film Grain</h2>
+    <p class="desc">SVG noise texture overlay. Adds analog warmth.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+        <div class="chirpui-grain" style="background:linear-gradient(135deg,#667,#334);border-radius:var(--chirpui-radius-lg);padding:2rem;text-align:center;color:#fff">
+            <strong>Default Grain</strong><br><span style="font-size:0.82rem;opacity:0.7">Subtle film texture</span>
+        </div>
+        <div class="chirpui-grain chirpui-grain--heavy" style="background:linear-gradient(135deg,#543,#321);border-radius:var(--chirpui-radius-lg);padding:2rem;text-align:center;color:#fff">
+            <strong>Heavy Grain</strong><br><span style="font-size:0.82rem;opacity:0.7">Vintage photograph</span>
+        </div>
+        <div class="chirpui-grain chirpui-grain--animated" style="background:linear-gradient(135deg,#345,#123);border-radius:var(--chirpui-radius-lg);padding:2rem;text-align:center;color:#fff">
+            <strong>Animated</strong><br><span style="font-size:0.82rem;opacity:0.7">Jittery film grain</span>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="orbit">
+    <h2>Orbit</h2>
+    <p class="desc">Items rotating around a center point. Pure CSS animation.</p>
+    <hr class="sc-divider">
+    <div class="sc-row" style="gap:3rem;justify-content:center;padding:2rem 0">
+        <div>
+            <div class="sc-label" style="text-align:center">Default (4 items)</div>
+            <div class="chirpui-orbit" style="margin:0 auto">
+                <div class="chirpui-orbit__ring" aria-hidden="true"></div>
+                <div class="chirpui-orbit__center"><span style="font-size:1.5rem">🌍</span></div>
+                <span class="chirpui-orbit__item">🐍</span>
+                <span class="chirpui-orbit__item">⚡</span>
+                <span class="chirpui-orbit__item">🔥</span>
+                <span class="chirpui-orbit__item">💎</span>
+            </div>
+        </div>
+        <div>
+            <div class="sc-label" style="text-align:center">Large + Fast + Reverse</div>
+            <div class="chirpui-orbit chirpui-orbit--lg chirpui-orbit--fast chirpui-orbit--reverse" style="margin:0 auto">
+                <div class="chirpui-orbit__ring" aria-hidden="true"></div>
+                <div class="chirpui-orbit__center"><span style="font-size:2rem">⚙️</span></div>
+                <span class="chirpui-orbit__item">🛠</span>
+                <span class="chirpui-orbit__item">📦</span>
+                <span class="chirpui-orbit__item">🧪</span>
+                <span class="chirpui-orbit__item">🚀</span>
+                <span class="chirpui-orbit__item">📊</span>
+                <span class="chirpui-orbit__item">🔧</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="sparkle">
+    <h2>Sparkle</h2>
+    <p class="desc">Staggered star twinkles wrapping content.</p>
+    <hr class="sc-divider">
+    <div class="sc-row" style="gap:2rem;align-items:flex-start">
+        <div>
+            <div class="sc-label">Default (accent)</div>
+            <span class="chirpui-sparkle" style="font-size:1.5rem;font-weight:700;padding:0.5rem">
+                <span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span>
+                Magic Button
+            </span>
+        </div>
+        <div>
+            <div class="sc-label">Gold</div>
+            <span class="chirpui-sparkle chirpui-sparkle--gold" style="font-size:1.5rem;font-weight:700;padding:0.5rem">
+                <span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span>
+                Premium
+            </span>
+        </div>
+        <div>
+            <div class="sc-label">Rainbow</div>
+            <span class="chirpui-sparkle chirpui-sparkle--rainbow" style="font-size:1.5rem;font-weight:700;padding:0.5rem">
+                <span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span><span class="chirpui-sparkle__star" aria-hidden="true"></span>
+                Celebration!
+            </span>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="confetti">
+    <h2>Confetti</h2>
+    <p class="desc">Alpine-triggered celebration burst. Click the button!</p>
+    <hr class="sc-divider">
+    <div class="sc-row" x-data>
+        <button class="chirpui-btn chirpui-btn--primary" @click="$dispatch('confetti')">🎉 Launch Confetti!</button>
+    </div>
+    <!-- Confetti container -->
+    <div class="chirpui-confetti" x-data="{ active: false }" @confetti.window="active = true; setTimeout(() => active = false, 3500)" x-show="active" x-cloak aria-hidden="true">
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--square" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:2%;background:#f44;--chirpui-confetti-duration:2.5s;animation-delay:0ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--circle" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:7%;background:#4af;--chirpui-confetti-duration:3s;animation-delay:80ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--strip" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:12%;background:#fa0;--chirpui-confetti-duration:2.8s;animation-delay:160ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--square" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:18%;background:#4f4;--chirpui-confetti-duration:2.3s;animation-delay:40ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--circle" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:24%;background:#f0f;--chirpui-confetti-duration:3.2s;animation-delay:120ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--strip" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:30%;background:#0ff;--chirpui-confetti-duration:2.6s;animation-delay:200ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--square" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:36%;background:#ff0;--chirpui-confetti-duration:2.9s;animation-delay:60ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--circle" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:42%;background:#f80;--chirpui-confetti-duration:2.4s;animation-delay:140ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--strip" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:48%;background:#f44;--chirpui-confetti-duration:3.1s;animation-delay:20ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--square" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:54%;background:#4af;--chirpui-confetti-duration:2.7s;animation-delay:100ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--circle" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:60%;background:#fa0;--chirpui-confetti-duration:2.5s;animation-delay:180ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--strip" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:66%;background:#4f4;--chirpui-confetti-duration:3.3s;animation-delay:240ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--square" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:72%;background:#f0f;--chirpui-confetti-duration:2.2s;animation-delay:50ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--circle" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:78%;background:#0ff;--chirpui-confetti-duration:2.8s;animation-delay:130ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--strip" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:84%;background:#ff0;--chirpui-confetti-duration:3s;animation-delay:210ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--square" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:90%;background:#f80;--chirpui-confetti-duration:2.6s;animation-delay:90ms"></span>
+        <span class="chirpui-confetti__piece chirpui-confetti__piece--circle" :class="active ? 'chirpui-confetti__piece--active' : ''" style="left:96%;background:#f44;--chirpui-confetti-duration:2.9s;animation-delay:170ms"></span>
+    </div>
+</section>
+
+<section class="sc-section" id="wobble">
+    <h2>Wobble / Jello / Rubber-band</h2>
+    <p class="desc">Micro-interaction animation utilities. Hover to trigger.</p>
+    <hr class="sc-divider">
+    <div class="sc-row" style="gap:1rem">
+        <button class="chirpui-btn chirpui-hover-wobble">Wobble</button>
+        <button class="chirpui-btn chirpui-hover-jello">Jello</button>
+        <button class="chirpui-btn chirpui-hover-rubber">Rubber Band</button>
+        <button class="chirpui-btn chirpui-btn--primary chirpui-bounce-in">Bounce In</button>
+    </div>
+</section>
+
+<section class="sc-section" id="marquee">
+    <h2>Marquee</h2>
+    <p class="desc">Infinite horizontal scroll. Pauses on hover.</p>
+    <hr class="sc-divider">
+    <div class="chirpui-marquee">
+        <div class="chirpui-marquee__fade chirpui-marquee__fade--start"></div>
+        <div class="chirpui-marquee__track">
+            <span class="chirpui-marquee__item">Acme Corp</span><span class="chirpui-marquee__item">•</span><span class="chirpui-marquee__item">Globex Industries</span><span class="chirpui-marquee__item">•</span><span class="chirpui-marquee__item">Initech</span><span class="chirpui-marquee__item">•</span><span class="chirpui-marquee__item">Umbrella Corp</span><span class="chirpui-marquee__item">•</span><span class="chirpui-marquee__item">Wayne Enterprises</span><span class="chirpui-marquee__item">•</span>
+            <span class="chirpui-marquee__item">Acme Corp</span><span class="chirpui-marquee__item">•</span><span class="chirpui-marquee__item">Globex Industries</span><span class="chirpui-marquee__item">•</span><span class="chirpui-marquee__item">Initech</span><span class="chirpui-marquee__item">•</span><span class="chirpui-marquee__item">Umbrella Corp</span><span class="chirpui-marquee__item">•</span><span class="chirpui-marquee__item">Wayne Enterprises</span><span class="chirpui-marquee__item">•</span>
+        </div>
+        <div class="chirpui-marquee__fade chirpui-marquee__fade--end"></div>
+    </div>
+</section>
+
+<section class="sc-section" id="meteor">
+    <h2>Meteor Effect</h2>
+    <hr class="sc-divider">
+    <div class="chirpui-meteor" style="height:200px;background:var(--chirpui-surface-alt);border-radius:var(--chirpui-radius-lg);display:flex;align-items:center;justify-content:center">
+        <span class="chirpui-meteor__streak"></span><span class="chirpui-meteor__streak"></span><span class="chirpui-meteor__streak"></span><span class="chirpui-meteor__streak"></span>
+        <div class="chirpui-meteor__content" style="text-align:center"><h3 style="margin:0">Meteor Shower</h3><p style="margin:0.25rem 0 0;color:var(--chirpui-text-muted);font-size:0.82rem">Diagonal streaks for hero sections</p></div>
+    </div>
+</section>
+
+<section class="sc-section" id="particles">
+    <h2>Particle Background</h2>
+    <hr class="sc-divider">
+    <div class="chirpui-particle-bg chirpui-particle-bg--accent" style="height:200px;background:var(--chirpui-surface-alt);border-radius:var(--chirpui-radius-lg)">
+        <div class="chirpui-particle-bg__canvas">
+            <span class="chirpui-particle-bg__dot" style="left:10%;top:20%"></span><span class="chirpui-particle-bg__dot" style="left:25%;top:50%"></span><span class="chirpui-particle-bg__dot" style="left:40%;top:15%"></span><span class="chirpui-particle-bg__dot" style="left:55%;top:70%"></span><span class="chirpui-particle-bg__dot" style="left:70%;top:30%"></span><span class="chirpui-particle-bg__dot" style="left:85%;top:60%"></span><span class="chirpui-particle-bg__dot" style="left:15%;top:80%"></span><span class="chirpui-particle-bg__dot" style="left:60%;top:45%"></span>
+        </div>
+        <div class="chirpui-particle-bg__content" style="display:flex;align-items:center;justify-content:center;height:100%;text-align:center"><div><h3 style="margin:0">Floating Particles</h3><p style="margin:0.25rem 0 0;color:var(--chirpui-text-muted);font-size:0.82rem">Gentle bobbing dots behind content</p></div></div>
+    </div>
+</section>
+
+<section class="sc-section" id="border-beam">
+    <h2>Border Beam (standalone)</h2>
+    <p class="desc">Also shown in Effect Cards above. Wraps any content.</p>
+    <hr class="sc-divider">
+    <div class="chirpui-border-beam chirpui-border-beam--accent" style="max-width:350px">
+        <div class="chirpui-border-beam__beam"></div>
+        <div class="chirpui-border-beam__content" style="padding:1.5rem;text-align:center">
+            <h3 style="margin:0 0 0.25rem">Featured</h3>
+            <p style="margin:0;font-size:0.85rem;color:var(--chirpui-text-muted)">This container has an animated accent beam tracing its border.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  DASHBOARD                                                       -->
+<!-- ================================================================ -->
+<section class="sc-section" id="stat-cards">
+    <h2>Animated Stat Cards</h2>
+    <hr class="sc-divider">
+    <div class="sc-grid-3">
+        <div class="chirpui-animated-stat-card">
+            <div class="chirpui-animated-counter"><div class="chirpui-animated-counter__display"><span class="chirpui-animated-counter__value" style="--chirpui-num:1250;--chirpui-num-target:1250"></span></div><span class="chirpui-animated-counter__label">Active Users</span></div>
+            <span class="chirpui-animated-stat-card__trend chirpui-animated-stat-card__trend--up">↑ +12%</span>
+        </div>
+        <div class="chirpui-animated-stat-card">
+            <div class="chirpui-animated-counter chirpui-animated-counter--mono"><div class="chirpui-animated-counter__display"><span class="chirpui-animated-counter__prefix">$</span><span class="chirpui-animated-counter__value" style="--chirpui-num:48;--chirpui-num-target:48"></span><span class="chirpui-animated-counter__suffix">M</span></div><span class="chirpui-animated-counter__label">Revenue</span></div>
+            <span class="chirpui-animated-stat-card__trend chirpui-animated-stat-card__trend--up">↑ +8.1%</span>
+        </div>
+        <div class="chirpui-animated-stat-card">
+            <div class="chirpui-animated-counter"><div class="chirpui-animated-counter__display"><span class="chirpui-animated-counter__value" style="--chirpui-num:23;--chirpui-num-target:23"></span></div><span class="chirpui-animated-counter__label">Open Issues</span></div>
+            <span class="chirpui-animated-stat-card__trend chirpui-animated-stat-card__trend--down">↓ -3.2%</span>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="config">
+    <h2>Config / Settings Rows</h2>
+    <hr class="sc-divider">
+    <div class="sc-box" style="max-width:500px">
+        <div class="chirpui-settings-row"><div class="chirpui-settings-row__info"><span class="chirpui-settings-row__label">Dark Mode</span><span class="chirpui-settings-row__hint" style="font-size:0.78rem;color:var(--chirpui-text-muted)">Auto-detect from system</span></div><label class="chirpui-toggle-wrap"><input type="checkbox" class="chirpui-toggle chirpui-visually-hidden" checked><span class="chirpui-toggle__track"></span></label></div>
+        <div class="chirpui-settings-row"><div class="chirpui-settings-row__info"><span class="chirpui-settings-row__label">Notifications</span></div><label class="chirpui-toggle-wrap chirpui-toggle-wrap--success"><input type="checkbox" class="chirpui-toggle chirpui-visually-hidden" checked><span class="chirpui-toggle__track"></span></label></div>
+        <div class="chirpui-settings-row"><div class="chirpui-settings-row__info"><span class="chirpui-settings-row__label">Language</span></div><select class="chirpui-field__control" style="width:auto"><option>English</option><option>Spanish</option></select></div>
+    </div>
+</section>
+
+<section class="sc-section" id="bar-chart">
+    <h2>Bar Chart (CSS-only)</h2>
+    <hr class="sc-divider">
+    <div class="chirpui-bar-chart chirpui-bar-chart--gold chirpui-bar-chart--md" style="max-width:450px" role="img" aria-label="Bar chart with 4 items">
+        <div class="chirpui-bar-chart__row"><span class="chirpui-bar-chart__label">React</span><div class="chirpui-bar-chart__track"><div class="chirpui-bar-chart__bar" style="width:85%"></div></div><span class="chirpui-bar-chart__value">85%</span></div>
+        <div class="chirpui-bar-chart__row"><span class="chirpui-bar-chart__label">Vue</span><div class="chirpui-bar-chart__track"><div class="chirpui-bar-chart__bar" style="width:62%"></div></div><span class="chirpui-bar-chart__value">62%</span></div>
+        <div class="chirpui-bar-chart__row"><span class="chirpui-bar-chart__label">Svelte</span><div class="chirpui-bar-chart__track"><div class="chirpui-bar-chart__bar" style="width:38%"></div></div><span class="chirpui-bar-chart__value">38%</span></div>
+        <div class="chirpui-bar-chart__row"><span class="chirpui-bar-chart__label">htmx</span><div class="chirpui-bar-chart__track"><div class="chirpui-bar-chart__bar" style="width:25%"></div></div><span class="chirpui-bar-chart__value">25%</span></div>
+    </div>
+</section>
+
+<section class="sc-section" id="donut">
+    <h2>Donut Chart (CSS-only)</h2>
+    <hr class="sc-divider">
+    <div class="sc-row" style="gap:2rem">
+        <div class="chirpui-donut chirpui-donut--gold chirpui-donut--lg" role="img" aria-label="75%"><div class="chirpui-donut__ring" style="--chirpui-donut-pct:75"></div><div class="chirpui-donut__center">75%</div></div>
+        <div class="chirpui-donut chirpui-donut--success chirpui-donut--lg" role="img" aria-label="92%"><div class="chirpui-donut__ring" style="--chirpui-donut-pct:92"></div><div class="chirpui-donut__center">92%</div></div>
+        <div class="chirpui-donut chirpui-donut--muted chirpui-donut--lg" role="img" aria-label="45%"><div class="chirpui-donut__ring" style="--chirpui-donut-pct:45"></div><div class="chirpui-donut__center">45%</div></div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="text-align:center;padding:3rem 1rem;color:var(--chirpui-text-muted);font-size:0.78rem;border-top:1px solid var(--chirpui-border)">
+    chirp-ui · 145 templates · 265 macros · <code>examples/static-showcase/index.html</code>
+</footer>
+
+</div><!-- /sc-main -->
+</body>
+</html>

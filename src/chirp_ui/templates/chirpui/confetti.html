@@ -1,0 +1,36 @@
+{#- chirp-ui: Confetti
+    Alpine-triggered celebration burst. Trigger with Alpine event dispatch.
+
+    Usage:
+        from "chirpui/confetti.html" import confetti, confetti_trigger
+
+        confetti()
+
+        confetti_trigger("Celebrate!", event="celebrate")
+
+        {# Or manually: #}
+        <button @click="$dispatch('confetti')">🎉 Party!</button>
+-#}
+
+{% def confetti(count=40, event="confetti", cls="") %}
+{% set colors = ["#f44", "#4af", "#fa0", "#4f4", "#f0f", "#0ff", "#ff0", "#f80"] %}
+{% set shapes = ["square", "circle", "strip"] %}
+{% set ncolors = colors | length %}
+{% set nshapes = shapes | length %}
+<div class="chirpui-confetti{{ " " ~ cls if cls else "" }}"
+     x-data="{ active: false }"
+     @{{ event }}.window="active = true; setTimeout(() => active = false, 3500)"
+     x-show="active"
+     x-cloak
+     aria-hidden="true">
+    {% for i in range(count) %}
+    <span class="chirpui-confetti__piece chirpui-confetti__piece--{{ shapes[loop.index0 - (loop.index0 // nshapes) * nshapes] }}"
+          :class="active ? 'chirpui-confetti__piece--active' : ''"
+          style="left: {{ (loop.index0 * 2.5) | round(1) }}%; background: {{ colors[loop.index0 - (loop.index0 // ncolors) * ncolors] }}; --chirpui-confetti-duration: {{ 2 + loop.index0 * 0.05 }}s; animation-delay: {{ loop.index0 * 80 }}ms;"></span>
+    {% end %}
+</div>
+{% end %}
+
+{% def confetti_trigger(label, event="confetti", tag="button", cls="") %}
+<{{ tag }} class="{{ cls }}" @click="$dispatch('{{ event }}')">{{ label }}</{{ tag }}>
+{% end %}

@@ -1,0 +1,13 @@
+{#- chirp-ui: Gradient Text
+    Text with gradient fill, optionally animated.
+
+    Usage:
+        from "chirpui/gradient_text.html" import gradient_text
+
+        gradient_text("Premium Feature")
+        gradient_text("Shifting Colors", animated=true, tag="h2")
+-#}
+
+{% def gradient_text(text, animated=false, tag="span", cls="") %}
+<{{ tag }} class="chirpui-gradient-text{% if animated %} chirpui-gradient-text--animated{% end %}{{ " " ~ cls if cls else "" }}">{{ text }}</{{ tag }}>
+{% end %}

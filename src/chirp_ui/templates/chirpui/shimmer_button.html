@@ -1,0 +1,31 @@
+{#- chirp-ui: Shimmer Button
+    Button with animated shimmer overlay effect.
+
+    Usage:
+        from "chirpui/shimmer_button.html" import shimmer_button
+
+        shimmer_button("Get Started")
+        shimmer_button("Subscribe", variant="primary", size="lg")
+        shimmer_button("Learn More", href="/docs", icon="→")
+-#}
+
+{% def shimmer_button(text, variant="", size="", icon=none, href=none, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "primary"), "") %}
+{% set size = size | validate_variant(("", "sm", "md", "lg"), "") %}
+{% set variant_class = " chirpui-shimmer-btn--" ~ variant if variant else "" %}
+{% set size_class = " chirpui-shimmer-btn--" ~ size if size else "" %}
+{% set base = "chirpui-shimmer-btn" ~ variant_class ~ size_class ~ (" " ~ cls if cls else "") %}
+{% if href %}
+<a href="{{ href }}" class="{{ base }}">
+    <span class="chirpui-shimmer-btn__shimmer" aria-hidden="true"></span>
+    {% if icon %}<span class="chirpui-shimmer-btn__icon">{{ icon | icon }}</span>{% end %}
+    {{ text }}
+</a>
+{% else %}
+<button type="button" class="{{ base }}">
+    <span class="chirpui-shimmer-btn__shimmer" aria-hidden="true"></span>
+    {% if icon %}<span class="chirpui-shimmer-btn__icon">{{ icon | icon }}</span>{% end %}
+    {{ text }}
+</button>
+{% end %}
+{% end %}

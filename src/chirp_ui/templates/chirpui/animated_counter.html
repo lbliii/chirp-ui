@@ -1,0 +1,24 @@
+{#- chirp-ui: Animated Counter
+    Stat counter that animates from 0 to target value on load.
+
+    Usage:
+        from "chirpui/animated_counter.html" import animated_counter
+
+        animated_counter(1250, label="Active Users")
+        animated_counter(99, prefix="$", suffix="M", label="Revenue", variant="mono")
+-#}
+
+{% def animated_counter(value, label="", prefix="", suffix="", variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "mono"), "") %}
+{% set variant_class = " chirpui-animated-counter--" ~ variant if variant else "" %}
+<div class="chirpui-animated-counter{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-animated-counter__display">
+        {%- if prefix %}<span class="chirpui-animated-counter__prefix">{{ prefix }}</span>{% end -%}
+        <span class="chirpui-animated-counter__value" style="--chirpui-num: {{ value }}; --chirpui-num-target: {{ value }}" aria-label="{{ value }}"></span>
+        {%- if suffix %}<span class="chirpui-animated-counter__suffix">{{ suffix }}</span>{% end -%}
+    </div>
+    {% if label %}
+    <span class="chirpui-animated-counter__label">{{ label }}</span>
+    {% end %}
+</div>
+{% end %}

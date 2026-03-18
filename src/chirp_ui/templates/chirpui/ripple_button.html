@@ -1,0 +1,36 @@
+{#- chirp-ui: Ripple Button
+    Button with Material-style click-position ripple effect.
+    Requires Alpine.js.
+
+    Usage:
+        from "chirpui/ripple_button.html" import ripple_button
+
+        ripple_button("Click Me")
+        ripple_button("Save", variant="primary")
+-#}
+
+{% def ripple_button(text, variant="", size="", icon=none, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "primary"), "") %}
+{% set size = size | validate_variant(("", "sm", "md", "lg"), "") %}
+{% set variant_class = " chirpui-ripple-btn--" ~ variant if variant else "" %}
+{% set size_class = " chirpui-ripple-btn--" ~ size if size else "" %}
+{% set base = "chirpui-ripple-btn" ~ variant_class ~ size_class ~ (" " ~ cls if cls else "") %}
+<button type="button" class="{{ base }}"
+    x-data="{ ripples: [] }"
+    @click="
+        const rect = $el.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = $event.clientX - rect.left - size / 2;
+        const y = $event.clientY - rect.top - size / 2;
+        const id = Date.now();
+        ripples.push({ id, x, y, size });
+        setTimeout(() => ripples = ripples.filter(r => r.id !== id), 600);
+    ">
+    <template x-for="r in ripples" :key="r.id">
+        <span class="chirpui-ripple-btn__ripple"
+              :style="`left:${r.x}px;top:${r.y}px;width:${r.size}px;height:${r.size}px`"></span>
+    </template>
+    {% if icon %}<span class="chirpui-ripple-btn__icon">{{ icon | icon }}</span>{% end %}
+    {{ text }}
+</button>
+{% end %}

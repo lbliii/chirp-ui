@@ -1,0 +1,32 @@
+{#- chirp-ui: Bento Grid
+    Asymmetric grid layout for feature showcases and dashboards.
+
+    Usage:
+        from "chirpui/bento_grid.html" import bento_grid, bento_item
+
+        call bento_grid()
+            call bento_item(span=2)
+                <h3>Wide feature</h3>
+            end
+            call bento_item()
+                <h3>Normal item</h3>
+            end
+            call bento_item(span_row=true)
+                <h3>Tall item</h3>
+            end
+        end
+-#}
+
+{% def bento_grid(cols=3, cls="") %}
+<div class="chirpui-bento{{ " " ~ cls if cls else "" }}" style="{% if cols != 3 %}grid-template-columns: repeat({{ cols }}, 1fr){% end %}">
+    {% slot %}
+</div>
+{% end %}
+
+{% def bento_item(span=none, span_row=false, cls="") %}
+{% set span_class = " chirpui-bento__item--span-2" if span == 2 else " chirpui-bento__item--span-full" if span == "full" else "" %}
+{% set row_class = " chirpui-bento__item--span-row" if span_row else "" %}
+<div class="chirpui-bento__item{{ span_class }}{{ row_class }}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}

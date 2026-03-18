@@ -1,0 +1,22 @@
+{#- chirp-ui: Grain Overlay
+    Film grain texture via SVG noise filter. Pure CSS.
+
+    Usage:
+        from "chirpui/grain.html" import grain
+
+        {% call grain() %}
+            <img src="photo.jpg" alt="Vintage photo">
+        {% end %}
+
+        {% call grain(variant="heavy", animated=true) %}
+            <div>Film-like background</div>
+        {% end %}
+-#}
+
+{% def grain(variant="", animated=false, cls="") %}
+{% set variant_cls = " chirpui-grain--" ~ variant if variant in ("heavy", "subtle") else "" %}
+{% set anim_cls = " chirpui-grain--animated" if animated else "" %}
+<div class="chirpui-grain{{ variant_cls }}{{ anim_cls }}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}

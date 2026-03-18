@@ -1,0 +1,39 @@
+{#- chirp-ui: Floating Dock
+    macOS-style dock bar with magnification on hover.
+
+    Usage:
+        from "chirpui/dock.html" import dock
+
+        dock(items=[
+            {"icon": "home", "label": "Home", "href": "/"},
+            {"icon": "search", "label": "Search", "href": "/search"},
+            {"icon": "settings", "label": "Settings", "active": true},
+        ])
+
+        dock(items=[...], variant="glass", size="lg")
+-#}
+
+{% def dock(items=none, variant="", size="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "glass"), "") %}
+{% set size = size | validate_variant(("", "sm", "md", "lg"), "") %}
+{% set variant_class = " chirpui-dock--" ~ variant if variant else "" %}
+{% set size_class = " chirpui-dock--" ~ size if size else "" %}
+<nav class="chirpui-dock{{ variant_class }}{{ size_class }}{{ " " ~ cls if cls else "" }}" aria-label="Dock">
+    {% if items %}
+        {% for item in items %}
+        {% set active_class = " chirpui-dock__item--active" if item.active else "" %}
+        {% if item.href %}
+        <a href="{{ item.href }}" class="chirpui-dock__item{{ active_class }}" aria-label="{{ item.label }}">
+            {{ item.icon | icon }}
+        </a>
+        {% else %}
+        <button type="button" class="chirpui-dock__item{{ active_class }}" aria-label="{{ item.label }}">
+            {{ item.icon | icon }}
+        </button>
+        {% end %}
+        {% end %}
+    {% else %}
+        {% slot %}
+    {% end %}
+</nav>
+{% end %}

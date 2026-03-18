@@ -1,0 +1,29 @@
+{#- chirp-ui: Orbit
+    Items rotating around a center element. Pure CSS.
+
+    Usage:
+        from "chirpui/orbit.html" import orbit
+
+        {% call orbit(items=["🐍", "⚡", "🔥", "💎"]) %}
+            <span style="font-size: 2rem">🌍</span>
+        {% end %}
+
+        {% call orbit(items=["A", "B", "C"], size="sm", speed="fast") %}
+            <strong>⚙️</strong>
+        {% end %}
+-#}
+
+{% def orbit(items=[], size="", speed="", reverse=false, cls="") %}
+{% set size_cls = " chirpui-orbit--" ~ size if size in ("sm", "lg", "xl") else "" %}
+{% set speed_cls = " chirpui-orbit--" ~ speed if speed in ("fast", "slow") else "" %}
+{% set rev_cls = " chirpui-orbit--reverse" if reverse else "" %}
+<div class="chirpui-orbit{{ size_cls }}{{ speed_cls }}{{ rev_cls }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-orbit__ring" aria-hidden="true"></div>
+    <div class="chirpui-orbit__center">
+        {% slot %}
+    </div>
+    {% for item in items %}
+    <span class="chirpui-orbit__item" aria-hidden="true">{{ item }}</span>
+    {% end %}
+</div>
+{% end %}

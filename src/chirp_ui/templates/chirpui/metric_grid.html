@@ -11,20 +11,47 @@
 {% end %}
 {% end %}
 
-{% def metric_card(value, label, icon=none, trend=none, hint=none, href=none, cls="") %}
+{% def metric_card(value, label, icon=none, trend=none, trend_direction="", hint=none, href=none, icon_bg="", footer_label=none, footer_href=none, cls="") %}
 {% if href %}
 <a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-metric-card{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-card__body">
-        {{ stat(value=value, label=label, icon=icon, cls="chirpui-metric-card__stat") }}
-        {% if trend %}<p class="chirpui-metric-card__trend">{{ trend }}</p>{% endif %}
+        <div class="chirpui-metric-card__top">
+            {% if icon and icon_bg %}
+            <span class="chirpui-metric-card__icon-badge chirpui-metric-card__icon-badge--{{ icon_bg }}">{{ icon | icon }}</span>
+            {% end %}
+            <div class="chirpui-metric-card__values">
+                {{ stat(value=value, label=label, icon=icon if not icon_bg else none, cls="chirpui-metric-card__stat") }}
+            </div>
+        </div>
+        {% if trend %}
+        <span class="chirpui-metric-card__trend chirpui-metric-card__trend--{{ trend_direction if trend_direction else "neutral" }}">
+            {% if trend_direction == "up" %}<span class="chirpui-metric-card__trend-arrow" aria-hidden="true">↑</span>{% elif trend_direction == "down" %}<span class="chirpui-metric-card__trend-arrow" aria-hidden="true">↓</span>{% end %}
+            {{ trend }}
+        </span>
+        {% end %}
         {% if hint %}<p class="chirpui-metric-card__hint">{{ hint }}</p>{% endif %}
     </div>
 </a>
 {% else %}
 {% call card(cls="chirpui-metric-card" ~ (" " ~ cls if cls else "")) %}
-{{ stat(value=value, label=label, icon=icon, cls="chirpui-metric-card__stat") }}
-{% if trend %}<p class="chirpui-metric-card__trend">{{ trend }}</p>{% endif %}
+<div class="chirpui-metric-card__top">
+    {% if icon and icon_bg %}
+    <span class="chirpui-metric-card__icon-badge chirpui-metric-card__icon-badge--{{ icon_bg }}">{{ icon | icon }}</span>
+    {% end %}
+    <div class="chirpui-metric-card__values">
+        {{ stat(value=value, label=label, icon=icon if not icon_bg else none, cls="chirpui-metric-card__stat") }}
+    </div>
+</div>
+{% if trend %}
+<span class="chirpui-metric-card__trend chirpui-metric-card__trend--{{ trend_direction if trend_direction else "neutral" }}">
+    {% if trend_direction == "up" %}<span class="chirpui-metric-card__trend-arrow" aria-hidden="true">↑</span>{% elif trend_direction == "down" %}<span class="chirpui-metric-card__trend-arrow" aria-hidden="true">↓</span>{% end %}
+    {{ trend }}
+</span>
+{% end %}
 {% if hint %}<p class="chirpui-metric-card__hint">{{ hint }}</p>{% endif %}
+{% if footer_label %}
+<a href="{{ footer_href or "#" }}" class="chirpui-metric-card__footer">{{ footer_label }} →</a>
+{% end %}
 {% end %}
 {% endif %}
 {% end %}
