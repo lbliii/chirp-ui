@@ -1,0 +1,47 @@
+{#- chirp-ui: ASCII Fader / Slider
+    Vertical mixing-board faders using block characters.
+
+    Usage:
+        from "chirpui/ascii_fader.html" import ascii_fader, fader_bank
+
+        ascii_fader("volume", value=75, label="VOL")
+        ascii_fader("bass", value=40, label="BASS", variant="accent")
+
+        call fader_bank()
+            ascii_fader("ch1", value=80, label="CH1")
+            ascii_fader("ch2", value=60, label="CH2")
+            ascii_fader("ch3", value=30, label="CH3")
+            ascii_fader("ch4", value=90, label="CH4")
+        end
+
+    Variants: default, accent, success, warning, danger.
+    value: 0-100 (maps to 8 block levels).
+-#}
+
+{% def ascii_fader(name, value=0, label=none, variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "success", "warning", "danger"), "") %}
+{% set variant_class = " chirpui-ascii-fader--" ~ variant if variant and variant != "default" else "" %}
+{% set level = ((value / 100) * 8) | int %}
+{% set level = 8 if level > 8 else (0 if level < 0 else level) %}
+<div class="chirpui-ascii-fader{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-ascii-fader__track" aria-hidden="true">
+        <span class="chirpui-ascii-fader__cap">┌─┐</span>
+        {% for i in range(8, 0, -1) %}
+        <span class="chirpui-ascii-fader__segment{{ " chirpui-ascii-fader__segment--filled" if i <= level else "" }}">│{{ "█" if i <= level else "░" }}│</span>
+        {% end %}
+        <span class="chirpui-ascii-fader__cap">└─┘</span>
+    </div>
+    <input class="chirpui-visually-hidden" type="hidden" name="{{ name }}" value="{{ value }}">
+    {% if label %}<span class="chirpui-ascii-fader__label">{{ label }}</span>{% end %}
+    <span class="chirpui-ascii-fader__value">{{ value }}</span>
+</div>
+{% end %}
+
+{% def fader_bank(title=none, cls="") %}
+<div class="chirpui-ascii-fader-bank{{ " " ~ cls if cls else "" }}">
+    {% if title %}<div class="chirpui-ascii-fader-bank__title">{{ title }}</div>{% end %}
+    <div class="chirpui-ascii-fader-bank__faders">
+        {% slot %}
+    </div>
+</div>
+{% end %}

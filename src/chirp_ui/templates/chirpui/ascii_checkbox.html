@@ -1,0 +1,37 @@
+{#- chirp-ui: ASCII Checkbox
+    Checkbox styled with Unicode ballot characters.
+
+    Usage:
+        from "chirpui/ascii_checkbox.html" import ascii_checkbox, ascii_checkbox_group
+
+        ascii_checkbox("terms", label="Accept terms")
+        ascii_checkbox("notify", label="Email notifications", checked=true)
+
+        call ascii_checkbox_group(legend="Options")
+            ascii_checkbox("opt_a", label="Enable logging")
+            ascii_checkbox("opt_b", label="Verbose output", checked=true)
+            ascii_checkbox("opt_c", label="Auto-restart")
+        end
+
+    Variants: default, accent, success, danger.
+-#}
+
+{% def ascii_checkbox(name, label=none, checked=false, variant="", disabled=false, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "success", "danger"), "") %}
+{% set variant_class = " chirpui-ascii-checkbox--" ~ variant if variant and variant != "default" else "" %}
+<label class="chirpui-ascii-checkbox{{ variant_class }}{{ " chirpui-ascii-checkbox--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
+    <input class="chirpui-ascii-checkbox__input chirpui-visually-hidden"
+           type="checkbox" name="{{ name }}" id="{{ name }}"
+           {% if checked %}checked{% end %}
+           {% if disabled %}disabled{% end %}>
+    <span class="chirpui-ascii-checkbox__box" aria-hidden="true"></span>
+    {% if label %}<span class="chirpui-ascii-checkbox__label">{{ label }}</span>{% end %}
+</label>
+{% end %}
+
+{% def ascii_checkbox_group(legend=none, cls="") %}
+<fieldset class="chirpui-ascii-checkbox-group{{ " " ~ cls if cls else "" }}">
+    {% if legend %}<legend class="chirpui-ascii-checkbox-group__legend">{{ legend }}</legend>{% end %}
+    {% slot %}
+</fieldset>
+{% end %}

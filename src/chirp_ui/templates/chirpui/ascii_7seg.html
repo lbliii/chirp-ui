@@ -1,0 +1,29 @@
+{#- chirp-ui: ASCII 7-Segment Display
+    Retro LCD-style digit readout using box-drawing characters.
+
+    Usage:
+        from "chirpui/ascii_7seg.html" import ascii_7seg
+
+        ascii_7seg("99.97")
+        ascii_7seg("1234", label="UPTIME")
+        ascii_7seg("08:42", variant="accent")
+
+    Renders each character as a tall monospace glyph in a display frame.
+    Supports: 0-9, colon, period, dash, space.
+    Variants: default, accent, success, warning, error.
+-#}
+
+{% def ascii_7seg(text, label=none, variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "success", "warning", "error"), "") %}
+{% set variant_class = " chirpui-ascii-7seg--" ~ variant if variant and variant != "default" else "" %}
+<div class="chirpui-ascii-7seg{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    {% if label %}<span class="chirpui-ascii-7seg__label">{{ label }}</span>{% end %}
+    <span class="chirpui-ascii-7seg__display">
+        <span class="chirpui-ascii-7seg__frame" aria-hidden="true">┌</span>
+        {% for ch in text %}
+        <span class="chirpui-ascii-7seg__digit" data-char="{{ ch }}">{{ ch }}</span>
+        {% end %}
+        <span class="chirpui-ascii-7seg__frame" aria-hidden="true">┐</span>
+    </span>
+</div>
+{% end %}

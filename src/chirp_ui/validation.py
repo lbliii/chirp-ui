@@ -75,6 +75,12 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     "ascii-indicator": ("success", "warning", "error", "muted", "accent"),
     "ascii-tile-btn": ("", "default", "success", "warning", "danger", "accent"),
     "ascii-knob": ("", "default", "accent"),
+    "ascii-fader": ("", "default", "accent", "success", "warning", "danger"),
+    "ascii-vu": ("", "default", "accent", "success", "warning"),
+    "ascii-7seg": ("", "default", "accent", "success", "warning", "error"),
+    "ascii-checkbox": ("", "default", "accent", "success", "danger"),
+    "ascii-radio-group": ("", "default", "accent"),
+    "ascii-stepper": ("", "default", "accent", "success"),
 }
 
 SIZE_REGISTRY: dict[str, tuple[str, ...]] = {

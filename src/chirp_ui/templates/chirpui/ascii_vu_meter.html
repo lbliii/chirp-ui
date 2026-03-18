@@ -1,0 +1,47 @@
+{#- chirp-ui: ASCII VU Meter
+    Horizontal bouncing level meter like vintage audio equipment.
+
+    Usage:
+        from "chirpui/ascii_vu_meter.html" import ascii_vu_meter, vu_meter_stack
+
+        ascii_vu_meter("cpu", value=65, label="CPU")
+        ascii_vu_meter("mem", value=90, label="MEM", peak=true)
+
+        call vu_meter_stack()
+            ascii_vu_meter("L", value=72, label="L")
+            ascii_vu_meter("R", value=68, label="R")
+        end
+
+    Variants: default, accent, success, warning.
+    peak=true adds a peak hold marker.
+    width: number of cells (default 20).
+    animate=true adds a gentle bounce animation.
+-#}
+
+{% def ascii_vu_meter(name=none, value=0, label=none, variant="", width=20,
+                      peak=false, animate=false, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent", "success", "warning"), "") %}
+{% set variant_class = " chirpui-ascii-vu--" ~ variant if variant and variant != "default" else "" %}
+{% set anim_class = " chirpui-ascii-vu--animate" if animate else "" %}
+{% set filled = ((value / 100) * width) | int %}
+{% set filled = width if filled > width else (0 if filled < 0 else filled) %}
+{% set hot_start = ((width * 0.75) | int) %}
+<div class="chirpui-ascii-vu{{ variant_class }}{{ anim_class }}{{ " " ~ cls if cls else "" }}">
+    {% if label %}<span class="chirpui-ascii-vu__label">{{ label }}</span>{% end %}
+    <span class="chirpui-ascii-vu__track">
+        <span class="chirpui-ascii-vu__bracket" aria-hidden="true">▐</span>
+        {% for i in range(1, width + 1) %}
+        <span class="chirpui-ascii-vu__cell{{ " chirpui-ascii-vu__cell--filled" if i <= filled else "" }}{{ " chirpui-ascii-vu__cell--hot" if i > hot_start and i <= filled else "" }}{{ " chirpui-ascii-vu__cell--peak" if peak and i == filled else "" }}" aria-hidden="true">{{ "█" if i <= filled else "░" }}</span>
+        {% end %}
+        <span class="chirpui-ascii-vu__bracket" aria-hidden="true">▌</span>
+    </span>
+    <span class="chirpui-ascii-vu__readout">{{ value }}%</span>
+</div>
+{% end %}
+
+{% def vu_meter_stack(title=none, cls="") %}
+<div class="chirpui-ascii-vu-stack{{ " " ~ cls if cls else "" }}">
+    {% if title %}<div class="chirpui-ascii-vu-stack__title">{{ title }}</div>{% end %}
+    {% slot %}
+</div>
+{% end %}

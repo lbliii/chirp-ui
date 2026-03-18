@@ -137,6 +137,11 @@
     <a href="#ascii-tile-btn">ASCII Tile Buttons</a>
     <a href="#ascii-knob">ASCII Knob</a>
     <a href="#ascii-breaker-panel">Breaker Panel</a>
+    <a href="#ascii-fader">ASCII Faders</a>
+    <a href="#ascii-vu-meter">ASCII VU Meter</a>
+    <a href="#ascii-7seg">7-Segment Display</a>
+    <a href="#ascii-checkbox-radio">Checkbox &amp; Radio</a>
+    <a href="#ascii-stepper">ASCII Stepper</a>
     <a href="#ascii-control-panel">Control Panel</a>
     <a href="#ascii-table">ASCII Table</a>
     <a href="#ascii-badge">ASCII Badge</a>
@@ -2374,6 +2379,340 @@ register_filters(app)</code></pre>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="ascii-fader">
+    <h2>ASCII Faders</h2>
+    <p class="desc">Vertical mixing-board sliders with block-character fill levels.</p>
+    <hr class="sc-divider">
+
+    <div class="chirpui-ascii-fader-bank">
+        <div class="chirpui-ascii-fader-bank__title">Channel Levels</div>
+        <div class="chirpui-ascii-fader-bank__faders">
+            <div class="chirpui-ascii-fader chirpui-ascii-fader--accent">
+                <div class="chirpui-ascii-fader__track" aria-hidden="true">
+                    <span class="chirpui-ascii-fader__cap">┌─┐</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__cap">└─┘</span>
+                </div>
+                <span class="chirpui-ascii-fader__label">CH1</span>
+                <span class="chirpui-ascii-fader__value">75</span>
+            </div>
+            <div class="chirpui-ascii-fader chirpui-ascii-fader--accent">
+                <div class="chirpui-ascii-fader__track" aria-hidden="true">
+                    <span class="chirpui-ascii-fader__cap">┌─┐</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__cap">└─┘</span>
+                </div>
+                <span class="chirpui-ascii-fader__label">CH2</span>
+                <span class="chirpui-ascii-fader__value">50</span>
+            </div>
+            <div class="chirpui-ascii-fader chirpui-ascii-fader--success">
+                <div class="chirpui-ascii-fader__track" aria-hidden="true">
+                    <span class="chirpui-ascii-fader__cap">┌─┐</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__cap">└─┘</span>
+                </div>
+                <span class="chirpui-ascii-fader__label">MAIN</span>
+                <span class="chirpui-ascii-fader__value">100</span>
+            </div>
+            <div class="chirpui-ascii-fader chirpui-ascii-fader--warning">
+                <div class="chirpui-ascii-fader__track" aria-hidden="true">
+                    <span class="chirpui-ascii-fader__cap">┌─┐</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                    <span class="chirpui-ascii-fader__cap">└─┘</span>
+                </div>
+                <span class="chirpui-ascii-fader__label">AUX</span>
+                <span class="chirpui-ascii-fader__value">25</span>
+            </div>
+            <div class="chirpui-ascii-fader chirpui-ascii-fader--danger">
+                <div class="chirpui-ascii-fader__track" aria-hidden="true">
+                    <span class="chirpui-ascii-fader__cap">┌─┐</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__segment">│░│</span>
+                    <span class="chirpui-ascii-fader__cap">└─┘</span>
+                </div>
+                <span class="chirpui-ascii-fader__label">MUTE</span>
+                <span class="chirpui-ascii-fader__value">0</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="ascii-vu-meter">
+    <h2>ASCII VU Meter</h2>
+    <p class="desc">Horizontal level bars with hot zones. The peak indicator glows red past 75%.</p>
+    <hr class="sc-divider">
+
+    <div class="chirpui-ascii-vu-stack">
+        <div class="chirpui-ascii-vu-stack__title">System Resources</div>
+        <div class="chirpui-ascii-vu">
+            <span class="chirpui-ascii-vu__label">CPU</span>
+            <span class="chirpui-ascii-vu__track">
+                <span class="chirpui-ascii-vu__bracket">▐</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__bracket">▌</span>
+            </span>
+            <span class="chirpui-ascii-vu__readout">60%</span>
+        </div>
+        <div class="chirpui-ascii-vu">
+            <span class="chirpui-ascii-vu__label">MEM</span>
+            <span class="chirpui-ascii-vu__track">
+                <span class="chirpui-ascii-vu__bracket">▐</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled chirpui-ascii-vu__cell--hot">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled chirpui-ascii-vu__cell--hot">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled chirpui-ascii-vu__cell--hot chirpui-ascii-vu__cell--peak">█</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__bracket">▌</span>
+            </span>
+            <span class="chirpui-ascii-vu__readout">90%</span>
+        </div>
+        <div class="chirpui-ascii-vu chirpui-ascii-vu--animate">
+            <span class="chirpui-ascii-vu__label">I/O</span>
+            <span class="chirpui-ascii-vu__track">
+                <span class="chirpui-ascii-vu__bracket">▐</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled">█</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__cell">░</span><span class="chirpui-ascii-vu__bracket">▌</span>
+            </span>
+            <span class="chirpui-ascii-vu__readout">40%</span>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="ascii-7seg">
+    <h2>ASCII 7-Segment Display</h2>
+    <p class="desc">Retro LCD-style readouts with glowing digits. Perfect for dashboards, counters, clocks.</p>
+    <hr class="sc-divider">
+
+    <div class="sc-row" style="gap:2rem;align-items:flex-start;flex-wrap:wrap">
+        <div class="chirpui-ascii-7seg">
+            <span class="chirpui-ascii-7seg__label">Uptime</span>
+            <span class="chirpui-ascii-7seg__display">
+                <span class="chirpui-ascii-7seg__frame">┌</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="9">9</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="9">9</span>
+                <span class="chirpui-ascii-7seg__digit" data-char=".">.</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="9">9</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="7">7</span>
+                <span class="chirpui-ascii-7seg__frame">┐</span>
+            </span>
+        </div>
+        <div class="chirpui-ascii-7seg chirpui-ascii-7seg--accent">
+            <span class="chirpui-ascii-7seg__label">Clock</span>
+            <span class="chirpui-ascii-7seg__display">
+                <span class="chirpui-ascii-7seg__frame">┌</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="0">0</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="8">8</span>
+                <span class="chirpui-ascii-7seg__digit" data-char=":">:</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="4">4</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="2">2</span>
+                <span class="chirpui-ascii-7seg__frame">┐</span>
+            </span>
+        </div>
+        <div class="chirpui-ascii-7seg chirpui-ascii-7seg--success">
+            <span class="chirpui-ascii-7seg__label">Requests</span>
+            <span class="chirpui-ascii-7seg__display">
+                <span class="chirpui-ascii-7seg__frame">┌</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="1">1</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="2">2</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="8">8</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="4">4</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="7">7</span>
+                <span class="chirpui-ascii-7seg__frame">┐</span>
+            </span>
+        </div>
+        <div class="chirpui-ascii-7seg chirpui-ascii-7seg--error">
+            <span class="chirpui-ascii-7seg__label">Errors</span>
+            <span class="chirpui-ascii-7seg__display">
+                <span class="chirpui-ascii-7seg__frame">┌</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="0">0</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="0">0</span>
+                <span class="chirpui-ascii-7seg__digit" data-char="3">3</span>
+                <span class="chirpui-ascii-7seg__frame">┐</span>
+            </span>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="ascii-checkbox-radio">
+    <h2>ASCII Checkbox &amp; Radio</h2>
+    <p class="desc">Form controls with Unicode ballot and circle characters. ☐ ☑ ○ ●</p>
+    <hr class="sc-divider">
+
+    <div class="sc-row" style="gap:3rem;align-items:flex-start">
+        <fieldset class="chirpui-ascii-checkbox-group">
+            <legend class="chirpui-ascii-checkbox-group__legend">Features</legend>
+            <label class="chirpui-ascii-checkbox chirpui-ascii-checkbox--accent">
+                <input class="chirpui-ascii-checkbox__input chirpui-visually-hidden" type="checkbox" name="cb_log" checked>
+                <span class="chirpui-ascii-checkbox__box"></span>
+                <span class="chirpui-ascii-checkbox__label">Enable logging</span>
+            </label>
+            <label class="chirpui-ascii-checkbox chirpui-ascii-checkbox--accent">
+                <input class="chirpui-ascii-checkbox__input chirpui-visually-hidden" type="checkbox" name="cb_verbose" checked>
+                <span class="chirpui-ascii-checkbox__box"></span>
+                <span class="chirpui-ascii-checkbox__label">Verbose output</span>
+            </label>
+            <label class="chirpui-ascii-checkbox">
+                <input class="chirpui-ascii-checkbox__input chirpui-visually-hidden" type="checkbox" name="cb_restart">
+                <span class="chirpui-ascii-checkbox__box"></span>
+                <span class="chirpui-ascii-checkbox__label">Auto-restart</span>
+            </label>
+            <label class="chirpui-ascii-checkbox chirpui-ascii-checkbox--disabled">
+                <input class="chirpui-ascii-checkbox__input chirpui-visually-hidden" type="checkbox" name="cb_exp" disabled>
+                <span class="chirpui-ascii-checkbox__box"></span>
+                <span class="chirpui-ascii-checkbox__label">Experimental (locked)</span>
+            </label>
+        </fieldset>
+
+        <fieldset class="chirpui-ascii-radio-group">
+            <legend class="chirpui-ascii-radio-group__legend">Log Level</legend>
+            <label class="chirpui-ascii-radio">
+                <input class="chirpui-ascii-radio__input chirpui-visually-hidden" type="radio" name="loglvl" value="debug">
+                <span class="chirpui-ascii-radio__dot"></span>
+                <span class="chirpui-ascii-radio__label">Debug</span>
+            </label>
+            <label class="chirpui-ascii-radio">
+                <input class="chirpui-ascii-radio__input chirpui-visually-hidden" type="radio" name="loglvl" value="info" checked>
+                <span class="chirpui-ascii-radio__dot"></span>
+                <span class="chirpui-ascii-radio__label">Info</span>
+            </label>
+            <label class="chirpui-ascii-radio">
+                <input class="chirpui-ascii-radio__input chirpui-visually-hidden" type="radio" name="loglvl" value="warn">
+                <span class="chirpui-ascii-radio__dot"></span>
+                <span class="chirpui-ascii-radio__label">Warning</span>
+            </label>
+            <label class="chirpui-ascii-radio">
+                <input class="chirpui-ascii-radio__input chirpui-visually-hidden" type="radio" name="loglvl" value="error">
+                <span class="chirpui-ascii-radio__dot"></span>
+                <span class="chirpui-ascii-radio__label">Error</span>
+            </label>
+        </fieldset>
+
+        <fieldset class="chirpui-ascii-radio-group chirpui-ascii-radio-group--horizontal">
+            <legend class="chirpui-ascii-radio-group__legend">Environment</legend>
+            <label class="chirpui-ascii-radio">
+                <input class="chirpui-ascii-radio__input chirpui-visually-hidden" type="radio" name="env" value="dev" checked>
+                <span class="chirpui-ascii-radio__dot"></span>
+                <span class="chirpui-ascii-radio__label">Dev</span>
+            </label>
+            <label class="chirpui-ascii-radio">
+                <input class="chirpui-ascii-radio__input chirpui-visually-hidden" type="radio" name="env" value="staging">
+                <span class="chirpui-ascii-radio__dot"></span>
+                <span class="chirpui-ascii-radio__label">Staging</span>
+            </label>
+            <label class="chirpui-ascii-radio">
+                <input class="chirpui-ascii-radio__input chirpui-visually-hidden" type="radio" name="env" value="prod">
+                <span class="chirpui-ascii-radio__dot"></span>
+                <span class="chirpui-ascii-radio__label">Prod</span>
+            </label>
+        </fieldset>
+    </div>
+</section>
+
+<section class="sc-section" id="ascii-stepper">
+    <h2>ASCII Stepper</h2>
+    <p class="desc">Pipeline/wizard progress using box-drawing connectors. [✓]───[●]───[○]</p>
+    <hr class="sc-divider">
+
+    <p class="desc">Deploy pipeline (step 3 of 5)</p>
+    <div class="chirpui-ascii-stepper" role="navigation" aria-label="Progress">
+        <div class="chirpui-ascii-stepper__track">
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--complete">
+                <span class="chirpui-ascii-stepper__node">[✓]</span>
+                <span class="chirpui-ascii-stepper__label">Build</span>
+            </span>
+            <span class="chirpui-ascii-stepper__connector chirpui-ascii-stepper__connector--complete">───</span>
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--complete">
+                <span class="chirpui-ascii-stepper__node">[✓]</span>
+                <span class="chirpui-ascii-stepper__label">Test</span>
+            </span>
+            <span class="chirpui-ascii-stepper__connector chirpui-ascii-stepper__connector--complete">───</span>
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--active">
+                <span class="chirpui-ascii-stepper__node">[●]</span>
+                <span class="chirpui-ascii-stepper__label">Deploy</span>
+            </span>
+            <span class="chirpui-ascii-stepper__connector">───</span>
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--pending">
+                <span class="chirpui-ascii-stepper__node">[○]</span>
+                <span class="chirpui-ascii-stepper__label">Verify</span>
+            </span>
+            <span class="chirpui-ascii-stepper__connector">───</span>
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--pending">
+                <span class="chirpui-ascii-stepper__node">[○]</span>
+                <span class="chirpui-ascii-stepper__label">Monitor</span>
+            </span>
+        </div>
+    </div>
+
+    <p class="desc" style="margin-top:1.5rem">Setup wizard (step 1 of 4)</p>
+    <div class="chirpui-ascii-stepper" role="navigation" aria-label="Progress">
+        <div class="chirpui-ascii-stepper__track">
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--active">
+                <span class="chirpui-ascii-stepper__node">[●]</span>
+                <span class="chirpui-ascii-stepper__label">Account</span>
+            </span>
+            <span class="chirpui-ascii-stepper__connector">───</span>
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--pending">
+                <span class="chirpui-ascii-stepper__node">[○]</span>
+                <span class="chirpui-ascii-stepper__label">Config</span>
+            </span>
+            <span class="chirpui-ascii-stepper__connector">───</span>
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--pending">
+                <span class="chirpui-ascii-stepper__node">[○]</span>
+                <span class="chirpui-ascii-stepper__label">Integrations</span>
+            </span>
+            <span class="chirpui-ascii-stepper__connector">───</span>
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--pending">
+                <span class="chirpui-ascii-stepper__node">[○]</span>
+                <span class="chirpui-ascii-stepper__label">Done</span>
+            </span>
+        </div>
+    </div>
+
+    <p class="desc" style="margin-top:1.5rem">All complete</p>
+    <div class="chirpui-ascii-stepper chirpui-ascii-stepper--success" role="navigation" aria-label="Progress">
+        <div class="chirpui-ascii-stepper__track">
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--complete">
+                <span class="chirpui-ascii-stepper__node">[✓]</span>
+                <span class="chirpui-ascii-stepper__label">Init</span>
+            </span>
+            <span class="chirpui-ascii-stepper__connector chirpui-ascii-stepper__connector--complete">───</span>
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--complete">
+                <span class="chirpui-ascii-stepper__node">[✓]</span>
+                <span class="chirpui-ascii-stepper__label">Validate</span>
+            </span>
+            <span class="chirpui-ascii-stepper__connector chirpui-ascii-stepper__connector--complete">───</span>
+            <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--complete">
+                <span class="chirpui-ascii-stepper__node">[✓]</span>
+                <span class="chirpui-ascii-stepper__label">Complete</span>
+            </span>
         </div>
     </div>
 </section>

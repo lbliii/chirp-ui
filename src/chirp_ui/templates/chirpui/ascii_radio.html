@@ -1,0 +1,36 @@
+{#- chirp-ui: ASCII Radio
+    Radio buttons styled with Unicode circle characters.
+
+    Usage:
+        from "chirpui/ascii_radio.html" import ascii_radio_group, ascii_radio
+
+        call ascii_radio_group("priority", legend="Priority")
+            ascii_radio("priority", "low", label="Low")
+            ascii_radio("priority", "med", label="Medium", checked=true)
+            ascii_radio("priority", "high", label="High")
+        end
+
+    Variants: default, accent.
+    Layout: vertical (default), horizontal.
+-#}
+
+{% def ascii_radio(name, value, label=none, checked=false, disabled=false, cls="") %}
+<label class="chirpui-ascii-radio{{ " chirpui-ascii-radio--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
+    <input class="chirpui-ascii-radio__input chirpui-visually-hidden"
+           type="radio" name="{{ name }}" value="{{ value }}"
+           {% if checked %}checked{% end %}
+           {% if disabled %}disabled{% end %}>
+    <span class="chirpui-ascii-radio__dot" aria-hidden="true"></span>
+    {% if label %}<span class="chirpui-ascii-radio__label">{{ label }}</span>{% end %}
+</label>
+{% end %}
+
+{% def ascii_radio_group(name=none, legend=none, layout="vertical", variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent"), "") %}
+{% set variant_class = " chirpui-ascii-radio-group--" ~ variant if variant and variant != "default" else "" %}
+{% set layout_class = " chirpui-ascii-radio-group--horizontal" if layout == "horizontal" else "" %}
+<fieldset class="chirpui-ascii-radio-group{{ layout_class }}{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    {% if legend %}<legend class="chirpui-ascii-radio-group__legend">{{ legend }}</legend>{% end %}
+    {% slot %}
+</fieldset>
+{% end %}
