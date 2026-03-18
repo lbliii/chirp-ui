@@ -62,7 +62,16 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     "constellation": ("", "default", "warm", "cool", "mono"),
     # ASCII primitives
     "ascii-border": ("", "single", "double", "rounded", "heavy", "spin"),
-    "ascii-divider": ("", "single", "double", "heavy", "dots", "spin", "spin-reverse", "spin-drift"),
+    "ascii-divider": (
+        "",
+        "single",
+        "double",
+        "heavy",
+        "dots",
+        "spin",
+        "spin-reverse",
+        "spin-drift",
+    ),
     "ascii-sparkline": ("", "default", "accent", "muted", "gradient"),
     "ascii-progress": ("", "default", "accent", "success", "warning"),
     "ascii-empty": ("", "default", "muted", "accent"),
