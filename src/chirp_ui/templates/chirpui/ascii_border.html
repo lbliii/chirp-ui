@@ -22,16 +22,13 @@
 {% def ascii_border(variant="", glyph="", cls="") %}
 {% set variant = variant | validate_variant(("", "single", "double", "rounded", "heavy"), "") %}
 {% set variant_class = " chirpui-ascii-border--" ~ variant if variant else "" %}
-{# Box-drawing character sets per variant #}
-{% if variant == "double" %}
-    {% set tl, h, tr, v, bl, br = "╔", "═", "╗", "║", "╚", "╝" %}
-{% elif variant == "rounded" %}
-    {% set tl, h, tr, v, bl, br = "╭", "─", "╮", "│", "╰", "╯" %}
-{% elif variant == "heavy" %}
-    {% set tl, h, tr, v, bl, br = "┏", "━", "┓", "┃", "┗", "┛" %}
-{% else %}
-    {% set tl, h, tr, v, bl, br = "┌", "─", "┐", "│", "└", "┘" %}
-{% end %}
+{# Box-drawing character sets — defaults for single/unset #}
+{% set tl = "╔" if variant == "double" else "╭" if variant == "rounded" else "┏" if variant == "heavy" else "┌" %}
+{% set h  = "═" if variant == "double" else "─" if variant == "rounded" else "━" if variant == "heavy" else "─" %}
+{% set tr = "╗" if variant == "double" else "╮" if variant == "rounded" else "┓" if variant == "heavy" else "┐" %}
+{% set v  = "║" if variant == "double" else "│" if variant == "rounded" else "┃" if variant == "heavy" else "│" %}
+{% set bl = "╚" if variant == "double" else "╰" if variant == "rounded" else "┗" if variant == "heavy" else "└" %}
+{% set br = "╝" if variant == "double" else "╯" if variant == "rounded" else "┛" if variant == "heavy" else "┘" %}
 <div class="chirpui-ascii-border{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-ascii-border__top" aria-hidden="true"><span class="chirpui-ascii-border__corner">{{ tl }}</span><span class="chirpui-ascii-border__line">{% if glyph %}{{ h }}{{ h }} {{ glyph }} {{ h }}{{ h }}{% end %}</span><span class="chirpui-ascii-border__corner">{{ tr }}</span></div>
     <div class="chirpui-ascii-border__mid">

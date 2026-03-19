@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
+{% from "chirpui/layout.html" import cluster %}
+{% from "chirpui/ripple_button.html" import ripple_button %}
+{% from "chirpui/shimmer_button.html" import shimmer_button %}
+{% from "chirpui/pulsing_button.html" import pulsing_button %}
+{% from "chirpui/glow_card.html" import glow_card %}
+{% from "chirpui/spotlight_card.html" import spotlight_card %}
+{% from "chirpui/bento_grid.html" import bento_grid, bento_item %}
+{% from "chirpui/dock.html" import dock %}
+{% from "chirpui/notification_dot.html" import notification_dot %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Buttons & Enhanced Cards", subtitle="Effect buttons, glow cards, spotlight cards, bento grids, dock, and notification dots.") }}
+
+<h2>Ripple Button</h2>
+<h3>Variants</h3>
+{% call cluster() %}
+{{ ripple_button("Default") }}
+{{ ripple_button("Primary", variant="primary") }}
+{% end %}
+
+<h3>Sizes</h3>
+{% call cluster() %}
+{{ ripple_button("Small", size="sm") }}
+{{ ripple_button("Medium", size="md") }}
+{{ ripple_button("Large", size="lg") }}
+{% end %}
+
+<h3>With Icon</h3>
+{% call cluster() %}
+{{ ripple_button("Save", variant="primary", icon="✦") }}
+{% end %}
+
+<h2>Shimmer Button</h2>
+<h3>Variants</h3>
+{% call cluster() %}
+{{ shimmer_button("Default") }}
+{{ shimmer_button("Primary", variant="primary") }}
+{% end %}
+
+<h3>Sizes</h3>
+{% call cluster() %}
+{{ shimmer_button("Small", size="sm") }}
+{{ shimmer_button("Medium", size="md") }}
+{{ shimmer_button("Large", size="lg") }}
+{% end %}
+
+<h3>Link Variant</h3>
+{% call cluster() %}
+{{ shimmer_button("Go to Forms", variant="primary", href="/forms") }}
+{% end %}
+
+<h2>Pulsing Button</h2>
+{% call cluster() %}
+{{ pulsing_button("Default") }}
+{{ pulsing_button("Primary", variant="primary") }}
+{{ pulsing_button("Success", variant="success") }}
+{{ pulsing_button("Danger", variant="danger") }}
+{% end %}
+
+<h2>Glow Card</h2>
+{% call grid(cols=3) %}
+{% call block() %}
+{% call glow_card() %}
+<h3>Default Glow</h3>
+<p>A card with a subtle glow effect on hover.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call glow_card(variant="accent") %}
+<h3>Accent Glow</h3>
+<p>Accent-colored glow highlights this card.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call glow_card(variant="muted") %}
+<h3>Muted Glow</h3>
+<p>A softer, muted glow for secondary content.</p>
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Spotlight Card</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call spotlight_card() %}
+<h3>Default Spotlight</h3>
+<p>Mouse-tracking spotlight effect reveals a radial highlight.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call spotlight_card(variant="accent") %}
+<h3>Accent Spotlight</h3>
+<p>Accent variant adds color to the spotlight beam.</p>
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Bento Grid</h2>
+{% call bento_grid(cols=3) %}
+{% call bento_item(span=2) %}
+<h3>Wide Item</h3>
+<p>This item spans two columns for featured content.</p>
+{% end %}
+{% call bento_item() %}
+<h3>Normal</h3>
+<p>Single column item.</p>
+{% end %}
+{% call bento_item() %}
+<h3>Normal</h3>
+<p>Another single column.</p>
+{% end %}
+{% call bento_item(span=2, span_row=true) %}
+<h3>Tall Wide Item</h3>
+<p>This item spans two columns and two rows, great for hero content or large visuals.</p>
+{% end %}
+{% end %}
+
+<h2>Dock</h2>
+<h3>Default</h3>
+{{ dock(items=[{"icon": "◆", "label": "Home", "href": "/"}, {"icon": "⚙", "label": "Settings", "href": "/forms"}, {"icon": "★", "label": "Favorites", "href": "/cards"}]) }}
+
+<h3>Glass Variant</h3>
+{{ dock(items=[{"icon": "◆", "label": "Home", "href": "/"}, {"icon": "⚙", "label": "Settings", "href": "/forms"}, {"icon": "★", "label": "Favorites", "href": "/cards"}], variant="glass") }}
+
+<h2>Notification Dot</h2>
+<h3>Variants</h3>
+{% call cluster() %}
+{% call notification_dot() %}
+{{ ripple_button("Default") }}
+{% end %}
+{% call notification_dot(variant="error") %}
+{{ ripple_button("Error") }}
+{% end %}
+{% call notification_dot(variant="success") %}
+{{ ripple_button("Success") }}
+{% end %}
+{% call notification_dot(variant="warning") %}
+{{ ripple_button("Warning") }}
+{% end %}
+{% end %}
+
+<h3>With Count</h3>
+{% call cluster() %}
+{% call notification_dot(variant="error", count=5) %}
+{{ ripple_button("Messages", variant="primary") }}
+{% end %}
+{% call notification_dot(variant="warning", count=12) %}
+{{ ripple_button("Alerts", variant="primary") }}
+{% end %}
+{% call notification_dot(variant="success", count=3) %}
+{{ ripple_button("Updates", variant="primary") }}
+{% end %}
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

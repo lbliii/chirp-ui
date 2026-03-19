@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
+{% from "chirpui/gradient_text.html" import gradient_text %}
+{% from "chirpui/neon_text.html" import neon_text %}
+{% from "chirpui/glitch_text.html" import glitch_text %}
+{% from "chirpui/typewriter.html" import typewriter %}
+{% from "chirpui/text_reveal.html" import text_reveal %}
+{% from "chirpui/marquee.html" import marquee %}
+{% from "chirpui/number_ticker.html" import number_ticker %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Typography & Text Effects", subtitle="Gradient text, neon glow, glitch, typewriter, text reveal, marquee, and number tickers — all pure CSS.") }}
+
+<h2>Gradient Text</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Colorful gradient fills on text. Static or animated.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<h1>{{ gradient_text("Hello World") }}</h1>
+<p class="chirpui-text-muted chirpui-font-sm">Static gradient in <code>&lt;h1&gt;</code></p>
+{% end %}
+{% call block() %}
+<h1>{{ gradient_text("Animated", animated=true) }}</h1>
+<p class="chirpui-text-muted chirpui-font-sm">Animated gradient in <code>&lt;h1&gt;</code></p>
+{% end %}
+{% call block() %}
+<h2>{{ gradient_text("Heading Two") }}</h2>
+<p class="chirpui-text-muted chirpui-font-sm">Static gradient in <code>&lt;h2&gt;</code></p>
+{% end %}
+{% call block() %}
+<h2>{{ gradient_text("Heading Two", animated=true) }}</h2>
+<p class="chirpui-text-muted chirpui-font-sm">Animated gradient in <code>&lt;h2&gt;</code></p>
+{% end %}
+{% call block() %}
+<p style="font-size: 1rem;">{{ gradient_text("Body text gradient") }}</p>
+<p class="chirpui-text-muted chirpui-font-sm">Static gradient in <code>&lt;p&gt;</code></p>
+{% end %}
+{% call block() %}
+<p style="font-size: 1rem;">{{ gradient_text("Body animated", animated=true) }}</p>
+<p class="chirpui-text-muted chirpui-font-sm">Animated gradient in <code>&lt;p&gt;</code></p>
+{% end %}
+{% end %}
+
+<h2>Neon Text</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Glowing neon effect in six colors. Best on dark backgrounds.
+</p>
+
+<h3>Colors</h3>
+<div style="background: var(--chirpui-bg); padding: 2rem; border-radius: var(--chirpui-radius-lg);">
+{% call grid(cols=3) %}
+{% call block() %}
+{{ neon_text("Cyan", color="cyan") }}
+{% end %}
+{% call block() %}
+{{ neon_text("Magenta", color="magenta") }}
+{% end %}
+{% call block() %}
+{{ neon_text("Green", color="green") }}
+{% end %}
+{% call block() %}
+{{ neon_text("Orange", color="orange") }}
+{% end %}
+{% call block() %}
+{{ neon_text("Blue", color="blue") }}
+{% end %}
+{% call block() %}
+{{ neon_text("Red", color="red") }}
+{% end %}
+{% end %}
+</div>
+
+<h3>Animations</h3>
+<div style="background: var(--chirpui-bg); padding: 2rem; border-radius: var(--chirpui-radius-lg);">
+{% call grid(cols=3) %}
+{% call block() %}
+{{ neon_text("Pulse Cyan", color="cyan", animation="pulse") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>animation="pulse"</code></p>
+{% end %}
+{% call block() %}
+{{ neon_text("Flicker Magenta", color="magenta", animation="flicker") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>animation="flicker"</code></p>
+{% end %}
+{% call block() %}
+{{ neon_text("Pulse Green", color="green", animation="pulse") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>animation="pulse"</code></p>
+{% end %}
+{% call block() %}
+{{ neon_text("Flicker Orange", color="orange", animation="flicker") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>animation="flicker"</code></p>
+{% end %}
+{% call block() %}
+{{ neon_text("Pulse Blue", color="blue", animation="pulse") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>animation="pulse"</code></p>
+{% end %}
+{% call block() %}
+{{ neon_text("Flicker Red", color="red", animation="flicker") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>animation="flicker"</code></p>
+{% end %}
+{% end %}
+</div>
+
+<h2>Glitch Text</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Distorted, glitchy text effect with configurable intensity.
+</p>
+{% call grid(cols=3) %}
+{% call block() %}
+{{ glitch_text("Glitch") }}
+<p class="chirpui-text-muted chirpui-font-sm">Default variant</p>
+{% end %}
+{% call block() %}
+{{ glitch_text("Subtle", variant="subtle") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>variant="subtle"</code></p>
+{% end %}
+{% call block() %}
+{{ glitch_text("Intense", variant="intense") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>variant="intense"</code></p>
+{% end %}
+{% end %}
+
+<h2>Typewriter</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Typing animation with optional cursor and speed control.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{{ typewriter("Hello, World!") }}
+<p class="chirpui-text-muted chirpui-font-sm">Default speed</p>
+{% end %}
+{% call block() %}
+{{ typewriter("Fast typing", speed="fast") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>speed="fast"</code></p>
+{% end %}
+{% call block() %}
+{{ typewriter("Slow typing", speed="slow") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>speed="slow"</code></p>
+{% end %}
+{% call block() %}
+{{ typewriter("No cursor", cursor=false) }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>cursor=false</code></p>
+{% end %}
+{% end %}
+
+<h2>Text Reveal</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Text that reveals on scroll with fade or gradient effects.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{{ text_reveal("Revealed on scroll") }}
+<p class="chirpui-text-muted chirpui-font-sm">Default reveal</p>
+{% end %}
+{% call block() %}
+{{ text_reveal("Gradient variant", variant="gradient") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>variant="gradient"</code></p>
+{% end %}
+{% end %}
+
+<h2>Marquee</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Scrolling text strip. Supports forward and reverse directions.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{{ marquee(items=["chirp-ui", "HTML over the wire", "zero JS frameworks", "pure CSS effects"]) }}
+<p class="chirpui-text-muted chirpui-font-sm">Default direction</p>
+{% end %}
+{% call block() %}
+{{ marquee(items=["reversed", "scrolling", "text"], reverse=true) }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>reverse=true</code></p>
+{% end %}
+{% end %}
+
+<h2>Number Ticker</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Animated number display with prefix, suffix, and size options.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{{ number_ticker(1234) }}
+<p class="chirpui-text-muted chirpui-font-sm">Default</p>
+{% end %}
+{% call block() %}
+{{ number_ticker(99.9, prefix="$", suffix="%") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>prefix="$"</code> + <code>suffix="%"</code></p>
+{% end %}
+{% call block() %}
+{{ number_ticker(42, variant="mono", size="lg") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>variant="mono"</code> + <code>size="lg"</code></p>
+{% end %}
+{% end %}
+
+<h3>Sizes</h3>
+{% call grid(cols=2) %}
+{% call block() %}
+{{ number_ticker(100, size="sm") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>size="sm"</code></p>
+{% end %}
+{% call block() %}
+{{ number_ticker(200, size="md") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>size="md"</code></p>
+{% end %}
+{% call block() %}
+{{ number_ticker(300, size="lg") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>size="lg"</code></p>
+{% end %}
+{% call block() %}
+{{ number_ticker(400, size="xl") }}
+<p class="chirpui-text-muted chirpui-font-sm"><code>size="xl"</code></p>
+{% end %}
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

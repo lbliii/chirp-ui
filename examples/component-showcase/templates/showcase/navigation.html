@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/navbar.html" import navbar, navbar_link %}
 {% from "chirpui/logo.html" import logo %}
@@ -8,6 +8,12 @@
 {% from "chirpui/stepper.html" import stepper %}
 {% from "chirpui/command_bar.html" import command_bar %}
 {% from "chirpui/button.html" import btn %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/nav_tree.html" import nav_tree %}
+{% from "chirpui/nav_link.html" import nav_link %}
+{% from "chirpui/pagination.html" import pagination %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+
 
 {% call container() %}
 {% call stack() %}
@@ -75,7 +81,45 @@
 {% end %}
 {% end %}
 
-<p><a href="/">← Back to index</a></p>
+<h2>Route Tabs</h2>
+<p class="chirpui-text-muted chirpui-font-sm">Route-backed subsection tabs with aria-current support. Each tab navigates to a new URL.</p>
+{% call block() %}
+{{ route_tabs(tabs=[{"href": "/navigation", "label": "Navigation"}, {"href": "/layout", "label": "Layout"}, {"href": "/forms", "label": "Forms"}], current_path="/navigation") }}
+{% end %}
+
+<h2>Nav Tree</h2>
+<p class="chirpui-text-muted chirpui-font-sm">Hierarchical navigation tree using native &lt;details&gt; for expand/collapse. Ideal for docs sidebars and admin nav.</p>
+{% call block() %}
+{{ nav_tree(items=[{"title": "Getting Started", "href": "/", "children": [{"title": "Installation", "href": "/install"}, {"title": "Quick Start", "href": "/quickstart"}]}, {"title": "Components", "href": "/components", "children": [{"title": "Layout", "href": "/layout"}, {"title": "Forms", "href": "/forms"}, {"title": "Navigation", "href": "/navigation"}]}, {"title": "API Reference", "href": "/api"}]) }}
+{% end %}
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm">With show_icons=true:</p>
+{{ nav_tree(items=[{"title": "Getting Started", "href": "/", "children": [{"title": "Installation", "href": "/install"}, {"title": "Quick Start", "href": "/quickstart"}]}, {"title": "Components", "href": "/components", "children": [{"title": "Layout", "href": "/layout"}, {"title": "Forms", "href": "/forms"}, {"title": "Navigation", "href": "/navigation"}]}, {"title": "API Reference", "href": "/api"}], show_icons=true) }}
+{% end %}
+
+<h2>Nav Link</h2>
+<p class="chirpui-text-muted chirpui-font-sm">SPA-style links with HTMX boost for smooth page transitions without full reloads.</p>
+{% call block() %}
+<div class="chirpui-stack chirpui-stack--sm">
+  {{ nav_link("/navigation", label="Navigation") }}
+  {{ nav_link("/layout", label="Layout") }}
+  {{ nav_link("/forms", label="Forms") }}
+</div>
+{% end %}
+
+<h2>Pagination</h2>
+<p class="chirpui-text-muted chirpui-font-sm">HTMX-powered page navigation with ellipsis for large page counts.</p>
+{% call block() %}
+{{ pagination(current=3, total=10, url_pattern="/data?page={page}") }}
+{% end %}
+
+<h2>Command Palette</h2>
+<p class="chirpui-text-muted chirpui-font-sm">Cmd+K search overlay using native &lt;dialog&gt;. Results load via HTMX.</p>
+{% call block() %}
+{{ command_palette(id="demo-palette", search_url="/data/table", placeholder="Search components...") }}
+{{ command_palette_trigger(target="demo-palette", label="Search") }}
+{% end %}
+
 {% end %}
 {% end %}
 {% end %}

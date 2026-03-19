@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/layout.html" import cluster %}
 {% from "chirpui/card.html" import card, resource_card %}
@@ -39,8 +39,7 @@
 {% slot header_actions %}
 {{ btn("⋯", variant="ghost", cls="chirpui-btn--sm") }}
 {% end %}
-<p>Use <code>{% slot header_actions %}</code> for header actions.</p>
-{% end %}
+<p>Use <code>slot header_actions</code> for header actions.</p>
 {% end %}
 {% end %}
 {% end %}
@@ -138,7 +137,6 @@ This alert has an icon and title. Use <code>icon</code> and <code>title</code> p
 {% end %}
 {% end %}
 
-<p><a href="/">← Back to index</a></p>
 {% end %}
 {% end %}
 {% end %}

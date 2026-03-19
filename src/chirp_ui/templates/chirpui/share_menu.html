@@ -24,7 +24,7 @@
 {% end %}
 {% else %}
 {% call dropdown(label=label, cls="chirpui-share-menu " ~ (cls or "")) %}
-{% slot %}
+{{ caller() }}
 {% end %}
 {% end %}
 {% end %}

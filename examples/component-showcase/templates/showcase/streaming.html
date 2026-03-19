@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/streaming.html" import streaming_block, copy_btn, model_card %}
 
@@ -79,7 +79,6 @@ Use with htmx SSE: sse-swap="fragment" hx-target="this" on the inner div.
 {% end %}
 {% end %}
 
-<p><a href="/">← Back to index</a></p>
 {% end %}
 {% end %}
 {% end %}

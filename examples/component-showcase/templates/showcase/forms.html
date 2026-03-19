@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, cluster, block, page_header %}
 {% from "chirpui/forms.html" import csrf_hidden, password_field, text_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, range_field, input_group, masked_field, phone_field, money_field, multi_select_field, search_field, search_bar, form_actions %}
 {% from "chirpui/auth.html" import login_form %}
@@ -13,6 +13,12 @@
 {% from "chirpui/card.html" import resource_card %}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/theme_toggle.html" import theme_toggle, style_toggle, style_select %}
+{% from "chirpui/wizard_form.html" import wizard_form %}
+{% from "chirpui/inline_edit_field.html" import inline_edit_field_display, inline_edit_field_form %}
+{% from "chirpui/dnd.html" import dnd_list, dnd_item, dnd_handle, dnd_board, dnd_column, dnd_card %}
+{% from "chirpui/sortable_list.html" import sortable_list, sortable_item %}
+{% from "chirpui/signature.html" import signature %}
+{% from "chirpui/params_table.html" import params_table %}
 
 {% call container() %}
 {% call stack() %}
@@ -246,7 +252,89 @@
 </p>
 {% end %}
 
-<p><a href="/">← Back to index</a></p>
+<h2>Wizard Form</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Server-driven multi-step form with stepper indicator. Steps submit via HTMX and replace the wrapper.
+</p>
+{% call block() %}
+{% call wizard_form(id="demo-wizard", steps=["Account", "Profile", "Review"], current=2) %}
+  <form class="chirpui-stack chirpui-stack--sm">
+    {{ text_field("display_name", value="", label="Display Name", placeholder="How others see you") }}
+    {{ textarea_field("about", value="", label="About", rows=3, placeholder="A short bio...") }}
+    {% call form_actions() %}
+    <button type="button" class="chirpui-btn chirpui-btn--default">Back</button>
+    <button type="submit" class="chirpui-btn chirpui-btn--primary">Continue</button>
+    {% end %}
+  </form>
+{% end %}
+{% end %}
+
+<h2>Inline Edit Field</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Click-to-edit pattern with display and form modes. Swaps via HTMX.
+</p>
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mb-md">Display mode:</p>
+{{ inline_edit_field_display(value="John Doe", edit_url="/forms/demo") }}
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mb-md chirpui-mt-md">Edit mode:</p>
+{{ inline_edit_field_form(name="name", value="John Doe", save_url="/forms/demo") }}
+{% end %}
+
+<h2>Drag &amp; Drop</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Row-based sortable list and kanban board variants. Alpine/HTMX wiring is left to the consumer.
+</p>
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mb-md">Row variant (dnd_list + dnd_item + dnd_handle):</p>
+{% call dnd_list() %}
+  {% call dnd_item() %}{{ dnd_handle() }} Item one{% end %}
+  {% call dnd_item() %}{{ dnd_handle() }} Item two{% end %}
+  {% call dnd_item() %}{{ dnd_handle() }} Item three{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mb-md chirpui-mt-md">Board variant (dnd_board + dnd_column + dnd_card):</p>
+{% call dnd_board() %}
+  {% call dnd_column(title="To Do") %}
+    {% call dnd_card() %}Task 1{% end %}
+    {% call dnd_card() %}Task 2{% end %}
+  {% end %}
+  {% call dnd_column(title="In Progress") %}
+    {% call dnd_card() %}Task 3{% end %}
+  {% end %}
+  {% call dnd_column(title="Done") %}
+    {% call dnd_card() %}Task 4{% end %}
+  {% end %}
+{% end %}
+{% end %}
+
+<h2>Sortable List</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  CSS-styled drag-to-reorder containers. Visual structure and drag affordances only.
+</p>
+{% call block() %}
+{% call sortable_list() %}
+  {% call sortable_item() %}First item{% end %}
+  {% call sortable_item() %}Second item{% end %}
+  {% call sortable_item() %}Third item{% end %}
+{% end %}
+{% end %}
+
+<h2>Signature</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Code block for function and method signatures. Optionally tag with a language.
+</p>
+{% call block() %}
+{{ signature(text="def greet(name: str) -> str:") }}
+{{ signature(text="async def fetch(url: str, timeout: int = 30) -> Response:", language="python") }}
+{% end %}
+
+<h2>Params Table</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  API parameters table with Name, Type, Default, and Description columns.
+</p>
+{% call block() %}
+{{ params_table(rows=[{"name": "variant", "type": "str", "default": '""', "description": "Visual variant"}, {"name": "size", "type": "str", "default": '"md"', "description": "Size variant"}, {"name": "cls", "type": "str", "default": '""', "description": "Extra CSS classes"}], title="Component Parameters") }}
+{% end %}
+
 {% end %}
 {% end %}
 {% end %}

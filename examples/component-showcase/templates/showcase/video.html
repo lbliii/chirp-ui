@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block %}
 {% from "chirpui/video_card.html" import video_card %}
 {% from "chirpui/channel_card.html" import channel_card %}
@@ -89,7 +89,6 @@
 {{ progress_bar(value=45, max=100, variant="watched", label="45% watched") }}
 {% end %}
 
-<p><a href="/">← Back to index</a></p>
 {% end %}
 {% end %}
 {% end %}

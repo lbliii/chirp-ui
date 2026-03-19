@@ -25,36 +25,22 @@
 {% def hero_effects(effect="particles", variant="", cls="") %}
 {% set hero_cls = "chirpui-hero-effects " ~ cls if cls else "chirpui-hero-effects" %}
 {% if effect == "particles" %}
-    {% call particle_bg(variant=variant, cls=hero_cls) %}
-        {% slot %}
-    {% end %}
+    {% call particle_bg(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
 {% elif effect == "meteors" %}
-    {% call meteor(variant=variant, cls=hero_cls) %}
-        {% slot %}
-    {% end %}
+    {% call meteor(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
 {% elif effect == "spotlight" %}
-    {% call spotlight_card(variant=variant, cls=hero_cls) %}
-        {% slot %}
-    {% end %}
+    {% call spotlight_card(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
 {% elif effect == "symbol-rain" %}
-    {% call symbol_rain(variant=variant, cls=hero_cls) %}
-        {% slot %}
-    {% end %}
+    {% call symbol_rain(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
 {% elif effect == "holy-light" %}
-    {% call holy_light(variant=variant, cls=hero_cls) %}
-        {% slot %}
-    {% end %}
+    {% call holy_light(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
 {% elif effect == "runes" %}
-    {% call rune_field(variant=variant, cls=hero_cls) %}
-        {% slot %}
-    {% end %}
+    {% call rune_field(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
 {% elif effect == "constellation" %}
-    {% call constellation(variant=variant, cls=hero_cls) %}
-        {% slot %}
-    {% end %}
+    {% call constellation(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
 {% else %}
     <div class="chirpui-hero-effects{{ " " ~ cls if cls else "" }}">
-        {% slot %}
+        {{ caller() }}
     </div>
 {% end %}
 {% end %}

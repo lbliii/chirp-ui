@@ -24,9 +24,6 @@
     {% else %}
     <div class="chirpui-infinite-scroll__loading chirpui-infinite-scroll__loading--skeleton" hx-indicator>
         {% slot loading %}
-        {% from "chirpui/skeleton.html" import skeleton %}
-        {{ skeleton(variant="card") }}
-        {% end %}
     </div>
     {% end %}
 </div>

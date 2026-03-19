@@ -1,0 +1,459 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
+{% from "chirpui/aurora.html" import aurora %}
+{% from "chirpui/meteor.html" import meteor %}
+{% from "chirpui/particle_bg.html" import particle_bg %}
+{% from "chirpui/symbol_rain.html" import symbol_rain %}
+{% from "chirpui/holy_light.html" import holy_light %}
+{% from "chirpui/rune_field.html" import rune_field %}
+{% from "chirpui/constellation.html" import constellation %}
+{% from "chirpui/scanline.html" import scanline %}
+{% from "chirpui/grain.html" import grain %}
+{% from "chirpui/border_beam.html" import border_beam %}
+{% from "chirpui/sparkle.html" import sparkle %}
+{% from "chirpui/confetti.html" import confetti, confetti_trigger %}
+{% from "chirpui/wobble.html" import wobble, jello, rubber_band, bounce_in %}
+{% from "chirpui/orbit.html" import orbit %}
+{% from "chirpui/hero_effects.html" import hero_effects %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Visual Effects", subtitle="Background effects, decorative overlays, and playful motion primitives from the chirp-ui design system.") }}
+
+<!-- ───────────────────────── Aurora ───────────────────────── -->
+
+<h2>Aurora</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Soft, shifting gradient glow. Variants: default, intense, subtle.
+</p>
+{% call grid(cols=3) %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ aurora() }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ aurora(variant="intense") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">intense</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ aurora(variant="subtle") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">subtle</span>
+</div>
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Meteor ───────────────────────── -->
+
+<h2>Meteor</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Streaking light trails across the surface. Variants: default, accent, muted.
+</p>
+{% call grid(cols=3) %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ meteor(count=4) }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ meteor(count=4, variant="accent") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">accent</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ meteor(count=4, variant="muted") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">muted</span>
+</div>
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Particle Background ───────────────────────── -->
+
+<h2>Particle Background</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Floating particle dots that drift across the container. Variants: default, accent, muted.
+</p>
+{% call grid(cols=3) %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ particle_bg(count=8) }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ particle_bg(count=8, variant="accent") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">accent</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ particle_bg(count=8, variant="muted") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">muted</span>
+</div>
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Symbol Rain ───────────────────────── -->
+
+<h2>Symbol Rain</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Cascading symbol characters raining down. Variants: default, accent, gold, muted.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ symbol_rain(count=6) }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ symbol_rain(count=6, variant="accent") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">accent</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ symbol_rain(count=6, variant="gold") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">gold</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ symbol_rain(count=6, variant="muted") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">muted</span>
+</div>
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Holy Light ───────────────────────── -->
+
+<h2>Holy Light</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Radiant divine glow emanating from the center. Variants: default, gold, silver.
+</p>
+{% call grid(cols=3) %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ holy_light() }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ holy_light(variant="gold") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">gold</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ holy_light(variant="silver") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">silver</span>
+</div>
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Rune Field ───────────────────────── -->
+
+<h2>Rune Field</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Mystical rune symbols floating in a field. Variants: default, arcane, frost, ember.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ rune_field() }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ rune_field(variant="arcane") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">arcane</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ rune_field(variant="frost") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">frost</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ rune_field(variant="ember") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">ember</span>
+</div>
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Constellation ───────────────────────── -->
+
+<h2>Constellation</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Connected star-point network pattern. Variants: default, warm, cool, mono.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ constellation() }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ constellation(variant="warm") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">warm</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ constellation(variant="cool") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">cool</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ constellation(variant="mono") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">mono</span>
+</div>
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Scanline ───────────────────────── -->
+
+<h2>Scanline</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Retro CRT scanline overlay. Variants: default, heavy, crt.
+</p>
+{% call grid(cols=3) %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ scanline() }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ scanline(variant="heavy") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">heavy</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ scanline(variant="crt") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">crt</span>
+</div>
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Film Grain ───────────────────────── -->
+
+<h2>Film Grain</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Film-style noise texture overlay. Variants: default, heavy, subtle, and animated.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ grain() }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ grain(variant="heavy") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">heavy</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ grain(variant="subtle") }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">subtle</span>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ grain(animated=true) }}
+  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">animated=true</span>
+</div>
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Border Beam ───────────────────────── -->
+
+<h2>Border Beam</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Animated light tracing around the border of an element. Variants: default, accent, success, warning.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call border_beam() %}
+<div style="padding: 1.5rem; text-align: center;">
+  <p style="margin: 0;">default</p>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call border_beam(variant="accent") %}
+<div style="padding: 1.5rem; text-align: center;">
+  <p style="margin: 0;">accent</p>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call border_beam(variant="success") %}
+<div style="padding: 1.5rem; text-align: center;">
+  <p style="margin: 0;">success</p>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call border_beam(variant="warning") %}
+<div style="padding: 1.5rem; text-align: center;">
+  <p style="margin: 0;">warning</p>
+</div>
+{% end %}
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Sparkle ───────────────────────── -->
+
+<h2>Sparkle</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Twinkling sparkle particles around content. Variants: default, gold, rainbow.
+</p>
+{% call grid(cols=3) %}
+{% call block() %}
+{% call sparkle(count=6) %}
+<div style="padding: 1.5rem; text-align: center;">
+  <p style="margin: 0;">default</p>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call sparkle(count=6, variant="gold") %}
+<div style="padding: 1.5rem; text-align: center;">
+  <p style="margin: 0;">gold</p>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call sparkle(count=6, variant="rainbow") %}
+<div style="padding: 1.5rem; text-align: center;">
+  <p style="margin: 0;">rainbow</p>
+</div>
+{% end %}
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Confetti ───────────────────────── -->
+
+<h2>Confetti</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Celebratory confetti burst triggered on click.
+</p>
+{% call block() %}
+<div style="display: flex; gap: 1rem; align-items: center;">
+  {{ confetti() }}
+  {{ confetti_trigger("Click me!") }}
+</div>
+{% end %}
+
+<!-- ───────────────────────── Wobble / Jello / Rubber Band ───────────────────────── -->
+
+<h2>Wobble / Jello / Rubber Band / Bounce In</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Playful motion primitives that wrap content with elastic animations.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call wobble(trigger="load") %}
+<div style="padding: 1.5rem; text-align: center; background: var(--chirpui-surface); border-radius: var(--chirpui-radius-lg); border: 1px solid var(--chirpui-border);">
+  <p style="margin: 0; font-weight: 600;">Wobble</p>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call jello(trigger="load") %}
+<div style="padding: 1.5rem; text-align: center; background: var(--chirpui-surface); border-radius: var(--chirpui-radius-lg); border: 1px solid var(--chirpui-border);">
+  <p style="margin: 0; font-weight: 600;">Jello</p>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call rubber_band(trigger="load") %}
+<div style="padding: 1.5rem; text-align: center; background: var(--chirpui-surface); border-radius: var(--chirpui-radius-lg); border: 1px solid var(--chirpui-border);">
+  <p style="margin: 0; font-weight: 600;">Rubber Band</p>
+</div>
+{% end %}
+{% end %}
+{% call block() %}
+{% call bounce_in(trigger="load") %}
+<div style="padding: 1.5rem; text-align: center; background: var(--chirpui-surface); border-radius: var(--chirpui-radius-lg); border: 1px solid var(--chirpui-border);">
+  <p style="margin: 0; font-weight: 600;">Bounce In</p>
+</div>
+{% end %}
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Orbit ───────────────────────── -->
+
+<h2>Orbit</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: -0.5rem;">
+  Items orbiting in a circular path. Default and reverse directions.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<div style="display: flex; justify-content: center; padding: 2rem 0;">
+  {{ orbit(items=["◆", "●", "★", "◇"]) }}
+</div>
+<p style="text-align: center; margin: 0; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</p>
+{% end %}
+{% call block() %}
+<div style="display: flex; justify-content: center; padding: 2rem 0;">
+  {{ orbit(items=["◆", "●", "★", "◇"], reverse=true) }}
+</div>
+<p style="text-align: center; margin: 0; font-size: 0.75rem; color: var(--chirpui-text-muted);">reverse=true</p>
+{% end %}
+{% end %}
+
+<!-- ───────────────────────── Hero Effects ───────────────────────── -->
+
+<h2>Hero Effects</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Hero sections with built-in particle, meteor, or spotlight effects.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ hero_effects(effect="particles") }}
+  <div style="position: relative; z-index: 1; padding: 2rem; text-align: center;">
+    <h3>Particles</h3>
+    <p class="chirpui-text-muted">effect="particles"</p>
+  </div>
+</div>
+{% end %}
+{% call block() %}
+<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ hero_effects(effect="meteor") }}
+  <div style="position: relative; z-index: 1; padding: 2rem; text-align: center;">
+    <h3>Meteor</h3>
+    <p class="chirpui-text-muted">effect="meteor"</p>
+  </div>
+</div>
+{% end %}
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}
