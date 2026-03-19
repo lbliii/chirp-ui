@@ -1,0 +1,438 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
+{% from "chirpui/ascii_border.html" import ascii_border %}
+{% from "chirpui/ascii_divider.html" import ascii_divider %}
+{% from "chirpui/ascii_sparkline.html" import ascii_sparkline %}
+{% from "chirpui/ascii_progress.html" import ascii_progress %}
+{% from "chirpui/ascii_spinner.html" import ascii_spinner %}
+{% from "chirpui/ascii_toggle.html" import ascii_toggle, ascii_switch %}
+{% from "chirpui/ascii_indicator.html" import indicator, indicator_row %}
+{% from "chirpui/ascii_tile_btn.html" import tile_btn, tile_grid %}
+{% from "chirpui/ascii_knob.html" import ascii_knob %}
+{% from "chirpui/ascii_fader.html" import ascii_fader, fader_bank %}
+{% from "chirpui/ascii_vu_meter.html" import ascii_vu_meter, vu_meter_stack %}
+{% from "chirpui/ascii_7seg.html" import ascii_7seg %}
+{% from "chirpui/ascii_checkbox.html" import ascii_checkbox, ascii_checkbox_group %}
+{% from "chirpui/ascii_radio.html" import ascii_radio, ascii_radio_group %}
+{% from "chirpui/ascii_stepper.html" import ascii_stepper %}
+{% from "chirpui/ascii_split_flap.html" import split_flap, split_flap_board %}
+{% from "chirpui/ascii_ticker.html" import ascii_ticker %}
+{% from "chirpui/ascii_breaker_panel.html" import breaker_panel, breaker %}
+{% from "chirpui/ascii_badge.html" import ascii_badge %}
+{% from "chirpui/ascii_empty.html" import ascii_empty %}
+{% from "chirpui/ascii_skeleton.html" import ascii_skeleton %}
+{% from "chirpui/ascii_table.html" import ascii_table, ascii_row %}
+{% from "chirpui/ascii_error.html" import ascii_error %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("ASCII Primitives", subtitle="Unicode box-drawing, controls, and retro UI components — all pure CSS.") }}
+
+{# ── 1. ASCII Border ── #}
+<h2>ASCII Border</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Box-drawing borders in four variants.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<code class="chirpui-font-sm">single</code>
+{% call ascii_border(variant="single") %}Hello, single border{% end %}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">double</code>
+{% call ascii_border(variant="double") %}Hello, double border{% end %}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">rounded</code>
+{% call ascii_border(variant="rounded") %}Hello, rounded border{% end %}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">heavy</code>
+{% call ascii_border(variant="heavy") %}Hello, heavy border{% end %}
+{% end %}
+{% end %}
+
+{# ── 2. ASCII Divider ── #}
+<h2>ASCII Divider</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Horizontal rules with character variety.
+</p>
+{% call block() %}
+<p class="chirpui-font-sm"><code>single</code></p>
+{{ ascii_divider(variant="single") }}
+<p class="chirpui-font-sm"><code>double</code></p>
+{{ ascii_divider(variant="double") }}
+<p class="chirpui-font-sm"><code>heavy</code></p>
+{{ ascii_divider(variant="heavy") }}
+<p class="chirpui-font-sm"><code>dots</code></p>
+{{ ascii_divider(variant="dots") }}
+<p class="chirpui-font-sm"><code>spin</code></p>
+{{ ascii_divider(variant="spin") }}
+{% end %}
+
+{# ── 3. ASCII Sparkline ── #}
+<h2>ASCII Sparkline</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Inline bar-chart sparklines from data arrays.
+</p>
+{% call grid(cols=3) %}
+{% call block() %}
+<code class="chirpui-font-sm">default</code>
+{{ ascii_sparkline(values=[3,7,2,8,4,6,1,9,5,3]) }}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">accent</code>
+{{ ascii_sparkline(values=[1,4,2,8,5,7,3,6,9,2], variant="accent") }}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">gradient</code>
+{{ ascii_sparkline(values=[9,7,5,3,1,2,4,6,8,9], variant="gradient") }}
+{% end %}
+{% end %}
+
+{# ── 4. ASCII Progress ── #}
+<h2>ASCII Progress</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Determinate progress bars with semantic variants.
+</p>
+{% call block() %}
+{{ ascii_progress(value=25, label="Queued") }}
+{{ ascii_progress(value=50, label="Building", variant="accent") }}
+{{ ascii_progress(value=75, label="Testing", variant="success") }}
+{{ ascii_progress(value=100, label="Complete", variant="warning") }}
+{% end %}
+
+{# ── 5. ASCII Spinner ── #}
+<h2>ASCII Spinner</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Animated character-set spinners in multiple sizes.
+</p>
+{% call block() %}
+<p class="chirpui-font-sm"><strong>Charsets</strong></p>
+<div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
+  <div style="text-align: center;">{{ ascii_spinner(charset="braille") }}<br><code class="chirpui-font-xs">braille</code></div>
+  <div style="text-align: center;">{{ ascii_spinner(charset="box") }}<br><code class="chirpui-font-xs">box</code></div>
+  <div style="text-align: center;">{{ ascii_spinner(charset="dots") }}<br><code class="chirpui-font-xs">dots</code></div>
+  <div style="text-align: center;">{{ ascii_spinner(charset="arrows") }}<br><code class="chirpui-font-xs">arrows</code></div>
+  <div style="text-align: center;">{{ ascii_spinner(charset="blocks") }}<br><code class="chirpui-font-xs">blocks</code></div>
+</div>
+<p class="chirpui-font-sm" style="margin-top: 1rem;"><strong>Sizes</strong></p>
+<div style="display: flex; gap: 2rem; align-items: center;">
+  <div style="text-align: center;">{{ ascii_spinner(charset="braille", size="sm") }}<br><code class="chirpui-font-xs">sm</code></div>
+  <div style="text-align: center;">{{ ascii_spinner(charset="braille", size="md") }}<br><code class="chirpui-font-xs">md</code></div>
+  <div style="text-align: center;">{{ ascii_spinner(charset="braille", size="lg") }}<br><code class="chirpui-font-xs">lg</code></div>
+</div>
+{% end %}
+
+{# ── 6. ASCII Toggle ── #}
+<h2>ASCII Toggle</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Toggling switches with semantic colour variants.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<p class="chirpui-font-sm"><strong>ascii_toggle</strong></p>
+{{ ascii_toggle(name="t1", label="Default on", checked=true) }}
+{{ ascii_toggle(name="t2", label="Default off") }}
+{{ ascii_toggle(name="t3", label="Success", checked=true, variant="success") }}
+{{ ascii_toggle(name="t4", label="Danger", checked=true, variant="danger") }}
+{{ ascii_toggle(name="t5", label="Accent", checked=true, variant="accent") }}
+{% end %}
+{% call block() %}
+<p class="chirpui-font-sm"><strong>ascii_switch</strong></p>
+{{ ascii_switch(name="s1", label="Power", checked=true) }}
+{{ ascii_switch(name="s2", label="Standby") }}
+{{ ascii_switch(name="s3", label="Network", checked=true) }}
+{% end %}
+{% end %}
+
+{# ── 7. ASCII Indicator ── #}
+<h2>ASCII Indicator</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Status dots with optional blink animation.
+</p>
+{% call block() %}
+<p class="chirpui-font-sm"><strong>Static</strong></p>
+{% call indicator_row() %}
+  {{ indicator(variant="success") }}
+  {{ indicator(variant="warning") }}
+  {{ indicator(variant="error") }}
+  {{ indicator(variant="muted") }}
+  {{ indicator(variant="accent") }}
+{% end %}
+<p class="chirpui-font-sm" style="margin-top: 1rem;"><strong>Blinking</strong></p>
+{% call indicator_row() %}
+  {{ indicator(variant="success", blink=true) }}
+  {{ indicator(variant="warning", blink=true) }}
+  {{ indicator(variant="error", blink=true) }}
+{% end %}
+{% end %}
+
+{# ── 8. ASCII Tile Buttons ── #}
+<h2>ASCII Tile Buttons</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Glyph tile buttons in a grid. <code>lit=true</code> highlights the active tile.
+</p>
+{% call block() %}
+{% call tile_grid(cols=4) %}
+  {{ tile_btn(glyph="■", label="One") }}
+  {{ tile_btn(glyph="◆", label="Two", lit=true) }}
+  {{ tile_btn(glyph="▲", label="Three") }}
+  {{ tile_btn(glyph="●", label="Four", lit=true) }}
+  {{ tile_btn(glyph="★", label="Five") }}
+  {{ tile_btn(glyph="✦", label="Six") }}
+  {{ tile_btn(glyph="◎", label="Seven", lit=true) }}
+  {{ tile_btn(glyph="▸", label="Eight") }}
+{% end %}
+{% end %}
+
+{# ── 9. ASCII Knob ── #}
+<h2>ASCII Knob</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Rotary selector with discrete steps.
+</p>
+{% call grid(cols=3) %}
+{% call block() %}
+{{ ascii_knob(name="vol", options=["Off","1","2","3","4","5"], selected="3", label="Volume") }}
+{% end %}
+{% call block() %}
+{{ ascii_knob(name="gain", options=["Low","Mid","High"], selected="Mid", label="Gain") }}
+{% end %}
+{% call block() %}
+{{ ascii_knob(name="pan", options=["L","C","R"], selected="C", label="Pan") }}
+{% end %}
+{% end %}
+
+{# ── 10. ASCII Fader ── #}
+<h2>ASCII Fader</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Vertical fader strips grouped into a mixer bank.
+</p>
+{% call block() %}
+{% call fader_bank(title="Mixer") %}
+  {{ ascii_fader(name="ch1", value=70, label="CH 1") }}
+  {{ ascii_fader(name="ch2", value=45, label="CH 2", variant="accent") }}
+  {{ ascii_fader(name="ch3", value=90, label="CH 3") }}
+  {{ ascii_fader(name="ch4", value=30, label="CH 4", variant="accent") }}
+{% end %}
+{% end %}
+
+{# ── 11. ASCII VU Meter ── #}
+<h2>ASCII VU Meter</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Animated level meters for audio-style displays.
+</p>
+{% call block() %}
+{% call vu_meter_stack(title="Levels") %}
+  {{ ascii_vu_meter(value=80, label="L", animate=true) }}
+  {{ ascii_vu_meter(value=65, label="R", animate=true) }}
+{% end %}
+{% end %}
+
+{# ── 12. ASCII 7-Segment ── #}
+<h2>ASCII 7-Segment Display</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Retro numeric readouts with colour variants.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{{ ascii_7seg("1234", label="Counter") }}
+{% end %}
+{% call block() %}
+{{ ascii_7seg("88:00", label="Clock", variant="accent") }}
+{% end %}
+{% call block() %}
+{{ ascii_7seg("0042", label="Score", variant="success") }}
+{% end %}
+{% call block() %}
+{{ ascii_7seg("9999", label="Limit", variant="warning") }}
+{% end %}
+{% end %}
+
+{# ── 13. ASCII Checkbox ── #}
+<h2>ASCII Checkbox</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Grouped checkboxes with ASCII-style markers.
+</p>
+{% call block() %}
+{% call ascii_checkbox_group(legend="Options") %}
+  {{ ascii_checkbox(name="a", label="Option A", checked=true) }}
+  {{ ascii_checkbox(name="b", label="Option B") }}
+  {{ ascii_checkbox(name="c", label="Option C", checked=true) }}
+  {{ ascii_checkbox(name="d", label="Option D") }}
+{% end %}
+{% end %}
+
+{# ── 14. ASCII Radio ── #}
+<h2>ASCII Radio</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Grouped radio buttons with ASCII markers.
+</p>
+{% call block() %}
+{% call ascii_radio_group(name="pick", legend="Pick one") %}
+  {{ ascii_radio(name="pick", value="a", label="Alpha", checked=true) }}
+  {{ ascii_radio(name="pick", value="b", label="Beta") }}
+  {{ ascii_radio(name="pick", value="c", label="Gamma") }}
+{% end %}
+{% end %}
+
+{# ── 15. ASCII Stepper ── #}
+<h2>ASCII Stepper</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Multi-step progress indicator.
+</p>
+{% call block() %}
+{{ ascii_stepper(steps=["Start","Configure","Review","Deploy"], current=2) }}
+{% end %}
+
+{# ── 16. ASCII Split-Flap ── #}
+<h2>ASCII Split-Flap</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Departure-board style split-flap display.
+</p>
+{% call block() %}
+{% call split_flap_board(title="Departures") %}
+  {{ split_flap("NYC") }}
+  {{ split_flap("12:45", variant="amber") }}
+  {{ split_flap("ON TIME", variant="green") }}
+{% end %}
+{% end %}
+
+{# ── 17. ASCII Ticker ── #}
+<h2>ASCII Ticker</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Scrolling marquee text with variant colours.
+</p>
+{% call block() %}
+{{ ascii_ticker(text="Breaking news: chirp-ui ships ASCII primitives") }}
+{{ ascii_ticker(text="ALERT: System maintenance scheduled at 02:00 UTC", variant="warning") }}
+{{ ascii_ticker(text="Featured: new split-flap and 7-segment components", variant="accent") }}
+{% end %}
+
+{# ── 18. ASCII Breaker Panel ── #}
+<h2>ASCII Breaker Panel</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Industrial-style toggle switches in a panel.
+</p>
+{% call block() %}
+{% call breaker_panel(title="System Controls") %}
+  {{ breaker(name="main", label="Main", checked=true) }}
+  {{ breaker(name="aux", label="Aux") }}
+  {{ breaker(name="backup", label="Backup", checked=true) }}
+  {{ breaker(name="lights", label="Lights") }}
+{% end %}
+{% end %}
+
+{# ── 19. ASCII Badge ── #}
+<h2>ASCII Badge</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Inline status badges with semantic variants.
+</p>
+{% call block() %}
+<div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+  {{ ascii_badge(text="Default") }}
+  {{ ascii_badge(text="OK", variant="success") }}
+  {{ ascii_badge(text="Warn", variant="warning") }}
+  {{ ascii_badge(text="Fail", variant="error") }}
+  {{ ascii_badge(text="New", variant="accent") }}
+  {{ ascii_badge(text="N/A", variant="muted") }}
+</div>
+{% end %}
+
+{# ── 20. ASCII Empty State ── #}
+<h2>ASCII Empty State</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Placeholder for views with no content.
+</p>
+{% call block() %}
+{{ ascii_empty(heading="No results", description="Try adjusting your search") }}
+{% end %}
+
+{# ── 21. ASCII Skeleton ── #}
+<h2>ASCII Skeleton</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Loading placeholders in various shapes.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<code class="chirpui-font-sm">text (3 lines)</code>
+{{ ascii_skeleton(variant="text", lines=3) }}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">card</code>
+{{ ascii_skeleton(variant="card") }}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">avatar</code>
+{{ ascii_skeleton(variant="avatar") }}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">heading</code>
+{{ ascii_skeleton(variant="heading") }}
+{% end %}
+{% end %}
+
+{# ── 22. ASCII Table ── #}
+<h2>ASCII Table</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Box-drawing tables in four border styles.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<code class="chirpui-font-sm">single</code>
+{% call ascii_table(headers=["Name","Role","Status"], variant="single") %}
+  {{ ascii_row("Alice","Admin","Active") }}
+  {{ ascii_row("Bob","User","Away") }}
+{% end %}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">double</code>
+{% call ascii_table(headers=["Name","Role","Status"], variant="double") %}
+  {{ ascii_row("Carol","Editor","Active") }}
+  {{ ascii_row("Dave","Viewer","Offline") }}
+{% end %}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">heavy</code>
+{% call ascii_table(headers=["Name","Role","Status"], variant="heavy") %}
+  {{ ascii_row("Eve","Admin","Active") }}
+  {{ ascii_row("Frank","User","Busy") }}
+{% end %}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">rounded</code>
+{% call ascii_table(headers=["Name","Role","Status"], variant="rounded") %}
+  {{ ascii_row("Grace","Editor","Active") }}
+  {{ ascii_row("Hank","Guest","Idle") }}
+{% end %}
+{% end %}
+{% end %}
+
+{# ── 23. ASCII Error Pages ── #}
+<h2>ASCII Error Pages</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Full-width error states for HTTP status codes.
+</p>
+{% call block() %}
+{{ ascii_error(code="404", heading="Not Found", description="The page you're looking for doesn't exist.") }}
+{% end %}
+{% call grid(cols=2) %}
+{% call block() %}
+{{ ascii_error(code="403", heading="Forbidden", description="You don't have permission to access this resource.") }}
+{% end %}
+{% call block() %}
+{{ ascii_error(code="500", heading="Server Error", description="Something went wrong on our end.") }}
+{% end %}
+{% call block() %}
+{{ ascii_error(code="503", heading="Unavailable", description="The service is temporarily offline.") }}
+{% end %}
+{% call block() %}
+{{ ascii_error(code="408", heading="Timeout", description="The request took too long to complete.") }}
+{% end %}
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

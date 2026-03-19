@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/modal.html" import modal, modal_trigger %}
 {% from "chirpui/confirm.html" import confirm_dialog, confirm_trigger %}
@@ -13,6 +13,13 @@
 {% from "chirpui/accordion.html" import accordion, accordion_item %}
 {% from "chirpui/collapse.html" import collapse %}
 {% from "chirpui/tooltip.html" import tooltip %}
+{% from "chirpui/row_actions.html" import row_actions %}
+
+{% from "chirpui/status.html" import status_indicator %}
+{% from "chirpui/status_with_hint.html" import status_with_hint %}
+{% from "chirpui/empty.html" import empty_state %}
+{% from "chirpui/reveal_on_scroll.html" import reveal_on_scroll %}
+{% from "chirpui/infinite_scroll.html" import infinite_scroll %}
 
 {% call container() %}
 {% call stack() %}
@@ -147,7 +154,70 @@ Go to Settings → Profile to edit your name, email, and preferences.
 </p>
 {% end %}
 
-<p><a href="/">← Back to index</a></p>
+<h2>Row Actions</h2>
+{% call block() %}
+{{ row_actions(items=[{"label": "Edit", "href": "/forms"}, {"label": "Duplicate", "href": "#"}, {"label": "Delete", "href": "#", "variant": "danger"}]) }}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  Kebab/dots menu for table rows. Supports variant="danger" for destructive actions.
+</p>
+{% end %}
+
+<h2>Status Indicator</h2>
+{% call block() %}
+<div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
+{{ status_indicator(label="Active", variant="success", pulse=true) }}
+{{ status_indicator(label="Away", variant="warning") }}
+{{ status_indicator(label="Offline", variant="default") }}
+{{ status_indicator(label="Error", variant="error") }}
+</div>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  Colored dot + label. Use pulse=true for live/active states.
+</p>
+{% end %}
+
+<h2>Status with Hint</h2>
+{% call block() %}
+<div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+{{ status_with_hint(text="Deployed", variant="success", hint="Last deploy: 2 hours ago") }}
+{{ status_with_hint(text="Pending", variant="warning", hint="Waiting for approval") }}
+</div>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  Status badge paired with a secondary hint line for extra context.
+</p>
+{% end %}
+
+<h2>Empty State</h2>
+{% call block() %}
+{{ empty_state(icon="◇", title="No results found", action_label="Clear filters", action_href="/data") }}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  With action button. Use for zero-result screens, onboarding, or blank slates.
+</p>
+{% end %}
+{% call block() %}
+{{ empty_state(icon="◇", title="Nothing here yet") }}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  Without action — just an icon and a title.
+</p>
+{% end %}
+
+<h2>Reveal on Scroll</h2>
+{% call block() %}
+{% call reveal_on_scroll() %}
+<p>This content reveals when scrolled into view.</p>
+{% end %}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  Fade/slide in on scroll using IntersectionObserver. Wrap any content.
+</p>
+{% end %}
+
+<h2>Infinite Scroll</h2>
+{% call block() %}
+{{ infinite_scroll(load_url="/data/table?page=2") }}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+  Loads the next page automatically when scrolled into view. Shows a loading indicator.
+</p>
+{% end %}
+
 {% end %}
 {% end %}
 {% end %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block %}
 {% from "chirpui/card.html" import card_link %}
 {% call container() %}
@@ -27,12 +27,12 @@
 {% call grid(cols=2) %}
 {% call block() %}
 {% call card_link("/navigation", "Navigation") %}
-<p>navbar, sidebar, stepper — Top nav, side nav, multi-step forms.</p>
+<p>navbar, sidebar, stepper, route_tabs, nav_tree, pagination, command_palette, segmented_control.</p>
 {% end %}
 {% end %}
 {% call block() %}
 {% call card_link("/layout", "Layout") %}
-<p>Grid, stack, surface, callout, hero, overlay, divider, breadcrumbs, list, link — RTL, @container resize.</p>
+<p>Grid, stack, surface, hero, split_panel, entity_header, search_header, filter_bar, action_bar, tray, media_object.</p>
 {% end %}
 {% end %}
 {% call block() %}
@@ -57,12 +57,12 @@
 {% end %}
 {% call block() %}
 {% call card_link("/forms", "Forms") %}
-<p>text, textarea, select, checkbox, toggle — live validation, toast on success.</p>
+<p>Fields, validation, wizard_form, inline_edit, drag-and-drop, sortable_list, signature, params_table.</p>
 {% end %}
 {% end %}
 {% call block() %}
 {% call card_link("/ui", "UI Components") %}
-<p>modal, dropdown, tabs, accordion, collapse, tooltip, badge, toast.</p>
+<p>modal, dropdown, tabs, accordion, tooltip, toast, row_actions, share_menu, status, empty_state, infinite_scroll.</p>
 {% end %}
 {% end %}
 {% call block() %}
@@ -83,6 +83,31 @@
 {% call block() %}
 {% call card_link("/data", "Data — Team Roster") %}
 <p>Search, filter, sort, pagination, bulk select, export CSV — HTML over the wire.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card_link("/effects", "Visual Effects") %}
+<p>aurora, meteor, particles, symbol rain, constellation, sparkle, confetti, orbit — Background and decorative effects.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card_link("/typography", "Typography Effects") %}
+<p>neon_text, glitch_text, gradient_text, typewriter, text_reveal, marquee, number_ticker.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card_link("/buttons", "Buttons & Enhanced Cards") %}
+<p>ripple, shimmer, pulsing buttons, glow_card, spotlight_card, bento_grid, dock, notification_dot.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card_link("/ascii-primitives", "ASCII Primitives") %}
+<p>Knobs, faders, VU meters, 7-segment displays, split-flap boards, breaker panels, toggles, tables — Full retro control suite.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card_link("/dashboard", "Dashboard") %}
+<p>animated_stat_card, config_row, settings_row, bar_chart, donut — Dashboard building blocks.</p>
 {% end %}
 {% end %}
 {% call block() %}

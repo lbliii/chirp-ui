@@ -90,6 +90,9 @@ except ImportError:
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
+# Use source chirp-ui templates (many components not yet in installed package)
+_CHIRPUI_SRC_TEMPLATES = Path(__file__).resolve().parents[2] / "src" / "chirp_ui" / "templates"
+
 # Build config with only params supported by installed Chirp (islands added in newer versions)
 _config_kwargs: dict[str, object] = {
     "template_dir": TEMPLATES_DIR,
@@ -97,6 +100,7 @@ _config_kwargs: dict[str, object] = {
     "view_transitions": True,
     "delegation": True,
     "islands": True,
+    "component_dirs": (_CHIRPUI_SRC_TEMPLATES,) if _CHIRPUI_SRC_TEMPLATES.is_dir() else (),
 }
 _sig = inspect.signature(AppConfig)
 _allowed = {k: v for k, v in _config_kwargs.items() if k in _sig.parameters}
@@ -450,6 +454,31 @@ async def calendar_view(year: int | str | None = None, month: int | str | None =
 @app.route("/data", template="showcase/data.html")
 async def data() -> Template:
     return Template("showcase/data.html")
+
+
+@app.route("/effects", template="showcase/effects.html")
+async def effects() -> Template:
+    return Template("showcase/effects.html")
+
+
+@app.route("/typography", template="showcase/typography.html")
+async def typography() -> Template:
+    return Template("showcase/typography.html")
+
+
+@app.route("/ascii-primitives", template="showcase/ascii_primitives.html")
+async def ascii_primitives() -> Template:
+    return Template("showcase/ascii_primitives.html")
+
+
+@app.route("/buttons", template="showcase/buttons.html")
+async def buttons() -> Template:
+    return Template("showcase/buttons.html")
+
+
+@app.route("/dashboard", template="showcase/dashboard.html")
+async def dashboard() -> Template:
+    return Template("showcase/dashboard.html")
 
 
 @app.route("/animation", template="showcase/animation.html")

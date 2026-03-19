@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
 {% from "chirpui/layout.html" import container, stack %}
 {% from "chirpui/carousel.html" import carousel, carousel_slide %}
 {% from "chirpui/card.html" import card %}
@@ -65,7 +65,6 @@
   carousel(variant="page", slide_count=3, show_dots=true)
 </p>
 
-<p><a href="/">← Back to index</a></p>
 {% end %}
 {% end %}
 {% end %}

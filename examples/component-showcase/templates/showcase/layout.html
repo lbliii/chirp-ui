@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/badge.html" import badge %}
@@ -12,6 +12,16 @@
 {% from "chirpui/callout.html" import callout %}
 {% from "chirpui/hero.html" import hero %}
 {% from "chirpui/overlay.html" import overlay %}
+{% from "chirpui/split_panel.html" import split_panel %}
+{% from "chirpui/entity_header.html" import entity_header %}
+{% from "chirpui/search_header.html" import search_header %}
+{% from "chirpui/filter_bar.html" import filter_bar %}
+{% from "chirpui/action_strip.html" import action_strip %}
+{% from "chirpui/action_bar.html" import action_bar, action_bar_item %}
+{% from "chirpui/media_object.html" import media_object, media_object_media, media_object_body, media_object_actions %}
+{% from "chirpui/tray.html" import tray, tray_trigger %}
+{% from "chirpui/selection_bar.html" import selection_bar %}
+{% from "chirpui/tabbed_page_layout.html" import tabbed_page_layout %}
 
 {% call container() %}
 {% call stack() %}
@@ -436,8 +446,203 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 {% end %}
 {% end %}
 {% end %}
+{% end %}
 
-<p><a href="/">← Back to index</a></p>
+<h2>Split Panel</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Resizable split layout with a draggable handle. Requires Alpine.js.
+</p>
+{% call block() %}
+<div style="height: 16rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); overflow: hidden;">
+{% call split_panel(direction="horizontal", default_split=30) %}
+  {% slot left %}
+  <div style="padding: 1rem; background: var(--chirpui-bg-subtle); height: 100%;">
+    <strong>Sidebar</strong>
+    <ul style="margin: 0.5rem 0 0; padding-inline-start: 1.25rem;">
+      <li>Nav item 1</li>
+      <li>Nav item 2</li>
+      <li>Nav item 3</li>
+    </ul>
+  </div>
+  {% end %}
+  {% slot right %}
+  <div style="padding: 1rem; height: 100%;">
+    <strong>Main Content</strong>
+    <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 0.875rem;">Drag the handle to resize the panels.</p>
+  </div>
+  {% end %}
+{% end %}
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  split_panel(direction="horizontal|vertical", default_split=50, min_split=10, max_split=90)
+</p>
+{% end %}
+
+<h2>Entity Header</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Title + meta + contextual actions for entity detail pages.
+</p>
+{% call block() %}
+{% call entity_header(title="Project Alpha", meta="Created 3 days ago", icon="◆") %}
+  {% slot actions %}
+  <button type="button" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Edit</button>
+  <button type="button" class="chirpui-btn chirpui-btn--secondary chirpui-btn--sm">Archive</button>
+  {% end %}
+{% end %}
+{% end %}
+{% call block() %}
+{% call entity_header(title="Simple Header", meta="No icon, no actions") %}{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  entity_header(title, meta=none, icon=none) — use {% slot actions %} for action buttons.
+</p>
+{% end %}
+
+<h2>Search Header</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Header with a prominent search strip for discovery and list pages.
+</p>
+{% call block() %}
+{{ search_header(title="Components", form_action="/data/table", query="", subtitle="Browse the full library") }}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  search_header(title, form_action, query="", subtitle=none, search_placeholder="Search...")
+</p>
+{% end %}
+
+<h2>Filter Bar</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Filter-first action container for list and table controls.
+</p>
+{% call block() %}
+{% call filter_bar(action="/data/table") %}
+<div class="chirpui-action-strip__primary">
+  <select class="chirpui-input chirpui-input--sm" name="status">
+    <option value="">All statuses</option>
+    <option value="active">Active</option>
+    <option value="archived">Archived</option>
+  </select>
+  <select class="chirpui-input chirpui-input--sm" name="category">
+    <option value="">All categories</option>
+    <option value="layout">Layout</option>
+    <option value="forms">Forms</option>
+  </select>
+</div>
+<div class="chirpui-action-strip__actions">
+  <button type="submit" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Apply Filters</button>
+</div>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  filter_bar(action, method="get") — wraps action_strip inside a form.
+</p>
+{% end %}
+
+<h2>Action Strip</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Container for search, filter, and action rows on list pages.
+</p>
+{% call block() %}
+{% call action_strip() %}
+<input type="search" class="chirpui-input chirpui-input--sm" placeholder="Search components..." style="max-width: 16rem;">
+<button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Filter</button>
+<button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Sort</button>
+<button type="button" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Create New</button>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  action_strip(surface_variant="muted", density="sm|md", wrap="wrap|scroll|collapse", sticky=false)
+</p>
+{% end %}
+
+<h2>Action Bar</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Horizontal row of icon buttons for social actions (like, share, etc.).
+</p>
+{% call block() %}
+{% call action_bar() %}
+{{ action_bar_item(icon="♡", label="Like", count=42) }}
+{{ action_bar_item(icon="↻", label="Share") }}
+{{ action_bar_item(icon="⋯", label="More") }}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  action_bar() wraps action_bar_item(icon, label, count=none, href=none, active=false)
+</p>
+{% end %}
+
+<h2>Media Object</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Classic media + body layout primitive for lists and cards.
+</p>
+{% call block() %}
+{% call media_object() %}
+{% call media_object_media() %}
+<div style="width: 3rem; height: 3rem; background: var(--chirpui-accent); border-radius: var(--chirpui-radius); display: flex; align-items: center; justify-content: center; color: var(--chirpui-surface);">◆</div>
+{% end %}
+{% call media_object_body() %}
+<strong>Media Object Title</strong>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">Description text for the media object. Uses the classic OOCSS pattern.</p>
+{% end %}
+{% call media_object_actions() %}
+<button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Action</button>
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  media_object(align="start") with media_object_media, media_object_body, media_object_actions helpers.
+</p>
+{% end %}
+
+<h2>Tray</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Slide-out panel triggered by a button. Requires Alpine.js.
+</p>
+{% call block() %}
+{{ tray_trigger("demo-tray", "Open Tray", icon="⚙") }}
+{% call tray("demo-tray", "Settings") %}
+<p>Tray content goes here. Click the backdrop or the close button to dismiss.</p>
+<div class="chirpui-stack chirpui-stack--sm">
+  <label class="chirpui-label">Setting One</label>
+  <input type="text" class="chirpui-input" placeholder="Value...">
+  <label class="chirpui-label">Setting Two</label>
+  <input type="text" class="chirpui-input" placeholder="Value...">
+</div>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  tray_trigger(id, label, icon=none) + tray(id, title, position="right")
+</p>
+{% end %}
+
+<h2>Selection Bar</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Bulk-action container shown when list or table rows are selected.
+</p>
+{% call block() %}
+{% call selection_bar(count=3) %}
+<button type="button" class="chirpui-btn chirpui-btn--sm chirpui-btn--secondary">Delete</button>
+<button type="button" class="chirpui-btn chirpui-btn--sm chirpui-btn--secondary">Archive</button>
+<button type="button" class="chirpui-btn chirpui-btn--sm chirpui-btn--secondary">Export</button>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  selection_bar(count=0, label="selected") — renders nothing when count is 0.
+</p>
+{% end %}
+
+<h2>Tabbed Page Layout</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Contract-aware tabbed page layout with route tabs, header, toolbar, and content slots.
+</p>
+{% call block() %}
+{% call tabbed_page_layout(tabs=[{"href": "/layout", "label": "Layout"}, {"href": "/forms", "label": "Forms"}, {"href": "/data", "label": "Data"}], current_path="/layout") %}
+  {% slot page_header %}
+  <h3 style="margin: 0;">Tabbed Content Area</h3>
+  {% end %}
+  {% slot page_content %}
+  <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted);">
+    This is the page content inside a tabbed layout. The "Layout" tab is active.
+  </p>
+  {% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  tabbed_page_layout(tabs=[...], current_path="/layout") with slot page_header, slot page_toolbar, slot page_content.
+</p>
+{% end %}
+
 {% end %}
 {% end %}
 {% end %}

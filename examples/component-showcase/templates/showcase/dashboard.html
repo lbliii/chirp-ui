@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
+{% from "chirpui/layout.html" import cluster %}
+{% from "chirpui/animated_stat_card.html" import animated_stat_card %}
+{% from "chirpui/config_row.html" import config_row_list, config_row_toggle, config_row_select, config_row_display, config_row_editable %}
+{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}
+{% from "chirpui/bar_chart.html" import bar_chart %}
+{% from "chirpui/donut.html" import donut %}
+{% from "chirpui/config_dashboard.html" import config_dashboard %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Dashboard Components", subtitle="Stat cards, config rows, settings rows, bar charts, and donut charts.") }}
+
+<h2>Animated Stat Cards</h2>
+{% call grid(cols=3) %}
+{% call block() %}
+{{ animated_stat_card(value=1234, label="Total Users", trend="+12%", trend_direction="up") }}
+{% end %}
+{% call block() %}
+{{ animated_stat_card(value=99.9, label="Uptime", suffix="%", trend="+0.1%", trend_direction="up") }}
+{% end %}
+{% call block() %}
+{{ animated_stat_card(value=42, label="Open Issues", trend="-3", trend_direction="down") }}
+{% end %}
+{% end %}
+
+<h2>Config Rows</h2>
+{% call block() %}
+{% call config_row_list(divided=true) %}
+{{ config_row_toggle(name="dark_mode", label="Dark Mode", checked=true) }}
+{{ config_row_toggle(name="notifications", label="Notifications") }}
+{{ config_row_select(name="lang", label="Language", options=[{"value":"en","label":"English"},{"value":"es","label":"Spanish"}], selected="en") }}
+{{ config_row_display(term="Version", detail="0.2.0") }}
+{% end %}
+{% end %}
+
+<h2>Settings Rows</h2>
+{% call block() %}
+{% call settings_row_list(divided=true) %}
+{{ settings_row(label="API Key", status="Active", status_variant="success", detail="Last rotated 3 days ago") }}
+{{ settings_row(label="Webhook", status="Disabled", status_variant="muted") }}
+{{ settings_row(label="Rate Limit", status="Warning", status_variant="warning", detail="85% of quota used") }}
+{% end %}
+{% end %}
+
+<h2>Bar Chart</h2>
+<h3>Default (Gold)</h3>
+{% call block() %}
+{{ bar_chart(items=[{"label": "Mon", "value": 40}, {"label": "Tue", "value": 65}, {"label": "Wed", "value": 30}, {"label": "Thu", "value": 80}, {"label": "Fri", "value": 55}]) }}
+{% end %}
+
+<h3>Variants</h3>
+{% call grid(cols=2) %}
+{% call block() %}
+<h4>Radiant</h4>
+{{ bar_chart(items=[{"label": "Alpha", "value": 70}, {"label": "Beta", "value": 45}, {"label": "Gamma", "value": 90}], variant="radiant") }}
+{% end %}
+{% call block() %}
+<h4>Success</h4>
+{{ bar_chart(items=[{"label": "Pass", "value": 95}, {"label": "Warn", "value": 60}, {"label": "Fail", "value": 12}], variant="success") }}
+{% end %}
+{% end %}
+
+<h2>Donut Charts</h2>
+{% call grid(cols=3) %}
+{% call block() %}
+<h3>Completion</h3>
+{{ donut(value=75, max=100, label="75%") }}
+{% end %}
+{% call block() %}
+<h3>Success Rate</h3>
+{{ donut(value=48, max=50, label="48/50", variant="success") }}
+{% end %}
+{% call block() %}
+<h3>Quota Used</h3>
+{{ donut(value=30, max=100, label="30%", variant="muted", size="lg") }}
+{% end %}
+{% end %}
+
+<h2>Config Dashboard</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Full settings page layout composite with title, breadcrumbs, and optional key-value form.
+</p>
+{% call block() %}
+{% call config_dashboard(title="API Settings", subtitle="Manage your API configuration") %}
+<p>Dashboard content goes here — config rows, settings rows, etc.</p>
+{% end %}
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

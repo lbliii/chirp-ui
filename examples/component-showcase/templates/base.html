@@ -1,2 +1,64 @@
 {% extends "chirpui/app_layout.html" %}
 {% block title %}{{ title | default("chirp-ui Component Showcase") }}{% end %}
+{% block content %}
+{% from "chirpui/app_shell.html" import app_shell %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/theme_toggle.html" import theme_toggle %}
+
+{% call app_shell(brand_url="/", brand_slot=true, sidebar_collapsible=true) %}
+{% slot brand %}{{ logo(text="chirp-ui", variant="text") }}{% end %}
+{% slot topbar_end %}{{ theme_toggle() }}{% end %}
+{% slot sidebar %}
+{% call sidebar() %}
+
+{% call sidebar_section("Core") %}
+{{ sidebar_link("/", "Home", icon="sources") }}
+{{ sidebar_link("/demo", "Quick Demo", icon="actions") }}
+{% end %}
+
+{% call sidebar_section("Components") %}
+{{ sidebar_link("/navigation", "Navigation") }}
+{{ sidebar_link("/layout", "Layout") }}
+{{ sidebar_link("/shell-actions", "Shell Actions") }}
+{{ sidebar_link("/sections", "Sections") }}
+{{ sidebar_link("/carousel", "Carousel") }}
+{{ sidebar_link("/cards", "Cards & Alerts") }}
+{{ sidebar_link("/forms", "Forms") }}
+{{ sidebar_link("/ui", "UI Components") }}
+{% end %}
+
+{% call sidebar_section("Data") %}
+{{ sidebar_link("/data-display", "Data Display") }}
+{{ sidebar_link("/data", "Team Roster") }}
+{{ sidebar_link("/calendar", "Calendar") }}
+{{ sidebar_link("/dashboard", "Dashboard") }}
+{% end %}
+
+{% call sidebar_section("Effects") %}
+{{ sidebar_link("/effects", "Visual Effects") }}
+{{ sidebar_link("/typography", "Typography") }}
+{{ sidebar_link("/animation", "Animation") }}
+{% end %}
+
+{% call sidebar_section("ASCII") %}
+{{ sidebar_link("/ascii", "ASCII Icons") }}
+{{ sidebar_link("/ascii-primitives", "ASCII Primitives") }}
+{% end %}
+
+{% call sidebar_section("Rich") %}
+{{ sidebar_link("/buttons", "Buttons & Cards") }}
+{{ sidebar_link("/streaming", "Streaming & AI") }}
+{{ sidebar_link("/islands", "Islands") }}
+{{ sidebar_link("/messenger", "Messenger") }}
+{{ sidebar_link("/social", "Social Media") }}
+{{ sidebar_link("/video", "Video Platform") }}
+{% end %}
+
+{% end %}
+{% end %}
+
+{% block main %}{% end %}
+
+{% end %}
+{% end %}
