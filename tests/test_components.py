@@ -191,7 +191,7 @@ class TestLayout:
         html = env.from_string(
             '{% from "chirpui/layout.html" import section_header %}'
             '{% call section_header("Advanced", variant="inline") %}'
-            '{% slot actions %}<button>Toggle</button>{% end %}'
+            "{% slot actions %}<button>Toggle</button>{% end %}"
             "{% end %}"
         ).render()
         assert "chirpui-section-header" in html
@@ -204,7 +204,7 @@ class TestLayout:
         html = env.from_string(
             '{% from "chirpui/layout.html" import section_header_inline %}'
             '{% call section_header_inline("Config") %}'
-            '{% slot %}<span>Edit</span>{% end %}'
+            "{% slot %}<span>Edit</span>{% end %}"
             "{% end %}"
         ).render()
         assert "chirpui-section-header--inline" in html
@@ -283,9 +283,9 @@ class TestWorkbench:
         html = env.from_string(
             '{% from "chirpui/panel.html" import panel %}'
             '{% call panel(title="Files", subtitle="Tree", scroll_body=true) %}'
-            '{% slot actions %}<button>Refresh</button>{% end %}'
+            "{% slot actions %}<button>Refresh</button>{% end %}"
             "Body"
-            '{% slot footer %}<span>Status</span>{% end %}'
+            "{% slot footer %}<span>Status</span>{% end %}"
             "{% end %}"
         ).render()
         assert "chirpui-panel--scroll" in html
@@ -357,16 +357,16 @@ class TestWorkbench:
             '{% call file_tree(items=[{"title": "docs", "icon": "⊞", "children": ['
             '{"title": "README.md", "href": "/readme", "active": true, "icon": "●"}]}], '
             'title="Files", show_icons=true) %}'
-            '{% slot actions %}<button>Refresh</button>{% end %}'
+            "{% slot actions %}<button>Refresh</button>{% end %}"
             '{% slot header %}<input type="search" placeholder="Filter">{% end %}'
-            '{% slot footer %}<span>1 file</span>{% end %}'
+            "{% slot footer %}<span>1 file</span>{% end %}"
             "{% end %}"
         ).render()
         assert "chirpui-file-tree" in html
         assert "chirpui-panel__title" in html
         assert "chirpui-nav-tree__icon" in html
         assert "Refresh" in html
-        assert "placeholder=\"Filter\"" in html
+        assert 'placeholder="Filter"' in html
         assert "1 file" in html
 
     def test_document_header_with_details(self, env: Environment) -> None:
@@ -375,7 +375,7 @@ class TestWorkbench:
             '{% call document_header("README.md", subtitle="Skill guide", path="docs/README.md", '
             'provenance="Forked from builtin/doc-help", status="Draft", '
             'meta_items=["Modified 2m ago", "Markdown"]) %}'
-            '{% slot actions %}<button>Save</button>{% end %}'
+            "{% slot actions %}<button>Save</button>{% end %}"
             "{% end %}"
         ).render()
         assert "chirpui-document-header" in html
@@ -670,7 +670,7 @@ class TestEmptyState:
             '{% from "chirpui/empty_panel_state.html" import empty_panel_state %}'
             '{% call empty_panel_state(title="No file selected", icon="◎") %}'
             "<p>Select a file to begin.</p>"
-            '{% slot action %}<button>Browse</button>{% end %}'
+            "{% slot action %}<button>Browse</button>{% end %}"
             "{% end %}"
         ).render()
         assert "chirpui-empty-panel-state" in html
@@ -954,9 +954,7 @@ class TestButton:
 
 
 class TestStreaming:
-    def test_streaming_bubble_sse_connect_renders_child_swap_target(
-        self, env: Environment
-    ) -> None:
+    def test_streaming_bubble_sse_connect_renders_child_swap_target(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/streaming.html" import streaming_bubble %}'
             '{% call streaming_bubble(sse_connect="/stream") %}Partial{% end %}'

@@ -381,12 +381,16 @@ class TestHtmlAttrsListTupleValues:
         assert "&quot;" in rendered or '"' not in rendered
 
     def test_mixed_value_types(self) -> None:
-        rendered = str(html_attrs({
-            "disabled": True,
-            "data-list": [1, 2],
-            "title": "hello",
-            "hidden": False,
-        }))
+        rendered = str(
+            html_attrs(
+                {
+                    "disabled": True,
+                    "data-list": [1, 2],
+                    "title": "hello",
+                    "hidden": False,
+                }
+            )
+        )
         assert " disabled" in rendered
         assert "data-list" in rendered
         assert "[1,2]" in rendered
@@ -450,6 +454,7 @@ class TestRegisterFiltersWithTemplateGlobal:
 
         assert "tab_is_active" in registered_globals
         from chirp_ui.route_tabs import tab_is_active
+
         assert registered_globals["tab_is_active"] is tab_is_active
 
     def test_without_template_global_no_error(self) -> None:

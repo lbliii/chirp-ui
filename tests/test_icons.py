@@ -26,17 +26,25 @@ class TestIconRegistry:
 
     def test_known_icons_present(self) -> None:
         expected = {
-            "status", "add", "refresh", "search", "home", "gear",
-            "star", "cloud", "bolt", "chat", "alert", "pencil",
+            "status",
+            "add",
+            "refresh",
+            "search",
+            "home",
+            "gear",
+            "star",
+            "cloud",
+            "bolt",
+            "chat",
+            "alert",
+            "pencil",
         }
         missing = expected - set(ICON_REGISTRY)
         assert not missing, f"expected icons missing from registry: {missing}"
 
     def test_values_are_single_grapheme_cluster_or_short(self) -> None:
         for name, glyph in ICON_REGISTRY.items():
-            assert len(glyph) <= 3, (
-                f"icon {name!r} maps to unexpectedly long value {glyph!r}"
-            )
+            assert len(glyph) <= 3, f"icon {name!r} maps to unexpectedly long value {glyph!r}"
 
 
 class TestIconFunction:

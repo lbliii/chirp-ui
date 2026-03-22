@@ -110,9 +110,7 @@ class TestVariantRegistry:
 
     def test_no_duplicate_variants(self) -> None:
         for block, variants in VARIANT_REGISTRY.items():
-            assert len(variants) == len(set(variants)), (
-                f"{block} has duplicate variants"
-            )
+            assert len(variants) == len(set(variants)), f"{block} has duplicate variants"
 
 
 class TestSizeRegistry:
