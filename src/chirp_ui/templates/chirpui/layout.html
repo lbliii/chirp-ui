@@ -55,9 +55,11 @@
 </div>
 {% end %}
 
-{#- page_header: title, subtitle, meta, breadcrumb_items, actions slot -#}
-{% def page_header(title, subtitle=none, meta=none, breadcrumb_items=none, cls="") %}
-<header class="chirpui-stack chirpui-stack--sm chirpui-page-header{{ " " ~ cls if cls else "" }}">
+{#- page_header: title, subtitle, meta, breadcrumb_items, variant, actions slot -#}
+{% def page_header(title, subtitle=none, meta=none, breadcrumb_items=none, variant="default", cls="") %}
+{% set variant = variant | validate_variant_block("page_header", default="default") %}
+{% set variant_class = " chirpui-page-header--" ~ variant if variant != "default" else "" %}
+<header class="chirpui-stack chirpui-stack--sm chirpui-page-header{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-page-header__top">
         <div>
             {% if breadcrumb_items %}
@@ -76,15 +78,17 @@
 </header>
 {% end %}
 
-{#- section_header: title, subtitle, icon, actions slot -#}
-{% def section_header(title, subtitle=none, icon=none, cls="") %}
-<div class="chirpui-section-header{{ " " ~ cls if cls else "" }}">
+{#- section_header: title, subtitle, icon, variant, actions slot -#}
+{% def section_header(title, subtitle=none, icon=none, variant="default", cls="") %}
+{% set variant = variant | validate_variant_block("section_header", default="default") %}
+{% set variant_class = " chirpui-section-header--inline" if variant == "inline" else "" %}
+<div class="chirpui-section-header{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-section-header__top">
         <div class="chirpui-section-header__title-block">
             {% if icon %}<span class="chirpui-section-header__icon">{{ icon | icon }}</span>{% end %}
             <div>
-                <h2>{{ title }}</h2>
-                {% if subtitle %}
+                <h2{% if variant == "inline" %} class="chirpui-section-header__title-inline"{% end %}>{{ title }}</h2>
+                {% if subtitle and variant != "inline" %}
                 <p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>
                 {% end %}
             </div>
@@ -94,17 +98,11 @@
 </div>
 {% end %}
 
-{#- section_header_inline: compact h2 + actions on one line, no subtitle — for dense forms -#}
+{#- section_header_inline: deprecated alias — use section_header(variant="inline") with {% slot actions %} -#}
 {% def section_header_inline(title, icon=none, cls="") %}
-<div class="chirpui-section-header chirpui-section-header--inline{{ " " ~ cls if cls else "" }}">
-    <div class="chirpui-section-header__top">
-        <div class="chirpui-section-header__title-block">
-            {% if icon %}<span class="chirpui-section-header__icon">{{ icon | icon }}</span>{% end %}
-            <h2 class="chirpui-section-header__title-inline">{{ title }}</h2>
-        </div>
-        <div class="chirpui-section-header__actions">{% slot %}</div>
-    </div>
-</div>
+{% call section_header(title, icon=icon, variant="inline", cls=cls) %}
+{% slot actions %}{% slot %}{% end %}
+{% end %}
 {% end %}
 
 {#- section: composite surface + section_header + content. Reduces boilerplate.
@@ -112,7 +110,7 @@
     full_width=true wraps in chirpui-blade for edge-to-edge blade-style sections.
     parallax=true adds subtle scroll-driven background motion (Chrome 115+). -#}
 {% def section(title, subtitle=none, icon=none, surface_variant="muted", full_width=false, parallax=false, cls="") %}
-{% set surface_variant = surface_variant | validate_variant(("default","muted","elevated","accent","gradient-subtle","gradient-accent","gradient-border","gradient-mesh","glass","frosted","smoke"), "muted") %}
+{% set surface_variant = surface_variant | validate_variant_block("surface", default="muted") %}
 {% if full_width %}
 <div class="chirpui-blade{{ " chirpui-blade--parallax" if parallax else "" }}{{ " " ~ cls if cls else "" }}">
 {% end %}
@@ -129,7 +127,7 @@
 
 {#- section_collapsible: details/summary with section_header as summary. For "Advanced" config. -#}
 {% def section_collapsible(title, open=false, surface_variant="muted", cls="") %}
-{% set surface_variant = surface_variant | validate_variant(("default","muted","elevated","accent","gradient-subtle","gradient-accent","gradient-border","gradient-mesh","glass","frosted","smoke"), "muted") %}
+{% set surface_variant = surface_variant | validate_variant_block("surface", default="muted") %}
 <details class="chirpui-section-collapsible{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
     <summary class="chirpui-section-collapsible__summary">
         {% call section_header_inline(title) %}{% end %}

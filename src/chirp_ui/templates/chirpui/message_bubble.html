@@ -13,10 +13,12 @@
         end
 -#}
 
-{% def message_bubble(align="left", status=none, cls="") %}
+{% def message_bubble(align="left", role="default", status=none, cls="") %}
+{% set role_valid = role | validate_variant_block("message_bubble", default="default") %}
 {% set align_class = " chirpui-message-bubble--" ~ align %}
+{% set role_class = " chirpui-message-bubble--" ~ role_valid if role_valid != "default" else "" %}
 {% set status_class = " chirpui-message-bubble--" ~ status if status else "" %}
-<article class="chirpui-message-bubble{{ align_class }}{{ status_class }}{{ " " ~ cls if cls else "" }}">
+<article class="chirpui-message-bubble{{ align_class }}{{ role_class }}{{ status_class }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </article>
 {% end %}

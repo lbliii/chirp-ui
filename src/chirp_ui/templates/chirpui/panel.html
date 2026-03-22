@@ -1,0 +1,36 @@
+{#- chirp-ui: Panel component
+    Reusable titled pane for inspectors, activity feeds, file trees, and embedded work surfaces.
+
+    Usage:
+        {% from "chirpui/panel.html" import panel %}
+
+        {% call panel(title="Tool Activity", scroll_body=true) %}
+        {% slot actions %}{{ btn("Clear", variant="ghost", size="sm") }}{% end %}
+        <div>Activity rows...</div>
+        {% slot footer %}<span class="chirpui-text-muted chirpui-ui-sm">Connected</span>{% end %}
+        {% end %}
+-#}
+
+{% def panel(title=none, subtitle=none, surface_variant="muted", scroll_body=false, cls="") %}
+{% set surface_variant = surface_variant | validate_variant_block("surface", default="muted") %}
+{% set panel_cls = "chirpui-panel" ~ (" chirpui-panel--scroll" if scroll_body else "") ~ (" " ~ cls if cls else "") %}
+<section class="chirpui-surface chirpui-surface--{{ surface_variant }} chirpui-surface--no-padding {{ panel_cls }}">
+    {% if title or subtitle %}
+    <header class="chirpui-panel__header">
+        <div class="chirpui-panel__heading">
+            {% if title %}
+            <h2 class="chirpui-panel__title">{{ title }}</h2>
+            {% end %}
+            {% if subtitle %}
+            <p class="chirpui-panel__subtitle">{{ subtitle }}</p>
+            {% end %}
+        </div>
+        <div class="chirpui-panel__actions">{% slot actions %}</div>
+    </header>
+    {% end %}
+    <div class="chirpui-panel__body{{ " chirpui-panel__body--scroll" if scroll_body else "" }}">
+        {% slot %}
+    </div>
+    <footer class="chirpui-panel__footer">{% slot footer %}</footer>
+</section>
+{% end %}

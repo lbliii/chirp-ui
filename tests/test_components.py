@@ -169,6 +169,15 @@ class TestLayout:
         assert "<h1>Title</h1>" in html
         assert "chirpui-text-muted" not in html
 
+    def test_page_header_variant_compact(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import page_header %}'
+            '{{ page_header("Ollama Chat", variant="compact") }}'
+        ).render()
+        assert "chirpui-page-header" in html
+        assert "chirpui-page-header--compact" in html
+        assert "<h1>Ollama Chat</h1>" in html
+
     def test_section_header(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import section_header %}'
@@ -177,6 +186,31 @@ class TestLayout:
         assert "chirpui-section-header" in html
         assert "<h2>Section</h2>" in html
         assert "Sub" in html
+
+    def test_section_header_variant_inline(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import section_header %}'
+            '{% call section_header("Advanced", variant="inline") %}'
+            "{% slot actions %}<button>Toggle</button>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-section-header" in html
+        assert "chirpui-section-header--inline" in html
+        assert "Advanced" in html
+        assert "<h2" in html
+        assert "Toggle" in html
+
+    def test_section_header_inline_alias(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import section_header_inline %}'
+            '{% call section_header_inline("Config") %}'
+            "{% slot %}<span>Edit</span>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-section-header--inline" in html
+        assert "Config" in html
+        assert "<h2" in html
+        assert "Edit" in html
 
     def test_section_with_actions(self, env: Environment) -> None:
         html = env.from_string(
@@ -231,6 +265,125 @@ class TestLayout:
         assert "chirpui-section-collapsible" in html
         assert "chirpui-surface--gradient-subtle" in html
         assert "Content" in html
+
+
+class TestWorkbench:
+    def test_panel_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/panel.html" import panel %}'
+            "{% call panel(title='Activity') %}Body{% end %}"
+        ).render()
+        assert "chirpui-panel" in html
+        assert "chirpui-surface--muted" in html
+        assert "chirpui-panel__title" in html
+        assert "Activity" in html
+        assert "Body" in html
+
+    def test_panel_scroll_with_actions_and_footer(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/panel.html" import panel %}'
+            '{% call panel(title="Files", subtitle="Tree", scroll_body=true) %}'
+            "{% slot actions %}<button>Refresh</button>{% end %}"
+            "Body"
+            "{% slot footer %}<span>Status</span>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-panel--scroll" in html
+        assert "chirpui-panel__body--scroll" in html
+        assert "chirpui-panel__actions" in html
+        assert "Refresh" in html
+        assert "Status" in html
+
+    def test_split_layout_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/split_layout.html" import split_layout %}'
+            "{% call split_layout() %}"
+            "{% slot primary %}Left{% end %}"
+            "{% slot secondary %}Right{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-split-layout" in html
+        assert "chirpui-split-layout--horizontal" in html
+        assert "chirpui-split-layout--sidebar" in html
+        assert "chirpui-split-layout--gap-md" in html
+        assert "Left" in html
+        assert "Right" in html
+
+    def test_split_layout_vertical_wide_secondary(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/split_layout.html" import split_layout %}'
+            '{% call split_layout(direction="vertical", ratio="wide-secondary", gap="lg") %}'
+            "{% slot primary %}Top{% end %}"
+            "{% slot secondary %}Bottom{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-split-layout--vertical" in html
+        assert "chirpui-split-layout--wide-secondary" in html
+        assert "chirpui-split-layout--gap-lg" in html
+
+    def test_workspace_shell_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/workspace_shell.html" import workspace_shell %}'
+            '{% call workspace_shell("Authoring", sidebar_title="Files") %}'
+            "{% slot toolbar %}<button>Save</button>{% end %}"
+            "{% slot sidebar %}<nav>Tree</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-workspace-shell" in html
+        assert "chirpui-workspace-shell__toolbar" in html
+        assert "chirpui-workspace-shell__layout" in html
+        assert "chirpui-workspace-shell__sidebar-panel" in html
+        assert "Tree" in html
+        assert "Main" in html
+
+    def test_workspace_shell_with_inspector(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/workspace_shell.html" import workspace_shell %}'
+            '{% call workspace_shell("Authoring", show_inspector=true, sidebar_title="Files", inspector_title="Preview") %}'
+            "{% slot sidebar %}<nav>Tree</nav>{% end %}"
+            "Editor"
+            "{% slot inspector %}<div>Preview body</div>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-workspace-shell__content-layout" in html
+        assert "chirpui-workspace-shell__inspector-panel" in html
+        assert "Preview" in html
+        assert "Preview body" in html
+
+    def test_file_tree_with_header_actions_and_footer(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/file_tree.html" import file_tree %}'
+            '{% call file_tree(items=[{"title": "docs", "icon": "⊞", "children": ['
+            '{"title": "README.md", "href": "/readme", "active": true, "icon": "●"}]}], '
+            'title="Files", show_icons=true) %}'
+            "{% slot actions %}<button>Refresh</button>{% end %}"
+            '{% slot header %}<input type="search" placeholder="Filter">{% end %}'
+            "{% slot footer %}<span>1 file</span>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-file-tree" in html
+        assert "chirpui-panel__title" in html
+        assert "chirpui-nav-tree__icon" in html
+        assert "Refresh" in html
+        assert 'placeholder="Filter"' in html
+        assert "1 file" in html
+
+    def test_document_header_with_details(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/document_header.html" import document_header %}'
+            '{% call document_header("README.md", subtitle="Skill guide", path="docs/README.md", '
+            'provenance="Forked from builtin/doc-help", status="Draft", '
+            'meta_items=["Modified 2m ago", "Markdown"]) %}'
+            "{% slot actions %}<button>Save</button>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-document-header" in html
+        assert "docs/README.md" in html
+        assert "Forked from builtin/doc-help" in html
+        assert "Draft" in html
+        assert "Modified 2m ago" in html
+        assert "Save" in html
 
 
 class TestIslands:
@@ -512,6 +665,19 @@ class TestEmptyState:
         assert "chirpui-empty-state__suggestions" in html
         assert "Tip 1" in html
 
+    def test_empty_panel_state_compact(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/empty_panel_state.html" import empty_panel_state %}'
+            '{% call empty_panel_state(title="No file selected", icon="◎") %}'
+            "<p>Select a file to begin.</p>"
+            "{% slot action %}<button>Browse</button>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-empty-panel-state" in html
+        assert "chirpui-empty-panel-state--compact" in html
+        assert "No file selected" in html
+        assert "Browse" in html
+
 
 # ---------------------------------------------------------------------------
 # Code
@@ -566,6 +732,15 @@ class TestNavTree:
         assert "chirpui-nav-tree__node" in html
         assert "API" in html
         assert "Ref" in html
+
+    def test_nav_tree_icons(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{% call nav_tree(items=[{"title": "API", "href": "/api", "icon": "◎"}], show_icons=true) %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-nav-tree__icon" in html
+        assert "◎" in html
 
 
 # ---------------------------------------------------------------------------
@@ -779,6 +954,16 @@ class TestButton:
 
 
 class TestStreaming:
+    def test_streaming_bubble_sse_connect_renders_child_swap_target(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(sse_connect="/stream") %}Partial{% end %}'
+        ).render()
+        assert 'sse-connect="/stream"' in html
+        assert html.count('sse-swap="fragment"') == 1
+        assert 'hx-swap="beforeend"' in html
+        assert 'aria-label="assistant response"' in html
+
     def test_streaming_block(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/streaming.html" import streaming_block %}'

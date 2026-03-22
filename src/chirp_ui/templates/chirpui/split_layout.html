@@ -1,0 +1,21 @@
+{#- chirp-ui: Split layout
+    Generic two-pane work surface for tree/content, editor/preview, or content/inspector layouts.
+
+    Usage:
+        {% from "chirpui/split_layout.html" import split_layout %}
+
+        {% call split_layout(ratio="sidebar") %}
+        {% slot primary %}<nav>Tree</nav>{% end %}
+        {% slot secondary %}<main>Editor</main>{% end %}
+        {% end %}
+-#}
+
+{% def split_layout(direction="horizontal", ratio="sidebar", gap="md", cls="") %}
+{% set direction = direction | validate_variant(("horizontal", "vertical"), "horizontal") %}
+{% set ratio = ratio | validate_variant(("sidebar", "balanced", "wide-primary", "wide-secondary"), "sidebar") %}
+{% set gap = gap | validate_variant(("sm", "md", "lg"), "md") %}
+<div class="chirpui-split-layout chirpui-split-layout--{{ direction }} chirpui-split-layout--{{ ratio }} chirpui-split-layout--gap-{{ gap }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-split-layout__primary">{% slot primary %}</div>
+    <div class="chirpui-split-layout__secondary">{% slot secondary %}</div>
+</div>
+{% end %}

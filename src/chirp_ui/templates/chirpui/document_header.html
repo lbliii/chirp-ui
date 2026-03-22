@@ -1,0 +1,40 @@
+{#- chirp-ui: Document header
+    Document-oriented header for editor/viewer surfaces inside workspaces.
+
+    Usage:
+        {% from "chirpui/document_header.html" import document_header %}
+
+        {% call document_header("README.md", path="docs/README.md", status="Draft") %}
+        {% slot actions %}<button type="button">Save</button>{% end %}
+        {% end %}
+-#}
+{% from "chirpui/layout.html" import page_header %}
+
+{% def document_header(title, subtitle=none, meta=none, breadcrumb_items=none, eyebrow=none, path=none, provenance=none, status=none, meta_items=none, cls="") %}
+<section class="chirpui-document-header{{ " " ~ cls if cls else "" }}">
+    {% if eyebrow %}
+    <p class="chirpui-document-header__eyebrow">{{ eyebrow }}</p>
+    {% end %}
+    {% call page_header(title, subtitle=subtitle, meta=meta, breadcrumb_items=breadcrumb_items, cls="chirpui-document-header__page-header") %}
+    {% slot actions %}{% slot actions %}{% end %}
+    {% end %}
+    {% if path or provenance or status or meta_items %}
+    <div class="chirpui-document-header__details">
+        {% if path %}
+        <code class="chirpui-document-header__path">{{ path }}</code>
+        {% end %}
+        {% if provenance %}
+        <span class="chirpui-document-header__detail">{{ provenance }}</span>
+        {% end %}
+        {% if status %}
+        <span class="chirpui-document-header__status">{{ status }}</span>
+        {% end %}
+        {% if meta_items %}
+            {% for item in meta_items %}
+            <span class="chirpui-document-header__detail">{{ item }}</span>
+            {% end %}
+        {% end %}
+    </div>
+    {% end %}
+</section>
+{% end %}
