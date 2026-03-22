@@ -42,7 +42,7 @@ ICON_REGISTRY: dict[str, str] = {
     # Alerts / flow
     "alert": "↑",
     "dots": "⋯",
-    # Writing / authoring (Dingbats U+270E–U+2712, U+2709)
+    # Writing / authoring (Dingbats U+270E-U+2712, U+2709)
     "pencil": "✏",
     "pencil-lower": "✎",
     "pencil-upper": "✐",
