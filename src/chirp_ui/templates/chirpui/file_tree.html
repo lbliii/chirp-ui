@@ -1,0 +1,25 @@
+{#- chirp-ui: File tree
+    Workbench-oriented explorer wrapper for file/folder navigation inside a panel.
+
+    Usage:
+        {% from "chirpui/file_tree.html" import file_tree %}
+
+        {% call file_tree(items=items, title="Files", show_icons=true) %}
+        {% slot actions %}<button type="button">Refresh</button>{% end %}
+        {% slot header %}<input type="search" placeholder="Filter files">{% end %}
+        {% slot footer %}<span>12 files</span>{% end %}
+        {% end %}
+-#}
+{% from "chirpui/nav_tree.html" import nav_tree %}
+{% from "chirpui/panel.html" import panel %}
+
+{% def file_tree(items, title=none, subtitle=none, show_icons=false, surface_variant="muted", scroll_body=true, cls="") %}
+{% set tree_cls = "chirpui-file-tree" ~ (" " ~ cls if cls else "") %}
+{% call panel(title=title, subtitle=subtitle, surface_variant=surface_variant, scroll_body=scroll_body, cls=tree_cls) %}
+{% slot actions %}{% slot actions %}{% end %}
+{% call nav_tree(items=items, show_icons=show_icons, cls="chirpui-file-tree__nav") %}
+{% slot header %}{% slot header %}{% end %}
+{% end %}
+{% slot footer %}{% slot footer %}{% end %}
+{% end %}
+{% end %}

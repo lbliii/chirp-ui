@@ -1,12 +1,8 @@
 name: Deploy Showcase to GitHub Pages
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "examples/static-showcase/**"
-      - "src/chirp_ui/templates/chirpui.css"
-      - "src/chirp_ui/templates/chirpui-transitions.css"
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:

@@ -1,0 +1,20 @@
+{#- chirp-ui: Empty panel state
+    Compact empty-state wrapper for panel and workspace bodies.
+
+    Usage:
+        {% from "chirpui/empty_panel_state.html" import empty_panel_state %}
+
+        {% call empty_panel_state(title="No file selected", icon="docs") %}
+        <p>Select a file from the tree to start editing.</p>
+        {% slot action %}<a href="/author">Browse</a>{% end %}
+        {% end %}
+-#}
+{% from "chirpui/empty.html" import empty_state %}
+
+{% def empty_panel_state(icon=none, title="No items", illustration=none, action_label=none, action_href=none, code=none, suggestions=none, search_hint=none, compact=true, cls="") %}
+{% set state_cls = "chirpui-empty-panel-state" ~ (" chirpui-empty-panel-state--compact" if compact else "") ~ (" " ~ cls if cls else "") %}
+{% call empty_state(icon=icon, title=title, illustration=illustration, action_label=action_label, action_href=action_href, code=code, suggestions=suggestions, search_hint=search_hint, cls=state_cls) %}
+{% slot %}{% slot %}{% end %}
+{% slot action %}{% slot action %}{% end %}
+{% end %}
+{% end %}

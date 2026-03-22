@@ -62,6 +62,19 @@ Current semantic spacing aliases:
 - **Pages**: page shells and top-level stacks should align to `page-gap`.
 - **Utilities**: helper classes should be small, named by role, and mainly exist to bridge markup that does not need a dedicated component.
 
+### Page header component tokens
+
+Override these to customize `page_header` without BEM class overrides:
+
+| Token | Purpose | Default |
+| ------- | --------- | --------- |
+| `--chirpui-page-header-padding` | Header bar padding | `spacing-md` |
+| `--chirpui-page-header-gap` | Gap between title block and actions | `space-page-gap` |
+| `--chirpui-page-header-title-size` | H1 font size | `ui-lg` |
+| `--chirpui-page-header-title-weight` | H1 font weight | `ui-font-weight-bold` |
+| `--chirpui-page-header-bg` | Header background | `transparent` |
+| `--chirpui-page-header-border` | Header border | `none` |
+
 ### Micro-spacing
 
 Small optical adjustments are still allowed for tiny UI details such as inline code chips, cursors, or small glyph pairs, but they should stay exceptional. When a micro-pattern repeats across several components, promote it into a named alias instead of scattering raw values.

@@ -1,0 +1,54 @@
+{#- chirp-ui: Workspace shell
+    Opinionated workbench composite for IDE-like and CMS-authoring surfaces inside an app shell.
+
+    Usage:
+        {% from "chirpui/workspace_shell.html" import workspace_shell %}
+
+        {% call workspace_shell("Authoring", subtitle="Edit content", sidebar_title="Files", show_inspector=true, inspector_title="Preview") %}
+        {% slot toolbar %}{{ btn("Save", variant="primary", size="sm") }}{% end %}
+        {% slot sidebar %}<nav>Tree</nav>{% end %}
+        <textarea></textarea>
+        {% slot inspector %}<div>Preview</div>{% end %}
+        {% end %}
+-#}
+{% from "chirpui/panel.html" import panel %}
+{% from "chirpui/split_layout.html" import split_layout %}
+
+{% def workspace_shell(title=none, subtitle=none, sidebar_title=none, show_inspector=false, inspector_title=none, sidebar_surface_variant="muted", inspector_surface_variant="muted", cls="") %}
+<section class="chirpui-workspace-shell{{ " " ~ cls if cls else "" }}">
+    <header class="chirpui-workspace-shell__header">
+        <div class="chirpui-workspace-shell__heading">
+            {% if title %}
+            <h1 class="chirpui-workspace-shell__title">{{ title }}</h1>
+            {% end %}
+            {% if subtitle %}
+            <p class="chirpui-workspace-shell__subtitle">{{ subtitle }}</p>
+            {% end %}
+        </div>
+        <div class="chirpui-workspace-shell__toolbar">{% slot toolbar %}</div>
+    </header>
+    {% call split_layout(ratio="sidebar", cls="chirpui-workspace-shell__layout") %}
+    {% slot primary %}
+        {% call panel(title=sidebar_title, surface_variant=sidebar_surface_variant, scroll_body=true, cls="chirpui-workspace-shell__sidebar-panel") %}
+        {% slot %}{% slot sidebar %}{% end %}
+        {% end %}
+    {% end %}
+    {% slot secondary %}
+        {% if show_inspector %}
+            {% call split_layout(ratio="wide-primary", cls="chirpui-workspace-shell__content-layout") %}
+            {% slot primary %}
+            <div class="chirpui-workspace-shell__main">{% slot %}</div>
+            {% end %}
+            {% slot secondary %}
+                {% call panel(title=inspector_title, surface_variant=inspector_surface_variant, scroll_body=true, cls="chirpui-workspace-shell__inspector-panel") %}
+                {% slot %}{% slot inspector %}{% end %}
+                {% end %}
+            {% end %}
+            {% end %}
+        {% else %}
+        <div class="chirpui-workspace-shell__main">{% slot %}</div>
+        {% end %}
+    {% end %}
+    {% end %}
+</section>
+{% end %}
