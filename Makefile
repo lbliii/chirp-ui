@@ -4,7 +4,7 @@
 PYTHON_VERSION ?= 3.14t
 VENV_DIR ?= .venv
 
-.PHONY: all help setup install test test-cov lint lint-fix format ty clean shell build publish release gh-release
+.PHONY: all help setup install test test-cov lint lint-fix format ty clean shell build publish release gh-release showcase
 
 all: help
 
@@ -26,6 +26,7 @@ help:
 	@echo "  make publish    - Publish to PyPI (uses .env for token)"
 	@echo "  make release    - Build and publish in one step"
 	@echo "  make gh-release - Create GitHub release (triggers PyPI via workflow)"
+	@echo "  make showcase   - Assemble static showcase into _site/ for preview"
 	@echo "  make clean      - Remove venv, build artifacts, and caches"
 	@echo "  make shell      - Start a shell with the environment activated"
 
@@ -99,12 +100,27 @@ gh-release:
 	echo "✓ GitHub release v$$VERSION created (PyPI publish will run via workflow)"
 
 # =============================================================================
+# Showcase (GitHub Pages preview)
+# =============================================================================
+
+showcase:
+	@echo "Assembling static showcase into _site/..."
+	@mkdir -p _site/css
+	@cp src/chirp_ui/templates/chirpui.css _site/css/
+	@cp src/chirp_ui/templates/chirpui-transitions.css _site/css/
+	@sed \
+		-e 's|../../src/chirp_ui/templates/chirpui.css|css/chirpui.css|' \
+		-e 's|../../src/chirp_ui/templates/chirpui-transitions.css|css/chirpui-transitions.css|' \
+		examples/static-showcase/index.html > _site/index.html
+	@echo "Open _site/index.html in a browser to preview"
+
+# =============================================================================
 # Cleanup
 # =============================================================================
 
 clean:
 	rm -rf $(VENV_DIR)
-	rm -rf build/ dist/ *.egg-info src/*.egg-info
+	rm -rf build/ dist/ *.egg-info src/*.egg-info _site/
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	find . -type d -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
 	find . -type d -name ".ruff_cache" -exec rm -rf {} + 2>/dev/null || true

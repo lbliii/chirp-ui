@@ -59,7 +59,8 @@ document.addEventListener("alpine:init",function(){
 {% from "chirpui/toast.html" import toast_container %}
 {% set _sidebar_collapsible = "false" %}
 {% set _collapsible = _sidebar_collapsible and _sidebar_collapsible != "false" %}
-{% set _shell_actions_target = shell_actions.target if shell_actions is defined and shell_actions else "chirp-shell-actions" %}
+{% set _shell_actions = shell_actions | default(none) %}
+{% set _shell_actions_target = _shell_actions.target if _shell_actions else "chirp-shell-actions" %}
 <div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}"
      x-data="{ collapsible: {{ 'true' if _collapsible else 'false' }}, collapsed: localStorage.getItem('chirpui-sidebar-collapsed') === 'true', toggle() { this.collapsed = !this.collapsed; localStorage.setItem('chirpui-sidebar-collapsed', this.collapsed); } }"
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsible && collapsed }">
@@ -69,8 +70,8 @@ document.addEventListener("alpine:init",function(){
     <div class="chirpui-app-shell__topbar-center">{% block topbar_center %}{% end %}</div>
     <div class="chirpui-app-shell__topbar-end">
       <div id="{{ _shell_actions_target }}" class="chirpui-app-shell__shell-actions">
-        {% if shell_actions is defined %}
-        {{ shell_actions_bar(shell_actions) }}
+        {% if _shell_actions %}
+        {{ shell_actions_bar(_shell_actions) }}
         {% end %}
       </div>
       {% block topbar_end %}{% end %}

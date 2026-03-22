@@ -68,6 +68,9 @@ Thumbs.db
 *.db-shm
 *.db-wal
 
+# Showcase build output
+_site/
+
 # Bengal docs site
 site/.bengal/
 .bengal/
