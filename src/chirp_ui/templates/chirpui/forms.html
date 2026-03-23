@@ -545,7 +545,7 @@
 {% def search_field(name, value="", label=none, search_url=none, search_target=none,
                     search_trigger="keyup changed delay:300ms", search_include=none,
                     search_sync=none, placeholder="Search...", errors=none, attrs="", attrs_map=none,
-                    search_attrs_map=none) %}
+                    search_attrs_map=none, search_hx_select=none) %}
 <div class="chirpui-field{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
@@ -562,6 +562,7 @@
            {% if search_url and search_target %}hx-trigger="{{ search_trigger }}"{% end %}
            {% if search_url and search_target %}hx-target="{{ search_target }}"{% end %}
            {% if search_url and search_target %}hx-swap="innerHTML"{% end %}
+           {% if search_url and search_target and search_hx_select %}hx-select="{{ search_hx_select }}"{% end %}
            {% if search_url and search_target and search_include %}hx-include="{{ search_include }}"{% end %}
            {% set _search_sync = search_sync if search_sync is not none else ("this:replace" if (search_url and search_target) else none) %}
            {% if _search_sync %}hx-sync="{{ _search_sync }}"{% end %}>
@@ -579,7 +580,7 @@
 {% def search_bar(name, value="", variant="solo", label=none, search_url=none, search_target=none,
                   search_trigger="keyup changed delay:300ms", search_include=none, search_sync=none,
                   placeholder="Search...", button_label="Search", button_icon="⌕",
-                  errors=none, attrs="", attrs_map=none, search_attrs_map=none) %}
+                  errors=none, attrs="", attrs_map=none, search_attrs_map=none, search_hx_select=none) %}
 <div class="chirpui-field chirpui-search-bar chirpui-search-bar--{{ variant }}{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
@@ -600,6 +601,7 @@
                {% if search_url and search_target %}hx-trigger="{{ search_trigger }}"{% end %}
                {% if search_url and search_target %}hx-target="{{ search_target }}"{% end %}
                {% if search_url and search_target %}hx-swap="innerHTML"{% end %}
+               {% if search_url and search_target and search_hx_select %}hx-select="{{ search_hx_select }}"{% end %}
                {% if search_url and search_target and search_include %}hx-include="{{ search_include }}"{% end %}
                {% set _search_sync = search_sync if search_sync is not none else ("this:replace" if (search_url and search_target) else none) %}
                {% if _search_sync %}hx-sync="{{ _search_sync }}"{% end %}>

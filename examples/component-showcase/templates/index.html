@@ -27,12 +27,17 @@
 {% call grid(cols=2) %}
 {% call block() %}
 {% call card_link("/navigation", "Navigation") %}
-<p>navbar, sidebar, stepper, route_tabs, nav_tree, pagination, command_palette, segmented_control.</p>
+<p>navbar, sidebar, stepper, route_tabs, nav_tree, pagination, command_palette.</p>
 {% end %}
 {% end %}
 {% call block() %}
 {% call card_link("/layout", "Layout") %}
-<p>Grid, stack, surface, hero, split_panel, entity_header, search_header, filter_bar, action_bar, tray, media_object.</p>
+<p>Grid, stack, surface, hero, split_panel, entity_header, search_header, filter_bar, filter_chips, label_overline, segmented_control, action_bar, tray, media_object.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call card_link("/chrome", "App chrome & regions") %}
+<p>workspace_shell, split_layout, file_tree, shell_region, safe_region — plus how <code>app_shell_layout</code> maps to Chirp’s shell.</p>
 {% end %}
 {% end %}
 {% call block() %}
@@ -52,7 +57,7 @@
 {% end %}
 {% call block() %}
 {% call card_link("/cards", "Cards & Alerts") %}
-<p>card, alert — Content containers and status messages.</p>
+<p>card, alert — Content containers, <code>attrs_map</code> for HTMX widget roots, metric/config cards.</p>
 {% end %}
 {% end %}
 {% call block() %}

@@ -11,6 +11,8 @@ category: app-shell
 
 # App Shell
 
+**Vocabulary:** [UI layers & terms](./ui-layers/) — app shell, page chrome, surface chrome, shell regions, and the built-in HTMX shell-coherence behavior.
+
 **Quick start:** Extend `chirpui/app_shell_layout.html` and fill the blocks. No manual HTML boilerplate.
 
 ```html
@@ -20,12 +22,22 @@ category: app-shell
   {% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
   {% call sidebar() %}
     {% call sidebar_section("Main") %}
-      {{ sidebar_link("/", "Home") }}
-      {{ sidebar_link("/items", "Items") }}
+      {{ sidebar_link("/", "Home", match="exact") }}
+      {{ sidebar_link("/items", "Items", match="prefix") }}
     {% end %}
   {% end %}
 {% end %}
 ```
+
+`match="exact"` highlights the link only when the URL matches exactly. `match="prefix"` highlights when the URL starts with the href (e.g. `/items/42` highlights the Items link). Chirp auto-injects `current_path` into template context, so `match=` works without manual `nav=` strings. After htmx navigation, a built-in client-side script keeps active states in sync.
+
+## Layout overflow
+
+The shell main area clips horizontal overflow and scrolls vertically. Build pages with **`grid()` + `block()`**, **`cluster()`**, and wrapping indicator rows so content stays in column; use **`overflow-x: auto`** only on inner wrappers for wide tables or code. See the repo doc **`docs/LAYOUT-OVERFLOW.md`** for the full checklist.
+
+## Full-height main
+
+For chat, maps, or IDE-style surfaces that should **fill the viewport** below the topbar (with scroll **inside** panels), opt in with **`{% block main_shell_class %} chirpui-app-shell__main--fill{% end %}`**, put a direct child of **`#page-content`** with class **`chirpui-page-fill`**, and use **`chat_layout(..., fill=true)`** for chat pages. See **`docs/LAYOUT-VERTICAL.md`** for the flex chain, **`min-height: 0`**, and the **`chirpui-chat-layout__messages-body`** wrapper class for SSE/HTMX roots inside the messages column.
 
 ## Components
 
@@ -149,7 +161,7 @@ ChirpUI registers its page shell contract via `use_chirp_ui()`. That contract ma
 | `#page-root` | `page_root_inner` | Tab clicks (tabs + content) |
 | `#page-content-inner` | `page_content` | Narrow content swaps |
 
-Sidebar links use `hx-target="#main"` by default. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
+`<main id="main">` carries `hx-boost="true"`, `hx-target="#main"`, `hx-swap="innerHTML"`, and `hx-select="#page-content"` — all links inside inherit SPA navigation automatically. The `#main` element persists in the DOM (never replaced), so its `view-transition-name` is never duplicated during swaps. Content is wrapped in `<div id="page-content">` inside `#main`. Sidebar links (outside `#main`) carry their own `hx-target="#main"` via `sidebar_link()`. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
 
 ## Debugging
 

@@ -15,7 +15,7 @@ _chirpui_strict: ContextVar[bool] = ContextVar("chirpui_strict", default=False)
 
 VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     "alert": ("info", "success", "warning", "error"),
-    "badge": ("primary", "success", "warning", "error", "muted", "info"),
+    "badge": ("primary", "success", "warning", "error", "muted", "info", "custom", "custom-solid"),
     "page_header": ("default", "compact"),
     "section_header": ("default", "inline"),
     "message_bubble": ("default", "user", "assistant", "system"),
@@ -39,7 +39,8 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     "skeleton": ("", "avatar", "text", "card"),
     "confirm": ("default", "danger"),
     "overlay": ("dark", "gradient-bottom", "gradient-top"),
-    "progress-bar": ("gold", "radiant", "success", "watched"),
+    "progress-bar": ("gold", "radiant", "success", "watched", "custom"),
+    "status-indicator": ("default", "success", "warning", "error", "info", "primary", "custom"),
     "btn": ("", "default", "primary", "ghost", "danger", "success", "warning"),
     "dropdown__item": ("default", "danger", "muted"),
     # Effects & new components

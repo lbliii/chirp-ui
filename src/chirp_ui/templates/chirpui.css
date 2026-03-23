@@ -227,6 +227,7 @@
     --chirpui-motion-slower: 400ms;
     --chirpui-motion-extra-slow: 600ms;
     --chirpui-motion-crawl: 1500ms;
+    --chirpui-motion-loading: 8s;
     --chirpui-ease-standard: ease;
     --chirpui-ease-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
     --chirpui-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -310,10 +311,33 @@
     /* Layout */
     --chirpui-container-max: 72rem;
     --chirpui-grid-min: 20rem;
+    /* grid() presets — @media below uses the same rem literals (var() not in @media). */
+    --chirpui-layout-bp-sm: 48rem;
+    --chirpui-layout-bp-md: 52rem;
+    --chirpui-layout-bp-lg: 64rem;
+    /* frame() — explicit tracks; override per wrapper via style= or theme */
+    --chirpui-frame-gap: var(--chirpui-spacing-lg);
+    --chirpui-frame-balanced-columns: minmax(0, 1fr) minmax(0, 1fr);
+    --chirpui-frame-hero-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    --chirpui-frame-sidebar-width: var(--chirpui-split-sidebar-width);
     --chirpui-modal-width: 32rem;
     --chirpui-modal-width-sm: 24rem;
     --chirpui-modal-width-lg: 48rem;
     --chirpui-toast-width: 24rem;
+
+    /* Tooltip — maps to theme (default matches floating menus); invert via tokens if needed */
+    --chirpui-tooltip-bg: var(--chirpui-surface);
+    --chirpui-tooltip-fg: var(--chirpui-text);
+    --chirpui-tooltip-border: 1px solid var(--chirpui-border);
+    --chirpui-tooltip-shadow: var(--chirpui-elevation-floating);
+    --chirpui-tooltip-radius: var(--chirpui-radius-sm);
+    --chirpui-tooltip-font-size: var(--chirpui-ui-xs);
+    --chirpui-tooltip-font-weight: var(--chirpui-ui-font-weight-medium);
+    --chirpui-tooltip-line-height: var(--chirpui-line-height-tight);
+    --chirpui-tooltip-padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    --chirpui-tooltip-gap: var(--chirpui-spacing-sm);
+    --chirpui-tooltip-max-width: min(16rem, 85vw);
+    --chirpui-tooltip-z: 50;
 
     /* Alert variants */
     --chirpui-alert-info-bg: light-dark(#eff6ff, #1e3a5f);
@@ -579,6 +603,12 @@ html {
     gap: var(--chirpui-space-stack-gap);
 }
 
+/* Grid items default to min-width:auto (min-content), so rich cells overflow tracks and cover gap.
+   Matches .chirpui-block; use block() when you need span= or explicit cell semantics. */
+.chirpui-grid > * {
+    min-width: 0;
+}
+
 .chirpui-grid--cols-2 {
     grid-template-columns: repeat(auto-fit, minmax(min(calc(var(--chirpui-grid-min) * 0.75), 100%), 1fr));
 }
@@ -594,6 +624,148 @@ html {
 .chirpui-grid--gap-sm { gap: var(--chirpui-spacing-sm); }
 .chirpui-grid--gap-md { gap: var(--chirpui-spacing-md); }
 .chirpui-grid--gap-lg { gap: var(--chirpui-spacing-lg); }
+
+/* Row alignment for uneven-height cells (default grid align-items is stretch) */
+.chirpui-grid--items-start {
+    align-items: start;
+}
+.chirpui-grid--items-end {
+    align-items: end;
+}
+.chirpui-grid--items-center {
+    align-items: center;
+}
+
+/* Fixed-track presets for grid() — see docs/LAYOUT-PRESETS.md (aliases: split-2-1-1, split-thirds, …) */
+.chirpui-grid.chirpui-grid--preset-bento-211 {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.chirpui-grid.chirpui-grid--preset-thirds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Two-column detail row (1fr : 1.35fr); stacks at 52rem. detail_single = one full-width column. */
+.chirpui-grid.chirpui-grid--preset-detail-two {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+    align-items: stretch;
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two.chirpui-grid--detail-two-single {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two .chirpui-block .chirpui-surface,
+.chirpui-grid.chirpui-grid--preset-detail-two .chirpui-block .chirpui-callout {
+    height: 100%;
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two .chirpui-cluster--detail-two-sprites {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two.chirpui-grid--detail-two-single .chirpui-cluster--detail-two-sprites {
+    justify-content: center;
+}
+
+/* --chirpui-layout-bp-md */
+@media (max-width: 52rem) {
+    .chirpui-grid.chirpui-grid--preset-detail-two:not(.chirpui-grid--detail-two-single) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-grid.chirpui-grid--preset-detail-two .chirpui-cluster--detail-two-sprites {
+        justify-content: center;
+    }
+}
+
+/* --chirpui-layout-bp-lg */
+@media (max-width: 64rem) {
+    .chirpui-grid.chirpui-grid--preset-bento-211 {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .chirpui-grid.chirpui-grid--preset-bento-211 .chirpui-block--span-2 {
+        grid-column: 1 / -1;
+    }
+}
+
+/* --chirpui-layout-bp-sm */
+@media (max-width: 48rem) {
+    .chirpui-grid.chirpui-grid--preset-bento-211,
+    .chirpui-grid.chirpui-grid--preset-thirds {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-grid.chirpui-grid--preset-bento-211 .chirpui-block--span-2 {
+        grid-column: span 1;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Frame — structural layouts (hero, sidebar, equal columns). Not auto-fit flow.
+   Use grid() for wrapping card/tile lists. See docs/LAYOUT-GRIDS-AND-FRAMES.md.
+   -------------------------------------------------------------------------- */
+
+.chirpui-frame {
+    display: grid;
+    gap: var(--chirpui-frame-gap);
+    min-width: 0;
+}
+
+.chirpui-frame > * {
+    min-width: 0;
+}
+
+.chirpui-frame--gap-sm {
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-frame--gap-md {
+    gap: var(--chirpui-spacing-md);
+}
+
+.chirpui-frame--gap-lg {
+    gap: var(--chirpui-spacing-lg);
+}
+
+.chirpui-frame--balanced {
+    grid-template-columns: var(--chirpui-frame-balanced-columns);
+}
+
+.chirpui-frame--hero {
+    align-items: center;
+    grid-template-columns: var(--chirpui-frame-hero-columns);
+}
+
+.chirpui-frame--sidebar-end {
+    grid-template-columns: minmax(0, 1fr) minmax(0, min(var(--chirpui-frame-sidebar-width), 100%));
+}
+
+@container chirpui-layout (width < 48rem) {
+    .chirpui-frame--balanced,
+    .chirpui-frame--hero,
+    .chirpui-frame--sidebar-end {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-frame--hero {
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 48rem) {
+    .chirpui-frame--balanced,
+    .chirpui-frame--hero,
+    .chirpui-frame--sidebar-end {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-frame--hero {
+        align-items: stretch;
+    }
+}
 
 .chirpui-stack {
     display: flex;
@@ -619,12 +791,31 @@ html {
 .chirpui-cluster--md { gap: var(--chirpui-spacing-md); }
 .chirpui-cluster--lg { gap: var(--chirpui-spacing-lg); }
 
+/* Label overline — see label_overline.html */
+.chirpui-label-overline {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.35rem;
+}
+
+.chirpui-label-overline--section {
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
 /* Prose + stack: use block flow so margins collapse; stack gap would double spacing */
 .chirpui-prose.chirpui-stack {
     display: block;
 }
 
 .chirpui-block {
+    min-width: 0;
+}
+
+/* Escape hatch for custom flex rows / raw markup (Tailwind-style min-w-0). */
+.chirpui-min-w-0 {
     min-width: 0;
 }
 
@@ -650,6 +841,12 @@ html {
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--chirpui-page-header-gap);
+}
+
+.chirpui-page-header__top > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .chirpui-page-header__actions {
@@ -750,6 +947,16 @@ html {
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--chirpui-space-section-gap);
+}
+
+.chirpui-section-header__top > .chirpui-section-header__title-block {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.chirpui-section-header__title-block > div {
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .chirpui-section-header__actions {
@@ -1031,11 +1238,19 @@ html {
     display: flex;
     align-items: flex-start;
     gap: var(--chirpui-space-control-gap);
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.chirpui-entity-header__content > div {
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .chirpui-entity-header__icon {
     font-size: var(--chirpui-ui-lg);
     line-height: 1;
+    flex-shrink: 0;
 }
 
 .chirpui-entity-header__title {
@@ -1592,6 +1807,30 @@ a.chirpui-action-bar__item {
     width: var(--chirpui-chat-layout-activity-width);
     flex-shrink: 0;
     overflow-y: auto;
+}
+
+/* Fill remaining height inside a flex parent (e.g. #page-content > .chirpui-page-fill). */
+.chirpui-chat-layout--fill {
+    flex: 1;
+    min-height: 0;
+    align-self: stretch;
+}
+
+.chirpui-chat-layout--fill .chirpui-chat-layout__messages {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    /* Transcript / thread scroll lives inside slots, not on this shell */
+}
+
+/* Put on SSE / HTMX / custom wrapper around the scroll region inside __messages. */
+.chirpui-chat-layout__messages-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 @media (max-width: 767px) {
@@ -2268,50 +2507,6 @@ a.chirpui-mention:hover {
 a.chirpui-mention:focus-visible {
     outline: var(--chirpui-state-focus-outline);
     outline-offset: var(--chirpui-state-focus-offset);
-}
-
-/* ==========================================================================
-   Tooltip
-   ========================================================================== */
-
-.chirpui-tooltip {
-    position: relative;
-}
-
-.chirpui-tooltip::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-0.25rem) scale(0.95);
-    transform-origin: bottom center;
-    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
-    font-size: var(--chirpui-font-xs);
-    white-space: nowrap;
-    background: var(--chirpui-text);
-    color: var(--chirpui-surface);
-    border-radius: var(--chirpui-radius-sm);
-    box-shadow: var(--chirpui-elevation-floating);
-    opacity: 0;
-    pointer-events: none;
-    transition:
-        opacity var(--chirpui-transition),
-        transform var(--chirpui-transition);
-    transition-delay: 0ms;
-}
-
-.chirpui-tooltip:hover::after,
-.chirpui-tooltip:focus-visible::after {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-0.5rem) scale(1);
-    transition-delay: 150ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .chirpui-tooltip::after {
-        transition: none;
-        transition-delay: 0ms;
-    }
 }
 
 /* ==========================================================================
@@ -4061,6 +4256,11 @@ a.chirpui-mention:focus-visible {
     background: var(--chirpui-gradient-subtle);
 }
 
+.chirpui-card--hoverable:not(.chirpui-card--link) {
+    cursor: pointer;
+    transition: transform var(--chirpui-transition), box-shadow var(--chirpui-transition);
+}
+
 .chirpui-card:not(.chirpui-card--link):hover {
     border-color: var(--chirpui-card-hover-border);
     box-shadow: var(--chirpui-elevation-card-hover);
@@ -4069,6 +4269,11 @@ a.chirpui-mention:focus-visible {
 @media (prefers-reduced-motion: no-preference) {
     .chirpui-card:not(.chirpui-card--link):hover {
         transform: translateY(-2px);
+    }
+
+    .chirpui-card--hoverable:not(.chirpui-card--link):hover {
+        transform: translateY(-2px);
+        box-shadow: var(--chirpui-shadow-md);
     }
 }
 
@@ -6475,7 +6680,7 @@ a.chirpui-tag:active {
 [data-style="neumorphic"] .chirpui-popover__panel,
 [data-style="neumorphic"] .chirpui-tray[data-tray-id] .chirpui-tray__panel,
 [data-style="neumorphic"] .chirpui-modal[data-modal-id] .chirpui-modal__panel,
-[data-style="neumorphic"] .chirpui-tooltip::after {
+[data-style="neumorphic"] .chirpui-tooltip__bubble {
     background: linear-gradient(
         145deg,
         color-mix(in srgb, white 30%, var(--chirpui-neu-surface)),
@@ -6485,6 +6690,14 @@ a.chirpui-tag:active {
     border-bottom-color: var(--chirpui-neu-lowlight-border);
     border-right-color: var(--chirpui-neu-lowlight-border);
     box-shadow: var(--chirpui-neu-raised);
+}
+
+[data-style="neumorphic"] .chirpui-tooltip__bubble::after {
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 30%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
 }
 
 [data-style="neumorphic"] .chirpui-stat {
@@ -6541,8 +6754,16 @@ a.chirpui-tag:active {
         .chirpui-popover__panel,
         .chirpui-tray[data-tray-id] .chirpui-tray__panel,
         .chirpui-modal[data-modal-id] .chirpui-modal__panel,
-        .chirpui-tooltip::after
+        .chirpui-tooltip__bubble
     ) {
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 10%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
+}
+
+[data-theme="dark"][data-style="neumorphic"] .chirpui-tooltip__bubble::after {
     background: linear-gradient(
         145deg,
         color-mix(in srgb, white 10%, var(--chirpui-neu-surface)),
@@ -8156,6 +8377,36 @@ a.chirpui-badge--info:active {
     background: color-mix(in srgb, var(--chirpui-info) 30%, var(--chirpui-alert-info-bg));
 }
 
+/* Custom color (scoped --chirpui-badge-color) */
+.chirpui-badge--custom {
+    --_bg-mix: light-dark(12%, 18%);
+    background: color-mix(in srgb, var(--chirpui-badge-color) var(--_bg-mix), transparent);
+    color: var(--chirpui-badge-color);
+    border-color: color-mix(in srgb, var(--chirpui-badge-color) 40%, transparent);
+}
+
+.chirpui-badge--custom-solid {
+    background: var(--chirpui-badge-color);
+    color: var(--chirpui-badge-text, white);
+    border-color: var(--chirpui-badge-color);
+}
+
+a.chirpui-badge--custom:hover {
+    background: color-mix(in srgb, var(--chirpui-badge-color) light-dark(18%, 24%), transparent);
+}
+
+a.chirpui-badge--custom-solid:hover {
+    filter: brightness(1.05);
+}
+
+/* filter_chips.html — filter_group row (not filter_bar.html form toolbar) */
+.chirpui-filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
 /* ==========================================================================
    Spinner
    ========================================================================== */
@@ -8641,6 +8892,10 @@ a.chirpui-badge--info:active {
     background: var(--chirpui-error);
 }
 
+.chirpui-progress-bar--custom .chirpui-progress-bar__fill {
+    background: var(--chirpui-progress-color);
+}
+
 .chirpui-progress-bar__label {
     display: block;
     margin-top: var(--chirpui-spacing-xs);
@@ -8845,6 +9100,16 @@ a.chirpui-badge--info:active {
     color: var(--chirpui-primary);
 }
 
+.chirpui-status-indicator--custom {
+    --_bg-mix: light-dark(14%, 20%);
+    background: color-mix(in srgb, var(--chirpui-status-color) var(--_bg-mix), transparent);
+    color: var(--chirpui-status-color);
+}
+
+.chirpui-status-indicator--custom .chirpui-status-indicator__dot {
+    background: var(--chirpui-status-color);
+}
+
 /* Pulsing animation */
 .chirpui-status-indicator--pulse .chirpui-status-indicator__dot {
     animation: chirpui-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -8964,6 +9229,13 @@ body:has(> .chirpui-app-shell) {
     gap: var(--chirpui-spacing-xs);
 }
 
+.chirpui-shell-action-form {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    margin: 0;
+}
+
 /* Keep breadcrumbs single-line in topbar to prevent topbar height growth */
 .chirpui-app-shell__topbar-center .chirpui-breadcrumbs__list {
     flex-wrap: nowrap;
@@ -8992,6 +9264,7 @@ body:has(> .chirpui-app-shell) {
     position: relative;
     min-height: 0;
     overflow-y: auto;
+    overscroll-behavior: contain;
     border-right: 1px solid var(--chirpui-border);
 }
 
@@ -9118,10 +9391,75 @@ body:has(> .chirpui-app-shell) {
 
 .chirpui-app-shell__main {
     grid-area: main;
+    position: relative;
     min-height: 0;
     min-width: 0;
+    overflow-x: clip;
     overflow-y: auto;
+    overscroll-behavior: contain;
     padding: var(--chirpui-spacing-lg);
+}
+
+/* Full-height main: flex column so #page-content can flex:1; inner panels own scroll.
+   Opt in via {% block main_shell_class %}chirpui-app-shell__main--fill{% end %} on app_shell_layout. */
+.chirpui-app-shell__main--fill {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+.chirpui-app-shell__main--fill #page-content {
+    flex: 1;
+    min-height: 0;
+    gap: 0;
+}
+
+/* Optional: single root wrapper inside #page-content that should fill (chat, maps). */
+.chirpui-app-shell__main--fill #page-content > .chirpui-page-fill {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+}
+
+.chirpui-app-shell__main--fill::before {
+    top: 0;
+    margin-inline: 0;
+}
+
+/* Navigation loading indicator — thin accent bar at the top of #main.
+   Appears automatically via HTMX's .htmx-request class on the swap target.
+   Slow cubic-bezier creep gives the illusion of real progress. */
+.chirpui-app-shell__main::before {
+    content: "";
+    position: sticky;
+    top: calc(-1 * var(--chirpui-spacing-lg));
+    left: 0;
+    right: 0;
+    display: block;
+    height: 2px;
+    margin-inline: calc(-1 * var(--chirpui-spacing-lg));
+    margin-bottom: calc(-2px);
+    background: var(--chirpui-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.chirpui-app-shell__main.htmx-request::before {
+    transform: scaleX(0.7);
+    transition: transform var(--chirpui-motion-loading) var(--chirpui-ease-decel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-app-shell__main.htmx-request::before {
+        transform: scaleX(1);
+        transition: none;
+    }
 }
 
 /* Fragment targets — vertical spacing. Tabs topmost; title/actions/content below. */
@@ -10317,26 +10655,39 @@ body:has(> .chirpui-app-shell) {
 }
 .chirpui-tooltip__bubble {
     position: absolute;
-    z-index: 50;
-    padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
-    font-size: var(--chirpui-font-xs);
-    font-weight: 500;
-    color: var(--chirpui-bg);
-    background: var(--chirpui-text);
-    border-radius: var(--chirpui-radius-sm);
-    white-space: nowrap;
+    z-index: var(--chirpui-tooltip-z);
+    box-sizing: border-box;
+    /* Shrink-to-fit uses the narrow tooltip anchor as the containing block; without
+       max-content, used width collapses to ~trigger width despite max-width. */
+    width: max-content;
+    max-width: var(--chirpui-tooltip-max-width);
+    padding: var(--chirpui-tooltip-padding);
+    border: var(--chirpui-tooltip-border);
+    border-radius: var(--chirpui-tooltip-radius);
+    background: var(--chirpui-tooltip-bg);
+    color: var(--chirpui-tooltip-fg);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-tooltip-font-size);
+    font-weight: var(--chirpui-tooltip-font-weight);
+    line-height: var(--chirpui-tooltip-line-height);
+    text-align: center;
+    text-wrap: balance;
+    white-space: normal;
     pointer-events: none;
     opacity: 0;
     transform: scale(0.95);
-    transition: opacity var(--chirpui-motion-fast), transform var(--chirpui-motion-fast);
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    box-shadow: var(--chirpui-tooltip-shadow);
+    transition:
+        opacity var(--chirpui-motion-fast) var(--chirpui-ease-decel),
+        transform var(--chirpui-motion-fast) var(--chirpui-ease-decel);
 }
 .chirpui-tooltip__bubble::after {
     content: "";
     position: absolute;
     width: 6px;
     height: 6px;
-    background: var(--chirpui-text);
+    box-sizing: border-box;
+    background: var(--chirpui-tooltip-bg);
     transform: rotate(45deg);
 }
 /* Ensure tooltip bubbles escape overflow:hidden ancestors */
@@ -10349,7 +10700,7 @@ body:has(> .chirpui-app-shell) {
 
 /* Tooltip positions */
 .chirpui-tooltip--top .chirpui-tooltip__bubble {
-    bottom: calc(100% + 8px);
+    bottom: calc(100% + var(--chirpui-tooltip-gap));
     left: 50%;
     transform: translateX(-50%) scale(0.95);
 }
@@ -10364,7 +10715,7 @@ body:has(> .chirpui-app-shell) {
 }
 
 .chirpui-tooltip--bottom .chirpui-tooltip__bubble {
-    top: calc(100% + 8px);
+    top: calc(100% + var(--chirpui-tooltip-gap));
     left: 50%;
     transform: translateX(-50%) scale(0.95);
 }
@@ -10379,7 +10730,7 @@ body:has(> .chirpui-app-shell) {
 }
 
 .chirpui-tooltip--left .chirpui-tooltip__bubble {
-    right: calc(100% + 8px);
+    right: calc(100% + var(--chirpui-tooltip-gap));
     top: 50%;
     transform: translateY(-50%) scale(0.95);
 }
@@ -10394,7 +10745,7 @@ body:has(> .chirpui-app-shell) {
 }
 
 .chirpui-tooltip--right .chirpui-tooltip__bubble {
-    left: calc(100% + 8px);
+    left: calc(100% + var(--chirpui-tooltip-gap));
     top: 50%;
     transform: translateY(-50%) scale(0.95);
 }
@@ -10408,6 +10759,11 @@ body:has(> .chirpui-app-shell) {
     margin-top: -3px;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-tooltip__bubble {
+        transition: none;
+    }
+}
 
 /* ==========================================================================
    Icon Button

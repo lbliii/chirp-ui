@@ -1,5 +1,6 @@
 {#- chirp-ui: Metric grid/card
     Overview/KPI wrappers for dashboard-style pages.
+    metric_card forwards attrs / attrs_map to the outer card or <a> (e.g. id for HTMX targets).
 -#}
 {% from "chirpui/layout.html" import grid %}
 {% from "chirpui/card.html" import card %}
@@ -11,9 +12,9 @@
 {% end %}
 {% end %}
 
-{% def metric_card(value, label, icon=none, trend=none, trend_direction="", hint=none, href=none, icon_bg="", footer_label=none, footer_href=none, cls="") %}
+{% def metric_card(value, label, icon=none, trend=none, trend_direction="", hint=none, href=none, icon_bg="", footer_label=none, footer_href=none, cls="", attrs="", attrs_map=none) %}
 {% if href %}
-<a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-metric-card{{ " " ~ cls if cls else "" }}">
+<a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-metric-card{{ " " ~ cls if cls else "" }}"{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}>
     <div class="chirpui-card__body">
         <div class="chirpui-metric-card__top">
             {% if icon and icon_bg %}
@@ -33,7 +34,7 @@
     </div>
 </a>
 {% else %}
-{% call card(cls="chirpui-metric-card" ~ (" " ~ cls if cls else "")) %}
+{% call card(cls="chirpui-metric-card" ~ (" " ~ cls if cls else ""), attrs=attrs, attrs_map=attrs_map) %}
 <div class="chirpui-metric-card__top">
     {% if icon and icon_bg %}
     <span class="chirpui-metric-card__icon-badge chirpui-metric-card__icon-badge--{{ icon_bg }}">{{ icon | icon }}</span>

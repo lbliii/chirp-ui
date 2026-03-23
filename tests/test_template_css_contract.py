@@ -12,6 +12,7 @@ EXAMPLES_DIR = Path(__file__).resolve().parents[1] / "examples/component-showcas
 
 
 TARGET_PREFIXES = (
+    "chirpui-frame",
     "chirpui-app-shell",
     "chirpui-route-tab",
     "chirpui-sidebar",
@@ -28,12 +29,15 @@ TARGET_PREFIXES = (
     "chirpui-metric-card",
     "chirpui-metric-grid",
     "chirpui-row-actions",
+    "chirpui-chat-layout",
+    "chirpui-page-fill",
 )
 
 EXAMPLE_LAYOUT_PREFIXES = (
     "chirpui-action-strip",
     "chirpui-cluster",
     "chirpui-flow",
+    "chirpui-frame",
     "chirpui-grid",
     "chirpui-inline",
     "chirpui-mb-",
@@ -122,6 +126,11 @@ def test_dynamic_bem_modifiers_used_in_templates_exist_in_css() -> None:
         "chirpui-thumbs--sm",
         "chirpui-thumbs--lg",
         "chirpui-segmented--sm",
+        # Fill layout (often emitted via Kida; ensure CSS exists even if class scan skips {{ }})
+        "chirpui-chat-layout--fill",
+        "chirpui-app-shell__main--fill",
+        "chirpui-page-fill",
+        "chirpui-chat-layout__messages-body",
     ]
     missing = [cls for cls in required if cls not in css_classes]
     assert not missing, "Required dynamic BEM classes missing from CSS: " + ", ".join(missing)

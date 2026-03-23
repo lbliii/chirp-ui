@@ -134,7 +134,7 @@ Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates w
 | Component | Description |
 |-----------|-------------|
 | `shell_outlet` | Main content swap target; wraps content in `#page-content` for hx-select |
-| `shell_outlet_attrs` | Standard hx-boost/hx-target/hx-swap/hx-select attributes for main |
+| `shell_outlet_attrs` | Standard hx-boost/hx-target/hx-swap/hx-select attributes (now built into `<main>` in `app_shell_layout.html`) |
 | `shell_region` | Persistent region container (id for OOB updates) |
 | `safe_region` | HTMX-safe mutation region; `hx-disinherit` to avoid inherited shell attributes |
 | `fragment_island` | Alias for `safe_region`; use either |
@@ -242,6 +242,8 @@ Use `card(title="...", icon="⟳")` for config/settings cards. The `icon` render
 | `variant` | Optional: feature, media, horizontal, stats |
 | `border_variant` | Optional: gradient (gradient border via background-clip) |
 | `header_variant` | Optional: gradient (gradient in header strip) |
+| `attrs` | Raw extra attributes on the outer `<article>` / `<details>` (same pattern as `surface`) |
+| `attrs_map` | Mapping for extra attributes; use e.g. `{"id": "kpi-users"}` for `hx-target` on dashboard widgets |
 
 **Slots:** `header_actions`, `media`, `body_actions` (for list cards), default (body).
 
@@ -322,11 +324,24 @@ Responsive layout grid for cards and sections.
 
 | Param | Description |
 |-------|-------------|
-| `cols` | `2`, `3`, `4`, or omitted for auto-fit |
+| `cols` | `2`, `3`, `4`, or omitted for auto-fit (scales minimum track width, not a fixed column count) |
+| `gap` | `sm`, `md`, `lg` |
+| `preset` | `bento-211` or `thirds` for fixed-track dashboard cells (with `block()` spans) |
+| `cls` | Optional additional classes |
+
+Use `grid()` for **flow** — repeating items that wrap. Prefer `gap="md"` for page content and `gap="sm"` for denser internal layouts. For hero / sidebar **regions** with explicit columns, use `frame()` and see [LAYOUT-GRIDS-AND-FRAMES.md](LAYOUT-GRIDS-AND-FRAMES.md).
+
+### frame
+
+Structural two-column layouts (explicit `grid-template-columns`). Pass **two direct children** in the default slot (e.g. media + copy).
+
+| Param | Description |
+|-------|-------------|
+| `variant` | `balanced` (default), `hero`, `sidebar-end` |
 | `gap` | `sm`, `md`, `lg` |
 | `cls` | Optional additional classes |
 
-Use `grid()` for two-dimensional layout rhythm. Prefer `gap="md"` for page content and `gap="sm"` for denser internal layouts.
+Override tracks per page with CSS variables on the element (e.g. `--chirpui-frame-hero-columns`). Full detail: [LAYOUT-GRIDS-AND-FRAMES.md](LAYOUT-GRIDS-AND-FRAMES.md).
 
 ### stack
 
@@ -416,7 +431,7 @@ Reusable titled pane for inspectors, activity feeds, file trees, and embedded si
 
 **Slots:** `actions`, default (body), `footer`.
 
-Use `panel()` when a region needs its own chrome and scroll behavior inside a larger page or workspace. This is the preferred primitive for activity rails, file explorers, and inspector panes.
+Use `panel()` when a region needs its own **surface chrome** (frame + scroll) inside a larger page or workspace. This is the preferred primitive for activity rails, file explorers, and inspector panes.
 
 ### file_tree
 
@@ -443,7 +458,7 @@ Workbench-oriented file explorer that composes `panel()` and `nav_tree()` into o
 
 **Slots:** `header`, `actions`, `footer`.
 
-Use `file_tree()` for CMS and IDE-like explorer rails where you want panel chrome and tree behavior together. For raw tree markup without panel chrome, keep using `nav_tree()`.
+Use `file_tree()` for CMS and IDE-like explorer rails where you want **panel** surface chrome and tree behavior together. For raw tree markup without that frame, keep using `nav_tree()`.
 
 ### split_layout
 
@@ -661,6 +676,13 @@ Recommended usage:
 
 ### Action Container Variants
 
+**`filter_bar` vs `filter_chips`:** two different patterns—do not confuse the template names.
+
+| Template | Macro(s) | Use when |
+|----------|-----------|----------|
+| `chirpui/filter_bar.html` | `filter_bar` | **Form-backed** filter toolbar: GET/POST to an action URL, `action_strip` zones (search, selects, export). Fits `resource_index`, data tables, admin lists. |
+| `chirpui/filter_chips.html` | `filter_group`, `filter_chip` | **Chip / pill** faceted navigation: `role="radiogroup"`, optional `resolve_color` / `register_colors`, HTMX `hx-target` / `hx-select`. Fits taxonomy toggles (e.g. Pokémon types), tag filters without a wrapping form. |
+
 #### filter_bar
 
 Filter-first composite (`action_strip` + `form`) for searchable lists and tables.
@@ -682,6 +704,30 @@ Use the same inner zone classes as `action_strip`.
   </div>
 {% end %}
 ```
+
+#### filter_chips
+
+Chip-style faceted filters: a `filter_group` wrapper (`role="radiogroup"`) and `filter_chip` pills that reuse badge styling and scoped `--chirpui-badge-color`. Pass semantic colors via `color=` after `chirp_ui.register_colors({...})`, or a literal hex/rgb string. Optional HTMX on each chip link.
+
+```html
+{% from "chirpui/filter_chips.html" import filter_group, filter_chip %}
+
+{% call filter_group(name="Type", value=current_type) %}
+  {{ filter_chip("All", href="/?q=" ~ search, active=not current_type,
+      hx_target="#main", hx_push_url=true, hx_select="#main") }}
+  {% for t in types %}
+    {{ filter_chip(t, color=t, href="/?type=" ~ t ~ "&q=" ~ search,
+        active=(current_type == t), hx_target="#main", hx_push_url=true, hx_select="#main") }}
+  {% endfor %}
+{% end %}
+```
+
+| Param | `filter_group` | `filter_chip` |
+|-------|----------------|---------------|
+| Core | `name` (→ `aria-label`), optional `cls` | `label`, `href`, `active`, `color`, `cls` |
+| HTMX | — | `hx_target`, `hx_push_url`, `hx_swap`, `hx_select` |
+
+See also: **Badge** (`color`, `fill`) and filters **`resolve_color`**, **`register_colors`** in `chirp_ui`.
 
 #### command_bar
 
@@ -786,6 +832,8 @@ Key-value card for settings. Icon in header, no media. Uses `description_list` w
 
 Item `type`: `bool` (badge), `url` (monospace+truncate), `number` (right-align), `unset` (muted italic).
 
+Also accepts `cls`, `attrs`, and `attrs_map` — forwarded to `card` (use `attrs_map={"id": "…"}` for `hx-target` on the widget root).
+
 ### config_dashboard
 
 Composite for full settings pages: page_header + key_value_form + grid of config_cards + action_strip. Slots: `header_actions`, `form_result`, `config_cards`, `action_strip`.
@@ -814,6 +862,8 @@ Use these for dashboard KPIs and overview decks instead of hand-assembling a gri
 | `metric_card` | `value`, `label`, `icon` | Core KPI content |
 | `metric_card` | `trend`, `hint` | Optional supporting context |
 | `metric_card` | `href` | Optional clickable KPI destination |
+| `metric_card` | `icon_bg`, `footer_label`, `footer_href`, `cls` | Icon badge tint, optional footer link, extra classes |
+| `metric_card` | `attrs`, `attrs_map` | Forwarded to the outer `card` or `<a>` (e.g. `id` for HTMX) |
 
 ---
 
@@ -931,6 +981,8 @@ These use `validate_variant` at macro top. Invalid values fall back to the defau
 ```html
 {% from "chirpui/surface.html" import surface %}
 {% call surface(variant="muted") %}...{% end %}
+{# Optional: style= (inline CSS; overrides variant background), attrs / attrs_map #}
+{% call surface(variant="default", padding=false, full_width=true, style="background: …") %}…{% end %}
 
 {% from "chirpui/toast.html" import toast %}
 {{ toast("Done!", variant="success") }}
@@ -988,8 +1040,19 @@ Sidebar navigation for dashboards and app shells. Use `sidebar`, `sidebar_sectio
 |-------|--------|-------------|
 | `sidebar` | `cls` | Container with header, nav, footer slots |
 | `sidebar_section` | `title`, `collapsible`, `cls` | Section group; `collapsible=true` uses details/summary |
-| `sidebar_link` | `href`, `label`, `icon`, `active`, `cls` | Nav link; `icon` recommended for collapsible mode |
+| `sidebar_link` | `href`, `label`, `icon`, `active`, `match`, `boost`, `cls` | Nav link; `icon` recommended for collapsible mode |
 | `sidebar_toggle` | `cls` | Toggle button for icon-only collapsed state |
+
+### Active state
+
+Two approaches:
+
+- **`match=`** (recommended) — Automatic path comparison using `current_path` from the template context. `match="exact"` activates when `current_path == href`. `match="prefix"` activates when `current_path` starts with `href` (or equals it). Chirp auto-injects `current_path` for `Template(...)` and `Page(...)` returns; no manual `nav=` threading needed.
+- **`active=`** (explicit) — Pass a boolean directly. Use when active state depends on something other than the URL path (e.g. `active=is_admin`).
+
+When `match=` is set, it takes precedence over `active=`. Both emit `aria-current="page"` on active links.
+
+**Client-side sync:** `app_shell_layout.html` includes a built-in script that updates sidebar and navbar active classes after htmx history navigation (`htmx:pushedIntoHistory`, `htmx:replacedInHistory`). This covers the case where `hx-boost` swaps `#main` but leaves the sidebar DOM untouched.
 
 ### Usage
 
@@ -997,13 +1060,19 @@ Sidebar navigation for dashboards and app shells. Use `sidebar`, `sidebar_sectio
 {% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
 {% call sidebar() %}
   {% call sidebar_section("Navigate") %}
-    {{ sidebar_link("/", "Home", icon="◉", active=cp == "/") }}
-    {{ sidebar_link("/skills", "Skills", icon="✦", active=cp.startswith("/skills")) }}
+    {{ sidebar_link("/", "Home", icon="◉", match="exact") }}
+    {{ sidebar_link("/skills", "Skills", icon="✦", match="prefix") }}
   {% end %}
   {% call sidebar_section("Settings") %}
-    {{ sidebar_link("/settings", "Config", icon="◇", active=cp.startswith("/settings")) }}
+    {{ sidebar_link("/settings", "Config", icon="◇", match="prefix") }}
   {% end %}
 {% end %}
+```
+
+Legacy `active=` still works for backward compatibility:
+
+```html
+{{ sidebar_link("/admin", "Admin", icon="⚙", active=is_admin) }}
 ```
 
 ### app_shell

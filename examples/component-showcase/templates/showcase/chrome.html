@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/workspace_shell.html" import workspace_shell %}
+{% from "chirpui/shell_frame.html" import shell_region %}
+{% from "chirpui/fragment_island.html" import safe_region %}
+{% from "chirpui/file_tree.html" import file_tree %}
+{% from "chirpui/split_layout.html" import split_layout %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("App chrome & regions", subtitle="workspace_shell, split_layout, file_tree, shell_region, safe_region — shells and HTMX-safe islands.") }}
+
+<h2>app_shell_layout</h2>
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0 0 0.75rem;">
+  Shipping apps extend <code>chirpui/app_shell_layout.html</code> on top of Chirp’s <code>chirp/layouts/shell.html</code>
+  (tokens, toast, transitions). This interactive showcase uses <code>app_layout.html</code> + <code>app_shell.html</code>
+  instead; see the template comment in <code>app_shell_layout.html</code> and <code>docs/UI-LAYERS.md</code>.
+</p>
+{% end %}
+
+<h2>Workspace shell</h2>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-bottom: 0.5rem;">
+  IDE-like workbench: toolbar, optional file sidebar, main editor, optional inspector.
+</p>
+{% call block() %}
+<div style="min-height: 14rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius-lg); overflow: hidden;">
+{% call workspace_shell("Workbench", subtitle="README.md", sidebar_title="Files", show_inspector=true, inspector_title="Notes") %}
+{% slot toolbar %}{{ btn("Save", variant="primary", size="sm") }}{% end %}
+{% slot sidebar %}
+<p class="chirpui-font-sm chirpui-text-muted" style="margin: 0;">Sidebar slot — tree, outline, etc.</p>
+{% end %}
+{% call surface(variant="default", padding=true) %}
+<p class="chirpui-font-sm" style="margin: 0;">Main editor region (default slot).</p>
+{% end %}
+{% slot inspector %}
+<p class="chirpui-font-sm chirpui-text-muted" style="margin: 0;">Inspector / preview</p>
+{% end %}
+{% end %}
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  workspace_shell(title, sidebar_title=…, show_inspector=true) — slots: toolbar, sidebar, inspector; body fills main.
+</p>
+{% end %}
+
+<h2>Shell region</h2>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-bottom: 0.5rem;">
+  Stable <code>id</code> wrapper for OOB targets (shell actions, breadcrumbs). Maps to Chirp’s page composition model.
+</p>
+{% call block() %}
+{% call shell_region("showcase-shell-region-demo") %}
+<span class="chirpui-font-sm">Region content (swap via <code>hx-swap-oob</code> in real apps)</span>
+{% end %}
+{% end %}
+
+<h2>Fragment island (safe region)</h2>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-bottom: 0.5rem;">
+  HTMX-safe region that opts out of inherited <code>hx-select</code> / targets — use inside boosted shells for forms and lists.
+  See <code>docs/DND-FRAGMENT-ISLAND.md</code>.
+</p>
+{% call block() %}
+{% call safe_region("demo-fragment-island") %}
+<p class="chirpui-font-sm" style="margin: 0;">Inner markup is isolated from parent shell swap rules via <code>hx-disinherit</code>.</p>
+{% end %}
+{% end %}
+
+<h2>File tree</h2>
+{% call block() %}
+{% call file_tree(items=[
+    {"title": "src", "open": true, "children": [
+        {"title": "main.py", "href": "/chrome"},
+        {"title": "app", "children": [{"title": "routes.py", "href": "/chrome"}]},
+    ]},
+    {"title": "README.md", "href": "/"},
+], title="Repository", show_icons=true) %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  file_tree(items=[…], title=…) — wraps <code>nav_tree</code> in a scrollable panel.
+</p>
+{% end %}
+
+<h2>Split layout</h2>
+{% call block() %}
+{% call split_layout(ratio="balanced", gap="md") %}
+{% slot primary %}
+<div class="chirpui-surface chirpui-surface--muted" style="padding: 1rem;">Primary pane</div>
+{% end %}
+{% slot secondary %}
+<div class="chirpui-surface chirpui-surface--muted" style="padding: 1rem;">Secondary pane</div>
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  split_layout(ratio="sidebar"|"balanced"|"wide-primary"|…) — generic two-pane primitive also used inside workspace_shell.
+</p>
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

@@ -16,6 +16,9 @@
 {% from "chirpui/entity_header.html" import entity_header %}
 {% from "chirpui/search_header.html" import search_header %}
 {% from "chirpui/filter_bar.html" import filter_bar %}
+{% from "chirpui/filter_chips.html" import filter_group, filter_chip %}
+{% from "chirpui/label_overline.html" import label_overline %}
+{% from "chirpui/segmented_control.html" import segmented_control %}
 {% from "chirpui/action_strip.html" import action_strip %}
 {% from "chirpui/action_bar.html" import action_bar, action_bar_item %}
 {% from "chirpui/media_object.html" import media_object, media_object_media, media_object_body, media_object_actions %}
@@ -25,7 +28,7 @@
 
 {% call container() %}
 {% call stack() %}
-{{ page_header("Layout", subtitle="container, grid, stack, block, surface, callout, hero, overlay — Tetris-inspired layouts and backgrounds.") }}
+{{ page_header("Layout", subtitle="container, grid, stack, block, surface, callout, hero, overlay, filter_bar, filter_chips, label_overline, segmented_control — Tetris-inspired layouts and backgrounds.") }}
 
 <h2>Breadcrumbs</h2>
 {% call block() %}
@@ -532,6 +535,52 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
   filter_bar(action, method="get") — wraps action_strip inside a form.
+</p>
+{% end %}
+
+<h2>Filter chips</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Faceted pill rows (not the same as filter_bar). Pairs with <code>register_colors</code> for named theme colors.
+  See <code>docs/COMPONENT-OPTIONS.md</code>.
+</p>
+{% call block() %}
+{% call filter_group(name="Type") %}
+{{ filter_chip("All", href="/layout", active=true) }}
+{{ filter_chip("Grass", color="#78c850", href="/layout") }}
+{{ filter_chip("Fire", color="#f08030", href="/layout") }}
+{{ filter_chip("Water", color="#6890f0", href="/layout") }}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  filter_group + filter_chip — use <code>href</code> for navigation or HTMX attributes for partial swaps.
+</p>
+{% end %}
+
+<h2>Label overline</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Small caps label for cards and dense panels.
+</p>
+{% call block() %}
+{% call surface(variant="muted") %}
+{{ label_overline("Inventory", section=true, tag="h3") }}
+<p class="chirpui-font-sm" style="margin: 0.25rem 0 0;">Card body under an overline heading.</p>
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  label_overline(text, section=true, tag="h3"|"span")
+</p>
+{% end %}
+
+<h2>Segmented control</h2>
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-bottom: 0.5rem;">
+  Mutually exclusive mode switcher (radiogroup).
+</p>
+{% call block() %}
+{{ segmented_control(items=[
+    {"label": "Grid", "value": "grid", "active": true},
+    {"label": "List", "value": "list"},
+    {"label": "Table", "value": "table"},
+], name="layout_demo_view") }}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  segmented_control(items=[...], name="…", size="sm"|"lg")
 </p>
 {% end %}
 

@@ -12,12 +12,19 @@
             Hero section content.
         end
 
+        call surface(variant="default", padding=false, full_width=true, cls="my-card",
+            style="--accent: #0a0; background: linear-gradient(...)")
+            Custom background overrides variant fill (e.g. type-tinted cards).
+        end
+
+    Optional: style (inline CSS), attrs / attrs_map (extra HTML attributes; same as btn).
+
     Variants: default, muted, elevated, accent, gradient-subtle, gradient-accent, gradient-border, gradient-mesh, glass, frosted, smoke
 -#}
 
-{% def surface(variant="default", full_width=false, padding=true, cls="") %}
+{% def surface(variant="default", full_width=false, padding=true, cls="", style="", attrs="", attrs_map=none) %}
 {% set variant = variant | validate_variant_block("surface", default="default") %}
-<div class="chirpui-surface chirpui-surface--{{ variant }}{% if full_width %} chirpui-surface--full{% end %}{% if not padding %} chirpui-surface--no-padding{% end %}{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-surface chirpui-surface--{{ variant }}{% if full_width %} chirpui-surface--full{% end %}{% if not padding %} chirpui-surface--no-padding{% end %}{{ " " ~ cls if cls else "" }}"{% if style %} style="{{ style }}"{% end %}{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}>
     {% slot %}
 </div>
 {% end %}

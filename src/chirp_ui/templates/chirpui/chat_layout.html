@@ -5,7 +5,7 @@
     Usage:
         {% from "chirpui/chat_layout.html" import chat_layout %}
 
-        {% call chat_layout(show_activity=true) %}
+        {% call chat_layout(show_activity=true, fill=true) %}
         {% slot messages %}
             <ul class="chirpui-message-thread">...</ul>
         {% end %}
@@ -16,10 +16,13 @@
             <aside>Model info, suggestions...</aside>
         {% end %}
         {% end %}
+
+    fill=true: adds chirpui-chat-layout--fill. For SSE/HTMX roots inside the messages
+    slot, add class chirpui-chat-layout__messages-body on the wrapper (see LAYOUT-VERTICAL.md).
 -#}
 
-{% def chat_layout(show_activity=false, cls="") %}
-<div class="chirpui-chat-layout{{ " " ~ cls if cls else "" }}">
+{% def chat_layout(show_activity=false, cls="", fill=false) %}
+<div class="chirpui-chat-layout{{ " chirpui-chat-layout--fill" if fill else "" }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-chat-layout__main">
         <div class="chirpui-chat-layout__messages">
             {% slot messages %}

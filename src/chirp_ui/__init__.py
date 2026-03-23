@@ -10,13 +10,15 @@ Headless, htmx-native, zero JavaScript. Install and import::
 When used with Chirp, components are auto-detected via ``PackageLoader``.
 For standalone Kida usage, call :func:`get_loader`.
 Call :func:`register_filters` to ensure bem/field_errors/html_attrs filters are available.
+Call :func:`register_colors` once per app if you use semantic color names with
+``resolve_color`` / ``badge(..., color=...)`` / ``filter_chips`` (see ``docs/COMPONENT-OPTIONS.md``).
 """
 
 from pathlib import Path
 
 from kida import PackageLoader
 
-from chirp_ui.filters import TemplateFilterApp
+from chirp_ui.filters import TemplateFilterApp, register_colors
 from chirp_ui.validation import set_strict
 
 # Declare free-threading support (PEP 703)
@@ -24,7 +26,7 @@ _Py_mod_gil = 0
 
 __version__ = "0.2.0"
 
-__all__ = ["get_loader", "register_filters", "set_strict", "static_path"]
+__all__ = ["get_loader", "register_colors", "register_filters", "set_strict", "static_path"]
 
 
 def static_path() -> Path:

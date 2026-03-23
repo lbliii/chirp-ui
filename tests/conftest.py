@@ -10,7 +10,12 @@ import pytest
 from kida import Environment, FileSystemLoader
 from kida.template import Markup
 
-from chirp_ui.filters import value_type
+from chirp_ui.filters import (
+    contrast_text,
+    resolve_color,
+    sanitize_color,
+    value_type,
+)
 from chirp_ui.icons import icon as icon_filter
 
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates"
@@ -160,8 +165,15 @@ def env() -> Environment:
             "validate_variant_block": _validate_variant_block_stub,
             "validate_size": _validate_size_stub,
             "value_type": value_type,
+            "sanitize_color": sanitize_color,
+            "contrast_text": contrast_text,
+            "resolve_color": resolve_color,
         }
     )
     e.add_global("island_attrs", _island_attrs_stub)
     e.add_global("primitive_attrs", _primitive_attrs_stub)
+    e.add_global(
+        "csrf_field",
+        lambda: Markup('<input type="hidden" name="_csrf_token" value="test-csrf">'),
+    )
     return e

@@ -8,7 +8,7 @@
         pulsing_button("Go Live", icon="◎", href="/live")
 -#}
 
-{% def pulsing_button(text, variant="", icon=none, href=none, cls="") %}
+{% def pulsing_button(text, variant="", icon=none, href=none, cls="", type="button", disabled=false) %}
 {% set variant = variant | validate_variant(("", "default", "primary", "success", "danger"), "") %}
 {% set variant_class = " chirpui-pulsing-btn--" ~ variant if variant else "" %}
 {% set base = "chirpui-pulsing-btn" ~ variant_class ~ (" " ~ cls if cls else "") %}
@@ -19,7 +19,7 @@
     {{ text }}
 </a>
 {% else %}
-<button type="button" class="{{ base }}">
+<button type="{{ type }}" class="{{ base }}" {% if disabled %}disabled{% end %}>
     <span class="chirpui-pulsing-btn__ring" aria-hidden="true"></span>
     {% if icon %}<span class="chirpui-pulsing-btn__icon">{{ icon | icon }}</span>{% end %}
     {{ text }}

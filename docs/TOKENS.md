@@ -155,3 +155,17 @@ Guideline: components should consume semantic aliases (`--chirpui-elevation-*`, 
 - `--chirpui-state-focus-offset`
 
 Guideline: focus-visible styles should prefer the state focus aliases for consistency.
+
+## Typography overrides
+
+ChirpUI inherits font settings from the document. To avoid layout shift when using webfonts, follow the usual pattern: load faces with `font-display: optional` (or swap) in your app CSS, and map heading/body roles to semantic typography tokens (`--chirpui-ui-*`, `--chirpui-font-*`) already defined in `chirpui.css` rather than hard-coding `font-family` on every component.
+
+Override at the shell or page level, for example:
+
+```css
+:root {
+  font-size: var(--chirpui-font-base);
+}
+```
+
+For marketing or code-heavy areas, set `font-family` on a wrapper class so ChirpUI components inside still inherit consistently.

@@ -15,6 +15,8 @@
             indicator("SYS", variant="warning", blink=true)
         end
 
+    Rows wrap by default for responsive layouts. Use indicator_row(nowrap=true) for a single-line strip.
+
     Variants: success, warning, error, muted, accent.
     Blink: true (steady pulse), "fast" (alarm), false (solid).
     Glyph: ■ (default), ● (round), ◆ (diamond).
@@ -31,8 +33,8 @@
 </span>
 {% end %}
 
-{% def indicator_row(cls="") %}
-<div class="chirpui-ascii-indicator-row{{ " " ~ cls if cls else "" }}">
+{% def indicator_row(cls="", nowrap=false) %}
+<div class="chirpui-ascii-indicator-row{{ " chirpui-ascii-indicator-row--nowrap" if nowrap else "" }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
 {% end %}

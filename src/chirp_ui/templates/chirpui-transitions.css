@@ -1,14 +1,28 @@
-/* chirp-ui View Transitions — optional polish for htmx swaps
+/* chirp-ui View Transitions — scoped to #main for app shell layouts.
    Include after chirpui.css when using AppConfig(view_transitions=True).
 
-   Avoid view-transition-name on #main when it's the htmx-boost swap target:
-   full-page responses create duplicate #main during transition. Use root
-   (default) instead. Modals use view-transition-name: none (multiple dialogs
-   would duplicate names). See: https://piccalil.li/blog/why-are-my-view-transitions-blinking/
+   Chirp base injects root-level crossfade for all layouts. This stylesheet
+   overrides that to scope transitions to #main so the app shell (topbar,
+   sidebar) stays frozen during navigation. Only the page content animates.
+
+   #main persists in the DOM (innerHTML swap, not outerHTML) so
+   view-transition-name pairing works correctly for both htmx swaps
+   (SPA) and MPA navigations. Modals use view-transition-name: none
+   because multiple dialogs can coexist and would duplicate the name.
 */
 
-/* Modal — opt out of view transitions; multiple dialogs share the class,
-   so view-transition-name would duplicate. Overlays don't need page-transition. */
+/* Scope transitions to the main content area */
+#main {
+    view-transition-name: page-content;
+}
+
+/* Suppress root animation — shell stays frozen */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+}
+
+/* Modal — opt out; multiple dialogs share the class and would duplicate */
 dialog.chirpui-modal,
 .chirpui-modal {
     view-transition-name: none;
@@ -26,13 +40,20 @@ dialog.chirpui-modal,
     box-shadow: none;
 }
 
-::view-transition-old(page-content),
-::view-transition-old(root) {
+/* Fragment islands — removes this element from named view-transition
+   participation. However, swaps that target elements *inside*
+   #page-content still trigger the page-content VT (the parent animates,
+   not the island). Use hx-swap="innerHTML transition:false" on forms
+   that post to fragment endpoints to suppress the flash. */
+.chirpui-fragment-island {
+    view-transition-name: none;
+}
+
+::view-transition-old(page-content) {
     animation: chirpui-vt-fade-out 0.12s ease-out forwards;
 }
 
-::view-transition-new(page-content),
-::view-transition-new(root) {
+::view-transition-new(page-content) {
     animation: chirpui-vt-fade-in 0.15s ease-out forwards;
 }
 
@@ -53,9 +74,7 @@ dialog.chirpui-modal,
 
 @media (prefers-reduced-motion: reduce) {
     ::view-transition-old(page-content),
-    ::view-transition-old(root),
-    ::view-transition-new(page-content),
-    ::view-transition-new(root) {
+    ::view-transition-new(page-content) {
         animation: none;
     }
 }

@@ -1,6 +1,13 @@
 {#- chirp-ui: Navbar component
     Top navigation bar with brand and links.
 
+    Active state: use match= for automatic path comparison (requires current_path
+    in template context), or active= for explicit control.
+
+    match="exact"  — active when current_path == href
+    match="prefix" — active when current_path starts with href (or equals it)
+    active=true    — always active (explicit override)
+
     Named slots (Kida 0.3+, use_slots=true): default (links), end (right-aligned),
     brand (brand area, when brand_slot=true).
 
@@ -8,14 +15,14 @@
         from "chirpui/navbar.html" import navbar, navbar_link, navbar_end, navbar_dropdown
 
         call navbar(brand="My App", brand_url="/", use_slots=true)
-            navbar_link("/docs", "Docs")
-            navbar_link("/about", "About", active=true)
+            navbar_link("/docs", "Docs", match="prefix")
+            navbar_link("/about", "About", match="exact")
             {% slot end %}btn("Login", href="/login"){% end %}
         end
 
         call navbar(brand_url="/", use_slots=true, brand_slot=true)
             {% slot brand %}logo(text="My App", image_src="/static/logo.svg", variant="both"){% end %}
-            navbar_link("/docs", "Docs")
+            navbar_link("/docs", "Docs", match="prefix")
         end
 
     Legacy: wrap right-aligned content in navbar_end(). Add cls="chirpui-navbar--sticky" for sticky nav.
@@ -43,9 +50,11 @@
 </nav>
 {% end %}
 
-{% def navbar_link(href, label, active=false, cls="") %}
-<a class="chirpui-navbar__link{{ " chirpui-navbar__link--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
-   href="{{ href }}">{{ label }}</a>
+{% def navbar_link(href, label, active=false, match="", cls="") %}
+{% set _cp = current_path | default("") if match else "" %}
+{% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
+<a class="chirpui-navbar__link{{ " chirpui-navbar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
+   href="{{ href }}"{% if _active %} aria-current="page"{% end %}>{{ label }}</a>
 {% end %}
 
 {% def navbar_end(cls="") %}
@@ -54,9 +63,11 @@
 </div>
 {% end %}
 
-{% def navbar_dropdown(label, active=false, cls="") %}
+{% def navbar_dropdown(label, active=false, match="", href="", cls="") %}
+{% set _cp = current_path | default("") if match else "" %}
+{% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <details class="chirpui-navbar-dropdown{{ " " ~ cls if cls else "" }}">
-    <summary class="chirpui-navbar-dropdown__trigger chirpui-navbar__link{{ " chirpui-navbar__link--active" if active else "" }}">{{ label }}</summary>
+    <summary class="chirpui-navbar-dropdown__trigger chirpui-navbar__link{{ " chirpui-navbar__link--active" if _active else "" }}">{{ label }}</summary>
     <div class="chirpui-navbar-dropdown__menu chirpui-dropdown__menu">
         {% slot %}
     </div>

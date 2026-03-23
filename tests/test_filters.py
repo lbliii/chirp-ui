@@ -4,10 +4,14 @@ import pytest
 
 from chirp_ui.filters import (
     bem,
+    contrast_text,
     field_errors,
     html_attrs,
     icon,
+    register_colors,
     register_filters,
+    resolve_color,
+    sanitize_color,
     validate_size,
     validate_variant,
     validate_variant_block,
@@ -425,6 +429,28 @@ class TestRegisterFilters:
         assert "validate_size" in registered
         assert "value_type" in registered
         assert registered["value_type"] is value_type
+        assert "sanitize_color" in registered
+        assert registered["sanitize_color"] is sanitize_color
+        assert "contrast_text" in registered
+        assert registered["contrast_text"] is contrast_text
+        assert "resolve_color" in registered
+        assert registered["resolve_color"] is resolve_color
+
+
+class TestColorFilters:
+    def test_sanitize_color_hex(self) -> None:
+        assert sanitize_color("#78c850") == "#78c850"
+        assert sanitize_color("#abc") == "#abc"
+        assert sanitize_color("url(x)") is None
+
+    def test_contrast_text_hex(self) -> None:
+        assert contrast_text("#ffffff") == "#1a1a1a"
+        assert contrast_text("#000000") == "white"
+
+    def test_resolve_color_registry(self) -> None:
+        register_colors({"_pytest_resolve_grass": "#78c850", "PytestFire": "#ff0000"})
+        assert resolve_color("_pytest_resolve_grass") == "#78c850"
+        assert resolve_color("pytestfire") == "#ff0000"
 
 
 class TestRegisterFiltersWithTemplateGlobal:

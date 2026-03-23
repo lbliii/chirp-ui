@@ -4,6 +4,14 @@ Common pitfalls and how to avoid them.
 
 ---
 
+## Layout and horizontal scroll
+
+The main column (`.chirpui-app-shell__main`) uses **`min-width: 0`** and **`overflow-x: clip`**. If the page scrolls sideways, something inside the content is wider than the column—usually a **non-wrapping flex row**, a **custom grid without `min-width: 0` on children**, or **wide tables** without an `overflow-x: auto` wrapper.
+
+**Fix:** Flow **`grid()`** applies **`min-width: 0`** to direct children in CSS; use **`block()`** when you need **`span=`**. Prefer **`cluster()`** and default-wrapping **`indicator_row()`**. Flex **rows** (headers, toolbars): shrinking text columns need **`min-width: 0`** — page/section/entity headers do this in CSS; for custom markup use **`chirpui-min-w-0`**. For custom grids, use **`minmax(0, 1fr)`** tracks and **`min-width: 0`** on items. Full checklist: [LAYOUT-OVERFLOW.md](LAYOUT-OVERFLOW.md).
+
+---
+
 ## Fragment Island and HTMX
 
 ### `hx-target` must match island ID
@@ -33,6 +41,28 @@ Alpine directives like `x-show`, `x-bind`, `@click` resolve state from the neare
   <div x-show="open">Content</div>
 </div>
 ```
+
+### Use `Alpine.safeData()` instead of `Alpine.data()` for named components
+
+`Alpine.data()` must be called during `alpine:init`, which only fires once on initial page load. Under htmx boosted navigation, swapped-in scripts that use `alpine:init` will not re-register their components — causing "X is not defined" errors.
+
+```html
+<!-- BAD: breaks on htmx navigation -->
+<script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('counter', () => ({ count: 0 }));
+});
+</script>
+
+<!-- GOOD: works on initial load AND htmx swaps -->
+<script>
+Alpine.safeData('counter', () => ({ count: 0 }));
+</script>
+```
+
+### Do not load Alpine.js yourself — Chirp is the single authority
+
+`use_chirp_ui(app)` auto-enables `alpine=True`, which injects Alpine core, all plugins (Mask, Intersect, Focus), store init, and the `safeData` helper. Adding your own `<script src="alpinejs">` tag will double-load Alpine and cause unpredictable behavior.
 
 ---
 

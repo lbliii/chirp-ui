@@ -5,13 +5,14 @@
         from "chirpui/status.html" import status_indicator
 
         status_indicator("Running", variant="success")
-        status_indicator("Error", variant="error", icon="⚠")
-        status_indicator("Processing", variant="warning", pulse=true)
-        status_indicator("Idle", variant="default")
+        status_indicator("Live", color="#78c850")
 -#}
 
-{% def status_indicator(label, variant="default", icon=none, pulse=false, cls="") %}
-<div class="chirpui-status-indicator chirpui-status-indicator--{{ variant }}{{ " chirpui-status-indicator--pulse" if pulse else "" }}{{ " " ~ cls if cls else "" }}">
+{% def status_indicator(label, variant="default", icon=none, pulse=false, cls="", color=none) %}
+{% set resolved = color | resolve_color %}
+{% set st_variant = ("custom" if resolved else (variant | validate_variant_block("status-indicator", "default"))) %}
+<div class="chirpui-status-indicator chirpui-status-indicator--{{ st_variant }}{{ " chirpui-status-indicator--pulse" if pulse else "" }}{{ " " ~ cls if cls else "" }}"
+     {% if resolved %}style="--chirpui-status-color: {{ resolved }}"{% end %}>
     {% if icon %}
         <span class="chirpui-status-indicator__icon">{{ icon }}</span>
     {% else %}

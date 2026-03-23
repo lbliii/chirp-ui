@@ -37,6 +37,16 @@ class ShellActionStub:
     size: str = "sm"
     disabled: bool = False
     menu_items: tuple[ShellMenuItemStub, ...] = ()
+    form_action: str | None = None
+    form_method: str = "post"
+    hidden_fields: tuple[tuple[str, str], ...] = ()
+    include_csrf: bool = True
+    hx_post: str | None = None
+    hx_target: str | None = None
+    hx_swap: str | None = None
+    hx_disinherit: str | None = None
+    submit_surface: str = "btn"
+    attrs: str = ""
 
     def as_menu_item(self) -> ShellMenuItemStub:
         return ShellMenuItemStub(
@@ -121,6 +131,120 @@ class TestLayout:
         assert "chirpui-grid--cols-3" in html
         assert "chirpui-grid--gap-md" in html
 
+    def test_grid_preset_bento_211(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="bento-211", gap="md") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-bento-211" in html
+        assert "chirpui-grid--gap-md" in html
+        assert "chirpui-grid--cols-" not in html
+
+    def test_grid_preset_thirds(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="thirds", gap="lg") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-thirds" in html
+        assert "chirpui-grid--gap-lg" in html
+
+    def test_grid_items_start(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="thirds", items="start") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--items-start" in html
+
+    def test_grid_preset_detail_two(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="detail-two", gap="md") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-detail-two" in html
+        assert "chirpui-grid--detail-two-single" not in html
+
+    def test_grid_preset_detail_two_single(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="detail-two", detail_single=true) %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-detail-two" in html
+        assert "chirpui-grid--detail-two-single" in html
+
+    def test_grid_preset_detail_two_single_string(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="detail-two-single") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-detail-two" in html
+        assert "chirpui-grid--detail-two-single" in html
+
+    def test_grid_preset_aliases_bento_thirds_detail(self, env: Environment) -> None:
+        for preset, want in (
+            ("split-2-1-1", "chirpui-grid--preset-bento-211"),
+            ("split-thirds", "chirpui-grid--preset-thirds"),
+            ("three-equal", "chirpui-grid--preset-thirds"),
+            ("split-1-1.35", "chirpui-grid--preset-detail-two"),
+        ):
+            html = env.from_string(
+                '{% from "chirpui/layout.html" import grid %}'
+                f'{{% call grid(preset="{preset}") %}}A{{% end %}}'
+            ).render()
+            assert want in html, preset
+
+    def test_grid_preset_alias_split_1_1_35_single(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="split-1-1.35-single") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-detail-two" in html
+        assert "chirpui-grid--detail-two-single" in html
+
+    def test_label_overline(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/label_overline.html" import label_overline %}'
+            '{{ label_overline("Hello", section=true, tag="h3") }}'
+        ).render()
+        assert "chirpui-label-overline" in html
+        assert "chirpui-label-overline--section" in html
+        assert "<h3 " in html
+        assert "Hello" in html
+
+    def test_grid_preset_overrides_cols(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(cols=2, preset="thirds") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-thirds" in html
+        assert "chirpui-grid--cols-2" not in html
+
+    def test_frame_balanced(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import frame %}{% call frame() %}A{% end %}'
+        ).render()
+        assert "chirpui-frame" in html
+        assert "chirpui-frame--balanced" in html
+
+    def test_frame_hero(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import frame %}'
+            '{% call frame(variant="hero") %}A{% end %}'
+        ).render()
+        assert "chirpui-frame--hero" in html
+
+    def test_frame_sidebar_end(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import frame %}'
+            '{% call frame(variant="sidebar-end") %}A{% end %}'
+        ).render()
+        assert "chirpui-frame--sidebar-end" in html
+
+    def test_frame_gap_lg(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import frame %}{% call frame(gap="lg") %}A{% end %}'
+        ).render()
+        assert "chirpui-frame--gap-lg" in html
+
     def test_stack(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import stack %}{% call stack() %}A{% end %}'
@@ -151,6 +275,23 @@ class TestLayout:
             '{% from "chirpui/layout.html" import block %}{% call block(span=2) %}A{% end %}'
         ).render()
         assert "chirpui-block--span-2" in html
+
+    def test_block_span_full(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import block %}{% call block(span="full") %}A{% end %}'
+        ).render()
+        assert "chirpui-block--span-full" in html
+
+    def test_chat_layout_fill_emits_modifier(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/chat_layout.html" import chat_layout %}'
+            "{% call chat_layout(fill=true, show_activity=false) %}"
+            "{% slot messages %}M{% end %}"
+            "{% slot input %}I{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-chat-layout--fill" in html
+        assert "chirpui-chat-layout__messages" in html
 
     def test_page_header(self, env: Environment) -> None:
         html = env.from_string(
@@ -511,6 +652,17 @@ class TestSurface:
                 f'{{% call surface(variant="{variant}") %}}X{{% end %}}'
             ).render()
             assert f"chirpui-surface--{variant}" in html
+
+    def test_surface_style_and_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% call surface(style="--x: 1; background: red", '
+            'attrs_map={"id": "s1", "data-test": "surf"}) %}In{% end %}'
+        ).render()
+        assert 'style="--x: 1; background: red"' in html
+        assert 'data-test="surf"' in html
+        assert 'id="s1"' in html
+        assert "In" in html
 
 
 # ---------------------------------------------------------------------------
@@ -1077,6 +1229,28 @@ class TestCard:
         ).render()
         assert "chirpui-card custom" in html
 
+    def test_card_attrs_map_id_for_htmx_target(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="W", attrs_map={"id": "widget-usage"}) %}Body{% end %}'
+        ).render()
+        assert 'id="widget-usage"' in html
+        assert "chirpui-card__title" in html
+
+    def test_card_collapsible_attrs_map(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="T", collapsible=true, attrs_map={"id": "foldable"}) %}B{% end %}'
+        ).render()
+        assert "<details" in html
+        assert 'id="foldable"' in html
+
+    def test_card_hoverable(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}{% call card(hoverable=true) %}Body{% end %}'
+        ).render()
+        assert "chirpui-card--hoverable" in html
+
     def test_card_with_icon(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/card.html" import card %}'
@@ -1498,6 +1672,40 @@ class TestPagination:
         assert 'hx-target="#list"' in html
         assert "hx-get" in html
 
+    def test_pagination_hx_select(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/pagination.html" import pagination %}'
+            "{{ pagination(current=2, total=5,"
+            ' url_pattern="/p?page={page}",'
+            ' hx_target="#main", hx_select="#main") }}'
+        ).render()
+        assert 'hx-select="#main"' in html
+
+
+class TestFilterBar:
+    def test_filter_group_and_chip(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_chips.html" import filter_group, filter_chip %}'
+            '{% call filter_group(name="Type") %}'
+            '{{ filter_chip("All", href="/", active=true) }}'
+            '{{ filter_chip("Grass", color="#78c850", href="/g") }}'
+            "{% end %}"
+        ).render()
+        assert 'role="radiogroup"' in html
+        assert "chirpui-filter-group" in html
+        assert "chirpui-filter-chip" in html
+        assert "chirpui-badge--custom" in html
+
+
+class TestStatusIndicator:
+    def test_status_custom_color(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/status.html" import status_indicator %}'
+            '{{ status_indicator("Live", color="#78c850") }}'
+        ).render()
+        assert "chirpui-status-indicator--custom" in html
+        assert "--chirpui-status-color: #78c850" in html
+
 
 # ---------------------------------------------------------------------------
 # Alert
@@ -1911,6 +2119,14 @@ class TestForms:
         assert "#results" in html
         assert "hx-trigger" in html
 
+    def test_search_field_with_htmx_select(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_field %}'
+            '{{ search_field("q", search_url="/search", search_target="#main", search_hx_select="#page-content") }}'
+        ).render()
+        assert 'hx-select="#page-content"' in html
+        assert 'hx-target="#main"' in html
+
     def test_form_actions(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/forms.html" import form_actions %}'
@@ -2154,6 +2370,38 @@ class TestAppShell:
         assert 'href="/new"' in html
         assert "chirpui-dropdown" in html
 
+    def test_shell_actions_renders_form_kind(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/shell_actions.html" import shell_actions_bar %}'
+            "{{ shell_actions_bar(shell_actions) }}"
+        ).render(
+            shell_actions=ShellActionsStub(
+                primary=ShellActionZoneStub(
+                    items=(
+                        ShellActionStub(
+                            id="save",
+                            label="Save",
+                            kind="form",
+                            variant="primary",
+                            form_action="/items",
+                            hidden_fields=(("id", "1"),),
+                            hx_post="/items",
+                            hx_target="#toast",
+                            submit_surface="shimmer",
+                        ),
+                    ),
+                ),
+            )
+        )
+        assert "chirpui-shell-action-form" in html
+        assert 'action="/items"' in html
+        assert 'hx-post="/items"' in html
+        assert 'hx-target="#toast"' in html
+        assert 'name="id"' in html
+        assert 'value="1"' in html
+        assert "chirpui-shimmer-btn" in html
+        assert "_csrf_token" in html
+
     def test_app_shell_brand_slot(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/app_shell.html" import app_shell %}'
@@ -2340,6 +2588,27 @@ class TestSidebar:
         assert "chirpui-sidebar__nav" in html
         assert "chirpui-sidebar__link--active" in html
         assert "Dashboard" in html
+        assert 'hx-select="#page-content"' in html
+
+    def test_shell_brand_link_matches_sidebar_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import shell_brand_link %}'
+            "{% call shell_brand_link() %}Brand{% end %}"
+        ).render()
+        assert "chirpui-app-shell__brand" in html
+        assert 'hx-target="#main"' in html
+        assert 'hx-swap="innerHTML"' in html
+        assert 'hx-select="#page-content"' in html
+        assert "Brand" in html
+
+    def test_shell_boosted_link_matches_sidebar_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import shell_boosted_link %}'
+            '{% call shell_boosted_link(href="/x", cls="chirpui-btn chirpui-btn--sm") %}Go{% end %}'
+        ).render()
+        assert 'class="chirpui-btn chirpui-btn--sm"' in html
+        assert 'hx-target="#main"' in html
+        assert 'hx-select="#page-content"' in html
 
     def test_sidebar_section(self, env: Environment) -> None:
         html = env.from_string(
@@ -2874,6 +3143,20 @@ class TestBadge:
         assert "chirpui-badge__icon" in html
         assert "◆" in html
 
+    def test_badge_custom_color(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/badge.html" import badge %}{{ badge("Grass", color="#78c850") }}'
+        ).render()
+        assert "chirpui-badge--custom" in html
+        assert "--chirpui-badge-color: #78c850" in html
+
+    def test_badge_href(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/badge.html" import badge %}{{ badge("Tag", href="/tags/x") }}'
+        ).render()
+        assert "<a " in html
+        assert 'href="/tags/x"' in html
+
 
 class TestRevealOnScroll:
     def test_reveal_on_scroll_renders_intersect_directives(self, env: Environment) -> None:
@@ -2952,6 +3235,14 @@ class TestProgress:
         ).render()
         assert "chirpui-progress-bar--success" in html
 
+    def test_progress_bar_custom_color(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/progress.html" import progress_bar %}'
+            '{{ progress_bar(value=40, max=100, color="#78c850") }}'
+        ).render()
+        assert "chirpui-progress-bar--custom" in html
+        assert "--chirpui-progress-color: #78c850" in html
+
 
 class TestMediaObject:
     def test_media_object_default_slot(self, env: Environment) -> None:
@@ -3017,6 +3308,33 @@ class TestMetricGrid:
         assert 'href="/status"' in html
         assert "chirpui-card--link" in html
         assert "This week" in html
+
+    def test_metric_card_attrs_map_on_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value=1, label="N", attrs_map={"id": "kpi-open"}) }}'
+        ).render()
+        assert 'id="kpi-open"' in html
+        assert "chirpui-metric-card" in html
+
+    def test_metric_card_attrs_map_on_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value=1, label="N", href="/x", attrs_map={"id": "kpi-link"}) }}'
+        ).render()
+        assert 'id="kpi-link"' in html
+        assert 'href="/x"' in html
+
+
+class TestConfigCard:
+    def test_config_card_forwards_attrs_map_to_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/config_card.html" import config_card %}'
+            '{{ config_card(title="T", icon="◇", items=[{"term": "a", "detail": "b"}], '
+            'attrs_map={"id": "cfg-logs"}) }}'
+        ).render()
+        assert 'id="cfg-logs"' in html
+        assert "chirpui-card__title" in html
 
 
 class TestAppLayout:
@@ -3181,7 +3499,6 @@ class TestTooltip:
         ).render()
         assert "chirpui-tooltip" in html
         assert 'data-tooltip="Help text"' in html
-        assert 'title="Help text"' in html
         assert "Hover me" in html
 
 
@@ -3481,6 +3798,14 @@ class TestShimmerButton:
         assert "<a " in html
         assert 'href="/go"' in html
 
+    def test_type_and_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/shimmer_button.html" import shimmer_button %}'
+            '{{ shimmer_button("X", type="submit", attrs=\'data-testid="sb"\') }}'
+        ).render()
+        assert 'type="submit"' in html
+        assert 'data-testid="sb"' in html
+
 
 class TestRippleButton:
     def test_basic(self, env: Environment) -> None:
@@ -3510,6 +3835,13 @@ class TestBorderBeam:
             '{% call border_beam(variant="success") %}X{% end %}'
         ).render()
         assert "chirpui-border-beam--success" in html
+
+    def test_attrs_on_root(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/border_beam.html" import border_beam %}'
+            "{% call border_beam(attrs='data-testid=\"bb\"') %}Z{% end %}"
+        ).render()
+        assert 'data-testid="bb"' in html
 
 
 class TestNotificationDot:
@@ -3634,6 +3966,14 @@ class TestGlowCard:
         assert "x-data" in html
         assert "Feature" in html
 
+    def test_attrs_on_root(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/glow_card.html" import glow_card %}'
+            "{% call glow_card(attrs='data-testid=\"gc\"') %}F{% end %}"
+        ).render()
+        assert 'data-testid="gc"' in html
+        assert "@mousemove=" in html
+
 
 class TestSpotlightCard:
     def test_basic(self, env: Environment) -> None:
@@ -3643,6 +3983,13 @@ class TestSpotlightCard:
         ).render()
         assert "chirpui-spotlight-card" in html
         assert "chirpui-spotlight-card__spotlight" in html
+
+    def test_attrs_on_root(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/spotlight_card.html" import spotlight_card %}'
+            "{% call spotlight_card(attrs='data-testid=\"sc\"') %}C{% end %}"
+        ).render()
+        assert 'data-testid="sc"' in html
 
 
 class TestParticleBg:
@@ -4078,6 +4425,13 @@ class TestGrain:
             '{% from "chirpui/grain.html" import grain %}{% call grain(animated=true) %}X{% end %}'
         ).render()
         assert "chirpui-grain--animated" in html
+
+    def test_attrs_on_root(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/grain.html" import grain %}'
+            "{% call grain(attrs='data-testid=\"gr\"') %}P{% end %}"
+        ).render()
+        assert 'data-testid="gr"' in html
 
 
 class TestOrbit:

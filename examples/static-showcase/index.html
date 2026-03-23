@@ -39,6 +39,11 @@
         .sc-theme button{padding:0.2rem 0.5rem;font-size:0.72rem;border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius);background:var(--chirpui-surface);color:var(--chirpui-text-muted);cursor:pointer}
         .sc-theme button.active{background:var(--chirpui-accent);color:var(--chirpui-bg);border-color:var(--chirpui-accent)}
         @media(max-width:768px){.sc-sidebar{display:none}.sc-grid-3{grid-template-columns:1fr}}
+        /* Full-height main demo (mirrors app shell + chat fill; fixed height stand-in for viewport) */
+        .sc-fill-demo{display:flex;flex-direction:column;height:280px;border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius-lg);overflow:hidden;background:var(--chirpui-surface)}
+        .sc-fill-demo .chirpui-app-shell__main--fill{flex:1;min-height:0}
+        .sc-fill-demo__thread{flex:1;min-height:0;overflow-y:auto;padding:0.5rem;font-size:0.78rem;line-height:1.45;color:var(--chirpui-text-muted)}
+        .sc-fill-demo__thread p{margin:0 0 0.5rem}
     </style>
 </head>
 <body>
@@ -58,6 +63,7 @@
     <a href="#card-gradients">Gradient Cards</a>
     <a href="#effect-cards">Effect Cards</a>
     <a href="#metric-cards">Metric Cards</a>
+    <a href="#card-widget-root">Card widget root</a>
     <h3>Data Display</h3>
     <a href="#badges">Badges & Status</a>
     <a href="#progress">Progress & Charts</a>
@@ -88,7 +94,12 @@
     <a href="#gradient-surfaces">Gradient Surfaces</a>
     <a href="#layout-primitives">Grid / Stack / Cluster</a>
     <a href="#bento">Bento Grid</a>
+    <a href="#filter-chips">Filter chips</a>
+    <a href="#label-overline">Label overline</a>
+    <a href="#segmented-control">Segmented control</a>
+    <a href="#fragment-island">Fragment island</a>
     <a href="#split-panel">Split Panel</a>
+    <a href="#full-height-main">Full-height main</a>
     <a href="#divider">Divider</a>
     <h3>Overlays</h3>
     <a href="#modal">Modal</a>
@@ -332,6 +343,18 @@
                 <div class="chirpui-card__header-actions"><button class="chirpui-icon-btn chirpui-icon-btn--sm chirpui-icon-btn--ghost" aria-label="More"><span class="chirpui-icon-btn__icon">⋯</span></button></div>
             </header>
             <div class="chirpui-card__body"><p>Card with header actions and icon.</p></div>
+        </article>
+    </div>
+</section>
+
+<section class="sc-section" id="card-widget-root">
+    <h2>Card widget root (stable id)</h2>
+    <p class="desc">Surface chrome for dashboard tiles: set <code>id</code> on the outer <code>&lt;article&gt;</code> (or <code>&lt;a&gt;</code> for link KPIs) so HTMX can swap into it (<code>hx-target="#…"</code>). In Kida, use <code>card(…, attrs_map={"id": "my-widget"})</code> — same for <code>config_card</code> and <code>metric_card</code>.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid">
+        <article id="static-showcase-widget-demo" class="chirpui-card">
+            <header class="chirpui-card__header"><h3 class="chirpui-card__title">id="static-showcase-widget-demo"</h3></header>
+            <div class="chirpui-card__body"><p>Plain HTML preview of the element macros render.</p></div>
         </article>
     </div>
 </section>
@@ -931,10 +954,15 @@
 </section>
 
 <section class="sc-section" id="layout-primitives">
-    <h2>Grid / Stack / Cluster</h2>
+    <h2>Grid / Frame / Stack / Cluster</h2>
     <hr class="sc-divider">
-    <div class="sc-label">Grid (3 cols)</div>
+    <div class="sc-label">Grid (flow — auto-fit)</div>
     <div class="chirpui-grid" style="margin-bottom:1rem"><div class="sc-box">1</div><div class="sc-box">2</div><div class="sc-box">3</div></div>
+    <div class="sc-label">Frame hero (explicit two columns)</div>
+    <div class="chirpui-frame chirpui-frame--hero chirpui-frame--gap-md" style="margin-bottom:1rem">
+        <div class="sc-box">Media</div>
+        <div class="sc-box">Copy</div>
+    </div>
     <div class="sc-label">Stack</div>
     <div class="chirpui-stack" style="margin-bottom:1rem;max-width:200px"><div class="sc-box">A</div><div class="sc-box">B</div><div class="sc-box">C</div></div>
     <div class="sc-label">Cluster</div>
@@ -957,6 +985,56 @@
     </div>
 </section>
 
+<section class="sc-section" id="filter-chips">
+    <h2>Filter chips</h2>
+    <p class="desc">Faceted pill row (not the same as the filter bar form toolbar). Pairs with <code>filter_group</code> + <code>filter_chip</code> in Kida.</p>
+    <hr class="sc-divider">
+    <div role="radiogroup" class="chirpui-filter-group" aria-label="Type">
+        <a class="chirpui-badge chirpui-badge--primary chirpui-filter-chip chirpui-filter-chip--active" href="#filter-chips"><span class="chirpui-badge__text">All</span></a>
+        <a class="chirpui-badge chirpui-badge--custom-solid chirpui-filter-chip" href="#filter-chips" style="--chirpui-badge-color:#78c850;--chirpui-badge-text:#0f1a0f"><span class="chirpui-badge__text">Grass</span></a>
+        <a class="chirpui-badge chirpui-badge--custom chirpui-filter-chip" href="#filter-chips" style="--chirpui-badge-color:#f08030"><span class="chirpui-badge__text">Fire</span></a>
+    </div>
+</section>
+
+<section class="sc-section" id="label-overline">
+    <h2>Label overline</h2>
+    <p class="desc">Small caps section label inside cards and dense panels.</p>
+    <hr class="sc-divider">
+    <div class="chirpui-surface chirpui-surface--muted" style="padding:1rem;max-width:28rem">
+        <h3 class="chirpui-font-xs chirpui-text-muted chirpui-label-overline chirpui-label-overline--section" style="margin:0 0 0.35rem">Inventory</h3>
+        <p class="chirpui-font-sm" style="margin:0;color:var(--chirpui-text-muted)">Use <code>label_overline(..., section=true, tag="h3")</code> for accessible headings.</p>
+    </div>
+</section>
+
+<section class="sc-section" id="segmented-control">
+    <h2>Segmented control</h2>
+    <p class="desc">Mutually exclusive mode switcher (<code>segmented_control</code> radiogroup).</p>
+    <hr class="sc-divider">
+    <div class="chirpui-segmented chirpui-segmented--sm" role="radiogroup" aria-label="View">
+        <label class="chirpui-segmented__option chirpui-segmented__option--active">
+            <input type="radio" name="static-seg-demo" value="grid" class="chirpui-visually-hidden" checked>
+            <span class="chirpui-segmented__label">Grid</span>
+        </label>
+        <label class="chirpui-segmented__option">
+            <input type="radio" name="static-seg-demo" value="list" class="chirpui-visually-hidden">
+            <span class="chirpui-segmented__label">List</span>
+        </label>
+        <label class="chirpui-segmented__option">
+            <input type="radio" name="static-seg-demo" value="table" class="chirpui-visually-hidden">
+            <span class="chirpui-segmented__label">Table</span>
+        </label>
+    </div>
+</section>
+
+<section class="sc-section" id="fragment-island">
+    <h2>Fragment island</h2>
+    <p class="desc">HTMX-safe region that opts out of inherited <code>hx-select</code> / swap rules (<code>safe_region</code> / <code>fragment_island</code>). See <code>docs/DND-FRAGMENT-ISLAND.md</code>.</p>
+    <hr class="sc-divider">
+    <div id="static-fragment-island" class="chirpui-fragment-island" hx-disinherit="hx-select hx-target hx-swap">
+        <p class="chirpui-font-sm" style="margin:0;color:var(--chirpui-text-muted)">Inner mutations do not inherit boosted navigation swap settings from the app shell.</p>
+    </div>
+</section>
+
 <section class="sc-section" id="split-panel">
     <h2>Split Panel</h2>
     <p class="desc">Resizable split panel with draggable handle.</p>
@@ -966,6 +1044,57 @@
         <div class="chirpui-split-panel__handle" @mousedown.prevent="startDrag($event)" role="separator"><span class="chirpui-split-panel__handle-grip"></span></div>
         <div class="chirpui-split-panel__pane chirpui-split-panel__pane--second" style="padding:1rem"><strong>Right</strong><p style="font-size:0.82rem;color:var(--chirpui-text-muted)">Main content area.</p></div>
     </div>
+</section>
+
+<section class="sc-section" id="full-height-main">
+    <h2>Full-height main</h2>
+    <p class="desc">App shell pages that should own the viewport (chat, dashboards) use <code>chirpui-app-shell__main--fill</code> on <code>&lt;main&gt;</code>, a <code>chirpui-page-fill</code> root inside <code>#page-content</code>, and <code>chat_layout(..., fill=true)</code> when using the chat layout. Scroll stays on inner regions (e.g. <code>chirpui-chat-layout__messages-body</code>), not on <code>#main</code>. See <code>docs/LAYOUT-VERTICAL.md</code> in the chirp-ui repo.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Live structure (fixed height simulates the viewport)</div>
+    <div class="sc-fill-demo">
+        <main class="chirpui-app-shell__main chirpui-app-shell__main--fill">
+            <div id="page-content">
+                <div class="chirpui-page-fill">
+                    <div class="chirpui-chat-layout chirpui-chat-layout--fill">
+                        <div class="chirpui-chat-layout__main">
+                            <div class="chirpui-chat-layout__messages">
+                                <div class="chirpui-chat-layout__messages-body">
+                                    <div class="sc-fill-demo__thread">
+                                        <p>Thread region scrolls independently; the composer stays pinned below.</p>
+                                        <p>This mirrors the flex chain: <code>main--fill</code> → <code>#page-content</code> → <code>chirpui-page-fill</code> → <code>chirpui-chat-layout--fill</code>.</p>
+                                        <p>For SSE or HTMX roots inside the messages column, add <code>chirpui-chat-layout__messages-body</code> to the streaming wrapper.</p>
+                                        <p>Line four.</p>
+                                        <p>Line five.</p>
+                                        <p>Line six.</p>
+                                        <p>Line seven.</p>
+                                        <p>Line eight.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chirpui-chat-layout__input">
+                                <span style="font-size:0.75rem;color:var(--chirpui-text-muted)">Composer strip (does not scroll with the thread)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="sc-spacer"></div>
+    <div class="sc-label">Kida (excerpt)</div>
+    <pre style="margin:0;padding:1rem;border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius-lg);background:var(--chirpui-bg-subtle);font-size:0.72rem;overflow-x:auto;line-height:1.4"><code>{% block main_shell_class %}chirpui-app-shell__main--fill{% end %}
+
+{% block content %}
+&lt;div class="chirpui-page-fill"&gt;
+  {% from "chirpui/chat_layout.html" import chat_layout %}
+  {% call chat_layout(fill=true, show_activity=false) %}
+  {% slot messages %}
+    &lt;div class="chirpui-chat-layout__messages-body"&gt;…&lt;/div&gt;
+  {% end %}
+  {% slot input %}…{% end %}
+  {% end %}
+&lt;/div&gt;
+{% end %}</code></pre>
 </section>
 
 <section class="sc-section" id="divider">
@@ -1127,7 +1256,7 @@ register_filters(app)</code></pre>
     <hr class="sc-divider">
     <div class="sc-stack" style="max-width:400px">
         <div class="chirpui-message-bubble chirpui-message-bubble--received"><div class="chirpui-message-bubble__content">Hey! How's the new UI coming along?</div><span class="chirpui-message-bubble__meta">Alice · 2:30 PM</span></div>
-        <div class="chirpui-message-bubble chirpui-message-bubble--sent"><div class="chirpui-message-bubble__content">Just finished the showcase — 135 components! 🎉</div><span class="chirpui-message-bubble__meta">You · 2:31 PM</span></div>
+        <div class="chirpui-message-bubble chirpui-message-bubble--sent"><div class="chirpui-message-bubble__content">Static showcase updated — see the component app for interactive demos. 🎉</div><span class="chirpui-message-bubble__meta">You · 2:31 PM</span></div>
     </div>
 </section>
 
@@ -3698,7 +3827,7 @@ register_filters(app)</code></pre>
 
 <!-- FOOTER -->
 <footer style="text-align:center;padding:3rem 1rem;color:var(--chirpui-text-muted);font-size:0.78rem;border-top:1px solid var(--chirpui-border)">
-    chirp-ui · 145 templates · 265 macros · <code>examples/static-showcase/index.html</code>
+    chirp-ui · 181 template files · ~320 Kida defs · <code>examples/static-showcase/index.html</code> · run <code>python examples/component-showcase/app.py</code> for Chirp + Kida
 </footer>
 
 </div><!-- /sc-main -->

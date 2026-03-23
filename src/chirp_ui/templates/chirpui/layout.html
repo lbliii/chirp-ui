@@ -1,25 +1,6 @@
-{#- chirp-ui: Layout primitives — Tetris-inspired block system
-    Responsive container, grid, stack, and block macros for desktop-to-mobile layouts.
-
-    Usage:
-        {% from "chirpui/layout.html" import container, grid, stack, cluster, block %}
-
-        {% call container() %}
-            {% call grid(cols=2, gap="md") %}
-                {% call block() %}...{% end %}
-                {% call block() %}...{% end %}
-            {% end %}
-        {% end %}
-
-        {% call stack() %}
-            <p>Vertical stack with gap.</p>
-        {% end %}
-
-        {% call cluster(gap="sm") %}
-            <span>Inline</span>
-            <span>wrapping</span>
-            <span>cluster</span>
-        {% end %}
+{#- chirp-ui: Layout primitives — container, grid (flow), frame (structural), stack, cluster, block.
+    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).
+    See docs/LAYOUT-GRIDS-AND-FRAMES.md.
 -#}
 {% from "chirpui/surface.html" import surface %}
 {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
@@ -31,8 +12,25 @@
 </div>
 {% end %}
 
-{% def grid(cols=none, gap=none, cls="") %}
-<div class="chirpui-grid{% if cols == 2 %} chirpui-grid--cols-2{% elif cols == 3 %} chirpui-grid--cols-3{% elif cols == 4 %} chirpui-grid--cols-4{% end %}{% if gap == "sm" %} chirpui-grid--gap-sm{% elif gap == "md" %} chirpui-grid--gap-md{% elif gap == "lg" %} chirpui-grid--gap-lg{% end %}{{ " " ~ cls if cls else "" }}">
+{#- grid(): flow — auto-fit columns; cols=2|3|4 scales --chirpui-grid-min. Fixed tracks: preset + aliases — docs/LAYOUT-PRESETS.md. detail_single only for detail-two | split-1-1.35. items=start|end|center. -#}
+{% def grid(cols=none, gap=none, preset=none, items=none, detail_single=false, cls="") %}
+{% set pn = preset %}
+{% set _bento = pn == "bento-211" or pn == "split-2-1-1" %}
+{% set _thirds = pn == "thirds" or pn == "split-thirds" or pn == "three-equal" %}
+{% set _detail = pn == "detail-two" or pn == "split-1-1.35" %}
+{% set _detail_one_col = pn == "detail-two-single" or pn == "split-1-1.35-single" %}
+{% set _has_preset = _bento or _thirds or _detail or _detail_one_col %}
+{% set _detail_single_on = detail_single or _detail_one_col %}
+<div class="chirpui-grid{% if not _has_preset %}{% if cols == 2 %} chirpui-grid--cols-2{% elif cols == 3 %} chirpui-grid--cols-3{% elif cols == 4 %} chirpui-grid--cols-4{% end %}{% end %}{% if gap == "sm" %} chirpui-grid--gap-sm{% elif gap == "md" %} chirpui-grid--gap-md{% elif gap == "lg" %} chirpui-grid--gap-lg{% end %}{% if _bento %} chirpui-grid--preset-bento-211{% elif _thirds %} chirpui-grid--preset-thirds{% elif _detail or _detail_one_col %} chirpui-grid--preset-detail-two{% if _detail_single_on %} chirpui-grid--detail-two-single{% end %}{% end %}{% if items == "start" %} chirpui-grid--items-start{% elif items == "end" %} chirpui-grid--items-end{% elif items == "center" %} chirpui-grid--items-center{% end %}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}
+
+{#- frame(): structural regions with explicit tracks — two direct children by default.
+    variant= balanced | hero | sidebar-end. Override columns via style="--chirpui-frame-hero-columns: …" on this element or a parent.
+-#}
+{% def frame(variant="balanced", gap=none, cls="") %}
+<div class="chirpui-frame{% if variant == "hero" %} chirpui-frame--hero{% elif variant == "sidebar-end" %} chirpui-frame--sidebar-end{% else %} chirpui-frame--balanced{% end %}{% if gap == "sm" %} chirpui-frame--gap-sm{% elif gap == "md" %} chirpui-frame--gap-md{% elif gap == "lg" %} chirpui-frame--gap-lg{% end %}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
 {% end %}
