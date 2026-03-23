@@ -7,7 +7,7 @@
         {% extends "chirpui/app_shell_layout.html" %}
         {% block brand %}My App{% end %}
         {% block sidebar %}
-          {% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+          {% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section, shell_brand_link %}
           {% call sidebar() %}
             {% call sidebar_section("Main") %}
               {{ sidebar_link("/", "Home") }}
@@ -22,8 +22,8 @@
     Collapsible sidebar (override block with "true"):
         {% block sidebar_collapsible %}{% end %}
 
-    Custom brand link (override brand_link for non-/ href):
-        {% block brand_link %}<a href="/projects" class="chirpui-app-shell__brand">My App</a>{% end %}
+    Custom brand (override brand_link for non-/ href or custom markup):
+        {% block brand_link %}{% call shell_brand_link(href="/projects") %}My App{% end %}{% end %}
 
     Alpine: app_shell_layout includes Alpine.js. Use AppConfig(alpine=False) (default)
     when extending this layout to avoid duplicate Alpine injection.
@@ -54,7 +54,7 @@ document.addEventListener("alpine:init",function(){
 {% end %}
 
 {% block shell %}
-{% from "chirpui/sidebar.html" import sidebar, sidebar_toggle %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_toggle, shell_brand_link %}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
 {% from "chirpui/toast.html" import toast_container %}
 {% set _sidebar_collapsible = "false" %}
@@ -66,7 +66,11 @@ document.addEventListener("alpine:init",function(){
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsible && collapsed }">
   <header class="chirpui-app-shell__topbar">
     {% if _collapsible %}<div class="chirpui-app-shell__topbar-start">{{ sidebar_toggle() }}</div>{% endif %}
-    {% block brand_link %}<a href="/" class="chirpui-app-shell__brand">{% block brand %}{% end %}</a>{% end %}
+    {% block brand_link %}
+    {% call shell_brand_link() %}
+      {% block brand %}{% end %}
+    {% end %}
+    {% end %}
     <div class="chirpui-app-shell__topbar-center">{% block topbar_center %}{% end %}</div>
     <div class="chirpui-app-shell__topbar-end">
       <div id="{{ _shell_actions_target }}" class="chirpui-app-shell__shell-actions">

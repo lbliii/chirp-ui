@@ -14,7 +14,8 @@
     Named slots: header, footer, default (nav content).
 
     Usage:
-        from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section
+        from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section,
+        shell_brand_link, shell_boosted_link
 
         call sidebar()
             {% slot header %}<div class="chirpui-sidebar__brand">My App</div>{% end %}
@@ -63,6 +64,30 @@
    hx-swap="innerHTML"
    hx-select="#page-content"
    {% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span></a>
+{% end %}
+
+{# Topbar brand — same HTMX contract as sidebar_link (full-page GET + select #page-content). #}
+{% def shell_brand_link(href="/", cls="", boost=true) %}
+<a href="{{ href }}" class="chirpui-app-shell__brand{{ " " ~ cls if cls else "" }}"
+   {% if boost %}
+   hx-boost="true"
+   hx-target="#main"
+   hx-swap="innerHTML"
+   hx-select="#page-content"
+   {% end %}
+>{% slot %}</a>
+{% end %}
+
+{# In-page boosted nav (buttons, evolution links) — same contract; slot for HTML labels. #}
+{% def shell_boosted_link(href, cls="", boost=true) %}
+<a href="{{ href }}"{% if cls %} class="{{ cls }}"{% end %}
+   {% if boost %}
+   hx-boost="true"
+   hx-target="#main"
+   hx-swap="innerHTML"
+   hx-select="#page-content"
+   {% end %}
+>{% slot %}</a>
 {% end %}
 
 {% def sidebar_toggle(cls="") %}

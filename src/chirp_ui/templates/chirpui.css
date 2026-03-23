@@ -9005,6 +9005,13 @@ body:has(> .chirpui-app-shell) {
     gap: var(--chirpui-spacing-xs);
 }
 
+.chirpui-shell-action-form {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    margin: 0;
+}
+
 /* Keep breadcrumbs single-line in topbar to prevent topbar height growth */
 .chirpui-app-shell__topbar-center .chirpui-breadcrumbs__list {
     flex-wrap: nowrap;

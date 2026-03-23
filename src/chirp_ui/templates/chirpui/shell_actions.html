@@ -41,9 +41,9 @@
   {% end %}
 </form>
 {% elif action.href %}
-{{ btn(action.label, variant=action.variant, size=action.size, href=action.href, icon=action.icon, disabled=action.disabled, data_action=action.action) }}
+{{ btn(action.label, variant=action.variant, size=action.size, href=action.href, icon=action.icon, disabled=action.disabled, data_action=action.action, attrs=action.attrs | default("")) }}
 {% else %}
-{{ btn(action.label, variant=action.variant, size=action.size, type="button", icon=action.icon, disabled=action.disabled, data_action=action.action) }}
+{{ btn(action.label, variant=action.variant, size=action.size, type="button", icon=action.icon, disabled=action.disabled, data_action=action.action, attrs=action.attrs | default("")) }}
 {% end %}
 {% end %}
 

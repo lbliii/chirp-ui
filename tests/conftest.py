@@ -172,4 +172,8 @@ def env() -> Environment:
     )
     e.add_global("island_attrs", _island_attrs_stub)
     e.add_global("primitive_attrs", _primitive_attrs_stub)
+    e.add_global(
+        "csrf_field",
+        lambda: Markup('<input type="hidden" name="_csrf_token" value="test-csrf">'),
+    )
     return e

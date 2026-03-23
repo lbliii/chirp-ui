@@ -37,6 +37,16 @@ class ShellActionStub:
     size: str = "sm"
     disabled: bool = False
     menu_items: tuple[ShellMenuItemStub, ...] = ()
+    form_action: str | None = None
+    form_method: str = "post"
+    hidden_fields: tuple[tuple[str, str], ...] = ()
+    include_csrf: bool = True
+    hx_post: str | None = None
+    hx_target: str | None = None
+    hx_swap: str | None = None
+    hx_disinherit: str | None = None
+    submit_surface: str = "btn"
+    attrs: str = ""
 
     def as_menu_item(self) -> ShellMenuItemStub:
         return ShellMenuItemStub(
@@ -1951,6 +1961,14 @@ class TestForms:
         assert "#results" in html
         assert "hx-trigger" in html
 
+    def test_search_field_with_htmx_select(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_field %}'
+            '{{ search_field("q", search_url="/search", search_target="#main", search_hx_select="#page-content") }}'
+        ).render()
+        assert 'hx-select="#page-content"' in html
+        assert 'hx-target="#main"' in html
+
     def test_form_actions(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/forms.html" import form_actions %}'
@@ -2194,6 +2212,38 @@ class TestAppShell:
         assert 'href="/new"' in html
         assert "chirpui-dropdown" in html
 
+    def test_shell_actions_renders_form_kind(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/shell_actions.html" import shell_actions_bar %}'
+            "{{ shell_actions_bar(shell_actions) }}"
+        ).render(
+            shell_actions=ShellActionsStub(
+                primary=ShellActionZoneStub(
+                    items=(
+                        ShellActionStub(
+                            id="save",
+                            label="Save",
+                            kind="form",
+                            variant="primary",
+                            form_action="/items",
+                            hidden_fields=(("id", "1"),),
+                            hx_post="/items",
+                            hx_target="#toast",
+                            submit_surface="shimmer",
+                        ),
+                    ),
+                ),
+            )
+        )
+        assert "chirpui-shell-action-form" in html
+        assert 'action="/items"' in html
+        assert 'hx-post="/items"' in html
+        assert 'hx-target="#toast"' in html
+        assert 'name="id"' in html
+        assert 'value="1"' in html
+        assert "chirpui-shimmer-btn" in html
+        assert "_csrf_token" in html
+
     def test_app_shell_brand_slot(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/app_shell.html" import app_shell %}'
@@ -2380,6 +2430,26 @@ class TestSidebar:
         assert "chirpui-sidebar__nav" in html
         assert "chirpui-sidebar__link--active" in html
         assert "Dashboard" in html
+        assert 'hx-select="#page-content"' in html
+
+    def test_shell_brand_link_matches_sidebar_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import shell_brand_link %}'
+            '{% call shell_brand_link() %}Brand{% end %}'
+        ).render()
+        assert "chirpui-app-shell__brand" in html
+        assert 'hx-target="#main"' in html
+        assert 'hx-swap="innerHTML"' in html
+        assert 'hx-select="#page-content"' in html
+        assert "Brand" in html
+
+    def test_shell_boosted_link_matches_sidebar_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import shell_boosted_link %}'
+            '{% call shell_boosted_link(href="/x", cls="chirpui-btn chirpui-btn--sm") %}Go{% end %}'
+        ).render()
+        assert 'class="chirpui-btn chirpui-btn--sm"' in html
+        assert 'hx-target="#main"' in html
         assert 'hx-select="#page-content"' in html
 
     def test_sidebar_section(self, env: Environment) -> None:
