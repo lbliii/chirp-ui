@@ -5,16 +5,30 @@
         from "chirpui/badge.html" import badge
 
         badge("Active", variant="success")
-        badge("Pending", variant="warning", icon="◆")
-        badge("Error", variant="error", icon="⚠")
-        badge("Default", variant="primary", icon="✦")
+        badge("Grass", color="#78c850")
+        badge("Fire", color="fire", fill="solid")
+        badge("Tag", href="/tags/x")
 -#}
 
-{% def badge(text, variant="primary", icon=none, cls="") %}
-<span class="{{ "badge" | bem(variant=variant, cls=cls) }}">
+{% def badge(text, variant="primary", icon=none, cls="", color=none, fill="subtle", href=none) %}
+{% set fill = fill | validate_variant(("subtle", "solid"), "subtle") %}
+{% set resolved = color | resolve_color %}
+{% set use_variant = ("custom-solid" if (resolved and fill == "solid") else ("custom" if resolved else (variant | validate_variant_block("badge", "primary")))) %}
+{% set style_attr = ("--chirpui-badge-color: " ~ resolved ~ ("; --chirpui-badge-text: " ~ (resolved | contrast_text) if fill == "solid" else "")) if resolved else "" %}
+{% set badge_class = "badge" | bem(variant=use_variant, cls=cls) %}
+{% if href %}
+<a class="{{ badge_class }}" href="{{ href }}"{% if style_attr %} style="{{ style_attr }}"{% end %}>
+    {% if icon %}
+        <span class="chirpui-badge__icon">{{ icon | icon }}</span>
+    {% end %}
+    <span class="chirpui-badge__text">{{ text }}</span>
+</a>
+{% else %}
+<span class="{{ badge_class }}"{% if style_attr %} style="{{ style_attr }}"{% end %}>
     {% if icon %}
         <span class="chirpui-badge__icon">{{ icon | icon }}</span>
     {% end %}
     <span class="chirpui-badge__text">{{ text }}</span>
 </span>
+{% end %}
 {% end %}

@@ -1077,6 +1077,12 @@ class TestCard:
         ).render()
         assert "chirpui-card custom" in html
 
+    def test_card_hoverable(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}{% call card(hoverable=true) %}Body{% end %}'
+        ).render()
+        assert "chirpui-card--hoverable" in html
+
     def test_card_with_icon(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/card.html" import card %}'
@@ -1497,6 +1503,40 @@ class TestPagination:
         ).render()
         assert 'hx-target="#list"' in html
         assert "hx-get" in html
+
+    def test_pagination_hx_select(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/pagination.html" import pagination %}'
+            "{{ pagination(current=2, total=5,"
+            ' url_pattern="/p?page={page}",'
+            ' hx_target="#main", hx_select="#main") }}'
+        ).render()
+        assert 'hx-select="#main"' in html
+
+
+class TestFilterBar:
+    def test_filter_group_and_chip(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_chips.html" import filter_group, filter_chip %}'
+            '{% call filter_group(name="Type") %}'
+            '{{ filter_chip("All", href="/", active=true) }}'
+            '{{ filter_chip("Grass", color="#78c850", href="/g") }}'
+            "{% end %}"
+        ).render()
+        assert 'role="radiogroup"' in html
+        assert "chirpui-filter-group" in html
+        assert "chirpui-filter-chip" in html
+        assert "chirpui-badge--custom" in html
+
+
+class TestStatusIndicator:
+    def test_status_custom_color(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/status.html" import status_indicator %}'
+            '{{ status_indicator("Live", color="#78c850") }}'
+        ).render()
+        assert "chirpui-status-indicator--custom" in html
+        assert "--chirpui-status-color: #78c850" in html
 
 
 # ---------------------------------------------------------------------------
@@ -2875,6 +2915,20 @@ class TestBadge:
         assert "chirpui-badge__icon" in html
         assert "◆" in html
 
+    def test_badge_custom_color(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/badge.html" import badge %}{{ badge("Grass", color="#78c850") }}'
+        ).render()
+        assert "chirpui-badge--custom" in html
+        assert "--chirpui-badge-color: #78c850" in html
+
+    def test_badge_href(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/badge.html" import badge %}{{ badge("Tag", href="/tags/x") }}'
+        ).render()
+        assert "<a " in html
+        assert 'href="/tags/x"' in html
+
 
 class TestRevealOnScroll:
     def test_reveal_on_scroll_renders_intersect_directives(self, env: Environment) -> None:
@@ -2952,6 +3006,14 @@ class TestProgress:
             '{{ progress_bar(value=50, variant="success") }}'
         ).render()
         assert "chirpui-progress-bar--success" in html
+
+    def test_progress_bar_custom_color(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/progress.html" import progress_bar %}'
+            '{{ progress_bar(value=40, max=100, color="#78c850") }}'
+        ).render()
+        assert "chirpui-progress-bar--custom" in html
+        assert "--chirpui-progress-color: #78c850" in html
 
 
 class TestMediaObject:
@@ -3523,7 +3585,7 @@ class TestBorderBeam:
     def test_attrs_on_root(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/border_beam.html" import border_beam %}'
-            '{% call border_beam(attrs=\'data-testid="bb"\') %}Z{% end %}'
+            "{% call border_beam(attrs='data-testid=\"bb\"') %}Z{% end %}"
         ).render()
         assert 'data-testid="bb"' in html
 
@@ -3653,7 +3715,7 @@ class TestGlowCard:
     def test_attrs_on_root(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/glow_card.html" import glow_card %}'
-            '{% call glow_card(attrs=\'data-testid="gc"\') %}F{% end %}'
+            "{% call glow_card(attrs='data-testid=\"gc\"') %}F{% end %}"
         ).render()
         assert 'data-testid="gc"' in html
         assert "@mousemove=" in html
@@ -3671,7 +3733,7 @@ class TestSpotlightCard:
     def test_attrs_on_root(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/spotlight_card.html" import spotlight_card %}'
-            '{% call spotlight_card(attrs=\'data-testid="sc"\') %}C{% end %}'
+            "{% call spotlight_card(attrs='data-testid=\"sc\"') %}C{% end %}"
         ).render()
         assert 'data-testid="sc"' in html
 
@@ -4113,7 +4175,7 @@ class TestGrain:
     def test_attrs_on_root(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/grain.html" import grain %}'
-            '{% call grain(attrs=\'data-testid="gr"\') %}P{% end %}'
+            "{% call grain(attrs='data-testid=\"gr\"') %}P{% end %}"
         ).render()
         assert 'data-testid="gr"' in html
 

@@ -7,19 +7,25 @@ Everything not in __all__ is internal and may change without notice.
 """
 
 import logging
+import re
 from pathlib import PurePath
 
 __all__ = [
     "bem",
+    "contrast_text",
     "field_errors",
     "html_attrs",
     "icon",
+    "register_colors",
+    "resolve_color",
+    "sanitize_color",
     "validate_size",
     "validate_variant",
     "validate_variant_block",
     "value_type",
 ]
 from collections.abc import Callable, Mapping
+from contextvars import ContextVar
 from html import escape
 from json import dumps
 from typing import Any, Protocol, cast
@@ -29,6 +35,100 @@ from kida.template import Markup
 from chirp_ui.icons import ICON_REGISTRY
 from chirp_ui.icons import icon as _resolve_icon
 from chirp_ui.validation import SIZE_REGISTRY, VARIANT_REGISTRY, _is_strict
+
+# Safe CSS color strings for inline styles (hex, rgb/hsl/oklch family).
+_COLOR_RE = re.compile(
+    r"^#[0-9a-fA-F]{3,8}$|^(?:rgb|hsl|oklch)a?\([\d.,% /]+\)$",
+)
+
+_chirpui_named_colors: ContextVar[dict[str, str] | None] = ContextVar(
+    "chirpui_named_colors",
+    default=None,
+)
+
+
+def _named_color_map() -> dict[str, str]:
+    d = _chirpui_named_colors.get()
+    return dict(d) if d else {}
+
+
+def register_colors(mapping: Mapping[str, str]) -> None:
+    """Register semantic color names (e.g. Pokémon types) for :func:`resolve_color`."""
+    base = _named_color_map()
+    for k, v in mapping.items():
+        base[str(k).strip()] = str(v).strip()
+    _chirpui_named_colors.set(base)
+
+
+def sanitize_color(value: object) -> str | None:
+    """Return the color if it matches a safe CSS color pattern, else None."""
+    if not isinstance(value, str):
+        return None
+    stripped = value.strip()
+    if not stripped:
+        return None
+    return stripped if _COLOR_RE.match(stripped) else None
+
+
+def _hex_to_rgb_channels(hex_color: str) -> tuple[float, float, float] | None:
+    """Parse #RGB / #RRGGBB / #RRGGBBAA into sRGB channels in 0..1."""
+    h = hex_color.strip()
+    if not h.startswith("#"):
+        return None
+    body = h[1:]
+    if len(body) == 3:
+        r = int(body[0] + body[0], 16) / 255.0
+        g = int(body[1] + body[1], 16) / 255.0
+        b = int(body[2] + body[2], 16) / 255.0
+        return (r, g, b)
+    if len(body) == 6:
+        r = int(body[0:2], 16) / 255.0
+        g = int(body[2:4], 16) / 255.0
+        b = int(body[4:6], 16) / 255.0
+        return (r, g, b)
+    if len(body) == 8:
+        r = int(body[0:2], 16) / 255.0
+        g = int(body[2:4], 16) / 255.0
+        b = int(body[4:6], 16) / 255.0
+        return (r, g, b)
+    return None
+
+
+def contrast_text(css_color: str) -> str:
+    """Return ``white`` or ``#1a1a1a`` for readable text on solid ``css_color`` (hex)."""
+    safe = sanitize_color(css_color)
+    if safe is None:
+        return "white"
+    ch = _hex_to_rgb_channels(safe)
+    if ch is None:
+        return "white"
+    r_lin, g_lin, b_lin = (
+        ch[0] / 12.92 if ch[0] <= 0.04045 else ((ch[0] + 0.055) / 1.055) ** 2.4,
+        ch[1] / 12.92 if ch[1] <= 0.04045 else ((ch[1] + 0.055) / 1.055) ** 2.4,
+        ch[2] / 12.92 if ch[2] <= 0.04045 else ((ch[2] + 0.055) / 1.055) ** 2.4,
+    )
+    luminance = 0.2126 * r_lin + 0.7152 * g_lin + 0.0722 * b_lin
+    return "#1a1a1a" if luminance > 0.179 else "white"
+
+
+def resolve_color(value: object) -> str | None:
+    """Resolve a named color from the registry, then validate as a CSS color string."""
+    if not isinstance(value, str):
+        return None
+    key = value.strip()
+    if not key:
+        return None
+    reg = _named_color_map()
+    resolved = reg.get(key)
+    if resolved is None:
+        lowered = key.lower()
+        for name, hexv in reg.items():
+            if name.lower() == lowered:
+                resolved = hexv
+                break
+    if resolved is not None:
+        return sanitize_color(resolved)
+    return sanitize_color(key)
 
 
 class TemplateFilterApp(Protocol):
@@ -209,6 +309,9 @@ def register_filters(app: TemplateFilterApp) -> None:
     app.template_filter("validate_variant_block")(validate_variant_block)
     app.template_filter("validate_size")(validate_size)
     app.template_filter("value_type")(value_type)
+    app.template_filter("sanitize_color")(sanitize_color)
+    app.template_filter("contrast_text")(contrast_text)
+    app.template_filter("resolve_color")(resolve_color)
     if hasattr(app, "template_global"):
         from chirp_ui.route_tabs import tab_is_active
 

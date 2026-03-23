@@ -4061,6 +4061,11 @@ a.chirpui-mention:focus-visible {
     background: var(--chirpui-gradient-subtle);
 }
 
+.chirpui-card--hoverable:not(.chirpui-card--link) {
+    cursor: pointer;
+    transition: transform var(--chirpui-transition), box-shadow var(--chirpui-transition);
+}
+
 .chirpui-card:not(.chirpui-card--link):hover {
     border-color: var(--chirpui-card-hover-border);
     box-shadow: var(--chirpui-elevation-card-hover);
@@ -4069,6 +4074,11 @@ a.chirpui-mention:focus-visible {
 @media (prefers-reduced-motion: no-preference) {
     .chirpui-card:not(.chirpui-card--link):hover {
         transform: translateY(-2px);
+    }
+
+    .chirpui-card--hoverable:not(.chirpui-card--link):hover {
+        transform: translateY(-2px);
+        box-shadow: var(--chirpui-shadow-md);
     }
 }
 
@@ -8156,6 +8166,35 @@ a.chirpui-badge--info:active {
     background: color-mix(in srgb, var(--chirpui-info) 30%, var(--chirpui-alert-info-bg));
 }
 
+/* Custom color (scoped --chirpui-badge-color) */
+.chirpui-badge--custom {
+    --_bg-mix: light-dark(12%, 18%);
+    background: color-mix(in srgb, var(--chirpui-badge-color) var(--_bg-mix), transparent);
+    color: var(--chirpui-badge-color);
+    border-color: color-mix(in srgb, var(--chirpui-badge-color) 40%, transparent);
+}
+
+.chirpui-badge--custom-solid {
+    background: var(--chirpui-badge-color);
+    color: var(--chirpui-badge-text, white);
+    border-color: var(--chirpui-badge-color);
+}
+
+a.chirpui-badge--custom:hover {
+    background: color-mix(in srgb, var(--chirpui-badge-color) light-dark(18%, 24%), transparent);
+}
+
+a.chirpui-badge--custom-solid:hover {
+    filter: brightness(1.05);
+}
+
+.chirpui-filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
 /* ==========================================================================
    Spinner
    ========================================================================== */
@@ -8641,6 +8680,10 @@ a.chirpui-badge--info:active {
     background: var(--chirpui-error);
 }
 
+.chirpui-progress-bar--custom .chirpui-progress-bar__fill {
+    background: var(--chirpui-progress-color);
+}
+
 .chirpui-progress-bar__label {
     display: block;
     margin-top: var(--chirpui-spacing-xs);
@@ -8843,6 +8886,16 @@ a.chirpui-badge--info:active {
 .chirpui-status-indicator--primary {
     background: var(--chirpui-primary-muted);
     color: var(--chirpui-primary);
+}
+
+.chirpui-status-indicator--custom {
+    --_bg-mix: light-dark(14%, 20%);
+    background: color-mix(in srgb, var(--chirpui-status-color) var(--_bg-mix), transparent);
+    color: var(--chirpui-status-color);
+}
+
+.chirpui-status-indicator--custom .chirpui-status-indicator__dot {
+    background: var(--chirpui-status-color);
 }
 
 /* Pulsing animation */

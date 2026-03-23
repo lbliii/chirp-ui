@@ -1,0 +1,37 @@
+{#- chirp-ui: Filter chips — radiogroup + pill chips (named colors / HTMX)
+
+    Usage:
+        from "chirpui/filter_chips.html" import filter_group, filter_chip
+
+        {% call filter_group(name="Type") %}
+            {{ filter_chip("All", href="/", active=true) }}
+            {{ filter_chip("Grass", color="#78c850", href="/g") }}
+        {% end %}
+-#}
+
+{% def filter_group(name, param="type", value="", cls="") %}
+<div role="radiogroup" class="chirpui-filter-group{{ " " ~ cls if cls else "" }}" aria-label="{{ name }}">
+{% slot %}
+</div>
+{% end %}
+
+{% def filter_chip(label, value="", color=none, active=false, href=none, cls="", hx_target=none, hx_push_url=false, hx_swap="innerHTML", hx_select=none) %}
+{% set resolved = color | resolve_color %}
+{% set badge_variant = ("custom-solid" if (resolved and active) else ("custom" if resolved else ("primary" if active else "muted"))) %}
+{% set style_attr = ("--chirpui-badge-color: " ~ resolved ~ ("; --chirpui-badge-text: " ~ (resolved | contrast_text) if active else "")) if resolved else "" %}
+{% set chip_cls = ("chirpui-filter-chip" ~ (" chirpui-filter-chip--active" if active else "") ~ (" " ~ cls if cls else "")).strip() %}
+{% set badge_class = "badge" | bem(variant=badge_variant, cls=chip_cls) %}
+{% if href %}
+<a class="{{ badge_class }}" href="{{ href }}"{% if style_attr %} style="{{ style_attr }}"{% end %}
+   {% if hx_target %}
+       hx-boost="false"
+       hx-get="{{ href }}"
+       hx-target="{{ hx_target }}"
+       hx-swap="{{ hx_swap }}"
+       {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
+       {% if hx_push_url %}hx-push-url="true"{% end %}
+   {% end %}><span class="chirpui-badge__text">{{ label }}</span></a>
+{% else %}
+<span class="{{ badge_class }}"{% if style_attr %} style="{{ style_attr }}"{% end %}><span class="chirpui-badge__text">{{ label }}</span></span>
+{% end %}
+{% end %}
