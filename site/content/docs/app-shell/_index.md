@@ -11,7 +11,7 @@ category: app-shell
 
 # App Shell
 
-**Vocabulary:** [UI layers & terms](./ui-layers/) — app shell, page chrome, surface chrome, shell regions, and the built-in HTMX shell-coherence behavior.
+**Vocabulary:** [UI layers & terms](/docs/app-shell/ui-layers/) — app shell, page chrome, surface chrome, shell regions, and the built-in HTMX shell-coherence behavior.
 
 **Quick start:** Extend `chirpui/app_shell_layout.html` and fill the blocks. No manual HTML boilerplate.
 

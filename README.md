@@ -351,6 +351,7 @@ pytest
 | Type check | `uv run ty check src/chirp_ui/` or `poe ty` |
 | Lint | `uv run ruff check .` or `poe lint` |
 | Full CI | `poe ci` |
+| Docs site + showcase | `uv sync --group docs` then `uv run poe docs-build-all` (writes `site/public/`, not tracked in git; GitHub Pages builds in CI) |
 
 ---
 
@@ -363,7 +364,7 @@ A structured reactive stack written in pure Python for 3.14t free-threading. Chi
 | **ᓚᘏᗢ** | [Bengal](https://github.com/lbliii/bengal) | Static site generator | [Docs](https://lbliii.github.io/bengal/) |
 | **∿∿** | [Purr](https://github.com/lbliii/purr) | Content runtime | — |
 | **⌁⌁** | [Chirp](https://github.com/lbliii/chirp) | Web framework | [Docs](https://lbliii.github.io/chirp/) |
-| **ʘ** | **chirp-ui** | Optional companion UI layer ← You are here | — |
+| **ʘ** | **chirp-ui** | Optional companion UI layer ← You are here | [Docs](https://lbliii.github.io/chirp-ui/) |
 | **=^..^=** | [Pounce](https://github.com/lbliii/pounce) | ASGI server | [Docs](https://lbliii.github.io/pounce/) |
 | **)彡** | [Kida](https://github.com/lbliii/kida) | Template engine | [Docs](https://lbliii.github.io/kida/) |
 | **ฅᨐฅ** | [Patitas](https://github.com/lbliii/patitas) | Markdown parser | [Docs](https://lbliii.github.io/patitas/) |

@@ -15,6 +15,9 @@ cta_buttons:
   - text: Get Started
     url: /docs/get-started/
     style: primary
+  - text: Component showcase
+    url: /showcase/
+    style: secondary
   - text: Components
     url: /docs/components/
     style: secondary

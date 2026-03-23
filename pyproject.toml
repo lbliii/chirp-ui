@@ -148,10 +148,12 @@ exclude_lines = [
 
 [dependency-groups]
 docs = [
-    "bengal>=0.2.0",
+    "bengal>=0.2.6",
     "lunr>=0.7.0",
 ]
 dev = [
+    # Task runner (poe tasks in [tool.poe.tasks])
+    "poethepoet>=0.32.0",
     # Testing
     "pytest>=9.0.2",
     "pytest-cov>=6.0.0",
@@ -191,6 +193,8 @@ css-transition-check = { cmd = "pytest tests/test_transition_tokens.py -q", help
 # Documentation
 docs-serve = { cmd = "uv run bengal site serve site", help = "Serve docs site locally" }
 docs-build = { cmd = "uv run bengal site build site", help = "Build docs site" }
+docs-assemble-showcase = { cmd = "bash scripts/assemble-static-showcase.sh site/public/showcase", help = "Copy static showcase into site/public/showcase (after docs-build)" }
+docs-build-all = { sequence = ["docs-build", "docs-assemble-showcase"], help = "Build Bengal site and assemble static component showcase" }
 
 # CI Pipeline
 ci = { sequence = [

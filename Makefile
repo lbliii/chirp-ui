@@ -4,7 +4,7 @@
 PYTHON_VERSION ?= 3.14t
 VENV_DIR ?= .venv
 
-.PHONY: all help setup install test test-cov lint lint-fix format ty clean shell build publish release gh-release showcase
+.PHONY: all help setup install test test-cov lint lint-fix format ty clean shell build publish release gh-release showcase showcase-public
 
 all: help
 
@@ -26,7 +26,8 @@ help:
 	@echo "  make publish    - Publish to PyPI (uses .env for token)"
 	@echo "  make release    - Build and publish in one step"
 	@echo "  make gh-release - Create GitHub release (triggers PyPI via workflow)"
-	@echo "  make showcase   - Assemble static showcase into _site/ for preview"
+	@echo "  make showcase         - Assemble static showcase into _site/ for preview"
+	@echo "  make showcase-public  - Copy showcase into site/public/showcase/ (after bengal build)"
 	@echo "  make clean      - Remove venv, build artifacts, and caches"
 	@echo "  make shell      - Start a shell with the environment activated"
 
@@ -104,15 +105,12 @@ gh-release:
 # =============================================================================
 
 showcase:
-	@echo "Assembling static showcase into _site/..."
-	@mkdir -p _site/css
-	@cp src/chirp_ui/templates/chirpui.css _site/css/
-	@cp src/chirp_ui/templates/chirpui-transitions.css _site/css/
-	@sed \
-		-e 's|../../src/chirp_ui/templates/chirpui.css|css/chirpui.css|' \
-		-e 's|../../src/chirp_ui/templates/chirpui-transitions.css|css/chirpui-transitions.css|' \
-		examples/static-showcase/index.html > _site/index.html
+	@bash scripts/assemble-static-showcase.sh "$(CURDIR)/_site"
 	@echo "Open _site/index.html in a browser to preview"
+
+# Run after: uv run bengal site build site
+showcase-public:
+	@bash scripts/assemble-static-showcase.sh "$(CURDIR)/site/public/showcase"
 
 # =============================================================================
 # Cleanup
