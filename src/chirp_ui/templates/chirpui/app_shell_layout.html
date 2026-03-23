@@ -27,6 +27,10 @@
 
     Alpine: app_shell_layout includes Alpine.js. Use AppConfig(alpine=False) (default)
     when extending this layout to avoid duplicate Alpine injection.
+
+    Full-height main (chat, maps): override {% block main_shell_class %} with
+    chirpui-app-shell__main--fill so #page-content receives flex:1 and inner
+    panels handle scroll. See docs/LAYOUT-VERTICAL.md.
 -#}
 {# target: body #}
 {% extends "chirp/layouts/shell.html" %}
@@ -82,7 +86,7 @@ document.addEventListener("alpine:init",function(){
     </div>
   </header>
   <aside class="chirpui-app-shell__sidebar">{% block sidebar %}{% end %}</aside>
-  <main id="main" class="chirpui-app-shell__main" tabindex="-1"
+  <main id="main" class="chirpui-app-shell__main{% block main_shell_class %}{% end %}" tabindex="-1"
         hx-boost="true" hx-target="#main" hx-swap="innerHTML" hx-select="#page-content">
     <div id="page-content">
       {% block content %}{% end %}

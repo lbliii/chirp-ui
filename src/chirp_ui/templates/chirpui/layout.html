@@ -12,8 +12,11 @@
 </div>
 {% end %}
 
-{% def grid(cols=none, gap=none, cls="") %}
-<div class="chirpui-grid{% if cols == 2 %} chirpui-grid--cols-2{% elif cols == 3 %} chirpui-grid--cols-3{% elif cols == 4 %} chirpui-grid--cols-4{% end %}{% if gap == "sm" %} chirpui-grid--gap-sm{% elif gap == "md" %} chirpui-grid--gap-md{% elif gap == "lg" %} chirpui-grid--gap-lg{% end %}{{ " " ~ cls if cls else "" }}">
+{#- grid preset: fixed column tracks (minmax) for bento-style layouts. When set, cols= is ignored — use block(span=) for cell width. Presets: bento-211 (2fr 1fr 1fr), thirds (three equal). See docs/LAYOUT-OVERFLOW.md. -#}
+{% def grid(cols=none, gap=none, preset=none, cls="") %}
+{% set _preset = preset %}
+{% set _has_preset = _preset == "bento-211" or _preset == "thirds" %}
+<div class="chirpui-grid{% if not _has_preset %}{% if cols == 2 %} chirpui-grid--cols-2{% elif cols == 3 %} chirpui-grid--cols-3{% elif cols == 4 %} chirpui-grid--cols-4{% end %}{% end %}{% if gap == "sm" %} chirpui-grid--gap-sm{% elif gap == "md" %} chirpui-grid--gap-md{% elif gap == "lg" %} chirpui-grid--gap-lg{% end %}{% if _preset == "bento-211" %} chirpui-grid--preset-bento-211{% elif _preset == "thirds" %} chirpui-grid--preset-thirds{% end %}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
 {% end %}

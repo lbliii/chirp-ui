@@ -25,7 +25,8 @@
       {% if action.hx_post %}hx-post="{{ action.hx_post }}"{% end %}
       {% if action.hx_target %}hx-target="{{ action.hx_target }}"{% end %}
       {% if action.hx_swap %}hx-swap="{{ action.hx_swap }}"{% end %}
-      {% if action.hx_disinherit %}hx-disinherit="{{ action.hx_disinherit }}"{% end %}>
+      {% if action.hx_disinherit %}hx-disinherit="{{ action.hx_disinherit }}"{% end %}
+      {{ action.attrs | html_attrs }}>
   {% if action.include_csrf %}
   {{ csrf_field() }}
   {% end %}

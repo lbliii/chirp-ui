@@ -39,6 +39,11 @@
         .sc-theme button{padding:0.2rem 0.5rem;font-size:0.72rem;border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius);background:var(--chirpui-surface);color:var(--chirpui-text-muted);cursor:pointer}
         .sc-theme button.active{background:var(--chirpui-accent);color:var(--chirpui-bg);border-color:var(--chirpui-accent)}
         @media(max-width:768px){.sc-sidebar{display:none}.sc-grid-3{grid-template-columns:1fr}}
+        /* Full-height main demo (mirrors app shell + chat fill; fixed height stand-in for viewport) */
+        .sc-fill-demo{display:flex;flex-direction:column;height:280px;border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius-lg);overflow:hidden;background:var(--chirpui-surface)}
+        .sc-fill-demo .chirpui-app-shell__main--fill{flex:1;min-height:0}
+        .sc-fill-demo__thread{flex:1;min-height:0;overflow-y:auto;padding:0.5rem;font-size:0.78rem;line-height:1.45;color:var(--chirpui-text-muted)}
+        .sc-fill-demo__thread p{margin:0 0 0.5rem}
     </style>
 </head>
 <body>
@@ -89,6 +94,7 @@
     <a href="#layout-primitives">Grid / Stack / Cluster</a>
     <a href="#bento">Bento Grid</a>
     <a href="#split-panel">Split Panel</a>
+    <a href="#full-height-main">Full-height main</a>
     <a href="#divider">Divider</a>
     <h3>Overlays</h3>
     <a href="#modal">Modal</a>
@@ -966,6 +972,57 @@
         <div class="chirpui-split-panel__handle" @mousedown.prevent="startDrag($event)" role="separator"><span class="chirpui-split-panel__handle-grip"></span></div>
         <div class="chirpui-split-panel__pane chirpui-split-panel__pane--second" style="padding:1rem"><strong>Right</strong><p style="font-size:0.82rem;color:var(--chirpui-text-muted)">Main content area.</p></div>
     </div>
+</section>
+
+<section class="sc-section" id="full-height-main">
+    <h2>Full-height main</h2>
+    <p class="desc">App shell pages that should own the viewport (chat, dashboards) use <code>chirpui-app-shell__main--fill</code> on <code>&lt;main&gt;</code>, a <code>chirpui-page-fill</code> root inside <code>#page-content</code>, and <code>chat_layout(..., fill=true)</code> when using the chat layout. Scroll stays on inner regions (e.g. <code>chirpui-chat-layout__messages-body</code>), not on <code>#main</code>. See <code>docs/LAYOUT-VERTICAL.md</code> in the chirp-ui repo.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Live structure (fixed height simulates the viewport)</div>
+    <div class="sc-fill-demo">
+        <main class="chirpui-app-shell__main chirpui-app-shell__main--fill">
+            <div id="page-content">
+                <div class="chirpui-page-fill">
+                    <div class="chirpui-chat-layout chirpui-chat-layout--fill">
+                        <div class="chirpui-chat-layout__main">
+                            <div class="chirpui-chat-layout__messages">
+                                <div class="chirpui-chat-layout__messages-body">
+                                    <div class="sc-fill-demo__thread">
+                                        <p>Thread region scrolls independently; the composer stays pinned below.</p>
+                                        <p>This mirrors the flex chain: <code>main--fill</code> → <code>#page-content</code> → <code>chirpui-page-fill</code> → <code>chirpui-chat-layout--fill</code>.</p>
+                                        <p>For SSE or HTMX roots inside the messages column, add <code>chirpui-chat-layout__messages-body</code> to the streaming wrapper.</p>
+                                        <p>Line four.</p>
+                                        <p>Line five.</p>
+                                        <p>Line six.</p>
+                                        <p>Line seven.</p>
+                                        <p>Line eight.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chirpui-chat-layout__input">
+                                <span style="font-size:0.75rem;color:var(--chirpui-text-muted)">Composer strip (does not scroll with the thread)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="sc-spacer"></div>
+    <div class="sc-label">Kida (excerpt)</div>
+    <pre style="margin:0;padding:1rem;border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius-lg);background:var(--chirpui-bg-subtle);font-size:0.72rem;overflow-x:auto;line-height:1.4"><code>{% block main_shell_class %}chirpui-app-shell__main--fill{% end %}
+
+{% block content %}
+&lt;div class="chirpui-page-fill"&gt;
+  {% from "chirpui/chat_layout.html" import chat_layout %}
+  {% call chat_layout(fill=true, show_activity=false) %}
+  {% slot messages %}
+    &lt;div class="chirpui-chat-layout__messages-body"&gt;…&lt;/div&gt;
+  {% end %}
+  {% slot input %}…{% end %}
+  {% end %}
+&lt;/div&gt;
+{% end %}</code></pre>
 </section>
 
 <section class="sc-section" id="divider">

@@ -33,6 +33,10 @@ category: app-shell
 
 The shell main area clips horizontal overflow and scrolls vertically. Build pages with **`grid()` + `block()`**, **`cluster()`**, and wrapping indicator rows so content stays in column; use **`overflow-x: auto`** only on inner wrappers for wide tables or code. See the repo doc **`docs/LAYOUT-OVERFLOW.md`** for the full checklist.
 
+## Full-height main
+
+For chat, maps, or IDE-style surfaces that should **fill the viewport** below the topbar (with scroll **inside** panels), opt in with **`{% block main_shell_class %} chirpui-app-shell__main--fill{% end %}`**, put a direct child of **`#page-content`** with class **`chirpui-page-fill`**, and use **`chat_layout(..., fill=true)`** for chat pages. See **`docs/LAYOUT-VERTICAL.md`** for the flex chain, **`min-height: 0`**, and the **`chirpui-chat-layout__messages-body`** wrapper class for SSE/HTMX roots inside the messages column.
+
 ## Components
 
 - **sidebar** — Collapsible navigation with sections

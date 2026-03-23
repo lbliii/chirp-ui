@@ -162,6 +162,17 @@ class TestLayout:
         ).render()
         assert "chirpui-block--span-2" in html
 
+    def test_chat_layout_fill_emits_modifier(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/chat_layout.html" import chat_layout %}'
+            '{% call chat_layout(fill=true, show_activity=false) %}'
+            "{% slot messages %}M{% end %}"
+            "{% slot input %}I{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-chat-layout--fill" in html
+        assert "chirpui-chat-layout__messages" in html
+
     def test_page_header(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import page_header %}'

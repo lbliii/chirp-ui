@@ -610,6 +610,36 @@ html {
 .chirpui-grid--gap-md { gap: var(--chirpui-spacing-md); }
 .chirpui-grid--gap-lg { gap: var(--chirpui-spacing-lg); }
 
+/* Fixed-track presets for grid() + block() — use with preset="bento-211" or preset="thirds" in chirpui/layout.html */
+.chirpui-grid.chirpui-grid--preset-bento-211 {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.chirpui-grid.chirpui-grid--preset-thirds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 64rem) {
+    .chirpui-grid.chirpui-grid--preset-bento-211 {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .chirpui-grid.chirpui-grid--preset-bento-211 .chirpui-block--span-2 {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 48rem) {
+    .chirpui-grid.chirpui-grid--preset-bento-211,
+    .chirpui-grid.chirpui-grid--preset-thirds {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-grid.chirpui-grid--preset-bento-211 .chirpui-block--span-2 {
+        grid-column: span 1;
+    }
+}
+
 .chirpui-stack {
     display: flex;
     flex-direction: column;
@@ -1607,6 +1637,30 @@ a.chirpui-action-bar__item {
     width: var(--chirpui-chat-layout-activity-width);
     flex-shrink: 0;
     overflow-y: auto;
+}
+
+/* Fill remaining height inside a flex parent (e.g. #page-content > .chirpui-page-fill). */
+.chirpui-chat-layout--fill {
+    flex: 1;
+    min-height: 0;
+    align-self: stretch;
+}
+
+.chirpui-chat-layout--fill .chirpui-chat-layout__messages {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    /* Transcript / thread scroll lives inside slots, not on this shell */
+}
+
+/* Put on SSE / HTMX / custom wrapper around the scroll region inside __messages. */
+.chirpui-chat-layout__messages-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 @media (max-width: 767px) {
@@ -9174,6 +9228,36 @@ body:has(> .chirpui-app-shell) {
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: var(--chirpui-spacing-lg);
+}
+
+/* Full-height main: flex column so #page-content can flex:1; inner panels own scroll.
+   Opt in via {% block main_shell_class %}chirpui-app-shell__main--fill{% end %} on app_shell_layout. */
+.chirpui-app-shell__main--fill {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+.chirpui-app-shell__main--fill #page-content {
+    flex: 1;
+    min-height: 0;
+    gap: 0;
+}
+
+/* Optional: single root wrapper inside #page-content that should fill (chat, maps). */
+.chirpui-app-shell__main--fill #page-content > .chirpui-page-fill {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+}
+
+.chirpui-app-shell__main--fill::before {
+    top: 0;
+    margin-inline: 0;
 }
 
 /* Navigation loading indicator — thin accent bar at the top of #main.
