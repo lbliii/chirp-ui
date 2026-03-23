@@ -2,13 +2,15 @@
 
 chirp-ui separates **two layout problems** so templates stay predictable.
 
+For **`grid()`** fixed-track **presets**, **aliases**, and layout breakpoints, see **[LAYOUT-PRESETS.md](LAYOUT-PRESETS.md)**.
+
 ## Flow grid (`grid()`)
 
 **Use for:** repeating siblings that should wrap — cards, metric tiles, form rows, filter chips.
 
 **Mechanism:** `repeat(auto-fit, minmax(…))` with `--chirpui-grid-min`. The `cols=2|3|4` parameter **does not** mean “always N columns”; it scales the minimum track width so you tend to get more columns on wide viewports.
 
-**Also:** `preset="bento-211"` or `preset="thirds"` on `grid()` selects **fixed** column tracks for dashboard-style cells (with `block()` for spans). That is still a **grid** primitive, not `frame()`.
+**Also:** `preset="bento-211"`, **`thirds`**, or **`detail-two`** on `grid()` selects **fixed** column tracks for dashboard-style cells (with `block()` for spans). Use **`detail_single=true`** with **`detail-two`** when only one column of content exists. That is still a **grid** primitive, not `frame()`. Optional **`items="start"`** / **`end`** / **`center`** sets **`align-items`** on the grid (default is **`stretch`**).
 
 **Tokens:** `--chirpui-grid-min` (and optional overrides on a wrapper).
 

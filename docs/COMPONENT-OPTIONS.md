@@ -975,6 +975,8 @@ These use `validate_variant` at macro top. Invalid values fall back to the defau
 ```html
 {% from "chirpui/surface.html" import surface %}
 {% call surface(variant="muted") %}...{% end %}
+{# Optional: style= (inline CSS; overrides variant background), attrs / attrs_map #}
+{% call surface(variant="default", padding=false, full_width=true, style="background: …") %}…{% end %}
 
 {% from "chirpui/toast.html" import toast %}
 {{ toast("Done!", variant="success") }}

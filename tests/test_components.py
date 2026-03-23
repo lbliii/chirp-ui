@@ -148,6 +148,68 @@ class TestLayout:
         assert "chirpui-grid--preset-thirds" in html
         assert "chirpui-grid--gap-lg" in html
 
+    def test_grid_items_start(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="thirds", items="start") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--items-start" in html
+
+    def test_grid_preset_detail_two(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="detail-two", gap="md") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-detail-two" in html
+        assert "chirpui-grid--detail-two-single" not in html
+
+    def test_grid_preset_detail_two_single(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="detail-two", detail_single=true) %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-detail-two" in html
+        assert "chirpui-grid--detail-two-single" in html
+
+    def test_grid_preset_detail_two_single_string(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="detail-two-single") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-detail-two" in html
+        assert "chirpui-grid--detail-two-single" in html
+
+    def test_grid_preset_aliases_bento_thirds_detail(self, env: Environment) -> None:
+        for preset, want in (
+            ("split-2-1-1", "chirpui-grid--preset-bento-211"),
+            ("split-thirds", "chirpui-grid--preset-thirds"),
+            ("three-equal", "chirpui-grid--preset-thirds"),
+            ("split-1-1.35", "chirpui-grid--preset-detail-two"),
+        ):
+            html = env.from_string(
+                '{% from "chirpui/layout.html" import grid %}'
+                f'{{% call grid(preset="{preset}") %}}A{{% end %}}'
+            ).render()
+            assert want in html, preset
+
+    def test_grid_preset_alias_split_1_1_35_single(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="split-1-1.35-single") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-detail-two" in html
+        assert "chirpui-grid--detail-two-single" in html
+
+    def test_label_overline(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/label_overline.html" import label_overline %}'
+            '{{ label_overline("Hello", section=true, tag="h3") }}'
+        ).render()
+        assert "chirpui-label-overline" in html
+        assert "chirpui-label-overline--section" in html
+        assert "<h3 " in html
+        assert "Hello" in html
+
     def test_grid_preset_overrides_cols(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import grid %}'
@@ -213,6 +275,12 @@ class TestLayout:
             '{% from "chirpui/layout.html" import block %}{% call block(span=2) %}A{% end %}'
         ).render()
         assert "chirpui-block--span-2" in html
+
+    def test_block_span_full(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import block %}{% call block(span="full") %}A{% end %}'
+        ).render()
+        assert "chirpui-block--span-full" in html
 
     def test_chat_layout_fill_emits_modifier(self, env: Environment) -> None:
         html = env.from_string(
@@ -584,6 +652,17 @@ class TestSurface:
                 f'{{% call surface(variant="{variant}") %}}X{{% end %}}'
             ).render()
             assert f"chirpui-surface--{variant}" in html
+
+    def test_surface_style_and_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% call surface(style="--x: 1; background: red", '
+            'attrs_map={"id": "s1", "data-test": "surf"}) %}In{% end %}'
+        ).render()
+        assert 'style="--x: 1; background: red"' in html
+        assert 'data-test="surf"' in html
+        assert 'id="s1"' in html
+        assert "In" in html
 
 
 # ---------------------------------------------------------------------------

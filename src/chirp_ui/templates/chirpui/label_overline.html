@@ -1,0 +1,12 @@
+{#- chirp-ui: Small caps / overline label for cards and dense panels.
+    Pairs with chirpui-font-xs + chirpui-text-muted via built-in classes.
+
+    Usage:
+        {% from "chirpui/label_overline.html" import label_overline %}
+        {{ label_overline("Section title", section=true, tag="h3") }}
+        {{ label_overline("Sub-label") }}
+-#}
+
+{% def label_overline(text, section=false, tag="span", cls="") %}
+<{{ tag }} class="chirpui-font-xs chirpui-text-muted chirpui-label-overline{% if section %} chirpui-label-overline--section{% end %}{{ " " ~ cls if cls else "" }}">{{ text }}</{{ tag }}>
+{% end %}

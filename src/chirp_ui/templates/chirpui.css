@@ -311,6 +311,10 @@
     /* Layout */
     --chirpui-container-max: 72rem;
     --chirpui-grid-min: 20rem;
+    /* grid() presets — @media below uses the same rem literals (var() not in @media). */
+    --chirpui-layout-bp-sm: 48rem;
+    --chirpui-layout-bp-md: 52rem;
+    --chirpui-layout-bp-lg: 64rem;
     /* frame() — explicit tracks; override per wrapper via style= or theme */
     --chirpui-frame-gap: var(--chirpui-spacing-lg);
     --chirpui-frame-balanced-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -599,6 +603,12 @@ html {
     gap: var(--chirpui-space-stack-gap);
 }
 
+/* Grid items default to min-width:auto (min-content), so rich cells overflow tracks and cover gap.
+   Matches .chirpui-block; use block() when you need span= or explicit cell semantics. */
+.chirpui-grid > * {
+    min-width: 0;
+}
+
 .chirpui-grid--cols-2 {
     grid-template-columns: repeat(auto-fit, minmax(min(calc(var(--chirpui-grid-min) * 0.75), 100%), 1fr));
 }
@@ -615,7 +625,18 @@ html {
 .chirpui-grid--gap-md { gap: var(--chirpui-spacing-md); }
 .chirpui-grid--gap-lg { gap: var(--chirpui-spacing-lg); }
 
-/* Fixed-track presets for grid() + block() — use with preset="bento-211" or preset="thirds" in chirpui/layout.html */
+/* Row alignment for uneven-height cells (default grid align-items is stretch) */
+.chirpui-grid--items-start {
+    align-items: start;
+}
+.chirpui-grid--items-end {
+    align-items: end;
+}
+.chirpui-grid--items-center {
+    align-items: center;
+}
+
+/* Fixed-track presets for grid() — see docs/LAYOUT-PRESETS.md (aliases: split-2-1-1, split-thirds, …) */
 .chirpui-grid.chirpui-grid--preset-bento-211 {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
 }
@@ -624,6 +645,42 @@ html {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* Two-column detail row (1fr : 1.35fr); stacks at 52rem. detail_single = one full-width column. */
+.chirpui-grid.chirpui-grid--preset-detail-two {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+    align-items: stretch;
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two.chirpui-grid--detail-two-single {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two .chirpui-block .chirpui-surface,
+.chirpui-grid.chirpui-grid--preset-detail-two .chirpui-block .chirpui-callout {
+    height: 100%;
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two .chirpui-cluster--detail-two-sprites {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two.chirpui-grid--detail-two-single .chirpui-cluster--detail-two-sprites {
+    justify-content: center;
+}
+
+/* --chirpui-layout-bp-md */
+@media (max-width: 52rem) {
+    .chirpui-grid.chirpui-grid--preset-detail-two:not(.chirpui-grid--detail-two-single) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-grid.chirpui-grid--preset-detail-two .chirpui-cluster--detail-two-sprites {
+        justify-content: center;
+    }
+}
+
+/* --chirpui-layout-bp-lg */
 @media (max-width: 64rem) {
     .chirpui-grid.chirpui-grid--preset-bento-211 {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -634,6 +691,7 @@ html {
     }
 }
 
+/* --chirpui-layout-bp-sm */
 @media (max-width: 48rem) {
     .chirpui-grid.chirpui-grid--preset-bento-211,
     .chirpui-grid.chirpui-grid--preset-thirds {
@@ -733,12 +791,31 @@ html {
 .chirpui-cluster--md { gap: var(--chirpui-spacing-md); }
 .chirpui-cluster--lg { gap: var(--chirpui-spacing-lg); }
 
+/* Label overline — see label_overline.html */
+.chirpui-label-overline {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.35rem;
+}
+
+.chirpui-label-overline--section {
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
 /* Prose + stack: use block flow so margins collapse; stack gap would double spacing */
 .chirpui-prose.chirpui-stack {
     display: block;
 }
 
 .chirpui-block {
+    min-width: 0;
+}
+
+/* Escape hatch for custom flex rows / raw markup (Tailwind-style min-w-0). */
+.chirpui-min-w-0 {
     min-width: 0;
 }
 
@@ -764,6 +841,12 @@ html {
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--chirpui-page-header-gap);
+}
+
+.chirpui-page-header__top > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .chirpui-page-header__actions {
@@ -864,6 +947,16 @@ html {
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--chirpui-space-section-gap);
+}
+
+.chirpui-section-header__top > .chirpui-section-header__title-block {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.chirpui-section-header__title-block > div {
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .chirpui-section-header__actions {
@@ -1145,11 +1238,19 @@ html {
     display: flex;
     align-items: flex-start;
     gap: var(--chirpui-space-control-gap);
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.chirpui-entity-header__content > div {
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .chirpui-entity-header__icon {
     font-size: var(--chirpui-ui-lg);
     line-height: 1;
+    flex-shrink: 0;
 }
 
 .chirpui-entity-header__title {
@@ -10556,6 +10657,9 @@ body:has(> .chirpui-app-shell) {
     position: absolute;
     z-index: var(--chirpui-tooltip-z);
     box-sizing: border-box;
+    /* Shrink-to-fit uses the narrow tooltip anchor as the containing block; without
+       max-content, used width collapses to ~trigger width despite max-width. */
+    width: max-content;
     max-width: var(--chirpui-tooltip-max-width);
     padding: var(--chirpui-tooltip-padding);
     border: var(--chirpui-tooltip-border);

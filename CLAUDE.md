@@ -20,7 +20,7 @@ src/chirp_ui/
   filters.py           # bem, html_attrs, validate_*, register_colors, resolve_color, sanitize_color, contrast_text
   validation.py        # VARIANT_REGISTRY, SIZE_REGISTRY, set_strict()
   route_tabs.py        # route-aware tabs helper
-  templates/chirpui/   # Kida macros — one file per component
+  templates/chirpui/   # Kida macros — one file per component (e.g. label_overline.html)
   templates/chirpui.css
   templates/chirpui.js
   templates/themes/
@@ -58,11 +58,12 @@ Or via Make: `make test`, `make lint`, `make ty`, `make ci` (see `Makefile`).
 - **CSS motion tokens** — animations must use `--chirpui-duration-*` / `--chirpui-easing-*` tokens, not raw values. The `test_transition_tokens.py` test enforces this.
 - **Template CSS contract** — every CSS class referenced in templates must exist in `chirpui.css`. The `test_template_css_contract.py` test enforces this.
 - **Filter bar vs filter chips** — `filter_bar.html` = form + `action_strip` for list/table toolbars. `filter_chips.html` = `filter_group` + `filter_chip` for faceted pill rows (HTMX, `register_colors`). See `docs/COMPONENT-OPTIONS.md`.
-- **Layout overflow** — App shell main clips horizontal bleed; use `grid()` + `block()`, `cluster()`, and wrapping `indicator_row()` so content does not widen the page. Use `frame()` for explicit hero/sidebar columns. Custom grids need `min-width: 0` / `minmax(0, 1fr)` on tracks. See `docs/LAYOUT-OVERFLOW.md` and `docs/LAYOUT-GRIDS-AND-FRAMES.md`.
+- **Layout overflow** — App shell main clips horizontal bleed; `grid()` applies **`min-width: 0`** to direct children in CSS; use `block()` for **`span=`** / bento cells. Pair with `cluster()` and wrapping `indicator_row()` so content does not widen the page. Use `frame()` for explicit hero/sidebar columns. Page/section/entity headers harden flex title columns; for other flex rows use **`chirpui-min-w-0`**. Custom grids need `min-width: 0` / `minmax(0, 1fr)` on tracks. For fixed bento-style column ratios, use `grid(..., preset=…)` (canonical names and aliases: `docs/LAYOUT-PRESETS.md`); use `items="start"` when row cells have unequal heights; use `preset="detail-two-single"` or `detail-two` + `detail_single=true` for a one-column detail row (see `docs/LAYOUT-OVERFLOW.md`). See also `docs/LAYOUT-GRIDS-AND-FRAMES.md`.
+- **Card overline labels** — use `label_overline()` from `chirpui/label_overline.html` for small-caps section labels inside cards (optional `section=true`, `tag="h3"`).
 
 ## Adding a component
 
-1. Add `src/chirp_ui/templates/chirpui/<name>.html` — Kida macro.
+1. Add `src/chirp_ui/templates/chirpui/<name>.html` — Kida macro (e.g. `label_overline.html`).
 2. Add styles to `chirpui.css` under a `/* <name> */` section comment.
 3. Add any new variants/sizes to `VARIANT_REGISTRY` / `SIZE_REGISTRY` in `validation.py`.
 4. Add render tests to `tests/test_components.py`.

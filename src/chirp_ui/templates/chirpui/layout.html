@@ -12,11 +12,16 @@
 </div>
 {% end %}
 
-{#- grid(): flow — auto-fit columns; cols=2|3|4 scales --chirpui-grid-min. preset=bento-211|thirds sets fixed tracks (cols ignored); use block(span=). See LAYOUT-GRIDS-AND-FRAMES.md, LAYOUT-OVERFLOW.md. -#}
-{% def grid(cols=none, gap=none, preset=none, cls="") %}
-{% set _preset = preset %}
-{% set _has_preset = _preset == "bento-211" or _preset == "thirds" %}
-<div class="chirpui-grid{% if not _has_preset %}{% if cols == 2 %} chirpui-grid--cols-2{% elif cols == 3 %} chirpui-grid--cols-3{% elif cols == 4 %} chirpui-grid--cols-4{% end %}{% end %}{% if gap == "sm" %} chirpui-grid--gap-sm{% elif gap == "md" %} chirpui-grid--gap-md{% elif gap == "lg" %} chirpui-grid--gap-lg{% end %}{% if _preset == "bento-211" %} chirpui-grid--preset-bento-211{% elif _preset == "thirds" %} chirpui-grid--preset-thirds{% end %}{{ " " ~ cls if cls else "" }}">
+{#- grid(): flow — auto-fit columns; cols=2|3|4 scales --chirpui-grid-min. Fixed tracks: preset + aliases — docs/LAYOUT-PRESETS.md. detail_single only for detail-two | split-1-1.35. items=start|end|center. -#}
+{% def grid(cols=none, gap=none, preset=none, items=none, detail_single=false, cls="") %}
+{% set pn = preset %}
+{% set _bento = pn == "bento-211" or pn == "split-2-1-1" %}
+{% set _thirds = pn == "thirds" or pn == "split-thirds" or pn == "three-equal" %}
+{% set _detail = pn == "detail-two" or pn == "split-1-1.35" %}
+{% set _detail_one_col = pn == "detail-two-single" or pn == "split-1-1.35-single" %}
+{% set _has_preset = _bento or _thirds or _detail or _detail_one_col %}
+{% set _detail_single_on = detail_single or _detail_one_col %}
+<div class="chirpui-grid{% if not _has_preset %}{% if cols == 2 %} chirpui-grid--cols-2{% elif cols == 3 %} chirpui-grid--cols-3{% elif cols == 4 %} chirpui-grid--cols-4{% end %}{% end %}{% if gap == "sm" %} chirpui-grid--gap-sm{% elif gap == "md" %} chirpui-grid--gap-md{% elif gap == "lg" %} chirpui-grid--gap-lg{% end %}{% if _bento %} chirpui-grid--preset-bento-211{% elif _thirds %} chirpui-grid--preset-thirds{% elif _detail or _detail_one_col %} chirpui-grid--preset-detail-two{% if _detail_single_on %} chirpui-grid--detail-two-single{% end %}{% end %}{% if items == "start" %} chirpui-grid--items-start{% elif items == "end" %} chirpui-grid--items-end{% elif items == "center" %} chirpui-grid--items-center{% end %}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
 {% end %}
