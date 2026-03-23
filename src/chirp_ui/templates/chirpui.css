@@ -227,6 +227,7 @@
     --chirpui-motion-slower: 400ms;
     --chirpui-motion-extra-slow: 600ms;
     --chirpui-motion-crawl: 1500ms;
+    --chirpui-motion-loading: 8s;
     --chirpui-ease-standard: ease;
     --chirpui-ease-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
     --chirpui-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -9046,6 +9047,7 @@ body:has(> .chirpui-app-shell) {
     position: relative;
     min-height: 0;
     overflow-y: auto;
+    overscroll-behavior: contain;
     border-right: 1px solid var(--chirpui-border);
 }
 
@@ -9172,10 +9174,44 @@ body:has(> .chirpui-app-shell) {
 
 .chirpui-app-shell__main {
     grid-area: main;
+    position: relative;
     min-height: 0;
     min-width: 0;
     overflow-y: auto;
+    overscroll-behavior: contain;
     padding: var(--chirpui-spacing-lg);
+}
+
+/* Navigation loading indicator — thin accent bar at the top of #main.
+   Appears automatically via HTMX's .htmx-request class on the swap target.
+   Slow cubic-bezier creep gives the illusion of real progress. */
+.chirpui-app-shell__main::before {
+    content: "";
+    position: sticky;
+    top: calc(-1 * var(--chirpui-spacing-lg));
+    left: 0;
+    right: 0;
+    display: block;
+    height: 2px;
+    margin-inline: calc(-1 * var(--chirpui-spacing-lg));
+    margin-bottom: calc(-2px);
+    background: var(--chirpui-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.chirpui-app-shell__main.htmx-request::before {
+    transform: scaleX(0.7);
+    transition: transform var(--chirpui-motion-loading) var(--chirpui-ease-decel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-app-shell__main.htmx-request::before {
+        transform: scaleX(1);
+        transition: none;
+    }
 }
 
 /* Fragment targets — vertical spacing. Tabs topmost; title/actions/content below. */

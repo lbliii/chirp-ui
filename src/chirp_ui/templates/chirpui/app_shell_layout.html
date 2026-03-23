@@ -78,7 +78,8 @@ document.addEventListener("alpine:init",function(){
     </div>
   </header>
   <aside class="chirpui-app-shell__sidebar">{% block sidebar %}{% end %}</aside>
-  <main id="main" class="chirpui-app-shell__main">
+  <main id="main" class="chirpui-app-shell__main" tabindex="-1"
+        hx-boost="true" hx-target="#main" hx-swap="outerHTML" hx-select="#main">
     {% block content %}{% end %}
   </main>
 </div>
@@ -105,6 +106,14 @@ document.body.addEventListener("htmx:configRequest", function(event) {
   document.body.addEventListener("htmx:pushedIntoHistory", syncNav);
   document.body.addEventListener("htmx:replacedInHistory", syncNav);
 })();
+document.body.addEventListener("htmx:afterSwap", function(e) {
+  var t = e.detail && e.detail.target;
+  if (t && t.id === "main") { t.scrollTo({top: 0}); }
+});
+document.body.addEventListener("htmx:afterSettle", function(e) {
+  var t = e.detail && e.detail.target;
+  if (t && t.id === "main") { t.focus({preventScroll: true}); }
+});
 </script>
 {{ toast_container() }}
 {% block page_scripts %}{% end %}

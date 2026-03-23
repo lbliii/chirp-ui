@@ -151,7 +151,7 @@ ChirpUI registers its page shell contract via `use_chirp_ui()`. That contract ma
 | `#page-root` | `page_root_inner` | Tab clicks (tabs + content) |
 | `#page-content-inner` | `page_content` | Narrow content swaps |
 
-Sidebar links use `hx-target="#main"` by default. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
+`<main id="main">` carries `hx-boost="true"`, `hx-target="#main"`, `hx-swap="outerHTML"`, and `hx-select="#main"` — all links inside inherit SPA navigation automatically. Sidebar links (outside `#main`) carry their own `hx-target="#main"` via `sidebar_link()`. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
 
 ## Debugging
 

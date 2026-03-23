@@ -134,7 +134,7 @@ Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates w
 | Component | Description |
 |-----------|-------------|
 | `shell_outlet` | Main content swap target; wraps content in `#page-content` for hx-select |
-| `shell_outlet_attrs` | Standard hx-boost/hx-target/hx-swap/hx-select attributes for main |
+| `shell_outlet_attrs` | Standard hx-boost/hx-target/hx-swap/hx-select attributes (now built into `<main>` in `app_shell_layout.html`) |
 | `shell_region` | Persistent region container (id for OOB updates) |
 | `safe_region` | HTMX-safe mutation region; `hx-disinherit` to avoid inherited shell attributes |
 | `fragment_island` | Alias for `safe_region`; use either |

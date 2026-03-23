@@ -16,11 +16,11 @@ Then `{% call passthrough() %}…{% end %}` participates in `{% if %}` / `{% mat
 
 ## HTMX fragments and `{% from %}`
 
-When a template is rendered as a **full page**, top-level `{% from "chirpui/…" import … %}` runs automatically. For **`render_block()`** / fragment targets, ensure macros imported in a **parent layout** are in scope: Kida runs `{% globals %}`, `{% imports %}`, and top-level `{% from %}` from the full `{% extends %}` chain before the block body (same as Chirp’s fragment pipeline). You should not need to duplicate imports for every fragment unless a template is used standalone without extending that chain.
+When a template is rendered as a **full page**, top-level `{% from "chirpui/…" import … %}` runs automatically. For **`render_block()`** / fragment targets, ensure macros imported in a **parent layout** are in scope: Kida runs `{% globals %}`, `{% imports %}`, and top-level `{% from %}` from the full `{% extends %}` chain before the block body (same as Chirp's fragment pipeline). You should not need to duplicate imports for every fragment unless a template is used standalone without extending that chain.
 
 ## View transitions
 
-Use Chirp’s `AppConfig(view_transitions=True)` (default) when you author `view-transition-name` or `@view-transition` CSS so HTMX navigations animate. With `view_transitions=False`, full-page swaps will not use the View Transitions API; in debug mode Chirp logs a warning if transition CSS appears in the HTML without injection enabled.
+Chirp injects the root-level `@view-transition` rule and meta tag when `AppConfig(view_transitions=True)` (default). `chirpui-transitions.css` scopes transitions to `#main` (via `view-transition-name: page-content`), suppresses root animations so the shell stays frozen, and disables VT on `.chirpui-fragment-island` elements. No custom VT CSS is needed for the common app shell case. With `view_transitions=False`, full-page swaps will not use the View Transitions API.
 
 ## Explicit Kida end tags
 
