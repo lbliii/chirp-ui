@@ -322,11 +322,24 @@ Responsive layout grid for cards and sections.
 
 | Param | Description |
 |-------|-------------|
-| `cols` | `2`, `3`, `4`, or omitted for auto-fit |
+| `cols` | `2`, `3`, `4`, or omitted for auto-fit (scales minimum track width, not a fixed column count) |
+| `gap` | `sm`, `md`, `lg` |
+| `preset` | `bento-211` or `thirds` for fixed-track dashboard cells (with `block()` spans) |
+| `cls` | Optional additional classes |
+
+Use `grid()` for **flow** — repeating items that wrap. Prefer `gap="md"` for page content and `gap="sm"` for denser internal layouts. For hero / sidebar **regions** with explicit columns, use `frame()` and see [LAYOUT-GRIDS-AND-FRAMES.md](LAYOUT-GRIDS-AND-FRAMES.md).
+
+### frame
+
+Structural two-column layouts (explicit `grid-template-columns`). Pass **two direct children** in the default slot (e.g. media + copy).
+
+| Param | Description |
+|-------|-------------|
+| `variant` | `balanced` (default), `hero`, `sidebar-end` |
 | `gap` | `sm`, `md`, `lg` |
 | `cls` | Optional additional classes |
 
-Use `grid()` for two-dimensional layout rhythm. Prefer `gap="md"` for page content and `gap="sm"` for denser internal layouts.
+Override tracks per page with CSS variables on the element (e.g. `--chirpui-frame-hero-columns`). Full detail: [LAYOUT-GRIDS-AND-FRAMES.md](LAYOUT-GRIDS-AND-FRAMES.md).
 
 ### stack
 

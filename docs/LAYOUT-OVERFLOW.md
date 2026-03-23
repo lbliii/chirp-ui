@@ -14,7 +14,7 @@ Wide content is still supported: put it in a **child** with **`overflow-x: auto`
 
 | Situation | Use |
 |-----------|-----|
-| Responsive columns | `grid()` + `block()` from `chirpui/layout.html` — `chirpui-block` sets **`min-width: 0`** on grid children. |
+| Responsive columns | `grid()` + `block()` from `chirpui/layout.html` — `chirpui-block` sets **`min-width: 0`** on grid children. For explicit hero/sidebar columns use **`frame()`** — see [LAYOUT-GRIDS-AND-FRAMES.md](LAYOUT-GRIDS-AND-FRAMES.md). |
 | Chips, tags, variable-length rows | `cluster()` — **`flex-wrap: wrap`** by default. |
 | LED-style indicators in a row | `indicator_row()` — wraps by default; use **`indicator_row(nowrap=true)`** for a deliberate single-line strip. |
 
@@ -41,7 +41,7 @@ The default **`chirpui-grid`** uses **auto-fit** columns (`--chirpui-grid-min`).
 ## Related CSS in `chirpui.css`
 
 - App shell grid and **`.chirpui-app-shell__main`** — scrollport and `min-width: 0`.
-- **`.chirpui-grid`** / **`.chirpui-block`** — layout primitives.
+- **`.chirpui-grid`** / **`.chirpui-grid--preset-bento-211`** / **`.chirpui-grid--preset-thirds`** / **`.chirpui-block`** — layout primitives and fixed-track presets.
 - **`.chirpui-cluster`** — wrapping horizontal clusters.
 - **`.chirpui-ascii-indicator-row`** — wrapping indicator rows; **`--nowrap`** modifier for single line.
 

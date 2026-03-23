@@ -131,6 +131,58 @@ class TestLayout:
         assert "chirpui-grid--cols-3" in html
         assert "chirpui-grid--gap-md" in html
 
+    def test_grid_preset_bento_211(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="bento-211", gap="md") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-bento-211" in html
+        assert "chirpui-grid--gap-md" in html
+        assert "chirpui-grid--cols-" not in html
+
+    def test_grid_preset_thirds(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(preset="thirds", gap="lg") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-thirds" in html
+        assert "chirpui-grid--gap-lg" in html
+
+    def test_grid_preset_overrides_cols(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import grid %}'
+            '{% call grid(cols=2, preset="thirds") %}A{% end %}'
+        ).render()
+        assert "chirpui-grid--preset-thirds" in html
+        assert "chirpui-grid--cols-2" not in html
+
+    def test_frame_balanced(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import frame %}{% call frame() %}A{% end %}'
+        ).render()
+        assert "chirpui-frame" in html
+        assert "chirpui-frame--balanced" in html
+
+    def test_frame_hero(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import frame %}'
+            '{% call frame(variant="hero") %}A{% end %}'
+        ).render()
+        assert "chirpui-frame--hero" in html
+
+    def test_frame_sidebar_end(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import frame %}'
+            '{% call frame(variant="sidebar-end") %}A{% end %}'
+        ).render()
+        assert "chirpui-frame--sidebar-end" in html
+
+    def test_frame_gap_lg(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import frame %}{% call frame(gap="lg") %}A{% end %}'
+        ).render()
+        assert "chirpui-frame--gap-lg" in html
+
     def test_stack(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import stack %}{% call stack() %}A{% end %}'
@@ -165,7 +217,7 @@ class TestLayout:
     def test_chat_layout_fill_emits_modifier(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/chat_layout.html" import chat_layout %}'
-            '{% call chat_layout(fill=true, show_activity=false) %}'
+            "{% call chat_layout(fill=true, show_activity=false) %}"
             "{% slot messages %}M{% end %}"
             "{% slot input %}I{% end %}"
             "{% end %}"
@@ -2446,7 +2498,7 @@ class TestSidebar:
     def test_shell_brand_link_matches_sidebar_contract(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/sidebar.html" import shell_brand_link %}'
-            '{% call shell_brand_link() %}Brand{% end %}'
+            "{% call shell_brand_link() %}Brand{% end %}"
         ).render()
         assert "chirpui-app-shell__brand" in html
         assert 'hx-target="#main"' in html

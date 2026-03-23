@@ -12,6 +12,7 @@ EXAMPLES_DIR = Path(__file__).resolve().parents[1] / "examples/component-showcas
 
 
 TARGET_PREFIXES = (
+    "chirpui-frame",
     "chirpui-app-shell",
     "chirpui-route-tab",
     "chirpui-sidebar",
@@ -36,6 +37,7 @@ EXAMPLE_LAYOUT_PREFIXES = (
     "chirpui-action-strip",
     "chirpui-cluster",
     "chirpui-flow",
+    "chirpui-frame",
     "chirpui-grid",
     "chirpui-inline",
     "chirpui-mb-",

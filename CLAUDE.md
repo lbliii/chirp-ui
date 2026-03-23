@@ -58,7 +58,7 @@ Or via Make: `make test`, `make lint`, `make ty`, `make ci` (see `Makefile`).
 - **CSS motion tokens** — animations must use `--chirpui-duration-*` / `--chirpui-easing-*` tokens, not raw values. The `test_transition_tokens.py` test enforces this.
 - **Template CSS contract** — every CSS class referenced in templates must exist in `chirpui.css`. The `test_template_css_contract.py` test enforces this.
 - **Filter bar vs filter chips** — `filter_bar.html` = form + `action_strip` for list/table toolbars. `filter_chips.html` = `filter_group` + `filter_chip` for faceted pill rows (HTMX, `register_colors`). See `docs/COMPONENT-OPTIONS.md`.
-- **Layout overflow** — App shell main clips horizontal bleed; use `grid()` + `block()`, `cluster()`, and wrapping `indicator_row()` so content does not widen the page. Custom grids need `min-width: 0` / `minmax(0, 1fr)` on tracks. See `docs/LAYOUT-OVERFLOW.md`.
+- **Layout overflow** — App shell main clips horizontal bleed; use `grid()` + `block()`, `cluster()`, and wrapping `indicator_row()` so content does not widen the page. Use `frame()` for explicit hero/sidebar columns. Custom grids need `min-width: 0` / `minmax(0, 1fr)` on tracks. See `docs/LAYOUT-OVERFLOW.md` and `docs/LAYOUT-GRIDS-AND-FRAMES.md`.
 
 ## Adding a component
 

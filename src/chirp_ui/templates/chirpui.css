@@ -311,6 +311,11 @@
     /* Layout */
     --chirpui-container-max: 72rem;
     --chirpui-grid-min: 20rem;
+    /* frame() — explicit tracks; override per wrapper via style= or theme */
+    --chirpui-frame-gap: var(--chirpui-spacing-lg);
+    --chirpui-frame-balanced-columns: minmax(0, 1fr) minmax(0, 1fr);
+    --chirpui-frame-hero-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    --chirpui-frame-sidebar-width: var(--chirpui-split-sidebar-width);
     --chirpui-modal-width: 32rem;
     --chirpui-modal-width-sm: 24rem;
     --chirpui-modal-width-lg: 48rem;
@@ -637,6 +642,70 @@ html {
 
     .chirpui-grid.chirpui-grid--preset-bento-211 .chirpui-block--span-2 {
         grid-column: span 1;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Frame — structural layouts (hero, sidebar, equal columns). Not auto-fit flow.
+   Use grid() for wrapping card/tile lists. See docs/LAYOUT-GRIDS-AND-FRAMES.md.
+   -------------------------------------------------------------------------- */
+
+.chirpui-frame {
+    display: grid;
+    gap: var(--chirpui-frame-gap);
+    min-width: 0;
+}
+
+.chirpui-frame > * {
+    min-width: 0;
+}
+
+.chirpui-frame--gap-sm {
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-frame--gap-md {
+    gap: var(--chirpui-spacing-md);
+}
+
+.chirpui-frame--gap-lg {
+    gap: var(--chirpui-spacing-lg);
+}
+
+.chirpui-frame--balanced {
+    grid-template-columns: var(--chirpui-frame-balanced-columns);
+}
+
+.chirpui-frame--hero {
+    align-items: center;
+    grid-template-columns: var(--chirpui-frame-hero-columns);
+}
+
+.chirpui-frame--sidebar-end {
+    grid-template-columns: minmax(0, 1fr) minmax(0, min(var(--chirpui-frame-sidebar-width), 100%));
+}
+
+@container chirpui-layout (width < 48rem) {
+    .chirpui-frame--balanced,
+    .chirpui-frame--hero,
+    .chirpui-frame--sidebar-end {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-frame--hero {
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 48rem) {
+    .chirpui-frame--balanced,
+    .chirpui-frame--hero,
+    .chirpui-frame--sidebar-end {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-frame--hero {
+        align-items: stretch;
     }
 }
 
