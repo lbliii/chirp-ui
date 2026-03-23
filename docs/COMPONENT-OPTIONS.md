@@ -661,6 +661,13 @@ Recommended usage:
 
 ### Action Container Variants
 
+**`filter_bar` vs `filter_chips`:** two different patterns—do not confuse the template names.
+
+| Template | Macro(s) | Use when |
+|----------|-----------|----------|
+| `chirpui/filter_bar.html` | `filter_bar` | **Form-backed** filter toolbar: GET/POST to an action URL, `action_strip` zones (search, selects, export). Fits `resource_index`, data tables, admin lists. |
+| `chirpui/filter_chips.html` | `filter_group`, `filter_chip` | **Chip / pill** faceted navigation: `role="radiogroup"`, optional `resolve_color` / `register_colors`, HTMX `hx-target` / `hx-select`. Fits taxonomy toggles (e.g. Pokémon types), tag filters without a wrapping form. |
+
 #### filter_bar
 
 Filter-first composite (`action_strip` + `form`) for searchable lists and tables.
@@ -682,6 +689,30 @@ Use the same inner zone classes as `action_strip`.
   </div>
 {% end %}
 ```
+
+#### filter_chips
+
+Chip-style faceted filters: a `filter_group` wrapper (`role="radiogroup"`) and `filter_chip` pills that reuse badge styling and scoped `--chirpui-badge-color`. Pass semantic colors via `color=` after `chirp_ui.register_colors({...})`, or a literal hex/rgb string. Optional HTMX on each chip link.
+
+```html
+{% from "chirpui/filter_chips.html" import filter_group, filter_chip %}
+
+{% call filter_group(name="Type", value=current_type) %}
+  {{ filter_chip("All", href="/?q=" ~ search, active=not current_type,
+      hx_target="#main", hx_push_url=true, hx_select="#main") }}
+  {% for t in types %}
+    {{ filter_chip(t, color=t, href="/?type=" ~ t ~ "&q=" ~ search,
+        active=(current_type == t), hx_target="#main", hx_push_url=true, hx_select="#main") }}
+  {% endfor %}
+{% end %}
+```
+
+| Param | `filter_group` | `filter_chip` |
+|-------|----------------|---------------|
+| Core | `name` (→ `aria-label`), optional `cls` | `label`, `href`, `active`, `color`, `cls` |
+| HTMX | — | `hx_target`, `hx_push_url`, `hx_swap`, `hx_select` |
+
+See also: **Badge** (`color`, `fill`) and filters **`resolve_color`**, **`register_colors`** in `chirp_ui`.
 
 #### command_bar
 

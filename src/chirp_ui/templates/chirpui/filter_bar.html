@@ -1,7 +1,10 @@
 {#- chirp-ui: Filter Bar composite
-    Filter-first action container for list/table controls.
+    Filter-first action container for list/table controls (form + action_strip).
     Wraps action_strip inside a form. Use one default slot with
     `chirpui-action-strip__primary`, `__controls`, and `__actions` children.
+
+    For chip/pill faceted navigation (radiogroup, HTMX, optional register_colors),
+    use chirpui/filter_chips.html — filter_group + filter_chip. See docs/COMPONENT-OPTIONS.md.
 
     Usage:
         from "chirpui/filter_bar.html" import filter_bar

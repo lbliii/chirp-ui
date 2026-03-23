@@ -8188,6 +8188,7 @@ a.chirpui-badge--custom-solid:hover {
     filter: brightness(1.05);
 }
 
+/* filter_chips.html — filter_group row (not filter_bar.html form toolbar) */
 .chirpui-filter-group {
     display: flex;
     flex-wrap: wrap;

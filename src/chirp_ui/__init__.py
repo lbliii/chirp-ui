@@ -10,6 +10,8 @@ Headless, htmx-native, zero JavaScript. Install and import::
 When used with Chirp, components are auto-detected via ``PackageLoader``.
 For standalone Kida usage, call :func:`get_loader`.
 Call :func:`register_filters` to ensure bem/field_errors/html_attrs filters are available.
+Call :func:`register_colors` once per app if you use semantic color names with
+``resolve_color`` / ``badge(..., color=...)`` / ``filter_chips`` (see ``docs/COMPONENT-OPTIONS.md``).
 """
 
 from pathlib import Path

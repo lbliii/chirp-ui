@@ -17,7 +17,7 @@ An optional companion UI layer for the Chirp web framework — Kida template mac
 ```
 src/chirp_ui/
   __init__.py          # get_loader(), register_filters(), static_path()
-  filters.py           # bem, html_attrs, validate_variant, validate_size, field_errors
+  filters.py           # bem, html_attrs, validate_*, register_colors, resolve_color, sanitize_color, contrast_text
   validation.py        # VARIANT_REGISTRY, SIZE_REGISTRY, set_strict()
   route_tabs.py        # route-aware tabs helper
   templates/chirpui/   # Kida macros — one file per component
@@ -57,6 +57,7 @@ Or via Make: `make test`, `make lint`, `make ty`, `make ci` (see `Makefile`).
 - **Variants/sizes validated** — use `validate_variant` / `validate_size` filters against `VARIANT_REGISTRY` / `SIZE_REGISTRY`. Unknown values fall back to default, not an error (unless strict mode is on).
 - **CSS motion tokens** — animations must use `--chirpui-duration-*` / `--chirpui-easing-*` tokens, not raw values. The `test_transition_tokens.py` test enforces this.
 - **Template CSS contract** — every CSS class referenced in templates must exist in `chirpui.css`. The `test_template_css_contract.py` test enforces this.
+- **Filter bar vs filter chips** — `filter_bar.html` = form + `action_strip` for list/table toolbars. `filter_chips.html` = `filter_group` + `filter_chip` for faceted pill rows (HTMX, `register_colors`). See `docs/COMPONENT-OPTIONS.md`.
 
 ## Adding a component
 
