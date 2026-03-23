@@ -5,7 +5,12 @@ from __future__ import annotations
 from pathlib import Path
 
 APP_SHELL = (
-    Path(__file__).resolve().parents[1] / "src" / "chirp_ui" / "templates" / "chirpui" / "app_shell_layout.html"
+    Path(__file__).resolve().parents[1]
+    / "src"
+    / "chirp_ui"
+    / "templates"
+    / "chirpui"
+    / "app_shell_layout.html"
 )
 
 
