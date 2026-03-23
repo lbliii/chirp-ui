@@ -137,16 +137,16 @@ wheels = [
 
 [[package]]
 name = "bengal-chirp"
-version = "0.1.6"
+version = "0.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
     { name = "bengal-pounce" },
     { name = "kida-templates" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8c/32/6f6a7662813691903c8740e42537fe6e4524a71fbdc9e6bbd5ead1d5d48b/bengal_chirp-0.1.6.tar.gz", hash = "sha256:0b038ddf5b54e9c06b5cc3f1a4d941a37bf0cdf2d2e159bd0a990f4d224a61f5", size = 313120, upload-time = "2026-03-06T19:29:26.919Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/da/50/b422a1b6086f1f1a5258fbe83ba77b14bf90cb5c87fdcf7d3ad361d46a34/bengal_chirp-0.2.0.tar.gz", hash = "sha256:e763c8c4d31ec98028eacdc26a11ffe2b1f24f7caeaa8363ba93048d824cede5", size = 365435, upload-time = "2026-03-23T23:39:32.372Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1b/d3/e685b64e78ba21e3607a4a33134547eb1f86c5e2cc4ada3ea3216eda6a76/bengal_chirp-0.1.6-py3-none-any.whl", hash = "sha256:089b0830ba1a78166d9013065057f1d019d517adaa313da5ffb9383a503caca4", size = 251481, upload-time = "2026-03-06T19:29:25.2Z" },
+    { url = "https://files.pythonhosted.org/packages/ce/7d/b0063e6156844e628594bce792e6af27b156589cf5d22fed0beedff81341/bengal_chirp-0.2.0-py3-none-any.whl", hash = "sha256:d00d3cdc0ad1aae2e859551e5dfff744caf8eab217ef88647a86e812c73f77b3", size = 319789, upload-time = "2026-03-23T23:39:30.419Z" },
 ]
 
 [[package]]
@@ -210,7 +210,7 @@ docs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "bengal-chirp", marker = "extra == 'showcase'", specifier = ">=0.1.6" },
+    { name = "bengal-chirp", marker = "extra == 'showcase'", specifier = ">=0.2.0" },
     { name = "kida-templates", specifier = ">=0.2.9" },
 ]
 provides-extras = ["showcase"]
