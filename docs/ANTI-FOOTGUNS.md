@@ -42,6 +42,28 @@ Alpine directives like `x-show`, `x-bind`, `@click` resolve state from the neare
 </div>
 ```
 
+### Use `Alpine.safeData()` instead of `Alpine.data()` for named components
+
+`Alpine.data()` must be called during `alpine:init`, which only fires once on initial page load. Under htmx boosted navigation, swapped-in scripts that use `alpine:init` will not re-register their components — causing "X is not defined" errors.
+
+```html
+<!-- BAD: breaks on htmx navigation -->
+<script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('counter', () => ({ count: 0 }));
+});
+</script>
+
+<!-- GOOD: works on initial load AND htmx swaps -->
+<script>
+Alpine.safeData('counter', () => ({ count: 0 }));
+</script>
+```
+
+### Do not load Alpine.js yourself — Chirp is the single authority
+
+`use_chirp_ui(app)` auto-enables `alpine=True`, which injects Alpine core, all plugins (Mask, Intersect, Focus), store init, and the `safeData` helper. Adding your own `<script src="alpinejs">` tag will double-load Alpine and cause unpredictable behavior.
+
 ---
 
 ## chirp-ui Registration
