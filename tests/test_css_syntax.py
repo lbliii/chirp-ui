@@ -16,7 +16,8 @@ def test_chirpui_grid_direct_children_allow_shrink() -> None:
     assert ".chirpui-grid > *" in text
     start = text.index(".chirpui-grid > *")
     snippet = text[start : start + 200]
-    assert "min-width" in snippet and "0" in snippet
+    assert "min-width" in snippet
+    assert "0" in snippet
 
 
 def test_chirpui_css_has_no_parse_errors() -> None:
