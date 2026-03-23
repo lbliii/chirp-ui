@@ -1,6 +1,9 @@
 {#- chirp-ui: Sidebar component
     Vertical sidebar navigation for dashboards and admin panels.
 
+    Boosted links use hx-select="#main" so full-page GET responses only swap the
+    main column (avoids nesting a second app shell inside #main).
+
     Named slots: header, footer, default (nav content).
 
     Usage:
@@ -46,6 +49,7 @@
    hx-boost="true"
    hx-target="#main"
    hx-swap="innerHTML"
+   hx-select="#main"
    {% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span></a>
 {% end %}
 

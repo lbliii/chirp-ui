@@ -1,25 +1,6 @@
-{#- chirp-ui: Layout primitives — Tetris-inspired block system
-    Responsive container, grid, stack, and block macros for desktop-to-mobile layouts.
-
-    Usage:
-        {% from "chirpui/layout.html" import container, grid, stack, cluster, block %}
-
-        {% call container() %}
-            {% call grid(cols=2, gap="md") %}
-                {% call block() %}...{% end %}
-                {% call block() %}...{% end %}
-            {% end %}
-        {% end %}
-
-        {% call stack() %}
-            <p>Vertical stack with gap.</p>
-        {% end %}
-
-        {% call cluster(gap="sm") %}
-            <span>Inline</span>
-            <span>wrapping</span>
-            <span>cluster</span>
-        {% end %}
+{#- chirp-ui: Layout primitives — container, grid, stack, cluster, block macros.
+    Import from chirpui/layout.html and use call/ end for container(), grid(), etc.
+    (Usage examples omit template tags so doc comments stay valid under Kida.)
 -#}
 {% from "chirpui/surface.html" import surface %}
 {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
