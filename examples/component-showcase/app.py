@@ -167,6 +167,11 @@ async def layout() -> Template:
     return Template("showcase/layout.html")
 
 
+@app.route("/chrome", template="showcase/chrome.html")
+async def chrome() -> Template:
+    return Template("showcase/chrome.html")
+
+
 @app.route("/shell-actions", template="showcase/shell_actions.html")
 async def shell_actions() -> Template:
     actions = ShellActions(

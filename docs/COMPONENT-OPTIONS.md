@@ -242,6 +242,8 @@ Use `card(title="...", icon="⟳")` for config/settings cards. The `icon` render
 | `variant` | Optional: feature, media, horizontal, stats |
 | `border_variant` | Optional: gradient (gradient border via background-clip) |
 | `header_variant` | Optional: gradient (gradient in header strip) |
+| `attrs` | Raw extra attributes on the outer `<article>` / `<details>` (same pattern as `surface`) |
+| `attrs_map` | Mapping for extra attributes; use e.g. `{"id": "kpi-users"}` for `hx-target` on dashboard widgets |
 
 **Slots:** `header_actions`, `media`, `body_actions` (for list cards), default (body).
 

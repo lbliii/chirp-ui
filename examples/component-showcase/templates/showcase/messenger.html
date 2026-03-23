@@ -11,10 +11,11 @@
 {% from "chirpui/conversation_item.html" import conversation_item %}
 {% from "chirpui/reaction_pill.html" import reaction_pill, message_reactions %}
 {% from "chirpui/button.html" import btn %}
+{% from "chirpui/chat_layout.html" import chat_layout %}
 
 {% call container() %}
 {% call stack() %}
-{{ page_header("Messenger & Chat", subtitle="message_bubble, message_thread, typing_indicator, chat_input, conversation_list, reaction_pill.") }}
+{{ page_header("Messenger & Chat", subtitle="message_bubble, message_thread, typing_indicator, chat_input, conversation_list, reaction_pill, chat_layout.") }}
 
 {% call grid(cols=2) %}
 {% call block() %}
@@ -67,6 +68,29 @@
 {% call chat_input(action="/messenger", name="message", placeholder="Type a message...") %}
 {{ btn("Send", variant="primary", type="submit") }}
 {% end %}
+{% end %}
+
+<h2>Chat layout</h2>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-bottom: 0.5rem;">
+  Composable shell for messages + composer (+ optional activity column). Use <code>fill=true</code> with app shell
+  <code>chirpui-app-shell__main--fill</code> for full-viewport chat (see <code>docs/LAYOUT-VERTICAL.md</code>).
+</p>
+{% call block() %}
+<div style="height: 220px; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius-lg); overflow: hidden;">
+{% call chat_layout(show_activity=true, fill=false) %}
+{% slot messages %}
+<ul class="chirpui-message-thread" style="list-style: none; margin: 0; padding: 0.5rem;">
+  <li class="chirpui-font-sm">Message list slot — add <code>chirpui-chat-layout__messages-body</code> for SSE/HTMX roots.</li>
+</ul>
+{% end %}
+{% slot input %}
+<div class="chirpui-font-xs chirpui-text-muted" style="padding: 0.35rem 0.5rem;">Input slot (composer strip)</div>
+{% end %}
+{% slot activity %}
+<div class="chirpui-font-xs chirpui-text-muted" style="padding: 0.5rem;">Activity / model info slot</div>
+{% end %}
+{% end %}
+</div>
 {% end %}
 
 {% end %}

@@ -1229,6 +1229,22 @@ class TestCard:
         ).render()
         assert "chirpui-card custom" in html
 
+    def test_card_attrs_map_id_for_htmx_target(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="W", attrs_map={"id": "widget-usage"}) %}Body{% end %}'
+        ).render()
+        assert 'id="widget-usage"' in html
+        assert "chirpui-card__title" in html
+
+    def test_card_collapsible_attrs_map(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="T", collapsible=true, attrs_map={"id": "foldable"}) %}B{% end %}'
+        ).render()
+        assert "<details" in html
+        assert 'id="foldable"' in html
+
     def test_card_hoverable(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/card.html" import card %}{% call card(hoverable=true) %}Body{% end %}'

@@ -11,10 +11,21 @@
 {% from "chirpui/bento_grid.html" import bento_grid, bento_item %}
 {% from "chirpui/dock.html" import dock %}
 {% from "chirpui/notification_dot.html" import notification_dot %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
 
 {% call container() %}
 {% call stack() %}
-{{ page_header("Buttons & Enhanced Cards", subtitle="Effect buttons, glow cards, spotlight cards, bento grids, dock, and notification dots.") }}
+{{ page_header("Buttons & Enhanced Cards", subtitle="Effect buttons, icon buttons, glow cards, spotlight cards, bento grids, dock, and notification dots.") }}
+
+<h2>Icon button</h2>
+{% call cluster() %}
+{{ icon_btn("⚙", variant="ghost", aria_label="Settings") }}
+{{ icon_btn("✕", variant="danger", aria_label="Close") }}
+{{ icon_btn("◇", href="/layout", variant="default", aria_label="Go to layout") }}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  icon_btn — square icon-only control for toolbar and dense layouts.
+</p>
 
 <h2>Ripple Button</h2>
 <h3>Variants</h3>

@@ -21,8 +21,8 @@
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/description_list.html" import description_list %}
 
-{% def config_card(title, icon=none, items=none, cls="") %}
-{% call card(title=title, icon=icon) %}
+{% def config_card(title, icon=none, items=none, cls="", attrs="", attrs_map=none) %}
+{% call card(title=title, icon=icon, cls=cls, attrs=attrs, attrs_map=attrs_map) %}
 {% if items %}
 {{ description_list(items=items, variant="horizontal") }}
 {% else %}

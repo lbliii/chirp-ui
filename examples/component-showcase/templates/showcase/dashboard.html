@@ -9,10 +9,41 @@
 {% from "chirpui/bar_chart.html" import bar_chart %}
 {% from "chirpui/donut.html" import donut %}
 {% from "chirpui/config_dashboard.html" import config_dashboard %}
+{% from "chirpui/animated_counter.html" import animated_counter %}
+{% from "chirpui/config_card.html" import config_card %}
+{% from "chirpui/index_card.html" import index_card %}
 
 {% call container() %}
 {% call stack() %}
-{{ page_header("Dashboard Components", subtitle="Stat cards, config rows, settings rows, bar charts, and donut charts.") }}
+{{ page_header("Dashboard Components", subtitle="Stat cards, animated counters, config cards, index cards, config rows, bar charts, and donut charts.") }}
+
+<h2>Animated counter</h2>
+{% call block() %}
+<div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-end;">
+{{ animated_counter(1280, label="Active Users") }}
+{{ animated_counter(99, prefix="$", suffix="M", label="Revenue", variant="mono") }}
+</div>
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  animated_counter — CSS-driven count-up on load.
+</p>
+{% end %}
+
+<h2>Config card</h2>
+{% call block() %}
+{{ config_card(title="Pipeline", icon="◇", items=[
+    {"term": "enabled", "detail": "Yes", "type": "bool"},
+    {"term": "endpoint", "detail": "https://api.example.com", "type": "url"},
+    {"term": "retention_days", "detail": "14", "type": "number"},
+]) }}
+{% end %}
+
+<h2>Index card</h2>
+{% call block() %}
+<div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+{{ index_card(href="/dashboard", title="Dashboard", description="Metrics and charts.", badge="page") }}
+{{ index_card(href="/chrome", title="App chrome", description="Workspace shells and islands.") }}
+</div>
+{% end %}
 
 <h2>Animated Stat Cards</h2>
 {% call grid(cols=3) %}

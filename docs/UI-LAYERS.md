@@ -15,6 +15,19 @@ Authoritative site copy lives in **`site/content/docs/app-shell/ui-layers.md`**.
 
 Do **not** use “chrome” alone for the global frame; say **app shell** or name the region.
 
+## Surface chrome (dashboards & data tiles)
+
+Use this vocabulary when building analytics-style UIs inside `#page-content`:
+
+| Building block | Macros / CSS | Typical use |
+|----------------|--------------|-------------|
+| **Widget frame** | `card`, `metric_card`, `animated_stat_card`, `config_card` | Title row, body, optional `header_actions`; pass `attrs_map={"id": "…"}` on `card` (and composites that forward it) so `hx-target="#…"` does not need an extra wrapper. |
+| **Section grouping** | `section`, `surface` | Muted/elevated backgrounds behind a block of widgets; `section` adds `section_header`. |
+| **Toolbar / filters** | `filter_bar`, `action_strip`, `filter_chip` | Page- or region-level controls (often **page chrome** if they sit under `page_header`). |
+| **HTMX-safe swap root** | `fragment_island` / `safe_region` | Wrap a widget or region that updates in place so app-shell `hx-boost` / `hx-select` does not steal the swap. See [DND-FRAGMENT-ISLAND.md](./DND-FRAGMENT-ISLAND.md). |
+
+**App shell** (`app_shell_layout`) is separate: sidebar, topbar, `#main`. **Surface chrome** is everything that *looks like a card or panel* around chart/table/KPI content.
+
 ## Chirp imports
 
 ```python
