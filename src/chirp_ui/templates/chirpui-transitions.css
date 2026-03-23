@@ -40,9 +40,11 @@ dialog.chirpui-modal,
     box-shadow: none;
 }
 
-/* Fragment islands — partial swaps inside islands should not trigger
-   page-level view transitions. Apps no longer need transition:false
-   on every fragment hx-swap. */
+/* Fragment islands — removes this element from named view-transition
+   participation. However, swaps that target elements *inside*
+   #page-content still trigger the page-content VT (the parent animates,
+   not the island). Use hx-swap="innerHTML transition:false" on forms
+   that post to fragment endpoints to suppress the flash. */
 .chirpui-fragment-island {
     view-transition-name: none;
 }

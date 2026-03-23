@@ -77,6 +77,57 @@ Forms inside the included content use `hx-target="#update-result"`; the target i
 
 ---
 
+## Forms inside boosted layouts
+
+When a `<form>` with `hx-post` lives inside `#main` (which has `hx-select="#page-content"` via `boost.html` or `app_shell_layout.html`), two inheritance traps apply:
+
+### Trap 1: `hx-select` empties the swap
+
+The form inherits `hx-select="#page-content"` from `#main`. When the server returns a Fragment (just the block content, no `#page-content` wrapper), htmx filters the response for `#page-content`, finds nothing, and swaps in empty content.
+
+**`hx-disinherit="hx-select"` on the form is NOT sufficient** — it only prevents the form's *children* from inheriting `hx-select`. The form itself still inherits it.
+
+**Fix:** Add `hx-select="unset"` directly on the form to override the inherited value:
+
+```html
+<form hx-post="/chat/message"
+      hx-target="#composer-wrap"
+      hx-swap="innerHTML"
+      hx-select="unset"
+      hx-disinherit="hx-select">
+```
+
+### Trap 2: View transitions flash the page
+
+With `globalViewTransitions=true`, every htmx swap calls `document.startViewTransition()`. Even though `.chirpui-fragment-island` sets `view-transition-name: none` on the island element, the parent `#page-content` (which has `view-transition-name: page-content`) still animates — causing a visible fade/slide on every form submission.
+
+**Fix:** Add `transition:false` to `hx-swap`:
+
+```html
+<form hx-swap="innerHTML transition:false" ...>
+```
+
+### Complete pattern
+
+```html
+<form hx-post="/endpoint"
+      hx-target="#my-island"
+      hx-swap="innerHTML transition:false"
+      hx-select="unset"
+      hx-disinherit="hx-select">
+  <div id="my-island" class="chirpui-fragment-island"
+       hx-disinherit="hx-select hx-target hx-swap">
+    {% block my_fragment %}
+      ...inputs and controls...
+    {% end %}
+  </div>
+</form>
+```
+
+The server returns `Fragment("template.html", "my_fragment", ...)` and the swap replaces the island's inner content without inheriting the shell's selector or triggering page transitions.
+
+---
+
 ## Sortable List Reorder (sortable_list + HTMX)
 
 For chains, todo lists, setup targets: use `sortable_list` and `sortable_item` with a **hidden form** for reliable HTMX submission. Alpine 3 removed `$parent`, so use `dataset.draggingIdx` on the list element to pass the source index to the drop handler.
