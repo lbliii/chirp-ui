@@ -2340,6 +2340,7 @@ class TestSidebar:
         assert "chirpui-sidebar__nav" in html
         assert "chirpui-sidebar__link--active" in html
         assert "Dashboard" in html
+        assert 'hx-select="#main"' in html
 
     def test_sidebar_section(self, env: Environment) -> None:
         html = env.from_string(
@@ -3481,6 +3482,14 @@ class TestShimmerButton:
         assert "<a " in html
         assert 'href="/go"' in html
 
+    def test_type_and_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/shimmer_button.html" import shimmer_button %}'
+            '{{ shimmer_button("X", type="submit", attrs=\'data-testid="sb"\') }}'
+        ).render()
+        assert 'type="submit"' in html
+        assert 'data-testid="sb"' in html
+
 
 class TestRippleButton:
     def test_basic(self, env: Environment) -> None:
@@ -3510,6 +3519,13 @@ class TestBorderBeam:
             '{% call border_beam(variant="success") %}X{% end %}'
         ).render()
         assert "chirpui-border-beam--success" in html
+
+    def test_attrs_on_root(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/border_beam.html" import border_beam %}'
+            '{% call border_beam(attrs=\'data-testid="bb"\') %}Z{% end %}'
+        ).render()
+        assert 'data-testid="bb"' in html
 
 
 class TestNotificationDot:
@@ -3634,6 +3650,14 @@ class TestGlowCard:
         assert "x-data" in html
         assert "Feature" in html
 
+    def test_attrs_on_root(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/glow_card.html" import glow_card %}'
+            '{% call glow_card(attrs=\'data-testid="gc"\') %}F{% end %}'
+        ).render()
+        assert 'data-testid="gc"' in html
+        assert "@mousemove=" in html
+
 
 class TestSpotlightCard:
     def test_basic(self, env: Environment) -> None:
@@ -3643,6 +3667,13 @@ class TestSpotlightCard:
         ).render()
         assert "chirpui-spotlight-card" in html
         assert "chirpui-spotlight-card__spotlight" in html
+
+    def test_attrs_on_root(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/spotlight_card.html" import spotlight_card %}'
+            '{% call spotlight_card(attrs=\'data-testid="sc"\') %}C{% end %}'
+        ).render()
+        assert 'data-testid="sc"' in html
 
 
 class TestParticleBg:
@@ -4078,6 +4109,13 @@ class TestGrain:
             '{% from "chirpui/grain.html" import grain %}{% call grain(animated=true) %}X{% end %}'
         ).render()
         assert "chirpui-grain--animated" in html
+
+    def test_attrs_on_root(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/grain.html" import grain %}'
+            '{% call grain(attrs=\'data-testid="gr"\') %}P{% end %}'
+        ).render()
+        assert 'data-testid="gr"' in html
 
 
 class TestOrbit:

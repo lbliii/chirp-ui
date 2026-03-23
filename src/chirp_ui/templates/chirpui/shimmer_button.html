@@ -9,20 +9,27 @@
         shimmer_button("Learn More", href="/docs", icon="→")
 -#}
 
-{% def shimmer_button(text, variant="", size="", icon=none, href=none, cls="") %}
+{% def shimmer_button(text, variant="", size="", icon=none, href=none, cls="",
+           type="button", attrs="", attrs_map=none, disabled=false) %}
 {% set variant = variant | validate_variant(("", "default", "primary"), "") %}
 {% set size = size | validate_variant(("", "sm", "md", "lg"), "") %}
 {% set variant_class = " chirpui-shimmer-btn--" ~ variant if variant else "" %}
 {% set size_class = " chirpui-shimmer-btn--" ~ size if size else "" %}
 {% set base = "chirpui-shimmer-btn" ~ variant_class ~ size_class ~ (" " ~ cls if cls else "") %}
 {% if href %}
-<a href="{{ href }}" class="{{ base }}">
+<a href="{{ href }}" class="{{ base }}"
+   {% if disabled %}aria-disabled="true" tabindex="-1"{% end %}
+   {{ attrs | html_attrs }}
+   {{ attrs_map | html_attrs }}>
     <span class="chirpui-shimmer-btn__shimmer" aria-hidden="true"></span>
     {% if icon %}<span class="chirpui-shimmer-btn__icon">{{ icon | icon }}</span>{% end %}
     {{ text }}
 </a>
 {% else %}
-<button type="button" class="{{ base }}">
+<button type="{{ type }}" class="{{ base }}"
+        {% if disabled %}disabled{% end %}
+        {{ attrs | html_attrs }}
+        {{ attrs_map | html_attrs }}>
     <span class="chirpui-shimmer-btn__shimmer" aria-hidden="true"></span>
     {% if icon %}<span class="chirpui-shimmer-btn__icon">{{ icon | icon }}</span>{% end %}
     {{ text }}

@@ -13,10 +13,12 @@
         {% end %}
 -#}
 
-{% def grain(variant="", animated=false, cls="") %}
+{% def grain(variant="", animated=false, cls="", attrs="", attrs_map=none) %}
 {% set variant_cls = " chirpui-grain--" ~ variant if variant in ("heavy", "subtle") else "" %}
 {% set anim_cls = " chirpui-grain--animated" if animated else "" %}
-<div class="chirpui-grain{{ variant_cls }}{{ anim_cls }}{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-grain{{ variant_cls }}{{ anim_cls }}{{ " " ~ cls if cls else "" }}"
+     {{ attrs | html_attrs }}
+     {{ attrs_map | html_attrs }}>
     {% slot %}
 </div>
 {% end %}

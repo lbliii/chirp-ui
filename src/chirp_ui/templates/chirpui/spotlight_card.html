@@ -14,10 +14,12 @@
         end
 -#}
 
-{% def spotlight_card(variant="", cls="") %}
+{% def spotlight_card(variant="", cls="", attrs="", attrs_map=none) %}
 {% set variant = variant | validate_variant(("", "default", "accent"), "") %}
 {% set variant_class = " chirpui-spotlight-card--" ~ variant if variant else "" %}
-<div class="chirpui-spotlight-card{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-spotlight-card{{ variant_class }}{{ " " ~ cls if cls else "" }}"
+     {{ attrs | html_attrs }}
+     {{ attrs_map | html_attrs }}>
     <div class="chirpui-spotlight-card__spotlight" aria-hidden="true"></div>
     <div class="chirpui-spotlight-card__content">
         {% slot %}
