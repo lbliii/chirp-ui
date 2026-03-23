@@ -24,6 +24,12 @@ cascade:
 Install chirp-ui and wire it into your Chirp app.
 :::{/card}
 
+:::{card} Component showcase
+:icon: layout
+:link: /showcase/
+Browse every macro and pattern in a static, offline-friendly gallery.
+:::{/card}
+
 :::{card} Components
 :icon: layers
 :link: ./components/

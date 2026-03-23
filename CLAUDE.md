@@ -50,6 +50,17 @@ uv run poe ci            # full CI: lint + format + CSS + ty + tests
 
 Or via Make: `make test`, `make lint`, `make ty`, `make ci` (see `Makefile`).
 
+**Documentation site (Bengal)** — lives under `site/`; published to GitHub Pages like other b-stack repos.
+
+```bash
+uv sync --group docs
+uv run poe docs-build-all   # bengal site build + static showcase → site/public/showcase/
+# or: uv run poe docs-build && make showcase-public
+uv run poe docs-serve       # local preview (rebuild first for /showcase/)
+```
+
+Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
+
 ## Key conventions
 
 - **BEM class names** — all CSS classes use `chirpui-<block>` and `chirpui-<block>--<modifier>`.

@@ -3,6 +3,10 @@
 
 menu:
   extra:
+    - name: "Showcase"
+      url: "/showcase/"
+      weight: 15
+      icon: layers
     - name: "Forum"
       url: "https://bengal.discourse.group/"
       weight: 100
