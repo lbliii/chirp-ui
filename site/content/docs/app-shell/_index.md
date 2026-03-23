@@ -20,12 +20,14 @@ category: app-shell
   {% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
   {% call sidebar() %}
     {% call sidebar_section("Main") %}
-      {{ sidebar_link("/", "Home") }}
-      {{ sidebar_link("/items", "Items") }}
+      {{ sidebar_link("/", "Home", match="exact") }}
+      {{ sidebar_link("/items", "Items", match="prefix") }}
     {% end %}
   {% end %}
 {% end %}
 ```
+
+`match="exact"` highlights the link only when the URL matches exactly. `match="prefix"` highlights when the URL starts with the href (e.g. `/items/42` highlights the Items link). Chirp auto-injects `current_path` into template context, so `match=` works without manual `nav=` strings. After htmx navigation, a built-in client-side script keeps active states in sync.
 
 ## Components
 

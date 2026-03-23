@@ -1019,8 +1019,19 @@ Sidebar navigation for dashboards and app shells. Use `sidebar`, `sidebar_sectio
 |-------|--------|-------------|
 | `sidebar` | `cls` | Container with header, nav, footer slots |
 | `sidebar_section` | `title`, `collapsible`, `cls` | Section group; `collapsible=true` uses details/summary |
-| `sidebar_link` | `href`, `label`, `icon`, `active`, `cls` | Nav link; `icon` recommended for collapsible mode |
+| `sidebar_link` | `href`, `label`, `icon`, `active`, `match`, `boost`, `cls` | Nav link; `icon` recommended for collapsible mode |
 | `sidebar_toggle` | `cls` | Toggle button for icon-only collapsed state |
+
+### Active state
+
+Two approaches:
+
+- **`match=`** (recommended) — Automatic path comparison using `current_path` from the template context. `match="exact"` activates when `current_path == href`. `match="prefix"` activates when `current_path` starts with `href` (or equals it). Chirp auto-injects `current_path` for `Template(...)` and `Page(...)` returns; no manual `nav=` threading needed.
+- **`active=`** (explicit) — Pass a boolean directly. Use when active state depends on something other than the URL path (e.g. `active=is_admin`).
+
+When `match=` is set, it takes precedence over `active=`. Both emit `aria-current="page"` on active links.
+
+**Client-side sync:** `app_shell_layout.html` includes a built-in script that updates sidebar and navbar active classes after htmx history navigation (`htmx:pushedIntoHistory`, `htmx:replacedInHistory`). This covers the case where `hx-boost` swaps `#main` but leaves the sidebar DOM untouched.
 
 ### Usage
 
@@ -1028,13 +1039,19 @@ Sidebar navigation for dashboards and app shells. Use `sidebar`, `sidebar_sectio
 {% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
 {% call sidebar() %}
   {% call sidebar_section("Navigate") %}
-    {{ sidebar_link("/", "Home", icon="◉", active=cp == "/") }}
-    {{ sidebar_link("/skills", "Skills", icon="✦", active=cp.startswith("/skills")) }}
+    {{ sidebar_link("/", "Home", icon="◉", match="exact") }}
+    {{ sidebar_link("/skills", "Skills", icon="✦", match="prefix") }}
   {% end %}
   {% call sidebar_section("Settings") %}
-    {{ sidebar_link("/settings", "Config", icon="◇", active=cp.startswith("/settings")) }}
+    {{ sidebar_link("/settings", "Config", icon="◇", match="prefix") }}
   {% end %}
 {% end %}
+```
+
+Legacy `active=` still works for backward compatibility:
+
+```html
+{{ sidebar_link("/admin", "Admin", icon="⚙", active=is_admin) }}
 ```
 
 ### app_shell
