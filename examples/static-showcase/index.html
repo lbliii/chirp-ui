@@ -63,6 +63,7 @@
     <a href="#card-gradients">Gradient Cards</a>
     <a href="#effect-cards">Effect Cards</a>
     <a href="#metric-cards">Metric Cards</a>
+    <a href="#card-widget-root">Card widget root</a>
     <h3>Data Display</h3>
     <a href="#badges">Badges & Status</a>
     <a href="#progress">Progress & Charts</a>
@@ -342,6 +343,18 @@
                 <div class="chirpui-card__header-actions"><button class="chirpui-icon-btn chirpui-icon-btn--sm chirpui-icon-btn--ghost" aria-label="More"><span class="chirpui-icon-btn__icon">⋯</span></button></div>
             </header>
             <div class="chirpui-card__body"><p>Card with header actions and icon.</p></div>
+        </article>
+    </div>
+</section>
+
+<section class="sc-section" id="card-widget-root">
+    <h2>Card widget root (stable id)</h2>
+    <p class="desc">Surface chrome for dashboard tiles: set <code>id</code> on the outer <code>&lt;article&gt;</code> (or <code>&lt;a&gt;</code> for link KPIs) so HTMX can swap into it (<code>hx-target="#…"</code>). In Kida, use <code>card(…, attrs_map={"id": "my-widget"})</code> — same for <code>config_card</code> and <code>metric_card</code>.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid">
+        <article id="static-showcase-widget-demo" class="chirpui-card">
+            <header class="chirpui-card__header"><h3 class="chirpui-card__title">id="static-showcase-widget-demo"</h3></header>
+            <div class="chirpui-card__body"><p>Plain HTML preview of the element macros render.</p></div>
         </article>
     </div>
 </section>

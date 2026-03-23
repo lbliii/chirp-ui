@@ -3309,6 +3309,33 @@ class TestMetricGrid:
         assert "chirpui-card--link" in html
         assert "This week" in html
 
+    def test_metric_card_attrs_map_on_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value=1, label="N", attrs_map={"id": "kpi-open"}) }}'
+        ).render()
+        assert 'id="kpi-open"' in html
+        assert "chirpui-metric-card" in html
+
+    def test_metric_card_attrs_map_on_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value=1, label="N", href="/x", attrs_map={"id": "kpi-link"}) }}'
+        ).render()
+        assert 'id="kpi-link"' in html
+        assert 'href="/x"' in html
+
+
+class TestConfigCard:
+    def test_config_card_forwards_attrs_map_to_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/config_card.html" import config_card %}'
+            '{{ config_card(title="T", icon="◇", items=[{"term": "a", "detail": "b"}], '
+            'attrs_map={"id": "cfg-logs"}) }}'
+        ).render()
+        assert 'id="cfg-logs"' in html
+        assert "chirpui-card__title" in html
+
 
 class TestAppLayout:
     def test_app_layout_file_structure(self) -> None:

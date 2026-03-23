@@ -8,6 +8,7 @@
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/metric_grid.html" import metric_card, metric_grid %}
+{% from "chirpui/config_card.html" import config_card %}
 
 {% call container() %}
 {% call stack() %}
@@ -106,13 +107,30 @@
 {% end %}
 {% end %}
 
+<h2>Widget root (surface chrome + HTMX)</h2>
+<p class="chirpui-text-muted chirpui-font-sm">Pass <code>attrs_map={"id": "…"}</code> on <code>card</code>, <code>config_card</code>, or <code>metric_card</code> so the outer element is a stable <code>hx-target</code> without an extra wrapper <code>div</code>. See <code>docs/UI-LAYERS.md</code> (surface chrome).</p>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call card(title="Swappable panel", attrs_map={"id": "showcase-card-widget"}) %}
+<p>Outer element is <code>&lt;article id="showcase-card-widget"&gt;</code>.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{{ config_card(title="Pipeline", icon="◇", attrs_map={"id": "showcase-config-widget"}, items=[
+    {"term": "enabled", "detail": "Yes", "type": "bool"},
+    {"term": "endpoint", "detail": "https://api.example.com", "type": "url"},
+]) }}
+{% end %}
+{% end %}
+
 <h2>Metric Cards</h2>
 {% call block() %}
 {% call metric_grid() %}
   {{ metric_card(value=128, label="Open tasks", icon="status", href="/tasks", hint="Assigned to your team") }}
   {{ metric_card(value="99.9%", label="Uptime", icon="status", trend="+0.2% this week") }}
-  {{ metric_card(value=42, label="Threads", icon="sources", hint="Active this hour") }}
+  {{ metric_card(value=42, label="Threads", icon="sources", hint="Active this hour", attrs_map={"id": "showcase-kpi-widget"}) }}
 {% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">The Threads card uses <code>attrs_map={"id": "showcase-kpi-widget"}</code> on the outer card root.</p>
 {% end %}
 
 <h2>Alerts</h2>

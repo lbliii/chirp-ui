@@ -17,6 +17,8 @@
         ])
 
     Item types: bool (badge), url (monospace+truncate), number (right-align), unset (muted italic)
+
+    Forwards cls, attrs, attrs_map to card() — use attrs_map={"id": "..."} for hx-target on the widget root.
 -#}
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/description_list.html" import description_list %}

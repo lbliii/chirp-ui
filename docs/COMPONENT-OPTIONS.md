@@ -832,6 +832,8 @@ Key-value card for settings. Icon in header, no media. Uses `description_list` w
 
 Item `type`: `bool` (badge), `url` (monospace+truncate), `number` (right-align), `unset` (muted italic).
 
+Also accepts `cls`, `attrs`, and `attrs_map` — forwarded to `card` (use `attrs_map={"id": "…"}` for `hx-target` on the widget root).
+
 ### config_dashboard
 
 Composite for full settings pages: page_header + key_value_form + grid of config_cards + action_strip. Slots: `header_actions`, `form_result`, `config_cards`, `action_strip`.
@@ -860,6 +862,8 @@ Use these for dashboard KPIs and overview decks instead of hand-assembling a gri
 | `metric_card` | `value`, `label`, `icon` | Core KPI content |
 | `metric_card` | `trend`, `hint` | Optional supporting context |
 | `metric_card` | `href` | Optional clickable KPI destination |
+| `metric_card` | `icon_bg`, `footer_label`, `footer_href`, `cls` | Icon badge tint, optional footer link, extra classes |
+| `metric_card` | `attrs`, `attrs_map` | Forwarded to the outer `card` or `<a>` (e.g. `id` for HTMX) |
 
 ---
 
