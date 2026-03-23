@@ -429,7 +429,7 @@ Reusable titled pane for inspectors, activity feeds, file trees, and embedded si
 
 **Slots:** `actions`, default (body), `footer`.
 
-Use `panel()` when a region needs its own chrome and scroll behavior inside a larger page or workspace. This is the preferred primitive for activity rails, file explorers, and inspector panes.
+Use `panel()` when a region needs its own **surface chrome** (frame + scroll) inside a larger page or workspace. This is the preferred primitive for activity rails, file explorers, and inspector panes.
 
 ### file_tree
 
@@ -456,7 +456,7 @@ Workbench-oriented file explorer that composes `panel()` and `nav_tree()` into o
 
 **Slots:** `header`, `actions`, `footer`.
 
-Use `file_tree()` for CMS and IDE-like explorer rails where you want panel chrome and tree behavior together. For raw tree markup without panel chrome, keep using `nav_tree()`.
+Use `file_tree()` for CMS and IDE-like explorer rails where you want **panel** surface chrome and tree behavior together. For raw tree markup without that frame, keep using `nav_tree()`.
 
 ### split_layout
 

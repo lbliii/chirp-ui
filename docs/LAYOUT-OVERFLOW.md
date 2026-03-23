@@ -40,7 +40,7 @@ The default **`chirpui-grid`** uses **auto-fit** columns (`--chirpui-grid-min`).
 
 **`block(span=2)`** spans **two grid tracks** (not “half the page” unless tracks are equal). **`block(span="full")`** is **`grid-column: 1 / -1`** (full row). Example: first row = stats `span=2` + abilities; second row = BST **`span="full"`** so the BST card uses the full width instead of leaving empty cells.
 
-**`chirpui-bento`** / **`bento_grid()`** is a separate component: equal columns **or** inline `style="repeat(n, 1fr)"`, with **default card chrome** (border, padding). Use **`grid()` + preset** when you need **asymmetric `fr` tracks** or you are wrapping content in **`surface()`** yourself.
+**`chirpui-bento`** / **`bento_grid()`** is a separate component: equal columns **or** inline `style="repeat(n, 1fr)"`, with **default surface chrome** (card border, padding). Use **`grid()` + preset** when you need **asymmetric `fr` tracks** or you are wrapping content in **`surface()`** yourself.
 
 ## Related CSS in `chirpui.css`
 

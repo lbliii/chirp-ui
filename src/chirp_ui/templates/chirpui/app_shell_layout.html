@@ -31,6 +31,10 @@
     Full-height main (chat, maps): override {% block main_shell_class %} with
     chirpui-app-shell__main--fill so #page-content receives flex:1 and inner
     panels handle scroll. See docs/LAYOUT-VERTICAL.md.
+
+    HTMX: primary #main swap runs before out-of-band fragments; a beforeSwap
+    handler clears #chirp-shell-actions when the response includes shell-actions
+    OOB (see docs/UI-LAYERS.md).
 -#}
 {# target: body #}
 {% extends "chirp/layouts/shell.html" %}
@@ -115,6 +119,20 @@ document.body.addEventListener("htmx:configRequest", function(event) {
   }
   document.body.addEventListener("htmx:pushedIntoHistory", syncNav);
   document.body.addEventListener("htmx:replacedInHistory", syncNav);
+})();
+(function () {
+  function responseUpdatesShellActionsOob(xhr) {
+    if (!xhr || !xhr.responseText) return false;
+    var body = xhr.responseText;
+    return body.indexOf("chirp-shell-actions") !== -1 && body.indexOf("hx-swap-oob") !== -1;
+  }
+  document.body.addEventListener("htmx:beforeSwap", function (e) {
+    var t = e.detail && e.detail.target;
+    if (!t || t.id !== "main") return;
+    if (!responseUpdatesShellActionsOob(e.detail.xhr)) return;
+    var shell = document.getElementById("chirp-shell-actions");
+    if (shell) shell.replaceChildren();
+  });
 })();
 document.body.addEventListener("htmx:afterSwap", function(e) {
   var t = e.detail && e.detail.target;
