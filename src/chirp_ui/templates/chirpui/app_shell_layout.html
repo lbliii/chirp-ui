@@ -25,8 +25,9 @@
     Custom brand (override brand_link for non-/ href or custom markup):
         {% block brand_link %}{% call shell_brand_link(href="/projects") %}My App{% end %}{% end %}
 
-    Alpine: app_shell_layout includes Alpine.js. Use AppConfig(alpine=False) (default)
-    when extending this layout to avoid duplicate Alpine injection.
+    Alpine: Chirp injects Alpine.js via AppConfig(alpine=True) or automatically
+    when use_chirp_ui() is called.  This layout does NOT load Alpine itself —
+    Chirp is the single authority for Alpine injection.
 
     Full-height main (chat, maps): override {% block main_shell_class %} with
     chirpui-app-shell__main--fill so #page-content receives flex:1 and inner
@@ -47,16 +48,6 @@
 <link rel="stylesheet" href="/static/chirpui-transitions.css">
 <script>
 (function(){var t=localStorage.getItem("chirpui-theme")||"system";var s=localStorage.getItem("chirpui-style")||"default";document.documentElement.setAttribute("data-theme",t);document.documentElement.setAttribute("data-style",s);})();
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.14.0/dist/cdn.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.14.0/dist/cdn.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.14.0/dist/cdn.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
-<script>
-document.addEventListener("alpine:init",function(){
-  Alpine.store("modals",{});
-  Alpine.store("trays",{});
-});
 </script>
 {% block head_extra %}{% end %}
 {% end %}
@@ -140,7 +131,10 @@ document.body.addEventListener("htmx:afterSwap", function(e) {
 });
 document.body.addEventListener("htmx:afterSettle", function(e) {
   var t = e.detail && e.detail.target;
-  if (t && t.id === "main") { t.focus({preventScroll: true}); }
+  if (!t || t.id !== "main") return;
+  t.focus({preventScroll: true});
+  var pc = document.getElementById("page-content");
+  if (pc) { t.classList.toggle("chirpui-app-shell__main--fill", !!pc.querySelector(":scope > .chirpui-page-fill")); }
 });
 </script>
 {{ toast_container() }}

@@ -42,6 +42,12 @@ Flex and grid children default to `min-height: auto`, which can prevent shrinkin
 
 Swapping `#page-content` via HTMX does not change this contract: the same classes on the new fragment re-establish the flex chain on each navigation.
 
+### Boosted navigation and `--fill` sync
+
+When using `hx-boost` or sidebar navigation that swaps `#main`'s inner HTML, the `<main>` element's class list is not re-rendered — only the content inside `#page-content` changes. The `{% block main_shell_class %}` override only takes effect on full page loads.
+
+`app_shell_layout.html` handles this automatically: an `htmx:afterSettle` handler checks whether the new `#page-content` contains a direct child with `.chirpui-page-fill` and toggles `chirpui-app-shell__main--fill` on `#main` accordingly. No extra JS needed in app layouts.
+
 ## See also
 
 - [LAYOUT-OVERFLOW.md](LAYOUT-OVERFLOW.md) — horizontal overflow and the main column scrollport
