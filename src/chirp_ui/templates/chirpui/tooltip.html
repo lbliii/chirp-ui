@@ -18,7 +18,7 @@
 {% def tooltip(content=none, hint=none, position="top", cls="") %}
 {% set tooltip_text = hint if hint is not none else content %}
 {% set pos = position if position in ("top", "bottom", "left", "right") else "top" %}
-<span class="chirpui-tooltip chirpui-tooltip--{{ pos }}{{ " " ~ cls if cls else "" }}" data-chirpui-tooltip data-tooltip="{{ tooltip_text | e }}" title="{{ tooltip_text | e }}">
+<span class="chirpui-tooltip chirpui-tooltip--{{ pos }}{{ " " ~ cls if cls else "" }}" data-chirpui-tooltip data-tooltip="{{ tooltip_text | e }}">
     {% slot %}
     <span class="chirpui-tooltip__bubble" role="tooltip">{{ tooltip_text }}</span>
 </span>

@@ -2380,7 +2380,7 @@ class TestSidebar:
         assert "chirpui-sidebar__nav" in html
         assert "chirpui-sidebar__link--active" in html
         assert "Dashboard" in html
-        assert 'hx-select="#main"' in html
+        assert 'hx-select="#page-content"' in html
 
     def test_sidebar_section(self, env: Environment) -> None:
         html = env.from_string(
@@ -3244,7 +3244,6 @@ class TestTooltip:
         ).render()
         assert "chirpui-tooltip" in html
         assert 'data-tooltip="Help text"' in html
-        assert 'title="Help text"' in html
         assert "Hover me" in html
 
 

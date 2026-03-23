@@ -4,9 +4,14 @@
     Usage:
         {% from "chirpui/shell_actions.html" import shell_actions_bar %}
         {{ shell_actions_bar(shell_actions) }}
+
+    kind="form" — POST form with optional HTMX (set hx_post, hx_target, … on ShellAction).
+    CSRF: {{ csrf_field() }} when include_csrf is true (Chirp provides csrf_field in globals).
 -#}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/shimmer_button.html" import shimmer_button %}
+{% from "chirpui/pulsing_button.html" import pulsing_button %}
 
 {% def shell_action(action) %}
 {% if action.kind == "menu" %}
@@ -15,6 +20,26 @@
     items=action.menu_items,
     id="chirpui-shell-action-" ~ action.id
 ) }}
+{% elif action.kind == "form" %}
+<form method="{{ action.form_method }}" action="{{ action.form_action }}" class="chirpui-shell-action-form"
+      {% if action.hx_post %}hx-post="{{ action.hx_post }}"{% end %}
+      {% if action.hx_target %}hx-target="{{ action.hx_target }}"{% end %}
+      {% if action.hx_swap %}hx-swap="{{ action.hx_swap }}"{% end %}
+      {% if action.hx_disinherit %}hx-disinherit="{{ action.hx_disinherit }}"{% end %}>
+  {% if action.include_csrf %}
+  {{ csrf_field() }}
+  {% end %}
+  {% for name, value in action.hidden_fields %}
+  <input type="hidden" name="{{ name }}" value="{{ value }}">
+  {% endfor %}
+  {% if action.submit_surface == "shimmer" %}
+  {{ shimmer_button(action.label, variant=action.variant, type="submit", disabled=action.disabled) }}
+  {% elif action.submit_surface == "pulsing" %}
+  {{ pulsing_button(action.label, variant=action.variant, type="submit", disabled=action.disabled) }}
+  {% else %}
+  {{ btn(action.label, variant=action.variant, size=action.size, type="submit", icon=action.icon, disabled=action.disabled) }}
+  {% end %}
+</form>
 {% elif action.href %}
 {{ btn(action.label, variant=action.variant, size=action.size, href=action.href, icon=action.icon, disabled=action.disabled, data_action=action.action) }}
 {% else %}

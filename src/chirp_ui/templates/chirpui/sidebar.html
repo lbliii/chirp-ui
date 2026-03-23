@@ -1,8 +1,8 @@
 {#- chirp-ui: Sidebar component
     Vertical sidebar navigation for dashboards and admin panels.
 
-    Boosted links use hx-select="#main" so full-page GET responses only swap the
-    main column (avoids nesting a second app shell inside #main).
+    Boosted links use hx-select="#page-content" so full-page GET responses only
+    swap the page content inside #main (avoids nesting a second shell).
 
     Active state: use match= for automatic path comparison (requires current_path
     in template context), or active= for explicit control.
@@ -61,7 +61,7 @@
    hx-boost="true"
    hx-target="#main"
    hx-swap="innerHTML"
-   hx-select="#main"
+   hx-select="#page-content"
    {% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span></a>
 {% end %}
 

@@ -29,6 +29,10 @@ category: app-shell
 
 `match="exact"` highlights the link only when the URL matches exactly. `match="prefix"` highlights when the URL starts with the href (e.g. `/items/42` highlights the Items link). Chirp auto-injects `current_path` into template context, so `match=` works without manual `nav=` strings. After htmx navigation, a built-in client-side script keeps active states in sync.
 
+## Layout overflow
+
+The shell main area clips horizontal overflow and scrolls vertically. Build pages with **`grid()` + `block()`**, **`cluster()`**, and wrapping indicator rows so content stays in column; use **`overflow-x: auto`** only on inner wrappers for wide tables or code. See the repo doc **`docs/LAYOUT-OVERFLOW.md`** for the full checklist.
+
 ## Components
 
 - **sidebar** — Collapsible navigation with sections
@@ -151,7 +155,7 @@ ChirpUI registers its page shell contract via `use_chirp_ui()`. That contract ma
 | `#page-root` | `page_root_inner` | Tab clicks (tabs + content) |
 | `#page-content-inner` | `page_content` | Narrow content swaps |
 
-`<main id="main">` carries `hx-boost="true"`, `hx-target="#main"`, `hx-swap="outerHTML"`, and `hx-select="#main"` — all links inside inherit SPA navigation automatically. Sidebar links (outside `#main`) carry their own `hx-target="#main"` via `sidebar_link()`. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
+`<main id="main">` carries `hx-boost="true"`, `hx-target="#main"`, `hx-swap="innerHTML"`, and `hx-select="#page-content"` — all links inside inherit SPA navigation automatically. The `#main` element persists in the DOM (never replaced), so its `view-transition-name` is never duplicated during swaps. Content is wrapped in `<div id="page-content">` inside `#main`. Sidebar links (outside `#main`) carry their own `hx-target="#main"` via `sidebar_link()`. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
 
 ## Debugging
 

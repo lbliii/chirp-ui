@@ -316,6 +316,20 @@
     --chirpui-modal-width-lg: 48rem;
     --chirpui-toast-width: 24rem;
 
+    /* Tooltip — maps to theme (default matches floating menus); invert via tokens if needed */
+    --chirpui-tooltip-bg: var(--chirpui-surface);
+    --chirpui-tooltip-fg: var(--chirpui-text);
+    --chirpui-tooltip-border: 1px solid var(--chirpui-border);
+    --chirpui-tooltip-shadow: var(--chirpui-elevation-floating);
+    --chirpui-tooltip-radius: var(--chirpui-radius-sm);
+    --chirpui-tooltip-font-size: var(--chirpui-ui-xs);
+    --chirpui-tooltip-font-weight: var(--chirpui-ui-font-weight-medium);
+    --chirpui-tooltip-line-height: var(--chirpui-line-height-tight);
+    --chirpui-tooltip-padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    --chirpui-tooltip-gap: var(--chirpui-spacing-sm);
+    --chirpui-tooltip-max-width: min(16rem, 85vw);
+    --chirpui-tooltip-z: 50;
+
     /* Alert variants */
     --chirpui-alert-info-bg: light-dark(#eff6ff, #1e3a5f);
     --chirpui-alert-info-border: light-dark(#bfdbfe, #3b82f6);
@@ -2269,50 +2283,6 @@ a.chirpui-mention:hover {
 a.chirpui-mention:focus-visible {
     outline: var(--chirpui-state-focus-outline);
     outline-offset: var(--chirpui-state-focus-offset);
-}
-
-/* ==========================================================================
-   Tooltip
-   ========================================================================== */
-
-.chirpui-tooltip {
-    position: relative;
-}
-
-.chirpui-tooltip::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-0.25rem) scale(0.95);
-    transform-origin: bottom center;
-    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
-    font-size: var(--chirpui-font-xs);
-    white-space: nowrap;
-    background: var(--chirpui-text);
-    color: var(--chirpui-surface);
-    border-radius: var(--chirpui-radius-sm);
-    box-shadow: var(--chirpui-elevation-floating);
-    opacity: 0;
-    pointer-events: none;
-    transition:
-        opacity var(--chirpui-transition),
-        transform var(--chirpui-transition);
-    transition-delay: 0ms;
-}
-
-.chirpui-tooltip:hover::after,
-.chirpui-tooltip:focus-visible::after {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-0.5rem) scale(1);
-    transition-delay: 150ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .chirpui-tooltip::after {
-        transition: none;
-        transition-delay: 0ms;
-    }
 }
 
 /* ==========================================================================
@@ -6486,7 +6456,7 @@ a.chirpui-tag:active {
 [data-style="neumorphic"] .chirpui-popover__panel,
 [data-style="neumorphic"] .chirpui-tray[data-tray-id] .chirpui-tray__panel,
 [data-style="neumorphic"] .chirpui-modal[data-modal-id] .chirpui-modal__panel,
-[data-style="neumorphic"] .chirpui-tooltip::after {
+[data-style="neumorphic"] .chirpui-tooltip__bubble {
     background: linear-gradient(
         145deg,
         color-mix(in srgb, white 30%, var(--chirpui-neu-surface)),
@@ -6496,6 +6466,14 @@ a.chirpui-tag:active {
     border-bottom-color: var(--chirpui-neu-lowlight-border);
     border-right-color: var(--chirpui-neu-lowlight-border);
     box-shadow: var(--chirpui-neu-raised);
+}
+
+[data-style="neumorphic"] .chirpui-tooltip__bubble::after {
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 30%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
 }
 
 [data-style="neumorphic"] .chirpui-stat {
@@ -6552,8 +6530,16 @@ a.chirpui-tag:active {
         .chirpui-popover__panel,
         .chirpui-tray[data-tray-id] .chirpui-tray__panel,
         .chirpui-modal[data-modal-id] .chirpui-modal__panel,
-        .chirpui-tooltip::after
+        .chirpui-tooltip__bubble
     ) {
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 10%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
+}
+
+[data-theme="dark"][data-style="neumorphic"] .chirpui-tooltip__bubble::after {
     background: linear-gradient(
         145deg,
         color-mix(in srgb, white 10%, var(--chirpui-neu-surface)),
@@ -9177,6 +9163,7 @@ body:has(> .chirpui-app-shell) {
     position: relative;
     min-height: 0;
     min-width: 0;
+    overflow-x: clip;
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: var(--chirpui-spacing-lg);
@@ -10407,26 +10394,36 @@ body:has(> .chirpui-app-shell) {
 }
 .chirpui-tooltip__bubble {
     position: absolute;
-    z-index: 50;
-    padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
-    font-size: var(--chirpui-font-xs);
-    font-weight: 500;
-    color: var(--chirpui-bg);
-    background: var(--chirpui-text);
-    border-radius: var(--chirpui-radius-sm);
-    white-space: nowrap;
+    z-index: var(--chirpui-tooltip-z);
+    box-sizing: border-box;
+    max-width: var(--chirpui-tooltip-max-width);
+    padding: var(--chirpui-tooltip-padding);
+    border: var(--chirpui-tooltip-border);
+    border-radius: var(--chirpui-tooltip-radius);
+    background: var(--chirpui-tooltip-bg);
+    color: var(--chirpui-tooltip-fg);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-tooltip-font-size);
+    font-weight: var(--chirpui-tooltip-font-weight);
+    line-height: var(--chirpui-tooltip-line-height);
+    text-align: center;
+    text-wrap: balance;
+    white-space: normal;
     pointer-events: none;
     opacity: 0;
     transform: scale(0.95);
-    transition: opacity var(--chirpui-motion-fast), transform var(--chirpui-motion-fast);
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    box-shadow: var(--chirpui-tooltip-shadow);
+    transition:
+        opacity var(--chirpui-motion-fast) var(--chirpui-ease-decel),
+        transform var(--chirpui-motion-fast) var(--chirpui-ease-decel);
 }
 .chirpui-tooltip__bubble::after {
     content: "";
     position: absolute;
     width: 6px;
     height: 6px;
-    background: var(--chirpui-text);
+    box-sizing: border-box;
+    background: var(--chirpui-tooltip-bg);
     transform: rotate(45deg);
 }
 /* Ensure tooltip bubbles escape overflow:hidden ancestors */
@@ -10439,7 +10436,7 @@ body:has(> .chirpui-app-shell) {
 
 /* Tooltip positions */
 .chirpui-tooltip--top .chirpui-tooltip__bubble {
-    bottom: calc(100% + 8px);
+    bottom: calc(100% + var(--chirpui-tooltip-gap));
     left: 50%;
     transform: translateX(-50%) scale(0.95);
 }
@@ -10454,7 +10451,7 @@ body:has(> .chirpui-app-shell) {
 }
 
 .chirpui-tooltip--bottom .chirpui-tooltip__bubble {
-    top: calc(100% + 8px);
+    top: calc(100% + var(--chirpui-tooltip-gap));
     left: 50%;
     transform: translateX(-50%) scale(0.95);
 }
@@ -10469,7 +10466,7 @@ body:has(> .chirpui-app-shell) {
 }
 
 .chirpui-tooltip--left .chirpui-tooltip__bubble {
-    right: calc(100% + 8px);
+    right: calc(100% + var(--chirpui-tooltip-gap));
     top: 50%;
     transform: translateY(-50%) scale(0.95);
 }
@@ -10484,7 +10481,7 @@ body:has(> .chirpui-app-shell) {
 }
 
 .chirpui-tooltip--right .chirpui-tooltip__bubble {
-    left: calc(100% + 8px);
+    left: calc(100% + var(--chirpui-tooltip-gap));
     top: 50%;
     transform: translateY(-50%) scale(0.95);
 }
@@ -10498,6 +10495,11 @@ body:has(> .chirpui-app-shell) {
     margin-top: -3px;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-tooltip__bubble {
+        transition: none;
+    }
+}
 
 /* ==========================================================================
    Icon Button

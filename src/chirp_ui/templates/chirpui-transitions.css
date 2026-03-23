@@ -5,10 +5,10 @@
    overrides that to scope transitions to #main so the app shell (topbar,
    sidebar) stays frozen during navigation. Only the page content animates.
 
-   #main is always a singleton (by id), so view-transition-name pairing
-   works correctly for both htmx swaps (SPA) and MPA navigations.
-   Modals use view-transition-name: none because multiple dialogs can
-   coexist and would duplicate the name.
+   #main persists in the DOM (innerHTML swap, not outerHTML) so
+   view-transition-name pairing works correctly for both htmx swaps
+   (SPA) and MPA navigations. Modals use view-transition-name: none
+   because multiple dialogs can coexist and would duplicate the name.
 */
 
 /* Scope transitions to the main content area */

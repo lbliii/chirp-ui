@@ -4,6 +4,14 @@ Common pitfalls and how to avoid them.
 
 ---
 
+## Layout and horizontal scroll
+
+The main column (`.chirpui-app-shell__main`) uses **`min-width: 0`** and **`overflow-x: clip`**. If the page scrolls sideways, something inside the content is wider than the column—usually a **non-wrapping flex row**, a **custom grid without `min-width: 0` on children**, or **wide tables** without an `overflow-x: auto` wrapper.
+
+**Fix:** Prefer `grid()` + `block()`, `cluster()`, and default-wrapping `indicator_row()`. For custom grids, use **`minmax(0, 1fr)`** tracks and **`min-width: 0`** on items. Full checklist: [LAYOUT-OVERFLOW.md](LAYOUT-OVERFLOW.md).
+
+---
+
 ## Fragment Island and HTMX
 
 ### `hx-target` must match island ID
