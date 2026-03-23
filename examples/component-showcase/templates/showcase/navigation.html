@@ -27,7 +27,7 @@
 {% end %}
 {{ navbar_link("/layout", "Layout") }}
 {{ navbar_link("/forms", "Forms") }}
-{{ navbar_link("/ui", "UI", active=true) }}
+{{ navbar_link("/ui", "UI", match="prefix") }}
 {% end %}
 {% end %}
 
@@ -44,7 +44,7 @@
 {% call block() %}
 {% call sidebar() %}
 {{ sidebar_section("Main") }}
-{{ sidebar_link("/dashboard", "Dashboard", active=true) }}
+{{ sidebar_link("/dashboard", "Dashboard", match="prefix") }}
 {{ sidebar_link("/settings", "Settings") }}
 {{ sidebar_section("Admin") }}
 {{ sidebar_link("/users", "Users") }}

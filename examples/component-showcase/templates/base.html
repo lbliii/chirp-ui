@@ -13,46 +13,46 @@
 {% call sidebar() %}
 
 {% call sidebar_section("Core") %}
-{{ sidebar_link("/", "Home", icon="sources") }}
-{{ sidebar_link("/demo", "Quick Demo", icon="actions") }}
+{{ sidebar_link("/", "Home", icon="sources", match="exact") }}
+{{ sidebar_link("/demo", "Quick Demo", icon="actions", match="prefix") }}
 {% end %}
 
 {% call sidebar_section("Components") %}
-{{ sidebar_link("/navigation", "Navigation") }}
-{{ sidebar_link("/layout", "Layout") }}
-{{ sidebar_link("/shell-actions", "Shell Actions") }}
-{{ sidebar_link("/sections", "Sections") }}
-{{ sidebar_link("/carousel", "Carousel") }}
-{{ sidebar_link("/cards", "Cards & Alerts") }}
-{{ sidebar_link("/forms", "Forms") }}
-{{ sidebar_link("/ui", "UI Components") }}
+{{ sidebar_link("/navigation", "Navigation", match="prefix") }}
+{{ sidebar_link("/layout", "Layout", match="prefix") }}
+{{ sidebar_link("/shell-actions", "Shell Actions", match="prefix") }}
+{{ sidebar_link("/sections", "Sections", match="prefix") }}
+{{ sidebar_link("/carousel", "Carousel", match="prefix") }}
+{{ sidebar_link("/cards", "Cards & Alerts", match="prefix") }}
+{{ sidebar_link("/forms", "Forms", match="prefix") }}
+{{ sidebar_link("/ui", "UI Components", match="prefix") }}
 {% end %}
 
 {% call sidebar_section("Data") %}
-{{ sidebar_link("/data-display", "Data Display") }}
-{{ sidebar_link("/data", "Team Roster") }}
-{{ sidebar_link("/calendar", "Calendar") }}
-{{ sidebar_link("/dashboard", "Dashboard") }}
+{{ sidebar_link("/data-display", "Data Display", match="prefix") }}
+{{ sidebar_link("/data", "Team Roster", match="exact") }}
+{{ sidebar_link("/calendar", "Calendar", match="prefix") }}
+{{ sidebar_link("/dashboard", "Dashboard", match="prefix") }}
 {% end %}
 
 {% call sidebar_section("Effects") %}
-{{ sidebar_link("/effects", "Visual Effects") }}
-{{ sidebar_link("/typography", "Typography") }}
-{{ sidebar_link("/animation", "Animation") }}
+{{ sidebar_link("/effects", "Visual Effects", match="prefix") }}
+{{ sidebar_link("/typography", "Typography", match="prefix") }}
+{{ sidebar_link("/animation", "Animation", match="prefix") }}
 {% end %}
 
 {% call sidebar_section("ASCII") %}
-{{ sidebar_link("/ascii", "ASCII Icons") }}
-{{ sidebar_link("/ascii-primitives", "ASCII Primitives") }}
+{{ sidebar_link("/ascii", "ASCII Icons", match="exact") }}
+{{ sidebar_link("/ascii-primitives", "ASCII Primitives", match="prefix") }}
 {% end %}
 
 {% call sidebar_section("Rich") %}
-{{ sidebar_link("/buttons", "Buttons & Cards") }}
-{{ sidebar_link("/streaming", "Streaming & AI") }}
-{{ sidebar_link("/islands", "Islands") }}
-{{ sidebar_link("/messenger", "Messenger") }}
-{{ sidebar_link("/social", "Social Media") }}
-{{ sidebar_link("/video", "Video Platform") }}
+{{ sidebar_link("/buttons", "Buttons & Cards", match="prefix") }}
+{{ sidebar_link("/streaming", "Streaming & AI", match="prefix") }}
+{{ sidebar_link("/islands", "Islands", match="prefix") }}
+{{ sidebar_link("/messenger", "Messenger", match="prefix") }}
+{{ sidebar_link("/social", "Social Media", match="prefix") }}
+{{ sidebar_link("/video", "Video Platform", match="prefix") }}
 {% end %}
 
 {% end %}
