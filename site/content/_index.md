@@ -18,8 +18,11 @@ cta_buttons:
   - text: Component showcase
     url: /showcase/
     style: secondary
-  - text: Components
-    url: /docs/components/
+  - text: Guides
+    url: /docs/guides/
+    style: secondary
+  - text: Reference
+    url: /docs/reference/
     style: secondary
 
 show_recent_posts: false

@@ -11,41 +11,41 @@ category: components
 
 # Components
 
-chirp-ui provides Kida macros organized by category. Import from `chirpui/` and use with `{% call %}`.
+chirp-ui ships many Kida templates under `chirpui/`. Import with `{% from "chirpui/...." import ... %}` and compose with `{% call %}`.
 
-## Categories
+## Reference by category
 
-| Category | Examples |
-|----------|----------|
-| **Layout** | container, grid, stack, block, page_header, section_header, divider, breadcrumbs, navbar, sidebar, hero, surface, callout |
-| **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group |
-| **Forms** | text_field, password_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field |
-| **Data display** | badge, spinner, skeleton, progress, [description_list](./type-aware-rendering.md) (type-aware), timeline, tree_view, calendar |
-| **Streaming** | streaming_block, copy_btn, model_card — for htmx SSE and LLM UIs |
-| **Mutation helpers** | fragment_island, fragment_island_with_result, poll_trigger, confirm_dialog, confirm_trigger |
+| Topic | Page |
+|-------|------|
+| **Layout** | [Layout](./layout.md) — container, grid, frame, stack, cluster, block, headers |
+| **Cards** | [Cards](./cards.md) — card, glow, spotlight, index, config |
+| **Buttons** | [Buttons](./buttons.md) — btn, icon, shimmer, ripple, pulsing, split, copy |
+| **Modals & drawers** | [Modals and drawers](./modals-and-drawers.md) — modal, drawer, tray, confirm, popover, tooltip |
+| **Alerts** | [Alerts and feedback](./alerts-and-feedback.md) — alert, toast, empty, skeleton, spinner, progress |
+| **Navigation** | [Navigation](./navigation.md) — sidebar, navbar, breadcrumbs, pagination, command palette |
+| **Tabs** | [Tabs](./tabs.md) — route_tabs, tabs, tabbed layout |
+| **Forms** | [Forms](./forms.md) — fields, fieldset, form_actions |
+| **Tables & data** | [Tables and data](./tables-and-data.md) — table, description_list, tree, sortable |
+| **Charts & stats** | [Charts and stats](./charts-and-stats.md) — bar, donut, stat, metric grid |
+| **Headers** | [Headers](./headers.md) — page, section, entity, document, profile |
+| **Status** | [Status indicators](./status-indicators.md) — badge, status, live, notification dot |
+| **Media** | [Avatars and media](./avatars-and-media.md) — avatar, media object, video, carousel |
+| **Social & chat** | [Social and chat](./social-and-chat.md) — messages, chat input, typing |
+| **Streaming** | [Streaming](./streaming.md) — SSE / LLM blocks |
+| **ASCII** | [ASCII kit](./ascii-kit.md) — retro terminal components |
+| **Effects** | [Effects](./effects.md) — backgrounds, particles, ambient |
+| **Typography FX** | [Typography effects](./typography-effects.md) — gradient, glitch, neon, typewriter |
+| **Type-aware** | [Type-aware rendering](./type-aware-rendering.md) — `description_item`, `value_type` |
 
-See the [component showcase](https://github.com/lbliii/chirp-ui#usage) for live examples. Run:
+## Live examples
 
-```bash
-pip install chirp chirp-ui
-python examples/component-showcase/app.py
-```
-
-Open http://localhost:8000
+Run the component showcase locally (see [README](https://github.com/lbliii/chirp-ui#usage)) or browse the **[Showcase](/showcase/)** on this site after build.
 
 ## Mutation helpers
 
-For server-driven dashboards and settings pages, chirp-ui also ships a small set
-of macros that standardize common htmx patterns:
+For server-driven dashboards:
 
-- `fragment_island(...)` wraps a target region that is refreshed independently
-- `fragment_island_with_result(...)` pairs a controls region with a result pane
-- `poll_trigger(url, target, delay=...)` renders the hidden polling button used
-  for load-time or delayed refreshes
-- `confirm_dialog(...)` and `confirm_trigger(...)` provide consistent
-  confirmation flows around destructive or high-friction actions
-
-Example:
+- `fragment_island`, `fragment_island_with_result` — isolated targets; see [HTMX patterns](../guides/htmx-patterns.md).
 
 ```html
 {% from "chirpui/fragment_island.html" import poll_trigger %}
@@ -54,4 +54,8 @@ Example:
 {{ poll_trigger("/collections/status?refresh=1", "#collection-status", delay="1s") }}
 ```
 
-Use these helpers instead of hand-writing hidden htmx buttons in each template.
+## Related
+
+- [Concepts](../concepts/_index.md)
+- [Guides](../guides/_index.md)
+- [Reference](../reference/_index.md)

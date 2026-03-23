@@ -110,13 +110,12 @@ wheels = [
 
 [[package]]
 name = "bengal"
-version = "0.2.5"
+version = "0.2.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "bengal-pounce" },
     { name = "click" },
     { name = "httpx" },
-    { name = "jinja2" },
     { name = "jsmin" },
     { name = "kida-templates" },
     { name = "packaging" },
@@ -131,9 +130,9 @@ dependencies = [
     { name = "uvloop", marker = "sys_platform != 'win32'" },
     { name = "watchfiles" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f6/97/aefd07d0d763019c68e262de88ff3dd5fc2fffb96b378f21bd239f647b39/bengal-0.2.5.tar.gz", hash = "sha256:01310cc8662a6f2270abbc3faaf8f8fd0c6b49109e71441f906a2ad36a71067e", size = 3203897, upload-time = "2026-03-04T00:23:12.814Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3c/78/bcb8fdd49a70c1fc3ff2cddd81ffee13033b40858cc3861d3794f1de052e/bengal-0.2.6.tar.gz", hash = "sha256:549b2bbd9ec2ab76d29c6f7be1f50ee64a901101dd2ee5e55d75168917c70e4f", size = 3230706, upload-time = "2026-03-19T14:49:51.907Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5d/0c/05748a596598410eb495703fdf49dd3e61859f793d3f1623d6051f20a6b0/bengal-0.2.5-py3-none-any.whl", hash = "sha256:541955ab78554366655be9e58f5ae1ee342a823f55381de1649242cce96d4c41", size = 3898567, upload-time = "2026-03-04T00:23:09.816Z" },
+    { url = "https://files.pythonhosted.org/packages/23/6d/b64f8baaf356fd9900a548f6dc449abd700a66d28fe9d9a29759270c602f/bengal-0.2.6-py3-none-any.whl", hash = "sha256:824b0d511d925babf5b1b99aec5889da6d245665fcf81f289a7bd80d2c188205", size = 3929370, upload-time = "2026-03-19T14:49:49.301Z" },
 ]
 
 [[package]]
@@ -152,14 +151,14 @@ wheels = [
 
 [[package]]
 name = "bengal-pounce"
-version = "0.2.1"
+version = "0.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "h11" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f9/36/87c623ab692cf197ffa3936903af087324f70ef442e78ee5f1064cdc554c/bengal_pounce-0.2.1.tar.gz", hash = "sha256:b8eac735e96be9be25c187c75c5d489d2fb4ccbbe63c6e1090834ad8de4a98d5", size = 108922, upload-time = "2026-03-06T18:30:47.302Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/61/2b/eb143e3a406cbc89b8a8d101792be2b4dd841d1476e94bf41cb6844836ef/bengal_pounce-0.3.1.tar.gz", hash = "sha256:dfe13f74273fe8f42dc67dfbbd9bd6b7ac30d769b84e95645003b14dec3905ba", size = 126749, upload-time = "2026-03-20T19:57:28.711Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/63/a1/dd195ba643b3a0e3ad9329be6c3b1e28f5bb199f6249511640fce6955040/bengal_pounce-0.2.1-py3-none-any.whl", hash = "sha256:5e304c4128b2468ad5cc8f1ef49c9494a8e93dc801069c49f516002e639c0115", size = 133288, upload-time = "2026-03-06T18:30:45.67Z" },
+    { url = "https://files.pythonhosted.org/packages/81/2e/21214e908e01975520ba42c482c6ff9bbaa43e2c4230ea8fc90cd445fea3/bengal_pounce-0.3.1-py3-none-any.whl", hash = "sha256:9529b25ce9fdfce40b62d7ae92e8deb9fbf7b7761ac6249a05d9a2bc0ec6f071", size = 154439, upload-time = "2026-03-20T19:57:27.43Z" },
 ]
 
 [[package]]
@@ -228,7 +227,7 @@ dev = [
     { name = "ty", specifier = ">=0.0.11" },
 ]
 docs = [
-    { name = "bengal", specifier = ">=0.2.0" },
+    { name = "bengal", specifier = ">=0.2.6" },
     { name = "lunr", specifier = ">=0.7.0" },
 ]
 
@@ -605,14 +604,14 @@ wheels = [
 
 [[package]]
 name = "patitas"
-version = "0.3.4"
+version = "0.3.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/05/d4/68258a484f53c9517f483000dc8a13f39782a1e458615dac87e1a45a566b/patitas-0.3.4.tar.gz", hash = "sha256:d59f2f90a55eeee746fd4941f37cf0dfb1d1916da7cfdc174d6dfbd0927b4720", size = 220624, upload-time = "2026-03-06T16:56:53.428Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a9/f2/5515ccb29656ba4285dca0325fa581229f945815975ed9735eb5a96fa428/patitas-0.3.5.tar.gz", hash = "sha256:5944be9ef0fd2573852c785ee80039412cea02fdc1296abf9b5b1d27fe862eb1", size = 221352, upload-time = "2026-03-09T21:54:06.804Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/ea/c7867d8018e517123256f8ffb1c52ceef652ea89f8e35ea251f315361f69/patitas-0.3.4-py3-none-any.whl", hash = "sha256:9d0f83bddd98315f8997d10a65899ad67627f7773a4710899686e4f14a6acaa3", size = 214360, upload-time = "2026-03-06T16:56:51.571Z" },
+    { url = "https://files.pythonhosted.org/packages/a5/00/a73e99e95487add89d890ee3703c8143ee8e7caeccfab8cb90792d29709f/patitas-0.3.5-py3-none-any.whl", hash = "sha256:da841c65f036ec159065bf5c302bf416ba95e1511b8243676e8ceb390205271b", size = 214833, upload-time = "2026-03-09T21:54:05.499Z" },
 ]
 
 [[package]]

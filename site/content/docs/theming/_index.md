@@ -1,39 +1,57 @@
 ---
 title: Theming
-description: CSS variables, dark mode, and customization
+description: Tokens, typography, color, motion, and custom themes
 draft: false
 weight: 30
 lang: en
 type: doc
-keywords: [chirp-ui, theming, css, dark mode, variables]
+keywords: [chirp-ui, theming, css, tokens]
 category: theming
 ---
 
 # Theming
 
-chirp-ui uses `prefers-color-scheme` for dark mode. Override any `--chirpui-*` variable to customize.
+chirp-ui is driven by **`--chirpui-*` CSS variables** and optional `data-theme` / `data-style` attributes. Override tokens instead of forking component CSS when possible.
 
-## Base Variables
+:::{cards}
+:columns: 2
+:gap: medium
 
-```css
-:root {
-    --chirpui-accent: #7c3aed;
-    --chirpui-container-max: 80rem;
-}
-```
+:::{card} Design tokens
+:icon: sliders
+:link: ./design-tokens.md
+Spacing, elevation, state, motion tiers.
+:::{/card}
 
-Base colors drive derived states (hover, active, light, muted) via `color-mix()`.
+:::{card} Typography
+:icon: text-t
+:link: ./typography.md
+UI vs prose scales, weights, utilities.
+:::{/card}
 
-## Manual Light/Dark Toggle
+:::{card} Color system
+:icon: palette
+:link: ./color-system.md
+Palettes, `resolve_color`, `register_colors`, contrast.
+:::{/card}
 
-Set `data-theme="light"` or `data-theme="dark"` on `<html>`.
+:::{card} Motion and transitions
+:icon: wave-sine
+:link: ./motion-and-transitions.md
+HTMX swaps, view transitions, motion tokens.
+:::{/card}
 
-## Optional Themes
+:::{card} Creating themes
+:icon: paint-brush
+:link: ./creating-themes.md
+`data-theme`, `data-style`, holy-light example.
+:::{/card}
 
-```html
-<link rel="stylesheet" href="/static/themes/holy-light.css">
-```
+:::{/cards}
 
-## Motion
+## Quick reference
 
-All animations respect `prefers-reduced-motion`. No configuration needed.
+- **`chirpui.js`** sets `data-theme` and `data-style` from `localStorage` before paint.
+- Optional **`themes/holy-light.css`** demonstrates a dark token layer.
+
+See also [Concepts](../concepts/design-philosophy.md).

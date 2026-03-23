@@ -20,39 +20,63 @@ cascade:
 
 :::{card} Get Started
 :icon: rocket
-:link: ./get-started/
-Install chirp-ui and wire it into your Chirp app.
+:link: ./get-started/_index.md
+Install, first component, Chirp integration, standalone Kida.
+:::{/card}
+
+:::{card} Concepts
+:icon: brain
+:link: ./concepts/_index.md
+Design philosophy, BEM, macros, variants, Alpine.
 :::{/card}
 
 :::{card} Component showcase
 :icon: layout
 :link: /showcase/
-Browse every macro and pattern in a static, offline-friendly gallery.
+Browse macros in a static, offline-friendly gallery.
 :::{/card}
 
 :::{card} Components
 :icon: layers
-:link: ./components/
-Layout, UI, forms, streaming, and dashboard components.
+:link: ./components/_index.md
+Reference by category: layout, cards, forms, navigation, and more.
 :::{/card}
 
 :::{card} Theming
 :icon: palette
-:link: ./theming/
-CSS variables, dark mode, and customization.
+:link: ./theming/_index.md
+Tokens, typography, color, motion, custom themes.
+:::{/card}
+
+:::{card} Guides
+:icon: book-open
+:link: ./guides/_index.md
+Layout overflow, HTMX, wizards, pitfalls, security, a11y.
+:::{/card}
+
+:::{card} Reference
+:icon: books
+:link: ./reference/_index.md
+Filters, validation registries, CSS contract, route tabs.
+:::{/card}
+
+:::{card} Tutorials
+:icon: student
+:link: ./tutorials/_index.md
+Dashboard and CRUD walkthroughs.
 :::{/card}
 
 :::{card} App Shell
 :icon: sidebar
-:link: ./app-shell/
-Sidebar, breadcrumbs, command palette, and layout patterns.
+:link: ./app-shell/_index.md
+Sidebar, regions, UI layers, HTMX targets.
 :::{/card}
 
 :::{/cards}
 
 ---
 
-## Reference
+## More
 
 :::{cards}
 :columns: 2
@@ -60,14 +84,14 @@ Sidebar, breadcrumbs, command palette, and layout patterns.
 
 :::{card} About
 :icon: info
-:link: ./about/
-Architecture, Chirp integration, and thread safety.
+:link: ./about/_index.md
+Architecture, Chirp integration, thread safety.
 :::{/card}
 
 :::{card} API Reference
 :icon: file-text
 :link: /api/
-Generated API docs from the chirp_ui package.
+Generated API docs from the `chirp_ui` package (if enabled in build).
 :::{/card}
 
 :::{/cards}
