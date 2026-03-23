@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] — 2026-03-23
+
+### Added
+
+- **Color filters** — `register_colors`, `resolve_color`, `sanitize_color`, and `contrast_text` for semantic palette names (e.g. faceted chips and badges); call `register_colors` once when using named colors with `filter_chips` / `badge`
+- **filter_chips** — Faceted filter row component with optional semantic colors
+- **label_overline** — Small-caps section labels inside cards
+- **Layout & shell** — `chat_layout`, `document_header`, `empty_panel_state`, `file_tree`, `panel`, `split_layout`, `workspace_shell`
+- **Docs** — `TRANSITIONS.md`, `UI-LAYERS.md`, layout guides (`LAYOUT-OVERFLOW`, `LAYOUT-PRESETS`, `LAYOUT-GRIDS-AND-FRAMES`, `LAYOUT-VERTICAL`), `COMPOSITION.md`, and DND-FRAGMENT-ISLAND / COMPONENT-OPTIONS updates
+- **CI** — GitHub Actions workflow to publish the docs site to GitHub Pages
+
+### Changed
+
+- **Theme & motion** — Expanded `chirpui.css` and `chirpui-transitions.css` (tokens, surfaces, shell overflow, transition tokens)
+- **App shell** — Refined `app_shell_layout`, `sidebar`, `navbar`, `shell_actions`, and related components for regions and overflow
+- **Showcase** — Component showcase and static showcase expanded (e.g. chrome, dashboard, effects, typography, buttons, ASCII primitives)
+
+### Fixed
+
+- Template and showcase fixes from design-system sync (layout, islands, forms)
+
+[0.2.1]: https://github.com/lbliii/chirp-ui/releases/tag/v0.2.1
+
 ## [0.2.0] — 2026-03-18
 
 ### Added
