@@ -50,7 +50,7 @@ uv run poe ci            # full CI: lint + format + CSS + ty + tests
 
 Or via Make: `make test`, `make lint`, `make ty`, `make ci` (see `Makefile`).
 
-**Documentation site (Bengal)** — lives under `site/`; published to GitHub Pages like other b-stack repos.
+**Documentation site (Bengal)** — lives under `site/`; published to GitHub Pages like other b-stack repos. **`site/public/` is not committed** (generated output; matches chirp/kida).
 
 ```bash
 uv sync --group docs

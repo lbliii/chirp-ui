@@ -68,11 +68,11 @@ Thumbs.db
 *.db-shm
 *.db-wal
 
-# Showcase build output
+# Showcase build output (standalone preview)
 _site/
-site/public/showcase/
 
-# Bengal docs site
+# Bengal docs site — build output and cache (same pattern as chirp/kida: CI builds site/public)
+site/public/
 site/.bengal/
 .bengal/
 .bengal.pid

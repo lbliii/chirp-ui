@@ -351,7 +351,7 @@ pytest
 | Type check | `uv run ty check src/chirp_ui/` or `poe ty` |
 | Lint | `uv run ruff check .` or `poe lint` |
 | Full CI | `poe ci` |
-| Docs site + showcase | `uv sync --group docs` then `uv run poe docs-build-all` (output in `site/public/`, including `/showcase/`) |
+| Docs site + showcase | `uv sync --group docs` then `uv run poe docs-build-all` (writes `site/public/`, not tracked in git; GitHub Pages builds in CI) |
 
 ---
 
