@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar() %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/", "Home") }}
+    {{ sidebar_link("/page-b", "Page B") }}
+    {{ sidebar_link("/form", "Form") }}
+    {{ sidebar_link("/tabs", "Tabs") }}
+    {{ sidebar_link("/modal", "Modal") }}
+    {{ sidebar_link("/dropdown", "Dropdown") }}
+    {{ sidebar_link("/inline-edit", "Inline Edit") }}
+    {{ sidebar_link("/tabs-panels", "Client Tabs") }}
+    {{ sidebar_link("/fill", "Fill Mode") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+<h1 data-testid="page-heading">Home</h1>
+<p data-testid="page-content">Welcome to the test app.</p>
+{% end %}

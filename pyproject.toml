@@ -92,7 +92,8 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]   # Allow unused imports in __init__ files (re-exports)
-"tests/**/*.py" = ["S101"] # Allow assert in tests
+"tests/**/*.py" = ["S101"]   # Allow assert in tests
+"tests/browser/**/*.py" = ["S101", "PT004", "PT005"]  # Browser tests use async fixtures
 
 # =============================================================================
 # ty — Type Checker (Rust-based, Astral)
@@ -115,7 +116,8 @@ unused-ignore-comment = "warn"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
-addopts = ["-ra", "-q", "--strict-markers", "--import-mode=importlib"]
+addopts = ["-ra", "-q", "--strict-markers", "--import-mode=importlib", "--ignore=tests/browser"]
+asyncio_mode = "auto"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: integration tests requiring full app setup",
@@ -166,6 +168,13 @@ dev = [
     # Pre-commit
     "pre-commit>=4.0.0",
 ]
+browser = [
+    # Browser integration tests (Playwright + real Chirp app)
+    "bengal-chirp>=0.1.6",
+    "playwright>=1.50.0",
+    "pytest-asyncio>=0.25.0",
+    "bengal-pounce>=0.2.1",
+]
 
 # =============================================================================
 # Task Runner (poethepoet) — use: poe <task>
@@ -176,6 +185,8 @@ dev = [
 test = { cmd = "pytest", help = "Run full test suite" }
 test-fast = { cmd = "pytest tests/ -x -q --timeout=10", help = "Fast feedback loop" }
 test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov-report=term-missing", help = "Run tests with coverage" }
+test-browser = { cmd = "pytest tests/browser/ -q --timeout=30 --override-ini='addopts='", help = "Run browser integration tests (requires: uv sync --group browser && playwright install chromium)" }
+ci-browser = { sequence = ["test-browser"], help = "Browser integration tests (release gate)" }
 
 # Type Checking
 ty = { cmd = "ty check src/chirp_ui/", help = "Run ty type checker" }

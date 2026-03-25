@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar() %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/", "Home") }}
+    {{ sidebar_link("/fill", "Fill Mode") }}
+    {{ sidebar_link("/no-fill", "No Fill") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+<div class="chirpui-page-fill" data-testid="fill-page">
+  <h1>Fill Mode Page</h1>
+  <p>This page uses fill mode — main should get the --fill class.</p>
+</div>
+{% end %}

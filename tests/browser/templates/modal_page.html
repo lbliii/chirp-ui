@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar() %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/", "Home") }}
+    {{ sidebar_link("/modal", "Modal") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/modal_overlay.html" import modal_overlay, modal_overlay_trigger %}
+
+<h1 data-testid="page-heading">Modal Test</h1>
+
+{{ modal_overlay_trigger("test-modal", "Open Modal", variant="default") }}
+
+{% call modal_overlay("test-modal", "Test Modal") %}
+  <p data-testid="modal-body">Modal content here.</p>
+{% end %}
+{% end %}
