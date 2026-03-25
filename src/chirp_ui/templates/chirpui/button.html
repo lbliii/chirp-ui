@@ -16,6 +16,7 @@
 {% if cls %}
 {% set base_class = base_class ~ " " ~ cls %}
 {% end %}
+{% set _btn_has_hx = hx_get or hx_post or hx_put or hx_patch or hx_delete %}
 {% if href %}
 <a class="{{ base_class }}"{% if not disabled %} href="{{ href }}"{% endif %}
    {% if aria_label %}aria-label="{{ aria_label }}"{% end %}
@@ -23,6 +24,8 @@
    {% if disabled %}aria-disabled="true" tabindex="-1"{% end %}
    {{ attrs | html_attrs }}
    {{ attrs_map | html_attrs }}
+   {% if not disabled and _btn_has_hx %}hx-boost="false"{% end %}
+   {% if not disabled and _btn_has_hx %}hx-select="{{ hx_select if hx_select else "unset" }}"{% end %}
    {% if not disabled and hx_get %}hx-get="{{ hx_get }}"{% end %}
    {% if not disabled and hx_post %}hx-post="{{ hx_post }}"{% end %}
    {% if not disabled and hx_put %}hx-put="{{ hx_put }}"{% end %}
@@ -32,7 +35,6 @@
    {% if not disabled and hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
    {% if not disabled and hx_trigger %}hx-trigger="{{ hx_trigger }}"{% end %}
    {% if not disabled and hx_include %}hx-include="{{ hx_include }}"{% end %}
-   {% if not disabled and hx_select %}hx-select="{{ hx_select }}"{% end %}
    {% if not disabled and hx_ext %}hx-ext="{{ hx_ext }}"{% end %}
    {% if not disabled and hx_vals is not none %}hx-vals="{{ hx_vals }}"{% end %}>
     {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}

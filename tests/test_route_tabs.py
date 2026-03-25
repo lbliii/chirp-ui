@@ -53,6 +53,8 @@ def test_render_route_tabs_macro_renders_htmx_attrs(env: Environment) -> None:
 
     assert 'hx-target="#page-root"' in html
     assert 'hx-push-url="true"' in html
+    assert 'hx-boost="false"' in html
+    assert 'hx-select="unset"' in html
     assert 'aria-current="page"' in html
     assert "chirpui-route-tab--active" in html
 

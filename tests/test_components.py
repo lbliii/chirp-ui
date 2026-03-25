@@ -1099,6 +1099,41 @@ class TestButton:
         assert 'href="/demo"' not in html
         assert 'hx-get="/demo"' not in html
 
+    def test_btn_link_with_htmx_emits_boost_and_select_overrides(self, env: Environment) -> None:
+        """Link buttons with htmx verbs emit hx-boost='false' and hx-select='unset'."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Go", href="/demo", hx_get="/demo", hx_target="#content") }}'
+        ).render()
+        assert 'hx-boost="false"' in html
+        assert 'hx-select="unset"' in html
+
+    def test_btn_link_with_htmx_explicit_hx_select(self, env: Environment) -> None:
+        """Explicit hx_select on link button overrides the auto-default."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Go", href="/demo", hx_get="/demo", hx_select="#my-target") }}'
+        ).render()
+        assert 'hx-select="#my-target"' in html
+        assert 'hx-select="unset"' not in html
+
+    def test_btn_link_without_htmx_no_hx_boost(self, env: Environment) -> None:
+        """Plain link buttons should not emit hx-boost or hx-select."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}{{ btn("Go", href="/demo") }}'
+        ).render()
+        assert "hx-boost" not in html
+        assert "hx-select" not in html
+
+    def test_btn_link_disabled_no_hx_boost(self, env: Environment) -> None:
+        """Disabled link buttons should not emit hx-boost or hx-select."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Go", href="/demo", hx_get="/demo", disabled=true) }}'
+        ).render()
+        assert "hx-boost" not in html
+        assert "hx-select" not in html
+
 
 # ---------------------------------------------------------------------------
 # Streaming
@@ -1458,6 +1493,23 @@ class TestTabs:
         ).render()
         assert 'hx-get="/tab/1"' in html
         assert 'hx-target="#content"' in html
+
+    def test_tab_with_htmx_emits_boost_and_select_overrides(self, env: Environment) -> None:
+        """Tabs with hx_target emit hx-boost='false' and hx-select='unset'."""
+        html = env.from_string(
+            '{% from "chirpui/tabs.html" import tab %}'
+            '{{ tab("t1", "Tab", url="/tab/1", hx_target="#content") }}'
+        ).render()
+        assert 'hx-boost="false"' in html
+        assert 'hx-select="unset"' in html
+
+    def test_tab_without_htmx_no_hx_boost(self, env: Environment) -> None:
+        """Tabs without hx_target should not emit hx-boost or hx-select."""
+        html = env.from_string(
+            '{% from "chirpui/tabs.html" import tab %}{{ tab("t1", "Tab", url="/tab/1") }}'
+        ).render()
+        assert "hx-boost" not in html
+        assert "hx-select" not in html
 
 
 # ---------------------------------------------------------------------------
@@ -1846,6 +1898,33 @@ class TestForms:
             '{% call form("/submit", method="post") %}<input>{% end %}'
         ).render()
         assert "hx-on::after-request" not in html
+
+    def test_form_auto_hx_select_unset(self, env: Environment) -> None:
+        """htmx forms auto-add hx-select='unset' to prevent boost inheritance."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", hx_post="/x") %}Body{% end %}'
+        ).render()
+        assert 'hx-select="unset"' in html
+        assert 'hx-disinherit="hx-select"' in html
+
+    def test_form_explicit_hx_select_overrides_auto(self, env: Environment) -> None:
+        """Explicit hx_select overrides the auto-default, no disinherit."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", hx_post="/x", hx_select="#my-target") %}Body{% end %}'
+        ).render()
+        assert 'hx-select="#my-target"' in html
+        assert "hx-disinherit" not in html
+
+    def test_form_no_hx_select_without_htmx(self, env: Environment) -> None:
+        """Plain forms (no htmx) should not get hx-select or hx-disinherit."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/submit", method="post") %}<input>{% end %}'
+        ).render()
+        assert "hx-select" not in html
+        assert "hx-disinherit" not in html
 
     def test_fieldset_macro(self, env: Environment) -> None:
         html = env.from_string(

@@ -20,6 +20,8 @@
 {% set _reset = hx_reset_on_success if hx_reset_on_success is not none else _has_hx %}
 {% set _sync_from_attrs = (attrs_map or {}).get("hx-sync") %}
 {% set _sync = hx_sync if hx_sync is not none else _sync_from_attrs %}
+{% set _select = hx_select if hx_select is not none else ("unset" if _has_hx else none) %}
+{% set _disinherit = "hx-select" if _has_hx and hx_select is none else none %}
 <form action="{{ action }}" method="{{ method }}"
       {% if enctype %}enctype="{{ enctype }}"{% end %}
       class="chirpui-form{{ " " ~ cls if cls else "" }}"
@@ -35,7 +37,8 @@
       {% if hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
       {% if hx_trigger %}hx-trigger="{{ hx_trigger }}"{% end %}
       {% if hx_include %}hx-include="{{ hx_include }}"{% end %}
-      {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
+      {% if _select %}hx-select="{{ _select }}"{% end %}
+      {% if _disinherit %}hx-disinherit="{{ _disinherit }}"{% end %}
       {% if hx_select_oob %}hx-select-oob="{{ hx_select_oob }}"{% end %}
       {% if hx_disabled_elt %}hx-disabled-elt="{{ hx_disabled_elt }}"{% end %}
       {% if _sync %}hx-sync="{{ _sync }}"{% end %}
