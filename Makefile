@@ -51,7 +51,7 @@ test-cov:
 	uv run pytest --cov=chirp_ui --cov-report=term-missing
 
 test-browser:
-	uv run --group browser pytest tests/browser/ -q --timeout=30
+	uv run --group browser pytest tests/browser/ -q --timeout=30 --override-ini='addopts='
 
 lint:
 	@echo "Running ruff linter..."

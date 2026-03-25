@@ -116,7 +116,7 @@ unused-ignore-comment = "warn"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
-addopts = ["-ra", "-q", "--strict-markers", "--import-mode=importlib"]
+addopts = ["-ra", "-q", "--strict-markers", "--import-mode=importlib", "--ignore=tests/browser"]
 asyncio_mode = "auto"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
@@ -185,7 +185,7 @@ browser = [
 test = { cmd = "pytest", help = "Run full test suite" }
 test-fast = { cmd = "pytest tests/ -x -q --timeout=10", help = "Fast feedback loop" }
 test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov-report=term-missing", help = "Run tests with coverage" }
-test-browser = { cmd = "pytest tests/browser/ -q --timeout=30", help = "Run browser integration tests (requires: uv sync --group browser && playwright install chromium)" }
+test-browser = { cmd = "pytest tests/browser/ -q --timeout=30 --override-ini='addopts='", help = "Run browser integration tests (requires: uv sync --group browser && playwright install chromium)" }
 ci-browser = { sequence = ["test-browser"], help = "Browser integration tests (release gate)" }
 
 # Type Checking
