@@ -26,6 +26,7 @@ def create_app() -> App:
             debug=True,
             alpine=True,
             view_transitions=True,
+            skip_contract_checks=True,
         )
     )
     use_chirp_ui(app)

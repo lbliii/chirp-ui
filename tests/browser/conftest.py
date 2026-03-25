@@ -22,21 +22,21 @@ def _find_free_port() -> int:
 @pytest.fixture(scope="session")
 def app_port():
     """Start the test Chirp app on a random port for the session."""
-    import uvicorn
+    from pounce import ServerConfig
+    from pounce.server import Server
 
     from tests.browser.app import create_app
 
     port = _find_free_port()
     app = create_app()
 
-    server = uvicorn.Server(
-        uvicorn.Config(
-            app,
-            host="127.0.0.1",
-            port=port,
-            log_level="warning",
-        )
+    config = ServerConfig(
+        host="127.0.0.1",
+        port=port,
+        log_level="warning",
+        access_log=False,
     )
+    server = Server(config, app)
     thread = threading.Thread(target=server.run, daemon=True)
     thread.start()
 
@@ -52,7 +52,7 @@ def app_port():
 
     yield port
 
-    server.should_exit = True
+    server.shutdown()
     thread.join(timeout=5)
 
 
