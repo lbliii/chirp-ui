@@ -37,7 +37,7 @@ jobs:
         env:
           CI: true
           PYTHON_GIL: "0"
-        run: uv run pytest -q --tb=short
+        run: uv run pytest -q --tb=short --maxfail=5
 
   lint:
     runs-on: ubuntu-latest
