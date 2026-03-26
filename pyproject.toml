@@ -32,11 +32,11 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "kida-templates>=0.2.9", # Template engine (PackageLoader added in 0.2.0)
+    "kida-templates>=0.3.0", # Template engine (PackageLoader added in 0.2.0)
 ]
 
 [project.optional-dependencies]
-showcase = ["bengal-chirp>=0.1.6"] # For examples/component-showcase
+showcase = ["bengal-chirp>=0.2.0"] # For examples/component-showcase
 
 [project.urls]
 Homepage = "https://github.com/lbliii/chirp-ui"
@@ -170,7 +170,7 @@ dev = [
 ]
 browser = [
     # Browser integration tests (Playwright + real Chirp app)
-    "bengal-chirp>=0.1.6",
+    "bengal-chirp>=0.2.0",
     "playwright>=1.50.0",
     "pytest-asyncio>=0.25.0",
     "bengal-pounce>=0.2.1",
