@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.3] — 2026-03-30
+
+### Fixed
+
+- **Alpine stores for modals/trays** — Register `Alpine.store("modals")` and `Alpine.store("trays")` in both `app_shell` and `app_shell_layout` so modal/tray components work on first page load without requiring Chirp to pre-register stores
+
+[0.2.3]: https://github.com/lbliii/chirp-ui/releases/tag/v0.2.3
+
 ## [0.2.2] — 2026-03-30
 
 ### Added
