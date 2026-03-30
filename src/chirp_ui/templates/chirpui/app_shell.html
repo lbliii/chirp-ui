@@ -83,4 +83,10 @@
         {% slot %}
     </main>
 </div>
+<script>
+document.addEventListener("alpine:init",function(){
+  Alpine.store("modals",{});
+  Alpine.store("trays",{});
+});
+</script>
 {% end %}
