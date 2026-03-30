@@ -57,7 +57,7 @@ You do not need `chirp-ui` to use Chirp. Use it when you want the companion comp
 
 | chirp-ui | Kida | Python | Chirp (optional) |
 |----------|------|--------|-------------------|
-| 0.2.x    | >= 0.2.8 | >= 3.14 | >= 0.1.6 for `use_chirp_ui` |
+| 0.2.x    | >= 0.3.0 | >= 3.14 | >= 0.2.0 for `use_chirp_ui` |
 
 **What's stable:** Core macros (layout, card, modal, forms, alert, badge), filters (`bem`, `html_attrs`, `validate_variant`, `validate_size`), `VARIANT_REGISTRY`/`SIZE_REGISTRY`, static path, `get_loader`, `register_filters`. See [SECURITY.md](SECURITY.md) for `| safe` usage.
 
@@ -330,7 +330,7 @@ For animated icons, use `ascii_icon()` in the component slot. For custom headers
 ## Requirements
 
 - Python >= 3.14
-- kida-templates >= 0.2.6
+- kida-templates >= 0.3.0
 
 **Interactive components** (dropdown, modal, tray, tabs, theme toggle, copy button) require [Alpine.js](https://alpinejs.dev/) 3.x. When using Chirp, call `use_chirp_ui(app)` — this auto-enables Alpine injection with all required plugins (Mask, Intersect, Focus) and the `Alpine.safeData()` helper for htmx-safe component registration. For standalone setups without Chirp, include Alpine manually.
 
