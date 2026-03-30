@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] — 2026-03-30
+
+### Added
+
+- **Boost-aware macros** — `tabs`, `route_tabs`, and `button` emit `hx-boost="false"` on `<a>` elements when `hx_target` is set, preventing boost from hijacking clicks
+- **Safe-by-default forms** — `form()` auto-adds `hx-select="unset"` and `hx-disinherit="hx-select"` when htmx is detected; explicit `hx_select` overrides the default
+- **Browser test suite** — Playwright-based integration tests covering Alpine lifecycle, boosted navigation, dropdowns, fill mode, fragment forms, inline edit, modals, and tabs
+- **Chirp integration tests** — `test_chirp_integration.py` for `use_chirp_ui()` registration and Alpine injection
+
+### Changed
+
+- **Dependency bumps** — `kida-templates>=0.3.0` (was >=0.2.8), `bengal-chirp>=0.2.0` for showcase/browser groups
+- **CI** — `--maxfail=5` added to test gate job for early failure
+
+[0.2.2]: https://github.com/lbliii/chirp-ui/releases/tag/v0.2.2
+
 ## [0.2.1] — 2026-03-23
 
 ### Added
