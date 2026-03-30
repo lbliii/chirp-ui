@@ -49,6 +49,12 @@
 <script>
 (function(){var t=localStorage.getItem("chirpui-theme")||"system";var s=localStorage.getItem("chirpui-style")||"default";document.documentElement.setAttribute("data-theme",t);document.documentElement.setAttribute("data-style",s);})();
 </script>
+<script>
+document.addEventListener("alpine:init",function(){
+  Alpine.store("modals",{});
+  Alpine.store("trays",{});
+});
+</script>
 {% block head_extra %}{% end %}
 {% end %}
 
