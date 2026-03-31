@@ -4656,8 +4656,7 @@ class TestPreHydrationSafety:
 
     def test_tray_has_static_closed_class(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/tray.html" import tray %}'
-            '{% call tray("t", "T") %}body{% end %}'
+            '{% from "chirpui/tray.html" import tray %}{% call tray("t", "T") %}body{% end %}'
         ).render()
         assert 'class="chirpui-tray chirpui-tray--right chirpui-tray--closed"' in html
 
@@ -4673,21 +4672,21 @@ class TestPreHydrationSafety:
             '{% from "chirpui/dropdown_menu.html" import dropdown_select %}'
             '{{ dropdown_select("Pick", items=[{"label": "A"}, {"label": "B"}]) }}'
         ).render()
-        assert 'x-cloak' in html
+        assert "x-cloak" in html
 
     def test_dropdown_split_menu_has_x_cloak(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/dropdown_menu.html" import dropdown_split %}'
             '{{ dropdown_split("Go", primary_href="/go", items=[{"label": "X", "href": "/x"}]) }}'
         ).render()
-        assert 'x-cloak' in html
+        assert "x-cloak" in html
 
     def test_copy_button_copied_span_has_x_cloak(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/copy_button.html" import copy_button %}'
             '{{ copy_button("hello", label="Copy") }}'
         ).render()
-        assert 'x-cloak' in html
+        assert "x-cloak" in html
         # "Copied!" should not flash before Alpine
         assert 'x-show="copied" x-cloak' in html
 
@@ -4720,8 +4719,7 @@ class TestHtmxCorrectness:
 
     def test_nav_link_includes_hx_select(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/nav_link.html" import nav_link %}'
-            '{{ nav_link("/page", "Next") }}'
+            '{% from "chirpui/nav_link.html" import nav_link %}{{ nav_link("/page", "Next") }}'
         ).render()
         assert 'hx-target="#main"' in html
         assert 'hx-select="#page-content"' in html
