@@ -23,5 +23,6 @@
    href="{{ href }}"
    hx-boost="true"
    hx-target="#main"
-   hx-swap="innerHTML transition:true">{% if label %}{{ label }}{% else %}{% slot %}{% end %}</a>
+   hx-swap="innerHTML transition:true"
+   hx-select="#page-content">{% if label %}{{ label }}{% else %}{% slot %}{% end %}</a>
 {% end %}

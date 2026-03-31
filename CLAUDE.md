@@ -35,7 +35,7 @@ tests/
 docs/
 ```
 
-**UI vocabulary:** `docs/UI-LAYERS.md` — app shell vs page chrome vs **surface chrome** (component frames), shell regions, and links to Chirp’s `chirp.shell_regions` constants.
+**UI vocabulary:** `docs/UI-LAYERS.md` — app shell vs page chrome vs **surface chrome** (component frames), shell regions, page fragment target IDs, and links to Chirp’s `chirp.shell_regions` constants.
 
 ## Dev commands
 
