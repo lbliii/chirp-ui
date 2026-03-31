@@ -1573,6 +1573,13 @@ class TestAlpineMagics:
         assert "chirpui:tray-closed" in html
         assert "x-trap.inert.noscroll" in html
 
+    def test_tray_renders_closed_by_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tray.html" import tray %}'
+            '{% call tray("filters", "Filters") %}content{% end %}'
+        ).render()
+        assert "chirpui-tray--closed" in html
+
     def test_modal_overlay_emits_dispatch(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/modal_overlay.html" import modal_overlay %}'
@@ -4636,3 +4643,107 @@ class TestWobble:
             '{% from "chirpui/wobble.html" import bounce_in %}{% call bounce_in() %}Pop{% end %}'
         ).render()
         assert "chirpui-bounce-in" in html
+
+
+# ---------------------------------------------------------------------------
+# Pre-hydration safety — overlays must be inert before Alpine initializes
+# ---------------------------------------------------------------------------
+
+
+class TestPreHydrationSafety:
+    """Overlay components must render with a safe static class so they don't
+    block clicks or flash content before Alpine.js hydrates."""
+
+    def test_tray_has_static_closed_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tray.html" import tray %}'
+            '{% call tray("t", "T") %}body{% end %}'
+        ).render()
+        assert 'class="chirpui-tray chirpui-tray--right chirpui-tray--closed"' in html
+
+    def test_modal_overlay_has_static_closed_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/modal_overlay.html" import modal_overlay %}'
+            '{% call modal_overlay("m", "M") %}body{% end %}'
+        ).render()
+        assert 'class="chirpui-modal chirpui-modal--closed"' in html
+
+    def test_dropdown_select_menu_has_x_cloak(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_select %}'
+            '{{ dropdown_select("Pick", items=[{"label": "A"}, {"label": "B"}]) }}'
+        ).render()
+        assert 'x-cloak' in html
+
+    def test_dropdown_split_menu_has_x_cloak(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_split %}'
+            '{{ dropdown_split("Go", primary_href="/go", items=[{"label": "X", "href": "/x"}]) }}'
+        ).render()
+        assert 'x-cloak' in html
+
+    def test_copy_button_copied_span_has_x_cloak(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/copy_button.html" import copy_button %}'
+            '{{ copy_button("hello", label="Copy") }}'
+        ).render()
+        assert 'x-cloak' in html
+        # "Copied!" should not flash before Alpine
+        assert 'x-show="copied" x-cloak' in html
+
+    def test_code_block_copy_copied_span_has_x_cloak(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import code_block %}'
+            '{{ code_block("print(1)", copy=true) }}'
+        ).render()
+        assert 'x-show="copied" x-cloak' in html
+
+    def test_streaming_copy_btn_copied_span_has_x_cloak(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import copy_btn %}'
+            '{{ copy_btn(label="Copy", copy_text="hi") }}'
+        ).render()
+        assert 'x-show="copied" x-cloak' in html
+
+
+# ---------------------------------------------------------------------------
+# HTMX correctness — boost, hx-select, hx-boost="false"
+# ---------------------------------------------------------------------------
+
+
+class TestHtmxCorrectness:
+    """Components that emit HTMX attributes must follow the conventions:
+    - Boosted links targeting #main must include hx-select="#page-content"
+    - Links with their own hx-target must emit hx-boost="false"
+    - Fragment swaps should use hx-select="unset"
+    """
+
+    def test_nav_link_includes_hx_select(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_link.html" import nav_link %}'
+            '{{ nav_link("/page", "Next") }}'
+        ).render()
+        assert 'hx-target="#main"' in html
+        assert 'hx-select="#page-content"' in html
+
+    def test_nav_link_with_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_link.html" import nav_link %}'
+            '{% call nav_link("/details") %}View{% end %}'
+        ).render()
+        assert 'hx-select="#page-content"' in html
+        assert "View" in html
+
+    def test_inline_edit_cancel_has_boost_false(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/inline_edit_field.html" import inline_edit_field_form %}'
+            '{{ inline_edit_field_form(name="n", value="v", save_url="/save", cancel_url="/cancel") }}'
+        ).render()
+        assert 'hx-boost="false"' in html
+
+    def test_inline_edit_cancel_has_select_unset(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/inline_edit_field.html" import inline_edit_field_form %}'
+            '{{ inline_edit_field_form(name="n", value="v", save_url="/save", cancel_url="/cancel") }}'
+        ).render()
+        assert 'hx-select="unset"' in html

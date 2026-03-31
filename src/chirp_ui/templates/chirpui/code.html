@@ -15,7 +15,7 @@
             @click="navigator.clipboard?.writeText($el.previousElementSibling.textContent).then(() => { copied = true; setTimeout(() => copied = false, 2000) })"
             aria-label="Copy code">
         <span x-show="!copied">Copy</span>
-        <span x-show="copied">Copied!</span>
+        <span x-show="copied" x-cloak>Copied!</span>
     </button>
 </div>
 {% else %}
