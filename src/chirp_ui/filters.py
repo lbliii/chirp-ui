@@ -36,6 +36,8 @@ from chirp_ui.icons import ICON_REGISTRY
 from chirp_ui.icons import icon as _resolve_icon
 from chirp_ui.validation import SIZE_REGISTRY, VARIANT_REGISTRY, _is_strict
 
+_SORTED_ICON_NAMES: str = ", ".join(sorted(ICON_REGISTRY))
+
 # Safe CSS color strings for inline styles (hex, rgb/hsl/oklch family).
 _COLOR_RE = re.compile(
     r"^#[0-9a-fA-F]{3,8}$|^(?:rgb|hsl|oklch)a?\([\d.,% /]+\)$",
@@ -43,6 +45,10 @@ _COLOR_RE = re.compile(
 
 _chirpui_named_colors: ContextVar[dict[str, str] | None] = ContextVar(
     "chirpui_named_colors",
+    default=None,
+)
+_chirpui_named_colors_lower: ContextVar[dict[str, str] | None] = ContextVar(
+    "chirpui_named_colors_lower",
     default=None,
 )
 
@@ -58,6 +64,7 @@ def register_colors(mapping: Mapping[str, str]) -> None:
     for k, v in mapping.items():
         base[str(k).strip()] = str(v).strip()
     _chirpui_named_colors.set(base)
+    _chirpui_named_colors_lower.set({k.lower(): v for k, v in base.items()})
 
 
 def sanitize_color(value: object) -> str | None:
@@ -118,16 +125,15 @@ def resolve_color(value: object) -> str | None:
     key = value.strip()
     if not key:
         return None
-    reg = _named_color_map()
-    resolved = reg.get(key)
-    if resolved is None:
-        lowered = key.lower()
-        for name, hexv in reg.items():
-            if name.lower() == lowered:
-                resolved = hexv
-                break
-    if resolved is not None:
-        return sanitize_color(resolved)
+    reg = _chirpui_named_colors.get()
+    if reg:
+        resolved = reg.get(key)
+        if resolved is None:
+            lower_reg = _chirpui_named_colors_lower.get()
+            if lower_reg:
+                resolved = lower_reg.get(key.lower())
+        if resolved is not None:
+            return sanitize_color(resolved)
     return sanitize_color(key)
 
 
@@ -236,7 +242,7 @@ def icon(name: str) -> str:
         log.warning(
             'chirp-ui: icon "%s" invalid; valid: %s',
             name,
-            ", ".join(sorted(ICON_REGISTRY)),
+            _SORTED_ICON_NAMES,
         )
     return result
 
