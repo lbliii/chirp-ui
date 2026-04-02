@@ -16,6 +16,8 @@
   <a href="{{ tab.href }}"
      class="chirpui-route-tab{% if _is_active(tab, current_path) %} chirpui-route-tab--active{% end %}"
      {% if _is_active(tab, current_path) %}aria-current="page"{% end %}
+     hx-boost="false"
+     hx-select="unset"
      hx-get="{{ tab.href }}"
      hx-target="{{ target }}"
      hx-push-url="true"

@@ -21,7 +21,7 @@
 {% end %}
 
 {% def tray(id, title, position="right") %}
-<div class="chirpui-tray chirpui-tray--{{ position }}" id="tray-{{ id }}"
+<div class="chirpui-tray chirpui-tray--{{ position }} chirpui-tray--closed" id="tray-{{ id }}"
      :class="{ 'chirpui-tray--closed': !$store.trays['{{ id }}'], 'chirpui-tray--open': $store.trays['{{ id }}'] }"
      role="dialog" aria-modal="true"
      aria-labelledby="tray-{{ id }}-title"

@@ -1,0 +1,17 @@
+{#- Test base: extends app_shell_layout, adds Alpine plugins + store init.
+    The installed chirp may not inject safeData/plugins via middleware,
+    so we add them explicitly here for test reliability.
+-#}
+{% extends "chirpui/app_shell_layout.html" %}
+{% block head_extra %}
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.14.0/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.14.0/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.14.0/dist/cdn.min.js"></script>
+<script>
+document.addEventListener("alpine:init", function() {
+  Alpine.store("modals", {});
+  Alpine.store("trays", {});
+  Alpine.safeData = function(n, f) { Alpine.data(n, f); };
+});
+</script>
+{% end %}

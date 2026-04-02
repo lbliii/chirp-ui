@@ -92,7 +92,9 @@ The form inherits the shell’s `hx-select` from `#main`. When the server return
 
 **`hx-disinherit="hx-select"` on the form is NOT sufficient** — it only prevents the form's *children* from inheriting `hx-select`. The form itself still inherits it.
 
-**Fix:** Add `hx-select="unset"` directly on the form to override the inherited value:
+**Fix:** Add `hx-select="unset"` directly on the form to override the inherited value.
+
+> **Note:** As of v0.2.2, the `form()` macro auto-adds `hx-select="unset"` and `hx-disinherit="hx-select"` when any htmx verb is detected. You no longer need to specify these manually unless you want an explicit `hx-select` value.
 
 ```html
 <form hx-post="/chat/message"

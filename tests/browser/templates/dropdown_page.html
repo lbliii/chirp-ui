@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar() %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/", "Home") }}
+    {{ sidebar_link("/dropdown", "Dropdown") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu, dropdown_select %}
+
+<h1 data-testid="page-heading">Dropdown Test</h1>
+
+<div data-testid="dropdown-menu-container">
+{{ dropdown_menu("Actions", items=[
+  {"label": "Edit", "action": "edit"},
+  {"label": "Delete", "action": "delete", "variant": "danger"},
+  {"label": "Archive", "action": "archive"},
+]) }}
+</div>
+
+<div data-testid="dropdown-select-container">
+{{ dropdown_select("Pick one", items=[
+  {"label": "Option A", "value": "a"},
+  {"label": "Option B", "value": "b"},
+  {"label": "Option C", "value": "c"},
+]) }}
+</div>
+{% end %}

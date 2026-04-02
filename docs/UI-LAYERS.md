@@ -16,6 +16,16 @@ Authoritative site copy lives in **`site/content/docs/app-shell/ui-layers.md`**.
 
 Do **not** use “chrome” alone for the global frame; say **app shell** or name the region.
 
+## Page fragment targets
+
+`chirpui.css` styles these IDs with flex-column + gap. **Do not add layout utility classes** (e.g. `chirpui-stack--lg`) to these elements — the CSS-by-ID rules already handle spacing.
+
+| ID | CSS | Purpose |
+|----|-----|---------|
+| `#page-root` | `flex-direction: column; gap: spacing-lg` | Outermost page wrapper inside `#page-content`. Route-tabs target this for sub-page swaps. |
+| `#page-content` | `flex-direction: column; gap: spacing-md` | Swapped on boosted nav (`hx-select`). Direct child of `#main`. |
+| `#page-content-inner` | `flex-direction: column; gap: spacing-md` | Optional inner wrapper below route-tabs. |
+
 ## Surface chrome (dashboards & data tiles)
 
 Use this vocabulary when building analytics-style UIs in the main document area (under `#page-content` in `app_shell_layout`):

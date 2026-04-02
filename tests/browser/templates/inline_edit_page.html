@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar() %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/", "Home") }}
+    {{ sidebar_link("/inline-edit", "Inline Edit") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/fragment_island.html" import fragment_island %}
+
+<h1 data-testid="page-heading">Inline Edit Test</h1>
+
+{% call fragment_island("edit-island") %}
+  <div id="edit-field">
+    <span data-testid="display-value">{{ current_value }}</span>
+    <button hx-get="/inline-edit/edit" hx-target="#edit-field" hx-swap="innerHTML"
+            data-testid="edit-btn">Edit</button>
+  </div>
+{% end %}
+{% end %}

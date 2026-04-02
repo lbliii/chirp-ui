@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar() %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/", "Home") }}
+    {{ sidebar_link("/tabs", "Tabs") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/tabs.html" import tabs, tab %}
+
+<h1 data-testid="page-heading">Tabs Test</h1>
+
+{% call tabs() %}
+  {{ tab("overview", "Overview", url="/tabs/overview", hx_target="#tab-content", active=(active_tab == "overview")) }}
+  {{ tab("details", "Details", url="/tabs/details", hx_target="#tab-content", active=(active_tab == "details")) }}
+{% end %}
+
+<div id="tab-content" data-testid="tab-content">
+  <div id="tab-content-inner">{{ tab_content }}</div>
+</div>
+{% end %}

@@ -35,7 +35,7 @@ tests/
 docs/
 ```
 
-**UI vocabulary:** `docs/UI-LAYERS.md` — app shell vs page chrome vs **surface chrome** (component frames), shell regions, and links to Chirp’s `chirp.shell_regions` constants.
+**UI vocabulary:** `docs/UI-LAYERS.md` — app shell vs page chrome vs **surface chrome** (component frames), shell regions, page fragment target IDs, and links to Chirp’s `chirp.shell_regions` constants.
 
 ## Dev commands
 
@@ -48,7 +48,7 @@ uv run ty check src/     # type check (Astral ty, Rust-based)
 uv run poe ci            # full CI: lint + format + CSS + ty + tests
 ```
 
-Or via Make: `make test`, `make lint`, `make ty`, `make ci` (see `Makefile`).
+Or via Make: `make test`, `make lint`, `make ty`, `make ci`, `make test-browser` (see `Makefile`).
 
 **Documentation site (Bengal)** — lives under `site/`; published to GitHub Pages like other b-stack repos. **`site/public/` is not committed** (generated output; matches chirp/kida).
 
@@ -73,7 +73,9 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 - **Filter bar vs filter chips** — `filter_bar.html` = form + `action_strip` for list/table toolbars. `filter_chips.html` = `filter_group` + `filter_chip` for faceted pill rows (HTMX, `register_colors`). See `docs/COMPONENT-OPTIONS.md`.
 - **Layout overflow** — App shell main clips horizontal bleed; `grid()` applies **`min-width: 0`** to direct children in CSS; use `block()` for **`span=`** / bento cells. Pair with `cluster()` and wrapping `indicator_row()` so content does not widen the page. Use `frame()` for explicit hero/sidebar columns. Page/section/entity headers harden flex title columns; for other flex rows use **`chirpui-min-w-0`**. Custom grids need `min-width: 0` / `minmax(0, 1fr)` on tracks. For fixed bento-style column ratios, use `grid(..., preset=…)` (canonical names and aliases: `docs/LAYOUT-PRESETS.md`); use `items="start"` when row cells have unequal heights; use `preset="detail-two-single"` or `detail-two` + `detail_single=true` for a one-column detail row (see `docs/LAYOUT-OVERFLOW.md`). See also `docs/LAYOUT-GRIDS-AND-FRAMES.md`.
 - **Card overline labels** — use `label_overline()` from `chirpui/label_overline.html` for small-caps section labels inside cards (optional `section=true`, `tag="h3"`).
-- **Fragment form pattern** — forms with `hx-post` inside boosted layouts need `hx-select="unset"` (overrides inherited `hx-select`), `hx-swap="innerHTML transition:false"` (preserves wrapper, suppresses VT flash), and `hx-disinherit="hx-select"` (protects children). See `docs/DND-FRAGMENT-ISLAND.md § Forms inside boosted layouts`.
+- **Boost-aware components** — components that accept `hx_target` must emit `hx-boost="false"` on `<a>` elements to prevent boost from hijacking the click. This is enforced by tabs, route_tabs, and button.
+- **Safe-by-default forms** — the `form()` macro auto-adds `hx-select="unset"` and `hx-disinherit="hx-select"` when htmx is detected. Explicit `hx_select` overrides the default. No manual `hx-select="unset"` needed.
+- **Fragment form pattern** — forms with `hx-post` inside boosted layouts get `hx-select="unset"` automatically (see above). Use `hx-swap="innerHTML transition:false"` (preserves wrapper, suppresses VT flash). See `docs/DND-FRAGMENT-ISLAND.md § Forms inside boosted layouts`.
 - **App shell boosted swap** — `app_shell_layout.html` / `app_shell` use `hx-select="#page-root"` on `#main`. Pages must render `<div id="page-root">…</div>`; a `page_root` block name alone does not. See `docs/UI-LAYERS.md`.
 
 ## Adding a component
