@@ -18,7 +18,7 @@ Do **not** use “chrome” alone for the global frame; say **app shell** or nam
 
 ## Surface chrome (dashboards & data tiles)
 
-Use this vocabulary when building analytics-style UIs inside `#page-content`:
+Use this vocabulary when building analytics-style UIs in the main document area (under `#page-content` in `app_shell_layout`):
 
 | Building block | Macros / CSS | Typical use |
 |----------------|--------------|-------------|
