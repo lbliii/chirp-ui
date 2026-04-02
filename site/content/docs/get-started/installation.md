@@ -54,14 +54,11 @@ pip install "bengal-chirp[ui]"
 
 ```python
 import chirp_ui
-# chirp_ui has no __version__; check templates load
-from chirp_ui import get_loader
-loader = get_loader()
-print(loader.list_templates())  # Lists chirpui/*.html
+print(chirp_ui.__version__)  # e.g. "0.2.2"
 ```
 
 ## Next Steps
 
-- [[/docs/components/|Components]] — Browse layout, UI, forms, and streaming components
-- [[/docs/theming/|Theming]] — Customize with CSS variables
-- [[/docs/app-shell/|App Shell]] — Build dashboard layouts with sidebar and breadcrumbs
+- [Components](/docs/components/) — Browse layout, UI, forms, and streaming components
+- [Theming](/docs/theming/) — Customize with CSS variables
+- [App Shell](/docs/app-shell/) — Build dashboard layouts with sidebar and breadcrumbs

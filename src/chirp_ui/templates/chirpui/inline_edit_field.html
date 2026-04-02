@@ -47,10 +47,12 @@
         <div class="chirpui-inline-edit__actions">
             <button type="submit" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">{{ save_label }}</button>
             <a href="{{ cancel_url }}" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm"
+               hx-boost="false"
                hx-get="{{ cancel_url }}"
                hx-target="{{ target }}"
                hx-swap="innerHTML"
                hx-push-url="false"
+               hx-select="unset"
                hx-sync="closest form:abort">{{ cancel_label }}</a>
         </div>
     </form>

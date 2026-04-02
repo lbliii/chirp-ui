@@ -26,6 +26,8 @@
    {% if url %}
        href="{{ url }}"
        {% if hx_target %}
+           hx-boost="false"
+           hx-select="unset"
            hx-get="{{ url }}"
            hx-target="{{ hx_target }}"
            hx-swap="{{ hx_swap }}"

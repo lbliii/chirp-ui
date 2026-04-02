@@ -93,7 +93,7 @@
         <span class="chirpui-dropdown__caret" aria-hidden="true">▾</span>
     </div>
     <div class="chirpui-dropdown__menu" x-ref="panel" :id="$id('dropdown-select')" role="listbox"
-         x-show="open" x-transition
+         x-show="open" x-cloak x-transition
          @keydown.down.prevent="keyDown()"
          @keydown.up.prevent="keyUp()"
          @keydown.enter.prevent="keyEnter()"
@@ -144,7 +144,7 @@
         <span class="chirpui-dropdown__caret" aria-hidden="true">▾</span>
     </div>
     <div class="chirpui-dropdown__menu" x-ref="panel" :id="$id('dropdown-split')" role="menu"
-         x-show="open" x-transition
+         x-show="open" x-cloak x-transition
          @click="close()">
         {% for item in items %}
         {% if item.get("divider") %}

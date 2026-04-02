@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar() %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/", "Home") }}
+    {{ sidebar_link("/form", "Form") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/fragment_island.html" import fragment_island_with_result %}
+{% from "chirpui/forms.html" import form, text_field %}
+
+<h1 data-testid="page-heading">Form Test</h1>
+
+{# This is the critical pattern: form inside boosted layout with fragment island #}
+{% call fragment_island_with_result("test-island", "form-result") %}
+  {% call form(
+    action="/form/submit",
+    method="post",
+    hx_post="/form/submit",
+    hx_target="#form-result",
+    hx_swap="innerHTML transition:false"
+  ) %}
+    <input name="value" value="test" data-testid="form-input">
+    <button type="submit" data-testid="form-submit">Save</button>
+  {% end %}
+{% end %}
+{% end %}

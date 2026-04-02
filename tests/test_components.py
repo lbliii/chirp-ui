@@ -1099,6 +1099,41 @@ class TestButton:
         assert 'href="/demo"' not in html
         assert 'hx-get="/demo"' not in html
 
+    def test_btn_link_with_htmx_emits_boost_and_select_overrides(self, env: Environment) -> None:
+        """Link buttons with htmx verbs emit hx-boost='false' and hx-select='unset'."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Go", href="/demo", hx_get="/demo", hx_target="#content") }}'
+        ).render()
+        assert 'hx-boost="false"' in html
+        assert 'hx-select="unset"' in html
+
+    def test_btn_link_with_htmx_explicit_hx_select(self, env: Environment) -> None:
+        """Explicit hx_select on link button overrides the auto-default."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Go", href="/demo", hx_get="/demo", hx_select="#my-target") }}'
+        ).render()
+        assert 'hx-select="#my-target"' in html
+        assert 'hx-select="unset"' not in html
+
+    def test_btn_link_without_htmx_no_hx_boost(self, env: Environment) -> None:
+        """Plain link buttons should not emit hx-boost or hx-select."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}{{ btn("Go", href="/demo") }}'
+        ).render()
+        assert "hx-boost" not in html
+        assert "hx-select" not in html
+
+    def test_btn_link_disabled_no_hx_boost(self, env: Environment) -> None:
+        """Disabled link buttons should not emit hx-boost or hx-select."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Go", href="/demo", hx_get="/demo", disabled=true) }}'
+        ).render()
+        assert "hx-boost" not in html
+        assert "hx-select" not in html
+
 
 # ---------------------------------------------------------------------------
 # Streaming
@@ -1459,6 +1494,23 @@ class TestTabs:
         assert 'hx-get="/tab/1"' in html
         assert 'hx-target="#content"' in html
 
+    def test_tab_with_htmx_emits_boost_and_select_overrides(self, env: Environment) -> None:
+        """Tabs with hx_target emit hx-boost='false' and hx-select='unset'."""
+        html = env.from_string(
+            '{% from "chirpui/tabs.html" import tab %}'
+            '{{ tab("t1", "Tab", url="/tab/1", hx_target="#content") }}'
+        ).render()
+        assert 'hx-boost="false"' in html
+        assert 'hx-select="unset"' in html
+
+    def test_tab_without_htmx_no_hx_boost(self, env: Environment) -> None:
+        """Tabs without hx_target should not emit hx-boost or hx-select."""
+        html = env.from_string(
+            '{% from "chirpui/tabs.html" import tab %}{{ tab("t1", "Tab", url="/tab/1") }}'
+        ).render()
+        assert "hx-boost" not in html
+        assert "hx-select" not in html
+
 
 # ---------------------------------------------------------------------------
 # Dropdown
@@ -1520,6 +1572,13 @@ class TestAlpineMagics:
         ).render()
         assert "chirpui:tray-closed" in html
         assert "x-trap.inert.noscroll" in html
+
+    def test_tray_renders_closed_by_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tray.html" import tray %}'
+            '{% call tray("filters", "Filters") %}content{% end %}'
+        ).render()
+        assert "chirpui-tray--closed" in html
 
     def test_modal_overlay_emits_dispatch(self, env: Environment) -> None:
         html = env.from_string(
@@ -1846,6 +1905,33 @@ class TestForms:
             '{% call form("/submit", method="post") %}<input>{% end %}'
         ).render()
         assert "hx-on::after-request" not in html
+
+    def test_form_auto_hx_select_unset(self, env: Environment) -> None:
+        """htmx forms auto-add hx-select='unset' to prevent boost inheritance."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", hx_post="/x") %}Body{% end %}'
+        ).render()
+        assert 'hx-select="unset"' in html
+        assert 'hx-disinherit="hx-select"' in html
+
+    def test_form_explicit_hx_select_overrides_auto(self, env: Environment) -> None:
+        """Explicit hx_select overrides the auto-default, no disinherit."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", hx_post="/x", hx_select="#my-target") %}Body{% end %}'
+        ).render()
+        assert 'hx-select="#my-target"' in html
+        assert "hx-disinherit" not in html
+
+    def test_form_no_hx_select_without_htmx(self, env: Environment) -> None:
+        """Plain forms (no htmx) should not get hx-select or hx-disinherit."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/submit", method="post") %}<input>{% end %}'
+        ).render()
+        assert "hx-select" not in html
+        assert "hx-disinherit" not in html
 
     def test_fieldset_macro(self, env: Environment) -> None:
         html = env.from_string(
@@ -4557,3 +4643,105 @@ class TestWobble:
             '{% from "chirpui/wobble.html" import bounce_in %}{% call bounce_in() %}Pop{% end %}'
         ).render()
         assert "chirpui-bounce-in" in html
+
+
+# ---------------------------------------------------------------------------
+# Pre-hydration safety — overlays must be inert before Alpine initializes
+# ---------------------------------------------------------------------------
+
+
+class TestPreHydrationSafety:
+    """Overlay components must render with a safe static class so they don't
+    block clicks or flash content before Alpine.js hydrates."""
+
+    def test_tray_has_static_closed_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tray.html" import tray %}{% call tray("t", "T") %}body{% end %}'
+        ).render()
+        assert 'class="chirpui-tray chirpui-tray--right chirpui-tray--closed"' in html
+
+    def test_modal_overlay_has_static_closed_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/modal_overlay.html" import modal_overlay %}'
+            '{% call modal_overlay("m", "M") %}body{% end %}'
+        ).render()
+        assert 'class="chirpui-modal chirpui-modal--closed"' in html
+
+    def test_dropdown_select_menu_has_x_cloak(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_select %}'
+            '{{ dropdown_select("Pick", items=[{"label": "A"}, {"label": "B"}]) }}'
+        ).render()
+        assert "x-cloak" in html
+
+    def test_dropdown_split_menu_has_x_cloak(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_split %}'
+            '{{ dropdown_split("Go", primary_href="/go", items=[{"label": "X", "href": "/x"}]) }}'
+        ).render()
+        assert "x-cloak" in html
+
+    def test_copy_button_copied_span_has_x_cloak(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/copy_button.html" import copy_button %}'
+            '{{ copy_button("hello", label="Copy") }}'
+        ).render()
+        assert "x-cloak" in html
+        # "Copied!" should not flash before Alpine
+        assert 'x-show="copied" x-cloak' in html
+
+    def test_code_block_copy_copied_span_has_x_cloak(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import code_block %}'
+            '{{ code_block("print(1)", copy=true) }}'
+        ).render()
+        assert 'x-show="copied" x-cloak' in html
+
+    def test_streaming_copy_btn_copied_span_has_x_cloak(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import copy_btn %}'
+            '{{ copy_btn(label="Copy", copy_text="hi") }}'
+        ).render()
+        assert 'x-show="copied" x-cloak' in html
+
+
+# ---------------------------------------------------------------------------
+# HTMX correctness — boost, hx-select, hx-boost="false"
+# ---------------------------------------------------------------------------
+
+
+class TestHtmxCorrectness:
+    """Components that emit HTMX attributes must follow the conventions:
+    - Boosted links targeting #main must include hx-select="#page-content"
+    - Links with their own hx-target must emit hx-boost="false"
+    - Fragment swaps should use hx-select="unset"
+    """
+
+    def test_nav_link_includes_hx_select(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_link.html" import nav_link %}{{ nav_link("/page", "Next") }}'
+        ).render()
+        assert 'hx-target="#main"' in html
+        assert 'hx-select="#page-content"' in html
+
+    def test_nav_link_with_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_link.html" import nav_link %}'
+            '{% call nav_link("/details") %}View{% end %}'
+        ).render()
+        assert 'hx-select="#page-content"' in html
+        assert "View" in html
+
+    def test_inline_edit_cancel_has_boost_false(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/inline_edit_field.html" import inline_edit_field_form %}'
+            '{{ inline_edit_field_form(name="n", value="v", save_url="/save", cancel_url="/cancel") }}'
+        ).render()
+        assert 'hx-boost="false"' in html
+
+    def test_inline_edit_cancel_has_select_unset(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/inline_edit_field.html" import inline_edit_field_form %}'
+            '{{ inline_edit_field_form(name="n", value="v", save_url="/save", cancel_url="/cancel") }}'
+        ).render()
+        assert 'hx-select="unset"' in html

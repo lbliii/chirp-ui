@@ -21,7 +21,7 @@
 {% end %}
 
 {% def modal_overlay(id, title) %}
-<div class="chirpui-modal" id="modal-{{ id }}"
+<div class="chirpui-modal chirpui-modal--closed" id="modal-{{ id }}"
      :class="{ 'chirpui-modal--closed': !$store.modals['{{ id }}'], 'chirpui-modal--open': $store.modals['{{ id }}'] }"
      role="dialog" aria-modal="true"
      aria-labelledby="modal-{{ id }}-title"
