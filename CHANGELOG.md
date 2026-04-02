@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.4] — 2026-04-01
+
+### Fixed
+
+- **Pre-hydration safety** — Render `modal_overlay` and `tray` with static `--closed` class so they don't block clicks before Alpine hydrates
+- **x-cloak on interactive elements** — Add `x-cloak` to `dropdown_select`, `dropdown_split`, and all "Copied!" spans to prevent flash of unstyled content
+- **HTMX correctness for nav_link** — Add `hx-select="#page-content"` to `nav_link` for proper fragment targeting
+- **Inline edit cancel** — Add `hx-boost="false"` and `hx-select="unset"` to inline edit cancel link
+
+[0.2.4]: https://github.com/lbliii/chirp-ui/releases/tag/v0.2.4
+
 ## [0.2.3] — 2026-03-30
 
 ### Fixed
