@@ -42,7 +42,7 @@ def test_render_route_tabs_macro_renders_htmx_attrs(env: Environment) -> None:
     env.add_global("tab_is_active", tab_is_active)
     html = env.from_string(
         '{% from "chirpui/route_tabs.html" import render_route_tabs %}'
-        '{{ render_route_tabs(tab_items, current_path, target="#page-root") }}'
+        '{{ render_route_tabs(tab_items, current_path, target="#main") }}'
     ).render(
         tab_items=(
             {"label": "Skills", "href": "/skills"},
@@ -51,8 +51,9 @@ def test_render_route_tabs_macro_renders_htmx_attrs(env: Environment) -> None:
         current_path="/settings/general",
     )
 
-    assert 'hx-target="#page-root"' in html
+    assert 'hx-target="#main"' in html
     assert 'hx-push-url="true"' in html
+    assert 'hx-select="#page-root"' in html
     assert 'aria-current="page"' in html
     assert "chirpui-route-tab--active" in html
 
@@ -67,7 +68,7 @@ def test_route_tabs_alias_still_renders(env: Environment) -> None:
     )
 
     assert "Workspace" in html
-    assert 'hx-target="#page-root"' in html
+    assert 'hx-target="#main"' in html
 
 
 def test_tabbed_page_layout_template_exposes_contract_blocks(env: Environment) -> None:
@@ -91,3 +92,6 @@ def test_tabbed_page_layout_template_exposes_contract_blocks(env: Environment) -
     assert "<h1>Header</h1>" in html
     assert "Toolbar" in html
     assert "<p>Body</p>" in html
+    pr_pos = html.index('id="page-root"')
+    container_pos = html.index("chirpui-container")
+    assert pr_pos < container_pos, "page-root must wrap container for hx-select preservation"

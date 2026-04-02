@@ -1,7 +1,8 @@
 {#- chirp-ui: Tabbed page layout macro
     Contract-aware tabbed page layout.
-    Structure: container → stack → page_root → page_root_inner → page_content.
+    Structure: page_root → container → stack → page_root_inner → page_content.
     Layout order: Tabs topmost → Title → Actions → Content.
+    page_root is outermost so hx-select="#page-root" preserves container/stack.
 
     Recommended usage:
         {% extends "chirpui/tabbed_page_layout.html" %}
@@ -22,12 +23,12 @@
 
 {% set _tab_items = tab_items if tab_items is defined and tab_items is not none else tabs | default(none) %}
 {% set _current_path = current_path | default("/") %}
-{% set _tab_target = tab_target | default("#page-root") %}
+{% set _tab_target = tab_target | default("#main") %}
 
 {% block page_root %}
+<div id="page-root">
 {% call container() %}
 {% call stack(gap="lg") %}
-<div id="page-root">
 {% block page_root_inner %}
 <div id="page-content">
 {% if _tab_items %}
@@ -42,16 +43,16 @@
 </div>
 </div>
 {% endblock %}
+{% end %}
+{% end %}
 </div>
 {% end %}
-{% end %}
-{% end %}
 
-{% def tabbed_page_layout(tab_items=none, tabs=none, current_path="/", tab_target="#page-root") %}
+{% def tabbed_page_layout(tab_items=none, tabs=none, current_path="/", tab_target="#main") %}
 {% set _tab_items = tab_items if tab_items is not none else tabs %}
+<div id="page-root">
 {% call container() %}
 {% call stack(gap="lg") %}
-<div id="page-root">
 <div id="page-content">
 {% if _tab_items %}
 <div id="route-tabs">
@@ -64,7 +65,7 @@
 {% slot page_content %}{% end %}
 </div>
 </div>
+{% end %}
+{% end %}
 </div>
-{% end %}
-{% end %}
 {% end %}

@@ -21,4 +21,4 @@ def test_app_shell_layout_has_main_and_page_content_contract() -> None:
     assert 'hx-boost="true"' in text
     assert 'hx-target="#main"' in text
     assert 'hx-swap="innerHTML"' in text
-    assert 'hx-select="#page-content"' in text
+    assert 'hx-select="#page-root"' in text

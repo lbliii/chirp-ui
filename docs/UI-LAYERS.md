@@ -7,8 +7,9 @@ Authoritative site copy lives in **`site/content/docs/app-shell/ui-layers.md`**.
 | Term | Meaning |
 |------|---------|
 | **App shell** | Persistent layout: `chirpui/app_shell_layout.html` (topbar, sidebar, `#main`). |
-| **Page content** | `#page-content` — swapped on boosted navigation (`hx-select`). |
-| **Page chrome** | Inside `#page-content`: tabs, headers, route toolbars. |
+| **Boosted main swap** | `#main` uses `hx-select="#page-root"`. Each page must render `<div id="page-root">…</div>` inside `{% block content %}` (a `{% block page_root %}` alone does **not** set that id). Chirp’s `layouts/boost.html` uses `hx-select="#page-content"` instead — different contract. |
+| **Page content** | `#page-content` — inner wrapper in `app_shell_layout` around `{% block content %}`. |
+| **Page chrome** | Route-owned UI inside the main area: tabs, headers, route toolbars. |
 | **Shell actions** | `shell_actions_bar` in `#chirp-shell-actions`; Chirp `ShellActions`. |
 | **Shell regions** | Stable ids for HTMX OOB: see `chirp.shell_regions` in Chirp. |
 | **Surface chrome** | Component frame (card/panel/bento border and padding) — not the app shell. |

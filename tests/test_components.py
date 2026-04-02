@@ -2122,9 +2122,9 @@ class TestForms:
     def test_search_field_with_htmx_select(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/forms.html" import search_field %}'
-            '{{ search_field("q", search_url="/search", search_target="#main", search_hx_select="#page-content") }}'
+            '{{ search_field("q", search_url="/search", search_target="#main", search_hx_select="#page-root") }}'
         ).render()
-        assert 'hx-select="#page-content"' in html
+        assert 'hx-select="#page-root"' in html
         assert 'hx-target="#main"' in html
 
     def test_form_actions(self, env: Environment) -> None:
@@ -2588,7 +2588,7 @@ class TestSidebar:
         assert "chirpui-sidebar__nav" in html
         assert "chirpui-sidebar__link--active" in html
         assert "Dashboard" in html
-        assert 'hx-select="#page-content"' in html
+        assert 'hx-select="#page-root"' in html
 
     def test_shell_brand_link_matches_sidebar_contract(self, env: Environment) -> None:
         html = env.from_string(
@@ -2598,7 +2598,7 @@ class TestSidebar:
         assert "chirpui-app-shell__brand" in html
         assert 'hx-target="#main"' in html
         assert 'hx-swap="innerHTML"' in html
-        assert 'hx-select="#page-content"' in html
+        assert 'hx-select="#page-root"' in html
         assert "Brand" in html
 
     def test_shell_boosted_link_matches_sidebar_contract(self, env: Environment) -> None:
@@ -2608,7 +2608,7 @@ class TestSidebar:
         ).render()
         assert 'class="chirpui-btn chirpui-btn--sm"' in html
         assert 'hx-target="#main"' in html
-        assert 'hx-select="#page-content"' in html
+        assert 'hx-select="#page-root"' in html
 
     def test_sidebar_section(self, env: Environment) -> None:
         html = env.from_string(

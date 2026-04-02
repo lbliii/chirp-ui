@@ -3,8 +3,13 @@
     Use role="navigation", not role="tablist" — each tab loads a new URL.
     Requires: tab_is_active (template global), current_path, tab_items.
     Tab item: {label, href, icon?, badge?, match?} — match: "exact" | "prefix"
+
+    HTMX: Same contract as sidebar_link — hx-target="#main" hx-swap="innerHTML"
+    hx-select="#page-root". Do not use hx-select="unset" (HTMX 2 reports empty select).
+    Wrap route tabs in a div with hx-disinherit="hx-select" when nested under #page-root
+    if you must block inheritance from a boosted ancestor; links still set hx-select.
 -#}
-{% def render_route_tabs(tab_items, current_path, target="#page-root", is_active=none) %}
+{% def render_route_tabs(tab_items, current_path, target="#main", is_active=none) %}
 {% set _is_active = is_active if is_active is not none else tab_is_active %}
 <nav role="navigation" aria-label="Subsection navigation" class="chirpui-route-tabs">
   {% for tab in tab_items %}
@@ -14,7 +19,8 @@
      hx-get="{{ tab.href }}"
      hx-target="{{ target }}"
      hx-push-url="true"
-     hx-swap="innerHTML">
+     hx-swap="innerHTML"
+     hx-select="#page-root">
     {% if tab.icon %}<span class="chirpui-route-tab__icon">{{ tab.icon | icon }}</span>{% end %}
     <span class="chirpui-route-tab__label">{{ tab.label }}</span>
     {% if tab.badge %}<span class="chirpui-route-tab__badge">{{ tab.badge }}</span>{% end %}
@@ -23,6 +29,6 @@
 </nav>
 {% end %}
 
-{% def route_tabs(tabs, current_path, target="#page-root", is_active=none) %}
+{% def route_tabs(tabs, current_path, target="#main", is_active=none) %}
 {{ render_route_tabs(tabs, current_path, target=target, is_active=is_active) }}
 {% end %}

@@ -79,11 +79,16 @@ Forms inside the included content use `hx-target="#update-result"`; the target i
 
 ## Forms inside boosted layouts
 
-When a `<form>` with `hx-post` lives inside `#main` (which has `hx-select="#page-content"` via `boost.html` or `app_shell_layout.html`), two inheritance traps apply:
+When a `<form>` with `hx-post` lives inside `#main`, it inherits that element’s `hx-select`. Layouts differ:
+
+- **`chirp/layouts/boost.html`:** `hx-select="#page-content"`.
+- **`chirpui/app_shell_layout.html` / `app_shell`:** `hx-select="#page-root"` (page templates must include `<div id="page-root">…</div>`).
+
+Two inheritance traps apply:
 
 ### Trap 1: `hx-select` empties the swap
 
-The form inherits `hx-select="#page-content"` from `#main`. When the server returns a Fragment (just the block content, no `#page-content` wrapper), htmx filters the response for `#page-content`, finds nothing, and swaps in empty content.
+The form inherits the shell’s `hx-select` from `#main`. When the server returns a fragment without a matching wrapper (`#page-content` or `#page-root`, depending on layout), htmx filters the response, finds nothing, and swaps in empty content.
 
 **`hx-disinherit="hx-select"` on the form is NOT sufficient** — it only prevents the form's *children* from inheriting `hx-select`. The form itself still inherits it.
 

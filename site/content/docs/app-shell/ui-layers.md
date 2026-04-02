@@ -17,9 +17,10 @@ This page aligns with the **Chirp** guide: [UI layers & shell regions](https://l
 
 | Term | Meaning |
 |------|---------|
-| **App shell** | Persistent layout from `chirpui/app_shell_layout.html`: topbar, sidebar, `#main` wrapper. Not replaced on navigation; `#page-content` inside `#main` swaps. |
-| **Page content** | The document area: `#page-content` — what `hx-select` targets for boosted nav. |
-| **Page chrome** | Route-owned UI *inside* `#page-content`: titles, tabs, toolbars — not the global topbar. |
+| **App shell** | Persistent layout from `chirpui/app_shell_layout.html`: topbar, sidebar, `#main`. Not replaced on navigation; boosted nav swaps the fragment matching `hx-select="#page-root"` into `#main`. |
+| **Boosted fragment** | **`id="page-root"`** — required in page templates for `app_shell_layout` / `app_shell` (the `page_root` block name does not create this id). Chirp’s `layouts/boost.html` uses `hx-select="#page-content"` instead. |
+| **Page content** | `#page-content` — inner wrapper in the layout around `{% block content %}`. |
+| **Page chrome** | Route-owned UI in the main area: titles, tabs, toolbars — not the global topbar. |
 | **Shell actions** | `ShellActions` → `shell_actions_bar`, target `#chirp-shell-actions`. Route-scoped; updates via OOB. |
 | **Shell regions** | Stable `id`s updated by `hx-swap-oob` (e.g. `chirp-shell-actions`, `chirpui-document-title`). |
 | **Surface chrome** | Visual frame of a **component** (`surface`, `panel`, bento): border, padding, scroll — *not* the app shell. |

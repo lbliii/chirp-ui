@@ -36,6 +36,11 @@
     HTMX: primary #main swap runs before out-of-band fragments; a beforeSwap
     handler clears #chirp-shell-actions when the response includes shell-actions
     OOB (see docs/UI-LAYERS.md).
+
+    Lazy hx-get inside this shell: use
+    hx-trigger="intersect root:#main threshold:0" — not "revealed".
+    HTMX 2.x revealed uses window viewport checks; scrolling lives on #main
+    (overflow-y: auto), so IntersectionObserver needs root:#main.
 -#}
 {# target: body #}
 {% extends "chirp/layouts/shell.html" %}
@@ -82,61 +87,13 @@
   </header>
   <aside class="chirpui-app-shell__sidebar">{% block sidebar %}{% end %}</aside>
   <main id="main" class="chirpui-app-shell__main{% block main_shell_class %}{% end %}" tabindex="-1"
-        hx-boost="true" hx-target="#main" hx-swap="innerHTML" hx-select="#page-content">
+        hx-boost="true" hx-target="#main" hx-swap="innerHTML" hx-select="#page-root">
     <div id="page-content">
       {% block content %}{% end %}
     </div>
   </main>
 </div>
-<script>
-document.body.addEventListener("htmx:configRequest", function(event) {
-  var meta = document.querySelector('meta[name="csrf-token"]');
-  if (meta) { event.detail.headers["X-CSRF-Token"] = meta.content; }
-});
-(function() {
-  var S = "chirpui-sidebar__link--active";
-  var N = "chirpui-navbar__link--active";
-  function syncNav() {
-    var p = location.pathname;
-    document.querySelectorAll(".chirpui-sidebar__link, .chirpui-navbar__link").forEach(function(a) {
-      var h = a.getAttribute("href");
-      if (!h || h.startsWith("http")) return;
-      var m = h === "/" ? p === "/" : (p === h || p.startsWith(h + "/"));
-      var c = a.classList.contains("chirpui-sidebar__link") ? S : N;
-      a.classList.toggle(c, m);
-      if (m) { a.setAttribute("aria-current", "page"); }
-      else { a.removeAttribute("aria-current"); }
-    });
-  }
-  document.body.addEventListener("htmx:pushedIntoHistory", syncNav);
-  document.body.addEventListener("htmx:replacedInHistory", syncNav);
-})();
-(function () {
-  function responseUpdatesShellActionsOob(xhr) {
-    if (!xhr || !xhr.responseText) return false;
-    var body = xhr.responseText;
-    return body.indexOf("chirp-shell-actions") !== -1 && body.indexOf("hx-swap-oob") !== -1;
-  }
-  document.body.addEventListener("htmx:beforeSwap", function (e) {
-    var t = e.detail && e.detail.target;
-    if (!t || t.id !== "main") return;
-    if (!responseUpdatesShellActionsOob(e.detail.xhr)) return;
-    var shell = document.getElementById("chirp-shell-actions");
-    if (shell) shell.replaceChildren();
-  });
-})();
-document.body.addEventListener("htmx:afterSwap", function(e) {
-  var t = e.detail && e.detail.target;
-  if (t && t.id === "main") { t.scrollTo({top: 0}); }
-});
-document.body.addEventListener("htmx:afterSettle", function(e) {
-  var t = e.detail && e.detail.target;
-  if (!t || t.id !== "main") return;
-  t.focus({preventScroll: true});
-  var pc = document.getElementById("page-content");
-  if (pc) { t.classList.toggle("chirpui-app-shell__main--fill", !!pc.querySelector(":scope > .chirpui-page-fill")); }
-});
-</script>
+{% include "chirpui/app_shell_htmx_scripts.html" %}
 {{ toast_container() }}
 {% block page_scripts %}{% end %}
 {% end %}

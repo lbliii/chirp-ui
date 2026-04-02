@@ -1,7 +1,9 @@
 {#- chirp-ui: App Shell component
     Full-page shell with topbar, sidebar, and main content area.
-    Navigation is driven by explicit hx-boost on sidebar_link/nav_link,
-    targeting #main to keep the sidebar and topbar persistent.
+    The brand link and #main use the same hx-boost contract as sidebar_link
+    (hx-target="#main" hx-swap="innerHTML" hx-select="#page-root"). Include
+    chirpui/app_shell_htmx_scripts.html once per page for history sync, shell-actions
+    OOB, scroll, and focus — same as app_shell_layout.html.
 
     Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar, default (main content).
 
@@ -27,7 +29,7 @@
 -#}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
 
-{% def app_shell(brand="", brand_url="/", brand_slot=false, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, cls="") %}
+{% def app_shell(brand="", brand_url="/", brand_slot=false, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, cls="", main_shell_class="") %}
 {% set topbar_variant = topbar_variant | validate_variant(("default","glass","gradient"), "default") %}
 {% set sidebar_variant = sidebar_variant | validate_variant(("default","glass","muted"), "default") %}
 {% set topbar_class = " chirpui-app-shell__topbar--" ~ topbar_variant if topbar_variant != "default" else "" %}
@@ -51,7 +53,8 @@
 <div class="chirpui-app-shell{{ " " ~ cls if cls else "" }}">
 {% end %}
     <header class="chirpui-app-shell__topbar{{ topbar_class }}">
-        <a href="{{ brand_url }}" class="chirpui-app-shell__brand">
+        <a href="{{ brand_url }}" class="chirpui-app-shell__brand"
+           hx-boost="true" hx-target="#main" hx-swap="innerHTML" hx-select="#page-root">
             {% if brand_slot %}
             {% slot brand %}
             {% else %}
@@ -79,7 +82,8 @@
              @keydown.space.prevent="toggle()"></div>
         {% end %}
     </aside>
-    <main id="main" class="chirpui-app-shell__main">
+    <main id="main" class="chirpui-app-shell__main{{ " " ~ main_shell_class if main_shell_class else "" }}" tabindex="-1"
+          hx-boost="true" hx-target="#main" hx-swap="innerHTML" hx-select="#page-root">
         {% slot %}
     </main>
 </div>
