@@ -94,3 +94,21 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 chirp-ui is one optional layer. Users bring their own Chirp app; chirp-ui adds the component library and default design language. The framework (`bengal-chirp`) and template engine (`kida-templates`) are separate packages maintained by the same author.
 
 **Alpine.js ownership:** Chirp is the single authority for Alpine injection. `use_chirp_ui(app)` auto-enables `alpine=True` on the app config; `app_shell_layout.html` does **not** include Alpine scripts. Named components should register with `Alpine.safeData(name, factory)` (injected by Chirp) for htmx-safe registration that works on both full page loads and boosted navigation swaps.
+
+## Troubleshooting: "all interactive components are dead"
+
+If theme toggles, style toggles, command palette, sidebar collapse, dropdowns,
+and modals all stop working at once, Alpine.js is not loading. Diagnosis:
+
+1. **Open browser DevTools → Elements** — look for `<script data-chirp="alpine">` near `</body>`.
+   - **Missing entirely?** `AlpineInject` is being skipped. Check if the string
+     `data-chirp="alpine"` appears elsewhere in the HTML (false-positive dedup).
+   - **Present but `window.Alpine` is undefined?** The CDN URL is wrong. Check
+     the `src` attribute — it must end with `/dist/cdn.min.js`, not a bare
+     `@version`. A bare jsDelivr path resolves to CommonJS (`dist/module.cjs.js`)
+     which silently fails in browsers. See Chirp's `CLAUDE.md § Alpine.js Injection`.
+2. **Check Console** — "Script error." at line 0 = cross-origin script failure
+   (CORS masks the real error). This confirms the CDN script didn't execute.
+3. **`poe dev-sync` not picking up fix?** If Chirp's workspace source has the fix
+   but the installed package doesn't, `uv` may cache the old wheel when the version
+   number is unchanged. Fix: `rm -rf .venv && poe dev-sync` to force a clean rebuild.
