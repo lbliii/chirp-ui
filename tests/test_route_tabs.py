@@ -20,6 +20,20 @@ def test_tab_is_active_prefix_match() -> None:
     assert tab_is_active(tab, "/shortcuts") is False
 
 
+def test_tab_is_active_with_chirp_dict_shape() -> None:
+    """Dict shape from Chirp's _tab_item_to_shell_dict works with tab_is_active."""
+    tab = {
+        "label": "Settings",
+        "href": "/settings",
+        "icon": "gear",
+        "badge": "2",
+        "match": "prefix",
+    }
+    assert tab_is_active(tab, "/settings") is True
+    assert tab_is_active(tab, "/settings/wizard") is True
+    assert tab_is_active(tab, "/admin") is False
+
+
 def test_tab_is_active_with_dataclass() -> None:
     from dataclasses import dataclass
 

@@ -1,6 +1,8 @@
 """Route-family tab helpers for chirp-ui route_tabs component.
 
-Tab item: dict or object with href, match (optional, default "exact").
+Tab item: dict or object with ``href``, optional ``match`` (default ``"exact"``).
+Full dict shape (from Chirp ``TabItem`` via ``_tab_item_to_shell_dict``):
+``{ label, href, icon?, badge?, match? }``.
 """
 
 from typing import Any, cast
