@@ -50,5 +50,6 @@ from chirp.shell_regions import (
 
 ## See also
 
+- [SHELL-TABS-CONTRACT.md](./SHELL-TABS-CONTRACT.md) — sections, route tabs, and OOB handoffs
 - [LAYOUT-OVERFLOW.md](./LAYOUT-OVERFLOW.md)
 - [COMPONENT-OPTIONS.md](./COMPONENT-OPTIONS.md) — panel / surface wording
