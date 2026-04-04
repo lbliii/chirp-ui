@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.5] — 2026-04-03
+
+### Changed
+
+- **O(1) color lookup** — `resolve_color` now uses a dict instead of linear scan; `icon` filter caches sorted icon list after first call
+
+### Added
+
+- **Shell tabs contract** — `docs/SHELL-TABS-CONTRACT.md` documenting shell-region tab ownership rules; `route_tabs` accepts dict-shape `tab_items`
+- **Alpine.js troubleshooting guide** — CLAUDE.md section for diagnosing dead interactive components (missing Alpine script, CDN URL issues)
+
+[0.2.5]: https://github.com/lbliii/chirp-ui/releases/tag/v0.2.5
+
 ## [0.2.4] — 2026-04-01
 
 ### Fixed
