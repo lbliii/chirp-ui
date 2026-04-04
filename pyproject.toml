@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chirp-ui"
-version = "0.2.4"
+version = "0.2.5"
 description = "A love letter to CSS and HTML over the wire — gorgeous Chirp components, htmx-native, Alpine.js for interactivity"
 readme = "README.md"
 requires-python = ">=3.14"
