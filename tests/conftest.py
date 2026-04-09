@@ -11,6 +11,7 @@ from kida import Environment, FileSystemLoader
 from kida.template import Markup
 
 from chirp_ui.filters import (
+    build_hx_attrs,
     contrast_text,
     resolve_color,
     sanitize_color,
@@ -170,6 +171,7 @@ def env() -> Environment:
             "resolve_color": resolve_color,
         }
     )
+    e.add_global("build_hx_attrs", build_hx_attrs)
     e.add_global("island_attrs", _island_attrs_stub)
     e.add_global("primitive_attrs", _primitive_attrs_stub)
     e.add_global(

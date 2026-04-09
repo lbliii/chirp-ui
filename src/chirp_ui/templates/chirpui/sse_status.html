@@ -1,0 +1,41 @@
+{#- chirp-ui: SSE connection status and error recovery
+    Lightweight components for streaming resilience. Pair with
+    streaming_bubble / streaming_block from chirpui/streaming.html.
+
+    Usage:
+        from "chirpui/sse_status.html" import sse_status, sse_retry
+
+        Connection indicator (shows dot + label):
+            sse_status("connected")
+            sse_status("error", label="Connection lost")
+
+        Retry button (re-fetches the SSE endpoint):
+            sse_retry("/api/stream/123", label="Reconnect")
+
+        Inside a streaming bubble on error:
+            call streaming_bubble(role="assistant", streaming=false)
+                <p>Connection lost.</p>
+                sse_retry("/api/stream/123")
+            end
+-#}
+
+{% def sse_status(state="connected", label="", cls="") %}
+{% set state = state | validate_variant(("connected", "disconnected", "error"), "connected") %}
+{% set default_labels = {"connected": "Connected", "disconnected": "Disconnected", "error": "Connection error"} %}
+{% set _label = label if label else default_labels[state] %}
+<span class="chirpui-sse-status chirpui-sse-status--{{ state }}{{ " " ~ cls if cls else "" }}"
+      role="status" aria-live="polite">
+    <span class="chirpui-sse-status__dot" aria-hidden="true"></span>
+    {{ _label }}
+</span>
+{% end %}
+
+{% def sse_retry(url, label="Retry", method="get", target="closest [hx-ext]", swap="outerHTML", cls="") %}
+<button type="button"
+        class="chirpui-sse-retry chirpui-btn chirpui-btn--sm{{ " " ~ cls if cls else "" }}"
+        hx-{{ method }}="{{ url }}"
+        hx-target="{{ target }}"
+        hx-swap="{{ swap }}">
+    {{ label }}
+</button>
+{% end %}

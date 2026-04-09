@@ -1,0 +1,14 @@
+{#- chirp-ui: Navigation progress bar
+    CSS-only page-level loading indicator. Place once in your base layout
+    (outside app_shell, which has its own built-in bar). Animates automatically
+    when htmx adds the `htmx-request` class to <body>.
+
+    Usage:
+        from "chirpui/nav_progress.html" import nav_progress
+
+        {{ nav_progress() }}
+-#}
+
+{% def nav_progress(cls="") %}
+<div class="chirpui-nav-progress{{ " " ~ cls if cls else "" }}" aria-hidden="true"></div>
+{% end %}

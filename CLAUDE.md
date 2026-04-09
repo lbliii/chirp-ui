@@ -17,7 +17,7 @@ An optional companion UI layer for the Chirp web framework — Kida template mac
 ```
 src/chirp_ui/
   __init__.py          # get_loader(), register_filters(), static_path()
-  filters.py           # bem, html_attrs, validate_*, register_colors, resolve_color, sanitize_color, contrast_text
+  filters.py           # bem, html_attrs, build_hx_attrs, validate_*, register_colors, resolve_color, sanitize_color, contrast_text
   validation.py        # VARIANT_REGISTRY, SIZE_REGISTRY, set_strict()
   route_tabs.py        # route-aware tabs helper
   templates/chirpui/   # Kida macros — one file per component (e.g. label_overline.html)
@@ -73,17 +73,24 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 - **Filter bar vs filter chips** — `filter_bar.html` = form + `action_strip` for list/table toolbars. `filter_chips.html` = `filter_group` + `filter_chip` for faceted pill rows (HTMX, `register_colors`). See `docs/COMPONENT-OPTIONS.md`.
 - **Layout overflow** — App shell main clips horizontal bleed; `grid()` applies **`min-width: 0`** to direct children in CSS; use `block()` for **`span=`** / bento cells. Pair with `cluster()` and wrapping `indicator_row()` so content does not widen the page. Use `frame()` for explicit hero/sidebar columns. Page/section/entity headers harden flex title columns; for other flex rows use **`chirpui-min-w-0`**. Custom grids need `min-width: 0` / `minmax(0, 1fr)` on tracks. For fixed bento-style column ratios, use `grid(..., preset=…)` (canonical names and aliases: `docs/LAYOUT-PRESETS.md`); use `items="start"` when row cells have unequal heights; use `preset="detail-two-single"` or `detail-two` + `detail_single=true` for a one-column detail row (see `docs/LAYOUT-OVERFLOW.md`). See also `docs/LAYOUT-GRIDS-AND-FRAMES.md`.
 - **Card overline labels** — use `label_overline()` from `chirpui/label_overline.html` for small-caps section labels inside cards (optional `section=true`, `tag="h3"`).
+- **HTMX attribute helper** — use `build_hx_attrs(hx_post=..., hx_target=...) | html_attrs` in templates instead of individual `{% if hx_* %}` blocks. `build_hx_attrs` converts underscores to hyphens; `html_attrs` skips `None` values and escapes output. Registered as a template global.
 - **Boost-aware components** — components that accept `hx_target` must emit `hx-boost="false"` on `<a>` elements to prevent boost from hijacking the click. This is enforced by tabs, route_tabs, and button.
 - **Safe-by-default forms** — the `form()` macro auto-adds `hx-select="unset"` and `hx-disinherit="hx-select"` when htmx is detected. Explicit `hx_select` overrides the default. No manual `hx-select="unset"` needed.
 - **Fragment form pattern** — forms with `hx-post` inside boosted layouts get `hx-select="unset"` automatically (see above). Use `hx-swap="innerHTML transition:false"` (preserves wrapper, suppresses VT flash). See `docs/DND-FRAGMENT-ISLAND.md § Forms inside boosted layouts`.
+- **OOB composition helpers** — `oob.html` provides `oob_fragment(id, swap)` for wrapping any content as an OOB swap, `oob_toast(message, variant)` as a shorthand for toast OOB, and `counter_badge(id, count, variant, oob)` for server-driven numeric indicators. See `docs/COMPONENT-OPTIONS.md § OOB Helpers`.
+- **Form field a11y** — every field has `id="field-{name}"` (OOB target), `aria-describedby="errors-{name}"` on controls, and a `<div id="errors-{name}" role="alert" aria-live="polite">` error container (always in DOM, empty when no errors). Use `form_error_summary(errors)` at form top for an alert-style error count with anchor links to fields. Fields support `oob=true` on `field_wrapper` for per-field OOB swap.
+- **Suspense slots** — `suspense.html` provides `suspense_slot(id)` and `suspense_group()` for skeleton-to-content swap patterns. Pairs with Chirp's `Suspense(defer_map={})` — the server renders the shell with skeleton placeholders, then sends deferred content as OOB swaps targeting each slot's `id`. Use `suspense_group` to mark a region `aria-busy="true"` until all child slots resolve. See `docs/COMPONENT-OPTIONS.md § Suspense`.
+- **Navigation progress** — `nav_progress.html` provides a CSS-only fixed progress bar at the viewport top. Animates automatically via `body.htmx-request`. Use outside `app_shell` (which has its own built-in bar). Place once in base layout: `{{ nav_progress() }}`.
+- **SSE connection status** — `sse_status.html` provides `sse_status(state)` (connected/disconnected/error indicator with dot + label) and `sse_retry(url)` (htmx-powered retry button for reconnecting to an SSE endpoint). Pair with `streaming_bubble`/`streaming_block` from `streaming.html`. See `docs/COMPONENT-OPTIONS.md § SSE Status`.
 
 ## Adding a component
 
 1. Add `src/chirp_ui/templates/chirpui/<name>.html` — Kida macro (e.g. `label_overline.html`).
 2. Add styles to `chirpui.css` under a `/* <name> */` section comment.
 3. Add any new variants/sizes to `VARIANT_REGISTRY` / `SIZE_REGISTRY` in `validation.py`.
-4. Add render tests to `tests/test_components.py`.
-5. Run `uv run poe ci` before opening a PR.
+4. For htmx-enabled components, use `build_hx_attrs(...) | html_attrs` instead of individual `{% if hx_* %}` blocks.
+5. Add render tests to `tests/test_components.py`.
+6. Run `uv run poe ci` before opening a PR.
 
 ## Testing without Chirp
 
