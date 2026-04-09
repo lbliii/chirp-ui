@@ -163,6 +163,13 @@
     <a href="#ascii-error">ASCII Error Pages</a>
     <a href="#ascii-skeleton">ASCII Skeleton</a>
     <a href="#ascii-bento">ASCII Bento</a>
+    <h3>HTMX Patterns</h3>
+    <a href="#nav-progress">Nav Progress</a>
+    <a href="#oob-helpers">OOB Helpers</a>
+    <a href="#counter-badge">Counter Badge</a>
+    <a href="#suspense">Suspense</a>
+    <a href="#sse-status">SSE Status</a>
+    <a href="#form-error-summary">Form Error Summary</a>
     <h3>Dashboard</h3>
     <a href="#stat-cards">Animated Stat Cards</a>
     <a href="#config">Config Rows</a>
@@ -3823,6 +3830,128 @@ register_filters(app)</code></pre>
         <div class="chirpui-donut chirpui-donut--success chirpui-donut--lg" role="img" aria-label="92%"><div class="chirpui-donut__ring" style="--chirpui-donut-pct:92"></div><div class="chirpui-donut__center">92%</div></div>
         <div class="chirpui-donut chirpui-donut--muted chirpui-donut--lg" role="img" aria-label="45%"><div class="chirpui-donut__ring" style="--chirpui-donut-pct:45"></div><div class="chirpui-donut__center">45%</div></div>
     </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  HTMX PATTERNS                                                    -->
+<!-- ================================================================ -->
+
+<section class="sc-section" id="nav-progress">
+    <h2>Navigation Progress</h2>
+    <p class="desc">CSS-only loading bar. Fixed to viewport top; animates on <code>body.htmx-request</code>. Use outside <code>app_shell</code> (which has its own bar).</p>
+    <hr class="sc-divider">
+    <div style="position:relative;height:2rem;overflow:hidden;border-radius:var(--chirpui-radius-md);border:1px solid var(--chirpui-border)">
+        <div class="chirpui-nav-progress" style="position:absolute"></div>
+    </div>
+    <p class="desc" style="margin-top:0.5rem">Contained preview. The bar is invisible until <code>htmx-request</code> is on <code>&lt;body&gt;</code>. Add the class temporarily to see the animation:</p>
+    <button class="chirpui-btn chirpui-btn--sm" onclick="document.body.classList.add('htmx-request');setTimeout(()=>document.body.classList.remove('htmx-request'),2000)">Simulate request (2s)</button>
+</section>
+
+<section class="sc-section" id="oob-helpers">
+    <h2>OOB Helpers</h2>
+    <p class="desc">Out-of-band swap composition macros for htmx. Include in any response to update multiple page regions at once.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">oob_fragment</div>
+    <div style="padding:var(--chirpui-spacing);border:1px dashed var(--chirpui-border);border-radius:var(--chirpui-radius-md)">
+        <div id="oob-demo-target" hx-swap-oob="true">
+            <p style="margin:0;font-size:var(--chirpui-font-sm)">This content replaces <code>#oob-demo-target</code> via OOB swap.</p>
+        </div>
+    </div>
+    <div class="sc-label" style="margin-top:1rem">oob_toast</div>
+    <p class="desc">Shorthand for appending a toast via OOB. Renders inside the toast container.</p>
+    <div class="sc-row" style="gap:0.75rem;flex-wrap:wrap">
+        <div class="chirpui-toast chirpui-toast--success" role="status"><div class="chirpui-toast__body">Item saved!</div></div>
+        <div class="chirpui-toast chirpui-toast--danger" role="status"><div class="chirpui-toast__body">Something went wrong.</div></div>
+        <div class="chirpui-toast chirpui-toast--warning" role="status"><div class="chirpui-toast__body">Rate limit approaching.</div></div>
+    </div>
+</section>
+
+<section class="sc-section" id="counter-badge">
+    <h2>Counter Badge</h2>
+    <p class="desc">Numeric indicator for nav items, tabs, sidebars. Supports <code>max_count</code> (99+), variant, and <code>oob=true</code> for server-driven updates. Hidden when count=0.</p>
+    <hr class="sc-divider">
+    <div class="sc-row" style="gap:1.5rem;align-items:center">
+        <div>
+            <span class="desc">Default</span><br>
+            <span class="chirpui-counter-badge" aria-label="5 notifications">5</span>
+        </div>
+        <div>
+            <span class="desc">Warning</span><br>
+            <span class="chirpui-counter-badge chirpui-counter-badge--warning" aria-label="12 notifications">12</span>
+        </div>
+        <div>
+            <span class="desc">Danger</span><br>
+            <span class="chirpui-counter-badge chirpui-counter-badge--danger" aria-label="3 notifications">3</span>
+        </div>
+        <div>
+            <span class="desc">Overflow</span><br>
+            <span class="chirpui-counter-badge" aria-label="142 notifications">99+</span>
+        </div>
+        <div>
+            <span class="desc">Zero (hidden)</span><br>
+            <span class="chirpui-counter-badge" hidden aria-label="0 notifications">0</span>
+            <span class="desc" style="font-style:italic">— hidden</span>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="suspense">
+    <h2>Suspense</h2>
+    <p class="desc">Skeleton-to-content swap pattern for deferred loading. Server renders the shell with skeletons, then sends content as OOB swaps.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">suspense_slot (default)</div>
+    <div class="chirpui-suspense-slot">
+        <div class="chirpui-skeleton" style="width:100%;height:3rem"></div>
+    </div>
+    <div class="sc-label" style="margin-top:1rem">suspense_slot (text, 3 lines)</div>
+    <div class="chirpui-suspense-slot">
+        <div class="chirpui-skeleton chirpui-skeleton--text"><span></span><span></span><span></span></div>
+    </div>
+    <div class="sc-label" style="margin-top:1rem">suspense_group (aria-busy region)</div>
+    <div class="chirpui-suspense-group" aria-busy="true" style="display:flex;flex-direction:column;gap:0.5rem">
+        <div class="chirpui-suspense-slot">
+            <div class="chirpui-skeleton chirpui-skeleton--text"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="chirpui-suspense-slot">
+            <div class="chirpui-skeleton chirpui-skeleton--text"><span></span><span></span></div>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="sse-status">
+    <h2>SSE Connection Status</h2>
+    <p class="desc">Dot + label indicator for streaming connection state. <code>role="status"</code> with <code>aria-live="polite"</code>.</p>
+    <hr class="sc-divider">
+    <div class="sc-row" style="gap:2rem">
+        <span class="chirpui-sse-status chirpui-sse-status--connected" role="status" aria-live="polite">
+            <span class="chirpui-sse-status__dot" aria-hidden="true"></span>Connected
+        </span>
+        <span class="chirpui-sse-status chirpui-sse-status--disconnected" role="status" aria-live="polite">
+            <span class="chirpui-sse-status__dot" aria-hidden="true"></span>Disconnected
+        </span>
+        <span class="chirpui-sse-status chirpui-sse-status--error" role="status" aria-live="polite">
+            <span class="chirpui-sse-status__dot" aria-hidden="true"></span>Connection lost
+        </span>
+    </div>
+    <div class="sc-label" style="margin-top:1rem">sse_retry</div>
+    <p class="desc">Recovery button that re-fetches an SSE endpoint to reconnect.</p>
+    <button type="button" class="chirpui-sse-retry chirpui-btn chirpui-btn--sm">Reconnect</button>
+</section>
+
+<section class="sc-section" id="form-error-summary">
+    <h2>Form Error Summary</h2>
+    <p class="desc">Alert-style box listing field errors with anchor links. Place at form top. Supports <code>oob=true</code> for partial updates.</p>
+    <hr class="sc-divider">
+    <div class="chirpui-form-error-summary" role="alert" aria-live="assertive">
+        <p class="chirpui-form-error-summary__heading">Please fix 2 errors below:</p>
+        <ul class="chirpui-form-error-summary__list">
+            <li><a href="#field-name">name</a></li>
+            <li><a href="#field-email">email</a></li>
+        </ul>
+    </div>
+    <p class="desc" style="margin-top:0.75rem">Empty state (hidden, present for OOB targeting):</p>
+    <div class="chirpui-form-error-summary" hidden></div>
+    <span class="desc" style="font-style:italic">— hidden div with <code>id</code> for OOB swap</span>
 </section>
 
 <!-- FOOTER -->

@@ -15,9 +15,26 @@
 {% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
 
 
+{% from "chirpui/nav_progress.html" import nav_progress %}
+
 {% call container() %}
 {% call stack() %}
-{{ page_header("Navigation", subtitle="navbar, sidebar, stepper — Top nav, side nav, and multi-step indicators.") }}
+{{ page_header("Navigation", subtitle="navbar, sidebar, stepper, nav_progress — Top nav, side nav, multi-step indicators, and loading bars.") }}
+
+<h2>Navigation Progress</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  CSS-only progress bar fixed to the viewport top. Animates automatically on
+  <code>body.htmx-request</code>. Use outside <code>app_shell</code> (which has its
+  own built-in bar). Place once in your base layout.
+</p>
+{% call block() %}
+<div style="position:relative;height:2rem;overflow:hidden;border-radius:var(--chirpui-radius-md);">
+  {{ nav_progress() }}
+</div>
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
+  Contained preview. In production: <code>position:fixed; top:0; width:100%</code>.
+</p>
+{% end %}
 
 <h2>Navbar</h2>
 {% call block() %}
