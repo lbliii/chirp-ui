@@ -1,11 +1,11 @@
 # Changelog
 
-All notable changes to chirp-ui will be documented in this file.
+All notable changes to chirp-ui are recorded here via [Towncrier](https://towncrier.readthedocs.io/) fragments in `changelog.d/`.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+<!-- towncrier release notes start -->
 
 ## [0.2.5] — 2026-04-03
 

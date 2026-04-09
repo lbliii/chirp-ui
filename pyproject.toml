@@ -167,6 +167,8 @@ dev = [
     "ruff>=0.15.1", # 0.15.1+ fixes except-parenthesis bug (PEP 758 + as clause)
     # Pre-commit
     "pre-commit>=4.0.0",
+    # Changelog
+    "towncrier>=24.8.0",
 ]
 browser = [
     # Browser integration tests (Playwright + real Chirp app)
@@ -226,9 +228,56 @@ check = { sequence = [
     "ty",
 ], help = "Quick check (no tests)" }
 
+# Changelog
+changelog = { cmd = "towncrier build --yes", help = "Build changelog from fragments" }
+changelog-draft = { cmd = "towncrier build --draft", help = "Preview changelog without writing" }
+
 # Cleanup
 clean.shell = """
 rm -rf dist build .pytest_cache .coverage htmlcov .ruff_cache .ty_cache
 find . -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true
 """
 clean.help = "Remove build artifacts and caches"
+
+# =============================================================================
+# Towncrier — Fragment-based changelog
+# =============================================================================
+
+[tool.towncrier]
+directory = "changelog.d"
+filename = "CHANGELOG.md"
+package = "chirp_ui"
+package_dir = "src"
+title_format = "## [{version}] - {project_date}"
+issue_format = "[#{issue}](https://github.com/lbliii/chirp-ui/issues/{issue})"
+underlines = ["", "", ""]
+
+[[tool.towncrier.type]]
+directory = "added"
+name = "Added"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "changed"
+name = "Changed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "deprecated"
+name = "Deprecated"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "removed"
+name = "Removed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "fixed"
+name = "Fixed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "security"
+name = "Security"
+showcontent = true
