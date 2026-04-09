@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
+{% from "chirpui/oob.html" import oob_fragment, oob_toast, counter_badge %}
+{% from "chirpui/suspense.html" import suspense_slot, suspense_group %}
+{% from "chirpui/sse_status.html" import sse_status, sse_retry %}
+{% from "chirpui/nav_progress.html" import nav_progress %}
+{% from "chirpui/forms.html" import form, text_field, form_error_summary, form_actions %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/label_overline.html" import label_overline %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("HTMX Patterns", subtitle="OOB helpers, suspense slots, SSE status, nav progress, form a11y — server-driven UI patterns.") }}
+
+{# ── Nav Progress ─────────────────────────────────────── #}
+{{ label_overline("Navigation Progress", section=true, tag="h2") }}
+<p class="chirpui-text-muted chirpui-font-sm">
+  CSS-only progress bar fixed to the viewport top. Animates automatically when
+  <code>body.htmx-request</code> is present. Place once in your base layout.
+  <code>app_shell</code> has its own built-in bar — use <code>nav_progress()</code>
+  for pages outside the shell.
+</p>
+{% call block() %}
+<div style="position:relative;height:2rem;overflow:hidden;border-radius:var(--chirpui-radius-md);">
+  {{ nav_progress() }}
+</div>
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
+  Preview above (contained). In production it sits at <code>position:fixed; top:0</code>.
+</p>
+{% end %}
+
+{# ── OOB Helpers ──────────────────────────────────────── #}
+{{ label_overline("OOB Helpers", section=true, tag="h2") }}
+<p class="chirpui-text-muted chirpui-font-sm">
+  <code>oob.html</code> provides macros for composing htmx
+  <a href="https://htmx.org/docs/#oob_swaps">out-of-band swaps</a>.
+  Include them in any htmx response to update multiple page regions at once.
+</p>
+
+<h3>oob_fragment</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Wrap any content with <code>hx-swap-oob</code>. The <code>swap</code> parameter
+  defaults to <code>"true"</code> (outerHTML); use <code>"innerHTML"</code> to
+  replace children only.
+</p>
+{% call block() %}
+{% call oob_fragment("my-target") %}
+<p>This content replaces <code>#my-target</code> via OOB swap.</p>
+{% end %}
+{% end %}
+
+{% call block() %}
+{% call oob_fragment("sidebar-stats", swap="innerHTML") %}
+<p>This replaces the <em>children</em> of <code>#sidebar-stats</code>.</p>
+{% end %}
+{% end %}
+
+<h3>oob_toast</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Shorthand for appending a toast notification from any htmx response.
+  Renders a <code>toast()</code> with <code>oob=true</code> targeting
+  the toast container.
+</p>
+{% call block() %}
+{% call grid(cols=2) %}
+<div>{{ oob_toast("Item saved!", variant="success") }}</div>
+<div>{{ oob_toast("Something went wrong.", variant="danger") }}</div>
+{% end %}
+{% end %}
+
+<h3>counter_badge</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Numeric indicator for navigation items, tabs, and sidebars. Supports
+  <code>max_count</code> (shows "99+" by default), <code>variant</code>
+  (warning, danger), and <code>oob=true</code> for server-driven updates.
+  Hidden automatically when <code>count=0</code>.
+</p>
+{% call block() %}
+{% call grid(cols=4) %}
+<div>
+  <p class="chirpui-font-sm">Default</p>
+  {{ counter_badge("inbox-count", count=5) }}
+</div>
+<div>
+  <p class="chirpui-font-sm">Warning</p>
+  {{ counter_badge("review-count", count=12, variant="warning") }}
+</div>
+<div>
+  <p class="chirpui-font-sm">Danger</p>
+  {{ counter_badge("alert-count", count=3, variant="danger") }}
+</div>
+<div>
+  <p class="chirpui-font-sm">Overflow (99+)</p>
+  {{ counter_badge("notif-count", count=142) }}
+</div>
+{% end %}
+{% end %}
+
+{# ── Suspense ─────────────────────────────────────────── #}
+{{ label_overline("Suspense", section=true, tag="h2") }}
+<p class="chirpui-text-muted chirpui-font-sm">
+  Skeleton-to-content swap pattern for deferred loading. The server renders
+  the shell immediately with skeleton placeholders, then sends deferred
+  content as OOB swaps targeting each slot's <code>id</code>.
+  Pairs with Chirp's <code>Suspense(defer_map={})</code>.
+</p>
+
+<h3>suspense_slot (default skeleton)</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Renders a generic skeleton placeholder. When the server sends an OOB swap
+  targeting this <code>id</code>, the skeleton is replaced with real content.
+</p>
+{% call block() %}
+{{ suspense_slot("user-profile") }}
+{% end %}
+
+<h3>suspense_slot (typed skeleton)</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Use <code>skeleton_variant</code> and <code>lines</code> for shaped placeholders.
+</p>
+{% call block() %}
+{% call grid(cols=2) %}
+<div>
+  <p class="chirpui-font-sm">Card skeleton</p>
+  {{ suspense_slot("card-preview", skeleton_variant="card") }}
+</div>
+<div>
+  <p class="chirpui-font-sm">Text skeleton (3 lines)</p>
+  {{ suspense_slot("article-body", skeleton_variant="text", lines=3) }}
+</div>
+{% end %}
+{% end %}
+
+<h3>suspense_slot (custom placeholder)</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Use <code>{%- call -%}</code> to provide custom loading content.
+</p>
+{% call block() %}
+{% call suspense_slot("dashboard-stats") %}
+<p class="chirpui-text-muted">Loading stats...</p>
+{% end %}
+{% end %}
+
+<h3>suspense_group</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Marks a region <code>aria-busy="true"</code> until all child slots resolve.
+  Assistive tech announces the region as loading; remove <code>aria-busy</code>
+  when the last slot receives its OOB swap.
+</p>
+{% call block() %}
+{% call suspense_group() %}
+  {{ suspense_slot("sidebar-nav", skeleton_variant="text", lines=5) }}
+  {{ suspense_slot("sidebar-footer", skeleton_variant="text", lines=2) }}
+{% end %}
+{% end %}
+
+{# ── SSE Status ───────────────────────────────────────── #}
+{{ label_overline("SSE Status", section=true, tag="h2") }}
+<p class="chirpui-text-muted chirpui-font-sm">
+  Connection status indicators and error recovery for SSE streams.
+  Pair with <code>streaming_bubble</code> / <code>streaming_block</code>.
+</p>
+
+<h3>sse_status</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Dot + label indicator showing connection state. Uses <code>role="status"</code>
+  and <code>aria-live="polite"</code> for screen readers.
+</p>
+{% call block() %}
+{% call grid(cols=3) %}
+<div>{{ sse_status("connected") }}</div>
+<div>{{ sse_status("disconnected") }}</div>
+<div>{{ sse_status("error", label="Connection lost") }}</div>
+{% end %}
+{% end %}
+
+<h3>sse_retry</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Button that re-fetches an SSE endpoint to reconnect after failure.
+  Targets the closest <code>[hx-ext]</code> ancestor by default.
+</p>
+{% call block() %}
+{{ sse_retry("/api/stream/123", label="Reconnect") }}
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
+  Use inside an error state to let users manually recover:
+</p>
+<pre class="chirpui-code"><code>{% call streaming_bubble(role="assistant", streaming=false) %}
+  &lt;p&gt;Connection lost.&lt;/p&gt;
+  {{"{{" }} sse_retry("/api/stream/123") {{ "}}" }}
+{% end %}</code></pre>
+{% end %}
+
+{# ── Form A11y ────────────────────────────────────────── #}
+{{ label_overline("Form Accessibility", section=true, tag="h2") }}
+<p class="chirpui-text-muted chirpui-font-sm">
+  Server-rendered form patterns for accessible validation and htmx integration.
+</p>
+
+<h3>form_error_summary</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Alert-style box at the top of a form listing all field errors with anchor links.
+  Renders nothing when there are no errors. Supports <code>oob=true</code> for
+  partial-page updates.
+</p>
+{% call block() %}
+{{ form_error_summary({"name": ["Name is required"], "email": ["Enter a valid email address"]}) }}
+{% end %}
+
+{% call block() %}
+<p class="chirpui-font-sm">Empty state (hidden, but present in DOM for OOB targeting):</p>
+{{ form_error_summary({}) }}
+{% end %}
+
+<h3>Safe-by-default forms</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  The <code>form()</code> macro auto-adds <code>hx-select="unset"</code> and
+  <code>hx-disinherit="hx-select"</code> when htmx is detected (any <code>hx_post</code>,
+  <code>hx_put</code>, etc.). This prevents <code>hx-select</code> inherited from
+  boosted layouts from stripping OOB swaps in form responses.
+</p>
+{% call block() %}
+{% call form("/demo/submit", hx_post="/demo/submit", hx_target="#form-result", hx_swap="innerHTML") %}
+  {{ text_field("prompt", label="Prompt", placeholder="Type something...") }}
+  {% call form_actions(align="end") %}
+    {{ btn("Submit", type="submit", variant="primary") }}
+  {% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
+  This form has <code>hx-post</code>, so it automatically gets
+  <code>hx-select="unset"</code>. Explicit <code>hx_select</code> overrides the default.
+</p>
+<div id="form-result"></div>
+{% end %}
+
+<h3>Per-field OOB</h3>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Each field has <code>id="field-{name}"</code> and an error container
+  <code>id="errors-{name}"</code> with <code>role="alert"</code>.
+  Set <code>oob=true</code> on <code>field_wrapper</code> to swap individual
+  fields without re-rendering the whole form.
+</p>
+{% call block() %}
+{{ text_field("username", label="Username", errors=["Username is already taken"], value="jdoe") }}
+<p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
+  The error container (<code>#errors-username</code>) is always in the DOM.
+  Server returns just the field with <code>oob=true</code> to update it in-place.
+</p>
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

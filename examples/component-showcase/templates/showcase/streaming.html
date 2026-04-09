@@ -3,6 +3,7 @@
 {% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/streaming.html" import streaming_block, copy_btn, model_card %}
+{% from "chirpui/sse_status.html" import sse_status, sse_retry %}
 
 {% call container() %}
 {% call stack() %}
@@ -68,6 +69,28 @@ Use with htmx SSE: sse-swap="fragment" hx-target="this" on the inner div.
 {% end %}
 {% end %}
 {% end %}
+{% end %}
+
+<h2>SSE Connection Status</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Connection indicator with dot + label. Shows stream health at a glance.
+  Uses <code>role="status"</code> and <code>aria-live="polite"</code>.
+</p>
+{% call block() %}
+{% call grid(cols=3) %}
+<div>{{ sse_status("connected") }}</div>
+<div>{{ sse_status("disconnected") }}</div>
+<div>{{ sse_status("error", label="Connection lost") }}</div>
+{% end %}
+{% end %}
+
+<h2>SSE Retry</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Recovery button that re-fetches an SSE endpoint. Place inside an error state
+  so users can manually reconnect.
+</p>
+{% call block() %}
+{{ sse_retry("/streaming/demo", label="Reconnect") }}
 {% end %}
 
 <h2>Try it — Live SSE Demo</h2>

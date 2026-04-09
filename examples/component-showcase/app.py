@@ -157,6 +157,11 @@ async def demo_stream(request: Request) -> EventStream:
     return EventStream(generate())
 
 
+@app.route("/htmx", template="showcase/htmx.html")
+async def htmx_patterns() -> Template:
+    return Template("showcase/htmx.html")
+
+
 @app.route("/navigation", template="showcase/navigation.html")
 async def navigation() -> Template:
     return Template("showcase/navigation.html")

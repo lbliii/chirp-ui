@@ -19,9 +19,12 @@ chirp-ui provides Kida macros organized by category. Import from `chirpui/` and 
 |----------|----------|
 | **Layout** | container, grid, stack, block, page_header, section_header, divider, breadcrumbs, navbar, sidebar, hero, surface, callout |
 | **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group |
-| **Forms** | text_field, password_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field |
+| **Forms** | text_field, password_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, form_error_summary |
 | **Data display** | badge, spinner, skeleton, progress, [description_list](./type-aware-rendering.md) (type-aware), timeline, tree_view, calendar |
-| **Streaming** | streaming_block, copy_btn, model_card — for htmx SSE and LLM UIs |
+| **Streaming** | streaming_block, copy_btn, model_card, sse_status, sse_retry — for htmx SSE and LLM UIs |
+| **HTMX helpers** | oob_fragment, oob_toast, counter_badge — out-of-band swap composition |
+| **Suspense** | suspense_slot, suspense_group — skeleton-to-content deferred loading |
+| **Navigation extras** | nav_progress — CSS-only loading bar for htmx page transitions |
 | **Mutation helpers** | fragment_island, fragment_island_with_result, poll_trigger, confirm_dialog, confirm_trigger |
 
 See the [component showcase](https://github.com/lbliii/chirp-ui#usage) for live examples. Run:
