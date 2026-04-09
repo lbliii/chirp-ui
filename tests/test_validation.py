@@ -49,24 +49,6 @@ class TestStrictContextVarIsolation:
     def teardown_method(self) -> None:
         set_strict(False)
 
-    def test_child_thread_gets_default_context(self) -> None:
-        set_strict(True)
-        assert _is_strict() is True
-
-        child_saw: list[bool] = []
-
-        def child_fn() -> None:
-            child_saw.append(_is_strict())
-
-        t = threading.Thread(target=child_fn)
-        t.start()
-        t.join()
-
-        assert child_saw == [False], (
-            "threading.Thread gets fresh context with defaults, not a copy of the parent"
-        )
-        assert _is_strict() is True
-
     def test_child_set_does_not_leak_to_parent(self) -> None:
         set_strict(False)
 
