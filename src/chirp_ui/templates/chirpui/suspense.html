@@ -1,0 +1,42 @@
+{#- chirp-ui: Suspense components
+    Skeleton-to-content swap pattern for deferred loading. Pairs with
+    Chirp's Suspense(defer_map={}) return type — the server renders the
+    shell immediately, then sends deferred blocks as OOB swaps.
+
+    Usage:
+        from "chirpui/suspense.html" import suspense_slot, suspense_group
+
+        Single deferred region:
+            suspense_slot("user-profile", skeleton="card")
+
+        With custom placeholder:
+            call suspense_slot("dashboard-stats")
+                <p>Loading stats...</p>
+            end
+
+        Group (marks parent busy until all slots resolve):
+            call suspense_group()
+                suspense_slot("sidebar-nav", skeleton="text", lines=5)
+                suspense_slot("sidebar-footer", skeleton="text", lines=2)
+            end
+-#}
+
+{% from "chirpui/skeleton.html" import skeleton %}
+
+{% def suspense_slot(id, skeleton_variant="", lines=1, width=none, height=none, cls="") %}
+<div id="{{ id }}" class="chirpui-suspense-slot{{ " " ~ cls if cls else "" }}">
+    {% if caller | default(none) %}
+        {% slot %}
+    {% elif skeleton_variant %}
+        {{ skeleton(variant=skeleton_variant, lines=lines, width=width, height=height) }}
+    {% else %}
+        {{ skeleton(width=width or "100%", height=height or "3rem") }}
+    {% end %}
+</div>
+{% end %}
+
+{% def suspense_group(cls="") %}
+<div class="chirpui-suspense-group{{ " " ~ cls if cls else "" }}" aria-busy="true">
+    {% slot %}
+</div>
+{% end %}

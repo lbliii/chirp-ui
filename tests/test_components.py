@@ -2235,6 +2235,105 @@ class TestForms:
         ).render()
         assert "chirpui-form-actions--end" in html
 
+    # -- a11y: aria-describedby, role=alert, error container --
+
+    def test_text_field_aria_describedby(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import text_field %}'
+            '{{ text_field("email", label="Email") }}'
+        ).render()
+        assert 'aria-describedby="errors-email"' in html
+
+    def test_text_field_error_container_role_alert(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import text_field %}'
+            '{{ text_field("email", label="Email", errors={"email": ["Required"]}) }}'
+        ).render()
+        assert 'role="alert"' in html
+        assert 'aria-live="polite"' in html
+        assert 'id="errors-email"' in html
+        assert "Required" in html
+
+    def test_field_wrapper_has_id(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import text_field %}'
+            '{{ text_field("username", label="Username") }}'
+        ).render()
+        assert 'id="field-username"' in html
+
+    def test_field_wrapper_oob(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import field_wrapper %}'
+            '{% call field_wrapper("name", oob=true) %}'
+            '<input name="name">'
+            "{% end %}"
+        ).render()
+        assert 'hx-swap-oob="true"' in html
+        assert 'id="field-name"' in html
+
+    def test_field_wrapper_custom_field_id(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import field_wrapper %}'
+            '{% call field_wrapper("name", field_id="edit-field-name") %}'
+            '<input name="name">'
+            "{% end %}"
+        ).render()
+        assert 'id="edit-field-name"' in html
+
+    def test_checkbox_field_aria_describedby(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import checkbox_field %}'
+            '{{ checkbox_field("agree", label="I agree") }}'
+        ).render()
+        assert 'aria-describedby="errors-agree"' in html
+        assert 'id="field-agree"' in html
+
+    def test_radio_field_error_container(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import radio_field %}'
+            '{% set opts = [{"value": "a", "label": "A"}] %}'
+            '{{ radio_field("choice", options=opts, errors={"choice": ["Pick one"]}) }}'
+        ).render()
+        assert 'id="errors-choice"' in html
+        assert 'role="alert"' in html
+        assert "Pick one" in html
+
+    def test_form_error_summary_with_errors(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form_error_summary %}'
+            '{{ form_error_summary({"email": ["Required"], "name": ["Too short"]}) }}'
+        ).render()
+        assert "chirpui-form-error-summary" in html
+        assert 'role="alert"' in html
+        assert 'aria-live="assertive"' in html
+        assert "2 errors" in html
+        assert 'href="#field-email"' in html
+        assert 'href="#field-name"' in html
+
+    def test_form_error_summary_no_errors(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form_error_summary %}'
+            "{{ form_error_summary(none) }}"
+        ).render()
+        # Should render nothing when no errors
+        assert "chirpui-form-error-summary__heading" not in html
+
+    def test_form_error_summary_oob(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form_error_summary %}'
+            '{{ form_error_summary({"x": ["Bad"]}, oob=true) }}'
+        ).render()
+        assert 'hx-swap-oob="true"' in html
+
+    def test_empty_error_container_always_present(self, env: Environment) -> None:
+        """Error container is always in DOM (for aria-describedby), just empty."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import text_field %}'
+            '{{ text_field("title", label="Title") }}'
+        ).render()
+        assert 'id="errors-title"' in html
+        assert 'role="alert"' in html
+
 
 # ---------------------------------------------------------------------------
 # Action Containers
@@ -3294,6 +3393,161 @@ class TestSkeleton:
         assert "chirpui-skeleton--card-img" in html
 
 
+class TestSuspense:
+    def test_suspense_slot_default_skeleton(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot %}'
+            '{{ suspense_slot("user-profile") }}'
+        ).render()
+        assert 'id="user-profile"' in html
+        assert "chirpui-suspense-slot" in html
+        assert "chirpui-skeleton" in html
+
+    def test_suspense_slot_card_skeleton(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot %}'
+            '{{ suspense_slot("stats", skeleton_variant="card", lines=2) }}'
+        ).render()
+        assert 'id="stats"' in html
+        assert "chirpui-skeleton--card" in html
+
+    def test_suspense_slot_text_skeleton(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot %}'
+            '{{ suspense_slot("nav", skeleton_variant="text", lines=4) }}'
+        ).render()
+        assert "chirpui-skeleton--text" in html
+        assert html.count("chirpui-skeleton__line") == 4
+
+    def test_suspense_slot_custom_placeholder(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot %}'
+            '{% call suspense_slot("data") %}<p>Loading data...</p>{% end %}'
+        ).render()
+        assert 'id="data"' in html
+        assert "Loading data..." in html
+        assert "chirpui-skeleton" not in html
+
+    def test_suspense_slot_oob_targetable(self, env: Environment) -> None:
+        """The slot id is the OOB target — server sends replacement via hx-swap-oob."""
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot %}'
+            '{{ suspense_slot("deferred-block") }}'
+        ).render()
+        assert 'id="deferred-block"' in html
+
+    def test_suspense_group_aria_busy(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot, suspense_group %}'
+            "{% call suspense_group() %}"
+            '{{ suspense_slot("a") }}{{ suspense_slot("b") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-suspense-group" in html
+        assert 'aria-busy="true"' in html
+        assert 'id="a"' in html
+        assert 'id="b"' in html
+
+    def test_suspense_slot_with_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot %}'
+            '{{ suspense_slot("x", cls="my-class") }}'
+        ).render()
+        assert "chirpui-suspense-slot my-class" in html
+
+
+class TestNavProgress:
+    def test_nav_progress_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_progress.html" import nav_progress %}{{ nav_progress() }}'
+        ).render()
+        assert "chirpui-nav-progress" in html
+        assert 'aria-hidden="true"' in html
+
+    def test_nav_progress_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_progress.html" import nav_progress %}'
+            '{{ nav_progress(cls="my-bar") }}'
+        ).render()
+        assert "chirpui-nav-progress my-bar" in html
+
+    def test_nav_progress_no_extra_class_when_empty(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_progress.html" import nav_progress %}{{ nav_progress() }}'
+        ).render()
+        assert 'class="chirpui-nav-progress"' in html
+
+
+class TestSseStatus:
+    def test_sse_status_connected(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_status %}{{ sse_status("connected") }}'
+        ).render()
+        assert "chirpui-sse-status--connected" in html
+        assert "Connected" in html
+        assert 'role="status"' in html
+
+    def test_sse_status_error(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_status %}{{ sse_status("error") }}'
+        ).render()
+        assert "chirpui-sse-status--error" in html
+        assert "Connection error" in html
+
+    def test_sse_status_disconnected(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_status %}{{ sse_status("disconnected") }}'
+        ).render()
+        assert "chirpui-sse-status--disconnected" in html
+        assert "Disconnected" in html
+
+    def test_sse_status_custom_label(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_status %}'
+            '{{ sse_status("error", label="Connection lost") }}'
+        ).render()
+        assert "Connection lost" in html
+        assert "chirpui-sse-status--error" in html
+
+    def test_sse_status_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_status %}'
+            '{{ sse_status("connected", cls="my-indicator") }}'
+        ).render()
+        assert "my-indicator" in html
+
+    def test_sse_retry_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}'
+            '{{ sse_retry("/api/stream/123") }}'
+        ).render()
+        assert "chirpui-sse-retry" in html
+        assert 'hx-get="/api/stream/123"' in html
+        assert "Retry" in html
+
+    def test_sse_retry_custom_label(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}'
+            '{{ sse_retry("/api/stream/123", label="Reconnect") }}'
+        ).render()
+        assert "Reconnect" in html
+
+    def test_sse_retry_post_method(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}'
+            '{{ sse_retry("/api/stream/123", method="post") }}'
+        ).render()
+        assert 'hx-post="/api/stream/123"' in html
+
+    def test_sse_retry_has_btn_classes(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}'
+            '{{ sse_retry("/api/stream/123") }}'
+        ).render()
+        assert "chirpui-btn" in html
+        assert "chirpui-btn--sm" in html
+
+
 class TestProgress:
     def test_progress_bar_default(self, env: Environment) -> None:
         html = env.from_string(
@@ -3946,6 +4200,99 @@ class TestNotificationDot:
             "{% call notification_dot(count=5) %}<span>Mail</span>{% end %}"
         ).render()
         assert "5" in html
+
+
+class TestOobHelpers:
+    def test_oob_fragment_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import oob_fragment %}'
+            '{% call oob_fragment("my-target") %}<p>New</p>{% end %}'
+        ).render()
+        assert 'id="my-target"' in html
+        assert 'hx-swap-oob="true"' in html
+        assert "<p>New</p>" in html
+
+    def test_oob_fragment_swap_strategy(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import oob_fragment %}'
+            '{% call oob_fragment("stats", swap="innerHTML") %}<span>42</span>{% end %}'
+        ).render()
+        assert 'hx-swap-oob="innerHTML"' in html
+
+    def test_oob_fragment_custom_tag(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import oob_fragment %}'
+            '{% call oob_fragment("nav", tag="nav") %}links{% end %}'
+        ).render()
+        assert "<nav " in html
+        assert "</nav>" in html
+
+    def test_oob_toast(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import oob_toast %}'
+            '{{ oob_toast("Saved!", variant="success") }}'
+        ).render()
+        assert 'hx-swap-oob="beforeend:#chirpui-toasts"' in html
+        assert "chirpui-toast--success" in html
+        assert "Saved!" in html
+
+    def test_oob_toast_custom_container(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import oob_toast %}'
+            '{{ oob_toast("Hi", container_id="my-toasts") }}'
+        ).render()
+        assert "beforeend:#my-toasts" in html
+
+    def test_counter_badge_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import counter_badge %}'
+            '{{ counter_badge("inbox-count", count=5) }}'
+        ).render()
+        assert 'id="inbox-count"' in html
+        assert "chirpui-counter-badge" in html
+        assert ">5<" in html
+        assert "hx-swap-oob" not in html
+
+    def test_counter_badge_oob(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import counter_badge %}'
+            '{{ counter_badge("cart", count=3, oob=true) }}'
+        ).render()
+        assert 'hx-swap-oob="true"' in html
+        assert 'id="cart"' in html
+
+    def test_counter_badge_zero_hidden(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import counter_badge %}'
+            '{{ counter_badge("notif", count=0) }}'
+        ).render()
+        assert "hidden" in html
+
+    def test_counter_badge_overflow(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import counter_badge %}'
+            '{{ counter_badge("msgs", count=150) }}'
+        ).render()
+        assert "99+" in html
+
+    def test_counter_badge_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import counter_badge %}'
+            '{{ counter_badge("alerts", count=7, variant="danger") }}'
+        ).render()
+        assert "chirpui-counter-badge--danger" in html
+
+    def test_counter_badge_aria_label(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import counter_badge %}{{ counter_badge("x", count=1) }}'
+        ).render()
+        assert 'aria-label="1 notification"' in html
+
+    def test_counter_badge_plural_aria(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import counter_badge %}{{ counter_badge("x", count=3) }}'
+        ).render()
+        assert 'aria-label="3 notifications"' in html
 
 
 class TestNumberTicker:

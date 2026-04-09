@@ -946,7 +946,225 @@ These helpers exist for lightweight markup where a dedicated component would be 
 
 ---
 
+## OOB Helpers
+
+`chirpui/oob.html` provides macros for composing htmx out-of-band swap fragments.
+
+### `oob_fragment(id, swap, tag, cls)`
+
+Wraps any block content with `hx-swap-oob`. Pairs with Chirp's `Fragment()` and `OOB()` returns.
+
+```html
+{% from "chirpui/oob.html" import oob_fragment %}
+{% call oob_fragment("sidebar-stats", swap="innerHTML") %}
+    <p>Updated stats</p>
+{% end %}
+```
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `id` | — | Target element ID |
+| `swap` | `"true"` | OOB swap strategy (`true` = outerHTML, `innerHTML`, `beforeend`, etc.) |
+| `tag` | `"div"` | HTML tag for the wrapper |
+
+### `oob_toast(message, variant, dismissible, container_id)`
+
+Shorthand for sending a toast notification from any htmx response.
+
+```html
+{% from "chirpui/oob.html" import oob_toast %}
+{{ oob_toast("Item saved!", variant="success") }}
+```
+
+### `counter_badge(id, count, variant, max_count, oob)`
+
+Small numeric pill for notification counts, cart items, etc. Hidden when `count=0`.
+
+```html
+{% from "chirpui/oob.html" import counter_badge %}
+{{ counter_badge("inbox-count", count=5) }}
+{{ counter_badge("inbox-count", count=12, variant="danger", oob=true) }}
+```
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `id` | — | Element ID (OOB target) |
+| `count` | `0` | Number to display |
+| `variant` | `""` | `""`, `warning`, `danger` |
+| `max_count` | `99` | Overflow threshold (displays `99+` above) |
+| `oob` | `false` | Emit `hx-swap-oob="true"` |
+
+---
+
+## Suspense (Deferred Loading)
+
+`chirpui/suspense.html` provides skeleton-to-content swap macros that pair with Chirp's `Suspense(defer_map={})` return type. The server renders the shell immediately, then sends deferred blocks as OOB swaps that replace the skeleton placeholders.
+
+```jinja
+{% from "chirpui/suspense.html" import suspense_slot, suspense_group %}
+
+{# Default skeleton placeholder #}
+{{ suspense_slot("user-profile") }}
+
+{# Skeleton variant (card, text, etc.) #}
+{{ suspense_slot("sidebar-nav", skeleton_variant="text", lines=5) }}
+
+{# Custom placeholder via call block #}
+{% call suspense_slot("dashboard-stats") %}
+    <p>Loading stats...</p>
+{% end %}
+
+{# Group — marks parent busy until all slots resolve #}
+{% call suspense_group() %}
+    {{ suspense_slot("panel-a", skeleton_variant="card") }}
+    {{ suspense_slot("panel-b", skeleton_variant="card") }}
+{% end %}
+```
+
+### `suspense_slot`
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `id` | *(required)* | Element ID — OOB swap target |
+| `skeleton_variant` | `""` | Skeleton type (`"text"`, `"card"`, etc.) |
+| `lines` | `1` | Line count for text skeleton |
+| `width` | `none` | Custom skeleton width |
+| `height` | `none` | Custom skeleton height |
+| `cls` | `""` | Extra CSS classes |
+
+When called without a `{% call %}` block and no `skeleton_variant`, renders a default block skeleton (`100%` × `3rem`).
+
+### `suspense_group`
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `cls` | `""` | Extra CSS classes |
+
+Wraps child slots in a `display: contents` container with `aria-busy="true"`. Remove the group (or swap its content) once all deferred slots resolve.
+
+---
+
+## Navigation Progress
+
+`chirpui/nav_progress.html` provides a CSS-only fixed progress bar at the top of the viewport. It animates automatically when htmx adds `htmx-request` to `<body>` during navigation requests. Use this in layouts that don't use `app_shell` (which has its own built-in loading bar).
+
+```jinja
+{% from "chirpui/nav_progress.html" import nav_progress %}
+
+{{ nav_progress() }}
+```
+
+### `nav_progress`
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `cls` | `""` | Extra CSS classes |
+
+The bar is `position: fixed`, `z-index: 9999`, and uses `aria-hidden="true"` (purely decorative). It respects `prefers-reduced-motion` by skipping the animation and showing a static full-width bar instead.
+
+---
+
+## SSE Status
+
+`chirpui/sse_status.html` provides connection status indicators and retry controls for SSE-driven streaming UIs. Pair with `streaming_bubble`/`streaming_block` from `chirpui/streaming.html`.
+
+```jinja
+{% from "chirpui/sse_status.html" import sse_status, sse_retry %}
+
+{# Connection indicator #}
+{{ sse_status("connected") }}
+{{ sse_status("error", label="Connection lost") }}
+
+{# Retry button — re-fetches the SSE endpoint #}
+{{ sse_retry("/api/stream/123") }}
+{{ sse_retry("/api/stream/123", label="Reconnect", method="post") }}
+```
+
+### `sse_status`
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `state` | `"connected"` | One of `connected`, `disconnected`, `error` |
+| `label` | *(auto)* | Display text (defaults to state name) |
+| `cls` | `""` | Extra CSS classes |
+
+Renders a colored dot + label with `role="status"` and `aria-live="polite"`.
+
+### `sse_retry`
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `url` | *(required)* | SSE endpoint URL to re-fetch |
+| `label` | `"Retry"` | Button text |
+| `method` | `"get"` | htmx method (`get`, `post`) |
+| `target` | `"closest [hx-ext]"` | htmx swap target |
+| `swap` | `"outerHTML"` | htmx swap strategy |
+| `cls` | `""` | Extra CSS classes |
+
+Renders a small button (`chirpui-btn--sm`) that triggers an htmx request to reconnect.
+
+---
+
+## Form Accessibility
+
+All field macros include built-in accessibility for validation:
+
+| Feature | Attribute | Where |
+|---------|-----------|-------|
+| Field OOB target | `id="field-{name}"` | Wrapper div |
+| Error description | `aria-describedby="errors-{name}"` | Input control |
+| Error container | `id="errors-{name}" role="alert" aria-live="polite"` | Always in DOM |
+| Invalid state | `aria-invalid="true"` | Input when errors present |
+
+### `field_wrapper` params
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `field_id` | `"field-{name}"` | Override wrapper ID (for repeated/nested fields) |
+| `oob` | `false` | Emit `hx-swap-oob="true"` for per-field OOB validation |
+
+### `form_error_summary(errors, id, oob)`
+
+Alert-style error summary for form tops. Lists field count with anchor links to `#field-{name}`.
+
+```html
+{% from "chirpui/forms.html" import form_error_summary %}
+{% call form("/save", hx_post="/save", hx_target="#my-form") %}
+    {{ form_error_summary(errors) }}
+    {{ text_field("email", errors=errors, label="Email") }}
+{% end %}
+```
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `errors` | — | Dict of `{field_name: [messages]}` |
+| `id` | `"form-errors"` | Element ID (OOB target) |
+| `oob` | `false` | Emit `hx-swap-oob="true"` |
+
+---
+
 ## Usage Notes
+
+### HTMX Attributes (`build_hx_attrs`)
+
+Components with htmx support (btn, form, tabs, etc.) accept named `hx_*` parameters directly. Internally, templates use `build_hx_attrs` to convert these to HTML attributes:
+
+```html
+{# Template author: use build_hx_attrs in macros instead of individual {% if hx_* %} blocks #}
+{{ build_hx_attrs(hx_post="/save", hx_target="#result") | html_attrs }}
+{# → hx-post="/save" hx-target="#result" #}
+```
+
+`build_hx_attrs` converts underscores to hyphens in keys (`hx_post` → `hx-post`). `None` values are preserved in the dict but skipped by `html_attrs`, so unset params produce no output. It is registered as a **template global** (called as a function, not a filter).
+
+**Component consumers** use the named params directly — no need to call `build_hx_attrs`:
+
+```html
+{{ btn("Save", hx_post="/save", hx_target="#result") }}
+{% call form("/items", hx_post="/items", hx_target="#list", hx_swap="innerHTML") %}
+  ...
+{% end %}
+```
 
 ### Structured Attributes (recommended)
 

@@ -70,7 +70,7 @@ Alpine.safeData('counter', () => ({ count: 0 }));
 
 ### `use_chirp_ui` (or `register_filters`) must be called before template rendering
 
-When using Chirp, call `use_chirp_ui(app)` after app creation. If you render templates before registration, filters like `bem`, `html_attrs`, `validate_variant` will be missing and templates will fail.
+When using Chirp, call `use_chirp_ui(app)` after app creation. If you render templates before registration, filters like `bem`, `html_attrs`, `validate_variant` and globals like `build_hx_attrs` will be missing and templates will fail.
 
 ```python
 from chirp import App, use_chirp_ui

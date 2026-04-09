@@ -26,17 +26,10 @@
    {{ attrs_map | html_attrs }}
    {% if not disabled and _btn_has_hx %}hx-boost="false"{% end %}
    {% if not disabled and _btn_has_hx %}hx-select="{{ hx_select if hx_select else "unset" }}"{% end %}
-   {% if not disabled and hx_get %}hx-get="{{ hx_get }}"{% end %}
-   {% if not disabled and hx_post %}hx-post="{{ hx_post }}"{% end %}
-   {% if not disabled and hx_put %}hx-put="{{ hx_put }}"{% end %}
-   {% if not disabled and hx_patch %}hx-patch="{{ hx_patch }}"{% end %}
-   {% if not disabled and hx_delete %}hx-delete="{{ hx_delete }}"{% end %}
-   {% if not disabled and hx_target %}hx-target="{{ hx_target }}"{% end %}
-   {% if not disabled and hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
-   {% if not disabled and hx_trigger %}hx-trigger="{{ hx_trigger }}"{% end %}
-   {% if not disabled and hx_include %}hx-include="{{ hx_include }}"{% end %}
-   {% if not disabled and hx_ext %}hx-ext="{{ hx_ext }}"{% end %}
-   {% if not disabled and hx_vals is not none %}hx-vals="{{ hx_vals }}"{% end %}>
+   {% if not disabled %}{{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
+       hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target, hx_swap=hx_swap,
+       hx_trigger=hx_trigger, hx_include=hx_include, hx_ext=hx_ext,
+       hx_vals=hx_vals) | html_attrs }}{% end %}>
     {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
     <span class="chirpui-btn__label">{{ label }}</span>
 </a>
@@ -47,18 +40,10 @@
         {% if disabled %}disabled{% end %}
         {{ attrs | html_attrs }}
         {{ attrs_map | html_attrs }}
-        {% if hx_get %}hx-get="{{ hx_get }}"{% end %}
-        {% if hx_post %}hx-post="{{ hx_post }}"{% end %}
-        {% if hx_put %}hx-put="{{ hx_put }}"{% end %}
-        {% if hx_patch %}hx-patch="{{ hx_patch }}"{% end %}
-        {% if hx_delete %}hx-delete="{{ hx_delete }}"{% end %}
-        {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
-        {% if hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
-        {% if hx_trigger %}hx-trigger="{{ hx_trigger }}"{% end %}
-        {% if hx_include %}hx-include="{{ hx_include }}"{% end %}
-        {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
-        {% if hx_ext %}hx-ext="{{ hx_ext }}"{% end %}
-        {% if hx_vals is not none %}hx-vals="{{ hx_vals }}"{% end %}>
+        {{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
+            hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target, hx_swap=hx_swap,
+            hx_trigger=hx_trigger, hx_include=hx_include, hx_select=hx_select,
+            hx_ext=hx_ext, hx_vals=hx_vals) | html_attrs }}>
     {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
     <span class="chirpui-btn__label">{{ label }}</span>
     <span class="chirpui-btn__spinner" aria-hidden="true">{{ spinner(size="sm") }}</span>

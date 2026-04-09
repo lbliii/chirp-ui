@@ -4,6 +4,7 @@ import pytest
 
 from chirp_ui.filters import (
     bem,
+    build_hx_attrs,
     contrast_text,
     field_errors,
     html_attrs,
@@ -498,3 +499,66 @@ class TestRegisterFiltersWithTemplateGlobal:
         register_filters(app)
         assert "bem" in registered
         assert "tab_is_active" not in registered
+
+
+class TestBuildHxAttrs:
+    """build_hx_attrs converts kwargs to hyphenated dict for html_attrs."""
+
+    def test_converts_underscores_to_hyphens(self) -> None:
+        result = build_hx_attrs(hx_post="/save", hx_target="#result")
+        assert result == {"hx-post": "/save", "hx-target": "#result"}
+
+    def test_preserves_none_values(self) -> None:
+        result = build_hx_attrs(hx_get=None, hx_post="/x")
+        assert result == {"hx-get": None, "hx-post": "/x"}
+
+    def test_empty_kwargs_returns_empty_dict(self) -> None:
+        assert build_hx_attrs() == {}
+
+    def test_none_values_skipped_by_html_attrs(self) -> None:
+        d = build_hx_attrs(hx_get=None, hx_post="/save")
+        rendered = str(html_attrs(d))
+        assert "hx-get" not in rendered
+        assert 'hx-post="/save"' in rendered
+
+    def test_all_hx_params(self) -> None:
+        result = build_hx_attrs(
+            hx_get="/a",
+            hx_post="/b",
+            hx_put="/c",
+            hx_patch="/d",
+            hx_delete="/e",
+            hx_target="#f",
+            hx_swap="innerHTML",
+            hx_trigger="click",
+            hx_include="[name=q]",
+            hx_select="#g",
+            hx_ext="sse",
+            hx_vals='{"k":"v"}',
+        )
+        assert result["hx-get"] == "/a"
+        assert result["hx-post"] == "/b"
+        assert result["hx-vals"] == '{"k":"v"}'
+        assert len(result) == 12
+
+    def test_non_hx_keys_also_converted(self) -> None:
+        result = build_hx_attrs(data_action="click->ctrl#method")
+        assert result == {"data-action": "click->ctrl#method"}
+
+    def test_registered_as_global(self) -> None:
+        registered_globals: dict[str, object] = {}
+
+        class MockApp:
+            def template_filter(self, name: str):
+                return lambda fn: fn
+
+            def template_global(self, name: str):
+                def decorator(fn: object) -> object:
+                    registered_globals[name] = fn
+                    return fn
+
+                return decorator
+
+        register_filters(MockApp())
+        assert "build_hx_attrs" in registered_globals
+        assert registered_globals["build_hx_attrs"] is build_hx_attrs

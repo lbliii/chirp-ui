@@ -1,0 +1,41 @@
+{#- chirp-ui: OOB (Out-of-Band) swap helpers
+    Macros for composing htmx out-of-band swap fragments.
+
+    Usage:
+        from "chirpui/oob.html" import oob_fragment, oob_toast, counter_badge
+
+        Wrap any content as an OOB fragment:
+            call oob_fragment("my-target")
+                <p>New content</p>
+            end
+
+            call oob_fragment("sidebar-stats", swap="innerHTML")
+                <p>Updated stats</p>
+            end
+
+        Send a toast notification from any htmx response:
+            oob_toast("Item saved!", variant="success")
+
+        Render or update a counter badge:
+            counter_badge("inbox-count", count=5)
+            counter_badge("inbox-count", count=12, variant="danger", oob=true)
+-#}
+
+{% def oob_fragment(id, swap="true", tag="div", cls="") %}
+<{{ tag }} id="{{ id }}" hx-swap-oob="{{ swap }}"{% if cls %} class="{{ cls }}"{% end %}>
+    {% slot %}
+</{{ tag }}>
+{% end %}
+
+{% def oob_toast(message, variant="info", dismissible=true, container_id="chirpui-toasts", cls="") %}
+{% from "chirpui/toast.html" import toast %}
+{{ toast(message, variant=variant, dismissible=dismissible, oob=true, container_id=container_id, cls=cls) }}
+{% end %}
+
+{% def counter_badge(id, count=0, variant="", max_count=99, oob=false, cls="") %}
+{% set variant = variant | validate_variant(("", "default", "warning", "danger"), "") %}
+{% set variant_class = " chirpui-counter-badge--" ~ variant if variant else "" %}
+{% set display = (count | string) if count <= max_count else (max_count | string ~ "+") %}
+<span id="{{ id }}" class="chirpui-counter-badge{{ variant_class }}{{ " " ~ cls if cls else "" }}"{% if oob %} hx-swap-oob="true"{% end %}{% if count == 0 %} hidden{% end %}
+      aria-label="{{ count }} notification{{ "s" if count != 1 else "" }}">{{ display }}</span>
+{% end %}

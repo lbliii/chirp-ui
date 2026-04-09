@@ -3622,6 +3622,39 @@ a.chirpui-mention:focus-visible {
     min-height: 3rem;
 }
 
+/* sse_status */
+.chirpui-sse-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-sse-status__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.chirpui-sse-status--connected .chirpui-sse-status__dot {
+    background: var(--chirpui-success);
+}
+
+.chirpui-sse-status--disconnected .chirpui-sse-status__dot {
+    background: var(--chirpui-text-muted);
+}
+
+.chirpui-sse-status--error .chirpui-sse-status__dot {
+    background: var(--chirpui-danger);
+}
+
+/* sse_retry — inherits .chirpui-btn .chirpui-btn--sm styling */
+.chirpui-sse-retry {
+    align-self: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -7133,11 +7166,46 @@ a.chirpui-tag:active {
     color: var(--chirpui-text-muted);
 }
 
+.chirpui-field__errors:empty {
+    display: none;
+}
+
 .chirpui-field__error {
     display: block;
     margin-top: var(--chirpui-spacing-xs);
     font-size: var(--chirpui-font-sm);
     color: var(--chirpui-error);
+}
+
+/* Form error summary */
+.chirpui-form-error-summary {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    margin-bottom: var(--chirpui-spacing);
+    border: 1px solid var(--chirpui-alert-error-border);
+    border-radius: var(--chirpui-radius-sm);
+    background: var(--chirpui-alert-error-bg);
+    color: var(--chirpui-error);
+}
+
+.chirpui-form-error-summary[hidden] {
+    display: none;
+}
+
+.chirpui-form-error-summary__heading {
+    margin: 0 0 var(--chirpui-spacing-xs);
+    font-weight: 600;
+    font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-form-error-summary__list {
+    margin: 0;
+    padding-left: var(--chirpui-spacing);
+    font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-form-error-summary__list a {
+    color: var(--chirpui-error);
+    text-decoration: underline;
 }
 
 .chirpui-field__checkbox {
@@ -8713,6 +8781,15 @@ a.chirpui-badge--custom-solid:hover {
     }
 }
 
+/* suspense */
+.chirpui-suspense-slot {
+    min-height: 2rem;
+}
+
+.chirpui-suspense-group {
+    display: contents;
+}
+
 /* ==========================================================================
    Infinite Scroll
    ========================================================================== */
@@ -9457,6 +9534,41 @@ body:has(> .chirpui-app-shell) {
 
 @media (prefers-reduced-motion: reduce) {
     .chirpui-app-shell__main.htmx-request::before {
+        transform: scaleX(1);
+        transition: none;
+    }
+}
+
+/* nav_progress — standalone page-level progress bar.
+   Sits fixed at viewport top, animates on body.htmx-request.
+   Use when not inside app_shell (which has its own built-in bar). */
+.chirpui-nav-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 9999;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.chirpui-nav-progress::after {
+    content: "";
+    display: block;
+    height: 100%;
+    background: var(--chirpui-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+body.htmx-request .chirpui-nav-progress::after {
+    transform: scaleX(0.7);
+    transition: transform var(--chirpui-motion-loading) var(--chirpui-ease-decel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.htmx-request .chirpui-nav-progress::after {
         transform: scaleX(1);
         transition: none;
     }
@@ -10218,6 +10330,38 @@ body:has(> .chirpui-app-shell) {
 .chirpui-notification-dot--sm .chirpui-notification-dot__ping { width: 6px; height: 6px; top: -1px; right: -1px; }
 .chirpui-notification-dot--lg .chirpui-notification-dot__dot,
 .chirpui-notification-dot--lg .chirpui-notification-dot__ping { width: 12px; height: 12px; top: -3px; right: -3px; }
+
+/* counter_badge */
+.chirpui-counter-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.375rem;
+    border-radius: var(--chirpui-radius-full, 9999px);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    font-feature-settings: "tnum";
+    line-height: 1;
+    background: var(--chirpui-bg-subtle);
+    color: var(--chirpui-text);
+}
+
+.chirpui-counter-badge[hidden] {
+    display: none;
+}
+
+.chirpui-counter-badge--warning {
+    background: var(--chirpui-warning);
+    color: var(--chirpui-on-warning, #1a1a1a);
+}
+
+.chirpui-counter-badge--danger {
+    background: var(--chirpui-error);
+    color: white;
+}
 
 
 /* ==========================================================================

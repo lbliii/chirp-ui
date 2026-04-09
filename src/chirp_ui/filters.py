@@ -262,6 +262,15 @@ def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]
     return []
 
 
+def build_hx_attrs(**kwargs: Any) -> dict[str, Any]:
+    """Build a dict of hyphenated HTML attributes from keyword arguments.
+
+    Converts underscores to hyphens in keys: ``hx_post`` becomes ``hx-post``.
+    Pipe through ``html_attrs`` to render: ``{{ build_hx_attrs(...) | html_attrs }}``.
+    """
+    return {k.replace("_", "-"): v for k, v in kwargs.items()}
+
+
 def _serialize_attr_value(value: Any) -> str:
     """Serialize structured attr values such as hx-vals payloads."""
     if isinstance(value, (dict, list, tuple)):
@@ -326,3 +335,4 @@ def register_filters(app: TemplateFilterApp) -> None:
             app.template_global,
         )
         tg("tab_is_active")(tab_is_active)
+        tg("build_hx_attrs")(build_hx_attrs)
