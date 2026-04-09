@@ -49,7 +49,7 @@ class TestStrictContextVarIsolation:
     def teardown_method(self) -> None:
         set_strict(False)
 
-    def test_child_inherits_parent_context(self) -> None:
+    def test_child_thread_gets_default_context(self) -> None:
         set_strict(True)
         assert _is_strict() is True
 
@@ -62,8 +62,8 @@ class TestStrictContextVarIsolation:
         t.start()
         t.join()
 
-        assert child_saw == [True], (
-            "child thread inherits parent context (ContextVar copy-on-spawn)"
+        assert child_saw == [False], (
+            "threading.Thread gets fresh context with defaults, not a copy of the parent"
         )
         assert _is_strict() is True
 

@@ -7,6 +7,7 @@ Everything not in __all__ is internal and may change without notice.
 """
 
 import logging
+import math
 import re
 from pathlib import PurePath
 
@@ -101,12 +102,137 @@ def _hex_to_rgb_channels(hex_color: str) -> tuple[float, float, float] | None:
     return None
 
 
+# Regex for splitting CSS function arguments: commas, slashes, or whitespace.
+_CSS_FUNC_SPLIT = re.compile(r"[,/\s]+")
+
+
+def _rgb_to_channels(s: str) -> tuple[float, float, float] | None:
+    """Parse ``rgb(R, G, B)`` / ``rgba(R G B / A)`` into sRGB 0..1 channels."""
+    m = re.match(r"rgba?\((.+)\)", s.strip())
+    if not m:
+        return None
+    parts = _CSS_FUNC_SPLIT.split(m.group(1).strip())
+    if len(parts) < 3:
+        return None
+    try:
+        vals: list[float] = []
+        for p in parts[:3]:
+            if p.endswith("%"):
+                vals.append(float(p[:-1]) / 100.0)
+            else:
+                vals.append(float(p) / 255.0)
+        return (
+            max(0.0, min(1.0, vals[0])),
+            max(0.0, min(1.0, vals[1])),
+            max(0.0, min(1.0, vals[2])),
+        )
+    except ValueError, IndexError:
+        return None
+
+
+def _hsl_to_channels(s: str) -> tuple[float, float, float] | None:
+    """Parse ``hsl(H, S%, L%)`` / ``hsla(...)`` and convert to sRGB 0..1."""
+    m = re.match(r"hsla?\((.+)\)", s.strip())
+    if not m:
+        return None
+    parts = _CSS_FUNC_SPLIT.split(m.group(1).strip())
+    if len(parts) < 3:
+        return None
+    try:
+        h = float(parts[0]) / 360.0
+        sat = float(parts[1].rstrip("%")) / 100.0
+        lit = float(parts[2].rstrip("%")) / 100.0
+    except ValueError:
+        return None
+    # HSL to sRGB (standard algorithm)
+    if sat == 0.0:
+        return (lit, lit, lit)
+
+    def _hue_to_rgb(p: float, q: float, t: float) -> float:
+        if t < 0.0:
+            t += 1.0
+        if t > 1.0:
+            t -= 1.0
+        if t < 1.0 / 6.0:
+            return p + (q - p) * 6.0 * t
+        if t < 0.5:
+            return q
+        if t < 2.0 / 3.0:
+            return p + (q - p) * (2.0 / 3.0 - t) * 6.0
+        return p
+
+    q = lit * (1.0 + sat) if lit < 0.5 else lit + sat - lit * sat
+    p = 2.0 * lit - q
+    return (
+        max(0.0, min(1.0, _hue_to_rgb(p, q, h + 1.0 / 3.0))),
+        max(0.0, min(1.0, _hue_to_rgb(p, q, h))),
+        max(0.0, min(1.0, _hue_to_rgb(p, q, h - 1.0 / 3.0))),
+    )
+
+
+def _oklch_to_channels(s: str) -> tuple[float, float, float] | None:
+    """Parse ``oklch(L C H)`` and convert to sRGB 0..1 via OKLab."""
+    m = re.match(r"oklch\((.+)\)", s.strip())
+    if not m:
+        return None
+    parts = _CSS_FUNC_SPLIT.split(m.group(1).strip())
+    if len(parts) < 3:
+        return None
+    try:
+        lightness = float(parts[0].rstrip("%"))
+        # CSS oklch L is 0..1 (or 0%..100%)
+        if parts[0].endswith("%"):
+            lightness /= 100.0
+        chroma = float(parts[1])
+        hue_deg = float(parts[2])
+    except ValueError:
+        return None
+    # OKLCh -> OKLab
+    hue_rad = math.radians(hue_deg)
+    a = chroma * math.cos(hue_rad)
+    b = chroma * math.sin(hue_rad)
+    # OKLab -> linear sRGB (via LMS intermediate)
+    l_ = lightness + 0.3963377774 * a + 0.2158037573 * b
+    m_ = lightness - 0.1055613458 * a - 0.0638541728 * b
+    s_ = lightness - 0.0894841775 * a - 1.2914855480 * b
+    l_3 = l_ * l_ * l_
+    m_3 = m_ * m_ * m_
+    s_3 = s_ * s_ * s_
+    r_lin = +4.0767416621 * l_3 - 3.3077115913 * m_3 + 0.2309699292 * s_3
+    g_lin = -1.2684380046 * l_3 + 2.6097574011 * m_3 - 0.3413193965 * s_3
+    b_lin = -0.0041960863 * l_3 - 0.7034186147 * m_3 + 1.7076147010 * s_3
+
+    # Linear sRGB -> sRGB gamma
+    def _linear_to_srgb(c: float) -> float:
+        c = max(0.0, min(1.0, c))
+        return c / 12.92 if c <= 0.0031308 else 1.055 * (c ** (1.0 / 2.4)) - 0.055
+
+    return (_linear_to_srgb(r_lin), _linear_to_srgb(g_lin), _linear_to_srgb(b_lin))
+
+
+def _css_color_to_srgb(css_color: str) -> tuple[float, float, float] | None:
+    """Try all supported CSS color formats and return sRGB 0..1 channels."""
+    ch = _hex_to_rgb_channels(css_color)
+    if ch is not None:
+        return ch
+    ch = _rgb_to_channels(css_color)
+    if ch is not None:
+        return ch
+    ch = _hsl_to_channels(css_color)
+    if ch is not None:
+        return ch
+    return _oklch_to_channels(css_color)
+
+
 def contrast_text(css_color: str) -> str:
-    """Return ``white`` or ``#1a1a1a`` for readable text on solid ``css_color`` (hex)."""
+    """Return ``white`` or ``#1a1a1a`` for readable text on solid *css_color*.
+
+    Supports hex, ``rgb()``, ``hsl()``, and ``oklch()`` color formats.
+    """
     safe = sanitize_color(css_color)
     if safe is None:
         return "white"
-    ch = _hex_to_rgb_channels(safe)
+    ch = _css_color_to_srgb(safe)
     if ch is None:
         return "white"
     r_lin, g_lin, b_lin = (

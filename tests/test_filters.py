@@ -448,6 +448,34 @@ class TestColorFilters:
         assert contrast_text("#ffffff") == "#1a1a1a"
         assert contrast_text("#000000") == "white"
 
+    def test_contrast_text_rgb(self) -> None:
+        assert contrast_text("rgb(255, 255, 255)") == "#1a1a1a"
+        assert contrast_text("rgb(0, 0, 0)") == "white"
+        assert contrast_text("rgb(0 0 0)") == "white"
+
+    def test_contrast_text_rgb_percent(self) -> None:
+        assert contrast_text("rgb(100%, 100%, 100%)") == "#1a1a1a"
+        assert contrast_text("rgb(0%, 0%, 0%)") == "white"
+
+    def test_contrast_text_rgba_ignores_alpha(self) -> None:
+        assert contrast_text("rgba(255, 255, 255, 0.5)") == "#1a1a1a"
+        assert contrast_text("rgba(0, 0, 0, 0.8)") == "white"
+
+    def test_contrast_text_hsl(self) -> None:
+        assert contrast_text("hsl(0, 0%, 100%)") == "#1a1a1a"  # white
+        assert contrast_text("hsl(0, 0%, 0%)") == "white"  # black
+        assert contrast_text("hsl(60, 100%, 50%)") == "#1a1a1a"  # yellow (bright)
+
+    def test_contrast_text_oklch(self) -> None:
+        assert contrast_text("oklch(1 0 0)") == "#1a1a1a"  # white
+        assert contrast_text("oklch(0 0 0)") == "white"  # black
+        assert contrast_text("oklch(0.9 0.1 110)") == "#1a1a1a"  # light green
+
+    def test_contrast_text_unsupported_falls_back(self) -> None:
+        # color-mix() is not in sanitize_color regex, falls back to white
+        assert contrast_text("color-mix(in srgb, red 50%, blue)") == "white"
+        assert contrast_text("invalid") == "white"
+
     def test_resolve_color_registry(self) -> None:
         register_colors({"_pytest_resolve_grass": "#78c850", "PytestFire": "#ff0000"})
         assert resolve_color("_pytest_resolve_grass") == "#78c850"
