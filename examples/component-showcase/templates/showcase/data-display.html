@@ -26,9 +26,9 @@
 <h2>Donut Chart</h2>
 {% call block() %}
 <div class="chirpui-flow" style="gap: var(--chirpui-spacing-md);">
-  {{ donut(value=75, max=100, label="75%") }}
-  {{ donut(value=3, max=5, label="3/5", variant="success") }}
-  {{ donut(value=42, max=100, size="lg") }}
+  {{ donut(value=75, max=100) }}
+  {{ donut(value=3, max=5, text="3/5", variant="success") }}
+  {{ donut(value=42, max=100, caption="Uptime", size="lg") }}
 </div>
 {% end %}
 

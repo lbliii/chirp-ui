@@ -1688,6 +1688,121 @@ class TestTable:
         ).render()
         assert html.count("chirpui-table__td") == 3
 
+    def test_table_data_driven_rows(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table %}'
+            '{{ table(headers=["Name", "Email"],'
+            ' rows=[("Alice", "alice@x.com"), ("Bob", "bob@x.com")]) }}'
+        ).render()
+        assert "Alice" in html
+        assert "Bob" in html
+        assert "alice@x.com" in html
+        assert html.count("chirpui-table__row") == 2
+
+    def test_table_data_driven_rows_with_alignment(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table %}'
+            '{{ table(headers=["Name", "Count"],'
+            ' rows=[("Alice", "42")],'
+            ' align=["left", "right"]) }}'
+        ).render()
+        assert "chirpui-table__th--left" in html
+        assert "chirpui-table__th--right" in html
+        assert "chirpui-table__td--left" in html
+        assert "chirpui-table__td--right" in html
+
+    def test_table_data_driven_ignores_slot(self, env: Environment) -> None:
+        """When rows= is provided, slot content is not rendered."""
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table, row %}'
+            '{% call table(headers=["Name"],'
+            ' rows=[("Alice",)]) %}'
+            '{{ row("SHOULD_NOT_APPEAR") }}'
+            "{% end %}"
+        ).render()
+        assert "Alice" in html
+        assert "SHOULD_NOT_APPEAR" not in html
+
+    def test_table_slot_still_works_without_rows(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table, row %}'
+            '{% call table(headers=["Name"]) %}'
+            '{{ row("Alice") }}'
+            "{% end %}"
+        ).render()
+        assert "Alice" in html
+
+
+# ---------------------------------------------------------------------------
+# Donut
+# ---------------------------------------------------------------------------
+
+
+class TestDonut:
+    def test_donut_default_percentage(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/donut.html" import donut %}{{ donut(value=75, max=100) }}'
+        ).render()
+        assert "75%" in html
+        assert "chirpui-donut" in html
+        assert "chirpui-donut--gold" in html
+
+    def test_donut_text_overrides_center(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/donut.html" import donut %}{{ donut(value=3, max=5, text="3/5") }}'
+        ).render()
+        assert "3/5" in html
+        assert "60%" not in html
+
+    def test_donut_caption(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/donut.html" import donut %}'
+            '{{ donut(value=40, max=100, caption="Success") }}'
+        ).render()
+        assert "40%" in html
+        assert "Success" in html
+        assert "chirpui-donut__caption" in html
+
+    def test_donut_text_and_caption(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/donut.html" import donut %}'
+            '{{ donut(value=3, max=5, text="3/5", caption="Tasks") }}'
+        ).render()
+        assert "3/5" in html
+        assert "Tasks" in html
+
+    def test_donut_no_caption_no_caption_element(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/donut.html" import donut %}{{ donut(value=50, max=100) }}'
+        ).render()
+        assert "chirpui-donut__caption" not in html
+
+    def test_donut_label_backwards_compat(self, env: Environment) -> None:
+        """label= still works as alias for text=."""
+        html = env.from_string(
+            '{% from "chirpui/donut.html" import donut %}{{ donut(value=3, max=5, label="3/5") }}'
+        ).render()
+        assert "3/5" in html
+
+    def test_donut_variants(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/donut.html" import donut %}{{ donut(value=50, variant="success") }}'
+        ).render()
+        assert "chirpui-donut--success" in html
+
+    def test_donut_sizes(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/donut.html" import donut %}{{ donut(value=50, size="lg") }}'
+        ).render()
+        assert "chirpui-donut--lg" in html
+
+    def test_donut_aria_label_with_caption(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/donut.html" import donut %}'
+            '{{ donut(value=40, max=100, caption="Uptime") }}'
+        ).render()
+        assert 'aria-label="40%: Uptime"' in html
+
 
 # ---------------------------------------------------------------------------
 # Pagination

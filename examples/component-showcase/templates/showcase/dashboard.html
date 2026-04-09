@@ -100,15 +100,15 @@
 {% call grid(cols=3) %}
 {% call block() %}
 <h3>Completion</h3>
-{{ donut(value=75, max=100, label="75%") }}
+{{ donut(value=75, max=100, caption="Completion") }}
 {% end %}
 {% call block() %}
 <h3>Success Rate</h3>
-{{ donut(value=48, max=50, label="48/50", variant="success") }}
+{{ donut(value=48, max=50, text="48/50", caption="Success", variant="success") }}
 {% end %}
 {% call block() %}
 <h3>Quota Used</h3>
-{{ donut(value=30, max=100, label="30%", variant="muted", size="lg") }}
+{{ donut(value=30, max=100, caption="Quota", variant="muted", size="lg") }}
 {% end %}
 {% end %}
 

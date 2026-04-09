@@ -1,25 +1,30 @@
-{#- chirpui: Donut Chart component
+{#- chirp-ui: Donut Chart component
     CSS-only donut using conic-gradient. For success rate, completion, etc.
 
     Usage:
         from "chirpui/donut.html" import donut
 
-        donut(value=75, max=100, label="75%")
-        donut(value=3, max=5, label="3/5", variant="success")
-        donut(value=42, max=100, size="lg")
+        donut(value=75, max=100)
+        donut(value=3, max=5, text="3/5", variant="success")
+        donut(value=42, max=100, caption="Uptime", size="lg")
+        donut(value=40, max=100, caption="Success")
 -#}
 
-{% def donut(value, max=100, label=none, variant="gold", size="md", cls="") %}
+{% def donut(value, max=100, text=none, caption=none, label=none, variant="gold", size="md", cls="") %}
 {% set variant = variant | validate_variant(("gold","success","muted"), "gold") %}
 {% set size = size | validate_variant(("sm","md","lg"), "md") %}
 {% set pct = (value / max * 100) if max > 0 else 0 %}
+{% set display_text = text or label or ((pct | int) ~ "%") %}
 <div class="chirpui-donut chirpui-donut--{{ variant }} chirpui-donut--{{ size }}{{ " " ~ cls if cls else "" }}"
      role="img"
-     aria-label="{{ label or ((pct | int) ~ '%') }}">
+     aria-label="{{ display_text ~ (": " ~ caption if caption else "") }}">
     <div class="chirpui-donut__ring"
          style="--chirpui-donut-pct: {{ pct }}"></div>
     <div class="chirpui-donut__center">
-        {{ label or ((pct | int) ~ "%") }}
+        <span class="chirpui-donut__value">{{ display_text }}</span>
+        {% if caption %}
+        <span class="chirpui-donut__caption">{{ caption }}</span>
+        {% end %}
     </div>
 </div>
 {% end %}

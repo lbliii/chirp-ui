@@ -4,15 +4,21 @@
     Usage:
         from "chirpui/table.html" import table, row
 
+        Slot-based (complex rows):
         call table(headers=["Name", "Email", "Role"])
             row("Alice", "alice@example.com", "Admin")
             row("Bob", "bob@example.com", "User")
         end
 
-        Per-column alignment:
+        Data-driven (alignment flows to all cells automatically):
+        table(headers=["Name", "Status", "Count"],
+              rows=[("Alice", "Active", "42"), ("Bob", "Idle", "7")],
+              align=["left", "center", "right"])
+
+        Per-column alignment (slot-based):
         call table(headers=["Name", "Status", "Count"],
                    align=["left", "center", "right"])
-            row("Alice", "Active", "42")
+            aligned_row(["Alice", "Active", "42"], align=["left", "center", "right"])
         end
 
         Column widths (CSS values or proportions):
@@ -30,7 +36,7 @@
         call table(headers=[...], sticky_header=true)
 -#}
 
-{% def table(headers=none, sortable=false, sort_url=none, hx_target=none,
+{% def table(headers=none, rows=none, sortable=false, sort_url=none, hx_target=none,
              striped=false, sticky_header=false, actions_header=false,
              align=none, widths=none, compact=false, cls="") %}
 <div class="chirpui-table-wrap{{ " chirpui-table-wrap--sticky" if sticky_header else "" }}">
@@ -66,7 +72,18 @@
             </thead>
         {% end %}
         <tbody class="chirpui-table__body">
-            {% slot %}
+            {% if rows %}
+                {% for row_data in rows %}
+                <tr class="chirpui-table__row">
+                    {% for cell in row_data %}
+                        {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
+                        <td class="chirpui-table__td{{ " chirpui-table__td--" ~ col_align if col_align else "" }}">{{ cell }}</td>
+                    {% end %}
+                </tr>
+                {% end %}
+            {% else %}
+                {% slot %}
+            {% end %}
         </tbody>
     </table>
 </div>

@@ -218,8 +218,25 @@ When `confirm_url` is set, add `hx_target`, `hx_swap`, `hx_select`, `hx_push_url
 
 | Param | Description |
 |-------|-------------|
+| `rows` | List of tuples/lists — data-driven mode, alignment applies to all cells automatically |
 | `sticky_header` | Adds chirpui-table-wrap--sticky for sticky thead |
 | `actions_header` | Adds empty th for row actions column |
+
+Data-driven tables (alignment flows to headers and body cells):
+
+```html
+{{ table(headers=["Name", "Status", "Count"],
+         rows=[("Alice", "Active", "42"), ("Bob", "Idle", "7")],
+         align=["left", "center", "right"]) }}
+```
+
+Slot-based tables (for custom cell content, use `aligned_row` for alignment):
+
+```html
+{% call table(headers=["Name", "Actions"]) %}
+  {{ row("Alice", button("Edit", size="sm")) }}
+{% end %}
+```
 
 ---
 
@@ -1240,10 +1257,15 @@ CSS-only horizontal bar chart. Items: `{label, value, href?}`. Optional `href` m
 
 CSS-only donut using conic-gradient. For success rate, completion, etc.
 
+- **text** — overrides center display (replaces the default percentage)
+- **caption** — small text below the value (e.g. "Uptime", "Tasks")
+- **label** — deprecated alias for `text` (backwards-compatible)
+
 ```html
 {% from "chirpui/donut.html" import donut %}
-{{ donut(value=75, max=100, label="75%") }}
-{{ donut(value=3, max=5, label="3/5", variant="success") }}
+{{ donut(value=75, max=100) }}
+{{ donut(value=3, max=5, text="3/5", variant="success") }}
+{{ donut(value=40, max=100, caption="Uptime") }}
 ```
 
 ---
