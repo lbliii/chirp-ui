@@ -1523,3 +1523,114 @@ Runtime controls are available in `chirpui/theme_toggle.html`:
 {{ style_toggle() }}
 {{ style_select() }}
 ```
+
+---
+
+## Error Boundaries (kida ≥ 0.4.0)
+
+Kida 0.4.0 adds native `{% try %}` / `{% fallback %}` blocks that catch render-time exceptions and provide fallback content instead of crashing the page.
+
+### Syntax
+
+```html
+{% try %}
+    {{ some_expression_that_might_fail }}
+    {% slot %}
+{% fallback error %}
+    <p>Render error: {{ error.message }}</p>
+{% end %}
+```
+
+The `error` variable is optional. When provided, it exposes: `message`, `type`, `template`, `line`.
+
+### Where chirp-ui uses error boundaries
+
+| Component | Fallback strategy |
+|-----------|-------------------|
+| `suspense_slot` | Default skeleton placeholder |
+| `oob_fragment` | Empty content (OOB swap still arrives with correct `id`) |
+| `streaming_bubble` / `streaming_block` | Error-state div with "Content unavailable" message |
+| `safe_region` / `fragment_island` | Empty content (wrapper `div` with `id` preserved) |
+
+### Tier guide for component authors
+
+| Tier | When to use | Fallback pattern |
+|------|-------------|-----------------|
+| **OOB-critical** | OOB swaps, toasts, live regions | Empty content — the swap still lands, preventing stale UI |
+| **Visible** | Suspense slots, loading states | Default skeleton — user sees a placeholder, not a crash |
+| **Slot guards** | Arbitrary `{% slot %}` content | Omit the slot region — parent structure stays intact |
+
+### When NOT to use error boundaries
+
+- **Argument evaluation** — `{% try %}` only catches errors inside its body. If the caller passes `{{ toast(undefined_var.bad) }}`, the error happens at the call site, not inside the macro.
+- **Development** — Consider leaving boundaries off in dev/test so errors surface immediately. Use `set_strict()` for this.
+
+---
+
+## Scoped Slots (kida ≥ 0.4.0)
+
+Scoped slots let a component expose variables back to the caller's slot content — an inversion-of-control pattern where the parent decides how to render child-provided data.
+
+### Syntax
+
+**In the component (def)** — expose variables with `let:name=expr`:
+
+```html
+{% def data_list(items) %}
+<ul>
+    {% for item in items %}
+    <li>{% slot row let:item=item, let:index=loop.index0 %}{{ item }}{% end %}</li>
+    {% end %}
+</ul>
+{% end %}
+```
+
+**In the caller** — declare which bindings to receive with `let:name`:
+
+```html
+{% call data_list(items=users) %}
+    {% slot row let:item, let:index %}
+        <strong>{{ index + 1 }}.</strong> {{ item.name }}
+    {% end %}
+{% end %}
+```
+
+### When to use scoped slots vs provide/consume
+
+| Pattern | Use when | Example |
+|---------|----------|---------|
+| **Scoped slots** | Parent needs data back from the child to template each item | Iterator components, render-prop patterns |
+| **Provide/consume** | Deep context propagation across macro boundaries | Theme variant flowing from `card` → nested `alert`, form density flowing from `form` → `field_wrapper` |
+
+chirp-ui currently uses provide/consume for all 33 context propagation sites. This is correct — those are deep cross-macro patterns, not parent-templates-child-data patterns. Scoped slots are available for future components (e.g. a `data_table` where the caller templates each row cell).
+
+---
+
+## Partial Evaluator (kida ≥ 0.4.0)
+
+Kida 0.4.0 includes an opt-in two-phase partial evaluator that performs compile-time optimizations:
+
+- **Constant folding** — static expressions reduced at compile time
+- **Filter inlining** — pure built-in filters evaluated at compile time
+- **Dead branch elimination** — `{% if false %}` blocks removed
+- **Loop unrolling** — `{% for x in [1, 2, 3] %}` with static iterables expanded
+
+### Enabling
+
+The partial evaluator is controlled by the `Environment` constructor, which Chirp owns:
+
+```python
+from kida import Environment
+
+env = Environment(
+    loader=...,
+    partial_eval=True,  # Enable compile-time optimization
+)
+```
+
+chirp-ui templates are compatible with the partial evaluator but do not require it. No code changes are needed — the optimizer is transparent to template authors.
+
+### When to enable
+
+- **Production builds** — measurable render speedup for templates with static content
+- **Development** — leave off (default) to keep compile times fast and error messages clear

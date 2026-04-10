@@ -1401,6 +1401,25 @@ class TestStreaming:
         ).render()
         assert "chirpui-model-card chirpui-card wide" in html
 
+    def test_streaming_bubble_error_boundary(self, env: Environment) -> None:
+        """Broken slot content falls back to error state instead of crashing."""
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            "{% call streaming_bubble() %}{{ undefined_var.bad }}{% end %}"
+        ).render()
+        assert "chirpui-message-bubble" in html
+        assert "chirpui-streaming--error" in html
+        assert "Content unavailable" in html
+
+    def test_streaming_block_error_boundary(self, env: Environment) -> None:
+        """Broken slot content falls back to error state instead of crashing."""
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_block %}'
+            "{% call streaming_block() %}{{ undefined_var.bad }}{% end %}"
+        ).render()
+        assert "chirpui-streaming-block" in html
+        assert "chirpui-streaming--error" in html
+
 
 # ---------------------------------------------------------------------------
 # Card
@@ -3305,6 +3324,15 @@ class TestWizardForm:
         assert "chirpui-stepper__item--active" in html
         assert "Step 1" in html
 
+    def test_safe_region_error_boundary(self, env: Environment) -> None:
+        """Broken caller content in safe_region produces empty region, not crash."""
+        html = env.from_string(
+            '{% from "chirpui/fragment_island.html" import safe_region %}'
+            '{% call safe_region("broken-region") %}{{ undefined_var.bad }}{% end %}'
+        ).render()
+        assert 'id="broken-region"' in html
+        assert "chirpui-fragment-island" in html
+
 
 class TestDescriptionList:
     def test_description_list_items(self, env: Environment) -> None:
@@ -3876,6 +3904,15 @@ class TestSuspense:
             '{{ suspense_slot("feed", skeleton_variant="text", lines=6) }}'
         ).render()
         assert html.count("chirpui-skeleton__line") == 6
+
+    def test_suspense_slot_error_boundary_fallback(self, env: Environment) -> None:
+        """If caller content raises, the slot falls back to a default skeleton."""
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot %}'
+            '{% call suspense_slot("broken") %}{{ undefined_var.bad_attr }}{% end %}'
+        ).render()
+        assert 'id="broken"' in html
+        assert "chirpui-skeleton" in html
 
 
 class TestNavProgress:
@@ -4797,6 +4834,15 @@ class TestOobHelpers:
             '{% from "chirpui/oob.html" import counter_badge %}{{ counter_badge("x", count=1) }}'
         ).render()
         assert "chirpui-counter-badge--" not in html
+
+    def test_oob_fragment_error_boundary(self, env: Environment) -> None:
+        """Broken slot content produces empty OOB fragment, not a crash."""
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import oob_fragment %}'
+            '{% call oob_fragment("broken-target") %}{{ undefined_var.bad }}{% end %}'
+        ).render()
+        assert 'id="broken-target"' in html
+        assert 'hx-swap-oob="true"' in html
 
 
 class TestNumberTicker:

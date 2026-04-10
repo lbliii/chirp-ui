@@ -25,11 +25,15 @@
 
 {% def suspense_slot(id, skeleton_variant="", lines=1, width=none, height=none, cls="") %}
 <div id="{{ id }}" class="chirpui-suspense-slot{{ " " ~ cls if cls else "" }}">
-    {% if caller | default(none) %}
-        {% slot %}
-    {% elif skeleton_variant %}
-        {{ skeleton(variant=skeleton_variant, lines=lines, width=width, height=height) }}
-    {% else %}
+    {% try %}
+        {% if caller | default(none) %}
+            {% slot %}
+        {% elif skeleton_variant %}
+            {{ skeleton(variant=skeleton_variant, lines=lines, width=width, height=height) }}
+        {% else %}
+            {{ skeleton(width=width or "100%", height=height or "3rem") }}
+        {% end %}
+    {% fallback %}
         {{ skeleton(width=width or "100%", height=height or "3rem") }}
     {% end %}
 </div>

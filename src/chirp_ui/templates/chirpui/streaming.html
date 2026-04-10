@@ -25,11 +25,17 @@
          {% if sse_connect %}hx-ext="sse" sse-connect="{{ sse_connect }}" sse-close="{{ sse_close }}" hx-disinherit="hx-target hx-swap" {% end %}aria-label="{{ _aria_labels[role_valid] if role_valid in _aria_labels else "message" }}"{% if _state == "error" %} role="alert"{% end %}{% if _state == "thinking" %} aria-busy="true"{% end %}>
     <div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}"
          {% if sse_connect or sse_swap_target %}sse-swap="fragment" hx-target="this" hx-swap="beforeend" {% end %}aria-live="polite" aria-atomic="true">
+        {% try %}
         {% slot %}
         {% if _state == "thinking" %}
         <span class="chirpui-streaming-bubble__thinking" aria-hidden="true"></span>
         {% elif streaming %}
         <span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
+        {% end %}
+        {% fallback %}
+        <div class="chirpui-streaming--error" role="alert">
+            <span class="chirpui-text-muted">Content unavailable</span>
+        </div>
         {% end %}
     </div>
 </article>
@@ -40,9 +46,15 @@
 <div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}{{ " " ~ cls if cls else "" }}"
      {% if sse_swap_target %}sse-swap="fragment" hx-target="this" {% end %}aria-live="polite"
      aria-atomic="true">
+    {% try %}
     {% slot %}
     {% if streaming %}
     <span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
+    {% end %}
+    {% fallback %}
+    <div class="chirpui-streaming--error" role="alert">
+        <span class="chirpui-text-muted">Content unavailable</span>
+    </div>
     {% end %}
 </div>
 {% end %}
