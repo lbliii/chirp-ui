@@ -14,8 +14,8 @@
 -#}
 
 {% def rune_field(variant="", cls="") %}
-{% set variant = variant | validate_variant(("", "default", "arcane", "frost", "ember"), "") %}
-{% set variant_class = " chirpui-rune-field--" ~ variant if variant else "" %}
+{% set _variant = (variant if variant else consume("_hero_variant", "")) | validate_variant(("", "default", "arcane", "frost", "ember"), "") %}
+{% set variant_class = " chirpui-rune-field--" ~ _variant if _variant else "" %}
 {% set far_runes = ["⊙", "◎", "⊞", "◎", "⊙", "⊞"] %}
 {% set mid_runes = ["◇", "⚙", "⛓", "◇", "⚙"] %}
 {% set near_runes = ["★", "⚡︎", "✦", "◇"] %}

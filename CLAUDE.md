@@ -68,6 +68,7 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 - **No client JS in macros** — Alpine.js `x-data` attributes only; no `<script>` tags in component templates.
 - **`| safe` usage** — only on outputs already escaped via `html_attrs` or `Markup`. See `SECURITY.md`.
 - **Variants/sizes validated** — use `validate_variant` / `validate_size` filters against `VARIANT_REGISTRY` / `SIZE_REGISTRY`. Unknown values fall back to default, not an error (unless strict mode is on).
+- **Provided context keys** — use `{% provide _component_key = value %}` with underscore prefix for parent-to-child state flow across slot boundaries (requires kida ≥ 0.3.4). In child macros: `{% set _variant = (variant if variant else consume("_component_key", "")) | validate_variant(...) %}`. Explicit params always win over provided values. Avoid `{% set variant = ... %}` when `variant` is also a macro parameter — kida has a scoping issue; use a different variable name like `_variant`.
 - **CSS motion tokens** — animations must use `--chirpui-duration-*` / `--chirpui-easing-*` tokens, not raw values. The `test_transition_tokens.py` test enforces this.
 - **Template CSS contract** — every CSS class referenced in templates must exist in `chirpui.css`. The `test_template_css_contract.py` test enforces this.
 - **Filter bar vs filter chips** — `filter_bar.html` = form + `action_strip` for list/table toolbars. `filter_chips.html` = `filter_group` + `filter_chip` for faceted pill rows (HTMX, `register_colors`). See `docs/COMPONENT-OPTIONS.md`.

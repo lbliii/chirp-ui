@@ -14,8 +14,8 @@
 -#}
 
 {% def meteor(count=4, variant="", cls="") %}
-{% set variant = variant | validate_variant(("", "default", "accent", "muted"), "") %}
-{% set variant_class = " chirpui-meteor--" ~ variant if variant else "" %}
+{% set _variant = (variant if variant else consume("_hero_variant", "")) | validate_variant(("", "default", "accent", "muted"), "") %}
+{% set variant_class = " chirpui-meteor--" ~ _variant if _variant else "" %}
 <div class="chirpui-meteor{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     {% for i in range(count) %}
     <span class="chirpui-meteor__streak" aria-hidden="true"></span>

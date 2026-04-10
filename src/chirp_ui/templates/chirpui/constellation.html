@@ -14,9 +14,9 @@
 -#}
 
 {% def constellation(density="", variant="", cls="") %}
-{% set variant = variant | validate_variant(("", "default", "warm", "cool", "mono"), "") %}
+{% set _variant = (variant if variant else consume("_hero_variant", "")) | validate_variant(("", "default", "warm", "cool", "mono"), "") %}
 {% set density = density | validate_variant(("", "default", "sparse", "dense"), "") %}
-{% set variant_class = " chirpui-constellation--" ~ variant if variant else "" %}
+{% set variant_class = " chirpui-constellation--" ~ _variant if _variant else "" %}
 {% set density_class = " chirpui-constellation--" ~ density if density else "" %}
 {% set count = 16 if density == "dense" else (6 if density == "sparse" else 10) %}
 {% set glyphs = ["·", "✦", "·", "★", "·", "·", "✦", "·", "●", "·", "✦", "·", "·", "★", "·", "✦"] %}
