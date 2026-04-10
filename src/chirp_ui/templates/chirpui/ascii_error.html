@@ -15,84 +15,93 @@
 -#}
 
 {% def ascii_error(code="404", heading="", description="", cls="") %}
-{% if code == "404" %}
-    {% set default_heading = "Page not found" %}
-    {% set default_desc = "The page you're looking for doesn't exist or has been moved." %}
-    {% set art = [
-        "     ┌─────────┐     ",
-        "     │  4 ◇ 4  │     ",
-        "     └────┬────┘     ",
-        "          │          ",
-        "     ◇ ── ★ ── ◇    ",
-        "          │          ",
-        "        ·   ·        ",
-    ] %}
-{% elif code == "403" %}
-    {% set default_heading = "Access denied" %}
-    {% set default_desc = "You don't have permission to view this page." %}
-    {% set art = [
-        "       ╔═══╗         ",
-        "       ║ ⛓ ║         ",
-        "    ╔══╬═══╬══╗      ",
-        "    ║  ┃   ┃  ║      ",
-        "    ║  ┃ ◆ ┃  ║      ",
-        "    ╚══╩═══╩══╝      ",
-    ] %}
-{% elif code == "500" %}
-    {% set default_heading = "Internal server error" %}
-    {% set default_desc = "Something went wrong on our end." %}
-    {% set art = [
-        "    ·  ✦  · ★ ·      ",
-        "      ╱ ◇ ╲          ",
-        "     ╱ 5·0·0╲        ",
-        "    ╱ · · · · ╲      ",
-        "   ╱───────────╲     ",
-        "   · · ★ · ✦ · ·    ",
-    ] %}
-{% elif code == "503" %}
-    {% set default_heading = "Service unavailable" %}
-    {% set default_desc = "We're temporarily offline for maintenance." %}
-    {% set art = [
-        "    ┌──────────┐     ",
-        "    │ ⚙  ·  ⚙ │     ",
-        "    │    ◎     │     ",
-        "    │  ·╱ ╲·   │     ",
-        "    └──╱───╲───┘     ",
-        "     ▪ ▪ ▪ ▪ ▪      ",
-    ] %}
-{% elif code == "timeout" %}
-    {% set default_heading = "Request timed out" %}
-    {% set default_desc = "The server took too long to respond." %}
-    {% set art = [
-        "      ╭───╮          ",
-        "     ╱  ⟳  ╲         ",
-        "    │ · · · │        ",
-        "    │   ◎   │        ",
-        "     ╲ · · ╱         ",
-        "      ╰───╯          ",
-        "    ·  ·  ·  ·       ",
-    ] %}
-{% else %}
-    {% set default_heading = "Something went wrong" %}
-    {% set default_desc = "An unexpected error occurred." %}
-    {% set art = [
+{% set _codes = {
+    "404": {
+        "heading": "Page not found",
+        "desc": "The page you're looking for doesn't exist or has been moved.",
+        "art": [
+            "     ┌─────────┐     ",
+            "     │  4 ◇ 4  │     ",
+            "     └────┬────┘     ",
+            "          │          ",
+            "     ◇ ── ★ ── ◇    ",
+            "          │          ",
+            "        ·   ·        ",
+        ],
+    },
+    "403": {
+        "heading": "Access denied",
+        "desc": "You don't have permission to view this page.",
+        "art": [
+            "       ╔═══╗         ",
+            "       ║ ⛓ ║         ",
+            "    ╔══╬═══╬══╗      ",
+            "    ║  ┃   ┃  ║      ",
+            "    ║  ┃ ◆ ┃  ║      ",
+            "    ╚══╩═══╩══╝      ",
+        ],
+    },
+    "500": {
+        "heading": "Internal server error",
+        "desc": "Something went wrong on our end.",
+        "art": [
+            "    ·  ✦  · ★ ·      ",
+            "      ╱ ◇ ╲          ",
+            "     ╱ 5·0·0╲        ",
+            "    ╱ · · · · ╲      ",
+            "   ╱───────────╲     ",
+            "   · · ★ · ✦ · ·    ",
+        ],
+    },
+    "503": {
+        "heading": "Service unavailable",
+        "desc": "We're temporarily offline for maintenance.",
+        "art": [
+            "    ┌──────────┐     ",
+            "    │ ⚙  ·  ⚙ │     ",
+            "    │    ◎     │     ",
+            "    │  ·╱ ╲·   │     ",
+            "    └──╱───╲───┘     ",
+            "     ▪ ▪ ▪ ▪ ▪      ",
+        ],
+    },
+    "timeout": {
+        "heading": "Request timed out",
+        "desc": "The server took too long to respond.",
+        "art": [
+            "      ╭───╮          ",
+            "     ╱  ⟳  ╲         ",
+            "    │ · · · │        ",
+            "    │   ◎   │        ",
+            "     ╲ · · ╱         ",
+            "      ╰───╯          ",
+            "    ·  ·  ·  ·       ",
+        ],
+    },
+} %}
+{% set _fallback = {
+    "heading": "Something went wrong",
+    "desc": "An unexpected error occurred.",
+    "art": [
         "       · ✦ ·         ",
         "      ◇     ◇        ",
         "     ·   ★   ·       ",
         "      ◇     ◇        ",
         "       · ✦ ·         ",
-    ] %}
-{% end %}
-{% set heading = heading if heading else default_heading %}
-{% set description = description if description else default_desc %}
+    ],
+} %}
+{% set _info = _codes[code] if code in _codes else _fallback %}
+{% set _heading = heading if heading else _info["heading"] %}
+{% set _description = description if description else _info["desc"] %}
+{% set _art = _info["art"] %}
 <div class="chirpui-ascii-error{{ " " ~ cls if cls else "" }}">
-    <pre class="chirpui-ascii-error__art" aria-hidden="true">{% for line in art %}{{ line }}
+    <pre class="chirpui-ascii-error__art" aria-hidden="true">{% for line in _art %}{{ line }}
 {% end %}</pre>
     {% if code != "empty" %}
     <span class="chirpui-ascii-error__code">{{ code }}</span>
     {% end %}
-    <h2 class="chirpui-ascii-error__heading">{{ heading }}</h2>
-    <p class="chirpui-ascii-error__desc">{{ description }}</p>
+    <h2 class="chirpui-ascii-error__heading">{{ _heading }}</h2>
+    <p class="chirpui-ascii-error__desc">{{ _description }}</p>
     <div class="chirpui-ascii-error__action">
         {% slot %}
     </div>

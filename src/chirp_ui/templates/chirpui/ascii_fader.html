@@ -31,7 +31,10 @@
         {% end %}
         <span class="chirpui-ascii-fader__cap">└─┘</span>
     </div>
-    <input class="chirpui-visually-hidden" type="hidden" name="{{ name }}" value="{{ value }}">
+    <input class="chirpui-ascii-fader__input chirpui-visually-hidden"
+           type="range" name="{{ name }}" value="{{ value }}"
+           min="0" max="100" step="1"
+           {% if label %}aria-label="{{ label }}"{% end %}>
     {% if label %}<span class="chirpui-ascii-fader__label">{{ label }}</span>{% end %}
     <span class="chirpui-ascii-fader__value">{{ value }}</span>
 </div>

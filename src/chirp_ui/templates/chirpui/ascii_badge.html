@@ -18,16 +18,8 @@
 {% set frame = frame if frame in ("pipe", "bracket", "angle", "none") else "pipe" %}
 {% set variant_class = " chirpui-ascii-badge--" ~ variant if variant and variant != "default" else "" %}
 {% set frame_class = " chirpui-ascii-badge--" ~ frame if frame else "" %}
-{% if frame == "pipe" or frame == "" %}
-    {% set tl = "┤" %}
-    {% set tr = "├" %}
-{% elif frame == "bracket" %}
-    {% set tl = "[" %}
-    {% set tr = "]" %}
-{% elif frame == "angle" %}
-    {% set tl = "‹" %}
-    {% set tr = "›" %}
-{% end %}
+{% set tl = "[" if frame == "bracket" else ("‹" if frame == "angle" else "┤") %}
+{% set tr = "]" if frame == "bracket" else ("›" if frame == "angle" else "├") %}
 <span class="chirpui-ascii-badge{{ variant_class }}{{ frame_class }}{{ " " ~ cls if cls else "" }}">
     {% if frame != "none" %}
     <span class="chirpui-ascii-badge__open" aria-hidden="true">{{ tl }}</span>

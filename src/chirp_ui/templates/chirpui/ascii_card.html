@@ -1,0 +1,68 @@
+{#- chirp-ui: ASCII Card
+    Box-drawn card with Unicode border frame, optional title bar, and content slot.
+
+    Usage:
+        from "chirpui/ascii_card.html" import ascii_card
+
+        {% call ascii_card(title="Status") %}
+            <p>All systems operational.</p>
+        {% end %}
+
+        {% call ascii_card(title="Deploy", variant="double", glyph="◆") %}
+            <p>Last deploy: 2 hours ago</p>
+        {% end %}
+
+        {% call ascii_card() %}
+            <p>Borderless content area</p>
+        {% end %}
+
+    Variants: single (default), double, rounded, heavy.
+
+    Visual:
+        ╭─── Status ──────────╮
+        │                      │
+        │ All systems           │
+        │ operational.          │
+        │                      │
+        ╰──────────────────────╯
+-#}
+
+{% def ascii_card(title=none, variant="", glyph="", cls="") %}
+{% set variant = variant | validate_variant(("", "single", "double", "rounded", "heavy"), "") %}
+{% set variant_class = " chirpui-ascii-card--" ~ variant if variant else "" %}
+{% set tl = "╔" if variant == "double" else "╭" if variant == "rounded" else "┏" if variant == "heavy" else "┌" %}
+{% set h  = "═" if variant == "double" else "─" if variant == "rounded" else "━" if variant == "heavy" else "─" %}
+{% set tr = "╗" if variant == "double" else "╮" if variant == "rounded" else "┓" if variant == "heavy" else "┐" %}
+{% set v  = "║" if variant == "double" else "│" if variant == "rounded" else "┃" if variant == "heavy" else "│" %}
+{% set bl = "╚" if variant == "double" else "╰" if variant == "rounded" else "┗" if variant == "heavy" else "└" %}
+{% set br = "╝" if variant == "double" else "╯" if variant == "rounded" else "┛" if variant == "heavy" else "┘" %}
+{% set dh = "═" if variant == "double" else "─" if variant == "rounded" else "━" if variant == "heavy" else "─" %}
+{% set dl = "╠" if variant == "double" else "├" if variant == "rounded" else "┣" if variant == "heavy" else "├" %}
+{% set dr = "╣" if variant == "double" else "┤" if variant == "rounded" else "┫" if variant == "heavy" else "┤" %}
+<div class="chirpui-ascii-card{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-ascii-card__top" aria-hidden="true">
+        <span class="chirpui-ascii-card__corner">{{ tl }}</span>
+        <span class="chirpui-ascii-card__line">{% if title %}{{ h }}{{ h }}{% if glyph %} {{ glyph }} {% end %} {{ title }} {% end %}</span>
+        <span class="chirpui-ascii-card__corner">{{ tr }}</span>
+    </div>
+    {% if title %}
+    <div class="chirpui-ascii-card__divider" aria-hidden="true">
+        <span class="chirpui-ascii-card__corner">{{ dl }}</span>
+        <span class="chirpui-ascii-card__line"></span>
+        <span class="chirpui-ascii-card__corner">{{ dr }}</span>
+    </div>
+    {% end %}
+    <div class="chirpui-ascii-card__body">
+        <span class="chirpui-ascii-card__side" aria-hidden="true">{{ v }}</span>
+        <div class="chirpui-ascii-card__content">
+            {% slot %}
+        </div>
+        <span class="chirpui-ascii-card__side" aria-hidden="true">{{ v }}</span>
+    </div>
+    <div class="chirpui-ascii-card__bottom" aria-hidden="true">
+        <span class="chirpui-ascii-card__corner">{{ bl }}</span>
+        <span class="chirpui-ascii-card__line"></span>
+        <span class="chirpui-ascii-card__corner">{{ br }}</span>
+    </div>
+</div>
+{% end %}

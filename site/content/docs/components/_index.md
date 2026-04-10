@@ -25,6 +25,7 @@ chirp-ui provides Kida macros organized by category. Import from `chirpui/` and 
 | **HTMX helpers** | oob_fragment, oob_toast, counter_badge — out-of-band swap composition |
 | **Suspense** | suspense_slot, suspense_group — skeleton-to-content deferred loading |
 | **Navigation extras** | nav_progress — CSS-only loading bar for htmx page transitions |
+| **ASCII primitives** | ascii_card, ascii_tabs, ascii_modal, ascii_border, ascii_table, ascii_7seg, ascii_fader, ascii_knob, and [19 more](./ascii.md) |
 | **Mutation helpers** | fragment_island, fragment_island_with_result, poll_trigger, confirm_dialog, confirm_trigger |
 
 See the [component showcase](https://github.com/lbliii/chirp-ui#usage) for live examples. Run:
