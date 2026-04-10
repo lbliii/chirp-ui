@@ -1,1 +1,0 @@
-Add 3 new ASCII composites (`ascii_card`, `ascii_tabs`, `ascii_modal`), 152 render tests for all 27 ASCII components, a11y improvements (fader upgraded to `type="range"`, VU meter gains `role="meter"`), fix kida scoping bugs in `ascii_badge` and `ascii_error`, and add ASCII component documentation page.
