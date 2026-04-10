@@ -21,7 +21,16 @@
 {% set _detail_one_col = pn == "detail-two-single" or pn == "split-1-1.35-single" %}
 {% set _has_preset = _bento or _thirds or _detail or _detail_one_col %}
 {% set _detail_single_on = detail_single or _detail_one_col %}
-<div class="chirpui-grid{% if not _has_preset %}{% if cols == 2 %} chirpui-grid--cols-2{% elif cols == 3 %} chirpui-grid--cols-3{% elif cols == 4 %} chirpui-grid--cols-4{% end %}{% end %}{% if gap == "sm" %} chirpui-grid--gap-sm{% elif gap == "md" %} chirpui-grid--gap-md{% elif gap == "lg" %} chirpui-grid--gap-lg{% end %}{% if _bento %} chirpui-grid--preset-bento-211{% elif _thirds %} chirpui-grid--preset-thirds{% elif _detail or _detail_one_col %} chirpui-grid--preset-detail-two{% if _detail_single_on %} chirpui-grid--detail-two-single{% end %}{% end %}{% if items == "start" %} chirpui-grid--items-start{% elif items == "end" %} chirpui-grid--items-end{% elif items == "center" %} chirpui-grid--items-center{% end %}{{ " " ~ cls if cls else "" }}">
+{% set _cls = [c for c in [
+    "chirpui-grid",
+    "chirpui-grid--cols-" ~ cols if cols and not _has_preset else "",
+    "chirpui-grid--gap-" ~ gap if gap else "",
+    "chirpui-grid--preset-bento-211" if _bento else "chirpui-grid--preset-thirds" if _thirds else "chirpui-grid--preset-detail-two" if _detail or _detail_one_col else "",
+    "chirpui-grid--detail-two-single" if _detail_single_on and (_detail or _detail_one_col) else "",
+    "chirpui-grid--items-" ~ items if items else "",
+    cls
+] if c] %}
+<div class="{{ _cls | join(' ') }}">
     {% slot %}
 </div>
 {% end %}
@@ -30,25 +39,34 @@
     variant= balanced | hero | sidebar-end. Override columns via style="--chirpui-frame-hero-columns: …" on this element or a parent.
 -#}
 {% def frame(variant="balanced", gap=none, cls="") %}
-<div class="chirpui-frame{% if variant == "hero" %} chirpui-frame--hero{% elif variant == "sidebar-end" %} chirpui-frame--sidebar-end{% else %} chirpui-frame--balanced{% end %}{% if gap == "sm" %} chirpui-frame--gap-sm{% elif gap == "md" %} chirpui-frame--gap-md{% elif gap == "lg" %} chirpui-frame--gap-lg{% end %}{{ " " ~ cls if cls else "" }}">
+{% set _cls = [c for c in [
+    "chirpui-frame",
+    "chirpui-frame--" ~ variant if variant else "chirpui-frame--balanced",
+    "chirpui-frame--gap-" ~ gap if gap else "",
+    cls
+] if c] %}
+<div class="{{ _cls | join(' ') }}">
     {% slot %}
 </div>
 {% end %}
 
 {% def stack(gap=none, cls="") %}
-<div class="chirpui-stack{% if gap == "xs" %} chirpui-stack--xs{% elif gap == "sm" %} chirpui-stack--sm{% elif gap == "md" %} chirpui-stack--md{% elif gap == "lg" %} chirpui-stack--lg{% elif gap == "xl" %} chirpui-stack--xl{% end %}{{ " " ~ cls if cls else "" }}">
+{% set _cls = [c for c in ["chirpui-stack", "chirpui-stack--" ~ gap if gap else "", cls] if c] %}
+<div class="{{ _cls | join(' ') }}">
     {% slot %}
 </div>
 {% end %}
 
 {% def cluster(gap=none, cls="") %}
-<div class="chirpui-cluster{% if gap == "xs" %} chirpui-cluster--xs{% elif gap == "sm" %} chirpui-cluster--sm{% elif gap == "md" %} chirpui-cluster--md{% elif gap == "lg" %} chirpui-cluster--lg{% end %}{{ " " ~ cls if cls else "" }}">
+{% set _cls = [c for c in ["chirpui-cluster", "chirpui-cluster--" ~ gap if gap else "", cls] if c] %}
+<div class="{{ _cls | join(' ') }}">
     {% slot %}
 </div>
 {% end %}
 
 {% def block(span=1, cls="") %}
-<div class="chirpui-block{% if span == 2 %} chirpui-block--span-2{% elif span == 3 %} chirpui-block--span-3{% elif span == "full" %} chirpui-block--span-full{% end %}{{ " " ~ cls if cls else "" }}">
+{% set _cls = [c for c in ["chirpui-block", "chirpui-block--span-" ~ span if span != 1 else "", cls] if c] %}
+<div class="{{ _cls | join(' ') }}">
     {% slot %}
 </div>
 {% end %}

@@ -52,7 +52,7 @@
      {% if hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
      {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
      {{ attrs | safe }}>
-    {% slot %}
+    {% try %}{% slot %}{% fallback %}{% end %}
 </div>
 {% end %}
 

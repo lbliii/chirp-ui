@@ -23,7 +23,7 @@
 
 {% def oob_fragment(id, swap="true", tag="div", cls="") %}
 <{{ tag }} id="{{ id }}" hx-swap-oob="{{ swap }}"{% if cls %} class="{{ cls }}"{% end %}>
-    {% slot %}
+    {% try %}{% slot %}{% fallback %}{% end %}
 </{{ tag }}>
 {% end %}
 

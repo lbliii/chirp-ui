@@ -3593,6 +3593,11 @@ a.chirpui-mention:focus-visible {
     50% { opacity: 0; }
 }
 
+.chirpui-streaming--error {
+    padding: var(--chirpui-space-xs, 0.25rem) var(--chirpui-space-sm, 0.5rem);
+    opacity: 0.6;
+}
+
 @supports (text-box-trim: trim-both) {
     .chirpui-copy-btn,
     .chirpui-badge,

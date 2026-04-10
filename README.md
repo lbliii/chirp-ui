@@ -330,7 +330,7 @@ For animated icons, use `ascii_icon()` in the component slot. For custom headers
 ## Requirements
 
 - Python >= 3.14
-- kida-templates >= 0.3.0
+- kida-templates >= 0.4.0
 
 **Interactive components** (dropdown, modal, tray, tabs, theme toggle, copy button) require [Alpine.js](https://alpinejs.dev/) 3.x. When using Chirp, call `use_chirp_ui(app)` — this auto-enables Alpine injection with all required plugins (Mask, Intersect, Focus) and the `Alpine.safeData()` helper for htmx-safe component registration. For standalone setups without Chirp, include Alpine manually.
 
