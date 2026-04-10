@@ -14,9 +14,9 @@
 -#}
 
 {% def holy_light(intensity="", variant="", cls="") %}
-{% set variant = variant | validate_variant(("", "default", "gold", "silver", "holy"), "") %}
+{% set _variant = (variant if variant else consume("_hero_variant", "")) | validate_variant(("", "default", "gold", "silver", "holy"), "") %}
 {% set intensity = intensity | validate_variant(("", "default", "subtle", "intense"), "") %}
-{% set variant_class = " chirpui-holy-light--" ~ variant if variant else "" %}
+{% set variant_class = " chirpui-holy-light--" ~ _variant if _variant else "" %}
 {% set intensity_class = " chirpui-holy-light--" ~ intensity if intensity else "" %}
 {% set far_glyphs = ["✦", "·", "✦", "·", "✦"] %}
 {% set mid_glyphs = ["★", "✦", "◇", "✦", "★"] %}

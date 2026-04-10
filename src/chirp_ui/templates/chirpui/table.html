@@ -15,10 +15,10 @@
               rows=[("Alice", "Active", "42"), ("Bob", "Idle", "7")],
               align=["left", "center", "right"])
 
-        Per-column alignment (slot-based):
+        Per-column alignment (slot-based, auto-inherited):
         call table(headers=["Name", "Status", "Count"],
                    align=["left", "center", "right"])
-            aligned_row(["Alice", "Active", "42"], align=["left", "center", "right"])
+            row("Alice", "Active", "42")
         end
 
         Column widths (CSS values or proportions):
@@ -82,7 +82,9 @@
                 </tr>
                 {% end %}
             {% else %}
+                {% provide _table_align = align %}
                 {% slot %}
+                {% end %}
             {% end %}
         </tbody>
     </table>
@@ -90,13 +92,16 @@
 {% end %}
 
 {% def row(*cells) %}
+{% set _align = consume("_table_align") %}
 <tr class="chirpui-table__row">
     {% for cell in cells %}
-        <td class="chirpui-table__td">{{ cell }}</td>
+        {% set col_align = _align[loop.index0] if _align and loop.index0 < _align | length else "" %}
+        <td class="chirpui-table__td{{ " chirpui-table__td--" ~ col_align if col_align else "" }}">{{ cell }}</td>
     {% end %}
 </tr>
 {% end %}
 
+{# DEPRECATED: Use row() inside a table(align=...) call instead. Will be removed in 0.3.0. #}
 {% def aligned_row(cells, align) %}
 <tr class="chirpui-table__row">
     {% for cell in cells %}

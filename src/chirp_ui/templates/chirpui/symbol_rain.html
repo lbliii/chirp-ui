@@ -14,8 +14,8 @@
 -#}
 
 {% def symbol_rain(count=6, variant="", cls="") %}
-{% set variant = variant | validate_variant(("", "default", "accent", "gold", "muted"), "") %}
-{% set variant_class = " chirpui-symbol-rain--" ~ variant if variant else "" %}
+{% set _variant = (variant if variant else consume("_hero_variant", "")) | validate_variant(("", "default", "accent", "gold", "muted"), "") %}
+{% set variant_class = " chirpui-symbol-rain--" ~ _variant if _variant else "" %}
 {% set glyphs = ["◇", "★", "✦", "⚡︎", "●", "◎", "⊞", "⚙", "◉", "⛓"] %}
 <div class="chirpui-symbol-rain{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-symbol-rain__canvas" aria-hidden="true">

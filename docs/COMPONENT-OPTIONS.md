@@ -230,13 +230,16 @@ Data-driven tables (alignment flows to headers and body cells):
          align=["left", "center", "right"]) }}
 ```
 
-Slot-based tables (for custom cell content, use `aligned_row` for alignment):
+Slot-based tables (alignment auto-inherited by `row()` via `provide`/`consume`):
 
 ```html
-{% call table(headers=["Name", "Actions"]) %}
-  {{ row("Alice", button("Edit", size="sm")) }}
+{% call table(headers=["Name", "Count"], align=["left", "right"]) %}
+  {{ row("Alice", "42") }}
+  {{ row("Bob", "7") }}
 {% end %}
 ```
+
+> **Deprecated:** `aligned_row(cells, align)` still works but is no longer needed — `row()` inside `table(align=...)` inherits alignment automatically. `aligned_row` will be removed in 0.3.0.
 
 ---
 

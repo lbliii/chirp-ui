@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.2.6] — 2026-04-09
+
+### Added
+
+- **`provide`/`consume` context flow** — Adopt kida 0.3.4's parent-to-child render context for slot-boundary state passing
+- **Table row auto-alignment** — `row()` inside `table(align=...)` inherits column alignment automatically via `provide`/`consume`; `aligned_row()` is soft-deprecated
+- **Hero variant broadcast** — Effect macros (`particle_bg`, `meteor`, `spotlight_card`, `symbol_rain`, `holy_light`, `rune_field`, `constellation`) consume variant from parent `hero_effects()` when no explicit variant is passed
+- **Bar surface context** — `command_bar` and `filter_bar` provide `_bar_surface` and `_bar_density` to slot children
+
+### Changed
+
+- **kida-templates ≥ 0.3.4** — Bumped minimum dependency for `provide`/`consume` support and Markup-aware `~` operator fix
+
+### Fixed
+
+- **Table alignment footgun** — Data-driven `rows=` parameter flows alignment to all cells automatically (#36)
+- **Donut label semantics** — Renamed `label=` to `text=`, added `caption=` for secondary text; `label=` kept as backward-compatible alias (#36)
+
+### Deprecated
+
+- **`aligned_row()`** — Use `row()` inside `table(align=...)` instead; will be removed in 0.3.0
+
+[0.2.6]: https://github.com/lbliii/chirp-ui/releases/tag/v0.2.6
+
 ## [0.2.5] — 2026-04-03
 
 ### Changed

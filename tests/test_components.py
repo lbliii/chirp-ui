@@ -1732,6 +1732,54 @@ class TestTable:
         ).render()
         assert "Alice" in html
 
+    def test_row_inherits_alignment_from_table(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table, row %}'
+            '{% call table(headers=["Name", "Count"], align=["left", "right"]) %}'
+            '{{ row("Alice", "42") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-table__td--left" in html
+        assert "chirpui-table__td--right" in html
+
+    def test_row_standalone_without_provide(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import row %}{{ row("Alice", "42") }}'
+        ).render()
+        assert "Alice" in html
+        assert "chirpui-table__td--" not in html
+
+    def test_row_alignment_partial(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table, row %}'
+            '{% call table(headers=["A", "B", "C"], align=["center"]) %}'
+            '{{ row("1", "2", "3") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-table__td--center" in html
+        assert html.count("chirpui-table__td--") == 1
+
+    def test_row_alignment_multiple_rows(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table, row %}'
+            '{% call table(headers=["Name", "Count"], align=["left", "right"]) %}'
+            '{{ row("Alice", "42") }}'
+            '{{ row("Bob", "7") }}'
+            "{% end %}"
+        ).render()
+        assert html.count("chirpui-table__td--left") == 2
+        assert html.count("chirpui-table__td--right") == 2
+
+    def test_aligned_row_still_works(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table, aligned_row %}'
+            '{% call table(headers=["Name", "Count"]) %}'
+            '{{ aligned_row(["Alice", "42"], align=["left", "right"]) }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-table__td--left" in html
+        assert "chirpui-table__td--right" in html
+
 
 # ---------------------------------------------------------------------------
 # Donut
@@ -4556,6 +4604,68 @@ class TestParticleBg:
             "{% call particle_bg(count=3) %}X{% end %}"
         ).render()
         assert html.count("chirpui-particle-bg__dot") == 3
+
+    def test_standalone_with_explicit_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/particle_bg.html" import particle_bg %}'
+            '{% call particle_bg(variant="accent") %}X{% end %}'
+        ).render()
+        assert "chirpui-particle-bg--accent" in html
+
+    def test_standalone_without_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/particle_bg.html" import particle_bg %}'
+            "{% call particle_bg() %}X{% end %}"
+        ).render()
+        assert "chirpui-particle-bg--" not in html
+
+    def test_consumes_variant_from_provide(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/particle_bg.html" import particle_bg %}'
+            '{% provide _hero_variant = "accent" %}'
+            "{% call particle_bg() %}X{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-particle-bg--accent" in html
+
+    def test_explicit_variant_overrides_provide(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/particle_bg.html" import particle_bg %}'
+            '{% provide _hero_variant = "accent" %}'
+            '{% call particle_bg(variant="muted") %}X{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-particle-bg--muted" in html
+        assert "chirpui-particle-bg--accent" not in html
+
+
+class TestHeroEffectsProvide:
+    def test_hero_effects_provides_variant_to_child(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero_effects.html" import hero_effects %}'
+            '{% call hero_effects(effect="particles", variant="accent") %}'
+            "<h1>Hello</h1>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-particle-bg--accent" in html
+
+    def test_hero_effects_default_no_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero_effects.html" import hero_effects %}'
+            '{% call hero_effects(effect="particles") %}'
+            "<h1>Hello</h1>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-particle-bg--" not in html
+
+    def test_hero_effects_meteor_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero_effects.html" import hero_effects %}'
+            '{% call hero_effects(effect="meteors", variant="accent") %}'
+            "<h1>Hello</h1>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-meteor--accent" in html
 
 
 class TestAnimatedCounter:
