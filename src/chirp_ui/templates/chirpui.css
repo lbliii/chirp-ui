@@ -99,6 +99,9 @@
     --chirpui-prose-3xl: clamp(1.75rem, 5vw, 2rem);
     --chirpui-prose-4xl: clamp(2rem, 6vw, 2.5rem);
     --chirpui-prose-5xl: clamp(2.5rem, 8vw, 3rem);
+    --chirpui-prose-6xl: clamp(3rem, 10vw, 3.75rem);
+    --chirpui-prose-7xl: clamp(3.5rem, 12vw, 4.625rem);
+    --chirpui-display-letter-spacing: -0.025em;
     --chirpui-prose-max-width: 65ch;
     --chirpui-prose-font-family: ui-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --chirpui-prose-font-optical-sizing: auto;
@@ -339,6 +342,11 @@
     --chirpui-tooltip-max-width: min(16rem, 85vw);
     --chirpui-tooltip-z: 50;
 
+    /* Corner accent — architectural bracket decoration on surfaces */
+    --chirpui-corner-accent-color: var(--chirpui-border);
+    --chirpui-corner-accent-size: 12px;
+    --chirpui-corner-accent-width: 1px;
+
     /* Alert variants */
     --chirpui-alert-info-bg: light-dark(#eff6ff, #1e3a5f);
     --chirpui-alert-info-border: light-dark(#bfdbfe, #3b82f6);
@@ -364,6 +372,13 @@
         0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1),
         0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4)
     );
+    --chirpui-shadow-deep: light-dark(
+        0 0 24px 0 rgba(0, 0, 0, 0.03) inset, 0 0.5px 0 0.75px rgba(0, 0, 0, 0.05),
+        0 4px 6px rgba(0, 0, 0, 0.04), 0 12px 24px rgba(0, 0, 0, 0.06), 0 36px 48px rgba(0, 0, 0, 0.08),
+        0 0 24px 0 rgba(0, 0, 0, 0.2) inset, 0 0.5px 0 0.75px rgba(255, 255, 255, 0.05),
+        0 4px 6px rgba(0, 0, 0, 0.15), 0 12px 24px rgba(0, 0, 0, 0.2), 0 36px 48px rgba(0, 0, 0, 0.25)
+    );
+    --chirpui-shadow-inset-glow: inset 0 1px 0 0 color-mix(in srgb, var(--chirpui-accent) 8%, transparent);
 
     /* Elevation semantics */
     --chirpui-elevation-0: none;
@@ -376,6 +391,8 @@
     --chirpui-elevation-floating: var(--chirpui-elevation-2);
     --chirpui-elevation-overlay: var(--chirpui-elevation-3);
     --chirpui-elevation-topbar: var(--chirpui-elevation-1);
+    --chirpui-elevation-5: var(--chirpui-shadow-deep);
+    --chirpui-elevation-deep: var(--chirpui-shadow-deep);
 
     /* Interaction state semantics */
     --chirpui-state-surface-hover: var(--chirpui-bg-subtle);
@@ -1412,6 +1429,18 @@ html {
 .chirpui-divider--accent::before,
 .chirpui-divider--accent::after { background: var(--chirpui-accent); }
 .chirpui-divider--accent:not(:has(.chirpui-divider__text)) { border-color: var(--chirpui-accent); }
+
+/* Pattern dividers */
+.chirpui-divider--dotted:not(:has(.chirpui-divider__text)) {
+    border: none;
+    height: 1px;
+    background-image: radial-gradient(circle, var(--chirpui-border) 1px, transparent 1px);
+    background-size: 6px 1px;
+}
+.chirpui-divider--fade:not(:has(.chirpui-divider__text)) {
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+}
 
 /* ==========================================================================
    Avatar
@@ -3763,6 +3792,42 @@ a.chirpui-mention:focus-visible {
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
     }
+}
+
+/* Deep — multi-layer dimensional shadow */
+.chirpui-surface--deep {
+    box-shadow: var(--chirpui-elevation-deep);
+}
+.chirpui-surface--deep.chirpui-surface--inset-glow {
+    box-shadow: var(--chirpui-elevation-deep), var(--chirpui-shadow-inset-glow);
+}
+
+/* Cornered — architectural bracket accents at opposing corners */
+.chirpui-surface--cornered {
+    position: relative;
+}
+.chirpui-surface--cornered::before,
+.chirpui-surface--cornered::after {
+    content: "";
+    position: absolute;
+    width: var(--chirpui-corner-accent-size);
+    height: var(--chirpui-corner-accent-size);
+    pointer-events: none;
+}
+.chirpui-surface--cornered::before {
+    top: 0;
+    left: 0;
+    border-top: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
+    border-left: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
+}
+.chirpui-surface--cornered::after {
+    bottom: 0;
+    right: 0;
+    border-bottom: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
+    border-right: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
+}
+.chirpui-surface--cornered.chirpui-surface--accent {
+    --chirpui-corner-accent-color: var(--chirpui-accent);
 }
 
 .chirpui-surface--full {
@@ -6704,7 +6769,9 @@ a.chirpui-tag:active {
         .chirpui-surface--gradient-subtle
     ):not(.chirpui-surface--gradient-accent):not(.chirpui-surface--gradient-border):not(
         .chirpui-surface--gradient-mesh
-    ):not(.chirpui-surface--glass):not(.chirpui-surface--frosted):not(.chirpui-surface--smoke),
+    ):not(.chirpui-surface--glass):not(.chirpui-surface--frosted):not(.chirpui-surface--smoke):not(
+        .chirpui-surface--deep
+    ):not(.chirpui-surface--cornered),
 [data-style="neumorphic"] .chirpui-card:not(.chirpui-card--glass):not(.chirpui-card--gradient-border),
 [data-style="neumorphic"] .chirpui-app-shell__topbar,
 [data-style="neumorphic"] .chirpui-app-shell__sidebar,
@@ -6778,7 +6845,9 @@ a.chirpui-tag:active {
                 .chirpui-surface--gradient-accent
             ):not(.chirpui-surface--gradient-border):not(.chirpui-surface--gradient-mesh):not(
                 .chirpui-surface--glass
-            ):not(.chirpui-surface--frosted):not(.chirpui-surface--smoke),
+            ):not(.chirpui-surface--frosted):not(.chirpui-surface--smoke):not(
+                .chirpui-surface--deep
+            ):not(.chirpui-surface--cornered),
         .chirpui-card:not(.chirpui-card--glass):not(.chirpui-card--gradient-border),
         .chirpui-app-shell__topbar,
         .chirpui-app-shell__sidebar,
@@ -10493,6 +10562,21 @@ body.htmx-request .chirpui-nav-progress::after {
 
 
 /* ==========================================================================
+   Display Text — large hero/landing headings
+   ========================================================================== */
+
+.chirpui-display {
+    font-size: var(--chirpui-prose-6xl);
+    letter-spacing: var(--chirpui-display-letter-spacing);
+    line-height: var(--chirpui-line-height-tight);
+    font-weight: var(--chirpui-prose-font-weight-bold);
+}
+.chirpui-display--xl {
+    font-size: var(--chirpui-prose-7xl);
+}
+
+
+/* ==========================================================================
    Gradient Text
    ========================================================================== */
 
@@ -10502,6 +10586,12 @@ body.htmx-request .chirpui-nav-progress::after {
     background-clip: text;
     color: transparent;
     display: inline;
+}
+.chirpui-gradient-text--secondary {
+    background: linear-gradient(135deg, var(--chirpui-accent), var(--chirpui-accent-secondary));
+}
+.chirpui-gradient-text--rainbow {
+    background: linear-gradient(135deg, var(--chirpui-accent), var(--chirpui-accent-secondary), var(--chirpui-accent-bright));
 }
 .chirpui-gradient-text--animated {
     background-size: 200% 200%;
@@ -11275,6 +11365,12 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-grain--heavy::after { opacity: 0.18; }
 .chirpui-grain--subtle::after { opacity: 0.04; }
+.chirpui-grain--dot::after {
+    background-image: radial-gradient(circle, currentColor 0.5px, transparent 0.5px);
+    background-size: 4px 4px;
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+}
 .chirpui-grain--animated::after {
     animation: chirpui-float 0.3s steps(2) infinite;
 }
