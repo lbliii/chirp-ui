@@ -32,6 +32,7 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
         "frosted",
         "smoke",
     ),
+    "streaming_bubble": ("", "content", "thinking", "error"),
     "toast": ("info", "success", "warning", "error"),
     "hero": ("solid", "muted", "gradient", "mesh", "animated-gradient"),
     "page_hero": ("editorial", "minimal"),
@@ -41,7 +42,7 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     "overlay": ("dark", "gradient-bottom", "gradient-top"),
     "progress-bar": ("gold", "radiant", "success", "watched", "custom"),
     "status-indicator": ("default", "success", "warning", "error", "info", "primary", "custom"),
-    "btn": ("", "default", "primary", "ghost", "danger", "success", "warning"),
+    "btn": ("", "primary", "ghost", "danger", "success", "warning"),
     "dropdown__item": ("default", "danger", "muted"),
     # Effects & new components
     "shimmer-btn": ("", "default", "primary"),
@@ -116,7 +117,11 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
 
 SIZE_REGISTRY: dict[str, tuple[str, ...]] = {
     "btn": ("", "sm", "md", "lg"),
-    "modal": ("small", "medium", "large"),  # CSS: chirpui-modal--small, chirpui-modal--large
+    "modal": (
+        "small",
+        "medium",
+        "large",
+    ),  # CSS: chirpui-modal--small, chirpui-modal--large; medium is default (no CSS)
     "star-rating": ("", "sm", "md", "lg"),
     "thumbs": ("", "sm", "md", "lg"),
     "segmented": ("", "sm", "md", "lg"),

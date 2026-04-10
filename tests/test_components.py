@@ -1205,6 +1205,202 @@ class TestStreaming:
         assert 'hx-ext="sse"' in html
         assert 'sse-swap="fragment"' in html
 
+    # --- streaming_bubble role variants & aria-label ---
+
+    def test_streaming_bubble_role_user(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(role="user") %}Hi{% end %}'
+        ).render()
+        assert "chirpui-message-bubble--user" in html
+        assert 'aria-label="user message"' in html
+
+    def test_streaming_bubble_role_system(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(role="system") %}Prompt{% end %}'
+        ).render()
+        assert "chirpui-message-bubble--system" in html
+        assert 'aria-label="system message"' in html
+
+    def test_streaming_bubble_role_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(role="default") %}Msg{% end %}'
+        ).render()
+        assert "chirpui-message-bubble--default" not in html
+        assert 'aria-label="message"' in html
+
+    def test_streaming_bubble_role_assistant_aria_label(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(role="assistant") %}Reply{% end %}'
+        ).render()
+        assert 'aria-label="assistant response"' in html
+
+    # --- streaming_bubble non-streaming state ---
+
+    def test_streaming_bubble_not_streaming(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            "{% call streaming_bubble(streaming=false) %}Done{% end %}"
+        ).render()
+        assert "chirpui-streaming-block--active" not in html
+        assert "chirpui-streaming-block__cursor" not in html
+        assert "Done" in html
+
+    def test_streaming_bubble_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(cls="my-bubble") %}X{% end %}'
+        ).render()
+        assert "my-bubble" in html
+        assert "chirpui-message-bubble" in html
+
+    def test_streaming_bubble_custom_sse_close(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(sse_connect="/s", sse_close="end") %}{% end %}'
+        ).render()
+        assert 'sse-close="end"' in html
+
+    # --- streaming state variants ---
+
+    def test_streaming_bubble_state_thinking(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(state="thinking") %}{% end %}'
+        ).render()
+        assert "chirpui-streaming-bubble--thinking" in html
+        assert 'aria-busy="true"' in html
+        assert "chirpui-streaming-bubble__thinking" in html
+        assert "chirpui-streaming-block__cursor" not in html
+
+    def test_streaming_bubble_state_error(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(state="error") %}<p>Failed</p>{% end %}'
+        ).render()
+        assert "chirpui-streaming-bubble--error" in html
+        assert 'role="alert"' in html
+
+    def test_streaming_bubble_state_content_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(state="content") %}Done{% end %}'
+        ).render()
+        assert "chirpui-streaming-bubble--" not in html
+        assert "Done" in html
+
+    def test_streaming_bubble_state_empty_is_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            "{% call streaming_bubble() %}Body{% end %}"
+        ).render()
+        assert "chirpui-streaming-bubble--thinking" not in html
+        assert "chirpui-streaming-bubble--error" not in html
+
+    def test_streaming_bubble_thinking_no_streaming_cursor(self, env: Environment) -> None:
+        """Thinking state shows thinking indicator, not the streaming cursor."""
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(state="thinking", streaming=true) %}{% end %}'
+        ).render()
+        assert "chirpui-streaming-bubble__thinking" in html
+        assert "chirpui-streaming-block__cursor" not in html
+
+    def test_streaming_bubble_state_invalid_falls_back(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(state="bogus") %}OK{% end %}'
+        ).render()
+        assert "chirpui-streaming-bubble--bogus" not in html
+
+    # --- sse_retry loading state ---
+
+    def test_sse_retry_has_alpine_loading_state(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}{{ sse_retry("/api/stream") }}'
+        ).render()
+        assert "x-data" in html
+        assert "retrying" in html
+        assert "x-show" in html
+
+    def test_sse_retry_loading_label(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}{{ sse_retry("/api/stream") }}'
+        ).render()
+        assert "chirpui-sse-retry__loading" in html
+
+    # --- streaming_block additional ---
+
+    def test_streaming_block_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_block %}'
+            '{% call streaming_block(cls="my-block") %}X{% end %}'
+        ).render()
+        assert "chirpui-streaming-block my-block" in html
+
+    def test_streaming_block_not_active_no_cursor(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_block %}'
+            "{% call streaming_block(streaming=false) %}Done{% end %}"
+        ).render()
+        assert "chirpui-streaming-block--active" not in html
+        assert "chirpui-streaming-block__cursor" not in html
+
+    # --- copy_btn additional ---
+
+    def test_copy_btn_aria_label(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import copy_btn %}{{ copy_btn(label="Copy code") }}'
+        ).render()
+        assert 'aria-label="Copy code"' in html
+
+    def test_copy_btn_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import copy_btn %}{{ copy_btn(cls="my-copy") }}'
+        ).render()
+        assert "chirpui-copy-btn my-copy" in html
+
+    def test_copy_btn_alpine_state(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import copy_btn %}{{ copy_btn(copy_text="hello") }}'
+        ).render()
+        assert "x-data" in html
+        assert "x-show" in html
+
+    def test_copy_btn_escapes_copy_text(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import copy_btn %}{{ copy_btn(copy_text="a&b<c") }}'
+        ).render()
+        assert "a&amp;b&lt;c" in html
+
+    # --- model_card additional ---
+
+    def test_model_card_no_badge(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import model_card %}'
+            '{% call model_card(title="GPT-4") %}Answer{% end %}'
+        ).render()
+        assert "chirpui-model-card__badge" not in html
+        assert "GPT-4" in html
+
+    def test_model_card_with_footer(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import model_card %}'
+            '{% call model_card(title="M", footer="Actions here") %}Body{% end %}'
+        ).render()
+        assert "chirpui-model-card__footer" in html
+        assert "Actions here" in html
+
+    def test_model_card_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import model_card %}'
+            '{% call model_card(title="M", cls="wide") %}B{% end %}'
+        ).render()
+        assert "chirpui-model-card chirpui-card wide" in html
+
 
 # ---------------------------------------------------------------------------
 # Card
@@ -1636,6 +1832,39 @@ class TestToast:
             '{% from "chirpui/toast.html" import toast %}{{ toast("msg", oob=false) }}'
         ).render()
         assert "hx-swap-oob" not in html
+
+    def test_toast_custom_id(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/toast.html" import toast %}{{ toast("msg", id="my-toast") }}'
+        ).render()
+        assert 'id="my-toast"' in html
+
+    def test_toast_role_alert(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/toast.html" import toast %}{{ toast("Error!", variant="error") }}'
+        ).render()
+        assert 'role="alert"' in html
+
+    def test_toast_container_custom_id(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/toast.html" import toast_container %}'
+            '{{ toast_container(id="my-toasts") }}'
+        ).render()
+        assert 'id="my-toasts"' in html
+
+    def test_toast_container_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/toast.html" import toast_container %}'
+            '{{ toast_container(cls="custom-container") }}'
+        ).render()
+        assert "chirpui-toast-container custom-container" in html
+
+    def test_toast_message_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/toast.html" import toast %}{{ toast("Hello") }}'
+        ).render()
+        assert "chirpui-toast__message" in html
+        assert "Hello" in html
 
 
 # ---------------------------------------------------------------------------
@@ -3618,6 +3847,36 @@ class TestSuspense:
         ).render()
         assert "chirpui-suspense-slot my-class" in html
 
+    def test_suspense_slot_avatar_skeleton(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot %}'
+            '{{ suspense_slot("avatar", skeleton_variant="avatar") }}'
+        ).render()
+        assert "chirpui-skeleton--avatar" in html
+
+    def test_suspense_slot_custom_dimensions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot %}'
+            '{{ suspense_slot("chart", width="300px", height="200px") }}'
+        ).render()
+        assert 'id="chart"' in html
+        assert "chirpui-skeleton" in html
+
+    def test_suspense_group_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_group %}'
+            '{% call suspense_group(cls="my-group") %}content{% end %}'
+        ).render()
+        assert "chirpui-suspense-group my-group" in html
+        assert 'aria-busy="true"' in html
+
+    def test_suspense_slot_multiple_lines(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot %}'
+            '{{ suspense_slot("feed", skeleton_variant="text", lines=6) }}'
+        ).render()
+        assert html.count("chirpui-skeleton__line") == 6
+
 
 class TestNavProgress:
     def test_nav_progress_default(self, env: Environment) -> None:
@@ -3709,6 +3968,47 @@ class TestSseStatus:
         ).render()
         assert "chirpui-btn" in html
         assert "chirpui-btn--sm" in html
+
+    def test_sse_status_invalid_falls_back(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_status %}{{ sse_status("bogus") }}'
+        ).render()
+        assert "chirpui-sse-status--connected" in html
+        assert "Connected" in html
+
+    def test_sse_status_dot_aria_hidden(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_status %}{{ sse_status("connected") }}'
+        ).render()
+        assert "chirpui-sse-status__dot" in html
+        assert 'aria-hidden="true"' in html
+
+    def test_sse_status_aria_live(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_status %}{{ sse_status("error") }}'
+        ).render()
+        assert 'aria-live="polite"' in html
+
+    def test_sse_retry_custom_target(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}'
+            '{{ sse_retry("/api/stream", target="#chat-container") }}'
+        ).render()
+        assert 'hx-target="#chat-container"' in html
+
+    def test_sse_retry_custom_swap(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}'
+            '{{ sse_retry("/api/stream", swap="innerHTML") }}'
+        ).render()
+        assert 'hx-swap="innerHTML"' in html
+
+    def test_sse_retry_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}'
+            '{{ sse_retry("/api/stream", cls="my-retry") }}'
+        ).render()
+        assert "my-retry" in html
 
 
 class TestProgress:
@@ -4456,6 +4756,47 @@ class TestOobHelpers:
             '{% from "chirpui/oob.html" import counter_badge %}{{ counter_badge("x", count=3) }}'
         ).render()
         assert 'aria-label="3 notifications"' in html
+
+    def test_counter_badge_custom_max(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import counter_badge %}'
+            '{{ counter_badge("x", count=50, max_count=25) }}'
+        ).render()
+        assert "25+" in html
+
+    def test_oob_fragment_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import oob_fragment %}'
+            '{% call oob_fragment("target", cls="my-frag") %}content{% end %}'
+        ).render()
+        assert 'class="my-frag"' in html
+
+    def test_oob_toast_default_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import oob_toast %}{{ oob_toast("Info msg") }}'
+        ).render()
+        assert "chirpui-toast--info" in html
+        assert "hx-swap-oob" in html
+
+    def test_oob_toast_not_dismissible(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import oob_toast %}'
+            '{{ oob_toast("Alert!", dismissible=false) }}'
+        ).render()
+        assert "chirpui-toast__close" not in html
+
+    def test_counter_badge_warning_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import counter_badge %}'
+            '{{ counter_badge("w", count=2, variant="warning") }}'
+        ).render()
+        assert "chirpui-counter-badge--warning" in html
+
+    def test_counter_badge_no_variant_no_modifier(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import counter_badge %}{{ counter_badge("x", count=1) }}'
+        ).render()
+        assert "chirpui-counter-badge--" not in html
 
 
 class TestNumberTicker:
