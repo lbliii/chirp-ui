@@ -1,0 +1,55 @@
+{#- chirp-ui: ASCII Tabs
+    Tab bar using box-drawing characters with active tab highlighting.
+
+    Usage:
+        from "chirpui/ascii_tabs.html" import ascii_tabs, ascii_tab
+
+        {% call ascii_tabs() %}
+            {{ ascii_tab("overview", "Overview", active=true) }}
+            {{ ascii_tab("details", "Details") }}
+            {{ ascii_tab("logs", "Logs") }}
+        {% end %}
+
+    With htmx:
+        {% call ascii_tabs() %}
+            {{ ascii_tab("overview", "Overview", url="/tabs/overview", hx_target="#panel", active=true) }}
+            {{ ascii_tab("details", "Details", url="/tabs/details", hx_target="#panel") }}
+        {% end %}
+
+    Variants: default, accent.
+
+    Visual (active tab boxed):
+        ┌──────────┐
+        │ Overview  │  Details    Logs
+        └──────────┴──────────────────
+-#}
+
+{% def ascii_tabs(variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "default", "accent"), "") %}
+{% set variant_class = " chirpui-ascii-tabs--" ~ variant if variant and variant != "default" else "" %}
+<nav class="chirpui-ascii-tabs{{ variant_class }}{{ " " ~ cls if cls else "" }}" role="tablist">
+    {% slot %}
+</nav>
+{% end %}
+
+{% def ascii_tab(id, label, url=none, hx_target=none, hx_swap="innerHTML", active=false, cls="") %}
+<a class="chirpui-ascii-tab{{ " chirpui-ascii-tab--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
+   id="tab-{{ id }}"
+   role="tab"
+   aria-selected="{{ "true" if active else "false" }}"
+   {% if url %}
+       href="{{ url }}"
+       {% if hx_target %}
+           hx-boost="false"
+           hx-select="unset"
+           hx-get="{{ url }}"
+           hx-target="{{ hx_target }}"
+           hx-swap="{{ hx_swap }}"
+           hx-push-url="false"
+       {% end %}
+   {% end %}>
+    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span>{% end %}
+    <span class="chirpui-ascii-tab__label">{{ label }}</span>
+    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span>{% end %}
+</a>
+{% end %}

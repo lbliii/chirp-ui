@@ -12932,6 +12932,9 @@ body.htmx-request .chirpui-nav-progress::after {
     text-align: center;
 }
 
+/* Range input (keyboard-accessible) — visually hidden but focusable */
+.chirpui-ascii-fader__input {}
+
 /* Color variants */
 .chirpui-ascii-fader--success .chirpui-ascii-fader__segment--filled { color: var(--chirpui-success); }
 .chirpui-ascii-fader--warning .chirpui-ascii-fader__segment--filled { color: var(--chirpui-warning, #e6a700); }
@@ -13883,4 +13886,109 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-settings-row-list--relaxed {
     row-gap: var(--chirpui-spacing);
+}
+
+/* ===== ascii_card ===== */
+.chirpui-ascii-card {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    color: var(--chirpui-text);
+}
+.chirpui-ascii-card--single {}
+.chirpui-ascii-card--double {}
+.chirpui-ascii-card--rounded {}
+.chirpui-ascii-card--heavy {}
+.chirpui-ascii-card__top,
+.chirpui-ascii-card__bottom,
+.chirpui-ascii-card__divider {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.chirpui-ascii-card__corner {
+    flex-shrink: 0;
+}
+.chirpui-ascii-card__line {
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+.chirpui-ascii-card__body {
+    display: flex;
+}
+.chirpui-ascii-card__side {
+    flex-shrink: 0;
+    line-height: 1;
+}
+.chirpui-ascii-card__content {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: var(--chirpui-spacing-xs, 0.25rem) var(--chirpui-spacing-sm, 0.5rem);
+}
+
+/* ===== ascii_tabs ===== */
+.chirpui-ascii-tabs {
+    display: flex;
+    gap: 0;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    border-bottom: 1px solid var(--chirpui-border, currentColor);
+}
+.chirpui-ascii-tabs--accent {}
+.chirpui-ascii-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    padding: var(--chirpui-spacing-xs, 0.25rem) var(--chirpui-spacing-sm, 0.5rem);
+    text-decoration: none;
+    color: var(--chirpui-text-muted);
+    cursor: pointer;
+}
+.chirpui-ascii-tab--active {
+    color: var(--chirpui-text);
+    font-weight: 600;
+    border-bottom: 2px solid currentColor;
+}
+.chirpui-ascii-tab__bracket {
+    opacity: 0.5;
+}
+.chirpui-ascii-tab__label {}
+
+/* ===== ascii_modal ===== */
+.chirpui-ascii-modal {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    border: none;
+    padding: 0;
+    color: var(--chirpui-text);
+    background: var(--chirpui-surface, Canvas);
+    max-width: min(90vw, 40rem);
+}
+.chirpui-ascii-modal--single {}
+.chirpui-ascii-modal--double {}
+.chirpui-ascii-modal--heavy {}
+.chirpui-ascii-modal::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+.chirpui-ascii-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--chirpui-spacing-xs, 0.25rem) var(--chirpui-spacing-sm, 0.5rem);
+    border-bottom: 1px solid var(--chirpui-border, currentColor);
+}
+.chirpui-ascii-modal__title {
+    font-weight: 600;
+}
+.chirpui-ascii-modal__close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 0 0.25rem;
+}
+.chirpui-ascii-modal__body {
+    padding: var(--chirpui-spacing-sm, 0.5rem);
+}
+.chirpui-ascii-modal-trigger {
+    cursor: pointer;
 }

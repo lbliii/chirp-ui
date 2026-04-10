@@ -25,6 +25,9 @@
 {% from "chirpui/ascii_skeleton.html" import ascii_skeleton %}
 {% from "chirpui/ascii_table.html" import ascii_table, ascii_row %}
 {% from "chirpui/ascii_error.html" import ascii_error %}
+{% from "chirpui/ascii_card.html" import ascii_card %}
+{% from "chirpui/ascii_tabs.html" import ascii_tabs, ascii_tab %}
+{% from "chirpui/ascii_modal.html" import ascii_modal, ascii_modal_trigger %}
 
 {% call container() %}
 {% call stack() %}
@@ -431,6 +434,51 @@
 {% call block() %}
 {{ ascii_error(code="408", heading="Timeout", description="The request took too long to complete.") }}
 {% end %}
+{% end %}
+
+{# ── ASCII Card ── #}
+<h2>ASCII Card</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Box-drawn card with title bar and content area.
+</p>
+{% call grid(cols=2) %}
+{% call block() %}
+<code class="chirpui-font-sm">single (default)</code>
+{% call ascii_card(title="Status") %}<p>All systems operational.</p>{% end %}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">double</code>
+{% call ascii_card(title="Deploy", variant="double", glyph="◆") %}<p>Last deploy: 2h ago</p>{% end %}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">rounded</code>
+{% call ascii_card(title="Info", variant="rounded") %}<p>Build #847 passed.</p>{% end %}
+{% end %}
+{% call block() %}
+<code class="chirpui-font-sm">heavy</code>
+{% call ascii_card(title="Alert", variant="heavy") %}<p>Disk usage at 92%.</p>{% end %}
+{% end %}
+{% end %}
+
+{# ── ASCII Tabs ── #}
+<h2>ASCII Tabs</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Tab bar with box-drawing bracket indicators.
+</p>
+{% call ascii_tabs() %}
+{{ ascii_tab("overview", "Overview", active=true) }}
+{{ ascii_tab("details", "Details") }}
+{{ ascii_tab("logs", "Logs") }}
+{% end %}
+
+{# ── ASCII Modal ── #}
+<h2>ASCII Modal</h2>
+<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+  Native dialog with monospace styling.
+</p>
+{{ ascii_modal_trigger("ascii-demo-modal", label="Open ASCII Modal") }}
+{% call ascii_modal("ascii-demo-modal", title="Terminal Settings") %}
+<p>Adjust your terminal preferences here.</p>
 {% end %}
 
 {% end %}

@@ -108,6 +108,10 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     "ascii-stepper": ("", "default", "accent", "success"),
     "split-flap": ("", "default", "amber", "green"),
     "ascii-ticker": ("", "default", "accent", "success", "warning", "error"),
+    "ascii-card": ("", "single", "double", "rounded", "heavy"),
+    "ascii-tabs": ("", "default", "accent"),
+    "ascii-tab": ("", "default", "accent"),
+    "ascii-modal": ("", "single", "double", "heavy"),
 }
 
 SIZE_REGISTRY: dict[str, tuple[str, ...]] = {

@@ -26,7 +26,12 @@
 {% set filled = ((value / 100) * width) | int %}
 {% set filled = width if filled > width else (0 if filled < 0 else filled) %}
 {% set hot_start = ((width * 0.75) | int) %}
-<div class="chirpui-ascii-vu{{ variant_class }}{{ anim_class }}{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-ascii-vu{{ variant_class }}{{ anim_class }}{{ " " ~ cls if cls else "" }}"
+     role="meter"
+     aria-valuenow="{{ value }}"
+     aria-valuemin="0"
+     aria-valuemax="100"
+     {% if label %}aria-label="{{ label }}"{% end %}>
     {% if label %}<span class="chirpui-ascii-vu__label">{{ label }}</span>{% end %}
     <span class="chirpui-ascii-vu__track">
         <span class="chirpui-ascii-vu__bracket" aria-hidden="true">▐</span>

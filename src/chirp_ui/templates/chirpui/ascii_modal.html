@@ -1,0 +1,49 @@
+{#- chirp-ui: ASCII Modal
+    Dialog-based modal with box-drawing character frame.
+
+    Usage:
+        from "chirpui/ascii_modal.html" import ascii_modal, ascii_modal_trigger
+
+        ascii_modal_trigger("settings", label="Settings")
+
+        {% call ascii_modal("settings", title="Settings") %}
+            <p>Modal body content.</p>
+        {% end %}
+
+    Variants: single (default), double, heavy.
+
+    Visual:
+        ╔══════════════════════╗
+        ║  Settings       [×]  ║
+        ╠══════════════════════╣
+        ║ Content              ║
+        ╚══════════════════════╝
+-#}
+
+{% def ascii_modal(id, title=none, variant="", cls="") %}
+{% set variant = variant | validate_variant(("", "single", "double", "heavy"), "") %}
+{% set variant_class = " chirpui-ascii-modal--" ~ variant if variant else "" %}
+<dialog id="{{ id }}" class="chirpui-ascii-modal{{ variant_class }}{{ " " ~ cls if cls else "" }}"
+        closedby="any">
+    {% if title %}
+    <header class="chirpui-ascii-modal__header">
+        <span class="chirpui-ascii-modal__title">{{ title }}</span>
+        <form method="dialog">
+            <button class="chirpui-ascii-modal__close" aria-label="Close">[<span aria-hidden="true">×</span>]</button>
+        </form>
+    </header>
+    {% end %}
+    <div class="chirpui-ascii-modal__body">
+        {% slot %}
+    </div>
+</dialog>
+{% end %}
+
+{% def ascii_modal_trigger(target, label="Open", cls="") %}
+<button class="chirpui-ascii-modal-trigger{{ " " ~ cls if cls else "" }}"
+        type="button"
+        x-data
+        @click="document.getElementById('{{ target }}')?.showModal()">
+    {{ label }}
+</button>
+{% end %}
