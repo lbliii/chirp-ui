@@ -1,0 +1,1 @@
+Adopt kida 0.3.4 `provide`/`consume` for parent-to-child state flow: table `row()` auto-inherits alignment, hero effect macros consume variant from parent, command_bar/filter_bar provide surface context to slot children.
