@@ -57,6 +57,7 @@
     <a href="#button-groups">Groups & Segmented</a>
     <a href="#split-button">Split Button</a>
     <a href="#effect-buttons">Effect Buttons</a>
+    <a href="#copy-button">Copy Button</a>
     <h3>Cards</h3>
     <a href="#cards">Cards</a>
     <a href="#card-variants">Card Variants</a>
@@ -79,16 +80,19 @@
     <a href="#spinner">Spinner</a>
     <a href="#tooltip">Tooltip</a>
     <a href="#notification-dot">Notification Dot</a>
+    <a href="#streaming">Streaming</a>
     <h3>Forms</h3>
     <a href="#text-fields">Text Fields</a>
     <a href="#toggles">Toggles</a>
     <a href="#checkboxes">Checkboxes & Radio</a>
     <a href="#search">Search Bar</a>
+    <a href="#inline-edit">Inline Edit</a>
     <h3>Navigation</h3>
     <a href="#tabs">Tabs</a>
     <a href="#breadcrumbs">Breadcrumbs</a>
     <a href="#dock">Floating Dock</a>
     <a href="#stepper">Stepper</a>
+    <a href="#nav-tree">Nav Tree</a>
     <h3>Layout</h3>
     <a href="#surfaces">Surfaces</a>
     <a href="#gradient-surfaces">Gradient Surfaces</a>
@@ -101,6 +105,7 @@
     <a href="#split-panel">Split Panel</a>
     <a href="#full-height-main">Full-height main</a>
     <a href="#divider">Divider</a>
+    <a href="#action-strip">Action Strip</a>
     <h3>Overlays</h3>
     <a href="#modal">Modal</a>
     <a href="#dropdown">Dropdown</a>
@@ -112,11 +117,14 @@
     <a href="#avatar">Avatars</a>
     <a href="#code">Code</a>
     <a href="#empty">Empty State</a>
+    <a href="#entity-header">Entity Header</a>
+    <a href="#document-header">Document Header</a>
     <h3>Social</h3>
     <a href="#post-card">Post Card</a>
     <a href="#message">Messages</a>
     <a href="#reactions">Reactions</a>
     <a href="#live-badge">Live Badge</a>
+    <a href="#action-bar">Action Bar</a>
     <h3>Effects</h3>
     <a href="#gradient-text">Typography Effects</a>
     <a href="#typewriter">Typewriter</a>
@@ -163,6 +171,9 @@
     <a href="#ascii-error">ASCII Error Pages</a>
     <a href="#ascii-skeleton">ASCII Skeleton</a>
     <a href="#ascii-bento">ASCII Bento</a>
+    <a href="#ascii-card">ASCII Card</a>
+    <a href="#ascii-tabs">ASCII Tabs</a>
+    <a href="#ascii-modal">ASCII Modal</a>
     <h3>HTMX Patterns</h3>
     <a href="#nav-progress">Nav Progress</a>
     <a href="#oob-helpers">OOB Helpers</a>
@@ -175,6 +186,8 @@
     <a href="#config">Config Rows</a>
     <a href="#bar-chart">Bar Chart</a>
     <a href="#donut">Donut Chart</a>
+    <a href="#settings-row">Settings Row</a>
+    <a href="#config-card">Config Card</a>
 </aside>
 
 <div class="sc-main">
@@ -319,6 +332,30 @@
     <div class="sc-row">
         <button class="chirpui-pulsing-btn"><span class="chirpui-pulsing-btn__ring"></span>Try Now</button>
         <button class="chirpui-pulsing-btn"><span class="chirpui-pulsing-btn__ring"></span>◎ Go Live</button>
+    </div>
+</section>
+
+<section class="sc-section" id="copy-button">
+    <h2>Copy Button</h2>
+    <p class="desc">Clipboard copy with visual feedback. Requires Alpine.js.</p>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <button type="button" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-copy-btn"
+                x-data="{ copied: false }"
+                data-copy-text="Hello, clipboard!"
+                @click="navigator.clipboard?.writeText($el.dataset.copyText||'').then(() => { copied = true; setTimeout(() => copied = false, 1500) })"
+                aria-label="Copy">
+            <span class="chirpui-copy-btn__label" x-show="!copied">Copy</span>
+            <span class="chirpui-copy-btn__done" x-show="copied" x-cloak>Copied!</span>
+        </button>
+        <button type="button" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-copy-btn chirpui-copy-btn--assistant"
+                x-data="{ copied: false }"
+                data-copy-text="Assistant response text"
+                @click="navigator.clipboard?.writeText($el.dataset.copyText||'').then(() => { copied = true; setTimeout(() => copied = false, 1500) })"
+                aria-label="Copy response">
+            <span class="chirpui-copy-btn__label" x-show="!copied">Copy Response</span>
+            <span class="chirpui-copy-btn__done" x-show="copied" x-cloak>Copied!</span>
+        </button>
     </div>
 </section>
 
@@ -799,6 +836,42 @@
     </div>
 </section>
 
+<section class="sc-section" id="streaming">
+    <h2>Streaming</h2>
+    <p class="desc">Bubble and block indicators for LLM/SSE content with thinking and error states. New in v0.3.0.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Streaming bubble (active)</div>
+    <div class="sc-stack" style="max-width:500px;margin-bottom:1.25rem">
+        <article class="chirpui-message-bubble chirpui-message-bubble--assistant" aria-label="assistant response">
+            <div class="chirpui-streaming-block chirpui-streaming-block--active" aria-live="polite" aria-atomic="true">
+                Here is the beginning of a response…<span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
+            </div>
+        </article>
+    </div>
+    <div class="sc-label">Thinking state</div>
+    <div class="sc-stack" style="max-width:500px;margin-bottom:1.25rem">
+        <article class="chirpui-message-bubble chirpui-message-bubble--assistant chirpui-streaming-bubble--thinking" aria-label="assistant response" aria-busy="true">
+            <div class="chirpui-streaming-block chirpui-streaming-block--active" aria-live="polite" aria-atomic="true">
+                <span class="chirpui-streaming-bubble__thinking" aria-hidden="true"></span>
+            </div>
+        </article>
+    </div>
+    <div class="sc-label">Error state</div>
+    <div class="sc-stack" style="max-width:500px;margin-bottom:1.25rem">
+        <article class="chirpui-message-bubble chirpui-message-bubble--assistant chirpui-streaming-bubble--error" aria-label="assistant response" role="alert">
+            <div class="chirpui-streaming-block" aria-live="polite" aria-atomic="true">
+                Connection lost. Please try again.
+            </div>
+        </article>
+    </div>
+    <div class="sc-label">Streaming block (standalone)</div>
+    <div style="max-width:500px;padding:1rem;border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius-lg)">
+        <div class="chirpui-streaming-block chirpui-streaming-block--active" aria-live="polite" aria-atomic="true">
+            Generating output…<span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
+        </div>
+    </div>
+</section>
+
 <!-- ================================================================ -->
 <!--  FORMS                                                           -->
 <!-- ================================================================ -->
@@ -850,6 +923,33 @@
     <hr class="sc-divider">
     <div style="max-width:400px">
         <div class="chirpui-search-bar"><span class="chirpui-search-bar__icon">⌕</span><input class="chirpui-search-bar__input" type="search" placeholder="Search components…"></div>
+    </div>
+</section>
+
+<section class="sc-section" id="inline-edit">
+    <h2>Inline Edit Field</h2>
+    <p class="desc">Display mode with edit trigger, edit mode with save/cancel. HTMX-powered swap between states.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Display mode</div>
+    <div style="max-width:400px;margin-bottom:1.25rem">
+        <div class="chirpui-inline-edit chirpui-inline-edit--display">
+            <span class="chirpui-inline-edit__value">My Workflow Name</span>
+            <button type="button" class="chirpui-inline-edit__trigger chirpui-btn chirpui-btn--ghost chirpui-btn--sm" title="Edit" aria-label="Edit">
+                <span class="chirpui-inline-edit__icon" aria-hidden="true">&#9998;</span> Edit
+            </button>
+        </div>
+    </div>
+    <div class="sc-label">Edit mode</div>
+    <div style="max-width:400px">
+        <div class="chirpui-inline-edit chirpui-inline-edit--edit">
+            <form class="chirpui-inline-edit__form">
+                <input type="text" name="name" value="My Workflow Name" class="chirpui-field__input chirpui-inline-edit__input">
+                <div class="chirpui-inline-edit__actions">
+                    <button type="button" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Save</button>
+                    <button type="button" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 </section>
 
@@ -924,6 +1024,57 @@
             </li>
         </ol>
     </nav>
+</section>
+
+<section class="sc-section" id="nav-tree">
+    <h2>Nav Tree</h2>
+    <p class="desc">Hierarchical navigation using native <code>&lt;details&gt;</code> for expand/collapse. For docs sidebars, admin nav, settings trees.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid">
+        <div class="sc-box">
+            <nav class="chirpui-nav-tree" aria-label="Navigation">
+                <div class="chirpui-nav-tree__header"></div>
+                <ul class="chirpui-nav-tree__list">
+                    <li class="chirpui-nav-tree__item">
+                        <details class="chirpui-nav-tree__node" open>
+                            <summary class="chirpui-nav-tree__label">
+                                <span class="chirpui-nav-tree__text"><span class="chirpui-nav-tree__title">Getting Started</span></span>
+                            </summary>
+                            <ul class="chirpui-nav-tree__list chirpui-nav-tree__list--nested">
+                                <li class="chirpui-nav-tree__item">
+                                    <a href="#" class="chirpui-nav-tree__link chirpui-nav-tree__link--leaf chirpui-nav-tree__link--active" aria-current="page"><span class="chirpui-nav-tree__title">Installation</span></a>
+                                </li>
+                                <li class="chirpui-nav-tree__item">
+                                    <a href="#" class="chirpui-nav-tree__link chirpui-nav-tree__link--leaf"><span class="chirpui-nav-tree__title">Quick Start</span></a>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li class="chirpui-nav-tree__item">
+                        <details class="chirpui-nav-tree__node">
+                            <summary class="chirpui-nav-tree__label">
+                                <span class="chirpui-nav-tree__text"><span class="chirpui-nav-tree__title">Components</span></span>
+                            </summary>
+                            <ul class="chirpui-nav-tree__list chirpui-nav-tree__list--nested">
+                                <li class="chirpui-nav-tree__item">
+                                    <a href="#" class="chirpui-nav-tree__link chirpui-nav-tree__link--leaf"><span class="chirpui-nav-tree__title">Buttons</span></a>
+                                </li>
+                                <li class="chirpui-nav-tree__item">
+                                    <a href="#" class="chirpui-nav-tree__link chirpui-nav-tree__link--leaf"><span class="chirpui-nav-tree__title">Cards</span></a>
+                                </li>
+                                <li class="chirpui-nav-tree__item">
+                                    <a href="#" class="chirpui-nav-tree__link chirpui-nav-tree__link--leaf"><span class="chirpui-nav-tree__title">Modals</span></a>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li class="chirpui-nav-tree__item">
+                        <a href="#" class="chirpui-nav-tree__link chirpui-nav-tree__link--leaf"><span class="chirpui-nav-tree__title">API Reference</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </section>
 
 <!-- ================================================================ -->
@@ -1110,6 +1261,40 @@
     <div class="chirpui-divider"></div>
     <div class="sc-spacer"></div>
     <div class="chirpui-divider chirpui-divider--label"><span>or</span></div>
+    <div class="sc-spacer"></div>
+    <div class="sc-label">Dotted</div>
+    <div class="chirpui-divider chirpui-divider--dotted"></div>
+    <div class="sc-spacer"></div>
+    <div class="sc-label">Fade</div>
+    <div class="chirpui-divider chirpui-divider--fade"></div>
+</section>
+
+<section class="sc-section" id="action-strip">
+    <h2>Action Strip</h2>
+    <p class="desc">Canonical container for search/filter/action rows on list and index pages. Density: sm, md. Wrap: wrap, scroll.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Default (md density, wrap)</div>
+    <div class="chirpui-surface chirpui-surface--muted" style="margin-bottom:1.25rem">
+        <div class="chirpui-action-strip chirpui-action-strip--md chirpui-action-strip--wrap">
+            <div class="chirpui-action-strip__inner" role="region" aria-label="Actions and filters">
+                <button class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Filters</button>
+                <button class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Sort</button>
+                <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm" style="margin-inline-start:auto">Create</button>
+            </div>
+        </div>
+    </div>
+    <div class="sc-label">Small density, scroll</div>
+    <div class="chirpui-surface chirpui-surface--muted">
+        <div class="chirpui-action-strip chirpui-action-strip--sm chirpui-action-strip--scroll">
+            <div class="chirpui-action-strip__inner" role="region" aria-label="Actions">
+                <button class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Validate</button>
+                <button class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Migrate</button>
+                <button class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Export</button>
+                <button class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Archive</button>
+                <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Deploy</button>
+            </div>
+        </div>
+    </div>
 </section>
 
 <!-- ================================================================ -->
@@ -1236,6 +1421,68 @@ register_filters(app)</code></pre>
     </div>
 </section>
 
+<section class="sc-section" id="entity-header">
+    <h2>Entity Header</h2>
+    <p class="desc">Title + meta + contextual actions for entity detail pages.</p>
+    <hr class="sc-divider">
+    <div class="sc-box" style="max-width:700px">
+        <header class="chirpui-entity-header">
+            <div class="chirpui-entity-header__content">
+                <span class="chirpui-entity-header__icon">◆</span>
+                <div>
+                    <h1 class="chirpui-entity-header__title" style="margin:0">Chain: My Workflow</h1>
+                    <p class="chirpui-text-muted chirpui-font-sm chirpui-entity-header__meta">3 steps · Updated 2h ago</p>
+                </div>
+            </div>
+            <div class="chirpui-entity-header__actions">
+                <button class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Edit</button>
+                <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm" style="color:var(--chirpui-error)">Delete</button>
+            </div>
+        </header>
+    </div>
+    <div class="sc-spacer"></div>
+    <div class="sc-label">Without icon</div>
+    <div class="sc-box" style="max-width:700px">
+        <header class="chirpui-entity-header">
+            <div class="chirpui-entity-header__content">
+                <div>
+                    <h1 class="chirpui-entity-header__title" style="margin:0">User Profile</h1>
+                    <p class="chirpui-text-muted chirpui-font-sm chirpui-entity-header__meta">Member since Jan 2024</p>
+                </div>
+            </div>
+            <div class="chirpui-entity-header__actions">
+                <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Save</button>
+            </div>
+        </header>
+    </div>
+</section>
+
+<section class="sc-section" id="document-header">
+    <h2>Document Header</h2>
+    <p class="desc">Document-oriented header for editor/viewer surfaces. Eyebrow, title, path, status, and action slot.</p>
+    <hr class="sc-divider">
+    <div class="sc-box" style="max-width:700px">
+        <section class="chirpui-document-header">
+            <p class="chirpui-document-header__eyebrow">Documentation</p>
+            <div class="chirpui-page-header chirpui-document-header__page-header">
+                <div class="chirpui-page-header__top">
+                    <div>
+                        <h1 style="margin:0;font-size:1.25rem;font-weight:700">README.md</h1>
+                    </div>
+                    <div class="chirpui-page-header__actions">
+                        <button class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chirpui-document-header__details">
+                <code class="chirpui-document-header__path">docs/README.md</code>
+                <span class="chirpui-document-header__detail">Last edited 3h ago</span>
+                <span class="chirpui-document-header__status">Draft</span>
+            </div>
+        </section>
+    </div>
+</section>
+
 <!-- ================================================================ -->
 <!--  SOCIAL                                                          -->
 <!-- ================================================================ -->
@@ -1286,6 +1533,30 @@ register_filters(app)</code></pre>
     <div class="sc-row">
         <span class="chirpui-live-badge"><span class="chirpui-live-badge__dot"></span>LIVE</span>
         <span class="chirpui-typing-indicator"><span class="chirpui-typing-indicator__dot"></span><span class="chirpui-typing-indicator__dot"></span><span class="chirpui-typing-indicator__dot"></span></span>
+    </div>
+</section>
+
+<section class="sc-section" id="action-bar">
+    <h2>Action Bar</h2>
+    <p class="desc">Horizontal row of icon buttons for post actions (like, share, comment).</p>
+    <hr class="sc-divider">
+    <div class="sc-box" style="max-width:400px">
+        <nav class="chirpui-action-bar" role="toolbar" aria-label="Post actions">
+            <button type="button" class="chirpui-action-bar__item chirpui-action-bar__item--active" aria-label="Like" title="Like">
+                <span class="chirpui-action-bar__icon">♥</span>
+                <span class="chirpui-action-bar__count">42</span>
+            </button>
+            <button type="button" class="chirpui-action-bar__item" aria-label="Comment" title="Comment">
+                <span class="chirpui-action-bar__icon">💬</span>
+                <span class="chirpui-action-bar__count">12</span>
+            </button>
+            <button type="button" class="chirpui-action-bar__item" aria-label="Share" title="Share">
+                <span class="chirpui-action-bar__icon">↗</span>
+            </button>
+            <button type="button" class="chirpui-action-bar__item" aria-label="Bookmark" title="Bookmark">
+                <span class="chirpui-action-bar__icon">☆</span>
+            </button>
+        </nav>
     </div>
 </section>
 
@@ -3779,6 +4050,113 @@ register_filters(app)</code></pre>
     </div>
 </section>
 
+<section class="sc-section" id="ascii-card">
+    <h2>ASCII Card</h2>
+    <p class="desc">Box-drawn card with Unicode border frame, optional title bar, and content slot. Variants: single (default), double, rounded, heavy.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Default (single)</div>
+    <div class="sc-grid">
+        <div class="chirpui-ascii-card">
+            <div class="chirpui-ascii-card__top" aria-hidden="true"><span class="chirpui-ascii-card__corner">┌</span><span class="chirpui-ascii-card__line">── Status </span><span class="chirpui-ascii-card__corner">┐</span></div>
+            <div class="chirpui-ascii-card__divider" aria-hidden="true"><span class="chirpui-ascii-card__corner">├</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">┤</span></div>
+            <div class="chirpui-ascii-card__body"><span class="chirpui-ascii-card__side" aria-hidden="true">│</span><div class="chirpui-ascii-card__content"><p style="margin:0">All systems operational.</p></div><span class="chirpui-ascii-card__side" aria-hidden="true">│</span></div>
+            <div class="chirpui-ascii-card__bottom" aria-hidden="true"><span class="chirpui-ascii-card__corner">└</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">┘</span></div>
+        </div>
+        <div class="chirpui-ascii-card chirpui-ascii-card--double">
+            <div class="chirpui-ascii-card__top" aria-hidden="true"><span class="chirpui-ascii-card__corner">╔</span><span class="chirpui-ascii-card__line">══ ◆ Deploy </span><span class="chirpui-ascii-card__corner">╗</span></div>
+            <div class="chirpui-ascii-card__divider" aria-hidden="true"><span class="chirpui-ascii-card__corner">╠</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">╣</span></div>
+            <div class="chirpui-ascii-card__body"><span class="chirpui-ascii-card__side" aria-hidden="true">║</span><div class="chirpui-ascii-card__content"><p style="margin:0">Last deploy: 2 hours ago</p></div><span class="chirpui-ascii-card__side" aria-hidden="true">║</span></div>
+            <div class="chirpui-ascii-card__bottom" aria-hidden="true"><span class="chirpui-ascii-card__corner">╚</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">╝</span></div>
+        </div>
+    </div>
+    <div class="sc-label">Rounded &amp; Heavy</div>
+    <div class="sc-grid">
+        <div class="chirpui-ascii-card chirpui-ascii-card--rounded">
+            <div class="chirpui-ascii-card__top" aria-hidden="true"><span class="chirpui-ascii-card__corner">╭</span><span class="chirpui-ascii-card__line">── Metrics </span><span class="chirpui-ascii-card__corner">╮</span></div>
+            <div class="chirpui-ascii-card__divider" aria-hidden="true"><span class="chirpui-ascii-card__corner">├</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">┤</span></div>
+            <div class="chirpui-ascii-card__body"><span class="chirpui-ascii-card__side" aria-hidden="true">│</span><div class="chirpui-ascii-card__content"><p style="margin:0">CPU 42% · Mem 68%</p></div><span class="chirpui-ascii-card__side" aria-hidden="true">│</span></div>
+            <div class="chirpui-ascii-card__bottom" aria-hidden="true"><span class="chirpui-ascii-card__corner">╰</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">╯</span></div>
+        </div>
+        <div class="chirpui-ascii-card chirpui-ascii-card--heavy">
+            <div class="chirpui-ascii-card__top" aria-hidden="true"><span class="chirpui-ascii-card__corner">┏</span><span class="chirpui-ascii-card__line">━━ Alerts </span><span class="chirpui-ascii-card__corner">┓</span></div>
+            <div class="chirpui-ascii-card__divider" aria-hidden="true"><span class="chirpui-ascii-card__corner">┣</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">┫</span></div>
+            <div class="chirpui-ascii-card__body"><span class="chirpui-ascii-card__side" aria-hidden="true">┃</span><div class="chirpui-ascii-card__content"><p style="margin:0">No active alerts.</p></div><span class="chirpui-ascii-card__side" aria-hidden="true">┃</span></div>
+            <div class="chirpui-ascii-card__bottom" aria-hidden="true"><span class="chirpui-ascii-card__corner">┗</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">┛</span></div>
+        </div>
+    </div>
+    <div class="sc-label">No title</div>
+    <div style="max-width:300px">
+        <div class="chirpui-ascii-card chirpui-ascii-card--rounded">
+            <div class="chirpui-ascii-card__top" aria-hidden="true"><span class="chirpui-ascii-card__corner">╭</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">╮</span></div>
+            <div class="chirpui-ascii-card__body"><span class="chirpui-ascii-card__side" aria-hidden="true">│</span><div class="chirpui-ascii-card__content"><p style="margin:0">Borderless content area — no title bar or divider.</p></div><span class="chirpui-ascii-card__side" aria-hidden="true">│</span></div>
+            <div class="chirpui-ascii-card__bottom" aria-hidden="true"><span class="chirpui-ascii-card__corner">╰</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">╯</span></div>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="ascii-tabs">
+    <h2>ASCII Tabs</h2>
+    <p class="desc">Tab bar using box-drawing characters with active tab highlighting. Variants: default, accent.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Default</div>
+    <div style="max-width:500px;margin-bottom:1.25rem">
+        <nav class="chirpui-ascii-tabs" role="tablist">
+            <a class="chirpui-ascii-tab chirpui-ascii-tab--active" role="tab" aria-selected="true"><span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span><span class="chirpui-ascii-tab__label">Overview</span><span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span></a>
+            <a class="chirpui-ascii-tab" role="tab" aria-selected="false"><span class="chirpui-ascii-tab__label">Details</span></a>
+            <a class="chirpui-ascii-tab" role="tab" aria-selected="false"><span class="chirpui-ascii-tab__label">Logs</span></a>
+        </nav>
+    </div>
+    <div class="sc-label">Accent</div>
+    <div style="max-width:500px">
+        <nav class="chirpui-ascii-tabs chirpui-ascii-tabs--accent" role="tablist">
+            <a class="chirpui-ascii-tab" role="tab" aria-selected="false"><span class="chirpui-ascii-tab__label">Config</span></a>
+            <a class="chirpui-ascii-tab chirpui-ascii-tab--active" role="tab" aria-selected="true"><span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span><span class="chirpui-ascii-tab__label">Secrets</span><span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span></a>
+            <a class="chirpui-ascii-tab" role="tab" aria-selected="false"><span class="chirpui-ascii-tab__label">Env</span></a>
+        </nav>
+    </div>
+</section>
+
+<section class="sc-section" id="ascii-modal">
+    <h2>ASCII Modal</h2>
+    <p class="desc">Dialog with box-drawing character frame. Variants: single (default), double, heavy. Uses native <code>&lt;dialog&gt;</code>.</p>
+    <hr class="sc-divider">
+    <div class="sc-row">
+        <button class="chirpui-ascii-modal-trigger" type="button" onclick="document.getElementById('demo-ascii-modal-single').showModal()">Open Single</button>
+        <button class="chirpui-ascii-modal-trigger" type="button" onclick="document.getElementById('demo-ascii-modal-double').showModal()">Open Double</button>
+        <button class="chirpui-ascii-modal-trigger" type="button" onclick="document.getElementById('demo-ascii-modal-heavy').showModal()">Open Heavy</button>
+    </div>
+
+    <dialog id="demo-ascii-modal-single" class="chirpui-ascii-modal" closedby="any">
+        <header class="chirpui-ascii-modal__header">
+            <span class="chirpui-ascii-modal__title">Settings</span>
+            <form method="dialog"><button class="chirpui-ascii-modal__close" aria-label="Close">[<span aria-hidden="true">×</span>]</button></form>
+        </header>
+        <div class="chirpui-ascii-modal__body">
+            <p style="margin:0">Single-line border variant (default).</p>
+        </div>
+    </dialog>
+
+    <dialog id="demo-ascii-modal-double" class="chirpui-ascii-modal chirpui-ascii-modal--double" closedby="any">
+        <header class="chirpui-ascii-modal__header">
+            <span class="chirpui-ascii-modal__title">Confirm</span>
+            <form method="dialog"><button class="chirpui-ascii-modal__close" aria-label="Close">[<span aria-hidden="true">×</span>]</button></form>
+        </header>
+        <div class="chirpui-ascii-modal__body">
+            <p style="margin:0">Double-line border variant.</p>
+        </div>
+    </dialog>
+
+    <dialog id="demo-ascii-modal-heavy" class="chirpui-ascii-modal chirpui-ascii-modal--heavy" closedby="any">
+        <header class="chirpui-ascii-modal__header">
+            <span class="chirpui-ascii-modal__title">Warning</span>
+            <form method="dialog"><button class="chirpui-ascii-modal__close" aria-label="Close">[<span aria-hidden="true">×</span>]</button></form>
+        </header>
+        <div class="chirpui-ascii-modal__body">
+            <p style="margin:0">Heavy-line border variant.</p>
+        </div>
+    </dialog>
+</section>
+
 <!-- ================================================================ -->
 <!--  DASHBOARD                                                       -->
 <!-- ================================================================ -->
@@ -3829,6 +4207,85 @@ register_filters(app)</code></pre>
         <div class="chirpui-donut chirpui-donut--gold chirpui-donut--lg" role="img" aria-label="75%"><div class="chirpui-donut__ring" style="--chirpui-donut-pct:75"></div><div class="chirpui-donut__center">75%</div></div>
         <div class="chirpui-donut chirpui-donut--success chirpui-donut--lg" role="img" aria-label="92%"><div class="chirpui-donut__ring" style="--chirpui-donut-pct:92"></div><div class="chirpui-donut__center">92%</div></div>
         <div class="chirpui-donut chirpui-donut--muted chirpui-donut--lg" role="img" aria-label="45%"><div class="chirpui-donut__ring" style="--chirpui-donut-pct:45"></div><div class="chirpui-donut__center">45%</div></div>
+    </div>
+</section>
+
+<section class="sc-section" id="settings-row">
+    <h2>Settings Row</h2>
+    <p class="desc">Three-column field set for setup targets, health checks, validation summaries. Auto-detects status variant from label.</p>
+    <hr class="sc-divider">
+    <div class="sc-label">Default (hoverable, divided)</div>
+    <div class="sc-box" style="max-width:600px">
+        <div class="chirpui-settings-row-list chirpui-settings-row-list--hoverable chirpui-settings-row-list--divided">
+            <div class="chirpui-settings-row">
+                <span class="chirpui-settings-row__label chirpui-font-sm chirpui-font-medium">Cursor IDE</span>
+                <span class="chirpui-settings-row__status"><span class="chirpui-badge chirpui-badge--success"><span class="chirpui-badge__text">Configured</span></span></span>
+                <span class="chirpui-settings-row__detail"><span class="chirpui-text-muted chirpui-font-sm chirpui-font-mono">dori setup cursor</span></span>
+            </div>
+            <div class="chirpui-settings-row">
+                <span class="chirpui-settings-row__label chirpui-font-sm chirpui-font-medium">Skills directory</span>
+                <span class="chirpui-settings-row__status"><span class="chirpui-badge chirpui-badge--success"><span class="chirpui-badge__text">ok</span></span></span>
+                <span class="chirpui-settings-row__detail"><span class="chirpui-text-muted chirpui-font-sm chirpui-font-mono">/home/user/.dori/skills</span></span>
+            </div>
+            <div class="chirpui-settings-row">
+                <span class="chirpui-settings-row__label chirpui-font-sm chirpui-font-medium">API Token</span>
+                <span class="chirpui-settings-row__status"><span class="chirpui-badge chirpui-badge--error"><span class="chirpui-badge__text">error</span></span></span>
+                <span class="chirpui-settings-row__detail"><span class="chirpui-text-muted chirpui-font-sm chirpui-font-mono">Not set</span></span>
+            </div>
+            <div class="chirpui-settings-row">
+                <span class="chirpui-settings-row__label chirpui-font-sm chirpui-font-medium">Collections</span>
+                <span class="chirpui-settings-row__status"><span class="chirpui-badge chirpui-badge--muted"><span class="chirpui-badge__text">pending</span></span></span>
+                <span class="chirpui-settings-row__detail"><span class="chirpui-text-muted chirpui-font-sm chirpui-font-mono">3 installed</span></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sc-section" id="config-card">
+    <h2>Config Card</h2>
+    <p class="desc">Key-value card for settings/config display. Composes card + description list with type-aware styling.</p>
+    <hr class="sc-divider">
+    <div class="sc-grid">
+        <article class="chirpui-card">
+            <header class="chirpui-card__header">
+                <span class="chirpui-card__icon">⟳</span>
+                <div class="chirpui-card__header-content"><h3 class="chirpui-card__title">Logs</h3></div>
+            </header>
+            <div class="chirpui-card__body">
+                <dl class="chirpui-dl chirpui-dl--horizontal">
+                    <div class="chirpui-dl__row">
+                        <dt class="chirpui-dl__term">retention_days</dt>
+                        <dd class="chirpui-dl__detail chirpui-dl__detail--number">14</dd>
+                    </div>
+                    <div class="chirpui-dl__row">
+                        <dt class="chirpui-dl__term">max_entries_per_day</dt>
+                        <dd class="chirpui-dl__detail chirpui-dl__detail--number">500</dd>
+                    </div>
+                </dl>
+            </div>
+        </article>
+        <article class="chirpui-card">
+            <header class="chirpui-card__header">
+                <span class="chirpui-card__icon">◇</span>
+                <div class="chirpui-card__header-content"><h3 class="chirpui-card__title">ACP</h3></div>
+            </header>
+            <div class="chirpui-card__body">
+                <dl class="chirpui-dl chirpui-dl--horizontal">
+                    <div class="chirpui-dl__row">
+                        <dt class="chirpui-dl__term">enabled</dt>
+                        <dd class="chirpui-dl__detail"><span class="chirpui-badge chirpui-badge--success chirpui-badge--sm"><span class="chirpui-badge__text">Yes</span></span></dd>
+                    </div>
+                    <div class="chirpui-dl__row">
+                        <dt class="chirpui-dl__term">endpoint</dt>
+                        <dd class="chirpui-dl__detail chirpui-dl__detail--url">https://api.example.com/v1</dd>
+                    </div>
+                    <div class="chirpui-dl__row">
+                        <dt class="chirpui-dl__term">api_key</dt>
+                        <dd class="chirpui-dl__detail" style="font-style:italic;color:var(--chirpui-text-muted)">(not set)</dd>
+                    </div>
+                </dl>
+            </div>
+        </article>
     </div>
 </section>
 

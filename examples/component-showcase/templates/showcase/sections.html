@@ -3,6 +3,7 @@
 {% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header, section %}
 {% from "chirpui/button.html" import btn %}
+{% from "chirpui/document_header.html" import document_header %}
 
 {% call container() %}
 {% call stack() %}
@@ -92,6 +93,30 @@
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
   Glass variants (glass, frosted, smoke) need a colored background behind to show blur — see Layout showcase.
+</p>
+{% end %}
+
+<h2>Document Header</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Document-oriented header for editor/viewer surfaces. Eyebrow, title, file path, status, and action slot.
+</p>
+{% call block() %}
+{% call document_header("README.md", eyebrow="Documentation", path="docs/README.md", status="Draft", meta_items=["Last edited 3h ago"]) %}
+{% slot actions %}
+{{ btn("Save", variant="default") }}
+{% end %}
+{% end %}
+{% end %}
+
+{% call block() %}
+{% call document_header("Architecture Overview", subtitle="System design reference", eyebrow="Engineering", path="docs/architecture.md", provenance="Created by Alice", status="Published") %}
+{% slot actions %}
+{{ btn("Edit", variant="default") }}
+{{ btn("Share", variant="ghost") }}
+{% end %}
+{% end %}
+<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+  document_header(title, eyebrow=, path=, status=, provenance=, meta_items=, subtitle=) — composes page_header + details bar.
 </p>
 {% end %}
 

@@ -189,8 +189,14 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 <div class="chirpui-stack chirpui-stack--sm" style="margin-top: 1rem;">
   {{ divider() }}
 </div>
+<div class="chirpui-stack chirpui-stack--sm" style="margin-top: 1rem;">
+  <p class="chirpui-text-muted chirpui-font-sm">Dotted</p>
+  {{ divider(variant="dotted") }}
+  <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.75rem;">Fade</p>
+  {{ divider(variant="fade") }}
+</div>
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
-  divider(), divider("OR"), divider("OR", horizontal=true), divider("OR", variant="accent")
+  divider(), divider("OR"), divider(variant="dotted"), divider(variant="fade"), divider("OR", variant="accent")
 </p>
 {% end %}
 
