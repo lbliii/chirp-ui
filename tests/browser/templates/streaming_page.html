@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/streaming.html" import streaming_bubble %}
+
+<h1 data-testid="page-heading">Streaming Test</h1>
+
+{% call streaming_bubble(role="assistant", state="", streaming=false) %}
+  <p data-testid="bubble-content">Hello from the assistant.</p>
+{% end %}
+
+{% call streaming_bubble(role="user", state="", streaming=false) %}
+  <p data-testid="user-bubble-content">Hello from the user.</p>
+{% end %}
+{% end %}

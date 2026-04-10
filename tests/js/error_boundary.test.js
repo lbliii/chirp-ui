@@ -219,4 +219,191 @@ describe("error_boundary", () => {
     root.querySelector("[data-error-reset]").click();
     expect(api.emitState).not.toHaveBeenCalled();
   });
+
+  it("populates [data-error-message] with detail.reason", async () => {
+    const fn = await getMountFn();
+    const root = createBoundaryDOM();
+    root.querySelector("[data-error-fallback]").innerHTML +=
+      '<span data-error-message></span>';
+    const api = createMockApi();
+
+    fn(createPayload(root, {}, { id: "b1", name: "boundary" }), api);
+
+    dispatchError({ id: "b1", reason: "Component crashed" });
+
+    expect(root.querySelector("[data-error-message]").textContent).toBe(
+      "Component crashed"
+    );
+  });
+
+  it("clears [data-error-message] on reset", async () => {
+    const fn = await getMountFn();
+    const root = createBoundaryDOM();
+    root.querySelector("[data-error-fallback]").innerHTML +=
+      '<span data-error-message></span>';
+    const api = createMockApi();
+
+    fn(createPayload(root, {}, { id: "b1", name: "boundary" }), api);
+
+    dispatchError({ id: "b1", reason: "Component crashed" });
+    expect(root.querySelector("[data-error-message]").textContent).toBe(
+      "Component crashed"
+    );
+
+    root.querySelector("[data-error-reset]").click();
+    expect(root.querySelector("[data-error-message]").textContent).toBe("");
+  });
+
+  it("uses textContent for message (XSS safe)", async () => {
+    const fn = await getMountFn();
+    const root = createBoundaryDOM();
+    root.querySelector("[data-error-fallback]").innerHTML +=
+      '<span data-error-message></span>';
+    const api = createMockApi();
+
+    fn(createPayload(root, {}, { id: "b1", name: "boundary" }), api);
+
+    dispatchError({ id: "b1", reason: "<script>alert(1)</script>" });
+
+    const msgEl = root.querySelector("[data-error-message]");
+    expect(msgEl.textContent).toBe("<script>alert(1)</script>");
+    expect(msgEl.innerHTML).not.toContain("<script>");
+  });
+
+  it("retry button dispatches action and resets to healthy", async () => {
+    const fn = await getMountFn();
+    const root = createBoundaryDOM();
+    root.querySelector("[data-error-fallback]").innerHTML +=
+      '<button data-error-retry>Retry</button>';
+    const api = createMockApi();
+
+    fn(createPayload(root, {}, { id: "b1", name: "boundary" }), api);
+
+    // Trigger error first
+    dispatchError({ id: "b1", reason: "timeout" });
+    expect(root.querySelector("[data-error-body]").hasAttribute("hidden")).toBe(
+      true
+    );
+
+    // Click retry
+    root.querySelector("[data-error-retry]").click();
+
+    // Should dispatch action
+    expect(api.emitAction).toHaveBeenCalledWith("retry", "pending", {});
+
+    // Should reset to healthy
+    expect(root.querySelector("[data-error-body]").hasAttribute("hidden")).toBe(
+      false
+    );
+    expect(
+      root.querySelector("[data-error-fallback]").hasAttribute("hidden")
+    ).toBe(true);
+    expect(api.emitState).toHaveBeenLastCalledWith(
+      expect.objectContaining({ state: "healthy" })
+    );
+  });
+
+  it("emits chirp:island:error:report telemetry event on error", async () => {
+    const fn = await getMountFn();
+    const root = createBoundaryDOM();
+    const api = createMockApi();
+
+    const cleanup = fn(
+      createPayload(
+        root,
+        { boundaryId: "telem-boundary-1" },
+        { id: "telem-1", name: "telem-name-1" }
+      ),
+      api
+    );
+
+    const reports = [];
+    const listener = (e) => {
+      if (e.detail.boundaryId === "telem-boundary-1") reports.push(e.detail);
+    };
+    document.addEventListener("chirp:island:error:report", listener);
+
+    try {
+      dispatchError({ id: "telem-1", reason: "render failed" });
+
+      expect(reports).toHaveLength(1);
+      expect(reports[0]).toMatchObject({
+        boundaryId: "telem-boundary-1",
+        reason: "render failed",
+        source: "error_boundary",
+      });
+      expect(typeof reports[0].timestamp).toBe("number");
+      expect(reports[0].timestamp).toBeGreaterThan(0);
+    } finally {
+      document.removeEventListener("chirp:island:error:report", listener);
+      cleanup();
+    }
+  });
+
+  it("telemetry event fires even with empty reason", async () => {
+    const fn = await getMountFn();
+    const root = createBoundaryDOM();
+    const api = createMockApi();
+
+    const cleanup = fn(
+      createPayload(root, {}, { id: "telem-2", name: "boundary" }),
+      api
+    );
+
+    const reports = [];
+    const listener = (e) => {
+      if (e.detail.boundaryId === "telem-2") reports.push(e.detail);
+    };
+    document.addEventListener("chirp:island:error:report", listener);
+
+    try {
+      dispatchError({ id: "telem-2" });
+
+      expect(reports).toHaveLength(1);
+      expect(reports[0].reason).toBe("");
+      expect(reports[0].source).toBe("error_boundary");
+    } finally {
+      document.removeEventListener("chirp:island:error:report", listener);
+      cleanup();
+    }
+  });
+
+  it("cleanup removes retry listener", async () => {
+    const fn = await getMountFn();
+    const root = createBoundaryDOM();
+    root.querySelector("[data-error-fallback]").innerHTML +=
+      '<button data-error-retry>Retry</button>';
+    const api = createMockApi();
+
+    const cleanup = fn(
+      createPayload(root, {}, { id: "b1", name: "boundary" }),
+      api
+    );
+    api.emitAction.mockClear();
+    api.emitState.mockClear();
+
+    cleanup();
+
+    // Retry after cleanup should not trigger action
+    root.querySelector("[data-error-retry]").click();
+    expect(api.emitAction).not.toHaveBeenCalled();
+  });
+
+  it("works without [data-error-message] element (backward compat)", async () => {
+    const fn = await getMountFn();
+    const root = createBoundaryDOM();
+    const api = createMockApi();
+
+    // No [data-error-message] in DOM — should not throw
+    fn(createPayload(root, {}, { id: "b1", name: "boundary" }), api);
+
+    dispatchError({ id: "b1", reason: "crash" });
+
+    expect(root.querySelector("[data-error-body]").hasAttribute("hidden")).toBe(
+      true
+    );
+    expect(api.emitState).toHaveBeenLastCalledWith(
+      expect.objectContaining({ state: "error" })
+    );
+  });
 });

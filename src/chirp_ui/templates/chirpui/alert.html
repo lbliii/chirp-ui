@@ -24,7 +24,8 @@
 -#}
 
 {% def alert(variant="info", dismissible=false, icon=none, title=none, cls="", collapsible=false, open=true) %}
-{% set alert_class = "alert" | bem(variant=variant, cls=cls) %}
+{% set _variant = variant if variant != "info" else (consume("_card_variant", "") or variant) %}
+{% set alert_class = "alert" | bem(variant=_variant, cls=cls) %}
 {% if collapsible %}
 <details class="{{ alert_class }}" role="alert"{% if open %} open{% endif %}>
     <summary class="chirpui-alert__body">

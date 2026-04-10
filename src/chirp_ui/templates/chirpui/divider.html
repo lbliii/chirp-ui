@@ -12,7 +12,8 @@
 -#}
 
 {% def divider(text=none, horizontal=false, variant="", cls="") %}
-{% set variant_class = " chirpui-divider--" ~ variant if variant else "" %}
+{% set _variant = variant if variant else consume("_card_variant", "") or consume("_surface_variant", "") %}
+{% set variant_class = " chirpui-divider--" ~ _variant if _variant else "" %}
 {% set horiz_class = " chirpui-divider--horizontal" if horizontal else "" %}
 <div class="chirpui-divider{{ variant_class }}{{ horiz_class }}{{ " " ~ cls if cls else "" }}"
      role="separator"

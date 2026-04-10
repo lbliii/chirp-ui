@@ -413,3 +413,253 @@ class TestSuspenseGroupProvide:
         ).render()
         assert 'id="a"' in html
         assert 'aria-busy="true"' in html
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2 — New consumer wiring contract tests
+# ---------------------------------------------------------------------------
+
+
+class TestBadgeConsumesCardVariant:
+    """badge() inherits variant from card via _card_variant."""
+
+    def test_badge_inside_card_inherits_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% from "chirpui/badge.html" import badge %}'
+            '{% call card(title="Alert", variant="warning") %}'
+            '{{ badge("Status") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-badge--warning" in html
+
+    def test_badge_explicit_variant_overrides_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% from "chirpui/badge.html" import badge %}'
+            '{% call card(title="Alert", variant="warning") %}'
+            '{{ badge("Status", variant="success") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-badge--success" in html
+        assert "chirpui-badge--warning" not in html
+
+    def test_badge_standalone_keeps_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/badge.html" import badge %}{{ badge("Test") }}'
+        ).render()
+        assert "chirpui-badge--primary" in html
+
+
+class TestBadgeConsumesSurfaceVariant:
+    """badge() inherits variant from surface via _surface_variant."""
+
+    def test_badge_inside_surface_inherits_matching_variant(self, env: Environment) -> None:
+        """Only variants valid for badge are inherited (e.g., warning, success)."""
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/badge.html" import badge %}'
+            '{% call surface(variant="warning") %}'
+            '{{ badge("Tag") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-badge--warning" in html
+
+    def test_badge_inside_surface_ignores_unrecognized_variant(self, env: Environment) -> None:
+        """Surface variant 'accent' is not a badge variant — falls back to primary."""
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/badge.html" import badge %}'
+            '{% call surface(variant="accent") %}'
+            '{{ badge("Tag") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-badge--primary" in html
+
+
+class TestDividerConsumesCardVariant:
+    """divider() inherits variant from card via _card_variant."""
+
+    def test_divider_inside_card_inherits_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% from "chirpui/divider.html" import divider %}'
+            '{% call card(title="Section", variant="primary") %}'
+            "{{ divider() }}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-divider--primary" in html
+
+    def test_divider_explicit_variant_overrides_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% from "chirpui/divider.html" import divider %}'
+            '{% call card(title="Section", variant="primary") %}'
+            '{{ divider(variant="muted") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-divider--muted" in html
+        assert "chirpui-divider--primary" not in html
+
+    def test_divider_standalone_no_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/divider.html" import divider %}{{ divider() }}'
+        ).render()
+        assert "chirpui-divider--" not in html
+
+
+class TestDividerConsumesSurfaceVariant:
+    """divider() inherits variant from surface via _surface_variant."""
+
+    def test_divider_inside_surface_inherits(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/divider.html" import divider %}'
+            '{% call surface(variant="muted") %}'
+            "{{ divider() }}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-divider--muted" in html
+
+
+class TestAlertConsumesCardVariant:
+    """alert() inherits variant from card via _card_variant."""
+
+    def test_alert_inside_card_inherits_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% from "chirpui/alert.html" import alert %}'
+            '{% call card(title="Section", variant="warning") %}'
+            "{% call alert() %}Content{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-alert--warning" in html
+
+    def test_alert_explicit_variant_overrides_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% from "chirpui/alert.html" import alert %}'
+            '{% call card(title="Section", variant="warning") %}'
+            '{% call alert(variant="error") %}Content{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-alert--error" in html
+
+
+class TestButtonConsumesBarDensity:
+    """btn() inherits size from command_bar/filter_bar via _bar_density."""
+
+    def test_button_inside_command_bar_inherits_size(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_bar.html" import command_bar %}'
+            '{% from "chirpui/button.html" import btn %}'
+            '{% call command_bar(density="sm") %}'
+            '{{ btn("Save") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-btn--sm" in html
+
+    def test_button_explicit_size_overrides_bar(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_bar.html" import command_bar %}'
+            '{% from "chirpui/button.html" import btn %}'
+            '{% call command_bar(density="sm") %}'
+            '{{ btn("Save", size="lg") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-btn--lg" in html
+        assert "chirpui-btn--sm" not in html
+
+    def test_button_standalone_no_size(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}{{ btn("Save") }}'
+        ).render()
+        assert "chirpui-btn--sm" not in html
+
+
+class TestButtonConsumesSuspenseBusy:
+    """btn() auto-disables inside suspense_group via _suspense_busy."""
+
+    def test_button_inside_suspense_group_disabled(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_group %}'
+            '{% from "chirpui/button.html" import btn %}'
+            "{% call suspense_group() %}"
+            '{{ btn("Submit") }}'
+            "{% end %}"
+        ).render()
+        assert "disabled" in html
+
+    def test_button_standalone_not_disabled(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}{{ btn("Submit") }}'
+        ).render()
+        assert "disabled" not in html
+
+
+class TestIconBtnConsumesBarDensity:
+    """icon_btn() inherits size from command_bar via _bar_density."""
+
+    def test_icon_btn_inside_command_bar_inherits_size(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_bar.html" import command_bar %}'
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{% call command_bar(density="sm") %}'
+            '{{ icon_btn("✕", aria_label="Close") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-icon-btn--sm" in html
+
+    def test_icon_btn_explicit_size_overrides(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_bar.html" import command_bar %}'
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{% call command_bar(density="sm") %}'
+            '{{ icon_btn("✕", aria_label="Close", size="lg") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-icon-btn--lg" in html
+
+
+class TestIconBtnConsumesSuspenseBusy:
+    """icon_btn() auto-disables inside suspense_group via _suspense_busy."""
+
+    def test_icon_btn_inside_suspense_group_disabled(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_group %}'
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            "{% call suspense_group() %}"
+            '{{ icon_btn("✕", aria_label="Close") }}'
+            "{% end %}"
+        ).render()
+        assert "disabled" in html
+
+
+class TestCopyButtonConsumesStreamingRole:
+    """copy_button() inherits role from streaming_bubble via _streaming_role."""
+
+    def test_copy_button_inside_streaming_bubble_gets_role(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% from "chirpui/copy_button.html" import copy_button %}'
+            '{% call streaming_bubble(role="user") %}'
+            '{{ copy_button("text") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-copy-btn--user" in html
+
+    def test_copy_button_inside_assistant_bubble(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% from "chirpui/copy_button.html" import copy_button %}'
+            '{% call streaming_bubble(role="assistant") %}'
+            '{{ copy_button("text") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-copy-btn--assistant" in html
+
+    def test_copy_button_standalone_no_role_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/copy_button.html" import copy_button %}{{ copy_button("text") }}'
+        ).render()
+        assert "chirpui-copy-btn--" not in html

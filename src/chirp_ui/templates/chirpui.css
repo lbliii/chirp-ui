@@ -3631,6 +3631,18 @@ a.chirpui-mention:focus-visible {
     pointer-events: none;
 }
 
+.chirpui-copy-btn--user {
+    opacity: 0.7;
+}
+
+.chirpui-copy-btn--assistant {
+    opacity: 1;
+}
+
+.chirpui-copy-btn--system {
+    opacity: 0.5;
+}
+
 .chirpui-model-card__header {
     display: flex;
     align-items: center;

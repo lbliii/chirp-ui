@@ -1,6 +1,6 @@
 # Epic: ASCII Component Maturity — Tests, A11y, and Interactive Variants
 
-**Status**: Draft
+**Status**: Partially Complete
 **Created**: 2026-04-09
 **Target**: 0.3.0
 **Estimated Effort**: 16–24h
@@ -314,4 +314,5 @@ Add `site/content/docs/components/ascii.md` with:
 
 ## Changelog
 
+- **2026-04-10**: Sprint 1 (render tests) complete — shipped in PLAN-behavior-layer-hardening Sprint 1 / PR #40 (152 tests across 27 ASCII component classes in `test_ascii_components.py`). Sprint 0 (audit) also complete via PLAN-behavior-layer-hardening Sprint 0. Remaining: Sprint 2 (a11y/keyboard), Sprint 3 (composites ascii_card/tabs/modal already exist), Sprint 4 (docs).
 - **2026-04-09**: Draft created from codebase exploration. 24 existing components audited; 0 tests, 0 docs, 5 interactive controls without keyboard support identified.

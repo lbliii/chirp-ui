@@ -1,6 +1,6 @@
 # Epic: Provide/Consume Expansion — Context Flow for Composite Components
 
-**Status**: Draft
+**Status**: Partially Complete
 **Created**: 2026-04-09
 **Target**: 0.3.0
 **Estimated Effort**: 12–20h
@@ -329,4 +329,5 @@ Add provide/consume expansion to key conventions.
 
 ## Changelog
 
+- **2026-04-10** — PLAN-behavior-layer-hardening Sprint 2 wired all 7 orphaned provide/consume keys (_card_variant, _bar_surface, _bar_density, _surface_variant, _streaming_role, _suspense_busy, _sse_state) to natural consumers with 30 contract tests. This is a subset of this plan's scope — Sprints 1-4 here (surface propagation, accordion name, form density, nav path) remain future work.
 - **2026-04-09** — Draft created from codebase audit (6 provides, 8 consumes across 11 templates)

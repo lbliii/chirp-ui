@@ -11,9 +11,11 @@
 -#}
 
 {% def badge(text, variant="primary", icon=none, cls="", color=none, fill="subtle", href=none) %}
+{% set _inherited = consume("_card_variant", "") or consume("_surface_variant", "") %}
+{% set _variant = variant if variant != "primary" else (_inherited if _inherited else variant) %}
 {% set fill = fill | validate_variant(("subtle", "solid"), "subtle") %}
 {% set resolved = color | resolve_color %}
-{% set use_variant = ("custom-solid" if (resolved and fill == "solid") else ("custom" if resolved else (variant | validate_variant_block("badge", "primary")))) %}
+{% set use_variant = ("custom-solid" if (resolved and fill == "solid") else ("custom" if resolved else (_variant | validate_variant_block("badge", "primary")))) %}
 {% set style_attr = ("--chirpui-badge-color: " ~ resolved ~ ("; --chirpui-badge-text: " ~ (resolved | contrast_text) if fill == "solid" else "")) if resolved else "" %}
 {% set badge_class = "badge" | bem(variant=use_variant, cls=cls) %}
 {% if href %}
