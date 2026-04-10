@@ -7062,6 +7062,20 @@ a.chirpui-tag:active {
     margin-bottom: var(--chirpui-spacing);
 }
 
+.chirpui-field--dense {
+    margin-bottom: var(--chirpui-spacing-xs);
+}
+
+.chirpui-field--dense .chirpui-field__label {
+    margin-bottom: 2px;
+    font-size: var(--chirpui-font-xs);
+}
+
+.chirpui-field--dense .chirpui-field__input {
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-font-sm);
+}
+
 .chirpui-field__label {
     display: block;
     margin-bottom: var(--chirpui-spacing-xs);

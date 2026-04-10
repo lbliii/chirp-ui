@@ -6,11 +6,12 @@
     use it; checkbox/toggle/radio/range/input_group have custom layouts.
 -#}
 
-{% def form(action, method="get", enctype=none, cls="", attrs="", attrs_map=none,
+{% def form(action, method="get", enctype=none, density="", cls="", attrs="", attrs_map=none,
            hx_get=none, hx_post=none, hx_put=none, hx_patch=none, hx_delete=none,
            hx_target=none, hx_swap=none, hx_trigger=none, hx_include=none,
            hx_select=none, hx_select_oob=none, hx_disabled_elt=none, hx_sync=none,
            hx_ext=none, hx_vals=none, hx_reset_on_success=none) %}
+{% provide _form_density = density %}
 {#- hx_reset_on_success: when true, form resets after successful htmx response (2xx).
    Defaults to true when form has hx-post/put/patch/delete (via params or attrs_map).
    See https://htmx.org/examples/reset-user-input/
@@ -37,6 +38,7 @@
     {% slot %}
 </form>
 {% end %}
+{% end %}
 
 {% def fieldset(legend=none, cls="") %}
 <fieldset class="chirpui-fieldset{{ " " ~ cls if cls else "" }}">
@@ -51,7 +53,8 @@
 {% set _fid = field_id if field_id else "field-" ~ name %}
 {% set _eid = "errors-" ~ name %}
 {% set _has_errors = errors and errors | field_errors(name) %}
-<div id="{{ _fid }}" class="chirpui-field{{ " chirpui-field--" ~ modifier if modifier else "" }}{{ " chirpui-field--error" if _has_errors else "" }}"{% if oob %} hx-swap-oob="true"{% end %}>
+{% set _density = consume("_form_density", "") %}
+<div id="{{ _fid }}" class="chirpui-field{{ " chirpui-field--" ~ modifier if modifier else "" }}{{ " chirpui-field--dense" if _density else "" }}{{ " chirpui-field--error" if _has_errors else "" }}"{% if oob %} hx-swap-oob="true"{% end %}>
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">
             {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
