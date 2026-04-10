@@ -39,9 +39,14 @@ from chirp_ui.validation import SIZE_REGISTRY, VARIANT_REGISTRY, _is_strict
 
 _SORTED_ICON_NAMES: str = ", ".join(sorted(ICON_REGISTRY))
 
-# Safe CSS color strings for inline styles (hex, rgb/hsl/oklch family).
+# Safe CSS color strings for inline styles (hex, rgb/hsl/oklch/lab/lch family).
+# The character class inside parens allows digits, decimals, negatives, percent,
+# commas, slashes, spaces, and lowercase alpha (for units: deg/turn/rad/grad
+# and the 'none' keyword).  It blocks parens, semicolons, braces, angle brackets,
+# and quotes — preventing CSS injection via url(), var(), expression(), etc.
 _COLOR_RE = re.compile(
-    r"^#[0-9a-fA-F]{3,8}$|^(?:rgb|hsl|oklch)a?\([\d.,% /]+\)$",
+    r"^#[0-9a-fA-F]{3,8}$"
+    r"|^(?:rgb|hsl|oklch|lab|lch)a?\([-\d.,%/ a-z]+\)$",
 )
 
 _chirpui_named_colors: ContextVar[dict[str, str] | None] = ContextVar(
@@ -171,8 +176,8 @@ def _hsl_to_channels(s: str) -> tuple[float, float, float] | None:
 
 
 def _oklch_to_channels(s: str) -> tuple[float, float, float] | None:
-    """Parse ``oklch(L C H)`` and convert to sRGB 0..1 via OKLab."""
-    m = re.match(r"oklch\((.+)\)", s.strip())
+    """Parse ``oklch(L C H)`` / ``oklcha(L C H / A)`` and convert to sRGB 0..1 via OKLab."""
+    m = re.match(r"oklcha?\((.+)\)", s.strip())
     if not m:
         return None
     parts = _CSS_FUNC_SPLIT.split(m.group(1).strip())
@@ -205,7 +210,7 @@ def _oklch_to_channels(s: str) -> tuple[float, float, float] | None:
     # Linear sRGB -> sRGB gamma
     def _linear_to_srgb(c: float) -> float:
         c = max(0.0, min(1.0, c))
-        return c / 12.92 if c <= 0.0031308 else 1.055 * (c ** (1.0 / 2.4)) - 0.055
+        return 12.92 * c if c <= 0.0031308 else 1.055 * (c ** (1.0 / 2.4)) - 0.055
 
     return (_linear_to_srgb(r_lin), _linear_to_srgb(g_lin), _linear_to_srgb(b_lin))
 
