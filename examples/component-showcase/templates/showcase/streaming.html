@@ -2,7 +2,7 @@
 
 {% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
-{% from "chirpui/streaming.html" import streaming_block, copy_btn, model_card %}
+{% from "chirpui/streaming.html" import streaming_bubble, streaming_block, copy_btn, model_card %}
 {% from "chirpui/sse_status.html" import sse_status, sse_retry %}
 
 {% call container() %}
@@ -27,6 +27,35 @@ Partial response text that is still streaming...
 {% call block() %}
 {% call streaming_block(streaming=true, sse_swap_target=true) %}
 Use with htmx SSE: sse-swap="fragment" hx-target="this" on the inner div.
+{% end %}
+{% end %}
+
+<h2>Streaming Bubble (active)</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Message bubble variant with role-aware styling. Wraps streaming_block inside an article.
+</p>
+{% call block() %}
+{% call streaming_bubble(role="assistant", streaming=true) %}
+Here is the beginning of a response…
+{% end %}
+{% end %}
+
+<h2>Streaming Bubble (thinking)</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Animated thinking dots, <code>aria-busy="true"</code>. Use <code>state="thinking"</code>.
+</p>
+{% call block() %}
+{% call streaming_bubble(role="assistant", state="thinking", streaming=true) %}
+{% end %}
+{% end %}
+
+<h2>Streaming Bubble (error)</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Error-tinted bubble with <code>role="alert"</code>. Use <code>state="error"</code>.
+</p>
+{% call block() %}
+{% call streaming_bubble(role="assistant", state="error", streaming=false) %}
+Connection lost. Please try again.
 {% end %}
 {% end %}
 
