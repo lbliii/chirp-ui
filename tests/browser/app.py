@@ -155,4 +155,70 @@ def create_app() -> App:
     async def no_fill_page(request: Request):
         return Template("no_fill_page.html", page_title="No Fill")
 
+    # ── Command palette ──────────────────────────────────────────────
+
+    @app.route("/command-palette")
+    async def command_palette_page(request: Request):
+        return Template("command_palette_page.html", page_title="Command Palette")
+
+    @app.route("/search")
+    async def search(request: Request):
+        q = request.query.get("q", "")
+        items = [f"Result for '{q}' #{i}" for i in range(1, 4)] if q else []
+        html = "".join(f'<div class="chirpui-command-palette__item">{item}</div>' for item in items)
+        return Response(html or '<div class="chirpui-command-palette__empty">No results</div>')
+
+    # ── Drawer ────────────────────────────────────────────────────────
+
+    @app.route("/drawer")
+    async def drawer_page(request: Request):
+        return Template("drawer_page.html", page_title="Drawer")
+
+    # ── Tray ──────────────────────────────────────────────────────────
+
+    @app.route("/tray")
+    async def tray_page(request: Request):
+        return Template("tray_page.html", page_title="Tray")
+
+    # ── Toast ─────────────────────────────────────────────────────────
+
+    @app.route("/toast")
+    async def toast_page(request: Request):
+        return Template("toast_page.html", page_title="Toast")
+
+    @app.route("/toast/send")
+    async def toast_send(request: Request):
+        return Response(
+            '<div class="chirpui-toast chirpui-toast--success" role="alert"'
+            ' data-testid="toast-item">'
+            '<span class="chirpui-toast__message">Operation successful</span>'
+            '<button class="chirpui-toast__close" x-data'
+            ' @click="$el.parentElement.remove()" aria-label="Dismiss">&times;</button>'
+            "</div>"
+        )
+
+    # ── Copy button ───────────────────────────────────────────────────
+
+    @app.route("/copy-button")
+    async def copy_button_page(request: Request):
+        return Template("copy_button_page.html", page_title="Copy Button")
+
+    # ── Theme toggle ──────────────────────────────────────────────────
+
+    @app.route("/theme-toggle")
+    async def theme_toggle_page(request: Request):
+        return Template("theme_toggle_page.html", page_title="Theme Toggle")
+
+    # ── Split panel ───────────────────────────────────────────────────
+
+    @app.route("/split-panel")
+    async def split_panel_page(request: Request):
+        return Template("split_panel_page.html", page_title="Split Panel")
+
+    # ── Streaming bubble ──────────────────────────────────────────────
+
+    @app.route("/streaming")
+    async def streaming_page(request: Request):
+        return Template("streaming_page.html", page_title="Streaming")
+
     return app

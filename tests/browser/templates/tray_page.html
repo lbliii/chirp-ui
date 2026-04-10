@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/tray.html" import tray, tray_trigger %}
+
+<h1 data-testid="page-heading">Tray Test</h1>
+
+{{ tray_trigger("test-tray", "Open Tray") }}
+
+{% call tray("test-tray", title="Test Tray") %}
+  <p data-testid="tray-body">Tray content here.</p>
+{% end %}
+{% end %}

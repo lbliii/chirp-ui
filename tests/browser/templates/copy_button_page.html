@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/copy_button.html" import copy_button %}
+
+<h1 data-testid="page-heading">Copy Button Test</h1>
+
+{{ copy_button("Hello clipboard!", label="Copy Text") }}
+{% end %}

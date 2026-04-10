@@ -1,6 +1,6 @@
 # Epic: Color System Hardening — Correct, Complete, Tested
 
-**Status**: Draft
+**Status**: Complete
 **Created**: 2026-04-10
 **Target**: 0.3.0
 **Estimated Effort**: 8–14h
@@ -269,4 +269,5 @@ Strategy: generate valid hex/rgb/hsl/oklch strings with random numeric values. A
 
 ## Changelog
 
-- 2026-04-10: Draft created from codebase exploration
+- **2026-04-10**: Complete — shipped in PR #44. Gamma bug fixed, regex widened, 80+ color tests added. All sprints delivered.
+- **2026-04-10**: Draft created from codebase exploration

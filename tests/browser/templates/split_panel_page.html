@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/split_panel.html" import split_panel %}
+
+<h1 data-testid="page-heading">Split Panel Test</h1>
+
+{% call split_panel(default_split=50, min_split=20, max_split=80) %}
+  {% slot first %}
+    <div data-testid="pane-first" style="padding: 1rem;">First pane</div>
+  {% end %}
+  {% slot second %}
+    <div data-testid="pane-second" style="padding: 1rem;">Second pane</div>
+  {% end %}
+{% end %}
+{% end %}

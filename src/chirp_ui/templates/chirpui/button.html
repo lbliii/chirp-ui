@@ -7,10 +7,13 @@
            hx_patch=none, hx_delete=none, hx_target=none, hx_swap=none,
            hx_trigger=none, hx_include=none, hx_select=none, hx_ext=none,
            hx_vals=none, disabled=false, data_action=none, aria_label=none) %}
-{% set variant = variant | validate_variant_block("btn", "") %}
-{% set size = (size or "") | validate_size("btn", "") %}
-{% set variant_class = " chirpui-btn--" ~ variant if variant else "" %}
-{% set size_class = " chirpui-btn--" ~ size if size else "" %}
+{% set _variant = variant | validate_variant_block("btn", "") %}
+{% set _bar_size = consume("_bar_density", "") %}
+{% set _busy = consume("_suspense_busy", "") %}
+{% set _size = (size or _bar_size or "") | validate_size("btn", "") %}
+{% set _disabled = disabled or (_busy == "true") %}
+{% set variant_class = " chirpui-btn--" ~ _variant if _variant else "" %}
+{% set size_class = " chirpui-btn--" ~ _size if _size else "" %}
 {% set loading_class = " chirpui-btn--loading" if loading else "" %}
 {% set base_class = "chirpui-btn" ~ variant_class ~ size_class ~ loading_class %}
 {% if cls %}
@@ -18,15 +21,15 @@
 {% end %}
 {% set _btn_has_hx = hx_get or hx_post or hx_put or hx_patch or hx_delete %}
 {% if href %}
-<a class="{{ base_class }}"{% if not disabled %} href="{{ href }}"{% endif %}
+<a class="{{ base_class }}"{% if not _disabled %} href="{{ href }}"{% endif %}
    {% if aria_label %}aria-label="{{ aria_label }}"{% end %}
    {% if data_action %}data-action="{{ data_action }}"{% end %}
-   {% if disabled %}aria-disabled="true" tabindex="-1"{% end %}
+   {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}
    {{ attrs | html_attrs }}
    {{ attrs_map | html_attrs }}
-   {% if not disabled and _btn_has_hx %}hx-boost="false"{% end %}
-   {% if not disabled and _btn_has_hx %}hx-select="{{ hx_select if hx_select else "unset" }}"{% end %}
-   {% if not disabled %}{{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
+   {% if not _disabled and _btn_has_hx %}hx-boost="false"{% end %}
+   {% if not _disabled and _btn_has_hx %}hx-select="{{ hx_select if hx_select else "unset" }}"{% end %}
+   {% if not _disabled %}{{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
        hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target, hx_swap=hx_swap,
        hx_trigger=hx_trigger, hx_include=hx_include, hx_ext=hx_ext,
        hx_vals=hx_vals) | html_attrs }}{% end %}>
@@ -37,7 +40,7 @@
 <button type="{{ type }}" class="{{ base_class }}" {% if loading %}aria-busy="true"{% end %}
         {% if aria_label %}aria-label="{{ aria_label }}"{% end %}
         {% if data_action %}data-action="{{ data_action }}"{% end %}
-        {% if disabled %}disabled{% end %}
+        {% if _disabled %}disabled{% end %}
         {{ attrs | html_attrs }}
         {{ attrs_map | html_attrs }}
         {{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,

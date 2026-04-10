@@ -1,6 +1,6 @@
 # Epic: Test Coverage Hardening — Close the 27% Gap
 
-**Status**: Draft
+**Status**: Partially Complete
 **Created**: 2026-04-10
 **Target**: 0.3.0
 **Estimated Effort**: 18–28h
@@ -340,5 +340,6 @@ Delete `docs/test-coverage-checklist.md` (Sprint 0 artifact) now that all items 
 
 ## Changelog
 
+- **2026-04-10** — Sprint 2 (JS unit tests) superseded by PLAN-behavior-layer-hardening Sprint 3 + PLAN-island-js-test-infrastructure (123 vitest tests across 9 island helpers). Sprint 3 (Playwright) superseded by PLAN-behavior-layer-hardening Sprint 4 (23 browser tests for 8 Alpine components). Sprint 4 (orphan coverage) superseded by PLAN-behavior-layer-hardening Sprint 2 (all 7 orphaned providers wired to consumers, 30 contract tests). Remaining: coverage gate raise (Sprint 4 Task 4.3).
 - **2026-04-10** — Sprint 0+1 complete. Actual inventory: 33 untested components (not 51 — ASCII suite already had 152 tests). All 33 now covered in `tests/test_coverage_sprint1.py` (72 tests). `app_layout` excluded (requires Chirp). Total: 1062 tests passing, CI green.
 - **2026-04-10** — Draft created from codebase audit (51 untested components, 0 JS tests, 21 untested Alpine interactions)

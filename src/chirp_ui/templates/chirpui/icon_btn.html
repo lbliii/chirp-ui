@@ -10,19 +10,22 @@
 
 {% def icon_btn(icon, variant="", size="", href=none, aria_label="", disabled=false, type="button", cls="",
                 hx_get=none, hx_post=none, hx_target=none, hx_swap=none) %}
-{% set variant = variant | validate_variant(("", "default", "primary", "ghost", "danger"), "") %}
-{% set size = size | validate_variant(("", "sm", "md", "lg"), "") %}
-{% set variant_class = " chirpui-icon-btn--" ~ variant if variant else "" %}
-{% set size_class = " chirpui-icon-btn--" ~ size if size else "" %}
+{% set _bar_size = consume("_bar_density", "") %}
+{% set _busy = consume("_suspense_busy", "") %}
+{% set _variant = variant | validate_variant(("", "default", "primary", "ghost", "danger"), "") %}
+{% set _size = (size or _bar_size or "") | validate_variant(("", "sm", "md", "lg"), "") %}
+{% set _disabled = disabled or (_busy == "true") %}
+{% set variant_class = " chirpui-icon-btn--" ~ _variant if _variant else "" %}
+{% set size_class = " chirpui-icon-btn--" ~ _size if _size else "" %}
 {% set base = "chirpui-icon-btn" ~ variant_class ~ size_class ~ (" " ~ cls if cls else "") %}
 {% if href %}
 <a href="{{ href }}" class="{{ base }}" aria-label="{{ aria_label }}"
-   {% if disabled %}aria-disabled="true" tabindex="-1"{% end %}>
+   {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}>
     <span class="chirpui-icon-btn__icon">{{ icon | icon }}</span>
 </a>
 {% else %}
 <button type="{{ type }}" class="{{ base }}" aria-label="{{ aria_label }}"
-        {% if disabled %}disabled{% end %}
+        {% if _disabled %}disabled{% end %}
         {% if hx_get %}hx-get="{{ hx_get }}"{% end %}
         {% if hx_post %}hx-post="{{ hx_post }}"{% end %}
         {% if hx_target %}hx-target="{{ hx_target }}"{% end %}

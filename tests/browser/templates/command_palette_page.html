@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+
+<h1 data-testid="page-heading">Command Palette Test</h1>
+
+{{ command_palette_trigger() }}
+{% call command_palette(search_url="/search") %}
+{% end %}
+{% end %}

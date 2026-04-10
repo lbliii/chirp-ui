@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/drawer.html" import drawer, drawer_trigger %}
+
+<h1 data-testid="page-heading">Drawer Test</h1>
+
+{{ drawer_trigger("test-drawer", label="Open Drawer") }}
+
+{% call drawer("test-drawer", title="Test Drawer") %}
+  <p data-testid="drawer-body">Drawer content here.</p>
+{% end %}
+{% end %}
