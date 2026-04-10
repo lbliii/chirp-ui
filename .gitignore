@@ -77,4 +77,7 @@ site/.bengal/
 .bengal/
 .bengal.pid
 
+# Node (JS test runner — vitest + jsdom)
+node_modules/
+
 # uv (uv.lock committed for reproducible builds)
