@@ -28,7 +28,8 @@
         end
 -#}
 
-{% def sidebar(cls="") %}
+{% def sidebar(cls="", current_path="") %}
+{% provide _nav_current_path = current_path %}
 <nav class="chirpui-sidebar{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-sidebar__header">{% slot header %}</div>
     <div class="chirpui-sidebar__nav">
@@ -36,6 +37,7 @@
     </div>
     <div class="chirpui-sidebar__footer">{% slot footer %}</div>
 </nav>
+{% end %}
 {% end %}
 
 {% def sidebar_section(title="", collapsible=false, cls="") %}
@@ -53,7 +55,7 @@
 {% end %}
 
 {% def sidebar_link(href, label, icon="", active=false, match="", boost=true, cls="") %}
-{% set _cp = current_path | default("") if match else "" %}
+{% set _cp = (consume("_nav_current_path", "") or (current_path | default(""))) if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <a class="chirpui-sidebar__link{{ " chirpui-sidebar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
    href="{{ href }}" title="{{ label }}"

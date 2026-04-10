@@ -16,14 +16,17 @@
 -#}
 
 {% def accordion(name="accordion", cls="") %}
+{% provide _accordion_name = name %}
 <div class="chirpui-accordion{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
 {% end %}
+{% end %}
 
-{% def accordion_item(title, open=false, name="accordion", cls="") %}
+{% def accordion_item(title, open=false, name="", cls="") %}
+{% set _name = name if name else consume("_accordion_name", "accordion") %}
 <details class="chirpui-accordion__item{{ " " ~ cls if cls else "" }}"
-         name="{{ name }}"
+         name="{{ _name }}"
          {% if open %}open{% end %}>
     <summary class="chirpui-accordion__trigger">
         <span class="chirpui-accordion__trigger-text">{{ title }}</span>
