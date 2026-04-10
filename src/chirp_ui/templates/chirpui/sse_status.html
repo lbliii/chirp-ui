@@ -20,10 +20,10 @@
 -#}
 
 {% def sse_status(state="connected", label="", cls="") %}
-{% set state = state | validate_variant(("connected", "disconnected", "error"), "connected") %}
+{% set _state = state | validate_variant(("connected", "disconnected", "error"), "connected") %}
 {% set default_labels = {"connected": "Connected", "disconnected": "Disconnected", "error": "Connection error"} %}
-{% set _label = label if label else default_labels[state] %}
-<span class="chirpui-sse-status chirpui-sse-status--{{ state }}{{ " " ~ cls if cls else "" }}"
+{% set _label = label if label else default_labels[_state] %}
+<span class="chirpui-sse-status chirpui-sse-status--{{ _state }}{{ " " ~ cls if cls else "" }}"
       role="status" aria-live="polite">
     <span class="chirpui-sse-status__dot" aria-hidden="true"></span>
     {{ _label }}
@@ -31,11 +31,18 @@
 {% end %}
 
 {% def sse_retry(url, label="Retry", method="get", target="closest [hx-ext]", swap="outerHTML", cls="") %}
+{% set _parent_state = consume("_sse_state", "") %}
 <button type="button"
         class="chirpui-sse-retry chirpui-btn chirpui-btn--sm{{ " " ~ cls if cls else "" }}"
+        x-data="{ retrying: false }"
+        @click="retrying = true"
+        @htmx:after-request.window="retrying = false"
+        :aria-busy="retrying"
+        :class="{ 'chirpui-sse-retry--loading': retrying }"
         hx-{{ method }}="{{ url }}"
         hx-target="{{ target }}"
-        hx-swap="{{ swap }}">
-    {{ label }}
+        hx-swap="{{ swap }}"{% if _parent_state == "connected" %} disabled aria-disabled="true"{% end %}>
+    <span x-show="!retrying">{{ label }}</span>
+    <span x-show="retrying" x-cloak class="chirpui-sse-retry__loading" aria-hidden="true">Retrying…</span>
 </button>
 {% end %}

@@ -3626,6 +3626,11 @@ a.chirpui-mention:focus-visible {
     outline-offset: var(--chirpui-state-focus-offset);
 }
 
+.chirpui-copy-btn__label,
+.chirpui-copy-btn__done {
+    pointer-events: none;
+}
+
 .chirpui-model-card__header {
     display: flex;
     align-items: center;
@@ -3649,6 +3654,44 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-model-card__body {
     min-height: 3rem;
+}
+
+.chirpui-model-card__footer {
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+/* streaming_bubble state variants */
+.chirpui-streaming-bubble--thinking {
+    opacity: 0.8;
+}
+
+.chirpui-streaming-bubble__thinking {
+    display: inline-flex;
+    gap: 3px;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.chirpui-streaming-bubble__thinking::before,
+.chirpui-streaming-bubble__thinking::after {
+    content: "·";
+    font-weight: bold;
+    animation: chirpui-thinking-pulse var(--chirpui-motion-slow) ease-in-out infinite;
+}
+
+.chirpui-streaming-bubble__thinking::after {
+    animation-delay: calc(var(--chirpui-motion-fast));
+}
+
+@keyframes chirpui-thinking-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.chirpui-streaming-bubble--error {
+    border-color: var(--chirpui-error);
+    background: color-mix(in srgb, var(--chirpui-error) 5%, transparent);
 }
 
 /* sse_status */
@@ -3682,6 +3725,15 @@ a.chirpui-mention:focus-visible {
 /* sse_retry — inherits .chirpui-btn .chirpui-btn--sm styling */
 .chirpui-sse-retry {
     align-self: center;
+}
+
+.chirpui-sse-retry--loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.chirpui-sse-retry__loading {
+    font-style: italic;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -5910,6 +5962,11 @@ a.chirpui-tag:active {
 .chirpui-toast--warning { border-color: var(--chirpui-alert-warning-border); background: var(--chirpui-alert-warning-bg); }
 .chirpui-toast--error   { border-color: var(--chirpui-alert-error-border); background: var(--chirpui-alert-error-bg); }
 
+.chirpui-toast__message {
+    flex: 1;
+    min-width: 0;
+}
+
 .chirpui-toast__close {
     background: none;
     border: none;
@@ -5918,6 +5975,7 @@ a.chirpui-tag:active {
     line-height: 1;
     margin-inline-start: var(--chirpui-spacing-sm);
     padding: 0;
+    flex-shrink: 0;
 }
 
 .chirpui-toast__close:focus-visible {
@@ -8271,6 +8329,40 @@ a.chirpui-btn {
 .chirpui-btn--danger:active:not(:disabled) {
     background: color-mix(in srgb, var(--chirpui-error) 75%, black);
     border-color: color-mix(in srgb, var(--chirpui-error) 75%, black);
+}
+
+/* Success variant */
+.chirpui-btn--success {
+    background: var(--chirpui-success);
+    border-color: var(--chirpui-success);
+    color: white;
+}
+
+.chirpui-btn--success:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-success) 85%, black);
+    border-color: color-mix(in srgb, var(--chirpui-success) 85%, black);
+}
+
+.chirpui-btn--success:active:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-success) 75%, black);
+    border-color: color-mix(in srgb, var(--chirpui-success) 75%, black);
+}
+
+/* Warning variant */
+.chirpui-btn--warning {
+    background: var(--chirpui-warning);
+    border-color: var(--chirpui-warning);
+    color: white;
+}
+
+.chirpui-btn--warning:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-warning) 85%, black);
+    border-color: color-mix(in srgb, var(--chirpui-warning) 85%, black);
+}
+
+.chirpui-btn--warning:active:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-warning) 75%, black);
+    border-color: color-mix(in srgb, var(--chirpui-warning) 75%, black);
 }
 
 /* Small button — compact for search bars, toolbars */

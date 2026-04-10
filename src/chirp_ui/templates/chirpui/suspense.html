@@ -36,7 +36,9 @@
 {% end %}
 
 {% def suspense_group(cls="") %}
+{% provide _suspense_busy = "true" %}
 <div class="chirpui-suspense-group{{ " " ~ cls if cls else "" }}" aria-busy="true">
     {% slot %}
 </div>
+{% end %}
 {% end %}

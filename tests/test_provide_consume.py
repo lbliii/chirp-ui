@@ -275,3 +275,141 @@ class TestNavProvide:
             "{% end %}"
         ).render()
         assert "chirpui-navbar__link--active" in html
+
+
+# ---------------------------------------------------------------------------
+# Streaming — _streaming_role
+# ---------------------------------------------------------------------------
+
+
+class TestStreamingBubbleProvide:
+    """streaming_bubble() provides _streaming_role to children."""
+
+    def test_streaming_bubble_provides_role(self, env: Environment) -> None:
+        """Children can consume the role via _streaming_role."""
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(role="user") %}'
+            '{% set r = consume("_streaming_role", "none") %}'
+            "{{ r }}"
+            "{% end %}"
+        ).render()
+        assert "user" in html
+
+    def test_streaming_bubble_provides_assistant_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            "{% call streaming_bubble() %}"
+            '{% set r = consume("_streaming_role", "none") %}'
+            "{{ r }}"
+            "{% end %}"
+        ).render()
+        assert "assistant" in html
+
+    def test_streaming_role_not_available_standalone(self, env: Environment) -> None:
+        """Without a streaming_bubble parent, consume returns fallback."""
+        html = env.from_string(
+            '{% set r = consume("_streaming_role", "fallback") %}{{ r }}'
+        ).render()
+        assert "fallback" in html
+
+    def test_streaming_bubble_role_system_provides(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(role="system") %}'
+            '{% set r = consume("_streaming_role", "none") %}'
+            "{{ r }}"
+            "{% end %}"
+        ).render()
+        assert "system" in html
+
+    def test_streaming_bubble_invalid_role_provides_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_bubble %}'
+            '{% call streaming_bubble(role="bogus") %}'
+            '{% set r = consume("_streaming_role", "none") %}'
+            "{{ r }}"
+            "{% end %}"
+        ).render()
+        # Invalid role falls back to "assistant" via validate_variant_block
+        assert "assistant" in html
+
+
+# ---------------------------------------------------------------------------
+# SSE — _sse_state (manual provide, consumed by sse_retry)
+# ---------------------------------------------------------------------------
+
+
+class TestSseStateConsume:
+    """sse_retry consumes _sse_state to auto-disable when connected."""
+
+    def test_sse_retry_standalone_no_disabled(self, env: Environment) -> None:
+        """Without _sse_state context, retry button is enabled."""
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}{{ sse_retry("/api/stream") }}'
+        ).render()
+        assert "disabled" not in html
+
+    def test_sse_retry_disabled_when_connected(self, env: Environment) -> None:
+        """When parent provides _sse_state=connected, retry is disabled."""
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}'
+            '{% provide _sse_state = "connected" %}'
+            '{{ sse_retry("/api/stream") }}'
+            "{% end %}"
+        ).render()
+        assert "disabled" in html
+        assert 'aria-disabled="true"' in html
+
+    def test_sse_retry_enabled_when_error(self, env: Environment) -> None:
+        """When parent provides _sse_state=error, retry is enabled."""
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}'
+            '{% provide _sse_state = "error" %}'
+            '{{ sse_retry("/api/stream") }}'
+            "{% end %}"
+        ).render()
+        assert "disabled" not in html
+
+    def test_sse_retry_enabled_when_disconnected(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sse_status.html" import sse_retry %}'
+            '{% provide _sse_state = "disconnected" %}'
+            '{{ sse_retry("/api/stream") }}'
+            "{% end %}"
+        ).render()
+        assert "disabled" not in html
+
+
+# ---------------------------------------------------------------------------
+# Suspense — _suspense_busy
+# ---------------------------------------------------------------------------
+
+
+class TestSuspenseGroupProvide:
+    """suspense_group() provides _suspense_busy to child slots."""
+
+    def test_suspense_group_provides_busy(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_group %}'
+            "{% call suspense_group() %}"
+            '{% set b = consume("_suspense_busy", "false") %}'
+            "{{ b }}"
+            "{% end %}"
+        ).render()
+        assert "true" in html
+
+    def test_suspense_busy_not_available_standalone(self, env: Environment) -> None:
+        html = env.from_string('{% set b = consume("_suspense_busy", "false") %}{{ b }}').render()
+        assert "false" in html
+
+    def test_suspense_slot_inside_group_gets_busy(self, env: Environment) -> None:
+        """suspense_slot rendered inside suspense_group can access _suspense_busy."""
+        html = env.from_string(
+            '{% from "chirpui/suspense.html" import suspense_slot, suspense_group %}'
+            "{% call suspense_group() %}"
+            '{{ suspense_slot("a") }}'
+            "{% end %}"
+        ).render()
+        assert 'id="a"' in html
+        assert 'aria-busy="true"' in html

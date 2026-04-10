@@ -1060,7 +1060,9 @@ When called without a `{% call %}` block and no `skeleton_variant`, renders a de
 |-------|---------|-------------|
 | `cls` | `""` | Extra CSS classes |
 
-Wraps child slots in a `display: contents` container with `aria-busy="true"`. Remove the group (or swap its content) once all deferred slots resolve.
+Wraps child slots in a container with `aria-busy="true"`. Remove the group (or swap its content) once all deferred slots resolve.
+
+**Provides:** `_suspense_busy = "true"` — child slots can consume this to coordinate rendering while the group is busy. Use `consume("_suspense_busy", "false")` in custom slot content to detect whether the slot is inside an active group.
 
 ---
 
@@ -1084,6 +1086,96 @@ The bar is `position: fixed`, `z-index: 9999`, and uses `aria-hidden="true"` (pu
 
 ---
 
+## Streaming
+
+`chirpui/streaming.html` provides components for LLM chat interfaces and SSE-driven UIs: message bubbles with role and state awareness, streaming blocks with animated cursors, copy buttons, and model cards.
+
+```jinja
+{% from "chirpui/streaming.html" import streaming_bubble, streaming_block, copy_btn, model_card %}
+
+{# Basic assistant bubble with streaming cursor #}
+{% call streaming_bubble() %}
+    <p>Generating response...</p>
+{% end %}
+
+{# User message (no cursor) #}
+{% call streaming_bubble(role="user", streaming=false) %}
+    <p>What is the meaning of life?</p>
+{% end %}
+
+{# Thinking state — pulsing indicator + aria-busy #}
+{% call streaming_bubble(state="thinking") %}{% end %}
+
+{# Error state — alert semantics + error styling #}
+{% call streaming_bubble(state="error", streaming=false) %}
+    <p>Connection lost. Please retry.</p>
+    {{ sse_retry("/api/stream/123") }}
+{% end %}
+
+{# SSE-connected bubble #}
+{% call streaming_bubble(sse_connect="/api/stream/123") %}{% end %}
+```
+
+### `streaming_bubble`
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `role` | `"assistant"` | Message role: `assistant`, `user`, `system`, `default` |
+| `state` | `""` | State variant: `""` / `"content"` (default), `"thinking"`, `"error"` |
+| `streaming` | `true` | Show animated cursor |
+| `sse_swap_target` | `false` | Add `sse-swap` attributes to the inner block |
+| `sse_connect` | `none` | SSE endpoint URL (adds `hx-ext="sse"` + `sse-connect`) |
+| `sse_close` | `"done"` | SSE close event name |
+| `cls` | `""` | Extra CSS classes |
+
+**State variants:**
+
+| `state` | CSS class | Aria | Visual |
+|---------|-----------|------|--------|
+| `""` / `"content"` | *(base)* | current behavior | Normal message body |
+| `"thinking"` | `chirpui-streaming-bubble--thinking` | `aria-busy="true"` | Pulsing dots animation (replaces streaming cursor) |
+| `"error"` | `chirpui-streaming-bubble--error` | `role="alert"` | Error border + background |
+
+**Role-aware aria-label:** The `aria-label` is set per role — `"assistant response"`, `"user message"`, `"system message"`, or `"message"` for default.
+
+**Provides:** `_streaming_role` — children in the slot can consume the bubble's role via `consume("_streaming_role", "assistant")`. Explicit params on children always win.
+
+### `streaming_block`
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `streaming` | `false` | Show animated cursor |
+| `sse_swap_target` | `false` | Add `sse-swap` attributes |
+| `cls` | `""` | Extra CSS classes |
+
+Low-level streaming container with `aria-live="polite"`. Use `streaming_bubble` for message-level semantics; use `streaming_block` when you need just the cursor and live region without a message wrapper.
+
+### `copy_btn`
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `label` | `"Copy"` | Button text |
+| `copy_text` | `""` | Text to copy to clipboard |
+| `cls` | `""` | Extra CSS classes |
+
+Clipboard copy button using Alpine.js. Shows "Copied!" feedback for 1.5s after click.
+
+### `model_card`
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `title` | *(required)* | Model name displayed in header |
+| `badge` | `none` | Optional badge text (e.g. version label) |
+| `footer` | `none` | Footer content (rendered as safe HTML) |
+| `sse_connect` | `none` | SSE endpoint URL |
+| `sse_close` | `"done"` | SSE close event name |
+| `sse_streaming` | `false` | Wrap slot in active streaming block |
+| `cls` | `""` | Extra CSS classes |
+
+Card-style wrapper for model comparison UIs. When `sse_streaming=true`, the body gets an active streaming block with cursor and `sse-swap="fragment"`.
+
+---
+
 ## SSE Status
 
 `chirpui/sse_status.html` provides connection status indicators and retry controls for SSE-driven streaming UIs. Pair with `streaming_bubble`/`streaming_block` from `chirpui/streaming.html`.
@@ -1098,6 +1190,11 @@ The bar is `position: fixed`, `z-index: 9999`, and uses `aria-hidden="true"` (pu
 {# Retry button — re-fetches the SSE endpoint #}
 {{ sse_retry("/api/stream/123") }}
 {{ sse_retry("/api/stream/123", label="Reconnect", method="post") }}
+
+{# Retry auto-disables when parent provides connected state #}
+{% provide _sse_state = "connected" %}
+    {{ sse_retry("/api/stream/123") }}  {# rendered with disabled + aria-disabled #}
+{% end %}
 ```
 
 ### `sse_status`
@@ -1121,7 +1218,9 @@ Renders a colored dot + label with `role="status"` and `aria-live="polite"`.
 | `swap` | `"outerHTML"` | htmx swap strategy |
 | `cls` | `""` | Extra CSS classes |
 
-Renders a small button (`chirpui-btn--sm`) that triggers an htmx request to reconnect.
+Renders a small button (`chirpui-btn--sm`) that triggers an htmx request to reconnect. Uses Alpine.js for loading state feedback — shows "Retrying…" with `aria-busy` during the request.
+
+**Consumes:** `_sse_state` — when a parent provides `_sse_state = "connected"`, the retry button renders with `disabled` and `aria-disabled="true"`. Use `{% provide _sse_state = "..." %}` to wrap SSE sections and coordinate retry availability.
 
 ---
 

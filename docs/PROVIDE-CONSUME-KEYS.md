@@ -30,6 +30,9 @@ parent-to-child state flow across slot boundaries (requires kida >= 0.3.4).
 | `_accordion_name` | `str` | `"accordion"` | `accordion()` | `accordion_item()` | 0.3.0 |
 | `_form_density` | `str` | `""` | `form()` | `field_wrapper()` | 0.3.0 |
 | `_nav_current_path` | `str` | `""` | `sidebar()`, `navbar()` | `sidebar_link`, `navbar_link`, `navbar_dropdown` | 0.3.0 |
+| `_streaming_role` | `str` | `"assistant"` | `streaming_bubble(role=...)` | `copy_btn`, `model_card` | 0.3.0 |
+| `_sse_state` | `str` | `""` | *(manual provide)* | `sse_retry` | 0.3.0 |
+| `_suspense_busy` | `str` | `"true"` | `suspense_group()` | `suspense_slot` | 0.3.0 |
 
 ## Consumer Pattern
 
@@ -42,6 +45,16 @@ parent-to-child state flow across slot boundaries (requires kida >= 0.3.4).
 
 {# Path context: consume from parent, fall back to global template variable #}
 {% set _cp = consume("_nav_current_path", "") or (current_path | default("")) %}
+
+{# Streaming role: inherit from streaming_bubble parent #}
+{% set _role = consume("_streaming_role", "assistant") %}
+
+{# SSE state: manual provide — auto-disable retry when connected #}
+{% set _parent_state = consume("_sse_state", "") %}
+{% if _parent_state == "connected" %} disabled aria-disabled="true"{% end %}
+
+{# Suspense busy: detect whether inside an active group #}
+{% set _busy = consume("_suspense_busy", "false") %}
 ```
 
 ## Testing Pattern

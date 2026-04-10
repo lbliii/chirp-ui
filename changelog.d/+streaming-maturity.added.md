@@ -1,0 +1,1 @@
+Add streaming state variants (`thinking`, `error`) to `streaming_bubble`, 3 provide/consume context keys (`_streaming_role`, `_sse_state`, `_suspense_busy`), role-aware aria-labels, 45 new tests, 11 CSS rules closing all forward gaps, and streaming/SSE/suspense documentation.
