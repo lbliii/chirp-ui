@@ -98,7 +98,7 @@ release: build publish
 # Create GitHub release; triggers python-publish workflow → PyPI
 gh-release:
 	@VERSION=$$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/'); \
-	PROJECT=$$(grep '^name = ' pyproject.toml | sed 's/name = "\(.*\)"/\1/'); \
+	PROJECT=$$(grep -m1 '^name = ' pyproject.toml | sed 's/name = "\(.*\)"/\1/'); \
 	echo "Creating release v$$VERSION for $$PROJECT..."; \
 	git push origin main 2>/dev/null || true; \
 	git push origin v$$VERSION 2>/dev/null || true; \
