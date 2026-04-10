@@ -1,0 +1,1 @@
+Fix `_linear_to_srgb` gamma encoding (divided instead of multiplied by 12.92, producing 166× too-dark values for near-black OKLch colors). Widen `sanitize_color` to accept modern CSS — negative hue, `oklcha()`, `lab()`/`lch()`, leading-dot decimals, `none` keyword, unit suffixes — while keeping injection blocked. Add 80+ color pipeline tests.
