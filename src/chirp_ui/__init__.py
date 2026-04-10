@@ -24,7 +24,7 @@ from chirp_ui.validation import set_strict
 # Declare free-threading support (PEP 703)
 _Py_mod_gil = 0
 
-__version__ = "0.2.6"
+__version__ = "0.3.0"
 
 __all__ = ["get_loader", "register_colors", "register_filters", "set_strict", "static_path"]
 

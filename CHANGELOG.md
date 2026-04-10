@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.3.0] — 2026-04-10
+
+### Added
+
+- **kida 0.4.0 adoption** — Native error boundaries (`{% try %}`/`{% fallback %}`), list comprehensions, scoped slots (`let:`), and opt-in partial evaluator. Error boundaries added to `suspense_slot`, `oob_fragment`, `streaming_bubble`, `streaming_block`, and `safe_region`/`fragment_island` — render errors now fall back gracefully instead of crashing the page. Layout primitives refactored from nested ternary chains to list comprehensions for readability
+- **Elevated design layer** — Display type scale (`prose-6xl`/`prose-7xl` up to 74px, `.chirpui-display`), gradient text `--secondary` and `--rainbow` variants, 5-layer `shadow-deep` token with `surface--deep` and `inset-glow` modifiers, `divider--dotted` and `divider--fade` patterns, `grain--dot` CSS-only texture, and `surface--cornered` corner-bracket card accents
+- **Provide/consume expansion** — `surface`/`panel` provide `_surface_variant`, `card` provides `_card_variant`, `accordion` provides `_accordion_name` (items auto-inherit), `form` gains `density` param providing `_form_density` to fields (new `chirpui-field--dense` CSS), `sidebar`/`navbar` gain `current_path` param providing `_nav_current_path` to links. Full key registry in `docs/PROVIDE-CONSUME-KEYS.md`
+- **ASCII component maturity** — 3 new composites (`ascii_card`, `ascii_tabs`, `ascii_modal`), 152 render tests for all 27 ASCII components, a11y improvements (fader upgraded to `type="range"`, VU meter gains `role="meter"`), and ASCII component documentation page
+- **Streaming & SSE maturity** — Streaming state variants (`thinking`, `error`) for `streaming_bubble`, 3 provide/consume context keys (`_streaming_role`, `_sse_state`, `_suspense_busy`), role-aware aria-labels, 45 new tests, and 11 CSS rules closing all forward gaps
+- **Behavior layer hardening** — Wire all 7 orphaned provide/consume keys to natural consumers (badge, alert, divider, button, icon_btn, copy_button) with 30 contract tests. Harden error boundary with message display, retry button, and telemetry event
+- **Island system documentation** — Site docs for architecture, foundation API, all 7 built-in primitives, fragment islands, event protocol, and custom primitive authoring guide
+- **JS unit test infrastructure** — 115 vitest tests covering all 9 island helpers (action_queue, counter, draft_store, error_boundary, foundation, grid_state, state_sync, upload_state, wizard_state)
+- **Component render tests** — 33 new render tests for previously untested components
+- **Playwright browser tests** — 23 tests for 8 Alpine components (command_palette, drawer, tray, toast, copy_button, theme_toggle, split_panel, streaming_bubble)
+
+### Fixed
+
+- **Color system gamma bug** — `_linear_to_srgb` divided instead of multiplied by 12.92, producing 166x too-dark values for near-black OKLch colors. Widened `sanitize_color` to accept modern CSS (negative hue, `oklcha()`, `lab()`/`lch()`, leading-dot decimals, `none` keyword, unit suffixes) while keeping injection blocked. Added 80+ color pipeline tests
+- **`contrast_text()` color formats** — Now handles `rgb()`, `hsl()`, and `oklch()` formats instead of silently falling back to white for non-hex colors
+
+### Changed
+
+- **kida-templates >= 0.4.0** — Bumped minimum dependency for error boundaries, scoped slots, and list comprehensions
+
+[0.3.0]: https://github.com/lbliii/chirp-ui/releases/tag/v0.3.0
+
 ## [0.2.6] — 2026-04-09
 
 ### Added
