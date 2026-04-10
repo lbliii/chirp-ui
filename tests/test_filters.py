@@ -482,6 +482,363 @@ class TestColorFilters:
         assert resolve_color("pytestfire") == "#ff0000"
 
 
+class TestHexToRgbChannels:
+    """Tests for _hex_to_rgb_channels internal parser."""
+
+    def test_hex_3_digit(self) -> None:
+        from chirp_ui.filters import _hex_to_rgb_channels
+
+        r, g, b = _hex_to_rgb_channels("#fff")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((1.0, 1.0, 1.0))
+
+    def test_hex_6_digit(self) -> None:
+        from chirp_ui.filters import _hex_to_rgb_channels
+
+        r, g, b = _hex_to_rgb_channels("#ff0000")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((1.0, 0.0, 0.0))
+
+    def test_hex_8_digit_ignores_alpha(self) -> None:
+        from chirp_ui.filters import _hex_to_rgb_channels
+
+        r, g, b = _hex_to_rgb_channels("#00ff0080")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((0.0, 1.0, 0.0))
+
+    def test_hex_black(self) -> None:
+        from chirp_ui.filters import _hex_to_rgb_channels
+
+        r, g, b = _hex_to_rgb_channels("#000000")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((0.0, 0.0, 0.0))
+
+    def test_hex_invalid_length(self) -> None:
+        from chirp_ui.filters import _hex_to_rgb_channels
+
+        assert _hex_to_rgb_channels("#ab") is None
+        assert _hex_to_rgb_channels("#abcde") is None
+
+    def test_hex_no_hash(self) -> None:
+        from chirp_ui.filters import _hex_to_rgb_channels
+
+        assert _hex_to_rgb_channels("ff0000") is None
+
+
+class TestRgbToChannels:
+    """Tests for _rgb_to_channels internal parser."""
+
+    def test_comma_syntax(self) -> None:
+        from chirp_ui.filters import _rgb_to_channels
+
+        r, g, b = _rgb_to_channels("rgb(255, 0, 128)")  # type: ignore[misc]
+        assert r == pytest.approx(1.0)
+        assert g == pytest.approx(0.0)
+        assert b == pytest.approx(128 / 255.0, abs=0.01)
+
+    def test_space_syntax(self) -> None:
+        from chirp_ui.filters import _rgb_to_channels
+
+        r, _g, b = _rgb_to_channels("rgb(0 128 255)")  # type: ignore[misc]
+        assert r == pytest.approx(0.0)
+        assert b == pytest.approx(1.0)
+
+    def test_percent_syntax(self) -> None:
+        from chirp_ui.filters import _rgb_to_channels
+
+        r, g, b = _rgb_to_channels("rgb(100%, 50%, 0%)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((1.0, 0.5, 0.0))
+
+    def test_rgba_ignores_alpha(self) -> None:
+        from chirp_ui.filters import _rgb_to_channels
+
+        r, g, b = _rgb_to_channels("rgba(255, 255, 255, 0.5)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((1.0, 1.0, 1.0))
+
+    def test_rgba_slash_alpha(self) -> None:
+        from chirp_ui.filters import _rgb_to_channels
+
+        r, g, b = _rgb_to_channels("rgba(0 0 0 / 0.8)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((0.0, 0.0, 0.0))
+
+    def test_clamped_values(self) -> None:
+        from chirp_ui.filters import _rgb_to_channels
+
+        r, _g, _b = _rgb_to_channels("rgb(999, 0, 0)")  # type: ignore[misc]
+        assert r == pytest.approx(1.0)  # clamped
+
+    def test_malformed_returns_none(self) -> None:
+        from chirp_ui.filters import _rgb_to_channels
+
+        assert _rgb_to_channels("rgb()") is None
+        assert _rgb_to_channels("rgb(1)") is None
+        assert _rgb_to_channels("notrgb(0,0,0)") is None
+
+
+class TestHslToChannels:
+    """Tests for _hsl_to_channels internal parser."""
+
+    def test_red(self) -> None:
+        from chirp_ui.filters import _hsl_to_channels
+
+        r, g, b = _hsl_to_channels("hsl(0, 100%, 50%)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((1.0, 0.0, 0.0), abs=0.01)
+
+    def test_green(self) -> None:
+        from chirp_ui.filters import _hsl_to_channels
+
+        r, g, b = _hsl_to_channels("hsl(120, 100%, 50%)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((0.0, 1.0, 0.0), abs=0.01)
+
+    def test_blue(self) -> None:
+        from chirp_ui.filters import _hsl_to_channels
+
+        r, g, b = _hsl_to_channels("hsl(240, 100%, 50%)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((0.0, 0.0, 1.0), abs=0.01)
+
+    def test_achromatic_white(self) -> None:
+        from chirp_ui.filters import _hsl_to_channels
+
+        r, g, b = _hsl_to_channels("hsl(0, 0%, 100%)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((1.0, 1.0, 1.0))
+
+    def test_achromatic_black(self) -> None:
+        from chirp_ui.filters import _hsl_to_channels
+
+        r, g, b = _hsl_to_channels("hsl(0, 0%, 0%)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((0.0, 0.0, 0.0))
+
+    def test_mid_gray(self) -> None:
+        from chirp_ui.filters import _hsl_to_channels
+
+        r, g, b = _hsl_to_channels("hsl(0, 0%, 50%)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((0.5, 0.5, 0.5))
+
+    def test_malformed_returns_none(self) -> None:
+        from chirp_ui.filters import _hsl_to_channels
+
+        assert _hsl_to_channels("hsl()") is None
+        assert _hsl_to_channels("hsl(abc, def, ghi)") is None
+
+
+class TestOklchToChannels:
+    """Tests for _oklch_to_channels internal parser."""
+
+    def test_white(self) -> None:
+        from chirp_ui.filters import _oklch_to_channels
+
+        r, g, b = _oklch_to_channels("oklch(1 0 0)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((1.0, 1.0, 1.0), abs=0.02)
+
+    def test_black(self) -> None:
+        from chirp_ui.filters import _oklch_to_channels
+
+        r, g, b = _oklch_to_channels("oklch(0 0 0)")  # type: ignore[misc]
+        assert (r, g, b) == pytest.approx((0.0, 0.0, 0.0), abs=0.01)
+
+    def test_near_black_gamma_fix(self) -> None:
+        """Validates the _linear_to_srgb fix: 12.92*c, not c/12.92."""
+        from chirp_ui.filters import _oklch_to_channels
+
+        r, g, _b = _oklch_to_channels("oklch(0.1 0 0)")  # type: ignore[misc]
+        # With the fix, near-black achromatic should give sRGB ≈ 0.013
+        # The buggy version gave ≈ 0.00008 (166x too dark)
+        assert r == pytest.approx(g, abs=0.001)  # achromatic → equal channels
+        assert r > 0.005, f"gamma fix failed: got {r} (should be ~0.013, not ~0.00008)"
+
+    def test_percent_lightness(self) -> None:
+        from chirp_ui.filters import _oklch_to_channels
+
+        r1, _, _ = _oklch_to_channels("oklch(0.5 0 0)")  # type: ignore[misc]
+        r2, _, _ = _oklch_to_channels("oklch(50% 0 0)")  # type: ignore[misc]
+        assert r1 == pytest.approx(r2, abs=0.01)
+
+    def test_oklcha_with_alpha(self) -> None:
+        """oklcha() should parse and ignore the alpha channel."""
+        from chirp_ui.filters import _oklch_to_channels
+
+        result = _oklch_to_channels("oklcha(0.8 0.1 200 / 0.5)")
+        assert result is not None
+        r, g, b = result
+        # Should be a valid color (light-ish blue-green)
+        assert 0.0 <= r <= 1.0
+        assert 0.0 <= g <= 1.0
+        assert 0.0 <= b <= 1.0
+
+    def test_malformed_returns_none(self) -> None:
+        from chirp_ui.filters import _oklch_to_channels
+
+        assert _oklch_to_channels("oklch()") is None
+        assert _oklch_to_channels("oklch(0.5)") is None
+        assert _oklch_to_channels("notcolor") is None
+
+
+class TestSanitizeColorExtended:
+    """Extended tests for sanitize_color with widened regex."""
+
+    def test_valid_hex_formats(self) -> None:
+        assert sanitize_color("#abc") == "#abc"
+        assert sanitize_color("#aabbcc") == "#aabbcc"
+        assert sanitize_color("#aabbccdd") == "#aabbccdd"
+
+    def test_valid_rgb_formats(self) -> None:
+        assert sanitize_color("rgb(255, 128, 0)") == "rgb(255, 128, 0)"
+        assert sanitize_color("rgb(255 128 0)") == "rgb(255 128 0)"
+        assert sanitize_color("rgba(255 128 0 / 0.5)") == "rgba(255 128 0 / 0.5)"
+        assert sanitize_color("rgb(100%, 50%, 0%)") == "rgb(100%, 50%, 0%)"
+
+    def test_valid_hsl_formats(self) -> None:
+        assert sanitize_color("hsl(120, 100%, 50%)") == "hsl(120, 100%, 50%)"
+        assert sanitize_color("hsl(120 100% 50%)") == "hsl(120 100% 50%)"
+        assert sanitize_color("hsla(120, 100%, 50%, 0.5)") == "hsla(120, 100%, 50%, 0.5)"
+
+    def test_valid_oklch_formats(self) -> None:
+        assert sanitize_color("oklch(0.5 0.2 30)") == "oklch(0.5 0.2 30)"
+        assert sanitize_color("oklch(50% 0.2 30)") == "oklch(50% 0.2 30)"
+
+    def test_negative_hue_accepted(self) -> None:
+        assert sanitize_color("oklch(0.5 0.2 -30)") == "oklch(0.5 0.2 -30)"
+
+    def test_leading_dot_decimal_accepted(self) -> None:
+        assert sanitize_color("oklch(.5 .2 30)") == "oklch(.5 .2 30)"
+
+    def test_oklcha_accepted(self) -> None:
+        assert sanitize_color("oklcha(0.5 0.2 30 / 0.8)") == "oklcha(0.5 0.2 30 / 0.8)"
+
+    def test_deg_unit_accepted(self) -> None:
+        assert sanitize_color("hsl(120deg 100% 50%)") == "hsl(120deg 100% 50%)"
+        assert sanitize_color("oklch(0.5 0.2 30deg)") == "oklch(0.5 0.2 30deg)"
+
+    def test_turn_unit_accepted(self) -> None:
+        assert sanitize_color("hsl(0.5turn 100% 50%)") == "hsl(0.5turn 100% 50%)"
+
+    def test_none_keyword_accepted(self) -> None:
+        assert sanitize_color("oklch(0.7 0.15 none)") == "oklch(0.7 0.15 none)"
+
+    def test_lab_lch_accepted(self) -> None:
+        assert sanitize_color("lab(50% 20 -30)") == "lab(50% 20 -30)"
+        assert sanitize_color("lch(50% 30 270)") == "lch(50% 30 270)"
+
+    def test_injection_url_blocked(self) -> None:
+        assert sanitize_color("url(evil.png)") is None
+
+    def test_injection_var_blocked(self) -> None:
+        assert sanitize_color("var(--secret)") is None
+
+    def test_injection_expression_blocked(self) -> None:
+        assert sanitize_color("expression(alert(1))") is None
+
+    def test_injection_calc_blocked(self) -> None:
+        assert sanitize_color("calc(100% - 20px)") is None
+
+    def test_injection_script_blocked(self) -> None:
+        assert sanitize_color("<script>alert(1)</script>") is None
+
+    def test_injection_semicolon_breakout_blocked(self) -> None:
+        assert sanitize_color("rgb(0,0,0); background: url(x)") is None
+
+    def test_injection_quote_blocked(self) -> None:
+        assert sanitize_color('"onmouseover="alert(1)') is None
+
+    def test_injection_style_close_blocked(self) -> None:
+        assert sanitize_color("rgb(0,0,0)</style><script>") is None
+
+    def test_injection_env_blocked(self) -> None:
+        assert sanitize_color("env(safe-area-inset-top)") is None
+
+    def test_injection_brace_breakout_blocked(self) -> None:
+        assert sanitize_color("rgb(0,0,0);}body{background:red") is None
+
+    def test_empty_and_non_string(self) -> None:
+        assert sanitize_color("") is None
+        assert sanitize_color("  ") is None
+        assert sanitize_color(None) is None  # type: ignore[arg-type]
+        assert sanitize_color(42) is None  # type: ignore[arg-type]
+
+    def test_plain_words_blocked(self) -> None:
+        assert sanitize_color("red") is None
+        assert sanitize_color("transparent") is None
+        assert sanitize_color("inherit") is None
+
+
+class TestContrastTextExtended:
+    """Extended contrast_text tests covering boundary cases and all formats."""
+
+    def test_hex_3_digit(self) -> None:
+        assert contrast_text("#fff") == "#1a1a1a"
+        assert contrast_text("#000") == "white"
+
+    def test_hex_8_digit(self) -> None:
+        assert contrast_text("#ffffffff") == "#1a1a1a"
+        assert contrast_text("#000000ff") == "white"
+
+    def test_bright_yellow(self) -> None:
+        # Yellow (#ffff00) has high luminance → dark text
+        assert contrast_text("#ffff00") == "#1a1a1a"
+
+    def test_dark_blue(self) -> None:
+        # Navy (#000080) has low luminance → white text
+        assert contrast_text("#000080") == "white"
+
+    def test_mid_gray_boundary(self) -> None:
+        # #757575 has luminance ≈ 0.178 (just below 0.179) → white text
+        assert contrast_text("#757575") == "white"
+        # #767676 has luminance ≈ 0.181 (just above 0.179) → dark text
+        assert contrast_text("#767676") == "#1a1a1a"
+
+    def test_hsl_yellow(self) -> None:
+        assert contrast_text("hsl(60, 100%, 50%)") == "#1a1a1a"
+
+    def test_hsl_dark_blue(self) -> None:
+        assert contrast_text("hsl(240, 100%, 25%)") == "white"
+
+    def test_oklch_light(self) -> None:
+        assert contrast_text("oklch(0.9 0.1 110)") == "#1a1a1a"
+
+    def test_oklch_dark(self) -> None:
+        assert contrast_text("oklch(0.2 0.1 270)") == "white"
+
+    def test_oklcha_parsed(self) -> None:
+        assert contrast_text("oklcha(0.9 0.05 90 / 0.5)") == "#1a1a1a"
+
+    def test_empty_string_fallback(self) -> None:
+        assert contrast_text("") == "white"
+
+    def test_nonsense_fallback(self) -> None:
+        assert contrast_text("not-a-color") == "white"
+
+    def test_color_mix_fallback(self) -> None:
+        assert contrast_text("color-mix(in srgb, red 50%, blue)") == "white"
+
+
+class TestResolveColorExtended:
+    """Extended resolve_color tests."""
+
+    def test_direct_hex(self) -> None:
+        assert resolve_color("#ff0000") == "#ff0000"
+
+    def test_direct_rgb(self) -> None:
+        assert resolve_color("rgb(255, 0, 0)") == "rgb(255, 0, 0)"
+
+    def test_direct_oklch(self) -> None:
+        assert resolve_color("oklch(0.5 0.2 30)") == "oklch(0.5 0.2 30)"
+
+    def test_registry_lookup(self) -> None:
+        register_colors({"_test_ocean": "#0077cc"})
+        assert resolve_color("_test_ocean") == "#0077cc"
+
+    def test_registry_case_insensitive(self) -> None:
+        register_colors({"_test_Sky": "#87ceeb"})
+        assert resolve_color("_test_sky") == "#87ceeb"
+
+    def test_unknown_name_returns_none(self) -> None:
+        assert resolve_color("nonexistent_color_name") is None
+
+    def test_empty_returns_none(self) -> None:
+        assert resolve_color("") is None
+        assert resolve_color("  ") is None
+
+    def test_non_string_returns_none(self) -> None:
+        assert resolve_color(None) is None  # type: ignore[arg-type]
+        assert resolve_color(42) is None  # type: ignore[arg-type]
+
+
 class TestRegisterFiltersWithTemplateGlobal:
     """register_filters with an app that has template_global registers tab_is_active."""
 
