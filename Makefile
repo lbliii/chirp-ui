@@ -4,7 +4,7 @@
 PYTHON_VERSION ?= 3.14t
 VENV_DIR ?= .venv
 
-.PHONY: all help setup install test test-cov test-browser lint lint-fix format ty clean shell build publish release gh-release showcase showcase-public
+.PHONY: all help setup install test test-js test-cov test-browser lint lint-fix format ty clean shell build publish release gh-release showcase showcase-public
 
 all: help
 
@@ -49,6 +49,9 @@ test:
 
 test-cov:
 	uv run pytest --cov=chirp_ui --cov-report=term-missing
+
+test-js:
+	npx vitest run
 
 test-browser:
 	uv run --group browser pytest tests/browser/ -q --timeout=30 --override-ini='addopts='
