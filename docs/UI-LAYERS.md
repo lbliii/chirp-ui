@@ -15,6 +15,10 @@ Authoritative site copy lives in **`site/content/docs/app-shell/ui-layers.md`**.
 
 Do **not** use “chrome” alone for the global frame; say **app shell** or name the region.
 
+## Chirp `mount_pages` layouts
+
+Filesystem `_layout.html` files that extend `chirpui/app_shell_layout.html` should declare `{# target: body #}` and **`{# outlet: main #}`** so Chirp’s `LayoutChain` matches `HX-Target: #main` on boosted navigation. The server then wraps the page with the full shell (including `#page-content` for `hx-select`). Without `{# outlet: main #}`, `main` may not match any layout and the response can omit `#page-content`, which breaks shell swaps. See Chirp’s **filesystem routing** guide (Layouts / persistent app shell).
+
 ## Page fragment targets
 
 `chirpui.css` styles these IDs with flex-column + gap. **Do not add layout utility classes** (e.g. `chirpui-stack--lg`) to these elements — the CSS-by-ID rules already handle spacing.

@@ -26,6 +26,10 @@ This page aligns with the **Chirp** guide: [UI layers & shell regions](https://l
 
 **Avoid:** using “chrome” alone for the whole app frame — say **app shell** or **topbar/sidebar**.
 
+## Chirp `mount_pages` layouts
+
+Filesystem `_layout.html` files that extend `app_shell_layout` should declare `{# target: body #}` and **`{# outlet: main #}`** so Chirp matches `HX-Target: #main` and returns HTML that includes `#page-content` for `hx-select` on boosted navigation. See the Chirp guide [Filesystem routing](https://lbliii.github.io/chirp/docs/routing/filesystem-routing/) (persistent app shell pattern).
+
 ## chirp-ui responsibilities
 
 - **`app_shell_layout.html`** — Defines the shell DOM, registers no extra Python; pairs with Chirp’s `use_chirp_ui(app)`.
