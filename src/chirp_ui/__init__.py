@@ -18,6 +18,7 @@ from pathlib import Path
 
 from kida import PackageLoader
 
+from chirp_ui.components import design_system_report
 from chirp_ui.filters import TemplateFilterApp, register_colors
 from chirp_ui.validation import set_strict
 
@@ -26,7 +27,14 @@ _Py_mod_gil = 0
 
 __version__ = "0.3.1"
 
-__all__ = ["get_loader", "register_colors", "register_filters", "set_strict", "static_path"]
+__all__ = [
+    "design_system_report",
+    "get_loader",
+    "register_colors",
+    "register_filters",
+    "set_strict",
+    "static_path",
+]
 
 
 def static_path() -> Path:

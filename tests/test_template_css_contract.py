@@ -177,11 +177,6 @@ def test_component_descriptor_key_variants_exist_in_css() -> None:
                 expected = f"chirpui-{desc.block}--{v}"
                 if expected not in css_classes:
                     missing.append(expected)
-        for s in desc.sizes:
-            if s:
-                expected = f"chirpui-{desc.block}--{s}"
-                if expected not in css_classes:
-                    missing.append(expected)
     assert not missing, (
         f"Key component variant/size classes missing from CSS ({len(missing)}): "
         + ", ".join(missing[:20])

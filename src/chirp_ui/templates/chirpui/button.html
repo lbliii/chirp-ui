@@ -1,4 +1,10 @@
-{#- chirp-ui: Button component. Use chirpui-btn with variants. Supports loading state for htmx. -#}
+{#- chirp-ui: Button component. Use chirpui-btn with variants. Supports loading state for htmx.
+    Defaults to type="submit" for form use; pass type="button" for non-form actions.
+
+        {{ btn("Save", variant="primary") }}                → <button type="submit" ...>
+        {{ btn("Cancel", type="button") }}                  → <button type="button" ...>
+        {{ btn("View", href="/page") }}                     → <a ...>
+-#}
 
 {% from "chirpui/spinner.html" import spinner %}
 
