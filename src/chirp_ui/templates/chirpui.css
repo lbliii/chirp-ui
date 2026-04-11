@@ -160,12 +160,13 @@
     --chirpui-accent-light: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-light), white);
     --chirpui-accent-active: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-active), black);
 
-    /* Semantic muted backgrounds — derived via generic shade */
-    --chirpui-primary-muted: color-mix(in srgb, var(--chirpui-primary) var(--chirpui-shade-muted), white);
-    --chirpui-success-muted: color-mix(in srgb, var(--chirpui-success) var(--chirpui-shade-muted), white);
-    --chirpui-warning-muted: color-mix(in srgb, var(--chirpui-warning) var(--chirpui-shade-muted), white);
-    --chirpui-error-muted: color-mix(in srgb, var(--chirpui-error) var(--chirpui-shade-muted), white);
-    --chirpui-muted-bg: color-mix(in srgb, var(--chirpui-muted) var(--chirpui-shade-muted), white);
+    /* Semantic muted backgrounds — derived via generic shade.
+       Mix toward --chirpui-surface (not white) so dark mode gets dark tints. */
+    --chirpui-primary-muted: color-mix(in srgb, var(--chirpui-primary) var(--chirpui-shade-muted), var(--chirpui-surface));
+    --chirpui-success-muted: color-mix(in srgb, var(--chirpui-success) var(--chirpui-shade-muted), var(--chirpui-surface));
+    --chirpui-warning-muted: color-mix(in srgb, var(--chirpui-warning) var(--chirpui-shade-muted), var(--chirpui-surface));
+    --chirpui-error-muted: color-mix(in srgb, var(--chirpui-error) var(--chirpui-shade-muted), var(--chirpui-surface));
+    --chirpui-muted-bg: color-mix(in srgb, var(--chirpui-muted) var(--chirpui-shade-muted), var(--chirpui-surface));
 
     /* Info semantic — alias of accent; override --chirpui-accent to change both */
     --chirpui-info: var(--chirpui-accent);
@@ -178,7 +179,7 @@
 
     /* Secondary accent — second brand color for gradients, docs blocks, code syntax */
     --chirpui-accent-secondary: light-dark(#7c3aed, #a78bfa);
-    --chirpui-accent-secondary-muted: color-mix(in srgb, var(--chirpui-accent-secondary) var(--chirpui-shade-muted), white);
+    --chirpui-accent-secondary-muted: color-mix(in srgb, var(--chirpui-accent-secondary) var(--chirpui-shade-muted), var(--chirpui-surface));
     --chirpui-alert-secondary-bg: light-dark(#f5f3ff, #2e1065);
     --chirpui-alert-secondary-border: light-dark(#c4b5fd, #7c3aed);
     --chirpui-alert-secondary-color: var(--chirpui-accent-secondary);
@@ -599,12 +600,12 @@
         --chirpui-accent-bright: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-bright), white);
         --chirpui-accent-light: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-light), white);
         --chirpui-accent-active: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-active), black);
-        --chirpui-primary-muted: color-mix(in oklch, var(--chirpui-primary) var(--chirpui-shade-muted), white);
-        --chirpui-success-muted: color-mix(in oklch, var(--chirpui-success) var(--chirpui-shade-muted), white);
-        --chirpui-warning-muted: color-mix(in oklch, var(--chirpui-warning) var(--chirpui-shade-muted), white);
-        --chirpui-error-muted: color-mix(in oklch, var(--chirpui-error) var(--chirpui-shade-muted), white);
-        --chirpui-muted-bg: color-mix(in oklch, var(--chirpui-muted) var(--chirpui-shade-muted), white);
-        --chirpui-accent-secondary-muted: color-mix(in oklch, var(--chirpui-accent-secondary) var(--chirpui-shade-muted), white);
+        --chirpui-primary-muted: color-mix(in oklch, var(--chirpui-primary) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-success-muted: color-mix(in oklch, var(--chirpui-success) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-warning-muted: color-mix(in oklch, var(--chirpui-warning) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-error-muted: color-mix(in oklch, var(--chirpui-error) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-muted-bg: color-mix(in oklch, var(--chirpui-muted) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-accent-secondary-muted: color-mix(in oklch, var(--chirpui-accent-secondary) var(--chirpui-shade-muted), var(--chirpui-surface));
         --chirpui-focus-ring: color-mix(in oklch, var(--chirpui-accent) 30%, transparent);
         --chirpui-border-subtle: color-mix(in oklch, var(--chirpui-border) 70%, transparent);
     }
