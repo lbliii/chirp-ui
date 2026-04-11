@@ -30,7 +30,7 @@ __all__ = ["get_loader", "register_colors", "register_filters", "set_strict", "s
 
 
 def static_path() -> Path:
-    """Path to chirp-ui templates (chirpui.css, themes/).
+    """Path to chirp-ui templates (chirpui.css, patterns/*.svg, themes/).
 
     Use with StaticFiles to serve CSS and themes from the package::
 

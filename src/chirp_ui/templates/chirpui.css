@@ -487,6 +487,18 @@
             transparent
         ),
         var(--chirpui-bg);
+
+    /* SVG pattern tiles — url() paths are relative to chirpui.css (serve templates/ as static root) */
+    --chirpui-pattern-checker: url("patterns/checker.svg");
+    --chirpui-pattern-dots-sm: url("patterns/dots-sm.svg");
+    --chirpui-pattern-dots-md: url("patterns/dots-md.svg");
+    --chirpui-pattern-grid: url("patterns/grid.svg");
+    --chirpui-pattern-diag: url("patterns/diag.svg");
+    --chirpui-pattern-crosshatch: url("patterns/crosshatch.svg");
+    --chirpui-pattern-weave: url("patterns/weave.svg");
+    --chirpui-pattern-noise-fine: url("patterns/noise-fine.svg");
+    --chirpui-pattern-noise-coarse: url("patterns/noise-coarse.svg");
+    --chirpui-pattern-hex: url("patterns/hex.svg");
 }
 
 /* Force light theme when [data-theme="light"] */
@@ -11712,6 +11724,97 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-grain--animated::after {
     animation: chirpui-float 0.3s steps(2) infinite;
+}
+
+
+/* ==========================================================================
+   SVG pattern tiles — mini assets + overlay utilities (layer under content)
+   Serve chirp_ui.static_path() so chirpui.css and patterns/*.svg share a base URL.
+   ========================================================================== */
+
+.chirpui-texture {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.chirpui-texture::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-repeat: repeat;
+    background-image: var(--chirpui-texture-image);
+    background-size: var(--chirpui-texture-size, 16px 16px);
+    background-position: 0 0;
+    opacity: var(--chirpui-texture-opacity, 0.14);
+    mix-blend-mode: var(--chirpui-texture-blend, multiply);
+}
+
+/* Element children stack above the texture; wrap loose text in a span (text nodes ignore z-index). */
+.chirpui-texture > * {
+    position: relative;
+    z-index: 1;
+}
+
+[data-theme="dark"] .chirpui-texture::after {
+    mix-blend-mode: var(--chirpui-texture-blend-dark, soft-light);
+    opacity: calc(var(--chirpui-texture-opacity, 0.14) * 0.85);
+}
+
+.chirpui-texture--checker {
+    --chirpui-texture-image: var(--chirpui-pattern-checker);
+    --chirpui-texture-size: 8px 8px;
+}
+
+.chirpui-texture--dots-sm {
+    --chirpui-texture-image: var(--chirpui-pattern-dots-sm);
+    --chirpui-texture-size: 10px 10px;
+}
+
+.chirpui-texture--dots-md {
+    --chirpui-texture-image: var(--chirpui-pattern-dots-md);
+    --chirpui-texture-size: 18px 18px;
+}
+
+.chirpui-texture--grid {
+    --chirpui-texture-image: var(--chirpui-pattern-grid);
+    --chirpui-texture-size: 20px 20px;
+}
+
+.chirpui-texture--diag {
+    --chirpui-texture-image: var(--chirpui-pattern-diag);
+    --chirpui-texture-size: 12px 12px;
+}
+
+.chirpui-texture--crosshatch {
+    --chirpui-texture-image: var(--chirpui-pattern-crosshatch);
+    --chirpui-texture-size: 10px 10px;
+}
+
+.chirpui-texture--weave {
+    --chirpui-texture-image: var(--chirpui-pattern-weave);
+    --chirpui-texture-size: 24px 42px;
+}
+
+.chirpui-texture--hex {
+    --chirpui-texture-image: var(--chirpui-pattern-hex);
+    --chirpui-texture-size: 28px 48px;
+}
+
+.chirpui-texture--noise-fine {
+    --chirpui-texture-image: var(--chirpui-pattern-noise-fine);
+    --chirpui-texture-size: 128px 128px;
+    --chirpui-texture-blend: overlay;
+    --chirpui-texture-blend-dark: overlay;
+}
+
+.chirpui-texture--noise-coarse {
+    --chirpui-texture-image: var(--chirpui-pattern-noise-coarse);
+    --chirpui-texture-size: 160px 160px;
+    --chirpui-texture-blend: overlay;
+    --chirpui-texture-blend-dark: overlay;
 }
 
 
