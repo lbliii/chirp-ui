@@ -23,8 +23,8 @@
                 @click="navigator.clipboard?.writeText($el.dataset.copyText||'').then(() => { copied = true; setTimeout(() => copied = false, 1600) })"
                 aria-label="Copy install command"
                 title="Copy">
-            <span x-show="!copied">Copy</span>
-            <span x-show="copied" x-cloak>Copied!</span>
+            <span x-show="!copied" aria-hidden="true">&#x29C9;</span>
+            <span x-show="copied" x-cloak aria-hidden="true">&#x2713;</span>
         </button>
     </div>
 </div>
@@ -38,8 +38,8 @@
     <button type="button" class="chirpui-code-block__copy"
             @click="navigator.clipboard?.writeText($el.previousElementSibling.textContent).then(() => { copied = true; setTimeout(() => copied = false, 2000) })"
             aria-label="Copy code">
-        <span x-show="!copied">Copy</span>
-        <span x-show="copied" x-cloak>Copied!</span>
+        <span x-show="!copied" aria-hidden="true">&#x29C9;</span>
+        <span x-show="copied" x-cloak aria-hidden="true">&#x2713;</span>
     </button>
 </div>
 {% else %}

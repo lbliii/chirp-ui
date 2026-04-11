@@ -3641,6 +3641,7 @@ a.chirpui-mention:focus-visible {
     top: 50%;
     right: 0.5rem;
     transform: translateY(-50%);
+    opacity: 1;
 }
 
 .chirpui-fieldset {
@@ -10076,6 +10077,13 @@ body.htmx-request .chirpui-nav-progress::after {
     display: flex;
     flex-direction: column;
     gap: var(--chirpui-spacing-lg);
+    /* Newlines/indentation can leave a whitespace-only text node as the first flex child; it still
+       gets a line-height strut (~1 line) under headers. Collapse the strut; restore type on children. */
+    font-size: 0;
+}
+
+#page-root > * {
+    font-size: var(--chirpui-font-base);
 }
 
 #page-content {
@@ -12036,10 +12044,13 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ambient-root {
     position: relative;
     isolation: isolate;
+    /* Column flex so in-flow siblings are flex items: z-index applies without position:relative,
+       which would override position:sticky on headers/topbars. */
+    display: flex;
+    flex-direction: column;
 }
 
 .chirpui-ambient-root > :not(.chirpui-ambient) {
-    position: relative;
     z-index: 1;
 }
 

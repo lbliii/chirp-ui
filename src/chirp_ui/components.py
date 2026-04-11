@@ -559,7 +559,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-switch",
         variants=("", "default", "success", "danger", "accent"),
         sizes=("", "sm", "md", "lg"),
-        template="ascii_switch.html",
+        template="ascii_toggle.html",
         category="ascii",
     ),
     "ascii-table": ComponentDescriptor(
