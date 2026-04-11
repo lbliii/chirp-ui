@@ -1,4 +1,4 @@
-"""SVG pattern suite shipped with chirpui.css."""
+"""SVG pattern suite and CSS-only bg-pattern utilities in chirpui.css."""
 
 from pathlib import Path
 
@@ -53,5 +53,11 @@ def test_chirpui_css_exports_pattern_tokens() -> None:
     text = css_path.read_text(encoding="utf-8")
     for token in EXPECTED_CSS_VARS:
         assert token in text
+    assert "--chirpui-bg-pattern-base:" in text
+    assert "--chirpui-bg-pattern-ink:" in text
+    assert ".chirpui-bg-pattern--dots-sm" in text
+    assert ".chirpui-band--pattern-dots" in text
+    assert ".chirpui-ambient" in text
+    assert ".chirpui-surface--noise-overlay" in text
     assert ".chirpui-texture--checker" in text
     assert ".chirpui-texture--noise-fine" in text

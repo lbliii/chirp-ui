@@ -22,6 +22,7 @@ src/chirp_ui/
   route_tabs.py        # route-aware tabs helper
   templates/chirpui/   # Kida macros — one file per component (e.g. aura.html, label_overline.html)
   templates/patterns/  # SVG tiles for --chirpui-pattern-* + .chirpui-texture--* (serve with static_path())
+  # CSS-only: --chirpui-bg-pattern-* tokens, .chirpui-bg-pattern--*, .chirpui-band--pattern-*, .chirpui-ambient, surface--noise-overlay / --static-overlay
   templates/chirpui.css
   templates/chirpui.js
   templates/themes/
