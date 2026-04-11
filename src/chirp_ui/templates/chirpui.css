@@ -9742,6 +9742,7 @@ body:has(> .chirpui-app-shell) {
     display: flex;
     align-items: center;
     min-width: 0;
+    min-height: calc(var(--chirpui-font-xs) * 1.25 + 2 * var(--chirpui-spacing-xs) + 2px);
 }
 
 .chirpui-shell-actions {

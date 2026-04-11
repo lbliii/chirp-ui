@@ -299,15 +299,13 @@ class TestLayout:
 
     def test_layer_angle_none(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/layout.html" import layer %}'
-            '{% call layer(angle="none") %}A{% end %}'
+            '{% from "chirpui/layout.html" import layer %}{% call layer(angle="none") %}A{% end %}'
         ).render()
         assert "chirpui-layer--angle-none" in html
 
     def test_layer_custom_cls(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/layout.html" import layer %}'
-            '{% call layer(cls="my-deck") %}A{% end %}'
+            '{% from "chirpui/layout.html" import layer %}{% call layer(cls="my-deck") %}A{% end %}'
         ).render()
         assert "chirpui-layer" in html
         assert "my-deck" in html
@@ -724,8 +722,7 @@ class TestSurface:
 class TestAura:
     def test_aura_default(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/aura.html" import aura %}'
-            "{% call aura() %}Inner{% end %}"
+            '{% from "chirpui/aura.html" import aura %}{% call aura() %}Inner{% end %}'
         ).render()
         assert "chirpui-aura" in html
         assert "chirpui-aura--accent" in html
@@ -751,8 +748,7 @@ class TestAura:
 
     def test_aura_mirror(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/aura.html" import aura %}'
-            "{% call aura(mirror=true) %}X{% end %}"
+            '{% from "chirpui/aura.html" import aura %}{% call aura(mirror=true) %}X{% end %}'
         ).render()
         assert "chirpui-aura--mirror" in html
 
