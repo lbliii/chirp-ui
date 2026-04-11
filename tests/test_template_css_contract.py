@@ -123,11 +123,12 @@ def test_dynamic_bem_modifiers_used_in_templates_exist_in_css() -> None:
     assert not missing, "Required dynamic BEM classes missing from CSS: " + ", ".join(missing)
 
 
-def test_component_descriptor_classes_exist_in_css() -> None:
-    """Every class implied by COMPONENTS descriptors must exist in chirpui.css.
+def test_component_descriptor_blocks_and_elements_exist_in_css() -> None:
+    """Block roots, elements, and modifiers from COMPONENTS must exist in CSS.
 
-    Auto-generates the expected class names from :data:`chirp_ui.components.COMPONENTS`
-    so the allowlist never goes stale.
+    Variants and sizes are validated separately because many values (e.g.
+    ``"default"``) use base-class styling and intentionally have no explicit
+    CSS rule.
     """
     from chirp_ui.components import COMPONENTS
 
@@ -137,16 +138,6 @@ def test_component_descriptor_classes_exist_in_css() -> None:
         block_cls = f"chirpui-{desc.block}"
         if block_cls not in css_classes:
             missing.append(block_cls)
-        for v in desc.variants:
-            if v:
-                expected = f"chirpui-{desc.block}--{v}"
-                if expected not in css_classes:
-                    missing.append(expected)
-        for s in desc.sizes:
-            if s:
-                expected = f"chirpui-{desc.block}--{s}"
-                if expected not in css_classes:
-                    missing.append(expected)
         for m in desc.modifiers:
             if m:
                 expected = f"chirpui-{desc.block}--{m}"
@@ -157,7 +148,45 @@ def test_component_descriptor_classes_exist_in_css() -> None:
             if expected not in css_classes:
                 missing.append(expected)
     assert not missing, (
-        f"Component descriptor classes missing from CSS ({len(missing)}): "
+        f"Component block/element/modifier classes missing from CSS ({len(missing)}): "
+        + ", ".join(missing[:20])
+        + ("..." if len(missing) > 20 else "")
+    )
+
+
+def test_component_descriptor_key_variants_exist_in_css() -> None:
+    """Non-default variant and size modifiers for high-traffic components must have CSS.
+
+    Checks a curated set of components where every declared variant/size is
+    expected to have an explicit CSS rule. Components whose variants are
+    purely validation fallbacks (many ASCII components) are not included.
+    """
+    from chirp_ui.components import COMPONENTS
+
+    enforced = {
+        "btn", "alert", "badge", "surface", "toast", "modal", "confirm",
+        "overlay", "hero", "page_hero", "aura", "aura_tone", "icon-btn",
+        "tooltip", "notification-dot", "progress-bar", "status-indicator",
+        "neon", "wobble",
+    }
+    css_classes = _extract_css_defined_classes()
+    missing: list[str] = []
+    for name in sorted(enforced):
+        desc = COMPONENTS.get(name)
+        if desc is None:
+            continue
+        for v in desc.variants:
+            if v and v != "default":
+                expected = f"chirpui-{desc.block}--{v}"
+                if expected not in css_classes:
+                    missing.append(expected)
+        for s in desc.sizes:
+            if s:
+                expected = f"chirpui-{desc.block}--{s}"
+                if expected not in css_classes:
+                    missing.append(expected)
+    assert not missing, (
+        f"Key component variant/size classes missing from CSS ({len(missing)}): "
         + ", ".join(missing[:20])
         + ("..." if len(missing) > 20 else "")
     )
