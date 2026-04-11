@@ -682,9 +682,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
 def design_system_report() -> dict[str, object]:
     """Machine-readable summary of the full chirp-ui design system surface.
 
-    Returns a dict with ``"components"`` keyed by block name and
-    ``"stats"`` with aggregate counts.
+    Returns a dict with ``"components"`` keyed by block name,
+    ``"tokens"`` keyed by CSS property name, and ``"stats"`` with
+    aggregate counts.
     """
+    from chirp_ui.tokens import TOKEN_CATALOG
+
     components: dict[str, dict[str, object]] = {}
     for name, desc in COMPONENTS.items():
         components[name] = {
@@ -698,14 +701,23 @@ def design_system_report() -> dict[str, object]:
             "template": desc.template,
             "category": desc.category,
         }
-    categories: dict[str, int] = {}
+    component_categories: dict[str, int] = {}
     for desc in COMPONENTS.values():
         cat = desc.category or "uncategorized"
-        categories[cat] = categories.get(cat, 0) + 1
+        component_categories[cat] = component_categories.get(cat, 0) + 1
+    token_categories: dict[str, int] = {}
+    for t in TOKEN_CATALOG.values():
+        token_categories[t.category] = token_categories.get(t.category, 0) + 1
     return {
         "components": components,
+        "tokens": {
+            name: {"category": t.category, "scope": t.scope}
+            for name, t in TOKEN_CATALOG.items()
+        },
         "stats": {
             "total_components": len(COMPONENTS),
-            "categories": categories,
+            "total_tokens": len(TOKEN_CATALOG),
+            "component_categories": component_categories,
+            "token_categories": token_categories,
         },
     }

@@ -3599,6 +3599,40 @@ a.chirpui-mention:focus-visible {
     outline-offset: var(--chirpui-state-focus-offset);
 }
 
+/* --- Install snippet (command + copy) --- */
+
+.chirpui-install-snippet {
+    position: relative;
+}
+
+.chirpui-install-snippet__label {
+    margin: 0 0 var(--chirpui-spacing-xs);
+}
+
+.chirpui-install-snippet__row {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.chirpui-install-snippet__command {
+    flex: 1;
+    margin: 0;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    padding-right: 4rem;
+    background: var(--chirpui-code-bg);
+    border-radius: var(--chirpui-radius-sm);
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.chirpui-install-snippet .chirpui-code-block__copy {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+}
+
 .chirpui-fieldset {
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-sm);

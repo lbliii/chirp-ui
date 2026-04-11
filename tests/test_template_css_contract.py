@@ -108,40 +108,69 @@ def test_example_chirpui_classes_exist_in_css() -> None:
 def test_dynamic_bem_modifiers_used_in_templates_exist_in_css() -> None:
     """Dynamic BEM modifiers used in button, modal, dropdown, forms exist in CSS.
 
-    Covers the blocks we enforce validate_variant/validate_size for.
-    Some variants use base styling (no explicit modifier class in CSS).
+    Covers additional classes that are emitted dynamically (via Kida ``{{ }}``
+    expressions) and therefore missed by the static template class scanner.
+    These supplement the descriptor-driven test below.
     """
     css_classes = _extract_css_defined_classes()
-    # Subset of VARIANT_REGISTRY/SIZE_REGISTRY that have explicit CSS
     required: list[str] = [
-        "chirpui-btn--primary",
-        "chirpui-btn--danger",
-        "chirpui-btn--ghost",
-        "chirpui-btn--sm",
-        "chirpui-modal--small",
-        "chirpui-modal--large",
-        "chirpui-dropdown__item--danger",
-        "chirpui-star-rating--sm",
-        "chirpui-star-rating--lg",
-        "chirpui-thumbs--sm",
-        "chirpui-thumbs--lg",
-        "chirpui-segmented--sm",
-        # Fill layout (often emitted via Kida; ensure CSS exists even if class scan skips {{ }})
         "chirpui-chat-layout--fill",
         "chirpui-app-shell__main--fill",
         "chirpui-page-fill",
         "chirpui-chat-layout__messages-body",
-        # Aura (dynamic modifiers from validate_variant_block / validate_size)
-        "chirpui-aura--accent",
-        "chirpui-aura--warm",
-        "chirpui-aura--cool",
-        "chirpui-aura--muted",
-        "chirpui-aura--primary",
-        "chirpui-aura--sm",
-        "chirpui-aura--md",
-        "chirpui-aura--lg",
-        "chirpui-aura--mirror",
-        "chirpui-aura__content",
     ]
     missing = [cls for cls in required if cls not in css_classes]
     assert not missing, "Required dynamic BEM classes missing from CSS: " + ", ".join(missing)
+
+
+def test_component_descriptor_classes_exist_in_css() -> None:
+    """Every class implied by COMPONENTS descriptors must exist in chirpui.css.
+
+    Auto-generates the expected class names from :data:`chirp_ui.components.COMPONENTS`
+    so the allowlist never goes stale.
+    """
+    from chirp_ui.components import COMPONENTS
+
+    css_classes = _extract_css_defined_classes()
+    missing: list[str] = []
+    for _name, desc in sorted(COMPONENTS.items()):
+        block_cls = f"chirpui-{desc.block}"
+        if block_cls not in css_classes:
+            missing.append(block_cls)
+        for v in desc.variants:
+            if v:
+                expected = f"chirpui-{desc.block}--{v}"
+                if expected not in css_classes:
+                    missing.append(expected)
+        for s in desc.sizes:
+            if s:
+                expected = f"chirpui-{desc.block}--{s}"
+                if expected not in css_classes:
+                    missing.append(expected)
+        for m in desc.modifiers:
+            if m:
+                expected = f"chirpui-{desc.block}--{m}"
+                if expected not in css_classes:
+                    missing.append(expected)
+        for e in desc.elements:
+            expected = f"chirpui-{desc.block}__{e}"
+            if expected not in css_classes:
+                missing.append(expected)
+    assert not missing, (
+        f"Component descriptor classes missing from CSS ({len(missing)}): "
+        + ", ".join(missing[:20])
+        + ("..." if len(missing) > 20 else "")
+    )
+
+
+def test_token_catalog_covers_css() -> None:
+    """Every token in TOKEN_CATALOG must exist in chirpui.css."""
+    from chirp_ui.tokens import TOKEN_CATALOG, extract_css_tokens
+
+    css_tokens = extract_css_tokens()
+    catalog_names = set(TOKEN_CATALOG)
+    missing_from_css = sorted(catalog_names - css_tokens)
+    assert not missing_from_css, (
+        f"TOKEN_CATALOG has {len(missing_from_css)} entries not in CSS: "
+        + ", ".join(missing_from_css[:10])
+    )
