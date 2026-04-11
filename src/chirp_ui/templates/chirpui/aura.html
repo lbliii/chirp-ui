@@ -28,7 +28,7 @@
 {% def aura(tone="accent", spread="md", mirror=false, cls="", attrs="", attrs_map=none) %}
 {% set tone = tone | validate_variant_block("aura_tone", default="accent") %}
 {% set spread = spread | validate_size("aura", default="md") %}
-<div class="chirpui-aura chirpui-aura--{{ tone }} chirpui-aura--{{ spread }}{% if mirror %} chirpui-aura--mirror{% end %}{{ " " ~ cls if cls else "" }}"{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}>
+<div class="{{ "aura" | bem(variant=tone, size=spread, modifier="mirror" if mirror else "", cls=cls) }}"{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}>
     <div class="chirpui-aura__content">
         {% slot %}
     </div>

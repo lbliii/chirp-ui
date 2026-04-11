@@ -12,13 +12,7 @@
 {% set _busy = consume("_suspense_busy", "") %}
 {% set _size = (size or _bar_size or "") | validate_size("btn", "") %}
 {% set _disabled = disabled or (_busy == "true") %}
-{% set variant_class = " chirpui-btn--" ~ _variant if _variant else "" %}
-{% set size_class = " chirpui-btn--" ~ _size if _size else "" %}
-{% set loading_class = " chirpui-btn--loading" if loading else "" %}
-{% set base_class = "chirpui-btn" ~ variant_class ~ size_class ~ loading_class %}
-{% if cls %}
-{% set base_class = base_class ~ " " ~ cls %}
-{% end %}
+{% set base_class = "btn" | bem(variant=_variant, size=_size, modifier="loading" if loading else "", cls=cls) %}
 {% set _btn_has_hx = hx_get or hx_post or hx_put or hx_patch or hx_delete %}
 {% if href %}
 <a class="{{ base_class }}"{% if not _disabled %} href="{{ href }}"{% endif %}

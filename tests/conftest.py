@@ -36,13 +36,26 @@ def _field_errors_stub(errors: Any, field_name: str) -> Sequence[str]:
     return []
 
 
-def _bem_stub(block: str, variant: str = "", modifier: str = "", cls: str = "") -> str:
+def _bem_stub(
+    block: str,
+    variant: str = "",
+    size: str = "",
+    modifier: str | list[str] = "",
+    cls: str = "",
+) -> str:
     """Stub for Chirp's ``bem`` filter (chirpui BEM class builder)."""
+    modifiers: list[str]
+    if isinstance(modifier, list):
+        modifiers = [m for m in modifier if m]
+    else:
+        modifiers = [modifier] if modifier else []
     parts = [f"chirpui-{block}"]
     if variant:
         parts.append(f"chirpui-{block}--{variant}")
-    if modifier:
-        parts.append(f"chirpui-{block}--{modifier}")
+    if size:
+        parts.append(f"chirpui-{block}--{size}")
+    for m in modifiers:
+        parts.append(f"chirpui-{block}--{m}")
     if cls:
         parts.append(cls)
     return " ".join(parts)

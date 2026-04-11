@@ -277,16 +277,30 @@ class TemplateFilterApp(Protocol):
     ) -> Callable[[Callable[..., object]], Callable[..., object]]: ...
 
 
-def bem(block: str, variant: str = "", modifier: str = "", cls: str = "") -> str:
-    """Build chirpui BEM class string: chirpui-{block} chirpui-{block}--{variant} etc.
+def bem(
+    block: str,
+    variant: str = "",
+    size: str = "",
+    modifier: str | list[str] = "",
+    cls: str = "",
+) -> str:
+    """Build chirpui BEM class string from block, variant, size, and modifiers.
 
-    Example:
-        class="{{ "alert" | bem(variant=variant, cls=cls) }}"
-        → "chirpui-alert chirpui-alert--success my-class"
+    Example::
+
+        class="{{ "btn" | bem(variant="primary", size="lg", modifier="loading") }}"
+        → "chirpui-btn chirpui-btn--primary chirpui-btn--lg chirpui-btn--loading"
+
+    *modifier* accepts a single string or a list of strings for additive flags.
     """
-    if variant and block in VARIANT_REGISTRY and _is_strict():
-        allowed = VARIANT_REGISTRY[block]
-        if variant not in allowed:
+    from chirp_ui.components import COMPONENTS
+
+    desc = COMPONENTS.get(block)
+    strict = _is_strict()
+
+    if variant and strict:
+        allowed = VARIANT_REGISTRY.get(block, ())
+        if allowed and variant not in allowed:
             log = logging.getLogger("chirp_ui")
             log.warning(
                 'chirp-ui: %s variant "%s" invalid; valid: %s',
@@ -295,11 +309,42 @@ def bem(block: str, variant: str = "", modifier: str = "", cls: str = "") -> str
                 ", ".join(allowed),
             )
             variant = allowed[0] if allowed else ""
+
+    if size and strict and desc and desc.sizes:
+        if size not in desc.sizes:
+            log = logging.getLogger("chirp_ui")
+            log.warning(
+                'chirp-ui: %s size "%s" invalid; valid: %s',
+                block,
+                size,
+                ", ".join(desc.sizes),
+            )
+            size = desc.sizes[0] if desc.sizes else ""
+
+    modifiers: list[str]
+    if isinstance(modifier, list):
+        modifiers = [m for m in modifier if m]
+    else:
+        modifiers = [modifier] if modifier else []
+
+    if strict and desc and desc.modifiers:
+        for m in modifiers:
+            if m not in desc.modifiers:
+                log = logging.getLogger("chirp_ui")
+                log.warning(
+                    'chirp-ui: %s modifier "%s" invalid; valid: %s',
+                    block,
+                    m,
+                    ", ".join(desc.modifiers),
+                )
+
     parts = [f"chirpui-{block}"]
     if variant:
         parts.append(f"chirpui-{block}--{variant}")
-    if modifier:
-        parts.append(f"chirpui-{block}--{modifier}")
+    if size:
+        parts.append(f"chirpui-{block}--{size}")
+    for m in modifiers:
+        parts.append(f"chirpui-{block}--{m}")
     if cls:
         parts.append(cls)
     return " ".join(parts)

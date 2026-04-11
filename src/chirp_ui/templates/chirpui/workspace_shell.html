@@ -30,23 +30,23 @@
     {% call split_layout(ratio="sidebar", cls="chirpui-workspace-shell__layout") %}
     {% slot primary %}
         {% call panel(title=sidebar_title, surface_variant=sidebar_surface_variant, scroll_body=true, cls="chirpui-workspace-shell__sidebar-panel") %}
-        {% slot %}{% slot sidebar %}{% end %}
+        {% yield sidebar %}
         {% end %}
     {% end %}
     {% slot secondary %}
         {% if show_inspector %}
             {% call split_layout(ratio="wide-primary", cls="chirpui-workspace-shell__content-layout") %}
             {% slot primary %}
-            <div class="chirpui-workspace-shell__main">{% slot %}</div>
+            <div class="chirpui-workspace-shell__main">{% yield %}</div>
             {% end %}
             {% slot secondary %}
                 {% call panel(title=inspector_title, surface_variant=inspector_surface_variant, scroll_body=true, cls="chirpui-workspace-shell__inspector-panel") %}
-                {% slot %}{% slot inspector %}{% end %}
+                {% yield inspector %}
                 {% end %}
             {% end %}
             {% end %}
         {% else %}
-        <div class="chirpui-workspace-shell__main">{% slot %}</div>
+        <div class="chirpui-workspace-shell__main">{% yield %}</div>
         {% end %}
     {% end %}
     {% end %}

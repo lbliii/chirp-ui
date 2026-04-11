@@ -133,7 +133,7 @@
 {#- section_header_inline: deprecated alias — use section_header(variant="inline") with {% slot actions %} -#}
 {% def section_header_inline(title, icon=none, cls="") %}
 {% call section_header(title, icon=icon, variant="inline", cls=cls) %}
-{% slot actions %}{% slot %}{% end %}
+{% slot actions %}{% yield %}{% end %}
 {% end %}
 {% end %}
 
@@ -148,9 +148,9 @@
 {% end %}
 {% call surface(variant=surface_variant, full_width=full_width) %}
 {% call section_header(title, subtitle, icon) %}
-{% slot actions %}{% slot actions %}{% end %}
+{% slot actions %}{% yield actions %}{% end %}
 {% end %}
-{% slot %}{% slot %}{% end %}
+{% yield %}
 {% end %}
 {% if full_width %}
 </div>
