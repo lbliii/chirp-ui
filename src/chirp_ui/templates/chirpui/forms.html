@@ -717,7 +717,11 @@
 {% if token is not none %}
 <input type="hidden" name="{{ field_name }}" value="{{ token }}">
 {% else %}
+{% if csrf_field is defined %}
+{{ csrf_field() }}
+{% else %}
 {{ csrf_token() }}
+{% end %}
 {% end %}
 {% end %}
 

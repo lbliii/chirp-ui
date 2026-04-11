@@ -109,11 +109,15 @@ when navigating via htmx boost (sidebar) or tab clicks (hx-target #main or #page
 
 When extending `chirpui/app_shell_layout.html`, `shell_actions` is provided by
 the layout chain from Chirp's merged `_context.py` results. When using the
-`app_shell()` macro, pass it explicitly:
+`app_shell()` macro, pass it explicitly and wrap routed content with
+`shell_outlet()` so custom shells get the same `#page-content` swap boundary:
 
 ```html
+{% from "chirpui/shell_frame.html" import shell_outlet %}
 {% call app_shell(brand="My App", shell_actions=shell_actions | default(none)) %}
-  ...
+  {% call shell_outlet() %}
+    ...
+  {% end %}
 {% end %}
 ```
 
@@ -162,6 +166,34 @@ ChirpUI registers its page shell contract via `use_chirp_ui()`. That contract ma
 | `#page-content-inner` | `page_content` | Narrow content swaps |
 
 `<main id="main">` carries `hx-boost="true"`, `hx-target="#main"`, `hx-swap="innerHTML"`, and `hx-select="#page-content"` — all links inside inherit SPA navigation automatically. The `#main` element persists in the DOM (never replaced), so its `view-transition-name` is never duplicated during swaps. Content is wrapped in `<div id="page-content">` inside `#main`. Sidebar links (outside `#main`) carry their own `hx-target="#main"` via `sidebar_link()`. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
+
+## Inline scripts in page templates
+
+`app_shell_layout.html` defines a `{% block page_scripts %}{% end %}` slot near `</body>`. This block is only available to templates that **`{% extends %}`** the layout directly — typically inner `_layout.html` files.
+
+**Filesystem page templates** (`page.html`) are composed into the layout via Chirp's `render_with_blocks`, which injects content into `{% block content %}`. Page templates **cannot** override sibling blocks like `page_scripts`, `head_extra`, or any other block outside the content region. A `{% block page_scripts %}` in a page template defines a new local block — it does not fill the layout's version.
+
+If a page needs a `<script>` tag (e.g. for `Alpine.safeData` component registration), put it **inside the content region**:
+
+```html
+{% block page_root %}
+<div id="page-root">
+{% block page_content %}
+  <p>Page content here.</p>
+{% end %}
+</div>
+
+<script>
+Alpine.safeData("myWidget", function() {
+  return { count: 0, increment() { this.count++; } };
+});
+</script>
+{% end %}
+```
+
+The inline `<script>` executes during DOM parsing — before Alpine's deferred CDN script runs. Chirp's `safeData` helper queues the registration and drains it on `alpine:init`, so the component is available when Alpine discovers `x-data` attributes.
+
+See [Chirp's filesystem routing guide](https://lbliii.github.io/chirp/docs/routing/filesystem-routing/#composition-not-inheritance) for the full explanation of the composition model.
 
 ## Debugging
 

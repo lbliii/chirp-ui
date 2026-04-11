@@ -36,6 +36,15 @@
     HTMX: primary #main swap runs before out-of-band fragments; a beforeSwap
     handler clears #chirp-shell-actions when the response includes shell-actions
     OOB (see docs/UI-LAYERS.md).
+
+    page_scripts block: renders after toast/CSRF/nav scripts near </body>.
+    Only templates that {% extends %} this layout can override it (inner
+    _layout.html files). Filesystem page templates (page.html) are injected
+    via render_with_blocks into {% block content %} — they CANNOT override
+    page_scripts or any other sibling block. If a page needs an inline
+    <script>, put it inside the content region (inside page_root or
+    page_content blocks). See Chirp's filesystem-routing docs §
+    "Composition, not inheritance".
 -#}
 {# target: body #}
 {% extends "chirp/layouts/shell.html" %}
@@ -60,6 +69,7 @@ document.addEventListener("alpine:init",function(){
 
 {% block shell %}
 {% from "chirpui/sidebar.html" import sidebar, sidebar_toggle, shell_brand_link %}
+{% from "chirpui/shell_frame.html" import shell_outlet, shell_outlet_attrs %}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
 {% from "chirpui/toast.html" import toast_container %}
 {% set _sidebar_collapsible = "false" %}
@@ -88,10 +98,10 @@ document.addEventListener("alpine:init",function(){
   </header>
   <aside class="chirpui-app-shell__sidebar">{% block sidebar %}{% end %}</aside>
   <main id="main" class="chirpui-app-shell__main{% block main_shell_class %}{% end %}" tabindex="-1"
-        hx-boost="true" hx-target="#main" hx-swap="innerHTML" hx-select="#page-content">
-    <div id="page-content">
+        {{ shell_outlet_attrs() }}>
+    {% call shell_outlet(include_boost_attrs=false) %}
       {% block content %}{% end %}
-    </div>
+    {% end %}
   </main>
 </div>
 <script>

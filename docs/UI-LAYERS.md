@@ -6,8 +6,8 @@ Authoritative site copy lives in **`site/content/docs/app-shell/ui-layers.md`**.
 
 | Term | Meaning |
 |------|---------|
-| **App shell** | Persistent layout: `chirpui/app_shell_layout.html` (topbar, sidebar, `#main`). |
-| **Page content** | `#page-content` — swapped on boosted navigation (`hx-select`). |
+| **App shell** | Persistent layout: `chirpui/app_shell_layout.html` or `app_shell()` + `shell_outlet()` (topbar, sidebar, `#main`). |
+| **Page content** | `#page-content` — swapped on boosted navigation (`hx-select`); provided by `app_shell_layout.html` or `shell_outlet()`. |
 | **Page chrome** | Inside `#page-content`: tabs, headers, route toolbars. |
 | **Shell actions** | `shell_actions_bar` in `#chirp-shell-actions`; Chirp `ShellActions`. |
 | **Shell regions** | Stable ids for HTMX OOB: see `chirp.shell_regions` in Chirp. |

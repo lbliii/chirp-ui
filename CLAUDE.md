@@ -20,7 +20,7 @@ src/chirp_ui/
   filters.py           # bem, html_attrs, build_hx_attrs, validate_*, register_colors, resolve_color, sanitize_color, contrast_text
   validation.py        # VARIANT_REGISTRY, SIZE_REGISTRY, set_strict()
   route_tabs.py        # route-aware tabs helper
-  templates/chirpui/   # Kida macros — one file per component (e.g. label_overline.html)
+  templates/chirpui/   # Kida macros — one file per component (e.g. aura.html, label_overline.html)
   templates/chirpui.css
   templates/chirpui.js
   templates/themes/
@@ -105,6 +105,8 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 chirp-ui is one optional layer. Users bring their own Chirp app; chirp-ui adds the component library and default design language. The framework (`bengal-chirp`) and template engine (`kida-templates`) are separate packages maintained by the same author.
 
 **Alpine.js ownership:** Chirp is the single authority for Alpine injection. `use_chirp_ui(app)` auto-enables `alpine=True` on the app config; `app_shell_layout.html` does **not** include Alpine scripts. Named components should register with `Alpine.safeData(name, factory)` (injected by Chirp) for htmx-safe registration that works on both full page loads and boosted navigation swaps.
+
+**`page_scripts` block:** `app_shell_layout.html` defines an empty `{% block page_scripts %}{% end %}` near `</body>`. This block is only overridable by templates that `{% extends %}` the layout directly (e.g. inner `_layout.html` files). **Filesystem page templates** (`page.html`) are composed into the layout via `render_with_blocks` — they cannot override `page_scripts` or any other sibling block in the layout. If a page needs an inline `<script>` (e.g. for `Alpine.safeData` registration), put it inside the content block (`page_root` or `page_content`), not in a separate `page_scripts` block. See Chirp's filesystem-routing docs for details.
 
 ## Troubleshooting: "all interactive components are dead"
 

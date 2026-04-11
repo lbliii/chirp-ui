@@ -808,6 +808,102 @@ html {
 .chirpui-cluster--md { gap: var(--chirpui-spacing-md); }
 .chirpui-cluster--lg { gap: var(--chirpui-spacing-lg); }
 
+/* Layer — overlapping card deck with hover-to-front.
+   Inspired by emdashCSS layers: horizontal flex row with negative margin overlap,
+   slight rotation on idle cards, hover straightens and elevates.
+   Usage: layer(direction="center", overlap="md", angle="subtle") */
+
+.chirpui-layer {
+    --chirpui-layer-overlap: var(--chirpui-layer-overlap-md);
+    --chirpui-layer-angle: var(--chirpui-layer-angle-subtle);
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    position: relative;
+}
+
+.chirpui-layer--left   { justify-content: flex-start; }
+.chirpui-layer--center { justify-content: center; }
+.chirpui-layer--right  { justify-content: flex-end; }
+
+.chirpui-layer > * {
+    flex-shrink: 0;
+    transition: transform var(--chirpui-motion-base) var(--chirpui-ease-spring),
+                z-index 0s;
+}
+
+.chirpui-layer > *:not(:first-child) {
+    margin-inline-start: var(--chirpui-layer-overlap);
+    transform: rotate(var(--chirpui-layer-angle));
+}
+
+.chirpui-layer--hover > *:hover {
+    transform: rotate(0deg) scale(1.04);
+    z-index: 10;
+}
+
+/* Overlap sizes (negative margin pulls cards together) */
+.chirpui-layer--overlap-sm { --chirpui-layer-overlap: -1.5rem; }
+.chirpui-layer--overlap-md { --chirpui-layer-overlap: -3rem; }
+.chirpui-layer--overlap-lg { --chirpui-layer-overlap: -5rem; }
+
+/* Default overlap token values (used when no --overlap-* modifier) */
+:root {
+    --chirpui-layer-overlap-sm: -1.5rem;
+    --chirpui-layer-overlap-md: -3rem;
+    --chirpui-layer-overlap-lg: -5rem;
+    --chirpui-layer-angle-none: 0deg;
+    --chirpui-layer-angle-subtle: -2deg;
+    --chirpui-layer-angle-moderate: -4deg;
+}
+
+/* Angle variants */
+.chirpui-layer--angle-none     { --chirpui-layer-angle: var(--chirpui-layer-angle-none); }
+.chirpui-layer--angle-subtle   { --chirpui-layer-angle: var(--chirpui-layer-angle-subtle); }
+.chirpui-layer--angle-moderate { --chirpui-layer-angle: var(--chirpui-layer-angle-moderate); }
+
+/* Alternating tilt: even children rotate opposite for a "fanned" look */
+.chirpui-layer > *:not(:first-child):nth-child(even) {
+    transform: rotate(calc(var(--chirpui-layer-angle) * -1));
+}
+
+.chirpui-layer--hover > *:nth-child(even):hover {
+    transform: rotate(0deg) scale(1.04);
+    z-index: 10;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-layer > * {
+        transition: none;
+    }
+    .chirpui-layer > *:not(:first-child) {
+        transform: none;
+    }
+    .chirpui-layer > *:not(:first-child):nth-child(even) {
+        transform: none;
+    }
+    .chirpui-layer--hover > *:hover {
+        transform: scale(1.02);
+    }
+    .chirpui-layer--hover > *:nth-child(even):hover {
+        transform: scale(1.02);
+    }
+}
+
+/* Container modifiers — propagate non-inheritable properties to direct children.
+   Inspired by emdashCSS c-* prefix (e.g. .c-rounded-11 > *).
+   Kept intentionally small: only for properties CSS custom properties can't inherit. */
+
+.chirpui-children--rounded > *     { border-radius: var(--chirpui-radius); }
+.chirpui-children--rounded-sm > *  { border-radius: var(--chirpui-radius-sm); }
+.chirpui-children--rounded-lg > *  { border-radius: var(--chirpui-radius-lg); }
+.chirpui-children--rounded-xl > *  { border-radius: var(--chirpui-radius-xl); }
+.chirpui-children--rounded-full > * { border-radius: 9999px; }
+
+.chirpui-children--equal > *       { flex: 1; }
+
+.chirpui-children--clip > *        { min-width: 0; overflow: hidden; }
+
 /* Label overline — see label_overline.html */
 .chirpui-label-overline {
     display: block;
@@ -3927,6 +4023,140 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-surface--no-padding {
     padding: 0;
+}
+
+/* ==========================================================================
+   Aura — chromatic halo behind wrapped content (glass cards, panels, etc.)
+   Pair with inner chirpui-surface--glass; keeps pseudos free on the surface
+   (e.g. chirpui-surface--cornered). Content stacks in .chirpui-aura__content.
+   ========================================================================== */
+
+.chirpui-aura {
+    position: relative;
+    isolation: isolate;
+    display: block;
+    min-width: 0;
+    overflow: visible;
+    --chirpui-aura-blur: 22px;
+    --chirpui-aura-inset-x: -12%;
+    --chirpui-aura-inset-top: -14%;
+    --chirpui-aura-inset-bottom: -32%;
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-accent) 52%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-primary) 38%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent-secondary) 28%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-accent) 9%, transparent);
+}
+
+.chirpui-aura--sm {
+    --chirpui-aura-blur: 14px;
+    --chirpui-aura-inset-x: -8%;
+    --chirpui-aura-inset-top: -10%;
+    --chirpui-aura-inset-bottom: -20%;
+}
+
+.chirpui-aura--md {
+    --chirpui-aura-blur: 22px;
+    --chirpui-aura-inset-x: -12%;
+    --chirpui-aura-inset-top: -14%;
+    --chirpui-aura-inset-bottom: -32%;
+}
+
+.chirpui-aura--lg {
+    --chirpui-aura-blur: 32px;
+    --chirpui-aura-inset-x: -16%;
+    --chirpui-aura-inset-top: -18%;
+    --chirpui-aura-inset-bottom: -40%;
+}
+
+.chirpui-aura--warm {
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-primary) 45%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-accent-secondary) 42%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent) 32%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-primary) 8%, transparent);
+}
+
+.chirpui-aura--cool {
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-accent) 48%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-primary) 42%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent-secondary) 24%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-accent) 8%, transparent);
+}
+
+.chirpui-aura--muted {
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-muted) 38%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-accent) 28%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-border) 22%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-text) 5%, transparent);
+}
+
+.chirpui-aura--primary {
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-primary) 50%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-accent) 36%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent-secondary) 26%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-primary) 8%, transparent);
+}
+
+.chirpui-aura--accent {
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-accent) 52%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-primary) 38%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent-secondary) 28%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-accent) 9%, transparent);
+}
+
+.chirpui-aura::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: var(--chirpui-aura-inset-top) var(--chirpui-aura-inset-x) var(--chirpui-aura-inset-bottom)
+        var(--chirpui-aura-inset-x);
+    border-radius: calc(var(--chirpui-radius-xl) + 0.75rem);
+    pointer-events: none;
+    opacity: 0.9;
+    filter: blur(var(--chirpui-aura-blur)) saturate(1.18);
+    background:
+        radial-gradient(
+            ellipse 100% 80% at 30% 12%,
+            var(--chirpui-aura-a) 0%,
+            transparent 58%
+        ),
+        radial-gradient(
+            ellipse 85% 70% at 95% 45%,
+            var(--chirpui-aura-b) 0%,
+            transparent 62%
+        ),
+        radial-gradient(
+            ellipse 90% 65% at 42% 118%,
+            var(--chirpui-aura-c) 0%,
+            transparent 55%
+        ),
+        repeating-linear-gradient(
+            118deg,
+            transparent 0,
+            transparent 8px,
+            var(--chirpui-aura-mess) 8px,
+            var(--chirpui-aura-mess) 9px
+        ),
+        linear-gradient(
+            188deg,
+            color-mix(in oklab, var(--chirpui-text) 6%, transparent) 0%,
+            transparent 42%
+        );
+}
+
+.chirpui-aura--mirror::before {
+    transform: scaleX(-1);
+}
+
+.chirpui-aura__content {
+    position: relative;
+    z-index: 1;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .chirpui-aura::before {
+        opacity: 0.35;
+        filter: none;
+    }
 }
 
 /* ==========================================================================
@@ -11983,10 +12213,14 @@ body.htmx-request .chirpui-nav-progress::after {
    ========================================================================== */
 
 .chirpui-ascii-divider {
-    display: flex;
+    /* Grid: two fr tracks + auto glyph column — reliable full width and centering vs flex+::before. */
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
     gap: var(--chirpui-spacing-sm);
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     margin: var(--chirpui-spacing) 0;
     font-family: var(--chirpui-ascii-font);
     color: var(--chirpui-text-muted);
@@ -11995,15 +12229,22 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-divider::before,
 .chirpui-ascii-divider::after {
     content: "────────────────────────────────────────";
-    flex: 1;
+    min-width: 0;
     overflow: hidden;
     white-space: nowrap;
     max-height: 1.2em;
     color: var(--chirpui-text-muted);
     opacity: 0.5;
 }
+/* Anchor repeated line to the glyph so clipping shows the join, not the far outer edge. */
+.chirpui-ascii-divider::before {
+    text-align: end;
+}
+.chirpui-ascii-divider::after {
+    text-align: start;
+}
 .chirpui-ascii-divider__glyph {
-    flex-shrink: 0;
+    justify-self: center;
     font-size: 0.875rem;
     opacity: 0.7;
 }

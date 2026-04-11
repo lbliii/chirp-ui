@@ -17,8 +17,5 @@ APP_SHELL = (
 def test_app_shell_layout_has_main_and_page_content_contract() -> None:
     text = APP_SHELL.read_text(encoding="utf-8")
     assert 'id="main"' in text
-    assert 'id="page-content"' in text
-    assert 'hx-boost="true"' in text
-    assert 'hx-target="#main"' in text
-    assert 'hx-swap="innerHTML"' in text
-    assert 'hx-select="#page-content"' in text
+    assert "shell_outlet(include_boost_attrs=false)" in text
+    assert "shell_outlet_attrs()" in text

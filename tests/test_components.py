@@ -270,6 +270,48 @@ class TestLayout:
         assert "chirpui-cluster" in html
         assert "chirpui-cluster--sm" in html
 
+    def test_layer_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import layer %}{% call layer() %}A{% end %}'
+        ).render()
+        assert "chirpui-layer" in html
+        assert "chirpui-layer--left" in html
+        assert "chirpui-layer--overlap-md" in html
+        assert "chirpui-layer--angle-subtle" in html
+        assert "chirpui-layer--hover" in html
+
+    def test_layer_center_no_hover(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import layer %}'
+            '{% call layer(direction="center", hover=false) %}A{% end %}'
+        ).render()
+        assert "chirpui-layer--center" in html
+        assert "chirpui-layer--hover" not in html
+
+    def test_layer_right_lg_moderate(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import layer %}'
+            '{% call layer(direction="right", overlap="lg", angle="moderate") %}A{% end %}'
+        ).render()
+        assert "chirpui-layer--right" in html
+        assert "chirpui-layer--overlap-lg" in html
+        assert "chirpui-layer--angle-moderate" in html
+
+    def test_layer_angle_none(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import layer %}'
+            '{% call layer(angle="none") %}A{% end %}'
+        ).render()
+        assert "chirpui-layer--angle-none" in html
+
+    def test_layer_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import layer %}'
+            '{% call layer(cls="my-deck") %}A{% end %}'
+        ).render()
+        assert "chirpui-layer" in html
+        assert "my-deck" in html
+
     def test_block(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import block %}{% call block(span=2) %}A{% end %}'
@@ -599,6 +641,15 @@ class TestAuthPrimitives:
         assert 'name="_csrf_token"' in html
         assert 'value="token-123"' in html
 
+    def test_csrf_hidden_macro_without_token_uses_csrf_field(self, env: Environment) -> None:
+        """Without an explicit token, prefer Chirp's ``csrf_field()`` over Kida's ``csrf_token()``."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import csrf_hidden %}{{ csrf_hidden() }}'
+        ).render()
+        assert 'type="hidden"' in html
+        assert 'name="_csrf_token"' in html
+        assert 'value="test-csrf"' in html
+
     def test_login_form_macro(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/auth.html" import login_form %}'
@@ -663,6 +714,66 @@ class TestSurface:
         assert 'data-test="surf"' in html
         assert 'id="s1"' in html
         assert "In" in html
+
+
+# ---------------------------------------------------------------------------
+# Aura
+# ---------------------------------------------------------------------------
+
+
+class TestAura:
+    def test_aura_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/aura.html" import aura %}'
+            "{% call aura() %}Inner{% end %}"
+        ).render()
+        assert "chirpui-aura" in html
+        assert "chirpui-aura--accent" in html
+        assert "chirpui-aura--md" in html
+        assert "chirpui-aura__content" in html
+        assert "Inner" in html
+
+    def test_aura_tones(self, env: Environment) -> None:
+        for tone in ("accent", "warm", "cool", "muted", "primary"):
+            html = env.from_string(
+                '{% from "chirpui/aura.html" import aura %}'
+                f'{{% call aura(tone="{tone}") %}}X{{% end %}}'
+            ).render()
+            assert f"chirpui-aura--{tone}" in html
+
+    def test_aura_spreads(self, env: Environment) -> None:
+        for spread in ("sm", "md", "lg"):
+            html = env.from_string(
+                '{% from "chirpui/aura.html" import aura %}'
+                f'{{% call aura(spread="{spread}") %}}X{{% end %}}'
+            ).render()
+            assert f"chirpui-aura--{spread}" in html
+
+    def test_aura_mirror(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/aura.html" import aura %}'
+            "{% call aura(mirror=true) %}X{% end %}"
+        ).render()
+        assert "chirpui-aura--mirror" in html
+
+    def test_aura_with_surface(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/aura.html" import aura %}'
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% call aura(tone="cool", spread="sm") %}'
+            '{% call surface(variant="glass") %}G{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-aura--cool" in html
+        assert "chirpui-aura--sm" in html
+        assert "chirpui-surface--glass" in html
+
+    def test_aura_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/aura.html" import aura %}'
+            '{% call aura(attrs_map={"data-testid": "a1"}) %}X{% end %}'
+        ).render()
+        assert 'data-testid="a1"' in html
 
 
 # ---------------------------------------------------------------------------
@@ -2947,6 +3058,30 @@ class TestNavbar:
         assert 'src="/static/logo.svg"' in html
 
 
+class TestShellFrame:
+    def test_shell_outlet_renders_boost_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/shell_frame.html" import shell_outlet %}'
+            "{% call shell_outlet() %}Main{% end %}"
+        ).render()
+        assert 'id="page-content"' in html
+        assert 'hx-boost="true"' in html
+        assert 'hx-target="#main"' in html
+        assert 'hx-swap="innerHTML"' in html
+        assert 'hx-select="#page-content"' in html
+        assert "Main" in html
+
+    def test_shell_outlet_can_skip_boost_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/shell_frame.html" import shell_outlet %}'
+            '{% call shell_outlet(include_boost_attrs=false, cls="custom-shell-outlet") %}Main{% end %}'
+        ).render()
+        assert 'id="page-content"' in html
+        assert 'class="custom-shell-outlet"' in html
+        assert 'hx-target="#main"' not in html
+        assert 'hx-select="#page-content"' not in html
+
+
 class TestAppShell:
     def test_shell_actions_renderer(self, env: Environment) -> None:
         html = env.from_string(
@@ -3012,7 +3147,21 @@ class TestAppShell:
         assert "chirpui-app-shell__brand" in html
         assert "chirpui-logo" in html
         assert 'src="/static/logo.svg"' in html
+        assert 'hx-target="#main"' in html
+        assert 'hx-select="#page-content"' in html
         assert "Main" in html
+
+    def test_app_shell_brand_boost_can_be_disabled(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            "{% call app_shell(brand='Brand', brand_boost=false) %}"
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell__brand" in html
+        assert 'hx-target="#main"' not in html
+        assert 'hx-select="#page-content"' not in html
 
     def test_app_shell_renders_shell_actions_target(self, env: Environment) -> None:
         html = env.from_string(

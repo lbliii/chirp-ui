@@ -131,6 +131,17 @@ def test_dynamic_bem_modifiers_used_in_templates_exist_in_css() -> None:
         "chirpui-app-shell__main--fill",
         "chirpui-page-fill",
         "chirpui-chat-layout__messages-body",
+        # Aura (dynamic modifiers from validate_variant_block / validate_size)
+        "chirpui-aura--accent",
+        "chirpui-aura--warm",
+        "chirpui-aura--cool",
+        "chirpui-aura--muted",
+        "chirpui-aura--primary",
+        "chirpui-aura--sm",
+        "chirpui-aura--md",
+        "chirpui-aura--lg",
+        "chirpui-aura--mirror",
+        "chirpui-aura__content",
     ]
     missing = [cls for cls in required if cls not in css_classes]
     assert not missing, "Required dynamic BEM classes missing from CSS: " + ", ".join(missing)

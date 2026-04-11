@@ -98,6 +98,9 @@ Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates w
 | **alert** | `variant` | info, success, warning, error | info |
 | **badge** | `variant` | primary, success, warning, error, muted, info | — |
 | **surface** | `variant` | default, muted, elevated, accent, gradient-subtle, gradient-accent, gradient-border, gradient-mesh, glass, frosted, smoke | default |
+| **aura** | `tone` | accent, warm, cool, muted, primary | accent |
+| **aura** | `spread` | sm, md, lg | md |
+| **aura** | `mirror` | false, true (horizontal flip of the halo; e.g. column on the left) | false |
 | **toast** | `variant` | info, success, warning, error | info |
 | **hero** | `background` | solid, muted, gradient, mesh, animated-gradient | solid |
 | **page_hero** | `variant` | editorial, minimal | editorial |
@@ -384,6 +387,58 @@ Wrapping inline layout primitive for badges, aliases, chips, and compact action 
 | `cls` | Optional additional classes |
 
 Use `cluster()` when content should wrap horizontally but remain visually grouped. This is the preferred primitive for badge/tag rows; `chirpui-flow` remains as the compatibility utility class.
+
+### layer
+
+Overlapping card deck layout — children overlap with negative margin and slight rotation, hover straightens and elevates. Inspired by emdashCSS's "layer" pattern.
+
+```html
+{% from "chirpui/layout.html" import layer %}
+{% call layer(direction="center", overlap="md", angle="subtle") %}
+  <div class="chirpui-card">Card 1</div>
+  <div class="chirpui-card">Card 2</div>
+  <div class="chirpui-card">Card 3</div>
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `direction` | `left` (default), `center`, `right` — horizontal alignment of the deck |
+| `overlap` | `sm` (-1.5rem), `md` (-3rem), `lg` (-5rem) — how much cards overlap |
+| `angle` | `none`, `subtle` (default, ~2deg), `moderate` (~4deg) — idle rotation on non-first cards |
+| `hover` | `true` (default) — hover straightens card and raises z-index |
+| `cls` | Optional additional classes |
+
+Children alternate tilt direction (even children rotate opposite) for a natural "fanned" look. All transforms respect `prefers-reduced-motion` — rotation is disabled, only a subtle scale remains on hover.
+
+Override overlap and angle via CSS custom properties: `--chirpui-layer-overlap-sm`, `--chirpui-layer-overlap-md`, `--chirpui-layer-overlap-lg`, `--chirpui-layer-angle-subtle`, `--chirpui-layer-angle-moderate`.
+
+### Container modifiers
+
+CSS-only classes that propagate non-inheritable properties to direct children. Inspired by emdashCSS's `c-*` prefix pattern (e.g. `.c-rounded-11 > *`). Use on any parent element — works with `grid()`, `cluster()`, `layer()`, or plain `<div>`.
+
+```html
+{% call grid(cols=3, gap="md") %}
+  {# All cards get rounded corners without passing to each macro #}
+  <div class="chirpui-children--rounded-lg">
+    {{ card("A") }}
+    {{ card("B") }}
+    {{ card("C") }}
+  </div>
+{% end %}
+```
+
+| Class | Effect on `> *` |
+|-------|-----------------|
+| `chirpui-children--rounded` | `border-radius: var(--chirpui-radius)` |
+| `chirpui-children--rounded-sm` | `border-radius: var(--chirpui-radius-sm)` |
+| `chirpui-children--rounded-lg` | `border-radius: var(--chirpui-radius-lg)` |
+| `chirpui-children--rounded-xl` | `border-radius: var(--chirpui-radius-xl)` |
+| `chirpui-children--rounded-full` | `border-radius: 9999px` (pill/circle) |
+| `chirpui-children--equal` | `flex: 1` (uniform sizing in flex contexts) |
+| `chirpui-children--clip` | `min-width: 0; overflow: hidden` (prevent blowout) |
+
+**Design note:** This is intentionally a small set covering non-inheritable CSS properties only. For semantic context propagation (variants, density), use `provide`/`consume`. For inheritable theming, use `--chirpui-*` custom properties.
 
 ### section
 
@@ -1324,6 +1379,23 @@ These use `validate_variant` at macro top. Invalid values fall back to the defau
 {% from "chirpui/toast.html" import toast %}
 {{ toast("Done!", variant="success") }}
 ```
+
+### Aura (dimensional halo)
+
+Wrapper for **any** block: a blurred, token-driven chromatic layer sits **behind** the child (via `::before`); the slot renders inside `chirpui-aura__content` above it. Pair with `surface(variant="glass")` for marketing panels, cards, or bento cells. Does not consume the inner surface’s `::before`/`::after`, so `chirpui-surface--cornered` on the child still works.
+
+```html
+{% from "chirpui/aura.html" import aura %}
+{% from "chirpui/surface.html" import surface %}
+{% call aura(tone="accent", spread="md") %}
+  {% call surface(variant="glass") %}…{% end %}
+{% end %}
+{% call aura(tone="warm", spread="lg", mirror=true) %}…{% end %}
+```
+
+`prefers-reduced-transparency` softens the effect in CSS.
+
+Apps that already shipped a local halo (e.g. `::before` on a marketing wrapper) can delete that CSS and wrap the same content with `aura()` after upgrading to chirp-ui **0.3.1+**.
 
 ### Skeleton variant
 

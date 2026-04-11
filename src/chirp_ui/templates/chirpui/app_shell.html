@@ -4,21 +4,28 @@
     targeting #main to keep the sidebar and topbar persistent.
 
     Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar, default (main content).
+    For routed apps, wrap the main slot with shell_outlet() so custom shells
+    use the same #page-content contract as app_shell_layout.html.
 
     Usage:
         from "chirpui/app_shell.html" import app_shell
+        from "chirpui/shell_frame.html" import shell_outlet
 
         call app_shell(brand="My App", brand_url="/")
             {% slot topbar %}breadcrumbs(...){% end %}
             {% slot topbar_end %}command_palette_trigger(){% end %}
             {% slot sidebar %}call sidebar()...end{% end %}
+            {% call shell_outlet() %}
             Page content here
+            {% end %}
         end
 
         call app_shell(brand_url="/", brand_slot=true)
             {% slot brand %}logo(text="My App", image_src="/static/logo.svg", variant="both"){% end %}
             {% slot sidebar %}...{% end %}
+            {% call shell_outlet() %}
             Page content here
+            {% end %}
         end
 
         call app_shell(brand="My App", sidebar_collapsible=true)
@@ -26,8 +33,9 @@
         end
 -#}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
+{% from "chirpui/shell_frame.html" import shell_outlet_attrs %}
 
-{% def app_shell(brand="", brand_url="/", brand_slot=false, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, cls="") %}
+{% def app_shell(brand="", brand_url="/", brand_slot=false, brand_boost=true, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, cls="") %}
 {% set topbar_variant = topbar_variant | validate_variant(("default","glass","gradient"), "default") %}
 {% set sidebar_variant = sidebar_variant | validate_variant(("default","glass","muted"), "default") %}
 {% set topbar_class = " chirpui-app-shell__topbar--" ~ topbar_variant if topbar_variant != "default" else "" %}
@@ -51,7 +59,7 @@
 <div class="chirpui-app-shell{{ " " ~ cls if cls else "" }}">
 {% end %}
     <header class="chirpui-app-shell__topbar{{ topbar_class }}">
-        <a href="{{ brand_url }}" class="chirpui-app-shell__brand">
+        <a href="{{ brand_url }}" class="chirpui-app-shell__brand"{% if brand_boost %} {{ shell_outlet_attrs() }}{% end %}>
             {% if brand_slot %}
             {% slot brand %}
             {% else %}
@@ -79,9 +87,8 @@
              @keydown.space.prevent="toggle()"></div>
         {% end %}
     </aside>
-    <main id="main" class="chirpui-app-shell__main">
-        {% slot %}
-    </main>
+    {#- No whitespace before/after slot: stray text nodes inside grid main break layout/scroll. -#}
+    <main id="main" class="chirpui-app-shell__main">{%- slot -%}</main>
 </div>
 <script>
 document.addEventListener("alpine:init",function(){

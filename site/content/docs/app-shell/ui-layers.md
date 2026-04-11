@@ -17,8 +17,8 @@ This page aligns with the **Chirp** guide: [UI layers & shell regions](https://l
 
 | Term | Meaning |
 |------|---------|
-| **App shell** | Persistent layout from `chirpui/app_shell_layout.html`: topbar, sidebar, `#main` wrapper. Not replaced on navigation; `#page-content` inside `#main` swaps. |
-| **Page content** | The document area: `#page-content` — what `hx-select` targets for boosted nav. |
+| **App shell** | Persistent layout from `chirpui/app_shell_layout.html` or `app_shell()` + `shell_outlet()`: topbar, sidebar, `#main` wrapper. Not replaced on navigation; `#page-content` inside `#main` swaps. |
+| **Page content** | The document area: `#page-content` — what `hx-select` targets for boosted nav, provided by `app_shell_layout.html` or `shell_outlet()`. |
 | **Page chrome** | Route-owned UI *inside* `#page-content`: titles, tabs, toolbars — not the global topbar. |
 | **Shell actions** | `ShellActions` → `shell_actions_bar`, target `#chirp-shell-actions`. Route-scoped; updates via OOB. |
 | **Shell regions** | Stable `id`s updated by `hx-swap-oob` (e.g. `chirp-shell-actions`, `chirpui-document-title`). |

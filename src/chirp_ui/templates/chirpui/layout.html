@@ -1,4 +1,4 @@
-{#- chirp-ui: Layout primitives — container, grid (flow), frame (structural), stack, cluster, block.
+{#- chirp-ui: Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
     grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).
     See docs/LAYOUT-GRIDS-AND-FRAMES.md.
 -#}
@@ -59,6 +59,22 @@
 
 {% def cluster(gap=none, cls="") %}
 {% set _cls = [c for c in ["chirpui-cluster", "chirpui-cluster--" ~ gap if gap else "", cls] if c] %}
+<div class="{{ _cls | join(' ') }}">
+    {% slot %}
+</div>
+{% end %}
+
+{#- layer(): overlapping card deck — children overlap with negative margin + rotation, hover straightens and elevates.
+    direction= left | center | right. overlap= sm | md | lg. angle= none | subtle | moderate. hover=true adds hover-to-front. -#}
+{% def layer(direction="left", overlap="md", angle="subtle", hover=true, cls="") %}
+{% set _cls = [c for c in [
+    "chirpui-layer",
+    "chirpui-layer--" ~ direction if direction else "chirpui-layer--left",
+    "chirpui-layer--overlap-" ~ overlap if overlap else "",
+    "chirpui-layer--angle-" ~ angle if angle else "",
+    "chirpui-layer--hover" if hover else "",
+    cls
+] if c] %}
 <div class="{{ _cls | join(' ') }}">
     {% slot %}
 </div>

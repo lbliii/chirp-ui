@@ -113,6 +113,8 @@ VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     "ascii-tabs": ("", "default", "accent"),
     "ascii-tab": ("", "default", "accent"),
     "ascii-modal": ("", "single", "double", "heavy"),
+    # Dimensional halo wrapper (see chirpui/aura.html)
+    "aura_tone": ("accent", "warm", "cool", "muted", "primary"),
 }
 
 SIZE_REGISTRY: dict[str, tuple[str, ...]] = {
@@ -140,6 +142,7 @@ SIZE_REGISTRY: dict[str, tuple[str, ...]] = {
     "sparkle": ("", "sm", "md", "lg"),
     "ascii-toggle": ("", "sm", "md", "lg"),
     "ascii-switch": ("", "sm", "md", "lg"),
+    "aura": ("sm", "md", "lg"),
 }
 
 

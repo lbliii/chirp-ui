@@ -1,8 +1,9 @@
 {#- chirp-ui: Sidebar component
     Vertical sidebar navigation for dashboards and admin panels.
 
-    Boosted links use hx-select="#page-content" so full-page GET responses only
-    swap the page content inside #main (avoids nesting a second shell).
+    Boosted links use the shell outlet contract: target #main, swap innerHTML,
+    and select #page-content so full-page GET responses only replace the page
+    outlet inside the persistent shell.
 
     Active state: use match= for automatic path comparison (requires current_path
     in template context), or active= for explicit control.
@@ -27,6 +28,7 @@
             {% slot footer %}<span>v1.0</span>{% end %}
         end
 -#}
+{% from "chirpui/shell_frame.html" import shell_outlet_attrs %}
 
 {% def sidebar(cls="", current_path="") %}
 {% provide _nav_current_path = current_path %}
@@ -60,35 +62,21 @@
 <a class="chirpui-sidebar__link{{ " chirpui-sidebar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
    href="{{ href }}" title="{{ label }}"
    {% if _active %}aria-current="page"{% end %}
-   {% if boost %}
-   hx-boost="true"
-   hx-target="#main"
-   hx-swap="innerHTML"
-   hx-select="#page-content"
-   {% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span></a>
+   {% if boost %}{{ shell_outlet_attrs() }}{% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span></a>
 {% end %}
 
-{# Topbar brand — same HTMX contract as sidebar_link (full-page GET + select #page-content). #}
+{# Topbar brand — same shell outlet contract as sidebar_link. #}
+{# Do not use inside app_shell brand_slot: app_shell already wraps the slot in one <a>. #}
 {% def shell_brand_link(href="/", cls="", boost=true) %}
 <a href="{{ href }}" class="chirpui-app-shell__brand{{ " " ~ cls if cls else "" }}"
-   {% if boost %}
-   hx-boost="true"
-   hx-target="#main"
-   hx-swap="innerHTML"
-   hx-select="#page-content"
-   {% end %}
+   {% if boost %}{{ shell_outlet_attrs() }}{% end %}
 >{% slot %}</a>
 {% end %}
 
-{# In-page boosted nav (buttons, evolution links) — same contract; slot for HTML labels. #}
+{# In-page boosted nav (buttons, evolution links) — same shell outlet contract. #}
 {% def shell_boosted_link(href, cls="", boost=true) %}
 <a href="{{ href }}"{% if cls %} class="{{ cls }}"{% end %}
-   {% if boost %}
-   hx-boost="true"
-   hx-target="#main"
-   hx-swap="innerHTML"
-   hx-select="#page-content"
-   {% end %}
+   {% if boost %}{{ shell_outlet_attrs() }}{% end %}
 >{% slot %}</a>
 {% end %}
 

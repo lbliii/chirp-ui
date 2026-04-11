@@ -1,10 +1,22 @@
-{#- chirp-ui: Shell frame primitives — persistent-region contract
+{#- chirp-ui: Shell frame primitives — persistent-region + swap-boundary contract
 
-    Maps to Chirp's PageComposition model. Use shell_region for OOB targets
-    (shell_actions, badges, breadcrumbs).
+    Maps to Chirp's PageComposition model. Use:
+    - shell_outlet_attrs for the canonical boosted-shell HTMX attrs
+    - shell_outlet for the #page-content wrapper used by boosted navigation
+    - shell_region for stable OOB targets (shell_actions, badges, breadcrumbs)
 
     Usage:
-        {% from "chirpui/shell_frame.html" import shell_region %}
+        {% from "chirpui/shell_frame.html" import shell_outlet, shell_outlet_attrs, shell_region %}
+
+        <main id="main" {{ shell_outlet_attrs() }}>
+          {% call shell_outlet(include_boost_attrs=false) %}
+            {% block content %}{% end %}
+          {% end %}
+        </main>
+
+        {% call shell_outlet() %}
+          {% block content %}{% end %}
+        {% end %}
 
         <div id="{{ shell_actions_target }}" class="chirpui-app-shell__shell-actions">
           {% call shell_region(shell_actions_target) %}
@@ -12,6 +24,22 @@
           {% end %}
         </div>
 -#}
+
+{% def shell_outlet_attrs(target="#main", swap="innerHTML", select="#page-content") %}hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-select="{{ select }}"{% end %}{% end %}
+
+{% def shell_outlet(
+    id="page-content",
+    cls="",
+    attrs="",
+    include_boost_attrs=true,
+    target="#main",
+    swap="innerHTML",
+    select="#page-content"
+) %}
+<div id="{{ id }}"{% if cls %} class="{{ cls }}"{% end %}{% if include_boost_attrs %} {{ shell_outlet_attrs(target=target, swap=swap, select=select) }}{% end %}{% if attrs %} {{ attrs | safe }}{% end %}>
+    {% slot %}
+</div>
+{% end %}
 
 {% def shell_region(id, cls="") %}
 <div id="{{ id }}" class="chirpui-shell-region{{ " " ~ cls if cls else "" }}">
