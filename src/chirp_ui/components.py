@@ -176,7 +176,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         category="feedback",
     ),
     "streaming_bubble": ComponentDescriptor(
-        block="streaming_bubble",
+        block="streaming-bubble",
         variants=("", "content", "thinking", "error"),
         template="streaming.html",
         category="feedback",
@@ -202,7 +202,6 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "icon",
             "media",
             "body",
-            "body-content",
             "body-actions",
             "footer",
             "footer-wrap",
@@ -290,19 +289,19 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     # -- Layout -------------------------------------------------------------
     "page_header": ComponentDescriptor(
-        block="page_header",
+        block="page-header",
         variants=("default", "compact"),
         template="document_header.html",
         category="layout",
     ),
     "section_header": ComponentDescriptor(
-        block="section_header",
+        block="section-header",
         variants=("default", "inline"),
         template="document_header.html",
         category="layout",
     ),
     "description_list": ComponentDescriptor(
-        block="description_list",
+        block="description-list",
         variants=("stacked", "horizontal"),
         template="description_list.html",
         category="layout",
@@ -314,13 +313,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         category="layout",
     ),
     "page_hero": ComponentDescriptor(
-        block="page_hero",
+        block="page-hero",
         variants=("editorial", "minimal"),
         template="hero.html",
         category="layout",
     ),
     "message_bubble": ComponentDescriptor(
-        block="message_bubble",
+        block="message-bubble",
         variants=("default", "user", "assistant", "system"),
         template="message_bubble.html",
         category="layout",
@@ -336,7 +335,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         category="effect",
     ),
     "aura_tone": ComponentDescriptor(
-        block="aura_tone",
+        block="aura",
         variants=("accent", "warm", "cool", "muted", "primary"),
         category="effect",
     ),

@@ -1886,6 +1886,15 @@ a.chirpui-action-bar__item {
     width: 100%;
 }
 
+.chirpui-filter-row {
+    align-items: center;
+    margin-bottom: var(--chirpui-spacing);
+}
+
+.chirpui-filter-row label {
+    white-space: nowrap;
+}
+
 .chirpui-command-bar .chirpui-action-strip__actions {
     gap: var(--chirpui-spacing-xs);
 }
