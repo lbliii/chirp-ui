@@ -9,6 +9,7 @@ from chirp_ui.filters import (
     field_errors,
     html_attrs,
     icon,
+    make_route_link_attrs,
     register_colors,
     register_filters,
     resolve_color,
@@ -947,3 +948,71 @@ class TestBuildHxAttrs:
         register_filters(MockApp())
         assert "build_hx_attrs" in registered_globals
         assert registered_globals["build_hx_attrs"] is build_hx_attrs
+
+
+class TestMakeRouteLinkAttrs:
+    """make_route_link_attrs builds route-aware link attr resolvers."""
+
+    def test_no_resolver_returns_empty(self) -> None:
+        route_link_attrs = make_route_link_attrs()
+        assert route_link_attrs("/page") == {}
+
+    def test_no_resolver_with_fallback(self) -> None:
+        route_link_attrs = make_route_link_attrs()
+        result = route_link_attrs("/page", fallback={"hx-boost": "true"})
+        assert result == {"hx-boost": "true"}
+
+    def test_none_href_returns_empty(self) -> None:
+        route_link_attrs = make_route_link_attrs()
+        assert route_link_attrs(None) == {}
+
+    def test_external_href_returns_empty(self) -> None:
+        route_link_attrs = make_route_link_attrs()
+        assert route_link_attrs("https://example.com") == {}
+
+    def test_external_flag_returns_empty(self) -> None:
+        route_link_attrs = make_route_link_attrs()
+        assert route_link_attrs("/page", external=True) == {}
+
+    def test_disabled_returns_empty(self) -> None:
+        route_link_attrs = make_route_link_attrs()
+        assert route_link_attrs("/page", disabled=True) == {}
+
+    def test_boost_false_returns_empty(self) -> None:
+        route_link_attrs = make_route_link_attrs()
+        assert route_link_attrs("/page", boost=False) == {}
+
+    def test_swap_resolver_called_for_internal(self) -> None:
+        def resolver(href, **kw):
+            return {"hx-target": "#main", "hx-boost": "true"}
+
+        route_link_attrs = make_route_link_attrs(swap_resolver=resolver)
+        result = route_link_attrs("/page")
+        assert result == {"hx-target": "#main", "hx-boost": "true"}
+
+    def test_swap_resolver_not_called_for_external(self) -> None:
+        called = []
+
+        def resolver(href, **kw):
+            called.append(href)
+            return {"hx-target": "#main"}
+
+        route_link_attrs = make_route_link_attrs(swap_resolver=resolver)
+        route_link_attrs("https://other.com")
+        assert called == []
+
+    def test_explicit_hx_attrs_skips_resolver(self) -> None:
+        called = []
+
+        def resolver(href, **kw):
+            called.append(href)
+            return {"hx-target": "#main"}
+
+        route_link_attrs = make_route_link_attrs(swap_resolver=resolver)
+        result = route_link_attrs("/page", attrs_map={"hx_post": "/save"})
+        assert result == {}
+        assert called == []
+
+    def test_resolver_returning_non_mapping_returns_empty(self) -> None:
+        route_link_attrs = make_route_link_attrs(swap_resolver=lambda h, **k: None)
+        assert route_link_attrs("/page") == {}

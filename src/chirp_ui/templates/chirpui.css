@@ -17,6 +17,20 @@
    -> @supports capability overrides (oklch, color-mix in oklch)
    ========================================================================== */
 
+/* ==========================================================================
+   Reset — minimal browser normalization
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
 /* Alpine x-cloak — hide until Alpine initializes */
 [x-cloak] { display: none !important; }
 
@@ -954,7 +968,7 @@ html {
 .chirpui-block--span-3 { grid-column: span 3; }
 .chirpui-block--span-full { grid-column: 1 / -1; }
 
-@container chirpui-layout (width < 768px) {
+@container chirpui-layout (width < 48rem) {
     .chirpui-block--span-2,
     .chirpui-block--span-3 {
         grid-column: span 1;
@@ -2845,6 +2859,10 @@ a.chirpui-mention:focus-visible {
     background: var(--chirpui-surface);
 }
 
+.chirpui-navbar--sticky ~ * :where([id]) {
+    scroll-margin-top: calc(var(--chirpui-navbar-height, 3.5rem) + var(--chirpui-spacing-sm));
+}
+
 .chirpui-navbar__links--end {
     margin-left: auto;
 }
@@ -3746,6 +3764,7 @@ a.chirpui-mention:focus-visible {
     min-height: 2rem;
     position: relative;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-streaming-block__cursor {
@@ -4454,7 +4473,6 @@ a.chirpui-mention:focus-visible {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
     padding-inline: var(--chirpui-spacing);
 }
 
@@ -4539,6 +4557,7 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-card__header-content {
     flex: 1;
+    min-width: 0;
 }
 
 .chirpui-card__title {
@@ -5521,6 +5540,7 @@ dialog.chirpui-modal a {
     padding: var(--chirpui-spacing-md);
     overflow-y: auto;
     flex: 1;
+    min-height: 0;
 }
 
 /* ==========================================================================
@@ -5546,6 +5566,11 @@ dialog.chirpui-modal a {
 
 .chirpui-tab:hover {
     border-bottom-color: var(--chirpui-border);
+}
+
+.chirpui-tab:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
 }
 
 .chirpui-tab--active {
@@ -5607,6 +5632,11 @@ dialog.chirpui-modal a {
 
 .chirpui-accordion__trigger:hover {
     background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-accordion__trigger:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
 }
 
 .chirpui-accordion__trigger-text {
@@ -5691,6 +5721,11 @@ dialog.chirpui-modal a {
     background: var(--chirpui-bg-subtle);
 }
 
+.chirpui-collapse__trigger:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
 .chirpui-collapse__content {
     padding: var(--chirpui-spacing) var(--chirpui-spacing-md);
     border-top: 1px solid var(--chirpui-border);
@@ -5729,7 +5764,7 @@ dialog.chirpui-modal a {
     z-index: 10;
     min-width: 10rem;
     max-inline-size: min(20rem, calc(100vw - 2 * var(--chirpui-dropdown-viewport-padding)));
-    max-block-size: calc(100vh - 2 * var(--chirpui-dropdown-viewport-padding));
+    max-block-size: calc(100dvh - 2 * var(--chirpui-dropdown-viewport-padding));
     overflow-x: hidden;
     overflow-y: auto;
     border: 1px solid var(--chirpui-border);
@@ -5846,6 +5881,8 @@ dialog.chirpui-modal a {
     top: 100%;
     margin-top: var(--chirpui-spacing-xs);
     min-width: 10rem;
+    max-height: calc(100dvh - 2 * var(--chirpui-spacing));
+    overflow-y: auto;
     padding: var(--chirpui-spacing-xs);
     background: var(--chirpui-surface);
     border: 1px solid var(--chirpui-border);
@@ -6280,7 +6317,7 @@ a.chirpui-tag:active {
     position: fixed;
     top: var(--chirpui-spacing);
     right: var(--chirpui-spacing);
-    z-index: 50;
+    z-index: 100;
     display: flex;
     flex-direction: column;
     gap: var(--chirpui-spacing-sm);
@@ -6949,7 +6986,7 @@ a.chirpui-tag:active {
     top: auto;
     width: 100%;
     max-width: none;
-    max-height: 70vh;
+    max-height: 70dvh;
     transform: translateY(100%);
 }
 .chirpui-tray--bottom.chirpui-tray--open .chirpui-tray__panel {
@@ -7021,7 +7058,7 @@ a.chirpui-tag:active {
     position: relative;
     width: 100%;
     max-width: 28rem;
-    max-height: 90vh;
+    max-height: 90dvh;
     background: var(--chirpui-surface);
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius);
@@ -7406,6 +7443,16 @@ a.chirpui-tag:active {
         0 8px 14px color-mix(in srgb, black 28%, transparent);
 }
 
+[data-theme="dark"][data-style="neumorphic"] .chirpui-btn--primary,
+[data-theme="dark"][data-style="neumorphic"] .chirpui-btn--danger,
+[data-theme="dark"][data-style="neumorphic"] .chirpui-split-btn__primary.chirpui-btn--primary
+    + .chirpui-split-btn__dropdown
+    .chirpui-split-btn__trigger {
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, white 12%, transparent),
+        0 8px 14px color-mix(in srgb, black 55%, transparent);
+}
+
 [data-style="neumorphic"] .chirpui-btn--ghost {
     box-shadow: none;
     background: transparent;
@@ -7482,6 +7529,12 @@ a.chirpui-tag:active {
     border: 1px solid var(--chirpui-neu-lowlight-border);
 }
 
+[data-theme="dark"][data-style="neumorphic"] .chirpui-toggle-wrap .chirpui-toggle__track {
+    box-shadow:
+        inset -1px -1px 3px color-mix(in srgb, white 6%, transparent),
+        inset 2px 2px 5px color-mix(in srgb, black 44%, transparent);
+}
+
 [data-style="neumorphic"] .chirpui-toggle-wrap:has(.chirpui-toggle:checked) .chirpui-toggle__track {
     box-shadow: var(--chirpui-neu-pressed);
 }
@@ -7513,6 +7566,13 @@ a.chirpui-tag:active {
     box-shadow:
         inset 0 1px 0 var(--chirpui-neu-chamfer),
         0 1px 1px color-mix(in srgb, black 20%, transparent);
+}
+
+[data-theme="dark"][data-style="neumorphic"] .chirpui-progress__fill,
+[data-theme="dark"][data-style="neumorphic"] .chirpui-bar-chart__bar {
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
+        0 1px 1px color-mix(in srgb, black 45%, transparent);
 }
 
 [data-style="neumorphic"] .chirpui-btn:focus-visible,
@@ -9765,9 +9825,6 @@ html {
     scroll-padding-top: var(--chirpui-shell-offset-top);
 }
 
-body:has(> .chirpui-app-shell) {
-    margin: 0;
-}
 
 .chirpui-app-shell {
     display: grid;
@@ -10650,8 +10707,8 @@ body.htmx-request .chirpui-nav-progress::after {
     100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 @keyframes chirpui-confetti-sway {
-    0%, 100% { margin-left: 0; }
-    50% { margin-left: 30px; }
+    0%, 100% { translate: 0 0; }
+    50% { translate: 30px 0; }
 }
 
 /* --- Orbit: circular rotation --- */
@@ -10732,8 +10789,17 @@ body.htmx-request .chirpui-nav-progress::after {
     .chirpui-ascii-spinner__char,
     .chirpui-ascii-skeleton,
     .chirpui-ascii-skeleton__fill,
-    .chirpui-ascii-skeleton__line {
+    .chirpui-ascii-skeleton__line,
+    .chirpui-gradient-text--animated,
+    .chirpui-accordion__content,
+    .chirpui-collapse__content {
         animation: none !important;
+        transition: none !important;
+    }
+    dialog.chirpui-modal,
+    .chirpui-modal,
+    .chirpui-modal[data-modal-id] .chirpui-modal__panel,
+    .chirpui-toast {
         transition: none !important;
     }
     .chirpui-text-reveal { clip-path: none; }
@@ -11557,6 +11623,10 @@ body.htmx-request .chirpui-nav-progress::after {
     user-select: none;
 }
 .chirpui-segmented__option:hover { color: var(--chirpui-text); }
+.chirpui-segmented__option:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
 .chirpui-segmented__option--active,
 .chirpui-segmented__option:has(input:checked) {
     background: var(--chirpui-surface);
@@ -12254,6 +12324,7 @@ body.htmx-request .chirpui-nav-progress::after {
     border: 1px solid var(--chirpui-border);
     font-size: var(--chirpui-font-sm);
     animation: chirpui-orbit var(--chirpui-orbit-duration, 12s) linear infinite;
+    pointer-events: none;
     --chirpui-orbit-radius: calc(var(--chirpui-orbit-size, 200px) / 2 - 12px);
 }
 .chirpui-orbit__item:nth-child(1) { animation-delay: 0s; }
@@ -12331,7 +12402,7 @@ body.htmx-request .chirpui-nav-progress::after {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 10000;
     overflow: hidden;
 }
 .chirpui-confetti__piece {
@@ -14984,10 +15055,18 @@ body.htmx-request .chirpui-nav-progress::after {
     top: 0;
     z-index: 50;
 }
+.chirpui-site-header--sticky ~ * :where([id]) {
+    scroll-margin-top: calc(var(--chirpui-site-header-height, 3.5rem) + var(--chirpui-spacing-sm));
+}
 .chirpui-site-header--glass {
-    background: color-mix(in oklab, var(--chirpui-site-header-bg, var(--chirpui-surface)) 78%, transparent);
-    backdrop-filter: blur(var(--chirpui-site-header-blur, 20px)) saturate(1.35);
-    -webkit-backdrop-filter: blur(var(--chirpui-site-header-blur, 20px)) saturate(1.35);
+    background: var(--chirpui-site-header-bg, var(--chirpui-surface));
+}
+@supports (background: color-mix(in oklab, red 50%, transparent)) {
+    .chirpui-site-header--glass {
+        background: color-mix(in oklab, var(--chirpui-site-header-bg, var(--chirpui-surface)) 78%, transparent);
+        backdrop-filter: blur(var(--chirpui-site-header-blur, 20px)) saturate(1.35);
+        -webkit-backdrop-filter: blur(var(--chirpui-site-header-blur, 20px)) saturate(1.35);
+    }
 }
 .chirpui-site-header--solid {
     background: var(--chirpui-site-header-bg, var(--chirpui-surface));
@@ -15021,6 +15100,7 @@ body.htmx-request .chirpui-nav-progress::after {
     grid-column: 1;
     grid-row: 1;
     justify-self: start;
+    min-width: 0;
 }
 .chirpui-site-header__inner--center-brand .chirpui-site-header__nav-end {
     grid-column: 3;
@@ -15256,10 +15336,21 @@ body.htmx-request .chirpui-nav-progress::after {
     background: var(--chirpui-band-bg, var(--chirpui-bg-subtle));
 }
 .chirpui-band--bleed {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
     width: 100vw;
-    margin-left: calc(50% - 50vw);
     padding: var(--chirpui-band-padding, var(--chirpui-spacing-lg)) var(--chirpui-spacing);
     background: var(--chirpui-band-bg, var(--chirpui-bg-subtle));
+}
+@supports (width: 100dvw) {
+    .chirpui-band--bleed {
+        width: 100dvw;
+        margin-left: -50dvw;
+        margin-right: -50dvw;
+    }
 }
 .chirpui-band--contained {
     padding: var(--chirpui-band-padding, var(--chirpui-spacing-lg));
