@@ -812,7 +812,7 @@ class TestSettingsRowCardAware:
     def test_settings_row_list_standalone_no_context(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
-            '{% call settings_row_list(hoverable=true) %}'
+            "{% call settings_row_list(hoverable=true) %}"
             '{{ settings_row("API Key", status="Configured") }}'
             "{% end %}"
         ).render()
@@ -824,7 +824,7 @@ class TestSettingsRowCardAware:
             '{% from "chirpui/card.html" import card %}'
             '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
             '{% call card(title="Config", variant="feature") %}'
-            '{% call settings_row_list(hoverable=true) %}'
+            "{% call settings_row_list(hoverable=true) %}"
             '{{ settings_row("API Key", status="ok") }}'
             "{% end %}"
             "{% end %}"
@@ -836,7 +836,7 @@ class TestSettingsRowCardAware:
             '{% from "chirpui/surface.html" import surface %}'
             '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
             '{% call surface(variant="muted") %}'
-            '{% call settings_row_list(hoverable=true) %}'
+            "{% call settings_row_list(hoverable=true) %}"
             '{{ settings_row("API Key", status="ok") }}'
             "{% end %}"
             "{% end %}"
@@ -851,7 +851,7 @@ class TestSettingsRowCardAware:
             '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
             '{% call surface(variant="muted") %}'
             '{% call card(title="Config", variant="feature") %}'
-            '{% call settings_row_list() %}'
+            "{% call settings_row_list() %}"
             '{{ settings_row("Key", status="ok") }}'
             "{% end %}"
             "{% end %}"
