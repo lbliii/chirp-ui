@@ -982,8 +982,76 @@ Three-column field set for setup targets, health checks, validation summaries. U
 |-------|-------------|
 | `label` | Row label (left column) |
 | `status` | Badge text (middle); variant inferred: ok/configured→success, error/issues→error, else muted |
-| `detail` | Right column; rendered as `<code>` when contains "dori " (command), else plain text |
+| `detail` | Right column; always rendered in monospace (`chirpui-font-mono`) |
 | `status_variant` | Override badge variant: success, error, muted, primary |
+
+### install_snippet
+
+Pre-formatted install command with copy-to-clipboard button. Replaces the pattern of inline Alpine + SVG duplicated across marketing pages.
+
+```html
+{% from "chirpui/code.html" import install_snippet %}
+{{ install_snippet("uv add bengal-chirp") }}
+{{ install_snippet("pip install kida-templates", label="pip", prompt="%") }}
+```
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `command` | *(required)* | Shell command text (auto-escaped in `data-copy-text`) |
+| `label` | `"install"` | Small-caps label above the command; empty string hides it |
+| `prompt` | `"$"` | Shell prompt prefix |
+| `id` | `none` | Optional id on the `<pre>` element |
+| `cls` | `""` | Extra classes on wrapper |
+
+Uses `x-data="chirpuiCopy()"` — register via `Alpine.safeData` in your Chirp app.
+
+### filter_row
+
+Lightweight inline filter form for 2-3 controls. Use instead of `filter_bar` when you don't need the full action strip toolbar chrome.
+
+```html
+{% from "chirpui/filter_bar.html" import filter_row %}
+{% call filter_row("/history/filter",
+    attrs_map={"hx-target": "#results", "hx-swap": "innerHTML",
+                "hx-trigger": "change delay:200ms from:input"}) %}
+    <label for="f-skill">Skill</label>
+    {{ text_field("skill", value=q, size="sm") }}
+{% end %}
+```
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `action` | `none` | Form action URL; omit for JS-only forms |
+| `method` | `"get"` | HTTP method |
+| `attrs_map` | `none` | Dict of HTML/HTMX attributes (passed through `html_attrs`) |
+| `gap` | `"sm"` | Cluster gap size |
+| `cls` | `""` | Extra classes |
+
+### tag_browse (tray + badges + actions)
+
+Composite for the common tag-filtered listing pattern. Provides three macros designed to plug into `resource_index` slots.
+
+```html
+{% from "chirpui/tag_browse.html" import tag_browse_tray, tag_selection_badges, tag_filter_actions %}
+
+{% slot filters_panel %}
+{{ tag_browse_tray("my-filters", "Filter by tags", all_tags, selected_tags, tag_toggle_url, clear_url) }}
+{% end %}
+{% slot selection %}
+{{ tag_selection_badges(selected_tags, tag_toggle_url, clear_url) }}
+{% end %}
+{% slot filter_actions %}
+{{ tag_filter_actions(selected_tags, clear_url) }}
+{% end %}
+```
+
+| Macro | Key Params | Description |
+|-------|-----------|-------------|
+| `tag_browse_tray` | `id`, `title`, `tags`, `selected_tags`, `tag_toggle_url`, `clear_url` | Slide-out tray with tag picker; selected tags get `badge--primary` |
+| `tag_selection_badges` | `selected_tags`, `tag_toggle_url`, `clear_url` | Badge row of selected tags with remove (×) links |
+| `tag_filter_actions` | `selected_tags`, `clear_url` | "Clear all" badge, hidden when no tags selected |
+
+`tag_toggle_url` is a callable: `tag_toggle_url(tag) → URL string`. All links use `route_link_attrs` for boost-aware navigation.
 
 ### config_row_list and config_row_* (toggle, select, editable)
 
