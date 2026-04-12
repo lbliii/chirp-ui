@@ -1179,7 +1179,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "split-layout": ComponentDescriptor(
         block="split-layout",
-        variants=("horizontal", "vertical", "sidebar", "balanced", "wide-primary", "wide-secondary"),
+        variants=(
+            "horizontal",
+            "vertical",
+            "sidebar",
+            "balanced",
+            "wide-primary",
+            "wide-secondary",
+        ),
         modifiers=("gap-sm", "gap-md", "gap-lg"),
         elements=("primary", "secondary"),
         slots=("primary", "secondary"),
