@@ -13,12 +13,25 @@ Authoritative site copy lives in **`site/content/docs/app-shell/ui-layers.md`**.
 | **Shell regions** | Stable ids for HTMX OOB: see `chirp.shell_regions` in Chirp. |
 | **Marketing site shell** | Full-page scroll layout: `site_shell()` + `site_header()` + `site_footer()`. Use for landing pages, docs homes, marketing sites. Counterpart to **app shell** — no sidebar, no fixed `#main`. |
 | **Surface chrome** | Component frame (card/panel/bento border and padding) — not the app shell. |
+| **Navigation domain** | The author-facing boundary declared in Chirp `_layout.html` via `{# domain: name #}`. `swap_attrs()` uses shared domain ancestry to choose the right swap target. |
 
 Do **not** use "chrome" alone for the global frame; say **app shell**, **site shell**, or name the region.
 
 ## Chirp `mount_pages` layouts
 
-Filesystem `_layout.html` files that extend `chirpui/app_shell_layout.html` should declare `{# target: body #}` and **`{# outlet: main #}`** so Chirp’s `LayoutChain` matches `HX-Target: #main` on boosted navigation. The server then wraps the page with the full shell (including `#page-content` for `hx-select`). Without `{# outlet: main #}`, `main` may not match any layout and the response can omit `#page-content`, which breaks shell swaps. See Chirp’s **filesystem routing** guide (Layouts / persistent app shell).
+Filesystem `_layout.html` files that extend `chirpui/app_shell_layout.html` should declare `{# target: body #}`, an explicit **`{# domain: ... #}`**, and **`{# outlet: main #}`** so Chirp can both resolve route-aware navigation and match `HX-Target: #main` on boosted requests.
+
+Minimal pattern:
+
+```html
+{# target: body #}
+{# domain: workspace #}
+{# shell: workspace #}
+{# outlet: main #}
+{% extends "chirpui/app_shell_layout.html" %}
+```
+
+The server then wraps the page with the full shell (including `#page-content` for `hx-select`). Without `{# outlet: main #}`, `main` may not match any layout and the response can omit `#page-content`, which breaks shell swaps. See Chirp’s **filesystem routing** guide (Layouts / persistent app shell).
 
 ## Page fragment targets
 

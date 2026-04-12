@@ -52,12 +52,33 @@ For chat, maps, or IDE-style surfaces that should **fill the viewport** below th
 The recommended app path is now:
 
 1. Call `use_chirp_ui(app)` so Chirp registers the canonical shell contract.
-2. Keep one section descriptor source in Python for sidebar groups, tab families, and breadcrumb prefixes.
-3. Extend `chirpui/tabbed_page_layout.html` for route-backed pages and pass `tab_items` plus `current_path`.
-4. Return `Page(..., "page_content", page_block_name="page_root", ...)` or `PageComposition(..., fragment_block="page_content", page_block="page_root", ...)`.
-5. Let Chirp validate that your leaf pages actually provide the required shell blocks.
+2. In filesystem apps, declare `{# preset: chirpui-app-shell #}` on the `_layout.html` that owns the app shell, then add route-specific `{# domain: ... #}` / `{# shell: ... #}` metadata.
+3. Keep one section descriptor source in Python for sidebar groups, tab families, and breadcrumb prefixes.
+4. Extend `chirpui/tabbed_page_layout.html` for route-backed pages and pass `tab_items` plus `current_path`.
+5. Return `Page(..., "page_content", page_block_name="page_root", ...)` or `PageComposition(..., fragment_block="page_content", page_block="page_root", ...)`.
+6. Let Chirp validate that your leaf pages actually provide the required shell blocks.
 
 That gives you one shell, one tab model, one set of fragment targets, and predictable OOB updates without app-local wrapper glue.
+
+Minimal filesystem shell:
+
+```html
+{# preset: chirpui-app-shell #}
+{# target: body #}
+{# domain: workspace #}
+{# shell: workspace #}
+{% extends "chirpui/app_shell_layout.html" %}
+```
+
+For nested app shells, keep the preset and override the target:
+
+```html
+{# preset: chirpui-app-shell #}
+{# target: main #}
+{# domain: showcase #}
+{# shell: showcase #}
+{% from "chirpui/app_shell.html" import app_shell %}
+```
 
 ## Reference Pattern
 

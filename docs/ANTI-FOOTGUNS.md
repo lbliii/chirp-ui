@@ -60,9 +60,20 @@ Alpine.safeData('counter', () => ({ count: 0 }));
 </script>
 ```
 
+chirp-ui's shared behavior runtime follows this rule already. If you need a new
+named controller, add it to `chirpui-alpine.js` instead of introducing another
+inline component-local registration script.
+
 ### Do not load Alpine.js yourself — Chirp is the single authority
 
 `use_chirp_ui(app)` auto-enables `alpine=True`, which injects Alpine core, all plugins (Mask, Intersect, Focus), store init, and the `safeData` helper. Adding your own `<script src="alpinejs">` tag will double-load Alpine and cause unpredictable behavior.
+
+### Keep medium-complex behavior out of inline `x-data`
+
+Inline `x-data` is fine for tiny one-state widgets. It should not hold behavior
+that depends on `$refs`, `$nextTick`, keyboard handling, `localStorage`,
+viewport measurement, dialog targeting, or repeated logic across templates. Use
+the shared controllers in `chirpui-alpine.js` for those cases.
 
 ---
 
@@ -80,13 +91,35 @@ app = App(...)
 use_chirp_ui(app, prefix="/static")  # Before any render
 ```
 
+### Prefer plain `href=` on supported link components
+
+When `use_chirp_ui(app)` is active, selected link-bearing components auto-apply
+Chirp's route-aware swap attrs for internal links. That includes `btn()`,
+`site_header()` brand links, `site_nav_link()`, `footer_link()`, `app_shell()`
+brand links, and `shell_brand_link()`.
+
+Use plain `href=` first:
+
+```kida
+{{ btn("Open showcase", href="/showcase") }}
+{{ site_nav_link("/docs", "Docs") }}
+{{ footer_link("/contact", "Contact") }}
+```
+
+Do not manually thread `swap_attrs()` into those components unless you need a
+special override. External links and explicit `hx-*` args still win.
+
 ---
 
 ## Static Path Setup
 
 ### CSS and JS must be served from the correct path
 
-Include `chirpui.css` and `chirpui.js` from `chirp_ui.static_path()`. With Chirp's `use_chirp_ui`, the prefix is configured automatically. For standalone setups, ensure your static file server serves the chirp-ui templates directory.
+Include `chirpui.css`, `chirpui.js`, and `chirpui-alpine.js` from
+`chirp_ui.static_path()`. With Chirp's `use_chirp_ui`, the prefix is configured
+automatically and the Alpine runtime is injected for full pages. For standalone
+setups, ensure your static file server serves the chirp-ui templates directory
+and load `chirpui-alpine.js` before the Alpine core script.
 
 ```python
 from chirp.middleware.static import StaticFiles

@@ -9,9 +9,10 @@
 {% def copy_button(text, label="Copy") %}
 {% set _role = consume("_streaming_role", "") %}
 <button type="button" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-copy-btn{{ " chirpui-copy-btn--" ~ _role if _role else "" }}"
-        x-data="{ copied: false }"
+        x-data="chirpuiCopy()"
         data-copy-text="{{ text | e }}"
-        @click="navigator.clipboard?.writeText($el.dataset.copyText||'').then(() => { copied = true; setTimeout(() => copied = false, 1500) })"
+        data-copy-timeout="1500"
+        @click="copy()"
         aria-label="{{ label }}">
     <span class="chirpui-copy-btn__label" x-show="!copied">{{ label }}</span>
     <span class="chirpui-copy-btn__done" x-show="copied" x-cloak>Copied!</span>

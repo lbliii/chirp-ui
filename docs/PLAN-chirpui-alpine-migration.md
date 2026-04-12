@@ -1,5 +1,20 @@
 # chirp-ui: Migrate chirpui.js to Alpine.js
 
+## Status
+
+Historical migration plan. The broad migration described here is complete:
+
+- `chirpui.js` is now pre-paint theme/style init only.
+- interactive behavior lives in Alpine-powered templates
+- the current contract for shared behavior lives in `ALPINE-MAGICS.md`
+
+Use this file as background only. For the current runtime split and public
+controller/store/event contract, see:
+
+- `docs/ALPINE-MAGICS.md`
+- `docs/ANTI-FOOTGUNS.md`
+- Chirp's `site/content/docs/guides/alpine.md`
+
 ## Goal
 
 Replace the custom vanilla JS in `chirpui.js` with Alpine.js for interactive components. Align chirp-ui with the HTMX + Alpine stack, reduce custom code to maintain, and use declarative patterns.

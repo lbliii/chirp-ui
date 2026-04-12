@@ -62,8 +62,9 @@
 {% def confirm_trigger(target, label="Confirm", cls="") %}
 <button class="chirpui-modal-trigger chirpui-confirm-trigger{{ " " ~ cls if cls else "" }}"
         type="button"
-        x-data
-        @click="document.getElementById('{{ target }}')?.showModal()">
+        x-data="chirpuiDialogTarget()"
+        data-dialog-target="{{ target }}"
+        @click="open()">
     {{ label }}
 </button>
 {% end %}

@@ -58,7 +58,7 @@
 {% def footer_link(href, label, glyph="", external=false, cls="") %}
 <li>
     <a class="chirpui-site-footer__link{{ " chirpui-site-footer__link--external" if external else "" }}{{ " " ~ cls if cls else "" }}"
-       href="{{ href }}"{% if external %} rel="noopener noreferrer"{% end %}>
+       href="{{ href }}"{% if external %} rel="noopener noreferrer"{% end %}{{ route_link_attrs(href, external=external) | html_attrs }}>
         {%- if glyph %}<span class="chirpui-site-footer__link-glyph" aria-hidden="true">{{ glyph }}</span>{% end -%}
         {{ label -}}
     </a>

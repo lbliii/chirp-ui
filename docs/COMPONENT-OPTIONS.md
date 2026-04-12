@@ -144,21 +144,29 @@ Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates w
 
 ## JavaScript Dependencies
 
-Interactive components require **Alpine.js** (loaded before chirp-ui components). Use `chirpui.js` for theme/style init only.
+Interactive components require **Alpine.js**. With Chirp, `use_chirp_ui(app)`
+auto-enables Alpine injection and also injects `chirpui-alpine.js`, which
+registers chirp-ui's named Alpine controllers. `chirpui.js` remains the
+pre-paint theme/style initializer only.
 
 | Template / Component | Required JS | Notes |
 |---------------------|-------------|-------|
-| `dropdown_menu.html` | Alpine.js | `x-data`, `x-show`, `@click.outside`, `x-transition` |
-| `modal.html` | Alpine.js (optional) | `modal_trigger` uses `@click`; native `<dialog>` for modal |
+| `dropdown_menu.html` | Alpine.js + `chirpui-alpine.js` | Uses `chirpuiDropdown()` / `chirpuiDropdownSelect()` |
+| `modal.html` | Alpine.js + `chirpui-alpine.js` | `modal_trigger` uses `chirpuiDialogTarget()`; native `<dialog>` remains the dialog surface |
 | `modal_overlay.html` | Alpine.js | Overlay behavior |
 | `tray.html` | Alpine.js | Slide-in panel |
 | `tabs_panels.html` | Alpine.js | Tab switching |
-| `theme_toggle.html` | Alpine.js | Theme/style persistence |
-| `copy_button.html` | Alpine.js | Copy-to-clipboard |
+| `theme_toggle.html` | Alpine.js + `chirpui-alpine.js` | Theme/style persistence via named controllers |
+| `copy_button.html` | Alpine.js + `chirpui-alpine.js` | Copy-to-clipboard via `chirpuiCopy()` |
 | `forms.html` (masked_field, phone_field, money_field) | Alpine.js + @alpinejs/mask | `x-mask`, `x-mask:dynamic` |
 | `chirpui.js` | — | Pre-paint theme/style init only |
+| `chirpui-alpine.js` | Alpine.js | Named controller runtime for chirp-ui behavior API |
 
-**Static path:** Include `chirpui.css` and `chirpui.js` from `chirp_ui.static_path()`. Use `use_chirp_ui(app)` with Chirp for automatic registration.
+**Static path:** Include `chirpui.css`, `chirpui.js`, and `chirpui-alpine.js`
+from `chirp_ui.static_path()`. With Chirp, prefer `use_chirp_ui(app)` so the
+runtime is injected automatically and stays aligned with Chirp's Alpine
+bootstrap. In standalone setups, load `chirpui-alpine.js` before the Alpine
+core script.
 
 ---
 

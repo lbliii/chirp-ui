@@ -1,6 +1,6 @@
 /**
  * chirp-ui — Pre-paint theme/style init only.
- * Interactive components (dropdown, modal, tray, tabs, theme toggle, copy) use Alpine.js.
+ * Interactive components use Alpine.js plus chirpui-alpine.js for shared controllers.
  * Include Alpine.js before components. app_shell_layout includes Alpine + pre-paint inline.
  *
  * For custom layouts: include this for theme init, or add the inline script from app_shell_layout.

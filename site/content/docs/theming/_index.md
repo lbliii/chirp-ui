@@ -39,7 +39,7 @@ Set `data-theme="light"` or `data-theme="dark"` on `<html>`.
 For fully static Bengal sites, `chirp-ui` now also ships `chirp-theme`, a
 static-first docs and marketing theme packaged in this project.
 
-- [chirp-theme](./chirp-theme/) - packaged Bengal theme with the `b-site`-inspired aesthetic
+- [chirp-theme](/docs/theming/chirp-theme/) - packaged Bengal theme with the `b-site`-inspired aesthetic
 
 ## Motion
 

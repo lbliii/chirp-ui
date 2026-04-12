@@ -13,6 +13,7 @@ from kida.template import Markup
 from chirp_ui.filters import (
     build_hx_attrs,
     contrast_text,
+    make_route_link_attrs,
     resolve_color,
     sanitize_color,
     value_type,
@@ -54,8 +55,7 @@ def _bem_stub(
         parts.append(f"chirpui-{block}--{variant}")
     if size:
         parts.append(f"chirpui-{block}--{size}")
-    for m in modifiers:
-        parts.append(f"chirpui-{block}--{m}")
+    parts.extend(f"chirpui-{block}--{m}" for m in modifiers)
     if cls:
         parts.append(cls)
     return " ".join(parts)
@@ -185,6 +185,7 @@ def env() -> Environment:
         }
     )
     e.add_global("build_hx_attrs", build_hx_attrs)
+    e.add_global("route_link_attrs", make_route_link_attrs())
     e.add_global("island_attrs", _island_attrs_stub)
     e.add_global("primitive_attrs", _primitive_attrs_stub)
     e.add_global(

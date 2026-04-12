@@ -1,7 +1,7 @@
 # chirp-theme
 
 `chirp-theme` is the packaged Bengal theme that now ships from the `chirp-ui`
-repo. It is intentionally **static-first** and keeps v1 self-contained.
+project. The theme is intentionally **static-first** and keeps v1 self-contained.
 
 ## Package Layout
 
@@ -11,8 +11,8 @@ Theme resources live under:
 - `src/bengal_themes/chirp_theme/templates/`
 - `src/bengal_themes/chirp_theme/assets/`
 
-The package is registered in `pyproject.toml` through the `bengal.themes`
-entry-point group as:
+`pyproject.toml` registers the package through the `bengal.themes`
+entry-point group:
 
 ```toml
 [project.entry-points."bengal.themes"]
@@ -21,7 +21,7 @@ chirp-theme = "bengal_themes.chirp_theme"
 
 ## Why v1 Is Self-Contained
 
-Today Bengal's Kida theme integration builds a `FileSystemLoader` from theme
+Today Bengal's template integration builds a `FileSystemLoader` from theme
 directories only. That means an installed Bengal theme can resolve templates
 from:
 
@@ -46,13 +46,13 @@ theme consume `chirp_ui` templates directly.
 
 Desired end state:
 
-1. Bengal theme templates can include/import package-provided Kida templates.
+1. Bengal theme templates can include or import package-provided templates.
 2. `chirp-theme` becomes a thinner composition layer over `chirp_ui`.
 3. Template duplication between the theme package and `chirp_ui` shrinks.
 
-Likely Bengal work:
+Expected Bengal work:
 
-1. Extend Kida loader construction so a theme can register package template roots.
+1. Extend template loader construction so a theme can register package template roots.
 2. Preserve current theme precedence rules for site, installed theme, and bundled theme overrides.
 3. Keep the fallback story deterministic so `extends` and `include` still resolve predictably.
 

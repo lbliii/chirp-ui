@@ -69,7 +69,11 @@
 {# Do not use inside app_shell brand_slot: app_shell already wraps the slot in one <a>. #}
 {% def shell_brand_link(href="/", cls="", boost=true) %}
 <a href="{{ href }}" class="chirpui-app-shell__brand{{ " " ~ cls if cls else "" }}"
-   {% if boost %}{{ shell_outlet_attrs() }}{% end %}
+   {{ route_link_attrs(
+       href,
+       boost=boost,
+       fallback=build_hx_attrs(hx_boost="true", hx_target="#main", hx_swap="innerHTML", hx_select="#page-content")
+   ) | html_attrs }}
 >{% slot %}</a>
 {% end %}
 

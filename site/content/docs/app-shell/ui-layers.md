@@ -24,12 +24,29 @@ This page aligns with the **Chirp** guide: [UI layers & shell regions](https://l
 | **Shell regions** | Stable `id`s updated by `hx-swap-oob` (e.g. `chirp-shell-actions`, `chirpui-document-title`). |
 | **Marketing site shell** | Full-page scroll layout: `site_shell()` + `site_header()` + `site_footer()`. Use for landing pages, docs homes, marketing sites. Counterpart to **app shell** — no sidebar, no fixed `#main`. |
 | **Surface chrome** | Visual frame of a **component** (`surface`, `panel`, bento): border, padding, scroll — *not* the app shell. |
+| **Navigation domain** | The author-facing boundary declared in Chirp `_layout.html` via `{# domain: name #}`. `swap_attrs()` uses shared domain ancestry to choose the right swap target. |
 
 **Avoid:** using "chrome" alone for the whole app frame — say **app shell**, **site shell**, or **topbar/sidebar**.
 
 ## Chirp `mount_pages` layouts
 
-Filesystem `_layout.html` files that extend `app_shell_layout` should declare `{# target: body #}` and **`{# outlet: main #}`** so Chirp matches `HX-Target: #main` and returns HTML that includes `#page-content` for `hx-select` on boosted navigation. See the Chirp guide [Filesystem routing](https://lbliii.github.io/chirp/docs/routing/filesystem-routing/) (persistent app shell pattern).
+Filesystem `_layout.html` files that extend `app_shell_layout` should declare `{# target: body #}`, an explicit **`{# domain: ... #}`**, and **`{# outlet: main #}`** so Chirp can:
+
+- decide which links should boost together from shared domain ancestry
+- match `HX-Target: #main` for intra-domain app-shell navigation
+- return HTML that still includes `#page-content` for `hx-select`
+
+Minimal pattern:
+
+```html
+{# target: body #}
+{# domain: workspace #}
+{# shell: workspace #}
+{# outlet: main #}
+{% extends "chirpui/app_shell_layout.html" %}
+```
+
+See the Chirp guide [Filesystem routing](https://lbliii.github.io/chirp/docs/routing/filesystem-routing/) for the routing-side contract.
 
 ## chirp-ui responsibilities
 

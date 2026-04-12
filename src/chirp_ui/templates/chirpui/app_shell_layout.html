@@ -58,12 +58,6 @@
 <script>
 (function(){var t=localStorage.getItem("chirpui-theme")||"system";var s=localStorage.getItem("chirpui-style")||"default";document.documentElement.setAttribute("data-theme",t);document.documentElement.setAttribute("data-style",s);})();
 </script>
-<script>
-document.addEventListener("alpine:init",function(){
-  Alpine.store("modals",{});
-  Alpine.store("trays",{});
-});
-</script>
 {% block head_extra %}{% end %}
 {% end %}
 
@@ -77,7 +71,8 @@ document.addEventListener("alpine:init",function(){
 {% set _shell_actions = shell_actions | default(none) %}
 {% set _shell_actions_target = _shell_actions.target if _shell_actions else "chirp-shell-actions" %}
 <div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}"
-     x-data="{ collapsible: {{ 'true' if _collapsible else 'false' }}, collapsed: localStorage.getItem('chirpui-sidebar-collapsed') === 'true', toggle() { this.collapsed = !this.collapsed; localStorage.setItem('chirpui-sidebar-collapsed', this.collapsed); } }"
+     x-data="chirpuiSidebar({ collapsible: {{ 'true' if _collapsible else 'false' }}, resizable: false })"
+     x-init="init()"
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsible && collapsed }">
   <header class="chirpui-app-shell__topbar">
     {% if _collapsible %}<div class="chirpui-app-shell__topbar-start">{{ sidebar_toggle() }}</div>{% endif %}

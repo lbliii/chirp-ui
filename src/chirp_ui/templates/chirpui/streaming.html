@@ -63,9 +63,10 @@
 <button type="button"
         class="chirpui-copy-btn{{ " " ~ cls if cls else "" }}"
         title="{{ label }}"
-        x-data="{ copied: false }"
+        x-data="chirpuiCopy()"
         data-copy-text="{{ copy_text | e }}"
-        @click="navigator.clipboard?.writeText($el.dataset.copyText||'').then(() => { copied = true; setTimeout(() => copied = false, 1500) })"
+        data-copy-timeout="1500"
+        @click="copy()"
         aria-label="{{ label }}">
     <span class="chirpui-copy-btn__label" x-show="!copied">{{ label }}</span>
     <span class="chirpui-copy-btn__done" x-show="copied" x-cloak>Copied!</span>

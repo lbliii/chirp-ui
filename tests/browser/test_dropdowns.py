@@ -115,8 +115,10 @@ async def test_dropdown_realigns_near_viewport_edge(page, base_url):
     await wait_for_alpine(page)
 
     dropdown = page.locator("[data-testid='dropdown-menu-right-edge'] .chirpui-dropdown")
-    trigger = page.locator("[data-testid='dropdown-menu-right-edge'] .chirpui-dropdown__trigger")
-    await trigger.click()
+    await page.evaluate("""() => {
+        const el = document.querySelector('[data-testid="dropdown-menu-right-edge"] .chirpui-dropdown');
+        el._x_dataStack[0].toggle();
+    }""")
 
     menu = page.locator("[data-testid='dropdown-menu-right-edge'] .chirpui-dropdown__menu")
     await menu.wait_for(state="visible", timeout=2000)

@@ -14,32 +14,7 @@
 <div class="chirpui-dropdown" id="{{ dropdown_id }}" x-id="['dropdown-menu']"
      :data-align-x="alignX"
      :data-align-y="alignY"
-     x-data="{
-       open: false,
-       alignX: 'start',
-       alignY: 'bottom',
-       toggle() {
-         if (this.open) return this.close();
-         this.$refs.trigger?.focus();
-         this.open = true;
-         this.$nextTick(() => this.reposition());
-       },
-       close(focusAfter) { if (!this.open) return; this.open = false; focusAfter?.focus() },
-       reposition() {
-         const panel = this.$refs.panel;
-         const trigger = this.$refs.trigger;
-         if (!panel || !trigger) return;
-         const padding = 12;
-         const panelRect = panel.getBoundingClientRect();
-         const triggerRect = trigger.getBoundingClientRect();
-         const rightSpace = window.innerWidth - triggerRect.left - padding;
-         const leftSpace = triggerRect.right - padding;
-         const bottomSpace = window.innerHeight - triggerRect.bottom - padding;
-         const topSpace = triggerRect.top - padding;
-         this.alignX = panelRect.width > rightSpace && leftSpace > rightSpace ? 'end' : 'start';
-         this.alignY = panelRect.height > bottomSpace && topSpace > bottomSpace ? 'top' : 'bottom';
-       }
-     }"
+     x-data="chirpuiDropdown()"
      @keydown.escape.prevent.stop="close($refs.trigger)"
      @focusin.window="!$refs.panel?.contains($event.target) && close($refs.trigger)"
      @click.outside="close($refs.trigger)"
@@ -98,38 +73,11 @@
 {% endfor %}
 <div class="chirpui-dropdown chirpui-dropdown--select" id="{{ id }}" x-id="['dropdown-select', 'listbox-option']"
      data-item-count="{{ items|length }}"
+     data-selected="{{ display | e }}"
      :data-align-x="alignX"
      :data-align-y="alignY"
-     x-data="{
-       open: false, selected: '{{ display | e }}', focusedIndex: 0, alignX: 'start', alignY: 'bottom',
-       toggle() {
-         if (this.open) return this.close();
-         this.open = true;
-         this.$nextTick(() => {
-           this.reposition();
-           this.focusedIndex = 0;
-           this.$refs['item-0']?.focus();
-         });
-       },
-       close(focusAfter) { if (!this.open) return; this.open = false; focusAfter?.focus() },
-       reposition() {
-         const panel = this.$refs.panel;
-         const trigger = this.$refs.trigger;
-         if (!panel || !trigger) return;
-         const padding = 12;
-         const panelRect = panel.getBoundingClientRect();
-         const triggerRect = trigger.getBoundingClientRect();
-         const rightSpace = window.innerWidth - triggerRect.left - padding;
-         const leftSpace = triggerRect.right - padding;
-         const bottomSpace = window.innerHeight - triggerRect.bottom - padding;
-         const topSpace = triggerRect.top - padding;
-         this.alignX = panelRect.width > rightSpace && leftSpace > rightSpace ? 'end' : 'start';
-         this.alignY = panelRect.height > bottomSpace && topSpace > bottomSpace ? 'top' : 'bottom';
-       },
-       keyDown() { const m = parseInt(this.$el.dataset.itemCount || '0', 10) - 1; if (this.focusedIndex < m) { this.focusedIndex++; this.$refs['item-' + this.focusedIndex]?.focus() } },
-       keyUp() { if (this.focusedIndex > 0) { this.focusedIndex--; this.$refs['item-' + this.focusedIndex]?.focus() } },
-       keyEnter() { const el = this.$refs['item-' + this.focusedIndex]; if (el) { this.selected = el.dataset.label; this.open = false; this.close(this.$refs.trigger); this.$dispatch('chirpui:dropdown-selected', { label: el.dataset.label, value: el.dataset.label }) } }
-     }"
+     x-data="chirpuiDropdownSelect()"
+     x-init="init()"
      @keydown.escape.prevent.stop="close($refs.trigger)"
      @focusin.window="!$refs.panel?.contains($event.target) && close($refs.trigger)"
      @click.outside="close($refs.trigger)"
@@ -168,32 +116,7 @@
 <div class="chirpui-dropdown chirpui-dropdown--split" x-id="['dropdown-split']"
      :data-align-x="alignX"
      :data-align-y="alignY"
-     x-data="{
-       open: false,
-       alignX: 'start',
-       alignY: 'bottom',
-       toggle() {
-         if (this.open) return this.close();
-         this.$refs.trigger?.focus();
-         this.open = true;
-         this.$nextTick(() => this.reposition());
-       },
-       close(focusAfter) { if (!this.open) return; this.open = false; focusAfter?.focus() },
-       reposition() {
-         const panel = this.$refs.panel;
-         const trigger = this.$refs.trigger;
-         if (!panel || !trigger) return;
-         const padding = 12;
-         const panelRect = panel.getBoundingClientRect();
-         const triggerRect = trigger.getBoundingClientRect();
-         const rightSpace = window.innerWidth - triggerRect.left - padding;
-         const leftSpace = triggerRect.right - padding;
-         const bottomSpace = window.innerHeight - triggerRect.bottom - padding;
-         const topSpace = triggerRect.top - padding;
-         this.alignX = panelRect.width > rightSpace && leftSpace > rightSpace ? 'end' : 'start';
-         this.alignY = panelRect.height > bottomSpace && topSpace > bottomSpace ? 'top' : 'bottom';
-       }
-     }"
+     x-data="chirpuiDropdown()"
      @keydown.escape.prevent.stop="close($refs.trigger)"
      @focusin.window="!$refs.panel?.contains($event.target) && close($refs.trigger)"
      @click.outside="close($refs.trigger)"

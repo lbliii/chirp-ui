@@ -2,38 +2,21 @@
     Full-page shell with topbar, sidebar, and main content area.
     Navigation is driven by explicit hx-boost on sidebar_link/nav_link,
     targeting #main to keep the sidebar and topbar persistent.
+    In filesystem apps, the route/layout tree should declare matching
+    Chirp domain metadata plus an outlet of main so route-aware links and
+    boosted responses resolve to this shell consistently.
 
     Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar, default (main content).
     For routed apps, wrap the main slot with shell_outlet() so custom shells
     use the same #page-content contract as app_shell_layout.html.
 
     Usage:
-        from "chirpui/app_shell.html" import app_shell
-        from "chirpui/shell_frame.html" import shell_outlet
-
-        call app_shell(brand="My App", brand_url="/")
-            {% slot topbar %}breadcrumbs(...){% end %}
-            {% slot topbar_end %}command_palette_trigger(){% end %}
-            {% slot sidebar %}call sidebar()...end{% end %}
-            {% call shell_outlet() %}
-            Page content here
-            {% end %}
-        end
-
-        call app_shell(brand_url="/", brand_slot=true)
-            {% slot brand %}logo(text="My App", image_src="/static/logo.svg", variant="both"){% end %}
-            {% slot sidebar %}...{% end %}
-            {% call shell_outlet() %}
-            Page content here
-            {% end %}
-        end
-
-        call app_shell(brand="My App", sidebar_collapsible=true)
-            ...
-        end
+        import app_shell plus shell_outlet
+        provide brand / topbar / topbar_end / sidebar slots
+        wrap the main slot with shell_outlet() for routed shells
+        enable sidebar_collapsible=true for the resizable shell variant
 -#}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
-{% from "chirpui/shell_frame.html" import shell_outlet_attrs %}
 
 {% def app_shell(brand="", brand_url="/", brand_slot=false, brand_boost=true, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, cls="") %}
 {% set topbar_variant = topbar_variant | validate_variant(("default","glass","gradient"), "default") %}
@@ -43,15 +26,8 @@
 {% set shell_actions_target = shell_actions.target if shell_actions else "chirp-shell-actions" %}
 {% if sidebar_collapsible %}
 <div class="chirpui-app-shell chirpui-app-shell--sidebar-collapsible{{ " " ~ cls if cls else "" }}"
-     x-data="{
-       collapsed: (function(){var k='chirpui-sidebar-collapsed';var s=localStorage.getItem(k);if(s===null){var w=localStorage.getItem('chirpui-sidebar-width');if(w){var m=w.match(/^(\d+)(px|rem)$/);var px=m?(m[2]==='rem'?parseInt(m[1],10)*16:parseInt(m[1],10)):null;s=px!==null&&px<=96?'true':'false';localStorage.removeItem('chirpui-sidebar-width');}else{s='false';}}return s==='true';})(),
-       _dragging: false, _startX: 0, _startCollapsed: false, _lastX: 0,
-       setCollapsed(v){this.collapsed=v;this.$el.classList.toggle('chirpui-app-shell--sidebar-collapsed',v);this.$el.style.removeProperty('--chirpui-sidebar-width');localStorage.setItem('chirpui-sidebar-collapsed',v?'true':'false');var h=this.$el.querySelector('[data-chirpui-sidebar-toggle]');if(h)h.setAttribute('aria-expanded',v?'false':'true');},
-       toggle(){this.setCollapsed(!this.collapsed);},
-       startDrag(e){e.preventDefault();this._dragging=true;this._startX=e.clientX;this._startCollapsed=this.collapsed;this._lastX=e.clientX;document.body.style.userSelect='none';},
-       onMove(e){if(!this._dragging)return;this._lastX=e.clientX;},
-       onUp(){if(!this._dragging)return;this._dragging=false;document.body.style.userSelect='';var d=this._lastX-this._startX;if(Math.abs(d)>=5){if(d<0&&!this._startCollapsed)this.setCollapsed(true);else if(d>0&&this._startCollapsed)this.setCollapsed(false);}else{this.toggle();}}
-     }"
+     x-data="chirpuiSidebar({ collapsible: true, resizable: true })"
+     x-init="init()"
      @mousemove.window="onMove($event)"
      @mouseup.window="onUp()"
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsed }">
@@ -59,7 +35,11 @@
 <div class="chirpui-app-shell{{ " " ~ cls if cls else "" }}">
 {% end %}
     <header class="chirpui-app-shell__topbar{{ topbar_class }}">
-        <a href="{{ brand_url }}" class="chirpui-app-shell__brand"{% if brand_boost %} {{ shell_outlet_attrs() }}{% end %}>
+        <a href="{{ brand_url }}" class="chirpui-app-shell__brand"{{ route_link_attrs(
+            brand_url,
+            boost=brand_boost,
+            fallback=build_hx_attrs(hx_boost="true", hx_target="#main", hx_swap="innerHTML", hx_select="#page-content")
+        ) | html_attrs }}>
             {% if brand_slot %}
             {% slot brand %}
             {% else %}
@@ -90,10 +70,4 @@
     {#- No whitespace before/after slot: stray text nodes inside grid main break layout/scroll. -#}
     <main id="main" class="chirpui-app-shell__main">{%- slot -%}</main>
 </div>
-<script>
-document.addEventListener("alpine:init",function(){
-  Alpine.store("modals",{});
-  Alpine.store("trays",{});
-});
-</script>
 {% end %}

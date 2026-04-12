@@ -10,9 +10,10 @@
 -#}
 
 {% def command_palette(id="command-palette", search_url="/search", placeholder="Search...") %}
-<div x-data
-     @keydown.window.meta.k.prevent="document.getElementById('{{ id }}')?.showModal()"
-     @keydown.window.ctrl.k.prevent="document.getElementById('{{ id }}')?.showModal()">
+<div x-data="chirpuiDialogTarget()"
+     data-dialog-target="{{ id }}"
+     @keydown.window.meta.k.prevent="open()"
+     @keydown.window.ctrl.k.prevent="open()">
 <dialog id="{{ id }}" class="chirpui-command-palette" closedby="any">
     <div class="chirpui-command-palette__inner">
         <input type="search" class="chirpui-command-palette__input"
@@ -30,9 +31,10 @@
 
 {% def command_palette_trigger(target="command-palette", label="Search", cls="") %}
 <button type="button"
-        class="chirpui-command-palette__trigger{{ " " ~ cls if cls else "" }}"
-        x-data
-        @click="document.getElementById('{{ target }}').showModal()">
+        class="chirpui-command-palette__trigger chirpui-command-palette-trigger{{ " " ~ cls if cls else "" }}"
+        x-data="chirpuiDialogTarget()"
+        data-dialog-target="{{ target }}"
+        @click="open()">
     {{ label }} <kbd class="chirpui-command-palette__kbd">⌘K</kbd>
 </button>
 {% end %}
