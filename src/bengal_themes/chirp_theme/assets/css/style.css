@@ -1,9 +1,9 @@
 /**
- * Bengal SSG Default Theme
+ * chirp-theme
  * Main Stylesheet
  *
- * This file imports all component styles in the correct order.
- * Following CUBE CSS methodology: Composition, Utility, Block, Exception
+ * This owned baseline vendors the Bengal default asset graph, then layers
+ * chirp-theme overrides on top through a final import.
  */
 
 /* ============================================

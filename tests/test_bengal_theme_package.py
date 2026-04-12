@@ -32,7 +32,7 @@ REQUIRED_PARTIALS = (
     "partials/components/tiles.html",
     "partials/components/related-posts-simple.html",
 )
-ASSET_ATTR_RE = re.compile(r"""(?:href|src)=["']([^"']+)["']""")
+ASSET_STRING_RE = re.compile(r"""["'](/?assets/[^"'?#]+\.[A-Za-z0-9]+(?:\?[^"']*)?(?:#[^"']*)?)["']""")
 
 
 def _copy_docs_site(root: Path) -> Path:
@@ -50,10 +50,8 @@ def _iter_local_asset_paths(output_dir: Path) -> set[str]:
     paths: set[str] = set()
     for html_path in output_dir.rglob("*.html"):
         text = html_path.read_text(encoding="utf-8")
-        for match in ASSET_ATTR_RE.finditer(text):
+        for match in ASSET_STRING_RE.finditer(text):
             raw = html_lib.unescape(match.group(1))
-            if raw.startswith(("http://", "https://", "//", "data:", "mailto:", "tel:", "#")):
-                continue
             asset_path = raw.split("?", 1)[0].split("#", 1)[0].lstrip("/")
             if asset_path.startswith("assets/"):
                 paths.add(asset_path)

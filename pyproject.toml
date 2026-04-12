@@ -137,7 +137,7 @@ markers = [
 # =============================================================================
 
 [tool.coverage.run]
-source = ["src/chirp_ui"]
+source = ["src/chirp_ui", "src/bengal_themes"]
 branch = true
 
 [tool.coverage.report]
@@ -163,6 +163,8 @@ docs = [
     "lunr>=0.7.0",
 ]
 dev = [
+    # Bengal-backed theme packaging/build tests run in the normal test suite
+    "bengal>=0.3.0",
     # Task runner (poe tasks in [tool.poe.tasks])
     "poethepoet>=0.32.0",
     # Testing
@@ -195,7 +197,7 @@ browser = [
 # Testing
 test = { cmd = "pytest", help = "Run full test suite" }
 test-fast = { cmd = "pytest tests/ -x -q --timeout=10", help = "Fast feedback loop" }
-test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov-report=term-missing", help = "Run tests with coverage" }
+test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov=bengal_themes --cov-report=term-missing", help = "Run tests with coverage" }
 test-browser = { cmd = "pytest tests/browser/ -q --timeout=30 --override-ini='addopts='", help = "Run browser integration tests (requires: uv sync --group browser && playwright install chromium)" }
 ci-browser = { sequence = ["test-browser"], help = "Browser integration tests (release gate)" }
 

@@ -33,6 +33,12 @@ The long-term goal is:
 3. A theme that uses modern `chirp-ui`, Kida, and Alpine-friendly patterns as
    the foundation for a future Bengal default v2
 
+The current standalone cutover is an ownership cutover first. Today the package
+vendors the legacy Bengal default asset/partial surface into `chirp-theme`,
+then layers `chirp-theme` styling and shell changes on top of that owned
+baseline. That keeps the runtime contract standalone now while leaving room for
+future visual and structural replacement work.
+
 That means the package should own:
 
 - its shell templates

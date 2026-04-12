@@ -59,6 +59,12 @@ That means the package itself should own:
 The `chirp-ui` docs site is the acceptance target for that contract, so the
 theme is continuously dogfooded on a real Bengal site.
 
+In the current cutover, "standalone" means the package owns the full runtime
+surface. The theme currently vendors the Bengal default asset and partial
+baseline into `chirp-theme`, then layers the `chirp-theme` shell and styling on
+top. The next phase is to replace more of that inherited baseline with more
+opinionated `chirp-ui`-driven patterns.
+
 ## Longer-Term Direction
 
 The broader goal is to build a better and more comprehensive alternative to the

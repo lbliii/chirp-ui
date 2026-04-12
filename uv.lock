@@ -202,6 +202,7 @@ browser = [
     { name = "pytest-asyncio" },
 ]
 dev = [
+    { name = "bengal" },
     { name = "poethepoet" },
     { name = "pre-commit" },
     { name = "pytest" },
@@ -232,6 +233,7 @@ browser = [
     { name = "pytest-asyncio", specifier = ">=0.25.0" },
 ]
 dev = [
+    { name = "bengal", specifier = ">=0.3.0" },
     { name = "poethepoet", specifier = ">=0.32.0" },
     { name = "pre-commit", specifier = ">=4.0.0" },
     { name = "pytest", specifier = ">=9.0.2" },
