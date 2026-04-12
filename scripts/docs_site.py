@@ -28,9 +28,7 @@ def _build_bengal_env() -> dict[str, str]:
     bengal_repo = str(_WORKSPACE_BENGAL)
     existing_pythonpath = env.get("PYTHONPATH")
     env["PYTHONPATH"] = (
-        bengal_repo
-        if not existing_pythonpath
-        else bengal_repo + os.pathsep + existing_pythonpath
+        bengal_repo if not existing_pythonpath else bengal_repo + os.pathsep + existing_pythonpath
     )
     return env
 

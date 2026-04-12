@@ -99,7 +99,9 @@ def _stub_route_link_attrs(
     ) -> dict[str, str]:
         if href is None or disabled or external or not boost:
             return {}
-        if isinstance(href, str) and ("://" in href or href.startswith(("#", "//", "mailto:", "tel:", "javascript:", "data:"))):
+        if isinstance(href, str) and (
+            "://" in href or href.startswith(("#", "//", "mailto:", "tel:", "javascript:", "data:"))
+        ):
             return {}
         if isinstance(attrs_map, dict) and any(str(key).startswith("hx-") for key in attrs_map):
             return {}
@@ -1125,7 +1127,8 @@ class TestIndexCard:
 
     def test_index_card_uses_route_link_attrs_when_available(self, env: Environment) -> None:
         env.add_global(
-            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/api/foo"}))
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/api/foo"})),
         )
         html = env.from_string(
             '{% from "chirpui/index_card.html" import index_card %}'
@@ -1137,14 +1140,16 @@ class TestIndexCard:
     def test_index_card_external_href_stays_plain(self, env: Environment) -> None:
         env.add_global(
             "route_link_attrs",
-            _stub_route_link_attrs("site-content", hrefs=frozenset({"https://example.com/api/foo"})),
+            _stub_route_link_attrs(
+                "site-content", hrefs=frozenset({"https://example.com/api/foo"})
+            ),
         )
         html = env.from_string(
             '{% from "chirpui/index_card.html" import index_card %}'
             '{{ index_card(href="https://example.com/api/foo", title="foo") }}'
         ).render()
         assert 'href="https://example.com/api/foo"' in html
-        assert 'hx-target=' not in html
+        assert "hx-target=" not in html
 
 
 # ---------------------------------------------------------------------------
@@ -1323,7 +1328,9 @@ class TestButton:
         assert "hx-select" not in html
 
     def test_btn_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
-        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/demo"})))
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/demo"}))
+        )
         html = env.from_string(
             '{% from "chirpui/button.html" import btn %}{{ btn("Go", href="/demo") }}'
         ).render()
@@ -1332,7 +1339,9 @@ class TestButton:
         assert 'hx-swap="innerHTML"' in html
 
     def test_btn_link_with_explicit_htmx_skips_route_link_attrs(self, env: Environment) -> None:
-        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/demo"})))
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/demo"}))
+        )
         html = env.from_string(
             '{% from "chirpui/button.html" import btn %}'
             '{{ btn("Go", href="/demo", hx_get="/demo", hx_target="#content") }}'
@@ -1341,8 +1350,12 @@ class TestButton:
         assert 'hx-target="#content"' in html
         assert 'hx-boost="false"' in html
 
-    def test_btn_link_with_explicit_htmx_config_skips_route_link_attrs(self, env: Environment) -> None:
-        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/demo"})))
+    def test_btn_link_with_explicit_htmx_config_skips_route_link_attrs(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/demo"}))
+        )
         html = env.from_string(
             '{% from "chirpui/button.html" import btn %}'
             '{{ btn("Go", href="/demo", hx_target="#content") }}'
@@ -1352,7 +1365,9 @@ class TestButton:
         assert 'hx-boost="true"' not in html
 
     def test_btn_link_with_attrs_map_hx_skips_route_link_attrs(self, env: Environment) -> None:
-        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/demo"})))
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/demo"}))
+        )
         html = env.from_string(
             '{% from "chirpui/button.html" import btn %}'
             '{{ btn("Go", href="/demo", attrs_map={"hx-target": "#content"}) }}'
@@ -1801,7 +1816,8 @@ class TestCard:
 
     def test_card_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
         env.add_global(
-            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/skill/demo"}))
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/skill/demo"})),
         )
         html = env.from_string(
             '{% from "chirpui/card.html" import card_link %}'
@@ -1824,7 +1840,7 @@ class TestCard:
             "{% end %}"
         ).render()
         assert 'href="https://example.com/demo"' in html
-        assert 'hx-target=' not in html
+        assert "hx-target=" not in html
 
     def test_card_main_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
         env.add_global(
@@ -1864,7 +1880,8 @@ class TestCard:
         self, env: Environment
     ) -> None:
         env.add_global(
-            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/skills/demo"}))
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/skills/demo"})),
         )
         html = env.from_string(
             '{% from "chirpui/card.html" import resource_card %}'
@@ -1874,7 +1891,9 @@ class TestCard:
         assert 'hx-target="#site-content"' in html
         assert 'hx-boost="true"' in html
 
-    def test_resource_card_links_use_route_link_attrs_when_available(self, env: Environment) -> None:
+    def test_resource_card_links_use_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
         env.add_global(
             "route_link_attrs",
             _stub_route_link_attrs(
@@ -3495,7 +3514,9 @@ class TestAppShell:
         assert 'hx-select="#page-content"' not in html
 
     def test_app_shell_brand_uses_route_link_attrs_when_available(self, env: Environment) -> None:
-        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/"})))
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/"}))
+        )
         html = env.from_string(
             '{% from "chirpui/app_shell.html" import app_shell %}'
             "{% call app_shell(brand='Brand') %}"
@@ -3656,7 +3677,9 @@ class TestLogo:
         assert "</a>" in html
 
     def test_logo_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
-        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/"})))
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/"}))
+        )
         html = env.from_string(
             '{% from "chirpui/logo.html" import logo %}'
             '{{ logo(text="Home", image_src="/static/logo.svg", href="/", variant="both") }}'
@@ -3674,7 +3697,7 @@ class TestLogo:
             '{{ logo(text="Home", image_src="/static/logo.svg", href="https://example.com", variant="both") }}'
         ).render()
         assert 'href="https://example.com"' in html
-        assert 'hx-target=' not in html
+        assert "hx-target=" not in html
 
     def test_logo_image_variant_uses_hidden_text_when_alt_missing(self, env: Environment) -> None:
         html = env.from_string(
@@ -3712,8 +3735,12 @@ class TestSidebar:
         assert 'hx-select="#page-content"' in html
         assert "Brand" in html
 
-    def test_shell_brand_link_prefers_route_link_attrs_when_available(self, env: Environment) -> None:
-        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/"})))
+    def test_shell_brand_link_prefers_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/"}))
+        )
         html = env.from_string(
             '{% from "chirpui/sidebar.html" import shell_brand_link %}'
             "{% call shell_brand_link() %}Brand{% end %}"
@@ -4288,9 +4315,7 @@ class TestCalendar:
         assert "1" in html
         assert "12" in html
 
-    def test_calendar_nav_links_use_route_link_attrs_when_available(
-        self, env: Environment
-    ) -> None:
+    def test_calendar_nav_links_use_route_link_attrs_when_available(self, env: Environment) -> None:
         env.add_global(
             "route_link_attrs",
             _stub_route_link_attrs(
@@ -4369,7 +4394,7 @@ class TestBadge:
             '{{ badge("Tag", href="https://example.com/tags/x") }}'
         ).render()
         assert 'href="https://example.com/tags/x"' in html
-        assert 'hx-target=' not in html
+        assert "hx-target=" not in html
 
 
 class TestRevealOnScroll:
@@ -4888,7 +4913,7 @@ class TestLink:
         ).render()
         assert 'target="_blank"' in html
         assert 'rel="noopener noreferrer"' in html
-        assert 'hx-target=' not in html
+        assert "hx-target=" not in html
 
 
 class TestBreadcrumbs:
@@ -5238,9 +5263,7 @@ class TestActionBar:
 
 
 class TestChannelCard:
-    def test_channel_card_link_uses_route_link_attrs_when_available(
-        self, env: Environment
-    ) -> None:
+    def test_channel_card_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
         env.add_global(
             "route_link_attrs",
             _stub_route_link_attrs("site-content", hrefs=frozenset({"/channel/1"})),
@@ -5362,9 +5385,7 @@ class TestMention:
 
 
 class TestTrendingTag:
-    def test_trending_tag_link_uses_route_link_attrs_when_available(
-        self, env: Environment
-    ) -> None:
+    def test_trending_tag_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
         env.add_global(
             "route_link_attrs",
             _stub_route_link_attrs("site-content", hrefs=frozenset({"/tag/python"})),
@@ -5378,9 +5399,7 @@ class TestTrendingTag:
 
 
 class TestConversationItem:
-    def test_conversation_item_uses_route_link_attrs_when_available(
-        self, env: Environment
-    ) -> None:
+    def test_conversation_item_uses_route_link_attrs_when_available(self, env: Environment) -> None:
         env.add_global(
             "route_link_attrs",
             _stub_route_link_attrs("site-content", hrefs=frozenset({"/chat/1"})),
@@ -5605,7 +5624,7 @@ class TestShimmerButton:
             '{{ shimmer_button("Link", href="/go", disabled=true) }}'
         ).render()
         assert 'href="/go"' not in html
-        assert 'hx-target=' not in html
+        assert "hx-target=" not in html
         assert 'aria-disabled="true"' in html
 
     def test_type_and_attrs(self, env: Environment) -> None:
@@ -5863,7 +5882,7 @@ class TestPulsingButton:
             '{{ pulsing_button("Go Live", href="/live", disabled=true) }}'
         ).render()
         assert 'href="/live"' not in html
-        assert 'hx-target=' not in html
+        assert "hx-target=" not in html
         assert 'aria-disabled="true"' in html
 
 
@@ -6176,7 +6195,7 @@ class TestIconBtn:
             '{{ icon_btn("→", href="https://example.com/next", aria_label="Next") }}'
         ).render()
         assert 'href="https://example.com/next"' in html
-        assert 'hx-target=' not in html
+        assert "hx-target=" not in html
 
     def test_disabled_link_strips_href_and_htmx(self, env: Environment) -> None:
         env.add_global(
@@ -6188,7 +6207,7 @@ class TestIconBtn:
         ).render()
         assert 'href="/next"' not in html
         assert 'hx-get="/next"' not in html
-        assert 'hx-target=' not in html
+        assert "hx-target=" not in html
         assert 'aria-disabled="true"' in html
 
 
@@ -6362,7 +6381,8 @@ class TestMetricCardEnhanced:
 
     def test_footer_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
         env.add_global(
-            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/reports"}))
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/reports"})),
         )
         html = env.from_string(
             '{% from "chirpui/metric_grid.html" import metric_card %}'
@@ -6813,7 +6833,7 @@ class TestSiteShell:
     def test_default_render(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/site_shell.html" import site_shell %}'
-            '{% call site_shell() %}Page content{% end %}'
+            "{% call site_shell() %}Page content{% end %}"
         ).render()
         assert "chirpui-site-shell" in html
         assert "chirpui-site-shell__main" in html
@@ -6822,7 +6842,7 @@ class TestSiteShell:
     def test_ambient_mode(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/site_shell.html" import site_shell %}'
-            '{% call site_shell(ambient=true) %}Content{% end %}'
+            "{% call site_shell(ambient=true) %}Content{% end %}"
         ).render()
         assert "chirpui-ambient-root" in html
         assert "chirpui-ambient" in html
@@ -6830,9 +6850,9 @@ class TestSiteShell:
     def test_header_slot(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/site_shell.html" import site_shell %}'
-            '{% call site_shell() %}'
-            '{% slot header %}<header>TOP</header>{% end %}'
-            'Body{% end %}'
+            "{% call site_shell() %}"
+            "{% slot header %}<header>TOP</header>{% end %}"
+            "Body{% end %}"
         ).render()
         assert "<header>TOP</header>" in html
         assert "Body" in html
@@ -6840,10 +6860,10 @@ class TestSiteShell:
     def test_footer_slot(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/site_shell.html" import site_shell %}'
-            '{% call site_shell() %}'
-            'Body'
-            '{% slot footer %}<footer>BOTTOM</footer>{% end %}'
-            '{% end %}'
+            "{% call site_shell() %}"
+            "Body"
+            "{% slot footer %}<footer>BOTTOM</footer>{% end %}"
+            "{% end %}"
         ).render()
         assert "<footer>BOTTOM</footer>" in html
 
@@ -6859,10 +6879,10 @@ class TestSiteHeader:
     def test_default_glass_sticky(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/site_header.html" import site_header %}'
-            '{% call site_header() %}'
-            '{% slot brand %}Logo{% end %}'
-            '{% slot nav %}Links{% end %}'
-            '{% end %}'
+            "{% call site_header() %}"
+            "{% slot brand %}Logo{% end %}"
+            "{% slot nav %}Links{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-header" in html
         assert "chirpui-site-header--sticky" in html
@@ -6876,8 +6896,8 @@ class TestSiteHeader:
         html = env.from_string(
             '{% from "chirpui/site_header.html" import site_header %}'
             '{% call site_header(variant="solid") %}'
-            '{% slot brand %}Logo{% end %}'
-            '{% end %}'
+            "{% slot brand %}Logo{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-header--glass" not in html
         assert "chirpui-site-header--solid" not in html
@@ -6886,8 +6906,8 @@ class TestSiteHeader:
         html = env.from_string(
             '{% from "chirpui/site_header.html" import site_header %}'
             '{% call site_header(variant="transparent") %}'
-            '{% slot brand %}Logo{% end %}'
-            '{% end %}'
+            "{% slot brand %}Logo{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-header--transparent" in html
 
@@ -6895,10 +6915,10 @@ class TestSiteHeader:
         html = env.from_string(
             '{% from "chirpui/site_header.html" import site_header %}'
             '{% call site_header(layout="center-brand") %}'
-            '{% slot nav %}Left{% end %}'
-            '{% slot brand %}LOGO{% end %}'
-            '{% slot nav_end %}Right{% end %}'
-            '{% end %}'
+            "{% slot nav %}Left{% end %}"
+            "{% slot brand %}LOGO{% end %}"
+            "{% slot nav_end %}Right{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-header__inner--center-brand" in html
         assert "chirpui-site-header__nav-end" in html
@@ -6908,28 +6928,28 @@ class TestSiteHeader:
         html = env.from_string(
             '{% from "chirpui/site_header.html" import site_header %}'
             '{% call site_header(layout="center-nav") %}'
-            '{% slot brand %}Logo{% end %}'
-            '{% slot nav %}Centered links{% end %}'
-            '{% end %}'
+            "{% slot brand %}Logo{% end %}"
+            "{% slot nav %}Centered links{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-header__inner--center-nav" in html
 
     def test_not_sticky(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/site_header.html" import site_header %}'
-            '{% call site_header(sticky=false) %}'
-            '{% slot brand %}Logo{% end %}'
-            '{% end %}'
+            "{% call site_header(sticky=false) %}"
+            "{% slot brand %}Logo{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-header--sticky" not in html
 
     def test_tools_slot(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/site_header.html" import site_header %}'
-            '{% call site_header() %}'
-            '{% slot brand %}Logo{% end %}'
-            '{% slot tools %}<button>Theme</button>{% end %}'
-            '{% end %}'
+            "{% call site_header() %}"
+            "{% slot brand %}Logo{% end %}"
+            "{% slot tools %}<button>Theme</button>{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-header__tools" in html
         assert "<button>Theme</button>" in html
@@ -6937,12 +6957,14 @@ class TestSiteHeader:
 
 class TestSiteNavLink:
     def test_site_header_brand_uses_route_link_attrs(self, env: Environment) -> None:
-        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/"})))
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/"}))
+        )
         html = env.from_string(
             '{% from "chirpui/site_header.html" import site_header %}'
             '{% call site_header(brand_url="/") %}'
-            '{% slot brand %}Logo{% end %}'
-            '{% end %}'
+            "{% slot brand %}Logo{% end %}"
+            "{% end %}"
         ).render()
         assert 'class="chirpui-site-header__brand"' in html
         assert 'hx-target="#site-content"' in html
@@ -6957,7 +6979,9 @@ class TestSiteNavLink:
         assert "Docs" in html
 
     def test_basic_link_uses_route_link_attrs(self, env: Environment) -> None:
-        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/docs"})))
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/docs"}))
+        )
         html = env.from_string(
             '{% from "chirpui/site_header.html" import site_nav_link %}'
             '{{ site_nav_link("/docs", "Docs") }}'
@@ -6994,13 +7018,13 @@ class TestSiteFooter:
     def test_default_columns_layout(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/site_footer.html" import site_footer, footer_column, footer_link %}'
-            '{% call site_footer() %}'
+            "{% call site_footer() %}"
             '{% slot brand %}<a href="/">Logo</a>{% end %}'
             '{% call footer_column(title="Product") %}'
             '{{ footer_link("/docs", "Docs") }}'
-            '{% end %}'
-            '{% slot colophon %}© 2026{% end %}'
-            '{% end %}'
+            "{% end %}"
+            "{% slot colophon %}© 2026{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-footer" in html
         assert "chirpui-site-footer__grid" in html
@@ -7017,8 +7041,8 @@ class TestSiteFooter:
         html = env.from_string(
             '{% from "chirpui/site_footer.html" import site_footer %}'
             '{% call site_footer(layout="centered") %}'
-            '{% slot brand %}Brand{% end %}'
-            '{% end %}'
+            "{% slot brand %}Brand{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-footer--centered" in html
 
@@ -7026,8 +7050,8 @@ class TestSiteFooter:
         html = env.from_string(
             '{% from "chirpui/site_footer.html" import site_footer %}'
             '{% call site_footer(layout="simple") %}'
-            '{% slot brand %}Brand{% end %}'
-            '{% end %}'
+            "{% slot brand %}Brand{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-footer--simple" in html
 
@@ -7040,7 +7064,9 @@ class TestSiteFooter:
         assert "noopener" in html
 
     def test_footer_link_uses_route_link_attrs(self, env: Environment) -> None:
-        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/docs"})))
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/docs"}))
+        )
         html = env.from_string(
             '{% from "chirpui/site_footer.html" import footer_link %}'
             '{{ footer_link("/docs", "Docs") }}'
@@ -7059,10 +7085,10 @@ class TestSiteFooter:
     def test_rule_slot(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/site_footer.html" import site_footer %}'
-            '{% call site_footer() %}'
-            '{% slot brand %}Brand{% end %}'
-            '{% slot rule %}<span>•</span>{% end %}'
-            '{% end %}'
+            "{% call site_footer() %}"
+            "{% slot brand %}Brand{% end %}"
+            "{% slot rule %}<span>•</span>{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-site-footer__rule" in html
         assert "•" in html
@@ -7071,8 +7097,7 @@ class TestSiteFooter:
 class TestBand:
     def test_default_inset(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/band.html" import band %}'
-            '{% call band() %}Band content{% end %}'
+            '{% from "chirpui/band.html" import band %}{% call band() %}Band content{% end %}'
         ).render()
         assert "chirpui-band" in html
         assert "chirpui-band--inset" in html
@@ -7123,10 +7148,10 @@ class TestBand:
     def test_header_slot(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/band.html" import band %}'
-            '{% call band() %}'
-            '{% slot header %}<h2>Featured</h2>{% end %}'
-            'Content'
-            '{% end %}'
+            "{% call band() %}"
+            "{% slot header %}<h2>Featured</h2>{% end %}"
+            "Content"
+            "{% end %}"
         ).render()
         assert "<h2>Featured</h2>" in html
         assert "Content" in html
@@ -7136,11 +7161,11 @@ class TestFeatureSection:
     def test_default_split(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/feature_section.html" import feature_section %}'
-            '{% call feature_section() %}'
-            '{% slot title %}Fast builds{% end %}'
-            '<p>Description.</p>'
+            "{% call feature_section() %}"
+            "{% slot title %}Fast builds{% end %}"
+            "<p>Description.</p>"
             '{% slot media %}<img src="/shot.png">{% end %}'
-            '{% end %}'
+            "{% end %}"
         ).render()
         assert "chirpui-feature-section" in html
         assert "chirpui-feature-section--split" in html
@@ -7152,9 +7177,9 @@ class TestFeatureSection:
     def test_reverse_modifier(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/feature_section.html" import feature_section %}'
-            '{% call feature_section(reverse=true) %}'
-            '{% slot title %}Title{% end %}'
-            '{% end %}'
+            "{% call feature_section(reverse=true) %}"
+            "{% slot title %}Title{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-feature-section--reverse" in html
 
@@ -7162,8 +7187,8 @@ class TestFeatureSection:
         html = env.from_string(
             '{% from "chirpui/feature_section.html" import feature_section %}'
             '{% call feature_section(layout="balanced") %}'
-            '{% slot title %}Title{% end %}'
-            '{% end %}'
+            "{% slot title %}Title{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-feature-section--balanced" in html
 
@@ -7171,8 +7196,8 @@ class TestFeatureSection:
         html = env.from_string(
             '{% from "chirpui/feature_section.html" import feature_section %}'
             '{% call feature_section(layout="stacked") %}'
-            '{% slot title %}Title{% end %}'
-            '{% end %}'
+            "{% slot title %}Title{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-feature-section--stacked" in html
 
@@ -7180,8 +7205,8 @@ class TestFeatureSection:
         html = env.from_string(
             '{% from "chirpui/feature_section.html" import feature_section %}'
             '{% call feature_section(layout="media-dominant") %}'
-            '{% slot title %}Title{% end %}'
-            '{% end %}'
+            "{% slot title %}Title{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-feature-section--media-dominant" in html
 
@@ -7189,9 +7214,9 @@ class TestFeatureSection:
         html = env.from_string(
             '{% from "chirpui/feature_section.html" import feature_section %}'
             '{% call feature_section(variant="halo") %}'
-            '{% slot title %}Title{% end %}'
+            "{% slot title %}Title{% end %}"
             '{% slot media %}<img src="/x.png">{% end %}'
-            '{% end %}'
+            "{% end %}"
         ).render()
         assert "chirpui-feature-section__halo" in html
 
@@ -7199,19 +7224,19 @@ class TestFeatureSection:
         html = env.from_string(
             '{% from "chirpui/feature_section.html" import feature_section %}'
             '{% call feature_section(variant="muted") %}'
-            '{% slot title %}Title{% end %}'
-            '{% end %}'
+            "{% slot title %}Title{% end %}"
+            "{% end %}"
         ).render()
         assert "chirpui-feature-section--muted" in html
 
     def test_eyebrow_and_actions(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/feature_section.html" import feature_section %}'
-            '{% call feature_section() %}'
-            '{% slot eyebrow %}New{% end %}'
-            '{% slot title %}Title{% end %}'
+            "{% call feature_section() %}"
+            "{% slot eyebrow %}New{% end %}"
+            "{% slot title %}Title{% end %}"
             '{% slot actions %}<a href="/">CTA</a>{% end %}'
-            '{% end %}'
+            "{% end %}"
         ).render()
         assert "chirpui-feature-section__eyebrow" in html
         assert "New" in html
@@ -7223,7 +7248,7 @@ class TestFeatureStack:
     def test_default_render(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/feature_section.html" import feature_stack %}'
-            '{% call feature_stack() %}Inner content{% end %}'
+            "{% call feature_stack() %}Inner content{% end %}"
         ).render()
         assert "chirpui-feature-stack" in html
         assert "Inner content" in html

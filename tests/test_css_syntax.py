@@ -94,7 +94,9 @@ def test_chirp_theme_css_has_no_parse_errors() -> None:
 
 
 def test_chirp_theme_entrypoint_css_has_no_parse_errors() -> None:
-    css_path = Path(__file__).resolve().parents[1] / "src/bengal_themes/chirp_theme/assets/css/style.css"
+    css_path = (
+        Path(__file__).resolve().parents[1] / "src/bengal_themes/chirp_theme/assets/css/style.css"
+    )
     stylesheet = css_path.read_text(encoding="utf-8")
     rules, encoding = tinycss2.parse_stylesheet_bytes(
         stylesheet.encode("utf-8"),

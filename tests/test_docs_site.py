@@ -56,8 +56,9 @@ def test_ensure_workspace_bengal_rejects_site_packages(monkeypatch, tmp_path: Pa
     monkeypatch.setattr(
         module,
         "_resolve_bengal_origin",
-        lambda _env: tmp_path / ".venv" / "lib" / "python3.14" / "site-packages" / "bengal"
-        / "__init__.py",
+        lambda _env: (
+            tmp_path / ".venv" / "lib" / "python3.14" / "site-packages" / "bengal" / "__init__.py"
+        ),
     )
 
     with pytest.raises(SystemExit, match="1"):

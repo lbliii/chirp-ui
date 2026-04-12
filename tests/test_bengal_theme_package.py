@@ -55,7 +55,9 @@ REQUIRED_PARTIALS = (
     "partials/components/tiles.html",
     "partials/components/related-posts-simple.html",
 )
-ASSET_STRING_RE = re.compile(r"""["'](/?assets/[^"'?#]+\.[A-Za-z0-9]+(?:\?[^"']*)?(?:#[^"']*)?)["']""")
+ASSET_STRING_RE = re.compile(
+    r"""["'](/?assets/[^"'?#]+\.[A-Za-z0-9]+(?:\?[^"']*)?(?:#[^"']*)?)["']"""
+)
 
 
 def _prefer_workspace_bengal() -> None:
@@ -67,7 +69,9 @@ def _prefer_workspace_bengal() -> None:
     if str(bengal_parent) not in sys.path:
         sys.path.insert(0, str(bengal_parent))
 
-    for module_name in [name for name in sys.modules if name == "bengal" or name.startswith("bengal.")]:
+    for module_name in [
+        name for name in sys.modules if name == "bengal" or name.startswith("bengal.")
+    ]:
         sys.modules.pop(module_name, None)
 
     importlib.invalidate_caches()
