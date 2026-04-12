@@ -120,3 +120,65 @@ class TestSizeRegistry:
     def test_no_duplicate_sizes(self) -> None:
         for block, sizes in SIZE_REGISTRY.items():
             assert len(sizes) == len(set(sizes)), f"{block} has duplicate sizes"
+
+
+class TestDescriptorCoverage:
+    """Every template in chirpui/ must have a ComponentDescriptor (or be excluded)."""
+
+    # Composition-only templates with no chirpui-* CSS blocks of their own.
+    EXCLUDED = frozenset({
+        "app_layout",
+        "app_shell_layout",
+        "ascii_icon",
+        "auth",
+        "bento_grid",
+        "command_bar",
+        "config_card",
+        "config_dashboard",
+        "islands",
+        "layout",
+        "modal_overlay",
+        "nav_link",
+        "oob",
+        "search_header",
+        "share_menu",
+        "shell_frame",
+        "state_primitives",
+        "status_with_hint",
+        "tabbed_page_layout",
+        "tabs_panels",
+    })
+
+    def test_descriptor_coverage(self) -> None:
+        """All non-excluded templates must have at least one COMPONENTS entry."""
+        from pathlib import Path
+
+        from chirp_ui.components import COMPONENTS
+
+        templates = {
+            p.stem
+            for p in Path("src/chirp_ui/templates/chirpui").glob("*.html")
+        }
+        registered = {
+            c.template.replace(".html", "")
+            for c in COMPONENTS.values()
+            if c.template
+        }
+        unregistered = sorted(
+            templates - registered - self.EXCLUDED
+        )
+        assert not unregistered, (
+            f"Templates without ComponentDescriptor (add descriptor or exclude): "
+            f"{unregistered}"
+        )
+
+    def test_excluded_templates_exist(self) -> None:
+        """Every excluded template must actually exist (stale exclusions are bugs)."""
+        from pathlib import Path
+
+        templates = {
+            p.stem
+            for p in Path("src/chirp_ui/templates/chirpui").glob("*.html")
+        }
+        stale = sorted(self.EXCLUDED - templates)
+        assert not stale, f"Excluded templates no longer exist: {stale}"

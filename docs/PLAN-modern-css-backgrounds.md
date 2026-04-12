@@ -1,8 +1,18 @@
 # Modern CSS Backgrounds & Effects — chirp-ui Design System Proposal
 
-**Status:** Proposal  
+**Status:** Complete  
 **Date:** 2026-03-04  
+**Completed:** 2026-04-12  
 **Scope:** Gradients, gradient borders, mesh gradients, parallax, glassmorphism, and related effects for cards, containers, sections, topbars, sidebars.
+
+> **Post-mortem:** Phases 1–3 shipped across v0.3.0–v0.3.1. All gradient tokens
+> (`--chirpui-gradient-subtle`, `-accent`, `-mesh`, `-border`, `-split`), surface
+> variants (`gradient-subtle`, `gradient-accent`, `gradient-mesh`, `gradient-border`),
+> card variants (`card--gradient-border`, `card--gradient-header`), app shell glass
+> (`topbar--glass`, `sidebar--glass`), band glass/gradient, hero mesh + animated-gradient,
+> and site-header glass are in production. Phase 4 parallax (`animation-timeline: scroll()`)
+> deferred — browser support still limited outside Chromium. Mesh gradient uses radial
+> overlay simulation (BBC pattern) until native `freeform-gradient()` ships.
 
 ---
 
