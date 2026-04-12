@@ -664,9 +664,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="site-shell",
         elements=("main",),
         slots=("", "header", "footer"),
-        tokens=(
-            "--chirpui-site-shell-bg",
-        ),
+        tokens=("--chirpui-site-shell-bg",),
         template="site_shell.html",
         category="marketing",
     ),
@@ -697,8 +695,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="site-footer",
         variants=("columns", "centered", "simple"),
         elements=(
-            "grid", "brand", "column", "column-title",
-            "list", "link", "link-glyph", "rule", "rule-line", "colophon",
+            "grid",
+            "brand",
+            "column",
+            "column-title",
+            "list",
+            "link",
+            "link-glyph",
+            "rule",
+            "rule-line",
+            "colophon",
         ),
         slots=("", "brand", "rule", "colophon"),
         tokens=(
@@ -732,7 +738,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("split", "balanced", "media-dominant", "stacked", "muted", "halo"),
         modifiers=("reverse",),
         elements=(
-            "copy", "eyebrow", "title", "body", "actions", "media", "halo",
+            "copy",
+            "eyebrow",
+            "title",
+            "body",
+            "actions",
+            "media",
+            "halo",
         ),
         slots=("", "eyebrow", "title", "actions", "media"),
         tokens=(
@@ -801,8 +813,7 @@ def design_system_report() -> dict[str, object]:
     return {
         "components": components,
         "tokens": {
-            name: {"category": t.category, "scope": t.scope}
-            for name, t in TOKEN_CATALOG.items()
+            name: {"category": t.category, "scope": t.scope} for name, t in TOKEN_CATALOG.items()
         },
         "stats": {
             "total_components": len(COMPONENTS),

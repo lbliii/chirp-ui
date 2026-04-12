@@ -168,11 +168,20 @@ def test_component_descriptor_key_variants_exist_in_css() -> None:
     from chirp_ui.components import COMPONENTS
 
     enforced = {
-        "btn", "alert", "badge", "surface", "toast",
-        "overlay", "hero", "aura_tone",
-        "tooltip", "status-indicator",
+        "btn",
+        "alert",
+        "badge",
+        "surface",
+        "toast",
+        "overlay",
+        "hero",
+        "aura_tone",
+        "tooltip",
+        "status-indicator",
         "neon",
-        "site-header", "band", "feature-section",
+        "site-header",
+        "band",
+        "feature-section",
     }
     css_classes = _extract_css_defined_classes()
     missing: list[str] = []
