@@ -1,4 +1,15 @@
 {% from 'partials/theme-primitives.html' import theme_page_header %}
+{% from 'partials/page-hero/_macros.html' import hero_element as _hero_element, hero_section as _hero_section %}
+
+{# Compatibility wrappers for deferred/pruned surfaces that still import
+   hero macros from partials/page-hero.html. #}
+{% def hero_element(element, page, config) %}
+{{ _hero_element(element, page, config) }}
+{% end %}
+
+{% def hero_section(section, page, hero_context=none) %}
+{{ _hero_section(section, page, hero_context ?? {}) }}
+{% end %}
 
 {% let _page = page ?? none %}
 {% let _params = params ?? {} %}
@@ -16,15 +27,15 @@
 {% if _child_total > 0 %}
 {% set _ = _meta_parts.append(_child_total ~ ' item' ~ ('s' if _child_total != 1 else '')) %}
 {% end %}
-{% if page?.version %}
-{% set _ = _meta_parts.append('Version ' ~ page.version) %}
+{% if _page?.version %}
+{% set _ = _meta_parts.append('Version ' ~ _page.version) %}
 {% end %}
 
 {% call theme_page_header(
   _title,
   _description,
   _eyebrow,
-  breadcrumb_items=true,
+  breadcrumb_page=_page,
   meta=_meta_parts | join(' · ') if _meta_parts | length > 0 else none,
   cls='page-hero page-hero--chirp'
 ) %}

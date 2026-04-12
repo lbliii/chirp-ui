@@ -24,7 +24,7 @@
 
 <div class="chirp-theme-doc-home">
   {% call theme_surface('chirp-theme-doc-home__hero') %}
-  {{ theme_page_header(page_title, page_desc, 'Documentation', breadcrumb_items=true, cls='chirp-theme-doc-home__header') }}
+  {{ theme_page_header(page_title, page_desc, 'Documentation', breadcrumb_page=page, cls='chirp-theme-doc-home__header') }}
   {% end %}
 
   {% if content and content.strip() %}

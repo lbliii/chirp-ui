@@ -1,11 +1,5 @@
 {% from 'partials/navigation-components.html' import toc %}
 
 {% if toc_items %}
-{% let show_graph = theme.features is not defined or 'graph.contextual' in theme.features %}
-{% if show_graph %}
-<div class="graph-contextual" data-page-url="{{ page?.href ?? page?._path ?? '' }}">
-  <div class="graph-contextual-container graph-loading"></div>
-</div>
-{% end %}
-{{ toc(toc_items=toc_items, toc=toc, page=page) }}
+{{ toc(toc_items=toc_items, page=page) }}
 {% end %}

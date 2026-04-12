@@ -10,7 +10,7 @@
   page?.title ?? 'Post',
   params?.description ?? meta_desc ?? none,
   'Blog Post',
-  breadcrumb_items=true,
+  breadcrumb_page=page,
   meta=(page?.date | dateformat('%B %d, %Y')) if page?.date else none,
   cls='chirp-theme-blog__hero'
 ) }}

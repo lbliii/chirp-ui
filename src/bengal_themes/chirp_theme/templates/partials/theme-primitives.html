@@ -12,11 +12,11 @@
 </section>
 {% end %}
 
-{% def theme_page_header(title, description=none, eyebrow=none, breadcrumb_items=none, meta=none, compact=false, cls='') %}
+{% def theme_page_header(title, description=none, eyebrow=none, breadcrumb_page=none, meta=none, compact=false, cls='') %}
 <header class="chirp-theme-page-header{{ ' chirp-theme-page-header--compact' if compact else '' }}{{ ' ' ~ cls if cls else '' }}">
-  {% if breadcrumb_items %}
+  {% if breadcrumb_page %}
   <div class="chirp-theme-page-header__breadcrumbs">
-    {{ breadcrumbs(page) }}
+    {{ breadcrumbs(breadcrumb_page) }}
   </div>
   {% end %}
   {% if eyebrow %}

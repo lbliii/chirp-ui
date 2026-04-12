@@ -12,7 +12,7 @@
 {% let section_desc = section?.metadata?.description ?? description ?? '' %}
 
 {% block blog_hero %}
-{{ theme_page_header(section_title, section_desc, 'Blog', breadcrumb_items=true, meta=total_posts ~ ' post' ~ ('s' if total_posts != 1 else ''), cls='chirp-theme-blog__hero') }}
+{{ theme_page_header(section_title, section_desc, 'Blog', breadcrumb_page=page, meta=total_posts ~ ' post' ~ ('s' if total_posts != 1 else ''), cls='chirp-theme-blog__hero') }}
 {% end %}
 
 {% block blog_content %}

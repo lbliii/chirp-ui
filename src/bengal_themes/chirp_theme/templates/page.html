@@ -13,7 +13,7 @@
 <div class="container chirp-theme-page">
   {% call theme_surface('chirp-theme-page__article ' ~ css_class) %}
   <article class="page prose chirp-theme-page__article">
-    {{ theme_page_header(page_title, params?.description ?? meta_desc ?? none, 'Page', breadcrumb_items=true, cls='chirp-theme-page__header') }}
+    {{ theme_page_header(page_title, params?.description ?? meta_desc ?? none, 'Page', breadcrumb_page=page, cls='chirp-theme-page__header') }}
 
     <div class="page-content chirp-theme-page__content">
       {{ content | safe }}
