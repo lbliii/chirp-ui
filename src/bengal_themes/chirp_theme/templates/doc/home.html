@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% def chirp_theme_section_card(section) %}
+{% let section_title = section?.title ?? 'Untitled' %}
+{% let section_desc = section?.metadata?.description ?? '' %}
+{% let page_count = (section?.pages ?? []) | length %}
+<a href="{{ section.href ?? section._path }}" class="chirp-theme-doc-home__card">
+  <span class="chirp-theme-doc-home__card-title">{{ section_title }}</span>
+  {% if section_desc %}
+  <span class="chirp-theme-doc-home__card-desc">{{ section_desc }}</span>
+  {% end %}
+  {% if page_count > 0 %}
+  <span class="chirp-theme-doc-home__card-meta">{{ page_count }} page{{ 's' if page_count != 1 else '' }}</span>
+  {% end %}
+</a>
+{% end %}
+
+{% def chirp_theme_quick_link(link) %}
+{% let link_url = link?.href ?? link?.url ?? '#' %}
+{% let link_title = link?.title ?? 'Link' %}
+{% let link_desc = link?.description ?? '' %}
+<a href="{{ link_url }}" class="chirp-theme-doc-home__link">
+  <span class="chirp-theme-doc-home__link-title">{{ link_title }}</span>
+  {% if link_desc %}
+  <span class="chirp-theme-doc-home__link-desc">{{ link_desc }}</span>
+  {% end %}
+</a>
+{% end %}
+
+{% block content %}
+{% let page_title = page?.title ?? config?.title ?? 'Documentation' %}
+{% let page_desc = params?.description ?? '' %}
+{% let show_quick_links = params?.show_quick_links ?? true %}
+{% let custom_quick_links = params?.quick_links ?? [] %}
+{% let site_sections = site?.sections ?? [] %}
+{% let doc_sections = site_sections |> selectattr('metadata.type', 'eq', 'doc') |> list %}
+{% if doc_sections | length == 0 %}
+{% let doc_sections = site_sections |> selectattr('metadata.content_type', 'eq', 'doc') |> list %}
+{% end %}
+{% if doc_sections | length == 0 %}
+{% let common_names = ['getting-started', 'guides', 'concepts', 'api', 'docs', 'documentation'] %}
+{% let doc_sections = [] %}
+{% for name in common_names %}
+{% let candidates = site_sections |> selectattr('name', 'eq', name) |> list %}
+{% if candidates | length > 0 %}
+{% set _ = doc_sections.append(candidates[0]) %}
+{% end %}
+{% end %}
+{% end %}
+
+<div class="chirp-theme-doc-home">
+  <section class="chirp-theme-doc-home__hero">
+    <p class="chirp-theme-doc-home__eyebrow">Documentation</p>
+    <h1 class="chirp-theme-doc-home__title">{{ page_title }}</h1>
+    {% if page_desc %}
+    <p class="chirp-theme-doc-home__subtitle">{{ page_desc }}</p>
+    {% end %}
+  </section>
+
+  {% if content and content.strip() %}
+  <section class="chirp-theme-doc-home__content prose">
+    {{ content | safe }}
+  </section>
+  {% end %}
+
+  {% if show_quick_links and doc_sections | length > 0 %}
+  {% let sorted_sections = doc_sections |> sort(attribute='metadata.weight') |> take(8) %}
+  <section class="chirp-theme-doc-home__section-block">
+    <div class="chirp-theme-doc-home__section-head">
+      <p class="chirp-theme-doc-home__section-eyebrow">Explore</p>
+      <h2 class="chirp-theme-doc-home__section-title">Start with a track that matches your goal.</h2>
+    </div>
+    <div class="chirp-theme-doc-home__grid">
+      {% for section in sorted_sections %}
+      {{ chirp_theme_section_card(section) }}
+      {% end %}
+    </div>
+  </section>
+  {% end %}
+
+  {% if custom_quick_links | length > 0 %}
+  <section class="chirp-theme-doc-home__section-block">
+    <div class="chirp-theme-doc-home__section-head">
+      <p class="chirp-theme-doc-home__section-eyebrow">Shortcuts</p>
+      <h2 class="chirp-theme-doc-home__section-title">High-signal entry points for common tasks.</h2>
+    </div>
+    <div class="chirp-theme-doc-home__link-grid">
+      {% for link in custom_quick_links %}
+      {{ chirp_theme_quick_link(link) }}
+      {% end %}
+    </div>
+  </section>
+  {% end %}
+</div>
+{% end %}

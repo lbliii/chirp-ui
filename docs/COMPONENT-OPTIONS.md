@@ -1706,3 +1706,162 @@ chirp-ui templates are compatible with the partial evaluator but do not require 
 
 - **Production builds** — measurable render speedup for templates with static content
 - **Development** — leave off (default) to keep compile times fast and error messages clear
+
+---
+
+## Marketing Kit
+
+Components for full-page scroll sites — landing pages, docs homes, marketing sites. The marketing kit is the scrolling-page counterpart to `app_shell`: instead of a sidebar + fixed topbar, you get a sticky header, flowing content bands, and a footer.
+
+### Imports
+
+```html
+{% from "chirpui/site_shell.html" import site_shell %}
+{% from "chirpui/site_header.html" import site_header, site_nav_link %}
+{% from "chirpui/site_footer.html" import site_footer, footer_column, footer_link %}
+{% from "chirpui/band.html" import band %}
+{% from "chirpui/feature_section.html" import feature_section, feature_stack %}
+```
+
+### Slot Reference
+
+| Component | Slot | Purpose | Required? |
+|-----------|------|---------|-----------|
+| `site_shell` | `header` | Sticky top region (place `site_header` here) | No |
+| `site_shell` | default | Page content | Yes |
+| `site_shell` | `footer` | Footer region (place `site_footer` here) | No |
+| `site_header` | `brand` | Logo / brand name (wrapped in `<a>`) | No |
+| `site_header` | `nav` | Primary navigation links | No |
+| `site_header` | `nav_end` | Right-side links when `layout="center-brand"` | No |
+| `site_header` | `tools` | Utility buttons (theme toggle, CTA) | No |
+| `site_footer` | `brand` | Footer brand / tagline | No |
+| `site_footer` | default | Footer columns (`footer_column`) | No |
+| `site_footer` | `rule` | Decorative divider between columns and colophon | No |
+| `site_footer` | `colophon` | Copyright / fine print | No |
+| `band` | `header` | Section header (e.g. `section_header()`) | No |
+| `band` | default | Band content | Yes |
+| `feature_section` | `eyebrow` | Small label above title | No |
+| `feature_section` | `title` | Feature heading | No |
+| `feature_section` | default | Body / description | Yes |
+| `feature_section` | `actions` | CTA buttons | No |
+| `feature_section` | `media` | Screenshot, code snippet, illustration | No |
+| `feature_stack` | default | Consecutive `feature_section` calls | Yes |
+
+### site_shell
+
+Full-page scroll container. Creates an `isolation: isolate` stacking context so sticky headers always sit above content, regardless of child z-indices.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `ambient` | bool | `false` | Adds ambient glow background layer |
+| `cls` | str | `""` | Extra CSS classes |
+
+### site_header
+
+Sticky top navigation bar with layout + surface axes.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `brand_url` | str | `"/"` | Brand link href |
+| `layout` | str | `"start"` | `start`, `center-brand`, `center-nav`, `split` |
+| `variant` | str | `"glass"` | `glass`, `solid`, `transparent` |
+| `sticky` | bool | `true` | Sticky positioning |
+| `current_path` | str | `""` | Current URL path for nav link active matching |
+| `cls` | str | `""` | Extra CSS classes |
+
+**Layout variants:**
+- **`start`** — `[brand] [nav...] [spacer] [tools]` (default)
+- **`center-brand`** — `[nav left] [brand] [nav right | tools]`
+- **`center-nav`** — `[brand] [nav centered] [tools]`
+- **`split`** — `[brand + nav] [spacer] [tools]`
+
+**Surface variants:** `glass` (backdrop blur), `solid` (opaque), `transparent` (hero overlap)
+
+### site_nav_link
+
+Navigation link for use inside `site_header`'s `nav` slot. Reads `current_path` from the parent header via provide/consume.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `href` | str | required | Link destination |
+| `label` | str | required | Display text |
+| `glyph` | str | `""` | Prefix icon/emoji |
+| `external` | bool | `false` | Adds `rel="noopener noreferrer"` |
+| `match` | str | `""` | `"exact"` or `"prefix"` for active state |
+| `active` | bool | `false` | Force active state |
+| `cls` | str | `""` | Extra CSS classes |
+
+### site_footer
+
+Multi-section footer with brand, link columns, rule, and colophon.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `layout` | str | `"columns"` | `columns`, `centered`, `simple` |
+| `cls` | str | `""` | Extra CSS classes |
+
+**Layout variants:**
+- **`columns`** — brand left + N link columns (fat footer)
+- **`centered`** — stacked, center-aligned
+- **`simple`** — single row: brand left, links right
+
+### footer_column / footer_link
+
+Sub-components for structuring `site_footer` content.
+
+**`footer_column`**: `title` (str), `cls` (str). Default slot holds `footer_link` calls.
+
+**`footer_link`**: `href` (str), `label` (str), `glyph` (str), `external` (bool), `cls` (str).
+
+### band
+
+Full-bleed marketing section panel with width control and pattern overlay.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `variant` | str | `"default"` | `default`, `elevated`, `accent`, `glass`, `gradient` |
+| `width` | str | `"inset"` | `inset`, `bleed`, `contained` |
+| `pattern` | str | `""` | Pattern overlay: `dots-sm`, `dots-md`, `grid`, `crosshatch`, `diag` |
+| `cls` | str | `""` | Extra CSS classes |
+
+**Width variants:** `inset` (rounded, slightly wider), `bleed` (viewport-wide bg), `contained` (no breakout)
+
+### feature_section
+
+Two-column copy + media grid for product features.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `layout` | str | `"split"` | `split`, `balanced`, `media-dominant`, `stacked` |
+| `variant` | str | `"default"` | `default`, `muted`, `halo` |
+| `reverse` | bool | `false` | Flip column order (zigzag patterns) |
+| `cls` | str | `""` | Extra CSS classes |
+
+**Layout variants:** `split` (55/45), `balanced` (50/50), `media-dominant` (40/60), `stacked` (single column)
+
+**Surface variants:** `default` (transparent), `muted` (subtle bg), `halo` (glow behind media)
+
+### feature_stack
+
+Wrapper for consecutive `feature_section` calls with consistent vertical spacing.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `cls` | str | `""` | Extra CSS classes |
+
+### Bento Extensions
+
+CSS-only extensions to existing `surface` and `frame` components for dashboard-style tile grids.
+
+| Class | Purpose |
+|-------|---------|
+| `chirpui-surface--bento` | Hover lift + flex height equalization on surfaces |
+| `chirpui-frame--bento` | Consistent gap and min-height for bento frames |
+| `chirpui-block--wide` | Span 2 grid columns |
+| `chirpui-block--tall` | Span 2 grid rows |
+| `chirpui-surface__eyebrow` | Small-caps label above title |
+| `chirpui-surface__title` | Large heading inside surface |
+| `chirpui-surface__lede` | Subtitle / summary text |
+| `chirpui-surface__body` | Body text region |
+
+Use with `grid(preset="bento-211")` or custom CSS grid layouts. Pair `surface--bento` tiles inside a `frame--bento` for consistent dashboard aesthetics.

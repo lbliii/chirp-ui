@@ -1875,6 +1875,8 @@ class TestAlpineMagics:
         assert "chirpui:dropdown-selected" in html
         assert 'x-ref="trigger"' in html
         assert 'x-ref="panel"' in html
+        assert ':data-align-x="alignX"' in html
+        assert "reposition()" in html
 
     def test_tabs_panels_emits_dispatch(self, env: Environment) -> None:
         html = env.from_string(
@@ -5849,3 +5851,406 @@ class TestHtmxCorrectness:
             '{{ inline_edit_field_form(name="n", value="v", save_url="/save", cancel_url="/cancel") }}'
         ).render()
         assert 'hx-select="unset"' in html
+
+
+# =============================================================================
+# Marketing Kit (site mode)
+# =============================================================================
+
+
+class TestSiteShell:
+    def test_default_render(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_shell.html" import site_shell %}'
+            '{% call site_shell() %}Page content{% end %}'
+        ).render()
+        assert "chirpui-site-shell" in html
+        assert "chirpui-site-shell__main" in html
+        assert "Page content" in html
+
+    def test_ambient_mode(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_shell.html" import site_shell %}'
+            '{% call site_shell(ambient=true) %}Content{% end %}'
+        ).render()
+        assert "chirpui-ambient-root" in html
+        assert "chirpui-ambient" in html
+
+    def test_header_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_shell.html" import site_shell %}'
+            '{% call site_shell() %}'
+            '{% slot header %}<header>TOP</header>{% end %}'
+            'Body{% end %}'
+        ).render()
+        assert "<header>TOP</header>" in html
+        assert "Body" in html
+
+    def test_footer_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_shell.html" import site_shell %}'
+            '{% call site_shell() %}'
+            'Body'
+            '{% slot footer %}<footer>BOTTOM</footer>{% end %}'
+            '{% end %}'
+        ).render()
+        assert "<footer>BOTTOM</footer>" in html
+
+    def test_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_shell.html" import site_shell %}'
+            '{% call site_shell(cls="my-site") %}Content{% end %}'
+        ).render()
+        assert "my-site" in html
+
+
+class TestSiteHeader:
+    def test_default_glass_sticky(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_header %}'
+            '{% call site_header() %}'
+            '{% slot brand %}Logo{% end %}'
+            '{% slot nav %}Links{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-header" in html
+        assert "chirpui-site-header--sticky" in html
+        assert "chirpui-site-header--glass" in html
+        assert "chirpui-site-header__inner" in html
+        assert "chirpui-site-header__brand" in html
+        assert "Logo" in html
+        assert "Links" in html
+
+    def test_solid_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_header %}'
+            '{% call site_header(variant="solid") %}'
+            '{% slot brand %}Logo{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-header--glass" not in html
+        assert "chirpui-site-header--solid" not in html
+
+    def test_transparent_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_header %}'
+            '{% call site_header(variant="transparent") %}'
+            '{% slot brand %}Logo{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-header--transparent" in html
+
+    def test_center_brand_layout(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_header %}'
+            '{% call site_header(layout="center-brand") %}'
+            '{% slot nav %}Left{% end %}'
+            '{% slot brand %}LOGO{% end %}'
+            '{% slot nav_end %}Right{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-header__inner--center-brand" in html
+        assert "chirpui-site-header__nav-end" in html
+        assert "LOGO" in html
+
+    def test_center_nav_layout(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_header %}'
+            '{% call site_header(layout="center-nav") %}'
+            '{% slot brand %}Logo{% end %}'
+            '{% slot nav %}Centered links{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-header__inner--center-nav" in html
+
+    def test_not_sticky(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_header %}'
+            '{% call site_header(sticky=false) %}'
+            '{% slot brand %}Logo{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-header--sticky" not in html
+
+    def test_tools_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_header %}'
+            '{% call site_header() %}'
+            '{% slot brand %}Logo{% end %}'
+            '{% slot tools %}<button>Theme</button>{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-header__tools" in html
+        assert "<button>Theme</button>" in html
+
+
+class TestSiteNavLink:
+    def test_basic_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_nav_link %}'
+            '{{ site_nav_link("/docs", "Docs") }}'
+        ).render()
+        assert "chirpui-site-nav__link" in html
+        assert 'href="/docs"' in html
+        assert "Docs" in html
+
+    def test_glyph_prefix(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_nav_link %}'
+            '{{ site_nav_link("/home", "Home", glyph="~") }}'
+        ).render()
+        assert "chirpui-site-nav__glyph" in html
+        assert "~" in html
+
+    def test_external_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_nav_link %}'
+            '{{ site_nav_link("https://github.com", "GitHub", external=true) }}'
+        ).render()
+        assert "chirpui-site-nav__link--external" in html
+        assert "noopener" in html
+
+    def test_active_explicit(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_header.html" import site_nav_link %}'
+            '{{ site_nav_link("/about", "About", active=true) }}'
+        ).render()
+        assert "chirpui-site-nav__link--active" in html
+        assert 'aria-current="page"' in html
+
+
+class TestSiteFooter:
+    def test_default_columns_layout(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_footer.html" import site_footer, footer_column, footer_link %}'
+            '{% call site_footer() %}'
+            '{% slot brand %}<a href="/">Logo</a>{% end %}'
+            '{% call footer_column(title="Product") %}'
+            '{{ footer_link("/docs", "Docs") }}'
+            '{% end %}'
+            '{% slot colophon %}© 2026{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-footer" in html
+        assert "chirpui-site-footer__grid" in html
+        assert "chirpui-site-footer__brand" in html
+        assert "chirpui-site-footer__column" in html
+        assert "chirpui-site-footer__column-title" in html
+        assert "Product" in html
+        assert "chirpui-site-footer__link" in html
+        assert "Docs" in html
+        assert "chirpui-site-footer__colophon" in html
+        assert "© 2026" in html
+
+    def test_centered_layout(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_footer.html" import site_footer %}'
+            '{% call site_footer(layout="centered") %}'
+            '{% slot brand %}Brand{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-footer--centered" in html
+
+    def test_simple_layout(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_footer.html" import site_footer %}'
+            '{% call site_footer(layout="simple") %}'
+            '{% slot brand %}Brand{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-footer--simple" in html
+
+    def test_footer_link_external(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_footer.html" import footer_link %}'
+            '{{ footer_link("https://github.com", "GitHub", external=true) }}'
+        ).render()
+        assert "chirpui-site-footer__link--external" in html
+        assert "noopener" in html
+
+    def test_footer_link_glyph(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_footer.html" import footer_link %}'
+            '{{ footer_link("/docs", "Docs", glyph="#") }}'
+        ).render()
+        assert "chirpui-site-footer__link-glyph" in html
+        assert "#" in html
+
+    def test_rule_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/site_footer.html" import site_footer %}'
+            '{% call site_footer() %}'
+            '{% slot brand %}Brand{% end %}'
+            '{% slot rule %}<span>•</span>{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-site-footer__rule" in html
+        assert "•" in html
+
+
+class TestBand:
+    def test_default_inset(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/band.html" import band %}'
+            '{% call band() %}Band content{% end %}'
+        ).render()
+        assert "chirpui-band" in html
+        assert "chirpui-band--inset" in html
+        assert "Band content" in html
+
+    def test_bleed_width(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/band.html" import band %}'
+            '{% call band(width="bleed") %}Content{% end %}'
+        ).render()
+        assert "chirpui-band--bleed" in html
+
+    def test_contained_width(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/band.html" import band %}'
+            '{% call band(width="contained") %}Content{% end %}'
+        ).render()
+        assert "chirpui-band--contained" in html
+
+    def test_elevated_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/band.html" import band %}'
+            '{% call band(variant="elevated") %}Content{% end %}'
+        ).render()
+        assert "chirpui-band--elevated" in html
+
+    def test_accent_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/band.html" import band %}'
+            '{% call band(variant="accent") %}Content{% end %}'
+        ).render()
+        assert "chirpui-band--accent" in html
+
+    def test_glass_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/band.html" import band %}'
+            '{% call band(variant="glass") %}Content{% end %}'
+        ).render()
+        assert "chirpui-band--glass" in html
+
+    def test_pattern_integration(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/band.html" import band %}'
+            '{% call band(pattern="grid") %}Content{% end %}'
+        ).render()
+        assert "chirpui-band--pattern-grid" in html
+
+    def test_header_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/band.html" import band %}'
+            '{% call band() %}'
+            '{% slot header %}<h2>Featured</h2>{% end %}'
+            'Content'
+            '{% end %}'
+        ).render()
+        assert "<h2>Featured</h2>" in html
+        assert "Content" in html
+
+
+class TestFeatureSection:
+    def test_default_split(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/feature_section.html" import feature_section %}'
+            '{% call feature_section() %}'
+            '{% slot title %}Fast builds{% end %}'
+            '<p>Description.</p>'
+            '{% slot media %}<img src="/shot.png">{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-feature-section" in html
+        assert "chirpui-feature-section--split" in html
+        assert "chirpui-feature-section__copy" in html
+        assert "chirpui-feature-section__title" in html
+        assert "Fast builds" in html
+        assert "chirpui-feature-section__media" in html
+
+    def test_reverse_modifier(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/feature_section.html" import feature_section %}'
+            '{% call feature_section(reverse=true) %}'
+            '{% slot title %}Title{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-feature-section--reverse" in html
+
+    def test_balanced_layout(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/feature_section.html" import feature_section %}'
+            '{% call feature_section(layout="balanced") %}'
+            '{% slot title %}Title{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-feature-section--balanced" in html
+
+    def test_stacked_layout(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/feature_section.html" import feature_section %}'
+            '{% call feature_section(layout="stacked") %}'
+            '{% slot title %}Title{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-feature-section--stacked" in html
+
+    def test_media_dominant_layout(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/feature_section.html" import feature_section %}'
+            '{% call feature_section(layout="media-dominant") %}'
+            '{% slot title %}Title{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-feature-section--media-dominant" in html
+
+    def test_halo_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/feature_section.html" import feature_section %}'
+            '{% call feature_section(variant="halo") %}'
+            '{% slot title %}Title{% end %}'
+            '{% slot media %}<img src="/x.png">{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-feature-section__halo" in html
+
+    def test_muted_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/feature_section.html" import feature_section %}'
+            '{% call feature_section(variant="muted") %}'
+            '{% slot title %}Title{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-feature-section--muted" in html
+
+    def test_eyebrow_and_actions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/feature_section.html" import feature_section %}'
+            '{% call feature_section() %}'
+            '{% slot eyebrow %}New{% end %}'
+            '{% slot title %}Title{% end %}'
+            '{% slot actions %}<a href="/">CTA</a>{% end %}'
+            '{% end %}'
+        ).render()
+        assert "chirpui-feature-section__eyebrow" in html
+        assert "New" in html
+        assert "chirpui-feature-section__actions" in html
+        assert "CTA" in html
+
+
+class TestFeatureStack:
+    def test_default_render(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/feature_section.html" import feature_stack %}'
+            '{% call feature_stack() %}Inner content{% end %}'
+        ).render()
+        assert "chirpui-feature-stack" in html
+        assert "Inner content" in html
+
+    def test_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/feature_section.html" import feature_stack %}'
+            '{% call feature_stack(cls="extra") %}Content{% end %}'
+        ).render()
+        assert "extra" in html

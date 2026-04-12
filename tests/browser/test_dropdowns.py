@@ -108,6 +108,29 @@ async def test_dropdown_aria_expanded(page, base_url):
     assert expanded == "true"
 
 
+async def test_dropdown_realigns_near_viewport_edge(page, base_url):
+    """A right-edge trigger should flip the menu inward instead of clipping."""
+    await page.set_viewport_size({"width": 240, "height": 720})
+    await page.goto(base_url + "/dropdown")
+    await wait_for_alpine(page)
+
+    dropdown = page.locator("[data-testid='dropdown-menu-right-edge'] .chirpui-dropdown")
+    trigger = page.locator("[data-testid='dropdown-menu-right-edge'] .chirpui-dropdown__trigger")
+    await trigger.click()
+
+    menu = page.locator("[data-testid='dropdown-menu-right-edge'] .chirpui-dropdown__menu")
+    await menu.wait_for(state="visible", timeout=2000)
+    await page.wait_for_timeout(100)
+
+    viewport = page.viewport_size
+    box = await menu.bounding_box()
+    assert viewport is not None
+    assert box is not None
+    assert await dropdown.get_attribute("data-align-x") == "end"
+    assert box["x"] >= 8
+    assert box["x"] + box["width"] <= viewport["width"] - 8
+
+
 # ── Dropdown select: keyboard navigation ────────────────────────────
 
 

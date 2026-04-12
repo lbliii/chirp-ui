@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% from 'partials/navigation-components.html' import page_navigation %}
+{% from 'partials/components/tags.html' import tag_list %}
+{% from 'partials/components/related-posts-simple.html' import related_posts_simple %}
+
+{% block content %}
+{% let page_title = page?.title ?? 'Page' %}
+{% let page_tags = page?.tags ?? [] %}
+{% let css_class = params?.css_class ?? '' %}
+
+<div class="container chirp-theme-page">
+  <article class="page prose chirp-theme-page__article {{ css_class }}">
+    <header class="page-header chirp-theme-page__header">
+      <p class="chirp-theme-page__eyebrow">Page</p>
+      <h1>{{ page_title }}</h1>
+    </header>
+
+    <div class="page-content chirp-theme-page__content">
+      {{ content | safe }}
+    </div>
+
+    {% if page_tags | length > 0 %}
+    <footer class="page-footer chirp-theme-page__footer">
+      <div class="tags">
+        <strong>Tags:</strong>
+        {{ tag_list(page_tags) }}
+      </div>
+    </footer>
+    {% end %}
+  </article>
+
+  {{ page_navigation(page) }}
+  {{ related_posts_simple(page?.related_posts ?? [], 'Related Posts') }}
+</div>
+{% end %}

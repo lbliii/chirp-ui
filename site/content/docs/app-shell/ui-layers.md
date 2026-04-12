@@ -22,9 +22,10 @@ This page aligns with the **Chirp** guide: [UI layers & shell regions](https://l
 | **Page chrome** | Route-owned UI *inside* `#page-content`: titles, tabs, toolbars — not the global topbar. |
 | **Shell actions** | `ShellActions` → `shell_actions_bar`, target `#chirp-shell-actions`. Route-scoped; updates via OOB. |
 | **Shell regions** | Stable `id`s updated by `hx-swap-oob` (e.g. `chirp-shell-actions`, `chirpui-document-title`). |
+| **Marketing site shell** | Full-page scroll layout: `site_shell()` + `site_header()` + `site_footer()`. Use for landing pages, docs homes, marketing sites. Counterpart to **app shell** — no sidebar, no fixed `#main`. |
 | **Surface chrome** | Visual frame of a **component** (`surface`, `panel`, bento): border, padding, scroll — *not* the app shell. |
 
-**Avoid:** using “chrome” alone for the whole app frame — say **app shell** or **topbar/sidebar**.
+**Avoid:** using "chrome" alone for the whole app frame — say **app shell**, **site shell**, or **topbar/sidebar**.
 
 ## Chirp `mount_pages` layouts
 

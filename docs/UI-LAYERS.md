@@ -11,9 +11,10 @@ Authoritative site copy lives in **`site/content/docs/app-shell/ui-layers.md`**.
 | **Page chrome** | Inside `#page-content`: tabs, headers, route toolbars. |
 | **Shell actions** | `shell_actions_bar` in `#chirp-shell-actions`; Chirp `ShellActions`. |
 | **Shell regions** | Stable ids for HTMX OOB: see `chirp.shell_regions` in Chirp. |
+| **Marketing site shell** | Full-page scroll layout: `site_shell()` + `site_header()` + `site_footer()`. Use for landing pages, docs homes, marketing sites. Counterpart to **app shell** — no sidebar, no fixed `#main`. |
 | **Surface chrome** | Component frame (card/panel/bento border and padding) — not the app shell. |
 
-Do **not** use “chrome” alone for the global frame; say **app shell** or name the region.
+Do **not** use "chrome" alone for the global frame; say **app shell**, **site shell**, or name the region.
 
 ## Chirp `mount_pages` layouts
 

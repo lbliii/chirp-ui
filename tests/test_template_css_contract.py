@@ -31,6 +31,13 @@ TARGET_PREFIXES = (
     "chirpui-row-actions",
     "chirpui-chat-layout",
     "chirpui-page-fill",
+    "chirpui-site-shell",
+    "chirpui-site-header",
+    "chirpui-site-footer",
+    "chirpui-site-nav",
+    "chirpui-band",
+    "chirpui-feature-section",
+    "chirpui-feature-stack",
 )
 
 EXAMPLE_LAYOUT_PREFIXES = (
@@ -165,6 +172,7 @@ def test_component_descriptor_key_variants_exist_in_css() -> None:
         "overlay", "hero", "aura_tone",
         "tooltip", "status-indicator",
         "neon",
+        "site-header", "band", "feature-section",
     }
     css_classes = _extract_css_defined_classes()
     missing: list[str] = []

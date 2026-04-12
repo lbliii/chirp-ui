@@ -38,6 +38,9 @@ dependencies = [
 [project.optional-dependencies]
 showcase = ["bengal-chirp>=0.2.0"] # For examples/component-showcase
 
+[project.entry-points."bengal.themes"]
+chirp-theme = "bengal_themes.chirp_theme"
+
 [project.urls]
 Homepage = "https://github.com/lbliii/chirp-ui"
 Repository = "https://github.com/lbliii/chirp-ui"
@@ -60,6 +63,11 @@ chirp_ui = [
     "templates/**/*.css",
     "templates/**/*.js",
     "templates/**/*.svg",
+]
+"bengal_themes.chirp_theme" = [
+    "theme.toml",
+    "templates/**/*.html",
+    "assets/**/*.css",
 ]
 
 # =============================================================================

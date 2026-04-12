@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ asset_url('css/chirp-theme.css') }}">
+{% end %}
+
+{% block site_footer %}
+{% let footer_menu = get_menu_lang('footer', current_lang()) %}
+{% let footer_links = footer_menu if footer_menu | length > 0 else get_menu_lang('main', current_lang()) %}
+{% let repo_url = site.params?.repo_url ?? '' %}
+{% let site_desc = site.description ?? '' %}
+<footer class="chirp-theme-footer" role="contentinfo">
+  <div class="chirp-theme-footer__inner">
+    <div class="chirp-theme-footer__brand">
+      <a href="{{ '/' | absolute_url }}" class="chirp-theme-footer__logo">
+        <span class="chirp-theme-footer__mark" aria-hidden="true">ʘ</span>
+        <span class="chirp-theme-footer__word">{{ site.title }}</span>
+      </a>
+      {% if site_desc %}
+      <p class="chirp-theme-footer__tagline">{{ site_desc }}</p>
+      {% end %}
+      <p class="chirp-theme-footer__meta">Static-first docs and marketing pages powered by Bengal.</p>
+    </div>
+
+    {% if footer_links | length > 0 %}
+    <nav class="chirp-theme-footer__nav" aria-label="Footer">
+      <span class="chirp-theme-footer__heading">Navigate</span>
+      <ul class="chirp-theme-footer__list">
+        {% for item in footer_links[:6] %}
+        <li><a href="{{ item.href | absolute_url }}">{{ item.name }}</a></li>
+        {% end %}
+      </ul>
+    </nav>
+    {% end %}
+
+    <div class="chirp-theme-footer__links">
+      <span class="chirp-theme-footer__heading">Source</span>
+      <ul class="chirp-theme-footer__list">
+        {% if repo_url %}
+        <li><a href="{{ repo_url }}" rel="noopener">Repository</a></li>
+        {% end %}
+        <li><a href="{{ '/rss.xml' | absolute_url }}">RSS Feed</a></li>
+        <li><a href="{{ '/search/' | absolute_url }}">Search</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chirp-theme-footer__rule">
+    <span class="chirp-theme-footer__rule-mark" aria-hidden="true">ᗢ</span>
+  </div>
+
+  <div class="chirp-theme-footer__colophon">
+    <span>&copy; {{ site.build_time | dateformat('%Y') }} {{ site.title }}</span>
+    <span class="chirp-theme-footer__hint">chirp-theme · packaged with chirp-ui</span>
+  </div>
+</footer>
+{% end %}

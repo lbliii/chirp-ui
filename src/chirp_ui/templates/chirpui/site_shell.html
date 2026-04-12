@@ -1,0 +1,31 @@
+{#- chirp-ui: Site Shell component
+    Full-page scroll shell with sticky header, main content, and footer.
+    The scrolling-page equivalent of app_shell — use for marketing sites,
+    landing pages, docs homes, and any layout that scrolls the whole page.
+
+    Manages stacking context so child z-indices in content never bleed
+    over the sticky header. Apps using site_shell never need to think
+    about isolation: isolate or z-index on the main content area.
+
+    Named slots: header (sticky top region), default (page content), footer.
+
+    Usage:
+        from "chirpui/site_shell.html" import site_shell
+
+        call site_shell(ambient=true)
+            {% slot header %}site_header(...){% end %}
+            Page content here
+            {% slot footer %}site_footer(...){% end %}
+        end
+-#}
+
+{% def site_shell(ambient=false, cls="") %}
+<div class="chirpui-site-shell{{ " chirpui-ambient-root" if ambient else "" }}{{ " " ~ cls if cls else "" }}">
+    {% if ambient %}<div class="chirpui-ambient" aria-hidden="true"></div>{% end %}
+    {% slot header %}
+    <div class="chirpui-site-shell__main">
+        {% slot %}
+    </div>
+    {% slot footer %}
+</div>
+{% end %}
