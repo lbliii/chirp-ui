@@ -66,8 +66,8 @@ Architecture, Chirp integration, and thread safety.
 
 :::{card} API Reference
 :icon: file-text
-:link: /api/
-Generated API docs from the chirp_ui package.
+:link: ./about/
+Python API — see About for architecture, Chirp integration, and thread safety.
 :::{/card}
 
 :::{/cards}

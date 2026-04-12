@@ -134,7 +134,7 @@ def _rgb_to_channels(s: str) -> tuple[float, float, float] | None:
             max(0.0, min(1.0, vals[1])),
             max(0.0, min(1.0, vals[2])),
         )
-    except ValueError, IndexError:
+    except (ValueError, IndexError):
         return None
 
 

@@ -31,7 +31,7 @@
 {% from "chirpui/action_strip.html" import action_strip %}
 
 {% def filter_row(action=none, method="get", attrs="", attrs_map=none, gap="sm", cls="") %}
-{% set hx = build_hx_attrs(**(attrs_map or {})) %}
+{% set hx = attrs_map or {} %}
 <form{% if action %} action="{{ action }}"{% end %} method="{{ method }}"
       class="chirpui-cluster chirpui-cluster--gap-{{ gap }} chirpui-filter-row chirpui-font-sm{{ " " ~ cls if cls else "" }}"
       {{ hx | html_attrs }}
