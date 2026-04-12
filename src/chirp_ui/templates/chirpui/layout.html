@@ -1,4 +1,4 @@
-{#- chirp-ui: Layout primitives — container, grid (flow), frame (structural), stack, cluster, block.
+{#- chirp-ui: Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
     grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).
     See docs/LAYOUT-GRIDS-AND-FRAMES.md.
 -#}
@@ -64,6 +64,22 @@
 </div>
 {% end %}
 
+{#- layer(): overlapping card deck — children overlap with negative margin + rotation, hover straightens and elevates.
+    direction= left | center | right. overlap= sm | md | lg. angle= none | subtle | moderate. hover=true adds hover-to-front. -#}
+{% def layer(direction="left", overlap="md", angle="subtle", hover=true, cls="") %}
+{% set _cls = [c for c in [
+    "chirpui-layer",
+    "chirpui-layer--" ~ direction if direction else "chirpui-layer--left",
+    "chirpui-layer--overlap-" ~ overlap if overlap else "",
+    "chirpui-layer--angle-" ~ angle if angle else "",
+    "chirpui-layer--hover" if hover else "",
+    cls
+] if c] %}
+<div class="{{ _cls | join(' ') }}">
+    {% slot %}
+</div>
+{% end %}
+
 {% def block(span=1, cls="") %}
 {% set _cls = [c for c in ["chirpui-block", "chirpui-block--span-" ~ span if span != 1 else "", cls] if c] %}
 <div class="{{ _cls | join(' ') }}">
@@ -117,7 +133,7 @@
 {#- section_header_inline: deprecated alias — use section_header(variant="inline") with {% slot actions %} -#}
 {% def section_header_inline(title, icon=none, cls="") %}
 {% call section_header(title, icon=icon, variant="inline", cls=cls) %}
-{% slot actions %}{% slot %}{% end %}
+{% slot actions %}{% yield %}{% end %}
 {% end %}
 {% end %}
 
@@ -132,9 +148,9 @@
 {% end %}
 {% call surface(variant=surface_variant, full_width=full_width) %}
 {% call section_header(title, subtitle, icon) %}
-{% slot actions %}{% slot actions %}{% end %}
+{% slot actions %}{% yield actions %}{% end %}
 {% end %}
-{% slot %}{% slot %}{% end %}
+{% yield %}
 {% end %}
 {% if full_width %}
 </div>

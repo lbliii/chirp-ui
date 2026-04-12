@@ -1,0 +1,67 @@
+{#- chirp-ui: Tag browse — tray + selection badges for tag-filtered listings
+    Composite for the common pattern of a slide-out tag picker tray with
+    selected-tag badge row.  Designed for resource_index filters_panel,
+    selection, and filter_actions slots.
+
+    Usage:
+        {% from "chirpui/tag_browse.html" import tag_browse_tray, tag_selection_badges, tag_filter_actions %}
+
+        {% slot filters_panel %}
+        {{ tag_browse_tray("my-filters", "Filter by tags", all_tags, selected_tags, tag_toggle_url, clear_url) }}
+        {% end %}
+        {% slot selection %}
+        {{ tag_selection_badges(selected_tags, tag_toggle_url, clear_url) }}
+        {% end %}
+        {% slot filter_actions %}
+        {{ tag_filter_actions(selected_tags, clear_url) }}
+        {% end %}
+
+    Parameters:
+        tags            — list of all tag strings
+        selected_tags   — list of currently selected tag strings
+        tag_toggle_url  — callable: tag_toggle_url(tag) → URL string
+        clear_url       — URL string to clear all selected tags
+-#}
+{% from "chirpui/tray.html" import tray %}
+{% from "chirpui/layout.html" import cluster, stack %}
+
+{% def tag_browse_tray(id, title, tags, selected_tags, tag_toggle_url, clear_url, position="right", hint="Select tags to filter (all must match):") %}
+{% call tray(id, title, position=position) %}
+  {% call stack(gap="sm") %}
+    {% if tags %}
+    {% if hint %}
+    <p class="chirpui-font-sm chirpui-text-muted">{{ hint }}</p>
+    {% end %}
+    {% call cluster() %}
+      {% for tag in tags %}
+      {% set _tag_href = tag_toggle_url(tag) %}
+      <a href="{{ _tag_href }}"
+         class="chirpui-badge chirpui-badge--{{ 'primary' if (tag | lower) in (selected_tags | map('lower') | list) else 'muted' }}"{{ route_link_attrs(_tag_href) | html_attrs }}>{{ tag }}</a>
+      {% end %}
+    {% end %}
+    {% if selected_tags %}
+    <a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted"{{ route_link_attrs(clear_url) | html_attrs }}>Clear all</a>
+    {% end %}
+    {% else %}
+    <p class="chirpui-text-muted chirpui-font-sm">No tags available.</p>
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+
+{% def tag_selection_badges(selected_tags, tag_toggle_url, clear_url) %}
+{% for tag in selected_tags %}
+{% set _tag_href = tag_toggle_url(tag) %}
+<a href="{{ _tag_href }}"
+   class="chirpui-badge chirpui-badge--primary"{{ route_link_attrs(_tag_href) | html_attrs }}>{{ tag }} &times;</a>
+{% end %}
+{% if selected_tags %}
+<a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted"{{ route_link_attrs(clear_url) | html_attrs }}>Clear all</a>
+{% end %}
+{% end %}
+
+{% def tag_filter_actions(selected_tags, clear_url) %}
+{% if selected_tags %}
+<a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted"{{ route_link_attrs(clear_url) | html_attrs }}>Clear all</a>
+{% end %}
+{% end %}

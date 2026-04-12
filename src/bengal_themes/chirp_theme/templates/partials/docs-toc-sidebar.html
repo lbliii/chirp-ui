@@ -1,0 +1,5 @@
+{% from 'partials/navigation-components.html' import toc %}
+
+{% if toc_items %}
+{{ toc(toc_items=toc_items, page=page) }}
+{% end %}

@@ -11,7 +11,7 @@
 -#}
 
 {% def index_card(href, title, description=none, badge=none, cls="") %}
-<a href="{{ href }}" class="chirpui-index-card{{ " " ~ cls if cls else "" }}">
+<a href="{{ href }}" class="chirpui-index-card{{ " " ~ cls if cls else "" }}"{{ route_link_attrs(href) | html_attrs }}>
     <div class="chirpui-index-card__header">
         {% if badge %}
         <span class="chirpui-index-card__badge">{{ badge }}</span>

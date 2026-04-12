@@ -24,7 +24,7 @@
         <span class="chirpui-comment__avatar">{{ avatar(src=avatar_src, initials=avatar_initials, alt=author, size="sm") }}</span>
         <div class="chirpui-comment__meta">
             {% if href %}
-            <a href="{{ href }}" class="chirpui-comment__author">{{ author }}</a>
+            <a href="{{ href }}" class="chirpui-comment__author"{{ route_link_attrs(href) | html_attrs }}>{{ author }}</a>
             {% else %}
             <span class="chirpui-comment__author">{{ author }}</span>
             {% end %}
@@ -38,7 +38,7 @@
     </div>
     <footer class="chirpui-comment__footer">
         {% if replies_url and replies_count %}
-        <a href="{{ replies_url }}" class="chirpui-comment__replies-link">View {{ replies_count }} {{ "reply" if replies_count == 1 else "replies" }}</a>
+        <a href="{{ replies_url }}" class="chirpui-comment__replies-link"{{ route_link_attrs(replies_url) | html_attrs }}>View {{ replies_count }} {{ "reply" if replies_count == 1 else "replies" }}</a>
         {% end %}
         <div class="chirpui-comment__actions">{% slot actions %}</div>
     </footer>

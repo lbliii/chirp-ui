@@ -12,6 +12,14 @@ The main column (`.chirpui-app-shell__main`) uses **`min-width: 0`** and **`over
 
 ---
 
+## App shell scroll model
+
+Default app shells scroll with the **document**, not with `#main`. If you reintroduce `height: 100dvh` plus `overflow-y: auto` on `.chirpui-app-shell__main`, you break sticky-topbar expectations, anchor landings, and browser history restoration.
+
+**Fix:** Keep default routes in document-scroll mode. Only opt into **`chirpui-app-shell__main--fill`** when the route intentionally needs bounded inner scroll (chat, map, IDE-style layouts). Pair that with a direct `#page-content > .chirpui-page-fill` root so the shell can re-sync fill mode after boosted navigation. See [LAYOUT-VERTICAL.md](LAYOUT-VERTICAL.md).
+
+---
+
 ## Fragment Island and HTMX
 
 ### `hx-target` must match island ID
@@ -60,9 +68,20 @@ Alpine.safeData('counter', () => ({ count: 0 }));
 </script>
 ```
 
+chirp-ui's shared behavior runtime follows this rule already. If you need a new
+named controller, add it to `chirpui-alpine.js` instead of introducing another
+inline component-local registration script.
+
 ### Do not load Alpine.js yourself — Chirp is the single authority
 
 `use_chirp_ui(app)` auto-enables `alpine=True`, which injects Alpine core, all plugins (Mask, Intersect, Focus), store init, and the `safeData` helper. Adding your own `<script src="alpinejs">` tag will double-load Alpine and cause unpredictable behavior.
+
+### Keep medium-complex behavior out of inline `x-data`
+
+Inline `x-data` is fine for tiny one-state widgets. It should not hold behavior
+that depends on `$refs`, `$nextTick`, keyboard handling, `localStorage`,
+viewport measurement, dialog targeting, or repeated logic across templates. Use
+the shared controllers in `chirpui-alpine.js` for those cases.
 
 ---
 
@@ -80,13 +99,62 @@ app = App(...)
 use_chirp_ui(app, prefix="/static")  # Before any render
 ```
 
+### Prefer plain `href=` on supported link components
+
+When `use_chirp_ui(app)` is active, selected link-bearing components auto-apply
+Chirp's route-aware swap attrs for internal links. That includes `btn()`,
+`shimmer_button()`, `pulsing_button()`, `site_header()` brand links,
+`site_nav_link()`, `footer_link()`, `app_shell()` brand links,
+`shell_brand_link()`, `navbar()` brand links, `navbar_link()`,
+`breadcrumbs()`, `pagination()`, `nav_tree()`, `dock()`, `timeline()`,
+`timeline_item()`, `logo()`, `badge()`, `card_link()`, `card_main_link()`,
+`resource_card()`, `icon_btn()`, `index_card()`, `metric_card()`,
+`split_button()` primary links, `dropdown_menu()` item links,
+`dropdown_split()` primary/item links, `action_bar_item()`,
+`list_group(linked=true)`, `video_card()` main link, `channel_card()`,
+`profile_header()` name links, `profile_header_info()`, `post_card()`,
+`post_card_header()`, `video_thumbnail()`, `mention()`, `trending_tag()`,
+`conversation_item()`, `playlist_item()`, `comment()` author/replies links,
+`filter_chip()`, `link()`, `calendar()` nav links, `bar_chart()` label links,
+`tab()`, `ascii_tab()`, `empty_state()` action links, and
+`tag_browse` badge/clear links.
+
+Use plain `href=` first:
+
+```kida
+{{ btn("Open showcase", href="/showcase") }}
+{{ site_nav_link("/docs", "Docs") }}
+{{ footer_link("/contact", "Contact") }}
+```
+
+Do not manually thread `swap_attrs()` into those components unless you need a
+special override. External links and explicit `hx-*` args still win. This only
+applies to links owned by the component itself, not arbitrary raw `<a>` tags
+you pass through a slot. For example, `split_button()` upgrades its
+`primary_href`, but not arbitrary menu links you slot into the dropdown body,
+and `navbar_dropdown()` still leaves its slotted menu links alone. Simpler
+wrappers like `logo()`, `badge()`, `breadcrumbs()`, `dock()`, `nav_tree()`,
+`list_group(linked=true)`, `video_thumbnail()`, `mention()`,
+`trending_tag()`, `index_card()`, `pulsing_button()`, and the link-card macros
+do not expose `hx_*` / `attrs_map` overrides on their outer anchor; when you
+need custom HTMX on that element, use raw link markup or a component like
+`btn()`, `icon_btn()`, `shimmer_button()`, `metric_card()`, or `pagination()`
+that exposes those knobs. Explicit HTMX helpers like `nav_link()`,
+`route_tabs()`, and `inline_edit_field_form()` keep their existing manual
+contract, and timestamp/fragment-style links like `chapter_item()` stay plain
+anchors on purpose.
+
 ---
 
 ## Static Path Setup
 
 ### CSS and JS must be served from the correct path
 
-Include `chirpui.css` and `chirpui.js` from `chirp_ui.static_path()`. With Chirp's `use_chirp_ui`, the prefix is configured automatically. For standalone setups, ensure your static file server serves the chirp-ui templates directory.
+Include `chirpui.css`, `chirpui.js`, and `chirpui-alpine.js` from
+`chirp_ui.static_path()`. With Chirp's `use_chirp_ui`, the prefix is configured
+automatically and the Alpine runtime is injected for full pages. For standalone
+setups, ensure your static file server serves the chirp-ui templates directory
+and load `chirpui-alpine.js` before the Alpine core script.
 
 ```python
 from chirp.middleware.static import StaticFiles
@@ -140,6 +208,6 @@ When a macro and a context variable have the same name (e.g. both `route_tabs`),
 {% end %}
 ```
 
-| Macros | Context variables |
-|--------|-------------------|
-| `render_route_tabs`, `format_date`, `render_nav` | `route_tabs`, `items`, `skills` |
+Macros: `render_route_tabs`, `format_date`, `render_nav`
+
+Context variables: `route_tabs`, `items`, `skills`

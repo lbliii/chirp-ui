@@ -12,4 +12,12 @@
 {% block content %}
 <h1 data-testid="page-heading">Page B</h1>
 <p data-testid="page-content">This is page B.</p>
+<p>
+  <a href="/page-b" data-testid="refresh-page-b">Refresh Page B</a>
+</p>
+<div style="height: 140vh" data-testid="page-b-scroll-spacer" aria-hidden="true"></div>
+<section id="page-b-anchor" data-testid="page-b-anchor">
+  <h2>Page B Anchor</h2>
+  <p>Hash navigation should land below the sticky topbar.</p>
+</section>
 {% end %}

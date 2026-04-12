@@ -1,0 +1,574 @@
+/**
+ * Bengal SSG Default Theme
+ * Footer Styles
+ */
+
+/* ============================================
+   SITE FOOTER
+   ============================================ */
+
+footer[role="contentinfo"] {
+  margin-top: var(--space-16);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+  margin-top: auto;
+  /* stick to bottom on short pages */
+  position: relative;
+  /* Peaceful glow animation */
+  animation: footer-glow 8s ease-in-out infinite;
+}
+
+/* Peaceful slow glow animation for footer border */
+@keyframes footer-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 -1px 0 0 color-mix(in srgb, var(--color-primary) 0%, transparent),
+      0 -2px 8px 0 color-mix(in srgb, var(--color-primary) 8%, transparent);
+  }
+
+  50% {
+    box-shadow: 0 -1px 0 0 color-mix(in srgb, var(--color-primary) 15%, transparent),
+      0 -2px 12px 0 color-mix(in srgb, var(--color-primary) 12%, transparent);
+  }
+}
+
+/* Dark mode glow - slightly brighter */
+[data-theme="dark"] footer[role="contentinfo"] {
+  animation: footer-glow-dark 8s ease-in-out infinite;
+}
+
+@keyframes footer-glow-dark {
+
+  0%,
+  100% {
+    box-shadow: 0 -1px 0 0 color-mix(in srgb, var(--color-primary) 5%, transparent),
+      0 -2px 10px 0 color-mix(in srgb, var(--color-primary) 10%, transparent);
+  }
+
+  50% {
+    box-shadow: 0 -1px 0 0 color-mix(in srgb, var(--color-primary) 20%, transparent),
+      0 -2px 14px 0 color-mix(in srgb, var(--color-primary) 15%, transparent);
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+  footer[role="contentinfo"],
+  [data-theme="dark"] footer[role="contentinfo"] {
+    animation: none;
+    box-shadow: 0 -1px 0 0 color-mix(in srgb, var(--color-primary) 10%, transparent);
+  }
+}
+
+footer .container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  footer .container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* ============================================
+   FOOTER CONTENT
+   ============================================ */
+
+.footer-copyright {
+  font-size: var(--text-xxs);
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Stack footer links vertically on very small screens */
+@media (max-width: 400px) {
+  .footer-links {
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: flex-start;
+  }
+}
+
+.footer-links a {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast) var(--ease-out);
+}
+
+.footer-links a:hover {
+  color: var(--color-primary);
+}
+
+/* ============================================
+   FOOTER SECTIONS
+   ============================================ */
+
+.footer-grid {
+  display: grid;
+  gap: var(--space-8);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.footer-section h3 {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.footer-section ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-section a {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast) var(--ease-out);
+}
+
+.footer-section a:hover {
+  color: var(--color-primary);
+}
+
+/* ============================================
+   SOCIAL LINKS
+   ============================================ */
+
+.social-links {
+  display: flex;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all var(--transition-fast) var(--ease-out);
+}
+
+.social-links a:hover {
+  color: var(--color-text-inverse);
+  background-color: var(--color-primary);
+}
+
+.social-links svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ============================================
+   FOOTER BOTTOM (Copyright + Badge)
+   ============================================ */
+
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: center;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .footer-left {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4);
+  }
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* ============================================
+   BENGAL BADGE (Built with Bengal)
+   ============================================ */
+
+/* Cat component structure */
+.cat {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  user-select: none;
+}
+
+.cat-tail,
+.cat-body,
+.cat-head {
+  display: inline-block;
+  font-weight: var(--weight-light);
+  /* Lighter weight prevents thickness at small sizes */
+}
+
+.cat-body {
+  letter-spacing: -0.02em;
+  /* Tighten spacing slightly */
+}
+
+/* Contemplative animation */
+.cat-contemplative .cat-head {
+  animation: contemplative-head 6s ease-in-out infinite;
+}
+
+.cat-contemplative .cat-tail {
+  animation: contemplative-tail 4s ease-in-out infinite;
+  transform-origin: right center;
+}
+
+@keyframes contemplative-head {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  30% {
+    transform: rotate(-8deg);
+  }
+
+  45% {
+    transform: rotate(-8deg);
+  }
+
+  /* tiny ear twitch flick */
+  47% {
+    transform: rotate(-10deg);
+  }
+
+  49% {
+    transform: rotate(-8deg);
+  }
+}
+
+@keyframes contemplative-tail {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  30% {
+    transform: rotate(-10deg);
+  }
+
+  60% {
+    transform: rotate(-12deg);
+  }
+}
+
+/* Hover bounce to draw attention at tiny size */
+.bengal-badge:hover .cat-head,
+.bengal-badge:focus-visible .cat-head {
+  animation-duration: 2.2s;
+}
+
+.bengal-badge:hover .cat-tail,
+.bengal-badge:focus-visible .cat-tail {
+  animation-duration: 1.8s;
+}
+
+/* Minimal badge: icon-only link with tooltip */
+.bengal-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  text-decoration: none;
+  color: var(--color-text-tertiary);
+  transition: color var(--transition-fast) var(--ease-out), transform var(--transition-fast) var(--ease-out);
+}
+
+.bengal-badge .cat {
+  font-size: var(--text-sm);
+  /* Slightly larger for visibility (14px) */
+}
+
+.bengal-badge:hover {
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+}
+
+/* Tooltip */
+.bengal-badge[data-tooltip] {
+  position: relative;
+}
+
+.bengal-badge[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  white-space: nowrap;
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 4px 6px;
+  font-size: var(--text-xxs);
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast) var(--ease-out), transform var(--transition-fast) var(--ease-out);
+}
+
+.bengal-badge[data-tooltip]:hover::after,
+.bengal-badge[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+/* ============================================
+   BUILD TIME BADGE (built in 1.2s)
+   ============================================ */
+
+.bengal-build-time {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
+  text-decoration: none;
+  color: var(--color-text-secondary);
+  font-size: var(--text-xxs);
+  line-height: 1;
+  box-shadow: var(--neumorphic-subtle);
+  transition: color var(--transition-fast) var(--ease-out),
+    border-color var(--transition-fast) var(--ease-out),
+    background-color var(--transition-fast) var(--ease-out),
+    transform var(--transition-fast) var(--ease-out);
+}
+
+.bengal-build-time__label {
+  color: var(--color-text-tertiary);
+}
+
+.bengal-build-time__value {
+  font-weight: var(--weight-medium);
+  color: var(--color-primary);
+}
+
+.bengal-build-time:hover,
+.bengal-build-time:focus-visible {
+  color: var(--color-text-primary);
+  border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
+  background: color-mix(in srgb, var(--color-primary) 6%, var(--color-bg-tertiary));
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bengal-build-time {
+    transition: none;
+  }
+
+  .bengal-build-time:hover,
+  .bengal-build-time:focus-visible {
+    transform: none;
+  }
+}
+
+/* Dark theme tooltip contrast */
+:root[data-theme="dark"] .bengal-badge[data-tooltip]::after,
+html[data-theme="dark"] .bengal-badge[data-tooltip]::after {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+  .cat-contemplative .cat-head,
+  .cat-contemplative .cat-tail {
+    animation: none;
+  }
+
+  .bengal-badge {
+    transition: none;
+  }
+
+  .bengal-badge:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
+   BUILD STATS HOVER CARD
+   Wikipedia-style preview for build badge
+   ============================================ */
+
+.build-stats-card {
+  position: absolute;
+  z-index: var(--z-tooltip, 1070);
+  width: 260px;
+  padding: var(--space-3);
+
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-high);
+
+  /* Entrance animation */
+  animation: build-stats-card-enter 150ms var(--ease-out);
+  pointer-events: auto;
+}
+
+/* Transform origin based on position */
+.build-stats-card--above {
+  transform-origin: center bottom;
+}
+
+.build-stats-card--below {
+  transform-origin: center top;
+}
+
+@keyframes build-stats-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.build-stats-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.build-stats-card__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-primary);
+}
+
+.build-stats-card__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-tertiary);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.build-stats-card__link:hover {
+  color: var(--color-primary);
+  background: var(--color-bg-hover);
+}
+
+/* Stats grid */
+.build-stats-card__stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.build-stats-card__stat {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.build-stats-card__icon {
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+.build-stats-card__label {
+  color: var(--color-text-secondary);
+}
+
+.build-stats-card__value {
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+  text-align: end;
+}
+
+/* Build time gets emphasis */
+.build-stats-card__stat:first-child .build-stats-card__value {
+  color: var(--color-primary);
+  font-weight: var(--weight-semibold);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .build-stats-card {
+    animation: none;
+  }
+}

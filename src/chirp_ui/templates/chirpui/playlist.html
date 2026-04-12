@@ -29,7 +29,7 @@
 {% def playlist_item(href, title, duration=none, active=false, cls="") %}
 {% set active_class = " chirpui-playlist-item--active" if active else "" %}
 <li class="chirpui-playlist-item{{ active_class }}{{ " " ~ cls if cls else "" }}">
-    <a href="{{ href }}" class="chirpui-playlist-item__link">
+    <a href="{{ href }}" class="chirpui-playlist-item__link"{{ route_link_attrs(href) | html_attrs }}>
         <span class="chirpui-playlist-item__title">{{ title }}</span>
         {% if duration %}
         <span class="chirpui-playlist-item__duration">{{ duration }}</span>

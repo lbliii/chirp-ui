@@ -27,7 +27,7 @@
         <div class="chirpui-profile-header__info">
             {% if name %}
             {% if href %}
-            <h1 class="chirpui-profile-header__name"><a href="{{ href }}">{{ name }}</a></h1>
+            <h1 class="chirpui-profile-header__name"><a href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>{{ name }}</a></h1>
             {% else %}
             <h1 class="chirpui-profile-header__name">{{ name }}</h1>
             {% end %}
@@ -52,7 +52,7 @@
 {% def profile_header_info(name, href=none, cls="") %}
 <div class="chirpui-profile-header__info{{ " " ~ cls if cls else "" }}">
     {% if href %}
-    <h1 class="chirpui-profile-header__name"><a href="{{ href }}">{{ name }}</a></h1>
+    <h1 class="chirpui-profile-header__name"><a href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>{{ name }}</a></h1>
     {% else %}
     <h1 class="chirpui-profile-header__name">{{ name }}</h1>
     {% end %}

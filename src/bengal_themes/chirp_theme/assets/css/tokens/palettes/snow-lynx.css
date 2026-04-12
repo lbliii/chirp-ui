@@ -1,0 +1,206 @@
+/**
+ * Snow Lynx Palette
+ * Inspired by snow lynx bengals: pristine white coat with cream/silver points,
+ * ice-blue eyes, and that soft ashen undertone.
+ *
+ * Design notes:
+ * - Primary canvas: Clean true white (the pristine coat)
+ * - Secondary surfaces: Warm cream (the points/shading)
+ * - Creates depth through temperature layering, not just value
+ * - Ice-blue eyes as the accent pop
+ *
+ * Usage: Attach data-palette="snow-lynx" on <html> to activate.
+ */
+
+/* Scope palette colors to root element only */
+:root[data-palette="snow-lynx"],
+html[data-palette="snow-lynx"] {
+    /* Primary (ice blue eyes - piercing and cool) */
+    --color-primary: #4FA8A0;
+    --color-primary-hover: #3D9287;
+    --color-primary-active: #2D7B72;
+    --color-primary-light: #E3F5F3;
+    --color-primary-dark: #236962;
+
+    /* Backgrounds (layered white → cream for depth through temperature) */
+    --color-bg-primary: #FEFEFE;
+    --color-bg-secondary: #FAF8F5;
+    --color-bg-tertiary: #F4F0EA;
+    --color-bg-elevated: #FFFFFF;
+    --color-bg-overlay: rgba(0, 0, 0, 0.5);
+    --color-bg-hover: #F6F3EE;
+    --color-bg-active: #EFEBE4;
+    --color-bg-code: #F9F7F3;
+
+    /* Text (soft charcoal with cooler undertone) */
+    --color-text-primary: #252525;
+    --color-text-secondary: #5F5B56;
+    --color-text-tertiary: #847F78;
+    --color-text-muted: #AFA9A1;
+    --color-text-inverse: #FFFFFF;
+    --color-text-link: #4FA8A0;
+    --color-text-link-hover: #3D9287;
+
+    /* Borders (subtle warmth against clean white) */
+    --color-border: #E8E4DD;
+    --color-border-light: #F2EFE9;
+    --color-border-strong: #D5CFC5;
+    --color-border-focus: #4FA8A0;
+
+    /* Semantic states (harmonized with icy cream) */
+    --color-success: #2E7D5A;
+    --color-success-bg: #F0F8F4;
+    --color-success-border: #8AC9B5;
+    --color-success-text: #1B5E42;
+
+    --color-warning: #D97706;
+    --color-warning-bg: #FFFBF2;
+    --color-warning-border: #F5D7A1;
+    --color-warning-text: #7C3E03;
+
+    --color-error: #C62828;
+    --color-error-bg: #FFF2F2;
+    --color-error-border: #F5B7B1;
+    --color-error-text: #7F1D1D;
+
+    --color-info: #3D9DAF;
+    --color-info-bg: #F0F8F9;
+    --color-info-border: #8AC9D9;
+    --color-info-text: #1E5C6B;
+
+    /* Accent color (ice blue-teal accent) */
+    --color-accent: #5BB8AF;
+    --color-accent-hover: #4FA8A0;
+    --color-accent-active: #3D9287;
+    --color-accent-light: #7FC9C2;
+    --color-accent-dark: #2D7B72;
+
+    /* Code colors (icy blue-teal with cream undertones) */
+    --color-code-type: #4FA8A0;
+    --color-code-type-bg: #F9F7F3;
+    --color-code-keyword: #3D9DAF;
+    --color-code-string: #4A8570;
+    --color-code-number: #B8845A;
+    --color-code-text: #5F5B56;
+}
+
+/* Dark-mode adjustments while Snow Lynx palette is active */
+:root[data-theme="dark"][data-palette="snow-lynx"],
+html[data-theme="dark"][data-palette="snow-lynx"] {
+    /* Icy teal for dark mode - muted and cool like moonlit ice */
+    --color-primary: #6EC4BC;
+    --color-primary-hover: #87D3CC;
+    --color-primary-active: #55B5AC;
+    --color-primary-light: rgba(110, 196, 188, 0.18);
+    --color-primary-dark: #3C9B93;
+    --color-primary-muted: rgba(110, 196, 188, 0.25);
+
+    /* Dark backgrounds with cool ash-gray tint (less warm, more snow/ice) */
+    --color-bg-primary: #18191A;
+    --color-bg-secondary: #252729;
+    --color-bg-tertiary: #333538;
+    --color-bg-elevated: #1E2022;
+    --color-bg-hover: #3A3D40;
+    --color-bg-active: #454850;
+    --color-bg-code: #252729;
+
+    /* Surface color for components */
+    --color-surface: #1E2022;
+
+    /* Cool text colors for dark mode */
+    --color-text-primary: #F5F5F3;
+    --color-text-secondary: #C9C7C3;
+    --color-text-tertiary: #9D9B97;
+    --color-text-muted: #75736F;
+    /* Inverse text - dark for contrast against light teal primary */
+    --color-text-inverse: #18191A;
+    /* Links: Icy teal glow - matches theme */
+    --color-text-link: #6EC4BC;
+    --color-text-link-hover: #87D3CC;
+
+    /* Cool borders for dark mode */
+    --color-border: #3A3D40;
+    --color-border-light: #2D3032;
+    --color-border-strong: #4F5356;
+
+    /* Semantic states for dark mode (notices/admonitions) */
+    --color-success: #5FB8A5;
+    --color-success-bg: rgba(46, 125, 90, 0.15);
+    --color-success-border: #3D9287;
+    --color-success-text: #8AC9B5;
+
+    --color-warning: #FFA726;
+    --color-warning-bg: rgba(217, 119, 6, 0.15);
+    --color-warning-border: #E67E22;
+    --color-warning-text: #FFCC80;
+
+    --color-error: #EF5350;
+    --color-error-bg: rgba(198, 40, 40, 0.15);
+    --color-error-border: #C62828;
+    --color-error-text: #FFAB91;
+
+    --color-info: #42A5F5;
+    --color-info-bg: rgba(30, 136, 229, 0.15);
+    --color-info-border: #1976D2;
+    --color-info-text: #90CAF9;
+
+    /* Accent color for dark mode */
+    --color-accent: #6EC4BC;
+    --color-accent-hover: #87D3CC;
+    --color-accent-active: #5AAFA7;
+
+    /* Code colors for dark mode (moonlit ice teal) */
+    --color-code-type: #6EC4BC;
+    --color-code-type-bg: rgba(110, 196, 188, 0.10);
+    --color-code-keyword: #87D3CC;
+    --color-code-string: #7FAA8E;
+    --color-code-number: #CCA173;
+    --color-code-text: #D9E5E3;
+}
+
+/* ============================================
+   THEME-AWARE PALETTE PREVIEW (DROPDOWN BUTTONS)
+   ============================================ */
+
+/* Add a color indicator dot before palette buttons */
+.theme-dropdown__menu button[data-palette="snow-lynx"]::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    /* Clean white center fading to cream with teal accent */
+    background: linear-gradient(135deg, #FFFFFF 0%, #F4F0EA 40%, #4FA8A0 100%);
+    border: 1px solid rgba(79, 168, 160, 0.3);
+    vertical-align: middle;
+}
+
+/* Default palette indicator dot (blue gradient) */
+.theme-dropdown__menu button[data-palette=""]::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+    border: 1px solid rgba(33, 150, 243, 0.3);
+    vertical-align: middle;
+}
+
+/* Light mode: Keep default button styling, let indicator show the palette */
+[data-theme="light"] .theme-dropdown__menu button[data-palette="snow-lynx"]:hover,
+[data-theme="light"] .theme-dropdown__menu button[data-palette="snow-lynx"]:focus {
+    /* Clean white with subtle cream warmth */
+    background: #FAF8F5;
+    color: #4FA8A0;
+}
+
+/* Dark mode: Keep default button styling, let indicator show the palette */
+[data-theme="dark"] .theme-dropdown__menu button[data-palette="snow-lynx"]:hover,
+[data-theme="dark"] .theme-dropdown__menu button[data-palette="snow-lynx"]:focus {
+    /* Use standard hover with a hint of palette color */
+    background: var(--color-bg-secondary);
+    color: #6EC4BC;
+}

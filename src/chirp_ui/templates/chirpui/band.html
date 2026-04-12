@@ -1,0 +1,41 @@
+{#- chirp-ui: Band component
+    Full-bleed marketing section panel with optional pattern overlay.
+
+    Width variants control breakout behavior:
+      inset     — rounded panel, slightly wider than container (default)
+      bleed     — viewport-wide background, content contained
+      contained — no breakout, same width as parent
+
+    Surface variants: default, elevated, accent, glass, gradient.
+    Patterns: dots-sm, dots-md, grid, crosshatch, diag (existing chirpui-band--pattern-* CSS).
+
+    Named slots: header (e.g. section_header), default (content).
+
+    Usage:
+        from "chirpui/band.html" import band
+
+        call band(variant="elevated", width="inset", pattern="grid")
+            {% slot header %}section_header("Featured"){% end %}
+            grid(cols=3) ...cards... end
+        end
+
+        call band(width="bleed", variant="accent")
+            Full-bleed accent section content.
+        end
+-#}
+
+{% def band(variant="default", width="inset", pattern="", cls="") %}
+{% set variant = variant | validate_variant(("default","elevated","accent","glass","gradient"), "default") %}
+{% set width = width | validate_variant(("inset","bleed","contained"), "inset") %}
+{% set _cls = [c for c in [
+    "chirpui-band",
+    "chirpui-band--" ~ width,
+    "chirpui-band--" ~ variant if variant != "default" else "",
+    "chirpui-band--pattern-" ~ pattern if pattern else "",
+    cls
+] if c] %}
+<section class="{{ _cls | join(' ') }}">
+    {% slot header %}
+    {% slot %}
+</section>
+{% end %}

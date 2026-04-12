@@ -1,0 +1,61 @@
+{#- chirp-ui: Feature Section component
+    Two-column copy + media layout for product features, changelogs, etc.
+
+    Layout variants:
+      split          — copy 55%, media 45% (default)
+      balanced       — equal 50/50
+      media-dominant — copy 40%, media 60%
+      stacked        — single column, media below copy
+
+    Surface variants: default (transparent), muted (subtle bg), halo (glow behind media).
+    reverse=true flips column order for zigzag patterns.
+
+    Named slots: eyebrow, title, actions, media. Default slot = body/description.
+
+    Usage:
+        from "chirpui/feature_section.html" import feature_section, feature_stack
+
+        call feature_section(layout="split", variant="halo", reverse=true)
+            {% slot eyebrow %}New{% end %}
+            {% slot title %}Lightning fast builds{% end %}
+            <p>Description text with details.</p>
+            <ul><li>Bullet one</li><li>Bullet two</li></ul>
+            {% slot actions %}btn("Get started", variant="primary"){% end %}
+            {% slot media %}surface(...)...install_snippet(...){% end %}
+        end
+
+        call feature_stack()
+            feature_section(...)...end
+            feature_section(..., reverse=true)...end
+        end
+-#}
+
+{% def feature_section(layout="split", variant="default", reverse=false, cls="") %}
+{% set layout = layout | validate_variant(("split","balanced","media-dominant","stacked"), "split") %}
+{% set variant = variant | validate_variant(("default","muted","halo"), "default") %}
+{% set _cls = [c for c in [
+    "chirpui-feature-section",
+    "chirpui-feature-section--" ~ layout,
+    "chirpui-feature-section--" ~ variant if variant != "default" else "",
+    "chirpui-feature-section--reverse" if reverse else "",
+    cls
+] if c] %}
+<div class="{{ _cls | join(' ') }}">
+    <div class="chirpui-feature-section__copy">
+        <div class="chirpui-feature-section__eyebrow">{% slot eyebrow %}</div>
+        <h2 class="chirpui-feature-section__title">{% slot title %}</h2>
+        <div class="chirpui-feature-section__body">{% slot %}</div>
+        <div class="chirpui-feature-section__actions">{% slot actions %}</div>
+    </div>
+    <div class="chirpui-feature-section__media">
+        {% if variant == "halo" %}<div class="chirpui-feature-section__halo" aria-hidden="true"></div>{% end %}
+        {% slot media %}
+    </div>
+</div>
+{% end %}
+
+{% def feature_stack(cls="") %}
+<div class="chirpui-feature-stack{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}

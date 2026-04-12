@@ -12,14 +12,13 @@
 {% def dropdown_menu(trigger, items, id="chirpui-dropdown") %}
 {% set dropdown_id = id %}
 <div class="chirpui-dropdown" id="{{ dropdown_id }}" x-id="['dropdown-menu']"
-     x-data="{
-       open: false,
-       toggle() { if (this.open) return this.close(); this.$refs.trigger?.focus(); this.open = true },
-       close(focusAfter) { if (!this.open) return; this.open = false; focusAfter?.focus() }
-     }"
+     :data-align-x="alignX"
+     :data-align-y="alignY"
+     x-data="chirpuiDropdown()"
      @keydown.escape.prevent.stop="close($refs.trigger)"
      @focusin.window="!$refs.panel?.contains($event.target) && close($refs.trigger)"
-     @click.outside="close($refs.trigger)">
+     @click.outside="close($refs.trigger)"
+     @resize.window="open && reposition()">
     <div class="chirpui-dropdown__trigger" x-ref="trigger"
          role="button" tabindex="0" aria-haspopup="menu" :aria-expanded="open"
          :aria-controls="$id('dropdown-menu')"
@@ -40,6 +39,7 @@
         {% set icon = item.get("icon", "") %}
         {% if href %}
         <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ href }}" role="menuitem"
+           {{ route_link_attrs(href) | html_attrs }}
            @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', href: '{{ href | e }}' })">
             {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
             {{ item.get("label", "") }}
@@ -74,17 +74,15 @@
 {% endfor %}
 <div class="chirpui-dropdown chirpui-dropdown--select" id="{{ id }}" x-id="['dropdown-select', 'listbox-option']"
      data-item-count="{{ items|length }}"
-     x-data="{
-       open: false, selected: '{{ display | e }}', focusedIndex: 0,
-       toggle() { if (this.open) return this.close(); this.open = true; this.$nextTick(() => { this.focusedIndex = 0; this.$refs['item-0']?.focus() }) },
-       close(focusAfter) { if (!this.open) return; this.open = false; focusAfter?.focus() },
-       keyDown() { const m = parseInt(this.$el.dataset.itemCount || '0', 10) - 1; if (this.focusedIndex < m) { this.focusedIndex++; this.$refs['item-' + this.focusedIndex]?.focus() } },
-       keyUp() { if (this.focusedIndex > 0) { this.focusedIndex--; this.$refs['item-' + this.focusedIndex]?.focus() } },
-       keyEnter() { const el = this.$refs['item-' + this.focusedIndex]; if (el) { this.selected = el.dataset.label; this.open = false; this.close(this.$refs.trigger); this.$dispatch('chirpui:dropdown-selected', { label: el.dataset.label, value: el.dataset.label }) } }
-     }"
+     data-selected="{{ display | e }}"
+     :data-align-x="alignX"
+     :data-align-y="alignY"
+     x-data="chirpuiDropdownSelect()"
+     x-init="init()"
      @keydown.escape.prevent.stop="close($refs.trigger)"
      @focusin.window="!$refs.panel?.contains($event.target) && close($refs.trigger)"
-     @click.outside="close($refs.trigger)">
+     @click.outside="close($refs.trigger)"
+     @resize.window="open && reposition()">
     <div class="chirpui-dropdown__trigger chirpui-dropdown__trigger--select" x-ref="trigger"
          role="combobox" tabindex="0" aria-haspopup="listbox" :aria-expanded="open"
          :aria-controls="$id('dropdown-select')" :aria-activedescendant="open ? $id('listbox-option', focusedIndex) : ''"
@@ -117,16 +115,15 @@
 
 {% def dropdown_split(primary_label, primary_href=none, primary_action=none, items=[], icon=none) %}
 <div class="chirpui-dropdown chirpui-dropdown--split" x-id="['dropdown-split']"
-     x-data="{
-       open: false,
-       toggle() { if (this.open) return this.close(); this.$refs.trigger?.focus(); this.open = true },
-       close(focusAfter) { if (!this.open) return; this.open = false; focusAfter?.focus() }
-     }"
+     :data-align-x="alignX"
+     :data-align-y="alignY"
+     x-data="chirpuiDropdown()"
      @keydown.escape.prevent.stop="close($refs.trigger)"
      @focusin.window="!$refs.panel?.contains($event.target) && close($refs.trigger)"
-     @click.outside="close($refs.trigger)">
+     @click.outside="close($refs.trigger)"
+     @resize.window="open && reposition()">
     {% if primary_href %}
-    <a href="{{ primary_href }}" class="chirpui-dropdown__split-primary chirpui-btn chirpui-btn--primary chirpui-btn--sm">
+    <a href="{{ primary_href }}" class="chirpui-dropdown__split-primary chirpui-btn chirpui-btn--primary chirpui-btn--sm"{{ route_link_attrs(primary_href) | html_attrs }}>
         {% if icon %}<span aria-hidden="true">{{ icon }}</span>{% endif %}
         {{ primary_label }}
     </a>
@@ -150,10 +147,12 @@
         {% if item.get("divider") %}
         <div class="chirpui-dropdown__divider" role="separator"></div>
         {% else %}
+        {% set item_href = item.get("href") %}
         {% set variant = item.get("variant", "default") | validate_variant_block("dropdown__item", "default") %}
-        {% if item.get("href") %}
-        <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ item.get('href') }}" role="menuitem"
-           @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', href: '{{ item.get("href", "") | e }}' })">
+        {% if item_href %}
+        <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ item_href }}" role="menuitem"
+           {{ route_link_attrs(item_href) | html_attrs }}
+           @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', href: '{{ item_href | e }}' })">
             {% if item.get("icon") %}<span class="chirpui-dropdown__icon">{{ item.get("icon") }}</span>{% endif %}
             {{ item.get("label", "") }}
         </a>

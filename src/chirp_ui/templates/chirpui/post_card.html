@@ -25,7 +25,7 @@
             <span class="chirpui-post-card__avatar">{% slot avatar %}</span>
             <div class="chirpui-post-card__meta">
                 {% if href %}
-                <a href="{{ href }}" class="chirpui-post-card__name">{{ name }}</a>
+                <a href="{{ href }}" class="chirpui-post-card__name"{{ route_link_attrs(href) | html_attrs }}>{{ name }}</a>
                 {% else %}
                 <span class="chirpui-post-card__name">{{ name }}</span>
                 {% end %}
@@ -51,7 +51,7 @@
         <span class="chirpui-post-card__avatar">{% slot %}</span>
         <div class="chirpui-post-card__meta">
             {% if href %}
-            <a href="{{ href }}" class="chirpui-post-card__name">{{ name }}</a>
+            <a href="{{ href }}" class="chirpui-post-card__name"{{ route_link_attrs(href) | html_attrs }}>{{ name }}</a>
             {% else %}
             <span class="chirpui-post-card__name">{{ name }}</span>
             {% end %}

@@ -25,7 +25,7 @@
 {% set has_accessible_text_fallback = variant == "image" and (not image_alt | trim) and has_text %}
 {% set resolved_alt = image_alt if image_alt | trim else "" %}
 {% if href %}
-<a class="{{ root_cls }}" href="{{ href }}">
+<a class="{{ root_cls }}" href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>
     {% if should_show_image %}
     <img class="chirpui-logo__img" src="{{ image_src }}" alt="{{ resolved_alt }}">
     {% end %}

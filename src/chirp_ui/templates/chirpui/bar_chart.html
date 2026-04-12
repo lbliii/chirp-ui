@@ -30,7 +30,7 @@
     <div class="chirpui-bar-chart__row">
         <span class="chirpui-bar-chart__label">
         {% if item.get("href") %}
-        <a href="{{ item.get('href') }}" class="chirpui-bar-chart__label-link">{{ item.label }}</a>
+        <a href="{{ item.get('href') }}" class="chirpui-bar-chart__label-link"{{ route_link_attrs(item.get("href")) | html_attrs }}>{{ item.label }}</a>
         {% else %}
         {{ item.label }}
         {% end %}

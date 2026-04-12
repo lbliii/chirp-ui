@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% from "partials/empty-state.html" import empty_state %}
+
+{% block title %}Page Not Found - {{ config?.title ?? 'Site' }}{% end %}
+
+{% block meta %}
+<meta name="robots" content="noindex, nofollow">
+{% end %}
+
+{% block content %}
+{% let current_language = current_lang() %}
+{% let main_menu = get_menu_lang('main', current_language) %}
+{% let auto_nav = get_auto_nav() if main_menu | length == 0 else [] %}
+{% let nav_items = main_menu if main_menu | length > 0 else auto_nav %}
+{% let home_url = '/' | absolute_url %}
+
+<div class="container">
+  {{ empty_state(
+      title="Page Not Found",
+      message="The page you're looking for does not exist or may have moved.",
+      icon_name="compass",
+      code="404",
+      actions=[{'href': home_url, 'label': 'Go Home', 'icon': 'house'}],
+      suggestions=nav_items[:5] if nav_items | length > 0 else none,
+      show_search_hint=true
+  ) }}
+</div>
+{% end %}

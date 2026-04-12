@@ -1,0 +1,36 @@
+{#- chirp-ui: Aura — chromatic halo behind stacked content (glass surfaces, cards, etc.)
+
+    Wrap any block so a soft blurred gradient sits *behind* the child (not below it in
+    document flow). Uses a wrapper + ::before; child lives in chirpui-aura__content with
+    z-index above the glow. Safe with glass/backdrop-filter; pair with surface(variant="glass").
+
+    Does not use the surface element's ::before/::after — compatible with chirpui-surface--cornered
+    on the inner surface (aura is on the parent).
+
+    Usage:
+        from "chirpui/aura.html" import aura
+        from "chirpui/surface.html" import surface
+
+        {% call aura(tone="accent", spread="md") %}
+          {% call surface(variant="glass") %}…{% end %}
+        {% end %}
+
+        {% call aura(tone="warm", spread="lg", mirror=true) %}…{% end %}
+
+    Params:
+        tone   — accent, warm, cool, muted, primary (token-driven tints)
+        spread — sm (tight), md (default), lg (hero / wide blades)
+        mirror — flip the gradient horizontally (e.g. panel column on the left)
+
+    See COMPONENT-OPTIONS.md § aura.
+-#}
+
+{% def aura(tone="accent", spread="md", mirror=false, cls="", attrs="", attrs_map=none) %}
+{% set tone = tone | validate_variant_block("aura_tone", default="accent") %}
+{% set spread = spread | validate_size("aura", default="md") %}
+<div class="{{ "aura" | bem(variant=tone, size=spread, modifier="mirror" if mirror else "", cls=cls) }}"{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}>
+    <div class="chirpui-aura__content">
+        {% slot %}
+    </div>
+</div>
+{% end %}

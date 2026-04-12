@@ -34,6 +34,13 @@ Set `data-theme="light"` or `data-theme="dark"` on `<html>`.
 <link rel="stylesheet" href="/static/themes/holy-light.css">
 ```
 
+## Bengal Theme
+
+For fully static Bengal sites, `chirp-ui` now also ships `chirp-theme`, a
+static-first docs and marketing theme packaged in this project.
+
+- [chirp-theme](/docs/theming/chirp-theme/) - packaged Bengal theme with the `b-site`-inspired aesthetic
+
 ## Motion
 
 All animations respect `prefers-reduced-motion`. No configuration needed.

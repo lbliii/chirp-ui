@@ -1,0 +1,185 @@
+/**
+ * Silver Bengal Palette
+ * High-contrast silver with cool blue undertones and charcoal accents
+ *
+ * Usage: Attach data-palette="silver-bengal" on <html> to activate.
+ */
+
+/* Scope palette colors to root element only */
+:root[data-palette="silver-bengal"],
+html[data-palette="silver-bengal"] {
+    /* Primary (cool pure silver - MONOCHROMATIC) */
+    --color-primary: #6B7280;
+    --color-primary-hover: #4B5563;
+    --color-primary-active: #374151;
+    --color-primary-light: #F3F4F6;
+    --color-primary-dark: #1F2937;
+
+    /* Backgrounds (pure monochrome - NO color tint) */
+    --color-bg-primary: #FFFFFF;
+    --color-bg-secondary: #F9FAFB;
+    --color-bg-tertiary: #F3F4F6;
+    --color-bg-elevated: #FFFFFF;
+    --color-bg-overlay: rgba(0, 0, 0, 0.6);
+    --color-bg-hover: #F3F4F6;
+    --color-bg-active: #E5E7EB;
+    --color-bg-code: #F9FAFB;
+
+    /* Text (pure blacks and grays - maximum contrast) */
+    --color-text-primary: #000000;
+    --color-text-secondary: #374151;
+    --color-text-tertiary: #6B7280;
+    --color-text-muted: #9CA3AF;
+    --color-text-inverse: #FFFFFF;
+    --color-text-link: #4B5563;
+    --color-text-link-hover: #1F2937;
+
+    /* Borders (neutral grays) */
+    --color-border: #D1D5DB;
+    --color-border-light: #E5E7EB;
+    --color-border-strong: #9CA3AF;
+    --color-border-focus: #6B7280;
+
+    /* Semantic states (cool tones) */
+    --color-success: #3F6D47;
+    --color-success-bg: #F3F6F4;
+    --color-success-border: #9BB29F;
+    --color-success-text: #2A4A30;
+
+    --color-warning: #CA8A04;
+    --color-warning-bg: #FEFCE8;
+    --color-warning-border: #FDE047;
+    --color-warning-text: #713F12;
+
+    --color-error: #C62828;
+    --color-error-bg: #FFF5F5;
+    --color-error-border: #FCA5A5;
+    --color-error-text: #7F1D1D;
+
+    --color-info: #4B5563;
+    --color-info-bg: #F3F4F6;
+    --color-info-border: #9CA3AF;
+    --color-info-text: #1F2937;
+
+    /* Accent color (pure silver - monochromatic) */
+    --color-accent: #4B5563;
+    --color-accent-hover: #374151;
+    --color-accent-active: #1F2937;
+    --color-accent-light: #9CA3AF;
+    --color-accent-dark: #111827;
+
+    /* Code colors (pure monochrome - high contrast) */
+    --color-code-type: #374151;
+    --color-code-type-bg: #F9FAFB;
+    --color-code-keyword: #1F2937;
+    --color-code-string: #4B5563;
+    --color-code-number: #6B7280;
+    --color-code-text: #374151;
+}
+
+/* Dark-mode adjustments while Silver Bengal palette is active */
+:root[data-theme="dark"][data-palette="silver-bengal"],
+html[data-theme="dark"][data-palette="silver-bengal"] {
+    /* Bright pure silver for dark mode - NO color tint */
+    --color-primary: #D1D5DB;
+    --color-primary-hover: #E5E7EB;
+    --color-primary-active: #9CA3AF;
+    --color-primary-light: rgba(209, 213, 219, 0.20);
+    --color-primary-dark: #6B7280;
+    --color-primary-muted: rgba(209, 213, 219, 0.25);
+
+    /* Pure black backgrounds - monochromatic */
+    --color-bg-primary: #000000;
+    --color-bg-secondary: #0F0F0F;
+    --color-bg-tertiary: #1A1A1A;
+    --color-bg-elevated: #0A0A0A;
+    --color-bg-hover: #262626;
+    --color-bg-active: #333333;
+    --color-bg-code: #0F0F0F;
+
+    /* Surface color for components */
+    --color-surface: #0A0A0A;
+
+    /* Pure grayscale text - high contrast */
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #D1D5DB;
+    --color-text-tertiary: #9CA3AF;
+    --color-text-muted: #6B7280;
+    /* CRITICAL: Inverse text must be dark for contrast against light primary */
+    --color-text-inverse: #111827;
+    /* Links: Steel blue with cool undertones - visible and recognizable */
+    --color-text-link: #94A3B8;
+    --color-text-link-hover: #CBD5E1;
+
+    /* Adjusted borders for dark mode */
+    --color-border: #262626;
+    --color-border-light: #1A1A1A;
+    --color-border-strong: #404040;
+
+    /* Semantic states for dark mode */
+    --color-success: #6B9B6F;
+    --color-success-bg: rgba(63, 109, 71, 0.15);
+    --color-success-border: #4A7450;
+    --color-success-text: #9BB29F;
+
+    --color-warning: #FFB020;
+    --color-warning-bg: rgba(217, 119, 6, 0.15);
+    --color-warning-border: #F59E0B;
+    --color-warning-text: #FCD34D;
+
+    --color-error: #EF5350;
+    --color-error-bg: rgba(198, 40, 40, 0.15);
+    --color-error-border: #C62828;
+    --color-error-text: #FCA5A5;
+
+    --color-info: #D1D5DB;
+    --color-info-bg: rgba(107, 114, 128, 0.15);
+    --color-info-border: #6B7280;
+    --color-info-text: #E5E7EB;
+
+    /* Accent color for dark mode */
+    --color-accent: #D1D5DB;
+    --color-accent-hover: #E5E7EB;
+    --color-accent-active: #9CA3AF;
+
+    /* Code colors for dark mode (bright monochrome - pure contrast) */
+    --color-code-type: #D1D5DB;
+    --color-code-type-bg: rgba(209, 213, 219, 0.08);
+    --color-code-keyword: #E5E7EB;
+    --color-code-string: #9CA3AF;
+    --color-code-number: #B8BFC7;
+    --color-code-text: #D1D5DB;
+}
+
+/* ============================================
+   THEME-AWARE PALETTE PREVIEW (DROPDOWN BUTTONS)
+   ============================================ */
+
+/* Add a color indicator dot before palette buttons */
+.theme-dropdown__menu button[data-palette="silver-bengal"]::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    background: linear-gradient(135deg, #5A6A7A 0%, #7C8B9B 50%, #FAFBFC 100%);
+    border: 1px solid rgba(90, 106, 122, 0.3);
+    vertical-align: middle;
+}
+
+/* Light mode: Keep default button styling, let indicator show the palette */
+[data-theme="light"] .theme-dropdown__menu button[data-palette="silver-bengal"]:hover,
+[data-theme="light"] .theme-dropdown__menu button[data-palette="silver-bengal"]:focus {
+    /* Use standard hover with a hint of palette color */
+    background: #F4F6F8;
+    color: #5A6A7A;
+}
+
+/* Dark mode: Keep default button styling, let indicator show the palette */
+[data-theme="dark"] .theme-dropdown__menu button[data-palette="silver-bengal"]:hover,
+[data-theme="dark"] .theme-dropdown__menu button[data-palette="silver-bengal"]:focus {
+    /* Use standard hover with a hint of palette color */
+    background: var(--color-bg-secondary);
+    color: #7C8B9B;
+}

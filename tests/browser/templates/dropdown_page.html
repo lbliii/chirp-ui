@@ -22,6 +22,16 @@
 ]) }}
 </div>
 
+<div
+  data-testid="dropdown-menu-right-edge"
+  style="display: flex; justify-content: flex-end; width: min(100%, 11rem); margin-top: 1rem;"
+>
+{{ dropdown_menu("More", items=[
+  {"label": "Playground", "href": "/playground"},
+  {"label": "Contracts", "href": "/contracts"},
+]) }}
+</div>
+
 <div data-testid="dropdown-select-container">
 {{ dropdown_select("Pick one", items=[
   {"label": "Option A", "value": "a"},

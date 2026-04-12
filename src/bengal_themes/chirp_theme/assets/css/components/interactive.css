@@ -1,0 +1,613 @@
+/**
+ * Bengal SSG Default Theme
+ * Interactive Components
+ *
+ * Styles for interactive UI elements:
+ * - Back to top button
+ * - Reading progress bar
+ * - Copy link buttons
+ * - Image lightbox
+ */
+
+/* ============================================
+   BACK TO TOP BUTTON
+   ============================================ */
+
+.back-to-top {
+  position: fixed;
+  bottom: 5rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  min-width: 3rem;
+  min-height: 3rem;
+  max-width: 3rem;
+  max-height: 3rem;
+  aspect-ratio: 1 / 1;
+  /* Prevent flexbox from stretching */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  /* Neumorphic background - subtle gradient matching other neumorphic elements */
+  background: linear-gradient(180deg,
+      var(--color-surface, var(--color-bg-elevated)),
+      var(--color-bg-secondary));
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  overflow: visible;
+  /* Allow SVG to render properly */
+  z-index: var(--z-fixed);
+  transition: all var(--transition-base);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 20px, 0) scale(0.8);
+  /* Neumorphic shadow - subtle for compact circular element */
+  box-shadow: var(--neumorphic-subtle);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.back-to-top.visible svg,
+.back-to-top.visible svg line,
+.back-to-top.visible svg polyline {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background: linear-gradient(180deg,
+      var(--color-surface, var(--color-bg-elevated)),
+      var(--color-bg-hover));
+  color: var(--color-primary-hover);
+  /* Neumorphic hover - raised key effect */
+  box-shadow: var(--neumorphic-hover);
+  transform: translateY(-1px);
+}
+
+.back-to-top:active {
+  background: linear-gradient(180deg,
+      var(--color-bg-active),
+      var(--color-bg-secondary));
+  color: var(--color-primary-active);
+  /* Neumorphic pressed - key fully depressed */
+  box-shadow: var(--neumorphic-subtle-pressed);
+  transform: translateY(0) scale(0.92);
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+/* Spring-back on release */
+.back-to-top:not(:active) {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow var(--transition-base),
+              background var(--transition-base);
+}
+
+/* Dark mode adjustments for back-to-top */
+[data-theme="dark"] .back-to-top {
+  background: linear-gradient(180deg,
+      var(--color-surface, var(--color-bg-elevated)),
+      var(--color-bg-secondary));
+  color: var(--color-primary);
+  border-color: var(--color-border);
+  /* Neumorphic shadow for dark mode - inherits via CSS variables */
+  box-shadow: var(--neumorphic-subtle);
+}
+
+[data-theme="dark"] .back-to-top:hover {
+  background: linear-gradient(180deg,
+      var(--color-surface, var(--color-bg-elevated)),
+      var(--color-bg-hover));
+  color: var(--color-primary-hover);
+  /* Neumorphic hover for dark mode */
+  box-shadow: var(--neumorphic-hover);
+}
+
+[data-theme="dark"] .back-to-top:active {
+  background: linear-gradient(180deg,
+      var(--color-bg-active),
+      var(--color-bg-secondary));
+  color: var(--color-primary-active);
+  /* Neumorphic pressed for dark mode */
+  box-shadow: var(--neumorphic-subtle-pressed);
+}
+
+.back-to-top:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 3px;
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  fill: none;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: none;
+  flex-shrink: 0;
+  position: relative;
+  color: inherit;
+}
+
+/* Ensure child elements use currentColor with fallback */
+.back-to-top svg line,
+.back-to-top svg polyline {
+  stroke: currentColor;
+  stroke-width: 2.5;
+  fill: none;
+  visibility: visible;
+  opacity: 1;
+  color: inherit;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 4rem;
+    right: 1rem;
+    /* Apple HIG: Minimum 44×44px touch target */
+    width: 2.75rem;
+    /* 44px */
+    height: 2.75rem;
+    /* 44px */
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    max-width: 2.75rem;
+    max-height: 2.75rem;
+    aspect-ratio: 1 / 1;
+  }
+
+  .back-to-top svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ============================================
+   READING PROGRESS BAR
+   ============================================ */
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  /* Match header's frosty glass effect */
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  z-index: var(--z-fixed);
+  overflow: hidden;
+}
+
+/* Dark mode - match header's dark theme */
+[data-theme="dark"] .reading-progress {
+  background-color: rgba(26, 26, 26, 0.85);
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(12px)) {
+  .reading-progress {
+    background-color: var(--color-bg-primary);
+  }
+}
+
+@supports not (backdrop-filter: blur(12px)) {
+  [data-theme="dark"] .reading-progress {
+    background-color: rgba(26, 26, 26, 0.95);
+  }
+}
+
+.reading-progress__fill {
+  height: 100%;
+  background: linear-gradient(90deg,
+      var(--color-primary) 0%,
+      var(--color-accent) 100%);
+  transition: width 150ms ease-out;
+  transform-origin: left;
+}
+
+/* Hide on very small screens */
+@media (max-width: 640px) {
+  .reading-progress {
+    height: 2px;
+  }
+}
+
+/* ============================================
+   COPY LINK BUTTONS (for headings)
+   ============================================ */
+
+.heading-anchor {
+  position: relative;
+  scroll-margin-top: 5rem;
+  /* Account for fixed header */
+}
+
+/* Link appears to the LEFT of heading on hover (GitHub-style) */
+.copy-link {
+  position: absolute;
+  left: -2.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--color-text-secondary);
+  opacity: 0;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: var(--radius-sm);
+  /* Reset ALL link styles from prose - critical overrides */
+  text-decoration: none !important;
+  background: none !important;
+  background-image: none !important;
+  background-size: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Prevent ::after pseudo-element from external link styles */
+.copy-link::after {
+  display: none !important;
+  content: none !important;
+}
+
+.heading-anchor:hover .copy-link,
+.copy-link:focus {
+  opacity: 0.6;
+}
+
+.copy-link:hover {
+  opacity: 1;
+  color: var(--color-primary);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.copy-link:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.copy-link:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+/* Hide legacy pilcrow headerlinks if present (parser now outputs IDs only) */
+.headerlink {
+  display: none !important;
+}
+
+.copy-link svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/* Success state */
+.copy-link.copied {
+  opacity: 1;
+  color: var(--color-success);
+}
+
+/* On mobile: show inline after the heading (can't hover to reveal) */
+@media (max-width: 768px) {
+  .copy-link {
+    position: static;
+    transform: none;
+    display: inline-flex;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    padding: 0.25rem;
+    margin: 0 0 0 0.5rem !important;
+    opacity: 0.4;
+    /* Subtle frosted background on mobile */
+    background: rgba(128, 128, 128, 0.1) !important;
+    border-radius: var(--radius-sm);
+  }
+
+  .copy-link:hover,
+  .copy-link:active {
+    transform: none;
+  }
+
+  .copy-link svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* ============================================
+   IMAGE LIGHTBOX - DIALOG PATTERN
+   See: assets/COMPONENT-PATTERNS.md
+
+   - Element: <dialog id="lightbox-dialog">
+   - Browser handles: focus trap, escape key, backdrop, inert
+   - JS handles: Image loading, arrow key navigation
+   ============================================ */
+
+.lightbox-dialog {
+  /* Reset dialog defaults */
+  position: fixed;
+  margin: 0;
+  padding: 2rem;
+  border: none;
+  max-width: none;
+  max-height: none;
+
+  /* Full viewport overlay */
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Appearance - cursor only applies when open */
+  background: transparent;
+
+  /* Animation - slide up and fade in */
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.2s ease, transform 0.2s ease,
+    display 0.2s allow-discrete, overlay 0.2s allow-discrete;
+}
+
+/* Open state - centering, cursor, and visibility */
+.lightbox-dialog[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Entry animation starting point */
+@starting-style {
+  .lightbox-dialog[open] {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* Backdrop styling */
+.lightbox-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.lightbox-dialog[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .lightbox-dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/*
+ * Note: Lightbox does NOT use view-transition-name.
+ * Cross-document view transitions should only animate main-content.
+ * Dialog open/close animations are handled by @starting-style above.
+ */
+
+/* Image styling */
+.lightbox-dialog__image {
+  max-width: 90%;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+/* Controls container */
+.lightbox-dialog__controls {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* Close button */
+.lightbox-dialog__close {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.15),
+      rgba(255, 255, 255, 0.1));
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--neumorphic-base);
+}
+
+.lightbox-dialog__close:hover {
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.25),
+      rgba(255, 255, 255, 0.2));
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: var(--neumorphic-hover);
+  transform: scale(1.1);
+}
+
+.lightbox-dialog__close:active {
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.05));
+  box-shadow: var(--neumorphic-pressed);
+  transform: scale(0.95);
+}
+
+.lightbox-dialog__close:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.lightbox-dialog__close svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  flex-shrink: 0;
+}
+
+/* Caption */
+.lightbox-dialog__caption {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80%;
+  padding: 0.75rem 1.5rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-dialog {
+    transition: none;
+  }
+
+  .lightbox-dialog::backdrop {
+    transition: none;
+  }
+
+  @starting-style {
+    .lightbox-dialog[open] {
+      opacity: 1;
+      transform: none;
+    }
+
+    .lightbox-dialog[open]::backdrop {
+      opacity: 1;
+    }
+  }
+}
+
+/* Clickable images indicator */
+img[data-lightbox] {
+  cursor: zoom-in;
+  transition: all var(--transition-base);
+}
+
+img[data-lightbox]:hover {
+  opacity: 0.9;
+  box-shadow: var(--elevation-card);
+}
+
+
+/* ============================================
+   KEYBOARD SHORTCUTS HINT
+   ============================================ */
+
+.keyboard-shortcuts {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-card);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  z-index: var(--z-popover);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-base);
+}
+
+.keyboard-shortcuts.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.keyboard-shortcuts kbd {
+  display: inline-block;
+  padding: 0.125rem 0.375rem;
+  font-size: var(--text-xxs);
+  font-family: var(--font-mono);
+  background-color: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  box-shadow: 0 1px 0 var(--color-border-dark);
+  margin: 0 0.25rem;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .back-to-top,
+  .reading-progress__fill,
+  .copy-link,
+  .lightbox,
+  .lightbox__image {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .back-to-top.visible {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* Reduce motion class (JS-applied) */
+/* Target specific interactive elements instead of universal selector to avoid dev tools conflicts */
+.reduce-motion .back-to-top,
+.reduce-motion .reading-progress__fill,
+.reduce-motion .copy-link,
+.reduce-motion .lightbox,
+.reduce-motion .lightbox__image {
+  animation-duration: 0ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0ms !important;
+}
+
+/* ============================================
+   PRINT
+   ============================================ */
+
+@media print {
+
+  .back-to-top,
+  .reading-progress,
+  .copy-link,
+  .lightbox,
+  .keyboard-shortcuts {
+    display: none !important;
+  }
+}

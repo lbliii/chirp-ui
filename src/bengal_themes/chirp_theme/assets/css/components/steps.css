@@ -1,0 +1,209 @@
+/**
+ * Steps Component Styles
+ *
+ * Styles for the {steps} directive.
+ * Creates a visual step-by-step guide with connected numbers.
+ *
+ * NOTE: Directive base CSS (bengal/assets/css/directives/steps.css) provides
+ * functional styles: counter reset, list reset, accessibility.
+ * This file provides aesthetic styles: layout, colors, connector lines.
+ */
+
+.steps {
+  margin-block: var(--space-8);
+  --step-marker-size: var(--space-8);
+  --step-line-width: 2px;
+  --step-spacing: var(--space-10);
+}
+
+/* List reset - base CSS handles this, but keeping for clarity with nested list restoration below */
+.steps > ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Restore list styling for nested ordered lists inside steps */
+.steps ol ol {
+  list-style: decimal;
+  padding-inline-start: 1.5rem;
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+/* Restore list styling for nested unordered lists inside steps */
+.steps ol ul {
+  list-style: disc;
+  padding-inline-start: 1.5rem;
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+/* Remove bottom margin from lists that are the last element in a step */
+.steps > ol > li > ol:last-child,
+.steps > ol > li > ul:last-child {
+  margin-bottom: 0;
+}
+
+.steps > ol > li {
+  position: relative;
+  padding-inline-start: calc(var(--step-marker-size) + var(--space-4));
+  margin-bottom: var(--step-spacing);
+}
+
+/* Step Marker (Number) - Anchor link for direct navigation */
+.steps > ol > li > .step-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--step-marker-size);
+  height: var(--step-marker-size);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  z-index: 1;
+  transition: all var(--transition-fast);
+}
+
+/* Connecting Line */
+.steps > ol > li::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--step-marker-size) / 2);
+  top: var(--step-marker-size);
+  bottom: calc(var(--step-spacing) * -1); /* Extend to next item */
+  width: var(--step-line-width);
+  background: var(--color-border);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+/* Hide line for last item */
+.steps > ol > li:last-child::after {
+  display: none;
+}
+
+/* Highlight step marker on hover */
+.steps > ol > li > .step-marker:hover {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  box-shadow: 0 0 0 4px var(--color-primary-muted);
+}
+
+/* Focus state for accessibility */
+.steps > ol > li > .step-marker:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Step titles (headings inside steps) */
+.steps > ol > li > .step-title,
+.steps > ol > li > strong:first-child,
+.steps > ol > li > h3:first-child,
+.steps > ol > li > h4:first-child {
+  display: block;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-2);
+  margin-top: calc((var(--step-marker-size) - var(--text-lg) * 1.5) / 2); /* Align with marker center */
+  color: var(--color-text-primary);
+}
+
+/* Hide auto-generated heading anchor links - step marker is the anchor */
+.steps > ol > li > .step-title.heading-anchor .copy-link {
+  display: none;
+}
+
+/* Step description - editorial deck/standfirst typography */
+.steps > ol > li > .step-description {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  font-weight: var(--weight-light);
+  line-height: var(--leading-relaxed);
+  letter-spacing: 0.01em;
+}
+
+/* Step metadata - container for badges and duration */
+.steps > ol > li > .step-metadata {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* Step badge - base styling */
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  padding: var(--space-0-5) var(--space-2);
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Optional badge styling */
+.step-badge-optional {
+  background: var(--color-warning-muted, rgba(234, 179, 8, 0.15));
+  color: var(--color-warning, #ca8a04);
+  border: 1px solid var(--color-warning, #ca8a04);
+}
+
+/* Step duration display */
+.step-duration {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  gap: var(--space-1);
+}
+
+.step-duration::before {
+  content: "⏱";
+  font-size: 0.9em;
+}
+
+/* Optional step - dashed border on marker */
+.steps > ol > li.step-optional > .step-marker {
+  border-style: dashed;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+}
+
+/* Optional step - faded connecting line */
+.steps > ol > li.step-optional::after {
+  background: var(--color-border);
+  opacity: 0.5;
+}
+
+/* Content spacing - remove bottom margin from last element */
+.steps > ol > li > :last-child {
+  margin-bottom: 0;
+}
+
+/* Ensure proper spacing between content elements inside steps */
+.steps > ol > li > p + ol,
+.steps > ol > li > p + ul,
+.steps > ol > li > strong + ol,
+.steps > ol > li > strong + ul {
+  margin-top: var(--space-3);
+}
+
+/* Ensure proper spacing after lists */
+.steps > ol > li > ol + p,
+.steps > ol > li > ul + p,
+.steps > ol > li > ol + strong,
+.steps > ol > li > ul + strong {
+  margin-top: var(--space-3);
+}

@@ -1,4 +1,10 @@
-{#- chirp-ui: Button component. Use chirpui-btn with variants. Supports loading state for htmx. -#}
+{#- chirp-ui: Button component. Use chirpui-btn with variants. Supports loading state for htmx.
+    Defaults to type="submit" for form use; pass type="button" for non-form actions.
+
+        {{ btn("Save", variant="primary") }}                → <button type="submit" ...>
+        {{ btn("Cancel", type="button") }}                  → <button type="button" ...>
+        {{ btn("View", href="/page") }}                     → <a ...>
+-#}
 
 {% from "chirpui/spinner.html" import spinner %}
 
@@ -12,14 +18,10 @@
 {% set _busy = consume("_suspense_busy", "") %}
 {% set _size = (size or _bar_size or "") | validate_size("btn", "") %}
 {% set _disabled = disabled or (_busy == "true") %}
-{% set variant_class = " chirpui-btn--" ~ _variant if _variant else "" %}
-{% set size_class = " chirpui-btn--" ~ _size if _size else "" %}
-{% set loading_class = " chirpui-btn--loading" if loading else "" %}
-{% set base_class = "chirpui-btn" ~ variant_class ~ size_class ~ loading_class %}
-{% if cls %}
-{% set base_class = base_class ~ " " ~ cls %}
-{% end %}
-{% set _btn_has_hx = hx_get or hx_post or hx_put or hx_patch or hx_delete %}
+{% set base_class = "btn" | bem(variant=_variant, size=_size, modifier="loading" if loading else "", cls=cls) %}
+{% set _btn_has_hx_request = hx_get or hx_post or hx_put or hx_patch or hx_delete %}
+{% set _btn_has_hx_config = _btn_has_hx_request or hx_target or hx_swap or hx_trigger or hx_include or hx_select or hx_ext or hx_vals %}
+{% set _route_attrs = route_link_attrs(href, disabled=_disabled, attrs=attrs, attrs_map=attrs_map) if not _btn_has_hx_config else {} %}
 {% if href %}
 <a class="{{ base_class }}"{% if not _disabled %} href="{{ href }}"{% endif %}
    {% if aria_label %}aria-label="{{ aria_label }}"{% end %}
@@ -27,8 +29,9 @@
    {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}
    {{ attrs | html_attrs }}
    {{ attrs_map | html_attrs }}
-   {% if not _disabled and _btn_has_hx %}hx-boost="false"{% end %}
-   {% if not _disabled and _btn_has_hx %}hx-select="{{ hx_select if hx_select else "unset" }}"{% end %}
+   {% if not _disabled and _btn_has_hx_request %}hx-boost="false"{% end %}
+   {% if not _disabled and _btn_has_hx_request %}hx-select="{{ hx_select if hx_select else "unset" }}"{% end %}
+   {% if not _disabled %}{{ _route_attrs | html_attrs }}{% end %}
    {% if not _disabled %}{{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
        hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target, hx_swap=hx_swap,
        hx_trigger=hx_trigger, hx_include=hx_include, hx_ext=hx_ext,

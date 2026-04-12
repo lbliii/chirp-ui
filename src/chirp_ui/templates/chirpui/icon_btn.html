@@ -18,9 +18,15 @@
 {% set variant_class = " chirpui-icon-btn--" ~ _variant if _variant else "" %}
 {% set size_class = " chirpui-icon-btn--" ~ _size if _size else "" %}
 {% set base = "chirpui-icon-btn" ~ variant_class ~ size_class ~ (" " ~ cls if cls else "") %}
+{% set _link_has_hx_request = hx_get or hx_post %}
+{% set _link_has_hx_config = _link_has_hx_request or hx_target or hx_swap %}
+{% set _route_attrs = route_link_attrs(href) if href and not _link_has_hx_config and not _disabled else {} %}
 {% if href %}
-<a href="{{ href }}" class="{{ base }}" aria-label="{{ aria_label }}"
-   {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}>
+<a{% if not _disabled %} href="{{ href }}"{% end %} class="{{ base }}" aria-label="{{ aria_label }}"
+   {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}
+   {% if not _disabled and _link_has_hx_request %}hx-boost="false" hx-select="unset"{% end %}
+   {% if not _disabled %}{{ _route_attrs | html_attrs }}{% end %}
+   {% if not _disabled %}{{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_target=hx_target, hx_swap=hx_swap) | html_attrs }}{% end %}>
     <span class="chirpui-icon-btn__icon">{{ icon | icon }}</span>
 </a>
 {% else %}

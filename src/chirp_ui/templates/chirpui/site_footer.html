@@ -1,0 +1,66 @@
+{#- chirp-ui: Site Footer component
+    Multi-section footer for full-page scroll sites.
+
+    Layout variants:
+      columns  — brand left + N link columns (default, fat footer)
+      centered — stacked, center-aligned (simple sites)
+      simple   — single row: brand left, links right
+
+    Named slots: brand, default (columns), rule (decorative divider), colophon.
+
+    Usage:
+        from "chirpui/site_footer.html" import site_footer, footer_column, footer_link
+
+        call site_footer(layout="columns")
+            {% slot brand %}
+                <a href="/">Logo</a>
+                <p>Tagline text.</p>
+            {% end %}
+            {% call footer_column(title="Product") %}
+                {{ footer_link("/docs", "Docs") }}
+                {{ footer_link("/pricing", "Pricing") }}
+            {% end %}
+            {% call footer_column(title="Company") %}
+                {{ footer_link("/about", "About") }}
+                {{ footer_link("https://github.com/...", "GitHub", external=true) }}
+            {% end %}
+            {% slot rule %}<span>•</span>{% end %}
+            {% slot colophon %}© 2026 My Company{% end %}
+        end
+-#}
+
+{% def site_footer(layout="columns", cls="") %}
+{% set layout = layout | validate_variant(("columns","centered","simple"), "columns") %}
+{% set _cls = "chirpui-site-footer" ~ (" chirpui-site-footer--" ~ layout if layout != "columns" else "") ~ (" " ~ cls if cls else "") %}
+<footer class="{{ _cls }}">
+    <div class="chirpui-site-footer__grid">
+        <div class="chirpui-site-footer__brand">{% slot brand %}</div>
+        {% slot %}
+    </div>
+    <div class="chirpui-site-footer__rule">
+        <span class="chirpui-site-footer__rule-line"></span>
+        {% slot rule %}
+        <span class="chirpui-site-footer__rule-line"></span>
+    </div>
+    <div class="chirpui-site-footer__colophon">{% slot colophon %}</div>
+</footer>
+{% end %}
+
+{% def footer_column(title="", cls="") %}
+<div class="chirpui-site-footer__column{{ " " ~ cls if cls else "" }}">
+    {% if title %}<h3 class="chirpui-site-footer__column-title">{{ title }}</h3>{% end %}
+    <ul class="chirpui-site-footer__list">
+        {% slot %}
+    </ul>
+</div>
+{% end %}
+
+{% def footer_link(href, label, glyph="", external=false, cls="") %}
+<li>
+    <a class="chirpui-site-footer__link{{ " chirpui-site-footer__link--external" if external else "" }}{{ " " ~ cls if cls else "" }}"
+       href="{{ href }}"{% if external %} rel="noopener noreferrer"{% end %}{{ route_link_attrs(href, external=external) | html_attrs }}>
+        {%- if glyph %}<span class="chirpui-site-footer__link-glyph" aria-hidden="true">{{ glyph }}</span>{% end -%}
+        {{ label -}}
+    </a>
+</li>
+{% end %}

@@ -16,6 +16,15 @@ async def test_alpine_initializes_on_page_load(page, base_url):
     assert has_alpine
 
 
+async def test_chirpui_runtime_initializes_on_page_load(page, base_url):
+    """The shared chirp-ui Alpine runtime is available on full page loads."""
+    await page.goto(base_url + "/")
+    await wait_for_alpine(page)
+
+    runtime_loaded = await page.evaluate("window.__chirpuiAlpineRuntimeLoaded === true")
+    assert runtime_loaded
+
+
 async def test_alpine_stores_exist(page, base_url):
     """Alpine stores for modals and trays are initialized."""
     await page.goto(base_url + "/")

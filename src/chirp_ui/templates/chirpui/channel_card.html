@@ -16,7 +16,7 @@
 {% def channel_card(href, name, avatar_src=none, avatar_initials=none, subscribers=none, cls="", use_slots=false) %}
 <article class="chirpui-channel-card{{ " " ~ cls if cls else "" }}">
     {% if use_slots %}
-    <a href="{{ href }}" class="chirpui-channel-card__link">
+    <a href="{{ href }}" class="chirpui-channel-card__link"{{ route_link_attrs(href) | html_attrs }}>
         {% from "chirpui/avatar.html" import avatar %}
         {{ avatar(src=avatar_src, initials=avatar_initials, alt=name, size="lg") }}
         <div class="chirpui-channel-card__info">
@@ -29,7 +29,7 @@
     </a>
     <div class="chirpui-channel-card__actions">{% slot actions %}</div>
     {% else %}
-    <a href="{{ href }}" class="chirpui-channel-card__link">
+    <a href="{{ href }}" class="chirpui-channel-card__link"{{ route_link_attrs(href) | html_attrs }}>
         {% from "chirpui/avatar.html" import avatar %}
         {{ avatar(src=avatar_src, initials=avatar_initials, alt=name, size="lg") }}
         <div class="chirpui-channel-card__info">

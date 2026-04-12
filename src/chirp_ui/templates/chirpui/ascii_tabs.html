@@ -46,6 +46,8 @@
            hx-target="{{ hx_target }}"
            hx-swap="{{ hx_swap }}"
            hx-push-url="false"
+       {% else %}
+           {{ route_link_attrs(url) | html_attrs }}
        {% end %}
    {% end %}>
     {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span>{% end %}

@@ -25,6 +25,7 @@
      :class="{ 'chirpui-tray--closed': !$store.trays['{{ id }}'], 'chirpui-tray--open': $store.trays['{{ id }}'] }"
      role="dialog" aria-modal="true"
      aria-labelledby="tray-{{ id }}-title"
+     aria-hidden="true"
      :aria-hidden="!$store.trays['{{ id }}']"
      x-data>
     <div class="chirpui-tray__backdrop" @click="$store.trays['{{ id }}'] = false; $dispatch('chirpui:tray-closed', { id: '{{ id }}' })"></div>

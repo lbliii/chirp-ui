@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chirp-ui"
-version = "0.3.0"
+version = "0.3.1"
 description = "A love letter to CSS and HTML over the wire — gorgeous Chirp components, htmx-native, Alpine.js for interactivity"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -38,6 +38,9 @@ dependencies = [
 [project.optional-dependencies]
 showcase = ["bengal-chirp>=0.2.0"] # For examples/component-showcase
 
+[project.entry-points."bengal.themes"]
+chirp-theme = "bengal_themes.chirp_theme"
+
 [project.urls]
 Homepage = "https://github.com/lbliii/chirp-ui"
 Repository = "https://github.com/lbliii/chirp-ui"
@@ -59,6 +62,12 @@ chirp_ui = [
     "templates/**/*.html",
     "templates/**/*.css",
     "templates/**/*.js",
+    "templates/**/*.svg",
+]
+"bengal_themes.chirp_theme" = [
+    "theme.toml",
+    "templates/**/*.html",
+    "assets/**/*",
 ]
 
 # =============================================================================
@@ -128,7 +137,7 @@ markers = [
 # =============================================================================
 
 [tool.coverage.run]
-source = ["src/chirp_ui"]
+source = ["src/chirp_ui", "src/bengal_themes"]
 branch = true
 
 [tool.coverage.report]
@@ -150,10 +159,12 @@ exclude_lines = [
 
 [dependency-groups]
 docs = [
-    "bengal>=0.2.6",
+    "bengal>=0.3.0",
     "lunr>=0.7.0",
 ]
 dev = [
+    # Bengal-backed theme packaging/build tests run in the normal test suite
+    "bengal>=0.3.0",
     # Task runner (poe tasks in [tool.poe.tasks])
     "poethepoet>=0.32.0",
     # Testing
@@ -186,7 +197,7 @@ browser = [
 # Testing
 test = { cmd = "pytest", help = "Run full test suite" }
 test-fast = { cmd = "pytest tests/ -x -q --timeout=10", help = "Fast feedback loop" }
-test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov-report=term-missing", help = "Run tests with coverage" }
+test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov=bengal_themes --cov-report=term-missing", help = "Run tests with coverage" }
 test-browser = { cmd = "pytest tests/browser/ -q --timeout=30 --override-ini='addopts='", help = "Run browser integration tests (requires: uv sync --group browser && playwright install chromium)" }
 ci-browser = { sequence = ["test-browser"], help = "Browser integration tests (release gate)" }
 
@@ -204,8 +215,8 @@ css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", he
 css-transition-check = { cmd = "pytest tests/test_transition_tokens.py -q", help = "Check transitions use motion tokens" }
 
 # Documentation
-docs-serve = { cmd = "uv run bengal site serve site", help = "Serve docs site locally" }
-docs-build = { cmd = "uv run bengal site build site", help = "Build docs site" }
+docs-serve = { cmd = "python scripts/docs_site.py serve", help = "Serve docs site locally" }
+docs-build = { cmd = "python scripts/docs_site.py build", help = "Build docs site" }
 docs-assemble-showcase = { cmd = "bash scripts/assemble-static-showcase.sh site/public/showcase", help = "Copy static showcase into site/public/showcase (after docs-build)" }
 docs-build-all = { sequence = ["docs-build", "docs-assemble-showcase"], help = "Build Bengal site and assemble static component showcase" }
 

@@ -11,17 +11,8 @@
 {% def theme_toggle() %}
 <button type="button"
         class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-theme-toggle"
-        x-data="{
-            theme: document.documentElement.getAttribute('data-theme') || 'system',
-            icons: { light: '\u25CB', dark: '\u25CF', system: '\u25D0' },
-            cycle() {
-                const order = ['system','light','dark'];
-                const idx = (order.indexOf(this.theme) + 1) % order.length;
-                this.theme = order[idx];
-                document.documentElement.setAttribute('data-theme', this.theme);
-                localStorage.setItem('chirpui-theme', this.theme);
-            }
-        }"
+        x-data="chirpuiThemeToggle()"
+        x-init="init()"
         @click="cycle()"
         aria-label="Toggle theme (light, dark, system)"
         :title="'Theme: ' + theme">
@@ -32,17 +23,8 @@
 {% def style_toggle() %}
 <button type="button"
         class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-style-toggle"
-        x-data="{
-            style: document.documentElement.getAttribute('data-style') || 'default',
-            icons: { default: '\u25A1', neumorphic: '\u25A3' },
-            cycle() {
-                const order = ['default','neumorphic'];
-                const idx = (order.indexOf(this.style) + 1) % order.length;
-                this.style = order[idx];
-                document.documentElement.setAttribute('data-style', this.style);
-                localStorage.setItem('chirpui-style', this.style);
-            }
-        }"
+        x-data="chirpuiStyleToggle()"
+        x-init="init()"
         @click="cycle()"
         aria-label="Toggle style (default, neumorphic)"
         :title="'Style: ' + style">
@@ -53,12 +35,9 @@
 {% def style_select(name="chirpui-style", cls="") %}
 <label class="chirpui-field__label chirpui-inline-flex {{ cls }}">Style
     <select name="{{ name }}" class="chirpui-field__input chirpui-field__input--sm"
-            x-data="{
-                style: document.documentElement.getAttribute('data-style') || 'default',
-                sync(v) { document.documentElement.setAttribute('data-style', v); localStorage.setItem('chirpui-style', v); }
-            }"
-            x-init="$el.value = style; $watch('style', sync)"
-            @change="style = $el.value; sync(style)">
+            x-data="chirpuiStyleSelect()"
+            x-init="init()"
+            @change="change()">
         <option value="default">Default</option>
         <option value="neumorphic">Neumorphic</option>
     </select>

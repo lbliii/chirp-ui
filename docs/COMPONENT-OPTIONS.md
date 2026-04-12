@@ -98,6 +98,9 @@ Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates w
 | **alert** | `variant` | info, success, warning, error | info |
 | **badge** | `variant` | primary, success, warning, error, muted, info | — |
 | **surface** | `variant` | default, muted, elevated, accent, gradient-subtle, gradient-accent, gradient-border, gradient-mesh, glass, frosted, smoke | default |
+| **aura** | `tone` | accent, warm, cool, muted, primary | accent |
+| **aura** | `spread` | sm, md, lg | md |
+| **aura** | `mirror` | false, true (horizontal flip of the halo; e.g. column on the left) | false |
 | **toast** | `variant` | info, success, warning, error | info |
 | **hero** | `background` | solid, muted, gradient, mesh, animated-gradient | solid |
 | **page_hero** | `variant` | editorial, minimal | editorial |
@@ -141,21 +144,29 @@ Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates w
 
 ## JavaScript Dependencies
 
-Interactive components require **Alpine.js** (loaded before chirp-ui components). Use `chirpui.js` for theme/style init only.
+Interactive components require **Alpine.js**. With Chirp, `use_chirp_ui(app)`
+auto-enables Alpine injection and also injects `chirpui-alpine.js`, which
+registers chirp-ui's named Alpine controllers. `chirpui.js` remains the
+pre-paint theme/style initializer only.
 
 | Template / Component | Required JS | Notes |
 |---------------------|-------------|-------|
-| `dropdown_menu.html` | Alpine.js | `x-data`, `x-show`, `@click.outside`, `x-transition` |
-| `modal.html` | Alpine.js (optional) | `modal_trigger` uses `@click`; native `<dialog>` for modal |
+| `dropdown_menu.html` | Alpine.js + `chirpui-alpine.js` | Uses `chirpuiDropdown()` / `chirpuiDropdownSelect()` |
+| `modal.html` | Alpine.js + `chirpui-alpine.js` | `modal_trigger` uses `chirpuiDialogTarget()`; native `<dialog>` remains the dialog surface |
 | `modal_overlay.html` | Alpine.js | Overlay behavior |
 | `tray.html` | Alpine.js | Slide-in panel |
 | `tabs_panels.html` | Alpine.js | Tab switching |
-| `theme_toggle.html` | Alpine.js | Theme/style persistence |
-| `copy_button.html` | Alpine.js | Copy-to-clipboard |
+| `theme_toggle.html` | Alpine.js + `chirpui-alpine.js` | Theme/style persistence via named controllers |
+| `copy_button.html` | Alpine.js + `chirpui-alpine.js` | Copy-to-clipboard via `chirpuiCopy()` |
 | `forms.html` (masked_field, phone_field, money_field) | Alpine.js + @alpinejs/mask | `x-mask`, `x-mask:dynamic` |
 | `chirpui.js` | — | Pre-paint theme/style init only |
+| `chirpui-alpine.js` | Alpine.js | Named controller runtime for chirp-ui behavior API |
 
-**Static path:** Include `chirpui.css` and `chirpui.js` from `chirp_ui.static_path()`. Use `use_chirp_ui(app)` with Chirp for automatic registration.
+**Static path:** Include `chirpui.css`, `chirpui.js`, and `chirpui-alpine.js`
+from `chirp_ui.static_path()`. With Chirp, prefer `use_chirp_ui(app)` so the
+runtime is injected automatically and stays aligned with Chirp's Alpine
+bootstrap. In standalone setups, load `chirpui-alpine.js` before the Alpine
+core script.
 
 ---
 
@@ -384,6 +395,58 @@ Wrapping inline layout primitive for badges, aliases, chips, and compact action 
 | `cls` | Optional additional classes |
 
 Use `cluster()` when content should wrap horizontally but remain visually grouped. This is the preferred primitive for badge/tag rows; `chirpui-flow` remains as the compatibility utility class.
+
+### layer
+
+Overlapping card deck layout — children overlap with negative margin and slight rotation, hover straightens and elevates. Inspired by emdashCSS's "layer" pattern.
+
+```html
+{% from "chirpui/layout.html" import layer %}
+{% call layer(direction="center", overlap="md", angle="subtle") %}
+  <div class="chirpui-card">Card 1</div>
+  <div class="chirpui-card">Card 2</div>
+  <div class="chirpui-card">Card 3</div>
+{% end %}
+```
+
+| Param | Description |
+|-------|-------------|
+| `direction` | `left` (default), `center`, `right` — horizontal alignment of the deck |
+| `overlap` | `sm` (-1.5rem), `md` (-3rem), `lg` (-5rem) — how much cards overlap |
+| `angle` | `none`, `subtle` (default, ~2deg), `moderate` (~4deg) — idle rotation on non-first cards |
+| `hover` | `true` (default) — hover straightens card and raises z-index |
+| `cls` | Optional additional classes |
+
+Children alternate tilt direction (even children rotate opposite) for a natural "fanned" look. All transforms respect `prefers-reduced-motion` — rotation is disabled, only a subtle scale remains on hover.
+
+Override overlap and angle via CSS custom properties: `--chirpui-layer-overlap-sm`, `--chirpui-layer-overlap-md`, `--chirpui-layer-overlap-lg`, `--chirpui-layer-angle-subtle`, `--chirpui-layer-angle-moderate`.
+
+### Container modifiers
+
+CSS-only classes that propagate non-inheritable properties to direct children. Inspired by emdashCSS's `c-*` prefix pattern (e.g. `.c-rounded-11 > *`). Use on any parent element — works with `grid()`, `cluster()`, `layer()`, or plain `<div>`.
+
+```html
+{% call grid(cols=3, gap="md") %}
+  {# All cards get rounded corners without passing to each macro #}
+  <div class="chirpui-children--rounded-lg">
+    {{ card("A") }}
+    {{ card("B") }}
+    {{ card("C") }}
+  </div>
+{% end %}
+```
+
+| Class | Effect on `> *` |
+|-------|-----------------|
+| `chirpui-children--rounded` | `border-radius: var(--chirpui-radius)` |
+| `chirpui-children--rounded-sm` | `border-radius: var(--chirpui-radius-sm)` |
+| `chirpui-children--rounded-lg` | `border-radius: var(--chirpui-radius-lg)` |
+| `chirpui-children--rounded-xl` | `border-radius: var(--chirpui-radius-xl)` |
+| `chirpui-children--rounded-full` | `border-radius: 9999px` (pill/circle) |
+| `chirpui-children--equal` | `flex: 1` (uniform sizing in flex contexts) |
+| `chirpui-children--clip` | `min-width: 0; overflow: hidden` (prevent blowout) |
+
+**Design note:** This is intentionally a small set covering non-inheritable CSS properties only. For semantic context propagation (variants, density), use `provide`/`consume`. For inheritable theming, use `--chirpui-*` custom properties.
 
 ### section
 
@@ -1325,6 +1388,23 @@ These use `validate_variant` at macro top. Invalid values fall back to the defau
 {{ toast("Done!", variant="success") }}
 ```
 
+### Aura (dimensional halo)
+
+Wrapper for **any** block: a blurred, token-driven chromatic layer sits **behind** the child (via `::before`); the slot renders inside `chirpui-aura__content` above it. Pair with `surface(variant="glass")` for marketing panels, cards, or bento cells. Does not consume the inner surface’s `::before`/`::after`, so `chirpui-surface--cornered` on the child still works.
+
+```html
+{% from "chirpui/aura.html" import aura %}
+{% from "chirpui/surface.html" import surface %}
+{% call aura(tone="accent", spread="md") %}
+  {% call surface(variant="glass") %}…{% end %}
+{% end %}
+{% call aura(tone="warm", spread="lg", mirror=true) %}…{% end %}
+```
+
+`prefers-reduced-transparency` softens the effect in CSS.
+
+Apps that already shipped a local halo (e.g. `::before` on a marketing wrapper) can delete that CSS and wrap the same content with `aura()` after upgrading to chirp-ui **0.3.1+**.
+
 ### Skeleton variant
 
 Use `""` (empty) for the default block, or `avatar`, `text`, `card` for structured placeholders.
@@ -1430,7 +1510,7 @@ Glass variants use `backdrop-filter`; gradient topbar uses `--chirpui-gradient-s
 
 ### Collapsible sidebar
 
-Enable via `app_shell(sidebar_collapsible=true)` or override `{% block sidebar_collapsible %}true{% end %}` in `app_shell_layout`. Collapsed mode shows icons only; provide `icon` for each `sidebar_link`.
+Enable via `app_shell(sidebar_collapsible=true)`. `app_shell_layout.html` keeps the sidebar non-collapsible by default; use a custom shell if a layout-based app needs the collapsible variant. Collapsed mode shows icons only; provide `icon` for each `sidebar_link`.
 
 ### Tokens
 
@@ -1634,3 +1714,162 @@ chirp-ui templates are compatible with the partial evaluator but do not require 
 
 - **Production builds** — measurable render speedup for templates with static content
 - **Development** — leave off (default) to keep compile times fast and error messages clear
+
+---
+
+## Marketing Kit
+
+Components for full-page scroll sites — landing pages, docs homes, marketing sites. The marketing kit is the scrolling-page counterpart to `app_shell`: instead of a sidebar + fixed topbar, you get a sticky header, flowing content bands, and a footer.
+
+### Imports
+
+```html
+{% from "chirpui/site_shell.html" import site_shell %}
+{% from "chirpui/site_header.html" import site_header, site_nav_link %}
+{% from "chirpui/site_footer.html" import site_footer, footer_column, footer_link %}
+{% from "chirpui/band.html" import band %}
+{% from "chirpui/feature_section.html" import feature_section, feature_stack %}
+```
+
+### Slot Reference
+
+| Component | Slot | Purpose | Required? |
+|-----------|------|---------|-----------|
+| `site_shell` | `header` | Sticky top region (place `site_header` here) | No |
+| `site_shell` | default | Page content | Yes |
+| `site_shell` | `footer` | Footer region (place `site_footer` here) | No |
+| `site_header` | `brand` | Logo / brand name (wrapped in `<a>`) | No |
+| `site_header` | `nav` | Primary navigation links | No |
+| `site_header` | `nav_end` | Right-side links when `layout="center-brand"` | No |
+| `site_header` | `tools` | Utility buttons (theme toggle, CTA) | No |
+| `site_footer` | `brand` | Footer brand / tagline | No |
+| `site_footer` | default | Footer columns (`footer_column`) | No |
+| `site_footer` | `rule` | Decorative divider between columns and colophon | No |
+| `site_footer` | `colophon` | Copyright / fine print | No |
+| `band` | `header` | Section header (e.g. `section_header()`) | No |
+| `band` | default | Band content | Yes |
+| `feature_section` | `eyebrow` | Small label above title | No |
+| `feature_section` | `title` | Feature heading | No |
+| `feature_section` | default | Body / description | Yes |
+| `feature_section` | `actions` | CTA buttons | No |
+| `feature_section` | `media` | Screenshot, code snippet, illustration | No |
+| `feature_stack` | default | Consecutive `feature_section` calls | Yes |
+
+### site_shell
+
+Full-page scroll container. Creates an `isolation: isolate` stacking context so sticky headers always sit above content, regardless of child z-indices.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `ambient` | bool | `false` | Adds ambient glow background layer |
+| `cls` | str | `""` | Extra CSS classes |
+
+### site_header
+
+Sticky top navigation bar with layout + surface axes.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `brand_url` | str | `"/"` | Brand link href |
+| `layout` | str | `"start"` | `start`, `center-brand`, `center-nav`, `split` |
+| `variant` | str | `"glass"` | `glass`, `solid`, `transparent` |
+| `sticky` | bool | `true` | Sticky positioning |
+| `current_path` | str | `""` | Current URL path for nav link active matching |
+| `cls` | str | `""` | Extra CSS classes |
+
+**Layout variants:**
+- **`start`** — `[brand] [nav...] [spacer] [tools]` (default)
+- **`center-brand`** — `[nav left] [brand] [nav right | tools]`
+- **`center-nav`** — `[brand] [nav centered] [tools]`
+- **`split`** — `[brand + nav] [spacer] [tools]`
+
+**Surface variants:** `glass` (backdrop blur), `solid` (opaque), `transparent` (hero overlap)
+
+### site_nav_link
+
+Navigation link for use inside `site_header`'s `nav` slot. Reads `current_path` from the parent header via provide/consume.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `href` | str | required | Link destination |
+| `label` | str | required | Display text |
+| `glyph` | str | `""` | Prefix icon/emoji |
+| `external` | bool | `false` | Adds `rel="noopener noreferrer"` |
+| `match` | str | `""` | `"exact"` or `"prefix"` for active state |
+| `active` | bool | `false` | Force active state |
+| `cls` | str | `""` | Extra CSS classes |
+
+### site_footer
+
+Multi-section footer with brand, link columns, rule, and colophon.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `layout` | str | `"columns"` | `columns`, `centered`, `simple` |
+| `cls` | str | `""` | Extra CSS classes |
+
+**Layout variants:**
+- **`columns`** — brand left + N link columns (fat footer)
+- **`centered`** — stacked, center-aligned
+- **`simple`** — single row: brand left, links right
+
+### footer_column / footer_link
+
+Sub-components for structuring `site_footer` content.
+
+**`footer_column`**: `title` (str), `cls` (str). Default slot holds `footer_link` calls.
+
+**`footer_link`**: `href` (str), `label` (str), `glyph` (str), `external` (bool), `cls` (str).
+
+### band
+
+Full-bleed marketing section panel with width control and pattern overlay.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `variant` | str | `"default"` | `default`, `elevated`, `accent`, `glass`, `gradient` |
+| `width` | str | `"inset"` | `inset`, `bleed`, `contained` |
+| `pattern` | str | `""` | Pattern overlay: `dots-sm`, `dots-md`, `grid`, `crosshatch`, `diag` |
+| `cls` | str | `""` | Extra CSS classes |
+
+**Width variants:** `inset` (rounded, slightly wider), `bleed` (viewport-wide bg), `contained` (no breakout)
+
+### feature_section
+
+Two-column copy + media grid for product features.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `layout` | str | `"split"` | `split`, `balanced`, `media-dominant`, `stacked` |
+| `variant` | str | `"default"` | `default`, `muted`, `halo` |
+| `reverse` | bool | `false` | Flip column order (zigzag patterns) |
+| `cls` | str | `""` | Extra CSS classes |
+
+**Layout variants:** `split` (55/45), `balanced` (50/50), `media-dominant` (40/60), `stacked` (single column)
+
+**Surface variants:** `default` (transparent), `muted` (subtle bg), `halo` (glow behind media)
+
+### feature_stack
+
+Wrapper for consecutive `feature_section` calls with consistent vertical spacing.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `cls` | str | `""` | Extra CSS classes |
+
+### Bento Extensions
+
+CSS-only extensions to existing `surface` and `frame` components for dashboard-style tile grids.
+
+| Class | Purpose |
+|-------|---------|
+| `chirpui-surface--bento` | Hover lift + flex height equalization on surfaces |
+| `chirpui-frame--bento` | Consistent gap and min-height for bento frames |
+| `chirpui-block--wide` | Span 2 grid columns |
+| `chirpui-block--tall` | Span 2 grid rows |
+| `chirpui-surface__eyebrow` | Small-caps label above title |
+| `chirpui-surface__title` | Large heading inside surface |
+| `chirpui-surface__lede` | Subtitle / summary text |
+| `chirpui-surface__body` | Body text region |
+
+Use with `grid(preset="bento-211")` or custom CSS grid layouts. Pair `surface--bento` tiles inside a `frame--bento` for consistent dashboard aesthetics.

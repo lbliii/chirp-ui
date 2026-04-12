@@ -19,8 +19,9 @@
           Page content here
         {% end %}
 
-    Collapsible sidebar (override block with "true"):
-        {% block sidebar_collapsible %}{% end %}
+    This layout keeps the sidebar non-collapsible by default. Use a custom
+    shell or the `app_shell()` macro when you need the resizable/collapsible
+    sidebar variant.
 
     Custom brand (override brand_link for non-/ href or custom markup):
         {% block brand_link %}{% call shell_brand_link(href="/projects") %}My App{% end %}{% end %}
@@ -29,13 +30,23 @@
     when use_chirp_ui() is called.  This layout does NOT load Alpine itself —
     Chirp is the single authority for Alpine injection.
 
-    Full-height main (chat, maps): override {% block main_shell_class %} with
-    chirpui-app-shell__main--fill so #page-content receives flex:1 and inner
-    panels handle scroll. See docs/LAYOUT-VERTICAL.md.
+    Default app shells use document scrolling. Full-height main (chat, maps):
+    override {% block main_shell_class %} with chirpui-app-shell__main--fill so
+    #page-content receives flex:1 and inner panels handle bounded scroll below
+    the sticky topbar. See docs/LAYOUT-VERTICAL.md.
 
     HTMX: primary #main swap runs before out-of-band fragments; a beforeSwap
     handler clears #chirp-shell-actions when the response includes shell-actions
     OOB (see docs/UI-LAYERS.md).
+
+    page_scripts block: renders after toast/CSRF/nav scripts near </body>.
+    Only templates that {% extends %} this layout can override it (inner
+    _layout.html files). Filesystem page templates (page.html) are injected
+    via render_with_blocks into {% block content %} — they CANNOT override
+    page_scripts or any other sibling block. If a page needs an inline
+    <script>, put it inside the content region (inside page_root or
+    page_content blocks). See Chirp's filesystem-routing docs §
+    "Composition, not inheritance".
 -#}
 {# target: body #}
 {% extends "chirp/layouts/shell.html" %}
@@ -49,17 +60,12 @@
 <script>
 (function(){var t=localStorage.getItem("chirpui-theme")||"system";var s=localStorage.getItem("chirpui-style")||"default";document.documentElement.setAttribute("data-theme",t);document.documentElement.setAttribute("data-style",s);})();
 </script>
-<script>
-document.addEventListener("alpine:init",function(){
-  Alpine.store("modals",{});
-  Alpine.store("trays",{});
-});
-</script>
 {% block head_extra %}{% end %}
 {% end %}
 
 {% block shell %}
 {% from "chirpui/sidebar.html" import sidebar, sidebar_toggle, shell_brand_link %}
+{% from "chirpui/shell_frame.html" import shell_outlet, shell_outlet_attrs, shell_runtime_script %}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
 {% from "chirpui/toast.html" import toast_container %}
 {% set _sidebar_collapsible = "false" %}
@@ -67,9 +73,10 @@ document.addEventListener("alpine:init",function(){
 {% set _shell_actions = shell_actions | default(none) %}
 {% set _shell_actions_target = _shell_actions.target if _shell_actions else "chirp-shell-actions" %}
 <div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}"
-     x-data="{ collapsible: {{ 'true' if _collapsible else 'false' }}, collapsed: localStorage.getItem('chirpui-sidebar-collapsed') === 'true', toggle() { this.collapsed = !this.collapsed; localStorage.setItem('chirpui-sidebar-collapsed', this.collapsed); } }"
+     x-data="chirpuiSidebar({ collapsible: {{ 'true' if _collapsible else 'false' }}, resizable: false })"
+     x-init="init()"
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsible && collapsed }">
-  <header class="chirpui-app-shell__topbar">
+  <header class="chirpui-app-shell__topbar" data-chirpui-shell-topbar>
     {% if _collapsible %}<div class="chirpui-app-shell__topbar-start">{{ sidebar_toggle() }}</div>{% endif %}
     {% block brand_link %}
     {% call shell_brand_link() %}
@@ -87,11 +94,12 @@ document.addEventListener("alpine:init",function(){
     </div>
   </header>
   <aside class="chirpui-app-shell__sidebar">{% block sidebar %}{% end %}</aside>
-  <main id="main" class="chirpui-app-shell__main{% block main_shell_class %}{% end %}" tabindex="-1"
-        hx-boost="true" hx-target="#main" hx-swap="innerHTML" hx-select="#page-content">
-    <div id="page-content">
+  <main id="main" class="chirpui-app-shell__main{% block main_shell_class %}{% end %}"
+        data-chirp-scroll="auto" tabindex="-1"
+        {{ shell_outlet_attrs() }}>
+    {% call shell_outlet(include_boost_attrs=false) %}
       {% block content %}{% end %}
-    </div>
+    {% end %}
   </main>
 </div>
 <script>
@@ -131,18 +139,8 @@ document.body.addEventListener("htmx:configRequest", function(event) {
     if (shell) shell.replaceChildren();
   });
 })();
-document.body.addEventListener("htmx:afterSwap", function(e) {
-  var t = e.detail && e.detail.target;
-  if (t && t.id === "main") { t.scrollTo({top: 0}); }
-});
-document.body.addEventListener("htmx:afterSettle", function(e) {
-  var t = e.detail && e.detail.target;
-  if (!t || t.id !== "main") return;
-  t.focus({preventScroll: true});
-  var pc = document.getElementById("page-content");
-  if (pc) { t.classList.toggle("chirpui-app-shell__main--fill", !!pc.querySelector(":scope > .chirpui-page-fill")); }
-});
 </script>
+{{ shell_runtime_script() }}
 {{ toast_container() }}
 {% block page_scripts %}{% end %}
 {% end %}

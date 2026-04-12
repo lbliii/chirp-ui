@@ -1,0 +1,81 @@
+{% from 'partials/navigation-components.html' import breadcrumbs %}
+
+{% def theme_shell_container(cls='') %}
+<div class="chirp-theme-shell{{ ' ' ~ cls if cls else '' }}">
+  {% slot %}
+</div>
+{% end %}
+
+{% def theme_surface(cls='') %}
+<section class="chirp-theme-surface{{ ' ' ~ cls if cls else '' }}">
+  {% slot %}
+</section>
+{% end %}
+
+{% def theme_page_header(title, description=none, eyebrow=none, breadcrumb_page=none, meta=none, compact=false, cls='') %}
+<header class="chirp-theme-page-header{{ ' chirp-theme-page-header--compact' if compact else '' }}{{ ' ' ~ cls if cls else '' }}">
+  {% if breadcrumb_page %}
+  <div class="chirp-theme-page-header__breadcrumbs">
+    {{ breadcrumbs(breadcrumb_page) }}
+  </div>
+  {% end %}
+  {% if eyebrow %}
+  <p class="chirp-theme-page-header__eyebrow">{{ eyebrow }}</p>
+  {% end %}
+  <div class="chirp-theme-page-header__top">
+    <div class="chirp-theme-page-header__body">
+      <h1 class="chirp-theme-page-header__title">{{ title }}</h1>
+      {% if description %}
+      <p class="chirp-theme-page-header__description">{{ description }}</p>
+      {% end %}
+      {% if meta %}
+      <div class="chirp-theme-page-header__meta">{{ meta | safe }}</div>
+      {% end %}
+    </div>
+    <div class="chirp-theme-page-header__actions">
+      {% slot actions %}
+    </div>
+  </div>
+</header>
+{% end %}
+
+{% def theme_link_card(href, title, description=none, meta=none, cls='') %}
+<a href="{{ href | absolute_url }}" class="chirp-theme-link-card{{ ' ' ~ cls if cls else '' }}">
+  <span class="chirp-theme-link-card__title">{{ title }}</span>
+  {% if description %}
+  <span class="chirp-theme-link-card__description">{{ description }}</span>
+  {% end %}
+  {% if meta %}
+  <span class="chirp-theme-link-card__meta">{{ meta }}</span>
+  {% end %}
+</a>
+{% end %}
+
+{% def theme_docs_frame(has_toc=false, cls='') %}
+<div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if has_toc else '' }}{{ ' ' ~ cls if cls else '' }}">
+  <aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="Documentation navigation">
+    {% slot sidebar %}
+  </aside>
+  <div class="chirp-theme-docs-layout__main">
+    {% slot %}
+  </div>
+  {% if has_toc %}
+  <aside class="chirp-theme-docs-layout__toc" role="complementary" aria-label="Table of contents">
+    {% slot toc %}
+  </aside>
+  {% end %}
+</div>
+{% end %}
+
+{% def theme_feed(title=none, cls='') %}
+<section class="chirp-theme-feed{{ ' ' ~ cls if cls else '' }}">
+  {% if title %}
+  <div class="chirp-theme-feed__header">
+    <h2 class="chirp-theme-feed__title">{{ title }}</h2>
+  </div>
+  {% end %}
+  <div class="chirp-theme-feed__body">
+    {% slot %}
+  </div>
+</section>
+{% end %}

@@ -21,7 +21,7 @@
     {% for item in items %}
     <li class="chirpui-list__item">
         {% if linked and item is mapping and item.get("href") %}
-            <a href="{{ item.href }}" class="chirpui-list__link">{{ item.get("label", item) }}</a>
+            <a href="{{ item.href }}" class="chirpui-list__link"{{ route_link_attrs(item.href) | html_attrs }}>{{ item.get("label", item) }}</a>
         {% elif item is mapping %}
             {{ item.get("label", item) }}
         {% else %}

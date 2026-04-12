@@ -1,0 +1,663 @@
+/**
+ * Bengal SSG Default Theme
+ * Landing Page Components
+ *
+ * Premium, marketing-oriented styles for landing pages and home pages.
+ * Aligned with Bengal's neumorphic design system (search modal, dropdowns, etc.)
+ *
+ * Uses tokens from: tokens/semantic.css, tokens/foundation.css
+ */
+
+/* ============================================
+   LANDING PAGE CONTAINER
+   ============================================ */
+
+.section-index {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.section-content {
+  max-width: var(--prose-width);
+  margin-inline: auto;
+}
+
+.section-empty {
+  text-align: center;
+  padding: var(--space-12);
+  color: var(--color-text-muted);
+}
+
+.home {
+  /* Ensure consistent containment for all home page content */
+  width: 100%;
+  max-width: var(--container-3xl);
+  margin-inline: auto;
+}
+
+/* ============================================
+   FEATURES SECTION - Value Proposition Grid
+   ============================================ */
+
+.features {
+  padding: var(--space-16) var(--space-6);
+  max-width: var(--container-xl);
+  margin: 0 auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: var(--space-8);
+}
+
+/* Feature Card - Neumorphic style matching search modal */
+.feature-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-8);
+
+  /* Neumorphic background gradient - matches search modal items */
+  background: linear-gradient(180deg,
+    var(--color-surface, var(--color-bg-elevated)),
+    var(--color-bg-secondary));
+
+  /* Standard border */
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+
+  /* Neumorphic shadow - elevated card style */
+  box-shadow: var(--neumorphic-enhanced-base, var(--neumorphic-base));
+
+  /* Smooth transitions using motion tokens */
+  transition:
+    transform var(--motion-medium) var(--ease-out),
+    box-shadow var(--motion-medium) var(--ease-out),
+    border-color var(--motion-fast);
+
+  height: 100%;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary);
+  box-shadow: var(--neumorphic-enhanced-hover, var(--neumorphic-hover));
+}
+
+.feature-card:active {
+  transform: translateY(0) scale(0.99);
+  box-shadow: var(--neumorphic-pressed);
+}
+
+/* Feature Icon - Neumorphic badge style */
+.feature-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Neumorphic badge background */
+  background: linear-gradient(180deg,
+    var(--color-surface, var(--color-bg-elevated)),
+    var(--color-bg-tertiary));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--neumorphic-subtle);
+
+  transition: transform var(--motion-fast), box-shadow var(--motion-fast);
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.05);
+  box-shadow: var(--neumorphic-hover);
+}
+
+/* Feature Title */
+.feature-title {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  color: var(--color-text-primary);
+}
+
+/* Feature Description */
+.feature-description {
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  flex: 1;
+}
+
+/* Feature Link - Styled as inline action */
+.feature-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-2);
+
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-primary);
+  text-decoration: none;
+
+  transition: gap var(--motion-fast), color var(--motion-fast);
+}
+
+.feature-link:hover {
+  color: var(--color-primary-hover);
+  gap: var(--space-3);
+}
+
+/* ============================================
+   STATS SECTION - Impressive Numbers
+   ============================================ */
+
+.stats {
+  padding: var(--space-12) var(--space-6);
+  max-width: var(--container-lg);
+  margin: 0 auto;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: var(--space-6);
+}
+
+/* Stat Card - Neumorphic elevated style */
+.stat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-8) var(--space-6);
+
+  /* Neumorphic background */
+  background: linear-gradient(180deg,
+    var(--color-surface, var(--color-bg-elevated)),
+    var(--color-bg-secondary));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--neumorphic-base);
+
+  transition:
+    transform var(--motion-medium) var(--ease-out),
+    box-shadow var(--motion-medium) var(--ease-out);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--neumorphic-hover);
+}
+
+/* Large stat value */
+.stat-value {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: var(--weight-extrabold);
+  line-height: 1;
+  letter-spacing: var(--letter-spacing-tighter);
+  color: var(--color-primary);
+}
+
+/* Stat label */
+.stat-label {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   QUICK LINKS SECTION - Navigation Cards
+   ============================================ */
+
+.quick-links {
+  padding: var(--space-12) var(--space-6);
+  max-width: var(--container-xl);
+  margin: 0 auto;
+}
+
+.quick-links h2 {
+  text-align: center;
+  margin-bottom: var(--space-10);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+}
+
+.quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: var(--space-6);
+}
+
+/* Quick Link Card - Neumorphic clickable style */
+.quick-link-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+
+  /* Neumorphic background */
+  background: linear-gradient(180deg,
+    var(--color-surface, var(--color-bg-elevated)),
+    var(--color-bg-secondary));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--neumorphic-base);
+
+  text-decoration: none;
+  color: inherit;
+
+  transition:
+    transform var(--motion-medium) var(--ease-out),
+    box-shadow var(--motion-medium) var(--ease-out),
+    border-color var(--motion-fast);
+}
+
+.quick-link-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-primary);
+  box-shadow: var(--neumorphic-hover);
+}
+
+.quick-link-card:active {
+  transform: translateY(0) scale(0.99);
+  box-shadow: var(--neumorphic-pressed);
+}
+
+/* Quick Link Icon - Neumorphic badge */
+.quick-link-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(180deg,
+    var(--color-surface, var(--color-bg-elevated)),
+    var(--color-bg-tertiary));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--neumorphic-subtle);
+
+  transition: transform var(--motion-fast), box-shadow var(--motion-fast);
+}
+
+.quick-link-card:hover .quick-link-icon {
+  transform: scale(1.05);
+  box-shadow: var(--neumorphic-hover);
+}
+
+.quick-link-card h3 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  transition: color var(--motion-fast);
+}
+
+.quick-link-card:hover h3 {
+  color: var(--color-primary);
+}
+
+.quick-link-card p {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+/* ============================================
+   HOME CONTENT - Markdown Content Area
+   ============================================ */
+
+.home-content {
+  /* Container for the markdown body content */
+  max-width: var(--container-xl);
+  margin: var(--space-12) auto;
+  padding: 0 var(--space-6);
+}
+
+/* When home-content has prose class, constrain text blocks for readability */
+.home-content.prose > p,
+.home-content.prose > ul,
+.home-content.prose > ol,
+.home-content.prose > blockquote {
+  max-width: var(--container-prose, 65ch);
+  margin-inline: auto;
+}
+
+/* Headings - centered and readable */
+.home-content h2 {
+  max-width: var(--container-lg);
+  margin: var(--space-12) auto var(--space-6);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+.home-content h3 {
+  max-width: var(--container-prose, 65ch);
+  margin: var(--space-8) auto var(--space-4);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+/* Code blocks - contained but not too narrow */
+.home-content pre {
+  max-width: var(--container-md);
+  margin-inline: auto;
+}
+
+/* Card grids - use full container width */
+.home-content .card-grid-container {
+  max-width: var(--container-xl);
+  margin-inline: auto;
+}
+
+/* Tables - full width up to container */
+.home-content table {
+  max-width: var(--container-lg);
+  margin-inline: auto;
+}
+
+/* Horizontal rules - contained */
+.home-content hr {
+  max-width: var(--container-md);
+  margin: var(--space-10) auto;
+}
+
+/* Lists with specific styling */
+.home-content ul,
+.home-content ol {
+  padding-inline-start: var(--space-6);
+}
+
+/* ============================================
+   LANDING PAGE CTA BUTTONS (Hero)
+   Neumorphic style consistent with Bengal's design system
+   ============================================ */
+
+.hero__button {
+  position: relative;
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  text-decoration: none;
+
+  /* Smooth transitions */
+  transition:
+    transform var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out),
+    background var(--motion-fast),
+    border-color var(--motion-fast),
+    color var(--motion-fast);
+}
+
+/* Primary CTA - Solid primary with neumorphic depth */
+.hero__button--primary {
+  background: linear-gradient(180deg,
+    var(--color-primary),
+    var(--color-primary-dark));
+  color: var(--color-text-inverse);
+  border: 1px solid var(--color-primary-dark);
+
+  /* Neumorphic shadow with primary tint */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.hero__button--primary:hover {
+  background: linear-gradient(180deg,
+    var(--color-primary-hover),
+    var(--color-primary));
+  transform: translateY(-2px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    0 4px 8px rgba(0, 0, 0, 0.12),
+    0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.hero__button--primary:active {
+  transform: translateY(0) scale(0.98);
+  background: linear-gradient(180deg,
+    var(--color-primary-dark),
+    var(--color-primary-active));
+
+  box-shadow:
+    inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Secondary CTA - Neumorphic light button (matches search modal close button) */
+.hero__button--secondary {
+  background: linear-gradient(180deg,
+    var(--color-surface, var(--color-bg-elevated)),
+    var(--color-bg-secondary));
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+
+  /* Standard neumorphic base shadow */
+  box-shadow: var(--neumorphic-base);
+}
+
+.hero__button--secondary:hover {
+  background: linear-gradient(180deg,
+    var(--color-surface, var(--color-bg-elevated)),
+    var(--color-bg-hover));
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+
+  /* Neumorphic hover shadow */
+  box-shadow: var(--neumorphic-hover);
+}
+
+.hero__button--secondary:active {
+  background: linear-gradient(180deg,
+    var(--color-bg-active),
+    var(--color-bg-secondary));
+  transform: translateY(0) scale(0.98);
+
+  /* Neumorphic pressed shadow */
+  box-shadow: var(--neumorphic-pressed);
+}
+
+/* ============================================
+   LANDING PAGE CARDS (from directive)
+   Enhanced styling for cards used in landing contexts
+   ============================================ */
+
+.home .card-grid {
+  max-width: var(--container-xl);
+  margin: var(--space-8) auto;
+}
+
+.home .card {
+  padding: var(--space-6);
+
+  /* Neumorphic background */
+  background: linear-gradient(180deg,
+    var(--color-surface, var(--color-bg-elevated)),
+    var(--color-bg-secondary));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--neumorphic-base);
+
+  transition:
+    transform var(--motion-medium) var(--ease-out),
+    box-shadow var(--motion-medium) var(--ease-out),
+    border-color var(--motion-fast);
+}
+
+.home .card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary);
+  box-shadow: var(--neumorphic-hover);
+}
+
+/* Card icon in landing page context */
+.home .card-icon {
+  font-size: 1.75rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(180deg,
+    var(--color-surface, var(--color-bg-elevated)),
+    var(--color-bg-tertiary));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--neumorphic-subtle);
+
+  transition: transform var(--motion-fast), box-shadow var(--motion-fast);
+}
+
+.home .card:hover .card-icon {
+  transform: scale(1.05);
+  box-shadow: var(--neumorphic-hover);
+}
+
+/* Card title styling */
+.home .card-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  transition: color var(--motion-fast);
+}
+
+.home .card:hover .card-title {
+  color: var(--color-primary);
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-card,
+  .stat-card,
+  .quick-link-card,
+  .hero__button,
+  .home .card {
+    transition: none !important;
+  }
+
+  .feature-card:hover,
+  .stat-card:hover,
+  .quick-link-card:hover,
+  .home .card:hover {
+    transform: none !important;
+  }
+
+  .feature-card:hover .feature-icon,
+  .quick-link-card:hover .quick-link-icon,
+  .home .card:hover .card-icon {
+    transform: none !important;
+  }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .features,
+  .stats,
+  .quick-links {
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .features-grid,
+  .quick-links-grid {
+    gap: var(--space-6);
+  }
+
+  .feature-card {
+    padding: var(--space-6);
+  }
+
+  .feature-icon {
+    font-size: var(--text-2xl);
+    width: var(--space-12);
+    height: var(--space-12);
+  }
+
+  .feature-title {
+    font-size: var(--text-lg);
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+  }
+
+  .hero__button {
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--text-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .features-grid,
+  .stats-grid,
+  .quick-links-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: var(--space-6);
+  }
+
+  .home-content {
+    padding: 0 var(--space-4);
+  }
+}
+
+/* ============================================
+   PRINT
+   ============================================ */
+
+@media print {
+  .features,
+  .stats,
+  .quick-links {
+    padding: 1rem 0;
+  }
+
+  .feature-card,
+  .stat-card,
+  .quick-link-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    break-inside: avoid;
+  }
+}

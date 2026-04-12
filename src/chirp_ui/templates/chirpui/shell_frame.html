@@ -1,10 +1,22 @@
-{#- chirp-ui: Shell frame primitives — persistent-region contract
+{#- chirp-ui: Shell frame primitives — persistent-region + swap-boundary contract
 
-    Maps to Chirp's PageComposition model. Use shell_region for OOB targets
-    (shell_actions, badges, breadcrumbs).
+    Maps to Chirp's PageComposition model. Use:
+    - shell_outlet_attrs for the canonical boosted-shell HTMX attrs
+    - shell_outlet for the #page-content wrapper used by boosted navigation
+    - shell_region for stable OOB targets (shell_actions, badges, breadcrumbs)
 
     Usage:
-        {% from "chirpui/shell_frame.html" import shell_region %}
+        {% from "chirpui/shell_frame.html" import shell_outlet, shell_outlet_attrs, shell_region %}
+
+        <main id="main" {{ shell_outlet_attrs() }}>
+          {% call shell_outlet(include_boost_attrs=false) %}
+            {% block content %}{% end %}
+          {% end %}
+        </main>
+
+        {% call shell_outlet() %}
+          {% block content %}{% end %}
+        {% end %}
 
         <div id="{{ shell_actions_target }}" class="chirpui-app-shell__shell-actions">
           {% call shell_region(shell_actions_target) %}
@@ -13,8 +25,179 @@
         </div>
 -#}
 
+{% def shell_outlet_attrs(target="#main", swap="innerHTML", select="#page-content") %}hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-select="{{ select }}"{% end %}{% end %}
+
+{% def shell_outlet(
+    id="page-content",
+    cls="",
+    attrs="",
+    include_boost_attrs=true,
+    target="#main",
+    swap="innerHTML",
+    select="#page-content"
+) %}
+<div id="{{ id }}"{% if cls %} class="{{ cls }}"{% end %}{% if include_boost_attrs %} {{ shell_outlet_attrs(target=target, swap=swap, select=select) }}{% end %}{% if attrs %} {{ attrs | safe }}{% end %}>
+    {% slot %}
+</div>
+{% end %}
+
 {% def shell_region(id, cls="") %}
 <div id="{{ id }}" class="chirpui-shell-region{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
+{% end %}
+
+{% def shell_runtime_script() %}
+<script>
+(function () {
+  if (window.__chirpuiShellRuntimeInitialized) return;
+  window.__chirpuiShellRuntimeInitialized = true;
+
+  var SCROLL_STATE = "__chirpuiShellScrollState";
+  var historyRestorePending = false;
+
+  function getMainTarget(detail) {
+    var target = detail && detail.target;
+    return target && target.id === "main" ? target : null;
+  }
+
+  function parseUrl(value) {
+    if (!value) return null;
+    try {
+      return new URL(value, window.location.href);
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function getRequestedUrl(detail) {
+    var trigger = detail && (detail.elt || (detail.requestConfig && detail.requestConfig.elt));
+    if (trigger && trigger.getAttribute) {
+      var href = trigger.getAttribute("href")
+        || trigger.getAttribute("hx-get")
+        || trigger.getAttribute("data-hx-get");
+      var parsedHref = parseUrl(href);
+      if (parsedHref) return parsedHref;
+    }
+    var pathInfo = detail && detail.pathInfo;
+    var parsedPath = parseUrl(
+      pathInfo && (pathInfo.finalRequestPath || pathInfo.requestPath || pathInfo.path)
+    );
+    if (parsedPath) return parsedPath;
+    var xhr = detail && detail.xhr;
+    return parseUrl(xhr && xhr.responseURL);
+  }
+
+  function resolveScrollMode(detail, requestedUrl) {
+    var main = getMainTarget(detail);
+    if (!main) return "preserve";
+    var trigger = detail && (detail.elt || (detail.requestConfig && detail.requestConfig.elt));
+    var override = trigger && trigger.getAttribute ? trigger.getAttribute("data-chirp-scroll") : null;
+    var currentUrl = parseUrl(window.location.href);
+    if (!override) override = main.getAttribute("data-chirp-scroll") || "auto";
+    if (override !== "auto") return override;
+    if (historyRestorePending) return "preserve";
+    if (requestedUrl && requestedUrl.hash) return "anchor";
+    if (!currentUrl || !requestedUrl) return "preserve";
+    return currentUrl.pathname !== requestedUrl.pathname || currentUrl.search !== requestedUrl.search
+      ? "top"
+      : "preserve";
+  }
+
+  function storeScrollState(detail) {
+    var main = getMainTarget(detail);
+    if (!main) return;
+    var requestedUrl = getRequestedUrl(detail) || parseUrl(window.location.href);
+    main[SCROLL_STATE] = {
+      mode: resolveScrollMode(detail, requestedUrl),
+      hash: requestedUrl && requestedUrl.hash ? requestedUrl.hash : "",
+    };
+    historyRestorePending = false;
+  }
+
+  function readScrollState(main) {
+    var state = main && main[SCROLL_STATE];
+    if (main) delete main[SCROLL_STATE];
+    return state || { mode: "preserve", hash: "" };
+  }
+
+  function syncShellOffset() {
+    var topbar = document.querySelector("[data-chirpui-shell-topbar]");
+    if (!topbar) return;
+    var height = Math.ceil(topbar.getBoundingClientRect().height);
+    document.documentElement.style.setProperty("--chirpui-shell-offset-top", height + "px");
+  }
+
+  function syncFillMode(main) {
+    if (!main || main.id !== "main") return;
+    var pageContent = document.getElementById("page-content");
+    var hasFill = !!(pageContent && pageContent.querySelector(":scope > .chirpui-page-fill"));
+    main.classList.toggle("chirpui-app-shell__main--fill", hasFill);
+  }
+
+  function scrollDocumentToTop() {
+    window.scrollTo({ top: 0, left: 0 });
+  }
+
+  function scrollToHash(hash) {
+    if (!hash) return;
+    var hashId = hash.charAt(0) === "#" ? hash.slice(1) : hash;
+    try {
+      hashId = decodeURIComponent(hashId);
+    } catch (_error) {
+      // Keep the original fragment when it is not URI-encoded.
+    }
+    var target = document.getElementById(hashId);
+    if (!target) {
+      try {
+        target = document.querySelector(hash);
+      } catch (_error) {
+        target = null;
+      }
+    }
+    if (!target) return;
+    window.requestAnimationFrame(function () {
+      target.scrollIntoView({ block: "start" });
+    });
+  }
+
+  function syncShellGeometry() {
+    syncShellOffset();
+    syncFillMode(document.getElementById("main"));
+  }
+
+  if (window.ResizeObserver) {
+    var topbar = document.querySelector("[data-chirpui-shell-topbar]");
+    if (topbar) {
+      var observer = new ResizeObserver(syncShellOffset);
+      observer.observe(topbar);
+    }
+  } else {
+    window.addEventListener("resize", syncShellOffset);
+  }
+
+  window.addEventListener("load", syncShellGeometry);
+  document.body.addEventListener("htmx:historyRestore", function () {
+    historyRestorePending = true;
+  });
+  document.body.addEventListener("htmx:beforeRequest", storeScrollState);
+  document.body.addEventListener("htmx:afterSwap", function (e) {
+    var main = getMainTarget(e.detail);
+    if (!main) return;
+    var state = readScrollState(main);
+    historyRestorePending = false;
+    main[SCROLL_STATE] = state;
+    if (state.mode === "top") scrollDocumentToTop();
+  });
+  document.body.addEventListener("htmx:afterSettle", function (e) {
+    var main = getMainTarget(e.detail);
+    if (!main) return;
+    var state = readScrollState(main);
+    syncShellGeometry();
+    if (state.mode === "anchor") scrollToHash(state.hash || window.location.hash);
+    main.focus({ preventScroll: true });
+  });
+  syncShellGeometry();
+})();
+</script>
 {% end %}

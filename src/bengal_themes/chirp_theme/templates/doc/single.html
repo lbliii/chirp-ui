@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% from 'partials/navigation-components.html' import page_navigation %}
+{% from 'partials/components/tags.html' import tag_list %}
+{% from 'partials/theme-primitives.html' import theme_docs_frame %}
+
+{% block content %}
+{% let page_tags = page?.tags ?? [] %}
+{% let page_href = page?.href ?? '' %}
+{% let css_class = params?.css_class ?? '' %}
+
+{% call theme_docs_frame(has_toc=toc_items | length > 0) %}
+{% slot sidebar %}
+{% include 'partials/docs-nav.html' %}
+{% end %}
+
+{% include 'partials/version-banner.html' %}
+{% include 'partials/stale-content-banner.html' %}
+{% include 'partials/page-hero.html' %}
+
+<article class="prose chirp-theme-docs-layout__article {{ css_class }}">
+  <div class="docs-content chirp-theme-docs-layout__content">
+    {{ content | safe }}
+  </div>
+
+  {% if page_tags | length > 0 %}
+  <footer class="docs-footer chirp-theme-docs-layout__footer">
+    <span class="docs-footer-label">{{ t('docs.tagged', default='Tagged') }}</span>
+    {{ tag_list(page_tags) }}
+  </footer>
+  {% end %}
+</article>
+
+{{ page_navigation(page) }}
+
+{% slot toc %}
+{% include 'partials/docs-toc-sidebar.html' %}
+{% end %}
+{% end %}
+
+<button class="docs-sidebar-toggle" aria-label="Toggle navigation sidebar" aria-expanded="false"
+  aria-controls="docs-sidebar">
+  {{ icon('list', size=20) }}
+</button>
+<div class="docs-sidebar-overlay" aria-hidden="true"></div>
+{% end %}

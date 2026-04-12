@@ -14,7 +14,7 @@
 {% def empty_panel_state(icon=none, title="No items", illustration=none, action_label=none, action_href=none, code=none, suggestions=none, search_hint=none, compact=true, cls="") %}
 {% set state_cls = "chirpui-empty-panel-state" ~ (" chirpui-empty-panel-state--compact" if compact else "") ~ (" " ~ cls if cls else "") %}
 {% call empty_state(icon=icon, title=title, illustration=illustration, action_label=action_label, action_href=action_href, code=code, suggestions=suggestions, search_hint=search_hint, cls=state_cls) %}
-{% slot %}{% slot %}{% end %}
-{% slot action %}{% slot action %}{% end %}
+{% yield %}
+{% slot action %}{% yield action %}{% end %}
 {% end %}
 {% end %}

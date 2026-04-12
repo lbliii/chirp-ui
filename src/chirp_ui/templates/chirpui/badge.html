@@ -19,7 +19,7 @@
 {% set style_attr = ("--chirpui-badge-color: " ~ resolved ~ ("; --chirpui-badge-text: " ~ (resolved | contrast_text) if fill == "solid" else "")) if resolved else "" %}
 {% set badge_class = "badge" | bem(variant=use_variant, cls=cls) %}
 {% if href %}
-<a class="{{ badge_class }}" href="{{ href }}"{% if style_attr %} style="{{ style_attr }}"{% end %}>
+<a class="{{ badge_class }}" href="{{ href }}"{% if style_attr %} style="{{ style_attr }}"{% end %}{{ route_link_attrs(href) | html_attrs }}>
     {% if icon %}
         <span class="chirpui-badge__icon">{{ icon | icon }}</span>
     {% end %}

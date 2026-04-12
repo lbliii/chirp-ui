@@ -13,6 +13,7 @@ from kida.template import Markup
 from chirp_ui.filters import (
     build_hx_attrs,
     contrast_text,
+    make_route_link_attrs,
     resolve_color,
     sanitize_color,
     value_type,
@@ -36,13 +37,25 @@ def _field_errors_stub(errors: Any, field_name: str) -> Sequence[str]:
     return []
 
 
-def _bem_stub(block: str, variant: str = "", modifier: str = "", cls: str = "") -> str:
+def _bem_stub(
+    block: str,
+    variant: str = "",
+    size: str = "",
+    modifier: str | list[str] = "",
+    cls: str = "",
+) -> str:
     """Stub for Chirp's ``bem`` filter (chirpui BEM class builder)."""
+    modifiers: list[str]
+    if isinstance(modifier, list):
+        modifiers = [m for m in modifier if m]
+    else:
+        modifiers = [modifier] if modifier else []
     parts = [f"chirpui-{block}"]
     if variant:
         parts.append(f"chirpui-{block}--{variant}")
-    if modifier:
-        parts.append(f"chirpui-{block}--{modifier}")
+    if size:
+        parts.append(f"chirpui-{block}--{size}")
+    parts.extend(f"chirpui-{block}--{m}" for m in modifiers)
     if cls:
         parts.append(cls)
     return " ".join(parts)
@@ -172,6 +185,7 @@ def env() -> Environment:
         }
     )
     e.add_global("build_hx_attrs", build_hx_attrs)
+    e.add_global("route_link_attrs", make_route_link_attrs())
     e.add_global("island_attrs", _island_attrs_stub)
     e.add_global("primitive_attrs", _primitive_attrs_stub)
     e.add_global(

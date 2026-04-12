@@ -1,6 +1,7 @@
 {#- chirp-ui: Metric grid/card
     Overview/KPI wrappers for dashboard-style pages.
     metric_card forwards attrs / attrs_map to the outer card or <a> (e.g. id for HTMX targets).
+    footer_label / footer_href apply to the non-link card branch only.
 -#}
 {% from "chirpui/layout.html" import grid %}
 {% from "chirpui/card.html" import card %}
@@ -14,7 +15,7 @@
 
 {% def metric_card(value, label, icon=none, trend=none, trend_direction="", hint=none, href=none, icon_bg="", footer_label=none, footer_href=none, cls="", attrs="", attrs_map=none) %}
 {% if href %}
-<a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-metric-card{{ " " ~ cls if cls else "" }}"{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}>
+<a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-metric-card{{ " " ~ cls if cls else "" }}"{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}{{ route_link_attrs(href, attrs=attrs, attrs_map=attrs_map) | html_attrs }}>
     <div class="chirpui-card__body">
         <div class="chirpui-metric-card__top">
             {% if icon and icon_bg %}
@@ -51,7 +52,7 @@
 {% end %}
 {% if hint %}<p class="chirpui-metric-card__hint">{{ hint }}</p>{% endif %}
 {% if footer_label %}
-<a href="{{ footer_href or "#" }}" class="chirpui-metric-card__footer">{{ footer_label }} →</a>
+<a href="{{ footer_href or "#" }}" class="chirpui-metric-card__footer"{{ route_link_attrs(footer_href or "#") | html_attrs }}>{{ footer_label }} →</a>
 {% end %}
 {% end %}
 {% endif %}

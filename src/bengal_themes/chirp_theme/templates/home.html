@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% from 'partials/theme-primitives.html' import theme_page_header, theme_surface, theme_link_card %}
+
+{% block content %}
+{% let page_title = page?.title ?? config?.title ?? 'Home' %}
+{% let page_desc = params?.description ?? '' %}
+{% let cta_buttons = params?.cta_buttons ?? [] %}
+{% let quick_links = params?.quick_links ?? [] %}
+{% let features = params?.features ?? [] %}
+
+<div class="chirp-theme-home">
+  {% call theme_surface('chirp-theme-home__hero') %}
+  <div class="chirp-theme-home__hero-inner">
+    {% call theme_page_header(page_title, page_desc, 'Bengal theme · chirp-ui aesthetic', cls='chirp-theme-home__header') %}
+    {% slot actions %}
+    {% if cta_buttons | length > 0 %}
+    <div class="chirp-theme-home__actions">
+      {% for button in cta_buttons %}
+      {% let btn_url = button?.href ?? button?.url ?? '#' %}
+      {% let btn_text = button?.text ?? 'Learn more' %}
+      {% let btn_style = button?.style ?? 'primary' %}
+      <a href="{{ btn_url | absolute_url }}"
+         class="chirp-theme-home__button chirp-theme-home__button--{{ btn_style }}">
+        {{ btn_text }}
+      </a>
+      {% end %}
+    </div>
+    {% end %}
+    {% end %}
+    {% end %}
+  </div>
+  {% end %}
+
+  {% if features | length > 0 %}
+  <section class="chirp-theme-home__grid" aria-label="Highlights">
+    {% for feature in features %}
+    {{ theme_link_card(
+      feature?.href ?? feature?.url ?? '#',
+      feature?.title ?? 'Feature',
+      feature?.description ?? '',
+      cls='chirp-theme-home__card'
+    ) }}
+    {% end %}
+  </section>
+  {% end %}
+
+  {% if quick_links | length > 0 %}
+  <section class="chirp-theme-home__grid chirp-theme-home__grid--links" aria-label="Quick links">
+    {% for link in quick_links %}
+    {{ theme_link_card(
+      link?.href ?? link?.url ?? '#',
+      link?.title ?? 'Link',
+      link?.description ?? '',
+      cls='chirp-theme-home__link-card'
+    ) }}
+    {% end %}
+  </section>
+  {% end %}
+
+  {% if content and content.strip() %}
+  <section class="chirp-theme-home__content">
+    <div class="chirp-theme-home__content-inner prose">
+      {{ content | safe }}
+    </div>
+  </section>
+  {% end %}
+</div>
+{% end %}

@@ -1,21 +1,47 @@
 {#- chirp-ui: Code macros
     Inline and block code with chirpui styling.
+
+    install_snippet: pre-formatted install command with copy-to-clipboard.
+        {{ install_snippet("uv add bengal-chirp") }}
+        {{ install_snippet("pip install kida-templates", label="pip", prompt="$") }}
 -#}
 
 {% def code(text, cls="") %}
 <code class="chirpui-code{{ " " ~ cls if cls else "" }}">{{ text }}</code>
 {% end %}
 
+{% def install_snippet(command, label="install", prompt="$", id=none, cls="") %}
+<div class="chirpui-install-snippet{{ " " ~ cls if cls else "" }}"
+     x-data="chirpuiCopy()">
+    {% if label %}
+    <p class="chirpui-install-snippet__label chirpui-font-mono chirpui-font-xs chirpui-text-muted">{{ label }}</p>
+    {% end %}
+    <div class="chirpui-install-snippet__row">
+        <pre class="chirpui-install-snippet__command chirpui-font-mono"{% if id %} id="{{ id }}"{% end %}>{{ prompt }} {{ command }}</pre>
+        <button type="button" class="chirpui-code-block__copy"
+                data-copy-text="{{ command | e }}"
+                data-copy-timeout="1600"
+                @click="copy()"
+                aria-label="Copy install command"
+                title="Copy">
+            <span x-show="!copied" aria-hidden="true">&#x29C9;</span>
+            <span x-show="copied" x-cloak aria-hidden="true">&#x2713;</span>
+        </button>
+    </div>
+</div>
+{% end %}
+
 {% def code_block(text, cls="", copy=false) %}
 {% if copy %}
 <div class="chirpui-code-block-wrapper{{ " " ~ cls if cls else "" }}"
-     x-data="{ copied: false }">
+     x-data="chirpuiCopy()">
     <pre class="chirpui-code-block"><code>{{ text }}</code></pre>
     <button type="button" class="chirpui-code-block__copy"
-            @click="navigator.clipboard?.writeText($el.previousElementSibling.textContent).then(() => { copied = true; setTimeout(() => copied = false, 2000) })"
+            data-copy-timeout="2000"
+            @click="copy()"
             aria-label="Copy code">
-        <span x-show="!copied">Copy</span>
-        <span x-show="copied" x-cloak>Copied!</span>
+        <span x-show="!copied" aria-hidden="true">&#x29C9;</span>
+        <span x-show="copied" x-cloak aria-hidden="true">&#x2713;</span>
     </button>
 </div>
 {% else %}

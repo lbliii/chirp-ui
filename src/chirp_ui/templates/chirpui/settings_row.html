@@ -5,19 +5,21 @@
     Usage:
         from "chirpui/settings_row.html" import settings_row_list, settings_row
 
-        call settings_row_list()
-            settings_row("Cursor IDE", status="Configured", detail="dori setup cursor")
-            settings_row("Skills directory", status="ok", detail="/path/to/skills")
-        end
+        {% call settings_row_list() %}
+            {{ settings_row("Cursor IDE", status="Configured", detail="dori setup cursor") }}
+            {{ settings_row("Skills directory", status="ok", detail="/path/to/skills") }}
+        {% end %}
+
+    List modifiers: hoverable=true, divided=true, relaxed=true
 -#}
 {% from "chirpui/badge.html" import badge %}
 
-{% def settings_row_list(cls="", hoverable=false, divided=false, relaxed=false) %}
-{% set mods = "" %}
-{% if hoverable %}{% set mods = mods ~ " chirpui-settings-row-list--hoverable" %}{% end %}
-{% if divided %}{% set mods = mods ~ " chirpui-settings-row-list--divided" %}{% end %}
-{% if relaxed %}{% set mods = mods ~ " chirpui-settings-row-list--relaxed" %}{% end %}
-<div class="chirpui-settings-row-list{{ mods }}{{ " " ~ cls if cls else "" }}">
+{% def settings_row_list(hoverable=false, divided=false, relaxed=false, cls="") %}
+{% set mods = [] %}
+{% if hoverable %}{% set mods = mods + ["chirpui-settings-row-list--hoverable"] %}{% end %}
+{% if divided %}{% set mods = mods + ["chirpui-settings-row-list--divided"] %}{% end %}
+{% if relaxed %}{% set mods = mods + ["chirpui-settings-row-list--relaxed"] %}{% end %}
+<div class="chirpui-settings-row-list{{ " " ~ mods | join(" ") if mods else "" }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
 {% end %}

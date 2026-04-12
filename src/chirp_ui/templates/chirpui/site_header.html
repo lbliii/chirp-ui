@@ -1,0 +1,70 @@
+{#- chirp-ui: Site Header component
+    Sticky top navigation bar for full-page scroll sites.
+
+    Layout variants control how brand, nav, and tools are arranged:
+      start        — [brand] [nav...] [spacer] [tools]  (default)
+      center-brand — [nav left] [brand] [nav right | tools]
+      center-nav   — [brand] [nav centered] [tools]
+      split        — [brand + nav] [spacer] [tools]
+
+    Surface variants control background treatment:
+      glass       — backdrop blur, semi-transparent (default)
+      solid       — opaque background
+      transparent — no background (hero overlap patterns)
+
+    Named slots: brand, nav, nav_end (center-brand right-side), tools.
+
+    Usage:
+        from "chirpui/site_header.html" import site_header, site_nav_link
+
+        call site_header(brand_url="/", layout="start", variant="glass")
+            {% slot brand %}<img src="/logo.svg" alt="Logo">{% end %}
+            {% slot nav %}
+                {{ site_nav_link("/docs", "Docs", glyph="#", match="prefix") }}
+                {{ site_nav_link("/about", "About", match="exact") }}
+            {% end %}
+            {% slot tools %}theme_toggle(){% end %}
+        end
+
+        call site_header(layout="center-brand", variant="solid")
+            {% slot nav %}left links{% end %}
+            {% slot brand %}LOGO{% end %}
+            {% slot nav_end %}right links{% end %}
+            {% slot tools %}CTA button{% end %}
+        end
+-#}
+
+{% def site_header(brand_url="/", layout="start", variant="glass", sticky=true, current_path="", cls="") %}
+{% set variant = variant | validate_variant(("glass","solid","transparent"), "glass") %}
+{% set layout = layout | validate_variant(("start","center-brand","center-nav","split"), "start") %}
+{% let _outer_cls = [c for c in [
+    "chirpui-site-header",
+    "chirpui-site-header--sticky" if sticky else "",
+    "chirpui-site-header--" ~ variant if variant != "solid" else "",
+    cls
+] if c] %}
+{% let _inner_cls = "chirpui-site-header__inner" ~ (" chirpui-site-header__inner--" ~ layout if layout != "start" and layout != "split" else "") %}
+{% provide _site_nav_current_path = current_path %}
+<header class="{{ _outer_cls | join(' ') }}">
+    <div class="{{ _inner_cls }}">
+        <a href="{{ brand_url }}" class="chirpui-site-header__brand"{{ route_link_attrs(brand_url) | html_attrs }}>{% slot brand %}</a>
+        <nav class="chirpui-site-header__nav" aria-label="Primary">{% slot nav %}</nav>
+        {% if layout == "center-brand" %}
+        <div class="chirpui-site-header__nav-end">{% slot nav_end %}{% slot tools %}</div>
+        {% else %}
+        <div class="chirpui-site-header__tools">{% slot tools %}</div>
+        {% end %}
+    </div>
+</header>
+{% endprovide %}
+{% end %}
+
+{% def site_nav_link(href, label, glyph="", external=false, match="", active=false, cls="") %}
+{% set _cp = consume("_site_nav_current_path", "") if match else "" %}
+{% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
+<a class="chirpui-site-nav__link{{ " chirpui-site-nav__link--active" if _active else "" }}{{ " chirpui-site-nav__link--external" if external else "" }}{{ " " ~ cls if cls else "" }}"
+   href="{{ href }}"{% if _active %} aria-current="page"{% end %}{% if external %} rel="noopener noreferrer"{% end %}{{ route_link_attrs(href, external=external) | html_attrs }}>
+    {%- if glyph %}<span class="chirpui-site-nav__glyph" aria-hidden="true">{{ glyph }}</span>{% end -%}
+    {{ label -}}
+</a>
+{% end %}

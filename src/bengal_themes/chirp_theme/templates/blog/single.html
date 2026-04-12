@@ -1,0 +1,36 @@
+{% extends "blog/shell.html" %}
+
+{% from 'partials/navigation-components.html' import page_navigation %}
+{% from 'partials/components/tags.html' import tag_list %}
+{% from 'partials/components/related-posts-simple.html' import related_posts_simple %}
+{% from 'partials/theme-primitives.html' import theme_page_header, theme_surface %}
+
+{% block blog_hero %}
+{{ theme_page_header(
+  page?.title ?? 'Post',
+  params?.description ?? meta_desc ?? none,
+  'Blog Post',
+  breadcrumb_page=page,
+  meta=(page?.date | dateformat('%B %d, %Y')) if page?.date else none,
+  cls='chirp-theme-blog__hero'
+) }}
+{% end %}
+
+{% block blog_content %}
+{% call theme_surface('chirp-theme-blog__article-shell') %}
+<article class="blog-post prose">
+  <div class="blog-post-content">
+    {{ content | safe }}
+  </div>
+
+  {% if page?.tags | length > 0 %}
+  <footer class="blog-post-footer">
+    {{ tag_list(page.tags) }}
+  </footer>
+  {% end %}
+</article>
+{% end %}
+
+{{ page_navigation(page) }}
+{{ related_posts_simple(page?.related_posts ?? [], 'More to Read') }}
+{% end %}

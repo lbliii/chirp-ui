@@ -6,7 +6,19 @@
     For chip/pill faceted navigation (radiogroup, HTMX, optional register_colors),
     use chirpui/filter_chips.html — filter_group + filter_chip. See docs/COMPONENT-OPTIONS.md.
 
-    Usage:
+    For simple inline filter forms (2-3 controls, no toolbar chrome), use
+    filter_row — a lightweight cluster form with HTMX support:
+
+        {% call filter_row("/history/filter",
+            attrs_map={"hx-target": "#results", "hx-swap": "innerHTML",
+                        "hx-trigger": "change delay:200ms from:input, change from:select"}) %}
+            <label for="f-skill">Skill</label>
+            {{ text_field("skill", value=q, size="sm") }}
+            <label for="f-range">Range</label>
+            {{ select_field("range", options=ranges, size="sm") }}
+        {% end %}
+
+    Usage (full filter_bar):
         from "chirpui/filter_bar.html" import filter_bar
 
         call filter_bar("/skills", attrs_map={"id": "skills_filters"})
@@ -17,6 +29,16 @@
 -#}
 {% from "chirpui/forms.html" import form %}
 {% from "chirpui/action_strip.html" import action_strip %}
+
+{% def filter_row(action=none, method="get", attrs="", attrs_map=none, gap="sm", cls="") %}
+{% set hx = attrs_map or {} %}
+<form{% if action %} action="{{ action }}"{% end %} method="{{ method }}"
+      class="chirpui-cluster chirpui-cluster--gap-{{ gap }} chirpui-filter-row chirpui-font-sm{{ " " ~ cls if cls else "" }}"
+      {{ hx | html_attrs }}
+      {{ attrs | safe }}>
+    {% slot %}
+</form>
+{% end %}
 
 {% def filter_bar(action, method="get", attrs="", attrs_map=none, surface_variant="muted", density="sm", wrap="wrap", sticky=false, cls="") %}
 {% provide _bar_surface = surface_variant %}

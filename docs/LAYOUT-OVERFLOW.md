@@ -6,9 +6,9 @@ How Chirp UI keeps the app shell from growing sideways, and how to build pages t
 
 For **vertical fill** (full-height routes with inner scroll), see **`docs/LAYOUT-VERTICAL.md`**.
 
-The scrollable region is `#main` / `.chirpui-app-shell__main`. It is a grid child with **`min-width: 0`** so the `1fr` main track can shrink next to the sidebar, and **`overflow-x: clip`** so stray overflow does not create a horizontal scrollbar on the page. Vertical scrolling stays on this element (`overflow-y: auto`).
+Default app shells use **document scrolling**, not a nested `#main` scrollport. The `#main` column is still a grid child with **`min-width: 0`** so the `1fr` main track can shrink next to the sidebar, and **`overflow-x: clip`** so stray overflow does not create a horizontal scrollbar on the page.
 
-Wide content is still supported: put it in a **child** with **`overflow-x: auto`** (tables, code blocks, dense toolbars). The page column clips; the child scrolls horizontally.
+Wide content is still supported: put it in a **child** with **`overflow-x: auto`** (tables, code blocks, dense toolbars). The page column clips; the child scrolls horizontally. For routes that intentionally need bounded inner vertical scroll, opt into **fill mode** — see **`docs/LAYOUT-VERTICAL.md`**.
 
 ## Primitives (preferred)
 
@@ -44,7 +44,7 @@ The default **`chirpui-grid`** uses **auto-fit** columns (`--chirpui-grid-min`).
 
 ## Related CSS in `chirpui.css`
 
-- App shell grid and **`.chirpui-app-shell__main`** — scrollport and `min-width: 0`.
+- App shell grid and **`.chirpui-app-shell__main`** — shrink-safe main column, horizontal clipping, and fill-mode exception path.
 - **`.chirpui-grid`** (including **`.chirpui-grid > *` { `min-width: 0` }**) / **`.chirpui-grid--preset-bento-211`** / **`.chirpui-grid--preset-thirds`** / **`.chirpui-grid--preset-detail-two`** / **`.chirpui-grid--items-*`** / **`.chirpui-block`** / **`.chirpui-min-w-0`** — layout primitives, shrink-safe cells, fixed-track presets, optional row alignment, and a **`min-width: 0`** utility for custom flex markup.
 - **`.chirpui-cluster`** — wrapping horizontal clusters.
 - **`.chirpui-ascii-indicator-row`** — wrapping indicator rows; **`--nowrap`** modifier for single line.

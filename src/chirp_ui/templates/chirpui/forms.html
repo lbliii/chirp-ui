@@ -717,7 +717,11 @@
 {% if token is not none %}
 <input type="hidden" name="{{ field_name }}" value="{{ token }}">
 {% else %}
+{% if csrf_field is defined %}
+{{ csrf_field() }}
+{% else %}
 {{ csrf_token() }}
+{% end %}
 {% end %}
 {% end %}
 
@@ -750,7 +754,14 @@
 {% end %}
 {% end %}
 
-{# Form actions — submit/cancel button row. Use align="end" for right-aligned. #}
+{# Form actions — submit/cancel button row. Use align="end" for right-aligned.
+   btn() defaults to type="submit", so use it directly for form submission:
+
+       {% call form_actions(align="end") %}
+           {{ btn("Cancel", href="/back", type="button") }}
+           {{ btn("Save", variant="primary") }}
+       {% end %}
+#}
 {% def form_actions(align="start", cls="") %}
 {% set align_class = " chirpui-form-actions--end" if align == "end" else "" %}
 <div class="chirpui-form-actions{{ align_class }}{{ " " ~ cls if cls else "" }}">

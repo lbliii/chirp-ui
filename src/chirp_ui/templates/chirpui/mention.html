@@ -10,7 +10,7 @@
 
 {% def mention(username, href=none, cls="") %}
 {% if href %}
-<a href="{{ href }}" class="chirpui-mention{{ " " ~ cls if cls else "" }}">@{{ username }}</a>
+<a href="{{ href }}" class="chirpui-mention{{ " " ~ cls if cls else "" }}"{{ route_link_attrs(href) | html_attrs }}>@{{ username }}</a>
 {% else %}
 <span class="chirpui-mention{{ " " ~ cls if cls else "" }}">@{{ username }}</span>
 {% end %}

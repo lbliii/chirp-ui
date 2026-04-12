@@ -16,7 +16,7 @@
     <p class="chirpui-document-header__eyebrow">{{ eyebrow }}</p>
     {% end %}
     {% call page_header(title, subtitle=subtitle, meta=meta, breadcrumb_items=breadcrumb_items, cls="chirpui-document-header__page-header") %}
-    {% slot actions %}{% slot actions %}{% end %}
+    {% slot actions %}{% yield actions %}{% end %}
     {% end %}
     {% if path or provenance or status or meta_items %}
     <div class="chirpui-document-header__details">

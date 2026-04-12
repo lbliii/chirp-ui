@@ -4,12 +4,12 @@ How ChirpUI’s app shell behaves in the **block axis** (height): when the main 
 
 ## Two modes
 
-| Mode | `main` scroll | Typical use |
-|------|----------------|------------|
-| **Default** | Yes (`overflow-y: auto`) | Long-form content, lists, docs |
-| **Fill** | No (`overflow: hidden`); flex column | Chat, maps, split editors, anything that should use the full area below the topbar |
+| Mode | Vertical scroll owner | Typical use |
+|------|------------------------|------------|
+| **Default** | Document / page | Long-form content, lists, docs |
+| **Fill** | Inner panels below `#main` | Chat, maps, split editors, anything that should use the full area below the topbar |
 
-Default mode is unchanged: `#page-content` is a flex column with vertical gap, but it only grows with its content. **Fill mode** makes `#page-content` a flex item with `flex: 1; min-height: 0` so a single child can stretch to the bottom of the shell.
+Default mode is now browser-native: the document scrolls, while `#page-content` remains a flex column with vertical gap. **Fill mode** is the explicit exception. It makes `#main` a bounded flex column and `#page-content` a flex item with `flex: 1; min-height: 0` so a single child can stretch to the bottom of the shell.
 
 ## Opt in to fill mode
 
@@ -20,6 +20,8 @@ Default mode is unchanged: `#page-content` is a flex column with vertical gap, b
    ```
 
    (Leading space is optional; the block is appended to the base `chirpui-app-shell__main` class.)
+
+   If you build a custom shell with `app_shell()`, wrap routed content with `shell_outlet()` so the same `#page-content` fill contract exists inside `<main>`.
 
 2. Wrap your route body in a single root that uses **`chirpui-page-fill`** as a class on the **direct child of `#page-content`**:
 
@@ -44,9 +46,9 @@ Swapping `#page-content` via HTMX does not change this contract: the same classe
 
 ### Boosted navigation and `--fill` sync
 
-When using `hx-boost` or sidebar navigation that swaps `#main`'s inner HTML, the `<main>` element's class list is not re-rendered — only the content inside `#page-content` changes. The `{% block main_shell_class %}` override only takes effect on full page loads.
+When using `hx-boost` or sidebar navigation that swaps `#main`'s inner HTML, the `<main>` element's class list is not re-rendered — only the content inside `#page-content` changes. The `{% block main_shell_class %}` override only takes effect on full page loads unless the shell runtime re-synchronizes it.
 
-`app_shell_layout.html` handles this automatically: an `htmx:afterSettle` handler checks whether the new `#page-content` contains a direct child with `.chirpui-page-fill` and toggles `chirpui-app-shell__main--fill` on `#main` accordingly. No extra JS needed in app layouts.
+`app_shell_layout.html` handles this automatically on both **initial page load** and **`htmx:afterSettle`**: the shell runtime checks whether the new `#page-content` contains a direct child with `.chirpui-page-fill` and toggles `chirpui-app-shell__main--fill` on `#main` accordingly. No extra JS needed in app layouts.
 
 ## See also
 

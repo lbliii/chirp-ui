@@ -13,10 +13,12 @@ from pathlib import PurePath
 
 __all__ = [
     "bem",
+    "build_hx_attrs",
     "contrast_text",
     "field_errors",
     "html_attrs",
     "icon",
+    "make_route_link_attrs",
     "register_colors",
     "resolve_color",
     "sanitize_color",
@@ -48,6 +50,7 @@ _COLOR_RE = re.compile(
     r"^#[0-9a-fA-F]{3,8}$"
     r"|^(?:rgb|hsl|oklch|lab|lch)a?\([-\d.,%/ a-z]+\)$",
 )
+_URI_SCHEME_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:")
 
 _chirpui_named_colors: ContextVar[dict[str, str] | None] = ContextVar(
     "chirpui_named_colors",
@@ -131,7 +134,7 @@ def _rgb_to_channels(s: str) -> tuple[float, float, float] | None:
             max(0.0, min(1.0, vals[1])),
             max(0.0, min(1.0, vals[2])),
         )
-    except ValueError, IndexError:
+    except (ValueError, IndexError):  # fmt: skip
         return None
 
 
@@ -277,16 +280,30 @@ class TemplateFilterApp(Protocol):
     ) -> Callable[[Callable[..., object]], Callable[..., object]]: ...
 
 
-def bem(block: str, variant: str = "", modifier: str = "", cls: str = "") -> str:
-    """Build chirpui BEM class string: chirpui-{block} chirpui-{block}--{variant} etc.
+def bem(
+    block: str,
+    variant: str = "",
+    size: str = "",
+    modifier: str | list[str] = "",
+    cls: str = "",
+) -> str:
+    """Build chirpui BEM class string from block, variant, size, and modifiers.
 
-    Example:
-        class="{{ "alert" | bem(variant=variant, cls=cls) }}"
-        → "chirpui-alert chirpui-alert--success my-class"
+    Example::
+
+        class="{{ "btn" | bem(variant="primary", size="lg", modifier="loading") }}"
+        → "chirpui-btn chirpui-btn--primary chirpui-btn--lg chirpui-btn--loading"
+
+    *modifier* accepts a single string or a list of strings for additive flags.
     """
-    if variant and block in VARIANT_REGISTRY and _is_strict():
-        allowed = VARIANT_REGISTRY[block]
-        if variant not in allowed:
+    from chirp_ui.components import COMPONENTS
+
+    desc = COMPONENTS.get(block)
+    strict = _is_strict()
+
+    if variant and strict:
+        allowed = VARIANT_REGISTRY.get(block, ())
+        if allowed and variant not in allowed:
             log = logging.getLogger("chirp_ui")
             log.warning(
                 'chirp-ui: %s variant "%s" invalid; valid: %s',
@@ -295,11 +312,40 @@ def bem(block: str, variant: str = "", modifier: str = "", cls: str = "") -> str
                 ", ".join(allowed),
             )
             variant = allowed[0] if allowed else ""
+
+    if size and strict and desc and desc.sizes and size not in desc.sizes:
+        log = logging.getLogger("chirp_ui")
+        log.warning(
+            'chirp-ui: %s size "%s" invalid; valid: %s',
+            block,
+            size,
+            ", ".join(desc.sizes),
+        )
+        size = desc.sizes[0] if desc.sizes else ""
+
+    modifiers: list[str]
+    if isinstance(modifier, list):
+        modifiers = [m for m in modifier if m]
+    else:
+        modifiers = [modifier] if modifier else []
+
+    if strict and desc and desc.modifiers:
+        for m in modifiers:
+            if m not in desc.modifiers:
+                log = logging.getLogger("chirp_ui")
+                log.warning(
+                    'chirp-ui: %s modifier "%s" invalid; valid: %s',
+                    block,
+                    m,
+                    ", ".join(desc.modifiers),
+                )
+
     parts = [f"chirpui-{block}"]
     if variant:
         parts.append(f"chirpui-{block}--{variant}")
-    if modifier:
-        parts.append(f"chirpui-{block}--{modifier}")
+    if size:
+        parts.append(f"chirpui-{block}--{size}")
+    parts.extend(f"chirpui-{block}--{m}" for m in modifiers)
     if cls:
         parts.append(cls)
     return " ".join(parts)
@@ -402,6 +448,74 @@ def build_hx_attrs(**kwargs: Any) -> dict[str, Any]:
     return {k.replace("_", "-"): v for k, v in kwargs.items()}
 
 
+def _is_internal_href(href: str) -> bool:
+    """Return True for app-local hrefs that can use route-aware swaps."""
+    stripped = href.strip()
+    if not stripped or stripped.startswith("#"):
+        return False
+    return not (stripped.startswith("//") or _URI_SCHEME_RE.match(stripped))
+
+
+def _has_explicit_hx_attrs(
+    *,
+    attrs: Any = None,
+    attrs_map: Mapping[str, Any] | None = None,
+) -> bool:
+    """Return True when legacy attrs already carry explicit htmx config."""
+    if isinstance(attrs_map, Mapping):
+        for raw_key in attrs_map:
+            key = str(raw_key).strip().replace("_", "-")
+            if key.startswith("hx-"):
+                return True
+    if isinstance(attrs, str):
+        normalized = attrs.replace("_", "-")
+        if "hx-" in normalized:
+            return True
+    return False
+
+
+def make_route_link_attrs(
+    *,
+    swap_resolver: Callable[..., Mapping[str, Any]] | None = None,
+) -> Callable[..., dict[str, Any]]:
+    """Build a template global for route-aware link attrs.
+
+    The default no-op version keeps standalone chirp-ui renderable. When
+    ``swap_resolver`` is supplied (for example by Chirp's ``use_chirp_ui``),
+    internal ``href`` values can inherit route-aware ``hx-target`` / ``hx-boost``
+    attrs automatically.
+    """
+
+    def route_link_attrs(
+        href: str | None,
+        *,
+        boost: bool = True,
+        external: bool = False,
+        disabled: bool = False,
+        fallback: Mapping[str, Any] | None = None,
+        attrs: Any = None,
+        attrs_map: Mapping[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        if (
+            href is None
+            or disabled
+            or not boost
+            or external
+            or not isinstance(href, str)
+            or not _is_internal_href(href)
+            or _has_explicit_hx_attrs(attrs=attrs, attrs_map=attrs_map)
+        ):
+            return {}
+        if swap_resolver is None:
+            return dict(fallback or {})
+        attrs = swap_resolver(href, hx_boost=boost)
+        if isinstance(attrs, Mapping):
+            return dict(attrs)
+        return {}
+
+    return route_link_attrs
+
+
 def _serialize_attr_value(value: Any) -> str:
     """Serialize structured attr values such as hx-vals payloads."""
     if isinstance(value, (dict, list, tuple)):
@@ -437,7 +551,7 @@ def html_attrs(value: Any) -> str | Markup:
 
 
 def register_filters(app: TemplateFilterApp) -> None:
-    """Register chirp-ui filters (bem, field_errors, html_attrs) on a Chirp app.
+    """Register chirp-ui filters and globals on a Chirp app.
 
     Call after App creation. Ensures chirp-ui components render correctly
     regardless of Chirp version::
@@ -446,6 +560,10 @@ def register_filters(app: TemplateFilterApp) -> None:
         import chirp_ui
         app = App(...)
         chirp_ui.register_filters(app)
+
+    Also registers template globals such as ``build_hx_attrs`` and the
+    standalone-safe ``route_link_attrs`` helper when the app exposes
+    ``template_global``.
     """
     app.template_filter("bem")(bem)
     app.template_filter("field_errors")(field_errors)
@@ -467,3 +585,4 @@ def register_filters(app: TemplateFilterApp) -> None:
         )
         tg("tab_is_active")(tab_is_active)
         tg("build_hx_attrs")(build_hx_attrs)
+        tg("route_link_attrs")(make_route_link_attrs())

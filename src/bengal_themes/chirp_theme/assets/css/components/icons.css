@@ -1,0 +1,283 @@
+/* ============================================
+   BENGAL ICON SYSTEM
+   ============================================
+   Custom SVG icons with theme-aware styling.
+
+   Usage in Markdown:
+     :::{icon} terminal
+     :size: 24
+     :class: text-primary
+     :::
+
+   The icon directive inlines SVGs for full CSS control.
+   ============================================ */
+
+/* Base icon styles */
+.bengal-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  flex-shrink: 0;
+
+  /* Inherit text color by default */
+  color: currentColor;
+
+  /* Smooth transitions for hover effects */
+  transition:
+    color var(--transition-fast, 150ms) ease,
+    transform var(--transition-fast, 150ms) ease,
+    opacity var(--transition-fast, 150ms) ease;
+}
+
+/* Ensure SVG inherits size from container */
+.bengal-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Size variants (can be combined with directive :size: option) */
+.bengal-icon.icon-xs {
+  width: 12px;
+  height: 12px;
+}
+
+.bengal-icon.icon-sm {
+  width: 16px;
+  height: 16px;
+}
+
+.bengal-icon.icon-md {
+  width: 24px;
+  height: 24px;
+}
+
+.bengal-icon.icon-lg {
+  width: 32px;
+  height: 32px;
+}
+
+.bengal-icon.icon-xl {
+  width: 48px;
+  height: 48px;
+}
+
+.bengal-icon.icon-2xl {
+  width: 64px;
+  height: 64px;
+}
+
+/* Color variants using semantic tokens
+   Use modifier classes (icon--*) to avoid conflicts with icon names
+   e.g., icon--info applies color, icon-info is just the icon name */
+.bengal-icon.icon--primary {
+  color: var(--color-accent);
+}
+
+.bengal-icon.icon--secondary {
+  color: var(--color-text-secondary);
+}
+
+.bengal-icon.icon--muted {
+  color: var(--color-text-tertiary);
+  opacity: 0.7;
+}
+
+.bengal-icon.icon--success {
+  color: var(--color-success);
+}
+
+.bengal-icon.icon--warning {
+  color: var(--color-warning);
+}
+
+.bengal-icon.icon--danger,
+.bengal-icon.icon--error {
+  color: var(--color-error);
+}
+
+.bengal-icon.icon--info {
+  color: var(--color-info);
+}
+
+.bengal-icon.icon--example {
+  color: var(--color-example);
+}
+
+/* Interactive states */
+.bengal-icon.icon--interactive {
+  cursor: pointer;
+}
+
+.bengal-icon.icon--interactive:hover {
+  color: var(--color-accent);
+  transform: scale(1.1);
+}
+
+.bengal-icon.icon--interactive:active {
+  transform: scale(0.95);
+}
+
+/* Error/missing icon states */
+.bengal-icon.bengal-icon--error,
+.bengal-icon.bengal-icon--missing {
+  color: var(--color-warning);
+  font-size: inherit;
+}
+
+/* Icon + text alignment helper */
+.icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+.icon-text .bengal-icon {
+  flex-shrink: 0;
+}
+
+/* Icon in buttons */
+.button .bengal-icon,
+.btn .bengal-icon {
+  margin-inline-end: var(--space-2, 0.5rem);
+}
+
+.button .bengal-icon:last-child,
+.btn .bengal-icon:last-child {
+  margin-inline-end: 0;
+  margin-inline-start: var(--space-2, 0.5rem);
+}
+
+/* Icon in navigation */
+.nav-item .bengal-icon {
+  margin-inline-end: var(--space-2, 0.5rem);
+  opacity: 0.8;
+}
+
+.nav-item:hover .bengal-icon {
+  opacity: 1;
+}
+
+/* Icon in cards */
+.card .bengal-icon.card-icon {
+  color: var(--color-accent);
+  margin-block-end: var(--space-3, 0.75rem);
+}
+
+/* Spinning animation for loading icons */
+.bengal-icon.icon-spin {
+  animation: bengal-icon-spin 1s linear infinite;
+}
+
+@keyframes bengal-icon-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Pulse animation for attention */
+.bengal-icon.icon-pulse {
+  animation: bengal-icon-pulse 2s ease-in-out infinite;
+}
+
+@keyframes bengal-icon-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+}
+
+/* ============================================
+   ICON GALLERY/DEMO STYLES
+   ============================================ */
+
+.icon-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-4, 1rem);
+  margin-block: var(--space-6, 1.5rem);
+}
+
+.icon-gallery-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-light);
+  transition: all var(--transition-fast) ease;
+  text-align: center;
+}
+
+[data-theme="dark"] .icon-gallery-item {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-light);
+}
+
+.icon-gallery-item:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--neumorphic-hover);
+  transform: translateY(-2px);
+}
+
+.icon-gallery-item .bengal-icon {
+  margin-block-end: var(--space-3);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .icon-gallery-item .bengal-icon {
+  color: var(--color-text-primary);
+}
+
+.icon-gallery-item:hover .bengal-icon {
+  color: var(--color-accent);
+}
+
+.icon-gallery-item .icon-name {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+/* Size comparison row */
+.icon-size-demo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4, 1rem);
+  flex-wrap: wrap;
+  margin-block: var(--space-4, 1rem);
+}
+
+.icon-size-demo .icon-size-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+.icon-size-demo .icon-size-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .bengal-icon {
+    transition: none;
+  }
+
+  .bengal-icon.icon-spin,
+  .bengal-icon.icon-pulse {
+    animation: none;
+  }
+}

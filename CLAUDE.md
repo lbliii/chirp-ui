@@ -20,7 +20,9 @@ src/chirp_ui/
   filters.py           # bem, html_attrs, build_hx_attrs, validate_*, register_colors, resolve_color, sanitize_color, contrast_text
   validation.py        # VARIANT_REGISTRY, SIZE_REGISTRY, set_strict()
   route_tabs.py        # route-aware tabs helper
-  templates/chirpui/   # Kida macros — one file per component (e.g. label_overline.html)
+  templates/chirpui/   # Kida macros — one file per component (e.g. aura.html, label_overline.html)
+  templates/patterns/  # SVG tiles for --chirpui-pattern-* + .chirpui-texture--* (serve with static_path())
+  # CSS-only: --chirpui-bg-pattern-* tokens, .chirpui-bg-pattern--*, .chirpui-band--pattern-*, .chirpui-ambient, surface--noise-overlay / --static-overlay
   templates/chirpui.css
   templates/chirpui.js
   templates/themes/
@@ -35,7 +37,7 @@ tests/
 docs/
 ```
 
-**UI vocabulary:** `docs/UI-LAYERS.md` — app shell vs page chrome vs **surface chrome** (component frames), shell regions, page fragment target IDs, and links to Chirp’s `chirp.shell_regions` constants.
+**UI vocabulary:** `docs/UI-LAYERS.md` — app shell vs **marketing site shell** vs page chrome vs **surface chrome** (component frames), shell regions, page fragment target IDs, and links to Chirp’s `chirp.shell_regions` constants.
 
 ## Dev commands
 
@@ -84,6 +86,9 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 - **OOB composition helpers** — `oob.html` provides `oob_fragment(id, swap)` for wrapping any content as an OOB swap, `oob_toast(message, variant)` as a shorthand for toast OOB, and `counter_badge(id, count, variant, oob)` for server-driven numeric indicators. See `docs/COMPONENT-OPTIONS.md § OOB Helpers`.
 - **Form field a11y** — every field has `id="field-{name}"` (OOB target), `aria-describedby="errors-{name}"` on controls, and a `<div id="errors-{name}" role="alert" aria-live="polite">` error container (always in DOM, empty when no errors). Use `form_error_summary(errors)` at form top for an alert-style error count with anchor links to fields. Fields support `oob=true` on `field_wrapper` for per-field OOB swap.
 - **Suspense slots** — `suspense.html` provides `suspense_slot(id)` and `suspense_group()` for skeleton-to-content swap patterns. Pairs with Chirp's `Suspense(defer_map={})` — the server renders the shell with skeleton placeholders, then sends deferred content as OOB swaps targeting each slot's `id`. Use `suspense_group` to mark a region `aria-busy="true"` until all child slots resolve. `suspense_slot` wraps content in a kida `{% try %}` error boundary — if the skeleton or caller content fails to render, a default skeleton is shown instead of crashing the page. See `docs/COMPONENT-OPTIONS.md § Suspense`.
+- **Marketing site shell** — `site_shell.html`, `site_header.html`, `site_footer.html` provide a full-page scroll layout alternative to `app_shell`. Use for marketing sites, landing pages, and docs homes. `site_shell` manages z-index stacking context so sticky headers always stay on top. `site_header` has layout variants (`start`, `center-brand`, `center-nav`, `split`) and surface variants (`glass`, `solid`, `transparent`). `site_footer` has layout variants (`columns`, `centered`, `simple`). See `docs/COMPONENT-OPTIONS.md § Marketing Kit`.
+- **Marketing content sections** — `band.html` provides full-bleed section panels with width variants (`inset`, `bleed`, `contained`) and pattern integration. `feature_section.html` provides two-column copy+media layouts with layout variants (`split`, `balanced`, `media-dominant`, `stacked`), surface variants (`default`, `muted`, `halo`), and a `reverse` modifier for zigzag patterns. `feature_stack` wraps multiple feature sections with consistent spacing.
+- **Bento extensions** — `chirpui-surface--bento` adds hover lift + flex height equalization to surfaces. `chirpui-frame--bento` applies consistent gap and min-height to bento frames. `chirpui-block--wide` / `chirpui-block--tall` span 2 grid columns/rows. Surface typography elements: `chirpui-surface__eyebrow`, `__title`, `__lede`, `__body`.
 - **Navigation progress** — `nav_progress.html` provides a CSS-only fixed progress bar at the viewport top. Animates automatically via `body.htmx-request`. Use outside `app_shell` (which has its own built-in bar). Place once in base layout: `{{ nav_progress() }}`.
 - **SSE connection status** — `sse_status.html` provides `sse_status(state)` (connected/disconnected/error indicator with dot + label) and `sse_retry(url)` (htmx-powered retry button for reconnecting to an SSE endpoint). Pair with `streaming_bubble`/`streaming_block` from `streaming.html`. See `docs/COMPONENT-OPTIONS.md § SSE Status`.
 
@@ -105,6 +110,10 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 chirp-ui is one optional layer. Users bring their own Chirp app; chirp-ui adds the component library and default design language. The framework (`bengal-chirp`) and template engine (`kida-templates`) are separate packages maintained by the same author.
 
 **Alpine.js ownership:** Chirp is the single authority for Alpine injection. `use_chirp_ui(app)` auto-enables `alpine=True` on the app config; `app_shell_layout.html` does **not** include Alpine scripts. Named components should register with `Alpine.safeData(name, factory)` (injected by Chirp) for htmx-safe registration that works on both full page loads and boosted navigation swaps.
+
+**JSON in `x-data`:** Prefer Chirp’s `{{ alpine_json_config("my-id", config) }}` (registered when `alpine=True`) to emit the JSON `<script>` tag with a safe id; or hand-write `<script type="application/json">` with `{{ config | tojson }}`. For JSON directly in a double-quoted attribute, use `{{ config | tojson(attr=true) }}` (or single-quoted attributes with default `tojson`). See Kida’s filter reference and Chirp’s Alpine guide.
+
+**`page_scripts` block:** `app_shell_layout.html` defines an empty `{% block page_scripts %}{% end %}` near `</body>`. This block is only overridable by templates that `{% extends %}` the layout directly (e.g. inner `_layout.html` files). **Filesystem page templates** (`page.html`) are composed into the layout via `render_with_blocks` — they cannot override `page_scripts` or any other sibling block in the layout. If a page needs an inline `<script>` (e.g. for `Alpine.safeData` registration), put it inside the content block (`page_root` or `page_content`), not in a separate `page_scripts` block. See Chirp's filesystem-routing docs for details.
 
 ## Troubleshooting: "all interactive components are dead"
 
