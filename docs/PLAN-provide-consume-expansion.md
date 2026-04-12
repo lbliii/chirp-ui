@@ -1,6 +1,6 @@
 # Epic: Provide/Consume Expansion — Context Flow for Composite Components
 
-**Status**: Partially Complete
+**Status**: Complete (Sprint 5 documentation polish deferred)
 **Created**: 2026-04-09
 **Target**: 0.3.0
 **Estimated Effort**: 12–20h
@@ -329,5 +329,6 @@ Add provide/consume expansion to key conventions.
 
 ## Changelog
 
+- **2026-04-12** — Plan audit: Sprints 0-4 verified complete. 16 providers across 12 templates, 23 consumer sites across 17 templates, 45+ tests in test_provide_consume.py. PROVIDE-CONSUME-KEYS.md exists with 12-key registry. `.chirpui-field--dense` CSS shipped. Nav current_path wired in sidebar + navbar. One gap: `label_overline.html` does not consume `_card_variant`/`_surface_variant` despite KEYS.md claiming it does — KEYS.md is aspirational for that component. Sprint 5 (docs polish, showcase updates, COMPONENT-OPTIONS.md context-aware sections) deferred.
 - **2026-04-10** — PLAN-behavior-layer-hardening Sprint 2 wired all 7 orphaned provide/consume keys (_card_variant, _bar_surface, _bar_density, _surface_variant, _streaming_role, _suspense_busy, _sse_state) to natural consumers with 30 contract tests. This is a subset of this plan's scope — Sprints 1-4 here (surface propagation, accordion name, form density, nav path) remain future work.
 - **2026-04-09** — Draft created from codebase audit (6 provides, 8 consumes across 11 templates)

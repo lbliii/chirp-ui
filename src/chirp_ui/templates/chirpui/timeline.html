@@ -22,8 +22,10 @@
 -#}
 
 {% def timeline(items=none, hoverable=false, cls="") %}
+{% set _surface = consume("_surface_variant", "") %}
+{% set _on_surface = " chirpui-timeline--on-" ~ _surface if _surface and _surface != "default" else "" %}
 {% set hover_class = " chirpui-timeline--hoverable" if hoverable else "" %}
-<div class="chirpui-timeline{{ hover_class }}{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-timeline{{ _on_surface }}{{ hover_class }}{{ " " ~ cls if cls else "" }}">
     {% if items %}
         {% for item in items %}
         <div class="chirpui-timeline__item{% if item.variant %} chirpui-timeline__item--{{ item.variant }}{% end %}{% if item.href %} chirpui-timeline__item--link{% end %}">

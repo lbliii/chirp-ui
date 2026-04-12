@@ -9,9 +9,11 @@
 -#}
 
 {% def status_indicator(label, variant="default", icon=none, pulse=false, cls="", color=none) %}
+{% set _surface = consume("_surface_variant", "") %}
+{% set _on_surface = " chirpui-status-indicator--on-" ~ _surface if _surface and _surface != "default" else "" %}
 {% set resolved = color | resolve_color %}
 {% set st_variant = ("custom" if resolved else (variant | validate_variant_block("status-indicator", "default"))) %}
-<div class="chirpui-status-indicator chirpui-status-indicator--{{ st_variant }}{{ " chirpui-status-indicator--pulse" if pulse else "" }}{{ " " ~ cls if cls else "" }}"
+<div class="chirpui-status-indicator chirpui-status-indicator--{{ st_variant }}{{ _on_surface }}{{ " chirpui-status-indicator--pulse" if pulse else "" }}{{ " " ~ cls if cls else "" }}"
      {% if resolved %}style="--chirpui-status-color: {{ resolved }}"{% end %}>
     {% if icon %}
         <span class="chirpui-status-indicator__icon">{{ icon }}</span>

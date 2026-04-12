@@ -1,0 +1,1 @@
+Context-aware theming: `timeline`, `callout`, `status_indicator`, and `settings_row_list` now automatically adapt their visual treatment when nested inside `surface()` or `card()` containers via `--on-<surface>` CSS modifier classes.

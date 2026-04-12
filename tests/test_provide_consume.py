@@ -663,3 +663,198 @@ class TestCopyButtonConsumesStreamingRole:
             '{% from "chirpui/copy_button.html" import copy_button %}{{ copy_button("text") }}'
         ).render()
         assert "chirpui-copy-btn--" not in html
+
+
+# ---------------------------------------------------------------------------
+# Context-aware theming — surface-sensitive rendering
+# ---------------------------------------------------------------------------
+
+
+class TestTimelineSurfaceAware:
+    """timeline() adapts to surface context via --on-<surface> modifier."""
+
+    def test_timeline_standalone_no_surface_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline, timeline_item %}'
+            "{% call timeline() %}"
+            '{% call timeline_item("Test", "Now") %}Content{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-timeline" in html
+        assert "chirpui-timeline--on-" not in html
+
+    def test_timeline_inside_muted_surface(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/timeline.html" import timeline, timeline_item %}'
+            '{% call surface(variant="muted") %}'
+            "{% call timeline() %}"
+            '{% call timeline_item("Test", "Now") %}Content{% end %}'
+            "{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-timeline--on-muted" in html
+
+    def test_timeline_inside_accent_surface(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/timeline.html" import timeline, timeline_item %}'
+            '{% call surface(variant="accent") %}'
+            "{% call timeline() %}"
+            '{% call timeline_item("Test", "Now") %}Content{% end %}'
+            "{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-timeline--on-accent" in html
+
+    def test_timeline_inside_default_surface_no_modifier(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/timeline.html" import timeline, timeline_item %}'
+            '{% call surface(variant="default") %}'
+            "{% call timeline() %}"
+            '{% call timeline_item("Test", "Now") %}Content{% end %}'
+            "{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-timeline--on-" not in html
+
+
+class TestCalloutSurfaceAware:
+    """callout() adapts to surface context via --on-<surface> modifier."""
+
+    def test_callout_standalone_no_surface_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/callout.html" import callout %}'
+            '{% call callout(variant="info", title="Note") %}Body{% end %}'
+        ).render()
+        assert "chirpui-callout--info" in html
+        assert "chirpui-callout--on-" not in html
+
+    def test_callout_inside_muted_surface(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/callout.html" import callout %}'
+            '{% call surface(variant="muted") %}'
+            '{% call callout(variant="info", title="Note") %}Body{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-callout--on-muted" in html
+
+    def test_callout_inside_accent_surface(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/callout.html" import callout %}'
+            '{% call surface(variant="accent") %}'
+            '{% call callout(variant="warning", title="Caution") %}Body{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-callout--on-accent" in html
+        assert "chirpui-callout--warning" in html
+
+    def test_callout_inside_default_surface_no_modifier(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/callout.html" import callout %}'
+            '{% call surface(variant="default") %}'
+            '{% call callout(variant="info") %}Body{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-callout--on-" not in html
+
+
+class TestStatusSurfaceAware:
+    """status_indicator() adapts to surface context via --on-<surface> modifier."""
+
+    def test_status_standalone_no_surface_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/status.html" import status_indicator %}'
+            '{{ status_indicator("Running", variant="success") }}'
+        ).render()
+        assert "chirpui-status-indicator--success" in html
+        assert "chirpui-status-indicator--on-" not in html
+
+    def test_status_inside_muted_surface(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/status.html" import status_indicator %}'
+            '{% call surface(variant="muted") %}'
+            '{{ status_indicator("Running", variant="success") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-status-indicator--on-muted" in html
+        assert "chirpui-status-indicator--success" in html
+
+    def test_status_inside_accent_surface(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/status.html" import status_indicator %}'
+            '{% call surface(variant="accent") %}'
+            '{{ status_indicator("Live", variant="success") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-status-indicator--on-accent" in html
+
+    def test_status_inside_default_surface_no_modifier(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/status.html" import status_indicator %}'
+            '{% call surface(variant="default") %}'
+            '{{ status_indicator("OK") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-status-indicator--on-" not in html
+
+
+class TestSettingsRowCardAware:
+    """settings_row_list() adapts to card/surface context."""
+
+    def test_settings_row_list_standalone_no_context(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
+            "{% call settings_row_list(hoverable=true) %}"
+            '{{ settings_row("API Key", status="Configured") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-settings-row-list--hoverable" in html
+        assert "chirpui-settings-row-list--on-" not in html
+
+    def test_settings_row_list_inside_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
+            '{% call card(title="Config", variant="feature") %}'
+            "{% call settings_row_list(hoverable=true) %}"
+            '{{ settings_row("API Key", status="ok") }}'
+            "{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-settings-row-list--on-feature" in html
+
+    def test_settings_row_list_inside_surface(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
+            '{% call surface(variant="muted") %}'
+            "{% call settings_row_list(hoverable=true) %}"
+            '{{ settings_row("API Key", status="ok") }}'
+            "{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-settings-row-list--on-muted" in html
+
+    def test_settings_row_list_card_overrides_surface(self, env: Environment) -> None:
+        """Card context takes priority over surface context."""
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% from "chirpui/card.html" import card %}'
+            '{% from "chirpui/settings_row.html" import settings_row_list, settings_row %}'
+            '{% call surface(variant="muted") %}'
+            '{% call card(title="Config", variant="feature") %}'
+            "{% call settings_row_list() %}"
+            '{{ settings_row("Key", status="ok") }}'
+            "{% end %}"
+            "{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-settings-row-list--on-feature" in html
