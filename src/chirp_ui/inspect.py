@@ -11,6 +11,7 @@ Usage::
 import argparse
 import json
 import sys
+from typing import Any, cast
 
 from chirp_ui.components import COMPONENTS, design_system_report
 from chirp_ui.tokens import TOKEN_CATALOG
@@ -18,9 +19,9 @@ from chirp_ui.tokens import TOKEN_CATALOG
 
 def _print_summary() -> None:
     report = design_system_report()
-    stats = report["stats"]
-    print(f"chirp-ui design system surface")
-    print(f"{'=' * 40}")
+    stats = cast(dict[str, Any], report["stats"])
+    print("chirp-ui design system surface")
+    print("=" * 40)
     print(f"Components: {stats['total_components']}")
     print(f"Tokens:     {stats['total_tokens']}")
     print()
