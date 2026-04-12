@@ -29,8 +29,8 @@ theme:
 ## What v1 Includes
 
 - A packaged Bengal theme entry point: `chirp-theme = "bengal_themes.chirp_theme"`
-- A reusable theme stylesheet layered on top of Bengal's `default` theme
-- Static-first overrides for `base.html`, `home.html`, `page.html`, `doc/home.html`, `doc/list.html`, and `doc/single.html`
+- A standalone theme package with its own shell templates, partials, and assets
+- Static-first templates for `base.html`, `home.html`, `page.html`, `doc/home.html`, `doc/list.html`, and `doc/single.html`
 
 ## Design Scope
 
@@ -41,29 +41,31 @@ v1 focuses on:
 - content-heavy static sites
 
 v1 does **not** try to reproduce every Chirp application-shell pattern inside
-Bengal. The goal is a strong static-site shell first, with a small template
-surface and a clear upgrade path.
+Bengal. The goal is a strong static-site shell first, with enough coverage to
+grow into a credible Bengal default-v2 candidate over time.
 
-## Why The Theme Is Self-Contained
+## Ownership Model
 
-Today Bengal's template integration loads theme templates from filesystem-backed
-theme directories. That means a Bengal theme package cannot yet import
-`chirp_ui` package templates directly during theme resolution.
+`chirp-theme` is owned by the `chirp-ui` project and should behave like a real,
+installable Bengal theme package, not a thin overlay on Bengal default.
 
-For v1, `chirp-theme` stays self-contained:
+That means the package itself should own:
 
-- Bengal resolves the theme package on its own
-- the theme carries the templates it needs
-- the docs site can build without any special theme-loader bridge
+- the shell templates
+- theme partials/macros
+- the canonical `assets/css/style.css` entrypoint
+- any JS, icons, fonts, favicons, or manifests referenced by the shell
 
-## Future Loader Bridge
+The `chirp-ui` docs site is the acceptance target for that contract, so the
+theme is continuously dogfooded on a real Bengal site.
 
-The follow-up plan is to add a Bengal loader bridge so packaged themes can
-consume `chirp-ui` templates directly instead of carrying their own copies or
-parallel markup.
+## Longer-Term Direction
 
-That later step should:
+The broader goal is to build a better and more comprehensive alternative to the
+historical Bengal default theme using modern `chirp-ui`, Kida, and Alpine-era
+patterns. The original default theme carries early-project CSS and template
+conventions; `chirp-theme` is the place to reach parity, simplify the old
+patterns, and then go beyond them.
 
-- reduce duplication between `chirp_ui` and `chirp-theme`
-- make the Bengal theme a thinner composition layer
-- let future theme templates import package-provided UI primitives more directly
+That evolution happens from a standalone package baseline, not through continued
+runtime dependence on Bengal default internals.

@@ -1,0 +1,78 @@
+{#-
+Product JSON-LD Structured Data Component
+
+Generates schema.org Product structured data for SEO optimization.
+Only renders when:
+  1. page.structured_data is true
+  2. page.type == 'product'
+
+Uses page frontmatter:
+  - title: Product name
+  - description: Product description
+  - price: Product price
+  - currency: Currency code (default: USD)
+  - sku: Stock keeping unit
+  - in_stock: Boolean availability
+  - images: List of image URLs
+
+Example frontmatter:
+  ---
+  title: Product Name
+  type: product
+  price: 99.99
+  currency: USD
+  sku: "PROD-001"
+  in_stock: true
+  images:
+    - /images/product.jpg
+  structured_data: true
+  ---
+
+Usage in base.html or product layout:
+  {% include "partials/product-jsonld.html" %}
+-#}
+
+{%- if page.structured_data and page.type == 'product' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ page.title | tojson }},
+  "description": {{ (page.description ?? page.summary ?? '') | tojson }},
+  {%- match page.images, page.image %}
+    {% case images, _ if images %}"image": {{ images | tojson }},
+    {% case _, image if image %}"image": {{ [image] | tojson }},
+    {% case _ %}"image": [],
+  {% end %}
+  {%- with page.sku as sku %}
+  "sku": {{ sku | tojson }},
+  {% end %}
+  {%- with page.brand as brand %}
+  "brand": {
+    "@type": "Brand",
+    "name": {{ brand | tojson }}
+  },
+  {% end %}
+  "offers": {
+    "@type": "Offer",
+    {%- with page.price as price %}
+    "price": {{ price | string | tojson }},
+    {% end %}
+    "priceCurrency": {{ (page.currency ?? "USD") | tojson }},
+    "availability": "https://schema.org/{{ 'InStock' if (page.in_stock ?? true) else 'OutOfStock' }}",
+    {%- with page.url as url %}
+    "url": "{{ site.baseurl }}{{ url }}",
+    {% end %}
+    "priceValidUntil": "{{ page.price_valid_until ?? (now() | dateformat('%Y-12-31')) }}"
+  }
+  {%- with page.aggregate_rating as rating %}
+  ,
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ (rating.value ?? 4.5) | string | tojson }},
+    "reviewCount": {{ (rating.count ?? 1) | string | tojson }}
+  }
+  {% end %}
+}
+</script>
+{% end %}

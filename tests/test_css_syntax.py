@@ -91,3 +91,19 @@ def test_chirp_theme_css_has_no_parse_errors() -> None:
     assert not parse_errors, "CSS parse errors found in chirp-theme.css: " + ", ".join(
         str(error.message) for error in parse_errors
     )
+
+
+def test_chirp_theme_entrypoint_css_has_no_parse_errors() -> None:
+    css_path = Path(__file__).resolve().parents[1] / "src/bengal_themes/chirp_theme/assets/css/style.css"
+    stylesheet = css_path.read_text(encoding="utf-8")
+    rules, encoding = tinycss2.parse_stylesheet_bytes(
+        stylesheet.encode("utf-8"),
+        skip_comments=False,
+        skip_whitespace=False,
+    )
+    assert encoding.name == "utf-8"
+
+    parse_errors = [token for token in rules if isinstance(token, tinycss2.ast.ParseError)]
+    assert not parse_errors, "CSS parse errors found in style.css: " + ", ".join(
+        str(error.message) for error in parse_errors
+    )

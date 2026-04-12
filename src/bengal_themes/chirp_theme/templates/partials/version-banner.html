@@ -1,0 +1,61 @@
+{#
+  Version Banner Component
+
+  Displays a warning banner for older documentation versions.
+  Automatically shows when viewing non-latest versioned content.
+
+  Available context:
+    - versioning_enabled: bool - Whether versioning is enabled
+    - current_version: dict|None - Current page's version info
+    - is_latest_version: bool - Whether current page is latest version
+    - site.latest_version: dict - The latest version info
+
+  Usage in templates:
+    {% include "partials/version-banner.html" %}
+
+  Customization:
+    Override this partial in your theme to customize the banner.
+    You can also style it using CSS class: .version-banner
+#}
+
+{% if versioning_enabled and current_version and not is_latest_version %}
+<div class="version-banner version-banner--{{ current_version.deprecated and 'danger' or 'warning' }}" role="alert">
+  <div class="version-banner__content">
+    {# Icon - uses Bengal icon() helper #}
+    {% if current_version.deprecated %}
+    {{ icon('danger', size=20, css_class='version-banner__icon') }}
+    {% else %}
+    {{ icon('warning', size=20, css_class='version-banner__icon') }}
+    {% end %}
+
+    {# Message #}
+    <div class="version-banner__message">
+      <strong>
+        {% if current_version.deprecated %}
+          {{ t('version.deprecated', {'label': current_version.label}, default='This version ({label}) is deprecated.') }}
+        {% else %}
+          {{ t('version.viewing', {'label': current_version.label}, default="You're viewing docs for {label}.") }}
+        {% end %}
+      </strong>
+      {% if site.latest_version %}
+      <span class="version-banner__link-text">
+        {{ t('version.see_latest', default='For the latest documentation, see') }}
+        <a href="{{ site.latest_version.url_prefix or '/' }}" class="version-banner__link">
+          {{ t('version.version_label', {'label': site.latest_version.label}, default='version {label}') }}
+        </a>.
+      </span>
+      {% end %}
+    </div>
+  </div>
+
+  {# Dismiss button (optional) #}
+  <button
+    type="button"
+    class="version-banner__dismiss"
+    onclick="this.parentElement.style.display='none'"
+    aria-label="{{ t('version.dismiss', default='Dismiss version notice') }}"
+  >
+    {{ icon('x', size=16) }}
+  </button>
+</div>
+{% end %}

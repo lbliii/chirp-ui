@@ -1,0 +1,19 @@
+{#
+DEPRECATED: Navigation Node Component
+
+This template is no longer used. The nav_node macro is now inlined
+in docs-nav.html for ~3x faster rendering.
+
+Reason: Recursive {% include %} was causing 11,000+ template instantiations
+per page render. Converting to a macro eliminates this overhead.
+
+See: plan/drafted/rfc-benchmark-refresh-and-worker-optimization.md
+
+If you're including this template directly, update to use docs-nav.html instead.
+#}
+
+{# Emit a visible warning if someone tries to use this #}
+<div class="deprecation-warning">
+  ⚠️ DEPRECATED: docs-nav-node.html is no longer used.
+  Use {% include 'partials/docs-nav.html' %} instead.
+</div>

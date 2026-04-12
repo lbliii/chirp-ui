@@ -1,0 +1,912 @@
+/* Documentation Sidebar Navigation */
+.docs-nav {
+  --nav-header-height: 1.75rem; /* Height of expandable group header row */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.docs-nav-header {
+  padding-bottom: 0.75rem;
+  /* Editorial: no border, spacing separates */
+}
+
+.docs-nav-title {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-tertiary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.docs-nav-title:hover {
+  color: var(--color-primary);
+}
+
+.docs-nav-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Virtualize deep nav trees unless DevTools are open to keep the inspector stable. */
+html:not([data-devtools-open]) .docs-nav-tree > * {
+  content-visibility: auto;
+  contain-intrinsic-size: 40px;
+}
+
+/* Navigation Groups (Sections) */
+.docs-nav-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================================
+   ROOT NAVIGATION GROUP (depth 0)
+   Static header, no toggle - reduces nesting by 1 level
+   ============================================================================ */
+
+.docs-nav-group--root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Root group header - similar to toggle-wrapper but without toggle button */
+.docs-nav-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0; /* Allow shrinking to enable text ellipsis on child elements */
+  padding: 0.375rem 0.25rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Root group title styling */
+.docs-nav-group-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  /* Prevent long titles from causing horizontal scroll */
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.docs-nav-group-title:hover {
+  color: var(--color-primary);
+}
+
+.docs-nav-group-title.active,
+.docs-nav-group-title[aria-current="page"] {
+  color: var(--color-primary);
+}
+
+/* Root group children - always expanded, no animation needed */
+.docs-nav-group--root > .docs-nav-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  opacity: 1;
+  transform: none;
+  padding-inline-start: 0;
+  margin-top: 0;
+}
+
+/* Root icon styling */
+.docs-nav-group-header .docs-nav-icon {
+  color: var(--color-text-tertiary);
+}
+
+.docs-nav-group-header:hover .docs-nav-icon {
+  color: var(--color-primary);
+}
+
+/* Active root icon - subtle glow */
+.docs-nav-group-header:has(.docs-nav-group-title.active) .docs-nav-icon,
+.docs-nav-group-header:has(.docs-nav-group-title[aria-current="page"]) .docs-nav-icon {
+  color: var(--color-primary);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-primary) 40%, transparent));
+}
+
+/* Dark mode root header adjustments */
+[data-theme="dark"] .docs-nav-group-header {
+  border-bottom-color: var(--color-border);
+}
+
+[data-theme="dark"] .docs-nav-group-header .docs-nav-icon {
+  color: var(--color-text-tertiary);
+}
+
+[data-theme="dark"] .docs-nav-group-header:hover .docs-nav-icon {
+  color: var(--color-primary);
+}
+
+[data-theme="dark"] .docs-nav-group-header:has(.docs-nav-group-title.active) .docs-nav-icon,
+[data-theme="dark"] .docs-nav-group-header:has(.docs-nav-group-title[aria-current="page"]) .docs-nav-icon {
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--color-primary) 50%, transparent));
+}
+
+/* ============================================================================
+   EXPANDABLE NAVIGATION GROUPS - CSS-Only Accessible Toggle
+
+   Uses <details>/<summary> for native toggle + CSS :has() to control visibility.
+   The <a> link is a SIBLING to details (not inside summary), avoiding nested
+   interactive elements. CSS Grid arranges the layout:
+
+   [icon] [link] [toggle]  <- Caret on the right for modern look
+   [items spanning full width]
+
+   Browser support: Chrome 105+, Firefox 121+, Safari 15.4+ (all support :has())
+   ============================================================================ */
+
+/* Expandable group container - CSS Grid for layout */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf) {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "icon link toggle"
+    "items items items";
+  align-items: center;
+  column-gap: 0.25rem;
+  row-gap: 0;
+  border-radius: var(--border-radius-medium);
+  position: relative;
+}
+
+/* Hover background - positioned to only cover header row */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-header-height, 1.75rem);
+  border-radius: var(--border-radius-medium);
+  background: transparent;
+  transition: background var(--transition-fast), box-shadow 0.2s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header row content - above the ::before background */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf) > .docs-nav-details,
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf) > .docs-nav-icon,
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf) > .docs-nav-group-link,
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf) > span.docs-nav-group-link {
+  position: relative;
+  z-index: 1;
+}
+
+/* Grid area: Toggle (caret) on the RIGHT */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf) > .docs-nav-details {
+  grid-area: toggle;
+  justify-self: end;
+  padding: 0.25rem;
+  padding-inline-end: 0.125rem;
+}
+
+/* Grid area: Icon */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf) > .docs-nav-icon {
+  grid-area: icon;
+  padding: 0.25rem;
+  padding-inline-start: 0.125rem;
+}
+
+/* Grid area: Link text */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf) > .docs-nav-group-link,
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf) > span.docs-nav-group-link {
+  grid-area: link;
+  min-width: 0;
+  padding: 0.25rem 0;
+}
+
+/* Grid area: Items (children) */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf) > .docs-nav-group-items {
+  grid-area: items;
+}
+
+/* Hover: Show background only on header row */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf):hover::before {
+  background: var(--color-bg-hover);
+  /* Light mode: Neumorphic hover with subtle gradient border */
+  box-shadow:
+    inset 0.3px 0.3px 0.8px rgba(255, 255, 255, 0.4),
+    inset -0.3px -0.3px 0.8px rgba(0, 0, 0, 0.08),
+    1px 1px 2px rgba(0, 0, 0, 0.05),
+    -0.3px -0.3px 1px rgba(255, 255, 255, 0.3);
+  /* Faded gradient border on hover */
+  outline: 1px solid color-mix(in srgb, var(--color-primary) 15%, transparent);
+  outline-offset: -1px;
+}
+
+/* Hover: Highlight text color */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf):hover > .docs-nav-group-link,
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf):hover > span.docs-nav-group-link {
+  color: var(--color-primary);
+}
+
+/* Left accent bar for active states - matches .docs-nav-link::before */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf)::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: -2px; /* Outside the element, same as .docs-nav-link */
+  top: 0;
+  height: var(--nav-header-height, 1.75rem);
+  width: 2px; /* Match standard accent bar width */
+  background: var(--gradient-border-subtle);
+  border-radius: 2px 0 0 2px;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 2;
+}
+
+/* Details element - just a container for the toggle */
+.docs-nav-details {
+  display: contents; /* Let summary participate in parent grid */
+}
+
+/* Summary as toggle - contains just the caret icon */
+.docs-nav-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+  list-style: none; /* Remove default disclosure marker */
+  user-select: none;
+}
+
+/* Remove default marker in all browsers */
+.docs-nav-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.docs-nav-toggle::marker {
+  display: none;
+}
+
+/* Focus visible for keyboard users on toggle */
+.docs-nav-toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-small);
+}
+
+/* Caret icon container */
+.docs-nav-caret {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0.25rem;
+  flex-shrink: 0;
+  overflow: hidden;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.docs-nav-caret svg {
+  width: 12px;
+  height: 12px;
+  color: var(--color-text-tertiary);
+  transform: rotate(0deg); /* Explicit initial state for smooth transition */
+  transition: transform 200ms ease-out, color var(--transition-fast);
+  flex-shrink: 0;
+  will-change: transform;
+}
+
+/* Show caret more prominently on hover */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf):hover .docs-nav-caret {
+  opacity: 1;
+}
+
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf):hover .docs-nav-caret svg {
+  color: var(--color-text-primary);
+}
+
+/* Rotate caret when its own details is open (no :has needed) */
+.docs-nav-details[open] .docs-nav-caret svg {
+  transform: rotate(90deg);
+}
+
+/* Section link (the title, clickable to navigate) */
+/* Note: Only root sections (depth 0) use bold; nested directories use regular weight */
+.docs-nav-group-link {
+  flex: 1;
+  min-width: 0; /* Allow shrinking below content width for text ellipsis */
+  padding: 0.3rem 0.375rem 0.3rem 0.125rem;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-normal);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  border-radius: var(--border-radius-medium);
+  transition: all var(--transition-fast);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  /* Prevent long titles from causing horizontal scroll */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* No shadow - wrapper handles it */
+}
+
+.docs-nav-group-link:hover {
+  color: var(--color-primary);
+}
+
+.docs-nav-group-link.active,
+.docs-nav-group-link[aria-current="page"] {
+  color: var(--color-primary);
+}
+
+/* Subtle indicator for parent groups containing active child - accent bar only */
+/* Only show subtle accent bar, don't highlight the entire group */
+.docs-nav-group:has(.docs-nav-link.active)::after,
+.docs-nav-group:has(.docs-nav-link[aria-current="page"])::after {
+  opacity: 0.7;
+  /* Subtle accent bar to indicate parent contains active child */
+  background: var(--gradient-border);
+}
+
+/* Also handle when the group link itself is active - accent bar only */
+.docs-nav-group:has(> .docs-nav-group-link.active)::after,
+.docs-nav-group:has(> .docs-nav-group-link[aria-current="page"])::after {
+  opacity: 1;
+  background: var(--gradient-border);
+}
+
+[data-theme="dark"] .docs-nav-group-link.active,
+[data-theme="dark"] .docs-nav-group-link[aria-current="page"] {
+  /* No background highlight - accent bar provides indication */
+}
+
+/* ============================================================================
+   ITEMS VISIBILITY - CSS :has() powered toggle
+
+   Items are hidden by default, shown when details[open] is present.
+   This is the core of the CSS-only accessible toggle pattern.
+   ============================================================================ */
+
+/* Children container - hidden by default */
+.docs-nav-group-items {
+  display: none;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding-inline-start: 0.375rem;
+  margin-top: 0.25rem;
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+}
+
+/* Show items when details is open - CSS :has() powered */
+.docs-nav-group:has(.docs-nav-details[open]) > .docs-nav-group-items {
+  display: flex;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Navigation Links */
+.docs-nav-link {
+  display: flex; /* Use flex to enable text ellipsis on .docs-nav-link-text */
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0; /* Allow shrinking below content width */
+  padding: 0.3rem 0.375rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-radius: var(--border-radius-medium);
+  border-inline-start: 2px solid transparent;
+  margin-inline-start: -2px;
+  transition: all var(--transition-fast), box-shadow 0.2s ease;
+  position: relative;
+}
+
+.docs-nav-link::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--gradient-border-subtle);
+  border-radius: 2px 0 0 2px;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.docs-nav-link:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-hover);
+  /* Light mode: Neumorphic hover with subtle gradient border */
+  box-shadow:
+    inset 0.3px 0.3px 0.8px rgba(255, 255, 255, 0.4),
+    inset -0.3px -0.3px 0.8px rgba(0, 0, 0, 0.08),
+    1px 1px 2px rgba(0, 0, 0, 0.05),
+    -0.3px -0.3px 1px rgba(255, 255, 255, 0.3);
+  /* Faded gradient border on hover */
+  outline: 1px solid color-mix(in srgb, var(--color-primary) 15%, transparent);
+  outline-offset: -1px;
+}
+
+.docs-nav-link:hover::before {
+  opacity: 0;
+  /* Hidden in light mode */
+}
+
+.docs-nav-link:active {
+  background: var(--color-bg-tertiary);
+  /* Light mode: Neumorphic pressed */
+  box-shadow:
+    inset 0.5px 0.5px 1px rgba(0, 0, 0, 0.1),
+    inset -0.3px -0.3px 0.5px rgba(255, 255, 255, 0.2),
+    0.3px 0.3px 0.5px rgba(0, 0, 0, 0.03);
+}
+
+.docs-nav-link:active::before {
+  opacity: 0;
+}
+
+/* Ensure only one active link at a time - use aria-current for semantic correctness */
+.docs-nav-link.active,
+.docs-nav-link[aria-current="page"] {
+  color: var(--color-primary);
+  font-weight: var(--weight-medium);
+  /* Unified neumorphic style - matches nav action buttons */
+  background: linear-gradient(180deg,
+      var(--color-surface, var(--color-bg-elevated)),
+      var(--color-bg-secondary));
+  border: 1px solid var(--color-border);
+  box-shadow: var(--neumorphic-subtle);
+}
+
+.docs-nav-link.active::before,
+.docs-nav-link[aria-current="page"]::before {
+  opacity: 1;
+  /* Gradient accent bar for active indication */
+  background: var(--gradient-border);
+  width: 2px;
+}
+
+/* Active trail (parent of active page) */
+.docs-nav-link.active-trail {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-medium);
+}
+
+/* Nested sections */
+.docs-nav-group .docs-nav-group {
+  margin-inline-start: 0.25rem;
+}
+/* ============================================================================
+   ALIGNED TEXT - Clean left alignment now that caret is on the right
+
+   With the caret moved to the far right, all items align cleanly to the left.
+   Small margin provides visual grouping within nested levels.
+   ============================================================================ */
+
+/* Single pages (direct children of group-items) - align with icon position */
+.docs-nav-group-items > .docs-nav-link {
+  margin-inline-start: 0.25rem;
+}
+
+/* Leaf section links align with directory text at same level */
+.docs-nav-group--leaf > .docs-nav-link {
+  margin-inline-start: 0.25rem;
+}
+
+/* ============================================================================
+   Leaf Sections (sections with no navigable children)
+   Renders as a simple link instead of an expandable group.
+   Styled like regular child page links since they behave as leaf pages.
+   ============================================================================ */
+
+.docs-nav-group--leaf {
+  /* Inherit base group styles but render flat */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Section link styled like regular nav links (not bold like parent sections) */
+.docs-nav-link--section {
+  /* Inherit from .docs-nav-link - same visual treatment as child pages */
+  font-weight: inherit;
+  color: var(--color-text-secondary);
+}
+
+.docs-nav-link--section:hover {
+  color: var(--color-text-primary);
+}
+
+.docs-nav-link--section.active,
+.docs-nav-link--section[aria-current="page"] {
+  color: var(--color-primary);
+  font-weight: var(--weight-medium);
+}
+
+/* ============================================================================
+   Dark Mode - Docs Nav
+   ============================================================================ */
+
+
+[data-theme="dark"] .docs-nav-link:hover {
+  /* Subtle neumorphic hover for dark mode */
+  box-shadow:
+    inset 0.3px 0.3px 0.8px rgba(255, 255, 255, 0.12),
+    inset -0.3px -0.3px 0.8px rgba(0, 0, 0, 0.3),
+    1px 1px 2px rgba(0, 0, 0, 0.2),
+    -0.3px -0.3px 1px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .docs-nav-link:active {
+  /* Subtle neumorphic pressed state for dark mode */
+  box-shadow:
+    inset 0.5px 0.5px 1px rgba(0, 0, 0, 0.3),
+    inset -0.3px -0.3px 0.5px rgba(255, 255, 255, 0.08),
+    0.3px 0.3px 0.5px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================================
+   Dark Mode: Expandable groups hover styling
+   ============================================================================ */
+
+[data-theme="dark"] .docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf)::before {
+  /* Hover background starts transparent */
+  background: transparent;
+}
+
+[data-theme="dark"] .docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf):hover::before {
+  /* Dark mode: subtle background with gradient border effect */
+  background: var(--color-bg-hover);
+  box-shadow: none;
+  /* Faded gradient border on hover */
+  outline: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  outline-offset: -1px;
+}
+
+[data-theme="dark"] .docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf)::after {
+  opacity: 0;
+  /* Accent bar starts hidden */
+}
+
+/* Dark mode: Subtle indicator for parent groups containing active child */
+[data-theme="dark"] .docs-nav-group:has(.docs-nav-link.active)::after,
+[data-theme="dark"] .docs-nav-group:has(.docs-nav-link[aria-current="page"])::after {
+  opacity: 0.7;
+  /* Subtle accent bar in dark mode */
+  background: var(--gradient-border);
+}
+
+/* Also handle when the group link itself is active */
+[data-theme="dark"] .docs-nav-group:has(> .docs-nav-group-link.active),
+[data-theme="dark"] .docs-nav-group:has(> .docs-nav-group-link[aria-current="page"]) {
+  /* No background highlight - accent bar provides indication */
+}
+
+[data-theme="dark"] .docs-nav-group:has(> .docs-nav-group-link.active)::after,
+[data-theme="dark"] .docs-nav-group:has(> .docs-nav-group-link[aria-current="page"])::after {
+  opacity: 0.9;
+  background: var(--gradient-border);
+}
+
+[data-theme="dark"] .docs-nav-link {
+  /* Remove neumorphic shadow in dark mode */
+  box-shadow: none;
+}
+
+[data-theme="dark"] .docs-nav-link::before {
+  opacity: 0;
+  /* Start hidden */
+}
+
+[data-theme="dark"] .docs-nav-link:hover {
+  /* Remove neumorphic hover in dark mode, keep gradient border */
+  box-shadow: none;
+  outline: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  outline-offset: -1px;
+}
+
+[data-theme="dark"] .docs-nav-link:hover::before {
+  opacity: 0.5;
+  /* Show gradient border in dark mode */
+}
+
+[data-theme="dark"] .docs-nav-link:active {
+  /* Remove neumorphic pressed in dark mode */
+  box-shadow: none;
+}
+
+[data-theme="dark"] .docs-nav-link:active::before {
+  opacity: 0.7;
+  background: var(--gradient-border);
+}
+
+[data-theme="dark"] .docs-nav-link.active::before,
+[data-theme="dark"] .docs-nav-link[aria-current="page"]::before {
+  opacity: 1;
+  /* Strong gradient border in dark mode for visibility */
+  background: var(--gradient-border);
+}
+
+/* ============================================
+   PALETTE-SPECIFIC ACTIVE NAVIGATION STYLING
+   ============================================
+
+   All palettes use --color-primary-light for active backgrounds.
+   This is consolidated into a single rule using the attribute selector
+   to match any data-palette value ending in "-bengal".
+*/
+
+/* Active navigation links - all palettes (pages only, not directories) */
+[data-palette$="-bengal"] .docs-nav-link.active,
+[data-palette$="-bengal"] .docs-nav-link[aria-current="page"],
+[data-palette$="-bengal"] .docs-nav-link--section.active,
+[data-palette$="-bengal"] .docs-nav-link--section[aria-current="page"] {
+  background: var(--color-primary-light);
+}
+
+/* Active navigation links - all palettes (dark mode, pages only) */
+[data-theme="dark"][data-palette$="-bengal"] .docs-nav-link.active,
+[data-theme="dark"][data-palette$="-bengal"] .docs-nav-link[aria-current="page"],
+[data-theme="dark"][data-palette$="-bengal"] .docs-nav-link--section.active,
+[data-theme="dark"][data-palette$="-bengal"] .docs-nav-link--section[aria-current="page"] {
+  background: var(--color-primary-light);
+}
+
+/* ============================================
+   ACTIVE ACCENT BAR GLOW ANIMATION
+   ============================================
+
+   Peaceful slow glow animation for active navigation items.
+   Matches the footer's breathing glow effect.
+*/
+
+/* Keyframes for the accent bar glow - light mode */
+@keyframes nav-accent-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 0%, transparent),
+      2px 0 6px 0 color-mix(in srgb, var(--color-primary) 8%, transparent);
+  }
+
+  50% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 15%, transparent),
+      3px 0 10px 0 color-mix(in srgb, var(--color-primary) 15%, transparent);
+  }
+}
+
+/* Keyframes for the accent bar glow - dark mode (slightly brighter) */
+@keyframes nav-accent-glow-dark {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 5%, transparent),
+      2px 0 8px 0 color-mix(in srgb, var(--color-primary) 12%, transparent);
+  }
+
+  50% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 25%, transparent),
+      4px 0 12px 0 color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+}
+
+/* Apply glow to active page link accent bars */
+.docs-nav-link.active::before,
+.docs-nav-link[aria-current="page"]::before {
+  animation: nav-accent-glow 8s ease-in-out infinite;
+}
+
+/* Apply glow to active directory accent bars */
+.docs-nav-group:has(> .docs-nav-group-link.active)::after,
+.docs-nav-group:has(> .docs-nav-group-link[aria-current="page"])::after {
+  animation: nav-accent-glow 8s ease-in-out infinite;
+}
+
+/* Apply glow to parent directory accent bars (containing active child) */
+.docs-nav-group:has(.docs-nav-link.active)::after,
+.docs-nav-group:has(.docs-nav-link[aria-current="page"])::after {
+  animation: nav-accent-glow 8s ease-in-out infinite;
+}
+
+/* Dark mode: use brighter glow animation */
+[data-theme="dark"] .docs-nav-link.active::before,
+[data-theme="dark"] .docs-nav-link[aria-current="page"]::before {
+  animation: nav-accent-glow-dark 8s ease-in-out infinite;
+}
+
+[data-theme="dark"] .docs-nav-group:has(> .docs-nav-group-link.active)::after,
+[data-theme="dark"] .docs-nav-group:has(> .docs-nav-group-link[aria-current="page"])::after {
+  animation: nav-accent-glow-dark 8s ease-in-out infinite;
+}
+
+[data-theme="dark"] .docs-nav-group:has(.docs-nav-link.active)::after,
+[data-theme="dark"] .docs-nav-group:has(.docs-nav-link[aria-current="page"])::after {
+  animation: nav-accent-glow-dark 8s ease-in-out infinite;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+  .docs-nav-link.active::before,
+  .docs-nav-link[aria-current="page"]::before,
+  .docs-nav-group:has(> .docs-nav-group-link.active)::after,
+  .docs-nav-group:has(> .docs-nav-group-link[aria-current="page"])::after,
+  .docs-nav-group:has(.docs-nav-link.active)::after,
+  .docs-nav-group:has(.docs-nav-link[aria-current="page"])::after {
+    animation: none;
+    box-shadow: 2px 0 6px 0 color-mix(in srgb, var(--color-primary) 10%, transparent);
+  }
+}
+
+/* ============================================================================
+   NAVIGATION ICONS (Premium Sidebar Icons)
+   ============================================================================
+
+   Icons appear alongside directory/section items (not individual pages).
+   - Section icons: via section.icon property (from _index.md frontmatter)
+
+   Layout: [Caret] [Icon] [Text]
+
+   Premium touches:
+   - Subtle glow on active items
+   - Smooth color transitions
+   - Muted default icons (for sections without explicit icon)
+*/
+
+/* Base icon container */
+.docs-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-inline-start: 0.125rem; /* Tiny gap from accent bar ::after */
+  color: var(--color-text-tertiary);
+  transition: color var(--transition-fast), filter var(--transition-fast), transform var(--transition-fast);
+}
+
+/* Smaller icons for leaf sections */
+.docs-nav-icon--section {
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+}
+
+/* Hide default/fallback icons to avoid reserving empty space */
+.docs-nav-icon[data-default="true"] {
+  display: none;
+}
+
+/* Icon color on hover - all contexts */
+.docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf):hover > .docs-nav-icon,
+.docs-nav-group-header:hover .docs-nav-icon,
+.docs-nav-link:hover .docs-nav-icon {
+  color: var(--color-primary);
+  opacity: 1;
+}
+
+/* ============================================================================
+   ACTIVE ICON STYLING - Premium Glow Effect
+   ============================================================================ */
+
+/* Active section icons (in expandable groups) */
+.docs-nav-group:has(> .docs-nav-group-link.active) > .docs-nav-icon,
+.docs-nav-group:has(> .docs-nav-group-link[aria-current="page"]) > .docs-nav-icon {
+  color: var(--color-primary);
+  opacity: 1;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-primary) 40%, transparent));
+}
+
+/* Active leaf section icons (in nav links) */
+.docs-nav-link--section.active .docs-nav-icon,
+.docs-nav-link--section[aria-current="page"] .docs-nav-icon {
+  color: var(--color-primary);
+  opacity: 1;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-primary) 40%, transparent));
+}
+
+/* Parent section icons when containing active child - subtle glow */
+.docs-nav-group:has(.docs-nav-link.active) > .docs-nav-icon,
+.docs-nav-group:has(.docs-nav-link[aria-current="page"]) > .docs-nav-icon {
+  color: var(--color-primary);
+  opacity: 0.8;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent));
+}
+
+/* ============================================================================
+   SECTION LINK STYLING (with icon)
+   ============================================================================ */
+
+/* Leaf section links use flex for icon + text layout */
+.docs-nav-link--section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Text element within section link */
+.docs-nav-link-text {
+  flex: 1;
+  min-width: 0; /* Allow text to shrink for ellipsis */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================================
+   ROOT SECTION ICON STYLING
+   ============================================================================ */
+
+.docs-nav-link--root {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.docs-nav-icon--root {
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+}
+
+/* ============================================================================
+   DARK MODE ICON ADJUSTMENTS
+   ============================================================================ */
+
+[data-theme="dark"] .docs-nav-icon {
+  color: var(--color-text-tertiary);
+}
+
+/* Dark mode: default icons also hidden */
+[data-theme="dark"] .docs-nav-icon[data-default="true"] {
+  display: none;
+}
+
+[data-theme="dark"] .docs-nav-group:not(.docs-nav-group--root):not(.docs-nav-group--leaf):hover > .docs-nav-icon,
+[data-theme="dark"] .docs-nav-group-header:hover .docs-nav-icon,
+[data-theme="dark"] .docs-nav-link:hover .docs-nav-icon {
+  color: var(--color-primary);
+  opacity: 1;
+}
+
+/* Brighter glow in dark mode */
+[data-theme="dark"] .docs-nav-group:has(> .docs-nav-group-link.active) > .docs-nav-icon,
+[data-theme="dark"] .docs-nav-group:has(> .docs-nav-group-link[aria-current="page"]) > .docs-nav-icon,
+[data-theme="dark"] .docs-nav-link--section.active .docs-nav-icon,
+[data-theme="dark"] .docs-nav-link--section[aria-current="page"] .docs-nav-icon {
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--color-primary) 50%, transparent));
+}
+
+[data-theme="dark"] .docs-nav-group:has(.docs-nav-link.active) > .docs-nav-icon,
+[data-theme="dark"] .docs-nav-group:has(.docs-nav-link[aria-current="page"]) > .docs-nav-icon {
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-primary) 35%, transparent));
+}
+
+/* ============================================================================
+   REDUCED MOTION PREFERENCES
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-nav-icon {
+    transition: none;
+  }
+}

@@ -12,7 +12,7 @@
 {% def link(text, href, external=false, cls="") %}
 <a href="{{ href }}"
    class="chirpui-link{{ " " ~ cls if cls else "" }}"
-   {% if external %}target="_blank" rel="noopener noreferrer"{% end %}>
+   {% if external %}target="_blank" rel="noopener noreferrer"{% end %}{{ route_link_attrs(href, external=external) | html_attrs }}>
     {{ text }}
 </a>
 {% end %}

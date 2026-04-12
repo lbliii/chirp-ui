@@ -67,7 +67,7 @@ chirp_ui = [
 "bengal_themes.chirp_theme" = [
     "theme.toml",
     "templates/**/*.html",
-    "assets/**/*.css",
+    "assets/**/*",
 ]
 
 # =============================================================================

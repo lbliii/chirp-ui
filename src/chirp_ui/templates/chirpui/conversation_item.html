@@ -15,7 +15,7 @@
 
 {% def conversation_item(href, name, preview, time=none, unread=none, muted=false, cls="") %}
 {% set muted_class = " chirpui-conversation-item--muted" if muted else "" %}
-<a href="{{ href }}" class="chirpui-conversation-item{{ muted_class }}{{ " " ~ cls if cls else "" }}">
+<a href="{{ href }}" class="chirpui-conversation-item{{ muted_class }}{{ " " ~ cls if cls else "" }}"{{ route_link_attrs(href) | html_attrs }}>
     <span class="chirpui-conversation-item__avatar">
         {% slot %}
     </span>

@@ -1,0 +1,65 @@
+{#
+Version Selector Component
+
+Displays a dropdown to switch between documentation versions.
+Only renders when versioning is enabled.
+
+Available context:
+- versioning_enabled: bool - Whether versioning is enabled
+- versions: list[dict] - All versions with id, label, latest, url_prefix
+- current_version: dict|None - Current page's version info
+- is_latest_version: bool - Whether current page is latest version
+
+Usage in templates:
+{% include "partials/version-selector.html" %}
+
+Customization:
+Override this partial in your theme to customize the version selector.
+You can also style it using CSS class: .version-selector
+
+Engine-Agnostic:
+Uses site.get_version_target_url() method which works with any template
+engine (Jinja2, Mako, or BYORenderer). No global function dependency.
+#}
+
+{# Only show version selector if:
+1. Versioning is enabled
+2. There are multiple versions
+3. The current page is actually versioned (has a version attribute)
+4. The page is not an autodoc page (autodoc pages are not versioned)
+#}
+{% set
+    is_autodoc = is_autodoc_page(page) if is_autodoc_page else false,
+    page_is_versioned = page.version is not none
+%}
+{% if versioning_enabled and versions | length > 1 and page_is_versioned and not is_autodoc %}
+<div class="version-selector">
+  {#
+  Smart Version Selector with Pre-computed Fallback URLs
+
+  Each option has a data-target attribute containing the best URL
+  to navigate to in that version. This is computed at build time,
+  so switching versions is instant with no 404 errors.
+
+  Fallback cascade (computed at build time):
+  1. Exact equivalent page exists → use it
+  2. Section index exists → use section index
+  3. Version root → use version root
+
+  This approach is better than any major static SSG (Docusaurus,
+  MkDocs, etc.) which all show 404 errors when switching versions.
+  #}
+  <select id="version-select" class="version-selector__select" aria-label="Select documentation version">
+    {% for v in versions %}
+    <option value="{{ v.url_prefix or '/' }}" data-target="{{ site.get_version_target_url(page, v) }}" {% if
+      current_version and current_version.id==v.id %}selected{% end %} {% if v.deprecated %}class="version-deprecated"
+      {% end %}>
+      {{ v.label }}{% if v.latest %} (Latest){% end %}{% if v.deprecated %} ⚠️{% end %}
+    </option>
+    {% end %}
+  </select>
+</div>
+
+{# Styles: assets/css/components/versioning.css #}
+{# Script: assets/js/core/version-selector.js #}
+{% end %}

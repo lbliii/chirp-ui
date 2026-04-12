@@ -1,0 +1,195 @@
+/**
+ * Charcoal Bengal Palette
+ * Inspired by charcoal bengal cats: smoke-gray base coat with high-contrast
+ * black rosettes, subtle sepia undertones, and that signature "glitter" sheen.
+ *
+ * Design notes:
+ * - Primary: Deep ink black for those dramatic rosette markings
+ * - Accent: Warm bronze/copper for the "glitter" metallic sheen
+ * - Backgrounds: Cool smoke grays with subtle warm undertones
+ * - High contrast between elements (inkblot on smoke aesthetic)
+ *
+ * Usage: Attach data-palette="charcoal-bengal" on <html> to activate.
+ */
+
+/* Scope palette colors to root element only */
+:root[data-palette="charcoal-bengal"],
+html[data-palette="charcoal-bengal"] {
+    /* Primary (true ink black - the rosette markings) */
+    --color-primary: #1A1D21;
+    --color-primary-hover: #0D0F12;
+    --color-primary-active: #050607;
+    --color-primary-light: #E5E6E8;
+    --color-primary-dark: #000000;
+
+    /* Backgrounds (smoke gray with subtle warmth - the base coat) */
+    --color-bg-primary: #F7F6F5;
+    --color-bg-secondary: #EDECEA;
+    --color-bg-tertiary: #E0DEDA;
+    --color-bg-elevated: #FDFCFB;
+    --color-bg-overlay: rgba(0, 0, 0, 0.8);
+    --color-bg-hover: #E8E6E3;
+    --color-bg-active: #DBD8D4;
+    --color-bg-code: #F0EFED;
+
+    /* Text (rich blacks with warm undertone) */
+    --color-text-primary: #0A0908;
+    --color-text-secondary: #36322E;
+    --color-text-tertiary: #5A554F;
+    --color-text-muted: #7D776F;
+    --color-text-inverse: #FDFCFB;
+    --color-text-link: #8B6914;
+    --color-text-link-hover: #6B5010;
+
+    /* Borders (warm grays - charcoal mask effect) */
+    --color-border: #C9C5BF;
+    --color-border-light: #DDD9D4;
+    --color-border-strong: #9A958D;
+    --color-border-focus: #8B6914;
+
+    /* Semantic states (warmer, richer tones) */
+    --color-success: #3D6B4A;
+    --color-success-bg: #F0F6F2;
+    --color-success-border: #8BAA96;
+    --color-success-text: #274432;
+
+    --color-warning: #B8860B;
+    --color-warning-bg: #FDF8EE;
+    --color-warning-border: #D4A84B;
+    --color-warning-text: #7A5A08;
+
+    --color-error: #A63D3D;
+    --color-error-bg: #FDF2F2;
+    --color-error-border: #D49A9A;
+    --color-error-text: #6B2626;
+
+    --color-info: #3D6B8B;
+    --color-info-bg: #F0F5F8;
+    --color-info-border: #8AAABF;
+    --color-info-text: #274456;
+
+    /* Accent color (bronze/copper "glitter" - the metallic sheen) */
+    --color-accent: #8B6914;
+    --color-accent-hover: #A67D1A;
+    --color-accent-active: #6B5010;
+    --color-accent-light: #C9A84D;
+    --color-accent-dark: #4A3808;
+
+    /* Code colors (high contrast with warm accents) */
+    --color-code-type: #8B6914;
+    --color-code-type-bg: #F5F3EF;
+    --color-code-keyword: #1A1D21;
+    --color-code-string: #3D6B4A;
+    --color-code-number: #A65D3D;
+    --color-code-text: #36322E;
+
+}
+
+/* Dark-mode adjustments while Charcoal Bengal palette is active */
+:root[data-theme="dark"][data-palette="charcoal-bengal"],
+html[data-theme="dark"][data-palette="charcoal-bengal"] {
+    /* Primary (silver glitter against dark - more visible) */
+    --color-primary: #C9C5BF;
+    --color-primary-hover: #DDD9D4;
+    --color-primary-active: #B5B0A8;
+    --color-primary-light: rgba(201, 197, 191, 0.20);
+    --color-primary-dark: #9A958D;
+    --color-primary-muted: rgba(201, 197, 191, 0.25);
+
+    /* Backgrounds (deep charcoal with warm undertones - the dark coat) */
+    --color-bg-primary: #0C0B0A;
+    --color-bg-secondary: #14130F;
+    --color-bg-tertiary: #1E1C18;
+    --color-bg-elevated: #100F0D;
+    --color-bg-hover: #262420;
+    --color-bg-active: #302D28;
+    --color-bg-code: #14130F;
+
+    /* Surface color for components */
+    --color-surface: #100F0D;
+
+    /* Text (warm whites and silvers) */
+    --color-text-primary: #F7F6F4;
+    --color-text-secondary: #D4D0C9;
+    --color-text-tertiary: #A09A91;
+    --color-text-muted: #6B655C;
+    /* CRITICAL: Inverse text must be dark for contrast against light primary */
+    --color-text-inverse: #0C0B0A;
+    /* Links: Golden bronze glitter - matches accent theme */
+    --color-text-link: #C9A84D;
+    --color-text-link-hover: #D9BC6D;
+
+    /* Borders (subtle warm definition) */
+    --color-border: #302D28;
+    --color-border-light: #1E1C18;
+    --color-border-strong: #454038;
+
+    /* Semantic states for dark mode */
+    --color-success: #7DAA8B;
+    --color-success-bg: rgba(61, 107, 74, 0.18);
+    --color-success-border: #5A8A6A;
+    --color-success-text: #A5C9B0;
+
+    --color-warning: #D4A84B;
+    --color-warning-bg: rgba(184, 134, 11, 0.18);
+    --color-warning-border: #B8860B;
+    --color-warning-text: #E8C97D;
+
+    --color-error: #D49A9A;
+    --color-error-bg: rgba(166, 61, 61, 0.18);
+    --color-error-border: #A63D3D;
+    --color-error-text: #E8BFBF;
+
+    --color-info: #8AAABF;
+    --color-info-bg: rgba(61, 107, 139, 0.18);
+    --color-info-border: #3D6B8B;
+    --color-info-text: #B5CFDF;
+
+    /* Accent (golden glitter - really pops in dark mode) */
+    --color-accent: #C9A84D;
+    --color-accent-hover: #D9BC6D;
+    --color-accent-active: #A68A3D;
+
+    /* Code colors for dark mode (bronze highlights against charcoal) */
+    --color-code-type: #C9A84D;
+    --color-code-type-bg: rgba(201, 168, 77, 0.12);
+    --color-code-keyword: #D4D0C9;
+    --color-code-string: #8BC9A0;
+    --color-code-number: #D4A07D;
+    --color-code-text: #D4D0C9;
+
+}
+
+/* ============================================
+   THEME-AWARE PALETTE PREVIEW (DROPDOWN BUTTONS)
+   ============================================ */
+
+/* Add a color indicator dot before palette buttons */
+.theme-dropdown__menu button[data-palette="charcoal-bengal"]::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    /* Charcoal base with bronze glitter accent */
+    background: linear-gradient(135deg, #1A1D21 0%, #36322E 40%, #8B6914 80%, #C9A84D 100%);
+    border: 1px solid rgba(139, 105, 20, 0.4);
+    vertical-align: middle;
+}
+
+/* Light mode: Keep default button styling, let indicator show the palette */
+[data-theme="light"] .theme-dropdown__menu button[data-palette="charcoal-bengal"]:hover,
+[data-theme="light"] .theme-dropdown__menu button[data-palette="charcoal-bengal"]:focus {
+    /* Warm smoke gray with bronze text */
+    background: #EDECEA;
+    color: #8B6914;
+}
+
+/* Dark mode: Keep default button styling, let indicator show the palette */
+[data-theme="dark"] .theme-dropdown__menu button[data-palette="charcoal-bengal"]:hover,
+[data-theme="dark"] .theme-dropdown__menu button[data-palette="charcoal-bengal"]:focus {
+    /* Deep charcoal with golden glitter */
+    background: var(--color-bg-secondary);
+    color: #C9A84D;
+}

@@ -17,10 +17,10 @@
         <h3 class="chirpui-calendar__title">{{ month_label }}</h3>
         <nav class="chirpui-calendar__nav">
             {% if prev_url %}
-            <a href="{{ prev_url }}" class="chirpui-calendar__nav-link" aria-label="Previous month">←</a>
+            <a href="{{ prev_url }}" class="chirpui-calendar__nav-link" aria-label="Previous month"{{ route_link_attrs(prev_url) | html_attrs }}>←</a>
             {% end %}
             {% if next_url %}
-            <a href="{{ next_url }}" class="chirpui-calendar__nav-link" aria-label="Next month">→</a>
+            <a href="{{ next_url }}" class="chirpui-calendar__nav-link" aria-label="Next month"{{ route_link_attrs(next_url) | html_attrs }}>→</a>
             {% end %}
         </nav>
     </header>

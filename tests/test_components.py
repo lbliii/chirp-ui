@@ -946,6 +946,22 @@ class TestEmptyState:
         assert 'href="/new"' in html
         assert "Create" in html
 
+    def test_empty_state_action_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/new"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/empty.html" import empty_state %}'
+            '{% call empty_state(title="No items", action_label="Create", action_href="/new") %}'
+            "<p>Get started.</p>"
+            "{% end %}"
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
     def test_empty_state_with_code_and_suggestions(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/empty.html" import empty_state %}'
@@ -2024,6 +2040,55 @@ class TestTabs:
         assert "hx-boost" not in html
         assert "hx-select" not in html
 
+    def test_tab_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/tab/1"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/tabs.html" import tab %}{{ tab("t1", "Tab", url="/tab/1") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_tab_with_htmx_skips_route_link_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/tab/1"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/tabs.html" import tab %}'
+            '{{ tab("t1", "Tab", url="/tab/1", hx_target="#content") }}'
+        ).render()
+        assert 'hx-target="#content"' in html
+        assert 'hx-target="#site-content"' not in html
+
+
+class TestAsciiTabs:
+    def test_ascii_tab_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/tab/1"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/ascii_tabs.html" import ascii_tab %}'
+            '{{ ascii_tab("t1", "Tab", url="/tab/1") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_ascii_tab_with_htmx_skips_route_link_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/tab/1"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/ascii_tabs.html" import ascii_tab %}'
+            '{{ ascii_tab("t1", "Tab", url="/tab/1", hx_target="#panel") }}'
+        ).render()
+        assert 'hx-target="#panel"' in html
+        assert 'hx-target="#site-content"' not in html
+
 
 # ---------------------------------------------------------------------------
 # Dropdown
@@ -2502,6 +2567,30 @@ class TestFilterBar:
         assert "chirpui-filter-group" in html
         assert "chirpui-filter-chip" in html
         assert "chirpui-badge--custom" in html
+
+    def test_filter_chip_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/g"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/filter_chips.html" import filter_chip %}'
+            '{{ filter_chip("Grass", color="#78c850", href="/g") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_filter_chip_with_htmx_skips_route_link_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/g"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/filter_chips.html" import filter_chip %}'
+            '{{ filter_chip("Grass", color="#78c850", href="/g", hx_target="#panel") }}'
+        ).render()
+        assert 'hx-target="#panel"' in html
+        assert 'hx-target="#site-content"' not in html
 
 
 class TestStatusIndicator:
@@ -4199,6 +4288,24 @@ class TestCalendar:
         assert "1" in html
         assert "12" in html
 
+    def test_calendar_nav_links_use_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs(
+                "site-content",
+                hrefs=frozenset({"/calendar/2024/12", "/calendar/2025/2"}),
+            ),
+        )
+        html = env.from_string(
+            '{% from "chirpui/calendar.html" import calendar %}'
+            "{% set weeks = [[0,0,1,2,3,4,5],[6,7,8,9,10,11,12]] %}"
+            '{{ calendar(weeks=weeks, month_label="January 2025", prev_url="/calendar/2024/12", next_url="/calendar/2025/2") }}'
+        ).render()
+        assert html.count('hx-target="#site-content"') == 2
+        assert html.count('hx-boost="true"') == 2
+
 
 # ---------------------------------------------------------------------------
 # Badge, Skeleton, Progress, Media Object, Stat, App Layout
@@ -4763,6 +4870,17 @@ class TestLink:
         assert 'href="/"' in html
         assert "Home" in html
 
+    def test_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/link.html" import link %}{{ link("Home", href="/") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
     def test_link_external(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/link.html" import link %}'
@@ -4770,6 +4888,7 @@ class TestLink:
         ).render()
         assert 'target="_blank"' in html
         assert 'rel="noopener noreferrer"' in html
+        assert 'hx-target=' not in html
 
 
 class TestBreadcrumbs:
@@ -5256,6 +5375,101 @@ class TestTrendingTag:
         ).render()
         assert "chirpui-trending-tag" in html
         assert 'hx-target="#site-content"' in html
+
+
+class TestConversationItem:
+    def test_conversation_item_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/chat/1"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/conversation_item.html" import conversation_item %}'
+            '{% call conversation_item(href="/chat/1", name="Alice", preview="Hey!", unread=3, time="2m") %}'
+            "<span>A</span>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-conversation-item" in html
+        assert 'hx-target="#site-content"' in html
+
+
+class TestPlaylist:
+    def test_playlist_item_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/watch/1"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/playlist.html" import playlist, playlist_item %}'
+            "{% call playlist(title='Up next') %}"
+            "{{ playlist_item('/watch/1', 'Video 1', duration='4:32', active=true) }}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-playlist-item__link" in html
+        assert 'hx-target="#site-content"' in html
+
+
+class TestComment:
+    def test_comment_links_use_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs(
+                "site-content",
+                hrefs=frozenset({"/user/alice", "/comments/1/replies"}),
+            ),
+        )
+        html = env.from_string(
+            '{% from "chirpui/comment.html" import comment %}'
+            '{% call comment(author="Alice", href="/user/alice", replies_url="/comments/1/replies", replies_count=2) %}'
+            "<p>Hello</p>"
+            "{% end %}"
+        ).render()
+        assert html.count('hx-target="#site-content"') == 2
+        assert html.count('hx-boost="true"') == 2
+
+
+class TestBarChart:
+    def test_bar_chart_label_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/skills/debug-agent"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/bar_chart.html" import bar_chart %}'
+            '{{ bar_chart(items=[{"label": "debug-agent", "value": 18, "href": "/skills/debug-agent"}], max=20) }}'
+        ).render()
+        assert "chirpui-bar-chart__label-link" in html
+        assert 'hx-target="#site-content"' in html
+
+
+class TestTagBrowse:
+    def test_tag_selection_badges_use_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        def tag_toggle_url(tag: str) -> str:
+            return f"/tags/{tag.lower()}"
+
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs(
+                "site-content",
+                hrefs=frozenset({"/tags/python", "/tags/clear"}),
+            ),
+        )
+        html = env.from_string(
+            '{% from "chirpui/tag_browse.html" import tag_selection_badges %}'
+            "{{ tag_selection_badges(selected_tags, tag_toggle_url, clear_url) }}"
+        ).render(
+            selected_tags=["Python"],
+            tag_toggle_url=tag_toggle_url,
+            clear_url="/tags/clear",
+        )
+        assert html.count('hx-target="#site-content"') == 2
+        assert html.count('hx-boost="true"') == 2
 
 
 # ---------------------------------------------------------------------------

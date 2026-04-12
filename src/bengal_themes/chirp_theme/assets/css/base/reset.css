@@ -1,0 +1,399 @@
+/**
+ * Bengal SSG Default Theme
+ * Modern CSS Reset
+ * Based on modern-normalize and best practices
+ */
+
+/* ============================================
+   DOCUMENT & BOX SIZING
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ============================================
+   ROOT & BODY
+   ============================================ */
+
+html {
+  /* Prevent font scaling in landscape */
+  -webkit-text-size-adjust: 100%;
+  /* Better font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
+}
+
+/*
+ * View Transitions API
+ * All view transition configuration is in transitions.css
+ * Do NOT add view-transition rules here to avoid conflicts.
+ */
+
+/* Browser navigation UI (Safari swipe arrows, etc.) - Theme-aware */
+/* These arrows appear when swiping with trackpad to navigate back/forward */
+/* Safari and other browsers may show navigation arrows - style with theme colors */
+
+/* CSS custom property for navigation arrow color - browsers can use this */
+:root {
+  --navigation-arrow-color: var(--color-primary);
+}
+
+/* Ensure navigation arrows use theme primary color across all palettes */
+/* This will override any default blue colors browsers might use */
+html {
+  --navigation-arrow-color: var(--color-primary);
+}
+
+/* Palette-specific overrides ensure each theme uses its own colors */
+/* Brown Bengal - warm amber navigation arrows */
+[data-palette="brown-bengal"],
+html[data-palette="brown-bengal"] {
+  --navigation-arrow-color: var(--color-primary); /* #D4850F - warm amber */
+}
+
+/* Blue Bengal - soft powder blue navigation arrows */
+[data-palette="blue-bengal"],
+html[data-palette="blue-bengal"] {
+  --navigation-arrow-color: var(--color-primary); /* #7FA3C3 - soft powder blue */
+}
+
+/* Silver Bengal - high contrast monochrome navigation arrows */
+[data-palette="silver-bengal"],
+html[data-palette="silver-bengal"] {
+  --navigation-arrow-color: var(--color-primary); /* Theme primary */
+}
+
+/* Charcoal Bengal - dramatic slate navigation arrows */
+[data-palette="charcoal-bengal"],
+html[data-palette="charcoal-bengal"] {
+  --navigation-arrow-color: var(--color-primary); /* Theme primary */
+}
+
+/* Snow Lynx - ice blue navigation arrows */
+[data-palette="snow-lynx"],
+html[data-palette="snow-lynx"] {
+  --navigation-arrow-color: var(--color-primary); /* Theme primary */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: var(--leading-normal);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  /* Better text rendering */
+  text-rendering: optimizeSpeed;
+  /* Prevent horizontal page scrolling from overflowing content */
+  overflow-x: hidden;
+}
+
+/* ============================================
+   HEADINGS
+   ============================================ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  /* size/weight defined in typography.css */
+  line-height: inherit;
+  color: inherit;
+}
+
+/* ============================================
+   TEXT ELEMENTS
+   ============================================ */
+
+p {
+  margin: 0;
+}
+
+/* Base link reset - minimal, let prose/content styles handle link appearance */
+a {
+  color: inherit; /* Don't force color - let content styles handle it */
+  text-decoration: none;
+  /* Transition removed - let content-specific styles handle transitions */
+}
+
+/* Base hover - minimal, content styles override */
+a:hover {
+  /* Let content styles handle hover */
+}
+
+/* Base focus - accessible outline */
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+strong,
+b {
+  font-weight: var(--weight-bold);
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+small {
+  font-size: var(--text-sm);
+}
+
+/* ============================================
+   CODE & PREFORMATTED TEXT
+   ============================================ */
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+code {
+  padding: 0.125em 0.25em;
+  background-color: var(--color-bg-code);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+}
+
+pre {
+  margin: 0;
+  padding: var(--space-4);
+  background-color: var(--color-bg-code);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  line-height: var(--leading-relaxed);
+}
+
+/* Break out of container padding on mobile for better scrolling */
+@media (max-width: 639px) {
+  pre {
+    margin-inline-start: calc(-1 * var(--space-3));
+    margin-inline-end: calc(-1 * var(--space-3));
+    padding-inline-start: var(--space-4);
+    padding-inline-end: var(--space-4);
+  }
+}
+
+@media (min-width: 400px) and (max-width: 639px) {
+  pre {
+    margin-inline-start: calc(-1 * var(--space-4));
+    margin-inline-end: calc(-1 * var(--space-4));
+  }
+}
+
+pre code {
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
+
+/* ============================================
+   LISTS
+   ============================================ */
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  /* NOTE: list-style is NOT removed globally.
+   * Semantic lists should have bullets/numbers by default.
+   * Components that need unstyled lists (nav, breadcrumbs, etc.)
+   * should explicitly set list-style: none.
+   */
+}
+
+/* ============================================
+   MEDIA ELEMENTS
+   ============================================ */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: var(--leading-normal);
+}
+
+button,
+input {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  appearance: button;
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+button:disabled,
+[type="button"]:disabled,
+[type="reset"]:disabled,
+[type="submit"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+textarea {
+  resize: vertical;
+  overflow: auto;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+legend {
+  padding: 0;
+  color: var(--color-text-primary);
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+/* ============================================
+   INTERACTIVE ELEMENTS
+   ============================================ */
+
+summary {
+  cursor: pointer;
+  display: list-item;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  z-index: var(--z-tooltip);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+  left: var(--space-4);
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Remove all animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================
+   FOCUS VISIBLE
+   ============================================ */
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb, 33, 150, 243), 0.1);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Enhanced focus for interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, 33, 150, 243), 0.15);
+}

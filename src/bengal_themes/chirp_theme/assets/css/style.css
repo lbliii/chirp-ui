@@ -1,0 +1,582 @@
+/**
+ * Bengal SSG Default Theme
+ * Main Stylesheet
+ *
+ * This file imports all component styles in the correct order.
+ * Following CUBE CSS methodology: Composition, Utility, Block, Exception
+ */
+
+/* ============================================
+   DESIGN TOKENS (Variables First!)
+   ============================================ */
+
+/* Use CSS Layers to stabilize cascade */
+@layer tokens, base, utilities, components, pages;
+
+/* Foundation tokens (primitives - never use directly) */
+@layer tokens {
+  @import url('tokens/foundation.css');
+}
+
+/* Typography tokens (clean typography scale) */
+@layer tokens {
+  @import url('tokens/typography.css');
+}
+
+/* Semantic tokens (purpose-based - use these in components) */
+@layer tokens {
+  @import url('tokens/semantic.css');
+}
+
+/* Palette presets (optional overrides; activated via data-palette="...") */
+@layer tokens {
+  @import url('tokens/palettes/snow-lynx.css');
+  @import url('tokens/palettes/brown-bengal.css');
+  @import url('tokens/palettes/silver-bengal.css');
+  @import url('tokens/palettes/charcoal-bengal.css');
+  @import url('tokens/palettes/blue-bengal.css');
+}
+
+/* ============================================
+   BASE STYLES (Resets & Foundations)
+   ============================================ */
+
+@layer base {
+  @import url('base/reset.css');
+}
+
+@layer base {
+  @import url('base/typography.css');
+}
+
+@layer base {
+  @import url('base/utilities.css');
+}
+
+@layer base {
+  @import url('base/interactive-patterns.css');
+}
+
+@layer utilities {
+  @import url('utilities/motion.css');
+  @import url('utilities/scroll-animations.css');
+  @import url('utilities/gradient-borders.css');
+  @import url('utilities/fluid-blobs.css');
+  @import url('utilities/micro-interactions.css');
+  @import url('utilities/skeleton.css');
+}
+
+@layer base {
+  @import url('base/accessibility.css');
+}
+
+@layer base {
+  @import url('base/print.css');
+}
+
+@layer base {
+  @import url('base/transitions.css');
+}
+
+/* ============================================
+   COMPOSITION (Layout Primitives)
+   ============================================ */
+
+@layer base {
+  @import url('composition/layouts.css');
+}
+
+/* ============================================
+   LAYOUT STYLES (Legacy - will be refactored)
+   ============================================ */
+
+@layer pages {
+  @import url('layouts/grid.css');
+}
+
+@layer pages {
+  @import url('layouts/header.css');
+}
+
+@layer pages {
+  @import url('layouts/page-header.css');
+}
+
+@layer pages {
+  @import url('layouts/footer.css');
+}
+
+@layer pages {
+  @import url('layouts/resume.css');
+}
+
+@layer pages {
+  @import url('layouts/changelog.css');
+  @import url('layouts/notebook.css');
+}
+
+/* ============================================
+   COMPONENT STYLES
+   ============================================ */
+
+@layer components {
+  @import url('components/admonitions.css');
+}
+
+@layer components {
+  @import url('components/alerts.css');
+}
+
+@layer components {
+  @import url('components/tabs.css');
+}
+
+@layer components {
+  @import url('components/tabs-native.css');
+}
+
+@layer components {
+  @import url('components/dropdowns.css');
+}
+
+@layer components {
+  @import url('components/checklist.css');
+}
+
+@layer components {
+  @import url('components/steps.css');
+}
+
+@layer components {
+  @import url('components/target-anchor.css');
+}
+
+@layer components {
+  @import url('components/buttons.css');
+  @import url('components/forms.css');
+}
+
+@layer components {
+  @import url('components/cards.css');
+}
+
+@layer components {
+  @import url('components/tags.css');
+}
+
+@layer components {
+  @import url('components/code.css');
+}
+
+@layer components {
+  @import url('components/mermaid.css');
+}
+
+@layer components {
+  @import url('components/pagination.css');
+}
+
+@layer components {
+  @import url('components/toc.css');
+}
+
+@layer components {
+  @import url('components/related-posts.css');
+}
+
+@layer components {
+  @import url('components/navigation.css');
+}
+
+@layer components {
+  @import url('components/action-bar.css');
+}
+
+@layer components {
+  @import url('components/nav-action-buttons.css');
+}
+
+@layer components {
+  @import url('components/docs-nav.css');
+}
+
+@layer components {
+  @import url('components/badges.css');
+}
+
+@layer components {
+  @import url('components/labels.css');
+}
+
+@layer components {
+  @import url('components/icons.css');
+}
+
+@layer components {
+  /* Shared hub landing page styles (tracks, api-hub, etc.) */
+  @import url('components/hub-cards.css');
+}
+
+@layer components {
+  @import url('components/tracks.css');
+}
+
+@layer components {
+  @import url('components/api-hub.css');
+}
+
+@layer components {
+  @import url('components/widgets.css');
+}
+
+@layer components {
+  @import url('components/search.css');
+  @import url('components/search-modal.css');
+}
+
+@layer components {
+  @import url('components/hero.css');
+}
+
+@layer components {
+  @import url('components/page-hero.css');
+}
+
+@layer components {
+  @import url('components/interactive.css');
+}
+
+@layer components {
+  @import url('components/reference-docs.css');
+}
+
+@layer components {
+  /* New unified autodoc styling - replaces legacy api-docs, autodoc-explorer, api-hub */
+  @import url('components/autodoc.css');
+}
+
+@layer components {
+  @import url('components/tutorial.css');
+}
+
+@layer components {
+  @import url('components/blog.css');
+}
+
+@layer components {
+  @import url('components/data-table.css');
+}
+
+@layer components {
+  @import url('components/empty-state.css');
+}
+
+@layer components {
+  @import url('components/meta.css');
+}
+
+@layer components {
+  @import url('components/share.css');
+}
+
+@layer components {
+  @import url('components/author.css');
+}
+
+@layer components {
+  @import url('components/author-page.css');
+}
+
+@layer components {
+  @import url('components/archive.css');
+}
+
+@layer components {
+  @import url('components/category-browser.css');
+}
+
+@layer components {
+  @import url('components/versioning.css');
+  @import url('components/stale-banner.css');
+}
+
+@layer components {
+  @import url('components/graph.css');
+}
+
+@layer components {
+  @import url('components/graph-minimap.css');
+}
+
+@layer components {
+  @import url('components/graph-contextual.css');
+}
+
+@layer components {
+  @import url('components/link-preview.css');
+}
+
+/* Media embed components */
+@layer components {
+  @import url('components/_video-embed.css');
+  @import url('components/_audio-embed.css');
+  @import url('components/_code-embed.css');
+  @import url('components/_figure.css');
+  @import url('components/_terminal-embed.css');
+}
+
+/* Third-party libraries */
+@layer components {
+  @import url('tabulator.min.css');
+}
+
+/* ============================================
+   EXPERIMENTAL COMPONENTS (Optional)
+   ============================================ */
+
+/* Holographic TCG-style card effects */
+@layer components {
+  @import url('experimental/holo-cards-advanced.css');
+}
+
+/* ============================================
+   PAGE-SPECIFIC STYLES
+   ============================================ */
+
+/* Landing page / home page components */
+@layer pages {
+  @import url('pages/landing.css');
+  @import url('pages/docs-home.css');
+}
+
+/* ============================================
+   CUSTOM GLOBAL STYLES
+   ============================================ */
+
+/* Page layout helpers */
+.page-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.page-description {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.page-footer {
+  margin-top: auto;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Main Content Area */
+main {
+  flex: 1 0 auto;
+  padding-block: var(--space-6) var(--space-10);
+  /* Reduced top from --space-10 (40px) to --space-6 (24px) for tighter spacing beneath navbar */
+}
+
+/* Home Page Hero: moved to components/hero.css; keep this section empty intentionally */
+
+/* Section Headers */
+.section-header {
+  margin-bottom: var(--space-8);
+}
+
+.section-title {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  transition: color var(--transition-fast) var(--ease-out);
+}
+
+.section-title:hover {
+  color: var(--color-primary);
+}
+
+@supports (color: color-mix(in srgb, white, black)) {
+  .section-title:hover {
+    color: color-mix(in srgb, var(--color-primary) 90%, black);
+  }
+}
+
+.section-description {
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+
+}
+
+.breadcrumbs li,
+.breadcrumb__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.breadcrumbs li:not(:last-child)::after {
+  content: '/';
+  color: var(--color-text-muted);
+}
+
+.breadcrumbs li:last-child {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-medium);
+}
+
+.breadcrumbs a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-smooth) var(--ease-smooth);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-primary);
+}
+
+@supports (color: color-mix(in srgb, white, black)) {
+  .breadcrumbs a:hover {
+    color: color-mix(in srgb, var(--color-primary) 90%, black);
+  }
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-12) 0;
+  padding: 0;
+  list-style: none;
+
+}
+
+.pagination a,
+.pagination span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: var(--space-2) var(--space-3);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all var(--transition-smooth) var(--ease-smooth);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform, background, box-shadow;
+}
+
+.pagination a:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background-color: var(--color-bg-hover);
+  transform: translate3d(0, -1px, 0);
+  box-shadow: var(--elevation-low);
+}
+
+@supports (color: color-mix(in srgb, white, black)) {
+  .pagination a:hover {
+    background-color: color-mix(in srgb, var(--color-bg-hover) 95%, var(--color-primary));
+  }
+}
+
+.pagination a:active {
+  transform: translate3d(0, 0, 0);
+}
+
+.pagination .active {
+  color: var(--color-text-inverse);
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.pagination .disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Alerts - moved to components/alerts.css */
+
+/* Loading Indicator */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  aspect-ratio: 1 / 1;
+  /* Added */
+  border: 3px solid var(--color-border);
+  border-block-start-color: var(--color-primary);
+  /* Changed from border-top-color */
+  border-radius: var(--radius-full);
+  animation: spin 1.5s linear infinite; /* Slower: increased from 0.8s to 1.5s */
+  will-change: transform;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .loading {
+    animation: none !important;
+    will-change: auto !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+
+  header[role="banner"],
+  footer[role="contentinfo"],
+  .mobile-nav-toggle,
+  .share-buttons,
+  .article-nav {
+    display: none !important;
+  }
+
+  main {
+    padding: 0;
+  }
+
+  a {
+    color: var(--color-text-primary) !important;
+    text-decoration: underline !important;
+  }
+
+  .prose a::after {
+    content: " (" attr(href) ")";
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+  }
+}
+
+/* Theme-owned overrides live outside the Bengal default layers so they can
+   fully restyle the shipped baseline without requiring theme inheritance. */
+@import url('chirp-theme.css');

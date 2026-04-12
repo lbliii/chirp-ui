@@ -1,7 +1,10 @@
 # chirp-theme
 
-`chirp-theme` is the packaged Bengal theme that now ships from the `chirp-ui`
-project. The theme is intentionally **static-first** and keeps v1 self-contained.
+`chirp-theme` is the packaged Bengal theme that ships from the `chirp-ui`
+project. It is intended to become a fully owned, comprehensive alternative to
+Bengal's original default theme: a cleaner, more modern static-site shell built
+with current Kida patterns, stronger component discipline, and a design system
+that can eventually reach parity with Bengal default v1 and then move past it.
 
 ## Package Layout
 
@@ -19,47 +22,54 @@ entry-point group:
 chirp-theme = "bengal_themes.chirp_theme"
 ```
 
-## Why v1 Is Self-Contained
+## Product Direction
 
-Today Bengal's template integration builds a `FileSystemLoader` from theme
-directories only. That means an installed Bengal theme can resolve templates
-from:
+`chirp-theme` is not meant to be a thin skin on Bengal default.
 
-- site `themes/<name>/templates/`
-- installed theme package `templates/`
-- bundled Bengal theme `templates/`
+The long-term goal is:
 
-But it cannot yet import templates from another installed package such as
-`chirp_ui`.
+1. A real standalone Bengal theme package fully supported by `chirp-ui`
+2. A better-organized replacement for the original Bengal default theme
+3. A theme that uses modern `chirp-ui`, Kida, and Alpine-friendly patterns as
+   the foundation for a future Bengal default v2
 
-Because of that, `chirp-theme` v1:
+That means the package should own:
 
-- extends Bengal `default`
-- ships its own theme templates
-- keeps the override surface small
-- avoids any special-case runtime coupling to `chirp_ui`
+- its shell templates
+- its partials/macros
+- its stylesheet entrypoint
+- its icons, JS, fonts, favicons, and other referenced assets
 
-## Future Loader Bridge
+## Design Principles
 
-The next architectural step is a Bengal loader bridge that would let a packaged
-theme consume `chirp_ui` templates directly.
+`chirp-theme` should optimize for:
 
-Desired end state:
+- docs sites
+- product and marketing pages
+- content-heavy static sites
+- modern composable template patterns
+- clearer separation between structure, behavior, and styling
 
-1. Bengal theme templates can include or import package-provided templates.
-2. `chirp-theme` becomes a thinner composition layer over `chirp_ui`.
-3. Template duplication between the theme package and `chirp_ui` shrinks.
+It should avoid carrying forward historical baggage from Bengal default when a
+cleaner `chirp-ui`-driven pattern exists.
 
-Expected Bengal work:
+## Relationship To `chirp-ui`
 
-1. Extend template loader construction so a theme can register package template roots.
-2. Preserve current theme precedence rules for site, installed theme, and bundled theme overrides.
-3. Keep the fallback story deterministic so `extends` and `include` still resolve predictably.
+The theme is shipped inside the `chirp-ui` repo because it is part of the same
+design-system effort. The docs site dogfoods the package directly, so the theme
+is exercised on a real Bengal site rather than living as an isolated demo.
 
-Until that bridge exists, prefer adding theme behavior in:
+The goal is not runtime indirection through `chirp_ui` template imports. The
+goal is a strong, installable Bengal theme package whose implementation happens
+to be owned and evolved by the `chirp-ui` project.
 
-- `assets/css/chirp-theme.css`
-- a small number of theme-owned template overrides
+## Near-Term Execution
 
-Avoid copying large sections of `chirp_ui` templates unless there is no simpler
-static-first option.
+The current cutover work focuses on making the theme truly standalone:
+
+- remove implicit dependence on Bengal default theme inheritance
+- give the theme a real Bengal-supported `assets/css/style.css` entrypoint
+- replace hidden default-theme partial dependencies with theme-owned resources
+- ensure generated output only references assets shipped by the theme package
+
+That standalone baseline is the platform for future parity and beyond.

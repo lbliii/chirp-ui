@@ -1,0 +1,860 @@
+/**
+ * Bengal SSG - Typography Styles
+ *
+ * Clean typography system using the new token system.
+ * Typography applies globally - no .prose dependency.
+ * .prose is only used for layout (max-width, spacing).
+ */
+
+/* ============================================
+   BASE TYPOGRAPHY
+   ============================================ */
+
+html {
+  font-family: var(--font-family-base);
+  font-size: 100%; /* 16px base */
+  line-height: var(--leading-body);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-size: var(--text-body);
+  font-weight: var(--weight-body);
+  line-height: var(--leading-body);
+}
+
+/* ============================================
+   HEADINGS
+   ============================================
+
+   Font families:
+   - h1, h2: Use --font-heading (Instrument Serif by default)
+   - h3-h6: Use inherited body font
+
+   Weight gradient (heavier at top for strong hierarchy):
+   - h1: extrabold (800)
+   - h2: bold (700)
+   - h3, h4: semibold (600)
+   - h5, h6: medium (500)
+
+   Tracking gradient: Larger headings get tighter tracking
+   for improved visual cohesion at display sizes.
+
+   h1:      --tracking-display  (-0.04em) - display/hero
+   h2:      --tracking-tighter  (-0.05em) - section headers
+   h3, h4:  --tracking-tight    (-0.025em) - subsections
+   h5, h6:  --tracking-normal   (0) - body-adjacent
+
+   Exception: h6 uses uppercase with --tracking-wide
+*/
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--weight-heading);
+  line-height: var(--leading-heading);
+  color: var(--color-text-primary);
+  scroll-margin-top: var(--space-20);
+  /* Prevent long words from overflowing on mobile */
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+h1 {
+  font-family: var(--font-heading-display);
+  font-size: var(--text-h1);
+  font-weight: var(--weight-extrabold);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-display);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-family: var(--font-heading-section);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tighter);
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  /* Editorial style: no underline, typography does the work */
+}
+
+h3 {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  margin-top: 1.5em;
+  margin-bottom: 0.375em;
+}
+
+h4 {
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  margin-top: 1.25em;
+  margin-bottom: 0.375em;
+}
+
+h5 {
+  font-size: var(--text-h5);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-normal);
+  margin-top: 1.25em;
+  margin-bottom: 0.25em;
+}
+
+h6 {
+  font-size: var(--text-h6);
+  font-weight: var(--weight-medium);
+  margin-top: 1.25em;
+  margin-bottom: 0.25em;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-secondary);
+}
+
+/* ============================================
+   PARAGRAPHS
+   ============================================ */
+
+p {
+  margin-bottom: 1.25em;
+  line-height: var(--leading-body);
+  color: var(--color-text-primary);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* Explicit lead class (opt-in enlarged intro paragraph) */
+.lead {
+  font-size: var(--text-lead);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-normal);
+  line-height: var(--leading-body);
+  margin-bottom: var(--space-6);
+}
+
+/* ============================================
+   LINKS (Content Only - Not UI Elements)
+   ============================================ */
+
+/* Base link reset - no underline by default */
+a {
+  text-decoration: none;
+}
+
+/* Content link styles - scoped to prose */
+.prose a:not(.button):not(.btn) {
+  color: var(--color-text-link);
+  background-image: linear-gradient(
+    to right,
+    var(--color-primary-light) 0%,
+    var(--color-primary-light) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  background-position: 0% 100%;
+  padding-bottom: 0.1em;
+  transition:
+    color var(--duration-200) var(--ease-out),
+    background-size var(--duration-200) var(--ease-out),
+    background-position var(--duration-200) var(--ease-out);
+  font-weight: var(--weight-medium);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  position: relative;
+}
+
+.prose a:not(.button):not(.btn):hover {
+  color: var(--color-text-link-hover);
+  background-size: 100% 2px;
+  background-image: linear-gradient(
+    to right,
+    var(--color-text-link-hover) 0%,
+    var(--color-text-link-hover) 100%
+  );
+  /* Subtle raised effect like kbd - single crisp shadow for dimension */
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  transform: translate3d(0, -0.5px, 0);
+  transition:
+    color var(--duration-200) var(--ease-out),
+    background-size var(--duration-200) var(--ease-out),
+    background-position var(--duration-200) var(--ease-out),
+    text-shadow var(--duration-200) var(--ease-out),
+    transform var(--duration-200) var(--ease-out);
+}
+
+/* Dark mode: Subtle shadow for visibility without blur */
+[data-theme="dark"] .prose a:not(.button):not(.btn):hover {
+  /* Single crisp shadow - visible in dark mode without making text fuzzy */
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .prose a:not(.button):not(.btn):hover {
+    /* Single crisp shadow - visible in dark mode without making text fuzzy */
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+}
+
+.prose a:not(.button):not(.btn):focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-small);
+  background-size: 100% 2px;
+}
+
+.prose a:not(.button):not(.btn):active {
+  color: var(--color-primary-active);
+  background-image: linear-gradient(
+    to right,
+    var(--color-primary-active) 0%,
+    var(--color-primary-active) 100%
+  );
+  /* Neumorphic pressed state - key being pressed */
+  text-shadow:
+    inset 0.5px 0.5px 0.5px rgba(0, 0, 0, 0.15),
+    -0.2px -0.2px 0.2px rgba(255, 255, 255, 0.3);
+  transform: translate3d(0, 0.5px, 0);
+  transition:
+    color 0.05s ease-out,
+    background-size 0.05s ease-out,
+    text-shadow 0.05s ease-out,
+    transform 0.05s ease-out;
+}
+
+/* ============================================
+   EXTERNAL LINKS (Content Only)
+   Uses inline-flow positioning for consistent
+   icon placement across all edge cases.
+   ============================================ */
+
+:root {
+  --external-link-icon-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2h2v2M9 9L3 3M11 1H7M11 1v4M11 1L7 5'/%3E%3C/svg%3E");
+}
+
+/* External link selector (shared across all rules) */
+.prose a[data-external="true"]:not(.button):not(.btn):not(.card):not(.card-link):not([data-no-external-icon]),
+.prose a[rel*="external"]:not(.button):not(.btn):not(.card):not(.card-link):not([data-no-external-icon]),
+.prose a[target="_blank"][href^="http"]:not(.button):not(.btn):not(.card):not(.card-link):not([data-no-external-icon]) {
+  /* Inline-flex keeps icon attached to text, prevents orphaned icons */
+  display: inline;
+}
+
+/* External link icon - inline flow, not absolute */
+.prose a[data-external="true"]:not(.button):not(.btn):not(.card):not(.card-link):not([data-no-external-icon])::after,
+.prose a[rel*="external"]:not(.button):not(.btn):not(.card):not(.card-link):not([data-no-external-icon])::after,
+.prose a[target="_blank"][href^="http"]:not(.button):not(.btn):not(.card):not(.card-link):not([data-no-external-icon])::after {
+  content: '';
+  display: inline-block;
+  /* Icon size scales with text */
+  width: 0.75em;
+  height: 0.75em;
+  /* Tight left margin, no right margin - icon hugs text */
+  margin-inline-start: 0.2em;
+  margin-inline-end: 0;
+  /* Flex-shrink prevents icon from being squished */
+  flex-shrink: 0;
+  /* Icon styling via mask */
+  background-color: currentColor;
+  -webkit-mask-image: var(--external-link-icon-mask-image);
+  mask-image: var(--external-link-icon-mask-image);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  /* Shorthand for older browsers */
+  mask: var(--external-link-icon-mask-image) no-repeat center / contain;
+  opacity: 0.6;
+  /* Align icon with text baseline - slight offset for visual centering */
+  vertical-align: -0.1em;
+  /* Smooth hover transition */
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  /* Prevent icon from wrapping alone to next line */
+  white-space: nowrap;
+}
+
+/* Hover state - icon becomes more visible and animates */
+.prose a[data-external="true"]:not(.button):not(.btn):not(.card):not(.card-link):not([data-no-external-icon]):hover::after,
+.prose a[rel*="external"]:not(.button):not(.btn):not(.card):not(.card-link):not([data-no-external-icon]):hover::after,
+.prose a[target="_blank"][href^="http"]:not(.button):not(.btn):not(.card):not(.card-link):not([data-no-external-icon]):hover::after {
+  opacity: 1;
+  transform: translate(1px, -1px);
+}
+
+/* --- Edge Case Exclusions --- */
+
+/* Links containing only images - no icon needed */
+.prose a[data-external="true"]:has(> img:only-child)::after,
+.prose a[rel*="external"]:has(> img:only-child)::after,
+.prose a[target="_blank"][href^="http"]:has(> img:only-child)::after {
+  display: none;
+}
+
+/* Links in tables - use smaller icon to fit cells */
+.prose table a[data-external="true"]::after,
+.prose table a[rel*="external"]::after,
+.prose table a[target="_blank"][href^="http"]::after {
+  width: 0.65em;
+  height: 0.65em;
+  margin-inline-start: 0.15em;
+}
+
+/* Links containing inline code - adjust spacing */
+.prose a[data-external="true"]:has(code)::after,
+.prose a[rel*="external"]:has(code)::after,
+.prose a[target="_blank"][href^="http"]:has(code)::after {
+  margin-inline-start: 0.3em;
+}
+
+/* Tab/Accordion navigation links - never show external icon */
+.tab-nav a::after,
+.accordion-header a::after,
+.track-nav a::after,
+.breadcrumb a::after,
+.pagination a::after {
+  display: none !important;
+}
+
+/* Print: Hide icon, show URL instead (handled in print.css) */
+@media print {
+  .prose a[data-external="true"]::after,
+  .prose a[rel*="external"]::after,
+  .prose a[target="_blank"][href^="http"]::after {
+    display: none;
+  }
+}
+
+/* Anchor links (content only) */
+.prose a[href^="#"]:not(.button):not(.btn) {
+  color: var(--color-text-secondary);
+  background-image: linear-gradient(
+    to right,
+    var(--color-border-light) 0%,
+    var(--color-border-light) 100%
+  );
+}
+
+.prose a[href^="#"]:not(.button):not(.btn):hover {
+  color: var(--color-text-link);
+  background-image: linear-gradient(
+    to right,
+    var(--color-text-link) 0%,
+    var(--color-text-link) 100%
+  );
+}
+
+/* Disabled links */
+a[aria-disabled="true"],
+a[href=""] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================================
+   TEXT EMPHASIS
+   ============================================ */
+
+strong {
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+}
+
+em {
+  font-style: italic;
+}
+
+/* ============================================
+   LISTS
+   ============================================ */
+
+ul,
+ol {
+  margin: var(--space-6) 0;
+  padding-inline-start: var(--space-8);
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+li {
+  margin: 0.375rem 0;  /* Tighter than --space-2 for better scannability */
+  line-height: var(--leading-body);
+}
+
+li > ul,
+li > ol {
+  margin: var(--space-2) 0;
+}
+
+/* Nested lists */
+ul ul,
+ol ul {
+  list-style-type: circle;
+}
+
+ul ul ul,
+ol ul ul,
+ul ol ul,
+ol ol ul {
+  list-style-type: square;
+}
+
+/* ============================================
+   BLOCKQUOTES
+   ============================================ */
+
+blockquote,
+.blockquote {
+  margin: var(--space-6) 0;
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 2px solid var(--color-border-light);
+  background-color: transparent;
+  border-radius: var(--radius-lg);
+  font-style: italic;
+  color: var(--color-text-secondary);
+  opacity: 0.9;
+  position: relative;
+}
+
+blockquote::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  padding: 1px;
+  background: var(--gradient-border);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+blockquote.gradient-border {
+  border-inline-start: 2px solid var(--color-primary);
+}
+
+blockquote p {
+  margin: 0 0 var(--space-2) 0;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+blockquote cite {
+  display: block;
+  margin-top: var(--space-3);
+  font-size: var(--text-caption);
+  font-style: normal;
+  color: var(--color-text-tertiary);
+  opacity: 0.8;
+}
+
+blockquote cite::before {
+  content: "— ";
+}
+
+blockquote h1,
+blockquote h2,
+blockquote h3,
+blockquote h4,
+blockquote h5,
+blockquote h6 {
+  font-style: normal;
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+/* ============================================
+   CODE
+   ============================================ */
+
+code {
+  padding: 0.125em 0.375em;
+  background-color: var(--color-bg-code);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-code);
+  font-family: var(--font-family-mono);
+  color: var(--color-text-primary);
+}
+
+/* Code in headers should match header size */
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+  font-size: inherit;
+}
+
+pre {
+  margin: var(--space-6) 0;
+  padding: var(--space-4);
+  background-color: var(--color-bg-code);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  overflow-x: auto;
+  line-height: 1.7;  /* Matches Supabase's code block line-height */
+  position: relative;
+}
+
+.code-block-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-2xl);
+  padding: 1px;
+  background: var(--gradient-border);
+  background-size: 200% 200%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.5;
+  animation: gradient-flow 8s ease infinite;
+  z-index: 0;
+}
+
+pre code {
+  position: relative;
+  z-index: 1;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  font-size: var(--text-xs);
+}
+
+/* ============================================
+   HORIZONTAL RULES
+   ============================================ */
+
+hr {
+  margin: var(--space-12) 0;
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ============================================
+   IMAGES
+   ============================================ */
+
+img {
+  max-width: 100%;
+  height: auto;
+  margin: var(--space-6) auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-medium);
+  display: block;
+}
+
+img[loading="lazy"] {
+  background: var(--color-bg-secondary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+img[loading="lazy"].loaded,
+img:not([loading="lazy"]) {
+  opacity: 1;
+}
+
+figure {
+  margin: var(--space-8) 0;
+}
+
+figcaption {
+  margin-top: var(--space-2);
+  font-size: var(--text-caption);
+  font-family: var(--font-family-mono);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-wide);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+table {
+  margin: var(--space-8) 0;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+  display: table;
+}
+
+/* Table wrapper for horizontal scrolling on overflow */
+.table-wrapper {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 100%;
+  margin: var(--space-8) 0;
+}
+
+.table-wrapper table {
+  display: table;
+  width: 100%;
+  min-width: max-content;
+  margin: 0;
+}
+
+/* Content tables - maintain native table display for full-width fill */
+.prose table,
+article table,
+main table,
+section table,
+.content table {
+  display: table;
+  width: 100%;
+  min-width: 100%;
+  margin: var(--space-8) 0;
+}
+
+/* Restore table display for table children */
+/* Note: tr, th, td are handled separately below */
+
+.prose table thead,
+article table thead,
+main table thead,
+section table thead,
+.content table thead {
+  display: table-header-group;
+}
+
+.prose table tbody,
+article table tbody,
+main table tbody,
+section table tbody,
+.content table tbody {
+  display: table-row-group;
+}
+
+.prose table tfoot,
+article table tfoot,
+main table tfoot,
+section table tfoot,
+.content table tfoot {
+  display: table-footer-group;
+}
+
+.prose table tr,
+article table tr,
+main table tr,
+section table tr,
+.content table tr {
+  display: table-row;
+}
+
+.prose table th,
+.prose table td,
+article table th,
+article table td,
+main table th,
+main table td,
+section table th,
+section table td,
+.content table th,
+.content table td {
+  display: table-cell;
+}
+
+thead {
+  border-bottom: 2px solid var(--color-border);
+}
+
+th {
+  padding: var(--space-3) var(--space-5);  /* More horizontal breathing room */
+  text-align: start;
+  font-size: var(--text-caption);  /* Smaller than body */
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-secondary);  /* Softer than primary */
+  background-color: var(--color-bg-secondary);
+}
+
+td {
+  padding: var(--space-3) var(--space-5);  /* Match th horizontal padding */
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+tbody tr:hover {
+  background-color: var(--color-bg-hover);
+}
+
+/* ============================================
+   DEFINITION LISTS
+   ============================================ */
+
+dl {
+  margin: var(--space-6) 0;
+}
+
+dt {
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  margin-top: var(--space-4);
+}
+
+dd {
+  margin-inline-start: var(--space-6);
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+/* ============================================
+   PROSE LAYOUT (Layout Only - Not Typography)
+   ============================================ */
+
+.prose {
+  max-width: var(--prose-width);
+}
+
+.prose > * + * {
+  margin-top: var(--space-6);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Text Sizes */
+.text-xs { font-size: var(--text-caption); }
+.text-sm { font-size: var(--text-body-sm); }
+.text-base { font-size: var(--text-body); }
+.text-lg { font-size: var(--text-body-lg); }
+.text-xl { font-size: var(--text-h5); }
+.text-2xl { font-size: var(--text-h4); }
+.text-3xl { font-size: var(--text-h3); }
+.text-4xl { font-size: var(--text-h2); }
+.text-5xl { font-size: var(--text-h1); letter-spacing: var(--tracking-display); }
+.text-6xl { font-size: var(--text-display); letter-spacing: var(--tracking-display); }
+
+/* Font Weights */
+.font-light { font-weight: var(--weight-light); }
+.font-normal { font-weight: var(--weight-normal); }
+.font-medium { font-weight: var(--weight-medium); }
+.font-semibold { font-weight: var(--weight-semibold); }
+.font-bold { font-weight: var(--weight-bold); }
+.font-extrabold { font-weight: var(--weight-extrabold); }
+.font-black { font-weight: var(--weight-black); }
+
+/* Text Colors */
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+
+/* Line Heights */
+.leading-none { line-height: var(--leading-none); }
+.leading-tight { line-height: var(--leading-tight); }
+.leading-snug { line-height: var(--leading-subheading); }
+.leading-normal { line-height: var(--leading-normal); }
+.leading-relaxed { line-height: var(--leading-relaxed); }
+.leading-loose { line-height: var(--leading-loose); }
+
+/* Text Alignment */
+.text-left { text-align: start; }
+.text-center { text-align: center; }
+.text-right { text-align: end; }
+.text-justify { text-align: justify; }
+
+/* Text Transform */
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+
+/* Text Decoration */
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+.no-underline { text-decoration: none; }
+
+/* Letter Spacing */
+.tracking-display { letter-spacing: var(--tracking-display); }
+.tracking-tighter { letter-spacing: var(--tracking-tighter); }
+.tracking-tight { letter-spacing: var(--tracking-tight); }
+.tracking-normal { letter-spacing: var(--tracking-normal); }
+.tracking-wide { letter-spacing: var(--tracking-wide); }
+.tracking-wider { letter-spacing: var(--tracking-wider); }
+.tracking-widest { letter-spacing: var(--tracking-widest); }
+
+/* Font Families */
+.font-sans { font-family: var(--font-family-sans); }
+.font-serif { font-family: var(--font-family-serif); }
+.font-mono { font-family: var(--font-family-mono); }
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 640px) {
+  h1, h2, h3 {
+    margin-top: var(--space-6);
+  }
+
+  ul,
+  ol {
+    margin: var(--space-4) 0;
+    padding-inline-start: var(--space-6);
+  }
+
+  blockquote {
+    margin: var(--space-4) 0;
+    padding: var(--space-3);
+  }
+
+  img {
+    margin: var(--space-4) auto;
+    border-radius: var(--radius-sm);
+  }
+
+  .lead {
+    font-size: var(--text-body);
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .prose > * + * {
+    margin-top: var(--space-4);
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes gradient-flow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}

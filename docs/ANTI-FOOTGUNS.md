@@ -113,8 +113,11 @@ Chirp's route-aware swap attrs for internal links. That includes `btn()`,
 `dropdown_split()` primary/item links, `action_bar_item()`,
 `list_group(linked=true)`, `video_card()` main link, `channel_card()`,
 `profile_header()` name links, `profile_header_info()`, `post_card()`,
-`post_card_header()`, `video_thumbnail()`, `mention()`, and
-`trending_tag()`.
+`post_card_header()`, `video_thumbnail()`, `mention()`, `trending_tag()`,
+`conversation_item()`, `playlist_item()`, `comment()` author/replies links,
+`filter_chip()`, `link()`, `calendar()` nav links, `bar_chart()` label links,
+`tab()`, `ascii_tab()`, `empty_state()` action links, and
+`tag_browse` badge/clear links.
 
 Use plain `href=` first:
 
@@ -136,7 +139,10 @@ wrappers like `logo()`, `badge()`, `breadcrumbs()`, `dock()`, `nav_tree()`,
 do not expose `hx_*` / `attrs_map` overrides on their outer anchor; when you
 need custom HTMX on that element, use raw link markup or a component like
 `btn()`, `icon_btn()`, `shimmer_button()`, `metric_card()`, or `pagination()`
-that exposes those knobs.
+that exposes those knobs. Explicit HTMX helpers like `nav_link()`,
+`route_tabs()`, and `inline_edit_field_form()` keep their existing manual
+contract, and timestamp/fragment-style links like `chapter_item()` stay plain
+anchors on purpose.
 
 ---
 

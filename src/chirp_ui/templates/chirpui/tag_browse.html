@@ -34,12 +34,13 @@
     {% end %}
     {% call cluster() %}
       {% for tag in tags %}
-      <a href="{{ tag_toggle_url(tag) }}"
-         class="chirpui-badge chirpui-badge--{{ 'primary' if (tag | lower) in (selected_tags | map('lower') | list) else 'muted' }}">{{ tag }}</a>
+      {% set _tag_href = tag_toggle_url(tag) %}
+      <a href="{{ _tag_href }}"
+         class="chirpui-badge chirpui-badge--{{ 'primary' if (tag | lower) in (selected_tags | map('lower') | list) else 'muted' }}"{{ route_link_attrs(_tag_href) | html_attrs }}>{{ tag }}</a>
       {% end %}
     {% end %}
     {% if selected_tags %}
-    <a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted">Clear all</a>
+    <a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted"{{ route_link_attrs(clear_url) | html_attrs }}>Clear all</a>
     {% end %}
     {% else %}
     <p class="chirpui-text-muted chirpui-font-sm">No tags available.</p>
@@ -50,16 +51,17 @@
 
 {% def tag_selection_badges(selected_tags, tag_toggle_url, clear_url) %}
 {% for tag in selected_tags %}
-<a href="{{ tag_toggle_url(tag) }}"
-   class="chirpui-badge chirpui-badge--primary">{{ tag }} &times;</a>
+{% set _tag_href = tag_toggle_url(tag) %}
+<a href="{{ _tag_href }}"
+   class="chirpui-badge chirpui-badge--primary"{{ route_link_attrs(_tag_href) | html_attrs }}>{{ tag }} &times;</a>
 {% end %}
 {% if selected_tags %}
-<a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted">Clear all</a>
+<a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted"{{ route_link_attrs(clear_url) | html_attrs }}>Clear all</a>
 {% end %}
 {% end %}
 
 {% def tag_filter_actions(selected_tags, clear_url) %}
 {% if selected_tags %}
-<a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted">Clear all</a>
+<a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted"{{ route_link_attrs(clear_url) | html_attrs }}>Clear all</a>
 {% end %}
 {% end %}

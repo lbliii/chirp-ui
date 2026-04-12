@@ -47,7 +47,7 @@
         </ul>
         {% end %}
         {% if action_label and action_href %}
-        <a href="{{ action_href }}" class="chirpui-btn chirpui-btn--primary chirpui-empty-state__action">{{ action_label }}</a>
+        <a href="{{ action_href }}" class="chirpui-btn chirpui-btn--primary chirpui-empty-state__action"{{ route_link_attrs(action_href) | html_attrs }}>{{ action_label }}</a>
         {% else %}
         <div class="chirpui-empty-state__action">{% slot action %}</div>
         {% end %}

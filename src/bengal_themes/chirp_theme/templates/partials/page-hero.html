@@ -1,0 +1,69 @@
+{#
+================================================================================
+Page Hero Dispatcher (Kida-Native)
+================================================================================
+
+Auto-routes to appropriate hero macro based on configuration cascade.
+
+USAGE:
+{% include 'partials/page-hero.html' %}
+
+For direct macro access (zero routing overhead):
+{% from 'partials/page-hero/_macros.html' import hero_editorial, hero_element %}
+{{ hero_editorial(page, params, theme) }}
+
+VARIANTS:
+- editorial: Clean magazine layout (default)
+- magazine: Editorial with container styling
+- overview: Section index with page count
+- api: Element or section pages (auto-detects context)
+
+RESOLUTION ORDER:
+1. page.variant (frontmatter)
+2. params.hero_style (frontmatter)
+3. _list_hero_default (template-set)
+4. theme.config.hero_style (theme config)
+5. 'editorial' (fallback)
+================================================================================
+#}
+
+{% from 'partials/page-hero/_macros.html' import
+    hero_editorial,
+    hero_magazine,
+    hero_overview,
+    hero_element,
+    hero_section
+%}
+
+{# Ensure context variables are defined #}
+{% let _page = page ?? none %}
+{% let _params = params ?? {} %}
+{% let _theme = theme ?? {} %}
+{% let _element = element ?? none %}
+{% let _section = section ?? none %}
+{% let _posts = posts ?? [] %}
+{% let _subsections = subsections ?? [] %}
+{% let _config = config ?? {} %}
+{% let _hero_context = hero_context ?? {} %}
+{% let _list_default = _list_hero_default ?? none %}
+
+{# Determine hero style from cascade #}
+{% let hero_style = _page?.variant ?? _params?.hero_style ?? _list_default ?? _theme?.config?.hero_style ?? 'editorial' %}
+
+{# Route to appropriate macro #}
+{% match hero_style, _element, _section %}
+{% case 'magazine', _, _ %}
+{{ hero_magazine(_page, _params, _theme) }}
+
+{% case 'overview', _, _ %}
+{{ hero_overview(_page, _params, _posts, _subsections) }}
+
+{% case 'api', el, _ if el %}
+{{ hero_element(el, _page, _config) }}
+
+{% case 'api', _, sec if sec %}
+{{ hero_section(sec, _page, _hero_context) }}
+
+{% case _ %}
+{{ hero_editorial(_page, _params, _theme) }}
+{% end %}

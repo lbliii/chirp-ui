@@ -1,0 +1,1569 @@
+/**
+ * Bengal SSG Default Theme
+ * Card Components
+ */
+
+/* ============================================
+   BASE CARD
+   ============================================ */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--elevation-low);
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow var(--transition-base),
+    transform var(--transition-base),
+    border-color var(--transition-base);
+  height: 100%;
+}
+
+/* Cards with gradient borders and fluid effects */
+.card.gradient-border {
+  border: none;
+}
+
+.card.fluid-combined {
+  border: none;
+}
+
+/* When card is a link, remove underlines and inherit color */
+a.card {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+a.card:hover {
+  color: inherit;
+}
+
+/* Motion gradient background on hover */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle at 40% 40%,
+      color-mix(in srgb, var(--blob-color-1) 6%, transparent) 0%,
+      color-mix(in srgb, var(--blob-color-2) 4%, transparent) 25%,
+      transparent 50%);
+  border-radius: 50%;
+  animation: blob-morph var(--blob-duration-slow) ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fallback for browsers without color-mix */
+@supports not (color: color-mix(in srgb, black, white)) {
+  .card::before {
+    background: radial-gradient(circle at 40% 40%,
+        rgba(59, 130, 246, 0.06) 0%,
+        rgba(139, 92, 246, 0.04) 25%,
+        transparent 50%);
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .card::before {
+    animation: none !important;
+  }
+}
+
+.card:hover {
+  box-shadow:
+    var(--elevation-high),
+    0 0 20px 0 color-mix(in srgb, var(--color-primary) 8%, transparent);
+  transform: translate3d(0, calc(-1 * var(--motion-distance-2)), 0);
+}
+
+[data-theme="dark"] .card:hover {
+  box-shadow:
+    var(--elevation-high),
+    0 0 25px 0 color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+/* Disable transform animations on mobile for performance */
+@media (max-width: 768px) {
+  .card:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
+   CARD BEM PARTS (card-base component)
+   ============================================ */
+
+.card__badges {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  z-index: 1;
+}
+
+.card__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  flex-shrink: 0;
+}
+
+.card__title {
+  margin: 0;
+  font-size: var(--type-ui-title);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+.card__body {
+  flex: 1;
+  padding: 0 var(--space-5) var(--space-4);
+  display: flex;
+  flex-direction: column;
+}
+
+.card__description {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.card__footer {
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--color-border-light);
+  background-color: var(--color-bg-secondary);
+  flex-shrink: 0;
+  margin-top: auto;
+  font-size: var(--text-xs);
+}
+
+.card__actions {
+  padding: var(--space-3) var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.card--hoverable:hover {
+  transform: translate3d(0, calc(-1 * var(--motion-distance-2)), 0);
+  box-shadow: var(--elevation-high);
+}
+
+/* ============================================
+   CARD PARTS
+   ============================================ */
+
+.card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card Header - Contains icon and title */
+.card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  flex-shrink: 0;
+  /* Editorial: no border, let spacing separate */
+}
+
+/* Card Content - Main content area */
+.card-content {
+  flex: 1;
+  padding: 0 var(--space-5) var(--space-4);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card Footer - Optional footer section */
+.card-footer {
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--color-border-light);
+  background-color: var(--color-bg-secondary);
+  flex-shrink: 0;
+  margin-top: auto;
+  font-size: var(--text-xs);
+}
+
+/* Text styling in card content */
+.card-content p {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.card-content p+p {
+  margin-top: var(--space-2);
+}
+
+/* List styling in card content */
+.card-content ul,
+.card-content ol {
+  padding-inline-start: var(--space-8);
+  margin: var(--space-3) 0;
+}
+
+.card-content ul {
+  list-style-type: disc;
+}
+
+.card-content ol {
+  list-style-type: decimal;
+}
+
+.card-content li {
+  margin: var(--space-1) 0;
+}
+
+.card-content>*:first-child {
+  margin-top: 0;
+}
+
+.card-content>*:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   CARD CONTENT
+   ============================================ */
+
+.card-title {
+  margin: 0;
+  font-size: var(--type-ui-title);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  /* Not a semantic heading, just styled text */
+  flex: 1;
+  /* Ensure text wraps nicely next to icon */
+  min-width: 0;
+}
+
+.card-title a {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast) var(--ease-out);
+}
+
+.card-title a:hover {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.card-text {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--type-ui-body);
+  line-height: var(--type-leading-body);
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.card-meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ============================================
+   ARTICLE CARD (Blog Posts)
+   ============================================ */
+
+.article-card {
+  display: block;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  /* Increased from --radius-lg (8px → 12px) */
+  overflow: hidden;
+  text-decoration: none;
+  position: relative;
+  transition: box-shadow var(--motion-medium), transform var(--motion-medium);
+}
+
+.article-card.gradient-border {
+  border: none;
+}
+
+.article-card.fluid-combined {
+  border: none;
+}
+
+/* Motion gradient background on hover */
+.article-card::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle at 40% 40%,
+      color-mix(in srgb, var(--blob-color-1) 6%, transparent) 0%,
+      color-mix(in srgb, var(--blob-color-2) 4%, transparent) 25%,
+      transparent 50%);
+  border-radius: 50%;
+  animation: blob-morph var(--blob-duration-slow) ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.article-card:hover::before {
+  opacity: 1;
+}
+
+.article-card>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fallback for browsers without color-mix */
+@supports not (color: color-mix(in srgb, black, white)) {
+  .article-card::before {
+    background: radial-gradient(circle at 40% 40%,
+        rgba(59, 130, 246, 0.06) 0%,
+        rgba(139, 92, 246, 0.04) 25%,
+        transparent 50%);
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .article-card::before {
+    animation: none !important;
+  }
+}
+
+.article-card:hover {
+  box-shadow: var(--elevation-high);
+  transform: translate3d(0, calc(-1 * var(--motion-distance-2)), 0);
+}
+
+.article-card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.article-card-content {
+  padding: var(--space-6);
+}
+
+.article-card-title {
+  margin: 0 0 var(--space-3) 0;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+}
+
+.article-card-excerpt {
+  margin: 0 0 var(--space-4) 0;
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.article-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.article-card-footer {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border-light);
+  background-color: var(--color-bg-secondary);
+}
+
+/* Article card modifiers for blog variants */
+.article-card--featured {
+  /* Uses gradient-border-strong fluid-bg for featured posts */
+}
+
+.article-card--compact {
+  /* Minimal card for related posts, author lists */
+}
+
+.article-card--featured.gradient-border-strong.fluid-bg {
+  border: none;
+}
+
+/* ============================================
+   CARD VARIANTS
+   ============================================ */
+
+.card-flat {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.card-flat:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+.card-horizontal {
+  flex-direction: row;
+}
+
+.card-horizontal .card-image {
+  width: 200px;
+  height: auto;
+}
+
+/* Tablet and below: Stack horizontal cards */
+@media (max-width: 768px) {
+  .card-horizontal {
+    flex-direction: column;
+  }
+
+  .card-horizontal .card-image {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+/* ============================================
+   FEATURE CARD (Icon + Content)
+   ============================================ */
+
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  /* Increased from --border-radius-large (8px → 12px) */
+  box-shadow: var(--elevation-card);
+  transition: box-shadow var(--motion-medium), transform var(--motion-medium);
+  height: 100%;
+}
+
+.feature-card.gradient-border {
+  border: none;
+}
+
+.feature-card.fluid-combined {
+  border: none;
+}
+
+.feature-card:hover {
+  box-shadow: var(--elevation-card-hover);
+  transform: translate3d(0, calc(-1 * var(--motion-distance-2)), 0);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modern color mixing for hover background */
+@supports (color: color-mix(in srgb, white, black)) {
+  .feature-card:hover {
+    background: color-mix(in srgb, var(--color-bg-elevated) 95%, var(--color-primary));
+  }
+}
+
+.feature-card__icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: var(--border-radius-medium);
+  flex-shrink: 0;
+}
+
+/* Dark mode handled by semantic tokens for bg/color */
+
+.feature-card__icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.feature-card__title {
+  margin: 0;
+  font-size: var(--text-heading-5);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.feature-card__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--motion-fast);
+}
+
+.feature-card__title a:hover {
+  color: var(--color-primary);
+}
+
+.feature-card__description {
+  margin: 0;
+  font-size: var(--text-body-small);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.feature-card__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--motion-fast), gap var(--motion-fast);
+  margin-top: auto;
+}
+
+.feature-card__action:hover {
+  color: var(--color-primary-hover);
+  gap: 0.625rem;
+}
+
+.feature-card__action svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================
+   CALLOUT CARD (Highlighted Information)
+   Luminescent left-edge glow matching admonitions
+   ============================================ */
+
+/* Luminescent glow animation for callout cards */
+@keyframes callout-edge-glow {
+  0%, 100% {
+    box-shadow:
+      var(--elevation-card),
+      -1px 0 0 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 15%, transparent),
+      -3px 0 8px 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 8%, transparent),
+      -1px 0 12px 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 4%, transparent);
+  }
+  50% {
+    box-shadow:
+      var(--elevation-card),
+      -1px 0 0 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 25%, transparent),
+      -3px 0 12px 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 12%, transparent),
+      -1px 0 16px 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 6%, transparent);
+  }
+}
+
+@keyframes callout-edge-glow-dark {
+  0%, 100% {
+    box-shadow:
+      var(--elevation-card),
+      -1px 0 0 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 20%, transparent),
+      -3px 0 10px 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 12%, transparent),
+      -1px 0 16px 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 6%, transparent);
+  }
+  50% {
+    box-shadow:
+      var(--elevation-card),
+      -1px 0 0 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 35%, transparent),
+      -3px 0 14px 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 18%, transparent),
+      -1px 0 20px 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 10%, transparent);
+  }
+}
+
+.callout-card {
+  --callout-color: var(--color-primary);
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--color-bg-secondary);
+  /* Luminescent left edge - thin border with soft glow */
+  border-inline-start: 2px solid color-mix(in srgb, var(--callout-color) 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  margin-block: 1.5rem;
+  /* Peaceful glow animation */
+  animation: callout-edge-glow 8s ease-in-out infinite;
+  transition: border-color var(--transition-base);
+}
+
+[data-theme="dark"] .callout-card {
+  border-inline-start-color: color-mix(in srgb, var(--callout-color) 50%, transparent);
+  animation-name: callout-edge-glow-dark;
+}
+
+.callout-card__icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  color: var(--callout-color);
+}
+
+.callout-card__content {
+  flex: 1;
+}
+
+.callout-card__title {
+  margin: 0 0 0.5rem 0;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.callout-card__description {
+  margin: 0;
+  font-size: var(--text-body-small);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+/* Callout Variants - each sets --callout-color for the glow */
+.callout-card--info {
+  --callout-color: var(--color-info);
+  background: var(--color-info-bg);
+  border-inline-start-color: color-mix(in srgb, var(--color-info) 60%, transparent);
+
+  .callout-card__icon {
+    color: var(--color-info);
+  }
+}
+
+.callout-card--success {
+  --callout-color: var(--color-success);
+  background: var(--color-success-bg);
+  border-inline-start-color: color-mix(in srgb, var(--color-success) 60%, transparent);
+
+  .callout-card__icon {
+    color: var(--color-success);
+  }
+}
+
+.callout-card--warning {
+  --callout-color: var(--color-warning);
+  background: var(--color-warning-bg);
+  border-inline-start-color: color-mix(in srgb, var(--color-warning) 60%, transparent);
+
+  .callout-card__icon {
+    color: var(--color-warning);
+  }
+}
+
+.callout-card--error {
+  --callout-color: var(--color-error);
+  background: var(--color-error-bg);
+  border-inline-start-color: color-mix(in srgb, var(--color-error) 60%, transparent);
+
+  .callout-card__icon {
+    color: var(--color-error);
+  }
+}
+
+/* Fallback for browsers without color-mix */
+@supports not (color: color-mix(in srgb, black, white)) {
+  .callout-card {
+    border-inline-start: 2px solid var(--color-primary);
+    animation: none;
+    box-shadow: var(--elevation-card);
+  }
+
+  .callout-card--info {
+    border-inline-start-color: var(--color-info-border);
+  }
+
+  .callout-card--success {
+    border-inline-start-color: var(--color-success-border);
+  }
+
+  .callout-card--warning {
+    border-inline-start-color: var(--color-warning-border);
+  }
+
+  .callout-card--error {
+    border-inline-start-color: var(--color-error-border);
+  }
+}
+
+/* Reduced motion - static subtle glow */
+@media (prefers-reduced-motion: reduce) {
+  .callout-card {
+    animation: none !important;
+    box-shadow:
+      var(--elevation-card),
+      -2px 0 8px 0 color-mix(in srgb, var(--callout-color, var(--color-primary)) 10%, transparent);
+  }
+}
+
+/* ============================================
+   LINK CARD (Entire Card Clickable)
+   ============================================ */
+
+.link-card {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-card .card {
+  transition: all var(--transition-base);
+}
+
+.link-card:hover .card {
+  transform: translate3d(0, -4px, 0);
+  box-shadow: var(--elevation-high);
+}
+
+/* ============================================
+   STAT CARD (Numbers/Statistics)
+   ============================================ */
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-8) var(--space-6);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  /* Increased from --border-radius-large (8px → 12px) */
+  box-shadow: var(--elevation-card);
+}
+
+.stat-card__value {
+  margin: 0;
+  font-size: var(--text-5xl);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  color: var(--color-primary);
+}
+
+.stat-card__label {
+  margin: 0.5rem 0 0 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+.stat-card__description {
+  margin: 0.5rem 0 0 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+}
+
+/* ============================================
+   CARD GRID LAYOUTS (New - from card/cards directives)
+   ============================================ */
+
+/* Container for card grid - enables container queries */
+.card-grid-container {
+  container-type: inline-size;
+  container-name: card-grid;
+}
+
+/* ============================================
+   CARD GRID LAYOUTS
+   ============================================ */
+
+/* Container for card grid - enables container queries */
+.card-grid-container {
+  container-type: inline-size;
+  container-name: card-grid;
+}
+
+.card-grid {
+  display: grid;
+  gap: var(--card-gap, var(--space-6));
+  margin: var(--space-8) 0;
+
+  /* Mobile-first: Single column */
+  grid-template-columns: 1fr;
+}
+
+/* Gap Sizes */
+.card-grid[data-gap="small"] {
+  --card-gap: var(--space-4);
+}
+
+.card-grid[data-gap="medium"] {
+  --card-gap: var(--space-6);
+}
+
+.card-grid[data-gap="large"] {
+  --card-gap: var(--space-8);
+}
+
+/* Fixed Columns - Use CSS Grid with explicit column count */
+.card-grid[data-columns="1"] {
+  grid-template-columns: 1fr;
+}
+
+.card-grid[data-columns="2"] {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-grid[data-columns="3"] {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card-grid[data-columns="4"] {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card-grid[data-columns="5"] {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.card-grid[data-columns="6"] {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+/* Responsive Columns - Mobile-first breakpoints */
+.card-grid[data-columns~="1-2"],
+.card-grid[data-columns~="1-2-3"],
+.card-grid[data-columns~="1-2-3-4"] {
+  grid-template-columns: 1fr;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) {
+
+  .card-grid[data-columns~="1-2"],
+  .card-grid[data-columns~="1-2-3"],
+  .card-grid[data-columns~="1-2-3-4"] {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 1024px) {
+
+  .card-grid[data-columns~="1-2-3"],
+  .card-grid[data-columns~="1-2-3-4"] {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Large Desktop: 4 columns */
+@media (min-width: 1280px) {
+  .card-grid[data-columns~="1-2-3-4"] {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Container query support (preferred when available) */
+@supports (container-type: inline-size) {
+  @container card-grid (min-width: 400px) {
+    .card-grid[data-columns="auto"] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @container card-grid (min-width: 600px) {
+    .card-grid[data-columns="auto"] {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @container card-grid (min-width: 800px) {
+    .card-grid[data-columns="auto"] {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+/* Fallback for browsers without container query support */
+@supports not (container-type: inline-size) {
+  .card-grid[data-columns="auto"] {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  }
+}
+
+
+/* ============================================
+   CARD COLOR VARIANTS (Theme-Aware Semantic Tokens)
+   Luminescent left-edge glow treatment
+   ============================================ */
+
+/**
+ * Card color accents use semantic tokens that automatically adapt to:
+ * - Light/dark mode
+ * - Theme palette variants (blue-bengal, brown-bengal, etc.)
+ *
+ * Mapping:
+ * - blue → info/primary (semantic: informational/primary brand)
+ * - green → success/secondary (semantic: success/secondary brand)
+ * - red → error (semantic: error/danger)
+ * - yellow/orange → warning/accent (semantic: warning/accent color)
+ * - purple → custom (kept as foundation token for flexibility)
+ * - pink → custom variant of purple
+ * - indigo → primary-dark variant
+ * - gray → neutral border
+ */
+
+/* Shared luminescent glow animation for card color variants */
+@keyframes card-color-edge-glow {
+  0%, 100% {
+    box-shadow:
+      var(--elevation-card),
+      -1px 0 0 0 color-mix(in srgb, var(--card-accent-color) 15%, transparent),
+      -2px 0 6px 0 color-mix(in srgb, var(--card-accent-color) 8%, transparent);
+  }
+  50% {
+    box-shadow:
+      var(--elevation-card),
+      -1px 0 0 0 color-mix(in srgb, var(--card-accent-color) 25%, transparent),
+      -3px 0 10px 0 color-mix(in srgb, var(--card-accent-color) 12%, transparent);
+  }
+}
+
+@keyframes card-color-edge-glow-dark {
+  0%, 100% {
+    box-shadow:
+      var(--elevation-card),
+      -1px 0 0 0 color-mix(in srgb, var(--card-accent-color) 20%, transparent),
+      -2px 0 8px 0 color-mix(in srgb, var(--card-accent-color) 12%, transparent);
+  }
+  50% {
+    box-shadow:
+      var(--elevation-card),
+      -1px 0 0 0 color-mix(in srgb, var(--card-accent-color) 35%, transparent),
+      -3px 0 12px 0 color-mix(in srgb, var(--card-accent-color) 18%, transparent);
+  }
+}
+
+/* Blue - Maps to primary brand color (matches palette) */
+.card-color-blue {
+  --card-accent-color: var(--color-primary);
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, var(--color-primary) 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-blue:hover {
+  border-inline-start-color: color-mix(in srgb, var(--color-primary-hover) 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-blue {
+  border-inline-start-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Green - Maps to success/secondary (success state, secondary brand) */
+.card-color-green {
+  --card-accent-color: var(--color-success);
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, var(--color-success) 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-green:hover {
+  border-inline-start-color: color-mix(in srgb, var(--color-success) 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-green {
+  border-inline-start-color: color-mix(in srgb, var(--color-success) 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Red - Maps to error (error/danger state) */
+.card-color-red {
+  --card-accent-color: var(--color-error);
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, var(--color-error) 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-red:hover {
+  border-inline-start-color: color-mix(in srgb, var(--color-error) 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-red {
+  border-inline-start-color: color-mix(in srgb, var(--color-error) 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Yellow/Orange - Maps to warning/accent (warning state, accent color) */
+.card-color-yellow,
+.card-color-orange {
+  --card-accent-color: var(--color-warning);
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, var(--color-warning) 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-yellow:hover,
+.card-color-orange:hover {
+  border-inline-start-color: color-mix(in srgb, var(--color-warning) 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-yellow,
+[data-theme="dark"] .card-color-orange {
+  border-inline-start-color: color-mix(in srgb, var(--color-warning) 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Purple - Custom color (kept as foundation token for design flexibility) */
+.card-color-purple {
+  --card-accent-color: var(--purple-500);
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, var(--purple-500) 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-purple:hover {
+  border-inline-start-color: color-mix(in srgb, var(--purple-600) 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-purple {
+  --card-accent-color: var(--purple-400);
+  border-inline-start-color: color-mix(in srgb, var(--purple-400) 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Pink - Custom variant of purple */
+.card-color-pink {
+  --card-accent-color: var(--purple-400);
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, var(--purple-400) 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-pink:hover {
+  border-inline-start-color: color-mix(in srgb, var(--purple-500) 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-pink {
+  --card-accent-color: var(--purple-300);
+  border-inline-start-color: color-mix(in srgb, var(--purple-300) 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Indigo - Maps to primary-dark (darker variant of primary) */
+.card-color-indigo {
+  --card-accent-color: var(--color-primary-dark);
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, var(--color-primary-dark) 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-indigo:hover {
+  border-inline-start-color: color-mix(in srgb, var(--color-primary-active) 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-indigo {
+  border-inline-start-color: color-mix(in srgb, var(--color-primary-dark) 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Gray - Maps to neutral border (neutral, no semantic meaning) */
+.card-color-gray {
+  --card-accent-color: var(--color-border-strong);
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, var(--color-border-strong) 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-gray:hover {
+  border-inline-start-color: color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-gray {
+  border-inline-start-color: color-mix(in srgb, var(--color-border-strong) 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Teal - Custom color (matches snow-lynx palette) */
+.card-color-teal {
+  --card-accent-color: #4FA8A0;
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, #4FA8A0 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-teal:hover {
+  border-inline-start-color: color-mix(in srgb, #3D9287 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-teal {
+  --card-accent-color: #6EC4BC;
+  border-inline-start-color: color-mix(in srgb, #6EC4BC 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Cyan - Custom color (bright cyan accent) */
+.card-color-cyan {
+  --card-accent-color: #06b6d4;
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, #06b6d4 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-cyan:hover {
+  border-inline-start-color: color-mix(in srgb, #0891b2 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-cyan {
+  --card-accent-color: #22d3ee;
+  border-inline-start-color: color-mix(in srgb, #22d3ee 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Violet - Custom color (blue-purple, distinct from purple) */
+.card-color-violet {
+  --card-accent-color: var(--violet-500);
+  border-inline-start-width: 2px;
+  border-inline-start-color: color-mix(in srgb, var(--violet-500) 60%, transparent);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  animation: card-color-edge-glow 8s ease-in-out infinite;
+}
+
+.card-color-violet:hover {
+  border-inline-start-color: color-mix(in srgb, var(--violet-600) 70%, transparent);
+}
+
+[data-theme="dark"] .card-color-violet {
+  --card-accent-color: var(--violet-400);
+  border-inline-start-color: color-mix(in srgb, var(--violet-400) 50%, transparent);
+  animation-name: card-color-edge-glow-dark;
+}
+
+/* Fallback for browsers without color-mix support */
+@supports not (color: color-mix(in srgb, black, white)) {
+  .card-color-blue,
+  .card-color-green,
+  .card-color-red,
+  .card-color-yellow,
+  .card-color-orange,
+  .card-color-purple,
+  .card-color-pink,
+  .card-color-indigo,
+  .card-color-gray,
+  .card-color-teal,
+  .card-color-cyan,
+  .card-color-violet {
+    /* Fallback to solid 2px border with no animation */
+    animation: none;
+    box-shadow: var(--elevation-card);
+  }
+
+  .card-color-blue { border-inline-start-color: var(--color-primary); }
+  .card-color-green { border-inline-start-color: var(--color-success-border); }
+  .card-color-red { border-inline-start-color: var(--color-error-border); }
+  .card-color-yellow,
+  .card-color-orange { border-inline-start-color: var(--color-warning-border); }
+  .card-color-purple { border-inline-start-color: var(--purple-500); }
+  .card-color-pink { border-inline-start-color: var(--purple-400); }
+  .card-color-indigo { border-inline-start-color: var(--color-primary-dark); }
+  .card-color-gray { border-inline-start-color: var(--color-border-strong); }
+  .card-color-teal { border-inline-start-color: #4FA8A0; }
+  .card-color-cyan { border-inline-start-color: #06b6d4; }
+  .card-color-violet { border-inline-start-color: var(--violet-500); }
+}
+
+/* Reduced motion - static subtle glow */
+@media (prefers-reduced-motion: reduce) {
+  .card-color-blue,
+  .card-color-green,
+  .card-color-red,
+  .card-color-yellow,
+  .card-color-orange,
+  .card-color-purple,
+  .card-color-pink,
+  .card-color-indigo,
+  .card-color-gray,
+  .card-color-teal,
+  .card-color-cyan,
+  .card-color-violet {
+    animation: none !important;
+    box-shadow:
+      var(--elevation-card),
+      -2px 0 6px 0 color-mix(in srgb, var(--card-accent-color) 10%, transparent);
+  }
+}
+
+
+/* Card Icon Styling */
+.card-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--color-text-tertiary);
+}
+
+/* Card Title Styling */
+.card-title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  color: var(--color-text-primary);
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.card-title a:hover {
+  color: var(--color-primary);
+}
+
+/* Legacy class names (keep for backward compat) */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: var(--space-8) 0;
+}
+
+/* Performance optimization: Content visibility removed due to DevTools crash
+.cards-grid > *,
+.feature-cards > * {
+  content-visibility: auto;
+  contain-intrinsic-size: 300px;
+}
+*/
+
+.cards-grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.cards-grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.cards-grid--4 {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* Feature Cards Grid */
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: var(--space-8) 0;
+}
+
+/* Mobile: Responsive adjustments */
+@media (max-width: 639px) {
+
+  /* Force single column on small screens for fixed column counts */
+  .card-grid[data-columns="2"],
+  .card-grid[data-columns="3"],
+  .card-grid[data-columns="4"],
+  .card-grid[data-columns="5"],
+  .card-grid[data-columns="6"] {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reduce gap on mobile */
+  .card-grid {
+    gap: var(--space-4);
+  }
+
+  /* Compact padding on mobile */
+  .card-header,
+  .card-content {
+    padding: var(--space-4);
+  }
+
+  .card-footer {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+/* Force single column on very small screens (redundant but explicit) */
+@media (max-width: 399px) {
+
+  .cards-grid,
+  .cards-grid--2,
+  .cards-grid--3,
+  .cards-grid--4,
+  .feature-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   AUTO-APPLY GRADIENT BORDERS & FLUID EFFECTS
+   ============================================ */
+
+/* Automatically apply gradient borders and fluid effects to common card patterns */
+/* Classes are added via templates, but this ensures they work */
+
+/* Support for gradient borders on cards */
+.article-card.gradient-border,
+.feature-card.gradient-border,
+.stat-card.gradient-border {
+  border: none;
+}
+
+.article-card.fluid-combined,
+.feature-card.fluid-combined {
+  border: none;
+}
+
+.feature-card.gradient-border-strong.fluid-bg {
+  border: none;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Mobile: Compact card padding */
+@media (max-width: 639px) {
+  .feature-card {
+    padding: var(--space-4);
+  }
+
+  .callout-card {
+    padding: var(--space-4);
+  }
+}
+
+/* ============================================
+   EXPLANATION / INFO / CONCEPT VARIANT
+   ============================================ */
+
+/* Less interactive feel for explanation cards */
+.card-grid[data-variant="explanation"] .card,
+.card-grid[data-variant="info"] .card,
+.card-grid[data-variant="concept"] .card {
+  transition: border-color var(--transition-base);
+}
+
+.card-grid[data-variant="explanation"] .card:hover,
+.card-grid[data-variant="info"] .card:hover,
+.card-grid[data-variant="concept"] .card:hover {
+  /* Disable lift effect */
+  transform: none;
+  /* Subtle shadow enhancement only */
+  box-shadow: var(--elevation-medium);
+}
+
+/* Hide the morphing blob effect for non-interactive cards */
+.card-grid[data-variant="explanation"] .card::before,
+.card-grid[data-variant="info"] .card::before,
+.card-grid[data-variant="concept"] .card::before {
+  display: none;
+}
+
+/* Content styling for Explanation Variant */
+.card-grid[data-variant="explanation"] .card-content,
+.card-grid[data-variant="info"] .card-content,
+.card-grid[data-variant="concept"] .card-content {
+  /* Allow for denser information */
+}
+
+/* Lists in Explanation Cards - Tighter, more compact */
+.card-grid[data-variant="explanation"] .card-content ul,
+.card-grid[data-variant="info"] .card-content ul,
+.card-grid[data-variant="concept"] .card-content ul {
+  padding-inline-start: var(--space-5);
+  margin: var(--space-2) 0;
+}
+
+.card-grid[data-variant="explanation"] .card-content li,
+.card-grid[data-variant="info"] .card-content li,
+.card-grid[data-variant="concept"] .card-content li {
+  margin: var(--space-1) 0;
+  font-size: var(--text-sm);
+}
+
+/* Tables in Explanation Cards - Enhanced styling for comparison */
+.card-grid[data-variant="explanation"] .card-content table,
+.card-grid[data-variant="info"] .card-content table,
+.card-grid[data-variant="concept"] .card-content table {
+  width: 100%;
+  font-size: var(--text-sm);
+  border-collapse: collapse;
+  margin: var(--space-3) 0;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  /* Ensures corners are rounded */
+}
+
+.card-grid[data-variant="explanation"] .card-content th,
+.card-grid[data-variant="info"] .card-content th,
+.card-grid[data-variant="concept"] .card-content th {
+  text-align: start;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-muted);
+  font-weight: var(--weight-medium);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card-grid[data-variant="explanation"] .card-content td,
+.card-grid[data-variant="info"] .card-content td,
+.card-grid[data-variant="concept"] .card-content td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary);
+}
+
+.card-grid[data-variant="explanation"] .card-content tr:last-child td,
+.card-grid[data-variant="info"] .card-content tr:last-child td,
+.card-grid[data-variant="concept"] .card-content tr:last-child td {
+  border-bottom: none;
+}
+
+/* Make headers smaller in explanation cards */
+.card-grid[data-variant="explanation"] .card-content h3,
+.card-grid[data-variant="explanation"] .card-content h4,
+.card-grid[data-variant="info"] .card-content h3,
+.card-grid[data-variant="info"] .card-content h4,
+.card-grid[data-variant="concept"] .card-content h3,
+.card-grid[data-variant="concept"] .card-content h4 {
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-base);
+}
+
+/* ============================================
+   CARD DESCRIPTION & BADGE OPTIONS
+   ============================================ */
+
+/* Card Description - Brief summary below header */
+.card-description {
+  padding: 0 var(--space-5);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* Card Badge - Inline badge in header */
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: auto;
+  padding: 0.0625rem 0.375rem;
+  font-size: 0.5625rem;
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: var(--color-text-inverse);
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* Badge color variants based on text content */
+.card-badge[data-variant="new"] {
+  background: var(--color-success);
+}
+
+.card-badge[data-variant="beta"] {
+  background: var(--color-warning);
+  color: var(--color-text-primary);
+}
+
+.card-badge[data-variant="pro"],
+.card-badge[data-variant="premium"] {
+  background: linear-gradient(135deg, var(--color-primary), var(--purple-500));
+}
+
+.card-badge[data-variant="deprecated"] {
+  background: var(--color-error);
+}
+
+.card-badge[data-variant="updated"] {
+  background: var(--color-info);
+}
+
+/* Adjust header layout when badge is present */
+.card-header:has(.card-badge) {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.card-header:has(.card-badge) .card-title {
+  flex: 1;
+}
+
+/* Mobile adjustments */
+@media (max-width: 639px) {
+  .card-description {
+    padding: 0 var(--space-4);
+    font-size: var(--text-xs);
+  }
+
+  .card-badge {
+    font-size: 0.5rem;
+    padding: 0.0625rem 0.3125rem;
+  }
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .card-badge {
+  color: var(--color-text-inverse);
+}
+
+[data-theme="dark"] .card-description {
+  color: var(--color-text-secondary);
+}

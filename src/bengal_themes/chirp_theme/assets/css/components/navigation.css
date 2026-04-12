@@ -1,0 +1,131 @@
+.nav-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Page Navigation (prev/next links) */
+.page-navigation {
+  margin: var(--space-12) 0;
+  padding-top: var(--space-8);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.nav-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+}
+
+.nav-links > .nav-next:only-child {
+  grid-column: 2;
+  justify-self: end;
+}
+
+.nav-links a {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); /* Increased from 8px to use token (8px) */
+  text-decoration: none;
+  color: var(--color-text-primary);
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-links a:hover {
+  border-color: var(--color-primary);
+  background: var(--color-bg-secondary);
+  transform: translate3d(0, calc(-1 * var(--motion-distance-2)), 0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@supports (color: color-mix(in srgb, white, black)) {
+  .nav-links a:hover {
+    background: color-mix(in srgb, var(--color-bg-secondary) 95%, var(--color-primary));
+  }
+}
+
+.nav-previous,
+.nav-next {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-previous {
+  justify-self: start;
+}
+
+.nav-next {
+  justify-self: end;
+  text-align: end; /* Changed from right */
+}
+
+.nav-subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.nav-title {
+  font-weight: var(--weight-semibold);
+  color: var(--color-primary);
+}
+
+/* Breadcrumbs - moved to style.css to avoid duplication */
+
+/* Tablet - Side by side but more compact */
+@media (max-width: 768px) {
+  .nav-links {
+    gap: 1rem;
+  }
+
+  .nav-links a {
+    padding: 0.75rem;
+  }
+
+  .nav-title {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Mobile - Stack vertically with consistent alignment */
+@media (max-width: 480px) {
+  .nav-links {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .nav-links > .nav-next:only-child {
+    grid-column: auto;
+    justify-self: stretch;
+  }
+
+  /* Both items should be full-width and left-aligned when stacked */
+  .nav-previous,
+  .nav-next {
+    justify-self: stretch;
+    text-align: start;
+  }
+
+  .nav-links a {
+    width: 100%;
+  }
+
+  .nav-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .nav-title {
+    font-size: 0.875rem;
+  }
+}
+
+/* RTL: Flip navigation arrows */
+[dir="rtl"] .nav-arrow {
+  display: inline-block;
+  transform: scaleX(-1);
+}
