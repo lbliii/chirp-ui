@@ -11,7 +11,7 @@
 {% def trending_tag(tag, href=none, count=none, trend=none, cls="") %}
 {% set tag_class = " chirpui-trending-tag--" ~ trend if trend else "" %}
 {% if href %}
-<a href="{{ href }}" class="chirpui-trending-tag{{ tag_class }}{{ " " ~ cls if cls else "" }}">
+<a href="{{ href }}" class="chirpui-trending-tag{{ tag_class }}{{ " " ~ cls if cls else "" }}"{{ route_link_attrs(href) | html_attrs }}>
 {% else %}
 <span class="chirpui-trending-tag{{ tag_class }}{{ " " ~ cls if cls else "" }}">
 {% end %}

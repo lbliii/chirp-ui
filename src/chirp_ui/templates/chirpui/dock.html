@@ -23,7 +23,7 @@
         {% for item in items %}
         {% set active_class = " chirpui-dock__item--active" if item.active else "" %}
         {% if item.href %}
-        <a href="{{ item.href }}" class="chirpui-dock__item{{ active_class }}" aria-label="{{ item.label }}">
+        <a href="{{ item.href }}" class="chirpui-dock__item{{ active_class }}" aria-label="{{ item.label }}"{{ route_link_attrs(item.href) | html_attrs }}>
             {{ item.icon | icon }}
         </a>
         {% else %}

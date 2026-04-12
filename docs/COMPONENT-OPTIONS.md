@@ -1510,7 +1510,7 @@ Glass variants use `backdrop-filter`; gradient topbar uses `--chirpui-gradient-s
 
 ### Collapsible sidebar
 
-Enable via `app_shell(sidebar_collapsible=true)` or override `{% block sidebar_collapsible %}true{% end %}` in `app_shell_layout`. Collapsed mode shows icons only; provide `icon` for each `sidebar_link`.
+Enable via `app_shell(sidebar_collapsible=true)`. `app_shell_layout.html` keeps the sidebar non-collapsible by default; use a custom shell if a layout-based app needs the collapsible variant. Collapsed mode shows icons only; provide `icon` for each `sidebar_link`.
 
 ### Tokens
 

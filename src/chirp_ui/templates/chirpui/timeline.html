@@ -46,7 +46,7 @@
                 <div class="chirpui-timeline__body">{{ item.content }}</div>
                 {% end %}
             </div>
-            {% if item.href %}<a href="{{ item.href }}" class="chirpui-timeline__link-overlay" aria-label="{{ item.title }}"></a>{% end %}
+            {% if item.href %}<a href="{{ item.href }}" class="chirpui-timeline__link-overlay" aria-label="{{ item.title }}"{{ route_link_attrs(item.href) | html_attrs }}></a>{% end %}
         </div>
         {% end %}
     {% else %}
@@ -81,6 +81,6 @@
         <div class="chirpui-timeline__body">{% slot content %}</div>
         {% end %}
     </div>
-    {% if href %}<a href="{{ href }}" class="chirpui-timeline__link-overlay" aria-label="{{ title }}"></a>{% end %}
+    {% if href %}<a href="{{ href }}" class="chirpui-timeline__link-overlay" aria-label="{{ title }}"{{ route_link_attrs(href) | html_attrs }}></a>{% end %}
 </div>
 {% end %}

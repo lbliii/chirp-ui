@@ -13,7 +13,7 @@
 
 {% def video_card(href, thumbnail, duration, title, channel=none, channel_href=none, views=none, date=none, cls="") %}
 <article class="chirpui-video-card{{ " " ~ cls if cls else "" }}">
-    <a href="{{ href }}" class="chirpui-video-card__link">
+    <a href="{{ href }}" class="chirpui-video-card__link"{{ route_link_attrs(href) | html_attrs }}>
         <figure class="chirpui-video-card__thumbnail">
             <img src="{{ thumbnail }}" alt="{{ title }}" loading="lazy">
             <span class="chirpui-video-card__duration">{{ duration }}</span>

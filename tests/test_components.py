@@ -99,6 +99,8 @@ def _stub_route_link_attrs(
     ) -> dict[str, str]:
         if href is None or disabled or external or not boost:
             return {}
+        if isinstance(href, str) and ("://" in href or href.startswith(("#", "//", "mailto:", "tel:", "javascript:", "data:"))):
+            return {}
         if isinstance(attrs_map, dict) and any(str(key).startswith("hx-") for key in attrs_map):
             return {}
         if isinstance(attrs, str) and "hx-" in attrs:
@@ -1016,6 +1018,20 @@ class TestNavTree:
         assert 'href="/docs"' in html
         assert 'aria-current="page"' in html
 
+    def test_nav_tree_links_use_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/", "/docs"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{% call nav_tree(items=[{"title": "Home", "href": "/"}, '
+            '{"title": "Docs", "href": "/docs", "active": True}]) %}'
+            "{% end %}"
+        ).render()
+        assert html.count('hx-target="#site-content"') == 2
+        assert html.count('hx-boost="true"') == 2
+
     def test_nav_tree_nested(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/nav_tree.html" import nav_tree %}'
@@ -1090,6 +1106,29 @@ class TestIndexCard:
         assert "Does something." in html
         assert "chirpui-index-card__badge" in html
         assert "function" in html
+
+    def test_index_card_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/api/foo"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/index_card.html" import index_card %}'
+            '{{ index_card(href="/api/foo", title="foo", description="Does something.", badge="function") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_index_card_external_href_stays_plain(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"https://example.com/api/foo"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/index_card.html" import index_card %}'
+            '{{ index_card(href="https://example.com/api/foo", title="foo") }}'
+        ).render()
+        assert 'href="https://example.com/api/foo"' in html
+        assert 'hx-target=' not in html
 
 
 # ---------------------------------------------------------------------------
@@ -1744,6 +1783,51 @@ class TestCard:
         assert 'href="/tags/demo"' in html
         assert "alias-demo" in html
 
+    def test_card_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/skill/demo"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card_link %}'
+            '{% call card_link("/skill/demo", "Demo") %}'
+            "<p>Description</p>"
+            "{% end %}"
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_card_link_external_href_stays_plain(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"https://example.com/demo"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card_link %}'
+            '{% call card_link("https://example.com/demo", "Demo") %}'
+            "<p>Description</p>"
+            "{% end %}"
+        ).render()
+        assert 'href="https://example.com/demo"' in html
+        assert 'hx-target=' not in html
+
+    def test_card_main_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs(
+                "site-content", hrefs=frozenset({"/skill/demo", "/collections/demo"})
+            ),
+        )
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card_main_link %}'
+            '{% call card_main_link("/skill/demo", "Demo") %}'
+            '{% slot top_meta %}<a href="/collections/demo">demo</a>{% end %}'
+            "<p>Description</p>"
+            "{% end %}"
+        ).render()
+        assert 'href="/skill/demo"' in html
+        assert 'hx-target="#site-content"' in html
+        assert html.count('hx-target="#site-content"') == 1
+
     def test_resource_card_full_link(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/card.html" import resource_card %}'
@@ -1759,6 +1843,38 @@ class TestCard:
         assert "builtin" in html
         assert "::demo" in html
         assert "tag" in html
+
+    def test_resource_card_full_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/skills/demo"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/card.html" import resource_card %}'
+            '{% call resource_card("/skills/demo", "Demo", description="Summary", top_meta="builtin") %}'
+            "{% end %}"
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_resource_card_links_use_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs(
+                "site-content",
+                hrefs=frozenset({"/skills/demo", "/collections/demo"}),
+            ),
+        )
+        html = env.from_string(
+            '{% from "chirpui/card.html" import resource_card %}'
+            '{% call resource_card("/skills/demo", "Demo", description="Summary", top_meta="collection", top_meta_href="/collections/demo", link_mode="main") %}'
+            "{% end %}"
+        ).render()
+        assert 'href="/skills/demo"' in html
+        assert 'href="/collections/demo"' in html
+        assert html.count('hx-target="#site-content"') == 2
+        assert html.count('hx-boost="true"') == 2
 
     def test_resource_card_main_link_keeps_meta_link_separate(self, env: Environment) -> None:
         html = env.from_string(
@@ -1952,6 +2068,19 @@ class TestAlpineMagics:
         assert 'x-ref="panel"' in html
         assert ':data-align-x="alignX"' in html
         assert 'x-data="chirpuiDropdown()"' in html
+
+    def test_dropdown_menu_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/a"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_menu %}'
+            '{{ dropdown_menu("<span>X</span>", items=[{"label": "A", "href": "/a"}]) }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
 
     def test_tabs_panels_emits_dispatch(self, env: Environment) -> None:
         html = env.from_string(
@@ -2299,6 +2428,30 @@ class TestPagination:
         assert "chirpui-pagination" in html
         assert 'aria-label="Pagination"' in html
         assert 'aria-current="page"' in html
+
+    def test_pagination_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs(
+                "site-content",
+                hrefs=frozenset(
+                    {
+                        "/items?page=1",
+                        "/items?page=2",
+                        "/items?page=3",
+                        "/items?page=4",
+                        "/items?page=5",
+                    }
+                ),
+            ),
+        )
+        html = env.from_string(
+            '{% from "chirpui/pagination.html" import pagination %}'
+            "{{ pagination(current=2, total=5,"
+            ' url_pattern="/items?page={page}") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
 
     def test_pagination_hidden_when_single_page(self, env: Environment) -> None:
         html = env.from_string(
@@ -3088,6 +3241,22 @@ class TestNavbar:
         assert 'href="/"' in html
         assert "Docs" in html
 
+    def test_navbar_brand_and_link_use_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/", "/docs"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar, navbar_link %}'
+            '{% call navbar(brand="App", brand_url="/") %}'
+            '{{ navbar_link("/docs", "Docs") }}'
+            "{% end %}"
+        ).render()
+        assert html.count('hx-target="#site-content"') == 2
+        assert html.count('hx-boost="true"') == 2
+
     def test_navbar_link_active(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/navbar.html" import navbar_link %}'
@@ -3396,6 +3565,27 @@ class TestLogo:
         assert '<a class="chirpui-logo' in html
         assert 'href="/"' in html
         assert "</a>" in html
+
+    def test_logo_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/"})))
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(text="Home", image_src="/static/logo.svg", href="/", variant="both") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_logo_external_link_stays_plain(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"https://example.com"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/logo.html" import logo %}'
+            '{{ logo(text="Home", image_src="/static/logo.svg", href="https://example.com", variant="both") }}'
+        ).render()
+        assert 'href="https://example.com"' in html
+        assert 'hx-target=' not in html
 
     def test_logo_image_variant_uses_hidden_text_when_alt_missing(self, env: Environment) -> None:
         html = env.from_string(
@@ -3732,6 +3922,22 @@ class TestTimeline:
         assert "Jan 1" in html
         assert "Done" in html
 
+    def test_timeline_items_link_use_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/detail"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline %}'
+            '{% set items = [{"title": "Step 1", "date": "Jan 1", "content": "Done", "href": "/detail"}] %}'
+            "{{ timeline(items=items) }}"
+        ).render()
+        assert "chirpui-timeline__link-overlay" in html
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
     def test_timeline_item(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/timeline.html" import timeline, timeline_item %}'
@@ -3904,6 +4110,21 @@ class TestSplitButton:
         assert 'href="/save"' in html
         assert "Export" in html
 
+    def test_split_button_primary_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/save"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/split_button.html" import split_button %}'
+            '{% call split_button("Save", primary_href="/save") %}'
+            '<a href="/export">Export</a>'
+            "{% end %}"
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
     def test_split_button_submit(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/split_button.html" import split_button %}'
@@ -4020,6 +4241,28 @@ class TestBadge:
         ).render()
         assert "<a " in html
         assert 'href="/tags/x"' in html
+
+    def test_badge_href_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/tags/x"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/badge.html" import badge %}{{ badge("Tag", href="/tags/x") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_badge_external_href_stays_plain(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"https://example.com/tags/x"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/badge.html" import badge %}'
+            '{{ badge("Tag", href="https://example.com/tags/x") }}'
+        ).render()
+        assert 'href="https://example.com/tags/x"' in html
+        assert 'hx-target=' not in html
 
 
 class TestRevealOnScroll:
@@ -4408,6 +4651,17 @@ class TestMetricGrid:
         assert "chirpui-card--link" in html
         assert "This week" in html
 
+    def test_metric_card_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/status"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value="99.9%", label="Uptime", href="/status", hint="This week") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
     def test_metric_card_attrs_map_on_card(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/metric_grid.html" import metric_card %}'
@@ -4423,6 +4677,17 @@ class TestMetricGrid:
         ).render()
         assert 'id="kpi-link"' in html
         assert 'href="/x"' in html
+
+    def test_metric_card_link_attrs_map_hx_skips_route_link_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/x"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value=1, label="N", href="/x", attrs_map={"hx-target": "#content"}) }}'
+        ).render()
+        assert 'hx-target="#site-content"' not in html
+        assert 'hx-target="#content"' in html
 
 
 class TestConfigCard:
@@ -4521,6 +4786,19 @@ class TestBreadcrumbs:
         assert 'href="/"' in html
         assert 'aria-current="page"' in html
 
+    def test_breadcrumb_links_use_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/", "/docs"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/breadcrumbs.html" import breadcrumbs %}'
+            '{% set items = [{"label": "Home", "href": "/"}, {"label": "Docs", "href": "/docs"}, {"label": "Current"}] %}'
+            "{{ breadcrumbs(items) }}"
+        ).render()
+        assert html.count('hx-target="#site-content"') == 2
+        assert html.count('hx-boost="true"') == 2
+
 
 class TestList:
     def test_list_with_items(self, env: Environment) -> None:
@@ -4554,6 +4832,19 @@ class TestList:
             "{{ list_group(items, bordered=true) }}"
         ).render()
         assert "chirpui-list--bordered" in html
+
+    def test_linked_list_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/a"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/list.html" import list_group %}'
+            '{% set items = [{"label": "A", "href": "/a"}] %}'
+            "{{ list_group(items, linked=true) }}"
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
 
 
 class TestAccordion:
@@ -4795,6 +5086,177 @@ class TestVideoCard:
         assert "4:32" in html
         assert "Test" in html
 
+    def test_video_card_links_use_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/v", "/c"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/video_card.html" import video_card %}'
+            '{{ video_card(href="/v", thumbnail="/t.jpg", duration="4:32", title="Test", channel="Ch", channel_href="/c") }}'
+        ).render()
+        assert 'class="chirpui-video-card__link"' in html
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+
+class TestActionBar:
+    def test_action_bar_item_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/share"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/action_bar.html" import action_bar, action_bar_item %}'
+            "{% call action_bar() %}"
+            '{{ action_bar_item(icon="↗", label="Share", href="/share") }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-action-bar__item" in html
+        assert 'hx-target="#site-content"' in html
+
+
+class TestChannelCard:
+    def test_channel_card_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/channel/1"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/channel_card.html" import channel_card %}'
+            '{{ channel_card(href="/channel/1", name="Dev Channel", subscribers="12.5K") }}'
+        ).render()
+        assert "chirpui-channel-card__link" in html
+        assert 'hx-target="#site-content"' in html
+
+    def test_channel_card_slot_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/channel/1"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/channel_card.html" import channel_card %}'
+            '{% call channel_card(href="/channel/1", name="Dev Channel", use_slots=true) %}'
+            "{% slot body %}<p>Info</p>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-channel-card__link" in html
+        assert 'hx-target="#site-content"' in html
+
+
+class TestProfileHeader:
+    def test_profile_header_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/alice"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/profile_header.html" import profile_header %}'
+            '{% call profile_header(name="Alice", href="/alice", use_slots=true) %}'
+            "{% slot avatar %}<span>A</span>{% end %}"
+            "{% end %}"
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_profile_header_info_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/alice"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/profile_header.html" import profile_header_info %}'
+            '{% call profile_header_info("Alice", href="/alice") %}<p>Bio</p>{% end %}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+
+class TestPostCard:
+    def test_post_card_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/alice"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/post_card.html" import post_card %}'
+            '{% call post_card(name="Alice", handle="@alice", time="2h", href="/alice") %}'
+            "<p>Hello</p>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-post-card__name" in html
+        assert 'hx-target="#site-content"' in html
+
+    def test_post_card_header_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/alice"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/post_card.html" import post_card_header %}'
+            '{% call post_card_header("Alice", href="/alice") %}<span>A</span>{% end %}'
+        ).render()
+        assert "chirpui-post-card__name" in html
+        assert 'hx-target="#site-content"' in html
+
+
+class TestVideoThumbnail:
+    def test_video_thumbnail_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/watch/1"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/video_thumbnail.html" import video_thumbnail %}'
+            '{{ video_thumbnail(href="/watch/1", src="/thumb.jpg", alt="Video title", duration="4:32") }}'
+        ).render()
+        assert "chirpui-video-thumbnail" in html
+        assert 'hx-target="#site-content"' in html
+
+
+class TestMention:
+    def test_mention_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/user/alice"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/mention.html" import mention %}'
+            '{{ mention("alice", href="/user/alice") }}'
+        ).render()
+        assert "chirpui-mention" in html
+        assert 'hx-target="#site-content"' in html
+
+
+class TestTrendingTag:
+    def test_trending_tag_link_uses_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/tag/python"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/trending_tag.html" import trending_tag %}'
+            '{{ trending_tag(tag="python", href="/tag/python", count="12.5K") }}'
+        ).render()
+        assert "chirpui-trending-tag" in html
+        assert 'hx-target="#site-content"' in html
+
 
 # ---------------------------------------------------------------------------
 # CSS file
@@ -4897,6 +5359,40 @@ class TestShimmerButton:
         ).render()
         assert "<a " in html
         assert 'href="/go"' in html
+
+    def test_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/go"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/shimmer_button.html" import shimmer_button %}'
+            '{{ shimmer_button("Link", href="/go") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_link_attrs_map_hx_skips_route_link_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/go"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/shimmer_button.html" import shimmer_button %}'
+            '{{ shimmer_button("Link", href="/go", attrs_map={"hx-target": "#content"}) }}'
+        ).render()
+        assert 'hx-target="#site-content"' not in html
+        assert 'hx-target="#content"' in html
+
+    def test_disabled_link_strips_href_and_route_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/go"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/shimmer_button.html" import shimmer_button %}'
+            '{{ shimmer_button("Link", href="/go", disabled=true) }}'
+        ).render()
+        assert 'href="/go"' not in html
+        assert 'hx-target=' not in html
+        assert 'aria-disabled="true"' in html
 
     def test_type_and_attrs(self, env: Environment) -> None:
         html = env.from_string(
@@ -5132,6 +5628,30 @@ class TestPulsingButton:
         assert "chirpui-pulsing-btn__ring" in html
         assert "Try Now" in html
 
+    def test_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/live"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/pulsing_button.html" import pulsing_button %}'
+            '{{ pulsing_button("Go Live", icon="◎", href="/live") }}'
+        ).render()
+        assert 'href="/live"' in html
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_disabled_link_strips_href_and_route_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/live"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/pulsing_button.html" import pulsing_button %}'
+            '{{ pulsing_button("Go Live", href="/live", disabled=true) }}'
+        ).render()
+        assert 'href="/live"' not in html
+        assert 'hx-target=' not in html
+        assert 'aria-disabled="true"' in html
+
 
 class TestMarquee:
     def test_basic(self, env: Environment) -> None:
@@ -5351,6 +5871,18 @@ class TestDock:
         assert 'aria-label="Home"' in html
         assert 'href="/"' in html
 
+    def test_dock_links_use_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/dock.html" import dock %}'
+            '{{ dock(items=[{"icon": "home", "label": "Home", "href": "/"}]) }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
     def test_glass_variant(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/dock.html" import dock %}'
@@ -5394,6 +5926,56 @@ class TestIconBtn:
         ).render()
         assert "<a " in html
         assert 'href="/next"' in html
+
+    def test_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/next"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{{ icon_btn("→", href="/next", aria_label="Next") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_link_with_explicit_hx_skips_route_link_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/next"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{{ icon_btn("→", href="/next", aria_label="Next", hx_get="/next", hx_target="#content") }}'
+        ).render()
+        assert 'hx-target="#site-content"' not in html
+        assert 'hx-target="#content"' in html
+        assert 'hx-get="/next"' in html
+        assert 'hx-boost="false"' in html
+        assert 'hx-select="unset"' in html
+
+    def test_external_link_stays_plain(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"https://example.com/next"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{{ icon_btn("→", href="https://example.com/next", aria_label="Next") }}'
+        ).render()
+        assert 'href="https://example.com/next"' in html
+        assert 'hx-target=' not in html
+
+    def test_disabled_link_strips_href_and_htmx(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/next"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{{ icon_btn("→", href="/next", aria_label="Next", hx_get="/next", disabled=true) }}'
+        ).render()
+        assert 'href="/next"' not in html
+        assert 'hx-get="/next"' not in html
+        assert 'hx-target=' not in html
+        assert 'aria-disabled="true"' in html
 
 
 class TestSegmentedControl:
@@ -5493,6 +6075,19 @@ class TestTimelineEnhanced:
         assert "chirpui-timeline__link-overlay" in html
         assert 'href="/detail"' in html
 
+    def test_link_item_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/detail"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline_item %}'
+            '{{ timeline_item("Click", "Jan 1", href="/detail") }}'
+        ).render()
+        assert "chirpui-timeline__link-overlay" in html
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
     def test_time_column(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/timeline.html" import timeline_item %}'
@@ -5550,6 +6145,17 @@ class TestMetricCardEnhanced:
         ).render()
         assert "chirpui-metric-card__footer" in html
         assert 'href="/reports"' in html
+
+    def test_footer_link_uses_route_link_attrs_when_available(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs", _stub_route_link_attrs("site-content", hrefs=frozenset({"/reports"}))
+        )
+        html = env.from_string(
+            '{% from "chirpui/metric_grid.html" import metric_card %}'
+            '{{ metric_card(value="72", label="Tasks", footer_label="View reports", footer_href="/reports") }}'
+        ).render()
+        assert "chirpui-metric-card__footer" in html
+        assert 'hx-target="#site-content"' in html
 
 
 # ==========================================================================
@@ -5901,6 +6507,20 @@ class TestPreHydrationSafety:
         ).render()
         assert "x-cloak" in html
         assert 'x-data="chirpuiDropdown()"' in html
+
+    def test_dropdown_split_links_use_route_link_attrs_when_available(
+        self, env: Environment
+    ) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/go", "/x"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_split %}'
+            '{{ dropdown_split("Go", primary_href="/go", items=[{"label": "X", "href": "/x"}]) }}'
+        ).render()
+        assert html.count('hx-target="#site-content"') == 2
+        assert html.count('hx-boost="true"') == 2
 
     def test_copy_button_copied_span_has_x_cloak(self, env: Environment) -> None:
         html = env.from_string(

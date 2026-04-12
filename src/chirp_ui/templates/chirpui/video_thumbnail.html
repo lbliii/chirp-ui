@@ -11,7 +11,7 @@
 {% def video_thumbnail(href=none, src="", alt="", duration=none, watched_pct=none, cls="") %}
 {% set tag = "a" if href else "figure" %}
 {% if href %}
-<a href="{{ href }}" class="chirpui-video-thumbnail{{ " " ~ cls if cls else "" }}">
+<a href="{{ href }}" class="chirpui-video-thumbnail{{ " " ~ cls if cls else "" }}"{{ route_link_attrs(href) | html_attrs }}>
 {% else %}
 <figure class="chirpui-video-thumbnail{{ " " ~ cls if cls else "" }}">
 {% end %}

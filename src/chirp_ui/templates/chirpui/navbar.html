@@ -32,7 +32,7 @@
 {% provide _nav_current_path = current_path %}
 <nav class="chirpui-navbar{{ " " ~ cls if cls else "" }}">
     {% if brand or brand_slot %}
-    <a class="chirpui-navbar__brand" href="{{ brand_url }}">
+    <a class="chirpui-navbar__brand" href="{{ brand_url }}"{{ route_link_attrs(brand_url) | html_attrs }}>
         {% if brand_slot %}
         {% slot brand %}
         {% else %}
@@ -56,7 +56,7 @@
 {% set _cp = (consume("_nav_current_path", "") or (current_path | default(""))) if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <a class="chirpui-navbar__link{{ " chirpui-navbar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
-   href="{{ href }}"{% if _active %} aria-current="page"{% end %}>{{ label }}</a>
+   href="{{ href }}"{% if _active %} aria-current="page"{% end %}{{ route_link_attrs(href) | html_attrs }}>{{ label }}</a>
 {% end %}
 
 {% def navbar_end(cls="") %}

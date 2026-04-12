@@ -16,11 +16,13 @@
 {% set variant_class = " chirpui-shimmer-btn--" ~ variant if variant else "" %}
 {% set size_class = " chirpui-shimmer-btn--" ~ size if size else "" %}
 {% set base = "chirpui-shimmer-btn" ~ variant_class ~ size_class ~ (" " ~ cls if cls else "") %}
+{% set _route_attrs = route_link_attrs(href, disabled=disabled, attrs=attrs, attrs_map=attrs_map) if href else {} %}
 {% if href %}
-<a href="{{ href }}" class="{{ base }}"
+<a{% if not disabled %} href="{{ href }}"{% end %} class="{{ base }}"
    {% if disabled %}aria-disabled="true" tabindex="-1"{% end %}
    {{ attrs | html_attrs }}
-   {{ attrs_map | html_attrs }}>
+   {{ attrs_map | html_attrs }}
+   {{ _route_attrs | html_attrs }}>
     <span class="chirpui-shimmer-btn__shimmer" aria-hidden="true"></span>
     {% if icon %}<span class="chirpui-shimmer-btn__icon">{{ icon | icon }}</span>{% end %}
     {{ text }}

@@ -17,6 +17,7 @@
         enable sidebar_collapsible=true for the resizable shell variant
 -#}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
+{% from "chirpui/shell_frame.html" import shell_runtime_script %}
 
 {% def app_shell(brand="", brand_url="/", brand_slot=false, brand_boost=true, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, cls="") %}
 {% set topbar_variant = topbar_variant | validate_variant(("default","glass","gradient"), "default") %}
@@ -70,4 +71,5 @@
     {#- No whitespace before/after slot: stray text nodes inside grid main break layout/scroll. -#}
     <main id="main" class="chirpui-app-shell__main" data-chirp-scroll="auto" tabindex="-1">{%- slot -%}</main>
 </div>
+{{ shell_runtime_script() }}
 {% end %}

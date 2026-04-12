@@ -103,8 +103,18 @@ use_chirp_ui(app, prefix="/static")  # Before any render
 
 When `use_chirp_ui(app)` is active, selected link-bearing components auto-apply
 Chirp's route-aware swap attrs for internal links. That includes `btn()`,
-`site_header()` brand links, `site_nav_link()`, `footer_link()`, `app_shell()`
-brand links, and `shell_brand_link()`.
+`shimmer_button()`, `pulsing_button()`, `site_header()` brand links,
+`site_nav_link()`, `footer_link()`, `app_shell()` brand links,
+`shell_brand_link()`, `navbar()` brand links, `navbar_link()`,
+`breadcrumbs()`, `pagination()`, `nav_tree()`, `dock()`, `timeline()`,
+`timeline_item()`, `logo()`, `badge()`, `card_link()`, `card_main_link()`,
+`resource_card()`, `icon_btn()`, `index_card()`, `metric_card()`,
+`split_button()` primary links, `dropdown_menu()` item links,
+`dropdown_split()` primary/item links, `action_bar_item()`,
+`list_group(linked=true)`, `video_card()` main link, `channel_card()`,
+`profile_header()` name links, `profile_header_info()`, `post_card()`,
+`post_card_header()`, `video_thumbnail()`, `mention()`, and
+`trending_tag()`.
 
 Use plain `href=` first:
 
@@ -115,7 +125,18 @@ Use plain `href=` first:
 ```
 
 Do not manually thread `swap_attrs()` into those components unless you need a
-special override. External links and explicit `hx-*` args still win.
+special override. External links and explicit `hx-*` args still win. This only
+applies to links owned by the component itself, not arbitrary raw `<a>` tags
+you pass through a slot. For example, `split_button()` upgrades its
+`primary_href`, but not arbitrary menu links you slot into the dropdown body,
+and `navbar_dropdown()` still leaves its slotted menu links alone. Simpler
+wrappers like `logo()`, `badge()`, `breadcrumbs()`, `dock()`, `nav_tree()`,
+`list_group(linked=true)`, `video_thumbnail()`, `mention()`,
+`trending_tag()`, `index_card()`, `pulsing_button()`, and the link-card macros
+do not expose `hx_*` / `attrs_map` overrides on their outer anchor; when you
+need custom HTMX on that element, use raw link markup or a component like
+`btn()`, `icon_btn()`, `shimmer_button()`, `metric_card()`, or `pagination()`
+that exposes those knobs.
 
 ---
 
@@ -181,6 +202,6 @@ When a macro and a context variable have the same name (e.g. both `route_tabs`),
 {% end %}
 ```
 
-| Macros | Context variables |
-|--------|-------------------|
-| `render_route_tabs`, `format_date`, `render_nav` | `route_tabs`, `items`, `skills` |
+Macros: `render_route_tabs`, `format_date`, `render_nav`
+
+Context variables: `route_tabs`, `items`, `skills`

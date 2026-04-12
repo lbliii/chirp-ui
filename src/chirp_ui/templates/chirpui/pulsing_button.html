@@ -12,8 +12,11 @@
 {% set variant = variant | validate_variant(("", "default", "primary", "success", "danger"), "") %}
 {% set variant_class = " chirpui-pulsing-btn--" ~ variant if variant else "" %}
 {% set base = "chirpui-pulsing-btn" ~ variant_class ~ (" " ~ cls if cls else "") %}
+{% set _route_attrs = route_link_attrs(href, disabled=disabled) if href else {} %}
 {% if href %}
-<a href="{{ href }}" class="{{ base }}">
+<a{% if not disabled %} href="{{ href }}"{% end %} class="{{ base }}"
+   {% if disabled %}aria-disabled="true" tabindex="-1"{% end %}
+   {{ _route_attrs | html_attrs }}>
     <span class="chirpui-pulsing-btn__ring" aria-hidden="true"></span>
     {% if icon %}<span class="chirpui-pulsing-btn__icon">{{ icon | icon }}</span>{% end %}
     {{ text }}

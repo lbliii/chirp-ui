@@ -21,6 +21,8 @@ Default mode is now browser-native: the document scrolls, while `#page-content` 
 
    (Leading space is optional; the block is appended to the base `chirpui-app-shell__main` class.)
 
+   If you build a custom shell with `app_shell()`, wrap routed content with `shell_outlet()` so the same `#page-content` fill contract exists inside `<main>`.
+
 2. Wrap your route body in a single root that uses **`chirpui-page-fill`** as a class on the **direct child of `#page-content`**:
 
    ```html

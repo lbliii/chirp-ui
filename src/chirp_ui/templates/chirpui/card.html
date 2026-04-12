@@ -99,7 +99,7 @@
    Named slots: header_badge (top-left chip/badge), header_subtitle (beneath title, e.g. aliases),
    footer (below hr, e.g. tags), default (body). #}
 {% def card_link(href, title, cls="") %}
-<a href="{{ href }}" class="chirpui-card chirpui-card--link{{ " " ~ cls if cls else "" }}">
+<a href="{{ href }}" class="chirpui-card chirpui-card--link{{ " " ~ cls if cls else "" }}"{{ route_link_attrs(href) | html_attrs }}>
     <header class="chirpui-card__header">
         <div class="chirpui-card__header-badges">{% slot header_badge %}</div>
         <div class="chirpui-card__header-content">
@@ -119,7 +119,7 @@
 {% def card_main_link(href, title, cls="") %}
 <article class="chirpui-card chirpui-card--linked{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-card__top-meta">{% slot top_meta %}</div>
-    <a href="{{ href }}" class="chirpui-card__main-link">
+    <a href="{{ href }}" class="chirpui-card__main-link"{{ route_link_attrs(href) | html_attrs }}>
         <header class="chirpui-card__header">
             <div class="chirpui-card__header-badges">{% slot header_badge %}</div>
             <div class="chirpui-card__header-content">
@@ -145,13 +145,13 @@
     {% if top_meta %}
     <div class="chirpui-card__top-meta">
         {% if top_meta_href %}
-        <a href="{{ top_meta_href }}" class="chirpui-font-xs chirpui-text-muted chirpui-font-mono"{% if top_meta_title %} title="{{ top_meta_title }}"{% endif %}>{{ top_meta }}</a>
+        <a href="{{ top_meta_href }}" class="chirpui-font-xs chirpui-text-muted chirpui-font-mono"{% if top_meta_title %} title="{{ top_meta_title }}"{% endif %}{{ route_link_attrs(top_meta_href) | html_attrs }}>{{ top_meta }}</a>
         {% else %}
         <span class="chirpui-font-xs chirpui-text-muted chirpui-font-mono">{{ top_meta }}</span>
         {% endif %}
     </div>
     {% endif %}
-    <a href="{{ href }}" class="chirpui-card__main-link">
+    <a href="{{ href }}" class="chirpui-card__main-link"{{ route_link_attrs(href) | html_attrs }}>
         <header class="chirpui-card__header">
             <div class="chirpui-card__header-badges">{% slot badges %}</div>
             <div class="chirpui-card__header-content">
@@ -167,7 +167,7 @@
     <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
 </article>
 {% else %}
-<a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-resource-card{{ " " ~ cls if cls else "" }}">
+<a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-resource-card{{ " " ~ cls if cls else "" }}"{{ route_link_attrs(href) | html_attrs }}>
     {% if top_meta %}
     <div class="chirpui-card__top-meta">
         <span class="chirpui-font-xs chirpui-text-muted chirpui-font-mono"{% if top_meta_title %} title="{{ top_meta_title }}"{% endif %}>{{ top_meta }}</span>

@@ -39,6 +39,7 @@
         {% set icon = item.get("icon", "") %}
         {% if href %}
         <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ href }}" role="menuitem"
+           {{ route_link_attrs(href) | html_attrs }}
            @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', href: '{{ href | e }}' })">
             {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
             {{ item.get("label", "") }}
@@ -122,7 +123,7 @@
      @click.outside="close($refs.trigger)"
      @resize.window="open && reposition()">
     {% if primary_href %}
-    <a href="{{ primary_href }}" class="chirpui-dropdown__split-primary chirpui-btn chirpui-btn--primary chirpui-btn--sm">
+    <a href="{{ primary_href }}" class="chirpui-dropdown__split-primary chirpui-btn chirpui-btn--primary chirpui-btn--sm"{{ route_link_attrs(primary_href) | html_attrs }}>
         {% if icon %}<span aria-hidden="true">{{ icon }}</span>{% endif %}
         {{ primary_label }}
     </a>
@@ -146,10 +147,12 @@
         {% if item.get("divider") %}
         <div class="chirpui-dropdown__divider" role="separator"></div>
         {% else %}
+        {% set item_href = item.get("href") %}
         {% set variant = item.get("variant", "default") | validate_variant_block("dropdown__item", "default") %}
-        {% if item.get("href") %}
-        <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ item.get('href') }}" role="menuitem"
-           @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', href: '{{ item.get("href", "") | e }}' })">
+        {% if item_href %}
+        <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ item_href }}" role="menuitem"
+           {{ route_link_attrs(item_href) | html_attrs }}
+           @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', href: '{{ item_href | e }}' })">
             {% if item.get("icon") %}<span class="chirpui-dropdown__icon">{{ item.get("icon") }}</span>{% endif %}
             {{ item.get("label", "") }}
         </a>

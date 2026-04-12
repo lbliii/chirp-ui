@@ -13,15 +13,18 @@
 <nav class="chirpui-pagination{{ " " ~ cls if cls else "" }}" aria-label="Pagination">
     {# Previous #}
     {% if current > 1 %}
+        {% set _prev_url = url_pattern | replace("{page}", (current - 1) | string) %}
         <a class="chirpui-pagination__link chirpui-pagination__prev"
-           href="{{ url_pattern | replace("{page}", (current - 1) | string) }}"
+           href="{{ _prev_url }}"
            {% if hx_target %}
                hx-boost="false"
-               hx-get="{{ url_pattern | replace("{page}", (current - 1) | string) }}"
+               hx-get="{{ _prev_url }}"
                hx-target="{{ hx_target }}"
                hx-swap="{{ hx_swap }}"
                {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
                {% if hx_push_url %}hx-push-url="true"{% end %}
+           {% else %}
+               {{ route_link_attrs(_prev_url) | html_attrs }}
            {% end %}
            aria-label="Previous page">&laquo;</a>
     {% else %}
@@ -35,15 +38,18 @@
             <span class="chirpui-pagination__link chirpui-pagination__link--active"
                   aria-current="page">{{ page }}</span>
         {% elif page == 1 or page == total or (page >= current - window and page <= current + window) %}
+            {% set _page_url = url_pattern | replace("{page}", page | string) %}
             <a class="chirpui-pagination__link"
-               href="{{ url_pattern | replace("{page}", page | string) }}"
+               href="{{ _page_url }}"
                {% if hx_target %}
                    hx-boost="false"
-                   hx-get="{{ url_pattern | replace("{page}", page | string) }}"
+                   hx-get="{{ _page_url }}"
                    hx-target="{{ hx_target }}"
                    hx-swap="{{ hx_swap }}"
                    {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
                    {% if hx_push_url %}hx-push-url="true"{% end %}
+               {% else %}
+                   {{ route_link_attrs(_page_url) | html_attrs }}
                {% end %}>{{ page }}</a>
         {% elif page == current - window - 1 or page == current + window + 1 %}
             <span class="chirpui-pagination__ellipsis">&hellip;</span>
@@ -52,15 +58,18 @@
 
     {# Next #}
     {% if current < total %}
+        {% set _next_url = url_pattern | replace("{page}", (current + 1) | string) %}
         <a class="chirpui-pagination__link chirpui-pagination__next"
-           href="{{ url_pattern | replace("{page}", (current + 1) | string) }}"
+           href="{{ _next_url }}"
            {% if hx_target %}
                hx-boost="false"
-               hx-get="{{ url_pattern | replace("{page}", (current + 1) | string) }}"
+               hx-get="{{ _next_url }}"
                hx-target="{{ hx_target }}"
                hx-swap="{{ hx_swap }}"
                {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
                {% if hx_push_url %}hx-push-url="true"{% end %}
+           {% else %}
+               {{ route_link_attrs(_next_url) | html_attrs }}
            {% end %}
            aria-label="Next page">&raquo;</a>
     {% else %}
