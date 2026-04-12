@@ -105,7 +105,8 @@
 
     function register(name, factory) {
         if (window.Alpine && window.Alpine.version) {
-            window.Alpine.data(name, factory);
+            var reg = window.Alpine.safeData || window.Alpine.data;
+            reg(name, factory);
             return;
         }
         if (typeof window._chirpAlpineData === "function") {
@@ -115,8 +116,9 @@
         document.addEventListener(
             "alpine:init",
             function () {
-                if (window.Alpine && window.Alpine.data) {
-                    window.Alpine.data(name, factory);
+                if (window.Alpine) {
+                    var reg = window.Alpine.safeData || window.Alpine.data;
+                    reg(name, factory);
                 }
             },
             { once: true }
