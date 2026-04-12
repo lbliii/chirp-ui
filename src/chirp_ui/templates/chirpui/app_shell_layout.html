@@ -29,9 +29,10 @@
     when use_chirp_ui() is called.  This layout does NOT load Alpine itself —
     Chirp is the single authority for Alpine injection.
 
-    Full-height main (chat, maps): override {% block main_shell_class %} with
-    chirpui-app-shell__main--fill so #page-content receives flex:1 and inner
-    panels handle scroll. See docs/LAYOUT-VERTICAL.md.
+    Default app shells use document scrolling. Full-height main (chat, maps):
+    override {% block main_shell_class %} with chirpui-app-shell__main--fill so
+    #page-content receives flex:1 and inner panels handle bounded scroll below
+    the sticky topbar. See docs/LAYOUT-VERTICAL.md.
 
     HTMX: primary #main swap runs before out-of-band fragments; a beforeSwap
     handler clears #chirp-shell-actions when the response includes shell-actions
@@ -74,7 +75,7 @@
      x-data="chirpuiSidebar({ collapsible: {{ 'true' if _collapsible else 'false' }}, resizable: false })"
      x-init="init()"
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsible && collapsed }">
-  <header class="chirpui-app-shell__topbar">
+  <header class="chirpui-app-shell__topbar" data-chirpui-shell-topbar>
     {% if _collapsible %}<div class="chirpui-app-shell__topbar-start">{{ sidebar_toggle() }}</div>{% endif %}
     {% block brand_link %}
     {% call shell_brand_link() %}
@@ -92,7 +93,8 @@
     </div>
   </header>
   <aside class="chirpui-app-shell__sidebar">{% block sidebar %}{% end %}</aside>
-  <main id="main" class="chirpui-app-shell__main{% block main_shell_class %}{% end %}" tabindex="-1"
+  <main id="main" class="chirpui-app-shell__main{% block main_shell_class %}{% end %}"
+        data-chirp-scroll="auto" tabindex="-1"
         {{ shell_outlet_attrs() }}>
     {% call shell_outlet(include_boost_attrs=false) %}
       {% block content %}{% end %}
@@ -136,17 +138,155 @@ document.body.addEventListener("htmx:configRequest", function(event) {
     if (shell) shell.replaceChildren();
   });
 })();
-document.body.addEventListener("htmx:afterSwap", function(e) {
-  var t = e.detail && e.detail.target;
-  if (t && t.id === "main") { t.scrollTo({top: 0}); }
-});
-document.body.addEventListener("htmx:afterSettle", function(e) {
-  var t = e.detail && e.detail.target;
-  if (!t || t.id !== "main") return;
-  t.focus({preventScroll: true});
-  var pc = document.getElementById("page-content");
-  if (pc) { t.classList.toggle("chirpui-app-shell__main--fill", !!pc.querySelector(":scope > .chirpui-page-fill")); }
-});
+(function () {
+  var SCROLL_STATE = "__chirpuiShellScrollState";
+  var historyRestorePending = false;
+
+  function getMainTarget(detail) {
+    var target = detail && detail.target;
+    return target && target.id === "main" ? target : null;
+  }
+
+  function parseUrl(value) {
+    if (!value) return null;
+    try {
+      return new URL(value, window.location.href);
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function getRequestedUrl(detail) {
+    var trigger = detail && (detail.elt || (detail.requestConfig && detail.requestConfig.elt));
+    if (trigger && trigger.getAttribute) {
+      var href = trigger.getAttribute("href")
+        || trigger.getAttribute("hx-get")
+        || trigger.getAttribute("data-hx-get");
+      var parsedHref = parseUrl(href);
+      if (parsedHref) return parsedHref;
+    }
+    var pathInfo = detail && detail.pathInfo;
+    var parsedPath = parseUrl(
+      pathInfo && (pathInfo.finalRequestPath || pathInfo.requestPath || pathInfo.path)
+    );
+    if (parsedPath) return parsedPath;
+    var xhr = detail && detail.xhr;
+    var parsedResponse = parseUrl(xhr && xhr.responseURL);
+    return parsedResponse;
+  }
+
+  function resolveScrollMode(detail, requestedUrl) {
+    var main = getMainTarget(detail);
+    if (!main) return "preserve";
+    var trigger = detail && (detail.elt || (detail.requestConfig && detail.requestConfig.elt));
+    var override = trigger && trigger.getAttribute ? trigger.getAttribute("data-chirp-scroll") : null;
+    var currentUrl = parseUrl(window.location.href);
+    if (!override) override = main.getAttribute("data-chirp-scroll") || "auto";
+    if (override !== "auto") return override;
+    if (historyRestorePending) return "preserve";
+    if (requestedUrl && requestedUrl.hash) return "anchor";
+    if (!currentUrl || !requestedUrl) return "preserve";
+    return currentUrl.pathname !== requestedUrl.pathname || currentUrl.search !== requestedUrl.search
+      ? "top"
+      : "preserve";
+  }
+
+  function storeScrollState(detail) {
+    var main = getMainTarget(detail);
+    if (!main) return;
+    var requestedUrl = getRequestedUrl(detail) || parseUrl(window.location.href);
+    main[SCROLL_STATE] = {
+      mode: resolveScrollMode(detail, requestedUrl),
+      hash: requestedUrl && requestedUrl.hash ? requestedUrl.hash : "",
+      historyRestore: historyRestorePending,
+    };
+    historyRestorePending = false;
+  }
+
+  function readScrollState(main) {
+    var state = main && main[SCROLL_STATE];
+    if (main) delete main[SCROLL_STATE];
+    return state || { mode: "preserve", hash: "", historyRestore: false };
+  }
+
+  function syncShellOffset() {
+    var topbar = document.querySelector("[data-chirpui-shell-topbar]");
+    if (!topbar) return;
+    var height = Math.ceil(topbar.getBoundingClientRect().height);
+    document.documentElement.style.setProperty("--chirpui-shell-offset-top", height + "px");
+  }
+
+  function syncFillMode(main) {
+    if (!main || main.id !== "main") return;
+    var pageContent = document.getElementById("page-content");
+    var hasFill = !!(pageContent && pageContent.querySelector(":scope > .chirpui-page-fill"));
+    main.classList.toggle("chirpui-app-shell__main--fill", hasFill);
+  }
+
+  function scrollDocumentToTop() {
+    window.scrollTo({ top: 0, left: 0 });
+  }
+
+  function scrollToHash(hash) {
+    if (!hash) return;
+    var hashId = hash.charAt(0) === "#" ? hash.slice(1) : hash;
+    try {
+      hashId = decodeURIComponent(hashId);
+    } catch (_error) {
+      // Keep the original fragment when it is not URI-encoded.
+    }
+    var target = document.getElementById(hashId);
+    if (!target) {
+      try {
+        target = document.querySelector(hash);
+      } catch (_error) {
+        target = null;
+      }
+    }
+    if (!target) return;
+    window.requestAnimationFrame(function () {
+      target.scrollIntoView({ block: "start" });
+    });
+  }
+
+  function syncShellGeometry() {
+    syncShellOffset();
+    syncFillMode(document.getElementById("main"));
+  }
+
+  if (window.ResizeObserver) {
+    var topbar = document.querySelector("[data-chirpui-shell-topbar]");
+    if (topbar) {
+      var observer = new ResizeObserver(syncShellOffset);
+      observer.observe(topbar);
+    }
+  } else {
+    window.addEventListener("resize", syncShellOffset);
+  }
+
+  window.addEventListener("load", syncShellGeometry);
+  document.body.addEventListener("htmx:historyRestore", function () {
+    historyRestorePending = true;
+  });
+  document.body.addEventListener("htmx:beforeRequest", storeScrollState);
+  document.body.addEventListener("htmx:afterSwap", function (e) {
+    var main = getMainTarget(e.detail);
+    if (!main) return;
+    var state = readScrollState(main);
+    historyRestorePending = false;
+    main[SCROLL_STATE] = state;
+    if (state.mode === "top") scrollDocumentToTop();
+  });
+  document.body.addEventListener("htmx:afterSettle", function (e) {
+    var main = getMainTarget(e.detail);
+    if (!main) return;
+    var state = readScrollState(main);
+    syncShellGeometry();
+    if (state.mode === "anchor") scrollToHash(state.hash || window.location.hash);
+    main.focus({ preventScroll: true });
+  });
+  syncShellGeometry();
+})();
 </script>
 {{ toast_container() }}
 {% block page_scripts %}{% end %}

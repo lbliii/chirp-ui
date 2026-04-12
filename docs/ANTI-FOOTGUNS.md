@@ -12,6 +12,14 @@ The main column (`.chirpui-app-shell__main`) uses **`min-width: 0`** and **`over
 
 ---
 
+## App shell scroll model
+
+Default app shells scroll with the **document**, not with `#main`. If you reintroduce `height: 100dvh` plus `overflow-y: auto` on `.chirpui-app-shell__main`, you break sticky-topbar expectations, anchor landings, and browser history restoration.
+
+**Fix:** Keep default routes in document-scroll mode. Only opt into **`chirpui-app-shell__main--fill`** when the route intentionally needs bounded inner scroll (chat, map, IDE-style layouts). Pair that with a direct `#page-content > .chirpui-page-fill` root so the shell can re-sync fill mode after boosted navigation. See [LAYOUT-VERTICAL.md](LAYOUT-VERTICAL.md).
+
+---
+
 ## Fragment Island and HTMX
 
 ### `hx-target` must match island ID

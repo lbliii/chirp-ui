@@ -7,6 +7,15 @@ from tests.browser.conftest import wait_for_alpine, wait_for_htmx
 pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
 
+async def _scroll_document(page, top: int) -> None:
+    await page.evaluate("value => window.scrollTo({ top: value, left: 0 })", top)
+    await page.wait_for_timeout(100)
+
+
+async def _document_scroll_y(page) -> float:
+    return await page.evaluate("window.scrollY")
+
+
 async def test_initial_page_renders_shell(page, base_url):
     """Full page load renders the app shell with sidebar + main."""
     await page.goto(base_url + "/")
@@ -64,30 +73,81 @@ async def test_back_button_restores_previous_page(page, base_url):
     """Browser back button restores the previous page content."""
     await page.goto(base_url + "/")
     await wait_for_alpine(page)
+    await _scroll_document(page, 900)
 
     await page.click("a[href='/page-b']")
     await wait_for_htmx(page)
     assert await page.text_content("[data-testid='page-heading']") == "Page B"
+    assert await _document_scroll_y(page) < 5
 
     await page.go_back()
     await page.wait_for_selector("[data-testid='page-heading']")
+    await page.wait_for_timeout(150)
     heading = await page.text_content("[data-testid='page-heading']")
     assert heading == "Home"
+    assert await _document_scroll_y(page) > 400
 
 
-async def test_main_scrolls_to_top_after_swap(page, base_url):
-    """After boosted nav, #main scrolls to top (htmx:afterSwap handler)."""
+async def test_topbar_stays_sticky_during_document_scroll(page, base_url):
+    """The topbar remains pinned to the viewport during document scroll."""
     await page.goto(base_url + "/")
     await wait_for_alpine(page)
+    await _scroll_document(page, 900)
 
-    # Scroll main down
-    await page.evaluate("document.getElementById('main').scrollTop = 100")
+    box = await page.locator(".chirpui-app-shell__topbar").bounding_box()
+    assert box is not None
+    assert abs(box["y"]) < 1
+
+
+async def test_new_route_boosted_nav_scrolls_document_to_top(page, base_url):
+    """New-route boosted nav resets document scroll, not an inner shell scrollport."""
+    await page.goto(base_url + "/")
+    await wait_for_alpine(page)
+    await _scroll_document(page, 900)
 
     await page.click("a[href='/page-b']")
     await wait_for_htmx(page)
 
-    scroll_top = await page.evaluate("document.getElementById('main').scrollTop")
-    assert scroll_top == 0
+    assert await _document_scroll_y(page) < 5
+
+
+async def test_same_route_boosted_refresh_preserves_document_scroll(page, base_url):
+    """Same-route boosted swaps preserve the current document scroll position."""
+    await page.goto(base_url + "/page-b")
+    await wait_for_alpine(page)
+    await _scroll_document(page, 800)
+
+    await page.click("[data-testid='refresh-page-b']")
+    await wait_for_htmx(page)
+
+    assert await page.text_content("[data-testid='page-heading']") == "Page B"
+    assert await _document_scroll_y(page) > 600
+
+
+async def test_hash_navigation_lands_below_sticky_topbar(page, base_url):
+    """Hash-based boosted nav scrolls the anchor below the sticky shell offset."""
+    await page.goto(base_url + "/")
+    await wait_for_alpine(page)
+
+    await page.click("[data-testid='page-b-anchor-link']")
+    await wait_for_htmx(page)
+    await page.wait_for_timeout(150)
+
+    assert page.url.endswith("/page-b#page-b-anchor")
+    metrics = await page.evaluate(
+        """() => {
+            const topbar = document.querySelector(".chirpui-app-shell__topbar");
+            const anchor = document.getElementById("page-b-anchor");
+            return {
+                topbarBottom: topbar ? topbar.getBoundingClientRect().bottom : null,
+                anchorTop: anchor ? anchor.getBoundingClientRect().top : null,
+            };
+        }"""
+    )
+    assert metrics["topbarBottom"] is not None
+    assert metrics["anchorTop"] is not None
+    assert metrics["anchorTop"] >= metrics["topbarBottom"] - 1
+    assert metrics["anchorTop"] < metrics["topbarBottom"] + 64
 
 
 async def test_main_receives_focus_after_swap(page, base_url):

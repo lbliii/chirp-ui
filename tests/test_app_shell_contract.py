@@ -17,5 +17,7 @@ APP_SHELL = (
 def test_app_shell_layout_has_main_and_page_content_contract() -> None:
     text = APP_SHELL.read_text(encoding="utf-8")
     assert 'id="main"' in text
+    assert 'data-chirp-scroll="auto"' in text
+    assert "data-chirpui-shell-topbar" in text
     assert "shell_outlet(include_boost_attrs=false)" in text
     assert "shell_outlet_attrs()" in text

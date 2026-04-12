@@ -19,4 +19,9 @@
 {% block content %}
 <h1 data-testid="page-heading">Home</h1>
 <p data-testid="page-content">Welcome to the test app.</p>
+<p>
+  <a href="/page-b#page-b-anchor" data-testid="page-b-anchor-link">Jump to Page B anchor</a>
+</p>
+<div style="height: 160vh" data-testid="home-scroll-spacer" aria-hidden="true"></div>
+<p id="home-bottom" data-testid="home-bottom">Bottom of home.</p>
 {% end %}

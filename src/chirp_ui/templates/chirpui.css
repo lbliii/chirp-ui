@@ -9726,6 +9726,14 @@ a.chirpui-badge--custom-solid:hover {
    children to allow shrinking; topbar needs nowrap + topbar-end needs flex
    layout; breadcrumbs in topbar must not wrap or topbar grows vertically. */
 
+:root {
+    --chirpui-shell-offset-top: 0px;
+}
+
+html {
+    scroll-padding-top: var(--chirpui-shell-offset-top);
+}
+
 body:has(> .chirpui-app-shell) {
     margin: 0;
 }
@@ -9735,8 +9743,11 @@ body:has(> .chirpui-app-shell) {
     grid-template-columns: var(--chirpui-sidebar-width, 16rem) 1fr;
     grid-template-rows: auto 1fr;
     grid-template-areas: "topbar topbar" "sidebar main";
-    height: 100dvh;
-    overflow: hidden;
+    min-height: 100dvh;
+}
+
+.chirpui-app-shell :where([id]) {
+    scroll-margin-top: calc(var(--chirpui-shell-offset-top) + var(--chirpui-spacing-sm));
 }
 
 .chirpui-app-shell__topbar {
@@ -9851,8 +9862,11 @@ body:has(> .chirpui-app-shell) {
 
 .chirpui-app-shell__sidebar {
     grid-area: sidebar;
-    position: relative;
+    position: sticky;
+    top: var(--chirpui-shell-offset-top);
+    align-self: start;
     min-height: 0;
+    max-height: calc(100dvh - var(--chirpui-shell-offset-top));
     overflow-y: auto;
     overscroll-behavior: contain;
     border-right: 1px solid var(--chirpui-border);
@@ -9985,8 +9999,6 @@ body:has(> .chirpui-app-shell) {
     min-height: 0;
     min-width: 0;
     overflow-x: clip;
-    overflow-y: auto;
-    overscroll-behavior: contain;
     padding: var(--chirpui-spacing-lg);
 }
 
@@ -9995,7 +10007,7 @@ body:has(> .chirpui-app-shell) {
 .chirpui-app-shell__main--fill {
     display: flex;
     flex-direction: column;
-    min-height: 0;
+    min-height: calc(100dvh - var(--chirpui-shell-offset-top));
     overflow: hidden;
     padding: 0;
 }
@@ -10016,7 +10028,7 @@ body:has(> .chirpui-app-shell) {
 }
 
 .chirpui-app-shell__main--fill::before {
-    top: 0;
+    top: var(--chirpui-shell-offset-top);
     margin-inline: 0;
 }
 
@@ -10026,7 +10038,7 @@ body:has(> .chirpui-app-shell) {
 .chirpui-app-shell__main::before {
     content: "";
     position: sticky;
-    top: calc(-1 * var(--chirpui-spacing-lg));
+    top: var(--chirpui-shell-offset-top);
     left: 0;
     right: 0;
     display: block;

@@ -33,11 +33,11 @@ category: app-shell
 
 ## Layout overflow
 
-The shell main area clips horizontal overflow and scrolls vertically. Build pages with **`grid()` + `block()`**, **`cluster()`**, and wrapping indicator rows so content stays in column; use **`overflow-x: auto`** only on inner wrappers for wide tables or code. See the repo doc **`docs/LAYOUT-OVERFLOW.md`** for the full checklist.
+The shell main area clips horizontal overflow, but **default app shells scroll with the document**. Build pages with **`grid()` + `block()`**, **`cluster()`**, and wrapping indicator rows so content stays in column; use **`overflow-x: auto`** only on inner wrappers for wide tables or code. See the repo doc **`docs/LAYOUT-OVERFLOW.md`** for the full checklist.
 
 ## Full-height main
 
-For chat, maps, or IDE-style surfaces that should **fill the viewport** below the topbar (with scroll **inside** panels), opt in with **`{% block main_shell_class %} chirpui-app-shell__main--fill{% end %}`**, put a direct child of **`#page-content`** with class **`chirpui-page-fill`**, and use **`chat_layout(..., fill=true)`** for chat pages. See **`docs/LAYOUT-VERTICAL.md`** for the flex chain, **`min-height: 0`**, and the **`chirpui-chat-layout__messages-body`** wrapper class for SSE/HTMX roots inside the messages column.
+For chat, maps, or IDE-style surfaces that should **fill the viewport** below the topbar (with scroll **inside** panels), opt in with **`{% block main_shell_class %} chirpui-app-shell__main--fill{% end %}`**, put a direct child of **`#page-content`** with class **`chirpui-page-fill`**, and use **`chat_layout(..., fill=true)`** for chat pages. This is the explicit bounded-scroll exception to the document-scroll default. See **`docs/LAYOUT-VERTICAL.md`** for the flex chain, **`min-height: 0`**, and the **`chirpui-chat-layout__messages-body`** wrapper class for SSE/HTMX roots inside the messages column.
 
 ## Components
 
@@ -187,6 +187,13 @@ ChirpUI registers its page shell contract via `use_chirp_ui()`. That contract ma
 | `#page-content-inner` | `page_content` | Narrow content swaps |
 
 `<main id="main">` carries `hx-boost="true"`, `hx-target="#main"`, `hx-swap="innerHTML"`, and `hx-select="#page-content"` — all links inside inherit SPA navigation automatically. The `#main` element persists in the DOM (never replaced), so its `view-transition-name` is never duplicated during swaps. Content is wrapped in `<div id="page-content">` inside `#main`. Sidebar links (outside `#main`) carry their own `hx-target="#main"` via `sidebar_link()`. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
+
+Boosted navigation follows the shell scroll policy:
+
+- New route: scroll the **document** to the top.
+- Same-route refresh/update: preserve the current document scroll position.
+- Hash navigation: land the target below the sticky topbar offset.
+- History navigation: preserve browser-native restoration.
 
 ## Inline scripts in page templates
 

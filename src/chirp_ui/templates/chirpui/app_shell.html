@@ -34,7 +34,7 @@
 {% else %}
 <div class="chirpui-app-shell{{ " " ~ cls if cls else "" }}">
 {% end %}
-    <header class="chirpui-app-shell__topbar{{ topbar_class }}">
+    <header class="chirpui-app-shell__topbar{{ topbar_class }}" data-chirpui-shell-topbar>
         <a href="{{ brand_url }}" class="chirpui-app-shell__brand"{{ route_link_attrs(
             brand_url,
             boost=brand_boost,
@@ -68,6 +68,6 @@
         {% end %}
     </aside>
     {#- No whitespace before/after slot: stray text nodes inside grid main break layout/scroll. -#}
-    <main id="main" class="chirpui-app-shell__main">{%- slot -%}</main>
+    <main id="main" class="chirpui-app-shell__main" data-chirp-scroll="auto" tabindex="-1">{%- slot -%}</main>
 </div>
 {% end %}

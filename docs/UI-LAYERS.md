@@ -6,12 +6,12 @@ Authoritative site copy lives in **`site/content/docs/app-shell/ui-layers.md`**.
 
 | Term | Meaning |
 |------|---------|
-| **App shell** | Persistent layout: `chirpui/app_shell_layout.html` or `app_shell()` + `shell_outlet()` (topbar, sidebar, `#main`). |
+| **App shell** | Persistent layout: `chirpui/app_shell_layout.html` or `app_shell()` + `shell_outlet()` (topbar, sidebar, `#main`). The document owns vertical scroll by default; `#main` is the persistent swap boundary. |
 | **Page content** | `#page-content` — swapped on boosted navigation (`hx-select`); provided by `app_shell_layout.html` or `shell_outlet()`. |
 | **Page chrome** | Inside `#page-content`: tabs, headers, route toolbars. |
 | **Shell actions** | `shell_actions_bar` in `#chirp-shell-actions`; Chirp `ShellActions`. |
 | **Shell regions** | Stable ids for HTMX OOB: see `chirp.shell_regions` in Chirp. |
-| **Marketing site shell** | Full-page scroll layout: `site_shell()` + `site_header()` + `site_footer()`. Use for landing pages, docs homes, marketing sites. Counterpart to **app shell** — no sidebar, no fixed `#main`. |
+| **Marketing site shell** | Full-page scroll layout: `site_shell()` + `site_header()` + `site_footer()`. Use for landing pages, docs homes, marketing sites. Counterpart to **app shell** — same document-scroll philosophy, no sidebar. |
 | **Surface chrome** | Component frame (card/panel/bento border and padding) — not the app shell. |
 | **Navigation domain** | The author-facing boundary declared in Chirp `_layout.html` via `{# domain: name #}`. `swap_attrs()` uses shared domain ancestry to choose the right swap target. |
 
@@ -40,7 +40,7 @@ The server then wraps the page with the full shell (including `#page-content` fo
 | ID | CSS | Purpose |
 |----|-----|---------|
 | `#page-root` | `flex-direction: column; gap: spacing-lg` | Outermost page wrapper inside `#page-content`. Route-tabs target this for sub-page swaps. |
-| `#page-content` | `flex-direction: column; gap: spacing-md` | Swapped on boosted nav (`hx-select`). Direct child of `#main`. |
+| `#page-content` | `flex-direction: column; gap: spacing-md` | Swapped on boosted nav (`hx-select`). Direct child of `#main`; not the primary page scrollport in default shell mode. |
 | `#page-content-inner` | `flex-direction: column; gap: spacing-md` | Optional inner wrapper below route-tabs. |
 
 ## Surface chrome (dashboards & data tiles)
@@ -54,7 +54,7 @@ Use this vocabulary when building analytics-style UIs inside `#page-content`:
 | **Toolbar / filters** | `filter_bar`, `action_strip`, `filter_chip` | Page- or region-level controls (often **page chrome** if they sit under `page_header`). |
 | **HTMX-safe swap root** | `fragment_island` / `safe_region` | Wrap a widget or region that updates in place so app-shell `hx-boost` / `hx-select` does not steal the swap. See [DND-FRAGMENT-ISLAND.md](./DND-FRAGMENT-ISLAND.md). |
 
-**App shell** (`app_shell_layout`) is separate: sidebar, topbar, `#main`. **Surface chrome** is everything that *looks like a card or panel* around chart/table/KPI content.
+**App shell** (`app_shell_layout`) is separate: sidebar, sticky topbar, and the persistent `#main` outlet. **Surface chrome** is everything that *looks like a card or panel* around chart/table/KPI content.
 
 ## Chirp imports
 

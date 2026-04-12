@@ -551,7 +551,7 @@ def html_attrs(value: Any) -> str | Markup:
 
 
 def register_filters(app: TemplateFilterApp) -> None:
-    """Register chirp-ui filters (bem, field_errors, html_attrs) on a Chirp app.
+    """Register chirp-ui filters and globals on a Chirp app.
 
     Call after App creation. Ensures chirp-ui components render correctly
     regardless of Chirp version::
@@ -560,6 +560,10 @@ def register_filters(app: TemplateFilterApp) -> None:
         import chirp_ui
         app = App(...)
         chirp_ui.register_filters(app)
+
+    Also registers template globals such as ``build_hx_attrs`` and the
+    standalone-safe ``route_link_attrs`` helper when the app exposes
+    ``template_global``.
     """
     app.template_filter("bem")(bem)
     app.template_filter("field_errors")(field_errors)
