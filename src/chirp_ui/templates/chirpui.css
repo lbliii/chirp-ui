@@ -3430,6 +3430,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-font-xl { font-size: var(--chirpui-font-xl); }
 .chirpui-font-mono { font-family: var(--chirpui-mono-font-family); }
 .chirpui-font-2xl { font-size: var(--chirpui-font-2xl); }
+.chirpui-font-medium { font-weight: 500; }
 .chirpui-text-muted { color: var(--chirpui-text-muted); }
 
 /* UI typography utilities — size, weight, composite */

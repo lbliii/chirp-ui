@@ -1017,6 +1017,50 @@ class TestCode:
         assert "<code>" in html
         assert "def foo():" in html
 
+    def test_install_snippet_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import install_snippet %}'
+            '{{ install_snippet("uv add bengal-chirp") }}'
+        ).render()
+        assert "chirpui-install-snippet" in html
+        assert "chirpui-install-snippet__label" in html
+        assert "chirpui-install-snippet__row" in html
+        assert "chirpui-install-snippet__command" in html
+        assert "$ uv add bengal-chirp" in html
+        assert "install" in html  # default label
+        assert 'aria-label="Copy install command"' in html
+
+    def test_install_snippet_custom_label_and_prompt(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import install_snippet %}'
+            '{{ install_snippet("pip install kida", label="pip", prompt="%") }}'
+        ).render()
+        assert "pip" in html
+        assert "% pip install kida" in html
+
+    def test_install_snippet_no_label(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import install_snippet %}'
+            '{{ install_snippet("npm install foo", label="") }}'
+        ).render()
+        assert "chirpui-install-snippet__label" not in html
+        assert "chirpui-install-snippet__row" in html
+
+    def test_install_snippet_copy_escapes_command(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import install_snippet %}'
+            '{{ install_snippet("echo <script>alert(1)</script>") }}'
+        ).render()
+        assert "<script>" not in html
+        assert "&lt;script&gt;" in html or "&#" in html
+
+    def test_install_snippet_custom_id(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/code.html" import install_snippet %}'
+            '{{ install_snippet("uv add chirp-ui", id="my-cmd") }}'
+        ).render()
+        assert 'id="my-cmd"' in html
+
 
 # ---------------------------------------------------------------------------
 # Nav tree
@@ -2610,6 +2654,52 @@ class TestFilterBar:
         ).render()
         assert 'hx-target="#panel"' in html
         assert 'hx-target="#site-content"' not in html
+
+    def test_filter_row_basic(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_row %}'
+            '{% call filter_row("/search") %}'
+            '<input name="q" />'
+            "{% end %}"
+        ).render()
+        assert "chirpui-filter-row" in html
+        assert "chirpui-cluster" in html
+        assert "chirpui-font-sm" in html
+        assert "<form" in html
+        assert 'action="/search"' in html
+        assert 'method="get"' in html
+        assert '<input name="q" />' in html
+
+    def test_filter_row_custom_gap(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_row %}'
+            '{% call filter_row(gap="md") %}x{% end %}'
+        ).render()
+        assert "chirpui-cluster--gap-md" in html
+
+    def test_filter_row_htmx_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_row %}'
+            '{% call filter_row("/filter",'
+            ' attrs_map={"hx-target": "#results", "hx-swap": "innerHTML"}) %}'
+            "x{% end %}"
+        ).render()
+        assert 'hx-target="#results"' in html
+        assert 'hx-swap="innerHTML"' in html
+
+    def test_filter_row_no_action(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_row %}'
+            "{% call filter_row() %}x{% end %}"
+        ).render()
+        assert "action=" not in html
+
+    def test_filter_row_custom_cls(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_row %}'
+            '{% call filter_row(cls="my-extra") %}x{% end %}'
+        ).render()
+        assert "my-extra" in html
 
 
 class TestStatusIndicator:
@@ -5489,6 +5579,56 @@ class TestTagBrowse:
         )
         assert html.count('hx-target="#site-content"') == 2
         assert html.count('hx-boost="true"') == 2
+
+    def test_tag_browse_tray_renders_tags_with_selection(self, env: Environment) -> None:
+        def tag_toggle_url(tag: str) -> str:
+            return f"/tags/{tag.lower()}"
+
+        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content"))
+        html = env.from_string(
+            '{% from "chirpui/tag_browse.html" import tag_browse_tray %}'
+            "{{ tag_browse_tray("
+            '"my-tray", "Pick tags", tags, selected_tags, tag_toggle_url, clear_url'
+            ") }}"
+        ).render(
+            tags=["Python", "Rust", "Go"],
+            selected_tags=["python"],
+            tag_toggle_url=tag_toggle_url,
+            clear_url="/tags/clear",
+        )
+        assert "chirpui-badge--primary" in html
+        assert "chirpui-badge--muted" in html
+        assert "Python" in html
+        assert "Rust" in html
+        assert "Clear all" in html
+
+    def test_tag_browse_tray_empty_tags(self, env: Environment) -> None:
+        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content"))
+        html = env.from_string(
+            '{% from "chirpui/tag_browse.html" import tag_browse_tray %}'
+            '{{ tag_browse_tray("t", "Tags", tags, [], tag_toggle_url, "/clear") }}'
+        ).render(tags=[], tag_toggle_url=lambda t: "/")
+        assert "No tags available" in html
+
+    def test_tag_filter_actions_shows_clear_when_selected(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/clear"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/tag_browse.html" import tag_filter_actions %}'
+            '{{ tag_filter_actions(selected_tags, "/clear") }}'
+        ).render(selected_tags=["Python"])
+        assert "Clear all" in html
+        assert 'hx-boost="true"' in html
+
+    def test_tag_filter_actions_hidden_when_empty(self, env: Environment) -> None:
+        env.add_global("route_link_attrs", _stub_route_link_attrs("site-content"))
+        html = env.from_string(
+            '{% from "chirpui/tag_browse.html" import tag_filter_actions %}'
+            '{{ tag_filter_actions(selected_tags, "/clear") }}'
+        ).render(selected_tags=[])
+        assert "Clear all" not in html
 
 
 # ---------------------------------------------------------------------------

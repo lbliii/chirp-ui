@@ -761,6 +761,38 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         template="feature_section.html",
         category="marketing",
     ),
+    # -- Composites (PR #57) ------------------------------------------------
+    "settings-row-list": ComponentDescriptor(
+        block="settings-row-list",
+        modifiers=("hoverable", "divided", "relaxed"),
+        slots=("",),
+        template="settings_row.html",
+        category="container",
+    ),
+    "settings-row": ComponentDescriptor(
+        block="settings-row",
+        elements=("label", "status", "detail"),
+        template="settings_row.html",
+        category="container",
+    ),
+    "install-snippet": ComponentDescriptor(
+        block="install-snippet",
+        elements=("label", "row", "command"),
+        slots=("",),
+        template="code.html",
+        category="content",
+    ),
+    "filter-row": ComponentDescriptor(
+        block="filter-row",
+        slots=("",),
+        template="filter_bar.html",
+        category="control",
+    ),
+    "tag-browse": ComponentDescriptor(
+        block="tag-browse",
+        template="tag_browse.html",
+        category="control",
+    ),
     # -- Sizing-only components ---------------------------------------------
     "star-rating": ComponentDescriptor(
         block="star-rating",

@@ -1,0 +1,1 @@
+Migrated 5 composite templates from double-nesting `{% slot %}` workaround to kida's `{% yield %}` directive: `layout.html`, `workspace_shell.html`, `file_tree.html`, `empty_panel_state.html`, `document_header.html`.
