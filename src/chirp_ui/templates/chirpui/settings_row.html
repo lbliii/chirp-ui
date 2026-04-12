@@ -15,11 +15,12 @@
 {% from "chirpui/badge.html" import badge %}
 
 {% def settings_row_list(hoverable=false, divided=false, relaxed=false, cls="") %}
-{% set mods = [] %}
-{% if hoverable %}{% set mods = mods + ["chirpui-settings-row-list--hoverable"] %}{% end %}
-{% if divided %}{% set mods = mods + ["chirpui-settings-row-list--divided"] %}{% end %}
-{% if relaxed %}{% set mods = mods + ["chirpui-settings-row-list--relaxed"] %}{% end %}
-<div class="chirpui-settings-row-list{{ " " ~ mods | join(" ") if mods else "" }}{{ " " ~ cls if cls else "" }}">
+{% set _surface = consume("_surface_variant", "") %}
+{% set _card = consume("_card_variant", "") %}
+{% set _ctx = _card or _surface %}
+{% set _on_ctx = " chirpui-settings-row-list--on-" ~ _ctx if _ctx and _ctx != "default" else "" %}
+{% let mods = [m for m in [("chirpui-settings-row-list--hoverable" if hoverable else ""), ("chirpui-settings-row-list--divided" if divided else ""), ("chirpui-settings-row-list--relaxed" if relaxed else "")] if m] %}
+<div class="chirpui-settings-row-list{{ _on_ctx }}{{ " " ~ mods | join(" ") if mods else "" }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
 {% end %}

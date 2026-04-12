@@ -3336,6 +3336,20 @@ a.chirpui-mention:focus-visible {
 .chirpui-timeline__item--info .chirpui-timeline__icon { background: var(--chirpui-info); border-color: var(--chirpui-info); color: white; }
 
 /* Timeline: hoverable rows */
+/* Timeline: surface-aware — adapt line/dot contrast on non-default surfaces */
+.chirpui-timeline--on-muted {
+    border-inline-start-color: var(--chirpui-fg-muted);
+}
+.chirpui-timeline--on-muted .chirpui-timeline__dot {
+    background: var(--chirpui-fg-muted);
+}
+.chirpui-timeline--on-accent {
+    border-inline-start-color: var(--chirpui-accent);
+}
+.chirpui-timeline--on-accent .chirpui-timeline__dot {
+    background: var(--chirpui-fg);
+}
+
 .chirpui-timeline--hoverable .chirpui-timeline__item {
     border-radius: var(--chirpui-radius);
     padding: var(--chirpui-spacing-xs);
@@ -4255,6 +4269,14 @@ a.chirpui-mention:focus-visible {
 .chirpui-callout--neutral {
     background: var(--chirpui-bg-subtle);
     border-inline-start-color: var(--chirpui-border);
+}
+
+/* Callout: surface-aware — reduce bg opacity on tinted/muted surfaces */
+.chirpui-callout--on-muted {
+    background: transparent;
+}
+.chirpui-callout--on-accent {
+    background: color-mix(in srgb, var(--chirpui-surface) 60%, transparent);
 }
 
 .chirpui-callout__header {
@@ -9720,6 +9742,14 @@ a.chirpui-badge--custom-solid:hover {
     }
 }
 
+/* Status indicator: surface-aware — boost dot visibility on non-default surfaces */
+.chirpui-status-indicator--on-muted .chirpui-status-indicator__dot {
+    box-shadow: 0 0 0 2px var(--chirpui-surface);
+}
+.chirpui-status-indicator--on-accent .chirpui-status-indicator__dot {
+    box-shadow: 0 0 0 2px var(--chirpui-surface);
+}
+
 /* ==========================================================================
    App Shell
    ========================================================================== */
@@ -14814,6 +14844,14 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-settings-row-list--relaxed {
     row-gap: var(--chirpui-spacing);
+}
+
+/* Settings row: surface/card-aware — adapt hover bg on non-default contexts */
+.chirpui-settings-row-list--on-muted.chirpui-settings-row-list--hoverable .chirpui-settings-row:hover > * {
+    background: var(--chirpui-surface);
+}
+.chirpui-settings-row-list--on-accent.chirpui-settings-row-list--hoverable .chirpui-settings-row:hover > * {
+    background: color-mix(in srgb, var(--chirpui-surface) 80%, transparent);
 }
 
 /* ===== ascii_card ===== */

@@ -24,9 +24,9 @@ parent-to-child state flow across slot boundaries (requires kida >= 0.3.4).
 | `_hero_variant` | `str` | `""` | `hero_effects()` | `particle_bg`, `meteor`, `spotlight_card`, `symbol_rain`, `holy_light`, `rune_field`, `constellation` | 0.2.6 |
 | `_table_align` | `list[str] \| None` | `None` | `table()` | `row()` | 0.2.6 |
 | `_bar_surface` | `str` | `"default"` | `command_bar()`, `filter_bar()` | *(future bar children)* | 0.2.6 |
-| `_bar_density` | `str` | `"sm"` | `command_bar()`, `filter_bar()` | *(future bar children)* | 0.2.6 |
-| `_surface_variant` | `str` | `""` | `surface()`, `section()` (via surface), `panel()` (via surface) | `badge`, `label_overline`, `alert` | 0.3.0 |
-| `_card_variant` | `str` | `""` | `card()` | `label_overline` | 0.3.0 |
+| `_bar_density` | `str` | `"sm"` | `command_bar()`, `filter_bar()` | `btn`, `icon_btn` | 0.2.6 |
+| `_surface_variant` | `str` | `""` | `surface()`, `section()` (via surface), `panel()` (via surface) | `badge`, `divider`, `alert`, `timeline`, `callout`, `status_indicator`, `settings_row_list` | 0.3.0 |
+| `_card_variant` | `str` | `""` | `card()` | `badge`, `divider`, `alert`, `settings_row_list` | 0.3.0 |
 | `_accordion_name` | `str` | `"accordion"` | `accordion()` | `accordion_item()` | 0.3.0 |
 | `_form_density` | `str` | `""` | `form()` | `field_wrapper()` | 0.3.0 |
 | `_nav_current_path` | `str` | `""` | `sidebar()`, `navbar()` | `sidebar_link`, `navbar_link`, `navbar_dropdown` | 0.3.0 |
@@ -55,6 +55,10 @@ parent-to-child state flow across slot boundaries (requires kida >= 0.3.4).
 
 {# Suspense busy: detect whether inside an active group #}
 {% set _busy = consume("_suspense_busy", "false") %}
+
+{# Surface-aware theming: add --on-<surface> CSS modifier for visual adaptation #}
+{% set _surface = consume("_surface_variant", "") %}
+{% set _on_surface = " chirpui-timeline--on-" ~ _surface if _surface and _surface != "default" else "" %}
 ```
 
 ## Testing Pattern
