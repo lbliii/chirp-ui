@@ -2,8 +2,8 @@
  * chirp-theme
  * Main Stylesheet
  *
- * This owned baseline vendors the Bengal default asset graph, then layers
- * chirp-theme overrides on top through a final import.
+ * Curated theme bundle for the retained chirp-theme surface.
+ * The retained contract is shell + docs + page + blog + search/error pages.
  */
 
 /* ============================================
@@ -106,15 +106,6 @@
   @import url('layouts/footer.css');
 }
 
-@layer pages {
-  @import url('layouts/resume.css');
-}
-
-@layer pages {
-  @import url('layouts/changelog.css');
-  @import url('layouts/notebook.css');
-}
-
 /* ============================================
    COMPONENT STYLES
    ============================================ */
@@ -189,14 +180,6 @@
 }
 
 @layer components {
-  @import url('components/action-bar.css');
-}
-
-@layer components {
-  @import url('components/nav-action-buttons.css');
-}
-
-@layer components {
   @import url('components/docs-nav.css');
 }
 
@@ -215,14 +198,6 @@
 @layer components {
   /* Shared hub landing page styles (tracks, api-hub, etc.) */
   @import url('components/hub-cards.css');
-}
-
-@layer components {
-  @import url('components/tracks.css');
-}
-
-@layer components {
-  @import url('components/api-hub.css');
 }
 
 @layer components {
@@ -247,24 +222,7 @@
 }
 
 @layer components {
-  @import url('components/reference-docs.css');
-}
-
-@layer components {
-  /* New unified autodoc styling - replaces legacy api-docs, autodoc-explorer, api-hub */
-  @import url('components/autodoc.css');
-}
-
-@layer components {
-  @import url('components/tutorial.css');
-}
-
-@layer components {
   @import url('components/blog.css');
-}
-
-@layer components {
-  @import url('components/data-table.css');
 }
 
 @layer components {
@@ -284,28 +242,12 @@
 }
 
 @layer components {
-  @import url('components/author-page.css');
-}
-
-@layer components {
-  @import url('components/archive.css');
-}
-
-@layer components {
-  @import url('components/category-browser.css');
-}
-
-@layer components {
   @import url('components/versioning.css');
   @import url('components/stale-banner.css');
 }
 
 @layer components {
   @import url('components/graph.css');
-}
-
-@layer components {
-  @import url('components/graph-minimap.css');
 }
 
 @layer components {
@@ -325,29 +267,9 @@
   @import url('components/_terminal-embed.css');
 }
 
-/* Third-party libraries */
-@layer components {
-  @import url('tabulator.min.css');
-}
-
-/* ============================================
-   EXPERIMENTAL COMPONENTS (Optional)
-   ============================================ */
-
-/* Holographic TCG-style card effects */
-@layer components {
-  @import url('experimental/holo-cards-advanced.css');
-}
-
 /* ============================================
    PAGE-SPECIFIC STYLES
    ============================================ */
-
-/* Landing page / home page components */
-@layer pages {
-  @import url('pages/landing.css');
-  @import url('pages/docs-home.css');
-}
 
 /* ============================================
    CUSTOM GLOBAL STYLES

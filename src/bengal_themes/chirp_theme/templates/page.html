@@ -3,6 +3,7 @@
 {% from 'partials/navigation-components.html' import page_navigation %}
 {% from 'partials/components/tags.html' import tag_list %}
 {% from 'partials/components/related-posts-simple.html' import related_posts_simple %}
+{% from 'partials/theme-primitives.html' import theme_page_header, theme_surface %}
 
 {% block content %}
 {% let page_title = page?.title ?? 'Page' %}
@@ -10,11 +11,9 @@
 {% let css_class = params?.css_class ?? '' %}
 
 <div class="container chirp-theme-page">
-  <article class="page prose chirp-theme-page__article {{ css_class }}">
-    <header class="page-header chirp-theme-page__header">
-      <p class="chirp-theme-page__eyebrow">Page</p>
-      <h1>{{ page_title }}</h1>
-    </header>
+  {% call theme_surface('chirp-theme-page__article ' ~ css_class) %}
+  <article class="page prose chirp-theme-page__article">
+    {{ theme_page_header(page_title, params?.description ?? meta_desc ?? none, 'Page', breadcrumb_items=true, cls='chirp-theme-page__header') }}
 
     <div class="page-content chirp-theme-page__content">
       {{ content | safe }}
@@ -29,6 +28,7 @@
     </footer>
     {% end %}
   </article>
+  {% end %}
 
   {{ page_navigation(page) }}
   {{ related_posts_simple(page?.related_posts ?? [], 'Related Posts') }}

@@ -46,6 +46,19 @@ That means the package should own:
 - its stylesheet entrypoint
 - its icons, JS, fonts, favicons, and other referenced assets
 
+## Supported Surface
+
+The retained `chirp-theme` contract is intentionally explicit:
+
+- canonical shell/docs/pages: `base.html`, `home.html`, `page.html`, `doc/home.html`, `doc/list.html`, `doc/single.html`
+- retained core parity: `blog/shell.html`, `blog/list.html`, `blog/single.html`, `post.html`, `search.html`, and `404.html`
+- shared shell partials and components that support those templates
+
+The current parity and defer/prune decisions live in
+[`docs/CHIRP-THEME-PARITY-MATRIX.md`](./CHIRP-THEME-PARITY-MATRIX.md).
+Anything not listed there as retained is intentionally deferred or pruned until a
+later redesign slice proves it is still worth carrying forward.
+
 ## Design Principles
 
 `chirp-theme` should optimize for:
@@ -78,4 +91,7 @@ The current cutover work focuses on making the theme truly standalone:
 - replace hidden default-theme partial dependencies with theme-owned resources
 - ensure generated output only references assets shipped by the theme package
 
-That standalone baseline is the platform for future parity and beyond.
+That standalone baseline is the platform for future parity and beyond. The next
+phase is no longer “copy every legacy family forward”; it is “grow from a clear
+retained surface, and restore only the verticals that still make sense with the
+new primitive layer.”

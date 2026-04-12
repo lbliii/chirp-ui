@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
-{% from 'partials/navigation-components.html' import page_navigation, toc %}
+{% from 'partials/navigation-components.html' import page_navigation %}
 {% from 'partials/components/tags.html' import tag_list %}
 {% from 'partials/components/tiles.html' import content_tiles %}
+{% from 'partials/theme-primitives.html' import theme_docs_frame %}
 
 {% def parse_discover_config(discover_config, default_title, default_variant='compact', default_limit=5) %}
 {% match discover_config %}
@@ -33,59 +34,49 @@
 {% let related_posts = page?.related_posts ?? [] %}
 {% let has_related = show_related and (related_posts | length > 0) %}
 
-<div class="docs-layout chirp-theme-docs-layout">
-  <aside class="docs-sidebar chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="Documentation navigation">
-    {% include 'partials/docs-nav.html' %}
-  </aside>
+{% call theme_docs_frame(has_toc=toc_items | length > 0) %}
+{% slot sidebar %}
+{% include 'partials/docs-nav.html' %}
+{% end %}
 
-  <div class="docs-main chirp-theme-docs-layout__main">
-    {% let _list_hero_default = 'overview' %}
-    {% include 'partials/page-hero.html' %}
+{% let _list_hero_default = 'overview' %}
+{% include 'partials/page-hero.html' %}
 
-    <article class="prose chirp-theme-docs-layout__article {{ params?.css_class ?? '' }}">
-      <div class="docs-content chirp-theme-docs-layout__content">
-        {{ content | safe }}
-      </div>
-
-      {% if show_children and (has_children or has_related) %}
-      {% cache "doc-list-tiles-" ~ (page?.href ?? '') ~ "-" ~ (site?.build_id ?? '') %}
-      <div class="docs-children chirp-theme-docs-layout__children">
-        {{ content_tiles(
-          title=children_config.title if has_children else none,
-          children=posts if show_children else none,
-          subsections=subsections if show_children else none,
-          related=related_posts[:related_config.limit] if has_related else none,
-          related_title=related_config.title,
-          variant=children_config.variant,
-          group_by='type' if has_children and has_related else none,
-          page=page
-        ) }}
-      </div>
-      {% endcache %}
-      {% end %}
-
-      {% if page?.tags | length > 0 %}
-      <footer class="docs-footer chirp-theme-docs-layout__footer">
-        {{ tag_list(page.tags) }}
-      </footer>
-      {% end %}
-    </article>
-
-    {{ page_navigation(page) }}
+<article class="prose chirp-theme-docs-layout__article {{ params?.css_class ?? '' }}">
+  <div class="docs-content chirp-theme-docs-layout__content">
+    {{ content | safe }}
   </div>
 
-  {% if toc_items %}
-  <aside class="docs-toc chirp-theme-docs-layout__toc" role="complementary" aria-label="Table of contents">
-    {% set show_graph = theme.features is not defined or 'graph.contextual' in theme.features %}
-    {% if show_graph %}
-    <div class="graph-contextual" data-page-url="{{ page?.href ?? '' }}">
-      <div class="graph-contextual-container graph-loading"></div>
-    </div>
-    {% end %}
-    {{ toc(toc_items=toc_items, toc=toc, page=page) }}
-  </aside>
+  {% if show_children and (has_children or has_related) %}
+  {% cache "doc-list-tiles-" ~ (page?.href ?? '') ~ "-" ~ (site?.build_id ?? '') %}
+  <div class="docs-children chirp-theme-docs-layout__children">
+    {{ content_tiles(
+      title=children_config.title if has_children else none,
+      children=posts if show_children else none,
+      subsections=subsections if show_children else none,
+      related=related_posts[:related_config.limit] if has_related else none,
+      related_title=related_config.title,
+      variant=children_config.variant,
+      group_by='type' if has_children and has_related else none,
+      page=page
+    ) }}
+  </div>
+  {% endcache %}
   {% end %}
-</div>
+
+  {% if page?.tags | length > 0 %}
+  <footer class="docs-footer chirp-theme-docs-layout__footer">
+    {{ tag_list(page.tags) }}
+  </footer>
+  {% end %}
+</article>
+
+{{ page_navigation(page) }}
+
+{% slot toc %}
+{% include 'partials/docs-toc-sidebar.html' %}
+{% end %}
+{% end %}
 
 <button class="docs-sidebar-toggle"
         aria-label="Toggle navigation sidebar"

@@ -20,14 +20,25 @@ CANONICAL_TEMPLATES = (
     "doc/list.html",
     "doc/single.html",
 )
+CORE_PARITY_TEMPLATES = (
+    "blog/shell.html",
+    "blog/home.html",
+    "blog/list.html",
+    "blog/single.html",
+    "post.html",
+    "search.html",
+    "404.html",
+)
 REQUIRED_PARTIALS = (
     "partials/navigation-components.html",
     "partials/docs-nav.html",
+    "partials/docs-toc-sidebar.html",
     "partials/page-hero.html",
+    "partials/search-modal.html",
+    "partials/theme-primitives.html",
     "partials/theme-controls.html",
     "partials/version-banner.html",
     "partials/stale-content-banner.html",
-    "partials/track_nav.html",
     "partials/components/tags.html",
     "partials/components/tiles.html",
     "partials/components/related-posts-simple.html",
@@ -74,10 +85,18 @@ def test_theme_package_contains_required_resources() -> None:
     assert (package_root / "theme.toml").is_file()
     assert (package_root / "templates" / "base.html").is_file()
     assert (package_root / "templates" / "home.html").is_file()
+    assert (package_root / "templates" / "search.html").is_file()
+    assert (package_root / "templates" / "404.html").is_file()
+    assert (package_root / "templates" / "post.html").is_file()
+    assert (package_root / "templates" / "blog" / "shell.html").is_file()
+    assert (package_root / "templates" / "blog" / "list.html").is_file()
+    assert (package_root / "templates" / "blog" / "single.html").is_file()
     assert (package_root / "templates" / "doc" / "home.html").is_file()
     assert (package_root / "templates" / "doc" / "list.html").is_file()
     assert (package_root / "templates" / "doc" / "single.html").is_file()
     assert (package_root / "templates" / "partials" / "docs-nav.html").is_file()
+    assert (package_root / "templates" / "partials" / "docs-toc-sidebar.html").is_file()
+    assert (package_root / "templates" / "partials" / "theme-primitives.html").is_file()
     assert (package_root / "templates" / "partials" / "theme-controls.html").is_file()
     assert (package_root / "assets" / "css" / "style.css").is_file()
     assert (package_root / "assets" / "css" / "chirp-theme.css").is_file()
@@ -131,7 +150,7 @@ def test_docs_site_theme_templates_load_via_bengal_kida_engine() -> None:
     assert site.theme == "chirp-theme"
     assert any(THEME_TEMPLATE_PATH_FRAGMENT in str(path) for path in engine.template_dirs)
 
-    for template_name in (*CANONICAL_TEMPLATES, *REQUIRED_PARTIALS):
+    for template_name in (*CANONICAL_TEMPLATES, *CORE_PARITY_TEMPLATES, *REQUIRED_PARTIALS):
         template = engine._env.get_template(template_name)
 
         assert template is not None

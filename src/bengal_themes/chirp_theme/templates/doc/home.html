@@ -1,31 +1,5 @@
 {% extends "base.html" %}
-
-{% def chirp_theme_section_card(section) %}
-{% let section_title = section?.title ?? 'Untitled' %}
-{% let section_desc = section?.metadata?.description ?? '' %}
-{% let page_count = (section?.pages ?? []) | length %}
-<a href="{{ section.href ?? section._path }}" class="chirp-theme-doc-home__card">
-  <span class="chirp-theme-doc-home__card-title">{{ section_title }}</span>
-  {% if section_desc %}
-  <span class="chirp-theme-doc-home__card-desc">{{ section_desc }}</span>
-  {% end %}
-  {% if page_count > 0 %}
-  <span class="chirp-theme-doc-home__card-meta">{{ page_count }} page{{ 's' if page_count != 1 else '' }}</span>
-  {% end %}
-</a>
-{% end %}
-
-{% def chirp_theme_quick_link(link) %}
-{% let link_url = link?.href ?? link?.url ?? '#' %}
-{% let link_title = link?.title ?? 'Link' %}
-{% let link_desc = link?.description ?? '' %}
-<a href="{{ link_url }}" class="chirp-theme-doc-home__link">
-  <span class="chirp-theme-doc-home__link-title">{{ link_title }}</span>
-  {% if link_desc %}
-  <span class="chirp-theme-doc-home__link-desc">{{ link_desc }}</span>
-  {% end %}
-</a>
-{% end %}
+{% from 'partials/theme-primitives.html' import theme_page_header, theme_surface, theme_link_card %}
 
 {% block content %}
 {% let page_title = page?.title ?? config?.title ?? 'Documentation' %}
@@ -49,13 +23,9 @@
 {% end %}
 
 <div class="chirp-theme-doc-home">
-  <section class="chirp-theme-doc-home__hero">
-    <p class="chirp-theme-doc-home__eyebrow">Documentation</p>
-    <h1 class="chirp-theme-doc-home__title">{{ page_title }}</h1>
-    {% if page_desc %}
-    <p class="chirp-theme-doc-home__subtitle">{{ page_desc }}</p>
-    {% end %}
-  </section>
+  {% call theme_surface('chirp-theme-doc-home__hero') %}
+  {{ theme_page_header(page_title, page_desc, 'Documentation', breadcrumb_items=true, cls='chirp-theme-doc-home__header') }}
+  {% end %}
 
   {% if content and content.strip() %}
   <section class="chirp-theme-doc-home__content prose">
@@ -72,7 +42,13 @@
     </div>
     <div class="chirp-theme-doc-home__grid">
       {% for section in sorted_sections %}
-      {{ chirp_theme_section_card(section) }}
+      {{ theme_link_card(
+        section?.href ?? section?._path ?? '#',
+        section?.title ?? 'Untitled',
+        section?.metadata?.description ?? '',
+        ((section?.pages ?? []) | length) ~ ' page' ~ ('s' if ((section?.pages ?? []) | length) != 1 else ''),
+        cls='chirp-theme-doc-home__card'
+      ) }}
       {% end %}
     </div>
   </section>
@@ -86,7 +62,12 @@
     </div>
     <div class="chirp-theme-doc-home__link-grid">
       {% for link in custom_quick_links %}
-      {{ chirp_theme_quick_link(link) }}
+      {{ theme_link_card(
+        link?.href ?? link?.url ?? '#',
+        link?.title ?? 'Link',
+        link?.description ?? '',
+        cls='chirp-theme-doc-home__link'
+      ) }}
       {% end %}
     </div>
   </section>

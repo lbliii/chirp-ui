@@ -1,69 +1,38 @@
-{#
-================================================================================
-Page Hero Dispatcher (Kida-Native)
-================================================================================
+{% from 'partials/theme-primitives.html' import theme_page_header %}
 
-Auto-routes to appropriate hero macro based on configuration cascade.
-
-USAGE:
-{% include 'partials/page-hero.html' %}
-
-For direct macro access (zero routing overhead):
-{% from 'partials/page-hero/_macros.html' import hero_editorial, hero_element %}
-{{ hero_editorial(page, params, theme) }}
-
-VARIANTS:
-- editorial: Clean magazine layout (default)
-- magazine: Editorial with container styling
-- overview: Section index with page count
-- api: Element or section pages (auto-detects context)
-
-RESOLUTION ORDER:
-1. page.variant (frontmatter)
-2. params.hero_style (frontmatter)
-3. _list_hero_default (template-set)
-4. theme.config.hero_style (theme config)
-5. 'editorial' (fallback)
-================================================================================
-#}
-
-{% from 'partials/page-hero/_macros.html' import
-    hero_editorial,
-    hero_magazine,
-    hero_overview,
-    hero_element,
-    hero_section
-%}
-
-{# Ensure context variables are defined #}
 {% let _page = page ?? none %}
 {% let _params = params ?? {} %}
-{% let _theme = theme ?? {} %}
-{% let _element = element ?? none %}
-{% let _section = section ?? none %}
 {% let _posts = posts ?? [] %}
 {% let _subsections = subsections ?? [] %}
-{% let _config = config ?? {} %}
-{% let _hero_context = hero_context ?? {} %}
-{% let _list_default = _list_hero_default ?? none %}
+{% let _title = _page?.title ?? section?.title ?? config?.title ?? 'Page' %}
+{% let _description = _params?.description ?? _page?.metadata?.description ?? meta_desc ?? '' %}
+{% let _content_type = _page?.type ?? _page?.metadata?.type ?? 'page' %}
+{% let _eyebrow = _params?.eyebrow ?? ('Documentation' if _content_type == 'doc' else 'Section' if _page?.kind == 'section' else 'Page') %}
+{% let _meta_parts = [] %}
+{% let _child_total = (_posts | length) + (_subsections | length) %}
+{% if _page?.date %}
+{% set _ = _meta_parts.append('Updated ' ~ (_page.date | time_ago)) %}
+{% end %}
+{% if _child_total > 0 %}
+{% set _ = _meta_parts.append(_child_total ~ ' item' ~ ('s' if _child_total != 1 else '')) %}
+{% end %}
+{% if page?.version %}
+{% set _ = _meta_parts.append('Version ' ~ page.version) %}
+{% end %}
 
-{# Determine hero style from cascade #}
-{% let hero_style = _page?.variant ?? _params?.hero_style ?? _list_default ?? _theme?.config?.hero_style ?? 'editorial' %}
-
-{# Route to appropriate macro #}
-{% match hero_style, _element, _section %}
-{% case 'magazine', _, _ %}
-{{ hero_magazine(_page, _params, _theme) }}
-
-{% case 'overview', _, _ %}
-{{ hero_overview(_page, _params, _posts, _subsections) }}
-
-{% case 'api', el, _ if el %}
-{{ hero_element(el, _page, _config) }}
-
-{% case 'api', _, sec if sec %}
-{{ hero_section(sec, _page, _hero_context) }}
-
-{% case _ %}
-{{ hero_editorial(_page, _params, _theme) }}
+{% call theme_page_header(
+  _title,
+  _description,
+  _eyebrow,
+  breadcrumb_items=true,
+  meta=_meta_parts | join(' · ') if _meta_parts | length > 0 else none,
+  cls='page-hero page-hero--chirp'
+) %}
+{% slot actions %}
+{% if _params?.hero_link?.href %}
+<a href="{{ _params.hero_link.href | absolute_url }}" class="chirp-theme-home__button chirp-theme-home__button--secondary">
+  {{ _params.hero_link.label ?? 'Explore' }}
+</a>
+{% end %}
+{% end %}
 {% end %}

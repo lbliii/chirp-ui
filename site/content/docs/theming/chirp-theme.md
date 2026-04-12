@@ -31,6 +31,7 @@ theme:
 - A packaged Bengal theme entry point: `chirp-theme = "bengal_themes.chirp_theme"`
 - A standalone theme package with its own shell templates, partials, and assets
 - Static-first templates for `base.html`, `home.html`, `page.html`, `doc/home.html`, `doc/list.html`, and `doc/single.html`
+- Retained core parity templates for `blog/shell.html`, `blog/list.html`, `blog/single.html`, `post.html`, `search.html`, and `404.html`
 
 ## Design Scope
 
@@ -75,3 +76,15 @@ patterns, and then go beyond them.
 
 That evolution happens from a standalone package baseline, not through continued
 runtime dependence on Bengal default internals.
+
+## Parity Policy
+
+`chirp-theme` does not treat every historical Bengal default vertical as a
+must-keep surface.
+
+- Retained: shell, docs, generic pages, blog/post, search, and 404
+- Deferred: taxonomy/archive/authors, tracks/tutorial/notebook/changelog/resume
+- Pruned until redesign: autodoc/reference/API-hub families and niche legacy extras
+
+The repo-level parity matrix in `docs/CHIRP-THEME-PARITY-MATRIX.md` is the
+source of truth for those decisions.

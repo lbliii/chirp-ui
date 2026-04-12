@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% from 'partials/theme-primitives.html' import theme_shell_container %}
+
+{% block content %}
+{% call theme_shell_container('chirp-theme-blog') %}
+{% block blog_hero %}{% end %}
+<div class="chirp-theme-blog__content">
+  {% block blog_content %}{% end %}
+</div>
+{% end %}
+{% end %}

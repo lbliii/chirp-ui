@@ -1,55 +1,42 @@
 {% extends "base.html" %}
 
-{% from 'partials/navigation-components.html' import page_navigation, toc %}
+{% from 'partials/navigation-components.html' import page_navigation %}
 {% from 'partials/components/tags.html' import tag_list %}
+{% from 'partials/theme-primitives.html' import theme_docs_frame %}
 
 {% block content %}
 {% let page_tags = page?.tags ?? [] %}
 {% let page_href = page?.href ?? '' %}
 {% let css_class = params?.css_class ?? '' %}
 
-<div class="docs-layout chirp-theme-docs-layout">
-  <aside class="docs-sidebar chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="Documentation navigation">
-    {% include 'partials/docs-nav.html' %}
-  </aside>
+{% call theme_docs_frame(has_toc=toc_items | length > 0) %}
+{% slot sidebar %}
+{% include 'partials/docs-nav.html' %}
+{% end %}
 
-  <div class="docs-main chirp-theme-docs-layout__main">
-    {% include 'partials/version-banner.html' %}
-    {% include 'partials/stale-content-banner.html' %}
-    {% include 'partials/page-hero.html' %}
+{% include 'partials/version-banner.html' %}
+{% include 'partials/stale-content-banner.html' %}
+{% include 'partials/page-hero.html' %}
 
-    <article class="prose chirp-theme-docs-layout__article {{ css_class }}">
-      {% include 'partials/track_nav.html' %}
-
-      <div class="docs-content chirp-theme-docs-layout__content">
-        {{ content | safe }}
-      </div>
-
-      {% if page_tags | length > 0 %}
-      <footer class="docs-footer chirp-theme-docs-layout__footer">
-        <span class="docs-footer-label">{{ t('docs.tagged', default='Tagged') }}</span>
-        {{ tag_list(page_tags) }}
-      </footer>
-      {% end %}
-    </article>
-
-    {% include 'partials/track_nav.html' %}
-    {{ page_navigation(page) }}
+<article class="prose chirp-theme-docs-layout__article {{ css_class }}">
+  <div class="docs-content chirp-theme-docs-layout__content">
+    {{ content | safe }}
   </div>
 
-  {% if toc_items %}
-  <aside class="docs-toc chirp-theme-docs-layout__toc" role="complementary" aria-label="Table of contents">
-    {% set show_graph = theme.features is not defined or 'graph.contextual' in theme.features %}
-    {% if show_graph %}
-    <div class="graph-contextual" data-page-url="{{ page_href }}">
-      <div class="graph-contextual-container graph-loading"></div>
-    </div>
-    {% end %}
-
-    {{ toc(toc_items=toc_items, toc=toc, page=page) }}
-  </aside>
+  {% if page_tags | length > 0 %}
+  <footer class="docs-footer chirp-theme-docs-layout__footer">
+    <span class="docs-footer-label">{{ t('docs.tagged', default='Tagged') }}</span>
+    {{ tag_list(page_tags) }}
+  </footer>
   {% end %}
-</div>
+</article>
+
+{{ page_navigation(page) }}
+
+{% slot toc %}
+{% include 'partials/docs-toc-sidebar.html' %}
+{% end %}
+{% end %}
 
 <button class="docs-sidebar-toggle" aria-label="Toggle navigation sidebar" aria-expanded="false"
   aria-controls="docs-sidebar">

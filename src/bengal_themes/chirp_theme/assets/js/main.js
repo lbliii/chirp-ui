@@ -1,5 +1,5 @@
 /**
- * Bengal SSG Default Theme
+ * chirp-theme
  * Main JavaScript
  */
 

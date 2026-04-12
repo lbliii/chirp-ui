@@ -241,11 +241,8 @@ HELPER: Render a menu item (desktop/mobile)
             'lightbox': '{{ asset_url("js/enhancements/lightbox.js") }}',
             'interactive': '{{ asset_url("js/enhancements/interactive.js") }}',
             'mobile-nav': '{{ asset_url("js/enhancements/mobile-nav.js") }}',
-            'action-bar': '{{ asset_url("js/enhancements/action-bar.js") }}',
             'copy-link': '{{ asset_url("js/enhancements/copy-link.js") }}',
-            'data-table': '{{ asset_url("js/enhancements/data-table.js") }}',
             'lazy-loaders': '{{ asset_url("js/enhancements/lazy-loaders.js") }}',
-            'holo': '{{ asset_url("js/enhancements/holo.js") }}',
             'link-previews': '{{ asset_url("js/enhancements/link-previews.js") }}'
         };
     </script>
@@ -353,67 +350,7 @@ HELPER: Render a menu item (desktop/mobile)
     {# Search Modal Block — placed after <main> so content starts early in DOM #}
     {% block site_search_modal %}
     {% cache 'base-search-modal-' ~ _current_lang ~ '-' ~ (bengal.build.timestamp ?? '') %}
-    {% with config.search.ui as ui %}
-    {% if ui.modal ?? false %}
-    <dialog id="search-modal" class="search-modal"
-        aria-label="{{ t('search.aria_label', default='Search documentation') }}">
-        <div class="search-modal__backdrop" data-close-modal></div>
-        <div class="search-modal__container" role="dialog" aria-modal="true">
-            <header class="search-modal__header">
-                <div class="search-modal__input-wrapper">
-                    {{ icon('magnifying-glass', size=20, css_class='search-modal__icon') }}
-                    <input type="search" id="search-modal-input" class="search-modal__input"
-                        placeholder="{{ ui.placeholder ?? t('search.placeholder', default='Search documentation...') }}"
-                        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-                        aria-label="{{ t('search.aria_label', default='Search') }}"
-                        aria-describedby="search-modal-status" aria-controls="search-modal-results"
-                        aria-autocomplete="list">
-                    <div class="search-modal__loading hidden" id="search-modal-loading">
-                        <div class="search-modal__spinner"></div>
-                    </div>
-                </div>
-                <button type="button" class="search-modal__close" data-close-modal
-                    aria-label="Close search"><kbd>ESC</kbd></button>
-            </header>
-            <div id="search-modal-status" class="sr-only" role="status" aria-live="polite"></div>
-            <section class="search-modal__recent" id="search-modal-recent"
-                aria-label="{{ t('search.recent_aria_label', default='Recent searches') }}">
-                <div class="search-modal__section-header">
-                    <span class="search-modal__section-title">{{ t('search.recent', default='Recent') }}</span>
-                    <button type="button" class="search-modal__clear-recent" id="clear-recent-searches">{{
-                        t('search.clear', default='Clear') }}</button>
-                </div>
-                <ul class="search-modal__recent-list" id="search-modal-recent-list" role="listbox"></ul>
-            </section>
-            <section class="search-modal__results" id="search-modal-results"
-                aria-label="{{ t('search.results_aria_label', default='Search results') }}">
-                <div class="search-modal__results-list" id="search-modal-results-list" role="listbox"></div>
-                <div class="search-modal__no-results hidden" id="search-modal-no-results">
-                    {{ icon('magnifying-glass', size=48) }}
-                    <p class="search-modal__no-results-text">{{ t('search.no_results', default='No results for') }}
-                        "<span id="search-modal-no-results-query"></span>"</p>
-                </div>
-                <div class="search-modal__empty" id="search-modal-empty">
-                    <p class="search-modal__empty-hint">{{ t('search.empty_hint', default='Start typing to search...')
-                        }}</p>
-                </div>
-            </section>
-            <footer class="search-modal__footer">
-                <div class="search-modal__hints">
-                    <span class="search-modal__hint"><kbd>↑</kbd><kbd>↓</kbd> <span>{{ t('search.hint_navigate',
-                            default='Navigate') }}</span></span>
-                    <span class="search-modal__hint"><kbd>↵</kbd> <span>{{ t('search.hint_open', default='Open')
-                            }}</span></span>
-                    <span class="search-modal__hint"><kbd>ESC</kbd> <span>{{ t('search.hint_close', default='Close')
-                            }}</span></span>
-                </div>
-                <div class="search-modal__powered-by"><span>{{ t('search.powered_by', default='Powered by') }}</span> <a
-                        href="https://lunrjs.com/" target="_blank" rel="noopener">Lunr</a></div>
-            </footer>
-        </div>
-    </dialog>
-    {% end %}
-    {% end %}
+    {% include 'partials/search-modal.html' %}
     {% end %}{# /cache base-search-modal #}
     {% end %}
 
@@ -536,8 +473,6 @@ HELPER: Render a menu item (desktop/mobile)
     <script defer src="{{ asset_url('js/enhancements/mobile-nav.js') }}"></script>
     <script defer src="{{ asset_url('js/enhancements/tabs.js') }}"></script>
     <script defer src="{{ asset_url('js/enhancements/toc.js') }}"></script>
-    <script defer src="{{ asset_url('js/enhancements/tracks.js') }}"></script>
-    <script defer src="{{ asset_url('js/enhancements/action-bar.js') }}"></script>
     <script defer src="{{ asset_url('js/enhancements/copy-link.js') }}"></script>
     {% if 'content.lightbox' in theme.features %}
     <script defer src="{{ asset_url('js/enhancements/lightbox.js') }}"></script>{% end %}
@@ -548,7 +483,7 @@ HELPER: Render a menu item (desktop/mobile)
     {% include "partials/link-previews.html" %}
     <script defer src="{{ asset_url('js/vendor/lunr.min.js') }}"></script>
     <script>
-        window.BENGAL_LAZY_ASSETS = { tabulator: '{{ asset_url("js/vendor/tabulator.min.js") }}', dataTable: '{{ asset_url("js/enhancements/data-table.js") }}', mermaidToolbar: '{{ asset_url("js/mermaid-toolbar.js") }}', mermaidTheme: '{{ asset_url("js/mermaid-theme.js") }}', graphMinimap: '{{ asset_url("js/graph-minimap.js") }}', graphContextual: '{{ asset_url("js/graph-contextual.js") }}' };
+        window.BENGAL_LAZY_ASSETS = { mermaidToolbar: '{{ asset_url("js/mermaid-toolbar.js") }}', mermaidTheme: '{{ asset_url("js/mermaid-theme.js") }}', graphContextual: '{{ asset_url("js/graph-contextual.js") }}' };
         window.BENGAL_ICONS = { close: '{{ asset_url("icons/close.svg") }}', enlarge: '{{ asset_url("icons/enlarge.svg") }}', copy: '{{ asset_url("icons/copy.svg") }}', 'download-svg': '{{ asset_url("icons/download.svg") }}', 'download-png': '{{ asset_url("icons/image.svg") }}', 'zoom-in': '{{ asset_url("icons/zoom-in.svg") }}', 'zoom-out': '{{ asset_url("icons/zoom-out.svg") }}', reset: '{{ asset_url("icons/reset.svg") }}' };
     </script>
     <script defer src="{{ asset_url('js/enhancements/lazy-loaders.js') }}"></script>
