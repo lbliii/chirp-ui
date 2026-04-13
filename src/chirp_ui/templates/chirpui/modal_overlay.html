@@ -10,8 +10,8 @@
         {% end %}
 -#}
 
-{% def modal_overlay_trigger(id, label, variant="default", icon=none) %}
-<button type="button" class="chirpui-btn chirpui-btn--{{ variant }} chirpui-btn--sm"
+{% def modal_overlay_trigger(id, label, variant="", icon=none) %}
+<button type="button" class="chirpui-btn{{ " chirpui-btn--" ~ variant if variant else "" }} chirpui-btn--sm"
         x-data
         @click="$store.modals['{{ id }}'] = true"
         aria-controls="modal-{{ id }}" :aria-expanded="$store.modals['{{ id }}']">

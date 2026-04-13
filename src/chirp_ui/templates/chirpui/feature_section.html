@@ -30,7 +30,7 @@
         end
 -#}
 
-{% def feature_section(layout="split", variant="default", reverse=false, cls="") %}
+{% def feature_section(layout="split", variant="", reverse=false, cls="") %}
 {% set layout = layout | validate_variant(("split","balanced","media-dominant","stacked"), "split") %}
 {% set variant = variant | validate_variant(("default","muted","halo"), "default") %}
 {% set _cls = [c for c in [

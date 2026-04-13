@@ -24,7 +24,7 @@
         end
 -#}
 
-{% def band(variant="default", width="inset", pattern="", cls="") %}
+{% def band(variant="", width="inset", pattern="", cls="") %}
 {% set variant = variant | validate_variant(("default","elevated","accent","glass","gradient"), "default") %}
 {% set width = width | validate_variant(("inset","bleed","contained"), "inset") %}
 {% set _cls = [c for c in [

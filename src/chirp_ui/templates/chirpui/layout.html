@@ -88,7 +88,7 @@
 {% end %}
 
 {#- page_header: title, subtitle, meta, breadcrumb_items, variant, actions slot -#}
-{% def page_header(title, subtitle=none, meta=none, breadcrumb_items=none, variant="default", cls="") %}
+{% def page_header(title, subtitle=none, meta=none, breadcrumb_items=none, variant="", cls="") %}
 {% set variant = variant | validate_variant_block("page_header", default="default") %}
 {% set variant_class = " chirpui-page-header--" ~ variant if variant != "default" else "" %}
 <header class="chirpui-stack chirpui-stack--sm chirpui-page-header{{ variant_class }}{{ " " ~ cls if cls else "" }}">
@@ -111,7 +111,7 @@
 {% end %}
 
 {#- section_header: title, subtitle, icon, variant, actions slot -#}
-{% def section_header(title, subtitle=none, icon=none, variant="default", cls="") %}
+{% def section_header(title, subtitle=none, icon=none, variant="", cls="") %}
 {% set variant = variant | validate_variant_block("section_header", default="default") %}
 {% set variant_class = " chirpui-section-header--inline" if variant == "inline" else "" %}
 <div class="chirpui-section-header{{ variant_class }}{{ " " ~ cls if cls else "" }}">

@@ -15,8 +15,8 @@
         end
 -#}
 
-{% def modal(id, title=none, size="medium", cls="") %}
-{% set size = size | validate_size("modal", "medium") %}
+{% def modal(id, title=none, size="md", cls="") %}
+{% set size = size | validate_size("modal", "md") %}
 <dialog id="{{ id }}" class="{{ "modal" | bem(size=size, cls=cls) }}"
         closedby="any">
     {% if title %}

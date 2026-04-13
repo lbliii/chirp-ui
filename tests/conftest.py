@@ -2,7 +2,7 @@
 
 import html
 import json
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -11,6 +11,7 @@ from kida import Environment, FileSystemLoader
 from kida.template import Markup
 
 from chirp_ui.filters import (
+    _serialize_attr_value,
     build_hx_attrs,
     contrast_text,
     make_route_link_attrs,
@@ -20,6 +21,7 @@ from chirp_ui.filters import (
     value_type,
 )
 from chirp_ui.icons import icon as icon_filter
+from chirp_ui.validation import ChirpUIValidationWarning, _warn
 
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates"
 
@@ -33,7 +35,7 @@ def _field_errors_stub(errors: Any, field_name: str) -> Sequence[str]:
     """
     if errors is None:
         return []
-    if isinstance(errors, dict):
+    if isinstance(errors, Mapping):
         return errors.get(field_name, [])
     return []
 
@@ -68,7 +70,15 @@ def _validate_variant_stub(
     default: str = "",
 ) -> str:
     """Stub for chirp-ui ``validate_variant`` filter. Returns value if in allowed, else default."""
-    return value if value in allowed else default
+    if value in allowed:
+        return value
+    result = default if default in allowed else (allowed[0] if allowed else "")
+    if value:
+        _warn(
+            f"chirp-ui: variant {value!r} not in {allowed!r}; using {result!r}",
+            category=ChirpUIValidationWarning,
+        )
+    return result
 
 
 def _validate_variant_block_stub(value: str, block: str, default: str = "") -> str:
@@ -76,7 +86,7 @@ def _validate_variant_block_stub(value: str, block: str, default: str = "") -> s
     from chirp_ui.validation import VARIANT_REGISTRY
 
     allowed = VARIANT_REGISTRY.get(block, ())
-    return value if value in allowed else default
+    return _validate_variant_stub(value, tuple(allowed), default)
 
 
 def _validate_size_stub(value: str, block: str, default: str = "") -> str:
@@ -84,25 +94,37 @@ def _validate_size_stub(value: str, block: str, default: str = "") -> str:
     from chirp_ui.validation import SIZE_REGISTRY
 
     allowed = SIZE_REGISTRY.get(block, ())
-    return value if value in allowed else default
+    if value in allowed:
+        return value
+    result = default if default in allowed else (allowed[0] if allowed else "")
+    if value and allowed:
+        _warn(
+            f"chirp-ui: size {value!r} not in {allowed!r} for {block!r}; using {result!r}",
+            category=ChirpUIValidationWarning,
+        )
+    return result
 
 
 def _html_attrs_stub(value: Any) -> str | Markup:
-    """Stub for structured attrs filter used by chirp-ui macros."""
+    """Stub for structured attrs filter used by chirp-ui macros.
+
+    Uses :func:`chirp_ui.filters._serialize_attr_value` for value serialization
+    so stub and real filter stay in sync.
+    """
     if value is None or value is False:
         return ""
-    if isinstance(value, dict):
+    if isinstance(value, Mapping):
         parts: list[str] = []
         for key, raw in value.items():
-            if raw is None or raw is False:
+            k = str(key).strip()
+            if not k or raw is None or raw is False:
                 continue
-            escaped_key = html.escape(str(key), quote=True)
+            escaped_key = html.escape(k, quote=True)
             if raw is True:
                 parts.append(f" {escaped_key}")
                 continue
-            if isinstance(raw, (dict, list, tuple)):
-                raw = json.dumps(raw, separators=(",", ":"), ensure_ascii=True)
-            parts.append(f' {escaped_key}="{html.escape(str(raw), quote=True)}"')
+            serialized = _serialize_attr_value(raw)
+            parts.append(f' {escaped_key}="{html.escape(serialized, quote=True)}"')
         return Markup("".join(parts))
     text = str(value).strip()
     if not text:

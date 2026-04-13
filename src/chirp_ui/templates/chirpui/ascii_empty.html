@@ -14,7 +14,7 @@
     Variants: default, muted, accent
 -#}
 
-{% def ascii_empty(glyph="◇", heading="Nothing here", description="", variant="default", cls="") %}
+{% def ascii_empty(glyph="◇", heading="Nothing here", description="", variant="", cls="") %}
 {% set variant = variant | validate_variant(("default","muted","accent"), "default") %}
 <div class="chirpui-ascii-empty chirpui-ascii-empty--{{ variant }}{{ " " ~ cls if cls else "" }}">
     <span class="chirpui-ascii-empty__glyph" aria-hidden="true">{{ glyph }}</span>

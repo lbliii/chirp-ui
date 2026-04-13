@@ -455,15 +455,15 @@ class TestBadgeConsumesSurfaceVariant:
     """badge() inherits variant from surface via _surface_variant."""
 
     def test_badge_inside_surface_inherits_matching_variant(self, env: Environment) -> None:
-        """Only variants valid for badge are inherited (e.g., warning, success)."""
+        """Only variants valid for badge are inherited (e.g., muted)."""
         html = env.from_string(
             '{% from "chirpui/surface.html" import surface %}'
             '{% from "chirpui/badge.html" import badge %}'
-            '{% call surface(variant="warning") %}'
+            '{% call surface(variant="muted") %}'
             '{{ badge("Tag") }}'
             "{% end %}"
         ).render()
-        assert "chirpui-badge--warning" in html
+        assert "chirpui-badge--muted" in html
 
     def test_badge_inside_surface_ignores_unrecognized_variant(self, env: Environment) -> None:
         """Surface variant 'accent' is not a badge variant — falls back to primary."""

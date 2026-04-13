@@ -8,7 +8,7 @@
         status_indicator("Live", color="#78c850")
 -#}
 
-{% def status_indicator(label, variant="default", icon=none, pulse=false, cls="", color=none) %}
+{% def status_indicator(label, variant="", icon=none, pulse=false, cls="", color=none) %}
 {% set _surface = consume("_surface_variant", "") %}
 {% set _on_surface = " chirpui-status-indicator--on-" ~ _surface if _surface and _surface != "default" else "" %}
 {% set resolved = color | resolve_color %}

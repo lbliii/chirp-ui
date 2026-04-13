@@ -234,7 +234,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "modal": ComponentDescriptor(
         block="modal",
-        sizes=("small", "medium", "large"),
+        sizes=("sm", "md", "lg"),
         elements=("header", "title", "header-actions", "close", "body", "footer"),
         slots=("", "header_actions", "footer"),
         template="modal.html",

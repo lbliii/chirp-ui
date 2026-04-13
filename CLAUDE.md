@@ -95,6 +95,31 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 - **Navigation progress** — `nav_progress.html` provides a CSS-only fixed progress bar at the viewport top. Animates automatically via `body.htmx-request`. Use outside `app_shell` (which has its own built-in bar). Place once in base layout: `{{ nav_progress() }}`.
 - **SSE connection status** — `sse_status.html` provides `sse_status(state)` (connected/disconnected/error indicator with dot + label) and `sse_retry(url)` (htmx-powered retry button for reconnecting to an SSE endpoint). Pair with `streaming_bubble`/`streaming_block` from `streaming.html`. See `docs/COMPONENT-OPTIONS.md § SSE Status`.
 
+## Warning system
+
+chirp-ui uses Python's `warnings` module (not `logging`) for developer feedback. Three warning classes in `chirp_ui.validation`:
+
+- **`ChirpUIValidationWarning`** — invalid variant/size/input silently corrected. In strict mode (`set_strict(True)`), escalates to `ValueError`.
+- **`ChirpUIDeprecationWarning`** — deprecated feature. Always warns (never raises, even in strict mode).
+- **`ChirpUIWarning`** — base class for all chirp-ui warnings.
+
+Developers filter with standard `-W` flags: `python -W ignore::ChirpUIValidationWarning` to silence, or `-W error::ChirpUIValidationWarning` to crash on invalid input.
+
+## `hx={}` dict pattern
+
+Macros with many htmx parameters (`btn`, `icon_btn`, `form`) accept an `hx=none` dict as shorthand. Keys are short htmx names without the `hx-` prefix:
+
+```html
+{{ btn("Save", hx={"post": "/save", "target": "#result", "swap": "innerHTML"}) }}
+```
+
+Individual `hx_*` kwargs still work and override keys from the `hx` dict. `build_hx_attrs(hx=dict, **kwargs)` merges both, drops `None` values.
+
+## Deprecation policy
+
+- **`channel_card(use_slots=...)`** — always use named slots (`body`, `actions`). The `use_slots` parameter will be removed in a future release.
+- **`section_header_inline`** — use `section_header(variant="inline")` instead.
+
 ## Adding a component
 
 1. Add `src/chirp_ui/templates/chirpui/<name>.html` — Kida macro (e.g. `label_overline.html`).

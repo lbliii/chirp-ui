@@ -1428,6 +1428,25 @@ class TestButton:
         assert "hx-boost" not in html
         assert "hx-select" not in html
 
+    def test_btn_hx_dict_shorthand(self, env: Environment) -> None:
+        """hx={} dict produces identical output to individual hx_* params."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Save", hx={"post": "/save", "target": "#result"}) }}'
+        ).render()
+        assert 'hx-post="/save"' in html
+        assert 'hx-target="#result"' in html
+
+    def test_btn_hx_dict_on_link(self, env: Environment) -> None:
+        """hx={} on a link button emits hx-boost=false and hx-select=unset."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Go", href="/page", hx={"get": "/page", "target": "#main"}) }}'
+        ).render()
+        assert 'hx-boost="false"' in html
+        assert 'hx-select="unset"' in html
+        assert 'hx-get="/page"' in html
+
 
 # ---------------------------------------------------------------------------
 # Streaming
@@ -2023,7 +2042,7 @@ class TestModal:
         assert "chirpui-modal__close" in html
 
     def test_modal_sizes(self, env: Environment) -> None:
-        for size in ("small", "medium", "large"):
+        for size in ("sm", "md", "lg"):
             html = env.from_string(
                 '{% from "chirpui/modal.html" import modal %}'
                 f'{{% call modal("dlg", size="{size}") %}}Body{{% end %}}'

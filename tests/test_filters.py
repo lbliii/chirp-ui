@@ -95,11 +95,12 @@ class TestValidateVariantBlock:
 class TestValidateSize:
     def test_valid_returns_value(self) -> None:
         assert validate_size("sm", "btn") == "sm"
-        assert validate_size("medium", "modal") == "medium"
+        assert validate_size("md", "modal") == "md"
 
     def test_invalid_returns_default(self) -> None:
         assert validate_size("xl", "btn", default="") == ""
-        assert validate_size("huge", "modal", default="medium") == "medium"
+        with pytest.warns(ChirpUIValidationWarning):
+            assert validate_size("huge", "modal", default="md") == "md"
 
     def test_empty_valid_when_in_registry(self) -> None:
         assert validate_size("", "btn") == ""
@@ -984,18 +985,28 @@ class TestBuildHxAttrs:
         result = build_hx_attrs(hx_post="/save", hx_target="#result")
         assert result == {"hx-post": "/save", "hx-target": "#result"}
 
-    def test_preserves_none_values(self) -> None:
+    def test_drops_none_values(self) -> None:
         result = build_hx_attrs(hx_get=None, hx_post="/x")
-        assert result == {"hx-get": None, "hx-post": "/x"}
+        assert result == {"hx-post": "/x"}
 
     def test_empty_kwargs_returns_empty_dict(self) -> None:
         assert build_hx_attrs() == {}
 
-    def test_none_values_skipped_by_html_attrs(self) -> None:
-        d = build_hx_attrs(hx_get=None, hx_post="/save")
-        rendered = str(html_attrs(d))
-        assert "hx-get" not in rendered
-        assert 'hx-post="/save"' in rendered
+    def test_hx_dict_merges_with_kwargs(self) -> None:
+        result = build_hx_attrs(hx={"post": "/save", "target": "#out"})
+        assert result == {"hx-post": "/save", "hx-target": "#out"}
+
+    def test_hx_dict_kwargs_override(self) -> None:
+        result = build_hx_attrs(hx={"post": "/old"}, hx_post="/new")
+        assert result == {"hx-post": "/new"}
+
+    def test_hx_dict_prefixed_keys(self) -> None:
+        result = build_hx_attrs(hx={"hx-get": "/api"})
+        assert result == {"hx-get": "/api"}
+
+    def test_hx_dict_drops_none(self) -> None:
+        result = build_hx_attrs(hx={"post": "/save", "get": None})
+        assert result == {"hx-post": "/save"}
 
     def test_all_hx_params(self) -> None:
         result = build_hx_attrs(

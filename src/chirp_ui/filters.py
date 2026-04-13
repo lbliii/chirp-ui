@@ -487,13 +487,30 @@ def resolve_status_variant(status: str, default: str = "muted") -> str:
     return default
 
 
-def build_hx_attrs(**kwargs: Any) -> dict[str, Any]:
+def build_hx_attrs(hx: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
     """Build a dict of hyphenated HTML attributes from keyword arguments.
 
     Converts underscores to hyphens in keys: ``hx_post`` becomes ``hx-post``.
     Pipe through ``html_attrs`` to render: ``{{ build_hx_attrs(...) | html_attrs }}``.
+
+    Accepts an optional ``hx`` dict whose keys are the short htmx names
+    (e.g. ``{"post": "/save", "target": "#out"}`` → ``hx-post``, ``hx-target``).
+    Individual ``hx_*`` kwargs override keys from the ``hx`` dict.
     """
-    return {k.replace("_", "-"): v for k, v in kwargs.items()}
+    merged: dict[str, Any] = {}
+    if hx:
+        for k, v in hx.items():
+            if v is None:
+                continue
+            key = k.replace("_", "-")
+            if not key.startswith("hx-"):
+                key = f"hx-{key}"
+            merged[key] = v
+    for k, v in kwargs.items():
+        if v is None:
+            continue
+        merged[k.replace("_", "-")] = v
+    return merged
 
 
 def _is_internal_href(href: str) -> bool:

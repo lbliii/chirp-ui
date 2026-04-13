@@ -280,7 +280,7 @@ class ChirpUIValidationWarning(ChirpUIWarning):
 
 ---
 
-## Sprint 2: API Normalization — Consistent Names and Defaults
+## Sprint 2: API Normalization — Consistent Names and Defaults ✓
 
 **Goal:** A developer who learns one macro's conventions can predict every other macro's conventions.
 
@@ -316,7 +316,7 @@ class ChirpUIValidationWarning(ChirpUIWarning):
 
 ---
 
-## Sprint 3: CSS/JS Correctness — Tokens, Overflow, Theme
+## Sprint 3: CSS/JS Correctness — Tokens, Overflow, Theme ✓
 
 **Goal:** The token system is self-consistent and the theme script works in all browsers.
 
@@ -358,7 +358,7 @@ class ChirpUIValidationWarning(ChirpUIWarning):
 
 ---
 
-## Sprint 4: Test Infrastructure — Align Stubs with Reality
+## Sprint 4: Test Infrastructure — Align Stubs with Reality ✓
 
 **Goal:** Test stubs match real filter behavior so green CI means green runtime.
 
@@ -388,7 +388,7 @@ class ChirpUIValidationWarning(ChirpUIWarning):
 
 ---
 
-## Sprint 5: Documentation — Close the 54% Gap
+## Sprint 5: Documentation — Close the 54% Gap ✓
 
 **Goal:** Every shipped component is discoverable and the overlapping families have decision guidance.
 
