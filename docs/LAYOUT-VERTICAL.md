@@ -1,3 +1,5 @@
+> **Consolidated:** This content has been merged into [LAYOUT.md](LAYOUT.md). This file is kept for existing links.
+
 # Layout vertical fill (full-height main)
 
 How ChirpUI’s app shell behaves in the **block axis** (height): when the main column scrolls vs when the page fills the viewport and **inner** regions scroll.

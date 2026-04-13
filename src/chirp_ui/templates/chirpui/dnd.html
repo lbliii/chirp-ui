@@ -31,40 +31,46 @@
         end
 -#}
 
-{% def dnd_list(cls="", attrs="") %}
+{% def dnd_list(cls="", attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <div class="chirpui-dnd chirpui-dnd--row{{ " " ~ cls if cls else "" }}"
-     role="listbox" {{ attrs | safe }}>
+     role="listbox" {{ _attrs_raw | safe }}>
     {% slot %}
 </div>
 {% end %}
 
-{% def dnd_item(cls="", attrs="") %}
+{% def dnd_item(cls="", attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <div class="chirpui-dnd__item chirpui-dnd__item--row{{ " " ~ cls if cls else "" }}"
-     role="option" {{ attrs | safe }}>
+     role="option" {{ _attrs_raw | safe }}>
     {% slot %}
 </div>
 {% end %}
 
-{% def dnd_handle(cls="", attrs="") %}
+{% def dnd_handle(cls="", attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <span class="chirpui-dnd__handle{{ " " ~ cls if cls else "" }}"
-      aria-hidden="true" {{ attrs | safe }}>&#x2630;</span>
+      aria-hidden="true" {{ _attrs_raw | safe }}>&#x2630;</span>
 {% end %}
 
-{% def dnd_drop_indicator(cls="", attrs="") %}
+{% def dnd_drop_indicator(cls="", attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <span class="chirpui-dnd__drop-indicator{{ " " ~ cls if cls else "" }}"
-      aria-hidden="true" {{ attrs | safe }}></span>
+      aria-hidden="true" {{ _attrs_raw | safe }}></span>
 {% end %}
 
-{% def dnd_board(cls="", attrs="") %}
+{% def dnd_board(cls="", attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <div class="chirpui-dnd chirpui-dnd--board{{ " " ~ cls if cls else "" }}"
-     role="group" aria-label="Board" {{ attrs | safe }}>
+     role="group" aria-label="Board" {{ _attrs_raw | safe }}>
     {% slot %}
 </div>
 {% end %}
 
-{% def dnd_column(title=none, cls="", attrs="") %}
+{% def dnd_column(title=none, cls="", attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <div class="chirpui-dnd__column{{ " " ~ cls if cls else "" }}"
-     role="group" {{ attrs | safe }}>
+     role="group" {{ _attrs_raw | safe }}>
     {% if title %}
     <div class="chirpui-dnd__column-header">{{ title }}</div>
     {% end %}
@@ -74,9 +80,10 @@
 </div>
 {% end %}
 
-{% def dnd_card(cls="", attrs="") %}
+{% def dnd_card(cls="", attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <div class="chirpui-dnd__card{{ " " ~ cls if cls else "" }}"
-     role="article" {{ attrs | safe }}>
+     role="article" {{ _attrs_raw | safe }}>
     {% slot %}
 </div>
 {% end %}

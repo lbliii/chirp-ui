@@ -1,8 +1,8 @@
 {#- chirp-ui: Card component
     Headless card with optional header, footer, collapsible, and variants.
 
-    Named slots: header_actions, media, body_actions (for list cards), default (body).
-    Link variants also expose header_badge, header_subtitle, top_meta, and footer.
+    Named slots: header_actions, media, body_actions (for list cards), footer, default (body).
+    Link variants also expose header_badge, header_subtitle, top_meta.
 
     Usage:
         from "chirpui/card.html" import card
@@ -19,20 +19,26 @@
         call card(title="Feature", variant="feature")
             {% slot media %}<img src="..." alt="...">{% end %}
             <p>Body content.</p>
+            {% slot footer %}Tags or metadata here{% end %}
         end
 
         call card(title="Usage", attrs_map={"id": "usage-widget"})
             <p>Stable id on the outer article for hx-target="#usage-widget".</p>
         end
+
+    Footer: use {% slot footer %} (preferred). The legacy footer= string parameter
+    still works but emits a ChirpUIDeprecationWarning.
 -#}
 
-{% def card(title=none, subtitle=none, footer=none, collapsible=false, open=false, variant="", icon=none, border_variant="", header_variant="", cls="", hoverable=false, attrs="", attrs_map=none) %}
+{% def card(title=none, subtitle=none, footer=none, collapsible=false, open=false, variant="", icon=none, border_variant="", header_variant="", cls="", hoverable=false, attrs="", attrs_unsafe="", attrs_map=none) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
+{% set _footer_text = footer | deprecate_param("footer", "{% slot footer %}...{% end %}") %}
 {# @provides _card_variant — consumed by: alert, badge, divider, settings_row #}
 {% provide _card_variant = variant %}
 {% let _card_mods = (["collapsible"] if collapsible else []) + (["gradient-border"] if border_variant == "gradient" else []) + (["gradient-header"] if header_variant == "gradient" else []) + (["hoverable"] if hoverable else []) %}
 {% let _card_class = "card" | bem(variant=variant, modifier=_card_mods, cls=cls) %}
 {% if collapsible %}
-<details class="{{ _card_class }}"{% if open %} open{% end %}{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}>
+<details class="{{ _card_class }}"{% if open %} open{% end %}{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}>
     {% if title %}
         <summary class="chirpui-card__header">
             {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
@@ -48,12 +54,11 @@
         <div class="chirpui-card__body-content">{% slot %}</div>
         <div class="chirpui-card__body-actions">{% slot body_actions %}</div>
     </div>
-    {% if footer %}
-        <footer class="chirpui-card__footer">{{ footer }}</footer>
-    {% end %}
+    {#- footer= string param is deprecated; use {% slot footer %} instead -#}
+    <div class="chirpui-card__footer-wrap">{% slot footer %}{{ _footer_text or "" }}</div>
 </details>
 {% else %}
-<article class="{{ _card_class }}"{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}>
+<article class="{{ _card_class }}"{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}>
     {% if title %}
         <header class="chirpui-card__header">
             {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
@@ -69,9 +74,8 @@
         <div class="chirpui-card__body-content">{% slot %}</div>
         <div class="chirpui-card__body-actions">{% slot body_actions %}</div>
     </div>
-    {% if footer %}
-        <footer class="chirpui-card__footer">{{ footer }}</footer>
-    {% end %}
+    {#- footer= string param is deprecated; use {% slot footer %} instead -#}
+    <div class="chirpui-card__footer-wrap">{% slot footer %}{{ _footer_text or "" }}</div>
 </article>
 {% end %}
 {% end %}

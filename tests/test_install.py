@@ -3,7 +3,7 @@
 from kida import Environment
 
 import chirp_ui
-from chirp_ui.filters import bem, field_errors, html_attrs, icon, validate_variant
+from chirp_ui.filters import bem, deprecate_param, field_errors, html_attrs, icon, validate_variant
 
 
 def test_import_chirp_ui() -> None:
@@ -20,6 +20,7 @@ def test_get_loader_loads_template() -> None:
     env.filters.update(
         {
             "bem": bem,
+            "deprecate_param": deprecate_param,
             "field_errors": field_errors,
             "html_attrs": html_attrs,
             "icon": icon,

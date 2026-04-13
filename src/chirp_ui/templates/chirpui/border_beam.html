@@ -13,11 +13,12 @@
         end
 -#}
 
-{% def border_beam(variant="", cls="", attrs="", attrs_map=none) %}
+{% def border_beam(variant="", cls="", attrs="", attrs_unsafe="", attrs_map=none) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set variant = variant | validate_variant(("", "default", "accent", "success", "warning"), "") %}
 {% set variant_class = " chirpui-border-beam--" ~ variant if variant else "" %}
 <div class="chirpui-border-beam{{ variant_class }}{{ " " ~ cls if cls else "" }}"
-     {{ attrs | html_attrs }}
+     {{ _attrs_raw | html_attrs }}
      {{ attrs_map | html_attrs }}>
     <div class="chirpui-border-beam__beam" aria-hidden="true"></div>
     <div class="chirpui-border-beam__content">

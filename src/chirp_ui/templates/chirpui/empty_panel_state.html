@@ -1,12 +1,14 @@
 {#- chirp-ui: Empty panel state
     Compact empty-state wrapper for panel and workspace bodies.
 
+    Named slots: actions (custom CTA), action (deprecated alias for actions).
+
     Usage:
         {% from "chirpui/empty_panel_state.html" import empty_panel_state %}
 
         {% call empty_panel_state(title="No file selected", icon="docs") %}
         <p>Select a file from the tree to start editing.</p>
-        {% slot action %}<a href="/author">Browse</a>{% end %}
+        {% slot actions %}<a href="/author">Browse</a>{% end %}
         {% end %}
 -#}
 {% from "chirpui/empty.html" import empty_state %}
@@ -15,6 +17,8 @@
 {% set state_cls = "chirpui-empty-panel-state" ~ (" chirpui-empty-panel-state--compact" if compact else "") ~ (" " ~ cls if cls else "") %}
 {% call empty_state(icon=icon, title=title, illustration=illustration, action_label=action_label, action_href=action_href, code=code, suggestions=suggestions, search_hint=search_hint, cls=state_cls) %}
 {% yield %}
+{# actions is the canonical name; action is kept for backward compat #}
+{% slot actions %}{% yield actions %}{% end %}
 {% slot action %}{% yield action %}{% end %}
 {% end %}
 {% end %}

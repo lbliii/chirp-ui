@@ -187,9 +187,38 @@ Without the token, the server may reject the request with 403.
 
 ---
 
-## Prefer `attrs_map` over `attrs`
+## `attrs_unsafe` vs `attrs_map` — choosing the right escape hatch
 
-Raw `attrs` strings are passed through unescaped. Use `attrs_map` (a dict) for structured attributes; it is escaped by the `html_attrs` filter, reducing XSS risk. See [SECURITY.md](../SECURITY.md).
+All chirp-ui macros that accept custom HTML attributes expose two parameters:
+
+| Parameter | Escaping | Use when |
+|-----------|----------|----------|
+| `attrs_map={"data-x": val}` | **Safe** — dict values are HTML-escaped by `html_attrs` | Any user-controlled or dynamic data |
+| `attrs_unsafe='data-x="static"'` | **Unsafe** — raw string passed through `\| safe` | Static strings, framework-generated markup only |
+
+**Rule:** Default to `attrs_map`. Only use `attrs_unsafe` when you need to inject pre-built attribute strings that are not user-controlled.
+
+```html
+{# SAFE — values are escaped #}
+{{ btn("Save", attrs_map={"data-id": item.id, "data-name": item.name}) }}
+
+{# UNSAFE — raw string, only for static known-safe content #}
+{{ btn("Save", attrs_unsafe='data-turbo-frame="modal"') }}
+```
+
+**Deprecated:** The old `attrs=""` parameter still works but emits `ChirpUIDeprecationWarning`. Migrate to `attrs_unsafe` (same behavior, explicit about the escaping bypass) or `attrs_map` (safe). See [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Scripting_Prevention_Cheat_Sheet.html).
+
+---
+
+## HTMX integration footguns
+
+chirp-ui auto-injects several htmx attributes to prevent common bugs. If you're debugging unexpected htmx behavior, check [HTMX-PATTERNS.md](HTMX-PATTERNS.md) for the full list. Key auto-behaviors:
+
+- **`hx-boost="false"`** on `<a>` elements with explicit htmx requests (prevents boost from hijacking the click)
+- **`hx-select="unset"`** on forms with htmx (prevents inherited `hx-select` from breaking fragment swaps)
+- **`hx-disinherit`** on fragment islands (isolates local htmx context from shell attributes)
+
+Use `hx={"post": "/url", "target": "#id"}` instead of individual `hx_post`/`hx_target` kwargs.
 
 ---
 
@@ -211,3 +240,35 @@ When a macro and a context variable have the same name (e.g. both `route_tabs`),
 Macros: `render_route_tabs`, `format_date`, `render_nav`
 
 Context variables: `route_tabs`, `items`, `skills`
+
+---
+
+## Resolved footguns (no longer applicable)
+
+The following issues were fixed in sharp-edges phases 1–3. **Do not re-triage these.** They are listed here so audits can skip them.
+
+| Former footgun | Resolution | Phase/Sprint |
+|---------------|------------|-------------|
+| `validate_variant` silently returns first allowed value | Emits `ChirpUIValidationWarning`; strict mode raises `ValueError` | 1/1 |
+| `register_colors` accepts invalid colors, fails at render | Validates color strings at registration time | 1/1 |
+| `btn()` defaults to `type="submit"` (form submission footgun) | Changed to `type="button"` | 3/9 |
+| `inline_edit_field` hardcoded fallback ID causes collisions | Warns when `swap_id` not provided | 3/9 |
+| `build_hx_attrs()` silently accepts typos like `hx={"typo": ...}` | Validates against 33 known htmx attrs; warns on unknown keys | 3/10 |
+| `field_errors()` silently drops non-list values (DRF/Pydantic dicts) | Warns and coerces to `[str(val)]` | 3/10 |
+| Pagination uses `<span aria-disabled>` (not keyboard-focusable) | Changed to `<button disabled>` | 3/11 |
+| Avatar has no `role="presentation"` for decorative use | `decorative=true` parameter added | 3/11 |
+| Alpine `register()` overwrites on double-load/htmx swap | Idempotency guard — first registration wins | 3/12 |
+| `safeSetItem()` silently swallows localStorage failures | `console.warn` on catch | 3/12 |
+| Provide/consume contracts invisible to template readers | `@provides`/`@consumes` annotations on all 43 statements | 3/13 |
+| `tab_is_active()` with empty `href=""` matches all paths | Returns `False` for empty href | 1/8 |
+| `contrast_text()` returns "white" on invalid color with no warning | Emits warning | 2/6 |
+| `data-theme="system"` has no matching CSS rule | CSS rule added | 1/3 |
+| `localStorage` throws in Safari private browsing (chirpui.js) | try/catch added | 1/3 |
+| z-index values scattered (1–10000) across 40+ rules | Token system `--chirpui-z-*` | 2/7 |
+| CSS hardcoded `color: white` breaks dark mode (20+ sites) | Replaced with `--chirpui-on-*` tokens | 1/3 |
+| `--chirpui-spacing-2xs` used but never defined | Defined in `:root` | 1/3 |
+| Breakpoints mix `767px`/`768px`/`48rem` | Normalized to `rem` | 1/3 |
+| Test stubs (`conftest.py`) diverge from real filter logic | Stubs updated to match production filters | 1/4 |
+| 106/195 templates undocumented in COMPONENT-OPTIONS.md | All documented | 1/5 |
+
+For the full history, see [PLAN-sharp-edges.md](PLAN-sharp-edges.md) (phases 1–2) and [PLAN-sharp-edges-phase3.md](PLAN-sharp-edges-phase3.md).

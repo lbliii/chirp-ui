@@ -1,7 +1,8 @@
 {#- chirp-ui: Profile Header component
     Cover image, avatar, name, bio, stats, action button.
 
-    Named slots (Kida 0.3+, use_slots=true): avatar, bio, stats, action.
+    Named slots (Kida 0.3+, use_slots=true): avatar, bio, stats, actions.
+    action (deprecated alias for actions).
 
     Usage:
         from "chirpui/profile_header.html" import profile_header, profile_header_avatar, ...
@@ -10,7 +11,7 @@
             {% slot avatar %}avatar(initials="AC", alt="Alice", size="lg"){% end %}
             {% slot bio %}<p class="chirpui-profile-header__bio">Developer & designer</p>{% end %}
             {% slot stats %}stat(value="1.2K", label="Followers") stat(value="42", label="Following"){% end %}
-            {% slot action %}btn("Follow", variant="primary"){% end %}
+            {% slot actions %}btn("Follow", variant="primary"){% end %}
         end
 
     Legacy (default): profile_header_avatar, profile_header_info, profile_header_stats, profile_header_action
@@ -34,7 +35,8 @@
             {% end %}
             <div class="chirpui-profile-header__bio">{% slot bio %}</div>
             <div class="chirpui-profile-header__stats">{% slot stats %}</div>
-            <div class="chirpui-profile-header__action">{% slot action %}</div>
+            {# actions is the canonical name; action is kept for backward compat #}
+            <div class="chirpui-profile-header__action">{% slot actions %}{% slot action %}</div>
         </div>
         {% else %}
         {% slot %}

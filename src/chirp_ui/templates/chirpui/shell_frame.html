@@ -31,12 +31,14 @@
     id="page-content",
     cls="",
     attrs="",
+    attrs_unsafe="",
     include_boost_attrs=true,
     target="#main",
     swap="innerHTML",
     select="#page-content"
 ) %}
-<div id="{{ id }}"{% if cls %} class="{{ cls }}"{% end %}{% if include_boost_attrs %} {{ shell_outlet_attrs(target=target, swap=swap, select=select) }}{% end %}{% if attrs %} {{ attrs | safe }}{% end %}>
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
+<div id="{{ id }}"{% if cls %} class="{{ cls }}"{% end %}{% if include_boost_attrs %} {{ shell_outlet_attrs(target=target, swap=swap, select=select) }}{% end %}{% if _attrs_raw %} {{ _attrs_raw | safe }}{% end %}>
     {% slot %}
 </div>
 {% end %}

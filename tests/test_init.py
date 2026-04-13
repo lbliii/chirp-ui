@@ -5,6 +5,7 @@ from kida import Environment, PackageLoader
 import chirp_ui
 from chirp_ui.filters import (
     bem,
+    deprecate_param,
     field_errors,
     html_attrs,
     icon,
@@ -41,6 +42,7 @@ class TestGetLoader:
         env.filters.update(
             {
                 "bem": bem,
+                "deprecate_param": deprecate_param,
                 "field_errors": field_errors,
                 "html_attrs": html_attrs,
                 "icon": icon,

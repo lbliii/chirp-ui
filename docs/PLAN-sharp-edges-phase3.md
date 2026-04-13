@@ -332,6 +332,7 @@ Add a comment block near each `consume()` call documenting what is consumed and 
 - **Sharp Edges Phase 1–2** — prerequisite, complete. Phase 3 addresses the structural/behavioral layer that Phase 1–2's warning/normalization/token work couldn't fix.
 - **PLAN-behavior-layer-hardening** — may overlap on Alpine.js; check for conflicts before Sprint 12.
 - **PLAN-test-coverage-hardening** — Sprint 10 filter changes need new tests; coordinate.
+- **[PLAN-sharp-edges-phase4](PLAN-sharp-edges-phase4.md)** (Complete) — next phase. API consistency & developer ergonomics: slot naming, attrs safety rename, hx={} promotion, neumorphic CSS refactor, test structural assertions, docs index.
 
 ---
 
@@ -341,3 +342,5 @@ Add a comment block near each `consume()` call documenting what is consumed and 
 - 2026-04-13: Sprint 9 complete — btn() defaults to type="button", inline_edit_field warns on missing swap_id, check_required_id filter added
 - 2026-04-13: Sprint 10 complete — build_hx_attrs() validates htmx attr names (33 known attrs, hx-on:* exempt), field_errors() warns and coerces non-list values
 - 2026-04-13: Sprint 11 complete — pagination uses <button disabled>, avatar gets decorative= param, notification_dot aria-label contextualizes count
+- 2026-04-13: Sprints 12–13 complete — Alpine idempotency/storage guards, provide/consume docstrings
+- 2026-04-13: Phase 3 complete. Next: [PLAN-sharp-edges-phase4.md](PLAN-sharp-edges-phase4.md) — API consistency & developer ergonomics
