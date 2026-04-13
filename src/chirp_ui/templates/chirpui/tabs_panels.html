@@ -1,12 +1,15 @@
 {#- chirp-ui: Tab panels (button-based, client-side switching)
-    Use tab() for each button, tab_panel() for each content. Requires Alpine.js.
+    Use tab_button() for each button, tab_panel() for each content. Requires Alpine.js.
+
+    Renamed from tab() to tab_button() to avoid collision with the htmx-based
+    tab() in tabs.html.
 
     Usage:
-        from "chirpui/tabs_panels.html" import tabs_container, tab, tab_panel
+        from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel
 
         {% call tabs_container(active="overview") %}
-            {{ tab("overview", "Overview", active=true) }}
-            {{ tab("details", "Details") }}
+            {{ tab_button("overview", "Overview", active=true) }}
+            {{ tab_button("details", "Details") }}
             {{ tab_panel("overview", active=true) %}
                 Overview content
             {% end %}
@@ -16,7 +19,7 @@
         {% end %}
 -#}
 
-{% def tab(id, label, active=false) %}
+{% def tab_button(id, label, active=false) %}
 <button type="button" class="chirpui-tabs__tab"
         :class="{ 'chirpui-tabs__tab--active': active === '{{ id }}' }"
         role="tab" :aria-selected="active === '{{ id }}'"

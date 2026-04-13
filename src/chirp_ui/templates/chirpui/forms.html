@@ -332,9 +332,12 @@
 </div>
 {% end %}
 
-{# Segmented control — connected button-group radio selector. #}
-{% def segmented_control(name, options, selected="", label=none, errors=none,
-                         required=false, hint=none, size="") %}
+{# Segmented control form field — connected button-group radio selector.
+   Renamed from segmented_control() to avoid collision with the display-only
+   segmented_control() in segmented_control.html.  The old name is kept as
+   a deprecated alias below. #}
+{% def segmented_control_field(name, options, selected="", label=none, errors=none,
+                               required=false, hint=none, size="") %}
 {% set size = size | validate_size("segmented", "") %}
 {% set _has_errors = errors and errors | field_errors(name) %}
 <div id="field-{{ name }}" class="chirpui-field{{ " chirpui-field--error" if _has_errors else "" }}">

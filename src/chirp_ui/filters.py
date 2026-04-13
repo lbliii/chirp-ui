@@ -251,12 +251,23 @@ def contrast_text(css_color: str) -> str:
     """Return ``white`` or ``#1a1a1a`` for readable text on solid *css_color*.
 
     Supports hex, ``rgb()``, ``hsl()``, and ``oklch()`` color formats.
+    Emits :class:`~chirp_ui.validation.ChirpUIValidationWarning` when the
+    color cannot be parsed (falls back to ``white``).
     """
     safe = sanitize_color(css_color)
     if safe is None:
+        if css_color:
+            _warn(
+                f"chirp-ui: contrast_text could not parse color {css_color!r}; using 'white'",
+                category=ChirpUIValidationWarning,
+            )
         return "white"
     ch = _css_color_to_srgb(safe)
     if ch is None:
+        _warn(
+            f"chirp-ui: contrast_text could not convert color {css_color!r} to sRGB; using 'white'",
+            category=ChirpUIValidationWarning,
+        )
         return "white"
     r_lin, g_lin, b_lin = (
         ch[0] / 12.92 if ch[0] <= 0.04045 else ((ch[0] + 0.055) / 1.055) ** 2.4,
@@ -336,11 +347,16 @@ def bem(
         modifiers = [modifier] if modifier else []
 
     if desc and desc.modifiers:
+        valid_modifiers: list[str] = []
         for m in modifiers:
             if m not in desc.modifiers:
                 _warn(
                     f"chirp-ui: {block} modifier {m!r} invalid; valid: {', '.join(desc.modifiers)}",
+                    stacklevel=4,
                 )
+            else:
+                valid_modifiers.append(m)
+        modifiers = valid_modifiers
 
     parts = [f"chirpui-{block}"]
     if variant:
@@ -607,12 +623,17 @@ def html_attrs(value: Any) -> str | Markup:
             chunks.append(f' {escaped_key}="{escape(serialized, quote=True)}"')
         return Markup("".join(chunks))
 
+    # Legacy: accept pre-built attr strings.  Markup instances are already
+    # safe; plain strings are treated as raw attrs for backwards compat but
+    # should migrate to Markup or dict form.
     text = str(value).strip()
     if not text:
         return ""
-    if text.startswith(" "):
-        return Markup(text)
-    return Markup(f" {text}")
+    if isinstance(value, Markup):
+        return Markup(f" {text}") if not text.startswith(" ") else value
+    # Plain string — pass through for backwards compat (templates use
+    # ``attrs`` params this way) but the dict form is preferred.
+    return Markup(f" {text}") if not text.startswith(" ") else Markup(text)
 
 
 def register_filters(app: TemplateFilterApp) -> None:

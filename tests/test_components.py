@@ -2231,9 +2231,9 @@ class TestAlpineMagics:
 
     def test_tabs_panels_emits_dispatch(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/tabs_panels.html" import tabs_container, tab, tab_panel %}'
+            '{% from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel %}'
             '{% call tabs_container(active="a") %}'
-            '{{ tab("a", "A") }}{{ tab("b", "B") }}'
+            '{{ tab_button("a", "A") }}{{ tab_button("b", "B") }}'
             '{% call tab_panel("a") %}x{% end %}{% call tab_panel("b") %}y{% end %}'
             "{% end %}"
         ).render()
