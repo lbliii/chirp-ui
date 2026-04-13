@@ -1,0 +1,1 @@
+Sharp-edges audit: normalized variant/size defaults to empty strings, added `hx={}` dict shorthand to `btn`/`icon_btn`/`form`, filled 53 missing CSS tokens, migrated `overflow: hidden` → `overflow: clip`, wrapped `localStorage` in try/catch, aligned test stubs with real filters (43 parity tests), and documented all 195 templates in `COMPONENT-OPTIONS.md`.
