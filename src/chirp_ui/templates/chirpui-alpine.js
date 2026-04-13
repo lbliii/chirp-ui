@@ -142,11 +142,16 @@
     document.addEventListener(
         "alpine:init",
         function () {
-            if (!window.Alpine.store("modals")) {
-                window.Alpine.store("modals", {});
-            }
-            if (!window.Alpine.store("trays")) {
-                window.Alpine.store("trays", {});
+            if (
+                window.Alpine &&
+                typeof window.Alpine.store === "function"
+            ) {
+                if (!window.Alpine.store("modals")) {
+                    window.Alpine.store("modals", {});
+                }
+                if (!window.Alpine.store("trays")) {
+                    window.Alpine.store("trays", {});
+                }
             }
         },
         { once: true }
