@@ -15,6 +15,7 @@ from chirp_ui.filters import (
     contrast_text,
     make_route_link_attrs,
     resolve_color,
+    resolve_status_variant,
     sanitize_color,
     value_type,
 )
@@ -182,6 +183,7 @@ def env() -> Environment:
             "sanitize_color": sanitize_color,
             "contrast_text": contrast_text,
             "resolve_color": resolve_color,
+            "resolve_status_variant": resolve_status_variant,
         }
     )
     e.add_global("build_hx_attrs", build_hx_attrs)

@@ -3,6 +3,7 @@
 import pytest
 
 from chirp_ui.filters import (
+    STATUS_WORDS,
     bem,
     build_hx_attrs,
     contrast_text,
@@ -13,13 +14,14 @@ from chirp_ui.filters import (
     register_colors,
     register_filters,
     resolve_color,
+    resolve_status_variant,
     sanitize_color,
     validate_size,
     validate_variant,
     validate_variant_block,
     value_type,
 )
-from chirp_ui.validation import set_strict
+from chirp_ui.validation import ChirpUIValidationWarning, ChirpUIWarning, set_strict
 
 
 class TestBem:
@@ -104,7 +106,7 @@ class TestValidateSize:
 
 
 class TestValidateVariantStrictMode:
-    """Strict mode logs warning on invalid variant and returns fallback."""
+    """Strict mode raises ValueError on invalid variant."""
 
     def setup_method(self) -> None:
         set_strict(True)
@@ -112,14 +114,12 @@ class TestValidateVariantStrictMode:
     def teardown_method(self) -> None:
         set_strict(False)
 
-    def test_invalid_logs_warning(self, caplog: pytest.LogCaptureFixture) -> None:
-        result = validate_variant("invalid", ("a", "b"))
-        assert result == "a"
-        assert "chirp_ui" in caplog.text or any("variant" in r.message for r in caplog.records)
+    def test_invalid_raises_value_error(self) -> None:
+        with pytest.raises(ValueError, match="variant"):
+            validate_variant("invalid", ("a", "b"))
 
-    def test_valid_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
-        validate_variant("a", ("a", "b"))
-        assert not any("invalid" in (r.message or "") for r in caplog.records)
+    def test_valid_no_error(self) -> None:
+        assert validate_variant("a", ("a", "b")) == "a"
 
 
 class TestHtmlAttrsEdgeCases:
@@ -164,6 +164,113 @@ class TestValidateVariantEdgeCases:
 
     def test_empty_allowed_list_returns_empty(self) -> None:
         assert validate_variant("x", (), default="") == ""
+
+
+class TestWarningInfrastructure:
+    """ChirpUI warning classes and _warn behavior."""
+
+    def test_validate_variant_warns_on_fallback(self) -> None:
+        with pytest.warns(ChirpUIValidationWarning, match="variant"):
+            validate_variant("xl", ("sm", "md", "lg"), "md")
+
+    def test_validate_variant_no_warn_on_empty_string(self) -> None:
+        # Empty string is the common "no variant" case — should not warn
+        result = validate_variant("", ("a", "b"), default="a")
+        assert result == "a"
+
+    def test_validate_size_warns_on_fallback(self) -> None:
+        with pytest.warns(ChirpUIValidationWarning, match="size"):
+            validate_size("xl", "btn", default="md")
+
+    def test_validate_size_no_warn_for_unknown_block(self) -> None:
+        # Unknown block has no registered sizes — no warning
+        result = validate_size("xl", "unknown-block")
+        assert result == ""
+
+    def test_icon_warns_on_unrecognized(self) -> None:
+        with pytest.warns(ChirpUIValidationWarning, match="nonexistent"):
+            icon("nonexistent")
+
+    def test_icon_no_warn_on_valid(self) -> None:
+        result = icon("status")
+        assert result == "◎"
+
+    def test_register_colors_raises_on_invalid(self) -> None:
+        with pytest.raises(ValueError, match="invalid color"):
+            register_colors({"brand": "not-a-color"})
+
+    def test_register_colors_accepts_valid(self) -> None:
+        register_colors({"_test_warn_green": "#00ff00"})
+        assert resolve_color("_test_warn_green") == "#00ff00"
+
+    def test_register_filters_warns_without_template_global(self) -> None:
+        class MinimalApp:
+            def template_filter(self, name: str):
+                return lambda fn: fn
+
+        with pytest.warns(ChirpUIWarning, match="template_global"):
+            register_filters(MinimalApp())
+
+    def test_strict_mode_escalates_validation_to_error(self) -> None:
+        set_strict(True)
+        try:
+            with pytest.raises(ValueError, match="variant"):
+                validate_variant("bad", ("a", "b"))
+        finally:
+            set_strict(False)
+
+    def test_strict_mode_escalates_size_to_error(self) -> None:
+        set_strict(True)
+        try:
+            with pytest.raises(ValueError, match="size"):
+                validate_size("xl", "btn")
+        finally:
+            set_strict(False)
+
+    def test_strict_mode_escalates_icon_to_error(self) -> None:
+        set_strict(True)
+        try:
+            with pytest.raises(ValueError, match="icon"):
+                icon("bogus_icon")
+        finally:
+            set_strict(False)
+
+
+class TestResolveStatusVariant:
+    """resolve_status_variant maps status strings to badge variants."""
+
+    def test_success_words(self) -> None:
+        for word in ("ok", "yes", "configured", "true", "1", "on", "ready", "active"):
+            assert resolve_status_variant(word) == "success", f"{word!r} should map to success"
+
+    def test_error_words(self) -> None:
+        for word in ("error", "issues", "failed", "offline", "disabled"):
+            assert resolve_status_variant(word) == "error", f"{word!r} should map to error"
+
+    def test_case_insensitive(self) -> None:
+        assert resolve_status_variant("OK") == "success"
+        assert resolve_status_variant("Failed") == "error"
+        assert resolve_status_variant("CONFIGURED") == "success"
+
+    def test_unknown_returns_default_and_warns(self) -> None:
+        with pytest.warns(ChirpUIValidationWarning, match="unknown-status"):
+            result = resolve_status_variant("unknown-status")
+        assert result == "muted"
+
+    def test_empty_returns_default(self) -> None:
+        assert resolve_status_variant("") == "muted"
+
+    def test_custom_default(self) -> None:
+        with pytest.warns(ChirpUIValidationWarning):
+            result = resolve_status_variant("unknown", default="info")
+        assert result == "info"
+
+    def test_extensible_via_status_words(self) -> None:
+        STATUS_WORDS["custom-status"] = "warning"
+        try:
+            assert resolve_status_variant("custom-status") == "warning"
+        finally:
+            del STATUS_WORDS["custom-status"]
 
 
 class TestFieldErrorsEdgeCases:
@@ -241,12 +348,14 @@ class TestIcon:
         assert icon("cloud") == "☁"
 
     def test_unknown_name_passes_through(self) -> None:
-        assert icon("◎") == "◎"
-        assert icon("custom-glyph") == "custom-glyph"
+        with pytest.warns(ChirpUIValidationWarning):
+            assert icon("◎") == "◎"
+        with pytest.warns(ChirpUIValidationWarning):
+            assert icon("custom-glyph") == "custom-glyph"
 
 
 class TestIconStrictMode:
-    """Strict mode logs warning on invalid icon name and passes through unchanged."""
+    """Strict mode raises ValueError on invalid icon name."""
 
     def setup_method(self) -> None:
         set_strict(True)
@@ -254,24 +363,17 @@ class TestIconStrictMode:
     def teardown_method(self) -> None:
         set_strict(False)
 
-    def test_invalid_logs_warning(self, caplog: pytest.LogCaptureFixture) -> None:
-        result = icon("statis")
-        assert result == "statis"
-        assert any(
-            "icon" in (r.message or "") and "invalid" in (r.message or "") for r in caplog.records
-        )
-        assert any("statis" in (r.message or "") for r in caplog.records)
+    def test_invalid_raises_value_error(self) -> None:
+        with pytest.raises(ValueError, match="statis"):
+            icon("statis")
 
-    def test_valid_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
-        icon("status")
-        assert not any(
-            "invalid" in (r.message or "") and "icon" in (r.message or "") for r in caplog.records
-        )
+    def test_valid_no_error(self) -> None:
+        assert icon("status") == "◎"
 
-    def test_strict_false_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+    def test_non_strict_warns(self) -> None:
         set_strict(False)
-        icon("statis")
-        assert not any("invalid" in (r.message or "") for r in caplog.records)
+        with pytest.warns(ChirpUIValidationWarning, match="statis"):
+            icon("statis")
 
 
 class TestValueType:
@@ -305,7 +407,7 @@ class TestValueType:
 
 
 class TestBemStrictMode:
-    """bem() in strict mode: invalid variant for a registered block logs and falls back."""
+    """bem() in strict mode: invalid variant for a registered block raises ValueError."""
 
     def setup_method(self) -> None:
         set_strict(True)
@@ -313,33 +415,25 @@ class TestBemStrictMode:
     def teardown_method(self) -> None:
         set_strict(False)
 
-    def test_invalid_variant_falls_back_to_first_allowed(
-        self, caplog: pytest.LogCaptureFixture
-    ) -> None:
-        result = bem("alert", variant="bogus")
-        first_allowed = ("info", "success", "warning", "error")[0]
-        assert f"chirpui-alert--{first_allowed}" in result
-        assert "chirpui-alert" in result
-        assert any("invalid" in r.message for r in caplog.records)
+    def test_invalid_variant_raises(self) -> None:
+        with pytest.raises(ValueError, match="bogus"):
+            bem("alert", variant="bogus")
 
-    def test_valid_variant_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+    def test_valid_variant_no_error(self) -> None:
         result = bem("alert", variant="success")
         assert "chirpui-alert--success" in result
-        assert not any("invalid" in r.message for r in caplog.records)
 
-    def test_unknown_block_no_strict_validation(self, caplog: pytest.LogCaptureFixture) -> None:
+    def test_unknown_block_no_validation(self) -> None:
         result = bem("custom-block", variant="whatever")
         assert "chirpui-custom-block--whatever" in result
-        assert not any("invalid" in r.message for r in caplog.records)
 
-    def test_empty_variant_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
+    def test_empty_variant_no_warning(self) -> None:
         result = bem("alert", variant="")
         assert result == "chirpui-alert"
-        assert not any("invalid" in r.message for r in caplog.records)
 
 
 class TestValidateSizeStrictMode:
-    """validate_size in strict mode: invalid size logs warning and returns fallback."""
+    """validate_size in strict mode: invalid size raises ValueError."""
 
     def setup_method(self) -> None:
         set_strict(True)
@@ -347,25 +441,19 @@ class TestValidateSizeStrictMode:
     def teardown_method(self) -> None:
         set_strict(False)
 
-    def test_invalid_size_logs_warning(self, caplog: pytest.LogCaptureFixture) -> None:
-        result = validate_size("xl", "btn")
-        assert result == ""  # first allowed for btn is ""
-        assert any("size" in r.message and "invalid" in r.message for r in caplog.records)
+    def test_invalid_size_raises(self) -> None:
+        with pytest.raises(ValueError, match="size"):
+            validate_size("xl", "btn")
 
-    def test_valid_size_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
-        result = validate_size("sm", "btn")
-        assert result == "sm"
-        assert not any("invalid" in r.message for r in caplog.records)
+    def test_valid_size_no_error(self) -> None:
+        assert validate_size("sm", "btn") == "sm"
 
-    def test_unknown_block_no_warning(self, caplog: pytest.LogCaptureFixture) -> None:
-        result = validate_size("xl", "unknown-block")
-        assert result == ""
-        assert not any("invalid" in r.message for r in caplog.records)
+    def test_unknown_block_no_error(self) -> None:
+        assert validate_size("xl", "unknown-block") == ""
 
-    def test_invalid_with_valid_default(self, caplog: pytest.LogCaptureFixture) -> None:
-        result = validate_size("xl", "btn", default="md")
-        assert result == "md"
-        assert any("invalid" in r.message for r in caplog.records)
+    def test_invalid_with_valid_default_raises(self) -> None:
+        with pytest.raises(ValueError, match="size"):
+            validate_size("xl", "btn", default="md")
 
 
 class TestHtmlAttrsListTupleValues:
@@ -418,7 +506,8 @@ class TestRegisterFilters:
                 return decorator
 
         app = MockApp()
-        register_filters(app)
+        with pytest.warns(ChirpUIWarning, match="template_global"):
+            register_filters(app)
         assert "bem" in registered
         assert registered["bem"] is bem
         assert "field_errors" in registered
@@ -870,7 +959,7 @@ class TestRegisterFiltersWithTemplateGlobal:
 
         assert registered_globals["tab_is_active"] is tab_is_active
 
-    def test_without_template_global_no_error(self) -> None:
+    def test_without_template_global_warns(self) -> None:
         registered: dict[str, object] = {}
 
         class MockAppNoGlobal:
@@ -882,7 +971,8 @@ class TestRegisterFiltersWithTemplateGlobal:
                 return decorator
 
         app = MockAppNoGlobal()
-        register_filters(app)
+        with pytest.warns(ChirpUIWarning, match="template_global"):
+            register_filters(app)
         assert "bem" in registered
         assert "tab_is_active" not in registered
 
