@@ -6,6 +6,10 @@
 
         icon_btn("✕", aria_label="Close")
         icon_btn("⚙", variant="ghost", size="lg", href="/settings", aria_label="Settings")
+        icon_btn("🗑", aria_label="Delete", hx={"delete": "/item/1", "target": "#list", "swap": "outerHTML"})
+
+    hx={"post": "/url", "target": "#id"} — preferred for htmx attributes.
+    Individual hx_get/hx_post/hx_target/hx_swap kwargs override dict keys.
 -#}
 
 {% def icon_btn(icon, variant="", size="", href=none, aria_label="", disabled=false, type="button", cls="",

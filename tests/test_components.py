@@ -13,6 +13,7 @@ import pytest
 from kida import Environment
 
 from chirp_ui.validation import ChirpUIValidationWarning
+from tests.helpers import assert_element
 
 
 @dataclass(frozen=True, slots=True)
@@ -933,6 +934,26 @@ class TestHero:
         assert "Explore." in html
         assert "Body" in html
 
+    def test_hero_actions_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero.html" import hero %}'
+            '{% call hero(title="Welcome") %}'
+            '{% slot actions %}<a href="/start">Go</a>{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-hero__action" in html
+        assert "Go" in html
+
+    def test_hero_action_slot_backward_compat(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hero.html" import hero %}'
+            '{% call hero(title="Welcome") %}'
+            '{% slot action %}<a href="/start">Go</a>{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-hero__action" in html
+        assert "Go" in html
+
 
 # ---------------------------------------------------------------------------
 # Empty State
@@ -994,6 +1015,35 @@ class TestEmptyState:
         assert "chirpui-empty-panel-state--compact" in html
         assert "No file selected" in html
         assert "Browse" in html
+
+    def test_empty_state_actions_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/empty.html" import empty_state %}'
+            '{% call empty_state(title="No items") %}'
+            "{% slot actions %}<button>Create</button>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-empty-state__action" in html
+        assert "Create" in html
+
+    def test_empty_state_action_slot_backward_compat(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/empty.html" import empty_state %}'
+            '{% call empty_state(title="No items") %}'
+            "{% slot action %}<button>Create</button>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-empty-state__action" in html
+        assert "Create" in html
+
+    def test_empty_panel_state_actions_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/empty_panel_state.html" import empty_panel_state %}'
+            '{% call empty_panel_state(title="Empty", icon="◎") %}'
+            "{% slot actions %}<button>Add</button>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "Add" in html
 
 
 # ---------------------------------------------------------------------------
@@ -2035,6 +2085,48 @@ class TestCard:
         assert "<details" in html
         assert "chirpui-card--gradient-border" in html
 
+    def test_card_footer_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="T") %}Body'
+            "{% slot footer %}Slot footer{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-card__footer-wrap" in html
+        assert "Slot footer" in html
+
+    def test_card_footer_param_backward_compat(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(footer="Legacy footer") %}Body{% end %}'
+        ).render()
+        assert "chirpui-card__footer-wrap" in html
+        assert "Legacy footer" in html
+
+    def test_card_footer_slot_collapsible(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="T", collapsible=true) %}Body'
+            "{% slot footer %}Slot footer{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-card__footer-wrap" in html
+        assert "Slot footer" in html
+
+    def test_card_attrs_unsafe(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="T", attrs_unsafe=\'data-x="1"\') %}Body{% end %}'
+        ).render()
+        assert 'data-x="1"' in html
+
+    def test_card_attrs_legacy_still_works(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="T", attrs=\'data-old="y"\') %}Body{% end %}'
+        ).render()
+        assert 'data-old="y"' in html
+
 
 # ---------------------------------------------------------------------------
 # Modal
@@ -2814,6 +2906,26 @@ class TestAlert:
         assert "chirpui-alert__title" in html
         assert "Heads up" in html
         assert "Body text" in html
+
+    def test_alert_header_actions_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/alert.html" import alert %}'
+            '{% call alert(variant="error") %}msg'
+            "{% slot header_actions %}<button>Retry</button>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-alert__actions" in html
+        assert "Retry" in html
+
+    def test_alert_actions_slot_backward_compat(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/alert.html" import alert %}'
+            '{% call alert(variant="error") %}msg'
+            "{% slot actions %}<button>Retry</button>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-alert__actions" in html
+        assert "Retry" in html
 
 
 # ---------------------------------------------------------------------------
@@ -7512,3 +7624,321 @@ class TestFeatureStack:
             '{% call feature_stack(cls="extra") %}Content{% end %}'
         ).render()
         assert "extra" in html
+
+
+# ---------------------------------------------------------------------------
+# Structural assertions (Sprint 18) — verify HTML structure, not just classes
+# ---------------------------------------------------------------------------
+
+
+class TestStructuralBtn:
+    """Button must render correct element type with key attributes."""
+
+    def test_btn_renders_button_element_with_type(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}{{ btn("Save") }}'
+        ).render()
+        assert_element(html, "button", {"type": "button"}, contains="Save")
+
+    def test_btn_link_renders_anchor(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}{{ btn("Go", href="/x") }}'
+        ).render()
+        assert_element(html, "a", {"href": "/x"}, contains="Go")
+        assert "<button" not in html
+
+    def test_btn_loading_has_aria_busy(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}{{ btn("Wait", loading=true) }}'
+        ).render()
+        assert_element(html, "button", {"aria-busy": "true"})
+
+
+class TestStructuralCard:
+    """Card must use correct wrapper elements and structural children."""
+
+    def test_card_has_body_div(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}{% call card() %}Body{% end %}'
+        ).render()
+        assert_element(html, "div", {"class": "chirpui-card__body"}, contains="Body")
+
+    def test_collapsible_card_uses_details_summary(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="T", collapsible=true) %}C{% end %}'
+        ).render()
+        assert_element(html, "details")
+        assert_element(html, "summary")
+
+
+class TestStructuralModal:
+    """Modal must render as <dialog> with correct id."""
+
+    def test_modal_renders_dialog_element(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/modal.html" import modal %}'
+            '{% call modal("my-dlg", title="Edit") %}Body{% end %}'
+        ).render()
+        assert_element(html, "dialog", {"id": "my-dlg"})
+        assert "chirpui-modal__header" in html
+        assert "chirpui-modal__close" in html
+
+
+class TestStructuralAlert:
+    """Alert must have role=alert and correct variant class."""
+
+    def test_alert_has_role_alert(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/alert.html" import alert %}{% call alert() %}Warning{% end %}'
+        ).render()
+        assert_element(html, "div", {"role": "alert"}, contains="Warning")
+
+    def test_alert_dismissible_has_close_button(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/alert.html" import alert %}'
+            "{% call alert(dismissible=true) %}msg{% end %}"
+        ).render()
+        assert "chirpui-alert__close" in html
+        assert_element(html, "button", {"aria-label": "Dismiss"})
+
+
+class TestStructuralBadge:
+    """Badge renders <span> by default, <a> with href."""
+
+    def test_badge_renders_span(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/badge.html" import badge %}{{ badge("New") }}'
+        ).render()
+        assert_element(html, "span", contains="New")
+        assert "<a" not in html
+
+    def test_badge_with_href_renders_anchor(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/badge.html" import badge %}{{ badge("Link", href="/x") }}'
+        ).render()
+        assert_element(html, "a", {"href": "/x"}, contains="Link")
+
+
+class TestStructuralForm:
+    """Form must render <form> with action and method."""
+
+    def test_form_renders_form_element(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/submit", method="post") %}fields{% end %}'
+        ).render()
+        assert_element(html, "form", {"action": "/submit", "method": "post"})
+
+    def test_text_field_has_aria_describedby(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import text_field %}'
+            '{{ text_field("email", label="Email") }}'
+        ).render()
+        assert_element(html, "input", {"id": "email", "aria-describedby": "errors-email"})
+        assert_element(html, "div", {"id": "errors-email", "role": "alert"})
+
+
+class TestStructuralTable:
+    """Table must use <table> with proper thead/tbody structure."""
+
+    def test_table_renders_table_element(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table, row %}'
+            '{% call table(headers=["Name"]) %}{{ row("Alice") }}{% end %}'
+        ).render()
+        assert_element(html, "table")
+        assert_element(html, "th", contains="Name")
+        assert_element(html, "td", contains="Alice")
+
+
+class TestStructuralTabs:
+    """Tabs must use role=tablist container."""
+
+    def test_tabs_container_has_role_tablist(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tabs.html" import tabs, tab %}'
+            "{% call tabs() %}"
+            '{{ tab("overview", "Overview", url="/o", active=true) }}'
+            "{% end %}"
+        ).render()
+        assert_element(html, "nav", {"role": "tablist"})
+        assert 'aria-selected="true"' in html
+        assert "Overview" in html
+
+
+class TestStructuralDropdown:
+    """Dropdown must use <details>/<summary> pattern."""
+
+    def test_dropdown_uses_details_summary(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown.html" import dropdown %}'
+            '{% call dropdown(label="Menu") %}<a>Item</a>{% end %}'
+        ).render()
+        assert_element(html, "details")
+        assert_element(html, "summary", contains="Menu")
+        assert "chirpui-dropdown__menu" in html
+
+
+class TestStructuralAccordion:
+    """Accordion items must use <details> with name for exclusive groups."""
+
+    def test_accordion_uses_details_with_name(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/accordion.html" import accordion_item %}'
+            '{% call accordion_item("Q1", name="faq") %}A1{% end %}'
+        ).render()
+        assert_element(html, "details", {"name": "faq"})
+        assert_element(html, "summary", contains="Q1")
+        assert "A1" in html
+
+
+class TestStructuralSidebar:
+    """Sidebar must render as <nav> with proper link structure."""
+
+    def test_sidebar_renders_nav(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import sidebar, sidebar_link %}'
+            "{% call sidebar() %}"
+            '{{ sidebar_link("/dash", "Dashboard", active=true) }}'
+            "{% end %}"
+        ).render()
+        assert_element(html, "nav")
+        assert 'aria-current="page"' in html
+        assert "chirpui-sidebar__link--active" in html
+
+
+class TestStructuralPagination:
+    """Pagination must render as <nav> with aria-label."""
+
+    def test_pagination_renders_nav_with_aria(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/pagination.html" import pagination %}'
+            '{{ pagination(current=2, total=5, url_pattern="/items?page={page}") }}'
+        ).render()
+        assert_element(html, "nav", {"aria-label": "Pagination"})
+
+    def test_pagination_current_page_is_aria_current(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/pagination.html" import pagination %}'
+            '{{ pagination(current=2, total=5, url_pattern="/items?page={page}") }}'
+        ).render()
+        assert 'aria-current="page"' in html
+
+
+class TestStructuralAvatar:
+    """Avatar must have role=img by default, suppressed when decorative."""
+
+    def test_avatar_has_role_img(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/avatar.html" import avatar %}{{ avatar(initials="JD") }}'
+        ).render()
+        assert_element(html, "span", {"role": "img"})
+
+    def test_avatar_decorative_has_presentation_role(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/avatar.html" import avatar %}'
+            '{{ avatar(initials="JD", decorative=true) }}'
+        ).render()
+        assert_element(html, "span", {"role": "presentation"})
+
+
+class TestStructuralBreadcrumbs:
+    """Breadcrumbs must render as <nav> with aria-label and <ol>."""
+
+    def test_breadcrumbs_renders_nav_ol(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/breadcrumbs.html" import breadcrumbs %}'
+            '{{ breadcrumbs([{"label": "Home", "href": "/"}, {"label": "Page"}]) }}'
+        ).render()
+        assert_element(html, "nav", {"aria-label": "Breadcrumb"})
+        assert_element(html, "ol")
+        assert 'aria-current="page"' in html
+
+
+class TestStructuralDrawer:
+    """Drawer must render as <dialog> with correct id and panel."""
+
+    def test_drawer_renders_dialog(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/drawer.html" import drawer %}'
+            '{% call drawer("d1", title="Settings") %}Content{% end %}'
+        ).render()
+        assert_element(html, "dialog", {"id": "d1"})
+        assert "chirpui-drawer__panel" in html
+        assert "chirpui-drawer__body" in html
+        assert "Settings" in html
+
+
+class TestStructuralSurface:
+    """Surface renders as <div> (or <section>) with class."""
+
+    def test_surface_renders_div(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}{% call surface() %}Inside{% end %}'
+        ).render()
+        assert_element(html, "div", contains="Inside")
+        assert "chirpui-surface" in html
+
+
+class TestStructuralCallout:
+    """Callout must render as <aside> with structural children."""
+
+    def test_callout_renders_aside(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/callout.html" import callout %}'
+            '{% call callout(variant="warning", title="Heads up") %}Caution{% end %}'
+        ).render()
+        assert_element(html, "aside")
+        assert "chirpui-callout--warning" in html
+        assert "chirpui-callout__header" in html
+        assert "chirpui-callout__body" in html
+        assert "Heads up" in html
+
+
+class TestStructuralTooltip:
+    """Tooltip must have data-tooltip and role=tooltip bubble."""
+
+    def test_tooltip_has_data_attr_and_role(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tooltip.html" import tooltip %}'
+            '{% call tooltip(hint="Help") %}Hover{% end %}'
+        ).render()
+        assert_element(html, "span", {"data-tooltip": "Help"})
+        assert_element(html, "span", {"role": "tooltip"})
+
+
+class TestStructuralNotificationDot:
+    """Notification dot must have aria-label and ping element."""
+
+    def test_dot_has_aria_label(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/notification_dot.html" import notification_dot %}'
+            "{% call notification_dot(count=3) %}<button>Inbox</button>{% end %}"
+        ).render()
+        assert_element(html, "span", {"aria-label": "3 notifications"})
+        assert 'aria-hidden="true"' in html
+
+    def test_dot_without_count_default_label(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/notification_dot.html" import notification_dot %}'
+            "{% call notification_dot() %}<button>Inbox</button>{% end %}"
+        ).render()
+        assert_element(html, "span", {"aria-label": "notification"})
+
+
+class TestStructuralEmpty:
+    """Empty state must render correct structure with actions slot."""
+
+    def test_empty_state_structure(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/empty.html" import empty_state %}'
+            '{% call empty_state(title="No results", action_label="Retry", action_href="/r") %}'
+            "<p>Get started.</p>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-empty-state" in html
+        assert "chirpui-empty-state__title" in html
+        assert "chirpui-empty-state__action" in html
+        assert "Retry" in html
+        assert "No results" in html

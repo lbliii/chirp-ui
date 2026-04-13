@@ -7183,6 +7183,9 @@ button.chirpui-pagination__link {
     --chirpui-neu-surface: var(--chirpui-surface);
 }
 
+@layer chirpui-theme {
+
+/* --- Neumorphic tokens (light) --- */
 [data-style="neumorphic"] {
     --chirpui-neu-surface: color-mix(in srgb, var(--chirpui-bg-subtle) 88%, var(--chirpui-surface));
     --chirpui-neu-surface-alt: color-mix(in srgb, var(--chirpui-neu-surface) 82%, var(--chirpui-bg));
@@ -7195,8 +7198,7 @@ button.chirpui-pagination__link {
     --chirpui-neu-raised-lg:
         -8px -8px 18px color-mix(in srgb, white 74%, transparent),
         11px 11px 22px color-mix(in srgb, black 20%, transparent);
-    --chirpui-neu-raised:
-        var(--chirpui-neu-raised-md);
+    --chirpui-neu-raised: var(--chirpui-neu-raised-md);
     --chirpui-neu-inset:
         inset -2px -2px 4px color-mix(in srgb, white 74%, transparent),
         inset 3px 3px 7px color-mix(in srgb, black 15%, transparent);
@@ -7206,6 +7208,18 @@ button.chirpui-pagination__link {
     --chirpui-neu-highlight-border: color-mix(in srgb, white 72%, var(--chirpui-border));
     --chirpui-neu-lowlight-border: color-mix(in srgb, black 26%, var(--chirpui-border));
     --chirpui-neu-chamfer: color-mix(in srgb, white 55%, transparent);
+
+    /* Gradient tokens — eliminates repeated linear-gradient() declarations */
+    --chirpui-neu-gradient-raised: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 30%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
+    --chirpui-neu-gradient-control: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 24%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
 
     /* Semantic remap for broad component adoption */
     --chirpui-elevation-1: var(--chirpui-neu-raised-sm);
@@ -7224,6 +7238,7 @@ button.chirpui-pagination__link {
     --chirpui-state-border-active: var(--chirpui-neu-lowlight-border);
 }
 
+/* --- Neumorphic tokens (dark) --- */
 [data-theme="dark"][data-style="neumorphic"] {
     --chirpui-neu-surface: color-mix(in srgb, var(--chirpui-surface) 88%, var(--chirpui-bg-subtle));
     --chirpui-neu-surface-alt: color-mix(in srgb, var(--chirpui-neu-surface) 76%, var(--chirpui-bg));
@@ -7236,8 +7251,7 @@ button.chirpui-pagination__link {
     --chirpui-neu-raised-lg:
         -7px -7px 15px color-mix(in srgb, white 16%, transparent),
         10px 10px 20px color-mix(in srgb, black 56%, transparent);
-    --chirpui-neu-raised:
-        var(--chirpui-neu-raised-md);
+    --chirpui-neu-raised: var(--chirpui-neu-raised-md);
     --chirpui-neu-inset:
         inset -2px -2px 5px color-mix(in srgb, white 14%, transparent),
         inset 3px 3px 8px color-mix(in srgb, black 52%, transparent);
@@ -7246,89 +7260,22 @@ button.chirpui-pagination__link {
         inset 4px 4px 10px color-mix(in srgb, black 58%, transparent);
     --chirpui-neu-highlight-border: color-mix(in srgb, white 14%, var(--chirpui-border));
     --chirpui-neu-lowlight-border: color-mix(in srgb, black 36%, var(--chirpui-border));
+    --chirpui-neu-gradient-raised: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 10%, var(--chirpui-neu-surface)),
+        var(--chirpui-neu-surface-alt)
+    );
+    --chirpui-neu-gradient-control: linear-gradient(
+        145deg,
+        color-mix(in srgb, white 8%, var(--chirpui-neu-surface)),
+        color-mix(in srgb, var(--chirpui-neu-surface-alt) 92%, var(--chirpui-bg))
+    );
     --chirpui-state-surface-hover: color-mix(in srgb, var(--chirpui-neu-surface) 92%, var(--chirpui-bg));
     --chirpui-state-surface-active: color-mix(in srgb, var(--chirpui-neu-surface) 84%, var(--chirpui-bg));
 }
 
-/* Foundations and layout containers */
-[data-style="neumorphic"] .chirpui-surface:not(.chirpui-surface--accent):not(
-        .chirpui-surface--gradient-subtle
-    ):not(.chirpui-surface--gradient-accent):not(.chirpui-surface--gradient-border):not(
-        .chirpui-surface--gradient-mesh
-    ):not(.chirpui-surface--glass):not(.chirpui-surface--frosted):not(.chirpui-surface--smoke):not(
-        .chirpui-surface--deep
-    ):not(.chirpui-surface--cornered):not(.chirpui-surface--noise-overlay):not(
-        .chirpui-surface--static-overlay
-    ),
-[data-style="neumorphic"] .chirpui-card:not(.chirpui-card--glass):not(.chirpui-card--gradient-border),
-[data-style="neumorphic"] .chirpui-app-shell__topbar,
-[data-style="neumorphic"] .chirpui-app-shell__sidebar,
-[data-style="neumorphic"] .chirpui-app-shell__main,
-[data-style="neumorphic"] .chirpui-dropdown__menu,
-[data-style="neumorphic"] .chirpui-popover__panel,
-[data-style="neumorphic"] .chirpui-tray[data-tray-id] .chirpui-tray__panel,
-[data-style="neumorphic"] .chirpui-modal[data-modal-id] .chirpui-modal__panel,
-[data-style="neumorphic"] .chirpui-tooltip__bubble {
-    background: linear-gradient(
-        145deg,
-        color-mix(in srgb, white 30%, var(--chirpui-neu-surface)),
-        var(--chirpui-neu-surface-alt)
-    );
-    border: 1px solid var(--chirpui-neu-highlight-border);
-    border-bottom-color: var(--chirpui-neu-lowlight-border);
-    border-right-color: var(--chirpui-neu-lowlight-border);
-    box-shadow: var(--chirpui-neu-raised);
-}
-
-[data-style="neumorphic"] .chirpui-tooltip__bubble::after {
-    background: linear-gradient(
-        145deg,
-        color-mix(in srgb, white 30%, var(--chirpui-neu-surface)),
-        var(--chirpui-neu-surface-alt)
-    );
-}
-
-[data-style="neumorphic"] .chirpui-stat {
-    background: linear-gradient(
-        145deg,
-        color-mix(in srgb, white 24%, var(--chirpui-neu-surface)),
-        var(--chirpui-neu-surface-alt)
-    );
-    border: 0;
-    box-shadow: var(--chirpui-neu-raised-sm);
-}
-
-[data-style="neumorphic"] .chirpui-app-shell__main {
-    background: color-mix(in srgb, var(--chirpui-neu-surface-alt) 80%, var(--chirpui-bg));
-}
-
-[data-style="neumorphic"] :is(.chirpui-app-shell__sidebar, .chirpui-sidebar) {
-    border-right-color: transparent;
-}
-
-[data-style="neumorphic"] .chirpui-app-shell__topbar {
-    border-bottom-color: transparent;
-}
-
-[data-style="neumorphic"] .chirpui-card :is(.chirpui-card__header, .chirpui-card__footer, .chirpui-card__footer-wrap) {
-    border-color: color-mix(in srgb, var(--chirpui-neu-lowlight-border) 40%, transparent);
-}
-
-[data-style="neumorphic"] .chirpui-app-shell__main {
-    padding: calc(var(--chirpui-spacing-lg) + var(--chirpui-spacing-xs));
-}
-
-[data-style="neumorphic"] .chirpui-sidebar__section {
-    padding: var(--chirpui-spacing) var(--chirpui-spacing);
-}
-
-[data-style="neumorphic"] .chirpui-sidebar__link {
-    padding-inline: var(--chirpui-spacing);
-    margin-inline-start: var(--chirpui-spacing);
-    border-radius: var(--chirpui-radius-sm);
-}
-
-[data-theme="dark"][data-style="neumorphic"] :is(
+/* --- Raised containers (surfaces, cards, shell regions, overlays) --- */
+[data-style="neumorphic"] :is(
         .chirpui-surface:not(.chirpui-surface--accent):not(.chirpui-surface--gradient-subtle):not(
                 .chirpui-surface--gradient-accent
             ):not(.chirpui-surface--gradient-border):not(.chirpui-surface--gradient-mesh):not(
@@ -7344,49 +7291,66 @@ button.chirpui-pagination__link {
         .chirpui-app-shell__main,
         .chirpui-dropdown__menu,
         .chirpui-popover__panel,
-        .chirpui-tray[data-tray-id] .chirpui-tray__panel,
-        .chirpui-modal[data-modal-id] .chirpui-modal__panel,
         .chirpui-tooltip__bubble
     ) {
-    background: linear-gradient(
-        145deg,
-        color-mix(in srgb, white 10%, var(--chirpui-neu-surface)),
-        var(--chirpui-neu-surface-alt)
-    );
+    background: var(--chirpui-neu-gradient-raised);
+    border: 1px solid var(--chirpui-neu-highlight-border);
+    border-bottom-color: var(--chirpui-neu-lowlight-border);
+    border-right-color: var(--chirpui-neu-lowlight-border);
+    box-shadow: var(--chirpui-neu-raised);
 }
 
-[data-theme="dark"][data-style="neumorphic"] .chirpui-tooltip__bubble::after {
-    background: linear-gradient(
-        145deg,
-        color-mix(in srgb, white 10%, var(--chirpui-neu-surface)),
-        var(--chirpui-neu-surface-alt)
-    );
+/* Overlay panels (nested selectors can't go in top-level :is()) */
+[data-style="neumorphic"] .chirpui-tray[data-tray-id] .chirpui-tray__panel,
+[data-style="neumorphic"] .chirpui-modal[data-modal-id] .chirpui-modal__panel {
+    background: var(--chirpui-neu-gradient-raised);
+    border: 1px solid var(--chirpui-neu-highlight-border);
+    border-bottom-color: var(--chirpui-neu-lowlight-border);
+    border-right-color: var(--chirpui-neu-lowlight-border);
+    box-shadow: var(--chirpui-neu-raised);
 }
 
-[data-theme="dark"][data-style="neumorphic"] .chirpui-stat {
-    background: linear-gradient(
-        145deg,
-        color-mix(in srgb, white 8%, var(--chirpui-neu-surface)),
-        var(--chirpui-neu-surface-alt)
-    );
+[data-style="neumorphic"] .chirpui-tooltip__bubble::after {
+    background: var(--chirpui-neu-gradient-raised);
 }
 
-/* Depth budget: avoid stacked raised shadows in nested containers */
-[data-style="neumorphic"] :is(.chirpui-card, .chirpui-surface, .chirpui-stat) > :is(
-        .chirpui-card,
-        .chirpui-surface,
-        .chirpui-stat
-    ) {
-    box-shadow: var(--chirpui-neu-inset);
-    background: color-mix(in srgb, var(--chirpui-neu-surface-alt) 88%, var(--chirpui-bg));
-    border-color: var(--chirpui-neu-lowlight-border);
+/* Stat uses control gradient (lighter white mix) */
+[data-style="neumorphic"] .chirpui-stat {
+    background: var(--chirpui-neu-gradient-control);
+    border: 0;
+    box-shadow: var(--chirpui-neu-raised-sm);
 }
 
-[data-style="neumorphic"] .chirpui-card :is(.chirpui-card__footer, .chirpui-card__footer-wrap) {
-    background: transparent;
+/* --- Shell region overrides --- */
+[data-style="neumorphic"] .chirpui-app-shell__main {
+    background: color-mix(in srgb, var(--chirpui-neu-surface-alt) 80%, var(--chirpui-bg));
+    padding: calc(var(--chirpui-spacing-lg) + var(--chirpui-spacing-xs));
 }
 
-[data-style="neumorphic"] .chirpui-card__body {
+[data-style="neumorphic"] :is(.chirpui-app-shell__sidebar, .chirpui-sidebar) {
+    border-right-color: transparent;
+}
+
+[data-style="neumorphic"] .chirpui-app-shell__topbar {
+    border-bottom-color: transparent;
+}
+
+[data-style="neumorphic"] .chirpui-sidebar__section {
+    padding: var(--chirpui-spacing) var(--chirpui-spacing);
+}
+
+[data-style="neumorphic"] .chirpui-sidebar__link {
+    padding-inline: var(--chirpui-spacing);
+    margin-inline-start: var(--chirpui-spacing);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+/* --- Card internals --- */
+[data-style="neumorphic"] .chirpui-card :is(.chirpui-card__header, .chirpui-card__footer, .chirpui-card__footer-wrap) {
+    border-color: color-mix(in srgb, var(--chirpui-neu-lowlight-border) 40%, transparent);
+}
+
+[data-style="neumorphic"] .chirpui-card :is(.chirpui-card__footer, .chirpui-card__footer-wrap, .chirpui-card__body) {
     background: transparent;
 }
 
@@ -7412,11 +7376,22 @@ button.chirpui-pagination__link {
     border: 0;
 }
 
-[data-style="neumorphic"] .chirpui-card .chirpui-stat :is(.chirpui-card, .chirpui-surface, .chirpui-stat),
-[data-style="neumorphic"] .chirpui-surface .chirpui-stat :is(.chirpui-card, .chirpui-surface, .chirpui-stat) {
+[data-style="neumorphic"] :is(.chirpui-card, .chirpui-surface) .chirpui-stat :is(.chirpui-card, .chirpui-surface, .chirpui-stat) {
     box-shadow: none;
 }
 
+/* Depth budget: avoid stacked raised shadows in nested containers */
+[data-style="neumorphic"] :is(.chirpui-card, .chirpui-surface, .chirpui-stat) > :is(
+        .chirpui-card,
+        .chirpui-surface,
+        .chirpui-stat
+    ) {
+    box-shadow: var(--chirpui-neu-inset);
+    background: color-mix(in srgb, var(--chirpui-neu-surface-alt) 88%, var(--chirpui-bg));
+    border-color: var(--chirpui-neu-lowlight-border);
+}
+
+/* Card-body embedded inputs */
 [data-style="neumorphic"] .chirpui-card__body :is(
         textarea.chirpui-field__input,
         .chirpui-chat-input__field,
@@ -7436,28 +7411,8 @@ button.chirpui-pagination__link {
     border-color: color-mix(in srgb, var(--chirpui-neu-lowlight-border) 55%, transparent);
 }
 
-/* Controls and interactive elements */
-[data-style="neumorphic"] .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger):not(.chirpui-btn--ghost),
-[data-style="neumorphic"] .chirpui-field__input,
-[data-style="neumorphic"] .chirpui-field__file,
-[data-style="neumorphic"] .chirpui-segmented,
-[data-style="neumorphic"] .chirpui-segmented__label,
-[data-style="neumorphic"] .chirpui-tabs__tab,
-[data-style="neumorphic"] .chirpui-sidebar__link,
-[data-style="neumorphic"] .chirpui-sidebar-toggle,
-[data-style="neumorphic"] .chirpui-popover__trigger,
-[data-style="neumorphic"] .chirpui-split-btn__trigger,
-[data-style="neumorphic"] .chirpui-tag {
-    background: linear-gradient(
-        145deg,
-        color-mix(in srgb, white 24%, var(--chirpui-neu-surface)),
-        var(--chirpui-neu-surface-alt)
-    );
-    border-color: var(--chirpui-neu-highlight-border);
-    box-shadow: var(--chirpui-neu-raised-sm);
-}
-
-[data-theme="dark"][data-style="neumorphic"] :is(
+/* --- Controls and interactive elements --- */
+[data-style="neumorphic"] :is(
         .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger):not(.chirpui-btn--ghost),
         .chirpui-field__input,
         .chirpui-field__file,
@@ -7470,28 +7425,31 @@ button.chirpui-pagination__link {
         .chirpui-split-btn__trigger,
         .chirpui-tag
     ) {
-    background: linear-gradient(
-        145deg,
-        color-mix(in srgb, white 8%, var(--chirpui-neu-surface)),
-        color-mix(in srgb, var(--chirpui-neu-surface-alt) 92%, var(--chirpui-bg))
-    );
+    background: var(--chirpui-neu-gradient-control);
+    border-color: var(--chirpui-neu-highlight-border);
+    box-shadow: var(--chirpui-neu-raised-sm);
 }
 
-[data-style="neumorphic"] .chirpui-btn--primary,
-[data-style="neumorphic"] .chirpui-btn--danger,
-[data-style="neumorphic"] .chirpui-split-btn__primary.chirpui-btn--primary
-    + .chirpui-split-btn__dropdown
-    .chirpui-split-btn__trigger {
+/* Primary/danger buttons — inset chamfer + deep shadow */
+[data-style="neumorphic"] :is(
+        .chirpui-btn--primary,
+        .chirpui-btn--danger,
+        .chirpui-split-btn__primary.chirpui-btn--primary
+            + .chirpui-split-btn__dropdown
+            .chirpui-split-btn__trigger
+    ) {
     box-shadow:
         inset 0 1px 0 color-mix(in srgb, white 30%, transparent),
         0 8px 14px color-mix(in srgb, black 28%, transparent);
 }
 
-[data-theme="dark"][data-style="neumorphic"] .chirpui-btn--primary,
-[data-theme="dark"][data-style="neumorphic"] .chirpui-btn--danger,
-[data-theme="dark"][data-style="neumorphic"] .chirpui-split-btn__primary.chirpui-btn--primary
-    + .chirpui-split-btn__dropdown
-    .chirpui-split-btn__trigger {
+[data-theme="dark"][data-style="neumorphic"] :is(
+        .chirpui-btn--primary,
+        .chirpui-btn--danger,
+        .chirpui-split-btn__primary.chirpui-btn--primary
+            + .chirpui-split-btn__dropdown
+            .chirpui-split-btn__trigger
+    ) {
     box-shadow:
         inset 0 1px 0 color-mix(in srgb, white 12%, transparent),
         0 8px 14px color-mix(in srgb, black 55%, transparent);
@@ -7502,57 +7460,62 @@ button.chirpui-pagination__link {
     background: transparent;
 }
 
+/* --- Tabs --- */
 [data-style="neumorphic"] .chirpui-tabs__tab {
     border: 1px solid transparent;
     border-radius: var(--chirpui-radius-sm);
     margin-bottom: 0;
 }
 
-[data-style="neumorphic"] .chirpui-tabs__tab[aria-selected="true"],
-[data-style="neumorphic"] .chirpui-tabs__tab--active {
+[data-style="neumorphic"] :is(.chirpui-tabs__tab[aria-selected="true"], .chirpui-tabs__tab--active) {
     box-shadow: var(--chirpui-neu-pressed);
     border-color: var(--chirpui-neu-lowlight-border);
     border-bottom-color: var(--chirpui-neu-lowlight-border);
     color: var(--chirpui-accent);
+    background: color-mix(in srgb, var(--chirpui-accent) 12%, var(--chirpui-neu-surface-alt));
 }
 
-[data-style="neumorphic"] .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger):not(.chirpui-btn--ghost):hover:not(:disabled),
-[data-style="neumorphic"] .chirpui-field__input:hover:not(:disabled):not([readonly]),
-[data-style="neumorphic"] .chirpui-field__file:hover:not(:disabled):not([readonly]),
-[data-style="neumorphic"] .chirpui-tabs__tab:hover,
-[data-style="neumorphic"] .chirpui-sidebar__link:hover,
-[data-style="neumorphic"] .chirpui-sidebar-toggle:hover,
-[data-style="neumorphic"] .chirpui-popover__trigger:hover,
-[data-style="neumorphic"] .chirpui-split-btn__trigger:hover,
-[data-style="neumorphic"] .chirpui-tag:hover {
+/* --- Control hover --- */
+[data-style="neumorphic"] :is(
+        .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger):not(.chirpui-btn--ghost):hover:not(:disabled),
+        .chirpui-field__input:hover:not(:disabled):not([readonly]),
+        .chirpui-field__file:hover:not(:disabled):not([readonly]),
+        .chirpui-tabs__tab:hover,
+        .chirpui-sidebar__link:hover,
+        .chirpui-sidebar-toggle:hover,
+        .chirpui-popover__trigger:hover,
+        .chirpui-split-btn__trigger:hover,
+        .chirpui-tag:hover
+    ) {
     border-color: var(--chirpui-neu-lowlight-border);
     box-shadow: var(--chirpui-neu-raised-md);
 }
 
-[data-style="neumorphic"] .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger):active:not(:disabled),
-[data-style="neumorphic"] .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger)[aria-pressed="true"],
-[data-style="neumorphic"] .chirpui-field__input:active:not(:disabled),
-[data-style="neumorphic"] .chirpui-field__file:active:not(:disabled),
-[data-style="neumorphic"] .chirpui-tabs__tab[aria-selected="true"],
-[data-style="neumorphic"] .chirpui-sidebar__link[aria-current="page"],
-[data-style="neumorphic"] .chirpui-sidebar__link--active,
-[data-style="neumorphic"] .chirpui-sidebar-toggle:active,
-[data-style="neumorphic"] .chirpui-popover__trigger:active,
-[data-style="neumorphic"] .chirpui-split-btn__trigger:active,
-[data-style="neumorphic"] a.chirpui-tag:active {
+/* --- Control active / pressed --- */
+[data-style="neumorphic"] :is(
+        .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger):active:not(:disabled),
+        .chirpui-btn:not(.chirpui-btn--primary):not(.chirpui-btn--danger)[aria-pressed="true"],
+        .chirpui-field__input:active:not(:disabled),
+        .chirpui-field__file:active:not(:disabled),
+        .chirpui-tabs__tab[aria-selected="true"],
+        .chirpui-sidebar__link[aria-current="page"],
+        .chirpui-sidebar__link--active,
+        .chirpui-sidebar-toggle:active,
+        .chirpui-popover__trigger:active,
+        .chirpui-split-btn__trigger:active,
+        a.chirpui-tag:active
+    ) {
     box-shadow: var(--chirpui-neu-pressed);
 }
 
+/* --- Active sidebar link accent --- */
 [data-style="neumorphic"] :is(.chirpui-sidebar__link--active, .chirpui-sidebar__link[aria-current="page"]) {
     background: color-mix(in srgb, var(--chirpui-accent) 16%, var(--chirpui-neu-surface-alt));
     color: var(--chirpui-accent);
     border-color: color-mix(in srgb, var(--chirpui-accent) 42%, var(--chirpui-neu-lowlight-border));
 }
 
-[data-style="neumorphic"] :is(.chirpui-tabs__tab--active, .chirpui-tabs__tab[aria-selected="true"]) {
-    background: color-mix(in srgb, var(--chirpui-accent) 12%, var(--chirpui-neu-surface-alt));
-}
-
+/* --- Tag link states --- */
 [data-style="neumorphic"] a.chirpui-tag {
     background: color-mix(in srgb, var(--chirpui-accent) 9%, var(--chirpui-neu-surface-alt));
     border-color: color-mix(in srgb, var(--chirpui-accent) 35%, var(--chirpui-neu-lowlight-border));
@@ -7568,6 +7531,7 @@ button.chirpui-pagination__link {
     background: color-mix(in srgb, var(--chirpui-accent) 18%, var(--chirpui-neu-surface-alt));
 }
 
+/* --- Toggle --- */
 [data-style="neumorphic"] .chirpui-toggle-wrap .chirpui-toggle__track {
     box-shadow: var(--chirpui-neu-inset);
     border: 1px solid var(--chirpui-neu-lowlight-border);
@@ -7583,11 +7547,13 @@ button.chirpui-pagination__link {
     box-shadow: var(--chirpui-neu-pressed);
 }
 
-/* Data-display depth cues */
-[data-style="neumorphic"] .chirpui-progress__track,
-[data-style="neumorphic"] .chirpui-bar-chart__track,
-[data-style="neumorphic"] .chirpui-donut,
-[data-style="neumorphic"] .chirpui-description-list {
+/* --- Data-display depth cues --- */
+[data-style="neumorphic"] :is(
+        .chirpui-progress__track,
+        .chirpui-bar-chart__track,
+        .chirpui-donut,
+        .chirpui-description-list
+    ) {
     background: color-mix(in srgb, var(--chirpui-neu-surface) 80%, var(--chirpui-bg));
     border: 1px solid var(--chirpui-neu-lowlight-border);
     box-shadow: var(--chirpui-neu-inset);
@@ -7605,26 +7571,27 @@ button.chirpui-pagination__link {
         inset 2px 2px 5px color-mix(in srgb, black 46%, transparent);
 }
 
-[data-style="neumorphic"] .chirpui-progress__fill,
-[data-style="neumorphic"] .chirpui-bar-chart__bar {
+[data-style="neumorphic"] :is(.chirpui-progress__fill, .chirpui-bar-chart__bar) {
     box-shadow:
         inset 0 1px 0 var(--chirpui-neu-chamfer),
         0 1px 1px color-mix(in srgb, black 20%, transparent);
 }
 
-[data-theme="dark"][data-style="neumorphic"] .chirpui-progress__fill,
-[data-theme="dark"][data-style="neumorphic"] .chirpui-bar-chart__bar {
+[data-theme="dark"][data-style="neumorphic"] :is(.chirpui-progress__fill, .chirpui-bar-chart__bar) {
     box-shadow:
         inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
         0 1px 1px color-mix(in srgb, black 45%, transparent);
 }
 
-[data-style="neumorphic"] .chirpui-btn:focus-visible,
-[data-style="neumorphic"] .chirpui-field__input:focus-visible,
-[data-style="neumorphic"] .chirpui-tabs__tab:focus-visible,
-[data-style="neumorphic"] .chirpui-sidebar__link:focus-visible,
-[data-style="neumorphic"] .chirpui-sidebar-toggle:focus-visible,
-[data-style="neumorphic"] .chirpui-tag:focus-visible {
+/* --- Focus + motion --- */
+[data-style="neumorphic"] :is(
+        .chirpui-btn,
+        .chirpui-field__input,
+        .chirpui-tabs__tab,
+        .chirpui-sidebar__link,
+        .chirpui-sidebar-toggle,
+        .chirpui-tag
+    ):focus-visible {
     outline: var(--chirpui-state-focus-outline);
     outline-offset: var(--chirpui-state-focus-offset);
 }
@@ -7635,6 +7602,8 @@ button.chirpui-pagination__link {
         transform: none;
     }
 }
+
+} /* end @layer chirpui-theme */
 
 /* ==========================================================================
    Form Fields

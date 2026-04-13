@@ -16,6 +16,7 @@ __all__ = [
     "build_hx_attrs",
     "check_required_id",
     "contrast_text",
+    "deprecate_param",
     "field_errors",
     "html_attrs",
     "icon",
@@ -43,6 +44,7 @@ from chirp_ui.icons import icon as _resolve_icon
 from chirp_ui.validation import (
     SIZE_REGISTRY,
     VARIANT_REGISTRY,
+    ChirpUIDeprecationWarning,
     ChirpUIValidationWarning,
     ChirpUIWarning,
     _warn,
@@ -412,6 +414,21 @@ def validate_variant_block(value: str, block: str, default: str = "") -> str:
     return validate_variant(value, allowed, default)
 
 
+def deprecate_param(value: Any, old_name: str, new_name: str) -> Any:
+    """Warn when a deprecated parameter is used and return value unchanged.
+
+    Used in templates to signal deprecation while preserving backward compat::
+
+        {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
+    """
+    if value:
+        _warn(
+            f"chirp-ui: {old_name} is deprecated; use {new_name} instead",
+            category=ChirpUIDeprecationWarning,
+        )
+    return value
+
+
 def value_type(value: Any) -> str:
     """Map Python types to ChirpUI CSS variant names for description_item.
 
@@ -774,6 +791,7 @@ def register_filters(app: TemplateFilterApp) -> None:
     app.template_filter("field_errors")(field_errors)
     app.template_filter("html_attrs")(html_attrs)
     app.template_filter("icon")(icon)
+    app.template_filter("deprecate_param")(deprecate_param)
     app.template_filter("validate_variant")(validate_variant)
     app.template_filter("validate_variant_block")(validate_variant_block)
     app.template_filter("validate_size")(validate_size)

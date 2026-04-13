@@ -13,9 +13,10 @@
 {% end %}
 {% end %}
 
-{% def metric_card(value, label, icon=none, trend=none, trend_direction="", hint=none, href=none, icon_bg="", footer_label=none, footer_href=none, cls="", attrs="", attrs_map=none) %}
+{% def metric_card(value, label, icon=none, trend=none, trend_direction="", hint=none, href=none, icon_bg="", footer_label=none, footer_href=none, cls="", attrs="", attrs_unsafe="", attrs_map=none) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% if href %}
-<a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-metric-card{{ " " ~ cls if cls else "" }}"{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}{{ route_link_attrs(href, attrs=attrs, attrs_map=attrs_map) | html_attrs }}>
+<a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-metric-card{{ " " ~ cls if cls else "" }}"{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}{{ route_link_attrs(href, attrs=_attrs_raw, attrs_map=attrs_map) | html_attrs }}>
     <div class="chirpui-card__body">
         <div class="chirpui-metric-card__top">
             {% if icon and icon_bg %}
@@ -35,7 +36,7 @@
     </div>
 </a>
 {% else %}
-{% call card(cls="chirpui-metric-card" ~ (" " ~ cls if cls else ""), attrs=attrs, attrs_map=attrs_map) %}
+{% call card(cls="chirpui-metric-card" ~ (" " ~ cls if cls else ""), attrs_unsafe=_attrs_raw, attrs_map=attrs_map) %}
 <div class="chirpui-metric-card__top">
     {% if icon and icon_bg %}
     <span class="chirpui-metric-card__icon-badge chirpui-metric-card__icon-badge--{{ icon_bg }}">{{ icon | icon }}</span>

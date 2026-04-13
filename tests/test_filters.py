@@ -7,6 +7,7 @@ from chirp_ui.filters import (
     bem,
     build_hx_attrs,
     contrast_text,
+    deprecate_param,
     field_errors,
     html_attrs,
     icon,
@@ -21,7 +22,12 @@ from chirp_ui.filters import (
     validate_variant_block,
     value_type,
 )
-from chirp_ui.validation import ChirpUIValidationWarning, ChirpUIWarning, set_strict
+from chirp_ui.validation import (
+    ChirpUIDeprecationWarning,
+    ChirpUIValidationWarning,
+    ChirpUIWarning,
+    set_strict,
+)
 
 
 class TestBem:
@@ -186,6 +192,24 @@ class TestContrastTextWarning:
     def test_valid_hex_light_returns_dark(self) -> None:
         result = contrast_text("#ffffff")
         assert result == "#1a1a1a"
+
+
+class TestDeprecateParam:
+    """deprecate_param filter warns on deprecated parameter usage."""
+
+    def test_warns_when_value_is_truthy(self) -> None:
+        with pytest.warns(ChirpUIDeprecationWarning, match="attrs.*deprecated"):
+            result = deprecate_param('data-x="1"', "attrs", "attrs_unsafe or attrs_map")
+        assert result == 'data-x="1"'
+
+    def test_no_warn_when_value_is_empty(self) -> None:
+        result = deprecate_param("", "attrs", "attrs_unsafe or attrs_map")
+        assert result == ""
+
+    def test_returns_value_unchanged(self) -> None:
+        with pytest.warns(ChirpUIDeprecationWarning):
+            result = deprecate_param("hello", "old", "new")
+        assert result == "hello"
 
 
 class TestValidateVariantEdgeCases:

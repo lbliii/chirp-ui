@@ -4,13 +4,23 @@
 
     Internal: field_wrapper provides label, hint, error display. Standard fields
     use it; checkbox/toggle/radio/range/input_group have custom layouts.
+
+    form() htmx usage:
+        call form("/save", hx={"post": "/save", "target": "#result", "swap": "innerHTML"})
+            ...fields...
+        end
+
+    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.
+    Auto-behaviors: hx-select="unset" + hx-disinherit="hx-select" when htmx is detected;
+    hx-on::after-request reset on success for mutating methods.
 -#}
 
-{% def form(action, method="get", enctype=none, density="", cls="", attrs="", attrs_map=none,
+{% def form(action, method="get", enctype=none, density="", cls="", attrs="", attrs_unsafe="", attrs_map=none,
            hx=none, hx_get=none, hx_post=none, hx_put=none, hx_patch=none, hx_delete=none,
            hx_target=none, hx_swap=none, hx_trigger=none, hx_include=none,
            hx_select=none, hx_select_oob=none, hx_disabled_elt=none, hx_sync=none,
            hx_ext=none, hx_vals=none, hx_reset_on_success=none) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {# @provides _form_density — consumed by: field_wrapper #}
 {% provide _form_density = density %}
 {#- hx_reset_on_success: when true, form resets after successful htmx response (2xx).
@@ -31,7 +41,7 @@
 <form action="{{ action }}" method="{{ method }}"
       {% if enctype %}enctype="{{ enctype }}"{% end %}
       class="chirpui-form{{ " " ~ cls if cls else "" }}"
-      {{ attrs | html_attrs }}
+      {{ _attrs_raw | html_attrs }}
       {{ attrs_map | html_attrs }}
       {% if _reset %}hx-on::after-request="if(event.detail.successful) this.reset()"{% end %}
       {{ build_hx_attrs(hx_select=_select, hx_disinherit=_disinherit,
@@ -105,7 +115,8 @@
 
 {# Text input with label and error display #}
 {% def text_field(name, value="", label=none, errors=none, type="text",
-                  required=false, placeholder="", hint=none, attrs="") %}
+                  required=false, placeholder="", hint=none, attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 {% call field_wrapper(name, label, errors, required, hint) %}
 <input class="chirpui-field__input"
        type="{{ type }}" id="{{ name }}" name="{{ name }}"
@@ -114,13 +125,14 @@
        {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
        aria-describedby="errors-{{ name }}"
-       {{ attrs | safe }}>
+       {{ _attrs_raw | safe }}>
 {% end %}
 {% end %}
 
 {# Password field with secure browser autocomplete defaults #}
 {% def password_field(name="password", value="", label=none, errors=none, required=true,
-                     placeholder="", hint=none, autocomplete="current-password", attrs="") %}
+                     placeholder="", hint=none, autocomplete="current-password", attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 {% call field_wrapper(name, label, errors, required, hint) %}
 <input class="chirpui-field__input"
        type="password" id="{{ name }}" name="{{ name }}"
@@ -130,7 +142,7 @@
        {% if autocomplete %}autocomplete="{{ autocomplete }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
        aria-describedby="errors-{{ name }}"
-       {{ attrs | safe }}>
+       {{ _attrs_raw | safe }}>
 {% end %}
 {% end %}
 
@@ -483,7 +495,8 @@
 {# Input with prefix/suffix. Use prefix/suffix params for text, or slot prefix/suffix for custom content (icons, etc). #}
 {% def input_group(name, prefix=none, suffix=none, value="", label=none,
                    errors=none, type="text", required=false, placeholder="",
-                   hint=none, attrs="") %}
+                   hint=none, attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 {% set _has_errors = errors and errors | field_errors(name) %}
 <div id="field-{{ name }}" class="chirpui-field chirpui-field--input-group{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
@@ -504,7 +517,7 @@
                {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
                {% if _has_errors %}aria-invalid="true"{% end %}
                aria-describedby="errors-{{ name }}"
-               {{ attrs | safe }}>
+               {{ _attrs_raw | safe }}>
         {% if suffix %}
         <span class="chirpui-input-group__suffix">{{ suffix }}</span>
         {% else %}
@@ -529,7 +542,8 @@
    mask: static pattern, e.g. "99/99/9999", "999-99-9999"
    mask_dynamic: Alpine expression with $input, e.g. "$money($input)" or credit card logic #}
 {% def masked_field(name, value="", label=none, errors=none, mask=none, mask_dynamic=none,
-                   required=false, placeholder="", hint=none, attrs="") %}
+                   required=false, placeholder="", hint=none, attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 {% call field_wrapper(name, label, errors, required, hint, modifier="masked") %}
 <input class="chirpui-field__input"
        type="text" id="{{ name }}" name="{{ name }}"
@@ -540,13 +554,14 @@
        {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
        aria-describedby="errors-{{ name }}"
-       {{ attrs | safe }}>
+       {{ _attrs_raw | safe }}>
 {% end %}
 {% end %}
 
 {# Phone field — US format (999) 999-9999 by default. Use masked_field for other formats. #}
 {% def phone_field(name, value="", label=none, errors=none, format="us",
-                   required=false, placeholder="", hint=none, attrs="") %}
+                   required=false, placeholder="", hint=none, attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 {% set _mask = "(999) 999-9999" if format == "us" else "9999 999 9999" if format == "uk" else "+9 999 999 9999" if format == "intl" else "(999) 999-9999" %}
 {% call field_wrapper(name, label, errors, required, hint, modifier="phone") %}
 <input class="chirpui-field__input"
@@ -557,7 +572,7 @@
        {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
        aria-describedby="errors-{{ name }}"
-       {{ attrs | safe }}>
+       {{ _attrs_raw | safe }}>
 {% end %}
 {% end %}
 
@@ -565,7 +580,8 @@
    $money($input, decimal, thousands, precision) — default ".", ",", 2 #}
 {% def money_field(name, value="", label=none, errors=none,
                   decimal_sep=".", thousands_sep=",", precision=2,
-                  required=false, placeholder="", hint=none, attrs="") %}
+                  required=false, placeholder="", hint=none, attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 {% set _money_expr = "$money($input, '" ~ decimal_sep ~ "', '" ~ thousands_sep ~ "', " ~ precision ~ ")" %}
 {% call field_wrapper(name, label, errors, required, hint, modifier="money") %}
 <input class="chirpui-field__input"
@@ -576,7 +592,7 @@
        {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
        aria-describedby="errors-{{ name }}"
-       {{ attrs | safe }}>
+       {{ _attrs_raw | safe }}>
 {% end %}
 {% end %}
 
@@ -603,8 +619,9 @@
 {# Search input with optional htmx debounced search #}
 {% def search_field(name, value="", label=none, search_url=none, search_target=none,
                     search_trigger="keyup changed delay:300ms", search_include=none,
-                    search_sync=none, placeholder="Search...", errors=none, attrs="", attrs_map=none,
+                    search_sync=none, placeholder="Search...", errors=none, attrs="", attrs_unsafe="", attrs_map=none,
                     search_attrs_map=none, search_hx_select=none) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set _has_errors = errors and errors | field_errors(name) %}
 <div id="field-{{ name }}" class="chirpui-field{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
@@ -616,7 +633,7 @@
            placeholder="{{ placeholder }}"
            {% if _has_errors %}aria-invalid="true"{% end %}
            aria-describedby="errors-{{ name }}"
-           {{ attrs | html_attrs }}
+           {{ _attrs_raw | html_attrs }}
            {{ attrs_map | html_attrs }}
            {{ search_attrs_map | html_attrs }}
            {% if search_url and search_target %}hx-get="{{ search_url }}"{% end %}
@@ -643,7 +660,8 @@
 {% def search_bar(name, value="", variant="solo", label=none, search_url=none, search_target=none,
                   search_trigger="keyup changed delay:300ms", search_include=none, search_sync=none,
                   placeholder="Search...", button_label="Search", button_icon="⌕",
-                  errors=none, attrs="", attrs_map=none, search_attrs_map=none, search_hx_select=none) %}
+                  errors=none, attrs="", attrs_unsafe="", attrs_map=none, search_attrs_map=none, search_hx_select=none) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set _has_errors = errors and errors | field_errors(name) %}
 <div id="field-{{ name }}" class="chirpui-field chirpui-search-bar chirpui-search-bar--{{ variant }}{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
@@ -659,7 +677,7 @@
                placeholder="{{ placeholder }}"
                {% if _has_errors %}aria-invalid="true"{% end %}
                aria-describedby="errors-{{ name }}"
-               {{ attrs | html_attrs }}
+               {{ _attrs_raw | html_attrs }}
                {{ attrs_map | html_attrs }}
                {{ search_attrs_map | html_attrs }}
                {% if search_url and search_target %}hx-get="{{ search_url }}"{% end %}
@@ -690,8 +708,9 @@
 {# Key-value form — inline key + value inputs + submit. For "Set config value" etc. -#}
 {% def key_value_form(action, method="post", key_placeholder="", value_placeholder="",
                       submit_label="Set", key_options=none, key_name="key", value_name="value",
-                      attrs="", attrs_map=none, cls="") %}
-{% call form(action, method=method, attrs=attrs, attrs_map=attrs_map, cls="chirpui-key-value-form" ~ (" " ~ cls if cls else "")) %}
+                      attrs="", attrs_unsafe="", attrs_map=none, cls="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
+{% call form(action, method=method, attrs_unsafe=_attrs_raw, attrs_map=attrs_map, cls="chirpui-key-value-form" ~ (" " ~ cls if cls else "")) %}
 <div class="chirpui-key-value-form__row">
     <div class="chirpui-field chirpui-key-value-form__key">
         <label class="chirpui-field__label" for="{{ key_name }}">Key</label>

@@ -22,12 +22,13 @@
     Variants: default, muted, elevated, accent, gradient-subtle, gradient-accent, gradient-border, gradient-mesh, glass, frosted, smoke
 -#}
 
-{% def surface(variant="", full_width=false, padding=true, cls="", style="", attrs="", attrs_map=none) %}
+{% def surface(variant="", full_width=false, padding=true, cls="", style="", attrs="", attrs_unsafe="", attrs_map=none) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set _variant = variant | validate_variant_block("surface", default="default") %}
 {# @provides _surface_variant — consumed by: badge, callout, divider, settings_row, status, timeline #}
 {% provide _surface_variant = _variant %}
 {% let _mods = (["full"] if full_width else []) + (["no-padding"] if not padding else []) %}
-<div class="{{ "surface" | bem(variant=_variant, modifier=_mods, cls=cls) }}"{% if style %} style="{{ style }}"{% end %}{{ attrs | html_attrs }}{{ attrs_map | html_attrs }}>
+<div class="{{ "surface" | bem(variant=_variant, modifier=_mods, cls=cls) }}"{% if style %} style="{{ style }}"{% end %}{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}>
     {% slot %}
 </div>
 {% end %}

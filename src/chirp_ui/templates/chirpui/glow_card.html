@@ -15,13 +15,14 @@
         end
 -#}
 
-{% def glow_card(variant="", cls="", attrs="", attrs_map=none) %}
+{% def glow_card(variant="", cls="", attrs="", attrs_unsafe="", attrs_map=none) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set variant = variant | validate_variant(("", "default", "accent", "muted"), "") %}
 {% set variant_class = " chirpui-glow-card--" ~ variant if variant else "" %}
 <div class="chirpui-glow-card{{ variant_class }}{{ " " ~ cls if cls else "" }}"
      x-data
      @mousemove="$el.style.setProperty('--chirpui-mouse-x', $event.offsetX + 'px'); $el.style.setProperty('--chirpui-mouse-y', $event.offsetY + 'px')"
-     {{ attrs | html_attrs }}
+     {{ _attrs_raw | html_attrs }}
      {{ attrs_map | html_attrs }}>
     <div class="chirpui-glow-card__glow" aria-hidden="true"></div>
     <div class="chirpui-glow-card__content">

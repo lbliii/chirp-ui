@@ -2,7 +2,7 @@
     Status alerts with variant styling and optional dismiss.
     When collapsible=true, renders as <details>/<summary> (collapsed by default if open=false).
 
-    Named slot: actions (e.g. Retry button).
+    Named slots: header_actions (canonical), actions (alias, backward compat).
 
     Usage:
         from "chirpui/alert.html" import alert
@@ -13,7 +13,7 @@
 
         call alert(variant="error", dismissible=true)
             Something went wrong.
-            {% slot actions %}<button>Retry</button>{% end %}
+            {% slot header_actions %}<button>Retry</button>{% end %}
         end
 
         call alert(variant="warning", collapsible=true, open=false, icon="↑", title="Shortcut collisions")
@@ -35,7 +35,8 @@
     </summary>
     <div class="chirpui-alert__body chirpui-mt-sm">
         {% slot %}
-        {% slot actions %}
+        {# header_actions is the canonical name; actions is kept for backward compat #}
+        {% slot header_actions %}{% slot actions %}
         {% if dismissible %}
         <button type="button" class="chirpui-alert__close" aria-label="Dismiss"
                 @click="$el.closest('.chirpui-alert').remove()">&times;</button>
@@ -52,7 +53,8 @@
             <div class="chirpui-alert__title">{{ title }}</div>
         {% end %}
         {% slot %}
-        <div class="chirpui-alert__actions">{% slot actions %}</div>
+        {# header_actions is the canonical name; actions is kept for backward compat #}
+        <div class="chirpui-alert__actions">{% slot header_actions %}{% slot actions %}</div>
     </div>
     {% if dismissible %}
         <button class="chirpui-alert__close"

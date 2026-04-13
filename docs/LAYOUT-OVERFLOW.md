@@ -1,3 +1,5 @@
+> **Consolidated:** This content has been merged into [LAYOUT.md](LAYOUT.md). This file is kept for existing links.
+
 # Layout overflow (horizontal scroll)
 
 How Chirp UI keeps the app shell from growing sideways, and how to build pages that stay inside the main column.

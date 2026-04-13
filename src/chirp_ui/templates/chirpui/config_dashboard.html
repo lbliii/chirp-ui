@@ -33,8 +33,9 @@
 {% from "chirpui/action_strip.html" import action_strip %}
 
 {% def config_dashboard(title, subtitle=none, meta=none, breadcrumb_items=none,
-                        form_action=none, form_attrs="", form_attrs_map=none, form_key_placeholder="", form_value_placeholder="",
+                        form_action=none, form_attrs="", form_attrs_unsafe="", form_attrs_map=none, form_key_placeholder="", form_value_placeholder="",
                         cls="") %}
+{% set _form_attrs_raw = form_attrs_unsafe or (form_attrs | deprecate_param("form_attrs", "form_attrs_unsafe or form_attrs_map")) %}
 {% call stack(gap="lg") %}
 {% call page_header(title, subtitle=subtitle, meta=meta, breadcrumb_items=breadcrumb_items) %}
 {% slot header_actions %}
@@ -43,7 +44,7 @@
 
 {% if form_action %}
 {% call section("Set config value", surface_variant="muted") %}
-{{ key_value_form(form_action, attrs=form_attrs, attrs_map=form_attrs_map, key_placeholder=form_key_placeholder, value_placeholder=form_value_placeholder) }}
+{{ key_value_form(form_action, attrs_unsafe=_form_attrs_raw, attrs_map=form_attrs_map, key_placeholder=form_key_placeholder, value_placeholder=form_value_placeholder) }}
 {% slot form_result %}
 {% end %}
 {% end %}

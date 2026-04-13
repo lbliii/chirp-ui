@@ -1,3 +1,5 @@
+> **Consolidated:** This content has been merged into [LAYOUT.md](LAYOUT.md). This file is kept for existing links.
+
 # Flow grids vs frame layouts
 
 chirp-ui separates **two layout problems** so templates stay predictable.

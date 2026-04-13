@@ -17,11 +17,12 @@
 
 {% from "chirpui/stepper.html" import stepper %}
 
-{% def wizard_form(id, steps, current=1, cls="", attrs="") %}
+{% def wizard_form(id, steps, current=1, cls="", attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <div id="{{ id }}"
      class="chirpui-wizard-form{{ " " ~ cls if cls else "" }}"
      hx-disinherit="hx-select hx-target hx-swap"
-     {{ attrs | safe }}>
+     {{ _attrs_raw | safe }}>
     {{ stepper(steps=steps, current=current) }}
     <div class="chirpui-wizard-form__body">{% slot %}</div>
 </div>

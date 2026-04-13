@@ -80,7 +80,7 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 - **Install snippet** — `code.html` provides `install_snippet(command)` for pre-formatted shell commands with a copy button. Uses `x-data="chirpuiCopy()"`.
 - **Tag browse composite** — `tag_browse.html` provides `tag_browse_tray`, `tag_selection_badges`, `tag_filter_actions` for tag-filtered listings. Plugs into `resource_index` slots.
 - **Settings row** — `settings_row.html` provides `settings_row_list` (container with hoverable/divided/relaxed modifiers) and `settings_row` (label + auto-inferred status badge + monospace detail).
-- **Layout overflow** — App shell main clips horizontal bleed; `grid()` applies **`min-width: 0`** to direct children in CSS; use `block()` for **`span=`** / bento cells. Pair with `cluster()` and wrapping `indicator_row()` so content does not widen the page. Use `frame()` for explicit hero/sidebar columns. Page/section/entity headers harden flex title columns; for other flex rows use **`chirpui-min-w-0`**. Custom grids need `min-width: 0` / `minmax(0, 1fr)` on tracks. For fixed bento-style column ratios, use `grid(..., preset=…)` (canonical names and aliases: `docs/LAYOUT-PRESETS.md`); use `items="start"` when row cells have unequal heights; use `preset="detail-two-single"` or `detail-two` + `detail_single=true` for a one-column detail row (see `docs/LAYOUT-OVERFLOW.md`). See also `docs/LAYOUT-GRIDS-AND-FRAMES.md`.
+- **Layout overflow** — App shell main clips horizontal bleed; `grid()` applies **`min-width: 0`** to direct children in CSS; use `block()` for **`span=`** / bento cells. Pair with `cluster()` and wrapping `indicator_row()` so content does not widen the page. Use `frame()` for explicit hero/sidebar columns. Page/section/entity headers harden flex title columns; for other flex rows use **`chirpui-min-w-0`**. Custom grids need `min-width: 0` / `minmax(0, 1fr)` on tracks. For fixed bento-style column ratios, use `grid(..., preset=…)` (canonical names and aliases: `docs/LAYOUT-PRESETS.md`); use `items="start"` when row cells have unequal heights; use `preset="detail-two-single"` or `detail-two` + `detail_single=true` for a one-column detail row (see `docs/LAYOUT.md`). See also `docs/LAYOUT.md`.
 - **Card overline labels** — use `label_overline()` from `chirpui/label_overline.html` for small-caps section labels inside cards (optional `section=true`, `tag="h3"`).
 - **HTMX attribute helper** — use `build_hx_attrs(hx_post=..., hx_target=...) | html_attrs` in templates instead of individual `{% if hx_* %}` blocks. `build_hx_attrs` converts underscores to hyphens; `html_attrs` skips `None` values and escapes output. Registered as a template global.
 - **Boost-aware components** — components that accept `hx_target` must emit `hx-boost="false"` on `<a>` elements to prevent boost from hijacking the click. This is enforced by tabs, route_tabs, and button.
@@ -94,6 +94,50 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 - **Bento extensions** — `chirpui-surface--bento` adds hover lift + flex height equalization to surfaces. `chirpui-frame--bento` applies consistent gap and min-height to bento frames. `chirpui-block--wide` / `chirpui-block--tall` span 2 grid columns/rows. Surface typography elements: `chirpui-surface__eyebrow`, `__title`, `__lede`, `__body`.
 - **Navigation progress** — `nav_progress.html` provides a CSS-only fixed progress bar at the viewport top. Animates automatically via `body.htmx-request`. Use outside `app_shell` (which has its own built-in bar). Place once in base layout: `{{ nav_progress() }}`.
 - **SSE connection status** — `sse_status.html` provides `sse_status(state)` (connected/disconnected/error indicator with dot + label) and `sse_retry(url)` (htmx-powered retry button for reconnecting to an SSE endpoint). Pair with `streaming_bubble`/`streaming_block` from `streaming.html`. See `docs/COMPONENT-OPTIONS.md § SSE Status`.
+
+## Sharp edges — what's been hardened
+
+Three audit phases (sprints 0–13) have systematically fixed the most common developer footguns. **Do not re-triage these — they are solved:**
+
+| Issue | Fix | Sprint |
+|-------|-----|--------|
+| `validate_variant`/`validate_size` silently return wrong default | Warns; strict mode raises `ValueError` | 1 |
+| `register_colors` accepts invalid colors | Validates at registration time | 1 |
+| Variant defaults differ (`""`, `"primary"`, `"info"`) | Normalized across all components | 2 |
+| Size vocabulary (`"md"` vs `"medium"`) | Normalized to short form | 2 |
+| `color: white` hardcoded (20+ instances) | Replaced with tokens | 3 |
+| `--chirpui-spacing-2xs` undefined | Defined in `:root` | 3 |
+| Breakpoints mix px/rem | Normalized to rem | 3 |
+| `localStorage` throws in Safari private | try/catch + console.warn | 3, 12 |
+| `data-theme="system"` no CSS rule | CSS rule added | 3 |
+| Test stubs diverge from real filters | Stubs updated to match | 4 |
+| 106/195 templates undocumented | All documented in COMPONENT-OPTIONS.md | 5 |
+| `segmented_control`/`tab` macro name collisions | Renamed to avoid shadowing | 6 |
+| `bem()` renders invalid modifiers | Strips invalid modifiers | 6 |
+| `html_attrs()` raw string bypass | Fixed | 6 |
+| `contrast_text()` silent fallback | Warns on invalid color | 6 |
+| z-index values scattered (1–10000) | Token system `--chirpui-z-*` | 7 |
+| 51 hardcoded `font-weight: 600` | Replaced with tokens | 7 |
+| 50+ hardcoded animation durations | Motion tokens enforced (test) | 7 |
+| `tab_is_active()` empty href matches all | Returns False for empty href | 8 |
+| `btn()` defaults to `type="submit"` | Changed to `type="button"` | 9 |
+| `inline_edit_field` hardcoded fallback ID | Warns on missing `swap_id` | 9 |
+| `build_hx_attrs()` accepts any key silently | Validates against 33 known htmx attrs | 10 |
+| `field_errors()` drops non-list values | Warns and coerces to `[str(val)]` | 10 |
+| Pagination `<span aria-disabled>` | Changed to `<button disabled>` | 11 |
+| Avatar has no decorative mode | `decorative=true` → `role="presentation"` | 11 |
+| `notification_dot` aria-label has no context | `aria-label="5 notifications"` | 11 |
+| Alpine `register()` overwrites existing | Idempotency guard (first-wins) | 12 |
+| Alpine store init overwrites data | Checks existing before creating | 12 |
+| `safeSetItem()` silent failure | console.warn on catch | 12 |
+| Provide/consume undocumented in templates | `@provides`/`@consumes` annotations on all 43 statements | 13 |
+| `footer` is param in card but slot in modal/dropdown/panel | Card footer migrated to slot; string param is fallback with deprecation | 14 |
+| `actions` vs `header_actions` vs `action` (singular) | Standardized: `actions` canonical, `header_actions` for alert, aliases kept | 14 |
+| `attrs=""` raw string bypasses escaping in 20 templates | `attrs_unsafe=` added; old `attrs=` emits `ChirpUIDeprecationWarning` | 15 |
+| `hx={}` dict undocumented in macro docstrings | Added examples to all `hx=none` macros; `docs/HTMX-PATTERNS.md` created | 16 |
+| 102 compound `[data-style="neumorphic"]` selectors | `@layer chirpui-theme` + gradient tokens + `:is()` consolidation → 44 selectors | 17 |
+| ~38% of test assertions are class-only string checks | `assert_element` helper + 29 structural tests for top-20 components | 18 |
+| 42 docs files with no navigation index | `docs/INDEX.md` created; layout docs consolidated into `docs/LAYOUT.md` | 19 |
 
 ## Warning system
 
@@ -113,12 +157,17 @@ Macros with many htmx parameters (`btn`, `icon_btn`, `form`) accept an `hx=none`
 {{ btn("Save", hx={"post": "/save", "target": "#result", "swap": "innerHTML"}) }}
 ```
 
-Individual `hx_*` kwargs still work and override keys from the `hx` dict. `build_hx_attrs(hx=dict, **kwargs)` merges both, drops `None` values.
+Individual `hx_*` kwargs still work and override keys from the `hx` dict. `build_hx_attrs(hx=dict, **kwargs)` merges both, drops `None` values. See `docs/HTMX-PATTERNS.md` for the full guide including auto-injected attributes (`hx-boost="false"`, `hx-select="unset"`, form reset, fragment island isolation).
 
 ## Deprecation policy
 
 - **`channel_card(use_slots=...)`** — always use named slots (`body`, `actions`). The `use_slots` parameter will be removed in a future release.
 - **`section_header_inline`** — use `section_header(variant="inline")` instead.
+- **`attrs=`** — deprecated; use `attrs_unsafe=` for raw HTML attributes or `attrs_map=` for safe escaped attributes. Old `attrs=` emits `ChirpUIDeprecationWarning`. See Sprint 15.
+- **Singular `action` slot** — `empty()`, `empty_panel_state()`, `hero()`, `profile_header()` now accept `actions` (plural) as the canonical name; `action` kept as backward-compat alias. See Sprint 14.
+- **`card(footer="string")`** — `footer` is now a named slot like `modal`/`dropdown`/`panel`; string parameter still works as fallback. See Sprint 14.
+- **`hx={}` docstring promotion** — `hx={}` dict pattern is now documented in all macro docstrings (`btn`, `icon_btn`, `form`). See Sprint 16 and `docs/HTMX-PATTERNS.md`.
+- **Neumorphic CSS refactor** — 102 compound selectors consolidated to 44 via `@layer chirpui-theme`, gradient tokens, and `:is()`. See Sprint 17.
 
 ## Adding a component
 

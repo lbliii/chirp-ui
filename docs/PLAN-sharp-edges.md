@@ -611,6 +611,8 @@ The second full-stack audit (2026-04-13) confirmed Sprints 0–5 are complete an
 - **PLAN-context-aware-theming** (Complete) — Sprint 5's context propagation documentation covers the provide/consume patterns introduced by that epic.
 - **PLAN-descriptor-coverage** — ComponentDescriptor registration is orthogonal; this plan does not change descriptor structure.
 - **PLAN-ascii-maturity** — Sprint 5 documentation covers ASCII components whose Sprint 4 (docs) was deferred.
+- **PLAN-sharp-edges-phase3** (Complete) — structural/behavioral hardening (sprints 9–13): template defaults, filter hardening, a11y, Alpine resilience, provide/consume docstrings.
+- **PLAN-sharp-edges-phase4** (Draft) — API consistency & developer ergonomics (sprints 14–19): slot naming, attrs safety, hx={} promotion, neumorphic refactor, test hardening, docs index.
 
 ---
 

@@ -10,10 +10,11 @@
 {% from "chirpui/spinner.html" import spinner %}
 
 {% def btn(label, variant="", size="", loading=false, type="button", href=none, icon=none, cls="",
-           attrs="", attrs_map=none, hx=none, hx_get=none, hx_post=none, hx_put=none,
+           attrs="", attrs_unsafe="", attrs_map=none, hx=none, hx_get=none, hx_post=none, hx_put=none,
            hx_patch=none, hx_delete=none, hx_target=none, hx_swap=none,
            hx_trigger=none, hx_include=none, hx_select=none, hx_ext=none,
            hx_vals=none, disabled=false, data_action=none, aria_label=none) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set _variant = variant | validate_variant_block("btn", "") %}
 {# @consumes _bar_density from: command_bar, filter_bar — falls back to "" #}
 {% set _bar_size = consume("_bar_density", "") %}
@@ -28,13 +29,13 @@
     hx_ext=hx_ext, hx_vals=hx_vals) %}
 {% set _btn_has_hx_request = _hx_dict.get("hx-get") or _hx_dict.get("hx-post") or _hx_dict.get("hx-put") or _hx_dict.get("hx-patch") or _hx_dict.get("hx-delete") %}
 {% set _btn_has_hx_config = _hx_dict | length > 0 or hx_select %}
-{% set _route_attrs = route_link_attrs(href, disabled=_disabled, attrs=attrs, attrs_map=attrs_map) if not _btn_has_hx_config else {} %}
+{% set _route_attrs = route_link_attrs(href, disabled=_disabled, attrs=_attrs_raw, attrs_map=attrs_map) if not _btn_has_hx_config else {} %}
 {% if href %}
 <a class="{{ base_class }}"{% if not _disabled %} href="{{ href }}"{% endif %}
    {% if aria_label %}aria-label="{{ aria_label }}"{% end %}
    {% if data_action %}data-action="{{ data_action }}"{% end %}
    {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}
-   {{ attrs | html_attrs }}
+   {{ _attrs_raw | html_attrs }}
    {{ attrs_map | html_attrs }}
    {% if not _disabled and _btn_has_hx_request %}hx-boost="false"{% end %}
    {% if not _disabled and _btn_has_hx_request %}hx-select="{{ hx_select if hx_select else "unset" }}"{% end %}
@@ -48,7 +49,7 @@
         {% if aria_label %}aria-label="{{ aria_label }}"{% end %}
         {% if data_action %}data-action="{{ data_action }}"{% end %}
         {% if _disabled %}disabled{% end %}
-        {{ attrs | html_attrs }}
+        {{ _attrs_raw | html_attrs }}
         {{ attrs_map | html_attrs }}
         {{ build_hx_attrs(hx_select=hx_select) | html_attrs }}
         {{ _hx_dict | html_attrs }}>

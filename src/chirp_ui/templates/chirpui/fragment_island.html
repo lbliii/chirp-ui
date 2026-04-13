@@ -22,7 +22,8 @@
         {{ poll_trigger("/status", "#collections-results", delay="2s") }}
 -#}
 
-{% def poll_trigger(url, target, delay=none, swap="innerHTML", select=none, cls="chirpui-sr-only", attrs="") %}
+{% def poll_trigger(url, target, delay=none, swap="innerHTML", select=none, cls="chirpui-sr-only", attrs="", attrs_unsafe="") %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <button type="button"
         class="{{ cls }}"
         hidden
@@ -33,7 +34,7 @@
         hx-swap="{{ swap }}"
         {% if select %}hx-select="{{ select }}"{% end %}
         aria-hidden="true"
-        {{ attrs | safe }}></button>
+        {{ _attrs_raw | safe }}></button>
 {% end %}
 
 {% def safe_region(
@@ -42,8 +43,10 @@
     hx_swap=none,
     hx_select=none,
     cls="",
-    attrs=""
+    attrs="",
+    attrs_unsafe=""
 ) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 {% set disinherit = "hx-select hx-target hx-swap" %}
 <div id="{{ id }}"
      class="chirpui-fragment-island{{ " " ~ cls if cls else "" }}"
@@ -51,7 +54,7 @@
      {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
      {% if hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
      {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
-     {{ attrs | safe }}>
+     {{ _attrs_raw | safe }}>
     {% try %}{% slot %}{% fallback %}{% end %}
 </div>
 {% end %}
@@ -62,9 +65,11 @@
     hx_swap=none,
     hx_select=none,
     cls="",
-    attrs=""
+    attrs="",
+    attrs_unsafe=""
 ) %}
-{% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs=attrs) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
+{% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs_unsafe=_attrs_raw) %}
 {{ caller() }}
 {% end %}
 {% end %}
@@ -76,9 +81,11 @@
     hx_swap=none,
     hx_select=none,
     cls="",
-    attrs=""
+    attrs="",
+    attrs_unsafe=""
 ) %}
-{% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs=attrs) %}
+{% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
+{% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs_unsafe=_attrs_raw) %}
 <div id="{{ mutation_result_id }}" class="chirpui-fragment-island chirpui-mb-sm" aria-live="polite"></div>
 {{ caller() }}
 {% end %}
