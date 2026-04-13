@@ -370,6 +370,13 @@
 </div>
 {% end %}
 
+{#- Deprecated alias — use segmented_control_field() instead. -#}
+{% def segmented_control(name, options, selected="", label=none, errors=none,
+                         required=false, hint=none, size="") %}
+{{ segmented_control_field(name, options, selected=selected, label=label, errors=errors,
+                           required=required, hint=hint, size=size) }}
+{% end %}
+
 {# Number scale — horizontal numbered radio row (NPS-style 0-10 or 1-5). #}
 {% def number_scale(name, min=0, max=10, selected=none, label=none, errors=none,
                     required=false, hint=none, low_label="", high_label="") %}

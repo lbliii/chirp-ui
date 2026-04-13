@@ -468,7 +468,7 @@ The second full-stack audit (2026-04-13) confirmed Sprints 0–5 are complete an
 
 ### Task 6.2: Disambiguate `tab` name collision
 
-- **Description:** `tabs.html` and `tabs_panels.html` both define `tab()` — one for htmx server-side, one for Alpine client-side. Rename the Alpine version to `tab_panel()` (it pairs with `tabs_panels`). Add deprecation alias.
+- **Description:** `tabs.html` and `tabs_panels.html` both define `tab()` — one for htmx server-side, one for Alpine client-side. Rename the Alpine version to `tab_button()` (it renders a `<button>`, not a panel). Add deprecation alias.
 - **Files:** `tabs.html:21`, `tabs_panels.html:19`, `test_components.py`
 - **Acceptance:** Both macros importable together. `rg 'def tab\b' src/chirp_ui/templates/chirpui/` returns exactly one result.
 
@@ -517,7 +517,7 @@ The second full-stack audit (2026-04-13) confirmed Sprints 0–5 are complete an
 
 ### Task 7.3: Animation duration tokens
 
-- **Description:** Define `--chirpui-duration-*` tokens for the ~12 distinct animation durations used (0.4s, 0.6s, 0.8s, 1s, 1.2s, 1.4s, 1.5s, 2s, 3s, 4s, 8s, 15s, 20s). Not every value needs a unique token — group into semantic categories (pulse, cycle, ambient, marquee). Replace hardcoded values in `animation:` declarations.
+- **Description:** Define `--chirpui-anim-*` tokens for the ~12 distinct animation durations used (0.4s, 0.6s, 0.8s, 1s, 1.2s, 1.4s, 1.5s, 2s, 3s, 4s, 8s, 15s, 20s). Not every value needs a unique token — group into semantic categories (pulse, cycle, ambient, marquee). Replace hardcoded values in `animation:` declarations.
 - **Files:** `chirpui.css`
 - **Acceptance:** `test_transition_tokens.py` extended to cover `animation` declarations (not just `transition`). Test passes.
 
@@ -600,7 +600,7 @@ The second full-stack audit (2026-04-13) confirmed Sprints 0–5 are complete an
 | `html_attrs` raw string bypass | Yes | Yes | Removed |
 | Z-index values without tokens | 40+ scattered | 40+ | 0 (all use `--chirpui-z-*`) |
 | Hardcoded `font-weight: 600` | 51 instances | 51 | 0 (all use token) |
-| Hardcoded animation durations | 50+ instances | 50+ | 0 (all use `--chirpui-duration-*`) |
+| Hardcoded animation durations | 50+ instances | 50+ | 0 (all use `--chirpui-anim-*`) |
 | `STATUS_WORDS` coverage | 3 states | 3 states | 11 states |
 
 ---

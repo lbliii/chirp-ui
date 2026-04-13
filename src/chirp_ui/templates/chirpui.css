@@ -11295,7 +11295,7 @@ body.htmx-request .chirpui-nav-progress::after {
     font-weight: var(--chirpui-ui-font-weight-bold);
     font-variant-numeric: tabular-nums;
     counter-reset: chirpui-num var(--chirpui-num);
-    animation: chirpui-count-up 1.var(--chirpui-anim-drift) var(--chirpui-ease-decel) forwards;
+    animation: chirpui-count-up 1.8s var(--chirpui-ease-decel) forwards;
 }
 .chirpui-animated-counter__value::after {
     content: counter(chirpui-num);
@@ -11951,7 +11951,7 @@ body.htmx-request .chirpui-nav-progress::after {
     mix-blend-mode: multiply;
 }
 .chirpui-grain--animated::after {
-    animation: chirpui-float 0.var(--chirpui-anim-cycle) steps(2) infinite;
+    animation: chirpui-float 0.3s steps(2) infinite;
 }
 
 

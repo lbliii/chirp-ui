@@ -29,6 +29,9 @@
 </button>
 {% end %}
 
+{#- Deprecated alias — use tab_button() instead. -#}
+{% def tab(id, label, active=false) %}{{ tab_button(id, label, active=active) }}{% end %}
+
 {% def tab_panel(id, active=false) %}
 <div class="chirpui-tab-panel" :id="$id('tabpanel', '{{ id }}')" role="tabpanel"
      :aria-labelledby="$id('tab', '{{ id }}')"
