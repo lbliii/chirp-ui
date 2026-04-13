@@ -156,6 +156,37 @@ class TestBemEdgeCases:
     def test_unknown_block_no_strict(self) -> None:
         assert bem("unknown", variant="x") == "chirpui-unknown chirpui-unknown--x"
 
+    def test_invalid_modifier_stripped_with_warning(self) -> None:
+        with pytest.warns(ChirpUIValidationWarning, match="invalid"):
+            result = bem("btn", modifier=["loading", "nonexistent-mod"])
+        assert "chirpui-btn--loading" in result
+        assert "nonexistent-mod" not in result
+
+    def test_valid_modifiers_kept(self) -> None:
+        result = bem("btn", modifier=["loading"])
+        assert "chirpui-btn--loading" in result
+
+
+class TestContrastTextWarning:
+    """contrast_text warns on unparseable colors."""
+
+    def test_unparseable_color_warns(self) -> None:
+        with pytest.warns(ChirpUIValidationWarning, match="could not parse"):
+            result = contrast_text("not-a-color")
+        assert result == "white"
+
+    def test_empty_color_no_warning(self) -> None:
+        result = contrast_text("")
+        assert result == "white"
+
+    def test_valid_hex_no_warning(self) -> None:
+        result = contrast_text("#000000")
+        assert result == "white"
+
+    def test_valid_hex_light_returns_dark(self) -> None:
+        result = contrast_text("#ffffff")
+        assert result == "#1a1a1a"
+
 
 class TestValidateVariantEdgeCases:
     """Edge cases for validate_variant."""
@@ -263,7 +294,7 @@ class TestResolveStatusVariant:
 
     def test_custom_default(self) -> None:
         with pytest.warns(ChirpUIValidationWarning):
-            result = resolve_status_variant("unknown", default="info")
+            result = resolve_status_variant("unrecognized-xyz", default="info")
         assert result == "info"
 
     def test_extensible_via_status_words(self) -> None:

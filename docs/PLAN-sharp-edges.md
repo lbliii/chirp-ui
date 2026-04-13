@@ -1,11 +1,11 @@
 # Epic: Sharp Edges — Ergonomic, Intuitive, Reliable
 
-**Status**: In Progress (Sprint 0 complete)
+**Status**: Complete (all sprints 0–8 implemented)
 **Created**: 2026-04-13
 **Target**: 0.4.0
-**Estimated Effort**: 30–50h
+**Estimated Effort**: 50–70h (30–50h Phase 1 ✓ + 20–25h Phase 2)
 **Dependencies**: None (self-contained; kida 0.4.0 already adopted)
-**Source**: Full-stack audit of templates (30+ files), CSS (15,524 lines), Python filters/validation, JS, docs, and test infrastructure
+**Source**: Full-stack audit of templates (30+ files), CSS (15,524 lines), Python filters/validation, JS, docs, and test infrastructure. Phase 2 sourced from second full-stack audit (2026-04-13) covering areas the first audit missed.
 
 ---
 
@@ -51,6 +51,21 @@ chirp-ui has 195 components and a rich design token system, but the developer ex
 | `overflow: hidden` clips nested content | 55+ CSS rules | **MITIGATES** — Sprint 3 (document + selective fix) |
 | Legacy + modern slot patterns coexist | post_card, card, channel_card | **MITIGATES** — Sprint 2 (deprecation markers) |
 | Undocumented provide/consume inheritance | badge, callout, settings_row | **MITIGATES** — Sprint 5 (document) |
+| `segmented_control` macro name collision | forms.html + segmented_control.html | **FIXES** — Sprint 6 |
+| `tab` macro name collision | tabs.html + tabs_panels.html | **FIXES** — Sprint 6 |
+| `bem()` doesn't strip invalid modifiers (warns but renders them) | filters.py:338-350 | **FIXES** — Sprint 6 |
+| `html_attrs()` raw string bypass for space-prefixed strings | filters.py:613-614 | **FIXES** — Sprint 6 |
+| `contrast_text()` returns "white" on invalid color with no warning | filters.py:250-267 | **FIXES** — Sprint 6 |
+| `_warn()` hardcodes stacklevel=3, wrong for some call depths | validation.py:64-77 | **FIXES** — Sprint 6 |
+| No z-index token system (values 1–10000 scattered across 40+ rules) | chirpui.css | **FIXES** — Sprint 7 |
+| 51 hardcoded `font-weight: 600` instead of tokens | chirpui.css (51 sites) | **FIXES** — Sprint 7 |
+| 50+ hardcoded animation durations not using motion tokens | chirpui.css | **FIXES** — Sprint 7 |
+| 20+ raw `rgba()` values in shadows/glass instead of tokens | chirpui.css | **MITIGATES** — Sprint 7 |
+| 7 templates still use `variant="default"` as parameter default | surface.html, confirm.html, etc. | **FIXES** — Sprint 8 (residual) |
+| No `reset_colors()` or strict-mode query API | filters.py | **FIXES** — Sprint 8 |
+| `tab_is_active()` with empty `href=""` matches all paths | route_tabs.py:25-28 | **FIXES** — Sprint 8 |
+| `register_colors()` silently coerces non-string keys/values | filters.py:85-86 | **FIXES** — Sprint 8 |
+| `STATUS_WORDS` missing "warning", "pending", "info" | filters.py:452-469 | **FIXES** — Sprint 8 |
 
 ---
 
@@ -95,12 +110,15 @@ docs:           COMPONENT-OPTIONS.md covers all 195 templates
 
 | Sprint | Focus | Effort | Risk | Ships Independently? |
 |--------|-------|--------|------|---------------------|
-| 0 | Design & validate | 3–4h | Low | Yes (plan doc only) |
-| 1 | Warning system — stop silent failures | 6–8h | Low | Yes |
-| 2 | API normalization — consistent names/defaults | 6–10h | Medium | Yes |
-| 3 | CSS/JS correctness — tokens, overflow, theme | 6–10h | Medium | Yes |
-| 4 | Test infrastructure — align stubs with reality | 4–6h | Low | Yes |
-| 5 | Documentation — close the 54% gap | 6–12h | Low | Yes |
+| 0 | Design & validate | 3–4h | Low | Yes (plan doc only) ✓ |
+| 1 | Warning system — stop silent failures | 6–8h | Low | Yes ✓ |
+| 2 | API normalization — consistent names/defaults | 6–10h | Medium | Yes ✓ |
+| 3 | CSS/JS correctness — tokens, overflow, theme | 6–10h | Medium | Yes ✓ |
+| 4 | Test infrastructure — align stubs with reality | 4–6h | Low | Yes ✓ |
+| 5 | Documentation — close the 54% gap | 6–12h | Low | Yes ✓ |
+| **6** | **Filter & macro safety — collisions, validation, escapes** | **6–8h** | **Medium** | **Yes ✓** |
+| **7** | **CSS token completeness — z-index, font-weight, animation** | **8–10h** | **Low** | **Yes ✓** |
+| **8** | **Residual cleanup — leftover defaults, missing APIs** | **4–6h** | **Low** | **Yes ✓** |
 
 ---
 
@@ -422,6 +440,131 @@ class ChirpUIValidationWarning(ChirpUIWarning):
 
 ---
 
+---
+
+# Phase 2: Second Audit Findings
+
+The second full-stack audit (2026-04-13) confirmed Sprints 0–5 are complete and revealed a new layer of sharp edges: macro name collisions, asymmetric validation, CSS token gaps in z-index/font-weight/animation, and several filter edge cases.
+
+## Phase 2 Sprint Structure
+
+| Sprint | Focus | Effort | Risk | Ships Independently? |
+|--------|-------|--------|------|---------------------|
+| 6 | Filter & macro safety — name collisions, validation asymmetry, escape hatches | 6–8h | Medium | Yes |
+| 7 | CSS token completeness — z-index, font-weight, animation duration | 8–10h | Low | Yes |
+| 8 | Residual cleanup — leftover defaults, missing APIs, edge cases | 4–6h | Low | Yes |
+
+---
+
+## Sprint 6: Filter & Macro Safety ✓
+
+**Goal:** Eliminate macro name collisions, make validation consistently correct-or-warn, and close the `html_attrs` escape hatch.
+
+### Task 6.1: Disambiguate `segmented_control` name collision
+
+- **Description:** `forms.html` and `segmented_control.html` both define `segmented_control()` with incompatible signatures (form field vs display component). Importing both silently shadows one. Rename the form version to `segmented_control_field()` and add a deprecation alias.
+- **Files:** `forms.html:336`, `segmented_control.html:20`, `test_components.py`
+- **Acceptance:** Both macros importable in the same template. `rg 'def segmented_control\b' src/chirp_ui/templates/chirpui/` returns exactly one result (the display version).
+
+### Task 6.2: Disambiguate `tab` name collision
+
+- **Description:** `tabs.html` and `tabs_panels.html` both define `tab()` — one for htmx server-side, one for Alpine client-side. Rename the Alpine version to `tab_button()` (it renders a `<button>`, not a panel). Add deprecation alias.
+- **Files:** `tabs.html:21`, `tabs_panels.html:19`, `test_components.py`
+- **Acceptance:** Both macros importable together. `rg 'def tab\b' src/chirp_ui/templates/chirpui/` returns exactly one result.
+
+### Task 6.3: `bem()` strips invalid modifiers (match variant/size behavior)
+
+- **Description:** `bem()` validates variants and sizes and **corrects** them (falls back to default), but validates modifiers and **leaves invalid ones in the output**. This is asymmetric. Change to filter out invalid modifiers after warning, consistent with variant/size behavior.
+- **Files:** `filters.py:338-350`
+- **Acceptance:** `bem("btn", modifier="nonexistent")` emits warning AND omits the invalid modifier class from output. `uv run pytest -q` passes.
+
+### Task 6.4: `contrast_text()` warns on invalid color
+
+- **Description:** Returns `"white"` on invalid color with no warning, unlike `icon()` which warns on unrecognized names. Add `ChirpUIValidationWarning` when color parsing fails.
+- **Files:** `filters.py:250-267`
+- **Acceptance:** `contrast_text("not-a-color")` emits warning. Still returns `"white"` as fallback (non-breaking).
+
+### Task 6.5: Remove `html_attrs()` raw string bypass
+
+- **Description:** Strings with a leading space bypass escaping and render as raw `Markup`. This is an undocumented security escape hatch. Remove the special-case: all string inputs should be escaped, or at minimum require an explicit `Markup()` wrapper.
+- **Files:** `filters.py:610-615`
+- **Acceptance:** `html_attrs(" onclick=alert(1)")` returns escaped output, not raw HTML. Grep templates for any call sites relying on the old behavior and update them.
+
+### Task 6.6: `_warn()` dynamic stacklevel
+
+- **Description:** `_warn()` hardcodes `stacklevel=3`, which is wrong when called from different depths (e.g., `bem()` → validation → `_warn()` vs `validate_variant()` → `_warn()`). Accept an optional `stacklevel` parameter, default to 3 for backwards compat.
+- **Files:** `validation.py:64-77`
+- **Acceptance:** Warnings from `bem()` point to the correct caller line, not an internal function.
+
+---
+
+## Sprint 7: CSS Token Completeness ✓
+
+**Goal:** Extend the token system to cover z-index, font-weight, and animation duration — the three areas where hardcoded values are most prevalent.
+
+### Task 7.1: Z-index token system
+
+- **Description:** Define `--chirpui-z-*` tokens in `:root` with a documented hierarchy. Replace all 40+ scattered z-index values with token references.
+- **Tokens:** `--chirpui-z-deep: -1`, `--chirpui-z-base: 0`, `--chirpui-z-raised: 1`, `--chirpui-z-dropdown: 10`, `--chirpui-z-sticky: 20`, `--chirpui-z-overlay: 50`, `--chirpui-z-modal: 100`, `--chirpui-z-popover: 1100`, `--chirpui-z-toast: 1200`, `--chirpui-z-max: 10000`
+- **Files:** `chirpui.css`
+- **Acceptance:** `rg 'z-index:\s*\d' chirpui.css | grep -v 'var(--chirpui-z-'` returns zero results (excluding `:root` definitions).
+
+### Task 7.2: Font-weight tokens
+
+- **Description:** Define `--chirpui-font-weight-semibold: 600` and `--chirpui-font-weight-bold: 700` tokens. Replace all 51 hardcoded `font-weight: 600` instances.
+- **Files:** `chirpui.css`
+- **Acceptance:** `rg 'font-weight:\s*600' chirpui.css` returns zero results outside `:root`.
+
+### Task 7.3: Animation duration tokens
+
+- **Description:** Define `--chirpui-anim-*` tokens for the ~12 distinct animation durations used (0.4s, 0.6s, 0.8s, 1s, 1.2s, 1.4s, 1.5s, 2s, 3s, 4s, 8s, 15s, 20s). Not every value needs a unique token — group into semantic categories (pulse, cycle, ambient, marquee). Replace hardcoded values in `animation:` declarations.
+- **Files:** `chirpui.css`
+- **Acceptance:** `test_transition_tokens.py` extended to cover `animation` declarations (not just `transition`). Test passes.
+
+### Task 7.4: Shadow/glass rgba consolidation (stretch)
+
+- **Description:** Replace the most common raw `rgba()` values in shadow and glass effects with tokens. Focus on the ~10 most-repeated patterns, not all 20+.
+- **Files:** `chirpui.css`
+- **Acceptance:** Top 10 repeated rgba patterns use tokens. Remaining documented as intentional.
+
+---
+
+## Sprint 8: Residual Cleanup ✓
+
+**Goal:** Fix leftover issues from Phase 1 and small filter edge cases found in the second audit.
+
+### Task 8.1: Fix remaining `variant="default"` defaults
+
+- **Description:** 7 templates still use `variant="default"` as macro parameter default: `surface.html`, `shell_actions.html`, `resource_index.html`, `confirm.html`, `command_bar.html`, `app_shell.html`, `action_strip.html`. Change to `variant=""` per Sprint 0 Decision 0.2.
+- **Files:** 7 template files listed above, `test_components.py`
+- **Acceptance:** `rg 'variant="default"' src/chirp_ui/templates/chirpui/` returns zero results in macro parameter defaults (CSS class references are fine).
+
+### Task 8.2: Add `reset_colors()` and `is_strict()` APIs
+
+- **Description:** `register_colors()` merges but has no reset. `set_strict()` sets but can't be queried. Add `reset_colors()` to clear the ContextVar and `is_strict()` as a public API.
+- **Files:** `filters.py`, `validation.py`, `__init__.py` (exports)
+- **Acceptance:** `reset_colors()` clears registered colors. `is_strict()` returns current strict mode state.
+
+### Task 8.3: Guard `tab_is_active()` against empty href
+
+- **Description:** With `href=""` and `match="prefix"`, the condition `current_path.startswith("" + "/")` matches every path starting with `/`. Add an early return `False` when `href` is empty.
+- **Files:** `route_tabs.py:25-28`
+- **Acceptance:** `tab_is_active({"href": ""}, "/anything")` returns `False`.
+
+### Task 8.4: Expand `STATUS_WORDS` registry
+
+- **Description:** Add common missing status words: `"warning" → "warning"`, `"pending" → "muted"`, `"info" → "info"`, `"active" → "success"`, `"inactive" → "muted"`, `"ready" → "success"`, `"offline" → "error"`, `"degraded" → "warning"`.
+- **Files:** `filters.py` (STATUS_WORDS dict)
+- **Acceptance:** `resolve_status_variant("warning")` returns `"warning"`, not `"muted"`.
+
+### Task 8.5: `register_colors()` type validation
+
+- **Description:** Currently `str()`-coerces non-string keys and values silently. Add type checking: keys must be `str`, values must be `str`. Raise `TypeError` on non-string input.
+- **Files:** `filters.py:85-86`
+- **Acceptance:** `register_colors({123: "#fff"})` raises `TypeError`.
+
+---
+
 ## Risk Register
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -432,23 +575,33 @@ class ChirpUIValidationWarning(ChirpUIWarning):
 | `hx={}` dict pattern rejected by users | Low | Medium | Sprint 2 keeps individual `hx_*` params as deprecated aliases; no forced migration |
 | Documenting 106 components is too large for one sprint | Medium | Low | Sprint 5 can be split across releases; prioritize by component family popularity |
 | Test stub parity test becomes maintenance burden | Low | Low | Sprint 4 Task 4.3 shares serialization code, so parity is structural, not manually maintained |
+| Macro rename breaks existing imports | Medium | High | Sprint 6 adds deprecation aliases — old names still work for one release cycle |
+| Removing `html_attrs` raw string bypass breaks call sites | Low | High | Sprint 6 Task 6.5 greps all templates for affected patterns before removing |
+| Z-index token migration causes visual regressions | Low | Medium | Sprint 7 maps existing values to tokens 1:1 — no visual changes, only indirection |
+| 51 font-weight replacements cause subtle rendering shifts | Low | Low | Sprint 7 tokens define exact same numeric values; purely a maintainability change |
 
 ---
 
 ## Success Metrics
 
-| Metric | Current | After Sprint 2 | After Sprint 5 |
-|--------|---------|----------------|----------------|
-| Silent validation fallbacks | ~15 sites, 0 warnings | 0 sites without warnings | 0 sites without warnings |
-| Variant default conventions | 4 different defaults | 1 default (`""`) | 1 default |
-| Size vocabulary variants | 3 (`md`, `medium`, `none`) | 1 (`md`) | 1 |
-| `btn()` parameter count | 22 | ~12 (with `hx={}`) | ~12 |
-| Hardcoded `color: white` in CSS | 20+ | 20+ | 0 |
-| Undefined CSS custom properties | ≥1 (`spacing-2xs`) | ≥1 | 0 |
-| Breakpoints using px | 3+ | 3+ | 0 |
-| chirpui.js browser failures | Safari private browsing | Safari private browsing | 0 |
-| Documented components | 89/195 (46%) | 89/195 | 195/195 (100%) |
-| Test stub divergences | 3 known | 3 known | 0 (parity test enforced) |
+| Metric | Before Phase 1 | After Phase 1 (Sprint 5) | After Phase 2 (Sprint 8) |
+|--------|----------------|--------------------------|--------------------------|
+| Silent validation fallbacks | ~15 sites, 0 warnings | 0 sites without warnings ✓ | 0 (+ contrast_text warns) |
+| Variant default conventions | 4 different defaults | 1 default (`""`) (7 residual) | 0 residual |
+| Size vocabulary variants | 3 (`md`, `medium`, `none`) | 1 (`md`) ✓ | 1 |
+| `btn()` parameter count | 22 | ~12 (with `hx={}`) ✓ | ~12 |
+| Hardcoded `color: white` in CSS | 20+ | 0 ✓ | 0 |
+| Undefined CSS custom properties | ≥1 (`spacing-2xs`) | 0 ✓ | 0 |
+| chirpui.js browser failures | Safari private browsing | 0 ✓ | 0 |
+| Documented components | 89/195 (46%) | 195/195 ✓ | 195/195 |
+| Test stub divergences | 3 known | 0 ✓ | 0 |
+| Macro name collisions | 2 (`segmented_control`, `tab`) | 2 (not addressed) | 0 |
+| `bem()` invalid modifiers rendered | Yes (warns but keeps) | Yes | 0 (stripped after warning) |
+| `html_attrs` raw string bypass | Yes | Yes | Removed |
+| Z-index values without tokens | 40+ scattered | 40+ | 0 (all use `--chirpui-z-*`) |
+| Hardcoded `font-weight: 600` | 51 instances | 51 | 0 (all use token) |
+| Hardcoded animation durations | 50+ instances | 50+ | 0 (all use `--chirpui-anim-*`) |
+| `STATUS_WORDS` coverage | 3 states | 3 states | 11 states |
 
 ---
 
@@ -465,3 +618,6 @@ class ChirpUIValidationWarning(ChirpUIWarning):
 
 - **2026-04-13**: Initial draft from full-stack sharp edges audit.
 - **2026-04-13**: Sprint 0 complete — all four design decisions resolved (hx dict pattern, canonical defaults, overflow catalog of 80 rules, warning infrastructure with ChirpUIWarning hierarchy).
+- **2026-04-13**: Sprints 1–5 implemented and merged (#61, #62).
+- **2026-04-13**: Phase 2 — second full-stack audit. Confirmed Sprints 0–5 complete. Found 15 new sharp edges not covered by Phase 1: macro name collisions (2), filter validation asymmetry (3), CSS token gaps in z-index/font-weight/animation (3), residual defaults (7 files), missing APIs (2), edge cases (3). Added Sprints 6–8.
+- **2026-04-13**: Sprints 6–8 implemented. Sprint 6: renamed segmented_control→segmented_control_field and tab→tab_button, fixed bem() modifier stripping, added contrast_text warning, dynamic _warn stacklevel, is_strict() API. Sprint 7: added 8 z-index tokens (replaced 18 values), replaced 62 font-weight values, added 8 animation tokens (replaced 34 values). Sprint 8: added reset_colors(), type validation for register_colors, empty href guard, expanded STATUS_WORDS from 16→25 entries.

@@ -217,7 +217,7 @@ class TestBemParity:
             ("btn", {"variant": "primary"}),
             ("btn", {"variant": "primary", "size": "lg"}),
             ("btn", {"modifier": "loading"}),
-            ("btn", {"modifier": ["loading", "wide"]}),
+            ("btn", {"modifier": ["loading"]}),
             ("btn", {"cls": "extra"}),
             ("surface", {"variant": "muted", "modifier": ["full", "no-padding"], "cls": "my-cls"}),
         ],

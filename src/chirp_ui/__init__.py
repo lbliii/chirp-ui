@@ -19,11 +19,12 @@ from pathlib import Path
 from kida import PackageLoader
 
 from chirp_ui.components import design_system_report
-from chirp_ui.filters import TemplateFilterApp, register_colors
+from chirp_ui.filters import TemplateFilterApp, register_colors, reset_colors
 from chirp_ui.validation import (
     ChirpUIDeprecationWarning,
     ChirpUIValidationWarning,
     ChirpUIWarning,
+    is_strict,
     set_strict,
 )
 
@@ -38,8 +39,10 @@ __all__ = [
     "ChirpUIWarning",
     "design_system_report",
     "get_loader",
+    "is_strict",
     "register_colors",
     "register_filters",
+    "reset_colors",
     "set_strict",
     "static_path",
 ]

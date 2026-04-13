@@ -22,6 +22,7 @@ __all__ = [
     "ChirpUIDeprecationWarning",
     "ChirpUIValidationWarning",
     "ChirpUIWarning",
+    "is_strict",
     "set_strict",
 ]
 
@@ -57,16 +58,29 @@ def set_strict(strict: bool) -> None:
     _chirpui_strict.set(strict)
 
 
-def _is_strict() -> bool:
+def is_strict() -> bool:
+    """Return True when strict mode is active for this context."""
     return _chirpui_strict.get()
 
 
-def _warn(message: str, *, category: type[Warning] = ChirpUIValidationWarning) -> None:
+# Keep private alias for internal callers that already import it.
+_is_strict = is_strict
+
+
+def _warn(
+    message: str,
+    *,
+    category: type[Warning] = ChirpUIValidationWarning,
+    stacklevel: int = 3,
+) -> None:
     """Emit a chirp-ui warning, or raise ValueError in strict mode.
 
     In strict mode, :class:`ChirpUIValidationWarning` escalates to
     ``ValueError``.  :class:`ChirpUIDeprecationWarning` always warns
     (deprecation ≠ error).
+
+    *stacklevel* defaults to 3 (caller → filter function → ``_warn``).
+    Pass a higher value when called from deeper internal helpers.
     """
     if (
         _is_strict()
@@ -74,4 +88,4 @@ def _warn(message: str, *, category: type[Warning] = ChirpUIValidationWarning) -
         and not issubclass(category, ChirpUIDeprecationWarning)
     ):
         raise ValueError(message)
-    warnings.warn(message, category, stacklevel=3)
+    warnings.warn(message, category, stacklevel=stacklevel)

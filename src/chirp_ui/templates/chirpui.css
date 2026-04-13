@@ -271,6 +271,16 @@ body {
     --chirpui-ease-decel: cubic-bezier(0, 0, 0.2, 1);
     --chirpui-ease-accel: cubic-bezier(0.4, 0, 1, 1);
 
+    /* Animation durations — for @keyframes (transitions use --chirpui-motion-*) */
+    --chirpui-anim-flash: 0.2s;
+    --chirpui-anim-quick: 0.4s;
+    --chirpui-anim-pace: 0.6s;
+    --chirpui-anim-breath: 0.8s;
+    --chirpui-anim-pulse: 1.5s;
+    --chirpui-anim-cycle: 3s;
+    --chirpui-anim-drift: 8s;
+    --chirpui-anim-ambient: 20s;
+
     /* Effect colors — shimmer, ripple, glow, beam */
     --chirpui-shimmer-from: color-mix(in srgb, var(--chirpui-border) 40%, transparent);
     --chirpui-shimmer-via: color-mix(in srgb, var(--chirpui-surface) 80%, transparent);
@@ -373,7 +383,7 @@ body {
     --chirpui-tooltip-padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
     --chirpui-tooltip-gap: var(--chirpui-spacing-sm);
     --chirpui-tooltip-max-width: min(16rem, 85vw);
-    --chirpui-tooltip-z: 50;
+    --chirpui-tooltip-z: var(--chirpui-z-sticky);
 
     /* Corner accent — architectural bracket decoration on surfaces */
     --chirpui-corner-accent-color: var(--chirpui-border);
@@ -426,6 +436,16 @@ body {
     --chirpui-elevation-topbar: var(--chirpui-elevation-1);
     --chirpui-elevation-5: var(--chirpui-shadow-deep);
     --chirpui-elevation-deep: var(--chirpui-shadow-deep);
+
+    /* Z-index — global stacking hierarchy (local 0/1/2 within components are intentionally hardcoded) */
+    --chirpui-z-dropdown: 10;
+    --chirpui-z-popover: 20;
+    --chirpui-z-sticky: 50;
+    --chirpui-z-toast: 100;
+    --chirpui-z-tray: 1100;
+    --chirpui-z-modal: 1200;
+    --chirpui-z-command-palette: 9999;
+    --chirpui-z-celebration: 10000;
 
     /* Interaction state semantics */
     --chirpui-state-surface-hover: var(--chirpui-bg-subtle);
@@ -889,7 +909,7 @@ html {
 
 .chirpui-layer--hover > *:hover {
     transform: rotate(0deg) scale(1.04);
-    z-index: 10;
+    z-index: var(--chirpui-z-dropdown);
 }
 
 /* Overlap sizes (negative margin pulls cards together) */
@@ -919,7 +939,7 @@ html {
 
 .chirpui-layer--hover > *:nth-child(even):hover {
     transform: rotate(0deg) scale(1.04);
-    z-index: 10;
+    z-index: var(--chirpui-z-dropdown);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -964,7 +984,7 @@ html {
 
 .chirpui-label-overline--section {
     margin-bottom: 0.75rem;
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
     letter-spacing: 0.06em;
 }
 
@@ -1912,7 +1932,7 @@ a.chirpui-action-bar__item {
 .chirpui-action-strip--sticky {
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: var(--chirpui-z-dropdown);
 }
 
 .chirpui-filter-bar__form {
@@ -2355,7 +2375,7 @@ a.chirpui-action-bar__item {
 }
 
 .chirpui-post-card__name {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-text);
 }
 
@@ -2430,7 +2450,7 @@ a.chirpui-post-card__name:hover {
 }
 
 .chirpui-comment__author {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-sm);
 }
 
@@ -2582,7 +2602,7 @@ a.chirpui-profile-header__name:hover {
     height: var(--chirpui-avatar-size-sm);
     margin-inline-start: -0.75rem;
     font-size: var(--chirpui-font-xs);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     background: var(--chirpui-bg-subtle);
     border: 2px solid var(--chirpui-surface);
     border-radius: 50%;
@@ -2753,7 +2773,7 @@ a.chirpui-mention:focus-visible {
 }
 
 .chirpui-navbar__brand {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-lg);
     color: var(--chirpui-text);
     text-decoration: none;
@@ -2798,7 +2818,7 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-logo__text {
     font-size: var(--chirpui-logo-font-size);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     line-height: 1.2;
     color: inherit;
 }
@@ -2866,14 +2886,14 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-navbar__link--active {
     color: var(--chirpui-accent);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
 }
 
 .chirpui-navbar--sticky {
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: var(--chirpui-z-sticky);
     background: var(--chirpui-surface);
 }
 
@@ -2945,7 +2965,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-sidebar__section-title {
     display: block;
     font-size: var(--chirpui-font-xs);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--chirpui-text-muted);
@@ -3045,7 +3065,7 @@ a.chirpui-mention:focus-visible {
     background: var(--chirpui-bg-subtle, var(--chirpui-border));
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     flex-shrink: 0;
     border: 2px solid var(--chirpui-border);
     transition: all var(--chirpui-transition);
@@ -3083,7 +3103,7 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-stepper__item--active .chirpui-stepper__label {
     color: var(--chirpui-text);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 .chirpui-stepper__item--completed .chirpui-stepper__label {
@@ -3704,7 +3724,7 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-fieldset__legend {
     padding: 0 0.5em;
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 :where(.chirpui-prose) pre {
@@ -3791,12 +3811,12 @@ a.chirpui-mention:focus-visible {
     height: 1em;
     background: var(--chirpui-accent);
     margin-left: 2px;
-    animation: chirpui-cursor-blink 0.8s step-end infinite;
+    animation: chirpui-cursor-blink var(--chirpui-anim-breath) step-end infinite;
     vertical-align: text-bottom;
 }
 
 .chirpui-streaming-block--active .chirpui-streaming-block__cursor {
-    animation: chirpui-cursor-blink 0.8s step-end infinite;
+    animation: chirpui-cursor-blink var(--chirpui-anim-breath) step-end infinite;
 }
 
 @keyframes chirpui-cursor-blink {
@@ -3866,7 +3886,7 @@ a.chirpui-mention:focus-visible {
 }
 
 .chirpui-model-card__title {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 .chirpui-model-card__badge {
@@ -4330,7 +4350,7 @@ a.chirpui-mention:focus-visible {
 }
 
 .chirpui-callout__title {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-base);
     margin-bottom: 0;
 }
@@ -4368,7 +4388,7 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-hero__title {
     font-size: var(--chirpui-font-2xl);
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
     line-height: var(--chirpui-line-height-tight);
     margin: 0 0 var(--chirpui-spacing-sm);
     color: var(--chirpui-text);
@@ -4748,7 +4768,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-card--stats .chirpui-card__header {
     border-bottom: none;
     font-size: var(--chirpui-font-2xl);
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
 }
 
 .chirpui-card--glass {
@@ -4945,7 +4965,7 @@ a.chirpui-mention:focus-visible {
     bottom: var(--chirpui-spacing-xs);
     padding: var(--chirpui-spacing-2xs) 0.35rem;
     font-size: var(--chirpui-font-xs);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     background: rgba(0, 0, 0, 0.75);
     color: var(--chirpui-on-accent);
     border-radius: var(--chirpui-radius-sm);
@@ -4958,7 +4978,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-video-card__title {
     margin: 0 0 var(--chirpui-spacing-xs);
     font-size: var(--chirpui-font-sm);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     line-height: var(--chirpui-line-height-tight);
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -5018,7 +5038,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-channel-card__name {
     margin: 0;
     font-size: var(--chirpui-font-base);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 .chirpui-channel-card__subscribers {
@@ -5079,7 +5099,7 @@ a.chirpui-mention:focus-visible {
     bottom: var(--chirpui-spacing-xs);
     padding: var(--chirpui-spacing-2xs) 0.35rem;
     font-size: var(--chirpui-font-xs);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     background: rgba(0, 0, 0, 0.75);
     color: var(--chirpui-on-accent);
     border-radius: var(--chirpui-radius-sm);
@@ -5103,7 +5123,7 @@ a.chirpui-mention:focus-visible {
     gap: var(--chirpui-spacing-xs);
     padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
     font-size: var(--chirpui-font-xs);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     background: var(--chirpui-error);
     color: var(--chirpui-on-accent);
     border-radius: var(--chirpui-radius-sm);
@@ -5114,7 +5134,7 @@ a.chirpui-mention:focus-visible {
     height: 0.5rem;
     border-radius: 50%;
     background: currentColor;
-    animation: chirpui-live-pulse 1.5s ease-in-out infinite;
+    animation: chirpui-live-pulse var(--chirpui-anim-pulse) ease-in-out infinite;
 }
 
 @keyframes chirpui-live-pulse {
@@ -5148,7 +5168,7 @@ a.chirpui-mention:focus-visible {
     margin: 0;
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     font-size: var(--chirpui-font-sm);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     flex: 1;
 }
 
@@ -5193,7 +5213,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-playlist-item--active .chirpui-playlist-item__link {
     color: var(--chirpui-accent);
     background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 .chirpui-playlist-item__title {
@@ -5222,7 +5242,7 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-chapter-list__summary {
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     cursor: pointer;
     list-style: none;
     display: flex;
@@ -5594,7 +5614,7 @@ dialog.chirpui-modal a {
 .chirpui-tab--active {
     border-bottom-color: var(--chirpui-accent);
     color: var(--chirpui-accent);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 .chirpui-tab--disabled {
@@ -5624,7 +5644,7 @@ dialog.chirpui-modal a {
     cursor: pointer;
     list-style: none;
     padding: var(--chirpui-spacing) var(--chirpui-spacing-md);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     display: flex;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
@@ -5700,7 +5720,7 @@ dialog.chirpui-modal a {
     cursor: pointer;
     list-style: none;
     padding: var(--chirpui-spacing) var(--chirpui-spacing-md);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     display: flex;
     align-items: center;
     gap: var(--chirpui-spacing-xs);
@@ -5779,7 +5799,7 @@ dialog.chirpui-modal a {
     position: absolute;
     top: calc(100% + var(--chirpui-dropdown-offset));
     left: 0;
-    z-index: 10;
+    z-index: var(--chirpui-z-dropdown);
     min-width: 10rem;
     max-inline-size: min(20rem, calc(100vw - 2 * var(--chirpui-dropdown-viewport-padding)));
     max-block-size: calc(100dvh - 2 * var(--chirpui-dropdown-viewport-padding));
@@ -5906,7 +5926,7 @@ dialog.chirpui-modal a {
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-sm);
     box-shadow: var(--chirpui-elevation-floating);
-    z-index: 20;
+    z-index: var(--chirpui-z-popover);
 }
 
 .chirpui-split-btn__menu a,
@@ -5971,7 +5991,7 @@ dialog.chirpui-modal a {
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-sm);
     box-shadow: var(--chirpui-elevation-overlay);
-    z-index: 20;
+    z-index: var(--chirpui-z-popover);
 }
 
 /* Tag input */
@@ -6207,7 +6227,7 @@ a.chirpui-tag:active {
 }
 
 .chirpui-nav-tree__link--active {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-accent);
     background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
 }
@@ -6335,7 +6355,7 @@ a.chirpui-tag:active {
     position: fixed;
     top: var(--chirpui-spacing);
     right: var(--chirpui-spacing);
-    z-index: 100;
+    z-index: var(--chirpui-z-toast);
     display: flex;
     flex-direction: column;
     gap: var(--chirpui-spacing-sm);
@@ -6424,7 +6444,7 @@ a.chirpui-tag:active {
 }
 
 .chirpui-table__th {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-sm);
     color: var(--chirpui-text-muted);
 }
@@ -6481,7 +6501,7 @@ a.chirpui-tag:active {
 .chirpui-params-table__title {
     margin: 0 0 var(--chirpui-spacing-sm);
     font-size: var(--chirpui-font-lg);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 .chirpui-params-table__wrap {
@@ -6502,7 +6522,7 @@ a.chirpui-tag:active {
 }
 
 .chirpui-params-table__th {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-text-muted);
 }
 
@@ -6591,7 +6611,7 @@ a.chirpui-tag:active {
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-xs);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     text-transform: uppercase;
     background: var(--chirpui-bg-subtle);
     border-radius: var(--chirpui-radius-sm);
@@ -6599,7 +6619,7 @@ a.chirpui-tag:active {
 }
 
 .chirpui-index-card__title {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 .chirpui-index-card__description {
@@ -6622,7 +6642,7 @@ a.chirpui-tag:active {
 
 .chirpui-selection-bar__count,
 .chirpui-bulk-bar__count {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     margin-inline-end: auto;
 }
 
@@ -6669,7 +6689,7 @@ a.chirpui-tag:active {
 
 .chirpui-pagination__link--active {
     color: var(--chirpui-accent);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
 }
 
@@ -6717,7 +6737,7 @@ a.chirpui-tag:active {
 }
 
 .chirpui-alert__title {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     margin-bottom: var(--chirpui-spacing-xs);
 }
 
@@ -6950,7 +6970,7 @@ a.chirpui-tag:active {
 .chirpui-tray {
     position: fixed;
     inset: 0;
-    z-index: 1100;
+    z-index: var(--chirpui-z-tray);
 }
 .chirpui-tray--closed {
     pointer-events: none;
@@ -7021,7 +7041,7 @@ a.chirpui-tag:active {
 .chirpui-tray__title {
     margin: 0;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 .chirpui-tray__close {
     background: none;
@@ -7048,7 +7068,7 @@ a.chirpui-tag:active {
 .chirpui-modal[data-modal-id] {
     position: fixed;
     inset: 0;
-    z-index: 1200;
+    z-index: var(--chirpui-z-modal);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7716,7 +7736,7 @@ a.chirpui-tag:active {
 
 @media (prefers-reduced-motion: no-preference) {
     .chirpui-field--error .chirpui-field__input {
-        animation: chirpui-field-shake 0.4s ease-in-out;
+        animation: chirpui-field-shake var(--chirpui-anim-quick) ease-in-out;
     }
 }
 
@@ -7763,7 +7783,7 @@ a.chirpui-tag:active {
 
 .chirpui-form-error-summary__heading {
     margin: 0 0 var(--chirpui-spacing-xs);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-sm);
 }
 
@@ -8272,7 +8292,7 @@ input[type="date"].chirpui-field__input {
 }
 
 .chirpui-dnd__column-header {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-sm);
     color: var(--chirpui-text-muted);
 }
@@ -8579,7 +8599,7 @@ input[type="date"].chirpui-field__input {
     top: 50%;
     transform: translateY(-50%);
     font-size: 0.5rem;
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     pointer-events: none;
@@ -9125,7 +9145,7 @@ a.chirpui-badge--custom-solid:hover {
 
 .chirpui-spinner-thinking__char {
     display: inline-block;
-    animation: chirpui-spiral-rotate 0.6s steps(4) infinite;
+    animation: chirpui-spiral-rotate var(--chirpui-anim-pace) steps(4) infinite;
 }
 
 @keyframes chirpui-spiral-rotate {
@@ -9181,7 +9201,7 @@ a.chirpui-badge--custom-solid:hover {
     align-items: center;
     justify-content: center;
     opacity: 0;
-    animation: chirpui-ascii-rotate-cycle 0.8s steps(1) infinite;
+    animation: chirpui-ascii-rotate-cycle var(--chirpui-anim-breath) steps(1) infinite;
 }
 
 .chirpui-ascii--rotate .chirpui-ascii__char--1 { animation-delay: 0s; }
@@ -9196,7 +9216,7 @@ a.chirpui-badge--custom-solid:hover {
 
 /* Blink */
 .chirpui-ascii--blink .chirpui-ascii__char {
-    animation: chirpui-ascii-blink 0.8s step-end infinite;
+    animation: chirpui-ascii-blink var(--chirpui-anim-breath) step-end infinite;
 }
 
 @keyframes chirpui-ascii-blink {
@@ -9244,7 +9264,7 @@ a.chirpui-badge--custom-solid:hover {
 
 /* Bounce — translateY */
 .chirpui-ascii--bounce .chirpui-ascii__char {
-    animation: chirpui-ascii-bounce 0.6s ease-in-out infinite;
+    animation: chirpui-ascii-bounce var(--chirpui-anim-pace) ease-in-out infinite;
 }
 
 @keyframes chirpui-ascii-bounce {
@@ -9254,7 +9274,7 @@ a.chirpui-badge--custom-solid:hover {
 
 /* Throb — opacity only, gentle */
 .chirpui-ascii--throb .chirpui-ascii__char {
-    animation: chirpui-ascii-throb 1.5s ease-in-out infinite;
+    animation: chirpui-ascii-throb var(--chirpui-anim-pulse) ease-in-out infinite;
 }
 
 @keyframes chirpui-ascii-throb {
@@ -9275,7 +9295,7 @@ a.chirpui-badge--custom-solid:hover {
 
 /* Glow — text-shadow pulse */
 .chirpui-ascii--glow .chirpui-ascii__char {
-    animation: chirpui-ascii-glow 1.5s ease-in-out infinite;
+    animation: chirpui-ascii-glow var(--chirpui-anim-pulse) ease-in-out infinite;
 }
 
 @keyframes chirpui-ascii-glow {
@@ -9323,7 +9343,7 @@ a.chirpui-badge--custom-solid:hover {
         var(--chirpui-bg-subtle) 75%
     );
     background-size: 200% 100%;
-    animation: chirpui-skeleton-shimmer 1.5s ease-in-out infinite;
+    animation: chirpui-skeleton-shimmer var(--chirpui-anim-pulse) ease-in-out infinite;
     border-radius: var(--chirpui-radius-sm);
 }
 
@@ -9441,7 +9461,7 @@ a.chirpui-badge--custom-solid:hover {
 .chirpui-empty-state__title {
     margin: 0 0 var(--chirpui-spacing-sm) 0;
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-text);
 }
 
@@ -9704,7 +9724,7 @@ a.chirpui-badge--custom-solid:hover {
     justify-content: center;
     gap: 0;
     font-size: var(--chirpui-font-sm);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-text);
 }
 
@@ -9867,7 +9887,7 @@ html {
     background: var(--chirpui-surface);
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: var(--chirpui-z-sticky);
     flex-shrink: 0;
     box-shadow: var(--chirpui-elevation-topbar);
     transition: box-shadow var(--chirpui-transition);
@@ -9891,7 +9911,7 @@ html {
 }
 
 .chirpui-app-shell__brand {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-lg);
     color: var(--chirpui-text);
     text-decoration: none;
@@ -10005,7 +10025,7 @@ html {
     bottom: 0;
     width: 10px;
     cursor: pointer;
-    z-index: 20;
+    z-index: var(--chirpui-z-popover);
     user-select: none;
 }
 
@@ -10154,7 +10174,7 @@ html {
     background: var(--chirpui-accent);
     transform: scaleX(0);
     transform-origin: left;
-    z-index: 10;
+    z-index: var(--chirpui-z-dropdown);
     pointer-events: none;
 }
 
@@ -10179,7 +10199,7 @@ html {
     left: 0;
     right: 0;
     height: 3px;
-    z-index: 9999;
+    z-index: var(--chirpui-z-command-palette);
     pointer-events: none;
     overflow: clip;
 }
@@ -10323,7 +10343,7 @@ body.htmx-request .chirpui-nav-progress::after {
 
 .chirpui-command-palette__group-title {
     font-size: var(--chirpui-font-xs);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--chirpui-text-muted);
@@ -10966,7 +10986,7 @@ body.htmx-request .chirpui-nav-progress::after {
     height: 8px;
     border-radius: 50%;
     background: var(--chirpui-error);
-    animation: chirpui-pulse-ring 1.5s var(--chirpui-ease-decel) infinite;
+    animation: chirpui-pulse-ring var(--chirpui-anim-pulse) var(--chirpui-ease-decel) infinite;
     z-index: 0;
 }
 .chirpui-notification-dot--success .chirpui-notification-dot__dot,
@@ -11021,7 +11041,7 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-number-ticker__value {
     font-variant-numeric: tabular-nums;
     counter-reset: chirpui-num var(--chirpui-num);
-    animation: chirpui-count-up 1.5s var(--chirpui-ease-decel) forwards;
+    animation: chirpui-count-up var(--chirpui-anim-pulse) var(--chirpui-ease-decel) forwards;
 }
 .chirpui-number-ticker__value::after {
     content: counter(chirpui-num);
@@ -11046,7 +11066,7 @@ body.htmx-request .chirpui-nav-progress::after {
     display: flex;
     gap: var(--chirpui-spacing-lg);
     width: max-content;
-    animation: chirpui-marquee 20s linear infinite;
+    animation: chirpui-marquee var(--chirpui-anim-ambient) linear infinite;
 }
 .chirpui-marquee--reverse .chirpui-marquee__track {
     animation-direction: reverse;
@@ -11090,7 +11110,7 @@ body.htmx-request .chirpui-nav-progress::after {
     height: 80px;
     background: linear-gradient(to bottom, var(--chirpui-beam-color), transparent);
     border-radius: 999px;
-    animation: chirpui-meteor 3s linear infinite;
+    animation: chirpui-meteor var(--chirpui-anim-cycle) linear infinite;
     opacity: 0;
 }
 .chirpui-meteor__streak:nth-child(2) { animation-delay: 0.8s; left: 30%; height: 60px; }
@@ -11105,7 +11125,7 @@ body.htmx-request .chirpui-nav-progress::after {
    ========================================================================== */
 
 .chirpui-text-reveal {
-    animation: chirpui-text-reveal 0.8s var(--chirpui-ease-decel) forwards;
+    animation: chirpui-text-reveal var(--chirpui-anim-breath) var(--chirpui-ease-decel) forwards;
     clip-path: inset(0 100% 0 0);
 }
 .chirpui-text-reveal--gradient {
@@ -11150,7 +11170,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-gradient-text--animated {
     background-size: 200% 200%;
-    animation: chirpui-gradient-shift 3s ease infinite;
+    animation: chirpui-gradient-shift var(--chirpui-anim-cycle) ease infinite;
 }
 
 
@@ -11209,7 +11229,7 @@ body.htmx-request .chirpui-nav-progress::after {
     left: 50%;
     translate: -50% -50%;
     background: radial-gradient(circle at 50% 50%, var(--chirpui-glow-color), transparent 50%);
-    animation: chirpui-spotlight-rotate 8s linear infinite;
+    animation: chirpui-spotlight-rotate var(--chirpui-anim-drift) linear infinite;
     pointer-events: none;
     z-index: 0;
     opacity: 0.4;
@@ -11272,7 +11292,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-animated-counter__value {
     font-size: var(--chirpui-prose-2xl);
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
     font-variant-numeric: tabular-nums;
     counter-reset: chirpui-num var(--chirpui-num);
     animation: chirpui-count-up 1.8s var(--chirpui-ease-decel) forwards;
@@ -11743,7 +11763,7 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-glitch {
     position: relative;
     display: inline-block;
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
     color: var(--chirpui-text);
 }
 .chirpui-glitch::before,
@@ -11758,7 +11778,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-glitch::before {
     color: #0ff;
-    animation: chirpui-glitch 3s infinite linear alternate-reverse;
+    animation: chirpui-glitch var(--chirpui-anim-cycle) infinite linear alternate-reverse;
     mix-blend-mode: difference;
 }
 .chirpui-glitch::after {
@@ -11782,7 +11802,7 @@ body.htmx-request .chirpui-nav-progress::after {
 
 .chirpui-neon {
     display: inline-block;
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
     color: var(--chirpui-on-accent);
     text-shadow:
         0 0 4px currentColor,
@@ -11838,7 +11858,7 @@ body.htmx-request .chirpui-nav-progress::after {
     top: 40%;
     left: 50%;
     background: var(--chirpui-aurora-2, color-mix(in srgb, var(--chirpui-accent) 60%, #f0f));
-    animation: chirpui-aurora-drift-2 20s ease-in-out infinite;
+    animation: chirpui-aurora-drift-2 var(--chirpui-anim-ambient) ease-in-out infinite;
 }
 .chirpui-aurora__blob:nth-child(3) {
     top: 60%;
@@ -11874,7 +11894,7 @@ body.htmx-request .chirpui-nav-progress::after {
         rgba(0, 0, 0, 0.03) 2px
     );
     pointer-events: none;
-    z-index: 10;
+    z-index: var(--chirpui-z-dropdown);
 }
 .chirpui-scanline--heavy::after {
     background: repeating-linear-gradient(
@@ -11919,7 +11939,7 @@ body.htmx-request .chirpui-nav-progress::after {
     background-size: 128px 128px;
     opacity: 0.08;
     pointer-events: none;
-    z-index: 10;
+    z-index: var(--chirpui-z-dropdown);
     mix-blend-mode: overlay;
 }
 .chirpui-grain--heavy::after { opacity: 0.18; }
@@ -12375,7 +12395,7 @@ body.htmx-request .chirpui-nav-progress::after {
     height: 10px;
     pointer-events: none;
     z-index: 2;
-    animation: chirpui-sparkle var(--chirpui-sparkle-duration, 1.5s) ease-in-out infinite;
+    animation: chirpui-sparkle var(--chirpui-sparkle-duration, var(--chirpui-anim-pulse)) ease-in-out infinite;
 }
 .chirpui-sparkle__star::before,
 .chirpui-sparkle__star::after {
@@ -12420,7 +12440,7 @@ body.htmx-request .chirpui-nav-progress::after {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 10000;
+    z-index: var(--chirpui-z-celebration);
     overflow: clip;
 }
 .chirpui-confetti__piece {
@@ -12787,7 +12807,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-ascii-border--spin .chirpui-ascii-border__bottom .chirpui-ascii-border__corner:nth-child(1) {
     animation-name: chirpui-ascii-momentum-drift;
-    animation-duration: 8s;
+    animation-duration: var(--chirpui-anim-drift);
 }
 .chirpui-ascii-border--spin .chirpui-ascii-border__bottom .chirpui-ascii-border__corner:nth-child(3) {
     animation-name: chirpui-ascii-momentum;
@@ -12865,7 +12885,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-ascii-divider--spin-drift .chirpui-ascii-divider__glyph {
     display: inline-block;
-    animation: chirpui-ascii-momentum-drift 8s cubic-bezier(0.3, 0, 0.1, 1) infinite;
+    animation: chirpui-ascii-momentum-drift var(--chirpui-anim-drift) cubic-bezier(0.3, 0, 0.1, 1) infinite;
 }
 
 
@@ -13034,7 +13054,7 @@ body.htmx-request .chirpui-nav-progress::after {
 
 /* Box: 4 frames */
 .chirpui-ascii-spinner--box .chirpui-ascii-spinner__char {
-    animation: chirpui-ascii-spinner-4 0.8s steps(1) infinite;
+    animation: chirpui-ascii-spinner-4 var(--chirpui-anim-breath) steps(1) infinite;
 }
 .chirpui-ascii-spinner--box .chirpui-ascii-spinner__char:nth-child(1) { animation-delay: 0s; }
 .chirpui-ascii-spinner--box .chirpui-ascii-spinner__char:nth-child(2) { animation-delay: -0.6s; }
@@ -13043,7 +13063,7 @@ body.htmx-request .chirpui-nav-progress::after {
 
 /* Dots: 8 frames */
 .chirpui-ascii-spinner--dots .chirpui-ascii-spinner__char {
-    animation: chirpui-ascii-spinner-8 0.8s steps(1) infinite;
+    animation: chirpui-ascii-spinner-8 var(--chirpui-anim-breath) steps(1) infinite;
 }
 .chirpui-ascii-spinner--dots .chirpui-ascii-spinner__char:nth-child(1) { animation-delay: 0s; }
 .chirpui-ascii-spinner--dots .chirpui-ascii-spinner__char:nth-child(2) { animation-delay: -0.7s; }
@@ -13056,7 +13076,7 @@ body.htmx-request .chirpui-nav-progress::after {
 
 /* Arrows: 8 frames */
 .chirpui-ascii-spinner--arrows .chirpui-ascii-spinner__char {
-    animation: chirpui-ascii-spinner-8 0.8s steps(1) infinite;
+    animation: chirpui-ascii-spinner-8 var(--chirpui-anim-breath) steps(1) infinite;
 }
 .chirpui-ascii-spinner--arrows .chirpui-ascii-spinner__char:nth-child(1) { animation-delay: 0s; }
 .chirpui-ascii-spinner--arrows .chirpui-ascii-spinner__char:nth-child(2) { animation-delay: -0.7s; }
@@ -13069,7 +13089,7 @@ body.htmx-request .chirpui-nav-progress::after {
 
 /* Blocks: 4 frames */
 .chirpui-ascii-spinner--blocks .chirpui-ascii-spinner__char {
-    animation: chirpui-ascii-spinner-4 0.8s steps(1) infinite;
+    animation: chirpui-ascii-spinner-4 var(--chirpui-anim-breath) steps(1) infinite;
 }
 .chirpui-ascii-spinner--blocks .chirpui-ascii-spinner__char:nth-child(1) { animation-delay: 0s; }
 .chirpui-ascii-spinner--blocks .chirpui-ascii-spinner__char:nth-child(2) { animation-delay: -0.6s; }
@@ -13576,7 +13596,7 @@ body.htmx-request .chirpui-nav-progress::after {
     text-align: center;
     font-family: var(--chirpui-font-mono, ui-monospace, monospace);
     font-size: var(--chirpui-font-xs, 0.65rem);
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--chirpui-text-muted);
@@ -13680,7 +13700,7 @@ body.htmx-request .chirpui-nav-progress::after {
     animation: chirpui-indicator-blink 2s ease-in-out infinite;
 }
 .chirpui-ascii-indicator--blink-fast .chirpui-ascii-indicator__light {
-    animation: chirpui-indicator-blink-fast 0.6s ease-in-out infinite;
+    animation: chirpui-indicator-blink-fast var(--chirpui-anim-pace) ease-in-out infinite;
 }
 
 /* Row layout */
@@ -13781,7 +13801,7 @@ body.htmx-request .chirpui-nav-progress::after {
     border-color: var(--chirpui-accent);
     color: var(--chirpui-surface);
     box-shadow: 0 0 6px var(--chirpui-accent);
-    animation: chirpui-tile-glow 3s ease-in-out infinite;
+    animation: chirpui-tile-glow var(--chirpui-anim-cycle) ease-in-out infinite;
 }
 
 /* Color variants — change the "lit" color */
@@ -13903,7 +13923,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-ascii-knob__position:has(.chirpui-ascii-knob__input:checked) .chirpui-ascii-knob__tick {
     opacity: 1;
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
 }
 
 /* Hover */
@@ -14068,7 +14088,7 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-vu__cell--peak {
     color: var(--chirpui-error);
     text-shadow: 0 0 6px currentColor;
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
 }
 
 .chirpui-ascii-vu__readout {
@@ -14079,7 +14099,7 @@ body.htmx-request .chirpui-nav-progress::after {
 
 /* Animate variant */
 .chirpui-ascii-vu--animate .chirpui-ascii-vu__cell--filled {
-    animation: chirpui-vu-bounce 1.5s ease-in-out infinite;
+    animation: chirpui-vu-bounce var(--chirpui-anim-pulse) ease-in-out infinite;
 }
 .chirpui-ascii-vu--animate .chirpui-ascii-vu__cell--filled:nth-child(odd) {
     animation-delay: 0.1s;
@@ -14152,7 +14172,7 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-7seg__digit {
     font-family: var(--chirpui-font-mono, ui-monospace, monospace);
     font-size: 1.6rem;
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
     line-height: 1;
     letter-spacing: 0.08em;
     padding: 0 0.06em;
@@ -14402,7 +14422,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-ascii-stepper__step--active .chirpui-ascii-stepper__label {
     color: var(--chirpui-text);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 
 /* Pending step — stays muted (default) */
@@ -14450,7 +14470,7 @@ body.htmx-request .chirpui-nav-progress::after {
     border: 1px solid var(--chirpui-border);
     border-radius: 2px;
     font-size: 0.95rem;
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
     letter-spacing: 0;
     color: var(--chirpui-text);
     position: relative;
@@ -14472,7 +14492,7 @@ body.htmx-request .chirpui-nav-progress::after {
 
 /* Flip animation */
 .chirpui-split-flap--animate .chirpui-split-flap__char {
-    animation: chirpui-split-flap-flip 0.4s ease-out both;
+    animation: chirpui-split-flap-flip var(--chirpui-anim-quick) ease-out both;
 }
 
 /* Amber variant — classic departure board */
@@ -14618,7 +14638,7 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-ticker__text {
     display: inline-block;
     white-space: nowrap;
-    animation: chirpui-ticker-scroll 20s linear infinite;
+    animation: chirpui-ticker-scroll var(--chirpui-anim-ambient) linear infinite;
     color: var(--chirpui-text);
 }
 
@@ -14765,7 +14785,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 .chirpui-ascii-table__th {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-text);
 }
 
@@ -15000,7 +15020,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-ascii-tab--active {
     color: var(--chirpui-text);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     border-bottom: 2px solid currentColor;
 }
 .chirpui-ascii-tab__bracket {
@@ -15031,7 +15051,7 @@ body.htmx-request .chirpui-nav-progress::after {
     border-bottom: 1px solid var(--chirpui-border, currentColor);
 }
 .chirpui-ascii-modal__title {
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 .chirpui-ascii-modal__close {
     background: none;
@@ -15071,7 +15091,7 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-site-header--sticky {
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: var(--chirpui-z-sticky);
 }
 .chirpui-site-header--sticky ~ * :where([id]) {
     scroll-margin-top: calc(var(--chirpui-site-header-height, 3.5rem) + var(--chirpui-spacing-sm));
@@ -15143,7 +15163,7 @@ body.htmx-request .chirpui-nav-progress::after {
     gap: var(--chirpui-spacing-xs);
     text-decoration: none;
     color: var(--chirpui-text);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-lg);
     flex-shrink: 0;
 }
@@ -15189,7 +15209,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-site-nav__link--active {
     color: var(--chirpui-text);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 .chirpui-site-nav__link--external::after {
     content: "↗";
@@ -15270,7 +15290,7 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-site-footer__column {}
 .chirpui-site-footer__column-title {
     font-size: var(--chirpui-font-xs);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--chirpui-text);
@@ -15435,14 +15455,14 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-feature-section__eyebrow {
     font-size: var(--chirpui-font-xs);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--chirpui-accent);
 }
 .chirpui-feature-section__title {
     font-size: var(--chirpui-prose-2xl, 1.5rem);
-    font-weight: 700;
+    font-weight: var(--chirpui-ui-font-weight-bold);
     line-height: 1.2;
     color: var(--chirpui-text);
 }
@@ -15504,14 +15524,14 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-surface__eyebrow {
     font-size: var(--chirpui-font-xs);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--chirpui-accent);
 }
 .chirpui-surface__title {
     font-size: var(--chirpui-font-lg);
-    font-weight: 600;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-text);
 }
 .chirpui-surface__lede {
