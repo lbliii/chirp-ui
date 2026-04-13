@@ -90,9 +90,13 @@ def register_colors(mapping: Mapping[str, str]) -> None:
     base = _named_color_map()
     for k, v in mapping.items():
         if not isinstance(k, str):
-            raise TypeError(f"chirp-ui: register_colors key must be str, got {type(k).__name__}: {k!r}")
+            raise TypeError(
+                f"chirp-ui: register_colors key must be str, got {type(k).__name__}: {k!r}"
+            )
         if not isinstance(v, str):
-            raise TypeError(f"chirp-ui: register_colors value must be str, got {type(v).__name__}: {v!r}")
+            raise TypeError(
+                f"chirp-ui: register_colors value must be str, got {type(v).__name__}: {v!r}"
+            )
         key = k.strip()
         val = v.strip()
         if val and sanitize_color(val) is None:
