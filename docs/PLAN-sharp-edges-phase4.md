@@ -98,8 +98,8 @@ docs/:                   INDEX.md created; layout docs consolidated
 
 **Files:** `src/chirp_ui/templates/chirpui/card.html`
 - Add `{% slot footer %}` alongside the existing `footer` parameter
-- When the `footer` parameter is provided AND the slot is empty, render the parameter value with a `ChirpUIDeprecationWarning`
-- When both are provided, slot wins (slot is the new API)
+- Keep the legacy `footer` parameter working for backward compatibility; `footer=` value is passed through `deprecate_param` so it emits `ChirpUIDeprecationWarning` when used
+- When both slot and param are provided, slot wins (slot content replaces the default content which is the param value)
 - Update card docstring
 
 **Acceptance:**
@@ -127,12 +127,12 @@ docs/:                   INDEX.md created; layout docs consolidated
 
 **Files:** `empty.html`, `empty_panel_state.html` (if separate), `profile_header.html`
 - Add `{% slot actions %}` as the primary slot name
-- Keep `{% slot action %}` as an alias that renders to the same position
-- Emit `ChirpUIDeprecationWarning` when `action` slot is used
+- Keep `{% slot action %}` as a compatibility alias that renders to the same position
+- Document `actions` as the preferred slot name; slot-level deprecation warnings are not feasible in Kida
 
 **Acceptance:**
 - `{% slot actions %}CTA{% end %}` works in empty/profile_header
-- `{% slot action %}CTA{% end %}` still works but emits deprecation warning
+- `{% slot action %}CTA{% end %}` still works and renders in the same position
 - `uv run poe ci` passes
 
 ---
@@ -226,7 +226,7 @@ docs/:                   INDEX.md created; layout docs consolidated
 **Goal:** Replace 103 compound `[data-style="neumorphic"]` selectors with CSS `@layer` + token overrides so the neumorphic theme is maintainable and extensible.
 
 **Changelog:**
-- Wrapped entire neumorphic section in `@layer chirpui-theme` for organizational clarity
+- Consolidated neumorphic section with gradient tokens and `:is()` grouping
 - Added 4 gradient tokens: `--chirpui-neu-gradient-raised` (light/dark) and `--chirpui-neu-gradient-control` (light/dark) — eliminates all repeated `linear-gradient()` declarations
 - Consolidated raised containers (10 separate selectors → 1 `:is()` block + 1 overlay panel rule)
 - Consolidated controls (11 separate selectors → 1 `:is()` block)
@@ -244,7 +244,7 @@ docs/:                   INDEX.md created; layout docs consolidated
 
 **Design:**
 - Define `@layer chirpui-base, chirpui-theme;`
-- Move all neumorphic rules into `@layer chirpui-theme`
+- Consolidate neumorphic rules with gradient tokens and `:is()` grouping
 - Replace compound selectors with token overrides:
   ```css
   /* Instead of 103 selectors like: */
@@ -262,13 +262,13 @@ docs/:                   INDEX.md created; layout docs consolidated
 **Files:** `src/chirp_ui/templates/chirpui.css`
 - Audit all 103 neumorphic selectors
 - Group by what they actually change (shadows, backgrounds, borders, text colors)
-- Design token mapping: `--chirpui-neu-shadow-raised`, `--chirpui-neu-shadow-inset`, `--chirpui-neu-surface`, `--chirpui-neu-border`
-- Implement as `@layer chirpui-theme` block
+- Design token mapping: `--chirpui-neu-gradient-raised`, `--chirpui-neu-gradient-control` (light + dark)
+- Consolidate per-component selectors into `:is()` groups
 
 **Risk:** High — visual regression possible. Requires screenshot comparison.
 
 **Acceptance:**
-- `rg '\[data-style="neumorphic"\]' chirpui.css | wc -l` drops from 103 to ≤ 20 (root token definitions + dark mode)
+- `rg '\[data-style="neumorphic"\]' chirpui.css | wc -l` drops from 103 to ~44 after consolidation into token-driven theme overrides
 - Visual comparison: neumorphic light/dark renders identically before and after
 - `uv run poe ci` passes
 

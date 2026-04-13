@@ -135,7 +135,7 @@ Three audit phases (sprints 0–13) have systematically fixed the most common de
 | `actions` vs `header_actions` vs `action` (singular) | Standardized: `actions` canonical, `header_actions` for alert, aliases kept | 14 |
 | `attrs=""` raw string bypasses escaping in 20 templates | `attrs_unsafe=` added; old `attrs=` emits `ChirpUIDeprecationWarning` | 15 |
 | `hx={}` dict undocumented in macro docstrings | Added examples to all `hx=none` macros; `docs/HTMX-PATTERNS.md` created | 16 |
-| 102 compound `[data-style="neumorphic"]` selectors | `@layer chirpui-theme` + gradient tokens + `:is()` consolidation → 44 selectors | 17 |
+| 102 compound `[data-style="neumorphic"]` selectors | Gradient tokens + `:is()` consolidation → 44 selectors | 17 |
 | ~38% of test assertions are class-only string checks | `assert_element` helper + 29 structural tests for top-20 components | 18 |
 | 42 docs files with no navigation index | `docs/INDEX.md` created; layout docs consolidated into `docs/LAYOUT.md` | 19 |
 
@@ -167,7 +167,7 @@ Individual `hx_*` kwargs still work and override keys from the `hx` dict. `build
 - **Singular `action` slot** — `empty()`, `empty_panel_state()`, `hero()`, `profile_header()` now accept `actions` (plural) as the canonical name; `action` kept as backward-compat alias. See Sprint 14.
 - **`card(footer="string")`** — `footer` is now a named slot like `modal`/`dropdown`/`panel`; string parameter still works as fallback. See Sprint 14.
 - **`hx={}` docstring promotion** — `hx={}` dict pattern is now documented in all macro docstrings (`btn`, `icon_btn`, `form`). See Sprint 16 and `docs/HTMX-PATTERNS.md`.
-- **Neumorphic CSS refactor** — 102 compound selectors consolidated to 44 via `@layer chirpui-theme`, gradient tokens, and `:is()`. See Sprint 17.
+- **Neumorphic CSS refactor** — 102 compound selectors consolidated to 44 via gradient tokens and `:is()`. See Sprint 17.
 
 ## Adding a component
 

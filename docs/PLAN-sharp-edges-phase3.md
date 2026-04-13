@@ -332,7 +332,7 @@ Add a comment block near each `consume()` call documenting what is consumed and 
 - **Sharp Edges Phase 1–2** — prerequisite, complete. Phase 3 addresses the structural/behavioral layer that Phase 1–2's warning/normalization/token work couldn't fix.
 - **PLAN-behavior-layer-hardening** — may overlap on Alpine.js; check for conflicts before Sprint 12.
 - **PLAN-test-coverage-hardening** — Sprint 10 filter changes need new tests; coordinate.
-- **[PLAN-sharp-edges-phase4](PLAN-sharp-edges-phase4.md)** (Draft) — next phase. API consistency & developer ergonomics: slot naming, attrs safety rename, hx={} promotion, neumorphic CSS refactor, test structural assertions, docs index.
+- **[PLAN-sharp-edges-phase4](PLAN-sharp-edges-phase4.md)** (Complete) — next phase. API consistency & developer ergonomics: slot naming, attrs safety rename, hx={} promotion, neumorphic CSS refactor, test structural assertions, docs index.
 
 ---
 

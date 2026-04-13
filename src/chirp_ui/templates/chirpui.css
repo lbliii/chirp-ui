@@ -7183,8 +7183,6 @@ button.chirpui-pagination__link {
     --chirpui-neu-surface: var(--chirpui-surface);
 }
 
-@layer chirpui-theme {
-
 /* --- Neumorphic tokens (light) --- */
 [data-style="neumorphic"] {
     --chirpui-neu-surface: color-mix(in srgb, var(--chirpui-bg-subtle) 88%, var(--chirpui-surface));
@@ -7603,7 +7601,7 @@ button.chirpui-pagination__link {
     }
 }
 
-} /* end @layer chirpui-theme */
+/* end neumorphic theme */
 
 /* ==========================================================================
    Form Fields

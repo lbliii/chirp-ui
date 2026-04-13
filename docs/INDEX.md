@@ -43,7 +43,7 @@ Navigation guide for all chirp-ui documentation.
 
 - [PLAN-sharp-edges.md](PLAN-sharp-edges.md) — Sharp edges phases 1-2 (complete)
 - [PLAN-sharp-edges-phase3.md](PLAN-sharp-edges-phase3.md) — Sharp edges phase 3 (complete)
-- [PLAN-sharp-edges-phase4.md](PLAN-sharp-edges-phase4.md) — Sharp edges phase 4: API consistency (in progress)
+- [PLAN-sharp-edges-phase4.md](PLAN-sharp-edges-phase4.md) — Sharp edges phase 4: API consistency (complete)
 - [PLAN-behavior-layer-hardening.md](PLAN-behavior-layer-hardening.md) — Alpine/JS behavior layer audit
 - [PLAN-chirpui-alpine-migration.md](PLAN-chirpui-alpine-migration.md) — Alpine.js migration plan
 - [PLAN-alpine-focus-plugin.md](PLAN-alpine-focus-plugin.md) — Alpine Focus plugin adoption

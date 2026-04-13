@@ -32,6 +32,7 @@
 
 {% def card(title=none, subtitle=none, footer=none, collapsible=false, open=false, variant="", icon=none, border_variant="", header_variant="", cls="", hoverable=false, attrs="", attrs_unsafe="", attrs_map=none) %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
+{% set _footer_text = footer | deprecate_param("footer", "{% slot footer %}...{% end %}") %}
 {# @provides _card_variant — consumed by: alert, badge, divider, settings_row #}
 {% provide _card_variant = variant %}
 {% let _card_mods = (["collapsible"] if collapsible else []) + (["gradient-border"] if border_variant == "gradient" else []) + (["gradient-header"] if header_variant == "gradient" else []) + (["hoverable"] if hoverable else []) %}
@@ -54,7 +55,7 @@
         <div class="chirpui-card__body-actions">{% slot body_actions %}</div>
     </div>
     {#- footer= string param is deprecated; use {% slot footer %} instead -#}
-    <div class="chirpui-card__footer-wrap">{% slot footer %}{{ footer or "" }}</div>
+    <div class="chirpui-card__footer-wrap">{% slot footer %}{{ _footer_text or "" }}</div>
 </details>
 {% else %}
 <article class="{{ _card_class }}"{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}>
@@ -74,7 +75,7 @@
         <div class="chirpui-card__body-actions">{% slot body_actions %}</div>
     </div>
     {#- footer= string param is deprecated; use {% slot footer %} instead -#}
-    <div class="chirpui-card__footer-wrap">{% slot footer %}{{ footer or "" }}</div>
+    <div class="chirpui-card__footer-wrap">{% slot footer %}{{ _footer_text or "" }}</div>
 </article>
 {% end %}
 {% end %}
