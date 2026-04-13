@@ -1941,3 +1941,1654 @@ CSS-only extensions to existing `surface` and `frame` components for dashboard-s
 | `chirpui-surface__body` | Body text region |
 
 Use with `grid(preset="bento-211")` or custom CSS grid layouts. Pair `surface--bento` tiles inside a `frame--bento` for consistent dashboard aesthetics.
+
+---
+
+## When to Use: Decision Trees
+
+### Overlays: modal vs tray vs drawer vs popover vs tooltip
+
+1. **Does the user need to confirm or input data?**
+   - Yes → Is it blocking (must respond before continuing)?
+     - Yes → **`modal`** — centered dialog, focus-trapped, backdrop
+     - No → **`tray`** — slide-out panel, page stays interactive
+   - No → continue
+2. **Is it persistent navigation or a tool panel?**
+   - Yes → **`drawer`** — side panel with header/close, typically right-aligned
+3. **Is it contextual info triggered by hover/focus on a specific element?**
+   - Short text (1–2 lines) → **`tooltip`** — pure CSS, no interactivity inside
+   - Rich content or interactive → **`popover`** — Alpine-powered, click to toggle
+4. **Is it an overlay for media or preview?**
+   - Yes → **`overlay`** — dark/gradient backdrop for fullscreen media
+
+### Cards: card vs resource\_card vs config\_card vs metric\_card vs glow\_card
+
+1. **Is it a CRUD resource with badges, subtitle, and list context?**
+   - Yes → **`resource_card`** — has `badges`, `subtitle`, `footer` slots; use inside `resource_index`
+2. **Is it a settings/config entry point?**
+   - Yes → **`config_card`** — title + icon, links to config dashboard
+3. **Is it a numeric KPI or metric?**
+   - Yes → **`stat`** or **`animated_stat_card`** — value + label + optional trend
+4. **Is it a marketing/hero decorative card?**
+   - Yes → **`glow_card`** / **`spotlight_card`** — mouse-tracking effects, use inside hero sections
+5. **General content container?**
+   - Yes → **`card`** — flexible container with `header_actions`, `media`, `body_actions` slots
+
+### Filters: filter\_bar vs filter\_chips vs filter\_row
+
+1. **Is it a full toolbar with search + actions for a list/table?**
+   - Yes → **`filter_bar`** — wraps `action_strip`, includes form structure
+2. **Is it a set of togglable facet pills (e.g., status: active/inactive)?**
+   - Yes → **`filter_chips`** — `filter_group` + `filter_chip`, HTMX-powered, supports `register_colors`
+3. **Is it 2–3 inline controls inside a compact row?**
+   - Yes → **`filter_row`** (from `filter_bar.html`) — lightweight cluster form with HTMX
+
+### Layout: frame vs grid vs stack vs cluster vs block vs layer
+
+1. **Do you need named column regions (hero + sidebar, content + aside)?**
+   - Yes → **`frame`** — CSS grid with named areas, `preset=` for common ratios
+2. **Do you need a repeating auto-fit grid of equal items?**
+   - Yes → **`grid`** — CSS grid with `min=` column width, `preset=` for bento layouts
+3. **Do you need vertical stacking with consistent gaps?**
+   - Yes → **`stack`** — flexbox column, `gap=` for spacing
+4. **Do you need horizontal wrapping items (tags, buttons, breadcrumbs)?**
+   - Yes → **`cluster`** — flexbox row with wrap, `gap=` and `justify=`
+5. **Do you need a single cell inside a grid that spans columns/rows?**
+   - Yes → **`block`** — grid child with `span=` for bento cells
+6. **Do you need overlapping layers (background + content + overlay)?**
+   - Yes → **`layer`** — CSS grid stacking with `z-index` control
+
+---
+
+## Context Propagation Reference
+
+Components use `{% provide %}` / `consume()` to pass state through slot boundaries without explicit props.
+
+| Provider | Key | Consumers | Effect |
+|----------|-----|-----------|--------|
+| `surface` | `_surface_variant` | `badge`, `callout`, `divider`, `settings_row`, `status`, `timeline` | Child inherits surface variant for color-matching |
+| `card` | `_card_variant` | `alert`, `badge`, `divider`, `settings_row` | Child inherits card variant |
+| `hero_effects` | `_hero_variant` | `constellation`, `holy_light`, `meteor`, `particle_bg`, `rune_field`, `spotlight_card`, `symbol_rain` | Effect children match hero color scheme |
+| `command_bar`, `filter_bar` | `_bar_density` | `button`, `icon_btn` | Buttons shrink to bar density |
+| `command_bar`, `filter_bar` | `_bar_surface` | *(reserved)* | Surface variant for bar children |
+| `suspense` | `_suspense_busy` | `button`, `icon_btn` | Buttons disable while slot is loading |
+| `streaming` | `_streaming_role` | `copy_button` | Copy button adapts to streaming context |
+| `forms` | `_form_density` | `forms` (field wrappers) | Fields inherit form density |
+| `table` | `_table_align` | `table` (rows) | Row cells inherit column alignment |
+| `accordion` | `_accordion_name` | `accordion` (items) | Items share radio-group name |
+| `navbar` | `_nav_current_path` | `navbar` (links) | Links highlight when matching current path |
+| `sidebar` | `_nav_current_path` | `sidebar` (links) | Same as navbar |
+| `site_header` | `_site_nav_current_path` | `site_header` (links) | Marketing nav active state |
+
+**Rule:** Explicit params always win over consumed values. Consuming a key that was never provided returns the default (usually `""`).
+
+---
+
+## All Components (A–Z)
+
+Auto-generated reference for every chirp-ui template. See topic sections above for in-depth usage.
+
+### accordion
+
+**File:** `chirpui/accordion.html`
+
+chirp-ui: Accordion component
+
+**Macros:**
+  - `accordion(name="accordion", cls="")`
+  - `accordion_item(title, open=false, name="", cls="")`
+
+**Context:** Provides: `_accordion_name`. Consumes: `_accordion_name`.
+
+
+### action_bar
+
+**File:** `chirpui/action_bar.html`
+
+chirp-ui: Action Bar component
+
+**Macros:**
+  - `action_bar(cls="")`
+  - `action_bar_item(icon, label, count=none, href=none, active=false, cls="")`
+
+
+### animated_counter
+
+**File:** `chirpui/animated_counter.html`
+
+chirp-ui: Animated Counter
+
+**Macros:**
+  - `animated_counter(value, label="", prefix="", suffix="", variant="", cls="")`
+
+
+### animated_stat_card
+
+**File:** `chirpui/animated_stat_card.html`
+
+chirp-ui: Animated Stat Card
+
+**Macros:**
+  - `animated_stat_card(value, label="", prefix="", suffix="", trend="", trend_direction="", effect="...)`
+
+
+### app_layout
+
+**File:** `chirpui/app_layout.html`
+
+chirp-ui: App layout — extends chirp boost with CSS and toast.
+
+
+### app_shell
+
+**File:** `chirpui/app_shell.html`
+
+chirp-ui: App Shell component
+
+**Macros:**
+  - `app_shell(brand="", brand_url="/", brand_slot=false, brand_boost=true, sidebar_collapsi...)`
+
+
+### app_shell_layout
+
+**File:** `chirpui/app_shell_layout.html`
+
+chirp-ui: App shell layout — extends chirp shell with ChirpUI structure
+
+
+### ascii_7seg
+
+**File:** `chirpui/ascii_7seg.html`
+
+chirp-ui: ASCII 7-Segment Display
+
+**Macros:**
+  - `ascii_7seg(text, label=none, variant="", cls="")`
+
+
+### ascii_badge
+
+**File:** `chirpui/ascii_badge.html`
+
+chirp-ui: ASCII Badge
+
+**Macros:**
+  - `ascii_badge(text="", glyph="", variant="", frame="", cls="")`
+
+
+### ascii_border
+
+**File:** `chirpui/ascii_border.html`
+
+chirp-ui: ASCII Border
+
+**Macros:**
+  - `ascii_border(variant="", glyph="", cls="")`
+
+
+### ascii_breaker_panel
+
+**File:** `chirpui/ascii_breaker_panel.html`
+
+chirp-ui: ASCII Breaker Panel
+
+**Macros:**
+  - `breaker_panel(title=none, variant="double", size="", master=none, cls="")`
+  - `breaker(name, label=none, checked=false, variant="", disabled=false)`
+
+
+### ascii_card
+
+**File:** `chirpui/ascii_card.html`
+
+chirp-ui: ASCII Card
+
+**Macros:**
+  - `ascii_card(title=none, variant="", glyph="", cls="")`
+
+
+### ascii_checkbox
+
+**File:** `chirpui/ascii_checkbox.html`
+
+chirp-ui: ASCII Checkbox
+
+**Macros:**
+  - `ascii_checkbox(name, label=none, checked=false, variant="", disabled=false, cls="")`
+  - `ascii_checkbox_group(legend=none, cls="")`
+
+
+### ascii_divider
+
+**File:** `chirpui/ascii_divider.html`
+
+chirp-ui: ASCII Divider
+
+**Macros:**
+  - `ascii_divider(glyph="", variant="", cls="")`
+
+
+### ascii_empty
+
+**File:** `chirpui/ascii_empty.html`
+
+chirp-ui: ASCII Empty State component
+
+**Macros:**
+  - `ascii_empty(glyph="◇", heading="Nothing here", description="", variant="", cls="")`
+
+
+### ascii_error
+
+**File:** `chirpui/ascii_error.html`
+
+chirp-ui: ASCII Error Page
+
+**Macros:**
+  - `ascii_error(code="404", heading="", description="", cls="")`
+
+
+### ascii_fader
+
+**File:** `chirpui/ascii_fader.html`
+
+chirp-ui: ASCII Fader / Slider
+
+**Macros:**
+  - `ascii_fader(name, value=0, label=none, variant="", cls="")`
+  - `fader_bank(title=none, cls="")`
+
+
+### ascii_icon
+
+**File:** `chirpui/ascii_icon.html`
+
+chirp-ui: ASCII Icon component
+
+**Macros:**
+  - `ascii_icon(char, animation="none", size="md", cls="")`
+
+
+### ascii_indicator
+
+**File:** `chirpui/ascii_indicator.html`
+
+chirp-ui: ASCII Indicator Light
+
+**Macros:**
+  - `indicator(label=none, variant="success", blink=false, glyph="square", cls="")`
+  - `indicator_row(cls="", nowrap=false)`
+
+
+### ascii_knob
+
+**File:** `chirpui/ascii_knob.html`
+
+chirp-ui: ASCII Knob / Rotary Selector
+
+**Macros:**
+  - `ascii_knob(name, options, selected=none, label=none, variant="", cls="")`
+
+
+### ascii_modal
+
+**File:** `chirpui/ascii_modal.html`
+
+chirp-ui: ASCII Modal
+
+**Macros:**
+  - `ascii_modal(id, title=none, variant="", cls="")`
+  - `ascii_modal_trigger(target, label="Open", cls="")`
+
+
+### ascii_progress
+
+**File:** `chirpui/ascii_progress.html`
+
+chirp-ui: ASCII Progress
+
+**Macros:**
+  - `ascii_progress(value=0, label="", variant="", width=20, cls="")`
+
+
+### ascii_radio
+
+**File:** `chirpui/ascii_radio.html`
+
+chirp-ui: ASCII Radio
+
+**Macros:**
+  - `ascii_radio(name, value, label=none, checked=false, disabled=false, cls="")`
+  - `ascii_radio_group(name=none, legend=none, layout="vertical", variant="", cls="")`
+
+
+### ascii_skeleton
+
+**File:** `chirpui/ascii_skeleton.html`
+
+chirp-ui: ASCII Skeleton
+
+**Macros:**
+  - `ascii_skeleton(variant="", lines=1, width="", cls="")`
+
+
+### ascii_sparkline
+
+**File:** `chirpui/ascii_sparkline.html`
+
+chirp-ui: ASCII Sparkline
+
+**Macros:**
+  - `ascii_sparkline(values=[], variant="", cls="")`
+
+
+### ascii_spinner
+
+**File:** `chirpui/ascii_spinner.html`
+
+chirp-ui: ASCII Spinner component
+
+**Macros:**
+  - `ascii_spinner(charset="braille", size="md", label="", cls="")`
+
+
+### ascii_split_flap
+
+**File:** `chirpui/ascii_split_flap.html`
+
+chirp-ui: ASCII Split-Flap Display
+
+**Macros:**
+  - `split_flap(text, variant="", animate=true, cls="")`
+  - `split_flap_row(cells, cls="")`
+  - `split_flap_board(title=none, variant="", cls="")`
+
+
+### ascii_stepper
+
+**File:** `chirpui/ascii_stepper.html`
+
+chirp-ui: ASCII Stepper
+
+**Macros:**
+  - `ascii_stepper(steps, current=0, variant="", cls="")`
+
+
+### ascii_table
+
+**File:** `chirpui/ascii_table.html`
+
+chirp-ui: ASCII Table
+
+**Macros:**
+  - `ascii_table(headers=none, variant="single", align=none, compact=false, striped=false, sti...)`
+  - `ascii_row(*cells, align=none)`
+
+
+### ascii_tabs
+
+**File:** `chirpui/ascii_tabs.html`
+
+chirp-ui: ASCII Tabs
+
+**Macros:**
+  - `ascii_tabs(variant="", cls="")`
+  - `ascii_tab(id, label, url=none, hx_target=none, hx_swap="innerHTML", active=false, cls="")`
+
+
+### ascii_ticker
+
+**File:** `chirpui/ascii_ticker.html`
+
+chirp-ui: ASCII Ticker
+
+**Macros:**
+  - `ascii_ticker(text, variant="", speed="", cls="")`
+
+
+### ascii_tile_btn
+
+**File:** `chirpui/ascii_tile_btn.html`
+
+chirp-ui: ASCII Tile Button
+
+**Macros:**
+  - `tile_btn(glyph="■", label=none, variant="", lit=false, toggle=false, name=none, disabl...)`
+  - `tile_grid(cols=4, cls="")`
+
+
+### ascii_toggle
+
+**File:** `chirpui/ascii_toggle.html`
+
+chirp-ui: ASCII Toggle
+
+**Macros:**
+  - `ascii_toggle(name, checked=false, label=none, variant="", size="", disabled=false, cls="")`
+  - `ascii_switch(name, checked=false, label=none, variant="", size="", disabled=false, cls="")`
+
+
+### ascii_vu_meter
+
+**File:** `chirpui/ascii_vu_meter.html`
+
+chirp-ui: ASCII VU Meter
+
+**Macros:**
+  - `ascii_vu_meter(name=none, value=0, label=none, variant="", width=20, peak=false, animate=fal...)`
+  - `vu_meter_stack(title=none, cls="")`
+
+
+### aurora
+
+**File:** `chirpui/aurora.html`
+
+chirp-ui: Aurora Background
+
+**Macros:**
+  - `aurora(variant="", cls="")`
+
+
+### auth
+
+**File:** `chirpui/auth.html`
+
+chirp-ui: Auth form compositions
+
+**Macros:**
+  - `login_form(action="/login", username_name="username", password_name="password", csrf=non...)`
+  - `signup_form(action="/signup", username_name="username", email_name="email", password_name...)`
+
+
+### avatar
+
+**File:** `chirpui/avatar.html`
+
+chirp-ui: Avatar component
+
+**Macros:**
+  - `avatar(src=none, initials=none, alt="", size="md", status=none, cls="")`
+
+
+### avatar_stack
+
+**File:** `chirpui/avatar_stack.html`
+
+chirp-ui: Avatar Stack component
+
+**Macros:**
+  - `avatar_stack(max_visible=4, total=none, cls="")`
+
+
+### badge
+
+**File:** `chirpui/badge.html`
+
+chirp-ui: Badge component
+
+**Macros:**
+  - `badge(text, variant="primary", icon=none, cls="", color=none, fill="subtle", href=none)`
+
+**Context:** Consumes: `_card_variant`, `_surface_variant`.
+
+
+### bento_grid
+
+**File:** `chirpui/bento_grid.html`
+
+chirp-ui: Bento Grid
+
+**Macros:**
+  - `bento_grid(cols=3, cls="")`
+  - `bento_item(span=none, span_row=false, cls="")`
+
+
+### border_beam
+
+**File:** `chirpui/border_beam.html`
+
+chirp-ui: Border Beam
+
+**Macros:**
+  - `border_beam(variant="", cls="", attrs="", attrs_map=none)`
+
+
+### breadcrumbs
+
+**File:** `chirpui/breadcrumbs.html`
+
+chirp-ui: Breadcrumbs component
+
+**Macros:**
+  - `breadcrumbs(items, cls="")`
+
+
+### calendar
+
+**File:** `chirpui/calendar.html`
+
+chirp-ui: Calendar component
+
+**Macros:**
+  - `calendar(weeks, month_label, prev_url=none, next_url=none, cls="")`
+
+
+### callout
+
+**File:** `chirpui/callout.html`
+
+chirp-ui: Callout component
+
+**Macros:**
+  - `callout(variant="info", title=none, icon=none, cls="")`
+
+**Context:** Consumes: `_surface_variant`.
+
+
+### carousel
+
+**File:** `chirpui/carousel.html`
+
+chirp-ui: Carousel component
+
+**Macros:**
+  - `carousel(variant="compact", slide_count=0, show_dots=false, cls="")`
+  - `carousel_slide(id, cls="")`
+
+
+### channel_card
+
+**File:** `chirpui/channel_card.html`
+
+chirp-ui: Channel Card component
+
+**Macros:**
+  - `channel_card(href, name, avatar_src=none, avatar_initials=none, subscribers=none, cls="", ...)`
+
+
+### chapter_list
+
+**File:** `chirpui/chapter_list.html`
+
+chirp-ui: Chapter List component
+
+**Macros:**
+  - `chapter_list(summary="Chapters", open=false, cls="")`
+  - `chapter_item(title, timestamp, href=none, cls="")`
+
+
+### chat_input
+
+**File:** `chirpui/chat_input.html`
+
+chirp-ui: Chat Input component
+
+**Macros:**
+  - `chat_input(action="", name="message", placeholder="Type a message...", rows=2, maxlength...)`
+
+
+### chat_layout
+
+**File:** `chirpui/chat_layout.html`
+
+chirp-ui: Chat Layout component
+
+**Macros:**
+  - `chat_layout(show_activity=false, cls="", fill=false)`
+
+
+### collapse
+
+**File:** `chirpui/collapse.html`
+
+chirp-ui: Collapse component
+
+**Macros:**
+  - `collapse(trigger, open=false, cls="")`
+
+
+### command_palette
+
+**File:** `chirpui/command_palette.html`
+
+chirp-ui: Command Palette component
+
+**Macros:**
+  - `command_palette(id="command-palette", search_url="/search", placeholder="Search...")`
+  - `command_palette_trigger(target="command-palette", label="Search", cls="")`
+
+
+### comment
+
+**File:** `chirpui/comment.html`
+
+chirp-ui: Comment component
+
+**Macros:**
+  - `comment(author, time=none, href=none, avatar_src=none, avatar_initials=none, replies_...)`
+  - `comment_thread(cls="")`
+
+
+### confetti
+
+**File:** `chirpui/confetti.html`
+
+chirp-ui: Confetti
+
+**Macros:**
+  - `confetti(count=40, event="confetti", cls="")`
+  - `confetti_trigger(label, event="confetti", tag="button", cls="")`
+
+
+### config_dashboard
+
+**File:** `chirpui/config_dashboard.html`
+
+chirp-ui: Config Dashboard composite
+
+**Macros:**
+  - `config_dashboard(title, subtitle=none, meta=none, breadcrumb_items=none, form_action=none, for...)`
+
+
+### constellation
+
+**File:** `chirpui/constellation.html`
+
+chirp-ui: Constellation
+
+**Macros:**
+  - `constellation(density="", variant="", cls="")`
+
+**Context:** Consumes: `_hero_variant`.
+
+
+### conversation_item
+
+**File:** `chirpui/conversation_item.html`
+
+chirp-ui: Conversation Item component
+
+**Macros:**
+  - `conversation_item(href, name, preview, time=none, unread=none, muted=false, cls="")`
+
+
+### conversation_list
+
+**File:** `chirpui/conversation_list.html`
+
+chirp-ui: Conversation List component
+
+**Macros:**
+  - `conversation_list(cls="")`
+
+
+### copy_button
+
+**File:** `chirpui/copy_button.html`
+
+chirp-ui: Copy button
+
+**Macros:**
+  - `copy_button(text, label="Copy")`
+
+**Context:** Consumes: `_streaming_role`.
+
+
+### description_list
+
+**File:** `chirpui/description_list.html`
+
+chirp-ui: Description list component
+
+**Macros:**
+  - `description_list(items=none, variant="stacked", compact=false, relaxed=false, hoverable=false,...)`
+  - `description_item(term, detail, type=none, icon=none, cls="")`
+
+
+### divider
+
+**File:** `chirpui/divider.html`
+
+chirp-ui: Divider component
+
+**Macros:**
+  - `divider(text=none, horizontal=false, variant="", cls="")`
+
+**Context:** Consumes: `_card_variant`, `_surface_variant`.
+
+
+### dnd
+
+**File:** `chirpui/dnd.html`
+
+chirp-ui: Drag-drop primitives
+
+**Macros:**
+  - `dnd_list(cls="", attrs="")`
+  - `dnd_item(cls="", attrs="")`
+  - `dnd_handle(cls="", attrs="")`
+  - `dnd_drop_indicator(cls="", attrs="")`
+  - `dnd_board(cls="", attrs="")`
+  - `dnd_column(title=none, cls="", attrs="")`
+  - `dnd_card(cls="", attrs="")`
+
+
+### dock
+
+**File:** `chirpui/dock.html`
+
+chirp-ui: Floating Dock
+
+**Macros:**
+  - `dock(items=none, variant="", size="", cls="")`
+
+
+### drawer
+
+**File:** `chirpui/drawer.html`
+
+chirp-ui: Drawer component
+
+**Macros:**
+  - `drawer(id, title=none, side="right", cls="")`
+  - `drawer_trigger(target, label="Open", cls="")`
+
+
+### dropdown
+
+**File:** `chirpui/dropdown.html`
+
+chirp-ui: Dropdown component
+
+**Macros:**
+  - `dropdown(label, cls="")`
+
+
+### dropdown_menu
+
+**File:** `chirpui/dropdown_menu.html`
+
+chirp-ui: Dropdown menu (items-based)
+
+**Macros:**
+  - `dropdown_menu(trigger, items, id="chirpui-dropdown")`
+  - `dropdown_select(trigger_label, items, selected=none, id="chirpui-dropdown-select")`
+  - `dropdown_split(primary_label, primary_href=none, primary_action=none, items=[], icon=none)`
+
+
+### empty
+
+**File:** `chirpui/empty.html`
+
+chirp-ui: Empty State component
+
+**Macros:**
+  - `empty_state(icon=none, title="No items", illustration=none, action_label=none, action_hre...)`
+
+
+### entity_header
+
+**File:** `chirpui/entity_header.html`
+
+chirp-ui: Entity header (dashboard-grade)
+
+**Macros:**
+  - `entity_header(title, meta=none, icon=none, cls="")`
+
+
+### fragment_island
+
+**File:** `chirpui/fragment_island.html`
+
+chirp-ui: Safe region / Fragment island primitives
+
+**Macros:**
+  - `poll_trigger(url, target, delay=none, swap="innerHTML", select=none, cls="chirpui-sr-only"...)`
+  - `safe_region(id, hx_target=none, hx_swap=none, hx_select=none, cls="", attrs="")`
+  - `fragment_island(id, hx_target=none, hx_swap=none, hx_select=none, cls="", attrs="")`
+  - `fragment_island_with_result(id, mutation_result_id, hx_target=none, hx_swap=none, hx_select=none, cls="",...)`
+
+
+### glitch_text
+
+**File:** `chirpui/glitch_text.html`
+
+chirp-ui: Glitch Text Effect
+
+**Macros:**
+  - `glitch_text(text, variant="", tag="span", cls="")`
+
+
+### glow_card
+
+**File:** `chirpui/glow_card.html`
+
+chirp-ui: Glow Card
+
+**Macros:**
+  - `glow_card(variant="", cls="", attrs="", attrs_map=none)`
+
+
+### gradient_text
+
+**File:** `chirpui/gradient_text.html`
+
+chirp-ui: Gradient Text
+
+**Macros:**
+  - `gradient_text(text, animated=false, tag="span", cls="")`
+
+
+### grain
+
+**File:** `chirpui/grain.html`
+
+chirp-ui: Grain Overlay
+
+**Macros:**
+  - `grain(variant="", animated=false, cls="", attrs="", attrs_map=none)`
+
+
+### hero
+
+**File:** `chirpui/hero.html`
+
+chirp-ui: Hero component
+
+**Macros:**
+  - `hero(title=none, subtitle=none, background="solid", cls="")`
+  - `page_hero(title=none, subtitle=none, variant="editorial", background="solid", cls="")`
+
+
+### hero_effects
+
+**File:** `chirpui/hero_effects.html`
+
+chirp-ui: Hero Effects
+
+**Macros:**
+  - `hero_effects(effect="particles", variant="", cls="")`
+
+**Context:** Provides: `_hero_variant`.
+
+
+### holy_light
+
+**File:** `chirpui/holy_light.html`
+
+chirp-ui: Holy Light
+
+**Macros:**
+  - `holy_light(intensity="", variant="", cls="")`
+
+**Context:** Consumes: `_hero_variant`.
+
+
+### icon_btn
+
+**File:** `chirpui/icon_btn.html`
+
+chirp-ui: Icon Button
+
+**Macros:**
+  - `icon_btn(icon, variant="", size="", href=none, aria_label="", disabled=false, type="bu...)`
+
+**Context:** Consumes: `_bar_density`, `_suspense_busy`.
+
+
+### index_card
+
+**File:** `chirpui/index_card.html`
+
+chirp-ui: Index card component
+
+**Macros:**
+  - `index_card(href, title, description=none, badge=none, cls="")`
+
+
+### infinite_scroll
+
+**File:** `chirpui/infinite_scroll.html`
+
+chirp-ui: Infinite Scroll component
+
+**Macros:**
+  - `infinite_scroll(load_url, target="this", swap="beforeend", loading_html=none, cls="")`
+
+
+### islands
+
+**File:** `chirpui/islands.html`
+
+chirp-ui: Framework-agnostic island mount wrappers
+
+**Macros:**
+  - `island_root(name, props=none, mount_id=none, version="1", src=none, primitive=none, cls="...)`
+
+
+### label_overline
+
+**File:** `chirpui/label_overline.html`
+
+chirp-ui: Small caps / overline label for cards and dense panels.
+
+**Macros:**
+  - `label_overline(text, section=false, tag="span", cls="")`
+
+
+### link
+
+**File:** `chirpui/link.html`
+
+chirp-ui: Link component
+
+**Macros:**
+  - `link(text, href, external=false, cls="")`
+
+
+### list
+
+**File:** `chirpui/list.html`
+
+chirp-ui: List component
+
+**Macros:**
+  - `list_group(items=none, linked=false, bordered=false, cls="")`
+  - `list_item(cls="")`
+
+
+### live_badge
+
+**File:** `chirpui/live_badge.html`
+
+chirp-ui: Live Badge component
+
+**Macros:**
+  - `live_badge(viewers=none, cls="")`
+
+
+### marquee
+
+**File:** `chirpui/marquee.html`
+
+chirp-ui: Marquee
+
+**Macros:**
+  - `marquee(items=none, speed="", reverse=false, pause_on_hover=true, cls="")`
+
+
+### media_object
+
+**File:** `chirpui/media_object.html`
+
+chirp-ui: Media Object layout primitive
+
+**Macros:**
+  - `media_object(align="start", cls="", use_slots=false)`
+  - `media_object_media(cls="")`
+  - `media_object_body(cls="")`
+  - `media_object_actions(cls="")`
+
+
+### mention
+
+**File:** `chirpui/mention.html`
+
+chirp-ui: Mention component
+
+**Macros:**
+  - `mention(username, href=none, cls="")`
+
+
+### message_bubble
+
+**File:** `chirpui/message_bubble.html`
+
+chirp-ui: Message Bubble component
+
+**Macros:**
+  - `message_bubble(align="left", role="default", status=none, cls="")`
+
+
+### message_thread
+
+**File:** `chirpui/message_thread.html`
+
+chirp-ui: Message Thread component
+
+**Macros:**
+  - `message_thread(cls="")`
+
+
+### meteor
+
+**File:** `chirpui/meteor.html`
+
+chirp-ui: Meteor Effect
+
+**Macros:**
+  - `meteor(count=4, variant="", cls="")`
+
+**Context:** Consumes: `_hero_variant`.
+
+
+### modal
+
+**File:** `chirpui/modal.html`
+
+chirp-ui: Modal component
+
+**Macros:**
+  - `modal(id, title=none, size="md", cls="")`
+  - `modal_trigger(target, label="Open", cls="")`
+
+
+### modal_overlay
+
+**File:** `chirpui/modal_overlay.html`
+
+chirp-ui: Modal overlay (div-based, for apps that prefer overlay over native dialog)
+
+**Macros:**
+  - `modal_overlay_trigger(id, label, variant="", icon=none)`
+  - `modal_overlay(id, title)`
+
+
+### nav_link
+
+**File:** `chirpui/nav_link.html`
+
+chirp-ui: SPA-style link for content areas
+
+**Macros:**
+  - `nav_link(href, label="", cls="")`
+
+
+### nav_tree
+
+**File:** `chirpui/nav_tree.html`
+
+chirp-ui: Nav tree component
+
+**Macros:**
+  - `nav_tree_item_content(item, show_icons=false)`
+  - `nav_tree(items, show_icons=false, cls="")`
+  - `nav_tree_items(items, show_icons)`
+
+
+### neon_text
+
+**File:** `chirpui/neon_text.html`
+
+chirp-ui: Neon Text
+
+**Macros:**
+  - `neon_text(text, color="cyan", animation="", tag="span", cls="")`
+
+
+### notification_dot
+
+**File:** `chirpui/notification_dot.html`
+
+chirp-ui: Notification Dot
+
+**Macros:**
+  - `notification_dot(variant="", size="", count=none, cls="")`
+
+
+### number_ticker
+
+**File:** `chirpui/number_ticker.html`
+
+chirp-ui: Number Ticker
+
+**Macros:**
+  - `number_ticker(value, variant="", size="", prefix="", suffix="", cls="")`
+
+
+### orbit
+
+**File:** `chirpui/orbit.html`
+
+chirp-ui: Orbit
+
+**Macros:**
+  - `orbit(items=[], size="", speed="", reverse=false, cls="")`
+
+
+### overlay
+
+**File:** `chirpui/overlay.html`
+
+chirp-ui: Overlay component
+
+**Macros:**
+  - `overlay(variant="dark", cls="")`
+
+
+### pagination
+
+**File:** `chirpui/pagination.html`
+
+chirp-ui: Pagination component
+
+**Macros:**
+  - `pagination(current, total, url_pattern, hx_target=none, hx_push_url=false, hx_swap="inne...)`
+
+
+### params_table
+
+**File:** `chirpui/params_table.html`
+
+chirp-ui: Params table component
+
+**Macros:**
+  - `params_table(rows, title=none, columns=none, cls="")`
+
+
+### particle_bg
+
+**File:** `chirpui/particle_bg.html`
+
+chirp-ui: Particle Background
+
+**Macros:**
+  - `particle_bg(count=8, variant="", cls="")`
+
+**Context:** Consumes: `_hero_variant`.
+
+
+### playlist
+
+**File:** `chirpui/playlist.html`
+
+chirp-ui: Playlist component
+
+**Macros:**
+  - `playlist(title=none, cls="")`
+  - `playlist_item(href, title, duration=none, active=false, cls="")`
+
+
+### popover
+
+**File:** `chirpui/popover.html`
+
+chirp-ui: Popover component
+
+**Macros:**
+  - `popover(trigger_label, cls="")`
+
+
+### post_card
+
+**File:** `chirpui/post_card.html`
+
+chirp-ui: Post Card component
+
+**Macros:**
+  - `post_card(name=none, handle=none, time=none, href=none, cls="")`
+  - `post_card_header(name, handle=none, time=none, href=none, cls="")`
+  - `post_card_body(cls="")`
+  - `post_card_media(cls="")`
+  - `post_card_actions(cls="")`
+
+
+### profile_header
+
+**File:** `chirpui/profile_header.html`
+
+chirp-ui: Profile Header component
+
+**Macros:**
+  - `profile_header(name=none, cover_url=none, href=none, cls="", use_slots=false)`
+  - `profile_header_avatar(cls="")`
+  - `profile_header_info(name, href=none, cls="")`
+  - `profile_header_stats(cls="")`
+  - `profile_header_action(cls="")`
+
+
+### pulsing_button
+
+**File:** `chirpui/pulsing_button.html`
+
+chirp-ui: Pulsing Button
+
+**Macros:**
+  - `pulsing_button(text, variant="", icon=none, href=none, cls="", type="button", disabled=false)`
+
+
+### reaction_pill
+
+**File:** `chirpui/reaction_pill.html`
+
+chirp-ui: Reaction Pill component
+
+**Macros:**
+  - `reaction_pill(emoji, count=1, active=false, cls="")`
+  - `message_reactions(cls="")`
+
+
+### reveal_on_scroll
+
+**File:** `chirpui/reveal_on_scroll.html`
+
+chirp-ui: Reveal on scroll — animate content when it enters the viewport
+
+**Macros:**
+  - `reveal_on_scroll(cls="")`
+
+
+### ripple_button
+
+**File:** `chirpui/ripple_button.html`
+
+chirp-ui: Ripple Button
+
+**Macros:**
+  - `ripple_button(text, variant="", size="", icon=none, cls="")`
+
+
+### route_tabs
+
+**File:** `chirpui/route_tabs.html`
+
+chirp-ui: Route-backed subsection tabs
+
+**Macros:**
+  - `render_route_tabs(tab_items, current_path, target="#page-root", is_active=none)`
+  - `route_tabs(tabs, current_path, target="#page-root", is_active=none)`
+
+
+### rune_field
+
+**File:** `chirpui/rune_field.html`
+
+chirp-ui: Rune Field
+
+**Macros:**
+  - `rune_field(variant="", cls="")`
+
+**Context:** Consumes: `_hero_variant`.
+
+
+### scanline
+
+**File:** `chirpui/scanline.html`
+
+chirp-ui: Scanline Overlay
+
+**Macros:**
+  - `scanline(variant="", cls="")`
+
+
+### segmented_control
+
+**File:** `chirpui/segmented_control.html`
+
+chirp-ui: Segmented Control
+
+**Macros:**
+  - `segmented_control(items, name="segmented", size="", cls="")`
+
+
+### share_menu
+
+**File:** `chirpui/share_menu.html`
+
+chirp-ui: Share Menu component
+
+**Macros:**
+  - `share_menu(label="Share", share_url=none, cls="")`
+
+
+### shell_frame
+
+**File:** `chirpui/shell_frame.html`
+
+chirp-ui: Shell frame primitives — persistent-region + swap-boundary contract
+
+**Macros:**
+  - `shell_outlet_attrs(target="#main", swap="innerHTML", select="#page-content")`
+  - `shell_outlet(id="page-content", cls="", attrs="", include_boost_attrs=true, target="#main"...)`
+  - `shell_region(id, cls="")`
+  - `shell_runtime_script()`
+
+
+### shimmer_button
+
+**File:** `chirpui/shimmer_button.html`
+
+chirp-ui: Shimmer Button
+
+**Macros:**
+  - `shimmer_button(text, variant="", size="", icon=none, href=none, cls="", type="button", attrs...)`
+
+
+### signature
+
+**File:** `chirpui/signature.html`
+
+chirp-ui: Signature component
+
+**Macros:**
+  - `signature(text, language=none, cls="")`
+
+
+### sortable_list
+
+**File:** `chirpui/sortable_list.html`
+
+chirp-ui: Sortable list macros
+
+**Macros:**
+  - `sortable_list(cls="", attrs="")`
+  - `sortable_item(cls="", attrs="")`
+
+
+### sparkle
+
+**File:** `chirpui/sparkle.html`
+
+chirp-ui: Sparkle
+
+**Macros:**
+  - `sparkle(count=6, variant="", cls="")`
+
+
+### spinner
+
+**File:** `chirpui/spinner.html`
+
+chirp-ui: Spinner component
+
+**Macros:**
+  - `spinner(size="md", cls="")`
+  - `spinner_thinking(size="md", cls="")`
+
+
+### split_button
+
+**File:** `chirpui/split_button.html`
+
+chirp-ui: Split button component
+
+**Macros:**
+  - `split_button(primary_label, primary_href=none, primary_submit=false, variant="primary", cl...)`
+
+
+### split_panel
+
+**File:** `chirpui/split_panel.html`
+
+chirp-ui: Split Panel
+
+**Macros:**
+  - `split_panel(direction="horizontal", default_split=50, min_split=10, max_split=90, cls="")`
+
+
+### spotlight_card
+
+**File:** `chirpui/spotlight_card.html`
+
+chirp-ui: Spotlight Card
+
+**Macros:**
+  - `spotlight_card(variant="", cls="", attrs="", attrs_map=none)`
+
+**Context:** Consumes: `_hero_variant`.
+
+
+### stat
+
+**File:** `chirpui/stat.html`
+
+chirp-ui: Stat component
+
+**Macros:**
+  - `stat(value, label, icon=none, cls="")`
+
+
+### state_primitives
+
+**File:** `chirpui/state_primitives.html`
+
+chirp-ui: No-build high-state primitive wrappers.
+
+**Macros:**
+  - `state_sync(state_key, query_param=none, initial="", mount_id=none, cls="")`
+  - `action_queue(action_id, mount_id=none, cls="")`
+  - `draft_store(draft_key, mount_id=none, cls="")`
+  - `error_boundary(boundary_id, mount_id=none, cls="")`
+  - `grid_state(state_key, columns, mount_id=none, cls="")`
+  - `wizard_state(state_key, steps, mount_id=none, cls="")`
+  - `upload_state(state_key, endpoint, mount_id=none, cls="")`
+
+
+### status
+
+**File:** `chirpui/status.html`
+
+chirp-ui: Status Indicator component
+
+**Macros:**
+  - `status_indicator(label, variant="", icon=none, pulse=false, cls="", color=none)`
+
+**Context:** Consumes: `_surface_variant`.
+
+
+### status_with_hint
+
+**File:** `chirpui/status_with_hint.html`
+
+chirp-ui: Status with hint (badge + tooltip/popover)
+
+**Macros:**
+  - `status_with_hint(text, variant="primary", hint=none, icon=none, cls="")`
+
+
+### stepper
+
+**File:** `chirpui/stepper.html`
+
+chirp-ui: Stepper component
+
+**Macros:**
+  - `stepper(steps, current=1, cls="")`
+
+
+### symbol_rain
+
+**File:** `chirpui/symbol_rain.html`
+
+chirp-ui: Symbol Rain
+
+**Macros:**
+  - `symbol_rain(count=6, variant="", cls="")`
+
+**Context:** Consumes: `_hero_variant`.
+
+
+### tabbed_page_layout
+
+**File:** `chirpui/tabbed_page_layout.html`
+
+chirp-ui: Tabbed page layout macro
+
+**Macros:**
+  - `tabbed_page_layout(tab_items=none, tabs=none, current_path="/", tab_target="#page-root")`
+
+
+### table
+
+**File:** `chirpui/table.html`
+
+chirp-ui: Table component
+
+**Macros:**
+  - `table(headers=none, rows=none, sortable=false, sort_url=none, hx_target=none, strip...)`
+  - `row(*cells)`
+  - `aligned_row(cells, align)`
+  - `table_empty(message="No data available", icon="◇")`
+
+**Context:** Provides: `_table_align`. Consumes: `_table_align`.
+
+
+### tabs
+
+**File:** `chirpui/tabs.html`
+
+chirp-ui: Tabs component
+
+**Macros:**
+  - `tabs(active=none, cls="")`
+  - `tab(id, label, url=none, hx_target=none, hx_swap="innerHTML", active=false, cls="")`
+
+
+### tabs_panels
+
+**File:** `chirpui/tabs_panels.html`
+
+chirp-ui: Tab panels (button-based, client-side switching)
+
+**Macros:**
+  - `tab(id, label, active=false)`
+  - `tab_panel(id, active=false)`
+  - `tabs_container(active=none)`
+
+
+### tag_input
+
+**File:** `chirpui/tag_input.html`
+
+chirp-ui: Tag input component
+
+**Macros:**
+  - `tag_input(name, tags=[], label=none, add_url=none, remove_url=none, placeholder="Add ta...)`
+
+
+### text_reveal
+
+**File:** `chirpui/text_reveal.html`
+
+chirp-ui: Text Reveal
+
+**Macros:**
+  - `text_reveal(text, variant="", tag="span", cls="")`
+
+
+### timeline
+
+**File:** `chirpui/timeline.html`
+
+chirp-ui: Timeline component
+
+**Macros:**
+  - `timeline(items=none, hoverable=false, cls="")`
+  - `timeline_item(title, date, content=none, icon=none, avatar=none, variant="", time=none, hre...)`
+
+**Context:** Consumes: `_surface_variant`.
+
+
+### tooltip
+
+**File:** `chirpui/tooltip.html`
+
+chirp-ui: Tooltip macro
+
+**Macros:**
+  - `tooltip(content=none, hint=none, position="top", cls="")`
+
+
+### tray
+
+**File:** `chirpui/tray.html`
+
+chirp-ui: Tray (slide-out panel)
+
+**Macros:**
+  - `tray_trigger(id, label, icon=none)`
+  - `tray(id, title, position="right")`
+
+
+### tree_view
+
+**File:** `chirpui/tree_view.html`
+
+chirp-ui: Tree view component
+
+**Macros:**
+  - `tree_view(nodes, cls="")`
+
+
+### trending_tag
+
+**File:** `chirpui/trending_tag.html`
+
+chirp-ui: Trending Tag component
+
+**Macros:**
+  - `trending_tag(tag, href=none, count=none, trend=none, cls="")`
+
+
+### typewriter
+
+**File:** `chirpui/typewriter.html`
+
+chirp-ui: Typewriter Effect
+
+**Macros:**
+  - `typewriter(text, speed="", cursor=true, delay="", tag="span", cls="")`
+
+
+### typing_indicator
+
+**File:** `chirpui/typing_indicator.html`
+
+chirp-ui: Typing Indicator component
+
+**Macros:**
+  - `typing_indicator(cls="")`
+
+
+### video_card
+
+**File:** `chirpui/video_card.html`
+
+chirp-ui: Video Card component
+
+**Macros:**
+  - `video_card(href, thumbnail, duration, title, channel=none, channel_href=none, views=none...)`
+
+
+### video_thumbnail
+
+**File:** `chirpui/video_thumbnail.html`
+
+chirp-ui: Video Thumbnail component
+
+**Macros:**
+  - `video_thumbnail(href=none, src="", alt="", duration=none, watched_pct=none, cls="")`
+
+
+### wizard_form
+
+**File:** `chirpui/wizard_form.html`
+
+chirp-ui: Wizard form component
+
+**Macros:**
+  - `wizard_form(id, steps, current=1, cls="", attrs="")`
+
+
+### wobble
+
+**File:** `chirpui/wobble.html`
+
+chirp-ui: Wobble / Jello / Rubber-band / Bounce-in
+
+**Macros:**
+  - `wobble(trigger="load", cls="")`
+  - `jello(trigger="load", cls="")`
+  - `rubber_band(trigger="load", cls="")`
+  - `bounce_in(cls="")`
+

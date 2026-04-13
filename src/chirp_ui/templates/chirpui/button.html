@@ -4,12 +4,13 @@
         {{ btn("Save", variant="primary") }}                → <button type="submit" ...>
         {{ btn("Cancel", type="button") }}                  → <button type="button" ...>
         {{ btn("View", href="/page") }}                     → <a ...>
+        {{ btn("Save", hx={"post": "/save", "target": "#r"}) }}  → shorthand for hx_post + hx_target
 -#}
 
 {% from "chirpui/spinner.html" import spinner %}
 
-{% def btn(label, variant="", size=none, loading=false, type="submit", href=none, icon=none, cls="",
-           attrs="", attrs_map=none, hx_get=none, hx_post=none, hx_put=none,
+{% def btn(label, variant="", size="", loading=false, type="submit", href=none, icon=none, cls="",
+           attrs="", attrs_map=none, hx=none, hx_get=none, hx_post=none, hx_put=none,
            hx_patch=none, hx_delete=none, hx_target=none, hx_swap=none,
            hx_trigger=none, hx_include=none, hx_select=none, hx_ext=none,
            hx_vals=none, disabled=false, data_action=none, aria_label=none) %}
@@ -19,8 +20,12 @@
 {% set _size = (size or _bar_size or "") | validate_size("btn", "") %}
 {% set _disabled = disabled or (_busy == "true") %}
 {% set base_class = "btn" | bem(variant=_variant, size=_size, modifier="loading" if loading else "", cls=cls) %}
-{% set _btn_has_hx_request = hx_get or hx_post or hx_put or hx_patch or hx_delete %}
-{% set _btn_has_hx_config = _btn_has_hx_request or hx_target or hx_swap or hx_trigger or hx_include or hx_select or hx_ext or hx_vals %}
+{% set _hx_dict = build_hx_attrs(hx=hx, hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
+    hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target, hx_swap=hx_swap,
+    hx_trigger=hx_trigger, hx_include=hx_include,
+    hx_ext=hx_ext, hx_vals=hx_vals) %}
+{% set _btn_has_hx_request = _hx_dict.get("hx-get") or _hx_dict.get("hx-post") or _hx_dict.get("hx-put") or _hx_dict.get("hx-patch") or _hx_dict.get("hx-delete") %}
+{% set _btn_has_hx_config = _hx_dict | length > 0 or hx_select %}
 {% set _route_attrs = route_link_attrs(href, disabled=_disabled, attrs=attrs, attrs_map=attrs_map) if not _btn_has_hx_config else {} %}
 {% if href %}
 <a class="{{ base_class }}"{% if not _disabled %} href="{{ href }}"{% endif %}
@@ -32,10 +37,7 @@
    {% if not _disabled and _btn_has_hx_request %}hx-boost="false"{% end %}
    {% if not _disabled and _btn_has_hx_request %}hx-select="{{ hx_select if hx_select else "unset" }}"{% end %}
    {% if not _disabled %}{{ _route_attrs | html_attrs }}{% end %}
-   {% if not _disabled %}{{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
-       hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target, hx_swap=hx_swap,
-       hx_trigger=hx_trigger, hx_include=hx_include, hx_ext=hx_ext,
-       hx_vals=hx_vals) | html_attrs }}{% end %}>
+   {% if not _disabled %}{{ _hx_dict | html_attrs }}{% end %}>
     {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
     <span class="chirpui-btn__label">{{ label }}</span>
 </a>
@@ -46,10 +48,8 @@
         {% if _disabled %}disabled{% end %}
         {{ attrs | html_attrs }}
         {{ attrs_map | html_attrs }}
-        {{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
-            hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target, hx_swap=hx_swap,
-            hx_trigger=hx_trigger, hx_include=hx_include, hx_select=hx_select,
-            hx_ext=hx_ext, hx_vals=hx_vals) | html_attrs }}>
+        {{ build_hx_attrs(hx_select=hx_select) | html_attrs }}
+        {{ _hx_dict | html_attrs }}>
     {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
     <span class="chirpui-btn__label">{{ label }}</span>
     <span class="chirpui-btn__spinner" aria-hidden="true">{{ spinner(size="sm") }}</span>

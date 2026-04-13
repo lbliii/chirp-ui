@@ -9,7 +9,7 @@
 -#}
 
 {% def icon_btn(icon, variant="", size="", href=none, aria_label="", disabled=false, type="button", cls="",
-                hx_get=none, hx_post=none, hx_target=none, hx_swap=none) %}
+                hx=none, hx_get=none, hx_post=none, hx_target=none, hx_swap=none) %}
 {% set _bar_size = consume("_bar_density", "") %}
 {% set _busy = consume("_suspense_busy", "") %}
 {% set _variant = variant | validate_variant(("", "default", "primary", "ghost", "danger"), "") %}
@@ -18,24 +18,22 @@
 {% set variant_class = " chirpui-icon-btn--" ~ _variant if _variant else "" %}
 {% set size_class = " chirpui-icon-btn--" ~ _size if _size else "" %}
 {% set base = "chirpui-icon-btn" ~ variant_class ~ size_class ~ (" " ~ cls if cls else "") %}
-{% set _link_has_hx_request = hx_get or hx_post %}
-{% set _link_has_hx_config = _link_has_hx_request or hx_target or hx_swap %}
+{% set _hx_dict = build_hx_attrs(hx=hx, hx_get=hx_get, hx_post=hx_post, hx_target=hx_target, hx_swap=hx_swap) %}
+{% set _link_has_hx_request = _hx_dict.get("hx-get") or _hx_dict.get("hx-post") %}
+{% set _link_has_hx_config = _hx_dict | length > 0 %}
 {% set _route_attrs = route_link_attrs(href) if href and not _link_has_hx_config and not _disabled else {} %}
 {% if href %}
 <a{% if not _disabled %} href="{{ href }}"{% end %} class="{{ base }}" aria-label="{{ aria_label }}"
    {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}
    {% if not _disabled and _link_has_hx_request %}hx-boost="false" hx-select="unset"{% end %}
    {% if not _disabled %}{{ _route_attrs | html_attrs }}{% end %}
-   {% if not _disabled %}{{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_target=hx_target, hx_swap=hx_swap) | html_attrs }}{% end %}>
+   {% if not _disabled %}{{ _hx_dict | html_attrs }}{% end %}>
     <span class="chirpui-icon-btn__icon">{{ icon | icon }}</span>
 </a>
 {% else %}
 <button type="{{ type }}" class="{{ base }}" aria-label="{{ aria_label }}"
         {% if _disabled %}disabled{% end %}
-        {% if hx_get %}hx-get="{{ hx_get }}"{% end %}
-        {% if hx_post %}hx-post="{{ hx_post }}"{% end %}
-        {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
-        {% if hx_swap %}hx-swap="{{ hx_swap }}"{% end %}>
+        {{ _hx_dict | html_attrs }}>
     <span class="chirpui-icon-btn__icon">{{ icon | icon }}</span>
 </button>
 {% end %}

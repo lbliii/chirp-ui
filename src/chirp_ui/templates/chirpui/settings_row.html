@@ -26,12 +26,7 @@
 {% end %}
 
 {% def settings_row(label, status=none, detail=none, status_variant=none, cls="") %}
-{% set v = status_variant %}
-{% if v is none and status %}
-{% set v = "success" if (status | lower) in ("ok", "yes", "configured", "true", "1", "on") else ("error" if (status | lower) in ("error", "issues", "failed") else "muted") %}
-{% elif v is none %}
-{% set v = "muted" %}
-{% end %}
+{% set v = status_variant if status_variant is not none else (status | resolve_status_variant("muted") if status else "muted") %}
 <div class="chirpui-settings-row{{ " " ~ cls if cls else "" }}">
     <span class="chirpui-settings-row__label chirpui-font-sm chirpui-font-medium">{{ label }}</span>
     <span class="chirpui-settings-row__status">

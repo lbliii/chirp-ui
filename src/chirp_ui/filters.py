@@ -6,9 +6,9 @@ Register via :func:`register_filters` when using Chirp.
 Everything not in __all__ is internal and may change without notice.
 """
 
-import logging
 import math
 import re
+import warnings
 from pathlib import PurePath
 
 __all__ = [
@@ -21,6 +21,7 @@ __all__ = [
     "make_route_link_attrs",
     "register_colors",
     "resolve_color",
+    "resolve_status_variant",
     "sanitize_color",
     "validate_size",
     "validate_variant",
@@ -37,7 +38,13 @@ from kida.template import Markup
 
 from chirp_ui.icons import ICON_REGISTRY
 from chirp_ui.icons import icon as _resolve_icon
-from chirp_ui.validation import SIZE_REGISTRY, VARIANT_REGISTRY, _is_strict
+from chirp_ui.validation import (
+    SIZE_REGISTRY,
+    VARIANT_REGISTRY,
+    ChirpUIValidationWarning,
+    ChirpUIWarning,
+    _warn,
+)
 
 _SORTED_ICON_NAMES: str = ", ".join(sorted(ICON_REGISTRY))
 
@@ -68,10 +75,18 @@ def _named_color_map() -> dict[str, str]:
 
 
 def register_colors(mapping: Mapping[str, str]) -> None:
-    """Register semantic color names (e.g. Pokémon types) for :func:`resolve_color`."""
+    """Register semantic color names (e.g. Pokémon types) for :func:`resolve_color`.
+
+    Raises ``ValueError`` immediately if any color value fails
+    :func:`sanitize_color` validation.
+    """
     base = _named_color_map()
     for k, v in mapping.items():
-        base[str(k).strip()] = str(v).strip()
+        key = str(k).strip()
+        val = str(v).strip()
+        if val and sanitize_color(val) is None:
+            raise ValueError(f"chirp-ui: invalid color value {val!r} for key {key!r}")
+        base[key] = val
     _chirpui_named_colors.set(base)
     _chirpui_named_colors_lower.set({k.lower(): v for k, v in base.items()})
 
@@ -299,27 +314,18 @@ def bem(
     from chirp_ui.components import COMPONENTS
 
     desc = COMPONENTS.get(block)
-    strict = _is_strict()
 
-    if variant and strict:
+    if variant:
         allowed = VARIANT_REGISTRY.get(block, ())
         if allowed and variant not in allowed:
-            log = logging.getLogger("chirp_ui")
-            log.warning(
-                'chirp-ui: %s variant "%s" invalid; valid: %s',
-                block,
-                variant,
-                ", ".join(allowed),
+            _warn(
+                f"chirp-ui: {block} variant {variant!r} invalid; valid: {', '.join(allowed)}",
             )
             variant = allowed[0] if allowed else ""
 
-    if size and strict and desc and desc.sizes and size not in desc.sizes:
-        log = logging.getLogger("chirp_ui")
-        log.warning(
-            'chirp-ui: %s size "%s" invalid; valid: %s',
-            block,
-            size,
-            ", ".join(desc.sizes),
+    if size and desc and desc.sizes and size not in desc.sizes:
+        _warn(
+            f"chirp-ui: {block} size {size!r} invalid; valid: {', '.join(desc.sizes)}",
         )
         size = desc.sizes[0] if desc.sizes else ""
 
@@ -329,15 +335,11 @@ def bem(
     else:
         modifiers = [modifier] if modifier else []
 
-    if strict and desc and desc.modifiers:
+    if desc and desc.modifiers:
         for m in modifiers:
             if m not in desc.modifiers:
-                log = logging.getLogger("chirp_ui")
-                log.warning(
-                    'chirp-ui: %s modifier "%s" invalid; valid: %s',
-                    block,
-                    m,
-                    ", ".join(desc.modifiers),
+                _warn(
+                    f"chirp-ui: {block} modifier {m!r} invalid; valid: {', '.join(desc.modifiers)}",
                 )
 
     parts = [f"chirpui-{block}"]
@@ -356,17 +358,20 @@ def validate_variant(
     allowed: tuple[str, ...],
     default: str = "",
 ) -> str:
-    """Return value if in allowed, else default. When strict, log warning."""
+    """Return value if in allowed, else default.
+
+    Always emits :class:`~chirp_ui.validation.ChirpUIValidationWarning`
+    on fallback (raises ``ValueError`` in strict mode).
+    """
     if value in allowed:
         return value
-    if _is_strict():
-        log = logging.getLogger("chirp_ui")
-        log.warning(
-            'chirp-ui: variant "%s" invalid; valid: %s',
-            value,
-            ", ".join(allowed),
+    result = default if default in allowed else (allowed[0] if allowed else "")
+    if value:  # don't warn on empty string — common "no variant" case
+        _warn(
+            f"chirp-ui: variant {value!r} not in {allowed!r}; using {result!r}",
+            category=ChirpUIValidationWarning,
         )
-    return default if default in allowed else (allowed[0] if allowed else "")
+    return result
 
 
 def validate_variant_block(value: str, block: str, default: str = "") -> str:
@@ -396,30 +401,35 @@ def validate_size(
     block: str,
     default: str = "",
 ) -> str:
-    """Return value if in SIZE_REGISTRY for block, else default. When strict, log warning."""
+    """Return value if in SIZE_REGISTRY for block, else default.
+
+    Always emits :class:`~chirp_ui.validation.ChirpUIValidationWarning`
+    on fallback when the block has a registered size list
+    (raises ``ValueError`` in strict mode).
+    """
     allowed = SIZE_REGISTRY.get(block, ())
     if value in allowed:
         return value
-    if _is_strict() and allowed:
-        log = logging.getLogger("chirp_ui")
-        log.warning(
-            'chirp-ui: %s size "%s" invalid; valid: %s',
-            block,
-            value,
-            ", ".join(allowed),
+    result = default if default in allowed else (allowed[0] if allowed else "")
+    if value and allowed:  # only warn when block has registered sizes and value is non-empty
+        _warn(
+            f"chirp-ui: size {value!r} not in {allowed!r} for {block!r}; using {result!r}",
+            category=ChirpUIValidationWarning,
         )
-    return default if default in allowed else (allowed[0] if allowed else "")
+    return result
 
 
 def icon(name: str) -> str:
-    """Resolve icon name to glyph; unknown names pass through. When strict, log warning."""
+    """Resolve icon name to glyph; unknown names pass through.
+
+    Always emits :class:`~chirp_ui.validation.ChirpUIValidationWarning`
+    for unrecognized names (raises ``ValueError`` in strict mode).
+    """
     result = _resolve_icon(name)
-    if name not in ICON_REGISTRY and _is_strict():
-        log = logging.getLogger("chirp_ui")
-        log.warning(
-            'chirp-ui: icon "%s" invalid; valid: %s',
-            name,
-            _SORTED_ICON_NAMES,
+    if name and name not in ICON_REGISTRY:
+        _warn(
+            f"chirp-ui: unrecognized icon name {name!r}",
+            category=ChirpUIValidationWarning,
         )
     return result
 
@@ -439,13 +449,68 @@ def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]
     return []
 
 
-def build_hx_attrs(**kwargs: Any) -> dict[str, Any]:
+STATUS_WORDS: dict[str, str] = {
+    "ok": "success",
+    "yes": "success",
+    "configured": "success",
+    "true": "success",
+    "1": "success",
+    "on": "success",
+    "ready": "success",
+    "active": "success",
+    "enabled": "success",
+    "connected": "success",
+    "error": "error",
+    "issues": "error",
+    "failed": "error",
+    "offline": "error",
+    "disabled": "error",
+    "disconnected": "error",
+}
+
+
+def resolve_status_variant(status: str, default: str = "muted") -> str:
+    """Map a status string to a badge variant using :data:`STATUS_WORDS`.
+
+    Lookup is case-insensitive. Unrecognized words return *default* and
+    emit :class:`~chirp_ui.validation.ChirpUIValidationWarning`.
+    """
+    if not status:
+        return default
+    variant = STATUS_WORDS.get(status.lower())
+    if variant is not None:
+        return variant
+    _warn(
+        f"chirp-ui: status {status!r} not in STATUS_WORDS; using {default!r}",
+        category=ChirpUIValidationWarning,
+    )
+    return default
+
+
+def build_hx_attrs(hx: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
     """Build a dict of hyphenated HTML attributes from keyword arguments.
 
     Converts underscores to hyphens in keys: ``hx_post`` becomes ``hx-post``.
     Pipe through ``html_attrs`` to render: ``{{ build_hx_attrs(...) | html_attrs }}``.
+
+    Accepts an optional ``hx`` dict whose keys are the short htmx names
+    (e.g. ``{"post": "/save", "target": "#out"}`` → ``hx-post``, ``hx-target``).
+    Individual ``hx_*`` kwargs override keys from the ``hx`` dict.
     """
-    return {k.replace("_", "-"): v for k, v in kwargs.items()}
+    merged: dict[str, Any] = {}
+    if hx:
+        for k, v in hx.items():
+            if v is None:
+                continue
+            key = k.replace("_", "-")
+            if not key.startswith("hx-"):
+                key = f"hx-{key}"
+            merged[key] = v
+    for k, v in kwargs.items():
+        if v is None:
+            continue
+        merged[k.replace("_", "-")] = v
+    return merged
 
 
 def _is_internal_href(href: str) -> bool:
@@ -576,6 +641,7 @@ def register_filters(app: TemplateFilterApp) -> None:
     app.template_filter("sanitize_color")(sanitize_color)
     app.template_filter("contrast_text")(contrast_text)
     app.template_filter("resolve_color")(resolve_color)
+    app.template_filter("resolve_status_variant")(resolve_status_variant)
     if hasattr(app, "template_global"):
         from chirp_ui.route_tabs import tab_is_active
 
@@ -586,3 +652,10 @@ def register_filters(app: TemplateFilterApp) -> None:
         tg("tab_is_active")(tab_is_active)
         tg("build_hx_attrs")(build_hx_attrs)
         tg("route_link_attrs")(make_route_link_attrs())
+    else:
+        warnings.warn(
+            "chirp-ui: app has no template_global(); "
+            "build_hx_attrs and route_link_attrs will not be available as template globals",
+            ChirpUIWarning,
+            stacklevel=2,
+        )

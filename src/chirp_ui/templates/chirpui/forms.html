@@ -7,7 +7,7 @@
 -#}
 
 {% def form(action, method="get", enctype=none, density="", cls="", attrs="", attrs_map=none,
-           hx_get=none, hx_post=none, hx_put=none, hx_patch=none, hx_delete=none,
+           hx=none, hx_get=none, hx_post=none, hx_put=none, hx_patch=none, hx_delete=none,
            hx_target=none, hx_swap=none, hx_trigger=none, hx_include=none,
            hx_select=none, hx_select_oob=none, hx_disabled_elt=none, hx_sync=none,
            hx_ext=none, hx_vals=none, hx_reset_on_success=none) %}
@@ -17,7 +17,11 @@
    See https://htmx.org/examples/reset-user-input/
    hx_sync: pass explicitly or via attrs_map to prevent double-submit; e.g. "this:replace".
    See https://htmx.org/docs/#synchronization -#}
-{% set _has_hx = hx_post or hx_put or hx_patch or hx_delete or (attrs_map or {}).get("hx-post") or (attrs_map or {}).get("hx-put") or (attrs_map or {}).get("hx-patch") or (attrs_map or {}).get("hx-delete") %}
+{% set _hx_dict = build_hx_attrs(hx=hx, hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
+    hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target,
+    hx_swap=hx_swap, hx_trigger=hx_trigger, hx_include=hx_include,
+    hx_ext=hx_ext, hx_vals=hx_vals) %}
+{% set _has_hx = _hx_dict.get("hx-post") or _hx_dict.get("hx-put") or _hx_dict.get("hx-patch") or _hx_dict.get("hx-delete") or (attrs_map or {}).get("hx-post") or (attrs_map or {}).get("hx-put") or (attrs_map or {}).get("hx-patch") or (attrs_map or {}).get("hx-delete") %}
 {% set _reset = hx_reset_on_success if hx_reset_on_success is not none else _has_hx %}
 {% set _sync_from_attrs = (attrs_map or {}).get("hx-sync") %}
 {% set _sync = hx_sync if hx_sync is not none else _sync_from_attrs %}
@@ -29,12 +33,10 @@
       {{ attrs | html_attrs }}
       {{ attrs_map | html_attrs }}
       {% if _reset %}hx-on::after-request="if(event.detail.successful) this.reset()"{% end %}
-      {{ build_hx_attrs(hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
-          hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target,
-          hx_swap=hx_swap, hx_trigger=hx_trigger, hx_include=hx_include,
-          hx_select=_select, hx_disinherit=_disinherit,
+      {{ build_hx_attrs(hx_select=_select, hx_disinherit=_disinherit,
           hx_select_oob=hx_select_oob, hx_disabled_elt=hx_disabled_elt,
-          hx_sync=_sync, hx_ext=hx_ext, hx_vals=hx_vals) | html_attrs }}>
+          hx_sync=_sync) | html_attrs }}
+      {{ _hx_dict | html_attrs }}>
     {% slot %}
 </form>
 {% end %}

@@ -11,6 +11,9 @@
             {% slot body %}<p>Custom info</p>{% end %}
             {% slot actions %}btn("Subscribe", variant="primary"){% end %}
         end
+
+    DEPRECATED: use_slots parameter. Always use named slots (body, actions).
+    The use_slots=false path will be removed in a future release.
 -#}
 
 {% def channel_card(href, name, avatar_src=none, avatar_initials=none, subscribers=none, cls="", use_slots=false) %}

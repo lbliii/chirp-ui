@@ -23,6 +23,7 @@
 </div>
 {% end %}
 
+{# REQUIRES: form_action AND attrs_map together — omitting either silently renders a plain (non-htmx) toggle. #}
 {% def config_row_toggle(name, label, checked=false, form_action=none, attrs_map=none, errors=none, cls="", swap_id=none, oob=false) %}
 {% set row_id = swap_id or ("config-row-" ~ name | replace(".", "-")) %}
 <div id="{{ row_id }}" class="chirpui-config-row{{ " " ~ cls if cls else "" }}"{{ " hx-swap-oob=\"true\"" if oob else "" }}>
@@ -57,6 +58,7 @@
 </div>
 {% end %}
 
+{# REQUIRES: form_action AND attrs_map together — omitting either silently renders a plain (non-htmx) select. #}
 {% def config_row_select(name, label, options, selected="", form_action=none, attrs_map=none, errors=none, cls="") %}
 <div class="chirpui-config-row{{ " " ~ cls if cls else "" }}">
     <label class="chirpui-config-row__label chirpui-font-sm chirpui-font-medium" for="{{ name }}">{{ label }}</label>

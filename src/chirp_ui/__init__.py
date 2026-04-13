@@ -20,7 +20,12 @@ from kida import PackageLoader
 
 from chirp_ui.components import design_system_report
 from chirp_ui.filters import TemplateFilterApp, register_colors
-from chirp_ui.validation import set_strict
+from chirp_ui.validation import (
+    ChirpUIDeprecationWarning,
+    ChirpUIValidationWarning,
+    ChirpUIWarning,
+    set_strict,
+)
 
 # Declare free-threading support (PEP 703)
 _Py_mod_gil = 0
@@ -28,6 +33,9 @@ _Py_mod_gil = 0
 __version__ = "0.3.1"
 
 __all__ = [
+    "ChirpUIDeprecationWarning",
+    "ChirpUIValidationWarning",
+    "ChirpUIWarning",
     "design_system_report",
     "get_loader",
     "register_colors",
