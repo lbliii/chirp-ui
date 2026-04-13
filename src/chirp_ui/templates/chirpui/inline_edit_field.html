@@ -17,8 +17,9 @@
 -#}
 
 {% def inline_edit_field_display(value, edit_url, swap_target=none, swap_id=none, edit_label="Edit", edit_icon=true, cls="") %}
-{% set target = swap_target or ("#" ~ (swap_id or "inline-edit-field")) %}
-<div id="{{ swap_id or "inline-edit-field" }}" class="chirpui-inline-edit chirpui-inline-edit--display{{ " " ~ cls if cls else "" }}">
+{% set _id = check_required_id(swap_id, "inline-edit-field", "inline_edit_field_display") %}
+{% set target = swap_target or ("#" ~ _id) %}
+<div id="{{ _id }}" class="chirpui-inline-edit chirpui-inline-edit--display{{ " " ~ cls if cls else "" }}">
     <span class="chirpui-inline-edit__value">{{ value }}</span>
     <button type="button" class="chirpui-inline-edit__trigger chirpui-btn chirpui-btn--ghost chirpui-btn--sm"
             hx-get="{{ edit_url }}"
@@ -35,8 +36,9 @@
 
 {% def inline_edit_field_form(name, value, save_url, cancel_url=none, swap_target=none, swap_id=none,
                               save_label="Save", cancel_label="Cancel", cls="") %}
-{% set target = swap_target or ("#" ~ (swap_id or "inline-edit-field")) %}
-<div id="{{ swap_id or "inline-edit-field" }}" class="chirpui-inline-edit chirpui-inline-edit--edit{{ " " ~ cls if cls else "" }}">
+{% set _id = check_required_id(swap_id, "inline-edit-field", "inline_edit_field_form") %}
+{% set target = swap_target or ("#" ~ _id) %}
+<div id="{{ _id }}" class="chirpui-inline-edit chirpui-inline-edit--edit{{ " " ~ cls if cls else "" }}">
     <form class="chirpui-inline-edit__form" method="post" action="{{ save_url }}"
           hx-post="{{ save_url }}"
           hx-target="{{ target }}"

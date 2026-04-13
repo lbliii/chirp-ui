@@ -1,21 +1,23 @@
 {#- chirp-ui: Button component. Use chirpui-btn with variants. Supports loading state for htmx.
-    Defaults to type="submit" for form use; pass type="button" for non-form actions.
+    Defaults to type="button" for safety; pass type="submit" explicitly for form submission.
 
-        {{ btn("Save", variant="primary") }}                → <button type="submit" ...>
-        {{ btn("Cancel", type="button") }}                  → <button type="button" ...>
-        {{ btn("View", href="/page") }}                     → <a ...>
+        {{ btn("Save", type="submit", variant="primary") }} → <button type="submit" ...>
+        {{ btn("Cancel") }}                                  → <button type="button" ...>
+        {{ btn("View", href="/page") }}                      → <a ...>
         {{ btn("Save", hx={"post": "/save", "target": "#r"}) }}  → shorthand for hx_post + hx_target
 -#}
 
 {% from "chirpui/spinner.html" import spinner %}
 
-{% def btn(label, variant="", size="", loading=false, type="submit", href=none, icon=none, cls="",
+{% def btn(label, variant="", size="", loading=false, type="button", href=none, icon=none, cls="",
            attrs="", attrs_map=none, hx=none, hx_get=none, hx_post=none, hx_put=none,
            hx_patch=none, hx_delete=none, hx_target=none, hx_swap=none,
            hx_trigger=none, hx_include=none, hx_select=none, hx_ext=none,
            hx_vals=none, disabled=false, data_action=none, aria_label=none) %}
 {% set _variant = variant | validate_variant_block("btn", "") %}
+{# @consumes _bar_density from: command_bar, filter_bar — falls back to "" #}
 {% set _bar_size = consume("_bar_density", "") %}
+{# @consumes _suspense_busy from: suspense_group — falls back to "" #}
 {% set _busy = consume("_suspense_busy", "") %}
 {% set _size = (size or _bar_size or "") | validate_size("btn", "") %}
 {% set _disabled = disabled or (_busy == "true") %}

@@ -15,7 +15,9 @@
 {% from "chirpui/badge.html" import badge %}
 
 {% def settings_row_list(hoverable=false, divided=false, relaxed=false, cls="") %}
+{# @consumes _surface_variant from: panel, surface — falls back to "" #}
 {% set _surface = consume("_surface_variant", "") %}
+{# @consumes _card_variant from: card — falls back to "" #}
 {% set _card = consume("_card_variant", "") %}
 {% set _ctx = _card or _surface %}
 {% set _on_ctx = " chirpui-settings-row-list--on-" ~ _ctx if _ctx and _ctx != "default" else "" %}

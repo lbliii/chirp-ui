@@ -5,7 +5,9 @@
 {% from "chirpui/action_strip.html" import action_strip %}
 
 {% def command_bar(surface_variant="default", density="sm", wrap="wrap", sticky=false, aria_label="Command bar", cls="") %}
+{# @provides _bar_surface — no consumers yet (reserved for future use) #}
 {% provide _bar_surface = surface_variant %}
+{# @provides _bar_density — consumed by: btn, icon_btn #}
 {% provide _bar_density = density %}
 {% call action_strip(surface_variant=surface_variant, density=density, wrap=wrap, sticky=sticky, role="toolbar", aria_label=aria_label, cls="chirpui-command-bar" ~ (" " ~ cls if cls else "")) %}
 {{ caller() }}

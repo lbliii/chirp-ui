@@ -17,7 +17,14 @@
     function safeSetItem(key, value) {
         try {
             window.localStorage.setItem(key, value);
-        } catch {}
+        } catch (e) {
+            console.warn(
+                'chirp-ui: localStorage write failed for key "' +
+                    key +
+                    '":',
+                e.message
+            );
+        }
     }
 
     function safeRemoveItem(key) {
@@ -103,7 +110,14 @@
         };
     }
 
+    var _registeredComponents = {};
+
     function register(name, factory) {
+        if (_registeredComponents[name]) {
+            return;
+        }
+        _registeredComponents[name] = true;
+
         if (window.Alpine && window.Alpine.version) {
             var reg = window.Alpine.safeData || window.Alpine.data;
             reg(name, factory);
@@ -128,19 +142,16 @@
     document.addEventListener(
         "alpine:init",
         function () {
-            try {
-                if (typeof window.Alpine.store("modals") === "undefined") {
+            if (
+                window.Alpine &&
+                typeof window.Alpine.store === "function"
+            ) {
+                if (!window.Alpine.store("modals")) {
                     window.Alpine.store("modals", {});
                 }
-            } catch {
-                window.Alpine.store("modals", {});
-            }
-            try {
-                if (typeof window.Alpine.store("trays") === "undefined") {
+                if (!window.Alpine.store("trays")) {
                     window.Alpine.store("trays", {});
                 }
-            } catch {
-                window.Alpine.store("trays", {});
             }
         },
         { once: true }

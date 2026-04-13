@@ -13,6 +13,7 @@ from kida.template import Markup
 from chirp_ui.filters import (
     _serialize_attr_value,
     build_hx_attrs,
+    check_required_id,
     contrast_text,
     make_route_link_attrs,
     resolve_color,
@@ -31,13 +32,25 @@ def _field_errors_stub(errors: Any, field_name: str) -> Sequence[str]:
 
     In production, this filter is provided by ``chirp.templating.filters``.
     For testing chirp-ui without Chirp, return an empty list so templates
-    render without errors.
+    render without errors.  Mirrors real filter: non-list values are coerced
+    to ``[str(val)]`` with a warning.
     """
     if errors is None:
         return []
-    if isinstance(errors, Mapping):
-        return errors.get(field_name, [])
-    return []
+    if not isinstance(errors, Mapping):
+        return []
+    val = errors.get(field_name)
+    if val is None:
+        return []
+    if isinstance(val, (list, tuple)):
+        return [str(x) for x in val]
+    _warn(
+        f"chirp-ui: field_errors expected list/tuple for field {field_name!r}, "
+        f"got {type(val).__name__}; wrapping as [str(val)]",
+        category=ChirpUIValidationWarning,
+        stacklevel=3,
+    )
+    return [str(val)]
 
 
 def _bem_stub(
@@ -209,6 +222,7 @@ def env() -> Environment:
         }
     )
     e.add_global("build_hx_attrs", build_hx_attrs)
+    e.add_global("check_required_id", check_required_id)
     e.add_global("route_link_attrs", make_route_link_attrs())
     e.add_global("island_attrs", _island_attrs_stub)
     e.add_global("primitive_attrs", _primitive_attrs_stub)

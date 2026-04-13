@@ -41,7 +41,9 @@
 {% end %}
 
 {% def filter_bar(action, method="get", attrs="", attrs_map=none, surface_variant="muted", density="sm", wrap="wrap", sticky=false, cls="") %}
+{# @provides _bar_surface — no consumers yet (reserved for future use) #}
 {% provide _bar_surface = surface_variant %}
+{# @provides _bar_density — consumed by: btn, icon_btn #}
 {% provide _bar_density = density %}
 {% call form(action, method=method, attrs=attrs, attrs_map=attrs_map, cls="chirpui-filter-bar__form") %}
 {% call action_strip(surface_variant=surface_variant, density=density, wrap=wrap, sticky=sticky, role="region", aria_label="Filter controls", cls="chirpui-filter-bar" ~ (" " ~ cls if cls else "")) %}

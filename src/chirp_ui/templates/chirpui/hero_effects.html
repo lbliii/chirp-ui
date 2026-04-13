@@ -24,6 +24,7 @@
 
 {% def hero_effects(effect="particles", variant="", cls="") %}
 {% set hero_cls = "chirpui-hero-effects " ~ cls if cls else "chirpui-hero-effects" %}
+{# @provides _hero_variant — consumed by: constellation, holy_light, meteor, particle_bg, rune_field, spotlight_card, symbol_rain #}
 {% provide _hero_variant = variant %}
 {% if effect == "particles" %}
     {% call particle_bg(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}

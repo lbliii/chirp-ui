@@ -44,6 +44,7 @@
     cls
 ] if c] %}
 {% let _inner_cls = "chirpui-site-header__inner" ~ (" chirpui-site-header__inner--" ~ layout if layout != "start" and layout != "split" else "") %}
+{# @provides _site_nav_current_path — consumed by: site_nav_link #}
 {% provide _site_nav_current_path = current_path %}
 <header class="{{ _outer_cls | join(' ') }}">
     <div class="{{ _inner_cls }}">
@@ -60,6 +61,7 @@
 {% end %}
 
 {% def site_nav_link(href, label, glyph="", external=false, match="", active=false, cls="") %}
+{# @consumes _site_nav_current_path from: site_header — falls back to "" #}
 {% set _cp = consume("_site_nav_current_path", "") if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <a class="chirpui-site-nav__link{{ " chirpui-site-nav__link--active" if _active else "" }}{{ " chirpui-site-nav__link--external" if external else "" }}{{ " " ~ cls if cls else "" }}"

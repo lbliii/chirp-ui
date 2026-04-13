@@ -29,6 +29,7 @@
 -#}
 
 {% def navbar(brand=none, brand_url="/", cls="", use_slots=false, brand_slot=false, current_path="") %}
+{# @provides _nav_current_path — consumed by: navbar_link, navbar_dropdown #}
 {% provide _nav_current_path = current_path %}
 <nav class="chirpui-navbar{{ " " ~ cls if cls else "" }}">
     {% if brand or brand_slot %}
@@ -53,6 +54,7 @@
 {% end %}
 
 {% def navbar_link(href, label, active=false, match="", cls="") %}
+{# @consumes _nav_current_path from: navbar — falls back to "" #}
 {% set _cp = (consume("_nav_current_path", "") or (current_path | default(""))) if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <a class="chirpui-navbar__link{{ " chirpui-navbar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
@@ -66,6 +68,7 @@
 {% end %}
 
 {% def navbar_dropdown(label, active=false, match="", href="", cls="") %}
+{# @consumes _nav_current_path from: navbar — falls back to "" #}
 {% set _cp = (consume("_nav_current_path", "") or (current_path | default(""))) if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <details class="chirpui-navbar-dropdown{{ " " ~ cls if cls else "" }}">

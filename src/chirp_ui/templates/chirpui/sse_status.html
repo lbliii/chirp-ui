@@ -31,6 +31,7 @@
 {% end %}
 
 {% def sse_retry(url, label="Retry", method="get", target="closest [hx-ext]", swap="outerHTML", cls="") %}
+{# @consumes _sse_state from: (external provider) — falls back to "" #}
 {% set _parent_state = consume("_sse_state", "") %}
 <button type="button"
         class="chirpui-sse-retry chirpui-btn chirpui-btn--sm{{ " " ~ cls if cls else "" }}"

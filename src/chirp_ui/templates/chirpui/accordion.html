@@ -16,6 +16,7 @@
 -#}
 
 {% def accordion(name="accordion", cls="") %}
+{# @provides _accordion_name — consumed by: accordion_item #}
 {% provide _accordion_name = name %}
 <div class="chirpui-accordion{{ " " ~ cls if cls else "" }}">
     {% slot %}
@@ -24,6 +25,7 @@
 {% end %}
 
 {% def accordion_item(title, open=false, name="", cls="") %}
+{# @consumes _accordion_name from: accordion — falls back to "accordion" if not in accordion context #}
 {% set _name = name if name else consume("_accordion_name", "accordion") %}
 <details class="chirpui-accordion__item{{ " " ~ cls if cls else "" }}"
          name="{{ _name }}"

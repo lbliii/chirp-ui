@@ -8,13 +8,14 @@
         avatar(src="/img/user.jpg", alt="Alice")
         avatar(src="/img/user.jpg", alt="Alice", size="lg", status="online")
         avatar(initials="AB", alt="Alice Brown")  # fallback when no src
+        avatar(src="/img/user.jpg", decorative=true)  # suppresses screen reader
 -#}
 
-{% def avatar(src=none, initials=none, alt="", size="md", status=none, cls="") %}
+{% def avatar(src=none, initials=none, alt="", size="md", status=none, decorative=false, cls="") %}
 {% set size_class = " chirpui-avatar--" ~ size if size else "" %}
 {% set status_class = " chirpui-avatar--" ~ status if status else "" %}
 <span class="chirpui-avatar{{ size_class }}{{ status_class }}{{ " " ~ cls if cls else "" }}"
-      role="img" aria-label="{{ alt or 'Avatar' }}">
+      {% if decorative %}role="presentation" aria-hidden="true"{% else %}role="img" aria-label="{{ alt or 'Avatar' }}"{% end %}>
     {% if src %}
     <img class="chirpui-avatar__img" src="{{ src }}" alt="{{ alt }}" loading="lazy">
     {% elif initials %}

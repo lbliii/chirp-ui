@@ -22,6 +22,7 @@
 -#}
 
 {% def timeline(items=none, hoverable=false, cls="") %}
+{# @consumes _surface_variant from: panel, surface — falls back to "" #}
 {% set _surface = consume("_surface_variant", "") %}
 {% set _on_surface = " chirpui-timeline--on-" ~ _surface if _surface and _surface != "default" else "" %}
 {% set hover_class = " chirpui-timeline--hoverable" if hoverable else "" %}

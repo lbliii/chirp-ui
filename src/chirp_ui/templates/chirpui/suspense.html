@@ -40,6 +40,7 @@
 {% end %}
 
 {% def suspense_group(cls="") %}
+{# @provides _suspense_busy — consumed by: btn, icon_btn #}
 {% provide _suspense_busy = "true" %}
 <div class="chirpui-suspense-group{{ " " ~ cls if cls else "" }}" aria-busy="true">
     {% slot %}

@@ -11,6 +11,7 @@
            hx_target=none, hx_swap=none, hx_trigger=none, hx_include=none,
            hx_select=none, hx_select_oob=none, hx_disabled_elt=none, hx_sync=none,
            hx_ext=none, hx_vals=none, hx_reset_on_success=none) %}
+{# @provides _form_density — consumed by: field_wrapper #}
 {% provide _form_density = density %}
 {#- hx_reset_on_success: when true, form resets after successful htmx response (2xx).
    Defaults to true when form has hx-post/put/patch/delete (via params or attrs_map).
@@ -55,6 +56,7 @@
 {% set _fid = field_id if field_id else "field-" ~ name %}
 {% set _eid = "errors-" ~ name %}
 {% set _has_errors = errors and errors | field_errors(name) %}
+{# @consumes _form_density from: form — falls back to "" #}
 {% set _density = consume("_form_density", "") %}
 <div id="{{ _fid }}" class="chirpui-field{{ " chirpui-field--" ~ modifier if modifier else "" }}{{ " chirpui-field--dense" if _density else "" }}{{ " chirpui-field--error" if _has_errors else "" }}"{% if oob %} hx-swap-oob="true"{% end %}>
     {% if label %}
@@ -767,11 +769,11 @@
 {% end %}
 
 {# Form actions — submit/cancel button row. Use align="end" for right-aligned.
-   btn() defaults to type="submit", so use it directly for form submission:
+   btn() defaults to type="button"; pass type="submit" explicitly for form submission:
 
        {% call form_actions(align="end") %}
-           {{ btn("Cancel", href="/back", type="button") }}
-           {{ btn("Save", variant="primary") }}
+           {{ btn("Cancel", href="/back") }}
+           {{ btn("Save", type="submit", variant="primary") }}
        {% end %}
 #}
 {% def form_actions(align="start", cls="") %}

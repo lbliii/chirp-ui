@@ -12,6 +12,7 @@
 -#}
 
 {% def divider(text=none, horizontal=false, variant="", cls="") %}
+{# @consumes _card_variant from: card, _surface_variant from: panel, surface — falls back to "" #}
 {% set _variant = variant if variant else consume("_card_variant", "") or consume("_surface_variant", "") %}
 {% set variant_class = " chirpui-divider--" ~ _variant if _variant else "" %}
 {% set horiz_class = " chirpui-divider--horizontal" if horizontal else "" %}

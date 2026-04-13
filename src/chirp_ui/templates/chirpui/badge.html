@@ -11,6 +11,7 @@
 -#}
 
 {% def badge(text, variant="primary", icon=none, cls="", color=none, fill="subtle", href=none) %}
+{# @consumes _card_variant from: card, _surface_variant from: panel, surface — falls back to "" #}
 {% set _inherited = consume("_card_variant", "") or consume("_surface_variant", "") %}
 {% set _variant = variant if variant != "primary" else (_inherited if _inherited else variant) %}
 {% set fill = fill | validate_variant(("subtle", "solid"), "subtle") %}

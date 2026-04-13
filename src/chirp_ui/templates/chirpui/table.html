@@ -82,6 +82,7 @@
                 </tr>
                 {% end %}
             {% else %}
+                {# @provides _table_align — consumed by: row #}
                 {% provide _table_align = align %}
                 {% slot %}
                 {% end %}
@@ -92,6 +93,7 @@
 {% end %}
 
 {% def row(*cells) %}
+{# @consumes _table_align from: data_table — falls back to none #}
 {% set _align = consume("_table_align") %}
 <tr class="chirpui-table__row">
     {% for cell in cells %}

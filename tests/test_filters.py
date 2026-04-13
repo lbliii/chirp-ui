@@ -308,10 +308,24 @@ class TestResolveStatusVariant:
 class TestFieldErrorsEdgeCases:
     """Edge cases for field_errors."""
 
-    def test_nested_dict_val_returns_empty(self) -> None:
-        # field_errors expects list/tuple of strings; dict val yields []
+    def test_nested_dict_val_warns_and_coerces(self) -> None:
+        """Non-list values (e.g. nested dicts from DRF) are coerced with a warning."""
         errors = {"field": {"nested": ["err"]}}
-        assert field_errors(errors, "field") == []
+        with pytest.warns(ChirpUIValidationWarning, match="expected list/tuple"):
+            result = field_errors(errors, "field")
+        assert result == [str({"nested": ["err"]})]
+
+    def test_string_val_warns_and_coerces(self) -> None:
+        """A bare string value is wrapped as a single-element list with a warning."""
+        with pytest.warns(ChirpUIValidationWarning, match="expected list/tuple"):
+            result = field_errors({"email": "invalid"}, "email")
+        assert result == ["invalid"]
+
+    def test_int_val_warns_and_coerces(self) -> None:
+        """Integer error codes are coerced to string with a warning."""
+        with pytest.warns(ChirpUIValidationWarning, match="expected list/tuple"):
+            result = field_errors({"code": 422}, "code")
+        assert result == ["422"]
 
     def test_non_dict_input_returns_empty(self) -> None:
         assert field_errors("not a dict", "x") == []
@@ -1061,6 +1075,40 @@ class TestBuildHxAttrs:
 
     def test_non_hx_keys_also_converted(self) -> None:
         result = build_hx_attrs(data_action="click->ctrl#method")
+        assert result == {"data-action": "click->ctrl#method"}
+
+    def test_warns_on_unknown_hx_attr_in_dict(self) -> None:
+        with pytest.warns(ChirpUIValidationWarning, match="unknown htmx attribute"):
+            result = build_hx_attrs(hx={"typo": "/url"})
+        assert result == {"hx-typo": "/url"}
+
+    def test_warns_on_unknown_hx_attr_in_kwargs(self) -> None:
+        with pytest.warns(ChirpUIValidationWarning, match="unknown htmx attribute"):
+            result = build_hx_attrs(hx_bogus="/url")
+        assert result == {"hx-bogus": "/url"}
+
+    def test_no_warning_on_known_attrs(self) -> None:
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", ChirpUIValidationWarning)
+            result = build_hx_attrs(hx={"post": "/save", "target": "#r", "swap": "innerHTML"})
+        assert "hx-post" in result
+
+    def test_no_warning_on_hx_on_event_handler(self) -> None:
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", ChirpUIValidationWarning)
+            result = build_hx_attrs(hx={"on:click": "alert(1)"})
+        assert result == {"hx-on:click": "alert(1)"}
+
+    def test_no_warning_on_non_hx_keys(self) -> None:
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", ChirpUIValidationWarning)
+            result = build_hx_attrs(data_action="click->ctrl#method")
         assert result == {"data-action": "click->ctrl#method"}
 
     def test_registered_as_global(self) -> None:
