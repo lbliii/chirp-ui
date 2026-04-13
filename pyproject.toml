@@ -32,7 +32,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "kida-templates>=0.4.0", # Template engine (error boundaries, scoped slots added in 0.4.0)
+    "kida-templates>=0.6.0", # Template engine (def introspection, strict_undefined, error fixes)
 ]
 
 [project.optional-dependencies]
