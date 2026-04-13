@@ -19,7 +19,7 @@ from pathlib import Path
 from kida import PackageLoader
 
 from chirp_ui.components import design_system_report
-from chirp_ui.filters import TemplateFilterApp, register_colors
+from chirp_ui.filters import TemplateFilterApp, register_colors, reset_colors
 from chirp_ui.validation import (
     ChirpUIDeprecationWarning,
     ChirpUIValidationWarning,
@@ -42,6 +42,7 @@ __all__ = [
     "is_strict",
     "register_colors",
     "register_filters",
+    "reset_colors",
     "set_strict",
     "static_path",
 ]

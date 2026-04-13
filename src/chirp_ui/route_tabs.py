@@ -21,8 +21,11 @@ def tab_is_active(tab: dict | object, current_path: str) -> bool:
     """Return True when tab matches current_path.
 
     Tab must have href. Optionally has match: "exact" | "prefix".
+    Returns False when href is empty (prevents prefix match against all paths).
     """
     href = _get_attr(tab, "href")
+    if not href:
+        return False
     match = _get_attr(tab, "match") or "exact"
     if match == "prefix":
         return current_path == href or current_path.startswith(href + "/")

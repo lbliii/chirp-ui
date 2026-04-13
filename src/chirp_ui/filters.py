@@ -20,6 +20,7 @@ __all__ = [
     "icon",
     "make_route_link_attrs",
     "register_colors",
+    "reset_colors",
     "resolve_color",
     "resolve_status_variant",
     "sanitize_color",
@@ -74,6 +75,12 @@ def _named_color_map() -> dict[str, str]:
     return dict(d) if d else {}
 
 
+def reset_colors() -> None:
+    """Clear all registered semantic color names for the current context."""
+    _chirpui_named_colors.set(None)
+    _chirpui_named_colors_lower.set(None)
+
+
 def register_colors(mapping: Mapping[str, str]) -> None:
     """Register semantic color names (e.g. Pokémon types) for :func:`resolve_color`.
 
@@ -82,8 +89,12 @@ def register_colors(mapping: Mapping[str, str]) -> None:
     """
     base = _named_color_map()
     for k, v in mapping.items():
-        key = str(k).strip()
-        val = str(v).strip()
+        if not isinstance(k, str):
+            raise TypeError(f"chirp-ui: register_colors key must be str, got {type(k).__name__}: {k!r}")
+        if not isinstance(v, str):
+            raise TypeError(f"chirp-ui: register_colors value must be str, got {type(v).__name__}: {v!r}")
+        key = k.strip()
+        val = v.strip()
         if val and sanitize_color(val) is None:
             raise ValueError(f"chirp-ui: invalid color value {val!r} for key {key!r}")
         base[key] = val
@@ -466,6 +477,7 @@ def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]
 
 
 STATUS_WORDS: dict[str, str] = {
+    # success
     "ok": "success",
     "yes": "success",
     "configured": "success",
@@ -476,12 +488,23 @@ STATUS_WORDS: dict[str, str] = {
     "active": "success",
     "enabled": "success",
     "connected": "success",
+    # warning
+    "warning": "warning",
+    "degraded": "warning",
+    "pending": "warning",
+    # error
     "error": "error",
     "issues": "error",
     "failed": "error",
     "offline": "error",
     "disabled": "error",
     "disconnected": "error",
+    # info
+    "info": "info",
+    # muted
+    "inactive": "muted",
+    "unknown": "muted",
+    "none": "muted",
 }
 
 

@@ -263,7 +263,7 @@ class TestResolveStatusVariant:
 
     def test_custom_default(self) -> None:
         with pytest.warns(ChirpUIValidationWarning):
-            result = resolve_status_variant("unknown", default="info")
+            result = resolve_status_variant("unrecognized-xyz", default="info")
         assert result == "info"
 
     def test_extensible_via_status_words(self) -> None:
