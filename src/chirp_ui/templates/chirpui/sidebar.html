@@ -31,6 +31,7 @@
 {% from "chirpui/shell_frame.html" import shell_outlet_attrs %}
 
 {% def sidebar(cls="", current_path="") %}
+{# @provides _nav_current_path — consumed by: sidebar_link #}
 {% provide _nav_current_path = current_path %}
 <nav class="chirpui-sidebar{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-sidebar__header">{% slot header %}</div>
@@ -57,6 +58,7 @@
 {% end %}
 
 {% def sidebar_link(href, label, icon="", active=false, match="", boost=true, cls="") %}
+{# @consumes _nav_current_path from: sidebar — falls back to "" #}
 {% set _cp = (consume("_nav_current_path", "") or (current_path | default(""))) if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <a class="chirpui-sidebar__link{{ " chirpui-sidebar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"

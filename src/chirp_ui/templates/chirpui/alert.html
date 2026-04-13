@@ -24,6 +24,7 @@
 -#}
 
 {% def alert(variant="info", dismissible=false, icon=none, title=none, cls="", collapsible=false, open=true) %}
+{# @consumes _card_variant from: card — falls back to "" if not in card context #}
 {% set _variant = variant if variant != "info" else (consume("_card_variant", "") or variant) %}
 {% set alert_class = "alert" | bem(variant=_variant, cls=cls) %}
 {% if collapsible %}

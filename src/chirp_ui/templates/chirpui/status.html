@@ -9,6 +9,7 @@
 -#}
 
 {% def status_indicator(label, variant="", icon=none, pulse=false, cls="", color=none) %}
+{# @consumes _surface_variant from: panel, surface — falls back to "" #}
 {% set _surface = consume("_surface_variant", "") %}
 {% set _on_surface = " chirpui-status-indicator--on-" ~ _surface if _surface and _surface != "default" else "" %}
 {% set resolved = color | resolve_color %}

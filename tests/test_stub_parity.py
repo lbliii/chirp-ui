@@ -24,6 +24,7 @@ from chirp_ui.filters import (
     validate_variant,
     validate_variant_block,
 )
+from chirp_ui.validation import ChirpUIValidationWarning
 
 _conftest_path = Path(__file__).parent / "conftest.py"
 _spec = importlib.util.spec_from_file_location("_conftest", _conftest_path)
@@ -247,12 +248,28 @@ class TestFieldErrorsParity:
             ({"name": ["required"]}, "name"),
             ({"name": ["required"]}, "email"),
             (OrderedDict([("name", ["err"])]), "name"),
+            ({"name": {"nested": "err"}}, "name"),
+            ({"name": "single"}, "name"),
+            ({"name": 42}, "name"),
         ],
-        ids=["none", "empty-dict", "has-errors", "missing-field", "ordered-dict"],
+        ids=[
+            "none",
+            "empty-dict",
+            "has-errors",
+            "missing-field",
+            "ordered-dict",
+            "nested-dict",
+            "bare-string",
+            "int-value",
+        ],
     )
     def test_parity(self, errors: Any, field: str) -> None:
-        real = field_errors(errors, field)
-        stub = _field_errors_stub(errors, field)
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", ChirpUIValidationWarning)
+            real = field_errors(errors, field)
+            stub = _field_errors_stub(errors, field)
         assert list(real) == list(stub), (
             f"Divergence for ({errors!r}, {field!r}): real={real!r}, stub={stub!r}"
         )

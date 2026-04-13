@@ -14,6 +14,7 @@
 -#}
 
 {% def symbol_rain(count=6, variant="", cls="") %}
+{# @consumes _hero_variant from: hero_effects — falls back to "" #}
 {% set _variant = (variant if variant else consume("_hero_variant", "")) | validate_variant(("", "default", "accent", "gold", "muted"), "") %}
 {% set variant_class = " chirpui-symbol-rain--" ~ _variant if _variant else "" %}
 {% set glyphs = ["◇", "★", "✦", "⚡︎", "●", "◎", "⊞", "⚙", "◉", "⛓"] %}

@@ -14,6 +14,7 @@
 -#}
 
 {% def holy_light(intensity="", variant="", cls="") %}
+{# @consumes _hero_variant from: hero_effects — falls back to "" #}
 {% set _variant = (variant if variant else consume("_hero_variant", "")) | validate_variant(("", "default", "gold", "silver", "holy"), "") %}
 {% set intensity = intensity | validate_variant(("", "default", "subtle", "intense"), "") %}
 {% set variant_class = " chirpui-holy-light--" ~ _variant if _variant else "" %}

@@ -19,6 +19,7 @@
 -#}
 
 {% def callout(variant="info", title=none, icon=none, cls="") %}
+{# @consumes _surface_variant from: panel, surface — falls back to "" #}
 {% set _surface = consume("_surface_variant", "") %}
 {% set _on_surface = " chirpui-callout--on-" ~ _surface if _surface and _surface != "default" else "" %}
 <aside class="chirpui-callout chirpui-callout--{{ variant }}{{ _on_surface }}{{ " " ~ cls if cls else "" }}">

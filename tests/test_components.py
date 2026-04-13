@@ -9,7 +9,10 @@ Each test verifies:
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
+import pytest
 from kida import Environment
+
+from chirp_ui.validation import ChirpUIValidationWarning
 
 
 @dataclass(frozen=True, slots=True)
@@ -1277,6 +1280,22 @@ class TestButton:
         assert "Click me" in html
         assert "chirpui-btn__label" in html
         assert "<button" in html
+
+    def test_btn_defaults_to_type_button(self, env: Environment) -> None:
+        """btn() defaults to type='button' to prevent accidental form submission."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}{{ btn("Click") }}'
+        ).render()
+        assert 'type="button"' in html
+        assert 'type="submit"' not in html
+
+    def test_btn_explicit_type_submit(self, env: Environment) -> None:
+        """Explicit type='submit' is preserved for form submission buttons."""
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Save", type="submit", variant="primary") }}'
+        ).render()
+        assert 'type="submit"' in html
 
     def test_btn_primary(self, env: Environment) -> None:
         html = env.from_string(
@@ -2615,6 +2634,19 @@ class TestPagination:
             ' url_pattern="/p?page={page}") }}'
         ).render()
         assert "chirpui-pagination__link--disabled" in html
+        assert "<button" in html
+        assert "disabled" in html
+        assert 'aria-label="Previous page"' in html
+
+    def test_pagination_next_disabled_on_last(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/pagination.html" import pagination %}'
+            "{{ pagination(current=3, total=3,"
+            ' url_pattern="/p?page={page}") }}'
+        ).render()
+        assert "<button" in html
+        assert "disabled" in html
+        assert 'aria-label="Next page"' in html
 
     def test_pagination_with_htmx(self, env: Environment) -> None:
         html = env.from_string(
@@ -4195,6 +4227,34 @@ class TestDashboardPrimitives:
         assert 'value="Bob"' in html
         assert 'action="/save"' in html
 
+    def test_inline_edit_display_warns_without_swap_id(self, env: Environment) -> None:
+        """Missing swap_id emits a validation warning about ID collision risk."""
+        with pytest.warns(ChirpUIValidationWarning, match="no explicit id provided"):
+            env.from_string(
+                '{% from "chirpui/inline_edit_field.html" import inline_edit_field_display %}'
+                '{{ inline_edit_field_display(value="X", edit_url="/e") }}'
+            ).render()
+
+    def test_inline_edit_form_warns_without_swap_id(self, env: Environment) -> None:
+        """Missing swap_id on form macro also warns."""
+        with pytest.warns(ChirpUIValidationWarning, match="no explicit id provided"):
+            env.from_string(
+                '{% from "chirpui/inline_edit_field.html" import inline_edit_field_form %}'
+                '{{ inline_edit_field_form(name="n", value="v", save_url="/s", cancel_url="/c") }}'
+            ).render()
+
+    def test_inline_edit_no_warning_with_swap_id(self, env: Environment) -> None:
+        """Explicit swap_id suppresses the warning."""
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", ChirpUIValidationWarning)
+            html = env.from_string(
+                '{% from "chirpui/inline_edit_field.html" import inline_edit_field_display %}'
+                '{{ inline_edit_field_display(value="X", edit_url="/e", swap_id="my-field") }}'
+            ).render()
+        assert 'id="my-field"' in html
+
     def test_row_actions(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/row_actions.html" import row_actions %}'
@@ -5323,6 +5383,23 @@ class TestAvatar:
         ).render()
         assert "chirpui-avatar--lg" in html
 
+    def test_avatar_default_has_role_img(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/avatar.html" import avatar %}{{ avatar(src="/a.jpg", alt="Alice") }}'
+        ).render()
+        assert 'role="img"' in html
+        assert 'aria-label="Alice"' in html
+
+    def test_avatar_decorative_suppresses_role_img(self, env: Environment) -> None:
+        """decorative=true renders role="presentation" and aria-hidden for screen reader suppression."""
+        html = env.from_string(
+            '{% from "chirpui/avatar.html" import avatar %}'
+            '{{ avatar(src="/a.jpg", decorative=true) }}'
+        ).render()
+        assert 'role="presentation"' in html
+        assert 'aria-hidden="true"' in html
+        assert 'role="img"' not in html
+
 
 # ---------------------------------------------------------------------------
 # Video Card
@@ -5841,6 +5918,7 @@ class TestNotificationDot:
         assert "chirpui-notification-dot" in html
         assert "chirpui-notification-dot__dot" in html
         assert "chirpui-notification-dot__ping" in html
+        assert 'aria-label="notification"' in html
 
     def test_count(self, env: Environment) -> None:
         html = env.from_string(
@@ -5848,6 +5926,22 @@ class TestNotificationDot:
             "{% call notification_dot(count=5) %}<span>Mail</span>{% end %}"
         ).render()
         assert "5" in html
+        assert 'aria-label="5 notifications"' in html
+
+    def test_count_singular(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/notification_dot.html" import notification_dot %}'
+            "{% call notification_dot(count=1) %}<span>Mail</span>{% end %}"
+        ).render()
+        assert 'aria-label="1 notification"' in html
+        assert "notifications" not in html
+
+    def test_custom_aria_label(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/notification_dot.html" import notification_dot %}'
+            '{% call notification_dot(count=5, aria_label="5 unread") %}<span>Mail</span>{% end %}'
+        ).render()
+        assert 'aria-label="5 unread"' in html
 
 
 class TestOobHelpers:

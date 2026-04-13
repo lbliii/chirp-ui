@@ -28,8 +28,8 @@
            {% end %}
            aria-label="Previous page">&laquo;</a>
     {% else %}
-        <span class="chirpui-pagination__link chirpui-pagination__prev chirpui-pagination__link--disabled"
-              aria-disabled="true">&laquo;</span>
+        <button type="button" class="chirpui-pagination__link chirpui-pagination__prev chirpui-pagination__link--disabled"
+                disabled aria-label="Previous page">&laquo;</button>
     {% end %}
 
     {# Page numbers #}
@@ -73,8 +73,8 @@
            {% end %}
            aria-label="Next page">&raquo;</a>
     {% else %}
-        <span class="chirpui-pagination__link chirpui-pagination__next chirpui-pagination__link--disabled"
-              aria-disabled="true">&raquo;</span>
+        <button type="button" class="chirpui-pagination__link chirpui-pagination__next chirpui-pagination__link--disabled"
+                disabled aria-label="Next page">&raquo;</button>
     {% end %}
 </nav>
 {% end %}

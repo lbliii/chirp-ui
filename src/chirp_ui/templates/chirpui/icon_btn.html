@@ -10,7 +10,9 @@
 
 {% def icon_btn(icon, variant="", size="", href=none, aria_label="", disabled=false, type="button", cls="",
                 hx=none, hx_get=none, hx_post=none, hx_target=none, hx_swap=none) %}
+{# @consumes _bar_density from: command_bar, filter_bar — falls back to "" #}
 {% set _bar_size = consume("_bar_density", "") %}
+{# @consumes _suspense_busy from: suspense_group — falls back to "" #}
 {% set _busy = consume("_suspense_busy", "") %}
 {% set _variant = variant | validate_variant(("", "default", "primary", "ghost", "danger"), "") %}
 {% set _size = (size or _bar_size or "") | validate_variant(("", "sm", "md", "lg"), "") %}

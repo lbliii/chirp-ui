@@ -27,6 +27,7 @@
 -#}
 
 {% def card(title=none, subtitle=none, footer=none, collapsible=false, open=false, variant="", icon=none, border_variant="", header_variant="", cls="", hoverable=false, attrs="", attrs_map=none) %}
+{# @provides _card_variant — consumed by: alert, badge, divider, settings_row #}
 {% provide _card_variant = variant %}
 {% let _card_mods = (["collapsible"] if collapsible else []) + (["gradient-border"] if border_variant == "gradient" else []) + (["gradient-header"] if header_variant == "gradient" else []) + (["hoverable"] if hoverable else []) %}
 {% let _card_class = "card" | bem(variant=variant, modifier=_card_mods, cls=cls) %}

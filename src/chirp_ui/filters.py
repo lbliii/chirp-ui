@@ -14,6 +14,7 @@ from pathlib import PurePath
 __all__ = [
     "bem",
     "build_hx_attrs",
+    "check_required_id",
     "contrast_text",
     "field_errors",
     "html_attrs",
@@ -469,6 +470,9 @@ def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]
     """Extract error messages for a field from a ValidationError-style dict.
 
     Returns empty list if errors is None, not a dict, or field has no errors.
+    Expects ``errors[field_name]`` to be a list or tuple of strings.
+    Non-list values (e.g. nested dicts from DRF/Pydantic) are coerced to
+    ``[str(val)]`` with a :class:`~chirp_ui.validation.ChirpUIValidationWarning`.
     """
     if errors is None or not isinstance(errors, Mapping):
         return []
@@ -477,7 +481,14 @@ def field_errors(errors: dict[str, object] | None, field_name: str) -> list[str]
         return []
     if isinstance(val, (list, tuple)):
         return [str(x) for x in val]
-    return []
+    # Non-list, non-None value — coerce to single-element list with warning
+    _warn(
+        f"chirp-ui: field_errors expected list/tuple for field {field_name!r}, "
+        f"got {type(val).__name__}; wrapping as [str(val)]",
+        category=ChirpUIValidationWarning,
+        stacklevel=3,
+    )
+    return [str(val)]
 
 
 STATUS_WORDS: dict[str, str] = {
@@ -530,6 +541,59 @@ def resolve_status_variant(status: str, default: str = "muted") -> str:
     return default
 
 
+_KNOWN_HX_ATTRS: frozenset[str] = frozenset(
+    {
+        "hx-boost",
+        "hx-confirm",
+        "hx-delete",
+        "hx-disable",
+        "hx-disabled-elt",
+        "hx-disinherit",
+        "hx-encoding",
+        "hx-ext",
+        "hx-get",
+        "hx-headers",
+        "hx-history",
+        "hx-history-elt",
+        "hx-include",
+        "hx-indicator",
+        "hx-inherit",
+        "hx-params",
+        "hx-patch",
+        "hx-post",
+        "hx-preserve",
+        "hx-prompt",
+        "hx-push-url",
+        "hx-put",
+        "hx-replace-url",
+        "hx-request",
+        "hx-select",
+        "hx-select-oob",
+        "hx-swap",
+        "hx-swap-oob",
+        "hx-sync",
+        "hx-target",
+        "hx-trigger",
+        "hx-validate",
+        "hx-vals",
+    }
+)
+
+
+def _check_hx_key(key: str) -> None:
+    """Warn if *key* is not a known htmx attribute (ignoring ``hx-on:*`` event handlers)."""
+    if key in _KNOWN_HX_ATTRS:
+        return
+    if key.startswith(("hx-on:", "hx-on-")):
+        return  # dynamic event handlers are valid
+    _warn(
+        f"chirp-ui: unknown htmx attribute {key!r}; "
+        f"check for typos or add to _KNOWN_HX_ATTRS if this is a custom extension",
+        category=ChirpUIValidationWarning,
+        stacklevel=4,
+    )
+
+
 def build_hx_attrs(hx: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
     """Build a dict of hyphenated HTML attributes from keyword arguments.
 
@@ -539,6 +603,10 @@ def build_hx_attrs(hx: dict[str, Any] | None = None, **kwargs: Any) -> dict[str,
     Accepts an optional ``hx`` dict whose keys are the short htmx names
     (e.g. ``{"post": "/save", "target": "#out"}`` → ``hx-post``, ``hx-target``).
     Individual ``hx_*`` kwargs override keys from the ``hx`` dict.
+
+    Emits :class:`~chirp_ui.validation.ChirpUIValidationWarning` for
+    unrecognized htmx attribute names (possible typos).  Event handlers
+    (``hx-on:*``) and non-``hx-`` keys pass through without warning.
     """
     merged: dict[str, Any] = {}
     if hx:
@@ -548,12 +616,36 @@ def build_hx_attrs(hx: dict[str, Any] | None = None, **kwargs: Any) -> dict[str,
             key = k.replace("_", "-")
             if not key.startswith("hx-"):
                 key = f"hx-{key}"
+            _check_hx_key(key)
             merged[key] = v
     for k, v in kwargs.items():
         if v is None:
             continue
-        merged[k.replace("_", "-")] = v
+        key = k.replace("_", "-")
+        if key.startswith("hx-"):
+            _check_hx_key(key)
+        merged[key] = v
     return merged
+
+
+def check_required_id(value: str | None, fallback: str, component: str = "") -> str:
+    """Return *value* if provided, else *fallback* with a validation warning.
+
+    Use in macros where a hardcoded fallback ID would cause collisions
+    if multiple instances appear on the same page::
+
+        {% set _id = check_required_id(swap_id, "inline-edit-field", "inline_edit_field") %}
+    """
+    if value:
+        return value
+    label = f" in {component}()" if component else ""
+    _warn(
+        f"chirp-ui: no explicit id provided{label}; "
+        f"using fallback {fallback!r} — multiple instances will collide",
+        category=ChirpUIValidationWarning,
+        stacklevel=4,
+    )
+    return fallback
 
 
 def _is_internal_href(href: str) -> bool:
@@ -699,6 +791,7 @@ def register_filters(app: TemplateFilterApp) -> None:
         )
         tg("tab_is_active")(tab_is_active)
         tg("build_hx_attrs")(build_hx_attrs)
+        tg("check_required_id")(check_required_id)
         tg("route_link_attrs")(make_route_link_attrs())
     else:
         warnings.warn(

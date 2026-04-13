@@ -6693,6 +6693,12 @@ a.chirpui-tag:active {
     background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
 }
 
+button.chirpui-pagination__link {
+    background: none;
+    font: inherit;
+    line-height: inherit;
+}
+
 .chirpui-pagination__link--disabled {
     opacity: 0.4;
     cursor: default;
