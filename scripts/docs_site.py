@@ -7,8 +7,6 @@ source path to ``chirp-ui/site`` and gives local preview commands a clean asset
 baseline before the dev server starts watching for changes.
 """
 
-from __future__ import annotations
-
 import os
 import subprocess
 import sys

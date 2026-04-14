@@ -14,8 +14,15 @@ Downstream consumers:
 """
 
 from dataclasses import dataclass
+from typing import TypedDict
 
-__all__ = ["COMPONENTS", "ComponentDescriptor", "design_system_report"]
+__all__ = [
+    "COMPONENTS",
+    "ComponentDescriptor",
+    "DesignSystemReport",
+    "DesignSystemStats",
+    "design_system_report",
+]
 
 
 @dataclass(frozen=True, slots=True)
@@ -1750,7 +1757,24 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
 }
 
 
-def design_system_report() -> dict[str, object]:
+class DesignSystemStats(TypedDict):
+    """Aggregate counts for the design system surface."""
+
+    total_components: int
+    total_tokens: int
+    component_categories: dict[str, int]
+    token_categories: dict[str, int]
+
+
+class DesignSystemReport(TypedDict):
+    """Machine-readable summary of the chirp-ui design system surface."""
+
+    components: dict[str, dict[str, object]]
+    tokens: dict[str, dict[str, str]]
+    stats: DesignSystemStats
+
+
+def design_system_report() -> DesignSystemReport:
     """Machine-readable summary of the full chirp-ui design system surface.
 
     Returns a dict with ``"components"`` keyed by block name,

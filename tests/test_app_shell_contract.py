@@ -1,7 +1,5 @@
 """Smoke checks for Chirp UI app shell HTMX contract (no Chirp runtime required)."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 APP_SHELL = (

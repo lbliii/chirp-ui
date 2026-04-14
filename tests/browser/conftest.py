@@ -4,8 +4,6 @@ Starts a real Chirp app on a random port for the test session,
 provides a fresh Playwright page per test.
 """
 
-from __future__ import annotations
-
 import socket
 import threading
 import time

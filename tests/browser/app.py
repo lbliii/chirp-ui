@@ -5,8 +5,6 @@ hx-boost, Alpine.js, and all the runtime machinery that production apps use.
 Each route exercises a specific nesting/interaction pattern.
 """
 
-from __future__ import annotations
-
 import os
 
 from chirp import App, AppConfig

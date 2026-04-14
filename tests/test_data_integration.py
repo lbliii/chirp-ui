@@ -3,8 +3,6 @@
 Requires chirp (pip install chirp or uv sync --group showcase).
 """
 
-from __future__ import annotations
-
 import sys
 from pathlib import Path
 
