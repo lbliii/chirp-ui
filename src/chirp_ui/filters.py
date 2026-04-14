@@ -772,6 +772,20 @@ def html_attrs(value: Any) -> str | Markup:
     return Markup(f" {text}") if not text.startswith(" ") else Markup(text)
 
 
+def shell_action_btn_variant(variant: str) -> str:
+    """Map Chirp ``ShellAction`` / ``ShellMenuItem`` variants to chirp-ui ``btn`` variants.
+
+    Chirp uses ``default`` and ``secondary``; :func:`btn` uses ``""`` (neutral) and
+    ``ghost`` for secondary chrome. See ``ShellActionVariant`` in ``chirp.pages.shell_actions``.
+    """
+
+    if variant == "default":
+        return ""
+    if variant == "secondary":
+        return "ghost"
+    return variant
+
+
 def register_filters(app: TemplateFilterApp) -> None:
     """Register chirp-ui filters and globals on a Chirp app.
 
@@ -800,6 +814,7 @@ def register_filters(app: TemplateFilterApp) -> None:
     app.template_filter("contrast_text")(contrast_text)
     app.template_filter("resolve_color")(resolve_color)
     app.template_filter("resolve_status_variant")(resolve_status_variant)
+    app.template_filter("shell_action_btn_variant")(shell_action_btn_variant)
     if hasattr(app, "template_global"):
         from chirp_ui.route_tabs import tab_is_active
 

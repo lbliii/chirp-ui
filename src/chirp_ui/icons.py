@@ -13,6 +13,7 @@ ICON_REGISTRY: dict[str, str] = {
     "add": "+",
     "refresh": "↻",
     "search": "⌕",
+    "chevron-down": "▾",
     "arrow": "▸",
     "migrate": "▸",
     "config": "▸",
