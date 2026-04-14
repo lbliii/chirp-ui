@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.4.0] - 2026-04-13
+
+### Added
+
+- Context-aware theming: `timeline`, `callout`, `status_indicator`, and `settings_row_list` now automatically adapt their visual treatment when nested inside `surface()` or `card()` containers via `--on-<surface>` CSS modifier classes. ([#context-aware-theming](https://github.com/lbliii/chirp-ui/issues/context-aware-theming))
+- ComponentDescriptor coverage: added 101 new descriptors to `COMPONENTS` registry (199 total), plus a test gate ensuring every template has a descriptor or is explicitly excluded. ([#descriptor-coverage](https://github.com/lbliii/chirp-ui/issues/descriptor-coverage))
+- New composite components: `install_snippet` (command + copy button), `filter_row` (lightweight inline filter form), `tag_browse` (tray + badges for tag-filtered listings), and `settings_row` (label + status badge + detail). ([#new-composites](https://github.com/lbliii/chirp-ui/issues/new-composites))
+- Sharp-edges audit: normalized variant/size defaults to empty strings, added `hx={}` dict shorthand to `btn`/`icon_btn`/`form`, filled 53 missing CSS tokens, migrated `overflow: hidden` → `overflow: clip`, wrapped `localStorage` in try/catch, aligned test stubs with real filters (43 parity tests), and documented all 195 templates in `COMPONENT-OPTIONS.md`. ([#sharp-edges-audit](https://github.com/lbliii/chirp-ui/issues/sharp-edges-audit))
+- 10 reusable SVG pattern tiles under `templates/patterns/` with matching `--chirpui-pattern-*` tokens and `.chirpui-texture` / `.chirpui-texture--*` overlay utilities.
+
+  CSS-only gradient patterns: `--chirpui-bg-pattern-base` / `--chirpui-bg-pattern-ink` / `--chirpui-bg-pattern-ink-accent`, `.chirpui-bg-pattern--*` (dots, grid, diag, crosshatch, weave, accent-dots), `.chirpui-band` + `--pattern-dots` / `--pattern-grid`, full-page `.chirpui-ambient` + `.chirpui-ambient-root`, and `.chirpui-surface--noise-overlay` / `--static-overlay` for card grain and scan-line texture. ([#svg-pattern-tiles](https://github.com/lbliii/chirp-ui/issues/svg-pattern-tiles))
+- Migrated 5 composite templates from double-nesting `{% slot %}` workaround to kida's `{% yield %}` directive: `layout.html`, `workspace_shell.html`, `file_tree.html`, `empty_panel_state.html`, `document_header.html`. ([#yield-migration](https://github.com/lbliii/chirp-ui/issues/yield-migration))
+- Sharp-edges phase 2: renamed colliding macros (`segmented_control` → `segmented_control_field`, `tab` → `tab_button`), `bem()` now strips invalid modifiers, `contrast_text()` warns on unparseable colors, added `is_strict()`/`reset_colors()` APIs, added `--chirpui-z-*`/`--chirpui-anim-*` tokens and replaced 114 hardcoded CSS values with token references, expanded `STATUS_WORDS` to 25 entries, and guarded `tab_is_active()` against empty href. ([#sharp-edges-phase2](https://github.com/lbliii/chirp-ui/issues/sharp-edges-phase2))
+- Sharp-edges phase 3: `btn()` defaults to `type="button"` (prevents accidental form submits), `inline_edit_field` warns on missing `swap_id` via `check_required_id()`, `build_hx_attrs()` validates attribute names against known htmx attrs, `field_errors()` warns and coerces non-list values, pagination disabled states use `<button disabled>` instead of `<span aria-disabled>`, avatar gains `decorative` mode, notification dot pluralizes aria-label, Alpine `register()` gets idempotency guard, store init checks existence before overwriting, `safeSetItem()` logs storage failures, and 44 `@provides`/`@consumes` annotations document every provide/consume contract inline. ([#sharp-edges-phase3](https://github.com/lbliii/chirp-ui/issues/sharp-edges-phase3))
+- Sharp-edges phase 4: standardize slot naming across container components (`footer` param→slot in card, `actions` canonical in alert/empty/hero/profile_header with backward-compat aliases), rename `attrs` → `attrs_unsafe` across 37 macros with deprecation warning, promote `hx={}` dict in all macro docstrings and new `HTMX-PATTERNS.md` guide, refactor neumorphic CSS from 102 → 44 selectors via `@layer chirpui-theme` + gradient tokens + `:is()` consolidation, add `assert_element()` structural test helper with 29 new tests for top-20 components, and create `docs/INDEX.md` navigation index with consolidated `docs/LAYOUT.md`. ([#sharp-edges-phase4](https://github.com/lbliii/chirp-ui/issues/sharp-edges-phase4))
+
+### Fixed
+
+- Add global CSS reset (`box-sizing: border-box`, `body { margin: 0 }`), fix `vh` → `dvh` on modals/drawers/dropdowns for mobile, add `:focus-visible` to tabs/accordion/collapse/segmented, fix neumorphic dark-mode shadow visibility, fix confetti layout thrash, raise toast z-index above sticky headers, add `@supports` guard on site-header glass, add scroll-anchor support for sticky navbar/site-header, and prefer `Alpine.safeData` for htmx compatibility. ([#css-hardening](https://github.com/lbliii/chirp-ui/issues/css-hardening))
+- Added missing `chirpui-font-medium` CSS utility (font-weight: 500), used by `settings_row` and `config_row` templates. ([#font-medium-utility](https://github.com/lbliii/chirp-ui/issues/font-medium-utility))
+- Muted color-mix tokens (`--chirpui-*-muted`) now derive from `var(--chirpui-surface)` instead of bare `white`, fixing near-white backgrounds in dark mode. ([#muted-dark-mode](https://github.com/lbliii/chirp-ui/issues/muted-dark-mode))
+- Tray overlay now includes static `aria-hidden="true"` for pre-Alpine hydration, preventing screen readers from seeing closed tray content during the hydration gap. ([#tray-aria-hidden](https://github.com/lbliii/chirp-ui/issues/tray-aria-hidden))
+
+
 ## [0.3.0] — 2026-04-10
 
 ### Added

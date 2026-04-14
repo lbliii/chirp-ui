@@ -1,1 +1,0 @@
-New composite components: `install_snippet` (command + copy button), `filter_row` (lightweight inline filter form), `tag_browse` (tray + badges for tag-filtered listings), and `settings_row` (label + status badge + detail).
