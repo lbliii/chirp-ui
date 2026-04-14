@@ -1,0 +1,1 @@
+**Shell actions** — Map Chirp ``ShellAction``/``ShellMenuItem`` variants (``default``, ``secondary``) to ``btn`` variants via new ``shell_action_btn_variant`` filter; register ``chevron-down`` in the icon set; overflow trigger uses ``ghost`` + named chevron icon. Test ``env`` fixture registers the filter for standalone Kida renders.
