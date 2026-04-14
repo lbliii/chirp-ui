@@ -31,7 +31,7 @@ from chirp_ui.validation import (
 # Declare free-threading support (PEP 703)
 _Py_mod_gil = 0
 
-__version__ = "0.3.1"
+__version__ = "0.4.0"
 
 __all__ = [
     "ChirpUIDeprecationWarning",
