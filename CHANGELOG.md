@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Packaged Bengal theme (`bengal_themes.chirp_theme`) with standalone CSS, templates, and assets — registered as `chirp-theme` entry point for Bengal's theme registry. ([#bengal-theme](https://github.com/lbliii/chirp-ui/issues/bengal-theme))
 - Context-aware theming: `timeline`, `callout`, `status_indicator`, and `settings_row_list` now automatically adapt their visual treatment when nested inside `surface()` or `card()` containers via `--on-<surface>` CSS modifier classes. ([#context-aware-theming](https://github.com/lbliii/chirp-ui/issues/context-aware-theming))
 - ComponentDescriptor coverage: added 101 new descriptors to `COMPONENTS` registry (199 total), plus a test gate ensuring every template has a descriptor or is explicitly excluded. ([#descriptor-coverage](https://github.com/lbliii/chirp-ui/issues/descriptor-coverage))
 - New composite components: `install_snippet` (command + copy button), `filter_row` (lightweight inline filter form), `tag_browse` (tray + badges for tag-filtered listings), and `settings_row` (label + status badge + detail). ([#new-composites](https://github.com/lbliii/chirp-ui/issues/new-composites))
