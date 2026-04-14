@@ -5,8 +5,6 @@ filter implementations in chirp_ui.filters. Prevents drift between test
 and production behavior.
 """
 
-from __future__ import annotations
-
 import contextlib
 import importlib.util
 import sys

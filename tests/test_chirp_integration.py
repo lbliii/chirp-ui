@@ -4,8 +4,6 @@ Requires bengal-chirp installed (skip if not available).
 Verifies that use_chirp_ui() correctly registers filters and loaders.
 """
 
-from __future__ import annotations
-
 import pytest
 
 chirp = pytest.importorskip("chirp")
