@@ -10,7 +10,7 @@
         from "chirpui/action_strip.html" import action_strip
 
         call action_strip()
-            {{ btn("Validate", variant="default", icon="◎", ...) }}
+            {{ btn("Validate", variant="", icon="◎", ...) }}
             {{ btn("Migrate", href="/migrate", ...) }}
         end
 
@@ -19,7 +19,7 @@
             {{ search_bar("q", variant="with-button") }}
             end
             slot controls
-            {{ btn("Filters", variant="default", size="sm") }}
+            {{ btn("Filters", variant="", size="sm") }}
             end
             slot actions
             {{ btn("Create", variant="primary", size="sm") }}

@@ -17,6 +17,7 @@ from chirp_ui.filters import (
     resolve_color,
     resolve_status_variant,
     sanitize_color,
+    shell_action_btn_variant,
     validate_size,
     validate_variant,
     validate_variant_block,
@@ -110,6 +111,23 @@ class TestValidateSize:
 
     def test_empty_valid_when_in_registry(self) -> None:
         assert validate_size("", "btn") == ""
+
+
+class TestShellActionBtnVariant:
+    """Maps Chirp shell action variants to chirp-ui ``btn`` variants."""
+
+    def test_default_to_neutral(self) -> None:
+        assert shell_action_btn_variant("default") == ""
+
+    def test_secondary_to_ghost(self) -> None:
+        assert shell_action_btn_variant("secondary") == "ghost"
+
+    def test_primary_danger_pass_through(self) -> None:
+        assert shell_action_btn_variant("primary") == "primary"
+        assert shell_action_btn_variant("danger") == "danger"
+
+    def test_empty_string_passthrough(self) -> None:
+        assert shell_action_btn_variant("") == ""
 
 
 class TestValidateVariantStrictMode:
@@ -596,6 +614,8 @@ class TestRegisterFilters:
         assert registered["contrast_text"] is contrast_text
         assert "resolve_color" in registered
         assert registered["resolve_color"] is resolve_color
+        assert "shell_action_btn_variant" in registered
+        assert registered["shell_action_btn_variant"] is shell_action_btn_variant
 
 
 class TestColorFilters:

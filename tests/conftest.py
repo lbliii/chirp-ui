@@ -20,6 +20,7 @@ from chirp_ui.filters import (
     resolve_color,
     resolve_status_variant,
     sanitize_color,
+    shell_action_btn_variant,
     value_type,
 )
 from chirp_ui.icons import icon as icon_filter
@@ -221,6 +222,7 @@ def env() -> Environment:
             "resolve_color": resolve_color,
             "deprecate_param": deprecate_param,
             "resolve_status_variant": resolve_status_variant,
+            "shell_action_btn_variant": shell_action_btn_variant,
         }
     )
     e.add_global("build_hx_attrs", build_hx_attrs)

@@ -16,7 +16,7 @@
 {% def shell_action(action) %}
 {% if action.kind == "menu" %}
 {{ dropdown_menu(
-    btn(action.label, variant=action.variant, size=action.size, type="button", icon=action.icon, disabled=action.disabled),
+    btn(action.label, variant=action.variant | shell_action_btn_variant, size=action.size, type="button", icon=action.icon, disabled=action.disabled),
     items=action.menu_items,
     id="chirpui-shell-action-" ~ action.id
 ) }}
@@ -38,13 +38,13 @@
   {% elif action.submit_surface == "pulsing" %}
   {{ pulsing_button(action.label, variant=action.variant, type="submit", disabled=action.disabled) }}
   {% else %}
-  {{ btn(action.label, variant=action.variant, size=action.size, type="submit", icon=action.icon, disabled=action.disabled) }}
+  {{ btn(action.label, variant=action.variant | shell_action_btn_variant, size=action.size, type="submit", icon=action.icon, disabled=action.disabled) }}
   {% end %}
 </form>
 {% elif action.href %}
-{{ btn(action.label, variant=action.variant, size=action.size, href=action.href, icon=action.icon, disabled=action.disabled, data_action=action.action, attrs=action.attrs | default("")) }}
+{{ btn(action.label, variant=action.variant | shell_action_btn_variant, size=action.size, href=action.href, icon=action.icon, disabled=action.disabled, data_action=action.action, attrs=action.attrs | default("")) }}
 {% else %}
-{{ btn(action.label, variant=action.variant, size=action.size, type="button", icon=action.icon, disabled=action.disabled, data_action=action.action, attrs=action.attrs | default("")) }}
+{{ btn(action.label, variant=action.variant | shell_action_btn_variant, size=action.size, type="button", icon=action.icon, disabled=action.disabled, data_action=action.action, attrs=action.attrs | default("")) }}
 {% end %}
 {% end %}
 
@@ -68,7 +68,7 @@
     {% if shell_actions.overflow.items %}
     <div class="chirpui-shell-actions__group chirpui-shell-actions__group--overflow">
         {{ dropdown_menu(
-            btn("More", variant="default", size="sm", type="button", icon="▾"),
+            btn("More", variant="ghost", size="sm", type="button", icon="chevron-down"),
             items=shell_actions.overflow.overflow_items,
             id=shell_actions.target ~ "-overflow"
         ) }}
