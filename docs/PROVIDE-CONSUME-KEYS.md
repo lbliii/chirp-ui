@@ -34,6 +34,36 @@ parent-to-child state flow across slot boundaries (requires kida >= 0.3.4).
 | `_sse_state` | `str` | `""` | *(manual provide)* | `sse_retry` | 0.3.0 |
 | `_suspense_busy` | `str` | `"true"` | `suspense_group()` | `suspense_slot` | 0.3.0 |
 
+## Introspection API
+
+`chirp_ui.inspect` walks the template tree and returns the provide/consume
+graph as structured records. Apps can pin their own audits against this API:
+
+```python
+from chirp_ui.inspect import list_provides, list_consumes, audit_provide_consume
+
+for record in list_provides():
+    print(record.template, record.key, record.consumed_by)
+
+report = audit_provide_consume()
+assert not report.dead_provides           # provided, never consumed
+assert not report.unprovided_consumes     # consumed, never provided
+assert not report.annotation_drift        # @provides lists a non-consumer
+```
+
+CLI equivalents:
+
+```bash
+python -m chirp_ui.inspect --provides        # {% provide %} statements + annotations
+python -m chirp_ui.inspect --consumes        # consume() calls + annotations
+python -m chirp_ui.inspect --audit-context   # dead provides, orphans, drift
+```
+
+The audit is backed by the `{# @provides _key — consumed by: ... #}` and
+`{# @consumes _key from: ... — falls back to ... #}` annotations above each
+statement — missing or drifted annotations fail `tests/test_annotation_grammar.py`
+and `tests/test_provide_consume_audit.py`.
+
 ## Consumer Pattern
 
 ```jinja2

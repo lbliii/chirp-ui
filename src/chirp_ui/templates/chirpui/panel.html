@@ -13,7 +13,7 @@
 
 {% def panel(title=none, subtitle=none, surface_variant="muted", scroll_body=false, cls="") %}
 {% set surface_variant = surface_variant | validate_variant_block("surface", default="muted") %}
-{# @provides _surface_variant — consumed by: badge, callout, divider, settings_row, status, timeline #}
+{# @provides _surface_variant — consumed by: badge, callout, divider, settings_row_list, status_indicator, timeline #}
 {% provide _surface_variant = surface_variant %}
 {% set panel_cls = "chirpui-panel" ~ (" chirpui-panel--scroll" if scroll_body else "") ~ (" " ~ cls if cls else "") %}
 <section class="chirpui-surface chirpui-surface--{{ surface_variant }} chirpui-surface--no-padding {{ panel_cls }}">
