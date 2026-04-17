@@ -18,6 +18,12 @@ from pathlib import Path
 
 from kida import PackageLoader
 
+from chirp_ui.alpine import (
+    ALPINE_REQUIRED_COMPONENTS,
+    AlpineRequirement,
+    AlpineRuntimeCheck,
+    check_alpine_runtime,
+)
 from chirp_ui.components import DesignSystemReport, DesignSystemStats, design_system_report
 from chirp_ui.filters import TemplateFilterApp, register_colors, reset_colors
 from chirp_ui.validation import (
@@ -34,11 +40,15 @@ _Py_mod_gil = 0
 __version__ = "0.4.0"
 
 __all__ = [
+    "ALPINE_REQUIRED_COMPONENTS",
+    "AlpineRequirement",
+    "AlpineRuntimeCheck",
     "ChirpUIDeprecationWarning",
     "ChirpUIValidationWarning",
     "ChirpUIWarning",
     "DesignSystemReport",
     "DesignSystemStats",
+    "check_alpine_runtime",
     "design_system_report",
     "get_loader",
     "is_strict",
