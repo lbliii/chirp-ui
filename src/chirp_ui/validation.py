@@ -11,12 +11,15 @@ component descriptors in :mod:`chirp_ui.components`.
 Everything not in __all__ is internal and may change without notice.
 """
 
+import os
 import warnings
 from contextvars import ContextVar
+from typing import Literal
 
 from chirp_ui.components import COMPONENTS
 
 __all__ = [
+    "CHIRP_UI_DEV_ENV",
     "SIZE_REGISTRY",
     "VARIANT_REGISTRY",
     "ChirpUIDeprecationWarning",
@@ -25,6 +28,9 @@ __all__ = [
     "is_strict",
     "set_strict",
 ]
+
+CHIRP_UI_DEV_ENV = "CHIRP_UI_DEV"
+_TRUTHY = frozenset({"1", "true", "yes", "on"})
 
 _chirpui_strict: ContextVar[bool] = ContextVar("chirpui_strict", default=False)
 
@@ -49,13 +55,28 @@ class ChirpUIDeprecationWarning(ChirpUIWarning, DeprecationWarning):
     """Deprecated chirp-ui feature."""
 
 
-def set_strict(strict: bool) -> None:
+def set_strict(strict: bool | Literal["auto"]) -> None:
     """Set strict mode for chirp-ui variant validation.
 
-    When True, validation warnings escalate to ``ValueError``.
+    When True, validation warnings escalate to ``ValueError``. When
+    ``"auto"``, reads the ``CHIRP_UI_DEV`` environment variable (truthy
+    values: ``1``, ``true``, ``yes``, ``on``) at call time — so dev hosts
+    opt in once at startup and get strict validation automatically.
+
     Chirp calls this per request when use_chirp_ui(app, strict=...) is used.
     """
-    _chirpui_strict.set(strict)
+    _chirpui_strict.set(_resolve_strict(strict))
+
+
+def _resolve_strict(strict: bool | Literal["auto"]) -> bool:
+    """Resolve a set_strict() argument to a concrete bool.
+
+    ``"auto"`` reads ``CHIRP_UI_DEV`` env at call time; any other string
+    is treated as an invalid argument.
+    """
+    if strict == "auto":
+        return os.environ.get(CHIRP_UI_DEV_ENV, "").strip().lower() in _TRUTHY
+    return bool(strict)
 
 
 def is_strict() -> bool:

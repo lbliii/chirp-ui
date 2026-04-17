@@ -2,7 +2,10 @@
 
 import threading
 
+import pytest
+
 from chirp_ui.validation import (
+    CHIRP_UI_DEV_ENV,
     SIZE_REGISTRY,
     VARIANT_REGISTRY,
     _is_strict,
@@ -38,6 +41,133 @@ class TestSetStrict:
             assert _is_strict() is True
             set_strict(False)
             assert _is_strict() is False
+
+
+class TestSetStrictAuto:
+    """set_strict("auto") resolves CHIRP_UI_DEV at call time."""
+
+    def setup_method(self) -> None:
+        set_strict(False)
+
+    def teardown_method(self) -> None:
+        set_strict(False)
+
+    def test_auto_with_env_set_enables_strict(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv(CHIRP_UI_DEV_ENV, "1")
+        set_strict("auto")
+        assert _is_strict() is True
+
+    def test_auto_without_env_stays_off(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.delenv(CHIRP_UI_DEV_ENV, raising=False)
+        set_strict("auto")
+        assert _is_strict() is False
+
+    @pytest.mark.parametrize("value", ["1", "true", "TRUE", "yes", "on", " On "])
+    def test_auto_truthy_values(self, monkeypatch: pytest.MonkeyPatch, value: str) -> None:
+        monkeypatch.setenv(CHIRP_UI_DEV_ENV, value)
+        set_strict("auto")
+        assert _is_strict() is True, f"{value!r} should enable strict"
+
+    @pytest.mark.parametrize("value", ["", "0", "false", "no", "off", "  ", "dev"])
+    def test_auto_falsy_values(self, monkeypatch: pytest.MonkeyPatch, value: str) -> None:
+        monkeypatch.setenv(CHIRP_UI_DEV_ENV, value)
+        set_strict("auto")
+        assert _is_strict() is False, f"{value!r} should not enable strict"
+
+    def test_auto_reads_env_at_call_time(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.delenv(CHIRP_UI_DEV_ENV, raising=False)
+        set_strict("auto")
+        assert _is_strict() is False
+
+        monkeypatch.setenv(CHIRP_UI_DEV_ENV, "1")
+        set_strict("auto")
+        assert _is_strict() is True
+
+    def test_bool_argument_still_works(self) -> None:
+        set_strict(True)
+        assert _is_strict() is True
+        set_strict(False)
+        assert _is_strict() is False
+
+
+class TestStrictEscalatesEveryValidationSite:
+    """Every ChirpUIValidationWarning site raises ValueError under strict mode.
+
+    Covers the 8 ``_warn()`` call sites in ``filters.py`` so the contract
+    ``strict mode escalates every validation warning to ValueError`` is
+    enforced, not just assumed.
+    """
+
+    def setup_method(self) -> None:
+        set_strict(True)
+
+    def teardown_method(self) -> None:
+        set_strict(False)
+
+    def test_invalid_variant_raises(self) -> None:
+        from chirp_ui.filters import validate_variant
+
+        with pytest.raises(ValueError, match="variant"):
+            validate_variant("gold", ("primary", "secondary"))
+
+    def test_invalid_block_variant_raises(self) -> None:
+        from chirp_ui.filters import validate_variant_block
+
+        with pytest.raises(ValueError, match="variant"):
+            validate_variant_block("gold", "badge")
+
+    def test_invalid_size_raises(self) -> None:
+        from chirp_ui.filters import validate_size
+
+        with pytest.raises(ValueError, match="size"):
+            validate_size("xxxl", "btn")
+
+    def test_bem_invalid_variant_raises(self) -> None:
+        from chirp_ui.filters import bem
+
+        with pytest.raises(ValueError, match="variant"):
+            bem("btn", variant="gold")
+
+    def test_bem_invalid_size_raises(self) -> None:
+        from chirp_ui.filters import bem
+
+        with pytest.raises(ValueError, match="size"):
+            bem("btn", size="xxxl")
+
+    def test_bem_invalid_modifier_raises(self) -> None:
+        from chirp_ui.components import COMPONENTS
+        from chirp_ui.filters import bem
+
+        block_with_modifiers = next(
+            (name for name, desc in COMPONENTS.items() if desc.modifiers),
+            None,
+        )
+        assert block_with_modifiers, "need a component with registered modifiers for this test"
+        with pytest.raises(ValueError, match="modifier"):
+            bem(block_with_modifiers, modifier="__definitely_not_a_real_modifier__")
+
+    def test_unknown_icon_raises(self) -> None:
+        from chirp_ui.filters import icon
+
+        with pytest.raises(ValueError, match="icon"):
+            icon("arrow-left")
+
+    def test_contrast_text_unparseable_raises(self) -> None:
+        from chirp_ui.filters import contrast_text
+
+        with pytest.raises(ValueError, match="contrast_text"):
+            contrast_text("not-a-real-color")
+
+    def test_deprecation_warnings_do_not_escalate(self) -> None:
+        """ChirpUIDeprecationWarning always warns, never raises."""
+        import warnings
+
+        from chirp_ui.filters import deprecate_param
+
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            deprecate_param("some-value", "old_param", "new_param")
+        assert caught, "deprecate_param should still emit a warning in strict mode"
 
 
 class TestStrictContextVarIsolation:
