@@ -28,6 +28,40 @@ If you use raw `display: grid` (e.g. `repeat(3, 1fr)`):
 
 ---
 
+## Content containment (inside cards, surfaces, bentos)
+
+Layout primitives solve the *cell* — the cell is the right width. Containment solves the *content inside the cell* — long URLs, wide tables, hardcoded-width inputs, API keys, filenames that punch past the cell edge.
+
+### What's handled automatically
+
+- **`.chirpui-card`** and **`.chirpui-panel`** use `overflow: clip`. Content cannot visually escape.
+- **`.chirpui-surface`** and **`.chirpui-callout`** apply `min-width: 0` and `overflow-wrap: break-word` — long words break instead of widening the surface.
+- **`.chirpui-field__input`** (all inputs/textareas/selects rendered by `field_wrapper`) uses `width: 100%; max-width: 100%; min-width: 0` — form controls cannot overflow their parent.
+- **Links inside cards and surfaces** use `overflow-wrap: anywhere` — long URLs break mid-string.
+- **Code blocks** (`.chirpui-code-block`, prose `<pre>`) scroll horizontally via `overflow-x: auto` and use `overscroll-behavior: contain` so scroll doesn't chain to the page.
+- **Media elements** (`<img>`, `<video>`, `<canvas>`, `<iframe>`, `<embed>`, `<object>`, `<svg>`) have a zero-specificity `:where()` reset — `max-width: 100%` and `height: auto` where applicable — so raw media dropped anywhere can't widen its parent.
+- **`<pre>` and `<table>` inside `.chirpui-card__body` / `.chirpui-surface` / `.chirpui-callout`** automatically scroll horizontally (`display: block` + `overflow-x: auto` on tables). No manual wrapping needed for the common case.
+- **`prefers-reduced-motion: reduce`** is honored globally — animations/transitions collapse to 0.01ms across the whole CSS. Per-component `@media` blocks still override for bespoke handling.
+- **Native form controls** (checkboxes, radios, range, progress) pick up `accent-color: var(--chirpui-accent)` at `:root`.
+
+### When you still need utilities
+
+| Utility | Use for |
+|---------|---------|
+| **`.chirpui-scroll-x`** | Wide tables, dense toolbars, horizontal strips that should scroll locally instead of widening the page. Wrap `<table>` in `<div class="chirpui-scroll-x">`. |
+| **`.chirpui-truncate`** | Single-line labels that must hard-stop with an ellipsis (file names in a tight bento cell). Requires a bounded parent. |
+| **`.chirpui-clamp-2`** / **`.chirpui-clamp-3`** | Multi-line descriptions that must cap at 2 or 3 lines with an ellipsis. |
+| **`.chirpui-min-w-0`** | Ad-hoc flex children that need to shrink below content width. |
+
+### Rules of thumb
+
+- **Prefer break-word over clip.** Clipping hides content; wrapping keeps it readable. Only use `overflow: clip` on outer frames (card, panel) where inner scroll/popover content doesn't need to escape.
+- **Surfaces don't clip.** A surface inside a bento cell is allowed to host popovers, tooltips, and overflow menus that visually escape. Containment happens via `min-width: 0` + `overflow-wrap`, not by clipping.
+- **Raw `<input>` tags outside `field_wrapper`** need `max-width: 100%; min-width: 0` added by hand, or they can overflow narrow cells.
+- **Wide prose tables** (outside the code-block treatment) need explicit wrapping: `<div class="chirpui-scroll-x"><table>…</table></div>`.
+
+---
+
 ## Vertical fill (full-height main)
 
 How the app shell handles the block axis (height).
