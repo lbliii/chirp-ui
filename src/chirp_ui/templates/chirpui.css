@@ -34,6 +34,46 @@ body {
 /* Alpine x-cloak — hide until Alpine initializes */
 [x-cloak] { display: none !important; }
 
+/* Media reset — prevent img/video/iframe/etc from overflowing their parent.
+   :where() keeps specificity at 0 so any authored selector wins.
+   Inline SVG keeps its inline flow; only gets a max-width safety net. */
+:where(img, video, canvas) {
+    max-width: 100%;
+    height: auto;
+}
+
+:where(iframe, embed, object) {
+    display: block;
+    max-width: 100%;
+}
+
+:where(svg) {
+    max-width: 100%;
+}
+
+/* Pre/table auto-containment outside prose — scoped to cards, surfaces, callouts.
+   Prose already handles its own pre/table at higher specificity. */
+:where(.chirpui-card__body, .chirpui-surface, .chirpui-callout) :is(pre, table) {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+:where(.chirpui-card__body, .chirpui-surface, .chirpui-callout) table {
+    display: block;
+}
+
+/* Global reduced-motion cap — OS-level accessibility preference honored at the root.
+   Duration 0.01ms (not 0) so animationend/transitionend still fire. Per-component
+   @media (prefers-reduced-motion: reduce) blocks still override for bespoke handling. */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 :root {
     font-optical-sizing: var(--chirpui-font-optical-sizing, auto);
 
@@ -138,6 +178,7 @@ body {
 
     /* Color — semantic tokens; light-dark() for dark mode (no @media duplication) */
     color-scheme: light dark;
+    accent-color: var(--chirpui-accent);
     --chirpui-text: light-dark(#1e293b, #f1f5f9);
     --chirpui-text-muted: light-dark(#64748b, #94a3b8);
     --chirpui-surface: light-dark(#ffffff, #1e293b);
@@ -1001,6 +1042,36 @@ html {
 .chirpui-min-w-0 {
     min-width: 0;
 }
+
+/* Horizontal scroll container for wide children (tables, toolbars, dense rows).
+   Parent clips; this child absorbs the overflow as a local scroll region.
+   overscroll-behavior: contain prevents scroll-chain to the page at the boundary. */
+.chirpui-scroll-x {
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior: contain;
+}
+
+/* Single-line truncation with ellipsis. Requires the element to have a width
+   constraint (block/grid/flex child in a bounded container). */
+.chirpui-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+/* Multi-line clamp with ellipsis (2 or 3 lines). */
+.chirpui-clamp-2,
+.chirpui-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.chirpui-clamp-2 { -webkit-line-clamp: 2; line-clamp: 2; }
+.chirpui-clamp-3 { -webkit-line-clamp: 3; line-clamp: 3; }
 
 .chirpui-block--span-2 { grid-column: span 2; }
 .chirpui-block--span-3 { grid-column: span 3; }
@@ -3602,6 +3673,7 @@ a.chirpui-mention:focus-visible {
 
 :where(.chirpui-prose) p {
     margin-bottom: var(--chirpui-prose-spacing);
+    text-wrap: pretty;
 }
 
 :where(.chirpui-prose) code {
@@ -3624,6 +3696,7 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-code-block {
     overflow-x: auto;
+    overscroll-behavior: contain;
     padding: var(--chirpui-pre-padding);
     background: var(--chirpui-code-bg);
     border-radius: var(--chirpui-radius-sm);
@@ -3729,6 +3802,7 @@ a.chirpui-mention:focus-visible {
 
 :where(.chirpui-prose) pre {
     overflow-x: auto;
+    overscroll-behavior: contain;
     padding: var(--chirpui-pre-padding);
     background: var(--chirpui-code-bg);
     border-radius: var(--chirpui-radius-sm);
@@ -4004,6 +4078,8 @@ a.chirpui-mention:focus-visible {
 .chirpui-surface {
     border-radius: var(--chirpui-radius);
     padding: var(--chirpui-space-surface-padding);
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .chirpui-surface--default {
@@ -4301,6 +4377,8 @@ a.chirpui-mention:focus-visible {
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     border-radius: var(--chirpui-radius-sm);
     border-inline-start: 4px solid var(--chirpui-border);
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .chirpui-callout--info {
@@ -4648,7 +4726,13 @@ a.chirpui-mention:focus-visible {
     gap: var(--chirpui-space-control-gap);
 }
 
-/* Links in card body — no underline by default; card/title signals clickability */
+/* Links in card body — no underline by default; card/title signals clickability.
+   overflow-wrap: anywhere lets long URLs break instead of punching past the card. */
+.chirpui-card__body a,
+.chirpui-surface a {
+    overflow-wrap: anywhere;
+}
+
 .chirpui-card__body a {
     color: var(--chirpui-card-body-link-color);
     text-decoration: var(--chirpui-card-body-link-decoration);
@@ -7658,6 +7742,8 @@ button.chirpui-pagination__link {
 .chirpui-field__input {
     display: block;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     padding: var(--chirpui-spacing-sm);
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-sm);

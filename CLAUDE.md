@@ -138,6 +138,8 @@ Three audit phases (sprints 0–13) have systematically fixed the most common de
 | 102 compound `[data-style="neumorphic"]` selectors | Gradient tokens + `:is()` consolidation → 44 selectors | 17 |
 | ~38% of test assertions are class-only string checks | `assert_element` helper + 29 structural tests for top-20 components | 18 |
 | 42 docs files with no navigation index | `docs/INDEX.md` created; layout docs consolidated into `docs/LAYOUT.md` | 19 |
+| Long strings / URLs / inputs punch past surface/callout/bento cells | Base `min-width: 0` + `overflow-wrap: break-word` on surface/callout; `overflow-wrap: anywhere` on card/surface links; `max-width: 100%; min-width: 0` on `.chirpui-field__input`; new `.chirpui-scroll-x`, `.chirpui-truncate`, `.chirpui-clamp-{2,3}` utilities | 20 |
+| Raw `<img>`/`<svg>`/`<video>`/`<iframe>` overflow; `<pre>`/`<table>` outside prose blow out cards; motion ignored `prefers-reduced-motion` globally; native form controls ignored brand accent; prose paragraphs used default wrapping; code scroll regions chain-scrolled to page | Base-layer hardening: `:where()` media reset; pre/table auto-contain inside card/surface/callout; global `@media (prefers-reduced-motion: reduce)` cap at root; `:root { accent-color }` lifted; `text-wrap: pretty` on prose `<p>`; `overscroll-behavior: contain` on scroll regions. See `docs/PLAN-base-layer-hardening.md` | 21–26 |
 
 ## Warning system
 
