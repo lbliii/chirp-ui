@@ -1,52 +1,63 @@
 /* ==========================================================================
-   Channel Card
+   Channel Card — @scope + @layer envelope.
+
+   Upper scope boundary `.chirpui-channel-card .chirpui-channel-card` stops
+   outer-card rules at the first nested channel card. The
+   `.chirpui-channel-card__link:hover .chirpui-channel-card__name` descendant
+   rule is the main bleed candidate — without the boundary, hovering the
+   outer card's link would tint a nested card's name too.
+   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
-.chirpui-channel-card {
-    display: flex;
-    align-items: center;
-    gap: var(--chirpui-spacing);
-    padding: var(--chirpui-spacing);
-    background: var(--chirpui-surface);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius);
-}
+@layer chirpui.component {
+    @scope (.chirpui-channel-card) to (.chirpui-channel-card .chirpui-channel-card) {
+        :scope {
+            display: flex;
+            align-items: center;
+            gap: var(--chirpui-spacing);
+            padding: var(--chirpui-spacing);
+            background: var(--chirpui-surface);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius);
+        }
 
-.chirpui-channel-card__link {
-    display: flex;
-    align-items: center;
-    gap: var(--chirpui-spacing);
-    flex: 1;
-    min-width: 0;
-    text-decoration: none;
-    color: inherit;
-}
+        .chirpui-channel-card__link {
+            display: flex;
+            align-items: center;
+            gap: var(--chirpui-spacing);
+            flex: 1;
+            min-width: 0;
+            text-decoration: none;
+            color: inherit;
+            &:hover .chirpui-channel-card__name {
+                color: var(--chirpui-accent);
+            }
+        }
 
-.chirpui-channel-card__link:hover .chirpui-channel-card__name {
-    color: var(--chirpui-accent);
-}
+        .chirpui-channel-card__info {
+            min-width: 0;
+        }
 
-.chirpui-channel-card__info {
-    min-width: 0;
-}
+        .chirpui-channel-card__name {
+            margin: 0;
+            font-size: var(--chirpui-font-base);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+        }
 
-.chirpui-channel-card__name {
-    margin: 0;
-    font-size: var(--chirpui-font-base);
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-}
+        .chirpui-channel-card__subscribers {
+            margin: var(--chirpui-spacing-xs) 0 0;
+            font-size: var(--chirpui-font-sm);
+            color: var(--chirpui-text-muted);
+        }
 
-.chirpui-channel-card__subscribers {
-    margin: var(--chirpui-spacing-xs) 0 0;
-    font-size: var(--chirpui-font-sm);
-    color: var(--chirpui-text-muted);
-}
+        .chirpui-channel-card__body {
+            &:empty {
+                display: none;
+            }
+        }
 
-.chirpui-channel-card__body:empty {
-    display: none;
+        .chirpui-channel-card__actions {
+            flex-shrink: 0;
+        }
+    }
 }
-
-.chirpui-channel-card__actions {
-    flex-shrink: 0;
-}
-

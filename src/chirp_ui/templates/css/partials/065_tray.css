@@ -1,98 +1,121 @@
 /* ==========================================================================
-   Tray (slide-out panel)
+   Tray (slide-out panel) — @scope + @layer envelope.
+
+   Upper scope boundary `.chirpui-tray .chirpui-tray` stops outer-tray rules
+   at the first nested tray (defensive — tray-in-tray is unlikely but cheap to
+   scope). See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
-.chirpui-tray {
-    position: fixed;
-    inset: 0;
-    z-index: var(--chirpui-z-tray);
-}
-.chirpui-tray--closed {
-    pointer-events: none;
-}
-.chirpui-tray--closed .chirpui-tray__backdrop {
-    opacity: 0;
-}
-.chirpui-tray--open .chirpui-tray__backdrop {
-    opacity: 1;
-}
-.chirpui-tray--open {
-    pointer-events: auto;
-}
-.chirpui-tray__backdrop {
-    position: absolute;
-    inset: 0;
-    background: var(--chirpui-smoke-bg);
-    transition: opacity var(--chirpui-transition);
-}
-.chirpui-tray__panel {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: min(90vw, 24rem);
-    max-width: 24rem;
-    background: var(--chirpui-surface);
-    border: 1px solid var(--chirpui-border);
-    box-shadow: var(--chirpui-elevation-overlay);
-    display: flex;
-    flex-direction: column;
-    transition: transform var(--chirpui-transition);
-    overflow: clip;
-}
-.chirpui-tray--right .chirpui-tray__panel {
-    right: 0;
-    transform: translateX(100%);
-}
-.chirpui-tray--right.chirpui-tray--open .chirpui-tray__panel {
-    transform: translateX(0);
-}
-.chirpui-tray--left .chirpui-tray__panel {
-    left: 0;
-    transform: translateX(-100%);
-}
-.chirpui-tray--left.chirpui-tray--open .chirpui-tray__panel {
-    transform: translateX(0);
-}
-.chirpui-tray--bottom .chirpui-tray__panel {
-    left: 0;
-    right: 0;
-    top: auto;
-    width: 100%;
-    max-width: none;
-    max-height: 70dvh;
-    transform: translateY(100%);
-}
-.chirpui-tray--bottom.chirpui-tray--open .chirpui-tray__panel {
-    transform: translateY(0);
-}
-.chirpui-tray__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--chirpui-spacing) var(--chirpui-spacing);
-    border-bottom: 1px solid var(--chirpui-border);
-    flex-shrink: 0;
-}
-.chirpui-tray__title {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-}
-.chirpui-tray__close {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    line-height: 1;
-    cursor: pointer;
-    color: var(--chirpui-text-muted);
-    padding: 0.25rem;
-}
-.chirpui-tray__close:hover {
-    color: var(--chirpui-text);
-}
-.chirpui-tray__body {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--chirpui-spacing);
-}
+@layer chirpui.component {
+    @scope (.chirpui-tray) to (.chirpui-tray .chirpui-tray) {
+        :scope {
+            position: fixed;
+            inset: 0;
+            z-index: var(--chirpui-z-tray);
+        }
 
+        :scope.chirpui-tray--closed {
+            pointer-events: none;
+        }
+
+        :scope.chirpui-tray--open {
+            pointer-events: auto;
+        }
+
+        .chirpui-tray__backdrop {
+            position: absolute;
+            inset: 0;
+            background: var(--chirpui-smoke-bg);
+            transition: opacity var(--chirpui-transition);
+        }
+
+        :scope.chirpui-tray--closed .chirpui-tray__backdrop {
+            opacity: 0;
+        }
+
+        :scope.chirpui-tray--open .chirpui-tray__backdrop {
+            opacity: 1;
+        }
+
+        .chirpui-tray__panel {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: min(90vw, 24rem);
+            max-width: 24rem;
+            background: var(--chirpui-surface);
+            border: 1px solid var(--chirpui-border);
+            box-shadow: var(--chirpui-elevation-overlay);
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--chirpui-transition);
+            overflow: clip;
+        }
+
+        :scope.chirpui-tray--right .chirpui-tray__panel {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        :scope.chirpui-tray--right.chirpui-tray--open .chirpui-tray__panel {
+            transform: translateX(0);
+        }
+
+        :scope.chirpui-tray--left .chirpui-tray__panel {
+            left: 0;
+            transform: translateX(-100%);
+        }
+
+        :scope.chirpui-tray--left.chirpui-tray--open .chirpui-tray__panel {
+            transform: translateX(0);
+        }
+
+        :scope.chirpui-tray--bottom .chirpui-tray__panel {
+            left: 0;
+            right: 0;
+            top: auto;
+            width: 100%;
+            max-width: none;
+            max-height: 70dvh;
+            transform: translateY(100%);
+        }
+
+        :scope.chirpui-tray--bottom.chirpui-tray--open .chirpui-tray__panel {
+            transform: translateY(0);
+        }
+
+        .chirpui-tray__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--chirpui-spacing) var(--chirpui-spacing);
+            border-bottom: 1px solid var(--chirpui-border);
+            flex-shrink: 0;
+        }
+
+        .chirpui-tray__title {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+        }
+
+        .chirpui-tray__close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--chirpui-text-muted);
+            padding: 0.25rem;
+            &:hover {
+                color: var(--chirpui-text);
+            }
+        }
+
+        .chirpui-tray__body {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--chirpui-spacing);
+        }
+    }
+}

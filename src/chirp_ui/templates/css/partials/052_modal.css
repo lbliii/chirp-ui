@@ -1,156 +1,162 @@
 /* ==========================================================================
-   Modal
+   Modal (native `<dialog>`) — @scope + @layer envelope.
+
+   `.chirpui-modal` is shared with the div-based overlay component
+   (066_modal-overlay.css), so the scope root is `dialog.chirpui-modal`
+   to keep these dialog-specific rules off the overlay variant. Backdrop
+   is a pseudo-element on `:scope`. Upper scope boundary
+   `.chirpui-modal .chirpui-modal` stops outer-modal rules at the first
+   nested modal (defensive — modal-in-modal is rare but cheap to scope).
+   The `.chirpui-confirm` variant lives on the same dialog as
+   `.chirpui-modal` so it composes via `:scope.chirpui-confirm` inside
+   the envelope.
+   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
-/* Native <dialog>: must stay hidden until showModal() is called (theme-safe) */
-dialog.chirpui-modal:not([open]) {
-    display: none;
-}
+@layer chirpui.component {
+    @scope (dialog.chirpui-modal) to (.chirpui-modal .chirpui-modal) {
+        /* Native <dialog>: stay hidden until showModal() is called (theme-safe) */
+        :scope:not([open]) {
+            display: none;
+        }
 
-dialog.chirpui-modal,
-.chirpui-modal {
-    max-width: var(--chirpui-modal-width);
-    width: 100%;
-    background: var(--chirpui-surface);
-    color: var(--chirpui-text, inherit);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius);
-    padding: 0;
-    box-shadow: var(--chirpui-elevation-overlay);
-    transition: transform var(--chirpui-transition-slow) var(--chirpui-ease-spring),
-        opacity var(--chirpui-transition-slow) var(--chirpui-ease-spring);
-    @starting-style {
-        transform: scale(0.95);
-        opacity: 0;
+        :scope {
+            max-width: var(--chirpui-modal-width);
+            width: 100%;
+            background: var(--chirpui-surface);
+            color: var(--chirpui-text, inherit);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius);
+            padding: 0;
+            box-shadow: var(--chirpui-elevation-overlay);
+            transition: transform var(--chirpui-transition-slow) var(--chirpui-ease-spring),
+                opacity var(--chirpui-transition-slow) var(--chirpui-ease-spring);
+            @starting-style {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+        }
+
+        /* Top layer: ensure descendants inherit modal text color (avoids black-on-black) */
+        * {
+            color: inherit;
+        }
+
+        a {
+            color: var(--chirpui-accent);
+        }
+
+        :scope.chirpui-modal--sm { max-width: var(--chirpui-modal-width-sm); }
+        :scope.chirpui-modal--lg { max-width: var(--chirpui-modal-width-lg); }
+
+        :scope::backdrop {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+        }
+
+        .chirpui-modal__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+            border-bottom: 1px solid var(--chirpui-border);
+        }
+
+        .chirpui-modal__title {
+            margin: 0;
+            font-size: 1.125rem;
+        }
+
+        .chirpui-modal__header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--chirpui-spacing-xs);
+            margin-inline-start: auto;
+            &:empty {
+                display: none;
+            }
+        }
+
+        .chirpui-modal__close {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 var(--chirpui-spacing-xs);
+            border-radius: var(--chirpui-radius-sm);
+            transition: background var(--chirpui-transition);
+            &:hover {
+                background: var(--chirpui-bg-subtle);
+            }
+            &:focus-visible {
+                outline: var(--chirpui-state-focus-outline);
+                outline-offset: var(--chirpui-state-focus-offset);
+            }
+        }
+
+        .chirpui-modal__body {
+            padding: var(--chirpui-spacing);
+            color: inherit;
+            & code {
+                color: inherit;
+                background: var(--chirpui-bg-subtle);
+                padding: 0.125em 0.25em;
+                border-radius: var(--chirpui-radius-sm);
+            }
+        }
+
+        .chirpui-modal__footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: var(--chirpui-spacing-sm);
+            padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+            border-top: 1px solid var(--chirpui-border);
+            &:empty {
+                display: none;
+            }
+        }
+
+        /* Confirm dialog — sibling class composed onto .chirpui-modal */
+        .chirpui-confirm__message {
+            margin: 0 0 var(--chirpui-spacing) 0;
+            color: var(--chirpui-text-muted);
+            &:empty {
+                display: none;
+            }
+        }
+
+        .chirpui-confirm__footer {
+            display: flex;
+            gap: var(--chirpui-spacing-sm);
+            justify-content: flex-end;
+        }
+
+        :scope.chirpui-confirm--danger {
+            border-left: 3px solid var(--chirpui-error);
+        }
+
+        :scope.chirpui-confirm--danger .chirpui-modal__header {
+            background: color-mix(in srgb, var(--chirpui-error) 8%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-confirm--danger .chirpui-modal__title {
+            color: var(--chirpui-error);
+        }
+
+        :scope.chirpui-confirm--danger .chirpui-confirm__icon {
+            margin-right: 0.5em;
+        }
+
+        :scope.chirpui-confirm--danger .chirpui-btn--danger {
+            background: var(--chirpui-error);
+            color: var(--chirpui-on-accent);
+            border-color: var(--chirpui-error);
+            &:hover {
+                background: color-mix(in srgb, var(--chirpui-error) 85%, black);
+            }
+        }
     }
 }
-
-/* Top layer: ensure descendants inherit modal text color (avoids black-on-black) */
-dialog.chirpui-modal * {
-    color: inherit;
-}
-
-dialog.chirpui-modal a {
-    color: var(--chirpui-accent);
-}
-
-.chirpui-modal--sm { max-width: var(--chirpui-modal-width-sm); }
-.chirpui-modal--lg { max-width: var(--chirpui-modal-width-lg); }
-
-.chirpui-modal::backdrop {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(2px);
-}
-
-.chirpui-modal__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
-    border-bottom: 1px solid var(--chirpui-border);
-}
-
-.chirpui-modal__title {
-    margin: 0;
-    font-size: 1.125rem;
-}
-
-.chirpui-modal__header-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--chirpui-spacing-xs);
-    margin-inline-start: auto;
-}
-
-.chirpui-modal__header-actions:empty {
-    display: none;
-}
-
-.chirpui-modal__close {
-    background: none;
-    border: none;
-    color: inherit;
-    font-size: 1.5rem;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0 var(--chirpui-spacing-xs);
-    border-radius: var(--chirpui-radius-sm);
-    transition: background var(--chirpui-transition);
-}
-
-.chirpui-modal__close:hover {
-    background: var(--chirpui-bg-subtle);
-}
-
-.chirpui-modal__close:focus-visible {
-    outline: var(--chirpui-state-focus-outline);
-    outline-offset: var(--chirpui-state-focus-offset);
-}
-
-.chirpui-modal__body {
-    padding: var(--chirpui-spacing);
-    color: inherit;
-}
-
-.chirpui-modal__body code {
-    color: inherit;
-    background: var(--chirpui-bg-subtle);
-    padding: 0.125em 0.25em;
-    border-radius: var(--chirpui-radius-sm);
-}
-
-.chirpui-modal__footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--chirpui-spacing-sm);
-    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
-    border-top: 1px solid var(--chirpui-border);
-}
-
-.chirpui-modal__footer:empty {
-    display: none;
-}
-
-/* Confirm dialog */
-.chirpui-confirm__message:empty {
-    display: none;
-}
-
-.chirpui-confirm__message {
-    margin: 0 0 var(--chirpui-spacing) 0;
-    color: var(--chirpui-text-muted);
-}
-
-.chirpui-confirm__footer {
-    display: flex;
-    gap: var(--chirpui-spacing-sm);
-    justify-content: flex-end;
-}
-
-.chirpui-confirm--danger {
-    border-left: 3px solid var(--chirpui-error);
-}
-
-.chirpui-confirm--danger .chirpui-modal__header {
-    background: color-mix(in srgb, var(--chirpui-error) 8%, var(--chirpui-surface));
-}
-
-.chirpui-confirm--danger .chirpui-modal__title {
-    color: var(--chirpui-error);
-}
-
-.chirpui-confirm--danger .chirpui-confirm__icon {
-    margin-right: 0.5em;
-}
-
-.chirpui-confirm--danger .chirpui-btn--danger {
-    background: var(--chirpui-error);
-    color: var(--chirpui-on-accent);
-    border-color: var(--chirpui-error);
-}
-
-.chirpui-confirm--danger .chirpui-btn--danger:hover {
-    background: color-mix(in srgb, var(--chirpui-error) 85%, black);
-}
-

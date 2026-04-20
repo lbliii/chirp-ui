@@ -1,168 +1,186 @@
 /* ==========================================================================
-   Surface
+   Surface — @scope + @layer envelope.
+
+   Surface is broadly used and has many variants with descendant rules
+   (links, ::before/::after corner accents). Upper scope boundary
+   `.chirpui-surface .chirpui-surface` stops outer-surface variant rules
+   (gradient backgrounds, glass blur, corner accents) at the first nested
+   surface — fixes bleed where an outer surface's `--cornered` ::before
+   would also paint on inner surfaces, or `a` rules from the outer would
+   override inner-link styles.
+
+   `.chirpui-blade` rules (and `.chirpui-blade--parallax .chirpui-surface`)
+   stay outside the envelope — blade is a sibling layout concept, not a
+   surface variant.
+   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
-.chirpui-surface {
-    border-radius: var(--chirpui-radius);
-    padding: var(--chirpui-space-surface-padding);
-    min-width: 0;
-    overflow-wrap: break-word;
-}
+@layer chirpui.component {
+    @scope (.chirpui-surface) to (.chirpui-surface .chirpui-surface) {
+        :scope {
+            border-radius: var(--chirpui-radius);
+            padding: var(--chirpui-space-surface-padding);
+            min-width: 0;
+            overflow-wrap: break-word;
+        }
 
-.chirpui-surface a {
-    overflow-wrap: anywhere;
-}
+        a {
+            overflow-wrap: anywhere;
+        }
 
-.chirpui-surface--default {
-    background: var(--chirpui-surface);
-}
+        :scope.chirpui-surface--default {
+            background: var(--chirpui-surface);
+        }
 
-.chirpui-surface--muted {
-    background: var(--chirpui-bg-subtle);
-}
+        :scope.chirpui-surface--muted {
+            background: var(--chirpui-bg-subtle);
+        }
 
-.chirpui-surface--elevated {
-    background: var(--chirpui-surface-elevated);
-    box-shadow: var(--chirpui-elevation-2);
-}
+        :scope.chirpui-surface--elevated {
+            background: var(--chirpui-surface-elevated);
+            box-shadow: var(--chirpui-elevation-2);
+        }
 
-.chirpui-surface--accent {
-    background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
-}
+        :scope.chirpui-surface--accent {
+            background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+        }
 
-.chirpui-surface--gradient-subtle {
-    background: var(--chirpui-gradient-subtle);
-}
+        :scope.chirpui-surface--gradient-subtle {
+            background: var(--chirpui-gradient-subtle);
+        }
 
-.chirpui-surface--gradient-accent {
-    background: var(--chirpui-gradient-accent);
-}
+        :scope.chirpui-surface--gradient-accent {
+            background: var(--chirpui-gradient-accent);
+        }
 
-.chirpui-surface--gradient-mesh {
-    background: var(--chirpui-gradient-mesh);
-}
+        :scope.chirpui-surface--gradient-mesh {
+            background: var(--chirpui-gradient-mesh);
+        }
 
-/* Gradient border — dual background, background-clip; fallback solid border */
-.chirpui-surface--gradient-border {
-    background: var(--chirpui-surface);
-    border: 2px solid var(--chirpui-border);
-}
-@supports (background: linear-gradient(red, blue)) and (background-clip: padding-box) {
-    .chirpui-surface--gradient-border {
-        background: linear-gradient(var(--chirpui-surface), var(--chirpui-surface)),
-            var(--chirpui-gradient-border);
-        background-origin: padding-box, border-box;
-        background-clip: padding-box, border-box;
-        background-repeat: no-repeat;
-        border: 2px solid transparent;
-    }
-}
+        /* Gradient border — dual background, background-clip; fallback solid border */
+        :scope.chirpui-surface--gradient-border {
+            background: var(--chirpui-surface);
+            border: 2px solid var(--chirpui-border);
+        }
+        @supports (background: linear-gradient(red, blue)) and (background-clip: padding-box) {
+            :scope.chirpui-surface--gradient-border {
+                background: linear-gradient(var(--chirpui-surface), var(--chirpui-surface)),
+                    var(--chirpui-gradient-border);
+                background-origin: padding-box, border-box;
+                background-clip: padding-box, border-box;
+                background-repeat: no-repeat;
+                border: 2px solid transparent;
+            }
+        }
 
-/* Glass — subtle blur, translucent */
-.chirpui-surface--glass {
-    background: var(--chirpui-surface-alt);
-    border: 1px solid var(--chirpui-border);
-}
-@supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
-    .chirpui-surface--glass {
-        background: var(--chirpui-glass-bg);
-        border-color: var(--chirpui-glass-border);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-    }
-}
+        /* Glass — subtle blur, translucent */
+        :scope.chirpui-surface--glass {
+            background: var(--chirpui-surface-alt);
+            border: 1px solid var(--chirpui-border);
+        }
+        @supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+            :scope.chirpui-surface--glass {
+                background: var(--chirpui-glass-bg);
+                border-color: var(--chirpui-glass-border);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+        }
 
-/* Frosted — stronger blur, more opaque */
-.chirpui-surface--frosted {
-    background: var(--chirpui-surface-alt);
-    border: 1px solid var(--chirpui-border);
-}
-@supports (backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px)) {
-    .chirpui-surface--frosted {
-        background: var(--chirpui-frosted-bg);
-        border-color: var(--chirpui-frosted-border);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-    }
-}
+        /* Frosted — stronger blur, more opaque */
+        :scope.chirpui-surface--frosted {
+            background: var(--chirpui-surface-alt);
+            border: 1px solid var(--chirpui-border);
+        }
+        @supports (backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px)) {
+            :scope.chirpui-surface--frosted {
+                background: var(--chirpui-frosted-bg);
+                border-color: var(--chirpui-frosted-border);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+        }
 
-/* Smoke — dark tinted glass for overlays */
-.chirpui-surface--smoke {
-    background: var(--chirpui-bg-subtle);
-    border: 1px solid var(--chirpui-border);
-}
-@supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
-    .chirpui-surface--smoke {
-        background: var(--chirpui-smoke-bg);
-        border-color: var(--chirpui-smoke-border);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-    }
-}
+        /* Smoke — dark tinted glass for overlays */
+        :scope.chirpui-surface--smoke {
+            background: var(--chirpui-bg-subtle);
+            border: 1px solid var(--chirpui-border);
+        }
+        @supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+            :scope.chirpui-surface--smoke {
+                background: var(--chirpui-smoke-bg);
+                border-color: var(--chirpui-smoke-border);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+        }
 
-/* Deep — multi-layer dimensional shadow */
-.chirpui-surface--deep {
-    box-shadow: var(--chirpui-elevation-deep);
-}
-.chirpui-surface--deep.chirpui-surface--inset-glow {
-    box-shadow: var(--chirpui-elevation-deep), var(--chirpui-shadow-inset-glow);
-}
+        /* Deep — multi-layer dimensional shadow */
+        :scope.chirpui-surface--deep {
+            box-shadow: var(--chirpui-elevation-deep);
+        }
+        :scope.chirpui-surface--deep.chirpui-surface--inset-glow {
+            box-shadow: var(--chirpui-elevation-deep), var(--chirpui-shadow-inset-glow);
+        }
 
-/* Cornered — architectural bracket accents at opposing corners */
-.chirpui-surface--cornered {
-    position: relative;
-}
-.chirpui-surface--cornered::before,
-.chirpui-surface--cornered::after {
-    content: "";
-    position: absolute;
-    width: var(--chirpui-corner-accent-size);
-    height: var(--chirpui-corner-accent-size);
-    pointer-events: none;
-}
-.chirpui-surface--cornered::before {
-    top: 0;
-    left: 0;
-    border-top: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
-    border-left: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
-}
-.chirpui-surface--cornered::after {
-    bottom: 0;
-    right: 0;
-    border-bottom: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
-    border-right: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
-}
-.chirpui-surface--cornered.chirpui-surface--accent {
-    --chirpui-corner-accent-color: var(--chirpui-accent);
-}
+        /* Cornered — architectural bracket accents at opposing corners */
+        :scope.chirpui-surface--cornered {
+            position: relative;
+        }
+        :scope.chirpui-surface--cornered::before,
+        :scope.chirpui-surface--cornered::after {
+            content: "";
+            position: absolute;
+            width: var(--chirpui-corner-accent-size);
+            height: var(--chirpui-corner-accent-size);
+            pointer-events: none;
+        }
+        :scope.chirpui-surface--cornered::before {
+            top: 0;
+            left: 0;
+            border-top: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
+            border-left: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
+        }
+        :scope.chirpui-surface--cornered::after {
+            bottom: 0;
+            right: 0;
+            border-bottom: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
+            border-right: var(--chirpui-corner-accent-width) solid var(--chirpui-corner-accent-color);
+        }
+        :scope.chirpui-surface--cornered.chirpui-surface--accent {
+            --chirpui-corner-accent-color: var(--chirpui-accent);
+        }
 
-.chirpui-surface--full {
-    width: 100%;
-}
+        :scope.chirpui-surface--full {
+            width: 100%;
+        }
 
-/* Blade — full-width edge-to-edge section; breaks out of container */
-.chirpui-blade {
-    width: 100vw;
-    max-width: 100vw;
-    margin-inline: calc(50% - 50vw);
-}
-
-/* Parallax — subtle scroll-driven opacity (Chrome 115+); respects prefers-reduced-motion */
-@supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-        .chirpui-blade--parallax .chirpui-surface {
-            animation: chirpui-parallax-fade linear;
-            animation-timeline: view();
-            animation-range: entry 0% entry 50%;
+        :scope.chirpui-surface--no-padding {
+            padding: 0;
         }
     }
-}
-@keyframes chirpui-parallax-fade {
-    from { opacity: 0.97; }
-    to { opacity: 1; }
-}
 
-.chirpui-surface--no-padding {
-    padding: 0;
-}
+    /* Blade — full-width edge-to-edge section; breaks out of container.
+       Outside the surface envelope: blade is a sibling layout concept that
+       may CONTAIN a surface, not be one. */
+    .chirpui-blade {
+        width: 100vw;
+        max-width: 100vw;
+        margin-inline: calc(50% - 50vw);
+    }
 
+    /* Parallax — subtle scroll-driven opacity (Chrome 115+); respects prefers-reduced-motion */
+    @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+            .chirpui-blade--parallax .chirpui-surface {
+                animation: chirpui-parallax-fade linear;
+                animation-timeline: view();
+                animation-range: entry 0% entry 50%;
+            }
+        }
+    }
+    @keyframes chirpui-parallax-fade {
+        from { opacity: 0.97; }
+        to { opacity: 1; }
+    }
+}

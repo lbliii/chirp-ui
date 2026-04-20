@@ -225,4 +225,22 @@ def create_app() -> App:
     async def card_variants_page(request: Request):
         return Template("card_variants_page.html", page_title="Card Variants")
 
+    # ── Surface variants (envelope hardening batch 1, S4) ─────────────
+
+    @app.route("/surface-variants")
+    async def surface_variants_page(request: Request):
+        return Template("surface_variants_page.html", page_title="Surface Variants")
+
+    # ── Callout variants (envelope hardening batch 1, S5) ─────────────
+
+    @app.route("/callout-variants")
+    async def callout_variants_page(request: Request):
+        return Template("callout_variants_page.html", page_title="Callout Variants")
+
+    # ── Video / Channel cards (envelope hardening batch 1, S6) ────────
+
+    @app.route("/video-channel-cards")
+    async def video_channel_cards_page(request: Request):
+        return Template("video_channel_cards_page.html", page_title="Video / Channel Cards")
+
     return app
