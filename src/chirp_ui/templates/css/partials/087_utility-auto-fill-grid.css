@@ -1,0 +1,17 @@
+/* ==========================================================================
+   Utility: Auto-fill grid (for tag filters, etc.)
+   ========================================================================== */
+
+.chirpui-grid--auto-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-grid--auto-fill .chirpui-badge {
+    min-width: 0;
+    overflow: clip;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+

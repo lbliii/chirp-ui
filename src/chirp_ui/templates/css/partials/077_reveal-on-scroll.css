@@ -1,0 +1,8 @@
+/* ==========================================================================
+   Reveal on Scroll (Alpine Intersect)
+   ========================================================================== */
+
+.chirpui-reveal-on-scroll {
+    /* min-height: 1px set inline so Intersection Observer has a valid target */
+}
+

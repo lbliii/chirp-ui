@@ -1,0 +1,74 @@
+/* ==========================================================================
+   ASCII Divider — glyph-centered horizontal separator
+   ========================================================================== */
+
+.chirpui-ascii-divider {
+    /* Grid: two fr tracks + auto glyph column — reliable full width and centering vs flex+::before. */
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: var(--chirpui-spacing) 0;
+    font-family: var(--chirpui-ascii-font);
+    color: var(--chirpui-text-muted);
+    user-select: none;
+}
+.chirpui-ascii-divider::before,
+.chirpui-ascii-divider::after {
+    content: "────────────────────────────────────────";
+    min-width: 0;
+    overflow: clip;
+    white-space: nowrap;
+    max-height: 1.2em;
+    color: var(--chirpui-text-muted);
+    opacity: 0.5;
+}
+/* Anchor repeated line to the glyph so clipping shows the join, not the far outer edge. */
+.chirpui-ascii-divider::before {
+    text-align: end;
+}
+.chirpui-ascii-divider::after {
+    text-align: start;
+}
+.chirpui-ascii-divider__glyph {
+    justify-self: center;
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+/* Variant: double line */
+.chirpui-ascii-divider--double::before,
+.chirpui-ascii-divider--double::after {
+    content: "════════════════════════════════════════";
+}
+
+/* Variant: heavy line */
+.chirpui-ascii-divider--heavy::before,
+.chirpui-ascii-divider--heavy::after {
+    content: "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+}
+
+/* Variant: dots */
+.chirpui-ascii-divider--dots::before,
+.chirpui-ascii-divider--dots::after {
+    content: "· · · · · · · · · · · · · · · · · · · · ";
+}
+
+/* Momentum spin for the glyph */
+.chirpui-ascii-divider--spin .chirpui-ascii-divider__glyph {
+    display: inline-block;
+    animation: chirpui-ascii-momentum 6s cubic-bezier(0.2, 0, 0.1, 1) infinite;
+}
+.chirpui-ascii-divider--spin-reverse .chirpui-ascii-divider__glyph {
+    display: inline-block;
+    animation: chirpui-ascii-momentum-reverse 7s cubic-bezier(0.2, 0, 0.1, 1) infinite;
+}
+.chirpui-ascii-divider--spin-drift .chirpui-ascii-divider__glyph {
+    display: inline-block;
+    animation: chirpui-ascii-momentum-drift var(--chirpui-anim-drift) cubic-bezier(0.3, 0, 0.1, 1) infinite;
+}
+
+

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>chirp-ui docs — Getting Started</title>
+    <link rel="stylesheet" href="../../src/chirp_ui/templates/chirpui.css">
+    <link rel="stylesheet" href="../../src/chirp_ui/templates/chirpui-transitions.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+    <style>
+        /* Page-level: only the bits the component system doesn't already provide.
+           Everything else (topbar, sidebar, breadcrumbs, badges, prose, callouts,
+           segmented toggle, icon buttons, search input, pager cards, eyebrows)
+           comes from chirpui-* classes. */
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            background: var(--chirpui-bg);
+            color: var(--chirpui-text);
+        }
+
+        /* Docs shell: widen the sidebar + park the sticky offset */
+        .docs-shell { --chirpui-sidebar-width: 17rem; --chirpui-shell-offset-top: 3.25rem; }
+
+        /* Topbar search widens to fill center region */
+        .docs-shell .chirpui-app-shell__topbar-center .chirpui-input-group {
+            max-width: 22rem;
+            margin-inline: auto;
+            background: var(--chirpui-bg-subtle);
+        }
+        .docs-shell .chirpui-app-shell__topbar-center .chirpui-input-group__input {
+            background: transparent;
+            font-size: var(--chirpui-font-sm);
+        }
+
+        /* Main column: article + on-this-page rail. */
+        .docs-main {
+            min-width: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 48rem) minmax(0, 14rem);
+            justify-content: start;
+            gap: clamp(2rem, 4vw, 4rem);
+            padding: 2rem clamp(1.5rem, 3vw, 3rem) 4rem;
+        }
+        .docs-article { min-width: 0; }
+        .docs-article__footer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--chirpui-spacing);
+            margin-top: var(--chirpui-spacing-xl);
+            padding-top: var(--chirpui-spacing-lg);
+            border-top: 1px solid var(--chirpui-border);
+        }
+
+        /* On-this-page rail — no built-in component for this */
+        .docs-toc {
+            position: sticky;
+            top: calc(var(--chirpui-shell-offset-top) + 1.5rem);
+            align-self: start;
+            font-size: var(--chirpui-font-sm);
+            max-height: calc(100dvh - var(--chirpui-shell-offset-top) - 3rem);
+            overflow-y: auto;
+        }
+        .docs-toc ul { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--chirpui-border); }
+        .docs-toc li a {
+            display: block;
+            padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
+            margin-left: -1px;
+            color: var(--chirpui-text-muted);
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            line-height: 1.4;
+        }
+        .docs-toc li a:hover { color: var(--chirpui-text); }
+        .docs-toc li a.is-active {
+            color: var(--chirpui-accent);
+            border-left-color: var(--chirpui-accent);
+            font-weight: 600;
+        }
+        .docs-toc li.is-nested a { padding-left: calc(var(--chirpui-spacing-sm) + 0.75rem); font-size: 0.8em; }
+
+        /* <kbd> styling (not shipped as a chirpui-* class) */
+        :where(.chirpui-prose, .chirpui-input-group__suffix, .docs-shell) kbd {
+            font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+            font-size: 0.8em;
+            padding: 0.1em 0.45em;
+            background: var(--chirpui-surface);
+            border: 1px solid var(--chirpui-border);
+            border-bottom-width: 2px;
+            border-radius: var(--chirpui-radius-sm);
+            color: var(--chirpui-text);
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .docs-main { grid-template-columns: minmax(0, 48rem); }
+            .docs-toc { display: none; }
+        }
+        @media (max-width: 820px) {
+            .docs-shell { grid-template-columns: 1fr; grid-template-areas: "topbar" "main"; }
+            .chirpui-app-shell__sidebar { display: none; }
+            .docs-shell .chirpui-app-shell__topbar-center { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="chirpui-app-shell docs-shell" x-data="{ theme: 'system' }">
+
+    <!-- ============================================================== -->
+    <!-- TOPBAR                                                         -->
+    <!-- ============================================================== -->
+    <header class="chirpui-app-shell__topbar chirpui-app-shell__topbar--glass">
+        <div class="chirpui-app-shell__topbar-start chirpui-cluster chirpui-cluster--sm">
+            <a href="#" class="chirpui-app-shell__brand chirpui-cluster chirpui-cluster--xs">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/>
+                </svg>
+                chirp-ui
+            </a>
+            <span class="chirpui-badge chirpui-badge--muted">v0.21.0</span>
+        </div>
+
+        <div class="chirpui-app-shell__topbar-center">
+            <div class="chirpui-input-group" role="search">
+                <span class="chirpui-input-group__prefix" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/>
+                    </svg>
+                </span>
+                <input type="search" class="chirpui-input-group__input" placeholder="Search components, tokens, recipes…" aria-label="Search docs">
+                <span class="chirpui-input-group__suffix"><kbd>⌘K</kbd></span>
+            </div>
+        </div>
+
+        <div class="chirpui-app-shell__topbar-end">
+            <nav class="chirpui-cluster chirpui-cluster--xs" aria-label="Primary">
+                <a href="#" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Docs</a>
+                <a href="#" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">API</a>
+                <a href="#" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Changelog</a>
+            </nav>
+
+            <!-- Theme toggle uses segmented control -->
+            <div class="chirpui-segmented chirpui-segmented--sm" role="radiogroup" aria-label="Theme">
+                <button type="button" class="chirpui-segmented__option" :class="{ 'chirpui-segmented__option--active': theme==='light' }" @click="theme='light'; document.documentElement.setAttribute('data-theme','light'); document.documentElement.style.colorScheme='light'" aria-label="Light theme">
+                    <span class="chirpui-segmented__icon" aria-hidden="true">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                    </span>
+                </button>
+                <button type="button" class="chirpui-segmented__option" :class="{ 'chirpui-segmented__option--active': theme==='dark' }" @click="theme='dark'; document.documentElement.setAttribute('data-theme','dark'); document.documentElement.style.colorScheme='dark'" aria-label="Dark theme">
+                    <span class="chirpui-segmented__icon" aria-hidden="true">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    </span>
+                </button>
+                <button type="button" class="chirpui-segmented__option" :class="{ 'chirpui-segmented__option--active': theme==='system' }" @click="theme='system'; document.documentElement.setAttribute('data-theme','system'); document.documentElement.style.colorScheme=''" aria-label="System theme">
+                    <span class="chirpui-segmented__icon" aria-hidden="true">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+                    </span>
+                </button>
+            </div>
+
+            <a href="#" class="chirpui-icon-btn chirpui-icon-btn--ghost chirpui-icon-btn--sm" aria-label="GitHub repository">
+                <span class="chirpui-icon-btn__icon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.39c.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .1-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.4 11.4 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.65 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5z"/></svg>
+                </span>
+            </a>
+        </div>
+    </header>
+
+    <!-- ============================================================== -->
+    <!-- SIDEBAR — chirpui-sidebar composed inside app-shell__sidebar   -->
+    <!-- ============================================================== -->
+    <aside class="chirpui-app-shell__sidebar chirpui-app-shell__sidebar--muted" aria-label="Documentation navigation">
+        <nav class="chirpui-sidebar">
+            <div class="chirpui-sidebar__nav">
+                <div class="chirpui-sidebar__section">
+                    <span class="chirpui-sidebar__section-title">Getting Started</span>
+                    <div class="chirpui-sidebar__section-links">
+                        <a href="#" class="chirpui-sidebar__link chirpui-sidebar__link--active" aria-current="page"><span class="chirpui-sidebar__label">Introduction</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Installation</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Quickstart</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Project layout</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Upgrade guide</span><span class="chirpui-badge chirpui-badge--muted" style="margin-left:auto;">v0.21</span></a>
+                    </div>
+                </div>
+
+                <div class="chirpui-sidebar__section">
+                    <span class="chirpui-sidebar__section-title">Core concepts</span>
+                    <div class="chirpui-sidebar__section-links">
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Design tokens</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">BEM &amp; naming</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Variants &amp; sizes</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Provide / consume</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Warning system</span></a>
+                    </div>
+                </div>
+
+                <div class="chirpui-sidebar__section">
+                    <span class="chirpui-sidebar__section-title">Components</span>
+                    <div class="chirpui-sidebar__section-links">
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Buttons</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Cards</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Callouts</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Forms &amp; fields</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Navigation</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Overlays</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Marketing kit</span><span class="chirpui-badge chirpui-badge--success" style="margin-left:auto;">new</span></a>
+                    </div>
+                </div>
+
+                <div class="chirpui-sidebar__section">
+                    <span class="chirpui-sidebar__section-title">HTMX patterns</span>
+                    <div class="chirpui-sidebar__section-links">
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Fragment islands</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">OOB swaps</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Suspense</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">SSE &amp; streaming</span></a>
+                    </div>
+                </div>
+
+                <div class="chirpui-sidebar__section">
+                    <span class="chirpui-sidebar__section-title">Recipes</span>
+                    <div class="chirpui-sidebar__section-links">
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Docs theme</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">Dashboards</span></a>
+                        <a href="#" class="chirpui-sidebar__link"><span class="chirpui-sidebar__label">App shell &amp; chat</span></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ============================================================== -->
+    <!-- MAIN — article + on-this-page rail                             -->
+    <!-- ============================================================== -->
+    <main class="chirpui-app-shell__main docs-main">
+
+        <article class="docs-article">
+            <!-- Breadcrumbs -->
+            <nav class="chirpui-breadcrumbs" aria-label="Breadcrumb" style="margin-bottom: var(--chirpui-spacing-sm);">
+                <ol class="chirpui-breadcrumbs__list">
+                    <li class="chirpui-breadcrumbs__item"><a class="chirpui-breadcrumbs__link" href="#">Docs</a></li>
+                    <li class="chirpui-breadcrumbs__item" aria-hidden="true">/</li>
+                    <li class="chirpui-breadcrumbs__item"><a class="chirpui-breadcrumbs__link" href="#">Getting Started</a></li>
+                    <li class="chirpui-breadcrumbs__item" aria-hidden="true">/</li>
+                    <li class="chirpui-breadcrumbs__item"><span class="chirpui-breadcrumbs__current" aria-current="page">Introduction</span></li>
+                </ol>
+            </nav>
+
+            <span class="chirpui-label-overline">Getting Started</span>
+
+            <div class="chirpui-prose chirpui-prose-lg">
+                <h1 id="introduction">Introduction to chirp-ui</h1>
+                <p class="chirpui-text-muted" style="font-size: var(--chirpui-font-lg); line-height: 1.55;">
+                    chirp-ui is an optional companion UI layer for the Chirp web framework — a set of
+                    Kida template macros that render as semantic HTML and are styled with modern CSS:
+                    custom properties, <code>color-mix()</code>, <code>:has()</code>, and container queries.
+                    No build step required.
+                </p>
+
+                <p>
+                    The library is designed to give you a functional, accessible, token-driven
+                    component vocabulary out of the box, with sensible defaults that you can redress
+                    entirely through CSS custom properties. Everything below — the topbar, sidebar,
+                    breadcrumbs, callouts, code blocks, and even this page's prose styling — is
+                    rendered with the same <code>chirpui-*</code> classes you'd use in your own app.
+                </p>
+
+                <div class="chirpui-callout chirpui-callout--info" role="note">
+                    <div class="chirpui-callout__header">
+                        <span class="chirpui-callout__icon" aria-hidden="true">ℹ</span>
+                        <strong class="chirpui-callout__title">New to the Bengal ecosystem?</strong>
+                    </div>
+                    <div class="chirpui-callout__body">
+                        chirp-ui sits on top of <a href="#">kida-templates</a> (the template engine) and
+                        <a href="#">bengal-chirp</a> (the web framework). You can use it without either —
+                        the compiled CSS stands alone — but the macros unlock the real power.
+                    </div>
+                </div>
+
+                <h2 id="install">Install</h2>
+                <p>
+                    chirp-ui is published on PyPI. Most users add it as a dependency alongside Chirp:
+                </p>
+
+<pre><code>uv add chirp-ui
+# or
+pip install chirp-ui</code></pre>
+
+                <p>
+                    Register it with your Chirp app and the component loader, CSS, and JavaScript
+                    helpers are wired up automatically:
+                </p>
+
+<pre><code>from chirp import Chirp
+from chirp_ui import use_chirp_ui
+
+app = Chirp(__name__)
+use_chirp_ui(app)  # registers loader, filters, static path, Alpine</code></pre>
+
+                <h2 id="first-page">Your first page</h2>
+                <p>
+                    A chirp-ui page is just a Kida template that composes macros. Start with the
+                    app shell — it provides a sticky topbar, a sidebar, and a main content region
+                    with sensible defaults for overflow, focus, and dark-mode:
+                </p>
+
+<pre><code>{% from "chirpui/app_shell.html" import app_shell %}
+{% from "chirpui/hero.html" import hero %}
+
+{% call app_shell(brand="Acme") %}
+  {% call hero(title="Welcome", lede="Get started in 60 seconds.") %}
+    {{ btn("Read the docs", href="/docs", variant="primary") }}
+  {% end %}
+{% end %}</code></pre>
+
+                <p>
+                    Every component accepts <strong>variants</strong> and <strong>sizes</strong>
+                    as keyword arguments, validated against a central registry. Unknown values
+                    fall back to the default with a warning — or raise in strict mode.
+                </p>
+
+                <h3 id="variants">Variants &amp; sizes</h3>
+                <p>
+                    The validation registry is the single source of truth. You can inspect it
+                    from any shell:
+                </p>
+
+<pre><code>>>> from chirp_ui.validation import VARIANT_REGISTRY
+>>> VARIANT_REGISTRY["button"]
+frozenset({'default', 'primary', 'ghost', 'danger', 'success'})</code></pre>
+
+                <div class="chirpui-callout chirpui-callout--warning" role="note">
+                    <div class="chirpui-callout__header">
+                        <span class="chirpui-callout__icon" aria-hidden="true">!</span>
+                        <strong class="chirpui-callout__title">Strict mode in CI</strong>
+                    </div>
+                    <div class="chirpui-callout__body">
+                        Call <code>set_strict(True)</code> in your test harness to escalate
+                        validation warnings to <code>ValueError</code>. This catches typos like
+                        <code>variant="primery"</code> before they ship.
+                    </div>
+                </div>
+
+                <h3 id="theming">Theming &amp; tokens</h3>
+                <p>
+                    All colors, spacing, typography, motion, and elevation are exposed as CSS
+                    custom properties prefixed with <code>--chirpui-</code>. Override them on
+                    <code>:root</code>, on a scoped element, or via <code>data-theme</code>:
+                </p>
+
+                <table>
+                    <thead>
+                        <tr><th>Token</th><th>Purpose</th><th>Default</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>--chirpui-accent</code></td><td>Brand / link color</td><td><code>hsl(212 100% 48%)</code></td></tr>
+                        <tr><td><code>--chirpui-surface</code></td><td>Card / panel bg</td><td><code>light-dark(#fff, #111)</code></td></tr>
+                        <tr><td><code>--chirpui-radius</code></td><td>Default corner radius</td><td><code>0.5rem</code></td></tr>
+                        <tr><td><code>--chirpui-duration</code></td><td>Default motion duration</td><td><code>180ms</code></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="chirpui-callout chirpui-callout--success" role="note">
+                    <div class="chirpui-callout__header">
+                        <span class="chirpui-callout__icon" aria-hidden="true">✓</span>
+                        <strong class="chirpui-callout__title">Dark mode comes free</strong>
+                    </div>
+                    <div class="chirpui-callout__body">
+                        Every token uses <code>light-dark()</code> under the hood. Toggle
+                        <code>&lt;html data-theme="dark"&gt;</code> and the entire page reflows —
+                        try the segmented control in the top-right.
+                    </div>
+                </div>
+
+                <h2 id="keyboard">Keyboard shortcuts</h2>
+                <p>
+                    Press <kbd>⌘</kbd> + <kbd>K</kbd> to open search, <kbd>G</kbd> then
+                    <kbd>H</kbd> to jump home, or <kbd>?</kbd> anywhere to show all shortcuts.
+                    These are wired up in the default app shell and can be disabled per-page.
+                </p>
+
+                <h2 id="next">Where to go next</h2>
+                <ul>
+                    <li><a href="#">Read the <strong>Quickstart</strong></a> — a 10-minute walkthrough that builds a real page.</li>
+                    <li><a href="#">Browse the <strong>Components</strong> reference</a> — every macro, prop, and slot.</li>
+                    <li><a href="#">Follow the <strong>Theming guide</strong></a> — redress chirp-ui in your brand colors in under an hour.</li>
+                </ul>
+
+                <blockquote>
+                    <p>
+                        chirp-ui is opinionated about defaults and agnostic about outcomes — ship
+                        the same macros in a marketing site, a dashboard, an LLM chat app, or this
+                        very docs page. All the footguns have already been filed down.
+                    </p>
+                </blockquote>
+            </div>
+
+            <!-- Prev / Next pager — chirpui-card with --link variant -->
+            <footer class="docs-article__footer">
+                <a href="#" class="chirpui-card chirpui-card--link">
+                    <div class="chirpui-card__header">
+                        <div class="chirpui-card__header-content">
+                            <div class="chirpui-card__header-subtitle">← Previous</div>
+                            <span class="chirpui-card__title">Overview</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="chirpui-card chirpui-card--link" style="text-align: right;">
+                    <div class="chirpui-card__header">
+                        <div class="chirpui-card__header-content">
+                            <div class="chirpui-card__header-subtitle">Next →</div>
+                            <span class="chirpui-card__title">Installation</span>
+                        </div>
+                    </div>
+                </a>
+            </footer>
+        </article>
+
+        <!-- On this page -->
+        <aside class="docs-toc" aria-label="On this page" x-data="tocSpy()" x-init="init()">
+            <span class="chirpui-label-overline" style="display:block; margin-bottom: var(--chirpui-spacing-xs);">On this page</span>
+            <ul>
+                <li><a href="#introduction" :class="{ 'is-active': active === 'introduction' }">Introduction</a></li>
+                <li><a href="#install" :class="{ 'is-active': active === 'install' }">Install</a></li>
+                <li><a href="#first-page" :class="{ 'is-active': active === 'first-page' }">Your first page</a></li>
+                <li class="is-nested"><a href="#variants" :class="{ 'is-active': active === 'variants' }">Variants &amp; sizes</a></li>
+                <li class="is-nested"><a href="#theming" :class="{ 'is-active': active === 'theming' }">Theming &amp; tokens</a></li>
+                <li><a href="#keyboard" :class="{ 'is-active': active === 'keyboard' }">Keyboard shortcuts</a></li>
+                <li><a href="#next" :class="{ 'is-active': active === 'next' }">Where to go next</a></li>
+            </ul>
+        </aside>
+    </main>
+</div>
+
+<script>
+    function tocSpy() {
+        return {
+            active: 'introduction',
+            init() {
+                const ids = ['introduction', 'install', 'first-page', 'variants', 'theming', 'keyboard', 'next'];
+                const headings = ids.map(id => document.getElementById(id)).filter(Boolean);
+                const observer = new IntersectionObserver((entries) => {
+                    const visible = entries.filter(e => e.isIntersecting)
+                        .sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
+                    if (visible.length) this.active = visible[0].target.id;
+                }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+                headings.forEach(h => observer.observe(h));
+            },
+        };
+    }
+</script>
+
+</body>
+</html>

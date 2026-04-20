@@ -1,0 +1,77 @@
+/* ================================================================
+   ASCII Checkbox — ☐/☑ ballot-style checkboxes
+   ================================================================ */
+
+.chirpui-ascii-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+    user-select: none;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+}
+
+.chirpui-ascii-checkbox__box {
+    font-size: 1.1rem;
+    line-height: 1;
+    color: var(--chirpui-text-muted);
+    transition: color var(--chirpui-transition);
+}
+.chirpui-ascii-checkbox__box::before {
+    content: "☐";
+}
+
+.chirpui-ascii-checkbox:has(.chirpui-ascii-checkbox__input:checked) .chirpui-ascii-checkbox__box {
+    color: var(--chirpui-accent);
+}
+.chirpui-ascii-checkbox:has(.chirpui-ascii-checkbox__input:checked) .chirpui-ascii-checkbox__box::before {
+    content: "☑";
+}
+
+/* Active press */
+.chirpui-ascii-checkbox:has(.chirpui-ascii-checkbox__input:active) .chirpui-ascii-checkbox__box::before {
+    content: "☒";
+}
+
+.chirpui-ascii-checkbox__label {
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text);
+}
+
+/* Focus */
+.chirpui-ascii-checkbox:has(.chirpui-ascii-checkbox__input:focus-visible) .chirpui-ascii-checkbox__box {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Disabled */
+.chirpui-ascii-checkbox--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Variants */
+.chirpui-ascii-checkbox--accent:has(.chirpui-ascii-checkbox__input:checked) .chirpui-ascii-checkbox__box { color: var(--chirpui-accent); }
+.chirpui-ascii-checkbox--success:has(.chirpui-ascii-checkbox__input:checked) .chirpui-ascii-checkbox__box { color: var(--chirpui-success); }
+.chirpui-ascii-checkbox--danger:has(.chirpui-ascii-checkbox__input:checked) .chirpui-ascii-checkbox__box { color: var(--chirpui-error); }
+
+/* Group */
+.chirpui-ascii-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.chirpui-ascii-checkbox-group__legend {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: var(--chirpui-font-xs, 0.65rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--chirpui-text-muted);
+    margin-bottom: 0.35em;
+}
+

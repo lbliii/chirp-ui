@@ -1,0 +1,35 @@
+/* ==========================================================================
+   Spotlight Card
+   ========================================================================== */
+
+.chirpui-spotlight-card {
+    position: relative;
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    overflow: clip;
+    padding: var(--chirpui-spacing-md);
+}
+.chirpui-spotlight-card__spotlight {
+    position: absolute;
+    /* Force square so the rotation stays circular, not rectangular */
+    width: 200%;
+    aspect-ratio: 1;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    background: radial-gradient(circle at 50% 50%, var(--chirpui-glow-color), transparent 50%);
+    animation: chirpui-spotlight-rotate var(--chirpui-anim-drift) linear infinite;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+}
+.chirpui-spotlight-card__content {
+    position: relative;
+    z-index: 1;
+}
+.chirpui-spotlight-card--accent .chirpui-spotlight-card__spotlight {
+    background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--chirpui-accent) 40%, transparent), transparent 50%);
+}
+
+

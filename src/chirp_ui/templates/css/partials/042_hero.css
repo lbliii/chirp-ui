@@ -1,0 +1,104 @@
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+
+.chirpui-hero {
+    width: 100%;
+    padding: var(--chirpui-spacing-xl) var(--chirpui-spacing);
+}
+
+.chirpui-hero__inner {
+    max-width: var(--chirpui-container-max);
+    margin-inline: auto;
+    text-align: center;
+}
+
+.chirpui-hero__title {
+    font-size: var(--chirpui-font-2xl);
+    font-weight: var(--chirpui-ui-font-weight-bold);
+    line-height: var(--chirpui-line-height-tight);
+    margin: 0 0 var(--chirpui-spacing-sm);
+    color: var(--chirpui-text);
+}
+
+.chirpui-hero__subtitle {
+    font-size: var(--chirpui-font-lg);
+    color: var(--chirpui-text-muted);
+    margin: 0 0 var(--chirpui-spacing);
+    line-height: var(--chirpui-line-height-normal);
+}
+
+.chirpui-hero__content {
+    margin-top: var(--chirpui-spacing);
+}
+
+.chirpui-hero__action {
+    margin-top: var(--chirpui-spacing);
+}
+
+.chirpui-hero__action:empty {
+    display: none;
+}
+
+.chirpui-hero--solid {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-hero--muted {
+    background: var(--chirpui-surface-alt);
+}
+
+.chirpui-hero--gradient {
+    background: linear-gradient(
+        135deg,
+        var(--chirpui-bg-subtle) 0%,
+        color-mix(in srgb, var(--chirpui-accent) 8%, var(--chirpui-bg)) 100%
+    );
+}
+
+.chirpui-hero--mesh {
+    background: var(--chirpui-gradient-mesh);
+}
+
+.chirpui-hero--animated-gradient {
+    background: var(--chirpui-gradient-subtle);
+}
+@media (prefers-reduced-motion: no-preference) {
+    .chirpui-hero--animated-gradient {
+        background: linear-gradient(
+            -45deg,
+            var(--chirpui-bg-subtle),
+            color-mix(in srgb, var(--chirpui-accent) 8%, var(--chirpui-bg)),
+            color-mix(in srgb, var(--chirpui-accent-secondary) 6%, var(--chirpui-bg)),
+            var(--chirpui-bg-subtle)
+        );
+        background-size: 400% 400%;
+        animation: chirpui-gradient-shift 15s ease infinite;
+    }
+}
+@keyframes chirpui-gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Page hero (docs, editorial) */
+.chirpui-hero--page .chirpui-hero__eyebrow,
+.chirpui-hero--page .chirpui-hero__actions,
+.chirpui-hero--page .chirpui-hero__metadata,
+.chirpui-hero--page .chirpui-hero__footer {
+    margin-bottom: var(--chirpui-spacing-sm);
+}
+
+.chirpui-hero--page .chirpui-hero__eyebrow:empty,
+.chirpui-hero--page .chirpui-hero__actions:empty,
+.chirpui-hero--page .chirpui-hero__metadata:empty,
+.chirpui-hero--page .chirpui-hero__footer:empty {
+    display: none;
+}
+
+.chirpui-hero--page-minimal .chirpui-hero__eyebrow {
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+

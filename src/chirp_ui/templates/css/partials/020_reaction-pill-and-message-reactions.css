@@ -1,0 +1,55 @@
+/* ==========================================================================
+   Reaction Pill & Message Reactions
+   ========================================================================== */
+
+.chirpui-message-reactions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--chirpui-spacing-xs);
+    margin-top: var(--chirpui-spacing-xs);
+}
+
+.chirpui-reaction-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
+    font: inherit;
+    background: var(--chirpui-bg-subtle);
+    border: 1px solid var(--chirpui-border);
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background var(--chirpui-transition), border-color var(--chirpui-transition);
+}
+
+.chirpui-reaction-pill:hover {
+    background: var(--chirpui-border);
+}
+
+.chirpui-reaction-pill:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-reaction-pill--active {
+    border-color: var(--chirpui-accent);
+    background: var(--chirpui-primary-muted);
+}
+
+.chirpui-reaction-pill--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.chirpui-reaction-pill__emoji {
+    font-size: var(--chirpui-ui-sm);
+}
+
+.chirpui-reaction-pill__count {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    color: var(--chirpui-text-muted);
+}
+

@@ -1,0 +1,87 @@
+/* ==========================================================================
+   ASCII Skeleton — character-based loading placeholder
+   ========================================================================== */
+
+.chirpui-ascii-skeleton {
+    display: inline-block;
+    font-family: var(--chirpui-ascii-font);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--chirpui-text-muted);
+    overflow: clip;
+    border-radius: var(--chirpui-radius-sm);
+    letter-spacing: 0.05em;
+}
+.chirpui-ascii-skeleton__fill,
+.chirpui-ascii-skeleton__line {
+    display: block;
+    overflow: clip;
+    white-space: nowrap;
+    max-height: 1.4em;
+    animation: chirpui-ascii-skeleton-wave 2s ease-in-out infinite;
+}
+
+/* Stagger wave across lines */
+.chirpui-ascii-skeleton__line:nth-child(2) { animation-delay: 0.15s; }
+.chirpui-ascii-skeleton__line:nth-child(3) { animation-delay: 0.3s; }
+.chirpui-ascii-skeleton__line:nth-child(4) { animation-delay: 0.45s; }
+.chirpui-ascii-skeleton__line:nth-child(5) { animation-delay: 0.6s; }
+.chirpui-ascii-skeleton__line:nth-child(6) { animation-delay: 0.75s; }
+
+/* Header line inside card skeleton */
+.chirpui-ascii-skeleton__line--header {
+    font-size: 0.875rem;
+    margin-bottom: var(--chirpui-spacing-xs);
+    font-weight: var(--chirpui-ui-font-weight-medium, 500);
+}
+
+/* Text variant */
+.chirpui-ascii-skeleton--text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+}
+.chirpui-ascii-skeleton--text .chirpui-ascii-skeleton__line:last-child {
+    max-width: 75%;
+}
+
+/* Card variant */
+.chirpui-ascii-skeleton--card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+    padding: var(--chirpui-spacing-sm);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+}
+.chirpui-ascii-skeleton--card .chirpui-ascii-skeleton__line:last-child {
+    max-width: 60%;
+}
+
+/* Avatar variant */
+.chirpui-ascii-skeleton--avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 1px solid var(--chirpui-border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+.chirpui-ascii-skeleton--avatar .chirpui-ascii-skeleton__fill {
+    animation: chirpui-ascii-skeleton-wave 2s ease-in-out infinite;
+}
+
+/* Heading variant */
+.chirpui-ascii-skeleton--heading {
+    display: block;
+    font-size: 1rem;
+    width: 60%;
+}
+.chirpui-ascii-skeleton--heading .chirpui-ascii-skeleton__fill {
+    font-size: inherit;
+}
+

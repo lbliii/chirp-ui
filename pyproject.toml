@@ -210,29 +210,37 @@ lint = { cmd = "ruff check .", help = "Run ruff linter" }
 lint-fix = { cmd = "ruff check . --fix", help = "Run ruff linter with auto-fix" }
 format = { cmd = "ruff format .", help = "Format code with ruff" }
 format-check = { cmd = "ruff format . --check", help = "Check formatting" }
+build-css = { cmd = "python scripts/build_chirpui_css.py", help = "Concat CSS partials into chirpui.css" }
+build-css-check = { cmd = "python scripts/build_chirpui_css.py --check", help = "Fail if chirpui.css is stale relative to partials" }
 css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS parses cleanly" }
 css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }
 css-transition-check = { cmd = "pytest tests/test_transition_tokens.py -q", help = "Check transitions use motion tokens" }
+css-concat-check = { cmd = "pytest tests/test_chirpui_css_concat.py -q", help = "Check chirpui.css matches partials" }
 
 # Documentation
 docs-serve = { cmd = "python scripts/docs_site.py serve", help = "Serve docs site locally" }
 docs-build = { cmd = "python scripts/docs_site.py build", help = "Build docs site" }
 docs-assemble-showcase = { cmd = "bash scripts/assemble-static-showcase.sh site/public/showcase", help = "Copy static showcase into site/public/showcase (after docs-build)" }
-docs-build-all = { sequence = ["docs-build", "docs-assemble-showcase"], help = "Build Bengal site and assemble static component showcase" }
+docs-emit-manifest.shell = "mkdir -p site/public && python -m chirp_ui.manifest --json > site/public/chirpui.manifest.json"
+docs-emit-manifest.help = "Emit chirpui component manifest to site/public/chirpui.manifest.json"
+docs-build-all = { sequence = ["docs-build", "docs-assemble-showcase", "docs-emit-manifest"], help = "Build Bengal site, assemble static showcase, and emit manifest" }
 
 # CI Pipeline
 ci = { sequence = [
     "lint",
     "format-check",
+    "build-css-check",
     "css-check",
     "css-contract-check",
     "css-transition-check",
+    "css-concat-check",
     "ty",
     "test",
 ], help = "Full CI check" }
 check = { sequence = [
     "lint",
     "format-check",
+    "build-css-check",
     "css-check",
     "css-contract-check",
     "css-transition-check",

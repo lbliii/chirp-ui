@@ -1,0 +1,31 @@
+/* ==========================================================================
+   Animated Counter
+   ========================================================================== */
+
+.chirpui-animated-counter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-2xs);
+}
+.chirpui-animated-counter__value {
+    font-size: var(--chirpui-prose-2xl);
+    font-weight: var(--chirpui-ui-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    counter-reset: chirpui-num var(--chirpui-num);
+    animation: chirpui-count-up 1.8s var(--chirpui-ease-decel) forwards;
+}
+.chirpui-animated-counter__value::after {
+    content: counter(chirpui-num);
+}
+.chirpui-animated-counter__prefix::after {
+    content: attr(data-prefix);
+}
+.chirpui-animated-counter__label {
+    font-size: var(--chirpui-ui-sm);
+    color: var(--chirpui-text-muted);
+}
+.chirpui-animated-counter--mono .chirpui-animated-counter__value {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+}
+
+

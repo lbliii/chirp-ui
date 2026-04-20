@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Media Object
+   ========================================================================== */
+
+.chirpui-media-object {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--chirpui-spacing);
+}
+
+.chirpui-media-object--align-center {
+    align-items: center;
+}
+
+.chirpui-media-object__media {
+    flex-shrink: 0;
+}
+
+.chirpui-media-object__media img,
+.chirpui-media-object__media video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.chirpui-media-object__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.chirpui-media-object__actions {
+    flex-shrink: 0;
+}
+
+.chirpui-media-object__media:empty,
+.chirpui-media-object__body:empty,
+.chirpui-media-object__actions:empty {
+    display: none;
+}
+

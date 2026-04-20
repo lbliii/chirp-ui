@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Playlist
+   ========================================================================== */
+
+.chirpui-playlist {
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    overflow: clip;
+}
+
+.chirpui-playlist__header {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    border-bottom: 1px solid var(--chirpui-border);
+}
+
+.chirpui-playlist__title {
+    margin: 0;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    flex: 1;
+}
+
+.chirpui-playlist__header-actions:empty {
+    display: none;
+}
+
+.chirpui-playlist__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chirpui-playlist-item {
+    border-bottom: 1px solid var(--chirpui-border);
+}
+
+.chirpui-playlist-item:last-child {
+    border-bottom: none;
+}
+
+.chirpui-playlist-item__link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    text-decoration: none;
+    color: inherit;
+    transition: background var(--chirpui-transition);
+}
+
+.chirpui-playlist-item__link:hover {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-playlist-item__link:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-playlist-item--active .chirpui-playlist-item__link {
+    color: var(--chirpui-accent);
+    background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+}
+
+.chirpui-playlist-item__title {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: clip;
+    text-overflow: ellipsis;
+}
+
+.chirpui-playlist-item__duration {
+    flex-shrink: 0;
+    font-size: var(--chirpui-font-xs);
+    color: var(--chirpui-text-muted);
+}
+

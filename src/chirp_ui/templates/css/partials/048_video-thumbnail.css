@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Video Thumbnail
+   ========================================================================== */
+
+.chirpui-video-thumbnail {
+    display: block;
+    position: relative;
+    aspect-ratio: var(--chirpui-video-aspect-ratio);
+    overflow: clip;
+    background: var(--chirpui-bg-subtle);
+    border-radius: var(--chirpui-radius);
+}
+
+.chirpui-video-thumbnail__img-wrap {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.chirpui-video-thumbnail img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chirpui-video-thumbnail__play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chirpui-video-thumbnail__duration {
+    position: absolute;
+    right: var(--chirpui-spacing-xs);
+    bottom: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-2xs) 0.35rem;
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    background: rgba(0, 0, 0, 0.75);
+    color: var(--chirpui-on-accent);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-video-thumbnail__progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    background: var(--chirpui-error);
+}
+

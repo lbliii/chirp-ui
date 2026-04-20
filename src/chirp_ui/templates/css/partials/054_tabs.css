@@ -1,0 +1,42 @@
+/* ==========================================================================
+   Tabs
+   ========================================================================== */
+
+.chirpui-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--chirpui-border);
+}
+
+.chirpui-tab {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    font-size: var(--chirpui-font-sm);
+    transition: border-color var(--chirpui-transition);
+    cursor: pointer;
+}
+
+.chirpui-tab:hover {
+    border-bottom-color: var(--chirpui-border);
+}
+
+.chirpui-tab:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-tab--active {
+    border-bottom-color: var(--chirpui-accent);
+    color: var(--chirpui-accent);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+}
+
+.chirpui-tab--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+

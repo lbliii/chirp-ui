@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Confetti — Alpine-triggered celebration burst
+   ========================================================================== */
+
+.chirpui-confetti {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: var(--chirpui-z-celebration);
+    overflow: clip;
+}
+.chirpui-confetti__piece {
+    position: absolute;
+    top: -10%;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+}
+.chirpui-confetti__piece--active {
+    animation:
+        chirpui-confetti-fall var(--chirpui-confetti-duration, 3s) ease-in forwards,
+        chirpui-confetti-sway var(--chirpui-confetti-sway, 1.5s) ease-in-out infinite;
+}
+.chirpui-confetti__piece--square { border-radius: 0; }
+.chirpui-confetti__piece--circle { border-radius: 50%; }
+.chirpui-confetti__piece--strip {
+    width: 4px;
+    height: 14px;
+    border-radius: 2px;
+}
+
+

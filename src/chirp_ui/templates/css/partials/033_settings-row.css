@@ -1,0 +1,33 @@
+/* ==========================================================================
+   Settings Row (label | status | detail)
+   ========================================================================== */
+
+.chirpui-settings-row-list {
+    display: grid;
+    grid-template-columns: minmax(var(--chirpui-dl-term-width, 8rem), auto) minmax(6rem, auto) 1fr;
+    gap: var(--chirpui-spacing-sm, 0.5rem) var(--chirpui-spacing-lg, 1.5rem);
+    align-items: center;
+}
+
+.chirpui-settings-row {
+    display: contents;
+}
+
+.chirpui-settings-row__label {
+    flex-shrink: 0;
+}
+
+.chirpui-settings-row__status {
+    min-width: 0;
+}
+
+.chirpui-settings-row__detail {
+    min-width: 0;
+    overflow: clip;
+    text-overflow: ellipsis;
+}
+
+.chirpui-settings-row__detail code {
+    font-family: var(--chirpui-ascii-font, ui-monospace, monospace);
+}
+

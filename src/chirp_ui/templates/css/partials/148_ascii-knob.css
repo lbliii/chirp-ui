@@ -1,0 +1,99 @@
+/* ================================================================
+   ASCII Knob — rotary dial selector
+   ================================================================ */
+
+.chirpui-ascii-knob {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+}
+
+.chirpui-ascii-knob__legend {
+    font-size: var(--chirpui-font-xs, 0.65rem);
+    color: var(--chirpui-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--chirpui-spacing-xs);
+}
+
+.chirpui-ascii-knob__dial {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.15;
+    font-size: 0.85rem;
+    color: var(--chirpui-text-muted);
+    transition: color var(--chirpui-transition);
+}
+
+.chirpui-ascii-knob__frame {
+    display: block;
+    white-space: pre;
+}
+
+.chirpui-ascii-knob__positions {
+    display: flex;
+    gap: 0;
+}
+
+.chirpui-ascii-knob__position {
+    cursor: pointer;
+    user-select: none;
+}
+
+.chirpui-ascii-knob__notch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0.35em;
+    transition: color var(--chirpui-transition);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-ascii-knob__tick {
+    font-size: 0.7rem;
+    line-height: 1;
+    opacity: 0.5;
+}
+
+.chirpui-ascii-knob__value {
+    font-size: var(--chirpui-font-xs, 0.65rem);
+    white-space: nowrap;
+}
+
+/* Selected position */
+.chirpui-ascii-knob__position:has(.chirpui-ascii-knob__input:checked) .chirpui-ascii-knob__notch {
+    color: var(--chirpui-accent);
+}
+.chirpui-ascii-knob__position:has(.chirpui-ascii-knob__input:checked) .chirpui-ascii-knob__tick {
+    opacity: 1;
+    font-weight: var(--chirpui-ui-font-weight-bold);
+}
+
+/* Hover */
+.chirpui-ascii-knob__position:hover .chirpui-ascii-knob__notch {
+    color: var(--chirpui-text);
+}
+
+/* Focus */
+.chirpui-ascii-knob__position:has(.chirpui-ascii-knob__input:focus-visible) .chirpui-ascii-knob__notch {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 1px;
+    border-radius: 2px;
+}
+
+/* Accent variant */
+.chirpui-ascii-knob--accent .chirpui-ascii-knob__position:has(.chirpui-ascii-knob__input:checked) .chirpui-ascii-knob__notch {
+    color: var(--chirpui-accent);
+}
+
+/* When any position is checked, light up the dial */
+.chirpui-ascii-knob:has(.chirpui-ascii-knob__input:checked) .chirpui-ascii-knob__dial {
+    color: var(--chirpui-text);
+}
+

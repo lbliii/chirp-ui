@@ -1,0 +1,87 @@
+/* ==========================================================================
+   Comment & Comment Thread
+   ========================================================================== */
+
+.chirpui-comment {
+    padding: var(--chirpui-spacing);
+}
+
+.chirpui-comment__header {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+    margin-bottom: var(--chirpui-spacing-sm);
+}
+
+.chirpui-comment__avatar {
+    flex-shrink: 0;
+}
+
+.chirpui-comment__meta {
+    display: flex;
+    align-items: baseline;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-comment__author {
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-size: var(--chirpui-font-sm);
+}
+
+a.chirpui-comment__author:hover {
+    color: var(--chirpui-accent);
+}
+
+.chirpui-comment__time {
+    font-size: var(--chirpui-font-xs);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-comment__body {
+    padding-inline-start: calc(var(--chirpui-avatar-size-sm) + var(--chirpui-spacing));
+}
+
+.chirpui-comment__body p {
+    margin: 0;
+}
+
+.chirpui-comment__footer {
+    margin-top: var(--chirpui-spacing-sm);
+    padding-inline-start: calc(var(--chirpui-avatar-size-sm) + var(--chirpui-spacing));
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+}
+
+.chirpui-comment__footer:not(:has(.chirpui-comment__replies-link)):has(.chirpui-comment__actions:empty) {
+    display: none;
+}
+
+.chirpui-comment__actions:empty {
+    display: none;
+}
+
+.chirpui-comment__replies {
+    margin-top: var(--chirpui-spacing-sm);
+    padding-inline-start: calc(var(--chirpui-avatar-size-sm) + var(--chirpui-spacing));
+}
+
+.chirpui-comment__replies-link {
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-accent);
+}
+
+.chirpui-comment-thread {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chirpui-comment-thread .chirpui-comment {
+    border-bottom: 1px solid var(--chirpui-border);
+}
+
+.chirpui-comment-thread .chirpui-comment:last-child {
+    border-bottom: none;
+}
+

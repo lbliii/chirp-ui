@@ -1,0 +1,61 @@
+/* ==========================================================================
+   Donut Chart (CSS-only conic gradient)
+   ========================================================================== */
+
+.chirpui-donut {
+    position: relative;
+    width: var(--chirpui-donut-size, 4rem);
+    height: var(--chirpui-donut-size, 4rem);
+    border-radius: 50%;
+}
+
+.chirpui-donut--sm { --chirpui-donut-size: 2.5rem; }
+.chirpui-donut--md { --chirpui-donut-size: 4rem; }
+.chirpui-donut--lg { --chirpui-donut-size: 6rem; }
+
+.chirpui-donut__ring {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--chirpui-donut-fill, var(--chirpui-accent)) 0deg,
+        var(--chirpui-donut-fill, var(--chirpui-accent)) calc(var(--chirpui-donut-pct, 0) * 3.6deg),
+        var(--chirpui-bg-subtle) calc(var(--chirpui-donut-pct, 0) * 3.6deg),
+        var(--chirpui-bg-subtle) 360deg
+    );
+}
+
+.chirpui-donut__center {
+    position: absolute;
+    inset: 15%;
+    border-radius: 50%;
+    background: var(--chirpui-surface);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    color: var(--chirpui-text);
+}
+
+.chirpui-donut__caption {
+    font-size: var(--chirpui-font-xs);
+    font-weight: 400;
+    color: var(--chirpui-text-muted);
+    line-height: 1;
+}
+
+.chirpui-donut--gold .chirpui-donut__ring {
+    --chirpui-donut-fill: var(--chirpui-accent-dim, var(--chirpui-accent));
+}
+
+.chirpui-donut--success .chirpui-donut__ring {
+    --chirpui-donut-fill: var(--chirpui-success);
+}
+
+.chirpui-donut--muted .chirpui-donut__ring {
+    --chirpui-donut-fill: var(--chirpui-text-muted);
+}
+

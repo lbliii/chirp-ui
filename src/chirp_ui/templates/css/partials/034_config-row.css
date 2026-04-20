@@ -1,0 +1,46 @@
+/* ==========================================================================
+   Config Row (label | control)
+   ========================================================================== */
+
+.chirpui-config-row-list {
+    display: grid;
+    grid-template-columns: minmax(var(--chirpui-dl-term-width, 8rem), auto) 1fr;
+    gap: var(--chirpui-spacing-sm, 0.5rem) var(--chirpui-spacing-lg, 1.5rem);
+    align-items: center;
+}
+
+.chirpui-config-row {
+    display: contents;
+}
+
+.chirpui-config-row__label {
+    flex-shrink: 0;
+}
+
+.chirpui-config-row__control {
+    min-width: 0;
+}
+
+.chirpui-config-row__form {
+    display: flex;
+    align-items: center;
+}
+
+.chirpui-config-row__toggle-wrap {
+    margin: 0;
+}
+
+.chirpui-config-row__select {
+    max-width: 20rem;
+}
+
+.chirpui-config-row__editable {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-config-row__editable.chirpui-inline-edit--display {
+    margin-inline-start: calc(-1 * var(--chirpui-spacing-sm));
+}
+

@@ -1,0 +1,45 @@
+/* ==========================================================================
+   ASCII Empty — zero-data empty state
+   ========================================================================== */
+
+.chirpui-ascii-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--chirpui-spacing-xl) var(--chirpui-spacing);
+    gap: var(--chirpui-spacing-xs);
+}
+.chirpui-ascii-empty__glyph {
+    font-family: var(--chirpui-ascii-font);
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--chirpui-text-muted);
+    opacity: 0.5;
+    margin-bottom: var(--chirpui-spacing-sm);
+}
+.chirpui-ascii-empty__heading {
+    font-family: var(--chirpui-ascii-font);
+    font-size: 0.875rem;
+    font-weight: var(--chirpui-ui-font-weight-medium, 500);
+    color: var(--chirpui-text);
+    margin: 0;
+}
+.chirpui-ascii-empty__desc {
+    font-size: 0.82rem;
+    color: var(--chirpui-text-muted);
+    margin: 0;
+    max-width: 30ch;
+}
+.chirpui-ascii-empty__action {
+    margin-top: var(--chirpui-spacing-sm);
+}
+.chirpui-ascii-empty__action:empty {
+    display: none;
+}
+
+/* Variants */
+.chirpui-ascii-empty--muted .chirpui-ascii-empty__glyph { color: var(--chirpui-text-muted); opacity: 0.3; }
+.chirpui-ascii-empty--accent .chirpui-ascii-empty__glyph { color: var(--chirpui-accent); opacity: 0.6; }
+

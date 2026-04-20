@@ -1,0 +1,30 @@
+/* ==========================================================================
+   Neon Text — layered text-shadow glow
+   ========================================================================== */
+
+.chirpui-neon {
+    display: inline-block;
+    font-weight: var(--chirpui-ui-font-weight-bold);
+    color: var(--chirpui-on-accent);
+    text-shadow:
+        0 0 4px currentColor,
+        0 0 11px currentColor,
+        0 0 19px currentColor,
+        0 0 40px var(--chirpui-neon-color, #0ff),
+        0 0 80px var(--chirpui-neon-color, #0ff),
+        0 0 90px var(--chirpui-neon-color, #0ff);
+}
+.chirpui-neon--cyan { --chirpui-neon-color: #0ff; }
+.chirpui-neon--magenta { --chirpui-neon-color: #f0f; }
+.chirpui-neon--green { --chirpui-neon-color: #0f0; }
+.chirpui-neon--orange { --chirpui-neon-color: #f80; }
+.chirpui-neon--blue { --chirpui-neon-color: #08f; }
+.chirpui-neon--red { --chirpui-neon-color: #f22; }
+.chirpui-neon--flicker {
+    animation: chirpui-neon-flicker 4s infinite;
+}
+.chirpui-neon--pulse {
+    animation: chirpui-neon-pulse 2s ease-in-out infinite;
+}
+
+

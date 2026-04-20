@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Profile Header
+   ========================================================================== */
+
+.chirpui-profile-header {
+    position: relative;
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    overflow: clip;
+}
+
+.chirpui-profile-header__cover {
+    height: 8rem;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--chirpui-bg-subtle);
+}
+
+.chirpui-profile-header__content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--chirpui-spacing-lg);
+    padding: var(--chirpui-spacing);
+}
+
+.chirpui-profile-header__avatar {
+    flex-shrink: 0;
+}
+
+.chirpui-profile-header__avatar:empty,
+.chirpui-profile-header__bio:empty,
+.chirpui-profile-header__stats:empty,
+.chirpui-profile-header__action:empty {
+    display: none;
+}
+
+.chirpui-profile-header__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.chirpui-profile-header__name {
+    margin: 0 0 var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-xl);
+}
+
+a.chirpui-profile-header__name:hover {
+    color: var(--chirpui-accent);
+}
+
+.chirpui-profile-header__bio {
+    margin: 0 0 var(--chirpui-spacing-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-profile-header__stats {
+    display: flex;
+    gap: var(--chirpui-spacing-lg);
+    margin-bottom: var(--chirpui-spacing-sm);
+}
+
+.chirpui-profile-header__action {
+    flex-shrink: 0;
+}
+

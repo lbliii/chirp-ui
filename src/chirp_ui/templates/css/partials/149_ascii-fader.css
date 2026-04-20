@@ -1,0 +1,80 @@
+/* ================================================================
+   ASCII Fader — vertical mixing-board slider
+   ================================================================ */
+
+.chirpui-ascii-fader {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2em;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+}
+
+.chirpui-ascii-fader__track {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.1;
+    font-size: 0.85rem;
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-ascii-fader__cap {
+    display: block;
+    white-space: pre;
+}
+
+.chirpui-ascii-fader__segment {
+    display: block;
+    white-space: pre;
+    transition: color var(--chirpui-transition);
+}
+
+.chirpui-ascii-fader__segment--filled {
+    color: var(--chirpui-accent);
+    text-shadow: 0 0 4px currentColor;
+}
+
+.chirpui-ascii-fader__label {
+    font-size: var(--chirpui-font-xs, 0.6rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-ascii-fader__value {
+    font-size: var(--chirpui-font-xs, 0.6rem);
+    color: var(--chirpui-text-muted);
+    min-width: 2em;
+    text-align: center;
+}
+
+/* Range input (keyboard-accessible) — visually hidden but focusable */
+.chirpui-ascii-fader__input {}
+
+/* Color variants */
+.chirpui-ascii-fader--success .chirpui-ascii-fader__segment--filled { color: var(--chirpui-success); }
+.chirpui-ascii-fader--warning .chirpui-ascii-fader__segment--filled { color: var(--chirpui-warning, #e6a700); }
+.chirpui-ascii-fader--danger .chirpui-ascii-fader__segment--filled { color: var(--chirpui-error); }
+.chirpui-ascii-fader--accent .chirpui-ascii-fader__segment--filled { color: var(--chirpui-accent); }
+
+/* Fader bank */
+.chirpui-ascii-fader-bank {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.chirpui-ascii-fader-bank__title {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: var(--chirpui-font-xs, 0.6rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chirpui-text-muted);
+}
+.chirpui-ascii-fader-bank__faders {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+}
+

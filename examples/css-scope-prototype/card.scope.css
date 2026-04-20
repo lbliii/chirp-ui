@@ -1,0 +1,320 @@
+/* =============================================================================
+   chirp-ui CSS architecture prototype — @scope + @layer
+   -----------------------------------------------------------------------------
+   This file is NOT shipped. It's a side-by-side rewrite of the `card` section
+   of chirpui.css (chirpui.css:4642-4985) in the pattern we're evaluating for
+   modularizing the monolith WITHOUT dropping the `chirpui-*` BEM public API.
+
+   The pattern, one sentence: one file per component, wrapped in exactly one
+   `@layer chirpui.component { @scope (.chirpui-X) to (.chirpui-X .chirpui-X) }`
+   envelope. Class names stay identical to today — only the authoring format
+   changes.
+
+   What you get for free:
+   - DOM-proximity cascade: rules in the scope beat outer rules without
+     specificity wars
+   - Upper boundary (`to (.chirpui-card .chirpui-card)`): outer-card styles
+     stop at the first nested `.chirpui-card` — fixes real bleed hazards
+     around card--link inside card--feature, card--stats inside card--horizontal,
+     etc.
+   - Consumer override surface: sites `@layer app.overrides { .chirpui-card
+     {…} }` wins without !important, because `chirpui.component` was declared
+     earlier in the cascade order
+   - `:scope` as self-reference — replaces verbose `.chirpui-card` repetitions
+
+   Build story: with every component in its own `_card.css`-style partial,
+   the shipped chirpui.css is produced by concatenation in a poe task. No
+   runtime cost. A 20-line Python script (or Lightning CSS if we want
+   minification + source maps) does the job.
+   ========================================================================= */
+
+@layer chirpui.component {
+    @scope (.chirpui-card) to (.chirpui-card .chirpui-card) {
+
+        /* Root --------------------------------------------------------- */
+        :scope {
+            background: var(--chirpui-surface);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius);
+            overflow: clip;
+            box-shadow: var(--chirpui-elevation-card-rest);
+            transition: border-color var(--chirpui-transition),
+                        box-shadow var(--chirpui-transition),
+                        transform var(--chirpui-transition),
+                        opacity var(--chirpui-transition);
+            @starting-style {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+        }
+
+        /* Header ------------------------------------------------------- */
+        .chirpui-card__header {
+            display: flex;
+            align-items: center;
+            gap: var(--chirpui-space-card-gap);
+            padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
+            font-family: var(--chirpui-ui-font-family);
+            font-size: var(--chirpui-ui-sm);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+            color: var(--chirpui-card-header-color);
+            border-bottom: 1px solid var(--chirpui-border);
+        }
+
+        .chirpui-card__icon { font-size: 1em; line-height: 1; flex-shrink: 0; }
+        .chirpui-card__header-content { flex: 1; min-width: 0; }
+        .chirpui-card__title {
+            display: block;
+            font-size: var(--chirpui-ui-base);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+        }
+        .chirpui-card__header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--chirpui-space-inline-gap);
+            margin-inline-start: auto;
+        }
+        .chirpui-card__header-badges {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: var(--chirpui-space-inline-gap);
+            flex-shrink: 0;
+            &:empty { display: none; }
+        }
+        .chirpui-card__header-subtitle {
+            margin-top: var(--chirpui-spacing-xs);
+            font-size: var(--chirpui-font-sm);
+            color: var(--chirpui-text-muted);
+            &:empty { display: none; }
+        }
+
+        /* Body --------------------------------------------------------- */
+        .chirpui-card__body {
+            padding: var(--chirpui-space-card-padding);
+            a {
+                overflow-wrap: anywhere;
+                color: var(--chirpui-card-body-link-color);
+                text-decoration: var(--chirpui-card-body-link-decoration);
+                transition: color var(--chirpui-transition);
+                &:hover { color: var(--chirpui-card-body-link-hover-color); }
+            }
+        }
+        .chirpui-card__body-actions {
+            &:empty { display: none; }
+            &:not(:empty) {
+                margin-top: var(--chirpui-space-card-gap);
+                display: flex;
+                align-items: center;
+                gap: var(--chirpui-space-control-gap);
+            }
+        }
+
+        /* Squeeze body padding when a footer is present. Using :scope as
+           self-reference — no more `.chirpui-card .chirpui-card__body`
+           descendant selector compound. */
+        :scope:has(.chirpui-card__footer) .chirpui-card__body,
+        :scope:has(.chirpui-card__footer-wrap:not(:empty)) .chirpui-card__body {
+            padding-bottom: var(--chirpui-space-card-gap);
+        }
+
+        /* Footer ------------------------------------------------------- */
+        .chirpui-card__footer {
+            padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
+            border-top: 1px solid var(--chirpui-border);
+            font-size: var(--chirpui-font-sm);
+            color: var(--chirpui-text-muted);
+        }
+        .chirpui-card__footer-wrap:not(:empty) {
+            border-top: 1px solid var(--chirpui-border);
+            padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
+            font-size: var(--chirpui-font-sm);
+            color: var(--chirpui-text-muted);
+        }
+
+        /* Top-meta / main-link ---------------------------------------- */
+        .chirpui-card__top-meta {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-space-inline-gap);
+            padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
+            border-bottom: 1px solid var(--chirpui-border);
+            font-size: var(--chirpui-font-xs);
+            &:empty { display: none; }
+        }
+        .chirpui-card__main-link {
+            display: block;
+            flex: 1;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Media -------------------------------------------------------- */
+        .chirpui-card__media {
+            overflow: clip;
+            &:empty { display: none; }
+            img, video {
+                display: block;
+                width: 100%;
+                height: auto;
+                aspect-ratio: var(--chirpui-video-aspect-ratio);
+                object-fit: cover;
+            }
+        }
+
+        /* Variants — nested &.modifier reads like a spec ------------- */
+        :scope {
+            &.chirpui-card--collapsible summary {
+                cursor: pointer;
+                list-style: none;
+                &::before {
+                    content: "\25B6";
+                    display: inline-block;
+                    margin-right: var(--chirpui-spacing-xs);
+                    transition: transform var(--chirpui-transition);
+                    font-size: 0.75em;
+                }
+            }
+            &.chirpui-card--collapsible[open] summary::before { rotate: 90deg; }
+
+            &.chirpui-card--feature .chirpui-card__media,
+            &.chirpui-card--media .chirpui-card__media { order: -1; }
+
+            &.chirpui-card--horizontal {
+                display: flex;
+                flex-direction: row;
+                .chirpui-card__media {
+                    flex: 0 0 40%;
+                    max-width: 12rem;
+                    img, video { aspect-ratio: 1; height: 100%; }
+                }
+            }
+
+            &.chirpui-card--stats {
+                .chirpui-card__body { text-align: center; }
+                .chirpui-card__header {
+                    border-bottom: none;
+                    font-size: var(--chirpui-font-2xl);
+                    font-weight: var(--chirpui-ui-font-weight-bold);
+                }
+            }
+
+            &.chirpui-card--glass {
+                background: color-mix(in srgb, var(--chirpui-surface) 80%, transparent);
+                backdrop-filter: blur(8px);
+            }
+
+            &.chirpui-card--gradient-border { border: 2px solid var(--chirpui-border); }
+            @supports (background-clip: padding-box) {
+                &.chirpui-card--gradient-border {
+                    background: linear-gradient(var(--chirpui-surface), var(--chirpui-surface)),
+                                var(--chirpui-gradient-border);
+                    background-origin: padding-box, border-box;
+                    background-clip: padding-box, border-box;
+                    background-repeat: no-repeat;
+                    border: 2px solid transparent;
+                }
+            }
+
+            &.chirpui-card--gradient-header .chirpui-card__header {
+                background: var(--chirpui-gradient-subtle);
+            }
+        }
+
+        /* Interactive states ------------------------------------------ */
+        :scope:not(.chirpui-card--link):hover {
+            border-color: var(--chirpui-card-hover-border);
+            box-shadow: var(--chirpui-elevation-card-hover);
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            :scope:not(.chirpui-card--link):hover { transform: translateY(-2px); }
+            :scope.chirpui-card--hoverable:not(.chirpui-card--link):hover {
+                transform: translateY(-2px);
+                box-shadow: var(--chirpui-shadow-md);
+            }
+        }
+
+        :scope.chirpui-card--hoverable:not(.chirpui-card--link) {
+            cursor: pointer;
+            transition: transform var(--chirpui-transition), box-shadow var(--chirpui-transition);
+        }
+
+        /* --link / --linked variants (anchor-card patterns) ---------- */
+        :scope {
+            &.chirpui-card--link,
+            &.chirpui-card--linked {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                transition: box-shadow var(--chirpui-transition),
+                            border-color var(--chirpui-transition);
+            }
+            &.chirpui-card--link {
+                text-decoration: none;
+                color: inherit;
+                cursor: pointer;
+            }
+            &.chirpui-card--link .chirpui-card__body,
+            &.chirpui-card--linked .chirpui-card__body { flex: 1; }
+
+            &.chirpui-card--link:hover,
+            &.chirpui-card--linked:hover,
+            &.chirpui-card--linked:has(.chirpui-card__main-link:focus-visible) {
+                border-color: var(--chirpui-state-border-hover);
+                box-shadow: var(--chirpui-elevation-card-hover);
+            }
+
+            &.chirpui-card--link:focus-visible,
+            &.chirpui-card--linked:has(.chirpui-card__main-link:focus-visible) {
+                outline: var(--chirpui-state-focus-outline);
+                outline-offset: var(--chirpui-state-focus-offset);
+            }
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            :scope {
+                &.chirpui-card--link,
+                &.chirpui-card--linked {
+                    transition: box-shadow var(--chirpui-transition),
+                                border-color var(--chirpui-transition),
+                                transform var(--chirpui-transition);
+                }
+                &.chirpui-card--link:hover,
+                &.chirpui-card--linked:hover,
+                &.chirpui-card--linked:has(.chirpui-card__main-link:focus-visible) {
+                    transform: translateY(-2px);
+                }
+                &.chirpui-card--link:active,
+                &.chirpui-card--linked:has(.chirpui-card__main-link:active) {
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
+}
+
+/* =============================================================================
+   Before / after — what actually changes for the consumer
+   -----------------------------------------------------------------------------
+   Template author's side (Kida / HTML) — IDENTICAL to today:
+
+       {% call card(variant="primary") %}
+           {% slot body %}…{% end %}
+       {% end %}
+
+       -> <article class="chirpui-card chirpui-card--primary">
+              <div class="chirpui-card__body">…</div>
+          </article>
+
+   Consumer app overriding accent color — NEW, simpler:
+
+       @layer app.overrides {
+           .chirpui-card { border-color: var(--brand-teal); }
+       }
+
+       (no more `.app .chirpui-card` specificity tricks)
+
+   Debugging — scope boundaries show up in devtools as `@scope` groups,
+   which is a one-line learning curve for anyone who hasn't seen them.
+   ========================================================================= */

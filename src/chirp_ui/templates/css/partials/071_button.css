@@ -1,0 +1,251 @@
+/* ==========================================================================
+   Button
+   ========================================================================== */
+
+/* Explicit cursor for button/a — overrides browser default (cursor: default on button) */
+button.chirpui-btn,
+a.chirpui-btn {
+    cursor: pointer;
+}
+
+.chirpui-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    font-size: var(--chirpui-font-sm);
+    font-weight: 500;
+    line-height: 1.25;
+    text-decoration: none;
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    background: var(--chirpui-surface);
+    color: var(--chirpui-text);
+    cursor: pointer;
+    box-shadow: var(--chirpui-shadow-sm);
+    transition: background var(--chirpui-transition), border-color var(--chirpui-transition),
+        color var(--chirpui-transition), transform var(--chirpui-transition),
+        box-shadow var(--chirpui-transition);
+}
+
+.chirpui-btn:hover:not(:disabled) {
+    background: var(--chirpui-bg-subtle);
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-btn:active:not(:disabled) {
+    background: var(--chirpui-border);
+}
+
+.chirpui-btn:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Primary variant */
+.chirpui-btn--primary {
+    background: var(--chirpui-accent);
+    border-color: var(--chirpui-accent);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-btn--primary:hover:not(:disabled) {
+    background: var(--chirpui-accent-hover);
+    border-color: var(--chirpui-accent-hover);
+}
+
+.chirpui-btn--primary:active:not(:disabled) {
+    background: var(--chirpui-accent-hover);
+    border-color: var(--chirpui-accent-hover);
+}
+
+/* Secondary variant */
+.chirpui-btn--secondary {
+    background: var(--chirpui-bg-subtle);
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-btn--secondary:hover:not(:disabled) {
+    background: var(--chirpui-border);
+}
+
+.chirpui-btn--secondary:active:not(:disabled) {
+    background: var(--chirpui-border);
+}
+
+/* Ghost variant — outline style, minimal fill */
+.chirpui-btn--ghost {
+    background: transparent;
+    border-color: var(--chirpui-border);
+    box-shadow: none;
+    color: var(--chirpui-text);
+}
+
+.chirpui-btn--ghost:hover:not(:disabled) {
+    background: var(--chirpui-bg-subtle);
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-btn--ghost:active:not(:disabled) {
+    background: var(--chirpui-border);
+}
+
+/* Danger variant */
+.chirpui-btn--danger {
+    background: var(--chirpui-error);
+    border-color: var(--chirpui-error);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-btn--danger:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-error) 85%, black);
+    border-color: color-mix(in srgb, var(--chirpui-error) 85%, black);
+}
+
+.chirpui-btn--danger:active:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-error) 75%, black);
+    border-color: color-mix(in srgb, var(--chirpui-error) 75%, black);
+}
+
+/* Success variant */
+.chirpui-btn--success {
+    background: var(--chirpui-success);
+    border-color: var(--chirpui-success);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-btn--success:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-success) 85%, black);
+    border-color: color-mix(in srgb, var(--chirpui-success) 85%, black);
+}
+
+.chirpui-btn--success:active:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-success) 75%, black);
+    border-color: color-mix(in srgb, var(--chirpui-success) 75%, black);
+}
+
+/* Warning variant */
+.chirpui-btn--warning {
+    background: var(--chirpui-warning);
+    border-color: var(--chirpui-warning);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-btn--warning:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-warning) 85%, black);
+    border-color: color-mix(in srgb, var(--chirpui-warning) 85%, black);
+}
+
+.chirpui-btn--warning:active:not(:disabled) {
+    background: color-mix(in srgb, var(--chirpui-warning) 75%, black);
+    border-color: color-mix(in srgb, var(--chirpui-warning) 75%, black);
+}
+
+/* Small button — compact for search bars, toolbars */
+.chirpui-btn--sm {
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-font-xs);
+}
+
+.chirpui-btn-group {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+.chirpui-btn-group--end { justify-content: flex-end; }
+.chirpui-btn-group--between { justify-content: space-between; }
+.chirpui-btn-group--center { justify-content: center; }
+.chirpui-btn-group--stretch .chirpui-btn { flex: 1; }
+
+/* Actions bar — semantic wrapper for form/dialog/card button groups.
+   Use in modal footers, card footers, form buttons, confirmation dialogs. */
+.chirpui-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-spacing-sm) 0;
+}
+.chirpui-actions--start { justify-content: flex-start; }
+.chirpui-actions--center { justify-content: center; }
+.chirpui-actions--between { justify-content: space-between; }
+.chirpui-actions--stretch .chirpui-btn { flex: 1; }
+.chirpui-actions--stacked {
+    flex-direction: column;
+    align-items: stretch;
+}
+.chirpui-actions--bordered {
+    border-top: 1px solid var(--chirpui-border);
+    padding-top: var(--chirpui-spacing);
+    margin-top: var(--chirpui-spacing);
+}
+
+/* Hover lift and active press — only when motion is preferred */
+@media (prefers-reduced-motion: no-preference) {
+    .chirpui-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: var(--chirpui-shadow-md);
+    }
+
+    .chirpui-btn:active:not(:disabled) {
+        transition: none;
+        transform: scale(0.98) translateY(0);
+        box-shadow: var(--chirpui-shadow-sm);
+    }
+
+    .chirpui-btn--ghost:hover:not(:disabled) {
+        box-shadow: none;
+    }
+
+    .chirpui-btn--ghost:active:not(:disabled) {
+        box-shadow: none;
+    }
+}
+
+/* Loading state — use with loading=true or htmx (adds htmx-request to trigger) */
+.chirpui-btn--loading,
+.chirpui-btn.htmx-request {
+    cursor: wait;
+    pointer-events: none;
+}
+
+.chirpui-btn__icon {
+    font-size: 1em;
+    line-height: 1;
+}
+
+.chirpui-btn__label {
+    display: inline-flex;
+    align-items: center;
+    gap: inherit;
+    transition: opacity var(--chirpui-transition);
+}
+
+.chirpui-btn__spinner {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.chirpui-btn--loading .chirpui-btn__icon,
+.chirpui-btn--loading .chirpui-btn__label,
+.chirpui-btn.htmx-request .chirpui-btn__icon,
+.chirpui-btn.htmx-request .chirpui-btn__label {
+    opacity: 0;
+}
+
+.chirpui-btn--loading .chirpui-btn__spinner,
+.chirpui-btn.htmx-request .chirpui-btn__spinner {
+    display: inline-flex;
+}
+

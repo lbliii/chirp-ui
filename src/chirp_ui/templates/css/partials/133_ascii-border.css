@@ -1,0 +1,85 @@
+/* ==========================================================================
+   ASCII Border — box-drawing character frame
+   ========================================================================== */
+
+.chirpui-ascii-border {
+    --chirpui-ascii-border-color: var(--chirpui-text-muted);
+    font-family: var(--chirpui-ascii-font);
+    display: inline-block;
+    overflow: clip;
+    min-width: 0;
+}
+.chirpui-ascii-border__top,
+.chirpui-ascii-border__bottom {
+    display: flex;
+    color: var(--chirpui-ascii-border-color);
+    line-height: 1;
+    user-select: none;
+}
+.chirpui-ascii-border__corner {
+    flex-shrink: 0;
+}
+.chirpui-ascii-border__line {
+    flex: 1;
+    overflow: clip;
+    white-space: nowrap;
+    position: relative;
+}
+/* Fill the horizontal line with the box-drawing character via repeating background */
+.chirpui-ascii-border__top .chirpui-ascii-border__line::after,
+.chirpui-ascii-border__bottom .chirpui-ascii-border__line::after {
+    content: "────────────────────────────────────────────────────────────────────────────────";
+    position: absolute;
+    inset: 0;
+    overflow: clip;
+    color: var(--chirpui-ascii-border-color);
+}
+.chirpui-ascii-border--double .chirpui-ascii-border__top .chirpui-ascii-border__line::after,
+.chirpui-ascii-border--double .chirpui-ascii-border__bottom .chirpui-ascii-border__line::after {
+    content: "════════════════════════════════════════════════════════════════════════════════";
+}
+.chirpui-ascii-border--heavy .chirpui-ascii-border__top .chirpui-ascii-border__line::after,
+.chirpui-ascii-border--heavy .chirpui-ascii-border__bottom .chirpui-ascii-border__line::after {
+    content: "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+}
+/* When a glyph is present in the top line, the glyph content takes precedence over the fill */
+.chirpui-ascii-border__top .chirpui-ascii-border__line:not(:empty)::after {
+    content: none;
+}
+.chirpui-ascii-border__mid {
+    display: flex;
+}
+.chirpui-ascii-border__side {
+    color: var(--chirpui-ascii-border-color);
+    line-height: 1;
+    user-select: none;
+    flex-shrink: 0;
+}
+.chirpui-ascii-border__content {
+    flex: 1;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+}
+
+/* Momentum spin for border corners */
+.chirpui-ascii-border--spin .chirpui-ascii-border__corner {
+    display: inline-block;
+    animation: chirpui-ascii-momentum 6s cubic-bezier(0.2, 0, 0.1, 1) infinite;
+}
+.chirpui-ascii-border--spin .chirpui-ascii-border__top .chirpui-ascii-border__corner:nth-child(1) {
+    animation-name: chirpui-ascii-momentum;
+    animation-duration: 5s;
+}
+.chirpui-ascii-border--spin .chirpui-ascii-border__top .chirpui-ascii-border__corner:nth-child(3) {
+    animation-name: chirpui-ascii-momentum-reverse;
+    animation-duration: 7s;
+}
+.chirpui-ascii-border--spin .chirpui-ascii-border__bottom .chirpui-ascii-border__corner:nth-child(1) {
+    animation-name: chirpui-ascii-momentum-drift;
+    animation-duration: var(--chirpui-anim-drift);
+}
+.chirpui-ascii-border--spin .chirpui-ascii-border__bottom .chirpui-ascii-border__corner:nth-child(3) {
+    animation-name: chirpui-ascii-momentum;
+    animation-duration: 6.5s;
+}
+
+

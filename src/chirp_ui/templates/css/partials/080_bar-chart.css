@@ -1,0 +1,81 @@
+/* ==========================================================================
+   Bar Chart (CSS-only horizontal bars)
+   ========================================================================== */
+
+.chirpui-bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-bar-chart--sm .chirpui-bar-chart__track { height: 0.25rem; }
+.chirpui-bar-chart--md .chirpui-bar-chart__track { height: 0.5rem; }
+.chirpui-bar-chart--lg .chirpui-bar-chart__track { height: 0.75rem; }
+
+.chirpui-bar-chart__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(4rem, 3fr) auto;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-bar-chart__label {
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text);
+    overflow: clip;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chirpui-bar-chart__label-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.chirpui-bar-chart__label-link:hover {
+    color: var(--chirpui-accent);
+    text-decoration: underline;
+}
+
+.chirpui-bar-chart__track {
+    width: 100%;
+    background: var(--chirpui-bg-subtle);
+    border-radius: var(--chirpui-radius-sm);
+    overflow: clip;
+}
+
+.chirpui-bar-chart__bar {
+    height: 100%;
+    min-width: 2px;
+    transition: width var(--chirpui-motion-slow) var(--chirpui-ease-standard);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-bar-chart--gold .chirpui-bar-chart__bar {
+    background: var(--chirpui-accent-dim, var(--chirpui-accent));
+}
+
+.chirpui-bar-chart--radiant .chirpui-bar-chart__bar {
+    background: linear-gradient(
+        90deg,
+        var(--chirpui-accent-dim, var(--chirpui-accent)),
+        var(--chirpui-accent-bright, var(--chirpui-accent))
+    );
+}
+
+.chirpui-bar-chart--success .chirpui-bar-chart__bar {
+    background: var(--chirpui-success);
+}
+
+.chirpui-bar-chart--muted .chirpui-bar-chart__bar {
+    background: var(--chirpui-text-muted);
+}
+
+.chirpui-bar-chart__value {
+    font-size: var(--chirpui-font-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--chirpui-text-muted);
+    min-width: 2ch;
+    text-align: right;
+}
+

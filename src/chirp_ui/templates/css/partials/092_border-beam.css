@@ -1,0 +1,30 @@
+/* ==========================================================================
+   Border Beam
+   ========================================================================== */
+
+.chirpui-border-beam {
+    position: relative;
+    overflow: clip;
+    border-radius: var(--chirpui-radius);
+    padding: 1px;
+}
+.chirpui-border-beam__beam {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: conic-gradient(from var(--chirpui-beam-angle, 0deg), transparent 60%, var(--chirpui-beam-color) 80%, transparent 100%);
+    animation: chirpui-border-beam-rotate var(--chirpui-motion-crawl) linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-border-beam__content {
+    position: relative;
+    background: var(--chirpui-surface);
+    border-radius: calc(var(--chirpui-radius) - 1px);
+    z-index: 1;
+}
+.chirpui-border-beam--accent .chirpui-border-beam__beam { --chirpui-beam-color: var(--chirpui-accent); }
+.chirpui-border-beam--success .chirpui-border-beam__beam { --chirpui-beam-color: var(--chirpui-success); }
+.chirpui-border-beam--warning .chirpui-border-beam__beam { --chirpui-beam-color: var(--chirpui-warning); }
+
+

@@ -1,0 +1,82 @@
+/* ==========================================================================
+   Dropdown menu (items-based, JS-driven)
+   ========================================================================== */
+
+.chirpui-dropdown__trigger[data-chirpui-dropdown-trigger] {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+}
+.chirpui-dropdown__menu[hidden] {
+    display: none;
+}
+.chirpui-dropdown__menu:not([hidden]) {
+    display: block;
+}
+.chirpui-dropdown__item {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+    width: 100%;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border: none;
+    background: none;
+    color: var(--chirpui-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    border-radius: var(--chirpui-radius-sm);
+    text-decoration: none;
+}
+.chirpui-dropdown__item:hover,
+.chirpui-dropdown__item:focus {
+    background: var(--chirpui-muted-bg);
+}
+.chirpui-dropdown__item--danger {
+    color: var(--chirpui-error);
+}
+.chirpui-dropdown__item--danger:hover {
+    background: var(--chirpui-error-muted);
+}
+.chirpui-dropdown__divider {
+    height: 1px;
+    background: var(--chirpui-border);
+    margin: var(--chirpui-spacing-xs) 0;
+}
+.chirpui-dropdown__icon {
+    opacity: 0.8;
+}
+.chirpui-dropdown__caret {
+    font-size: 0.7em;
+    opacity: 0.7;
+}
+.chirpui-dropdown--split {
+    display: inline-flex;
+}
+.chirpui-dropdown__split-primary {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.chirpui-dropdown__trigger--split {
+    border: 1px solid var(--chirpui-primary);
+    background: var(--chirpui-primary);
+    color: var(--chirpui-on-accent);
+    padding: 0.25rem 0.5rem;
+    border-top-right-radius: var(--chirpui-radius-sm);
+    border-bottom-right-radius: var(--chirpui-radius-sm);
+    border-left: none;
+}
+.chirpui-dropdown__trigger--split:hover {
+    background: var(--chirpui-accent-hover);
+    border-color: var(--chirpui-accent-hover);
+}
+.chirpui-dropdown__trigger--select {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    background: var(--chirpui-surface);
+}
+.chirpui-dropdown__item--selected {
+    background: var(--chirpui-primary-muted);
+}
+

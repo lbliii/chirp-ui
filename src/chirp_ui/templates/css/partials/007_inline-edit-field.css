@@ -1,0 +1,57 @@
+/* ==========================================================================
+   Inline edit field
+   ========================================================================== */
+
+.chirpui-inline-edit {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-inline-edit--display {
+    cursor: pointer;
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    margin: calc(-1 * var(--chirpui-spacing-xs)) calc(-1 * var(--chirpui-spacing-sm));
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-inline-edit--display:hover {
+    background: color-mix(in srgb, var(--chirpui-accent) 8%, transparent);
+}
+
+.chirpui-inline-edit--display .chirpui-inline-edit__value {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-base);
+}
+
+.chirpui-inline-edit--edit .chirpui-inline-edit__form {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-inline-edit__input {
+    min-width: 12ch;
+}
+
+.chirpui-inline-edit__actions {
+    display: flex;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-inline-edit__trigger {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-inline-edit__icon {
+    font-size: 0.85em;
+    opacity: 0.75;
+}
+
+.chirpui-inline-edit__trigger:hover .chirpui-inline-edit__icon {
+    opacity: 1;
+}
+

@@ -1,0 +1,571 @@
+/* ==========================================================================
+   Layout — Tetris-inspired block system
+   ========================================================================== */
+
+.chirpui-container {
+    container-type: inline-size;
+    container-name: chirpui-layout;
+    width: 100%;
+    max-width: min(var(--chirpui-container-max), 90vw);
+    margin-inline: auto;
+    padding-inline: var(--chirpui-space-container-gutter);
+}
+
+.chirpui-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--chirpui-grid-min), 100%), 1fr));
+    gap: var(--chirpui-space-stack-gap);
+}
+
+/* Grid items default to min-width:auto (min-content), so rich cells overflow tracks and cover gap.
+   Matches .chirpui-block; use block() when you need span= or explicit cell semantics. */
+.chirpui-grid > * {
+    min-width: 0;
+}
+
+.chirpui-grid--cols-2 {
+    grid-template-columns: repeat(auto-fit, minmax(min(calc(var(--chirpui-grid-min) * 0.75), 100%), 1fr));
+}
+
+.chirpui-grid--cols-3 {
+    grid-template-columns: repeat(auto-fit, minmax(min(calc(var(--chirpui-grid-min) * 0.6), 100%), 1fr));
+}
+
+.chirpui-grid--cols-4 {
+    grid-template-columns: repeat(auto-fit, minmax(min(calc(var(--chirpui-grid-min) * 0.5), 100%), 1fr));
+}
+
+.chirpui-grid--gap-sm { gap: var(--chirpui-spacing-sm); }
+.chirpui-grid--gap-md { gap: var(--chirpui-spacing-md); }
+.chirpui-grid--gap-lg { gap: var(--chirpui-spacing-lg); }
+
+/* Row alignment for uneven-height cells (default grid align-items is stretch) */
+.chirpui-grid--items-start {
+    align-items: start;
+}
+.chirpui-grid--items-end {
+    align-items: end;
+}
+.chirpui-grid--items-center {
+    align-items: center;
+}
+
+/* Fixed-track presets for grid() — see docs/LAYOUT-PRESETS.md (aliases: split-2-1-1, split-thirds, …) */
+.chirpui-grid.chirpui-grid--preset-bento-211 {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.chirpui-grid.chirpui-grid--preset-thirds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Two-column detail row (1fr : 1.35fr); stacks at 52rem. detail_single = one full-width column. */
+.chirpui-grid.chirpui-grid--preset-detail-two {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+    align-items: stretch;
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two.chirpui-grid--detail-two-single {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two .chirpui-block .chirpui-surface,
+.chirpui-grid.chirpui-grid--preset-detail-two .chirpui-block .chirpui-callout {
+    height: 100%;
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two .chirpui-cluster--detail-two-sprites {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.chirpui-grid.chirpui-grid--preset-detail-two.chirpui-grid--detail-two-single .chirpui-cluster--detail-two-sprites {
+    justify-content: center;
+}
+
+/* --chirpui-layout-bp-md */
+@media (max-width: 52rem) {
+    .chirpui-grid.chirpui-grid--preset-detail-two:not(.chirpui-grid--detail-two-single) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-grid.chirpui-grid--preset-detail-two .chirpui-cluster--detail-two-sprites {
+        justify-content: center;
+    }
+}
+
+/* --chirpui-layout-bp-lg */
+@media (max-width: 64rem) {
+    .chirpui-grid.chirpui-grid--preset-bento-211 {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .chirpui-grid.chirpui-grid--preset-bento-211 .chirpui-block--span-2 {
+        grid-column: 1 / -1;
+    }
+}
+
+/* --chirpui-layout-bp-sm */
+@media (max-width: 48rem) {
+    .chirpui-grid.chirpui-grid--preset-bento-211,
+    .chirpui-grid.chirpui-grid--preset-thirds {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-grid.chirpui-grid--preset-bento-211 .chirpui-block--span-2 {
+        grid-column: span 1;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Frame — structural layouts (hero, sidebar, equal columns). Not auto-fit flow.
+   Use grid() for wrapping card/tile lists. See docs/LAYOUT-GRIDS-AND-FRAMES.md.
+   -------------------------------------------------------------------------- */
+
+.chirpui-frame {
+    display: grid;
+    gap: var(--chirpui-frame-gap);
+    min-width: 0;
+}
+
+.chirpui-frame > * {
+    min-width: 0;
+}
+
+.chirpui-frame--gap-sm {
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-frame--gap-md {
+    gap: var(--chirpui-spacing-md);
+}
+
+.chirpui-frame--gap-lg {
+    gap: var(--chirpui-spacing-lg);
+}
+
+.chirpui-frame--balanced {
+    grid-template-columns: var(--chirpui-frame-balanced-columns);
+}
+
+.chirpui-frame--hero {
+    align-items: center;
+    grid-template-columns: var(--chirpui-frame-hero-columns);
+}
+
+.chirpui-frame--sidebar-end {
+    grid-template-columns: minmax(0, 1fr) minmax(0, min(var(--chirpui-frame-sidebar-width), 100%));
+}
+
+@container chirpui-layout (width < 48rem) {
+    .chirpui-frame--balanced,
+    .chirpui-frame--hero,
+    .chirpui-frame--sidebar-end {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-frame--hero {
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 48rem) {
+    .chirpui-frame--balanced,
+    .chirpui-frame--hero,
+    .chirpui-frame--sidebar-end {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .chirpui-frame--hero {
+        align-items: stretch;
+    }
+}
+
+.chirpui-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-space-stack-gap);
+}
+
+.chirpui-stack--xs { gap: var(--chirpui-spacing-xs); }
+.chirpui-stack--sm { gap: var(--chirpui-spacing-sm); }
+.chirpui-stack--md { gap: var(--chirpui-spacing-md); }
+.chirpui-stack--lg { gap: var(--chirpui-spacing-lg); }
+.chirpui-stack--xl { gap: var(--chirpui-spacing-xl); }
+
+.chirpui-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--chirpui-space-cluster-gap);
+}
+
+.chirpui-cluster--xs { gap: var(--chirpui-spacing-xs); }
+.chirpui-cluster--sm { gap: var(--chirpui-spacing-sm); }
+.chirpui-cluster--md { gap: var(--chirpui-spacing-md); }
+.chirpui-cluster--lg { gap: var(--chirpui-spacing-lg); }
+
+/* Layer — overlapping card deck with hover-to-front.
+   Inspired by emdashCSS layers: horizontal flex row with negative margin overlap,
+   slight rotation on idle cards, hover straightens and elevates.
+   Usage: layer(direction="center", overlap="md", angle="subtle") */
+
+.chirpui-layer {
+    --chirpui-layer-overlap: var(--chirpui-layer-overlap-md);
+    --chirpui-layer-angle: var(--chirpui-layer-angle-subtle);
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    position: relative;
+}
+
+.chirpui-layer--left   { justify-content: flex-start; }
+.chirpui-layer--center { justify-content: center; }
+.chirpui-layer--right  { justify-content: flex-end; }
+
+.chirpui-layer > * {
+    flex-shrink: 0;
+    transition: transform var(--chirpui-motion-base) var(--chirpui-ease-spring),
+                z-index 0s;
+}
+
+.chirpui-layer > *:not(:first-child) {
+    margin-inline-start: var(--chirpui-layer-overlap);
+    transform: rotate(var(--chirpui-layer-angle));
+}
+
+.chirpui-layer--hover > *:hover {
+    transform: rotate(0deg) scale(1.04);
+    z-index: var(--chirpui-z-dropdown);
+}
+
+/* Overlap sizes (negative margin pulls cards together) */
+.chirpui-layer--overlap-sm { --chirpui-layer-overlap: -1.5rem; }
+.chirpui-layer--overlap-md { --chirpui-layer-overlap: -3rem; }
+.chirpui-layer--overlap-lg { --chirpui-layer-overlap: -5rem; }
+
+/* Default overlap token values (used when no --overlap-* modifier) */
+:root {
+    --chirpui-layer-overlap-sm: -1.5rem;
+    --chirpui-layer-overlap-md: -3rem;
+    --chirpui-layer-overlap-lg: -5rem;
+    --chirpui-layer-angle-none: 0deg;
+    --chirpui-layer-angle-subtle: -2deg;
+    --chirpui-layer-angle-moderate: -4deg;
+}
+
+/* Angle variants */
+.chirpui-layer--angle-none     { --chirpui-layer-angle: var(--chirpui-layer-angle-none); }
+.chirpui-layer--angle-subtle   { --chirpui-layer-angle: var(--chirpui-layer-angle-subtle); }
+.chirpui-layer--angle-moderate { --chirpui-layer-angle: var(--chirpui-layer-angle-moderate); }
+
+/* Alternating tilt: even children rotate opposite for a "fanned" look */
+.chirpui-layer > *:not(:first-child):nth-child(even) {
+    transform: rotate(calc(var(--chirpui-layer-angle) * -1));
+}
+
+.chirpui-layer--hover > *:nth-child(even):hover {
+    transform: rotate(0deg) scale(1.04);
+    z-index: var(--chirpui-z-dropdown);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-layer > * {
+        transition: none;
+    }
+    .chirpui-layer > *:not(:first-child) {
+        transform: none;
+    }
+    .chirpui-layer > *:not(:first-child):nth-child(even) {
+        transform: none;
+    }
+    .chirpui-layer--hover > *:hover {
+        transform: scale(1.02);
+    }
+    .chirpui-layer--hover > *:nth-child(even):hover {
+        transform: scale(1.02);
+    }
+}
+
+/* Container modifiers — propagate non-inheritable properties to direct children.
+   Inspired by emdashCSS c-* prefix (e.g. .c-rounded-11 > *).
+   Kept intentionally small: only for properties CSS custom properties can't inherit. */
+
+.chirpui-children--rounded > *     { border-radius: var(--chirpui-radius); }
+.chirpui-children--rounded-sm > *  { border-radius: var(--chirpui-radius-sm); }
+.chirpui-children--rounded-lg > *  { border-radius: var(--chirpui-radius-lg); }
+.chirpui-children--rounded-xl > *  { border-radius: var(--chirpui-radius-xl); }
+.chirpui-children--rounded-full > * { border-radius: 9999px; }
+
+.chirpui-children--equal > *       { flex: 1; }
+
+.chirpui-children--clip > *        { min-width: 0; overflow: clip; }
+
+/* Label overline — see label_overline.html */
+.chirpui-label-overline {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.35rem;
+}
+
+.chirpui-label-overline--section {
+    margin-bottom: 0.75rem;
+    font-weight: var(--chirpui-ui-font-weight-bold);
+    letter-spacing: 0.06em;
+}
+
+/* Prose + stack: use block flow so margins collapse; stack gap would double spacing */
+.chirpui-prose.chirpui-stack {
+    display: block;
+}
+
+.chirpui-block {
+    min-width: 0;
+}
+
+/* Escape hatch for custom flex rows / raw markup (Tailwind-style min-w-0). */
+.chirpui-min-w-0 {
+    min-width: 0;
+}
+
+/* Horizontal scroll container for wide children (tables, toolbars, dense rows).
+   Parent clips; this child absorbs the overflow as a local scroll region.
+   overscroll-behavior: contain prevents scroll-chain to the page at the boundary. */
+.chirpui-scroll-x {
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior: contain;
+}
+
+/* Single-line truncation with ellipsis. Requires the element to have a width
+   constraint (block/grid/flex child in a bounded container). */
+.chirpui-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+/* Multi-line clamp with ellipsis (2 or 3 lines). */
+.chirpui-clamp-2,
+.chirpui-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.chirpui-clamp-2 { -webkit-line-clamp: 2; line-clamp: 2; }
+.chirpui-clamp-3 { -webkit-line-clamp: 3; line-clamp: 3; }
+
+.chirpui-block--span-2 { grid-column: span 2; }
+.chirpui-block--span-3 { grid-column: span 3; }
+.chirpui-block--span-full { grid-column: 1 / -1; }
+
+@container chirpui-layout (width < 48rem) {
+    .chirpui-block--span-2,
+    .chirpui-block--span-3 {
+        grid-column: span 1;
+    }
+}
+
+.chirpui-page-header {
+    padding: var(--chirpui-page-header-padding);
+    background: var(--chirpui-page-header-bg);
+    border: var(--chirpui-page-header-border);
+}
+
+.chirpui-page-header__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--chirpui-page-header-gap);
+}
+
+.chirpui-page-header__top > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+.chirpui-page-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-space-control-gap);
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.chirpui-page-header__actions:empty {
+    display: none;
+}
+
+.chirpui-page-header__breadcrumbs {
+    margin-bottom: var(--chirpui-spacing-xs);
+}
+
+.chirpui-page-header__meta {
+    margin-top: var(--chirpui-spacing-xs);
+    margin-bottom: 0;
+}
+
+.chirpui-document-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-document-header__eyebrow {
+    margin: 0;
+    padding: 0 var(--chirpui-page-header-padding);
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.chirpui-document-header__page-header {
+    padding-bottom: 0;
+}
+
+.chirpui-document-header__details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+    padding: 0 var(--chirpui-page-header-padding) var(--chirpui-page-header-padding);
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-ui-sm);
+}
+
+.chirpui-document-header__path {
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--chirpui-radius-sm);
+    border: 1px solid var(--chirpui-border-subtle);
+    background: var(--chirpui-bg-subtle);
+    color: var(--chirpui-text);
+    font-family: var(--chirpui-ascii-font);
+    font-size: 0.95em;
+}
+
+.chirpui-document-header__detail {
+    white-space: nowrap;
+}
+
+.chirpui-document-header__status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: var(--chirpui-bg-subtle);
+    color: var(--chirpui-text);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+}
+
+.chirpui-section-header {
+    margin-bottom: var(--chirpui-space-section-gap);
+    padding-bottom: var(--chirpui-space-section-gap);
+    border-bottom: 1px solid var(--chirpui-border-subtle);
+}
+
+.chirpui-section-header__title-block {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-space-control-gap);
+}
+
+.chirpui-section-header__icon {
+    font-size: 1em;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.chirpui-section-header__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--chirpui-space-section-gap);
+}
+
+.chirpui-section-header__top > .chirpui-section-header__title-block {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.chirpui-section-header__title-block > div {
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+.chirpui-section-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-space-control-gap);
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.chirpui-section-header__actions:empty {
+    display: none;
+}
+
+.chirpui-page-header h1 {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-page-header-title-size);
+    font-weight: var(--chirpui-page-header-title-weight);
+    margin: 0;
+}
+
+.chirpui-page-header--compact {
+    --chirpui-page-header-padding: 0.6rem 1.25rem;
+    --chirpui-page-header-gap: var(--chirpui-space-control-gap);
+    --chirpui-page-header-title-size: var(--chirpui-ui-base);
+    --chirpui-page-header-title-weight: var(--chirpui-ui-font-weight-semibold);
+    --chirpui-page-header-bg: var(--chirpui-bg-subtle);
+    --chirpui-page-header-border: 1px solid var(--chirpui-border-subtle);
+    flex-direction: row;
+    align-items: center;
+}
+
+.chirpui-page-header--compact .chirpui-page-header__top {
+    flex-direction: row;
+    align-items: center;
+}
+
+.chirpui-section-header h2 {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-base);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    margin: 0;
+}
+
+.chirpui-section-header--inline .chirpui-section-header__top {
+    align-items: center;
+}
+
+.chirpui-section-header--inline .chirpui-section-header__title-block {
+    align-items: center;
+}
+
+.chirpui-section-header--inline .chirpui-section-header__title-inline {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-base);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    margin: 0;
+}
+
+.chirpui-section-collapsible__summary {
+    list-style: none;
+    cursor: pointer;
+}
+
+.chirpui-section-collapsible__summary::-webkit-details-marker {
+    display: none;
+}
+
+.chirpui-section-collapsible__summary::marker {
+    display: none;
+}
+

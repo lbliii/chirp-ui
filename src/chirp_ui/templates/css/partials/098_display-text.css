@@ -1,0 +1,15 @@
+/* ==========================================================================
+   Display Text — large hero/landing headings
+   ========================================================================== */
+
+.chirpui-display {
+    font-size: var(--chirpui-prose-6xl);
+    letter-spacing: var(--chirpui-display-letter-spacing);
+    line-height: var(--chirpui-line-height-tight);
+    font-weight: var(--chirpui-prose-font-weight-bold);
+}
+.chirpui-display--xl {
+    font-size: var(--chirpui-prose-7xl);
+}
+
+

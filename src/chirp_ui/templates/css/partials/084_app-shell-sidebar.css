@@ -1,0 +1,36 @@
+/* ==========================================================================
+   Sidebar — section links container
+   ========================================================================== */
+
+.chirpui-sidebar__section-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-sidebar-link-gap);
+    margin-top: var(--chirpui-spacing-xs);
+}
+
+/* Collapsible section (details/summary) */
+.chirpui-sidebar__section > summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.chirpui-sidebar__section > summary::-webkit-details-marker {
+    display: none;
+}
+
+.chirpui-sidebar__section > summary::after {
+    content: "\25B8";
+    display: inline-block;
+    transition: rotate var(--chirpui-transition);
+    margin-inline-start: auto;
+    font-size: 0.75em;
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-sidebar__section[open] > summary::after {
+    rotate: 90deg;
+}
+

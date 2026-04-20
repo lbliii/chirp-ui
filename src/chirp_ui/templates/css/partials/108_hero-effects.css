@@ -1,0 +1,15 @@
+/* ==========================================================================
+   Hero Effects (composite wrapper)
+   ========================================================================== */
+
+.chirpui-hero-effects {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--chirpui-spacing-2xl) var(--chirpui-spacing-lg);
+}
+
+

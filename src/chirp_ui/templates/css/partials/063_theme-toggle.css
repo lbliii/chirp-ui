@@ -1,0 +1,23 @@
+/* ==========================================================================
+   Theme toggle
+   ========================================================================== */
+
+.chirpui-theme-toggle {
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    min-width: 2rem;
+}
+.chirpui-theme-toggle__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    font-size: 1.25rem;
+    line-height: 1;
+    opacity: 0.85;
+    font-family: var(--chirpui-ascii-font);
+}
+.chirpui-theme-toggle:hover .chirpui-theme-toggle__icon {
+    opacity: 1;
+}
+

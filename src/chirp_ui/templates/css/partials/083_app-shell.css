@@ -1,0 +1,406 @@
+/* ==========================================================================
+   App Shell
+   ========================================================================== */
+/* Root cause (9650266): grid + flex layout needs min-size 0 on flex/grid
+   children to allow shrinking; topbar needs nowrap + topbar-end needs flex
+   layout; breadcrumbs in topbar must not wrap or topbar grows vertically. */
+
+:root {
+    --chirpui-shell-offset-top: 0px;
+}
+
+html {
+    scroll-padding-top: var(--chirpui-shell-offset-top);
+}
+
+
+.chirpui-app-shell {
+    display: grid;
+    grid-template-columns: var(--chirpui-sidebar-width, 16rem) 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "topbar topbar" "sidebar main";
+    min-height: 100dvh;
+}
+
+.chirpui-app-shell :where([id]) {
+    scroll-margin-top: calc(var(--chirpui-shell-offset-top) + var(--chirpui-spacing-sm));
+}
+
+.chirpui-app-shell__topbar {
+    grid-area: topbar;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: var(--chirpui-spacing);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border-bottom: 1px solid var(--chirpui-border);
+    background: var(--chirpui-surface);
+    position: sticky;
+    top: 0;
+    z-index: var(--chirpui-z-sticky);
+    flex-shrink: 0;
+    box-shadow: var(--chirpui-elevation-topbar);
+    transition: box-shadow var(--chirpui-transition);
+}
+
+.chirpui-app-shell__topbar--glass {
+    background: var(--chirpui-surface);
+    border-color: var(--chirpui-border);
+}
+@supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+    .chirpui-app-shell__topbar--glass {
+        background: var(--chirpui-glass-bg);
+        border-color: var(--chirpui-glass-border);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+}
+
+.chirpui-app-shell__topbar--gradient {
+    background: var(--chirpui-gradient-subtle);
+}
+
+.chirpui-app-shell__brand {
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-size: var(--chirpui-font-lg);
+    color: var(--chirpui-text);
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.chirpui-app-shell__topbar-start {
+    flex-shrink: 0;
+}
+
+.chirpui-app-shell__topbar-center {
+    flex: 1;
+    min-width: 0;
+    overflow: clip;
+}
+
+.chirpui-app-shell__topbar-end {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-app-shell__shell-actions {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    min-height: calc(var(--chirpui-font-xs) * 1.25 + 2 * var(--chirpui-spacing-xs) + 2px);
+}
+
+.chirpui-shell-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-shell-actions__group {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-shell-action-form {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    margin: 0;
+}
+
+/* Keep breadcrumbs single-line in topbar to prevent topbar height growth */
+.chirpui-app-shell__topbar-center .chirpui-breadcrumbs__list {
+    flex-wrap: nowrap;
+    overflow: clip;
+}
+
+.chirpui-app-shell__topbar-center .chirpui-breadcrumbs__item {
+    flex-shrink: 0;
+}
+
+.chirpui-app-shell__topbar-center .chirpui-breadcrumbs__item:last-child {
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+.chirpui-app-shell__topbar-center .chirpui-breadcrumbs__item:last-child .chirpui-breadcrumbs__link,
+.chirpui-app-shell__topbar-center .chirpui-breadcrumbs__item:last-child .chirpui-breadcrumbs__current {
+    overflow: clip;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+
+.chirpui-app-shell__sidebar {
+    grid-area: sidebar;
+    position: sticky;
+    top: var(--chirpui-shell-offset-top);
+    align-self: start;
+    min-height: 0;
+    max-height: calc(100dvh - var(--chirpui-shell-offset-top));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-right: 1px solid var(--chirpui-border);
+}
+
+.chirpui-app-shell__sidebar--muted {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-app-shell__sidebar--glass {
+    background: var(--chirpui-surface);
+}
+@supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+    .chirpui-app-shell__sidebar--glass {
+        background: var(--chirpui-glass-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+}
+
+.chirpui-app-shell__sidebar .chirpui-sidebar {
+    width: auto;
+    border-right: none;
+}
+
+.chirpui-app-shell__sidebar-resize {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    cursor: pointer;
+    z-index: var(--chirpui-z-popover);
+    user-select: none;
+}
+
+.chirpui-app-shell__sidebar-resize::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--chirpui-border);
+    opacity: 0.6;
+}
+
+.chirpui-app-shell__sidebar-resize:hover::before,
+.chirpui-app-shell__sidebar-resize:active::before {
+    background: var(--chirpui-accent);
+    opacity: 1;
+}
+
+.chirpui-app-shell__sidebar-resize:hover {
+    background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+}
+
+/* Sidebar collapsed (icon-only) */
+.chirpui-app-shell--sidebar-collapsed {
+    --chirpui-sidebar-width: var(--chirpui-sidebar-collapsed-width, 4rem);
+}
+
+.chirpui-app-shell--sidebar-collapsible {
+    transition: grid-template-columns var(--chirpui-transition);
+}
+
+.chirpui-app-shell--sidebar-collapsed .chirpui-sidebar__label,
+.chirpui-app-shell--sidebar-collapsed .chirpui-sidebar__section-title {
+    overflow: clip;
+    width: 0;
+    opacity: 0;
+    white-space: nowrap;
+}
+
+.chirpui-app-shell--sidebar-collapsed .chirpui-sidebar__link {
+    justify-content: center;
+    padding-inline: var(--chirpui-spacing-sm);
+    margin-inline: var(--chirpui-spacing-sm);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-app-shell--sidebar-collapsed .chirpui-sidebar__icon {
+    margin-inline-end: 0;
+    min-width: 0;
+    width: 1.25em;
+    justify-content: center;
+}
+
+.chirpui-sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--chirpui-spacing-sm);
+    background: transparent;
+    border: none;
+    border-radius: var(--chirpui-radius-sm);
+    color: var(--chirpui-text-muted);
+    cursor: pointer;
+    font-size: var(--chirpui-font-sm);
+    transition: color var(--chirpui-transition), background var(--chirpui-transition),
+        box-shadow var(--chirpui-transition), transform var(--chirpui-transition);
+}
+
+.chirpui-sidebar-toggle:hover {
+    color: var(--chirpui-text);
+    background: var(--chirpui-state-surface-hover);
+    box-shadow: var(--chirpui-elevation-1);
+}
+
+.chirpui-sidebar-toggle:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-sidebar-toggle:active {
+    transform: translateY(1px);
+}
+
+.chirpui-sidebar-toggle__icon {
+    font-family: var(--chirpui-ascii-font);
+}
+
+.chirpui-sidebar-toggle[aria-expanded="false"] .chirpui-sidebar-toggle__icon {
+    transform: rotate(180deg);
+}
+
+.chirpui-app-shell__main {
+    grid-area: main;
+    position: relative;
+    min-height: 0;
+    min-width: 0;
+    overflow-x: clip;
+    padding: var(--chirpui-spacing-lg);
+}
+
+/* Full-height main: flex column so #page-content can flex:1; inner panels own scroll.
+   Opt in via {% block main_shell_class %}chirpui-app-shell__main--fill{% end %} on app_shell_layout. */
+.chirpui-app-shell__main--fill {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100dvh - var(--chirpui-shell-offset-top));
+    overflow: clip;
+    padding: 0;
+}
+
+.chirpui-app-shell__main--fill #page-content {
+    flex: 1;
+    min-height: 0;
+    gap: 0;
+}
+
+/* Optional: single root wrapper inside #page-content that should fill (chat, maps). */
+.chirpui-app-shell__main--fill #page-content > .chirpui-page-fill {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+}
+
+.chirpui-app-shell__main--fill::before {
+    top: var(--chirpui-shell-offset-top);
+    margin-inline: 0;
+}
+
+/* Navigation loading indicator — thin accent bar at the top of #main.
+   Appears automatically via HTMX's .htmx-request class on the swap target.
+   Slow cubic-bezier creep gives the illusion of real progress. */
+.chirpui-app-shell__main::before {
+    content: "";
+    position: sticky;
+    top: var(--chirpui-shell-offset-top);
+    left: 0;
+    right: 0;
+    display: block;
+    height: 2px;
+    margin-inline: calc(-1 * var(--chirpui-spacing-lg));
+    margin-bottom: calc(-2px);
+    background: var(--chirpui-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: var(--chirpui-z-dropdown);
+    pointer-events: none;
+    /* If a page sets display:grid on main, don't claim an auto-placed slot. */
+    grid-column: 1 / -1;
+    grid-row: 1;
+}
+
+.chirpui-app-shell__main.htmx-request::before {
+    transform: scaleX(0.7);
+    transition: transform var(--chirpui-motion-loading) var(--chirpui-ease-decel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-app-shell__main.htmx-request::before {
+        transform: scaleX(1);
+        transition: none;
+    }
+}
+
+/* nav_progress — standalone page-level progress bar.
+   Sits fixed at viewport top, animates on body.htmx-request.
+   Use when not inside app_shell (which has its own built-in bar). */
+.chirpui-nav-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: var(--chirpui-z-command-palette);
+    pointer-events: none;
+    overflow: clip;
+}
+
+.chirpui-nav-progress::after {
+    content: "";
+    display: block;
+    height: 100%;
+    background: var(--chirpui-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+body.htmx-request .chirpui-nav-progress::after {
+    transform: scaleX(0.7);
+    transition: transform var(--chirpui-motion-loading) var(--chirpui-ease-decel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.htmx-request .chirpui-nav-progress::after {
+        transform: scaleX(1);
+        transition: none;
+    }
+}
+
+/* Fragment targets — vertical spacing. Tabs topmost; title/actions/content below. */
+#page-root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-lg);
+    /* Newlines/indentation can leave a whitespace-only text node as the first flex child; it still
+       gets a line-height strut (~1 line) under headers. Collapse the strut; restore type on children. */
+    font-size: 0;
+}
+
+#page-root > * {
+    font-size: var(--chirpui-font-base);
+}
+
+#page-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-md);
+}
+
+#page-content-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-md);
+}
+

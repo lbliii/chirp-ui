@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Modal overlay (div-based, for modal_overlay component)
+   ========================================================================== */
+
+.chirpui-modal[data-modal-id] {
+    position: fixed;
+    inset: 0;
+    z-index: var(--chirpui-z-modal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--chirpui-spacing);
+}
+.chirpui-modal[data-modal-id].chirpui-modal--closed {
+    pointer-events: none;
+}
+.chirpui-modal[data-modal-id].chirpui-modal--closed .chirpui-modal__backdrop {
+    opacity: 0;
+}
+.chirpui-modal[data-modal-id].chirpui-modal--open .chirpui-modal__backdrop {
+    opacity: 1;
+}
+.chirpui-modal[data-modal-id].chirpui-modal--open {
+    pointer-events: auto;
+}
+.chirpui-modal[data-modal-id] .chirpui-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--chirpui-smoke-bg);
+    transition: opacity var(--chirpui-transition);
+}
+.chirpui-modal[data-modal-id] .chirpui-modal__panel {
+    position: relative;
+    width: 100%;
+    max-width: 28rem;
+    max-height: 90dvh;
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    box-shadow: var(--chirpui-elevation-overlay);
+    display: flex;
+    flex-direction: column;
+    overflow: clip;
+    transition: transform var(--chirpui-transition);
+}
+.chirpui-modal[data-modal-id].chirpui-modal--closed .chirpui-modal__panel {
+    transform: scale(0.95);
+    opacity: 0;
+}
+.chirpui-modal[data-modal-id].chirpui-modal--open .chirpui-modal__panel {
+    transform: scale(1);
+    opacity: 1;
+}
+

@@ -1,0 +1,123 @@
+/* ================================================================
+   ASCII Toggle — box-drawing switch with Unicode knob
+   OFF:  ╶───○     ON:  ●───╴
+   ================================================================ */
+.chirpui-ascii-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+    cursor: pointer;
+    user-select: none;
+}
+
+.chirpui-ascii-toggle__track {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--chirpui-text-muted);
+    transition: color var(--chirpui-transition);
+}
+
+.chirpui-ascii-toggle__rail {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    width: 3.5em;
+    height: 1.4em;
+    overflow: clip;
+}
+
+/* The rail draws the track characters via pseudo-elements */
+.chirpui-ascii-toggle__rail::before {
+    content: "╶───";
+    position: absolute;
+    left: 0;
+    pointer-events: none;
+    transition: opacity var(--chirpui-transition);
+}
+.chirpui-ascii-toggle__rail::after {
+    content: "───╴";
+    position: absolute;
+    right: 0;
+    pointer-events: none;
+    transition: opacity var(--chirpui-transition);
+}
+
+/* The knob — ○ when off, ● when on */
+.chirpui-ascii-toggle__knob {
+    position: absolute;
+    left: 0;
+    transition: left var(--chirpui-transition-slow) var(--chirpui-ease-spring),
+                color var(--chirpui-transition);
+    z-index: 1;
+    pointer-events: none;
+}
+.chirpui-ascii-toggle__knob::before {
+    content: "○";
+    font-size: 1.15em;
+}
+
+/* Checked state */
+.chirpui-ascii-toggle:has(.chirpui-ascii-toggle__input:checked) .chirpui-ascii-toggle__track {
+    color: var(--chirpui-accent);
+}
+.chirpui-ascii-toggle:has(.chirpui-ascii-toggle__input:checked) .chirpui-ascii-toggle__knob {
+    left: calc(100% - 1em);
+}
+.chirpui-ascii-toggle:has(.chirpui-ascii-toggle__input:checked) .chirpui-ascii-toggle__knob::before {
+    content: "●";
+}
+
+/* Focus ring */
+.chirpui-ascii-toggle:has(.chirpui-ascii-toggle__input:focus-visible) .chirpui-ascii-toggle__rail {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Active press feedback */
+.chirpui-ascii-toggle:has(.chirpui-ascii-toggle__input:active) .chirpui-ascii-toggle__knob::before {
+    content: "◉";
+}
+
+/* Label */
+.chirpui-ascii-toggle__label {
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text);
+}
+
+/* Disabled */
+.chirpui-ascii-toggle--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* --- Size variants --- */
+.chirpui-ascii-toggle--sm .chirpui-ascii-toggle__track { font-size: 0.75rem; }
+.chirpui-ascii-toggle--sm .chirpui-ascii-toggle__rail { width: 2.8em; height: 1.2em; }
+.chirpui-ascii-toggle--sm .chirpui-ascii-toggle__label { font-size: var(--chirpui-font-xs, 0.7rem); }
+
+.chirpui-ascii-toggle--lg .chirpui-ascii-toggle__track { font-size: 1.35rem; }
+.chirpui-ascii-toggle--lg .chirpui-ascii-toggle__rail { width: 4em; height: 1.6em; }
+
+/* --- Color variants --- */
+.chirpui-ascii-toggle--success:has(.chirpui-ascii-toggle__input:checked) .chirpui-ascii-toggle__track {
+    color: var(--chirpui-success);
+}
+.chirpui-ascii-toggle--danger:has(.chirpui-ascii-toggle__input:checked) .chirpui-ascii-toggle__track {
+    color: var(--chirpui-error);
+}
+.chirpui-ascii-toggle--accent:has(.chirpui-ascii-toggle__input:checked) .chirpui-ascii-toggle__track {
+    color: var(--chirpui-accent);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-toggle__knob {
+        transition: none;
+    }
+}
+

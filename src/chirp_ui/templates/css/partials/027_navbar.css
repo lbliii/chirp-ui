@@ -1,0 +1,29 @@
+/* ==========================================================================
+   Navbar
+   ========================================================================== */
+
+.chirpui-navbar {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-lg);
+    padding: var(--chirpui-spacing) 0;
+    border-bottom: 1px solid var(--chirpui-border);
+}
+
+.chirpui-navbar__brand {
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-size: var(--chirpui-font-lg);
+    color: var(--chirpui-text);
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.chirpui-navbar__brand:hover {
+    color: var(--chirpui-accent);
+}
+
+.chirpui-navbar__brand:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+

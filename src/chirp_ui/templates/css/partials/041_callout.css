@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Callout
+   ========================================================================== */
+
+.chirpui-callout {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border-radius: var(--chirpui-radius-sm);
+    border-inline-start: 4px solid var(--chirpui-border);
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+.chirpui-callout--info {
+    background: var(--chirpui-alert-info-bg);
+    border-inline-start-color: var(--chirpui-alert-info-border);
+}
+
+.chirpui-callout--success {
+    background: var(--chirpui-alert-success-bg);
+    border-inline-start-color: var(--chirpui-alert-success-border);
+}
+
+.chirpui-callout--warning {
+    background: var(--chirpui-alert-warning-bg);
+    border-inline-start-color: var(--chirpui-alert-warning-border);
+}
+
+.chirpui-callout--error {
+    background: var(--chirpui-alert-error-bg);
+    border-inline-start-color: var(--chirpui-alert-error-border);
+}
+
+.chirpui-callout--neutral {
+    background: var(--chirpui-bg-subtle);
+    border-inline-start-color: var(--chirpui-border);
+}
+
+/* Callout: surface-aware — reduce bg opacity on tinted/muted surfaces */
+.chirpui-callout--on-muted {
+    background: transparent;
+}
+.chirpui-callout--on-accent {
+    background: color-mix(in srgb, var(--chirpui-surface) 60%, transparent);
+}
+
+.chirpui-callout__header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--chirpui-spacing-sm);
+    margin-bottom: var(--chirpui-spacing-xs);
+}
+
+.chirpui-callout__icon {
+    font-size: 1em;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.chirpui-callout__title {
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-size: var(--chirpui-font-base);
+    margin-bottom: 0;
+}
+
+.chirpui-callout__header-actions {
+    margin-inline-start: auto;
+}
+
+.chirpui-callout__header-actions:empty {
+    display: none;
+}
+
+.chirpui-callout__header:not(:has(.chirpui-callout__icon)):not(:has(.chirpui-callout__title)):has(.chirpui-callout__header-actions:empty) {
+    display: none;
+}
+
+.chirpui-callout__body {
+    font-size: var(--chirpui-font-sm);
+}
+

@@ -1,0 +1,22 @@
+/* ==========================================================================
+   Number Ticker
+   ========================================================================== */
+
+.chirpui-number-ticker {
+    display: inline-block;
+}
+.chirpui-number-ticker__value {
+    font-variant-numeric: tabular-nums;
+    counter-reset: chirpui-num var(--chirpui-num);
+    animation: chirpui-count-up var(--chirpui-anim-pulse) var(--chirpui-ease-decel) forwards;
+}
+.chirpui-number-ticker__value::after {
+    content: counter(chirpui-num);
+}
+.chirpui-number-ticker--mono { font-family: var(--chirpui-font-mono, ui-monospace, monospace); }
+.chirpui-number-ticker--sm { font-size: var(--chirpui-ui-sm); }
+.chirpui-number-ticker--md { font-size: var(--chirpui-ui-base); }
+.chirpui-number-ticker--lg { font-size: var(--chirpui-ui-lg); }
+.chirpui-number-ticker--xl { font-size: var(--chirpui-prose-2xl); }
+
+

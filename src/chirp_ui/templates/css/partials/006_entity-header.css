@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Entity header (dashboard-grade)
+   ========================================================================== */
+
+.chirpui-entity-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--chirpui-space-section-gap);
+    flex-wrap: wrap;
+}
+
+.chirpui-entity-header__content {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--chirpui-space-control-gap);
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.chirpui-entity-header__content > div {
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+.chirpui-entity-header__icon {
+    font-size: var(--chirpui-ui-lg);
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.chirpui-entity-header__title {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-lg);
+    font-weight: var(--chirpui-ui-font-weight-bold);
+    margin: 0;
+}
+
+.chirpui-entity-header__meta {
+    margin-top: var(--chirpui-spacing-xs);
+    margin-bottom: 0;
+}
+
+.chirpui-entity-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-space-control-gap);
+    flex-shrink: 0;
+}
+
+.chirpui-entity-header__actions:empty {
+    display: none;
+}
+

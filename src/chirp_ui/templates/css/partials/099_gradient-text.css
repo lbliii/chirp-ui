@@ -1,0 +1,23 @@
+/* ==========================================================================
+   Gradient Text
+   ========================================================================== */
+
+.chirpui-gradient-text {
+    background: linear-gradient(135deg, var(--chirpui-accent), var(--chirpui-accent-bright));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline;
+}
+.chirpui-gradient-text--secondary {
+    background: linear-gradient(135deg, var(--chirpui-accent), var(--chirpui-accent-secondary));
+}
+.chirpui-gradient-text--rainbow {
+    background: linear-gradient(135deg, var(--chirpui-accent), var(--chirpui-accent-secondary), var(--chirpui-accent-bright));
+}
+.chirpui-gradient-text--animated {
+    background-size: 200% 200%;
+    animation: chirpui-gradient-shift var(--chirpui-anim-cycle) ease infinite;
+}
+
+

@@ -1,0 +1,11 @@
+/* ==========================================================================
+   Resource card — thin wrapper used inside resource index grids.
+   ========================================================================== */
+
+.chirpui-resource-card {
+    height: 100%;
+}
+
+.chirpui-resource-card__description {
+    margin: 0;
+}

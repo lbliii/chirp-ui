@@ -1,0 +1,106 @@
+/* ==========================================================================
+   Stepper
+   ========================================================================== */
+
+.chirpui-stepper {
+    margin: var(--chirpui-spacing-lg) 0;
+}
+
+.chirpui-stepper__list {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: stepper;
+}
+
+.chirpui-stepper__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    text-align: center;
+}
+
+/* Connector line between steps — drawn via ::before on all items except first */
+.chirpui-stepper__item + .chirpui-stepper__item::before {
+    content: "";
+    position: absolute;
+    top: 1rem; /* vertically center on the 2rem indicator */
+    right: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--chirpui-border);
+    z-index: 0;
+}
+
+.chirpui-stepper__item--completed + .chirpui-stepper__item::before {
+    background: var(--chirpui-accent);
+}
+
+.chirpui-stepper__indicator {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--chirpui-bg-subtle, var(--chirpui-border));
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    flex-shrink: 0;
+    border: 2px solid var(--chirpui-border);
+    transition: all var(--chirpui-transition);
+}
+
+.chirpui-stepper__item--active .chirpui-stepper__indicator {
+    background: var(--chirpui-accent);
+    color: var(--chirpui-on-accent);
+    border-color: var(--chirpui-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--chirpui-accent) 25%, transparent);
+}
+
+.chirpui-stepper__item--completed .chirpui-stepper__indicator {
+    background: color-mix(in srgb, var(--chirpui-accent) 15%, transparent);
+    color: var(--chirpui-accent);
+    border-color: var(--chirpui-accent);
+}
+
+.chirpui-stepper__check {
+    font-size: 0.875rem;
+    line-height: 1;
+}
+
+.chirpui-stepper__label {
+    display: block;
+    margin-top: var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+    white-space: nowrap;
+    overflow: clip;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    padding: 0 var(--chirpui-spacing-xs);
+}
+
+.chirpui-stepper__item--active .chirpui-stepper__label {
+    color: var(--chirpui-text);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+}
+
+.chirpui-stepper__item--completed .chirpui-stepper__label {
+    color: var(--chirpui-text-muted);
+}
+
+/* Hide the old connector element — lines are now drawn via ::before */
+.chirpui-stepper__connector {
+    display: none;
+}
+

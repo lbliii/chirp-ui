@@ -1,0 +1,73 @@
+/* ==========================================================================
+   Progress Bar
+   ========================================================================== */
+
+.chirpui-progress-bar {
+    position: relative;
+    width: 100%;
+}
+
+.chirpui-progress-bar--sm { height: 0.25rem; }
+.chirpui-progress-bar--md { height: 0.5rem; }
+.chirpui-progress-bar--lg { height: 1rem; }
+
+.chirpui-progress-bar__track {
+    width: 100%;
+    height: 100%;
+    background: var(--chirpui-bg-subtle);
+    border-radius: var(--chirpui-radius-sm);
+    overflow: clip;
+}
+
+.chirpui-progress-bar__fill {
+    height: 100%;
+    background: currentColor;
+    transition: width var(--chirpui-motion-slow) var(--chirpui-ease-standard);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+/* Progress bar variants */
+.chirpui-progress-bar--gold .chirpui-progress-bar__fill {
+    background: var(--chirpui-accent-dim, var(--chirpui-accent));
+}
+
+.chirpui-progress-bar--radiant .chirpui-progress-bar__fill {
+    background: linear-gradient(
+        90deg,
+        var(--chirpui-accent-dim, var(--chirpui-accent)),
+        var(--chirpui-accent-bright, var(--chirpui-accent))
+    );
+}
+
+.chirpui-progress-bar--success .chirpui-progress-bar__fill {
+    background: var(--chirpui-success);
+}
+
+.chirpui-progress-bar--watched .chirpui-progress-bar__fill {
+    background: var(--chirpui-error);
+}
+
+.chirpui-progress-bar--info .chirpui-progress-bar__fill {
+    background: var(--chirpui-info);
+}
+
+.chirpui-progress-bar--warning .chirpui-progress-bar__fill {
+    background: var(--chirpui-warning);
+}
+
+.chirpui-progress-bar--error .chirpui-progress-bar__fill {
+    background: var(--chirpui-error);
+}
+
+.chirpui-progress-bar--custom .chirpui-progress-bar__fill {
+    background: var(--chirpui-progress-color);
+}
+
+.chirpui-progress-bar__label {
+    display: block;
+    margin-top: var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-sm);
+    text-align: center;
+    color: var(--chirpui-text-muted);
+}
+

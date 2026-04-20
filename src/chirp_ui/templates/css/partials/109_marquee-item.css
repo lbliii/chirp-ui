@@ -1,0 +1,14 @@
+/* ==========================================================================
+   Marquee Item
+   ========================================================================== */
+
+.chirpui-marquee__item {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 0 var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-ui-sm);
+    color: var(--chirpui-text-muted);
+}
+
+

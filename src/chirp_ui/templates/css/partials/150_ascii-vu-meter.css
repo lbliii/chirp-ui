@@ -1,0 +1,104 @@
+/* ================================================================
+   ASCII VU Meter — horizontal bouncing level bars
+   ================================================================ */
+
+@keyframes chirpui-vu-bounce {
+    0%, 100% { opacity: 1; }
+    30% { opacity: 0.85; }
+    60% { opacity: 1; }
+    80% { opacity: 0.9; }
+}
+
+.chirpui-ascii-vu {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.chirpui-ascii-vu__label {
+    font-size: var(--chirpui-font-xs, 0.6rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--chirpui-text-muted);
+    min-width: 2.5em;
+    text-align: right;
+}
+
+.chirpui-ascii-vu__track {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.chirpui-ascii-vu__bracket {
+    color: var(--chirpui-text-muted);
+    opacity: 0.5;
+}
+
+.chirpui-ascii-vu__cell {
+    color: var(--chirpui-text-muted);
+    opacity: 0.3;
+    transition: color var(--chirpui-transition), opacity var(--chirpui-transition);
+}
+
+.chirpui-ascii-vu__cell--filled {
+    color: var(--chirpui-success);
+    opacity: 1;
+    text-shadow: 0 0 2px currentColor;
+}
+
+.chirpui-ascii-vu__cell--hot {
+    color: var(--chirpui-error);
+    text-shadow: 0 0 4px currentColor;
+}
+
+.chirpui-ascii-vu__cell--peak {
+    color: var(--chirpui-error);
+    text-shadow: 0 0 6px currentColor;
+    font-weight: var(--chirpui-ui-font-weight-bold);
+}
+
+.chirpui-ascii-vu__readout {
+    font-size: var(--chirpui-font-xs, 0.6rem);
+    color: var(--chirpui-text-muted);
+    min-width: 3em;
+}
+
+/* Animate variant */
+.chirpui-ascii-vu--animate .chirpui-ascii-vu__cell--filled {
+    animation: chirpui-vu-bounce var(--chirpui-anim-pulse) ease-in-out infinite;
+}
+.chirpui-ascii-vu--animate .chirpui-ascii-vu__cell--filled:nth-child(odd) {
+    animation-delay: 0.1s;
+}
+
+/* Color variants */
+.chirpui-ascii-vu--accent .chirpui-ascii-vu__cell--filled { color: var(--chirpui-accent); }
+.chirpui-ascii-vu--accent .chirpui-ascii-vu__cell--hot { color: var(--chirpui-accent); }
+.chirpui-ascii-vu--success .chirpui-ascii-vu__cell--filled { color: var(--chirpui-success); }
+.chirpui-ascii-vu--warning .chirpui-ascii-vu__cell--filled { color: var(--chirpui-warning, #e6a700); }
+.chirpui-ascii-vu--warning .chirpui-ascii-vu__cell--hot { color: var(--chirpui-error); }
+
+/* Stack layout */
+.chirpui-ascii-vu-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
+}
+.chirpui-ascii-vu-stack__title {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: var(--chirpui-font-xs, 0.6rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chirpui-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-vu--animate .chirpui-ascii-vu__cell--filled {
+        animation: none;
+    }
+}
+

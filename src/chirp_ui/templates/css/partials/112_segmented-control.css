@@ -1,0 +1,44 @@
+/* ==========================================================================
+   Segmented Control
+   ========================================================================== */
+
+.chirpui-segmented {
+    display: inline-flex;
+    background: var(--chirpui-surface-alt);
+    border-radius: var(--chirpui-radius);
+    padding: 2px;
+    gap: 2px;
+}
+.chirpui-segmented__option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-2xs);
+    padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: 500;
+    color: var(--chirpui-text-muted);
+    border-radius: calc(var(--chirpui-radius) - 2px);
+    cursor: pointer;
+    transition: background var(--chirpui-transition), color var(--chirpui-transition),
+                box-shadow var(--chirpui-transition);
+    user-select: none;
+}
+.chirpui-segmented__option:hover { color: var(--chirpui-text); }
+.chirpui-segmented__option:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+.chirpui-segmented__option--active,
+.chirpui-segmented__option:has(input:checked) {
+    background: var(--chirpui-surface);
+    color: var(--chirpui-text);
+    box-shadow: var(--chirpui-shadow-sm);
+}
+.chirpui-segmented__icon { font-size: 0.85em; }
+
+/* Segmented sizes */
+.chirpui-segmented--sm .chirpui-segmented__option { padding: 1px var(--chirpui-spacing-xs); font-size: var(--chirpui-ui-xs); }
+.chirpui-segmented--lg .chirpui-segmented__option { padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md); font-size: var(--chirpui-ui-base); }
+
+

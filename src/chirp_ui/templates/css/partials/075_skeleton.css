@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Skeleton
+   ========================================================================== */
+
+.chirpui-skeleton {
+    display: inline-block;
+    background: linear-gradient(
+        90deg,
+        var(--chirpui-bg-subtle) 25%,
+        var(--chirpui-border) 50%,
+        var(--chirpui-bg-subtle) 75%
+    );
+    background-size: 200% 100%;
+    animation: chirpui-skeleton-shimmer var(--chirpui-anim-pulse) ease-in-out infinite;
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-skeleton--avatar {
+    width: var(--chirpui-avatar-size-md);
+    height: var(--chirpui-avatar-size-md);
+    border-radius: 50%;
+}
+
+.chirpui-skeleton--card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing);
+    width: 100%;
+}
+
+.chirpui-skeleton--card-img {
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-skeleton--card-line {
+    display: block;
+    height: 1em;
+    width: 100%;
+}
+
+.chirpui-skeleton--card-line:last-child {
+    width: 60%;
+}
+
+.chirpui-skeleton--text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-skeleton__line {
+    display: block;
+    height: 1em;
+    width: 100%;
+}
+
+.chirpui-skeleton__line:last-child {
+    width: 75%;
+}
+
+@keyframes chirpui-skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-skeleton {
+        animation: none;
+        background: var(--chirpui-bg-subtle);
+    }
+}
+
+/* suspense */
+.chirpui-suspense-slot {
+    min-height: 2rem;
+}
+
+.chirpui-suspense-group {
+    display: contents;
+}
+

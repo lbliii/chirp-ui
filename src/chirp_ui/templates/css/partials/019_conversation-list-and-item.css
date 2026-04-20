@@ -1,0 +1,91 @@
+/* ==========================================================================
+   Conversation List & Item
+   ========================================================================== */
+
+.chirpui-conversation-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-conversation-item {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--chirpui-radius);
+    transition: background var(--chirpui-transition);
+}
+
+.chirpui-conversation-item:hover {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-conversation-item:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-conversation-item__avatar {
+    flex-shrink: 0;
+}
+
+.chirpui-conversation-item__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.chirpui-conversation-item__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-conversation-item__name {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+}
+
+.chirpui-conversation-item__time {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-normal);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-conversation-item__preview {
+    margin: var(--chirpui-spacing-xs) 0 0;
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-normal);
+    color: var(--chirpui-text-muted);
+    white-space: nowrap;
+    overflow: clip;
+    text-overflow: ellipsis;
+}
+
+.chirpui-conversation-item--muted .chirpui-conversation-item__preview {
+    opacity: 0.8;
+}
+
+.chirpui-conversation-item__actions:empty {
+    display: none;
+}
+
+.chirpui-conversation-item__unread {
+    flex-shrink: 0;
+    min-width: 1.25rem;
+    padding: var(--chirpui-spacing-2xs) 0.35rem;
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    text-align: center;
+    background: var(--chirpui-accent);
+    color: var(--chirpui-surface);
+    border-radius: 9999px;
+}
+

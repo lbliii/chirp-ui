@@ -1,0 +1,165 @@
+/* ==========================================================================
+   ASCII Icons — Unicode symbols as primary icons
+   ========================================================================== */
+
+/* ASCII/symbol glyphs — monospace for consistent ○●◐ sizing across fonts */
+.chirpui-ascii {
+    display: inline-block;
+    line-height: 1;
+    font-size: 1rem;
+    font-family: var(--chirpui-ascii-font);
+}
+
+.chirpui-ascii--sm { font-size: 0.75rem; }
+.chirpui-ascii--md { font-size: 1rem; }
+.chirpui-ascii--lg { font-size: 1.5rem; }
+.chirpui-ascii--xl { font-size: 2rem; }
+
+.chirpui-ascii__char {
+    display: inline-block;
+}
+
+/* Rotate: 4 overlapping chars, cycle opacity */
+.chirpui-ascii--rotate {
+    position: relative;
+    width: 1em;
+    height: 1em;
+    text-align: center;
+}
+
+.chirpui-ascii--rotate .chirpui-ascii__char {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: chirpui-ascii-rotate-cycle var(--chirpui-anim-breath) steps(1) infinite;
+}
+
+.chirpui-ascii--rotate .chirpui-ascii__char--1 { animation-delay: 0s; }
+.chirpui-ascii--rotate .chirpui-ascii__char--2 { animation-delay: -0.6s; }
+.chirpui-ascii--rotate .chirpui-ascii__char--3 { animation-delay: -0.4s; }
+.chirpui-ascii--rotate .chirpui-ascii__char--4 { animation-delay: -0.2s; }
+
+@keyframes chirpui-ascii-rotate-cycle {
+    0%, 24% { opacity: 1; }
+    25%, 100% { opacity: 0; }
+}
+
+/* Blink */
+.chirpui-ascii--blink .chirpui-ascii__char {
+    animation: chirpui-ascii-blink var(--chirpui-anim-breath) step-end infinite;
+}
+
+@keyframes chirpui-ascii-blink {
+    50% { opacity: 0; }
+}
+
+/* Pulse — opacity + scale */
+.chirpui-ascii--pulse .chirpui-ascii__char {
+    animation: chirpui-ascii-pulse 1s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-pulse {
+    0%, 100% { opacity: 0.6; scale: 0.9; }
+    50% { opacity: 1; scale: 1.1; }
+}
+
+/* Shrink — scale down and back */
+.chirpui-ascii--shrink .chirpui-ascii__char {
+    animation: chirpui-ascii-shrink 1.2s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-shrink {
+    0%, 100% { scale: 1; }
+    50% { scale: 0.6; }
+}
+
+/* Grow — scale up and back */
+.chirpui-ascii--grow .chirpui-ascii__char {
+    animation: chirpui-ascii-grow 1.2s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-grow {
+    0%, 100% { scale: 1; }
+    50% { scale: 1.4; }
+}
+
+/* Spin — full rotation */
+.chirpui-ascii--spin .chirpui-ascii__char {
+    animation: chirpui-ascii-spin 1s linear infinite;
+}
+
+@keyframes chirpui-ascii-spin {
+    to { rotate: 360deg; }
+}
+
+/* Bounce — translateY */
+.chirpui-ascii--bounce .chirpui-ascii__char {
+    animation: chirpui-ascii-bounce var(--chirpui-anim-pace) ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-bounce {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -0.25em; }
+}
+
+/* Throb — opacity only, gentle */
+.chirpui-ascii--throb .chirpui-ascii__char {
+    animation: chirpui-ascii-throb var(--chirpui-anim-pulse) ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-throb {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* Wiggle — small rotation wobble */
+.chirpui-ascii--wiggle .chirpui-ascii__char {
+    animation: chirpui-ascii-wiggle 0.5s ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-wiggle {
+    0%, 100% { rotate: 0deg; }
+    25% { rotate: -12deg; }
+    75% { rotate: 12deg; }
+}
+
+/* Glow — text-shadow pulse */
+.chirpui-ascii--glow .chirpui-ascii__char {
+    animation: chirpui-ascii-glow var(--chirpui-anim-pulse) ease-in-out infinite;
+}
+
+@keyframes chirpui-ascii-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 2px currentColor);
+        opacity: 0.8;
+    }
+    50% {
+        filter: drop-shadow(0 0 8px currentColor);
+        opacity: 1;
+    }
+}
+
+/* Accessibility: Reduced motion for ASCII icons */
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii--blink .chirpui-ascii__char,
+    .chirpui-ascii--pulse .chirpui-ascii__char,
+    .chirpui-ascii--shrink .chirpui-ascii__char,
+    .chirpui-ascii--grow .chirpui-ascii__char,
+    .chirpui-ascii--spin .chirpui-ascii__char,
+    .chirpui-ascii--bounce .chirpui-ascii__char,
+    .chirpui-ascii--throb .chirpui-ascii__char,
+    .chirpui-ascii--wiggle .chirpui-ascii__char,
+    .chirpui-ascii--glow .chirpui-ascii__char,
+    .chirpui-ascii--rotate .chirpui-ascii__char {
+        animation: none;
+        opacity: 1;
+        scale: 1;
+        rotate: 0;
+        translate: 0 0;
+        filter: none;
+    }
+}
+

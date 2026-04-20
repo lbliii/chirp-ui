@@ -1,0 +1,53 @@
+/* ================================================================
+   ASCII Ticker — scrolling text banner
+   ================================================================ */
+
+@keyframes chirpui-ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+.chirpui-ascii-ticker {
+    display: flex;
+    align-items: center;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: 0.8rem;
+    overflow: clip;
+    max-width: 100%;
+}
+
+.chirpui-ascii-ticker__bracket {
+    color: var(--chirpui-text-muted);
+    opacity: 0.5;
+    flex-shrink: 0;
+}
+
+.chirpui-ascii-ticker__track {
+    overflow: clip;
+    flex: 1;
+    min-width: 0;
+}
+
+.chirpui-ascii-ticker__text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: chirpui-ticker-scroll var(--chirpui-anim-ambient) linear infinite;
+    color: var(--chirpui-text);
+}
+
+/* Speeds */
+.chirpui-ascii-ticker--slow .chirpui-ascii-ticker__text { animation-duration: 35s; }
+.chirpui-ascii-ticker--fast .chirpui-ascii-ticker__text { animation-duration: 10s; }
+
+/* Variants */
+.chirpui-ascii-ticker--accent .chirpui-ascii-ticker__text { color: var(--chirpui-accent); }
+.chirpui-ascii-ticker--success .chirpui-ascii-ticker__text { color: var(--chirpui-success); }
+.chirpui-ascii-ticker--warning .chirpui-ascii-ticker__text { color: var(--chirpui-warning, #e6a700); }
+.chirpui-ascii-ticker--error .chirpui-ascii-ticker__text { color: var(--chirpui-error); }
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-ticker__text {
+        animation: none;
+    }
+}
+

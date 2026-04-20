@@ -219,4 +219,10 @@ def create_app() -> App:
     async def streaming_page(request: Request):
         return Template("streaming_page.html", page_title="Streaming")
 
+    # ── Card variants (Sprint 5 @scope pilot) ─────────────────────────
+
+    @app.route("/card-variants")
+    async def card_variants_page(request: Request):
+        return Template("card_variants_page.html", page_title="Card Variants")
+
     return app

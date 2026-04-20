@@ -1,0 +1,687 @@
+/* ==========================================================================
+   Reset — minimal browser normalization
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+/* Alpine x-cloak — hide until Alpine initializes */
+[x-cloak] { display: none !important; }
+
+/* Media reset — prevent img/video/iframe/etc from overflowing their parent.
+   :where() keeps specificity at 0 so any authored selector wins.
+   Inline SVG keeps its inline flow; only gets a max-width safety net. */
+:where(img, video, canvas) {
+    max-width: 100%;
+    height: auto;
+}
+
+:where(iframe, embed, object) {
+    display: block;
+    max-width: 100%;
+}
+
+:where(svg) {
+    max-width: 100%;
+}
+
+/* Pre/table auto-containment outside prose — scoped to cards, surfaces, callouts.
+   Prose already handles its own pre/table at higher specificity. */
+:where(.chirpui-card__body, .chirpui-surface, .chirpui-callout) :is(pre, table) {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+:where(.chirpui-card__body, .chirpui-surface, .chirpui-callout) table {
+    display: block;
+}
+
+/* Global reduced-motion cap — OS-level accessibility preference honored at the root.
+   Duration 0.01ms (not 0) so animationend/transitionend still fire. Per-component
+   @media (prefers-reduced-motion: reduce) blocks still override for bespoke handling. */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+:root {
+    font-optical-sizing: var(--chirpui-font-optical-sizing, auto);
+
+    /* Spacing — fluid scale with clamp() */
+    --chirpui-spacing-2xs: 0.125rem;
+    --chirpui-spacing-xs: 0.25rem;
+    --chirpui-spacing-sm: clamp(0.375rem, 1vw, 0.5rem);
+    --chirpui-spacing: clamp(0.5rem, 2vw, 1rem);
+    --chirpui-spacing-md: clamp(0.75rem, 3vw, 1.25rem);
+    --chirpui-spacing-lg: clamp(1rem, 4vw, 1.5rem);
+    --chirpui-spacing-xl: clamp(1.25rem, 5vw, 2rem);
+    --chirpui-spacing-2xl: clamp(1.5rem, 6vw, 2.5rem);
+    --chirpui-spacing-3xl: clamp(2rem, 8vw, 3rem);
+
+    /* Spacing shorthand aliases */
+    --chirpui-space-xs: var(--chirpui-spacing-xs);
+    --chirpui-space-sm: var(--chirpui-spacing-sm);
+
+    /* Spacing aliases — prefer these when spacing conveys role */
+    --chirpui-space-inline-gap: var(--chirpui-spacing-xs);
+    --chirpui-space-control-gap: var(--chirpui-spacing-sm);
+    --chirpui-space-cluster-gap: var(--chirpui-spacing-xs);
+    --chirpui-space-stack-gap: var(--chirpui-spacing);
+    --chirpui-space-section-gap: var(--chirpui-spacing-md);
+    --chirpui-space-page-gap: var(--chirpui-spacing-lg);
+    --chirpui-space-container-gutter: var(--chirpui-spacing);
+    --chirpui-space-card-padding: var(--chirpui-spacing);
+    --chirpui-space-card-gap: var(--chirpui-spacing-sm);
+    --chirpui-space-surface-padding: var(--chirpui-spacing);
+    --chirpui-space-result-gap: var(--chirpui-spacing-md);
+    --chirpui-measure-sm: 22rem;
+    --chirpui-measure-md: 32rem;
+    --chirpui-measure-lg: 48rem;
+
+    /* Sidebar — theme-overridable */
+    --chirpui-sidebar-active-bg: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+    --chirpui-sidebar-active-color: var(--chirpui-accent);
+    --chirpui-sidebar-section-gap: var(--chirpui-spacing-md);
+    --chirpui-sidebar-link-gap: var(--chirpui-spacing-xs);
+    --chirpui-sidebar-collapsed-width: 4rem;
+    --chirpui-sidebar-expanded-width: 16rem;
+    --chirpui-sidebar-max-width: 20rem;
+
+    /* Radius */
+    --chirpui-radius-xs: 0.125rem;
+    --chirpui-radius-sm: 0.25rem;
+    --chirpui-radius: 0.5rem;
+    --chirpui-radius-lg: 0.75rem;
+    --chirpui-radius-xl: 1rem;
+    --chirpui-radius-2xl: 1.5rem;
+    --chirpui-radius-full: 9999px;
+
+    /* Typography — fluid scale */
+    --chirpui-font-xs: 0.75rem;
+    --chirpui-font-sm: clamp(0.8125rem, 1.5vw, 0.875rem);
+    --chirpui-font-base: clamp(0.9375rem, 2vw, 1rem);
+    --chirpui-font-lg: clamp(1.0625rem, 2.5vw, 1.125rem);
+    --chirpui-font-xl: clamp(1.25rem, 3vw, 1.5rem);
+    --chirpui-font-2xl: clamp(1.5rem, 4vw, 1.75rem);
+    --chirpui-line-height-tight: 1.25;
+    --chirpui-line-height-normal: 1.5;
+    --chirpui-line-height-relaxed: 1.7;
+
+    /* UI typography — components (badges, cards, stats, labels) */
+    --chirpui-ui-xs: var(--chirpui-font-xs);
+    --chirpui-ui-sm: var(--chirpui-font-sm);
+    --chirpui-ui-base: var(--chirpui-font-base);
+    --chirpui-ui-lg: var(--chirpui-font-lg);
+    --chirpui-ui-xl: var(--chirpui-font-xl);
+    --chirpui-ui-font-family: ui-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --chirpui-ascii-font: ui-monospace, "SF Mono", "Cascadia Code", "Consolas", "Liberation Mono", monospace;
+    --chirpui-font-optical-sizing: auto;
+    --chirpui-ui-font-weight-normal: 400;
+    --chirpui-ui-font-weight-medium: 500;
+    --chirpui-ui-font-weight-semibold: 600;
+    --chirpui-ui-font-weight-bold: 700;
+
+    /* Prose typography — document content (body, headings) */
+    --chirpui-prose-xs: var(--chirpui-font-xs);
+    --chirpui-prose-base: var(--chirpui-font-base);
+    --chirpui-prose-sm: var(--chirpui-font-sm);
+    --chirpui-prose-lg: var(--chirpui-font-lg);
+    --chirpui-prose-xl: var(--chirpui-font-xl);
+    --chirpui-prose-2xl: var(--chirpui-font-2xl);
+    --chirpui-prose-3xl: clamp(1.75rem, 5vw, 2rem);
+    --chirpui-prose-4xl: clamp(2rem, 6vw, 2.5rem);
+    --chirpui-prose-5xl: clamp(2.5rem, 8vw, 3rem);
+    --chirpui-prose-6xl: clamp(3rem, 10vw, 3.75rem);
+    --chirpui-prose-7xl: clamp(3.5rem, 12vw, 4.625rem);
+    --chirpui-display-letter-spacing: -0.025em;
+    --chirpui-prose-max-width: 65ch;
+    --chirpui-prose-font-family: ui-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --chirpui-prose-font-optical-sizing: auto;
+    --chirpui-prose-font-weight-normal: 400;
+    --chirpui-prose-font-weight-medium: 500;
+    --chirpui-prose-font-weight-heading: 600;
+    --chirpui-prose-font-weight-bold: 700;
+
+    /* Prose spacing — conventional vertical rhythm (override for looser/tighter) */
+    --chirpui-prose-spacing: 0.5em;
+    --chirpui-prose-spacing-heading: 0.75em;
+
+    /* Color — semantic tokens; light-dark() for dark mode (no @media duplication) */
+    color-scheme: light dark;
+    accent-color: var(--chirpui-accent);
+    --chirpui-text: light-dark(#1e293b, #f1f5f9);
+    --chirpui-text-muted: light-dark(#64748b, #94a3b8);
+    --chirpui-surface: light-dark(#ffffff, #1e293b);
+    --chirpui-surface-alt: light-dark(#f8fafc, #334155);
+    --chirpui-border: light-dark(#e2e8f0, #475569);
+    --chirpui-border-subtle: color-mix(in srgb, var(--chirpui-border) 70%, transparent);
+    --chirpui-accent: light-dark(#0284c7, #38bdf8);
+    --chirpui-accent-hover: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-hover), black);
+    --chirpui-bg: light-dark(#f8fafc, #0f172a);
+    --chirpui-bg-subtle: light-dark(#f1f5f9, #1e293b);
+    --chirpui-surface-elevated: var(--chirpui-surface-alt);
+    --chirpui-focus-ring: color-mix(in srgb, var(--chirpui-accent) 30%, transparent);
+
+    /* Semantic — badges, status, progress, errors; *-muted use generic shade */
+    --chirpui-primary: light-dark(#5b9cf5, #93bbfc);
+    --chirpui-success: light-dark(#22c55e, #4ade80);
+    --chirpui-warning: light-dark(#f59e5b, #fbbf24);
+    --chirpui-error: light-dark(#dc2626, #f87171);
+    --chirpui-muted: light-dark(#6b7280, #9ca3af);
+
+    /* Aliases — shorthand for common token lookups */
+    --chirpui-fg: var(--chirpui-text);
+    --chirpui-fg-muted: var(--chirpui-text-muted);
+    --chirpui-danger: var(--chirpui-error);
+    --chirpui-on-accent: #fff;
+    --chirpui-on-warning: light-dark(#1a1a1a, #1a1a1a);
+    --chirpui-font-family: var(--chirpui-prose-font-family);
+    --chirpui-font-mono: var(--chirpui-mono-font-family);
+    --chirpui-navbar-height: 3.5rem;
+
+    /* Optional component aliases */
+    --chirpui-card-header-color: var(--chirpui-text);
+    --chirpui-card-hover-border: var(--chirpui-border);
+    --chirpui-card-hover-shadow: var(--chirpui-elevation-2);
+
+    /* Card body links — titles/primary links in card content (no underline; card signals clickability) */
+    --chirpui-card-body-link-color: var(--chirpui-text);
+    --chirpui-card-body-link-decoration: none;
+    --chirpui-card-body-link-hover-color: var(--chirpui-accent);
+
+    /* Generic shade modifiers — apply to any color via color-mix(); themes override for global tuning */
+    --chirpui-shade-hover: 85%;
+    --chirpui-shade-active: 70%;
+    --chirpui-shade-light: 15%;
+    --chirpui-shade-dim: 40%;
+    --chirpui-shade-bright: 85%;
+    --chirpui-shade-muted: 15%;
+
+    /* Derived accent states — use generic shades; override base --chirpui-accent for all */
+    --chirpui-accent-dim: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-dim), black);
+    --chirpui-accent-bright: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-bright), white);
+    --chirpui-accent-light: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-light), white);
+    --chirpui-accent-active: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-active), black);
+
+    /* Semantic muted backgrounds — derived via generic shade.
+       Mix toward --chirpui-surface (not white) so dark mode gets dark tints. */
+    --chirpui-primary-muted: color-mix(in srgb, var(--chirpui-primary) var(--chirpui-shade-muted), var(--chirpui-surface));
+    --chirpui-success-muted: color-mix(in srgb, var(--chirpui-success) var(--chirpui-shade-muted), var(--chirpui-surface));
+    --chirpui-warning-muted: color-mix(in srgb, var(--chirpui-warning) var(--chirpui-shade-muted), var(--chirpui-surface));
+    --chirpui-error-muted: color-mix(in srgb, var(--chirpui-error) var(--chirpui-shade-muted), var(--chirpui-surface));
+    --chirpui-muted-bg: color-mix(in srgb, var(--chirpui-muted) var(--chirpui-shade-muted), var(--chirpui-surface));
+
+    /* Info semantic — alias of accent; override --chirpui-accent to change both */
+    --chirpui-info: var(--chirpui-accent);
+
+    /* Alert/admonition text/icon colors — derive from semantic base */
+    --chirpui-alert-info-color: var(--chirpui-info);
+    --chirpui-alert-success-color: var(--chirpui-success);
+    --chirpui-alert-warning-color: var(--chirpui-warning);
+    --chirpui-alert-error-color: var(--chirpui-error);
+
+    /* Secondary accent — second brand color for gradients, docs blocks, code syntax */
+    --chirpui-accent-secondary: light-dark(#7c3aed, #a78bfa);
+    --chirpui-accent-secondary-muted: color-mix(in srgb, var(--chirpui-accent-secondary) var(--chirpui-shade-muted), var(--chirpui-surface));
+    --chirpui-alert-secondary-bg: light-dark(#f5f3ff, #2e1065);
+    --chirpui-alert-secondary-border: light-dark(#c4b5fd, #7c3aed);
+    --chirpui-alert-secondary-color: var(--chirpui-accent-secondary);
+
+    /* HTTP method tokens — API docs; map to semantic by default */
+    --chirpui-method-get: var(--chirpui-info);
+    --chirpui-method-get-bg: var(--chirpui-alert-info-bg);
+    --chirpui-method-get-border: var(--chirpui-alert-info-border);
+    --chirpui-method-post: var(--chirpui-success);
+    --chirpui-method-post-bg: var(--chirpui-alert-success-bg);
+    --chirpui-method-post-border: var(--chirpui-alert-success-border);
+    --chirpui-method-put: var(--chirpui-warning);
+    --chirpui-method-put-bg: var(--chirpui-alert-warning-bg);
+    --chirpui-method-put-border: var(--chirpui-alert-warning-border);
+    --chirpui-method-patch: var(--chirpui-warning);
+    --chirpui-method-patch-bg: var(--chirpui-alert-warning-bg);
+    --chirpui-method-patch-border: var(--chirpui-alert-warning-border);
+    --chirpui-method-delete: var(--chirpui-error);
+    --chirpui-method-delete-bg: var(--chirpui-alert-error-bg);
+    --chirpui-method-delete-border: var(--chirpui-alert-error-border);
+    --chirpui-method-head: var(--chirpui-muted);
+    --chirpui-method-head-bg: var(--chirpui-muted-bg);
+    --chirpui-method-head-border: var(--chirpui-border);
+    --chirpui-method-options: var(--chirpui-muted);
+    --chirpui-method-options-bg: var(--chirpui-muted-bg);
+    --chirpui-method-options-border: var(--chirpui-border);
+
+    /* Code syntax — inline code, code blocks, syntax highlighting */
+    --chirpui-code-bg: light-dark(#f1f5f9, #1e293b);
+    --chirpui-code-text: light-dark(#334155, #cbd5e1);
+    --chirpui-code-type: var(--chirpui-info);
+    --chirpui-code-type-bg: var(--chirpui-alert-info-bg);
+    --chirpui-code-keyword: light-dark(#7c3aed, #a78bfa);
+    --chirpui-code-string: light-dark(#059669, #34d399);
+    --chirpui-code-number: light-dark(#d97706, #fbbf24);
+
+    /* Code typography — font, size, line-height */
+    --chirpui-code-font-family: ui-monospace, ui-serif, "Cascadia Code", "Fira Code", "JetBrains Mono", "SF Mono", Consolas, monospace;
+    --chirpui-mono-font-family: var(--chirpui-code-font-family);
+    --chirpui-code-font-size-inline: 0.9em;
+    --chirpui-code-font-size-block: var(--chirpui-prose-sm);
+    --chirpui-code-line-height: 1.6;
+    --chirpui-pre-padding: var(--chirpui-spacing-sm);
+
+    /* Motion primitives */
+    --chirpui-motion-fast: 120ms;
+    --chirpui-motion-base: 150ms;
+    --chirpui-motion-slow: 250ms;
+    --chirpui-motion-slower: 400ms;
+    --chirpui-motion-extra-slow: 600ms;
+    --chirpui-motion-crawl: 1500ms;
+    --chirpui-motion-loading: 8s;
+    --chirpui-ease-standard: ease;
+    --chirpui-ease-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
+    --chirpui-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --chirpui-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --chirpui-ease-decel: cubic-bezier(0, 0, 0.2, 1);
+    --chirpui-ease-accel: cubic-bezier(0.4, 0, 1, 1);
+
+    /* Animation durations — for @keyframes (transitions use --chirpui-motion-*) */
+    --chirpui-anim-flash: 0.2s;
+    --chirpui-anim-quick: 0.4s;
+    --chirpui-anim-pace: 0.6s;
+    --chirpui-anim-breath: 0.8s;
+    --chirpui-anim-pulse: 1.5s;
+    --chirpui-anim-cycle: 3s;
+    --chirpui-anim-drift: 8s;
+    --chirpui-anim-ambient: 20s;
+
+    /* Effect colors — shimmer, ripple, glow, beam */
+    --chirpui-shimmer-from: color-mix(in srgb, var(--chirpui-border) 40%, transparent);
+    --chirpui-shimmer-via: color-mix(in srgb, var(--chirpui-surface) 80%, transparent);
+    --chirpui-shimmer-to: color-mix(in srgb, var(--chirpui-border) 40%, transparent);
+    --chirpui-ripple-color: color-mix(in srgb, var(--chirpui-accent) 25%, transparent);
+    --chirpui-beam-color: var(--chirpui-accent);
+    --chirpui-glow-color: color-mix(in srgb, var(--chirpui-accent) 40%, transparent);
+
+    /* Backward-compatible motion aliases */
+    --chirpui-transition: var(--chirpui-motion-base) var(--chirpui-ease-standard);
+    --chirpui-transition-slow: var(--chirpui-motion-slow) var(--chirpui-ease-standard);
+    --chirpui-transition-emphasized: var(--chirpui-motion-base) var(--chirpui-ease-emphasized);
+
+    /* Drag-drop tactile polish */
+    --chirpui-dnd-lift-scale: 1.02;
+    --chirpui-dnd-lift-offset-y: -4px;
+    --chirpui-dnd-lift-shadow: var(--chirpui-shadow-lg);
+    --chirpui-dnd-drag-opacity: 0.5;
+    --chirpui-dnd-ghost-opacity: 0.4;
+    --chirpui-dnd-drop-indicator-color: var(--chirpui-accent);
+    --chirpui-dnd-drop-indicator-width: 2px;
+    --chirpui-dnd-transition: var(--chirpui-motion-base) var(--chirpui-ease-emphasized);
+    --chirpui-dnd-drag-transition: var(--chirpui-motion-fast) var(--chirpui-ease-standard);
+
+    /* Avatar */
+    --chirpui-avatar-size-sm: 2rem;
+    --chirpui-avatar-size-md: 2.5rem;
+    --chirpui-avatar-size-lg: 3.5rem;
+
+    /* Video */
+    --chirpui-video-aspect-ratio: 16 / 9;
+
+    /* Message bubble */
+    --chirpui-message-bubble-radius: var(--chirpui-radius-lg);
+    --chirpui-message-bubble-user-bg: var(--chirpui-accent);
+    --chirpui-message-bubble-user-color: var(--chirpui-surface);
+    --chirpui-message-bubble-assistant-bg: var(--chirpui-bg-subtle);
+    --chirpui-message-bubble-assistant-color: var(--chirpui-text);
+    --chirpui-message-bubble-system-bg: var(--chirpui-muted-bg);
+    --chirpui-message-bubble-system-color: var(--chirpui-text-muted);
+    --chirpui-message-bubble-padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    --chirpui-message-bubble-max-width: 85%;
+    --chirpui-message-bubble-gap: var(--chirpui-spacing-sm);
+
+    /* Page header — component aliases */
+    --chirpui-page-header-padding: var(--chirpui-spacing-md);
+    --chirpui-page-header-gap: var(--chirpui-space-page-gap);
+    --chirpui-page-header-title-size: var(--chirpui-ui-lg);
+    --chirpui-page-header-title-weight: var(--chirpui-ui-font-weight-bold);
+    --chirpui-page-header-bg: transparent;
+    --chirpui-page-header-border: none;
+
+    /* Chat layout */
+    --chirpui-chat-layout-gap: var(--chirpui-spacing-md);
+    --chirpui-chat-layout-messages-padding: var(--chirpui-spacing-md);
+    --chirpui-chat-layout-input-padding: var(--chirpui-spacing-md);
+    --chirpui-chat-layout-input-border: 1px solid var(--chirpui-border);
+    --chirpui-chat-layout-activity-width: 280px;
+    --chirpui-chat-layout-min-height: 400px;
+
+    /* Workbench */
+    --chirpui-panel-header-padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-md);
+    --chirpui-panel-body-padding: var(--chirpui-spacing-md);
+    --chirpui-panel-footer-padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-md);
+    --chirpui-panel-min-height: 14rem;
+    --chirpui-file-tree-padding: var(--chirpui-spacing-md);
+    --chirpui-empty-panel-state-icon-size: 2rem;
+    --chirpui-split-sidebar-width: 18rem;
+    --chirpui-split-balanced-width: 1fr;
+    --chirpui-split-wide-width: minmax(0, 1.6fr);
+    --chirpui-split-narrow-width: minmax(16rem, 0.75fr);
+    --chirpui-workspace-min-height: 32rem;
+
+    /* Layout */
+    --chirpui-container-max: 72rem;
+    --chirpui-grid-min: 20rem;
+    /* grid() presets — @media below uses the same rem literals (var() not in @media). */
+    --chirpui-layout-bp-sm: 48rem;
+    --chirpui-layout-bp-md: 52rem;
+    --chirpui-layout-bp-lg: 64rem;
+    /* frame() — explicit tracks; override per wrapper via style= or theme */
+    --chirpui-frame-gap: var(--chirpui-spacing-lg);
+    --chirpui-frame-balanced-columns: minmax(0, 1fr) minmax(0, 1fr);
+    --chirpui-frame-hero-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    --chirpui-frame-sidebar-width: var(--chirpui-split-sidebar-width);
+    --chirpui-modal-width: 32rem;
+    --chirpui-modal-width-sm: 24rem;
+    --chirpui-modal-width-lg: 48rem;
+    --chirpui-toast-width: 24rem;
+
+    /* Tooltip — maps to theme (default matches floating menus); invert via tokens if needed */
+    --chirpui-tooltip-bg: var(--chirpui-surface);
+    --chirpui-tooltip-fg: var(--chirpui-text);
+    --chirpui-tooltip-border: 1px solid var(--chirpui-border);
+    --chirpui-tooltip-shadow: var(--chirpui-elevation-floating);
+    --chirpui-tooltip-radius: var(--chirpui-radius-sm);
+    --chirpui-tooltip-font-size: var(--chirpui-ui-xs);
+    --chirpui-tooltip-font-weight: var(--chirpui-ui-font-weight-medium);
+    --chirpui-tooltip-line-height: var(--chirpui-line-height-tight);
+    --chirpui-tooltip-padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    --chirpui-tooltip-gap: var(--chirpui-spacing-sm);
+    --chirpui-tooltip-max-width: min(16rem, 85vw);
+    --chirpui-tooltip-z: var(--chirpui-z-sticky);
+
+    /* Corner accent — architectural bracket decoration on surfaces */
+    --chirpui-corner-accent-color: var(--chirpui-border);
+    --chirpui-corner-accent-size: 12px;
+    --chirpui-corner-accent-width: 1px;
+
+    /* Alert variants */
+    --chirpui-alert-info-bg: light-dark(#eff6ff, #1e3a5f);
+    --chirpui-alert-info-border: light-dark(#bfdbfe, #3b82f6);
+    --chirpui-alert-success-bg: light-dark(#f0fdf4, #14532d);
+    --chirpui-alert-success-border: light-dark(#bbf7d0, #22c55e);
+    --chirpui-alert-warning-bg: light-dark(#fffbeb, #422006);
+    --chirpui-alert-warning-border: light-dark(#fde68a, #f59e0b);
+    --chirpui-alert-error-bg: light-dark(#fef2f2, #450a0a);
+    --chirpui-alert-error-border: light-dark(#fecaca, #ef4444);
+
+    /* Shadows adapt to scheme (core primitives) */
+    --chirpui-shadow-xs: light-dark(0 1px 1px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.2));
+    --chirpui-shadow-sm: light-dark(0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.3));
+    --chirpui-shadow-md: light-dark(
+        0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1),
+        0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3)
+    );
+    --chirpui-shadow-lg: light-dark(
+        0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1),
+        0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4)
+    );
+    --chirpui-shadow-xl: light-dark(
+        0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1),
+        0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4)
+    );
+    --chirpui-shadow-deep: light-dark(
+        0 0 24px 0 rgba(0, 0, 0, 0.03) inset, 0 0.5px 0 0.75px rgba(0, 0, 0, 0.05),
+        0 4px 6px rgba(0, 0, 0, 0.04), 0 12px 24px rgba(0, 0, 0, 0.06), 0 36px 48px rgba(0, 0, 0, 0.08),
+        0 0 24px 0 rgba(0, 0, 0, 0.2) inset, 0 0.5px 0 0.75px rgba(255, 255, 255, 0.05),
+        0 4px 6px rgba(0, 0, 0, 0.15), 0 12px 24px rgba(0, 0, 0, 0.2), 0 36px 48px rgba(0, 0, 0, 0.25)
+    );
+    --chirpui-shadow-inset-glow: inset 0 1px 0 0 color-mix(in srgb, var(--chirpui-accent) 8%, transparent);
+
+    /* Elevation semantics */
+    --chirpui-elevation-0: none;
+    --chirpui-elevation-1: var(--chirpui-shadow-sm);
+    --chirpui-elevation-2: var(--chirpui-shadow-md);
+    --chirpui-elevation-3: var(--chirpui-shadow-lg);
+    --chirpui-elevation-4: var(--chirpui-shadow-xl);
+    --chirpui-elevation-card-rest: var(--chirpui-elevation-1);
+    --chirpui-elevation-card-hover: var(--chirpui-elevation-2);
+    --chirpui-elevation-floating: var(--chirpui-elevation-2);
+    --chirpui-elevation-overlay: var(--chirpui-elevation-3);
+    --chirpui-elevation-topbar: var(--chirpui-elevation-1);
+    --chirpui-elevation-5: var(--chirpui-shadow-deep);
+    --chirpui-elevation-deep: var(--chirpui-shadow-deep);
+
+    /* Z-index — global stacking hierarchy (local 0/1/2 within components are intentionally hardcoded) */
+    --chirpui-z-dropdown: 10;
+    --chirpui-z-popover: 20;
+    --chirpui-z-sticky: 50;
+    --chirpui-z-toast: 100;
+    --chirpui-z-tray: 1100;
+    --chirpui-z-modal: 1200;
+    --chirpui-z-command-palette: 9999;
+    --chirpui-z-celebration: 10000;
+
+    /* Interaction state semantics */
+    --chirpui-state-surface-hover: var(--chirpui-bg-subtle);
+    --chirpui-state-surface-active: color-mix(in srgb, var(--chirpui-accent) 12%, var(--chirpui-bg-subtle));
+    --chirpui-state-border-hover: color-mix(in srgb, var(--chirpui-accent) 35%, var(--chirpui-border));
+    --chirpui-state-border-active: color-mix(in srgb, var(--chirpui-accent) 55%, var(--chirpui-border));
+    --chirpui-state-text-hover: var(--chirpui-accent-hover);
+    --chirpui-state-focus-outline: 2px solid var(--chirpui-accent);
+    --chirpui-state-focus-offset: 2px;
+
+    /* Style-axis defaults (data-style="default|neumorphic") */
+    --chirpui-neu-surface: var(--chirpui-surface);
+    --chirpui-neu-raised: var(--chirpui-shadow-sm);
+    --chirpui-neu-inset: inset 0 1px 2px rgba(15, 23, 42, 0.12);
+    --chirpui-neu-pressed: inset 0 2px 5px rgba(15, 23, 42, 0.18);
+    --chirpui-neu-highlight-border: color-mix(in srgb, white 50%, var(--chirpui-border));
+    --chirpui-neu-lowlight-border: color-mix(in srgb, black 16%, var(--chirpui-border));
+    --chirpui-neu-chamfer: color-mix(in srgb, white 34%, transparent);
+
+    /* Overlay — for text-on-image contrast */
+    --chirpui-overlay-dark: light-dark(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5));
+    --chirpui-overlay-gradient-bottom: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.6),
+        transparent
+    );
+    --chirpui-overlay-gradient-top: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.6),
+        transparent
+    );
+
+    /* Glass / frosted — backdrop-filter required */
+    --chirpui-glass-bg: light-dark(
+        rgba(255, 255, 255, 0.25),
+        rgba(30, 41, 59, 0.4)
+    );
+    --chirpui-glass-border: light-dark(
+        rgba(255, 255, 255, 0.4),
+        rgba(71, 85, 105, 0.3)
+    );
+    --chirpui-frosted-bg: light-dark(
+        rgba(255, 255, 255, 0.4),
+        rgba(30, 41, 59, 0.5)
+    );
+    --chirpui-frosted-border: light-dark(
+        rgba(255, 255, 255, 0.5),
+        rgba(71, 85, 105, 0.4)
+    );
+    --chirpui-smoke-bg: light-dark(
+        rgba(0, 0, 0, 0.08),
+        rgba(0, 0, 0, 0.25)
+    );
+    --chirpui-smoke-border: light-dark(
+        rgba(0, 0, 0, 0.1),
+        rgba(255, 255, 255, 0.08)
+    );
+
+    /* Gradient presets — theme-overridable */
+    --chirpui-gradient-subtle: linear-gradient(
+        135deg,
+        var(--chirpui-bg-subtle) 0%,
+        color-mix(in srgb, var(--chirpui-accent) 6%, var(--chirpui-bg)) 100%
+    );
+    --chirpui-gradient-accent: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--chirpui-accent) 15%, white) 0%,
+        color-mix(in srgb, var(--chirpui-accent) 8%, var(--chirpui-bg)) 100%
+    );
+    --chirpui-gradient-border: linear-gradient(
+        to right,
+        var(--chirpui-accent),
+        var(--chirpui-accent-secondary),
+        var(--chirpui-accent)
+    );
+    --chirpui-gradient-split: linear-gradient(
+        to right,
+        var(--chirpui-surface) 0%,
+        var(--chirpui-surface) 50%,
+        var(--chirpui-bg-subtle) 50%,
+        var(--chirpui-bg-subtle) 100%
+    );
+    /* Mesh — simulated via radial overlays (BBC-style ambient) */
+    --chirpui-gradient-mesh: radial-gradient(
+            ellipse 80% 50% at 20% 40%,
+            color-mix(in srgb, var(--chirpui-accent) 25%, transparent),
+            transparent
+        ),
+        radial-gradient(
+            ellipse 60% 80% at 80% 20%,
+            color-mix(in srgb, var(--chirpui-accent-secondary) 20%, transparent),
+            transparent
+        ),
+        var(--chirpui-bg);
+
+    /* SVG pattern tiles — url() paths are relative to chirpui.css (serve templates/ as static root) */
+    --chirpui-pattern-checker: url("patterns/checker.svg");
+    --chirpui-pattern-dots-sm: url("patterns/dots-sm.svg");
+    --chirpui-pattern-dots-md: url("patterns/dots-md.svg");
+    --chirpui-pattern-grid: url("patterns/grid.svg");
+    --chirpui-pattern-diag: url("patterns/diag.svg");
+    --chirpui-pattern-crosshatch: url("patterns/crosshatch.svg");
+    --chirpui-pattern-weave: url("patterns/weave.svg");
+    --chirpui-pattern-noise-fine: url("patterns/noise-fine.svg");
+    --chirpui-pattern-noise-coarse: url("patterns/noise-coarse.svg");
+    --chirpui-pattern-hex: url("patterns/hex.svg");
+
+    /* CSS-only repeating fills (gradient geometry; tune ink without changing tile size) */
+    --chirpui-bg-pattern-base: var(--chirpui-bg-subtle);
+    --chirpui-bg-pattern-ink: color-mix(in oklab, var(--chirpui-border) 50%, transparent);
+    --chirpui-bg-pattern-ink-accent: color-mix(in oklab, var(--chirpui-accent) 30%, transparent);
+}
+
+/* Force light theme when [data-theme="light"] */
+[data-theme="light"] {
+    --chirpui-text: #1e293b;
+    --chirpui-text-muted: #64748b;
+    --chirpui-surface: #ffffff;
+    --chirpui-surface-alt: #f8fafc;
+    --chirpui-border: #e2e8f0;
+    --chirpui-accent: #0284c7;
+    --chirpui-bg: #f8fafc;
+    --chirpui-bg-subtle: #f1f5f9;
+    --chirpui-alert-info-bg: #eff6ff;
+    --chirpui-alert-info-border: #bfdbfe;
+    --chirpui-alert-success-bg: #f0fdf4;
+    --chirpui-alert-success-border: #bbf7d0;
+    --chirpui-alert-warning-bg: #fffbeb;
+    --chirpui-alert-warning-border: #fde68a;
+    --chirpui-alert-error-bg: #fef2f2;
+    --chirpui-alert-error-border: #fecaca;
+    --chirpui-primary: #5b9cf5;
+    --chirpui-success: #22c55e;
+    --chirpui-warning: #f59e5b;
+    --chirpui-error: #dc2626;
+    --chirpui-muted: #6b7280;
+    --chirpui-accent-secondary: #7c3aed;
+    --chirpui-shadow-xs: 0 1px 1px rgba(0, 0, 0, 0.04);
+    --chirpui-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --chirpui-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --chirpui-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --chirpui-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+@supports (color: oklch(0 0 0)) {
+    :root {
+        --chirpui-text: light-dark(oklch(0.24 0.02 260), oklch(0.965 0.005 260));
+        --chirpui-text-muted: light-dark(oklch(0.55 0.02 261), oklch(0.68 0.02 260));
+        --chirpui-surface: light-dark(oklch(1 0 0), oklch(0.24 0.02 260));
+        --chirpui-surface-alt: light-dark(oklch(0.985 0.002 260), oklch(0.31 0.02 260));
+        --chirpui-border: light-dark(oklch(0.92 0.01 260), oklch(0.42 0.02 260));
+        --chirpui-accent: light-dark(oklch(0.55 0.15 230), oklch(0.78 0.12 230));
+        --chirpui-accent-hover: light-dark(oklch(0.45 0.15 230), oklch(0.85 0.1 230));
+        --chirpui-bg: light-dark(oklch(0.985 0.002 260), oklch(0.18 0.02 260));
+        --chirpui-bg-subtle: light-dark(oklch(0.965 0.005 260), oklch(0.24 0.02 260));
+        --chirpui-alert-info-bg: light-dark(oklch(0.97 0.02 250), oklch(0.25 0.06 250));
+        --chirpui-alert-info-border: light-dark(oklch(0.84 0.06 250), oklch(0.6 0.15 250));
+        --chirpui-alert-success-bg: light-dark(oklch(0.975 0.02 145), oklch(0.22 0.06 145));
+        --chirpui-alert-success-border: light-dark(oklch(0.88 0.08 145), oklch(0.65 0.19 145));
+        --chirpui-alert-warning-bg: light-dark(oklch(0.985 0.02 85), oklch(0.28 0.06 85));
+        --chirpui-alert-warning-border: light-dark(oklch(0.9 0.1 85), oklch(0.75 0.15 85));
+        --chirpui-alert-error-bg: light-dark(oklch(0.975 0.02 25), oklch(0.28 0.06 25));
+        --chirpui-alert-error-border: light-dark(oklch(0.88 0.08 25), oklch(0.6 0.2 25));
+    }
+    [data-theme="light"] {
+        --chirpui-text: oklch(0.24 0.02 260);
+        --chirpui-text-muted: oklch(0.55 0.02 261);
+        --chirpui-surface: oklch(1 0 0);
+        --chirpui-surface-alt: oklch(0.985 0.002 260);
+        --chirpui-border: oklch(0.92 0.01 260);
+        --chirpui-accent: oklch(0.55 0.15 230);
+        --chirpui-accent-hover: oklch(0.45 0.15 230);
+        --chirpui-bg: oklch(0.985 0.002 260);
+        --chirpui-bg-subtle: oklch(0.965 0.005 260);
+        --chirpui-alert-info-bg: oklch(0.97 0.02 250);
+        --chirpui-alert-info-border: oklch(0.84 0.06 250);
+        --chirpui-alert-success-bg: oklch(0.975 0.02 145);
+        --chirpui-alert-success-border: oklch(0.88 0.08 145);
+        --chirpui-alert-warning-bg: oklch(0.985 0.02 85);
+        --chirpui-alert-warning-border: oklch(0.9 0.1 85);
+        --chirpui-alert-error-bg: oklch(0.975 0.02 25);
+        --chirpui-alert-error-border: oklch(0.88 0.08 25);
+        --chirpui-primary: oklch(0.55 0.15 250);
+        --chirpui-success: oklch(0.6 0.18 145);
+        --chirpui-warning: oklch(0.72 0.15 65);
+        --chirpui-error: oklch(0.55 0.2 25);
+        --chirpui-muted: oklch(0.55 0.02 260);
+    }
+
+    [data-theme="dark"] {
+        --chirpui-primary: oklch(0.65 0.15 250);
+        --chirpui-success: oklch(0.7 0.18 145);
+        --chirpui-warning: oklch(0.8 0.15 65);
+        --chirpui-error: oklch(0.65 0.2 25);
+        --chirpui-muted: oklch(0.6 0.02 260);
+    }
+}
+
+/* Use oklch for color-mix when supported — better perceptual uniformity */
+@supports (color: oklch(0 0 0)) {
+    :root {
+        --chirpui-accent-hover: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-hover), black);
+        --chirpui-accent-dim: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-dim), black);
+        --chirpui-accent-bright: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-bright), white);
+        --chirpui-accent-light: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-light), white);
+        --chirpui-accent-active: color-mix(in oklch, var(--chirpui-accent) var(--chirpui-shade-active), black);
+        --chirpui-primary-muted: color-mix(in oklch, var(--chirpui-primary) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-success-muted: color-mix(in oklch, var(--chirpui-success) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-warning-muted: color-mix(in oklch, var(--chirpui-warning) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-error-muted: color-mix(in oklch, var(--chirpui-error) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-muted-bg: color-mix(in oklch, var(--chirpui-muted) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-accent-secondary-muted: color-mix(in oklch, var(--chirpui-accent-secondary) var(--chirpui-shade-muted), var(--chirpui-surface));
+        --chirpui-focus-ring: color-mix(in oklch, var(--chirpui-accent) 30%, transparent);
+        --chirpui-border-subtle: color-mix(in oklch, var(--chirpui-border) 70%, transparent);
+    }
+}
+

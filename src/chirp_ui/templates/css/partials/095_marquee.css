@@ -1,0 +1,41 @@
+/* ==========================================================================
+   Marquee
+   ========================================================================== */
+
+.chirpui-marquee {
+    overflow: clip;
+    position: relative;
+    width: 100%;
+}
+.chirpui-marquee__track {
+    display: flex;
+    gap: var(--chirpui-spacing-lg);
+    width: max-content;
+    animation: chirpui-marquee var(--chirpui-anim-ambient) linear infinite;
+}
+.chirpui-marquee--reverse .chirpui-marquee__track {
+    animation-direction: reverse;
+}
+.chirpui-marquee--fast .chirpui-marquee__track { animation-duration: 10s; }
+.chirpui-marquee--slow .chirpui-marquee__track { animation-duration: 40s; }
+.chirpui-marquee:hover .chirpui-marquee__track {
+    animation-play-state: paused;
+}
+.chirpui-marquee__fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4rem;
+    z-index: 1;
+    pointer-events: none;
+}
+.chirpui-marquee__fade--start {
+    left: 0;
+    background: linear-gradient(to right, var(--chirpui-bg), transparent);
+}
+.chirpui-marquee__fade--end {
+    right: 0;
+    background: linear-gradient(to left, var(--chirpui-bg), transparent);
+}
+
+

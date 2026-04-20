@@ -1,0 +1,20 @@
+/* ==========================================================================
+   Inner shell sections (nested layouts: forum > subforum > thread)
+   ========================================================================== */
+
+.chirpui-shell-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-md);
+    min-height: 0;
+}
+.chirpui-shell-section__nav {
+    flex-shrink: 0;
+}
+.chirpui-shell-section__content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+

@@ -1,0 +1,67 @@
+/* ================================================================
+   ASCII 7-Segment Display — retro LCD readout
+   ================================================================ */
+
+.chirpui-ascii-7seg {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-ascii-7seg__label {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: var(--chirpui-font-xs, 0.6rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-ascii-7seg__display {
+    display: inline-flex;
+    align-items: center;
+    background: var(--chirpui-bg-subtle);
+    border: 1px solid var(--chirpui-border);
+    border-radius: 3px;
+    padding: 0.3em 0.15em;
+    gap: 0;
+}
+
+.chirpui-ascii-7seg__frame {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: 0.6em;
+    color: var(--chirpui-text-muted);
+    opacity: 0.3;
+    padding: 0 0.1em;
+}
+
+.chirpui-ascii-7seg__digit {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: 1.6rem;
+    font-weight: var(--chirpui-ui-font-weight-bold);
+    line-height: 1;
+    letter-spacing: 0.08em;
+    padding: 0 0.06em;
+    color: var(--chirpui-text);
+    text-shadow: 0 0 6px currentColor;
+}
+
+/* Colon and period are narrower */
+.chirpui-ascii-7seg__digit[data-char=":"],
+.chirpui-ascii-7seg__digit[data-char="."] {
+    letter-spacing: 0;
+    padding: 0;
+    font-size: 1.4rem;
+}
+
+/* Dash is muted */
+.chirpui-ascii-7seg__digit[data-char="-"] {
+    opacity: 0.5;
+}
+
+/* Color variants */
+.chirpui-ascii-7seg--accent .chirpui-ascii-7seg__digit { color: var(--chirpui-accent); }
+.chirpui-ascii-7seg--success .chirpui-ascii-7seg__digit { color: var(--chirpui-success); }
+.chirpui-ascii-7seg--warning .chirpui-ascii-7seg__digit { color: var(--chirpui-warning, #e6a700); }
+.chirpui-ascii-7seg--error .chirpui-ascii-7seg__digit { color: var(--chirpui-error); }
+

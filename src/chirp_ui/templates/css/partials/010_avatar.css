@@ -1,0 +1,55 @@
+/* ==========================================================================
+   Avatar
+   ========================================================================== */
+
+.chirpui-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--chirpui-avatar-size-md);
+    height: var(--chirpui-avatar-size-md);
+    border-radius: 50%;
+    overflow: clip;
+    background: var(--chirpui-bg-subtle);
+    color: var(--chirpui-text-muted);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+}
+
+.chirpui-avatar--sm {
+    width: var(--chirpui-avatar-size-sm);
+    height: var(--chirpui-avatar-size-sm);
+    font-size: var(--chirpui-ui-xs);
+}
+
+.chirpui-avatar--lg {
+    width: var(--chirpui-avatar-size-lg);
+    height: var(--chirpui-avatar-size-lg);
+    font-size: var(--chirpui-ui-base);
+}
+
+.chirpui-avatar__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chirpui-avatar__initials,
+.chirpui-avatar__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.chirpui-avatar--online {
+    box-shadow: 0 0 0 2px var(--chirpui-surface), 0 0 0 4px var(--chirpui-success);
+}
+
+.chirpui-avatar--offline {
+    box-shadow: 0 0 0 2px var(--chirpui-surface), 0 0 0 4px var(--chirpui-muted);
+}
+

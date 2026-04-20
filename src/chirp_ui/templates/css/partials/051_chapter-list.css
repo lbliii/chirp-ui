@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Chapter List
+   ========================================================================== */
+
+.chirpui-chapter-list {
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    background: var(--chirpui-surface);
+}
+
+.chirpui-chapter-list__summary {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-chapter-list__summary::after {
+    content: "\25B8";
+    display: inline-block;
+    transition: rotate var(--chirpui-transition);
+    margin-inline-start: auto;
+    font-size: 0.75em;
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-chapter-list[open] > .chirpui-chapter-list__summary::after {
+    rotate: 90deg;
+}
+
+.chirpui-chapter-list__summary-text {
+    flex: 1;
+}
+
+.chirpui-chapter-list__summary-actions:empty {
+    display: none;
+}
+
+.chirpui-chapter-list__summary::-webkit-details-marker {
+    display: none;
+}
+
+.chirpui-chapter-list__list {
+    padding: 0 var(--chirpui-spacing) var(--chirpui-spacing);
+    margin: 0;
+    list-style: none;
+}
+
+.chirpui-chapter-item {
+    margin-bottom: var(--chirpui-spacing-xs);
+}
+
+.chirpui-chapter-item:last-child {
+    margin-bottom: 0;
+}
+
+.chirpui-chapter-item__link {
+    display: flex;
+    gap: var(--chirpui-spacing);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--chirpui-radius-sm);
+    transition: background var(--chirpui-transition);
+}
+
+a.chirpui-chapter-item__link:hover {
+    background: var(--chirpui-bg-subtle);
+}
+
+a.chirpui-chapter-item__link:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-chapter-item__timestamp {
+    flex-shrink: 0;
+    font-size: var(--chirpui-font-xs);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-chapter-item__title {
+    flex: 1;
+    min-width: 0;
+}
+
