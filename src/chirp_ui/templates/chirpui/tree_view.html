@@ -19,13 +19,13 @@
 <ul class="chirpui-tree{{ " " ~ cls if cls else "" }}">
     {% for node in nodes %}
     <li class="chirpui-tree__item">
-        {% if node.children %}
+        {% if node.get("children") %}
         <details class="chirpui-tree__node">
-            <summary class="chirpui-tree__label">{{ node.label }}</summary>
+            <summary class="chirpui-tree__label">{{ node.label | default("") }}</summary>
             {{ tree_view(node.children) }}
         </details>
         {% else %}
-        <span class="chirpui-tree__label chirpui-tree__label--leaf">{{ node.label }}</span>
+        <span class="chirpui-tree__label chirpui-tree__label--leaf">{{ node.label | default("") }}</span>
         {% end %}
     </li>
     {% end %}

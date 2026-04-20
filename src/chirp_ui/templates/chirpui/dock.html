@@ -21,14 +21,14 @@
 <nav class="chirpui-dock{{ variant_class }}{{ size_class }}{{ " " ~ cls if cls else "" }}" aria-label="Dock">
     {% if items %}
         {% for item in items %}
-        {% set active_class = " chirpui-dock__item--active" if item.active else "" %}
-        {% if item.href %}
-        <a href="{{ item.href }}" class="chirpui-dock__item{{ active_class }}" aria-label="{{ item.label }}"{{ route_link_attrs(item.href) | html_attrs }}>
-            {{ item.icon | icon }}
+        {% set active_class = " chirpui-dock__item--active" if item.get("active") else "" %}
+        {% if item.get("href") %}
+        <a href="{{ item.href }}" class="chirpui-dock__item{{ active_class }}" aria-label="{{ item.label | default("") }}"{{ route_link_attrs(item.href) | html_attrs }}>
+            {{ item.icon | default("") | icon }}
         </a>
         {% else %}
-        <button type="button" class="chirpui-dock__item{{ active_class }}" aria-label="{{ item.label }}">
-            {{ item.icon | icon }}
+        <button type="button" class="chirpui-dock__item{{ active_class }}" aria-label="{{ item.label | default("") }}">
+            {{ item.icon | default("") | icon }}
         </button>
         {% end %}
         {% end %}

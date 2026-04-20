@@ -169,9 +169,9 @@
         {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
         aria-describedby="errors-{{ name }}">
     {% for opt in options %}
-        <option value="{{ opt.value }}"
-                {% if opt.value == selected %}selected{% end %}>
-            {{ opt.label }}
+        <option value="{{ opt.get("value", "") }}"
+                {% if opt.get("value") == selected %}selected{% end %}>
+            {{ opt.get("label", opt.get("value", "")) }}
         </option>
     {% end %}
 </select>
@@ -245,11 +245,11 @@
         {% for opt in options %}
         <label class="chirpui-field__radio-option">
             <input class="chirpui-field__input"
-                   type="radio" name="{{ name }}" value="{{ opt.value }}"
-                   {% if opt.value == selected %}checked{% end %}
+                   type="radio" name="{{ name }}" value="{{ opt.get("value", "") }}"
+                   {% if opt.get("value") == selected %}checked{% end %}
                    {% if required %}required{% end %}
                    {% if _has_errors %}aria-invalid="true"{% end %}>
-            <span class="chirpui-field__radio-label">{{ opt.label }}</span>
+            <span class="chirpui-field__radio-label">{{ opt.get("label", opt.get("value", "")) }}</span>
         </label>
         {% end %}
     </div>
@@ -363,12 +363,13 @@
     <div class="chirpui-segmented{{ " chirpui-segmented--" ~ size if size else "" }}"
          role="radiogroup" aria-label="{{ label or name }}" aria-describedby="errors-{{ name }}">
         {% for opt in options %}
+        {% set _ov = opt.get("value", "") %}
         <input class="chirpui-segmented__input" type="radio" name="{{ name }}"
-               value="{{ opt.value }}" id="{{ name }}-{{ opt.value }}"
-               {% if opt.value == selected %}checked{% end %}
+               value="{{ _ov }}" id="{{ name }}-{{ _ov }}"
+               {% if _ov == selected %}checked{% end %}
                {% if required %}required{% end %}
                {% if _has_errors %}aria-invalid="true"{% end %}>
-        <label class="chirpui-segmented__label" for="{{ name }}-{{ opt.value }}">{{ opt.label }}</label>
+        <label class="chirpui-segmented__label" for="{{ name }}-{{ _ov }}">{{ opt.get("label", _ov) }}</label>
         {% end %}
     </div>
     {% if hint and not _has_errors %}
@@ -607,9 +608,9 @@
         {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
         aria-describedby="errors-{{ name }}">
     {% for opt in options %}
-        <option value="{{ opt.value }}"
-                {% if opt.value in selected %}selected{% end %}>
-            {{ opt.label }}
+        <option value="{{ opt.get("value", "") }}"
+                {% if opt.get("value") in selected %}selected{% end %}>
+            {{ opt.get("label", opt.get("value", "")) }}
         </option>
     {% end %}
 </select>
@@ -719,7 +720,7 @@
                list="key-value-form-datalist-{{ key_name }}" placeholder="{{ key_placeholder }}">
         <datalist id="key-value-form-datalist-{{ key_name }}">
             {% for opt in key_options %}
-            <option value="{{ opt['value'] if opt is mapping else opt }}">{{ opt['label'] if opt is mapping else opt }}</option>
+            <option value="{{ opt.get("value", "") if opt is mapping else opt }}">{{ opt.get("label", opt.get("value", "")) if opt is mapping else opt }}</option>
             {% end %}
         </datalist>
         {% else %}

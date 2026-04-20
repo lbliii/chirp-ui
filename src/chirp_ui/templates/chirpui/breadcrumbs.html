@@ -17,9 +17,9 @@
         {% for item in items %}
         <li class="chirpui-breadcrumbs__item">
             {% if item.get("href") %}
-                <a href="{{ item.href }}" class="chirpui-breadcrumbs__link"{{ route_link_attrs(item.href) | html_attrs }}>{{ item.label }}</a>
+                <a href="{{ item.href }}" class="chirpui-breadcrumbs__link"{{ route_link_attrs(item.href) | html_attrs }}>{{ item.label | default("") }}</a>
             {% else %}
-                <span class="chirpui-breadcrumbs__current" aria-current="page">{{ item.label }}</span>
+                <span class="chirpui-breadcrumbs__current" aria-current="page">{{ item.label | default("") }}</span>
             {% end %}
         </li>
         {% end %}

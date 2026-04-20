@@ -75,9 +75,9 @@
                 hx-include="[name='key'],[name='value']"
                 {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
             {% for opt in options %}
-            <option value="{{ opt.value if opt is mapping else opt }}"
-                    {% if (opt.value if opt is mapping else opt) == selected %}selected{% end %}>
-                {{ opt.label if opt is mapping else opt }}
+            <option value="{{ opt.get("value", "") if opt is mapping else opt }}"
+                    {% if (opt.get("value", "") if opt is mapping else opt) == selected %}selected{% end %}>
+                {{ opt.get("label", opt.get("value", "")) if opt is mapping else opt }}
             </option>
             {% end %}
         </select>
@@ -87,9 +87,9 @@
             id="{{ name }}" name="{{ name }}"
             {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
         {% for opt in options %}
-        <option value="{{ opt.value if opt is mapping else opt }}"
-                {% if (opt.value if opt is mapping else opt) == selected %}selected{% end %}>
-            {{ opt.label if opt is mapping else opt }}
+        <option value="{{ opt.get("value", "") if opt is mapping else opt }}"
+                {% if (opt.get("value", "") if opt is mapping else opt) == selected %}selected{% end %}>
+            {{ opt.get("label", opt.get("value", "")) if opt is mapping else opt }}
         </option>
         {% end %}
     </select>

@@ -35,17 +35,18 @@
 <dl class="chirpui-dl chirpui-dl--{{ variant }}{{ compact_class }}{{ relaxed_class }}{{ hover_class }}{{ divided_class }}{{ align_class }}{{ " " ~ cls if cls else "" }}"{{ style_attr }}>
     {% if items %}
         {% for item in items %}
-        {% set item_type = item.get('type') or (item.detail | value_type) %}
+        {% set _detail = item.get('detail') %}
+        {% set item_type = item.get('type') or (_detail | value_type) %}
         <div class="chirpui-dl__row">
-            <dt class="chirpui-dl__term">{{ item.term }}</dt>
+            <dt class="chirpui-dl__term">{{ item.term | default("") }}</dt>
             <dd class="chirpui-dl__detail{{ " chirpui-dl__detail--" ~ item_type if item_type in ("bool","url","path","number","unset") else "" }}">
             {% if item_type == "bool" %}
                 {% from "chirpui/badge.html" import badge %}
-                {{ badge("Yes" if item.detail else "No", variant="success" if item.detail else "muted") }}
+                {{ badge("Yes" if _detail else "No", variant="success" if _detail else "muted") }}
             {% elif item_type == "unset" %}
-                <span class="chirpui-dl__detail-unset">{{ item.detail }}</span>
+                <span class="chirpui-dl__detail-unset">{{ _detail }}</span>
             {% else %}
-                {{ item.detail }}
+                {{ _detail }}
             {% end %}
             </dd>
         </div>
