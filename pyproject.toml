@@ -59,6 +59,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 chirp_ui = [
     "py.typed",
+    "manifest.json",
     "templates/**/*.html",
     "templates/**/*.css",
     "templates/**/*.js",
@@ -212,6 +213,10 @@ format = { cmd = "ruff format .", help = "Format code with ruff" }
 format-check = { cmd = "ruff format . --check", help = "Check formatting" }
 build-css = { cmd = "python scripts/build_chirpui_css.py", help = "Concat CSS partials into chirpui.css" }
 build-css-check = { cmd = "python scripts/build_chirpui_css.py --check", help = "Fail if chirpui.css is stale relative to partials" }
+build-manifest = { cmd = "python scripts/build_manifest.py", help = "Emit src/chirp_ui/manifest.json from the registry" }
+build-manifest-check = { cmd = "python scripts/build_manifest.py --check", help = "Fail if manifest.json is stale relative to the registry" }
+build-docs = { cmd = "python scripts/build_component_options.py", help = "Regenerate docs/COMPONENT-OPTIONS.md API reference section from the manifest" }
+build-docs-check = { cmd = "python scripts/build_component_options.py --check", help = "Fail if docs/COMPONENT-OPTIONS.md is stale relative to the manifest" }
 css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS parses cleanly" }
 css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }
 css-transition-check = { cmd = "pytest tests/test_transition_tokens.py -q", help = "Check transitions use motion tokens" }
@@ -230,6 +235,8 @@ ci = { sequence = [
     "lint",
     "format-check",
     "build-css-check",
+    "build-manifest-check",
+    "build-docs-check",
     "css-check",
     "css-contract-check",
     "css-transition-check",
@@ -241,6 +248,8 @@ check = { sequence = [
     "lint",
     "format-check",
     "build-css-check",
+    "build-manifest-check",
+    "build-docs-check",
     "css-check",
     "css-contract-check",
     "css-transition-check",

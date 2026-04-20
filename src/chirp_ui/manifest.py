@@ -7,14 +7,41 @@ and templates instead of plausible-sounding ones.
 
 Schema
 ------
-``{"schema": "chirpui-manifest@1", "version": "<pkg>", "components": {...},
+``{"schema": "chirpui-manifest@2", "version": "<pkg>", "components": {...},
  "tokens": {...}, "stats": {...}}``
 
 * ``components`` keys sorted; each entry contains ``block``, ``variants``,
   ``sizes``, ``modifiers``, ``elements``, ``slots``, ``tokens``, ``extra_emits``,
-  ``emits``, ``template``, ``category``.
+  ``emits``, ``template``, ``category``, plus the ``@2`` additions ``macro``,
+  ``params``, and ``lineno``.
+* ``params`` is a list of ``{"name": str, "has_default": bool,
+  "is_required": bool}`` derived from the template AST via
+  :mod:`chirp_ui._macro_introspect`. Empty when the descriptor has no
+  template, the macro cannot be resolved, or the template has no
+  ``{% def %}`` matching the resolved name.
+* ``macro`` is the resolved macro identifier (``descriptor.macro`` if set,
+  else ``block.replace("-", "_")``). ``null`` when the descriptor has no
+  template or no matching macro is found.
+* ``lineno`` is the source line of the ``{% def %}`` tag (``0`` when
+  unavailable).
+* ``slots`` is the sorted union of ``descriptor.slots`` and slots
+  extracted from the macro body. The unnamed default slot is represented
+  as ``""``. Hand-authored descriptor entries can over-declare (e.g. for
+  documentation), but the manifest never under-reports a real slot.
+* ``slots_extracted`` is the AST-derived slot list (sorted, default = ``""``)
+  exposed separately so parity tests can spot descriptor↔template drift
+  without losing the merged ``slots`` contract.
+* ``provides`` / ``consumes`` are sorted lists of context keys (e.g.
+  ``"_card_variant"``) sourced from :mod:`chirp_ui.inspect`. A key is
+  attributed to the macro whose ``{% def %}`` lineno is the largest one
+  preceding the ``{% provide %}`` / ``consume()`` site.
+* ``description`` is the stripped text inside the leading
+  ``{#- chirp-ui: ... -#}`` doc-block of the template file. One block per
+  file, covering every macro; empty string when the descriptor has no
+  template. New chirp-ui templates must carry a doc-block
+  (``tests/test_description_coverage.py``).
 * ``tokens`` keys sorted; each entry is ``{"category": …, "scope": …}``.
-* ``stats`` aggregates counts.
+* ``stats`` aggregates counts, including ``components_with_params``.
 
 Deterministic: two calls to :func:`build_manifest` yield byte-identical JSON.
 
@@ -22,7 +49,8 @@ CLI
 ---
 ``python -m chirp_ui.manifest --json`` writes JSON to stdout.
 
-See ``docs/PLAN-css-scope-and-layer.md § Sprint 7``.
+See ``docs/PLAN-agent-grounding-depth.md`` and
+``docs/DESIGN-manifest-signature-extraction.md``.
 """
 
 import argparse
@@ -31,34 +59,132 @@ import sys
 from typing import Any
 
 from chirp_ui import __version__
-from chirp_ui.components import COMPONENTS
+from chirp_ui._macro_introspect import MacroInfo, description_from_template, macros_in_template
+from chirp_ui.components import COMPONENTS, ComponentDescriptor
+from chirp_ui.inspect import list_consumes, list_provides
 from chirp_ui.tokens import TOKEN_CATALOG
 
-SCHEMA = "chirpui-manifest@1"
+SCHEMA = "chirpui-manifest@2"
+
+
+def _resolve_macro(desc: ComponentDescriptor) -> MacroInfo | None:
+    """Look up the ``MacroInfo`` for a descriptor, or ``None`` if unresolvable.
+
+    Resolution order: explicit ``descriptor.macro`` → ``block.replace("-", "_")``.
+    Returns ``None`` when the template is missing, the file has no defs, or
+    no def name matches the resolved macro identifier.
+    """
+    if not desc.template:
+        return None
+    macros = macros_in_template(desc.template)
+    if not macros:
+        return None
+    target = desc.macro or desc.block.replace("-", "_")
+    return macros.get(target)
+
+
+def _owning_macro(macros: dict[str, MacroInfo], line: int) -> str | None:
+    """Return the macro name whose ``{% def %}`` lineno most-recently precedes ``line``.
+
+    Used to attribute a ``{% provide %}`` or ``consume()`` site (which has only
+    a template + line) to the macro it lives inside. Returns ``None`` if the
+    line is before any def (top-of-file noise).
+    """
+    candidates = [info for info in macros.values() if info.lineno <= line]
+    if not candidates:
+        return None
+    return max(candidates, key=lambda info: info.lineno).name
+
+
+def _provide_consume_index() -> dict[tuple[str, str], tuple[set[str], set[str]]]:
+    """Index ``(template, macro_name) → (provides_keys, consumes_keys)``.
+
+    Built once per manifest; relies on the line-walked records from
+    :mod:`chirp_ui.inspect`. Templates with no defs (or sites before the
+    first def) are dropped silently.
+    """
+    index: dict[tuple[str, str], tuple[set[str], set[str]]] = {}
+    for record in list_provides():
+        macros = macros_in_template(record.template)
+        if not macros:
+            continue
+        owner = _owning_macro(macros, record.line)
+        if owner is None:
+            continue
+        provides, consumes = index.setdefault((record.template, owner), (set(), set()))
+        provides.add(record.key)
+    for record in list_consumes():
+        macros = macros_in_template(record.template)
+        if not macros:
+            continue
+        owner = _owning_macro(macros, record.line)
+        if owner is None:
+            continue
+        provides, consumes = index.setdefault((record.template, owner), (set(), set()))
+        consumes.add(record.key)
+    return index
 
 
 def build_manifest() -> dict[str, Any]:
     """Return the component/token manifest as a JSON-serializable dict.
 
     Output is deterministic: components and tokens are sorted by key, and
-    every per-entry list (emits, variants, etc.) is sorted. Callers can
-    ``json.dumps(build_manifest(), indent=2, sort_keys=True)`` with confidence.
+    every per-entry list (emits, variants, etc.) is sorted. Param order is
+    preserved as declared in the template (positional order matters for
+    macro callers).
     """
+    pc_index = _provide_consume_index()
     components: dict[str, dict[str, Any]] = {}
+    components_with_params = 0
+    components_with_provides = 0
+    components_with_consumes = 0
+    components_with_description = 0
     for name in sorted(COMPONENTS):
         desc = COMPONENTS[name]
+        macro_info = _resolve_macro(desc)
+        params: list[dict[str, Any]] = []
+        slots_extracted: list[str] = []
+        provides: list[str] = []
+        consumes: list[str] = []
+        description = description_from_template(desc.template) if desc.template else ""
+        if description:
+            components_with_description += 1
+        if macro_info is not None:
+            components_with_params += 1
+            params = [
+                {"name": p.name, "has_default": p.has_default, "is_required": p.is_required}
+                for p in macro_info.params
+            ]
+            slots_extracted = sorted(macro_info.slots)
+            pc_provides, pc_consumes = pc_index.get(
+                (macro_info.template, macro_info.name), (set(), set())
+            )
+            provides = sorted(pc_provides)
+            consumes = sorted(pc_consumes)
+            if provides:
+                components_with_provides += 1
+            if consumes:
+                components_with_consumes += 1
+        slots_union = sorted(set(desc.slots) | set(slots_extracted))
         components[name] = {
             "block": desc.block,
             "variants": sorted(desc.variants),
             "sizes": sorted(desc.sizes),
             "modifiers": sorted(desc.modifiers),
             "elements": sorted(desc.elements),
-            "slots": sorted(desc.slots),
+            "slots": slots_union,
+            "slots_extracted": slots_extracted,
             "tokens": sorted(desc.tokens),
             "extra_emits": sorted(desc.extra_emits),
             "emits": sorted(desc.emits),
             "template": desc.template,
             "category": desc.category,
+            "macro": macro_info.name if macro_info else None,
+            "params": params,
+            "lineno": macro_info.lineno if macro_info else 0,
+            "provides": provides,
+            "consumes": consumes,
+            "description": description,
         }
 
     tokens: dict[str, dict[str, str]] = {
@@ -81,6 +207,10 @@ def build_manifest() -> dict[str, Any]:
         "tokens": tokens,
         "stats": {
             "total_components": len(COMPONENTS),
+            "components_with_params": components_with_params,
+            "components_with_provides": components_with_provides,
+            "components_with_consumes": components_with_consumes,
+            "components_with_description": components_with_description,
             "total_tokens": len(TOKEN_CATALOG),
             "component_categories": dict(sorted(component_categories.items())),
             "token_categories": dict(sorted(token_categories.items())),

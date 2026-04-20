@@ -48,7 +48,10 @@ def test_manifest_covers_every_component() -> None:
         assert entry["variants"] == sorted(desc.variants)
         assert entry["sizes"] == sorted(desc.sizes)
         assert entry["modifiers"] == sorted(desc.modifiers)
-        assert entry["slots"] == sorted(desc.slots)
+        # Sprint 2 widened ``slots`` to the union of descriptor + AST-extracted
+        # slots. The manifest must always be a superset of the descriptor;
+        # parity is enforced separately by ``tests/test_slot_parity.py``.
+        assert set(entry["slots"]) >= set(desc.slots)
         assert entry["tokens"] == sorted(desc.tokens)
         assert entry["extra_emits"] == sorted(desc.extra_emits)
 

@@ -1,7 +1,7 @@
 # DESIGN — CSS as a projection of the Python registry
 
 **Status:** accepted 2026-04-17
-**Epic:** `docs/PLAN-css-scope-and-layer.md`
+**Epic:** `docs/plans/PLAN-css-scope-and-layer.md`
 **Purpose:** settle the four cross-sprint decisions so S1–S7 can execute without re-litigation.
 
 ## Decision 1 — Layer namespace is `chirpui.*`
@@ -170,6 +170,6 @@ One direction of truth: partials are the CSS source; descriptors are the Python 
 
 ## Related
 
-- `docs/PLAN-css-scope-and-layer.md` — the epic this design supports
+- `docs/plans/PLAN-css-scope-and-layer.md` — the epic this design supports
 - `docs/VISION.md § CSS architecture as a registry projection` — the *why*
 - `examples/css-scope-prototype/card.scope.css` — the S5 pilot starting point

@@ -271,4 +271,4 @@ The following issues were fixed in sharp-edges phases 1–3. **Do not re-triage 
 | Test stubs (`conftest.py`) diverge from real filter logic | Stubs updated to match production filters | 1/4 |
 | 106/195 templates undocumented in COMPONENT-OPTIONS.md | All documented | 1/5 |
 
-For the full history, see [PLAN-sharp-edges.md](PLAN-sharp-edges.md) (phases 1–2) and [PLAN-sharp-edges-phase3.md](PLAN-sharp-edges-phase3.md).
+For the full history, see [plans/done/PLAN-sharp-edges.md](plans/done/PLAN-sharp-edges.md) (phases 1–2) and [plans/done/PLAN-sharp-edges-phase3.md](plans/done/PLAN-sharp-edges-phase3.md).

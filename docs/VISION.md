@@ -72,7 +72,7 @@ Five rules define the shape:
    (.chirpui-X .chirpui-X) { … } }`. The stylesheet's structure mechanically
    matches the registry's structure — reading a partial tells you what the
    registry entry knows, and vice versa. See
-   `docs/PLAN-css-scope-and-layer.md`.
+   `docs/plans/PLAN-css-scope-and-layer.md`.
 
 5. **No utility class vocabulary, ever.** Composition primitives (`stack()`,
    `cluster()`, `grid()`, `frame()`, `block()`) stay as macros. Once a
@@ -111,7 +111,7 @@ If the answer to any is no, the change belongs somewhere else — or the design 
 
 ## Related
 
-- `docs/PLAN-base-layer-hardening.md` — follow-on CSS hardening (preflight-style defaults)
+- `docs/plans/done/PLAN-base-layer-hardening.md` — follow-on CSS hardening (preflight-style defaults)
 - `CLAUDE.md § Sharp edges — what's been hardened` — institutional memory of solved categories
 - `DASHBOARD-MATURITY-CONTRACT.md` — early example of a contract chirpui enforces
 - `docs/PROVIDE-CONSUME-KEYS.md` — composition primitives for parent-to-child state flow

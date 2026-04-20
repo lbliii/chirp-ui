@@ -1,6 +1,6 @@
 # Sprint 0: Behavior Layer Hardening — Design & Validate
 
-**Parent epic**: `PLAN-behavior-layer-hardening.md`
+**Parent epic**: `plans/done/PLAN-behavior-layer-hardening.md`
 **Status**: Complete
 **Date**: 2026-04-10
 

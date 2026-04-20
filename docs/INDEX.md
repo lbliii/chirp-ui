@@ -42,29 +42,43 @@ Navigation guide for all chirp-ui documentation.
 
 ## Planning
 
-- [PLAN-css-scope-and-layer.md](PLAN-css-scope-and-layer.md) — CSS-as-registry-projection epic (in progress)
-- [DESIGN-css-registry-projection.md](DESIGN-css-registry-projection.md) — Design lock-in for the CSS epic (S0)
-- [PLAN-sharp-edges.md](PLAN-sharp-edges.md) — Sharp edges phases 1-2 (complete)
-- [PLAN-sharp-edges-phase3.md](PLAN-sharp-edges-phase3.md) — Sharp edges phase 3 (complete)
-- [PLAN-sharp-edges-phase4.md](PLAN-sharp-edges-phase4.md) — Sharp edges phase 4: API consistency (complete)
-- [PLAN-behavior-layer-hardening.md](PLAN-behavior-layer-hardening.md) — Alpine/JS behavior layer audit
-- [PLAN-chirpui-alpine-migration.md](PLAN-chirpui-alpine-migration.md) — Alpine.js migration plan
-- [PLAN-alpine-focus-plugin.md](PLAN-alpine-focus-plugin.md) — Alpine Focus plugin adoption
-- [PLAN-context-aware-theming.md](PLAN-context-aware-theming.md) — Context-aware theme switching
-- [PLAN-color-system-hardening.md](PLAN-color-system-hardening.md) — Color system validation and tokens
-- [PLAN-theme-tokens.md](PLAN-theme-tokens.md) — Theme token standardization
-- [PLAN-modern-css-backgrounds.md](PLAN-modern-css-backgrounds.md) — CSS background pattern system
-- [PLAN-descriptor-coverage.md](PLAN-descriptor-coverage.md) — ComponentDescriptor registration coverage
-- [PLAN-provide-consume-expansion.md](PLAN-provide-consume-expansion.md) — Expand provide/consume usage
-- [PLAN-route-tabs-and-tabbed-layout.md](PLAN-route-tabs-and-tabbed-layout.md) — Route tabs architecture
-- [PLAN-sidebar-nav-refinements.md](PLAN-sidebar-nav-refinements.md) — Sidebar navigation improvements
-- [PLAN-streaming-maturity.md](PLAN-streaming-maturity.md) — SSE/streaming component maturity
-- [PLAN-ascii-maturity.md](PLAN-ascii-maturity.md) — ASCII art component maturity
-- [PLAN-kida-0.4.0-adoption.md](PLAN-kida-0.4.0-adoption.md) — Kida 0.4.0 feature adoption
-- [PLAN-island-js-test-infrastructure.md](PLAN-island-js-test-infrastructure.md) — JS island test infrastructure
-- [PLAN-test-coverage-hardening.md](PLAN-test-coverage-hardening.md) — Test coverage expansion
-- [PLAN-layout-widget-brainstorm.md](PLAN-layout-widget-brainstorm.md) — Layout widget ideas
-- [PLAN-primitives-and-components.md](PLAN-primitives-and-components.md) — Primitives vs components boundary
+Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped work is archived under [`plans/done/`](plans/done/) so agents don't cite stale plans as live direction. (Sprint 6 of `PLAN-agent-grounding-depth.md`, 2026-04-20.)
+
+### In-flight plans (`docs/plans/`)
+
+- [PLAN-agent-grounding-depth.md](plans/PLAN-agent-grounding-depth.md) — Manifest-as-full-registry-projection epic
+- [PLAN-css-scope-and-layer.md](plans/PLAN-css-scope-and-layer.md) — CSS-as-registry-projection epic
+- [PLAN-envelope-hardening-batch-1.md](plans/PLAN-envelope-hardening-batch-1.md) — Envelope-conversion batch 1
+- [PLAN-alpine-focus-plugin.md](plans/PLAN-alpine-focus-plugin.md) — Alpine Focus plugin adoption
+- [PLAN-ascii-maturity.md](plans/PLAN-ascii-maturity.md) — ASCII art component maturity (partial)
+- [PLAN-test-coverage-hardening.md](plans/PLAN-test-coverage-hardening.md) — Test coverage expansion (partial)
+- [PLAN-theme-tokens.md](plans/PLAN-theme-tokens.md) — Theme token standardization
+- [PLAN-sidebar-nav-refinements.md](plans/PLAN-sidebar-nav-refinements.md) — Sidebar nav refinements
+- [PLAN-route-tabs-and-tabbed-layout.md](plans/PLAN-route-tabs-and-tabbed-layout.md) — Route tabs architecture
+- [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary
+- [PLAN-layout-widget-brainstorm.md](plans/PLAN-layout-widget-brainstorm.md) — Layout widget ideas
+
+### Shipped plans (`docs/plans/done/`)
+
+- [PLAN-sharp-edges.md](plans/done/PLAN-sharp-edges.md) — Sharp edges phases 1–2
+- [PLAN-sharp-edges-phase3.md](plans/done/PLAN-sharp-edges-phase3.md) — Sharp edges phase 3
+- [PLAN-sharp-edges-phase4.md](plans/done/PLAN-sharp-edges-phase4.md) — Sharp edges phase 4: API consistency
+- [PLAN-base-layer-hardening.md](plans/done/PLAN-base-layer-hardening.md) — Base-layer hardening (Sprints 20–26)
+- [PLAN-behavior-layer-hardening.md](plans/done/PLAN-behavior-layer-hardening.md) — Alpine/JS behavior layer audit
+- [PLAN-chirpui-alpine-migration.md](plans/done/PLAN-chirpui-alpine-migration.md) — chirpui.js → Alpine migration
+- [PLAN-color-system-hardening.md](plans/done/PLAN-color-system-hardening.md) — Color system validation and tokens
+- [PLAN-context-aware-theming.md](plans/done/PLAN-context-aware-theming.md) — Context-aware theme switching
+- [PLAN-descriptor-coverage.md](plans/done/PLAN-descriptor-coverage.md) — ComponentDescriptor coverage
+- [PLAN-island-js-test-infrastructure.md](plans/done/PLAN-island-js-test-infrastructure.md) — JS island test infrastructure
+- [PLAN-kida-0.4.0-adoption.md](plans/done/PLAN-kida-0.4.0-adoption.md) — Kida 0.4.0 feature adoption
+- [PLAN-modern-css-backgrounds.md](plans/done/PLAN-modern-css-backgrounds.md) — CSS background pattern system
+- [PLAN-provide-consume-expansion.md](plans/done/PLAN-provide-consume-expansion.md) — Expand provide/consume usage
+- [PLAN-streaming-maturity.md](plans/done/PLAN-streaming-maturity.md) — SSE/streaming component maturity
+
+### Design & sprint-0 docs
+
+- [DESIGN-css-registry-projection.md](DESIGN-css-registry-projection.md) — CSS epic S0 design lock-in
+- [DESIGN-manifest-signature-extraction.md](DESIGN-manifest-signature-extraction.md) — Manifest signature-extraction RFC (Sprint 0 of agent-grounding)
 - [SPRINT-0-behavior-layer-design.md](SPRINT-0-behavior-layer-design.md) — Sprint 0 design for behavior layer
 
 ## Consolidated (redirects)

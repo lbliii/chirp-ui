@@ -3592,3 +3592,3621 @@ chirp-ui: Wobble / Jello / Rubber-band / Bounce-in
   - `rubber_band(trigger="load", cls="")`
   - `bounce_in(cls="")`
 
+---
+
+<!-- chirpui:generated:start -->
+## API Reference (generated)
+
+> Generated from `src/chirp_ui/manifest.json` by `scripts/build_component_options.py`.
+> Do not edit this section directly — edit the descriptor in `chirp_ui.components`
+> or the template's `{#- chirp-ui: ... -#}` doc-block and re-run `poe build-docs`.
+> Hand-authored narrative guides above are the source of truth for intent and
+> idioms; this section is the projection of the registry for agent grounding.
+
+### `accordion`
+
+Accordion component
+
+- **Template:** `chirpui/accordion.html`
+- **Macro:** `accordion`
+- **Category:** `interactive`
+- **Slots:** `(default)`
+- **Provides:** `_accordion_name`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `action-bar`
+
+Action Bar component
+
+- **Template:** `chirpui/action_bar.html`
+- **Macro:** `action_bar`
+- **Category:** `control`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+
+### `action-strip`
+
+Action Strip component
+
+- **Template:** `chirpui/action_strip.html`
+- **Macro:** `action_strip`
+- **Category:** `control`
+- **Slots:** `(default)`
+- **Modifiers:** `collapse`, `scroll`, `sm`, `sticky`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `surface_variant` | no | (has default) |
+| `density` | no | (has default) |
+| `wrap` | no | (has default) |
+| `sticky` | no | (has default) |
+| `role` | no | (has default) |
+| `aria_label` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `actions`
+
+- **Category:** `auto`
+
+### `alert`
+
+Alert component
+
+- **Template:** `chirpui/alert.html`
+- **Macro:** `alert`
+- **Category:** `feedback`
+- **Slots:** `(default)`, `actions`, `header_actions`
+- **Variants:** `error`, `info`, `success`, `warning`
+- **Consumes:** `_card_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `dismissible` | no | (has default) |
+| `icon` | no | (has default) |
+| `title` | no | (has default) |
+| `cls` | no | (has default) |
+| `collapsible` | no | (has default) |
+| `open` | no | (has default) |
+
+### `ambient`
+
+- **Category:** `auto`
+
+### `ambient-root`
+
+- **Category:** `auto`
+
+### `animated-counter`
+
+Animated Counter
+
+- **Template:** `chirpui/animated_counter.html`
+- **Macro:** `animated_counter`
+- **Category:** `effect`
+- **Variants:** `(default)`, `default`, `mono`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `value` | yes | — |
+| `label` | no | (has default) |
+| `prefix` | no | (has default) |
+| `suffix` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `animated-stat-card`
+
+Animated Stat Card
+
+- **Template:** `chirpui/animated_stat_card.html`
+- **Macro:** `animated_stat_card`
+- **Category:** `data-display`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `value` | yes | — |
+| `label` | no | (has default) |
+| `prefix` | no | (has default) |
+| `suffix` | no | (has default) |
+| `trend` | no | (has default) |
+| `trend_direction` | no | (has default) |
+| `effect` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `app-shell`
+
+App Shell component
+
+- **Template:** `chirpui/app_shell.html`
+- **Macro:** `app_shell`
+- **Category:** `layout`
+- **Slots:** `(default)`, `brand`, `sidebar`, `topbar`, `topbar_end`
+- **Modifiers:** `sidebar-collapsed`, `sidebar-collapsible`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `brand` | no | (has default) |
+| `brand_url` | no | (has default) |
+| `brand_slot` | no | (has default) |
+| `brand_boost` | no | (has default) |
+| `sidebar_collapsible` | no | (has default) |
+| `topbar_variant` | no | (has default) |
+| `sidebar_variant` | no | (has default) |
+| `shell_actions` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii`
+
+- **Category:** `auto`
+
+### `ascii-7seg`
+
+ASCII 7-Segment Display
+
+- **Template:** `chirpui/ascii_7seg.html`
+- **Macro:** `ascii_7seg`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-badge`
+
+ASCII Badge
+
+- **Template:** `chirpui/ascii_badge.html`
+- **Macro:** `ascii_badge`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `default`, `error`, `muted`, `success`, `warning`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | no | (has default) |
+| `glyph` | no | (has default) |
+| `variant` | no | (has default) |
+| `frame` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-border`
+
+ASCII Border
+
+- **Template:** `chirpui/ascii_border.html`
+- **Macro:** `ascii_border`
+- **Category:** `ascii`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `double`, `heavy`, `rounded`, `single`, `spin`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `glyph` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-breaker-panel`
+
+ASCII Breaker Panel
+
+- **Template:** `chirpui/ascii_breaker_panel.html`
+- **Category:** `ascii`
+- **Modifiers:** `sm`
+
+### `ascii-card`
+
+ASCII Card
+
+- **Template:** `chirpui/ascii_card.html`
+- **Macro:** `ascii_card`
+- **Category:** `ascii`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `double`, `heavy`, `rounded`, `single`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `variant` | no | (has default) |
+| `glyph` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-checkbox`
+
+ASCII Checkbox
+
+- **Template:** `chirpui/ascii_checkbox.html`
+- **Macro:** `ascii_checkbox`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `label` | no | (has default) |
+| `checked` | no | (has default) |
+| `variant` | no | (has default) |
+| `disabled` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-checkbox-group`
+
+- **Category:** `auto`
+
+### `ascii-divider`
+
+ASCII Divider
+
+- **Template:** `chirpui/ascii_divider.html`
+- **Macro:** `ascii_divider`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `dots`, `double`, `heavy`, `single`, `spin`, `spin-drift`, `spin-reverse`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `glyph` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-empty`
+
+ASCII Empty State component
+
+- **Template:** `chirpui/ascii_empty.html`
+- **Macro:** `ascii_empty`
+- **Category:** `ascii`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `accent`, `default`, `muted`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `glyph` | no | (has default) |
+| `heading` | no | (has default) |
+| `description` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-error`
+
+ASCII Error Page
+
+- **Template:** `chirpui/ascii_error.html`
+- **Macro:** `ascii_error`
+- **Category:** `ascii`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `code` | no | (has default) |
+| `heading` | no | (has default) |
+| `description` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-fader`
+
+ASCII Fader / Slider
+
+- **Template:** `chirpui/ascii_fader.html`
+- **Macro:** `ascii_fader`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `value` | no | (has default) |
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-fader-bank`
+
+- **Category:** `auto`
+
+### `ascii-fill`
+
+- **Category:** `auto`
+
+### `ascii-fill-hover`
+
+- **Category:** `auto`
+
+### `ascii-indicator`
+
+ASCII Indicator Light
+
+- **Template:** `chirpui/ascii_indicator.html`
+- **Category:** `ascii`
+- **Variants:** `accent`, `error`, `muted`, `success`, `warning`
+
+### `ascii-indicator-row`
+
+- **Category:** `auto`
+
+### `ascii-knob`
+
+ASCII Knob / Rotary Selector
+
+- **Template:** `chirpui/ascii_knob.html`
+- **Macro:** `ascii_knob`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `default`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `options` | yes | — |
+| `selected` | no | (has default) |
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-modal`
+
+ASCII Modal
+
+- **Template:** `chirpui/ascii_modal.html`
+- **Macro:** `ascii_modal`
+- **Category:** `ascii`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `double`, `heavy`, `single`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `title` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-modal-trigger`
+
+- **Category:** `auto`
+
+### `ascii-progress`
+
+ASCII Progress
+
+- **Template:** `chirpui/ascii_progress.html`
+- **Macro:** `ascii_progress`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `value` | no | (has default) |
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `width` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-radio`
+
+- **Category:** `auto`
+
+### `ascii-radio-group`
+
+ASCII Radio
+
+- **Template:** `chirpui/ascii_radio.html`
+- **Macro:** `ascii_radio_group`
+- **Category:** `ascii`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `accent`, `default`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | no | (has default) |
+| `legend` | no | (has default) |
+| `layout` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-skeleton`
+
+ASCII Skeleton
+
+- **Template:** `chirpui/ascii_skeleton.html`
+- **Macro:** `ascii_skeleton`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `avatar`, `card`, `heading`, `text`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `lines` | no | (has default) |
+| `width` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-sparkline`
+
+ASCII Sparkline
+
+- **Template:** `chirpui/ascii_sparkline.html`
+- **Macro:** `ascii_sparkline`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `default`, `gradient`, `muted`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `values` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-spinner`
+
+ASCII Spinner component
+
+- **Template:** `chirpui/ascii_spinner.html`
+- **Macro:** `ascii_spinner`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `arrows`, `blocks`, `box`, `braille`, `dots`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `charset` | no | (has default) |
+| `size` | no | (has default) |
+| `label` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-stepper`
+
+ASCII Stepper
+
+- **Template:** `chirpui/ascii_stepper.html`
+- **Macro:** `ascii_stepper`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `default`, `success`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `steps` | yes | — |
+| `current` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-switch`
+
+ASCII Toggle
+
+- **Template:** `chirpui/ascii_toggle.html`
+- **Macro:** `ascii_switch`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `checked` | no | (has default) |
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `disabled` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-tab`
+
+ASCII Tabs
+
+- **Template:** `chirpui/ascii_tabs.html`
+- **Macro:** `ascii_tab`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `default`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `label` | yes | — |
+| `url` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `hx_swap` | no | (has default) |
+| `active` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-table`
+
+ASCII Table
+
+- **Template:** `chirpui/ascii_table.html`
+- **Macro:** `ascii_table`
+- **Category:** `ascii`
+- **Slots:** `(default)`
+- **Variants:** `double`, `heavy`, `rounded`, `single`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `headers` | no | (has default) |
+| `variant` | no | (has default) |
+| `align` | no | (has default) |
+| `compact` | no | (has default) |
+| `striped` | no | (has default) |
+| `sticky_header` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-tabs`
+
+ASCII Tabs
+
+- **Template:** `chirpui/ascii_tabs.html`
+- **Macro:** `ascii_tabs`
+- **Category:** `ascii`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `accent`, `default`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-ticker`
+
+ASCII Ticker
+
+- **Template:** `chirpui/ascii_ticker.html`
+- **Macro:** `ascii_ticker`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `variant` | no | (has default) |
+| `speed` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-tile-btn`
+
+ASCII Tile Button
+
+- **Template:** `chirpui/ascii_tile_btn.html`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
+
+### `ascii-tile-grid`
+
+- **Category:** `auto`
+
+### `ascii-toggle`
+
+ASCII Toggle
+
+- **Template:** `chirpui/ascii_toggle.html`
+- **Macro:** `ascii_toggle`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `checked` | no | (has default) |
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `disabled` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `ascii-vu`
+
+ASCII VU Meter
+
+- **Template:** `chirpui/ascii_vu_meter.html`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
+
+### `ascii-vu-stack`
+
+- **Category:** `auto`
+
+### `aura`
+
+Aura — chromatic halo behind stacked content (glass surfaces, cards, etc.)
+
+- **Template:** `chirpui/aura.html`
+- **Macro:** `aura`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Sizes:** `lg`, `md`, `sm`
+- **Modifiers:** `mirror`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `tone` | no | (has default) |
+| `spread` | no | (has default) |
+| `mirror` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
+### `aura_tone`
+
+- **Category:** `effect`
+- **Variants:** `accent`, `cool`, `muted`, `primary`, `warm`
+
+### `aurora`
+
+Aurora Background
+
+- **Template:** `chirpui/aurora.html`
+- **Macro:** `aurora`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `intense`, `subtle`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `avatar`
+
+Avatar component
+
+- **Template:** `chirpui/avatar.html`
+- **Macro:** `avatar`
+- **Category:** `data-display`
+- **Sizes:** `(default)`, `lg`, `sm`
+- **Modifiers:** `offline`, `online`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `src` | no | (has default) |
+| `initials` | no | (has default) |
+| `alt` | no | (has default) |
+| `size` | no | (has default) |
+| `status` | no | (has default) |
+| `decorative` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `avatar-stack`
+
+Avatar Stack component
+
+- **Template:** `chirpui/avatar_stack.html`
+- **Macro:** `avatar_stack`
+- **Category:** `data-display`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `max_visible` | no | (has default) |
+| `total` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `badge`
+
+Badge component
+
+- **Template:** `chirpui/badge.html`
+- **Macro:** `badge`
+- **Category:** `feedback`
+- **Slots:** `(default)`
+- **Variants:** `custom`, `custom-solid`, `error`, `info`, `muted`, `primary`, `success`, `warning`
+- **Consumes:** `_card_variant`, `_surface_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `variant` | no | (has default) |
+| `icon` | no | (has default) |
+| `cls` | no | (has default) |
+| `color` | no | (has default) |
+| `fill` | no | (has default) |
+| `href` | no | (has default) |
+
+### `band`
+
+Band component
+
+- **Template:** `chirpui/band.html`
+- **Macro:** `band`
+- **Category:** `marketing`
+- **Slots:** `(default)`, `header`
+- **Variants:** `accent`, `default`, `elevated`, `glass`, `gradient`
+- **Modifiers:** `bleed`, `contained`, `inset`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `width` | no | (has default) |
+| `pattern` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `bar-chart`
+
+Bar Chart component
+
+- **Template:** `chirpui/bar_chart.html`
+- **Macro:** `bar_chart`
+- **Category:** `data-display`
+- **Variants:** `(default)`, `gold`, `muted`, `radiant`, `success`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `max` | no | (has default) |
+| `show_value` | no | (has default) |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `bento`
+
+- **Category:** `auto`
+
+### `bg-pattern`
+
+- **Category:** `auto`
+
+### `blade`
+
+- **Category:** `auto`
+
+### `block`
+
+- **Category:** `auto`
+
+### `border-beam`
+
+Border Beam
+
+- **Template:** `chirpui/border_beam.html`
+- **Macro:** `border_beam`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
+### `bounce-in`
+
+- **Category:** `auto`
+
+### `breadcrumbs`
+
+Breadcrumbs component
+
+- **Template:** `chirpui/breadcrumbs.html`
+- **Macro:** `breadcrumbs`
+- **Category:** `navigation`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `cls` | no | (has default) |
+
+### `btn`
+
+Button component. Use chirpui-btn with variants. Supports loading state for htmx.
+
+- **Template:** `chirpui/button.html`
+- **Macro:** `btn`
+- **Category:** `control`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `danger`, `ghost`, `primary`, `success`, `warning`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+- **Modifiers:** `loading`
+- **Consumes:** `_bar_density`, `_suspense_busy`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | yes | — |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `loading` | no | (has default) |
+| `type` | no | (has default) |
+| `href` | no | (has default) |
+| `icon` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+| `hx` | no | (has default) |
+| `hx_get` | no | (has default) |
+| `hx_post` | no | (has default) |
+| `hx_put` | no | (has default) |
+| `hx_patch` | no | (has default) |
+| `hx_delete` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `hx_swap` | no | (has default) |
+| `hx_trigger` | no | (has default) |
+| `hx_include` | no | (has default) |
+| `hx_select` | no | (has default) |
+| `hx_ext` | no | (has default) |
+| `hx_vals` | no | (has default) |
+| `disabled` | no | (has default) |
+| `data_action` | no | (has default) |
+| `aria_label` | no | (has default) |
+
+### `btn-group`
+
+- **Category:** `auto`
+
+### `bulk-bar`
+
+- **Category:** `auto`
+
+### `calendar`
+
+Calendar component
+
+- **Template:** `chirpui/calendar.html`
+- **Macro:** `calendar`
+- **Category:** `data-display`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `weeks` | yes | — |
+| `month_label` | yes | — |
+| `prev_url` | no | (has default) |
+| `next_url` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `callout`
+
+Callout component
+
+- **Template:** `chirpui/callout.html`
+- **Macro:** `callout`
+- **Category:** `feedback`
+- **Slots:** `(default)`, `header_actions`
+- **Modifiers:** `error`, `info`, `neutral`, `on-accent`, `on-muted`, `success`, `warning`
+- **Consumes:** `_surface_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `title` | no | (has default) |
+| `icon` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `card`
+
+Card component
+
+- **Template:** `chirpui/card.html`
+- **Macro:** `card`
+- **Category:** `container`
+- **Slots:** `(default)`, `body_actions`, `footer`, `header_actions`, `media`
+- **Modifiers:** `collapsible`, `gradient-border`, `gradient-header`, `hoverable`, `link`, `linked`
+- **Provides:** `_card_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `subtitle` | no | (has default) |
+| `footer` | no | (has default) |
+| `collapsible` | no | (has default) |
+| `open` | no | (has default) |
+| `variant` | no | (has default) |
+| `icon` | no | (has default) |
+| `border_variant` | no | (has default) |
+| `header_variant` | no | (has default) |
+| `cls` | no | (has default) |
+| `hoverable` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
+### `carousel`
+
+Carousel component
+
+- **Template:** `chirpui/carousel.html`
+- **Macro:** `carousel`
+- **Category:** `interactive`
+- **Slots:** `(default)`
+- **Modifiers:** `compact`, `page`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `slide_count` | no | (has default) |
+| `show_dots` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `channel-card`
+
+Channel Card component
+
+- **Template:** `chirpui/channel_card.html`
+- **Macro:** `channel_card`
+- **Category:** `data-display`
+- **Slots:** `(default)`, `actions`, `body`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | yes | — |
+| `name` | yes | — |
+| `avatar_src` | no | (has default) |
+| `avatar_initials` | no | (has default) |
+| `subscribers` | no | (has default) |
+| `cls` | no | (has default) |
+| `use_slots` | no | (has default) |
+
+### `chapter-item`
+
+Chapter List component
+
+- **Template:** `chirpui/chapter_list.html`
+- **Macro:** `chapter_item`
+- **Category:** `data-display`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `timestamp` | yes | — |
+| `href` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `chapter-list`
+
+Chapter List component
+
+- **Template:** `chirpui/chapter_list.html`
+- **Macro:** `chapter_list`
+- **Category:** `data-display`
+- **Slots:** `(default)`, `summary_actions`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `summary` | no | (has default) |
+| `open` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `chat-input`
+
+Chat Input component
+
+- **Template:** `chirpui/chat_input.html`
+- **Macro:** `chat_input`
+- **Category:** `form`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `action` | no | (has default) |
+| `name` | no | (has default) |
+| `placeholder` | no | (has default) |
+| `rows` | no | (has default) |
+| `maxlength` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `chat-layout`
+
+Chat Layout component
+
+- **Template:** `chirpui/chat_layout.html`
+- **Macro:** `chat_layout`
+- **Category:** `layout`
+- **Slots:** `activity`, `input`, `messages`
+- **Modifiers:** `fill`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `show_activity` | no | (has default) |
+| `cls` | no | (has default) |
+| `fill` | no | (has default) |
+
+### `children`
+
+- **Category:** `auto`
+
+### `clamp-2`
+
+- **Category:** `auto`
+
+### `clamp-3`
+
+- **Category:** `auto`
+
+### `click-jello`
+
+- **Category:** `auto`
+
+### `click-wobble`
+
+- **Category:** `auto`
+
+### `cluster`
+
+- **Category:** `auto`
+
+### `code`
+
+- **Category:** `auto`
+
+### `code-block`
+
+- **Category:** `auto`
+
+### `code-block-wrapper`
+
+- **Category:** `auto`
+
+### `collapse`
+
+Collapse component
+
+- **Template:** `chirpui/collapse.html`
+- **Macro:** `collapse`
+- **Category:** `interactive`
+- **Slots:** `(default)`, `header_actions`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `trigger` | yes | — |
+| `open` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `command-bar`
+
+- **Category:** `auto`
+
+### `command-palette`
+
+Command Palette component
+
+- **Template:** `chirpui/command_palette.html`
+- **Macro:** `command_palette`
+- **Category:** `interactive`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | no | (has default) |
+| `search_url` | no | (has default) |
+| `placeholder` | no | (has default) |
+
+### `comment`
+
+Comment component
+
+- **Template:** `chirpui/comment.html`
+- **Macro:** `comment`
+- **Category:** `data-display`
+- **Slots:** `(default)`, `actions`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `author` | yes | — |
+| `time` | no | (has default) |
+| `href` | no | (has default) |
+| `avatar_src` | no | (has default) |
+| `avatar_initials` | no | (has default) |
+| `replies_url` | no | (has default) |
+| `replies_count` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `comment-thread`
+
+- **Category:** `auto`
+
+### `confetti`
+
+Confetti
+
+- **Template:** `chirpui/confetti.html`
+- **Macro:** `confetti`
+- **Category:** `effect`
+- **Variants:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `count` | no | (has default) |
+| `event` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `config-row`
+
+Config row — label | control (toggle, select, editable)
+
+- **Template:** `chirpui/config_row.html`
+- **Category:** `container`
+
+### `config-row-list`
+
+- **Category:** `auto`
+
+### `confirm`
+
+Confirm dialog component
+
+- **Template:** `chirpui/confirm.html`
+- **Category:** `feedback`
+- **Variants:** `danger`, `default`
+
+### `constellation`
+
+Constellation
+
+- **Template:** `chirpui/constellation.html`
+- **Macro:** `constellation`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `cool`, `default`, `mono`, `warm`
+- **Consumes:** `_hero_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `density` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `container`
+
+- **Category:** `auto`
+
+### `conversation-item`
+
+Conversation Item component
+
+- **Template:** `chirpui/conversation_item.html`
+- **Macro:** `conversation_item`
+- **Category:** `navigation`
+- **Slots:** `(default)`, `actions`
+- **Modifiers:** `muted`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | yes | — |
+| `name` | yes | — |
+| `preview` | yes | — |
+| `time` | no | (has default) |
+| `unread` | no | (has default) |
+| `muted` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `conversation-list`
+
+Conversation List component
+
+- **Template:** `chirpui/conversation_list.html`
+- **Macro:** `conversation_list`
+- **Category:** `navigation`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+
+### `copy-btn`
+
+Copy button
+
+- **Template:** `chirpui/copy_button.html`
+- **Category:** `control`
+- **Variants:** `(default)`, `assistant`, `system`, `user`
+
+### `counter-badge`
+
+- **Category:** `auto`
+
+### `description_list`
+
+Description list component
+
+- **Template:** `chirpui/description_list.html`
+- **Macro:** `description_list`
+- **Category:** `layout`
+- **Slots:** `header`
+- **Variants:** `horizontal`, `stacked`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | no | (has default) |
+| `variant` | no | (has default) |
+| `compact` | no | (has default) |
+| `relaxed` | no | (has default) |
+| `hoverable` | no | (has default) |
+| `divided` | no | (has default) |
+| `term_width` | no | (has default) |
+| `detail_align` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `display`
+
+- **Category:** `auto`
+
+### `divider`
+
+Divider component
+
+- **Template:** `chirpui/divider.html`
+- **Macro:** `divider`
+- **Category:** `layout`
+- **Modifiers:** `accent`, `dotted`, `error`, `fade`, `horizontal`, `primary`, `success`, `warning`
+- **Consumes:** `_card_variant`, `_surface_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | no | (has default) |
+| `horizontal` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `dl`
+
+- **Category:** `auto`
+
+### `dnd`
+
+Drag-drop primitives
+
+- **Template:** `chirpui/dnd.html`
+- **Category:** `interactive`
+- **Modifiers:** `board`, `row`
+
+### `dock`
+
+Floating Dock
+
+- **Template:** `chirpui/dock.html`
+- **Macro:** `dock`
+- **Category:** `effect`
+- **Variants:** `(default)`, `default`, `glass`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | no | (has default) |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `document-header`
+
+- **Category:** `auto`
+
+### `donut`
+
+Donut Chart component
+
+- **Template:** `chirpui/donut.html`
+- **Macro:** `donut`
+- **Category:** `data-display`
+- **Variants:** `(default)`, `gold`, `muted`, `success`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `value` | yes | — |
+| `max` | no | (has default) |
+| `text` | no | (has default) |
+| `caption` | no | (has default) |
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `drawer`
+
+Drawer component
+
+- **Template:** `chirpui/drawer.html`
+- **Macro:** `drawer`
+- **Category:** `overlay`
+- **Slots:** `(default)`, `header_actions`
+- **Variants:** `left`, `right`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `title` | no | (has default) |
+| `side` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `dropdown`
+
+Dropdown component
+
+- **Template:** `chirpui/dropdown.html`
+- **Macro:** `dropdown`
+- **Category:** `navigation`
+- **Slots:** `(default)`, `footer`, `header`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | yes | — |
+| `cls` | no | (has default) |
+
+### `dropdown__item`
+
+Dropdown menu (items-based)
+
+- **Template:** `chirpui/dropdown_menu.html`
+- **Category:** `navigation`
+- **Variants:** `danger`, `default`, `muted`
+
+### `empty-panel-state`
+
+Empty panel state
+
+- **Template:** `chirpui/empty_panel_state.html`
+- **Macro:** `empty_panel_state`
+- **Category:** `feedback`
+- **Slots:** `(default)`
+- **Modifiers:** `compact`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `icon` | no | (has default) |
+| `title` | no | (has default) |
+| `illustration` | no | (has default) |
+| `action_label` | no | (has default) |
+| `action_href` | no | (has default) |
+| `code` | no | (has default) |
+| `suggestions` | no | (has default) |
+| `search_hint` | no | (has default) |
+| `compact` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `empty-state`
+
+Empty State component
+
+- **Template:** `chirpui/empty.html`
+- **Macro:** `empty_state`
+- **Category:** `feedback`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `icon` | no | (has default) |
+| `title` | no | (has default) |
+| `illustration` | no | (has default) |
+| `action_label` | no | (has default) |
+| `action_href` | no | (has default) |
+| `code` | no | (has default) |
+| `suggestions` | no | (has default) |
+| `search_hint` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `entity-header`
+
+Entity header (dashboard-grade)
+
+- **Template:** `chirpui/entity_header.html`
+- **Macro:** `entity_header`
+- **Category:** `layout`
+- **Slots:** `(default)`, `actions`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `meta` | no | (has default) |
+| `icon` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `feature-section`
+
+Feature Section component
+
+- **Template:** `chirpui/feature_section.html`
+- **Macro:** `feature_section`
+- **Category:** `marketing`
+- **Slots:** `(default)`, `actions`, `eyebrow`, `media`, `title`
+- **Variants:** `balanced`, `halo`, `media-dominant`, `muted`, `split`, `stacked`
+- **Modifiers:** `reverse`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `layout` | no | (has default) |
+| `variant` | no | (has default) |
+| `reverse` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `feature-stack`
+
+Feature Section component
+
+- **Template:** `chirpui/feature_section.html`
+- **Macro:** `feature_stack`
+- **Category:** `marketing`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+
+### `field`
+
+Form field macros
+
+- **Template:** `chirpui/forms.html`
+- **Category:** `form`
+- **Variants:** `checkbox`, `dense`, `error`, `radio`, `radio-horizontal`, `range`, `toggle`
+
+### `fieldset`
+
+Form field macros
+
+- **Template:** `chirpui/forms.html`
+- **Macro:** `fieldset`
+- **Category:** `form`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `legend` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `file-tree`
+
+File tree
+
+- **Template:** `chirpui/file_tree.html`
+- **Macro:** `file_tree`
+- **Category:** `data-display`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `title` | no | (has default) |
+| `subtitle` | no | (has default) |
+| `show_icons` | no | (has default) |
+| `surface_variant` | no | (has default) |
+| `scroll_body` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `filter-bar`
+
+- **Category:** `auto`
+
+### `filter-group`
+
+Filter chips — radiogroup + pill chips (named colors / HTMX)
+
+- **Template:** `chirpui/filter_chips.html`
+- **Macro:** `filter_group`
+- **Category:** `control`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `param` | no | (has default) |
+| `value` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `filter-row`
+
+Filter Bar composite
+
+- **Template:** `chirpui/filter_bar.html`
+- **Macro:** `filter_row`
+- **Category:** `control`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `action` | no | (has default) |
+| `method` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+| `gap` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `flow`
+
+- **Category:** `auto`
+
+### `focus-ring`
+
+- **Category:** `auto`
+
+### `font-2xl`
+
+- **Category:** `auto`
+
+### `font-base`
+
+- **Category:** `auto`
+
+### `font-lg`
+
+- **Category:** `auto`
+
+### `font-medium`
+
+- **Category:** `auto`
+
+### `font-mono`
+
+- **Category:** `auto`
+
+### `font-sm`
+
+- **Category:** `auto`
+
+### `font-xl`
+
+- **Category:** `auto`
+
+### `font-xs`
+
+- **Category:** `auto`
+
+### `form-actions`
+
+Form field macros
+
+- **Template:** `chirpui/forms.html`
+- **Macro:** `form_actions`
+- **Category:** `form`
+- **Slots:** `(default)`
+- **Modifiers:** `end`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `align` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `form-error-summary`
+
+Form field macros
+
+- **Template:** `chirpui/forms.html`
+- **Macro:** `form_error_summary`
+- **Category:** `form`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `errors` | yes | — |
+| `id` | no | (has default) |
+| `oob` | no | (has default) |
+
+### `fragment-island`
+
+Safe region / Fragment island primitives
+
+- **Template:** `chirpui/fragment_island.html`
+- **Macro:** `fragment_island`
+- **Category:** `infrastructure`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `hx_target` | no | (has default) |
+| `hx_swap` | no | (has default) |
+| `hx_select` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+
+### `frame`
+
+- **Category:** `auto`
+
+### `glitch`
+
+Glitch Text Effect
+
+- **Template:** `chirpui/glitch_text.html`
+- **Category:** `effect`
+- **Variants:** `(default)`, `intense`, `subtle`
+
+### `glow-card`
+
+Glow Card
+
+- **Template:** `chirpui/glow_card.html`
+- **Macro:** `glow_card`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `accent`, `default`, `muted`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
+### `gradient-text`
+
+Gradient Text
+
+- **Template:** `chirpui/gradient_text.html`
+- **Macro:** `gradient_text`
+- **Category:** `effect`
+- **Modifiers:** `animated`, `rainbow`, `secondary`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `animated` | no | (has default) |
+| `tag` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `grain`
+
+Grain Overlay
+
+- **Template:** `chirpui/grain.html`
+- **Macro:** `grain`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `heavy`, `subtle`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `animated` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
+### `grid`
+
+- **Category:** `auto`
+
+### `hero`
+
+Hero component
+
+- **Template:** `chirpui/hero.html`
+- **Macro:** `hero`
+- **Category:** `layout`
+- **Slots:** `(default)`, `action`, `actions`
+- **Variants:** `animated-gradient`, `gradient`, `mesh`, `muted`, `solid`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `subtitle` | no | (has default) |
+| `background` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `hero-effects`
+
+Hero Effects
+
+- **Template:** `chirpui/hero_effects.html`
+- **Macro:** `hero_effects`
+- **Category:** `effect`
+- **Provides:** `_hero_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `effect` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `holy-light`
+
+Holy Light
+
+- **Template:** `chirpui/holy_light.html`
+- **Macro:** `holy_light`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `default`, `gold`, `holy`, `silver`
+- **Consumes:** `_hero_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `intensity` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `hover-jello`
+
+- **Category:** `auto`
+
+### `hover-rubber`
+
+- **Category:** `auto`
+
+### `hover-wobble`
+
+- **Category:** `auto`
+
+### `icon-btn`
+
+Icon Button
+
+- **Template:** `chirpui/icon_btn.html`
+- **Macro:** `icon_btn`
+- **Category:** `control`
+- **Variants:** `(default)`, `danger`, `default`, `ghost`, `primary`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+- **Consumes:** `_bar_density`, `_suspense_busy`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `icon` | yes | — |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `href` | no | (has default) |
+| `aria_label` | no | (has default) |
+| `disabled` | no | (has default) |
+| `type` | no | (has default) |
+| `cls` | no | (has default) |
+| `hx` | no | (has default) |
+| `hx_get` | no | (has default) |
+| `hx_post` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `hx_swap` | no | (has default) |
+
+### `index-card`
+
+Index card component
+
+- **Template:** `chirpui/index_card.html`
+- **Macro:** `index_card`
+- **Category:** `navigation`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | yes | — |
+| `title` | yes | — |
+| `description` | no | (has default) |
+| `badge` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `infinite-scroll`
+
+Infinite Scroll component
+
+- **Template:** `chirpui/infinite_scroll.html`
+- **Macro:** `infinite_scroll`
+- **Category:** `interactive`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `load_url` | yes | — |
+| `target` | no | (has default) |
+| `swap` | no | (has default) |
+| `loading_html` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `inline`
+
+- **Category:** `auto`
+
+### `inline-edit`
+
+Inline edit field
+
+- **Template:** `chirpui/inline_edit_field.html`
+- **Category:** `form`
+- **Variants:** `display`, `edit`
+
+### `input-group`
+
+Form field macros
+
+- **Template:** `chirpui/forms.html`
+- **Macro:** `input_group`
+- **Category:** `form`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `prefix` | no | (has default) |
+| `suffix` | no | (has default) |
+| `value` | no | (has default) |
+| `label` | no | (has default) |
+| `errors` | no | (has default) |
+| `type` | no | (has default) |
+| `required` | no | (has default) |
+| `placeholder` | no | (has default) |
+| `hint` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+
+### `install-snippet`
+
+Code macros
+
+- **Template:** `chirpui/code.html`
+- **Macro:** `install_snippet`
+- **Category:** `content`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `command` | yes | — |
+| `label` | no | (has default) |
+| `prompt` | no | (has default) |
+| `id` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `jello`
+
+- **Category:** `auto`
+
+### `key-value-form`
+
+- **Category:** `auto`
+
+### `label-overline`
+
+Small caps / overline label for cards and dense panels.
+
+- **Template:** `chirpui/label_overline.html`
+- **Macro:** `label_overline`
+- **Category:** `content`
+- **Modifiers:** `section`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `section` | no | (has default) |
+| `tag` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `layer`
+
+- **Category:** `auto`
+
+### `link`
+
+Link component
+
+- **Template:** `chirpui/link.html`
+- **Macro:** `link`
+- **Category:** `navigation`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `href` | yes | — |
+| `external` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `list`
+
+List component
+
+- **Template:** `chirpui/list.html`
+- **Category:** `data-display`
+- **Slots:** `(default)`
+- **Modifiers:** `bordered`
+
+### `list-reset`
+
+- **Category:** `auto`
+
+### `live-badge`
+
+Live Badge component
+
+- **Template:** `chirpui/live_badge.html`
+- **Macro:** `live_badge`
+- **Category:** `feedback`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `viewers` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `logo`
+
+Logo component
+
+- **Template:** `chirpui/logo.html`
+- **Macro:** `logo`
+- **Category:** `content`
+- **Modifiers:** `center`, `end`, `image`, `lg`, `md`, `sm`, `start`, `text`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | no | (has default) |
+| `image_src` | no | (has default) |
+| `image_alt` | no | (has default) |
+| `href` | no | (has default) |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `align` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `marquee`
+
+Marquee
+
+- **Template:** `chirpui/marquee.html`
+- **Macro:** `marquee`
+- **Category:** `effect`
+- **Variants:** `(default)`, `default`, `reverse`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | no | (has default) |
+| `speed` | no | (has default) |
+| `reverse` | no | (has default) |
+| `pause_on_hover` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `mb-md`
+
+- **Category:** `auto`
+
+### `measure-lg`
+
+- **Category:** `auto`
+
+### `measure-md`
+
+- **Category:** `auto`
+
+### `measure-sm`
+
+- **Category:** `auto`
+
+### `media-object`
+
+Media Object layout primitive
+
+- **Template:** `chirpui/media_object.html`
+- **Macro:** `media_object`
+- **Category:** `layout`
+- **Slots:** `(default)`, `actions`, `media`
+- **Modifiers:** `align-center`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `align` | no | (has default) |
+| `cls` | no | (has default) |
+| `use_slots` | no | (has default) |
+
+### `mention`
+
+Mention component
+
+- **Template:** `chirpui/mention.html`
+- **Macro:** `mention`
+- **Category:** `content`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `username` | yes | — |
+| `href` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `message-reactions`
+
+- **Category:** `auto`
+
+### `message-thread`
+
+Message Thread component
+
+- **Template:** `chirpui/message_thread.html`
+- **Macro:** `message_thread`
+- **Category:** `data-display`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+
+### `message_bubble`
+
+Message Bubble component
+
+- **Template:** `chirpui/message_bubble.html`
+- **Macro:** `message_bubble`
+- **Category:** `layout`
+- **Slots:** `(default)`
+- **Variants:** `assistant`, `default`, `system`, `user`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `align` | no | (has default) |
+| `role` | no | (has default) |
+| `status` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `meteor`
+
+Meteor Effect
+
+- **Template:** `chirpui/meteor.html`
+- **Macro:** `meteor`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `accent`, `default`, `muted`
+- **Consumes:** `_hero_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `count` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `metric-card`
+
+Metric grid/card
+
+- **Template:** `chirpui/metric_grid.html`
+- **Macro:** `metric_card`
+- **Category:** `data-display`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `value` | yes | — |
+| `label` | yes | — |
+| `icon` | no | (has default) |
+| `trend` | no | (has default) |
+| `trend_direction` | no | (has default) |
+| `hint` | no | (has default) |
+| `href` | no | (has default) |
+| `icon_bg` | no | (has default) |
+| `footer_label` | no | (has default) |
+| `footer_href` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
+### `metric-grid`
+
+Metric grid/card
+
+- **Template:** `chirpui/metric_grid.html`
+- **Macro:** `metric_grid`
+- **Category:** `layout`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cols` | no | (has default) |
+| `gap` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `min-w-0`
+
+- **Category:** `auto`
+
+### `modal`
+
+Modal component
+
+- **Template:** `chirpui/modal.html`
+- **Macro:** `modal`
+- **Category:** `container`
+- **Slots:** `(default)`, `footer`, `header_actions`
+- **Sizes:** `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `title` | no | (has default) |
+| `size` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `model-card`
+
+- **Category:** `auto`
+
+### `mt-md`
+
+- **Category:** `auto`
+
+### `mt-sm`
+
+- **Category:** `auto`
+
+### `nav-progress`
+
+Navigation progress bar
+
+- **Template:** `chirpui/nav_progress.html`
+- **Macro:** `nav_progress`
+- **Category:** `navigation`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+
+### `nav-tree`
+
+Nav tree component
+
+- **Template:** `chirpui/nav_tree.html`
+- **Macro:** `nav_tree`
+- **Category:** `navigation`
+- **Slots:** `(default)`, `header`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `show_icons` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `navbar`
+
+Navbar component
+
+- **Template:** `chirpui/navbar.html`
+- **Macro:** `navbar`
+- **Category:** `navigation`
+- **Slots:** `(default)`, `brand`, `end`
+- **Modifiers:** `sticky`
+- **Provides:** `_nav_current_path`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `brand` | no | (has default) |
+| `brand_url` | no | (has default) |
+| `cls` | no | (has default) |
+| `use_slots` | no | (has default) |
+| `brand_slot` | no | (has default) |
+| `current_path` | no | (has default) |
+
+### `navbar-dropdown`
+
+Navbar component
+
+- **Template:** `chirpui/navbar.html`
+- **Macro:** `navbar_dropdown`
+- **Category:** `navigation`
+- **Slots:** `(default)`
+- **Consumes:** `_nav_current_path`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | yes | — |
+| `active` | no | (has default) |
+| `match` | no | (has default) |
+| `href` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `neon`
+
+Neon Text
+
+- **Template:** `chirpui/neon_text.html`
+- **Category:** `effect`
+- **Variants:** `blue`, `cyan`, `green`, `magenta`, `orange`, `red`
+
+### `notification-dot`
+
+Notification Dot
+
+- **Template:** `chirpui/notification_dot.html`
+- **Macro:** `notification_dot`
+- **Category:** `feedback`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `default`, `error`, `success`, `warning`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `count` | no | (has default) |
+| `aria_label` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `number-scale`
+
+- **Category:** `auto`
+
+### `number-ticker`
+
+Number Ticker
+
+- **Template:** `chirpui/number_ticker.html`
+- **Macro:** `number_ticker`
+- **Category:** `effect`
+- **Variants:** `(default)`, `default`, `mono`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`, `xl`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `value` | yes | — |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `prefix` | no | (has default) |
+| `suffix` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `orbit`
+
+Orbit
+
+- **Template:** `chirpui/orbit.html`
+- **Macro:** `orbit`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `lg`, `sm`, `xl`
+- **Sizes:** `(default)`, `lg`, `sm`, `xl`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | no | (has default) |
+| `size` | no | (has default) |
+| `speed` | no | (has default) |
+| `reverse` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `overlay`
+
+Overlay component
+
+- **Template:** `chirpui/overlay.html`
+- **Macro:** `overlay`
+- **Category:** `container`
+- **Variants:** `dark`, `gradient-bottom`, `gradient-top`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `page-fill`
+
+- **Category:** `auto`
+
+### `page_header`
+
+Document header
+
+- **Template:** `chirpui/document_header.html`
+- **Category:** `layout`
+- **Variants:** `compact`, `default`
+
+### `page_hero`
+
+Hero component
+
+- **Template:** `chirpui/hero.html`
+- **Macro:** `page_hero`
+- **Category:** `layout`
+- **Slots:** `(default)`, `actions`, `eyebrow`, `footer`, `metadata`
+- **Variants:** `editorial`, `minimal`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `subtitle` | no | (has default) |
+| `variant` | no | (has default) |
+| `background` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `pagination`
+
+Pagination component
+
+- **Template:** `chirpui/pagination.html`
+- **Macro:** `pagination`
+- **Category:** `navigation`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `current` | yes | — |
+| `total` | yes | — |
+| `url_pattern` | yes | — |
+| `hx_target` | no | (has default) |
+| `hx_push_url` | no | (has default) |
+| `hx_swap` | no | (has default) |
+| `hx_select` | no | (has default) |
+| `window` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `panel`
+
+Panel component
+
+- **Template:** `chirpui/panel.html`
+- **Macro:** `panel`
+- **Category:** `container`
+- **Slots:** `(default)`, `actions`, `footer`
+- **Provides:** `_surface_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `subtitle` | no | (has default) |
+| `surface_variant` | no | (has default) |
+| `scroll_body` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `params-table`
+
+Params table component
+
+- **Template:** `chirpui/params_table.html`
+- **Macro:** `params_table`
+- **Category:** `data-display`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `rows` | yes | — |
+| `title` | no | (has default) |
+| `columns` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `particle-bg`
+
+Particle Background
+
+- **Template:** `chirpui/particle_bg.html`
+- **Macro:** `particle_bg`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `accent`, `default`, `muted`
+- **Consumes:** `_hero_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `count` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `placeholder-inline`
+
+- **Category:** `auto`
+
+### `playlist`
+
+Playlist component
+
+- **Template:** `chirpui/playlist.html`
+- **Macro:** `playlist`
+- **Category:** `data-display`
+- **Slots:** `(default)`, `header_actions`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `playlist-item`
+
+Playlist component
+
+- **Template:** `chirpui/playlist.html`
+- **Macro:** `playlist_item`
+- **Category:** `data-display`
+- **Modifiers:** `active`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | yes | — |
+| `title` | yes | — |
+| `duration` | no | (has default) |
+| `active` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `popover`
+
+Popover component
+
+- **Template:** `chirpui/popover.html`
+- **Macro:** `popover`
+- **Category:** `overlay`
+- **Slots:** `(default)`, `footer`, `header`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `trigger_label` | yes | — |
+| `cls` | no | (has default) |
+
+### `post-card`
+
+Post Card component
+
+- **Template:** `chirpui/post_card.html`
+- **Macro:** `post_card`
+- **Category:** `data-display`
+- **Slots:** `(default)`, `actions`, `avatar`, `media`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | no | (has default) |
+| `handle` | no | (has default) |
+| `time` | no | (has default) |
+| `href` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `profile-header`
+
+Profile Header component
+
+- **Template:** `chirpui/profile_header.html`
+- **Macro:** `profile_header`
+- **Category:** `data-display`
+- **Slots:** `(default)`, `action`, `actions`, `avatar`, `bio`, `stats`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | no | (has default) |
+| `cover_url` | no | (has default) |
+| `href` | no | (has default) |
+| `cls` | no | (has default) |
+| `use_slots` | no | (has default) |
+
+### `progress`
+
+- **Category:** `auto`
+
+### `progress-bar`
+
+Progress Bar component
+
+- **Template:** `chirpui/progress.html`
+- **Macro:** `progress_bar`
+- **Category:** `feedback`
+- **Variants:** `custom`, `gold`, `radiant`, `success`, `watched`
+- **Sizes:** `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `value` | yes | — |
+| `max` | no | (has default) |
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `cls` | no | (has default) |
+| `color` | no | (has default) |
+
+### `prose`
+
+- **Category:** `auto`
+
+### `prose-lg`
+
+- **Category:** `auto`
+
+### `prose-sm`
+
+- **Category:** `auto`
+
+### `pulsing-btn`
+
+Pulsing Button
+
+- **Template:** `chirpui/pulsing_button.html`
+- **Category:** `effect`
+- **Variants:** `(default)`, `danger`, `default`, `primary`, `success`
+
+### `reaction-pill`
+
+Reaction Pill component
+
+- **Template:** `chirpui/reaction_pill.html`
+- **Macro:** `reaction_pill`
+- **Category:** `interactive`
+- **Modifiers:** `active`, `disabled`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `emoji` | yes | — |
+| `count` | no | (has default) |
+| `active` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `resource-card`
+
+- **Category:** `auto`
+
+### `resource-index`
+
+Resource Index composite
+
+- **Template:** `chirpui/resource_index.html`
+- **Macro:** `resource_index`
+- **Category:** `composite`
+- **Slots:** `(default)`, `empty`, `filter_actions`, `filter_controls`, `filter_primary`, `filters_panel`, `selection`, `toolbar_controls`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `search_action` | yes | — |
+| `query` | no | (has default) |
+| `subtitle` | no | (has default) |
+| `search_name` | no | (has default) |
+| `search_placeholder` | no | (has default) |
+| `button_label` | no | (has default) |
+| `button_icon` | no | (has default) |
+| `search_method` | no | (has default) |
+| `filter_action` | no | (has default) |
+| `filter_method` | no | (has default) |
+| `filter_surface_variant` | no | (has default) |
+| `filter_density` | no | (has default) |
+| `filter_label` | no | (has default) |
+| `filter_state_name` | no | (has default) |
+| `filter_state_value` | no | (has default) |
+| `selected_count` | no | (has default) |
+| `selected_label` | no | (has default) |
+| `selected_aria_label` | no | (has default) |
+| `results_title` | no | (has default) |
+| `results_subtitle` | no | (has default) |
+| `results_layout` | no | (has default) |
+| `results_cols` | no | (has default) |
+| `results_gap` | no | (has default) |
+| `has_results` | no | (has default) |
+| `empty_title` | no | (has default) |
+| `empty_icon` | no | (has default) |
+| `empty_hint` | no | (has default) |
+| `empty_message` | no | (has default) |
+| `mutation_result_id` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `result-slot`
+
+- **Category:** `auto`
+
+### `reveal-on-scroll`
+
+Reveal on scroll — animate content when it enters the viewport
+
+- **Template:** `chirpui/reveal_on_scroll.html`
+- **Macro:** `reveal_on_scroll`
+- **Category:** `effect`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+
+### `ripple-btn`
+
+Ripple Button
+
+- **Template:** `chirpui/ripple_button.html`
+- **Category:** `effect`
+- **Variants:** `(default)`, `default`, `primary`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+### `route-tab`
+
+Route-backed subsection tabs
+
+- **Template:** `chirpui/route_tabs.html`
+- **Category:** `navigation`
+
+### `route-tabs`
+
+- **Category:** `auto`
+
+### `row-actions`
+
+Row actions (kebab menu)
+
+- **Template:** `chirpui/row_actions.html`
+- **Macro:** `row_actions`
+- **Category:** `control`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `id` | no | (has default) |
+
+### `rubber-band`
+
+- **Category:** `auto`
+
+### `rune-field`
+
+Rune Field
+
+- **Template:** `chirpui/rune_field.html`
+- **Macro:** `rune_field`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `arcane`, `default`, `ember`, `frost`
+- **Consumes:** `_hero_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `scanline`
+
+Scanline Overlay
+
+- **Template:** `chirpui/scanline.html`
+- **Macro:** `scanline`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `crt`, `heavy`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `scroll-x`
+
+- **Category:** `auto`
+
+### `search-bar`
+
+Form field macros
+
+- **Template:** `chirpui/forms.html`
+- **Macro:** `search_bar`
+- **Category:** `form`
+- **Modifiers:** `with-icon`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `value` | no | (has default) |
+| `variant` | no | (has default) |
+| `label` | no | (has default) |
+| `search_url` | no | (has default) |
+| `search_target` | no | (has default) |
+| `search_trigger` | no | (has default) |
+| `search_include` | no | (has default) |
+| `search_sync` | no | (has default) |
+| `placeholder` | no | (has default) |
+| `button_label` | no | (has default) |
+| `button_icon` | no | (has default) |
+| `errors` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+| `search_attrs_map` | no | (has default) |
+| `search_hx_select` | no | (has default) |
+
+### `search-header`
+
+- **Category:** `auto`
+
+### `section-collapsible`
+
+- **Category:** `auto`
+
+### `section_header`
+
+Document header
+
+- **Template:** `chirpui/document_header.html`
+- **Category:** `layout`
+- **Variants:** `default`, `inline`
+
+### `segmented`
+
+Segmented Control
+
+- **Template:** `chirpui/segmented_control.html`
+- **Category:** `control`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+### `selection-bar`
+
+Selection Bar
+
+- **Template:** `chirpui/selection_bar.html`
+- **Macro:** `selection_bar`
+- **Category:** `control`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `count` | no | (has default) |
+| `label` | no | (has default) |
+| `live_region` | no | (has default) |
+| `aria_label` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `settings-row`
+
+Settings row — label | status badge | detail
+
+- **Template:** `chirpui/settings_row.html`
+- **Macro:** `settings_row`
+- **Category:** `container`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | yes | — |
+| `status` | no | (has default) |
+| `detail` | no | (has default) |
+| `status_variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `settings-row-list`
+
+Settings row — label | status badge | detail
+
+- **Template:** `chirpui/settings_row.html`
+- **Macro:** `settings_row_list`
+- **Category:** `container`
+- **Slots:** `(default)`
+- **Modifiers:** `divided`, `hoverable`, `relaxed`
+- **Consumes:** `_card_variant`, `_surface_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `hoverable` | no | (has default) |
+| `divided` | no | (has default) |
+| `relaxed` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `shell-action-form`
+
+- **Category:** `auto`
+
+### `shell-actions`
+
+Shell actions renderer
+
+- **Template:** `chirpui/shell_actions.html`
+- **Category:** `layout`
+- **Slots:** `(default)`
+
+### `shell-section`
+
+- **Category:** `auto`
+
+### `shimmer-btn`
+
+Shimmer Button
+
+- **Template:** `chirpui/shimmer_button.html`
+- **Category:** `effect`
+- **Variants:** `(default)`, `default`, `primary`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+### `sidebar`
+
+Sidebar component
+
+- **Template:** `chirpui/sidebar.html`
+- **Macro:** `sidebar`
+- **Category:** `navigation`
+- **Slots:** `(default)`, `footer`, `header`
+- **Provides:** `_nav_current_path`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+| `current_path` | no | (has default) |
+
+### `sidebar-toggle`
+
+Sidebar component
+
+- **Template:** `chirpui/sidebar.html`
+- **Macro:** `sidebar_toggle`
+- **Category:** `navigation`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+
+### `signature`
+
+Signature component
+
+- **Template:** `chirpui/signature.html`
+- **Macro:** `signature`
+- **Category:** `content`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `language` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `site-footer`
+
+Site Footer component
+
+- **Template:** `chirpui/site_footer.html`
+- **Macro:** `site_footer`
+- **Category:** `marketing`
+- **Slots:** `(default)`, `brand`, `colophon`, `rule`
+- **Variants:** `centered`, `columns`, `simple`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `layout` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `site-header`
+
+Site Header component
+
+- **Template:** `chirpui/site_header.html`
+- **Macro:** `site_header`
+- **Category:** `marketing`
+- **Slots:** `(default)`, `brand`, `nav`, `nav_end`, `tools`
+- **Variants:** `glass`, `solid`, `transparent`
+- **Modifiers:** `sticky`
+- **Provides:** `_site_nav_current_path`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `brand_url` | no | (has default) |
+| `layout` | no | (has default) |
+| `variant` | no | (has default) |
+| `sticky` | no | (has default) |
+| `current_path` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `site-nav-link`
+
+Site Header component
+
+- **Template:** `chirpui/site_header.html`
+- **Category:** `marketing`
+
+### `site-shell`
+
+Site Shell component
+
+- **Template:** `chirpui/site_shell.html`
+- **Macro:** `site_shell`
+- **Category:** `marketing`
+- **Slots:** `(default)`, `footer`, `header`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `ambient` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `skeleton`
+
+Skeleton component
+
+- **Template:** `chirpui/skeleton.html`
+- **Macro:** `skeleton`
+- **Category:** `feedback`
+- **Variants:** `(default)`, `avatar`, `card`, `text`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `width` | no | (has default) |
+| `height` | no | (has default) |
+| `variant` | no | (has default) |
+| `lines` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `sortable`
+
+Sortable list macros
+
+- **Template:** `chirpui/sortable_list.html`
+- **Category:** `interactive`
+- **Slots:** `(default)`
+
+### `sparkle`
+
+Sparkle
+
+- **Template:** `chirpui/sparkle.html`
+- **Macro:** `sparkle`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `gold`, `rainbow`, `white`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `count` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `spinner`
+
+Spinner component
+
+- **Template:** `chirpui/spinner.html`
+- **Macro:** `spinner`
+- **Category:** `feedback`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `size` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `spinner-thinking`
+
+- **Category:** `auto`
+
+### `split-btn`
+
+Split button component
+
+- **Template:** `chirpui/split_button.html`
+- **Category:** `control`
+- **Slots:** `(default)`, `footer`, `header`
+
+### `split-flap`
+
+ASCII Split-Flap Display
+
+- **Template:** `chirpui/ascii_split_flap.html`
+- **Macro:** `split_flap`
+- **Category:** `ascii`
+- **Variants:** `(default)`, `amber`, `default`, `green`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `variant` | no | (has default) |
+| `animate` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `split-flap-board`
+
+- **Category:** `auto`
+
+### `split-flap-row`
+
+- **Category:** `auto`
+
+### `split-layout`
+
+Split layout
+
+- **Template:** `chirpui/split_layout.html`
+- **Macro:** `split_layout`
+- **Category:** `layout`
+- **Slots:** `primary`, `secondary`
+- **Variants:** `balanced`, `horizontal`, `sidebar`, `vertical`, `wide-primary`, `wide-secondary`
+- **Modifiers:** `gap-lg`, `gap-md`, `gap-sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `direction` | no | (has default) |
+| `ratio` | no | (has default) |
+| `gap` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `split-panel`
+
+Split Panel
+
+- **Template:** `chirpui/split_panel.html`
+- **Macro:** `split_panel`
+- **Category:** `layout`
+- **Slots:** `left`, `right`
+- **Modifiers:** `dragging`, `vertical`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `direction` | no | (has default) |
+| `default_split` | no | (has default) |
+| `min_split` | no | (has default) |
+| `max_split` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `spotlight-card`
+
+Spotlight Card
+
+- **Template:** `chirpui/spotlight_card.html`
+- **Macro:** `spotlight_card`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `accent`, `default`
+- **Consumes:** `_hero_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
+### `sse-retry`
+
+- **Category:** `auto`
+
+### `sse-status`
+
+SSE connection status and error recovery
+
+- **Template:** `chirpui/sse_status.html`
+- **Macro:** `sse_status`
+- **Category:** `feedback`
+- **Modifiers:** `connected`, `disconnected`, `error`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `state` | no | (has default) |
+| `label` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `stack`
+
+- **Category:** `auto`
+
+### `star-rating`
+
+- **Category:** `control`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+### `stat`
+
+Stat component
+
+- **Template:** `chirpui/stat.html`
+- **Macro:** `stat`
+- **Category:** `data-display`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `value` | yes | — |
+| `label` | yes | — |
+| `icon` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `status-indicator`
+
+Status Indicator component
+
+- **Template:** `chirpui/status.html`
+- **Macro:** `status_indicator`
+- **Category:** `feedback`
+- **Variants:** `custom`, `default`, `error`, `info`, `primary`, `success`, `warning`
+- **Consumes:** `_surface_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | yes | — |
+| `variant` | no | (has default) |
+| `icon` | no | (has default) |
+| `pulse` | no | (has default) |
+| `cls` | no | (has default) |
+| `color` | no | (has default) |
+
+### `stepper`
+
+Stepper component
+
+- **Template:** `chirpui/stepper.html`
+- **Macro:** `stepper`
+- **Category:** `navigation`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `steps` | yes | — |
+| `current` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `streaming`
+
+- **Category:** `auto`
+
+### `streaming-block`
+
+- **Category:** `auto`
+
+### `streaming_bubble`
+
+Streaming and AI components
+
+- **Template:** `chirpui/streaming.html`
+- **Macro:** `streaming_bubble`
+- **Category:** `feedback`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `content`, `error`, `thinking`
+- **Provides:** `_streaming_role`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `role` | no | (has default) |
+| `state` | no | (has default) |
+| `streaming` | no | (has default) |
+| `sse_swap_target` | no | (has default) |
+| `sse_connect` | no | (has default) |
+| `sse_close` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `surface`
+
+Surface component
+
+- **Template:** `chirpui/surface.html`
+- **Macro:** `surface`
+- **Category:** `container`
+- **Slots:** `(default)`
+- **Variants:** `accent`, `default`, `elevated`, `frosted`, `glass`, `gradient-accent`, `gradient-border`, `gradient-mesh`, `gradient-subtle`, `muted`, `smoke`
+- **Modifiers:** `bento`, `full`, `no-padding`
+- **Provides:** `_surface_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `full_width` | no | (has default) |
+| `padding` | no | (has default) |
+| `cls` | no | (has default) |
+| `style` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
+### `suspense-group`
+
+- **Category:** `auto`
+
+### `suspense-slot`
+
+Suspense components
+
+- **Template:** `chirpui/suspense.html`
+- **Macro:** `suspense_slot`
+- **Category:** `infrastructure`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `skeleton_variant` | no | (has default) |
+| `lines` | no | (has default) |
+| `width` | no | (has default) |
+| `height` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `symbol-rain`
+
+Symbol Rain
+
+- **Template:** `chirpui/symbol_rain.html`
+- **Macro:** `symbol_rain`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `(default)`, `accent`, `default`, `gold`, `muted`
+- **Consumes:** `_hero_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `count` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `tab`
+
+Tabs component
+
+- **Template:** `chirpui/tabs.html`
+- **Macro:** `tab`
+- **Category:** `navigation`
+- **Modifiers:** `active`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `label` | yes | — |
+| `url` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `hx_swap` | no | (has default) |
+| `active` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `tab-panel`
+
+- **Category:** `auto`
+
+### `table`
+
+Table component
+
+- **Template:** `chirpui/table.html`
+- **Macro:** `table`
+- **Category:** `data-display`
+- **Slots:** `(default)`, `caption`
+- **Modifiers:** `compact`, `striped`
+- **Provides:** `_table_align`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `headers` | no | (has default) |
+| `rows` | no | (has default) |
+| `sortable` | no | (has default) |
+| `sort_url` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `striped` | no | (has default) |
+| `sticky_header` | no | (has default) |
+| `actions_header` | no | (has default) |
+| `align` | no | (has default) |
+| `widths` | no | (has default) |
+| `compact` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `table-wrap`
+
+Table component
+
+- **Template:** `chirpui/table.html`
+- **Category:** `data-display`
+- **Modifiers:** `sticky`
+
+### `tabs`
+
+Tabs component
+
+- **Template:** `chirpui/tabs.html`
+- **Macro:** `tabs`
+- **Category:** `navigation`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `active` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `tag`
+
+Tag input component
+
+- **Template:** `chirpui/tag_input.html`
+- **Category:** `form`
+
+### `tag-browse`
+
+Tag browse — tray + selection badges for tag-filtered listings
+
+- **Template:** `chirpui/tag_browse.html`
+- **Category:** `control`
+
+### `tag-input`
+
+Tag input component
+
+- **Template:** `chirpui/tag_input.html`
+- **Macro:** `tag_input`
+- **Category:** `form`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `tags` | no | (has default) |
+| `label` | no | (has default) |
+| `add_url` | no | (has default) |
+| `remove_url` | no | (has default) |
+| `placeholder` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `text-muted`
+
+- **Category:** `auto`
+
+### `text-reveal`
+
+Text Reveal
+
+- **Template:** `chirpui/text_reveal.html`
+- **Macro:** `text_reveal`
+- **Category:** `effect`
+- **Variants:** `(default)`, `default`, `gradient`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `variant` | no | (has default) |
+| `tag` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `texture`
+
+- **Category:** `auto`
+
+### `theme-toggle`
+
+Theme + style toggles
+
+- **Template:** `chirpui/theme_toggle.html`
+- **Macro:** `theme_toggle`
+- **Category:** `control`
+
+### `thumbs`
+
+- **Category:** `control`
+- **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+### `timeline`
+
+Timeline component
+
+- **Template:** `chirpui/timeline.html`
+- **Macro:** `timeline`
+- **Category:** `data-display`
+- **Slots:** `(default)`
+- **Modifiers:** `hoverable`, `on-accent`, `on-muted`
+- **Consumes:** `_surface_variant`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | no | (has default) |
+| `hoverable` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `toast`
+
+Toast component
+
+- **Template:** `chirpui/toast.html`
+- **Macro:** `toast`
+- **Category:** `feedback`
+- **Variants:** `error`, `info`, `success`, `warning`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `message` | yes | — |
+| `variant` | no | (has default) |
+| `id` | no | (has default) |
+| `dismissible` | no | (has default) |
+| `oob` | no | (has default) |
+| `container_id` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `toast-container`
+
+- **Category:** `auto`
+
+### `toggle`
+
+- **Category:** `auto`
+
+### `toggle-wrap`
+
+Form field macros
+
+- **Template:** `chirpui/forms.html`
+- **Category:** `form`
+- **Variants:** `(default)`, `accent`, `danger`, `lg`, `sm`, `success`
+
+### `tooltip`
+
+Tooltip macro
+
+- **Template:** `chirpui/tooltip.html`
+- **Macro:** `tooltip`
+- **Category:** `navigation`
+- **Slots:** `(default)`
+- **Variants:** `bottom`, `left`, `right`, `top`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `content` | no | (has default) |
+| `hint` | no | (has default) |
+| `position` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `tray`
+
+Tray (slide-out panel)
+
+- **Template:** `chirpui/tray.html`
+- **Macro:** `tray`
+- **Category:** `overlay`
+- **Slots:** `(default)`
+- **Variants:** `bottom`, `left`, `right`
+- **Modifiers:** `closed`, `open`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `title` | yes | — |
+| `position` | no | (has default) |
+
+### `tree`
+
+Tree view component
+
+- **Template:** `chirpui/tree_view.html`
+- **Category:** `data-display`
+- **Slots:** `(default)`
+
+### `trending-tag`
+
+Trending Tag component
+
+- **Template:** `chirpui/trending_tag.html`
+- **Macro:** `trending_tag`
+- **Category:** `data-display`
+- **Modifiers:** `up`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `tag` | yes | — |
+| `href` | no | (has default) |
+| `count` | no | (has default) |
+| `trend` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `truncate`
+
+- **Category:** `auto`
+
+### `typewriter`
+
+Typewriter Effect
+
+- **Template:** `chirpui/typewriter.html`
+- **Macro:** `typewriter`
+- **Category:** `effect`
+- **Variants:** `(default)`, `fast`, `slow`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `speed` | no | (has default) |
+| `cursor` | no | (has default) |
+| `delay` | no | (has default) |
+| `tag` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `typing-indicator`
+
+Typing Indicator component
+
+- **Template:** `chirpui/typing_indicator.html`
+- **Macro:** `typing_indicator`
+- **Category:** `feedback`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+
+### `ui-base`
+
+- **Category:** `auto`
+
+### `ui-bold`
+
+- **Category:** `auto`
+
+### `ui-label`
+
+- **Category:** `auto`
+
+### `ui-lg`
+
+- **Category:** `auto`
+
+### `ui-medium`
+
+- **Category:** `auto`
+
+### `ui-meta`
+
+- **Category:** `auto`
+
+### `ui-normal`
+
+- **Category:** `auto`
+
+### `ui-semibold`
+
+- **Category:** `auto`
+
+### `ui-sm`
+
+- **Category:** `auto`
+
+### `ui-title`
+
+- **Category:** `auto`
+
+### `ui-xl`
+
+- **Category:** `auto`
+
+### `ui-xs`
+
+- **Category:** `auto`
+
+### `video-card`
+
+Video Card component
+
+- **Template:** `chirpui/video_card.html`
+- **Macro:** `video_card`
+- **Category:** `data-display`
+- **Slots:** `actions`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | yes | — |
+| `thumbnail` | yes | — |
+| `duration` | yes | — |
+| `title` | yes | — |
+| `channel` | no | (has default) |
+| `channel_href` | no | (has default) |
+| `views` | no | (has default) |
+| `date` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `video-thumbnail`
+
+Video Thumbnail component
+
+- **Template:** `chirpui/video_thumbnail.html`
+- **Macro:** `video_thumbnail`
+- **Category:** `media`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | no | (has default) |
+| `src` | no | (has default) |
+| `alt` | no | (has default) |
+| `duration` | no | (has default) |
+| `watched_pct` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `visually-hidden`
+
+- **Category:** `auto`
+
+### `wizard-form`
+
+Wizard form component
+
+- **Template:** `chirpui/wizard_form.html`
+- **Macro:** `wizard_form`
+- **Category:** `form`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `steps` | yes | — |
+| `current` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+
+### `wobble`
+
+Wobble / Jello / Rubber-band / Bounce-in
+
+- **Template:** `chirpui/wobble.html`
+- **Macro:** `wobble`
+- **Category:** `effect`
+- **Slots:** `(default)`
+- **Variants:** `bounce-in`, `jello`, `rubber-band`, `wobble`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `trigger` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `workspace-shell`
+
+Workspace shell
+
+- **Template:** `chirpui/workspace_shell.html`
+- **Macro:** `workspace_shell`
+- **Category:** `layout`
+- **Slots:** `(default)`, `inspector`, `toolbar`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `subtitle` | no | (has default) |
+| `sidebar_title` | no | (has default) |
+| `show_inspector` | no | (has default) |
+| `inspector_title` | no | (has default) |
+| `sidebar_surface_variant` | no | (has default) |
+| `inspector_surface_variant` | no | (has default) |
+| `cls` | no | (has default) |
+<!-- chirpui:generated:end -->

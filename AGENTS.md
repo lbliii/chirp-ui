@@ -15,7 +15,7 @@ Chirp-ui ships the component vocabulary that downstream apps render to their end
 - **No utility-class vocabulary, ever.** `stack()`, `cluster()`, `grid()`, `frame()`, `block()` are the composition primitives. We do not ship `p-4 mx-auto rounded-lg` equivalents. The moment a utility class lands, the registry stops being the source of truth and we re-enter Tailwind's category at a disadvantage.
 - **Every class the CSS ships is registry-cited.** If `chirpui-card__X` is emitted by `card.html`, it appears in the card registry entry's `emits` set and in `_card.css`. Tests assert the three views agree. Unused classes get deleted; hallucinated classes fail CI.
 - **Cascade order is public API.** `@layer chirpui.reset, chirpui.token, chirpui.base, chirpui.component, chirpui.utility, app.overrides`. Consumers place overrides in `app.overrides` and win predictably. Don't fight it with specificity.
-- **CSS is concat-from-partials.** Edit `src/chirp_ui/templates/css/partials/*.css`, run `poe build-css`, commit both. New components get the `@layer chirpui.component { @scope (.chirpui-X) to (.chirpui-X .chirpui-X) { … } }` envelope — see `docs/PLAN-css-scope-and-layer.md`.
+- **CSS is concat-from-partials.** Edit `src/chirp_ui/templates/css/partials/*.css`, run `poe build-css`, commit both. New components get the `@layer chirpui.component { @scope (.chirpui-X) to (.chirpui-X .chirpui-X) { … } }` envelope — see `docs/plans/PLAN-css-scope-and-layer.md`.
 - **Free-threading-compatible tooling only.** Pure-Python build scripts, stdlib-only where possible. Lightning CSS Python bindings and anything else gated on the GIL are out. Python 3.14+ (free-threading-ready) is the floor.
 - **No client JS in macros.** Alpine `x-data` attributes only. No `<script>` tags in component templates. Named Alpine components use `Alpine.safeData(name, factory)` and live in `chirpui-alpine.js`. Chirp is the single authority for Alpine injection.
 - **Sharp edges are bugs, not taste.** Silent `| safe` on user input, un-validated variants, raw motion/color/spacing values, template-CSS drift, `attrs=""` raw strings — these have cost real consumers real time. CI catches some; the rest is on you.
@@ -59,7 +59,7 @@ Forks where I want a check-in, not a judgment call:
 - **New config option / macro parameter on a load-bearing component.** Reshape first. The surface is already large; growing it is a smell. If you add one, update `COMPONENT-OPTIONS.md` in the same PR.
 - **Bypassing escaping** (`| safe`, `Markup(...)`, new `attrs_unsafe` consumer). Explain why the input is trusted. Default: use `html_attrs` + `attrs_map`.
 - **Changing `provide`/`consume` keys** (`PROVIDE-CONSUME-KEYS.md`). Contract surface across macro boundaries; breaking it breaks consumer templates silently.
-- **Big-bang CSS migrations.** Don't. Opportunistic envelope conversion only — when a PR touches a legacy partial, convert that one partial in the same PR. One component per PR. See `docs/PLAN-css-scope-and-layer.md § Migration status`.
+- **Big-bang CSS migrations.** Don't. Opportunistic envelope conversion only — when a PR touches a legacy partial, convert that one partial in the same PR. One component per PR. See `docs/plans/PLAN-css-scope-and-layer.md § Migration status`.
 - **Public API change** (anything imported from `chirp_ui.__init__`, macro signatures in the registry, `static_path()`, `register_filters()`). Ask whether the break is worth it and add a deprecation path per the policy in `CLAUDE.md`.
 - **Dead code you found.** Flag in the PR, let me decide. Unused macros may be load-bearing for a theme, showcase route, or example.
 - **Test disagrees with code.** Ask which is authoritative before "fixing" either — especially for `test_template_css_contract.py`, `test_transition_tokens.py`, and the registry-emits parity test. They exist because the code drifted.
@@ -93,6 +93,7 @@ A change is done when all of these hold:
 - [ ] `uv run poe ci` is green — lint + format + CSS build check + `ty` + tests.
 - [ ] `test_template_css_contract.py`, `test_transition_tokens.py`, and the registry-emits parity test pass. No new classes without matching CSS; no raw motion values.
 - [ ] If you added/changed a macro: the registry entry reflects the new slots/params/variants, and the agent manifest rebuilds cleanly (`python -m chirp_ui.manifest --json`).
+- [ ] New template → leading `{#- chirp-ui: Title\n  Body… -#}` doc-block present (extracted into `manifest["components"][name]["description"]`; enforced by `test_description_coverage.py`).
 - [ ] If you added a CSS class: it's cited in the registry `emits` set and in the matching partial — not hand-appended to `chirpui.css`, which is generated.
 - [ ] Tests exercise the *interesting* path: at least one non-default variant, default-fallback behaviour for invalid variants, and the slot-composition shape for new macros.
 - [ ] Provide/consume keys on new macros are annotated with `@provides` / `@consumes` in the template and listed in `docs/PROVIDE-CONSUME-KEYS.md`.

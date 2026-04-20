@@ -63,6 +63,18 @@ uv run poe docs-serve       # local preview (rebuild first for /showcase/)
 
 Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 
+## Release prep
+
+`make build`, `make release`, and `make gh-release` all depend on `make release-preflight`, which:
+
+1. Regenerates `src/chirp_ui/templates/chirpui.css` (`poe build-css`).
+2. Regenerates `src/chirp_ui/manifest.json` (`poe build-manifest`).
+3. Runs `git diff --quiet` on both — **fails the release with a clear "commit these files" message if either is stale**.
+
+So yes, manifest creation is automated as part of release prep. A tag created via `make gh-release` is guaranteed to carry a freshly-built manifest + CSS bundle, or the release never happens.
+
+Freshness is also enforced at CI time via `poe build-css-check` + `poe build-manifest-check` in the `ci` / `check` poe sequences (pyproject.toml).
+
 ## Key conventions
 
 - **BEM class names** — all CSS classes use `chirpui-<block>` and `chirpui-<block>--<modifier>`.
@@ -78,8 +90,8 @@ Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
 - **Template CSS contract** — every CSS class referenced in templates must exist in `chirpui.css`. The `test_template_css_contract.py` test enforces this.
 - **CSS build is concat-from-partials** — the shipped `chirpui.css` is regenerated from `src/chirp_ui/templates/css/partials/*.css` via `scripts/build_chirpui_css.py` (pure-Python, stdlib-only). Edit partials, run `poe build-css`, commit both. `poe build-css-check` fails CI if the committed output is stale.
 - **CSS cascade order is public API** — `chirpui.css` declares `@layer chirpui.reset, chirpui.token, chirpui.base, chirpui.component, chirpui.utility;` at the top. Consumers override chirp-ui by placing rules in `@layer app.overrides` (or any later-declared layer). No specificity tricks required. See `docs/CSS-OVERRIDE-SURFACE.md`.
-- **CSS envelope convention (default for new components)** — wrap each component partial in exactly `@layer chirpui.component { @scope (.chirpui-<block>) to (.chirpui-<block> .chirpui-<block>) { … } }`. Use `:scope` for self-reference and nested `&.chirpui-<block>--modifier` for variants. The upper scope boundary stops outer-component rules at the first nested instance — fixes bleed (e.g. outer `:hover` border-color leaking into inner cards). A partial that starts with `@layer …` opts out of build-time wrapping. Pilot: `src/chirp_ui/templates/css/partials/045_card.css` (Sprint 5). Full plan in `docs/PLAN-css-scope-and-layer.md`.
-- **Opportunistic envelope conversion** — when a PR touches a legacy (flat) component partial for any reason, also convert that partial to the envelope form in the same PR. Self-contained: one component's partial per PR, one entry in the description. No big-bang migration; the registry-emits parity test + concat CI gate keep the half-converted codebase honest. See `docs/PLAN-css-scope-and-layer.md § Migration status`.
+- **CSS envelope convention (default for new components)** — wrap each component partial in exactly `@layer chirpui.component { @scope (.chirpui-<block>) to (.chirpui-<block> .chirpui-<block>) { … } }`. Use `:scope` for self-reference and nested `&.chirpui-<block>--modifier` for variants. The upper scope boundary stops outer-component rules at the first nested instance — fixes bleed (e.g. outer `:hover` border-color leaking into inner cards). A partial that starts with `@layer …` opts out of build-time wrapping. Pilot: `src/chirp_ui/templates/css/partials/045_card.css` (Sprint 5). Full plan in `docs/plans/PLAN-css-scope-and-layer.md`.
+- **Opportunistic envelope conversion** — when a PR touches a legacy (flat) component partial for any reason, also convert that partial to the envelope form in the same PR. Self-contained: one component's partial per PR, one entry in the description. No big-bang migration; the registry-emits parity test + concat CI gate keep the half-converted codebase honest. See `docs/plans/PLAN-css-scope-and-layer.md § Migration status`.
 - **Filter bar vs filter chips vs filter row** — `filter_bar.html` = form + `action_strip` for list/table toolbars; `filter_row` (same file) = lightweight cluster form for 2-3 inline controls with HTMX. `filter_chips.html` = `filter_group` + `filter_chip` for faceted pill rows (HTMX, `register_colors`). See `docs/COMPONENT-OPTIONS.md`.
 - **Install snippet** — `code.html` provides `install_snippet(command)` for pre-formatted shell commands with a copy button. Uses `x-data="chirpuiCopy()"`.
 - **Tag browse composite** — `tag_browse.html` provides `tag_browse_tray`, `tag_selection_badges`, `tag_filter_actions` for tag-filtered listings. Plugs into `resource_index` slots.
@@ -143,7 +155,7 @@ Three audit phases (sprints 0–13) have systematically fixed the most common de
 | ~38% of test assertions are class-only string checks | `assert_element` helper + 29 structural tests for top-20 components | 18 |
 | 42 docs files with no navigation index | `docs/INDEX.md` created; layout docs consolidated into `docs/LAYOUT.md` | 19 |
 | Long strings / URLs / inputs punch past surface/callout/bento cells | Base `min-width: 0` + `overflow-wrap: break-word` on surface/callout; `overflow-wrap: anywhere` on card/surface links; `max-width: 100%; min-width: 0` on `.chirpui-field__input`; new `.chirpui-scroll-x`, `.chirpui-truncate`, `.chirpui-clamp-{2,3}` utilities | 20 |
-| Raw `<img>`/`<svg>`/`<video>`/`<iframe>` overflow; `<pre>`/`<table>` outside prose blow out cards; motion ignored `prefers-reduced-motion` globally; native form controls ignored brand accent; prose paragraphs used default wrapping; code scroll regions chain-scrolled to page | Base-layer hardening: `:where()` media reset; pre/table auto-contain inside card/surface/callout; global `@media (prefers-reduced-motion: reduce)` cap at root; `:root { accent-color }` lifted; `text-wrap: pretty` on prose `<p>`; `overscroll-behavior: contain` on scroll regions. See `docs/PLAN-base-layer-hardening.md` | 21–26 |
+| Raw `<img>`/`<svg>`/`<video>`/`<iframe>` overflow; `<pre>`/`<table>` outside prose blow out cards; motion ignored `prefers-reduced-motion` globally; native form controls ignored brand accent; prose paragraphs used default wrapping; code scroll regions chain-scrolled to page | Base-layer hardening: `:where()` media reset; pre/table auto-contain inside card/surface/callout; global `@media (prefers-reduced-motion: reduce)` cap at root; `:root { accent-color }` lifted; `text-wrap: pretty` on prose `<p>`; `overscroll-behavior: contain` on scroll regions. See `docs/plans/done/PLAN-base-layer-hardening.md` | 21–26 |
 
 ## Warning system
 
@@ -177,12 +189,12 @@ Individual `hx_*` kwargs still work and override keys from the `hx` dict. `build
 
 ## Adding a component
 
-1. Add `src/chirp_ui/templates/chirpui/<name>.html` — Kida macro (e.g. `label_overline.html`).
+1. Add `src/chirp_ui/templates/chirpui/<name>.html` — Kida macro (e.g. `label_overline.html`). Start the file with a `{#- chirp-ui: Title\n   Body… -#}` doc-block before any `{% def %}`; it becomes `manifest["components"][name]["description"]` and is enforced by `test_description_coverage.py`.
 2. Add styles to `chirpui.css` under a `/* <name> */` section comment.
 3. Add any new variants/sizes to `VARIANT_REGISTRY` / `SIZE_REGISTRY` in `validation.py`.
 4. For htmx-enabled components, use `build_hx_attrs(...) | html_attrs` instead of individual `{% if hx_* %}` blocks.
 5. Add render tests to `tests/test_components.py`.
-6. Run `uv run poe ci` before opening a PR.
+6. Run `uv run poe ci` before opening a PR (regenerates `manifest.json` via `poe build-manifest` if a descriptor changed).
 
 ## Testing without Chirp
 
