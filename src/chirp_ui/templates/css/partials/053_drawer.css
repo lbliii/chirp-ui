@@ -1,106 +1,105 @@
 /* ==========================================================================
-   Drawer
+   Drawer — @scope + @layer envelope.
+
+   Upper scope boundary `.chirpui-drawer .chirpui-drawer` stops outer-drawer
+   rules at the first nested drawer. Drawer is a native `<dialog>` so its
+   `::backdrop` is a pseudo-element on `:scope`, not a descendant.
+   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
-.chirpui-drawer {
-    border: none;
-    padding: 0;
-    max-width: none;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-}
+@layer chirpui.component {
+    @scope (.chirpui-drawer) to (.chirpui-drawer .chirpui-drawer) {
+        :scope {
+            border: none;
+            padding: 0;
+            max-width: none;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
 
-.chirpui-drawer::backdrop {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(2px);
-}
+        :scope::backdrop {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+        }
 
-.chirpui-drawer__panel {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: min(24rem, 90vw);
-    max-width: 24rem;
-    background: var(--chirpui-surface);
-    box-shadow: var(--chirpui-elevation-overlay);
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    transition: transform var(--chirpui-transition-slow) var(--chirpui-ease-spring);
-}
+        .chirpui-drawer__panel {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: min(24rem, 90vw);
+            max-width: 24rem;
+            background: var(--chirpui-surface);
+            box-shadow: var(--chirpui-elevation-overlay);
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            transition: transform var(--chirpui-transition-slow) var(--chirpui-ease-spring);
+        }
 
-.chirpui-drawer--right .chirpui-drawer__panel {
-    right: 0;
-    margin-left: auto;
-}
+        :scope.chirpui-drawer--right .chirpui-drawer__panel {
+            right: 0;
+            margin-left: auto;
+            @starting-style {
+                transform: translateX(100%);
+            }
+        }
 
-.chirpui-drawer--right .chirpui-drawer__panel {
-    @starting-style {
-        transform: translateX(100%);
+        :scope.chirpui-drawer--left .chirpui-drawer__panel {
+            left: 0;
+            margin-right: auto;
+            @starting-style {
+                transform: translateX(-100%);
+            }
+        }
+
+        .chirpui-drawer__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--chirpui-spacing) var(--chirpui-spacing-md);
+            border-bottom: 1px solid var(--chirpui-border);
+        }
+
+        .chirpui-drawer__title {
+            margin: 0;
+            font-size: var(--chirpui-font-lg);
+        }
+
+        .chirpui-drawer__header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--chirpui-spacing-xs);
+            margin-inline-start: auto;
+            &:empty {
+                display: none;
+            }
+        }
+
+        .chirpui-drawer__close {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 var(--chirpui-spacing-xs);
+            border-radius: var(--chirpui-radius-sm);
+            transition: background var(--chirpui-transition);
+            &:hover {
+                background: var(--chirpui-bg-subtle);
+            }
+            &:focus-visible {
+                outline: var(--chirpui-state-focus-outline);
+                outline-offset: var(--chirpui-state-focus-offset);
+            }
+        }
+
+        .chirpui-drawer__body {
+            padding: var(--chirpui-spacing-md);
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }
     }
 }
-
-.chirpui-drawer--left .chirpui-drawer__panel {
-    left: 0;
-    margin-right: auto;
-}
-
-.chirpui-drawer--left .chirpui-drawer__panel {
-    @starting-style {
-        transform: translateX(-100%);
-    }
-}
-
-.chirpui-drawer__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--chirpui-spacing) var(--chirpui-spacing-md);
-    border-bottom: 1px solid var(--chirpui-border);
-}
-
-.chirpui-drawer__title {
-    margin: 0;
-    font-size: var(--chirpui-font-lg);
-}
-
-.chirpui-drawer__header-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--chirpui-spacing-xs);
-    margin-inline-start: auto;
-}
-
-.chirpui-drawer__header-actions:empty {
-    display: none;
-}
-
-.chirpui-drawer__close {
-    background: none;
-    border: none;
-    color: inherit;
-    font-size: 1.5rem;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0 var(--chirpui-spacing-xs);
-    border-radius: var(--chirpui-radius-sm);
-    transition: background var(--chirpui-transition);
-}
-
-.chirpui-drawer__close:hover {
-    background: var(--chirpui-bg-subtle);
-}
-
-.chirpui-drawer__close:focus-visible {
-    outline: var(--chirpui-state-focus-outline);
-    outline-offset: var(--chirpui-state-focus-offset);
-}
-
-.chirpui-drawer__body {
-    padding: var(--chirpui-spacing-md);
-    overflow-y: auto;
-    flex: 1;
-    min-height: 0;
-}
-

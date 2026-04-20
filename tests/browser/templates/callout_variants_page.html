@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block brand %}Callout Variants{% end %}
+{% block sidebar %}{% end %}
+{% block content %}
+{% from "chirpui/callout.html" import callout %}
+
+<h1 data-testid="page-heading">Callout Variants</h1>
+
+<section data-testid="v-info">
+  {% call callout(variant="info", title="Info") %}<p>Info body.</p>{% end %}
+</section>
+
+<section data-testid="v-success">
+  {% call callout(variant="success", title="Success") %}<p>Success body.</p>{% end %}
+</section>
+
+<section data-testid="v-warning">
+  {% call callout(variant="warning", title="Warning") %}<p>Warning body.</p>{% end %}
+</section>
+
+<section data-testid="v-error">
+  {% call callout(variant="error", title="Error") %}<p>Error body.</p>{% end %}
+</section>
+
+<section data-testid="v-neutral">
+  {% call callout(variant="neutral", title="Neutral") %}<p>Neutral body.</p>{% end %}
+</section>
+
+{# Bleed case: outer warning callout's tinted background must NOT bleed onto an
+   inner info callout. The @scope upper boundary stops outer variant rules at
+   the first nested callout. #}
+<section data-testid="v-nested">
+  {% call callout(variant="warning", title="Outer warning") %}
+    <p>Outer body.</p>
+    {% call callout(variant="info", title="Inner info") %}
+      <p data-testid="v-nested-inner-body">Inner body.</p>
+    {% end %}
+  {% end %}
+</section>
+{% end %}

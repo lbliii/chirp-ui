@@ -1,17 +1,37 @@
 {#- Test base: extends app_shell_layout, adds Alpine plugins + store init.
     The installed chirp may not inject safeData/plugins via middleware,
     so we add them explicitly here for test reliability.
+
+    Alpine core override: bengal-chirp 0.4.0 emits a bare-version Alpine URL
+    (`alpinejs@3.15.8` without `/dist/cdn.min.js`) which jsDelivr resolves to
+    CommonJS — silently fails in browsers, leaving `window.Alpine` undefined.
+    See chirp-ui CLAUDE.md § Troubleshooting. We emit a correct script with
+    `data-chirp="alpine"` so chirp's AlpineInject dedup skips its broken one.
 -#}
 {% extends "chirpui/app_shell_layout.html" %}
 {% block head_extra %}
+{#- Script order matches app_layout.html: chirpui-alpine.js + plugins + inline
+    init listener BEFORE Alpine core. Defer scripts execute in document order,
+    so listeners are registered before alpine:init fires.
+    chirpui-alpine.js registers chirpuiDialogTarget, chirpuiSidebar, etc.
+    app_layout.html loads it; app_shell_layout (which we extend) does not. -#}
+<script defer src="/static/chirpui-alpine.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.14.0/dist/cdn.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.14.0/dist/cdn.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.14.0/dist/cdn.min.js"></script>
 <script>
 document.addEventListener("alpine:init", function() {
-  Alpine.store("modals", {});
-  Alpine.store("trays", {});
-  Alpine.safeData = function(n, f) { Alpine.data(n, f); };
+  if (!Alpine.store("modals")) Alpine.store("modals", {});
+  if (!Alpine.store("trays")) Alpine.store("trays", {});
+  if (!Alpine.safeData) Alpine.safeData = function(n, f) { Alpine.data(n, f); };
 });
 </script>
+{#- Alpine core override: bengal-chirp 0.4.0 emits a bare-version Alpine URL
+    (`alpinejs@3.15.8` without `/dist/cdn.min.js`) which jsDelivr resolves to
+    CommonJS — silently fails in browsers, leaving `window.Alpine` undefined.
+    See chirp-ui CLAUDE.md § Troubleshooting. We emit a correct script with
+    `data-chirp="alpine"` so chirp's AlpineInject dedup skips its broken one.
+    Loaded LAST so prior defer scripts register their alpine:init listeners
+    before Alpine's auto-start fires. -#}
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.8/dist/cdn.min.js" data-chirp="alpine"></script>
 {% end %}

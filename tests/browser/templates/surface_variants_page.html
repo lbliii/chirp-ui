@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block brand %}Surface Variants{% end %}
+{% block sidebar %}{% end %}
+{% block content %}
+{% from "chirpui/surface.html" import surface %}
+
+<h1 data-testid="page-heading">Surface Variants</h1>
+
+{# One instance of each variant surfaced by the @scope envelope. #}
+
+<section data-testid="v-default">
+  {% call surface(variant="default") %}<p>Default body.</p>{% end %}
+</section>
+
+<section data-testid="v-muted">
+  {% call surface(variant="muted") %}<p>Muted body.</p>{% end %}
+</section>
+
+<section data-testid="v-elevated">
+  {% call surface(variant="elevated") %}<p>Elevated body.</p>{% end %}
+</section>
+
+<section data-testid="v-accent">
+  {% call surface(variant="accent") %}<p>Accent body.</p>{% end %}
+</section>
+
+<section data-testid="v-glass">
+  {% call surface(variant="glass") %}<p>Glass body.</p>{% end %}
+</section>
+
+<section data-testid="v-cornered">
+  {% call surface(variant="default", cls="chirpui-surface--cornered") %}
+    <p>Cornered body.</p>
+  {% end %}
+</section>
+
+{# Bleed case: outer surface's cornered ::before/::after must NOT bleed onto
+   inner surface; inner anchor must not inherit corner-accent positioning. #}
+<section data-testid="v-nested">
+  {% call surface(variant="muted", cls="chirpui-surface--cornered") %}
+    <p>Outer body.</p>
+    {% call surface(variant="default") %}
+      <p data-testid="v-nested-inner-body">Inner body.</p>
+      <a href="#" data-testid="v-nested-inner-link">Inner link</a>
+    {% end %}
+  {% end %}
+</section>
+{% end %}

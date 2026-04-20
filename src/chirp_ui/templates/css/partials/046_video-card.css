@@ -1,92 +1,100 @@
 /* ==========================================================================
-   Video Card
+   Video Card — @scope + @layer envelope.
+
+   Upper scope boundary `.chirpui-video-card .chirpui-video-card` stops
+   outer-card rules at the first nested video card. Critical here because
+   the bare `:hover` rule (`:scope:hover { border-color, box-shadow }`)
+   would otherwise cascade to descendant `.chirpui-video-card` instances
+   and flip their borders on outer hover — same bleed pattern that the
+   card pilot fixed.
+   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
-.chirpui-video-card {
-    background: var(--chirpui-surface);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius);
-    overflow: clip;
-    transition: border-color var(--chirpui-transition), box-shadow var(--chirpui-transition);
-}
+@layer chirpui.component {
+    @scope (.chirpui-video-card) to (.chirpui-video-card .chirpui-video-card) {
+        :scope {
+            background: var(--chirpui-surface);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius);
+            overflow: clip;
+            transition: border-color var(--chirpui-transition), box-shadow var(--chirpui-transition);
+        }
 
-.chirpui-video-card:hover {
-    border-color: var(--chirpui-card-hover-border);
-    box-shadow: var(--chirpui-elevation-card-hover);
-}
+        :scope:hover {
+            border-color: var(--chirpui-card-hover-border);
+            box-shadow: var(--chirpui-elevation-card-hover);
+        }
 
-.chirpui-video-card__link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-}
+        .chirpui-video-card__link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
 
-.chirpui-video-card__thumbnail {
-    position: relative;
-    margin: 0;
-    aspect-ratio: var(--chirpui-video-aspect-ratio);
-    overflow: clip;
-    background: var(--chirpui-bg-subtle);
-}
+        .chirpui-video-card__thumbnail {
+            position: relative;
+            margin: 0;
+            aspect-ratio: var(--chirpui-video-aspect-ratio);
+            overflow: clip;
+            background: var(--chirpui-bg-subtle);
+            & img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
 
-.chirpui-video-card__thumbnail img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+        .chirpui-video-card__actions {
+            position: absolute;
+            top: var(--chirpui-spacing-xs);
+            right: var(--chirpui-spacing-xs);
+            &:empty {
+                display: none;
+            }
+        }
 
-.chirpui-video-card__actions {
-    position: absolute;
-    top: var(--chirpui-spacing-xs);
-    right: var(--chirpui-spacing-xs);
-}
+        .chirpui-video-card__duration {
+            position: absolute;
+            right: var(--chirpui-spacing-xs);
+            bottom: var(--chirpui-spacing-xs);
+            padding: var(--chirpui-spacing-2xs) 0.35rem;
+            font-size: var(--chirpui-font-xs);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+            background: rgba(0, 0, 0, 0.75);
+            color: var(--chirpui-on-accent);
+            border-radius: var(--chirpui-radius-sm);
+        }
 
-.chirpui-video-card__actions:empty {
-    display: none;
-}
+        .chirpui-video-card__body {
+            padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+        }
 
-.chirpui-video-card__duration {
-    position: absolute;
-    right: var(--chirpui-spacing-xs);
-    bottom: var(--chirpui-spacing-xs);
-    padding: var(--chirpui-spacing-2xs) 0.35rem;
-    font-size: var(--chirpui-font-xs);
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-    background: rgba(0, 0, 0, 0.75);
-    color: var(--chirpui-on-accent);
-    border-radius: var(--chirpui-radius-sm);
-}
+        .chirpui-video-card__title {
+            margin: 0 0 var(--chirpui-spacing-xs);
+            font-size: var(--chirpui-font-sm);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+            line-height: var(--chirpui-line-height-tight);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: clip;
+        }
 
-.chirpui-video-card__body {
-    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
-}
+        .chirpui-video-card__channel,
+        .chirpui-video-card__meta {
+            margin: 0;
+            font-size: var(--chirpui-font-xs);
+            color: var(--chirpui-text-muted);
+        }
 
-.chirpui-video-card__title {
-    margin: 0 0 var(--chirpui-spacing-xs);
-    font-size: var(--chirpui-font-sm);
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-    line-height: var(--chirpui-line-height-tight);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: clip;
+        .chirpui-video-card__channel-link {
+            color: inherit;
+            text-decoration: none;
+            &:hover {
+                color: var(--chirpui-accent);
+                text-decoration: underline;
+            }
+        }
+    }
 }
-
-.chirpui-video-card__channel,
-.chirpui-video-card__meta {
-    margin: 0;
-    font-size: var(--chirpui-font-xs);
-    color: var(--chirpui-text-muted);
-}
-
-.chirpui-video-card__channel-link {
-    color: inherit;
-    text-decoration: none;
-}
-
-.chirpui-video-card__channel-link:hover {
-    color: var(--chirpui-accent);
-    text-decoration: underline;
-}
-

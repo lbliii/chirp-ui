@@ -317,6 +317,43 @@ grep -lE '^@layer chirpui\.component' src/chirp_ui/templates/css/partials/*.css
 
 Percentage converted is not an epic gate — half-converted is a supported steady state.
 
+### Hardening batch 1 — priority order
+
+The opportunistic policy is the default, but a small bounded batch of deliberate conversions is justified when a partial carries documented bleed risk that organic touches may not reach for months. Batch 1 (planned 2026-04-20, see `docs/PLAN-envelope-hardening-batch-1.md`) covers six conversions, ordered by intersecting bleed evidence with existing browser-test coverage:
+
+| # | Partial | Bleed-risk justification | Browser test |
+|---|---------|--------------------------|--------------|
+| 1 | `065_tray.css` | Sharp-edge memory (`feedback_tray_shell_sharp_edges.md`); overlay panel that hosts other components. | `tests/browser/test_tray.py` (existing) |
+| 2 | `053_drawer.css` | Overlay container; drawers commonly hold forms/lists where outer hover states could leak. | `tests/browser/test_drawer.py` (existing) |
+| 3 | `052_modal.css` | Modal-in-modal is a real pattern (confirmation inside a settings modal). | `tests/browser/test_modals.py` (existing) |
+| 4 | `039_surface.css` | Parent epic E2 cited `surface`-inside-`surface` as a live hazard. Highest-leverage conversion in this batch. | `tests/browser/test_surface.py` (new in this batch) |
+| 5 | `041_callout.css` | Surface-shaped container often nested inside a `surface` or `card`; callout-in-callout pattern (notice → expandable detail) carries the same risk. | `tests/browser/test_callout.py` (new in this batch) |
+| 6 | `046_video-card.css` + `047_channel-card.css` | Mirror `card`'s structure (border + radius + overflow-clip + hover) but live outside `.chirpui-card`'s `@scope`, so the pilot's bleed fix doesn't reach them. | `tests/browser/test_video_card_variants.py`, `tests/browser/test_channel_card_variants.py` (both new) |
+
+After batch 1 closes, opportunistic mode resumes for the remaining 153 partials. **No further deliberate batch is planned**; future batches require their own justification document with evidence on par with this one.
+
+### Per-PR conversion template
+
+Every conversion (deliberate or opportunistic) follows the same five steps:
+
+1. **Rewrite the partial** to the envelope form. Use `045_card.css` as the structural reference: open with `@layer chirpui.component { @scope (.chirpui-NAME) to (.chirpui-NAME .chirpui-NAME) { … } }`, use `:scope` for self-reference, nest `&.chirpui-NAME--modifier` for variants.
+2. **Rebuild the monolith.** `poe build-css` regenerates `src/chirp_ui/templates/chirpui.css`. Commit the regenerated file with the partial change in the same PR.
+3. **Run CI locally.** `poe ci` — must be green. The concat test (`tests/test_chirpui_css_concat.py`) and the registry-emits parity test (`tests/test_registry_emits_parity.py`) are the load-bearing gates.
+4. **Add or extend a browser test.** If the component already has one under `tests/browser/`, extend it to cover a nested-instance bleed case if not already present. If not, add a new `tests/browser/test_<component>.py` following the pattern in `### Browser test: bleed case` below.
+5. **PR description.** Cite this `Migration status` section, name the partial converted, and (if part of batch 1) link to `docs/PLAN-envelope-hardening-batch-1.md` and the row in the priority-order table.
+
+When the conversion consolidates a compound class the descriptor grammar can't express, update the component's `extra_emits` in `src/chirp_ui/components.py` in the same PR — the parity test will surface the gap if missed.
+
+### Browser test: bleed case
+
+Use `tests/browser/test_card_variants.py` as the reference for testing nested-instance bleed. The pattern:
+
+1. Render two instances of the component nested inside each other (outer with one variant, inner with a different variant).
+2. Hover or focus the outer instance.
+3. Assert the inner instance's computed style for the bleed-prone property (commonly `border-color`, `box-shadow`, or `background`) matches the inner's declared value, **not** the outer's hover state.
+
+Tests added in batch 1 (surface, callout, video-card, channel-card) all follow this template. The test should fail on the unconverted partial (proving it catches the bleed) and pass after conversion — if it passes on both, either the bleed wasn't actually present or the test isn't asserting the right property.
+
 ## Open items
 
 - **S0 decision: layer namespace.** Recommend `chirpui.*`. Needs a second opinion before S3 ships.

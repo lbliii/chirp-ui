@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block brand %}Video / Channel Cards{% end %}
+{% block sidebar %}{% end %}
+{% block content %}
+{% from "chirpui/video_card.html" import video_card %}
+{% from "chirpui/channel_card.html" import channel_card %}
+
+<h1 data-testid="page-heading">Video / Channel Cards</h1>
+
+<section data-testid="v-video">
+  {{ video_card(
+      href="/watch/1",
+      thumbnail="/static/themes/holy-light.css",
+      duration="4:32",
+      title="Sample video",
+      channel="Sample Channel",
+      channel_href="/channel/1",
+      views="1.2K",
+      date="2 days ago"
+  ) }}
+</section>
+
+<section data-testid="v-channel">
+  {{ channel_card(
+      href="/channel/1",
+      name="Sample Channel",
+      avatar_initials="SC",
+      subscribers="12.5K"
+  ) }}
+</section>
+
+{# Bleed case: outer :hover border-color must NOT propagate to nested card. #}
+{# Use raw markup so we can DOM-nest one .chirpui-video-card inside another. #}
+<section data-testid="v-video-nested">
+  <article class="chirpui-video-card" data-testid="v-video-outer">
+    <a href="/watch/outer" class="chirpui-video-card__link">
+      <figure class="chirpui-video-card__thumbnail">
+        <span class="chirpui-video-card__duration">0:30</span>
+      </figure>
+      <div class="chirpui-video-card__body">
+        <h3 class="chirpui-video-card__title">Outer video</h3>
+        <article class="chirpui-video-card" data-testid="v-video-inner">
+          <div class="chirpui-video-card__body">
+            <h3 class="chirpui-video-card__title">Inner video</h3>
+          </div>
+        </article>
+      </div>
+    </a>
+  </article>
+</section>
+
+<section data-testid="v-channel-nested">
+  <article class="chirpui-channel-card" data-testid="v-channel-outer">
+    <a href="/c/outer" class="chirpui-channel-card__link" data-testid="v-channel-outer-link">
+      <div class="chirpui-channel-card__info">
+        <h3 class="chirpui-channel-card__name" data-testid="v-channel-outer-name">Outer channel</h3>
+      </div>
+    </a>
+    <div class="chirpui-channel-card__actions">
+      {# Nested channel card inside outer's actions slot #}
+      <article class="chirpui-channel-card" data-testid="v-channel-inner">
+        <a href="/c/inner" class="chirpui-channel-card__link">
+          <div class="chirpui-channel-card__info">
+            <h3 class="chirpui-channel-card__name" data-testid="v-channel-inner-name">Inner channel</h3>
+          </div>
+        </a>
+      </article>
+    </div>
+  </article>
+</section>
+{% end %}
