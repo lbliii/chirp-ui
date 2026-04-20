@@ -8,18 +8,18 @@
 {% set _is_active = is_active if is_active is not none else tab_is_active %}
 <nav role="navigation" aria-label="Subsection navigation" class="chirpui-route-tabs">
   {% for tab in tab_items %}
-  <a href="{{ tab.href }}"
+  <a href="{{ tab.href | default("") }}"
      class="chirpui-route-tab{% if _is_active(tab, current_path) %} chirpui-route-tab--active{% end %}"
      {% if _is_active(tab, current_path) %}aria-current="page"{% end %}
      hx-boost="false"
      hx-select="unset"
-     hx-get="{{ tab.href }}"
+     hx-get="{{ tab.href | default("") }}"
      hx-target="{{ target }}"
      hx-push-url="true"
      hx-swap="innerHTML">
-    {% if tab.icon %}<span class="chirpui-route-tab__icon">{{ tab.icon | icon }}</span>{% end %}
-    <span class="chirpui-route-tab__label">{{ tab.label }}</span>
-    {% if tab.badge %}<span class="chirpui-route-tab__badge">{{ tab.badge }}</span>{% end %}
+    {% if tab.get("icon") %}<span class="chirpui-route-tab__icon">{{ tab.icon | icon }}</span>{% end %}
+    <span class="chirpui-route-tab__label">{{ tab.label | default("") }}</span>
+    {% if tab.get("badge") %}<span class="chirpui-route-tab__badge">{{ tab.badge }}</span>{% end %}
   </a>
   {% end %}
 </nav>

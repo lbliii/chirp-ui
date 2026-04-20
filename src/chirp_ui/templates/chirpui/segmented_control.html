@@ -22,12 +22,12 @@
 {% set size_class = " chirpui-segmented--" ~ size if size else "" %}
 <div class="chirpui-segmented{{ size_class }}{{ " " ~ cls if cls else "" }}" role="radiogroup" aria-label="{{ name }}">
     {% for item in items %}
-    <label class="chirpui-segmented__option{% if item.active %} chirpui-segmented__option--active{% end %}">
-        <input type="radio" name="{{ name }}" value="{{ item.value }}"
+    <label class="chirpui-segmented__option{% if item.get("active") %} chirpui-segmented__option--active{% end %}">
+        <input type="radio" name="{{ name }}" value="{{ item.value | default("") }}"
                class="chirpui-visually-hidden"
-               {% if item.active %}checked{% end %}>
-        {% if item.icon %}<span class="chirpui-segmented__icon">{{ item.icon | icon }}</span>{% end %}
-        <span class="chirpui-segmented__label">{{ item.label }}</span>
+               {% if item.get("active") %}checked{% end %}>
+        {% if item.get("icon") %}<span class="chirpui-segmented__icon">{{ item.icon | icon }}</span>{% end %}
+        <span class="chirpui-segmented__label">{{ item.label | default("") }}</span>
     </label>
     {% end %}
 </div>

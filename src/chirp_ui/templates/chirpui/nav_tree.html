@@ -17,7 +17,7 @@
 {% if show_icons and item.get("icon") %}
 <span class="chirpui-nav-tree__icon">{{ item.icon | icon }}</span>
 {% end %}
-<span class="chirpui-nav-tree__title">{{ item.title }}</span>
+<span class="chirpui-nav-tree__title">{{ item.title | default("") }}</span>
 {% end %}
 
 {% def nav_tree(items, show_icons=false, cls="") %}
