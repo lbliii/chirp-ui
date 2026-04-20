@@ -4,7 +4,7 @@
 **Created**: 2026-04-20
 **Target**: chirp-ui next minor (post-Sprint 26 base-layer hardening)
 **Estimated Effort**: 10–14h across 7 PRs
-**Dependencies**: `docs/PLAN-css-scope-and-layer.md` (parent epic; S0–S5 + S7 done, S6 in opportunistic mode)
+**Dependencies**: `docs/plans/PLAN-css-scope-and-layer.md` (parent epic; S0–S5 + S7 done, S6 in opportunistic mode)
 **Source**: parent epic E2 (nested-block bleed evidence), pilot `045_card.css` (Sprint 5), user memory `feedback_tray_shell_sharp_edges.md`, browser-test inventory under `tests/browser/`
 
 ---
@@ -22,7 +22,7 @@ This plan executes one **deliberate hardening batch** — six conversions, one P
 | # | Finding | Source |
 |---|---------|--------|
 | E1 | 160 partials shipped; 1 (`045_card.css`) in envelope form. 159 legacy, all carrying the bleed risk class the pilot fixed. | `ls src/chirp_ui/templates/css/partials/`; `grep -lE '^@layer chirpui\.component' src/chirp_ui/templates/css/partials/*.css` |
-| E2 | Parent epic explicitly documented `surface`-inside-`surface` as a live bleed hazard. `039_surface.css` is 168 lines of flat selectors with 7+ `--variant` modifiers — exactly the shape the envelope was designed for. | `docs/PLAN-css-scope-and-layer.md § Evidence E2`; `wc -l src/chirp_ui/templates/css/partials/039_surface.css`; `grep -c '^.chirpui-surface--' src/chirp_ui/templates/css/partials/039_surface.css` |
+| E2 | Parent epic explicitly documented `surface`-inside-`surface` as a live bleed hazard. `039_surface.css` is 168 lines of flat selectors with 7+ `--variant` modifiers — exactly the shape the envelope was designed for. | `docs/plans/PLAN-css-scope-and-layer.md § Evidence E2`; `wc -l src/chirp_ui/templates/css/partials/039_surface.css`; `grep -c '^.chirpui-surface--' src/chirp_ui/templates/css/partials/039_surface.css` |
 | E3 | `tray` was independently flagged in user memory as a sharp-edge surface (initial state, `#page-root` double-styling, `hx-select` inheritance gap). Conversion gives the partial the same bleed protection card now has. | `memory/feedback_tray_shell_sharp_edges.md`; `src/chirp_ui/templates/css/partials/065_tray.css` (98 lines) |
 | E4 | `video-card`, `channel-card`, `resource-card` mirror `chirpui-card`'s visual structure (border + radius + overflow-clip + hover transition) but use their own block name, so the card pilot's `@scope (.chirpui-card) to (.chirpui-card .chirpui-card)` upper boundary does not protect them. They re-incur the same hover-leak risk on every render that nests one inside another. | `head -10 src/chirp_ui/templates/css/partials/{046,047,159}_*.css` |
 | E5 | Browser-test scaffolding already exists for `tray`, `drawer`, `modals`, `card_variants`. These four components can be converted with the existing harness — no new test infrastructure required. `surface`, `callout`, `video-card`, `channel-card` need new browser tests (incremental, not net-new infra). | `ls tests/browser/test_*.py` |
@@ -103,23 +103,23 @@ Sprint 0 is design/decision only — no code. Sprints 1–3 are intentionally fi
 
 ### Task 0.1 — Confirm prioritization in writing
 
-Append a `## Hardening batch 1 — priority order` section to `docs/PLAN-css-scope-and-layer.md § Migration status` listing the six partials in conversion order, each with a one-line bleed-risk justification and a link to the browser test it will use.
+Append a `## Hardening batch 1 — priority order` section to `docs/plans/PLAN-css-scope-and-layer.md § Migration status` listing the six partials in conversion order, each with a one-line bleed-risk justification and a link to the browser test it will use.
 
-**Files**: `docs/PLAN-css-scope-and-layer.md`
-**Acceptance**: `grep -c 'Hardening batch 1' docs/PLAN-css-scope-and-layer.md` ≥ 1; six files listed.
+**Files**: `docs/plans/PLAN-css-scope-and-layer.md`
+**Acceptance**: `grep -c 'Hardening batch 1' docs/plans/PLAN-css-scope-and-layer.md` ≥ 1; six files listed.
 
 ### Task 0.2 — Document the per-PR conversion template
 
 Add a short `## Per-PR conversion template` subsection (under the existing `Migration status` section) with the checklist a contributor follows for one conversion: rewrite partial → run `poe build-css` → run `poe ci` → add/extend browser test → PR description references this batch plan.
 
-**Files**: `docs/PLAN-css-scope-and-layer.md`
+**Files**: `docs/plans/PLAN-css-scope-and-layer.md`
 **Acceptance**: subsection contains the five-step checklist verbatim.
 
 ### Task 0.3 — Document the bleed-case browser-test pattern
 
 Add a brief `### Browser test: bleed case` subsection citing `tests/browser/test_card_variants.py` as the reference for testing nested-instance bleed. Surface, callout, video-card, channel-card tests will follow this pattern.
 
-**Files**: `docs/PLAN-css-scope-and-layer.md`
+**Files**: `docs/plans/PLAN-css-scope-and-layer.md`
 **Acceptance**: subsection exists and references `test_card_variants.py` by path.
 
 **Sprint acceptance**: no code changes; `poe ci` still green; the parent epic's `Migration status` section grows three subsections.
@@ -269,7 +269,7 @@ Mirror `tests/browser/test_card_variants.py`. For each component, exercise the v
 
 ## Relationship to Existing Work
 
-- **Parent epic `docs/PLAN-css-scope-and-layer.md`** — this is one explicit batch executed under that epic's Sprint 6 (opportunistic fan-out). Each PR adds an entry to that epic's `Migration status § Converted` list.
+- **Parent epic `docs/plans/PLAN-css-scope-and-layer.md`** — this is one explicit batch executed under that epic's Sprint 6 (opportunistic fan-out). Each PR adds an entry to that epic's `Migration status § Converted` list.
 - **Pilot `045_card.css`** — the structural template every conversion in this batch follows. New contributors should read it before attempting a conversion.
 - **`memory/feedback_tray_shell_sharp_edges.md`** — drove the inclusion of `tray` in S1.
 - **`memory/project_chirpui_vision.md`** — registry-as-bet thesis. This batch reinforces it by closing CSS bleed holes that would otherwise undermine the registry's claim to be the source of truth.

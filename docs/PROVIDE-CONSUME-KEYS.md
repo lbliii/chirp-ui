@@ -30,6 +30,7 @@ parent-to-child state flow across slot boundaries (requires kida >= 0.3.4).
 | `_accordion_name` | `str` | `"accordion"` | `accordion()` | `accordion_item()` | 0.3.0 |
 | `_form_density` | `str` | `""` | `form()` | `field_wrapper()` | 0.3.0 |
 | `_nav_current_path` | `str` | `""` | `sidebar()`, `navbar()` | `sidebar_link`, `navbar_link`, `navbar_dropdown` | 0.3.0 |
+| `_site_nav_current_path` | `str` | `""` | `site_header()` | `site_nav_link` | 0.3.0 |
 | `_streaming_role` | `str` | `"assistant"` | `streaming_bubble(role=...)` | `copy_btn`, `model_card` | 0.3.0 |
 | `_sse_state` | `str` | `""` | *(manual provide)* | `sse_retry` | 0.3.0 |
 | `_suspense_busy` | `str` | `"true"` | `suspense_group()` | `suspense_slot` | 0.3.0 |

@@ -4,7 +4,7 @@
 PYTHON_VERSION ?= 3.14t
 VENV_DIR ?= .venv
 
-.PHONY: all help setup install test test-js test-cov test-browser lint lint-fix format ty clean shell build publish release gh-release showcase showcase-public
+.PHONY: all help setup install test test-js test-cov test-browser lint lint-fix format ty clean shell build publish release gh-release release-preflight showcase showcase-public
 
 all: help
 
@@ -27,6 +27,7 @@ help:
 	@echo "  make publish    - Publish to PyPI (uses .env for token)"
 	@echo "  make release    - Build and publish in one step"
 	@echo "  make gh-release - Create GitHub release (triggers PyPI via workflow)"
+	@echo "  make release-preflight - Verify committed manifest.json + chirpui.css are fresh"
 	@echo "  make showcase         - Assemble static showcase into _site/ for preview"
 	@echo "  make showcase-public  - Copy showcase into site/public/showcase/ (after bengal build)"
 	@echo "  make clean      - Remove venv, build artifacts, and caches"
@@ -76,7 +77,27 @@ ty:
 # Build & Release
 # =============================================================================
 
-build:
+# Regenerate committed generated artifacts (chirpui.css, manifest.json) and
+# fail if the working tree now has uncommitted changes. Runs before every
+# build/release — guarantees the tag carries a fresh manifest + CSS bundle,
+# and refuses to ship if the dev forgot to commit a regeneration.
+release-preflight:
+	@echo "Regenerating generated artifacts..."
+	uv run poe build-css
+	uv run poe build-manifest
+	uv run poe build-docs
+	@echo "Verifying no uncommitted changes to generated artifacts..."
+	@if ! git diff --quiet -- src/chirp_ui/manifest.json src/chirp_ui/templates/chirpui.css docs/COMPONENT-OPTIONS.md; then \
+		echo ""; \
+		echo "ERROR: one or more generated artifacts are stale." >&2; \
+		echo "       Commit the regenerated files below, then re-run:" >&2; \
+		echo ""; \
+		git diff --stat -- src/chirp_ui/manifest.json src/chirp_ui/templates/chirpui.css docs/COMPONENT-OPTIONS.md >&2; \
+		exit 1; \
+	fi
+	@echo "✓ Generated artifacts are fresh and committed"
+
+build: release-preflight
 	@echo "Building distribution packages..."
 	rm -rf dist/
 	uv build
@@ -96,7 +117,7 @@ release: build publish
 	@echo "✓ Release complete"
 
 # Create GitHub release; triggers python-publish workflow → PyPI
-gh-release:
+gh-release: release-preflight
 	@VERSION=$$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/'); \
 	PROJECT=$$(grep -m1 '^name = ' pyproject.toml | sed 's/name = "\(.*\)"/\1/'); \
 	echo "Creating release v$$VERSION for $$PROJECT..."; \

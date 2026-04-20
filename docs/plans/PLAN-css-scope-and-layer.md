@@ -247,7 +247,7 @@ Sprint 0 is always a design sprint — every downstream sprint has acceptance cr
 - Variant screenshot baseline updated.
 - `poe ci` + `poe test-browser` pass.
 
-**Epic-level acceptance.** Tracked in a lightweight markdown checklist in `docs/PLAN-css-scope-and-layer.md § Migration status` — appended in S6. Closing the epic does not require 100 % conversion; it requires the *mechanism* (concat + layer order + registry parity + envelope convention) to be load-bearing.
+**Epic-level acceptance.** Tracked in a lightweight markdown checklist in `docs/plans/PLAN-css-scope-and-layer.md § Migration status` — appended in S6. Closing the epic does not require 100 % conversion; it requires the *mechanism* (concat + layer order + registry parity + envelope convention) to be load-bearing.
 
 ---
 
@@ -319,7 +319,7 @@ Percentage converted is not an epic gate — half-converted is a supported stead
 
 ### Hardening batch 1 — priority order
 
-The opportunistic policy is the default, but a small bounded batch of deliberate conversions is justified when a partial carries documented bleed risk that organic touches may not reach for months. Batch 1 (planned 2026-04-20, see `docs/PLAN-envelope-hardening-batch-1.md`) covers six conversions, ordered by intersecting bleed evidence with existing browser-test coverage:
+The opportunistic policy is the default, but a small bounded batch of deliberate conversions is justified when a partial carries documented bleed risk that organic touches may not reach for months. Batch 1 (planned 2026-04-20, see `docs/plans/PLAN-envelope-hardening-batch-1.md`) covers six conversions, ordered by intersecting bleed evidence with existing browser-test coverage:
 
 | # | Partial | Bleed-risk justification | Browser test |
 |---|---------|--------------------------|--------------|
@@ -340,7 +340,7 @@ Every conversion (deliberate or opportunistic) follows the same five steps:
 2. **Rebuild the monolith.** `poe build-css` regenerates `src/chirp_ui/templates/chirpui.css`. Commit the regenerated file with the partial change in the same PR.
 3. **Run CI locally.** `poe ci` — must be green. The concat test (`tests/test_chirpui_css_concat.py`) and the registry-emits parity test (`tests/test_registry_emits_parity.py`) are the load-bearing gates.
 4. **Add or extend a browser test.** If the component already has one under `tests/browser/`, extend it to cover a nested-instance bleed case if not already present. If not, add a new `tests/browser/test_<component>.py` following the pattern in `### Browser test: bleed case` below.
-5. **PR description.** Cite this `Migration status` section, name the partial converted, and (if part of batch 1) link to `docs/PLAN-envelope-hardening-batch-1.md` and the row in the priority-order table.
+5. **PR description.** Cite this `Migration status` section, name the partial converted, and (if part of batch 1) link to `docs/plans/PLAN-envelope-hardening-batch-1.md` and the row in the priority-order table.
 
 When the conversion consolidates a compound class the descriptor grammar can't express, update the component's `extra_emits` in `src/chirp_ui/components.py` in the same PR — the parity test will surface the gap if missed.
 

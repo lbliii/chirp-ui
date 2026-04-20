@@ -134,7 +134,7 @@ chirp-ui uses `prefers-color-scheme` for dark mode. Override any `--chirpui-*` v
 }
 ```
 
-Advanced tokens: HTTP methods (`--chirpui-method-get`, etc.), code syntax (`--chirpui-code-keyword`, etc.), secondary accent (`--chirpui-accent-secondary`, `--chirpui-alert-secondary-*`). Full token reference: [PLAN-theme-tokens.md](docs/PLAN-theme-tokens.md).
+Advanced tokens: HTTP methods (`--chirpui-method-get`, etc.), code syntax (`--chirpui-code-keyword`, etc.), secondary accent (`--chirpui-accent-secondary`, `--chirpui-alert-secondary-*`). Full token reference: [plans/PLAN-theme-tokens.md](docs/plans/PLAN-theme-tokens.md).
 
 For manual light/dark toggle, set `data-theme="light"` or `data-theme="dark"` on `<html>`.
 

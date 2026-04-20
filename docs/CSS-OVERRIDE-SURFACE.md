@@ -1,7 +1,7 @@
 # CSS override surface
 
 **Status:** stable API as of chirp-ui 0.4.x
-**Related:** `docs/PLAN-css-scope-and-layer.md`, `docs/DESIGN-css-registry-projection.md`
+**Related:** `docs/plans/PLAN-css-scope-and-layer.md`, `docs/DESIGN-css-registry-projection.md`
 
 ## The one-line contract
 

@@ -835,6 +835,13 @@ class ComponentDescriptor:
         Filename in ``templates/chirpui/`` (e.g. ``"button.html"``).
     category : str
         Grouping label for documentation/introspection.
+    macro : str | None
+        Macro identifier inside :attr:`template` (e.g. ``"shimmer_button"``).
+        When ``None``, defaults to ``block.replace("-", "_")`` at lookup
+        time. Set explicitly only when the macro name diverges from the BEM
+        block (e.g. ``block="shimmer-btn"`` → ``macro="shimmer_button"``).
+        Used by :mod:`chirp_ui.manifest` to resolve param signatures from
+        the template AST.
     """
 
     block: str
@@ -847,6 +854,7 @@ class ComponentDescriptor:
     extra_emits: tuple[str, ...] = ()
     template: str = ""
     category: str = ""
+    macro: str | None = None
 
     @property
     def emits(self) -> frozenset[str]:
