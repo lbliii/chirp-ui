@@ -1,0 +1,92 @@
+/* ==========================================================================
+   Empty State
+   ========================================================================== */
+
+.chirpui-empty-state {
+    text-align: center;
+    padding: var(--chirpui-spacing) calc(var(--chirpui-spacing) * 2);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-empty-state__icon,
+.chirpui-empty-state__illustration {
+    font-size: 3rem;
+    line-height: 1;
+    margin-bottom: var(--chirpui-spacing);
+    opacity: 0.6;
+}
+
+.chirpui-empty-state__title {
+    margin: 0 0 var(--chirpui-spacing-sm) 0;
+    font-size: 1.25rem;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    color: var(--chirpui-text);
+}
+
+.chirpui-empty-state__code {
+    margin-bottom: var(--chirpui-spacing-sm);
+}
+
+.chirpui-empty-state__code code {
+    font-family: ui-monospace, monospace;
+    font-size: 0.9em;
+    padding: 0.2em 0.4em;
+    background: var(--chirpui-bg-subtle);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-empty-state__search-hint {
+    margin: var(--chirpui-spacing-sm) 0 0;
+    font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-empty-state__suggestions {
+    margin: var(--chirpui-spacing-sm) 0 0;
+    padding-inline-start: 1.25rem;
+    text-align: left;
+}
+
+.chirpui-empty-state__body {
+    font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-empty-state__action {
+    display: inline-block;
+    margin-top: var(--chirpui-spacing);
+}
+
+.chirpui-empty-state__action:empty {
+    display: none;
+}
+
+.chirpui-empty-panel-state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
+}
+
+.chirpui-empty-panel-state--compact {
+    padding: var(--chirpui-spacing-md);
+}
+
+.chirpui-empty-panel-state--compact .chirpui-empty-state__icon,
+.chirpui-empty-panel-state--compact .chirpui-empty-state__illustration {
+    font-size: var(--chirpui-empty-panel-state-icon-size);
+    margin-bottom: var(--chirpui-spacing-sm);
+}
+
+.chirpui-empty-panel-state--compact .chirpui-empty-state__title {
+    font-size: var(--chirpui-ui-base);
+    margin-bottom: var(--chirpui-spacing-xs);
+}
+
+.chirpui-empty-panel-state--compact .chirpui-empty-state__body {
+    max-width: var(--chirpui-measure-sm);
+    margin: 0 auto;
+}
+
+.chirpui-empty-panel-state--compact .chirpui-empty-state__action {
+    margin-top: var(--chirpui-spacing-sm);
+}
+

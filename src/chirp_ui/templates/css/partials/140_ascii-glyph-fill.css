@@ -1,0 +1,40 @@
+/* ==========================================================================
+   ASCII Glyph Fill — hover/active micro-moments
+   Swap between hollow and filled glyphs on interaction.
+
+   Usage:
+       <span class="chirpui-ascii-fill" data-hollow="◇" data-filled="◆">◇</span>
+       <span class="chirpui-ascii-fill" data-hollow="☆" data-filled="★">☆</span>
+       <span class="chirpui-ascii-fill" data-hollow="○" data-filled="●">○</span>
+
+   Or as utility classes on a parent (swaps all .chirpui-ascii-fill children):
+       <button class="chirpui-ascii-fill-hover">
+           <span class="chirpui-ascii-fill" ...>◇</span> Settings
+       </button>
+   ========================================================================== */
+
+.chirpui-ascii-fill {
+    font-family: var(--chirpui-ascii-font);
+    display: inline-block;
+    transition: transform var(--chirpui-motion-fast) var(--chirpui-ease-spring);
+    cursor: default;
+}
+
+/* Self-hover: the glyph itself is hovered */
+.chirpui-ascii-fill:hover {
+    transform: scale(1.15);
+}
+
+/* Parent-triggered hover: parent has .chirpui-ascii-fill-hover */
+.chirpui-ascii-fill-hover:hover .chirpui-ascii-fill {
+    transform: scale(1.15);
+}
+
+/* Active/press: slight shrink for tactile feel */
+.chirpui-ascii-fill:active,
+.chirpui-ascii-fill-hover:active .chirpui-ascii-fill {
+    transform: scale(0.9);
+    transition-duration: var(--chirpui-motion-fast);
+}
+
+

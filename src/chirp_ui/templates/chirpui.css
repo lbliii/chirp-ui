@@ -1,3 +1,17 @@
+/* ============================================================================
+ * chirp-ui — GENERATED FILE; do not hand-edit.
+ *
+ * Source partials: src/chirp_ui/templates/css/
+ * Rebuild:         poe build-css   (or python scripts/build_chirpui_css.py)
+ *
+ * See docs/PLAN-css-scope-and-layer.md for the authoring model.
+ * ============================================================================
+ */
+
+@layer chirpui.reset, chirpui.token, chirpui.base, chirpui.component, chirpui.utility;
+
+/* === partials/001_tokens.css === */
+@layer chirpui.component {
 /* chirp-ui — A love letter to CSS and HTML over the wire.
  *
  * Gorgeous by default. Unapologetically modern. Override any --chirpui-*
@@ -17,6 +31,10 @@
    -> @supports capability overrides (oklch, color-mix in oklch)
    ========================================================================== */
 
+}
+
+/* === partials/002_reset.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Reset — minimal browser normalization
    ========================================================================== */
@@ -704,6 +722,10 @@ body {
     }
 }
 
+}
+
+/* === partials/003_base.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Base — prevent layout shift from scrollbar
    ========================================================================== */
@@ -712,6 +734,10 @@ html {
     scrollbar-gutter: stable;
 }
 
+}
+
+/* === partials/004_layout.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Layout — Tetris-inspired block system
    ========================================================================== */
@@ -1283,6 +1309,10 @@ html {
     display: none;
 }
 
+}
+
+/* === partials/005_workbench.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Workbench
    ========================================================================== */
@@ -1476,6 +1506,10 @@ html {
     }
 }
 
+}
+
+/* === partials/006_entity-header.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Entity header (dashboard-grade)
    ========================================================================== */
@@ -1530,6 +1564,10 @@ html {
     display: none;
 }
 
+}
+
+/* === partials/007_inline-edit-field.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Inline edit field
    ========================================================================== */
@@ -1587,6 +1625,10 @@ html {
     opacity: 1;
 }
 
+}
+
+/* === partials/008_row-actions.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Row actions (kebab menu)
    ========================================================================== */
@@ -1595,6 +1637,10 @@ html {
     padding: var(--chirpui-spacing-xs);
 }
 
+}
+
+/* === partials/009_divider.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Divider
    ========================================================================== */
@@ -1679,6 +1725,10 @@ html {
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
+}
+
+/* === partials/010_avatar.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Avatar
    ========================================================================== */
@@ -1734,6 +1784,10 @@ html {
     box-shadow: 0 0 0 2px var(--chirpui-surface), 0 0 0 4px var(--chirpui-muted);
 }
 
+}
+
+/* === partials/011_media-object.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Media Object
    ========================================================================== */
@@ -1774,6 +1828,10 @@ html {
     display: none;
 }
 
+}
+
+/* === partials/012_stat.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Stat
    ========================================================================== */
@@ -1871,6 +1929,10 @@ html {
 }
 .chirpui-metric-card__footer:hover { color: var(--chirpui-accent-hover); }
 
+}
+
+/* === partials/013_action-bar.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Action Bar
    ========================================================================== */
@@ -1935,6 +1997,10 @@ a.chirpui-action-bar__item {
     color: inherit;
 }
 
+}
+
+/* === partials/014_action-containers.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Action Containers
    ========================================================================== */
@@ -2050,6 +2116,10 @@ a.chirpui-action-bar__item {
     }
 }
 
+}
+
+/* === partials/015_chat-layout.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Chat Layout
    ========================================================================== */
@@ -2118,6 +2188,10 @@ a.chirpui-action-bar__item {
     }
 }
 
+}
+
+/* === partials/016_message-bubble-and-thread.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Message Bubble & Thread
    ========================================================================== */
@@ -2182,6 +2256,10 @@ a.chirpui-action-bar__item {
     opacity: 0.85;
 }
 
+}
+
+/* === partials/017_typing-indicator.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Typing Indicator
    ========================================================================== */
@@ -2209,6 +2287,10 @@ a.chirpui-action-bar__item {
     40% { transform: scale(1); opacity: 1; }
 }
 
+}
+
+/* === partials/018_chat-input.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Chat Input
    ========================================================================== */
@@ -2269,6 +2351,10 @@ a.chirpui-action-bar__item {
     gap: var(--chirpui-spacing-sm);
 }
 
+}
+
+/* === partials/019_conversation-list-and-item.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Conversation List & Item
    ========================================================================== */
@@ -2360,6 +2446,10 @@ a.chirpui-action-bar__item {
     border-radius: 9999px;
 }
 
+}
+
+/* === partials/020_reaction-pill-and-message-reactions.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Reaction Pill & Message Reactions
    ========================================================================== */
@@ -2415,6 +2505,10 @@ a.chirpui-action-bar__item {
     color: var(--chirpui-text-muted);
 }
 
+}
+
+/* === partials/021_post-card.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Post Card (Social)
    ========================================================================== */
@@ -2495,6 +2589,10 @@ a.chirpui-post-card__name:hover {
     border-top: 1px solid var(--chirpui-border);
 }
 
+}
+
+/* === partials/022_comment-and-comment-thread.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Comment & Comment Thread
    ========================================================================== */
@@ -2582,6 +2680,10 @@ a.chirpui-comment__author:hover {
     border-bottom: none;
 }
 
+}
+
+/* === partials/023_profile-header.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Profile Header
    ========================================================================== */
@@ -2649,6 +2751,10 @@ a.chirpui-profile-header__name:hover {
     flex-shrink: 0;
 }
 
+}
+
+/* === partials/024_avatar-stack.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Avatar Stack
    ========================================================================== */
@@ -2680,6 +2786,10 @@ a.chirpui-profile-header__name:hover {
     color: var(--chirpui-text-muted);
 }
 
+}
+
+/* === partials/025_trending-tag-and-mention.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Trending Tag & Mention
    ========================================================================== */
@@ -2784,6 +2894,10 @@ a.chirpui-mention:focus-visible {
     outline-offset: var(--chirpui-state-focus-offset);
 }
 
+}
+
+/* === partials/026_breadcrumbs.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Breadcrumbs
    ========================================================================== */
@@ -2831,6 +2945,10 @@ a.chirpui-mention:focus-visible {
     color: var(--chirpui-text-muted);
 }
 
+}
+
+/* === partials/027_navbar.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Navbar
    ========================================================================== */
@@ -2860,6 +2978,10 @@ a.chirpui-mention:focus-visible {
     outline-offset: var(--chirpui-state-focus-offset);
 }
 
+}
+
+/* === partials/028_logo.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Logo
    ========================================================================== */
@@ -3007,6 +3129,10 @@ a.chirpui-mention:focus-visible {
     rotate: 90deg;
 }
 
+}
+
+/* === partials/029_sidebar.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Sidebar
    ========================================================================== */
@@ -3080,6 +3206,10 @@ a.chirpui-mention:focus-visible {
     background: var(--chirpui-sidebar-active-bg);
 }
 
+}
+
+/* === partials/030_stepper.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Stepper
    ========================================================================== */
@@ -3186,6 +3316,10 @@ a.chirpui-mention:focus-visible {
     display: none;
 }
 
+}
+
+/* === partials/031_wizard-form.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Wizard Form
    ========================================================================== */
@@ -3194,6 +3328,10 @@ a.chirpui-mention:focus-visible {
     margin-top: var(--chirpui-spacing-lg);
 }
 
+}
+
+/* === partials/032_description-list.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Description List
    ========================================================================== */
@@ -3275,6 +3413,10 @@ a.chirpui-mention:focus-visible {
     font-style: italic;
 }
 
+}
+
+/* === partials/033_settings-row.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Settings Row (label | status | detail)
    ========================================================================== */
@@ -3308,6 +3450,10 @@ a.chirpui-mention:focus-visible {
     font-family: var(--chirpui-ascii-font, ui-monospace, monospace);
 }
 
+}
+
+/* === partials/034_config-row.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Config Row (label | control)
    ========================================================================== */
@@ -3354,6 +3500,10 @@ a.chirpui-mention:focus-visible {
     margin-inline-start: calc(-1 * var(--chirpui-spacing-sm));
 }
 
+}
+
+/* === partials/035_timeline.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Timeline
    ========================================================================== */
@@ -3494,6 +3644,10 @@ a.chirpui-mention:focus-visible {
     z-index: 1;
 }
 
+}
+
+/* === partials/036_list.css === */
+@layer chirpui.component {
 /* ==========================================================================
    List
    ========================================================================== */
@@ -3542,6 +3696,10 @@ a.chirpui-mention:focus-visible {
     text-decoration: underline;
 }
 
+}
+
+/* === partials/037_utilities.css === */
+@layer chirpui.utility {
 /* ==========================================================================
    Utilities
    ========================================================================== */
@@ -3868,6 +4026,10 @@ a.chirpui-mention:focus-visible {
     background: var(--chirpui-bg-subtle);
 }
 
+}
+
+/* === partials/038_streaming-and-ai-components.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Streaming and AI components
    ========================================================================== */
@@ -4071,6 +4233,10 @@ a.chirpui-mention:focus-visible {
     }
 }
 
+}
+
+/* === partials/039_surface.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Surface
    ========================================================================== */
@@ -4080,6 +4246,10 @@ a.chirpui-mention:focus-visible {
     padding: var(--chirpui-space-surface-padding);
     min-width: 0;
     overflow-wrap: break-word;
+}
+
+.chirpui-surface a {
+    overflow-wrap: anywhere;
 }
 
 .chirpui-surface--default {
@@ -4235,6 +4405,10 @@ a.chirpui-mention:focus-visible {
     padding: 0;
 }
 
+}
+
+/* === partials/040_aura.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Aura — chromatic halo behind wrapped content (glass cards, panels, etc.)
    Pair with inner chirpui-surface--glass; keeps pseudos free on the surface
@@ -4369,6 +4543,10 @@ a.chirpui-mention:focus-visible {
     }
 }
 
+}
+
+/* === partials/041_callout.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Callout
    ========================================================================== */
@@ -4449,6 +4627,10 @@ a.chirpui-mention:focus-visible {
     font-size: var(--chirpui-font-sm);
 }
 
+}
+
+/* === partials/042_hero.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Hero
    ========================================================================== */
@@ -4553,6 +4735,10 @@ a.chirpui-mention:focus-visible {
     color: var(--chirpui-text-muted);
 }
 
+}
+
+/* === partials/043_overlay.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Overlay
    ========================================================================== */
@@ -4575,6 +4761,10 @@ a.chirpui-mention:focus-visible {
     background: var(--chirpui-overlay-gradient-top);
 }
 
+}
+
+/* === partials/044_carousel.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Carousel
    ========================================================================== */
@@ -4635,366 +4825,335 @@ a.chirpui-mention:focus-visible {
     background: var(--chirpui-accent);
 }
 
+}
+
+/* === partials/045_card.css === */
 /* ==========================================================================
-   Card
+   Card — @scope + @layer envelope (Sprint 5 pilot).
+
+   Upper scope boundary `.chirpui-card .chirpui-card` stops outer-card rules at
+   the first nested card, fixing bleed (e.g. outer :hover border-color leaking
+   into an inner card). See docs/PLAN-css-scope-and-layer.md § Sprint 5 and
+   examples/css-scope-prototype/card.scope.css.
    ========================================================================== */
 
-.chirpui-card {
-    background: var(--chirpui-surface);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius);
-    overflow: clip;
-    box-shadow: var(--chirpui-elevation-card-rest);
-    transition: border-color var(--chirpui-transition), box-shadow var(--chirpui-transition),
-        transform var(--chirpui-transition), opacity var(--chirpui-transition);
-    @starting-style {
-        opacity: 0;
-        transform: translateY(8px);
+@layer chirpui.component {
+    @scope (.chirpui-card) to (.chirpui-card .chirpui-card) {
+        :scope {
+            background: var(--chirpui-surface);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius);
+            overflow: clip;
+            box-shadow: var(--chirpui-elevation-card-rest);
+            transition:
+                border-color var(--chirpui-transition),
+                box-shadow var(--chirpui-transition),
+                transform var(--chirpui-transition),
+                opacity var(--chirpui-transition);
+            @starting-style {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+        }
+
+        .chirpui-card__header {
+            display: flex;
+            align-items: center;
+            gap: var(--chirpui-space-card-gap);
+            padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
+            font-family: var(--chirpui-ui-font-family);
+            font-size: var(--chirpui-ui-sm);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+            color: var(--chirpui-card-header-color);
+            border-bottom: 1px solid var(--chirpui-border);
+        }
+
+        .chirpui-card__icon {
+            font-size: 1em;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .chirpui-card__header-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chirpui-card__title {
+            display: block;
+            font-size: var(--chirpui-ui-base);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+        }
+
+        .chirpui-card__header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--chirpui-space-inline-gap);
+            margin-inline-start: auto;
+        }
+
+        .chirpui-card__header-badges {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: var(--chirpui-space-inline-gap);
+            flex-shrink: 0;
+            &:empty {
+                display: none;
+            }
+        }
+
+        .chirpui-card__header-subtitle {
+            margin-top: var(--chirpui-spacing-xs);
+            font-size: var(--chirpui-font-sm);
+            color: var(--chirpui-text-muted);
+            &:empty {
+                display: none;
+            }
+        }
+
+        .chirpui-card__body {
+            padding: var(--chirpui-space-card-padding);
+            a {
+                overflow-wrap: anywhere;
+                color: var(--chirpui-card-body-link-color);
+                text-decoration: var(--chirpui-card-body-link-decoration);
+                transition: color var(--chirpui-transition);
+                &:hover {
+                    color: var(--chirpui-card-body-link-hover-color);
+                }
+            }
+        }
+
+        .chirpui-card__body-actions {
+            &:empty {
+                display: none;
+            }
+            &:not(:empty) {
+                margin-top: var(--chirpui-space-card-gap);
+                display: flex;
+                align-items: center;
+                gap: var(--chirpui-space-control-gap);
+            }
+        }
+
+        /* Squeeze body padding when a footer is present. `:scope` replaces
+           the verbose `.chirpui-card .chirpui-card__body` descendant compound. */
+        :scope:has(.chirpui-card__footer) .chirpui-card__body,
+        :scope:has(.chirpui-card__footer-wrap:not(:empty)) .chirpui-card__body {
+            padding-bottom: var(--chirpui-space-card-gap);
+        }
+
+        .chirpui-card__footer {
+            padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
+            border-top: 1px solid var(--chirpui-border);
+            font-size: var(--chirpui-font-sm);
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-card__footer-wrap:not(:empty) {
+            border-top: 1px solid var(--chirpui-border);
+            padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
+            font-size: var(--chirpui-font-sm);
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-card__top-meta {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-space-inline-gap);
+            padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
+            border-bottom: 1px solid var(--chirpui-border);
+            font-size: var(--chirpui-font-xs);
+            &:empty {
+                display: none;
+            }
+        }
+
+        .chirpui-card__main-link {
+            display: block;
+            flex: 1;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .chirpui-card__media {
+            overflow: clip;
+            &:empty {
+                display: none;
+            }
+            img,
+            video {
+                display: block;
+                width: 100%;
+                height: auto;
+                aspect-ratio: var(--chirpui-video-aspect-ratio);
+                object-fit: cover;
+            }
+        }
+
+        /* Variants — nested &.modifier reads like a spec. */
+        :scope {
+            &.chirpui-card--collapsible summary {
+                cursor: pointer;
+                list-style: none;
+                &::before {
+                    content: "\25B6";
+                    display: inline-block;
+                    margin-right: var(--chirpui-spacing-xs);
+                    transition: transform var(--chirpui-transition);
+                    font-size: 0.75em;
+                }
+            }
+            &.chirpui-card--collapsible[open] summary::before {
+                rotate: 90deg;
+            }
+
+            &.chirpui-card--feature .chirpui-card__media,
+            &.chirpui-card--media .chirpui-card__media {
+                order: -1;
+            }
+
+            &.chirpui-card--horizontal {
+                display: flex;
+                flex-direction: row;
+                .chirpui-card__media {
+                    flex: 0 0 40%;
+                    max-width: 12rem;
+                    img,
+                    video {
+                        aspect-ratio: 1;
+                        height: 100%;
+                    }
+                }
+            }
+
+            &.chirpui-card--stats {
+                .chirpui-card__body {
+                    text-align: center;
+                }
+                .chirpui-card__header {
+                    border-bottom: none;
+                    font-size: var(--chirpui-font-2xl);
+                    font-weight: var(--chirpui-ui-font-weight-bold);
+                }
+            }
+
+            &.chirpui-card--glass {
+                background: color-mix(in srgb, var(--chirpui-surface) 80%, transparent);
+                backdrop-filter: blur(8px);
+            }
+
+            &.chirpui-card--gradient-border {
+                border: 2px solid var(--chirpui-border);
+            }
+
+            &.chirpui-card--gradient-header .chirpui-card__header {
+                background: var(--chirpui-gradient-subtle);
+            }
+        }
+
+        @supports (background-clip: padding-box) {
+            :scope.chirpui-card--gradient-border {
+                background:
+                    linear-gradient(var(--chirpui-surface), var(--chirpui-surface)),
+                    var(--chirpui-gradient-border);
+                background-origin: padding-box, border-box;
+                background-clip: padding-box, border-box;
+                background-repeat: no-repeat;
+                border: 2px solid transparent;
+            }
+        }
+
+        /* Interactive states. */
+        :scope:not(.chirpui-card--link):hover {
+            border-color: var(--chirpui-card-hover-border);
+            box-shadow: var(--chirpui-elevation-card-hover);
+        }
+
+        :scope.chirpui-card--hoverable:not(.chirpui-card--link) {
+            cursor: pointer;
+            transition:
+                transform var(--chirpui-transition),
+                box-shadow var(--chirpui-transition);
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            :scope:not(.chirpui-card--link):hover {
+                transform: translateY(-2px);
+            }
+            :scope.chirpui-card--hoverable:not(.chirpui-card--link):hover {
+                transform: translateY(-2px);
+                box-shadow: var(--chirpui-shadow-md);
+            }
+        }
+
+        /* --link / --linked (anchor-card patterns). */
+        :scope {
+            &.chirpui-card--link,
+            &.chirpui-card--linked {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                transition:
+                    box-shadow var(--chirpui-transition),
+                    border-color var(--chirpui-transition);
+            }
+            &.chirpui-card--link {
+                text-decoration: none;
+                color: inherit;
+                cursor: pointer;
+            }
+            &.chirpui-card--link .chirpui-card__body,
+            &.chirpui-card--linked .chirpui-card__body {
+                flex: 1;
+            }
+
+            &.chirpui-card--link:hover,
+            &.chirpui-card--linked:hover,
+            &.chirpui-card--linked:has(.chirpui-card__main-link:focus-visible) {
+                border-color: var(--chirpui-state-border-hover);
+                box-shadow: var(--chirpui-elevation-card-hover);
+            }
+
+            &.chirpui-card--link:focus-visible,
+            &.chirpui-card--linked:has(.chirpui-card__main-link:focus-visible) {
+                outline: var(--chirpui-state-focus-outline);
+                outline-offset: var(--chirpui-state-focus-offset);
+            }
+
+            &.chirpui-card--link:active,
+            &.chirpui-card--linked:has(.chirpui-card__main-link:active) {
+                box-shadow: var(--chirpui-elevation-card-rest);
+                border-color: var(--chirpui-state-border-active);
+            }
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            :scope {
+                &.chirpui-card--link,
+                &.chirpui-card--linked {
+                    transition:
+                        box-shadow var(--chirpui-transition),
+                        border-color var(--chirpui-transition),
+                        transform var(--chirpui-transition);
+                }
+                &.chirpui-card--link:hover,
+                &.chirpui-card--linked:hover,
+                &.chirpui-card--linked:has(.chirpui-card__main-link:focus-visible) {
+                    transform: translateY(-2px);
+                }
+                &.chirpui-card--link:active,
+                &.chirpui-card--linked:has(.chirpui-card__main-link:active) {
+                    transform: translateY(0);
+                }
+            }
+        }
     }
 }
 
-.chirpui-card__header {
-    display: flex;
-    align-items: center;
-    gap: var(--chirpui-space-card-gap);
-    padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
-    font-family: var(--chirpui-ui-font-family);
-    font-size: var(--chirpui-ui-sm);
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-    color: var(--chirpui-card-header-color);
-    border-bottom: 1px solid var(--chirpui-border);
-}
-
-.chirpui-card__icon {
-    font-size: 1em;
-    line-height: 1;
-    flex-shrink: 0;
-}
-
-.chirpui-card__header-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.chirpui-card__title {
-    display: block;
-    font-size: var(--chirpui-ui-base);
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-}
-
-.chirpui-card__header-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--chirpui-space-inline-gap);
-    margin-inline-start: auto;
-}
-
-.chirpui-card__header-badges {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--chirpui-space-inline-gap);
-    flex-shrink: 0;
-}
-
-.chirpui-card__header-badges:empty {
-    display: none;
-}
-
-.chirpui-card__header-subtitle {
-    margin-top: var(--chirpui-spacing-xs);
-    font-size: var(--chirpui-font-sm);
-    color: var(--chirpui-text-muted);
-}
-
-.chirpui-card__header-subtitle:empty {
-    display: none;
-}
-
-.chirpui-card__body {
-    padding: var(--chirpui-space-card-padding);
-}
-
-.chirpui-card__body-actions:empty {
-    display: none;
-}
-
-.chirpui-card__body-actions:not(:empty) {
-    margin-top: var(--chirpui-space-card-gap);
-    display: flex;
-    align-items: center;
-    gap: var(--chirpui-space-control-gap);
-}
-
-/* Links in card body — no underline by default; card/title signals clickability.
-   overflow-wrap: anywhere lets long URLs break instead of punching past the card. */
-.chirpui-card__body a,
-.chirpui-surface a {
-    overflow-wrap: anywhere;
-}
-
-.chirpui-card__body a {
-    color: var(--chirpui-card-body-link-color);
-    text-decoration: var(--chirpui-card-body-link-decoration);
-    transition: color var(--chirpui-transition);
-}
-
-.chirpui-card__body a:hover {
-    color: var(--chirpui-card-body-link-hover-color);
-}
-
-.chirpui-card:has(.chirpui-card__footer) .chirpui-card__body,
-.chirpui-card:has(.chirpui-card__footer-wrap:not(:empty)) .chirpui-card__body {
-    padding-bottom: var(--chirpui-space-card-gap);
-}
-
-.chirpui-card__footer {
-    padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
-    border-top: 1px solid var(--chirpui-border);
-    font-size: var(--chirpui-font-sm);
-    color: var(--chirpui-text-muted);
-}
-
-.chirpui-card__footer-wrap:not(:empty) {
-    border-top: 1px solid var(--chirpui-border);
-    padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
-    font-size: var(--chirpui-font-sm);
-    color: var(--chirpui-text-muted);
-}
-
-.chirpui-card__top-meta {
-    display: flex;
-    flex-direction: column;
-    gap: var(--chirpui-space-inline-gap);
-    padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
-    border-bottom: 1px solid var(--chirpui-border);
-    font-size: var(--chirpui-font-xs);
-}
-
-.chirpui-card__top-meta:empty {
-    display: none;
-}
-
-.chirpui-card__main-link {
-    display: block;
-    flex: 1;
-    color: inherit;
-    text-decoration: none;
-}
-
-.chirpui-resource-card {
-    height: 100%;
-}
-
-.chirpui-resource-card__description {
-    margin: 0;
-}
-
-.chirpui-card--collapsible summary {
-    cursor: pointer;
-    list-style: none;
-}
-
-.chirpui-card--collapsible summary::before {
-    content: "\25B6";
-    display: inline-block;
-    margin-right: var(--chirpui-spacing-xs);
-    transition: transform var(--chirpui-transition);
-    font-size: 0.75em;
-}
-
-.chirpui-card--collapsible[open] summary::before {
-    rotate: 90deg;
-}
-
-.chirpui-card__media {
-    overflow: clip;
-}
-
-.chirpui-card__media:empty {
-    display: none;
-}
-
-.chirpui-card__media img,
-.chirpui-card__media video {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: var(--chirpui-video-aspect-ratio);
-    object-fit: cover;
-}
-
-.chirpui-card--feature .chirpui-card__media,
-.chirpui-card--media .chirpui-card__media {
-    order: -1;
-}
-
-.chirpui-card--horizontal {
-    display: flex;
-    flex-direction: row;
-}
-
-.chirpui-card--horizontal .chirpui-card__media {
-    flex: 0 0 40%;
-    max-width: 12rem;
-}
-
-.chirpui-card--horizontal .chirpui-card__media img,
-.chirpui-card--horizontal .chirpui-card__media video {
-    aspect-ratio: 1;
-    height: 100%;
-}
-
-.chirpui-card--stats .chirpui-card__body {
-    text-align: center;
-}
-
-.chirpui-card--stats .chirpui-card__header {
-    border-bottom: none;
-    font-size: var(--chirpui-font-2xl);
-    font-weight: var(--chirpui-ui-font-weight-bold);
-}
-
-.chirpui-card--glass {
-    background: color-mix(in srgb, var(--chirpui-surface) 80%, transparent);
-    backdrop-filter: blur(8px);
-}
-
-/* Gradient border — dual background, background-clip; fallback solid */
-.chirpui-card--gradient-border {
-    border: 2px solid var(--chirpui-border);
-}
-@supports (background-clip: padding-box) {
-    .chirpui-card--gradient-border {
-        background: linear-gradient(var(--chirpui-surface), var(--chirpui-surface)),
-            var(--chirpui-gradient-border);
-        background-origin: padding-box, border-box;
-        background-clip: padding-box, border-box;
-        background-repeat: no-repeat;
-        border: 2px solid transparent;
-    }
-}
-
-.chirpui-card--gradient-header .chirpui-card__header {
-    background: var(--chirpui-gradient-subtle);
-}
-
-.chirpui-card--hoverable:not(.chirpui-card--link) {
-    cursor: pointer;
-    transition: transform var(--chirpui-transition), box-shadow var(--chirpui-transition);
-}
-
-.chirpui-card:not(.chirpui-card--link):hover {
-    border-color: var(--chirpui-card-hover-border);
-    box-shadow: var(--chirpui-elevation-card-hover);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .chirpui-card:not(.chirpui-card--link):hover {
-        transform: translateY(-2px);
-    }
-
-    .chirpui-card--hoverable:not(.chirpui-card--link):hover {
-        transform: translateY(-2px);
-        box-shadow: var(--chirpui-shadow-md);
-    }
-}
-
-.chirpui-card--link {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    transition: box-shadow var(--chirpui-transition), border-color var(--chirpui-transition);
-}
-
-.chirpui-card--linked {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    transition: box-shadow var(--chirpui-transition), border-color var(--chirpui-transition);
-}
-
-.chirpui-resource-index {
-    width: 100%;
-}
-
-.chirpui-resource-index__search,
-.chirpui-resource-index__filters,
-.chirpui-resource-index__results {
-    width: 100%;
-}
-
-.chirpui-card--link .chirpui-card__body {
-    flex: 1;
-}
-
-.chirpui-card--linked .chirpui-card__body {
-    flex: 1;
-}
-
-.chirpui-card--link:hover {
-    border-color: var(--chirpui-state-border-hover);
-    box-shadow: var(--chirpui-elevation-card-hover);
-}
-
-.chirpui-card--linked:hover,
-.chirpui-card--linked:has(.chirpui-card__main-link:focus-visible) {
-    border-color: var(--chirpui-state-border-hover);
-    box-shadow: var(--chirpui-elevation-card-hover);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .chirpui-card--link {
-        transition: box-shadow var(--chirpui-transition), border-color var(--chirpui-transition),
-            transform var(--chirpui-transition);
-    }
-
-    .chirpui-card--linked {
-        transition: box-shadow var(--chirpui-transition), border-color var(--chirpui-transition),
-            transform var(--chirpui-transition);
-    }
-
-    .chirpui-card--link:hover {
-        transform: translateY(-2px);
-    }
-
-    .chirpui-card--linked:hover,
-    .chirpui-card--linked:has(.chirpui-card__main-link:focus-visible) {
-        transform: translateY(-2px);
-    }
-
-    .chirpui-card--link:active {
-        transform: translateY(0);
-    }
-
-    .chirpui-card--linked:has(.chirpui-card__main-link:active) {
-        transform: translateY(0);
-    }
-}
-
-.chirpui-card--link:focus-visible {
-    outline: var(--chirpui-state-focus-outline);
-    outline-offset: var(--chirpui-state-focus-offset);
-}
-
-.chirpui-card--linked:has(.chirpui-card__main-link:focus-visible) {
-    outline: var(--chirpui-state-focus-outline);
-    outline-offset: var(--chirpui-state-focus-offset);
-}
-
-.chirpui-card--link:active {
-    box-shadow: var(--chirpui-elevation-card-rest);
-    border-color: var(--chirpui-state-border-active);
-}
-
-.chirpui-card--linked:has(.chirpui-card__main-link:active) {
-    box-shadow: var(--chirpui-elevation-card-rest);
-    border-color: var(--chirpui-state-border-active);
-}
-
+/* === partials/046_video-card.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Video Card
    ========================================================================== */
@@ -5087,6 +5246,10 @@ a.chirpui-mention:focus-visible {
     text-decoration: underline;
 }
 
+}
+
+/* === partials/047_channel-card.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Channel Card
    ========================================================================== */
@@ -5139,6 +5302,10 @@ a.chirpui-mention:focus-visible {
     flex-shrink: 0;
 }
 
+}
+
+/* === partials/048_video-thumbnail.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Video Thumbnail
    ========================================================================== */
@@ -5197,6 +5364,10 @@ a.chirpui-mention:focus-visible {
     background: var(--chirpui-error);
 }
 
+}
+
+/* === partials/049_live-badge.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Live Badge
    ========================================================================== */
@@ -5230,6 +5401,10 @@ a.chirpui-mention:focus-visible {
     opacity: 0.9;
 }
 
+}
+
+/* === partials/050_playlist.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Playlist
    ========================================================================== */
@@ -5314,6 +5489,10 @@ a.chirpui-mention:focus-visible {
     color: var(--chirpui-text-muted);
 }
 
+}
+
+/* === partials/051_chapter-list.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Chapter List
    ========================================================================== */
@@ -5403,6 +5582,10 @@ a.chirpui-chapter-item__link:focus-visible {
     min-width: 0;
 }
 
+}
+
+/* === partials/052_modal.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Modal
    ========================================================================== */
@@ -5559,6 +5742,10 @@ dialog.chirpui-modal a {
     background: color-mix(in srgb, var(--chirpui-error) 85%, black);
 }
 
+}
+
+/* === partials/053_drawer.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Drawer
    ========================================================================== */
@@ -5665,6 +5852,10 @@ dialog.chirpui-modal a {
     min-height: 0;
 }
 
+}
+
+/* === partials/054_tabs.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Tabs
    ========================================================================== */
@@ -5707,6 +5898,10 @@ dialog.chirpui-modal a {
     pointer-events: none;
 }
 
+}
+
+/* === partials/055_accordion.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Accordion
    ========================================================================== */
@@ -5789,6 +5984,10 @@ dialog.chirpui-modal a {
     to { opacity: 1; }
 }
 
+}
+
+/* === partials/056_collapse.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Collapse
    ========================================================================== */
@@ -5858,6 +6057,10 @@ dialog.chirpui-modal a {
     animation: chirpui-accordion-content-in var(--chirpui-transition-slow) var(--chirpui-ease-spring);
 }
 
+}
+
+/* === partials/057_dropdown.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Dropdown
    ========================================================================== */
@@ -6431,6 +6634,10 @@ a.chirpui-tag:active {
     max-width: 100%;
 }
 
+}
+
+/* === partials/058_toast.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Toast
    ========================================================================== */
@@ -6489,6 +6696,10 @@ a.chirpui-tag:active {
     outline-offset: var(--chirpui-state-focus-offset);
 }
 
+}
+
+/* === partials/059_table.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Table
    ========================================================================== */
@@ -6737,6 +6948,10 @@ a.chirpui-tag:active {
     flex-wrap: wrap;
 }
 
+}
+
+/* === partials/060_pagination.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Pagination
    ========================================================================== */
@@ -6798,6 +7013,10 @@ button.chirpui-pagination__link {
     color: var(--chirpui-text-muted);
 }
 
+}
+
+/* === partials/061_alert.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Alert
    ========================================================================== */
@@ -6886,6 +7105,10 @@ button.chirpui-pagination__link {
     margin-top: 0;
 }
 
+}
+
+/* === partials/062_route-tabs.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Route tabs — subsection navigation (route-backed, HTMX swap)
    ========================================================================== */
@@ -6948,6 +7171,10 @@ button.chirpui-pagination__link {
     border-radius: 9999px;
 }
 
+}
+
+/* === partials/063_theme-toggle.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Theme toggle
    ========================================================================== */
@@ -6971,6 +7198,10 @@ button.chirpui-pagination__link {
     opacity: 1;
 }
 
+}
+
+/* === partials/064_dropdown-menu.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Dropdown menu (items-based, JS-driven)
    ========================================================================== */
@@ -7053,6 +7284,10 @@ button.chirpui-pagination__link {
     background: var(--chirpui-primary-muted);
 }
 
+}
+
+/* === partials/065_tray.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Tray (slide-out panel)
    ========================================================================== */
@@ -7151,6 +7386,10 @@ button.chirpui-pagination__link {
     padding: var(--chirpui-spacing);
 }
 
+}
+
+/* === partials/066_modal-overlay.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Modal overlay (div-based, for modal_overlay component)
    ========================================================================== */
@@ -7205,6 +7444,10 @@ button.chirpui-pagination__link {
     opacity: 1;
 }
 
+}
+
+/* === partials/067_tabs-panels.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Tabs panels (button-based)
    ========================================================================== */
@@ -7238,6 +7481,10 @@ button.chirpui-pagination__link {
     display: none;
 }
 
+}
+
+/* === partials/068_data-theme-support.css === */
+@layer chirpui.component {
 /* ==========================================================================
    data-theme support (for theme toggle)
    ========================================================================== */
@@ -7259,6 +7506,10 @@ button.chirpui-pagination__link {
     }
 }
 
+}
+
+/* === partials/069_data-style-support.css === */
+@layer chirpui.component {
 /* ==========================================================================
    data-style support (artistic preset axis)
    ========================================================================== */
@@ -7687,6 +7938,10 @@ button.chirpui-pagination__link {
 
 /* end neumorphic theme */
 
+}
+
+/* === partials/070_form-fields.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Form Fields
    ========================================================================== */
@@ -8722,6 +8977,10 @@ input[type="date"].chirpui-field__input {
     }
 }
 
+}
+
+/* === partials/071_button.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Button
    ========================================================================== */
@@ -8973,6 +9232,10 @@ a.chirpui-btn {
     display: inline-flex;
 }
 
+}
+
+/* === partials/072_badge.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Badge
    ========================================================================== */
@@ -9158,6 +9421,10 @@ a.chirpui-badge--custom-solid:hover {
     gap: var(--chirpui-spacing-sm);
 }
 
+}
+
+/* === partials/073_spinner.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Spinner
    ========================================================================== */
@@ -9224,6 +9491,10 @@ a.chirpui-badge--custom-solid:hover {
     }
 }
 
+}
+
+/* === partials/074_ascii-icons.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Icons — Unicode symbols as primary icons
    ========================================================================== */
@@ -9389,6 +9660,10 @@ a.chirpui-badge--custom-solid:hover {
     }
 }
 
+}
+
+/* === partials/075_skeleton.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Skeleton
    ========================================================================== */
@@ -9473,6 +9748,10 @@ a.chirpui-badge--custom-solid:hover {
     display: contents;
 }
 
+}
+
+/* === partials/076_infinite-scroll.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Infinite Scroll
    ========================================================================== */
@@ -9491,6 +9770,10 @@ a.chirpui-badge--custom-solid:hover {
     padding: var(--chirpui-spacing);
 }
 
+}
+
+/* === partials/077_reveal-on-scroll.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Reveal on Scroll (Alpine Intersect)
    ========================================================================== */
@@ -9499,6 +9782,10 @@ a.chirpui-badge--custom-solid:hover {
     /* min-height: 1px set inline so Intersection Observer has a valid target */
 }
 
+}
+
+/* === partials/078_empty-state.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Empty State
    ========================================================================== */
@@ -9591,6 +9878,10 @@ a.chirpui-badge--custom-solid:hover {
     margin-top: var(--chirpui-spacing-sm);
 }
 
+}
+
+/* === partials/079_progress-bar.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Progress Bar
    ========================================================================== */
@@ -9664,6 +9955,10 @@ a.chirpui-badge--custom-solid:hover {
     color: var(--chirpui-text-muted);
 }
 
+}
+
+/* === partials/080_bar-chart.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Bar Chart (CSS-only horizontal bars)
    ========================================================================== */
@@ -9745,6 +10040,10 @@ a.chirpui-badge--custom-solid:hover {
     text-align: right;
 }
 
+}
+
+/* === partials/081_donut-chart.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Donut Chart (CSS-only conic gradient)
    ========================================================================== */
@@ -9806,6 +10105,10 @@ a.chirpui-badge--custom-solid:hover {
     --chirpui-donut-fill: var(--chirpui-text-muted);
 }
 
+}
+
+/* === partials/082_status-indicator.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Status Indicator
    ========================================================================== */
@@ -9907,6 +10210,10 @@ a.chirpui-badge--custom-solid:hover {
     box-shadow: 0 0 0 2px var(--chirpui-surface);
 }
 
+}
+
+/* === partials/083_app-shell.css === */
+@layer chirpui.component {
 /* ==========================================================================
    App Shell
    ========================================================================== */
@@ -10235,6 +10542,9 @@ html {
     transform-origin: left;
     z-index: var(--chirpui-z-dropdown);
     pointer-events: none;
+    /* If a page sets display:grid on main, don't claim an auto-placed slot. */
+    grid-column: 1 / -1;
+    grid-row: 1;
 }
 
 .chirpui-app-shell__main.htmx-request::before {
@@ -10310,6 +10620,10 @@ body.htmx-request .chirpui-nav-progress::after {
     gap: var(--chirpui-spacing-md);
 }
 
+}
+
+/* === partials/084_app-shell-sidebar.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Sidebar — section links container
    ========================================================================== */
@@ -10346,6 +10660,10 @@ body.htmx-request .chirpui-nav-progress::after {
     rotate: 90deg;
 }
 
+}
+
+/* === partials/085_command-palette.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Command Palette
    ========================================================================== */
@@ -10463,6 +10781,10 @@ body.htmx-request .chirpui-nav-progress::after {
     border: 1px solid var(--chirpui-border);
 }
 
+}
+
+/* === partials/086_utility-inline-grouping-and-measures.css === */
+@layer chirpui.utility {
 /* ==========================================================================
    Utility: Inline grouping and measures
    ========================================================================== */
@@ -10501,6 +10823,10 @@ body.htmx-request .chirpui-nav-progress::after {
     padding-inline-start: 1.25rem;
 }
 
+}
+
+/* === partials/087_utility-auto-fill-grid.css === */
+@layer chirpui.utility {
 /* ==========================================================================
    Utility: Auto-fill grid (for tag filters, etc.)
    ========================================================================== */
@@ -10518,6 +10844,10 @@ body.htmx-request .chirpui-nav-progress::after {
     white-space: nowrap;
 }
 
+}
+
+/* === partials/088_inner-shell-sections.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Inner shell sections (nested layouts: forum > subforum > thread)
    ========================================================================== */
@@ -10538,6 +10868,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/089_effects-foundation.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Effects Foundation — @property, @keyframes, reduced-motion
    ========================================================================== */
@@ -10905,6 +11239,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/090_shimmer-button.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Shimmer Button
    ========================================================================== */
@@ -10949,6 +11287,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-shimmer-btn--lg { padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg); font-size: var(--chirpui-ui-base); }
 
 
+}
+
+/* === partials/091_ripple-button.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Ripple Button
    ========================================================================== */
@@ -10989,6 +11331,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ripple-btn--lg { padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg); font-size: var(--chirpui-ui-base); }
 
 
+}
+
+/* === partials/092_border-beam.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Border Beam
    ========================================================================== */
@@ -11019,6 +11365,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-border-beam--warning .chirpui-border-beam__beam { --chirpui-beam-color: var(--chirpui-warning); }
 
 
+}
+
+/* === partials/093_notification-dot.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Notification Dot
    ========================================================================== */
@@ -11090,6 +11440,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/094_number-ticker.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Number Ticker
    ========================================================================== */
@@ -11112,6 +11466,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-number-ticker--xl { font-size: var(--chirpui-prose-2xl); }
 
 
+}
+
+/* === partials/095_marquee.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Marquee
    ========================================================================== */
@@ -11153,6 +11511,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/096_meteor-effect.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Meteor Effect
    ========================================================================== */
@@ -11179,6 +11541,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-meteor--muted .chirpui-meteor__streak { --chirpui-beam-color: var(--chirpui-text-muted); }
 
 
+}
+
+/* === partials/097_text-reveal.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Text Reveal
    ========================================================================== */
@@ -11195,6 +11561,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/098_display-text.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Display Text — large hero/landing headings
    ========================================================================== */
@@ -11210,6 +11580,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/099_gradient-text.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Gradient Text
    ========================================================================== */
@@ -11233,6 +11607,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/100_glow-card.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Glow Card
    ========================================================================== */
@@ -11267,6 +11645,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-glow-card--muted { --chirpui-glow-color: color-mix(in srgb, var(--chirpui-text-muted) 20%, transparent); }
 
 
+}
+
+/* === partials/101_spotlight-card.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Spotlight Card
    ========================================================================== */
@@ -11302,6 +11684,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/102_particle-background.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Particle Background
    ========================================================================== */
@@ -11340,6 +11726,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-particle-bg--muted .chirpui-particle-bg__dot { background: var(--chirpui-text-muted); opacity: 0.3; }
 
 
+}
+
+/* === partials/103_animated-counter.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Animated Counter
    ========================================================================== */
@@ -11371,6 +11761,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/104_pulsing-button.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Pulsing Button
    ========================================================================== */
@@ -11402,6 +11796,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/105_bento-grid.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Bento Grid
    ========================================================================== */
@@ -11427,6 +11825,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/106_floating-dock.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Floating Dock
    ========================================================================== */
@@ -11482,6 +11884,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-dock--lg .chirpui-dock__item { width: 48px; height: 48px; }
 
 
+}
+
+/* === partials/107_animated-stat-card.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Animated Stat Card (composite)
    ========================================================================== */
@@ -11507,6 +11913,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-animated-stat-card__trend--down { color: var(--chirpui-error); }
 
 
+}
+
+/* === partials/108_hero-effects.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Hero Effects (composite wrapper)
    ========================================================================== */
@@ -11522,6 +11932,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/109_marquee-item.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Marquee Item
    ========================================================================== */
@@ -11536,6 +11950,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/110_tooltip.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Tooltip (enhanced with bubble + arrow)
    ========================================================================== */
@@ -11656,6 +12074,10 @@ body.htmx-request .chirpui-nav-progress::after {
     }
 }
 
+}
+
+/* === partials/111_icon-button.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Icon Button
    ========================================================================== */
@@ -11693,6 +12115,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-icon-btn--lg { width: 2.75rem; height: 2.75rem; font-size: var(--chirpui-ui-base); }
 
 
+}
+
+/* === partials/112_segmented-control.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Segmented Control
    ========================================================================== */
@@ -11737,6 +12163,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-segmented--lg .chirpui-segmented__option { padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md); font-size: var(--chirpui-ui-base); }
 
 
+}
+
+/* === partials/113_split-panel.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Split Panel
    ========================================================================== */
@@ -11788,6 +12218,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-split-panel--dragging { user-select: none; }
 
 
+}
+
+/* === partials/114_typewriter.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Typewriter — step-based text reveal with blinking cursor
    ========================================================================== */
@@ -11815,6 +12249,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-typewriter--slow .chirpui-typewriter__text { --chirpui-typewriter-duration: 4s; }
 
 
+}
+
+/* === partials/115_glitch-text.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Glitch Text — RGB-split distortion effect
    ========================================================================== */
@@ -11855,6 +12293,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-glitch--intense::after { animation-duration: 1s; }
 
 
+}
+
+/* === partials/116_neon-text.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Neon Text — layered text-shadow glow
    ========================================================================== */
@@ -11885,6 +12327,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/117_aurora-background.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Aurora Background — drifting gradient blobs
    ========================================================================== */
@@ -11933,6 +12379,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/118_scanline-overlay.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Scanline Overlay — CRT/retro line effect
    ========================================================================== */
@@ -11980,6 +12430,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/119_grain-overlay.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Grain Overlay — film grain texture
    ========================================================================== */
@@ -12014,6 +12468,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/120_svg-pattern-tiles.css === */
+@layer chirpui.component {
 /* ==========================================================================
    SVG pattern tiles — mini assets + overlay utilities (layer under content)
    Serve chirp_ui.static_path() so chirpui.css and patterns/*.svg share a base URL.
@@ -12105,6 +12563,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/121_css-only-bg-patterns.css === */
+@layer chirpui.component {
 /* ==========================================================================
    CSS-only bg patterns — gradient tiles (no SVG); ink follows --chirpui-bg-pattern-*
    Pair with chirpui-surface--*, elevation tokens, or SVG .chirpui-texture on another layer.
@@ -12205,6 +12667,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/122_band.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Band — section chrome + optional dot/grid overlay (::after). Use with gradients.
    ========================================================================== */
@@ -12262,6 +12728,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/123_page-ambient.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Page ambient — mesh + SVG noise; first child inside .chirpui-ambient-root
    ========================================================================== */
@@ -12322,6 +12792,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/124_surface-overlays.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Surface overlays — noise / static scan
    Do not combine with chirpui-surface--cornered (both use ::before/::after).
@@ -12380,6 +12854,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/125_orbit.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Orbit — items rotating around a center
    ========================================================================== */
@@ -12440,6 +12918,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-orbit--reverse .chirpui-orbit__item { animation-direction: reverse; }
 
 
+}
+
+/* === partials/126_sparkle.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Sparkle — staggered star twinkles
    ========================================================================== */
@@ -12491,6 +12973,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-sparkle--rainbow .chirpui-sparkle__star:nth-child(6) { --chirpui-sparkle-color: #f0c; }
 
 
+}
+
+/* === partials/127_confetti.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Confetti — Alpine-triggered celebration burst
    ========================================================================== */
@@ -12523,6 +13009,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/128_wobble-jello-rubber-band.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Wobble/Jello/Rubber-band — micro-interaction utilities
    ========================================================================== */
@@ -12542,6 +13032,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-click-jello:active { animation: chirpui-jello 0.6s ease-in-out; }
 
 
+}
+
+/* === partials/129_symbol-rain.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Symbol Rain — cascading ASCII characters
    ========================================================================== */
@@ -12580,6 +13074,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-symbol-rain--muted .chirpui-symbol-rain__drop { --chirpui-symbol-rain-color: var(--chirpui-text-muted); opacity: 0.4; }
 
 
+}
+
+/* === partials/130_holy-light.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Holy Light — divine ascending sparkles with parallax
    ========================================================================== */
@@ -12657,6 +13155,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-holy-light--subtle .chirpui-holy-light__layer--mid .chirpui-holy-light__mote { font-size: 0.625rem; }
 
 
+}
+
+/* === partials/131_rune-field.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Rune Field — mystical drifting symbols with parallax
    ========================================================================== */
@@ -12733,6 +13235,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-rune-field--ember { --chirpui-rune-color: #fb923c; }
 
 
+}
+
+/* === partials/132_constellation.css === */
+@layer chirpui.component {
 /* ==========================================================================
    Constellation — twinkling ASCII starfield
    ========================================================================== */
@@ -12789,6 +13295,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-constellation--sparse { --chirpui-star-base-opacity: 0.2; --chirpui-star-twinkle-speed: 5s; }
 
 
+}
+
+/* === partials/133_ascii-border.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Border — box-drawing character frame
    ========================================================================== */
@@ -12874,6 +13384,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/134_ascii-divider.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Divider — glyph-centered horizontal separator
    ========================================================================== */
@@ -12948,6 +13462,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/135_ascii-sparkline.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Sparkline — inline block-character data visualization
    ========================================================================== */
@@ -12979,6 +13497,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/136_ascii-progress.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Progress — terminal-style progress bar
    ========================================================================== */
@@ -13018,6 +13540,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-progress--success { --chirpui-ascii-progress-fill: var(--chirpui-success); }
 .chirpui-ascii-progress--warning { --chirpui-ascii-progress-fill: var(--chirpui-warning); }
 
+}
+
+/* === partials/137_ascii-empty.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Empty — zero-data empty state
    ========================================================================== */
@@ -13063,6 +13589,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-empty--muted .chirpui-ascii-empty__glyph { color: var(--chirpui-text-muted); opacity: 0.3; }
 .chirpui-ascii-empty--accent .chirpui-ascii-empty__glyph { color: var(--chirpui-accent); opacity: 0.6; }
 
+}
+
+/* === partials/138_ascii-spinner.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Spinner
    ========================================================================== */
@@ -13155,6 +13685,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-spinner--blocks .chirpui-ascii-spinner__char:nth-child(3) { animation-delay: -0.4s; }
 .chirpui-ascii-spinner--blocks .chirpui-ascii-spinner__char:nth-child(4) { animation-delay: -0.2s; }
 
+}
+
+/* === partials/139_ascii-badge.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Badge
    ========================================================================== */
@@ -13189,6 +13723,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-badge--muted { --chirpui-ascii-badge-color: var(--chirpui-text-muted); }
 
 
+}
+
+/* === partials/140_ascii-glyph-fill.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Glyph Fill — hover/active micro-moments
    Swap between hollow and filled glyphs on interaction.
@@ -13229,6 +13767,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/141_ascii-error-page.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Error Page — stylized error states with ASCII art
    ========================================================================== */
@@ -13282,6 +13824,10 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 
+}
+
+/* === partials/142_ascii-skeleton.css === */
+@layer chirpui.component {
 /* ==========================================================================
    ASCII Skeleton — character-based loading placeholder
    ========================================================================== */
@@ -13369,6 +13915,10 @@ body.htmx-request .chirpui-nav-progress::after {
     font-size: inherit;
 }
 
+}
+
+/* === partials/143_ascii-toggle.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Toggle — box-drawing switch with Unicode knob
    OFF:  ╶───○     ON:  ●───╴
@@ -13492,6 +14042,10 @@ body.htmx-request .chirpui-nav-progress::after {
     }
 }
 
+}
+
+/* === partials/144_ascii-switch.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Switch — vertical breaker toggle with block characters
    ┌───┐        ┌───┐
@@ -13636,6 +14190,10 @@ body.htmx-request .chirpui-nav-progress::after {
     }
 }
 
+}
+
+/* === partials/145_ascii-breaker-panel.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Breaker Panel — framed set of switches
    ================================================================ */
@@ -13712,6 +14270,10 @@ body.htmx-request .chirpui-nav-progress::after {
     gap: 0.6rem;
 }
 
+}
+
+/* === partials/146_ascii-indicator-light.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Indicator Light — blinking mainframe LEDs
    ================================================================ */
@@ -13776,6 +14338,10 @@ body.htmx-request .chirpui-nav-progress::after {
     }
 }
 
+}
+
+/* === partials/147_ascii-tile-button.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Tile Button — square mainframe pushbuttons
    ================================================================ */
@@ -13908,6 +14474,10 @@ body.htmx-request .chirpui-nav-progress::after {
     }
 }
 
+}
+
+/* === partials/148_ascii-knob.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Knob — rotary dial selector
    ================================================================ */
@@ -14007,6 +14577,10 @@ body.htmx-request .chirpui-nav-progress::after {
     color: var(--chirpui-text);
 }
 
+}
+
+/* === partials/149_ascii-fader.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Fader — vertical mixing-board slider
    ================================================================ */
@@ -14087,6 +14661,10 @@ body.htmx-request .chirpui-nav-progress::after {
     align-items: flex-end;
 }
 
+}
+
+/* === partials/150_ascii-vu-meter.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII VU Meter — horizontal bouncing level bars
    ================================================================ */
@@ -14191,6 +14769,10 @@ body.htmx-request .chirpui-nav-progress::after {
     }
 }
 
+}
+
+/* === partials/151_ascii-7-segment-display.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII 7-Segment Display — retro LCD readout
    ================================================================ */
@@ -14258,6 +14840,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-7seg--warning .chirpui-ascii-7seg__digit { color: var(--chirpui-warning, #e6a700); }
 .chirpui-ascii-7seg--error .chirpui-ascii-7seg__digit { color: var(--chirpui-error); }
 
+}
+
+/* === partials/152_ascii-checkbox.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Checkbox — ☐/☑ ballot-style checkboxes
    ================================================================ */
@@ -14335,6 +14921,10 @@ body.htmx-request .chirpui-nav-progress::after {
     margin-bottom: 0.35em;
 }
 
+}
+
+/* === partials/153_ascii-radio.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Radio — (○)/(●) dial-style selectors
    ================================================================ */
@@ -14416,6 +15006,10 @@ body.htmx-request .chirpui-nav-progress::after {
     color: var(--chirpui-accent);
 }
 
+}
+
+/* === partials/154_ascii-stepper.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Stepper — pipeline/wizard progress
    [✓]───[✓]───[●]───[○]───[○]
@@ -14491,6 +15085,10 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-stepper--accent .chirpui-ascii-stepper__connector--complete { color: var(--chirpui-accent); }
 .chirpui-ascii-stepper--success .chirpui-ascii-stepper__step--active .chirpui-ascii-stepper__node { color: var(--chirpui-success); }
 
+}
+
+/* === partials/155_ascii-split-flap-display.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Split-Flap Display — Solari board / departure board
    ================================================================ */
@@ -14664,6 +15262,10 @@ body.htmx-request .chirpui-nav-progress::after {
     }
 }
 
+}
+
+/* === partials/156_ascii-ticker.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Ticker — scrolling text banner
    ================================================================ */
@@ -14717,6 +15319,10 @@ body.htmx-request .chirpui-nav-progress::after {
     }
 }
 
+}
+
+/* === partials/157_ascii-table.css === */
+@layer chirpui.component {
 /* ================================================================
    ASCII Table — box-drawing character borders
    ================================================================ */
@@ -14881,6 +15487,10 @@ body.htmx-request .chirpui-nav-progress::after {
     background: var(--chirpui-surface);
 }
 
+}
+
+/* === partials/158_row-component-enhancements.css === */
+@layer chirpui.component {
 /* ================================================================
    Row component enhancements
    ================================================================ */
@@ -15618,4 +16228,37 @@ body.htmx-request .chirpui-nav-progress::after {
     .chirpui-block--wide {
         grid-column: span 1;
     }
+}
+}
+
+/* === partials/159_resource-card.css === */
+@layer chirpui.component {
+/* ==========================================================================
+   Resource card — thin wrapper used inside resource index grids.
+   ========================================================================== */
+
+.chirpui-resource-card {
+    height: 100%;
+}
+
+.chirpui-resource-card__description {
+    margin: 0;
+}
+}
+
+/* === partials/160_resource-index.css === */
+@layer chirpui.component {
+/* ==========================================================================
+   Resource index — composite layout (search + filters + results).
+   ========================================================================== */
+
+.chirpui-resource-index {
+    width: 100%;
+}
+
+.chirpui-resource-index__search,
+.chirpui-resource-index__filters,
+.chirpui-resource-index__results {
+    width: 100%;
+}
 }

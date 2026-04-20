@@ -1,0 +1,101 @@
+/* ==========================================================================
+   Status Indicator
+   ========================================================================== */
+
+.chirpui-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--chirpui-radius-sm);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    transition: background var(--chirpui-transition), color var(--chirpui-transition);
+}
+
+.chirpui-status-indicator__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.chirpui-status-indicator__icon {
+    font-size: 1em;
+    line-height: 1;
+}
+
+.chirpui-status-indicator__label {
+    line-height: 1;
+}
+
+/* Status variants - minimal styling, override with themes */
+.chirpui-status-indicator--default {
+    background: var(--chirpui-muted-bg);
+    color: var(--chirpui-muted);
+}
+
+.chirpui-status-indicator--success {
+    background: var(--chirpui-success-muted);
+    color: var(--chirpui-success);
+}
+
+.chirpui-status-indicator--warning {
+    background: var(--chirpui-warning-muted);
+    color: var(--chirpui-warning);
+}
+
+.chirpui-status-indicator--error {
+    background: var(--chirpui-error-muted);
+    color: var(--chirpui-error);
+}
+
+.chirpui-status-indicator--info {
+    background: var(--chirpui-alert-info-bg);
+    color: var(--chirpui-info);
+}
+
+.chirpui-status-indicator--primary {
+    background: var(--chirpui-primary-muted);
+    color: var(--chirpui-primary);
+}
+
+.chirpui-status-indicator--custom {
+    --_bg-mix: light-dark(14%, 20%);
+    background: color-mix(in srgb, var(--chirpui-status-color) var(--_bg-mix), transparent);
+    color: var(--chirpui-status-color);
+}
+
+.chirpui-status-indicator--custom .chirpui-status-indicator__dot {
+    background: var(--chirpui-status-color);
+}
+
+/* Pulsing animation */
+.chirpui-status-indicator--pulse .chirpui-status-indicator__dot {
+    animation: chirpui-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes chirpui-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-status-indicator--pulse .chirpui-status-indicator__dot {
+        animation: none;
+    }
+}
+
+/* Status indicator: surface-aware — boost dot visibility on non-default surfaces */
+.chirpui-status-indicator--on-muted .chirpui-status-indicator__dot {
+    box-shadow: 0 0 0 2px var(--chirpui-surface);
+}
+.chirpui-status-indicator--on-accent .chirpui-status-indicator__dot {
+    box-shadow: 0 0 0 2px var(--chirpui-surface);
+}
+

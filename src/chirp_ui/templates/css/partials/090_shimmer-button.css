@@ -1,0 +1,44 @@
+/* ==========================================================================
+   Shimmer Button
+   ========================================================================== */
+
+.chirpui-shimmer-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: 500;
+    color: var(--chirpui-text);
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    overflow: clip;
+    cursor: pointer;
+    transition: background var(--chirpui-transition);
+}
+.chirpui-shimmer-btn:hover { background: var(--chirpui-surface-alt); }
+.chirpui-shimmer-btn__shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        var(--chirpui-shimmer-from),
+        var(--chirpui-shimmer-via),
+        var(--chirpui-shimmer-to)
+    );
+    animation: chirpui-shimmer 2s var(--chirpui-ease-standard) infinite;
+    pointer-events: none;
+}
+.chirpui-shimmer-btn--primary {
+    background: var(--chirpui-accent);
+    color: var(--chirpui-bg);
+    border-color: var(--chirpui-accent);
+}
+.chirpui-shimmer-btn--primary:hover { background: var(--chirpui-accent-hover); }
+.chirpui-shimmer-btn--sm { padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm); font-size: var(--chirpui-ui-xs); }
+.chirpui-shimmer-btn--lg { padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg); font-size: var(--chirpui-ui-base); }
+
+

@@ -1,0 +1,120 @@
+/* ==========================================================================
+   Tooltip (enhanced with bubble + arrow)
+   ========================================================================== */
+
+.chirpui-tooltip {
+    position: relative;
+    display: inline-flex;
+}
+.chirpui-tooltip__bubble {
+    position: absolute;
+    z-index: var(--chirpui-tooltip-z);
+    box-sizing: border-box;
+    /* Shrink-to-fit uses the narrow tooltip anchor as the containing block; without
+       max-content, used width collapses to ~trigger width despite max-width. */
+    width: max-content;
+    max-width: var(--chirpui-tooltip-max-width);
+    padding: var(--chirpui-tooltip-padding);
+    border: var(--chirpui-tooltip-border);
+    border-radius: var(--chirpui-tooltip-radius);
+    background: var(--chirpui-tooltip-bg);
+    color: var(--chirpui-tooltip-fg);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-tooltip-font-size);
+    font-weight: var(--chirpui-tooltip-font-weight);
+    line-height: var(--chirpui-tooltip-line-height);
+    text-align: center;
+    text-wrap: balance;
+    white-space: normal;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.95);
+    box-shadow: var(--chirpui-tooltip-shadow);
+    transition:
+        opacity var(--chirpui-motion-fast) var(--chirpui-ease-decel),
+        transform var(--chirpui-motion-fast) var(--chirpui-ease-decel);
+}
+.chirpui-tooltip__bubble::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    box-sizing: border-box;
+    background: var(--chirpui-tooltip-bg);
+    transform: rotate(45deg);
+}
+/* Ensure tooltip bubbles escape overflow:hidden ancestors */
+.chirpui-tooltip { overflow: visible; }
+.chirpui-tooltip:hover .chirpui-tooltip__bubble,
+.chirpui-tooltip:focus-within .chirpui-tooltip__bubble {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Tooltip positions */
+.chirpui-tooltip--top .chirpui-tooltip__bubble {
+    bottom: calc(100% + var(--chirpui-tooltip-gap));
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+}
+.chirpui-tooltip--top:hover .chirpui-tooltip__bubble,
+.chirpui-tooltip--top:focus-within .chirpui-tooltip__bubble {
+    transform: translateX(-50%) scale(1);
+}
+.chirpui-tooltip--top .chirpui-tooltip__bubble::after {
+    bottom: -3px;
+    left: 50%;
+    margin-left: -3px;
+}
+
+.chirpui-tooltip--bottom .chirpui-tooltip__bubble {
+    top: calc(100% + var(--chirpui-tooltip-gap));
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+}
+.chirpui-tooltip--bottom:hover .chirpui-tooltip__bubble,
+.chirpui-tooltip--bottom:focus-within .chirpui-tooltip__bubble {
+    transform: translateX(-50%) scale(1);
+}
+.chirpui-tooltip--bottom .chirpui-tooltip__bubble::after {
+    top: -3px;
+    left: 50%;
+    margin-left: -3px;
+}
+
+.chirpui-tooltip--left .chirpui-tooltip__bubble {
+    right: calc(100% + var(--chirpui-tooltip-gap));
+    top: 50%;
+    transform: translateY(-50%) scale(0.95);
+}
+.chirpui-tooltip--left:hover .chirpui-tooltip__bubble,
+.chirpui-tooltip--left:focus-within .chirpui-tooltip__bubble {
+    transform: translateY(-50%) scale(1);
+}
+.chirpui-tooltip--left .chirpui-tooltip__bubble::after {
+    right: -3px;
+    top: 50%;
+    margin-top: -3px;
+}
+
+.chirpui-tooltip--right .chirpui-tooltip__bubble {
+    left: calc(100% + var(--chirpui-tooltip-gap));
+    top: 50%;
+    transform: translateY(-50%) scale(0.95);
+}
+.chirpui-tooltip--right:hover .chirpui-tooltip__bubble,
+.chirpui-tooltip--right:focus-within .chirpui-tooltip__bubble {
+    transform: translateY(-50%) scale(1);
+}
+.chirpui-tooltip--right .chirpui-tooltip__bubble::after {
+    left: -3px;
+    top: 50%;
+    margin-top: -3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-tooltip__bubble {
+        transition: none;
+    }
+}
+

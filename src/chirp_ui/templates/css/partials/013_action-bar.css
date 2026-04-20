@@ -1,0 +1,64 @@
+/* ==========================================================================
+   Action Bar
+   ========================================================================== */
+
+.chirpui-action-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+}
+
+.chirpui-action-bar__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    background: none;
+    border: none;
+    font: inherit;
+    color: var(--chirpui-text-muted);
+    cursor: pointer;
+    border-radius: var(--chirpui-radius-sm);
+    transition: color var(--chirpui-transition), background var(--chirpui-transition);
+}
+
+a.chirpui-action-bar__item {
+    text-decoration: none;
+}
+
+.chirpui-action-bar__item:hover {
+    color: var(--chirpui-accent);
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-action-bar__item:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-action-bar__item--active {
+    color: var(--chirpui-error);
+}
+
+.chirpui-action-bar__item--active:hover {
+    color: var(--chirpui-error);
+}
+
+.chirpui-action-bar__item--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.chirpui-action-bar__icon {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-lg);
+}
+
+.chirpui-action-bar__count {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    color: inherit;
+}
+

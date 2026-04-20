@@ -1,0 +1,39 @@
+/* ==========================================================================
+   ASCII Progress — terminal-style progress bar
+   ========================================================================== */
+
+.chirpui-ascii-progress {
+    font-family: var(--chirpui-ascii-font);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+    color: var(--chirpui-text);
+}
+.chirpui-ascii-progress__label {
+    color: var(--chirpui-text-muted);
+    flex-shrink: 0;
+}
+.chirpui-ascii-progress__track {
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+.chirpui-ascii-progress__filled {
+    color: var(--chirpui-ascii-progress-fill, var(--chirpui-accent));
+}
+.chirpui-ascii-progress__empty {
+    color: var(--chirpui-text-muted);
+    opacity: 0.4;
+}
+.chirpui-ascii-progress__value {
+    color: var(--chirpui-text-muted);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Variants */
+.chirpui-ascii-progress--accent { --chirpui-ascii-progress-fill: var(--chirpui-accent); }
+.chirpui-ascii-progress--success { --chirpui-ascii-progress-fill: var(--chirpui-success); }
+.chirpui-ascii-progress--warning { --chirpui-ascii-progress-fill: var(--chirpui-warning); }
+

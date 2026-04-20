@@ -1,0 +1,22 @@
+/* ==========================================================================
+   Overlay
+   ========================================================================== */
+
+.chirpui-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.chirpui-overlay--dark {
+    background: var(--chirpui-overlay-dark);
+}
+
+.chirpui-overlay--gradient-bottom {
+    background: var(--chirpui-overlay-gradient-bottom);
+}
+
+.chirpui-overlay--gradient-top {
+    background: var(--chirpui-overlay-gradient-top);
+}
+

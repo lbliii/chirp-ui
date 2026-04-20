@@ -1,0 +1,25 @@
+/* ==========================================================================
+   Bento Grid
+   ========================================================================== */
+
+.chirpui-bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--chirpui-spacing-md);
+}
+.chirpui-bento__item {
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    padding: var(--chirpui-spacing-md);
+    min-height: 120px;
+}
+.chirpui-bento__item--span-2 { grid-column: span 2; }
+.chirpui-bento__item--span-row { grid-row: span 2; }
+.chirpui-bento__item--span-full { grid-column: 1 / -1; }
+@media (max-width: 48rem) {
+    .chirpui-bento { grid-template-columns: 1fr; }
+    .chirpui-bento__item--span-2 { grid-column: span 1; }
+}
+
+

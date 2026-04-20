@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Notification Dot
+   ========================================================================== */
+
+.chirpui-notification-dot {
+    position: relative;
+    display: inline-flex;
+}
+.chirpui-notification-dot__dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--chirpui-error);
+    z-index: 1;
+}
+.chirpui-notification-dot__ping {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--chirpui-error);
+    animation: chirpui-pulse-ring var(--chirpui-anim-pulse) var(--chirpui-ease-decel) infinite;
+    z-index: 0;
+}
+.chirpui-notification-dot--success .chirpui-notification-dot__dot,
+.chirpui-notification-dot--success .chirpui-notification-dot__ping { background: var(--chirpui-success); }
+.chirpui-notification-dot--warning .chirpui-notification-dot__dot,
+.chirpui-notification-dot--warning .chirpui-notification-dot__ping { background: var(--chirpui-warning); }
+.chirpui-notification-dot--sm .chirpui-notification-dot__dot,
+.chirpui-notification-dot--sm .chirpui-notification-dot__ping { width: 6px; height: 6px; top: -1px; right: -1px; }
+.chirpui-notification-dot--lg .chirpui-notification-dot__dot,
+.chirpui-notification-dot--lg .chirpui-notification-dot__ping { width: 12px; height: 12px; top: -3px; right: -3px; }
+
+/* counter_badge */
+.chirpui-counter-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.375rem;
+    border-radius: var(--chirpui-radius-full, 9999px);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    font-feature-settings: "tnum";
+    line-height: 1;
+    background: var(--chirpui-bg-subtle);
+    color: var(--chirpui-text);
+}
+
+.chirpui-counter-badge[hidden] {
+    display: none;
+}
+
+.chirpui-counter-badge--warning {
+    background: var(--chirpui-warning);
+    color: var(--chirpui-on-warning, #1a1a1a);
+}
+
+.chirpui-counter-badge--danger {
+    background: var(--chirpui-error);
+    color: var(--chirpui-on-accent);
+}
+
+

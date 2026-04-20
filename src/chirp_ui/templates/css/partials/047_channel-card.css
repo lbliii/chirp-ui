@@ -1,0 +1,52 @@
+/* ==========================================================================
+   Channel Card
+   ========================================================================== */
+
+.chirpui-channel-card {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+    padding: var(--chirpui-spacing);
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+}
+
+.chirpui-channel-card__link {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.chirpui-channel-card__link:hover .chirpui-channel-card__name {
+    color: var(--chirpui-accent);
+}
+
+.chirpui-channel-card__info {
+    min-width: 0;
+}
+
+.chirpui-channel-card__name {
+    margin: 0;
+    font-size: var(--chirpui-font-base);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+}
+
+.chirpui-channel-card__subscribers {
+    margin: var(--chirpui-spacing-xs) 0 0;
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-channel-card__body:empty {
+    display: none;
+}
+
+.chirpui-channel-card__actions {
+    flex-shrink: 0;
+}
+

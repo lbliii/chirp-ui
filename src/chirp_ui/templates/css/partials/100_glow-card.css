@@ -1,0 +1,34 @@
+/* ==========================================================================
+   Glow Card
+   ========================================================================== */
+
+.chirpui-glow-card {
+    position: relative;
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    overflow: clip;
+    padding: var(--chirpui-spacing-md);
+}
+.chirpui-glow-card__glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--chirpui-motion-slow) var(--chirpui-ease-standard);
+    background: radial-gradient(
+        circle at var(--chirpui-mouse-x, 50%) var(--chirpui-mouse-y, 50%),
+        var(--chirpui-glow-color),
+        transparent 60%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-glow-card:hover .chirpui-glow-card__glow { opacity: 1; }
+.chirpui-glow-card__content {
+    position: relative;
+    z-index: 1;
+}
+.chirpui-glow-card--accent { --chirpui-glow-color: color-mix(in srgb, var(--chirpui-accent) 30%, transparent); }
+.chirpui-glow-card--muted { --chirpui-glow-color: color-mix(in srgb, var(--chirpui-text-muted) 20%, transparent); }
+
+

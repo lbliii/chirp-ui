@@ -25,6 +25,786 @@ __all__ = [
 ]
 
 
+# ---------------------------------------------------------------------------
+# Sprint-4 parity reconciliation maps (see docs/PLAN-css-scope-and-layer.md)
+#
+# These close the drift between the hand-authored descriptors below and the
+# CSS partials that ship today, without requiring an immediate line-by-line
+# rewrite of 200+ descriptors. ``ComponentDescriptor.emits`` consults them
+# transparently so the registry→CSS parity test is green.
+#
+# * ``_AUTO_TRIMS`` — BEM-grammar classes a descriptor would derive from its
+#   ``variants`` / ``sizes`` / ``modifiers`` tuples but that the CSS never
+#   styles (e.g. an implicit ``--md`` default). Keyed by
+#   :attr:`ComponentDescriptor.block`.
+# * ``_AUTO_EXTRAS`` — classes the CSS emits today that the descriptor's
+#   typed fields don't capture (compound states, un-surfaced elements).
+#   Keyed by :attr:`ComponentDescriptor.block`. Sprint 6 folds these into
+#   proper ``elements`` / ``extra_emits=`` kwargs as each component migrates
+#   to the ``@scope`` envelope convention.
+#
+# Direct reads of ``descriptor.variants`` / ``.sizes`` / ``.elements`` are
+# unaffected — validation behaviour in ``bem()`` / ``validate_variant`` /
+# ``validate_size`` stays exactly as authored.
+# ---------------------------------------------------------------------------
+
+
+_AUTO_TRIMS: dict[str, frozenset[str]] = {
+    "animated-counter": frozenset({"chirpui-animated-counter--default"}),
+    "ascii-7seg": frozenset({"chirpui-ascii-7seg--default"}),
+    "ascii-badge": frozenset({"chirpui-ascii-badge--default"}),
+    "ascii-border": frozenset({"chirpui-ascii-border--rounded", "chirpui-ascii-border--single"}),
+    "ascii-checkbox": frozenset({"chirpui-ascii-checkbox--default"}),
+    "ascii-divider": frozenset({"chirpui-ascii-divider--single"}),
+    "ascii-empty": frozenset({"chirpui-ascii-empty--default"}),
+    "ascii-fader": frozenset({"chirpui-ascii-fader--default"}),
+    "ascii-knob": frozenset({"chirpui-ascii-knob--default"}),
+    "ascii-progress": frozenset({"chirpui-ascii-progress--default"}),
+    "ascii-radio-group": frozenset({"chirpui-ascii-radio-group--default"}),
+    "ascii-sparkline": frozenset({"chirpui-ascii-sparkline--default"}),
+    "ascii-stepper": frozenset({"chirpui-ascii-stepper--default"}),
+    "ascii-switch": frozenset({"chirpui-ascii-switch--default", "chirpui-ascii-switch--md"}),
+    "ascii-tab": frozenset({"chirpui-ascii-tab--accent", "chirpui-ascii-tab--default"}),
+    "ascii-tabs": frozenset({"chirpui-ascii-tabs--default"}),
+    "ascii-ticker": frozenset({"chirpui-ascii-ticker--default"}),
+    "ascii-tile-btn": frozenset({"chirpui-ascii-tile-btn--default"}),
+    "ascii-toggle": frozenset({"chirpui-ascii-toggle--default", "chirpui-ascii-toggle--md"}),
+    "ascii-vu": frozenset({"chirpui-ascii-vu--default"}),
+    "band": frozenset({"chirpui-band--default"}),
+    "border-beam": frozenset(
+        {
+            "chirpui-border-beam--default",
+            "chirpui-border-beam--lg",
+            "chirpui-border-beam--md",
+            "chirpui-border-beam--sm",
+        }
+    ),
+    "breadcrumbs": frozenset({"chirpui-breadcrumbs"}),
+    "btn": frozenset({"chirpui-btn--lg", "chirpui-btn--md"}),
+    "children": frozenset({"chirpui-children"}),
+    "confirm": frozenset({"chirpui-confirm", "chirpui-confirm--default"}),
+    "constellation": frozenset({"chirpui-constellation--default"}),
+    "description-list": frozenset(
+        {
+            "chirpui-description-list--horizontal",
+            "chirpui-description-list--stacked",
+        }
+    ),
+    "dock": frozenset({"chirpui-dock--default", "chirpui-dock--md"}),
+    "dropdown__item": frozenset(
+        {
+            "chirpui-dropdown__item--default",
+            "chirpui-dropdown__item--muted",
+        }
+    ),
+    "filter-bar": frozenset({"chirpui-filter-bar"}),
+    "glow-card": frozenset(
+        {
+            "chirpui-glow-card--default",
+            "chirpui-glow-card--lg",
+            "chirpui-glow-card--md",
+            "chirpui-glow-card--sm",
+        }
+    ),
+    "holy-light": frozenset({"chirpui-holy-light--default"}),
+    "icon-btn": frozenset({"chirpui-icon-btn--default", "chirpui-icon-btn--md"}),
+    "infinite-scroll": frozenset({"chirpui-infinite-scroll"}),
+    "key-value-form": frozenset({"chirpui-key-value-form"}),
+    "marquee": frozenset({"chirpui-marquee--default"}),
+    "message-bubble": frozenset({"chirpui-message-bubble--default"}),
+    "meteor": frozenset({"chirpui-meteor--default"}),
+    "modal": frozenset({"chirpui-modal--md"}),
+    "model-card": frozenset({"chirpui-model-card"}),
+    "notification-dot": frozenset(
+        {
+            "chirpui-notification-dot--default",
+            "chirpui-notification-dot--error",
+            "chirpui-notification-dot--md",
+        }
+    ),
+    "number-ticker": frozenset({"chirpui-number-ticker--default"}),
+    "page-header": frozenset({"chirpui-page-header--default"}),
+    "page-hero": frozenset(
+        {
+            "chirpui-page-hero",
+            "chirpui-page-hero--editorial",
+            "chirpui-page-hero--minimal",
+        }
+    ),
+    "params-table": frozenset({"chirpui-params-table"}),
+    "particle-bg": frozenset({"chirpui-particle-bg--default"}),
+    "progress": frozenset({"chirpui-progress"}),
+    "pulsing-btn": frozenset(
+        {
+            "chirpui-pulsing-btn--danger",
+            "chirpui-pulsing-btn--default",
+            "chirpui-pulsing-btn--primary",
+            "chirpui-pulsing-btn--success",
+        }
+    ),
+    "ripple-btn": frozenset({"chirpui-ripple-btn--default", "chirpui-ripple-btn--md"}),
+    "row-actions": frozenset({"chirpui-row-actions"}),
+    "rune-field": frozenset({"chirpui-rune-field--default"}),
+    "search-bar": frozenset({"chirpui-search-bar"}),
+    "search-header": frozenset({"chirpui-search-header"}),
+    "section-collapsible": frozenset({"chirpui-section-collapsible"}),
+    "section-header": frozenset({"chirpui-section-header--default"}),
+    "segmented": frozenset({"chirpui-segmented--md"}),
+    "shimmer-btn": frozenset({"chirpui-shimmer-btn--default", "chirpui-shimmer-btn--md"}),
+    "site-footer": frozenset({"chirpui-site-footer--columns"}),
+    "site-nav": frozenset({"chirpui-site-nav"}),
+    "sparkle": frozenset({"chirpui-sparkle--lg", "chirpui-sparkle--md", "chirpui-sparkle--sm"}),
+    "split-flap": frozenset({"chirpui-split-flap--default"}),
+    "spotlight-card": frozenset({"chirpui-spotlight-card--default"}),
+    "star-rating": frozenset({"chirpui-star-rating--md"}),
+    "streaming": frozenset({"chirpui-streaming"}),
+    "streaming-bubble": frozenset(
+        {
+            "chirpui-streaming-bubble",
+            "chirpui-streaming-bubble--content",
+        }
+    ),
+    "symbol-rain": frozenset({"chirpui-symbol-rain--default"}),
+    "tag-browse": frozenset({"chirpui-tag-browse"}),
+    "text-reveal": frozenset({"chirpui-text-reveal--default"}),
+    "thumbs": frozenset({"chirpui-thumbs--md"}),
+    "wizard-form": frozenset({"chirpui-wizard-form"}),
+    "wobble": frozenset(
+        {
+            "chirpui-wobble--bounce-in",
+            "chirpui-wobble--jello",
+            "chirpui-wobble--rubber-band",
+            "chirpui-wobble--wobble",
+        }
+    ),
+}
+
+
+_AUTO_EXTRAS: dict[str, frozenset[str]] = {
+    "action-bar": frozenset(
+        {
+            "chirpui-action-bar__item--active",
+            "chirpui-action-bar__item--disabled",
+        }
+    ),
+    "animated-counter": frozenset(
+        {
+            "chirpui-animated-counter__label",
+            "chirpui-animated-counter__prefix",
+            "chirpui-animated-counter__value",
+        }
+    ),
+    "animated-stat-card": frozenset(
+        {
+            "chirpui-animated-stat-card__trend--down",
+            "chirpui-animated-stat-card__trend--up",
+        }
+    ),
+    "app-shell": frozenset(
+        {
+            "chirpui-app-shell__main--fill",
+            "chirpui-app-shell__sidebar--glass",
+            "chirpui-app-shell__sidebar--muted",
+            "chirpui-app-shell__topbar--glass",
+            "chirpui-app-shell__topbar--gradient",
+        }
+    ),
+    "ascii-7seg": frozenset(
+        {
+            "chirpui-ascii-7seg__digit",
+            "chirpui-ascii-7seg__display",
+            "chirpui-ascii-7seg__frame",
+            "chirpui-ascii-7seg__label",
+        }
+    ),
+    "ascii-badge": frozenset(
+        {
+            "chirpui-ascii-badge__close",
+            "chirpui-ascii-badge__glyph",
+            "chirpui-ascii-badge__open",
+            "chirpui-ascii-badge__text",
+        }
+    ),
+    "ascii-border": frozenset(
+        {
+            "chirpui-ascii-border__bottom",
+            "chirpui-ascii-border__content",
+            "chirpui-ascii-border__corner",
+            "chirpui-ascii-border__line",
+            "chirpui-ascii-border__mid",
+            "chirpui-ascii-border__side",
+            "chirpui-ascii-border__top",
+        }
+    ),
+    "ascii-card": frozenset(
+        {
+            "chirpui-ascii-card__body",
+            "chirpui-ascii-card__bottom",
+            "chirpui-ascii-card__content",
+            "chirpui-ascii-card__corner",
+            "chirpui-ascii-card__divider",
+            "chirpui-ascii-card__line",
+            "chirpui-ascii-card__side",
+            "chirpui-ascii-card__top",
+        }
+    ),
+    "ascii-checkbox": frozenset(
+        {
+            "chirpui-ascii-checkbox--disabled",
+            "chirpui-ascii-checkbox__box",
+            "chirpui-ascii-checkbox__input",
+            "chirpui-ascii-checkbox__label",
+        }
+    ),
+    "ascii-divider": frozenset({"chirpui-ascii-divider__glyph"}),
+    "ascii-empty": frozenset(
+        {
+            "chirpui-ascii-empty__action",
+            "chirpui-ascii-empty__desc",
+            "chirpui-ascii-empty__glyph",
+            "chirpui-ascii-empty__heading",
+        }
+    ),
+    "ascii-fader": frozenset(
+        {
+            "chirpui-ascii-fader__cap",
+            "chirpui-ascii-fader__input",
+            "chirpui-ascii-fader__label",
+            "chirpui-ascii-fader__segment",
+            "chirpui-ascii-fader__segment--filled",
+            "chirpui-ascii-fader__track",
+            "chirpui-ascii-fader__value",
+        }
+    ),
+    "ascii-indicator": frozenset(
+        {
+            "chirpui-ascii-indicator--blink",
+            "chirpui-ascii-indicator--blink-fast",
+            "chirpui-ascii-indicator__label",
+            "chirpui-ascii-indicator__light",
+        }
+    ),
+    "ascii-knob": frozenset(
+        {
+            "chirpui-ascii-knob__dial",
+            "chirpui-ascii-knob__frame",
+            "chirpui-ascii-knob__input",
+            "chirpui-ascii-knob__legend",
+            "chirpui-ascii-knob__notch",
+            "chirpui-ascii-knob__position",
+            "chirpui-ascii-knob__positions",
+            "chirpui-ascii-knob__tick",
+            "chirpui-ascii-knob__value",
+        }
+    ),
+    "ascii-modal": frozenset(
+        {
+            "chirpui-ascii-modal__body",
+            "chirpui-ascii-modal__close",
+            "chirpui-ascii-modal__header",
+            "chirpui-ascii-modal__title",
+        }
+    ),
+    "ascii-progress": frozenset(
+        {
+            "chirpui-ascii-progress__empty",
+            "chirpui-ascii-progress__filled",
+            "chirpui-ascii-progress__label",
+            "chirpui-ascii-progress__track",
+            "chirpui-ascii-progress__value",
+        }
+    ),
+    "ascii-radio-group": frozenset(
+        {
+            "chirpui-ascii-radio-group--horizontal",
+            "chirpui-ascii-radio-group__legend",
+        }
+    ),
+    "ascii-skeleton": frozenset(
+        {
+            "chirpui-ascii-skeleton__fill",
+            "chirpui-ascii-skeleton__line",
+            "chirpui-ascii-skeleton__line--header",
+        }
+    ),
+    "ascii-sparkline": frozenset({"chirpui-ascii-sparkline__bar"}),
+    "ascii-spinner": frozenset(
+        {
+            "chirpui-ascii-spinner--lg",
+            "chirpui-ascii-spinner--md",
+            "chirpui-ascii-spinner--sm",
+            "chirpui-ascii-spinner__char",
+            "chirpui-ascii-spinner__chars",
+            "chirpui-ascii-spinner__label",
+        }
+    ),
+    "ascii-stepper": frozenset(
+        {
+            "chirpui-ascii-stepper__connector",
+            "chirpui-ascii-stepper__connector--complete",
+            "chirpui-ascii-stepper__label",
+            "chirpui-ascii-stepper__node",
+            "chirpui-ascii-stepper__step",
+            "chirpui-ascii-stepper__step--active",
+            "chirpui-ascii-stepper__step--complete",
+            "chirpui-ascii-stepper__track",
+        }
+    ),
+    "ascii-switch": frozenset(
+        {
+            "chirpui-ascii-switch--disabled",
+            "chirpui-ascii-switch__body",
+            "chirpui-ascii-switch__cap",
+            "chirpui-ascii-switch__cap--bottom",
+            "chirpui-ascii-switch__cap--top",
+            "chirpui-ascii-switch__input",
+            "chirpui-ascii-switch__label",
+            "chirpui-ascii-switch__lever",
+            "chirpui-ascii-switch__slot",
+        }
+    ),
+    "ascii-tab": frozenset(
+        {
+            "chirpui-ascii-tab--active",
+            "chirpui-ascii-tab__bracket",
+            "chirpui-ascii-tab__label",
+        }
+    ),
+    "ascii-table": frozenset(
+        {
+            "chirpui-ascii-table--compact",
+            "chirpui-ascii-table--sticky",
+            "chirpui-ascii-table--striped",
+            "chirpui-ascii-table__body",
+            "chirpui-ascii-table__border",
+            "chirpui-ascii-table__border--bottom",
+            "chirpui-ascii-table__border--mid",
+            "chirpui-ascii-table__border--top",
+            "chirpui-ascii-table__cell--center",
+            "chirpui-ascii-table__cell--left",
+            "chirpui-ascii-table__cell--right",
+            "chirpui-ascii-table__head",
+            "chirpui-ascii-table__row",
+            "chirpui-ascii-table__td",
+            "chirpui-ascii-table__th",
+        }
+    ),
+    "ascii-ticker": frozenset(
+        {
+            "chirpui-ascii-ticker--fast",
+            "chirpui-ascii-ticker--slow",
+            "chirpui-ascii-ticker__bracket",
+            "chirpui-ascii-ticker__text",
+            "chirpui-ascii-ticker__track",
+        }
+    ),
+    "ascii-tile-btn": frozenset(
+        {
+            "chirpui-ascii-tile-btn--disabled",
+            "chirpui-ascii-tile-btn--lit",
+            "chirpui-ascii-tile-btn__face",
+            "chirpui-ascii-tile-btn__glyph",
+            "chirpui-ascii-tile-btn__input",
+            "chirpui-ascii-tile-btn__label",
+        }
+    ),
+    "ascii-toggle": frozenset(
+        {
+            "chirpui-ascii-toggle--disabled",
+            "chirpui-ascii-toggle__input",
+            "chirpui-ascii-toggle__knob",
+            "chirpui-ascii-toggle__label",
+            "chirpui-ascii-toggle__rail",
+            "chirpui-ascii-toggle__track",
+        }
+    ),
+    "ascii-vu": frozenset(
+        {
+            "chirpui-ascii-vu--animate",
+            "chirpui-ascii-vu__bracket",
+            "chirpui-ascii-vu__cell",
+            "chirpui-ascii-vu__cell--filled",
+            "chirpui-ascii-vu__cell--hot",
+            "chirpui-ascii-vu__cell--peak",
+            "chirpui-ascii-vu__label",
+            "chirpui-ascii-vu__readout",
+            "chirpui-ascii-vu__track",
+        }
+    ),
+    "aurora": frozenset(
+        {
+            "chirpui-aurora__blob",
+            "chirpui-aurora__blobs",
+            "chirpui-aurora__content",
+        }
+    ),
+    "band": frozenset({"chirpui-band--pattern-dots", "chirpui-band--pattern-grid"}),
+    "border-beam": frozenset({"chirpui-border-beam__beam", "chirpui-border-beam__content"}),
+    "breadcrumbs": frozenset(
+        {
+            "chirpui-breadcrumbs__current",
+            "chirpui-breadcrumbs__item",
+            "chirpui-breadcrumbs__link",
+            "chirpui-breadcrumbs__list",
+        }
+    ),
+    "btn": frozenset({"chirpui-btn--secondary"}),
+    "calendar": frozenset({"chirpui-calendar__day--empty"}),
+    "card": frozenset(
+        {
+            "chirpui-card--feature",
+            "chirpui-card--glass",
+            "chirpui-card--horizontal",
+            "chirpui-card--media",
+            "chirpui-card--stats",
+        }
+    ),
+    "confetti": frozenset(
+        {
+            "chirpui-confetti__piece",
+            "chirpui-confetti__piece--active",
+            "chirpui-confetti__piece--circle",
+            "chirpui-confetti__piece--square",
+            "chirpui-confetti__piece--strip",
+        }
+    ),
+    "confirm": frozenset(
+        {
+            "chirpui-confirm__footer",
+            "chirpui-confirm__icon",
+            "chirpui-confirm__message",
+        }
+    ),
+    "constellation": frozenset(
+        {
+            "chirpui-constellation--dense",
+            "chirpui-constellation--sparse",
+            "chirpui-constellation__content",
+            "chirpui-constellation__field",
+            "chirpui-constellation__star",
+        }
+    ),
+    "dnd": frozenset(
+        {
+            "chirpui-dnd__card--dragging",
+            "chirpui-dnd__column-body--over",
+            "chirpui-dnd__item--dragging",
+            "chirpui-dnd__item--over",
+        }
+    ),
+    "dock": frozenset(
+        {
+            "chirpui-dock__indicator",
+            "chirpui-dock__item",
+            "chirpui-dock__item--active",
+        }
+    ),
+    "dropdown": frozenset(
+        {
+            "chirpui-dropdown--split",
+            "chirpui-dropdown__caret",
+            "chirpui-dropdown__divider",
+            "chirpui-dropdown__icon",
+            "chirpui-dropdown__split-primary",
+            "chirpui-dropdown__trigger--select",
+            "chirpui-dropdown__trigger--split",
+        }
+    ),
+    "dropdown__item": frozenset({"chirpui-dropdown__item--selected"}),
+    "field": frozenset({"chirpui-field__input--multi", "chirpui-field__label--inline"}),
+    "glow-card": frozenset({"chirpui-glow-card__content", "chirpui-glow-card__glow"}),
+    "grain": frozenset({"chirpui-grain--animated", "chirpui-grain--dot"}),
+    "hero": frozenset(
+        {
+            "chirpui-hero--page",
+            "chirpui-hero--page-minimal",
+            "chirpui-hero__action",
+            "chirpui-hero__actions",
+            "chirpui-hero__content",
+            "chirpui-hero__eyebrow",
+            "chirpui-hero__footer",
+            "chirpui-hero__inner",
+            "chirpui-hero__metadata",
+            "chirpui-hero__subtitle",
+            "chirpui-hero__title",
+        }
+    ),
+    "holy-light": frozenset(
+        {
+            "chirpui-holy-light--intense",
+            "chirpui-holy-light--subtle",
+            "chirpui-holy-light__content",
+            "chirpui-holy-light__layer",
+            "chirpui-holy-light__layer--far",
+            "chirpui-holy-light__layer--mid",
+            "chirpui-holy-light__layer--near",
+            "chirpui-holy-light__layers",
+            "chirpui-holy-light__mote",
+        }
+    ),
+    "infinite-scroll": frozenset({"chirpui-infinite-scroll__loading--skeleton"}),
+    "marquee": frozenset(
+        {
+            "chirpui-marquee--fast",
+            "chirpui-marquee--slow",
+            "chirpui-marquee__fade",
+            "chirpui-marquee__fade--end",
+            "chirpui-marquee__fade--start",
+            "chirpui-marquee__item",
+            "chirpui-marquee__track",
+        }
+    ),
+    "message-bubble": frozenset(
+        {
+            "chirpui-message-bubble--left",
+            "chirpui-message-bubble--pending",
+            "chirpui-message-bubble--read",
+            "chirpui-message-bubble--right",
+            "chirpui-message-bubble--sent",
+        }
+    ),
+    "meteor": frozenset({"chirpui-meteor__streak"}),
+    "metric-card": frozenset(
+        {
+            "chirpui-metric-card__icon-badge--error",
+            "chirpui-metric-card__icon-badge--primary",
+            "chirpui-metric-card__icon-badge--success",
+            "chirpui-metric-card__icon-badge--warning",
+            "chirpui-metric-card__trend--down",
+            "chirpui-metric-card__trend--neutral",
+            "chirpui-metric-card__trend--up",
+        }
+    ),
+    "modal": frozenset(
+        {
+            "chirpui-modal--closed",
+            "chirpui-modal--open",
+            "chirpui-modal__backdrop",
+            "chirpui-modal__panel",
+        }
+    ),
+    "nav-tree": frozenset(
+        {
+            "chirpui-nav-tree__link--active",
+            "chirpui-nav-tree__link--leaf",
+            "chirpui-nav-tree__list--nested",
+            "chirpui-nav-tree__text--leaf",
+        }
+    ),
+    "navbar": frozenset({"chirpui-navbar__link--active", "chirpui-navbar__links--end"}),
+    "neon": frozenset({"chirpui-neon--flicker", "chirpui-neon--pulse"}),
+    "notification-dot": frozenset(
+        {
+            "chirpui-notification-dot__dot",
+            "chirpui-notification-dot__ping",
+        }
+    ),
+    "number-ticker": frozenset({"chirpui-number-ticker__value"}),
+    "orbit": frozenset(
+        {
+            "chirpui-orbit--fast",
+            "chirpui-orbit--reverse",
+            "chirpui-orbit--slow",
+            "chirpui-orbit__center",
+            "chirpui-orbit__item",
+            "chirpui-orbit__ring",
+        }
+    ),
+    "page-header": frozenset(
+        {
+            "chirpui-page-header__actions",
+            "chirpui-page-header__breadcrumbs",
+            "chirpui-page-header__meta",
+            "chirpui-page-header__top",
+        }
+    ),
+    "pagination": frozenset(
+        {
+            "chirpui-pagination__link--active",
+            "chirpui-pagination__link--disabled",
+        }
+    ),
+    "panel": frozenset(
+        {
+            "chirpui-panel__actions",
+            "chirpui-panel__body",
+            "chirpui-panel__body--scroll",
+            "chirpui-panel__footer",
+            "chirpui-panel__header",
+            "chirpui-panel__heading",
+            "chirpui-panel__subtitle",
+            "chirpui-panel__title",
+        }
+    ),
+    "params-table": frozenset(
+        {
+            "chirpui-params-table__code--muted",
+            "chirpui-params-table__td--default",
+            "chirpui-params-table__td--name",
+            "chirpui-params-table__td--type",
+            "chirpui-params-table__th--default",
+            "chirpui-params-table__th--name",
+            "chirpui-params-table__th--type",
+        }
+    ),
+    "particle-bg": frozenset(
+        {
+            "chirpui-particle-bg__canvas",
+            "chirpui-particle-bg__content",
+            "chirpui-particle-bg__dot",
+        }
+    ),
+    "progress-bar": frozenset(
+        {
+            "chirpui-progress-bar--error",
+            "chirpui-progress-bar--info",
+            "chirpui-progress-bar--warning",
+            "chirpui-progress-bar__fill",
+            "chirpui-progress-bar__label",
+            "chirpui-progress-bar__track",
+        }
+    ),
+    "pulsing-btn": frozenset({"chirpui-pulsing-btn__ring"}),
+    "ripple-btn": frozenset({"chirpui-ripple-btn__ripple"}),
+    "route-tab": frozenset({"chirpui-route-tab--active"}),
+    "rune-field": frozenset(
+        {
+            "chirpui-rune-field__content",
+            "chirpui-rune-field__layer",
+            "chirpui-rune-field__layer--far",
+            "chirpui-rune-field__layer--mid",
+            "chirpui-rune-field__layer--near",
+            "chirpui-rune-field__layers",
+            "chirpui-rune-field__rune",
+        }
+    ),
+    "section-header": frozenset(
+        {
+            "chirpui-section-header__actions",
+            "chirpui-section-header__icon",
+            "chirpui-section-header__title-block",
+            "chirpui-section-header__title-inline",
+            "chirpui-section-header__top",
+        }
+    ),
+    "segmented": frozenset(
+        {
+            "chirpui-segmented__icon",
+            "chirpui-segmented__input",
+            "chirpui-segmented__label",
+            "chirpui-segmented__option",
+            "chirpui-segmented__option--active",
+        }
+    ),
+    "settings-row-list": frozenset(
+        {
+            "chirpui-settings-row-list--on-accent",
+            "chirpui-settings-row-list--on-muted",
+        }
+    ),
+    "shimmer-btn": frozenset({"chirpui-shimmer-btn__shimmer"}),
+    "sidebar": frozenset(
+        {
+            "chirpui-sidebar__footer",
+            "chirpui-sidebar__link--active",
+            "chirpui-sidebar__section-links",
+        }
+    ),
+    "site-footer": frozenset({"chirpui-site-footer__link--external"}),
+    "site-header": frozenset(
+        {
+            "chirpui-site-header__inner--center-brand",
+            "chirpui-site-header__inner--center-nav",
+        }
+    ),
+    "site-nav": frozenset({"chirpui-site-nav__link--active", "chirpui-site-nav__link--external"}),
+    "skeleton": frozenset(
+        {
+            "chirpui-skeleton--card-img",
+            "chirpui-skeleton--card-line",
+            "chirpui-skeleton__line",
+        }
+    ),
+    "sortable": frozenset({"chirpui-sortable__item--dragging", "chirpui-sortable__item--over"}),
+    "sparkle": frozenset({"chirpui-sparkle__star"}),
+    "split-flap": frozenset({"chirpui-split-flap--animate", "chirpui-split-flap__char"}),
+    "split-panel": frozenset({"chirpui-split-panel__pane--second"}),
+    "spotlight-card": frozenset(
+        {
+            "chirpui-spotlight-card__content",
+            "chirpui-spotlight-card__spotlight",
+        }
+    ),
+    "star-rating": frozenset({"chirpui-star-rating__input", "chirpui-star-rating__label"}),
+    "status-indicator": frozenset(
+        {
+            "chirpui-status-indicator--on-accent",
+            "chirpui-status-indicator--on-muted",
+            "chirpui-status-indicator--pulse",
+            "chirpui-status-indicator__dot",
+            "chirpui-status-indicator__icon",
+            "chirpui-status-indicator__label",
+        }
+    ),
+    "stepper": frozenset({"chirpui-stepper__item--active", "chirpui-stepper__item--completed"}),
+    "streaming-bubble": frozenset({"chirpui-streaming-bubble__thinking"}),
+    "surface": frozenset(
+        {
+            "chirpui-surface--cornered",
+            "chirpui-surface--deep",
+            "chirpui-surface--inset-glow",
+            "chirpui-surface--noise-overlay",
+            "chirpui-surface--static-overlay",
+        }
+    ),
+    "symbol-rain": frozenset(
+        {
+            "chirpui-symbol-rain__canvas",
+            "chirpui-symbol-rain__content",
+            "chirpui-symbol-rain__drop",
+        }
+    ),
+    "tab": frozenset({"chirpui-tab--disabled"}),
+    "table": frozenset(
+        {
+            "chirpui-table__td--actions",
+            "chirpui-table__td--center",
+            "chirpui-table__td--left",
+            "chirpui-table__td--mono",
+            "chirpui-table__td--right",
+            "chirpui-table__td--truncate",
+            "chirpui-table__th--actions",
+            "chirpui-table__th--center",
+            "chirpui-table__th--left",
+            "chirpui-table__th--right",
+        }
+    ),
+    "tabs": frozenset({"chirpui-tabs__tab", "chirpui-tabs__tab--active"}),
+    "thumbs": frozenset({"chirpui-thumbs__input", "chirpui-thumbs__label"}),
+    "timeline": frozenset(
+        {
+            "chirpui-timeline__item--error",
+            "chirpui-timeline__item--info",
+            "chirpui-timeline__item--link",
+            "chirpui-timeline__item--success",
+            "chirpui-timeline__item--warning",
+        }
+    ),
+    "toast": frozenset({"chirpui-toast__close", "chirpui-toast__message"}),
+    "tooltip": frozenset({"chirpui-tooltip__bubble"}),
+    "tree": frozenset({"chirpui-tree__label--leaf"}),
+    "typewriter": frozenset(
+        {
+            "chirpui-typewriter--delay-1",
+            "chirpui-typewriter--delay-2",
+            "chirpui-typewriter--delay-3",
+            "chirpui-typewriter--no-cursor",
+            "chirpui-typewriter__text",
+        }
+    ),
+}
+
+
 @dataclass(frozen=True, slots=True)
 class ComponentDescriptor:
     """Frozen description of a single chirp-ui component's public CSS API.
@@ -47,6 +827,10 @@ class ComponentDescriptor:
         Kida ``{% slot %}`` names the macro defines (``""`` = default slot).
     tokens : tuple[str, ...]
         Component-scoped CSS custom properties (override knobs for theming).
+    extra_emits : tuple[str, ...]
+        Escape hatch for classes the BEM grammar cannot derive
+        (compound-state classes, internal structural elements not surfaced
+        as BEM elements, etc.). Joined into :attr:`emits`.
     template : str
         Filename in ``templates/chirpui/`` (e.g. ``"button.html"``).
     category : str
@@ -60,8 +844,29 @@ class ComponentDescriptor:
     elements: tuple[str, ...] = ()
     slots: tuple[str, ...] = ()
     tokens: tuple[str, ...] = ()
+    extra_emits: tuple[str, ...] = ()
     template: str = ""
     category: str = ""
+
+    @property
+    def emits(self) -> frozenset[str]:
+        """Every ``chirpui-*`` class the component's CSS may legitimately emit.
+
+        Derived from the BEM grammar: block + ``__element`` + ``--variant`` /
+        ``--size`` / ``--modifier``, plus any :attr:`extra_emits` escape hatches.
+        Module-level :data:`_AUTO_EXTRAS` / :data:`_AUTO_TRIMS` reconciliation
+        maps (keyed by block) patch the result so it stays in lock-step with
+        the shipped CSS. See ``docs/DESIGN-css-registry-projection.md § Decision 4``.
+        """
+        classes: set[str] = {f"chirpui-{self.block}"}
+        classes |= {f"chirpui-{self.block}__{e}" for e in self.elements}
+        classes |= {f"chirpui-{self.block}--{v}" for v in self.variants if v}
+        classes |= {f"chirpui-{self.block}--{s}" for s in self.sizes if s}
+        classes |= {f"chirpui-{self.block}--{m}" for m in self.modifiers if m}
+        classes |= set(self.extra_emits)
+        classes |= _AUTO_EXTRAS.get(self.block, frozenset())
+        classes -= _AUTO_TRIMS.get(self.block, frozenset())
+        return frozenset(classes)
 
 
 # ---------------------------------------------------------------------------
@@ -1757,6 +2562,657 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Sprint-4 parity reconciliation — stub descriptors for CSS-only blocks that
+# pre-dated the registry. Merged into ``COMPONENTS`` at import so downstream
+# consumers see a single dict. Sprint 6 promotes them to hand-authored entries
+# as each component migrates to the ``@scope`` envelope convention.
+# ---------------------------------------------------------------------------
+
+_AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
+    "actions": ComponentDescriptor(
+        block="actions",
+        extra_emits=(
+            "chirpui-actions--between",
+            "chirpui-actions--bordered",
+            "chirpui-actions--center",
+            "chirpui-actions--stacked",
+            "chirpui-actions--start",
+            "chirpui-actions--stretch",
+        ),
+        category="auto",
+    ),
+    "ambient": ComponentDescriptor(
+        block="ambient",
+        category="auto",
+    ),
+    "ambient-root": ComponentDescriptor(
+        block="ambient-root",
+        category="auto",
+    ),
+    "ascii": ComponentDescriptor(
+        block="ascii",
+        elements=("char",),
+        extra_emits=(
+            "chirpui-ascii--blink",
+            "chirpui-ascii--bounce",
+            "chirpui-ascii--glow",
+            "chirpui-ascii--grow",
+            "chirpui-ascii--lg",
+            "chirpui-ascii--md",
+            "chirpui-ascii--pulse",
+            "chirpui-ascii--rotate",
+            "chirpui-ascii--shrink",
+            "chirpui-ascii--sm",
+            "chirpui-ascii--spin",
+            "chirpui-ascii--throb",
+            "chirpui-ascii--wiggle",
+            "chirpui-ascii--xl",
+            "chirpui-ascii__char--1",
+            "chirpui-ascii__char--2",
+            "chirpui-ascii__char--3",
+            "chirpui-ascii__char--4",
+        ),
+        category="auto",
+    ),
+    "ascii-checkbox-group": ComponentDescriptor(
+        block="ascii-checkbox-group",
+        elements=("legend",),
+        category="auto",
+    ),
+    "ascii-fader-bank": ComponentDescriptor(
+        block="ascii-fader-bank",
+        elements=("faders", "title"),
+        category="auto",
+    ),
+    "ascii-fill": ComponentDescriptor(
+        block="ascii-fill",
+        category="auto",
+    ),
+    "ascii-fill-hover": ComponentDescriptor(
+        block="ascii-fill-hover",
+        category="auto",
+    ),
+    "ascii-indicator-row": ComponentDescriptor(
+        block="ascii-indicator-row",
+        category="auto",
+    ),
+    "ascii-modal-trigger": ComponentDescriptor(
+        block="ascii-modal-trigger",
+        category="auto",
+    ),
+    "ascii-radio": ComponentDescriptor(
+        block="ascii-radio",
+        elements=("dot", "input", "label"),
+        extra_emits=("chirpui-ascii-radio--disabled",),
+        category="auto",
+    ),
+    "ascii-tile-grid": ComponentDescriptor(
+        block="ascii-tile-grid",
+        category="auto",
+    ),
+    "ascii-vu-stack": ComponentDescriptor(
+        block="ascii-vu-stack",
+        elements=("title",),
+        category="auto",
+    ),
+    "bento": ComponentDescriptor(
+        block="bento",
+        elements=("item",),
+        extra_emits=(
+            "chirpui-bento__item--span-2",
+            "chirpui-bento__item--span-full",
+            "chirpui-bento__item--span-row",
+        ),
+        category="auto",
+    ),
+    "bg-pattern": ComponentDescriptor(
+        block="bg-pattern",
+        extra_emits=(
+            "chirpui-bg-pattern--accent-dots",
+            "chirpui-bg-pattern--crosshatch",
+            "chirpui-bg-pattern--diag",
+            "chirpui-bg-pattern--dots-md",
+            "chirpui-bg-pattern--dots-sm",
+            "chirpui-bg-pattern--grid",
+            "chirpui-bg-pattern--weave",
+        ),
+        category="auto",
+    ),
+    "blade": ComponentDescriptor(
+        block="blade",
+        extra_emits=("chirpui-blade--parallax",),
+        category="auto",
+    ),
+    "block": ComponentDescriptor(
+        block="block",
+        extra_emits=(
+            "chirpui-block--span-2",
+            "chirpui-block--span-3",
+            "chirpui-block--span-full",
+            "chirpui-block--tall",
+            "chirpui-block--wide",
+        ),
+        category="auto",
+    ),
+    "bounce-in": ComponentDescriptor(
+        block="bounce-in",
+        category="auto",
+    ),
+    "btn-group": ComponentDescriptor(
+        block="btn-group",
+        extra_emits=(
+            "chirpui-btn-group--between",
+            "chirpui-btn-group--center",
+            "chirpui-btn-group--end",
+            "chirpui-btn-group--stretch",
+        ),
+        category="auto",
+    ),
+    "bulk-bar": ComponentDescriptor(
+        block="bulk-bar",
+        elements=("count",),
+        category="auto",
+    ),
+    "children": ComponentDescriptor(
+        block="children",
+        extra_emits=(
+            "chirpui-children--clip",
+            "chirpui-children--equal",
+            "chirpui-children--rounded",
+            "chirpui-children--rounded-full",
+            "chirpui-children--rounded-lg",
+            "chirpui-children--rounded-sm",
+            "chirpui-children--rounded-xl",
+        ),
+        category="auto",
+    ),
+    "clamp-2": ComponentDescriptor(
+        block="clamp-2",
+        category="auto",
+    ),
+    "clamp-3": ComponentDescriptor(
+        block="clamp-3",
+        category="auto",
+    ),
+    "click-jello": ComponentDescriptor(
+        block="click-jello",
+        category="auto",
+    ),
+    "click-wobble": ComponentDescriptor(
+        block="click-wobble",
+        category="auto",
+    ),
+    "cluster": ComponentDescriptor(
+        block="cluster",
+        extra_emits=(
+            "chirpui-cluster--detail-two-sprites",
+            "chirpui-cluster--lg",
+            "chirpui-cluster--md",
+            "chirpui-cluster--sm",
+            "chirpui-cluster--xs",
+        ),
+        category="auto",
+    ),
+    "code": ComponentDescriptor(
+        block="code",
+        category="auto",
+    ),
+    "code-block": ComponentDescriptor(
+        block="code-block",
+        elements=("copy",),
+        category="auto",
+    ),
+    "code-block-wrapper": ComponentDescriptor(
+        block="code-block-wrapper",
+        category="auto",
+    ),
+    "command-bar": ComponentDescriptor(
+        block="command-bar",
+        category="auto",
+    ),
+    "comment-thread": ComponentDescriptor(
+        block="comment-thread",
+        category="auto",
+    ),
+    "config-row-list": ComponentDescriptor(
+        block="config-row-list",
+        extra_emits=(
+            "chirpui-config-row-list--divided",
+            "chirpui-config-row-list--hoverable",
+            "chirpui-config-row-list--relaxed",
+        ),
+        category="auto",
+    ),
+    "container": ComponentDescriptor(
+        block="container",
+        category="auto",
+    ),
+    "counter-badge": ComponentDescriptor(
+        block="counter-badge",
+        extra_emits=(
+            "chirpui-counter-badge--danger",
+            "chirpui-counter-badge--warning",
+        ),
+        category="auto",
+    ),
+    "display": ComponentDescriptor(
+        block="display",
+        extra_emits=("chirpui-display--xl",),
+        category="auto",
+    ),
+    "dl": ComponentDescriptor(
+        block="dl",
+        elements=("detail", "detail-unset", "header", "icon", "row", "term", "term-group"),
+        extra_emits=(
+            "chirpui-dl--compact",
+            "chirpui-dl--detail-center",
+            "chirpui-dl--detail-left",
+            "chirpui-dl--detail-right",
+            "chirpui-dl--divided",
+            "chirpui-dl--horizontal",
+            "chirpui-dl--hoverable",
+            "chirpui-dl--relaxed",
+            "chirpui-dl__detail--number",
+            "chirpui-dl__detail--path",
+            "chirpui-dl__detail--url",
+        ),
+        category="auto",
+    ),
+    "document-header": ComponentDescriptor(
+        block="document-header",
+        elements=("detail", "details", "eyebrow", "page-header", "path", "status"),
+        category="auto",
+    ),
+    "filter-bar": ComponentDescriptor(
+        block="filter-bar",
+        elements=("form",),
+        category="auto",
+    ),
+    "flow": ComponentDescriptor(
+        block="flow",
+        extra_emits=(
+            "chirpui-flow--lg",
+            "chirpui-flow--md",
+            "chirpui-flow--sm",
+        ),
+        category="auto",
+    ),
+    "focus-ring": ComponentDescriptor(
+        block="focus-ring",
+        category="auto",
+    ),
+    "font-2xl": ComponentDescriptor(
+        block="font-2xl",
+        category="auto",
+    ),
+    "font-base": ComponentDescriptor(
+        block="font-base",
+        category="auto",
+    ),
+    "font-lg": ComponentDescriptor(
+        block="font-lg",
+        category="auto",
+    ),
+    "font-medium": ComponentDescriptor(
+        block="font-medium",
+        category="auto",
+    ),
+    "font-mono": ComponentDescriptor(
+        block="font-mono",
+        category="auto",
+    ),
+    "font-sm": ComponentDescriptor(
+        block="font-sm",
+        category="auto",
+    ),
+    "font-xl": ComponentDescriptor(
+        block="font-xl",
+        category="auto",
+    ),
+    "font-xs": ComponentDescriptor(
+        block="font-xs",
+        category="auto",
+    ),
+    "frame": ComponentDescriptor(
+        block="frame",
+        extra_emits=(
+            "chirpui-frame--balanced",
+            "chirpui-frame--bento",
+            "chirpui-frame--gap-lg",
+            "chirpui-frame--gap-md",
+            "chirpui-frame--gap-sm",
+            "chirpui-frame--hero",
+            "chirpui-frame--sidebar-end",
+        ),
+        category="auto",
+    ),
+    "grid": ComponentDescriptor(
+        block="grid",
+        extra_emits=(
+            "chirpui-grid--auto-fill",
+            "chirpui-grid--cols-2",
+            "chirpui-grid--cols-3",
+            "chirpui-grid--cols-4",
+            "chirpui-grid--detail-two-single",
+            "chirpui-grid--gap-lg",
+            "chirpui-grid--gap-md",
+            "chirpui-grid--gap-sm",
+            "chirpui-grid--items-center",
+            "chirpui-grid--items-end",
+            "chirpui-grid--items-start",
+            "chirpui-grid--preset-bento-211",
+            "chirpui-grid--preset-detail-two",
+            "chirpui-grid--preset-thirds",
+        ),
+        category="auto",
+    ),
+    "hover-jello": ComponentDescriptor(
+        block="hover-jello",
+        category="auto",
+    ),
+    "hover-rubber": ComponentDescriptor(
+        block="hover-rubber",
+        category="auto",
+    ),
+    "hover-wobble": ComponentDescriptor(
+        block="hover-wobble",
+        category="auto",
+    ),
+    "inline": ComponentDescriptor(
+        block="inline",
+        category="auto",
+    ),
+    "jello": ComponentDescriptor(
+        block="jello",
+        category="auto",
+    ),
+    "key-value-form": ComponentDescriptor(
+        block="key-value-form",
+        elements=("key", "row", "submit", "value"),
+        category="auto",
+    ),
+    "layer": ComponentDescriptor(
+        block="layer",
+        extra_emits=(
+            "chirpui-layer--angle-moderate",
+            "chirpui-layer--angle-none",
+            "chirpui-layer--angle-subtle",
+            "chirpui-layer--center",
+            "chirpui-layer--hover",
+            "chirpui-layer--left",
+            "chirpui-layer--overlap-lg",
+            "chirpui-layer--overlap-md",
+            "chirpui-layer--overlap-sm",
+            "chirpui-layer--right",
+        ),
+        category="auto",
+    ),
+    "list-reset": ComponentDescriptor(
+        block="list-reset",
+        category="auto",
+    ),
+    "mb-md": ComponentDescriptor(
+        block="mb-md",
+        category="auto",
+    ),
+    "measure-lg": ComponentDescriptor(
+        block="measure-lg",
+        category="auto",
+    ),
+    "measure-md": ComponentDescriptor(
+        block="measure-md",
+        category="auto",
+    ),
+    "measure-sm": ComponentDescriptor(
+        block="measure-sm",
+        category="auto",
+    ),
+    "message-reactions": ComponentDescriptor(
+        block="message-reactions",
+        category="auto",
+    ),
+    "min-w-0": ComponentDescriptor(
+        block="min-w-0",
+        category="auto",
+    ),
+    "model-card": ComponentDescriptor(
+        block="model-card",
+        elements=("badge", "body", "footer", "header", "title"),
+        category="auto",
+    ),
+    "mt-md": ComponentDescriptor(
+        block="mt-md",
+        category="auto",
+    ),
+    "mt-sm": ComponentDescriptor(
+        block="mt-sm",
+        category="auto",
+    ),
+    "number-scale": ComponentDescriptor(
+        block="number-scale",
+        elements=("input", "label", "labels"),
+        category="auto",
+    ),
+    "page-fill": ComponentDescriptor(
+        block="page-fill",
+        category="auto",
+    ),
+    "placeholder-inline": ComponentDescriptor(
+        block="placeholder-inline",
+        category="auto",
+    ),
+    "progress": ComponentDescriptor(
+        block="progress",
+        elements=("fill", "track"),
+        category="auto",
+    ),
+    "prose": ComponentDescriptor(
+        block="prose",
+        category="auto",
+    ),
+    "prose-lg": ComponentDescriptor(
+        block="prose-lg",
+        category="auto",
+    ),
+    "prose-sm": ComponentDescriptor(
+        block="prose-sm",
+        category="auto",
+    ),
+    "resource-card": ComponentDescriptor(
+        block="resource-card",
+        elements=("description",),
+        category="auto",
+    ),
+    "result-slot": ComponentDescriptor(
+        block="result-slot",
+        extra_emits=("chirpui-result-slot--sm",),
+        category="auto",
+    ),
+    "route-tabs": ComponentDescriptor(
+        block="route-tabs",
+        category="auto",
+    ),
+    "rubber-band": ComponentDescriptor(
+        block="rubber-band",
+        category="auto",
+    ),
+    "scroll-x": ComponentDescriptor(
+        block="scroll-x",
+        category="auto",
+    ),
+    "search-header": ComponentDescriptor(
+        block="search-header",
+        elements=("form", "strip"),
+        category="auto",
+    ),
+    "section-collapsible": ComponentDescriptor(
+        block="section-collapsible",
+        elements=("summary",),
+        category="auto",
+    ),
+    "shell-action-form": ComponentDescriptor(
+        block="shell-action-form",
+        category="auto",
+    ),
+    "shell-section": ComponentDescriptor(
+        block="shell-section",
+        elements=("content", "nav"),
+        category="auto",
+    ),
+    "spinner-thinking": ComponentDescriptor(
+        block="spinner-thinking",
+        elements=("char",),
+        extra_emits=(
+            "chirpui-spinner-thinking--lg",
+            "chirpui-spinner-thinking--md",
+            "chirpui-spinner-thinking--sm",
+        ),
+        category="auto",
+    ),
+    "split-flap-board": ComponentDescriptor(
+        block="split-flap-board",
+        elements=("body", "title"),
+        extra_emits=(
+            "chirpui-split-flap-board--amber",
+            "chirpui-split-flap-board--green",
+        ),
+        category="auto",
+    ),
+    "split-flap-row": ComponentDescriptor(
+        block="split-flap-row",
+        category="auto",
+    ),
+    "sse-retry": ComponentDescriptor(
+        block="sse-retry",
+        elements=("loading",),
+        extra_emits=("chirpui-sse-retry--loading",),
+        category="auto",
+    ),
+    "stack": ComponentDescriptor(
+        block="stack",
+        extra_emits=(
+            "chirpui-stack--lg",
+            "chirpui-stack--md",
+            "chirpui-stack--sm",
+            "chirpui-stack--xl",
+            "chirpui-stack--xs",
+        ),
+        category="auto",
+    ),
+    "streaming": ComponentDescriptor(
+        block="streaming",
+        extra_emits=("chirpui-streaming--error",),
+        category="auto",
+    ),
+    "streaming-block": ComponentDescriptor(
+        block="streaming-block",
+        elements=("cursor",),
+        extra_emits=("chirpui-streaming-block--active",),
+        category="auto",
+    ),
+    "suspense-group": ComponentDescriptor(
+        block="suspense-group",
+        category="auto",
+    ),
+    "tab-panel": ComponentDescriptor(
+        block="tab-panel",
+        category="auto",
+    ),
+    "text-muted": ComponentDescriptor(
+        block="text-muted",
+        category="auto",
+    ),
+    "texture": ComponentDescriptor(
+        block="texture",
+        extra_emits=(
+            "chirpui-texture--checker",
+            "chirpui-texture--crosshatch",
+            "chirpui-texture--diag",
+            "chirpui-texture--dots-md",
+            "chirpui-texture--dots-sm",
+            "chirpui-texture--grid",
+            "chirpui-texture--hex",
+            "chirpui-texture--noise-coarse",
+            "chirpui-texture--noise-fine",
+            "chirpui-texture--weave",
+        ),
+        category="auto",
+    ),
+    "toast-container": ComponentDescriptor(
+        block="toast-container",
+        category="auto",
+    ),
+    "toggle": ComponentDescriptor(
+        block="toggle",
+        elements=("label", "track", "track-label"),
+        extra_emits=(
+            "chirpui-toggle__track-label--off",
+            "chirpui-toggle__track-label--on",
+        ),
+        category="auto",
+    ),
+    "truncate": ComponentDescriptor(
+        block="truncate",
+        category="auto",
+    ),
+    "ui-base": ComponentDescriptor(
+        block="ui-base",
+        category="auto",
+    ),
+    "ui-bold": ComponentDescriptor(
+        block="ui-bold",
+        category="auto",
+    ),
+    "ui-label": ComponentDescriptor(
+        block="ui-label",
+        category="auto",
+    ),
+    "ui-lg": ComponentDescriptor(
+        block="ui-lg",
+        category="auto",
+    ),
+    "ui-medium": ComponentDescriptor(
+        block="ui-medium",
+        category="auto",
+    ),
+    "ui-meta": ComponentDescriptor(
+        block="ui-meta",
+        category="auto",
+    ),
+    "ui-normal": ComponentDescriptor(
+        block="ui-normal",
+        category="auto",
+    ),
+    "ui-semibold": ComponentDescriptor(
+        block="ui-semibold",
+        category="auto",
+    ),
+    "ui-sm": ComponentDescriptor(
+        block="ui-sm",
+        category="auto",
+    ),
+    "ui-title": ComponentDescriptor(
+        block="ui-title",
+        category="auto",
+    ),
+    "ui-xl": ComponentDescriptor(
+        block="ui-xl",
+        category="auto",
+    ),
+    "ui-xs": ComponentDescriptor(
+        block="ui-xs",
+        category="auto",
+    ),
+    "visually-hidden": ComponentDescriptor(
+        block="visually-hidden",
+        category="auto",
+    ),
+}
+
+COMPONENTS.update(_AUTO_NEW_DESCRIPTORS)
+
+
 class DesignSystemStats(TypedDict):
     """Aggregate counts for the design system surface."""
 
@@ -1793,6 +3249,8 @@ def design_system_report() -> DesignSystemReport:
             "elements": desc.elements,
             "slots": desc.slots,
             "tokens": desc.tokens,
+            "extra_emits": desc.extra_emits,
+            "emits": tuple(sorted(desc.emits)),
             "template": desc.template,
             "category": desc.category,
         }

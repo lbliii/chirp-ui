@@ -1,0 +1,115 @@
+/* ==========================================================================
+   Action Containers
+   ========================================================================== */
+
+.chirpui-action-strip {
+    width: 100%;
+}
+
+.chirpui-action-strip__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--chirpui-space-control-gap);
+    width: 100%;
+}
+
+.chirpui-action-strip__primary,
+.chirpui-action-strip__controls,
+.chirpui-action-strip__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-space-control-gap);
+    min-width: 0;
+}
+
+.chirpui-action-strip__primary {
+    flex: 1 1 18rem;
+}
+
+.chirpui-action-strip__primary > * {
+    width: 100%;
+}
+
+.chirpui-action-strip__controls {
+    flex: 1 1 14rem;
+    flex-wrap: wrap;
+}
+
+.chirpui-action-strip__actions {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    flex-wrap: wrap;
+    justify-content: end;
+}
+
+.chirpui-action-strip--sm .chirpui-action-strip__inner {
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-action-strip--scroll .chirpui-action-strip__inner {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: var(--chirpui-spacing-2xs);
+}
+
+.chirpui-action-strip--scroll .chirpui-action-strip__primary,
+.chirpui-action-strip--scroll .chirpui-action-strip__controls,
+.chirpui-action-strip--scroll .chirpui-action-strip__actions {
+    flex-wrap: nowrap;
+}
+
+.chirpui-action-strip--collapse .chirpui-action-strip__controls {
+    flex: 0 1 auto;
+}
+
+.chirpui-action-strip--sticky {
+    position: sticky;
+    top: 0;
+    z-index: var(--chirpui-z-dropdown);
+}
+
+.chirpui-filter-bar__form {
+    width: 100%;
+}
+
+.chirpui-filter-row {
+    align-items: center;
+    margin-bottom: var(--chirpui-spacing);
+}
+
+.chirpui-filter-row label {
+    white-space: nowrap;
+}
+
+.chirpui-command-bar .chirpui-action-strip__actions {
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-search-header__form {
+    width: 100%;
+}
+
+.chirpui-search-header__strip .chirpui-action-strip__primary {
+    flex-basis: 24rem;
+}
+
+@media (max-width: 48rem) {
+    .chirpui-action-strip__primary,
+    .chirpui-action-strip__controls,
+    .chirpui-action-strip__actions {
+        flex: 1 1 100%;
+    }
+
+    .chirpui-action-strip__actions {
+        margin-inline-start: 0;
+        justify-content: start;
+    }
+
+    .chirpui-action-strip--scroll .chirpui-action-strip__primary,
+    .chirpui-action-strip--scroll .chirpui-action-strip__controls,
+    .chirpui-action-strip--scroll .chirpui-action-strip__actions {
+        flex: 0 0 auto;
+    }
+}
+

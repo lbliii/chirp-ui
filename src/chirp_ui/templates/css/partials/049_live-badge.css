@@ -1,0 +1,33 @@
+/* ==========================================================================
+   Live Badge
+   ========================================================================== */
+
+.chirpui-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    background: var(--chirpui-error);
+    color: var(--chirpui-on-accent);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-live-badge__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: currentColor;
+    animation: chirpui-live-pulse var(--chirpui-anim-pulse) ease-in-out infinite;
+}
+
+@keyframes chirpui-live-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.chirpui-live-badge__viewers {
+    opacity: 0.9;
+}
+

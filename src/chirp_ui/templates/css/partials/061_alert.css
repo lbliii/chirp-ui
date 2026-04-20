@@ -1,0 +1,88 @@
+/* ==========================================================================
+   Alert
+   ========================================================================== */
+
+.chirpui-alert {
+    display: flex;
+    align-items: flex-start;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-alert--info    { border-color: var(--chirpui-alert-info-border); background: var(--chirpui-alert-info-bg); }
+.chirpui-alert--success { border-color: var(--chirpui-alert-success-border); background: var(--chirpui-alert-success-bg); }
+.chirpui-alert--warning { border-color: var(--chirpui-alert-warning-border); background: var(--chirpui-alert-warning-bg); }
+.chirpui-alert--error   { border-color: var(--chirpui-alert-error-border); background: var(--chirpui-alert-error-bg); }
+
+.chirpui-alert__icon {
+    font-size: 1em;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-inline-end: var(--chirpui-spacing-sm);
+}
+
+.chirpui-alert__body {
+    flex: 1;
+}
+
+.chirpui-alert__title {
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    margin-bottom: var(--chirpui-spacing-xs);
+}
+
+.chirpui-alert__actions {
+    margin-top: var(--chirpui-spacing-sm);
+}
+
+.chirpui-alert__actions:empty {
+    display: none;
+}
+
+.chirpui-alert__close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    line-height: 1;
+    margin-inline-start: var(--chirpui-spacing-sm);
+    padding: 0;
+}
+
+.chirpui-alert__close:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+/* Collapsible alert (details/summary) */
+.chirpui-alert[role="alert"] summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+.chirpui-alert[role="alert"] summary::-webkit-details-marker {
+    display: none;
+}
+
+.chirpui-mt-sm { margin-top: var(--chirpui-spacing-sm); }
+.chirpui-mt-md { margin-top: var(--chirpui-spacing-md); }
+.chirpui-mb-md { margin-bottom: var(--chirpui-spacing-md); }
+
+.chirpui-result-slot {
+    margin-top: var(--chirpui-space-result-gap);
+}
+
+.chirpui-result-slot:empty {
+    margin-top: 0;
+}
+
+.chirpui-result-slot--sm {
+    margin-top: var(--chirpui-space-control-gap);
+}
+
+.chirpui-result-slot--sm:empty {
+    margin-top: 0;
+}
+

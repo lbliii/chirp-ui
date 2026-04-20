@@ -1,0 +1,64 @@
+/* ==========================================================================
+   Message Bubble & Thread
+   ========================================================================== */
+
+.chirpui-message-thread {
+    list-style: none;
+    margin: 0;
+    padding: var(--chirpui-spacing);
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-message-bubble {
+    display: flex;
+    gap: var(--chirpui-message-bubble-gap);
+    max-width: var(--chirpui-message-bubble-max-width);
+    padding: var(--chirpui-message-bubble-padding);
+    border-radius: var(--chirpui-message-bubble-radius);
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-message-bubble--right {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+    background: var(--chirpui-accent);
+    color: var(--chirpui-surface);
+}
+
+.chirpui-message-bubble--left {
+    align-self: flex-start;
+}
+
+.chirpui-message-bubble--user {
+    background: var(--chirpui-message-bubble-user-bg);
+    color: var(--chirpui-message-bubble-user-color);
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.chirpui-message-bubble--assistant {
+    background: var(--chirpui-message-bubble-assistant-bg);
+    color: var(--chirpui-message-bubble-assistant-color);
+    align-self: flex-start;
+}
+
+.chirpui-message-bubble--system {
+    background: var(--chirpui-message-bubble-system-bg);
+    color: var(--chirpui-message-bubble-system-color);
+    align-self: center;
+    max-width: 70%;
+    font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-message-bubble--sent,
+.chirpui-message-bubble--read,
+.chirpui-message-bubble--pending {
+    opacity: 1;
+}
+
+.chirpui-message-bubble--pending {
+    opacity: 0.85;
+}
+

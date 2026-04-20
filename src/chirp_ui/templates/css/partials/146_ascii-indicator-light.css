@@ -1,0 +1,64 @@
+/* ================================================================
+   ASCII Indicator Light — blinking mainframe LEDs
+   ================================================================ */
+
+@keyframes chirpui-indicator-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+@keyframes chirpui-indicator-blink-fast {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.15; }
+}
+
+.chirpui-ascii-indicator {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15em;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+}
+
+.chirpui-ascii-indicator__light {
+    font-size: 1rem;
+    line-height: 1;
+    text-shadow: 0 0 4px currentColor;
+}
+
+.chirpui-ascii-indicator__label {
+    font-size: var(--chirpui-font-xs, 0.65rem);
+    color: var(--chirpui-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+
+/* Color variants */
+.chirpui-ascii-indicator--success .chirpui-ascii-indicator__light { color: var(--chirpui-success); }
+.chirpui-ascii-indicator--warning .chirpui-ascii-indicator__light { color: var(--chirpui-warning, #e6a700); }
+.chirpui-ascii-indicator--error .chirpui-ascii-indicator__light { color: var(--chirpui-error); }
+.chirpui-ascii-indicator--muted .chirpui-ascii-indicator__light { color: var(--chirpui-text-muted); text-shadow: none; }
+.chirpui-ascii-indicator--accent .chirpui-ascii-indicator__light { color: var(--chirpui-accent); }
+
+/* Blink */
+.chirpui-ascii-indicator--blink .chirpui-ascii-indicator__light {
+    animation: chirpui-indicator-blink 2s ease-in-out infinite;
+}
+.chirpui-ascii-indicator--blink-fast .chirpui-ascii-indicator__light {
+    animation: chirpui-indicator-blink-fast var(--chirpui-anim-pace) ease-in-out infinite;
+}
+
+/* Row layout */
+.chirpui-ascii-indicator-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-indicator--blink .chirpui-ascii-indicator__light,
+    .chirpui-ascii-indicator--blink-fast .chirpui-ascii-indicator__light {
+        animation: none;
+    }
+}
+

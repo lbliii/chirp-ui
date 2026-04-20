@@ -1,0 +1,134 @@
+/* ==========================================================================
+   Aura — chromatic halo behind wrapped content (glass cards, panels, etc.)
+   Pair with inner chirpui-surface--glass; keeps pseudos free on the surface
+   (e.g. chirpui-surface--cornered). Content stacks in .chirpui-aura__content.
+   ========================================================================== */
+
+.chirpui-aura {
+    position: relative;
+    isolation: isolate;
+    display: block;
+    min-width: 0;
+    overflow: visible;
+    --chirpui-aura-blur: 22px;
+    --chirpui-aura-inset-x: -12%;
+    --chirpui-aura-inset-top: -14%;
+    --chirpui-aura-inset-bottom: -32%;
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-accent) 52%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-primary) 38%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent-secondary) 28%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-accent) 9%, transparent);
+}
+
+.chirpui-aura--sm {
+    --chirpui-aura-blur: 14px;
+    --chirpui-aura-inset-x: -8%;
+    --chirpui-aura-inset-top: -10%;
+    --chirpui-aura-inset-bottom: -20%;
+}
+
+.chirpui-aura--md {
+    --chirpui-aura-blur: 22px;
+    --chirpui-aura-inset-x: -12%;
+    --chirpui-aura-inset-top: -14%;
+    --chirpui-aura-inset-bottom: -32%;
+}
+
+.chirpui-aura--lg {
+    --chirpui-aura-blur: 32px;
+    --chirpui-aura-inset-x: -16%;
+    --chirpui-aura-inset-top: -18%;
+    --chirpui-aura-inset-bottom: -40%;
+}
+
+.chirpui-aura--warm {
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-primary) 45%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-accent-secondary) 42%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent) 32%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-primary) 8%, transparent);
+}
+
+.chirpui-aura--cool {
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-accent) 48%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-primary) 42%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent-secondary) 24%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-accent) 8%, transparent);
+}
+
+.chirpui-aura--muted {
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-muted) 38%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-accent) 28%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-border) 22%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-text) 5%, transparent);
+}
+
+.chirpui-aura--primary {
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-primary) 50%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-accent) 36%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent-secondary) 26%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-primary) 8%, transparent);
+}
+
+.chirpui-aura--accent {
+    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-accent) 52%, transparent);
+    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-primary) 38%, transparent);
+    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent-secondary) 28%, transparent);
+    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-accent) 9%, transparent);
+}
+
+.chirpui-aura::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: var(--chirpui-aura-inset-top) var(--chirpui-aura-inset-x) var(--chirpui-aura-inset-bottom)
+        var(--chirpui-aura-inset-x);
+    border-radius: calc(var(--chirpui-radius-xl) + 0.75rem);
+    pointer-events: none;
+    opacity: 0.9;
+    filter: blur(var(--chirpui-aura-blur)) saturate(1.18);
+    background:
+        radial-gradient(
+            ellipse 100% 80% at 30% 12%,
+            var(--chirpui-aura-a) 0%,
+            transparent 58%
+        ),
+        radial-gradient(
+            ellipse 85% 70% at 95% 45%,
+            var(--chirpui-aura-b) 0%,
+            transparent 62%
+        ),
+        radial-gradient(
+            ellipse 90% 65% at 42% 118%,
+            var(--chirpui-aura-c) 0%,
+            transparent 55%
+        ),
+        repeating-linear-gradient(
+            118deg,
+            transparent 0,
+            transparent 8px,
+            var(--chirpui-aura-mess) 8px,
+            var(--chirpui-aura-mess) 9px
+        ),
+        linear-gradient(
+            188deg,
+            color-mix(in oklab, var(--chirpui-text) 6%, transparent) 0%,
+            transparent 42%
+        );
+}
+
+.chirpui-aura--mirror::before {
+    transform: scaleX(-1);
+}
+
+.chirpui-aura__content {
+    position: relative;
+    z-index: 1;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .chirpui-aura::before {
+        opacity: 0.35;
+        filter: none;
+    }
+}
+

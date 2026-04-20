@@ -1,0 +1,81 @@
+/* ================================================================
+   ASCII Radio — (○)/(●) dial-style selectors
+   ================================================================ */
+
+.chirpui-ascii-radio {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+    user-select: none;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+}
+
+.chirpui-ascii-radio__dot {
+    font-size: 1.1rem;
+    line-height: 1;
+    color: var(--chirpui-text-muted);
+    transition: color var(--chirpui-transition);
+}
+.chirpui-ascii-radio__dot::before {
+    content: "○";
+}
+
+.chirpui-ascii-radio:has(.chirpui-ascii-radio__input:checked) .chirpui-ascii-radio__dot {
+    color: var(--chirpui-accent);
+}
+.chirpui-ascii-radio:has(.chirpui-ascii-radio__input:checked) .chirpui-ascii-radio__dot::before {
+    content: "●";
+}
+
+/* Active */
+.chirpui-ascii-radio:has(.chirpui-ascii-radio__input:active) .chirpui-ascii-radio__dot::before {
+    content: "◉";
+}
+
+.chirpui-ascii-radio__label {
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text);
+}
+
+/* Focus */
+.chirpui-ascii-radio:has(.chirpui-ascii-radio__input:focus-visible) .chirpui-ascii-radio__dot {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 2px;
+    border-radius: 50%;
+}
+
+/* Disabled */
+.chirpui-ascii-radio--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Group */
+.chirpui-ascii-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.chirpui-ascii-radio-group--horizontal {
+    flex-direction: row;
+    gap: 1.25em;
+}
+.chirpui-ascii-radio-group__legend {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: var(--chirpui-font-xs, 0.65rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--chirpui-text-muted);
+    margin-bottom: 0.35em;
+}
+
+/* Accent variant */
+.chirpui-ascii-radio-group--accent .chirpui-ascii-radio:has(.chirpui-ascii-radio__input:checked) .chirpui-ascii-radio__dot {
+    color: var(--chirpui-accent);
+}
+

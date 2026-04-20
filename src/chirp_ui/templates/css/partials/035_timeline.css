@@ -1,0 +1,140 @@
+/* ==========================================================================
+   Timeline
+   ========================================================================== */
+
+.chirpui-timeline {
+    position: relative;
+    padding-inline-start: var(--chirpui-spacing-lg);
+    border-inline-start: 2px solid var(--chirpui-border);
+}
+
+.chirpui-timeline__item {
+    position: relative;
+    padding-bottom: var(--chirpui-spacing-lg);
+}
+
+.chirpui-timeline__item:last-child {
+    padding-bottom: 0;
+}
+
+.chirpui-timeline__dot {
+    position: absolute;
+    left: calc(-1 * var(--chirpui-spacing-lg) - 4px);
+    top: 0.35rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--chirpui-accent);
+}
+
+.chirpui-timeline__content {
+    margin-inline-start: var(--chirpui-spacing);
+}
+
+.chirpui-timeline__header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--chirpui-spacing-sm);
+    margin-bottom: var(--chirpui-spacing-xs);
+}
+
+.chirpui-timeline__header-actions {
+    margin-inline-start: auto;
+}
+
+.chirpui-timeline__header-actions:empty,
+.chirpui-timeline__body:empty {
+    display: none;
+}
+
+.chirpui-timeline__title {
+    font-weight: 500;
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text);
+}
+
+.chirpui-timeline__date {
+    font-size: var(--chirpui-font-xs);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-timeline__body {
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+/* Timeline: icon/avatar variants */
+.chirpui-timeline__icon {
+    position: absolute;
+    left: calc(-1 * var(--chirpui-spacing-lg) - 10px);
+    top: 0.15rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--chirpui-surface);
+    border: 2px solid var(--chirpui-border);
+    font-size: 0.65rem;
+    color: var(--chirpui-text-muted);
+}
+.chirpui-timeline__avatar {
+    position: absolute;
+    left: calc(-1 * var(--chirpui-spacing-lg) - 10px);
+    top: 0.15rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.chirpui-timeline__time {
+    display: block;
+    font-size: var(--chirpui-font-xs);
+    color: var(--chirpui-text-muted);
+    margin-bottom: var(--chirpui-spacing-2xs);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Timeline: semantic dot colors */
+.chirpui-timeline__item--success .chirpui-timeline__dot,
+.chirpui-timeline__item--success .chirpui-timeline__icon { background: var(--chirpui-success); border-color: var(--chirpui-success); color: var(--chirpui-on-accent); }
+.chirpui-timeline__item--warning .chirpui-timeline__dot,
+.chirpui-timeline__item--warning .chirpui-timeline__icon { background: var(--chirpui-warning); border-color: var(--chirpui-warning); color: var(--chirpui-on-accent); }
+.chirpui-timeline__item--error .chirpui-timeline__dot,
+.chirpui-timeline__item--error .chirpui-timeline__icon { background: var(--chirpui-error); border-color: var(--chirpui-error); color: var(--chirpui-on-accent); }
+.chirpui-timeline__item--info .chirpui-timeline__dot,
+.chirpui-timeline__item--info .chirpui-timeline__icon { background: var(--chirpui-info); border-color: var(--chirpui-info); color: var(--chirpui-on-accent); }
+
+/* Timeline: hoverable rows */
+/* Timeline: surface-aware — adapt line/dot contrast on non-default surfaces */
+.chirpui-timeline--on-muted {
+    border-inline-start-color: var(--chirpui-fg-muted);
+}
+.chirpui-timeline--on-muted .chirpui-timeline__dot {
+    background: var(--chirpui-fg-muted);
+}
+.chirpui-timeline--on-accent {
+    border-inline-start-color: var(--chirpui-accent);
+}
+.chirpui-timeline--on-accent .chirpui-timeline__dot {
+    background: var(--chirpui-fg);
+}
+
+.chirpui-timeline--hoverable .chirpui-timeline__item {
+    border-radius: var(--chirpui-radius);
+    padding: var(--chirpui-spacing-xs);
+    transition: background var(--chirpui-transition);
+}
+.chirpui-timeline--hoverable .chirpui-timeline__item:hover {
+    background: var(--chirpui-surface-alt);
+}
+
+/* Timeline: clickable link overlay */
+.chirpui-timeline__item--link { position: relative; }
+.chirpui-timeline__link-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+

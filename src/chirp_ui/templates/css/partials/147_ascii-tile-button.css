@@ -1,0 +1,132 @@
+/* ================================================================
+   ASCII Tile Button — square mainframe pushbuttons
+   ================================================================ */
+
+@keyframes chirpui-tile-glow {
+    0%, 100% { box-shadow: 0 0 3px currentColor, inset 0 0 3px currentColor; }
+    50% { box-shadow: 0 0 8px currentColor, inset 0 0 6px currentColor; }
+}
+
+.chirpui-ascii-tile-btn {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25em;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    background: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+}
+
+.chirpui-ascii-tile-btn__face {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 2px solid var(--chirpui-border);
+    border-radius: 3px;
+    background: var(--chirpui-surface);
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: 1rem;
+    color: var(--chirpui-text-muted);
+    transition: background var(--chirpui-transition),
+                border-color var(--chirpui-transition),
+                color var(--chirpui-transition),
+                box-shadow var(--chirpui-transition),
+                transform var(--chirpui-motion-fast);
+}
+
+.chirpui-ascii-tile-btn__glyph {
+    line-height: 1;
+}
+
+.chirpui-ascii-tile-btn__label {
+    font-size: var(--chirpui-font-xs, 0.6rem);
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    color: var(--chirpui-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+
+/* Hover */
+.chirpui-ascii-tile-btn:hover .chirpui-ascii-tile-btn__face {
+    border-color: var(--chirpui-text-muted);
+    background: var(--chirpui-bg-subtle);
+}
+
+/* Active press — push in */
+.chirpui-ascii-tile-btn:active .chirpui-ascii-tile-btn__face,
+.chirpui-ascii-tile-btn:has(.chirpui-ascii-tile-btn__input:active) .chirpui-ascii-tile-btn__face {
+    transform: scale(0.9);
+    background: var(--chirpui-accent);
+    border-color: var(--chirpui-accent);
+    color: var(--chirpui-surface);
+}
+
+/* Focus */
+.chirpui-ascii-tile-btn:focus-visible .chirpui-ascii-tile-btn__face,
+.chirpui-ascii-tile-btn:has(.chirpui-ascii-tile-btn__input:focus-visible) .chirpui-ascii-tile-btn__face {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 2px;
+}
+
+/* Lit state (checkbox checked OR .chirpui-ascii-tile-btn--lit) */
+.chirpui-ascii-tile-btn--lit .chirpui-ascii-tile-btn__face,
+.chirpui-ascii-tile-btn:has(.chirpui-ascii-tile-btn__input:checked) .chirpui-ascii-tile-btn__face {
+    background: var(--chirpui-accent);
+    border-color: var(--chirpui-accent);
+    color: var(--chirpui-surface);
+    box-shadow: 0 0 6px var(--chirpui-accent);
+    animation: chirpui-tile-glow var(--chirpui-anim-cycle) ease-in-out infinite;
+}
+
+/* Color variants — change the "lit" color */
+.chirpui-ascii-tile-btn--success:has(.chirpui-ascii-tile-btn__input:checked) .chirpui-ascii-tile-btn__face,
+.chirpui-ascii-tile-btn--success.chirpui-ascii-tile-btn--lit .chirpui-ascii-tile-btn__face {
+    background: var(--chirpui-success); border-color: var(--chirpui-success);
+    box-shadow: 0 0 6px var(--chirpui-success);
+}
+.chirpui-ascii-tile-btn--warning:has(.chirpui-ascii-tile-btn__input:checked) .chirpui-ascii-tile-btn__face,
+.chirpui-ascii-tile-btn--warning.chirpui-ascii-tile-btn--lit .chirpui-ascii-tile-btn__face {
+    background: var(--chirpui-warning, #e6a700); border-color: var(--chirpui-warning, #e6a700);
+    box-shadow: 0 0 6px var(--chirpui-warning, #e6a700);
+}
+.chirpui-ascii-tile-btn--danger:has(.chirpui-ascii-tile-btn__input:checked) .chirpui-ascii-tile-btn__face,
+.chirpui-ascii-tile-btn--danger.chirpui-ascii-tile-btn--lit .chirpui-ascii-tile-btn__face {
+    background: var(--chirpui-error); border-color: var(--chirpui-error);
+    box-shadow: 0 0 6px var(--chirpui-error);
+}
+.chirpui-ascii-tile-btn--accent:has(.chirpui-ascii-tile-btn__input:checked) .chirpui-ascii-tile-btn__face,
+.chirpui-ascii-tile-btn--accent.chirpui-ascii-tile-btn--lit .chirpui-ascii-tile-btn__face {
+    background: var(--chirpui-accent); border-color: var(--chirpui-accent);
+    box-shadow: 0 0 6px var(--chirpui-accent);
+}
+
+/* Disabled */
+.chirpui-ascii-tile-btn--disabled,
+.chirpui-ascii-tile-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Grid layout */
+.chirpui-ascii-tile-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--_tile-cols, 4), auto);
+    gap: 0.5rem;
+    justify-content: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-tile-btn--lit .chirpui-ascii-tile-btn__face,
+    .chirpui-ascii-tile-btn:has(.chirpui-ascii-tile-btn__input:checked) .chirpui-ascii-tile-btn__face {
+        animation: none;
+    }
+}
+

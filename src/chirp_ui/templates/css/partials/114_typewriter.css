@@ -1,0 +1,27 @@
+/* ==========================================================================
+   Typewriter — step-based text reveal with blinking cursor
+   ========================================================================== */
+
+.chirpui-typewriter {
+    display: inline-block;
+}
+.chirpui-typewriter__text {
+    display: inline-block;
+    overflow: clip;
+    white-space: nowrap;
+    border-right: 2px solid currentColor;
+    width: 0;
+    animation:
+        chirpui-typewriter var(--chirpui-typewriter-duration, 2s) steps(var(--chirpui-typewriter-steps, 30), end) forwards,
+        chirpui-blink-caret 0.75s step-end infinite;
+}
+.chirpui-typewriter--no-cursor .chirpui-typewriter__text {
+    border-right: none;
+}
+.chirpui-typewriter--delay-1 .chirpui-typewriter__text { animation-delay: 0.5s; }
+.chirpui-typewriter--delay-2 .chirpui-typewriter__text { animation-delay: 1s; }
+.chirpui-typewriter--delay-3 .chirpui-typewriter__text { animation-delay: 1.5s; }
+.chirpui-typewriter--fast .chirpui-typewriter__text { --chirpui-typewriter-duration: 1s; }
+.chirpui-typewriter--slow .chirpui-typewriter__text { --chirpui-typewriter-duration: 4s; }
+
+

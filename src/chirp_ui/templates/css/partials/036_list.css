@@ -1,0 +1,48 @@
+/* ==========================================================================
+   List
+   ========================================================================== */
+
+.chirpui-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-list__item {
+    transition: opacity var(--chirpui-transition-slow), transform var(--chirpui-transition-slow);
+    @starting-style {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+}
+
+.chirpui-list--bordered .chirpui-list__item {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    background: var(--chirpui-surface);
+}
+
+.chirpui-list--bordered .chirpui-list__item + .chirpui-list__item {
+    margin-top: var(--chirpui-spacing-xs);
+}
+
+.chirpui-list__link {
+    color: var(--chirpui-accent);
+    text-decoration: none;
+    transition: color var(--chirpui-transition);
+}
+
+.chirpui-list__link:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-list__link:hover {
+    color: var(--chirpui-accent-hover);
+    text-decoration: underline;
+}
+

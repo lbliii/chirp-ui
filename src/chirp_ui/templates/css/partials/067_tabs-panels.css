@@ -1,0 +1,33 @@
+/* ==========================================================================
+   Tabs panels (button-based)
+   ========================================================================== */
+
+.chirpui-tabs[data-chirpui-tabs] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--chirpui-spacing-xs);
+    border-bottom: 1px solid var(--chirpui-border);
+    margin-bottom: var(--chirpui-spacing);
+}
+.chirpui-tabs__tab {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--chirpui-text-muted);
+    font: inherit;
+    cursor: pointer;
+    margin-bottom: -1px;
+}
+.chirpui-tabs__tab:hover {
+    color: var(--chirpui-text);
+}
+.chirpui-tabs__tab--active,
+.chirpui-tabs__tab[aria-selected="true"] {
+    color: var(--chirpui-accent);
+    border-bottom-color: var(--chirpui-accent);
+}
+.chirpui-tab-panel[hidden] {
+    display: none;
+}
+

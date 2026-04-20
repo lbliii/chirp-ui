@@ -1,0 +1,75 @@
+/* ================================================================
+   ASCII Stepper — pipeline/wizard progress
+   [✓]───[✓]───[●]───[○]───[○]
+   ================================================================ */
+
+.chirpui-ascii-stepper {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+}
+
+.chirpui-ascii-stepper__track {
+    display: flex;
+    align-items: flex-start;
+}
+
+.chirpui-ascii-stepper__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25em;
+}
+
+.chirpui-ascii-stepper__node {
+    font-size: 0.85rem;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--chirpui-text-muted);
+    transition: color var(--chirpui-transition);
+}
+
+.chirpui-ascii-stepper__label {
+    font-size: var(--chirpui-font-xs, 0.6rem);
+    color: var(--chirpui-text-muted);
+    white-space: nowrap;
+    transition: color var(--chirpui-transition);
+}
+
+.chirpui-ascii-stepper__connector {
+    font-size: 0.85rem;
+    line-height: 1;
+    color: var(--chirpui-text-muted);
+    opacity: 0.4;
+    padding-top: 0;
+    align-self: center;
+    margin-top: -0.25em;
+}
+
+/* Complete step */
+.chirpui-ascii-stepper__step--complete .chirpui-ascii-stepper__node {
+    color: var(--chirpui-success);
+}
+.chirpui-ascii-stepper__step--complete .chirpui-ascii-stepper__label {
+    color: var(--chirpui-text);
+}
+.chirpui-ascii-stepper__connector--complete {
+    color: var(--chirpui-success);
+    opacity: 0.8;
+}
+
+/* Active step */
+.chirpui-ascii-stepper__step--active .chirpui-ascii-stepper__node {
+    color: var(--chirpui-accent);
+    text-shadow: 0 0 4px currentColor;
+}
+.chirpui-ascii-stepper__step--active .chirpui-ascii-stepper__label {
+    color: var(--chirpui-text);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+}
+
+/* Pending step — stays muted (default) */
+
+/* Variants */
+.chirpui-ascii-stepper--accent .chirpui-ascii-stepper__step--complete .chirpui-ascii-stepper__node { color: var(--chirpui-accent); }
+.chirpui-ascii-stepper--accent .chirpui-ascii-stepper__connector--complete { color: var(--chirpui-accent); }
+.chirpui-ascii-stepper--success .chirpui-ascii-stepper__step--active .chirpui-ascii-stepper__node { color: var(--chirpui-success); }
+

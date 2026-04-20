@@ -1,0 +1,82 @@
+/* ==========================================================================
+   Accordion
+   ========================================================================== */
+
+.chirpui-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-accordion__item {
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    background: var(--chirpui-surface);
+    overflow: clip;
+}
+
+.chirpui-accordion__trigger {
+    cursor: pointer;
+    list-style: none;
+    padding: var(--chirpui-spacing) var(--chirpui-spacing-md);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-accordion__trigger::-webkit-details-marker {
+    display: none;
+}
+
+.chirpui-accordion__trigger::marker {
+    display: none;
+}
+
+.chirpui-accordion__trigger::before {
+    content: "▸";
+    font-size: 0.75em;
+    transition: transform var(--chirpui-transition-slow) var(--chirpui-ease-spring);
+}
+
+.chirpui-accordion__item[open] .chirpui-accordion__trigger::before {
+    transform: rotate(90deg);
+}
+
+.chirpui-accordion__trigger:hover {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-accordion__trigger:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-accordion__trigger-text {
+    flex: 1;
+}
+
+.chirpui-accordion__trigger-actions {
+    margin-inline-start: auto;
+}
+
+.chirpui-accordion__trigger-actions:empty {
+    display: none;
+}
+
+.chirpui-accordion__content {
+    padding: 0 var(--chirpui-spacing-md) var(--chirpui-spacing) var(--chirpui-spacing-md);
+    padding-inline-start: calc(var(--chirpui-spacing-md) + 1em);
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-accordion__item[open] .chirpui-accordion__content {
+    animation: chirpui-accordion-content-in var(--chirpui-transition-slow) var(--chirpui-ease-spring);
+}
+
+@keyframes chirpui-accordion-content-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+

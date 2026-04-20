@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block brand %}Card Variants{% end %}
+{% block sidebar %}{% end %}
+{% block content %}
+{% from "chirpui/card.html" import card %}
+
+<h1 data-testid="page-heading">Card Variants</h1>
+
+{# One instance of each variant surfaced by the @scope envelope.  #}
+{# Tests lookup by data-testid → data-testid wraps the article.   #}
+
+<section data-testid="v-default">
+  {% call card(title="Default") %}<p>Default body.</p>{% end %}
+</section>
+
+<section data-testid="v-feature">
+  {% call card(title="Feature", variant="feature") %}
+    {% slot media %}<div data-testid="v-feature-media">media</div>{% end %}
+    <p>Feature body.</p>
+  {% end %}
+</section>
+
+<section data-testid="v-horizontal">
+  {% call card(title="Horizontal", variant="horizontal") %}
+    {% slot media %}<div data-testid="v-horizontal-media">media</div>{% end %}
+    <p>Horizontal body.</p>
+  {% end %}
+</section>
+
+<section data-testid="v-stats">
+  {% call card(title="42", variant="stats") %}<p data-testid="v-stats-body">Completed</p>{% end %}
+</section>
+
+<section data-testid="v-link">
+  {% call card(title="Link", variant="link") %}<p>Link body.</p>{% end %}
+</section>
+
+<section data-testid="v-linked">
+  {% call card(title="Linked", variant="linked") %}<p>Linked body.</p>{% end %}
+</section>
+
+<section data-testid="v-collapsible">
+  {% call card(title="Collapsible", collapsible=true, open=true) %}<p>Collapsible body.</p>{% end %}
+</section>
+
+<section data-testid="v-glass">
+  {% call card(title="Glass", variant="glass") %}<p>Glass body.</p>{% end %}
+</section>
+
+<section data-testid="v-gradient-border">
+  {% call card(title="Gradient border", border_variant="gradient") %}<p>Gradient-border body.</p>{% end %}
+</section>
+
+<section data-testid="v-gradient-header">
+  {% call card(title="Gradient header", header_variant="gradient") %}<p>Gradient-header body.</p>{% end %}
+</section>
+
+{# Bleed case: outer card hover must not leak to inner card's border. #}
+<section data-testid="v-nested">
+  {% call card(title="Outer card", hoverable=true) %}
+    <p>Outer body.</p>
+    {% call card(title="Inner card") %}
+      <p data-testid="v-nested-inner-body">Inner body.</p>
+    {% end %}
+  {% end %}
+</section>
+{% end %}

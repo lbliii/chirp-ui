@@ -1,0 +1,61 @@
+/* ==========================================================================
+   Pagination
+   ========================================================================== */
+
+.chirpui-pagination {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-pagination__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 var(--chirpui-spacing-xs);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    text-decoration: none;
+    color: inherit;
+    font-size: var(--chirpui-font-sm);
+    transition: background var(--chirpui-transition);
+}
+
+.chirpui-pagination__link:hover:not(.chirpui-pagination__link--disabled):not(.chirpui-pagination__link--active) {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-pagination__link:focus-visible:not(.chirpui-pagination__link--disabled) {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-pagination__link--active {
+    color: var(--chirpui-accent);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+}
+
+button.chirpui-pagination__link {
+    background: none;
+    font: inherit;
+    line-height: inherit;
+}
+
+.chirpui-pagination__link--disabled {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+}
+
+.chirpui-pagination__ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    color: var(--chirpui-text-muted);
+}
+

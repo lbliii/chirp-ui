@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Post Card (Social)
+   ========================================================================== */
+
+.chirpui-post-card {
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    overflow: clip;
+}
+
+.chirpui-post-card__header {
+    padding: var(--chirpui-spacing);
+}
+
+.chirpui-post-card__author {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing);
+}
+
+.chirpui-post-card__avatar {
+    flex-shrink: 0;
+}
+
+.chirpui-post-card__meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.chirpui-post-card__name {
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    color: var(--chirpui-text);
+}
+
+a.chirpui-post-card__name:hover {
+    color: var(--chirpui-accent);
+}
+
+.chirpui-post-card__handle {
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-font-sm);
+    margin-left: var(--chirpui-spacing-xs);
+}
+
+.chirpui-post-card__time {
+    display: block;
+    font-size: var(--chirpui-font-xs);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-post-card__body {
+    padding: 0 var(--chirpui-spacing) var(--chirpui-spacing);
+}
+
+.chirpui-post-card__body p {
+    margin: 0;
+}
+
+.chirpui-post-card__media {
+    padding: 0 var(--chirpui-spacing) var(--chirpui-spacing);
+}
+
+.chirpui-post-card__media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-post-card__media:empty,
+.chirpui-post-card__actions:empty {
+    display: none;
+}
+
+.chirpui-post-card__actions {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border-top: 1px solid var(--chirpui-border);
+}
+

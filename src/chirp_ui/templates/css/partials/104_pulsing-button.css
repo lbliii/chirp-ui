@@ -1,0 +1,31 @@
+/* ==========================================================================
+   Pulsing Button
+   ========================================================================== */
+
+.chirpui-pulsing-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: 500;
+    color: var(--chirpui-bg);
+    background: var(--chirpui-accent);
+    border: none;
+    border-radius: var(--chirpui-radius);
+    cursor: pointer;
+    transition: background var(--chirpui-transition);
+}
+.chirpui-pulsing-btn:hover { background: var(--chirpui-accent-hover); }
+.chirpui-pulsing-btn__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--chirpui-accent);
+    animation: chirpui-pulse-ring 2s var(--chirpui-ease-decel) infinite;
+    z-index: -1;
+}
+
+

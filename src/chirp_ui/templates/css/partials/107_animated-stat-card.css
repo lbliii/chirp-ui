@@ -1,0 +1,25 @@
+/* ==========================================================================
+   Animated Stat Card (composite)
+   ========================================================================== */
+
+.chirpui-animated-stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-md);
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+}
+.chirpui-animated-stat-card__trend {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-2xs);
+    font-size: var(--chirpui-ui-xs);
+    font-weight: 500;
+    color: var(--chirpui-text-muted);
+}
+.chirpui-animated-stat-card__trend--up { color: var(--chirpui-success); }
+.chirpui-animated-stat-card__trend--down { color: var(--chirpui-error); }
+
+

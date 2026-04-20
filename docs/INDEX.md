@@ -13,6 +13,7 @@ Navigation guide for all chirp-ui documentation.
 - [TOKENS.md](TOKENS.md) — CSS custom property reference (spacing, color, radius, z-index)
 - [TRANSITIONS.md](TRANSITIONS.md) — Motion tokens, duration/easing values, reduced-motion
 - [UI-LAYERS.md](UI-LAYERS.md) — App shell vs page chrome vs surface chrome, shell regions
+- [CSS-OVERRIDE-SURFACE.md](CSS-OVERRIDE-SURFACE.md) — Cascade order, `@layer app.overrides` contract, token vs layer vs unlayered paths
 
 ## Patterns
 
@@ -41,6 +42,8 @@ Navigation guide for all chirp-ui documentation.
 
 ## Planning
 
+- [PLAN-css-scope-and-layer.md](PLAN-css-scope-and-layer.md) — CSS-as-registry-projection epic (in progress)
+- [DESIGN-css-registry-projection.md](DESIGN-css-registry-projection.md) — Design lock-in for the CSS epic (S0)
 - [PLAN-sharp-edges.md](PLAN-sharp-edges.md) — Sharp edges phases 1-2 (complete)
 - [PLAN-sharp-edges-phase3.md](PLAN-sharp-edges-phase3.md) — Sharp edges phase 3 (complete)
 - [PLAN-sharp-edges-phase4.md](PLAN-sharp-edges-phase4.md) — Sharp edges phase 4: API consistency (complete)

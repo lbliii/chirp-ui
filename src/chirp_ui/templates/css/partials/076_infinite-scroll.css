@@ -1,0 +1,18 @@
+/* ==========================================================================
+   Infinite Scroll
+   ========================================================================== */
+
+.chirpui-infinite-scroll__loading {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--chirpui-transition);
+}
+
+.chirpui-infinite-scroll__loading.htmx-request {
+    opacity: 1;
+}
+
+.chirpui-infinite-scroll__loading--skeleton {
+    padding: var(--chirpui-spacing);
+}
+

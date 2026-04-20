@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Orbit — items rotating around a center
+   ========================================================================== */
+
+.chirpui-orbit {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--chirpui-orbit-size, 200px);
+    height: var(--chirpui-orbit-size, 200px);
+}
+.chirpui-orbit__center {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chirpui-orbit__ring {
+    position: absolute;
+    inset: 0;
+    border: 1px dashed var(--chirpui-border);
+    border-radius: 50%;
+}
+.chirpui-orbit__item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -12px;
+    margin-left: -12px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    font-size: var(--chirpui-font-sm);
+    animation: chirpui-orbit var(--chirpui-orbit-duration, 12s) linear infinite;
+    pointer-events: none;
+    --chirpui-orbit-radius: calc(var(--chirpui-orbit-size, 200px) / 2 - 12px);
+}
+.chirpui-orbit__item:nth-child(1) { animation-delay: 0s; }
+.chirpui-orbit__item:nth-child(2) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.25); }
+.chirpui-orbit__item:nth-child(3) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.5); }
+.chirpui-orbit__item:nth-child(4) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.75); }
+.chirpui-orbit__item:nth-child(5) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.2); }
+.chirpui-orbit__item:nth-child(6) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.4); }
+.chirpui-orbit__item:nth-child(7) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.6); }
+.chirpui-orbit__item:nth-child(8) { animation-delay: calc(var(--chirpui-orbit-duration, 12s) * -0.8); }
+.chirpui-orbit--sm { --chirpui-orbit-size: 120px; }
+.chirpui-orbit--lg { --chirpui-orbit-size: 300px; }
+.chirpui-orbit--xl { --chirpui-orbit-size: 400px; }
+.chirpui-orbit--fast { --chirpui-orbit-duration: 6s; }
+.chirpui-orbit--slow { --chirpui-orbit-duration: 20s; }
+.chirpui-orbit--reverse .chirpui-orbit__item { animation-direction: reverse; }
+
+

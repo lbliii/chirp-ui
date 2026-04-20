@@ -1,0 +1,73 @@
+/* ==========================================================================
+   Sidebar
+   ========================================================================== */
+
+.chirpui-sidebar {
+    width: 16rem;
+    flex-shrink: 0;
+    border-right: 1px solid var(--chirpui-border);
+    padding: var(--chirpui-spacing) 0;
+}
+
+.chirpui-sidebar__header:empty,
+.chirpui-sidebar__footer:empty {
+    display: none;
+}
+
+.chirpui-sidebar__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-sidebar-section-gap);
+}
+
+.chirpui-sidebar__section {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-sm);
+}
+
+.chirpui-sidebar__section-title {
+    display: block;
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--chirpui-text-muted);
+    margin-bottom: var(--chirpui-spacing-xs);
+}
+
+.chirpui-sidebar__link {
+    display: flex;
+    align-items: center;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-sm);
+    color: var(--chirpui-text-muted);
+    text-decoration: none;
+    font-size: var(--chirpui-font-sm);
+    border-radius: 0 var(--chirpui-radius-sm) var(--chirpui-radius-sm) 0;
+    margin-inline-start: var(--chirpui-spacing-sm);
+    transition: color var(--chirpui-transition), background var(--chirpui-transition);
+}
+
+.chirpui-sidebar__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25em;
+    margin-inline-end: var(--chirpui-spacing-sm);
+    font-family: var(--chirpui-ascii-font);
+}
+
+.chirpui-sidebar__link:hover {
+    color: var(--chirpui-text);
+    background: var(--chirpui-state-surface-hover);
+}
+
+.chirpui-sidebar__link:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-sidebar__link--active {
+    color: var(--chirpui-sidebar-active-color);
+    font-weight: 500;
+    background: var(--chirpui-sidebar-active-bg);
+}
+

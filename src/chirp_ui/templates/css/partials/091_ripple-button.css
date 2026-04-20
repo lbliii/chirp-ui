@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Ripple Button
+   ========================================================================== */
+
+.chirpui-ripple-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: 500;
+    color: var(--chirpui-text);
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    overflow: clip;
+    cursor: pointer;
+    transition: background var(--chirpui-transition);
+}
+.chirpui-ripple-btn:hover { background: var(--chirpui-surface-alt); }
+.chirpui-ripple-btn__ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--chirpui-ripple-color);
+    transform: scale(0);
+    animation: chirpui-ripple-expand var(--chirpui-motion-extra-slow) var(--chirpui-ease-decel) forwards;
+    pointer-events: none;
+}
+.chirpui-ripple-btn--primary {
+    background: var(--chirpui-accent);
+    color: var(--chirpui-bg);
+    border-color: var(--chirpui-accent);
+}
+.chirpui-ripple-btn--primary:hover { background: var(--chirpui-accent-hover); }
+.chirpui-ripple-btn--sm { padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm); font-size: var(--chirpui-ui-xs); }
+.chirpui-ripple-btn--lg { padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg); font-size: var(--chirpui-ui-base); }
+
+

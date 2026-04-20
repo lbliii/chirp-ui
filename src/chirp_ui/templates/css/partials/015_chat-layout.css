@@ -1,0 +1,68 @@
+/* ==========================================================================
+   Chat Layout
+   ========================================================================== */
+
+.chirpui-chat-layout {
+    display: flex;
+    gap: var(--chirpui-chat-layout-gap);
+    min-height: var(--chirpui-chat-layout-min-height);
+}
+
+.chirpui-chat-layout__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.chirpui-chat-layout__messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--chirpui-chat-layout-messages-padding);
+}
+
+.chirpui-chat-layout__input {
+    padding: var(--chirpui-chat-layout-input-padding);
+    border-top: var(--chirpui-chat-layout-input-border);
+}
+
+.chirpui-chat-layout__activity {
+    width: var(--chirpui-chat-layout-activity-width);
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+/* Fill remaining height inside a flex parent (e.g. #page-content > .chirpui-page-fill). */
+.chirpui-chat-layout--fill {
+    flex: 1;
+    min-height: 0;
+    align-self: stretch;
+}
+
+.chirpui-chat-layout--fill .chirpui-chat-layout__messages {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: clip;
+    /* Transcript / thread scroll lives inside slots, not on this shell */
+}
+
+/* Put on SSE / HTMX / custom wrapper around the scroll region inside __messages. */
+.chirpui-chat-layout__messages-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+@media (max-width: 47.9375rem) {
+    .chirpui-chat-layout {
+        flex-direction: column;
+    }
+
+    .chirpui-chat-layout__activity {
+        width: 100%;
+    }
+}
+

@@ -1,0 +1,55 @@
+/* ==========================================================================
+   Floating Dock
+   ========================================================================== */
+
+.chirpui-dock {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-2xl);
+    box-shadow: var(--chirpui-shadow-lg);
+}
+.chirpui-dock__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--chirpui-radius);
+    color: var(--chirpui-text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform var(--chirpui-motion-fast) var(--chirpui-ease-spring),
+                color var(--chirpui-motion-fast);
+}
+.chirpui-dock__item:hover {
+    transform: scale(1.4) translateY(-8px);
+    color: var(--chirpui-text);
+}
+.chirpui-dock__item--active {
+    color: var(--chirpui-accent);
+}
+.chirpui-dock__indicator {
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--chirpui-accent);
+}
+.chirpui-dock--glass {
+    background: color-mix(in srgb, var(--chirpui-surface) 70%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+.chirpui-dock--sm .chirpui-dock__item { width: 32px; height: 32px; }
+.chirpui-dock--lg .chirpui-dock__item { width: 48px; height: 48px; }
+
+

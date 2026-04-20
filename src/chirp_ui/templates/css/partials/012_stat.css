@@ -1,0 +1,97 @@
+/* ==========================================================================
+   Stat
+   ========================================================================== */
+
+.chirpui-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    text-align: center;
+}
+
+.chirpui-stat__value {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-lg);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-feature-settings: "tnum";
+    color: var(--chirpui-text);
+}
+
+.chirpui-stat__label {
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-stat__icon {
+    font-size: var(--chirpui-ui-xl);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-metric-grid {
+    align-items: stretch;
+}
+
+.chirpui-metric-card {
+    height: 100%;
+}
+
+.chirpui-metric-card__stat {
+    align-items: flex-start;
+    text-align: start;
+}
+
+.chirpui-metric-card__trend,
+.chirpui-metric-card__hint {
+    margin: 0;
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-metric-card__trend {
+    margin-top: var(--chirpui-space-card-gap);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-2xs);
+}
+.chirpui-metric-card__trend--up { color: var(--chirpui-success); }
+.chirpui-metric-card__trend--down { color: var(--chirpui-error); }
+.chirpui-metric-card__trend--neutral { color: var(--chirpui-text-muted); }
+.chirpui-metric-card__trend-arrow { font-size: 0.75em; }
+.chirpui-metric-card__top {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--chirpui-spacing-sm);
+}
+.chirpui-metric-card__icon-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--chirpui-radius);
+    flex-shrink: 0;
+    font-size: var(--chirpui-ui-base);
+    background: var(--chirpui-surface-alt);
+    color: var(--chirpui-text-muted);
+}
+.chirpui-metric-card__icon-badge--primary { background: var(--chirpui-primary-muted); color: var(--chirpui-primary); }
+.chirpui-metric-card__icon-badge--success { background: var(--chirpui-success-muted); color: var(--chirpui-success); }
+.chirpui-metric-card__icon-badge--warning { background: var(--chirpui-warning-muted); color: var(--chirpui-warning); }
+.chirpui-metric-card__icon-badge--error { background: var(--chirpui-error-muted); color: var(--chirpui-error); }
+.chirpui-metric-card__values { flex: 1; min-width: 0; }
+.chirpui-metric-card__footer {
+    display: block;
+    margin-top: var(--chirpui-spacing-sm);
+    padding-top: var(--chirpui-spacing-sm);
+    border-top: 1px solid var(--chirpui-border);
+    font-size: var(--chirpui-font-xs);
+    color: var(--chirpui-accent);
+    text-decoration: none;
+    transition: color var(--chirpui-transition);
+}
+.chirpui-metric-card__footer:hover { color: var(--chirpui-accent-hover); }
+

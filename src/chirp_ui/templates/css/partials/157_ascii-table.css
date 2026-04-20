@@ -1,0 +1,164 @@
+/* ================================================================
+   ASCII Table — box-drawing character borders
+   ================================================================ */
+
+/* Character maps per variant (via CSS custom properties) */
+.chirpui-ascii-table--single {
+    --_at-tl: "┌"; --_at-tr: "┐"; --_at-bl: "└"; --_at-br: "┘";
+    --_at-h: "─"; --_at-v: "│";
+    --_at-mt: "┬"; --_at-mb: "┴"; --_at-ml: "├"; --_at-mr: "┤"; --_at-x: "┼";
+    --_at-mh: "─";
+}
+.chirpui-ascii-table--double {
+    --_at-tl: "╔"; --_at-tr: "╗"; --_at-bl: "╚"; --_at-br: "╝";
+    --_at-h: "═"; --_at-v: "║";
+    --_at-mt: "╦"; --_at-mb: "╩"; --_at-ml: "╠"; --_at-mr: "╣"; --_at-x: "╬";
+    --_at-mh: "═";
+}
+.chirpui-ascii-table--heavy {
+    --_at-tl: "┏"; --_at-tr: "┓"; --_at-bl: "┗"; --_at-br: "┛";
+    --_at-h: "━"; --_at-v: "┃";
+    --_at-mt: "┳"; --_at-mb: "┻"; --_at-ml: "┣"; --_at-mr: "┫"; --_at-x: "╋";
+    --_at-mh: "━";
+}
+.chirpui-ascii-table--rounded {
+    --_at-tl: "╭"; --_at-tr: "╮"; --_at-bl: "╰"; --_at-br: "╯";
+    --_at-h: "─"; --_at-v: "│";
+    --_at-mt: "┬"; --_at-mb: "┴"; --_at-ml: "├"; --_at-mr: "┤"; --_at-x: "┼";
+    --_at-mh: "─";
+}
+
+.chirpui-ascii-table {
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: var(--chirpui-font-sm);
+    line-height: 1.5;
+    color: var(--chirpui-text);
+    display: inline-block;
+    max-width: 100%;
+}
+
+/* Border lines — built from repeating characters */
+.chirpui-ascii-table__border {
+    white-space: nowrap;
+    overflow: clip;
+    color: var(--chirpui-text-muted);
+    user-select: none;
+}
+.chirpui-ascii-table__border--top::before,
+.chirpui-ascii-table__border--mid::before,
+.chirpui-ascii-table__border--bottom::before {
+    display: block;
+    overflow: clip;
+}
+.chirpui-ascii-table__border--top::before {
+    content: "┌────────────────────────────────────────────────────────────────────────────────────────────────────┐";
+}
+.chirpui-ascii-table__border--mid::before {
+    content: "├────────────────────────────────────────────────────────────────────────────────────────────────────┤";
+}
+.chirpui-ascii-table__border--bottom::before {
+    content: "└────────────────────────────────────────────────────────────────────────────────────────────────────┘";
+}
+
+/* Double variant overrides */
+.chirpui-ascii-table--double .chirpui-ascii-table__border--top::before {
+    content: "╔════════════════════════════════════════════════════════════════════════════════════════════════════╗";
+}
+.chirpui-ascii-table--double .chirpui-ascii-table__border--mid::before {
+    content: "╠════════════════════════════════════════════════════════════════════════════════════════════════════╣";
+}
+.chirpui-ascii-table--double .chirpui-ascii-table__border--bottom::before {
+    content: "╚════════════════════════════════════════════════════════════════════════════════════════════════════╝";
+}
+
+/* Heavy variant overrides */
+.chirpui-ascii-table--heavy .chirpui-ascii-table__border--top::before {
+    content: "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
+}
+.chirpui-ascii-table--heavy .chirpui-ascii-table__border--mid::before {
+    content: "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫";
+}
+.chirpui-ascii-table--heavy .chirpui-ascii-table__border--bottom::before {
+    content: "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
+}
+
+/* Rounded variant overrides */
+.chirpui-ascii-table--rounded .chirpui-ascii-table__border--top::before {
+    content: "╭────────────────────────────────────────────────────────────────────────────────────────────────────╮";
+}
+.chirpui-ascii-table--rounded .chirpui-ascii-table__border--bottom::before {
+    content: "╰────────────────────────────────────────────────────────────────────────────────────────────────────╯";
+}
+
+/* Rows */
+.chirpui-ascii-table__row {
+    display: flex;
+    gap: 0;
+    transition: background var(--chirpui-transition);
+}
+.chirpui-ascii-table__row::before,
+.chirpui-ascii-table__row::after {
+    content: "│";
+    color: var(--chirpui-text-muted);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+.chirpui-ascii-table--double .chirpui-ascii-table__row::before,
+.chirpui-ascii-table--double .chirpui-ascii-table__row::after {
+    content: "║";
+}
+.chirpui-ascii-table--heavy .chirpui-ascii-table__row::before,
+.chirpui-ascii-table--heavy .chirpui-ascii-table__row::after {
+    content: "┃";
+}
+
+/* Cells */
+.chirpui-ascii-table__th,
+.chirpui-ascii-table__td {
+    flex: 1;
+    padding: 0.15em 1em;
+    min-width: 0;
+    overflow: clip;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chirpui-ascii-table__th {
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    color: var(--chirpui-text);
+}
+
+.chirpui-ascii-table__td {
+    color: var(--chirpui-text);
+}
+
+/* Cell alignment */
+.chirpui-ascii-table__cell--left { text-align: left; }
+.chirpui-ascii-table__cell--center { text-align: center; }
+.chirpui-ascii-table__cell--right { text-align: right; }
+
+/* Row hover */
+.chirpui-ascii-table__body .chirpui-ascii-table__row:hover {
+    background: var(--chirpui-bg-subtle);
+}
+
+/* Striped rows */
+.chirpui-ascii-table--striped .chirpui-ascii-table__body .chirpui-ascii-table__row:nth-child(even) {
+    background: var(--chirpui-bg-subtle);
+}
+
+/* Compact */
+.chirpui-ascii-table--compact .chirpui-ascii-table__th,
+.chirpui-ascii-table--compact .chirpui-ascii-table__td {
+    padding: 0 0.75em;
+}
+
+/* Sticky header */
+.chirpui-ascii-table--sticky .chirpui-ascii-table__head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--chirpui-surface);
+}
+

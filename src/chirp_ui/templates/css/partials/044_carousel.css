@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Carousel
+   ========================================================================== */
+
+.chirpui-carousel {
+    position: relative;
+}
+
+.chirpui-carousel__track {
+    display: flex;
+    gap: var(--chirpui-spacing);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-inline: var(--chirpui-spacing);
+}
+
+.chirpui-carousel__slide {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    flex: 0 0 auto;
+}
+
+.chirpui-carousel--compact .chirpui-carousel__slide {
+    min-width: min(280px, 85vw);
+}
+
+.chirpui-carousel--page .chirpui-carousel__slide {
+    min-width: 100%;
+    scroll-snap-align: center;
+}
+
+.chirpui-carousel__dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--chirpui-spacing-sm);
+    margin-top: var(--chirpui-spacing);
+    padding-inline: var(--chirpui-spacing);
+}
+
+.chirpui-carousel__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--chirpui-border);
+    transition: background var(--chirpui-transition);
+}
+
+.chirpui-carousel__dot:hover {
+    background: var(--chirpui-accent);
+}
+
+.chirpui-carousel:has(#slide-1:target) .chirpui-carousel__dot[href="#slide-1"],
+.chirpui-carousel:has(#slide-2:target) .chirpui-carousel__dot[href="#slide-2"],
+.chirpui-carousel:has(#slide-3:target) .chirpui-carousel__dot[href="#slide-3"],
+.chirpui-carousel:has(#slide-4:target) .chirpui-carousel__dot[href="#slide-4"],
+.chirpui-carousel:has(#slide-5:target) .chirpui-carousel__dot[href="#slide-5"] {
+    background: var(--chirpui-accent);
+}
+

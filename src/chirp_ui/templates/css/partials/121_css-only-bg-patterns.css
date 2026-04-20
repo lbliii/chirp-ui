@@ -1,0 +1,100 @@
+/* ==========================================================================
+   CSS-only bg patterns — gradient tiles (no SVG); ink follows --chirpui-bg-pattern-*
+   Pair with chirpui-surface--*, elevation tokens, or SVG .chirpui-texture on another layer.
+   ========================================================================== */
+
+.chirpui-bg-pattern {
+    --_ink: var(--chirpui-bg-pattern-ink);
+    --_base: var(--chirpui-bg-pattern-base);
+    background-color: var(--_base);
+}
+
+.chirpui-bg-pattern--dots-sm {
+    background-color: var(--chirpui-bg-pattern-base);
+    background-image: radial-gradient(
+        circle at 1px 1px,
+        color-mix(in oklab, var(--chirpui-bg-pattern-ink) 85%, transparent) 1px,
+        transparent 0
+    );
+    background-size: 14px 14px;
+}
+
+.chirpui-bg-pattern--dots-md {
+    background-color: var(--chirpui-bg-pattern-base);
+    background-image: radial-gradient(
+        circle at 2px 2px,
+        color-mix(in oklab, var(--chirpui-bg-pattern-ink) 80%, transparent) 1.5px,
+        transparent 0
+    );
+    background-size: 22px 22px;
+}
+
+.chirpui-bg-pattern--grid {
+    background-color: var(--chirpui-bg-pattern-base);
+    background-image:
+        linear-gradient(color-mix(in oklab, var(--chirpui-bg-pattern-ink) 55%, transparent) 1px, transparent 1px),
+        linear-gradient(
+            90deg,
+            color-mix(in oklab, var(--chirpui-bg-pattern-ink) 55%, transparent) 1px,
+            transparent 1px
+        );
+    background-size: 20px 20px;
+}
+
+.chirpui-bg-pattern--diag {
+    background-color: var(--chirpui-bg-pattern-base);
+    background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 8px,
+        color-mix(in oklab, var(--chirpui-bg-pattern-ink) 45%, transparent) 8px,
+        color-mix(in oklab, var(--chirpui-bg-pattern-ink) 45%, transparent) 9px
+    );
+}
+
+.chirpui-bg-pattern--crosshatch {
+    background-color: var(--chirpui-bg-pattern-base);
+    background-image:
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 6px,
+            color-mix(in oklab, var(--chirpui-bg-pattern-ink) 35%, transparent) 6px,
+            color-mix(in oklab, var(--chirpui-bg-pattern-ink) 35%, transparent) 7px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 6px,
+            color-mix(in oklab, var(--chirpui-bg-pattern-ink) 35%, transparent) 6px,
+            color-mix(in oklab, var(--chirpui-bg-pattern-ink) 35%, transparent) 7px
+        );
+}
+
+.chirpui-bg-pattern--weave {
+    background-color: var(--chirpui-bg-pattern-base);
+    background-image:
+        linear-gradient(
+            30deg,
+            color-mix(in oklab, var(--chirpui-bg-pattern-ink) 25%, transparent) 12%,
+            transparent 12.5%
+        ),
+        linear-gradient(
+            150deg,
+            color-mix(in oklab, var(--chirpui-bg-pattern-ink) 22%, transparent) 12%,
+            transparent 12.5%
+        );
+    background-size: 24px 42px;
+}
+
+.chirpui-bg-pattern--accent-dots {
+    background-color: var(--chirpui-bg-pattern-base);
+    background-image: radial-gradient(
+        circle at 1px 1px,
+        color-mix(in oklab, var(--chirpui-bg-pattern-ink-accent) 75%, transparent) 1px,
+        transparent 0
+    );
+    background-size: 16px 16px;
+}
+
+

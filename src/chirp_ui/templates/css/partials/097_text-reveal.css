@@ -1,0 +1,16 @@
+/* ==========================================================================
+   Text Reveal
+   ========================================================================== */
+
+.chirpui-text-reveal {
+    animation: chirpui-text-reveal var(--chirpui-anim-breath) var(--chirpui-ease-decel) forwards;
+    clip-path: inset(0 100% 0 0);
+}
+.chirpui-text-reveal--gradient {
+    background: linear-gradient(90deg, var(--chirpui-accent), var(--chirpui-accent-bright));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+

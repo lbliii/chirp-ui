@@ -1,0 +1,185 @@
+/* ==========================================================================
+   Badge
+   ========================================================================== */
+
+.chirpui-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--chirpui-radius-sm);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    font-feature-settings: "tnum";
+    line-height: 1;
+    border: 1px solid;
+    text-decoration: none;
+    transition: background var(--chirpui-transition), color var(--chirpui-transition),
+        border-color var(--chirpui-transition), box-shadow var(--chirpui-transition);
+}
+
+a.chirpui-badge {
+    cursor: pointer;
+    box-shadow: var(--chirpui-shadow-sm);
+    border-width: 1.5px;
+}
+
+a.chirpui-badge:hover,
+a.chirpui-badge:focus {
+    text-decoration: none;
+}
+
+a.chirpui-badge:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    a.chirpui-badge {
+        transition: background var(--chirpui-transition), color var(--chirpui-transition),
+            border-color var(--chirpui-transition), box-shadow var(--chirpui-transition),
+            transform var(--chirpui-transition);
+    }
+
+    a.chirpui-badge:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--chirpui-shadow-sm);
+    }
+
+    a.chirpui-badge:active {
+        transition: none;
+        transform: translateY(0);
+        box-shadow: none;
+    }
+}
+
+.chirpui-badge__icon {
+    font-size: 1em;
+    line-height: 1;
+}
+
+.chirpui-badge__text {
+    line-height: 1;
+}
+
+.chirpui-badge--primary {
+    background: var(--chirpui-primary-muted);
+    color: var(--chirpui-primary);
+    border-color: var(--chirpui-primary);
+}
+
+a.chirpui-badge--primary:hover {
+    background: color-mix(in srgb, var(--chirpui-primary) 25%, var(--chirpui-primary-muted));
+    color: color-mix(in srgb, var(--chirpui-primary) var(--chirpui-shade-hover), black);
+}
+
+a.chirpui-badge--primary:active {
+    background: color-mix(in srgb, var(--chirpui-primary) 35%, var(--chirpui-primary-muted));
+}
+
+.chirpui-badge--success {
+    background: var(--chirpui-success-muted);
+    color: var(--chirpui-success);
+    border-color: var(--chirpui-success);
+}
+
+a.chirpui-badge--success:hover {
+    background: color-mix(in srgb, var(--chirpui-success) 25%, var(--chirpui-success-muted));
+    color: color-mix(in srgb, var(--chirpui-success) var(--chirpui-shade-hover), black);
+}
+
+a.chirpui-badge--success:active {
+    background: color-mix(in srgb, var(--chirpui-success) 35%, var(--chirpui-success-muted));
+}
+
+.chirpui-badge--warning {
+    background: var(--chirpui-warning-muted);
+    color: var(--chirpui-warning);
+    border-color: var(--chirpui-warning);
+}
+
+a.chirpui-badge--warning:hover {
+    background: color-mix(in srgb, var(--chirpui-warning) 25%, var(--chirpui-warning-muted));
+    color: color-mix(in srgb, var(--chirpui-warning) var(--chirpui-shade-hover), black);
+}
+
+a.chirpui-badge--warning:active {
+    background: color-mix(in srgb, var(--chirpui-warning) 35%, var(--chirpui-warning-muted));
+}
+
+.chirpui-badge--error {
+    background: var(--chirpui-error-muted);
+    color: var(--chirpui-error);
+    border-color: var(--chirpui-error);
+}
+
+a.chirpui-badge--error:hover {
+    background: color-mix(in srgb, var(--chirpui-error) 25%, var(--chirpui-error-muted));
+    color: color-mix(in srgb, var(--chirpui-error) var(--chirpui-shade-hover), black);
+}
+
+a.chirpui-badge--error:active {
+    background: color-mix(in srgb, var(--chirpui-error) 35%, var(--chirpui-error-muted));
+}
+
+.chirpui-badge--muted {
+    background: var(--chirpui-muted-bg);
+    color: var(--chirpui-text-muted);
+    border-color: var(--chirpui-border);
+}
+
+a.chirpui-badge--muted:hover {
+    background: var(--chirpui-border);
+    color: var(--chirpui-text);
+}
+
+a.chirpui-badge--muted:active {
+    background: color-mix(in srgb, var(--chirpui-border) 80%, black);
+}
+
+.chirpui-badge--info {
+    background: var(--chirpui-alert-info-bg);
+    color: var(--chirpui-info);
+    border-color: var(--chirpui-alert-info-border);
+}
+
+a.chirpui-badge--info:hover {
+    background: color-mix(in srgb, var(--chirpui-info) 20%, var(--chirpui-alert-info-bg));
+    color: color-mix(in srgb, var(--chirpui-info) var(--chirpui-shade-hover), black);
+}
+
+a.chirpui-badge--info:active {
+    background: color-mix(in srgb, var(--chirpui-info) 30%, var(--chirpui-alert-info-bg));
+}
+
+/* Custom color (scoped --chirpui-badge-color) */
+.chirpui-badge--custom {
+    --_bg-mix: light-dark(12%, 18%);
+    background: color-mix(in srgb, var(--chirpui-badge-color) var(--_bg-mix), transparent);
+    color: var(--chirpui-badge-color);
+    border-color: color-mix(in srgb, var(--chirpui-badge-color) 40%, transparent);
+}
+
+.chirpui-badge--custom-solid {
+    background: var(--chirpui-badge-color);
+    color: var(--chirpui-badge-text, white);
+    border-color: var(--chirpui-badge-color);
+}
+
+a.chirpui-badge--custom:hover {
+    background: color-mix(in srgb, var(--chirpui-badge-color) light-dark(18%, 24%), transparent);
+}
+
+a.chirpui-badge--custom-solid:hover {
+    filter: brightness(1.05);
+}
+
+/* filter_chips.html — filter_group row (not filter_bar.html form toolbar) */
+.chirpui-filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+}
+

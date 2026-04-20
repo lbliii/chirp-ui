@@ -1,0 +1,38 @@
+/* ==========================================================================
+   Symbol Rain — cascading ASCII characters
+   ========================================================================== */
+
+.chirpui-symbol-rain {
+    position: relative;
+    overflow: clip;
+}
+.chirpui-symbol-rain__canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-symbol-rain__drop {
+    position: absolute;
+    top: 0;
+    font-family: var(--chirpui-ascii-font);
+    font-size: 0.875rem;
+    color: var(--chirpui-symbol-rain-color, var(--chirpui-accent));
+    opacity: 0;
+    animation: chirpui-symbol-rain-fall var(--chirpui-symbol-rain-speed, 4s) linear infinite;
+}
+.chirpui-symbol-rain__drop:nth-child(1) { animation-delay: 0s; animation-duration: 3.5s; }
+.chirpui-symbol-rain__drop:nth-child(2) { animation-delay: 0.7s; animation-duration: 4.2s; font-size: 0.75rem; }
+.chirpui-symbol-rain__drop:nth-child(3) { animation-delay: 1.3s; animation-duration: 3.8s; }
+.chirpui-symbol-rain__drop:nth-child(4) { animation-delay: 2.0s; animation-duration: 5s; font-size: 1rem; }
+.chirpui-symbol-rain__drop:nth-child(5) { animation-delay: 0.4s; animation-duration: 4.5s; font-size: 0.675rem; }
+.chirpui-symbol-rain__drop:nth-child(6) { animation-delay: 1.8s; animation-duration: 3.2s; }
+.chirpui-symbol-rain__content {
+    position: relative;
+    z-index: 1;
+}
+.chirpui-symbol-rain--accent .chirpui-symbol-rain__drop { --chirpui-symbol-rain-color: var(--chirpui-accent); }
+.chirpui-symbol-rain--gold .chirpui-symbol-rain__drop { --chirpui-symbol-rain-color: #ffd700; }
+.chirpui-symbol-rain--muted .chirpui-symbol-rain__drop { --chirpui-symbol-rain-color: var(--chirpui-text-muted); opacity: 0.4; }
+
+

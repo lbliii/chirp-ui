@@ -1,0 +1,77 @@
+/* ==========================================================================
+   Holy Light — divine ascending sparkles with parallax
+   ========================================================================== */
+
+.chirpui-holy-light {
+    position: relative;
+    overflow: clip;
+    --chirpui-holy-color: #ffd700;
+}
+.chirpui-holy-light__layers {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.chirpui-holy-light__layer {
+    position: absolute;
+    inset: 0;
+}
+.chirpui-holy-light__mote {
+    position: absolute;
+    font-family: var(--chirpui-ascii-font);
+    color: var(--chirpui-holy-color);
+    opacity: 0;
+}
+
+/* Far layer — small, slow, faint */
+.chirpui-holy-light__layer--far .chirpui-holy-light__mote {
+    font-size: 0.5rem;
+    animation:
+        chirpui-holy-rise-far 8s ease-in-out infinite,
+        chirpui-holy-glow-pulse 3s ease-in-out infinite;
+}
+.chirpui-holy-light__layer--far .chirpui-holy-light__mote:nth-child(2) { animation-delay: 1.5s; }
+.chirpui-holy-light__layer--far .chirpui-holy-light__mote:nth-child(3) { animation-delay: 3s; }
+.chirpui-holy-light__layer--far .chirpui-holy-light__mote:nth-child(4) { animation-delay: 4.5s; }
+.chirpui-holy-light__layer--far .chirpui-holy-light__mote:nth-child(5) { animation-delay: 6s; }
+
+/* Mid layer — medium, moderate speed */
+.chirpui-holy-light__layer--mid .chirpui-holy-light__mote {
+    font-size: 0.875rem;
+    animation:
+        chirpui-holy-rise-mid 6s ease-in-out infinite,
+        chirpui-holy-glow-pulse 2.5s ease-in-out infinite;
+}
+.chirpui-holy-light__layer--mid .chirpui-holy-light__mote:nth-child(2) { animation-delay: 1.2s; }
+.chirpui-holy-light__layer--mid .chirpui-holy-light__mote:nth-child(3) { animation-delay: 2.4s; }
+.chirpui-holy-light__layer--mid .chirpui-holy-light__mote:nth-child(4) { animation-delay: 3.6s; }
+.chirpui-holy-light__layer--mid .chirpui-holy-light__mote:nth-child(5) { animation-delay: 4.8s; }
+
+/* Near layer — large, fast, bright */
+.chirpui-holy-light__layer--near .chirpui-holy-light__mote {
+    font-size: 1.25rem;
+    animation:
+        chirpui-holy-rise-near 4.5s ease-in-out infinite,
+        chirpui-holy-glow-pulse 2s ease-in-out infinite;
+}
+.chirpui-holy-light__layer--near .chirpui-holy-light__mote:nth-child(2) { animation-delay: 1s; }
+.chirpui-holy-light__layer--near .chirpui-holy-light__mote:nth-child(3) { animation-delay: 2.2s; }
+.chirpui-holy-light__layer--near .chirpui-holy-light__mote:nth-child(4) { animation-delay: 3.4s; }
+
+.chirpui-holy-light__content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Variants */
+.chirpui-holy-light--gold { --chirpui-holy-color: #ffd700; }
+.chirpui-holy-light--silver { --chirpui-holy-color: #c0c0c0; }
+.chirpui-holy-light--holy { --chirpui-holy-color: #fffacd; }
+
+/* Intensity */
+.chirpui-holy-light--intense .chirpui-holy-light__mote { filter: drop-shadow(0 0 6px var(--chirpui-holy-color)); }
+.chirpui-holy-light--subtle .chirpui-holy-light__layer--near .chirpui-holy-light__mote { font-size: 0.875rem; }
+.chirpui-holy-light--subtle .chirpui-holy-light__layer--mid .chirpui-holy-light__mote { font-size: 0.625rem; }
+
+

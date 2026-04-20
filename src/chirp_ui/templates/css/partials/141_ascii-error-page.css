@@ -1,0 +1,53 @@
+/* ==========================================================================
+   ASCII Error Page — stylized error states with ASCII art
+   ========================================================================== */
+
+.chirpui-ascii-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--chirpui-spacing-2xl) var(--chirpui-spacing);
+    gap: var(--chirpui-spacing-xs);
+    min-height: 40vh;
+}
+.chirpui-ascii-error__art {
+    font-family: var(--chirpui-ascii-font);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--chirpui-text-muted);
+    opacity: 0.6;
+    margin: 0 0 var(--chirpui-spacing);
+    white-space: pre;
+    user-select: none;
+}
+.chirpui-ascii-error__code {
+    font-family: var(--chirpui-ascii-font);
+    font-size: 3rem;
+    font-weight: var(--chirpui-ui-font-weight-bold, 700);
+    line-height: 1;
+    color: var(--chirpui-text);
+    letter-spacing: 0.1em;
+}
+.chirpui-ascii-error__heading {
+    font-family: var(--chirpui-ascii-font);
+    font-size: 1rem;
+    font-weight: var(--chirpui-ui-font-weight-medium, 500);
+    color: var(--chirpui-text);
+    margin: var(--chirpui-spacing-xs) 0 0;
+}
+.chirpui-ascii-error__desc {
+    font-size: 0.82rem;
+    color: var(--chirpui-text-muted);
+    margin: var(--chirpui-spacing-xs) 0 0;
+    max-width: 40ch;
+}
+.chirpui-ascii-error__action {
+    margin-top: var(--chirpui-spacing);
+}
+.chirpui-ascii-error__action:empty {
+    display: none;
+}
+
+

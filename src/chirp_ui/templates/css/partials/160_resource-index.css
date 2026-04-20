@@ -1,0 +1,13 @@
+/* ==========================================================================
+   Resource index — composite layout (search + filters + results).
+   ========================================================================== */
+
+.chirpui-resource-index {
+    width: 100%;
+}
+
+.chirpui-resource-index__search,
+.chirpui-resource-index__filters,
+.chirpui-resource-index__results {
+    width: 100%;
+}

@@ -1,0 +1,19 @@
+/* chirp-ui — A love letter to CSS and HTML over the wire.
+ *
+ * Gorgeous by default. Unapologetically modern. Override any --chirpui-*
+ * variable in your own CSS to customize.
+ */
+
+/* ==========================================================================
+   Tokens — Design system foundation
+
+   Token tiers:
+   1) Core primitives: spacing, type, radius, base color, motion, shadow
+   2) Semantic tokens: stateful color + interaction semantics
+   3) Component aliases: per-component defaults that map to semantic/core
+
+   Theme precedence:
+   :root defaults -> [data-theme="light"|"dark"|"system"] mode overrides
+   -> @supports capability overrides (oklch, color-mix in oklch)
+   ========================================================================== */
+

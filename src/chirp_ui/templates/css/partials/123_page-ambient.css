@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Page ambient — mesh + SVG noise; first child inside .chirpui-ambient-root
+   ========================================================================== */
+
+.chirpui-ambient-root {
+    position: relative;
+    isolation: isolate;
+    /* Column flex so in-flow siblings are flex items: z-index applies without position:relative,
+       which would override position:sticky on headers/topbars. */
+    display: flex;
+    flex-direction: column;
+}
+
+.chirpui-ambient-root > :not(.chirpui-ambient) {
+    z-index: 1;
+}
+
+.chirpui-ambient {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            ellipse 90% 55% at 50% -25%,
+            color-mix(in oklab, var(--chirpui-accent) 16%, transparent),
+            transparent 58%
+        ),
+        radial-gradient(
+            ellipse 45% 30% at 95% 15%,
+            color-mix(in oklab, var(--chirpui-accent-secondary) 12%, transparent),
+            transparent 52%
+        ),
+        radial-gradient(
+            ellipse 40% 28% at 5% 55%,
+            color-mix(in oklab, var(--chirpui-primary) 10%, transparent),
+            transparent 48%
+        ),
+        radial-gradient(
+            ellipse 70% 45% at 50% 100%,
+            color-mix(in oklab, var(--chirpui-border) 25%, transparent),
+            transparent 55%
+        );
+}
+
+.chirpui-ambient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.22;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='0.65'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+}
+
+[data-theme="dark"] .chirpui-ambient::after {
+    opacity: 0.14;
+    mix-blend-mode: soft-light;
+}
+
+

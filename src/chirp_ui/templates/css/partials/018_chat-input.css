@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Chat Input
+   ========================================================================== */
+
+.chirpui-chat-input {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-spacing);
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+}
+
+.chirpui-chat-input__composer {
+    display: flex;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-chat-input__field {
+    flex: 1;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    font: inherit;
+    background: var(--chirpui-surface);
+    color: var(--chirpui-text);
+    resize: none;
+    transition: border-color var(--chirpui-transition);
+}
+
+.chirpui-chat-input__field:focus {
+    outline: none;
+    border-color: var(--chirpui-accent);
+    box-shadow: 0 0 0 3px var(--chirpui-focus-ring);
+}
+
+.chirpui-chat-input__field:disabled,
+.chirpui-chat-input__field[readonly] {
+    background: var(--chirpui-bg-subtle);
+    color: var(--chirpui-text-muted);
+    cursor: not-allowed;
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-chat-input__field[readonly] {
+    cursor: default;
+    opacity: 1;
+}
+
+.chirpui-chat-input__field:disabled {
+    opacity: 0.5;
+}
+
+.chirpui-chat-input__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--chirpui-spacing-sm);
+}
+

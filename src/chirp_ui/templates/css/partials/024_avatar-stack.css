@@ -1,0 +1,31 @@
+/* ==========================================================================
+   Avatar Stack
+   ========================================================================== */
+
+.chirpui-avatar-stack {
+    display: flex;
+}
+
+.chirpui-avatar-stack .chirpui-avatar {
+    margin-inline-start: -0.75rem;
+}
+
+.chirpui-avatar-stack .chirpui-avatar:first-child {
+    margin-inline-start: 0;
+}
+
+.chirpui-avatar-stack__more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--chirpui-avatar-size-sm);
+    height: var(--chirpui-avatar-size-sm);
+    margin-inline-start: -0.75rem;
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    background: var(--chirpui-bg-subtle);
+    border: 2px solid var(--chirpui-surface);
+    border-radius: 50%;
+    color: var(--chirpui-text-muted);
+}
+

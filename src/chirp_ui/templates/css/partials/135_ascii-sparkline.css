@@ -1,0 +1,31 @@
+/* ==========================================================================
+   ASCII Sparkline — inline block-character data visualization
+   ========================================================================== */
+
+.chirpui-ascii-sparkline {
+    font-family: var(--chirpui-ascii-font);
+    font-size: 1rem;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    color: var(--chirpui-text);
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 1px;
+    vertical-align: middle;
+}
+.chirpui-ascii-sparkline__bar {
+    display: inline-block;
+    line-height: 1;
+}
+
+/* Variants */
+.chirpui-ascii-sparkline--accent { color: var(--chirpui-accent); }
+.chirpui-ascii-sparkline--muted { color: var(--chirpui-text-muted); }
+.chirpui-ascii-sparkline--gradient .chirpui-ascii-sparkline__bar {
+    background: linear-gradient(to top, var(--chirpui-accent), var(--chirpui-accent-bright, var(--chirpui-accent)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+

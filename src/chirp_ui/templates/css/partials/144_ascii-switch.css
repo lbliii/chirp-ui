@@ -1,0 +1,144 @@
+/* ================================================================
+   ASCII Switch — vertical breaker toggle with block characters
+   ┌───┐        ┌───┐
+   │░░░│  OFF   │███│  ON
+   │░░░│        │███│
+   │███│        │░░░│
+   │███│        │░░░│
+   └───┘        └───┘
+   ================================================================ */
+.chirpui-ascii-switch {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    cursor: pointer;
+    user-select: none;
+}
+
+.chirpui-ascii-switch__body {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--chirpui-font-mono, ui-monospace, monospace);
+    font-size: 0.85rem;
+    line-height: 1;
+    color: var(--chirpui-text-muted);
+    transition: color var(--chirpui-transition);
+}
+
+/* Top and bottom caps: box-drawing corners + horizontal line */
+.chirpui-ascii-switch__cap {
+    display: block;
+    white-space: pre;
+    text-align: center;
+}
+.chirpui-ascii-switch__cap--top::before { content: "┌───┐"; }
+.chirpui-ascii-switch__cap--bottom::before { content: "└───┘"; }
+
+/* The slot contains rows of block characters */
+.chirpui-ascii-switch__slot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: clip;
+    height: 4.2em;
+}
+
+/* The lever is the sliding element — 4 rows of characters, 2 filled + 2 empty.
+   We slide it up (ON) or down (OFF). */
+.chirpui-ascii-switch__lever {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: transform var(--chirpui-transition-slow) var(--chirpui-ease-spring);
+    transform: translateY(0);
+}
+
+/* 4 rows via pseudo + generated content on the lever */
+.chirpui-ascii-switch__lever::before,
+.chirpui-ascii-switch__lever::after {
+    display: block;
+    white-space: pre;
+    text-align: center;
+}
+
+/* Bottom 2 rows = filled blocks, Top 2 rows = light shade */
+.chirpui-ascii-switch__lever::before {
+    content: "│░░░│\A│░░░│";
+    opacity: 0.4;
+}
+.chirpui-ascii-switch__lever::after {
+    content: "│███│\A│███│";
+}
+
+/* OFF state — lever is down (default), blocks at bottom */
+/* (default position, no transform needed) */
+
+/* ON state — lever slides up, blocks move to top */
+.chirpui-ascii-switch:has(.chirpui-ascii-switch__input:checked) .chirpui-ascii-switch__lever {
+    transform: translateY(-50%);
+}
+
+/* Color on checked */
+.chirpui-ascii-switch:has(.chirpui-ascii-switch__input:checked) .chirpui-ascii-switch__body {
+    color: var(--chirpui-accent);
+}
+
+/* Active press — brief squish */
+.chirpui-ascii-switch:has(.chirpui-ascii-switch__input:active) .chirpui-ascii-switch__body {
+    transform: scaleY(0.95);
+    transition: transform var(--chirpui-motion-fast);
+}
+
+/* Focus ring */
+.chirpui-ascii-switch:has(.chirpui-ascii-switch__input:focus-visible) .chirpui-ascii-switch__body {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.chirpui-ascii-switch__label {
+    font-size: var(--chirpui-font-xs, 0.7rem);
+    color: var(--chirpui-text-muted);
+    text-align: center;
+    transition: color var(--chirpui-transition);
+}
+.chirpui-ascii-switch:has(.chirpui-ascii-switch__input:checked) .chirpui-ascii-switch__label {
+    color: var(--chirpui-text);
+}
+
+/* Disabled */
+.chirpui-ascii-switch--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* --- Size variants --- */
+.chirpui-ascii-switch--sm .chirpui-ascii-switch__body { font-size: 0.65rem; }
+.chirpui-ascii-switch--sm .chirpui-ascii-switch__slot { height: 3.2em; }
+
+.chirpui-ascii-switch--lg .chirpui-ascii-switch__body { font-size: 1.15rem; }
+.chirpui-ascii-switch--lg .chirpui-ascii-switch__slot { height: 5.2em; }
+
+/* --- Color variants --- */
+.chirpui-ascii-switch--success:has(.chirpui-ascii-switch__input:checked) .chirpui-ascii-switch__body {
+    color: var(--chirpui-success);
+}
+.chirpui-ascii-switch--danger:has(.chirpui-ascii-switch__input:checked) .chirpui-ascii-switch__body {
+    color: var(--chirpui-error);
+}
+.chirpui-ascii-switch--accent:has(.chirpui-ascii-switch__input:checked) .chirpui-ascii-switch__body {
+    color: var(--chirpui-accent);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-switch__lever {
+        transition: none;
+    }
+}
+
