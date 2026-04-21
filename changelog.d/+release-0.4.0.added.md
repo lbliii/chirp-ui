@@ -1,1 +1,0 @@
-Release 0.4.0 — sharp-edges hardening (phases 1–4), context-aware theming, SVG pattern tiles, CSS-only gradient patterns, new composites, ComponentDescriptor coverage, kida yield migration, and kida-templates >=0.6.0.
