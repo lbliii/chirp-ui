@@ -1,4 +1,4 @@
-# chirp-ui
+# ʘ chirp-ui
 
 [![PyPI version](https://img.shields.io/pypi/v/chirp-ui.svg)](https://pypi.org/project/chirp-ui/)
 [![Tests](https://github.com/lbliii/chirp-ui/actions/workflows/tests.yml/badge.svg)](https://github.com/lbliii/chirp-ui/actions/workflows/tests.yml)
@@ -6,144 +6,181 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Status: Alpha](https://img.shields.io/badge/status-alpha-orange.svg)](https://pypi.org/project/chirp-ui/)
 
-**An optional, opinionated UI layer for Chirp — gorgeous by default, htmx-native.**
+**Python-native UI components for Chirp and Kida apps.**
 
-```python
-pip install chirp chirp-ui
-```
-
-```html
-{% from "chirpui/layout.html" import container, grid, block %}
-{% from "chirpui/card.html" import card %}
-
-{% call container() %}
-    {% call grid(cols=2) %}
-        {% call block() %}{% call card(title="Hello") %}<p>Card one.</p>{% end %}{% end %}
-        {% call block() %}{% call card(title="World") %}<p>Card two.</p>{% end %}{% end %}
-    {% end %}
-{% end %}
-```
-
----
-
-## What is chirp-ui?
-
-chirp-ui is an optional companion design system for [Chirp](https://github.com/lbliii/chirp). It provides [Kida](https://github.com/lbliii/kida) template macros — cards, modals, forms, layouts — that render as HTML. It is one polished, opinionated way to build Chirp apps, not the framework itself and not the only way to use Chirp. Use it with htmx for swaps, SSE for streaming, and View Transitions for polish. No client-side framework required for layout.
-
-**What's good about it:**
-
-- **Gorgeous by default** — Full visual design out of the box. Override `--chirpui-*` CSS variables to customize.
-- **htmx-native** — Interactive components use htmx or Alpine.js. Dropdown, modal, tray, tabs, theme toggle, copy button use Alpine for declarative behavior.
-- **Composable** — `{% slot %}` for content injection. Components nest freely.
-- **Modern CSS** — `:has()`, container queries, fluid typography, `prefers-color-scheme` dark mode.
-
----
-
-## Installation
-
-```bash
-# pip
-pip install chirp-ui
-
-# uv
-uv add chirp-ui
-```
-
-Requires Python 3.14+. When used with Chirp, components are auto-detected — no configuration needed.
-
-You do not need `chirp-ui` to use Chirp. Use it when you want the companion component library, default design language, and app-shell patterns.
-
-**Version compatibility:**
-
-| chirp-ui | Kida | Python | Chirp (optional) |
-|----------|------|--------|-------------------|
-| 0.2.x    | >= 0.3.0 | >= 3.14 | >= 0.2.0 for `use_chirp_ui` |
-
-**What's stable:** Core macros (layout, card, modal, forms, alert, badge), filters (`bem`, `html_attrs`, `validate_variant`, `validate_size`), `VARIANT_REGISTRY`/`SIZE_REGISTRY`, static path, `get_loader`, `register_filters`. See [SECURITY.md](SECURITY.md) for `| safe` usage.
-
-**What may change:** New component variants/sizes, API surface of `__all__`-excluded internals, Alpine.js migration patterns.
-
----
+chirp-ui gives server-rendered Python apps a real component vocabulary:
+Kida macros, typed variants and sizes, registry-cited CSS classes, design
+tokens, htmx/Alpine interaction patterns, and an agent-groundable manifest.
+No Node pipeline. No utility-class vocabulary. No mystery CSS strings that
+your Python tests and tools cannot see.
 
 ## Quick Start
 
-| Step | Action |
-|------|--------|
-| 1 | Install Chirp and chirp-ui if you want the companion UI layer: `pip install chirp chirp-ui` |
-| 2 | Serve static assets from the package (CSS, themes) |
-| 3 | Import macros in templates: `{% from "chirpui/card.html" import card %}` |
-| 4 | Include CSS: `<link rel="stylesheet" href="/static/chirpui.css">` |
-| 5 | For interactive components (dropdown, modal, tray, tabs, theme toggle): call `use_chirp_ui(app)` — Chirp auto-injects Alpine.js with all required plugins |
-
-**Serve assets:**
-
-```python
-from chirp.middleware.static import StaticFiles
-import chirp_ui
-
-app.add_middleware(StaticFiles(
-    directory=str(chirp_ui.static_path()),
-    prefix="/static"
-))
-```
-
----
-
-## Features
-
-| Feature | Description |
-|---------|-------------|
-| **Layout** | container, grid, stack, block, page_header, section_header, divider, breadcrumbs, navbar, navbar_end, navbar_dropdown, sidebar, hero, surface, callout |
-| **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group, island_root, state primitives |
-| **Forms** | text_field, password_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, csrf_hidden, form_actions, login_form, signup_form |
-| **Data display** | badge, spinner, skeleton, progress, description_list, timeline, tree_view, calendar |
-| **Dashboard** | inline_edit_field, row_actions, status_with_hint, entity_header, confirm_dialog, confirm_trigger, fragment_island, poll_trigger — [DASHBOARD-MATURITY-CONTRACT](docs/DASHBOARD-MATURITY-CONTRACT.md) |
-| **Docs** | page_hero, nav_tree, params_table, signature, index_card — framework-agnostic docs components |
-| **Streaming** | streaming_block, copy_btn, model_card — for htmx SSE and LLM UIs |
-| **Theming** | `--chirpui-*` CSS variables, dark mode, optional Holy Light theme |
-| **Component options** | [COMPONENT-OPTIONS.md](docs/COMPONENT-OPTIONS.md) — valid variants, sizes, strict mode |
-
----
-
-## Usage
-
-<details>
-<summary><strong>Component Showcase</strong> — Browse all components</summary>
-
 ```bash
 pip install chirp chirp-ui
-python examples/component-showcase/app.py
 ```
 
-Open http://localhost:8000
+```python
+from chirp import App, AppConfig, use_chirp_ui
 
-</details>
+app = App(AppConfig(template_dir="templates", debug=True))
+use_chirp_ui(app, prefix="/static")
+```
 
-<details>
-<summary><strong>Theming</strong> — Override CSS variables</summary>
+```kida
+{% from "chirpui/layout.html" import container, grid, block %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/button.html" import btn %}
 
-chirp-ui uses `prefers-color-scheme` for dark mode. Override any `--chirpui-*` variable. Base colors drive derived states (hover, active, light, muted) via `color-mix()`:
+{% call container() %}
+  {% call grid(cols=2) %}
+    {% call block() %}
+      {% call card(title="Pipeline", subtitle="Live status") %}
+        <p>Builds, deploys, and background jobs in one swappable panel.</p>
+        {{ btn("View details", href="/pipeline", variant="primary") }}
+      {% endcall %}
+    {% endcall %}
+    {% call block() %}
+      {% call card(title="Queue", subtitle="7 jobs waiting") %}
+        <p>Rendered on the server, ready for htmx refreshes.</p>
+      {% endcall %}
+    {% endcall %}
+  {% endcall %}
+{% endcall %}
+```
+
+When you use Chirp, `use_chirp_ui(app)` registers the template loader, filters,
+static assets, debug-aware strict validation, Alpine runtime support, and
+Chirp-aware link/swap helpers. For standalone Kida usage, use
+`chirp_ui.get_loader()` and serve the files from `chirp_ui.static_path()`.
+
+## What It Is
+
+chirp-ui is the optional companion design system for
+[Chirp](https://github.com/lbliii/chirp), built on
+[Kida](https://github.com/lbliii/kida). It is not the framework itself. It is
+one opinionated way to build Chirp apps with a polished default UI, predictable
+HTMX behavior, and components that stay inspectable from Python.
+
+The central idea is simple: the component registry is the source of truth.
+Macros, CSS, docs, validation, and the shipped manifest are projections of that
+registry.
+
+## Use chirp-ui For
+
+| Surface | What chirp-ui gives you |
+|---|---|
+| Chirp apps | App shells, navigation, cards, forms, overlays, dashboard panels, and htmx-safe patterns |
+| Admin screens | Fragment islands, confirm flows, polling, row actions, inline edit controls, and status displays |
+| Data-heavy pages | Tables, pagination, metrics, timelines, trees, charts, descriptions, and resource indexes |
+| Streaming UIs | SSE status, streaming blocks, copy buttons, model cards, suspense states, and retry affordances |
+| Documentation | Page heroes, nav trees, params tables, signatures, code blocks, and index cards |
+| Coding agents | `chirp_ui.manifest.build_manifest()` with real components, slots, params, classes, and tokens |
+
+## Component Vocabulary
+
+chirp-ui ships more than 300 registry-described components and primitives.
+
+| Family | Examples |
+|---|---|
+| Layout | `container`, `stack`, `cluster`, `grid`, `frame`, `block`, `split_layout`, `app_shell`, `workspace_shell` |
+| Controls | `btn`, `icon_btn`, `button_group`, `segmented_control`, `row_actions`, `theme_toggle`, `copy_btn` |
+| Feedback | `alert`, `badge`, `toast`, `spinner`, `skeleton`, `progress`, `empty_state`, `callout` |
+| Forms | `text_field`, `select_field`, `checkbox_field`, `toggle_field`, `file_field`, `date_field`, `wizard_form` |
+| Navigation | `tabs`, `route_tabs`, `breadcrumbs`, `navbar`, `sidebar`, `nav_tree`, `pagination`, `stepper` |
+| Data display | `table`, `metric_card`, `stat`, `timeline`, `tree_view`, `calendar`, `avatar`, `description_list` |
+| Overlays | `modal`, `drawer`, `tray`, `popover`, `tooltip`, `command_palette` |
+| Effects and ASCII | `shimmer_button`, `glow_card`, `aurora`, `ascii_card`, `ascii_table`, `ascii_spinner` |
+
+Composition primitives are macros, not utilities. Reach for `stack()`,
+`cluster()`, `grid()`, `frame()`, and `block()` instead of inventing spacing or
+display classes.
+
+## Registry And Manifest
+
+The registry in `chirp_ui.components.COMPONENTS` describes every public block:
+variants, sizes, modifiers, BEM elements, slots, composed children, emitted
+classes, tokens, maturity, authoring hints, and runtime requirements.
+
+```python
+from chirp_ui import load_manifest
+from chirp_ui.components import design_system_report
+
+manifest = load_manifest()
+card = manifest["components"]["card"]
+print(card["params"])
+print(card["slots"])
+
+report = design_system_report()
+print(report["stats"]["total_components"])  # 309
+```
+
+The shipped manifest schema is `chirpui-manifest@3`. It is available as:
+
+| Surface | How to read it |
+|---|---|
+| Python API | `chirp_ui.load_manifest()` or `chirp_ui.manifest.build_manifest()` |
+| CLI | `python -m chirp_ui.manifest --json` |
+| Package data | `chirp_ui.MANIFEST_PATH` |
+| Docs build | `site/public/chirpui.manifest.json` from `poe docs-build-all` |
+
+This is the agent contract: downstream tools should cite the manifest instead
+of guessing component names, slots, variants, or CSS classes.
+
+## CSS Contract
+
+chirp-ui CSS is generated from partials and guarded by registry parity tests.
+Every shipped `chirpui-*` class must be cited by a registry entry, defined in
+CSS, and reachable from the templates that emit it.
+
+The cascade order is public API:
+
+```css
+@layer chirpui.reset, chirpui.token, chirpui.base, chirpui.component, chirpui.utility, app.overrides;
+```
+
+Put application overrides in `app.overrides` and use `--chirpui-*` custom
+properties for theming. Do not fight the design system with specificity.
 
 ```css
 :root {
-    --chirpui-accent: #7c3aed;
-    --chirpui-container-max: 80rem;
-    /* Optional: tune shade ratios for all colors */
-    --chirpui-shade-hover: 85%;
-    --chirpui-shade-muted: 15%;
+  --chirpui-accent: #2563eb;
+  --chirpui-container-max: 80rem;
+  --chirpui-radius-lg: 0.75rem;
+}
+
+@layer app.overrides {
+  .billing-panel {
+    --chirpui-card-hover-border: color-mix(in oklab, var(--chirpui-accent) 35%, var(--chirpui-border));
+  }
 }
 ```
 
-Advanced tokens: HTTP methods (`--chirpui-method-get`, etc.), code syntax (`--chirpui-code-keyword`, etc.), secondary accent (`--chirpui-accent-secondary`, `--chirpui-alert-secondary-*`). Full token reference: [plans/PLAN-theme-tokens.md](docs/plans/PLAN-theme-tokens.md).
+For token and override details, see
+[TOKENS.md](docs/TOKENS.md),
+[CSS-OVERRIDE-SURFACE.md](docs/CSS-OVERRIDE-SURFACE.md), and
+[COMPONENT-OPTIONS.md](docs/COMPONENT-OPTIONS.md).
 
-For manual light/dark toggle, set `data-theme="light"` or `data-theme="dark"` on `<html>`.
+## Interactivity
 
-Optional theme: `<link rel="stylesheet" href="/static/themes/holy-light.css">`
+chirp-ui stays server-rendered by default. Interactive components are htmx- and
+Alpine-native where browser state is the right tool.
 
-</details>
+| Pattern | Components and docs |
+|---|---|
+| HTMX fragments | `fragment_island`, `poll_trigger`, `oob`, `infinite_scroll`, [HTMX-PATTERNS.md](docs/HTMX-PATTERNS.md) |
+| Alpine behavior | `dropdown`, `modal`, `tray`, `tabs`, `theme_toggle`, `copy_btn`, [ALPINE-MAGICS.md](docs/ALPINE-MAGICS.md) |
+| App shell swaps | `app_shell`, `shell_frame`, `route_tabs`, [SHELL-TABS-CONTRACT.md](docs/SHELL-TABS-CONTRACT.md) |
+| High-state islands | `island_root`, `grid_state`, `wizard_state`, `upload_state`, [DND-FRAGMENT-ISLAND.md](docs/DND-FRAGMENT-ISLAND.md) |
+| Streaming | `streaming_block`, `sse_status`, `model_card`, `copy_btn`, [HTMX-ADVANCEMENT.md](docs/HTMX-ADVANCEMENT.md) |
 
-<details>
-<summary><strong>Manual registration</strong> — Use with Kida without Chirp</summary>
+Named Alpine controllers live in `chirpui-alpine.js` and register through
+`Alpine.safeData()`, so htmx swaps can initialize behavior safely. Component
+templates do not ship inline `<script>` tags.
+
+## Standalone Kida
+
+You can use chirp-ui without Chirp by adding its loader to a Kida environment.
 
 ```python
 from kida import ChoiceLoader, Environment, FileSystemLoader
@@ -157,184 +194,41 @@ env = Environment(
 )
 ```
 
-Call `chirp_ui.register_filters(app)` if using Chirp for form/field helpers.
-
-</details>
-
-<details>
-<summary><strong>Islands (framework-agnostic)</strong> — Isolate high-state widgets</summary>
-
-chirp-ui stays server-rendered by default. For complex client-state widgets
-(editors, canvases, advanced grids), mount isolated islands on dedicated roots.
-
-```html
-{% from "chirpui/islands.html" import island_root %}
-
-{% call island_root("editor", props={"doc_id": doc.id}, mount_id="editor-root") %}
-<p>Fallback editor UI (SSR) if JavaScript is unavailable.</p>
-{% end %}
-```
-
-In Chirp, enable runtime lifecycle hooks:
-
-```python
-from chirp import App, AppConfig
-
-app = App(AppConfig(islands=True, islands_contract_strict=True))
-```
-
-Lifecycle events emitted in the browser:
-- `chirp:island:mount`
-- `chirp:island:unmount`
-- `chirp:island:remount`
-- `chirp:island:state`
-- `chirp:island:action`
-- `chirp:island:error`
-
-For no-build defaults, use primitive wrappers from `chirpui/state_primitives.html`:
-
-```html
-{% from "chirpui/state_primitives.html" import grid_state, wizard_state, upload_state %}
-
-{% call grid_state("team_grid", ["name", "role"], mount_id="grid-root") %}
-...
-{% end %}
-```
-
-Included no-build primitives:
-- `state_sync`
-- `action_queue`
-- `draft_store`
-- `error_boundary`
-- `grid_state`
-- `wizard_state`
-- `upload_state`
-
-</details>
-
-<details>
-<summary><strong>SSE and streaming</strong> — htmx + Server-Sent Events</summary>
-
-- **streaming_block** — Use `sse_swap_target=true` for htmx SSE fragment swaps.
-- **model_card** — Use `sse_connect=url`, `sse_streaming=true` for LLM comparison UIs.
-- **copy_btn** — Copy button with `data-copy-text`. Enable `AppConfig(delegation=True)` for dynamically inserted buttons.
-
-See Chirp [RAG demo](https://github.com/lbliii/chirp/tree/main/examples/rag_demo) and [LLM playground](https://github.com/lbliii/chirp/tree/main/examples/llm_playground).
-
-</details>
-
-<details>
-<summary><strong>Dashboard refresh patterns</strong> — fragment islands, confirm flows, polling</summary>
-
-For server-driven admin and settings pages, chirp-ui includes dashboard helpers
-that remove a lot of repeated htmx markup:
-
-- `fragment_island(...)` and `fragment_island_with_result(...)` for isolated
-  refresh regions
-- `confirm_dialog(...)` and `confirm_trigger(...)` for confirmation flows
-- `poll_trigger(url, target, delay=...)` for hidden load/delay polling
-
-```html
-{% from "chirpui/fragment_island.html" import poll_trigger %}
-
-<div id="collections-results"></div>
-{{ poll_trigger("/collections/status?refresh=1", "#collections-results", delay="1s") }}
-```
-
-These are especially useful in app-shell layouts where one panel refreshes in
-place while the rest of the shell stays stable.
-
-</details>
-
-<details>
-<summary><strong>Alpine Magics & Events</strong></summary>
-
-chirp-ui uses Alpine.js magics for accessibility and cross-component communication:
-
-| Magic | Use |
-|-------|-----|
-| `$el` | Current element (e.g. `$el.dataset.label`, `$el.value`) |
-| `$refs` | DOM refs for focus management (dropdown trigger/panel) |
-| `$store` | Global state (`modals`, `trays`) for overlay components |
-| `$id` | Unique IDs for ARIA (dropdown, tabs) |
-| `$watch` | Reactive sync (theme/style select) |
-| `$dispatch` | Custom events for app-level handling |
-| `$nextTick` | Post-render focus (dropdown_select) |
-
-**Custom events** — Listen for `chirpui:*` events on `document` or a parent:
-
-| Event | When | Detail |
-|-------|------|--------|
-| `chirpui:dropdown-selected` | Dropdown item clicked | `{ label, href? }` or `{ label, action? }` or `{ label, value? }` |
-| `chirpui:tab-changed` | Tab clicked | `{ tab }` |
-| `chirpui:tray-closed` | Tray backdrop/close clicked | `{ id }` |
-| `chirpui:modal-closed` | Modal backdrop/close clicked | `{ id }` |
-
-Example: run HTMX or analytics when a dropdown item is selected:
-
-```javascript
-document.addEventListener('chirpui:dropdown-selected', (e) => {
-  if (e.detail.action) htmx.ajax('POST', '/api/action', { values: { action: e.detail.action } });
-});
-```
-
-Full reference: [docs/ALPINE-MAGICS.md](docs/ALPINE-MAGICS.md)
-
-</details>
-
-<details>
-<summary><strong>Icons and ergonomics</strong></summary>
-
-Many components support Unicode icons via the `icon` param:
-
-```html
-{% from "chirpui/alert.html" import alert %}
-{% from "chirpui/card.html" import card %}
-{% from "chirpui/button.html" import btn %}
-{% from "chirpui/callout.html" import callout %}
-
-{% call alert(variant="warning", icon="⚠", title="Heads up") %}Body text{% end %}
-{% call card(title="Feature", subtitle="Optional subtitle", icon="◆") %}Content{% end %}
-{{ btn("Save", icon="✓") }}
-{% call callout(icon="💡", title="Tip") %}Use Unicode for icons.{% end %}
-```
-
-For animated icons, use `ascii_icon()` in the component slot. For custom headers with actions, use the `header_actions` named slot (Kida 0.3+):
-
-```html
-{% from "chirpui/card.html" import card %}
-{% call card(title="Settings", icon="⚙") %}
-{% slot header_actions %}
-<button class="chirpui-btn chirpui-btn--ghost">⋯</button>
-{% end %}
-<p>Body content.</p>
-{% end %}
-```
-
-`empty_state` supports `action_label` and `action_href` for a primary CTA button.
-
-</details>
-
----
-
-## Key Ideas
-
-- **HTML over the wire.** Components render as blocks for htmx swaps, SSE streams, and View Transitions. The server is the source of truth.
-- **Companion, not core.** `chirp-ui` is an optional layer on top of Chirp, not a requirement for using the framework.
-- **CSS as the design language.** Modern features (`:has()`, `aspect-ratio`, `clamp()`) used where they add value. All animations respect `prefers-reduced-motion`.
-- **Composable.** `{% slot %}` for content injection. Components nest freely. No wrapper classes.
-- **Minimal dependency.** `kida-templates` only. Chirp optional for auto-registration.
-
----
+In standalone setups, register equivalent filters/globals and serve
+`chirpui.css`, `chirpui.js`, `chirpui-alpine.js`, themes, and pattern assets
+from `chirp_ui.static_path()`.
 
 ## Requirements
 
-- Python >= 3.14
-- kida-templates >= 0.4.0
+| Package | Requirement |
+|---|---|
+| Python | `>=3.14` |
+| Kida | `kida-templates>=0.8.0` |
+| Chirp | Optional, but recommended for `use_chirp_ui(app)` |
+| Browser JS | Alpine 3.x for interactive components; auto-injected by Chirp integration |
 
-**Interactive components** (dropdown, modal, tray, tabs, theme toggle, copy button) require [Alpine.js](https://alpinejs.dev/) 3.x. When using Chirp, call `use_chirp_ui(app)` — this auto-enables Alpine injection with all required plugins (Mask, Intersect, Focus), injects the shared `chirpui-alpine.js` runtime, and provides the `Alpine.safeData()` helper for htmx-safe component registration. For standalone setups without Chirp, serve both `chirpui.js` and `chirpui-alpine.js` from `chirp_ui.static_path()`, and load `chirpui-alpine.js` before the Alpine core script.
+chirp-ui declares free-threading support and avoids build/runtime dependencies
+that rely on the GIL. The build pipeline is Python-native and CSS is assembled
+from package partials.
 
----
+## Showcase
+
+```bash
+git clone https://github.com/lbliii/chirp-ui.git
+cd chirp-ui
+pip install -e ".[showcase]"
+python examples/component-showcase/app.py
+```
+
+Then open <http://localhost:8000>.
+
+With the b-stack workspace:
+
+```bash
+cd /path/to/b-stack
+uv sync
+uv run python chirp-ui/examples/component-showcase/app.py
+```
 
 ## Development
 
@@ -342,37 +236,49 @@ For animated icons, use `ascii_icon()` in the component slot. For custom headers
 git clone https://github.com/lbliii/chirp-ui.git
 cd chirp-ui
 uv sync --group dev
-pytest
+uv run poe ci
 ```
 
 | Task | Command |
-|------|---------|
-| Run tests | `uv run pytest` or `poe test` |
-| Type check | `uv run ty check src/chirp_ui/` or `poe ty` |
-| Lint | `uv run ruff check .` or `poe lint` |
-| Full CI | `poe ci` |
-| Docs site + showcase | `uv sync --group docs` then `uv run poe docs-build-all` (writes `site/public/`, not tracked in git; GitHub Pages builds in CI) |
+|---|---|
+| Run tests | `uv run pytest` or `uv run poe test` |
+| Type check | `uv run ty check src/chirp_ui/` or `uv run poe ty` |
+| Lint | `uv run ruff check .` or `uv run poe lint` |
+| Build CSS | `uv run poe build-css` |
+| Check manifest | `uv run poe build-manifest-check` |
+| Full CI | `uv run poe ci` |
+| Docs site and showcase | `uv sync --group docs` then `uv run poe docs-build-all` |
 
----
+If you edit CSS, change `src/chirp_ui/templates/css/partials/*.css`, run
+`uv run poe build-css`, and commit the generated `chirpui.css`.
+
+If you edit a macro's public surface, update the registry entry and regenerate
+the manifest/docs projections.
+
+## Status
+
+chirp-ui is pre-1.0 and shipped. Core principles are stable: Python-native
+components, registry-cited CSS, no utility vocabulary, htmx/Alpine defaults,
+and free-threading-ready tooling. Some variants, experimental effects, and
+legacy compatibility classes can still move before 1.0.
 
 ## The Bengal Ecosystem
 
-A structured reactive stack written in pure Python for 3.14t free-threading. Chirp is the framework; `chirp-ui` is one optional UI layer built on top of it.
+chirp-ui is part of a pure-Python stack built for Python 3.14t free-threading.
 
 | | | | |
 |--:|---|---|---|
 | **ᓚᘏᗢ** | [Bengal](https://github.com/lbliii/bengal) | Static site generator | [Docs](https://lbliii.github.io/bengal/) |
-| **∿∿** | [Purr](https://github.com/lbliii/purr) | Content runtime | — |
+| **∿∿** | [Purr](https://github.com/lbliii/purr) | Content runtime | - |
 | **⌁⌁** | [Chirp](https://github.com/lbliii/chirp) | Web framework | [Docs](https://lbliii.github.io/chirp/) |
-| **ʘ** | **chirp-ui** | Optional companion UI layer ← You are here | [Docs](https://lbliii.github.io/chirp-ui/) |
+| **ʘ** | **chirp-ui** | Python-native UI components | [Docs](https://lbliii.github.io/chirp-ui/) |
 | **=^..^=** | [Pounce](https://github.com/lbliii/pounce) | ASGI server | [Docs](https://lbliii.github.io/pounce/) |
-| **)彡** | [Kida](https://github.com/lbliii/kida) | Template engine | [Docs](https://lbliii.github.io/kida/) |
+| **)彡** | [Kida](https://github.com/lbliii/kida) | Component template engine | [Docs](https://lbliii.github.io/kida/) |
 | **ฅᨐฅ** | [Patitas](https://github.com/lbliii/patitas) | Markdown parser | [Docs](https://lbliii.github.io/patitas/) |
 | **⌾⌾⌾** | [Rosettes](https://github.com/lbliii/rosettes) | Syntax highlighter | [Docs](https://lbliii.github.io/rosettes/) |
+| **ᓃ‿ᓃ** | [Milo](https://github.com/lbliii/milo-cli) | Terminal UI framework | [Docs](https://lbliii.github.io/milo-cli/) |
 
 Python-native. Free-threading ready. No npm required.
-
----
 
 ## License
 
