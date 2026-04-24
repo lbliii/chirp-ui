@@ -1028,6 +1028,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "confirm": ComponentDescriptor(
         block="confirm",
         variants=("default", "danger"),
+        slots=("header_actions", "form_content"),
         template="confirm.html",
         category="feedback",
         macro="confirm_dialog",
@@ -1176,12 +1177,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "page_header": ComponentDescriptor(
         block="page-header",
         variants=("default", "compact"),
+        slots=("actions",),
         template="layout.html",
         category="layout",
     ),
     "section_header": ComponentDescriptor(
         block="section-header",
         variants=("default", "inline"),
+        slots=("actions",),
         template="layout.html",
         category="layout",
     ),
@@ -1723,6 +1726,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "table-wrap": ComponentDescriptor(
         block="table-wrap",
         modifiers=("sticky",),
+        slots=("caption",),
         template="table.html",
         category="data-display",
         macro="table",
@@ -1827,7 +1831,6 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="list",
         modifiers=("bordered",),
         elements=("item", "link"),
-        slots=("",),
         template="list.html",
         category="data-display",
         macro="list_group",
@@ -1864,7 +1867,6 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "tree": ComponentDescriptor(
         block="tree",
         elements=("item", "node", "label"),
-        slots=("",),
         template="tree_view.html",
         category="data-display",
         macro="tree_view",
@@ -2025,7 +2027,6 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "shell-actions": ComponentDescriptor(
         block="shell-actions",
         elements=("group",),
-        slots=("",),
         template="shell_actions.html",
         category="layout",
         macro="shell_actions_bar",
@@ -2149,6 +2150,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "range-header",
             "range-value",
         ),
+        slots=("",),
         template="forms.html",
         category="form",
         macro="field_wrapper",
@@ -2318,6 +2320,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-breaker-panel",
         modifiers=("sm",),
         elements=("title", "divider", "master", "switches", "breaker", "status"),
+        slots=("",),
         template="ascii_breaker_panel.html",
         category="ascii",
         macro="breaker_panel",
@@ -2435,6 +2438,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "column-body",
             "card",
         ),
+        slots=("",),
         template="dnd.html",
         category="interactive",
         macro="dnd_list",
@@ -2917,7 +2921,10 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     "document-header": ComponentDescriptor(
         block="document-header",
         elements=("detail", "details", "eyebrow", "page-header", "path", "status"),
-        category="auto",
+        slots=("actions",),
+        template="document_header.html",
+        category="layout",
+        macro="document_header",
     ),
     "filter-bar": ComponentDescriptor(
         block="filter-bar",

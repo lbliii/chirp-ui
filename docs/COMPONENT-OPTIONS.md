@@ -5176,9 +5176,27 @@ Floating Dock
 
 ### `document-header`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
-- **Role:** `primitive`
+Document header
+
+- **Template:** `chirpui/document_header.html`
+- **Macro:** `document_header`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `actions`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `subtitle` | no | (has default) |
+| `meta` | no | (has default) |
+| `breadcrumb_items` | no | (has default) |
+| `eyebrow` | no | (has default) |
+| `path` | no | (has default) |
+| `provenance` | no | (has default) |
+| `status` | no | (has default) |
+| `meta_items` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `donut`
 
@@ -5938,7 +5956,6 @@ List component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
-- **Slots:** `(default)`
 - **Modifiers:** `bordered`
 
 | Param | Required | Default |
@@ -7028,7 +7045,6 @@ Shell actions renderer
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
-- **Slots:** `(default)`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7901,7 +7917,6 @@ Tree view component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
-- **Slots:** `(default)`
 
 | Param | Required | Default |
 |-------|----------|---------|

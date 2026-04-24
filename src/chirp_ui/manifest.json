@@ -5962,9 +5962,9 @@
     },
     "document-header": {
       "block": "document-header",
-      "category": "auto",
+      "category": "layout",
       "consumes": [],
-      "description": "",
+      "description": "Document header\n    Document-oriented header for editor/viewer surfaces inside workspaces.\n\n    Usage:\n        {% from \"chirpui/document_header.html\" import document_header %}\n\n        {% call document_header(\"README.md\", path=\"docs/README.md\", status=\"Draft\") %}\n        {% slot actions %}<button type=\"button\">Save</button>{% end %}\n        {% end %}",
       "elements": [
         "detail",
         "details",
@@ -5983,18 +5983,71 @@
         "chirpui-document-header__status"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
-      "maturity": "experimental",
+      "lineno": 13,
+      "macro": "document_header",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "subtitle"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "meta"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "breadcrumb_items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "eyebrow"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "path"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "provenance"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "status"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "meta_items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
-      "role": "primitive",
+      "role": "component",
       "sizes": [],
-      "slots": [],
+      "slots": [
+        "actions"
+      ],
       "slots_extracted": [],
-      "template": "",
+      "template": "document_header.html",
       "tokens": [],
       "variants": []
     },
@@ -8739,9 +8792,7 @@
       "requires": [],
       "role": "component",
       "sizes": [],
-      "slots": [
-        ""
-      ],
+      "slots": [],
       "slots_extracted": [],
       "template": "list.html",
       "tokens": [],
@@ -12549,9 +12600,7 @@
       "requires": [],
       "role": "component",
       "sizes": [],
-      "slots": [
-        ""
-      ],
+      "slots": [],
       "slots_extracted": [],
       "template": "shell_actions.html",
       "tokens": [],
@@ -15709,9 +15758,7 @@
       "requires": [],
       "role": "component",
       "sizes": [],
-      "slots": [
-        ""
-      ],
+      "slots": [],
       "slots_extracted": [],
       "template": "tree_view.html",
       "tokens": [],
@@ -16589,7 +16636,7 @@
   "stats": {
     "component_categories": {
       "ascii": 28,
-      "auto": 110,
+      "auto": 109,
       "composite": 1,
       "container": 8,
       "content": 5,
@@ -16600,32 +16647,32 @@
       "form": 12,
       "infrastructure": 2,
       "interactive": 8,
-      "layout": 16,
+      "layout": 17,
       "marketing": 7,
       "media": 1,
       "navigation": 19,
       "overlay": 3
     },
     "component_maturity": {
-      "experimental": 110,
-      "stable": 199
+      "experimental": 109,
+      "stable": 200
     },
     "component_requirements": {
       "alpine": 8
     },
     "component_roles": {
-      "component": 164,
+      "component": 165,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 1,
-      "primitive": 110
+      "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 196,
-    "components_with_params": 196,
+    "components_with_description": 197,
+    "components_with_params": 197,
     "components_with_provides": 11,
     "registry_debt": {
-      "auto_category_components": 110,
+      "auto_category_components": 109,
       "auto_extra_blocks": 98,
       "auto_extra_classes": 380,
       "auto_trim_blocks": 72,
