@@ -3610,6 +3610,8 @@ Accordion component
 - **Template:** `chirpui/accordion.html`
 - **Macro:** `accordion`
 - **Category:** `interactive`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Provides:** `_accordion_name`
 
@@ -3625,6 +3627,8 @@ Action Bar component
 - **Template:** `chirpui/action_bar.html`
 - **Macro:** `action_bar`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -3638,6 +3642,8 @@ Action Strip component
 - **Template:** `chirpui/action_strip.html`
 - **Macro:** `action_strip`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Modifiers:** `collapse`, `scroll`, `sm`, `sticky`
 
@@ -3654,6 +3660,8 @@ Action Strip component
 ### `actions`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `alert`
 
@@ -3662,6 +3670,8 @@ Alert component
 - **Template:** `chirpui/alert.html`
 - **Macro:** `alert`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `actions`, `header_actions`
 - **Variants:** `error`, `info`, `success`, `warning`
 - **Consumes:** `_card_variant`
@@ -3679,10 +3689,14 @@ Alert component
 ### `ambient`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ambient-root`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `animated-counter`
 
@@ -3691,6 +3705,8 @@ Animated Counter
 - **Template:** `chirpui/animated_counter.html`
 - **Macro:** `animated_counter`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`, `default`, `mono`
 
 | Param | Required | Default |
@@ -3709,6 +3725,8 @@ Animated Stat Card
 - **Template:** `chirpui/animated_stat_card.html`
 - **Macro:** `animated_stat_card`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -3728,6 +3746,9 @@ App Shell component
 - **Template:** `chirpui/app_shell.html`
 - **Macro:** `app_shell`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Requires:** `alpine`
 - **Slots:** `(default)`, `brand`, `sidebar`, `topbar`, `topbar_end`
 - **Modifiers:** `sidebar-collapsed`, `sidebar-collapsible`
 
@@ -3746,6 +3767,8 @@ App Shell component
 ### `ascii`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ascii-7seg`
 
@@ -3754,6 +3777,8 @@ ASCII 7-Segment Display
 - **Template:** `chirpui/ascii_7seg.html`
 - **Macro:** `ascii_7seg`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
 
 | Param | Required | Default |
@@ -3770,6 +3795,8 @@ ASCII Badge
 - **Template:** `chirpui/ascii_badge.html`
 - **Macro:** `ascii_badge`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `muted`, `success`, `warning`
 
 | Param | Required | Default |
@@ -3787,6 +3814,8 @@ ASCII Border
 - **Template:** `chirpui/ascii_border.html`
 - **Macro:** `ascii_border`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `double`, `heavy`, `rounded`, `single`, `spin`
 
@@ -3801,8 +3830,20 @@ ASCII Border
 ASCII Breaker Panel
 
 - **Template:** `chirpui/ascii_breaker_panel.html`
+- **Macro:** `breaker_panel`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `(default)`
 - **Modifiers:** `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `master` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `ascii-card`
 
@@ -3811,6 +3852,8 @@ ASCII Card
 - **Template:** `chirpui/ascii_card.html`
 - **Macro:** `ascii_card`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `double`, `heavy`, `rounded`, `single`
 
@@ -3828,6 +3871,8 @@ ASCII Checkbox
 - **Template:** `chirpui/ascii_checkbox.html`
 - **Macro:** `ascii_checkbox`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
 
 | Param | Required | Default |
@@ -3842,6 +3887,8 @@ ASCII Checkbox
 ### `ascii-checkbox-group`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ascii-divider`
 
@@ -3850,6 +3897,8 @@ ASCII Divider
 - **Template:** `chirpui/ascii_divider.html`
 - **Macro:** `ascii_divider`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `dots`, `double`, `heavy`, `single`, `spin`, `spin-drift`, `spin-reverse`
 
 | Param | Required | Default |
@@ -3865,6 +3914,8 @@ ASCII Empty State component
 - **Template:** `chirpui/ascii_empty.html`
 - **Macro:** `ascii_empty`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
 
@@ -3883,6 +3934,8 @@ ASCII Error Page
 - **Template:** `chirpui/ascii_error.html`
 - **Macro:** `ascii_error`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -3899,6 +3952,8 @@ ASCII Fader / Slider
 - **Template:** `chirpui/ascii_fader.html`
 - **Macro:** `ascii_fader`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
 
 | Param | Required | Default |
@@ -3912,26 +3967,45 @@ ASCII Fader / Slider
 ### `ascii-fader-bank`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ascii-fill`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ascii-fill-hover`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ascii-indicator`
 
 ASCII Indicator Light
 
 - **Template:** `chirpui/ascii_indicator.html`
+- **Macro:** `indicator`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `accent`, `error`, `muted`, `success`, `warning`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `blink` | no | (has default) |
+| `glyph` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `ascii-indicator-row`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ascii-knob`
 
@@ -3940,6 +4014,8 @@ ASCII Knob / Rotary Selector
 - **Template:** `chirpui/ascii_knob.html`
 - **Macro:** `ascii_knob`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`
 
 | Param | Required | Default |
@@ -3958,6 +4034,9 @@ ASCII Modal
 - **Template:** `chirpui/ascii_modal.html`
 - **Macro:** `ascii_modal`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Requires:** `alpine`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `double`, `heavy`, `single`
 
@@ -3971,6 +4050,8 @@ ASCII Modal
 ### `ascii-modal-trigger`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ascii-progress`
 
@@ -3979,6 +4060,8 @@ ASCII Progress
 - **Template:** `chirpui/ascii_progress.html`
 - **Macro:** `ascii_progress`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
 
 | Param | Required | Default |
@@ -3992,6 +4075,8 @@ ASCII Progress
 ### `ascii-radio`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ascii-radio-group`
 
@@ -4000,6 +4085,8 @@ ASCII Radio
 - **Template:** `chirpui/ascii_radio.html`
 - **Macro:** `ascii_radio_group`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`
 
@@ -4018,6 +4105,8 @@ ASCII Skeleton
 - **Template:** `chirpui/ascii_skeleton.html`
 - **Macro:** `ascii_skeleton`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `avatar`, `card`, `heading`, `text`
 
 | Param | Required | Default |
@@ -4034,6 +4123,8 @@ ASCII Sparkline
 - **Template:** `chirpui/ascii_sparkline.html`
 - **Macro:** `ascii_sparkline`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `gradient`, `muted`
 
 | Param | Required | Default |
@@ -4049,6 +4140,8 @@ ASCII Spinner component
 - **Template:** `chirpui/ascii_spinner.html`
 - **Macro:** `ascii_spinner`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `arrows`, `blocks`, `box`, `braille`, `dots`
 
 | Param | Required | Default |
@@ -4065,6 +4158,8 @@ ASCII Stepper
 - **Template:** `chirpui/ascii_stepper.html`
 - **Macro:** `ascii_stepper`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `success`
 
 | Param | Required | Default |
@@ -4081,6 +4176,8 @@ ASCII Toggle
 - **Template:** `chirpui/ascii_toggle.html`
 - **Macro:** `ascii_switch`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -4101,6 +4198,8 @@ ASCII Tabs
 - **Template:** `chirpui/ascii_tabs.html`
 - **Macro:** `ascii_tab`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`
 
 | Param | Required | Default |
@@ -4120,6 +4219,8 @@ ASCII Table
 - **Template:** `chirpui/ascii_table.html`
 - **Macro:** `ascii_table`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `double`, `heavy`, `rounded`, `single`
 
@@ -4140,6 +4241,8 @@ ASCII Tabs
 - **Template:** `chirpui/ascii_tabs.html`
 - **Macro:** `ascii_tabs`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`
 
@@ -4155,6 +4258,8 @@ ASCII Ticker
 - **Template:** `chirpui/ascii_ticker.html`
 - **Macro:** `ascii_ticker`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
 
 | Param | Required | Default |
@@ -4169,12 +4274,28 @@ ASCII Ticker
 ASCII Tile Button
 
 - **Template:** `chirpui/ascii_tile_btn.html`
+- **Macro:** `tile_btn`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `glyph` | no | (has default) |
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `lit` | no | (has default) |
+| `toggle` | no | (has default) |
+| `name` | no | (has default) |
+| `disabled` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `ascii-tile-grid`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ascii-toggle`
 
@@ -4183,6 +4304,8 @@ ASCII Toggle
 - **Template:** `chirpui/ascii_toggle.html`
 - **Macro:** `ascii_toggle`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -4201,12 +4324,28 @@ ASCII Toggle
 ASCII VU Meter
 
 - **Template:** `chirpui/ascii_vu_meter.html`
+- **Macro:** `ascii_vu_meter`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | no | (has default) |
+| `value` | no | (has default) |
+| `label` | no | (has default) |
+| `variant` | no | (has default) |
+| `width` | no | (has default) |
+| `peak` | no | (has default) |
+| `animate` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `ascii-vu-stack`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `aura`
 
@@ -4215,6 +4354,8 @@ Aura — chromatic halo behind stacked content (glass surfaces, cards, etc.)
 - **Template:** `chirpui/aura.html`
 - **Macro:** `aura`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Sizes:** `lg`, `md`, `sm`
 - **Modifiers:** `mirror`
@@ -4232,6 +4373,8 @@ Aura — chromatic halo behind stacked content (glass surfaces, cards, etc.)
 ### `aura_tone`
 
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `accent`, `cool`, `muted`, `primary`, `warm`
 
 ### `aurora`
@@ -4241,6 +4384,8 @@ Aurora Background
 - **Template:** `chirpui/aurora.html`
 - **Macro:** `aurora`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `intense`, `subtle`
 
@@ -4256,6 +4401,8 @@ Avatar component
 - **Template:** `chirpui/avatar.html`
 - **Macro:** `avatar`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Sizes:** `(default)`, `lg`, `sm`
 - **Modifiers:** `offline`, `online`
 
@@ -4276,6 +4423,8 @@ Avatar Stack component
 - **Template:** `chirpui/avatar_stack.html`
 - **Macro:** `avatar_stack`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -4291,6 +4440,8 @@ Badge component
 - **Template:** `chirpui/badge.html`
 - **Macro:** `badge`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `custom`, `custom-solid`, `error`, `info`, `muted`, `primary`, `success`, `warning`
 - **Consumes:** `_card_variant`, `_surface_variant`
@@ -4312,6 +4463,8 @@ Band component
 - **Template:** `chirpui/band.html`
 - **Macro:** `band`
 - **Category:** `marketing`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `header`
 - **Variants:** `accent`, `default`, `elevated`, `glass`, `gradient`
 - **Modifiers:** `bleed`, `contained`, `inset`
@@ -4330,6 +4483,8 @@ Bar Chart component
 - **Template:** `chirpui/bar_chart.html`
 - **Macro:** `bar_chart`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `gold`, `muted`, `radiant`, `success`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -4345,18 +4500,26 @@ Bar Chart component
 ### `bento`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `bg-pattern`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `blade`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `block`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `border-beam`
 
@@ -4365,6 +4528,8 @@ Border Beam
 - **Template:** `chirpui/border_beam.html`
 - **Macro:** `border_beam`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -4380,6 +4545,8 @@ Border Beam
 ### `bounce-in`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `breadcrumbs`
 
@@ -4388,6 +4555,8 @@ Breadcrumbs component
 - **Template:** `chirpui/breadcrumbs.html`
 - **Macro:** `breadcrumbs`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -4401,6 +4570,8 @@ Button component. Use chirpui-btn with variants. Supports loading state for htmx
 - **Template:** `chirpui/button.html`
 - **Macro:** `btn`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `danger`, `ghost`, `primary`, `success`, `warning`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -4440,10 +4611,14 @@ Button component. Use chirpui-btn with variants. Supports loading state for htmx
 ### `btn-group`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `bulk-bar`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `calendar`
 
@@ -4452,6 +4627,8 @@ Calendar component
 - **Template:** `chirpui/calendar.html`
 - **Macro:** `calendar`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -4468,6 +4645,8 @@ Callout component
 - **Template:** `chirpui/callout.html`
 - **Macro:** `callout`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `header_actions`
 - **Modifiers:** `error`, `info`, `neutral`, `on-accent`, `on-muted`, `success`, `warning`
 - **Consumes:** `_surface_variant`
@@ -4486,6 +4665,8 @@ Card component
 - **Template:** `chirpui/card.html`
 - **Macro:** `card`
 - **Category:** `container`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `body_actions`, `footer`, `header_actions`, `media`
 - **Modifiers:** `collapsible`, `gradient-border`, `gradient-header`, `hoverable`, `link`, `linked`
 - **Provides:** `_card_variant`
@@ -4514,6 +4695,8 @@ Carousel component
 - **Template:** `chirpui/carousel.html`
 - **Macro:** `carousel`
 - **Category:** `interactive`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Modifiers:** `compact`, `page`
 
@@ -4531,6 +4714,8 @@ Channel Card component
 - **Template:** `chirpui/channel_card.html`
 - **Macro:** `channel_card`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `actions`, `body`
 
 | Param | Required | Default |
@@ -4550,6 +4735,8 @@ Chapter List component
 - **Template:** `chirpui/chapter_list.html`
 - **Macro:** `chapter_item`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -4565,6 +4752,8 @@ Chapter List component
 - **Template:** `chirpui/chapter_list.html`
 - **Macro:** `chapter_list`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `summary_actions`
 
 | Param | Required | Default |
@@ -4580,6 +4769,8 @@ Chat Input component
 - **Template:** `chirpui/chat_input.html`
 - **Macro:** `chat_input`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -4598,6 +4789,8 @@ Chat Layout component
 - **Template:** `chirpui/chat_layout.html`
 - **Macro:** `chat_layout`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `activity`, `input`, `messages`
 - **Modifiers:** `fill`
 
@@ -4610,38 +4803,56 @@ Chat Layout component
 ### `children`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `clamp-2`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `clamp-3`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `click-jello`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `click-wobble`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `cluster`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `code`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `code-block`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `code-block-wrapper`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `collapse`
 
@@ -4650,6 +4861,8 @@ Collapse component
 - **Template:** `chirpui/collapse.html`
 - **Macro:** `collapse`
 - **Category:** `interactive`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `header_actions`
 
 | Param | Required | Default |
@@ -4661,6 +4874,8 @@ Collapse component
 ### `command-bar`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `command-palette`
 
@@ -4669,6 +4884,9 @@ Command Palette component
 - **Template:** `chirpui/command_palette.html`
 - **Macro:** `command_palette`
 - **Category:** `interactive`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Requires:** `alpine`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -4684,6 +4902,8 @@ Comment component
 - **Template:** `chirpui/comment.html`
 - **Macro:** `comment`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `actions`
 
 | Param | Required | Default |
@@ -4700,6 +4920,8 @@ Comment component
 ### `comment-thread`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `confetti`
 
@@ -4708,6 +4930,8 @@ Confetti
 - **Template:** `chirpui/confetti.html`
 - **Macro:** `confetti`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`
 
 | Param | Required | Default |
@@ -4721,19 +4945,56 @@ Confetti
 Config row — label | control (toggle, select, editable)
 
 - **Template:** `chirpui/config_row.html`
+- **Macro:** `config_row_toggle`
 - **Category:** `container`
+- **Maturity:** `stable`
+- **Role:** `component`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `label` | yes | — |
+| `checked` | no | (has default) |
+| `form_action` | no | (has default) |
+| `attrs_map` | no | (has default) |
+| `errors` | no | (has default) |
+| `cls` | no | (has default) |
+| `swap_id` | no | (has default) |
+| `oob` | no | (has default) |
 
 ### `config-row-list`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `confirm`
 
 Confirm dialog component
 
 - **Template:** `chirpui/confirm.html`
+- **Macro:** `confirm_dialog`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `form_content`, `header_actions`
 - **Variants:** `danger`, `default`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `title` | yes | — |
+| `message` | no | (has default) |
+| `confirm_label` | no | (has default) |
+| `cancel_label` | no | (has default) |
+| `variant` | no | (has default) |
+| `confirm_url` | no | (has default) |
+| `confirm_method` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `hx_swap` | no | (has default) |
+| `hx_select` | no | (has default) |
+| `hx_push_url` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `constellation`
 
@@ -4742,6 +5003,8 @@ Constellation
 - **Template:** `chirpui/constellation.html`
 - **Macro:** `constellation`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `cool`, `default`, `mono`, `warm`
 - **Consumes:** `_hero_variant`
@@ -4755,6 +5018,8 @@ Constellation
 ### `container`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `conversation-item`
 
@@ -4763,6 +5028,8 @@ Conversation Item component
 - **Template:** `chirpui/conversation_item.html`
 - **Macro:** `conversation_item`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `actions`
 - **Modifiers:** `muted`
 
@@ -4783,6 +5050,8 @@ Conversation List component
 - **Template:** `chirpui/conversation_list.html`
 - **Macro:** `conversation_list`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -4794,12 +5063,24 @@ Conversation List component
 Copy button
 
 - **Template:** `chirpui/copy_button.html`
+- **Macro:** `copy_button`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Requires:** `alpine`
 - **Variants:** `(default)`, `assistant`, `system`, `user`
+- **Consumes:** `_streaming_role`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `label` | no | (has default) |
 
 ### `counter-badge`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `description_list`
 
@@ -4808,6 +5089,8 @@ Description list component
 - **Template:** `chirpui/description_list.html`
 - **Macro:** `description_list`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `header`
 - **Variants:** `horizontal`, `stacked`
 
@@ -4826,6 +5109,8 @@ Description list component
 ### `display`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `divider`
 
@@ -4834,6 +5119,8 @@ Divider component
 - **Template:** `chirpui/divider.html`
 - **Macro:** `divider`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Modifiers:** `accent`, `dotted`, `error`, `fade`, `horizontal`, `primary`, `success`, `warning`
 - **Consumes:** `_card_variant`, `_surface_variant`
 
@@ -4847,14 +5134,26 @@ Divider component
 ### `dl`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `dnd`
 
 Drag-drop primitives
 
 - **Template:** `chirpui/dnd.html`
+- **Macro:** `dnd_list`
 - **Category:** `interactive`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `(default)`
 - **Modifiers:** `board`, `row`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
 
 ### `dock`
 
@@ -4863,6 +5162,8 @@ Floating Dock
 - **Template:** `chirpui/dock.html`
 - **Macro:** `dock`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`, `default`, `glass`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -4875,7 +5176,27 @@ Floating Dock
 
 ### `document-header`
 
-- **Category:** `auto`
+Document header
+
+- **Template:** `chirpui/document_header.html`
+- **Macro:** `document_header`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `actions`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `subtitle` | no | (has default) |
+| `meta` | no | (has default) |
+| `breadcrumb_items` | no | (has default) |
+| `eyebrow` | no | (has default) |
+| `path` | no | (has default) |
+| `provenance` | no | (has default) |
+| `status` | no | (has default) |
+| `meta_items` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `donut`
 
@@ -4884,6 +5205,8 @@ Donut Chart component
 - **Template:** `chirpui/donut.html`
 - **Macro:** `donut`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `gold`, `muted`, `success`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -4905,6 +5228,9 @@ Drawer component
 - **Template:** `chirpui/drawer.html`
 - **Macro:** `drawer`
 - **Category:** `overlay`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Requires:** `alpine`
 - **Slots:** `(default)`, `header_actions`
 - **Variants:** `left`, `right`
 
@@ -4922,6 +5248,8 @@ Dropdown component
 - **Template:** `chirpui/dropdown.html`
 - **Macro:** `dropdown`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `footer`, `header`
 
 | Param | Required | Default |
@@ -4934,8 +5262,18 @@ Dropdown component
 Dropdown menu (items-based)
 
 - **Template:** `chirpui/dropdown_menu.html`
+- **Macro:** `dropdown_menu`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Requires:** `alpine`
 - **Variants:** `danger`, `default`, `muted`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `trigger` | yes | — |
+| `items` | yes | — |
+| `id` | no | (has default) |
 
 ### `empty-panel-state`
 
@@ -4944,6 +5282,8 @@ Empty panel state
 - **Template:** `chirpui/empty_panel_state.html`
 - **Macro:** `empty_panel_state`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Modifiers:** `compact`
 
@@ -4967,6 +5307,8 @@ Empty State component
 - **Template:** `chirpui/empty.html`
 - **Macro:** `empty_state`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -4988,6 +5330,8 @@ Entity header (dashboard-grade)
 - **Template:** `chirpui/entity_header.html`
 - **Macro:** `entity_header`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `actions`
 
 | Param | Required | Default |
@@ -5004,6 +5348,8 @@ Feature Section component
 - **Template:** `chirpui/feature_section.html`
 - **Macro:** `feature_section`
 - **Category:** `marketing`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `actions`, `eyebrow`, `media`, `title`
 - **Variants:** `balanced`, `halo`, `media-dominant`, `muted`, `split`, `stacked`
 - **Modifiers:** `reverse`
@@ -5022,6 +5368,8 @@ Feature Section component
 - **Template:** `chirpui/feature_section.html`
 - **Macro:** `feature_stack`
 - **Category:** `marketing`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5033,8 +5381,24 @@ Feature Section component
 Form field macros
 
 - **Template:** `chirpui/forms.html`
+- **Macro:** `field_wrapper`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `(default)`
 - **Variants:** `checkbox`, `dense`, `error`, `radio`, `radio-horizontal`, `range`, `toggle`
+- **Consumes:** `_form_density`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `label` | no | (has default) |
+| `errors` | no | (has default) |
+| `required` | no | (has default) |
+| `hint` | no | (has default) |
+| `modifier` | no | (has default) |
+| `field_id` | no | (has default) |
+| `oob` | no | (has default) |
 
 ### `fieldset`
 
@@ -5043,6 +5407,8 @@ Form field macros
 - **Template:** `chirpui/forms.html`
 - **Macro:** `fieldset`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5057,6 +5423,8 @@ File tree
 - **Template:** `chirpui/file_tree.html`
 - **Macro:** `file_tree`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5071,6 +5439,8 @@ File tree
 ### `filter-bar`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `filter-group`
 
@@ -5079,6 +5449,8 @@ Filter chips — radiogroup + pill chips (named colors / HTMX)
 - **Template:** `chirpui/filter_chips.html`
 - **Macro:** `filter_group`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5095,6 +5467,8 @@ Filter Bar composite
 - **Template:** `chirpui/filter_bar.html`
 - **Macro:** `filter_row`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5110,42 +5484,62 @@ Filter Bar composite
 ### `flow`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `focus-ring`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `font-2xl`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `font-base`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `font-lg`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `font-medium`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `font-mono`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `font-sm`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `font-xl`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `font-xs`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `form-actions`
 
@@ -5154,6 +5548,8 @@ Form field macros
 - **Template:** `chirpui/forms.html`
 - **Macro:** `form_actions`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Modifiers:** `end`
 
@@ -5169,6 +5565,8 @@ Form field macros
 - **Template:** `chirpui/forms.html`
 - **Macro:** `form_error_summary`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5183,6 +5581,8 @@ Safe region / Fragment island primitives
 - **Template:** `chirpui/fragment_island.html`
 - **Macro:** `fragment_island`
 - **Category:** `infrastructure`
+- **Maturity:** `stable`
+- **Role:** `infrastructure`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5197,14 +5597,26 @@ Safe region / Fragment island primitives
 ### `frame`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `glitch`
 
 Glitch Text Effect
 
 - **Template:** `chirpui/glitch_text.html`
+- **Macro:** `glitch_text`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`, `intense`, `subtle`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `variant` | no | (has default) |
+| `tag` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `glow-card`
 
@@ -5213,6 +5625,8 @@ Glow Card
 - **Template:** `chirpui/glow_card.html`
 - **Macro:** `glow_card`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -5232,6 +5646,8 @@ Gradient Text
 - **Template:** `chirpui/gradient_text.html`
 - **Macro:** `gradient_text`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Modifiers:** `animated`, `rainbow`, `secondary`
 
 | Param | Required | Default |
@@ -5248,6 +5664,8 @@ Grain Overlay
 - **Template:** `chirpui/grain.html`
 - **Macro:** `grain`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `heavy`, `subtle`
 
@@ -5263,6 +5681,8 @@ Grain Overlay
 ### `grid`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `hero`
 
@@ -5271,6 +5691,8 @@ Hero component
 - **Template:** `chirpui/hero.html`
 - **Macro:** `hero`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `action`, `actions`
 - **Variants:** `animated-gradient`, `gradient`, `mesh`, `muted`, `solid`
 
@@ -5288,6 +5710,8 @@ Hero Effects
 - **Template:** `chirpui/hero_effects.html`
 - **Macro:** `hero_effects`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Provides:** `_hero_variant`
 
 | Param | Required | Default |
@@ -5303,6 +5727,8 @@ Holy Light
 - **Template:** `chirpui/holy_light.html`
 - **Macro:** `holy_light`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `default`, `gold`, `holy`, `silver`
 - **Consumes:** `_hero_variant`
@@ -5316,14 +5742,20 @@ Holy Light
 ### `hover-jello`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `hover-rubber`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `hover-wobble`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `icon-btn`
 
@@ -5332,6 +5764,8 @@ Icon Button
 - **Template:** `chirpui/icon_btn.html`
 - **Macro:** `icon_btn`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `danger`, `default`, `ghost`, `primary`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 - **Consumes:** `_bar_density`, `_suspense_busy`
@@ -5359,6 +5793,8 @@ Index card component
 - **Template:** `chirpui/index_card.html`
 - **Macro:** `index_card`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5375,6 +5811,8 @@ Infinite Scroll component
 - **Template:** `chirpui/infinite_scroll.html`
 - **Macro:** `infinite_scroll`
 - **Category:** `interactive`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5388,14 +5826,29 @@ Infinite Scroll component
 ### `inline`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `inline-edit`
 
 Inline edit field
 
 - **Template:** `chirpui/inline_edit_field.html`
+- **Macro:** `inline_edit_field_display`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `display`, `edit`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `value` | yes | — |
+| `edit_url` | yes | — |
+| `swap_target` | no | (has default) |
+| `swap_id` | no | (has default) |
+| `edit_label` | no | (has default) |
+| `edit_icon` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `input-group`
 
@@ -5404,6 +5857,8 @@ Form field macros
 - **Template:** `chirpui/forms.html`
 - **Macro:** `input_group`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5427,6 +5882,8 @@ Code macros
 - **Template:** `chirpui/code.html`
 - **Macro:** `install_snippet`
 - **Category:** `content`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5440,10 +5897,14 @@ Code macros
 ### `jello`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `key-value-form`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `label-overline`
 
@@ -5452,6 +5913,8 @@ Small caps / overline label for cards and dense panels.
 - **Template:** `chirpui/label_overline.html`
 - **Macro:** `label_overline`
 - **Category:** `content`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Modifiers:** `section`
 
 | Param | Required | Default |
@@ -5464,6 +5927,8 @@ Small caps / overline label for cards and dense panels.
 ### `layer`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `link`
 
@@ -5472,6 +5937,8 @@ Link component
 - **Template:** `chirpui/link.html`
 - **Macro:** `link`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5485,13 +5952,24 @@ Link component
 List component
 
 - **Template:** `chirpui/list.html`
+- **Macro:** `list_group`
 - **Category:** `data-display`
-- **Slots:** `(default)`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Modifiers:** `bordered`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | no | (has default) |
+| `linked` | no | (has default) |
+| `bordered` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `list-reset`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `live-badge`
 
@@ -5500,6 +5978,8 @@ Live Badge component
 - **Template:** `chirpui/live_badge.html`
 - **Macro:** `live_badge`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5513,6 +5993,8 @@ Logo component
 - **Template:** `chirpui/logo.html`
 - **Macro:** `logo`
 - **Category:** `content`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Modifiers:** `center`, `end`, `image`, `lg`, `md`, `sm`, `start`, `text`
 
 | Param | Required | Default |
@@ -5533,6 +6015,8 @@ Marquee
 - **Template:** `chirpui/marquee.html`
 - **Macro:** `marquee`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`, `default`, `reverse`
 
 | Param | Required | Default |
@@ -5546,18 +6030,26 @@ Marquee
 ### `mb-md`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `measure-lg`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `measure-md`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `measure-sm`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `media-object`
 
@@ -5566,6 +6058,8 @@ Media Object layout primitive
 - **Template:** `chirpui/media_object.html`
 - **Macro:** `media_object`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `actions`, `media`
 - **Modifiers:** `align-center`
 
@@ -5582,6 +6076,8 @@ Mention component
 - **Template:** `chirpui/mention.html`
 - **Macro:** `mention`
 - **Category:** `content`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5592,6 +6088,8 @@ Mention component
 ### `message-reactions`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `message-thread`
 
@@ -5600,6 +6098,8 @@ Message Thread component
 - **Template:** `chirpui/message_thread.html`
 - **Macro:** `message_thread`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5613,6 +6113,8 @@ Message Bubble component
 - **Template:** `chirpui/message_bubble.html`
 - **Macro:** `message_bubble`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `assistant`, `default`, `system`, `user`
 
@@ -5630,6 +6132,8 @@ Meteor Effect
 - **Template:** `chirpui/meteor.html`
 - **Macro:** `meteor`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
 - **Consumes:** `_hero_variant`
@@ -5647,6 +6151,8 @@ Metric grid/card
 - **Template:** `chirpui/metric_grid.html`
 - **Macro:** `metric_card`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5672,6 +6178,8 @@ Metric grid/card
 - **Template:** `chirpui/metric_grid.html`
 - **Macro:** `metric_grid`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5683,6 +6191,8 @@ Metric grid/card
 ### `min-w-0`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `modal`
 
@@ -5691,6 +6201,9 @@ Modal component
 - **Template:** `chirpui/modal.html`
 - **Macro:** `modal`
 - **Category:** `container`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Requires:** `alpine`
 - **Slots:** `(default)`, `footer`, `header_actions`
 - **Sizes:** `lg`, `md`, `sm`
 
@@ -5704,14 +6217,20 @@ Modal component
 ### `model-card`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `mt-md`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `mt-sm`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `nav-progress`
 
@@ -5720,6 +6239,8 @@ Navigation progress bar
 - **Template:** `chirpui/nav_progress.html`
 - **Macro:** `nav_progress`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5732,6 +6253,8 @@ Nav tree component
 - **Template:** `chirpui/nav_tree.html`
 - **Macro:** `nav_tree`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `header`
 
 | Param | Required | Default |
@@ -5747,6 +6270,8 @@ Navbar component
 - **Template:** `chirpui/navbar.html`
 - **Macro:** `navbar`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `brand`, `end`
 - **Modifiers:** `sticky`
 - **Provides:** `_nav_current_path`
@@ -5767,6 +6292,8 @@ Navbar component
 - **Template:** `chirpui/navbar.html`
 - **Macro:** `navbar_dropdown`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Consumes:** `_nav_current_path`
 
@@ -5783,8 +6310,19 @@ Navbar component
 Neon Text
 
 - **Template:** `chirpui/neon_text.html`
+- **Macro:** `neon_text`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `blue`, `cyan`, `green`, `magenta`, `orange`, `red`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `color` | no | (has default) |
+| `animation` | no | (has default) |
+| `tag` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `notification-dot`
 
@@ -5793,6 +6331,8 @@ Notification Dot
 - **Template:** `chirpui/notification_dot.html`
 - **Macro:** `notification_dot`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `default`, `error`, `success`, `warning`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -5808,6 +6348,8 @@ Notification Dot
 ### `number-scale`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `number-ticker`
 
@@ -5816,6 +6358,8 @@ Number Ticker
 - **Template:** `chirpui/number_ticker.html`
 - **Macro:** `number_ticker`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`, `default`, `mono`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`, `xl`
 
@@ -5835,6 +6379,8 @@ Orbit
 - **Template:** `chirpui/orbit.html`
 - **Macro:** `orbit`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `lg`, `sm`, `xl`
 - **Sizes:** `(default)`, `lg`, `sm`, `xl`
@@ -5854,6 +6400,8 @@ Overlay component
 - **Template:** `chirpui/overlay.html`
 - **Macro:** `overlay`
 - **Category:** `container`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `dark`, `gradient-bottom`, `gradient-top`
 
 | Param | Required | Default |
@@ -5864,14 +6412,29 @@ Overlay component
 ### `page-fill`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `page_header`
 
-Document header
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
 
-- **Template:** `chirpui/document_header.html`
+- **Template:** `chirpui/layout.html`
+- **Macro:** `page_header`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `actions`
 - **Variants:** `compact`, `default`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `subtitle` | no | (has default) |
+| `meta` | no | (has default) |
+| `breadcrumb_items` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `page_hero`
 
@@ -5880,6 +6443,8 @@ Hero component
 - **Template:** `chirpui/hero.html`
 - **Macro:** `page_hero`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `actions`, `eyebrow`, `footer`, `metadata`
 - **Variants:** `editorial`, `minimal`
 
@@ -5898,6 +6463,8 @@ Pagination component
 - **Template:** `chirpui/pagination.html`
 - **Macro:** `pagination`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5918,6 +6485,8 @@ Panel component
 - **Template:** `chirpui/panel.html`
 - **Macro:** `panel`
 - **Category:** `container`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `actions`, `footer`
 - **Provides:** `_surface_variant`
 
@@ -5936,6 +6505,8 @@ Params table component
 - **Template:** `chirpui/params_table.html`
 - **Macro:** `params_table`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5951,6 +6522,8 @@ Particle Background
 - **Template:** `chirpui/particle_bg.html`
 - **Macro:** `particle_bg`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
 - **Consumes:** `_hero_variant`
@@ -5964,6 +6537,8 @@ Particle Background
 ### `placeholder-inline`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `playlist`
 
@@ -5972,6 +6547,8 @@ Playlist component
 - **Template:** `chirpui/playlist.html`
 - **Macro:** `playlist`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `header_actions`
 
 | Param | Required | Default |
@@ -5986,6 +6563,8 @@ Playlist component
 - **Template:** `chirpui/playlist.html`
 - **Macro:** `playlist_item`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Modifiers:** `active`
 
 | Param | Required | Default |
@@ -6003,6 +6582,8 @@ Popover component
 - **Template:** `chirpui/popover.html`
 - **Macro:** `popover`
 - **Category:** `overlay`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `footer`, `header`
 
 | Param | Required | Default |
@@ -6017,6 +6598,8 @@ Post Card component
 - **Template:** `chirpui/post_card.html`
 - **Macro:** `post_card`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `actions`, `avatar`, `media`
 
 | Param | Required | Default |
@@ -6034,6 +6617,8 @@ Profile Header component
 - **Template:** `chirpui/profile_header.html`
 - **Macro:** `profile_header`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `action`, `actions`, `avatar`, `bio`, `stats`
 
 | Param | Required | Default |
@@ -6047,6 +6632,8 @@ Profile Header component
 ### `progress`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `progress-bar`
 
@@ -6055,6 +6642,8 @@ Progress Bar component
 - **Template:** `chirpui/progress.html`
 - **Macro:** `progress_bar`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `custom`, `gold`, `radiant`, `success`, `watched`
 - **Sizes:** `lg`, `md`, `sm`
 
@@ -6071,22 +6660,41 @@ Progress Bar component
 ### `prose`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `prose-lg`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `prose-sm`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `pulsing-btn`
 
 Pulsing Button
 
 - **Template:** `chirpui/pulsing_button.html`
+- **Macro:** `pulsing_button`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`, `danger`, `default`, `primary`, `success`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `variant` | no | (has default) |
+| `icon` | no | (has default) |
+| `href` | no | (has default) |
+| `cls` | no | (has default) |
+| `type` | no | (has default) |
+| `disabled` | no | (has default) |
 
 ### `reaction-pill`
 
@@ -6095,6 +6703,8 @@ Reaction Pill component
 - **Template:** `chirpui/reaction_pill.html`
 - **Macro:** `reaction_pill`
 - **Category:** `interactive`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Modifiers:** `active`, `disabled`
 
 | Param | Required | Default |
@@ -6107,6 +6717,8 @@ Reaction Pill component
 ### `resource-card`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `resource-index`
 
@@ -6115,6 +6727,8 @@ Resource Index composite
 - **Template:** `chirpui/resource_index.html`
 - **Macro:** `resource_index`
 - **Category:** `composite`
+- **Maturity:** `stable`
+- **Role:** `pattern`
 - **Slots:** `(default)`, `empty`, `filter_actions`, `filter_controls`, `filter_primary`, `filters_panel`, `selection`, `toolbar_controls`
 
 | Param | Required | Default |
@@ -6154,6 +6768,8 @@ Resource Index composite
 ### `result-slot`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `reveal-on-scroll`
 
@@ -6162,6 +6778,8 @@ Reveal on scroll — animate content when it enters the viewport
 - **Template:** `chirpui/reveal_on_scroll.html`
 - **Macro:** `reveal_on_scroll`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -6173,20 +6791,43 @@ Reveal on scroll — animate content when it enters the viewport
 Ripple Button
 
 - **Template:** `chirpui/ripple_button.html`
+- **Macro:** `ripple_button`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`, `default`, `primary`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `icon` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `route-tab`
 
 Route-backed subsection tabs
 
 - **Template:** `chirpui/route_tabs.html`
+- **Macro:** `render_route_tabs`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `tab_items` | yes | — |
+| `current_path` | yes | — |
+| `target` | no | (has default) |
+| `is_active` | no | (has default) |
 
 ### `route-tabs`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `row-actions`
 
@@ -6195,6 +6836,8 @@ Row actions (kebab menu)
 - **Template:** `chirpui/row_actions.html`
 - **Macro:** `row_actions`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6204,6 +6847,8 @@ Row actions (kebab menu)
 ### `rubber-band`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `rune-field`
 
@@ -6212,6 +6857,8 @@ Rune Field
 - **Template:** `chirpui/rune_field.html`
 - **Macro:** `rune_field`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `arcane`, `default`, `ember`, `frost`
 - **Consumes:** `_hero_variant`
@@ -6228,6 +6875,8 @@ Scanline Overlay
 - **Template:** `chirpui/scanline.html`
 - **Macro:** `scanline`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `crt`, `heavy`
 
@@ -6239,6 +6888,8 @@ Scanline Overlay
 ### `scroll-x`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `search-bar`
 
@@ -6247,6 +6898,8 @@ Form field macros
 - **Template:** `chirpui/forms.html`
 - **Macro:** `search_bar`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Modifiers:** `with-icon`
 
 | Param | Required | Default |
@@ -6273,26 +6926,52 @@ Form field macros
 ### `search-header`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `section-collapsible`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `section_header`
 
-Document header
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
 
-- **Template:** `chirpui/document_header.html`
+- **Template:** `chirpui/layout.html`
+- **Macro:** `section_header`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `actions`
 - **Variants:** `default`, `inline`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `subtitle` | no | (has default) |
+| `icon` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `segmented`
 
 Segmented Control
 
 - **Template:** `chirpui/segmented_control.html`
+- **Macro:** `segmented_control`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `name` | no | (has default) |
+| `size` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `selection-bar`
 
@@ -6301,6 +6980,8 @@ Selection Bar
 - **Template:** `chirpui/selection_bar.html`
 - **Macro:** `selection_bar`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -6318,6 +6999,8 @@ Settings row — label | status badge | detail
 - **Template:** `chirpui/settings_row.html`
 - **Macro:** `settings_row`
 - **Category:** `container`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6334,6 +7017,8 @@ Settings row — label | status badge | detail
 - **Template:** `chirpui/settings_row.html`
 - **Macro:** `settings_row_list`
 - **Category:** `container`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Modifiers:** `divided`, `hoverable`, `relaxed`
 - **Consumes:** `_card_variant`, `_surface_variant`
@@ -6348,27 +7033,55 @@ Settings row — label | status badge | detail
 ### `shell-action-form`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `shell-actions`
 
 Shell actions renderer
 
 - **Template:** `chirpui/shell_actions.html`
+- **Macro:** `shell_actions_bar`
 - **Category:** `layout`
-- **Slots:** `(default)`
+- **Maturity:** `stable`
+- **Role:** `component`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `shell_actions` | yes | — |
+| `cls` | no | (has default) |
 
 ### `shell-section`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `shimmer-btn`
 
 Shimmer Button
 
 - **Template:** `chirpui/shimmer_button.html`
+- **Macro:** `shimmer_button`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`, `default`, `primary`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | yes | — |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `icon` | no | (has default) |
+| `href` | no | (has default) |
+| `cls` | no | (has default) |
+| `type` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+| `disabled` | no | (has default) |
 
 ### `sidebar`
 
@@ -6377,6 +7090,8 @@ Sidebar component
 - **Template:** `chirpui/sidebar.html`
 - **Macro:** `sidebar`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `footer`, `header`
 - **Provides:** `_nav_current_path`
 
@@ -6392,6 +7107,8 @@ Sidebar component
 - **Template:** `chirpui/sidebar.html`
 - **Macro:** `sidebar_toggle`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6404,6 +7121,8 @@ Signature component
 - **Template:** `chirpui/signature.html`
 - **Macro:** `signature`
 - **Category:** `content`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6418,6 +7137,8 @@ Site Footer component
 - **Template:** `chirpui/site_footer.html`
 - **Macro:** `site_footer`
 - **Category:** `marketing`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `brand`, `colophon`, `rule`
 - **Variants:** `centered`, `columns`, `simple`
 
@@ -6433,6 +7154,8 @@ Site Header component
 - **Template:** `chirpui/site_header.html`
 - **Macro:** `site_header`
 - **Category:** `marketing`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `brand`, `nav`, `nav_end`, `tools`
 - **Variants:** `glass`, `solid`, `transparent`
 - **Modifiers:** `sticky`
@@ -6452,7 +7175,21 @@ Site Header component
 Site Header component
 
 - **Template:** `chirpui/site_header.html`
+- **Macro:** `site_nav_link`
 - **Category:** `marketing`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Consumes:** `_site_nav_current_path`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | yes | — |
+| `label` | yes | — |
+| `glyph` | no | (has default) |
+| `external` | no | (has default) |
+| `match` | no | (has default) |
+| `active` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `site-shell`
 
@@ -6461,6 +7198,8 @@ Site Shell component
 - **Template:** `chirpui/site_shell.html`
 - **Macro:** `site_shell`
 - **Category:** `marketing`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `footer`, `header`
 
 | Param | Required | Default |
@@ -6475,6 +7214,8 @@ Skeleton component
 - **Template:** `chirpui/skeleton.html`
 - **Macro:** `skeleton`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `avatar`, `card`, `text`
 
 | Param | Required | Default |
@@ -6490,8 +7231,17 @@ Skeleton component
 Sortable list macros
 
 - **Template:** `chirpui/sortable_list.html`
+- **Macro:** `sortable_list`
 - **Category:** `interactive`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
 
 ### `sparkle`
 
@@ -6500,6 +7250,8 @@ Sparkle
 - **Template:** `chirpui/sparkle.html`
 - **Macro:** `sparkle`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `gold`, `rainbow`, `white`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -6517,6 +7269,8 @@ Spinner component
 - **Template:** `chirpui/spinner.html`
 - **Macro:** `spinner`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
 | Param | Required | Default |
@@ -6527,14 +7281,27 @@ Spinner component
 ### `spinner-thinking`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `split-btn`
 
 Split button component
 
 - **Template:** `chirpui/split_button.html`
+- **Macro:** `split_button`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `footer`, `header`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `primary_label` | yes | — |
+| `primary_href` | no | (has default) |
+| `primary_submit` | no | (has default) |
+| `variant` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `split-flap`
 
@@ -6543,6 +7310,8 @@ ASCII Split-Flap Display
 - **Template:** `chirpui/ascii_split_flap.html`
 - **Macro:** `split_flap`
 - **Category:** `ascii`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `amber`, `default`, `green`
 
 | Param | Required | Default |
@@ -6555,10 +7324,14 @@ ASCII Split-Flap Display
 ### `split-flap-board`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `split-flap-row`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `split-layout`
 
@@ -6567,6 +7340,8 @@ Split layout
 - **Template:** `chirpui/split_layout.html`
 - **Macro:** `split_layout`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `primary`, `secondary`
 - **Variants:** `balanced`, `horizontal`, `sidebar`, `vertical`, `wide-primary`, `wide-secondary`
 - **Modifiers:** `gap-lg`, `gap-md`, `gap-sm`
@@ -6585,6 +7360,8 @@ Split Panel
 - **Template:** `chirpui/split_panel.html`
 - **Macro:** `split_panel`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `left`, `right`
 - **Modifiers:** `dragging`, `vertical`
 
@@ -6603,6 +7380,8 @@ Spotlight Card
 - **Template:** `chirpui/spotlight_card.html`
 - **Macro:** `spotlight_card`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`
 - **Consumes:** `_hero_variant`
@@ -6618,6 +7397,8 @@ Spotlight Card
 ### `sse-retry`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `sse-status`
 
@@ -6626,6 +7407,8 @@ SSE connection status and error recovery
 - **Template:** `chirpui/sse_status.html`
 - **Macro:** `sse_status`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Modifiers:** `connected`, `disconnected`, `error`
 
 | Param | Required | Default |
@@ -6637,10 +7420,14 @@ SSE connection status and error recovery
 ### `stack`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `star-rating`
 
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
 ### `stat`
@@ -6650,6 +7437,8 @@ Stat component
 - **Template:** `chirpui/stat.html`
 - **Macro:** `stat`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6665,6 +7454,8 @@ Status Indicator component
 - **Template:** `chirpui/status.html`
 - **Macro:** `status_indicator`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `custom`, `default`, `error`, `info`, `primary`, `success`, `warning`
 - **Consumes:** `_surface_variant`
 
@@ -6684,6 +7475,8 @@ Stepper component
 - **Template:** `chirpui/stepper.html`
 - **Macro:** `stepper`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6694,10 +7487,14 @@ Stepper component
 ### `streaming`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `streaming-block`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `streaming_bubble`
 
@@ -6706,6 +7503,8 @@ Streaming and AI components
 - **Template:** `chirpui/streaming.html`
 - **Macro:** `streaming_bubble`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `content`, `error`, `thinking`
 - **Provides:** `_streaming_role`
@@ -6727,6 +7526,8 @@ Surface component
 - **Template:** `chirpui/surface.html`
 - **Macro:** `surface`
 - **Category:** `container`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `accent`, `default`, `elevated`, `frosted`, `glass`, `gradient-accent`, `gradient-border`, `gradient-mesh`, `gradient-subtle`, `muted`, `smoke`
 - **Modifiers:** `bento`, `full`, `no-padding`
@@ -6746,6 +7547,8 @@ Surface component
 ### `suspense-group`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `suspense-slot`
 
@@ -6754,6 +7557,8 @@ Suspense components
 - **Template:** `chirpui/suspense.html`
 - **Macro:** `suspense_slot`
 - **Category:** `infrastructure`
+- **Maturity:** `stable`
+- **Role:** `infrastructure`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -6772,6 +7577,8 @@ Symbol Rain
 - **Template:** `chirpui/symbol_rain.html`
 - **Macro:** `symbol_rain`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `gold`, `muted`
 - **Consumes:** `_hero_variant`
@@ -6789,6 +7596,8 @@ Tabs component
 - **Template:** `chirpui/tabs.html`
 - **Macro:** `tab`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Modifiers:** `active`
 
 | Param | Required | Default |
@@ -6804,6 +7613,8 @@ Tabs component
 ### `tab-panel`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `table`
 
@@ -6812,6 +7623,8 @@ Table component
 - **Template:** `chirpui/table.html`
 - **Macro:** `table`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `caption`
 - **Modifiers:** `compact`, `striped`
 - **Provides:** `_table_align`
@@ -6836,8 +7649,28 @@ Table component
 Table component
 
 - **Template:** `chirpui/table.html`
+- **Macro:** `table`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `caption`
 - **Modifiers:** `sticky`
+- **Provides:** `_table_align`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `headers` | no | (has default) |
+| `rows` | no | (has default) |
+| `sortable` | no | (has default) |
+| `sort_url` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `striped` | no | (has default) |
+| `sticky_header` | no | (has default) |
+| `actions_header` | no | (has default) |
+| `align` | no | (has default) |
+| `widths` | no | (has default) |
+| `compact` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `tabs`
 
@@ -6846,6 +7679,8 @@ Tabs component
 - **Template:** `chirpui/tabs.html`
 - **Macro:** `tabs`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -6858,14 +7693,41 @@ Tabs component
 Tag input component
 
 - **Template:** `chirpui/tag_input.html`
+- **Macro:** `tag_input`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `tags` | no | (has default) |
+| `label` | no | (has default) |
+| `add_url` | no | (has default) |
+| `remove_url` | no | (has default) |
+| `placeholder` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `tag-browse`
 
 Tag browse — tray + selection badges for tag-filtered listings
 
 - **Template:** `chirpui/tag_browse.html`
+- **Macro:** `tag_browse_tray`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `title` | yes | — |
+| `tags` | yes | — |
+| `selected_tags` | yes | — |
+| `tag_toggle_url` | yes | — |
+| `clear_url` | yes | — |
+| `position` | no | (has default) |
+| `hint` | no | (has default) |
 
 ### `tag-input`
 
@@ -6874,6 +7736,8 @@ Tag input component
 - **Template:** `chirpui/tag_input.html`
 - **Macro:** `tag_input`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6888,6 +7752,8 @@ Tag input component
 ### `text-muted`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `text-reveal`
 
@@ -6896,6 +7762,8 @@ Text Reveal
 - **Template:** `chirpui/text_reveal.html`
 - **Macro:** `text_reveal`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`, `default`, `gradient`
 
 | Param | Required | Default |
@@ -6908,6 +7776,8 @@ Text Reveal
 ### `texture`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `theme-toggle`
 
@@ -6916,10 +7786,15 @@ Theme + style toggles
 - **Template:** `chirpui/theme_toggle.html`
 - **Macro:** `theme_toggle`
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Requires:** `alpine`
 
 ### `thumbs`
 
 - **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
 ### `timeline`
@@ -6929,6 +7804,8 @@ Timeline component
 - **Template:** `chirpui/timeline.html`
 - **Macro:** `timeline`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Modifiers:** `hoverable`, `on-accent`, `on-muted`
 - **Consumes:** `_surface_variant`
@@ -6946,6 +7823,8 @@ Toast component
 - **Template:** `chirpui/toast.html`
 - **Macro:** `toast`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `error`, `info`, `success`, `warning`
 
 | Param | Required | Default |
@@ -6961,18 +7840,35 @@ Toast component
 ### `toast-container`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `toggle`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `toggle-wrap`
 
 Form field macros
 
 - **Template:** `chirpui/forms.html`
+- **Macro:** `toggle_field`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `lg`, `sm`, `success`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `checked` | no | (has default) |
+| `label` | no | (has default) |
+| `errors` | no | (has default) |
+| `size` | no | (has default) |
+| `variant` | no | (has default) |
+| `label_inside` | no | (has default) |
 
 ### `tooltip`
 
@@ -6981,6 +7877,8 @@ Tooltip macro
 - **Template:** `chirpui/tooltip.html`
 - **Macro:** `tooltip`
 - **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `bottom`, `left`, `right`, `top`
 
@@ -6998,6 +7896,8 @@ Tray (slide-out panel)
 - **Template:** `chirpui/tray.html`
 - **Macro:** `tray`
 - **Category:** `overlay`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `bottom`, `left`, `right`
 - **Modifiers:** `closed`, `open`
@@ -7013,8 +7913,15 @@ Tray (slide-out panel)
 Tree view component
 
 - **Template:** `chirpui/tree_view.html`
+- **Macro:** `tree_view`
 - **Category:** `data-display`
-- **Slots:** `(default)`
+- **Maturity:** `stable`
+- **Role:** `component`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `nodes` | yes | — |
+| `cls` | no | (has default) |
 
 ### `trending-tag`
 
@@ -7023,6 +7930,8 @@ Trending Tag component
 - **Template:** `chirpui/trending_tag.html`
 - **Macro:** `trending_tag`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Modifiers:** `up`
 
 | Param | Required | Default |
@@ -7036,6 +7945,8 @@ Trending Tag component
 ### `truncate`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `typewriter`
 
@@ -7044,6 +7955,8 @@ Typewriter Effect
 - **Template:** `chirpui/typewriter.html`
 - **Macro:** `typewriter`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Variants:** `(default)`, `fast`, `slow`
 
 | Param | Required | Default |
@@ -7062,6 +7975,8 @@ Typing Indicator component
 - **Template:** `chirpui/typing_indicator.html`
 - **Macro:** `typing_indicator`
 - **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7070,50 +7985,74 @@ Typing Indicator component
 ### `ui-base`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-bold`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-label`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-lg`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-medium`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-meta`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-normal`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-semibold`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-sm`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-title`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-xl`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `ui-xs`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `video-card`
 
@@ -7122,6 +8061,8 @@ Video Card component
 - **Template:** `chirpui/video_card.html`
 - **Macro:** `video_card`
 - **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `actions`
 
 | Param | Required | Default |
@@ -7143,6 +8084,8 @@ Video Thumbnail component
 - **Template:** `chirpui/video_thumbnail.html`
 - **Macro:** `video_thumbnail`
 - **Category:** `media`
+- **Maturity:** `stable`
+- **Role:** `component`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7156,6 +8099,8 @@ Video Thumbnail component
 ### `visually-hidden`
 
 - **Category:** `auto`
+- **Maturity:** `experimental`
+- **Role:** `primitive`
 
 ### `wizard-form`
 
@@ -7164,6 +8109,8 @@ Wizard form component
 - **Template:** `chirpui/wizard_form.html`
 - **Macro:** `wizard_form`
 - **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -7182,6 +8129,8 @@ Wobble / Jello / Rubber-band / Bounce-in
 - **Template:** `chirpui/wobble.html`
 - **Macro:** `wobble`
 - **Category:** `effect`
+- **Maturity:** `stable`
+- **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `bounce-in`, `jello`, `rubber-band`, `wobble`
 
@@ -7197,6 +8146,8 @@ Workspace shell
 - **Template:** `chirpui/workspace_shell.html`
 - **Macro:** `workspace_shell`
 - **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
 - **Slots:** `(default)`, `inspector`, `toolbar`
 
 | Param | Required | Default |

@@ -53,6 +53,7 @@ KNOWN_DRIFT: frozenset[str] = frozenset(
         "command-palette",
         "constellation",
         "description_list",
+        "document-header",
         "empty-panel-state",
         "entity-header",
         "feature-stack",

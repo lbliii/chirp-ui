@@ -23,6 +23,7 @@
       "extra_emits": [],
       "lineno": 18,
       "macro": "accordion",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -39,6 +40,8 @@
       "provides": [
         "_accordion_name"
       ],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -71,6 +74,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "action_bar",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -80,6 +84,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -116,6 +122,7 @@
       "extra_emits": [],
       "lineno": 30,
       "macro": "action_strip",
+      "maturity": "stable",
       "modifiers": [
         "collapse",
         "scroll",
@@ -160,6 +167,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -194,9 +203,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -233,6 +245,7 @@
       "extra_emits": [],
       "lineno": 26,
       "macro": "alert",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -272,6 +285,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -304,9 +319,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -326,9 +344,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -352,6 +373,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "animated_counter",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -386,6 +408,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -414,6 +438,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "animated_stat_card",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -458,6 +483,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -503,6 +530,7 @@
       "extra_emits": [],
       "lineno": 22,
       "macro": "app_shell",
+      "maturity": "stable",
       "modifiers": [
         "sidebar-collapsed",
         "sidebar-collapsible"
@@ -555,6 +583,10 @@
         }
       ],
       "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -631,9 +663,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -661,6 +696,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "ascii_7seg",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -685,6 +721,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -720,6 +758,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "ascii_badge",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -749,6 +788,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -786,6 +827,7 @@
       "extra_emits": [],
       "lineno": 22,
       "macro": "ascii_border",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -805,6 +847,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -847,16 +891,49 @@
         "chirpui-ascii-breaker-panel__title"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 40,
+      "macro": "breaker_panel",
+      "maturity": "stable",
       "modifiers": [
         "sm"
       ],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "master"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "template": "ascii_breaker_panel.html",
       "tokens": [],
       "variants": []
@@ -885,6 +962,7 @@
       "extra_emits": [],
       "lineno": 30,
       "macro": "ascii_card",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -909,6 +987,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -945,6 +1025,7 @@
       "extra_emits": [],
       "lineno": 19,
       "macro": "ascii_checkbox",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -979,6 +1060,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1007,9 +1090,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1036,6 +1122,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "ascii_divider",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1055,6 +1142,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1089,6 +1178,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "ascii_empty",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1118,6 +1208,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -1157,6 +1249,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "ascii_error",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1181,6 +1274,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -1215,6 +1310,7 @@
       "extra_emits": [],
       "lineno": 21,
       "macro": "ascii_fader",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1244,6 +1340,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1275,9 +1373,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1297,9 +1398,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1319,9 +1423,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1348,11 +1455,40 @@
         "chirpui-ascii-indicator__light"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 25,
+      "macro": "indicator",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "blink"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "glyph"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1378,9 +1514,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1410,6 +1549,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "ascii_knob",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1444,6 +1584,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1474,6 +1616,7 @@
       "extra_emits": [],
       "lineno": 23,
       "macro": "ascii_modal",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1498,6 +1641,10 @@
         }
       ],
       "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -1526,9 +1673,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1556,6 +1706,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "ascii_progress",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1585,6 +1736,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1620,9 +1773,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1645,6 +1801,7 @@
       "extra_emits": [],
       "lineno": 28,
       "macro": "ascii_radio_group",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1674,6 +1831,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -1708,6 +1867,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "ascii_skeleton",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1732,6 +1892,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1761,6 +1923,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "ascii_sparkline",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1780,6 +1943,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1816,6 +1981,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "ascii_spinner",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1840,6 +2006,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1876,6 +2044,7 @@
       "extra_emits": [],
       "lineno": 18,
       "macro": "ascii_stepper",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1900,6 +2069,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -1938,6 +2109,7 @@
       "extra_emits": [],
       "lineno": 48,
       "macro": "ascii_switch",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1977,6 +2149,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -2010,6 +2184,7 @@
       "extra_emits": [],
       "lineno": 35,
       "macro": "ascii_tab",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2049,6 +2224,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -2091,6 +2268,7 @@
       "extra_emits": [],
       "lineno": 24,
       "macro": "ascii_table",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2130,6 +2308,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -2159,6 +2339,7 @@
       "extra_emits": [],
       "lineno": 27,
       "macro": "ascii_tabs",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2173,6 +2354,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -2209,6 +2392,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "ascii_ticker",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2233,6 +2417,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -2267,11 +2453,55 @@
         "chirpui-ascii-tile-btn__label"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 25,
+      "macro": "tile_btn",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "glyph"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "lit"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "toggle"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "disabled"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -2298,9 +2528,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -2331,6 +2564,7 @@
       "extra_emits": [],
       "lineno": 29,
       "macro": "ascii_toggle",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2370,6 +2604,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -2410,11 +2646,55 @@
         "chirpui-ascii-vu__track"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 21,
+      "macro": "ascii_vu_meter",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "value"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "width"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "peak"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "animate"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -2443,9 +2723,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -2472,6 +2755,7 @@
       "extra_emits": [],
       "lineno": 28,
       "macro": "aura",
+      "maturity": "stable",
       "modifiers": [
         "mirror"
       ],
@@ -2513,6 +2797,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [
         "lg",
         "md",
@@ -2545,9 +2831,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -2578,6 +2867,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "aurora",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2592,6 +2882,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -2630,6 +2922,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "avatar",
+      "maturity": "stable",
       "modifiers": [
         "offline",
         "online"
@@ -2672,6 +2965,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -2698,6 +2993,7 @@
       "extra_emits": [],
       "lineno": 22,
       "macro": "avatar_stack",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2717,6 +3013,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -2756,6 +3054,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "badge",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2795,6 +3094,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -2837,6 +3138,7 @@
       "extra_emits": [],
       "lineno": 27,
       "macro": "band",
+      "maturity": "stable",
       "modifiers": [
         "bleed",
         "contained",
@@ -2865,6 +3167,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -2922,6 +3226,7 @@
       "extra_emits": [],
       "lineno": 22,
       "macro": "bar_chart",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2956,6 +3261,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -2996,9 +3303,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -3033,9 +3343,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -3058,9 +3371,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -3091,9 +3407,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -3118,6 +3437,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "border_beam",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -3147,6 +3467,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [
         "",
         "lg",
@@ -3181,9 +3503,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -3206,6 +3531,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "breadcrumbs",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -3220,6 +3546,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -3257,6 +3585,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "btn",
+      "maturity": "stable",
       "modifiers": [
         "loading"
       ],
@@ -3398,6 +3727,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -3445,9 +3776,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -3470,9 +3804,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -3512,6 +3849,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "calendar",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -3541,6 +3879,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -3580,6 +3920,7 @@
       "extra_emits": [],
       "lineno": 21,
       "macro": "callout",
+      "maturity": "stable",
       "modifiers": [
         "error",
         "info",
@@ -3612,6 +3953,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -3677,6 +4020,7 @@
       "extra_emits": [],
       "lineno": 33,
       "macro": "card",
+      "maturity": "stable",
       "modifiers": [
         "collapsible",
         "gradient-border",
@@ -3760,6 +4104,8 @@
       "provides": [
         "_card_variant"
       ],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -3802,6 +4148,7 @@
       "extra_emits": [],
       "lineno": 19,
       "macro": "carousel",
+      "maturity": "stable",
       "modifiers": [
         "compact",
         "page"
@@ -3829,6 +4176,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -3865,6 +4214,7 @@
       "extra_emits": [],
       "lineno": 19,
       "macro": "channel_card",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -3904,6 +4254,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -3937,6 +4289,7 @@
       "extra_emits": [],
       "lineno": 28,
       "macro": "chapter_item",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -3961,6 +4314,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -3989,6 +4344,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "chapter_list",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -4008,6 +4364,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -4040,6 +4398,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "chat_input",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -4074,6 +4433,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -4109,6 +4470,7 @@
       "extra_emits": [],
       "lineno": 24,
       "macro": "chat_layout",
+      "maturity": "stable",
       "modifiers": [
         "fill"
       ],
@@ -4130,6 +4492,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "activity",
@@ -4178,9 +4542,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4200,9 +4567,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4222,9 +4592,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4244,9 +4617,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4266,9 +4642,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4299,9 +4678,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4321,9 +4703,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4346,9 +4731,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4368,9 +4756,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4399,6 +4790,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "collapse",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -4418,6 +4810,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -4443,9 +4837,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4484,6 +4881,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "command_palette",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -4503,6 +4901,10 @@
         }
       ],
       "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -4547,6 +4949,7 @@
       "extra_emits": [],
       "lineno": 20,
       "macro": "comment",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -4591,6 +4994,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -4616,9 +5021,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4643,6 +5051,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "confetti",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -4662,6 +5071,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4694,11 +5105,60 @@
         "chirpui-config-row__toggle-wrap"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 27,
+      "macro": "config_row_toggle",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "checked"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "form_action"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "errors"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "swap_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "oob"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4725,9 +5185,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4748,14 +5211,89 @@
         "chirpui-confirm__message"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 18,
+      "macro": "confirm_dialog",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "id"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "message"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "confirm_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cancel_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "confirm_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "confirm_method"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_swap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_select"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_push_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        "form_content",
+        "header_actions"
+      ],
+      "slots_extracted": [
+        "form_content",
+        "header_actions"
+      ],
       "template": "confirm.html",
       "tokens": [],
       "variants": [
@@ -4785,6 +5323,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "constellation",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -4804,6 +5343,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -4833,9 +5374,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -4873,6 +5417,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "conversation_item",
+      "maturity": "stable",
       "modifiers": [
         "muted"
       ],
@@ -4914,6 +5459,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -4939,6 +5486,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "conversation_list",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -4948,6 +5496,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -4962,7 +5512,9 @@
     "copy-btn": {
       "block": "copy-btn",
       "category": "control",
-      "consumes": [],
+      "consumes": [
+        "_streaming_role"
+      ],
       "description": "Copy button\n    Copies text to clipboard, shows feedback. Requires Alpine.js.\n\n    Usage:\n        from \"chirpui/copy_button.html\" import copy_button\n        {{ copy_button(\"text to copy\", label=\"Copy\") }}",
       "elements": [
         "done",
@@ -4977,11 +5529,27 @@
         "chirpui-copy-btn__label"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 9,
+      "macro": "copy_button",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "text"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        }
+      ],
       "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -5011,9 +5579,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -5033,6 +5604,7 @@
       "extra_emits": [],
       "lineno": 23,
       "macro": "description_list",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -5082,6 +5654,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "header"
@@ -5111,9 +5685,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -5147,6 +5724,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "divider",
+      "maturity": "stable",
       "modifiers": [
         "accent",
         "dotted",
@@ -5180,6 +5758,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -5237,9 +5817,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -5278,17 +5861,40 @@
         "chirpui-dnd__item--over"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 34,
+      "macro": "dnd_list",
+      "maturity": "stable",
       "modifiers": [
         "board",
         "row"
       ],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_unsafe"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "template": "dnd.html",
       "tokens": [],
       "variants": []
@@ -5311,6 +5917,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "dock",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -5335,6 +5942,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [
         "",
         "lg",
@@ -5353,9 +5962,9 @@
     },
     "document-header": {
       "block": "document-header",
-      "category": "auto",
+      "category": "layout",
       "consumes": [],
-      "description": "",
+      "description": "Document header\n    Document-oriented header for editor/viewer surfaces inside workspaces.\n\n    Usage:\n        {% from \"chirpui/document_header.html\" import document_header %}\n\n        {% call document_header(\"README.md\", path=\"docs/README.md\", status=\"Draft\") %}\n        {% slot actions %}<button type=\"button\">Save</button>{% end %}\n        {% end %}",
       "elements": [
         "detail",
         "details",
@@ -5374,15 +5983,71 @@
         "chirpui-document-header__status"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 13,
+      "macro": "document_header",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "subtitle"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "meta"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "breadcrumb_items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "eyebrow"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "path"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "provenance"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "status"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "meta_items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
-      "slots": [],
+      "slots": [
+        "actions"
+      ],
       "slots_extracted": [],
-      "template": "",
+      "template": "document_header.html",
       "tokens": [],
       "variants": []
     },
@@ -5411,6 +6076,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "donut",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -5455,6 +6121,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -5503,6 +6171,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "drawer",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -5527,6 +6196,10 @@
         }
       ],
       "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -5571,6 +6244,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "dropdown",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -5585,6 +6259,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -5612,11 +6288,32 @@
         "chirpui-dropdown__item--selected"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 12,
+      "macro": "dropdown_menu",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "trigger"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        }
+      ],
       "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -5641,6 +6338,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "empty_panel_state",
+      "maturity": "stable",
       "modifiers": [
         "compact"
       ],
@@ -5697,6 +6395,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -5737,6 +6437,7 @@
       "extra_emits": [],
       "lineno": 27,
       "macro": "empty_state",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -5786,6 +6487,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -5820,6 +6523,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "entity_header",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -5844,6 +6548,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -5890,6 +6596,7 @@
       "extra_emits": [],
       "lineno": 33,
       "macro": "feature_section",
+      "maturity": "stable",
       "modifiers": [
         "reverse"
       ],
@@ -5916,6 +6623,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -5959,6 +6668,7 @@
       "extra_emits": [],
       "lineno": 57,
       "macro": "feature_stack",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -5968,6 +6678,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -5982,7 +6694,9 @@
     "field": {
       "block": "field",
       "category": "form",
-      "consumes": [],
+      "consumes": [
+        "_form_density"
+      ],
       "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.",
       "elements": [
         "checkbox",
@@ -6027,14 +6741,62 @@
         "chirpui-field__required"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 65,
+      "macro": "field_wrapper",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "errors"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "required"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hint"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "modifier"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "field_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "oob"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "template": "forms.html",
       "tokens": [],
       "variants": [
@@ -6062,6 +6824,7 @@
       "extra_emits": [],
       "lineno": 56,
       "macro": "fieldset",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -6076,6 +6839,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -6102,6 +6867,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "file_tree",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -6141,6 +6907,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6162,9 +6930,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6184,6 +6955,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "filter_group",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -6208,6 +6980,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -6231,6 +7005,7 @@
       "extra_emits": [],
       "lineno": 33,
       "macro": "filter_row",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -6270,6 +7045,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -6300,9 +7077,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6322,9 +7102,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6344,9 +7127,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6366,9 +7152,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6388,9 +7177,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6410,9 +7202,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6432,9 +7227,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6454,9 +7252,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6476,9 +7277,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6498,9 +7302,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6521,6 +7328,7 @@
       "extra_emits": [],
       "lineno": 799,
       "macro": "form_actions",
+      "maturity": "stable",
       "modifiers": [
         "end"
       ],
@@ -6537,6 +7345,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -6565,6 +7375,7 @@
       "extra_emits": [],
       "lineno": 764,
       "macro": "form_error_summary",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -6584,6 +7395,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6603,6 +7416,7 @@
       "extra_emits": [],
       "lineno": 62,
       "macro": "fragment_island",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -6642,6 +7456,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "infrastructure",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6676,9 +7492,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6698,11 +7517,35 @@
         "chirpui-glitch--subtle"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 11,
+      "macro": "glitch_text",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "text"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "tag"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6730,6 +7573,7 @@
       "extra_emits": [],
       "lineno": 18,
       "macro": "glow_card",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -6759,6 +7603,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [
         "",
         "lg",
@@ -6795,6 +7641,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "gradient_text",
+      "maturity": "stable",
       "modifiers": [
         "animated",
         "rainbow",
@@ -6823,6 +7670,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6846,6 +7695,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "grain",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -6880,6 +7730,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -6936,9 +7788,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -6974,6 +7829,7 @@
       "extra_emits": [],
       "lineno": 18,
       "macro": "hero",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -6998,6 +7854,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -7031,6 +7889,7 @@
       "extra_emits": [],
       "lineno": 25,
       "macro": "hero_effects",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -7052,6 +7911,8 @@
       "provides": [
         "_hero_variant"
       ],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7085,6 +7946,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "holy_light",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -7104,6 +7966,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -7133,9 +7997,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7155,9 +8022,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7177,9 +8047,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7207,6 +8080,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "icon_btn",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -7276,6 +8150,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -7315,6 +8191,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "index_card",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -7344,6 +8221,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7366,6 +8245,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "infinite_scroll",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -7395,6 +8275,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -7418,9 +8300,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7453,11 +8338,50 @@
         "chirpui-inline-edit__value"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 19,
+      "macro": "inline_edit_field_display",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "value"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "edit_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "swap_target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "swap_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "edit_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "edit_icon"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7487,6 +8411,7 @@
       "extra_emits": [],
       "lineno": 497,
       "macro": "input_group",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -7551,6 +8476,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7577,6 +8504,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "install_snippet",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -7606,6 +8534,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -7627,9 +8557,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7657,9 +8590,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7680,6 +8616,7 @@
       "extra_emits": [],
       "lineno": 10,
       "macro": "label_overline",
+      "maturity": "stable",
       "modifiers": [
         "section"
       ],
@@ -7706,6 +8643,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7746,9 +8685,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7768,6 +8710,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "link",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -7792,6 +8735,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7815,17 +8760,39 @@
         "chirpui-list__link"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 17,
+      "macro": "list_group",
+      "maturity": "stable",
       "modifiers": [
         "bordered"
       ],
-      "params": [],
-      "provides": [],
-      "sizes": [],
-      "slots": [
-        ""
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "linked"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "bordered"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
       ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slots": [],
       "slots_extracted": [],
       "template": "list.html",
       "tokens": [],
@@ -7843,9 +8810,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7870,6 +8840,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "live_badge",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -7884,6 +8855,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7916,6 +8889,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "logo",
+      "maturity": "stable",
       "modifiers": [
         "center",
         "end",
@@ -7969,6 +8943,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -7996,6 +8972,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "marquee",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8025,6 +9002,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8048,9 +9027,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8070,9 +9052,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8092,9 +9077,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8114,9 +9102,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8144,6 +9135,7 @@
       "extra_emits": [],
       "lineno": 19,
       "macro": "media_object",
+      "maturity": "stable",
       "modifiers": [
         "align-center"
       ],
@@ -8165,6 +9157,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -8192,6 +9186,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "mention",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8211,6 +9206,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8230,9 +9227,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8252,6 +9252,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "message_thread",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8261,6 +9262,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -8292,6 +9295,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "message_bubble",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8316,6 +9320,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -8349,6 +9355,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "meteor",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8368,6 +9375,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -8420,6 +9429,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "metric_card",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8494,6 +9504,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8513,6 +9525,7 @@
       "extra_emits": [],
       "lineno": 10,
       "macro": "metric_grid",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8532,6 +9545,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -8553,9 +9568,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8594,6 +9612,7 @@
       "extra_emits": [],
       "lineno": 18,
       "macro": "modal",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8618,6 +9637,10 @@
         }
       ],
       "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
       "sizes": [
         "lg",
         "md",
@@ -8659,9 +9682,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8681,9 +9707,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8703,9 +9732,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8725,6 +9757,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "nav_progress",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8734,6 +9767,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8776,6 +9811,7 @@
       "extra_emits": [],
       "lineno": 23,
       "macro": "nav_tree",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8795,6 +9831,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -8829,6 +9867,7 @@
       "extra_emits": [],
       "lineno": 31,
       "macro": "navbar",
+      "maturity": "stable",
       "modifiers": [
         "sticky"
       ],
@@ -8867,6 +9906,8 @@
       "provides": [
         "_nav_current_path"
       ],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -8899,6 +9940,7 @@
       "extra_emits": [],
       "lineno": 70,
       "macro": "navbar_dropdown",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -8928,6 +9970,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -8957,11 +10001,40 @@
         "chirpui-neon--red"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 12,
+      "macro": "neon_text",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "text"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "color"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "animation"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "tag"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -8994,6 +10067,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "notification_dot",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9023,6 +10097,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -9064,9 +10140,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -9092,6 +10171,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "number_ticker",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9126,6 +10206,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [
         "",
         "lg",
@@ -9164,6 +10246,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "orbit",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9193,6 +10276,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [
         "",
         "lg",
@@ -9229,6 +10314,7 @@
       "extra_emits": [],
       "lineno": 19,
       "macro": "overlay",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9243,6 +10329,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -9266,9 +10354,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -9280,7 +10371,7 @@
       "block": "page-header",
       "category": "layout",
       "consumes": [],
-      "description": "Document header\n    Document-oriented header for editor/viewer surfaces inside workspaces.\n\n    Usage:\n        {% from \"chirpui/document_header.html\" import document_header %}\n\n        {% call document_header(\"README.md\", path=\"docs/README.md\", status=\"Draft\") %}\n        {% slot actions %}<button type=\"button\">Save</button>{% end %}\n        {% end %}",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-page-header",
@@ -9291,15 +10382,53 @@
         "chirpui-page-header__top"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 91,
+      "macro": "page_header",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "subtitle"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "meta"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "breadcrumb_items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
-      "slots": [],
-      "slots_extracted": [],
-      "template": "document_header.html",
+      "slots": [
+        "actions"
+      ],
+      "slots_extracted": [
+        "actions"
+      ],
+      "template": "layout.html",
       "tokens": [],
       "variants": [
         "compact",
@@ -9316,6 +10445,7 @@
       "extra_emits": [],
       "lineno": 53,
       "macro": "page_hero",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9345,6 +10475,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -9386,6 +10518,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "pagination",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9435,6 +10568,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -9462,6 +10597,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "panel",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9493,6 +10629,8 @@
       "provides": [
         "_surface_variant"
       ],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -9541,6 +10679,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "params_table",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9565,6 +10704,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -9591,6 +10732,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "particle_bg",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9610,6 +10752,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -9638,9 +10782,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -9669,6 +10816,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "playlist",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9683,6 +10831,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -9716,6 +10866,7 @@
       "extra_emits": [],
       "lineno": 29,
       "macro": "playlist_item",
+      "maturity": "stable",
       "modifiers": [
         "active"
       ],
@@ -9747,6 +10898,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -9775,6 +10928,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "popover",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9789,6 +10943,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -9837,6 +10993,7 @@
       "extra_emits": [],
       "lineno": 20,
       "macro": "post_card",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9866,6 +11023,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -9912,6 +11071,7 @@
       "extra_emits": [],
       "lineno": 20,
       "macro": "profile_header",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -9941,6 +11101,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -9977,9 +11139,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10013,6 +11178,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "progress_bar",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -10052,6 +11218,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "lg",
         "md",
@@ -10081,9 +11249,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10103,9 +11274,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10125,9 +11299,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10146,11 +11323,50 @@
         "chirpui-pulsing-btn__ring"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 11,
+      "macro": "pulsing_button",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "text"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "icon"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "type"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "disabled"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10183,6 +11399,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "reaction_pill",
+      "maturity": "stable",
       "modifiers": [
         "active",
         "disabled"
@@ -10210,6 +11427,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10232,9 +11451,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10261,6 +11483,7 @@
       "extra_emits": [],
       "lineno": 21,
       "macro": "resource_index",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -10420,6 +11643,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "pattern",
       "sizes": [],
       "slots": [
         "",
@@ -10451,9 +11676,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10473,6 +11701,7 @@
       "extra_emits": [],
       "lineno": 19,
       "macro": "reveal_on_scroll",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -10482,6 +11711,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -10507,11 +11738,40 @@
         "chirpui-ripple-btn__ripple"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 12,
+      "macro": "ripple_button",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "text"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "icon"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [
         "",
         "lg",
@@ -10546,11 +11806,35 @@
         "chirpui-route-tab__label"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 7,
+      "macro": "render_route_tabs",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "tab_items"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "current_path"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "is_active"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10570,9 +11854,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10594,6 +11881,7 @@
       "extra_emits": [],
       "lineno": 19,
       "macro": "row_actions",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -10608,6 +11896,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10627,9 +11917,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10661,6 +11954,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "rune_field",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -10675,6 +11969,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -10706,6 +12002,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "scanline",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -10720,6 +12017,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -10747,9 +12046,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10778,6 +12080,7 @@
       "extra_emits": [],
       "lineno": 661,
       "macro": "search_bar",
+      "maturity": "stable",
       "modifiers": [
         "with-icon"
       ],
@@ -10874,6 +12177,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10897,9 +12202,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10921,9 +12229,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -10935,7 +12246,7 @@
       "block": "section-header",
       "category": "layout",
       "consumes": [],
-      "description": "Document header\n    Document-oriented header for editor/viewer surfaces inside workspaces.\n\n    Usage:\n        {% from \"chirpui/document_header.html\" import document_header %}\n\n        {% call document_header(\"README.md\", path=\"docs/README.md\", status=\"Draft\") %}\n        {% slot actions %}<button type=\"button\">Save</button>{% end %}\n        {% end %}",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-section-header",
@@ -10947,15 +12258,48 @@
         "chirpui-section-header__top"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 114,
+      "macro": "section_header",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "subtitle"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "icon"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
-      "slots": [],
-      "slots_extracted": [],
-      "template": "document_header.html",
+      "slots": [
+        "actions"
+      ],
+      "slots_extracted": [
+        "actions"
+      ],
+      "template": "layout.html",
       "tokens": [],
       "variants": [
         "default",
@@ -10979,11 +12323,35 @@
         "chirpui-segmented__option--active"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 20,
+      "macro": "segmented_control",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -11013,6 +12381,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "selection_bar",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11042,6 +12411,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -11070,6 +12441,7 @@
       "extra_emits": [],
       "lineno": 30,
       "macro": "settings_row",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11099,6 +12471,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -11126,6 +12500,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "settings_row_list",
+      "maturity": "stable",
       "modifiers": [
         "divided",
         "hoverable",
@@ -11154,6 +12529,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -11177,9 +12554,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -11200,15 +12580,27 @@
         "chirpui-shell-actions__group"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 51,
+      "macro": "shell_actions_bar",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
-      "provides": [],
-      "sizes": [],
-      "slots": [
-        ""
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "shell_actions"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
       ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slots": [],
       "slots_extracted": [],
       "template": "shell_actions.html",
       "tokens": [],
@@ -11231,9 +12623,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -11255,11 +12650,70 @@
         "chirpui-shimmer-btn__shimmer"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 12,
+      "macro": "shimmer_button",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "text"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "icon"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "type"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_unsafe"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "disabled"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [
         "",
         "lg",
@@ -11306,6 +12760,7 @@
       "extra_emits": [],
       "lineno": 33,
       "macro": "sidebar",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11322,6 +12777,8 @@
       "provides": [
         "_nav_current_path"
       ],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -11357,6 +12814,7 @@
       "extra_emits": [],
       "lineno": 89,
       "macro": "sidebar_toggle",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11366,6 +12824,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -11388,6 +12848,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "signature",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11407,6 +12868,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -11450,6 +12913,7 @@
       "extra_emits": [],
       "lineno": 32,
       "macro": "site_footer",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11464,6 +12928,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -11520,6 +12986,7 @@
       "extra_emits": [],
       "lineno": 37,
       "macro": "site_header",
+      "maturity": "stable",
       "modifiers": [
         "sticky"
       ],
@@ -11558,6 +13025,8 @@
       "provides": [
         "_site_nav_current_path"
       ],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -11590,7 +13059,9 @@
     "site-nav-link": {
       "block": "site-nav",
       "category": "marketing",
-      "consumes": [],
+      "consumes": [
+        "_site_nav_current_path"
+      ],
       "description": "Site Header component\n    Sticky top navigation bar for full-page scroll sites.\n\n    Layout variants control how brand, nav, and tools are arranged:\n      start        — [brand] [nav...] [spacer] [tools]  (default)\n      center-brand — [nav left] [brand] [nav right | tools]\n      center-nav   — [brand] [nav centered] [tools]\n      split        — [brand + nav] [spacer] [tools]\n\n    Surface variants control background treatment:\n      glass       — backdrop blur, semi-transparent (default)\n      solid       — opaque background\n      transparent — no background (hero overlap patterns)\n\n    Named slots: brand, nav, nav_end (center-brand right-side), tools.\n\n    Usage:\n        from \"chirpui/site_header.html\" import site_header, site_nav_link\n\n        call site_header(brand_url=\"/\", layout=\"start\", variant=\"glass\")\n            {% slot brand %}<img src=\"/logo.svg\" alt=\"Logo\">{% end %}\n            {% slot nav %}\n                {{ site_nav_link(\"/docs\", \"Docs\", glyph=\"#\", match=\"prefix\") }}\n                {{ site_nav_link(\"/about\", \"About\", match=\"exact\") }}\n            {% end %}\n            {% slot tools %}theme_toggle(){% end %}\n        end\n\n        call site_header(layout=\"center-brand\", variant=\"solid\")\n            {% slot nav %}left links{% end %}\n            {% slot brand %}LOGO{% end %}\n            {% slot nav_end %}right links{% end %}\n            {% slot tools %}CTA button{% end %}\n        end",
       "elements": [
         "glyph",
@@ -11603,11 +13074,50 @@
         "chirpui-site-nav__link--external"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 63,
+      "macro": "site_nav_link",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "href"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "glyph"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "external"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "match"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "active"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -11630,6 +13140,7 @@
       "extra_emits": [],
       "lineno": 22,
       "macro": "site_shell",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11644,6 +13155,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -11679,6 +13192,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "skeleton",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11708,6 +13222,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -11741,16 +13257,37 @@
         "chirpui-sortable__remove"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 18,
+      "macro": "sortable_list",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_unsafe"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
       ],
-      "slots_extracted": [],
+      "slots_extracted": [
+        ""
+      ],
       "template": "sortable_list.html",
       "tokens": [],
       "variants": []
@@ -11771,6 +13308,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "sparkle",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11790,6 +13328,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [
         "",
         "lg",
@@ -11829,6 +13369,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "spinner",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11843,6 +13384,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -11877,9 +13420,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -11910,18 +13456,51 @@
         "chirpui-split-btn__trigger"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 18,
+      "macro": "split_button",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "primary_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "primary_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "primary_submit"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
         "footer",
         "header"
       ],
-      "slots_extracted": [],
+      "slots_extracted": [
+        "",
+        "footer",
+        "header"
+      ],
       "template": "split_button.html",
       "tokens": [],
       "variants": []
@@ -11942,6 +13521,7 @@
       "extra_emits": [],
       "lineno": 21,
       "macro": "split_flap",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11966,6 +13546,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12000,9 +13582,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12022,9 +13607,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12058,6 +13646,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "split_layout",
+      "maturity": "stable",
       "modifiers": [
         "gap-lg",
         "gap-md",
@@ -12086,6 +13675,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "primary",
@@ -12128,6 +13719,7 @@
       "extra_emits": [],
       "lineno": 23,
       "macro": "split_panel",
+      "maturity": "stable",
       "modifiers": [
         "dragging",
         "vertical"
@@ -12160,6 +13752,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "left",
@@ -12190,6 +13784,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "spotlight_card",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -12219,6 +13814,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -12252,9 +13849,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12280,6 +13880,7 @@
       "extra_emits": [],
       "lineno": 22,
       "macro": "sse_status",
+      "maturity": "stable",
       "modifiers": [
         "connected",
         "disconnected",
@@ -12303,6 +13904,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12333,9 +13936,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12359,9 +13965,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -12393,6 +14002,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "stat",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -12417,6 +14027,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12451,6 +14063,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "status_indicator",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -12485,6 +14098,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12527,6 +14142,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "stepper",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -12546,6 +14162,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12567,9 +14185,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12595,9 +14216,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12619,6 +14243,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "streaming_bubble",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -12660,6 +14285,8 @@
       "provides": [
         "_streaming_role"
       ],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -12716,6 +14343,7 @@
       "extra_emits": [],
       "lineno": 25,
       "macro": "surface",
+      "maturity": "stable",
       "modifiers": [
         "bento",
         "full",
@@ -12766,6 +14394,8 @@
       "provides": [
         "_surface_variant"
       ],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -12801,9 +14431,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12823,6 +14456,7 @@
       "extra_emits": [],
       "lineno": 26,
       "macro": "suspense_slot",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -12857,6 +14491,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "infrastructure",
       "sizes": [],
       "slots": [
         ""
@@ -12888,6 +14524,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "symbol_rain",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -12907,6 +14544,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -12938,6 +14577,7 @@
       "extra_emits": [],
       "lineno": 21,
       "macro": "tab",
+      "maturity": "stable",
       "modifiers": [
         "active"
       ],
@@ -12979,6 +14619,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -12998,9 +14640,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13049,6 +14694,7 @@
       "extra_emits": [],
       "lineno": 39,
       "macro": "table",
+      "maturity": "stable",
       "modifiers": [
         "compact",
         "striped"
@@ -13118,6 +14764,8 @@
       "provides": [
         "_table_align"
       ],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -13141,16 +14789,86 @@
         "chirpui-table-wrap--sticky"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 39,
+      "macro": "table",
+      "maturity": "stable",
       "modifiers": [
         "sticky"
       ],
-      "params": [],
-      "provides": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "headers"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "rows"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sortable"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sort_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "striped"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sticky_header"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "actions_header"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "align"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "widths"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "compact"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [
+        "_table_align"
+      ],
+      "requires": [],
+      "role": "component",
       "sizes": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        "caption"
+      ],
+      "slots_extracted": [
+        "caption"
+      ],
       "template": "table.html",
       "tokens": [],
       "variants": []
@@ -13169,6 +14887,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "tabs",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -13183,6 +14902,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -13209,59 +14930,9 @@
         "chirpui-tag__remove-btn"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
-      "modifiers": [],
-      "params": [],
-      "provides": [],
-      "sizes": [],
-      "slots": [],
-      "slots_extracted": [],
-      "template": "tag_input.html",
-      "tokens": [],
-      "variants": []
-    },
-    "tag-browse": {
-      "block": "tag-browse",
-      "category": "control",
-      "consumes": [],
-      "description": "Tag browse — tray + selection badges for tag-filtered listings\n    Composite for the common pattern of a slide-out tag picker tray with\n    selected-tag badge row.  Designed for resource_index filters_panel,\n    selection, and filter_actions slots.\n\n    Usage:\n        {% from \"chirpui/tag_browse.html\" import tag_browse_tray, tag_selection_badges, tag_filter_actions %}\n\n        {% slot filters_panel %}\n        {{ tag_browse_tray(\"my-filters\", \"Filter by tags\", all_tags, selected_tags, tag_toggle_url, clear_url) }}\n        {% end %}\n        {% slot selection %}\n        {{ tag_selection_badges(selected_tags, tag_toggle_url, clear_url) }}\n        {% end %}\n        {% slot filter_actions %}\n        {{ tag_filter_actions(selected_tags, clear_url) }}\n        {% end %}\n\n    Parameters:\n        tags            — list of all tag strings\n        selected_tags   — list of currently selected tag strings\n        tag_toggle_url  — callable: tag_toggle_url(tag) → URL string\n        clear_url       — URL string to clear all selected tags",
-      "elements": [],
-      "emits": [],
-      "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
-      "modifiers": [],
-      "params": [],
-      "provides": [],
-      "sizes": [],
-      "slots": [],
-      "slots_extracted": [],
-      "template": "tag_browse.html",
-      "tokens": [],
-      "variants": []
-    },
-    "tag-input": {
-      "block": "tag-input",
-      "category": "form",
-      "consumes": [],
-      "description": "Tag input component\n    Display tags as chips; add/remove via forms (server-rendered, zero-JS).\n\n    Usage:\n        from \"chirpui/tag_input.html\" import tag_input\n\n        tag_input(\"tags\", tags=[\"python\", \"rust\"], label=\"Tags\",\n                  add_url=\"/tags/add\", remove_url=\"/tags/remove\",\n                  placeholder=\"Add tag...\")\n\n    When add_url/remove_url provided, renders add form and remove buttons.\n    Server: add_url accepts POST with \"tag\" param; remove_url accepts POST with \"tag\" param.",
-      "elements": [
-        "add",
-        "add-field",
-        "chips",
-        "label"
-      ],
-      "emits": [
-        "chirpui-tag-input",
-        "chirpui-tag-input__add",
-        "chirpui-tag-input__add-field",
-        "chirpui-tag-input__chips",
-        "chirpui-tag-input__label"
-      ],
-      "extra_emits": [],
       "lineno": 15,
       "macro": "tag_input",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -13301,6 +14972,142 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slots": [],
+      "slots_extracted": [],
+      "template": "tag_input.html",
+      "tokens": [],
+      "variants": []
+    },
+    "tag-browse": {
+      "block": "tag-browse",
+      "category": "control",
+      "consumes": [],
+      "description": "Tag browse — tray + selection badges for tag-filtered listings\n    Composite for the common pattern of a slide-out tag picker tray with\n    selected-tag badge row.  Designed for resource_index filters_panel,\n    selection, and filter_actions slots.\n\n    Usage:\n        {% from \"chirpui/tag_browse.html\" import tag_browse_tray, tag_selection_badges, tag_filter_actions %}\n\n        {% slot filters_panel %}\n        {{ tag_browse_tray(\"my-filters\", \"Filter by tags\", all_tags, selected_tags, tag_toggle_url, clear_url) }}\n        {% end %}\n        {% slot selection %}\n        {{ tag_selection_badges(selected_tags, tag_toggle_url, clear_url) }}\n        {% end %}\n        {% slot filter_actions %}\n        {{ tag_filter_actions(selected_tags, clear_url) }}\n        {% end %}\n\n    Parameters:\n        tags            — list of all tag strings\n        selected_tags   — list of currently selected tag strings\n        tag_toggle_url  — callable: tag_toggle_url(tag) → URL string\n        clear_url       — URL string to clear all selected tags",
+      "elements": [],
+      "emits": [],
+      "extra_emits": [],
+      "lineno": 28,
+      "macro": "tag_browse_tray",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "id"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "tags"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "selected_tags"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "tag_toggle_url"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "clear_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "position"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hint"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slots": [],
+      "slots_extracted": [],
+      "template": "tag_browse.html",
+      "tokens": [],
+      "variants": []
+    },
+    "tag-input": {
+      "block": "tag-input",
+      "category": "form",
+      "consumes": [],
+      "description": "Tag input component\n    Display tags as chips; add/remove via forms (server-rendered, zero-JS).\n\n    Usage:\n        from \"chirpui/tag_input.html\" import tag_input\n\n        tag_input(\"tags\", tags=[\"python\", \"rust\"], label=\"Tags\",\n                  add_url=\"/tags/add\", remove_url=\"/tags/remove\",\n                  placeholder=\"Add tag...\")\n\n    When add_url/remove_url provided, renders add form and remove buttons.\n    Server: add_url accepts POST with \"tag\" param; remove_url accepts POST with \"tag\" param.",
+      "elements": [
+        "add",
+        "add-field",
+        "chips",
+        "label"
+      ],
+      "emits": [
+        "chirpui-tag-input",
+        "chirpui-tag-input__add",
+        "chirpui-tag-input__add-field",
+        "chirpui-tag-input__chips",
+        "chirpui-tag-input__label"
+      ],
+      "extra_emits": [],
+      "lineno": 15,
+      "macro": "tag_input",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "tags"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "add_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "remove_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "placeholder"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13320,9 +15127,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13343,6 +15153,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "text_reveal",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -13367,6 +15178,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13411,9 +15224,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13436,9 +15252,14 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "theme_toggle",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13462,9 +15283,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [
         "",
         "lg",
@@ -13524,6 +15348,7 @@
       "extra_emits": [],
       "lineno": 24,
       "macro": "timeline",
+      "maturity": "stable",
       "modifiers": [
         "hoverable",
         "on-accent",
@@ -13547,6 +15372,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -13574,6 +15401,7 @@
       "extra_emits": [],
       "lineno": 20,
       "macro": "toast",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -13613,6 +15441,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13637,9 +15467,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13671,9 +15504,12 @@
       ],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13696,11 +15532,50 @@
         "chirpui-toggle-wrap--success"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 204,
+      "macro": "toggle_field",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "checked"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "errors"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label_inside"
+        }
+      ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13732,6 +15607,7 @@
       "extra_emits": [],
       "lineno": 18,
       "macro": "tooltip",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -13756,6 +15632,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -13802,6 +15680,7 @@
       "extra_emits": [],
       "lineno": 23,
       "macro": "tray",
+      "maturity": "stable",
       "modifiers": [
         "closed",
         "open"
@@ -13824,6 +15703,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -13857,15 +15738,27 @@
         "chirpui-tree__node"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 18,
+      "macro": "tree_view",
+      "maturity": "stable",
       "modifiers": [],
-      "params": [],
-      "provides": [],
-      "sizes": [],
-      "slots": [
-        ""
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "nodes"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
       ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slots": [],
       "slots_extracted": [],
       "template": "tree_view.html",
       "tokens": [],
@@ -13889,6 +15782,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "trending_tag",
+      "maturity": "stable",
       "modifiers": [
         "up"
       ],
@@ -13920,6 +15814,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13939,9 +15835,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -13968,6 +15867,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "typewriter",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -14002,6 +15902,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14028,6 +15930,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "typing_indicator",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -14037,6 +15940,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14056,9 +15961,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14078,9 +15986,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14100,9 +16011,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14122,9 +16036,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14144,9 +16061,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14166,9 +16086,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14188,9 +16111,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14210,9 +16136,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14232,9 +16161,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14254,9 +16186,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14276,9 +16211,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14298,9 +16236,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14339,6 +16280,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "video_card",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -14388,6 +16330,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "actions"
@@ -14420,6 +16364,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "video_thumbnail",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -14454,6 +16399,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14475,9 +16422,12 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
+      "requires": [],
+      "role": "primitive",
       "sizes": [],
       "slots": [],
       "slots_extracted": [],
@@ -14499,6 +16449,7 @@
       "extra_emits": [],
       "lineno": 20,
       "macro": "wizard_form",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -14533,6 +16484,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         ""
@@ -14556,6 +16509,7 @@
       "extra_emits": [],
       "lineno": 24,
       "macro": "wobble",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -14570,6 +16524,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "effect",
       "sizes": [],
       "slots": [
         ""
@@ -14615,6 +16571,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "workspace_shell",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -14659,6 +16616,8 @@
         }
       ],
       "provides": [],
+      "requires": [],
+      "role": "component",
       "sizes": [],
       "slots": [
         "",
@@ -14677,7 +16636,7 @@
   "stats": {
     "component_categories": {
       "ascii": 28,
-      "auto": 110,
+      "auto": 109,
       "composite": 1,
       "container": 8,
       "content": 5,
@@ -14688,16 +16647,39 @@
       "form": 12,
       "infrastructure": 2,
       "interactive": 8,
-      "layout": 16,
+      "layout": 17,
       "marketing": 7,
       "media": 1,
       "navigation": 19,
       "overlay": 3
     },
-    "components_with_consumes": 17,
-    "components_with_description": 196,
-    "components_with_params": 166,
-    "components_with_provides": 10,
+    "component_maturity": {
+      "experimental": 109,
+      "stable": 200
+    },
+    "component_requirements": {
+      "alpine": 8
+    },
+    "component_roles": {
+      "component": 165,
+      "effect": 32,
+      "infrastructure": 2,
+      "pattern": 1,
+      "primitive": 109
+    },
+    "components_with_consumes": 20,
+    "components_with_description": 197,
+    "components_with_params": 197,
+    "components_with_provides": 11,
+    "registry_debt": {
+      "auto_category_components": 109,
+      "auto_extra_blocks": 98,
+      "auto_extra_classes": 380,
+      "auto_trim_blocks": 72,
+      "auto_trim_classes": 103,
+      "explicit_extra_blocks": 27,
+      "explicit_extra_classes": 134
+    },
     "token_categories": {
       "color": 181,
       "component": 74,

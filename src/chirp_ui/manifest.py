@@ -12,8 +12,8 @@ Schema
 
 * ``components`` keys sorted; each entry contains ``block``, ``variants``,
   ``sizes``, ``modifiers``, ``elements``, ``slots``, ``tokens``, ``extra_emits``,
-  ``emits``, ``template``, ``category``, plus the ``@2`` additions ``macro``,
-  ``params``, and ``lineno``.
+  ``emits``, ``template``, ``category``, ``maturity``, ``role``, ``requires``,
+  plus the ``@2`` additions ``macro``, ``params``, and ``lineno``.
 * ``params`` is a list of ``{"name": str, "has_default": bool,
   "is_required": bool}`` derived from the template AST via
   :mod:`chirp_ui._macro_introspect`. Empty when the descriptor has no
@@ -41,7 +41,8 @@ Schema
   template. New chirp-ui templates must carry a doc-block
   (``tests/test_description_coverage.py``).
 * ``tokens`` keys sorted; each entry is ``{"category": …, "scope": …}``.
-* ``stats`` aggregates counts, including ``components_with_params``.
+* ``stats`` aggregates counts, including ``components_with_params`` and a
+  ``registry_debt`` scorecard for descriptor/CSS reconciliation burn-down.
 
 Deterministic: two calls to :func:`build_manifest` yield byte-identical JSON.
 
@@ -60,11 +61,16 @@ from typing import Any
 
 from chirp_ui import __version__
 from chirp_ui._macro_introspect import MacroInfo, description_from_template, macros_in_template
-from chirp_ui.components import COMPONENTS, ComponentDescriptor
+from chirp_ui.alpine import ALPINE_REQUIRED_COMPONENTS
+from chirp_ui.components import _AUTO_EXTRAS, _AUTO_TRIMS, COMPONENTS, ComponentDescriptor
 from chirp_ui.inspect import list_consumes, list_provides
 from chirp_ui.tokens import TOKEN_CATALOG
 
 SCHEMA = "chirpui-manifest@2"
+
+_ALPINE_MACROS = frozenset(
+    macro for requirement in ALPINE_REQUIRED_COMPONENTS.values() for macro in requirement.macros
+)
 
 
 def _resolve_macro(desc: ComponentDescriptor) -> MacroInfo | None:
@@ -81,6 +87,14 @@ def _resolve_macro(desc: ComponentDescriptor) -> MacroInfo | None:
         return None
     target = desc.macro or desc.block.replace("-", "_")
     return macros.get(target)
+
+
+def _runtime_requirements(desc: ComponentDescriptor, macro_info: MacroInfo | None) -> list[str]:
+    """Return sorted runtime requirements from descriptor + derived macro metadata."""
+    requires = set(desc.requires)
+    if macro_info is not None and macro_info.name in _ALPINE_MACROS:
+        requires.add("alpine")
+    return sorted(requires)
 
 
 def _owning_macro(macros: dict[str, MacroInfo], line: int) -> str | None:
@@ -166,6 +180,7 @@ def build_manifest() -> dict[str, Any]:
             if consumes:
                 components_with_consumes += 1
         slots_union = sorted(set(desc.slots) | set(slots_extracted))
+        requires = _runtime_requirements(desc, macro_info)
         components[name] = {
             "block": desc.block,
             "variants": sorted(desc.variants),
@@ -179,6 +194,9 @@ def build_manifest() -> dict[str, Any]:
             "emits": sorted(desc.emits),
             "template": desc.template,
             "category": desc.category,
+            "maturity": desc.resolved_maturity,
+            "role": desc.resolved_role,
+            "requires": requires,
             "macro": macro_info.name if macro_info else None,
             "params": params,
             "lineno": macro_info.lineno if macro_info else 0,
@@ -193,9 +211,29 @@ def build_manifest() -> dict[str, Any]:
     }
 
     component_categories: dict[str, int] = {}
-    for desc in COMPONENTS.values():
+    component_maturity: dict[str, int] = {}
+    component_roles: dict[str, int] = {}
+    component_requirements: dict[str, int] = {}
+    for name, desc in COMPONENTS.items():
         cat = desc.category or "uncategorized"
         component_categories[cat] = component_categories.get(cat, 0) + 1
+        maturity = desc.resolved_maturity
+        component_maturity[maturity] = component_maturity.get(maturity, 0) + 1
+        role = desc.resolved_role
+        component_roles[role] = component_roles.get(role, 0) + 1
+        for requirement in components[name]["requires"]:
+            component_requirements[requirement] = component_requirements.get(requirement, 0) + 1
+    registry_debt = {
+        "auto_category_components": sum(
+            1 for desc in COMPONENTS.values() if desc.category == "auto"
+        ),
+        "auto_extra_blocks": len(_AUTO_EXTRAS),
+        "auto_extra_classes": sum(len(classes) for classes in _AUTO_EXTRAS.values()),
+        "auto_trim_blocks": len(_AUTO_TRIMS),
+        "auto_trim_classes": sum(len(classes) for classes in _AUTO_TRIMS.values()),
+        "explicit_extra_blocks": sum(1 for desc in COMPONENTS.values() if desc.extra_emits),
+        "explicit_extra_classes": sum(len(desc.extra_emits) for desc in COMPONENTS.values()),
+    }
     token_categories: dict[str, int] = {}
     for t in TOKEN_CATALOG.values():
         token_categories[t.category] = token_categories.get(t.category, 0) + 1
@@ -212,7 +250,11 @@ def build_manifest() -> dict[str, Any]:
             "components_with_consumes": components_with_consumes,
             "components_with_description": components_with_description,
             "total_tokens": len(TOKEN_CATALOG),
+            "registry_debt": registry_debt,
             "component_categories": dict(sorted(component_categories.items())),
+            "component_maturity": dict(sorted(component_maturity.items())),
+            "component_roles": dict(sorted(component_roles.items())),
+            "component_requirements": dict(sorted(component_requirements.items())),
             "token_categories": dict(sorted(token_categories.items())),
         },
     }
