@@ -224,7 +224,9 @@ def build_manifest() -> dict[str, Any]:
         for requirement in components[name]["requires"]:
             component_requirements[requirement] = component_requirements.get(requirement, 0) + 1
     registry_debt = {
-        "auto_category_components": sum(1 for desc in COMPONENTS.values() if desc.category == "auto"),
+        "auto_category_components": sum(
+            1 for desc in COMPONENTS.values() if desc.category == "auto"
+        ),
         "auto_extra_blocks": len(_AUTO_EXTRAS),
         "auto_extra_classes": sum(len(classes) for classes in _AUTO_EXTRAS.values()),
         "auto_trim_blocks": len(_AUTO_TRIMS),
