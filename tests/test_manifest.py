@@ -85,6 +85,15 @@ def test_manifest_stats_match_counts() -> None:
     assert set(m["stats"]["component_requirements"]) <= set(RUNTIME_REQUIREMENTS)
 
 
+def test_maturity_taxonomy_is_explicit_for_templated_components() -> None:
+    """Rendered component descriptors must not rely on fallback maturity."""
+    assert COMPONENT_MATURITY_LEVELS == ("stable", "experimental", "legacy", "internal")
+    missing = sorted(
+        name for name, desc in COMPONENTS.items() if desc.template and not desc.maturity
+    )
+    assert not missing, "templated components missing explicit maturity: " + ", ".join(missing)
+
+
 def test_manifest_registry_debt_scorecard_matches_registry() -> None:
     """Stats expose the registry/CSS reconciliation burn-down as numbers."""
     debt = build_manifest()["stats"]["registry_debt"]

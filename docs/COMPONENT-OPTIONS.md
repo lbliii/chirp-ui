@@ -3603,6 +3603,11 @@ chirp-ui: Wobble / Jello / Rubber-band / Bounce-in
 > Hand-authored narrative guides above are the source of truth for intent and
 > idioms; this section is the projection of the registry for agent grounding.
 
+**Maturity taxonomy:** `stable` = documented public surface suitable for normal app use;
+`experimental` = public but still settling; `legacy` = supported compatibility surface
+with a preferred replacement; `internal` = infrastructure for Chirp UI composition, not
+recommended as an app-level building block.
+
 ### `accordion`
 
 Accordion component
@@ -3705,7 +3710,7 @@ Animated Counter
 - **Template:** `chirpui/animated_counter.html`
 - **Macro:** `animated_counter`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`, `default`, `mono`
 
@@ -3777,7 +3782,7 @@ ASCII 7-Segment Display
 - **Template:** `chirpui/ascii_7seg.html`
 - **Macro:** `ascii_7seg`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
 
@@ -3795,7 +3800,7 @@ ASCII Badge
 - **Template:** `chirpui/ascii_badge.html`
 - **Macro:** `ascii_badge`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `muted`, `success`, `warning`
 
@@ -3814,7 +3819,7 @@ ASCII Border
 - **Template:** `chirpui/ascii_border.html`
 - **Macro:** `ascii_border`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `double`, `heavy`, `rounded`, `single`, `spin`
@@ -3832,7 +3837,7 @@ ASCII Breaker Panel
 - **Template:** `chirpui/ascii_breaker_panel.html`
 - **Macro:** `breaker_panel`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`
 - **Modifiers:** `sm`
@@ -3852,7 +3857,7 @@ ASCII Card
 - **Template:** `chirpui/ascii_card.html`
 - **Macro:** `ascii_card`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `double`, `heavy`, `rounded`, `single`
@@ -3871,7 +3876,7 @@ ASCII Checkbox
 - **Template:** `chirpui/ascii_checkbox.html`
 - **Macro:** `ascii_checkbox`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
 
@@ -3897,7 +3902,7 @@ ASCII Divider
 - **Template:** `chirpui/ascii_divider.html`
 - **Macro:** `ascii_divider`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `dots`, `double`, `heavy`, `single`, `spin`, `spin-drift`, `spin-reverse`
 
@@ -3914,7 +3919,7 @@ ASCII Empty State component
 - **Template:** `chirpui/ascii_empty.html`
 - **Macro:** `ascii_empty`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
@@ -3934,7 +3939,7 @@ ASCII Error Page
 - **Template:** `chirpui/ascii_error.html`
 - **Macro:** `ascii_error`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`
 
@@ -3952,7 +3957,7 @@ ASCII Fader / Slider
 - **Template:** `chirpui/ascii_fader.html`
 - **Macro:** `ascii_fader`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
 
@@ -3989,7 +3994,7 @@ ASCII Indicator Light
 - **Template:** `chirpui/ascii_indicator.html`
 - **Macro:** `indicator`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `accent`, `error`, `muted`, `success`, `warning`
 
@@ -4014,7 +4019,7 @@ ASCII Knob / Rotary Selector
 - **Template:** `chirpui/ascii_knob.html`
 - **Macro:** `ascii_knob`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`
 
@@ -4034,7 +4039,7 @@ ASCII Modal
 - **Template:** `chirpui/ascii_modal.html`
 - **Macro:** `ascii_modal`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Requires:** `alpine`
 - **Slots:** `(default)`
@@ -4060,7 +4065,7 @@ ASCII Progress
 - **Template:** `chirpui/ascii_progress.html`
 - **Macro:** `ascii_progress`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
 
@@ -4085,7 +4090,7 @@ ASCII Radio
 - **Template:** `chirpui/ascii_radio.html`
 - **Macro:** `ascii_radio_group`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`
@@ -4105,7 +4110,7 @@ ASCII Skeleton
 - **Template:** `chirpui/ascii_skeleton.html`
 - **Macro:** `ascii_skeleton`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `avatar`, `card`, `heading`, `text`
 
@@ -4123,7 +4128,7 @@ ASCII Sparkline
 - **Template:** `chirpui/ascii_sparkline.html`
 - **Macro:** `ascii_sparkline`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `gradient`, `muted`
 
@@ -4140,7 +4145,7 @@ ASCII Spinner component
 - **Template:** `chirpui/ascii_spinner.html`
 - **Macro:** `ascii_spinner`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `arrows`, `blocks`, `box`, `braille`, `dots`
 
@@ -4158,7 +4163,7 @@ ASCII Stepper
 - **Template:** `chirpui/ascii_stepper.html`
 - **Macro:** `ascii_stepper`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `success`
 
@@ -4176,7 +4181,7 @@ ASCII Toggle
 - **Template:** `chirpui/ascii_toggle.html`
 - **Macro:** `ascii_switch`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -4198,7 +4203,7 @@ ASCII Tabs
 - **Template:** `chirpui/ascii_tabs.html`
 - **Macro:** `ascii_tab`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`
 
@@ -4219,7 +4224,7 @@ ASCII Table
 - **Template:** `chirpui/ascii_table.html`
 - **Macro:** `ascii_table`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `double`, `heavy`, `rounded`, `single`
@@ -4241,7 +4246,7 @@ ASCII Tabs
 - **Template:** `chirpui/ascii_tabs.html`
 - **Macro:** `ascii_tabs`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`
@@ -4258,7 +4263,7 @@ ASCII Ticker
 - **Template:** `chirpui/ascii_ticker.html`
 - **Macro:** `ascii_ticker`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
 
@@ -4276,7 +4281,7 @@ ASCII Tile Button
 - **Template:** `chirpui/ascii_tile_btn.html`
 - **Macro:** `tile_btn`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
 
@@ -4304,7 +4309,7 @@ ASCII Toggle
 - **Template:** `chirpui/ascii_toggle.html`
 - **Macro:** `ascii_toggle`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -4326,7 +4331,7 @@ ASCII VU Meter
 - **Template:** `chirpui/ascii_vu_meter.html`
 - **Macro:** `ascii_vu_meter`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
 
@@ -4354,7 +4359,7 @@ Aura — chromatic halo behind stacked content (glass surfaces, cards, etc.)
 - **Template:** `chirpui/aura.html`
 - **Macro:** `aura`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Sizes:** `lg`, `md`, `sm`
@@ -4384,7 +4389,7 @@ Aurora Background
 - **Template:** `chirpui/aurora.html`
 - **Macro:** `aurora`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `intense`, `subtle`
@@ -4463,7 +4468,7 @@ Band component
 - **Template:** `chirpui/band.html`
 - **Macro:** `band`
 - **Category:** `marketing`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`, `header`
 - **Variants:** `accent`, `default`, `elevated`, `glass`, `gradient`
@@ -4528,7 +4533,7 @@ Border Beam
 - **Template:** `chirpui/border_beam.html`
 - **Macro:** `border_beam`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
@@ -4930,7 +4935,7 @@ Confetti
 - **Template:** `chirpui/confetti.html`
 - **Macro:** `confetti`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`
 
@@ -5003,7 +5008,7 @@ Constellation
 - **Template:** `chirpui/constellation.html`
 - **Macro:** `constellation`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `cool`, `default`, `mono`, `warm`
@@ -5162,7 +5167,7 @@ Floating Dock
 - **Template:** `chirpui/dock.html`
 - **Macro:** `dock`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`, `default`, `glass`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -5348,7 +5353,7 @@ Feature Section component
 - **Template:** `chirpui/feature_section.html`
 - **Macro:** `feature_section`
 - **Category:** `marketing`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`, `actions`, `eyebrow`, `media`, `title`
 - **Variants:** `balanced`, `halo`, `media-dominant`, `muted`, `split`, `stacked`
@@ -5368,7 +5373,7 @@ Feature Section component
 - **Template:** `chirpui/feature_section.html`
 - **Macro:** `feature_stack`
 - **Category:** `marketing`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`
 
@@ -5581,7 +5586,7 @@ Safe region / Fragment island primitives
 - **Template:** `chirpui/fragment_island.html`
 - **Macro:** `fragment_island`
 - **Category:** `infrastructure`
-- **Maturity:** `stable`
+- **Maturity:** `internal`
 - **Role:** `infrastructure`
 
 | Param | Required | Default |
@@ -5607,7 +5612,7 @@ Glitch Text Effect
 - **Template:** `chirpui/glitch_text.html`
 - **Macro:** `glitch_text`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`, `intense`, `subtle`
 
@@ -5625,7 +5630,7 @@ Glow Card
 - **Template:** `chirpui/glow_card.html`
 - **Macro:** `glow_card`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
@@ -5646,7 +5651,7 @@ Gradient Text
 - **Template:** `chirpui/gradient_text.html`
 - **Macro:** `gradient_text`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Modifiers:** `animated`, `rainbow`, `secondary`
 
@@ -5664,7 +5669,7 @@ Grain Overlay
 - **Template:** `chirpui/grain.html`
 - **Macro:** `grain`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `heavy`, `subtle`
@@ -5710,7 +5715,7 @@ Hero Effects
 - **Template:** `chirpui/hero_effects.html`
 - **Macro:** `hero_effects`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Provides:** `_hero_variant`
 
@@ -5727,7 +5732,7 @@ Holy Light
 - **Template:** `chirpui/holy_light.html`
 - **Macro:** `holy_light`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `default`, `gold`, `holy`, `silver`
@@ -6015,7 +6020,7 @@ Marquee
 - **Template:** `chirpui/marquee.html`
 - **Macro:** `marquee`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`, `default`, `reverse`
 
@@ -6132,7 +6137,7 @@ Meteor Effect
 - **Template:** `chirpui/meteor.html`
 - **Macro:** `meteor`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
@@ -6312,7 +6317,7 @@ Neon Text
 - **Template:** `chirpui/neon_text.html`
 - **Macro:** `neon_text`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `blue`, `cyan`, `green`, `magenta`, `orange`, `red`
 
@@ -6358,7 +6363,7 @@ Number Ticker
 - **Template:** `chirpui/number_ticker.html`
 - **Macro:** `number_ticker`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`, `default`, `mono`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`, `xl`
@@ -6379,7 +6384,7 @@ Orbit
 - **Template:** `chirpui/orbit.html`
 - **Macro:** `orbit`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `lg`, `sm`, `xl`
@@ -6522,7 +6527,7 @@ Particle Background
 - **Template:** `chirpui/particle_bg.html`
 - **Macro:** `particle_bg`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
@@ -6682,7 +6687,7 @@ Pulsing Button
 - **Template:** `chirpui/pulsing_button.html`
 - **Macro:** `pulsing_button`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`, `danger`, `default`, `primary`, `success`
 
@@ -6778,7 +6783,7 @@ Reveal on scroll — animate content when it enters the viewport
 - **Template:** `chirpui/reveal_on_scroll.html`
 - **Macro:** `reveal_on_scroll`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 
@@ -6793,7 +6798,7 @@ Ripple Button
 - **Template:** `chirpui/ripple_button.html`
 - **Macro:** `ripple_button`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`, `default`, `primary`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -6857,7 +6862,7 @@ Rune Field
 - **Template:** `chirpui/rune_field.html`
 - **Macro:** `rune_field`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `arcane`, `default`, `ember`, `frost`
@@ -6875,7 +6880,7 @@ Scanline Overlay
 - **Template:** `chirpui/scanline.html`
 - **Macro:** `scanline`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `crt`, `heavy`
@@ -7064,7 +7069,7 @@ Shimmer Button
 - **Template:** `chirpui/shimmer_button.html`
 - **Macro:** `shimmer_button`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`, `default`, `primary`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -7137,7 +7142,7 @@ Site Footer component
 - **Template:** `chirpui/site_footer.html`
 - **Macro:** `site_footer`
 - **Category:** `marketing`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`, `brand`, `colophon`, `rule`
 - **Variants:** `centered`, `columns`, `simple`
@@ -7154,7 +7159,7 @@ Site Header component
 - **Template:** `chirpui/site_header.html`
 - **Macro:** `site_header`
 - **Category:** `marketing`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`, `brand`, `nav`, `nav_end`, `tools`
 - **Variants:** `glass`, `solid`, `transparent`
@@ -7177,7 +7182,7 @@ Site Header component
 - **Template:** `chirpui/site_header.html`
 - **Macro:** `site_nav_link`
 - **Category:** `marketing`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Consumes:** `_site_nav_current_path`
 
@@ -7198,7 +7203,7 @@ Site Shell component
 - **Template:** `chirpui/site_shell.html`
 - **Macro:** `site_shell`
 - **Category:** `marketing`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Slots:** `(default)`, `footer`, `header`
 
@@ -7250,7 +7255,7 @@ Sparkle
 - **Template:** `chirpui/sparkle.html`
 - **Macro:** `sparkle`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `gold`, `rainbow`, `white`
@@ -7310,7 +7315,7 @@ ASCII Split-Flap Display
 - **Template:** `chirpui/ascii_split_flap.html`
 - **Macro:** `split_flap`
 - **Category:** `ascii`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Variants:** `(default)`, `amber`, `default`, `green`
 
@@ -7380,7 +7385,7 @@ Spotlight Card
 - **Template:** `chirpui/spotlight_card.html`
 - **Macro:** `spotlight_card`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`
@@ -7557,7 +7562,7 @@ Suspense components
 - **Template:** `chirpui/suspense.html`
 - **Macro:** `suspense_slot`
 - **Category:** `infrastructure`
-- **Maturity:** `stable`
+- **Maturity:** `internal`
 - **Role:** `infrastructure`
 - **Slots:** `(default)`
 
@@ -7577,7 +7582,7 @@ Symbol Rain
 - **Template:** `chirpui/symbol_rain.html`
 - **Macro:** `symbol_rain`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `gold`, `muted`
@@ -7762,7 +7767,7 @@ Text Reveal
 - **Template:** `chirpui/text_reveal.html`
 - **Macro:** `text_reveal`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`, `default`, `gradient`
 
@@ -7955,7 +7960,7 @@ Typewriter Effect
 - **Template:** `chirpui/typewriter.html`
 - **Macro:** `typewriter`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Variants:** `(default)`, `fast`, `slow`
 
@@ -8129,7 +8134,7 @@ Wobble / Jello / Rubber-band / Bounce-in
 - **Template:** `chirpui/wobble.html`
 - **Macro:** `wobble`
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
 - **Slots:** `(default)`
 - **Variants:** `bounce-in`, `jello`, `rubber-band`, `wobble`
