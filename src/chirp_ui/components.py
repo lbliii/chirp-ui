@@ -165,12 +165,7 @@ _AUTO_TRIMS: dict[str, frozenset[str]] = {
     "spotlight-card": frozenset({"chirpui-spotlight-card--default"}),
     "star-rating": frozenset({"chirpui-star-rating--md"}),
     "streaming": frozenset({"chirpui-streaming"}),
-    "streaming-bubble": frozenset(
-        {
-            "chirpui-streaming-bubble",
-            "chirpui-streaming-bubble--content",
-        }
-    ),
+    "streaming-bubble": frozenset({"chirpui-streaming-bubble"}),
     "symbol-rain": frozenset({"chirpui-symbol-rain--default"}),
     "tag-browse": frozenset({"chirpui-tag-browse"}),
     "text-reveal": frozenset({"chirpui-text-reveal--default"}),
@@ -754,7 +749,6 @@ _AUTO_EXTRAS: dict[str, frozenset[str]] = {
         }
     ),
     "stepper": frozenset({"chirpui-stepper__item--active", "chirpui-stepper__item--completed"}),
-    "streaming-bubble": frozenset({"chirpui-streaming-bubble__thinking"}),
     "surface": frozenset(
         {
             "chirpui-surface--cornered",
@@ -1075,7 +1069,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "streaming_bubble": ComponentDescriptor(
         block="streaming-bubble",
-        variants=("", "content", "thinking", "error"),
+        variants=("thinking", "error"),
+        elements=("thinking",),
         template="streaming.html",
         category="feedback",
         maturity="stable",
@@ -3385,8 +3380,8 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "sse-retry": ComponentDescriptor(
         block="sse-retry",
+        modifiers=("loading",),
         elements=("loading",),
-        extra_emits=("chirpui-sse-retry--loading",),
         category="auto",
     ),
     "stack": ComponentDescriptor(
@@ -3402,13 +3397,13 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "streaming": ComponentDescriptor(
         block="streaming",
-        extra_emits=("chirpui-streaming--error",),
+        variants=("error",),
         category="auto",
     ),
     "streaming-block": ComponentDescriptor(
         block="streaming-block",
+        modifiers=("active",),
         elements=("cursor",),
-        extra_emits=("chirpui-streaming-block--active",),
         category="auto",
     ),
     "suspense-group": ComponentDescriptor(

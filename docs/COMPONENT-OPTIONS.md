@@ -7426,6 +7426,7 @@ Spotlight Card
 - **Category:** `auto`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Modifiers:** `loading`
 
 ### `sse-status`
 
@@ -7517,12 +7518,14 @@ Stepper component
 - **Category:** `auto`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Variants:** `error`
 
 ### `streaming-block`
 
 - **Category:** `auto`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Modifiers:** `active`
 
 ### `streaming_bubble`
 
@@ -7535,7 +7538,7 @@ Streaming and AI components
 - **Role:** `component`
 - **Requires:** `htmx`
 - **Slots:** `(default)`
-- **Variants:** `(default)`, `content`, `error`, `thinking`
+- **Variants:** `error`, `thinking`
 - **Provides:** `_streaming_role`
 
 | Param | Required | Default |

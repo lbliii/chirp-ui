@@ -13890,13 +13890,13 @@
         "chirpui-sse-retry--loading",
         "chirpui-sse-retry__loading"
       ],
-      "extra_emits": [
-        "chirpui-sse-retry--loading"
-      ],
+      "extra_emits": [],
       "lineno": 0,
       "macro": null,
       "maturity": "experimental",
-      "modifiers": [],
+      "modifiers": [
+        "loading"
+      ],
       "params": [],
       "provides": [],
       "requires": [],
@@ -14228,9 +14228,7 @@
       "emits": [
         "chirpui-streaming--error"
       ],
-      "extra_emits": [
-        "chirpui-streaming--error"
-      ],
+      "extra_emits": [],
       "lineno": 0,
       "macro": null,
       "maturity": "experimental",
@@ -14244,7 +14242,9 @@
       "slots_extracted": [],
       "template": "",
       "tokens": [],
-      "variants": []
+      "variants": [
+        "error"
+      ]
     },
     "streaming-block": {
       "block": "streaming-block",
@@ -14259,13 +14259,13 @@
         "chirpui-streaming-block--active",
         "chirpui-streaming-block__cursor"
       ],
-      "extra_emits": [
-        "chirpui-streaming-block--active"
-      ],
+      "extra_emits": [],
       "lineno": 0,
       "macro": null,
       "maturity": "experimental",
-      "modifiers": [],
+      "modifiers": [
+        "active"
+      ],
       "params": [],
       "provides": [],
       "requires": [],
@@ -14282,7 +14282,9 @@
       "category": "feedback",
       "consumes": [],
       "description": "Streaming and AI components\n    For LLM Playground, RAG demo, and SSE-driven UIs.\n    Works with htmx SSE and event delegation for copy buttons.\n\n    Usage:\n        {% from \"chirpui/streaming.html\" import streaming_block, copy_btn, prose %}\n\n        {% call streaming_block(streaming=true) %}\n            Content or thinking...\n        {% end %}\n\n        {% call copy_btn(text=\"Copy\", copy_text=answer_text) %}\n\n        <div class=\"chirpui-prose\">{{ content | markdown | safe }}</div>",
-      "elements": [],
+      "elements": [
+        "thinking"
+      ],
       "emits": [
         "chirpui-streaming-bubble--error",
         "chirpui-streaming-bubble--thinking",
@@ -14347,8 +14349,6 @@
       "template": "streaming.html",
       "tokens": [],
       "variants": [
-        "",
-        "content",
         "error",
         "thinking"
       ]
@@ -16736,14 +16736,22 @@
     "components_with_description": 197,
     "components_with_params": 197,
     "components_with_provides": 11,
+    "manifest_quality": {
+      "missing_description": 0,
+      "missing_macro": 0,
+      "missing_maturity": 0,
+      "missing_role": 0,
+      "missing_slot_metadata": 0,
+      "public_templated_components": 195
+    },
     "registry_debt": {
       "auto_category_components": 109,
-      "auto_extra_blocks": 98,
-      "auto_extra_classes": 380,
+      "auto_extra_blocks": 97,
+      "auto_extra_classes": 379,
       "auto_trim_blocks": 72,
-      "auto_trim_classes": 103,
-      "explicit_extra_blocks": 27,
-      "explicit_extra_classes": 134
+      "auto_trim_classes": 102,
+      "explicit_extra_blocks": 24,
+      "explicit_extra_classes": 131
     },
     "token_categories": {
       "color": 181,

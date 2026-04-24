@@ -113,6 +113,46 @@ def test_manifest_registry_debt_scorecard_matches_registry() -> None:
     assert debt["auto_trim_classes"] > 0
 
 
+def test_manifest_quality_scorecard_has_no_public_metadata_gaps() -> None:
+    """Public templated components must be fully groundable for agent consumers."""
+    m = build_manifest()
+    quality = m["stats"]["manifest_quality"]
+    public_templated = [
+        name
+        for name, entry in m["components"].items()
+        if entry["template"] and entry["maturity"] != "internal"
+    ]
+    assert quality == {
+        "public_templated_components": len(public_templated),
+        "missing_macro": 0,
+        "missing_maturity": 0,
+        "missing_role": 0,
+        "missing_description": 0,
+        "missing_slot_metadata": 0,
+    }
+
+
+def test_public_templated_manifest_entries_have_quality_fields() -> None:
+    """Quality gate with precise failure output when one component drifts."""
+    m = build_manifest()
+    missing: list[str] = []
+    for name, entry in m["components"].items():
+        if not entry["template"] or entry["maturity"] == "internal":
+            continue
+        missing.extend(
+            f"{name}: {key}"
+            for key in ("macro", "maturity", "role", "description")
+            if not entry[key]
+        )
+        if not isinstance(entry["slots"], list):
+            missing.append(f"{name}: slots")
+        if not isinstance(entry["slots_extracted"], list):
+            missing.append(f"{name}: slots_extracted")
+    assert not missing, "public templated manifest entries missing quality fields: " + ", ".join(
+        missing
+    )
+
+
 def test_manifest_runtime_requirements_include_known_alpine_macros() -> None:
     m = build_manifest()
     assert "alpine" in m["components"]["theme-toggle"]["requires"]
