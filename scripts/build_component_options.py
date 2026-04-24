@@ -54,6 +54,11 @@ HEADER = """\
 > or the template's `{#- chirp-ui: ... -#}` doc-block and re-run `poe build-docs`.
 > Hand-authored narrative guides above are the source of truth for intent and
 > idioms; this section is the projection of the registry for agent grounding.
+
+**Maturity taxonomy:** `stable` = documented public surface suitable for normal app use;
+`experimental` = public but still settling; `legacy` = supported compatibility surface
+with a preferred replacement; `internal` = infrastructure for Chirp UI composition, not
+recommended as an app-level building block.
 """
 
 

@@ -47,8 +47,9 @@ Schema
   template. New chirp-ui templates must carry a doc-block
   (``tests/test_description_coverage.py``).
 * ``tokens`` keys sorted; each entry is ``{"category": …, "scope": …}``.
-* ``stats`` aggregates counts, including ``components_with_params`` and a
-  ``registry_debt`` scorecard for descriptor/CSS reconciliation burn-down.
+* ``stats`` aggregates counts, including ``components_with_params``, a
+  ``registry_debt`` scorecard for descriptor/CSS reconciliation burn-down,
+  and a ``manifest_quality`` scorecard for agent-facing metadata coverage.
 
 Deterministic: two calls to :func:`build_manifest` yield byte-identical JSON.
 
@@ -62,11 +63,17 @@ See ``docs/PLAN-agent-grounding-depth.md`` and
 
 import argparse
 import json
+import re
 import sys
 from typing import Any
 
 from chirp_ui import __version__
-from chirp_ui._macro_introspect import MacroInfo, description_from_template, macros_in_template
+from chirp_ui._macro_introspect import (
+    _TEMPLATES_DIR,
+    MacroInfo,
+    description_from_template,
+    macros_in_template,
+)
 from chirp_ui.alpine import ALPINE_REQUIRED_COMPONENTS
 from chirp_ui.components import _AUTO_EXTRAS, _AUTO_TRIMS, COMPONENTS, ComponentDescriptor
 from chirp_ui.inspect import list_consumes, list_provides
@@ -77,6 +84,10 @@ SCHEMA = "chirpui-manifest@3"
 _ALPINE_MACROS = frozenset(
     macro for requirement in ALPINE_REQUIRED_COMPONENTS.values() for macro in requirement.macros
 )
+_ALPINE_DIRECTIVE_RE = re.compile(
+    r"""(?<![\w-])(?:x-data|x-show|x-ref|x-cloak|x-transition|x-on:|x-bind:|:aria-[\w-]+|:class|:id|@(?:click|keydown|keyup|submit|input|change|focus|blur|mouseenter|mouseleave)[\w:.-]*)\b"""
+)
+_HTMX_CONTRACT_RE = re.compile(r"""\b(?:hx-[\w:-]+|sse-[\w:-]+|hx_[A-Za-z]\w*)\b""")
 
 
 def _resolve_macro(desc: ComponentDescriptor) -> MacroInfo | None:
@@ -98,9 +109,49 @@ def _resolve_macro(desc: ComponentDescriptor) -> MacroInfo | None:
 def _runtime_requirements(desc: ComponentDescriptor, macro_info: MacroInfo | None) -> list[str]:
     """Return sorted runtime requirements from descriptor + derived macro metadata."""
     requires = set(desc.requires)
-    if macro_info is not None and macro_info.name in _ALPINE_MACROS:
-        requires.add("alpine")
+    if macro_info is not None:
+        macro_source = _macro_source(macro_info)
+        if macro_info.name in _ALPINE_MACROS or _ALPINE_DIRECTIVE_RE.search(macro_source):
+            requires.add("alpine")
+        if _HTMX_CONTRACT_RE.search(macro_source):
+            requires.add("htmx")
     return sorted(requires)
+
+
+def _macro_source(macro_info: MacroInfo) -> str:
+    """Return the source slice for one macro body, bounded by the next ``{% def %}``."""
+    path = _TEMPLATES_DIR / macro_info.template
+    if not path.is_file():
+        return ""
+    lines = path.read_text(encoding="utf-8").splitlines()
+    macros = sorted(macros_in_template(macro_info.template).values(), key=lambda info: info.lineno)
+    following = [info.lineno for info in macros if info.lineno > macro_info.lineno]
+    end_line = min(following) - 1 if following else len(lines)
+    return "\n".join(lines[macro_info.lineno - 1 : end_line])
+
+
+def _manifest_quality(components: dict[str, dict[str, Any]]) -> dict[str, int]:
+    """Return agent-facing metadata gap counts for public templated components."""
+    public_templated = [
+        name
+        for name, entry in components.items()
+        if entry["template"] and entry["maturity"] != "internal"
+    ]
+    return {
+        "public_templated_components": len(public_templated),
+        "missing_macro": sum(1 for name in public_templated if not components[name]["macro"]),
+        "missing_maturity": sum(1 for name in public_templated if not components[name]["maturity"]),
+        "missing_role": sum(1 for name in public_templated if not components[name]["role"]),
+        "missing_description": sum(
+            1 for name in public_templated if not components[name]["description"]
+        ),
+        "missing_slot_metadata": sum(
+            1
+            for name in public_templated
+            if not isinstance(components[name]["slots"], list)
+            or not isinstance(components[name]["slots_extracted"], list)
+        ),
+    }
 
 
 def _owning_macro(macros: dict[str, MacroInfo], line: int) -> str | None:
@@ -265,6 +316,7 @@ def build_manifest() -> dict[str, Any]:
             "components_with_description": components_with_description,
             "total_tokens": len(TOKEN_CATALOG),
             "registry_debt": registry_debt,
+            "manifest_quality": _manifest_quality(components),
             "component_categories": dict(sorted(component_categories.items())),
             "component_maturity": dict(sorted(component_maturity.items())),
             "component_roles": dict(sorted(component_roles.items())),

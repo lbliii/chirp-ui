@@ -98,6 +98,7 @@ A change is done when all of these hold:
 - [ ] Tests exercise the *interesting* path: at least one non-default variant, default-fallback behaviour for invalid variants, and the slot-composition shape for new macros.
 - [ ] Provide/consume keys on new macros are annotated with `@provides` / `@consumes` in the template and listed in `docs/PROVIDE-CONSUME-KEYS.md`.
 - [ ] Public API changed or macro deprecated → entry in `COMPONENT-OPTIONS.md` (and `CLAUDE.md § Deprecation policy` if user-facing), migration note if breaking.
+- [ ] User-facing behavior, docs, manifest, or public metadata changed → add a focused `changelog.d/` fragment in the same PR.
 - [ ] Error messages and warnings tell the reader what to do next, not just what went wrong. `ChirpUIValidationWarning` / `ChirpUIDeprecationWarning` are the right channels — not `print`, not `logging`.
 - [ ] PR description explains *why*. The diff explains what.
 

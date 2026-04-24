@@ -298,7 +298,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -395,7 +397,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "animated_counter",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -618,7 +620,8 @@
       ],
       "provides": [],
       "requires": [
-        "alpine"
+        "alpine",
+        "htmx"
       ],
       "role": "component",
       "sizes": [],
@@ -736,7 +739,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "ascii_7seg",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -801,7 +804,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "ascii_badge",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -873,7 +876,7 @@
       "extra_emits": [],
       "lineno": 22,
       "macro": "ascii_border",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -942,7 +945,7 @@
       "extra_emits": [],
       "lineno": 40,
       "macro": "breaker_panel",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [
         "sm"
       ],
@@ -1014,7 +1017,7 @@
       "extra_emits": [],
       "lineno": 30,
       "macro": "ascii_card",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1080,7 +1083,7 @@
       "extra_emits": [],
       "lineno": 19,
       "macro": "ascii_checkbox",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1183,7 +1186,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "ascii_divider",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1242,7 +1245,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "ascii_empty",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1316,7 +1319,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "ascii_error",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1380,7 +1383,7 @@
       "extra_emits": [],
       "lineno": 21,
       "macro": "ascii_fader",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1539,7 +1542,7 @@
       "extra_emits": [],
       "lineno": 25,
       "macro": "indicator",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1637,7 +1640,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "ascii_knob",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1707,7 +1710,7 @@
       "extra_emits": [],
       "lineno": 23,
       "macro": "ascii_modal",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1803,7 +1806,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "ascii_progress",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1904,7 +1907,7 @@
       "extra_emits": [],
       "lineno": 28,
       "macro": "ascii_radio_group",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -1973,7 +1976,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "ascii_skeleton",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2032,7 +2035,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "ascii_sparkline",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2093,7 +2096,7 @@
       "extra_emits": [],
       "lineno": 13,
       "macro": "ascii_spinner",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2159,7 +2162,7 @@
       "extra_emits": [],
       "lineno": 18,
       "macro": "ascii_stepper",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2227,7 +2230,7 @@
       "extra_emits": [],
       "lineno": 48,
       "macro": "ascii_switch",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2305,7 +2308,7 @@
       "extra_emits": [],
       "lineno": 35,
       "macro": "ascii_tab",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2345,7 +2348,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -2392,7 +2397,7 @@
       "extra_emits": [],
       "lineno": 24,
       "macro": "ascii_table",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2466,7 +2471,7 @@
       "extra_emits": [],
       "lineno": 27,
       "macro": "ascii_tabs",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2522,7 +2527,7 @@
       "extra_emits": [],
       "lineno": 14,
       "macro": "ascii_ticker",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2588,7 +2593,7 @@
       "extra_emits": [],
       "lineno": 25,
       "macro": "tile_btn",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2703,7 +2708,7 @@
       "extra_emits": [],
       "lineno": 29,
       "macro": "ascii_toggle",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2790,7 +2795,7 @@
       "extra_emits": [],
       "lineno": 21,
       "macro": "ascii_vu_meter",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -2903,7 +2908,7 @@
       "extra_emits": [],
       "lineno": 28,
       "macro": "aura",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [
         "mirror"
       ],
@@ -3021,7 +3026,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "aurora",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -3307,7 +3312,7 @@
       ],
       "lineno": 27,
       "macro": "band",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [
         "bleed",
         "contained",
@@ -3624,7 +3629,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "border_beam",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -3923,7 +3928,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [
         "",
@@ -5168,7 +5175,8 @@
       ],
       "provides": [],
       "requires": [
-        "alpine"
+        "alpine",
+        "htmx"
       ],
       "role": "component",
       "sizes": [],
@@ -5326,7 +5334,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "confetti",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -5346,7 +5354,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "effect",
       "sizes": [],
       "slot_forwards": [],
@@ -5435,7 +5445,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -5567,7 +5579,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -5612,7 +5626,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "constellation",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -6241,7 +6255,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "dock",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -6989,7 +7003,7 @@
       "extra_emits": [],
       "lineno": 33,
       "macro": "feature_section",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [
         "reverse"
       ],
@@ -7064,7 +7078,7 @@
       "extra_emits": [],
       "lineno": 57,
       "macro": "feature_stack",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -7187,7 +7201,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -7241,7 +7257,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -7872,7 +7890,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -7896,7 +7916,7 @@
       "extra_emits": [],
       "lineno": 62,
       "macro": "fragment_island",
-      "maturity": "stable",
+      "maturity": "internal",
       "modifiers": [],
       "params": [
         {
@@ -7936,7 +7956,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "infrastructure",
       "sizes": [],
       "slot_forwards": [],
@@ -8005,7 +8027,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "glitch_text",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -8062,7 +8084,7 @@
       "extra_emits": [],
       "lineno": 18,
       "macro": "glow_card",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -8092,7 +8114,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "effect",
       "sizes": [
         "",
@@ -8133,7 +8157,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "gradient_text",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [
         "animated",
         "rainbow",
@@ -8190,7 +8214,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "grain",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -8393,7 +8417,7 @@
       "extra_emits": [],
       "lineno": 25,
       "macro": "hero_effects",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -8453,7 +8477,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "holy_light",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -8669,7 +8693,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [
         "",
@@ -8800,7 +8826,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -8913,7 +8941,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -9079,7 +9109,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -9551,7 +9583,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "marquee",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -9968,7 +10000,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "meteor",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -10652,7 +10684,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "neon_text",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -10829,7 +10861,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "number_ticker",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -10907,7 +10939,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "orbit",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -11249,7 +11281,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -11422,7 +11456,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "particle_bg",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -12052,7 +12086,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "pulsing_button",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -12443,7 +12477,7 @@
       "extra_emits": [],
       "lineno": 19,
       "macro": "reveal_on_scroll",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -12453,7 +12487,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "effect",
       "sizes": [],
       "slot_forwards": [],
@@ -12485,7 +12521,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "ripple_button",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -12515,7 +12551,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "effect",
       "sizes": [
         "",
@@ -12581,7 +12619,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -12714,7 +12754,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "rune_field",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -12765,7 +12805,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "scanline",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -12946,7 +12986,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -13588,7 +13630,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "shimmer_button",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -13766,7 +13808,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -13861,7 +13905,7 @@
       "extra_emits": [],
       "lineno": 32,
       "macro": "site_footer",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -13937,7 +13981,7 @@
       "extra_emits": [],
       "lineno": 37,
       "macro": "site_header",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [
         "sticky"
       ],
@@ -14030,7 +14074,7 @@
       "extra_emits": [],
       "lineno": 63,
       "macro": "site_nav_link",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -14097,7 +14141,7 @@
       "extra_emits": [],
       "lineno": 22,
       "macro": "site_shell",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -14274,7 +14318,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "sparkle",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -14499,7 +14543,7 @@
       "extra_emits": [],
       "lineno": 21,
       "macro": "split_flap",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -14742,7 +14786,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -14777,7 +14823,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "spotlight_card",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -14840,13 +14886,13 @@
         "chirpui-sse-retry--loading",
         "chirpui-sse-retry__loading"
       ],
-      "extra_emits": [
-        "chirpui-sse-retry--loading"
-      ],
+      "extra_emits": [],
       "lineno": 0,
       "macro": null,
       "maturity": "experimental",
-      "modifiers": [],
+      "modifiers": [
+        "loading"
+      ],
       "params": [],
       "provides": [],
       "requires": [],
@@ -14903,7 +14949,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -15197,9 +15245,7 @@
       "emits": [
         "chirpui-streaming--error"
       ],
-      "extra_emits": [
-        "chirpui-streaming--error"
-      ],
+      "extra_emits": [],
       "lineno": 0,
       "macro": null,
       "maturity": "experimental",
@@ -15215,7 +15261,9 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
-      "variants": []
+      "variants": [
+        "error"
+      ]
     },
     "streaming-block": {
       "block": "streaming-block",
@@ -15231,13 +15279,13 @@
         "chirpui-streaming-block--active",
         "chirpui-streaming-block__cursor"
       ],
-      "extra_emits": [
-        "chirpui-streaming-block--active"
-      ],
+      "extra_emits": [],
       "lineno": 0,
       "macro": null,
       "maturity": "experimental",
-      "modifiers": [],
+      "modifiers": [
+        "active"
+      ],
       "params": [],
       "provides": [],
       "requires": [],
@@ -15257,7 +15305,9 @@
       "composes": [],
       "consumes": [],
       "description": "Streaming and AI components\n    For LLM Playground, RAG demo, and SSE-driven UIs.\n    Works with htmx SSE and event delegation for copy buttons.\n\n    Usage:\n        {% from \"chirpui/streaming.html\" import streaming_block, copy_btn, prose %}\n\n        {% call streaming_block(streaming=true) %}\n            Content or thinking...\n        {% end %}\n\n        {% call copy_btn(text=\"Copy\", copy_text=answer_text) %}\n\n        <div class=\"chirpui-prose\">{{ content | markdown | safe }}</div>",
-      "elements": [],
+      "elements": [
+        "thinking"
+      ],
       "emits": [
         "chirpui-streaming-bubble--error",
         "chirpui-streaming-bubble--thinking",
@@ -15308,7 +15358,9 @@
       "provides": [
         "_streaming_role"
       ],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -15322,8 +15374,6 @@
       "template": "streaming.html",
       "tokens": [],
       "variants": [
-        "",
-        "content",
         "error",
         "thinking"
       ]
@@ -15488,7 +15538,7 @@
       "extra_emits": [],
       "lineno": 26,
       "macro": "suspense_slot",
-      "maturity": "stable",
+      "maturity": "internal",
       "modifiers": [],
       "params": [
         {
@@ -15559,7 +15609,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "symbol_rain",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -15657,7 +15707,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -15808,7 +15860,9 @@
       "provides": [
         "_table_align"
       ],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -15908,7 +15962,9 @@
       "provides": [
         "_table_align"
       ],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -16221,7 +16277,7 @@
       "extra_emits": [],
       "lineno": 11,
       "macro": "text_reveal",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -16526,7 +16582,10 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine",
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -16803,7 +16862,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -16979,7 +17040,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "typewriter",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -17647,7 +17708,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -17675,7 +17738,7 @@
       "extra_emits": [],
       "lineno": 24,
       "macro": "wobble",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -17844,11 +17907,13 @@
       "overlay": 3
     },
     "component_maturity": {
-      "experimental": 109,
-      "stable": 200
+      "experimental": 175,
+      "internal": 2,
+      "stable": 132
     },
     "component_requirements": {
-      "alpine": 8
+      "alpine": 18,
+      "htmx": 23
     },
     "component_roles": {
       "component": 165,
@@ -17861,14 +17926,22 @@
     "components_with_description": 199,
     "components_with_params": 199,
     "components_with_provides": 11,
+    "manifest_quality": {
+      "missing_description": 0,
+      "missing_macro": 0,
+      "missing_maturity": 0,
+      "missing_role": 0,
+      "missing_slot_metadata": 0,
+      "public_templated_components": 197
+    },
     "registry_debt": {
       "auto_category_components": 104,
-      "auto_extra_blocks": 94,
-      "auto_extra_classes": 364,
+      "auto_extra_blocks": 93,
+      "auto_extra_classes": 363,
       "auto_trim_blocks": 72,
-      "auto_trim_classes": 103,
-      "explicit_extra_blocks": 29,
-      "explicit_extra_classes": 141
+      "auto_trim_classes": 102,
+      "explicit_extra_blocks": 26,
+      "explicit_extra_classes": 138
     },
     "token_categories": {
       "color": 181,

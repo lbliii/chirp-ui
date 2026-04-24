@@ -28,7 +28,7 @@ __all__ = [
     "design_system_report",
 ]
 
-COMPONENT_MATURITY_LEVELS = ("core", "stable", "experimental", "lab")
+COMPONENT_MATURITY_LEVELS = ("stable", "experimental", "legacy", "internal")
 COMPONENT_ROLES = ("primitive", "component", "pattern", "effect", "infrastructure")
 RUNTIME_REQUIREMENTS = ("htmx", "alpine", "dialog", "view-transition")
 
@@ -166,12 +166,7 @@ _AUTO_TRIMS: dict[str, frozenset[str]] = {
     "spotlight-card": frozenset({"chirpui-spotlight-card--default"}),
     "star-rating": frozenset({"chirpui-star-rating--md"}),
     "streaming": frozenset({"chirpui-streaming"}),
-    "streaming-bubble": frozenset(
-        {
-            "chirpui-streaming-bubble",
-            "chirpui-streaming-bubble--content",
-        }
-    ),
+    "streaming-bubble": frozenset({"chirpui-streaming-bubble"}),
     "symbol-rain": frozenset({"chirpui-symbol-rain--default"}),
     "tag-browse": frozenset({"chirpui-tag-browse"}),
     "text-reveal": frozenset({"chirpui-text-reveal--default"}),
@@ -728,7 +723,6 @@ _AUTO_EXTRAS: dict[str, frozenset[str]] = {
         }
     ),
     "stepper": frozenset({"chirpui-stepper__item--active", "chirpui-stepper__item--completed"}),
-    "streaming-bubble": frozenset({"chirpui-streaming-bubble__thinking"}),
     "surface": frozenset(
         {
             "chirpui-surface--cornered",
@@ -837,9 +831,10 @@ class ComponentDescriptor:
     category : str
         Grouping label for documentation/introspection.
     maturity : str
-        Stability tier for agents and docs. Empty means "derive from category"
-        (currently ``stable`` for normal descriptors, ``experimental`` for
-        ``category="auto"`` descriptors).
+        Stability tier for agents and docs. Public templated components must
+        set this explicitly. Empty is reserved for CSS-only reconciliation
+        descriptors and derives from category (``stable`` normally,
+        ``experimental`` for ``category="auto"``).
     role : str
         Semantic role for discovery/agent planning. Empty means "derive from
         category" (effects → ``effect``, composites → ``pattern``, etc.).
@@ -957,6 +952,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="button.html",
         category="control",
+        maturity="stable",
     ),
     "icon-btn": ComponentDescriptor(
         block="icon-btn",
@@ -964,6 +960,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="icon_btn.html",
         category="control",
+        maturity="stable",
     ),
     "shimmer-btn": ComponentDescriptor(
         block="shimmer-btn",
@@ -971,6 +968,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="shimmer_button.html",
         category="effect",
+        maturity="experimental",
         macro="shimmer_button",
     ),
     "ripple-btn": ComponentDescriptor(
@@ -979,6 +977,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="ripple_button.html",
         category="effect",
+        maturity="experimental",
         macro="ripple_button",
     ),
     "pulsing-btn": ComponentDescriptor(
@@ -986,6 +985,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "primary", "success", "danger"),
         template="pulsing_button.html",
         category="effect",
+        maturity="experimental",
         macro="pulsing_button",
     ),
     # -- Feedback -----------------------------------------------------------
@@ -996,6 +996,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "actions"),
         template="alert.html",
         category="feedback",
+        maturity="stable",
     ),
     "badge": ComponentDescriptor(
         block="badge",
@@ -1014,12 +1015,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         tokens=("--chirpui-badge-color", "--chirpui-badge-text"),
         template="badge.html",
         category="feedback",
+        maturity="stable",
     ),
     "toast": ComponentDescriptor(
         block="toast",
         variants=("info", "success", "warning", "error"),
         template="toast.html",
         category="feedback",
+        maturity="stable",
     ),
     "confirm": ComponentDescriptor(
         block="confirm",
@@ -1027,6 +1030,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("header_actions", "message", "form_content"),
         template="confirm.html",
         category="feedback",
+        maturity="stable",
         macro="confirm_dialog",
     ),
     "skeleton": ComponentDescriptor(
@@ -1034,6 +1038,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "avatar", "text", "card"),
         template="skeleton.html",
         category="feedback",
+        maturity="stable",
     ),
     "progress-bar": ComponentDescriptor(
         block="progress-bar",
@@ -1041,12 +1046,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("sm", "md", "lg"),
         template="progress.html",
         category="feedback",
+        maturity="stable",
     ),
     "status-indicator": ComponentDescriptor(
         block="status-indicator",
         variants=("default", "success", "warning", "error", "info", "primary", "custom"),
         template="status.html",
         category="feedback",
+        maturity="stable",
     ),
     "notification-dot": ComponentDescriptor(
         block="notification-dot",
@@ -1054,12 +1061,15 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="notification_dot.html",
         category="feedback",
+        maturity="stable",
     ),
     "streaming_bubble": ComponentDescriptor(
         block="streaming-bubble",
-        variants=("", "content", "thinking", "error"),
+        variants=("thinking", "error"),
+        elements=("thinking",),
         template="streaming.html",
         category="feedback",
+        maturity="stable",
     ),
     # -- Containers ---------------------------------------------------------
     "card": ComponentDescriptor(
@@ -1091,6 +1101,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "header_actions", "media", "body_actions", "footer"),
         template="card.html",
         category="container",
+        maturity="stable",
     ),
     "surface": ComponentDescriptor(
         block="surface",
@@ -1111,6 +1122,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("eyebrow", "title", "lede", "body"),
         template="surface.html",
         category="container",
+        maturity="stable",
     ),
     "modal": ComponentDescriptor(
         block="modal",
@@ -1119,18 +1131,21 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "header_actions", "footer"),
         template="modal.html",
         category="container",
+        maturity="stable",
     ),
     "panel": ComponentDescriptor(
         block="panel",
         slots=("", "actions", "footer"),
         template="panel.html",
         category="container",
+        maturity="stable",
     ),
     "overlay": ComponentDescriptor(
         block="overlay",
         variants=("dark", "gradient-bottom", "gradient-top"),
         template="overlay.html",
         category="container",
+        maturity="stable",
     ),
     # -- Navigation ---------------------------------------------------------
     "tabs": ComponentDescriptor(
@@ -1138,12 +1153,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="tabs.html",
         category="navigation",
+        maturity="stable",
     ),
     "tab": ComponentDescriptor(
         block="tab",
         modifiers=("active",),
         template="tabs.html",
         category="navigation",
+        maturity="stable",
     ),
     "dropdown": ComponentDescriptor(
         block="dropdown",
@@ -1151,24 +1168,28 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "header", "footer"),
         template="dropdown.html",
         category="navigation",
+        maturity="stable",
     ),
     "dropdown__item": ComponentDescriptor(
         block="dropdown__item",
         variants=("default", "danger", "muted"),
         template="dropdown_menu.html",
         category="navigation",
+        maturity="stable",
         macro="dropdown_menu",
     ),
     "breadcrumbs": ComponentDescriptor(
         block="breadcrumbs",
         template="breadcrumbs.html",
         category="navigation",
+        maturity="stable",
     ),
     "tooltip": ComponentDescriptor(
         block="tooltip",
         variants=("top", "bottom", "left", "right"),
         template="tooltip.html",
         category="navigation",
+        maturity="stable",
     ),
     # -- Layout -------------------------------------------------------------
     "page_header": ComponentDescriptor(
@@ -1178,6 +1199,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("actions",),
         template="layout.html",
         category="layout",
+        maturity="stable",
     ),
     "section_header": ComponentDescriptor(
         block="section-header",
@@ -1186,30 +1208,35 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("actions",),
         template="layout.html",
         category="layout",
+        maturity="stable",
     ),
     "description_list": ComponentDescriptor(
         block="description-list",
         variants=("stacked", "horizontal"),
         template="description_list.html",
         category="layout",
+        maturity="stable",
     ),
     "hero": ComponentDescriptor(
         block="hero",
         variants=("solid", "muted", "gradient", "mesh", "animated-gradient"),
         template="hero.html",
         category="layout",
+        maturity="stable",
     ),
     "page_hero": ComponentDescriptor(
         block="page-hero",
         variants=("editorial", "minimal"),
         template="hero.html",
         category="layout",
+        maturity="stable",
     ),
     "message_bubble": ComponentDescriptor(
         block="message-bubble",
         variants=("default", "user", "assistant", "system"),
         template="message_bubble.html",
         category="layout",
+        maturity="stable",
     ),
     # -- Effects & decorative -----------------------------------------------
     "aura": ComponentDescriptor(
@@ -1220,6 +1247,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="aura.html",
         category="effect",
+        maturity="experimental",
     ),
     "aura_tone": ComponentDescriptor(
         block="aura",
@@ -1232,6 +1260,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="border_beam.html",
         category="effect",
+        maturity="experimental",
     ),
     "glow-card": ComponentDescriptor(
         block="glow-card",
@@ -1239,12 +1268,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="glow_card.html",
         category="effect",
+        maturity="experimental",
     ),
     "spotlight-card": ComponentDescriptor(
         block="spotlight-card",
         variants=("", "default", "accent"),
         template="spotlight_card.html",
         category="effect",
+        maturity="experimental",
     ),
     "number-ticker": ComponentDescriptor(
         block="number-ticker",
@@ -1252,12 +1283,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg", "xl"),
         template="number_ticker.html",
         category="effect",
+        maturity="experimental",
     ),
     "animated-counter": ComponentDescriptor(
         block="animated-counter",
         variants=("", "default", "mono"),
         template="animated_counter.html",
         category="effect",
+        maturity="experimental",
     ),
     "marquee": ComponentDescriptor(
         block="marquee",
@@ -1265,18 +1298,21 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="marquee.html",
         category="effect",
+        maturity="experimental",
     ),
     "meteor": ComponentDescriptor(
         block="meteor",
         variants=("", "default", "accent", "muted"),
         template="meteor.html",
         category="effect",
+        maturity="experimental",
     ),
     "text-reveal": ComponentDescriptor(
         block="text-reveal",
         variants=("", "default", "gradient"),
         template="text_reveal.html",
         category="effect",
+        maturity="experimental",
     ),
     "dock": ComponentDescriptor(
         block="dock",
@@ -1285,24 +1321,28 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="dock.html",
         category="effect",
+        maturity="experimental",
     ),
     "particle-bg": ComponentDescriptor(
         block="particle-bg",
         variants=("", "default", "accent", "muted"),
         template="particle_bg.html",
         category="effect",
+        maturity="experimental",
     ),
     "typewriter": ComponentDescriptor(
         block="typewriter",
         variants=("", "fast", "slow"),
         template="typewriter.html",
         category="effect",
+        maturity="experimental",
     ),
     "glitch": ComponentDescriptor(
         block="glitch",
         variants=("", "subtle", "intense"),
         template="glitch_text.html",
         category="effect",
+        maturity="experimental",
         macro="glitch_text",
     ),
     "neon": ComponentDescriptor(
@@ -1310,6 +1350,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("cyan", "magenta", "green", "orange", "blue", "red"),
         template="neon_text.html",
         category="effect",
+        maturity="experimental",
         macro="neon_text",
     ),
     "aurora": ComponentDescriptor(
@@ -1317,18 +1358,21 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "intense", "subtle"),
         template="aurora.html",
         category="effect",
+        maturity="experimental",
     ),
     "scanline": ComponentDescriptor(
         block="scanline",
         variants=("", "heavy", "crt"),
         template="scanline.html",
         category="effect",
+        maturity="experimental",
     ),
     "grain": ComponentDescriptor(
         block="grain",
         variants=("", "heavy", "subtle"),
         template="grain.html",
         category="effect",
+        maturity="experimental",
     ),
     "orbit": ComponentDescriptor(
         block="orbit",
@@ -1336,6 +1380,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "lg", "xl"),
         template="orbit.html",
         category="effect",
+        maturity="experimental",
     ),
     "sparkle": ComponentDescriptor(
         block="sparkle",
@@ -1343,18 +1388,21 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="sparkle.html",
         category="effect",
+        maturity="experimental",
     ),
     "confetti": ComponentDescriptor(
         block="confetti",
         variants=("",),
         template="confetti.html",
         category="effect",
+        maturity="experimental",
     ),
     "wobble": ComponentDescriptor(
         block="wobble",
         variants=("wobble", "jello", "rubber-band", "bounce-in"),
         template="wobble.html",
         category="effect",
+        maturity="experimental",
     ),
     # -- ASCII background effects -------------------------------------------
     "symbol-rain": ComponentDescriptor(
@@ -1362,24 +1410,28 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "accent", "gold", "muted"),
         template="symbol_rain.html",
         category="effect",
+        maturity="experimental",
     ),
     "holy-light": ComponentDescriptor(
         block="holy-light",
         variants=("", "default", "gold", "silver", "holy"),
         template="holy_light.html",
         category="effect",
+        maturity="experimental",
     ),
     "rune-field": ComponentDescriptor(
         block="rune-field",
         variants=("", "default", "arcane", "frost", "ember"),
         template="rune_field.html",
         category="effect",
+        maturity="experimental",
     ),
     "constellation": ComponentDescriptor(
         block="constellation",
         variants=("", "default", "warm", "cool", "mono"),
         template="constellation.html",
         category="effect",
+        maturity="experimental",
     ),
     # -- ASCII primitives ---------------------------------------------------
     "ascii-border": ComponentDescriptor(
@@ -1387,6 +1439,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "single", "double", "rounded", "heavy", "spin"),
         template="ascii_border.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-divider": ComponentDescriptor(
         block="ascii-divider",
@@ -1402,42 +1455,49 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="ascii_divider.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-sparkline": ComponentDescriptor(
         block="ascii-sparkline",
         variants=("", "default", "accent", "muted", "gradient"),
         template="ascii_sparkline.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-progress": ComponentDescriptor(
         block="ascii-progress",
         variants=("", "default", "accent", "success", "warning"),
         template="ascii_progress.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-empty": ComponentDescriptor(
         block="ascii-empty",
         variants=("", "default", "muted", "accent"),
         template="ascii_empty.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-badge": ComponentDescriptor(
         block="ascii-badge",
         variants=("", "default", "success", "warning", "error", "accent", "muted"),
         template="ascii_badge.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-spinner": ComponentDescriptor(
         block="ascii-spinner",
         variants=("", "braille", "box", "dots", "arrows", "blocks"),
         template="ascii_spinner.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-skeleton": ComponentDescriptor(
         block="ascii-skeleton",
         variants=("", "text", "card", "avatar", "heading"),
         template="ascii_skeleton.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-toggle": ComponentDescriptor(
         block="ascii-toggle",
@@ -1445,6 +1505,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="ascii_toggle.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-switch": ComponentDescriptor(
         block="ascii-switch",
@@ -1452,18 +1513,21 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="ascii_toggle.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-table": ComponentDescriptor(
         block="ascii-table",
         variants=("single", "double", "heavy", "rounded"),
         template="ascii_table.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-indicator": ComponentDescriptor(
         block="ascii-indicator",
         variants=("success", "warning", "error", "muted", "accent"),
         template="ascii_indicator.html",
         category="ascii",
+        maturity="experimental",
         macro="indicator",
     ),
     "ascii-tile-btn": ComponentDescriptor(
@@ -1471,6 +1535,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "success", "warning", "danger", "accent"),
         template="ascii_tile_btn.html",
         category="ascii",
+        maturity="experimental",
         macro="tile_btn",
     ),
     "ascii-knob": ComponentDescriptor(
@@ -1478,18 +1543,21 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "accent"),
         template="ascii_knob.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-fader": ComponentDescriptor(
         block="ascii-fader",
         variants=("", "default", "accent", "success", "warning", "danger"),
         template="ascii_fader.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-vu": ComponentDescriptor(
         block="ascii-vu",
         variants=("", "default", "accent", "success", "warning"),
         template="ascii_vu_meter.html",
         category="ascii",
+        maturity="experimental",
         macro="ascii_vu_meter",
     ),
     "ascii-7seg": ComponentDescriptor(
@@ -1497,60 +1565,70 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "accent", "success", "warning", "error"),
         template="ascii_7seg.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-checkbox": ComponentDescriptor(
         block="ascii-checkbox",
         variants=("", "default", "accent", "success", "danger"),
         template="ascii_checkbox.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-radio-group": ComponentDescriptor(
         block="ascii-radio-group",
         variants=("", "default", "accent"),
         template="ascii_radio.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-stepper": ComponentDescriptor(
         block="ascii-stepper",
         variants=("", "default", "accent", "success"),
         template="ascii_stepper.html",
         category="ascii",
+        maturity="experimental",
     ),
     "split-flap": ComponentDescriptor(
         block="split-flap",
         variants=("", "default", "amber", "green"),
         template="ascii_split_flap.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-ticker": ComponentDescriptor(
         block="ascii-ticker",
         variants=("", "default", "accent", "success", "warning", "error"),
         template="ascii_ticker.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-card": ComponentDescriptor(
         block="ascii-card",
         variants=("", "single", "double", "rounded", "heavy"),
         template="ascii_card.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-tabs": ComponentDescriptor(
         block="ascii-tabs",
         variants=("", "default", "accent"),
         template="ascii_tabs.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-tab": ComponentDescriptor(
         block="ascii-tab",
         variants=("", "default", "accent"),
         template="ascii_tabs.html",
         category="ascii",
+        maturity="experimental",
     ),
     "ascii-modal": ComponentDescriptor(
         block="ascii-modal",
         variants=("", "single", "double", "heavy"),
         template="ascii_modal.html",
         category="ascii",
+        maturity="experimental",
     ),
     # -- Marketing (site mode) ----------------------------------------------
     "site-shell": ComponentDescriptor(
@@ -1560,6 +1638,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         tokens=("--chirpui-site-shell-bg",),
         template="site_shell.html",
         category="marketing",
+        maturity="experimental",
     ),
     "site-header": ComponentDescriptor(
         block="site-header",
@@ -1577,12 +1656,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="site_header.html",
         category="marketing",
+        maturity="experimental",
     ),
     "site-nav-link": ComponentDescriptor(
         block="site-nav",
         elements=("link", "glyph"),
         template="site_header.html",
         category="marketing",
+        maturity="experimental",
         macro="site_nav_link",
     ),
     "site-footer": ComponentDescriptor(
@@ -1610,6 +1691,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="site_footer.html",
         category="marketing",
+        maturity="experimental",
     ),
     "band": ComponentDescriptor(
         block="band",
@@ -1627,6 +1709,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="band.html",
         category="marketing",
+        maturity="experimental",
     ),
     "feature-section": ComponentDescriptor(
         block="feature-section",
@@ -1650,11 +1733,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="feature_section.html",
         category="marketing",
+        maturity="experimental",
     ),
     "feature-stack": ComponentDescriptor(
         block="feature-stack",
         template="feature_section.html",
         category="marketing",
+        maturity="experimental",
     ),
     # -- Composites (PR #57) ------------------------------------------------
     "settings-row-list": ComponentDescriptor(
@@ -1663,12 +1748,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="settings_row.html",
         category="container",
+        maturity="stable",
     ),
     "settings-row": ComponentDescriptor(
         block="settings-row",
         elements=("label", "status", "detail"),
         template="settings_row.html",
         category="container",
+        maturity="stable",
     ),
     "install-snippet": ComponentDescriptor(
         block="install-snippet",
@@ -1676,17 +1763,20 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="code.html",
         category="content",
+        maturity="stable",
     ),
     "filter-row": ComponentDescriptor(
         block="filter-row",
         slots=("",),
         template="filter_bar.html",
         category="control",
+        maturity="stable",
     ),
     "tag-browse": ComponentDescriptor(
         block="tag-browse",
         template="tag_browse.html",
         category="control",
+        maturity="stable",
         macro="tag_browse_tray",
     ),
     # -- Sizing-only components ---------------------------------------------
@@ -1705,6 +1795,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="segmented_control.html",
         category="control",
+        maturity="stable",
         macro="segmented_control",
     ),
     # -- Data display -------------------------------------------------------
@@ -1724,6 +1815,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "caption"),
         template="table.html",
         category="data-display",
+        maturity="stable",
     ),
     "table-wrap": ComponentDescriptor(
         block="table-wrap",
@@ -1731,6 +1823,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "caption"),
         template="table.html",
         category="data-display",
+        maturity="stable",
         macro="table",
     ),
     "pagination": ComponentDescriptor(
@@ -1738,6 +1831,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("link", "ellipsis"),
         template="pagination.html",
         category="navigation",
+        maturity="stable",
     ),
     "resource-index": ComponentDescriptor(
         block="resource-index",
@@ -1754,12 +1848,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="resource_index.html",
         category="composite",
+        maturity="stable",
     ),
     "row-actions": ComponentDescriptor(
         block="row-actions",
         elements=("trigger",),
         template="row_actions.html",
         category="control",
+        maturity="stable",
     ),
     "params-table": ComponentDescriptor(
         block="params-table",
@@ -1774,6 +1870,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="params_table.html",
         category="data-display",
+        maturity="stable",
     ),
     "bar-chart": ComponentDescriptor(
         block="bar-chart",
@@ -1782,6 +1879,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("row", "label", "label-link", "track", "bar", "value"),
         template="bar_chart.html",
         category="data-display",
+        maturity="stable",
     ),
     "donut": ComponentDescriptor(
         block="donut",
@@ -1795,12 +1893,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="donut.html",
         category="data-display",
+        maturity="stable",
     ),
     "metric-grid": ComponentDescriptor(
         block="metric-grid",
         slots=("",),
         template="metric_grid.html",
         category="layout",
+        maturity="stable",
     ),
     "metric-card": ComponentDescriptor(
         block="metric-card",
@@ -1816,18 +1916,21 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="metric_grid.html",
         category="data-display",
+        maturity="stable",
     ),
     "stat": ComponentDescriptor(
         block="stat",
         elements=("value", "label", "icon"),
         template="stat.html",
         category="data-display",
+        maturity="stable",
     ),
     "animated-stat-card": ComponentDescriptor(
         block="animated-stat-card",
         elements=("trend",),
         template="animated_stat_card.html",
         category="data-display",
+        maturity="stable",
     ),
     "list": ComponentDescriptor(
         block="list",
@@ -1836,6 +1939,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="list.html",
         category="data-display",
+        maturity="stable",
         macro="list_group",
     ),
     "sortable": ComponentDescriptor(
@@ -1844,6 +1948,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="sortable_list.html",
         category="interactive",
+        maturity="stable",
         macro="sortable_list",
     ),
     "timeline": ComponentDescriptor(
@@ -1866,12 +1971,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="timeline.html",
         category="data-display",
+        maturity="stable",
     ),
     "tree": ComponentDescriptor(
         block="tree",
         elements=("item", "node", "label"),
         template="tree_view.html",
         category="data-display",
+        maturity="stable",
         macro="tree_view",
     ),
     "chapter-list": ComponentDescriptor(
@@ -1880,12 +1987,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "summary_actions"),
         template="chapter_list.html",
         category="data-display",
+        maturity="stable",
     ),
     "chapter-item": ComponentDescriptor(
         block="chapter-item",
         elements=("link", "timestamp", "title"),
         template="chapter_list.html",
         category="data-display",
+        maturity="stable",
     ),
     "playlist": ComponentDescriptor(
         block="playlist",
@@ -1893,6 +2002,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "header_actions"),
         template="playlist.html",
         category="data-display",
+        maturity="stable",
     ),
     "playlist-item": ComponentDescriptor(
         block="playlist-item",
@@ -1900,12 +2010,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("link", "title", "duration"),
         template="playlist.html",
         category="data-display",
+        maturity="stable",
     ),
     "conversation-list": ComponentDescriptor(
         block="conversation-list",
         slots=("",),
         template="conversation_list.html",
         category="navigation",
+        maturity="stable",
     ),
     "conversation-item": ComponentDescriptor(
         block="conversation-item",
@@ -1923,6 +2035,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "actions"),
         template="conversation_item.html",
         category="navigation",
+        maturity="stable",
     ),
     "post-card": ComponentDescriptor(
         block="post-card",
@@ -1941,6 +2054,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "avatar", "media", "actions"),
         template="post_card.html",
         category="data-display",
+        maturity="stable",
     ),
     "channel-card": ComponentDescriptor(
         block="channel-card",
@@ -1948,6 +2062,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "body"),
         template="channel_card.html",
         category="data-display",
+        maturity="stable",
     ),
     "video-card": ComponentDescriptor(
         block="video-card",
@@ -1965,6 +2080,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("actions",),
         template="video_card.html",
         category="data-display",
+        maturity="stable",
     ),
     "video-thumbnail": ComponentDescriptor(
         block="video-thumbnail",
@@ -1972,12 +2088,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         tokens=("--chirpui-video-aspect-ratio",),
         template="video_thumbnail.html",
         category="media",
+        maturity="stable",
     ),
     "index-card": ComponentDescriptor(
         block="index-card",
         elements=("header", "badge", "title", "description"),
         template="index_card.html",
         category="navigation",
+        maturity="stable",
     ),
     "trending-tag": ComponentDescriptor(
         block="trending-tag",
@@ -1985,6 +2103,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("hash", "count"),
         template="trending_tag.html",
         category="data-display",
+        maturity="stable",
     ),
     # -- Layout & shell (Sprint 2) ------------------------------------------
     "app-shell": ComponentDescriptor(
@@ -2017,6 +2136,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="app_shell.html",
         category="layout",
+        maturity="stable",
     ),
     "workspace-shell": ComponentDescriptor(
         block="workspace-shell",
@@ -2038,12 +2158,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="workspace_shell.html",
         category="layout",
+        maturity="stable",
     ),
     "shell-actions": ComponentDescriptor(
         block="shell-actions",
         elements=("group",),
         template="shell_actions.html",
         category="layout",
+        maturity="stable",
         macro="shell_actions_bar",
     ),
     "sidebar": ComponentDescriptor(
@@ -2066,12 +2188,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="sidebar.html",
         category="navigation",
+        maturity="stable",
     ),
     "sidebar-toggle": ComponentDescriptor(
         block="sidebar-toggle",
         elements=("icon",),
         template="sidebar.html",
         category="navigation",
+        maturity="stable",
     ),
     "tray": ComponentDescriptor(
         block="tray",
@@ -2081,6 +2205,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="tray.html",
         category="overlay",
+        maturity="stable",
     ),
     "drawer": ComponentDescriptor(
         block="drawer",
@@ -2089,6 +2214,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "header_actions"),
         template="drawer.html",
         category="overlay",
+        maturity="stable",
     ),
     "split-layout": ComponentDescriptor(
         block="split-layout",
@@ -2105,6 +2231,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("primary", "secondary"),
         template="split_layout.html",
         category="layout",
+        maturity="stable",
     ),
     "split-panel": ComponentDescriptor(
         block="split-panel",
@@ -2113,6 +2240,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("left", "right"),
         template="split_panel.html",
         category="layout",
+        maturity="stable",
     ),
     "chat-layout": ComponentDescriptor(
         block="chat-layout",
@@ -2129,6 +2257,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="chat_layout.html",
         category="layout",
+        maturity="stable",
     ),
     "accordion": ComponentDescriptor(
         block="accordion",
@@ -2136,6 +2265,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="accordion.html",
         category="interactive",
+        maturity="stable",
     ),
     # -- Forms (Sprint 3) ---------------------------------------------------
     "field": ComponentDescriptor(
@@ -2168,6 +2298,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="forms.html",
         category="form",
+        maturity="stable",
         macro="field_wrapper",
     ),
     "form-actions": ComponentDescriptor(
@@ -2175,12 +2306,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         modifiers=("end",),
         template="forms.html",
         category="form",
+        maturity="stable",
     ),
     "form-error-summary": ComponentDescriptor(
         block="form-error-summary",
         elements=("heading", "list"),
         template="forms.html",
         category="form",
+        maturity="stable",
     ),
     "search-bar": ComponentDescriptor(
         block="search-bar",
@@ -2188,6 +2321,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("input", "inner", "icon", "btn"),
         template="forms.html",
         category="form",
+        maturity="stable",
     ),
     "input-group": ComponentDescriptor(
         block="input-group",
@@ -2195,12 +2329,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("prefix", "suffix"),
         template="forms.html",
         category="form",
+        maturity="stable",
     ),
     "toggle-wrap": ComponentDescriptor(
         block="toggle-wrap",
         variants=("", "sm", "lg", "accent", "danger", "success"),
         template="forms.html",
         category="form",
+        maturity="stable",
         macro="toggle_field",
     ),
     "fieldset": ComponentDescriptor(
@@ -2208,6 +2344,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("legend",),
         template="forms.html",
         category="form",
+        maturity="stable",
     ),
     "chat-input": ComponentDescriptor(
         block="chat-input",
@@ -2215,6 +2352,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="chat_input.html",
         category="form",
+        maturity="stable",
     ),
     "inline-edit": ComponentDescriptor(
         block="inline-edit",
@@ -2222,6 +2360,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("value", "trigger", "icon", "form", "input", "actions"),
         template="inline_edit_field.html",
         category="form",
+        maturity="stable",
         macro="inline_edit_field_display",
     ),
     "tag-input": ComponentDescriptor(
@@ -2229,12 +2368,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("label", "chips", "add", "add-field"),
         template="tag_input.html",
         category="form",
+        maturity="stable",
     ),
     "tag": ComponentDescriptor(
         block="tag",
         elements=("remove", "remove-btn"),
         template="tag_input.html",
         category="form",
+        maturity="stable",
         macro="tag_input",
     ),
     "wizard-form": ComponentDescriptor(
@@ -2242,6 +2383,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("body",),
         template="wizard_form.html",
         category="form",
+        maturity="stable",
     ),
     "selection-bar": ComponentDescriptor(
         block="selection-bar",
@@ -2249,6 +2391,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="selection_bar.html",
         category="control",
+        maturity="stable",
     ),
     # -- Navigation (Sprint 3) ----------------------------------------------
     "nav-tree": ComponentDescriptor(
@@ -2267,6 +2410,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "header"),
         template="nav_tree.html",
         category="navigation",
+        maturity="stable",
     ),
     "navbar": ComponentDescriptor(
         block="navbar",
@@ -2275,23 +2419,27 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "brand", "end"),
         template="navbar.html",
         category="navigation",
+        maturity="stable",
     ),
     "navbar-dropdown": ComponentDescriptor(
         block="navbar-dropdown",
         elements=("trigger",),
         template="navbar.html",
         category="navigation",
+        maturity="stable",
     ),
     "nav-progress": ComponentDescriptor(
         block="nav-progress",
         template="nav_progress.html",
         category="navigation",
+        maturity="stable",
     ),
     "route-tab": ComponentDescriptor(
         block="route-tab",
         elements=("icon", "label", "badge"),
         template="route_tabs.html",
         category="navigation",
+        maturity="stable",
         macro="render_route_tabs",
     ),
     "command-palette": ComponentDescriptor(
@@ -2309,6 +2457,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="command_palette.html",
         category="interactive",
+        maturity="stable",
     ),
     "collapse": ComponentDescriptor(
         block="collapse",
@@ -2316,6 +2465,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="collapse.html",
         category="interactive",
+        maturity="stable",
     ),
     # -- Utility & remaining (Sprint 4) -------------------------------------
     "action-bar": ComponentDescriptor(
@@ -2323,6 +2473,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("item", "icon", "count"),
         template="action_bar.html",
         category="control",
+        maturity="stable",
     ),
     "action-strip": ComponentDescriptor(
         block="action-strip",
@@ -2331,6 +2482,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="action_strip.html",
         category="control",
+        maturity="stable",
     ),
     "ascii-breaker-panel": ComponentDescriptor(
         block="ascii-breaker-panel",
@@ -2339,6 +2491,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="ascii_breaker_panel.html",
         category="ascii",
+        maturity="experimental",
         macro="breaker_panel",
     ),
     "ascii-error": ComponentDescriptor(
@@ -2346,6 +2499,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("art", "code", "heading", "desc", "action"),
         template="ascii_error.html",
         category="ascii",
+        maturity="experimental",
     ),
     "avatar": ComponentDescriptor(
         block="avatar",
@@ -2354,12 +2508,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("img", "initials", "placeholder"),
         template="avatar.html",
         category="data-display",
+        maturity="stable",
     ),
     "avatar-stack": ComponentDescriptor(
         block="avatar-stack",
         elements=("more",),
         template="avatar_stack.html",
         category="data-display",
+        maturity="stable",
     ),
     "calendar": ComponentDescriptor(
         block="calendar",
@@ -2376,6 +2532,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="calendar.html",
         category="data-display",
+        maturity="stable",
     ),
     "callout": ComponentDescriptor(
         block="callout",
@@ -2392,6 +2549,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "header_actions"),
         template="callout.html",
         category="feedback",
+        maturity="stable",
     ),
     "carousel": ComponentDescriptor(
         block="carousel",
@@ -2400,6 +2558,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="carousel.html",
         category="interactive",
+        maturity="stable",
     ),
     "comment": ComponentDescriptor(
         block="comment",
@@ -2418,12 +2577,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "actions"),
         template="comment.html",
         category="data-display",
+        maturity="stable",
     ),
     "config-row": ComponentDescriptor(
         block="config-row",
         elements=("label", "control", "form", "toggle-wrap", "select", "editable"),
         template="config_row.html",
         category="container",
+        maturity="stable",
         macro="config_row_toggle",
     ),
     "divider": ComponentDescriptor(
@@ -2441,6 +2602,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("text",),
         template="divider.html",
         category="layout",
+        maturity="stable",
     ),
     "dnd": ComponentDescriptor(
         block="dnd",
@@ -2457,6 +2619,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="dnd.html",
         category="interactive",
+        maturity="stable",
         macro="dnd_list",
     ),
     "empty-panel-state": ComponentDescriptor(
@@ -2471,6 +2634,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="empty_panel_state.html",
         category="feedback",
+        maturity="stable",
     ),
     "entity-header": ComponentDescriptor(
         block="entity-header",
@@ -2478,6 +2642,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "actions"),
         template="entity_header.html",
         category="layout",
+        maturity="stable",
     ),
     "file-tree": ComponentDescriptor(
         block="file-tree",
@@ -2491,39 +2656,46 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="file_tree.html",
         category="data-display",
+        maturity="stable",
     ),
     "gradient-text": ComponentDescriptor(
         block="gradient-text",
         modifiers=("secondary", "rainbow", "animated"),
         template="gradient_text.html",
         category="effect",
+        maturity="experimental",
     ),
     "hero-effects": ComponentDescriptor(
         block="hero-effects",
         template="hero_effects.html",
         category="effect",
+        maturity="experimental",
     ),
     "fragment-island": ComponentDescriptor(
         block="fragment-island",
         template="fragment_island.html",
         category="infrastructure",
+        maturity="internal",
     ),
     "label-overline": ComponentDescriptor(
         block="label-overline",
         modifiers=("section",),
         template="label_overline.html",
         category="content",
+        maturity="stable",
     ),
     "link": ComponentDescriptor(
         block="link",
         template="link.html",
         category="navigation",
+        maturity="stable",
     ),
     "live-badge": ComponentDescriptor(
         block="live-badge",
         elements=("dot", "viewers"),
         template="live_badge.html",
         category="feedback",
+        maturity="stable",
     ),
     "logo": ComponentDescriptor(
         block="logo",
@@ -2540,6 +2712,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("img", "text"),
         template="logo.html",
         category="content",
+        maturity="stable",
     ),
     "media-object": ComponentDescriptor(
         block="media-object",
@@ -2548,16 +2721,19 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "media", "actions"),
         template="media_object.html",
         category="layout",
+        maturity="stable",
     ),
     "mention": ComponentDescriptor(
         block="mention",
         template="mention.html",
         category="content",
+        maturity="stable",
     ),
     "message-thread": ComponentDescriptor(
         block="message-thread",
         template="message_thread.html",
         category="data-display",
+        maturity="stable",
     ),
     "popover": ComponentDescriptor(
         block="popover",
@@ -2565,6 +2741,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "header", "footer"),
         template="popover.html",
         category="overlay",
+        maturity="stable",
     ),
     "profile-header": ComponentDescriptor(
         block="profile-header",
@@ -2581,6 +2758,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "actions"),
         template="profile_header.html",
         category="data-display",
+        maturity="stable",
     ),
     "reaction-pill": ComponentDescriptor(
         block="reaction-pill",
@@ -2588,17 +2766,20 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("emoji", "count"),
         template="reaction_pill.html",
         category="interactive",
+        maturity="stable",
     ),
     "reveal-on-scroll": ComponentDescriptor(
         block="reveal-on-scroll",
         template="reveal_on_scroll.html",
         category="effect",
+        maturity="experimental",
     ),
     "signature": ComponentDescriptor(
         block="signature",
         elements=("code",),
         template="signature.html",
         category="content",
+        maturity="stable",
     ),
     "spinner": ComponentDescriptor(
         block="spinner",
@@ -2606,6 +2787,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("mote",),
         template="spinner.html",
         category="feedback",
+        maturity="stable",
     ),
     "sse-status": ComponentDescriptor(
         block="sse-status",
@@ -2613,24 +2795,28 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("dot",),
         template="sse_status.html",
         category="feedback",
+        maturity="stable",
     ),
     "stepper": ComponentDescriptor(
         block="stepper",
         elements=("list", "item", "indicator", "check", "label", "connector"),
         template="stepper.html",
         category="navigation",
+        maturity="stable",
     ),
     "theme-toggle": ComponentDescriptor(
         block="theme-toggle",
         elements=("icon",),
         template="theme_toggle.html",
         category="control",
+        maturity="stable",
     ),
     "typing-indicator": ComponentDescriptor(
         block="typing-indicator",
         elements=("dot",),
         template="typing_indicator.html",
         category="feedback",
+        maturity="stable",
     ),
     # -- Additional blocks discovered in multi-macro files ------------------
     "copy-btn": ComponentDescriptor(
@@ -2639,6 +2825,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("label", "done"),
         template="copy_button.html",
         category="control",
+        maturity="stable",
         macro="copy_button",
     ),
     "split-btn": ComponentDescriptor(
@@ -2654,6 +2841,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "header", "footer"),
         template="split_button.html",
         category="control",
+        maturity="stable",
         macro="split_button",
     ),
     "empty-state": ComponentDescriptor(
@@ -2671,22 +2859,26 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "actions", "action"),
         template="empty.html",
         category="feedback",
+        maturity="stable",
     ),
     "filter-group": ComponentDescriptor(
         block="filter-group",
         template="filter_chips.html",
         category="control",
+        maturity="stable",
     ),
     "infinite-scroll": ComponentDescriptor(
         block="infinite-scroll",
         elements=("loading",),
         template="infinite_scroll.html",
         category="interactive",
+        maturity="stable",
     ),
     "suspense-slot": ComponentDescriptor(
         block="suspense-slot",
         template="suspense.html",
         category="infrastructure",
+        maturity="internal",
     ),
 }
 
@@ -2956,6 +3148,7 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         slot_forwards=(SlotForward("actions", "page_header", "actions"),),
         template="document_header.html",
         category="layout",
+        maturity="stable",
         macro="document_header",
     ),
     "filter-bar": ComponentDescriptor(
@@ -3234,8 +3427,8 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "sse-retry": ComponentDescriptor(
         block="sse-retry",
+        modifiers=("loading",),
         elements=("loading",),
-        extra_emits=("chirpui-sse-retry--loading",),
         category="auto",
     ),
     "stack": ComponentDescriptor(
@@ -3251,13 +3444,13 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "streaming": ComponentDescriptor(
         block="streaming",
-        extra_emits=("chirpui-streaming--error",),
+        variants=("error",),
         category="auto",
     ),
     "streaming-block": ComponentDescriptor(
         block="streaming-block",
+        modifiers=("active",),
         elements=("cursor",),
-        extra_emits=("chirpui-streaming-block--active",),
         category="auto",
     ),
     "suspense-group": ComponentDescriptor(

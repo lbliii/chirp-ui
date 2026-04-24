@@ -136,3 +136,18 @@ def test_emits_is_derived_from_grammar() -> None:
             if cls in trims:
                 continue
             assert cls in emits, (name, tag)
+
+
+def test_streaming_family_classes_are_typed_descriptors() -> None:
+    """Streaming/SSE state classes should not live in auto reconciliation maps."""
+    from chirp_ui.components import _AUTO_EXTRAS
+
+    assert not {"streaming-bubble", "streaming-block", "streaming", "sse-retry"} & set(_AUTO_EXTRAS)
+
+    streaming_bubble = COMPONENTS["streaming_bubble"]
+    assert streaming_bubble.variants == ("thinking", "error")
+    assert streaming_bubble.elements == ("thinking",)
+
+    assert COMPONENTS["streaming-block"].modifiers == ("active",)
+    assert COMPONENTS["streaming"].variants == ("error",)
+    assert COMPONENTS["sse-retry"].modifiers == ("loading",)
