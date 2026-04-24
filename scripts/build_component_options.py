@@ -14,6 +14,7 @@ Per-component entry (one per manifest key, sorted):
   when available, else blank)
 * ``- Template:`` path
 * ``- Macro:`` resolved macro identifier (when extractable)
+* ``- Maturity:``, ``- Role:``, ``- Requires:`` manifest metadata
 * Params table (name | required | default?)  — only when ``params`` non-empty
 * Slots / Variants / Sizes / Modifiers / Provides / Consumes — one bullet each,
   only when the list is non-empty
@@ -85,6 +86,13 @@ def _render_component(name: str, entry: dict) -> list[str]:
         lines.append(f"- **Macro:** `{entry['macro']}`")
     if entry.get("category"):
         lines.append(f"- **Category:** `{entry['category']}`")
+    if entry.get("maturity"):
+        lines.append(f"- **Maturity:** `{entry['maturity']}`")
+    if entry.get("role"):
+        lines.append(f"- **Role:** `{entry['role']}`")
+    if entry.get("requires"):
+        rendered_requires = ", ".join(f"`{v}`" for v in entry["requires"])
+        lines.append(f"- **Requires:** {rendered_requires}")
 
     list_fields = [
         ("Slots", entry.get("slots") or []),

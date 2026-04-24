@@ -77,16 +77,9 @@ def test_card_signature_required_set() -> None:
 def test_field_signature_resolves_through_forms_template() -> None:
     """``field`` descriptor maps to a macro inside the multi-macro forms.html."""
     entry = build_manifest()["components"]["field"]
-    # forms.html holds form/fieldset/field_wrapper/text_field/etc.; the
-    # 'field' descriptor's block→macro fallback won't match any of them
-    # (no bare 'field' macro). Until an explicit ``macro=`` is added, this
-    # surfaces the gap honestly: macro=None, params=[].  The contract is
-    # that the build doesn't fail, which is the point of this test.
     assert entry["template"] == "forms.html"
-    if entry["macro"] is None:
-        assert entry["params"] == []
-    else:
-        assert isinstance(entry["params"], list)
+    assert entry["macro"] == "field_wrapper"
+    assert [p["name"] for p in entry["params"]][:2] == ["name", "label"]
 
 
 def test_alert_signature_resolves() -> None:
@@ -146,24 +139,32 @@ def test_components_with_params_count_in_stats() -> None:
     assert m["stats"]["components_with_params"] > 100
 
 
-def test_unmapped_descriptors_degrade_gracefully() -> None:
-    """``shimmer-btn`` block→macro mismatch (template has ``shimmer_button``).
+def test_all_templated_descriptors_resolve_to_macros() -> None:
+    """Every templated descriptor must map to a concrete macro.
 
-    Without an explicit ``macro=`` field, the resolver returns no match and
-    the entry surfaces empty ``params`` rather than raising. This is the
-    safety net that lets the registry stay incomplete without breaking the
-    manifest build.
+    Some descriptors describe blocks emitted from multi-macro templates
+    (``field``, ``dnd``, ``table-wrap``) or use shorter BEM names than the
+    callable macro (``shimmer-btn`` → ``shimmer_button``). Those are expected
+    to carry explicit ``macro=`` values in the registry so the manifest remains
+    fully groundable.
     """
-    entry = build_manifest()["components"]["shimmer-btn"]
-    assert entry["template"] == "shimmer_button.html"
-    # Either: explicit macro added in a follow-up commit (then params populated),
-    # or: still unmapped (then macro is null).  Both are valid; the contract is
-    # that the build doesn't fail.
-    if entry["macro"] is None:
-        assert entry["params"] == []
-    else:
-        assert entry["macro"] == "shimmer_button"
-        assert len(entry["params"]) > 0
+    unresolved = [
+        name
+        for name, entry in build_manifest()["components"].items()
+        if entry["template"] and entry["macro"] is None
+    ]
+    assert unresolved == []
+
+
+def test_known_block_to_macro_mismatches_resolve() -> None:
+    """Representative explicit mappings for high-signal naming mismatches."""
+    components = build_manifest()["components"]
+    assert components["shimmer-btn"]["macro"] == "shimmer_button"
+    assert components["pulsing-btn"]["macro"] == "pulsing_button"
+    assert components["copy-btn"]["macro"] == "copy_button"
+    assert components["route-tab"]["macro"] == "render_route_tabs"
+    assert components["table-wrap"]["macro"] == "table"
+    assert components["site-nav-link"]["macro"] == "site_nav_link"
 
 
 def test_param_extraction_is_cached() -> None:

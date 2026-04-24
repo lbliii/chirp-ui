@@ -16,7 +16,14 @@ import json
 import subprocess
 import sys
 
-from chirp_ui.components import COMPONENTS
+from chirp_ui.components import (
+    _AUTO_EXTRAS,
+    _AUTO_TRIMS,
+    COMPONENT_MATURITY_LEVELS,
+    COMPONENT_ROLES,
+    COMPONENTS,
+    RUNTIME_REQUIREMENTS,
+)
 from chirp_ui.manifest import SCHEMA, build_manifest, to_json
 from chirp_ui.tokens import TOKEN_CATALOG
 
@@ -42,6 +49,10 @@ def test_manifest_covers_every_component() -> None:
         assert entry["block"] == desc.block
         assert entry["template"] == desc.template
         assert entry["category"] == desc.category
+        assert entry["maturity"] == desc.resolved_maturity
+        assert entry["role"] == desc.resolved_role
+        assert set(entry["requires"]) >= set(desc.requires)
+        assert set(entry["requires"]) <= set(RUNTIME_REQUIREMENTS)
         # Lists are sorted in the manifest for stability.
         assert entry["emits"] == sorted(desc.emits)
         assert entry["elements"] == sorted(desc.elements)
@@ -67,6 +78,36 @@ def test_manifest_stats_match_counts() -> None:
     m = build_manifest()
     assert m["stats"]["total_components"] == len(COMPONENTS)
     assert m["stats"]["total_tokens"] == len(TOKEN_CATALOG)
+    assert sum(m["stats"]["component_maturity"].values()) == len(COMPONENTS)
+    assert sum(m["stats"]["component_roles"].values()) == len(COMPONENTS)
+    assert set(m["stats"]["component_maturity"]) <= set(COMPONENT_MATURITY_LEVELS)
+    assert set(m["stats"]["component_roles"]) <= set(COMPONENT_ROLES)
+    assert set(m["stats"]["component_requirements"]) <= set(RUNTIME_REQUIREMENTS)
+
+
+def test_manifest_registry_debt_scorecard_matches_registry() -> None:
+    """Stats expose the registry/CSS reconciliation burn-down as numbers."""
+    debt = build_manifest()["stats"]["registry_debt"]
+    assert debt == {
+        "auto_category_components": sum(
+            1 for desc in COMPONENTS.values() if desc.category == "auto"
+        ),
+        "auto_extra_blocks": len(_AUTO_EXTRAS),
+        "auto_extra_classes": sum(len(classes) for classes in _AUTO_EXTRAS.values()),
+        "auto_trim_blocks": len(_AUTO_TRIMS),
+        "auto_trim_classes": sum(len(classes) for classes in _AUTO_TRIMS.values()),
+        "explicit_extra_blocks": sum(1 for desc in COMPONENTS.values() if desc.extra_emits),
+        "explicit_extra_classes": sum(len(desc.extra_emits) for desc in COMPONENTS.values()),
+    }
+    assert debt["auto_extra_classes"] > 0
+    assert debt["auto_trim_classes"] > 0
+
+
+def test_manifest_runtime_requirements_include_known_alpine_macros() -> None:
+    m = build_manifest()
+    assert "alpine" in m["components"]["theme-toggle"]["requires"]
+    assert "alpine" in m["components"]["dropdown__item"]["requires"]
+    assert "alpine" in m["components"]["copy-btn"]["requires"]
 
 
 def test_manifest_serializes_to_valid_json() -> None:
