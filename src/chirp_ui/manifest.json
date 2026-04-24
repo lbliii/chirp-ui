@@ -285,7 +285,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -584,7 +586,8 @@
       ],
       "provides": [],
       "requires": [
-        "alpine"
+        "alpine",
+        "htmx"
       ],
       "role": "component",
       "sizes": [],
@@ -2224,7 +2227,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -3727,7 +3732,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [
         "",
@@ -4902,7 +4909,8 @@
       ],
       "provides": [],
       "requires": [
-        "alpine"
+        "alpine",
+        "htmx"
       ],
       "role": "component",
       "sizes": [],
@@ -5071,7 +5079,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "effect",
       "sizes": [],
       "slots": [],
@@ -5157,7 +5167,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -5283,7 +5295,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -6788,7 +6802,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -6839,7 +6855,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -7395,7 +7413,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -7456,7 +7476,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "infrastructure",
       "sizes": [],
       "slots": [],
@@ -7603,7 +7625,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "effect",
       "sizes": [
         "",
@@ -8150,7 +8174,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [
         "",
@@ -8275,7 +8301,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -8380,7 +8408,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -8534,7 +8564,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -10568,7 +10600,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -11711,7 +11745,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "effect",
       "sizes": [],
       "slots": [
@@ -11770,7 +11806,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "effect",
       "sizes": [
         "",
@@ -11833,7 +11871,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -12177,7 +12217,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -12824,7 +12866,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -13752,7 +13796,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -13904,7 +13950,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -14285,7 +14333,9 @@
       "provides": [
         "_streaming_role"
       ],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -14619,7 +14669,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -14764,7 +14816,9 @@
       "provides": [
         "_table_align"
       ],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -14860,7 +14914,9 @@
       "provides": [
         "_table_align"
       ],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -15441,7 +15497,10 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine",
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [],
@@ -15703,7 +15762,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -16484,7 +16545,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slots": [
@@ -16659,7 +16722,8 @@
       "stable": 132
     },
     "component_requirements": {
-      "alpine": 8
+      "alpine": 18,
+      "htmx": 23
     },
     "component_roles": {
       "component": 165,

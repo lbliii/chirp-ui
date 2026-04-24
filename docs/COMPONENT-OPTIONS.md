@@ -3677,6 +3677,7 @@ Alert component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `alpine`
 - **Slots:** `(default)`, `actions`, `header_actions`
 - **Variants:** `error`, `info`, `success`, `warning`
 - **Consumes:** `_card_variant`
@@ -3753,7 +3754,7 @@ App Shell component
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
-- **Requires:** `alpine`
+- **Requires:** `alpine`, `htmx`
 - **Slots:** `(default)`, `brand`, `sidebar`, `topbar`, `topbar_end`
 - **Modifiers:** `sidebar-collapsed`, `sidebar-collapsible`
 
@@ -4205,6 +4206,7 @@ ASCII Tabs
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Variants:** `(default)`, `accent`, `default`
 
 | Param | Required | Default |
@@ -4577,6 +4579,7 @@ Button component. Use chirpui-btn with variants. Supports loading state for htmx
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `danger`, `ghost`, `primary`, `success`, `warning`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -4891,7 +4894,7 @@ Command Palette component
 - **Category:** `interactive`
 - **Maturity:** `stable`
 - **Role:** `component`
-- **Requires:** `alpine`
+- **Requires:** `alpine`, `htmx`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -4937,6 +4940,7 @@ Confetti
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Requires:** `alpine`
 - **Variants:** `(default)`
 
 | Param | Required | Default |
@@ -4954,6 +4958,7 @@ Config row — label | control (toggle, select, editable)
 - **Category:** `container`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -4982,6 +4987,7 @@ Confirm dialog component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Slots:** `form_content`, `header_actions`
 - **Variants:** `danger`, `default`
 
@@ -5390,6 +5396,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Slots:** `(default)`
 - **Variants:** `checkbox`, `dense`, `error`, `radio`, `radio-horizontal`, `range`, `toggle`
 - **Consumes:** `_form_density`
@@ -5414,6 +5421,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5572,6 +5580,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5588,6 +5597,7 @@ Safe region / Fragment island primitives
 - **Category:** `infrastructure`
 - **Maturity:** `internal`
 - **Role:** `infrastructure`
+- **Requires:** `htmx`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5632,6 +5642,7 @@ Glow Card
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Requires:** `alpine`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -5771,6 +5782,7 @@ Icon Button
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Variants:** `(default)`, `danger`, `default`, `ghost`, `primary`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 - **Consumes:** `_bar_density`, `_suspense_busy`
@@ -5818,6 +5830,7 @@ Infinite Scroll component
 - **Category:** `interactive`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5843,6 +5856,7 @@ Inline edit field
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Variants:** `display`, `edit`
 
 | Param | Required | Default |
@@ -5889,6 +5903,7 @@ Code macros
 - **Category:** `content`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `alpine`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -6470,6 +6485,7 @@ Pagination component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6785,6 +6801,7 @@ Reveal on scroll — animate content when it enters the viewport
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Requires:** `alpine`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -6800,6 +6817,7 @@ Ripple Button
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Requires:** `alpine`
 - **Variants:** `(default)`, `default`, `primary`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -6820,6 +6838,7 @@ Route-backed subsection tabs
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6905,6 +6924,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Modifiers:** `with-icon`
 
 | Param | Required | Default |
@@ -7114,6 +7134,7 @@ Sidebar component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `alpine`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7367,6 +7388,7 @@ Split Panel
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `alpine`
 - **Slots:** `left`, `right`
 - **Modifiers:** `dragging`, `vertical`
 
@@ -7414,6 +7436,7 @@ SSE connection status and error recovery
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Modifiers:** `connected`, `disconnected`, `error`
 
 | Param | Required | Default |
@@ -7510,6 +7533,7 @@ Streaming and AI components
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `content`, `error`, `thinking`
 - **Provides:** `_streaming_role`
@@ -7603,6 +7627,7 @@ Tabs component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Modifiers:** `active`
 
 | Param | Required | Default |
@@ -7630,6 +7655,7 @@ Table component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Slots:** `(default)`, `caption`
 - **Modifiers:** `compact`, `striped`
 - **Provides:** `_table_align`
@@ -7658,6 +7684,7 @@ Table component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Slots:** `caption`
 - **Modifiers:** `sticky`
 - **Provides:** `_table_align`
@@ -7830,6 +7857,7 @@ Toast component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `alpine`, `htmx`
 - **Variants:** `error`, `info`, `success`, `warning`
 
 | Param | Required | Default |
@@ -7903,6 +7931,7 @@ Tray (slide-out panel)
 - **Category:** `overlay`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `alpine`
 - **Slots:** `(default)`
 - **Variants:** `bottom`, `left`, `right`
 - **Modifiers:** `closed`, `open`
@@ -8116,6 +8145,7 @@ Wizard form component
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Requires:** `htmx`
 - **Slots:** `(default)`
 
 | Param | Required | Default |

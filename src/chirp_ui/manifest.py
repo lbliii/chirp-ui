@@ -56,11 +56,17 @@ See ``docs/PLAN-agent-grounding-depth.md`` and
 
 import argparse
 import json
+import re
 import sys
 from typing import Any
 
 from chirp_ui import __version__
-from chirp_ui._macro_introspect import MacroInfo, description_from_template, macros_in_template
+from chirp_ui._macro_introspect import (
+    _TEMPLATES_DIR,
+    MacroInfo,
+    description_from_template,
+    macros_in_template,
+)
 from chirp_ui.alpine import ALPINE_REQUIRED_COMPONENTS
 from chirp_ui.components import _AUTO_EXTRAS, _AUTO_TRIMS, COMPONENTS, ComponentDescriptor
 from chirp_ui.inspect import list_consumes, list_provides
@@ -71,6 +77,10 @@ SCHEMA = "chirpui-manifest@2"
 _ALPINE_MACROS = frozenset(
     macro for requirement in ALPINE_REQUIRED_COMPONENTS.values() for macro in requirement.macros
 )
+_ALPINE_DIRECTIVE_RE = re.compile(
+    r"""(?<![\w-])(?:x-data|x-show|x-ref|x-cloak|x-transition|x-on:|x-bind:|:aria-[\w-]+|:class|:id|@(?:click|keydown|keyup|submit|input|change|focus|blur|mouseenter|mouseleave)[\w:.-]*)\b"""
+)
+_HTMX_CONTRACT_RE = re.compile(r"""\b(?:hx-[\w:-]+|sse-[\w:-]+|hx_[A-Za-z]\w*)\b""")
 
 
 def _resolve_macro(desc: ComponentDescriptor) -> MacroInfo | None:
@@ -92,9 +102,25 @@ def _resolve_macro(desc: ComponentDescriptor) -> MacroInfo | None:
 def _runtime_requirements(desc: ComponentDescriptor, macro_info: MacroInfo | None) -> list[str]:
     """Return sorted runtime requirements from descriptor + derived macro metadata."""
     requires = set(desc.requires)
-    if macro_info is not None and macro_info.name in _ALPINE_MACROS:
-        requires.add("alpine")
+    if macro_info is not None:
+        macro_source = _macro_source(macro_info)
+        if macro_info.name in _ALPINE_MACROS or _ALPINE_DIRECTIVE_RE.search(macro_source):
+            requires.add("alpine")
+        if _HTMX_CONTRACT_RE.search(macro_source):
+            requires.add("htmx")
     return sorted(requires)
+
+
+def _macro_source(macro_info: MacroInfo) -> str:
+    """Return the source slice for one macro body, bounded by the next ``{% def %}``."""
+    path = _TEMPLATES_DIR / macro_info.template
+    if not path.is_file():
+        return ""
+    lines = path.read_text(encoding="utf-8").splitlines()
+    macros = sorted(macros_in_template(macro_info.template).values(), key=lambda info: info.lineno)
+    following = [info.lineno for info in macros if info.lineno > macro_info.lineno]
+    end_line = min(following) - 1 if following else len(lines)
+    return "\n".join(lines[macro_info.lineno - 1 : end_line])
 
 
 def _owning_macro(macros: dict[str, MacroInfo], line: int) -> str | None:

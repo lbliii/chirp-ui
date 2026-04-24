@@ -13,6 +13,7 @@ See ``docs/PLAN-css-scope-and-layer.md § Sprint 7``.
 """
 
 import json
+import re
 import subprocess
 import sys
 
@@ -24,7 +25,7 @@ from chirp_ui.components import (
     COMPONENTS,
     RUNTIME_REQUIREMENTS,
 )
-from chirp_ui.manifest import SCHEMA, build_manifest, to_json
+from chirp_ui.manifest import SCHEMA, _macro_source, _resolve_macro, build_manifest, to_json
 from chirp_ui.tokens import TOKEN_CATALOG
 
 
@@ -117,6 +118,38 @@ def test_manifest_runtime_requirements_include_known_alpine_macros() -> None:
     assert "alpine" in m["components"]["theme-toggle"]["requires"]
     assert "alpine" in m["components"]["dropdown__item"]["requires"]
     assert "alpine" in m["components"]["copy-btn"]["requires"]
+    assert "alpine" in m["components"]["ripple-btn"]["requires"]
+    assert "alpine" in m["components"]["split-panel"]["requires"]
+
+
+def test_manifest_runtime_requirements_include_known_htmx_macros() -> None:
+    m = build_manifest()
+    assert "htmx" in m["components"]["btn"]["requires"]
+    assert "htmx" in m["components"]["pagination"]["requires"]
+    assert "htmx" in m["components"]["infinite-scroll"]["requires"]
+    assert "htmx" in m["components"]["streaming_bubble"]["requires"]
+    assert "htmx" in m["components"]["fragment-island"]["requires"]
+
+
+def test_manifest_runtime_requirements_cover_template_runtime_markers() -> None:
+    """Alpine/HTMX marker drift should surface in the manifest."""
+    alpine_pattern = re.compile(
+        r"""(?<![\w-])(?:x-data|x-show|x-ref|x-cloak|x-transition|x-on:|x-bind:|:aria-[\w-]+|:class|:id|@(?:click|keydown|keyup|submit|input|change|focus|blur|mouseenter|mouseleave)[\w:.-]*)\b"""
+    )
+    htmx_pattern = re.compile(r"""\b(?:hx-[\w:-]+|sse-[\w:-]+|hx_[A-Za-z]\w*)\b""")
+    manifest_components = build_manifest()["components"]
+    missing: list[str] = []
+    for name, desc in COMPONENTS.items():
+        macro_info = _resolve_macro(desc)
+        if macro_info is None:
+            continue
+        source = _macro_source(macro_info)
+        requirements = set(manifest_components[name]["requires"])
+        if alpine_pattern.search(source) and "alpine" not in requirements:
+            missing.append(f"{name}: alpine")
+        if htmx_pattern.search(source) and "htmx" not in requirements:
+            missing.append(f"{name}: htmx")
+    assert not missing, "runtime markers missing from manifest requirements: " + ", ".join(missing)
 
 
 def test_manifest_serializes_to_valid_json() -> None:
