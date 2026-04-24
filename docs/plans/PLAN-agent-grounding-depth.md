@@ -14,7 +14,7 @@
 The manifest is the one bet (`docs/VISION.md`). Today it grounds the **CSS class surface** but not the **macro Python API**, so coding agents that "ground in the manifest" still have to grep templates to call a macro — re-introducing the hallucination risk the registry was built to eliminate.
 
 1. **Manifest descriptors lack call signatures.** `metric_card` has 11 parameters in the macro definition (`value, label, icon, trend, trend_direction, hint, href, icon_bg, footer_label, footer_href, attrs_*`); the manifest entry exposes `slots: []`, `variants: []`, no `params` field. An agent reading the manifest cannot construct a valid call.
-2. **64/309 components are signature-opaque from the manifest** — they have a `template` but neither slots nor variants nor params. 110/309 are `category=auto` (descriptor coverage gap).
+2. **Historical: 64/309 components were signature-opaque from the manifest** — they had a `template` but neither slots nor variants nor params. The `category=auto` descriptor debt has since been cleared: CSS-only descriptors now carry explicit categories and maturity, with descriptor-local `extra_emits` / `trim_emits`.
 3. **Slot lists drift from `{% slot %}` reality.** Hand-authored `slots` field in `ComponentDescriptor` is what the manifest reports; `metric_card` uses `card`'s slots transitively but reports `[]`.
 4. **`COMPONENT-OPTIONS.md` is 3,594 lines of hand-authored API reference.** A 3.5k-line markdown doc is the same drift problem as Tailwind's class strings — exactly the failure mode the registry-as-source-of-truth thesis exists to prevent. It must become a *projection* of the manifest, not a parallel source.
 5. **Manifest is not shipped with the wheel.** `site/public/chirpui.manifest.json` only exists after `poe docs-build-all`. An agent doing zero-shot grounding (no build step) cannot read it. There's no `from chirp_ui import MANIFEST_PATH`.
@@ -192,7 +192,7 @@ Add `params` field to `ComponentDescriptor` and to the manifest emit in `chirp_u
 
 Add `tests/test_manifest_signatures.py` covering:
 - 5 representative macros (positional, defaults, `none`-defaulted, multi-kwarg).
-- Components with no template (`category=auto`) emit `params: []`, not an error.
+- Components with no template emit `params: []`, not an error.
 - Schema field is `chirpui-manifest@2`.
 
 **Acceptance**: `uv run poe ci` green; new tests pass.
@@ -340,6 +340,10 @@ Create `docs/plans/done/` and `docs/plans/`. Move each `PLAN-*.md` into one or t
 
 Search the manifest by name + category + description.
 
+Follow-on: `python -m chirp_ui find --authoring=preferred` lists the
+descriptor-backed composition vocabulary agents should reach for first;
+`--authoring=compatibility` audits retained legacy helpers.
+
 ```bash
 python -m chirp_ui find dashboard
 # → metric-card, metric-grid, animated-stat-card, stat, ...
@@ -386,7 +390,7 @@ python -m chirp_ui find --category=feedback
 
 - **`docs/VISION.md § Agent-groundable manifest`** — prerequisite vision; this epic is the first concrete delivery against the "registry as one bet" thesis beyond CSS class coverage.
 - **`docs/plans/PLAN-css-scope-and-layer.md`** — parallel; CSS is the *other* projection of the registry. This epic projects the *Python API*; together they make the registry a complete source of truth.
-- **`docs/plans/done/PLAN-descriptor-coverage.md`** — prerequisite-ish; raises descriptor coverage from the current ~64% (110/309 are `category=auto`). The two epics can interleave: this one consumes whatever descriptors exist, drift is enforced by parity tests.
+- **`docs/plans/done/PLAN-descriptor-coverage.md`** — prerequisite-ish; descriptor coverage is now explicit enough that `category=auto` is a regression, enforced by manifest tests. The two epics can interleave: this one consumes whatever descriptors exist, drift is enforced by parity tests.
 - **`docs/PROVIDE-CONSUME-KEYS.md`** — Sprint 2 task 2.3 makes this doc a projection rather than a hand-authored register.
 - **`AGENTS.md`** — Sprint 4 task 4.3 amends it. The escape-hatch and done-criteria sections are load-bearing for agents using the new contract.
 

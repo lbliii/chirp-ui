@@ -7,6 +7,7 @@ Navigation guide for all chirp-ui documentation.
 ## Core Guides
 
 - [LAYOUT.md](LAYOUT.md) — Horizontal overflow, vertical fill, grid vs frame primitives (consolidated)
+- [PRIMITIVES.md](PRIMITIVES.md) — Blessed composition primitives vs legacy compatibility helpers
 - [LAYOUT-PRESETS.md](LAYOUT-PRESETS.md) — Grid preset names, aliases, and breakpoint tokens
 - [COMPOSITION.md](COMPOSITION.md) — Component composition patterns and slot mechanics
 - [TYPOGRAPHY.md](TYPOGRAPHY.md) — Type scale, font tokens, and text utilities
@@ -53,6 +54,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-ascii-maturity.md](plans/PLAN-ascii-maturity.md) — ASCII art component maturity (partial)
 - [PLAN-test-coverage-hardening.md](plans/PLAN-test-coverage-hardening.md) — Test coverage expansion (partial)
 - [PLAN-theme-tokens.md](plans/PLAN-theme-tokens.md) — Theme token standardization
+- [PLAN-primitive-vocabulary-hardening.md](plans/PLAN-primitive-vocabulary-hardening.md) — Primitive vs legacy helper vocabulary hardening
 - [PLAN-sidebar-nav-refinements.md](plans/PLAN-sidebar-nav-refinements.md) — Sidebar nav refinements
 - [PLAN-route-tabs-and-tabbed-layout.md](plans/PLAN-route-tabs-and-tabbed-layout.md) — Route tabs architecture
 - [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary

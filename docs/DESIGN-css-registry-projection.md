@@ -79,7 +79,7 @@ Pure Python, stdlib only, deterministic byte-for-byte given the same input.
 
 ## Decision 4 — Registry `emits` schema
 
-`ComponentDescriptor` gains one field:
+`ComponentDescriptor` gained two descriptor-local emit fields:
 
 ```python
 @dataclass(frozen=True, slots=True)
@@ -91,7 +91,9 @@ class ComponentDescriptor:
     elements: tuple[str, ...] = ()
     slots: tuple[str, ...] = ()
     tokens: tuple[str, ...] = ()
-    extra_emits: tuple[str, ...] = ()     # NEW — escape hatch
+    extra_emits: tuple[str, ...] = ()     # escape hatch for non-grammar classes
+    trim_emits: tuple[str, ...] = ()      # explicit style-less grammar trims
+    authoring: str = ""                   # preferred / available / compatibility / internal
     template: str = ""
 
     @property
@@ -103,12 +105,15 @@ class ComponentDescriptor:
         classes |= {f"chirpui-{self.block}--{s}" for s in self.sizes}
         classes |= {f"chirpui-{self.block}--{m}" for m in self.modifiers}
         classes |= set(self.extra_emits)
+        classes -= set(self.trim_emits)
         return frozenset(classes)
 ```
 
 **Why a derived property instead of a stored field:**
 - The generator is trivial and cannot drift — it *is* the BEM grammar.
 - `extra_emits` captures only what the grammar can't express (compound states like `chirpui-card__header-wrap`, internal structural elements not surfaced as BEM elements, etc.).
+- `trim_emits` captures explicit vocabulary/classes that are accepted by a descriptor but intentionally have no standalone CSS rule (for example default/implicit variants). This keeps exceptions on the owning descriptor instead of in global reconciliation maps.
+- `authoring` captures agent-facing recommendation level on the descriptor. The manifest projects it so preferred primitives and compatibility helpers are machine-visible without adding a second registry.
 
 **Parity test** (S4):
 - Parse `.chirpui-<ident>` from every partial.
