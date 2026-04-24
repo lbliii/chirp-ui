@@ -16,8 +16,9 @@ Per-component entry (one per manifest key, sorted):
 * ``- Macro:`` resolved macro identifier (when extractable)
 * ``- Maturity:``, ``- Role:``, ``- Requires:`` manifest metadata
 * Params table (name | required | default?)  — only when ``params`` non-empty
-* Slots / Variants / Sizes / Modifiers / Provides / Consumes — one bullet each,
-  only when the list is non-empty
+* Slots / Composes / Variants / Sizes / Modifiers / Provides / Consumes — one
+  bullet each, only when the list is non-empty
+* Slot forwards table (slot | target | target slot) — only when present
 
 Pure-Python, stdlib only, deterministic. Mirrors ``scripts/build_manifest.py``
 — same ``--check`` gate pattern so CI fails when the committed doc drifts from
@@ -74,6 +75,15 @@ def _params_table(params: list[dict]) -> list[str]:
     return lines
 
 
+def _slot_forwards_table(slot_forwards: list[dict]) -> list[str]:
+    lines = ["", "| Slot | Target | Target slot |", "|------|--------|-------------|"]
+    for forward in slot_forwards:
+        slot = forward["slot"] or "(default)"
+        target_slot = forward["target_slot"] or "(default)"
+        lines.append(f"| `{slot}` | `{forward['target']}` | `{target_slot}` |")
+    return lines
+
+
 def _render_component(name: str, entry: dict) -> list[str]:
     lines: list[str] = [f"### `{name}`", ""]
     summary = _summary_line(entry.get("description", ""))
@@ -96,6 +106,7 @@ def _render_component(name: str, entry: dict) -> list[str]:
 
     list_fields = [
         ("Slots", entry.get("slots") or []),
+        ("Composes", entry.get("composes") or []),
         ("Variants", entry.get("variants") or []),
         ("Sizes", entry.get("sizes") or []),
         ("Modifiers", entry.get("modifiers") or []),
@@ -111,6 +122,10 @@ def _render_component(name: str, entry: dict) -> list[str]:
     params = entry.get("params") or []
     if params:
         lines.extend(_params_table(params))
+
+    slot_forwards = entry.get("slot_forwards") or []
+    if slot_forwards:
+        lines.extend(_slot_forwards_table(slot_forwards))
 
     lines.append("")
     return lines

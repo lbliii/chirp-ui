@@ -1,7 +1,9 @@
-"""Slot parity — descriptor.slots vs. AST-extracted slots.
+"""Slot parity — descriptor.slots vs. extracted public macro slots.
 
 Sprint 2 of the agent-grounding-depth epic auto-extracts ``{% slot %}`` tags
 from each macro body and emits them in the manifest as ``slots_extracted``.
+Composite wrappers also expose caller-provided slots via ``{% yield %}``,
+emitted separately as ``slots_yielded``.
 The manifest's ``slots`` field is the *union* of descriptor + extracted, so
 the agent-facing surface never under-reports a real slot.
 
@@ -53,8 +55,6 @@ KNOWN_DRIFT: frozenset[str] = frozenset(
         "command-palette",
         "constellation",
         "description_list",
-        "document-header",
-        "empty-panel-state",
         "entity-header",
         "feature-stack",
         "fieldset",
@@ -75,7 +75,6 @@ KNOWN_DRIFT: frozenset[str] = frozenset(
         "notification-dot",
         "orbit",
         "page_hero",
-        "panel",
         "particle-bg",
         "profile-header",
         "resource-index",
@@ -90,18 +89,15 @@ KNOWN_DRIFT: frozenset[str] = frozenset(
         "surface",
         "suspense-slot",
         "symbol-rain",
-        "table",
-        "timeline",
         "tooltip",
         "wizard-form",
         "wobble",
-        "workspace-shell",
     }
 )
 
 
 def _drift_set() -> set[str]:
-    """Return the names of components whose descriptor.slots ≠ extracted slots."""
+    """Return names whose descriptor.slots differ from direct plus yielded slots."""
     drifting: set[str] = set()
     for name in sorted(COMPONENTS):
         desc = COMPONENTS[name]
@@ -112,7 +108,9 @@ def _drift_set() -> set[str]:
         info = macros.get(target)
         if info is None:
             continue
-        if set(desc.slots) != set(info.slots):
+        forwarded_slots = {forward.slot for forward in desc.slot_forwards}
+        public_slots = set(info.slots) | set(info.yielded_slots) | forwarded_slots
+        if set(desc.slots) != public_slots:
             drifting.add(name)
     return drifting
 
