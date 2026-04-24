@@ -60,6 +60,11 @@ def test_manifest_covers_every_component() -> None:
         assert entry["variants"] == sorted(desc.variants)
         assert entry["sizes"] == sorted(desc.sizes)
         assert entry["modifiers"] == sorted(desc.modifiers)
+        assert entry["composes"] == sorted(desc.composes)
+        assert entry["slot_forwards"] == [
+            {"slot": f.slot, "target": f.target, "target_slot": f.target_slot}
+            for f in sorted(desc.slot_forwards, key=lambda f: (f.slot, f.target, f.target_slot))
+        ]
         # Sprint 2 widened ``slots`` to the union of descriptor + AST-extracted
         # slots. The manifest must always be a superset of the descriptor;
         # parity is enforced separately by ``tests/test_slot_parity.py``.
@@ -151,6 +156,99 @@ def test_public_templated_manifest_entries_have_quality_fields() -> None:
     assert not missing, "public templated manifest entries missing quality fields: " + ", ".join(
         missing
     )
+
+
+def test_layout_descriptor_burndown_stays_explicit() -> None:
+    """PR-sized layout descriptor burn-down should not regress into auto extras."""
+    migrated_blocks = {
+        "app-shell",
+        "band",
+        "page-header",
+        "section-header",
+    }
+    assert not (migrated_blocks & set(_AUTO_EXTRAS))
+
+    explicit_classes = {
+        "app-shell": {
+            "chirpui-app-shell__main--fill",
+            "chirpui-app-shell__sidebar--glass",
+            "chirpui-app-shell__sidebar--muted",
+            "chirpui-app-shell__topbar--glass",
+            "chirpui-app-shell__topbar--gradient",
+        },
+        "band": {"chirpui-band--pattern-dots", "chirpui-band--pattern-grid"},
+        "page_header": {
+            "chirpui-page-header__actions",
+            "chirpui-page-header__breadcrumbs",
+            "chirpui-page-header__meta",
+            "chirpui-page-header__top",
+        },
+        "section_header": {
+            "chirpui-section-header__actions",
+            "chirpui-section-header__icon",
+            "chirpui-section-header__title-block",
+            "chirpui-section-header__title-inline",
+            "chirpui-section-header__top",
+        },
+    }
+    for component_name, class_names in explicit_classes.items():
+        assert class_names <= COMPONENTS[component_name].emits
+
+    for component_name in (
+        "page-fill",
+        "search-header",
+        "section-collapsible",
+        "shell-action-form",
+        "shell-section",
+    ):
+        assert COMPONENTS[component_name].category == "layout"
+
+    m = build_manifest()
+    assert m["components"]["search-header"]["macro"] == "search_header"
+    assert m["components"]["section-collapsible"]["macro"] == "section_collapsible"
+
+
+def test_slot_forward_metadata_is_structurally_valid() -> None:
+    """Composite slot forwards point from real public slots to real child slots."""
+    components = build_manifest()["components"]
+    for name, entry in components.items():
+        composes = set(entry["composes"])
+        source_slots = set(entry["slots"])
+        for forward in entry["slot_forwards"]:
+            assert forward["slot"] in source_slots, f"{name}: source slot missing"
+            assert forward["target"] in components, f"{name}: target component missing"
+            assert forward["target"] in composes, f"{name}: target not listed in composes"
+            target_slots = set(components[forward["target"]]["slots"])
+            assert forward["target_slot"] in target_slots, f"{name}: target slot missing"
+
+
+def test_composite_slot_forward_manifest_examples() -> None:
+    components = build_manifest()["components"]
+
+    assert components["document-header"]["composes"] == ["page_header"]
+    assert components["document-header"]["slot_forwards"] == [
+        {"slot": "actions", "target": "page_header", "target_slot": "actions"}
+    ]
+
+    workspace = components["workspace-shell"]
+    assert workspace["composes"] == ["panel", "split-layout"]
+    assert set(workspace["slots"]) >= {"", "toolbar", "sidebar", "inspector"}
+    assert workspace["slots_yielded"] == ["", "inspector", "sidebar"]
+    assert workspace["slot_forwards"] == [
+        {"slot": "inspector", "target": "panel", "target_slot": ""},
+        {"slot": "sidebar", "target": "panel", "target_slot": ""},
+    ]
+
+    assert components["empty-panel-state"]["slot_forwards"] == [
+        {"slot": "", "target": "empty-state", "target_slot": ""},
+        {"slot": "action", "target": "empty-state", "target_slot": "action"},
+        {"slot": "actions", "target": "empty-state", "target_slot": "actions"},
+    ]
+    assert components["file-tree"]["slot_forwards"] == [
+        {"slot": "actions", "target": "panel", "target_slot": "actions"},
+        {"slot": "footer", "target": "panel", "target_slot": "footer"},
+        {"slot": "header", "target": "nav-tree", "target_slot": "header"},
+    ]
 
 
 def test_manifest_runtime_requirements_include_known_alpine_macros() -> None:

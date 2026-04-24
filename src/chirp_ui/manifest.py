@@ -7,13 +7,15 @@ and templates instead of plausible-sounding ones.
 
 Schema
 ------
-``{"schema": "chirpui-manifest@2", "version": "<pkg>", "components": {...},
+``{"schema": "chirpui-manifest@3", "version": "<pkg>", "components": {...},
  "tokens": {...}, "stats": {...}}``
 
 * ``components`` keys sorted; each entry contains ``block``, ``variants``,
   ``sizes``, ``modifiers``, ``elements``, ``slots``, ``tokens``, ``extra_emits``,
   ``emits``, ``template``, ``category``, ``maturity``, ``role``, ``requires``,
-  plus the ``@2`` additions ``macro``, ``params``, and ``lineno``.
+  plus the ``@2`` additions ``macro``, ``params``, and ``lineno`` and the
+  ``@3`` composition additions ``composes``, ``slot_forwards``, and
+  ``slots_yielded``.
 * ``params`` is a list of ``{"name": str, "has_default": bool,
   "is_required": bool}`` derived from the template AST via
   :mod:`chirp_ui._macro_introspect`. Empty when the descriptor has no
@@ -24,13 +26,17 @@ Schema
   template or no matching macro is found.
 * ``lineno`` is the source line of the ``{% def %}`` tag (``0`` when
   unavailable).
-* ``slots`` is the sorted union of ``descriptor.slots`` and slots
-  extracted from the macro body. The unnamed default slot is represented
-  as ``""``. Hand-authored descriptor entries can over-declare (e.g. for
-  documentation), but the manifest never under-reports a real slot.
+* ``slots`` is the sorted union of ``descriptor.slots``, direct slots
+  extracted from the macro body, and yielded slots accepted by composite
+  wrappers. The unnamed default slot is represented as ``""``. Hand-authored
+  descriptor entries can over-declare (e.g. for documentation), but the
+  manifest never under-reports a real slot.
 * ``slots_extracted`` is the AST-derived slot list (sorted, default = ``""``)
   exposed separately so parity tests can spot descriptor↔template drift
   without losing the merged ``slots`` contract.
+* ``slots_yielded`` is the source-derived list of ``{% yield %}`` /
+  ``{% yield name %}`` caller slots. Composite forwarding metadata is explicit
+  in ``composes`` and ``slot_forwards``.
 * ``provides`` / ``consumes`` are sorted lists of context keys (e.g.
   ``"_card_variant"``) sourced from :mod:`chirp_ui.inspect`. A key is
   attributed to the macro whose ``{% def %}`` lineno is the largest one
@@ -73,7 +79,7 @@ from chirp_ui.components import _AUTO_EXTRAS, _AUTO_TRIMS, COMPONENTS, Component
 from chirp_ui.inspect import list_consumes, list_provides
 from chirp_ui.tokens import TOKEN_CATALOG
 
-SCHEMA = "chirpui-manifest@2"
+SCHEMA = "chirpui-manifest@3"
 
 _ALPINE_MACROS = frozenset(
     macro for requirement in ALPINE_REQUIRED_COMPONENTS.values() for macro in requirement.macros
@@ -209,6 +215,7 @@ def build_manifest() -> dict[str, Any]:
         macro_info = _resolve_macro(desc)
         params: list[dict[str, Any]] = []
         slots_extracted: list[str] = []
+        slots_yielded: list[str] = []
         provides: list[str] = []
         consumes: list[str] = []
         description = description_from_template(desc.template) if desc.template else ""
@@ -221,6 +228,7 @@ def build_manifest() -> dict[str, Any]:
                 for p in macro_info.params
             ]
             slots_extracted = sorted(macro_info.slots)
+            slots_yielded = sorted(macro_info.yielded_slots)
             pc_provides, pc_consumes = pc_index.get(
                 (macro_info.template, macro_info.name), (set(), set())
             )
@@ -230,7 +238,7 @@ def build_manifest() -> dict[str, Any]:
                 components_with_provides += 1
             if consumes:
                 components_with_consumes += 1
-        slots_union = sorted(set(desc.slots) | set(slots_extracted))
+        slots_union = sorted(set(desc.slots) | set(slots_extracted) | set(slots_yielded))
         requires = _runtime_requirements(desc, macro_info)
         components[name] = {
             "block": desc.block,
@@ -240,6 +248,12 @@ def build_manifest() -> dict[str, Any]:
             "elements": sorted(desc.elements),
             "slots": slots_union,
             "slots_extracted": slots_extracted,
+            "slots_yielded": slots_yielded,
+            "composes": sorted(desc.composes),
+            "slot_forwards": [
+                {"slot": f.slot, "target": f.target, "target_slot": f.target_slot}
+                for f in sorted(desc.slot_forwards, key=lambda f: (f.slot, f.target, f.target_slot))
+            ],
             "tokens": sorted(desc.tokens),
             "extra_emits": sorted(desc.extra_emits),
             "emits": sorted(desc.emits),

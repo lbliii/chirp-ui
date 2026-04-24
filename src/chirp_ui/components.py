@@ -24,6 +24,7 @@ __all__ = [
     "ComponentDescriptor",
     "DesignSystemReport",
     "DesignSystemStats",
+    "SlotForward",
     "design_system_report",
 ]
 
@@ -200,15 +201,6 @@ _AUTO_EXTRAS: dict[str, frozenset[str]] = {
         {
             "chirpui-animated-stat-card__trend--down",
             "chirpui-animated-stat-card__trend--up",
-        }
-    ),
-    "app-shell": frozenset(
-        {
-            "chirpui-app-shell__main--fill",
-            "chirpui-app-shell__sidebar--glass",
-            "chirpui-app-shell__sidebar--muted",
-            "chirpui-app-shell__topbar--glass",
-            "chirpui-app-shell__topbar--gradient",
         }
     ),
     "ascii-7seg": frozenset(
@@ -440,7 +432,6 @@ _AUTO_EXTRAS: dict[str, frozenset[str]] = {
             "chirpui-aurora__content",
         }
     ),
-    "band": frozenset({"chirpui-band--pattern-dots", "chirpui-band--pattern-grid"}),
     "border-beam": frozenset({"chirpui-border-beam__beam", "chirpui-border-beam__content"}),
     "breadcrumbs": frozenset(
         {
@@ -612,14 +603,6 @@ _AUTO_EXTRAS: dict[str, frozenset[str]] = {
             "chirpui-orbit__ring",
         }
     ),
-    "page-header": frozenset(
-        {
-            "chirpui-page-header__actions",
-            "chirpui-page-header__breadcrumbs",
-            "chirpui-page-header__meta",
-            "chirpui-page-header__top",
-        }
-    ),
     "pagination": frozenset(
         {
             "chirpui-pagination__link--active",
@@ -678,15 +661,6 @@ _AUTO_EXTRAS: dict[str, frozenset[str]] = {
             "chirpui-rune-field__layer--near",
             "chirpui-rune-field__layers",
             "chirpui-rune-field__rune",
-        }
-    ),
-    "section-header": frozenset(
-        {
-            "chirpui-section-header__actions",
-            "chirpui-section-header__icon",
-            "chirpui-section-header__title-block",
-            "chirpui-section-header__title-inline",
-            "chirpui-section-header__top",
         }
     ),
     "segmented": frozenset(
@@ -807,6 +781,20 @@ _AUTO_EXTRAS: dict[str, frozenset[str]] = {
 
 
 @dataclass(frozen=True, slots=True)
+class SlotForward:
+    """Explicit mapping from a composite's public slot to a composed child slot.
+
+    ``slot`` and ``target_slot`` use ``""`` for the default slot, matching
+    :attr:`ComponentDescriptor.slots` and the manifest convention.
+    ``target`` is a key in :data:`COMPONENTS`, not a CSS block or macro name.
+    """
+
+    slot: str
+    target: str
+    target_slot: str = ""
+
+
+@dataclass(frozen=True, slots=True)
 class ComponentDescriptor:
     """Frozen description of a single chirp-ui component's public CSS API.
 
@@ -825,7 +813,13 @@ class ComponentDescriptor:
     elements : tuple[str, ...]
         BEM elements (``chirpui-{block}__{element}``).
     slots : tuple[str, ...]
-        Kida ``{% slot %}`` names the macro defines (``""`` = default slot).
+        Public caller slots the macro accepts (``""`` = default slot). This
+        includes direct Kida ``{% slot %}`` placeholders and caller content
+        forwarded into composed children.
+    composes : tuple[str, ...]
+        Component registry keys this component semantically composes.
+    slot_forwards : tuple[SlotForward, ...]
+        Explicit public-slot forwarding contracts into composed children.
     tokens : tuple[str, ...]
         Component-scoped CSS custom properties (override knobs for theming).
     extra_emits : tuple[str, ...]
@@ -863,6 +857,8 @@ class ComponentDescriptor:
     modifiers: tuple[str, ...] = ()
     elements: tuple[str, ...] = ()
     slots: tuple[str, ...] = ()
+    composes: tuple[str, ...] = ()
+    slot_forwards: tuple[SlotForward, ...] = ()
     tokens: tuple[str, ...] = ()
     extra_emits: tuple[str, ...] = ()
     template: str = ""
@@ -1031,7 +1027,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "confirm": ComponentDescriptor(
         block="confirm",
         variants=("default", "danger"),
-        slots=("header_actions", "form_content"),
+        slots=("header_actions", "message", "form_content"),
         template="confirm.html",
         category="feedback",
         maturity="stable",
@@ -1139,6 +1135,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "panel": ComponentDescriptor(
         block="panel",
+        slots=("", "actions", "footer"),
         template="panel.html",
         category="container",
         maturity="stable",
@@ -1198,6 +1195,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "page_header": ComponentDescriptor(
         block="page-header",
         variants=("default", "compact"),
+        elements=("actions", "breadcrumbs", "meta", "top"),
         slots=("actions",),
         template="layout.html",
         category="layout",
@@ -1206,6 +1204,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "section_header": ComponentDescriptor(
         block="section-header",
         variants=("default", "inline"),
+        elements=("actions", "icon", "title-block", "title-inline", "top"),
         slots=("actions",),
         template="layout.html",
         category="layout",
@@ -1296,6 +1295,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "marquee": ComponentDescriptor(
         block="marquee",
         variants=("", "default", "reverse"),
+        slots=("",),
         template="marquee.html",
         category="effect",
         maturity="experimental",
@@ -1318,6 +1318,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="dock",
         variants=("", "default", "glass"),
         sizes=("", "sm", "md", "lg"),
+        slots=("",),
         template="dock.html",
         category="effect",
         maturity="experimental",
@@ -1698,6 +1699,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         modifiers=("inset", "bleed", "contained"),
         elements=(),
         slots=("", "header"),
+        extra_emits=("chirpui-band--pattern-dots", "chirpui-band--pattern-grid"),
         tokens=(
             "--chirpui-band-bg",
             "--chirpui-band-border",
@@ -1818,7 +1820,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "table-wrap": ComponentDescriptor(
         block="table-wrap",
         modifiers=("sticky",),
-        slots=("caption",),
+        slots=("", "caption"),
         template="table.html",
         category="data-display",
         maturity="stable",
@@ -1934,6 +1936,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="list",
         modifiers=("bordered",),
         elements=("item", "link"),
+        slots=("",),
         template="list.html",
         category="data-display",
         maturity="stable",
@@ -2117,6 +2120,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "sidebar-resize",
             "main",
         ),
+        extra_emits=(
+            "chirpui-app-shell__main--fill",
+            "chirpui-app-shell__sidebar--glass",
+            "chirpui-app-shell__sidebar--muted",
+            "chirpui-app-shell__topbar--glass",
+            "chirpui-app-shell__topbar--gradient",
+        ),
         slots=("", "brand", "topbar", "topbar_end", "sidebar"),
         tokens=(
             "--chirpui-sidebar-width",
@@ -2140,7 +2150,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "content-layout",
             "main",
         ),
-        slots=("", "toolbar", "inspector"),
+        slots=("", "toolbar", "sidebar", "inspector"),
+        composes=("split-layout", "panel"),
+        slot_forwards=(
+            SlotForward("sidebar", "panel"),
+            SlotForward("inspector", "panel"),
+        ),
         template="workspace_shell.html",
         category="layout",
         maturity="stable",
@@ -2311,6 +2326,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "input-group": ComponentDescriptor(
         block="input-group",
         elements=("input", "prefix", "suffix"),
+        slots=("prefix", "suffix"),
         template="forms.html",
         category="form",
         maturity="stable",
@@ -2609,6 +2625,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "empty-panel-state": ComponentDescriptor(
         block="empty-panel-state",
         modifiers=("compact",),
+        slots=("", "actions", "action"),
+        composes=("empty-state",),
+        slot_forwards=(
+            SlotForward("", "empty-state"),
+            SlotForward("actions", "empty-state", "actions"),
+            SlotForward("action", "empty-state", "action"),
+        ),
         template="empty_panel_state.html",
         category="feedback",
         maturity="stable",
@@ -2624,6 +2647,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "file-tree": ComponentDescriptor(
         block="file-tree",
         elements=("nav",),
+        slots=("actions", "header", "footer"),
+        composes=("panel", "nav-tree"),
+        slot_forwards=(
+            SlotForward("actions", "panel", "actions"),
+            SlotForward("header", "nav-tree", "header"),
+            SlotForward("footer", "panel", "footer"),
+        ),
         template="file_tree.html",
         category="data-display",
         maturity="stable",
@@ -2826,7 +2856,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "body",
             "action",
         ),
-        slots=("",),
+        slots=("", "actions", "action"),
         template="empty.html",
         category="feedback",
         maturity="stable",
@@ -3114,6 +3144,8 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         block="document-header",
         elements=("detail", "details", "eyebrow", "page-header", "path", "status"),
         slots=("actions",),
+        composes=("page_header",),
+        slot_forwards=(SlotForward("actions", "page_header", "actions"),),
         template="document_header.html",
         category="layout",
         maturity="stable",
@@ -3291,7 +3323,9 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "page-fill": ComponentDescriptor(
         block="page-fill",
-        category="auto",
+        category="layout",
+        maturity="experimental",
+        role="primitive",
     ),
     "placeholder-inline": ComponentDescriptor(
         block="placeholder-inline",
@@ -3339,21 +3373,34 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     "search-header": ComponentDescriptor(
         block="search-header",
         elements=("form", "strip"),
-        category="auto",
+        template="search_header.html",
+        category="layout",
+        maturity="experimental",
+        role="primitive",
     ),
     "section-collapsible": ComponentDescriptor(
         block="section-collapsible",
         elements=("summary",),
-        category="auto",
+        slots=("",),
+        composes=("surface", "section_header"),
+        slot_forwards=(SlotForward("", "surface"),),
+        template="layout.html",
+        category="layout",
+        maturity="experimental",
+        role="primitive",
     ),
     "shell-action-form": ComponentDescriptor(
         block="shell-action-form",
-        category="auto",
+        category="layout",
+        maturity="experimental",
+        role="primitive",
     ),
     "shell-section": ComponentDescriptor(
         block="shell-section",
         elements=("content", "nav"),
-        category="auto",
+        category="layout",
+        maturity="experimental",
+        role="primitive",
     ),
     "spinner-thinking": ComponentDescriptor(
         block="spinner-thinking",

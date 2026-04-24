@@ -4988,7 +4988,7 @@ Confirm dialog component
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Requires:** `htmx`
-- **Slots:** `form_content`, `header_actions`
+- **Slots:** `form_content`, `header_actions`, `message`
 - **Variants:** `danger`, `default`
 
 | Param | Required | Default |
@@ -5102,7 +5102,7 @@ Description list component
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
-- **Slots:** `header`
+- **Slots:** `(default)`, `header`
 - **Variants:** `horizontal`, `stacked`
 
 | Param | Required | Default |
@@ -5175,6 +5175,7 @@ Floating Dock
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Slots:** `(default)`
 - **Variants:** `(default)`, `default`, `glass`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -5195,6 +5196,7 @@ Document header
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Slots:** `actions`
+- **Composes:** `page_header`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5208,6 +5210,10 @@ Document header
 | `status` | no | (has default) |
 | `meta_items` | no | (has default) |
 | `cls` | no | (has default) |
+
+| Slot | Target | Target slot |
+|------|--------|-------------|
+| `actions` | `page_header` | `actions` |
 
 ### `donut`
 
@@ -5295,7 +5301,8 @@ Empty panel state
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
-- **Slots:** `(default)`
+- **Slots:** `(default)`, `action`, `actions`
+- **Composes:** `empty-state`
 - **Modifiers:** `compact`
 
 | Param | Required | Default |
@@ -5311,6 +5318,12 @@ Empty panel state
 | `compact` | no | (has default) |
 | `cls` | no | (has default) |
 
+| Slot | Target | Target slot |
+|------|--------|-------------|
+| `(default)` | `empty-state` | `(default)` |
+| `action` | `empty-state` | `action` |
+| `actions` | `empty-state` | `actions` |
+
 ### `empty-state`
 
 Empty State component
@@ -5320,7 +5333,7 @@ Empty State component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
-- **Slots:** `(default)`
+- **Slots:** `(default)`, `action`, `actions`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5438,6 +5451,8 @@ File tree
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Slots:** `actions`, `footer`, `header`
+- **Composes:** `nav-tree`, `panel`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5448,6 +5463,12 @@ File tree
 | `surface_variant` | no | (has default) |
 | `scroll_body` | no | (has default) |
 | `cls` | no | (has default) |
+
+| Slot | Target | Target slot |
+|------|--------|-------------|
+| `actions` | `panel` | `actions` |
+| `footer` | `panel` | `footer` |
+| `header` | `nav-tree` | `header` |
 
 ### `filter-bar`
 
@@ -5831,7 +5852,7 @@ Infinite Scroll component
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Requires:** `htmx`
-- **Slots:** `(default)`
+- **Slots:** `(default)`, `loading`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5878,6 +5899,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Slots:** `prefix`, `suffix`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5976,6 +5998,7 @@ List component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Slots:** `(default)`
 - **Modifiers:** `bordered`
 
 | Param | Required | Default |
@@ -6037,6 +6060,7 @@ Marquee
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Slots:** `(default)`
 - **Variants:** `(default)`, `default`, `reverse`
 
 | Param | Required | Default |
@@ -6431,7 +6455,7 @@ Overlay component
 
 ### `page-fill`
 
-- **Category:** `auto`
+- **Category:** `layout`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
 
@@ -6950,15 +6974,58 @@ Form field macros
 
 ### `search-header`
 
-- **Category:** `auto`
+Search Header composite
+
+- **Template:** `chirpui/search_header.html`
+- **Macro:** `search_header`
+- **Category:** `layout`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `form_action` | yes | — |
+| `query` | no | (has default) |
+| `search_name` | no | (has default) |
+| `subtitle` | no | (has default) |
+| `meta` | no | (has default) |
+| `breadcrumb_items` | no | (has default) |
+| `form_method` | no | (has default) |
+| `form_attrs` | no | (has default) |
+| `form_attrs_unsafe` | no | (has default) |
+| `form_attrs_map` | no | (has default) |
+| `search_placeholder` | no | (has default) |
+| `button_label` | no | (has default) |
+| `button_icon` | no | (has default) |
+| `surface_variant` | no | (has default) |
+| `density` | no | (has default) |
+| `wrap` | no | (has default) |
+| `sticky` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `section-collapsible`
 
-- **Category:** `auto`
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `section_collapsible`
+- **Category:** `layout`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Slots:** `(default)`
+- **Composes:** `section_header`, `surface`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `open` | no | (has default) |
+| `surface_variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+| Slot | Target | Target slot |
+|------|--------|-------------|
+| `(default)` | `surface` | `(default)` |
 
 ### `section_header`
 
@@ -7057,7 +7124,7 @@ Settings row — label | status badge | detail
 
 ### `shell-action-form`
 
-- **Category:** `auto`
+- **Category:** `layout`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
 
@@ -7078,7 +7145,7 @@ Shell actions renderer
 
 ### `shell-section`
 
-- **Category:** `auto`
+- **Category:** `layout`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
 
@@ -7688,7 +7755,7 @@ Table component
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Requires:** `htmx`
-- **Slots:** `caption`
+- **Slots:** `(default)`, `caption`
 - **Modifiers:** `sticky`
 - **Provides:** `_table_align`
 
@@ -8186,7 +8253,8 @@ Workspace shell
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
-- **Slots:** `(default)`, `inspector`, `toolbar`
+- **Slots:** `(default)`, `inspector`, `sidebar`, `toolbar`
+- **Composes:** `panel`, `split-layout`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -8198,4 +8266,9 @@ Workspace shell
 | `sidebar_surface_variant` | no | (has default) |
 | `inspector_surface_variant` | no | (has default) |
 | `cls` | no | (has default) |
+
+| Slot | Target | Target slot |
+|------|--------|-------------|
+| `inspector` | `panel` | `(default)` |
+| `sidebar` | `panel` | `(default)` |
 <!-- chirpui:generated:end -->
