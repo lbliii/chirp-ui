@@ -65,7 +65,7 @@ __all__ = [
     "static_path",
 ]
 
-# Path to the shipped ``chirpui-manifest@2`` JSON. Populated at build time by
+# Path to the shipped ``chirpui-manifest@3`` JSON. Populated at build time by
 # ``scripts/build_manifest.py`` and committed as package data; CI's
 # ``build-manifest-check`` task guards against drift. Agents and tooling can
 # ground against this file after a clean ``pip install chirp-ui`` with no

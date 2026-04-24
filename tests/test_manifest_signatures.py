@@ -1,8 +1,9 @@
 """Manifest signature contract tests (Sprint 1 of agent-grounding-depth epic).
 
-These tests pin the ``@2`` schema additions: every component descriptor with
+These tests pin the ``@3`` schema additions: every component descriptor with
 a discoverable macro surfaces ``params`` (positional order, ``has_default`` /
-``is_required`` flags), ``macro`` (resolved identifier), and ``lineno``.
+``is_required`` flags), ``macro`` (resolved identifier), ``lineno``, and
+composite slot-forwarding metadata.
 
 See ``docs/PLAN-agent-grounding-depth.md § Sprint 1`` and
 ``docs/DESIGN-manifest-signature-extraction.md``.
@@ -14,9 +15,9 @@ from chirp_ui.components import COMPONENTS
 from chirp_ui.manifest import SCHEMA, build_manifest
 
 
-def test_schema_is_v2() -> None:
-    assert SCHEMA == "chirpui-manifest@2"
-    assert build_manifest()["schema"] == "chirpui-manifest@2"
+def test_schema_is_v3() -> None:
+    assert SCHEMA == "chirpui-manifest@3"
+    assert build_manifest()["schema"] == "chirpui-manifest@3"
 
 
 def test_metric_card_signature() -> None:
@@ -205,6 +206,20 @@ def test_panel_slots_extracted_includes_actions() -> None:
     """``panel`` declares no slots in the descriptor but the template has 3."""
     entry = build_manifest()["components"]["panel"]
     assert sorted(entry["slots_extracted"]) == sorted(["", "actions", "footer"])
+
+
+def test_document_header_yielded_actions_slot() -> None:
+    entry = build_manifest()["components"]["document-header"]
+    assert entry["slots_extracted"] == []
+    assert entry["slots_yielded"] == ["actions"]
+    assert "actions" in entry["slots"]
+
+
+def test_workspace_shell_yielded_slots_are_public_slots() -> None:
+    entry = build_manifest()["components"]["workspace-shell"]
+    assert entry["slots_extracted"] == ["toolbar"]
+    assert entry["slots_yielded"] == ["", "inspector", "sidebar"]
+    assert set(entry["slots"]) >= {"", "toolbar", "sidebar", "inspector"}
 
 
 def test_metric_card_has_no_slots() -> None:

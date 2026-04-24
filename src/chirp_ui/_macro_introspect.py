@@ -31,6 +31,7 @@ _DOCBLOCK_RE = re.compile(
     r"\{#-?\s*chirp-ui:\s*(.*?)\s*-?#\}",
     re.DOTALL,
 )
+_YIELD_RE = re.compile(r"\{%-?\s*yield(?:\s+([a-zA-Z_][a-zA-Z0-9_]*))?\s*-?%\}")
 
 
 @dataclass(frozen=True, slots=True)
@@ -57,6 +58,8 @@ class MacroInfo:
     macro body, in declaration order, deduplicated (a slot rendered twice
     appears once). The unnamed default slot is normalized from kida's
     ``"default"`` to ``""`` to match ``ComponentDescriptor.slots`` convention.
+    ``yielded_slots`` is the tuple of ``{% yield %}`` / ``{% yield name %}``
+    caller slots accepted by composite macros and forwarded into child calls.
     """
 
     name: str
@@ -64,6 +67,7 @@ class MacroInfo:
     lineno: int
     params: tuple[ParamInfo, ...]
     slots: tuple[str, ...]
+    yielded_slots: tuple[str, ...]
 
 
 @cache
@@ -79,19 +83,19 @@ def macros_in_template(template_name: str) -> dict[str, MacroInfo]:
     source = path.read_text(encoding="utf-8")
     tokens = list(Lexer(source).tokenize())
     ast = Parser(tokens, name=f"chirpui/{template_name}", source=source).parse()
-    return {d.name: _to_macro_info(d, template_name) for d in _walk_defs(ast)}
+    defs = list(_walk_defs(ast))
+    yielded_slots = _yielded_slots_by_macro(source, defs)
+    return {d.name: _to_macro_info(d, template_name, yielded_slots.get(d.name, ())) for d in defs}
 
 
-def _to_macro_info(node: Def, template: str) -> MacroInfo:
+def _to_macro_info(node: Def, template: str, yielded_slots: tuple[str, ...]) -> MacroInfo:
     n_required = len(node.params) - len(node.defaults)
     params = tuple(
         ParamInfo(name=p.name, has_default=i >= n_required) for i, p in enumerate(node.params)
     )
     seen: set[str] = set()
     slots: list[str] = []
-    for slot in _walk_slots(node):
-        # Normalize kida's unnamed-slot sentinel to descriptor convention.
-        name = "" if slot.name == "default" else slot.name
+    for name in _walk_slot_names(node):
         if name not in seen:
             seen.add(name)
             slots.append(name)
@@ -101,6 +105,7 @@ def _to_macro_info(node: Def, template: str) -> MacroInfo:
         lineno=node.lineno,
         params=params,
         slots=tuple(slots),
+        yielded_slots=yielded_slots,
     )
 
 
@@ -113,20 +118,63 @@ def _walk_defs(node: Node) -> Iterator[Def]:
             yield from _walk_defs(child)
 
 
-def _walk_slots(node: Node) -> Iterator[Slot]:
-    """Yield every ``Slot`` reachable from ``node`` without crossing a nested ``Def``.
+def _walk_slot_names(node: Node) -> Iterator[str]:
+    """Yield public slot names reachable from ``node`` without crossing a nested ``Def``.
 
     chirp-ui currently has no nested defs (verified at Sprint 2), so this is
     defensive only — keeps slot ownership per-macro if that ever changes.
     """
     if isinstance(node, Slot):
-        yield node
+        yield "" if node.name == "default" else node.name
     body = getattr(node, "body", None)
     if body:
         for child in body:
             if isinstance(child, Def):
                 continue
-            yield from _walk_slots(child)
+            yield from _walk_slot_names(child)
+    else_body = getattr(node, "else_", None)
+    if else_body:
+        for child in else_body:
+            if isinstance(child, Def):
+                continue
+            yield from _walk_slot_names(child)
+    elif_bodies = getattr(node, "elif_", None)
+    if elif_bodies:
+        for _, elif_body in elif_bodies:
+            for child in elif_body:
+                if isinstance(child, Def):
+                    continue
+                yield from _walk_slot_names(child)
+
+
+def _yielded_slots_by_macro(source: str, defs: list[Def]) -> dict[str, tuple[str, ...]]:
+    """Return ``macro_name → yielded slot names`` attributed by source line.
+
+    The installed kida AST exposes ``Slot`` placeholders but not a public
+    ``Yield`` node, so composite forwarded slots are found from the raw source
+    and attributed to the nearest preceding ``{% def %}`` line. chirp-ui does
+    not use nested defs, which keeps the ownership rule straightforward.
+    """
+    if not defs:
+        return {}
+    sorted_defs = sorted(defs, key=lambda d: d.lineno)
+    found: dict[str, list[str]] = {d.name: [] for d in sorted_defs}
+    seen: dict[str, set[str]] = {d.name: set() for d in sorted_defs}
+    current_index = -1
+    for lineno, line in enumerate(source.splitlines(), start=1):
+        while (
+            current_index + 1 < len(sorted_defs) and sorted_defs[current_index + 1].lineno <= lineno
+        ):
+            current_index += 1
+        if current_index < 0:
+            continue
+        owner = sorted_defs[current_index].name
+        for match in _YIELD_RE.finditer(line):
+            name = match.group(1) or ""
+            if name not in seen[owner]:
+                seen[owner].add(name)
+                found[owner].append(name)
+    return {name: tuple(slots) for name, slots in found.items() if slots}
 
 
 @cache
