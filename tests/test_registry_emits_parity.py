@@ -20,7 +20,7 @@ See ``docs/PLAN-css-scope-and-layer.md § Sprint 4`` and
 import re
 from pathlib import Path
 
-from chirp_ui.components import _AUTO_TRIMS, COMPONENTS
+from chirp_ui.components import _AUTO_EXTRAS, _AUTO_TRIMS, COMPONENTS
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PARTIALS_DIR = REPO_ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials"
@@ -119,11 +119,11 @@ def test_emits_is_derived_from_grammar() -> None:
     """Sanity check: the property derives block/elements/variants/sizes/modifiers.
 
     Grammar-derived classes appear in ``emits`` unless explicitly listed in
-    :data:`_AUTO_TRIMS` for that block (drift reconciliation).
+    the descriptor's ``trim_emits``.
     """
     for name, desc in COMPONENTS.items():
         emits = desc.emits
-        trims = _AUTO_TRIMS.get(desc.block, frozenset())
+        trims = set(desc.trim_emits)
 
         expected: list[tuple[str, str]] = [(f"chirpui-{desc.block}", "block")]
         expected.extend((f"chirpui-{desc.block}__{e}", e) for e in desc.elements)
@@ -138,11 +138,14 @@ def test_emits_is_derived_from_grammar() -> None:
             assert cls in emits, (name, tag)
 
 
-def test_streaming_family_classes_are_typed_descriptors() -> None:
-    """Streaming/SSE state classes should not live in auto reconciliation maps."""
-    from chirp_ui.components import _AUTO_EXTRAS
+def test_auto_reconciliation_maps_are_retired() -> None:
+    """Descriptor-local fields now own CSS exceptions."""
+    assert _AUTO_EXTRAS == {}
+    assert _AUTO_TRIMS == {}
 
-    assert not {"streaming-bubble", "streaming-block", "streaming", "sse-retry"} & set(_AUTO_EXTRAS)
+
+def test_streaming_family_classes_are_typed_descriptors() -> None:
+    """Streaming/SSE state classes should stay as typed descriptors."""
 
     streaming_bubble = COMPONENTS["streaming_bubble"]
     assert streaming_bubble.variants == ("thinking", "error")

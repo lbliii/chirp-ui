@@ -126,7 +126,7 @@ Sprint 0 is always a design sprint — every downstream sprint has acceptance cr
 1. **Layer namespace.** `chirpui.reset` / `chirpui.token` / `chirpui.base` / `chirpui.component` / `chirpui.utility` (namespaced) vs unnamespaced. Recommend namespaced — a consumer using a plain `reset` layer in their own app won't collide.
 2. **Partials directory.** `src/chirp_ui/templates/css/` (adjacent to `chirpui.css`) vs `src/chirp_ui/templates/chirpui/css/` (namespaced alongside the macros). Recommend the first — matches the single-file neighbor and needs no `package-data` glob update.
 3. **Concat script API.** Input = an ordered list of partials driven by a manifest in `scripts/build_chirpui_css.py`; output = `src/chirp_ui/templates/chirpui.css` with `/* === <file> === */` banners. Deterministic byte-for-byte given same inputs.
-4. **Registry `emits` schema.** `frozenset[str]` of fully-qualified class names (`chirpui-card`, `chirpui-card__header`, `chirpui-card--feature`). Generated-at-import from `block` + `elements` + `variants` + `sizes` + `modifiers`, with an optional `extra_emits` escape hatch for classes the descriptor grammar can't express (e.g. `chirpui-card__header-wrap`).
+4. **Registry `emits` schema.** `frozenset[str]` of fully-qualified class names (`chirpui-card`, `chirpui-card__header`, `chirpui-card--feature`). Generated-at-import from `block` + `elements` + `variants` + `sizes` + `modifiers`, with descriptor-local `extra_emits` for classes the grammar can't express (e.g. `chirpui-card__header-wrap`) and `trim_emits` for explicit style-less/default classes.
 
 **Tasks:**
 - T0.1 Draft `docs/DESIGN-css-registry-projection.md` capturing the four decisions above, the envelope convention, and the override contract.

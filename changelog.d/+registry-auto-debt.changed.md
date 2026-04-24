@@ -1,0 +1,1 @@
+Clear the registry auto-category debt by promoting CSS-only descriptors into explicit categories, descriptor-local emit trims, primitive vocabulary docs, manifest authoring hints, discovery helpers, and debt gates.

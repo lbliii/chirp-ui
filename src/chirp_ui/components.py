@@ -18,6 +18,7 @@ from typing import TypedDict
 
 __all__ = [
     "COMPONENTS",
+    "COMPONENT_AUTHORING_LEVELS",
     "COMPONENT_MATURITY_LEVELS",
     "COMPONENT_ROLES",
     "RUNTIME_REQUIREMENTS",
@@ -30,754 +31,22 @@ __all__ = [
 
 COMPONENT_MATURITY_LEVELS = ("stable", "experimental", "legacy", "internal")
 COMPONENT_ROLES = ("primitive", "component", "pattern", "effect", "infrastructure")
+COMPONENT_AUTHORING_LEVELS = ("preferred", "available", "compatibility", "internal")
 RUNTIME_REQUIREMENTS = ("htmx", "alpine", "dialog", "view-transition")
 
 
 # ---------------------------------------------------------------------------
-# Sprint-4 parity reconciliation maps (see docs/PLAN-css-scope-and-layer.md)
+# Deprecated Sprint-4 parity reconciliation maps.
 #
-# These close the drift between the hand-authored descriptors below and the
-# CSS partials that ship today, without requiring an immediate line-by-line
-# rewrite of 200+ descriptors. ``ComponentDescriptor.emits`` consults them
-# transparently so the registry→CSS parity test is green.
+# Kept as empty compatibility constants for tests and downstream diagnostics
+# that imported the names while registry/CSS parity was being bootstrapped.
+# Descriptor-local ``extra_emits`` and ``trim_emits`` now own the exceptions.
 #
-# * ``_AUTO_TRIMS`` — BEM-grammar classes a descriptor would derive from its
-#   ``variants`` / ``sizes`` / ``modifiers`` tuples but that the CSS never
-#   styles (e.g. an implicit ``--md`` default). Keyed by
-#   :attr:`ComponentDescriptor.block`.
-# * ``_AUTO_EXTRAS`` — classes the CSS emits today that the descriptor's
-#   typed fields don't capture (compound states, un-surfaced elements).
-#   Keyed by :attr:`ComponentDescriptor.block`. Sprint 6 folds these into
-#   proper ``elements`` / ``extra_emits=`` kwargs as each component migrates
-#   to the ``@scope`` envelope convention.
-#
-# Direct reads of ``descriptor.variants`` / ``.sizes`` / ``.elements`` are
-# unaffected — validation behaviour in ``bem()`` / ``validate_variant`` /
-# ``validate_size`` stays exactly as authored.
 # ---------------------------------------------------------------------------
 
 
-_AUTO_TRIMS: dict[str, frozenset[str]] = {
-    "animated-counter": frozenset({"chirpui-animated-counter--default"}),
-    "ascii-7seg": frozenset({"chirpui-ascii-7seg--default"}),
-    "ascii-badge": frozenset({"chirpui-ascii-badge--default"}),
-    "ascii-border": frozenset({"chirpui-ascii-border--rounded", "chirpui-ascii-border--single"}),
-    "ascii-checkbox": frozenset({"chirpui-ascii-checkbox--default"}),
-    "ascii-divider": frozenset({"chirpui-ascii-divider--single"}),
-    "ascii-empty": frozenset({"chirpui-ascii-empty--default"}),
-    "ascii-fader": frozenset({"chirpui-ascii-fader--default"}),
-    "ascii-knob": frozenset({"chirpui-ascii-knob--default"}),
-    "ascii-progress": frozenset({"chirpui-ascii-progress--default"}),
-    "ascii-radio-group": frozenset({"chirpui-ascii-radio-group--default"}),
-    "ascii-sparkline": frozenset({"chirpui-ascii-sparkline--default"}),
-    "ascii-stepper": frozenset({"chirpui-ascii-stepper--default"}),
-    "ascii-switch": frozenset({"chirpui-ascii-switch--default", "chirpui-ascii-switch--md"}),
-    "ascii-tab": frozenset({"chirpui-ascii-tab--accent", "chirpui-ascii-tab--default"}),
-    "ascii-tabs": frozenset({"chirpui-ascii-tabs--default"}),
-    "ascii-ticker": frozenset({"chirpui-ascii-ticker--default"}),
-    "ascii-tile-btn": frozenset({"chirpui-ascii-tile-btn--default"}),
-    "ascii-toggle": frozenset({"chirpui-ascii-toggle--default", "chirpui-ascii-toggle--md"}),
-    "ascii-vu": frozenset({"chirpui-ascii-vu--default"}),
-    "band": frozenset({"chirpui-band--default"}),
-    "border-beam": frozenset(
-        {
-            "chirpui-border-beam--default",
-            "chirpui-border-beam--lg",
-            "chirpui-border-beam--md",
-            "chirpui-border-beam--sm",
-        }
-    ),
-    "breadcrumbs": frozenset({"chirpui-breadcrumbs"}),
-    "btn": frozenset({"chirpui-btn--lg", "chirpui-btn--md"}),
-    "children": frozenset({"chirpui-children"}),
-    "confirm": frozenset({"chirpui-confirm", "chirpui-confirm--default"}),
-    "constellation": frozenset({"chirpui-constellation--default"}),
-    "description-list": frozenset(
-        {
-            "chirpui-description-list--horizontal",
-            "chirpui-description-list--stacked",
-        }
-    ),
-    "dock": frozenset({"chirpui-dock--default", "chirpui-dock--md"}),
-    "dropdown__item": frozenset(
-        {
-            "chirpui-dropdown__item--default",
-            "chirpui-dropdown__item--muted",
-        }
-    ),
-    "filter-bar": frozenset({"chirpui-filter-bar"}),
-    "glow-card": frozenset(
-        {
-            "chirpui-glow-card--default",
-            "chirpui-glow-card--lg",
-            "chirpui-glow-card--md",
-            "chirpui-glow-card--sm",
-        }
-    ),
-    "holy-light": frozenset({"chirpui-holy-light--default"}),
-    "icon-btn": frozenset({"chirpui-icon-btn--default", "chirpui-icon-btn--md"}),
-    "infinite-scroll": frozenset({"chirpui-infinite-scroll"}),
-    "key-value-form": frozenset({"chirpui-key-value-form"}),
-    "marquee": frozenset({"chirpui-marquee--default"}),
-    "message-bubble": frozenset({"chirpui-message-bubble--default"}),
-    "meteor": frozenset({"chirpui-meteor--default"}),
-    "modal": frozenset({"chirpui-modal--md"}),
-    "model-card": frozenset({"chirpui-model-card"}),
-    "notification-dot": frozenset(
-        {
-            "chirpui-notification-dot--default",
-            "chirpui-notification-dot--error",
-            "chirpui-notification-dot--md",
-        }
-    ),
-    "number-ticker": frozenset({"chirpui-number-ticker--default"}),
-    "page-header": frozenset({"chirpui-page-header--default"}),
-    "page-hero": frozenset(
-        {
-            "chirpui-page-hero",
-            "chirpui-page-hero--editorial",
-            "chirpui-page-hero--minimal",
-        }
-    ),
-    "params-table": frozenset({"chirpui-params-table"}),
-    "particle-bg": frozenset({"chirpui-particle-bg--default"}),
-    "progress": frozenset({"chirpui-progress"}),
-    "pulsing-btn": frozenset(
-        {
-            "chirpui-pulsing-btn--danger",
-            "chirpui-pulsing-btn--default",
-            "chirpui-pulsing-btn--primary",
-            "chirpui-pulsing-btn--success",
-        }
-    ),
-    "ripple-btn": frozenset({"chirpui-ripple-btn--default", "chirpui-ripple-btn--md"}),
-    "row-actions": frozenset({"chirpui-row-actions"}),
-    "rune-field": frozenset({"chirpui-rune-field--default"}),
-    "search-bar": frozenset({"chirpui-search-bar"}),
-    "search-header": frozenset({"chirpui-search-header"}),
-    "section-collapsible": frozenset({"chirpui-section-collapsible"}),
-    "section-header": frozenset({"chirpui-section-header--default"}),
-    "segmented": frozenset({"chirpui-segmented--md"}),
-    "shimmer-btn": frozenset({"chirpui-shimmer-btn--default", "chirpui-shimmer-btn--md"}),
-    "site-footer": frozenset({"chirpui-site-footer--columns"}),
-    "site-nav": frozenset({"chirpui-site-nav"}),
-    "sparkle": frozenset({"chirpui-sparkle--lg", "chirpui-sparkle--md", "chirpui-sparkle--sm"}),
-    "split-flap": frozenset({"chirpui-split-flap--default"}),
-    "spotlight-card": frozenset({"chirpui-spotlight-card--default"}),
-    "star-rating": frozenset({"chirpui-star-rating--md"}),
-    "streaming": frozenset({"chirpui-streaming"}),
-    "streaming-bubble": frozenset({"chirpui-streaming-bubble"}),
-    "symbol-rain": frozenset({"chirpui-symbol-rain--default"}),
-    "tag-browse": frozenset({"chirpui-tag-browse"}),
-    "text-reveal": frozenset({"chirpui-text-reveal--default"}),
-    "thumbs": frozenset({"chirpui-thumbs--md"}),
-    "wizard-form": frozenset({"chirpui-wizard-form"}),
-    "wobble": frozenset(
-        {
-            "chirpui-wobble--bounce-in",
-            "chirpui-wobble--jello",
-            "chirpui-wobble--rubber-band",
-            "chirpui-wobble--wobble",
-        }
-    ),
-}
-
-
-_AUTO_EXTRAS: dict[str, frozenset[str]] = {
-    "action-bar": frozenset(
-        {
-            "chirpui-action-bar__item--active",
-            "chirpui-action-bar__item--disabled",
-        }
-    ),
-    "animated-counter": frozenset(
-        {
-            "chirpui-animated-counter__label",
-            "chirpui-animated-counter__prefix",
-            "chirpui-animated-counter__value",
-        }
-    ),
-    "animated-stat-card": frozenset(
-        {
-            "chirpui-animated-stat-card__trend--down",
-            "chirpui-animated-stat-card__trend--up",
-        }
-    ),
-    "ascii-7seg": frozenset(
-        {
-            "chirpui-ascii-7seg__digit",
-            "chirpui-ascii-7seg__display",
-            "chirpui-ascii-7seg__frame",
-            "chirpui-ascii-7seg__label",
-        }
-    ),
-    "ascii-badge": frozenset(
-        {
-            "chirpui-ascii-badge__close",
-            "chirpui-ascii-badge__glyph",
-            "chirpui-ascii-badge__open",
-            "chirpui-ascii-badge__text",
-        }
-    ),
-    "ascii-border": frozenset(
-        {
-            "chirpui-ascii-border__bottom",
-            "chirpui-ascii-border__content",
-            "chirpui-ascii-border__corner",
-            "chirpui-ascii-border__line",
-            "chirpui-ascii-border__mid",
-            "chirpui-ascii-border__side",
-            "chirpui-ascii-border__top",
-        }
-    ),
-    "ascii-card": frozenset(
-        {
-            "chirpui-ascii-card__body",
-            "chirpui-ascii-card__bottom",
-            "chirpui-ascii-card__content",
-            "chirpui-ascii-card__corner",
-            "chirpui-ascii-card__divider",
-            "chirpui-ascii-card__line",
-            "chirpui-ascii-card__side",
-            "chirpui-ascii-card__top",
-        }
-    ),
-    "ascii-checkbox": frozenset(
-        {
-            "chirpui-ascii-checkbox--disabled",
-            "chirpui-ascii-checkbox__box",
-            "chirpui-ascii-checkbox__input",
-            "chirpui-ascii-checkbox__label",
-        }
-    ),
-    "ascii-divider": frozenset({"chirpui-ascii-divider__glyph"}),
-    "ascii-empty": frozenset(
-        {
-            "chirpui-ascii-empty__action",
-            "chirpui-ascii-empty__desc",
-            "chirpui-ascii-empty__glyph",
-            "chirpui-ascii-empty__heading",
-        }
-    ),
-    "ascii-fader": frozenset(
-        {
-            "chirpui-ascii-fader__cap",
-            "chirpui-ascii-fader__input",
-            "chirpui-ascii-fader__label",
-            "chirpui-ascii-fader__segment",
-            "chirpui-ascii-fader__segment--filled",
-            "chirpui-ascii-fader__track",
-            "chirpui-ascii-fader__value",
-        }
-    ),
-    "ascii-indicator": frozenset(
-        {
-            "chirpui-ascii-indicator--blink",
-            "chirpui-ascii-indicator--blink-fast",
-            "chirpui-ascii-indicator__label",
-            "chirpui-ascii-indicator__light",
-        }
-    ),
-    "ascii-knob": frozenset(
-        {
-            "chirpui-ascii-knob__dial",
-            "chirpui-ascii-knob__frame",
-            "chirpui-ascii-knob__input",
-            "chirpui-ascii-knob__legend",
-            "chirpui-ascii-knob__notch",
-            "chirpui-ascii-knob__position",
-            "chirpui-ascii-knob__positions",
-            "chirpui-ascii-knob__tick",
-            "chirpui-ascii-knob__value",
-        }
-    ),
-    "ascii-modal": frozenset(
-        {
-            "chirpui-ascii-modal__body",
-            "chirpui-ascii-modal__close",
-            "chirpui-ascii-modal__header",
-            "chirpui-ascii-modal__title",
-        }
-    ),
-    "ascii-progress": frozenset(
-        {
-            "chirpui-ascii-progress__empty",
-            "chirpui-ascii-progress__filled",
-            "chirpui-ascii-progress__label",
-            "chirpui-ascii-progress__track",
-            "chirpui-ascii-progress__value",
-        }
-    ),
-    "ascii-radio-group": frozenset(
-        {
-            "chirpui-ascii-radio-group--horizontal",
-            "chirpui-ascii-radio-group__legend",
-        }
-    ),
-    "ascii-skeleton": frozenset(
-        {
-            "chirpui-ascii-skeleton__fill",
-            "chirpui-ascii-skeleton__line",
-            "chirpui-ascii-skeleton__line--header",
-        }
-    ),
-    "ascii-sparkline": frozenset({"chirpui-ascii-sparkline__bar"}),
-    "ascii-spinner": frozenset(
-        {
-            "chirpui-ascii-spinner--lg",
-            "chirpui-ascii-spinner--md",
-            "chirpui-ascii-spinner--sm",
-            "chirpui-ascii-spinner__char",
-            "chirpui-ascii-spinner__chars",
-            "chirpui-ascii-spinner__label",
-        }
-    ),
-    "ascii-stepper": frozenset(
-        {
-            "chirpui-ascii-stepper__connector",
-            "chirpui-ascii-stepper__connector--complete",
-            "chirpui-ascii-stepper__label",
-            "chirpui-ascii-stepper__node",
-            "chirpui-ascii-stepper__step",
-            "chirpui-ascii-stepper__step--active",
-            "chirpui-ascii-stepper__step--complete",
-            "chirpui-ascii-stepper__track",
-        }
-    ),
-    "ascii-switch": frozenset(
-        {
-            "chirpui-ascii-switch--disabled",
-            "chirpui-ascii-switch__body",
-            "chirpui-ascii-switch__cap",
-            "chirpui-ascii-switch__cap--bottom",
-            "chirpui-ascii-switch__cap--top",
-            "chirpui-ascii-switch__input",
-            "chirpui-ascii-switch__label",
-            "chirpui-ascii-switch__lever",
-            "chirpui-ascii-switch__slot",
-        }
-    ),
-    "ascii-tab": frozenset(
-        {
-            "chirpui-ascii-tab--active",
-            "chirpui-ascii-tab__bracket",
-            "chirpui-ascii-tab__label",
-        }
-    ),
-    "ascii-table": frozenset(
-        {
-            "chirpui-ascii-table--compact",
-            "chirpui-ascii-table--sticky",
-            "chirpui-ascii-table--striped",
-            "chirpui-ascii-table__body",
-            "chirpui-ascii-table__border",
-            "chirpui-ascii-table__border--bottom",
-            "chirpui-ascii-table__border--mid",
-            "chirpui-ascii-table__border--top",
-            "chirpui-ascii-table__cell--center",
-            "chirpui-ascii-table__cell--left",
-            "chirpui-ascii-table__cell--right",
-            "chirpui-ascii-table__head",
-            "chirpui-ascii-table__row",
-            "chirpui-ascii-table__td",
-            "chirpui-ascii-table__th",
-        }
-    ),
-    "ascii-ticker": frozenset(
-        {
-            "chirpui-ascii-ticker--fast",
-            "chirpui-ascii-ticker--slow",
-            "chirpui-ascii-ticker__bracket",
-            "chirpui-ascii-ticker__text",
-            "chirpui-ascii-ticker__track",
-        }
-    ),
-    "ascii-tile-btn": frozenset(
-        {
-            "chirpui-ascii-tile-btn--disabled",
-            "chirpui-ascii-tile-btn--lit",
-            "chirpui-ascii-tile-btn__face",
-            "chirpui-ascii-tile-btn__glyph",
-            "chirpui-ascii-tile-btn__input",
-            "chirpui-ascii-tile-btn__label",
-        }
-    ),
-    "ascii-toggle": frozenset(
-        {
-            "chirpui-ascii-toggle--disabled",
-            "chirpui-ascii-toggle__input",
-            "chirpui-ascii-toggle__knob",
-            "chirpui-ascii-toggle__label",
-            "chirpui-ascii-toggle__rail",
-            "chirpui-ascii-toggle__track",
-        }
-    ),
-    "ascii-vu": frozenset(
-        {
-            "chirpui-ascii-vu--animate",
-            "chirpui-ascii-vu__bracket",
-            "chirpui-ascii-vu__cell",
-            "chirpui-ascii-vu__cell--filled",
-            "chirpui-ascii-vu__cell--hot",
-            "chirpui-ascii-vu__cell--peak",
-            "chirpui-ascii-vu__label",
-            "chirpui-ascii-vu__readout",
-            "chirpui-ascii-vu__track",
-        }
-    ),
-    "aurora": frozenset(
-        {
-            "chirpui-aurora__blob",
-            "chirpui-aurora__blobs",
-            "chirpui-aurora__content",
-        }
-    ),
-    "border-beam": frozenset({"chirpui-border-beam__beam", "chirpui-border-beam__content"}),
-    "breadcrumbs": frozenset(
-        {
-            "chirpui-breadcrumbs__current",
-            "chirpui-breadcrumbs__item",
-            "chirpui-breadcrumbs__link",
-            "chirpui-breadcrumbs__list",
-        }
-    ),
-    "btn": frozenset({"chirpui-btn--secondary"}),
-    "calendar": frozenset({"chirpui-calendar__day--empty"}),
-    "card": frozenset(
-        {
-            "chirpui-card--feature",
-            "chirpui-card--glass",
-            "chirpui-card--horizontal",
-            "chirpui-card--media",
-            "chirpui-card--stats",
-        }
-    ),
-    "confetti": frozenset(
-        {
-            "chirpui-confetti__piece",
-            "chirpui-confetti__piece--active",
-            "chirpui-confetti__piece--circle",
-            "chirpui-confetti__piece--square",
-            "chirpui-confetti__piece--strip",
-        }
-    ),
-    "confirm": frozenset(
-        {
-            "chirpui-confirm__footer",
-            "chirpui-confirm__icon",
-            "chirpui-confirm__message",
-        }
-    ),
-    "constellation": frozenset(
-        {
-            "chirpui-constellation--dense",
-            "chirpui-constellation--sparse",
-            "chirpui-constellation__content",
-            "chirpui-constellation__field",
-            "chirpui-constellation__star",
-        }
-    ),
-    "dnd": frozenset(
-        {
-            "chirpui-dnd__card--dragging",
-            "chirpui-dnd__column-body--over",
-            "chirpui-dnd__item--dragging",
-            "chirpui-dnd__item--over",
-        }
-    ),
-    "dock": frozenset(
-        {
-            "chirpui-dock__indicator",
-            "chirpui-dock__item",
-            "chirpui-dock__item--active",
-        }
-    ),
-    "dropdown": frozenset(
-        {
-            "chirpui-dropdown--split",
-            "chirpui-dropdown__caret",
-            "chirpui-dropdown__divider",
-            "chirpui-dropdown__icon",
-            "chirpui-dropdown__split-primary",
-            "chirpui-dropdown__trigger--select",
-            "chirpui-dropdown__trigger--split",
-        }
-    ),
-    "dropdown__item": frozenset({"chirpui-dropdown__item--selected"}),
-    "field": frozenset({"chirpui-field__input--multi", "chirpui-field__label--inline"}),
-    "glow-card": frozenset({"chirpui-glow-card__content", "chirpui-glow-card__glow"}),
-    "grain": frozenset({"chirpui-grain--animated", "chirpui-grain--dot"}),
-    "hero": frozenset(
-        {
-            "chirpui-hero--page",
-            "chirpui-hero--page-minimal",
-            "chirpui-hero__action",
-            "chirpui-hero__actions",
-            "chirpui-hero__content",
-            "chirpui-hero__eyebrow",
-            "chirpui-hero__footer",
-            "chirpui-hero__inner",
-            "chirpui-hero__metadata",
-            "chirpui-hero__subtitle",
-            "chirpui-hero__title",
-        }
-    ),
-    "holy-light": frozenset(
-        {
-            "chirpui-holy-light--intense",
-            "chirpui-holy-light--subtle",
-            "chirpui-holy-light__content",
-            "chirpui-holy-light__layer",
-            "chirpui-holy-light__layer--far",
-            "chirpui-holy-light__layer--mid",
-            "chirpui-holy-light__layer--near",
-            "chirpui-holy-light__layers",
-            "chirpui-holy-light__mote",
-        }
-    ),
-    "infinite-scroll": frozenset({"chirpui-infinite-scroll__loading--skeleton"}),
-    "marquee": frozenset(
-        {
-            "chirpui-marquee--fast",
-            "chirpui-marquee--slow",
-            "chirpui-marquee__fade",
-            "chirpui-marquee__fade--end",
-            "chirpui-marquee__fade--start",
-            "chirpui-marquee__item",
-            "chirpui-marquee__track",
-        }
-    ),
-    "message-bubble": frozenset(
-        {
-            "chirpui-message-bubble--left",
-            "chirpui-message-bubble--pending",
-            "chirpui-message-bubble--read",
-            "chirpui-message-bubble--right",
-            "chirpui-message-bubble--sent",
-        }
-    ),
-    "meteor": frozenset({"chirpui-meteor__streak"}),
-    "metric-card": frozenset(
-        {
-            "chirpui-metric-card__icon-badge--error",
-            "chirpui-metric-card__icon-badge--primary",
-            "chirpui-metric-card__icon-badge--success",
-            "chirpui-metric-card__icon-badge--warning",
-            "chirpui-metric-card__trend--down",
-            "chirpui-metric-card__trend--neutral",
-            "chirpui-metric-card__trend--up",
-        }
-    ),
-    "modal": frozenset(
-        {
-            "chirpui-modal--closed",
-            "chirpui-modal--open",
-            "chirpui-modal__backdrop",
-            "chirpui-modal__panel",
-        }
-    ),
-    "nav-tree": frozenset(
-        {
-            "chirpui-nav-tree__link--active",
-            "chirpui-nav-tree__link--leaf",
-            "chirpui-nav-tree__list--nested",
-            "chirpui-nav-tree__text--leaf",
-        }
-    ),
-    "navbar": frozenset({"chirpui-navbar__link--active", "chirpui-navbar__links--end"}),
-    "neon": frozenset({"chirpui-neon--flicker", "chirpui-neon--pulse"}),
-    "notification-dot": frozenset(
-        {
-            "chirpui-notification-dot__dot",
-            "chirpui-notification-dot__ping",
-        }
-    ),
-    "number-ticker": frozenset({"chirpui-number-ticker__value"}),
-    "orbit": frozenset(
-        {
-            "chirpui-orbit--fast",
-            "chirpui-orbit--reverse",
-            "chirpui-orbit--slow",
-            "chirpui-orbit__center",
-            "chirpui-orbit__item",
-            "chirpui-orbit__ring",
-        }
-    ),
-    "pagination": frozenset(
-        {
-            "chirpui-pagination__link--active",
-            "chirpui-pagination__link--disabled",
-        }
-    ),
-    "panel": frozenset(
-        {
-            "chirpui-panel__actions",
-            "chirpui-panel__body",
-            "chirpui-panel__body--scroll",
-            "chirpui-panel__footer",
-            "chirpui-panel__header",
-            "chirpui-panel__heading",
-            "chirpui-panel__subtitle",
-            "chirpui-panel__title",
-        }
-    ),
-    "params-table": frozenset(
-        {
-            "chirpui-params-table__code--muted",
-            "chirpui-params-table__td--default",
-            "chirpui-params-table__td--name",
-            "chirpui-params-table__td--type",
-            "chirpui-params-table__th--default",
-            "chirpui-params-table__th--name",
-            "chirpui-params-table__th--type",
-        }
-    ),
-    "particle-bg": frozenset(
-        {
-            "chirpui-particle-bg__canvas",
-            "chirpui-particle-bg__content",
-            "chirpui-particle-bg__dot",
-        }
-    ),
-    "progress-bar": frozenset(
-        {
-            "chirpui-progress-bar--error",
-            "chirpui-progress-bar--info",
-            "chirpui-progress-bar--warning",
-            "chirpui-progress-bar__fill",
-            "chirpui-progress-bar__label",
-            "chirpui-progress-bar__track",
-        }
-    ),
-    "pulsing-btn": frozenset({"chirpui-pulsing-btn__ring"}),
-    "ripple-btn": frozenset({"chirpui-ripple-btn__ripple"}),
-    "route-tab": frozenset({"chirpui-route-tab--active"}),
-    "rune-field": frozenset(
-        {
-            "chirpui-rune-field__content",
-            "chirpui-rune-field__layer",
-            "chirpui-rune-field__layer--far",
-            "chirpui-rune-field__layer--mid",
-            "chirpui-rune-field__layer--near",
-            "chirpui-rune-field__layers",
-            "chirpui-rune-field__rune",
-        }
-    ),
-    "segmented": frozenset(
-        {
-            "chirpui-segmented__icon",
-            "chirpui-segmented__input",
-            "chirpui-segmented__label",
-            "chirpui-segmented__option",
-            "chirpui-segmented__option--active",
-        }
-    ),
-    "settings-row-list": frozenset(
-        {
-            "chirpui-settings-row-list--on-accent",
-            "chirpui-settings-row-list--on-muted",
-        }
-    ),
-    "shimmer-btn": frozenset({"chirpui-shimmer-btn__shimmer"}),
-    "sidebar": frozenset(
-        {
-            "chirpui-sidebar__footer",
-            "chirpui-sidebar__link--active",
-            "chirpui-sidebar__section-links",
-        }
-    ),
-    "site-footer": frozenset({"chirpui-site-footer__link--external"}),
-    "site-header": frozenset(
-        {
-            "chirpui-site-header__inner--center-brand",
-            "chirpui-site-header__inner--center-nav",
-        }
-    ),
-    "site-nav": frozenset({"chirpui-site-nav__link--active", "chirpui-site-nav__link--external"}),
-    "skeleton": frozenset(
-        {
-            "chirpui-skeleton--card-img",
-            "chirpui-skeleton--card-line",
-            "chirpui-skeleton__line",
-        }
-    ),
-    "sortable": frozenset({"chirpui-sortable__item--dragging", "chirpui-sortable__item--over"}),
-    "sparkle": frozenset({"chirpui-sparkle__star"}),
-    "split-flap": frozenset({"chirpui-split-flap--animate", "chirpui-split-flap__char"}),
-    "split-panel": frozenset({"chirpui-split-panel__pane--second"}),
-    "spotlight-card": frozenset(
-        {
-            "chirpui-spotlight-card__content",
-            "chirpui-spotlight-card__spotlight",
-        }
-    ),
-    "star-rating": frozenset({"chirpui-star-rating__input", "chirpui-star-rating__label"}),
-    "status-indicator": frozenset(
-        {
-            "chirpui-status-indicator--on-accent",
-            "chirpui-status-indicator--on-muted",
-            "chirpui-status-indicator--pulse",
-            "chirpui-status-indicator__dot",
-            "chirpui-status-indicator__icon",
-            "chirpui-status-indicator__label",
-        }
-    ),
-    "stepper": frozenset({"chirpui-stepper__item--active", "chirpui-stepper__item--completed"}),
-    "surface": frozenset(
-        {
-            "chirpui-surface--cornered",
-            "chirpui-surface--deep",
-            "chirpui-surface--inset-glow",
-            "chirpui-surface--noise-overlay",
-            "chirpui-surface--static-overlay",
-        }
-    ),
-    "symbol-rain": frozenset(
-        {
-            "chirpui-symbol-rain__canvas",
-            "chirpui-symbol-rain__content",
-            "chirpui-symbol-rain__drop",
-        }
-    ),
-    "tab": frozenset({"chirpui-tab--disabled"}),
-    "table": frozenset(
-        {
-            "chirpui-table__td--actions",
-            "chirpui-table__td--center",
-            "chirpui-table__td--left",
-            "chirpui-table__td--mono",
-            "chirpui-table__td--right",
-            "chirpui-table__td--truncate",
-            "chirpui-table__th--actions",
-            "chirpui-table__th--center",
-            "chirpui-table__th--left",
-            "chirpui-table__th--right",
-        }
-    ),
-    "tabs": frozenset({"chirpui-tabs__tab", "chirpui-tabs__tab--active"}),
-    "thumbs": frozenset({"chirpui-thumbs__input", "chirpui-thumbs__label"}),
-    "timeline": frozenset(
-        {
-            "chirpui-timeline__item--error",
-            "chirpui-timeline__item--info",
-            "chirpui-timeline__item--link",
-            "chirpui-timeline__item--success",
-            "chirpui-timeline__item--warning",
-        }
-    ),
-    "toast": frozenset({"chirpui-toast__close", "chirpui-toast__message"}),
-    "tooltip": frozenset({"chirpui-tooltip__bubble"}),
-    "tree": frozenset({"chirpui-tree__label--leaf"}),
-    "typewriter": frozenset(
-        {
-            "chirpui-typewriter--delay-1",
-            "chirpui-typewriter--delay-2",
-            "chirpui-typewriter--delay-3",
-            "chirpui-typewriter--no-cursor",
-            "chirpui-typewriter__text",
-        }
-    ),
-}
+_AUTO_TRIMS: dict[str, frozenset[str]] = {}
+_AUTO_EXTRAS: dict[str, frozenset[str]] = {}
 
 
 @dataclass(frozen=True, slots=True)
@@ -826,18 +95,25 @@ class ComponentDescriptor:
         Escape hatch for classes the BEM grammar cannot derive
         (compound-state classes, internal structural elements not surfaced
         as BEM elements, etc.). Joined into :attr:`emits`.
+    trim_emits : tuple[str, ...]
+        Explicitly removes grammar-derived classes that are accepted by a
+        descriptor's public vocabulary but intentionally have no standalone
+        CSS rule (for example implicit/default variants).
     template : str
         Filename in ``templates/chirpui/`` (e.g. ``"button.html"``).
     category : str
         Grouping label for documentation/introspection.
     maturity : str
-        Stability tier for agents and docs. Public templated components must
-        set this explicitly. Empty is reserved for CSS-only reconciliation
-        descriptors and derives from category (``stable`` normally,
-        ``experimental`` for ``category="auto"``).
+        Stability tier for agents and docs. Public descriptors set this
+        explicitly so the manifest does not infer product readiness.
     role : str
         Semantic role for discovery/agent planning. Empty means "derive from
         category" (effects → ``effect``, composites → ``pattern``, etc.).
+    authoring : str
+        Agent-facing authoring hint. ``"preferred"`` marks vocabulary to reach
+        for first, ``"compatibility"`` marks retained legacy surface, and empty
+        derives from maturity (legacy → compatibility, internal → internal,
+        everything else → available).
     requires : tuple[str, ...]
         Runtime features the component needs when rendered. Keep explicit
         entries for non-obvious requirements; the manifest may add derived
@@ -861,10 +137,12 @@ class ComponentDescriptor:
     slot_forwards: tuple[SlotForward, ...] = ()
     tokens: tuple[str, ...] = ()
     extra_emits: tuple[str, ...] = ()
+    trim_emits: tuple[str, ...] = ()
     template: str = ""
     category: str = ""
     maturity: str = ""
     role: str = ""
+    authoring: str = ""
     requires: tuple[str, ...] = ()
     macro: str | None = None
 
@@ -875,6 +153,10 @@ class ComponentDescriptor:
             )
         if self.role and self.role not in COMPONENT_ROLES:
             raise ValueError(f"chirp-ui: invalid role {self.role!r} for block {self.block!r}")
+        if self.authoring and self.authoring not in COMPONENT_AUTHORING_LEVELS:
+            raise ValueError(
+                f"chirp-ui: invalid authoring hint {self.authoring!r} for block {self.block!r}"
+            )
         invalid_requires = tuple(r for r in self.requires if r not in RUNTIME_REQUIREMENTS)
         if invalid_requires:
             joined = ", ".join(repr(r) for r in invalid_requires)
@@ -887,8 +169,6 @@ class ComponentDescriptor:
         """Return the effective stability tier for manifest/docs projection."""
         if self.maturity:
             return self.maturity
-        if self.category == "auto":
-            return "experimental"
         return "stable"
 
     @property
@@ -902,19 +182,27 @@ class ComponentDescriptor:
             return "pattern"
         if self.category == "infrastructure":
             return "infrastructure"
-        if self.category == "auto":
-            return "primitive"
         return "component"
+
+    @property
+    def resolved_authoring(self) -> str:
+        """Return the effective authoring hint for agent/docs projection."""
+        if self.authoring:
+            return self.authoring
+        maturity = self.resolved_maturity
+        if maturity == "legacy":
+            return "compatibility"
+        if maturity == "internal":
+            return "internal"
+        return "available"
 
     @property
     def emits(self) -> frozenset[str]:
         """Every ``chirpui-*`` class the component's CSS may legitimately emit.
 
         Derived from the BEM grammar: block + ``__element`` + ``--variant`` /
-        ``--size`` / ``--modifier``, plus any :attr:`extra_emits` escape hatches.
-        Module-level :data:`_AUTO_EXTRAS` / :data:`_AUTO_TRIMS` reconciliation
-        maps (keyed by block) patch the result so it stays in lock-step with
-        the shipped CSS. See ``docs/DESIGN-css-registry-projection.md § Decision 4``.
+        ``--size`` / ``--modifier``, plus any :attr:`extra_emits` escape
+        hatches, minus descriptor-local :attr:`trim_emits`.
         """
         classes: set[str] = {f"chirpui-{self.block}"}
         classes |= {f"chirpui-{self.block}__{e}" for e in self.elements}
@@ -922,8 +210,7 @@ class ComponentDescriptor:
         classes |= {f"chirpui-{self.block}--{s}" for s in self.sizes if s}
         classes |= {f"chirpui-{self.block}--{m}" for m in self.modifiers if m}
         classes |= set(self.extra_emits)
-        classes |= _AUTO_EXTRAS.get(self.block, frozenset())
-        classes -= _AUTO_TRIMS.get(self.block, frozenset())
+        classes -= set(self.trim_emits)
         return frozenset(classes)
 
 
@@ -951,6 +238,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "--chirpui-btn-radius",
         ),
         template="button.html",
+        extra_emits=("chirpui-btn--secondary",),
+        trim_emits=(
+            "chirpui-btn--lg",
+            "chirpui-btn--md",
+        ),
         category="control",
         maturity="stable",
     ),
@@ -959,6 +251,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "primary", "ghost", "danger"),
         sizes=("", "sm", "md", "lg"),
         template="icon_btn.html",
+        trim_emits=(
+            "chirpui-icon-btn--default",
+            "chirpui-icon-btn--md",
+        ),
         category="control",
         maturity="stable",
     ),
@@ -967,6 +263,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "primary"),
         sizes=("", "sm", "md", "lg"),
         template="shimmer_button.html",
+        extra_emits=("chirpui-shimmer-btn__shimmer",),
+        trim_emits=(
+            "chirpui-shimmer-btn--default",
+            "chirpui-shimmer-btn--md",
+        ),
         category="effect",
         maturity="experimental",
         macro="shimmer_button",
@@ -976,6 +277,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "primary"),
         sizes=("", "sm", "md", "lg"),
         template="ripple_button.html",
+        extra_emits=("chirpui-ripple-btn__ripple",),
+        trim_emits=(
+            "chirpui-ripple-btn--default",
+            "chirpui-ripple-btn--md",
+        ),
         category="effect",
         maturity="experimental",
         macro="ripple_button",
@@ -984,6 +290,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="pulsing-btn",
         variants=("", "default", "primary", "success", "danger"),
         template="pulsing_button.html",
+        extra_emits=("chirpui-pulsing-btn__ring",),
+        trim_emits=(
+            "chirpui-pulsing-btn--danger",
+            "chirpui-pulsing-btn--default",
+            "chirpui-pulsing-btn--primary",
+            "chirpui-pulsing-btn--success",
+        ),
         category="effect",
         maturity="experimental",
         macro="pulsing_button",
@@ -1021,6 +334,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="toast",
         variants=("info", "success", "warning", "error"),
         template="toast.html",
+        extra_emits=(
+            "chirpui-toast__close",
+            "chirpui-toast__message",
+        ),
         category="feedback",
         maturity="stable",
     ),
@@ -1029,6 +346,15 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("default", "danger"),
         slots=("header_actions", "message", "form_content"),
         template="confirm.html",
+        extra_emits=(
+            "chirpui-confirm__footer",
+            "chirpui-confirm__icon",
+            "chirpui-confirm__message",
+        ),
+        trim_emits=(
+            "chirpui-confirm",
+            "chirpui-confirm--default",
+        ),
         category="feedback",
         maturity="stable",
         macro="confirm_dialog",
@@ -1037,6 +363,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="skeleton",
         variants=("", "avatar", "text", "card"),
         template="skeleton.html",
+        extra_emits=(
+            "chirpui-skeleton--card-img",
+            "chirpui-skeleton--card-line",
+            "chirpui-skeleton__line",
+        ),
         category="feedback",
         maturity="stable",
     ),
@@ -1045,6 +376,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("gold", "radiant", "success", "watched", "custom"),
         sizes=("sm", "md", "lg"),
         template="progress.html",
+        extra_emits=(
+            "chirpui-progress-bar--error",
+            "chirpui-progress-bar--info",
+            "chirpui-progress-bar--warning",
+            "chirpui-progress-bar__fill",
+            "chirpui-progress-bar__label",
+            "chirpui-progress-bar__track",
+        ),
         category="feedback",
         maturity="stable",
     ),
@@ -1052,6 +391,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="status-indicator",
         variants=("default", "success", "warning", "error", "info", "primary", "custom"),
         template="status.html",
+        extra_emits=(
+            "chirpui-status-indicator--on-accent",
+            "chirpui-status-indicator--on-muted",
+            "chirpui-status-indicator--pulse",
+            "chirpui-status-indicator__dot",
+            "chirpui-status-indicator__icon",
+            "chirpui-status-indicator__label",
+        ),
         category="feedback",
         maturity="stable",
     ),
@@ -1060,6 +407,15 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "error", "success", "warning"),
         sizes=("", "sm", "md", "lg"),
         template="notification_dot.html",
+        extra_emits=(
+            "chirpui-notification-dot__dot",
+            "chirpui-notification-dot__ping",
+        ),
+        trim_emits=(
+            "chirpui-notification-dot--default",
+            "chirpui-notification-dot--error",
+            "chirpui-notification-dot--md",
+        ),
         category="feedback",
         maturity="stable",
     ),
@@ -1068,6 +424,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("thinking", "error"),
         elements=("thinking",),
         template="streaming.html",
+        trim_emits=("chirpui-streaming-bubble",),
         category="feedback",
         maturity="stable",
     ),
@@ -1100,6 +457,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         slots=("", "header_actions", "media", "body_actions", "footer"),
         template="card.html",
+        extra_emits=(
+            "chirpui-card--feature",
+            "chirpui-card--glass",
+            "chirpui-card--horizontal",
+            "chirpui-card--media",
+            "chirpui-card--stats",
+        ),
         category="container",
         maturity="stable",
     ),
@@ -1121,6 +485,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         modifiers=("full", "no-padding", "bento"),
         elements=("eyebrow", "title", "lede", "body"),
         template="surface.html",
+        extra_emits=(
+            "chirpui-surface--cornered",
+            "chirpui-surface--deep",
+            "chirpui-surface--inset-glow",
+            "chirpui-surface--noise-overlay",
+            "chirpui-surface--static-overlay",
+        ),
         category="container",
         maturity="stable",
     ),
@@ -1130,6 +501,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("header", "title", "header-actions", "close", "body", "footer"),
         slots=("", "header_actions", "footer"),
         template="modal.html",
+        extra_emits=(
+            "chirpui-modal--closed",
+            "chirpui-modal--open",
+            "chirpui-modal__backdrop",
+            "chirpui-modal__panel",
+        ),
+        trim_emits=("chirpui-modal--md",),
         category="container",
         maturity="stable",
     ),
@@ -1137,6 +515,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="panel",
         slots=("", "actions", "footer"),
         template="panel.html",
+        extra_emits=(
+            "chirpui-panel__actions",
+            "chirpui-panel__body",
+            "chirpui-panel__body--scroll",
+            "chirpui-panel__footer",
+            "chirpui-panel__header",
+            "chirpui-panel__heading",
+            "chirpui-panel__subtitle",
+            "chirpui-panel__title",
+        ),
         category="container",
         maturity="stable",
     ),
@@ -1152,6 +540,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="tabs",
         slots=("",),
         template="tabs.html",
+        extra_emits=(
+            "chirpui-tabs__tab",
+            "chirpui-tabs__tab--active",
+        ),
         category="navigation",
         maturity="stable",
     ),
@@ -1159,6 +551,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="tab",
         modifiers=("active",),
         template="tabs.html",
+        extra_emits=("chirpui-tab--disabled",),
         category="navigation",
         maturity="stable",
     ),
@@ -1167,6 +560,15 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("trigger", "menu", "header", "footer"),
         slots=("", "header", "footer"),
         template="dropdown.html",
+        extra_emits=(
+            "chirpui-dropdown--split",
+            "chirpui-dropdown__caret",
+            "chirpui-dropdown__divider",
+            "chirpui-dropdown__icon",
+            "chirpui-dropdown__split-primary",
+            "chirpui-dropdown__trigger--select",
+            "chirpui-dropdown__trigger--split",
+        ),
         category="navigation",
         maturity="stable",
     ),
@@ -1174,6 +576,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="dropdown__item",
         variants=("default", "danger", "muted"),
         template="dropdown_menu.html",
+        extra_emits=("chirpui-dropdown__item--selected",),
+        trim_emits=(
+            "chirpui-dropdown__item--default",
+            "chirpui-dropdown__item--muted",
+        ),
         category="navigation",
         maturity="stable",
         macro="dropdown_menu",
@@ -1181,6 +588,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "breadcrumbs": ComponentDescriptor(
         block="breadcrumbs",
         template="breadcrumbs.html",
+        extra_emits=(
+            "chirpui-breadcrumbs__current",
+            "chirpui-breadcrumbs__item",
+            "chirpui-breadcrumbs__link",
+            "chirpui-breadcrumbs__list",
+        ),
+        trim_emits=("chirpui-breadcrumbs",),
         category="navigation",
         maturity="stable",
     ),
@@ -1188,6 +602,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="tooltip",
         variants=("top", "bottom", "left", "right"),
         template="tooltip.html",
+        extra_emits=("chirpui-tooltip__bubble",),
         category="navigation",
         maturity="stable",
     ),
@@ -1198,6 +613,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("actions", "breadcrumbs", "meta", "top"),
         slots=("actions",),
         template="layout.html",
+        trim_emits=("chirpui-page-header--default",),
         category="layout",
         maturity="stable",
     ),
@@ -1207,6 +623,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("actions", "icon", "title-block", "title-inline", "top"),
         slots=("actions",),
         template="layout.html",
+        trim_emits=("chirpui-section-header--default",),
         category="layout",
         maturity="stable",
     ),
@@ -1214,6 +631,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="description-list",
         variants=("stacked", "horizontal"),
         template="description_list.html",
+        trim_emits=(
+            "chirpui-description-list--horizontal",
+            "chirpui-description-list--stacked",
+        ),
         category="layout",
         maturity="stable",
     ),
@@ -1221,6 +642,19 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="hero",
         variants=("solid", "muted", "gradient", "mesh", "animated-gradient"),
         template="hero.html",
+        extra_emits=(
+            "chirpui-hero--page",
+            "chirpui-hero--page-minimal",
+            "chirpui-hero__action",
+            "chirpui-hero__actions",
+            "chirpui-hero__content",
+            "chirpui-hero__eyebrow",
+            "chirpui-hero__footer",
+            "chirpui-hero__inner",
+            "chirpui-hero__metadata",
+            "chirpui-hero__subtitle",
+            "chirpui-hero__title",
+        ),
         category="layout",
         maturity="stable",
     ),
@@ -1228,6 +662,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="page-hero",
         variants=("editorial", "minimal"),
         template="hero.html",
+        trim_emits=(
+            "chirpui-page-hero",
+            "chirpui-page-hero--editorial",
+            "chirpui-page-hero--minimal",
+        ),
         category="layout",
         maturity="stable",
     ),
@@ -1235,6 +674,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="message-bubble",
         variants=("default", "user", "assistant", "system"),
         template="message_bubble.html",
+        extra_emits=(
+            "chirpui-message-bubble--left",
+            "chirpui-message-bubble--pending",
+            "chirpui-message-bubble--read",
+            "chirpui-message-bubble--right",
+            "chirpui-message-bubble--sent",
+        ),
+        trim_emits=("chirpui-message-bubble--default",),
         category="layout",
         maturity="stable",
     ),
@@ -1253,12 +700,24 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="aura",
         variants=("accent", "warm", "cool", "muted", "primary"),
         category="effect",
+        maturity="experimental",
+        role="effect",
     ),
     "border-beam": ComponentDescriptor(
         block="border-beam",
         variants=("", "default", "accent", "success", "warning"),
         sizes=("", "sm", "md", "lg"),
         template="border_beam.html",
+        extra_emits=(
+            "chirpui-border-beam__beam",
+            "chirpui-border-beam__content",
+        ),
+        trim_emits=(
+            "chirpui-border-beam--default",
+            "chirpui-border-beam--lg",
+            "chirpui-border-beam--md",
+            "chirpui-border-beam--sm",
+        ),
         category="effect",
         maturity="experimental",
     ),
@@ -1267,6 +726,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "accent", "muted"),
         sizes=("", "sm", "md", "lg"),
         template="glow_card.html",
+        extra_emits=(
+            "chirpui-glow-card__content",
+            "chirpui-glow-card__glow",
+        ),
+        trim_emits=(
+            "chirpui-glow-card--default",
+            "chirpui-glow-card--lg",
+            "chirpui-glow-card--md",
+            "chirpui-glow-card--sm",
+        ),
         category="effect",
         maturity="experimental",
     ),
@@ -1274,6 +743,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="spotlight-card",
         variants=("", "default", "accent"),
         template="spotlight_card.html",
+        extra_emits=(
+            "chirpui-spotlight-card__content",
+            "chirpui-spotlight-card__spotlight",
+        ),
+        trim_emits=("chirpui-spotlight-card--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1282,6 +756,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "mono"),
         sizes=("", "sm", "md", "lg", "xl"),
         template="number_ticker.html",
+        extra_emits=("chirpui-number-ticker__value",),
+        trim_emits=("chirpui-number-ticker--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1289,6 +765,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="animated-counter",
         variants=("", "default", "mono"),
         template="animated_counter.html",
+        extra_emits=(
+            "chirpui-animated-counter__label",
+            "chirpui-animated-counter__prefix",
+            "chirpui-animated-counter__value",
+        ),
+        trim_emits=("chirpui-animated-counter--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1297,6 +779,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "reverse"),
         slots=("",),
         template="marquee.html",
+        extra_emits=(
+            "chirpui-marquee--fast",
+            "chirpui-marquee--slow",
+            "chirpui-marquee__fade",
+            "chirpui-marquee__fade--end",
+            "chirpui-marquee__fade--start",
+            "chirpui-marquee__item",
+            "chirpui-marquee__track",
+        ),
+        trim_emits=("chirpui-marquee--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1304,6 +796,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="meteor",
         variants=("", "default", "accent", "muted"),
         template="meteor.html",
+        extra_emits=("chirpui-meteor__streak",),
+        trim_emits=("chirpui-meteor--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1311,6 +805,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="text-reveal",
         variants=("", "default", "gradient"),
         template="text_reveal.html",
+        trim_emits=("chirpui-text-reveal--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1320,6 +815,15 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         slots=("",),
         template="dock.html",
+        extra_emits=(
+            "chirpui-dock__indicator",
+            "chirpui-dock__item",
+            "chirpui-dock__item--active",
+        ),
+        trim_emits=(
+            "chirpui-dock--default",
+            "chirpui-dock--md",
+        ),
         category="effect",
         maturity="experimental",
     ),
@@ -1327,6 +831,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="particle-bg",
         variants=("", "default", "accent", "muted"),
         template="particle_bg.html",
+        extra_emits=(
+            "chirpui-particle-bg__canvas",
+            "chirpui-particle-bg__content",
+            "chirpui-particle-bg__dot",
+        ),
+        trim_emits=("chirpui-particle-bg--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1334,6 +844,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="typewriter",
         variants=("", "fast", "slow"),
         template="typewriter.html",
+        extra_emits=(
+            "chirpui-typewriter--delay-1",
+            "chirpui-typewriter--delay-2",
+            "chirpui-typewriter--delay-3",
+            "chirpui-typewriter--no-cursor",
+            "chirpui-typewriter__text",
+        ),
         category="effect",
         maturity="experimental",
     ),
@@ -1349,6 +866,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="neon",
         variants=("cyan", "magenta", "green", "orange", "blue", "red"),
         template="neon_text.html",
+        extra_emits=(
+            "chirpui-neon--flicker",
+            "chirpui-neon--pulse",
+        ),
         category="effect",
         maturity="experimental",
         macro="neon_text",
@@ -1357,6 +878,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="aurora",
         variants=("", "intense", "subtle"),
         template="aurora.html",
+        extra_emits=(
+            "chirpui-aurora__blob",
+            "chirpui-aurora__blobs",
+            "chirpui-aurora__content",
+        ),
         category="effect",
         maturity="experimental",
     ),
@@ -1371,6 +897,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="grain",
         variants=("", "heavy", "subtle"),
         template="grain.html",
+        extra_emits=(
+            "chirpui-grain--animated",
+            "chirpui-grain--dot",
+        ),
         category="effect",
         maturity="experimental",
     ),
@@ -1379,6 +909,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "sm", "lg", "xl"),
         sizes=("", "sm", "lg", "xl"),
         template="orbit.html",
+        extra_emits=(
+            "chirpui-orbit--fast",
+            "chirpui-orbit--reverse",
+            "chirpui-orbit--slow",
+            "chirpui-orbit__center",
+            "chirpui-orbit__item",
+            "chirpui-orbit__ring",
+        ),
         category="effect",
         maturity="experimental",
     ),
@@ -1387,6 +925,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "gold", "white", "rainbow"),
         sizes=("", "sm", "md", "lg"),
         template="sparkle.html",
+        extra_emits=("chirpui-sparkle__star",),
+        trim_emits=(
+            "chirpui-sparkle--lg",
+            "chirpui-sparkle--md",
+            "chirpui-sparkle--sm",
+        ),
         category="effect",
         maturity="experimental",
     ),
@@ -1394,6 +938,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="confetti",
         variants=("",),
         template="confetti.html",
+        extra_emits=(
+            "chirpui-confetti__piece",
+            "chirpui-confetti__piece--active",
+            "chirpui-confetti__piece--circle",
+            "chirpui-confetti__piece--square",
+            "chirpui-confetti__piece--strip",
+        ),
         category="effect",
         maturity="experimental",
     ),
@@ -1401,6 +952,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="wobble",
         variants=("wobble", "jello", "rubber-band", "bounce-in"),
         template="wobble.html",
+        trim_emits=(
+            "chirpui-wobble--bounce-in",
+            "chirpui-wobble--jello",
+            "chirpui-wobble--rubber-band",
+            "chirpui-wobble--wobble",
+        ),
         category="effect",
         maturity="experimental",
     ),
@@ -1409,6 +966,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="symbol-rain",
         variants=("", "default", "accent", "gold", "muted"),
         template="symbol_rain.html",
+        extra_emits=(
+            "chirpui-symbol-rain__canvas",
+            "chirpui-symbol-rain__content",
+            "chirpui-symbol-rain__drop",
+        ),
+        trim_emits=("chirpui-symbol-rain--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1416,6 +979,18 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="holy-light",
         variants=("", "default", "gold", "silver", "holy"),
         template="holy_light.html",
+        extra_emits=(
+            "chirpui-holy-light--intense",
+            "chirpui-holy-light--subtle",
+            "chirpui-holy-light__content",
+            "chirpui-holy-light__layer",
+            "chirpui-holy-light__layer--far",
+            "chirpui-holy-light__layer--mid",
+            "chirpui-holy-light__layer--near",
+            "chirpui-holy-light__layers",
+            "chirpui-holy-light__mote",
+        ),
+        trim_emits=("chirpui-holy-light--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1423,6 +998,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="rune-field",
         variants=("", "default", "arcane", "frost", "ember"),
         template="rune_field.html",
+        extra_emits=(
+            "chirpui-rune-field__content",
+            "chirpui-rune-field__layer",
+            "chirpui-rune-field__layer--far",
+            "chirpui-rune-field__layer--mid",
+            "chirpui-rune-field__layer--near",
+            "chirpui-rune-field__layers",
+            "chirpui-rune-field__rune",
+        ),
+        trim_emits=("chirpui-rune-field--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1430,6 +1015,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="constellation",
         variants=("", "default", "warm", "cool", "mono"),
         template="constellation.html",
+        extra_emits=(
+            "chirpui-constellation--dense",
+            "chirpui-constellation--sparse",
+            "chirpui-constellation__content",
+            "chirpui-constellation__field",
+            "chirpui-constellation__star",
+        ),
+        trim_emits=("chirpui-constellation--default",),
         category="effect",
         maturity="experimental",
     ),
@@ -1438,6 +1031,19 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-border",
         variants=("", "single", "double", "rounded", "heavy", "spin"),
         template="ascii_border.html",
+        extra_emits=(
+            "chirpui-ascii-border__bottom",
+            "chirpui-ascii-border__content",
+            "chirpui-ascii-border__corner",
+            "chirpui-ascii-border__line",
+            "chirpui-ascii-border__mid",
+            "chirpui-ascii-border__side",
+            "chirpui-ascii-border__top",
+        ),
+        trim_emits=(
+            "chirpui-ascii-border--rounded",
+            "chirpui-ascii-border--single",
+        ),
         category="ascii",
         maturity="experimental",
     ),
@@ -1454,6 +1060,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "spin-drift",
         ),
         template="ascii_divider.html",
+        extra_emits=("chirpui-ascii-divider__glyph",),
+        trim_emits=("chirpui-ascii-divider--single",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1461,6 +1069,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-sparkline",
         variants=("", "default", "accent", "muted", "gradient"),
         template="ascii_sparkline.html",
+        extra_emits=("chirpui-ascii-sparkline__bar",),
+        trim_emits=("chirpui-ascii-sparkline--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1468,6 +1078,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-progress",
         variants=("", "default", "accent", "success", "warning"),
         template="ascii_progress.html",
+        extra_emits=(
+            "chirpui-ascii-progress__empty",
+            "chirpui-ascii-progress__filled",
+            "chirpui-ascii-progress__label",
+            "chirpui-ascii-progress__track",
+            "chirpui-ascii-progress__value",
+        ),
+        trim_emits=("chirpui-ascii-progress--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1475,6 +1093,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-empty",
         variants=("", "default", "muted", "accent"),
         template="ascii_empty.html",
+        extra_emits=(
+            "chirpui-ascii-empty__action",
+            "chirpui-ascii-empty__desc",
+            "chirpui-ascii-empty__glyph",
+            "chirpui-ascii-empty__heading",
+        ),
+        trim_emits=("chirpui-ascii-empty--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1482,6 +1107,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-badge",
         variants=("", "default", "success", "warning", "error", "accent", "muted"),
         template="ascii_badge.html",
+        extra_emits=(
+            "chirpui-ascii-badge__close",
+            "chirpui-ascii-badge__glyph",
+            "chirpui-ascii-badge__open",
+            "chirpui-ascii-badge__text",
+        ),
+        trim_emits=("chirpui-ascii-badge--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1489,6 +1121,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-spinner",
         variants=("", "braille", "box", "dots", "arrows", "blocks"),
         template="ascii_spinner.html",
+        extra_emits=(
+            "chirpui-ascii-spinner--lg",
+            "chirpui-ascii-spinner--md",
+            "chirpui-ascii-spinner--sm",
+            "chirpui-ascii-spinner__char",
+            "chirpui-ascii-spinner__chars",
+            "chirpui-ascii-spinner__label",
+        ),
         category="ascii",
         maturity="experimental",
     ),
@@ -1496,6 +1136,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-skeleton",
         variants=("", "text", "card", "avatar", "heading"),
         template="ascii_skeleton.html",
+        extra_emits=(
+            "chirpui-ascii-skeleton__fill",
+            "chirpui-ascii-skeleton__line",
+            "chirpui-ascii-skeleton__line--header",
+        ),
         category="ascii",
         maturity="experimental",
     ),
@@ -1504,6 +1149,18 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "success", "danger", "accent"),
         sizes=("", "sm", "md", "lg"),
         template="ascii_toggle.html",
+        extra_emits=(
+            "chirpui-ascii-toggle--disabled",
+            "chirpui-ascii-toggle__input",
+            "chirpui-ascii-toggle__knob",
+            "chirpui-ascii-toggle__label",
+            "chirpui-ascii-toggle__rail",
+            "chirpui-ascii-toggle__track",
+        ),
+        trim_emits=(
+            "chirpui-ascii-toggle--default",
+            "chirpui-ascii-toggle--md",
+        ),
         category="ascii",
         maturity="experimental",
     ),
@@ -1512,6 +1169,21 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "success", "danger", "accent"),
         sizes=("", "sm", "md", "lg"),
         template="ascii_toggle.html",
+        extra_emits=(
+            "chirpui-ascii-switch--disabled",
+            "chirpui-ascii-switch__body",
+            "chirpui-ascii-switch__cap",
+            "chirpui-ascii-switch__cap--bottom",
+            "chirpui-ascii-switch__cap--top",
+            "chirpui-ascii-switch__input",
+            "chirpui-ascii-switch__label",
+            "chirpui-ascii-switch__lever",
+            "chirpui-ascii-switch__slot",
+        ),
+        trim_emits=(
+            "chirpui-ascii-switch--default",
+            "chirpui-ascii-switch--md",
+        ),
         category="ascii",
         maturity="experimental",
     ),
@@ -1519,6 +1191,23 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-table",
         variants=("single", "double", "heavy", "rounded"),
         template="ascii_table.html",
+        extra_emits=(
+            "chirpui-ascii-table--compact",
+            "chirpui-ascii-table--sticky",
+            "chirpui-ascii-table--striped",
+            "chirpui-ascii-table__body",
+            "chirpui-ascii-table__border",
+            "chirpui-ascii-table__border--bottom",
+            "chirpui-ascii-table__border--mid",
+            "chirpui-ascii-table__border--top",
+            "chirpui-ascii-table__cell--center",
+            "chirpui-ascii-table__cell--left",
+            "chirpui-ascii-table__cell--right",
+            "chirpui-ascii-table__head",
+            "chirpui-ascii-table__row",
+            "chirpui-ascii-table__td",
+            "chirpui-ascii-table__th",
+        ),
         category="ascii",
         maturity="experimental",
     ),
@@ -1526,6 +1215,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-indicator",
         variants=("success", "warning", "error", "muted", "accent"),
         template="ascii_indicator.html",
+        extra_emits=(
+            "chirpui-ascii-indicator--blink",
+            "chirpui-ascii-indicator--blink-fast",
+            "chirpui-ascii-indicator__label",
+            "chirpui-ascii-indicator__light",
+        ),
         category="ascii",
         maturity="experimental",
         macro="indicator",
@@ -1534,6 +1229,15 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-tile-btn",
         variants=("", "default", "success", "warning", "danger", "accent"),
         template="ascii_tile_btn.html",
+        extra_emits=(
+            "chirpui-ascii-tile-btn--disabled",
+            "chirpui-ascii-tile-btn--lit",
+            "chirpui-ascii-tile-btn__face",
+            "chirpui-ascii-tile-btn__glyph",
+            "chirpui-ascii-tile-btn__input",
+            "chirpui-ascii-tile-btn__label",
+        ),
+        trim_emits=("chirpui-ascii-tile-btn--default",),
         category="ascii",
         maturity="experimental",
         macro="tile_btn",
@@ -1542,6 +1246,18 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-knob",
         variants=("", "default", "accent"),
         template="ascii_knob.html",
+        extra_emits=(
+            "chirpui-ascii-knob__dial",
+            "chirpui-ascii-knob__frame",
+            "chirpui-ascii-knob__input",
+            "chirpui-ascii-knob__legend",
+            "chirpui-ascii-knob__notch",
+            "chirpui-ascii-knob__position",
+            "chirpui-ascii-knob__positions",
+            "chirpui-ascii-knob__tick",
+            "chirpui-ascii-knob__value",
+        ),
+        trim_emits=("chirpui-ascii-knob--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1549,6 +1265,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-fader",
         variants=("", "default", "accent", "success", "warning", "danger"),
         template="ascii_fader.html",
+        extra_emits=(
+            "chirpui-ascii-fader__cap",
+            "chirpui-ascii-fader__input",
+            "chirpui-ascii-fader__label",
+            "chirpui-ascii-fader__segment",
+            "chirpui-ascii-fader__segment--filled",
+            "chirpui-ascii-fader__track",
+            "chirpui-ascii-fader__value",
+        ),
+        trim_emits=("chirpui-ascii-fader--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1556,6 +1282,18 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-vu",
         variants=("", "default", "accent", "success", "warning"),
         template="ascii_vu_meter.html",
+        extra_emits=(
+            "chirpui-ascii-vu--animate",
+            "chirpui-ascii-vu__bracket",
+            "chirpui-ascii-vu__cell",
+            "chirpui-ascii-vu__cell--filled",
+            "chirpui-ascii-vu__cell--hot",
+            "chirpui-ascii-vu__cell--peak",
+            "chirpui-ascii-vu__label",
+            "chirpui-ascii-vu__readout",
+            "chirpui-ascii-vu__track",
+        ),
+        trim_emits=("chirpui-ascii-vu--default",),
         category="ascii",
         maturity="experimental",
         macro="ascii_vu_meter",
@@ -1564,6 +1302,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-7seg",
         variants=("", "default", "accent", "success", "warning", "error"),
         template="ascii_7seg.html",
+        extra_emits=(
+            "chirpui-ascii-7seg__digit",
+            "chirpui-ascii-7seg__display",
+            "chirpui-ascii-7seg__frame",
+            "chirpui-ascii-7seg__label",
+        ),
+        trim_emits=("chirpui-ascii-7seg--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1571,6 +1316,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-checkbox",
         variants=("", "default", "accent", "success", "danger"),
         template="ascii_checkbox.html",
+        extra_emits=(
+            "chirpui-ascii-checkbox--disabled",
+            "chirpui-ascii-checkbox__box",
+            "chirpui-ascii-checkbox__input",
+            "chirpui-ascii-checkbox__label",
+        ),
+        trim_emits=("chirpui-ascii-checkbox--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1578,6 +1330,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-radio-group",
         variants=("", "default", "accent"),
         template="ascii_radio.html",
+        extra_emits=(
+            "chirpui-ascii-radio-group--horizontal",
+            "chirpui-ascii-radio-group__legend",
+        ),
+        trim_emits=("chirpui-ascii-radio-group--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1585,6 +1342,17 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-stepper",
         variants=("", "default", "accent", "success"),
         template="ascii_stepper.html",
+        extra_emits=(
+            "chirpui-ascii-stepper__connector",
+            "chirpui-ascii-stepper__connector--complete",
+            "chirpui-ascii-stepper__label",
+            "chirpui-ascii-stepper__node",
+            "chirpui-ascii-stepper__step",
+            "chirpui-ascii-stepper__step--active",
+            "chirpui-ascii-stepper__step--complete",
+            "chirpui-ascii-stepper__track",
+        ),
+        trim_emits=("chirpui-ascii-stepper--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1592,6 +1360,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="split-flap",
         variants=("", "default", "amber", "green"),
         template="ascii_split_flap.html",
+        extra_emits=(
+            "chirpui-split-flap--animate",
+            "chirpui-split-flap__char",
+        ),
+        trim_emits=("chirpui-split-flap--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1599,6 +1372,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-ticker",
         variants=("", "default", "accent", "success", "warning", "error"),
         template="ascii_ticker.html",
+        extra_emits=(
+            "chirpui-ascii-ticker--fast",
+            "chirpui-ascii-ticker--slow",
+            "chirpui-ascii-ticker__bracket",
+            "chirpui-ascii-ticker__text",
+            "chirpui-ascii-ticker__track",
+        ),
+        trim_emits=("chirpui-ascii-ticker--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1606,6 +1387,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-card",
         variants=("", "single", "double", "rounded", "heavy"),
         template="ascii_card.html",
+        extra_emits=(
+            "chirpui-ascii-card__body",
+            "chirpui-ascii-card__bottom",
+            "chirpui-ascii-card__content",
+            "chirpui-ascii-card__corner",
+            "chirpui-ascii-card__divider",
+            "chirpui-ascii-card__line",
+            "chirpui-ascii-card__side",
+            "chirpui-ascii-card__top",
+        ),
         category="ascii",
         maturity="experimental",
     ),
@@ -1613,6 +1404,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-tabs",
         variants=("", "default", "accent"),
         template="ascii_tabs.html",
+        trim_emits=("chirpui-ascii-tabs--default",),
         category="ascii",
         maturity="experimental",
     ),
@@ -1620,6 +1412,15 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-tab",
         variants=("", "default", "accent"),
         template="ascii_tabs.html",
+        extra_emits=(
+            "chirpui-ascii-tab--active",
+            "chirpui-ascii-tab__bracket",
+            "chirpui-ascii-tab__label",
+        ),
+        trim_emits=(
+            "chirpui-ascii-tab--accent",
+            "chirpui-ascii-tab--default",
+        ),
         category="ascii",
         maturity="experimental",
     ),
@@ -1627,6 +1428,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="ascii-modal",
         variants=("", "single", "double", "heavy"),
         template="ascii_modal.html",
+        extra_emits=(
+            "chirpui-ascii-modal__body",
+            "chirpui-ascii-modal__close",
+            "chirpui-ascii-modal__header",
+            "chirpui-ascii-modal__title",
+        ),
         category="ascii",
         maturity="experimental",
     ),
@@ -1655,6 +1462,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "--chirpui-site-header-max-width",
         ),
         template="site_header.html",
+        extra_emits=(
+            "chirpui-site-header__inner--center-brand",
+            "chirpui-site-header__inner--center-nav",
+        ),
         category="marketing",
         maturity="experimental",
     ),
@@ -1662,6 +1473,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="site-nav",
         elements=("link", "glyph"),
         template="site_header.html",
+        extra_emits=(
+            "chirpui-site-nav__link--active",
+            "chirpui-site-nav__link--external",
+        ),
+        trim_emits=("chirpui-site-nav",),
         category="marketing",
         maturity="experimental",
         macro="site_nav_link",
@@ -1690,6 +1506,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "--chirpui-site-footer-padding-inline",
         ),
         template="site_footer.html",
+        extra_emits=("chirpui-site-footer__link--external",),
+        trim_emits=("chirpui-site-footer--columns",),
         category="marketing",
         maturity="experimental",
     ),
@@ -1708,6 +1526,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "--chirpui-band-breakout",
         ),
         template="band.html",
+        trim_emits=("chirpui-band--default",),
         category="marketing",
         maturity="experimental",
     ),
@@ -1747,6 +1566,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         modifiers=("hoverable", "divided", "relaxed"),
         slots=("",),
         template="settings_row.html",
+        extra_emits=(
+            "chirpui-settings-row-list--on-accent",
+            "chirpui-settings-row-list--on-muted",
+        ),
         category="container",
         maturity="stable",
     ),
@@ -1775,6 +1598,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "tag-browse": ComponentDescriptor(
         block="tag-browse",
         template="tag_browse.html",
+        trim_emits=("chirpui-tag-browse",),
         category="control",
         maturity="stable",
         macro="tag_browse_tray",
@@ -1783,17 +1607,39 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "star-rating": ComponentDescriptor(
         block="star-rating",
         sizes=("", "sm", "md", "lg"),
+        extra_emits=(
+            "chirpui-star-rating__input",
+            "chirpui-star-rating__label",
+        ),
+        trim_emits=("chirpui-star-rating--md",),
         category="control",
+        role="component",
+        maturity="stable",
     ),
     "thumbs": ComponentDescriptor(
         block="thumbs",
         sizes=("", "sm", "md", "lg"),
+        extra_emits=(
+            "chirpui-thumbs__input",
+            "chirpui-thumbs__label",
+        ),
+        trim_emits=("chirpui-thumbs--md",),
         category="control",
+        role="component",
+        maturity="stable",
     ),
     "segmented": ComponentDescriptor(
         block="segmented",
         sizes=("", "sm", "md", "lg"),
         template="segmented_control.html",
+        extra_emits=(
+            "chirpui-segmented__icon",
+            "chirpui-segmented__input",
+            "chirpui-segmented__label",
+            "chirpui-segmented__option",
+            "chirpui-segmented__option--active",
+        ),
+        trim_emits=("chirpui-segmented--md",),
         category="control",
         maturity="stable",
         macro="segmented_control",
@@ -1814,6 +1660,18 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         slots=("", "caption"),
         template="table.html",
+        extra_emits=(
+            "chirpui-table__td--actions",
+            "chirpui-table__td--center",
+            "chirpui-table__td--left",
+            "chirpui-table__td--mono",
+            "chirpui-table__td--right",
+            "chirpui-table__td--truncate",
+            "chirpui-table__th--actions",
+            "chirpui-table__th--center",
+            "chirpui-table__th--left",
+            "chirpui-table__th--right",
+        ),
         category="data-display",
         maturity="stable",
     ),
@@ -1830,6 +1688,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="pagination",
         elements=("link", "ellipsis"),
         template="pagination.html",
+        extra_emits=(
+            "chirpui-pagination__link--active",
+            "chirpui-pagination__link--disabled",
+        ),
         category="navigation",
         maturity="stable",
     ),
@@ -1854,6 +1716,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="row-actions",
         elements=("trigger",),
         template="row_actions.html",
+        trim_emits=("chirpui-row-actions",),
         category="control",
         maturity="stable",
     ),
@@ -1869,6 +1732,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "empty",
         ),
         template="params_table.html",
+        extra_emits=(
+            "chirpui-params-table__code--muted",
+            "chirpui-params-table__td--default",
+            "chirpui-params-table__td--name",
+            "chirpui-params-table__td--type",
+            "chirpui-params-table__th--default",
+            "chirpui-params-table__th--name",
+            "chirpui-params-table__th--type",
+        ),
+        trim_emits=("chirpui-params-table",),
         category="data-display",
         maturity="stable",
     ),
@@ -1915,6 +1788,15 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "footer",
         ),
         template="metric_grid.html",
+        extra_emits=(
+            "chirpui-metric-card__icon-badge--error",
+            "chirpui-metric-card__icon-badge--primary",
+            "chirpui-metric-card__icon-badge--success",
+            "chirpui-metric-card__icon-badge--warning",
+            "chirpui-metric-card__trend--down",
+            "chirpui-metric-card__trend--neutral",
+            "chirpui-metric-card__trend--up",
+        ),
         category="data-display",
         maturity="stable",
     ),
@@ -1929,6 +1811,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="animated-stat-card",
         elements=("trend",),
         template="animated_stat_card.html",
+        extra_emits=(
+            "chirpui-animated-stat-card__trend--down",
+            "chirpui-animated-stat-card__trend--up",
+        ),
         category="data-display",
         maturity="stable",
     ),
@@ -1947,6 +1833,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("item", "handle", "content", "remove"),
         slots=("",),
         template="sortable_list.html",
+        extra_emits=(
+            "chirpui-sortable__item--dragging",
+            "chirpui-sortable__item--over",
+        ),
         category="interactive",
         maturity="stable",
         macro="sortable_list",
@@ -1970,6 +1860,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         slots=("",),
         template="timeline.html",
+        extra_emits=(
+            "chirpui-timeline__item--error",
+            "chirpui-timeline__item--info",
+            "chirpui-timeline__item--link",
+            "chirpui-timeline__item--success",
+            "chirpui-timeline__item--warning",
+        ),
         category="data-display",
         maturity="stable",
     ),
@@ -1977,6 +1874,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="tree",
         elements=("item", "node", "label"),
         template="tree_view.html",
+        extra_emits=("chirpui-tree__label--leaf",),
         category="data-display",
         maturity="stable",
         macro="tree_view",
@@ -2187,6 +2085,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "--chirpui-sidebar-link-gap",
         ),
         template="sidebar.html",
+        extra_emits=(
+            "chirpui-sidebar__footer",
+            "chirpui-sidebar__link--active",
+            "chirpui-sidebar__section-links",
+        ),
         category="navigation",
         maturity="stable",
     ),
@@ -2239,6 +2142,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("pane", "handle", "handle-grip"),
         slots=("left", "right"),
         template="split_panel.html",
+        extra_emits=("chirpui-split-panel__pane--second",),
         category="layout",
         maturity="stable",
     ),
@@ -2297,6 +2201,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         slots=("",),
         template="forms.html",
+        extra_emits=(
+            "chirpui-field__input--multi",
+            "chirpui-field__label--inline",
+        ),
         category="form",
         maturity="stable",
         macro="field_wrapper",
@@ -2320,6 +2228,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         modifiers=("with-icon",),
         elements=("input", "inner", "icon", "btn"),
         template="forms.html",
+        trim_emits=("chirpui-search-bar",),
         category="form",
         maturity="stable",
     ),
@@ -2382,6 +2291,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="wizard-form",
         elements=("body",),
         template="wizard_form.html",
+        trim_emits=("chirpui-wizard-form",),
         category="form",
         maturity="stable",
     ),
@@ -2409,6 +2319,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         slots=("", "header"),
         template="nav_tree.html",
+        extra_emits=(
+            "chirpui-nav-tree__link--active",
+            "chirpui-nav-tree__link--leaf",
+            "chirpui-nav-tree__list--nested",
+            "chirpui-nav-tree__text--leaf",
+        ),
         category="navigation",
         maturity="stable",
     ),
@@ -2418,6 +2334,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("brand", "links", "link"),
         slots=("", "brand", "end"),
         template="navbar.html",
+        extra_emits=(
+            "chirpui-navbar__link--active",
+            "chirpui-navbar__links--end",
+        ),
         category="navigation",
         maturity="stable",
     ),
@@ -2438,6 +2358,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="route-tab",
         elements=("icon", "label", "badge"),
         template="route_tabs.html",
+        extra_emits=("chirpui-route-tab--active",),
         category="navigation",
         maturity="stable",
         macro="render_route_tabs",
@@ -2472,6 +2393,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="action-bar",
         elements=("item", "icon", "count"),
         template="action_bar.html",
+        extra_emits=(
+            "chirpui-action-bar__item--active",
+            "chirpui-action-bar__item--disabled",
+        ),
         category="control",
         maturity="stable",
     ),
@@ -2531,6 +2456,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "event",
         ),
         template="calendar.html",
+        extra_emits=("chirpui-calendar__day--empty",),
         category="data-display",
         maturity="stable",
     ),
@@ -2618,6 +2544,12 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         slots=("",),
         template="dnd.html",
+        extra_emits=(
+            "chirpui-dnd__card--dragging",
+            "chirpui-dnd__column-body--over",
+            "chirpui-dnd__item--dragging",
+            "chirpui-dnd__item--over",
+        ),
         category="interactive",
         maturity="stable",
         macro="dnd_list",
@@ -2801,6 +2733,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="stepper",
         elements=("list", "item", "indicator", "check", "label", "connector"),
         template="stepper.html",
+        extra_emits=(
+            "chirpui-stepper__item--active",
+            "chirpui-stepper__item--completed",
+        ),
         category="navigation",
         maturity="stable",
     ),
@@ -2871,6 +2807,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="infinite-scroll",
         elements=("loading",),
         template="infinite_scroll.html",
+        extra_emits=("chirpui-infinite-scroll__loading--skeleton",),
+        trim_emits=("chirpui-infinite-scroll",),
         category="interactive",
         maturity="stable",
     ),
@@ -2884,13 +2822,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
 
 
 # ---------------------------------------------------------------------------
-# Sprint-4 parity reconciliation — stub descriptors for CSS-only blocks that
-# pre-dated the registry. Merged into ``COMPONENTS`` at import so downstream
-# consumers see a single dict. Sprint 6 promotes them to hand-authored entries
-# as each component migrates to the ``@scope`` envelope convention.
+# Explicit descriptors for CSS-only blocks that pre-dated the registry. Merged
+# into ``COMPONENTS`` at import so downstream consumers see a single dict.
 # ---------------------------------------------------------------------------
 
-_AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
+_CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     "actions": ComponentDescriptor(
         block="actions",
         extra_emits=(
@@ -2901,15 +2837,22 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-actions--start",
             "chirpui-actions--stretch",
         ),
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="stable",
+        authoring="preferred",
     ),
     "ambient": ComponentDescriptor(
         block="ambient",
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "ambient-root": ComponentDescriptor(
         block="ambient-root",
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "ascii": ComponentDescriptor(
         block="ascii",
@@ -2934,48 +2877,68 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii__char--3",
             "chirpui-ascii__char--4",
         ),
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "ascii-checkbox-group": ComponentDescriptor(
         block="ascii-checkbox-group",
         elements=("legend",),
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "ascii-fader-bank": ComponentDescriptor(
         block="ascii-fader-bank",
         elements=("faders", "title"),
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "ascii-fill": ComponentDescriptor(
         block="ascii-fill",
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "ascii-fill-hover": ComponentDescriptor(
         block="ascii-fill-hover",
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "ascii-indicator-row": ComponentDescriptor(
         block="ascii-indicator-row",
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "ascii-modal-trigger": ComponentDescriptor(
         block="ascii-modal-trigger",
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "ascii-radio": ComponentDescriptor(
         block="ascii-radio",
         elements=("dot", "input", "label"),
         extra_emits=("chirpui-ascii-radio--disabled",),
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "ascii-tile-grid": ComponentDescriptor(
         block="ascii-tile-grid",
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "ascii-vu-stack": ComponentDescriptor(
         block="ascii-vu-stack",
         elements=("title",),
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "bento": ComponentDescriptor(
         block="bento",
@@ -2985,7 +2948,9 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-bento__item--span-full",
             "chirpui-bento__item--span-row",
         ),
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "bg-pattern": ComponentDescriptor(
         block="bg-pattern",
@@ -2998,12 +2963,16 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-bg-pattern--grid",
             "chirpui-bg-pattern--weave",
         ),
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "blade": ComponentDescriptor(
         block="blade",
         extra_emits=("chirpui-blade--parallax",),
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "block": ComponentDescriptor(
         block="block",
@@ -3014,11 +2983,16 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-block--tall",
             "chirpui-block--wide",
         ),
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="stable",
+        authoring="preferred",
     ),
     "bounce-in": ComponentDescriptor(
         block="bounce-in",
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "btn-group": ComponentDescriptor(
         block="btn-group",
@@ -3028,12 +3002,16 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-btn-group--end",
             "chirpui-btn-group--stretch",
         ),
-        category="auto",
+        category="control",
+        role="primitive",
+        maturity="stable",
     ),
     "bulk-bar": ComponentDescriptor(
         block="bulk-bar",
         elements=("count",),
-        category="auto",
+        category="control",
+        role="primitive",
+        maturity="experimental",
     ),
     "children": ComponentDescriptor(
         block="children",
@@ -3046,23 +3024,34 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-children--rounded-sm",
             "chirpui-children--rounded-xl",
         ),
-        category="auto",
+        trim_emits=("chirpui-children",),
+        category="layout",
+        role="primitive",
+        maturity="stable",
     ),
     "clamp-2": ComponentDescriptor(
         block="clamp-2",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "clamp-3": ComponentDescriptor(
         block="clamp-3",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "click-jello": ComponentDescriptor(
         block="click-jello",
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "click-wobble": ComponentDescriptor(
         block="click-wobble",
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "cluster": ComponentDescriptor(
         block="cluster",
@@ -3073,28 +3062,41 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-cluster--sm",
             "chirpui-cluster--xs",
         ),
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="stable",
+        authoring="preferred",
     ),
     "code": ComponentDescriptor(
         block="code",
-        category="auto",
+        category="content",
+        role="primitive",
+        maturity="stable",
     ),
     "code-block": ComponentDescriptor(
         block="code-block",
         elements=("copy",),
-        category="auto",
+        category="content",
+        role="primitive",
+        maturity="stable",
     ),
     "code-block-wrapper": ComponentDescriptor(
         block="code-block-wrapper",
-        category="auto",
+        category="content",
+        role="primitive",
+        maturity="stable",
     ),
     "command-bar": ComponentDescriptor(
         block="command-bar",
-        category="auto",
+        category="control",
+        role="primitive",
+        maturity="stable",
     ),
     "comment-thread": ComponentDescriptor(
         block="comment-thread",
-        category="auto",
+        category="content",
+        role="primitive",
+        maturity="stable",
     ),
     "config-row-list": ComponentDescriptor(
         block="config-row-list",
@@ -3103,11 +3105,16 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-config-row-list--hoverable",
             "chirpui-config-row-list--relaxed",
         ),
-        category="auto",
+        category="container",
+        role="primitive",
+        maturity="stable",
     ),
     "container": ComponentDescriptor(
         block="container",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="stable",
+        authoring="preferred",
     ),
     "counter-badge": ComponentDescriptor(
         block="counter-badge",
@@ -3115,12 +3122,16 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-counter-badge--danger",
             "chirpui-counter-badge--warning",
         ),
-        category="auto",
+        category="feedback",
+        role="primitive",
+        maturity="stable",
     ),
     "display": ComponentDescriptor(
         block="display",
         extra_emits=("chirpui-display--xl",),
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "dl": ComponentDescriptor(
         block="dl",
@@ -3138,7 +3149,9 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-dl__detail--path",
             "chirpui-dl__detail--url",
         ),
-        category="auto",
+        category="data-display",
+        role="primitive",
+        maturity="stable",
     ),
     "document-header": ComponentDescriptor(
         block="document-header",
@@ -3154,7 +3167,10 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     "filter-bar": ComponentDescriptor(
         block="filter-bar",
         elements=("form",),
-        category="auto",
+        trim_emits=("chirpui-filter-bar",),
+        category="form",
+        role="primitive",
+        maturity="stable",
     ),
     "flow": ComponentDescriptor(
         block="flow",
@@ -3163,43 +3179,64 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-flow--md",
             "chirpui-flow--sm",
         ),
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="stable",
+        authoring="preferred",
     ),
     "focus-ring": ComponentDescriptor(
         block="focus-ring",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "font-2xl": ComponentDescriptor(
         block="font-2xl",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "font-base": ComponentDescriptor(
         block="font-base",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "font-lg": ComponentDescriptor(
         block="font-lg",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "font-medium": ComponentDescriptor(
         block="font-medium",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "font-mono": ComponentDescriptor(
         block="font-mono",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "font-sm": ComponentDescriptor(
         block="font-sm",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "font-xl": ComponentDescriptor(
         block="font-xl",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "font-xs": ComponentDescriptor(
         block="font-xs",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "frame": ComponentDescriptor(
         block="frame",
@@ -3212,7 +3249,10 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-frame--hero",
             "chirpui-frame--sidebar-end",
         ),
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="stable",
+        authoring="preferred",
     ),
     "grid": ComponentDescriptor(
         block="grid",
@@ -3232,32 +3272,48 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-grid--preset-detail-two",
             "chirpui-grid--preset-thirds",
         ),
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="stable",
+        authoring="preferred",
     ),
     "hover-jello": ComponentDescriptor(
         block="hover-jello",
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "hover-rubber": ComponentDescriptor(
         block="hover-rubber",
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "hover-wobble": ComponentDescriptor(
         block="hover-wobble",
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "inline": ComponentDescriptor(
         block="inline",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="stable",
     ),
     "jello": ComponentDescriptor(
         block="jello",
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "key-value-form": ComponentDescriptor(
         block="key-value-form",
         elements=("key", "row", "submit", "value"),
-        category="auto",
+        trim_emits=("chirpui-key-value-form",),
+        category="form",
+        role="primitive",
+        maturity="stable",
     ),
     "layer": ComponentDescriptor(
         block="layer",
@@ -3273,53 +3329,79 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-layer--overlap-sm",
             "chirpui-layer--right",
         ),
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="stable",
+        authoring="preferred",
     ),
     "list-reset": ComponentDescriptor(
         block="list-reset",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "mb-md": ComponentDescriptor(
         block="mb-md",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "measure-lg": ComponentDescriptor(
         block="measure-lg",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "measure-md": ComponentDescriptor(
         block="measure-md",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "measure-sm": ComponentDescriptor(
         block="measure-sm",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "message-reactions": ComponentDescriptor(
         block="message-reactions",
-        category="auto",
+        category="content",
+        role="primitive",
+        maturity="stable",
     ),
     "min-w-0": ComponentDescriptor(
         block="min-w-0",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "model-card": ComponentDescriptor(
         block="model-card",
         elements=("badge", "body", "footer", "header", "title"),
-        category="auto",
+        trim_emits=("chirpui-model-card",),
+        category="data-display",
+        role="primitive",
+        maturity="experimental",
     ),
     "mt-md": ComponentDescriptor(
         block="mt-md",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "mt-sm": ComponentDescriptor(
         block="mt-sm",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "number-scale": ComponentDescriptor(
         block="number-scale",
         elements=("input", "label", "labels"),
-        category="auto",
+        category="form",
+        role="primitive",
+        maturity="experimental",
     ),
     "page-fill": ComponentDescriptor(
         block="page-fill",
@@ -3329,51 +3411,74 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "placeholder-inline": ComponentDescriptor(
         block="placeholder-inline",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "progress": ComponentDescriptor(
         block="progress",
         elements=("fill", "track"),
-        category="auto",
+        trim_emits=("chirpui-progress",),
+        category="feedback",
+        role="primitive",
+        maturity="stable",
     ),
     "prose": ComponentDescriptor(
         block="prose",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="stable",
+        authoring="preferred",
     ),
     "prose-lg": ComponentDescriptor(
         block="prose-lg",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "prose-sm": ComponentDescriptor(
         block="prose-sm",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "resource-card": ComponentDescriptor(
         block="resource-card",
         elements=("description",),
-        category="auto",
+        category="data-display",
+        role="primitive",
+        maturity="experimental",
     ),
     "result-slot": ComponentDescriptor(
         block="result-slot",
         extra_emits=("chirpui-result-slot--sm",),
-        category="auto",
+        category="feedback",
+        role="primitive",
+        maturity="experimental",
     ),
     "route-tabs": ComponentDescriptor(
         block="route-tabs",
-        category="auto",
+        category="navigation",
+        role="primitive",
+        maturity="stable",
     ),
     "rubber-band": ComponentDescriptor(
         block="rubber-band",
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "scroll-x": ComponentDescriptor(
         block="scroll-x",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "search-header": ComponentDescriptor(
         block="search-header",
         elements=("form", "strip"),
         template="search_header.html",
+        trim_emits=("chirpui-search-header",),
         category="layout",
         maturity="experimental",
         role="primitive",
@@ -3385,6 +3490,7 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         composes=("surface", "section_header"),
         slot_forwards=(SlotForward("", "surface"),),
         template="layout.html",
+        trim_emits=("chirpui-section-collapsible",),
         category="layout",
         maturity="experimental",
         role="primitive",
@@ -3410,7 +3516,9 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-spinner-thinking--md",
             "chirpui-spinner-thinking--sm",
         ),
-        category="auto",
+        category="feedback",
+        role="primitive",
+        maturity="experimental",
     ),
     "split-flap-board": ComponentDescriptor(
         block="split-flap-board",
@@ -3419,17 +3527,23 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-split-flap-board--amber",
             "chirpui-split-flap-board--green",
         ),
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "split-flap-row": ComponentDescriptor(
         block="split-flap-row",
-        category="auto",
+        category="ascii",
+        role="primitive",
+        maturity="experimental",
     ),
     "sse-retry": ComponentDescriptor(
         block="sse-retry",
         modifiers=("loading",),
         elements=("loading",),
-        category="auto",
+        category="feedback",
+        role="primitive",
+        maturity="experimental",
     ),
     "stack": ComponentDescriptor(
         block="stack",
@@ -3440,30 +3554,44 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-stack--xl",
             "chirpui-stack--xs",
         ),
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="stable",
+        authoring="preferred",
     ),
     "streaming": ComponentDescriptor(
         block="streaming",
         variants=("error",),
-        category="auto",
+        trim_emits=("chirpui-streaming",),
+        category="feedback",
+        role="primitive",
+        maturity="stable",
     ),
     "streaming-block": ComponentDescriptor(
         block="streaming-block",
         modifiers=("active",),
         elements=("cursor",),
-        category="auto",
+        category="feedback",
+        role="primitive",
+        maturity="stable",
     ),
     "suspense-group": ComponentDescriptor(
         block="suspense-group",
-        category="auto",
+        category="feedback",
+        role="primitive",
+        maturity="experimental",
     ),
     "tab-panel": ComponentDescriptor(
         block="tab-panel",
-        category="auto",
+        category="navigation",
+        role="primitive",
+        maturity="stable",
     ),
     "text-muted": ComponentDescriptor(
         block="text-muted",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "texture": ComponentDescriptor(
         block="texture",
@@ -3479,11 +3607,15 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-texture--noise-fine",
             "chirpui-texture--weave",
         ),
-        category="auto",
+        category="effect",
+        role="primitive",
+        maturity="experimental",
     ),
     "toast-container": ComponentDescriptor(
         block="toast-container",
-        category="auto",
+        category="feedback",
+        role="primitive",
+        maturity="stable",
     ),
     "toggle": ComponentDescriptor(
         block="toggle",
@@ -3492,67 +3624,97 @@ _AUTO_NEW_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-toggle__track-label--off",
             "chirpui-toggle__track-label--on",
         ),
-        category="auto",
+        category="control",
+        role="primitive",
+        maturity="experimental",
     ),
     "truncate": ComponentDescriptor(
         block="truncate",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-base": ComponentDescriptor(
         block="ui-base",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-bold": ComponentDescriptor(
         block="ui-bold",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-label": ComponentDescriptor(
         block="ui-label",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-lg": ComponentDescriptor(
         block="ui-lg",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-medium": ComponentDescriptor(
         block="ui-medium",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-meta": ComponentDescriptor(
         block="ui-meta",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-normal": ComponentDescriptor(
         block="ui-normal",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-semibold": ComponentDescriptor(
         block="ui-semibold",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-sm": ComponentDescriptor(
         block="ui-sm",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-title": ComponentDescriptor(
         block="ui-title",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-xl": ComponentDescriptor(
         block="ui-xl",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "ui-xs": ComponentDescriptor(
         block="ui-xs",
-        category="auto",
+        category="typography",
+        role="primitive",
+        maturity="legacy",
     ),
     "visually-hidden": ComponentDescriptor(
         block="visually-hidden",
-        category="auto",
+        category="layout",
+        role="primitive",
+        maturity="legacy",
     ),
 }
 
-COMPONENTS.update(_AUTO_NEW_DESCRIPTORS)
+COMPONENTS.update(_CSS_ONLY_DESCRIPTORS)
 
 
 class DesignSystemStats(TypedDict):
@@ -3564,6 +3726,7 @@ class DesignSystemStats(TypedDict):
     component_categories: dict[str, int]
     component_maturity: dict[str, int]
     component_roles: dict[str, int]
+    component_authoring: dict[str, int]
     component_requirements: dict[str, int]
     token_categories: dict[str, int]
 
@@ -3596,16 +3759,19 @@ def design_system_report() -> DesignSystemReport:
             "slots": desc.slots,
             "tokens": desc.tokens,
             "extra_emits": desc.extra_emits,
+            "trim_emits": desc.trim_emits,
             "emits": tuple(sorted(desc.emits)),
             "template": desc.template,
             "category": desc.category,
             "maturity": desc.resolved_maturity,
             "role": desc.resolved_role,
+            "authoring": desc.resolved_authoring,
             "requires": desc.requires,
         }
     component_categories: dict[str, int] = {}
     component_maturity: dict[str, int] = {}
     component_roles: dict[str, int] = {}
+    component_authoring: dict[str, int] = {}
     component_requirements: dict[str, int] = {}
     for desc in COMPONENTS.values():
         cat = desc.category or "uncategorized"
@@ -3614,6 +3780,8 @@ def design_system_report() -> DesignSystemReport:
         component_maturity[maturity] = component_maturity.get(maturity, 0) + 1
         role = desc.resolved_role
         component_roles[role] = component_roles.get(role, 0) + 1
+        authoring = desc.resolved_authoring
+        component_authoring[authoring] = component_authoring.get(authoring, 0) + 1
         for requirement in desc.requires:
             component_requirements[requirement] = component_requirements.get(requirement, 0) + 1
     registry_debt = {
@@ -3626,6 +3794,8 @@ def design_system_report() -> DesignSystemReport:
         "auto_trim_classes": sum(len(classes) for classes in _AUTO_TRIMS.values()),
         "explicit_extra_blocks": sum(1 for desc in COMPONENTS.values() if desc.extra_emits),
         "explicit_extra_classes": sum(len(desc.extra_emits) for desc in COMPONENTS.values()),
+        "explicit_trim_blocks": sum(1 for desc in COMPONENTS.values() if desc.trim_emits),
+        "explicit_trim_classes": sum(len(desc.trim_emits) for desc in COMPONENTS.values()),
     }
     token_categories: dict[str, int] = {}
     for t in TOKEN_CATALOG.values():
@@ -3642,6 +3812,7 @@ def design_system_report() -> DesignSystemReport:
             "component_categories": component_categories,
             "component_maturity": component_maturity,
             "component_roles": component_roles,
+            "component_authoring": component_authoring,
             "component_requirements": component_requirements,
             "token_categories": token_categories,
         },

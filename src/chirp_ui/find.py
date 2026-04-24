@@ -19,6 +19,10 @@ Query filters (``--category`` etc.) are applied AFTER substring match, so
 ``find --category=feedback`` lists every component in that category even when
 no term is given.
 
+Use ``--authoring=preferred`` to list the registry-blessed primitives agents
+should reach for first, or ``--authoring=compatibility`` to audit legacy
+helpers retained for existing templates.
+
 Output
 ------
 
@@ -40,6 +44,10 @@ from collections.abc import Iterable
 from typing import Any
 
 from chirp_ui import load_manifest
+from chirp_ui.components import COMPONENT_AUTHORING_LEVELS
+
+ComponentEntry = dict[str, Any]
+Manifest = dict[str, Any]
 
 
 def _summary(description: str) -> str:
@@ -50,8 +58,16 @@ def _summary(description: str) -> str:
     return ""
 
 
-def _matches(entry: dict[str, Any], name: str, query: str, category: str | None) -> bool:
+def _matches(
+    entry: dict[str, Any],
+    name: str,
+    query: str,
+    category: str | None,
+    authoring: str | None,
+) -> bool:
     if category and (entry.get("category") or "") != category:
+        return False
+    if authoring and (entry.get("authoring") or "") != authoring:
         return False
     if not query:
         return True
@@ -67,18 +83,64 @@ def _matches(entry: dict[str, Any], name: str, query: str, category: str | None)
     return q in haystack
 
 
+def _ensure_manifest(manifest: Manifest | None) -> Manifest:
+    return load_manifest() if manifest is None else manifest
+
+
+def components_by_authoring(
+    authoring: str,
+    *,
+    manifest: Manifest | None = None,
+    category: str | None = None,
+) -> dict[str, ComponentEntry]:
+    """Return manifest component entries with the given authoring hint.
+
+    This is the Python API twin of ``python -m chirp_ui find --authoring=...``.
+    It returns a name-keyed dict in sorted order so downstream agents/tools can
+    inspect full manifest entries without hand-filtering JSON.
+    """
+    if authoring not in COMPONENT_AUTHORING_LEVELS:
+        allowed = ", ".join(COMPONENT_AUTHORING_LEVELS)
+        raise ValueError(f"chirp-ui: authoring must be one of: {allowed}")
+    components = _ensure_manifest(manifest).get("components", {})
+    matches: dict[str, ComponentEntry] = {}
+    for name in sorted(components):
+        entry = components[name]
+        if (entry.get("authoring") or "") != authoring:
+            continue
+        if category and (entry.get("category") or "") != category:
+            continue
+        matches[name] = entry
+    return matches
+
+
+def preferred_components(
+    *, manifest: Manifest | None = None, category: str | None = None
+) -> dict[str, ComponentEntry]:
+    """Return components marked as preferred authoring vocabulary."""
+    return components_by_authoring("preferred", manifest=manifest, category=category)
+
+
+def compatibility_components(
+    *, manifest: Manifest | None = None, category: str | None = None
+) -> dict[str, ComponentEntry]:
+    """Return compatibility components retained for existing or narrow uses."""
+    return components_by_authoring("compatibility", manifest=manifest, category=category)
+
+
 def search(
-    manifest: dict[str, Any],
+    manifest: Manifest,
     query: str = "",
     *,
     category: str | None = None,
+    authoring: str | None = None,
 ) -> list[tuple[str, str, str]]:
     """Return ``(name, category, summary)`` rows sorted by name."""
     components = manifest.get("components", {})
     rows: list[tuple[str, str, str]] = []
     for name in sorted(components):
         entry = components[name]
-        if not _matches(entry, name, query, category):
+        if not _matches(entry, name, query, category, authoring):
             continue
         rows.append((name, entry.get("category") or "", _summary(entry.get("description") or "")))
     return rows
@@ -111,9 +173,15 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Filter to a single category (e.g. data-display, feedback, layout).",
     )
+    parser.add_argument(
+        "--authoring",
+        choices=COMPONENT_AUTHORING_LEVELS,
+        default=None,
+        help="Filter by authoring hint: preferred, available, compatibility, or internal.",
+    )
     args = parser.parse_args(argv)
 
-    rows = search(load_manifest(), args.query, category=args.category)
+    rows = search(load_manifest(), args.query, category=args.category, authoring=args.authoring)
     if rows:
         sys.stdout.write(format_rows(rows) + "\n")
     return 0

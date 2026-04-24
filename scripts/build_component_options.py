@@ -14,7 +14,7 @@ Per-component entry (one per manifest key, sorted):
   when available, else blank)
 * ``- Template:`` path
 * ``- Macro:`` resolved macro identifier (when extractable)
-* ``- Maturity:``, ``- Role:``, ``- Requires:`` manifest metadata
+* ``- Maturity:``, ``- Role:``, ``- Authoring:``, ``- Requires:`` manifest metadata
 * Params table (name | required | default?)  — only when ``params`` non-empty
 * Slots / Composes / Variants / Sizes / Modifiers / Provides / Consumes — one
   bullet each, only when the list is non-empty
@@ -59,6 +59,11 @@ HEADER = """\
 `experimental` = public but still settling; `legacy` = supported compatibility surface
 with a preferred replacement; `internal` = infrastructure for Chirp UI composition, not
 recommended as an app-level building block.
+
+**Authoring hints:** `preferred` = reach for this first in new app templates;
+`available` = public surface, but not the first-choice composition vocabulary;
+`compatibility` = retained for existing code or narrow escape hatches; `internal` =
+not for app-level authoring.
 """
 
 
@@ -105,6 +110,8 @@ def _render_component(name: str, entry: dict) -> list[str]:
         lines.append(f"- **Maturity:** `{entry['maturity']}`")
     if entry.get("role"):
         lines.append(f"- **Role:** `{entry['role']}`")
+    if entry.get("authoring"):
+        lines.append(f"- **Authoring:** `{entry['authoring']}`")
     if entry.get("requires"):
         rendered_requires = ", ".join(f"`{v}`" for v in entry["requires"])
         lines.append(f"- **Requires:** {rendered_requires}")
