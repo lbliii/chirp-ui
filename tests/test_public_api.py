@@ -35,7 +35,7 @@ def test_manifest_path_lives_beside_package() -> None:
 def test_load_manifest_returns_dict_with_schema() -> None:
     m = load_manifest()
     assert isinstance(m, dict)
-    assert m["schema"] == "chirpui-manifest@2"
+    assert m["schema"] == "chirpui-manifest@3"
     assert m["version"] == chirp_ui.__version__
 
 
@@ -45,7 +45,7 @@ def test_load_manifest_exposes_components_and_tokens() -> None:
     assert "tokens" in m
     assert "stats" in m
     assert m["stats"]["total_components"] > 100
-    # Spot-check: metric-card's @2 fields made it through the build pipeline.
+    # Spot-check: metric-card's signature fields made it through the build pipeline.
     mc = m["components"]["metric-card"]
     assert mc["macro"] == "metric_card"
     assert len(mc["params"]) >= 10
