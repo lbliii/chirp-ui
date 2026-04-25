@@ -156,7 +156,13 @@ properties for theming. Do not fight the design system with specificity.
 }
 ```
 
+Fresh apps should start with a token-only app theme layer loaded after
+`chirpui.css`. Chirp-UI ships a starter at
+`/static/themes/app-theme-starter.css`; it covers light, dark, and `system`
+mode so `theme_toggle()` has coherent app-owned tokens immediately.
+
 For token and override details, see
+[APP-THEME.md](docs/APP-THEME.md),
 [TOKENS.md](docs/TOKENS.md),
 [CSS-OVERRIDE-SURFACE.md](docs/CSS-OVERRIDE-SURFACE.md), and
 [COMPONENT-OPTIONS.md](docs/COMPONENT-OPTIONS.md).

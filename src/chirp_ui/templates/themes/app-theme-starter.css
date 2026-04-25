@@ -1,0 +1,152 @@
+/* chirp-ui app theme starter
+ *
+ * Token-only application theme layer. Load after /static/chirpui.css and
+ * before any component-level app overrides.
+ *
+ * Chirp-UI owns the --chirpui-* vocabulary and baseline defaults. Apps own
+ * their brand values. This file is intentionally class-free so it stays a
+ * token projection rather than a parallel component vocabulary.
+ */
+
+@layer app.theme {
+    :root {
+        color-scheme: light dark;
+
+        /* Brand anchors */
+        --chirpui-accent: oklch(0.58 0.16 248);
+        --chirpui-accent-hover: oklch(0.5 0.16 248);
+        --chirpui-accent-secondary: oklch(0.58 0.14 305);
+        --chirpui-on-accent: #ffffff;
+
+        /* Typography */
+        --chirpui-ui-font-family: ui-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --chirpui-prose-font-family: var(--chirpui-ui-font-family);
+        --chirpui-font-family: var(--chirpui-prose-font-family);
+
+        /* Shape and elevation */
+        --chirpui-radius: 0.5rem;
+        --chirpui-radius-lg: 0.75rem;
+        --chirpui-radius-xl: 1rem;
+    }
+
+    [data-theme="light"] {
+        color-scheme: light;
+        --chirpui-bg: oklch(0.985 0.004 248);
+        --chirpui-bg-subtle: oklch(0.96 0.008 248);
+        --chirpui-surface: oklch(1 0 0);
+        --chirpui-surface-alt: oklch(0.975 0.006 248);
+        --chirpui-surface-elevated: oklch(1 0 0);
+        --chirpui-border: oklch(0.9 0.014 248);
+        --chirpui-text: oklch(0.22 0.028 248);
+        --chirpui-text-muted: oklch(0.5 0.028 248);
+
+        --chirpui-primary: var(--chirpui-accent);
+        --chirpui-success: oklch(0.58 0.17 150);
+        --chirpui-warning: oklch(0.72 0.15 70);
+        --chirpui-error: oklch(0.55 0.19 25);
+        --chirpui-muted: var(--chirpui-text-muted);
+
+        --chirpui-alert-info-bg: oklch(0.96 0.025 248);
+        --chirpui-alert-info-border: oklch(0.82 0.07 248);
+        --chirpui-alert-success-bg: oklch(0.96 0.03 150);
+        --chirpui-alert-success-border: oklch(0.82 0.09 150);
+        --chirpui-alert-warning-bg: oklch(0.97 0.035 70);
+        --chirpui-alert-warning-border: oklch(0.84 0.11 70);
+        --chirpui-alert-error-bg: oklch(0.96 0.03 25);
+        --chirpui-alert-error-border: oklch(0.8 0.1 25);
+    }
+
+    [data-theme="dark"] {
+        color-scheme: dark;
+        --chirpui-bg: oklch(0.18 0.024 248);
+        --chirpui-bg-subtle: oklch(0.23 0.026 248);
+        --chirpui-surface: oklch(0.24 0.028 248);
+        --chirpui-surface-alt: oklch(0.29 0.03 248);
+        --chirpui-surface-elevated: oklch(0.32 0.032 248);
+        --chirpui-border: oklch(0.42 0.035 248);
+        --chirpui-text: oklch(0.94 0.008 248);
+        --chirpui-text-muted: oklch(0.72 0.018 248);
+
+        --chirpui-accent: oklch(0.76 0.13 248);
+        --chirpui-accent-hover: oklch(0.84 0.11 248);
+        --chirpui-accent-secondary: oklch(0.78 0.12 305);
+        --chirpui-primary: var(--chirpui-accent);
+        --chirpui-success: oklch(0.72 0.16 150);
+        --chirpui-warning: oklch(0.82 0.13 70);
+        --chirpui-error: oklch(0.72 0.16 25);
+        --chirpui-muted: var(--chirpui-text-muted);
+
+        --chirpui-alert-info-bg: oklch(0.26 0.05 248);
+        --chirpui-alert-info-border: oklch(0.58 0.12 248);
+        --chirpui-alert-success-bg: oklch(0.25 0.045 150);
+        --chirpui-alert-success-border: oklch(0.58 0.13 150);
+        --chirpui-alert-warning-bg: oklch(0.28 0.05 70);
+        --chirpui-alert-warning-border: oklch(0.68 0.12 70);
+        --chirpui-alert-error-bg: oklch(0.26 0.05 25);
+        --chirpui-alert-error-border: oklch(0.62 0.14 25);
+    }
+
+    @media (prefers-color-scheme: light) {
+        [data-theme="system"] {
+            color-scheme: light;
+            --chirpui-bg: oklch(0.985 0.004 248);
+            --chirpui-bg-subtle: oklch(0.96 0.008 248);
+            --chirpui-surface: oklch(1 0 0);
+            --chirpui-surface-alt: oklch(0.975 0.006 248);
+            --chirpui-surface-elevated: oklch(1 0 0);
+            --chirpui-border: oklch(0.9 0.014 248);
+            --chirpui-text: oklch(0.22 0.028 248);
+            --chirpui-text-muted: oklch(0.5 0.028 248);
+
+            --chirpui-accent: oklch(0.58 0.16 248);
+            --chirpui-accent-hover: oklch(0.5 0.16 248);
+            --chirpui-accent-secondary: oklch(0.58 0.14 305);
+            --chirpui-primary: var(--chirpui-accent);
+            --chirpui-success: oklch(0.58 0.17 150);
+            --chirpui-warning: oklch(0.72 0.15 70);
+            --chirpui-error: oklch(0.55 0.19 25);
+            --chirpui-muted: var(--chirpui-text-muted);
+
+            --chirpui-alert-info-bg: oklch(0.96 0.025 248);
+            --chirpui-alert-info-border: oklch(0.82 0.07 248);
+            --chirpui-alert-success-bg: oklch(0.96 0.03 150);
+            --chirpui-alert-success-border: oklch(0.82 0.09 150);
+            --chirpui-alert-warning-bg: oklch(0.97 0.035 70);
+            --chirpui-alert-warning-border: oklch(0.84 0.11 70);
+            --chirpui-alert-error-bg: oklch(0.96 0.03 25);
+            --chirpui-alert-error-border: oklch(0.8 0.1 25);
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        [data-theme="system"] {
+            color-scheme: dark;
+            --chirpui-bg: oklch(0.18 0.024 248);
+            --chirpui-bg-subtle: oklch(0.23 0.026 248);
+            --chirpui-surface: oklch(0.24 0.028 248);
+            --chirpui-surface-alt: oklch(0.29 0.03 248);
+            --chirpui-surface-elevated: oklch(0.32 0.032 248);
+            --chirpui-border: oklch(0.42 0.035 248);
+            --chirpui-text: oklch(0.94 0.008 248);
+            --chirpui-text-muted: oklch(0.72 0.018 248);
+
+            --chirpui-accent: oklch(0.76 0.13 248);
+            --chirpui-accent-hover: oklch(0.84 0.11 248);
+            --chirpui-accent-secondary: oklch(0.78 0.12 305);
+            --chirpui-primary: var(--chirpui-accent);
+            --chirpui-success: oklch(0.72 0.16 150);
+            --chirpui-warning: oklch(0.82 0.13 70);
+            --chirpui-error: oklch(0.72 0.16 25);
+            --chirpui-muted: var(--chirpui-text-muted);
+
+            --chirpui-alert-info-bg: oklch(0.26 0.05 248);
+            --chirpui-alert-info-border: oklch(0.58 0.12 248);
+            --chirpui-alert-success-bg: oklch(0.25 0.045 150);
+            --chirpui-alert-success-border: oklch(0.58 0.13 150);
+            --chirpui-alert-warning-bg: oklch(0.28 0.05 70);
+            --chirpui-alert-warning-border: oklch(0.68 0.12 70);
+            --chirpui-alert-error-bg: oklch(0.26 0.05 25);
+            --chirpui-alert-error-border: oklch(0.62 0.14 25);
+        }
+    }
+}

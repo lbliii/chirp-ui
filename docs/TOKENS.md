@@ -103,6 +103,21 @@ Use them together on the root element:
 
 If `data-style` is missing, runtime defaults to `default`.
 
+## App-owned themes
+
+Use a small token-only stylesheet for app branding, loaded after
+`chirpui.css`. Chirp-UI ships `themes/app-theme-starter.css` as the canonical
+starter shape: it uses `@layer app.theme`, sets app-owned color/typography/shape
+tokens, and includes explicit light, dark, and `system` branches.
+
+The important bit is `system`: `theme_toggle()` can leave
+`data-theme="system"` on the root element, so app themes should include
+`@media (prefers-color-scheme: ...)` rules for `[data-theme="system"]` instead
+of defining only light/dark overrides.
+
+See [APP-THEME.md](APP-THEME.md) for the ownership contract and starter token
+list.
+
 ## Motion tokens
 
 - `--chirpui-motion-fast`, `--chirpui-motion-base`, `--chirpui-motion-slow`, `--chirpui-motion-slower`
