@@ -12,6 +12,7 @@ Navigation guide for all chirp-ui documentation.
 - [COMPOSITION.md](COMPOSITION.md) — Component composition patterns and slot mechanics
 - [TYPOGRAPHY.md](TYPOGRAPHY.md) — Type scale, font tokens, and text utilities
 - [TOKENS.md](TOKENS.md) — CSS custom property reference (spacing, color, radius, z-index)
+- [APP-THEME.md](APP-THEME.md) — Token-only app theme starter and fresh-project ownership contract
 - [TRANSITIONS.md](TRANSITIONS.md) — Motion tokens, duration/easing values, reduced-motion
 - [UI-LAYERS.md](UI-LAYERS.md) — App shell vs page chrome vs surface chrome, shell regions
 - [CSS-OVERRIDE-SURFACE.md](CSS-OVERRIDE-SURFACE.md) — Cascade order, `@layer app.overrides` contract, token vs layer vs unlayered paths

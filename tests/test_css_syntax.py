@@ -109,3 +109,49 @@ def test_chirp_theme_entrypoint_css_has_no_parse_errors() -> None:
     assert not parse_errors, "CSS parse errors found in style.css: " + ", ".join(
         str(error.message) for error in parse_errors
     )
+
+
+def test_app_theme_starter_css_has_no_parse_errors() -> None:
+    css_path = (
+        Path(__file__).resolve().parents[1] / "src/chirp_ui/templates/themes/app-theme-starter.css"
+    )
+    stylesheet = css_path.read_text(encoding="utf-8")
+    rules, encoding = tinycss2.parse_stylesheet_bytes(
+        stylesheet.encode("utf-8"),
+        skip_comments=False,
+        skip_whitespace=False,
+    )
+    assert encoding.name == "utf-8"
+
+    parse_errors = [token for token in rules if isinstance(token, tinycss2.ast.ParseError)]
+    assert not parse_errors, "CSS parse errors found in app-theme-starter.css: " + ", ".join(
+        str(error.message) for error in parse_errors
+    )
+
+
+def test_app_theme_starter_covers_system_mode_tokens() -> None:
+    css_path = (
+        Path(__file__).resolve().parents[1] / "src/chirp_ui/templates/themes/app-theme-starter.css"
+    )
+    text = css_path.read_text(encoding="utf-8")
+
+    assert '[data-theme="light"]' in text
+    assert '[data-theme="dark"]' in text
+    assert '[data-theme="system"]' in text
+    assert "prefers-color-scheme: light" in text
+    assert "prefers-color-scheme: dark" in text
+
+    for media_query in ("prefers-color-scheme: light", "prefers-color-scheme: dark"):
+        media_start = text.index(media_query)
+        system_start = text.index('[data-theme="system"]', media_start)
+        system_end = text.index("}", system_start)
+        system_text = text[system_start:system_end]
+        for token in (
+            "--chirpui-bg",
+            "--chirpui-surface",
+            "--chirpui-text",
+            "--chirpui-accent",
+            "--chirpui-primary",
+            "--chirpui-alert-info-bg",
+        ):
+            assert token in system_text

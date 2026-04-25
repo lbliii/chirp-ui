@@ -39,3 +39,4 @@ def test_static_path_exists() -> None:
     path = chirp_ui.static_path()
     assert path.exists()
     assert (path / "chirpui.css").exists()
+    assert (path / "themes" / "app-theme-starter.css").exists()
