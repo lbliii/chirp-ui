@@ -102,6 +102,8 @@ GAUNTLET_ROOMS = {
     "workflow": "Workflow room",
     "linkability": "Linkability room",
     "contextual": "Contextual detail room",
+    "actions": "Actions in entries room",
+    "swaps": "HTMX swap room",
     "hostile": "Hostile room",
 }
 
@@ -143,6 +145,18 @@ def create_app() -> App:
     @app.route("/gauntlet")
     async def gauntlet_page(request: Request):
         return Template("gauntlet_page.html", **_gauntlet_context())
+
+    @app.route("/gauntlet/fragments/actions/{state}")
+    async def gauntlet_actions_fragment(request: Request, state: str):
+        return Template(
+            "gauntlet_swap_fragment.html",
+            swap_state=state if state in {"stable", "urgent"} else "stable",
+        )
+
+    @app.route("/gauntlet/fragments/action-result/{label}")
+    async def gauntlet_action_result(request: Request, label: str):
+        safe_label = label if label in {"pinned", "configured", "refreshed"} else "updated"
+        return Response(f'<span class="chirpui-text-muted">Action: {safe_label}</span>')
 
     @app.route("/gauntlet/{room}")
     async def gauntlet_room(request: Request, room: str):

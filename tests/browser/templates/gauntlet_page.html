@@ -24,6 +24,8 @@
     {{ sidebar_link("/gauntlet/workflow", "Workflow") }}
     {{ sidebar_link("/gauntlet/linkability", "Linkability") }}
     {{ sidebar_link("/gauntlet/contextual", "Contextual Detail") }}
+    {{ sidebar_link("/gauntlet/actions", "Entry Actions") }}
+    {{ sidebar_link("/gauntlet/swaps", "HTMX Swaps") }}
     {{ sidebar_link("/gauntlet/hostile", "Hostile") }}
   {% end %}
 {% end %}
@@ -324,6 +326,97 @@
         {% end %}
       {% end %}
     {% end %}
+  {% end %}
+</section>
+{% endif %}
+
+{% if active_room == "all" or active_room == "actions" %}
+<section id="actions" data-gauntlet-room="actions" data-gauntlet-no-overlap>
+  {{ section_header("Actions in entries room", subtitle="Whole entries, title links, hints, menus, chips, and buttons should not steal each other's click surface.") }}
+  {% call grid(cols=2, gap="md") %}
+    <div data-testid="action-resource-card">
+      {% call resource_card("/gauntlet/actions/resource", "Resource with independent actions", description="The main title/body routes, while footer controls remain independently interactive.", top_meta="Updated now", top_meta_href="/gauntlet/actions/meta", top_meta_title="Open activity metadata", link_mode="main") %}
+        {% slot badges %}
+          {% call tooltip("Badge hint inside the main-link header.") %}
+            {{ badge("7", variant="info") }}
+          {% end %}
+        {% end %}
+        {% slot footer %}
+          <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="entry-card-actions" data-gauntlet-touch-critical>
+            {{ chip("team", href="/gauntlet/actions/team") }}
+            {{ btn("Pin", variant="ghost", hx={"get": "/gauntlet/fragments/action-result/pinned", "target": "#entry-action-result", "swap": "innerHTML"}) }}
+            {{ dropdown_menu(btn("More", variant="ghost"), items=[
+              {"label": "Archive", "action": "archive"},
+              {"label": "Open audit", "href": "/gauntlet/actions/audit"},
+              {"divider": true},
+              {"label": "Delete", "action": "delete", "variant": "danger"},
+            ], id="gauntlet-entry-card-menu") }}
+            <span id="entry-action-result" class="chirpui-text-muted">No action yet</span>
+          </div>
+        {% end %}
+      {% end %}
+    </div>
+    {% call card(title="Card slots with mixed actions", subtitle="Header, body, and footer controls should keep their own focus and layout.") %}
+      {% slot header_actions %}
+        {{ icon_btn("settings", aria_label="Configure card", hx={"get": "/gauntlet/fragments/action-result/configured", "target": "#entry-card-slot-result", "swap": "innerHTML"}) }}
+      {% end %}
+      <p>Body content remains readable while actions sit in separate component slots.</p>
+      {% slot body_actions %}
+        <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="entry-body-actions" data-gauntlet-touch-critical>
+          {{ btn("Review", href="/gauntlet/actions/review") }}
+          {{ icon_btn("link", aria_label="Copy card link") }}
+        </div>
+      {% end %}
+      {% slot footer %}<span id="entry-card-slot-result" class="chirpui-text-muted">Waiting</span>{% end %}
+    {% end %}
+    {% call surface(variant="muted") %}
+      <div data-testid="action-timeline">
+        {% call timeline(hoverable=true) %}
+          {% call timeline_item("Title link with row actions", "Now", "Header actions must remain usable beside a linked title.", href="/gauntlet/actions/timeline", link_mode="title", hint="Title hint survives beside actions.") %}
+            {% slot header_actions %}
+              {{ dropdown_menu(icon_btn("settings", aria_label="Timeline actions"), items=[
+                {"label": "Follow thread", "action": "follow"},
+                {"label": "Open source", "href": "/gauntlet/actions/source"},
+              ], id="gauntlet-timeline-menu") }}
+            {% end %}
+          {% end %}
+          {{ timeline_item("Plain row action target", "Later", "This row has no overlay link.") }}
+        {% end %}
+      </div>
+    {% end %}
+    {% call card(title="Dense action strip") %}
+      <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="entry-dense-actions" data-gauntlet-touch-critical>
+        {{ btn("Open", href="/gauntlet/actions/open") }}
+        {{ btn("Refresh", hx={"get": "/gauntlet/fragments/action-result/refreshed", "target": "#entry-dense-result", "swap": "innerHTML"}) }}
+        {{ icon_btn("settings", aria_label="Delete", variant="danger") }}
+        {{ dropdown_split("Export", primary_href="/gauntlet/actions/export", items=[
+          {"label": "CSV", "href": "/gauntlet/actions/export.csv"},
+          {"label": "JSON", "href": "/gauntlet/actions/export.json"},
+        ]) }}
+      </div>
+      {% slot footer %}<span id="entry-dense-result" class="chirpui-text-muted">Stable</span>{% end %}
+    {% end %}
+  {% end %}
+</section>
+{% endif %}
+
+{% if active_room == "all" or active_room == "swaps" %}
+<section id="swaps" data-gauntlet-room="swaps" data-gauntlet-no-overlap>
+  {{ section_header("HTMX swap room", subtitle="Partial replacement should preserve layout rhythm and leave swapped ChirpUI components interactive.") }}
+  {% call stack(gap="md") %}
+    <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="swap-controls" data-gauntlet-touch-critical>
+      {{ btn("Load stable", variant="primary", hx={"get": "/gauntlet/fragments/actions/stable", "target": "#gauntlet-swap-region", "swap": "outerHTML"}) }}
+      {{ btn("Load urgent", variant="ghost", hx={"get": "/gauntlet/fragments/actions/urgent", "target": "#gauntlet-swap-region", "swap": "outerHTML"}) }}
+      {{ dropdown_select("Swap view", items=[
+        {"label": "Stable", "value": "stable"},
+        {"label": "Urgent", "value": "urgent"},
+      ], selected="stable", id="gauntlet-swap-view") }}
+    </div>
+    <div id="gauntlet-swap-region" data-testid="gauntlet-swap-region" data-state="initial" aria-live="polite">
+      {% call surface(variant="muted") %}
+        <p>Initial content. Use the controls above to swap in a dense entry fragment.</p>
+      {% end %}
+    </div>
   {% end %}
 </section>
 {% endif %}

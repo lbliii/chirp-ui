@@ -1615,6 +1615,15 @@ class TestButton:
         ).render()
         assert 'hx-post="/save"' in html
         assert 'hx-target="#result"' in html
+        assert 'hx-select="unset"' in html
+
+    def test_btn_hx_button_explicit_select_overrides_unset(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Save", hx={"post": "/save", "target": "#result", "select": "#fragment"}) }}'
+        ).render()
+        assert 'hx-select="#fragment"' in html
+        assert 'hx-select="unset"' not in html
 
     def test_btn_hx_dict_on_link(self, env: Environment) -> None:
         """hx={} on a link button emits hx-boost=false and hx-select=unset."""
@@ -6703,6 +6712,16 @@ class TestIconBtn:
         assert 'hx-target="#content"' in html
         assert 'hx-get="/next"' in html
         assert 'hx-boost="false"' in html
+        assert 'hx-select="unset"' in html
+
+    def test_button_with_explicit_hx_emits_select_unset(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{{ icon_btn("→", aria_label="Next", hx_get="/next", hx_target="#content") }}'
+        ).render()
+        assert "<button " in html
+        assert 'hx-get="/next"' in html
+        assert 'hx-target="#content"' in html
         assert 'hx-select="unset"' in html
 
     def test_external_link_stays_plain(self, env: Environment) -> None:

@@ -27,11 +27,13 @@
 {% set _hx_dict = build_hx_attrs(hx=hx, hx_get=hx_get, hx_post=hx_post, hx_target=hx_target, hx_swap=hx_swap) %}
 {% set _link_has_hx_request = _hx_dict.get("hx-get") or _hx_dict.get("hx-post") %}
 {% set _link_has_hx_config = _hx_dict | length > 0 %}
+{% set _explicit_hx_select = _hx_dict.get("hx-select") %}
 {% set _route_attrs = route_link_attrs(href) if href and not _link_has_hx_config and not _disabled else {} %}
 {% if href %}
 <a{% if not _disabled %} href="{{ href }}"{% end %} class="{{ base }}" aria-label="{{ aria_label }}"
    {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}
-   {% if not _disabled and _link_has_hx_request %}hx-boost="false" hx-select="unset"{% end %}
+   {% if not _disabled and _link_has_hx_request %}hx-boost="false"{% end %}
+   {% if not _disabled and _link_has_hx_request and not _explicit_hx_select %}hx-select="unset"{% end %}
    {% if not _disabled %}{{ _route_attrs | html_attrs }}{% end %}
    {% if not _disabled %}{{ _hx_dict | html_attrs }}{% end %}>
     <span class="chirpui-icon-btn__icon">{{ icon | icon }}</span>
@@ -39,6 +41,7 @@
 {% else %}
 <button type="{{ type }}" class="{{ base }}" aria-label="{{ aria_label }}"
         {% if _disabled %}disabled{% end %}
+        {% if not _disabled and _link_has_hx_request and not _explicit_hx_select %}hx-select="unset"{% end %}
         {{ _hx_dict | html_attrs }}>
     <span class="chirpui-icon-btn__icon">{{ icon | icon }}</span>
 </button>

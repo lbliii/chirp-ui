@@ -7,6 +7,7 @@ pressure, and viewport pressure from phone through desktop.
 
 import pytest
 
+from tests.browser.conftest import wait_for_htmx
 from tests.browser.gauntlet_detectors import (
     assert_common_compositions_do_not_overlap,
     assert_control_rows_keep_coherent_heights,
@@ -37,6 +38,8 @@ ROOM_PATHS = [
     "/gauntlet/workflow",
     "/gauntlet/linkability",
     "/gauntlet/contextual",
+    "/gauntlet/actions",
+    "/gauntlet/swaps",
     "/gauntlet/hostile",
 ]
 
@@ -64,6 +67,8 @@ TOUCH_SCENARIOS = [
     pytest.param("/gauntlet/data", 375, 812, id="data-phone"),
     pytest.param("/gauntlet/workflow", 375, 812, id="workflow-phone"),
     pytest.param("/gauntlet/contextual", 375, 812, id="contextual-phone"),
+    pytest.param("/gauntlet/actions", 375, 812, id="actions-phone"),
+    pytest.param("/gauntlet/swaps", 375, 812, id="swaps-phone"),
     pytest.param("/gauntlet", 768, 1024, id="all-tablet"),
 ]
 
@@ -246,6 +251,113 @@ async def test_gauntlet_contextual_popover_is_click_reachable_on_phone(page, bas
         }"""
     )
     await assert_no_failures(page, [failure] if failure else [], "contextual-popover-phone")
+
+
+async def test_gauntlet_entry_actions_remain_independent_from_main_link(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/actions", width=768, height=1024)
+
+    card = page.locator("[data-testid='action-resource-card']")
+    main_link = card.locator(".chirpui-card__main-link")
+    assert await main_link.get_attribute("href") == "/gauntlet/actions/resource"
+
+    footer_controls_inside_main_link = await card.locator(
+        ".chirpui-card__footer-wrap :is(a, button, [role='button'])"
+    ).evaluate_all(
+        """(els) => els.filter((el) => Boolean(el.closest(".chirpui-card__main-link"))).length"""
+    )
+    assert footer_controls_inside_main_link == 0
+
+    await card.get_by_role("button", name="Pin").click()
+    await wait_for_htmx(page)
+    assert "pinned" in await page.locator("#entry-action-result").inner_text()
+    assert page.url.endswith("/gauntlet/actions")
+
+
+async def test_gauntlet_entry_action_menus_open_without_navigation_or_viewport_escape(
+    page, base_url
+):
+    await open_gauntlet(page, base_url, "/gauntlet/actions", width=375, height=812)
+
+    before_url = page.url
+    menu_root = page.locator("#gauntlet-entry-card-menu")
+    await menu_root.locator(".chirpui-dropdown__trigger").click()
+    menu = menu_root.locator(".chirpui-dropdown__menu")
+    await menu.wait_for(state="visible")
+
+    assert page.url == before_url
+    assert await menu.get_by_role("menuitem", name="Archive").count() == 1
+    failure = await menu.evaluate(
+        """(el) => {
+            const rect = el.getBoundingClientRect();
+            const viewport = document.documentElement.clientWidth;
+            if (rect.left >= -1 && rect.right <= viewport + 1) return null;
+            return {
+                left: Math.round(rect.left),
+                right: Math.round(rect.right),
+                viewport,
+            };
+        }"""
+    )
+    await assert_no_failures(page, [failure] if failure else [], "entry-action-menu-phone")
+
+
+async def test_gauntlet_timeline_header_actions_do_not_require_overlay_links(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/actions", width=768, height=1024)
+
+    timeline = page.locator("[data-testid='action-timeline']")
+    assert await timeline.locator(".chirpui-timeline__title-link").count() == 1
+    assert (
+        await timeline.locator(".chirpui-timeline__header-actions .chirpui-dropdown").count() == 1
+    )
+    assert await timeline.locator(".chirpui-timeline__link-overlay").count() == 0
+
+    await timeline.locator("#gauntlet-timeline-menu .chirpui-dropdown__trigger").click()
+    await timeline.locator("#gauntlet-timeline-menu .chirpui-dropdown__menu").wait_for(
+        state="visible"
+    )
+
+
+async def test_gauntlet_htmx_swap_preserves_layout_and_reinitializes_components(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/swaps", width=375, height=812)
+
+    trigger = page.get_by_role("button", name="Load urgent")
+    await trigger.click()
+    await wait_for_htmx(page)
+
+    region = page.locator("[data-testid='gauntlet-swap-region']")
+    assert await region.get_attribute("data-state") == "urgent"
+    assert "Swapped urgent entry" in await region.inner_text()
+
+    await assert_no_document_horizontal_overflow(page, "htmx-swap-urgent-phone")
+    await assert_common_compositions_do_not_overlap(page, "htmx-swap-urgent-phone")
+    await assert_control_rows_keep_coherent_heights(page, "htmx-swap-urgent-phone")
+    await assert_touch_critical_controls_not_tiny(page, "htmx-swap-urgent-phone")
+
+    swapped_menu = page.locator("#gauntlet-swapped-menu")
+    await swapped_menu.locator(".chirpui-dropdown__trigger").click()
+    await swapped_menu.locator(".chirpui-dropdown__menu").wait_for(state="visible")
+    assert await swapped_menu.get_by_role("menuitem", name="Mark reviewed").count() == 1
+
+
+async def test_gauntlet_htmx_swap_keeps_trigger_focus_and_allows_second_swap(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/swaps", width=768, height=1024)
+
+    urgent = page.get_by_role("button", name="Load urgent")
+    await urgent.focus()
+    await urgent.press("Enter")
+    await wait_for_htmx(page)
+    assert (
+        await page.locator("[data-testid='gauntlet-swap-region']").get_attribute("data-state")
+        == "urgent"
+    )
+    assert await urgent.evaluate("el => document.activeElement === el")
+
+    await page.get_by_role("button", name="Refresh fragment").click()
+    await wait_for_htmx(page)
+    assert (
+        await page.locator("[data-testid='gauntlet-swap-region']").get_attribute("data-state")
+        == "stable"
+    )
 
 
 async def test_gauntlet_dropdown_select_interaction_does_not_shift_toolbar(page, base_url):
