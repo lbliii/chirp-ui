@@ -13,13 +13,22 @@
         {% end %}
 
     Positions: top (default), bottom, left, right
+    Use block=true when the trigger is block-level content such as a full nav row.
 -#}
 
-{% def tooltip(content=none, hint=none, position="top", cls="") %}
+{% def tooltip(content=none, hint=none, position="top", block=false, cls="") %}
 {% set tooltip_text = hint if hint is not none else content %}
 {% set pos = position if position in ("top", "bottom", "left", "right") else "top" %}
-<span class="chirpui-tooltip chirpui-tooltip--{{ pos }}{{ " " ~ cls if cls else "" }}" data-chirpui-tooltip data-tooltip="{{ tooltip_text | e }}">
+{% set block_class = " chirpui-tooltip--block" if block else "" %}
+{% if block %}
+<div class="chirpui-tooltip chirpui-tooltip--{{ pos }}{{ block_class }}{{ " " ~ cls if cls else "" }}" data-chirpui-tooltip data-tooltip="{{ tooltip_text | e }}">
+    {% slot %}
+    <span class="chirpui-tooltip__bubble" role="tooltip">{{ tooltip_text }}</span>
+</div>
+{% else %}
+<span class="chirpui-tooltip chirpui-tooltip--{{ pos }}{{ block_class }}{{ " " ~ cls if cls else "" }}" data-chirpui-tooltip data-tooltip="{{ tooltip_text | e }}">
     {% slot %}
     <span class="chirpui-tooltip__bubble" role="tooltip">{{ tooltip_text }}</span>
 </span>
+{% end %}
 {% end %}

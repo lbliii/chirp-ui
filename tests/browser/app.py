@@ -48,6 +48,31 @@ GAUNTLET_NAV_ITEMS = [
     {"title": "Plain leaf", "href": "/gauntlet/plain"},
 ]
 
+GAUNTLET_DETAIL_NAV_ITEMS = [
+    {
+        "title": "Hinted route branch",
+        "href": "/gauntlet/contextual/branch",
+        "hint": "Branch parents stay route links while detail appears on hover and focus.",
+        "hint_position": "right",
+        "open": True,
+        "badge": 3,
+        "children": [
+            {
+                "title": "Hinted child link",
+                "href": "/gauntlet/contextual/child",
+                "hint": "Child entries inherit the same item hint contract.",
+            },
+            {"title": "Plain child", "href": "/gauntlet/contextual/plain"},
+        ],
+    },
+    {
+        "title": "Closed hinted branch",
+        "href": "/gauntlet/contextual/closed",
+        "hint": "Closed branches still expose their route and do not render hidden children.",
+        "children": [{"title": "Hidden detail child", "href": "/gauntlet/contextual/hidden"}],
+    },
+]
+
 
 GAUNTLET_ROUTE_TABS = [
     {"label": "Overview", "href": "/gauntlet", "match": "exact", "badge": 4},
@@ -76,6 +101,7 @@ GAUNTLET_ROOMS = {
     "data": "Data room",
     "workflow": "Workflow room",
     "linkability": "Linkability room",
+    "contextual": "Contextual detail room",
     "hostile": "Hostile room",
 }
 
@@ -87,6 +113,7 @@ def _gauntlet_context(active_room: str = "all") -> dict[str, object]:
         "active_room": room,
         "rooms": GAUNTLET_ROOMS,
         "nav_items": GAUNTLET_NAV_ITEMS,
+        "detail_nav_items": GAUNTLET_DETAIL_NAV_ITEMS,
         "gauntlet_route_tabs": GAUNTLET_ROUTE_TABS,
         "table_rows": GAUNTLET_TABLE_ROWS,
     }

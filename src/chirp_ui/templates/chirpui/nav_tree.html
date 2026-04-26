@@ -4,6 +4,7 @@
     Default branch_mode="disclosure" uses native <details> for expand/collapse.
     branch_mode="linked" renders branch parents as direct links and only renders
     children when open=true, for server-controlled section trees.
+    Item hint="..." renders a reusable tooltip wrapper around that item's trigger.
 
     Named slot: header (version selector, search, etc.).
 
@@ -14,6 +15,7 @@
             slot header: version selector, search
         end
 -#}
+{% from "chirpui/tooltip.html" import tooltip %}
 
 {% def nav_tree_item_content(item, show_icons=false) %}
 {% if show_icons and item.get("icon") %}
@@ -22,6 +24,37 @@
 <span class="chirpui-nav-tree__title">{{ item.title | default("") }}</span>
 {% if item.get("badge") is not none %}
 <span class="chirpui-nav-tree__badge">{{ item.get("badge") }}</span>
+{% end %}
+{% end %}
+
+{% def nav_tree_link_anchor(item, show_icons=false, leaf=false) %}
+{% set active_class = " chirpui-nav-tree__link--active" if item.get("active") else "" %}
+{% set leaf_class = " chirpui-nav-tree__link--leaf" if leaf else "" %}
+<a href="{{ item.href }}" class="chirpui-nav-tree__link{{ leaf_class }}{{ active_class }}"{% if item.get("active") %} aria-current="page"{% end %}{{ route_link_attrs(item.href) | html_attrs }}>{{ nav_tree_item_content(item, show_icons) }}</a>
+{% end %}
+
+{% def nav_tree_link(item, show_icons=false, leaf=false, block_hint=true) %}
+{% if item.get("hint") %}
+{% call tooltip(item.hint, position=item.get("hint_position") or "right", block=block_hint, cls="chirpui-nav-tree__hint") %}
+{{ nav_tree_link_anchor(item, show_icons, leaf) }}
+{% end %}
+{% else %}
+{{ nav_tree_link_anchor(item, show_icons, leaf) }}
+{% end %}
+{% end %}
+
+{% def nav_tree_text_span(item, show_icons=false, leaf=false) %}
+{% set leaf_class = " chirpui-nav-tree__text--leaf" if leaf else "" %}
+<span class="chirpui-nav-tree__text{{ " " ~ leaf_class if leaf_class else "" }}">{{ nav_tree_item_content(item, show_icons) }}</span>
+{% end %}
+
+{% def nav_tree_text(item, show_icons=false, leaf=false, block_hint=true) %}
+{% if item.get("hint") %}
+{% call tooltip(item.hint, position=item.get("hint_position") or "right", block=block_hint, cls="chirpui-nav-tree__hint") %}
+{{ nav_tree_text_span(item, show_icons, leaf) }}
+{% end %}
+{% else %}
+{{ nav_tree_text_span(item, show_icons, leaf) }}
 {% end %}
 {% end %}
 
@@ -34,9 +67,9 @@
             {% if item.get("children") %}
             {% if branch_mode == "linked" %}
             {% if item.get("href") %}
-            <a href="{{ item.href }}" class="chirpui-nav-tree__link{{ " chirpui-nav-tree__link--active" if item.get("active") else "" }}"{% if item.get("active") %} aria-current="page"{% end %}{{ route_link_attrs(item.href) | html_attrs }}>{{ nav_tree_item_content(item, show_icons) }}</a>
+            {{ nav_tree_link(item, show_icons) }}
             {% else %}
-            <span class="chirpui-nav-tree__text">{{ nav_tree_item_content(item, show_icons) }}</span>
+            {{ nav_tree_text(item, show_icons) }}
             {% end %}
             {% if item.get("open") %}
             {{ nav_tree_items(item.children, show_icons, branch_mode=branch_mode) }}
@@ -45,9 +78,9 @@
             <details class="chirpui-nav-tree__node"{% if item.get("active") or item.get("open") %} open{% end %}>
                 <summary class="chirpui-nav-tree__label">
                     {% if item.get("href") %}
-                    <a href="{{ item.href }}" class="chirpui-nav-tree__link{{ " chirpui-nav-tree__link--active" if item.get("active") else "" }}"{% if item.get("active") %} aria-current="page"{% end %}{{ route_link_attrs(item.href) | html_attrs }}>{{ nav_tree_item_content(item, show_icons) }}</a>
+                    {{ nav_tree_link(item, show_icons, block_hint=false) }}
                     {% else %}
-                    <span class="chirpui-nav-tree__text">{{ nav_tree_item_content(item, show_icons) }}</span>
+                    {{ nav_tree_text(item, show_icons, block_hint=false) }}
                     {% end %}
                 </summary>
                 {{ nav_tree_items(item.children, show_icons, branch_mode=branch_mode) }}
@@ -55,9 +88,9 @@
             {% end %}
             {% else %}
             {% if item.get("href") %}
-            <a href="{{ item.href }}" class="chirpui-nav-tree__link chirpui-nav-tree__link--leaf{{ " chirpui-nav-tree__link--active" if item.get("active") else "" }}"{% if item.get("active") %} aria-current="page"{% end %}{{ route_link_attrs(item.href) | html_attrs }}>{{ nav_tree_item_content(item, show_icons) }}</a>
+            {{ nav_tree_link(item, show_icons, leaf=true) }}
             {% else %}
-            <span class="chirpui-nav-tree__text chirpui-nav-tree__text--leaf">{{ nav_tree_item_content(item, show_icons) }}</span>
+            {{ nav_tree_text(item, show_icons, leaf=true) }}
             {% end %}
             {% end %}
         </li>
@@ -73,9 +106,9 @@
         {% if item.get("children") %}
         {% if branch_mode == "linked" %}
         {% if item.get("href") %}
-        <a href="{{ item.href }}" class="chirpui-nav-tree__link{{ " chirpui-nav-tree__link--active" if item.get("active") else "" }}"{% if item.get("active") %} aria-current="page"{% end %}{{ route_link_attrs(item.href) | html_attrs }}>{{ nav_tree_item_content(item, show_icons) }}</a>
+        {{ nav_tree_link(item, show_icons) }}
         {% else %}
-        <span class="chirpui-nav-tree__text">{{ nav_tree_item_content(item, show_icons) }}</span>
+        {{ nav_tree_text(item, show_icons) }}
         {% end %}
         {% if item.get("open") %}
         {{ nav_tree_items(item.children, show_icons, branch_mode=branch_mode) }}
@@ -84,9 +117,9 @@
         <details class="chirpui-nav-tree__node"{% if item.get("active") or item.get("open") %} open{% end %}>
             <summary class="chirpui-nav-tree__label">
                 {% if item.get("href") %}
-                <a href="{{ item.href }}" class="chirpui-nav-tree__link{{ " chirpui-nav-tree__link--active" if item.get("active") else "" }}"{% if item.get("active") %} aria-current="page"{% end %}{{ route_link_attrs(item.href) | html_attrs }}>{{ nav_tree_item_content(item, show_icons) }}</a>
+                {{ nav_tree_link(item, show_icons, block_hint=false) }}
                 {% else %}
-                <span class="chirpui-nav-tree__text">{{ nav_tree_item_content(item, show_icons) }}</span>
+                {{ nav_tree_text(item, show_icons, block_hint=false) }}
                 {% end %}
             </summary>
             {{ nav_tree_items(item.children, show_icons, branch_mode=branch_mode) }}
@@ -94,9 +127,9 @@
         {% end %}
         {% else %}
         {% if item.get("href") %}
-        <a href="{{ item.href }}" class="chirpui-nav-tree__link chirpui-nav-tree__link--leaf{{ " chirpui-nav-tree__link--active" if item.get("active") else "" }}"{% if item.get("active") %} aria-current="page"{% end %}{{ route_link_attrs(item.href) | html_attrs }}>{{ nav_tree_item_content(item, show_icons) }}</a>
+        {{ nav_tree_link(item, show_icons, leaf=true) }}
         {% else %}
-        <span class="chirpui-nav-tree__text chirpui-nav-tree__text--leaf">{{ nav_tree_item_content(item, show_icons) }}</span>
+        {{ nav_tree_text(item, show_icons, leaf=true) }}
         {% end %}
         {% end %}
     </li>

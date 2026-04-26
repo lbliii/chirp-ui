@@ -1242,6 +1242,41 @@ class TestNavTree:
         assert "chirpui-nav-tree__icon" in html
         assert "◎" in html
 
+    def test_nav_tree_item_hint_wraps_route_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{{ nav_tree(items=[{"title": "Inbox", "href": "/inbox", "hint": "Unread & urgent"}]) }}'
+        ).render()
+        assert "chirpui-nav-tree__hint" in html
+        assert "chirpui-tooltip--block" in html
+        assert 'data-tooltip="Unread &amp; urgent"' in html
+        assert 'href="/inbox"' in html
+        assert "chirpui-nav-tree__link" in html
+
+    def test_nav_tree_branch_hint_uses_inline_wrapper_inside_summary(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{{ nav_tree(items=[{"title": "Docs", "href": "/docs", "hint": "Docs detail", "children": [{"title": "API"}]}]) }}'
+        ).render()
+        summary = html[html.index("<summary") : html.index("</summary>")]
+        assert '<span class="chirpui-tooltip' in summary
+        assert '<div class="chirpui-tooltip' not in summary
+
+    def test_nav_tree_item_hint_keeps_route_link_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/inbox"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{{ nav_tree(items=[{"title": "Inbox", "href": "/inbox", "hint": "Unread detail"}]) }}'
+        ).render()
+        assert "chirpui-nav-tree__hint" in html
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
 
 # ---------------------------------------------------------------------------
 # Params table
@@ -4408,6 +4443,17 @@ class TestTimeline:
         assert 'hx-target="#site-content"' in html
         assert 'hx-boost="true"' in html
 
+    def test_timeline_items_hint_wraps_title_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline %}'
+            '{% set items = [{"title": "Step 1", "date": "Jan 1", "href": "/detail", "hint": "Audit detail"}] %}'
+            '{{ timeline(items=items, link_mode="title") }}'
+        ).render()
+        assert "chirpui-timeline__hint" in html
+        assert 'data-tooltip="Audit detail"' in html
+        assert "chirpui-timeline__title-link" in html
+        assert "chirpui-timeline__link-overlay" not in html
+
     def test_timeline_item(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/timeline.html" import timeline, timeline_item %}'
@@ -5417,6 +5463,14 @@ class TestTooltip:
         assert "chirpui-tooltip" in html
         assert 'data-tooltip="Help text"' in html
         assert "Hover me" in html
+
+    def test_tooltip_block_wrapper(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tooltip.html" import tooltip %}'
+            '{% call tooltip("More detail", block=true) %}<a href="/x">Route</a>{% end %}'
+        ).render()
+        assert '<div class="chirpui-tooltip chirpui-tooltip--top chirpui-tooltip--block"' in html
+        assert '<a href="/x">Route</a>' in html
 
 
 # ---------------------------------------------------------------------------
@@ -6795,6 +6849,16 @@ class TestTimelineEnhanced:
         assert "chirpui-timeline__title-link" in html
         assert 'hx-target="#site-content"' in html
         assert 'hx-boost="true"' in html
+
+    def test_hint_item_wraps_title_link(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline_item %}'
+            '{{ timeline_item("Click", "Jan 1", href="/detail", link_mode="title", hint="More context") }}'
+        ).render()
+        assert "chirpui-timeline__hint" in html
+        assert 'data-tooltip="More context"' in html
+        assert "chirpui-timeline__title-link" in html
+        assert "chirpui-timeline__link-overlay" not in html
 
     def test_link_item_uses_route_link_attrs_when_available(self, env: Environment) -> None:
         env.add_global(

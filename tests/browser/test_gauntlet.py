@@ -36,6 +36,7 @@ ROOM_PATHS = [
     "/gauntlet/data",
     "/gauntlet/workflow",
     "/gauntlet/linkability",
+    "/gauntlet/contextual",
     "/gauntlet/hostile",
 ]
 
@@ -62,6 +63,7 @@ TOUCH_SCENARIOS = [
     pytest.param("/gauntlet/forms", 375, 812, id="forms-phone"),
     pytest.param("/gauntlet/data", 375, 812, id="data-phone"),
     pytest.param("/gauntlet/workflow", 375, 812, id="workflow-phone"),
+    pytest.param("/gauntlet/contextual", 375, 812, id="contextual-phone"),
     pytest.param("/gauntlet", 768, 1024, id="all-tablet"),
 ]
 
@@ -176,6 +178,74 @@ async def test_gauntlet_timeline_title_link_mode_avoids_overlay_contract(page, b
     assert await data_timeline.locator(".chirpui-timeline__link-overlay").count() == 0
     assert await slot_timeline.locator(".chirpui-timeline__title-link").count() == 1
     assert await slot_timeline.locator(".chirpui-timeline__link-overlay").count() == 0
+
+
+async def test_gauntlet_contextual_nav_hints_keep_route_link_focus_contract(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/contextual", width=768, height=1024)
+
+    nav = page.locator("[data-testid='contextual-nav']")
+    hinted = nav.locator(".chirpui-nav-tree__hint").first
+    link = hinted.locator(".chirpui-nav-tree__link").first
+    bubble = hinted.locator(".chirpui-tooltip__bubble")
+
+    assert await link.get_attribute("href") == "/gauntlet/contextual/branch"
+    assert await nav.locator("summary").count() == 0
+
+    await link.focus()
+    await bubble.wait_for(state="visible")
+    await page.wait_for_function(
+        """(el) => {
+            const rect = el.getBoundingClientRect();
+            return parseFloat(getComputedStyle(el).opacity) > 0.9
+                && rect.width > 0
+                && rect.height > 0;
+        }""",
+        arg=await bubble.element_handle(),
+    )
+
+
+async def test_gauntlet_contextual_timeline_hints_do_not_use_link_overlay(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/contextual", width=768, height=1024)
+
+    timeline = page.locator("[data-testid='contextual-timeline']")
+    assert await timeline.locator(".chirpui-timeline__hint").count() == 2
+    assert await timeline.locator(".chirpui-timeline__title-link").count() == 1
+    assert await timeline.locator(".chirpui-timeline__link-overlay").count() == 0
+
+    first_title = timeline.locator(".chirpui-timeline__title-link").first
+    await first_title.focus()
+    bubble = timeline.locator(".chirpui-tooltip__bubble").first
+    await bubble.wait_for(state="visible")
+    await page.wait_for_function(
+        """(el) => parseFloat(getComputedStyle(el).opacity) > 0.9""",
+        arg=await bubble.element_handle(),
+    )
+    assert await bubble.inner_text() == "Visible from hover or keyboard focus."
+
+
+async def test_gauntlet_contextual_popover_is_click_reachable_on_phone(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/contextual", width=375, height=812)
+
+    popover = page.locator("[data-testid='contextual-popover'] .chirpui-popover")
+    trigger = popover.locator(".chirpui-popover__trigger")
+    await trigger.click()
+
+    assert await popover.evaluate("el => el.open")
+    panel = popover.locator(".chirpui-popover__panel")
+    await panel.wait_for(state="visible")
+    failure = await panel.evaluate(
+        """(el) => {
+            const rect = el.getBoundingClientRect();
+            const viewport = document.documentElement.clientWidth;
+            if (rect.left >= -1 && rect.right <= viewport + 1) return null;
+            return {
+                left: Math.round(rect.left),
+                right: Math.round(rect.right),
+                viewport,
+            };
+        }"""
+    )
+    await assert_no_failures(page, [failure] if failure else [], "contextual-popover-phone")
 
 
 async def test_gauntlet_dropdown_select_interaction_does_not_shift_toolbar(page, base_url):

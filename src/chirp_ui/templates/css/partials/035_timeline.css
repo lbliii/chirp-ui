@@ -53,6 +53,10 @@
     color: var(--chirpui-text);
 }
 
+.chirpui-timeline__hint {
+    min-width: 0;
+}
+
 .chirpui-timeline__title-link {
     text-decoration: none;
 }

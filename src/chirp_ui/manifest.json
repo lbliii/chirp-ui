@@ -11534,10 +11534,11 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Nav tree component\n    Hierarchical navigation for docs sidebar, admin nav, settings tree.\n    Data-in: items = [{title, href?, children?, active?, open?, badge?, muted?}].\n    Default branch_mode=\"disclosure\" uses native <details> for expand/collapse.\n    branch_mode=\"linked\" renders branch parents as direct links and only renders\n    children when open=true, for server-controlled section trees.\n\n    Named slot: header (version selector, search, etc.).\n\n    Usage:\n        from \"chirpui/nav_tree.html\" import nav_tree\n\n        call nav_tree(items=items, show_icons=false)\n            slot header: version selector, search\n        end",
+      "description": "Nav tree component\n    Hierarchical navigation for docs sidebar, admin nav, settings tree.\n    Data-in: items = [{title, href?, children?, active?, open?, badge?, muted?}].\n    Default branch_mode=\"disclosure\" uses native <details> for expand/collapse.\n    branch_mode=\"linked\" renders branch parents as direct links and only renders\n    children when open=true, for server-controlled section trees.\n    Item hint=\"...\" renders a reusable tooltip wrapper around that item's trigger.\n\n    Named slot: header (version selector, search, etc.).\n\n    Usage:\n        from \"chirpui/nav_tree.html\" import nav_tree\n\n        call nav_tree(items=items, show_icons=false)\n            slot header: version selector, search\n        end",
       "elements": [
         "badge",
         "header",
+        "hint",
         "icon",
         "item",
         "label",
@@ -11552,6 +11553,7 @@
         "chirpui-nav-tree--linked-branches",
         "chirpui-nav-tree__badge",
         "chirpui-nav-tree__header",
+        "chirpui-nav-tree__hint",
         "chirpui-nav-tree__icon",
         "chirpui-nav-tree__item",
         "chirpui-nav-tree__item--active",
@@ -11581,7 +11583,7 @@
         "chirpui-nav-tree__list--nested",
         "chirpui-nav-tree__text--leaf"
       ],
-      "lineno": 28,
+      "lineno": 61,
       "macro": "nav_tree",
       "maturity": "stable",
       "modifiers": [
@@ -18077,7 +18079,7 @@
       "consumes": [
         "_surface_variant"
       ],
-      "description": "Timeline component\n    Vertical timeline for activity feeds, order tracking, audit logs.\n\n    Usage:\n        from \"chirpui/timeline.html\" import timeline, timeline_item\n\n        timeline(items=[\n            {\"title\": \"Created\", \"date\": \"Jan 1\", \"content\": \"Order placed\"},\n            {\"title\": \"Shipped\", \"date\": \"Jan 3\", \"content\": \"In transit\"}\n        ])\n\n        Or with slot:\n        call timeline()\n            timeline_item(\"Created\", \"Jan 1\", \"Order placed\")\n            timeline_item(\"Shipped\", \"Jan 3\", \"In transit\")\n        end\n\n    Variants:\n        timeline_item(\"Deployed\", \"Now\", icon=\"◎\", variant=\"success\")\n        timeline_item(\"Error\", \"12:05\", variant=\"error\", avatar=\"/img/user.jpg\")\n        timeline(hoverable=true)\n\n    Links:\n        href defaults to a whole-row overlay link.\n        link_mode=\"title\" renders the title itself as the link.",
+      "description": "Timeline component\n    Vertical timeline for activity feeds, order tracking, audit logs.\n\n    Usage:\n        from \"chirpui/timeline.html\" import timeline, timeline_item\n\n        timeline(items=[\n            {\"title\": \"Created\", \"date\": \"Jan 1\", \"content\": \"Order placed\"},\n            {\"title\": \"Shipped\", \"date\": \"Jan 3\", \"content\": \"In transit\"}\n        ])\n\n        Or with slot:\n        call timeline()\n            timeline_item(\"Created\", \"Jan 1\", \"Order placed\")\n            timeline_item(\"Shipped\", \"Jan 3\", \"In transit\")\n        end\n\n    Variants:\n        timeline_item(\"Deployed\", \"Now\", icon=\"◎\", variant=\"success\")\n        timeline_item(\"Error\", \"12:05\", variant=\"error\", avatar=\"/img/user.jpg\")\n        timeline(hoverable=true)\n\n    Links:\n        href defaults to a whole-row overlay link.\n        link_mode=\"title\" renders the title itself as the link.\n    Hints:\n        item hint=\"...\" or timeline_item(..., hint=\"...\") wraps the title in a tooltip.",
       "elements": [
         "avatar",
         "body",
@@ -18086,6 +18088,7 @@
         "dot",
         "header",
         "header-actions",
+        "hint",
         "icon",
         "item",
         "link-overlay",
@@ -18105,6 +18108,7 @@
         "chirpui-timeline__dot",
         "chirpui-timeline__header",
         "chirpui-timeline__header-actions",
+        "chirpui-timeline__hint",
         "chirpui-timeline__icon",
         "chirpui-timeline__item",
         "chirpui-timeline__item--error",
@@ -18124,7 +18128,7 @@
         "chirpui-timeline__item--success",
         "chirpui-timeline__item--warning"
       ],
-      "lineno": 28,
+      "lineno": 49,
       "macro": "timeline",
       "maturity": "stable",
       "modifiers": [
@@ -18493,10 +18497,11 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Tooltip macro\n    Wraps child, shows tooltip bubble on hover with arrow positioning. Pure CSS.\n\n    Usage:\n        from \"chirpui/tooltip.html\" import tooltip\n\n        {% call tooltip(\"Copy to clipboard\") %}\n            <button>Copy</button>\n        {% end %}\n\n        {% call tooltip(\"Below the element\", position=\"bottom\") %}\n            <span>Hover me</span>\n        {% end %}\n\n    Positions: top (default), bottom, left, right",
+      "description": "Tooltip macro\n    Wraps child, shows tooltip bubble on hover with arrow positioning. Pure CSS.\n\n    Usage:\n        from \"chirpui/tooltip.html\" import tooltip\n\n        {% call tooltip(\"Copy to clipboard\") %}\n            <button>Copy</button>\n        {% end %}\n\n        {% call tooltip(\"Below the element\", position=\"bottom\") %}\n            <span>Hover me</span>\n        {% end %}\n\n    Positions: top (default), bottom, left, right\n    Use block=true when the trigger is block-level content such as a full nav row.",
       "elements": [],
       "emits": [
         "chirpui-tooltip",
+        "chirpui-tooltip--block",
         "chirpui-tooltip--bottom",
         "chirpui-tooltip--left",
         "chirpui-tooltip--right",
@@ -18506,10 +18511,12 @@
       "extra_emits": [
         "chirpui-tooltip__bubble"
       ],
-      "lineno": 18,
+      "lineno": 19,
       "macro": "tooltip",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "block"
+      ],
       "params": [
         {
           "has_default": true,
@@ -18525,6 +18532,11 @@
           "has_default": true,
           "is_required": false,
           "name": "position"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "block"
         },
         {
           "has_default": true,

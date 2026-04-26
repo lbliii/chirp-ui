@@ -23,6 +23,7 @@
     {{ sidebar_link("/gauntlet/data", "Data") }}
     {{ sidebar_link("/gauntlet/workflow", "Workflow") }}
     {{ sidebar_link("/gauntlet/linkability", "Linkability") }}
+    {{ sidebar_link("/gauntlet/contextual", "Contextual Detail") }}
     {{ sidebar_link("/gauntlet/hostile", "Hostile") }}
   {% end %}
 {% end %}
@@ -40,6 +41,8 @@
 {% from "chirpui/primary_nav.html" import primary_nav %}
 {% from "chirpui/route_tabs.html" import route_tabs %}
 {% from "chirpui/timeline.html" import timeline, timeline_item %}
+{% from "chirpui/tooltip.html" import tooltip %}
+{% from "chirpui/popover.html" import popover %}
 {% from "chirpui/forms.html" import form, text_field, select_field, textarea_field, toggle_field, radio_field, number_scale %}
 {% from "chirpui/segmented_control.html" import segmented_control %}
 {% from "chirpui/token_input.html" import token_input, token, token_result %}
@@ -52,6 +55,7 @@
 {% from "chirpui/latest_line.html" import latest_line %}
 {% from "chirpui/inline_counter.html" import inline_counter %}
 {% from "chirpui/composer_shell.html" import composer_shell %}
+{% from "chirpui/mention.html" import mention %}
 
 {% call container(max_width="84rem") %}
 {% call stack(gap="xl") %}
@@ -272,6 +276,57 @@
   {% end %}
 </section>
 {% end %}
+
+{% if active_room == "all" or active_room == "contextual" %}
+<section id="contextual" data-gauntlet-room="contextual" data-gauntlet-no-overlap>
+  {{ section_header("Contextual detail room", subtitle="Short hints and richer popovers should survive links, badges, entries, focus, and small viewports.") }}
+  {% call grid(cols=2, gap="md") %}
+    <div data-testid="contextual-nav">
+      {% call file_tree(items=detail_nav_items, title="Hinted section tree", subtitle="Item hints share the route surface.", branch_mode="linked") %}
+        {% slot header %}<span class="chirpui-text-muted">Linked branches with item hints</span>{% end %}
+      {% end %}
+    </div>
+    {% call surface(variant="muted") %}
+      {% call stack(gap="md") %}
+        <div data-testid="contextual-timeline">
+          {{ timeline(items=[
+            {"title": "Council note", "date": "Now", "content": "The title routes; the hint explains why it matters.", "href": "/gauntlet/contextual/timeline", "hint": "Visible from hover or keyboard focus.", "link_mode": "title"},
+            {"title": "Follow-up", "date": "Later", "content": "Plain hinted title without a route.", "hint": "Hints also work for non-link entries."},
+          ], hoverable=true) }}
+        </div>
+        <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-touch-critical>
+          {% call tooltip("Shows cast metadata without replacing mention markup.") %}
+            {{ mention("Rogue", href="/gauntlet/contextual/rogue") }}
+          {% end %}
+          {% call tooltip("Count describes unread plot threads.") %}
+            {{ badge("12", variant="info") }}
+          {% end %}
+          {% call tooltip("Avatar hint keeps the circular fallback intact.") %}
+            {{ avatar(initials="XM", alt="Xavier Moderator") }}
+          {% end %}
+        </div>
+      {% end %}
+    {% end %}
+    {% call card(title="Rich touch fallback") %}
+      <p>Hover-only detail is short. Rich detail uses a click/tap popover.</p>
+      <div data-testid="contextual-popover">
+        {% call popover(trigger_label="Show entry detail") %}
+          {% slot header %}<strong>Entry detail</strong>{% end %}
+          <p>Longer notes can contain links and actions without depending on hover.</p>
+          {% slot footer %}{{ btn("Open source", href="/gauntlet/contextual/source") }}{% end %}
+        {% end %}
+      </div>
+    {% end %}
+    {% call card(title="Nested surface clipping") %}
+      {% call surface(variant="accent") %}
+        {% call tooltip("Tooltip should remain visible even when nested in a surfaced card.", position="bottom") %}
+          {{ btn("Nested hint target", href="/gauntlet/contextual/nested") }}
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+</section>
+{% endif %}
 
 {% if active_room == "all" or active_room == "hostile" %}
 <section id="hostile" data-gauntlet-room="hostile" data-gauntlet-no-overlap>

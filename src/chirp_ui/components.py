@@ -601,6 +601,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "tooltip": ComponentDescriptor(
         block="tooltip",
         variants=("top", "bottom", "left", "right"),
+        modifiers=("block",),
         template="tooltip.html",
         extra_emits=("chirpui-tooltip__bubble",),
         category="navigation",
@@ -1850,6 +1851,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "content",
             "header",
             "header-actions",
+            "hint",
             "title",
             "title-link",
             "date",
@@ -2329,6 +2331,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "link",
             "text",
             "icon",
+            "hint",
             "title",
             "badge",
         ),

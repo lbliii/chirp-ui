@@ -8496,12 +8496,14 @@ Tooltip macro
 - **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `bottom`, `left`, `right`, `top`
+- **Modifiers:** `block`
 
 | Param | Required | Default |
 |-------|----------|---------|
 | `content` | no | (has default) |
 | `hint` | no | (has default) |
 | `position` | no | (has default) |
+| `block` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `tray`

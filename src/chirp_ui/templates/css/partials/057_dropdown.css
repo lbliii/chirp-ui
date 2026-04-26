@@ -453,6 +453,15 @@ a.chirpui-tag:active {
     text-decoration: none;
 }
 
+.chirpui-nav-tree__hint {
+    display: block;
+}
+
+.chirpui-nav-tree__hint .chirpui-nav-tree__link,
+.chirpui-nav-tree__hint .chirpui-nav-tree__text {
+    width: 100%;
+}
+
 .chirpui-nav-tree__link:hover {
     color: var(--chirpui-accent);
 }
@@ -469,6 +478,8 @@ a.chirpui-tag:active {
 }
 
 .chirpui-nav-tree__item--muted > .chirpui-nav-tree__link:not(.chirpui-nav-tree__link--active),
+.chirpui-nav-tree__item--muted > .chirpui-nav-tree__hint .chirpui-nav-tree__link:not(.chirpui-nav-tree__link--active),
+.chirpui-nav-tree__item--muted > .chirpui-nav-tree__hint .chirpui-nav-tree__text,
 .chirpui-nav-tree__item--muted > .chirpui-nav-tree__text,
 .chirpui-nav-tree__item--muted > .chirpui-nav-tree__node > .chirpui-nav-tree__label .chirpui-nav-tree__link:not(.chirpui-nav-tree__link--active),
 .chirpui-nav-tree__item--muted > .chirpui-nav-tree__node > .chirpui-nav-tree__label .chirpui-nav-tree__text {
