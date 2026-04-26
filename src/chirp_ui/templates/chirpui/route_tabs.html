@@ -19,7 +19,7 @@
      hx-swap="innerHTML">
     {% if tab.get("icon") %}<span class="chirpui-route-tab__icon">{{ tab.icon | icon }}</span>{% end %}
     <span class="chirpui-route-tab__label">{{ tab.label | default("") }}</span>
-    {% if tab.get("badge") %}<span class="chirpui-route-tab__badge">{{ tab.badge }}</span>{% end %}
+    {% if tab.get("badge") is not none %}<span class="chirpui-route-tab__badge">{{ tab.badge }}</span>{% end %}
   </a>
   {% end %}
 </nav>

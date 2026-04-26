@@ -55,6 +55,22 @@
     font-family: var(--chirpui-ascii-font);
 }
 
+.chirpui-sidebar__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: calc(var(--chirpui-spacing) + var(--chirpui-spacing-xs));
+    margin-inline-start: auto;
+    padding-inline: var(--chirpui-spacing-xs);
+    border: 1px solid var(--chirpui-border-subtle);
+    border-radius: 999px;
+    background: var(--chirpui-muted-bg);
+    color: var(--chirpui-text);
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    line-height: var(--chirpui-line-height-tight);
+}
+
 .chirpui-sidebar__link:hover {
     color: var(--chirpui-text);
     background: var(--chirpui-state-surface-hover);
@@ -70,4 +86,3 @@
     font-weight: 500;
     background: var(--chirpui-sidebar-active-bg);
 }
-

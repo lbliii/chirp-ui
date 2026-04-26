@@ -3149,14 +3149,16 @@
       "consumes": [],
       "description": "Avatar Stack component\n    Overlapping avatars (e.g. \"3 people liked\").\n\n    Usage:\n        from \"chirpui/avatar_stack.html\" import avatar_stack\n        from \"chirpui/avatar.html\" import avatar\n\n        call avatar_stack(max_visible=3)\n            avatar(src=\"/a.jpg\", alt=\"Alice\", size=\"sm\")\n            avatar(src=\"/b.jpg\", alt=\"Bob\", size=\"sm\")\n            avatar(src=\"/c.jpg\", alt=\"Carol\", size=\"sm\")\n        end\n\n        call avatar_stack(max_visible=3, total=5)\n            avatar(...)\n            avatar(...)\n            avatar(...)\n        end\n        # Shows 3 avatars + \"+2\" overlay",
       "elements": [
+        "link",
         "more"
       ],
       "emits": [
         "chirpui-avatar-stack",
+        "chirpui-avatar-stack__link",
         "chirpui-avatar-stack__more"
       ],
       "extra_emits": [],
-      "lineno": 22,
+      "lineno": 23,
       "macro": "avatar_stack",
       "maturity": "stable",
       "modifiers": [],
@@ -4797,6 +4799,115 @@
       "tokens": [],
       "variants": []
     },
+    "chip": {
+      "block": "chip",
+      "category": "data-display",
+      "composes": [],
+      "consumes": [],
+      "description": "Chip group\n    Tokenized chips for tags, facets, filters, and compact metadata.\n    Use color names or safe CSS colors resolved through ChirpUI color filters.",
+      "elements": [],
+      "emits": [
+        "chirpui-chip",
+        "chirpui-chip--custom",
+        "chirpui-chip--muted",
+        "chirpui-chip--selected"
+      ],
+      "extra_emits": [],
+      "lineno": 12,
+      "macro": "chip",
+      "maturity": "stable",
+      "modifiers": [
+        "custom",
+        "muted",
+        "selected"
+      ],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "selected"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "muted"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "color"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "chip_group.html",
+      "tokens": [],
+      "variants": []
+    },
+    "chip-group": {
+      "block": "chip-group",
+      "category": "data-display",
+      "composes": [],
+      "consumes": [],
+      "description": "Chip group\n    Tokenized chips for tags, facets, filters, and compact metadata.\n    Use color names or safe CSS colors resolved through ChirpUI color filters.",
+      "elements": [],
+      "emits": [
+        "chirpui-chip-group"
+      ],
+      "extra_emits": [],
+      "lineno": 6,
+      "macro": "chip_group",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "chip_group.html",
+      "tokens": [],
+      "variants": []
+    },
     "clamp-2": {
       "block": "clamp-2",
       "category": "auto",
@@ -5313,6 +5424,77 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "",
+      "tokens": [],
+      "variants": []
+    },
+    "composer-shell": {
+      "block": "composer-shell",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Composer shell\n    Structural wrapper for writing/editing surfaces with context, toolbar, preview,\n    draft status, and actions. Behavior remains app-owned.",
+      "elements": [
+        "actions",
+        "body",
+        "fields",
+        "footer",
+        "header",
+        "identity",
+        "preview",
+        "status",
+        "toolbar"
+      ],
+      "emits": [
+        "chirpui-composer-shell",
+        "chirpui-composer-shell__actions",
+        "chirpui-composer-shell__body",
+        "chirpui-composer-shell__fields",
+        "chirpui-composer-shell__footer",
+        "chirpui-composer-shell__header",
+        "chirpui-composer-shell__identity",
+        "chirpui-composer-shell__preview",
+        "chirpui-composer-shell__status",
+        "chirpui-composer-shell__toolbar"
+      ],
+      "extra_emits": [],
+      "lineno": 6,
+      "macro": "composer_shell",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "actions",
+        "body",
+        "fields",
+        "header",
+        "identity",
+        "preview",
+        "status",
+        "toolbar"
+      ],
+      "slots_extracted": [
+        "actions",
+        "body",
+        "fields",
+        "header",
+        "identity",
+        "preview",
+        "status",
+        "toolbar"
+      ],
+      "slots_yielded": [],
+      "template": "composer_shell.html",
       "tokens": [],
       "variants": []
     },
@@ -8873,6 +9055,67 @@
       "tokens": [],
       "variants": []
     },
+    "inline-counter": {
+      "block": "inline-counter",
+      "category": "data-display",
+      "composes": [],
+      "consumes": [],
+      "description": "Inline counter\n    Compact mark/value/label count for dense metadata rows.",
+      "elements": [
+        "label",
+        "mark",
+        "value"
+      ],
+      "emits": [
+        "chirpui-inline-counter",
+        "chirpui-inline-counter__label",
+        "chirpui-inline-counter__mark",
+        "chirpui-inline-counter__value"
+      ],
+      "extra_emits": [],
+      "lineno": 5,
+      "macro": "inline_counter",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "mark"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "value"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "inline_counter.html",
+      "tokens": [],
+      "variants": []
+    },
     "inline-edit": {
       "block": "inline-edit",
       "category": "form",
@@ -9237,6 +9480,84 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "label_overline.html",
+      "tokens": [],
+      "variants": []
+    },
+    "latest-line": {
+      "block": "latest-line",
+      "category": "data-display",
+      "composes": [],
+      "consumes": [],
+      "description": "Latest line\n    Compact activity/jump metadata with optional actor and tooltip detail.",
+      "elements": [
+        "label",
+        "meta",
+        "title",
+        "tooltip"
+      ],
+      "emits": [
+        "chirpui-latest-line",
+        "chirpui-latest-line__label",
+        "chirpui-latest-line__meta",
+        "chirpui-latest-line__title",
+        "chirpui-latest-line__tooltip"
+      ],
+      "extra_emits": [],
+      "lineno": 6,
+      "macro": "latest_line",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "label"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "href"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "actor"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "actor_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "meta"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "detail"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "latest_line.html",
       "tokens": [],
       "variants": []
     },
@@ -10452,8 +10773,9 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Nav tree component\n    Hierarchical navigation for docs sidebar, admin nav, settings tree.\n    Data-in: items = [{title, href?, children?, active?}].\n    Uses native <details> for expand/collapse. No framework-specific helpers.\n\n    Named slot: header (version selector, search, etc.).\n\n    Usage:\n        from \"chirpui/nav_tree.html\" import nav_tree\n\n        call nav_tree(items=items, show_icons=false)\n            slot header: version selector, search\n        end",
+      "description": "Nav tree component\n    Hierarchical navigation for docs sidebar, admin nav, settings tree.\n    Data-in: items = [{title, href?, children?, active?, open?, badge?, muted?}].\n    Default branch_mode=\"disclosure\" uses native <details> for expand/collapse.\n    branch_mode=\"linked\" renders branch parents as direct links and only renders\n    children when open=true, for server-controlled section trees.\n\n    Named slot: header (version selector, search, etc.).\n\n    Usage:\n        from \"chirpui/nav_tree.html\" import nav_tree\n\n        call nav_tree(items=items, show_icons=false)\n            slot header: version selector, search\n        end",
       "elements": [
+        "badge",
         "header",
         "icon",
         "item",
@@ -10466,9 +10788,16 @@
       ],
       "emits": [
         "chirpui-nav-tree",
+        "chirpui-nav-tree--linked-branches",
+        "chirpui-nav-tree__badge",
         "chirpui-nav-tree__header",
         "chirpui-nav-tree__icon",
         "chirpui-nav-tree__item",
+        "chirpui-nav-tree__item--active",
+        "chirpui-nav-tree__item--branch",
+        "chirpui-nav-tree__item--child",
+        "chirpui-nav-tree__item--muted",
+        "chirpui-nav-tree__item--open",
         "chirpui-nav-tree__label",
         "chirpui-nav-tree__link",
         "chirpui-nav-tree__link--active",
@@ -10480,11 +10809,19 @@
         "chirpui-nav-tree__text--leaf",
         "chirpui-nav-tree__title"
       ],
-      "extra_emits": [],
-      "lineno": 23,
+      "extra_emits": [
+        "chirpui-nav-tree__item--active",
+        "chirpui-nav-tree__item--branch",
+        "chirpui-nav-tree__item--child",
+        "chirpui-nav-tree__item--muted",
+        "chirpui-nav-tree__item--open"
+      ],
+      "lineno": 28,
       "macro": "nav_tree",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "linked-branches"
+      ],
       "params": [
         {
           "has_default": false,
@@ -10495,6 +10832,11 @@
           "has_default": true,
           "is_required": false,
           "name": "show_icons"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "branch_mode"
         },
         {
           "has_default": true,
@@ -11783,6 +12125,69 @@
       "tokens": [],
       "variants": []
     },
+    "primary-nav": {
+      "block": "primary-nav",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "Primary navigation\n    Broad route navigation for app shell topbars and section bars.\n    Data-in: items = [{label, href?, badge?, active?, match?, divider?}].\n    Use for cross-feature navigation; use route_tabs for local subsection views.",
+      "elements": [
+        "badge",
+        "divider",
+        "label",
+        "link"
+      ],
+      "emits": [
+        "chirpui-primary-nav",
+        "chirpui-primary-nav__badge",
+        "chirpui-primary-nav__divider",
+        "chirpui-primary-nav__label",
+        "chirpui-primary-nav__link",
+        "chirpui-primary-nav__link--active",
+        "chirpui-primary-nav__link--disabled"
+      ],
+      "extra_emits": [
+        "chirpui-primary-nav__link--active",
+        "chirpui-primary-nav__link--disabled"
+      ],
+      "lineno": 7,
+      "macro": "primary_nav",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "current_path"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "aria_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "primary_nav.html",
+      "tokens": [],
+      "variants": []
+    },
     "profile-header": {
       "block": "profile-header",
       "category": "data-display",
@@ -12199,6 +12604,52 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "reaction_pill.html",
+      "tokens": [],
+      "variants": []
+    },
+    "rendered-content": {
+      "block": "rendered-content",
+      "category": "typography",
+      "composes": [],
+      "consumes": [],
+      "description": "Rendered content\n    Wrapper for already-rendered user content such as posts, comments, and revisions.\n    Keep escaping decisions outside this macro; pass content through the default slot.",
+      "elements": [],
+      "emits": [
+        "chirpui-rendered-content",
+        "chirpui-rendered-content--compact"
+      ],
+      "extra_emits": [],
+      "lineno": 6,
+      "macro": "rendered_content",
+      "maturity": "stable",
+      "modifiers": [
+        "compact"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "compact"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "rendered_content.html",
       "tokens": [],
       "variants": []
     },
@@ -13717,6 +14168,7 @@
       "consumes": [],
       "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
       "elements": [
+        "badge",
         "header",
         "icon",
         "label",
@@ -13727,6 +14179,7 @@
       ],
       "emits": [
         "chirpui-sidebar",
+        "chirpui-sidebar__badge",
         "chirpui-sidebar__footer",
         "chirpui-sidebar__header",
         "chirpui-sidebar__icon",
@@ -16745,6 +17198,87 @@
         "success"
       ]
     },
+    "token-input": {
+      "block": "token-input",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Token input\n    Accessible token input and listbox structure for app-owned autocomplete.",
+      "elements": [
+        "control",
+        "input",
+        "label",
+        "list",
+        "remove",
+        "result",
+        "result-label",
+        "result-meta",
+        "token",
+        "token-label"
+      ],
+      "emits": [
+        "chirpui-token-input",
+        "chirpui-token-input__control",
+        "chirpui-token-input__input",
+        "chirpui-token-input__label",
+        "chirpui-token-input__list",
+        "chirpui-token-input__remove",
+        "chirpui-token-input__result",
+        "chirpui-token-input__result--active",
+        "chirpui-token-input__result-label",
+        "chirpui-token-input__result-meta",
+        "chirpui-token-input__token",
+        "chirpui-token-input__token-label"
+      ],
+      "extra_emits": [
+        "chirpui-token-input__result--active"
+      ],
+      "lineno": 5,
+      "macro": "token_input",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "input_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "placeholder"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "input",
+        "results",
+        "tokens"
+      ],
+      "slots_extracted": [
+        "input",
+        "results",
+        "tokens"
+      ],
+      "slots_yielded": [],
+      "template": "token_input.html",
+      "tokens": [],
+      "variants": []
+    },
     "tooltip": {
       "block": "tooltip",
       "category": "navigation",
@@ -17894,37 +18428,38 @@
       "container": 8,
       "content": 5,
       "control": 15,
-      "data-display": 26,
+      "data-display": 30,
       "effect": 32,
       "feedback": 16,
-      "form": 12,
+      "form": 14,
       "infrastructure": 2,
       "interactive": 8,
       "layout": 22,
       "marketing": 7,
       "media": 1,
-      "navigation": 19,
-      "overlay": 3
+      "navigation": 20,
+      "overlay": 3,
+      "typography": 1
     },
     "component_maturity": {
-      "experimental": 175,
+      "experimental": 177,
       "internal": 2,
-      "stable": 132
+      "stable": 138
     },
     "component_requirements": {
       "alpine": 18,
       "htmx": 23
     },
     "component_roles": {
-      "component": 165,
+      "component": 173,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 1,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 199,
-    "components_with_params": 199,
+    "components_with_description": 207,
+    "components_with_params": 207,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -17932,7 +18467,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 197
+      "public_templated_components": 205
     },
     "registry_debt": {
       "auto_category_components": 104,
@@ -17940,8 +18475,8 @@
       "auto_extra_classes": 363,
       "auto_trim_blocks": 72,
       "auto_trim_classes": 102,
-      "explicit_extra_blocks": 26,
-      "explicit_extra_classes": 138
+      "explicit_extra_blocks": 29,
+      "explicit_extra_classes": 146
     },
     "token_categories": {
       "color": 181,
@@ -17953,7 +18488,7 @@
       "spacing": 22,
       "typography": 40
     },
-    "total_components": 309,
+    "total_components": 317,
     "total_tokens": 356
   },
   "tokens": {

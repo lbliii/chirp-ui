@@ -1,0 +1,21 @@
+{#- chirp-ui: Chip group
+    Tokenized chips for tags, facets, filters, and compact metadata.
+    Use color names or safe CSS colors resolved through ChirpUI color filters.
+-#}
+
+{% def chip_group(label=none, cls="") %}
+<div class="chirpui-chip-group{{ " " ~ cls if cls else "" }}"{% if label %} aria-label="{{ label }}"{% end %}>
+    {% slot %}
+</div>
+{% end %}
+
+{% def chip(label, href=none, selected=false, muted=false, color=none, cls="") %}
+{% set resolved = color | resolve_color %}
+{% set style_attr = ("--chirpui-chip-color: " ~ resolved) if resolved else "" %}
+{% set chip_cls = "chirpui-chip" ~ (" chirpui-chip--selected" if selected else "") ~ (" chirpui-chip--muted" if muted else "") ~ (" chirpui-chip--custom" if resolved else "") ~ (" " ~ cls if cls else "") %}
+{% if href %}
+<a class="{{ chip_cls }}" href="{{ href }}"{% if selected %} aria-current="page"{% end %}{% if style_attr %} style="{{ style_attr }}"{% end %}{{ route_link_attrs(href) | html_attrs }}>{{ label }}</a>
+{% else %}
+<span class="{{ chip_cls }}"{% if style_attr %} style="{{ style_attr }}"{% end %}>{{ label }}</span>
+{% end %}
+{% end %}

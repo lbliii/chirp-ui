@@ -6,6 +6,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
+    min-block-size: var(--chirpui-control-block-size);
     cursor: pointer;
     user-select: none;
 }
@@ -120,4 +121,3 @@
         transition: none;
     }
 }
-

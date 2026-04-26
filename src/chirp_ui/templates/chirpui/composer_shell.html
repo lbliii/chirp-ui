@@ -1,0 +1,19 @@
+{#- chirp-ui: Composer shell
+    Structural wrapper for writing/editing surfaces with context, toolbar, preview,
+    draft status, and actions. Behavior remains app-owned.
+-#}
+
+{% def composer_shell(cls="") %}
+<div class="chirpui-composer-shell{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-composer-shell__header">{% slot header %}</div>
+    <div class="chirpui-composer-shell__identity">{% slot identity %}</div>
+    <div class="chirpui-composer-shell__fields">{% slot fields %}</div>
+    <div class="chirpui-composer-shell__toolbar">{% slot toolbar %}</div>
+    <div class="chirpui-composer-shell__body">{% slot body %}</div>
+    <div class="chirpui-composer-shell__preview">{% slot preview %}</div>
+    <div class="chirpui-composer-shell__footer">
+        <div class="chirpui-composer-shell__status">{% slot status %}</div>
+        <div class="chirpui-composer-shell__actions">{% slot actions %}</div>
+    </div>
+</div>
+{% end %}

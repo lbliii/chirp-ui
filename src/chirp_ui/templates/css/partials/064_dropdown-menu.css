@@ -6,6 +6,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-xs);
+    min-block-size: var(--chirpui-control-block-size);
 }
 .chirpui-dropdown__menu[hidden] {
     display: none;
@@ -71,6 +72,7 @@
     border-color: var(--chirpui-accent-hover);
 }
 .chirpui-dropdown__trigger--select {
+    min-block-size: var(--chirpui-control-block-size);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius);
@@ -79,4 +81,3 @@
 .chirpui-dropdown__item--selected {
     background: var(--chirpui-primary-muted);
 }
-

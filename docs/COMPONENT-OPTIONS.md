@@ -19,6 +19,10 @@ See [Strict mode](#strict-mode) for setup.
 | `page_hero` | `eyebrow`, `actions`, `metadata`, `footer` | Hero sub-regions | No |
 | `alert` | `actions` | Alert action buttons | No |
 | `sidebar` | `header`, `footer`, default (nav) | Sidebar regions | No |
+| `composer_shell` | `header`, `identity`, `fields`, `toolbar`, `body`, `preview`, `status`, `actions` | Structured authoring form regions | No |
+| `token_input` | `tokens`, `input`, `results` | App-owned autocomplete token picker regions | No |
+| `rendered_content` | default (unnamed) | Rendered prose/content wrapper | No |
+| `chip_group` | default (unnamed) | Facet, tag, or metadata chips | No |
 | `card` | `header_actions`, `media`, `body_actions`, default | Card regions | No |
 | `resource_card` | `badges`, `subtitle`, `footer`, default | Resource card regions | No |
 | `confirm_dialog` | `form_content` | Hidden fields when `confirm_url` set | No |
@@ -765,6 +769,7 @@ Recommended usage:
 |----------|-----------|----------|
 | `chirpui/filter_bar.html` | `filter_bar` | **Form-backed** filter toolbar: GET/POST to an action URL, `action_strip` zones (search, selects, export). Fits `resource_index`, data tables, admin lists. |
 | `chirpui/filter_chips.html` | `filter_group`, `filter_chip` | **Chip / pill** faceted navigation: `role="radiogroup"`, optional `resolve_color` / `register_colors`, HTMX `hx-target` / `hx-select`. Fits taxonomy toggles (e.g. Pokémon types), tag filters without a wrapping form. |
+| `chirpui/chip_group.html` | `chip_group`, `chip` | **Display chips** for tags, facets, world traits, and compact metadata where a radiogroup/form contract would be too strong. |
 
 #### filter_bar
 
@@ -811,6 +816,21 @@ Chip-style faceted filters: a `filter_group` wrapper (`role="radiogroup"`) and `
 | HTMX | — | `hx_target`, `hx_push_url`, `hx_swap`, `hx_select` |
 
 See also: **Badge** (`color`, `fill`) and filters **`resolve_color`**, **`register_colors`** in `chirp_ui`.
+
+#### chip_group
+
+Display-only chip clusters for tags, facets, and compact metadata. Use
+`filter_chips` when the chips are a single-choice filter control; use
+`chip_group` when they are simple links or labels.
+
+```html
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+
+{% call chip_group(label="Traits") %}
+  {{ chip("Urban", href="/facets/urban", color="#78c850") }}
+  {{ chip("Quiet", muted=true) }}
+{% end %}
+```
 
 #### command_bar
 
@@ -1530,7 +1550,7 @@ Sidebar navigation for dashboards and app shells. Use `sidebar`, `sidebar_sectio
 |-------|--------|-------------|
 | `sidebar` | `cls` | Container with header, nav, footer slots |
 | `sidebar_section` | `title`, `collapsible`, `cls` | Section group; `collapsible=true` uses details/summary |
-| `sidebar_link` | `href`, `label`, `icon`, `active`, `match`, `boost`, `cls` | Nav link; `icon` recommended for collapsible mode |
+| `sidebar_link` | `href`, `label`, `icon`, `active`, `match`, `boost`, `cls`, `badge` | Nav link; `icon` recommended for collapsible mode; `badge` renders counts/status outside the label |
 | `sidebar_toggle` | `cls` | Toggle button for icon-only collapsed state |
 
 ### Active state
@@ -1551,7 +1571,7 @@ When `match=` is set, it takes precedence over `active=`. Both emit `aria-curren
 {% call sidebar() %}
   {% call sidebar_section("Navigate") %}
     {{ sidebar_link("/", "Home", icon="◉", match="exact") }}
-    {{ sidebar_link("/skills", "Skills", icon="✦", match="prefix") }}
+    {{ sidebar_link("/skills", "Skills", icon="✦", match="prefix", badge=3) }}
   {% end %}
   {% call sidebar_section("Settings") %}
     {{ sidebar_link("/settings", "Config", icon="◇", match="prefix") }}
@@ -1565,9 +1585,39 @@ Legacy `active=` still works for backward compatibility:
 {{ sidebar_link("/admin", "Admin", icon="⚙", active=is_admin) }}
 ```
 
+## Navigation and PBP Metadata
+
+Use `primary_nav` for broad top-level app or section navigation. Use
+`route_tabs` only for local views of one object/workspace; use `nav_tree` with
+`branch_mode="linked"` for server-controlled site maps where parent nodes are
+route links first.
+
+```html
+{% from "chirpui/primary_nav.html" import primary_nav %}
+
+{{ primary_nav([
+  {"label": "World", "href": "/world", "match": "prefix"},
+  {"divider": true},
+  {"label": "Inbox", "href": "/inbox", "badge": unread_count},
+], current_path=current_path) }}
+```
+
+For compact forum/PBP metadata:
+
+- `inline_counter(mark, value, label)` renders small count triples without folding the label into a string.
+- `latest_line(label, href, title, actor=none, actor_href=none, meta=none, detail=none)` renders a latest-activity jump with optional tooltip detail.
+- `linked_avatar_stack(items, max_visible=4, total=none)` renders cast/avatar faces as direct links while preserving the avatar-stack shape.
+- `rendered_content(compact=false)` wraps rendered post/prose content without bypassing escaping; sanitize/mark safe upstream when content is already trusted.
+- `composer_shell()` and `token_input()` provide authoring structure for app-owned editors and autocomplete. ChirpUI supplies the regions; the app owns the behavior.
+
 ### app_shell
 
 Full-page shell with topbar, sidebar, and main content. Params: `brand`, `brand_url`, `sidebar_collapsible`, `topbar_variant`, `sidebar_variant`, `cls`.
+
+Below `48rem`, `app_shell` collapses to a single-column layout and turns its
+sidebar slot into a horizontally scrollable navigation strip. This keeps forum,
+dashboard, and workspace pages from losing main-content width on phones while
+preserving persistent navigation.
 
 | Param | Valid values | Default |
 |-------|--------------|---------|
@@ -3010,10 +3060,20 @@ chirp-ui: SPA-style link for content areas
 
 chirp-ui: Nav tree component
 
+Use `branch_mode="disclosure"` (the default) for docs/file-explorer sidebars
+where branch rows are expand/collapse controls. Use `branch_mode="linked"` for
+site-map or world-map navigation where parent locations are route links first;
+in linked mode, child lists render only when the server marks the item
+`open=true`.
+
+Item shape: `{title, href?, children?, active?, open?, icon?, badge?, muted?}`.
+`badge` renders in a separate count/status region, and `active`, `branch`,
+`child`, `open`, and `muted` emit item-level state hooks for app overrides.
+
 **Macros:**
   - `nav_tree_item_content(item, show_icons=false)`
-  - `nav_tree(items, show_icons=false, cls="")`
-  - `nav_tree_items(items, show_icons)`
+  - `nav_tree(items, show_icons=false, branch_mode="disclosure", cls="")`
+  - `nav_tree_items(items, show_icons, branch_mode="disclosure")`
 
 
 ### neon_text
@@ -3193,6 +3253,12 @@ chirp-ui: Ripple Button
 **File:** `chirpui/route_tabs.html`
 
 chirp-ui: Route-backed subsection tabs
+
+Use `route_tabs` for local views of one object, workspace, or subsection. For
+broad cross-feature navigation, prefer `primary_nav`, `sidebar`, `nav_tree`, or
+an app-level section tree so tab semantics do not imply a single local context.
+Below `40rem`, route tabs become a horizontal scroll strip instead of wrapping
+into several rows.
 
 **Macros:**
   - `render_route_tabs(tab_items, current_path, target="#page-root", is_active=none)`
@@ -4814,6 +4880,42 @@ Chat Layout component
 - **Maturity:** `experimental`
 - **Role:** `primitive`
 
+### `chip`
+
+Chip group
+
+- **Template:** `chirpui/chip_group.html`
+- **Macro:** `chip`
+- **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Modifiers:** `custom`, `muted`, `selected`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | yes | — |
+| `href` | no | (has default) |
+| `selected` | no | (has default) |
+| `muted` | no | (has default) |
+| `color` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `chip-group`
+
+Chip group
+
+- **Template:** `chirpui/chip_group.html`
+- **Macro:** `chip_group`
+- **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `clamp-2`
 
 - **Category:** `auto`
@@ -4930,6 +5032,21 @@ Comment component
 - **Category:** `auto`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+
+### `composer-shell`
+
+Composer shell
+
+- **Template:** `chirpui/composer_shell.html`
+- **Macro:** `composer_shell`
+- **Category:** `form`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Slots:** `actions`, `body`, `fields`, `header`, `identity`, `preview`, `status`, `toolbar`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
 
 ### `confetti`
 
@@ -5868,6 +5985,24 @@ Infinite Scroll component
 - **Maturity:** `experimental`
 - **Role:** `primitive`
 
+### `inline-counter`
+
+Inline counter
+
+- **Template:** `chirpui/inline_counter.html`
+- **Macro:** `inline_counter`
+- **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `mark` | yes | — |
+| `value` | yes | — |
+| `label` | yes | — |
+| `title` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `inline-edit`
 
 Inline edit field
@@ -5964,6 +6099,27 @@ Small caps / overline label for cards and dense panels.
 | `text` | yes | — |
 | `section` | no | (has default) |
 | `tag` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `latest-line`
+
+Latest line
+
+- **Template:** `chirpui/latest_line.html`
+- **Macro:** `latest_line`
+- **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | yes | — |
+| `href` | yes | — |
+| `title` | yes | — |
+| `actor` | no | (has default) |
+| `actor_href` | no | (has default) |
+| `meta` | no | (has default) |
+| `detail` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `layer`
@@ -6300,11 +6456,13 @@ Nav tree component
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Slots:** `(default)`, `header`
+- **Modifiers:** `linked-branches`
 
 | Param | Required | Default |
 |-------|----------|---------|
 | `items` | yes | — |
 | `show_icons` | no | (has default) |
+| `branch_mode` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `navbar`
@@ -6655,6 +6813,23 @@ Post Card component
 | `href` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `primary-nav`
+
+Primary navigation
+
+- **Template:** `chirpui/primary_nav.html`
+- **Macro:** `primary_nav`
+- **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `current_path` | no | (has default) |
+| `aria_label` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `profile-header`
 
 Profile Header component
@@ -6757,6 +6932,23 @@ Reaction Pill component
 | `emoji` | yes | — |
 | `count` | no | (has default) |
 | `active` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `rendered-content`
+
+Rendered content
+
+- **Template:** `chirpui/rendered_content.html`
+- **Macro:** `rendered_content`
+- **Category:** `typography`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Slots:** `(default)`
+- **Modifiers:** `compact`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `compact` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `resource-card`
@@ -7972,6 +8164,24 @@ Form field macros
 | `size` | no | (has default) |
 | `variant` | no | (has default) |
 | `label_inside` | no | (has default) |
+
+### `token-input`
+
+Token input
+
+- **Template:** `chirpui/token_input.html`
+- **Macro:** `token_input`
+- **Category:** `form`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Slots:** `input`, `results`, `tokens`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | no | (has default) |
+| `input_id` | no | (has default) |
+| `placeholder` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `tooltip`
 

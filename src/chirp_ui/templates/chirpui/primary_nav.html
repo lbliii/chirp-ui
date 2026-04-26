@@ -1,0 +1,36 @@
+{#- chirp-ui: Primary navigation
+    Broad route navigation for app shell topbars and section bars.
+    Data-in: items = [{label, href?, badge?, active?, match?, divider?}].
+    Use for cross-feature navigation; use route_tabs for local subsection views.
+-#}
+
+{% def primary_nav(items, current_path="", aria_label="Primary", cls="") %}
+<nav class="chirpui-primary-nav{{ " " ~ cls if cls else "" }}" aria-label="{{ aria_label }}">
+    {% for item in items %}
+    {% if item.get("divider") %}
+    <span class="chirpui-primary-nav__divider" aria-hidden="true"></span>
+    {% else %}
+    {% set href = item.get("href", "") %}
+    {% set match = item.get("match", "exact") %}
+    {% set active = item.get("active") if item.get("active") is not none else ((current_path == href) if match == "exact" else (current_path == href or current_path.startswith(href ~ "/")) if match == "prefix" else false) %}
+    {% if href %}
+    <a class="chirpui-primary-nav__link{{ " chirpui-primary-nav__link--active" if active else "" }}"
+       href="{{ href }}"
+       {% if active %}aria-current="page"{% end %}{{ route_link_attrs(href) | html_attrs }}>
+        <span class="chirpui-primary-nav__label">{{ item.label | default("") }}</span>
+        {% if item.get("badge") is not none %}
+        <span class="chirpui-primary-nav__badge">{{ item.get("badge") }}</span>
+        {% end %}
+    </a>
+    {% else %}
+    <span class="chirpui-primary-nav__link chirpui-primary-nav__link--disabled">
+        <span class="chirpui-primary-nav__label">{{ item.label | default("") }}</span>
+        {% if item.get("badge") is not none %}
+        <span class="chirpui-primary-nav__badge">{{ item.get("badge") }}</span>
+        {% end %}
+    </span>
+    {% end %}
+    {% end %}
+    {% end %}
+</nav>
+{% end %}

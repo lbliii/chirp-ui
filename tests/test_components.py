@@ -1158,6 +1158,70 @@ class TestNavTree:
         assert "API" in html
         assert "Ref" in html
 
+    def test_nav_tree_linked_branch_mode_uses_route_links(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{{ nav_tree(items=items, branch_mode="linked") }}'
+        ).render(
+            items=[
+                {
+                    "title": "Worlds",
+                    "href": "/worlds",
+                    "open": True,
+                    "children": [{"title": "Earth", "href": "/worlds/earth"}],
+                },
+                {
+                    "title": "Closed",
+                    "href": "/closed",
+                    "children": [{"title": "Hidden", "href": "/closed/hidden"}],
+                },
+            ]
+        )
+        assert "chirpui-nav-tree--linked-branches" in html
+        assert "<details" not in html
+        assert "<summary" not in html
+        assert 'href="/worlds"' in html
+        assert "Earth" in html
+        assert "Hidden" not in html
+
+    def test_nav_tree_linked_branch_mode_keeps_route_link_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs("site-content", hrefs=frozenset({"/worlds"})),
+        )
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{{ nav_tree(items=[{"title": "Worlds", "href": "/worlds", "children": [{"title": "Earth"}]}], branch_mode="linked") }}'
+        ).render()
+        assert 'hx-target="#site-content"' in html
+        assert 'hx-boost="true"' in html
+
+    def test_nav_tree_badge_and_state_hooks(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{{ nav_tree(items=[{"title": "Inbox", "href": "/inbox", "badge": 0, "active": true, "muted": true}, '
+            '{"title": "Worlds", "href": "/worlds", "open": true, "children": [{"title": "Earth", "href": "/worlds/earth"}]}], '
+            'branch_mode="linked") }}'
+        ).render()
+        assert "chirpui-nav-tree__badge" in html
+        assert ">0<" in html
+        assert "chirpui-nav-tree__item--active" in html
+        assert "chirpui-nav-tree__item--muted" in html
+        assert "chirpui-nav-tree__item--branch" in html
+        assert "chirpui-nav-tree__item--open" in html
+        assert "chirpui-nav-tree__item--child" in html
+
+    def test_nav_tree_unknown_branch_mode_falls_back_to_disclosure(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_tree.html" import nav_tree %}'
+            '{{ nav_tree(items=[{"title": "API", "href": "/api", "children": [{"title": "Ref", "href": "/api/ref"}]}], '
+            'branch_mode="unknown") }}'
+        ).render()
+        assert "chirpui-nav-tree--linked-branches" not in html
+        assert "<details" in html
+        assert "<summary" in html
+        assert "Ref" in html
+
     def test_nav_tree_icons(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/nav_tree.html" import nav_tree %}'

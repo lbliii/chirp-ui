@@ -18,12 +18,35 @@
         end
         # Shows 3 avatars + "+2" overlay
 -#}
+{% from "chirpui/avatar.html" import avatar %}
 
 {% def avatar_stack(max_visible=4, total=none, cls="") %}
 <div class="chirpui-avatar-stack{{ " " ~ cls if cls else "" }}">
     {% slot %}
     {% if total is not none and total > max_visible %}
     <span class="chirpui-avatar-stack__more">+{{ total - max_visible }}</span>
+    {% end %}
+</div>
+{% end %}
+
+{% def linked_avatar_stack(items, max_visible=4, total=none, label="Avatars", cls="") %}
+{% set _total = total if total is not none else (items | length) %}
+<div class="chirpui-avatar-stack{{ " " ~ cls if cls else "" }}" aria-label="{{ label }}">
+    {% for item in items %}
+    {% if loop.index <= max_visible %}
+    {% if item.get("href") %}
+    <a class="chirpui-avatar-stack__link" href="{{ item.href }}" title="{{ item.label | default("") }}" aria-label="{{ item.label | default("") }}"{{ route_link_attrs(item.href) | html_attrs }}>
+        {{ avatar(src=item.get("src"), initials=item.get("initials", ""), alt=item.get("label", ""), size=item.get("size", "sm")) }}
+    </a>
+    {% else %}
+    <span class="chirpui-avatar-stack__link" title="{{ item.label | default("") }}" aria-label="{{ item.label | default("") }}">
+        {{ avatar(src=item.get("src"), initials=item.get("initials", ""), alt=item.get("label", ""), size=item.get("size", "sm")) }}
+    </span>
+    {% end %}
+    {% end %}
+    {% end %}
+    {% if _total > max_visible %}
+    <span class="chirpui-avatar-stack__more">+{{ _total - max_visible }}</span>
     {% end %}
 </div>
 {% end %}

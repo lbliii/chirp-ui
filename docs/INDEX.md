@@ -10,6 +10,7 @@ Navigation guide for all chirp-ui documentation.
 - [LAYOUT-PRESETS.md](LAYOUT-PRESETS.md) — Grid preset names, aliases, and breakpoint tokens
 - [COMPOSITION.md](COMPOSITION.md) — Component composition patterns and slot mechanics
 - [TYPOGRAPHY.md](TYPOGRAPHY.md) — Type scale, font tokens, and text utilities
+- [RESPONSIVE.md](RESPONSIVE.md) — Phone/tablet/desktop component behavior contract
 - [TOKENS.md](TOKENS.md) — CSS custom property reference (spacing, color, radius, z-index)
 - [TRANSITIONS.md](TRANSITIONS.md) — Motion tokens, duration/easing values, reduced-motion
 - [UI-LAYERS.md](UI-LAYERS.md) — App shell vs page chrome vs surface chrome, shell regions
