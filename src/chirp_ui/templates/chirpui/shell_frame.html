@@ -60,7 +60,10 @@
 
   function getMainTarget(detail) {
     var target = detail && detail.target;
-    return target && target.id === "main" ? target : null;
+    if (target && target.id === "main") return target;
+    var main = document.getElementById("main");
+    if (target && target.id === "page-content" && main && main.contains(target)) return main;
+    return null;
   }
 
   function parseUrl(value) {
@@ -83,11 +86,30 @@
     }
     var pathInfo = detail && detail.pathInfo;
     var parsedPath = parseUrl(
-      pathInfo && (pathInfo.finalRequestPath || pathInfo.requestPath || pathInfo.path)
+      pathInfo && (pathInfo.requestPath || pathInfo.finalRequestPath || pathInfo.path)
     );
     if (parsedPath) return parsedPath;
     var xhr = detail && detail.xhr;
     return parseUrl(xhr && xhr.responseURL);
+  }
+
+  function primeScrollStateFromLink(link) {
+    var main = document.getElementById("main");
+    if (!main || !link || !link.getAttribute) return;
+    var explicitTarget = link.getAttribute("hx-target") || link.getAttribute("data-hx-target");
+    var boostedOff = link.getAttribute("hx-boost") === "false" || link.getAttribute("data-hx-boost") === "false";
+    var shellLink = !boostedOff && (
+      explicitTarget === "#main" ||
+      (!explicitTarget && link.closest("#main, .chirpui-app-shell__sidebar"))
+    );
+    if (!shellLink) return;
+    var requestedUrl = parseUrl(link.href);
+    if (!requestedUrl || requestedUrl.origin !== window.location.origin) return;
+    main[SCROLL_STATE] = {
+      mode: resolveScrollMode({ target: main, elt: link }, requestedUrl),
+      hash: requestedUrl.hash || "",
+      y: window.scrollY || window.pageYOffset || 0,
+    };
   }
 
   function resolveScrollMode(detail, requestedUrl) {
@@ -113,6 +135,7 @@
     main[SCROLL_STATE] = {
       mode: resolveScrollMode(detail, requestedUrl),
       hash: requestedUrl && requestedUrl.hash ? requestedUrl.hash : "",
+      y: window.scrollY || window.pageYOffset || 0,
     };
     historyRestorePending = false;
   }
@@ -141,6 +164,18 @@
     window.scrollTo({ top: 0, left: 0 });
   }
 
+  function deferScroll(fn) {
+    window.requestAnimationFrame(function () {
+      window.setTimeout(fn, 0);
+    });
+  }
+
+  function restoreDocumentScroll(y) {
+    deferScroll(function () {
+      window.scrollTo({ top: y || 0, left: 0 });
+    });
+  }
+
   function scrollToHash(hash) {
     if (!hash) return;
     var hashId = hash.charAt(0) === "#" ? hash.slice(1) : hash;
@@ -158,7 +193,7 @@
       }
     }
     if (!target) return;
-    window.requestAnimationFrame(function () {
+    deferScroll(function () {
       target.scrollIntoView({ block: "start" });
     });
   }
@@ -179,10 +214,15 @@
   }
 
   window.addEventListener("load", syncShellGeometry);
+  document.body.addEventListener("click", function (e) {
+    var target = e.target;
+    var link = target && target.closest ? target.closest("a[href]") : null;
+    primeScrollStateFromLink(link);
+  }, true);
   document.body.addEventListener("htmx:historyRestore", function () {
     historyRestorePending = true;
-  });
-  document.body.addEventListener("htmx:beforeRequest", storeScrollState);
+  }, true);
+  document.body.addEventListener("htmx:beforeRequest", storeScrollState, true);
   document.body.addEventListener("htmx:afterSwap", function (e) {
     var main = getMainTarget(e.detail);
     if (!main) return;
@@ -190,15 +230,18 @@
     historyRestorePending = false;
     main[SCROLL_STATE] = state;
     if (state.mode === "top") scrollDocumentToTop();
-  });
+  }, true);
   document.body.addEventListener("htmx:afterSettle", function (e) {
     var main = getMainTarget(e.detail);
     if (!main) return;
     var state = readScrollState(main);
     syncShellGeometry();
-    if (state.mode === "anchor") scrollToHash(state.hash || window.location.hash);
+    if (state.mode === "preserve") restoreDocumentScroll(state.y);
+    if (state.mode === "anchor" || (state.mode === "top" && window.location.hash)) {
+      scrollToHash(state.hash || window.location.hash);
+    }
     main.focus({ preventScroll: true });
-  });
+  }, true);
   syncShellGeometry();
 })();
 </script>

@@ -117,7 +117,7 @@ async def test_same_route_boosted_refresh_preserves_document_scroll(page, base_u
     await wait_for_alpine(page)
     await _scroll_document(page, 800)
 
-    await page.click("[data-testid='refresh-page-b']")
+    await page.evaluate("document.querySelector('[data-testid=\"refresh-page-b\"]').click()")
     await wait_for_htmx(page)
 
     assert await page.text_content("[data-testid='page-heading']") == "Page B"

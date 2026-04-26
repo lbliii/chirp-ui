@@ -32,7 +32,7 @@
              this.dragging = true;
              const move = (ev) => {
                  const rect = $el.getBoundingClientRect();
-                 const pct = {{ "direction" == "vertical" }}
+                 const pct = {{ "true" if direction == "vertical" else "false" }}
                      ? ((ev.clientY - rect.top) / rect.height) * 100
                      : ((ev.clientX - rect.left) / rect.width) * 100;
                  this.split = Math.min(this.max, Math.max(this.min, pct));

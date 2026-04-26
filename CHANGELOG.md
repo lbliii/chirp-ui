@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.6.0] - 2026-04-26
+
+### Added
+
+- Add manifest metadata for composite slot forwarding via `composes`, `slot_forwards`, and `slots_yielded`.
+- Added Elbysodic-driven navigation, metadata, avatar, chip, rendered-content, composer, and token-input primitives.
+- Added `nav_tree(branch_mode="linked")` for link-first section trees, with server-controlled open branches, item badges, and registry-cited item state hooks.
+- Added a browser gauntlet route and responsive detector tests for broad ChirpUI component compositions.
+- Added a packaged token-only app theme starter plus documentation for wiring app-owned light, dark, and system theme tokens after `chirpui.css`.
+- Added contextual-detail contracts for block tooltips, hinted nav tree items, hinted timeline titles, and gauntlet coverage for hover/focus/touch composition.
+- Added linkability contracts for file tree branch forwarding and timeline title links, with gauntlet coverage for linkable composition surfaces.
+- Release 0.6.0 — kida-templates 0.7.0/0.8.0 upgrade hardening, agent-grounding-depth manifest (the full Python surface), CSS envelope hardening batch 1, modularized `chirpui.css` from partials, base-layer containment + preflight-style defaults, composite contract tests with a provide/consume introspection API, dev-mode fail-fast diagnostics, app theme starter, Elbysodic-driven primitives, and the responsive composition gauntlet.
+
+### Changed
+
+- Clear the registry auto-category debt by promoting CSS-only descriptors into explicit categories, descriptor-local emit trims, primitive vocabulary docs, manifest authoring hints, discovery helpers, and debt gates.
+- Harden the agent manifest with explicit maturity, runtime requirements, public metadata checks, and a manifest quality scorecard for public components.
+- Hardened app shell, navigation strips, tables, rendered content, control sizing, and mobile touch targets for phone and tablet layouts.
+- Refresh the README to match the current Kida-style product framing, registry/manifest contract, and current chirp-ui development workflow.
+- Upgrade the Kida template dependency floor to 0.8.0 so Mapping optional-chain misses stay null-safe under strict mode.
+
+### Fixed
+
+- Aligned icon buttons, segmented controls, and small ASCII toggles to the shared control height tokens, including touch-target promotion on narrow/coarse-pointer contexts.
+- Fixed button and icon button htmx request shorthands so button elements default to `hx-select="unset"` inside boosted shells, matching link-button fragment behavior.
+- Fixed card titles and badge text so long unbroken content can wrap instead of escaping narrow viewports.
+- Fixed shell-frame boosted navigation so same-route refreshes preserve scroll and hash links land below the sticky topbar.
+- Fixed split panel drag state so Alpine receives JavaScript booleans and can resize panes reliably.
+
+
 ## [0.5.0] - 2026-04-20
 
 ### Added
