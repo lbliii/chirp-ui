@@ -53,6 +53,7 @@
             display: block;
             font-size: var(--chirpui-ui-base);
             font-weight: var(--chirpui-ui-font-weight-semibold);
+            overflow-wrap: anywhere;
         }
 
         .chirpui-card__header-actions {
@@ -67,7 +68,8 @@
             flex-wrap: wrap;
             align-items: center;
             gap: var(--chirpui-space-inline-gap);
-            flex-shrink: 0;
+            min-width: 0;
+            flex-shrink: 1;
             &:empty {
                 display: none;
             }

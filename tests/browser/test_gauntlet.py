@@ -40,6 +40,10 @@ ROOM_PATHS = [
     "/gauntlet/contextual",
     "/gauntlet/actions",
     "/gauntlet/swaps",
+    "/gauntlet/content",
+    "/gauntlet/density",
+    "/gauntlet/states",
+    "/gauntlet/edges",
     "/gauntlet/hostile",
 ]
 
@@ -69,6 +73,10 @@ TOUCH_SCENARIOS = [
     pytest.param("/gauntlet/contextual", 375, 812, id="contextual-phone"),
     pytest.param("/gauntlet/actions", 375, 812, id="actions-phone"),
     pytest.param("/gauntlet/swaps", 375, 812, id="swaps-phone"),
+    pytest.param("/gauntlet/content", 375, 812, id="content-phone"),
+    pytest.param("/gauntlet/density", 375, 812, id="density-phone"),
+    pytest.param("/gauntlet/states", 375, 812, id="states-phone"),
+    pytest.param("/gauntlet/edges", 375, 812, id="edges-phone"),
     pytest.param("/gauntlet", 768, 1024, id="all-tablet"),
 ]
 
@@ -136,7 +144,7 @@ async def test_gauntlet_state_matrix_keeps_layout_contracts(page, base_url, them
     await assert_control_rows_keep_coherent_heights(page, label)
 
 
-@pytest.mark.parametrize("path", ["/gauntlet/forms", "/gauntlet/hostile"])
+@pytest.mark.parametrize("path", ["/gauntlet/forms", "/gauntlet/content", "/gauntlet/hostile"])
 async def test_gauntlet_room_survives_large_text_pressure(page, base_url, path):
     await open_gauntlet(page, base_url, path, width=375, height=812)
     await page.add_style_tag(content="html { font-size: 20px !important; }")
@@ -358,6 +366,140 @@ async def test_gauntlet_htmx_swap_keeps_trigger_focus_and_allows_second_swap(pag
         await page.locator("[data-testid='gauntlet-swap-region']").get_attribute("data-state")
         == "stable"
     )
+
+
+async def test_gauntlet_content_pressure_keeps_text_inside_viewport(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/content", width=320, height=640)
+
+    await assert_no_document_horizontal_overflow(page, "content-pressure-phone-320")
+    failure = await page.locator("[data-testid='content-pressure']").evaluate(
+        """(root) => {
+            const viewport = document.documentElement.clientWidth;
+            const offenders = [...root.querySelectorAll(
+                ".chirpui-card__title, .chirpui-resource-card__description, .chirpui-badge, .chirpui-chip"
+            )].filter((el) => {
+                const rect = el.getBoundingClientRect();
+                return rect.left < -1 || rect.right > viewport + 1;
+            }).map((el) => ({
+                className: el.className,
+                text: (el.textContent || "").trim().slice(0, 80),
+                rect: (() => {
+                    const rect = el.getBoundingClientRect();
+                    return { left: Math.round(rect.left), right: Math.round(rect.right) };
+                })(),
+                viewport,
+            }));
+            return offenders.length ? offenders : null;
+        }"""
+    )
+    await assert_no_failures(page, failure or [], "content-pressure-contained")
+
+
+async def test_gauntlet_content_long_menu_stays_inside_phone_viewport(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/content", width=320, height=640)
+
+    await page.locator("#gauntlet-content-menu .chirpui-dropdown__trigger").click()
+    menu = page.locator("#gauntlet-content-menu .chirpui-dropdown__menu")
+    await menu.wait_for(state="visible")
+    failure = await menu.evaluate(
+        """(el) => {
+            const rect = el.getBoundingClientRect();
+            const viewport = document.documentElement.clientWidth;
+            if (rect.left >= -1 && rect.right <= viewport + 1) return null;
+            return {
+                left: Math.round(rect.left),
+                right: Math.round(rect.right),
+                viewport,
+                text: (el.textContent || "").trim().slice(0, 120),
+            };
+        }"""
+    )
+    await assert_no_failures(page, [failure] if failure else [], "content-long-menu-phone")
+
+
+async def test_gauntlet_dense_record_actions_remain_separate_from_record_links(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/density", width=375, height=812)
+
+    table = page.locator("[data-testid='dense-record-table']")
+    assert await table.get_by_role("link", name="Alpha intake with a long but spaced title").count()
+    row_actions = table.locator("[data-gauntlet-control-group='dense-row-actions']")
+    assert await row_actions.get_by_role("link", name="Open").get_attribute("href") == (
+        "/gauntlet/density/alpha"
+    )
+
+    await row_actions.locator("#gauntlet-dense-row-menu .chirpui-dropdown__trigger").click()
+    await row_actions.locator("#gauntlet-dense-row-menu .chirpui-dropdown__menu").wait_for(
+        state="visible"
+    )
+    assert page.url.endswith("/gauntlet/density")
+    await assert_no_document_horizontal_overflow(page, "density-row-actions-phone")
+
+
+async def test_gauntlet_state_matrix_preserves_state_semantics(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/states", width=375, height=812)
+
+    assert await page.get_by_role("button", name="Saving").get_attribute("aria-busy") == "true"
+    assert await page.get_by_role("button", name="Disabled", exact=True).is_disabled()
+    assert await page.get_by_label("Disabled settings").is_disabled()
+    assert await page.locator(".chirpui-chip--selected").count() == 1
+    assert await page.locator(".chirpui-chip--muted").count() == 1
+
+    dismiss = page.get_by_label("Dismiss")
+    assert await dismiss.count() == 1
+    await dismiss.click()
+    assert await page.get_by_text("Failed").count() == 0
+
+
+async def test_gauntlet_edge_layers_stay_inside_phone_viewport(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/edges", width=320, height=640)
+
+    failures = []
+    for selector in [
+        "#gauntlet-edge-top-menu",
+        "#gauntlet-edge-right-menu",
+        "#gauntlet-edge-scroll-menu",
+    ]:
+        root = page.locator(selector)
+        await root.locator(".chirpui-dropdown__trigger").click()
+        menu = root.locator(".chirpui-dropdown__menu")
+        await menu.wait_for(state="visible")
+        failure = await menu.evaluate(
+            """(el) => {
+                const rect = el.getBoundingClientRect();
+                const viewport = document.documentElement.clientWidth;
+                if (rect.left >= -1 && rect.right <= viewport + 1) return null;
+                return {
+                    id: el.closest(".chirpui-dropdown")?.id,
+                    left: Math.round(rect.left),
+                    right: Math.round(rect.right),
+                    viewport,
+                };
+            }"""
+        )
+        if failure:
+            failures.append(failure)
+        await page.keyboard.press("Escape")
+
+    popover = page.locator("[data-testid='edge-popover'] .chirpui-popover")
+    await popover.locator(".chirpui-popover__trigger").click()
+    panel = popover.locator(".chirpui-popover__panel")
+    await panel.wait_for(state="visible")
+    popover_failure = await panel.evaluate(
+        """(el) => {
+            const rect = el.getBoundingClientRect();
+            const viewport = document.documentElement.clientWidth;
+            if (rect.left >= -1 && rect.right <= viewport + 1) return null;
+            return {
+                panel: "edge-popover",
+                left: Math.round(rect.left),
+                right: Math.round(rect.right),
+                viewport,
+            };
+        }"""
+    )
+    if popover_failure:
+        failures.append(popover_failure)
+    await assert_no_failures(page, failures, "edge-layers-phone")
 
 
 async def test_gauntlet_dropdown_select_interaction_does_not_shift_toolbar(page, base_url):

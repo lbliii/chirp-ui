@@ -4941,6 +4941,7 @@ a.chirpui-mention:focus-visible {
             display: block;
             font-size: var(--chirpui-ui-base);
             font-weight: var(--chirpui-ui-font-weight-semibold);
+            overflow-wrap: anywhere;
         }
 
         .chirpui-card__header-actions {
@@ -4955,7 +4956,8 @@ a.chirpui-mention:focus-visible {
             flex-wrap: wrap;
             align-items: center;
             gap: var(--chirpui-space-inline-gap);
-            flex-shrink: 0;
+            min-width: 0;
+            flex-shrink: 1;
             &:empty {
                 display: none;
             }
@@ -9450,6 +9452,8 @@ a.chirpui-btn {
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-xs);
+    max-width: 100%;
+    min-width: 0;
     padding: 0.25rem 0.5rem;
     border-radius: var(--chirpui-radius-sm);
     font-family: var(--chirpui-ui-font-family);
@@ -9505,6 +9509,8 @@ a.chirpui-badge:focus-visible {
 
 .chirpui-badge__text {
     line-height: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-badge--primary {
@@ -9626,7 +9632,6 @@ a.chirpui-badge--custom-solid:hover {
     align-items: center;
     gap: var(--chirpui-spacing-sm);
 }
-
 }
 
 /* === partials/073_spinner.css === */

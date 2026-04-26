@@ -104,6 +104,10 @@ GAUNTLET_ROOMS = {
     "contextual": "Contextual detail room",
     "actions": "Actions in entries room",
     "swaps": "HTMX swap room",
+    "content": "Hostile content room",
+    "density": "Dense records room",
+    "states": "State matrix room",
+    "edges": "Viewport edge room",
     "hostile": "Hostile room",
 }
 
