@@ -97,10 +97,14 @@
 }
 
 /* --- Size variants --- */
+.chirpui-ascii-toggle--sm { min-block-size: var(--chirpui-control-block-size-sm); }
 .chirpui-ascii-toggle--sm .chirpui-ascii-toggle__track { font-size: 0.75rem; }
 .chirpui-ascii-toggle--sm .chirpui-ascii-toggle__rail { width: 2.8em; height: 1.2em; }
 .chirpui-ascii-toggle--sm .chirpui-ascii-toggle__label { font-size: var(--chirpui-font-xs, 0.7rem); }
 
+.chirpui-ascii-toggle--lg {
+    min-block-size: calc(var(--chirpui-control-block-size) + var(--chirpui-spacing-xs));
+}
 .chirpui-ascii-toggle--lg .chirpui-ascii-toggle__track { font-size: 1.35rem; }
 .chirpui-ascii-toggle--lg .chirpui-ascii-toggle__rail { width: 4em; height: 1.6em; }
 
@@ -119,5 +123,11 @@
 @media (prefers-reduced-motion: reduce) {
     .chirpui-ascii-toggle__knob {
         transition: none;
+    }
+}
+
+@media (max-width: 48rem), (pointer: coarse) {
+    .chirpui-ascii-toggle--sm {
+        min-block-size: var(--chirpui-control-touch-target);
     }
 }

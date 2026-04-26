@@ -13,6 +13,118 @@ from chirp.http.request import Request
 from chirp.http.response import Response
 from chirp.templating.returns import Template
 
+GAUNTLET_NAV_ITEMS = [
+    {
+        "title": "Workspace with a very long branch label",
+        "href": "/gauntlet/workspace",
+        "open": True,
+        "active": True,
+        "badge": 128,
+        "children": [
+            {"title": "Overview", "href": "/gauntlet/workspace/overview", "active": True},
+            {"title": "Members", "href": "/gauntlet/workspace/members", "badge": 12},
+            {
+                "title": "Nested section with server-owned children",
+                "href": "/gauntlet/workspace/nested",
+                "open": True,
+                "children": [
+                    {"title": "Deep child", "href": "/gauntlet/workspace/nested/deep"},
+                    {
+                        "title": "Muted archived child with a long title",
+                        "href": "/gauntlet/workspace/nested/archive",
+                        "muted": True,
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        "title": "Closed branch still routes",
+        "href": "/gauntlet/closed",
+        "children": [
+            {"title": "Hidden until open", "href": "/gauntlet/closed/hidden"},
+        ],
+    },
+    {"title": "Plain leaf", "href": "/gauntlet/plain"},
+]
+
+GAUNTLET_DETAIL_NAV_ITEMS = [
+    {
+        "title": "Hinted route branch",
+        "href": "/gauntlet/contextual/branch",
+        "hint": "Branch parents stay route links while detail appears on hover and focus.",
+        "hint_position": "right",
+        "open": True,
+        "badge": 3,
+        "children": [
+            {
+                "title": "Hinted child link",
+                "href": "/gauntlet/contextual/child",
+                "hint": "Child entries inherit the same item hint contract.",
+            },
+            {"title": "Plain child", "href": "/gauntlet/contextual/plain"},
+        ],
+    },
+    {
+        "title": "Closed hinted branch",
+        "href": "/gauntlet/contextual/closed",
+        "hint": "Closed branches still expose their route and do not render hidden children.",
+        "children": [{"title": "Hidden detail child", "href": "/gauntlet/contextual/hidden"}],
+    },
+]
+
+
+GAUNTLET_ROUTE_TABS = [
+    {"label": "Overview", "href": "/gauntlet", "match": "exact", "badge": 4},
+    {"label": "Activity", "href": "/gauntlet/activity", "match": "prefix"},
+    {"label": "Settings With A Long Label", "href": "/gauntlet/settings", "match": "prefix"},
+    {"label": "Audit", "href": "/gauntlet/audit", "match": "prefix", "badge": 999},
+]
+
+
+GAUNTLET_TABLE_ROWS = [
+    ("Alpha Corridor", "Active", "42", "Stable short cell"),
+    ("Beta Intake", "Paused", "7", "Wrapped metadata with several short words"),
+    (
+        "Gamma Archive",
+        "Needs review",
+        "128",
+        "unbroken-token-0123456789abcdefghijklmnopqrstuvwxyz",
+    ),
+]
+
+GAUNTLET_ROOMS = {
+    "all": "All rooms",
+    "primitives": "Primitive room",
+    "rhythm": "Control rhythm room",
+    "navigation": "Navigation room",
+    "forms": "Forms room",
+    "data": "Data room",
+    "workflow": "Workflow room",
+    "linkability": "Linkability room",
+    "contextual": "Contextual detail room",
+    "actions": "Actions in entries room",
+    "swaps": "HTMX swap room",
+    "content": "Hostile content room",
+    "density": "Dense records room",
+    "states": "State matrix room",
+    "edges": "Viewport edge room",
+    "hostile": "Hostile room",
+}
+
+
+def _gauntlet_context(active_room: str = "all") -> dict[str, object]:
+    room = active_room if active_room in GAUNTLET_ROOMS else "all"
+    return {
+        "page_title": f"Gauntlet: {GAUNTLET_ROOMS[room]}",
+        "active_room": room,
+        "rooms": GAUNTLET_ROOMS,
+        "nav_items": GAUNTLET_NAV_ITEMS,
+        "detail_nav_items": GAUNTLET_DETAIL_NAV_ITEMS,
+        "gauntlet_route_tabs": GAUNTLET_ROUTE_TABS,
+        "table_rows": GAUNTLET_TABLE_ROWS,
+    }
+
 
 def create_app() -> App:
     """Create the test Chirp app with chirp-ui integration."""
@@ -34,6 +146,26 @@ def create_app() -> App:
     @app.route("/")
     async def home(request: Request):
         return Template("home.html", page_title="Home")
+
+    @app.route("/gauntlet")
+    async def gauntlet_page(request: Request):
+        return Template("gauntlet_page.html", **_gauntlet_context())
+
+    @app.route("/gauntlet/fragments/actions/{state}")
+    async def gauntlet_actions_fragment(request: Request, state: str):
+        return Template(
+            "gauntlet_swap_fragment.html",
+            swap_state=state if state in {"stable", "urgent"} else "stable",
+        )
+
+    @app.route("/gauntlet/fragments/action-result/{label}")
+    async def gauntlet_action_result(request: Request, label: str):
+        safe_label = label if label in {"pinned", "configured", "refreshed"} else "updated"
+        return Response(f'<span class="chirpui-text-muted">Action: {safe_label}</span>')
+
+    @app.route("/gauntlet/{room}")
+    async def gauntlet_room(request: Request, room: str):
+        return Template("gauntlet_page.html", **_gauntlet_context(room))
 
     @app.route("/page-b")
     async def page_b(request: Request):

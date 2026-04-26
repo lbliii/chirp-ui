@@ -1,0 +1,48 @@
+{% from "chirpui/layout.html" import stack, grid %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+{% from "chirpui/timeline.html" import timeline %}
+{% from "chirpui/tooltip.html" import tooltip %}
+
+<div id="gauntlet-swap-region" data-testid="gauntlet-swap-region" data-state="{{ swap_state }}" aria-live="polite">
+  {% call surface(variant="muted") %}
+    {% call stack(gap="md") %}
+      <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="swapped-fragment-actions" data-gauntlet-touch-critical>
+        {{ badge("urgent" if swap_state == "urgent" else "stable", variant="warning" if swap_state == "urgent" else "success") }}
+        {{ btn("Refresh fragment", hx={"get": "/gauntlet/fragments/actions/urgent" if swap_state == "stable" else "/gauntlet/fragments/actions/stable", "target": "#gauntlet-swap-region", "swap": "outerHTML"}) }}
+        {{ dropdown_menu(btn("Fragment menu", variant="ghost"), items=[
+          {"label": "Open swapped item", "href": "/gauntlet/swaps/item"},
+          {"label": "Mark reviewed", "action": "review"},
+        ], id="gauntlet-swapped-menu") }}
+      </div>
+      {% call grid(cols=2, gap="md") %}
+        {% call resource_card("/gauntlet/swaps/" ~ swap_state, "Swapped " ~ swap_state ~ " entry", description="This fragment was rendered server-side and swapped into the gauntlet.", top_meta="fragment", link_mode="main") %}
+          {% slot badges %}
+            {% call tooltip("Badge tooltip still works after the htmx swap.") %}
+              {{ badge("2", variant="info") }}
+            {% end %}
+          {% end %}
+          {% slot footer %}
+            {% call chip_group(label="Swapped tags") %}
+              {{ chip("after-swap", href="/gauntlet/swaps/tag") }}
+              {{ chip(swap_state, selected=true) }}
+            {% end %}
+          {% end %}
+        {% end %}
+        {% call timeline(items=[
+          {"title": "Fragment loaded", "date": "Now", "content": "Dropdowns and hints should work after swap.", "href": "/gauntlet/swaps/timeline", "link_mode": "title", "hint": "Freshly swapped title hint."},
+          {"title": "State: " ~ swap_state, "date": "Next", "content": "Layout should stay stable across state changes."},
+        ], hoverable=true) %}
+        {% end %}
+      {% end %}
+      <div data-testid="swapped-focus-target">
+        {{ icon_btn("settings", aria_label="Swapped focus target") }}
+      </div>
+    {% end %}
+  {% end %}
+</div>

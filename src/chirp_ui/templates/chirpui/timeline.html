@@ -19,16 +19,44 @@
         timeline_item("Deployed", "Now", icon="◎", variant="success")
         timeline_item("Error", "12:05", variant="error", avatar="/img/user.jpg")
         timeline(hoverable=true)
--#}
 
-{% def timeline(items=none, hoverable=false, cls="") %}
+    Links:
+        href defaults to a whole-row overlay link.
+        link_mode="title" renders the title itself as the link.
+    Hints:
+        item hint="..." or timeline_item(..., hint="...") wraps the title in a tooltip.
+-#}
+{% from "chirpui/tooltip.html" import tooltip %}
+
+{% def timeline_title_content(title, href=none, link_mode="overlay") %}
+{% if href and link_mode == "title" %}
+<a href="{{ href }}" class="chirpui-timeline__title chirpui-timeline__title-link"{{ route_link_attrs(href) | html_attrs }}>{{ title }}</a>
+{% else %}
+<span class="chirpui-timeline__title">{{ title }}</span>
+{% end %}
+{% end %}
+
+{% def timeline_title(title, href=none, link_mode="overlay", hint=none, hint_position="top") %}
+{% if hint %}
+{% call tooltip(hint, position=hint_position, cls="chirpui-timeline__hint") %}
+{{ timeline_title_content(title, href, link_mode) }}
+{% end %}
+{% else %}
+{{ timeline_title_content(title, href, link_mode) }}
+{% end %}
+{% end %}
+
+{% def timeline(items=none, hoverable=false, link_mode="overlay", cls="") %}
 {# @consumes _surface_variant from: panel, surface — falls back to "" #}
 {% set _surface = consume("_surface_variant", "") %}
 {% set _on_surface = " chirpui-timeline--on-" ~ _surface if _surface and _surface != "default" else "" %}
 {% set hover_class = " chirpui-timeline--hoverable" if hoverable else "" %}
+{% set _default_link_mode = link_mode | validate_variant(("overlay", "title"), "overlay") %}
 <div class="chirpui-timeline{{ _on_surface }}{{ hover_class }}{{ " " ~ cls if cls else "" }}">
     {% if items %}
         {% for item in items %}
+        {% set _href = item.get("href") %}
+        {% set _link_mode = (item.get("link_mode") or _default_link_mode) | validate_variant(("overlay", "title"), "overlay") %}
         <div class="chirpui-timeline__item{% if item.get("variant") %} chirpui-timeline__item--{{ item.variant }}{% end %}{% if item.get("href") %} chirpui-timeline__item--link{% end %}">
             {% if item.get("avatar") %}
             <img class="chirpui-timeline__avatar" src="{{ item.avatar }}" alt="" aria-hidden="true">
@@ -42,14 +70,14 @@
                 <span class="chirpui-timeline__time">{{ item.time }}</span>
                 {% end %}
                 <div class="chirpui-timeline__header">
-                    <span class="chirpui-timeline__title">{{ item.title | default("") }}</span>
+                    {{ timeline_title(item.title | default(""), _href, _link_mode, hint=item.get("hint"), hint_position=item.get("hint_position") or "top") }}
                     <span class="chirpui-timeline__date">{{ item.date | default("") }}</span>
                 </div>
                 {% if item.get("content") %}
                 <div class="chirpui-timeline__body">{{ item.content }}</div>
                 {% end %}
             </div>
-            {% if item.get("href") %}<a href="{{ item.href }}" class="chirpui-timeline__link-overlay" aria-label="{{ item.title | default("") }}"{{ route_link_attrs(item.href) | html_attrs }}></a>{% end %}
+            {% if _href and _link_mode == "overlay" %}<a href="{{ _href }}" class="chirpui-timeline__link-overlay" aria-label="{{ item.title | default("") }}"{{ route_link_attrs(_href) | html_attrs }}></a>{% end %}
         </div>
         {% end %}
     {% else %}
@@ -58,9 +86,10 @@
 </div>
 {% end %}
 
-{% def timeline_item(title, date, content=none, icon=none, avatar=none, variant="", time=none, href=none, cls="") %}
+{% def timeline_item(title, date, content=none, icon=none, avatar=none, variant="", time=none, href=none, link_mode="overlay", hint=none, hint_position="top", cls="") %}
 {% set variant_class = " chirpui-timeline__item--" ~ variant if variant else "" %}
 {% set link_class = " chirpui-timeline__item--link" if href else "" %}
+{% set _link_mode = link_mode | validate_variant(("overlay", "title"), "overlay") %}
 <div class="chirpui-timeline__item{{ variant_class }}{{ link_class }}{{ " " ~ cls if cls else "" }}">
     {% if avatar %}
     <img class="chirpui-timeline__avatar" src="{{ avatar }}" alt="" aria-hidden="true">
@@ -74,7 +103,7 @@
         <span class="chirpui-timeline__time">{{ time }}</span>
         {% end %}
         <div class="chirpui-timeline__header">
-            <span class="chirpui-timeline__title">{{ title }}</span>
+            {{ timeline_title(title, href, _link_mode, hint=hint, hint_position=hint_position) }}
             <span class="chirpui-timeline__date">{{ date }}</span>
             <div class="chirpui-timeline__header-actions">{% slot header_actions %}</div>
         </div>
@@ -84,6 +113,6 @@
         <div class="chirpui-timeline__body">{% slot content %}</div>
         {% end %}
     </div>
-    {% if href %}<a href="{{ href }}" class="chirpui-timeline__link-overlay" aria-label="{{ title }}"{{ route_link_attrs(href) | html_attrs }}></a>{% end %}
+    {% if href and _link_mode == "overlay" %}<a href="{{ href }}" class="chirpui-timeline__link-overlay" aria-label="{{ title }}"{{ route_link_attrs(href) | html_attrs }}></a>{% end %}
 </div>
 {% end %}

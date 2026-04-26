@@ -6,6 +6,11 @@
     position: relative;
     display: inline-flex;
 }
+
+.chirpui-tooltip--block {
+    display: block;
+}
+
 .chirpui-tooltip__bubble {
     position: absolute;
     z-index: var(--chirpui-tooltip-z);
@@ -117,4 +122,3 @@
         transition: none;
     }
 }
-

@@ -5704,6 +5704,7 @@ File tree
 | `title` | no | (has default) |
 | `subtitle` | no | (has default) |
 | `show_icons` | no | (has default) |
+| `branch_mode` | no | (has default) |
 | `surface_variant` | no | (has default) |
 | `scroll_body` | no | (has default) |
 | `cls` | no | (has default) |
@@ -8402,6 +8403,7 @@ Timeline component
 |-------|----------|---------|
 | `items` | no | (has default) |
 | `hoverable` | no | (has default) |
+| `link_mode` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `toast`
@@ -8494,12 +8496,14 @@ Tooltip macro
 - **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `bottom`, `left`, `right`, `top`
+- **Modifiers:** `block`
 
 | Param | Required | Default |
 |-------|----------|---------|
 | `content` | no | (has default) |
 | `hint` | no | (has default) |
 | `position` | no | (has default) |
+| `block` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `tray`
