@@ -53,6 +53,20 @@
     color: var(--chirpui-text);
 }
 
+.chirpui-timeline__title-link {
+    text-decoration: none;
+}
+
+.chirpui-timeline__title-link:hover {
+    color: var(--chirpui-accent);
+    text-decoration: underline;
+}
+
+.chirpui-timeline__title-link:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
 .chirpui-timeline__date {
     font-size: var(--chirpui-font-xs);
     color: var(--chirpui-text-muted);
@@ -137,4 +151,3 @@
     inset: 0;
     z-index: 1;
 }
-

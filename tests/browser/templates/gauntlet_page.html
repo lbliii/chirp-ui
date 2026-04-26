@@ -22,6 +22,7 @@
     {{ sidebar_link("/gauntlet/forms", "Forms") }}
     {{ sidebar_link("/gauntlet/data", "Data") }}
     {{ sidebar_link("/gauntlet/workflow", "Workflow") }}
+    {{ sidebar_link("/gauntlet/linkability", "Linkability") }}
     {{ sidebar_link("/gauntlet/hostile", "Hostile") }}
   {% end %}
 {% end %}
@@ -35,8 +36,10 @@
 {% from "chirpui/dropdown_menu.html" import dropdown_menu, dropdown_select, dropdown_split %}
 {% from "chirpui/ascii_toggle.html" import ascii_toggle %}
 {% from "chirpui/nav_tree.html" import nav_tree %}
+{% from "chirpui/file_tree.html" import file_tree %}
 {% from "chirpui/primary_nav.html" import primary_nav %}
 {% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/timeline.html" import timeline, timeline_item %}
 {% from "chirpui/forms.html" import form, text_field, select_field, textarea_field, toggle_field, radio_field, number_scale %}
 {% from "chirpui/segmented_control.html" import segmented_control %}
 {% from "chirpui/token_input.html" import token_input, token, token_result %}
@@ -239,6 +242,32 @@
     {% slot actions %}
       {{ btn("Cancel", href="/gauntlet") }}
       {{ btn("Post Reply", variant="primary") }}
+    {% end %}
+  {% end %}
+</section>
+{% end %}
+
+{% if active_room == "all" or active_room == "linkability" %}
+<section id="linkability" data-gauntlet-room="linkability" data-gauntlet-no-overlap>
+  {{ section_header("Linkability room", subtitle="Navigation surfaces should expose link contracts without apps re-emitting component internals.") }}
+  {% call grid(cols=2, gap="md") %}
+    {% call file_tree(items=nav_items, title="Linked file tree", subtitle="Branch parents route; children are server-opened.", branch_mode="linked") %}
+      {% slot header %}<span class="chirpui-text-muted">Public file_tree -> nav_tree branch mode</span>{% end %}
+    {% end %}
+    {% call surface(variant="muted") %}
+      {% call stack(gap="md") %}
+        <div data-testid="title-link-timeline">
+          {{ timeline(items=[
+            {"title": "Title link from data item", "date": "Now", "content": "Only the title is the link.", "href": "/gauntlet/linkability/data"},
+            {"title": "Per-item title override", "date": "Later", "content": "The item can own the same contract.", "href": "/gauntlet/linkability/item", "link_mode": "title"},
+          ], link_mode="title", hoverable=true) }}
+        </div>
+        <div data-testid="slot-title-link-timeline">
+          {% call timeline(hoverable=true) %}
+            {{ timeline_item("Slot helper title link", "Soon", "The helper exposes link_mode too.", href="/gauntlet/linkability/slot", link_mode="title") }}
+          {% end %}
+        </div>
+      {% end %}
     {% end %}
   {% end %}
 </section>

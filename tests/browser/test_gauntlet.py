@@ -35,6 +35,7 @@ ROOM_PATHS = [
     "/gauntlet/forms",
     "/gauntlet/data",
     "/gauntlet/workflow",
+    "/gauntlet/linkability",
     "/gauntlet/hostile",
 ]
 
@@ -148,6 +149,33 @@ async def test_gauntlet_linked_nav_branches_route_without_disclosure_conflict(pa
     href = await branch.get_attribute("href")
     assert href == "/gauntlet/workspace"
     assert await page.get_by_text("Hidden until open").count() == 0
+
+
+async def test_gauntlet_file_tree_forwards_linked_branch_contract(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/linkability", width=768, height=1024)
+
+    tree = page.locator(".chirpui-file-tree")
+    assert await tree.locator(".chirpui-nav-tree--linked-branches").count() == 1
+    assert await tree.locator("summary").count() == 0
+    assert (
+        await tree.locator(
+            ".chirpui-nav-tree__item--branch > .chirpui-nav-tree__link"
+        ).first.get_attribute("href")
+        == "/gauntlet/workspace"
+    )
+    assert await tree.get_by_text("Hidden until open").count() == 0
+
+
+async def test_gauntlet_timeline_title_link_mode_avoids_overlay_contract(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/linkability", width=768, height=1024)
+
+    data_timeline = page.locator("[data-testid='title-link-timeline']")
+    slot_timeline = page.locator("[data-testid='slot-title-link-timeline']")
+
+    assert await data_timeline.locator(".chirpui-timeline__title-link").count() == 2
+    assert await data_timeline.locator(".chirpui-timeline__link-overlay").count() == 0
+    assert await slot_timeline.locator(".chirpui-timeline__title-link").count() == 1
+    assert await slot_timeline.locator(".chirpui-timeline__link-overlay").count() == 0
 
 
 async def test_gauntlet_dropdown_select_interaction_does_not_shift_toolbar(page, base_url):

@@ -75,6 +75,7 @@ GAUNTLET_ROOMS = {
     "forms": "Forms room",
     "data": "Data room",
     "workflow": "Workflow room",
+    "linkability": "Linkability room",
     "hostile": "Hostile room",
 }
 

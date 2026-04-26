@@ -5704,6 +5704,7 @@ File tree
 | `title` | no | (has default) |
 | `subtitle` | no | (has default) |
 | `show_icons` | no | (has default) |
+| `branch_mode` | no | (has default) |
 | `surface_variant` | no | (has default) |
 | `scroll_body` | no | (has default) |
 | `cls` | no | (has default) |
@@ -8402,6 +8403,7 @@ Timeline component
 |-------|----------|---------|
 | `items` | no | (has default) |
 | `hoverable` | no | (has default) |
+| `link_mode` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `toast`

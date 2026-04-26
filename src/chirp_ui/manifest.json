@@ -8003,7 +8003,7 @@
         "panel"
       ],
       "consumes": [],
-      "description": "File tree\n    Workbench-oriented explorer wrapper for file/folder navigation inside a panel.\n\n    Usage:\n        {% from \"chirpui/file_tree.html\" import file_tree %}\n\n        {% call file_tree(items=items, title=\"Files\", show_icons=true) %}\n        {% slot actions %}<button type=\"button\">Refresh</button>{% end %}\n        {% slot header %}<input type=\"search\" placeholder=\"Filter files\">{% end %}\n        {% slot footer %}<span>12 files</span>{% end %}\n        {% end %}",
+      "description": "File tree\n    Workbench-oriented explorer wrapper for file/folder navigation inside a panel.\n\n    Usage:\n        {% from \"chirpui/file_tree.html\" import file_tree %}\n\n        {% call file_tree(items=items, title=\"Files\", show_icons=true) %}\n        {% slot actions %}<button type=\"button\">Refresh</button>{% end %}\n        {% slot header %}<input type=\"search\" placeholder=\"Filter files\">{% end %}\n        {% slot footer %}<span>12 files</span>{% end %}\n        {% end %}\n\n        Linked branch parents:\n        file_tree(items=items, branch_mode=\"linked\")",
       "elements": [
         "nav"
       ],
@@ -8012,7 +8012,7 @@
         "chirpui-file-tree__nav"
       ],
       "extra_emits": [],
-      "lineno": 16,
+      "lineno": 19,
       "macro": "file_tree",
       "maturity": "stable",
       "modifiers": [],
@@ -8036,6 +8036,11 @@
           "has_default": true,
           "is_required": false,
           "name": "show_icons"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "branch_mode"
         },
         {
           "has_default": true,
@@ -18072,7 +18077,7 @@
       "consumes": [
         "_surface_variant"
       ],
-      "description": "Timeline component\n    Vertical timeline for activity feeds, order tracking, audit logs.\n\n    Usage:\n        from \"chirpui/timeline.html\" import timeline, timeline_item\n\n        timeline(items=[\n            {\"title\": \"Created\", \"date\": \"Jan 1\", \"content\": \"Order placed\"},\n            {\"title\": \"Shipped\", \"date\": \"Jan 3\", \"content\": \"In transit\"}\n        ])\n\n        Or with slot:\n        call timeline()\n            timeline_item(\"Created\", \"Jan 1\", \"Order placed\")\n            timeline_item(\"Shipped\", \"Jan 3\", \"In transit\")\n        end\n\n    Variants:\n        timeline_item(\"Deployed\", \"Now\", icon=\"◎\", variant=\"success\")\n        timeline_item(\"Error\", \"12:05\", variant=\"error\", avatar=\"/img/user.jpg\")\n        timeline(hoverable=true)",
+      "description": "Timeline component\n    Vertical timeline for activity feeds, order tracking, audit logs.\n\n    Usage:\n        from \"chirpui/timeline.html\" import timeline, timeline_item\n\n        timeline(items=[\n            {\"title\": \"Created\", \"date\": \"Jan 1\", \"content\": \"Order placed\"},\n            {\"title\": \"Shipped\", \"date\": \"Jan 3\", \"content\": \"In transit\"}\n        ])\n\n        Or with slot:\n        call timeline()\n            timeline_item(\"Created\", \"Jan 1\", \"Order placed\")\n            timeline_item(\"Shipped\", \"Jan 3\", \"In transit\")\n        end\n\n    Variants:\n        timeline_item(\"Deployed\", \"Now\", icon=\"◎\", variant=\"success\")\n        timeline_item(\"Error\", \"12:05\", variant=\"error\", avatar=\"/img/user.jpg\")\n        timeline(hoverable=true)\n\n    Links:\n        href defaults to a whole-row overlay link.\n        link_mode=\"title\" renders the title itself as the link.",
       "elements": [
         "avatar",
         "body",
@@ -18085,7 +18090,8 @@
         "item",
         "link-overlay",
         "time",
-        "title"
+        "title",
+        "title-link"
       ],
       "emits": [
         "chirpui-timeline",
@@ -18108,7 +18114,8 @@
         "chirpui-timeline__item--warning",
         "chirpui-timeline__link-overlay",
         "chirpui-timeline__time",
-        "chirpui-timeline__title"
+        "chirpui-timeline__title",
+        "chirpui-timeline__title-link"
       ],
       "extra_emits": [
         "chirpui-timeline__item--error",
@@ -18117,7 +18124,7 @@
         "chirpui-timeline__item--success",
         "chirpui-timeline__item--warning"
       ],
-      "lineno": 24,
+      "lineno": 28,
       "macro": "timeline",
       "maturity": "stable",
       "modifiers": [
@@ -18135,6 +18142,11 @@
           "has_default": true,
           "is_required": false,
           "name": "hoverable"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "link_mode"
         },
         {
           "has_default": true,

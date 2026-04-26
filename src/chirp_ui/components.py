@@ -1851,6 +1851,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "header",
             "header-actions",
             "title",
+            "title-link",
             "date",
             "body",
             "icon",
