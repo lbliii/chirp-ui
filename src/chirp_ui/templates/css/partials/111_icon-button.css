@@ -6,8 +6,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    inline-size: var(--chirpui-control-block-size);
+    block-size: var(--chirpui-control-block-size);
     border-radius: var(--chirpui-radius);
     border: 1px solid var(--chirpui-border);
     background: var(--chirpui-surface);
@@ -31,7 +31,21 @@
 .chirpui-icon-btn--danger:hover { background: var(--chirpui-error-muted); }
 
 /* Icon button sizes */
-.chirpui-icon-btn--sm { width: 1.75rem; height: 1.75rem; font-size: var(--chirpui-ui-xs); }
-.chirpui-icon-btn--lg { width: 2.75rem; height: 2.75rem; font-size: var(--chirpui-ui-base); }
+.chirpui-icon-btn--sm {
+    inline-size: var(--chirpui-control-block-size-sm);
+    block-size: var(--chirpui-control-block-size-sm);
+    font-size: var(--chirpui-ui-xs);
+}
+.chirpui-icon-btn--lg {
+    inline-size: calc(var(--chirpui-control-block-size) + var(--chirpui-spacing-xs));
+    block-size: calc(var(--chirpui-control-block-size) + var(--chirpui-spacing-xs));
+    font-size: var(--chirpui-ui-base);
+}
 
-
+@media (max-width: 48rem), (pointer: coarse) {
+    .chirpui-icon-btn,
+    .chirpui-icon-btn--sm {
+        inline-size: var(--chirpui-control-touch-target);
+        block-size: var(--chirpui-control-touch-target);
+    }
+}

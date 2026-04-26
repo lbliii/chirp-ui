@@ -32,6 +32,7 @@ VIEWPORT_SPECS = [
 
 ROOM_PATHS = [
     "/gauntlet/primitives",
+    "/gauntlet/rhythm",
     "/gauntlet/navigation",
     "/gauntlet/forms",
     "/gauntlet/data",
@@ -67,6 +68,7 @@ SCENARIOS = [
 TOUCH_SCENARIOS = [
     pytest.param("/gauntlet", 320, 640, id="all-phone-320"),
     pytest.param("/gauntlet", 375, 812, id="all-phone-375"),
+    pytest.param("/gauntlet/rhythm", 375, 812, id="rhythm-phone"),
     pytest.param("/gauntlet/forms", 375, 812, id="forms-phone"),
     pytest.param("/gauntlet/data", 375, 812, id="data-phone"),
     pytest.param("/gauntlet/workflow", 375, 812, id="workflow-phone"),
@@ -179,6 +181,68 @@ async def test_gauntlet_file_tree_forwards_linked_branch_contract(page, base_url
         == "/gauntlet/workspace"
     )
     assert await tree.get_by_text("Hidden until open").count() == 0
+
+
+async def test_gauntlet_default_controls_share_height_contract(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/rhythm", width=375, height=812)
+
+    heights = await page.locator("[data-gauntlet-control-group='rhythm-default']").evaluate(
+        """(group) => {
+            const selector = [
+                ":scope > .chirpui-btn",
+                ":scope > .chirpui-dropdown",
+                ":scope > .chirpui-ascii-toggle",
+                ":scope > .chirpui-icon-btn",
+                ":scope > .chirpui-segmented",
+                ":scope > .chirpui-pagination",
+            ].join(",");
+            return [...group.querySelectorAll(selector)].map((el) => ({
+                className: el.className,
+                text: (el.textContent || el.getAttribute("aria-label") || "").trim().slice(0, 40),
+                height: Math.round(el.getBoundingClientRect().height),
+            }));
+        }"""
+    )
+    values = [item["height"] for item in heights]
+    failures = []
+    if min(values) < 39 or max(values) > 41 or max(values) - min(values) > 1:
+        failures.append(heights)
+    await assert_no_failures(page, failures, "rhythm-default-height-contract")
+
+
+@pytest.mark.parametrize(
+    ("width", "height", "expected"),
+    [
+        pytest.param(1024, 768, 32, id="desktop-small"),
+        pytest.param(375, 812, 40, id="phone-touch-small"),
+    ],
+)
+async def test_gauntlet_small_controls_follow_context_height_contract(
+    page, base_url, width, height, expected
+):
+    await open_gauntlet(page, base_url, "/gauntlet/rhythm", width=width, height=height)
+
+    heights = await page.locator("[data-gauntlet-control-group='rhythm-small']").evaluate(
+        """(group) => {
+            const selector = [
+                ":scope > .chirpui-btn",
+                ":scope > .chirpui-icon-btn",
+                ":scope > .chirpui-ascii-toggle",
+                ":scope > .chirpui-segmented",
+            ].join(",");
+            return [...group.querySelectorAll(selector)].map((el) => ({
+                className: el.className,
+                text: (el.textContent || el.getAttribute("aria-label") || "").trim().slice(0, 40),
+                height: Math.round(el.getBoundingClientRect().height),
+            }));
+        }"""
+    )
+    failures = [item for item in heights if abs(item["height"] - expected) > 1]
+    await assert_no_failures(
+        page,
+        failures,
+        f"rhythm-small-height-contract-{width}x{height}",
+    )
 
 
 async def test_gauntlet_timeline_title_link_mode_avoids_overlay_contract(page, base_url):

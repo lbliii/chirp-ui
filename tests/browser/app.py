@@ -96,6 +96,7 @@ GAUNTLET_TABLE_ROWS = [
 GAUNTLET_ROOMS = {
     "all": "All rooms",
     "primitives": "Primitive room",
+    "rhythm": "Control rhythm room",
     "navigation": "Navigation room",
     "forms": "Forms room",
     "data": "Data room",

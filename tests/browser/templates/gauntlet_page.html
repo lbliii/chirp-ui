@@ -18,6 +18,7 @@
   {% call sidebar_section("Rooms") %}
     {{ sidebar_link("/gauntlet", "Gauntlet") }}
     {{ sidebar_link("/gauntlet/primitives", "Primitives") }}
+    {{ sidebar_link("/gauntlet/rhythm", "Control Rhythm") }}
     {{ sidebar_link("/gauntlet/navigation", "Navigation") }}
     {{ sidebar_link("/gauntlet/forms", "Forms") }}
     {{ sidebar_link("/gauntlet/data", "Data") }}
@@ -102,6 +103,41 @@
         {{ inline_counter("B", 7, "blocked") }}
         {{ inline_counter("C", 9999, "queued") }}
       {% end %}
+    {% end %}
+  {% end %}
+</section>
+{% end %}
+
+{% if active_room == "all" or active_room == "rhythm" %}
+<section id="rhythm" data-gauntlet-room="rhythm" data-gauntlet-no-overlap>
+  {{ section_header("Control rhythm room", subtitle="Mixed controls should share a stable block-size contract across default, small, and touch contexts.") }}
+  {% call stack(gap="md") %}
+    {% call card(title="Default control row", subtitle="Common topbar and toolbar controls should sit on one baseline.") %}
+      <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="rhythm-default" data-gauntlet-touch-critical>
+        {{ btn("Button", variant="primary") }}
+        {{ dropdown_select("Mode", items=[
+          {"label": "Cards", "value": "cards"},
+          {"label": "Table", "value": "table"},
+        ], selected="cards", id="gauntlet-rhythm-mode") }}
+        {{ ascii_toggle("rhythm_ascii", checked=true, label="ASCII") }}
+        {{ icon_btn("settings", aria_label="Rhythm settings") }}
+        {{ segmented_control(items=[
+          {"label": "One", "value": "one", "active": true},
+          {"label": "Two", "value": "two"},
+        ], name="rhythm_segment") }}
+        {{ pagination(current=2, total=3, url_pattern="/gauntlet/rhythm?page={page}") }}
+      </div>
+    {% end %}
+    {% call card(title="Small controls", subtitle="Small controls remain compact on desktop but promote to touch targets on narrow screens.") %}
+      <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="rhythm-small" data-gauntlet-touch-critical>
+        {{ btn("Small", size="sm") }}
+        {{ icon_btn("settings", aria_label="Small settings", size="sm") }}
+        {{ ascii_toggle("rhythm_small_ascii", checked=false, label="Small", size="sm") }}
+        {{ segmented_control(items=[
+          {"label": "A", "value": "a", "active": true},
+          {"label": "B", "value": "b"},
+        ], name="rhythm_small_segment", size="sm") }}
+      </div>
     {% end %}
   {% end %}
 </section>
