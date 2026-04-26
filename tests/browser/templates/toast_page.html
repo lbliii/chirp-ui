@@ -1,16 +1,13 @@
 {% extends "base.html" %}
 {% block brand %}Test App{% end %}
 {% block content %}
-{% from "chirpui/toast.html" import toast_container, toast %}
-
 <h1 data-testid="page-heading">Toast Test</h1>
 
 <button data-testid="trigger-toast"
         hx-get="/toast/send"
         hx-target="#chirpui-toasts"
+        hx-select="unset"
         hx-swap="beforeend">
     Show Toast
 </button>
-
-{{ toast_container() }}
 {% end %}
