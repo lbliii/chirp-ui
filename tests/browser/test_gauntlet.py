@@ -1,237 +1,144 @@
 """Responsive composition gauntlet.
 
 This suite exercises ChirpUI as downstream apps compose it: many components
-sharing one shell, dense controls in the same row, hostile labels, and
-viewport pressure from phone through desktop.
+sharing one shell, dense controls in the same row, hostile labels, state
+pressure, and viewport pressure from phone through desktop.
 """
-
-from pathlib import Path
 
 import pytest
 
-from tests.browser.conftest import wait_for_alpine
+from tests.browser.gauntlet_detectors import (
+    assert_common_compositions_do_not_overlap,
+    assert_control_rows_keep_coherent_heights,
+    assert_focused_element_has_visible_ring,
+    assert_no_document_horizontal_overflow,
+    assert_no_failures,
+    assert_touch_critical_controls_not_tiny,
+    open_gauntlet,
+)
 
 pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
-ARTIFACT_DIR = Path("tests/browser/artifacts")
+VIEWPORT_SPECS = [
+    (320, 640, "phone-320"),
+    (375, 812, "phone-375"),
+    (430, 932, "phone-430"),
+    (768, 1024, "tablet-portrait"),
+    (1024, 768, "tablet-landscape"),
+    (1280, 800, "desktop-1280"),
+    (1440, 900, "desktop-1440"),
+]
 
-VIEWPORTS = [
-    pytest.param(320, 640, id="phone-320"),
-    pytest.param(375, 812, id="phone-375"),
-    pytest.param(430, 932, id="phone-430"),
-    pytest.param(768, 1024, id="tablet-portrait"),
-    pytest.param(1024, 768, id="tablet-landscape"),
-    pytest.param(1280, 800, id="desktop-1280"),
-    pytest.param(1440, 900, id="desktop-1440"),
+ROOM_PATHS = [
+    "/gauntlet/primitives",
+    "/gauntlet/navigation",
+    "/gauntlet/forms",
+    "/gauntlet/data",
+    "/gauntlet/workflow",
+    "/gauntlet/hostile",
+]
+
+ROOM_VIEWPORTS = [
+    (375, 812, "phone"),
+    (1024, 768, "tablet-landscape"),
+]
+
+SCENARIOS = [
+    *[
+        pytest.param("/gauntlet", width, height, id=f"all-{label}")
+        for width, height, label in VIEWPORT_SPECS
+    ],
+    *[
+        pytest.param(path, width, height, id=f"{path.rsplit('/', 1)[-1]}-{name}")
+        for path in ROOM_PATHS
+        for width, height, name in ROOM_VIEWPORTS
+    ],
+]
+
+TOUCH_SCENARIOS = [
+    pytest.param("/gauntlet", 320, 640, id="all-phone-320"),
+    pytest.param("/gauntlet", 375, 812, id="all-phone-375"),
+    pytest.param("/gauntlet/forms", 375, 812, id="forms-phone"),
+    pytest.param("/gauntlet/data", 375, 812, id="data-phone"),
+    pytest.param("/gauntlet/workflow", 375, 812, id="workflow-phone"),
+    pytest.param("/gauntlet", 768, 1024, id="all-tablet"),
+]
+
+STATE_SCENARIOS = [
+    pytest.param("dark", "default", id="dark-default"),
+    pytest.param("light", "default", id="light-default"),
+    pytest.param("system", "plain", id="system-plain"),
 ]
 
 
-async def _open_gauntlet(page, base_url: str, width: int, height: int) -> None:
-    await page.set_viewport_size({"width": width, "height": height})
-    await page.goto(base_url + "/gauntlet")
-    await wait_for_alpine(page)
+@pytest.mark.parametrize("path", ROOM_PATHS)
+async def test_gauntlet_room_routes_render_surgical_rooms(page, base_url, path):
+    await open_gauntlet(page, base_url, path, width=768, height=1024)
+
+    assert await page.locator("[data-gauntlet-room]").count() == 1
+    expected_room = path.rsplit("/", 1)[-1]
+    assert await page.locator(f"[data-gauntlet-room='{expected_room}']").count() == 1
+
+
+@pytest.mark.parametrize(("path", "width", "height"), SCENARIOS)
+async def test_gauntlet_scenarios_have_no_document_horizontal_overflow(
+    page, base_url, path, width, height
+):
+    await open_gauntlet(page, base_url, path, width=width, height=height)
+
+    await assert_no_document_horizontal_overflow(page, f"{path}-{width}x{height}")
+
+
+@pytest.mark.parametrize(("path", "width", "height"), SCENARIOS)
+async def test_gauntlet_scenarios_do_not_overlap(page, base_url, path, width, height):
+    await open_gauntlet(page, base_url, path, width=width, height=height)
+
+    await assert_common_compositions_do_not_overlap(page, f"{path}-{width}x{height}")
+
+
+@pytest.mark.parametrize(("path", "width", "height"), SCENARIOS)
+async def test_gauntlet_control_rows_keep_coherent_heights(page, base_url, path, width, height):
+    await open_gauntlet(page, base_url, path, width=width, height=height)
+
+    await assert_control_rows_keep_coherent_heights(page, f"{path}-{width}x{height}")
+
+
+@pytest.mark.parametrize(("path", "width", "height"), TOUCH_SCENARIOS)
+async def test_gauntlet_touch_critical_controls_are_not_tiny(page, base_url, path, width, height):
+    await open_gauntlet(page, base_url, path, width=width, height=height)
+
+    await assert_touch_critical_controls_not_tiny(page, f"{path}-{width}x{height}")
+
+
+@pytest.mark.parametrize(("theme", "style"), STATE_SCENARIOS)
+async def test_gauntlet_state_matrix_keeps_layout_contracts(page, base_url, theme, style):
+    await open_gauntlet(page, base_url, "/gauntlet", width=375, height=812)
+    await page.evaluate(
+        """([theme, style]) => {
+            document.documentElement.setAttribute("data-theme", theme);
+            document.documentElement.setAttribute("data-style", style);
+        }""",
+        [theme, style],
+    )
     await page.wait_for_timeout(100)
 
-
-async def _assert_no_failures(page, failures, label: str) -> None:
-    if failures:
-        ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-        await page.screenshot(path=str(ARTIFACT_DIR / f"{label}.png"), full_page=True)
-    assert not failures, "\n".join(str(failure) for failure in failures)
+    label = f"state-{theme}-{style}"
+    await assert_no_document_horizontal_overflow(page, label)
+    await assert_common_compositions_do_not_overlap(page, label)
+    await assert_control_rows_keep_coherent_heights(page, label)
 
 
-@pytest.mark.parametrize(("width", "height"), VIEWPORTS)
-async def test_gauntlet_has_no_document_horizontal_overflow(page, base_url, width, height):
-    await _open_gauntlet(page, base_url, width, height)
+@pytest.mark.parametrize("path", ["/gauntlet/forms", "/gauntlet/hostile"])
+async def test_gauntlet_room_survives_large_text_pressure(page, base_url, path):
+    await open_gauntlet(page, base_url, path, width=375, height=812)
+    await page.add_style_tag(content="html { font-size: 20px !important; }")
+    await page.wait_for_timeout(100)
 
-    result = await page.evaluate(
-        """() => {
-            const root = document.documentElement;
-            const overflow = Math.ceil(root.scrollWidth - root.clientWidth);
-            if (overflow <= 1) return { overflow, offenders: [] };
-
-            const viewport = root.clientWidth;
-            const offenders = [...document.body.querySelectorAll("*")]
-                .filter((el) => {
-                    const style = getComputedStyle(el);
-                    const rect = el.getBoundingClientRect();
-                    return style.display !== "none"
-                        && style.visibility !== "hidden"
-                        && rect.width > 0
-                        && rect.height > 0
-                        && (rect.right > viewport + 1 || rect.left < -1);
-                })
-                .slice(0, 8)
-                .map((el) => ({
-                    tag: el.tagName.toLowerCase(),
-                    className: el.className,
-                    text: (el.textContent || "").trim().slice(0, 80),
-                    rect: (() => {
-                        const r = el.getBoundingClientRect();
-                        return { left: r.left, right: r.right, width: r.width };
-                    })(),
-                }));
-            return { overflow, offenders };
-        }"""
-    )
-
-    failures = []
-    if result["overflow"] > 1:
-        failures.append(
-            {
-                "viewport": f"{width}x{height}",
-                "overflow": result["overflow"],
-                "offenders": result["offenders"],
-            }
-        )
-    await _assert_no_failures(page, failures, f"gauntlet-overflow-{width}x{height}")
-
-
-@pytest.mark.parametrize(("width", "height"), VIEWPORTS)
-async def test_gauntlet_common_compositions_do_not_overlap(page, base_url, width, height):
-    await _open_gauntlet(page, base_url, width, height)
-
-    failures = await page.evaluate(
-        """() => {
-            function visible(el) {
-                const style = getComputedStyle(el);
-                const rect = el.getBoundingClientRect();
-                return style.display !== "none"
-                    && style.visibility !== "hidden"
-                    && rect.width > 0
-                    && rect.height > 0;
-            }
-            function overlap(a, b) {
-                const left = Math.max(a.left, b.left);
-                const right = Math.min(a.right, b.right);
-                const top = Math.max(a.top, b.top);
-                const bottom = Math.min(a.bottom, b.bottom);
-                return Math.max(0, right - left) * Math.max(0, bottom - top);
-            }
-
-            const failures = [];
-            const containers = [
-                ...document.querySelectorAll("[data-gauntlet-no-overlap] .chirpui-grid"),
-                ...document.querySelectorAll("[data-gauntlet-no-overlap] .chirpui-frame"),
-                ...document.querySelectorAll("[data-gauntlet-control-group]"),
-            ];
-
-            for (const container of containers) {
-                const children = [...container.children].filter(visible);
-                for (let i = 0; i < children.length; i += 1) {
-                    for (let j = i + 1; j < children.length; j += 1) {
-                        const a = children[i].getBoundingClientRect();
-                        const b = children[j].getBoundingClientRect();
-                        if (overlap(a, b) > 4) {
-                            failures.push({
-                                container: container.className || container.dataset.gauntletControlGroup,
-                                a: children[i].className || children[i].tagName,
-                                b: children[j].className || children[j].tagName,
-                                overlap: overlap(a, b),
-                            });
-                        }
-                    }
-                }
-            }
-            return failures;
-        }"""
-    )
-
-    await _assert_no_failures(page, failures, f"gauntlet-overlap-{width}x{height}")
-
-
-@pytest.mark.parametrize(("width", "height"), VIEWPORTS)
-async def test_gauntlet_control_rows_keep_coherent_heights(page, base_url, width, height):
-    await _open_gauntlet(page, base_url, width, height)
-
-    failures = await page.evaluate(
-        """() => {
-            const failures = [];
-            const selector = [
-                ":scope > .chirpui-btn",
-                ":scope > .chirpui-dropdown",
-                ":scope > .chirpui-ascii-toggle",
-                ":scope > .chirpui-icon-btn",
-                ":scope > .chirpui-pagination",
-                ":scope > .chirpui-segmented",
-            ].join(",");
-
-            for (const group of document.querySelectorAll("[data-gauntlet-control-group]")) {
-                const controls = [...group.querySelectorAll(selector)]
-                    .filter((el) => {
-                        const rect = el.getBoundingClientRect();
-                        const style = getComputedStyle(el);
-                        return style.display !== "none"
-                            && style.visibility !== "hidden"
-                            && rect.width > 0
-                            && rect.height > 0;
-                    });
-                if (controls.length < 2) continue;
-                const heights = controls.map((el) => Math.round(el.getBoundingClientRect().height));
-                const min = Math.min(...heights);
-                const max = Math.max(...heights);
-                if (max - min > 6) {
-                    failures.push({
-                        group: group.dataset.gauntletControlGroup,
-                        heights,
-                        labels: controls.map((el) => (el.textContent || el.getAttribute("aria-label") || el.className).trim().slice(0, 40)),
-                    });
-                }
-            }
-            return failures;
-        }"""
-    )
-
-    await _assert_no_failures(page, failures, f"gauntlet-control-heights-{width}x{height}")
-
-
-@pytest.mark.parametrize(
-    ("width", "height"),
-    [
-        pytest.param(320, 640, id="phone-320"),
-        pytest.param(375, 812, id="phone-375"),
-        pytest.param(768, 1024, id="tablet-portrait"),
-    ],
-)
-async def test_gauntlet_touch_critical_controls_are_not_tiny(page, base_url, width, height):
-    await _open_gauntlet(page, base_url, width, height)
-
-    failures = await page.evaluate(
-        """() => {
-            const selector = [
-                ":scope > .chirpui-btn",
-                ":scope > .chirpui-dropdown",
-                ":scope > .chirpui-ascii-toggle",
-                ":scope > .chirpui-icon-btn",
-                ":scope > .chirpui-pagination a",
-                ":scope > .chirpui-pagination button",
-            ].join(",");
-            const failures = [];
-            for (const group of document.querySelectorAll("[data-gauntlet-touch-critical]")) {
-                for (const el of group.querySelectorAll(selector)) {
-                    const rect = el.getBoundingClientRect();
-                    const style = getComputedStyle(el);
-                    if (style.display === "none" || style.visibility === "hidden") continue;
-                    if (rect.width < 32 || rect.height < 32) {
-                        failures.push({
-                            group: group.dataset.gauntletControlGroup,
-                            className: el.className,
-                            text: (el.textContent || el.getAttribute("aria-label") || "").trim().slice(0, 60),
-                            width: Math.round(rect.width),
-                            height: Math.round(rect.height),
-                        });
-                    }
-                }
-            }
-            return failures;
-        }"""
-    )
-
-    await _assert_no_failures(page, failures, f"gauntlet-touch-{width}x{height}")
+    await assert_no_document_horizontal_overflow(page, f"{path}-large-text")
 
 
 async def test_gauntlet_linked_nav_branches_route_without_disclosure_conflict(page, base_url):
-    await _open_gauntlet(page, base_url, 768, 1024)
+    await open_gauntlet(page, base_url, "/gauntlet/navigation", width=768, height=1024)
 
     assert await page.locator(".chirpui-nav-tree--linked-branches summary").count() == 0
     branch = page.locator(
@@ -243,15 +150,55 @@ async def test_gauntlet_linked_nav_branches_route_without_disclosure_conflict(pa
     assert await page.get_by_text("Hidden until open").count() == 0
 
 
-async def test_gauntlet_survives_large_text_pressure(page, base_url):
-    await _open_gauntlet(page, base_url, 375, 812)
-    await page.add_style_tag(content="html { font-size: 20px !important; }")
-    await page.wait_for_timeout(100)
+async def test_gauntlet_dropdown_select_interaction_does_not_shift_toolbar(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/forms", width=375, height=812)
 
-    overflow = await page.evaluate(
-        "() => Math.ceil(document.documentElement.scrollWidth - document.documentElement.clientWidth)"
-    )
+    group = page.locator("[data-gauntlet-control-group='toolbar']")
+    before = await group.bounding_box()
+    await page.locator("#gauntlet-view .chirpui-dropdown__trigger--select").click()
+    await page.get_by_role("option", name="Table").click()
+    after = await group.bounding_box()
+
+    assert await page.locator("#gauntlet-view .chirpui-dropdown__selected").inner_text() == "Table"
     failures = []
-    if overflow > 1:
-        failures.append({"viewport": "375x812", "font_size": "20px", "overflow": overflow})
-    await _assert_no_failures(page, failures, "gauntlet-large-text")
+    if before and after and abs(before["height"] - after["height"]) > 1:
+        failures.append({"before": before["height"], "after": after["height"]})
+    await assert_no_failures(page, failures, "dropdown-select-toolbar-shift")
+
+
+async def test_gauntlet_split_dropdown_menu_stays_inside_viewport(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/data", width=375, height=812)
+
+    await page.locator(
+        "[data-gauntlet-control-group='pagination'] .chirpui-dropdown__trigger--split"
+    ).click()
+    menu = page.locator("[data-gauntlet-control-group='pagination'] .chirpui-dropdown__menu")
+    await menu.wait_for(state="visible")
+    failure = await menu.evaluate(
+        """(el) => {
+            const rect = el.getBoundingClientRect();
+            const viewport = document.documentElement.clientWidth;
+            if (rect.left >= -1 && rect.right <= viewport + 1) return null;
+            return {
+                left: Math.round(rect.left),
+                right: Math.round(rect.right),
+                viewport,
+            };
+        }"""
+    )
+    await assert_no_failures(page, [failure] if failure else [], "split-dropdown-in-viewport")
+
+
+async def test_gauntlet_focus_indicators_are_visible_for_mixed_controls(page, base_url):
+    await open_gauntlet(page, base_url, "/gauntlet/forms", width=375, height=812)
+
+    await assert_focused_element_has_visible_ring(
+        page,
+        "[data-gauntlet-control-group='toolbar'] .chirpui-btn",
+        "gauntlet-button",
+    )
+    await assert_focused_element_has_visible_ring(
+        page,
+        "[data-gauntlet-control-group='toolbar'] .chirpui-dropdown__trigger--select",
+        "gauntlet-select",
+    )

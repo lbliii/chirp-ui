@@ -17,10 +17,12 @@
 {% call sidebar() %}
   {% call sidebar_section("Rooms") %}
     {{ sidebar_link("/gauntlet", "Gauntlet") }}
-    {{ sidebar_link("/gauntlet#navigation", "Navigation") }}
-    {{ sidebar_link("/gauntlet#forms", "Forms") }}
-    {{ sidebar_link("/gauntlet#data", "Data") }}
-    {{ sidebar_link("/gauntlet#hostile", "Hostile") }}
+    {{ sidebar_link("/gauntlet/primitives", "Primitives") }}
+    {{ sidebar_link("/gauntlet/navigation", "Navigation") }}
+    {{ sidebar_link("/gauntlet/forms", "Forms") }}
+    {{ sidebar_link("/gauntlet/data", "Data") }}
+    {{ sidebar_link("/gauntlet/workflow", "Workflow") }}
+    {{ sidebar_link("/gauntlet/hostile", "Hostile") }}
   {% end %}
 {% end %}
 {% end %}
@@ -52,12 +54,13 @@
 {% call stack(gap="xl") %}
 <header class="chirpui-stack chirpui-stack--sm">
   <p class="chirpui-label-overline">Composition stress suite</p>
-  <h1 data-testid="page-heading">ChirpUI Gauntlet</h1>
+  <h1 data-testid="page-heading">ChirpUI Gauntlet{% if active_room != "all" %}: {{ rooms.get(active_room) }}{% end %}</h1>
   <p class="chirpui-text-muted">
     A downstream-shaped pressure page that mixes standard, common, advanced, and hostile compositions.
   </p>
 </header>
 
+{% if active_room == "all" or active_room == "primitives" %}
 <section id="primitives" data-gauntlet-room="primitives" data-gauntlet-no-overlap>
   {{ section_header("Primitive room", subtitle="Flow grids, explicit frames, nested surfaces, and uneven content.") }}
   {% call frame(variant="sidebar-end", gap="lg") %}
@@ -87,7 +90,9 @@
     {% end %}
   {% end %}
 </section>
+{% end %}
 
+{% if active_room == "all" or active_room == "navigation" %}
 <section id="navigation" data-gauntlet-room="navigation" data-gauntlet-no-overlap>
   {{ section_header("Navigation room", subtitle="Broad nav, local route tabs, linked nav trees, and dense badges together.") }}
   {% call stack(gap="md") %}
@@ -110,7 +115,9 @@
     {% end %}
   {% end %}
 </section>
+{% end %}
 
+{% if active_room == "all" or active_room == "forms" %}
 <section id="forms" data-gauntlet-room="forms" data-gauntlet-no-overlap>
   {{ section_header("Forms room", subtitle="Mixed controls should share rhythm in dense bars and still breathe inside forms.") }}
   {% call stack(gap="md") %}
@@ -158,7 +165,9 @@
     {% end %}
   {% end %}
 </section>
+{% end %}
 
+{% if active_room == "all" or active_room == "data" %}
 <section id="data" data-gauntlet-room="data" data-gauntlet-no-overlap>
   {{ section_header("Data room", subtitle="Dense rows, action bars, counts, pagination, and table overflow.") }}
   {% call stack(gap="md") %}
@@ -186,7 +195,9 @@
     {% end %}
   {% end %}
 </section>
+{% end %}
 
+{% if active_room == "all" or active_room == "workflow" %}
 <section id="workflow" data-gauntlet-room="workflow" data-gauntlet-no-overlap>
   {{ section_header("Workflow room", subtitle="Composer, identity, toolbar, preview, and action footer.") }}
   {% call composer_shell() %}
@@ -231,7 +242,9 @@
     {% end %}
   {% end %}
 </section>
+{% end %}
 
+{% if active_room == "all" or active_room == "hostile" %}
 <section id="hostile" data-gauntlet-room="hostile" data-gauntlet-no-overlap>
   {{ section_header("Hostile room", subtitle="Long labels, large counts, missing media, empty states, and dense chips.") }}
   {% call grid(cols=2, gap="md") %}
@@ -253,6 +266,7 @@
     {% end %}
   {% end %}
 </section>
+{% end %}
 {% end %}
 {% end %}
 {% end %}

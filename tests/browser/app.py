@@ -68,6 +68,28 @@ GAUNTLET_TABLE_ROWS = [
     ),
 ]
 
+GAUNTLET_ROOMS = {
+    "all": "All rooms",
+    "primitives": "Primitive room",
+    "navigation": "Navigation room",
+    "forms": "Forms room",
+    "data": "Data room",
+    "workflow": "Workflow room",
+    "hostile": "Hostile room",
+}
+
+
+def _gauntlet_context(active_room: str = "all") -> dict[str, object]:
+    room = active_room if active_room in GAUNTLET_ROOMS else "all"
+    return {
+        "page_title": f"Gauntlet: {GAUNTLET_ROOMS[room]}",
+        "active_room": room,
+        "rooms": GAUNTLET_ROOMS,
+        "nav_items": GAUNTLET_NAV_ITEMS,
+        "gauntlet_route_tabs": GAUNTLET_ROUTE_TABS,
+        "table_rows": GAUNTLET_TABLE_ROWS,
+    }
+
 
 def create_app() -> App:
     """Create the test Chirp app with chirp-ui integration."""
@@ -92,13 +114,11 @@ def create_app() -> App:
 
     @app.route("/gauntlet")
     async def gauntlet_page(request: Request):
-        return Template(
-            "gauntlet_page.html",
-            page_title="Gauntlet",
-            nav_items=GAUNTLET_NAV_ITEMS,
-            gauntlet_route_tabs=GAUNTLET_ROUTE_TABS,
-            table_rows=GAUNTLET_TABLE_ROWS,
-        )
+        return Template("gauntlet_page.html", **_gauntlet_context())
+
+    @app.route("/gauntlet/{room}")
+    async def gauntlet_room(request: Request, room: str):
+        return Template("gauntlet_page.html", **_gauntlet_context(room))
 
     @app.route("/page-b")
     async def page_b(request: Request):
