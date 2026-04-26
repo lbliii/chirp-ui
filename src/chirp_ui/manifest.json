@@ -1,6 +1,7 @@
 {
   "components": {
     "accordion": {
+      "authoring": "available",
       "block": "accordion",
       "category": "interactive",
       "composes": [],
@@ -54,9 +55,11 @@
       "slots_yielded": [],
       "template": "accordion.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "action-bar": {
+      "authoring": "available",
       "block": "action-bar",
       "category": "control",
       "composes": [],
@@ -75,7 +78,10 @@
         "chirpui-action-bar__item--active",
         "chirpui-action-bar__item--disabled"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-action-bar__item--active",
+        "chirpui-action-bar__item--disabled"
+      ],
       "lineno": 14,
       "macro": "action_bar",
       "maturity": "stable",
@@ -101,9 +107,11 @@
       "slots_yielded": [],
       "template": "action_bar.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "action-strip": {
+      "authoring": "available",
       "block": "action-strip",
       "category": "control",
       "composes": [],
@@ -185,11 +193,13 @@
       "slots_yielded": [],
       "template": "action_strip.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "actions": {
+      "authoring": "preferred",
       "block": "actions",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -213,7 +223,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -226,9 +236,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "alert": {
+      "authoring": "available",
       "block": "alert",
       "category": "feedback",
       "composes": [],
@@ -317,6 +329,7 @@
       "slots_yielded": [],
       "template": "alert.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "error",
         "info",
@@ -325,8 +338,9 @@
       ]
     },
     "ambient": {
+      "authoring": "available",
       "block": "ambient",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -350,11 +364,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ambient-root": {
+      "authoring": "available",
       "block": "ambient-root",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -378,9 +394,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "animated-counter": {
+      "authoring": "available",
       "block": "animated-counter",
       "category": "effect",
       "composes": [],
@@ -394,7 +412,11 @@
         "chirpui-animated-counter__prefix",
         "chirpui-animated-counter__value"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-animated-counter__label",
+        "chirpui-animated-counter__prefix",
+        "chirpui-animated-counter__value"
+      ],
       "lineno": 11,
       "macro": "animated_counter",
       "maturity": "experimental",
@@ -441,6 +463,9 @@
       "slots_yielded": [],
       "template": "animated_counter.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-animated-counter--default"
+      ],
       "variants": [
         "",
         "default",
@@ -448,6 +473,7 @@
       ]
     },
     "animated-stat-card": {
+      "authoring": "available",
       "block": "animated-stat-card",
       "category": "data-display",
       "composes": [],
@@ -462,7 +488,10 @@
         "chirpui-animated-stat-card__trend--down",
         "chirpui-animated-stat-card__trend--up"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-animated-stat-card__trend--down",
+        "chirpui-animated-stat-card__trend--up"
+      ],
       "lineno": 13,
       "macro": "animated_stat_card",
       "maturity": "stable",
@@ -519,9 +548,11 @@
       "slots_yielded": [],
       "template": "animated_stat_card.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "app-shell": {
+      "authoring": "available",
       "block": "app-shell",
       "category": "layout",
       "composes": [],
@@ -648,11 +679,13 @@
         "--chirpui-sidebar-max-width",
         "--chirpui-sidebar-width"
       ],
+      "trim_emits": [],
       "variants": []
     },
     "ascii": {
+      "authoring": "available",
       "block": "ascii",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -716,9 +749,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-7seg": {
+      "authoring": "available",
       "block": "ascii-7seg",
       "category": "ascii",
       "composes": [],
@@ -736,7 +771,12 @@
         "chirpui-ascii-7seg__frame",
         "chirpui-ascii-7seg__label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-7seg__digit",
+        "chirpui-ascii-7seg__display",
+        "chirpui-ascii-7seg__frame",
+        "chirpui-ascii-7seg__label"
+      ],
       "lineno": 16,
       "macro": "ascii_7seg",
       "maturity": "experimental",
@@ -773,6 +813,9 @@
       "slots_yielded": [],
       "template": "ascii_7seg.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-7seg--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -783,6 +826,7 @@
       ]
     },
     "ascii-badge": {
+      "authoring": "available",
       "block": "ascii-badge",
       "category": "ascii",
       "composes": [],
@@ -801,7 +845,12 @@
         "chirpui-ascii-badge__open",
         "chirpui-ascii-badge__text"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-badge__close",
+        "chirpui-ascii-badge__glyph",
+        "chirpui-ascii-badge__open",
+        "chirpui-ascii-badge__text"
+      ],
       "lineno": 16,
       "macro": "ascii_badge",
       "maturity": "experimental",
@@ -843,6 +892,9 @@
       "slots_yielded": [],
       "template": "ascii_badge.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-badge--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -854,6 +906,7 @@
       ]
     },
     "ascii-border": {
+      "authoring": "available",
       "block": "ascii-border",
       "category": "ascii",
       "composes": [],
@@ -873,7 +926,15 @@
         "chirpui-ascii-border__side",
         "chirpui-ascii-border__top"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-border__bottom",
+        "chirpui-ascii-border__content",
+        "chirpui-ascii-border__corner",
+        "chirpui-ascii-border__line",
+        "chirpui-ascii-border__mid",
+        "chirpui-ascii-border__side",
+        "chirpui-ascii-border__top"
+      ],
       "lineno": 22,
       "macro": "ascii_border",
       "maturity": "experimental",
@@ -909,6 +970,10 @@
       "slots_yielded": [],
       "template": "ascii_border.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-border--rounded",
+        "chirpui-ascii-border--single"
+      ],
       "variants": [
         "",
         "double",
@@ -919,6 +984,7 @@
       ]
     },
     "ascii-breaker-panel": {
+      "authoring": "available",
       "block": "ascii-breaker-panel",
       "category": "ascii",
       "composes": [],
@@ -990,9 +1056,11 @@
       "slots_yielded": [],
       "template": "ascii_breaker_panel.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-card": {
+      "authoring": "available",
       "block": "ascii-card",
       "category": "ascii",
       "composes": [],
@@ -1014,7 +1082,16 @@
         "chirpui-ascii-card__side",
         "chirpui-ascii-card__top"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-card__body",
+        "chirpui-ascii-card__bottom",
+        "chirpui-ascii-card__content",
+        "chirpui-ascii-card__corner",
+        "chirpui-ascii-card__divider",
+        "chirpui-ascii-card__line",
+        "chirpui-ascii-card__side",
+        "chirpui-ascii-card__top"
+      ],
       "lineno": 30,
       "macro": "ascii_card",
       "maturity": "experimental",
@@ -1055,6 +1132,7 @@
       "slots_yielded": [],
       "template": "ascii_card.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "double",
@@ -1064,6 +1142,7 @@
       ]
     },
     "ascii-checkbox": {
+      "authoring": "available",
       "block": "ascii-checkbox",
       "category": "ascii",
       "composes": [],
@@ -1080,7 +1159,12 @@
         "chirpui-ascii-checkbox__input",
         "chirpui-ascii-checkbox__label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-checkbox--disabled",
+        "chirpui-ascii-checkbox__box",
+        "chirpui-ascii-checkbox__input",
+        "chirpui-ascii-checkbox__label"
+      ],
       "lineno": 19,
       "macro": "ascii_checkbox",
       "maturity": "experimental",
@@ -1127,6 +1211,9 @@
       "slots_yielded": [],
       "template": "ascii_checkbox.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-checkbox--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -1136,8 +1223,9 @@
       ]
     },
     "ascii-checkbox-group": {
+      "authoring": "available",
       "block": "ascii-checkbox-group",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -1164,9 +1252,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-divider": {
+      "authoring": "available",
       "block": "ascii-divider",
       "category": "ascii",
       "composes": [],
@@ -1183,7 +1273,9 @@
         "chirpui-ascii-divider--spin-reverse",
         "chirpui-ascii-divider__glyph"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-divider__glyph"
+      ],
       "lineno": 15,
       "macro": "ascii_divider",
       "maturity": "experimental",
@@ -1215,6 +1307,9 @@
       "slots_yielded": [],
       "template": "ascii_divider.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-divider--single"
+      ],
       "variants": [
         "",
         "dots",
@@ -1227,6 +1322,7 @@
       ]
     },
     "ascii-empty": {
+      "authoring": "available",
       "block": "ascii-empty",
       "category": "ascii",
       "composes": [],
@@ -1242,7 +1338,12 @@
         "chirpui-ascii-empty__glyph",
         "chirpui-ascii-empty__heading"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-empty__action",
+        "chirpui-ascii-empty__desc",
+        "chirpui-ascii-empty__glyph",
+        "chirpui-ascii-empty__heading"
+      ],
       "lineno": 17,
       "macro": "ascii_empty",
       "maturity": "experimental",
@@ -1288,6 +1389,9 @@
       "slots_yielded": [],
       "template": "ascii_empty.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-empty--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -1296,6 +1400,7 @@
       ]
     },
     "ascii-error": {
+      "authoring": "available",
       "block": "ascii-error",
       "category": "ascii",
       "composes": [],
@@ -1357,9 +1462,11 @@
       "slots_yielded": [],
       "template": "ascii_error.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-fader": {
+      "authoring": "available",
       "block": "ascii-fader",
       "category": "ascii",
       "composes": [],
@@ -1380,7 +1487,15 @@
         "chirpui-ascii-fader__track",
         "chirpui-ascii-fader__value"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-fader__cap",
+        "chirpui-ascii-fader__input",
+        "chirpui-ascii-fader__label",
+        "chirpui-ascii-fader__segment",
+        "chirpui-ascii-fader__segment--filled",
+        "chirpui-ascii-fader__track",
+        "chirpui-ascii-fader__value"
+      ],
       "lineno": 21,
       "macro": "ascii_fader",
       "maturity": "experimental",
@@ -1422,6 +1537,9 @@
       "slots_yielded": [],
       "template": "ascii_fader.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-fader--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -1432,8 +1550,9 @@
       ]
     },
     "ascii-fader-bank": {
+      "authoring": "available",
       "block": "ascii-fader-bank",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -1462,11 +1581,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-fill": {
+      "authoring": "available",
       "block": "ascii-fill",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -1490,11 +1611,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-fill-hover": {
+      "authoring": "available",
       "block": "ascii-fill-hover",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -1518,9 +1641,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-indicator": {
+      "authoring": "available",
       "block": "ascii-indicator",
       "category": "ascii",
       "composes": [],
@@ -1539,7 +1664,12 @@
         "chirpui-ascii-indicator__label",
         "chirpui-ascii-indicator__light"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-indicator--blink",
+        "chirpui-ascii-indicator--blink-fast",
+        "chirpui-ascii-indicator__label",
+        "chirpui-ascii-indicator__light"
+      ],
       "lineno": 25,
       "macro": "indicator",
       "maturity": "experimental",
@@ -1581,6 +1711,7 @@
       "slots_yielded": [],
       "template": "ascii_indicator.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "accent",
         "error",
@@ -1590,8 +1721,9 @@
       ]
     },
     "ascii-indicator-row": {
+      "authoring": "available",
       "block": "ascii-indicator-row",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -1615,9 +1747,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-knob": {
+      "authoring": "available",
       "block": "ascii-knob",
       "category": "ascii",
       "composes": [],
@@ -1637,7 +1771,17 @@
         "chirpui-ascii-knob__tick",
         "chirpui-ascii-knob__value"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-knob__dial",
+        "chirpui-ascii-knob__frame",
+        "chirpui-ascii-knob__input",
+        "chirpui-ascii-knob__legend",
+        "chirpui-ascii-knob__notch",
+        "chirpui-ascii-knob__position",
+        "chirpui-ascii-knob__positions",
+        "chirpui-ascii-knob__tick",
+        "chirpui-ascii-knob__value"
+      ],
       "lineno": 17,
       "macro": "ascii_knob",
       "maturity": "experimental",
@@ -1684,6 +1828,9 @@
       "slots_yielded": [],
       "template": "ascii_knob.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-knob--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -1691,6 +1838,7 @@
       ]
     },
     "ascii-modal": {
+      "authoring": "available",
       "block": "ascii-modal",
       "category": "ascii",
       "composes": [],
@@ -1707,7 +1855,12 @@
         "chirpui-ascii-modal__header",
         "chirpui-ascii-modal__title"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-modal__body",
+        "chirpui-ascii-modal__close",
+        "chirpui-ascii-modal__header",
+        "chirpui-ascii-modal__title"
+      ],
       "lineno": 23,
       "macro": "ascii_modal",
       "maturity": "experimental",
@@ -1750,6 +1903,7 @@
       "slots_yielded": [],
       "template": "ascii_modal.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "double",
@@ -1758,8 +1912,9 @@
       ]
     },
     "ascii-modal-trigger": {
+      "authoring": "available",
       "block": "ascii-modal-trigger",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -1783,9 +1938,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-progress": {
+      "authoring": "available",
       "block": "ascii-progress",
       "category": "ascii",
       "composes": [],
@@ -1803,7 +1960,13 @@
         "chirpui-ascii-progress__track",
         "chirpui-ascii-progress__value"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-progress__empty",
+        "chirpui-ascii-progress__filled",
+        "chirpui-ascii-progress__label",
+        "chirpui-ascii-progress__track",
+        "chirpui-ascii-progress__value"
+      ],
       "lineno": 14,
       "macro": "ascii_progress",
       "maturity": "experimental",
@@ -1845,6 +2008,9 @@
       "slots_yielded": [],
       "template": "ascii_progress.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-progress--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -1854,8 +2020,9 @@
       ]
     },
     "ascii-radio": {
+      "authoring": "available",
       "block": "ascii-radio",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -1889,9 +2056,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-radio-group": {
+      "authoring": "available",
       "block": "ascii-radio-group",
       "category": "ascii",
       "composes": [],
@@ -1904,7 +2073,10 @@
         "chirpui-ascii-radio-group--horizontal",
         "chirpui-ascii-radio-group__legend"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-radio-group--horizontal",
+        "chirpui-ascii-radio-group__legend"
+      ],
       "lineno": 28,
       "macro": "ascii_radio_group",
       "maturity": "experimental",
@@ -1950,6 +2122,9 @@
       "slots_yielded": [],
       "template": "ascii_radio.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-radio-group--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -1957,6 +2132,7 @@
       ]
     },
     "ascii-skeleton": {
+      "authoring": "available",
       "block": "ascii-skeleton",
       "category": "ascii",
       "composes": [],
@@ -1973,7 +2149,11 @@
         "chirpui-ascii-skeleton__line",
         "chirpui-ascii-skeleton__line--header"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-skeleton__fill",
+        "chirpui-ascii-skeleton__line",
+        "chirpui-ascii-skeleton__line--header"
+      ],
       "lineno": 17,
       "macro": "ascii_skeleton",
       "maturity": "experimental",
@@ -2010,6 +2190,7 @@
       "slots_yielded": [],
       "template": "ascii_skeleton.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "avatar",
@@ -2019,6 +2200,7 @@
       ]
     },
     "ascii-sparkline": {
+      "authoring": "available",
       "block": "ascii-sparkline",
       "category": "ascii",
       "composes": [],
@@ -2032,7 +2214,9 @@
         "chirpui-ascii-sparkline--muted",
         "chirpui-ascii-sparkline__bar"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-sparkline__bar"
+      ],
       "lineno": 16,
       "macro": "ascii_sparkline",
       "maturity": "experimental",
@@ -2064,6 +2248,9 @@
       "slots_yielded": [],
       "template": "ascii_sparkline.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-sparkline--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -2073,6 +2260,7 @@
       ]
     },
     "ascii-spinner": {
+      "authoring": "available",
       "block": "ascii-spinner",
       "category": "ascii",
       "composes": [],
@@ -2093,7 +2281,14 @@
         "chirpui-ascii-spinner__chars",
         "chirpui-ascii-spinner__label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-spinner--lg",
+        "chirpui-ascii-spinner--md",
+        "chirpui-ascii-spinner--sm",
+        "chirpui-ascii-spinner__char",
+        "chirpui-ascii-spinner__chars",
+        "chirpui-ascii-spinner__label"
+      ],
       "lineno": 13,
       "macro": "ascii_spinner",
       "maturity": "experimental",
@@ -2130,6 +2325,7 @@
       "slots_yielded": [],
       "template": "ascii_spinner.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "arrows",
@@ -2140,6 +2336,7 @@
       ]
     },
     "ascii-stepper": {
+      "authoring": "available",
       "block": "ascii-stepper",
       "category": "ascii",
       "composes": [],
@@ -2159,7 +2356,16 @@
         "chirpui-ascii-stepper__step--complete",
         "chirpui-ascii-stepper__track"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-stepper__connector",
+        "chirpui-ascii-stepper__connector--complete",
+        "chirpui-ascii-stepper__label",
+        "chirpui-ascii-stepper__node",
+        "chirpui-ascii-stepper__step",
+        "chirpui-ascii-stepper__step--active",
+        "chirpui-ascii-stepper__step--complete",
+        "chirpui-ascii-stepper__track"
+      ],
       "lineno": 18,
       "macro": "ascii_stepper",
       "maturity": "experimental",
@@ -2196,6 +2402,9 @@
       "slots_yielded": [],
       "template": "ascii_stepper.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-stepper--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -2204,6 +2413,7 @@
       ]
     },
     "ascii-switch": {
+      "authoring": "available",
       "block": "ascii-switch",
       "category": "ascii",
       "composes": [],
@@ -2227,7 +2437,17 @@
         "chirpui-ascii-switch__lever",
         "chirpui-ascii-switch__slot"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-switch--disabled",
+        "chirpui-ascii-switch__body",
+        "chirpui-ascii-switch__cap",
+        "chirpui-ascii-switch__cap--bottom",
+        "chirpui-ascii-switch__cap--top",
+        "chirpui-ascii-switch__input",
+        "chirpui-ascii-switch__label",
+        "chirpui-ascii-switch__lever",
+        "chirpui-ascii-switch__slot"
+      ],
       "lineno": 48,
       "macro": "ascii_switch",
       "maturity": "experimental",
@@ -2284,6 +2504,10 @@
       "slots_yielded": [],
       "template": "ascii_toggle.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-switch--default",
+        "chirpui-ascii-switch--md"
+      ],
       "variants": [
         "",
         "accent",
@@ -2293,6 +2517,7 @@
       ]
     },
     "ascii-tab": {
+      "authoring": "available",
       "block": "ascii-tab",
       "category": "ascii",
       "composes": [],
@@ -2305,7 +2530,11 @@
         "chirpui-ascii-tab__bracket",
         "chirpui-ascii-tab__label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-tab--active",
+        "chirpui-ascii-tab__bracket",
+        "chirpui-ascii-tab__label"
+      ],
       "lineno": 35,
       "macro": "ascii_tab",
       "maturity": "experimental",
@@ -2359,6 +2588,10 @@
       "slots_yielded": [],
       "template": "ascii_tabs.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-tab--accent",
+        "chirpui-ascii-tab--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -2366,6 +2599,7 @@
       ]
     },
     "ascii-table": {
+      "authoring": "available",
       "block": "ascii-table",
       "category": "ascii",
       "composes": [],
@@ -2394,7 +2628,23 @@
         "chirpui-ascii-table__td",
         "chirpui-ascii-table__th"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-table--compact",
+        "chirpui-ascii-table--sticky",
+        "chirpui-ascii-table--striped",
+        "chirpui-ascii-table__body",
+        "chirpui-ascii-table__border",
+        "chirpui-ascii-table__border--bottom",
+        "chirpui-ascii-table__border--mid",
+        "chirpui-ascii-table__border--top",
+        "chirpui-ascii-table__cell--center",
+        "chirpui-ascii-table__cell--left",
+        "chirpui-ascii-table__cell--right",
+        "chirpui-ascii-table__head",
+        "chirpui-ascii-table__row",
+        "chirpui-ascii-table__td",
+        "chirpui-ascii-table__th"
+      ],
       "lineno": 24,
       "macro": "ascii_table",
       "maturity": "experimental",
@@ -2450,6 +2700,7 @@
       "slots_yielded": [],
       "template": "ascii_table.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "double",
         "heavy",
@@ -2458,6 +2709,7 @@
       ]
     },
     "ascii-tabs": {
+      "authoring": "available",
       "block": "ascii-tabs",
       "category": "ascii",
       "composes": [],
@@ -2499,6 +2751,9 @@
       "slots_yielded": [],
       "template": "ascii_tabs.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-tabs--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -2506,6 +2761,7 @@
       ]
     },
     "ascii-ticker": {
+      "authoring": "available",
       "block": "ascii-ticker",
       "category": "ascii",
       "composes": [],
@@ -2524,7 +2780,13 @@
         "chirpui-ascii-ticker__text",
         "chirpui-ascii-ticker__track"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-ticker--fast",
+        "chirpui-ascii-ticker--slow",
+        "chirpui-ascii-ticker__bracket",
+        "chirpui-ascii-ticker__text",
+        "chirpui-ascii-ticker__track"
+      ],
       "lineno": 14,
       "macro": "ascii_ticker",
       "maturity": "experimental",
@@ -2561,6 +2823,9 @@
       "slots_yielded": [],
       "template": "ascii_ticker.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-ticker--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -2571,6 +2836,7 @@
       ]
     },
     "ascii-tile-btn": {
+      "authoring": "available",
       "block": "ascii-tile-btn",
       "category": "ascii",
       "composes": [],
@@ -2590,7 +2856,14 @@
         "chirpui-ascii-tile-btn__input",
         "chirpui-ascii-tile-btn__label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-tile-btn--disabled",
+        "chirpui-ascii-tile-btn--lit",
+        "chirpui-ascii-tile-btn__face",
+        "chirpui-ascii-tile-btn__glyph",
+        "chirpui-ascii-tile-btn__input",
+        "chirpui-ascii-tile-btn__label"
+      ],
       "lineno": 25,
       "macro": "tile_btn",
       "maturity": "experimental",
@@ -2647,6 +2920,9 @@
       "slots_yielded": [],
       "template": "ascii_tile_btn.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-tile-btn--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -2657,8 +2933,9 @@
       ]
     },
     "ascii-tile-grid": {
+      "authoring": "available",
       "block": "ascii-tile-grid",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -2682,9 +2959,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ascii-toggle": {
+      "authoring": "available",
       "block": "ascii-toggle",
       "category": "ascii",
       "composes": [],
@@ -2705,7 +2984,14 @@
         "chirpui-ascii-toggle__rail",
         "chirpui-ascii-toggle__track"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-toggle--disabled",
+        "chirpui-ascii-toggle__input",
+        "chirpui-ascii-toggle__knob",
+        "chirpui-ascii-toggle__label",
+        "chirpui-ascii-toggle__rail",
+        "chirpui-ascii-toggle__track"
+      ],
       "lineno": 29,
       "macro": "ascii_toggle",
       "maturity": "experimental",
@@ -2762,6 +3048,10 @@
       "slots_yielded": [],
       "template": "ascii_toggle.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-toggle--default",
+        "chirpui-ascii-toggle--md"
+      ],
       "variants": [
         "",
         "accent",
@@ -2771,6 +3061,7 @@
       ]
     },
     "ascii-vu": {
+      "authoring": "available",
       "block": "ascii-vu",
       "category": "ascii",
       "composes": [],
@@ -2792,7 +3083,17 @@
         "chirpui-ascii-vu__readout",
         "chirpui-ascii-vu__track"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ascii-vu--animate",
+        "chirpui-ascii-vu__bracket",
+        "chirpui-ascii-vu__cell",
+        "chirpui-ascii-vu__cell--filled",
+        "chirpui-ascii-vu__cell--hot",
+        "chirpui-ascii-vu__cell--peak",
+        "chirpui-ascii-vu__label",
+        "chirpui-ascii-vu__readout",
+        "chirpui-ascii-vu__track"
+      ],
       "lineno": 21,
       "macro": "ascii_vu_meter",
       "maturity": "experimental",
@@ -2849,6 +3150,9 @@
       "slots_yielded": [],
       "template": "ascii_vu_meter.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ascii-vu--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -2858,8 +3162,9 @@
       ]
     },
     "ascii-vu-stack": {
+      "authoring": "available",
       "block": "ascii-vu-stack",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -2886,9 +3191,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "aura": {
+      "authoring": "available",
       "block": "aura",
       "category": "effect",
       "composes": [],
@@ -2967,9 +3274,11 @@
       "slots_yielded": [],
       "template": "aura.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "aura_tone": {
+      "authoring": "available",
       "block": "aura",
       "category": "effect",
       "composes": [],
@@ -2987,7 +3296,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -3000,6 +3309,7 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "accent",
         "cool",
@@ -3009,6 +3319,7 @@
       ]
     },
     "aurora": {
+      "authoring": "available",
       "block": "aurora",
       "category": "effect",
       "composes": [],
@@ -3023,7 +3334,11 @@
         "chirpui-aurora__blobs",
         "chirpui-aurora__content"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-aurora__blob",
+        "chirpui-aurora__blobs",
+        "chirpui-aurora__content"
+      ],
       "lineno": 16,
       "macro": "aurora",
       "maturity": "experimental",
@@ -3054,6 +3369,7 @@
       "slots_yielded": [],
       "template": "aurora.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "intense",
@@ -3061,6 +3377,7 @@
       ]
     },
     "avatar": {
+      "authoring": "available",
       "block": "avatar",
       "category": "data-display",
       "composes": [],
@@ -3140,9 +3457,11 @@
       "slots_yielded": [],
       "template": "avatar.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "avatar-stack": {
+      "authoring": "available",
       "block": "avatar-stack",
       "category": "data-display",
       "composes": [],
@@ -3193,9 +3512,11 @@
       "slots_yielded": [],
       "template": "avatar_stack.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "badge": {
+      "authoring": "available",
       "block": "badge",
       "category": "feedback",
       "composes": [],
@@ -3278,6 +3599,7 @@
         "--chirpui-badge-color",
         "--chirpui-badge-text"
       ],
+      "trim_emits": [],
       "variants": [
         "custom",
         "custom-solid",
@@ -3290,6 +3612,7 @@
       ]
     },
     "band": {
+      "authoring": "available",
       "block": "band",
       "category": "marketing",
       "composes": [],
@@ -3364,6 +3687,9 @@
         "--chirpui-band-padding",
         "--chirpui-band-radius"
       ],
+      "trim_emits": [
+        "chirpui-band--default"
+      ],
       "variants": [
         "accent",
         "default",
@@ -3373,6 +3699,7 @@
       ]
     },
     "bar-chart": {
+      "authoring": "available",
       "block": "bar-chart",
       "category": "data-display",
       "composes": [],
@@ -3454,6 +3781,7 @@
       "slots_yielded": [],
       "template": "bar_chart.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "gold",
@@ -3463,8 +3791,9 @@
       ]
     },
     "bento": {
+      "authoring": "available",
       "block": "bento",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -3498,11 +3827,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "bg-pattern": {
+      "authoring": "available",
       "block": "bg-pattern",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -3541,11 +3872,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "blade": {
+      "authoring": "available",
       "block": "blade",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -3572,11 +3905,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "block": {
+      "authoring": "preferred",
       "block": "block",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -3598,7 +3933,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -3611,9 +3946,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "border-beam": {
+      "authoring": "available",
       "block": "border-beam",
       "category": "effect",
       "composes": [],
@@ -3628,7 +3965,10 @@
         "chirpui-border-beam__beam",
         "chirpui-border-beam__content"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-border-beam__beam",
+        "chirpui-border-beam__content"
+      ],
       "lineno": 16,
       "macro": "border_beam",
       "maturity": "experimental",
@@ -3679,6 +4019,12 @@
       "slots_yielded": [],
       "template": "border_beam.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-border-beam--default",
+        "chirpui-border-beam--lg",
+        "chirpui-border-beam--md",
+        "chirpui-border-beam--sm"
+      ],
       "variants": [
         "",
         "accent",
@@ -3688,8 +4034,9 @@
       ]
     },
     "bounce-in": {
+      "authoring": "available",
       "block": "bounce-in",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -3713,9 +4060,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "breadcrumbs": {
+      "authoring": "available",
       "block": "breadcrumbs",
       "category": "navigation",
       "composes": [],
@@ -3728,7 +4077,12 @@
         "chirpui-breadcrumbs__link",
         "chirpui-breadcrumbs__list"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-breadcrumbs__current",
+        "chirpui-breadcrumbs__item",
+        "chirpui-breadcrumbs__link",
+        "chirpui-breadcrumbs__list"
+      ],
       "lineno": 14,
       "macro": "breadcrumbs",
       "maturity": "stable",
@@ -3755,9 +4109,13 @@
       "slots_yielded": [],
       "template": "breadcrumbs.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-breadcrumbs"
+      ],
       "variants": []
     },
     "btn": {
+      "authoring": "available",
       "block": "btn",
       "category": "control",
       "composes": [],
@@ -3785,7 +4143,9 @@
         "chirpui-btn__label",
         "chirpui-btn__spinner"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-btn--secondary"
+      ],
       "lineno": 12,
       "macro": "btn",
       "maturity": "stable",
@@ -3953,6 +4313,10 @@
         "--chirpui-btn-color",
         "--chirpui-btn-radius"
       ],
+      "trim_emits": [
+        "chirpui-btn--lg",
+        "chirpui-btn--md"
+      ],
       "variants": [
         "",
         "danger",
@@ -3963,8 +4327,9 @@
       ]
     },
     "btn-group": {
+      "authoring": "available",
       "block": "btn-group",
-      "category": "auto",
+      "category": "control",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -3984,7 +4349,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -3997,11 +4362,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "bulk-bar": {
+      "authoring": "available",
       "block": "bulk-bar",
-      "category": "auto",
+      "category": "control",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -4028,9 +4395,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "calendar": {
+      "authoring": "available",
       "block": "calendar",
       "category": "data-display",
       "composes": [],
@@ -4060,7 +4429,9 @@
         "chirpui-calendar__title",
         "chirpui-calendar__weekdays"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-calendar__day--empty"
+      ],
       "lineno": 14,
       "macro": "calendar",
       "maturity": "stable",
@@ -4102,9 +4473,11 @@
       "slots_yielded": [],
       "template": "calendar.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "callout": {
+      "authoring": "available",
       "block": "callout",
       "category": "feedback",
       "composes": [],
@@ -4185,9 +4558,11 @@
       "slots_yielded": [],
       "template": "callout.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "card": {
+      "authoring": "available",
       "block": "card",
       "category": "container",
       "composes": [],
@@ -4237,7 +4612,13 @@
         "chirpui-card__title",
         "chirpui-card__top-meta"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-card--feature",
+        "chirpui-card--glass",
+        "chirpui-card--horizontal",
+        "chirpui-card--media",
+        "chirpui-card--stats"
+      ],
       "lineno": 33,
       "macro": "card",
       "maturity": "stable",
@@ -4345,9 +4726,11 @@
       "slots_yielded": [],
       "template": "card.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "carousel": {
+      "authoring": "available",
       "block": "carousel",
       "category": "interactive",
       "composes": [],
@@ -4412,9 +4795,11 @@
       "slots_yielded": [],
       "template": "carousel.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "channel-card": {
+      "authoring": "available",
       "block": "channel-card",
       "category": "data-display",
       "composes": [],
@@ -4497,9 +4882,11 @@
       "slots_yielded": [],
       "template": "channel_card.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "chapter-item": {
+      "authoring": "available",
       "block": "chapter-item",
       "category": "data-display",
       "composes": [],
@@ -4553,9 +4940,11 @@
       "slots_yielded": [],
       "template": "chapter_list.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "chapter-list": {
+      "authoring": "available",
       "block": "chapter-list",
       "category": "data-display",
       "composes": [],
@@ -4612,9 +5001,11 @@
       "slots_yielded": [],
       "template": "chapter_list.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "chat-input": {
+      "authoring": "available",
       "block": "chat-input",
       "category": "form",
       "composes": [],
@@ -4682,9 +5073,11 @@
       "slots_yielded": [],
       "template": "chat_input.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "chat-layout": {
+      "authoring": "available",
       "block": "chat-layout",
       "category": "layout",
       "composes": [],
@@ -4755,11 +5148,13 @@
         "--chirpui-chat-layout-messages-padding",
         "--chirpui-chat-layout-min-height"
       ],
+      "trim_emits": [],
       "variants": []
     },
     "children": {
+      "authoring": "available",
       "block": "children",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -4784,7 +5179,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -4797,9 +5192,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-children"
+      ],
       "variants": []
     },
     "chip": {
+      "authoring": "available",
       "block": "chip",
       "category": "data-display",
       "composes": [],
@@ -4863,9 +5262,11 @@
       "slots_yielded": [],
       "template": "chip_group.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "chip-group": {
+      "authoring": "available",
       "block": "chip-group",
       "category": "data-display",
       "composes": [],
@@ -4906,11 +5307,13 @@
       "slots_yielded": [],
       "template": "chip_group.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "clamp-2": {
+      "authoring": "compatibility",
       "block": "clamp-2",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -4921,7 +5324,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -4934,11 +5337,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "clamp-3": {
+      "authoring": "compatibility",
       "block": "clamp-3",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -4949,7 +5354,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -4962,11 +5367,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "click-jello": {
+      "authoring": "available",
       "block": "click-jello",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -4990,11 +5397,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "click-wobble": {
+      "authoring": "available",
       "block": "click-wobble",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -5018,11 +5427,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "cluster": {
+      "authoring": "preferred",
       "block": "cluster",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -5044,7 +5455,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -5057,11 +5468,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "code": {
+      "authoring": "available",
       "block": "code",
-      "category": "auto",
+      "category": "content",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -5072,7 +5485,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -5085,11 +5498,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "code-block": {
+      "authoring": "available",
       "block": "code-block",
-      "category": "auto",
+      "category": "content",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -5103,7 +5518,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -5116,11 +5531,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "code-block-wrapper": {
+      "authoring": "available",
       "block": "code-block-wrapper",
-      "category": "auto",
+      "category": "content",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -5131,7 +5548,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -5144,9 +5561,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "collapse": {
+      "authoring": "available",
       "block": "collapse",
       "category": "interactive",
       "composes": [],
@@ -5203,11 +5622,13 @@
       "slots_yielded": [],
       "template": "collapse.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "command-bar": {
+      "authoring": "available",
       "block": "command-bar",
-      "category": "auto",
+      "category": "control",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -5218,7 +5639,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -5231,9 +5652,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "command-palette": {
+      "authoring": "available",
       "block": "command-palette",
       "category": "interactive",
       "composes": [],
@@ -5301,9 +5724,11 @@
       "slots_yielded": [],
       "template": "command_palette.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "comment": {
+      "authoring": "available",
       "block": "comment",
       "category": "data-display",
       "composes": [],
@@ -5397,11 +5822,13 @@
       "slots_yielded": [],
       "template": "comment.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "comment-thread": {
+      "authoring": "available",
       "block": "comment-thread",
-      "category": "auto",
+      "category": "content",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -5412,7 +5839,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -5425,9 +5852,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "composer-shell": {
+      "authoring": "available",
       "block": "composer-shell",
       "category": "form",
       "composes": [],
@@ -5496,9 +5925,11 @@
       "slots_yielded": [],
       "template": "composer_shell.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "confetti": {
+      "authoring": "available",
       "block": "confetti",
       "category": "effect",
       "composes": [],
@@ -5513,7 +5944,13 @@
         "chirpui-confetti__piece--square",
         "chirpui-confetti__piece--strip"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-confetti__piece",
+        "chirpui-confetti__piece--active",
+        "chirpui-confetti__piece--circle",
+        "chirpui-confetti__piece--square",
+        "chirpui-confetti__piece--strip"
+      ],
       "lineno": 15,
       "macro": "confetti",
       "maturity": "experimental",
@@ -5547,11 +5984,13 @@
       "slots_yielded": [],
       "template": "confetti.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         ""
       ]
     },
     "config-row": {
+      "authoring": "available",
       "block": "config-row",
       "category": "container",
       "composes": [],
@@ -5638,11 +6077,13 @@
       "slots_yielded": [],
       "template": "config_row.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "config-row-list": {
+      "authoring": "available",
       "block": "config-row-list",
-      "category": "auto",
+      "category": "container",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -5660,7 +6101,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -5673,9 +6114,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "confirm": {
+      "authoring": "available",
       "block": "confirm",
       "category": "feedback",
       "composes": [],
@@ -5688,7 +6131,11 @@
         "chirpui-confirm__icon",
         "chirpui-confirm__message"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-confirm__footer",
+        "chirpui-confirm__icon",
+        "chirpui-confirm__message"
+      ],
       "lineno": 18,
       "macro": "confirm_dialog",
       "maturity": "stable",
@@ -5780,12 +6227,17 @@
       "slots_yielded": [],
       "template": "confirm.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-confirm",
+        "chirpui-confirm--default"
+      ],
       "variants": [
         "danger",
         "default"
       ]
     },
     "constellation": {
+      "authoring": "available",
       "block": "constellation",
       "category": "effect",
       "composes": [],
@@ -5805,7 +6257,13 @@
         "chirpui-constellation__field",
         "chirpui-constellation__star"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-constellation--dense",
+        "chirpui-constellation--sparse",
+        "chirpui-constellation__content",
+        "chirpui-constellation__field",
+        "chirpui-constellation__star"
+      ],
       "lineno": 16,
       "macro": "constellation",
       "maturity": "experimental",
@@ -5841,6 +6299,9 @@
       "slots_yielded": [],
       "template": "constellation.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-constellation--default"
+      ],
       "variants": [
         "",
         "cool",
@@ -5850,8 +6311,9 @@
       ]
     },
     "container": {
+      "authoring": "preferred",
       "block": "container",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -5862,7 +6324,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -5875,9 +6337,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "conversation-item": {
+      "authoring": "available",
       "block": "conversation-item",
       "category": "navigation",
       "composes": [],
@@ -5965,9 +6429,11 @@
       "slots_yielded": [],
       "template": "conversation_item.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "conversation-list": {
+      "authoring": "available",
       "block": "conversation-list",
       "category": "navigation",
       "composes": [],
@@ -6003,9 +6469,11 @@
       "slots_yielded": [],
       "template": "conversation_list.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "copy-btn": {
+      "authoring": "available",
       "block": "copy-btn",
       "category": "control",
       "composes": [],
@@ -6054,6 +6522,7 @@
       "slots_yielded": [],
       "template": "copy_button.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "assistant",
@@ -6062,8 +6531,9 @@
       ]
     },
     "counter-badge": {
+      "authoring": "available",
       "block": "counter-badge",
-      "category": "auto",
+      "category": "feedback",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -6079,7 +6549,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -6092,9 +6562,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "description_list": {
+      "authoring": "available",
       "block": "description-list",
       "category": "layout",
       "composes": [],
@@ -6172,14 +6644,19 @@
       "slots_yielded": [],
       "template": "description_list.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-description-list--horizontal",
+        "chirpui-description-list--stacked"
+      ],
       "variants": [
         "horizontal",
         "stacked"
       ]
     },
     "display": {
+      "authoring": "compatibility",
       "block": "display",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -6193,7 +6670,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -6206,9 +6683,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "divider": {
+      "authoring": "available",
       "block": "divider",
       "category": "layout",
       "composes": [],
@@ -6278,11 +6757,13 @@
       "slots_yielded": [],
       "template": "divider.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "dl": {
+      "authoring": "available",
       "block": "dl",
-      "category": "auto",
+      "category": "data-display",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -6331,7 +6812,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -6344,9 +6825,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "dnd": {
+      "authoring": "available",
       "block": "dnd",
       "category": "interactive",
       "composes": [],
@@ -6377,7 +6860,12 @@
         "chirpui-dnd__item--dragging",
         "chirpui-dnd__item--over"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-dnd__card--dragging",
+        "chirpui-dnd__column-body--over",
+        "chirpui-dnd__item--dragging",
+        "chirpui-dnd__item--over"
+      ],
       "lineno": 34,
       "macro": "dnd_list",
       "maturity": "stable",
@@ -6416,9 +6904,11 @@
       "slots_yielded": [],
       "template": "dnd.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "dock": {
+      "authoring": "available",
       "block": "dock",
       "category": "effect",
       "composes": [],
@@ -6434,7 +6924,11 @@
         "chirpui-dock__item",
         "chirpui-dock__item--active"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-dock__indicator",
+        "chirpui-dock__item",
+        "chirpui-dock__item--active"
+      ],
       "lineno": 16,
       "macro": "dock",
       "maturity": "experimental",
@@ -6480,6 +6974,10 @@
       "slots_yielded": [],
       "template": "dock.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-dock--default",
+        "chirpui-dock--md"
+      ],
       "variants": [
         "",
         "default",
@@ -6487,6 +6985,7 @@
       ]
     },
     "document-header": {
+      "authoring": "available",
       "block": "document-header",
       "category": "layout",
       "composes": [
@@ -6588,9 +7087,11 @@
       ],
       "template": "document_header.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "donut": {
+      "authoring": "available",
       "block": "donut",
       "category": "data-display",
       "composes": [],
@@ -6679,6 +7180,7 @@
         "--chirpui-donut-pct",
         "--chirpui-donut-size"
       ],
+      "trim_emits": [],
       "variants": [
         "",
         "gold",
@@ -6687,6 +7189,7 @@
       ]
     },
     "drawer": {
+      "authoring": "available",
       "block": "drawer",
       "category": "overlay",
       "composes": [],
@@ -6756,12 +7259,14 @@
       "slots_yielded": [],
       "template": "drawer.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "left",
         "right"
       ]
     },
     "dropdown": {
+      "authoring": "available",
       "block": "dropdown",
       "category": "navigation",
       "composes": [],
@@ -6787,7 +7292,15 @@
         "chirpui-dropdown__trigger--select",
         "chirpui-dropdown__trigger--split"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-dropdown--split",
+        "chirpui-dropdown__caret",
+        "chirpui-dropdown__divider",
+        "chirpui-dropdown__icon",
+        "chirpui-dropdown__split-primary",
+        "chirpui-dropdown__trigger--select",
+        "chirpui-dropdown__trigger--split"
+      ],
       "lineno": 17,
       "macro": "dropdown",
       "maturity": "stable",
@@ -6822,9 +7335,11 @@
       "slots_yielded": [],
       "template": "dropdown.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "dropdown__item": {
+      "authoring": "available",
       "block": "dropdown__item",
       "category": "navigation",
       "composes": [],
@@ -6836,7 +7351,9 @@
         "chirpui-dropdown__item--danger",
         "chirpui-dropdown__item--selected"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-dropdown__item--selected"
+      ],
       "lineno": 12,
       "macro": "dropdown_menu",
       "maturity": "stable",
@@ -6870,6 +7387,10 @@
       "slots_yielded": [],
       "template": "dropdown_menu.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-dropdown__item--default",
+        "chirpui-dropdown__item--muted"
+      ],
       "variants": [
         "danger",
         "default",
@@ -6877,6 +7398,7 @@
       ]
     },
     "empty-panel-state": {
+      "authoring": "available",
       "block": "empty-panel-state",
       "category": "feedback",
       "composes": [
@@ -6984,9 +7506,11 @@
       ],
       "template": "empty_panel_state.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "empty-state": {
+      "authoring": "available",
       "block": "empty-state",
       "category": "feedback",
       "composes": [],
@@ -7083,9 +7607,11 @@
       "slots_yielded": [],
       "template": "empty.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "entity-header": {
+      "authoring": "available",
       "block": "entity-header",
       "category": "layout",
       "composes": [],
@@ -7148,9 +7674,11 @@
       "slots_yielded": [],
       "template": "entity_header.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "feature-section": {
+      "authoring": "available",
       "block": "feature-section",
       "category": "marketing",
       "composes": [],
@@ -7238,6 +7766,7 @@
         "--chirpui-feature-section-columns",
         "--chirpui-feature-section-gap"
       ],
+      "trim_emits": [],
       "variants": [
         "balanced",
         "halo",
@@ -7248,6 +7777,7 @@
       ]
     },
     "feature-stack": {
+      "authoring": "available",
       "block": "feature-stack",
       "category": "marketing",
       "composes": [],
@@ -7283,9 +7813,11 @@
       "slots_yielded": [],
       "template": "feature_section.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "field": {
+      "authoring": "available",
       "block": "field",
       "category": "form",
       "composes": [],
@@ -7335,7 +7867,10 @@
         "chirpui-field__range-value",
         "chirpui-field__required"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-field__input--multi",
+        "chirpui-field__label--inline"
+      ],
       "lineno": 65,
       "macro": "field_wrapper",
       "maturity": "stable",
@@ -7398,6 +7933,7 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "checkbox",
         "dense",
@@ -7409,6 +7945,7 @@
       ]
     },
     "fieldset": {
+      "authoring": "available",
       "block": "fieldset",
       "category": "form",
       "composes": [],
@@ -7454,9 +7991,11 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "file-tree": {
+      "authoring": "available",
       "block": "file-tree",
       "category": "data-display",
       "composes": [
@@ -7548,11 +8087,13 @@
       ],
       "template": "file_tree.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "filter-bar": {
+      "authoring": "available",
       "block": "filter-bar",
-      "category": "auto",
+      "category": "form",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7565,7 +8106,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7578,9 +8119,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-filter-bar"
+      ],
       "variants": []
     },
     "filter-group": {
+      "authoring": "available",
       "block": "filter-group",
       "category": "control",
       "composes": [],
@@ -7631,9 +8176,11 @@
       "slots_yielded": [],
       "template": "filter_chips.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "filter-row": {
+      "authoring": "available",
       "block": "filter-row",
       "category": "control",
       "composes": [],
@@ -7699,11 +8246,13 @@
       "slots_yielded": [],
       "template": "filter_bar.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "flow": {
+      "authoring": "preferred",
       "block": "flow",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7721,7 +8270,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7734,11 +8283,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "focus-ring": {
+      "authoring": "compatibility",
       "block": "focus-ring",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7749,7 +8300,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7762,11 +8313,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "font-2xl": {
+      "authoring": "compatibility",
       "block": "font-2xl",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7777,7 +8330,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7790,11 +8343,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "font-base": {
+      "authoring": "compatibility",
       "block": "font-base",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7805,7 +8360,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7818,11 +8373,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "font-lg": {
+      "authoring": "compatibility",
       "block": "font-lg",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7833,7 +8390,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7846,11 +8403,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "font-medium": {
+      "authoring": "compatibility",
       "block": "font-medium",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7861,7 +8420,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7874,11 +8433,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "font-mono": {
+      "authoring": "compatibility",
       "block": "font-mono",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7889,7 +8450,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7902,11 +8463,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "font-sm": {
+      "authoring": "compatibility",
       "block": "font-sm",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7917,7 +8480,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7930,11 +8493,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "font-xl": {
+      "authoring": "compatibility",
       "block": "font-xl",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7945,7 +8510,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7958,11 +8523,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "font-xs": {
+      "authoring": "compatibility",
       "block": "font-xs",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -7973,7 +8540,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -7986,9 +8553,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "form-actions": {
+      "authoring": "available",
       "block": "form-actions",
       "category": "form",
       "composes": [],
@@ -8032,9 +8601,11 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "form-error-summary": {
+      "authoring": "available",
       "block": "form-error-summary",
       "category": "form",
       "composes": [],
@@ -8083,9 +8654,11 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "fragment-island": {
+      "authoring": "internal",
       "block": "fragment-island",
       "category": "infrastructure",
       "composes": [],
@@ -8149,11 +8722,13 @@
       "slots_yielded": [],
       "template": "fragment_island.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "frame": {
+      "authoring": "preferred",
       "block": "frame",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -8179,7 +8754,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -8192,9 +8767,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "glitch": {
+      "authoring": "available",
       "block": "glitch",
       "category": "effect",
       "composes": [],
@@ -8243,6 +8820,7 @@
       "slots_yielded": [],
       "template": "glitch_text.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "intense",
@@ -8250,6 +8828,7 @@
       ]
     },
     "glow-card": {
+      "authoring": "available",
       "block": "glow-card",
       "category": "effect",
       "composes": [],
@@ -8263,7 +8842,10 @@
         "chirpui-glow-card__content",
         "chirpui-glow-card__glow"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-glow-card__content",
+        "chirpui-glow-card__glow"
+      ],
       "lineno": 18,
       "macro": "glow_card",
       "maturity": "experimental",
@@ -8316,6 +8898,12 @@
       "slots_yielded": [],
       "template": "glow_card.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-glow-card--default",
+        "chirpui-glow-card--lg",
+        "chirpui-glow-card--md",
+        "chirpui-glow-card--sm"
+      ],
       "variants": [
         "",
         "accent",
@@ -8324,6 +8912,7 @@
       ]
     },
     "gradient-text": {
+      "authoring": "available",
       "block": "gradient-text",
       "category": "effect",
       "composes": [],
@@ -8377,9 +8966,11 @@
       "slots_yielded": [],
       "template": "gradient_text.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "grain": {
+      "authoring": "available",
       "block": "grain",
       "category": "effect",
       "composes": [],
@@ -8393,7 +8984,10 @@
         "chirpui-grain--heavy",
         "chirpui-grain--subtle"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-grain--animated",
+        "chirpui-grain--dot"
+      ],
       "lineno": 16,
       "macro": "grain",
       "maturity": "experimental",
@@ -8444,6 +9038,7 @@
       "slots_yielded": [],
       "template": "grain.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "heavy",
@@ -8451,8 +9046,9 @@
       ]
     },
     "grid": {
+      "authoring": "preferred",
       "block": "grid",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -8492,7 +9088,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -8505,9 +9101,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "hero": {
+      "authoring": "available",
       "block": "hero",
       "category": "layout",
       "composes": [],
@@ -8533,7 +9131,19 @@
         "chirpui-hero__subtitle",
         "chirpui-hero__title"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-hero--page",
+        "chirpui-hero--page-minimal",
+        "chirpui-hero__action",
+        "chirpui-hero__actions",
+        "chirpui-hero__content",
+        "chirpui-hero__eyebrow",
+        "chirpui-hero__footer",
+        "chirpui-hero__inner",
+        "chirpui-hero__metadata",
+        "chirpui-hero__subtitle",
+        "chirpui-hero__title"
+      ],
       "lineno": 18,
       "macro": "hero",
       "maturity": "stable",
@@ -8578,6 +9188,7 @@
       "slots_yielded": [],
       "template": "hero.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "animated-gradient",
         "gradient",
@@ -8587,6 +9198,7 @@
       ]
     },
     "hero-effects": {
+      "authoring": "available",
       "block": "hero-effects",
       "category": "effect",
       "composes": [],
@@ -8630,9 +9242,11 @@
       "slots_yielded": [],
       "template": "hero_effects.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "holy-light": {
+      "authoring": "available",
       "block": "holy-light",
       "category": "effect",
       "composes": [],
@@ -8656,7 +9270,17 @@
         "chirpui-holy-light__layers",
         "chirpui-holy-light__mote"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-holy-light--intense",
+        "chirpui-holy-light--subtle",
+        "chirpui-holy-light__content",
+        "chirpui-holy-light__layer",
+        "chirpui-holy-light__layer--far",
+        "chirpui-holy-light__layer--mid",
+        "chirpui-holy-light__layer--near",
+        "chirpui-holy-light__layers",
+        "chirpui-holy-light__mote"
+      ],
       "lineno": 16,
       "macro": "holy_light",
       "maturity": "experimental",
@@ -8692,6 +9316,9 @@
       "slots_yielded": [],
       "template": "holy_light.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-holy-light--default"
+      ],
       "variants": [
         "",
         "default",
@@ -8701,8 +9328,9 @@
       ]
     },
     "hover-jello": {
+      "authoring": "available",
       "block": "hover-jello",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -8726,11 +9354,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "hover-rubber": {
+      "authoring": "available",
       "block": "hover-rubber",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -8754,11 +9384,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "hover-wobble": {
+      "authoring": "available",
       "block": "hover-wobble",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -8782,9 +9414,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "icon-btn": {
+      "authoring": "available",
       "block": "icon-btn",
       "category": "control",
       "composes": [],
@@ -8891,6 +9525,10 @@
       "slots_yielded": [],
       "template": "icon_btn.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-icon-btn--default",
+        "chirpui-icon-btn--md"
+      ],
       "variants": [
         "",
         "danger",
@@ -8900,6 +9538,7 @@
       ]
     },
     "index-card": {
+      "authoring": "available",
       "block": "index-card",
       "category": "navigation",
       "composes": [],
@@ -8960,9 +9599,11 @@
       "slots_yielded": [],
       "template": "index_card.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "infinite-scroll": {
+      "authoring": "available",
       "block": "infinite-scroll",
       "category": "interactive",
       "composes": [],
@@ -8975,7 +9616,9 @@
         "chirpui-infinite-scroll__loading",
         "chirpui-infinite-scroll__loading--skeleton"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-infinite-scroll__loading--skeleton"
+      ],
       "lineno": 12,
       "macro": "infinite_scroll",
       "maturity": "stable",
@@ -9025,11 +9668,15 @@
       "slots_yielded": [],
       "template": "infinite_scroll.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-infinite-scroll"
+      ],
       "variants": []
     },
     "inline": {
+      "authoring": "available",
       "block": "inline",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -9040,7 +9687,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -9053,9 +9700,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "inline-counter": {
+      "authoring": "available",
       "block": "inline-counter",
       "category": "data-display",
       "composes": [],
@@ -9114,9 +9763,11 @@
       "slots_yielded": [],
       "template": "inline_counter.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "inline-edit": {
+      "authoring": "available",
       "block": "inline-edit",
       "category": "form",
       "composes": [],
@@ -9195,12 +9846,14 @@
       "slots_yielded": [],
       "template": "inline_edit_field.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "display",
         "edit"
       ]
     },
     "input-group": {
+      "authoring": "available",
       "block": "input-group",
       "category": "form",
       "composes": [],
@@ -9300,9 +9953,11 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "install-snippet": {
+      "authoring": "available",
       "block": "install-snippet",
       "category": "content",
       "composes": [],
@@ -9365,11 +10020,13 @@
       "slots_yielded": [],
       "template": "code.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "jello": {
+      "authoring": "available",
       "block": "jello",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -9393,11 +10050,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "key-value-form": {
+      "authoring": "available",
       "block": "key-value-form",
-      "category": "auto",
+      "category": "form",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -9416,7 +10075,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -9429,9 +10088,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-key-value-form"
+      ],
       "variants": []
     },
     "label-overline": {
+      "authoring": "available",
       "block": "label-overline",
       "category": "content",
       "composes": [],
@@ -9481,9 +10144,11 @@
       "slots_yielded": [],
       "template": "label_overline.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "latest-line": {
+      "authoring": "available",
       "block": "latest-line",
       "category": "data-display",
       "composes": [],
@@ -9559,11 +10224,13 @@
       "slots_yielded": [],
       "template": "latest_line.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "layer": {
+      "authoring": "preferred",
       "block": "layer",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -9595,7 +10262,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -9608,9 +10275,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "link": {
+      "authoring": "available",
       "block": "link",
       "category": "navigation",
       "composes": [],
@@ -9657,9 +10326,11 @@
       "slots_yielded": [],
       "template": "link.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "list": {
+      "authoring": "available",
       "block": "list",
       "category": "data-display",
       "composes": [],
@@ -9718,11 +10389,13 @@
       "slots_yielded": [],
       "template": "list.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "list-reset": {
+      "authoring": "compatibility",
       "block": "list-reset",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -9733,7 +10406,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -9746,9 +10419,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "live-badge": {
+      "authoring": "available",
       "block": "live-badge",
       "category": "feedback",
       "composes": [],
@@ -9790,9 +10465,11 @@
       "slots_yielded": [],
       "template": "live_badge.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "logo": {
+      "authoring": "available",
       "block": "logo",
       "category": "content",
       "composes": [],
@@ -9881,9 +10558,11 @@
       "slots_yielded": [],
       "template": "logo.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "marquee": {
+      "authoring": "available",
       "block": "marquee",
       "category": "effect",
       "composes": [],
@@ -9901,7 +10580,15 @@
         "chirpui-marquee__item",
         "chirpui-marquee__track"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-marquee--fast",
+        "chirpui-marquee--slow",
+        "chirpui-marquee__fade",
+        "chirpui-marquee__fade--end",
+        "chirpui-marquee__fade--start",
+        "chirpui-marquee__item",
+        "chirpui-marquee__track"
+      ],
       "lineno": 11,
       "macro": "marquee",
       "maturity": "experimental",
@@ -9947,6 +10634,9 @@
       "slots_yielded": [],
       "template": "marquee.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-marquee--default"
+      ],
       "variants": [
         "",
         "default",
@@ -9954,8 +10644,9 @@
       ]
     },
     "mb-md": {
+      "authoring": "compatibility",
       "block": "mb-md",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -9966,7 +10657,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -9979,11 +10670,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "measure-lg": {
+      "authoring": "compatibility",
       "block": "measure-lg",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -9994,7 +10687,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -10007,11 +10700,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "measure-md": {
+      "authoring": "compatibility",
       "block": "measure-md",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -10022,7 +10717,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -10035,11 +10730,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "measure-sm": {
+      "authoring": "compatibility",
       "block": "measure-sm",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -10050,7 +10747,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -10063,9 +10760,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "media-object": {
+      "authoring": "available",
       "block": "media-object",
       "category": "layout",
       "composes": [],
@@ -10125,9 +10824,11 @@
       "slots_yielded": [],
       "template": "media_object.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "mention": {
+      "authoring": "available",
       "block": "mention",
       "category": "content",
       "composes": [],
@@ -10169,11 +10870,13 @@
       "slots_yielded": [],
       "template": "mention.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "message-reactions": {
+      "authoring": "available",
       "block": "message-reactions",
-      "category": "auto",
+      "category": "content",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -10184,7 +10887,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -10197,9 +10900,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "message-thread": {
+      "authoring": "available",
       "block": "message-thread",
       "category": "data-display",
       "composes": [],
@@ -10235,9 +10940,11 @@
       "slots_yielded": [],
       "template": "message_thread.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "message_bubble": {
+      "authoring": "available",
       "block": "message-bubble",
       "category": "layout",
       "composes": [],
@@ -10255,7 +10962,13 @@
         "chirpui-message-bubble--system",
         "chirpui-message-bubble--user"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-message-bubble--left",
+        "chirpui-message-bubble--pending",
+        "chirpui-message-bubble--read",
+        "chirpui-message-bubble--right",
+        "chirpui-message-bubble--sent"
+      ],
       "lineno": 16,
       "macro": "message_bubble",
       "maturity": "stable",
@@ -10296,6 +11009,9 @@
       "slots_yielded": [],
       "template": "message_bubble.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-message-bubble--default"
+      ],
       "variants": [
         "assistant",
         "default",
@@ -10304,6 +11020,7 @@
       ]
     },
     "meteor": {
+      "authoring": "available",
       "block": "meteor",
       "category": "effect",
       "composes": [],
@@ -10318,7 +11035,9 @@
         "chirpui-meteor--muted",
         "chirpui-meteor__streak"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-meteor__streak"
+      ],
       "lineno": 16,
       "macro": "meteor",
       "maturity": "experimental",
@@ -10354,6 +11073,9 @@
       "slots_yielded": [],
       "template": "meteor.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-meteor--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -10362,6 +11084,7 @@
       ]
     },
     "metric-card": {
+      "authoring": "available",
       "block": "metric-card",
       "category": "data-display",
       "composes": [],
@@ -10395,7 +11118,15 @@
         "chirpui-metric-card__trend-arrow",
         "chirpui-metric-card__values"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-metric-card__icon-badge--error",
+        "chirpui-metric-card__icon-badge--primary",
+        "chirpui-metric-card__icon-badge--success",
+        "chirpui-metric-card__icon-badge--warning",
+        "chirpui-metric-card__trend--down",
+        "chirpui-metric-card__trend--neutral",
+        "chirpui-metric-card__trend--up"
+      ],
       "lineno": 16,
       "macro": "metric_card",
       "maturity": "stable",
@@ -10482,9 +11213,11 @@
       "slots_yielded": [],
       "template": "metric_grid.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "metric-grid": {
+      "authoring": "available",
       "block": "metric-grid",
       "category": "layout",
       "composes": [],
@@ -10528,11 +11261,13 @@
       "slots_yielded": [],
       "template": "metric_grid.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "min-w-0": {
+      "authoring": "compatibility",
       "block": "min-w-0",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -10543,7 +11278,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -10556,9 +11291,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "modal": {
+      "authoring": "available",
       "block": "modal",
       "category": "container",
       "composes": [],
@@ -10587,7 +11324,12 @@
         "chirpui-modal__panel",
         "chirpui-modal__title"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-modal--closed",
+        "chirpui-modal--open",
+        "chirpui-modal__backdrop",
+        "chirpui-modal__panel"
+      ],
       "lineno": 18,
       "macro": "modal",
       "maturity": "stable",
@@ -10638,11 +11380,15 @@
       "slots_yielded": [],
       "template": "modal.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-modal--md"
+      ],
       "variants": []
     },
     "model-card": {
+      "authoring": "available",
       "block": "model-card",
-      "category": "auto",
+      "category": "data-display",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -10676,11 +11422,15 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-model-card"
+      ],
       "variants": []
     },
     "mt-md": {
+      "authoring": "compatibility",
       "block": "mt-md",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -10691,7 +11441,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -10704,11 +11454,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "mt-sm": {
+      "authoring": "compatibility",
       "block": "mt-sm",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -10719,7 +11471,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -10732,9 +11484,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "nav-progress": {
+      "authoring": "available",
       "block": "nav-progress",
       "category": "navigation",
       "composes": [],
@@ -10766,9 +11520,11 @@
       "slots_yielded": [],
       "template": "nav_progress.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "nav-tree": {
+      "authoring": "available",
       "block": "nav-tree",
       "category": "navigation",
       "composes": [],
@@ -10814,7 +11570,11 @@
         "chirpui-nav-tree__item--branch",
         "chirpui-nav-tree__item--child",
         "chirpui-nav-tree__item--muted",
-        "chirpui-nav-tree__item--open"
+        "chirpui-nav-tree__item--open",
+        "chirpui-nav-tree__link--active",
+        "chirpui-nav-tree__link--leaf",
+        "chirpui-nav-tree__list--nested",
+        "chirpui-nav-tree__text--leaf"
       ],
       "lineno": 28,
       "macro": "nav_tree",
@@ -10859,9 +11619,11 @@
       "slots_yielded": [],
       "template": "nav_tree.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "navbar": {
+      "authoring": "available",
       "block": "navbar",
       "category": "navigation",
       "composes": [],
@@ -10881,7 +11643,10 @@
         "chirpui-navbar__links",
         "chirpui-navbar__links--end"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-navbar__link--active",
+        "chirpui-navbar__links--end"
+      ],
       "lineno": 31,
       "macro": "navbar",
       "maturity": "stable",
@@ -10940,9 +11705,11 @@
       "slots_yielded": [],
       "template": "navbar.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "navbar-dropdown": {
+      "authoring": "available",
       "block": "navbar-dropdown",
       "category": "navigation",
       "composes": [],
@@ -11003,9 +11770,11 @@
       "slots_yielded": [],
       "template": "navbar.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "neon": {
+      "authoring": "available",
       "block": "neon",
       "category": "effect",
       "composes": [],
@@ -11023,7 +11792,10 @@
         "chirpui-neon--pulse",
         "chirpui-neon--red"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-neon--flicker",
+        "chirpui-neon--pulse"
+      ],
       "lineno": 12,
       "macro": "neon_text",
       "maturity": "experimental",
@@ -11065,6 +11837,7 @@
       "slots_yielded": [],
       "template": "neon_text.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "blue",
         "cyan",
@@ -11075,6 +11848,7 @@
       ]
     },
     "notification-dot": {
+      "authoring": "available",
       "block": "notification-dot",
       "category": "feedback",
       "composes": [],
@@ -11090,7 +11864,10 @@
         "chirpui-notification-dot__dot",
         "chirpui-notification-dot__ping"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-notification-dot__dot",
+        "chirpui-notification-dot__ping"
+      ],
       "lineno": 16,
       "macro": "notification_dot",
       "maturity": "stable",
@@ -11141,6 +11918,11 @@
       "slots_yielded": [],
       "template": "notification_dot.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-notification-dot--default",
+        "chirpui-notification-dot--error",
+        "chirpui-notification-dot--md"
+      ],
       "variants": [
         "",
         "default",
@@ -11150,8 +11932,9 @@
       ]
     },
     "number-scale": {
+      "authoring": "available",
       "block": "number-scale",
-      "category": "auto",
+      "category": "form",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -11182,9 +11965,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "number-ticker": {
+      "authoring": "available",
       "block": "number-ticker",
       "category": "effect",
       "composes": [],
@@ -11200,7 +11985,9 @@
         "chirpui-number-ticker--xl",
         "chirpui-number-ticker__value"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-number-ticker__value"
+      ],
       "lineno": 11,
       "macro": "number_ticker",
       "maturity": "experimental",
@@ -11253,6 +12040,9 @@
       "slots_yielded": [],
       "template": "number_ticker.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-number-ticker--default"
+      ],
       "variants": [
         "",
         "default",
@@ -11260,6 +12050,7 @@
       ]
     },
     "orbit": {
+      "authoring": "available",
       "block": "orbit",
       "category": "effect",
       "composes": [],
@@ -11278,7 +12069,14 @@
         "chirpui-orbit__item",
         "chirpui-orbit__ring"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-orbit--fast",
+        "chirpui-orbit--reverse",
+        "chirpui-orbit--slow",
+        "chirpui-orbit__center",
+        "chirpui-orbit__item",
+        "chirpui-orbit__ring"
+      ],
       "lineno": 16,
       "macro": "orbit",
       "maturity": "experimental",
@@ -11329,6 +12127,7 @@
       "slots_yielded": [],
       "template": "orbit.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "lg",
@@ -11337,6 +12136,7 @@
       ]
     },
     "overlay": {
+      "authoring": "available",
       "block": "overlay",
       "category": "container",
       "composes": [],
@@ -11376,6 +12176,7 @@
       "slots_yielded": [],
       "template": "overlay.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "dark",
         "gradient-bottom",
@@ -11383,6 +12184,7 @@
       ]
     },
     "page-fill": {
+      "authoring": "available",
       "block": "page-fill",
       "category": "layout",
       "composes": [],
@@ -11408,9 +12210,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "page_header": {
+      "authoring": "available",
       "block": "page-header",
       "category": "layout",
       "composes": [],
@@ -11481,12 +12285,16 @@
       "slots_yielded": [],
       "template": "layout.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-page-header--default"
+      ],
       "variants": [
         "compact",
         "default"
       ]
     },
     "page_hero": {
+      "authoring": "available",
       "block": "page-hero",
       "category": "layout",
       "composes": [],
@@ -11548,12 +12356,18 @@
       "slots_yielded": [],
       "template": "hero.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-page-hero",
+        "chirpui-page-hero--editorial",
+        "chirpui-page-hero--minimal"
+      ],
       "variants": [
         "editorial",
         "minimal"
       ]
     },
     "pagination": {
+      "authoring": "available",
       "block": "pagination",
       "category": "navigation",
       "composes": [],
@@ -11570,7 +12384,10 @@
         "chirpui-pagination__link--active",
         "chirpui-pagination__link--disabled"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-pagination__link--active",
+        "chirpui-pagination__link--disabled"
+      ],
       "lineno": 11,
       "macro": "pagination",
       "maturity": "stable",
@@ -11634,9 +12451,11 @@
       "slots_yielded": [],
       "template": "pagination.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "panel": {
+      "authoring": "available",
       "block": "panel",
       "category": "container",
       "composes": [],
@@ -11654,7 +12473,16 @@
         "chirpui-panel__subtitle",
         "chirpui-panel__title"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-panel__actions",
+        "chirpui-panel__body",
+        "chirpui-panel__body--scroll",
+        "chirpui-panel__footer",
+        "chirpui-panel__header",
+        "chirpui-panel__heading",
+        "chirpui-panel__subtitle",
+        "chirpui-panel__title"
+      ],
       "lineno": 14,
       "macro": "panel",
       "maturity": "stable",
@@ -11706,9 +12534,11 @@
       "slots_yielded": [],
       "template": "panel.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "params-table": {
+      "authoring": "available",
       "block": "params-table",
       "category": "data-display",
       "composes": [],
@@ -11739,7 +12569,15 @@
         "chirpui-params-table__title",
         "chirpui-params-table__wrap"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-params-table__code--muted",
+        "chirpui-params-table__td--default",
+        "chirpui-params-table__td--name",
+        "chirpui-params-table__td--type",
+        "chirpui-params-table__th--default",
+        "chirpui-params-table__th--name",
+        "chirpui-params-table__th--type"
+      ],
       "lineno": 13,
       "macro": "params_table",
       "maturity": "stable",
@@ -11776,9 +12614,13 @@
       "slots_yielded": [],
       "template": "params_table.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-params-table"
+      ],
       "variants": []
     },
     "particle-bg": {
+      "authoring": "available",
       "block": "particle-bg",
       "category": "effect",
       "composes": [],
@@ -11795,7 +12637,11 @@
         "chirpui-particle-bg__content",
         "chirpui-particle-bg__dot"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-particle-bg__canvas",
+        "chirpui-particle-bg__content",
+        "chirpui-particle-bg__dot"
+      ],
       "lineno": 16,
       "macro": "particle_bg",
       "maturity": "experimental",
@@ -11831,6 +12677,9 @@
       "slots_yielded": [],
       "template": "particle_bg.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-particle-bg--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -11839,8 +12688,9 @@
       ]
     },
     "placeholder-inline": {
+      "authoring": "compatibility",
       "block": "placeholder-inline",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -11851,7 +12701,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -11864,9 +12714,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "playlist": {
+      "authoring": "available",
       "block": "playlist",
       "category": "data-display",
       "composes": [],
@@ -11918,9 +12770,11 @@
       "slots_yielded": [],
       "template": "playlist.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "playlist-item": {
+      "authoring": "available",
       "block": "playlist-item",
       "category": "data-display",
       "composes": [],
@@ -11982,9 +12836,11 @@
       "slots_yielded": [],
       "template": "playlist.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "popover": {
+      "authoring": "available",
       "block": "popover",
       "category": "overlay",
       "composes": [],
@@ -12038,9 +12894,11 @@
       "slots_yielded": [],
       "template": "popover.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "post-card": {
+      "authoring": "available",
       "block": "post-card",
       "category": "data-display",
       "composes": [],
@@ -12123,9 +12981,11 @@
       "slots_yielded": [],
       "template": "post_card.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "primary-nav": {
+      "authoring": "available",
       "block": "primary-nav",
       "category": "navigation",
       "composes": [],
@@ -12186,9 +13046,11 @@
       "slots_yielded": [],
       "template": "primary_nav.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "profile-header": {
+      "authoring": "available",
       "block": "profile-header",
       "category": "data-display",
       "composes": [],
@@ -12271,11 +13133,13 @@
       "slots_yielded": [],
       "template": "profile_header.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "progress": {
+      "authoring": "available",
       "block": "progress",
-      "category": "auto",
+      "category": "feedback",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -12290,7 +13154,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -12303,9 +13167,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-progress"
+      ],
       "variants": []
     },
     "progress-bar": {
+      "authoring": "available",
       "block": "progress-bar",
       "category": "feedback",
       "composes": [],
@@ -12329,7 +13197,14 @@
         "chirpui-progress-bar__label",
         "chirpui-progress-bar__track"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-progress-bar--error",
+        "chirpui-progress-bar--info",
+        "chirpui-progress-bar--warning",
+        "chirpui-progress-bar__fill",
+        "chirpui-progress-bar__label",
+        "chirpui-progress-bar__track"
+      ],
       "lineno": 11,
       "macro": "progress_bar",
       "maturity": "stable",
@@ -12385,6 +13260,7 @@
       "slots_yielded": [],
       "template": "progress.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "custom",
         "gold",
@@ -12394,8 +13270,9 @@
       ]
     },
     "prose": {
+      "authoring": "preferred",
       "block": "prose",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -12406,7 +13283,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -12419,11 +13296,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "prose-lg": {
+      "authoring": "compatibility",
       "block": "prose-lg",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -12434,7 +13313,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -12447,11 +13326,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "prose-sm": {
+      "authoring": "compatibility",
       "block": "prose-sm",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -12462,7 +13343,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -12475,9 +13356,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "pulsing-btn": {
+      "authoring": "available",
       "block": "pulsing-btn",
       "category": "effect",
       "composes": [],
@@ -12488,7 +13371,9 @@
         "chirpui-pulsing-btn",
         "chirpui-pulsing-btn__ring"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-pulsing-btn__ring"
+      ],
       "lineno": 11,
       "macro": "pulsing_button",
       "maturity": "experimental",
@@ -12540,6 +13425,12 @@
       "slots_yielded": [],
       "template": "pulsing_button.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-pulsing-btn--danger",
+        "chirpui-pulsing-btn--default",
+        "chirpui-pulsing-btn--primary",
+        "chirpui-pulsing-btn--success"
+      ],
       "variants": [
         "",
         "danger",
@@ -12549,6 +13440,7 @@
       ]
     },
     "reaction-pill": {
+      "authoring": "available",
       "block": "reaction-pill",
       "category": "interactive",
       "composes": [],
@@ -12605,9 +13497,11 @@
       "slots_yielded": [],
       "template": "reaction_pill.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "rendered-content": {
+      "authoring": "available",
       "block": "rendered-content",
       "category": "typography",
       "composes": [],
@@ -12651,11 +13545,13 @@
       "slots_yielded": [],
       "template": "rendered_content.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "resource-card": {
+      "authoring": "available",
       "block": "resource-card",
-      "category": "auto",
+      "category": "data-display",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -12682,9 +13578,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "resource-index": {
+      "authoring": "available",
       "block": "resource-index",
       "category": "composite",
       "composes": [],
@@ -12882,11 +13780,13 @@
       "slots_yielded": [],
       "template": "resource_index.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "result-slot": {
+      "authoring": "available",
       "block": "result-slot",
-      "category": "auto",
+      "category": "feedback",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -12913,9 +13813,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "reveal-on-scroll": {
+      "authoring": "available",
       "block": "reveal-on-scroll",
       "category": "effect",
       "composes": [],
@@ -12953,9 +13855,11 @@
       "slots_yielded": [],
       "template": "reveal_on_scroll.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ripple-btn": {
+      "authoring": "available",
       "block": "ripple-btn",
       "category": "effect",
       "composes": [],
@@ -12969,7 +13873,9 @@
         "chirpui-ripple-btn--sm",
         "chirpui-ripple-btn__ripple"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-ripple-btn__ripple"
+      ],
       "lineno": 12,
       "macro": "ripple_button",
       "maturity": "experimental",
@@ -13018,6 +13924,10 @@
       "slots_yielded": [],
       "template": "ripple_button.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-ripple-btn--default",
+        "chirpui-ripple-btn--md"
+      ],
       "variants": [
         "",
         "default",
@@ -13025,6 +13935,7 @@
       ]
     },
     "route-tab": {
+      "authoring": "available",
       "block": "route-tab",
       "category": "navigation",
       "composes": [],
@@ -13042,7 +13953,9 @@
         "chirpui-route-tab__icon",
         "chirpui-route-tab__label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-route-tab--active"
+      ],
       "lineno": 7,
       "macro": "render_route_tabs",
       "maturity": "stable",
@@ -13081,11 +13994,13 @@
       "slots_yielded": [],
       "template": "route_tabs.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "route-tabs": {
+      "authoring": "available",
       "block": "route-tabs",
-      "category": "auto",
+      "category": "navigation",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -13096,7 +14011,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -13109,9 +14024,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "row-actions": {
+      "authoring": "available",
       "block": "row-actions",
       "category": "control",
       "composes": [],
@@ -13150,11 +14067,15 @@
       "slots_yielded": [],
       "template": "row_actions.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-row-actions"
+      ],
       "variants": []
     },
     "rubber-band": {
+      "authoring": "available",
       "block": "rubber-band",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -13178,9 +14099,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "rune-field": {
+      "authoring": "available",
       "block": "rune-field",
       "category": "effect",
       "composes": [],
@@ -13202,7 +14125,15 @@
         "chirpui-rune-field__layers",
         "chirpui-rune-field__rune"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-rune-field__content",
+        "chirpui-rune-field__layer",
+        "chirpui-rune-field__layer--far",
+        "chirpui-rune-field__layer--mid",
+        "chirpui-rune-field__layer--near",
+        "chirpui-rune-field__layers",
+        "chirpui-rune-field__rune"
+      ],
       "lineno": 16,
       "macro": "rune_field",
       "maturity": "experimental",
@@ -13233,6 +14164,9 @@
       "slots_yielded": [],
       "template": "rune_field.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-rune-field--default"
+      ],
       "variants": [
         "",
         "arcane",
@@ -13242,6 +14176,7 @@
       ]
     },
     "scanline": {
+      "authoring": "available",
       "block": "scanline",
       "category": "effect",
       "composes": [],
@@ -13284,6 +14219,7 @@
       "slots_yielded": [],
       "template": "scanline.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "crt",
@@ -13291,8 +14227,9 @@
       ]
     },
     "scroll-x": {
+      "authoring": "compatibility",
       "block": "scroll-x",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -13303,7 +14240,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -13316,9 +14253,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "search-bar": {
+      "authoring": "available",
       "block": "search-bar",
       "category": "form",
       "composes": [],
@@ -13448,9 +14387,13 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-search-bar"
+      ],
       "variants": []
     },
     "search-header": {
+      "authoring": "available",
       "block": "search-header",
       "category": "layout",
       "composes": [],
@@ -13576,9 +14519,13 @@
       "slots_yielded": [],
       "template": "search_header.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-search-header"
+      ],
       "variants": []
     },
     "section-collapsible": {
+      "authoring": "available",
       "block": "section-collapsible",
       "category": "layout",
       "composes": [
@@ -13638,9 +14585,13 @@
       "slots_yielded": [],
       "template": "layout.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-section-collapsible"
+      ],
       "variants": []
     },
     "section_header": {
+      "authoring": "available",
       "block": "section-header",
       "category": "layout",
       "composes": [],
@@ -13708,12 +14659,16 @@
       "slots_yielded": [],
       "template": "layout.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-section-header--default"
+      ],
       "variants": [
         "default",
         "inline"
       ]
     },
     "segmented": {
+      "authoring": "available",
       "block": "segmented",
       "category": "control",
       "composes": [],
@@ -13730,7 +14685,13 @@
         "chirpui-segmented__option",
         "chirpui-segmented__option--active"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-segmented__icon",
+        "chirpui-segmented__input",
+        "chirpui-segmented__label",
+        "chirpui-segmented__option",
+        "chirpui-segmented__option--active"
+      ],
       "lineno": 20,
       "macro": "segmented_control",
       "maturity": "stable",
@@ -13772,9 +14733,13 @@
       "slots_yielded": [],
       "template": "segmented_control.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-segmented--md"
+      ],
       "variants": []
     },
     "selection-bar": {
+      "authoring": "available",
       "block": "selection-bar",
       "category": "control",
       "composes": [],
@@ -13833,9 +14798,11 @@
       "slots_yielded": [],
       "template": "selection_bar.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "settings-row": {
+      "authoring": "available",
       "block": "settings-row",
       "category": "container",
       "composes": [],
@@ -13894,9 +14861,11 @@
       "slots_yielded": [],
       "template": "settings_row.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "settings-row-list": {
+      "authoring": "available",
       "block": "settings-row-list",
       "category": "container",
       "composes": [],
@@ -13914,7 +14883,10 @@
         "chirpui-settings-row-list--on-muted",
         "chirpui-settings-row-list--relaxed"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-settings-row-list--on-accent",
+        "chirpui-settings-row-list--on-muted"
+      ],
       "lineno": 17,
       "macro": "settings_row_list",
       "maturity": "stable",
@@ -13959,9 +14931,11 @@
       "slots_yielded": [],
       "template": "settings_row.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "shell-action-form": {
+      "authoring": "available",
       "block": "shell-action-form",
       "category": "layout",
       "composes": [],
@@ -13987,9 +14961,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "shell-actions": {
+      "authoring": "available",
       "block": "shell-actions",
       "category": "layout",
       "composes": [],
@@ -14029,9 +15005,11 @@
       "slots_yielded": [],
       "template": "shell_actions.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "shell-section": {
+      "authoring": "available",
       "block": "shell-section",
       "category": "layout",
       "composes": [],
@@ -14062,9 +15040,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "shimmer-btn": {
+      "authoring": "available",
       "block": "shimmer-btn",
       "category": "effect",
       "composes": [],
@@ -14078,7 +15058,9 @@
         "chirpui-shimmer-btn--sm",
         "chirpui-shimmer-btn__shimmer"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-shimmer-btn__shimmer"
+      ],
       "lineno": 12,
       "macro": "shimmer_button",
       "maturity": "experimental",
@@ -14155,6 +15137,10 @@
       "slots_yielded": [],
       "template": "shimmer_button.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-shimmer-btn--default",
+        "chirpui-shimmer-btn--md"
+      ],
       "variants": [
         "",
         "default",
@@ -14162,6 +15148,7 @@
       ]
     },
     "sidebar": {
+      "authoring": "available",
       "block": "sidebar",
       "category": "navigation",
       "composes": [],
@@ -14191,7 +15178,11 @@
         "chirpui-sidebar__section-links",
         "chirpui-sidebar__section-title"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-sidebar__footer",
+        "chirpui-sidebar__link--active",
+        "chirpui-sidebar__section-links"
+      ],
       "lineno": 33,
       "macro": "sidebar",
       "maturity": "stable",
@@ -14233,9 +15224,11 @@
         "--chirpui-sidebar-link-gap",
         "--chirpui-sidebar-section-gap"
       ],
+      "trim_emits": [],
       "variants": []
     },
     "sidebar-toggle": {
+      "authoring": "available",
       "block": "sidebar-toggle",
       "category": "navigation",
       "composes": [],
@@ -14272,9 +15265,11 @@
       "slots_yielded": [],
       "template": "sidebar.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "signature": {
+      "authoring": "available",
       "block": "signature",
       "category": "content",
       "composes": [],
@@ -14319,9 +15314,11 @@
       "slots_yielded": [],
       "template": "signature.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "site-footer": {
+      "authoring": "available",
       "block": "site-footer",
       "category": "marketing",
       "composes": [],
@@ -14355,7 +15352,9 @@
         "chirpui-site-footer__rule",
         "chirpui-site-footer__rule-line"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-site-footer__link--external"
+      ],
       "lineno": 32,
       "macro": "site_footer",
       "maturity": "experimental",
@@ -14398,6 +15397,9 @@
         "--chirpui-site-footer-max-width",
         "--chirpui-site-footer-padding-inline"
       ],
+      "trim_emits": [
+        "chirpui-site-footer--columns"
+      ],
       "variants": [
         "centered",
         "columns",
@@ -14405,6 +15407,7 @@
       ]
     },
     "site-header": {
+      "authoring": "available",
       "block": "site-header",
       "category": "marketing",
       "composes": [],
@@ -14431,7 +15434,10 @@
         "chirpui-site-header__nav-end",
         "chirpui-site-header__tools"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-site-header__inner--center-brand",
+        "chirpui-site-header__inner--center-nav"
+      ],
       "lineno": 37,
       "macro": "site_header",
       "maturity": "experimental",
@@ -14500,6 +15506,7 @@
         "--chirpui-site-header-max-width",
         "--chirpui-site-header-padding-inline"
       ],
+      "trim_emits": [],
       "variants": [
         "glass",
         "solid",
@@ -14507,6 +15514,7 @@
       ]
     },
     "site-nav-link": {
+      "authoring": "available",
       "block": "site-nav",
       "category": "marketing",
       "composes": [],
@@ -14524,7 +15532,10 @@
         "chirpui-site-nav__link--active",
         "chirpui-site-nav__link--external"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-site-nav__link--active",
+        "chirpui-site-nav__link--external"
+      ],
       "lineno": 63,
       "macro": "site_nav_link",
       "maturity": "experimental",
@@ -14576,9 +15587,13 @@
       "slots_yielded": [],
       "template": "site_header.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-site-nav"
+      ],
       "variants": []
     },
     "site-shell": {
+      "authoring": "available",
       "block": "site-shell",
       "category": "marketing",
       "composes": [],
@@ -14628,9 +15643,11 @@
       "tokens": [
         "--chirpui-site-shell-bg"
       ],
+      "trim_emits": [],
       "variants": []
     },
     "skeleton": {
+      "authoring": "available",
       "block": "skeleton",
       "category": "feedback",
       "composes": [],
@@ -14646,7 +15663,11 @@
         "chirpui-skeleton--text",
         "chirpui-skeleton__line"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-skeleton--card-img",
+        "chirpui-skeleton--card-line",
+        "chirpui-skeleton__line"
+      ],
       "lineno": 15,
       "macro": "skeleton",
       "maturity": "stable",
@@ -14688,6 +15709,7 @@
       "slots_yielded": [],
       "template": "skeleton.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "avatar",
@@ -14696,6 +15718,7 @@
       ]
     },
     "sortable": {
+      "authoring": "available",
       "block": "sortable",
       "category": "interactive",
       "composes": [],
@@ -14716,7 +15739,10 @@
         "chirpui-sortable__item--over",
         "chirpui-sortable__remove"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-sortable__item--dragging",
+        "chirpui-sortable__item--over"
+      ],
       "lineno": 18,
       "macro": "sortable_list",
       "maturity": "stable",
@@ -14752,9 +15778,11 @@
       "slots_yielded": [],
       "template": "sortable_list.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "sparkle": {
+      "authoring": "available",
       "block": "sparkle",
       "category": "effect",
       "composes": [],
@@ -14768,7 +15796,9 @@
         "chirpui-sparkle--white",
         "chirpui-sparkle__star"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-sparkle__star"
+      ],
       "lineno": 16,
       "macro": "sparkle",
       "maturity": "experimental",
@@ -14809,6 +15839,11 @@
       "slots_yielded": [],
       "template": "sparkle.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-sparkle--lg",
+        "chirpui-sparkle--md",
+        "chirpui-sparkle--sm"
+      ],
       "variants": [
         "",
         "gold",
@@ -14817,6 +15852,7 @@
       ]
     },
     "spinner": {
+      "authoring": "available",
       "block": "spinner",
       "category": "feedback",
       "composes": [],
@@ -14864,11 +15900,13 @@
       "slots_yielded": [],
       "template": "spinner.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "spinner-thinking": {
+      "authoring": "available",
       "block": "spinner-thinking",
-      "category": "auto",
+      "category": "feedback",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -14902,9 +15940,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "split-btn": {
+      "authoring": "available",
       "block": "split-btn",
       "category": "control",
       "composes": [],
@@ -14977,9 +16017,11 @@
       "slots_yielded": [],
       "template": "split_button.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "split-flap": {
+      "authoring": "available",
       "block": "split-flap",
       "category": "ascii",
       "composes": [],
@@ -14993,7 +16035,10 @@
         "chirpui-split-flap--green",
         "chirpui-split-flap__char"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-split-flap--animate",
+        "chirpui-split-flap__char"
+      ],
       "lineno": 21,
       "macro": "split_flap",
       "maturity": "experimental",
@@ -15030,6 +16075,9 @@
       "slots_yielded": [],
       "template": "ascii_split_flap.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-split-flap--default"
+      ],
       "variants": [
         "",
         "amber",
@@ -15038,8 +16086,9 @@
       ]
     },
     "split-flap-board": {
+      "authoring": "available",
       "block": "split-flap-board",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -15073,11 +16122,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "split-flap-row": {
+      "authoring": "available",
       "block": "split-flap-row",
-      "category": "auto",
+      "category": "ascii",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -15101,9 +16152,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "split-layout": {
+      "authoring": "available",
       "block": "split-layout",
       "category": "layout",
       "composes": [],
@@ -15174,6 +16227,7 @@
       "slots_yielded": [],
       "template": "split_layout.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "balanced",
         "horizontal",
@@ -15184,6 +16238,7 @@
       ]
     },
     "split-panel": {
+      "authoring": "available",
       "block": "split-panel",
       "category": "layout",
       "composes": [],
@@ -15203,7 +16258,9 @@
         "chirpui-split-panel__pane",
         "chirpui-split-panel__pane--second"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-split-panel__pane--second"
+      ],
       "lineno": 23,
       "macro": "split_panel",
       "maturity": "stable",
@@ -15256,9 +16313,11 @@
       "slots_yielded": [],
       "template": "split_panel.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "spotlight-card": {
+      "authoring": "available",
       "block": "spotlight-card",
       "category": "effect",
       "composes": [],
@@ -15273,7 +16332,10 @@
         "chirpui-spotlight-card__content",
         "chirpui-spotlight-card__spotlight"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-spotlight-card__content",
+        "chirpui-spotlight-card__spotlight"
+      ],
       "lineno": 17,
       "macro": "spotlight_card",
       "maturity": "experimental",
@@ -15319,6 +16381,9 @@
       "slots_yielded": [],
       "template": "spotlight_card.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-spotlight-card--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -15326,8 +16391,9 @@
       ]
     },
     "sse-retry": {
+      "authoring": "available",
       "block": "sse-retry",
-      "category": "auto",
+      "category": "feedback",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -15357,9 +16423,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "sse-status": {
+      "authoring": "available",
       "block": "sse-status",
       "category": "feedback",
       "composes": [],
@@ -15413,11 +16481,13 @@
       "slots_yielded": [],
       "template": "sse_status.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "stack": {
+      "authoring": "preferred",
       "block": "stack",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -15439,7 +16509,7 @@
       ],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -15452,9 +16522,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "star-rating": {
+      "authoring": "available",
       "block": "star-rating",
       "category": "control",
       "composes": [],
@@ -15468,7 +16540,10 @@
         "chirpui-star-rating__input",
         "chirpui-star-rating__label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-star-rating__input",
+        "chirpui-star-rating__label"
+      ],
       "lineno": 0,
       "macro": null,
       "maturity": "stable",
@@ -15489,9 +16564,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-star-rating--md"
+      ],
       "variants": []
     },
     "stat": {
+      "authoring": "available",
       "block": "stat",
       "category": "data-display",
       "composes": [],
@@ -15545,9 +16624,11 @@
       "slots_yielded": [],
       "template": "stat.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "status-indicator": {
+      "authoring": "available",
       "block": "status-indicator",
       "category": "feedback",
       "composes": [],
@@ -15572,7 +16653,14 @@
         "chirpui-status-indicator__icon",
         "chirpui-status-indicator__label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-status-indicator--on-accent",
+        "chirpui-status-indicator--on-muted",
+        "chirpui-status-indicator--pulse",
+        "chirpui-status-indicator__dot",
+        "chirpui-status-indicator__icon",
+        "chirpui-status-indicator__label"
+      ],
       "lineno": 11,
       "macro": "status_indicator",
       "maturity": "stable",
@@ -15619,6 +16707,7 @@
       "slots_yielded": [],
       "template": "status.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "custom",
         "default",
@@ -15630,6 +16719,7 @@
       ]
     },
     "stepper": {
+      "authoring": "available",
       "block": "stepper",
       "category": "navigation",
       "composes": [],
@@ -15654,7 +16744,10 @@
         "chirpui-stepper__label",
         "chirpui-stepper__list"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-stepper__item--active",
+        "chirpui-stepper__item--completed"
+      ],
       "lineno": 12,
       "macro": "stepper",
       "maturity": "stable",
@@ -15686,11 +16779,13 @@
       "slots_yielded": [],
       "template": "stepper.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "streaming": {
+      "authoring": "available",
       "block": "streaming",
-      "category": "auto",
+      "category": "feedback",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -15701,7 +16796,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -15714,13 +16809,17 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-streaming"
+      ],
       "variants": [
         "error"
       ]
     },
     "streaming-block": {
+      "authoring": "available",
       "block": "streaming-block",
-      "category": "auto",
+      "category": "feedback",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -15735,7 +16834,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [
         "active"
       ],
@@ -15750,9 +16849,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "streaming_bubble": {
+      "authoring": "available",
       "block": "streaming-bubble",
       "category": "feedback",
       "composes": [],
@@ -15826,12 +16927,16 @@
       "slots_yielded": [],
       "template": "streaming.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-streaming-bubble"
+      ],
       "variants": [
         "error",
         "thinking"
       ]
     },
     "surface": {
+      "authoring": "available",
       "block": "surface",
       "category": "container",
       "composes": [],
@@ -15869,7 +16974,13 @@
         "chirpui-surface__lede",
         "chirpui-surface__title"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-surface--cornered",
+        "chirpui-surface--deep",
+        "chirpui-surface--inset-glow",
+        "chirpui-surface--noise-overlay",
+        "chirpui-surface--static-overlay"
+      ],
       "lineno": 25,
       "macro": "surface",
       "maturity": "stable",
@@ -15936,6 +17047,7 @@
       "slots_yielded": [],
       "template": "surface.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "accent",
         "default",
@@ -15951,8 +17063,9 @@
       ]
     },
     "suspense-group": {
+      "authoring": "available",
       "block": "suspense-group",
-      "category": "auto",
+      "category": "feedback",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -15976,9 +17089,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "suspense-slot": {
+      "authoring": "internal",
       "block": "suspense-slot",
       "category": "infrastructure",
       "composes": [],
@@ -16039,9 +17154,11 @@
       "slots_yielded": [],
       "template": "suspense.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "symbol-rain": {
+      "authoring": "available",
       "block": "symbol-rain",
       "category": "effect",
       "composes": [],
@@ -16059,7 +17176,11 @@
         "chirpui-symbol-rain__content",
         "chirpui-symbol-rain__drop"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-symbol-rain__canvas",
+        "chirpui-symbol-rain__content",
+        "chirpui-symbol-rain__drop"
+      ],
       "lineno": 16,
       "macro": "symbol_rain",
       "maturity": "experimental",
@@ -16095,6 +17216,9 @@
       "slots_yielded": [],
       "template": "symbol_rain.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-symbol-rain--default"
+      ],
       "variants": [
         "",
         "accent",
@@ -16104,6 +17228,7 @@
       ]
     },
     "tab": {
+      "authoring": "available",
       "block": "tab",
       "category": "navigation",
       "composes": [],
@@ -16115,7 +17240,9 @@
         "chirpui-tab--active",
         "chirpui-tab--disabled"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-tab--disabled"
+      ],
       "lineno": 21,
       "macro": "tab",
       "maturity": "stable",
@@ -16171,11 +17298,13 @@
       "slots_yielded": [],
       "template": "tabs.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "tab-panel": {
+      "authoring": "available",
       "block": "tab-panel",
-      "category": "auto",
+      "category": "navigation",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -16186,7 +17315,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -16199,9 +17328,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "table": {
+      "authoring": "available",
       "block": "table",
       "category": "data-display",
       "composes": [],
@@ -16240,7 +17371,18 @@
         "chirpui-table__th--left",
         "chirpui-table__th--right"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-table__td--actions",
+        "chirpui-table__td--center",
+        "chirpui-table__td--left",
+        "chirpui-table__td--mono",
+        "chirpui-table__td--right",
+        "chirpui-table__td--truncate",
+        "chirpui-table__th--actions",
+        "chirpui-table__th--center",
+        "chirpui-table__th--left",
+        "chirpui-table__th--right"
+      ],
       "lineno": 39,
       "macro": "table",
       "maturity": "stable",
@@ -16330,9 +17472,11 @@
       "slots_yielded": [],
       "template": "table.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "table-wrap": {
+      "authoring": "available",
       "block": "table-wrap",
       "category": "data-display",
       "composes": [],
@@ -16432,9 +17576,11 @@
       "slots_yielded": [],
       "template": "table.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "tabs": {
+      "authoring": "available",
       "block": "tabs",
       "category": "navigation",
       "composes": [],
@@ -16446,7 +17592,10 @@
         "chirpui-tabs__tab",
         "chirpui-tabs__tab--active"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-tabs__tab",
+        "chirpui-tabs__tab--active"
+      ],
       "lineno": 15,
       "macro": "tabs",
       "maturity": "stable",
@@ -16477,9 +17626,11 @@
       "slots_yielded": [],
       "template": "tabs.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "tag": {
+      "authoring": "available",
       "block": "tag",
       "category": "form",
       "composes": [],
@@ -16546,9 +17697,11 @@
       "slots_yielded": [],
       "template": "tag_input.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "tag-browse": {
+      "authoring": "available",
       "block": "tag-browse",
       "category": "control",
       "composes": [],
@@ -16613,9 +17766,13 @@
       "slots_yielded": [],
       "template": "tag_browse.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-tag-browse"
+      ],
       "variants": []
     },
     "tag-input": {
+      "authoring": "available",
       "block": "tag-input",
       "category": "form",
       "composes": [],
@@ -16686,11 +17843,13 @@
       "slots_yielded": [],
       "template": "tag_input.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "text-muted": {
+      "authoring": "compatibility",
       "block": "text-muted",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -16701,7 +17860,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -16714,9 +17873,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "text-reveal": {
+      "authoring": "available",
       "block": "text-reveal",
       "category": "effect",
       "composes": [],
@@ -16764,6 +17925,9 @@
       "slots_yielded": [],
       "template": "text_reveal.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-text-reveal--default"
+      ],
       "variants": [
         "",
         "default",
@@ -16771,8 +17935,9 @@
       ]
     },
     "texture": {
+      "authoring": "available",
       "block": "texture",
-      "category": "auto",
+      "category": "effect",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -16817,9 +17982,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "theme-toggle": {
+      "authoring": "available",
       "block": "theme-toggle",
       "category": "control",
       "composes": [],
@@ -16850,9 +18017,11 @@
       "slots_yielded": [],
       "template": "theme_toggle.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "thumbs": {
+      "authoring": "available",
       "block": "thumbs",
       "category": "control",
       "composes": [],
@@ -16866,7 +18035,10 @@
         "chirpui-thumbs__input",
         "chirpui-thumbs__label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-thumbs__input",
+        "chirpui-thumbs__label"
+      ],
       "lineno": 0,
       "macro": null,
       "maturity": "stable",
@@ -16887,9 +18059,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-thumbs--md"
+      ],
       "variants": []
     },
     "timeline": {
+      "authoring": "available",
       "block": "timeline",
       "category": "data-display",
       "composes": [],
@@ -16934,7 +18110,13 @@
         "chirpui-timeline__time",
         "chirpui-timeline__title"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-timeline__item--error",
+        "chirpui-timeline__item--info",
+        "chirpui-timeline__item--link",
+        "chirpui-timeline__item--success",
+        "chirpui-timeline__item--warning"
+      ],
       "lineno": 24,
       "macro": "timeline",
       "maturity": "stable",
@@ -16974,9 +18156,11 @@
       "slots_yielded": [],
       "template": "timeline.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "toast": {
+      "authoring": "available",
       "block": "toast",
       "category": "feedback",
       "composes": [],
@@ -16992,7 +18176,10 @@
         "chirpui-toast__close",
         "chirpui-toast__message"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-toast__close",
+        "chirpui-toast__message"
+      ],
       "lineno": 20,
       "macro": "toast",
       "maturity": "stable",
@@ -17047,6 +18234,7 @@
       "slots_yielded": [],
       "template": "toast.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "error",
         "info",
@@ -17055,8 +18243,9 @@
       ]
     },
     "toast-container": {
+      "authoring": "available",
       "block": "toast-container",
-      "category": "auto",
+      "category": "feedback",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17067,7 +18256,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17080,11 +18269,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "toggle": {
+      "authoring": "available",
       "block": "toggle",
-      "category": "auto",
+      "category": "control",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17120,9 +18311,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "toggle-wrap": {
+      "authoring": "available",
       "block": "toggle-wrap",
       "category": "form",
       "composes": [],
@@ -17189,6 +18382,7 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "accent",
@@ -17199,6 +18393,7 @@
       ]
     },
     "token-input": {
+      "authoring": "available",
       "block": "token-input",
       "category": "form",
       "composes": [],
@@ -17277,9 +18472,11 @@
       "slots_yielded": [],
       "template": "token_input.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "tooltip": {
+      "authoring": "available",
       "block": "tooltip",
       "category": "navigation",
       "composes": [],
@@ -17294,7 +18491,9 @@
         "chirpui-tooltip--top",
         "chirpui-tooltip__bubble"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-tooltip__bubble"
+      ],
       "lineno": 18,
       "macro": "tooltip",
       "maturity": "stable",
@@ -17335,6 +18534,7 @@
       "slots_yielded": [],
       "template": "tooltip.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "bottom",
         "left",
@@ -17343,6 +18543,7 @@
       ]
     },
     "tray": {
+      "authoring": "available",
       "block": "tray",
       "category": "overlay",
       "composes": [],
@@ -17411,6 +18612,7 @@
       "slots_yielded": [],
       "template": "tray.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "bottom",
         "left",
@@ -17418,6 +18620,7 @@
       ]
     },
     "tree": {
+      "authoring": "available",
       "block": "tree",
       "category": "data-display",
       "composes": [],
@@ -17435,7 +18638,9 @@
         "chirpui-tree__label--leaf",
         "chirpui-tree__node"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-tree__label--leaf"
+      ],
       "lineno": 18,
       "macro": "tree_view",
       "maturity": "stable",
@@ -17462,9 +18667,11 @@
       "slots_yielded": [],
       "template": "tree_view.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "trending-tag": {
+      "authoring": "available",
       "block": "trending-tag",
       "category": "data-display",
       "composes": [],
@@ -17524,11 +18731,13 @@
       "slots_yielded": [],
       "template": "trending_tag.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "truncate": {
+      "authoring": "compatibility",
       "block": "truncate",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17539,7 +18748,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17552,9 +18761,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "typewriter": {
+      "authoring": "available",
       "block": "typewriter",
       "category": "effect",
       "composes": [],
@@ -17571,7 +18782,13 @@
         "chirpui-typewriter--slow",
         "chirpui-typewriter__text"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-typewriter--delay-1",
+        "chirpui-typewriter--delay-2",
+        "chirpui-typewriter--delay-3",
+        "chirpui-typewriter--no-cursor",
+        "chirpui-typewriter__text"
+      ],
       "lineno": 12,
       "macro": "typewriter",
       "maturity": "experimental",
@@ -17618,6 +18835,7 @@
       "slots_yielded": [],
       "template": "typewriter.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": [
         "",
         "fast",
@@ -17625,6 +18843,7 @@
       ]
     },
     "typing-indicator": {
+      "authoring": "available",
       "block": "typing-indicator",
       "category": "feedback",
       "composes": [],
@@ -17659,11 +18878,13 @@
       "slots_yielded": [],
       "template": "typing_indicator.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-base": {
+      "authoring": "compatibility",
       "block": "ui-base",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17674,7 +18895,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17687,11 +18908,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-bold": {
+      "authoring": "compatibility",
       "block": "ui-bold",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17702,7 +18925,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17715,11 +18938,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-label": {
+      "authoring": "compatibility",
       "block": "ui-label",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17730,7 +18955,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17743,11 +18968,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-lg": {
+      "authoring": "compatibility",
       "block": "ui-lg",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17758,7 +18985,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17771,11 +18998,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-medium": {
+      "authoring": "compatibility",
       "block": "ui-medium",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17786,7 +19015,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17799,11 +19028,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-meta": {
+      "authoring": "compatibility",
       "block": "ui-meta",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17814,7 +19045,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17827,11 +19058,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-normal": {
+      "authoring": "compatibility",
       "block": "ui-normal",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17842,7 +19075,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17855,11 +19088,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-semibold": {
+      "authoring": "compatibility",
       "block": "ui-semibold",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17870,7 +19105,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17883,11 +19118,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-sm": {
+      "authoring": "compatibility",
       "block": "ui-sm",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17898,7 +19135,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17911,11 +19148,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-title": {
+      "authoring": "compatibility",
       "block": "ui-title",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17926,7 +19165,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17939,11 +19178,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-xl": {
+      "authoring": "compatibility",
       "block": "ui-xl",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17954,7 +19195,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17967,11 +19208,13 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "ui-xs": {
+      "authoring": "compatibility",
       "block": "ui-xs",
-      "category": "auto",
+      "category": "typography",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -17982,7 +19225,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -17995,9 +19238,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "video-card": {
+      "authoring": "available",
       "block": "video-card",
       "category": "data-display",
       "composes": [],
@@ -18092,9 +19337,11 @@
       "slots_yielded": [],
       "template": "video_card.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "video-thumbnail": {
+      "authoring": "available",
       "block": "video-thumbnail",
       "category": "media",
       "composes": [],
@@ -18162,11 +19409,13 @@
       "tokens": [
         "--chirpui-video-aspect-ratio"
       ],
+      "trim_emits": [],
       "variants": []
     },
     "visually-hidden": {
+      "authoring": "compatibility",
       "block": "visually-hidden",
-      "category": "auto",
+      "category": "layout",
       "composes": [],
       "consumes": [],
       "description": "",
@@ -18177,7 +19426,7 @@
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
-      "maturity": "experimental",
+      "maturity": "legacy",
       "modifiers": [],
       "params": [],
       "provides": [],
@@ -18190,9 +19439,11 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "wizard-form": {
+      "authoring": "available",
       "block": "wizard-form",
       "category": "form",
       "composes": [],
@@ -18257,9 +19508,13 @@
       "slots_yielded": [],
       "template": "wizard_form.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-wizard-form"
+      ],
       "variants": []
     },
     "wobble": {
+      "authoring": "available",
       "block": "wobble",
       "category": "effect",
       "composes": [],
@@ -18300,6 +19555,12 @@
       "slots_yielded": [],
       "template": "wobble.html",
       "tokens": [],
+      "trim_emits": [
+        "chirpui-wobble--bounce-in",
+        "chirpui-wobble--jello",
+        "chirpui-wobble--rubber-band",
+        "chirpui-wobble--wobble"
+      ],
       "variants": [
         "bounce-in",
         "jello",
@@ -18308,6 +19569,7 @@
       ]
     },
     "workspace-shell": {
+      "authoring": "available",
       "block": "workspace-shell",
       "category": "layout",
       "composes": [
@@ -18416,35 +19678,42 @@
       ],
       "template": "workspace_shell.html",
       "tokens": [],
+      "trim_emits": [],
       "variants": []
     }
   },
   "schema": "chirpui-manifest@3",
   "stats": {
+    "component_authoring": {
+      "available": 266,
+      "compatibility": 39,
+      "internal": 2,
+      "preferred": 10
+    },
     "component_categories": {
-      "ascii": 28,
-      "auto": 104,
+      "ascii": 40,
       "composite": 1,
-      "container": 8,
-      "content": 5,
-      "control": 15,
-      "data-display": 30,
-      "effect": 32,
-      "feedback": 16,
-      "form": 14,
+      "container": 9,
+      "content": 10,
+      "control": 19,
+      "data-display": 33,
+      "effect": 46,
+      "feedback": 25,
+      "form": 17,
       "infrastructure": 2,
       "interactive": 8,
-      "layout": 22,
+      "layout": 45,
       "marketing": 7,
       "media": 1,
-      "navigation": 20,
+      "navigation": 22,
       "overlay": 3,
-      "typography": 1
+      "typography": 29
     },
     "component_maturity": {
-      "experimental": 177,
+      "experimental": 109,
       "internal": 2,
-      "stable": 138
+      "legacy": 39,
+      "stable": 167
     },
     "component_requirements": {
       "alpine": 18,
@@ -18470,13 +19739,15 @@
       "public_templated_components": 205
     },
     "registry_debt": {
-      "auto_category_components": 104,
-      "auto_extra_blocks": 93,
-      "auto_extra_classes": 363,
-      "auto_trim_blocks": 72,
-      "auto_trim_classes": 102,
-      "explicit_extra_blocks": 29,
-      "explicit_extra_classes": 146
+      "auto_category_components": 0,
+      "auto_extra_blocks": 0,
+      "auto_extra_classes": 0,
+      "auto_trim_blocks": 0,
+      "auto_trim_classes": 0,
+      "explicit_extra_blocks": 121,
+      "explicit_extra_classes": 509,
+      "explicit_trim_blocks": 72,
+      "explicit_trim_classes": 102
     },
     "token_categories": {
       "color": 181,

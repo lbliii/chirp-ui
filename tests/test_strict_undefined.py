@@ -1,4 +1,4 @@
-"""Regression tests for kida 0.7.0 strict_undefined=True compliance.
+"""Regression tests for kida strict_undefined=True compliance.
 
 These render dict-iterating components with the MINIMAL required fields
 (per macro docstring) and assert they don't raise UndefinedError.
@@ -7,11 +7,19 @@ If a new component ships with `{% if item.foo %}` style guards on
 optional keys, add a test here so strict-mode breakage is caught fast.
 """
 
+from typing import Any
+
 from kida import Environment
 
 
-def _render(env: Environment, src: str) -> str:
-    return env.from_string(src, name="strict_probe").render()
+def _render(env: Environment, src: str, **ctx: Any) -> str:
+    return env.from_string(src, name="strict_probe").render(**ctx)
+
+
+def test_mapping_optional_chain_missing_key_renders_empty(env: Environment) -> None:
+    """Kida 0.8.0 makes Mapping optional-chain misses soft under strict mode."""
+    out = _render(env, "{{ params?.description }}", params={})
+    assert out == ""
 
 
 def test_timeline_minimal_item(env: Environment) -> None:

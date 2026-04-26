@@ -9,9 +9,17 @@ from __future__ import annotations
 import io
 from contextlib import redirect_stdout
 
+import pytest
+
 from chirp_ui import load_manifest
 from chirp_ui.__main__ import main as dispatch_main
-from chirp_ui.find import format_rows, search
+from chirp_ui.find import (
+    compatibility_components,
+    components_by_authoring,
+    format_rows,
+    preferred_components,
+    search,
+)
 
 
 def test_search_metric_matches_card_and_grid() -> None:
@@ -30,6 +38,68 @@ def test_search_category_filter_returns_feedback_family() -> None:
     # Filter is exact match, not substring.
     for _name, category, _summary in rows:
         assert category == "feedback"
+
+
+def test_search_authoring_filter_returns_preferred_primitives() -> None:
+    """``--authoring=preferred`` surfaces the blessed composition vocabulary."""
+    rows = search(load_manifest(), authoring="preferred")
+    names = [r[0] for r in rows]
+    assert names == [
+        "actions",
+        "block",
+        "cluster",
+        "container",
+        "flow",
+        "frame",
+        "grid",
+        "layer",
+        "prose",
+        "stack",
+    ]
+
+
+def test_search_authoring_filter_can_combine_with_category() -> None:
+    """Authoring hints compose with existing exact category filtering."""
+    rows = search(load_manifest(), category="typography", authoring="compatibility")
+    names = {r[0] for r in rows}
+    assert {"font-sm", "text-muted", "ui-title"}.issubset(names)
+    for _name, category, _summary in rows:
+        assert category == "typography"
+
+
+def test_preferred_components_returns_manifest_entries() -> None:
+    """Python callers can get full preferred entries without filtering JSON."""
+    components = preferred_components(manifest=load_manifest())
+    assert list(components) == [
+        "actions",
+        "block",
+        "cluster",
+        "container",
+        "flow",
+        "frame",
+        "grid",
+        "layer",
+        "prose",
+        "stack",
+    ]
+    assert components["stack"]["authoring"] == "preferred"
+    assert components["stack"]["role"] == "primitive"
+
+
+def test_compatibility_components_can_filter_category() -> None:
+    """Compatibility helper audits can be sliced by category."""
+    components = compatibility_components(manifest=load_manifest(), category="typography")
+    assert {"font-sm", "text-muted", "ui-title"}.issubset(components)
+    assert all(entry["category"] == "typography" for entry in components.values())
+
+
+def test_components_by_authoring_rejects_unknown_hint() -> None:
+    """Invalid authoring hints fail loudly for Python callers."""
+    with pytest.raises(ValueError, match=r"preferred.*compatibility") as exc_info:
+        components_by_authoring("recommended", manifest=load_manifest())
+    message = str(exc_info.value)
+    assert "preferred" in message
+    assert "compatibility" in message
 
 
 def test_search_empty_query_lists_every_component() -> None:
@@ -80,6 +150,18 @@ def test_dispatch_find_writes_to_stdout() -> None:
     out = buf.getvalue()
     assert "metric-card" in out
     assert "metric-grid" in out
+
+
+def test_dispatch_find_supports_authoring_filter() -> None:
+    """``python -m chirp_ui find --authoring=preferred`` is the agent shortcut."""
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        rc = dispatch_main(["find", "--authoring=preferred"])
+    assert rc == 0
+    out = buf.getvalue()
+    assert "stack" in out
+    assert "grid" in out
+    assert "font-sm" not in out
 
 
 def test_dispatch_help_prints_usage() -> None:

@@ -2,6 +2,12 @@
 
 ChirpUI components are Kida macros: `{% call %}`, `{% slot %}`, and `{% def %}`. These patterns work well in practice; the main pitfalls are conditional wrappers and duplicate imports when mixing full pages with HTMX fragments.
 
+## Primitive vocabulary
+
+Prefer ChirpUI's composition primitives over helper-class chains. Reach first for `stack()`, `cluster()`, `grid()`, `frame()`, `block()`, `layer()`, `container()`, `flow`, `actions`, and `prose`; keep legacy helpers like `chirpui-mt-md`, `chirpui-font-sm`, and `chirpui-text-muted` for compatibility or narrow containment cases.
+
+The full guide lives in [PRIMITIVES.md](PRIMITIVES.md).
+
 ## Nesting slots and calls
 
 Prefer shallow trees. When you need a neutral wrapper for layout only, use a one-line macro in your app templates:

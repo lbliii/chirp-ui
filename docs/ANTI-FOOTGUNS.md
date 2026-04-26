@@ -4,6 +4,14 @@ Common pitfalls and how to avoid them.
 
 ---
 
+## Utility-like helper drift
+
+ChirpUI's authoring vocabulary is composition primitives and components, not chains of CSS helper classes. If new template code starts to look like `chirpui-mt-md chirpui-font-sm chirpui-text-muted`, reshape it around `stack()`, `cluster()`, `grid()`, `frame()`, `block()`, `container()`, `flow`, `actions`, or `prose` instead.
+
+**Fix:** Treat helpers such as `.chirpui-truncate`, `.chirpui-scroll-x`, `.chirpui-min-w-0`, `.chirpui-clamp-2`, `.chirpui-focus-ring`, and typography shorthands as legacy compatibility surface. Use them for narrow containment, accessibility, or migration cases; do not add new stable helpers in that style without a vocabulary review. Full guide: [PRIMITIVES.md](PRIMITIVES.md).
+
+---
+
 ## Layout and horizontal scroll
 
 The main column (`.chirpui-app-shell__main`) uses **`min-width: 0`** and **`overflow-x: clip`**. If the page scrolls sideways, something inside the content is wider than the column—usually a **non-wrapping flex row**, a **custom grid without `min-width: 0` on children**, or **wide tables** without an `overflow-x: auto` wrapper.

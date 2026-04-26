@@ -2,6 +2,8 @@
 
 Valid variant, size, and option values for chirp-ui components. When **strict mode** is enabled (e.g. `app.debug=True` with Chirp's `use_chirp_ui`), invalid values log warnings and fall back to defaults.
 
+Prefer composition primitives and component slots over legacy helper-class chains when authoring templates. See [Primitive Vocabulary](PRIMITIVES.md) for the blessed primitive set and the compatibility-helper boundary.
+
 See [Strict mode](#strict-mode) for setup.
 
 ---
@@ -3674,6 +3676,11 @@ chirp-ui: Wobble / Jello / Rubber-band / Bounce-in
 with a preferred replacement; `internal` = infrastructure for Chirp UI composition, not
 recommended as an app-level building block.
 
+**Authoring hints:** `preferred` = reach for this first in new app templates;
+`available` = public surface, but not the first-choice composition vocabulary;
+`compatibility` = retained for existing code or narrow escape hatches; `internal` =
+not for app-level authoring.
+
 ### `accordion`
 
 Accordion component
@@ -3683,6 +3690,7 @@ Accordion component
 - **Category:** `interactive`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Provides:** `_accordion_name`
 
@@ -3700,6 +3708,7 @@ Action Bar component
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -3715,6 +3724,7 @@ Action Strip component
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Modifiers:** `collapse`, `scroll`, `sm`, `sticky`
 
@@ -3730,9 +3740,10 @@ Action Strip component
 
 ### `actions`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `preferred`
 
 ### `alert`
 
@@ -3743,6 +3754,7 @@ Alert component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Slots:** `(default)`, `actions`, `header_actions`
 - **Variants:** `error`, `info`, `success`, `warning`
@@ -3760,15 +3772,17 @@ Alert component
 
 ### `ambient`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `ambient-root`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `animated-counter`
 
@@ -3779,6 +3793,7 @@ Animated Counter
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `default`, `mono`
 
 | Param | Required | Default |
@@ -3799,6 +3814,7 @@ Animated Stat Card
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -3820,6 +3836,7 @@ App Shell component
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`, `htmx`
 - **Slots:** `(default)`, `brand`, `sidebar`, `topbar`, `topbar_end`
 - **Modifiers:** `sidebar-collapsed`, `sidebar-collapsible`
@@ -3838,9 +3855,10 @@ App Shell component
 
 ### `ascii`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `ascii-7seg`
 
@@ -3851,6 +3869,7 @@ ASCII 7-Segment Display
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
 
 | Param | Required | Default |
@@ -3869,6 +3888,7 @@ ASCII Badge
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `muted`, `success`, `warning`
 
 | Param | Required | Default |
@@ -3888,6 +3908,7 @@ ASCII Border
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `double`, `heavy`, `rounded`, `single`, `spin`
 
@@ -3906,6 +3927,7 @@ ASCII Breaker Panel
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Modifiers:** `sm`
 
@@ -3926,6 +3948,7 @@ ASCII Card
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `double`, `heavy`, `rounded`, `single`
 
@@ -3945,6 +3968,7 @@ ASCII Checkbox
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
 
 | Param | Required | Default |
@@ -3958,9 +3982,10 @@ ASCII Checkbox
 
 ### `ascii-checkbox-group`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `ascii-divider`
 
@@ -3971,6 +3996,7 @@ ASCII Divider
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `dots`, `double`, `heavy`, `single`, `spin`, `spin-drift`, `spin-reverse`
 
 | Param | Required | Default |
@@ -3988,6 +4014,7 @@ ASCII Empty State component
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
 
@@ -4008,6 +4035,7 @@ ASCII Error Page
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -4026,6 +4054,7 @@ ASCII Fader / Slider
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
 
 | Param | Required | Default |
@@ -4038,21 +4067,24 @@ ASCII Fader / Slider
 
 ### `ascii-fader-bank`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `ascii-fill`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `ascii-fill-hover`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `ascii-indicator`
 
@@ -4063,6 +4095,7 @@ ASCII Indicator Light
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `accent`, `error`, `muted`, `success`, `warning`
 
 | Param | Required | Default |
@@ -4075,9 +4108,10 @@ ASCII Indicator Light
 
 ### `ascii-indicator-row`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `ascii-knob`
 
@@ -4088,6 +4122,7 @@ ASCII Knob / Rotary Selector
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`
 
 | Param | Required | Default |
@@ -4108,6 +4143,7 @@ ASCII Modal
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `double`, `heavy`, `single`
@@ -4121,9 +4157,10 @@ ASCII Modal
 
 ### `ascii-modal-trigger`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `ascii-progress`
 
@@ -4134,6 +4171,7 @@ ASCII Progress
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
 
 | Param | Required | Default |
@@ -4146,9 +4184,10 @@ ASCII Progress
 
 ### `ascii-radio`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `ascii-radio-group`
 
@@ -4159,6 +4198,7 @@ ASCII Radio
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`
 
@@ -4179,6 +4219,7 @@ ASCII Skeleton
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `avatar`, `card`, `heading`, `text`
 
 | Param | Required | Default |
@@ -4197,6 +4238,7 @@ ASCII Sparkline
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `gradient`, `muted`
 
 | Param | Required | Default |
@@ -4214,6 +4256,7 @@ ASCII Spinner component
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `arrows`, `blocks`, `box`, `braille`, `dots`
 
 | Param | Required | Default |
@@ -4232,6 +4275,7 @@ ASCII Stepper
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `success`
 
 | Param | Required | Default |
@@ -4250,6 +4294,7 @@ ASCII Toggle
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -4272,6 +4317,7 @@ ASCII Tabs
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Variants:** `(default)`, `accent`, `default`
 
@@ -4294,6 +4340,7 @@ ASCII Table
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `double`, `heavy`, `rounded`, `single`
 
@@ -4316,6 +4363,7 @@ ASCII Tabs
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`
 
@@ -4333,6 +4381,7 @@ ASCII Ticker
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
 
 | Param | Required | Default |
@@ -4351,6 +4400,7 @@ ASCII Tile Button
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
 
 | Param | Required | Default |
@@ -4366,9 +4416,10 @@ ASCII Tile Button
 
 ### `ascii-tile-grid`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `ascii-toggle`
 
@@ -4379,6 +4430,7 @@ ASCII Toggle
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -4401,6 +4453,7 @@ ASCII VU Meter
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
 
 | Param | Required | Default |
@@ -4416,9 +4469,10 @@ ASCII VU Meter
 
 ### `ascii-vu-stack`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `aura`
 
@@ -4429,6 +4483,7 @@ Aura — chromatic halo behind stacked content (glass surfaces, cards, etc.)
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Sizes:** `lg`, `md`, `sm`
 - **Modifiers:** `mirror`
@@ -4446,8 +4501,9 @@ Aura — chromatic halo behind stacked content (glass surfaces, cards, etc.)
 ### `aura_tone`
 
 - **Category:** `effect`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Variants:** `accent`, `cool`, `muted`, `primary`, `warm`
 
 ### `aurora`
@@ -4459,6 +4515,7 @@ Aurora Background
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `intense`, `subtle`
 
@@ -4476,6 +4533,7 @@ Avatar component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Sizes:** `(default)`, `lg`, `sm`
 - **Modifiers:** `offline`, `online`
 
@@ -4498,6 +4556,7 @@ Avatar Stack component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -4515,6 +4574,7 @@ Badge component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `custom`, `custom-solid`, `error`, `info`, `muted`, `primary`, `success`, `warning`
 - **Consumes:** `_card_variant`, `_surface_variant`
@@ -4538,6 +4598,7 @@ Band component
 - **Category:** `marketing`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `header`
 - **Variants:** `accent`, `default`, `elevated`, `glass`, `gradient`
 - **Modifiers:** `bleed`, `contained`, `inset`
@@ -4558,6 +4619,7 @@ Bar Chart component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `gold`, `muted`, `radiant`, `success`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -4572,27 +4634,31 @@ Bar Chart component
 
 ### `bento`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `bg-pattern`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `blade`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `block`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `preferred`
 
 ### `border-beam`
 
@@ -4603,6 +4669,7 @@ Border Beam
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -4617,9 +4684,10 @@ Border Beam
 
 ### `bounce-in`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `breadcrumbs`
 
@@ -4630,6 +4698,7 @@ Breadcrumbs component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -4645,6 +4714,7 @@ Button component. Use chirpui-btn with variants. Supports loading state for htmx
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `danger`, `ghost`, `primary`, `success`, `warning`
@@ -4684,15 +4754,17 @@ Button component. Use chirpui-btn with variants. Supports loading state for htmx
 
 ### `btn-group`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `control`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `bulk-bar`
 
-- **Category:** `auto`
+- **Category:** `control`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `calendar`
 
@@ -4703,6 +4775,7 @@ Calendar component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -4721,6 +4794,7 @@ Callout component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `header_actions`
 - **Modifiers:** `error`, `info`, `neutral`, `on-accent`, `on-muted`, `success`, `warning`
 - **Consumes:** `_surface_variant`
@@ -4741,6 +4815,7 @@ Card component
 - **Category:** `container`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `body_actions`, `footer`, `header_actions`, `media`
 - **Modifiers:** `collapsible`, `gradient-border`, `gradient-header`, `hoverable`, `link`, `linked`
 - **Provides:** `_card_variant`
@@ -4771,6 +4846,7 @@ Carousel component
 - **Category:** `interactive`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Modifiers:** `compact`, `page`
 
@@ -4790,6 +4866,7 @@ Channel Card component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `actions`, `body`
 
 | Param | Required | Default |
@@ -4811,6 +4888,7 @@ Chapter List component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -4828,6 +4906,7 @@ Chapter List component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `summary_actions`
 
 | Param | Required | Default |
@@ -4845,6 +4924,7 @@ Chat Input component
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -4865,6 +4945,7 @@ Chat Layout component
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `activity`, `input`, `messages`
 - **Modifiers:** `fill`
 
@@ -4876,9 +4957,10 @@ Chat Layout component
 
 ### `children`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `chip`
 
@@ -4889,6 +4971,7 @@ Chip group
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Modifiers:** `custom`, `muted`, `selected`
 
 | Param | Required | Default |
@@ -4909,6 +4992,7 @@ Chip group
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -4918,51 +5002,59 @@ Chip group
 
 ### `clamp-2`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `clamp-3`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `click-jello`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `click-wobble`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `cluster`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `preferred`
 
 ### `code`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `content`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `code-block`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `content`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `code-block-wrapper`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `content`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `collapse`
 
@@ -4973,6 +5065,7 @@ Collapse component
 - **Category:** `interactive`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `header_actions`
 
 | Param | Required | Default |
@@ -4983,9 +5076,10 @@ Collapse component
 
 ### `command-bar`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `control`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `command-palette`
 
@@ -4996,6 +5090,7 @@ Command Palette component
 - **Category:** `interactive`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`, `htmx`
 - **Slots:** `(default)`
 
@@ -5014,6 +5109,7 @@ Comment component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `actions`
 
 | Param | Required | Default |
@@ -5029,9 +5125,10 @@ Comment component
 
 ### `comment-thread`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `content`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `composer-shell`
 
@@ -5042,6 +5139,7 @@ Composer shell
 - **Category:** `form`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `actions`, `body`, `fields`, `header`, `identity`, `preview`, `status`, `toolbar`
 
 | Param | Required | Default |
@@ -5057,6 +5155,7 @@ Confetti
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Variants:** `(default)`
 
@@ -5075,6 +5174,7 @@ Config row — label | control (toggle, select, editable)
 - **Category:** `container`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 
 | Param | Required | Default |
@@ -5091,9 +5191,10 @@ Config row — label | control (toggle, select, editable)
 
 ### `config-row-list`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `container`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `confirm`
 
@@ -5104,6 +5205,7 @@ Confirm dialog component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `form_content`, `header_actions`, `message`
 - **Variants:** `danger`, `default`
@@ -5133,6 +5235,7 @@ Constellation
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `cool`, `default`, `mono`, `warm`
 - **Consumes:** `_hero_variant`
@@ -5145,9 +5248,10 @@ Constellation
 
 ### `container`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `preferred`
 
 ### `conversation-item`
 
@@ -5158,6 +5262,7 @@ Conversation Item component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `actions`
 - **Modifiers:** `muted`
 
@@ -5180,6 +5285,7 @@ Conversation List component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5195,6 +5301,7 @@ Copy button
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Variants:** `(default)`, `assistant`, `system`, `user`
 - **Consumes:** `_streaming_role`
@@ -5206,9 +5313,10 @@ Copy button
 
 ### `counter-badge`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `feedback`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `description_list`
 
@@ -5219,6 +5327,7 @@ Description list component
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `header`
 - **Variants:** `horizontal`, `stacked`
 
@@ -5236,9 +5345,10 @@ Description list component
 
 ### `display`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `divider`
 
@@ -5249,6 +5359,7 @@ Divider component
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Modifiers:** `accent`, `dotted`, `error`, `fade`, `horizontal`, `primary`, `success`, `warning`
 - **Consumes:** `_card_variant`, `_surface_variant`
 
@@ -5261,9 +5372,10 @@ Divider component
 
 ### `dl`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `data-display`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `dnd`
 
@@ -5274,6 +5386,7 @@ Drag-drop primitives
 - **Category:** `interactive`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Modifiers:** `board`, `row`
 
@@ -5292,6 +5405,7 @@ Floating Dock
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `default`, `glass`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -5312,6 +5426,7 @@ Document header
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `actions`
 - **Composes:** `page_header`
 
@@ -5341,6 +5456,7 @@ Donut Chart component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `gold`, `muted`, `success`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -5364,6 +5480,7 @@ Drawer component
 - **Category:** `overlay`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Slots:** `(default)`, `header_actions`
 - **Variants:** `left`, `right`
@@ -5384,6 +5501,7 @@ Dropdown component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `footer`, `header`
 
 | Param | Required | Default |
@@ -5400,6 +5518,7 @@ Dropdown menu (items-based)
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Variants:** `danger`, `default`, `muted`
 
@@ -5418,6 +5537,7 @@ Empty panel state
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `action`, `actions`
 - **Composes:** `empty-state`
 - **Modifiers:** `compact`
@@ -5450,6 +5570,7 @@ Empty State component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `action`, `actions`
 
 | Param | Required | Default |
@@ -5473,6 +5594,7 @@ Entity header (dashboard-grade)
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `actions`
 
 | Param | Required | Default |
@@ -5491,6 +5613,7 @@ Feature Section component
 - **Category:** `marketing`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `actions`, `eyebrow`, `media`, `title`
 - **Variants:** `balanced`, `halo`, `media-dominant`, `muted`, `split`, `stacked`
 - **Modifiers:** `reverse`
@@ -5511,6 +5634,7 @@ Feature Section component
 - **Category:** `marketing`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5526,6 +5650,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`
 - **Variants:** `checkbox`, `dense`, `error`, `radio`, `radio-horizontal`, `range`, `toggle`
@@ -5551,6 +5676,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`
 
@@ -5568,6 +5694,7 @@ File tree
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `actions`, `footer`, `header`
 - **Composes:** `nav-tree`, `panel`
 
@@ -5589,9 +5716,10 @@ File tree
 
 ### `filter-bar`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `form`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `filter-group`
 
@@ -5602,6 +5730,7 @@ Filter chips — radiogroup + pill chips (named colors / HTMX)
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5620,6 +5749,7 @@ Filter Bar composite
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -5634,63 +5764,73 @@ Filter Bar composite
 
 ### `flow`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `preferred`
 
 ### `focus-ring`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `font-2xl`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `font-base`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `font-lg`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `font-medium`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `font-mono`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `font-sm`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `font-xl`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `font-xs`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `form-actions`
 
@@ -5701,6 +5841,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Modifiers:** `end`
 
@@ -5718,6 +5859,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 
 | Param | Required | Default |
@@ -5735,6 +5877,7 @@ Safe region / Fragment island primitives
 - **Category:** `infrastructure`
 - **Maturity:** `internal`
 - **Role:** `infrastructure`
+- **Authoring:** `internal`
 - **Requires:** `htmx`
 
 | Param | Required | Default |
@@ -5749,9 +5892,10 @@ Safe region / Fragment island primitives
 
 ### `frame`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `preferred`
 
 ### `glitch`
 
@@ -5762,6 +5906,7 @@ Glitch Text Effect
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `intense`, `subtle`
 
 | Param | Required | Default |
@@ -5780,6 +5925,7 @@ Glow Card
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
@@ -5802,6 +5948,7 @@ Gradient Text
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Modifiers:** `animated`, `rainbow`, `secondary`
 
 | Param | Required | Default |
@@ -5820,6 +5967,7 @@ Grain Overlay
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `heavy`, `subtle`
 
@@ -5834,9 +5982,10 @@ Grain Overlay
 
 ### `grid`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `preferred`
 
 ### `hero`
 
@@ -5847,6 +5996,7 @@ Hero component
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `action`, `actions`
 - **Variants:** `animated-gradient`, `gradient`, `mesh`, `muted`, `solid`
 
@@ -5866,6 +6016,7 @@ Hero Effects
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Provides:** `_hero_variant`
 
 | Param | Required | Default |
@@ -5883,6 +6034,7 @@ Holy Light
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `default`, `gold`, `holy`, `silver`
 - **Consumes:** `_hero_variant`
@@ -5895,21 +6047,24 @@ Holy Light
 
 ### `hover-jello`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `hover-rubber`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `hover-wobble`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `icon-btn`
 
@@ -5920,6 +6075,7 @@ Icon Button
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Variants:** `(default)`, `danger`, `default`, `ghost`, `primary`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -5950,6 +6106,7 @@ Index card component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5968,6 +6125,7 @@ Infinite Scroll component
 - **Category:** `interactive`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`, `loading`
 
@@ -5981,9 +6139,10 @@ Infinite Scroll component
 
 ### `inline`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `inline-counter`
 
@@ -5994,6 +6153,7 @@ Inline counter
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6012,6 +6172,7 @@ Inline edit field
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Variants:** `display`, `edit`
 
@@ -6034,6 +6195,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `prefix`, `suffix`
 
 | Param | Required | Default |
@@ -6060,6 +6222,7 @@ Code macros
 - **Category:** `content`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Slots:** `(default)`
 
@@ -6073,15 +6236,17 @@ Code macros
 
 ### `jello`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `key-value-form`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `form`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `label-overline`
 
@@ -6092,6 +6257,7 @@ Small caps / overline label for cards and dense panels.
 - **Category:** `content`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Modifiers:** `section`
 
 | Param | Required | Default |
@@ -6110,6 +6276,7 @@ Latest line
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6124,9 +6291,10 @@ Latest line
 
 ### `layer`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `preferred`
 
 ### `link`
 
@@ -6137,6 +6305,7 @@ Link component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6154,6 +6323,7 @@ List component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Modifiers:** `bordered`
 
@@ -6166,9 +6336,10 @@ List component
 
 ### `list-reset`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `live-badge`
 
@@ -6179,6 +6350,7 @@ Live Badge component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6194,6 +6366,7 @@ Logo component
 - **Category:** `content`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Modifiers:** `center`, `end`, `image`, `lg`, `md`, `sm`, `start`, `text`
 
 | Param | Required | Default |
@@ -6216,6 +6389,7 @@ Marquee
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `default`, `reverse`
 
@@ -6229,27 +6403,31 @@ Marquee
 
 ### `mb-md`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `measure-lg`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `measure-md`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `measure-sm`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `media-object`
 
@@ -6260,6 +6438,7 @@ Media Object layout primitive
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `actions`, `media`
 - **Modifiers:** `align-center`
 
@@ -6278,6 +6457,7 @@ Mention component
 - **Category:** `content`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6287,9 +6467,10 @@ Mention component
 
 ### `message-reactions`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `content`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `message-thread`
 
@@ -6300,6 +6481,7 @@ Message Thread component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -6315,6 +6497,7 @@ Message Bubble component
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `assistant`, `default`, `system`, `user`
 
@@ -6334,6 +6517,7 @@ Meteor Effect
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
 - **Consumes:** `_hero_variant`
@@ -6353,6 +6537,7 @@ Metric grid/card
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6380,6 +6565,7 @@ Metric grid/card
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -6390,9 +6576,10 @@ Metric grid/card
 
 ### `min-w-0`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `modal`
 
@@ -6403,6 +6590,7 @@ Modal component
 - **Category:** `container`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Slots:** `(default)`, `footer`, `header_actions`
 - **Sizes:** `lg`, `md`, `sm`
@@ -6416,21 +6604,24 @@ Modal component
 
 ### `model-card`
 
-- **Category:** `auto`
+- **Category:** `data-display`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `mt-md`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `mt-sm`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `nav-progress`
 
@@ -6441,6 +6632,7 @@ Navigation progress bar
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6455,6 +6647,7 @@ Nav tree component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `header`
 - **Modifiers:** `linked-branches`
 
@@ -6474,6 +6667,7 @@ Navbar component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `brand`, `end`
 - **Modifiers:** `sticky`
 - **Provides:** `_nav_current_path`
@@ -6496,6 +6690,7 @@ Navbar component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Consumes:** `_nav_current_path`
 
@@ -6516,6 +6711,7 @@ Neon Text
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Variants:** `blue`, `cyan`, `green`, `magenta`, `orange`, `red`
 
 | Param | Required | Default |
@@ -6535,6 +6731,7 @@ Notification Dot
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `default`, `error`, `success`, `warning`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -6549,9 +6746,10 @@ Notification Dot
 
 ### `number-scale`
 
-- **Category:** `auto`
+- **Category:** `form`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `number-ticker`
 
@@ -6562,6 +6760,7 @@ Number Ticker
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `default`, `mono`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`, `xl`
 
@@ -6583,6 +6782,7 @@ Orbit
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `lg`, `sm`, `xl`
 - **Sizes:** `(default)`, `lg`, `sm`, `xl`
@@ -6604,6 +6804,7 @@ Overlay component
 - **Category:** `container`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `dark`, `gradient-bottom`, `gradient-top`
 
 | Param | Required | Default |
@@ -6616,6 +6817,7 @@ Overlay component
 - **Category:** `layout`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `page_header`
 
@@ -6626,6 +6828,7 @@ Layout primitives — container, grid (flow), frame (structural), stack, cluster
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `actions`
 - **Variants:** `compact`, `default`
 
@@ -6647,6 +6850,7 @@ Hero component
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `actions`, `eyebrow`, `footer`, `metadata`
 - **Variants:** `editorial`, `minimal`
 
@@ -6667,6 +6871,7 @@ Pagination component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 
 | Param | Required | Default |
@@ -6690,6 +6895,7 @@ Panel component
 - **Category:** `container`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `actions`, `footer`
 - **Provides:** `_surface_variant`
 
@@ -6710,6 +6916,7 @@ Params table component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6727,6 +6934,7 @@ Particle Background
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `muted`
 - **Consumes:** `_hero_variant`
@@ -6739,9 +6947,10 @@ Particle Background
 
 ### `placeholder-inline`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `playlist`
 
@@ -6752,6 +6961,7 @@ Playlist component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `header_actions`
 
 | Param | Required | Default |
@@ -6768,6 +6978,7 @@ Playlist component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Modifiers:** `active`
 
 | Param | Required | Default |
@@ -6787,6 +6998,7 @@ Popover component
 - **Category:** `overlay`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `footer`, `header`
 
 | Param | Required | Default |
@@ -6803,6 +7015,7 @@ Post Card component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `actions`, `avatar`, `media`
 
 | Param | Required | Default |
@@ -6822,6 +7035,7 @@ Primary navigation
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6839,6 +7053,7 @@ Profile Header component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `action`, `actions`, `avatar`, `bio`, `stats`
 
 | Param | Required | Default |
@@ -6851,9 +7066,10 @@ Profile Header component
 
 ### `progress`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `feedback`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `progress-bar`
 
@@ -6864,6 +7080,7 @@ Progress Bar component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `custom`, `gold`, `radiant`, `success`, `watched`
 - **Sizes:** `lg`, `md`, `sm`
 
@@ -6879,21 +7096,24 @@ Progress Bar component
 
 ### `prose`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `preferred`
 
 ### `prose-lg`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `prose-sm`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `pulsing-btn`
 
@@ -6904,6 +7124,7 @@ Pulsing Button
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `danger`, `default`, `primary`, `success`
 
 | Param | Required | Default |
@@ -6925,6 +7146,7 @@ Reaction Pill component
 - **Category:** `interactive`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Modifiers:** `active`, `disabled`
 
 | Param | Required | Default |
@@ -6943,6 +7165,7 @@ Rendered content
 - **Category:** `typography`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Modifiers:** `compact`
 
@@ -6953,9 +7176,10 @@ Rendered content
 
 ### `resource-card`
 
-- **Category:** `auto`
+- **Category:** `data-display`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `resource-index`
 
@@ -6966,6 +7190,7 @@ Resource Index composite
 - **Category:** `composite`
 - **Maturity:** `stable`
 - **Role:** `pattern`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `empty`, `filter_actions`, `filter_controls`, `filter_primary`, `filters_panel`, `selection`, `toolbar_controls`
 
 | Param | Required | Default |
@@ -7004,9 +7229,10 @@ Resource Index composite
 
 ### `result-slot`
 
-- **Category:** `auto`
+- **Category:** `feedback`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `reveal-on-scroll`
 
@@ -7017,6 +7243,7 @@ Reveal on scroll — animate content when it enters the viewport
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Slots:** `(default)`
 
@@ -7033,6 +7260,7 @@ Ripple Button
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Variants:** `(default)`, `default`, `primary`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -7054,6 +7282,7 @@ Route-backed subsection tabs
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 
 | Param | Required | Default |
@@ -7065,9 +7294,10 @@ Route-backed subsection tabs
 
 ### `route-tabs`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `navigation`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `row-actions`
 
@@ -7078,6 +7308,7 @@ Row actions (kebab menu)
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7086,9 +7317,10 @@ Row actions (kebab menu)
 
 ### `rubber-band`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `rune-field`
 
@@ -7099,6 +7331,7 @@ Rune Field
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `arcane`, `default`, `ember`, `frost`
 - **Consumes:** `_hero_variant`
@@ -7117,6 +7350,7 @@ Scanline Overlay
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `crt`, `heavy`
 
@@ -7127,9 +7361,10 @@ Scanline Overlay
 
 ### `scroll-x`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `search-bar`
 
@@ -7140,6 +7375,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Modifiers:** `with-icon`
 
@@ -7173,6 +7409,7 @@ Search Header composite
 - **Category:** `layout`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7205,6 +7442,7 @@ Layout primitives — container, grid (flow), frame (structural), stack, cluster
 - **Category:** `layout`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Composes:** `section_header`, `surface`
 
@@ -7228,6 +7466,7 @@ Layout primitives — container, grid (flow), frame (structural), stack, cluster
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `actions`
 - **Variants:** `default`, `inline`
 
@@ -7248,6 +7487,7 @@ Segmented Control
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
 | Param | Required | Default |
@@ -7266,6 +7506,7 @@ Selection Bar
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -7285,6 +7526,7 @@ Settings row — label | status badge | detail
 - **Category:** `container`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7303,6 +7545,7 @@ Settings row — label | status badge | detail
 - **Category:** `container`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Modifiers:** `divided`, `hoverable`, `relaxed`
 - **Consumes:** `_card_variant`, `_surface_variant`
@@ -7319,6 +7562,7 @@ Settings row — label | status badge | detail
 - **Category:** `layout`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `shell-actions`
 
@@ -7329,6 +7573,7 @@ Shell actions renderer
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7340,6 +7585,7 @@ Shell actions renderer
 - **Category:** `layout`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `shimmer-btn`
 
@@ -7350,6 +7596,7 @@ Shimmer Button
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `default`, `primary`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
@@ -7376,6 +7623,7 @@ Sidebar component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `footer`, `header`
 - **Provides:** `_nav_current_path`
 
@@ -7393,6 +7641,7 @@ Sidebar component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 
 | Param | Required | Default |
@@ -7408,6 +7657,7 @@ Signature component
 - **Category:** `content`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7424,6 +7674,7 @@ Site Footer component
 - **Category:** `marketing`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `brand`, `colophon`, `rule`
 - **Variants:** `centered`, `columns`, `simple`
 
@@ -7441,6 +7692,7 @@ Site Header component
 - **Category:** `marketing`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `brand`, `nav`, `nav_end`, `tools`
 - **Variants:** `glass`, `solid`, `transparent`
 - **Modifiers:** `sticky`
@@ -7464,6 +7716,7 @@ Site Header component
 - **Category:** `marketing`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Consumes:** `_site_nav_current_path`
 
 | Param | Required | Default |
@@ -7485,6 +7738,7 @@ Site Shell component
 - **Category:** `marketing`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `footer`, `header`
 
 | Param | Required | Default |
@@ -7501,6 +7755,7 @@ Skeleton component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `avatar`, `card`, `text`
 
 | Param | Required | Default |
@@ -7520,6 +7775,7 @@ Sortable list macros
 - **Category:** `interactive`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -7537,6 +7793,7 @@ Sparkle
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `gold`, `rainbow`, `white`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -7556,6 +7813,7 @@ Spinner component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
 | Param | Required | Default |
@@ -7565,9 +7823,10 @@ Spinner component
 
 ### `spinner-thinking`
 
-- **Category:** `auto`
+- **Category:** `feedback`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `split-btn`
 
@@ -7578,6 +7837,7 @@ Split button component
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `footer`, `header`
 
 | Param | Required | Default |
@@ -7597,6 +7857,7 @@ ASCII Split-Flap Display
 - **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `amber`, `default`, `green`
 
 | Param | Required | Default |
@@ -7608,15 +7869,17 @@ ASCII Split-Flap Display
 
 ### `split-flap-board`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `split-flap-row`
 
-- **Category:** `auto`
+- **Category:** `ascii`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `split-layout`
 
@@ -7627,6 +7890,7 @@ Split layout
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `primary`, `secondary`
 - **Variants:** `balanced`, `horizontal`, `sidebar`, `vertical`, `wide-primary`, `wide-secondary`
 - **Modifiers:** `gap-lg`, `gap-md`, `gap-sm`
@@ -7647,6 +7911,7 @@ Split Panel
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Slots:** `left`, `right`
 - **Modifiers:** `dragging`, `vertical`
@@ -7668,6 +7933,7 @@ Spotlight Card
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`
 - **Consumes:** `_hero_variant`
@@ -7682,9 +7948,10 @@ Spotlight Card
 
 ### `sse-retry`
 
-- **Category:** `auto`
+- **Category:** `feedback`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 - **Modifiers:** `loading`
 
 ### `sse-status`
@@ -7696,6 +7963,7 @@ SSE connection status and error recovery
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Modifiers:** `connected`, `disconnected`, `error`
 
@@ -7707,15 +7975,17 @@ SSE connection status and error recovery
 
 ### `stack`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `preferred`
 
 ### `star-rating`
 
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
 ### `stat`
@@ -7727,6 +7997,7 @@ Stat component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7744,6 +8015,7 @@ Status Indicator component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `custom`, `default`, `error`, `info`, `primary`, `success`, `warning`
 - **Consumes:** `_surface_variant`
 
@@ -7765,6 +8037,7 @@ Stepper component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -7774,16 +8047,18 @@ Stepper component
 
 ### `streaming`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `feedback`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 - **Variants:** `error`
 
 ### `streaming-block`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `feedback`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 - **Modifiers:** `active`
 
 ### `streaming_bubble`
@@ -7795,6 +8070,7 @@ Streaming and AI components
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`
 - **Variants:** `error`, `thinking`
@@ -7819,6 +8095,7 @@ Surface component
 - **Category:** `container`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `accent`, `default`, `elevated`, `frosted`, `glass`, `gradient-accent`, `gradient-border`, `gradient-mesh`, `gradient-subtle`, `muted`, `smoke`
 - **Modifiers:** `bento`, `full`, `no-padding`
@@ -7837,9 +8114,10 @@ Surface component
 
 ### `suspense-group`
 
-- **Category:** `auto`
+- **Category:** `feedback`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `suspense-slot`
 
@@ -7850,6 +8128,7 @@ Suspense components
 - **Category:** `infrastructure`
 - **Maturity:** `internal`
 - **Role:** `infrastructure`
+- **Authoring:** `internal`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -7870,6 +8149,7 @@ Symbol Rain
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `accent`, `default`, `gold`, `muted`
 - **Consumes:** `_hero_variant`
@@ -7889,6 +8169,7 @@ Tabs component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Modifiers:** `active`
 
@@ -7904,9 +8185,10 @@ Tabs component
 
 ### `tab-panel`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `navigation`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `table`
 
@@ -7917,6 +8199,7 @@ Table component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`, `caption`
 - **Modifiers:** `compact`, `striped`
@@ -7946,6 +8229,7 @@ Table component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`, `caption`
 - **Modifiers:** `sticky`
@@ -7975,6 +8259,7 @@ Tabs component
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -7991,6 +8276,7 @@ Tag input component
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -8011,6 +8297,7 @@ Tag browse — tray + selection badges for tag-filtered listings
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -8032,6 +8319,7 @@ Tag input component
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -8045,9 +8333,10 @@ Tag input component
 
 ### `text-muted`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `text-reveal`
 
@@ -8058,6 +8347,7 @@ Text Reveal
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `default`, `gradient`
 
 | Param | Required | Default |
@@ -8069,9 +8359,10 @@ Text Reveal
 
 ### `texture`
 
-- **Category:** `auto`
+- **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `theme-toggle`
 
@@ -8082,6 +8373,7 @@ Theme + style toggles
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 
 ### `thumbs`
@@ -8089,6 +8381,7 @@ Theme + style toggles
 - **Category:** `control`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 
 ### `timeline`
@@ -8100,6 +8393,7 @@ Timeline component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Modifiers:** `hoverable`, `on-accent`, `on-muted`
 - **Consumes:** `_surface_variant`
@@ -8119,6 +8413,7 @@ Toast component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`, `htmx`
 - **Variants:** `error`, `info`, `success`, `warning`
 
@@ -8134,15 +8429,17 @@ Toast component
 
 ### `toast-container`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `feedback`
+- **Maturity:** `stable`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `toggle`
 
-- **Category:** `auto`
+- **Category:** `control`
 - **Maturity:** `experimental`
 - **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `toggle-wrap`
 
@@ -8153,6 +8450,7 @@ Form field macros
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `lg`, `sm`, `success`
 
 | Param | Required | Default |
@@ -8174,6 +8472,7 @@ Token input
 - **Category:** `form`
 - **Maturity:** `experimental`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `input`, `results`, `tokens`
 
 | Param | Required | Default |
@@ -8192,6 +8491,7 @@ Tooltip macro
 - **Category:** `navigation`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `bottom`, `left`, `right`, `top`
 
@@ -8211,6 +8511,7 @@ Tray (slide-out panel)
 - **Category:** `overlay`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `alpine`
 - **Slots:** `(default)`
 - **Variants:** `bottom`, `left`, `right`
@@ -8231,6 +8532,7 @@ Tree view component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -8246,6 +8548,7 @@ Trending Tag component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Modifiers:** `up`
 
 | Param | Required | Default |
@@ -8258,9 +8561,10 @@ Trending Tag component
 
 ### `truncate`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `typewriter`
 
@@ -8271,6 +8575,7 @@ Typewriter Effect
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Variants:** `(default)`, `fast`, `slow`
 
 | Param | Required | Default |
@@ -8291,6 +8596,7 @@ Typing Indicator component
 - **Category:** `feedback`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -8298,75 +8604,87 @@ Typing Indicator component
 
 ### `ui-base`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-bold`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-label`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-lg`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-medium`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-meta`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-normal`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-semibold`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-sm`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-title`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-xl`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `ui-xs`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `typography`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `video-card`
 
@@ -8377,6 +8695,7 @@ Video Card component
 - **Category:** `data-display`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `actions`
 
 | Param | Required | Default |
@@ -8400,6 +8719,7 @@ Video Thumbnail component
 - **Category:** `media`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -8412,9 +8732,10 @@ Video Thumbnail component
 
 ### `visually-hidden`
 
-- **Category:** `auto`
-- **Maturity:** `experimental`
+- **Category:** `layout`
+- **Maturity:** `legacy`
 - **Role:** `primitive`
+- **Authoring:** `compatibility`
 
 ### `wizard-form`
 
@@ -8425,6 +8746,7 @@ Wizard form component
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`
 
@@ -8446,6 +8768,7 @@ Wobble / Jello / Rubber-band / Bounce-in
 - **Category:** `effect`
 - **Maturity:** `experimental`
 - **Role:** `effect`
+- **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `bounce-in`, `jello`, `rubber-band`, `wobble`
 
@@ -8463,6 +8786,7 @@ Workspace shell
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `component`
+- **Authoring:** `available`
 - **Slots:** `(default)`, `inspector`, `sidebar`, `toolbar`
 - **Composes:** `panel`, `split-layout`
 

@@ -7,11 +7,13 @@ Navigation guide for all chirp-ui documentation.
 ## Core Guides
 
 - [LAYOUT.md](LAYOUT.md) — Horizontal overflow, vertical fill, grid vs frame primitives (consolidated)
+- [PRIMITIVES.md](PRIMITIVES.md) — Blessed composition primitives vs legacy compatibility helpers
 - [LAYOUT-PRESETS.md](LAYOUT-PRESETS.md) — Grid preset names, aliases, and breakpoint tokens
 - [COMPOSITION.md](COMPOSITION.md) — Component composition patterns and slot mechanics
 - [TYPOGRAPHY.md](TYPOGRAPHY.md) — Type scale, font tokens, and text utilities
 - [RESPONSIVE.md](RESPONSIVE.md) — Phone/tablet/desktop component behavior contract
 - [TOKENS.md](TOKENS.md) — CSS custom property reference (spacing, color, radius, z-index)
+- [APP-THEME.md](APP-THEME.md) — Token-only app theme starter and fresh-project ownership contract
 - [TRANSITIONS.md](TRANSITIONS.md) — Motion tokens, duration/easing values, reduced-motion
 - [UI-LAYERS.md](UI-LAYERS.md) — App shell vs page chrome vs surface chrome, shell regions
 - [CSS-OVERRIDE-SURFACE.md](CSS-OVERRIDE-SURFACE.md) — Cascade order, `@layer app.overrides` contract, token vs layer vs unlayered paths
@@ -54,6 +56,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-ascii-maturity.md](plans/PLAN-ascii-maturity.md) — ASCII art component maturity (partial)
 - [PLAN-test-coverage-hardening.md](plans/PLAN-test-coverage-hardening.md) — Test coverage expansion (partial)
 - [PLAN-theme-tokens.md](plans/PLAN-theme-tokens.md) — Theme token standardization
+- [PLAN-primitive-vocabulary-hardening.md](plans/PLAN-primitive-vocabulary-hardening.md) — Primitive vs legacy helper vocabulary hardening
 - [PLAN-sidebar-nav-refinements.md](plans/PLAN-sidebar-nav-refinements.md) — Sidebar nav refinements
 - [PLAN-route-tabs-and-tabbed-layout.md](plans/PLAN-route-tabs-and-tabbed-layout.md) — Route tabs architecture
 - [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary

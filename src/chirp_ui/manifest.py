@@ -12,10 +12,10 @@ Schema
 
 * ``components`` keys sorted; each entry contains ``block``, ``variants``,
   ``sizes``, ``modifiers``, ``elements``, ``slots``, ``tokens``, ``extra_emits``,
-  ``emits``, ``template``, ``category``, ``maturity``, ``role``, ``requires``,
-  plus the ``@2`` additions ``macro``, ``params``, and ``lineno`` and the
-  ``@3`` composition additions ``composes``, ``slot_forwards``, and
-  ``slots_yielded``.
+  ``trim_emits``, ``emits``, ``template``, ``category``, ``maturity``, ``role``,
+  ``authoring``, ``requires``, plus the ``@2`` additions ``macro``, ``params``,
+  and ``lineno`` and the ``@3`` composition additions ``composes``,
+  ``slot_forwards``, and ``slots_yielded``.
 * ``params`` is a list of ``{"name": str, "has_default": bool,
   "is_required": bool}`` derived from the template AST via
   :mod:`chirp_ui._macro_introspect`. Empty when the descriptor has no
@@ -256,11 +256,13 @@ def build_manifest() -> dict[str, Any]:
             ],
             "tokens": sorted(desc.tokens),
             "extra_emits": sorted(desc.extra_emits),
+            "trim_emits": sorted(desc.trim_emits),
             "emits": sorted(desc.emits),
             "template": desc.template,
             "category": desc.category,
             "maturity": desc.resolved_maturity,
             "role": desc.resolved_role,
+            "authoring": desc.resolved_authoring,
             "requires": requires,
             "macro": macro_info.name if macro_info else None,
             "params": params,
@@ -278,6 +280,7 @@ def build_manifest() -> dict[str, Any]:
     component_categories: dict[str, int] = {}
     component_maturity: dict[str, int] = {}
     component_roles: dict[str, int] = {}
+    component_authoring: dict[str, int] = {}
     component_requirements: dict[str, int] = {}
     for name, desc in COMPONENTS.items():
         cat = desc.category or "uncategorized"
@@ -286,6 +289,8 @@ def build_manifest() -> dict[str, Any]:
         component_maturity[maturity] = component_maturity.get(maturity, 0) + 1
         role = desc.resolved_role
         component_roles[role] = component_roles.get(role, 0) + 1
+        authoring = desc.resolved_authoring
+        component_authoring[authoring] = component_authoring.get(authoring, 0) + 1
         for requirement in components[name]["requires"]:
             component_requirements[requirement] = component_requirements.get(requirement, 0) + 1
     registry_debt = {
@@ -298,6 +303,8 @@ def build_manifest() -> dict[str, Any]:
         "auto_trim_classes": sum(len(classes) for classes in _AUTO_TRIMS.values()),
         "explicit_extra_blocks": sum(1 for desc in COMPONENTS.values() if desc.extra_emits),
         "explicit_extra_classes": sum(len(desc.extra_emits) for desc in COMPONENTS.values()),
+        "explicit_trim_blocks": sum(1 for desc in COMPONENTS.values() if desc.trim_emits),
+        "explicit_trim_classes": sum(len(desc.trim_emits) for desc in COMPONENTS.values()),
     }
     token_categories: dict[str, int] = {}
     for t in TOKEN_CATALOG.values():
@@ -320,6 +327,7 @@ def build_manifest() -> dict[str, Any]:
             "component_categories": dict(sorted(component_categories.items())),
             "component_maturity": dict(sorted(component_maturity.items())),
             "component_roles": dict(sorted(component_roles.items())),
+            "component_authoring": dict(sorted(component_authoring.items())),
             "component_requirements": dict(sorted(component_requirements.items())),
             "token_categories": dict(sorted(token_categories.items())),
         },

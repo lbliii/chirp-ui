@@ -20,6 +20,7 @@ import sys
 from chirp_ui.components import (
     _AUTO_EXTRAS,
     _AUTO_TRIMS,
+    COMPONENT_AUTHORING_LEVELS,
     COMPONENT_MATURITY_LEVELS,
     COMPONENT_ROLES,
     COMPONENTS,
@@ -52,6 +53,7 @@ def test_manifest_covers_every_component() -> None:
         assert entry["category"] == desc.category
         assert entry["maturity"] == desc.resolved_maturity
         assert entry["role"] == desc.resolved_role
+        assert entry["authoring"] == desc.resolved_authoring
         assert set(entry["requires"]) >= set(desc.requires)
         assert set(entry["requires"]) <= set(RUNTIME_REQUIREMENTS)
         # Lists are sorted in the manifest for stability.
@@ -71,6 +73,7 @@ def test_manifest_covers_every_component() -> None:
         assert set(entry["slots"]) >= set(desc.slots)
         assert entry["tokens"] == sorted(desc.tokens)
         assert entry["extra_emits"] == sorted(desc.extra_emits)
+        assert entry["trim_emits"] == sorted(desc.trim_emits)
 
 
 def test_manifest_covers_every_token() -> None:
@@ -86,8 +89,10 @@ def test_manifest_stats_match_counts() -> None:
     assert m["stats"]["total_tokens"] == len(TOKEN_CATALOG)
     assert sum(m["stats"]["component_maturity"].values()) == len(COMPONENTS)
     assert sum(m["stats"]["component_roles"].values()) == len(COMPONENTS)
+    assert sum(m["stats"]["component_authoring"].values()) == len(COMPONENTS)
     assert set(m["stats"]["component_maturity"]) <= set(COMPONENT_MATURITY_LEVELS)
     assert set(m["stats"]["component_roles"]) <= set(COMPONENT_ROLES)
+    assert set(m["stats"]["component_authoring"]) <= set(COMPONENT_AUTHORING_LEVELS)
     assert set(m["stats"]["component_requirements"]) <= set(RUNTIME_REQUIREMENTS)
 
 
@@ -98,6 +103,109 @@ def test_maturity_taxonomy_is_explicit_for_templated_components() -> None:
         name for name, desc in COMPONENTS.items() if desc.template and not desc.maturity
     )
     assert not missing, "templated components missing explicit maturity: " + ", ".join(missing)
+
+
+def test_registry_has_no_auto_category_descriptors() -> None:
+    """CSS-only classes must be intentionally classified, not left as auto debt."""
+    auto = sorted(name for name, desc in COMPONENTS.items() if desc.category == "auto")
+    assert not auto, "descriptors still using category='auto': " + ", ".join(auto)
+
+
+def test_blessed_composition_primitives_stay_stable() -> None:
+    """Core composition primitives are the vocabulary agents should prefer."""
+    blessed = {
+        "actions",
+        "block",
+        "cluster",
+        "container",
+        "flow",
+        "frame",
+        "grid",
+        "layer",
+        "prose",
+        "stack",
+    }
+    for name in sorted(blessed):
+        desc = COMPONENTS[name]
+        assert desc.resolved_role == "primitive"
+        assert desc.resolved_maturity == "stable"
+        assert desc.resolved_authoring == "preferred"
+        assert desc.category in {"layout", "typography"}
+
+
+def test_utility_like_legacy_primitive_set_does_not_grow_silently() -> None:
+    """Compatibility helpers are allowed, but should not become a new vocabulary."""
+    expected_legacy_primitives = {
+        "clamp-2",
+        "clamp-3",
+        "display",
+        "focus-ring",
+        "font-2xl",
+        "font-base",
+        "font-lg",
+        "font-medium",
+        "font-mono",
+        "font-sm",
+        "font-xl",
+        "font-xs",
+        "list-reset",
+        "mb-md",
+        "measure-lg",
+        "measure-md",
+        "measure-sm",
+        "min-w-0",
+        "mt-md",
+        "mt-sm",
+        "placeholder-inline",
+        "prose-lg",
+        "prose-sm",
+        "scroll-x",
+        "text-muted",
+        "truncate",
+        "ui-base",
+        "ui-bold",
+        "ui-label",
+        "ui-lg",
+        "ui-medium",
+        "ui-meta",
+        "ui-normal",
+        "ui-semibold",
+        "ui-sm",
+        "ui-title",
+        "ui-xl",
+        "ui-xs",
+        "visually-hidden",
+    }
+    actual = {
+        name
+        for name, desc in COMPONENTS.items()
+        if desc.resolved_role == "primitive" and desc.resolved_maturity == "legacy"
+    }
+    assert actual == expected_legacy_primitives
+    for name in sorted(expected_legacy_primitives):
+        assert COMPONENTS[name].resolved_authoring == "compatibility"
+
+
+def test_manifest_authoring_guidance_marks_only_blessed_primitives_preferred() -> None:
+    """Agent-facing authoring hints should point to concepts, not helper strings."""
+    expected_preferred = {
+        "actions",
+        "block",
+        "cluster",
+        "container",
+        "flow",
+        "frame",
+        "grid",
+        "layer",
+        "prose",
+        "stack",
+    }
+    m = build_manifest()
+    actual_preferred = {
+        name for name, entry in m["components"].items() if entry["authoring"] == "preferred"
+    }
+    assert actual_preferred == expected_preferred
+    assert m["stats"]["component_authoring"]["preferred"] == len(expected_preferred)
 
 
 def test_manifest_registry_debt_scorecard_matches_registry() -> None:
@@ -113,9 +221,14 @@ def test_manifest_registry_debt_scorecard_matches_registry() -> None:
         "auto_trim_classes": sum(len(classes) for classes in _AUTO_TRIMS.values()),
         "explicit_extra_blocks": sum(1 for desc in COMPONENTS.values() if desc.extra_emits),
         "explicit_extra_classes": sum(len(desc.extra_emits) for desc in COMPONENTS.values()),
+        "explicit_trim_blocks": sum(1 for desc in COMPONENTS.values() if desc.trim_emits),
+        "explicit_trim_classes": sum(len(desc.trim_emits) for desc in COMPONENTS.values()),
     }
-    assert debt["auto_extra_classes"] > 0
-    assert debt["auto_trim_classes"] > 0
+    assert debt["auto_category_components"] == 0
+    assert debt["auto_extra_classes"] == 0
+    assert debt["auto_trim_classes"] == 0
+    assert debt["explicit_extra_classes"] > 0
+    assert debt["explicit_trim_classes"] > 0
 
 
 def test_manifest_quality_scorecard_has_no_public_metadata_gaps() -> None:

@@ -221,7 +221,7 @@ docs = [
 [package.metadata]
 requires-dist = [
     { name = "bengal-chirp", marker = "extra == 'showcase'", specifier = ">=0.2.0" },
-    { name = "kida-templates", specifier = ">=0.7.0" },
+    { name = "kida-templates", specifier = ">=0.8.0" },
 ]
 provides-extras = ["showcase"]
 
@@ -477,11 +477,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/5e/73/e01e4c5e11ad0494f
 
 [[package]]
 name = "kida-templates"
-version = "0.7.0"
+version = "0.8.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/7e/d0/261198d9c8667272ee87c2012fa42fea6628053e34c1ec7bf66ed147ece8/kida_templates-0.7.0.tar.gz", hash = "sha256:81fcbc167f9754e0fc503d46ea50b4e558f0da1c468bcf28b57f670152856f65", size = 570668, upload-time = "2026-04-20T21:40:22.864Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/58/81/ef95a7342505b682d4c0948901096bca3a760fd6332ad8e4dab2808015bb/kida_templates-0.8.0.tar.gz", hash = "sha256:c80c0cbb53fa88723454c79ca4485fcc85f6ebaa920eb675ba1866a9e461168c", size = 590629, upload-time = "2026-04-24T18:33:26.577Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b6/fb/52359cf08ed6547f03be43958af2ebfd5df2bb65cda08e68dd3e6ab6f27b/kida_templates-0.7.0-py3-none-any.whl", hash = "sha256:b7b7e1061dbf21ba5ba296efcba40f003576c4428006ff4531fa5861e34dbc60", size = 400534, upload-time = "2026-04-20T21:40:20.927Z" },
+    { url = "https://files.pythonhosted.org/packages/39/2a/8c7345b3449ea92aa45820d47fccdfd51a7a1a04a7e4ba9a9d9bc4d02560/kida_templates-0.8.0-py3-none-any.whl", hash = "sha256:01f7240f7228ebda14a66c367071fe6e8a47b0ef6775f84006ae1c1f5dfadbc3", size = 408281, upload-time = "2026-04-24T18:33:24.745Z" },
 ]
 
 [[package]]

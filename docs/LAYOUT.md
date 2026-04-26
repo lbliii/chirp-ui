@@ -1,6 +1,6 @@
 # Layout Guide
 
-How chirp-ui layouts work: horizontal overflow, vertical fill, and grid vs frame primitives.
+How chirp-ui layouts work: horizontal overflow, vertical fill, and grid vs frame primitives. For the broader authoring vocabulary, see [PRIMITIVES.md](PRIMITIVES.md).
 
 ---
 
@@ -44,9 +44,11 @@ Layout primitives solve the *cell* — the cell is the right width. Containment 
 - **`prefers-reduced-motion: reduce`** is honored globally — animations/transitions collapse to 0.01ms across the whole CSS. Per-component `@media` blocks still override for bespoke handling.
 - **Native form controls** (checkboxes, radios, range, progress) pick up `accent-color: var(--chirpui-accent)` at `:root`.
 
-### When you still need utilities
+### Legacy containment helpers
 
-| Utility | Use for |
+These helpers remain available for narrow compatibility cases. They are not the preferred growth path for new layout vocabulary.
+
+| Helper | Use for |
 |---------|---------|
 | **`.chirpui-scroll-x`** | Wide tables, dense toolbars, horizontal strips that should scroll locally instead of widening the page. Wrap `<table>` in `<div class="chirpui-scroll-x">`. |
 | **`.chirpui-truncate`** | Single-line labels that must hard-stop with an ellipsis (file names in a tight bento cell). Requires a bounded parent. |
@@ -161,6 +163,7 @@ Canonical names, aliases, and breakpoint tokens: [LAYOUT-PRESETS.md](LAYOUT-PRES
 
 ## See also
 
+- [PRIMITIVES.md](PRIMITIVES.md) — blessed primitives and legacy helper boundary
 - [LAYOUT-PRESETS.md](LAYOUT-PRESETS.md) — preset names, aliases, breakpoint tokens
 - [ANTI-FOOTGUNS.md](ANTI-FOOTGUNS.md) — common layout footguns and how to avoid them
 - [UI-LAYERS.md](UI-LAYERS.md) — app shell vs page chrome vs surface chrome
