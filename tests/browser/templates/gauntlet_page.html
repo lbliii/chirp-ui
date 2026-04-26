@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% block brand %}ChirpUI Gauntlet{% end %}
+{% block topbar_end %}
+{% from "chirpui/dropdown_menu.html" import dropdown_select %}
+{% from "chirpui/ascii_toggle.html" import ascii_toggle %}
+<div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="topbar" data-gauntlet-touch-critical>
+  {{ dropdown_select("Density", items=[
+    {"label": "Comfortable", "value": "comfortable"},
+    {"label": "Compact", "value": "compact"},
+    {"label": "Dense", "value": "dense"},
+  ], selected="comfortable", id="gauntlet-density") }}
+  {{ ascii_toggle("gauntlet_ascii", checked=true, label="ASCII") }}
+</div>
+{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar() %}
+  {% call sidebar_section("Rooms") %}
+    {{ sidebar_link("/gauntlet", "Gauntlet") }}
+    {{ sidebar_link("/gauntlet#navigation", "Navigation") }}
+    {{ sidebar_link("/gauntlet#forms", "Forms") }}
+    {{ sidebar_link("/gauntlet#data", "Data") }}
+    {{ sidebar_link("/gauntlet#hostile", "Hostile") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, grid, frame, section_header %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/card.html" import card, resource_card %}
+{% from "chirpui/button.html" import btn, button_group %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu, dropdown_select, dropdown_split %}
+{% from "chirpui/ascii_toggle.html" import ascii_toggle %}
+{% from "chirpui/nav_tree.html" import nav_tree %}
+{% from "chirpui/primary_nav.html" import primary_nav %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/forms.html" import form, text_field, select_field, textarea_field, toggle_field, radio_field, number_scale %}
+{% from "chirpui/segmented_control.html" import segmented_control %}
+{% from "chirpui/token_input.html" import token_input, token, token_result %}
+{% from "chirpui/table.html" import table %}
+{% from "chirpui/pagination.html" import pagination %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/avatar.html" import avatar %}
+{% from "chirpui/avatar_stack.html" import avatar_stack %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+{% from "chirpui/latest_line.html" import latest_line %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/composer_shell.html" import composer_shell %}
+
+{% call container(max_width="84rem") %}
+{% call stack(gap="xl") %}
+<header class="chirpui-stack chirpui-stack--sm">
+  <p class="chirpui-label-overline">Composition stress suite</p>
+  <h1 data-testid="page-heading">ChirpUI Gauntlet</h1>
+  <p class="chirpui-text-muted">
+    A downstream-shaped pressure page that mixes standard, common, advanced, and hostile compositions.
+  </p>
+</header>
+
+<section id="primitives" data-gauntlet-room="primitives" data-gauntlet-no-overlap>
+  {{ section_header("Primitive room", subtitle="Flow grids, explicit frames, nested surfaces, and uneven content.") }}
+  {% call frame(variant="sidebar-end", gap="lg") %}
+    {% call surface(variant="muted") %}
+      {% call stack(gap="md") %}
+        {{ badge("Nested surface", variant="info") }}
+        <p>Short prose beside a dense index. The frame should collapse without pinching either side.</p>
+        {% call grid(cols=3, gap="sm") %}
+          {% call card(title="Short") %}<p>One line.</p>{% end %}
+          {% call card(title="Uneven middle card") %}
+            <p>Several lines of content test whether the grid keeps its tracks stable as cards grow.</p>
+            {% slot footer %}{{ badge("footer", variant="muted") }}{% end %}
+          {% end %}
+          {% call card(title="Actions") %}
+            {% slot header_actions %}{{ icon_btn("settings", aria_label="Configure") }}{% end %}
+            <p>Header actions should not collide with the title.</p>
+          {% end %}
+        {% end %}
+      {% end %}
+    {% end %}
+    {% call surface(variant="elevated") %}
+      {% call stack(gap="sm") %}
+        {{ inline_counter("A", 128, "alerts") }}
+        {{ inline_counter("B", 7, "blocked") }}
+        {{ inline_counter("C", 9999, "queued") }}
+      {% end %}
+    {% end %}
+  {% end %}
+</section>
+
+<section id="navigation" data-gauntlet-room="navigation" data-gauntlet-no-overlap>
+  {{ section_header("Navigation room", subtitle="Broad nav, local route tabs, linked nav trees, and dense badges together.") }}
+  {% call stack(gap="md") %}
+    {{ primary_nav([
+      {"label": "Dashboard", "href": "/gauntlet", "active": true, "badge": 2},
+      {"label": "Operations", "href": "/gauntlet/operations", "match": "prefix"},
+      {"label": "Research With Long Label", "href": "/gauntlet/research", "match": "prefix", "badge": 18},
+      {"divider": true},
+      {"label": "Archive", "href": "/gauntlet/archive"},
+    ], current_path="/gauntlet") }}
+    {{ route_tabs(gauntlet_route_tabs, current_path="/gauntlet") }}
+    {% call grid(cols=2, gap="md") %}
+      {% call surface(variant="default") %}
+        {{ nav_tree(items=nav_items, branch_mode="linked", show_icons=false) }}
+      {% end %}
+      {% call card(title="Routeable Branch Contract") %}
+        <p>Branch parents are links first. Children appear only when the server marks a branch open.</p>
+        {{ latest_line("Latest", "/gauntlet/thread/1", "A Very Long Thread Title That Still Needs To Wrap Gracefully", actor="Morgan", meta="3 min ago") }}
+      {% end %}
+    {% end %}
+  {% end %}
+</section>
+
+<section id="forms" data-gauntlet-room="forms" data-gauntlet-no-overlap>
+  {{ section_header("Forms room", subtitle="Mixed controls should share rhythm in dense bars and still breathe inside forms.") }}
+  {% call stack(gap="md") %}
+    <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="toolbar" data-gauntlet-touch-critical>
+      {{ btn("Start New Thread", variant="primary", href="/gauntlet/new") }}
+      {{ dropdown_select("View", items=[
+        {"label": "Cards", "value": "cards"},
+        {"label": "Table", "value": "table"},
+        {"label": "Timeline", "value": "timeline"},
+      ], selected="cards", id="gauntlet-view") }}
+      {{ ascii_toggle("compact", checked=false, label="Compact") }}
+      {{ icon_btn("search", aria_label="Search") }}
+    </div>
+    {% call surface(variant="muted") %}
+      {% call form(action="/gauntlet", method="post", density="compact") %}
+        {% call grid(cols=2, gap="md") %}
+          {{ text_field("title", value="A form value with enough text to wrap", label="Title", required=true) }}
+          {{ select_field("status", options=[
+            {"label": "Draft", "value": "draft"},
+            {"label": "Ready for Review", "value": "review"},
+            {"label": "Published", "value": "published"},
+          ], selected="review", label="Status") }}
+          {{ textarea_field("summary", value="Longer notes test textarea rhythm alongside compact fields.", label="Summary", rows=3) }}
+          {% call stack(gap="sm") %}
+            {{ toggle_field("notify", checked=true, label="Notify watchers", label_inside=true) }}
+            {{ radio_field("visibility", options=[
+              {"label": "Public", "value": "public"},
+              {"label": "Team", "value": "team"},
+              {"label": "Private", "value": "private"},
+            ], selected="team", label="Visibility") }}
+          {% end %}
+        {% end %}
+        {{ number_scale("confidence", min=1, max=7, selected=5, label="Confidence", low_label="low", high_label="high") }}
+      {% end %}
+    {% end %}
+    {% call token_input(label="Token input", input_id="gauntlet-tags", placeholder="Add tags") %}
+      {% slot tokens %}
+        {{ token("urgent", name="tags", value="urgent", removable=true) }}
+        {{ token("long-token-label", name="tags", value="long", removable=true) }}
+      {% end %}
+      {% slot results %}
+        {{ token_result("Suggested result", meta="recent", active=true) }}
+        {{ token_result("Another result with more context", meta="12 matches") }}
+      {% end %}
+    {% end %}
+  {% end %}
+</section>
+
+<section id="data" data-gauntlet-room="data" data-gauntlet-no-overlap>
+  {{ section_header("Data room", subtitle="Dense rows, action bars, counts, pagination, and table overflow.") }}
+  {% call stack(gap="md") %}
+    <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="pagination" data-gauntlet-touch-critical>
+      {{ pagination(current=3, total=8, url_pattern="/gauntlet?page={page}") }}
+      {{ btn("Start New Thread", variant="primary", href="/gauntlet/new-thread") }}
+      {{ dropdown_split("Export", primary_href="/gauntlet/export", items=[
+        {"label": "CSV", "href": "/gauntlet/export.csv"},
+        {"label": "JSON", "href": "/gauntlet/export.json"},
+      ]) }}
+    </div>
+    {{ table(headers=["Name", "State", "Count", "Notes"], rows=table_rows, striped=true, compact=true, align=["left", "center", "right", "left"]) }}
+    {% call grid(cols=3, gap="md") %}
+      {% for row in table_rows %}
+      {% call resource_card("/gauntlet/resource/" ~ loop.index, row[0], description=row[3], top_meta=row[1], link_mode="main") %}
+        {% slot badges %}{{ badge(row[2], variant="info") }}{% end %}
+        {% slot footer %}
+          {% call chip_group(label="Resource tags") %}
+            {{ chip("team", href="/gauntlet/tags/team") }}
+            {{ chip("needs-review", selected=loop.index == 3) }}
+          {% end %}
+        {% end %}
+      {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+</section>
+
+<section id="workflow" data-gauntlet-room="workflow" data-gauntlet-no-overlap>
+  {{ section_header("Workflow room", subtitle="Composer, identity, toolbar, preview, and action footer.") }}
+  {% call composer_shell() %}
+    {% slot header %}<strong>Reply composer</strong>{% end %}
+    {% slot identity %}
+      {% call avatar_stack() %}
+        {{ avatar(initials="AL", alt="Ada Lovelace", status="online") }}
+        {{ avatar(initials="GH", alt="Grace Hopper", status="away") }}
+        {{ avatar(initials="KT", alt="Katherine Johnson") }}
+      {% end %}
+    {% end %}
+    {% slot fields %}
+      {{ segmented_control(items=[
+        {"label": "Write", "value": "write", "active": true},
+        {"label": "Preview", "value": "preview"},
+        {"label": "History", "value": "history"},
+      ], name="composer_mode") }}
+    {% end %}
+    {% slot toolbar %}
+      <div class="chirpui-cluster chirpui-cluster--sm" data-gauntlet-control-group="composer" data-gauntlet-touch-critical>
+        {{ icon_btn("pencil", aria_label="Edit text") }}
+        {{ icon_btn("link", aria_label="Insert link") }}
+        {{ dropdown_menu(btn("Insert"), items=[
+          {"label": "Mention", "action": "mention"},
+          {"label": "Link", "action": "link"},
+          {"label": "Spoiler", "action": "spoiler"},
+        ], id="gauntlet-insert") }}
+      </div>
+    {% end %}
+    {% slot body %}
+      {{ textarea_field("body", value="A draft with enough text to make the composer look like real work.", rows=5) }}
+    {% end %}
+    {% slot preview %}
+      {% call card(title="Preview") %}
+        <p>Rendered content should sit in the composer without resizing the action footer.</p>
+      {% end %}
+    {% end %}
+    {% slot status %}<span class="chirpui-text-muted">Saved 12 seconds ago</span>{% end %}
+    {% slot actions %}
+      {{ btn("Cancel", href="/gauntlet") }}
+      {{ btn("Post Reply", variant="primary") }}
+    {% end %}
+  {% end %}
+</section>
+
+<section id="hostile" data-gauntlet-room="hostile" data-gauntlet-no-overlap>
+  {{ section_header("Hostile room", subtitle="Long labels, large counts, missing media, empty states, and dense chips.") }}
+  {% call grid(cols=2, gap="md") %}
+    {% call card(title="Long Content And Counts") %}
+      {% call chip_group(label="Hostile chips") %}
+        {{ chip("oneveryveryverylongunbrokenchiplabelthatmustnotescapetheviewport") }}
+        {{ chip("selected", selected=true) }}
+        {{ chip("muted", muted=true) }}
+      {% end %}
+      <p>Counts: {{ badge("999999", variant="error") }} {{ badge("archived", variant="muted") }}</p>
+    {% end %}
+    {% call card(title="Missing Media Fallbacks") %}
+      <div class="chirpui-cluster chirpui-cluster--sm">
+        {{ avatar(alt="Missing avatar") }}
+        {{ avatar(initials="WW", alt="Wrapped Words") }}
+        {{ avatar(initials="XL", alt="Extra Large", size="lg") }}
+      </div>
+      <p class="chirpui-text-muted">Fallbacks should preserve layout without an image request succeeding.</p>
+    {% end %}
+  {% end %}
+</section>
+{% end %}
+{% end %}
+{% end %}

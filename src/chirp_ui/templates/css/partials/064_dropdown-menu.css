@@ -55,14 +55,20 @@
     display: inline-flex;
 }
 .chirpui-dropdown__split-primary {
+    min-block-size: var(--chirpui-control-block-size);
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
 .chirpui-dropdown__trigger--split {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--chirpui-control-block-size);
+    min-block-size: var(--chirpui-control-block-size);
     border: 1px solid var(--chirpui-primary);
     background: var(--chirpui-primary);
     color: var(--chirpui-on-accent);
-    padding: 0.25rem 0.5rem;
+    padding: 0 var(--chirpui-spacing-sm);
     border-top-right-radius: var(--chirpui-radius-sm);
     border-bottom-right-radius: var(--chirpui-radius-sm);
     border-left: none;
