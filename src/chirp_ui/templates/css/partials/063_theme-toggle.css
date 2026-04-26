@@ -4,7 +4,8 @@
 
 .chirpui-theme-toggle {
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
-    min-width: 2rem;
+    min-inline-size: var(--chirpui-control-block-size);
+    min-block-size: var(--chirpui-control-block-size);
 }
 .chirpui-theme-toggle__icon {
     display: inline-flex;
@@ -21,3 +22,9 @@
     opacity: 1;
 }
 
+@media (max-width: 48rem), (pointer: coarse) {
+    .chirpui-theme-toggle {
+        min-inline-size: var(--chirpui-control-touch-target);
+        min-block-size: var(--chirpui-control-touch-target);
+    }
+}

@@ -4,6 +4,9 @@
 
 .chirpui-table-wrap {
     overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
 }
 
 .chirpui-table-wrap--sticky .chirpui-table__head {
@@ -26,6 +29,7 @@
 
 .chirpui-table {
     width: 100%;
+    min-width: 100%;
     border-collapse: collapse;
 }
 
@@ -34,6 +38,7 @@
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     text-align: left;
     border-bottom: 1px solid var(--chirpui-border);
+    vertical-align: top;
 }
 
 .chirpui-table__th {
@@ -89,6 +94,20 @@
 .chirpui-table__td--center { text-align: center; }
 .chirpui-table__th--right,
 .chirpui-table__td--right { text-align: right; }
+
+@media (max-width: 40rem) {
+    .chirpui-table {
+        width: max-content;
+        min-width: 100%;
+    }
+
+    .chirpui-table__th,
+    .chirpui-table__td {
+        max-width: min(18rem, 72vw);
+        padding: var(--chirpui-spacing-sm);
+        overflow-wrap: anywhere;
+    }
+}
 
 /* Params table (API docs) */
 .chirpui-params-table__title {
@@ -245,4 +264,3 @@
     gap: var(--chirpui-spacing-xs);
     flex-wrap: wrap;
 }
-

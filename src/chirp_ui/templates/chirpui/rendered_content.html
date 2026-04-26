@@ -1,0 +1,10 @@
+{#- chirp-ui: Rendered content
+    Wrapper for already-rendered user content such as posts, comments, and revisions.
+    Keep escaping decisions outside this macro; pass content through the default slot.
+-#}
+
+{% def rendered_content(compact=false, cls="") %}
+<div class="chirpui-rendered-content{{ " chirpui-rendered-content--compact" if compact else "" }}{{ " " ~ cls if cls else "" }}">
+    {% slot %}
+</div>
+{% end %}

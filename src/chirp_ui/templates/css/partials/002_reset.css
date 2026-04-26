@@ -85,6 +85,9 @@ body {
     --chirpui-space-card-gap: var(--chirpui-spacing-sm);
     --chirpui-space-surface-padding: var(--chirpui-spacing);
     --chirpui-space-result-gap: var(--chirpui-spacing-md);
+    --chirpui-control-block-size: 2.5rem;
+    --chirpui-control-block-size-sm: 2rem;
+    --chirpui-control-touch-target: 2.5rem;
     --chirpui-measure-sm: 22rem;
     --chirpui-measure-md: 32rem;
     --chirpui-measure-lg: 48rem;
@@ -97,6 +100,7 @@ body {
     --chirpui-sidebar-collapsed-width: 4rem;
     --chirpui-sidebar-expanded-width: 16rem;
     --chirpui-sidebar-max-width: 20rem;
+    --chirpui-sidebar-mobile-max-block-size: min(40dvh, 12rem);
 
     /* Radius */
     --chirpui-radius-xs: 0.125rem;
@@ -684,4 +688,3 @@ body {
         --chirpui-border-subtle: color-mix(in oklch, var(--chirpui-border) 70%, transparent);
     }
 }
-

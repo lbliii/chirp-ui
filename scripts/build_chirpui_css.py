@@ -220,6 +220,7 @@ MANIFEST: tuple[str, ...] = (
     "partials/158_row-component-enhancements.css",
     "partials/159_resource-card.css",
     "partials/160_resource-index.css",
+    "partials/161_navigation-metadata-authoring.css",
 )
 
 

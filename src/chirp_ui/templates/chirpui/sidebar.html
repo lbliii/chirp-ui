@@ -57,14 +57,14 @@
 {% end %}
 {% end %}
 
-{% def sidebar_link(href, label, icon="", active=false, match="", boost=true, cls="") %}
+{% def sidebar_link(href, label, icon="", active=false, match="", boost=true, cls="", badge=none) %}
 {# @consumes _nav_current_path from: sidebar — falls back to "" #}
 {% set _cp = (consume("_nav_current_path", "") or (current_path | default(""))) if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <a class="chirpui-sidebar__link{{ " chirpui-sidebar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
    href="{{ href }}" title="{{ label }}"
    {% if _active %}aria-current="page"{% end %}
-   {% if boost %}{{ shell_outlet_attrs() }}{% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span></a>
+   {% if boost %}{{ shell_outlet_attrs() }}{% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span>{% if badge is not none %}<span class="chirpui-sidebar__badge">{{ badge }}</span>{% end %}</a>
 {% end %}
 
 {# Topbar brand — same shell outlet contract as sidebar_link. #}

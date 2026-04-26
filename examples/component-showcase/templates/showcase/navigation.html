@@ -113,6 +113,10 @@
 <p class="chirpui-text-muted chirpui-font-sm">With show_icons=true:</p>
 {{ nav_tree(items=[{"title": "Getting Started", "href": "/", "children": [{"title": "Installation", "href": "/install"}, {"title": "Quick Start", "href": "/quickstart"}]}, {"title": "Components", "href": "/components", "children": [{"title": "Layout", "href": "/layout"}, {"title": "Forms", "href": "/forms"}, {"title": "Navigation", "href": "/navigation"}]}, {"title": "API Reference", "href": "/api"}], show_icons=true) }}
 {% end %}
+{% call block() %}
+<p class="chirpui-text-muted chirpui-font-sm">Link-first branches for server-controlled section trees:</p>
+{{ nav_tree(items=[{"title": "Worlds", "href": "/worlds", "open": true, "badge": 3, "children": [{"title": "Earth", "href": "/worlds/earth", "active": true}, {"title": "Mars", "href": "/worlds/mars", "muted": true}]}, {"title": "Archive", "href": "/archive", "children": [{"title": "Closed child", "href": "/archive/closed"}]}], branch_mode="linked") }}
+{% end %}
 
 <h2>Nav Link</h2>
 <p class="chirpui-text-muted chirpui-font-sm">SPA-style links with HTMX boost for smooth page transitions without full reloads.</p>

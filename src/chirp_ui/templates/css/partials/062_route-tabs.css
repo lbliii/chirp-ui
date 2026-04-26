@@ -60,3 +60,22 @@
     border-radius: 9999px;
 }
 
+@media (max-width: 40rem) {
+    .chirpui-route-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        margin-inline: calc(-1 * var(--chirpui-spacing));
+        padding-inline: var(--chirpui-spacing);
+        scroll-snap-type: x proximity;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .chirpui-route-tab {
+        flex: 0 0 auto;
+        min-block-size: var(--chirpui-control-touch-target);
+        scroll-snap-align: start;
+        white-space: nowrap;
+    }
+}

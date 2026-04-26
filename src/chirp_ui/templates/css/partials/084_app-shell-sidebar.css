@@ -9,6 +9,15 @@
     margin-top: var(--chirpui-spacing-xs);
 }
 
+@media (max-width: 48rem) {
+    .chirpui-app-shell__sidebar .chirpui-sidebar__section-links {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: nowrap;
+        margin-top: 0;
+    }
+}
+
 /* Collapsible section (details/summary) */
 .chirpui-sidebar__section > summary {
     cursor: pointer;
@@ -33,4 +42,3 @@
 .chirpui-sidebar__section[open] > summary::after {
     rotate: 90deg;
 }
-

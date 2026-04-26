@@ -12,8 +12,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 2rem;
-    height: 2rem;
+    min-inline-size: var(--chirpui-control-block-size);
+    min-block-size: var(--chirpui-control-block-size);
     padding: 0 var(--chirpui-spacing-xs);
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-sm);
@@ -54,8 +54,7 @@ button.chirpui-pagination__link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 2rem;
-    height: 2rem;
+    min-inline-size: var(--chirpui-control-block-size);
+    min-block-size: var(--chirpui-control-block-size);
     color: var(--chirpui-text-muted);
 }
-

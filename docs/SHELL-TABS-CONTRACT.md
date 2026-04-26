@@ -35,6 +35,7 @@ Stable fragment targets (`#page-root`, `#page-content-inner`) are documented in 
 2. **Tab dict shape**: `{ label, href, icon?, badge?, match? }`. Prefix matching follows `tab_is_active` in `chirp_ui/route_tabs.py`.
 3. **Targets** — default `hx-target="#page-root"` so subsection navigation swaps page chrome + inner content without reloading the app shell.
 4. **Boost** — route tab links use `hx-boost="false"` so they do not inherit the shell’s boosted `hx-select`; see component source.
+5. **Scope** — route tabs are for local views of one object, workspace, or subsection. Broad cross-feature navigation belongs in `primary_nav`, `sidebar`, `nav_tree`, or an app-level section tree.
 
 ## OOB handoffs
 

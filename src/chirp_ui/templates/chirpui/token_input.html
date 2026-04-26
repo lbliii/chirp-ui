@@ -1,0 +1,47 @@
+{#- chirp-ui: Token input
+    Accessible token input and listbox structure for app-owned autocomplete.
+-#}
+
+{% def token_input(label=none, input_id="", placeholder="", cls="") %}
+<div class="chirpui-token-input{{ " " ~ cls if cls else "" }}">
+    {% if label %}
+    <label class="chirpui-token-input__label" for="{{ input_id }}">{{ label }}</label>
+    {% end %}
+    <div class="chirpui-token-input__control">
+        {% slot tokens %}
+        {% slot input %}
+        {% if input_id %}
+        <input id="{{ input_id }}" class="chirpui-token-input__input" type="text" placeholder="{{ placeholder }}" autocomplete="off">
+        {% end %}
+    </div>
+    <div class="chirpui-token-input__list" role="listbox">
+        {% slot results %}
+    </div>
+</div>
+{% end %}
+
+{% def token(label, name=none, value=none, removable=false, remove_label=none) %}
+<span class="chirpui-token-input__token">
+    {% if name is not none and value is not none %}
+    <input type="hidden" name="{{ name }}" value="{{ value }}">
+    {% end %}
+    <span class="chirpui-token-input__token-label">{{ label }}</span>
+    {% if removable %}
+    <button type="button" class="chirpui-token-input__remove" aria-label="{{ remove_label or ("Remove " ~ label) }}">&times;</button>
+    {% end %}
+</span>
+{% end %}
+
+{% def token_result(label, meta=none, active=false, href=none, cls="") %}
+{% if href %}
+<a class="chirpui-token-input__result{{ " chirpui-token-input__result--active" if active else "" }}{{ " " ~ cls if cls else "" }}" role="option" href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>
+    <span class="chirpui-token-input__result-label">{{ label }}</span>
+    {% if meta %}<small class="chirpui-token-input__result-meta">{{ meta }}</small>{% end %}
+</a>
+{% else %}
+<button type="button" class="chirpui-token-input__result{{ " chirpui-token-input__result--active" if active else "" }}{{ " " ~ cls if cls else "" }}" role="option">
+    <span class="chirpui-token-input__result-label">{{ label }}</span>
+    {% if meta %}<small class="chirpui-token-input__result-meta">{{ meta }}</small>{% end %}
+</button>
+{% end %}
+{% end %}

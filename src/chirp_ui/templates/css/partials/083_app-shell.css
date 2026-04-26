@@ -61,6 +61,8 @@ html {
 }
 
 .chirpui-app-shell__brand {
+    display: inline-flex;
+    align-items: center;
     font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-lg);
     color: var(--chirpui-text);
@@ -398,9 +400,169 @@ body.htmx-request .chirpui-nav-progress::after {
     gap: var(--chirpui-spacing-md);
 }
 
+@media (max-width: 48rem) {
+    .chirpui-app-shell {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto minmax(0, 1fr);
+        grid-template-areas:
+            "topbar"
+            "sidebar"
+            "main";
+    }
+
+    .chirpui-app-shell__topbar {
+        flex-wrap: wrap;
+        gap: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+        padding: var(--chirpui-spacing-sm);
+    }
+
+    .chirpui-app-shell__topbar :where(a, button, select, input) {
+        min-block-size: var(--chirpui-control-touch-target);
+    }
+
+    .chirpui-app-shell__brand {
+        max-inline-size: min(16rem, 58vw);
+        min-width: 0;
+        overflow: clip;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .chirpui-app-shell__topbar-center {
+        order: 3;
+        flex: 1 1 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .chirpui-app-shell__topbar-end {
+        flex: 1 1 auto;
+        justify-content: flex-end;
+        min-width: 0;
+    }
+
+    .chirpui-app-shell__sidebar {
+        position: sticky;
+        top: var(--chirpui-shell-offset-top);
+        max-block-size: var(--chirpui-sidebar-mobile-max-block-size);
+        overflow-x: auto;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        border-right: 0;
+        border-bottom: 1px solid var(--chirpui-border);
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .chirpui-app-shell__sidebar .chirpui-sidebar {
+        width: max-content;
+        min-width: 100%;
+        padding: 0;
+        border-right: 0;
+    }
+
+    .chirpui-app-shell__sidebar .chirpui-sidebar__header,
+    .chirpui-app-shell__sidebar .chirpui-sidebar__footer,
+    .chirpui-app-shell__sidebar .chirpui-sidebar__section-title {
+        display: none;
+    }
+
+    .chirpui-app-shell__sidebar .chirpui-sidebar__nav {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    .chirpui-app-shell__sidebar .chirpui-sidebar__section {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+        padding: var(--chirpui-spacing-xs);
+    }
+
+    .chirpui-app-shell__sidebar .chirpui-sidebar__section-links {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: var(--chirpui-spacing-xs);
+    }
+
+    .chirpui-app-shell__sidebar .chirpui-sidebar__section-links :where(div, nav, ul, ol),
+    .chirpui-app-shell__sidebar .chirpui-nav-tree__list {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: var(--chirpui-spacing-xs);
+        margin: 0;
+        padding: 0;
+    }
+
+    .chirpui-app-shell__sidebar .chirpui-sidebar__section-links :where(ul, ol),
+    .chirpui-app-shell__sidebar .chirpui-nav-tree__list {
+        list-style: none;
+    }
+
+    .chirpui-app-shell__sidebar .chirpui-sidebar__section-links > *,
+    .chirpui-app-shell__sidebar .chirpui-sidebar__section-links :where(div, nav, ul, ol) > *,
+    .chirpui-app-shell__sidebar .chirpui-nav-tree__item {
+        flex: 0 0 auto;
+    }
+
+    .chirpui-app-shell__sidebar .chirpui-sidebar__section-links :where(div) {
+        border: 0;
+        margin: 0;
+        min-width: 0;
+        padding: 0;
+    }
+
+    .chirpui-app-shell__sidebar :where(.chirpui-sidebar__link, .chirpui-nav-tree__link) {
+        flex: 0 0 auto;
+        margin-inline-start: 0;
+        min-block-size: var(--chirpui-control-touch-target);
+        border-radius: var(--chirpui-radius-sm);
+        white-space: nowrap;
+    }
+
+    .chirpui-app-shell__sidebar .chirpui-sidebar__badge {
+        margin-inline-start: var(--chirpui-spacing-xs);
+    }
+
+    .chirpui-app-shell__sidebar-resize {
+        display: none;
+    }
+
+    .chirpui-app-shell--sidebar-collapsed .chirpui-sidebar__label,
+    .chirpui-app-shell--sidebar-collapsed .chirpui-sidebar__section-title {
+        width: auto;
+        opacity: 1;
+        overflow: visible;
+    }
+
+    .chirpui-app-shell--sidebar-collapsed .chirpui-sidebar__link {
+        justify-content: flex-start;
+        margin-inline: 0;
+    }
+
+    .chirpui-app-shell--sidebar-collapsed .chirpui-sidebar__icon {
+        margin-inline-end: var(--chirpui-spacing-sm);
+        min-width: 1.25em;
+        width: auto;
+    }
+
+    .chirpui-app-shell__main {
+        padding: var(--chirpui-spacing);
+    }
+
+    .chirpui-app-shell__main::before {
+        margin-inline: calc(-1 * var(--chirpui-spacing));
+    }
+}
+
 #page-content-inner {
     display: flex;
     flex-direction: column;
     gap: var(--chirpui-spacing-md);
 }
-

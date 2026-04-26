@@ -1,0 +1,12 @@
+{#- chirp-ui: Inline counter
+    Compact mark/value/label count for dense metadata rows.
+-#}
+
+{% def inline_counter(mark, value, label, title=none, cls="") %}
+{% set _title = title if title is not none else (value ~ " " ~ label) %}
+<span class="chirpui-inline-counter{{ " " ~ cls if cls else "" }}" title="{{ _title }}" aria-label="{{ _title }}">
+    <span class="chirpui-inline-counter__mark" aria-hidden="true">{{ mark }}</span>
+    <span class="chirpui-inline-counter__value">{{ value }}</span>
+    <span class="chirpui-inline-counter__label">{{ label }}</span>
+</span>
+{% end %}

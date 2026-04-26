@@ -64,6 +64,16 @@
     transition: border-color var(--chirpui-transition), box-shadow var(--chirpui-transition);
 }
 
+.chirpui-field__input:not(textarea):not([type="checkbox"]):not([type="radio"]):not([multiple]) {
+    min-block-size: var(--chirpui-control-block-size);
+}
+
+@media (max-width: 48rem), (pointer: coarse) {
+    .chirpui-field__input:not([type="checkbox"]):not([type="radio"]) {
+        min-block-size: var(--chirpui-control-touch-target);
+    }
+}
+
 .chirpui-field__input:focus {
     outline: none;
     border-color: var(--chirpui-accent);
@@ -1032,4 +1042,3 @@ input[type="date"].chirpui-field__input {
         align-items: stretch;
     }
 }
-

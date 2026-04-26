@@ -1,0 +1,32 @@
+{#- chirp-ui: Latest line
+    Compact activity/jump metadata with optional actor and tooltip detail.
+-#}
+{% from "chirpui/tooltip.html" import tooltip %}
+
+{% def latest_line(label, href, title, actor=none, actor_href=none, meta=none, detail=none, cls="") %}
+{% set _detail = detail if detail is not none else (((("by " ~ actor) if actor else "") ~ ((" - " ~ meta) if meta else ""))) %}
+<div class="chirpui-latest-line{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-latest-line__label">{{ label }}</span>
+    {% if _detail %}
+    {% call tooltip(title ~ " - " ~ _detail, position="top", cls="chirpui-latest-line__tooltip") %}
+    <a class="chirpui-latest-line__title" href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>{{ title }}</a>
+    {% end %}
+    {% else %}
+    <a class="chirpui-latest-line__title" href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>{{ title }}</a>
+    {% end %}
+    {% if actor or meta %}
+    <span class="chirpui-latest-line__meta">
+        {% if actor %}
+        by
+        {% if actor_href %}
+        <a href="{{ actor_href }}"{{ route_link_attrs(actor_href) | html_attrs }}>{{ actor }}</a>
+        {% else %}
+        {{ actor }}
+        {% end %}
+        {% end %}
+        {% if actor and meta %}<span aria-hidden="true">&middot;</span>{% end %}
+        {% if meta %}<span>{{ meta }}</span>{% end %}
+    </span>
+    {% end %}
+</div>
+{% end %}

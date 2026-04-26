@@ -14,6 +14,7 @@ a.chirpui-btn {
     align-items: center;
     justify-content: center;
     gap: var(--chirpui-spacing-xs);
+    min-block-size: var(--chirpui-control-block-size);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     font-size: var(--chirpui-font-sm);
     font-weight: 500;
@@ -151,8 +152,15 @@ a.chirpui-btn {
 
 /* Small button — compact for search bars, toolbars */
 .chirpui-btn--sm {
+    min-block-size: var(--chirpui-control-block-size-sm);
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
     font-size: var(--chirpui-font-xs);
+}
+
+@media (max-width: 48rem), (pointer: coarse) {
+    .chirpui-btn {
+        min-block-size: var(--chirpui-control-touch-target);
+    }
 }
 
 .chirpui-btn-group {
@@ -248,4 +256,3 @@ a.chirpui-btn {
 .chirpui-btn.htmx-request .chirpui-btn__spinner {
     display: inline-flex;
 }
-
