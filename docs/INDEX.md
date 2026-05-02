@@ -22,6 +22,7 @@ Navigation guide for all chirp-ui documentation.
 
 - [PRODUCT-PAGE-PATTERNS.md](PRODUCT-PAGE-PATTERNS.md) — Product-site composition recipes built from existing primitives
 - [MEDIA-SITE-PATTERNS.md](MEDIA-SITE-PATTERNS.md) — Streaming, video, catalog, live-event, and media-plan composition recipes
+- [FORUM-SITE-PATTERNS.md](FORUM-SITE-PATTERNS.md) — Forum, Q&A, threaded discussion, moderation, and community composition recipes
 - [HTMX-PATTERNS.md](HTMX-PATTERNS.md) — `hx={}` dict, auto-injected attrs, `build_hx_attrs()`
 - [HTMX-ADVANCEMENT.md](HTMX-ADVANCEMENT.md) — Design decisions for htmx integration
 - [ALPINE-MAGICS.md](ALPINE-MAGICS.md) — Alpine.js store, `safeData`, shared controllers
@@ -65,6 +66,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-layout-widget-brainstorm.md](plans/PLAN-layout-widget-brainstorm.md) — Layout widget ideas
 - [PLAN-product-page-patterns-from-langchain.md](plans/PLAN-product-page-patterns-from-langchain.md) — Product-page composition recipes from LangChain design review
 - [PLAN-media-site-patterns-from-streaming.md](plans/PLAN-media-site-patterns-from-streaming.md) — Media-site composition recipes from Netflix, YouTube, and Apple TV research
+- [PLAN-forum-site-patterns-from-communities.md](plans/PLAN-forum-site-patterns-from-communities.md) — Forum-site composition recipes from Reddit, Discourse, Stack Overflow, and GitHub Discussions research
 
 ### Shipped plans (`docs/plans/done/`)
 
