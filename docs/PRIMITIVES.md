@@ -23,6 +23,11 @@ Use legacy helpers only for narrow compatibility cases such as truncation or loc
 
 `actions`, `flow`, and `prose` are CSS primitives today. The rest are Kida macros in `chirpui/layout.html`.
 
+For product-site pages, use these primitives through the recipes in
+[PRODUCT-PAGE-PATTERNS.md](PRODUCT-PAGE-PATTERNS.md). Those recipes show how
+to compose hero, proof, lifecycle, customer story, and CTA sections without
+adding utility classes or speculative component APIs.
+
 The registry projects this boundary into the manifest as `authoring` metadata:
 these blessed primitives are `preferred`, legacy helpers are `compatibility`,
 and other public surfaces remain `available`.

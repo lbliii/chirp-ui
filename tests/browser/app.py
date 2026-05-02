@@ -93,6 +93,59 @@ GAUNTLET_TABLE_ROWS = [
     ),
 ]
 
+PRODUCT_PATTERN_CUSTOMERS = [
+    "Klarna",
+    "Vanta",
+    "Clay",
+    "Rippling",
+    "Lyft",
+    "Gong",
+    "Harvey",
+    "Cloudflare",
+]
+
+PRODUCT_PATTERN_PRODUCTS = [
+    {
+        "href": "/product-page-patterns/observe",
+        "name": "Observability",
+        "summary": "Trace runs, inspect tool calls, and understand failures.",
+        "kind": "Platform",
+    },
+    {
+        "href": "/product-page-patterns/evaluate",
+        "name": "Evaluation",
+        "summary": "Score behavior with reusable test cases and human review.",
+        "kind": "Workflow",
+    },
+    {
+        "href": "/product-page-patterns/deploy",
+        "name": "Deployment",
+        "summary": "Ship durable agent services with memory and checkpoints.",
+        "kind": "Runtime",
+    },
+]
+
+PRODUCT_PATTERN_STORIES = [
+    {
+        "customer": "Klarna",
+        "outcome": "Reduced support resolution time",
+        "summary": "A shared tracing and evaluation loop helped support agents improve faster.",
+        "href": "/product-page-patterns/stories/klarna",
+    },
+    {
+        "customer": "Monday Service",
+        "outcome": "Faster evaluation feedback",
+        "summary": "Production traces became reusable eval cases for each agent iteration.",
+        "href": "/product-page-patterns/stories/monday",
+    },
+    {
+        "customer": "Podium",
+        "outcome": "Fewer engineering escalations",
+        "summary": "Observable agent runs gave operators enough context to resolve issues.",
+        "href": "/product-page-patterns/stories/podium",
+    },
+]
+
 GAUNTLET_ROOMS = {
     "all": "All rooms",
     "primitives": "Primitive room",
@@ -374,5 +427,18 @@ def create_app() -> App:
     @app.route("/video-channel-cards")
     async def video_channel_cards_page(request: Request):
         return Template("video_channel_cards_page.html", page_title="Video / Channel Cards")
+
+    # ── Product page patterns (LangChain design review, Phase 2) ─────
+
+    @app.route("/product-page-patterns")
+    async def product_page_patterns(request: Request):
+        return Template(
+            "product_page_patterns.html",
+            page_title="Product Page Patterns",
+            current_path="/product-page-patterns",
+            customer_names=PRODUCT_PATTERN_CUSTOMERS,
+            products=PRODUCT_PATTERN_PRODUCTS,
+            stories=PRODUCT_PATTERN_STORIES,
+        )
 
     return app
