@@ -131,18 +131,21 @@ PRODUCT_PATTERN_STORIES = [
     {
         "customer": "Klarna",
         "outcome": "Reduced support resolution time",
+        "metric": "80%",
         "summary": "A shared tracing and evaluation loop helped support agents improve faster.",
         "href": "/product-page-patterns/stories/klarna",
     },
     {
         "customer": "Monday Service",
         "outcome": "Faster evaluation feedback",
+        "metric": "8.7x",
         "summary": "Production traces became reusable eval cases for each agent iteration.",
         "href": "/product-page-patterns/stories/monday",
     },
     {
         "customer": "Podium",
         "outcome": "Fewer engineering escalations",
+        "metric": "90%",
         "summary": "Observable agent runs gave operators enough context to resolve issues.",
         "href": "/product-page-patterns/stories/podium",
     },

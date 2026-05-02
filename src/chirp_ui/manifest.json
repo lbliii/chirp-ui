@@ -16863,6 +16863,120 @@
       "trim_emits": [],
       "variants": []
     },
+    "story-card": {
+      "authoring": "available",
+      "block": "story-card",
+      "category": "marketing",
+      "composes": [],
+      "consumes": [],
+      "description": "Story Card\n    Customer outcome card for product pages, case-study strips, and proof grids.\n\n    Data-in: customer, outcome, optional summary, metric, href, logo_src, logo_alt.\n    Default slot replaces summary when a page needs richer escaped markup.\n    Named slots: logo, metric, footer.\n\n    Usage:\n        from \"chirpui/story_card.html\" import story_card\n\n        story_card(\n            customer=\"Acme\",\n            outcome=\"Reduced review time\",\n            summary=\"Teams debugged production runs without escalating.\",\n            href=\"/customers/acme\",\n            metric=\"80%\",\n        )",
+      "elements": [
+        "body",
+        "cta",
+        "customer",
+        "footer",
+        "header",
+        "logo",
+        "logo-img",
+        "metric",
+        "outcome",
+        "summary"
+      ],
+      "emits": [
+        "chirpui-story-card",
+        "chirpui-story-card--link",
+        "chirpui-story-card__body",
+        "chirpui-story-card__cta",
+        "chirpui-story-card__customer",
+        "chirpui-story-card__footer",
+        "chirpui-story-card__header",
+        "chirpui-story-card__logo",
+        "chirpui-story-card__logo-img",
+        "chirpui-story-card__metric",
+        "chirpui-story-card__outcome",
+        "chirpui-story-card__summary"
+      ],
+      "extra_emits": [],
+      "lineno": 20,
+      "macro": "story_card",
+      "maturity": "experimental",
+      "modifiers": [
+        "link"
+      ],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "customer"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "outcome"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "summary"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "metric"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "logo_src"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "logo_alt"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cta_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "",
+        "footer",
+        "logo",
+        "metric"
+      ],
+      "slots_extracted": [
+        "",
+        "footer",
+        "logo",
+        "metric"
+      ],
+      "slots_yielded": [],
+      "template": "story_card.html",
+      "tokens": [
+        "--chirpui-story-card-gap",
+        "--chirpui-story-card-logo-size",
+        "--chirpui-story-card-padding"
+      ],
+      "trim_emits": [],
+      "variants": []
+    },
     "streaming": {
       "authoring": "available",
       "block": "streaming",
@@ -19783,7 +19897,7 @@
   "schema": "chirpui-manifest@3",
   "stats": {
     "component_authoring": {
-      "available": 267,
+      "available": 268,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -19801,14 +19915,14 @@
       "infrastructure": 2,
       "interactive": 8,
       "layout": 45,
-      "marketing": 8,
+      "marketing": 9,
       "media": 1,
       "navigation": 22,
       "overlay": 3,
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 110,
+      "experimental": 111,
       "internal": 2,
       "legacy": 39,
       "stable": 167
@@ -19821,12 +19935,12 @@
       "component": 173,
       "effect": 32,
       "infrastructure": 2,
-      "pattern": 2,
+      "pattern": 3,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 208,
-    "components_with_params": 208,
+    "components_with_description": 209,
+    "components_with_params": 209,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -19834,7 +19948,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 206
+      "public_templated_components": 207
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -19857,7 +19971,7 @@
       "spacing": 22,
       "typography": 40
     },
-    "total_components": 318,
+    "total_components": 319,
     "total_tokens": 356
   },
   "tokens": {

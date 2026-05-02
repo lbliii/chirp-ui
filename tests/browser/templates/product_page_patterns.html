@@ -13,7 +13,7 @@
 {% from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel %}
 {% from "chirpui/surface.html" import surface %}
 {% from "chirpui/index_card.html" import index_card %}
-{% from "chirpui/card.html" import card %}
+{% from "chirpui/story_card.html" import story_card %}
 {% from "chirpui/metric_grid.html" import metric_grid, metric_card %}
 
 {% call site_shell() %}
@@ -109,12 +109,7 @@
         {{ section_header("Learn from teams running agents in production") }}
         {% call grid(cols=3, gap="lg") %}
           {% for story in stories %}
-            {% call card(title=story.customer, subtitle=story.outcome, hoverable=true) %}
-              <p>{{ story.summary }}</p>
-              {% slot footer %}
-                {{ btn("Read story", href=story.href, variant="ghost") }}
-              {% end %}
-            {% end %}
+            {{ story_card(customer=story.customer, outcome=story.outcome, summary=story.summary, href=story.href, metric=story.metric | default(none)) }}
           {% endfor %}
         {% end %}
       {% end %}

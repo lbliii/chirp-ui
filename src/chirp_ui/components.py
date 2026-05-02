@@ -1577,6 +1577,32 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         maturity="experimental",
         role="pattern",
     ),
+    "story-card": ComponentDescriptor(
+        block="story-card",
+        modifiers=("link",),
+        elements=(
+            "header",
+            "logo",
+            "logo-img",
+            "metric",
+            "body",
+            "customer",
+            "outcome",
+            "summary",
+            "footer",
+            "cta",
+        ),
+        slots=("", "logo", "metric", "footer"),
+        tokens=(
+            "--chirpui-story-card-gap",
+            "--chirpui-story-card-padding",
+            "--chirpui-story-card-logo-size",
+        ),
+        template="story_card.html",
+        category="marketing",
+        maturity="experimental",
+        role="pattern",
+    ),
     # -- Composites (PR #57) ------------------------------------------------
     "settings-row-list": ComponentDescriptor(
         block="settings-row-list",

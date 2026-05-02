@@ -286,7 +286,7 @@ Candidate macros, gated by evidence:
 |-----------|----------------|-------------------|
 | `logo_cloud` | Built 2026-05-02 | Accessible proof bands are common and stable enough to ship proactively |
 | `lifecycle_showcase` | Recipe only | Repeated `tabs_panels` + `feature_section` markup becomes error-prone |
-| `story_card` | Maybe | Real pages repeat customer/outcome/href/metric structure |
+| `story_card` | Built 2026-05-02 | Customer outcome cards are common and stable enough to ship proactively |
 | `site_nav_group` | Maybe | Product nav grouping cannot be expressed cleanly with current `site_header` slots |
 | `cta_band` | Recipe only | `band` + `stack` + `cluster` proves too verbose in multiple pages |
 

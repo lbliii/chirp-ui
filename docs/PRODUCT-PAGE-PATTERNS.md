@@ -25,6 +25,7 @@ Most examples use this shared import set:
 {% from "chirpui/surface.html" import surface %}
 {% from "chirpui/index_card.html" import index_card %}
 {% from "chirpui/card.html" import card %}
+{% from "chirpui/story_card.html" import story_card %}
 {% from "chirpui/metric_grid.html" import metric_grid, metric_card %}
 ```
 
@@ -199,7 +200,7 @@ Checks:
 
 ## Customer Story Strip
 
-Use this when a page needs specific outcomes from real users. Start with `card` and `grid`; only propose `story_card` after repeated usage proves the structure is stable.
+Use this when a page needs specific outcomes from real users.
 
 ```kida
 {% call container() %}
@@ -208,23 +209,27 @@ Use this when a page needs specific outcomes from real users. Start with `card` 
 
     {% call grid(cols=3, gap="lg") %}
       {% for story in stories %}
-        {% call card(title=story.customer, subtitle=story.outcome, hoverable=true) %}
-          <p>{{ story.summary }}</p>
-          {% slot footer %}
-            {{ btn("Read story", href=story.href, variant="ghost") }}
-          {% end %}
-        {% end %}
+        {{ story_card(
+          customer=story.customer,
+          outcome=story.outcome,
+          summary=story.summary,
+          href=story.href,
+          metric=story.metric | default(none)
+        ) }}
       {% endfor %}
     {% end %}
   {% end %}
 {% end %}
 ```
 
-Promotion trigger for a future `story_card`:
+Use `card` directly only when a story needs page-specific structure outside the
+standard customer, outcome, metric, summary, and CTA regions.
 
-- At least two real pages repeat customer, outcome, metric, summary, href, and optional logo/avatar regions.
-- Existing `card` composition requires repeated structural classes.
-- The registry can cite every emitted class without escape hatches for page-only styling.
+Checks:
+
+- Outcome copy is specific and measurable when possible.
+- The whole-card link is used only when the footer does not need independent controls.
+- Logo images have text alternatives through `logo_alt` or the customer name.
 
 ---
 
@@ -273,7 +278,7 @@ Likely candidates, in priority order:
 | `site_nav_group` | Recipe | Grouped product navigation cannot be expressed cleanly with `site_header` slots |
 | `lifecycle_showcase` | Recipe | `tabs_panels` plus `feature_section` markup becomes repeated and error-prone |
 | `logo_cloud` | Built | Accessible proof bands are common and stable enough to ship proactively |
-| `story_card` | Maybe | Real pages repeat the same customer outcome structure |
+| `story_card` | Built | Customer outcome cards are common and stable enough to ship proactively |
 | `cta_band` | Recipe | `band` plus `stack` plus `cluster` proves too verbose in multiple pages |
 
 Do not add a generic landing-page builder or utility-class vocabulary.

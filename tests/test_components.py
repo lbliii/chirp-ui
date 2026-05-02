@@ -4113,6 +4113,40 @@ class TestLogo:
         assert '<span class="custom-logo">Partner</span>' in html
 
 
+class TestStoryCard:
+    def test_story_card_link_with_metric(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/story_card.html" import story_card %}'
+            '{{ story_card(customer="Acme", outcome="Reduced review time", '
+            'summary="Teams debugged production runs.", href="/stories/acme", metric="80%") }}'
+        ).render()
+
+        assert '<a href="/stories/acme"' in html
+        assert "chirpui-story-card" in html
+        assert "chirpui-story-card--link" in html
+        assert "chirpui-story-card__metric" in html
+        assert "80%" in html
+        assert "Reduced review time" in html
+        assert "Read story" in html
+
+    def test_story_card_slots_and_logo(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/story_card.html" import story_card %}'
+            '{% call story_card(customer="Globex", outcome="Improved quality", '
+            'logo_src="/static/globex.svg", logo_alt="Globex mark") %}'
+            "Custom summary"
+            "{% slot footer %}<span>Case study</span>{% end %}"
+            "{% end %}"
+        ).render()
+
+        assert "<article" in html
+        assert "chirpui-story-card--link" not in html
+        assert 'src="/static/globex.svg"' in html
+        assert 'alt="Globex mark"' in html
+        assert "Custom summary" in html
+        assert "Case study" in html
+
+
 class TestSidebar:
     def test_sidebar_with_links(self, env: Environment) -> None:
         html = env.from_string(
