@@ -61,6 +61,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-route-tabs-and-tabbed-layout.md](plans/PLAN-route-tabs-and-tabbed-layout.md) — Route tabs architecture
 - [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary
 - [PLAN-layout-widget-brainstorm.md](plans/PLAN-layout-widget-brainstorm.md) — Layout widget ideas
+- [PLAN-product-page-patterns-from-langchain.md](plans/PLAN-product-page-patterns-from-langchain.md) — Product-page composition recipes from LangChain design review
 
 ### Shipped plans (`docs/plans/done/`)
 

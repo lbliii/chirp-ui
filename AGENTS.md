@@ -1,121 +1,105 @@
-# AGENTS.md
+# Chirp UI Agent Constitution
 
-Chirp-ui ships the component vocabulary that downstream apps render to their end users. A bad macro here becomes a rendering bug, an XSS hole, or a cascade failure in every Chirp app that upgrades. You can't see those apps, and they can't audit what you did. Treat the rules below as safety rules, not style rules.
+## North Star
 
----
+Chirp UI exists to prove that a Python UI library can stay introspectable, safe, and beautiful without becoming a utility-class string vocabulary. The component registry is the source of truth; macros, CSS, docs, tests, the manifest, themes, and examples are projections of that registry. See `docs/VISION.md`.
 
-## North star
+## Non-Negotiables
 
-**Chirpui is a Python vocabulary for UI, not a string vocabulary.** The component registry is the single source of truth; CSS, macros, tests, docs, and the agent manifest are all *projections* of it. Every decision routes back to that: does this keep chirpui introspectable from Python, or does it grow a parallel source of truth the registry can't see? If a change doesn't serve that goal, it isn't worth shipping. See `docs/VISION.md`.
+- No utility-class vocabulary. Use `stack()`, `cluster()`, `grid()`, `frame()`, and `block()` composition primitives instead of `p-4`/`flex`/`text-center` equivalents.
+- Every shipped `chirpui-*` class is registry-cited, template-emitted only when intentional, and defined in the generated CSS.
+- Cascade order is public API: `chirpui.reset, chirpui.token, chirpui.base, chirpui.component, chirpui.utility, app.overrides`.
+- Edit CSS partials, not generated `src/chirp_ui/templates/chirpui.css`; run the CSS build and commit both when CSS changes.
+- No `<script>` tags in component macros. Alpine behavior lives in `chirpui-alpine.js`; tiny inline `x-data` attributes are the exception.
+- Escape by default. Use `html_attrs`/`attrs_map`; `Markup` and `| safe` require trusted or already-escaped input.
+- Python 3.14+ and free-threading compatibility are table stakes. Avoid mutable global state and non-free-threading-ready dependencies.
 
----
+## Architecture Boundaries
 
-## Design philosophy
-
-- **No utility-class vocabulary, ever.** `stack()`, `cluster()`, `grid()`, `frame()`, `block()` are the composition primitives. We do not ship `p-4 mx-auto rounded-lg` equivalents. The moment a utility class lands, the registry stops being the source of truth and we re-enter Tailwind's category at a disadvantage.
-- **Every class the CSS ships is registry-cited.** If `chirpui-card__X` is emitted by `card.html`, it appears in the card registry entry's `emits` set and in `_card.css`. Tests assert the three views agree. Unused classes get deleted; hallucinated classes fail CI.
-- **Cascade order is public API.** `@layer chirpui.reset, chirpui.token, chirpui.base, chirpui.component, chirpui.utility, app.overrides`. Consumers place overrides in `app.overrides` and win predictably. Don't fight it with specificity.
-- **CSS is concat-from-partials.** Edit `src/chirp_ui/templates/css/partials/*.css`, run `poe build-css`, commit both. New components get the `@layer chirpui.component { @scope (.chirpui-X) to (.chirpui-X .chirpui-X) { … } }` envelope — see `docs/plans/PLAN-css-scope-and-layer.md`.
-- **Free-threading-compatible tooling only.** Pure-Python build scripts, stdlib-only where possible. Lightning CSS Python bindings and anything else gated on the GIL are out. Python 3.14+ (free-threading-ready) is the floor.
-- **No client JS in macros.** Alpine `x-data` attributes only. No `<script>` tags in component templates. Named Alpine components use `Alpine.safeData(name, factory)` and live in `chirpui-alpine.js`. Chirp is the single authority for Alpine injection.
-- **Sharp edges are bugs, not taste.** Silent `| safe` on user input, un-validated variants, raw motion/color/spacing values, template-CSS drift, `attrs=""` raw strings — these have cost real consumers real time. CI catches some; the rest is on you.
-
----
+- `src/chirp_ui/components.py` owns component descriptors, variants, sizes, emitted classes, slots, runtime requirements, and registry metadata.
+- `src/chirp_ui/manifest.py` and `src/chirp_ui/manifest.json` project the registry for agents, docs, and downstream tooling.
+- `src/chirp_ui/templates/chirpui/` owns Kida macro output and public HTML/HTMX/Alpine contracts.
+- `src/chirp_ui/templates/css/partials/` owns author CSS; `chirpui.css` is deterministic generated output.
+- `src/chirp_ui/validation.py`, `filters.py`, `tokens.py`, `alpine.py`, `route_tabs.py`, `icons.py`, and public exports in `__init__.py` are Python API surface.
+- `src/bengal_themes/` is the packaged default Bengal theme surface.
+- `scripts/` owns deterministic build projections. Keep them pure-Python/stdlib unless there is a checked-in reason not to.
 
 ## Stakes
 
-When you change something in chirp-ui, the blast radius is:
+- App developers inherit broken HTML, inaccessible controls, or XSS if macros bypass escaping or drift from Kida/HTMX contracts.
+- Downstream overrides silently fail if layer order or specificity discipline changes.
+- Coding agents hallucinate APIs when descriptors, manifest, docs, examples, and CSS disagree.
+- Theme consumers lose a stable default UX when token names, assets, or theme package metadata drift.
+- Free-threaded consumers can see races that local GIL-backed testing hides.
 
-- **Template rendering bugs** → consumer apps produce broken HTML to their end users. Debuggable only by the consumer, who can't see inside chirpui's macros. Harm: a dashboard breaks, an admin can't take a destructive action, a user sees a stale state.
-- **XSS via `| safe` misuse** → reaches every app that renders the affected component. The `html_attrs`/`Markup` rule is load-bearing; raw string interpolation into attributes is an incident waiting to ship. See `SECURITY.md`.
-- **CSS cascade / layer order changes** → consumer overrides in `app.overrides` silently stop winning, or chirpui rules start over-specifying. Documented cascade order is the public API; breaking it is a major version bump, not a drive-by.
-- **Template-CSS drift** → `test_template_css_contract.py` exists because undefined classes looked fine in review and failed in the browser. New classes referenced in templates must exist in `chirpui.css` and in the registry's `emits` set.
-- **Registry drift** → the agent manifest (`chirp_ui.manifest.build_manifest()`) is what grounds coding agents. If the registry doesn't match what macros emit, agents hallucinate classes that don't exist. This is the one bet; treat it like one.
-- **Free-threaded races** → no GIL safety net under 3.14t. Any module-level mutable state (registries, colour caches, warning filters) must be safe under true parallelism.
+## Stop And Ask
 
-Chirp-ui is pre-1.0 but shipped — the Bengal ecosystem (kida, chirp, chirp-ui, bengal) uses it, and external consumers are starting to. Calibrate accordingly.
+- Public API changes: imports from `chirp_ui.__init__`, macro signatures, descriptor fields, manifest schema, theme entry points, `static_path()`, `register_filters()`.
+- New runtime or build dependencies, especially anything not clearly pure-Python/free-threading-ready.
+- New component, variant, size, color vocabulary, macro parameter, provide/consume key, config surface, or extension pattern.
+- Cascade layer order, `app.overrides`, generated-output build order, release pipeline, or docs-site output contract changes.
+- Security/auth/escaping changes, `Markup`/`| safe` use on new inputs, raw attribute escape hatches.
+- Test/code disagreement, unreproduced bugs, irreversible migrations, or "dead" code that may still be load-bearing.
 
----
+## Anti-Patterns
 
-## Who reads your output
+- Adding utility classes or raw CSS values instead of tokens.
+- Hand-editing generated `chirpui.css`, `manifest.json`, or generated docs sections.
+- Template classes without CSS and descriptor `emits` coverage.
+- Defensive `try: ... except Exception: pass` around validation; use warnings that tell consumers what to do.
+- Speculative macro params or "future flexibility" without a consumer.
+- Refactoring during a bug fix unless the refactor is the fix or the touched CSS partial needs opportunistic envelope conversion.
+- Re-triaging sharp edges already documented in `CLAUDE.md`; treat that table as institutional memory.
 
-- **App devs migrating from Tailwind/Shadcn** — want Python-reachable components, a working app-shell, and not to wire htmx/Alpine themselves. They read macro docstrings, `COMPONENT-OPTIONS.md`, and tracebacks.
-- **Coding agents** — read the manifest and docstrings to ground suggestions. Vague, inconsistent, or missing docstrings propagate hallucinations into every PR those agents open in downstream projects.
-- **Contributors** — know Jinja/Python but not our internals. They read `CLAUDE.md`, `docs/INDEX.md`, and a macro or two to get oriented. Onboarding fails when composition primitives aren't obvious.
-- **Me (Lawrence)** — read diffs. Put the what in code, the why in the PR. I am the sole author of kida/chirp/chirp-ui; the flywheel is real and reviewer bandwidth is me.
+## Steward System
 
----
+Read this root file plus the closest scoped `AGENTS.md`. Root is the constitution and routing guide; scoped files are domain stewards. Scoped stewards own local invariants, refusal patterns, docs, tests, examples, fixtures, and checks. Cross-boundary work needs `Steward Notes` in the PR description naming the consulted stewards, the contract touched, and the remaining risk.
 
-## Escape hatches — stop and ask
+Steward files use this operating model:
 
-Forks where I want a check-in, not a judgment call:
+- Point Of View: who or what the domain represents.
+- Protect: invariants, contracts, quality bars, and failure modes.
+- Advocate: features, fixes, and investments the domain should push for.
+- Serve Peers: upstream/downstream domains that need clearer contracts, diagnostics, docs, tests, or ergonomics.
+- Do Not: local anti-patterns.
+- Own: tests, docs, examples, fixtures, and maintenance checks.
 
-- **Adding a utility class.** The bright line. The answer is almost always no. If you think it's yes, ask.
-- **Touching `@layer` order** (`chirpui.css` preamble) or the `app.overrides` contract. Public API.
-- **New component that isn't clearly a projection of a registry entry.** Sketch the macro, its `emits` set, its `provides`/`consumes` keys, and variants first; ask whether it belongs before writing CSS.
-- **New variant, size, or colour vocabulary.** Add to `VARIANT_REGISTRY` / `SIZE_REGISTRY` / `register_colors` first; if the vocabulary itself is new (not just a new value), ask.
-- **New runtime dependency.** Must be pure-Python, free-threading-safe, and genuinely load-bearing. Default answer: "reshape an existing primitive."
-- **New build/tooling dependency.** Same bar as runtime deps, plus: must work on 3.14t. Lightning CSS Python bindings are already out; so is anything equivalent.
-- **New config option / macro parameter on a load-bearing component.** Reshape first. The surface is already large; growing it is a smell. If you add one, update `COMPONENT-OPTIONS.md` in the same PR.
-- **Bypassing escaping** (`| safe`, `Markup(...)`, new `attrs_unsafe` consumer). Explain why the input is trusted. Default: use `html_attrs` + `attrs_map`.
-- **Changing `provide`/`consume` keys** (`PROVIDE-CONSUME-KEYS.md`). Contract surface across macro boundaries; breaking it breaks consumer templates silently.
-- **Big-bang CSS migrations.** Don't. Opportunistic envelope conversion only — when a PR touches a legacy partial, convert that one partial in the same PR. One component per PR. See `docs/plans/PLAN-css-scope-and-layer.md § Migration status`.
-- **Public API change** (anything imported from `chirp_ui.__init__`, macro signatures in the registry, `static_path()`, `register_filters()`). Ask whether the break is worth it and add a deprecation path per the policy in `CLAUDE.md`.
-- **Dead code you found.** Flag in the PR, let me decide. Unused macros may be load-bearing for a theme, showcase route, or example.
-- **Test disagrees with code.** Ask which is authoritative before "fixing" either — especially for `test_template_css_contract.py`, `test_transition_tokens.py`, and the registry-emits parity test. They exist because the code drifted.
-- **Adjacent issues found mid-task.** List them in the PR description. Don't fold them in — exception: opportunistic envelope conversion on the partial you're already editing, and refactors renaming a concept across many files (one bundled PR beats churn).
+## When To Consult
 
----
+- Proactively consult stewards for cross-boundary, public-facing, hard-to-reverse, performance-sensitive, concurrency-sensitive, security-sensitive, or contract-affecting work.
+- Use the nearest steward for local work.
+- Use multiple stewards when ownership lines cross.
+- Parallelize steward consultation only when questions are independent.
+- Keep final synthesis with the implementing agent.
 
-## Anti-patterns
+## Ask Stewards
 
-Things that look reasonable and are wrong here:
+Trigger phrase: `ask stewards`.
 
-- **Utility classes.** No `chirpui-p-4`, no `chirpui-flex`, no `chirpui-text-center`. Use composition macros.
-- **Raw CSS values instead of tokens.** Hardcoded hex colors, `font-weight: 600`, `transition: 200ms ease`, `z-index: 9999`, `padding: 12px`. Motion tokens are enforced by `test_transition_tokens.py`; the rest is on you. Use `--chirpui-{duration,easing,color,on,weight,z,spacing,radius}-*`.
-- **Template classes without a CSS definition.** `test_template_css_contract.py` will fail. If a class is visual, define it in the matching partial and cite it in the registry.
-- **`<script>` tags inside macro templates.** Named controllers go in `chirpui-alpine.js` via `Alpine.safeData`. Inline `x-data` is fine for tiny one-state widgets only; anything involving `$refs`, `$nextTick`, keyboard handling, `localStorage`, or viewport measurement moves out.
-- **`| safe` on user-controlled input.** Use `html_attrs` + `attrs_map` (escaping), or `Markup` on already-escaped output. `attrs=""` raw strings are deprecated — migrate to `attrs_unsafe` (explicit) or `attrs_map` (safe).
-- **`try: ... except Exception: pass`** around validation. Chirp-ui uses `warnings`, not `logging`, for dev feedback. Let warnings fire; consumers filter with `-W`. Silencing them hides the footgun for everyone downstream.
-- **`# type: ignore` in `src/chirp_ui/`.** Target is zero. `ty` is fast and Rust-based; there's no excuse. If you have to, own it in the PR.
-- **Speculative macro parameters** for "future flexibility." If no consumer template uses it, don't add it. Parameters are easier to add than to remove — and `COMPONENT-OPTIONS.md` entries rot.
-- **Defensive validation inside internal filters/helpers.** Validate at the template boundary (`validate_variant`, `validate_size`, `sanitize_color`); internal code trusts its callers.
-- **Macro name collisions with context variable names.** `route_tabs` the macro vs `route_tabs` the context var silently shadow each other. Verb-prefix macros (`render_route_tabs`), noun-name context vars (`route_tabs`). See `docs/ANTI-FOOTGUNS.md § Kida Macros`.
-- **Refactoring during a bug fix.** Separate PR. Exception: the refactor *is* the fix, or it's an opportunistic envelope conversion on a partial you're already touching (one partial, called out in the PR description).
-- **Re-triaging sharp edges listed in `CLAUDE.md`.** The table is institutional memory. If you see an entry, it's solved; don't "fix" it again.
+For implementation work, consult affected scoped stewards before editing. For backlog, roadmap, or prioritization work, consult all scoped stewards and produce a rollup with raw steward signals, confidence, dependencies, risks, convergence, minority reports, ranked backlog, and not-now items.
 
----
+## Extension Routing
 
-## Done criteria
+- New component descriptor: `src/chirp_ui/components.py`.
+- New Kida component macro: `src/chirp_ui/templates/chirpui/<name>.html`.
+- New component CSS: `src/chirp_ui/templates/css/partials/<nnn>_<name>.css`, then regenerate `chirpui.css`.
+- New Alpine controller: `src/chirp_ui/templates/chirpui-alpine.js` and `src/chirp_ui/alpine.py` metadata when required.
+- New token: `src/chirp_ui/tokens.py`, token CSS partials, docs, and manifest projection.
+- New Bengal theme asset/template: `src/bengal_themes/chirp_theme/`.
+- New docs page: `docs/` for reference, `docs/plans/` for active plans, `site/content/` for published docs site content.
 
-A change is done when all of these hold:
+## Done Criteria
 
-- [ ] `uv run poe ci` is green — lint + format + CSS build check + `ty` + tests.
-- [ ] `test_template_css_contract.py`, `test_transition_tokens.py`, and the registry-emits parity test pass. No new classes without matching CSS; no raw motion values.
-- [ ] If you added/changed a macro: the registry entry reflects the new slots/params/variants, and the agent manifest rebuilds cleanly (`python -m chirp_ui.manifest --json`).
-- [ ] New template → leading `{#- chirp-ui: Title\n  Body… -#}` doc-block present (extracted into `manifest["components"][name]["description"]`; enforced by `test_description_coverage.py`).
-- [ ] If you added a CSS class: it's cited in the registry `emits` set and in the matching partial — not hand-appended to `chirpui.css`, which is generated.
-- [ ] Tests exercise the *interesting* path: at least one non-default variant, default-fallback behaviour for invalid variants, and the slot-composition shape for new macros.
-- [ ] Provide/consume keys on new macros are annotated with `@provides` / `@consumes` in the template and listed in `docs/PROVIDE-CONSUME-KEYS.md`.
-- [ ] Public API changed or macro deprecated → entry in `COMPONENT-OPTIONS.md` (and `CLAUDE.md § Deprecation policy` if user-facing), migration note if breaking.
-- [ ] User-facing behavior, docs, manifest, or public metadata changed → add a focused `changelog.d/` fragment in the same PR.
-- [ ] Error messages and warnings tell the reader what to do next, not just what went wrong. `ChirpUIValidationWarning` / `ChirpUIDeprecationWarning` are the right channels — not `print`, not `logging`.
-- [ ] PR description explains *why*. The diff explains what.
+- `uv run poe ci` is green, or you state exactly which narrower checks ran and why full CI was not run.
+- Registry/template/CSS/manifest/docs projections are rebuilt and committed when affected.
+- `test_template_css_contract.py`, `test_transition_tokens.py`, `test_registry_emits_parity.py`, manifest checks, and provide/consume checks pass for affected surfaces.
+- Macro changes update descriptors, doc-blocks, `COMPONENT-OPTIONS.md`, examples, tests, and changelog fragments where user-facing.
+- Public API changes include migration notes/deprecation path.
+- Performance, concurrency, and security-sensitive changes include explicit notes in the PR.
 
-"Tests pass" is not "done." The test suite covers structural shape and cascade order; feature correctness is on you. UI changes that can't be verified in a browser should say so explicitly in the PR rather than claim success.
+## Review Notes
 
----
-
-## Review and assimilation
-
-- **I read diff-first, description-second.** Tight diff + clear why merges fast; sprawling diff gets questions.
-- **One component / one concern per PR.** If the diff needs section headers, it's two PRs. Exceptions: refactors renaming a concept across many files, and opportunistic envelope conversion on partials you're already editing (call it out in the description).
-- **Commit style:** see `git log`. `feat(...):`/`fix:`/`refactor:`/`docs:` prefixes, imperative, body = motivation.
-- **Don't trailing-summary me.** If the diff is readable, I can read it.
-- **Flag surprises.** Unused classes, unused macros, variants/sizes that differ across components, orphaned providers (wire them, don't remove — see `docs/PROVIDE-CONSUME-KEYS.md`), tests that look wrong. Put it in the PR description. Don't fix silently, don't ignore.
-
----
-
-## When this file is wrong
-
-It will be. Tell me. The worst outcome is that it sits here for a year contradicting how the project actually works. Updates to `AGENTS.md` are a first-class PR — short, focused, and welcome.
+- Keep PRs to one component or one concern unless a rename genuinely crosses files.
+- Commit style follows existing history: `feat(...)`, `fix:`, `refactor:`, `docs:`; imperative subject, body explains motivation.
+- Flag surprises in the PR: stale classes, orphaned providers, inconsistent variants/sizes, tests that look wrong, dead-looking macros, or browser verification gaps.
+- Diff explains what; PR description explains why.
