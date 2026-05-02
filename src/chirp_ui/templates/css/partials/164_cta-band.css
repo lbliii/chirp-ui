@@ -1,0 +1,54 @@
+/* ==========================================================================
+   CTA Band
+   ========================================================================== */
+
+@layer chirpui.component {
+@scope (.chirpui-cta-band) to (.chirpui-cta-band .chirpui-cta-band) {
+    :scope {
+        --chirpui-cta-band-gap: var(--chirpui-spacing-xl);
+        --chirpui-cta-band-copy-gap: var(--chirpui-spacing-sm);
+    }
+
+    :scope .chirpui-cta-band__inner {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: var(--chirpui-cta-band-gap);
+    }
+
+    :scope .chirpui-cta-band__copy {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--chirpui-cta-band-copy-gap);
+    }
+
+    :scope .chirpui-cta-band__title {
+        margin: 0;
+        color: var(--chirpui-text);
+        font-size: var(--chirpui-display-sm);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        line-height: var(--chirpui-line-height-tight);
+    }
+
+    :scope .chirpui-cta-band__body {
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-ui-base);
+    }
+
+    :scope .chirpui-cta-band__body :where(p) {
+        margin: 0;
+    }
+
+    :scope .chirpui-cta-band__actions {
+        min-width: 0;
+    }
+
+    @media (max-width: 48rem) {
+        :scope .chirpui-cta-band__inner {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+}

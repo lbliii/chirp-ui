@@ -243,15 +243,16 @@ Only add `story_card` if at least two real pages need the same structure:
 
 ## Implementation Plan
 
-### Phase 1: Document Recipes
+### Phase 1: Document Recipes (completed 2026-05-02)
 
 Add product-page recipes to docs without changing component APIs.
 
 | File | Action |
 |------|--------|
-| `docs/PRIMITIVES.md` | Add a short "Product-page compositions" pointer after the blessed primitives section |
-| `docs/COMPONENT-OPTIONS.md` | Add links to recipe docs only if no generated section is affected |
-| `docs/plans/PLAN-product-page-patterns-from-langchain.md` | Keep this plan as the active roadmap |
+| `docs/PRODUCT-PAGE-PATTERNS.md` | Added recipe documentation for product hero, lifecycle, proof, product choice, customer story, and CTA sections |
+| `docs/PRIMITIVES.md` | Added a short product-page compositions pointer after the blessed primitives section |
+| `docs/INDEX.md` | Indexed the recipe doc under Patterns |
+| `docs/plans/PLAN-product-page-patterns-from-langchain.md` | Kept this plan as the active roadmap |
 
 **Done when:**
 
@@ -259,14 +260,15 @@ Add product-page recipes to docs without changing component APIs.
 - No new classes, variants, or tokens are introduced.
 - Examples use `stack`, `cluster`, `grid`, `frame`, `block`, `band`, and existing components.
 
-### Phase 2: Build a Showcase Fixture
+### Phase 2: Build a Showcase Fixture (completed 2026-05-02)
 
 Create one internal showcase page that exercises the recipes against real HTML.
 
-Candidate locations:
+Implemented locations:
 
 - `tests/browser/templates/product_page_patterns.html`
-- `site/` docs example page, if the published site wants to expose it
+- `tests/browser/test_product_page_patterns.py`
+- `/product-page-patterns` route in `tests/browser/app.py`
 
 **Done when:**
 
@@ -282,11 +284,11 @@ Candidate macros, gated by evidence:
 
 | Candidate | Default answer | Promotion trigger |
 |-----------|----------------|-------------------|
-| `logo_cloud` | Recipe only | `marquee`/`cluster` composition cannot handle images, labels, and accessibility cleanly |
+| `logo_cloud` | Built 2026-05-02 | Accessible proof bands are common and stable enough to ship proactively |
 | `lifecycle_showcase` | Recipe only | Repeated `tabs_panels` + `feature_section` markup becomes error-prone |
-| `story_card` | Maybe | Real pages repeat customer/outcome/href/metric structure |
+| `story_card` | Built 2026-05-02 | Customer outcome cards are common and stable enough to ship proactively |
 | `site_nav_group` | Maybe | Product nav grouping cannot be expressed cleanly with current `site_header` slots |
-| `cta_band` | Recipe only | `band` + `stack` + `cluster` proves too verbose in multiple pages |
+| `cta_band` | Built 2026-05-02 | CTA sections are common and stable enough to ship proactively |
 
 **Done when:**
 

@@ -17208,3 +17208,247 @@ a.chirpui-chip:hover,
 }
 }
 }
+
+/* === partials/162_logo-cloud.css === */
+/* ==========================================================================
+   Logo Cloud
+   ========================================================================== */
+
+@layer chirpui.component {
+@scope (.chirpui-logo-cloud) to (.chirpui-logo-cloud .chirpui-logo-cloud) {
+    :scope {
+        --chirpui-logo-cloud-gap: var(--chirpui-spacing-lg);
+        --chirpui-logo-cloud-item-min: 8rem;
+        --chirpui-logo-cloud-image-height: 2rem;
+        --chirpui-logo-cloud-opacity: 0.72;
+        display: block;
+    }
+
+    :scope .chirpui-logo-cloud__track {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--chirpui-logo-cloud-item-min)), 1fr));
+        align-items: center;
+        gap: var(--chirpui-logo-cloud-gap);
+    }
+
+    :scope .chirpui-logo-cloud__item {
+        min-width: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--chirpui-text-muted);
+        text-align: center;
+        text-decoration: none;
+    }
+
+    :scope .chirpui-logo-cloud__link {
+        border-radius: var(--chirpui-radius-sm);
+    }
+
+    :scope .chirpui-logo-cloud__link:focus-visible {
+        outline: var(--chirpui-state-focus-outline);
+        outline-offset: var(--chirpui-state-focus-offset);
+    }
+
+    :scope .chirpui-logo-cloud__img {
+        display: block;
+        max-inline-size: 100%;
+        block-size: var(--chirpui-logo-cloud-image-height);
+        object-fit: contain;
+        opacity: var(--chirpui-logo-cloud-opacity);
+    }
+
+    :scope .chirpui-logo-cloud__name {
+        overflow-wrap: anywhere;
+        font-size: var(--chirpui-ui-sm);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        line-height: var(--chirpui-line-height-tight);
+        color: var(--chirpui-text-muted);
+    }
+
+    :scope.chirpui-logo-cloud--monochrome .chirpui-logo-cloud__img {
+        filter: grayscale(1);
+    }
+
+    :scope .chirpui-logo-cloud__link:hover .chirpui-logo-cloud__img,
+    :scope .chirpui-logo-cloud__link:focus-visible .chirpui-logo-cloud__img {
+        opacity: 1;
+        filter: none;
+    }
+}
+}
+
+/* === partials/163_story-card.css === */
+/* ==========================================================================
+   Story Card
+   ========================================================================== */
+
+@layer chirpui.component {
+@scope (.chirpui-story-card) to (.chirpui-story-card .chirpui-story-card) {
+    :scope {
+        --chirpui-story-card-gap: var(--chirpui-spacing);
+        --chirpui-story-card-padding: var(--chirpui-spacing-lg);
+        --chirpui-story-card-logo-size: 2.25rem;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--chirpui-story-card-gap);
+        min-block-size: 100%;
+        padding: var(--chirpui-story-card-padding);
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-lg);
+        background: var(--chirpui-surface);
+        color: var(--chirpui-text);
+        text-decoration: none;
+    }
+
+    :scope.chirpui-story-card--link {
+        transition:
+            border-color var(--chirpui-duration-fast) var(--chirpui-easing-standard),
+            box-shadow var(--chirpui-duration-fast) var(--chirpui-easing-standard),
+            translate var(--chirpui-duration-fast) var(--chirpui-easing-standard);
+    }
+
+    :scope.chirpui-story-card--link:hover {
+        border-color: var(--chirpui-accent);
+        box-shadow: var(--chirpui-shadow-md);
+        translate: 0 calc(-1 * var(--chirpui-space-3xs));
+    }
+
+    :scope.chirpui-story-card--link:focus-visible {
+        outline: var(--chirpui-state-focus-outline);
+        outline-offset: var(--chirpui-state-focus-offset);
+    }
+
+    :scope .chirpui-story-card__header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--chirpui-spacing);
+    }
+
+    :scope .chirpui-story-card__logo {
+        min-inline-size: 0;
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-ui-sm);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+    }
+
+    :scope .chirpui-story-card__logo-img {
+        display: block;
+        max-inline-size: 100%;
+        block-size: var(--chirpui-story-card-logo-size);
+        object-fit: contain;
+    }
+
+    :scope .chirpui-story-card__metric {
+        flex: 0 0 auto;
+        color: var(--chirpui-accent);
+        font-size: var(--chirpui-ui-lg);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        line-height: var(--chirpui-line-height-tight);
+    }
+
+    :scope .chirpui-story-card__body {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        gap: var(--chirpui-spacing-xs);
+        min-width: 0;
+    }
+
+    :scope .chirpui-story-card__customer {
+        margin: 0;
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-ui-sm);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+    }
+
+    :scope .chirpui-story-card__outcome {
+        margin: 0;
+        color: var(--chirpui-text);
+        font-size: var(--chirpui-ui-lg);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        line-height: var(--chirpui-line-height-tight);
+    }
+
+    :scope .chirpui-story-card__summary {
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-ui-sm);
+    }
+
+    :scope .chirpui-story-card__summary :where(p) {
+        margin: 0;
+    }
+
+    :scope .chirpui-story-card__footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--chirpui-spacing-sm);
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-ui-sm);
+    }
+
+    :scope .chirpui-story-card__cta {
+        color: var(--chirpui-accent);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+    }
+}
+}
+
+/* === partials/164_cta-band.css === */
+/* ==========================================================================
+   CTA Band
+   ========================================================================== */
+
+@layer chirpui.component {
+@scope (.chirpui-cta-band) to (.chirpui-cta-band .chirpui-cta-band) {
+    :scope {
+        --chirpui-cta-band-gap: var(--chirpui-spacing-xl);
+        --chirpui-cta-band-copy-gap: var(--chirpui-spacing-sm);
+    }
+
+    :scope .chirpui-cta-band__inner {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: var(--chirpui-cta-band-gap);
+    }
+
+    :scope .chirpui-cta-band__copy {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--chirpui-cta-band-copy-gap);
+    }
+
+    :scope .chirpui-cta-band__title {
+        margin: 0;
+        color: var(--chirpui-text);
+        font-size: var(--chirpui-display-sm);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        line-height: var(--chirpui-line-height-tight);
+    }
+
+    :scope .chirpui-cta-band__body {
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-ui-base);
+    }
+
+    :scope .chirpui-cta-band__body :where(p) {
+        margin: 0;
+    }
+
+    :scope .chirpui-cta-band__actions {
+        min-width: 0;
+    }
+
+    @media (max-width: 48rem) {
+        :scope .chirpui-cta-band__inner {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+}

@@ -1,0 +1,147 @@
+{% extends "chirpui/app_layout.html" %}
+{% block title %}{{ page_title }}{% end %}
+{% block content %}
+{% from "chirpui/site_shell.html" import site_shell %}
+{% from "chirpui/site_header.html" import site_header, site_nav_link %}
+{% from "chirpui/site_footer.html" import site_footer, footer_column, footer_link %}
+{% from "chirpui/hero.html" import hero %}
+{% from "chirpui/band.html" import band %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/cta_band.html" import cta_band %}
+{% from "chirpui/layout.html" import container, stack, cluster, grid, section_header %}
+{% from "chirpui/logo_cloud.html" import logo_cloud %}
+{% from "chirpui/feature_section.html" import feature_section %}
+{% from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/index_card.html" import index_card %}
+{% from "chirpui/story_card.html" import story_card %}
+{% from "chirpui/metric_grid.html" import metric_grid, metric_card %}
+
+{% call site_shell() %}
+  {% slot header %}
+    {% call site_header(current_path=current_path, variant="solid") %}
+      {% slot brand %}Acme Agents{% end %}
+      {% slot nav %}
+        {{ site_nav_link("/product-page-patterns", "Platform", match="exact") }}
+        {{ site_nav_link("/product-page-patterns/docs", "Docs", match="prefix") }}
+        {{ site_nav_link("/product-page-patterns/pricing", "Pricing", match="exact") }}
+      {% end %}
+      {% slot tools %}
+        {{ btn("Get a demo", href="/product-page-patterns/demo", variant="ghost") }}
+        {{ btn("Start building", href="/product-page-patterns/start", variant="primary") }}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {% call hero(title="Acme Agents", subtitle="Observe, evaluate, and deploy production agents.", background="solid") %}
+    {% slot actions %}
+      {% call cluster() %}
+        {{ btn("Start building", href="/product-page-patterns/start", variant="primary") }}
+        {{ btn("Get a demo", href="/product-page-patterns/demo", variant="ghost") }}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {% call band(width="bleed", variant="default") %}
+    {% call container() %}
+      {{ logo_cloud(items=customer_logos, label="Customers using Acme Agents") }}
+    {% end %}
+  {% end %}
+
+  {% call container() %}
+    {% call stack(gap="xl") %}
+      {% call tabs_container(active="build") %}
+        {{ tab_button("build", "Build", active=true) }}
+        {{ tab_button("observe", "Observe") }}
+        {{ tab_button("evaluate", "Evaluate") }}
+        {{ tab_button("deploy", "Deploy") }}
+
+        {% call tab_panel("build", active=true) %}
+          {% call feature_section(layout="balanced") %}
+            {% slot eyebrow %}Build{% end %}
+            {% slot title %}Design agent workflows with clear control{% end %}
+            <p>Give teams a shared place to define steps, tools, and review points.</p>
+            {% slot media %}
+              {% call surface(variant="muted") %}
+                {% call stack(gap="sm") %}
+                  <strong>Workflow draft</strong>
+                  <p>Plan -> retrieve context -> call tools -> request review -> respond.</p>
+                {% end %}
+              {% end %}
+            {% end %}
+          {% end %}
+        {% end %}
+
+        {% call tab_panel("observe") %}
+          {% call feature_section(layout="balanced") %}
+            {% slot eyebrow %}Observe{% end %}
+            {% slot title %}Trace every run as a timeline{% end %}
+            <p>Show each step, model call, tool result, and handoff in order.</p>
+            {% slot media %}
+              {% call surface(variant="muted") %}
+                Trace timeline: input -> retrieval -> tool call -> answer.
+              {% end %}
+            {% end %}
+          {% end %}
+        {% end %}
+      {% end %}
+
+      {% call band(width="contained", variant="elevated") %}
+        {% call stack(gap="md") %}
+          {{ section_header("Trusted by teams shipping production agents") }}
+          {% call metric_grid(cols=3) %}
+            {{ metric_card(value="100M+", label="Monthly downloads") }}
+            {{ metric_card(value="6K+", label="Active customers") }}
+            {{ metric_card(value="5", label="Fortune 10 customers") }}
+          {% end %}
+        {% end %}
+      {% end %}
+
+      {% call stack(gap="lg") %}
+        {{ section_header("Choose the right framework") }}
+        {% call grid(cols=3, gap="lg") %}
+          {% for item in products %}
+            {{ index_card(href=item.href, title=item.name, description=item.summary, badge=item.kind) }}
+          {% endfor %}
+        {% end %}
+      {% end %}
+
+      {% call stack(gap="lg") %}
+        {{ section_header("Learn from teams running agents in production") }}
+        {% call grid(cols=3, gap="lg") %}
+          {% for story in stories %}
+            {{ story_card(customer=story.customer, outcome=story.outcome, summary=story.summary, href=story.href, metric=story.metric | default(none)) }}
+          {% endfor %}
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {{ cta_band(
+    title="Start building with Acme Agents",
+    body="Improve each step of the agent development lifecycle from one platform.",
+    primary_label="Start building",
+    primary_href="/product-page-patterns/start",
+    secondary_label="Get a demo",
+    secondary_href="/product-page-patterns/demo"
+  ) }}
+
+  {% slot footer %}
+    {% call site_footer(layout="columns") %}
+      {% slot brand %}
+        <strong>Acme Agents</strong>
+        <p>Product page pattern fixture.</p>
+      {% end %}
+      {% call footer_column(title="Product") %}
+        {{ footer_link("/product-page-patterns", "Platform") }}
+        {{ footer_link("/product-page-patterns/docs", "Docs") }}
+      {% end %}
+      {% call footer_column(title="Company") %}
+        {{ footer_link("/product-page-patterns/about", "About") }}
+        {{ footer_link("/product-page-patterns/status", "Status") }}
+      {% end %}
+      {% slot colophon %}ChirpUI browser fixture{% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}

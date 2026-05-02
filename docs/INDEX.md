@@ -20,6 +20,7 @@ Navigation guide for all chirp-ui documentation.
 
 ## Patterns
 
+- [PRODUCT-PAGE-PATTERNS.md](PRODUCT-PAGE-PATTERNS.md) — Product-site composition recipes built from existing primitives
 - [HTMX-PATTERNS.md](HTMX-PATTERNS.md) — `hx={}` dict, auto-injected attrs, `build_hx_attrs()`
 - [HTMX-ADVANCEMENT.md](HTMX-ADVANCEMENT.md) — Design decisions for htmx integration
 - [ALPINE-MAGICS.md](ALPINE-MAGICS.md) — Alpine.js store, `safeData`, shared controllers

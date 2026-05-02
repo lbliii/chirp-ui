@@ -6565,6 +6565,108 @@
       "trim_emits": [],
       "variants": []
     },
+    "cta-band": {
+      "authoring": "available",
+      "block": "cta-band",
+      "category": "marketing",
+      "composes": [
+        "band",
+        "btn"
+      ],
+      "consumes": [],
+      "description": "CTA Band\n    Final or mid-page call-to-action band for product and marketing pages.\n\n    Data-in: title, optional body, primary/secondary labels and hrefs.\n    Default slot replaces body when richer escaped markup is needed.\n    Named slot: actions.\n\n    Usage:\n        from \"chirpui/cta_band.html\" import cta_band\n\n        cta_band(\n            title=\"Start building\",\n            body=\"Improve each step of the lifecycle.\",\n            primary_label=\"Start\",\n            primary_href=\"/start\",\n            secondary_label=\"Get a demo\",\n            secondary_href=\"/demo\",\n        )",
+      "elements": [
+        "actions",
+        "body",
+        "copy",
+        "inner",
+        "title"
+      ],
+      "emits": [
+        "chirpui-cta-band",
+        "chirpui-cta-band__actions",
+        "chirpui-cta-band__body",
+        "chirpui-cta-band__copy",
+        "chirpui-cta-band__inner",
+        "chirpui-cta-band__title"
+      ],
+      "extra_emits": [],
+      "lineno": 25,
+      "macro": "cta_band",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "body"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "primary_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "primary_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "secondary_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "secondary_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "width"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "",
+        "actions"
+      ],
+      "slots_extracted": [
+        "",
+        "actions"
+      ],
+      "slots_yielded": [
+        "",
+        "actions"
+      ],
+      "template": "cta_band.html",
+      "tokens": [
+        "--chirpui-cta-band-copy-gap",
+        "--chirpui-cta-band-gap"
+      ],
+      "trim_emits": [],
+      "variants": []
+    },
     "description_list": {
       "authoring": "available",
       "block": "description-list",
@@ -10563,6 +10665,80 @@
       "slots_yielded": [],
       "template": "logo.html",
       "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "logo-cloud": {
+      "authoring": "available",
+      "block": "logo-cloud",
+      "category": "marketing",
+      "composes": [],
+      "consumes": [],
+      "description": "Logo Cloud\n    Accessible proof strip for customer, partner, integration, or ecosystem logos.\n\n    Data-in: items with name, optional src, alt, href, external.\n    Slot mode: omit items and pass already-rendered logo/link content in the default slot.\n\n    Usage:\n        from \"chirpui/logo_cloud.html\" import logo_cloud\n\n        logo_cloud(items=[\n            {\"name\": \"Acme\", \"src\": \"/static/acme.svg\", \"href\": \"/customers/acme\"},\n            {\"name\": \"Globex\"},\n        ])",
+      "elements": [
+        "img",
+        "item",
+        "link",
+        "name",
+        "track"
+      ],
+      "emits": [
+        "chirpui-logo-cloud",
+        "chirpui-logo-cloud--monochrome",
+        "chirpui-logo-cloud__img",
+        "chirpui-logo-cloud__item",
+        "chirpui-logo-cloud__link",
+        "chirpui-logo-cloud__name",
+        "chirpui-logo-cloud__track"
+      ],
+      "extra_emits": [],
+      "lineno": 16,
+      "macro": "logo_cloud",
+      "maturity": "experimental",
+      "modifiers": [
+        "monochrome"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "monochrome"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "logo_cloud.html",
+      "tokens": [
+        "--chirpui-logo-cloud-gap",
+        "--chirpui-logo-cloud-image-height",
+        "--chirpui-logo-cloud-item-min",
+        "--chirpui-logo-cloud-opacity"
+      ],
       "trim_emits": [],
       "variants": []
     },
@@ -16789,6 +16965,120 @@
       "trim_emits": [],
       "variants": []
     },
+    "story-card": {
+      "authoring": "available",
+      "block": "story-card",
+      "category": "marketing",
+      "composes": [],
+      "consumes": [],
+      "description": "Story Card\n    Customer outcome card for product pages, case-study strips, and proof grids.\n\n    Data-in: customer, outcome, optional summary, metric, href, logo_src, logo_alt.\n    Default slot replaces summary when a page needs richer escaped markup.\n    Named slots: logo, metric, footer.\n\n    Usage:\n        from \"chirpui/story_card.html\" import story_card\n\n        story_card(\n            customer=\"Acme\",\n            outcome=\"Reduced review time\",\n            summary=\"Teams debugged production runs without escalating.\",\n            href=\"/customers/acme\",\n            metric=\"80%\",\n        )",
+      "elements": [
+        "body",
+        "cta",
+        "customer",
+        "footer",
+        "header",
+        "logo",
+        "logo-img",
+        "metric",
+        "outcome",
+        "summary"
+      ],
+      "emits": [
+        "chirpui-story-card",
+        "chirpui-story-card--link",
+        "chirpui-story-card__body",
+        "chirpui-story-card__cta",
+        "chirpui-story-card__customer",
+        "chirpui-story-card__footer",
+        "chirpui-story-card__header",
+        "chirpui-story-card__logo",
+        "chirpui-story-card__logo-img",
+        "chirpui-story-card__metric",
+        "chirpui-story-card__outcome",
+        "chirpui-story-card__summary"
+      ],
+      "extra_emits": [],
+      "lineno": 20,
+      "macro": "story_card",
+      "maturity": "experimental",
+      "modifiers": [
+        "link"
+      ],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "customer"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "outcome"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "summary"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "metric"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "logo_src"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "logo_alt"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cta_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "",
+        "footer",
+        "logo",
+        "metric"
+      ],
+      "slots_extracted": [
+        "",
+        "footer",
+        "logo",
+        "metric"
+      ],
+      "slots_yielded": [],
+      "template": "story_card.html",
+      "tokens": [
+        "--chirpui-story-card-gap",
+        "--chirpui-story-card-logo-size",
+        "--chirpui-story-card-padding"
+      ],
+      "trim_emits": [],
+      "variants": []
+    },
     "streaming": {
       "authoring": "available",
       "block": "streaming",
@@ -19709,7 +19999,7 @@
   "schema": "chirpui-manifest@3",
   "stats": {
     "component_authoring": {
-      "available": 266,
+      "available": 269,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -19727,14 +20017,14 @@
       "infrastructure": 2,
       "interactive": 8,
       "layout": 45,
-      "marketing": 7,
+      "marketing": 10,
       "media": 1,
       "navigation": 22,
       "overlay": 3,
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 109,
+      "experimental": 112,
       "internal": 2,
       "legacy": 39,
       "stable": 167
@@ -19747,12 +20037,12 @@
       "component": 173,
       "effect": 32,
       "infrastructure": 2,
-      "pattern": 1,
+      "pattern": 4,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 207,
-    "components_with_params": 207,
+    "components_with_description": 210,
+    "components_with_params": 210,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -19760,7 +20050,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 205
+      "public_templated_components": 208
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -19783,7 +20073,7 @@
       "spacing": 22,
       "typography": 40
     },
-    "total_components": 317,
+    "total_components": 320,
     "total_tokens": 356
   },
   "tokens": {

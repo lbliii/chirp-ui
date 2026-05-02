@@ -4081,6 +4081,102 @@ class TestLogo:
         assert "chirpui-visually-hidden" in html
         assert "Accessible brand" in html
 
+    def test_logo_cloud_items(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo_cloud.html" import logo_cloud %}{{ logo_cloud(items=items) }}'
+        ).render(
+            items=[
+                {"name": "Acme", "src": "/static/acme.svg", "href": "/customers/acme"},
+                {"name": "Globex"},
+            ]
+        )
+
+        assert "chirpui-logo-cloud" in html
+        assert "chirpui-logo-cloud--monochrome" in html
+        assert "chirpui-logo-cloud__track" in html
+        assert "chirpui-logo-cloud__link" in html
+        assert 'src="/static/acme.svg"' in html
+        assert 'alt="Acme"' in html
+        assert "Globex" in html
+
+    def test_logo_cloud_slot_mode(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo_cloud.html" import logo_cloud %}'
+            '{% call logo_cloud(label="Partners", monochrome=false) %}'
+            '<span class="custom-logo">Partner</span>'
+            "{% end %}"
+        ).render()
+
+        assert 'aria-label="Partners"' in html
+        assert "chirpui-logo-cloud--monochrome" not in html
+        assert '<span class="custom-logo">Partner</span>' in html
+
+
+class TestStoryCard:
+    def test_story_card_link_with_metric(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/story_card.html" import story_card %}'
+            '{{ story_card(customer="Acme", outcome="Reduced review time", '
+            'summary="Teams debugged production runs.", href="/stories/acme", metric="80%") }}'
+        ).render()
+
+        assert '<a href="/stories/acme"' in html
+        assert "chirpui-story-card" in html
+        assert "chirpui-story-card--link" in html
+        assert "chirpui-story-card__metric" in html
+        assert "80%" in html
+        assert "Reduced review time" in html
+        assert "Read story" in html
+
+    def test_story_card_slots_and_logo(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/story_card.html" import story_card %}'
+            '{% call story_card(customer="Globex", outcome="Improved quality", '
+            'logo_src="/static/globex.svg", logo_alt="Globex mark") %}'
+            "Custom summary"
+            "{% slot footer %}<span>Case study</span>{% end %}"
+            "{% end %}"
+        ).render()
+
+        assert "<article" in html
+        assert "chirpui-story-card--link" not in html
+        assert 'src="/static/globex.svg"' in html
+        assert 'alt="Globex mark"' in html
+        assert "Custom summary" in html
+        assert "Case study" in html
+
+
+class TestCtaBand:
+    def test_cta_band_with_standard_actions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/cta_band.html" import cta_band %}'
+            '{{ cta_band(title="Start building", body="Ship production agents.", '
+            'primary_label="Start", primary_href="/start", '
+            'secondary_label="Demo", secondary_href="/demo") }}'
+        ).render()
+
+        assert "chirpui-band" in html
+        assert "chirpui-cta-band" in html
+        assert "chirpui-cta-band__inner" in html
+        assert "Start building" in html
+        assert "Ship production agents." in html
+        assert 'href="/start"' in html
+        assert 'href="/demo"' in html
+
+    def test_cta_band_slots_and_forwarded_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/cta_band.html" import cta_band %}'
+            '{% call cta_band(title="Launch", variant="elevated", width="contained") %}'
+            "<p>Custom body</p>"
+            '{% slot actions %}<a href="/custom">Custom action</a>{% end %}'
+            "{% end %}"
+        ).render()
+
+        assert "chirpui-band--elevated" in html
+        assert "chirpui-band--contained" in html
+        assert "<p>Custom body</p>" in html
+        assert "Custom action" in html
+
 
 class TestSidebar:
     def test_sidebar_with_links(self, env: Environment) -> None:

@@ -1,0 +1,50 @@
+{#- chirp-ui: CTA Band
+    Final or mid-page call-to-action band for product and marketing pages.
+
+    Data-in: title, optional body, primary/secondary labels and hrefs.
+    Default slot replaces body when richer escaped markup is needed.
+    Named slot: actions.
+
+    Usage:
+        from "chirpui/cta_band.html" import cta_band
+
+        cta_band(
+            title="Start building",
+            body="Improve each step of the lifecycle.",
+            primary_label="Start",
+            primary_href="/start",
+            secondary_label="Get a demo",
+            secondary_href="/demo",
+        )
+-#}
+
+{% from "chirpui/band.html" import band %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/layout.html" import cluster %}
+
+{% def cta_band(title, body=none, primary_label=none, primary_href=none, secondary_label=none, secondary_href=none, variant="accent", width="bleed", cls="") %}
+{% set variant = variant | validate_variant(("default","elevated","accent","glass","gradient"), "accent") %}
+{% set width = width | validate_variant(("inset","bleed","contained"), "bleed") %}
+{% call band(variant=variant, width=width, cls="chirpui-cta-band" ~ (" " ~ cls if cls else "")) %}
+<div class="chirpui-cta-band__inner">
+    <div class="chirpui-cta-band__copy">
+        <h2 class="chirpui-cta-band__title">{{ title }}</h2>
+        <div class="chirpui-cta-band__body">
+            {% yield %}
+            {% if body %}<p>{{ body }}</p>{% endif %}
+        </div>
+    </div>
+    <div class="chirpui-cta-band__actions">
+        {% call cluster() %}
+            {% if primary_label and primary_href %}
+            {{ btn(primary_label, href=primary_href, variant="primary") }}
+            {% endif %}
+            {% if secondary_label and secondary_href %}
+            {{ btn(secondary_label, href=secondary_href, variant="ghost") }}
+            {% endif %}
+            {% yield actions %}
+        {% end %}
+    </div>
+</div>
+{% end %}
+{% end %}

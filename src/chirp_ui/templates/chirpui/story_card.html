@@ -1,0 +1,58 @@
+{#- chirp-ui: Story Card
+    Customer outcome card for product pages, case-study strips, and proof grids.
+
+    Data-in: customer, outcome, optional summary, metric, href, logo_src, logo_alt.
+    Default slot replaces summary when a page needs richer escaped markup.
+    Named slots: logo, metric, footer.
+
+    Usage:
+        from "chirpui/story_card.html" import story_card
+
+        story_card(
+            customer="Acme",
+            outcome="Reduced review time",
+            summary="Teams debugged production runs without escalating.",
+            href="/customers/acme",
+            metric="80%",
+        )
+-#}
+
+{% def story_card(customer, outcome, summary=none, href=none, metric=none, logo_src=none, logo_alt=none, cta_label="Read story", cls="") %}
+{% set _root_class = "chirpui-story-card" ~ (" chirpui-story-card--link" if href else "") ~ (" " ~ cls if cls else "") %}
+{% if href %}
+<a href="{{ href }}" class="{{ _root_class }}"{{ route_link_attrs(href) | html_attrs }}>
+{% else %}
+<article class="{{ _root_class }}">
+{% endif %}
+    <header class="chirpui-story-card__header">
+        <div class="chirpui-story-card__logo">
+            {% if logo_src %}
+            <img class="chirpui-story-card__logo-img" src="{{ logo_src }}" alt="{{ logo_alt or customer }}">
+            {% else %}
+            {% slot logo %}
+            {% endif %}
+        </div>
+        {% if metric %}
+        <span class="chirpui-story-card__metric">{{ metric }}</span>
+        {% else %}
+        {% slot metric %}
+        {% endif %}
+    </header>
+    <div class="chirpui-story-card__body">
+        <p class="chirpui-story-card__customer">{{ customer }}</p>
+        <h3 class="chirpui-story-card__outcome">{{ outcome }}</h3>
+        <div class="chirpui-story-card__summary">
+            {% slot %}
+            {% if summary %}<p>{{ summary }}</p>{% endif %}
+        </div>
+    </div>
+    <footer class="chirpui-story-card__footer">
+        {% slot footer %}
+        {% if href %}<span class="chirpui-story-card__cta">{{ cta_label }}</span>{% endif %}
+    </footer>
+{% if href %}
+</a>
+{% else %}
+</article>
+{% endif %}
+{% end %}
