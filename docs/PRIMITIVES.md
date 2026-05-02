@@ -28,6 +28,11 @@ For product-site pages, use these primitives through the recipes in
 to compose hero, proof, lifecycle, customer story, and CTA sections without
 adding utility classes or speculative component APIs.
 
+For streaming, video, catalog, live-event, and media-plan page recipes, see
+[MEDIA-SITE-PATTERNS.md](MEDIA-SITE-PATTERNS.md). Those recipes show how to
+compose media pages from existing registry-cited primitives before adding any
+new media-specific component surface.
+
 The registry projects this boundary into the manifest as `authoring` metadata:
 these blessed primitives are `preferred`, legacy helpers are `compatibility`,
 and other public surfaces remain `available`.
