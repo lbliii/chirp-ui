@@ -21,6 +21,7 @@ Navigation guide for all chirp-ui documentation.
 ## Patterns
 
 - [PRODUCT-PAGE-PATTERNS.md](PRODUCT-PAGE-PATTERNS.md) — Product-site composition recipes built from existing primitives
+- [MEDIA-SITE-PATTERNS.md](MEDIA-SITE-PATTERNS.md) — Streaming, video, catalog, live-event, and media-plan composition recipes
 - [HTMX-PATTERNS.md](HTMX-PATTERNS.md) — `hx={}` dict, auto-injected attrs, `build_hx_attrs()`
 - [HTMX-ADVANCEMENT.md](HTMX-ADVANCEMENT.md) — Design decisions for htmx integration
 - [ALPINE-MAGICS.md](ALPINE-MAGICS.md) — Alpine.js store, `safeData`, shared controllers
@@ -63,6 +64,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary
 - [PLAN-layout-widget-brainstorm.md](plans/PLAN-layout-widget-brainstorm.md) — Layout widget ideas
 - [PLAN-product-page-patterns-from-langchain.md](plans/PLAN-product-page-patterns-from-langchain.md) — Product-page composition recipes from LangChain design review
+- [PLAN-media-site-patterns-from-streaming.md](plans/PLAN-media-site-patterns-from-streaming.md) — Media-site composition recipes from Netflix, YouTube, and Apple TV research
 
 ### Shipped plans (`docs/plans/done/`)
 
