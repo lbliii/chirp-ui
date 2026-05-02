@@ -33,6 +33,11 @@ For streaming, video, catalog, live-event, and media-plan page recipes, see
 compose media pages from existing registry-cited primitives before adding any
 new media-specific component surface.
 
+For forum, Q&A, threaded discussion, moderation, and community page recipes, see
+[FORUM-SITE-PATTERNS.md](FORUM-SITE-PATTERNS.md). Those recipes show how to
+compose forum-shaped pages from existing registry-cited primitives before adding
+any new forum-specific component surface.
+
 The registry projects this boundary into the manifest as `authoring` metadata:
 these blessed primitives are `preferred`, legacy helpers are `compatibility`,
 and other public surfaces remain `available`.
