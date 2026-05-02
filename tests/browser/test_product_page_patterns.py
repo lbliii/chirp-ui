@@ -15,15 +15,11 @@ pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
         pytest.param(1280, 800, id="desktop"),
     ],
 )
-async def test_product_page_patterns_have_no_horizontal_overflow(
-    page, base_url, width, height
-):
+async def test_product_page_patterns_have_no_horizontal_overflow(page, base_url, width, height):
     await page.set_viewport_size({"width": width, "height": height})
     await page.goto(base_url + "/product-page-patterns")
 
-    await assert_no_document_horizontal_overflow(
-        page, f"product-page-patterns-{width}x{height}"
-    )
+    await assert_no_document_horizontal_overflow(page, f"product-page-patterns-{width}x{height}")
 
 
 async def test_product_page_patterns_render_recipe_sections(page, base_url):

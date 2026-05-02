@@ -4083,8 +4083,7 @@ class TestLogo:
 
     def test_logo_cloud_items(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/logo_cloud.html" import logo_cloud %}'
-            "{{ logo_cloud(items=items) }}"
+            '{% from "chirpui/logo_cloud.html" import logo_cloud %}{{ logo_cloud(items=items) }}'
         ).render(
             items=[
                 {"name": "Acme", "src": "/static/acme.svg", "href": "/customers/acme"},
@@ -4169,7 +4168,7 @@ class TestCtaBand:
             '{% from "chirpui/cta_band.html" import cta_band %}'
             '{% call cta_band(title="Launch", variant="elevated", width="contained") %}'
             "<p>Custom body</p>"
-            "{% slot actions %}<a href=\"/custom\">Custom action</a>{% end %}"
+            '{% slot actions %}<a href="/custom">Custom action</a>{% end %}'
             "{% end %}"
         ).render()
 
