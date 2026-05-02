@@ -6565,6 +6565,108 @@
       "trim_emits": [],
       "variants": []
     },
+    "cta-band": {
+      "authoring": "available",
+      "block": "cta-band",
+      "category": "marketing",
+      "composes": [
+        "band",
+        "btn"
+      ],
+      "consumes": [],
+      "description": "CTA Band\n    Final or mid-page call-to-action band for product and marketing pages.\n\n    Data-in: title, optional body, primary/secondary labels and hrefs.\n    Default slot replaces body when richer escaped markup is needed.\n    Named slot: actions.\n\n    Usage:\n        from \"chirpui/cta_band.html\" import cta_band\n\n        cta_band(\n            title=\"Start building\",\n            body=\"Improve each step of the lifecycle.\",\n            primary_label=\"Start\",\n            primary_href=\"/start\",\n            secondary_label=\"Get a demo\",\n            secondary_href=\"/demo\",\n        )",
+      "elements": [
+        "actions",
+        "body",
+        "copy",
+        "inner",
+        "title"
+      ],
+      "emits": [
+        "chirpui-cta-band",
+        "chirpui-cta-band__actions",
+        "chirpui-cta-band__body",
+        "chirpui-cta-band__copy",
+        "chirpui-cta-band__inner",
+        "chirpui-cta-band__title"
+      ],
+      "extra_emits": [],
+      "lineno": 25,
+      "macro": "cta_band",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "body"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "primary_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "primary_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "secondary_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "secondary_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "width"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "",
+        "actions"
+      ],
+      "slots_extracted": [
+        "",
+        "actions"
+      ],
+      "slots_yielded": [
+        "",
+        "actions"
+      ],
+      "template": "cta_band.html",
+      "tokens": [
+        "--chirpui-cta-band-copy-gap",
+        "--chirpui-cta-band-gap"
+      ],
+      "trim_emits": [],
+      "variants": []
+    },
     "description_list": {
       "authoring": "available",
       "block": "description-list",
@@ -19897,7 +19999,7 @@
   "schema": "chirpui-manifest@3",
   "stats": {
     "component_authoring": {
-      "available": 268,
+      "available": 269,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -19915,14 +20017,14 @@
       "infrastructure": 2,
       "interactive": 8,
       "layout": 45,
-      "marketing": 9,
+      "marketing": 10,
       "media": 1,
       "navigation": 22,
       "overlay": 3,
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 111,
+      "experimental": 112,
       "internal": 2,
       "legacy": 39,
       "stable": 167
@@ -19935,12 +20037,12 @@
       "component": 173,
       "effect": 32,
       "infrastructure": 2,
-      "pattern": 3,
+      "pattern": 4,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 209,
-    "components_with_params": 209,
+    "components_with_description": 210,
+    "components_with_params": 210,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -19948,7 +20050,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 207
+      "public_templated_components": 208
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -19971,7 +20073,7 @@
       "spacing": 22,
       "typography": 40
     },
-    "total_components": 319,
+    "total_components": 320,
     "total_tokens": 356
   },
   "tokens": {

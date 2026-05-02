@@ -1603,6 +1603,20 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         maturity="experimental",
         role="pattern",
     ),
+    "cta-band": ComponentDescriptor(
+        block="cta-band",
+        elements=("inner", "copy", "title", "body", "actions"),
+        slots=("", "actions"),
+        composes=("band", "btn"),
+        tokens=(
+            "--chirpui-cta-band-gap",
+            "--chirpui-cta-band-copy-gap",
+        ),
+        template="cta_band.html",
+        category="marketing",
+        maturity="experimental",
+        role="pattern",
+    ),
     # -- Composites (PR #57) ------------------------------------------------
     "settings-row-list": ComponentDescriptor(
         block="settings-row-list",

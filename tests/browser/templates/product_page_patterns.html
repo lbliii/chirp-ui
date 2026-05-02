@@ -7,6 +7,7 @@
 {% from "chirpui/hero.html" import hero %}
 {% from "chirpui/band.html" import band %}
 {% from "chirpui/button.html" import btn %}
+{% from "chirpui/cta_band.html" import cta_band %}
 {% from "chirpui/layout.html" import container, stack, cluster, grid, section_header %}
 {% from "chirpui/logo_cloud.html" import logo_cloud %}
 {% from "chirpui/feature_section.html" import feature_section %}
@@ -116,18 +117,14 @@
     {% end %}
   {% end %}
 
-  {% call band(width="bleed", variant="accent") %}
-    {% call container() %}
-      {% call stack(gap="md") %}
-        <h2>Start building with Acme Agents</h2>
-        <p>Improve each step of the agent development lifecycle from one platform.</p>
-        {% call cluster() %}
-          {{ btn("Start building", href="/product-page-patterns/start", variant="primary") }}
-          {{ btn("Get a demo", href="/product-page-patterns/demo", variant="ghost") }}
-        {% end %}
-      {% end %}
-    {% end %}
-  {% end %}
+  {{ cta_band(
+    title="Start building with Acme Agents",
+    body="Improve each step of the agent development lifecycle from one platform.",
+    primary_label="Start building",
+    primary_href="/product-page-patterns/start",
+    secondary_label="Get a demo",
+    secondary_href="/product-page-patterns/demo"
+  ) }}
 
   {% slot footer %}
     {% call site_footer(layout="columns") %}

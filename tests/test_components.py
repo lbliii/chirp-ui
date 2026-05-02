@@ -4147,6 +4147,38 @@ class TestStoryCard:
         assert "Case study" in html
 
 
+class TestCtaBand:
+    def test_cta_band_with_standard_actions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/cta_band.html" import cta_band %}'
+            '{{ cta_band(title="Start building", body="Ship production agents.", '
+            'primary_label="Start", primary_href="/start", '
+            'secondary_label="Demo", secondary_href="/demo") }}'
+        ).render()
+
+        assert "chirpui-band" in html
+        assert "chirpui-cta-band" in html
+        assert "chirpui-cta-band__inner" in html
+        assert "Start building" in html
+        assert "Ship production agents." in html
+        assert 'href="/start"' in html
+        assert 'href="/demo"' in html
+
+    def test_cta_band_slots_and_forwarded_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/cta_band.html" import cta_band %}'
+            '{% call cta_band(title="Launch", variant="elevated", width="contained") %}'
+            "<p>Custom body</p>"
+            "{% slot actions %}<a href=\"/custom\">Custom action</a>{% end %}"
+            "{% end %}"
+        ).render()
+
+        assert "chirpui-band--elevated" in html
+        assert "chirpui-band--contained" in html
+        assert "<p>Custom body</p>" in html
+        assert "Custom action" in html
+
+
 class TestSidebar:
     def test_sidebar_with_links(self, env: Environment) -> None:
         html = env.from_string(

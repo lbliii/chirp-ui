@@ -17,6 +17,7 @@ Most examples use this shared import set:
 {% from "chirpui/hero.html" import hero %}
 {% from "chirpui/band.html" import band %}
 {% from "chirpui/button.html" import btn %}
+{% from "chirpui/cta_band.html" import cta_band %}
 {% from "chirpui/layout.html" import container, stack, cluster, grid, frame, section_header %}
 {% from "chirpui/logo_cloud.html" import logo_cloud %}
 {% from "chirpui/marquee.html" import marquee %}
@@ -238,18 +239,14 @@ Checks:
 Use this after proof and feature explanation, not as a substitute for the hero.
 
 ```kida
-{% call band(width="bleed", variant="accent") %}
-  {% call container() %}
-    {% call stack(gap="md") %}
-      <h2>Start building with Acme Agents</h2>
-      <p>Improve each step of the agent development lifecycle from one platform.</p>
-      {% call cluster() %}
-        {{ btn("Start building", href="/start", variant="primary") }}
-        {{ btn("Get a demo", href="/demo", variant="ghost") }}
-      {% end %}
-    {% end %}
-  {% end %}
-{% end %}
+{{ cta_band(
+  title="Start building with Acme Agents",
+  body="Improve each step of the agent development lifecycle from one platform.",
+  primary_label="Start building",
+  primary_href="/start",
+  secondary_label="Get a demo",
+  secondary_href="/demo"
+) }}
 ```
 
 Checks:
@@ -279,6 +276,6 @@ Likely candidates, in priority order:
 | `lifecycle_showcase` | Recipe | `tabs_panels` plus `feature_section` markup becomes repeated and error-prone |
 | `logo_cloud` | Built | Accessible proof bands are common and stable enough to ship proactively |
 | `story_card` | Built | Customer outcome cards are common and stable enough to ship proactively |
-| `cta_band` | Recipe | `band` plus `stack` plus `cluster` proves too verbose in multiple pages |
+| `cta_band` | Built | CTA sections are common and stable enough to ship proactively |
 
 Do not add a generic landing-page builder or utility-class vocabulary.

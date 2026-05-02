@@ -223,6 +223,7 @@ MANIFEST: tuple[str, ...] = (
     "partials/161_navigation-metadata-authoring.css",
     "partials/162_logo-cloud.css",
     "partials/163_story-card.css",
+    "partials/164_cta-band.css",
 )
 
 
