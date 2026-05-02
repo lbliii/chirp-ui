@@ -1,0 +1,51 @@
+{#- chirp-ui: Logo Cloud
+    Accessible proof strip for customer, partner, integration, or ecosystem logos.
+
+    Data-in: items with name, optional src, alt, href, external.
+    Slot mode: omit items and pass already-rendered logo/link content in the default slot.
+
+    Usage:
+        from "chirpui/logo_cloud.html" import logo_cloud
+
+        logo_cloud(items=[
+            {"name": "Acme", "src": "/static/acme.svg", "href": "/customers/acme"},
+            {"name": "Globex"},
+        ])
+-#}
+
+{% def logo_cloud(items=none, label="Featured logos", monochrome=true, cls="") %}
+<section class="chirpui-logo-cloud{{ " chirpui-logo-cloud--monochrome" if monochrome else "" }}{{ " " ~ cls if cls else "" }}"
+         aria-label="{{ label }}">
+    <div class="chirpui-logo-cloud__track">
+        {% if items %}
+            {% for item in items %}
+                {% set name = item.name %}
+                {% set href = item.href | default(none) %}
+                {% set external = item.external | default(false) %}
+                {% set src = item.src | default(none) %}
+                {% set alt = item.alt | default(name) %}
+                {% if href %}
+                <a class="chirpui-logo-cloud__item chirpui-logo-cloud__link"
+                   href="{{ href }}"{% if external %} rel="noopener noreferrer"{% end %}{{ route_link_attrs(href, external=external) | html_attrs }}>
+                    {% if src %}
+                    <img class="chirpui-logo-cloud__img" src="{{ src }}" alt="{{ alt }}">
+                    {% else %}
+                    <span class="chirpui-logo-cloud__name">{{ name }}</span>
+                    {% endif %}
+                </a>
+                {% else %}
+                <span class="chirpui-logo-cloud__item">
+                    {% if src %}
+                    <img class="chirpui-logo-cloud__img" src="{{ src }}" alt="{{ alt }}">
+                    {% else %}
+                    <span class="chirpui-logo-cloud__name">{{ name }}</span>
+                    {% endif %}
+                </span>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {% slot %}
+        {% endif %}
+    </div>
+</section>
+{% end %}

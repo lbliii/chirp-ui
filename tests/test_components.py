@@ -4081,6 +4081,37 @@ class TestLogo:
         assert "chirpui-visually-hidden" in html
         assert "Accessible brand" in html
 
+    def test_logo_cloud_items(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo_cloud.html" import logo_cloud %}'
+            "{{ logo_cloud(items=items) }}"
+        ).render(
+            items=[
+                {"name": "Acme", "src": "/static/acme.svg", "href": "/customers/acme"},
+                {"name": "Globex"},
+            ]
+        )
+
+        assert "chirpui-logo-cloud" in html
+        assert "chirpui-logo-cloud--monochrome" in html
+        assert "chirpui-logo-cloud__track" in html
+        assert "chirpui-logo-cloud__link" in html
+        assert 'src="/static/acme.svg"' in html
+        assert 'alt="Acme"' in html
+        assert "Globex" in html
+
+    def test_logo_cloud_slot_mode(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/logo_cloud.html" import logo_cloud %}'
+            '{% call logo_cloud(label="Partners", monochrome=false) %}'
+            '<span class="custom-logo">Partner</span>'
+            "{% end %}"
+        ).render()
+
+        assert 'aria-label="Partners"' in html
+        assert "chirpui-logo-cloud--monochrome" not in html
+        assert '<span class="custom-logo">Partner</span>' in html
+
 
 class TestSidebar:
     def test_sidebar_with_links(self, env: Environment) -> None:

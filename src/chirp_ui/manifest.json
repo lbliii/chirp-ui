@@ -10566,6 +10566,80 @@
       "trim_emits": [],
       "variants": []
     },
+    "logo-cloud": {
+      "authoring": "available",
+      "block": "logo-cloud",
+      "category": "marketing",
+      "composes": [],
+      "consumes": [],
+      "description": "Logo Cloud\n    Accessible proof strip for customer, partner, integration, or ecosystem logos.\n\n    Data-in: items with name, optional src, alt, href, external.\n    Slot mode: omit items and pass already-rendered logo/link content in the default slot.\n\n    Usage:\n        from \"chirpui/logo_cloud.html\" import logo_cloud\n\n        logo_cloud(items=[\n            {\"name\": \"Acme\", \"src\": \"/static/acme.svg\", \"href\": \"/customers/acme\"},\n            {\"name\": \"Globex\"},\n        ])",
+      "elements": [
+        "img",
+        "item",
+        "link",
+        "name",
+        "track"
+      ],
+      "emits": [
+        "chirpui-logo-cloud",
+        "chirpui-logo-cloud--monochrome",
+        "chirpui-logo-cloud__img",
+        "chirpui-logo-cloud__item",
+        "chirpui-logo-cloud__link",
+        "chirpui-logo-cloud__name",
+        "chirpui-logo-cloud__track"
+      ],
+      "extra_emits": [],
+      "lineno": 16,
+      "macro": "logo_cloud",
+      "maturity": "experimental",
+      "modifiers": [
+        "monochrome"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "monochrome"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "logo_cloud.html",
+      "tokens": [
+        "--chirpui-logo-cloud-gap",
+        "--chirpui-logo-cloud-image-height",
+        "--chirpui-logo-cloud-item-min",
+        "--chirpui-logo-cloud-opacity"
+      ],
+      "trim_emits": [],
+      "variants": []
+    },
     "marquee": {
       "authoring": "available",
       "block": "marquee",
@@ -19709,7 +19783,7 @@
   "schema": "chirpui-manifest@3",
   "stats": {
     "component_authoring": {
-      "available": 266,
+      "available": 267,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -19727,14 +19801,14 @@
       "infrastructure": 2,
       "interactive": 8,
       "layout": 45,
-      "marketing": 7,
+      "marketing": 8,
       "media": 1,
       "navigation": 22,
       "overlay": 3,
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 109,
+      "experimental": 110,
       "internal": 2,
       "legacy": 39,
       "stable": 167
@@ -19747,12 +19821,12 @@
       "component": 173,
       "effect": 32,
       "infrastructure": 2,
-      "pattern": 1,
+      "pattern": 2,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 207,
-    "components_with_params": 207,
+    "components_with_description": 208,
+    "components_with_params": 208,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -19760,7 +19834,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 205
+      "public_templated_components": 206
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -19783,7 +19857,7 @@
       "spacing": 22,
       "typography": 40
     },
-    "total_components": 317,
+    "total_components": 318,
     "total_tokens": 356
   },
   "tokens": {

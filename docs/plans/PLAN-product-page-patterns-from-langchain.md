@@ -284,7 +284,7 @@ Candidate macros, gated by evidence:
 
 | Candidate | Default answer | Promotion trigger |
 |-----------|----------------|-------------------|
-| `logo_cloud` | Recipe only | `marquee`/`cluster` composition cannot handle images, labels, and accessibility cleanly |
+| `logo_cloud` | Built 2026-05-02 | Accessible proof bands are common and stable enough to ship proactively |
 | `lifecycle_showcase` | Recipe only | Repeated `tabs_panels` + `feature_section` markup becomes error-prone |
 | `story_card` | Maybe | Real pages repeat customer/outcome/href/metric structure |
 | `site_nav_group` | Maybe | Product nav grouping cannot be expressed cleanly with current `site_header` slots |

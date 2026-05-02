@@ -104,6 +104,8 @@ PRODUCT_PATTERN_CUSTOMERS = [
     "Cloudflare",
 ]
 
+PRODUCT_PATTERN_LOGOS = [{"name": name} for name in PRODUCT_PATTERN_CUSTOMERS]
+
 PRODUCT_PATTERN_PRODUCTS = [
     {
         "href": "/product-page-patterns/observe",
@@ -437,6 +439,7 @@ def create_app() -> App:
             page_title="Product Page Patterns",
             current_path="/product-page-patterns",
             customer_names=PRODUCT_PATTERN_CUSTOMERS,
+            customer_logos=PRODUCT_PATTERN_LOGOS,
             products=PRODUCT_PATTERN_PRODUCTS,
             stories=PRODUCT_PATTERN_STORIES,
         )

@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Logo Cloud
+   ========================================================================== */
+
+@layer chirpui.component {
+@scope (.chirpui-logo-cloud) to (.chirpui-logo-cloud .chirpui-logo-cloud) {
+    :scope {
+        --chirpui-logo-cloud-gap: var(--chirpui-spacing-lg);
+        --chirpui-logo-cloud-item-min: 8rem;
+        --chirpui-logo-cloud-image-height: 2rem;
+        --chirpui-logo-cloud-opacity: 0.72;
+        display: block;
+    }
+
+    :scope .chirpui-logo-cloud__track {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--chirpui-logo-cloud-item-min)), 1fr));
+        align-items: center;
+        gap: var(--chirpui-logo-cloud-gap);
+    }
+
+    :scope .chirpui-logo-cloud__item {
+        min-width: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--chirpui-text-muted);
+        text-align: center;
+        text-decoration: none;
+    }
+
+    :scope .chirpui-logo-cloud__link {
+        border-radius: var(--chirpui-radius-sm);
+    }
+
+    :scope .chirpui-logo-cloud__link:focus-visible {
+        outline: var(--chirpui-state-focus-outline);
+        outline-offset: var(--chirpui-state-focus-offset);
+    }
+
+    :scope .chirpui-logo-cloud__img {
+        display: block;
+        max-inline-size: 100%;
+        block-size: var(--chirpui-logo-cloud-image-height);
+        object-fit: contain;
+        opacity: var(--chirpui-logo-cloud-opacity);
+    }
+
+    :scope .chirpui-logo-cloud__name {
+        overflow-wrap: anywhere;
+        font-size: var(--chirpui-ui-sm);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        line-height: var(--chirpui-line-height-tight);
+        color: var(--chirpui-text-muted);
+    }
+
+    :scope.chirpui-logo-cloud--monochrome .chirpui-logo-cloud__img {
+        filter: grayscale(1);
+    }
+
+    :scope .chirpui-logo-cloud__link:hover .chirpui-logo-cloud__img,
+    :scope .chirpui-logo-cloud__link:focus-visible .chirpui-logo-cloud__img {
+        opacity: 1;
+        filter: none;
+    }
+}
+}

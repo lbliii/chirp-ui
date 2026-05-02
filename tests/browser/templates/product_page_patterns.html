@@ -8,7 +8,7 @@
 {% from "chirpui/band.html" import band %}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/layout.html" import container, stack, cluster, grid, section_header %}
-{% from "chirpui/marquee.html" import marquee %}
+{% from "chirpui/logo_cloud.html" import logo_cloud %}
 {% from "chirpui/feature_section.html" import feature_section %}
 {% from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel %}
 {% from "chirpui/surface.html" import surface %}
@@ -43,7 +43,7 @@
 
   {% call band(width="bleed", variant="default") %}
     {% call container() %}
-      {{ marquee(items=customer_names, speed="slow") }}
+      {{ logo_cloud(items=customer_logos, label="Customers using Acme Agents") }}
     {% end %}
   {% end %}
 

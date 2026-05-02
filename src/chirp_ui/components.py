@@ -1561,6 +1561,22 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         category="marketing",
         maturity="experimental",
     ),
+    "logo-cloud": ComponentDescriptor(
+        block="logo-cloud",
+        modifiers=("monochrome",),
+        elements=("track", "item", "link", "img", "name"),
+        slots=("",),
+        tokens=(
+            "--chirpui-logo-cloud-gap",
+            "--chirpui-logo-cloud-item-min",
+            "--chirpui-logo-cloud-image-height",
+            "--chirpui-logo-cloud-opacity",
+        ),
+        template="logo_cloud.html",
+        category="marketing",
+        maturity="experimental",
+        role="pattern",
+    ),
     # -- Composites (PR #57) ------------------------------------------------
     "settings-row-list": ComponentDescriptor(
         block="settings-row-list",

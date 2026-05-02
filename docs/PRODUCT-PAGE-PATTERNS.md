@@ -18,6 +18,7 @@ Most examples use this shared import set:
 {% from "chirpui/band.html" import band %}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/layout.html" import container, stack, cluster, grid, frame, section_header %}
+{% from "chirpui/logo_cloud.html" import logo_cloud %}
 {% from "chirpui/marquee.html" import marquee %}
 {% from "chirpui/feature_section.html" import feature_section %}
 {% from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel %}
@@ -63,7 +64,7 @@ Use this when a product page needs a first-viewport claim, one primary action, o
 
   {% call band(width="bleed", variant="default") %}
     {% call container() %}
-      {{ marquee(items=customer_names, speed="slow") }}
+      {{ logo_cloud(items=customer_logos, label="Customers using Acme Agents") }}
     {% end %}
   {% end %}
 {% end %}
@@ -132,13 +133,15 @@ Checks:
 ## Proof Band
 
 Use this for customer logos, ecosystem names, integration lists, or adoption claims.
+Use `logo_cloud` for accessible image or text logos, and reserve `marquee`
+for long repeating text strips.
 
 ```kida
 {% call band(width="bleed", variant="elevated") %}
   {% call container() %}
     {% call stack(gap="md") %}
       {{ section_header("Trusted by teams shipping production agents") }}
-      {{ marquee(items=customer_names, speed="slow") }}
+      {{ logo_cloud(items=customer_logos, label="Customers using Acme Agents") }}
     {% end %}
   {% end %}
 {% end %}
@@ -160,7 +163,7 @@ For quantified proof, pair the same band with `metric_grid`:
 
 Checks:
 
-- Image logos have text alternatives.
+- Image logos have text alternatives through `logo_cloud` item names or explicit `alt` values.
 - Repeated proof data comes from app-owned lists, not duplicated template literals.
 - Motion remains limited to existing `marquee` behavior.
 
@@ -269,7 +272,7 @@ Likely candidates, in priority order:
 |-----------|---------|--------------|
 | `site_nav_group` | Recipe | Grouped product navigation cannot be expressed cleanly with `site_header` slots |
 | `lifecycle_showcase` | Recipe | `tabs_panels` plus `feature_section` markup becomes repeated and error-prone |
-| `logo_cloud` | Recipe | Logo/image accessibility requires more than `marquee` or `cluster` recipes |
+| `logo_cloud` | Built | Accessible proof bands are common and stable enough to ship proactively |
 | `story_card` | Maybe | Real pages repeat the same customer outcome structure |
 | `cta_band` | Recipe | `band` plus `stack` plus `cluster` proves too verbose in multiple pages |
 
