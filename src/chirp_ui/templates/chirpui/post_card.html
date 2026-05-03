@@ -9,7 +9,7 @@
         call post_card(name="Alice", handle="@alice", time="2h ago")
             {% slot avatar %}avatar(src="...", alt="Alice", size="md"){% end %}
             {% slot media %}<img src="sunset.jpg" alt="Sunset">{% end %}
-            {% slot actions %}action_bar_item(icon="♥", label="Like", count=42){% end %}
+            {% slot actions %}action_bar_item(icon="up", label="Vote up", count=42){% end %}
             <p>Check out this amazing sunset! 🌅</p>
         end
 

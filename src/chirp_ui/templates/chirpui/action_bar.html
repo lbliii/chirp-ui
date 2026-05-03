@@ -1,13 +1,13 @@
 {#- chirp-ui: Action Bar component
-    Horizontal row of icon buttons (like, share, comment, etc.).
+    Horizontal row of icon buttons (reply, vote, share, comment, etc.).
 
     Usage:
         from "chirpui/action_bar.html" import action_bar, action_bar_item
 
         call action_bar()
-            call action_bar_item(icon="♥", label="Like", count=42)
-            call action_bar_item(icon="💬", label="Comment", count=12)
-            call action_bar_item(icon="↗", label="Share")
+            call action_bar_item(icon="up", label="Vote up", count=42)
+            call action_bar_item(icon="comment", label="Comment", count=12)
+            call action_bar_item(icon="share", label="Share")
         end
 -#}
 
