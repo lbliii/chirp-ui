@@ -160,7 +160,9 @@ a repository/project page and an admin/settings page. Both keep global
 navigation, object context, local routes, and page tools as separate layers.
 It also includes a cloud/control-plane recipe for scope switching, service
 menus, favorites quickbars, resource search, deployment tabs, and page-local
-controls.
+controls. The suite work hub recipe extends the same layer model to product
+suites: top utilities, product modes, personal shortcuts, customizable sidebar
+sections, project-local route tabs, and saved views stay distinct.
 
 On phones:
 

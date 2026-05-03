@@ -32,6 +32,10 @@ systems without cloning any specific product.
 
 ## Progress
 
+- Family 1 accepted: the component showcase now includes a product-suite work
+  hub recipe with top utilities, mode navigation, personal shortcuts,
+  customizable sidebar sections, project-local route tabs, stable counts, and
+  saved views.
 - Family 2 accepted: the component showcase now includes a cloud/control-plane
   console recipe with scope switching, service menu, favorites quickbar,
   resource search, object-local route tabs, stable counts, and deployment tools.

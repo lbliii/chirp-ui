@@ -39,11 +39,16 @@ class TestDataPage:
             assert "Cloud Console Navigation" in response.text
             assert "Cloud console global navigation" in response.text
             assert "Cloud console favorites" in response.text
+            assert "Suite Work Hub Navigation" in response.text
+            assert "Suite work hub global navigation" in response.text
+            assert "Suite work hub personal shortcuts" in response.text
+            assert "Suite work hub saved views" in response.text
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
             assert "chirpui-route-tab__badge--reserved" in response.text
             assert "chirpui-command-palette-trigger--sm" in response.text
             assert "Find service, project, deployment" in response.text
+            assert "Search work, people, projects" in response.text
 
     @pytest.mark.asyncio
     async def test_data_page_returns_200(self, showcase_app) -> None:
