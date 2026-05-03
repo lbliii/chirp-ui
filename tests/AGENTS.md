@@ -22,6 +22,15 @@ Represent downstream consumers who cannot inspect Chirp UI internals and depend 
 - Strict undefined regressions need explicit cases for dict-driven templates.
 - CSS, manifest, docs, and package-data freshness checks should fail with actionable messages.
 
+## Contract Checklist
+
+- New component or macro behavior: inspect unit render tests, structural assertions, descriptor/slot parity tests, strict-undefined cases, CSS contract tests, and browser tests when layout or behavior depends on the browser.
+- Registry/manifest changes: inspect manifest freshness, schema expectations, emits parity, provide/consume audits, public API tests, and CLI tests.
+- CSS/token changes: inspect syntax, concat, transition token, template/CSS contract, responsive contract, and browser visual probes when computed layout matters.
+- Docs/examples changes: inspect docs-site tests, generated reference freshness, example/showcase coverage, and snippets that tests should pin.
+- Theme/package changes: inspect package-data tests, asset-path tests, install tests, and build/sdist/wheel smoke checks when package contents move.
+- Test infra changes: inspect fixture parity with real filters/globals, browser app routes/templates, timeout behavior, and whether narrowed checks still prove the changed contract.
+
 ## Advocate
 
 - Focused tests for the interesting path: non-default variant, invalid fallback behavior, slot composition, and downstream integration shape.

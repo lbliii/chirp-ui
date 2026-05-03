@@ -21,6 +21,14 @@ Represent CI, release prep, and contributors who need stale generated output to 
 - Build order and layer declarations are public contracts when they affect shipped output.
 - Generated files should clearly say they are generated and name the source/build command.
 
+## Contract Checklist
+
+- Builder changes: inspect normal and `--check` modes, deterministic ordering, generated header text, failure messages, and stale-output tests.
+- CSS builder changes: inspect partial ordering, layer declarations, generated `chirpui.css`, CSS concat/syntax tests, and release-preflight tasks.
+- Manifest/docs builder changes: inspect AST/parser assumptions, schema output, generated `manifest.json`, generated `COMPONENT-OPTIONS.md` sections, site manifest task, and docs freshness tests.
+- Site/showcase assembly changes: inspect `docs-build-all`, `site/public` generation expectations, Make/Poe task wiring, and docs-site tests.
+- Task changes in `pyproject.toml`: inspect CI/check/release task order, README command docs, Makefile parity, and changelog/release notes when behavior changes.
+
 ## Advocate
 
 - More projection checks that catch drift before release.
