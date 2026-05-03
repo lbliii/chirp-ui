@@ -171,22 +171,35 @@ Implemented locations:
   dense scene cards, scene/read/management action separation, Q&A accepted
   state, moderation queue, and compact writer-desk activity.
 
-### Phase 3: Promote Repeated Recipes
+### Phase 3: Promote Repeated Recipes (decision checkpoint 2026-05-03)
 
 After the docs recipe and showcase have at least one real consumer, decide
 whether any pattern deserves a macro.
+
+The first browser fixture did **not** justify a new public forum component yet.
+It showed that `resource_card`, `badge`, `inline_counter`, `latest_line`,
+`linked_avatar_stack`, `post_card`, `comment_thread`, `rendered_content`, and
+`action_bar` can express dense community and play-by-post surfaces without
+page-local utility classes. The only immediate friction was action icon
+ergonomics: forum/social action rows had to pass raw glyphs or plain words into
+`action_bar_item`. That was handled by resolving `action_bar_item(icon=...)`
+through the existing icon registry and adding semantic action names.
 
 Candidate macros, gated by evidence:
 
 | Candidate | Default answer | Promotion trigger |
 |-----------|----------------|-------------------|
-| `topic_card` | Maybe | `resource_card` cannot express title, author, category, labels, replies, views, and latest activity without repeated local structure |
-| `vote_control` | Maybe | Vote buttons, score states, hidden scores, and permission notices repeat across posts and comments |
+| `topic_card` | Not yet | `resource_card` cannot express title, author, category, labels, replies, views, and latest activity without repeated local structure across at least two real pages |
+| `vote_control` | Not yet | Vote buttons, score states, hidden scores, and permission notices repeat across posts and comments after app-owned scoring semantics are known |
 | `thread_layout` | Recipe only | Root post plus replies plus composer needs stable anchors and responsive affordances |
-| `answer_card` | Maybe | Accepted/recommended/closed Q&A states repeat across several pages |
-| `moderation_queue_item` | Maybe | Report source, rule, target content, actions, and history repeat in review tools |
+| `answer_card` | Not yet | Accepted/recommended/closed Q&A states repeat across several pages and need structure beyond `card` + `badge` |
+| `moderation_queue_item` | Not yet | Report source, rule, target content, actions, and history repeat in review tools beyond `resource_card` |
 | `community_header` | Recipe only | Community identity, rules, counts, and membership actions repeat across apps |
 | `flair_badge` | Recipe only | Badge plus search/filter behavior becomes common enough to deserve registry coverage |
+
+Current conclusion: continue polishing existing components and recipes. Do not
+promote `topic_card`, `vote_control`, `answer_card`, or
+`moderation_queue_item` on the fixture alone.
 
 **Done when:**
 
@@ -202,11 +215,13 @@ friction.
 
 Possible refinements:
 
-- `resource_card`: verify topic metadata and badge slots are enough.
+- `resource_card`: verified by fixture for topic and moderation cards; revisit
+  after real app pages repeat the same slot choreography.
 - `post_card`: verify root-post action and media slots cover forum posts.
 - `comment` / `comment_thread`: verify reply nesting and action rows remain
   accessible.
-- `action_bar` / `icon_btn`: verify vote/reaction controls can be labeled
+- `action_bar` / `icon_btn`: action rows can now use semantic registry icons
+  such as `reply`, `up`, `down`, `watch`, `follow`, `report`, and `share`
   without custom classes.
 - `resource_index`: verify category/search/filter composition fits forum lists.
 - `rendered_content`: verify docs clearly state upstream sanitization duties.
