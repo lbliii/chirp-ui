@@ -1,0 +1,116 @@
+{% from "chirpui/layout.html" import stack, cluster, grid, block %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/primary_nav.html" import primary_nav %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+{% from "chirpui/avatar.html" import avatar %}
+
+{% def cloud_control_plane_console() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Cloud console global navigation") %}
+  {{ logo(text="Nimbus", href="/cloud", variant="text") }}
+  {{ dropdown_menu(btn("Prod / us-east", variant="ghost", size="sm"), items=[
+    {"label": "Prod / us-east", "href": "/cloud/scopes/prod-us-east"},
+    {"label": "Prod / eu-west", "href": "/cloud/scopes/prod-eu-west"},
+    {"label": "Staging", "href": "/cloud/scopes/staging"},
+    {"divider": true},
+    {"label": "Manage scopes", "href": "/cloud/scopes"}
+  ], id="cloud-scope-menu") }}
+  {{ dropdown_menu(btn("Services", variant="ghost", size="sm"), items=[
+    {"label": "Compute", "href": "/cloud/services/compute"},
+    {"label": "Storage", "href": "/cloud/services/storage"},
+    {"label": "Databases", "href": "/cloud/services/databases"},
+    {"label": "Networking", "href": "/cloud/services/networking"},
+    {"divider": true},
+    {"label": "All services", "href": "/cloud/services"}
+  ], id="cloud-services-menu") }}
+  {{ command_palette_trigger(target="cloud-console-palette", label="Find cloud resource", placeholder="Find service, project, deployment", shortcut="F", icon="search", density="sm") }}
+  {{ btn("Create", variant="primary", size="sm") }}
+  {{ icon_btn("alert", href="/cloud/alerts", aria_label="Alerts") }}
+  {{ avatar(initials="NC", alt="Nimbus Console", size="sm") }}
+{% end %}
+{{ command_palette(id="cloud-console-palette", search_url="/data/table", placeholder="Find resources, services, pages...") }}
+{% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Cloud console favorites") %}
+  {{ primary_nav([
+    {"label": "Compute", "href": "/cloud/services/compute", "badge": 18, "badge_label": "18 compute resources"},
+    {"label": "Deployments", "href": "/cloud/deployments", "badge_loading": true},
+    {"label": "Domains", "href": "/cloud/domains", "badge": 7, "badge_label": "7 domains"},
+    {"label": "Logs", "href": "/cloud/logs"},
+    {"label": "Cost", "href": "/cloud/cost", "badge_expected": true},
+  ], current_path="/cloud/projects/api-gateway/deployments") }}
+{% end %}
+{{ breadcrumbs([
+  {"label": "Cloud", "href": "/cloud"},
+  {"label": "Projects", "href": "/cloud/projects"},
+  {"label": "api-gateway", "href": "/cloud/projects/api-gateway"},
+  {"label": "Deployments"}
+], overflow="collapse", max_items=4) }}
+{% call cluster(gap="sm") %}
+  <div class="chirpui-stack chirpui-stack--sm">
+    <h3>api-gateway</h3>
+    <div class="chirpui-cluster chirpui-cluster--sm">
+      {{ inline_counter("D", 42, "deployments") }}
+      {{ inline_counter("R", 3, "regions") }}
+      {{ inline_counter("E", 1, "error") }}
+    </div>
+  </div>
+  {{ badge("Production", variant="success") }}
+  {{ btn("Promote", variant="primary", size="sm") }}
+  {{ dropdown_menu(btn("More", variant="ghost", size="sm"), items=[
+    {"label": "View build logs", "href": "/cloud/projects/api-gateway/logs"},
+    {"label": "Rollback", "action": "rollback"},
+    {"label": "Transfer project", "action": "transfer-project", "variant": "danger"}
+  ], id="cloud-project-more-menu") }}
+{% end %}
+{{ route_tabs(tabs=[
+  {"href": "/cloud/projects/api-gateway", "label": "Overview"},
+  {"href": "/cloud/projects/api-gateway/deployments", "label": "Deployments", "badge": 42, "badge_label": "42 deployments"},
+  {"href": "/cloud/projects/api-gateway/domains", "label": "Domains", "badge": 7, "badge_label": "7 domains"},
+  {"href": "/cloud/projects/api-gateway/logs", "label": "Logs", "badge_loading": true},
+  {"href": "/cloud/projects/api-gateway/settings", "label": "Settings"},
+], current_path="/cloud/projects/api-gateway/deployments") }}
+{% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Deployment list controls") %}
+  {{ btn("Repository", variant="ghost", size="sm") }}
+  {{ btn("Activity", variant="ghost", size="sm") }}
+  {{ btn("Errors only", variant="ghost", size="sm") }}
+  {{ btn("Refresh", variant="ghost", size="sm") }}
+{% end %}
+{% call chip_group(label="Cloud console saved views") %}
+  {{ chip("Recent deployments", selected=true, href="/cloud/deployments/recent") }}
+  {{ chip("Favorites", href="/cloud/favorites") }}
+  {{ chip("Failed builds", href="/cloud/deployments/failed") }}
+  {{ chip("Cost spike", href="/cloud/cost/spikes") }}
+{% end %}
+{% call grid(cols=3, gap="md") %}
+  {% call resource_card("/cloud/projects/api-gateway", "api-gateway", description="Public edge API with three active regions.", top_meta="project") %}
+    {% slot badges %}{{ badge("Healthy", variant="success") }}{% end %}
+    {% slot footer %}
+      <span class="chirpui-font-sm chirpui-text-muted">Last deployed 8 min ago</span>
+    {% end %}
+  {% end %}
+  {% call resource_card("/cloud/services/databases/ledger", "ledger-db", description="Primary relational store for payments events.", top_meta="database") %}
+    {% slot badges %}{{ badge("Watch", variant="warning") }}{% end %}
+    {% slot footer %}
+      <span class="chirpui-font-sm chirpui-text-muted">Replica lag 42ms</span>
+    {% end %}
+  {% end %}
+  {% call resource_card("/cloud/domains/app", "app.example.com", description="Production domain with managed certificate.", top_meta="domain") %}
+    {% slot badges %}{{ badge("Renewing", variant="info") }}{% end %}
+    {% slot footer %}
+      <span class="chirpui-font-sm chirpui-text-muted">Certificate renews in 12 days</span>
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

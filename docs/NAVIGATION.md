@@ -158,6 +158,9 @@ For GitHub-like object pages, compose existing primitives in this order:
 The component showcase includes two copyable dense object chrome recipes:
 a repository/project page and an admin/settings page. Both keep global
 navigation, object context, local routes, and page tools as separate layers.
+It also includes a cloud/control-plane recipe for scope switching, service
+menus, favorites quickbars, resource search, deployment tabs, and page-local
+controls.
 
 On phones:
 

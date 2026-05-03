@@ -30,6 +30,12 @@ Each family should produce copyable ChirpUI recipes and only then justify new
 component API. The goal is to teach ChirpUI how to build dense navigation
 systems without cloning any specific product.
 
+## Progress
+
+- Family 2 accepted: the component showcase now includes a cloud/control-plane
+  console recipe with scope switching, service menu, favorites quickbar,
+  resource search, object-local route tabs, stable counts, and deployment tools.
+
 ## Research Sources
 
 These sources are reference inputs, not contracts to copy:

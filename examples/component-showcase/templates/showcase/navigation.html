@@ -19,6 +19,7 @@
 {% from "chirpui/pagination.html" import pagination %}
 {% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
 {% from "showcase/_dense_object_chrome.html" import dense_project_object_chrome, dense_settings_object_chrome %}
+{% from "showcase/_cloud_console_nav.html" import cloud_control_plane_console %}
 
 
 {% from "chirpui/nav_progress.html" import nav_progress %}
@@ -87,6 +88,12 @@
 </p>
 {{ dense_project_object_chrome() }}
 {{ dense_settings_object_chrome() }}
+
+<h2>Cloud Console Navigation</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Control-plane recipe: scope switcher, service menu, favorites quickbar, resource search, object-local tabs, and deployment tools.
+</p>
+{{ cloud_control_plane_console() }}
 
 <h2>Stepper</h2>
 {% call block() %}
