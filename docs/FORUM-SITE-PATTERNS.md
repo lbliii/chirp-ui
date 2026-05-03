@@ -456,17 +456,17 @@ remain outside ChirpUI.
 |-----------|---------|-------------------|
 | `topic_card` | Built | Topic metadata, counters, state, and latest activity need a reusable default |
 | `vote_control` | Not yet | Vote buttons, score states, hidden scores, and permission notices repeat after app-owned scoring semantics are known |
-| `thread_layout` | Recipe | Root post plus replies plus composer needs stable anchors and responsive affordances |
+| `thread_reader_layout` | Built | Root post plus replies plus composer needs stable reader regions and responsive affordances without owning ranking or composer behavior |
 | `answer_card` | Built | Accepted/closed answer state needs a readable default without owning Q&A logic |
 | `moderation_queue_item` | Built | Report reason, target, state, and review actions need a reusable default |
-| `community_header` | Recipe | Community identity, rules, counts, and membership actions repeat across apps |
-| `flair_badge` | Recipe | Badge plus search/filter behavior becomes common enough to deserve registry coverage |
+| `detail_header` | Built | Community, thread, title, and product orientation need a reusable detail surface |
+| `facet_chip` | Built | Badge plus selected/search/filter behavior needs a compact default without owning filter state |
 
 The browser fixture still does not justify app-behavior macros such as
-`vote_control` or `thread_layout`. It does justify default display assets for
-topics, answers, and moderation queue rows, plus semantic icon names in
-`action_bar_item()` for forum/social actions such as reply, vote, watch, follow,
-report, and share.
+`vote_control`. It does justify default display assets for topics, answers,
+moderation queue rows, detail orientation, facet chips, and thread reader
+regions, plus semantic icon names in `action_bar_item()` for forum/social
+actions such as reply, vote, watch, follow, report, and share.
 
 Elbysodic is the first real consumer pass for these recipes. Start with one
 surface, not a new ChirpUI macro: migrate either thread-list cards, the thread
@@ -477,8 +477,9 @@ Elbysodic until the same slot shape repeats across real pages.
 
 Known friction from the first pass is narrow: action rows needed semantic icon
 names, and copied vote recipes needed `arrow-up` / `arrow-down` aliases. Both
-now resolve through the icon registry. Thread cards, scene headers, post frames,
-and inline filter rails still need real migration evidence before promotion.
+now resolve through the icon registry. Vote controls, post frames, and
+app-specific inline filter rails still need real migration evidence before
+promotion.
 
 Any promoted macro needs a descriptor, emitted-class coverage, CSS partials,
 template docs, manifest projection, and browser coverage before it ships.

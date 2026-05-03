@@ -214,9 +214,11 @@ The first browser fixture showed that `resource_card`, `badge`,
 `inline_counter`, `latest_line`, `linked_avatar_stack`, `post_card`,
 `comment_thread`, `rendered_content`, and `action_bar` can express dense
 community and play-by-post surfaces without page-local utility classes. A small
-default display layer is now justified for repeated topic, answer, and
-moderation queue shapes; app-owned behavior such as voting, ranking, trust, and
-thread orchestration remains recipe-only.
+default display layer is now justified for repeated topic, answer, moderation
+queue, detail orientation, facet, and thread reader shapes; app-owned behavior
+such as voting, ranking, trust, and composer orchestration remains recipe-only.
+The first fixture also confirmed the action icon ergonomics from upstream:
+forum/social action rows should use semantic `action_bar_item(icon=...)` names.
 
 Candidate macros, gated by evidence:
 
@@ -224,15 +226,16 @@ Candidate macros, gated by evidence:
 |-----------|----------------|-------------------|
 | `topic_card` | Built 2026-05-03 | Topic metadata, counters, state, and latest activity need a reusable default |
 | `vote_control` | Not yet | Vote buttons, score states, hidden scores, and permission notices repeat across posts and comments after app-owned scoring semantics are known |
-| `thread_layout` | Recipe only | Root post plus replies plus composer needs stable anchors and responsive affordances |
+| `thread_reader_layout` | Built 2026-05-03 | Root post plus replies plus composer needs stable reader regions and responsive affordances |
 | `answer_card` | Built 2026-05-03 | Accepted/closed answer state needs a readable default without owning Q&A logic |
 | `moderation_queue_item` | Built 2026-05-03 | Report reason, target, state, and review actions need a reusable default |
-| `community_header` | Recipe only | Community identity, rules, counts, and membership actions repeat across apps |
-| `flair_badge` | Recipe only | Badge plus search/filter behavior becomes common enough to deserve registry coverage |
+| `detail_header` | Built 2026-05-03 | Community, thread, title, and product orientation need a reusable detail surface |
+| `facet_chip` | Built 2026-05-03 | Compact selected/category/filter chips need a reusable default |
 
-Current conclusion: ship display defaults for `topic_card`, `answer_card`, and
-`moderation_queue_item`; continue holding `vote_control`, `thread_layout`,
-`community_header`, and `flair_badge` until real app behavior proves the API.
+Current conclusion: ship display defaults for `topic_card`, `answer_card`,
+`moderation_queue_item`, `detail_header`, `facet_chip`, and
+`thread_reader_layout`; continue holding `vote_control` until real app behavior
+proves the API.
 
 **Done when:**
 
