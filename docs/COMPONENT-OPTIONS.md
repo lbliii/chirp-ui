@@ -82,8 +82,8 @@ Components that accept an `icon` param (e.g. `section`, `card`, `btn`, `alert`, 
 | reply | ↩ |
 | comment, watch | ◉ |
 | share | ↗ |
-| up, vote-up | ▲ |
-| down, vote-down | ▼ |
+| up, arrow-up, vote-up | ▲ |
+| down, arrow-down, vote-down | ▼ |
 | follow, star | ★ |
 | report, alert | ↑ |
 | arrow, migrate, config | ▸ |

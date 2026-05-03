@@ -18,6 +18,8 @@ ICON_REGISTRY: dict[str, str] = {
     "share": "↗",
     "up": "▲",
     "down": "▼",
+    "arrow-up": "▲",
+    "arrow-down": "▼",
     "vote-up": "▲",
     "vote-down": "▼",
     "watch": "◉",

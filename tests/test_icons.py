@@ -34,6 +34,8 @@ class TestIconRegistry:
             "share",
             "up",
             "down",
+            "arrow-up",
+            "arrow-down",
             "watch",
             "follow",
             "report",
