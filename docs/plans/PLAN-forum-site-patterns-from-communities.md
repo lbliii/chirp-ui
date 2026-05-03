@@ -176,6 +176,30 @@ Implemented locations:
 After the docs recipe and showcase have at least one real consumer, decide
 whether any pattern deserves a macro.
 
+#### Elbysodic consumer pass
+
+Elbysodic is the first real PBP-shaped consumer to pressure-test these recipes.
+Its current thread pages separate orientation, reading, acting, management, and
+continuation controls well, but the functionality is spread across app-local
+thread-card, scene-header, post-frame, activity, and toolbar markup.
+
+Try these migrations before proposing new chirp-ui APIs:
+
+| Elbysodic surface | First ChirpUI mapping | Keep app-owned for now |
+|-------------------|-----------------------|------------------------|
+| Thread list cards | `resource_card` title/content/media/actions slots, `badge`, `inline_counter`, `linked_avatar_stack`, `latest_line` | Scene Slate poster treatment, board-specific premise copy, per-game state rules |
+| Thread page header | `card`/`surface`, `section_header`, `cluster`, `badge`, `action_bar`, plus a recipe-level management disclosure | Place-path semantics, story timeline copy, GM-only controls |
+| Transcript skim nav | Existing route/local navigation recipe plus anchors | Exact sticky behavior and scene-specific headings |
+| Activity and inbox rows | `resource_card`, `latest_line`, `inline_counter`, `badge` | Read/unread delivery semantics and privacy rules |
+| Posts and replies | `post_card`, `comment_thread`, `rendered_content`, `action_bar` | Character portrait treatment, actor/GM identity rules, composer shell |
+
+The first pass should migrate one Elbysodic surface without adding public
+chirp-ui macros, then record where markup becomes genuinely repetitive or
+awkward. `scene_header`, `topic_card`, `post_frame`, and `inline_filter_rail`
+remain app-local or recipe-only until that migration produces a concrete slot
+sketch, repeated emitted classes, and browser evidence across phone and desktop
+widths.
+
 The first browser fixture did **not** justify a new public forum component yet.
 It showed that `resource_card`, `badge`, `inline_counter`, `latest_line`,
 `linked_avatar_stack`, `post_card`, `comment_thread`, `rendered_content`, and

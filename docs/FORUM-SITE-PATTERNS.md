@@ -439,5 +439,12 @@ The first browser fixture did not justify a new public `forum_*` component. It
 did justify using semantic icon names in `action_bar_item()` for forum/social
 actions such as reply, vote, watch, follow, report, and share.
 
+Elbysodic is the first real consumer pass for these recipes. Start with one
+surface, not a new ChirpUI macro: migrate either thread-list cards, the thread
+page header, transcript skim navigation, activity rows, or posts/replies using
+the existing vocabulary. Keep PBP-specific story semantics, character portrait
+treatment, GM controls, composer behavior, and delivery/privacy rules in
+Elbysodic until the same slot shape repeats across real pages.
+
 Any promoted macro needs a descriptor, emitted-class coverage, CSS partials,
 template docs, manifest projection, and browser coverage before it ships.
