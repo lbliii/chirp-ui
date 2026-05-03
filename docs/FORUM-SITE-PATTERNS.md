@@ -36,13 +36,15 @@ Start with these shipped primitives and components:
 - **Discovery and lists:** `resource_index`, `resource_card`, `filter_chips`,
   `tabs_panels`, `table`, `empty_state`, `infinite_scroll`
 - **Posts and threads:** `post_card`, `comment`, `comment_thread`,
-  `rendered_content`, `card`, `media_object`
+  `rendered_content`, `card`, `media_object`, `thread_reader_layout`
 - **Conversation tools:** `action_bar`, `icon_btn`, `btn`, `share_menu`,
   `reaction_pill`, `message_reactions`, `chat_layout`, `message_thread`
 - **State and identity:** `avatar`, `badge`, `counter_badge`,
-  `notification_dot`, `stat`, `description_list`, `timeline`
+  `notification_dot`, `stat`, `description_list`, `timeline`, `facet_chip`
 - **Governance and safety:** `callout`, `alert`, `confirm_dialog`, `form`,
   `action_strip`, `toast`, `accordion`
+- **Detail surfaces:** `detail_header` for community, category, title, or
+  thread orientation when `page_header` is too generic.
 
 App code owns ranking, voting math, reputation, permissions, policy,
 moderation decisions, markdown sanitization, notification delivery, and
@@ -60,16 +62,27 @@ categories, and route users into topic lists.
 Compose from:
 
 - `app_shell` or `site_shell`
-- `page_hero` or `entity_header`
+- `detail_header`, `page_hero`, or `entity_header`
 - `route_tabs` or `tabs_panels`
 - `resource_index`
 - `resource_card`
+- `facet_chip` for selected categories, tags, saved views, or participation
+  state
 - `callout` for visibility, rules, or posting restrictions
 - `stat` for member, topic, answer, or activity counts
 
 ```kida
 {% call stack(gap="lg") %}
-  {{ page_header(community.name, subtitle=community.summary) }}
+  {% call detail_header(community.name, summary=community.summary, eyebrow="Community") %}
+    {% slot badges %}
+      {{ facet_chip("Announcements", href="/c/announcements", count=3) }}
+      {{ facet_chip("Q&A", href="/c/questions", count=18, selected=true) }}
+    {% end %}
+    {% slot meta %}
+      <span>{{ community.member_count }} members</span>
+      <span>{{ community.open_thread_count }} open threads</span>
+    {% end %}
+  {% end %}
   {% call callout(variant="info", title=community.visibility_label) %}
     {{ community.visibility_help }}
   {% end %}
@@ -105,6 +118,8 @@ Compose from:
 
 - `resource_index`
 - `filter_chips`
+- `facet_chip` for compact topic/category facets outside form-owned filter
+  controls
 - `resource_card` for card lists
 - `table` for dense moderation or Q&A listings
 - `badge` for labels, solved, locked, pinned, staff, or needs-review states
@@ -148,6 +163,8 @@ Use this for one canonical discussion, post, or topic page.
 
 Compose from:
 
+- `thread_reader_layout` for durable reader regions
+- `detail_header` for thread title, summary, labels, metadata, and actions
 - `post_card` for the root post
 - `rendered_content` for sanitized post bodies
 - `action_bar` and `share_menu` for visible actions
@@ -156,24 +173,33 @@ Compose from:
 - `callout` for locked, archived, private, or moderation notices
 
 ```kida
-{% call stack(gap="lg") %}
-  {% call post_card(name=post.author, handle=post.handle, time=post.time, href=post.author_href) %}
-    {% call rendered_content() %}
-      {{ post.body_html }}
-    {% end %}
-    {% slot actions %}
-      ...vote, reply, save, share, report...
+{% call thread_reader_layout(label=thread.title) %}
+  {% slot header %}
+    {% call detail_header(thread.title, summary=thread.summary, eyebrow=thread.category) %}
+      {% slot badges %}
+        {% for tag in thread.tags %}
+          {{ facet_chip(tag.label, href=tag.href, selected=tag.selected) }}
+        {% endfor %}
+      {% end %}
+      {% slot actions %}...reply, share, watch...{% end %}
     {% end %}
   {% end %}
 
-  {% call comment_thread() %}
-    {% for reply in replies %}
-      {% call comment(author=reply.author, time=reply.time, avatar_src=reply.avatar) %}
-        {% call rendered_content() %}{{ reply.body_html }}{% end %}
-        {% slot actions %}...reply, react, report...{% end %}
+  {% slot local_nav %}...anchors, unread, accepted answer...{% end %}
+
+  {% slot posts %}
+    {% call post_card(name=post.author, handle=post.handle, time=post.time, href=post.author_href) %}
+      {% call rendered_content() %}
+        {{ post.body_html }}
       {% end %}
-    {% endfor %}
+      {% slot actions %}...vote, reply, save, share, report...{% end %}
+    {% end %}
+
+    {% call comment_thread() %}...replies...{% end %}
   {% end %}
+
+  {% slot attention_nav %}...locked state, moderation, next unread...{% end %}
+  {% slot composer %}...reply composer or permission notice...{% end %}
 {% end %}
 ```
 
@@ -422,22 +448,25 @@ Checks:
 
 ## Promotion Gates
 
-Keep these as recipes until real pages prove repeated markup is fragile or hard
-to keep accessible.
+The default assets below are registry-backed starting points for common forum
+shapes. App-owned ranking, trust, permissions, voting, and moderation policy
+remain outside ChirpUI.
 
 | Candidate | Default | Promote only when |
 |-----------|---------|-------------------|
-| `topic_card` | Not yet | `resource_card` cannot express topic metadata without repeated local structure across at least two real pages |
+| `topic_card` | Built | Topic metadata, counters, state, and latest activity need a reusable default |
 | `vote_control` | Not yet | Vote buttons, score states, hidden scores, and permission notices repeat after app-owned scoring semantics are known |
 | `thread_layout` | Recipe | Root post plus replies plus composer needs stable anchors and responsive affordances |
-| `answer_card` | Not yet | Accepted/recommended/closed Q&A states repeat across several pages and need structure beyond `card` + `badge` |
-| `moderation_queue_item` | Not yet | Report source, rule, target, actions, and history repeat beyond `resource_card` |
+| `answer_card` | Built | Accepted/closed answer state needs a readable default without owning Q&A logic |
+| `moderation_queue_item` | Built | Report reason, target, state, and review actions need a reusable default |
 | `community_header` | Recipe | Community identity, rules, counts, and membership actions repeat across apps |
 | `flair_badge` | Recipe | Badge plus search/filter behavior becomes common enough to deserve registry coverage |
 
-The first browser fixture did not justify a new public `forum_*` component. It
-did justify using semantic icon names in `action_bar_item()` for forum/social
-actions such as reply, vote, watch, follow, report, and share.
+The browser fixture still does not justify app-behavior macros such as
+`vote_control` or `thread_layout`. It does justify default display assets for
+topics, answers, and moderation queue rows, plus semantic icon names in
+`action_bar_item()` for forum/social actions such as reply, vote, watch, follow,
+report, and share.
 
 Elbysodic is the first real consumer pass for these recipes. Start with one
 surface, not a new ChirpUI macro: migrate either thread-list cards, the thread

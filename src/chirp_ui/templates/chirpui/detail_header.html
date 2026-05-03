@@ -1,0 +1,22 @@
+{#- chirp-ui: Detail header
+    A general detail-page header for communities, media titles, products, and
+    content records. App-owned routing, permissions, and ranking stay outside
+    the macro; callers provide behavior through slots and links.
+-#}
+
+{% def detail_header(title, summary=none, eyebrow=none, cls="") %}
+<header class="chirpui-detail-header{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-detail-header__layout">
+        <div class="chirpui-detail-header__media">{% yield media %}</div>
+        <div class="chirpui-detail-header__body">
+            {% if eyebrow %}<p class="chirpui-detail-header__eyebrow">{{ eyebrow }}</p>{% endif %}
+            <h1 class="chirpui-detail-header__title">{{ title }}</h1>
+            {% if summary %}<p class="chirpui-detail-header__summary">{{ summary }}</p>{% endif %}
+            <div class="chirpui-detail-header__badges">{% yield badges %}</div>
+            <div class="chirpui-detail-header__meta">{% yield meta %}</div>
+            <div class="chirpui-detail-header__actions">{% yield actions %}</div>
+        </div>
+        <div class="chirpui-detail-header__aside">{% yield aside %}</div>
+    </div>
+</header>
+{% end %}

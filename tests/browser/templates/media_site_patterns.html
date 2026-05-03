@@ -1,0 +1,238 @@
+{% extends "chirpui/app_layout.html" %}
+{% block title %}{{ page_title }}{% end %}
+{% block content %}
+{% from "chirpui/accordion.html" import accordion, accordion_item %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/band.html" import band %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/callout.html" import callout %}
+{% from "chirpui/card.html" import card, resource_card %}
+{% from "chirpui/cta_band.html" import cta_band %}
+{% from "chirpui/feature_section.html" import feature_section %}
+{% from "chirpui/hero.html" import hero %}
+{% from "chirpui/layout.html" import container, stack, cluster, grid, frame, section_header %}
+{% from "chirpui/logo_cloud.html" import logo_cloud %}
+{% from "chirpui/media_patterns.html" import catalog_rail, live_event_card, media_hero_shelf, title_card, watch_companion_layout %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/site_header.html" import site_header, site_nav_link %}
+{% from "chirpui/site_shell.html" import site_shell %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel %}
+{% from "chirpui/video_card.html" import video_card %}
+{% from "chirpui/video_thumbnail.html" import video_thumbnail %}
+
+{% call site_shell() %}
+  {% slot header %}
+    {% call site_header(current_path=current_path, variant="solid") %}
+      {% slot brand %}Acme Stream{% end %}
+      {% slot nav %}
+        {{ site_nav_link("/media-site-patterns", "Watch", match="exact") }}
+        {{ site_nav_link("/media-site-patterns/live", "Live", match="prefix") }}
+        {{ site_nav_link("/media-site-patterns/plans", "Plans", match="prefix") }}
+      {% end %}
+      {% slot tools %}
+        {{ btn("See plans", href="#plans", variant="ghost") }}
+        {{ btn("Start watching", href="/media-site-patterns/start", variant="primary") }}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {% call hero(title="Acme Stream", subtitle="Live events, original series, and profile-safe discovery in one media fixture.", background="solid") %}
+    {% slot actions %}
+      {% call cluster(gap="sm") %}
+        {{ btn("Start watching", href="/media-site-patterns/start", variant="primary") }}
+        {{ btn("Browse catalog", href="#catalog", variant="ghost") }}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {% call band(width="bleed", variant="default") %}
+    {% call container() %}
+      {% call stack(gap="md") %}
+        {{ section_header("Watch on the screens you already use") }}
+        {{ logo_cloud(items=devices, label="Supported devices and platforms") }}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {% call container(max_width="76rem") %}
+    {% call stack(gap="xl") %}
+      {% call stack(gap="lg") %}
+        {{ section_header("Hero shelf", subtitle="Featured titles carry state, metadata, and clear actions without a media-specific macro.") }}
+        {{ media_hero_shelf(featured, artwork=thumbnail) }}
+      {% end %}
+
+      {% call stack(gap="lg") %}
+        {{ section_header("Ranked catalog rail", subtitle="Rank and metadata stay real text even when artwork carries the visual load.", icon="list") }}
+        {{ catalog_rail("Trending now", titles, subtitle="Creator videos, premieres, and live replays share one rail contract.", artwork=thumbnail) }}
+      {% end %}
+
+      {% call stack(gap="lg") %}
+        {{ section_header("Format tabs", subtitle="Videos, shorts, and live formats are content jobs, not visual styles.") }}
+        {% call tabs_container(active="videos") %}
+          {{ tab_button("videos", "Videos", active=true) }}
+          {{ tab_button("shorts", "Shorts") }}
+          {{ tab_button("live", "Live") }}
+
+          {% call tab_panel("videos", active=true) %}
+            {% call grid(cols=3, gap="lg") %}
+              {% for title in titles %}
+                {{ video_card(title.href, thumbnail, title.duration, title.title, channel=title.channel, views=title.views, date=title.date) }}
+              {% end %}
+            {% end %}
+          {% end %}
+
+          {% call tab_panel("shorts") %}
+            {% call callout(variant="info", title="Shorts preview") %}
+              Short-form items use app-owned cards until a repeated structure proves a dedicated macro.
+            {% end %}
+          {% end %}
+
+          {% call tab_panel("live") %}
+            {% call stack(gap="md") %}
+              {% for event in live_events %}
+                {{ live_event_card(event.name, event.state, event.time, href="/media-site-patterns/live", state_variant=event.variant) }}
+              {% end %}
+            {% end %}
+          {% end %}
+        {% end %}
+      {% end %}
+
+      {% call frame(variant="sidebar-end", gap="lg") %}
+        {% call stack(gap="lg") %}
+          {% call surface(variant="muted") %}
+            {% call stack(gap="md") %}
+              {{ section_header("Title detail page", subtitle="Action, maturity, availability, episodes, and extras stay close to the title.", icon="watch") }}
+              {% call feature_section(layout="balanced") %}
+                {% slot media %}
+                  {{ title_card(
+                    "/media-site-patterns/watch/north-pier",
+                    "North Pier",
+                    artwork=thumbnail,
+                    duration="Trailer",
+                    meta="Series / 4K / Weekly episodes",
+                    summary="A waterfront mystery where each episode unlocks a new suspect and a new city archive.",
+                    state="Downloadable",
+                    state_variant="success",
+                    secondary_label="Add to list",
+                    secondary_href="/media-site-patterns/list/add"
+                  ) }}
+                {% end %}
+                {% slot eyebrow %}Series / 4K / Weekly episodes{% end %}
+                {% slot title %}North Pier{% end %}
+                <p>A waterfront mystery where each episode unlocks a new suspect and a new city archive.</p>
+                {% call cluster(gap="sm") %}
+                  {{ badge("TV-14", variant="muted") }}
+                  {{ badge("Downloadable", variant="success") }}
+                  {{ badge("New episode Friday", variant="info") }}
+                {% end %}
+                {% call cluster(gap="sm") %}
+                  {{ btn("Play episode 1", href="/media-site-patterns/watch/north-pier/e1", variant="primary") }}
+                  {{ btn("Add to list", href="/media-site-patterns/list/add", variant="ghost") }}
+                {% end %}
+              {% end %}
+
+              {% call accordion(name="north-pier-details") %}
+                {% call accordion_item("Episodes", open=true) %}
+                  Episode 1: The Signal. Episode 2: Low Tide. Episode 3: Archive Room.
+                {% end %}
+                {% call accordion_item("Accessibility and availability") %}
+                  Captions, audio descriptions, downloads on supported plans, and replay until June 30.
+                {% end %}
+              {% end %}
+            {% end %}
+          {% end %}
+
+          {% call surface(variant="muted") %}
+            {% call stack(gap="md") %}
+              {{ section_header("Watch-side companion panel", subtitle="The player owns aspect ratio; related context stacks below it on narrow screens.") }}
+              {% call watch_companion_layout() %}
+                {% slot player %}
+                {{ video_thumbnail(href="/media-site-patterns/watch/relay", src=thumbnail, alt="Live relay player", duration="Live") }}
+                {% end %}
+                {% slot companion %}
+                {% call tabs_container(active="chat") %}
+                  {{ tab_button("chat", "Chat", active=true) }}
+                  {{ tab_button("transcript", "Transcript") }}
+                  {{ tab_button("related", "Related") }}
+                  {% call tab_panel("chat", active=true) %}
+                    <p>Live chat is app-owned and escaped through form helpers.</p>
+                  {% end %}
+                  {% call tab_panel("transcript") %}
+                    <p>00:14 Market Street opens. 00:47 First rider enters the tunnel.</p>
+                  {% end %}
+                  {% call tab_panel("related") %}
+                    <p>Replay, stats, and camera feeds stay reachable without interrupting playback.</p>
+                  {% end %}
+                {% end %}
+                {% end %}
+              {% end %}
+            {% end %}
+          {% end %}
+        {% end %}
+
+        {% call stack(gap="lg") %}
+          {% call surface(variant="muted") %}
+            {% call stack(gap="md") %}
+              {{ section_header("Live event cards", subtitle="Time, restriction, and state are readable text.", icon="status") }}
+              {% for event in live_events %}
+                {{ live_event_card(event.name, event.state, event.time, href="/media-site-patterns/live/" ~ loop.index, restriction=event.restriction, state_variant=event.variant) }}
+              {% end %}
+            {% end %}
+          {% end %}
+
+          {% call callout(variant="warning", title="Kids profile") %}
+            This profile hides mature titles, disables purchases, and shows downloadable shows that are cleared for family viewing.
+          {% end %}
+        {% end %}
+      {% end %}
+
+      {% call resource_index(
+        "Profile-safe catalog",
+        "/media-site-patterns/search",
+        query="family",
+        subtitle="Filtered catalogs use normal search, badges, empty states, and app-owned entitlement logic.",
+        results_title="Family picks",
+        results_subtitle="Availability and maturity labels are visible text.",
+        results_layout="grid",
+        results_cols=3
+      ) %}
+        {% for title in titles %}
+          {% call resource_card(title.href, title.title, description=title.channel ~ " / " ~ title.duration, top_meta=title.date, link_mode="main") %}
+            {% slot badges %}
+              {{ badge("Family profile", variant="success") }}
+              {{ badge("Download", variant="info") }}
+            {% end %}
+          {% end %}
+        {% end %}
+      {% end %}
+
+      {% call stack(gap="lg") %}
+        <div id="plans"></div>
+        {{ section_header("Plan and add-on comparison", subtitle="Trial, renewal, and restriction copy appears before conversion.") }}
+        {% call grid(cols=3, gap="lg") %}
+          {% for plan in plans %}
+            {% call card(title=plan.name, subtitle=plan.fit, icon="grid") %}
+              {% slot header_actions %}{{ badge(plan.badge, variant="info") }}{% end %}
+              <p><strong>{{ plan.price }}</strong></p>
+              <p>{{ plan.summary }}</p>
+              {% slot footer %}
+                {{ btn("Choose " ~ plan.name, href="/media-site-patterns/plans/" ~ loop.index, variant="primary") }}
+              {% end %}
+            {% end %}
+          {% end %}
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {{ cta_band(
+    title="Start watching Acme Stream",
+    body="Browse live events, originals, downloads, and profile-safe picks without adding a media-specific API.",
+    primary_label="Start watching",
+    primary_href="/media-site-patterns/start",
+    secondary_label="Compare plans",
+    secondary_href="#plans"
+  ) }}
+{% end %}
+{% end %}

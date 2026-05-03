@@ -1,0 +1,22 @@
+{#- chirp-ui: Thread reader layout
+    Reader shell for forum and social threads with optional local navigation,
+    attention/moderation rail, and composer region. Posts and ranking remain
+    app-owned content.
+-#}
+
+{% def thread_reader_layout(label="Thread", cls="") %}
+<section class="chirpui-thread-reader-layout{{ " " ~ cls if cls else "" }}" aria-label="{{ label }}">
+    <div class="chirpui-thread-reader-layout__header">{% yield header %}</div>
+    <nav class="chirpui-thread-reader-layout__nav" aria-label="{{ label }} sections">
+        <p class="chirpui-thread-reader-layout__nav-title">Sections</p>
+        <div class="chirpui-thread-reader-layout__nav-list">{% yield local_nav %}</div>
+    </nav>
+    <main class="chirpui-thread-reader-layout__posts">
+        {% yield posts %}
+    </main>
+    <aside class="chirpui-thread-reader-layout__attention-nav" aria-label="{{ label }} attention">
+        {% yield attention_nav %}
+    </aside>
+    <div class="chirpui-thread-reader-layout__composer">{% yield composer %}</div>
+</section>
+{% end %}

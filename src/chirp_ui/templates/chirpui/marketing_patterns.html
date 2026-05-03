@@ -1,0 +1,35 @@
+{#- chirp-ui: Marketing pattern assets
+    Opinionated composition macros for product and marketing pages.
+    These are registry-backed defaults, not a page-builder API.
+-#}
+{% from "chirpui/feature_section.html" import feature_section %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel %}
+
+{% def lifecycle_showcase(items, active=none, cls="") %}
+{% set active_id = active or (items[0].id if items else "") %}
+<section class="chirpui-lifecycle-showcase{{ " " ~ cls if cls else "" }}">
+{% call tabs_container(active=active_id) %}
+    {% for item in items %}
+    {% set item_id = item.id | default("stage-" ~ loop.index) %}
+    {{ tab_button(item_id, item.label | default(item.title | default(item_id)), active=item_id == active_id) }}
+    {% end %}
+
+    {% for item in items %}
+    {% set item_id = item.id | default("stage-" ~ loop.index) %}
+    {% call tab_panel(item_id, active=item_id == active_id) %}
+        {% call feature_section(layout=item.layout | default("balanced")) %}
+            {% slot eyebrow %}{{ item.eyebrow | default(item.label | default("")) }}{% end %}
+            {% slot title %}{{ item.title | default(item.label | default("")) }}{% end %}
+            {% if item.body | default(none) %}<p>{{ item.body }}</p>{% endif %}
+            {% slot media %}
+                {% call surface(variant=item.surface_variant | default("muted")) %}
+                    {{ item.media | default(item.title | default("")) }}
+                {% end %}
+            {% end %}
+        {% end %}
+    {% end %}
+    {% end %}
+{% end %}
+</section>
+{% end %}

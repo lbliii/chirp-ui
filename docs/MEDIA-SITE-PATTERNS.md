@@ -434,17 +434,18 @@ Checks:
 
 ## Promotion Gates
 
-Keep these as recipes until real pages prove that local markup is repeated,
+The default assets below are registry-backed starting points. Keep broader
+media app behavior as recipes until real pages prove local markup is repeated,
 fragile, or hard to keep accessible.
 
 | Candidate | Default | Promote only when |
 |-----------|---------|-------------------|
-| `media_hero_shelf` | Recipe | Page-carousel plus feature-section markup repeats with the same accessibility needs |
-| `catalog_rail` | Recipe | Heading, rail, fallback-grid, and empty-state structure repeat across pages |
-| `title_card` | Maybe | `video_card` cannot represent premium titles without misleading YouTube-specific fields |
+| `media_hero_shelf` | Built | Page-carousel plus title-card structure needs a default accessible shelf |
+| `catalog_rail` | Built | Heading and carousel title-card rail is common enough to ship as a default |
+| `title_card` | Built | Streaming/premium title metadata differs from creator-video metadata |
 | `title_detail` | Recipe | Artwork, metadata, CTA, and episode sections repeat across real pages |
-| `live_event_card` | Maybe | Live/upcoming/replay/restricted states repeat across sports and non-sports pages |
-| `watch_companion_layout` | Maybe | Player plus side-panel responsive behavior proves too fragile as page markup |
+| `live_event_card` | Built | Live/upcoming/replay/restricted states need readable default structure |
+| `watch_companion_layout` | Built | Player plus side-panel responsive behavior is easy to get wrong locally |
 | `profile_catalog_notice` | Recipe | Profile/maturity/download restrictions need consistent structure across apps |
 
 Any promoted macro needs a descriptor, emitted-class coverage, CSS partials,

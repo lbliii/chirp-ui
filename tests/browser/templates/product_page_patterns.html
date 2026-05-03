@@ -10,9 +10,7 @@
 {% from "chirpui/cta_band.html" import cta_band %}
 {% from "chirpui/layout.html" import container, stack, cluster, grid, section_header %}
 {% from "chirpui/logo_cloud.html" import logo_cloud %}
-{% from "chirpui/feature_section.html" import feature_section %}
-{% from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel %}
-{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/marketing_patterns.html" import lifecycle_showcase %}
 {% from "chirpui/index_card.html" import index_card %}
 {% from "chirpui/story_card.html" import story_card %}
 {% from "chirpui/metric_grid.html" import metric_grid, metric_card %}
@@ -50,41 +48,40 @@
 
   {% call container() %}
     {% call stack(gap="xl") %}
-      {% call tabs_container(active="build") %}
-        {{ tab_button("build", "Build", active=true) }}
-        {{ tab_button("observe", "Observe") }}
-        {{ tab_button("evaluate", "Evaluate") }}
-        {{ tab_button("deploy", "Deploy") }}
-
-        {% call tab_panel("build", active=true) %}
-          {% call feature_section(layout="balanced") %}
-            {% slot eyebrow %}Build{% end %}
-            {% slot title %}Design agent workflows with clear control{% end %}
-            <p>Give teams a shared place to define steps, tools, and review points.</p>
-            {% slot media %}
-              {% call surface(variant="muted") %}
-                {% call stack(gap="sm") %}
-                  <strong>Workflow draft</strong>
-                  <p>Plan -> retrieve context -> call tools -> request review -> respond.</p>
-                {% end %}
-              {% end %}
-            {% end %}
-          {% end %}
-        {% end %}
-
-        {% call tab_panel("observe") %}
-          {% call feature_section(layout="balanced") %}
-            {% slot eyebrow %}Observe{% end %}
-            {% slot title %}Trace every run as a timeline{% end %}
-            <p>Show each step, model call, tool result, and handoff in order.</p>
-            {% slot media %}
-              {% call surface(variant="muted") %}
-                Trace timeline: input -> retrieval -> tool call -> answer.
-              {% end %}
-            {% end %}
-          {% end %}
-        {% end %}
-      {% end %}
+      {{ lifecycle_showcase([
+        {
+          "id": "build",
+          "label": "Build",
+          "eyebrow": "Build",
+          "title": "Design agent workflows with clear control",
+          "body": "Give teams a shared place to define steps, tools, and review points.",
+          "media": "Workflow draft: plan -> retrieve context -> call tools -> request review -> respond."
+        },
+        {
+          "id": "observe",
+          "label": "Observe",
+          "eyebrow": "Observe",
+          "title": "Trace every run as a timeline",
+          "body": "Show each step, model call, tool result, and handoff in order.",
+          "media": "Trace timeline: input -> retrieval -> tool call -> answer."
+        },
+        {
+          "id": "evaluate",
+          "label": "Evaluate",
+          "eyebrow": "Evaluate",
+          "title": "Turn production traces into evals",
+          "body": "Keep regression coverage close to real user behavior.",
+          "media": "Evaluation set: prompt, expected behavior, reviewer, score."
+        },
+        {
+          "id": "deploy",
+          "label": "Deploy",
+          "eyebrow": "Deploy",
+          "title": "Ship with guardrails and rollback context",
+          "body": "Expose rollout state and failure context without bespoke page chrome.",
+          "media": "Release: canary -> monitor -> promote -> rollback."
+        }
+      ]) }}
 
       {% call band(width="contained", variant="elevated") %}
         {% call stack(gap="md") %}

@@ -398,12 +398,12 @@ Add media-site recipes to docs without changing component APIs.
 - No new classes, variants, tokens, or macro params are introduced.
 - Recipes call out where apps own rights, account, playback, recommendation, and safety logic.
 
-### Phase 2: Build a Showcase Fixture
+### Phase 2: Build a Showcase Fixture (completed 2026-05-03)
 
 Create one internal showcase page that exercises the recipes against realistic
 placeholder media data.
 
-Candidate locations:
+Implemented locations:
 
 - `tests/browser/templates/media_site_patterns.html`
 - `tests/browser/test_media_site_patterns.py`
@@ -416,6 +416,19 @@ Candidate locations:
 - The fixture uses only existing public macros and component classes.
 - The watch-side layout proves player aspect ratio and companion panel behavior at phone and desktop widths.
 
+Progress:
+
+- Added the media-site browser fixture with acquisition hero, device proof,
+  hero shelf, ranked catalog rail, format tabs, title detail, live-event cards,
+  watch-side companion panel, profile-safe catalog, plan comparison, and closing
+  CTA recipes.
+- Added browser coverage for phone/tablet/desktop horizontal overflow, rendered
+  recipe sections, and mobile watch-companion stacking.
+- The fixture initially exercised existing primitives without a public
+  `media_*` macro, then promoted a small default asset layer so apps have
+  battle-tested starting points while playback, entitlement, profile,
+  live-state, and chat behavior stay app-owned.
+
 ### Phase 3: Promote Repeated Recipes
 
 After the docs recipe and showcase have at least one real consumer, decide
@@ -425,12 +438,12 @@ Candidate macros, gated by evidence:
 
 | Candidate | Default answer | Promotion trigger |
 |-----------|----------------|-------------------|
-| `media_hero_shelf` | Recipe only | Repeated page-carousel + feature-section markup becomes hard to keep accessible |
-| `catalog_rail` | Recipe only | Multiple pages need the same heading, rail, fallback-grid, and empty-state structure |
-| `title_card` | Maybe | `video_card` cannot represent premium titles without misleading YouTube-specific fields |
+| `media_hero_shelf` | Built 2026-05-03 | Default carousel + title-card shelf for featured media |
+| `catalog_rail` | Built 2026-05-03 | Heading + title-card rail is common enough to ship as a default |
+| `title_card` | Built 2026-05-03 | Streaming/premium title metadata differs from creator-video metadata |
 | `title_detail` | Recipe only | Detail pages repeat the same artwork, metadata, CTA, and episode structure |
-| `live_event_card` | Maybe | Live/upcoming/replay/restricted states repeat across sports and non-sports pages |
-| `watch_companion_layout` | Maybe | Player + side panel + responsive stacking proves too fragile as local page markup |
+| `live_event_card` | Built 2026-05-03 | Live/upcoming/replay/restricted states need readable default structure |
+| `watch_companion_layout` | Built 2026-05-03 | Player + side panel + responsive stacking is easy to get wrong locally |
 | `profile_catalog_notice` | Recipe only | Profile/maturity/download restrictions need consistent text structure across apps |
 
 **Done when:**

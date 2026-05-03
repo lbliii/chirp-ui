@@ -285,7 +285,7 @@ Candidate macros, gated by evidence:
 | Candidate | Default answer | Promotion trigger |
 |-----------|----------------|-------------------|
 | `logo_cloud` | Built 2026-05-02 | Accessible proof bands are common and stable enough to ship proactively |
-| `lifecycle_showcase` | Recipe only | Repeated `tabs_panels` + `feature_section` markup becomes error-prone |
+| `lifecycle_showcase` | Built 2026-05-03 | Default lifecycle tabs + feature panel pattern helps battle-test composition primitives |
 | `story_card` | Built 2026-05-02 | Customer outcome cards are common and stable enough to ship proactively |
 | `site_nav_group` | Maybe | Product nav grouping cannot be expressed cleanly with current `site_header` slots |
 | `cta_band` | Built 2026-05-02 | CTA sections are common and stable enough to ship proactively |
