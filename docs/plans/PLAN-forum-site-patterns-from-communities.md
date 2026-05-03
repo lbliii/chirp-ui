@@ -148,12 +148,12 @@ Add forum-site recipes to docs without changing component APIs.
 - Recipes call out where apps own ranking, moderation, permissions, trust, and
   sanitization logic.
 
-### Phase 2: Build a Showcase Fixture
+### Phase 2: Build a Showcase Fixture (completed 2026-05-03)
 
 Create one internal showcase page that exercises the recipes against realistic
 placeholder forum data.
 
-Candidate locations:
+Implemented locations:
 
 - `tests/browser/templates/forum_site_patterns.html`
 - `tests/browser/test_forum_site_patterns.py`
@@ -167,6 +167,9 @@ Candidate locations:
 - The fixture uses only existing public macros and component classes.
 - The thread layout proves long titles, nested replies, and action rows at phone
   and desktop widths.
+- The fixture includes Elbysodic-shaped PBP pressure points: local route tabs,
+  dense scene cards, scene/read/management action separation, Q&A accepted
+  state, moderation queue, and compact writer-desk activity.
 
 ### Phase 3: Promote Repeated Recipes
 

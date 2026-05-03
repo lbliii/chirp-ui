@@ -184,6 +184,10 @@ Checks:
 - Locked, archived, removed, or moderator-only states appear before reply forms.
 - Reply actions are reachable by keyboard and are not icon-only without labels.
 - Long threads need anchors, sort controls, or "new since last visit" markers.
+- For play-by-post scene pages, keep orientation, local skim navigation,
+  reading actions, management controls, and end-of-thread attention navigation
+  in separate regions. This keeps the layout information-dense without making
+  staff tools compete with the prose.
 
 ---
 

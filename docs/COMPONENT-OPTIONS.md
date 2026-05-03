@@ -5318,6 +5318,31 @@ Copy button
 - **Role:** `primitive`
 - **Authoring:** `available`
 
+### `cta-band`
+
+CTA Band
+
+- **Template:** `chirpui/cta_band.html`
+- **Macro:** `cta_band`
+- **Category:** `marketing`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `(default)`, `actions`
+- **Composes:** `band`, `btn`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `body` | no | (has default) |
+| `primary_label` | no | (has default) |
+| `primary_href` | no | (has default) |
+| `secondary_label` | no | (has default) |
+| `secondary_href` | no | (has default) |
+| `variant` | no | (has default) |
+| `width` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `description_list`
 
 Description list component
@@ -6379,6 +6404,26 @@ Logo component
 | `variant` | no | (has default) |
 | `size` | no | (has default) |
 | `align` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `logo-cloud`
+
+Logo Cloud
+
+- **Template:** `chirpui/logo_cloud.html`
+- **Macro:** `logo_cloud`
+- **Category:** `marketing`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+- **Modifiers:** `monochrome`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | no | (has default) |
+| `label` | no | (has default) |
+| `monochrome` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `marquee`
@@ -8044,6 +8089,31 @@ Stepper component
 |-------|----------|---------|
 | `steps` | yes | — |
 | `current` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `story-card`
+
+Story Card
+
+- **Template:** `chirpui/story_card.html`
+- **Macro:** `story_card`
+- **Category:** `marketing`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `(default)`, `footer`, `logo`, `metric`
+- **Modifiers:** `link`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `customer` | yes | — |
+| `outcome` | yes | — |
+| `summary` | no | (has default) |
+| `href` | no | (has default) |
+| `metric` | no | (has default) |
+| `logo_src` | no | (has default) |
+| `logo_alt` | no | (has default) |
+| `cta_label` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `streaming`
