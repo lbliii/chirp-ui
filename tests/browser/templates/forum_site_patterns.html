@@ -1,0 +1,250 @@
+{% extends "chirpui/app_layout.html" %}
+{% block title %}{{ page_title }}{% end %}
+{% block content %}
+{% from "chirpui/action_bar.html" import action_bar, action_bar_item %}
+{% from "chirpui/avatar_stack.html" import linked_avatar_stack %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/callout.html" import callout %}
+{% from "chirpui/card.html" import card, resource_card %}
+{% from "chirpui/comment.html" import comment, comment_thread %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/latest_line.html" import latest_line %}
+{% from "chirpui/layout.html" import container, frame, grid, page_header, section_header, stack, cluster %}
+{% from "chirpui/oob.html" import counter_badge %}
+{% from "chirpui/post_card.html" import post_card %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/share_menu.html" import share_menu %}
+{% from "chirpui/surface.html" import surface %}
+
+{% call container(max_width="76rem") %}
+  {% call stack(gap="xl") %}
+    {% call page_header(
+      "Harborlight Writers",
+      subtitle="A dense forum and play-by-post fixture built from existing ChirpUI primitives."
+    ) %}
+      {% slot actions %}
+        {% call cluster(gap="sm") %}
+          {{ btn("Reply as Rogue", href="#reply", variant="primary") }}
+          {{ btn("New scene", href="/forum-site-patterns/threads/new", variant="ghost") }}
+        {% end %}
+      {% end %}
+    {% end %}
+
+    {{ route_tabs(forum_tabs, current_path, target="#page-root") }}
+
+    {% call callout(variant="info", title="Fixture contract") %}
+      This page keeps global navigation, local route tabs, object actions, management controls,
+      and attention continuation in separate places so the thread remains readable.
+    {% end %}
+
+    {% call grid(cols=4, gap="md") %}
+      {% call card(title="Members", icon="home") %}
+        {{ inline_counter("M", 284, "members") }}
+      {% end %}
+      {% call card(title="Open scenes", icon="sources") %}
+        {{ inline_counter("S", 17, "active") }}
+      {% end %}
+      {% call card(title="Needs reply", icon="alert") %}
+        {{ inline_counter("Q", 6, "waiting") }}
+      {% end %}
+      {% call card(title="Reports", icon="status") %}
+        {{ counter_badge("forum-pattern-report-count", count=3, variant="warning") }}
+      {% end %}
+    {% end %}
+
+    {% call frame(variant="sidebar-end", gap="lg") %}
+      {% call stack(gap="lg") %}
+        {% call resource_index(
+          "Community threads",
+          "/forum-site-patterns/search",
+          query="generator",
+          subtitle="Search, filter, and scan without turning every signal into a top-level control.",
+          results_title="Latest scenes",
+          results_subtitle="Long titles, latest jumps, cast, counters, and state labels share one card.",
+          results_layout="stack"
+        ) %}
+          {% for topic in topics %}
+            {% call resource_card(topic.href, topic.title, description=topic.description, top_meta=topic.top_meta, link_mode="main") %}
+              {% slot badges %}
+                {{ badge(topic.category, variant="muted") }}
+                {{ badge(topic.state, variant=topic.state_variant) }}
+              {% end %}
+              {% slot footer %}
+                {% call stack(gap="sm") %}
+                  {% call cluster(gap="sm") %}
+                    {{ inline_counter("R", topic.replies, "replies") }}
+                    {{ inline_counter("V", topic.views, "views") }}
+                    {{ linked_avatar_stack(cast, max_visible=3, label="Scene cast") }}
+                  {% end %}
+                  {{ latest_line("Latest", topic.latest_href, topic.latest_title, actor=topic.actor, meta=topic.meta) }}
+                {% end %}
+              {% end %}
+            {% end %}
+          {% end %}
+        {% end %}
+
+        {% call surface(variant="muted") %}
+          {% call stack(gap="lg") %}
+            {{ section_header("Thread page", subtitle="A scene surface followed by prose, local skim navigation, and end-of-thread attention navigation.", icon="sources") }}
+
+            {% call card(title="Med Bay after the blackout", subtitle="Xavier Institute / Med Bay", icon="sources") %}
+              {% slot header_actions %}
+                {% call cluster(gap="sm") %}
+                  {{ badge("open to join", variant="success") }}
+                  {{ badge("posting order", variant="info") }}
+                  {{ badge("watched", variant="muted") }}
+                {% end %}
+              {% end %}
+              {% call stack(gap="md") %}
+                {% call rendered_content(compact=true) %}
+                  <p>The east generator failed during the storm. Rogue has the first clue, Gambit has the security feed, and Storm is asking who was near the service tunnel.</p>
+                {% end %}
+                {% call cluster(gap="sm") %}
+                  {{ inline_counter("R", 18, "replies") }}
+                  {{ inline_counter("C", 5, "cast") }}
+                  {{ linked_avatar_stack(cast, max_visible=4, label="Scene cast") }}
+                {% end %}
+              {% end %}
+              {% slot footer %}
+                {% call cluster(gap="sm") %}
+                  {{ btn("Reply as Rogue", href="#reply", variant="primary") }}
+                  {{ btn("Read latest", href="#post-18", variant="ghost") }}
+                  {{ share_menu(label="Share", share_url="/forum-site-patterns/threads/med-bay-after-the-blackout") }}
+                {% end %}
+              {% end %}
+            {% end %}
+
+            {% call cluster(gap="sm") %}
+              {{ btn("Previous scene", href="/forum-site-patterns/threads/previous", variant="ghost") }}
+              {{ btn("Next scene", href="/forum-site-patterns/threads/next", variant="ghost") }}
+            {% end %}
+
+            {% call post_card(name="Rogue", handle="@rogue", time="12 min ago", href="/forum-site-patterns/characters/rogue") %}
+              {% slot avatar %}R{% end %}
+              {% call rendered_content() %}
+                <p>I touched the casing and got a flash of somebody cutting power from inside the service hall. Whoever did it knew exactly which breaker would hide the alarm.</p>
+              {% end %}
+              {% slot actions %}
+                {% call action_bar() %}
+                  {{ action_bar_item("reply", "Reply to Rogue", count=2) }}
+                  {{ action_bar_item("watch", "Watch this beat", active=true) }}
+                  {{ action_bar_item("report", "Report post") }}
+                {% end %}
+              {% end %}
+            {% end %}
+
+            {% call comment_thread() %}
+              <li>
+                {% call comment(author="Gambit", time="8 min ago", avatar_initials="G") %}
+                  {% call rendered_content(compact=true) %}
+                    <p>Security feed jumps from 02:13 to 02:19. That gap is too clean.</p>
+                  {% end %}
+                  {% slot actions %}
+                    {{ btn("Reply", href="#reply", size="sm", variant="ghost") }}
+                  {% end %}
+                {% end %}
+              </li>
+              <li>
+                {% call comment(author="Storm", time="5 min ago", avatar_initials="S") %}
+                  {% call rendered_content(compact=true) %}
+                    <p>I can hold the weather back for one more hour. After that, the tunnel floods.</p>
+                  {% end %}
+                  {% slot actions %}
+                    {{ btn("Reply", href="#reply", size="sm", variant="ghost") }}
+                  {% end %}
+                {% end %}
+              </li>
+            {% end %}
+
+            {% call card(title="Management", subtitle="Secondary controls stay available without becoming the reading surface.", collapsible=true) %}
+              {% call cluster(gap="sm") %}
+                {{ btn("Pin thread", href="/forum-site-patterns/moderation/pin", variant="ghost") }}
+                {{ btn("Lock thread", href="/forum-site-patterns/moderation/lock", variant="ghost") }}
+                {{ btn("Move thread", href="/forum-site-patterns/moderation/move", variant="ghost") }}
+              {% end %}
+            {% end %}
+
+            {% call cluster(gap="sm") %}
+              {{ btn("Previous unreplied", href="/forum-site-patterns/threads/previous-unreplied", variant="ghost") }}
+              {{ btn("Next unread", href="/forum-site-patterns/threads/next-unread", variant="primary") }}
+            {% end %}
+          {% end %}
+        {% end %}
+
+        {% call surface(variant="muted") %}
+          {% call stack(gap="md") %}
+            {{ section_header("Q&A answer set", subtitle="Accepted and closed states are labels, not color-only treatment.", icon="status") }}
+
+            {% call post_card(name="Jean", handle="@jean", time="2h ago", href="/forum-site-patterns/members/jean") %}
+              {% call rendered_content() %}
+                <p>How should writers mark psychic contact in posts when the scene includes characters who cannot hear it?</p>
+              {% end %}
+              {% slot actions %}
+                {% call action_bar() %}
+                  {{ action_bar_item("up", "Upvote question", count=12) }}
+                  {{ action_bar_item("follow", "Follow question") }}
+                {% end %}
+              {% end %}
+            {% end %}
+            {% call card(title="Accepted answer", subtitle="Professor X / moderator guidance", icon="status") %}
+              {% slot header_actions %}{{ badge("accepted", variant="success") }}{% end %}
+              {% call rendered_content(compact=true) %}
+                <p>Use a short italic setup sentence before the quoted thought, then return to ordinary prose. If the contact affects another writer's character, ask first or use the consent tag.</p>
+              {% end %}
+            {% end %}
+            {% call callout(variant="warning", title="Closed duplicate") %}
+              Similar etiquette questions should now use the Telepathy and Consent guidebook thread.
+            {% end %}
+          {% end %}
+        {% end %}
+      {% end %}
+
+      {% call stack(gap="lg") %}
+        {% call surface(variant="muted") %}
+          {% call stack(gap="md") %}
+            {{ section_header("Writer desk", subtitle="Condensed operating state for the current face.") }}
+            {% call cluster(gap="sm") %}
+              {{ badge("Rogue active", variant="success") }}
+              {{ badge("2 mentions", variant="warning") }}
+              {{ badge("1 application reply", variant="info") }}
+            {% end %}
+            {{ latest_line("Next owed", "/forum-site-patterns/threads/med-bay-after-the-blackout#reply", "Med Bay after the blackout", actor="Rogue", meta="needs reply") }}
+            {{ latest_line("Application", "/forum-site-patterns/applications/telepath", "Telepath concept", actor="Director", meta="revision requested") }}
+          {% end %}
+        {% end %}
+
+        {% call surface(variant="muted") %}
+          {% call stack(gap="md") %}
+            {{ section_header("Moderation queue", subtitle="Dense review items use the same card vocabulary as public lists.", icon="alert") }}
+
+            {% for item in moderation_items %}
+              {% call resource_card(item.href, item.title, description=item.description, top_meta=item.meta, link_mode="main") %}
+                {% slot badges %}{{ badge(item.state, variant=item.variant) }}{% end %}
+                {% slot footer %}
+                  {% call cluster(gap="sm") %}
+                    {{ btn("Review", href=item.href, size="sm", variant="primary") }}
+                    {{ btn("Defer", href=item.href ~ "/defer", size="sm", variant="ghost") }}
+                  {% end %}
+                {% end %}
+              {% end %}
+            {% end %}
+          {% end %}
+        {% end %}
+
+        {% call surface(variant="muted") %}
+          {% call stack(gap="sm") %}
+            {{ section_header("Activity and inbox", subtitle="Notifications stay compact until the writer chooses the full desk.", icon="status") }}
+
+            {{ latest_line("Mention", "/forum-site-patterns/notifications/1", "Storm tagged Rogue in Med Bay", actor="Storm", meta="5 min ago") }}
+            {{ latest_line("Interest", "/forum-site-patterns/wanted/12", "New prospective concept for the Sentinel analyst", actor="Bishop", meta="1h ago") }}
+            {{ latest_line("Room", "/forum-site-patterns/plotting/7", "Planning room opened", actor="Gambit", meta="Yesterday") }}
+          {% end %}
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}

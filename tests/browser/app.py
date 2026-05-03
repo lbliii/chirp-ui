@@ -151,6 +151,100 @@ PRODUCT_PATTERN_STORIES = [
     },
 ]
 
+FORUM_PATTERN_TABS = [
+    {"label": "Home", "href": "/forum-site-patterns", "match": "exact", "icon": "home"},
+    {
+        "label": "Threads",
+        "href": "/forum-site-patterns/threads",
+        "match": "prefix",
+        "badge": 12,
+        "icon": "sources",
+    },
+    {"label": "Q&A", "href": "/forum-site-patterns/questions", "match": "prefix", "icon": "status"},
+    {
+        "label": "Moderation",
+        "href": "/forum-site-patterns/moderation",
+        "match": "prefix",
+        "badge": 3,
+        "icon": "alert",
+    },
+]
+
+FORUM_PATTERN_CAST = [
+    {"label": "Rogue", "initials": "R", "href": "/forum-site-patterns/characters/rogue"},
+    {"label": "Gambit", "initials": "G", "href": "/forum-site-patterns/characters/gambit"},
+    {"label": "Storm", "initials": "S", "href": "/forum-site-patterns/characters/storm"},
+    {"label": "Forge", "initials": "F", "href": "/forum-site-patterns/characters/forge"},
+    {"label": "Jubilee", "initials": "J", "href": "/forum-site-patterns/characters/jubilee"},
+]
+
+FORUM_PATTERN_TOPICS = [
+    {
+        "href": "/forum-site-patterns/threads/med-bay-after-the-blackout",
+        "title": "Med Bay after the blackout: who saw the east generator fail?",
+        "description": "Open investigation scene with a rotating cast, two unread replies, and one director note.",
+        "category": "Scene",
+        "state": "needs reply",
+        "state_variant": "warning",
+        "top_meta": "Xavier Institute / Med Bay",
+        "replies": 18,
+        "views": 142,
+        "latest_href": "/forum-site-patterns/threads/med-bay-after-the-blackout#post-18",
+        "latest_title": "New generator clue",
+        "actor": "Rogue",
+        "meta": "12 min ago",
+    },
+    {
+        "href": "/forum-site-patterns/threads/quiet-hours-in-the-boathouse-with-a-long-scene-title",
+        "title": "Quiet hours in the boathouse with a long scene title that should wrap without pushing controls sideways",
+        "description": "Low-pressure character scene; watch state and cast do the work instead of repeated labels.",
+        "category": "Slice of life",
+        "state": "watched",
+        "state_variant": "info",
+        "top_meta": "Lake / Boathouse",
+        "replies": 7,
+        "views": 64,
+        "latest_href": "/forum-site-patterns/threads/quiet-hours#post-7",
+        "latest_title": "Tea on the dock",
+        "actor": "Gambit",
+        "meta": "Yesterday",
+    },
+    {
+        "href": "/forum-site-patterns/threads/founders-office-closed-canon-review",
+        "title": "Founder office canon review",
+        "description": "Locked staff thread that still exposes state, latest activity, and a clear route to context.",
+        "category": "Canon",
+        "state": "locked",
+        "state_variant": "muted",
+        "top_meta": "Guidebook / Director notes",
+        "replies": 4,
+        "views": 35,
+        "latest_href": "/forum-site-patterns/threads/founders-office#post-4",
+        "latest_title": "Revision summary",
+        "actor": "Director",
+        "meta": "2 days ago",
+    },
+]
+
+FORUM_PATTERN_MODERATION = [
+    {
+        "href": "/forum-site-patterns/moderation/reports/42",
+        "title": "Report on Med Bay after the blackout",
+        "description": "Potential continuity conflict with current event timing.",
+        "state": "needs review",
+        "variant": "warning",
+        "meta": "Rule: continuity / Scene",
+    },
+    {
+        "href": "/forum-site-patterns/moderation/reports/43",
+        "title": "Application needs director response",
+        "description": "Prospective writer answered the requested revision.",
+        "state": "waiting",
+        "variant": "info",
+        "meta": "Applications / 1 hour ago",
+    },
+]
+
 GAUNTLET_ROOMS = {
     "all": "All rooms",
     "primitives": "Primitive room",
@@ -445,6 +539,20 @@ def create_app() -> App:
             customer_logos=PRODUCT_PATTERN_LOGOS,
             products=PRODUCT_PATTERN_PRODUCTS,
             stories=PRODUCT_PATTERN_STORIES,
+        )
+
+    # ── Forum site patterns (community/PBP design review, Phase 2) ───
+
+    @app.route("/forum-site-patterns")
+    async def forum_site_patterns(request: Request):
+        return Template(
+            "forum_site_patterns.html",
+            page_title="Forum Site Patterns",
+            current_path="/forum-site-patterns",
+            forum_tabs=FORUM_PATTERN_TABS,
+            cast=FORUM_PATTERN_CAST,
+            topics=FORUM_PATTERN_TOPICS,
+            moderation_items=FORUM_PATTERN_MODERATION,
         )
 
     return app
