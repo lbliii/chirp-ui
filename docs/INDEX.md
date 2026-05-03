@@ -17,6 +17,7 @@ Navigation guide for all chirp-ui documentation.
 - [TRANSITIONS.md](TRANSITIONS.md) — Motion tokens, duration/easing values, reduced-motion
 - [UI-LAYERS.md](UI-LAYERS.md) — App shell vs page chrome vs surface chrome, shell regions
 - [CSS-OVERRIDE-SURFACE.md](CSS-OVERRIDE-SURFACE.md) — Cascade order, `@layer app.overrides` contract, token vs layer vs unlayered paths
+- [NAVIGATION.md](NAVIGATION.md) — Navigation layer model, component decision matrix, and dense chrome guidance
 
 ## Patterns
 

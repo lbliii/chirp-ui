@@ -11,7 +11,7 @@ category: app-shell
 
 # App Shell
 
-**Vocabulary:** [UI layers & terms](/docs/app-shell/ui-layers/) — app shell, page chrome, surface chrome, shell regions, and the built-in HTMX shell-coherence behavior.
+**Vocabulary:** [UI layers & terms](/docs/app-shell/ui-layers/) — app shell, page chrome, surface chrome, shell regions, and the built-in HTMX shell-coherence behavior. For dense topbars, object chrome, route tabs, command launchers, and overflow choices, use the repository guide `docs/NAVIGATION.md` as the canonical decision model.
 
 **Quick start:** Extend `chirpui/app_shell_layout.html` and fill the blocks. No manual HTML boilerplate.
 
@@ -46,6 +46,24 @@ For chat, maps, or IDE-style surfaces that should **fill the viewport** below th
 - **command_palette** — Cmd+K search
 - **toast_container** — Toast notifications
 - **shell_actions** — Route-scoped topbar actions that update automatically on navigation
+
+## Navigation Layers
+
+Do not model every compact control as a nav item. ChirpUI separates:
+
+- **global shell**: app identity, product switch, search/command trigger, utility actions
+- **product navigation**: `sidebar`, `primary_nav`, or `nav_tree`
+- **object context**: `breadcrumbs`, title, metadata, and object actions
+- **local route views**: `render_route_tabs` with `aria-current="page"`
+- **commands**: `command_bar`, `action_strip`, `dropdown_menu`, and `command_palette`
+
+Route-backed tabs are navigation links, not ARIA tab widgets. True tabs are for in-place panels with tablist/tab/tabpanel semantics. Ordinary expandable navigation should use disclosure/list semantics rather than ARIA menu roles.
+
+For deep object paths, prefer breadcrumb overflow instead of letting the header widen:
+
+```html
+{{ breadcrumbs(items, overflow="collapse", max_items=4) }}
+```
 
 ## Golden Path
 

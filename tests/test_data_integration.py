@@ -29,6 +29,15 @@ class TestDataPage:
     """Verify /data and /data/table routes return 200 and expected HTML."""
 
     @pytest.mark.asyncio
+    async def test_navigation_page_returns_dense_example(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/navigation")
+            assert response.status == 200
+            assert "Dense Object Navigation" in response.text
+            assert "chirpui-breadcrumbs__overflow" in response.text
+            assert "chirpui-route-tab__badge" in response.text
+
+    @pytest.mark.asyncio
     async def test_data_page_returns_200(self, showcase_app) -> None:
         async with TestClient(showcase_app) as client:
             response = await client.get("/data")

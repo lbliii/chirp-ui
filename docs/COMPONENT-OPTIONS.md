@@ -4735,6 +4735,8 @@ Breadcrumbs component
 |-------|----------|---------|
 | `items` | yes | — |
 | `cls` | no | (has default) |
+| `overflow` | no | (has default) |
+| `max_items` | no | (has default) |
 
 ### `btn`
 

@@ -24,6 +24,9 @@ layout onto small screens.
   sidebar rather than pushing the main surface down the page.
 - `route_tabs` and `primary_nav` become horizontally scrollable strips below
   `40rem` instead of wrapping into tall blocks.
+- Deep `breadcrumbs` trails can opt into `overflow="collapse"` so the first
+  crumb, current crumb, and configured tail stay visible while middle crumbs
+  move into a disclosure-style overflow list.
 - Buttons, single-line form controls, dropdown triggers, pagination links,
   theme toggles, and ASCII toggles share `--chirpui-control-block-size` so
   mixed controls line up in topbars/toolbars. At phone widths or on coarse
