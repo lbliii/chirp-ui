@@ -45,3 +45,78 @@
     color: var(--chirpui-text-muted);
 }
 
+.chirpui-breadcrumbs__overflow {
+    position: relative;
+}
+
+.chirpui-breadcrumbs__overflow-menu {
+    position: relative;
+}
+
+.chirpui-breadcrumbs__overflow-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--chirpui-control-block-size-sm);
+    min-block-size: var(--chirpui-control-block-size-sm);
+    padding: 0 var(--chirpui-spacing-sm);
+    border-radius: var(--chirpui-radius-sm);
+    color: var(--chirpui-text-muted);
+    cursor: pointer;
+    list-style: none;
+}
+
+.chirpui-breadcrumbs__overflow-trigger::-webkit-details-marker {
+    display: none;
+}
+
+.chirpui-breadcrumbs__overflow-trigger:hover {
+    background: var(--chirpui-surface-alt);
+    color: var(--chirpui-text);
+}
+
+.chirpui-breadcrumbs__overflow-trigger:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-breadcrumbs__overflow-list {
+    position: absolute;
+    z-index: var(--chirpui-z-dropdown);
+    inset-block-start: calc(100% + var(--chirpui-spacing-xs));
+    inset-inline-start: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-2xs);
+    min-inline-size: 12rem;
+    max-inline-size: min(20rem, calc(100vw - 2 * var(--chirpui-spacing)));
+    max-block-size: min(24rem, calc(100dvh - 2 * var(--chirpui-spacing)));
+    overflow: auto;
+    margin: 0;
+    padding: var(--chirpui-spacing-xs);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-md);
+    background: var(--chirpui-surface);
+    box-shadow: var(--chirpui-shadow-lg);
+    list-style: none;
+}
+
+.chirpui-breadcrumbs__overflow-item {
+    display: flex;
+    min-inline-size: 0;
+}
+
+.chirpui-breadcrumbs__overflow-item .chirpui-breadcrumbs__link,
+.chirpui-breadcrumbs__overflow-item .chirpui-breadcrumbs__current {
+    display: block;
+    inline-size: 100%;
+    overflow: hidden;
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    border-radius: var(--chirpui-radius-sm);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chirpui-breadcrumbs__overflow-item .chirpui-breadcrumbs__link:hover {
+    background: var(--chirpui-surface-alt);
+}

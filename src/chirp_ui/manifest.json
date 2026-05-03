@@ -4158,15 +4158,25 @@
         "chirpui-breadcrumbs__current",
         "chirpui-breadcrumbs__item",
         "chirpui-breadcrumbs__link",
-        "chirpui-breadcrumbs__list"
+        "chirpui-breadcrumbs__list",
+        "chirpui-breadcrumbs__overflow",
+        "chirpui-breadcrumbs__overflow-item",
+        "chirpui-breadcrumbs__overflow-list",
+        "chirpui-breadcrumbs__overflow-menu",
+        "chirpui-breadcrumbs__overflow-trigger"
       ],
       "extra_emits": [
         "chirpui-breadcrumbs__current",
         "chirpui-breadcrumbs__item",
         "chirpui-breadcrumbs__link",
-        "chirpui-breadcrumbs__list"
+        "chirpui-breadcrumbs__list",
+        "chirpui-breadcrumbs__overflow",
+        "chirpui-breadcrumbs__overflow-item",
+        "chirpui-breadcrumbs__overflow-list",
+        "chirpui-breadcrumbs__overflow-menu",
+        "chirpui-breadcrumbs__overflow-trigger"
       ],
-      "lineno": 14,
+      "lineno": 22,
       "macro": "breadcrumbs",
       "maturity": "stable",
       "modifiers": [],
@@ -4180,6 +4190,16 @@
           "has_default": true,
           "is_required": false,
           "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "overflow"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "max_items"
         }
       ],
       "provides": [],
@@ -21031,7 +21051,7 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 121,
-      "explicit_extra_classes": 509,
+      "explicit_extra_classes": 514,
       "explicit_trim_blocks": 72,
       "explicit_trim_classes": 102
     },

@@ -4,6 +4,15 @@ Status: active plan
 Date: 2026-05-03
 Depends on: [PLAN-navigation-density-study.md](PLAN-navigation-density-study.md)
 
+Progress:
+
+- Phase 1 accepted: `docs/NAVIGATION.md` is the canonical repository guidance.
+- Phase 2 accepted: component showcase includes a dense object-navigation example
+  composed from existing primitives.
+- Phase 3 accepted: `breadcrumbs(..., overflow="collapse", max_items=4)` ships
+  opt-in middle-crumb overflow for deep path trails.
+- Phases 4-6 remain not-now until a consuming app proves the need.
+
 ## Goal
 
 Apply the navigation density study to ChirpUI in small, contract-first slices:
