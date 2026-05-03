@@ -1,0 +1,70 @@
+{#- chirp-ui: Forum and social pattern assets
+    Default community/forum patterns for topic lists, answer states, and
+    moderation queues. App-owned ranking, permissions, trust, and moderation
+    policy stays outside ChirpUI.
+-#}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/card.html" import card, resource_card %}
+{% from "chirpui/layout.html" import cluster %}
+
+{% def topic_card(href, title, description=none, category=none, state=none, state_variant="muted",
+                  replies=none, views=none, latest_label=none, latest_href=none, actor=none,
+                  meta=none, cls="") %}
+{% call resource_card(href, title, description=description, top_meta=category, link_mode="main", cls="chirpui-topic-card" ~ (" " ~ cls if cls else "")) %}
+    {% slot badges %}
+        {% if state %}{{ badge(state, variant=state_variant) }}{% endif %}
+        {% yield badges %}
+    {% end %}
+    {% slot footer %}
+        <div class="chirpui-topic-card__footer">
+            <div class="chirpui-topic-card__counts">
+                {% if replies is not none %}<span>{{ replies }} replies</span>{% endif %}
+                {% if views is not none %}<span>{{ views }} views</span>{% endif %}
+            </div>
+            {% if latest_label %}
+            <a class="chirpui-topic-card__latest" href="{{ latest_href or href }}"{{ route_link_attrs(latest_href or href) | html_attrs }}>
+                {{ latest_label }}{% if actor %} by {{ actor }}{% endif %}{% if meta %} · {{ meta }}{% endif %}
+            </a>
+            {% endif %}
+        </div>
+    {% end %}
+{% end %}
+{% end %}
+
+{% def answer_card(title="Answer", accepted=false, closed=false, author=none, href=none, cls="") %}
+{% set variant = "success" if accepted else ("muted" if closed else "default") %}
+{% call card(title=title, subtitle=author, variant=variant, icon="status", cls="chirpui-answer-card" ~ (" " ~ cls if cls else "")) %}
+    {% slot header_actions %}
+        {% if accepted %}{{ badge("accepted", variant="success") }}{% endif %}
+        {% if closed %}{{ badge("closed", variant="muted") }}{% endif %}
+        {% yield header_actions %}
+    {% end %}
+    <div class="chirpui-answer-card__body">
+        {% slot %}
+    </div>
+    {% slot footer %}
+        {% call cluster(gap="sm") %}
+            {% if href %}{{ btn("Open answer", href=href, size="sm", variant="ghost") }}{% endif %}
+            {% yield footer %}
+        {% end %}
+    {% end %}
+{% end %}
+{% end %}
+
+{% def moderation_queue_item(href, title, reason, state="needs review", state_variant="warning",
+                             target=none, actor=none, cls="") %}
+{% call resource_card(href, title, description=reason, top_meta=target, link_mode="main", cls="chirpui-moderation-queue-item" ~ (" " ~ cls if cls else "")) %}
+    {% slot badges %}{{ badge(state, variant=state_variant) }}{% end %}
+    {% slot footer %}
+        <div class="chirpui-moderation-queue-item__footer">
+            {% if actor %}<span class="chirpui-moderation-queue-item__actor">{{ actor }}</span>{% endif %}
+            {% call cluster(gap="sm") %}
+                {{ btn("Review", href=href, size="sm", variant="primary") }}
+                {{ btn("Defer", href=href ~ "/defer", size="sm", variant="ghost") }}
+                {% yield actions %}
+            {% end %}
+        </div>
+    {% end %}
+{% end %}
+{% end %}

@@ -4178,6 +4178,140 @@ class TestCtaBand:
         assert "Custom action" in html
 
 
+class TestOfficialPatternAssets:
+    def test_lifecycle_showcase_renders_tabs_and_feature_panel(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/marketing_patterns.html" import lifecycle_showcase %}'
+            "{{ lifecycle_showcase(items) }}"
+        ).render(
+            items=[
+                {
+                    "id": "build",
+                    "label": "Build",
+                    "title": "Build with control",
+                    "body": "Plan the workflow.",
+                    "media": "Workflow artifact",
+                },
+                {
+                    "id": "ship",
+                    "label": "Ship",
+                    "title": "Ship with checks",
+                    "body": "Watch the rollout.",
+                    "media": "Release artifact",
+                },
+            ]
+        )
+
+        assert "chirpui-lifecycle-showcase" in html
+        assert "Build with control" in html
+        assert "Workflow artifact" in html
+        assert "chirpui-tabs" in html
+
+    def test_media_pattern_assets_render(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/media_patterns.html" import catalog_rail, live_event_card, watch_companion_layout %}'
+            '{{ catalog_rail("Trending", items, artwork="/thumb.svg") }}'
+            '{{ live_event_card("Final", "Live", "Tonight 8 PM", href="/live", state_variant="error") }}'
+            "{% call watch_companion_layout() %}"
+            "{% slot player %}<div>Player</div>{% end %}"
+            "{% slot companion %}<div>Transcript</div>{% end %}"
+            "{% end %}"
+        ).render(
+            items=[
+                {
+                    "href": "/watch/1",
+                    "title": "North Pier",
+                    "duration": "42:00",
+                    "meta": "Series",
+                    "state": "New",
+                }
+            ]
+        )
+
+        assert "chirpui-catalog-rail" in html
+        assert "chirpui-title-card" in html
+        assert "North Pier" in html
+        assert "chirpui-live-event-card" in html
+        assert "Tonight 8 PM" in html
+        assert "chirpui-watch-companion-layout__player" in html
+        assert "Transcript" in html
+
+    def test_forum_pattern_assets_render(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forum_patterns.html" import answer_card, moderation_queue_item, topic_card %}'
+            '{{ topic_card("/topics/1", "Long topic", description="Summary", category="Q&A", '
+            'state="open", replies=3, views=12, latest_label="Latest reply") }}'
+            '{% call answer_card(title="Accepted answer", accepted=true) %}Use consent tags.{% end %}'
+            '{{ moderation_queue_item("/mod/1", "Reported post", "Needs review", target="Rule: safety") }}'
+        ).render()
+
+        assert "chirpui-topic-card" in html
+        assert "Long topic" in html
+        assert "Latest reply" in html
+        assert "chirpui-answer-card" in html
+        assert "accepted" in html
+        assert "chirpui-moderation-queue-item" in html
+        assert "Reported post" in html
+
+    def test_detail_header_renders_named_slots(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/detail_header.html" import detail_header %}'
+            '{% from "chirpui/badge.html" import badge %}'
+            '{% call detail_header("Community name", summary="A focused space.", eyebrow="Forum") %}'
+            '{% slot media %}<img src="/avatar.svg" alt="">{% end %}'
+            '{% slot badges %}{{ badge("public", variant="success") }}{% end %}'
+            "{% slot meta %}<span>12k members</span>{% end %}"
+            '{% slot actions %}<a href="/join">Join</a>{% end %}'
+            "{% slot aside %}<p>Guidelines</p>{% end %}"
+            "{% end %}"
+        ).render()
+
+        assert "chirpui-detail-header" in html
+        assert "chirpui-detail-header__media" in html
+        assert "Community name" in html
+        assert "A focused space." in html
+        assert "12k members" in html
+        assert "Guidelines" in html
+
+    def test_facet_chip_renders_selected_count_and_remove(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/facet_chip.html" import facet_chip %}'
+            '{{ facet_chip("Accessibility", href="/tags/a11y", count=24, selected=true, '
+            'remove_href="/tags", remove_label="Clear accessibility") }}'
+        ).render()
+
+        assert "chirpui-facet-chip" in html
+        assert "chirpui-facet-chip--selected" in html
+        assert "chirpui-facet-chip--removable" in html
+        assert 'aria-current="page"' in html
+        assert "chirpui-facet-chip__count" in html
+        assert "24" in html
+        assert "chirpui-facet-chip__remove" in html
+        assert 'aria-label="Clear accessibility"' in html
+
+    def test_thread_reader_layout_renders_reader_regions(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/thread_reader_layout.html" import thread_reader_layout %}'
+            '{% from "chirpui/detail_header.html" import detail_header %}'
+            '{% call thread_reader_layout(label="Design thread") %}'
+            '{% slot header %}{{ detail_header("Design systems", summary="Thread summary") }}{% end %}'
+            '{% slot local_nav %}<a class="chirpui-thread-reader-layout__nav-link" href="#answer">Answer</a>{% end %}'
+            "{% slot posts %}<article>First post</article>{% end %}"
+            "{% slot attention_nav %}<aside>Needs review</aside>{% end %}"
+            "{% slot composer %}<form>Reply</form>{% end %}"
+            "{% end %}"
+        ).render()
+
+        assert "chirpui-thread-reader-layout" in html
+        assert 'aria-label="Design thread"' in html
+        assert "chirpui-thread-reader-layout__header" in html
+        assert "chirpui-detail-header" in html
+        assert "chirpui-thread-reader-layout__nav-link" in html
+        assert "First post" in html
+        assert "Needs review" in html
+        assert "Reply" in html
+
+
 class TestSidebar:
     def test_sidebar_with_links(self, env: Environment) -> None:
         html = env.from_string(

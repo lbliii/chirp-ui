@@ -8,9 +8,12 @@
 {% from "chirpui/callout.html" import callout %}
 {% from "chirpui/card.html" import card, resource_card %}
 {% from "chirpui/comment.html" import comment, comment_thread %}
+{% from "chirpui/detail_header.html" import detail_header %}
+{% from "chirpui/facet_chip.html" import facet_chip %}
+{% from "chirpui/forum_patterns.html" import answer_card, moderation_queue_item, topic_card %}
 {% from "chirpui/inline_counter.html" import inline_counter %}
 {% from "chirpui/latest_line.html" import latest_line %}
-{% from "chirpui/layout.html" import container, frame, grid, page_header, section_header, stack, cluster %}
+{% from "chirpui/layout.html" import container, frame, grid, section_header, stack, cluster %}
 {% from "chirpui/oob.html" import counter_badge %}
 {% from "chirpui/post_card.html" import post_card %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
@@ -18,17 +21,29 @@
 {% from "chirpui/route_tabs.html" import route_tabs %}
 {% from "chirpui/share_menu.html" import share_menu %}
 {% from "chirpui/surface.html" import surface %}
+{% from "chirpui/thread_reader_layout.html" import thread_reader_layout %}
 
 {% call container(max_width="76rem") %}
   {% call stack(gap="xl") %}
-    {% call page_header(
+    {% call detail_header(
       "Harborlight Writers",
-      subtitle="A dense forum and play-by-post fixture built from existing ChirpUI primitives."
+      summary="Play-by-post scenes, Q&A, moderation, and writer-facing continuation cues in one community surface.",
+      eyebrow="Community"
     ) %}
+      {% slot badges %}
+        {{ facet_chip("Scene", href="/forum-site-patterns/tags/scene", count=17, selected=true) }}
+        {{ facet_chip("Q&A", href="/forum-site-patterns/questions", count=8) }}
+        {{ facet_chip("Canon", href="/forum-site-patterns/tags/canon", count=4, muted=true) }}
+      {% end %}
+      {% slot meta %}
+        <span>284 members</span>
+        <span>6 writers waiting</span>
+        <span>3 reports open</span>
+      {% end %}
       {% slot actions %}
         {% call cluster(gap="sm") %}
-          {{ btn("Reply as Rogue", href="#reply", variant="primary") }}
-          {{ btn("New scene", href="/forum-site-patterns/threads/new", variant="ghost") }}
+          {{ btn("Join scene", href="/forum-site-patterns/threads/new", variant="primary") }}
+          {{ btn("Read rules", href="/forum-site-patterns/rules", variant="ghost") }}
         {% end %}
       {% end %}
     {% end %}
@@ -67,20 +82,22 @@
           results_layout="stack"
         ) %}
           {% for topic in topics %}
-            {% call resource_card(topic.href, topic.title, description=topic.description, top_meta=topic.top_meta, link_mode="main") %}
+            {% call topic_card(
+              topic.href,
+              topic.title,
+              description=topic.description,
+              category=topic.top_meta,
+              state=topic.state,
+              state_variant=topic.state_variant,
+              replies=topic.replies,
+              views=topic.views,
+              latest_label=topic.latest_title,
+              latest_href=topic.latest_href,
+              actor=topic.actor,
+              meta=topic.meta
+            ) %}
               {% slot badges %}
                 {{ badge(topic.category, variant="muted") }}
-                {{ badge(topic.state, variant=topic.state_variant) }}
-              {% end %}
-              {% slot footer %}
-                {% call stack(gap="sm") %}
-                  {% call cluster(gap="sm") %}
-                    {{ inline_counter("R", topic.replies, "replies") }}
-                    {{ inline_counter("V", topic.views, "views") }}
-                    {{ linked_avatar_stack(cast, max_visible=3, label="Scene cast") }}
-                  {% end %}
-                  {{ latest_line("Latest", topic.latest_href, topic.latest_title, actor=topic.actor, meta=topic.meta) }}
-                {% end %}
               {% end %}
             {% end %}
           {% end %}
@@ -88,88 +105,91 @@
 
         {% call surface(variant="muted") %}
           {% call stack(gap="lg") %}
-            {{ section_header("Thread page", subtitle="A scene surface followed by prose, local skim navigation, and end-of-thread attention navigation.", icon="sources") }}
-
-            {% call card(title="Med Bay after the blackout", subtitle="Xavier Institute / Med Bay", icon="sources") %}
-              {% slot header_actions %}
-                {% call cluster(gap="sm") %}
-                  {{ badge("open to join", variant="success") }}
-                  {{ badge("posting order", variant="info") }}
-                  {{ badge("watched", variant="muted") }}
-                {% end %}
-              {% end %}
-              {% call stack(gap="md") %}
-                {% call rendered_content(compact=true) %}
-                  <p>The east generator failed during the storm. Rogue has the first clue, Gambit has the security feed, and Storm is asking who was near the service tunnel.</p>
-                {% end %}
-                {% call cluster(gap="sm") %}
-                  {{ inline_counter("R", 18, "replies") }}
-                  {{ inline_counter("C", 5, "cast") }}
-                  {{ linked_avatar_stack(cast, max_visible=4, label="Scene cast") }}
-                {% end %}
-              {% end %}
-              {% slot footer %}
-                {% call cluster(gap="sm") %}
-                  {{ btn("Reply as Rogue", href="#reply", variant="primary") }}
-                  {{ btn("Read latest", href="#post-18", variant="ghost") }}
-                  {{ share_menu(label="Share", share_url="/forum-site-patterns/threads/med-bay-after-the-blackout") }}
-                {% end %}
-              {% end %}
-            {% end %}
-
-            {% call cluster(gap="sm") %}
-              {{ btn("Previous scene", href="/forum-site-patterns/threads/previous", variant="ghost") }}
-              {{ btn("Next scene", href="/forum-site-patterns/threads/next", variant="ghost") }}
-            {% end %}
-
-            {% call post_card(name="Rogue", handle="@rogue", time="12 min ago", href="/forum-site-patterns/characters/rogue") %}
-              {% slot avatar %}R{% end %}
-              {% call rendered_content() %}
-                <p>I touched the casing and got a flash of somebody cutting power from inside the service hall. Whoever did it knew exactly which breaker would hide the alarm.</p>
-              {% end %}
-              {% slot actions %}
-                {% call action_bar() %}
-                  {{ action_bar_item("reply", "Reply to Rogue", count=2) }}
-                  {{ action_bar_item("watch", "Watch this beat", active=true) }}
-                  {{ action_bar_item("report", "Report post") }}
-                {% end %}
-              {% end %}
-            {% end %}
-
-            {% call comment_thread() %}
-              <li>
-                {% call comment(author="Gambit", time="8 min ago", avatar_initials="G") %}
-                  {% call rendered_content(compact=true) %}
-                    <p>Security feed jumps from 02:13 to 02:19. That gap is too clean.</p>
+            {% call thread_reader_layout(label="Med Bay thread") %}
+              {% slot header %}
+                {% call detail_header(
+                  "Thread page: Med Bay after the blackout",
+                  summary="The east generator failed during the storm. Rogue has the first clue, Gambit has the security feed, and Storm is asking who was near the service tunnel.",
+                  eyebrow="Xavier Institute / Med Bay"
+                ) %}
+                  {% slot badges %}
+                    {{ badge("open to join", variant="success") }}
+                    {{ facet_chip("posting order", href="/forum-site-patterns/tags/posting-order", selected=true) }}
+                    {{ facet_chip("watched", href="/forum-site-patterns/watched", remove_href="/forum-site-patterns/unwatch") }}
+                  {% end %}
+                  {% slot meta %}
+                    {{ inline_counter("R", 18, "replies") }}
+                    {{ inline_counter("C", 5, "cast") }}
+                    {{ linked_avatar_stack(cast, max_visible=4, label="Scene cast") }}
                   {% end %}
                   {% slot actions %}
-                    {{ btn("Reply", href="#reply", size="sm", variant="ghost") }}
+                    {% call cluster(gap="sm") %}
+                      {{ btn("Reply as Rogue", href="#reply", variant="primary") }}
+                      {{ btn("Read latest", href="#post-18", variant="ghost") }}
+                      {{ share_menu(label="Share", share_url="/forum-site-patterns/threads/med-bay-after-the-blackout") }}
+                    {% end %}
                   {% end %}
                 {% end %}
-              </li>
-              <li>
-                {% call comment(author="Storm", time="5 min ago", avatar_initials="S") %}
-                  {% call rendered_content(compact=true) %}
-                    <p>I can hold the weather back for one more hour. After that, the tunnel floods.</p>
+              {% end %}
+              {% slot local_nav %}
+                <a class="chirpui-thread-reader-layout__nav-link" href="#post-18">Latest clue</a>
+                <a class="chirpui-thread-reader-layout__nav-link" href="#reply">Reply composer</a>
+                <a class="chirpui-thread-reader-layout__nav-link" href="/forum-site-patterns/threads/previous">Previous scene</a>
+                <a class="chirpui-thread-reader-layout__nav-link" href="/forum-site-patterns/threads/next">Next scene</a>
+              {% end %}
+              {% slot posts %}
+                {% call post_card(name="Rogue", handle="@rogue", time="12 min ago", href="/forum-site-patterns/characters/rogue") %}
+                  {% slot avatar %}R{% end %}
+                  {% call rendered_content() %}
+                    <p>I touched the casing and got a flash of somebody cutting power from inside the service hall. Whoever did it knew exactly which breaker would hide the alarm.</p>
                   {% end %}
                   {% slot actions %}
-                    {{ btn("Reply", href="#reply", size="sm", variant="ghost") }}
+                    {% call action_bar() %}
+                      {{ action_bar_item("reply", "Reply to Rogue", count=2) }}
+                      {{ action_bar_item("watch", "Watch this beat", active=true) }}
+                      {{ action_bar_item("report", "Report post") }}
+                    {% end %}
                   {% end %}
                 {% end %}
-              </li>
-            {% end %}
 
-            {% call card(title="Management", subtitle="Secondary controls stay available without becoming the reading surface.", collapsible=true) %}
-              {% call cluster(gap="sm") %}
-                {{ btn("Pin thread", href="/forum-site-patterns/moderation/pin", variant="ghost") }}
-                {{ btn("Lock thread", href="/forum-site-patterns/moderation/lock", variant="ghost") }}
-                {{ btn("Move thread", href="/forum-site-patterns/moderation/move", variant="ghost") }}
+                {% call comment_thread() %}
+                  <li>
+                    {% call comment(author="Gambit", time="8 min ago", avatar_initials="G") %}
+                      {% call rendered_content(compact=true) %}
+                        <p>Security feed jumps from 02:13 to 02:19. That gap is too clean.</p>
+                      {% end %}
+                      {% slot actions %}
+                        {{ btn("Reply", href="#reply", size="sm", variant="ghost") }}
+                      {% end %}
+                    {% end %}
+                  </li>
+                  <li>
+                    {% call comment(author="Storm", time="5 min ago", avatar_initials="S") %}
+                      {% call rendered_content(compact=true) %}
+                        <p>I can hold the weather back for one more hour. After that, the tunnel floods.</p>
+                      {% end %}
+                      {% slot actions %}
+                        {{ btn("Reply", href="#reply", size="sm", variant="ghost") }}
+                      {% end %}
+                    {% end %}
+                  </li>
+                {% end %}
               {% end %}
-            {% end %}
-
-            {% call cluster(gap="sm") %}
-              {{ btn("Previous unreplied", href="/forum-site-patterns/threads/previous-unreplied", variant="ghost") }}
-              {{ btn("Next unread", href="/forum-site-patterns/threads/next-unread", variant="primary") }}
+              {% slot attention_nav %}
+                {% call card(title="Management", subtitle="Secondary controls stay available without becoming the reading surface.", collapsible=true) %}
+                  {% call cluster(gap="sm") %}
+                    {{ btn("Pin thread", href="/forum-site-patterns/moderation/pin", variant="ghost") }}
+                    {{ btn("Lock thread", href="/forum-site-patterns/moderation/lock", variant="ghost") }}
+                    {{ btn("Move thread", href="/forum-site-patterns/moderation/move", variant="ghost") }}
+                  {% end %}
+                {% end %}
+              {% end %}
+              {% slot composer %}
+                {% call cluster(gap="sm") %}
+                  {{ btn("Previous unreplied", href="/forum-site-patterns/threads/previous-unreplied", variant="ghost") }}
+                  {{ btn("Next unread", href="/forum-site-patterns/threads/next-unread", variant="primary") }}
+                {% end %}
+              {% end %}
             {% end %}
           {% end %}
         {% end %}
@@ -189,8 +209,7 @@
                 {% end %}
               {% end %}
             {% end %}
-            {% call card(title="Accepted answer", subtitle="Professor X / moderator guidance", icon="status") %}
-              {% slot header_actions %}{{ badge("accepted", variant="success") }}{% end %}
+            {% call answer_card(title="Accepted answer", author="Professor X / moderator guidance", accepted=true) %}
               {% call rendered_content(compact=true) %}
                 <p>Use a short italic setup sentence before the quoted thought, then return to ordinary prose. If the contact affects another writer's character, ask first or use the consent tag.</p>
               {% end %}
@@ -221,15 +240,7 @@
             {{ section_header("Moderation queue", subtitle="Dense review items use the same card vocabulary as public lists.", icon="alert") }}
 
             {% for item in moderation_items %}
-              {% call resource_card(item.href, item.title, description=item.description, top_meta=item.meta, link_mode="main") %}
-                {% slot badges %}{{ badge(item.state, variant=item.variant) }}{% end %}
-                {% slot footer %}
-                  {% call cluster(gap="sm") %}
-                    {{ btn("Review", href=item.href, size="sm", variant="primary") }}
-                    {{ btn("Defer", href=item.href ~ "/defer", size="sm", variant="ghost") }}
-                  {% end %}
-                {% end %}
-              {% end %}
+              {{ moderation_queue_item(item.href, item.title, item.description, state=item.state, state_variant=item.variant, target=item.meta) }}
             {% end %}
           {% end %}
         {% end %}

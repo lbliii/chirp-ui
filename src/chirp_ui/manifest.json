@@ -551,6 +551,89 @@
       "trim_emits": [],
       "variants": []
     },
+    "answer-card": {
+      "authoring": "available",
+      "block": "answer-card",
+      "category": "social",
+      "composes": [
+        "badge",
+        "btn",
+        "card"
+      ],
+      "consumes": [],
+      "description": "Forum and social pattern assets\n    Default community/forum patterns for topic lists, answer states, and\n    moderation queues. App-owned ranking, permissions, trust, and moderation\n    policy stays outside ChirpUI.",
+      "elements": [
+        "body"
+      ],
+      "emits": [
+        "chirpui-answer-card",
+        "chirpui-answer-card__body"
+      ],
+      "extra_emits": [],
+      "lineno": 35,
+      "macro": "answer_card",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "accepted"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "closed"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "author"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [
+        {
+          "slot": "",
+          "target": "card",
+          "target_slot": ""
+        }
+      ],
+      "slots": [
+        "",
+        "footer",
+        "header_actions"
+      ],
+      "slots_extracted": [
+        "footer"
+      ],
+      "slots_yielded": [
+        "footer",
+        "header_actions"
+      ],
+      "template": "forum_patterns.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "app-shell": {
       "authoring": "available",
       "block": "app-shell",
@@ -4798,6 +4881,90 @@
       "trim_emits": [],
       "variants": []
     },
+    "catalog-rail": {
+      "authoring": "available",
+      "block": "catalog-rail",
+      "category": "media",
+      "composes": [
+        "carousel",
+        "title-card"
+      ],
+      "consumes": [],
+      "description": "Media pattern assets\n    Default media-site patterns for acquisition shelves, catalog rails, title\n    cards, live events, and watch-side companion layouts.\n    App-owned playback, entitlement, recommendation, and chat logic stays out.",
+      "elements": [
+        "actions",
+        "header",
+        "subtitle",
+        "title"
+      ],
+      "emits": [
+        "chirpui-catalog-rail",
+        "chirpui-catalog-rail__actions",
+        "chirpui-catalog-rail__header",
+        "chirpui-catalog-rail__subtitle",
+        "chirpui-catalog-rail__title"
+      ],
+      "extra_emits": [],
+      "lineno": 38,
+      "macro": "catalog_rail",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "subtitle"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "artwork"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "show_dots"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "actions"
+      ],
+      "slots_extracted": [
+        "actions"
+      ],
+      "slots_yielded": [
+        "actions"
+      ],
+      "template": "media_patterns.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "channel-card": {
       "authoring": "available",
       "block": "channel-card",
@@ -6755,6 +6922,99 @@
         "stacked"
       ]
     },
+    "detail-header": {
+      "authoring": "available",
+      "block": "detail-header",
+      "category": "layout",
+      "composes": [
+        "badge",
+        "btn"
+      ],
+      "consumes": [],
+      "description": "Detail header\n    A general detail-page header for communities, media titles, products, and\n    content records. App-owned routing, permissions, and ranking stay outside\n    the macro; callers provide behavior through slots and links.",
+      "elements": [
+        "actions",
+        "aside",
+        "badges",
+        "body",
+        "eyebrow",
+        "layout",
+        "media",
+        "meta",
+        "summary",
+        "title"
+      ],
+      "emits": [
+        "chirpui-detail-header",
+        "chirpui-detail-header__actions",
+        "chirpui-detail-header__aside",
+        "chirpui-detail-header__badges",
+        "chirpui-detail-header__body",
+        "chirpui-detail-header__eyebrow",
+        "chirpui-detail-header__layout",
+        "chirpui-detail-header__media",
+        "chirpui-detail-header__meta",
+        "chirpui-detail-header__summary",
+        "chirpui-detail-header__title"
+      ],
+      "extra_emits": [],
+      "lineno": 7,
+      "macro": "detail_header",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "summary"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "eyebrow"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "actions",
+        "aside",
+        "badges",
+        "media",
+        "meta"
+      ],
+      "slots_extracted": [
+        "actions",
+        "aside",
+        "badges",
+        "media",
+        "meta"
+      ],
+      "slots_yielded": [
+        "actions",
+        "aside",
+        "badges",
+        "media",
+        "meta"
+      ],
+      "template": "detail_header.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "display": {
       "authoring": "compatibility",
       "block": "display",
@@ -7775,6 +8035,100 @@
       ],
       "slots_yielded": [],
       "template": "entity_header.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "facet-chip": {
+      "authoring": "available",
+      "block": "facet-chip",
+      "category": "control",
+      "composes": [
+        "chip"
+      ],
+      "consumes": [],
+      "description": "Facet chip\n    Compact facet/status chip with optional count, selection state, and a\n    separate remove affordance for applied filters or community facets.",
+      "elements": [
+        "count",
+        "label",
+        "remove"
+      ],
+      "emits": [
+        "chirpui-facet-chip",
+        "chirpui-facet-chip--custom",
+        "chirpui-facet-chip--muted",
+        "chirpui-facet-chip--removable",
+        "chirpui-facet-chip--selected",
+        "chirpui-facet-chip__count",
+        "chirpui-facet-chip__label",
+        "chirpui-facet-chip__remove"
+      ],
+      "extra_emits": [],
+      "lineno": 6,
+      "macro": "facet_chip",
+      "maturity": "experimental",
+      "modifiers": [
+        "custom",
+        "muted",
+        "removable",
+        "selected"
+      ],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "count"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "selected"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "muted"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "color"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "remove_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "remove_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "facet_chip.html",
       "tokens": [],
       "trim_emits": [],
       "variants": []
@@ -10385,6 +10739,52 @@
       "trim_emits": [],
       "variants": []
     },
+    "lifecycle-showcase": {
+      "authoring": "available",
+      "block": "lifecycle-showcase",
+      "category": "marketing",
+      "composes": [],
+      "consumes": [],
+      "description": "Marketing pattern assets\n    Opinionated composition macros for product and marketing pages.\n    These are registry-backed defaults, not a page-builder API.",
+      "elements": [],
+      "emits": [
+        "chirpui-lifecycle-showcase"
+      ],
+      "extra_emits": [],
+      "lineno": 9,
+      "macro": "lifecycle_showcase",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "active"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "marketing_patterns.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "link": {
       "authoring": "available",
       "block": "link",
@@ -10571,6 +10971,85 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "live_badge.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "live-event-card": {
+      "authoring": "available",
+      "block": "live-event-card",
+      "category": "media",
+      "composes": [
+        "badge",
+        "btn",
+        "media-object"
+      ],
+      "consumes": [],
+      "description": "Media pattern assets\n    Default media-site patterns for acquisition shelves, catalog rails, title\n    cards, live events, and watch-side companion layouts.\n    App-owned playback, entitlement, recommendation, and chat logic stays out.",
+      "elements": [
+        "media-object",
+        "restriction",
+        "time",
+        "title"
+      ],
+      "emits": [
+        "chirpui-live-event-card",
+        "chirpui-live-event-card__media-object",
+        "chirpui-live-event-card__restriction",
+        "chirpui-live-event-card__time",
+        "chirpui-live-event-card__title"
+      ],
+      "extra_emits": [],
+      "lineno": 91,
+      "macro": "live_event_card",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "state"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "time"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "restriction"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "state_variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "media_patterns.html",
       "tokens": [],
       "trim_emits": [],
       "variants": []
@@ -10940,6 +11419,55 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "media-hero-shelf": {
+      "authoring": "available",
+      "block": "media-hero-shelf",
+      "category": "media",
+      "composes": [
+        "carousel",
+        "title-card"
+      ],
+      "consumes": [],
+      "description": "Media pattern assets\n    Default media-site patterns for acquisition shelves, catalog rails, title\n    cards, live events, and watch-side companion layouts.\n    App-owned playback, entitlement, recommendation, and chat logic stays out.",
+      "elements": [],
+      "emits": [
+        "chirpui-media-hero-shelf"
+      ],
+      "extra_emits": [],
+      "lineno": 68,
+      "macro": "media_hero_shelf",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "artwork"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "media_patterns.html",
       "tokens": [],
       "trim_emits": [],
       "variants": []
@@ -11606,6 +12134,90 @@
       "trim_emits": [
         "chirpui-model-card"
       ],
+      "variants": []
+    },
+    "moderation-queue-item": {
+      "authoring": "available",
+      "block": "moderation-queue-item",
+      "category": "social",
+      "composes": [
+        "badge",
+        "btn",
+        "resource-card"
+      ],
+      "consumes": [],
+      "description": "Forum and social pattern assets\n    Default community/forum patterns for topic lists, answer states, and\n    moderation queues. App-owned ranking, permissions, trust, and moderation\n    policy stays outside ChirpUI.",
+      "elements": [
+        "actor",
+        "footer"
+      ],
+      "emits": [
+        "chirpui-moderation-queue-item",
+        "chirpui-moderation-queue-item__actor",
+        "chirpui-moderation-queue-item__footer"
+      ],
+      "extra_emits": [],
+      "lineno": 55,
+      "macro": "moderation_queue_item",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "href"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "reason"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "state"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "state_variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "actor"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "actions"
+      ],
+      "slots_extracted": [],
+      "slots_yielded": [
+        "actions"
+      ],
+      "template": "forum_patterns.html",
+      "tokens": [],
+      "trim_emits": [],
       "variants": []
     },
     "mt-md": {
@@ -18317,6 +18929,87 @@
       "trim_emits": [],
       "variants": []
     },
+    "thread-reader-layout": {
+      "authoring": "available",
+      "block": "thread-reader-layout",
+      "category": "social",
+      "composes": [
+        "answer-card",
+        "btn",
+        "detail-header",
+        "facet-chip"
+      ],
+      "consumes": [],
+      "description": "Thread reader layout\n    Reader shell for forum and social threads with optional local navigation,\n    attention/moderation rail, and composer region. Posts and ranking remain\n    app-owned content.",
+      "elements": [
+        "attention-nav",
+        "composer",
+        "header",
+        "nav",
+        "nav-link",
+        "nav-list",
+        "nav-title",
+        "posts"
+      ],
+      "emits": [
+        "chirpui-thread-reader-layout",
+        "chirpui-thread-reader-layout__attention-nav",
+        "chirpui-thread-reader-layout__composer",
+        "chirpui-thread-reader-layout__header",
+        "chirpui-thread-reader-layout__nav",
+        "chirpui-thread-reader-layout__nav-link",
+        "chirpui-thread-reader-layout__nav-list",
+        "chirpui-thread-reader-layout__nav-title",
+        "chirpui-thread-reader-layout__posts"
+      ],
+      "extra_emits": [],
+      "lineno": 7,
+      "macro": "thread_reader_layout",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "attention_nav",
+        "composer",
+        "header",
+        "local_nav",
+        "posts"
+      ],
+      "slots_extracted": [
+        "attention_nav",
+        "composer",
+        "header",
+        "local_nav",
+        "posts"
+      ],
+      "slots_yielded": [
+        "attention_nav",
+        "composer",
+        "header",
+        "local_nav",
+        "posts"
+      ],
+      "template": "thread_reader_layout.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "thumbs": {
       "authoring": "available",
       "block": "thumbs",
@@ -18461,6 +19154,127 @@
       ],
       "slots_yielded": [],
       "template": "timeline.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "title-card": {
+      "authoring": "available",
+      "block": "title-card",
+      "category": "media",
+      "composes": [
+        "badge",
+        "btn",
+        "video-thumbnail"
+      ],
+      "consumes": [],
+      "description": "Media pattern assets\n    Default media-site patterns for acquisition shelves, catalog rails, title\n    cards, live events, and watch-side companion layouts.\n    App-owned playback, entitlement, recommendation, and chat logic stays out.",
+      "elements": [
+        "actions",
+        "artwork",
+        "body",
+        "meta",
+        "meta-row",
+        "summary",
+        "title"
+      ],
+      "emits": [
+        "chirpui-title-card",
+        "chirpui-title-card__actions",
+        "chirpui-title-card__artwork",
+        "chirpui-title-card__body",
+        "chirpui-title-card__meta",
+        "chirpui-title-card__meta-row",
+        "chirpui-title-card__summary",
+        "chirpui-title-card__title"
+      ],
+      "extra_emits": [],
+      "lineno": 13,
+      "macro": "title_card",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "href"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "artwork"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "alt"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "duration"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "meta"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "summary"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "state"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "state_variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "primary_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "secondary_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "secondary_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "actions"
+      ],
+      "slots_extracted": [
+        "actions"
+      ],
+      "slots_yielded": [
+        "actions"
+      ],
+      "template": "media_patterns.html",
       "tokens": [],
       "trim_emits": [],
       "variants": []
@@ -18855,6 +19669,116 @@
         "right",
         "top"
       ]
+    },
+    "topic-card": {
+      "authoring": "available",
+      "block": "topic-card",
+      "category": "social",
+      "composes": [
+        "badge",
+        "resource-card"
+      ],
+      "consumes": [],
+      "description": "Forum and social pattern assets\n    Default community/forum patterns for topic lists, answer states, and\n    moderation queues. App-owned ranking, permissions, trust, and moderation\n    policy stays outside ChirpUI.",
+      "elements": [
+        "counts",
+        "footer",
+        "latest"
+      ],
+      "emits": [
+        "chirpui-topic-card",
+        "chirpui-topic-card__counts",
+        "chirpui-topic-card__footer",
+        "chirpui-topic-card__latest"
+      ],
+      "extra_emits": [],
+      "lineno": 11,
+      "macro": "topic_card",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "href"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "description"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "category"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "state"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "state_variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "replies"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "views"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "latest_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "latest_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "actor"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "meta"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "badges"
+      ],
+      "slots_extracted": [],
+      "slots_yielded": [
+        "badges"
+      ],
+      "template": "forum_patterns.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
     },
     "tray": {
       "authoring": "available",
@@ -19756,6 +20680,53 @@
       "trim_emits": [],
       "variants": []
     },
+    "watch-companion-layout": {
+      "authoring": "available",
+      "block": "watch-companion-layout",
+      "category": "media",
+      "composes": [],
+      "consumes": [],
+      "description": "Media pattern assets\n    Default media-site patterns for acquisition shelves, catalog rails, title\n    cards, live events, and watch-side companion layouts.\n    App-owned playback, entitlement, recommendation, and chat logic stays out.",
+      "elements": [
+        "companion",
+        "player"
+      ],
+      "emits": [
+        "chirpui-watch-companion-layout",
+        "chirpui-watch-companion-layout__companion",
+        "chirpui-watch-companion-layout__player"
+      ],
+      "extra_emits": [],
+      "lineno": 105,
+      "macro": "watch_companion_layout",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "companion",
+        "player"
+      ],
+      "slots_extracted": [
+        "companion",
+        "player"
+      ],
+      "slots_yielded": [],
+      "template": "media_patterns.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "wizard-form": {
       "authoring": "available",
       "block": "wizard-form",
@@ -19999,7 +20970,7 @@
   "schema": "chirpui-manifest@3",
   "stats": {
     "component_authoring": {
-      "available": 269,
+      "available": 281,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -20009,22 +20980,23 @@
       "composite": 1,
       "container": 9,
       "content": 10,
-      "control": 19,
+      "control": 20,
       "data-display": 33,
       "effect": 46,
       "feedback": 25,
       "form": 17,
       "infrastructure": 2,
       "interactive": 8,
-      "layout": 45,
-      "marketing": 10,
-      "media": 1,
+      "layout": 46,
+      "marketing": 11,
+      "media": 6,
       "navigation": 22,
       "overlay": 3,
+      "social": 4,
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 112,
+      "experimental": 124,
       "internal": 2,
       "legacy": 39,
       "stable": 167
@@ -20034,15 +21006,15 @@
       "htmx": 23
     },
     "component_roles": {
-      "component": 173,
+      "component": 174,
       "effect": 32,
       "infrastructure": 2,
-      "pattern": 4,
+      "pattern": 15,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 210,
-    "components_with_params": 210,
+    "components_with_description": 222,
+    "components_with_params": 222,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -20050,7 +21022,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 208
+      "public_templated_components": 220
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -20073,7 +21045,7 @@
       "spacing": 22,
       "typography": 40
     },
-    "total_components": 320,
+    "total_components": 332,
     "total_tokens": 356
   },
   "tokens": {

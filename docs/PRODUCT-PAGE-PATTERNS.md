@@ -273,7 +273,7 @@ Likely candidates, in priority order:
 | Candidate | Default | Promote when |
 |-----------|---------|--------------|
 | `site_nav_group` | Recipe | Grouped product navigation cannot be expressed cleanly with `site_header` slots |
-| `lifecycle_showcase` | Recipe | `tabs_panels` plus `feature_section` markup becomes repeated and error-prone |
+| `lifecycle_showcase` | Built | Default lifecycle tabs + feature panel pattern for product jobs |
 | `logo_cloud` | Built | Accessible proof bands are common and stable enough to ship proactively |
 | `story_card` | Built | Customer outcome cards are common and stable enough to ship proactively |
 | `cta_band` | Built | CTA sections are common and stable enough to ship proactively |

@@ -3832,6 +3832,32 @@ Animated Stat Card
 | `effect` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `answer-card`
+
+Forum and social pattern assets
+
+- **Template:** `chirpui/forum_patterns.html`
+- **Macro:** `answer_card`
+- **Category:** `social`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `(default)`, `footer`, `header_actions`
+- **Composes:** `badge`, `btn`, `card`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `accepted` | no | (has default) |
+| `closed` | no | (has default) |
+| `author` | no | (has default) |
+| `href` | no | (has default) |
+| `cls` | no | (has default) |
+
+| Slot | Target | Target slot |
+|------|--------|-------------|
+| `(default)` | `card` | `(default)` |
+
 ### `app-shell`
 
 App Shell component
@@ -4862,6 +4888,29 @@ Carousel component
 | `show_dots` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `catalog-rail`
+
+Media pattern assets
+
+- **Template:** `chirpui/media_patterns.html`
+- **Macro:** `catalog_rail`
+- **Category:** `media`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `actions`
+- **Composes:** `carousel`, `title-card`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `items` | yes | — |
+| `subtitle` | no | (has default) |
+| `artwork` | no | (has default) |
+| `variant` | no | (has default) |
+| `show_dots` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `channel-card`
 
 Channel Card component
@@ -5373,6 +5422,26 @@ Description list component
 | `detail_align` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `detail-header`
+
+Detail header
+
+- **Template:** `chirpui/detail_header.html`
+- **Macro:** `detail_header`
+- **Category:** `layout`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `actions`, `aside`, `badges`, `media`, `meta`
+- **Composes:** `badge`, `btn`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `summary` | no | (has default) |
+| `eyebrow` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `display`
 
 - **Category:** `typography`
@@ -5632,6 +5701,31 @@ Entity header (dashboard-grade)
 | `title` | yes | — |
 | `meta` | no | (has default) |
 | `icon` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `facet-chip`
+
+Facet chip
+
+- **Template:** `chirpui/facet_chip.html`
+- **Macro:** `facet_chip`
+- **Category:** `control`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Composes:** `chip`
+- **Modifiers:** `custom`, `muted`, `removable`, `selected`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | yes | — |
+| `href` | no | (has default) |
+| `count` | no | (has default) |
+| `selected` | no | (has default) |
+| `muted` | no | (has default) |
+| `color` | no | (has default) |
+| `remove_href` | no | (has default) |
+| `remove_label` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `feature-section`
@@ -6327,6 +6421,23 @@ Latest line
 - **Role:** `primitive`
 - **Authoring:** `preferred`
 
+### `lifecycle-showcase`
+
+Marketing pattern assets
+
+- **Template:** `chirpui/marketing_patterns.html`
+- **Macro:** `lifecycle_showcase`
+- **Category:** `marketing`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `active` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `link`
 
 Link component
@@ -6386,6 +6497,28 @@ Live Badge component
 | Param | Required | Default |
 |-------|----------|---------|
 | `viewers` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `live-event-card`
+
+Media pattern assets
+
+- **Template:** `chirpui/media_patterns.html`
+- **Macro:** `live_event_card`
+- **Category:** `media`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Composes:** `badge`, `btn`, `media-object`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `state` | yes | — |
+| `time` | yes | — |
+| `href` | no | (has default) |
+| `restriction` | no | (has default) |
+| `state_variant` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `logo`
@@ -6479,6 +6612,24 @@ Marquee
 - **Maturity:** `legacy`
 - **Role:** `primitive`
 - **Authoring:** `compatibility`
+
+### `media-hero-shelf`
+
+Media pattern assets
+
+- **Template:** `chirpui/media_patterns.html`
+- **Macro:** `media_hero_shelf`
+- **Category:** `media`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Composes:** `carousel`, `title-card`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `artwork` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `media-object`
 
@@ -6659,6 +6810,30 @@ Modal component
 - **Maturity:** `experimental`
 - **Role:** `primitive`
 - **Authoring:** `available`
+
+### `moderation-queue-item`
+
+Forum and social pattern assets
+
+- **Template:** `chirpui/forum_patterns.html`
+- **Macro:** `moderation_queue_item`
+- **Category:** `social`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `actions`
+- **Composes:** `badge`, `btn`, `resource-card`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | yes | — |
+| `title` | yes | — |
+| `reason` | yes | — |
+| `state` | no | (has default) |
+| `state_variant` | no | (has default) |
+| `target` | no | (has default) |
+| `actor` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `mt-md`
 
@@ -8452,6 +8627,24 @@ Theme + style toggles
 - **Authoring:** `available`
 - **Requires:** `alpine`
 
+### `thread-reader-layout`
+
+Thread reader layout
+
+- **Template:** `chirpui/thread_reader_layout.html`
+- **Macro:** `thread_reader_layout`
+- **Category:** `social`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `attention_nav`, `composer`, `header`, `local_nav`, `posts`
+- **Composes:** `answer-card`, `btn`, `detail-header`, `facet-chip`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `thumbs`
 
 - **Category:** `control`
@@ -8479,6 +8672,35 @@ Timeline component
 | `items` | no | (has default) |
 | `hoverable` | no | (has default) |
 | `link_mode` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `title-card`
+
+Media pattern assets
+
+- **Template:** `chirpui/media_patterns.html`
+- **Macro:** `title_card`
+- **Category:** `media`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `actions`
+- **Composes:** `badge`, `btn`, `video-thumbnail`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | yes | — |
+| `title` | yes | — |
+| `artwork` | no | (has default) |
+| `alt` | no | (has default) |
+| `duration` | no | (has default) |
+| `meta` | no | (has default) |
+| `summary` | no | (has default) |
+| `state` | no | (has default) |
+| `state_variant` | no | (has default) |
+| `primary_label` | no | (has default) |
+| `secondary_label` | no | (has default) |
+| `secondary_href` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `toast`
@@ -8579,6 +8801,35 @@ Tooltip macro
 | `hint` | no | (has default) |
 | `position` | no | (has default) |
 | `block` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `topic-card`
+
+Forum and social pattern assets
+
+- **Template:** `chirpui/forum_patterns.html`
+- **Macro:** `topic_card`
+- **Category:** `social`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `badges`
+- **Composes:** `badge`, `resource-card`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | yes | — |
+| `title` | yes | — |
+| `description` | no | (has default) |
+| `category` | no | (has default) |
+| `state` | no | (has default) |
+| `state_variant` | no | (has default) |
+| `replies` | no | (has default) |
+| `views` | no | (has default) |
+| `latest_label` | no | (has default) |
+| `latest_href` | no | (has default) |
+| `actor` | no | (has default) |
+| `meta` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `tray`
@@ -8815,6 +9066,22 @@ Video Thumbnail component
 - **Maturity:** `legacy`
 - **Role:** `primitive`
 - **Authoring:** `compatibility`
+
+### `watch-companion-layout`
+
+Media pattern assets
+
+- **Template:** `chirpui/media_patterns.html`
+- **Macro:** `watch_companion_layout`
+- **Category:** `media`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `companion`, `player`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
 
 ### `wizard-form`
 

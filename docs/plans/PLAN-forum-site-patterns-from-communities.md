@@ -210,30 +210,32 @@ Initial friction log:
 | Elbysodic thread pages spread orientation, reading, management, and continuation controls across several regions | Watch during migration | Keep as a recipe until a `scene_header` slot sketch survives one real page |
 | PBP posts combine character identity, actor identity, portrait media, content, and action rows | App-owned | Do not promote `post_frame`; use `post_card`/`comment_thread` only where they fit |
 
-The first browser fixture did **not** justify a new public forum component yet.
-It showed that `resource_card`, `badge`, `inline_counter`, `latest_line`,
-`linked_avatar_stack`, `post_card`, `comment_thread`, `rendered_content`, and
-`action_bar` can express dense community and play-by-post surfaces without
-page-local utility classes. The only immediate friction was action icon
-ergonomics: forum/social action rows had to pass raw glyphs or plain words into
-`action_bar_item`. That was handled by resolving `action_bar_item(icon=...)`
-through the existing icon registry and adding semantic action names.
+The first browser fixture showed that `resource_card`, `badge`,
+`inline_counter`, `latest_line`, `linked_avatar_stack`, `post_card`,
+`comment_thread`, `rendered_content`, and `action_bar` can express dense
+community and play-by-post surfaces without page-local utility classes. A small
+default display layer is now justified for repeated topic, answer, moderation
+queue, detail orientation, facet, and thread reader shapes; app-owned behavior
+such as voting, ranking, trust, and composer orchestration remains recipe-only.
+The first fixture also confirmed the action icon ergonomics from upstream:
+forum/social action rows should use semantic `action_bar_item(icon=...)` names.
 
 Candidate macros, gated by evidence:
 
 | Candidate | Default answer | Promotion trigger |
 |-----------|----------------|-------------------|
-| `topic_card` | Not yet | `resource_card` cannot express title, author, category, labels, replies, views, and latest activity without repeated local structure across at least two real pages |
+| `topic_card` | Built 2026-05-03 | Topic metadata, counters, state, and latest activity need a reusable default |
 | `vote_control` | Not yet | Vote buttons, score states, hidden scores, and permission notices repeat across posts and comments after app-owned scoring semantics are known |
-| `thread_layout` | Recipe only | Root post plus replies plus composer needs stable anchors and responsive affordances |
-| `answer_card` | Not yet | Accepted/recommended/closed Q&A states repeat across several pages and need structure beyond `card` + `badge` |
-| `moderation_queue_item` | Not yet | Report source, rule, target content, actions, and history repeat in review tools beyond `resource_card` |
-| `community_header` | Recipe only | Community identity, rules, counts, and membership actions repeat across apps |
-| `flair_badge` | Recipe only | Badge plus search/filter behavior becomes common enough to deserve registry coverage |
+| `thread_reader_layout` | Built 2026-05-03 | Root post plus replies plus composer needs stable reader regions and responsive affordances |
+| `answer_card` | Built 2026-05-03 | Accepted/closed answer state needs a readable default without owning Q&A logic |
+| `moderation_queue_item` | Built 2026-05-03 | Report reason, target, state, and review actions need a reusable default |
+| `detail_header` | Built 2026-05-03 | Community, thread, title, and product orientation need a reusable detail surface |
+| `facet_chip` | Built 2026-05-03 | Compact selected/category/filter chips need a reusable default |
 
-Current conclusion: continue polishing existing components and recipes. Do not
-promote `topic_card`, `vote_control`, `answer_card`, or
-`moderation_queue_item` on the fixture alone.
+Current conclusion: ship display defaults for `topic_card`, `answer_card`,
+`moderation_queue_item`, `detail_header`, `facet_chip`, and
+`thread_reader_layout`; continue holding `vote_control` until real app behavior
+proves the API.
 
 **Done when:**
 

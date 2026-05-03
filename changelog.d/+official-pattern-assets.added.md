@@ -1,0 +1,1 @@
+Added experimental official pattern assets for marketing, media, forum/social, and detail surfaces, including `detail_header`, `facet_chip`, `thread_reader_layout`, `topic_card`, `answer_card`, `moderation_queue_item`, and media catalog/watch patterns.

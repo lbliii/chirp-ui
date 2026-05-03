@@ -1,0 +1,110 @@
+{#- chirp-ui: Media pattern assets
+    Default media-site patterns for acquisition shelves, catalog rails, title
+    cards, live events, and watch-side companion layouts.
+    App-owned playback, entitlement, recommendation, and chat logic stays out.
+-#}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/carousel.html" import carousel, carousel_slide %}
+{% from "chirpui/layout.html" import cluster %}
+{% from "chirpui/media_object.html" import media_object %}
+{% from "chirpui/video_thumbnail.html" import video_thumbnail %}
+
+{% def title_card(href, title, artwork="", alt=none, duration=none, meta=none, summary=none,
+                  state=none, state_variant="info", primary_label="Watch", secondary_label=none,
+                  secondary_href=none, cls="") %}
+<article class="chirpui-title-card{{ " " ~ cls if cls else "" }}">
+    {{ video_thumbnail(href=href, src=artwork, alt=alt or title, duration=duration, cls="chirpui-title-card__artwork") }}
+    <div class="chirpui-title-card__body">
+        <div class="chirpui-title-card__meta-row">
+            {% if state %}{{ badge(state, variant=state_variant) }}{% endif %}
+            {% if meta %}<span class="chirpui-title-card__meta">{{ meta }}</span>{% endif %}
+        </div>
+        <h3 class="chirpui-title-card__title"><a href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>{{ title }}</a></h3>
+        {% if summary %}<p class="chirpui-title-card__summary">{{ summary }}</p>{% endif %}
+        <div class="chirpui-title-card__actions">
+            {% call cluster(gap="sm") %}
+                {{ btn(primary_label, href=href, variant="primary", size="sm") }}
+                {% if secondary_label %}
+                {{ btn(secondary_label, href=secondary_href or href, variant="ghost", size="sm") }}
+                {% endif %}
+                {% yield actions %}
+            {% end %}
+        </div>
+    </div>
+</article>
+{% end %}
+
+{% def catalog_rail(title, items, subtitle=none, artwork="", variant="compact", show_dots=false, cls="") %}
+<section class="chirpui-catalog-rail{{ " " ~ cls if cls else "" }}">
+    <header class="chirpui-catalog-rail__header">
+        <div>
+            <h2 class="chirpui-catalog-rail__title">{{ title }}</h2>
+            {% if subtitle %}<p class="chirpui-catalog-rail__subtitle">{{ subtitle }}</p>{% endif %}
+        </div>
+        <div class="chirpui-catalog-rail__actions">{% yield actions %}</div>
+    </header>
+    {% call carousel(variant=variant, slide_count=items | length, show_dots=show_dots) %}
+        {% for item in items %}
+        {% call carousel_slide(loop.index) %}
+            {{ title_card(
+                item.href,
+                item.title,
+                artwork=item.artwork | default(item.thumbnail | default(artwork)),
+                duration=item.duration | default(none),
+                meta=item.meta | default(item.channel | default(none)),
+                summary=item.summary | default(none),
+                state=item.state | default(none),
+                state_variant=item.state_variant | default("info"),
+                primary_label=item.primary_label | default("Open"),
+                secondary_label=item.secondary_label | default(none)
+            ) }}
+        {% end %}
+        {% end %}
+    {% end %}
+</section>
+{% end %}
+
+{% def media_hero_shelf(items, artwork="", cls="") %}
+<section class="chirpui-media-hero-shelf{{ " " ~ cls if cls else "" }}">
+{% call carousel(variant="page", slide_count=items | length, show_dots=true) %}
+    {% for item in items %}
+    {% call carousel_slide(loop.index) %}
+        {{ title_card(
+            item.href,
+            item.title | default(item.name),
+            artwork=item.artwork | default(item.thumbnail | default(artwork)),
+            duration=item.duration | default("Preview"),
+            meta=item.meta | default(none),
+            summary=item.summary | default(none),
+            state=item.state | default(none),
+            state_variant=item.state_variant | default("info"),
+            primary_label=item.primary_label | default("Watch now"),
+            secondary_label=item.secondary_label | default("Details")
+        ) }}
+    {% end %}
+    {% end %}
+{% end %}
+</section>
+{% end %}
+
+{% def live_event_card(name, state, time, href=none, restriction=none, state_variant="info", cls="") %}
+<article class="chirpui-live-event-card{{ " " ~ cls if cls else "" }}">
+    {% call media_object(use_slots=true, cls="chirpui-live-event-card__media-object") %}
+        {% slot media %}{{ badge(state, variant=state_variant) }}{% end %}
+        <h3 class="chirpui-live-event-card__title">{{ name }}</h3>
+        <p class="chirpui-live-event-card__time">{{ time }}</p>
+        {% if restriction %}<p class="chirpui-live-event-card__restriction">{{ restriction }}</p>{% endif %}
+        {% slot actions %}
+            {% if href %}{{ btn("Details", href=href, size="sm", variant="ghost") }}{% endif %}
+        {% end %}
+    {% end %}
+</article>
+{% end %}
+
+{% def watch_companion_layout(cls="") %}
+<section class="chirpui-watch-companion-layout{{ " " ~ cls if cls else "" }}">
+    <div class="chirpui-watch-companion-layout__player">{% slot player %}</div>
+    <aside class="chirpui-watch-companion-layout__companion">{% slot companion %}</aside>
+</section>
+{% end %}

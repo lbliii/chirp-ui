@@ -245,6 +245,109 @@ FORUM_PATTERN_MODERATION = [
     },
 ]
 
+MEDIA_PATTERN_THUMB = (
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' "
+    "viewBox='0 0 640 360'%3E%3Crect width='640' height='360' fill='%23242b3d'/%3E"
+    "%3Crect x='42' y='42' width='556' height='276' rx='24' fill='%2337475f'/%3E"
+    "%3Ccircle cx='320' cy='180' r='52' fill='%23ffffff' fill-opacity='.82'/%3E"
+    "%3Cpath d='M304 146l56 34-56 34z' fill='%23242b3d'/%3E%3C/svg%3E"
+)
+
+MEDIA_PATTERN_DEVICES = [
+    {"name": "Smart TVs"},
+    {"name": "Mobile"},
+    {"name": "Game consoles"},
+    {"name": "Web"},
+    {"name": "Tablets"},
+]
+
+MEDIA_PATTERN_FEATURED = [
+    {
+        "name": "The Long Night Relay",
+        "summary": "A live citywide race with alternate camera feeds and replay markers.",
+        "state": "Live",
+        "state_variant": "error",
+        "meta": "Sports / 8 feeds / Included",
+        "href": "/media-site-patterns/watch/relay",
+    },
+    {
+        "name": "North Pier",
+        "summary": "A premium mystery series with weekly episodes and downloadable extras.",
+        "state": "New episodes",
+        "state_variant": "info",
+        "meta": "Series / 4K / Downloadable",
+        "href": "/media-site-patterns/watch/north-pier",
+    },
+]
+
+MEDIA_PATTERN_TITLES = [
+    {
+        "href": "/media-site-patterns/watch/relay-final",
+        "title": "Relay Final: Market Street Sprint",
+        "duration": "1:42:00",
+        "channel": "Acme Sports",
+        "views": "Live",
+        "date": "Starts 8:00 PM",
+    },
+    {
+        "href": "/media-site-patterns/watch/tide-archive",
+        "title": "Tide Archive: Director Commentary",
+        "duration": "42:18",
+        "channel": "Acme Originals",
+        "views": "24K",
+        "date": "Yesterday",
+    },
+    {
+        "href": "/media-site-patterns/watch/field-notes",
+        "title": "Field Notes: How the city rail scene was built",
+        "duration": "13:05",
+        "channel": "Behind the Frame",
+        "views": "8.4K",
+        "date": "2 days ago",
+    },
+]
+
+MEDIA_PATTERN_LIVE_EVENTS = [
+    {
+        "name": "Bay City vs. Harbor United",
+        "state": "Live",
+        "variant": "error",
+        "time": "Q3 / 08:12 remaining",
+        "restriction": "Available in home market and replay after midnight.",
+    },
+    {
+        "name": "Creator Premiere: Studio Walkthrough",
+        "state": "Upcoming",
+        "variant": "info",
+        "time": "Tomorrow, 7:30 PM",
+        "restriction": "Reminder and trailer available now.",
+    },
+]
+
+MEDIA_PATTERN_PLANS = [
+    {
+        "name": "Starter",
+        "price": "$8/mo",
+        "fit": "Mobile and web",
+        "badge": "Core",
+        "summary": "HD streaming, one profile, and offline downloads on one device.",
+    },
+    {
+        "name": "Household",
+        "price": "$15/mo",
+        "fit": "Families",
+        "badge": "Popular",
+        "summary": "4K catalog, four profiles, kids mode, and two simultaneous streams.",
+    },
+    {
+        "name": "Live Plus",
+        "price": "$24/mo",
+        "fit": "Sports and live events",
+        "badge": "Live",
+        "summary": "Live channels, DVR, regional sports, and event replay windows.",
+    },
+]
+
 GAUNTLET_ROOMS = {
     "all": "All rooms",
     "primitives": "Primitive room",
@@ -553,6 +656,22 @@ def create_app() -> App:
             cast=FORUM_PATTERN_CAST,
             topics=FORUM_PATTERN_TOPICS,
             moderation_items=FORUM_PATTERN_MODERATION,
+        )
+
+    # ── Media site patterns (streaming/media design review, Phase 2) ─
+
+    @app.route("/media-site-patterns")
+    async def media_site_patterns(request: Request):
+        return Template(
+            "media_site_patterns.html",
+            page_title="Media Site Patterns",
+            current_path="/media-site-patterns",
+            devices=MEDIA_PATTERN_DEVICES,
+            featured=MEDIA_PATTERN_FEATURED,
+            titles=MEDIA_PATTERN_TITLES,
+            live_events=MEDIA_PATTERN_LIVE_EVENTS,
+            plans=MEDIA_PATTERN_PLANS,
+            thumbnail=MEDIA_PATTERN_THUMB,
         )
 
     return app
