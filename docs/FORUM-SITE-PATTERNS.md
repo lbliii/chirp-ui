@@ -446,5 +446,10 @@ the existing vocabulary. Keep PBP-specific story semantics, character portrait
 treatment, GM controls, composer behavior, and delivery/privacy rules in
 Elbysodic until the same slot shape repeats across real pages.
 
+Known friction from the first pass is narrow: action rows needed semantic icon
+names, and copied vote recipes needed `arrow-up` / `arrow-down` aliases. Both
+now resolve through the icon registry. Thread cards, scene headers, post frames,
+and inline filter rails still need real migration evidence before promotion.
+
 Any promoted macro needs a descriptor, emitted-class coverage, CSS partials,
 template docs, manifest projection, and browser coverage before it ships.

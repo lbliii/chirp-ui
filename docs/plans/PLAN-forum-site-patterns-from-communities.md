@@ -200,6 +200,16 @@ remain app-local or recipe-only until that migration produces a concrete slot
 sketch, repeated emitted classes, and browser evidence across phone and desktop
 widths.
 
+Initial friction log:
+
+| Friction | Current status | Next action |
+|----------|----------------|-------------|
+| Social/forum actions needed semantic icon names instead of raw glyphs | Fixed in `action_bar_item(icon=...)` via the icon registry | Keep examples on semantic names |
+| Vote recipes used `arrow-up` / `arrow-down` names that did not resolve | Fixed with icon aliases | Prefer `up` / `down` in new docs, keep aliases for copied recipes |
+| Elbysodic thread cards aggregate title, premise, cast, latest activity, and state | Watch during migration | Try `resource_card` first; promote only if the same slot choreography repeats |
+| Elbysodic thread pages spread orientation, reading, management, and continuation controls across several regions | Watch during migration | Keep as a recipe until a `scene_header` slot sketch survives one real page |
+| PBP posts combine character identity, actor identity, portrait media, content, and action rows | App-owned | Do not promote `post_frame`; use `post_card`/`comment_thread` only where they fit |
+
 The first browser fixture did **not** justify a new public forum component yet.
 It showed that `resource_card`, `badge`, `inline_counter`, `latest_line`,
 `linked_avatar_stack`, `post_card`, `comment_thread`, `rendered_content`, and
