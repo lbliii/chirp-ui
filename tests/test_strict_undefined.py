@@ -87,6 +87,15 @@ def test_breadcrumbs_minimal_item(env: Environment) -> None:
     assert "chirpui-breadcrumbs__item" in out
 
 
+def test_breadcrumbs_overflow_minimal_items(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/breadcrumbs.html" import breadcrumbs %}'
+        "{{ breadcrumbs(items=[{}, {}, {}, {}, {}], overflow='collapse') }}",
+    )
+    assert "chirpui-breadcrumbs__overflow" in out
+
+
 def test_description_list_minimal_item(env: Environment) -> None:
     out = _render(
         env,

@@ -5610,6 +5610,52 @@ class TestBreadcrumbs:
         assert html.count('hx-target="#site-content"') == 2
         assert html.count('hx-boost="true"') == 2
 
+    def test_breadcrumbs_overflow_collapse(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/breadcrumbs.html" import breadcrumbs %}'
+            "{{ breadcrumbs(items, overflow='collapse', max_items=4) }}"
+        ).render(
+            items=[
+                {"label": "Home", "href": "/"},
+                {"label": "Workspace", "href": "/workspace"},
+                {"label": "Project", "href": "/workspace/project"},
+                {"label": "Runs", "href": "/workspace/project/runs"},
+                {"label": "Current"},
+            ]
+        )
+        assert "chirpui-breadcrumbs__overflow" in html
+        assert "chirpui-breadcrumbs__overflow-list" in html
+        assert 'aria-label="Show collapsed breadcrumbs"' in html
+        assert "Workspace" in html
+        assert "Project" in html
+        assert "Runs" in html
+        assert html.count('aria-current="page"') == 1
+
+    def test_breadcrumbs_overflow_preserves_route_link_attrs(self, env: Environment) -> None:
+        env.add_global(
+            "route_link_attrs",
+            _stub_route_link_attrs(
+                "site-content",
+                hrefs=frozenset(
+                    {"/", "/workspace", "/workspace/project", "/workspace/project/runs"}
+                ),
+            ),
+        )
+        html = env.from_string(
+            '{% from "chirpui/breadcrumbs.html" import breadcrumbs %}'
+            "{{ breadcrumbs(items, overflow='collapse', max_items=4) }}"
+        ).render(
+            items=[
+                {"label": "Home", "href": "/"},
+                {"label": "Workspace", "href": "/workspace"},
+                {"label": "Project", "href": "/workspace/project"},
+                {"label": "Runs", "href": "/workspace/project/runs"},
+                {"label": "Current"},
+            ]
+        )
+        assert html.count('hx-target="#site-content"') == 4
+        assert html.count('hx-boost="true"') == 4
+
 
 class TestList:
     def test_list_with_items(self, env: Environment) -> None:

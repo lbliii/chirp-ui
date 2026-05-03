@@ -11,17 +11,54 @@
         ])
 -#}
 
-{% def breadcrumbs(items, cls="") %}
+{% def breadcrumb_item(item, current=false) %}
+{% if item.get("href") %}
+<a href="{{ item.href }}" class="chirpui-breadcrumbs__link"{% if current %} aria-current="page"{% end %}{{ route_link_attrs(item.href) | html_attrs }}>{{ item.label | default("") }}</a>
+{% else %}
+<span class="chirpui-breadcrumbs__current"{% if current %} aria-current="page"{% end %}>{{ item.label | default("") }}</span>
+{% end %}
+{% end %}
+
+{% def breadcrumbs(items, cls="", overflow="", max_items=4) %}
+{% set count = items | length %}
+{% set collapse = overflow == "collapse" and count > max_items and count > 2 %}
+{% set tail_count = (max_items - 2) if max_items > 3 else 1 %}
+{% set tail_start = count - tail_count %}
 <nav class="chirpui-breadcrumbs{{ " " ~ cls if cls else "" }}" aria-label="Breadcrumb">
     <ol class="chirpui-breadcrumbs__list">
+        {% if collapse %}
+        {% for item in items %}
+        {% if loop.index0 == 0 %}
+        <li class="chirpui-breadcrumbs__item">
+            {{ breadcrumb_item(item, current=false) }}
+        </li>
+        {% elif loop.index0 == 1 %}
+        <li class="chirpui-breadcrumbs__item chirpui-breadcrumbs__overflow">
+            <details class="chirpui-breadcrumbs__overflow-menu">
+                <summary class="chirpui-breadcrumbs__overflow-trigger" aria-label="Show collapsed breadcrumbs">...</summary>
+                <ol class="chirpui-breadcrumbs__overflow-list">
+                    {% for hidden_item in items %}
+                    {% if loop.index0 > 0 and loop.index0 < tail_start %}
+                    <li class="chirpui-breadcrumbs__overflow-item">
+                        {{ breadcrumb_item(hidden_item, current=false) }}
+                    </li>
+                    {% end %}
+                    {% end %}
+                </ol>
+            </details>
+        </li>
+        {% elif loop.index0 >= tail_start %}
+        <li class="chirpui-breadcrumbs__item">
+            {{ breadcrumb_item(item, current=loop.last) }}
+        </li>
+        {% end %}
+        {% end %}
+        {% else %}
         {% for item in items %}
         <li class="chirpui-breadcrumbs__item">
-            {% if item.get("href") %}
-                <a href="{{ item.href }}" class="chirpui-breadcrumbs__link"{{ route_link_attrs(item.href) | html_attrs }}>{{ item.label | default("") }}</a>
-            {% else %}
-                <span class="chirpui-breadcrumbs__current" aria-current="page">{{ item.label | default("") }}</span>
-            {% end %}
+            {{ breadcrumb_item(item, current=loop.last) }}
         </li>
+        {% end %}
         {% end %}
     </ol>
 </nav>
