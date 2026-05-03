@@ -79,18 +79,23 @@ Components that accept an `icon` param (e.g. `section`, `card`, `btn`, `alert`, 
 | add | + |
 | refresh | ↻ |
 | search | ⌕ |
+| reply | ↩ |
+| comment, watch | ◉ |
+| share | ↗ |
+| up, vote-up | ▲ |
+| down, vote-down | ▼ |
+| follow, star | ★ |
+| report, alert | ↑ |
 | arrow, migrate, config | ▸ |
 | wizard, diamond, settings | ◇ |
 | gear | ⚙ |
 | bullet | ● |
-| star | ★ |
 | spark | ✦ |
 | logs | ⟳ |
 | cloud | ☁ |
 | sources | ⊞ |
 | chain | ⛓ |
 | link | ⟶ |
-| alert | ↑ |
 | dots | ⋯ |
 
 Unknown names pass through unchanged. Use `{{ "custom" | icon }}` in templates when needed.

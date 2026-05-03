@@ -51,6 +51,15 @@ class TestActionBar:
         ).render()
         assert "/like" in html
 
+    def test_action_bar_item_resolves_semantic_icon(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/action_bar.html" import action_bar_item %}'
+            '{{ action_bar_item(icon="reply", label="Reply") }}'
+        ).render()
+        assert "chirpui-action-bar__icon" in html
+        assert "↩" in html
+        assert ">reply<" not in html
+
 
 # ---------------------------------------------------------------------------
 # Avatar stack

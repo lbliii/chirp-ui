@@ -26,7 +26,7 @@
 <button type="button" class="chirpui-action-bar__item{{ active_class }}{{ " " ~ cls if cls else "" }}"
         aria-label="{{ label }}" title="{{ label }}">
 {% end %}
-    <span class="chirpui-action-bar__icon">{{ icon }}</span>
+    <span class="chirpui-action-bar__icon">{{ icon | icon }}</span>
     {% if count is not none %}
     <span class="chirpui-action-bar__count">{{ count }}</span>
     {% end %}
