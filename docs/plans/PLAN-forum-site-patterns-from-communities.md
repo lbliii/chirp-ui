@@ -148,12 +148,12 @@ Add forum-site recipes to docs without changing component APIs.
 - Recipes call out where apps own ranking, moderation, permissions, trust, and
   sanitization logic.
 
-### Phase 2: Build a Showcase Fixture
+### Phase 2: Build a Showcase Fixture (completed 2026-05-03)
 
 Create one internal showcase page that exercises the recipes against realistic
 placeholder forum data.
 
-Candidate locations:
+Implemented locations:
 
 - `tests/browser/templates/forum_site_patterns.html`
 - `tests/browser/test_forum_site_patterns.py`
@@ -167,23 +167,73 @@ Candidate locations:
 - The fixture uses only existing public macros and component classes.
 - The thread layout proves long titles, nested replies, and action rows at phone
   and desktop widths.
+- The fixture includes Elbysodic-shaped PBP pressure points: local route tabs,
+  dense scene cards, scene/read/management action separation, Q&A accepted
+  state, moderation queue, and compact writer-desk activity.
 
-### Phase 3: Promote Repeated Recipes
+### Phase 3: Promote Repeated Recipes (decision checkpoint 2026-05-03)
 
 After the docs recipe and showcase have at least one real consumer, decide
 whether any pattern deserves a macro.
+
+#### Elbysodic consumer pass
+
+Elbysodic is the first real PBP-shaped consumer to pressure-test these recipes.
+Its current thread pages separate orientation, reading, acting, management, and
+continuation controls well, but the functionality is spread across app-local
+thread-card, scene-header, post-frame, activity, and toolbar markup.
+
+Try these migrations before proposing new chirp-ui APIs:
+
+| Elbysodic surface | First ChirpUI mapping | Keep app-owned for now |
+|-------------------|-----------------------|------------------------|
+| Thread list cards | `resource_card` title/content/media/actions slots, `badge`, `inline_counter`, `linked_avatar_stack`, `latest_line` | Scene Slate poster treatment, board-specific premise copy, per-game state rules |
+| Thread page header | `card`/`surface`, `section_header`, `cluster`, `badge`, `action_bar`, plus a recipe-level management disclosure | Place-path semantics, story timeline copy, GM-only controls |
+| Transcript skim nav | Existing route/local navigation recipe plus anchors | Exact sticky behavior and scene-specific headings |
+| Activity and inbox rows | `resource_card`, `latest_line`, `inline_counter`, `badge` | Read/unread delivery semantics and privacy rules |
+| Posts and replies | `post_card`, `comment_thread`, `rendered_content`, `action_bar` | Character portrait treatment, actor/GM identity rules, composer shell |
+
+The first pass should migrate one Elbysodic surface without adding public
+chirp-ui macros, then record where markup becomes genuinely repetitive or
+awkward. `scene_header`, `topic_card`, `post_frame`, and `inline_filter_rail`
+remain app-local or recipe-only until that migration produces a concrete slot
+sketch, repeated emitted classes, and browser evidence across phone and desktop
+widths.
+
+Initial friction log:
+
+| Friction | Current status | Next action |
+|----------|----------------|-------------|
+| Social/forum actions needed semantic icon names instead of raw glyphs | Fixed in `action_bar_item(icon=...)` via the icon registry | Keep examples on semantic names |
+| Vote recipes used `arrow-up` / `arrow-down` names that did not resolve | Fixed with icon aliases | Prefer `up` / `down` in new docs, keep aliases for copied recipes |
+| Elbysodic thread cards aggregate title, premise, cast, latest activity, and state | Watch during migration | Try `resource_card` first; promote only if the same slot choreography repeats |
+| Elbysodic thread pages spread orientation, reading, management, and continuation controls across several regions | Watch during migration | Keep as a recipe until a `scene_header` slot sketch survives one real page |
+| PBP posts combine character identity, actor identity, portrait media, content, and action rows | App-owned | Do not promote `post_frame`; use `post_card`/`comment_thread` only where they fit |
+
+The first browser fixture did **not** justify a new public forum component yet.
+It showed that `resource_card`, `badge`, `inline_counter`, `latest_line`,
+`linked_avatar_stack`, `post_card`, `comment_thread`, `rendered_content`, and
+`action_bar` can express dense community and play-by-post surfaces without
+page-local utility classes. The only immediate friction was action icon
+ergonomics: forum/social action rows had to pass raw glyphs or plain words into
+`action_bar_item`. That was handled by resolving `action_bar_item(icon=...)`
+through the existing icon registry and adding semantic action names.
 
 Candidate macros, gated by evidence:
 
 | Candidate | Default answer | Promotion trigger |
 |-----------|----------------|-------------------|
-| `topic_card` | Maybe | `resource_card` cannot express title, author, category, labels, replies, views, and latest activity without repeated local structure |
-| `vote_control` | Maybe | Vote buttons, score states, hidden scores, and permission notices repeat across posts and comments |
+| `topic_card` | Not yet | `resource_card` cannot express title, author, category, labels, replies, views, and latest activity without repeated local structure across at least two real pages |
+| `vote_control` | Not yet | Vote buttons, score states, hidden scores, and permission notices repeat across posts and comments after app-owned scoring semantics are known |
 | `thread_layout` | Recipe only | Root post plus replies plus composer needs stable anchors and responsive affordances |
-| `answer_card` | Maybe | Accepted/recommended/closed Q&A states repeat across several pages |
-| `moderation_queue_item` | Maybe | Report source, rule, target content, actions, and history repeat in review tools |
+| `answer_card` | Not yet | Accepted/recommended/closed Q&A states repeat across several pages and need structure beyond `card` + `badge` |
+| `moderation_queue_item` | Not yet | Report source, rule, target content, actions, and history repeat in review tools beyond `resource_card` |
 | `community_header` | Recipe only | Community identity, rules, counts, and membership actions repeat across apps |
 | `flair_badge` | Recipe only | Badge plus search/filter behavior becomes common enough to deserve registry coverage |
+
+Current conclusion: continue polishing existing components and recipes. Do not
+promote `topic_card`, `vote_control`, `answer_card`, or
+`moderation_queue_item` on the fixture alone.
 
 **Done when:**
 
@@ -199,11 +249,13 @@ friction.
 
 Possible refinements:
 
-- `resource_card`: verify topic metadata and badge slots are enough.
+- `resource_card`: verified by fixture for topic and moderation cards; revisit
+  after real app pages repeat the same slot choreography.
 - `post_card`: verify root-post action and media slots cover forum posts.
 - `comment` / `comment_thread`: verify reply nesting and action rows remain
   accessible.
-- `action_bar` / `icon_btn`: verify vote/reaction controls can be labeled
+- `action_bar` / `icon_btn`: action rows can now use semantic registry icons
+  such as `reply`, `up`, `down`, `watch`, `follow`, `report`, and `share`
   without custom classes.
 - `resource_index`: verify category/search/filter composition fits forum lists.
 - `rendered_content`: verify docs clearly state upstream sanitization duties.

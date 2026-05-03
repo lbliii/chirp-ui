@@ -64,7 +64,7 @@
       "category": "control",
       "composes": [],
       "consumes": [],
-      "description": "Action Bar component\n    Horizontal row of icon buttons (like, share, comment, etc.).\n\n    Usage:\n        from \"chirpui/action_bar.html\" import action_bar, action_bar_item\n\n        call action_bar()\n            call action_bar_item(icon=\"♥\", label=\"Like\", count=42)\n            call action_bar_item(icon=\"💬\", label=\"Comment\", count=12)\n            call action_bar_item(icon=\"↗\", label=\"Share\")\n        end",
+      "description": "Action Bar component\n    Horizontal row of icon buttons (reply, vote, share, comment, etc.).\n\n    Usage:\n        from \"chirpui/action_bar.html\" import action_bar, action_bar_item\n\n        call action_bar()\n            call action_bar_item(icon=\"up\", label=\"Vote up\", count=42)\n            call action_bar_item(icon=\"comment\", label=\"Comment\", count=12)\n            call action_bar_item(icon=\"share\", label=\"Share\")\n        end",
       "elements": [
         "count",
         "icon",
@@ -13086,7 +13086,7 @@
       "category": "data-display",
       "composes": [],
       "consumes": [],
-      "description": "Post Card component\n    Full social post: avatar, name, handle, timestamp, content, media, actions.\n\n    Named slots (Kida 0.3+): avatar, body (default), media, actions.\n\n    Usage:\n        from \"chirpui/post_card.html\" import post_card\n\n        call post_card(name=\"Alice\", handle=\"@alice\", time=\"2h ago\")\n            {% slot avatar %}avatar(src=\"...\", alt=\"Alice\", size=\"md\"){% end %}\n            {% slot media %}<img src=\"sunset.jpg\" alt=\"Sunset\">{% end %}\n            {% slot actions %}action_bar_item(icon=\"♥\", label=\"Like\", count=42){% end %}\n            <p>Check out this amazing sunset! 🌅</p>\n        end\n\n    Legacy: post_card_header, post_card_body, post_card_media, post_card_actions\n    still available for backward compatibility.",
+      "description": "Post Card component\n    Full social post: avatar, name, handle, timestamp, content, media, actions.\n\n    Named slots (Kida 0.3+): avatar, body (default), media, actions.\n\n    Usage:\n        from \"chirpui/post_card.html\" import post_card\n\n        call post_card(name=\"Alice\", handle=\"@alice\", time=\"2h ago\")\n            {% slot avatar %}avatar(src=\"...\", alt=\"Alice\", size=\"md\"){% end %}\n            {% slot media %}<img src=\"sunset.jpg\" alt=\"Sunset\">{% end %}\n            {% slot actions %}action_bar_item(icon=\"up\", label=\"Vote up\", count=42){% end %}\n            <p>Check out this amazing sunset! 🌅</p>\n        end\n\n    Legacy: post_card_header, post_card_body, post_card_media, post_card_actions\n    still available for backward compatibility.",
       "elements": [
         "actions",
         "author",

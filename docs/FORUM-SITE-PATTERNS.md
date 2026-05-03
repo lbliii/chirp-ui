@@ -184,6 +184,10 @@ Checks:
 - Locked, archived, removed, or moderator-only states appear before reply forms.
 - Reply actions are reachable by keyboard and are not icon-only without labels.
 - Long threads need anchors, sort controls, or "new since last visit" markers.
+- For play-by-post scene pages, keep orientation, local skim navigation,
+  reading actions, management controls, and end-of-thread attention navigation
+  in separate regions. This keeps the layout information-dense without making
+  staff tools compete with the prose.
 
 ---
 
@@ -423,13 +427,29 @@ to keep accessible.
 
 | Candidate | Default | Promote only when |
 |-----------|---------|-------------------|
-| `topic_card` | Maybe | `resource_card` cannot express topic metadata without repeated local structure |
-| `vote_control` | Maybe | Vote buttons, score states, hidden scores, and permission notices repeat across posts and comments |
+| `topic_card` | Not yet | `resource_card` cannot express topic metadata without repeated local structure across at least two real pages |
+| `vote_control` | Not yet | Vote buttons, score states, hidden scores, and permission notices repeat after app-owned scoring semantics are known |
 | `thread_layout` | Recipe | Root post plus replies plus composer needs stable anchors and responsive affordances |
-| `answer_card` | Maybe | Accepted/recommended/closed Q&A states repeat across several pages |
-| `moderation_queue_item` | Maybe | Report source, rule, target, actions, and history repeat in review tools |
+| `answer_card` | Not yet | Accepted/recommended/closed Q&A states repeat across several pages and need structure beyond `card` + `badge` |
+| `moderation_queue_item` | Not yet | Report source, rule, target, actions, and history repeat beyond `resource_card` |
 | `community_header` | Recipe | Community identity, rules, counts, and membership actions repeat across apps |
 | `flair_badge` | Recipe | Badge plus search/filter behavior becomes common enough to deserve registry coverage |
+
+The first browser fixture did not justify a new public `forum_*` component. It
+did justify using semantic icon names in `action_bar_item()` for forum/social
+actions such as reply, vote, watch, follow, report, and share.
+
+Elbysodic is the first real consumer pass for these recipes. Start with one
+surface, not a new ChirpUI macro: migrate either thread-list cards, the thread
+page header, transcript skim navigation, activity rows, or posts/replies using
+the existing vocabulary. Keep PBP-specific story semantics, character portrait
+treatment, GM controls, composer behavior, and delivery/privacy rules in
+Elbysodic until the same slot shape repeats across real pages.
+
+Known friction from the first pass is narrow: action rows needed semantic icon
+names, and copied vote recipes needed `arrow-up` / `arrow-down` aliases. Both
+now resolve through the icon registry. Thread cards, scene headers, post frames,
+and inline filter rails still need real migration evidence before promotion.
 
 Any promoted macro needs a descriptor, emitted-class coverage, CSS partials,
 template docs, manifest projection, and browser coverage before it ships.
