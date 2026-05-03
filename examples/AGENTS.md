@@ -22,6 +22,14 @@ Represent app developers copying examples into real projects and agents using ex
 - Static showcase output should not become the source of truth for components.
 - Demonstrations should exercise meaningful states, not only happy-path default markup.
 
+## Contract Checklist
+
+- Macro/API changes: inspect showcase templates, README snippets, docs examples, public params/slots, and tests that render copied patterns.
+- HTMX/Alpine examples: inspect boost/select behavior, fragment targets, Alpine runtime loading, browser routes, and docs that teach the pattern.
+- CSS/token/layout examples: inspect composition primitives, token usage, responsive/overflow behavior, and template/CSS contract tests for example-owned classes.
+- Showcase assembly changes: inspect `examples/static-showcase`, `examples/component-showcase`, `site/public/showcase` generation, docs-build tasks, and browser fixtures that depend on routes.
+- New demos: inspect non-default states, accessibility labels, invalid/fallback states when relevant, and changelog/docs collateral if the demo introduces a user-facing pattern.
+
 ## Advocate
 
 - Examples for non-default variants, slot composition, invalid fallback behavior, htmx fragments, and accessible interactive states.

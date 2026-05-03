@@ -22,6 +22,13 @@ Represent prioritization clarity and institutional memory: what is live, what is
 - Plans should name contracts, tests, docs, examples, and migration risks, not only implementation tasks.
 - Cross-boundary plans need Steward Notes identifying affected domains.
 
+## Contract Checklist
+
+- New or changed active plan: inspect affected scoped stewards, acceptance checks, proof commands, docs/examples collateral, migration/changelog needs, and not-now boundaries.
+- Completed work: inspect whether the plan should move to `docs/plans/done/`, whether `docs/INDEX.md` status changes, and whether `CLAUDE.md` hardening notes need an entry.
+- Roadmap/backlog synthesis: inspect raw steward signals, dependencies, risks, convergence, minority reports, ranked backlog, and deferred items.
+- Public contract plans: inspect deprecation/migration strategy, parity matrix across entrypoints, release notes, and tests needed before implementation.
+
 ## Advocate
 
 - Thin, staged plans with clear acceptance checks.

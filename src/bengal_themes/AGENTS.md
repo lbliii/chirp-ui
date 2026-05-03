@@ -21,6 +21,14 @@ Represent Bengal apps that install the theme and expect the default UX, assets, 
 - Icons and images must remain inspectable assets with stable names; avoid replacing real assets with CSS decoration.
 - Theme changes must not assume a docs-site-only context.
 
+## Contract Checklist
+
+- Theme entry point/package changes: inspect `pyproject.toml`, package data, install/build smoke tests, theme import tests, and changelog fragments.
+- Template changes: inspect Chirp UI macro contracts, token hooks, docs/theme examples, site usage, and tests proving the theme works outside the docs site.
+- Asset/icon changes: inspect stable names, package inclusion, README notes in asset folders, docs references, tests for asset paths, and generated site/showcase consumers.
+- Token parity changes: inspect `CHIRP-THEME.md`, `CHIRP-THEME-PARITY-MATRIX.md`, app theme starter docs, CSS token partials, and theme package tests.
+- UX/default changes: inspect examples, screenshots or browser checks when visual behavior matters, and migration notes when users must update overrides.
+
 ## Advocate
 
 - Token parity improvements that reduce theme/component drift.

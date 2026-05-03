@@ -31,6 +31,15 @@ Represent end users seeing rendered HTML and app developers composing macros wit
 - Motion uses `--chirpui-duration-*` and `--chirpui-easing-*`; color, spacing, radius, z-index, and font weight use tokens.
 - Template classes must exist in CSS and descriptor `emits`; CSS classes must be registry-owned.
 
+## Contract Checklist
+
+- Macro changes: inspect descriptor params/slots, macro doc-block, `COMPONENT-OPTIONS.md`, examples/showcase use, render tests, and strict-undefined cases for dict inputs.
+- HTMX changes: inspect `build_hx_attrs` usage, boost/select/disinherit behavior, fragment island docs, browser tests for swaps, and examples using the pattern.
+- Alpine changes: inspect `chirpui-alpine.js`, `src/chirp_ui/alpine.py`, runtime requirements in descriptors, lifecycle/idempotency behavior, browser tests, and `ALPINE-MAGICS.md`.
+- CSS changes: edit partials, regenerate `chirpui.css`, inspect cascade layer/scope envelope, descriptor `emits`, CSS syntax/concat/contract tests, and token docs when tokens move.
+- Accessibility/responsive/layout changes: inspect ARIA, focus, keyboard behavior, reduced motion, overflow, phone/tablet behavior, browser fixtures, and `RESPONSIVE.md`/`LAYOUT.md`.
+- Pattern/composite changes: inspect provide/consume annotations, slot forwarding metadata, pattern docs, browser fixtures, and changelog fragments when user-facing.
+
 ## Advocate
 
 - Prefer composition primitives and slots over new parameters.

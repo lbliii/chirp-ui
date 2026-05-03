@@ -23,6 +23,14 @@ Represent readers trying to understand the system without reading every macro an
 - Consolidated docs that are kept for links should point to the canonical doc, not fork guidance.
 - Security, migration, and deprecation notes must tell readers what to do next.
 
+## Contract Checklist
+
+- Component/reference changes: inspect `COMPONENT-OPTIONS.md` generated sections, README examples, canonical concept docs, examples/showcase snippets, and changelog fragments.
+- Contract docs: inspect matching code/tests for layers, slots, tokens, provide/consume keys, shell regions, HTMX patterns, Alpine behavior, and responsive/layout rules.
+- Planning changes: inspect `docs/INDEX.md`, active vs done plan location, `CLAUDE.md` sharp-edge memory, Steward Notes, and not-now items.
+- Migration/deprecation/security changes: inspect public API docs, warning text, upgrade notes, examples, tests proving old and new behavior, and changelog fragments.
+- Site-published docs: inspect `site/content/` mirrors, docs build expectations, search/index source, and generated-reference freshness checks.
+
 ## Advocate
 
 - Smaller canonical docs over many conflicting partial notes.

@@ -25,6 +25,15 @@ Represent Python consumers, coding agents, and downstream tests that import Chir
 - Validation uses `warnings` (`ChirpUIValidationWarning`, `ChirpUIDeprecationWarning`) with actionable messages.
 - Module-level mutable state must be safe under Python 3.14 free-threading.
 
+## Contract Checklist
+
+- Registry changes: inspect descriptor fields, variants/sizes, `emits`, slots, `composes`, runtime requirements, maturity, authoring hints, and generated `manifest.json`.
+- Public API changes: inspect `__init__.py`, `py.typed`, CLI behavior in `__main__.py`/`find.py`/`manifest.py`, README snippets, docs, and changelog.
+- Validation/filter changes: inspect warnings, strict-mode behavior, tests for invalid inputs, template call sites, and standalone Kida fixture parity.
+- Token/icon changes: inspect `tokens.py`/`icons.py`, CSS token partials, theme parity docs, `tests/test_icons.py`, transition/token tests, and package data if assets move.
+- Provide/consume changes: inspect template annotations, `PROVIDE-CONSUME-KEYS.md`, `test_inspect_provides.py`, `test_provide_consume*.py`, and manifest projection.
+- Manifest/schema changes: inspect schema versioning, generated docs, site manifest output, downstream examples, and migration/changelog notes.
+
 ## Advocate
 
 - Richer descriptor coverage before ad hoc template conventions.

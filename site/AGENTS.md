@@ -21,6 +21,14 @@ Represent readers and agents consuming the published site rather than the source
 - Release pages should match changelog/release reality.
 - Search, `llms.txt`, `agent.json`, and index artifacts must be generated from the site pipeline.
 
+## Contract Checklist
+
+- Source content changes: inspect matching `docs/` source, registry/manifest truth, links/navigation, examples, and docs-site tests.
+- Build/config changes: inspect `site/config/`, `scripts/docs_site.py`, `pyproject.toml` docs tasks, environment config, and generated artifact expectations.
+- Manifest/public artifact changes: inspect `docs-emit-manifest`, `site/public/chirpui.manifest.json` generation, schema version, and whether generated files should stay uncommitted.
+- Release/showcase changes: inspect changelog fragments, release pages, `examples/static-showcase`, showcase assembly, and `docs-build-all`.
+- Search/agent artifact changes: inspect source indexes, `llms.txt`/`agent.json` generation, and docs-site tests that cover them.
+
 ## Advocate
 
 - Published docs that expose manifest, component options, examples, and release notes cleanly.
