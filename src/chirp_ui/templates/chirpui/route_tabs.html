@@ -2,12 +2,16 @@
     Route-backed nav links with aria-current="page".
     Use role="navigation", not role="tablist" — each tab loads a new URL.
     Requires: tab_is_active (template global), current_path, tab_items.
-    Tab item: {label, href, icon?, badge?, match?} — match: "exact" | "prefix"
+    Tab item: {label, href, icon?, badge?, badge_label?, badge_expected?, badge_loading?, match?}
+    match: "exact" | "prefix"
 -#}
 {% def render_route_tabs(tab_items, current_path, target="#page-root", is_active=none) %}
 {% set _is_active = is_active if is_active is not none else tab_is_active %}
 <nav role="navigation" aria-label="Subsection navigation" class="chirpui-route-tabs">
   {% for tab in tab_items %}
+  {% set badge = tab.get("badge") %}
+  {% set badge_label = tab.get("badge_label") %}
+  {% set badge_expected = tab.get("badge_expected") or tab.get("badge_reserved") or tab.get("badge_loading") %}
   <a href="{{ tab.href | default("") }}"
      class="chirpui-route-tab{% if _is_active(tab, current_path) %} chirpui-route-tab--active{% end %}"
      {% if _is_active(tab, current_path) %}aria-current="page"{% end %}
@@ -19,7 +23,9 @@
      hx-swap="innerHTML">
     {% if tab.get("icon") %}<span class="chirpui-route-tab__icon">{{ tab.icon | icon }}</span>{% end %}
     <span class="chirpui-route-tab__label">{{ tab.label | default("") }}</span>
-    {% if tab.get("badge") is not none %}<span class="chirpui-route-tab__badge">{{ tab.badge }}</span>{% end %}
+    {% if badge is not none or badge_expected %}
+    <span class="chirpui-route-tab__badge{% if badge is none %} chirpui-route-tab__badge--reserved{% end %}{% if tab.get("badge_loading") %} chirpui-route-tab__badge--loading{% end %}"{% if badge_label and badge is not none %} aria-label="{{ badge_label }}"{% elif badge is none %} aria-hidden="true"{% end %}>{% if badge is not none %}{{ badge }}{% end %}</span>
+    {% end %}
   </a>
   {% end %}
 </nav>

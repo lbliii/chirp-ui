@@ -18,6 +18,7 @@
 {% from "chirpui/avatar.html" import avatar %}
 {% from "chirpui/pagination.html" import pagination %}
 {% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "showcase/_dense_object_chrome.html" import dense_project_object_chrome, dense_settings_object_chrome %}
 
 
 {% from "chirpui/nav_progress.html" import nav_progress %}
@@ -82,52 +83,10 @@
 
 <h2>Dense Object Navigation</h2>
 <p class="chirpui-text-muted chirpui-font-sm">
-  Contract-first dense chrome: global commands, object context, and local route views remain separate surfaces.
+  Contract-first dense chrome recipes: global commands, object context, local route views, and page tools stay separate.
 </p>
-{% call block() %}
-{% call stack(gap="sm") %}
-{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Global workspace navigation") %}
-  {{ logo(text="chirp-ui", image_src="/static/chirpui-logo.svg", href="/", variant="both") }}
-  {{ primary_nav([
-    {"label": "Docs", "href": "/docs", "match": "prefix"},
-    {"label": "Examples", "href": "/examples", "match": "prefix"},
-    {"divider": true},
-    {"label": "Inbox", "href": "/inbox", "badge": 3},
-  ], current_path="/docs/navigation") }}
-  {{ command_palette_trigger(target="dense-navigation-palette", label="Search") }}
-  {{ dropdown_menu(btn("Create", variant="ghost", size="sm"), items=[
-    {"label": "New page", "href": "/new/page"},
-    {"label": "New component", "href": "/new/component"},
-    {"divider": true},
-    {"label": "Import", "action": "import"}
-  ], id="dense-create-menu") }}
-  {{ icon_btn("envelope", href="/notifications", aria_label="Notifications") }}
-  {{ avatar(initials="LL", alt="Lawrence Lane", size="sm") }}
-{% end %}
-{{ command_palette(id="dense-navigation-palette", search_url="/data/table", placeholder="Search or jump...") }}
-{{ breadcrumbs([
-  {"label": "Docs", "href": "/docs"},
-  {"label": "Components", "href": "/docs/components"},
-  {"label": "Patterns", "href": "/docs/components/patterns"},
-  {"label": "Dense Chrome", "href": "/docs/components/patterns/dense-chrome"},
-  {"label": "Navigation"}
-], overflow="collapse", max_items=4) }}
-{% call cluster(gap="sm") %}
-  <div class="chirpui-stack chirpui-stack--sm">
-    <h3>Navigation contract</h3>
-    <p class="chirpui-text-muted chirpui-font-sm">Object-level actions sit with the object context, not inside route tabs.</p>
-  </div>
-  {{ btn("New section", variant="primary", size="sm") }}
-  {{ btn("Export", variant="ghost", size="sm") }}
-{% end %}
-{{ route_tabs(tabs=[
-  {"href": "/docs/navigation", "label": "Overview", "badge": 12},
-  {"href": "/docs/navigation/examples", "label": "Examples", "badge": 4},
-  {"href": "/docs/navigation/accessibility", "label": "Accessibility"},
-  {"href": "/docs/navigation/overflow", "label": "Overflow"},
-], current_path="/docs/navigation") }}
-{% end %}
-{% end %}
+{{ dense_project_object_chrome() }}
+{{ dense_settings_object_chrome() }}
 
 <h2>Stepper</h2>
 {% call block() %}
@@ -141,13 +100,13 @@
 {% call block() %}
 {% call command_bar(surface_variant="muted", density="sm", aria_label="Navigation commands") %}
   <div class="chirpui-action-strip__controls">
-    {{ btn("Overview", variant="default", size="sm") }}
-    {{ btn("Routes", variant="default", size="sm") }}
-    {{ btn("Permissions", variant="default", size="sm") }}
+    {{ btn("Overview", variant="ghost", size="sm") }}
+    {{ btn("Routes", variant="ghost", size="sm") }}
+    {{ btn("Permissions", variant="ghost", size="sm") }}
   </div>
   <div class="chirpui-action-strip__actions">
     {{ btn("New route", variant="primary", size="sm") }}
-    {{ btn("Export", variant="secondary", size="sm") }}
+    {{ btn("Export", variant="ghost", size="sm") }}
   </div>
 {% end %}
 {% end %}

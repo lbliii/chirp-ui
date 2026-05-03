@@ -55,6 +55,27 @@ def test_route_tabs_minimal_tab(env: Environment) -> None:
     assert "chirpui-route-tab" in out
 
 
+def test_route_tabs_minimal_expected_badge(env: Environment) -> None:
+    from chirp_ui.route_tabs import tab_is_active
+
+    env.add_global("tab_is_active", tab_is_active)
+    out = _render(
+        env,
+        '{% from "chirpui/route_tabs.html" import render_route_tabs %}'
+        '{{ render_route_tabs(tab_items=[{"badge_expected": true}], current_path="/") }}',
+    )
+    assert "chirpui-route-tab__badge--reserved" in out
+
+
+def test_primary_nav_minimal_expected_badge(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/primary_nav.html" import primary_nav %}'
+        '{{ primary_nav(items=[{"badge_expected": true}]) }}',
+    )
+    assert "chirpui-primary-nav__badge--reserved" in out
+
+
 def test_nav_tree_minimal_item(env: Environment) -> None:
     out = _render(
         env,

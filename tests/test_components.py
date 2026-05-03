@@ -1278,6 +1278,37 @@ class TestNavTree:
         assert 'hx-boost="true"' in html
 
 
+class TestPrimaryNav:
+    def test_primary_nav_badge_accessible_label_and_reserved_state(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/primary_nav.html" import primary_nav %}'
+            '{{ primary_nav(items=[{"label": "Issues", "href": "/issues", "badge": 12, "badge_label": "12 open issues"}, '
+            '{"label": "Runs", "href": "/runs", "badge_loading": true}, '
+            '{"label": "Inbox", "href": "/inbox", "badge_expected": true}], current_path="/issues") }}'
+        ).render()
+        assert 'aria-label="12 open issues"' in html
+        assert "chirpui-primary-nav__badge--loading" in html
+        assert "chirpui-primary-nav__badge--reserved" in html
+        assert html.count('aria-hidden="true"') == 2
+
+
+class TestRouteTabs:
+    def test_route_tabs_badge_accessible_label_and_reserved_state(self, env: Environment) -> None:
+        from chirp_ui.route_tabs import tab_is_active
+
+        env.add_global("tab_is_active", tab_is_active)
+        html = env.from_string(
+            '{% from "chirpui/route_tabs.html" import route_tabs %}'
+            '{{ route_tabs(tabs=[{"label": "Pulls", "href": "/pulls", "badge": 2, "badge_label": "2 pull requests"}, '
+            '{"label": "Runs", "href": "/runs", "badge_loading": true}, '
+            '{"label": "Audit", "href": "/audit", "badge_expected": true}], current_path="/pulls") }}'
+        ).render()
+        assert 'aria-label="2 pull requests"' in html
+        assert "chirpui-route-tab__badge--loading" in html
+        assert "chirpui-route-tab__badge--reserved" in html
+        assert html.count('aria-hidden="true"') == 2
+
+
 # ---------------------------------------------------------------------------
 # Params table
 # ---------------------------------------------------------------------------
@@ -4878,6 +4909,20 @@ class TestCommandPalette:
         assert "chirpui-command-palette-trigger" in html
         assert 'x-data="chirpuiDialogTarget()"' in html
         assert 'data-dialog-target="palette"' in html
+        assert 'aria-label="Search"' in html
+
+    def test_command_palette_trigger_dense_chrome_options(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_palette.html" import command_palette_trigger %}'
+            '{{ command_palette_trigger("palette", label="Search project", placeholder="Search or jump", shortcut="/", icon="search", density="sm") }}'
+        ).render()
+        assert "chirpui-command-palette-trigger--sm" in html
+        assert "chirpui-command-palette__trigger-icon" in html
+        assert "chirpui-command-palette__trigger-label" in html
+        assert "Search or jump" in html
+        assert "<kbd" in html
+        assert ">/" in html
+        assert 'aria-label="Search project"' in html
 
 
 class TestSplitButton:

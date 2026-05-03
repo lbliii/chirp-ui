@@ -29,12 +29,18 @@
 </div>
 {% end %}
 
-{% def command_palette_trigger(target="command-palette", label="Search", cls="") %}
+{% def command_palette_trigger(target="command-palette", label="Search", placeholder=none, shortcut="⌘K", icon=none, aria_label=none, density="md", cls="") %}
+{% set density = density | validate_variant(("sm","md"), "md") %}
+{% set visible_label = placeholder if placeholder is not none else label %}
+{% set control_label = aria_label if aria_label is not none else label %}
 <button type="button"
-        class="chirpui-command-palette__trigger chirpui-command-palette-trigger{{ " " ~ cls if cls else "" }}"
+        class="chirpui-command-palette__trigger chirpui-command-palette-trigger chirpui-command-palette-trigger--{{ density }}{{ " " ~ cls if cls else "" }}"
+        aria-label="{{ control_label }}"
         x-data="chirpuiDialogTarget()"
         data-dialog-target="{{ target }}"
         @click="open()">
-    {{ label }} <kbd class="chirpui-command-palette__kbd">⌘K</kbd>
+    {% if icon %}<span class="chirpui-command-palette__trigger-icon" aria-hidden="true">{{ icon | icon }}</span>{% end %}
+    <span class="chirpui-command-palette__trigger-label">{{ visible_label }}</span>
+    {% if shortcut %}<kbd class="chirpui-command-palette__kbd">{{ shortcut }}</kbd>{% end %}
 </button>
 {% end %}

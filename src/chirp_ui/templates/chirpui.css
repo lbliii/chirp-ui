@@ -7378,10 +7378,22 @@ button.chirpui-pagination__link {
     opacity: 1;
 }
 .chirpui-route-tab__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: calc(var(--chirpui-spacing) + var(--chirpui-spacing-xs));
     font-size: var(--chirpui-font-xs);
     padding: var(--chirpui-spacing-2xs) 0.375rem;
     background: var(--chirpui-surface-alt);
     border-radius: 9999px;
+    line-height: var(--chirpui-line-height-tight);
+}
+.chirpui-route-tab__badge--reserved {
+    min-inline-size: 1.75rem;
+    opacity: 0.58;
+}
+.chirpui-route-tab__badge--loading::before {
+    content: "...";
 }
 
 @media (max-width: 40rem) {
@@ -11224,9 +11236,31 @@ body.htmx-request .chirpui-nav-progress::after {
     font-family: inherit;
 }
 
+.chirpui-command-palette-trigger--md {
+    min-block-size: var(--chirpui-control-block-size);
+}
+
+.chirpui-command-palette-trigger--sm {
+    min-block-size: var(--chirpui-control-block-size-sm);
+    padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-font-xs);
+}
+
 .chirpui-command-palette__trigger:hover {
     color: var(--chirpui-text);
     border-color: var(--chirpui-text-muted);
+}
+
+.chirpui-command-palette__trigger-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1em;
+    block-size: 1em;
+}
+
+.chirpui-command-palette__trigger-label {
+    min-inline-size: 0;
 }
 
 .chirpui-command-palette__kbd {
@@ -11236,7 +11270,6 @@ body.htmx-request .chirpui-nav-progress::after {
     background: var(--chirpui-bg-subtle);
     border: 1px solid var(--chirpui-border);
 }
-
 }
 
 /* === partials/086_utility-inline-grouping-and-measures.css === */
@@ -16825,6 +16858,15 @@ body.htmx-request .chirpui-nav-progress::after {
     color: var(--chirpui-text);
     font-size: var(--chirpui-font-xs);
     line-height: var(--chirpui-line-height-tight);
+}
+
+.chirpui-primary-nav__badge--reserved {
+    min-inline-size: 1.75rem;
+    opacity: 0.58;
+}
+
+.chirpui-primary-nav__badge--loading::before {
+    content: "...";
 }
 
 .chirpui-primary-nav__divider {

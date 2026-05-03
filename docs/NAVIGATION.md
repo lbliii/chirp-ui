@@ -107,6 +107,19 @@ Keyboard hints are supplemental.
 
 Use `command_palette_trigger` for the chrome control and `command_palette` for
 the overlay. Keep search/jump behavior out of ordinary route navigation.
+Dense chrome triggers can use a short visible placeholder while keeping a more
+specific accessible name:
+
+```html
+{{ command_palette_trigger(
+  target="project-palette",
+  label="Search project",
+  placeholder="Search or jump",
+  shortcut="/",
+  icon="search",
+  density="sm"
+) }}
+```
 
 ## Counters And Badges
 
@@ -119,9 +132,18 @@ Counters in navigation should be stable:
 - include accessible count text when the visual badge is compact or hidden from
   assistive technologies
 
-This is guidance for existing badge-bearing surfaces (`route_tabs`,
-`primary_nav`, `sidebar_link`, and `nav_tree`). New count-loading API should not
-be added until an example or app proves the need.
+`route_tabs` and `primary_nav` support `badge_label`, `badge_expected`, and
+`badge_loading` on items. Use `badge_label` when the visual count needs fuller
+assistive text, `badge_expected` when a count is intentionally reserved but not
+loaded yet, and `badge_loading` when a count is pending.
+
+```html
+{{ route_tabs(tabs=[
+  {"href": "/issues", "label": "Issues", "badge": 12, "badge_label": "12 open issues"},
+  {"href": "/runs", "label": "Runs", "badge_loading": true},
+  {"href": "/audit", "label": "Audit", "badge_expected": true},
+], current_path="/issues") }}
+```
 
 ## Dense Object Navigation Recipe
 
@@ -132,6 +154,10 @@ For GitHub-like object pages, compose existing primitives in this order:
 2. object row: breadcrumbs, title/meta, object-level actions
 3. local row: `render_route_tabs` for route-backed object views
 4. page row: filters, sort, bulk actions, and content-local tools
+
+The component showcase includes two copyable dense object chrome recipes:
+a repository/project page and an admin/settings page. Both keep global
+navigation, object context, local routes, and page tools as separate layers.
 
 On phones:
 

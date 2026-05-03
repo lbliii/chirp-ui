@@ -5858,10 +5858,14 @@
         "item-label",
         "kbd",
         "results",
-        "trigger"
+        "trigger",
+        "trigger-icon",
+        "trigger-label"
       ],
       "emits": [
         "chirpui-command-palette",
+        "chirpui-command-palette-trigger--md",
+        "chirpui-command-palette-trigger--sm",
         "chirpui-command-palette__group-title",
         "chirpui-command-palette__inner",
         "chirpui-command-palette__input",
@@ -5870,9 +5874,14 @@
         "chirpui-command-palette__item-label",
         "chirpui-command-palette__kbd",
         "chirpui-command-palette__results",
-        "chirpui-command-palette__trigger"
+        "chirpui-command-palette__trigger",
+        "chirpui-command-palette__trigger-icon",
+        "chirpui-command-palette__trigger-label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-command-palette-trigger--md",
+        "chirpui-command-palette-trigger--sm"
+      ],
       "lineno": 12,
       "macro": "command_palette",
       "maturity": "stable",
@@ -13805,7 +13814,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Primary navigation\n    Broad route navigation for app shell topbars and section bars.\n    Data-in: items = [{label, href?, badge?, active?, match?, divider?}].\n    Use for cross-feature navigation; use route_tabs for local subsection views.",
+      "description": "Primary navigation\n    Broad route navigation for app shell topbars and section bars.\n    Data-in: items = [{label, href?, badge?, badge_label?, badge_expected?,\n    badge_loading?, active?, match?, divider?}].\n    Use for cross-feature navigation; use route_tabs for local subsection views.",
       "elements": [
         "badge",
         "divider",
@@ -13815,6 +13824,8 @@
       "emits": [
         "chirpui-primary-nav",
         "chirpui-primary-nav__badge",
+        "chirpui-primary-nav__badge--loading",
+        "chirpui-primary-nav__badge--reserved",
         "chirpui-primary-nav__divider",
         "chirpui-primary-nav__label",
         "chirpui-primary-nav__link",
@@ -13822,10 +13833,12 @@
         "chirpui-primary-nav__link--disabled"
       ],
       "extra_emits": [
+        "chirpui-primary-nav__badge--loading",
+        "chirpui-primary-nav__badge--reserved",
         "chirpui-primary-nav__link--active",
         "chirpui-primary-nav__link--disabled"
       ],
-      "lineno": 7,
+      "lineno": 8,
       "macro": "primary_nav",
       "maturity": "stable",
       "modifiers": [],
@@ -14755,7 +14768,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Route-backed subsection tabs\n    Route-backed nav links with aria-current=\"page\".\n    Use role=\"navigation\", not role=\"tablist\" — each tab loads a new URL.\n    Requires: tab_is_active (template global), current_path, tab_items.\n    Tab item: {label, href, icon?, badge?, match?} — match: \"exact\" | \"prefix\"",
+      "description": "Route-backed subsection tabs\n    Route-backed nav links with aria-current=\"page\".\n    Use role=\"navigation\", not role=\"tablist\" — each tab loads a new URL.\n    Requires: tab_is_active (template global), current_path, tab_items.\n    Tab item: {label, href, icon?, badge?, badge_label?, badge_expected?, badge_loading?, match?}\n    match: \"exact\" | \"prefix\"",
       "elements": [
         "badge",
         "icon",
@@ -14765,13 +14778,17 @@
         "chirpui-route-tab",
         "chirpui-route-tab--active",
         "chirpui-route-tab__badge",
+        "chirpui-route-tab__badge--loading",
+        "chirpui-route-tab__badge--reserved",
         "chirpui-route-tab__icon",
         "chirpui-route-tab__label"
       ],
       "extra_emits": [
-        "chirpui-route-tab--active"
+        "chirpui-route-tab--active",
+        "chirpui-route-tab__badge--loading",
+        "chirpui-route-tab__badge--reserved"
       ],
-      "lineno": 7,
+      "lineno": 8,
       "macro": "render_route_tabs",
       "maturity": "stable",
       "modifiers": [],
@@ -21050,8 +21067,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 121,
-      "explicit_extra_classes": 514,
+      "explicit_extra_blocks": 122,
+      "explicit_extra_classes": 520,
       "explicit_trim_blocks": 72,
       "explicit_trim_classes": 102
     },

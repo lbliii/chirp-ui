@@ -2510,6 +2510,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         category="navigation",
         maturity="stable",
         extra_emits=(
+            "chirpui-primary-nav__badge--loading",
+            "chirpui-primary-nav__badge--reserved",
             "chirpui-primary-nav__link--active",
             "chirpui-primary-nav__link--disabled",
         ),
@@ -2576,7 +2578,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="route-tab",
         elements=("icon", "label", "badge"),
         template="route_tabs.html",
-        extra_emits=("chirpui-route-tab--active",),
+        extra_emits=(
+            "chirpui-route-tab--active",
+            "chirpui-route-tab__badge--loading",
+            "chirpui-route-tab__badge--reserved",
+        ),
         category="navigation",
         maturity="stable",
         macro="render_route_tabs",
@@ -2593,10 +2599,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "item-hint",
             "kbd",
             "trigger",
+            "trigger-icon",
+            "trigger-label",
         ),
         template="command_palette.html",
         category="interactive",
         maturity="stable",
+        extra_emits=(
+            "chirpui-command-palette-trigger--md",
+            "chirpui-command-palette-trigger--sm",
+        ),
     ),
     "collapse": ComponentDescriptor(
         block="collapse",

@@ -34,8 +34,12 @@ class TestDataPage:
             response = await client.get("/navigation")
             assert response.status == 200
             assert "Dense Object Navigation" in response.text
+            assert "Project workspace navigation" in response.text
+            assert "Settings workspace navigation" in response.text
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
+            assert "chirpui-route-tab__badge--reserved" in response.text
+            assert "chirpui-command-palette-trigger--sm" in response.text
 
     @pytest.mark.asyncio
     async def test_data_page_returns_200(self, showcase_app) -> None:
