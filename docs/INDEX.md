@@ -61,6 +61,8 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-theme-tokens.md](plans/PLAN-theme-tokens.md) — Theme token standardization
 - [PLAN-primitive-vocabulary-hardening.md](plans/PLAN-primitive-vocabulary-hardening.md) — Primitive vs legacy helper vocabulary hardening
 - [PLAN-sidebar-nav-refinements.md](plans/PLAN-sidebar-nav-refinements.md) — Sidebar nav refinements
+- [PLAN-navigation-density-study.md](plans/PLAN-navigation-density-study.md) — Dense high-utility navigation study
+- [PLAN-navigation-contract-application.md](plans/PLAN-navigation-contract-application.md) — Apply dense navigation guidance to ChirpUI
 - [PLAN-route-tabs-and-tabbed-layout.md](plans/PLAN-route-tabs-and-tabbed-layout.md) — Route tabs architecture
 - [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary
 - [PLAN-layout-widget-brainstorm.md](plans/PLAN-layout-widget-brainstorm.md) — Layout widget ideas
