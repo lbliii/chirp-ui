@@ -398,7 +398,7 @@
 {% end %}
 {% end %}
 {% call block() %}
-{% call bounce_in(trigger="load") %}
+{% call bounce_in() %}
 <div style="padding: 1.5rem; text-align: center; background: var(--chirpui-surface); border-radius: var(--chirpui-radius-lg); border: 1px solid var(--chirpui-border);">
   <p style="margin: 0; font-weight: 600;">Bounce In</p>
 </div>
@@ -436,20 +436,22 @@
 {% call grid(cols=2) %}
 {% call block() %}
 <div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ hero_effects(effect="particles") }}
+  {% call hero_effects(effect="particles") %}
   <div style="position: relative; z-index: 1; padding: 2rem; text-align: center;">
     <h3>Particles</h3>
     <p class="chirpui-text-muted">effect="particles"</p>
   </div>
+  {% end %}
 </div>
 {% end %}
 {% call block() %}
 <div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ hero_effects(effect="meteor") }}
+  {% call hero_effects(effect="meteors") %}
   <div style="position: relative; z-index: 1; padding: 2rem; text-align: center;">
     <h3>Meteor</h3>
-    <p class="chirpui-text-muted">effect="meteor"</p>
+    <p class="chirpui-text-muted">effect="meteors"</p>
   </div>
+  {% end %}
 </div>
 {% end %}
 {% end %}

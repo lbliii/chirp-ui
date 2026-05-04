@@ -29,6 +29,53 @@ class TestDataPage:
     """Verify /data and /data/table routes return 200 and expected HTML."""
 
     @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "path",
+        [
+            "/",
+            "/demo",
+            "/htmx",
+            "/navigation",
+            "/layout",
+            "/chrome",
+            "/shell-actions",
+            "/sections",
+            "/carousel",
+            "/cards",
+            "/forms",
+            "/ui",
+            "/islands",
+            "/islands/grid-state",
+            "/islands/wizard-state",
+            "/islands/upload-state",
+            "/streaming",
+            "/data-display",
+            "/calendar",
+            "/data",
+            "/effects",
+            "/typography",
+            "/ascii-primitives",
+            "/buttons",
+            "/dashboard",
+            "/animation",
+            "/ascii",
+            "/messenger",
+            "/social",
+            "/video",
+            "/data/table?page=1&sort=name",
+            "/data/bulk-bar",
+            "/data/export",
+            "/layout/dir?dir=rtl",
+            "/animation/swap-demo",
+            "/islands/remount",
+        ],
+    )
+    async def test_showcase_routes_return_200(self, showcase_app, path: str) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get(path)
+            assert response.status == 200
+
+    @pytest.mark.asyncio
     async def test_navigation_page_returns_dense_example(self, showcase_app) -> None:
         async with TestClient(showcase_app) as client:
             response = await client.get("/navigation")
@@ -119,3 +166,20 @@ class TestDataPage:
             assert response.status == 200
             assert "chirpui-empty-state" in response.text
             assert "No results" in response.text
+
+    @pytest.mark.asyncio
+    async def test_data_bulk_bar_and_export_accept_selected_values(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            bulk_response = await client.get(
+                "/data/bulk-bar?selected=alice@example.com&selected=bob@example.com"
+            )
+            assert bulk_response.status == 200
+            assert "2 selected" in bulk_response.text
+
+            export_response = await client.get(
+                "/data/export?selected=alice@example.com,bob@example.com"
+            )
+            assert export_response.status == 200
+            assert "Alice,alice@example.com" in export_response.text
+            assert "Bob,bob@example.com" in export_response.text
+            assert "Carol" not in export_response.text

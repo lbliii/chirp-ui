@@ -1,9 +1,9 @@
 {% extends "base.html" %}
+{% from "chirpui/islands.html" import island_root %}
+{% from "chirpui/state_primitives.html" import state_sync, action_queue, draft_store, error_boundary %}
 
 {% block main %}
 {% from "chirpui/layout.html" import container, stack, block, page_header %}
-{% from "chirpui/islands.html" import island_root %}
-{% from "chirpui/state_primitives.html" import state_sync, action_queue, draft_store, error_boundary %}
 
 {% call container() %}
 {% call stack() %}

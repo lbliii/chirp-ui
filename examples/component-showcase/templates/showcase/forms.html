@@ -257,7 +257,11 @@
   Server-driven multi-step form with stepper indicator. Steps submit via HTMX and replace the wrapper.
 </p>
 {% call block() %}
-{% call wizard_form(id="demo-wizard", steps=["Account", "Profile", "Review"], current=2) %}
+{% call wizard_form(id="demo-wizard", steps=[
+  {"id": "account", "label": "Account"},
+  {"id": "profile", "label": "Profile"},
+  {"id": "review", "label": "Review"}
+], current=2) %}
   <form class="chirpui-stack chirpui-stack--sm">
     {{ text_field("display_name", value="", label="Display Name", placeholder="How others see you") }}
     {{ textarea_field("about", value="", label="About", rows=3, placeholder="A short bio...") }}
