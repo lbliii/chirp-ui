@@ -177,7 +177,9 @@ object console recipe separates app/resource navigation, global object search,
 object ID context, saved searches, and object-local event/invoice/log routes.
 The collaboration inbox recipe separates unread navigation, jump-to-conversation
 search, activity/later surfaces, and conversation-local message/thread/file
-routes.
+routes. The developer platform recipe combines project/group/profile scope,
+search-or-go-to, workflow navigation, a context-sensitive project sidebar, and
+project-local tabs without creating a product-specific header clone.
 
 On phones:
 

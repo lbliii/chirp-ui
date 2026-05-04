@@ -67,6 +67,10 @@ class TestDataPage:
             assert "Collaboration inbox global navigation" in response.text
             assert "Collaboration inbox controls" in response.text
             assert "Jump to channel, DM, thread" in response.text
+            assert "Developer Platform Navigation" in response.text
+            assert "Developer platform global navigation" in response.text
+            assert "Developer platform list controls" in response.text
+            assert "Search or go to project, issue, MR" in response.text
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
             assert "chirpui-route-tab__badge--reserved" in response.text

@@ -27,6 +27,7 @@
 {% from "showcase/_editor_workbench_nav.html" import editor_workbench_navigation %}
 {% from "showcase/_business_object_console.html" import business_object_console_navigation %}
 {% from "showcase/_collaboration_inbox_nav.html" import collaboration_inbox_navigation %}
+{% from "showcase/_developer_platform_nav.html" import developer_platform_navigation %}
 
 
 {% from "chirpui/nav_progress.html" import nav_progress %}
@@ -143,6 +144,12 @@
   Collaboration recipe: workspace switcher, unread sidebar, jump-to-conversation, activity/later surfaces, and conversation-local routes.
 </p>
 {{ collaboration_inbox_navigation() }}
+
+<h2>Developer Platform Navigation</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Developer platform recipe: project/group scope, search-or-go-to, context sidebar, workflow nav, project route tabs, and list filters.
+</p>
+{{ developer_platform_navigation() }}
 
 <h2>Stepper</h2>
 {% call block() %}

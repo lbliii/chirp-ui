@@ -59,6 +59,9 @@ systems without cloning any specific product.
 - Family 8 accepted: the component showcase now includes a collaboration inbox
   recipe with workspace switching, unread side navigation, jump-to-conversation
   search, activity/later surfaces, and conversation-local routes.
+- Family 9 accepted: the component showcase now includes a developer platform
+  recipe with project/group/profile scope, search-or-go-to, workflow navigation,
+  a context-sensitive project sidebar, project route tabs, and list filters.
 
 ## Research Sources
 
