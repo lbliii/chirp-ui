@@ -6,8 +6,10 @@ Each test verifies:
 - Slot content injection where applicable
 """
 
+import re
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from itertools import pairwise
 
 import pytest
 from kida import Environment
@@ -7292,6 +7294,21 @@ class TestMetricCardEnhanced:
 # ==========================================================================
 
 
+def _position_pairs(html: str) -> list[tuple[int, int]]:
+    return [(int(x), int(y)) for x, y in re.findall(r"left: (\d+)%; (?:top|bottom): (\d+)%", html)]
+
+
+def _assert_scattered_effect_positions(html: str) -> None:
+    points = sorted(_position_pairs(html))
+    assert len(points) >= 6
+    xs = [x for x, _ in points]
+    ys = [y for _, y in points]
+    assert max(xs) - min(xs) >= 40
+    assert max(ys) - min(ys) >= 40
+    assert not all(left <= right for left, right in pairwise(ys))
+    assert not all(left >= right for left, right in pairwise(ys))
+
+
 class TestTypewriter:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
@@ -7419,6 +7436,29 @@ class TestAurora:
             '{% call aurora(variant="subtle") %}X{% end %}'
         ).render()
         assert "chirpui-aurora--subtle" in html
+
+
+class TestDecorativeScatter:
+    def test_holy_light_positions_are_not_formulaic_diagonal(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/holy_light.html" import holy_light %}'
+            "{% call holy_light() %}Glow{% end %}"
+        ).render()
+        _assert_scattered_effect_positions(html)
+
+    def test_rune_field_positions_are_not_formulaic_diagonal(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/rune_field.html" import rune_field %}'
+            "{% call rune_field() %}Runes{% end %}"
+        ).render()
+        _assert_scattered_effect_positions(html)
+
+    def test_constellation_positions_are_not_formulaic_diagonal(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/constellation.html" import constellation %}'
+            "{% call constellation() %}Stars{% end %}"
+        ).render()
+        _assert_scattered_effect_positions(html)
 
 
 class TestScanline:
