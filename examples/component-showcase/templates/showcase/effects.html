@@ -18,6 +18,17 @@
 {% from "chirpui/orbit.html" import orbit %}
 {% from "chirpui/hero_effects.html" import hero_effects %}
 
+{% def effect_preview(label) %}
+<div data-showcase-effect-preview="{{ label }}" style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ caller() }}
+  <span style="position: absolute; z-index: 2; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">{{ label }}</span>
+</div>
+{% end %}
+
+{% def effect_fill() %}
+<div data-showcase-effect-fill style="min-height: 12rem;" aria-hidden="true"></div>
+{% end %}
+
 {% call container() %}
 {% call stack() %}
 {{ page_header("Visual Effects", subtitle="Background effects, decorative overlays, and playful motion primitives from the chirp-ui design system.") }}
@@ -30,22 +41,19 @@
 </p>
 {% call grid(cols=3) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ aurora() }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call aurora() %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ aurora(variant="intense") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">intense</span>
-</div>
+{% call effect_preview("intense") %}
+  {% call aurora(variant="intense") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ aurora(variant="subtle") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">subtle</span>
-</div>
+{% call effect_preview("subtle") %}
+  {% call aurora(variant="subtle") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -57,22 +65,19 @@
 </p>
 {% call grid(cols=3) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ meteor(count=4) }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call meteor(count=4) %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ meteor(count=4, variant="accent") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">accent</span>
-</div>
+{% call effect_preview("accent") %}
+  {% call meteor(count=4, variant="accent") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ meteor(count=4, variant="muted") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">muted</span>
-</div>
+{% call effect_preview("muted") %}
+  {% call meteor(count=4, variant="muted") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -84,22 +89,19 @@
 </p>
 {% call grid(cols=3) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ particle_bg(count=8) }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call particle_bg(count=8) %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ particle_bg(count=8, variant="accent") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">accent</span>
-</div>
+{% call effect_preview("accent") %}
+  {% call particle_bg(count=8, variant="accent") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ particle_bg(count=8, variant="muted") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">muted</span>
-</div>
+{% call effect_preview("muted") %}
+  {% call particle_bg(count=8, variant="muted") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -111,28 +113,24 @@
 </p>
 {% call grid(cols=2) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ symbol_rain(count=6) }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call symbol_rain(count=6) %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ symbol_rain(count=6, variant="accent") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">accent</span>
-</div>
+{% call effect_preview("accent") %}
+  {% call symbol_rain(count=6, variant="accent") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ symbol_rain(count=6, variant="gold") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">gold</span>
-</div>
+{% call effect_preview("gold") %}
+  {% call symbol_rain(count=6, variant="gold") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ symbol_rain(count=6, variant="muted") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">muted</span>
-</div>
+{% call effect_preview("muted") %}
+  {% call symbol_rain(count=6, variant="muted") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 

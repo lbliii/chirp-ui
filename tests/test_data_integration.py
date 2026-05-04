@@ -193,6 +193,27 @@ class TestDataPage:
             assert "Search work, people, projects" in response.text
 
     @pytest.mark.asyncio
+    async def test_effects_page_wraps_background_macros_with_canvas_height(
+        self, showcase_app
+    ) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/effects")
+        assert response.status == 200
+        html = response.text
+
+        for root_class, content_class in (
+            ("chirpui-aurora", "chirpui-aurora__content"),
+            ("chirpui-meteor", "chirpui-meteor__content"),
+            ("chirpui-particle-bg", "chirpui-particle-bg__content"),
+            ("chirpui-symbol-rain", "chirpui-symbol-rain__content"),
+        ):
+            assert re.search(
+                rf'class="{root_class}[^"]*".*?class="{content_class}".*?data-showcase-effect-fill',
+                html,
+                re.S,
+            ), f"{root_class} showcase demo must call the wrapper macro with height"
+
+    @pytest.mark.asyncio
     async def test_data_page_returns_200(self, showcase_app) -> None:
         async with TestClient(showcase_app) as client:
             response = await client.get("/data")
