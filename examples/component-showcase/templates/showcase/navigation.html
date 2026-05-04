@@ -28,6 +28,7 @@
 {% from "showcase/_business_object_console.html" import business_object_console_navigation %}
 {% from "showcase/_collaboration_inbox_nav.html" import collaboration_inbox_navigation %}
 {% from "showcase/_developer_platform_nav.html" import developer_platform_navigation %}
+{% from "showcase/_reference_docs_nav.html" import reference_docs_navigation %}
 
 
 {% from "chirpui/nav_progress.html" import nav_progress %}
@@ -150,6 +151,12 @@
   Developer platform recipe: project/group scope, search-or-go-to, context sidebar, workflow nav, project route tabs, and list filters.
 </p>
 {{ developer_platform_navigation() }}
+
+<h2>Reference Docs Navigation</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Reference recipe: workflow IA, docs search, persistent left nav, collapsed breadcrumbs, page controls, and nearby-topic discovery.
+</p>
+{{ reference_docs_navigation() }}
 
 <h2>Stepper</h2>
 {% call block() %}

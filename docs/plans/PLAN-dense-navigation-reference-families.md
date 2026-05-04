@@ -62,6 +62,10 @@ systems without cloning any specific product.
 - Family 9 accepted: the component showcase now includes a developer platform
   recipe with project/group/profile scope, search-or-go-to, workflow navigation,
   a context-sensitive project sidebar, project route tabs, and list filters.
+- Family 10 accepted: the component showcase now includes a reference/docs
+  system recipe with workflow information architecture, persistent left
+  navigation, docs search, collapsed breadcrumbs, page-local controls, and
+  nearby-topic discovery.
 
 ## Research Sources
 

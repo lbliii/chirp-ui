@@ -179,7 +179,10 @@ The collaboration inbox recipe separates unread navigation, jump-to-conversation
 search, activity/later surfaces, and conversation-local message/thread/file
 routes. The developer platform recipe combines project/group/profile scope,
 search-or-go-to, workflow navigation, a context-sensitive project sidebar, and
-project-local tabs without creating a product-specific header clone.
+project-local tabs without creating a product-specific header clone. The
+reference docs recipe applies the same contract to workflow information
+architecture, persistent left navigation, docs search, page-local controls, and
+nearby-topic discovery.
 
 On phones:
 

@@ -71,6 +71,10 @@ class TestDataPage:
             assert "Developer platform global navigation" in response.text
             assert "Developer platform list controls" in response.text
             assert "Search or go to project, issue, MR" in response.text
+            assert "Reference Docs Navigation" in response.text
+            assert "Reference docs global navigation" in response.text
+            assert "Reference docs page controls" in response.text
+            assert "Search docs or jump to topic" in response.text
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
             assert "chirpui-route-tab__badge--reserved" in response.text
