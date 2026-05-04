@@ -18,6 +18,7 @@ Navigation guide for all chirp-ui documentation.
 - [UI-LAYERS.md](UI-LAYERS.md) — App shell vs page chrome vs surface chrome, shell regions
 - [CSS-OVERRIDE-SURFACE.md](CSS-OVERRIDE-SURFACE.md) — Cascade order, `@layer app.overrides` contract, token vs layer vs unlayered paths
 - [NAVIGATION.md](NAVIGATION.md) — Navigation layer model, component decision matrix, and dense chrome guidance
+- [DENSE-NAVIGATION-SYNTHESIS.md](DENSE-NAVIGATION-SYNTHESIS.md) — Dense navigation recipe synthesis, primitive candidates, and anti-decisions
 
 ## Patterns
 
