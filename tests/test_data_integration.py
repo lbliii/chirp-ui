@@ -201,14 +201,19 @@ class TestDataPage:
         assert response.status == 200
         html = response.text
 
-        for root_class, content_class in (
-            ("chirpui-aurora", "chirpui-aurora__content"),
-            ("chirpui-meteor", "chirpui-meteor__content"),
-            ("chirpui-particle-bg", "chirpui-particle-bg__content"),
-            ("chirpui-symbol-rain", "chirpui-symbol-rain__content"),
+        for root_class in (
+            "chirpui-aurora",
+            "chirpui-meteor",
+            "chirpui-particle-bg",
+            "chirpui-symbol-rain",
+            "chirpui-holy-light",
+            "chirpui-rune-field",
+            "chirpui-constellation",
+            "chirpui-scanline",
+            "chirpui-grain",
         ):
             assert re.search(
-                rf'class="{root_class}[^"]*".*?class="{content_class}".*?data-showcase-effect-fill',
+                rf'class="{root_class}(?:[" ]|--).*?data-showcase-effect-fill',
                 html,
                 re.S,
             ), f"{root_class} showcase demo must call the wrapper macro with height"
