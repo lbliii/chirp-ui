@@ -628,6 +628,12 @@ def create_app() -> App:
     async def callout_variants_page(request: Request):
         return Template("callout_variants_page.html", page_title="Callout Variants")
 
+    # ── Visual effect render contracts ──────────────────────────────
+
+    @app.route("/effects-visual")
+    async def effects_visual_page(request: Request):
+        return Template("effects_visual_page.html", page_title="Effects Visual Contracts")
+
     # ── Video / Channel cards (envelope hardening batch 1, S6) ────────
 
     @app.route("/video-channel-cards")
