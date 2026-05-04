@@ -6367,6 +6367,29 @@ Code macros
 | `id` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `island-root`
+
+Framework-agnostic island mount wrappers
+
+- **Template:** `chirpui/islands.html`
+- **Macro:** `island_root`
+- **Category:** `interactive`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `props` | no | (has default) |
+| `mount_id` | no | (has default) |
+| `version` | no | (has default) |
+| `src` | no | (has default) |
+| `primitive` | no | (has default) |
+| `cls` | no | (has default) |
+| `raw_attrs` | no | (has default) |
+
 ### `jello`
 
 - **Category:** `effect`
@@ -8734,7 +8757,7 @@ Timeline component
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
-- **Modifiers:** `hoverable`, `on-accent`, `on-muted`
+- **Modifiers:** `cards`, `compact`, `hoverable`, `on-accent`, `on-muted`, `spacious`
 - **Consumes:** `_surface_variant`
 
 | Param | Required | Default |
@@ -8742,6 +8765,8 @@ Timeline component
 | `items` | no | (has default) |
 | `hoverable` | no | (has default) |
 | `link_mode` | no | (has default) |
+| `density` | no | (has default) |
+| `variant` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `title-card`

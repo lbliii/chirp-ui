@@ -139,7 +139,7 @@
 {{ dock(items=[{"icon": "home", "label": "Home", "href": "/"}, {"icon": "gear", "label": "Settings", "href": "/forms"}, {"icon": "star", "label": "Favorites", "href": "/cards"}], variant="glass") }}
 
 <h2>Notification Dot</h2>
-<h3>Variants</h3>
+<h3>Minimal Pulse</h3>
 {% call cluster() %}
 {% call notification_dot() %}
 {{ ripple_button("Default") }}
@@ -155,15 +155,15 @@
 {% end %}
 {% end %}
 
-<h3>With Count</h3>
+<h3>Count Badge</h3>
 {% call cluster() %}
-{% call notification_dot(variant="error", count=5) %}
+{% call notification_dot(variant="error", count=5, size="lg") %}
 {{ ripple_button("Messages", variant="primary") }}
 {% end %}
-{% call notification_dot(variant="warning", count=12) %}
+{% call notification_dot(variant="warning", count=12, size="lg") %}
 {{ ripple_button("Alerts", variant="primary") }}
 {% end %}
-{% call notification_dot(variant="success", count=3) %}
+{% call notification_dot(variant="success", count=3, size="lg") %}
 {{ ripple_button("Updates", variant="primary") }}
 {% end %}
 {% end %}

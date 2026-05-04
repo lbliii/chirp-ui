@@ -51,6 +51,31 @@ def test_navigation_strips_scroll_horizontally_on_phone_widths() -> None:
     assert "scroll-snap-type: x proximity;" in primary_nav
 
 
+def test_blade_is_sidebar_aware_inside_app_shells() -> None:
+    surface = _partial("039_surface.css")
+
+    assert ".chirpui-app-shell__main .chirpui-blade" in surface
+    assert "width: 100%;" in surface
+    assert "margin-inline: 0;" in surface
+
+
+def test_feedback_primitives_keep_dense_labels_readable() -> None:
+    progress = _partial("079_progress-bar.css")
+    notification = _partial("093_notification-dot.css")
+    dock = _partial("106_floating-dock.css")
+    timeline = _partial("035_timeline.css")
+
+    assert ".chirpui-progress-bar__label" in progress
+    assert "z-index: 1;" in progress
+    assert "background: color-mix(in srgb, var(--chirpui-bg) 72%, transparent);" in progress
+    assert ".chirpui-notification-dot--count .chirpui-notification-dot__dot" in notification
+    assert "min-width: 1.25rem;" in notification
+    assert "text-decoration: none;" in dock
+    assert ".chirpui-timeline::before" in timeline
+    assert "inset-inline-start: calc(var(--chirpui-timeline-rail-x) - 1px);" in timeline
+    assert ".chirpui-timeline--cards .chirpui-timeline__content" in timeline
+
+
 def test_touch_targets_expand_on_phone_and_coarse_pointer_widths() -> None:
     tokens = _partial("002_reset.css")
     app_shell = _partial("083_app-shell.css")

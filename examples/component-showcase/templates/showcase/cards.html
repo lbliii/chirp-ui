@@ -135,24 +135,32 @@
 {% end %}
 
 <h2>Alerts</h2>
-{% call stack(gap="sm") %}
-{% call alert(variant="info") %}
-<strong>Info.</strong> This is an informational message.
+{% call stack(gap="md") %}
+{% call grid(cols=2) %}
+{% call alert(variant="info", icon="status", title="Heads up") %}
+Compact informational copy with an icon, title, and stronger left accent.
 {% end %}
-{% call alert(variant="success") %}
-<strong>Success.</strong> Your changes have been saved.
+{% call alert(variant="success", icon="status", title="Changes saved") %}
+Use the minimalist variant for brief confirmations that should not interrupt flow.
 {% end %}
-{% call alert(variant="warning") %}
-<strong>Warning.</strong> Please review before continuing.
+{% call alert(variant="warning", icon="alert", title="Review required") %}
+Warnings can carry body text without becoming a full modal or blocking state.
 {% end %}
-{% call alert(variant="error") %}
-<strong>Error.</strong> Something went wrong. Please try again.
+{% call alert(variant="error", icon="alert", title="Sync failed", dismissible=true) %}
+Dismissible errors keep the close control aligned beside longer message text.
 {% end %}
-{% call alert(variant="info", dismissible=true) %}
-<strong>Dismissible.</strong> Click × to close.
 {% end %}
-{% call alert(variant="warning", icon="alert", title="Heads up") %}
-This alert has an icon and title. Use <code>icon</code> and <code>title</code> params.
+
+{% call alert(variant="warning", icon="alert", title="Deployment guardrail") %}
+Production deploys are paused until the migration check finishes and the owner acknowledges the risk.
+{% slot header_actions %}
+{{ btn("View checks", variant="secondary", size="sm") }}
+{{ btn("Acknowledge", variant="primary", size="sm") }}
+{% end %}
+{% end %}
+
+{% call alert(variant="info", icon="status", title="Troubleshooting note", collapsible=true, open=false) %}
+Collapsible alerts work as advanced admonitions for dense documentation, operational runbooks, and progressive disclosure.
 {% end %}
 {% end %}
 

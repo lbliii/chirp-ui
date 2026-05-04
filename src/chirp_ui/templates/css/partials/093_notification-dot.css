@@ -36,6 +36,34 @@
 .chirpui-notification-dot--lg .chirpui-notification-dot__dot,
 .chirpui-notification-dot--lg .chirpui-notification-dot__ping { width: 12px; height: 12px; top: -3px; right: -3px; }
 
+.chirpui-notification-dot--count .chirpui-notification-dot__dot,
+.chirpui-notification-dot--count .chirpui-notification-dot__ping {
+    top: -0.65rem;
+    right: -0.65rem;
+    width: auto;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    border-radius: var(--chirpui-radius-full, 9999px);
+}
+
+.chirpui-notification-dot--count .chirpui-notification-dot__dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 0.375rem;
+    border: 2px solid var(--chirpui-bg);
+    color: var(--chirpui-on-accent);
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-notification-dot--count.chirpui-notification-dot--warning .chirpui-notification-dot__dot {
+    color: var(--chirpui-on-warning, #1a1a1a);
+}
+
 /* counter_badge */
 .chirpui-counter-badge {
     display: inline-flex;
@@ -67,5 +95,4 @@
     background: var(--chirpui-error);
     color: var(--chirpui-on-accent);
 }
-
 

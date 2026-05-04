@@ -5,6 +5,8 @@
 .chirpui-progress-bar {
     position: relative;
     width: 100%;
+    display: grid;
+    align-items: center;
 }
 
 .chirpui-progress-bar--sm { height: 0.25rem; }
@@ -12,6 +14,7 @@
 .chirpui-progress-bar--lg { height: 1rem; }
 
 .chirpui-progress-bar__track {
+    grid-area: 1 / 1;
     width: 100%;
     height: 100%;
     background: var(--chirpui-bg-subtle);
@@ -64,10 +67,18 @@
 }
 
 .chirpui-progress-bar__label {
-    display: block;
-    margin-top: var(--chirpui-spacing-xs);
+    grid-area: 1 / 1;
+    z-index: 1;
+    justify-self: center;
+    max-width: calc(100% - var(--chirpui-spacing-sm));
+    padding-inline: var(--chirpui-spacing-xs);
+    border-radius: var(--chirpui-radius-full, 999px);
+    background: color-mix(in srgb, var(--chirpui-bg) 72%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--chirpui-border) 60%, transparent);
     font-size: var(--chirpui-font-sm);
+    line-height: 1.3;
     text-align: center;
-    color: var(--chirpui-text-muted);
+    color: var(--chirpui-text);
+    pointer-events: none;
+    white-space: nowrap;
 }
-

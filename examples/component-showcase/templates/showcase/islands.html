@@ -1,110 +1,129 @@
 {% extends "base.html" %}
 {% from "chirpui/islands.html" import island_root %}
 {% from "chirpui/state_primitives.html" import state_sync, action_queue, draft_store, error_boundary %}
+{% from "chirpui/layout.html" import cluster %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/button.html" import btn %}
 
 {% block main %}
-{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/layout.html" import container, stack, block, page_header, grid %}
+{% from "chirpui/nav_link.html" import nav_link %}
+{% from "chirpui/forms.html" import text_field %}
 
 {% call container() %}
-{% call stack() %}
+{% call stack(gap="lg") %}
 {{ page_header("Islands + State Primitives", subtitle="No-build high-state primitives on top of framework-agnostic islands.") }}
 
-{% call block() %}
+{% call surface(variant="muted") %}
+{% call stack(gap="md") %}
 <p class="chirpui-text-muted">
-  This page demonstrates foundational primitives: <code>state_sync</code>, <code>action_queue</code>,
+  Foundational primitives: <code>state_sync</code>, <code>action_queue</code>,
   <code>draft_store</code>, and <code>error_boundary</code>.
 </p>
 
-<button
-  type="button"
-  class="chirpui-btn chirpui-btn--secondary"
-  hx-get="/islands/remount"
-  hx-target="#island-shell"
-  hx-swap="outerHTML"
->
-  Trigger htmx remount
-</button>
+{% call cluster(gap="sm") %}
+{{ btn("Trigger htmx remount", variant="secondary", hx_get="/islands/remount", hx_target="#island-shell", hx_swap="outerHTML") }}
+{{ nav_link("/islands/grid-state", "grid_state") }}
+{{ nav_link("/islands/wizard-state", "wizard_state") }}
+{{ nav_link("/islands/upload-state", "upload_state") }}
+{% end %}
 
-<p style="margin-top: 0.75rem;">
-  <a href="/islands/grid-state">grid_state →</a> |
-  <a href="/islands/wizard-state">wizard_state →</a> |
-  <a href="/islands/upload-state">upload_state →</a>
-</p>
-
-<div id="island-events" class="chirpui-stack chirpui-stack--sm" style="margin-top: 1rem;"></div>
+<div id="island-events" class="chirpui-stack chirpui-stack--sm"></div>
+{% end %}
 {% end %}
 
 {% block island_mount %}
 <div id="island-shell">
+{% call surface(variant="elevated") %}
 {% call island_root(
   "counter-widget",
   props={"seed": 3, "updated_at": "server-rendered"},
   mount_id="counter-widget-root",
   version="1",
-  src="/static/islands/counter.js",
-  cls="chirpui-card"
+  src="/static/islands/counter.js"
 ) %}
-  <h3>Counter island (custom adapter)</h3>
-  <p class="chirpui-text-muted">Mounted by /static/islands/counter.js</p>
+  <h3>Counter island</h3>
+  <p class="chirpui-text-muted">Custom adapter mounted by <code>/static/islands/counter.js</code>.</p>
   <p><strong data-counter-value>0</strong></p>
-  <div style="display:flex; gap:0.5rem;">
-    <button type="button" class="chirpui-btn chirpui-btn--secondary" data-counter-minus>-1</button>
-    <button type="button" class="chirpui-btn chirpui-btn--primary" data-counter-plus>+1</button>
-  </div>
+  {% call cluster(gap="sm") %}
+    {{ btn("-1", variant="secondary", attrs_unsafe="data-counter-minus") }}
+    {{ btn("+1", variant="primary", attrs_unsafe="data-counter-plus") }}
+  {% end %}
+{% end %}
 {% end %}
 </div>
 {% end %}
 
+{% call grid(cols=2, gap="md") %}
 {% call block() %}
+{% call surface(variant="muted") %}
+{% call stack(gap="sm") %}
 <h3>state_sync</h3>
-{% call state_sync("search_text", query_param="q", initial="", mount_id="state-sync-root", cls="chirpui-card") %}
-<label class="chirpui-font-sm">Query</label>
-<input data-state-field type="text" placeholder="Type to sync URL..." style="width:100%;">
+{% call state_sync("search_text", query_param="q", initial="", mount_id="state-sync-root") %}
+{{ text_field("query", label="Query", placeholder="Type to sync URL...", attrs_unsafe="data-state-field") }}
+{% end %}
+{% end %}
 {% end %}
 {% end %}
 
 {% call block() %}
+{% call surface(variant="muted") %}
+{% call stack(gap="sm") %}
 <h3>action_queue</h3>
-{% call action_queue("save_profile", mount_id="action-queue-root", cls="chirpui-card") %}
-<button type="button" class="chirpui-btn chirpui-btn--primary" data-action-trigger>
-  Run action
-</button>
+{% call action_queue("save_profile", mount_id="action-queue-root") %}
+{{ btn("Run action", variant="primary", attrs_unsafe="data-action-trigger") }}
 <p class="chirpui-text-muted" data-action-status>Ready.</p>
 {% end %}
 {% end %}
+{% end %}
+{% end %}
 
 {% call block() %}
+{% call surface(variant="muted") %}
+{% call stack(gap="sm") %}
 <h3>draft_store</h3>
-{% call draft_store("profile_draft", mount_id="draft-store-root", cls="chirpui-card") %}
-<label>Name</label>
-<input name="name" data-draft-field type="text" style="width:100%;">
-<label style="margin-top:0.5rem; display:block;">Bio</label>
-<textarea name="bio" data-draft-field rows="3" style="width:100%;"></textarea>
+{% call draft_store("profile_draft", mount_id="draft-store-root") %}
+{{ text_field("name", label="Name", attrs_unsafe="data-draft-field") }}
+<div class="chirpui-field">
+  <label class="chirpui-field__label" for="bio">Bio</label>
+  <textarea class="chirpui-field__input" id="bio" name="bio" data-draft-field rows="3"></textarea>
+</div>
 <p class="chirpui-text-muted">Last saved: <span data-draft-saved-at>never</span></p>
 {% end %}
 {% end %}
+{% end %}
+{% end %}
 
 {% call block() %}
+{% call surface(variant="muted") %}
+{% call stack(gap="sm") %}
 <h3>error_boundary</h3>
-{% call error_boundary("profile-boundary", mount_id="boundary-root", cls="chirpui-card") %}
+{% call error_boundary("profile-boundary", mount_id="boundary-root") %}
 <div data-error-body>
   <p>Healthy content region.</p>
-  <button type="button"
-          class="chirpui-btn chirpui-btn--secondary"
-          onclick="document.dispatchEvent(new CustomEvent('chirp:island:error', {detail: {id: 'boundary-root', reason: 'demo'}}))">
-    Trigger boundary error
-  </button>
+  {{ btn("Trigger boundary error", variant="secondary", attrs_map={"id": "trigger-boundary-error"}) }}
 </div>
 <div data-error-fallback hidden>
   <p>Fallback active due to runtime error.</p>
-  <button type="button" class="chirpui-btn chirpui-btn--primary" data-error-reset>Reset</button>
+  {{ btn("Reset", variant="primary", attrs_unsafe="data-error-reset") }}
 </div>
+{% end %}
+{% end %}
+{% end %}
 {% end %}
 {% end %}
 
 <script>
 (() => {
   const log = document.getElementById("island-events");
+  const boundaryTrigger = document.getElementById("trigger-boundary-error");
+  if (boundaryTrigger) {
+    boundaryTrigger.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("chirp:island:error", {
+        detail: {id: "boundary-root", reason: "demo"}
+      }));
+    });
+  }
   if (!log) return;
   const events = [
     "chirp:island:mount",
@@ -116,10 +135,10 @@
   ];
   events.forEach((name) => {
     document.addEventListener(name, (event) => {
-      const d = event.detail || {};
+      const detail = event.detail || {};
       const item = document.createElement("p");
       item.className = "chirpui-text-muted";
-      item.textContent = `${name}: ${d.name || "unknown"} (${d.id || "no-id"}) ${d.status || d.reason || ""}`.trim();
+      item.textContent = `${name}: ${detail.name || "unknown"} (${detail.id || "no-id"}) ${detail.status || detail.reason || ""}`.trim();
       log.prepend(item);
     });
   });

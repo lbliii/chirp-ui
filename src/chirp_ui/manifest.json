@@ -10518,6 +10518,84 @@
       "trim_emits": [],
       "variants": []
     },
+    "island-root": {
+      "authoring": "available",
+      "block": "island-root",
+      "category": "interactive",
+      "composes": [],
+      "consumes": [],
+      "description": "Framework-agnostic island mount wrappers\n    Keeps fallback content server-rendered while exposing a stable\n    mount root contract for client adapters.\n\n    Requires Chirp's `island_attrs(...)` global unless raw_attrs is provided.",
+      "elements": [],
+      "emits": [
+        "chirpui-island-fallback",
+        "chirpui-island-root"
+      ],
+      "extra_emits": [
+        "chirpui-island-fallback"
+      ],
+      "lineno": 8,
+      "macro": "island_root",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "props"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "mount_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "version"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "src"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "primitive"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "raw_attrs"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "islands.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "jello": {
       "authoring": "available",
       "block": "jello",
@@ -12736,6 +12814,7 @@
       "elements": [],
       "emits": [
         "chirpui-notification-dot",
+        "chirpui-notification-dot--count",
         "chirpui-notification-dot--lg",
         "chirpui-notification-dot--sm",
         "chirpui-notification-dot--success",
@@ -12744,6 +12823,7 @@
         "chirpui-notification-dot__ping"
       ],
       "extra_emits": [
+        "chirpui-notification-dot--count",
         "chirpui-notification-dot__dot",
         "chirpui-notification-dot__ping"
       ],
@@ -19312,9 +19392,12 @@
       ],
       "emits": [
         "chirpui-timeline",
+        "chirpui-timeline--cards",
+        "chirpui-timeline--compact",
         "chirpui-timeline--hoverable",
         "chirpui-timeline--on-accent",
         "chirpui-timeline--on-muted",
+        "chirpui-timeline--spacious",
         "chirpui-timeline__avatar",
         "chirpui-timeline__body",
         "chirpui-timeline__content",
@@ -19346,9 +19429,12 @@
       "macro": "timeline",
       "maturity": "stable",
       "modifiers": [
+        "cards",
+        "compact",
         "hoverable",
         "on-accent",
-        "on-muted"
+        "on-muted",
+        "spacious"
       ],
       "params": [
         {
@@ -19365,6 +19451,16 @@
           "has_default": true,
           "is_required": false,
           "name": "link_mode"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "density"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
         },
         {
           "has_default": true,
@@ -21201,7 +21297,7 @@
   "schema": "chirpui-manifest@3",
   "stats": {
     "component_authoring": {
-      "available": 284,
+      "available": 285,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -21217,7 +21313,7 @@
       "feedback": 25,
       "form": 17,
       "infrastructure": 2,
-      "interactive": 8,
+      "interactive": 9,
       "layout": 46,
       "marketing": 11,
       "media": 6,
@@ -21230,22 +21326,22 @@
       "experimental": 124,
       "internal": 2,
       "legacy": 39,
-      "stable": 170
+      "stable": 171
     },
     "component_requirements": {
       "alpine": 19,
       "htmx": 23
     },
     "component_roles": {
-      "component": 175,
+      "component": 176,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 17,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 225,
-    "components_with_params": 225,
+    "components_with_description": 226,
+    "components_with_params": 226,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -21253,7 +21349,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 223
+      "public_templated_components": 224
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -21261,8 +21357,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 122,
-      "explicit_extra_classes": 523,
+      "explicit_extra_blocks": 123,
+      "explicit_extra_classes": 525,
       "explicit_trim_blocks": 72,
       "explicit_trim_classes": 102
     },
@@ -21276,7 +21372,7 @@
       "spacing": 22,
       "typography": 40
     },
-    "total_components": 335,
+    "total_components": 336,
     "total_tokens": 356
   },
   "tokens": {

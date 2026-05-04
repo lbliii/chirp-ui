@@ -641,6 +641,7 @@ class TestIslands:
         ).render()
         assert 'data-island="editor"' in html
         assert 'id="editor-root"' in html
+        assert 'class="chirpui-island-root"' in html
         assert "data-island-props=" in html
         assert "chirpui-island-fallback" in html
         assert "Fallback" in html
@@ -4727,6 +4728,15 @@ class TestTimeline:
         assert "chirpui-timeline__link-overlay" not in html
         assert 'href="/detail"' in html
 
+    def test_timeline_density_and_card_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline %}'
+            '{% set items = [{"title": "Step 1", "date": "Jan 1"}] %}'
+            '{{ timeline(items=items, density="compact", variant="cards") }}'
+        ).render()
+        assert "chirpui-timeline--compact" in html
+        assert "chirpui-timeline--cards" in html
+
     def test_timeline_items_title_link_mode_uses_route_link_attrs_when_available(
         self, env: Environment
     ) -> None:
@@ -6555,6 +6565,7 @@ class TestNotificationDot:
             '{% from "chirpui/notification_dot.html" import notification_dot %}'
             "{% call notification_dot(count=5) %}<span>Mail</span>{% end %}"
         ).render()
+        assert "chirpui-notification-dot--count" in html
         assert "5" in html
         assert 'aria-label="5 notifications"' in html
 

@@ -58,8 +58,23 @@
 {% end %}
 
 <h2>Timeline</h2>
+{% call grid(cols=2) %}
 {% call block() %}
-{{ timeline(items=[{"title": "Order placed", "date": "Jan 15, 10:30", "content": "Order #1234 created"}, {"title": "Payment received", "date": "Jan 15, 10:32", "content": "Card ending in 4242"}, {"title": "Shipped", "date": "Jan 16, 09:00", "content": "Tracking: 1Z999AA10123456784"}]) }}
+<h3>Order Progress</h3>
+{{ timeline(items=[
+  {"title": "Order placed", "date": "Jan 15, 10:30", "content": "Order #1234 created", "variant": "success"},
+  {"title": "Payment received", "date": "Jan 15, 10:32", "content": "Card ending in 4242", "variant": "info"},
+  {"title": "Shipped", "date": "Jan 16, 09:00", "content": "Tracking: 1Z999AA10123456784"}
+], density="spacious") }}
+{% end %}
+{% call block() %}
+<h3>Incident Review</h3>
+{{ timeline(items=[
+  {"title": "Alert fired", "date": "09:12", "time": "T+0", "content": "Checkout error rate crossed the warning threshold.", "icon": "alert", "variant": "warning"},
+  {"title": "Owner paged", "date": "09:14", "time": "T+2", "content": "Payments on-call acknowledged the incident.", "icon": "user", "variant": "info"},
+  {"title": "Mitigation live", "date": "09:31", "time": "T+19", "content": "Retry budget and queue drain restored normal checkout.", "icon": "status", "variant": "success"}
+], variant="cards", density="compact") }}
+{% end %}
 {% end %}
 
 {% end %}

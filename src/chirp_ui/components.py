@@ -408,6 +408,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="notification_dot.html",
         extra_emits=(
+            "chirpui-notification-dot--count",
             "chirpui-notification-dot__dot",
             "chirpui-notification-dot__ping",
         ),
@@ -2040,7 +2041,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "timeline": ComponentDescriptor(
         block="timeline",
-        modifiers=("on-muted", "on-accent", "hoverable"),
+        modifiers=("on-muted", "on-accent", "hoverable", "compact", "spacious", "cards"),
         elements=(
             "item",
             "dot",
@@ -2869,6 +2870,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         template="fragment_island.html",
         category="infrastructure",
         maturity="internal",
+    ),
+    "island-root": ComponentDescriptor(
+        block="island-root",
+        slots=("",),
+        template="islands.html",
+        extra_emits=("chirpui-island-fallback",),
+        category="interactive",
+        maturity="stable",
     ),
     "label-overline": ComponentDescriptor(
         block="label-overline",
