@@ -121,3 +121,25 @@ async def test_decorative_background_effects_have_nonzero_layers(page, base_url)
         assert any(layer["opacity"] > 0 and layer["display"] != "none" for layer in layers), (
             f"{testid} should have at least one visible decorative layer"
         )
+
+
+async def test_motion_wrappers_distinguish_hover_replay_from_load_once(page, base_url):
+    await page.goto(base_url + "/effects-visual")
+
+    hover_cases = {
+        "motion-wobble": "chirpui-wobble",
+        "motion-jello": "chirpui-jello",
+        "motion-rubber": "chirpui-rubber-band",
+    }
+
+    for testid, animation_name in hover_cases.items():
+        wrapper = page.locator(f"[data-testid='{testid}'] > span").first
+        before = await wrapper.evaluate("el => getComputedStyle(el).animationName")
+        await wrapper.hover()
+        after = await wrapper.evaluate("el => getComputedStyle(el).animationName")
+        assert before in ("none", ""), f"{testid} should not animate before hover"
+        assert after == animation_name, f"{testid} should animate on hover"
+
+    bounce = page.locator("[data-testid='motion-bounce'] > span").first
+    bounce_animation = await bounce.evaluate("el => getComputedStyle(el).animationName")
+    assert bounce_animation == "chirpui-bounce-in"

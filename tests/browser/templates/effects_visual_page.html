@@ -11,6 +11,7 @@
 {% from "chirpui/constellation.html" import constellation %}
 {% from "chirpui/scanline.html" import scanline %}
 {% from "chirpui/grain.html" import grain %}
+{% from "chirpui/wobble.html" import wobble, jello, rubber_band, bounce_in %}
 
 <style>
   .effect-probe {
@@ -59,5 +60,21 @@
 
 <section data-testid="constellation">
   {% call constellation() %}<div class="effect-probe">Constellation</div>{% end %}
+</section>
+
+<section data-testid="motion-wobble">
+  {% call wobble(trigger="hover") %}<button type="button">Wobble</button>{% end %}
+</section>
+
+<section data-testid="motion-jello">
+  {% call jello(trigger="hover") %}<button type="button">Jello</button>{% end %}
+</section>
+
+<section data-testid="motion-rubber">
+  {% call rubber_band(trigger="hover") %}<button type="button">Rubber</button>{% end %}
+</section>
+
+<section data-testid="motion-bounce">
+  {% call bounce_in() %}<button type="button">Bounce</button>{% end %}
 </section>
 {% end %}

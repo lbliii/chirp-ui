@@ -20983,13 +20983,13 @@
       "category": "effect",
       "composes": [],
       "consumes": [],
-      "description": "Wobble / Jello / Rubber-band / Bounce-in\n    Micro-interaction animation utilities. Apply on hover, click, or one-shot.\n\n    Usage:\n        from \"chirpui/wobble.html\" import wobble, jello, rubber_band, bounce_in\n\n        {% call wobble(trigger=\"hover\") %}\n            <button>Hover me</button>\n        {% end %}\n\n        {% call jello() %}\n            <div>Jello on load</div>\n        {% end %}\n\n        {% call rubber_band(trigger=\"hover\") %}\n            <span>🎈 Stretch!</span>\n        {% end %}\n\n        {% call bounce_in() %}\n            <div class=\"chirpui-card\">Appears with bounce</div>\n        {% end %}",
+      "description": "Wobble / Jello / Rubber-band / Bounce-in\n    Micro-interaction animation utilities. Load-triggered variants play once\n    when inserted into the document; use trigger=\"hover\" for replayable\n    interaction demos or controls.\n\n    Usage:\n        from \"chirpui/wobble.html\" import wobble, jello, rubber_band, bounce_in\n\n        {% call wobble(trigger=\"hover\") %}\n            <button>Hover me</button>\n        {% end %}\n\n        {% call jello() %}\n            <div>Jello on load</div>\n        {% end %}\n\n        {% call rubber_band(trigger=\"hover\") %}\n            <span>🎈 Stretch!</span>\n        {% end %}\n\n        {% call bounce_in() %}\n            <div class=\"chirpui-card\">Appears with bounce</div>\n        {% end %}",
       "elements": [],
       "emits": [
         "chirpui-wobble"
       ],
       "extra_emits": [],
-      "lineno": 24,
+      "lineno": 26,
       "macro": "wobble",
       "maturity": "experimental",
       "modifiers": [],
