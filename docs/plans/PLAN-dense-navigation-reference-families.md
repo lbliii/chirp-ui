@@ -69,9 +69,9 @@ systems without cloning any specific product.
   nearby-topic discovery.
 - Synthesis accepted: `docs/DENSE-NAVIGATION-SYNTHESIS.md` captures the common
   contracts, anti-decisions, primitive candidates, and backlog. The first
-  implementation candidate is sidebar badge parity; scope switcher, saved view
-  strip, and dense shell/frame ideas remain recipe-level until real app usage
-  proves stable shapes.
+  implementation candidates are sidebar badge parity, `scope_switcher`, and
+  `saved_view_strip`; dense shell/frame ideas remain recipe-level until real app
+  usage proves stable shapes.
 
 ## Research Sources
 

@@ -76,6 +76,33 @@ def test_primary_nav_minimal_expected_badge(env: Environment) -> None:
     assert "chirpui-primary-nav__badge--reserved" in out
 
 
+def test_sidebar_link_minimal_expected_badge(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/sidebar.html" import sidebar_link %}'
+        '{{ sidebar_link("/", "Home", badge_expected=true) }}',
+    )
+    assert "chirpui-sidebar__badge--reserved" in out
+
+
+def test_scope_switcher_minimal_item(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/scope_switcher.html" import scope_switcher %}'
+        '{{ scope_switcher("Scope", items=[{}]) }}',
+    )
+    assert "chirpui-scope-switcher" in out
+
+
+def test_saved_view_strip_minimal_item(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/saved_view_strip.html" import saved_view_strip %}'
+        "{{ saved_view_strip(views=[{}]) }}",
+    )
+    assert "chirpui-saved-view-strip" in out
+
+
 def test_nav_tree_minimal_item(env: Environment) -> None:
     out = _render(
         env,

@@ -1,0 +1,14 @@
+{#- chirp-ui: Scope switcher
+    Compact dropdown trigger for choosing workspace, org, project, environment,
+    file, account, channel, docs version, or other navigation scope.
+    Items use dropdown_menu's item contract: {label, href?} or {label, action?,
+    variant?, icon?, divider?}.
+-#}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+
+{% def scope_switcher(label, items, id="chirpui-scope-switcher", aria_label=none, variant="ghost", size="sm", icon=none, cls="") %}
+<span class="chirpui-scope-switcher{{ " " ~ cls if cls else "" }}">
+    {{ dropdown_menu(btn(label, variant=variant, size=size, icon=icon, aria_label=aria_label), items=items, id=id) }}
+</span>
+{% end %}

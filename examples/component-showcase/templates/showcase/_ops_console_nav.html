@@ -6,6 +6,8 @@
 {% from "chirpui/primary_nav.html" import primary_nav %}
 {% from "chirpui/dropdown_menu.html" import dropdown_menu %}
 {% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/scope_switcher.html" import scope_switcher %}
+{% from "chirpui/saved_view_strip.html" import saved_view_strip %}
 {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
 {% from "chirpui/route_tabs.html" import route_tabs %}
 {% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
@@ -20,13 +22,13 @@
 {% call stack(gap="sm") %}
 {% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Ops console global navigation") %}
   {{ logo(text="PulseOps", href="/ops", variant="text") }}
-  {{ dropdown_menu(btn("Prod monitors", variant="ghost", size="sm"), items=[
+  {{ scope_switcher("Prod monitors", items=[
     {"label": "Prod monitors", "href": "/ops/scopes/prod"},
     {"label": "Staging monitors", "href": "/ops/scopes/staging"},
     {"label": "Customer edge", "href": "/ops/scopes/edge"},
     {"divider": true},
     {"label": "Manage scopes", "href": "/ops/scopes"}
-  ], id="ops-scope-menu") }}
+  ], id="ops-scope-menu", aria_label="Switch ops scope") }}
   {{ command_palette_trigger(target="ops-console-palette", label="Search dashboards and signals", placeholder="Jump to dashboard, log, trace", shortcut="J", icon="search", density="sm") }}
   {{ btn("New monitor", variant="primary", size="sm") }}
   {{ icon_btn("alert", href="/ops/incidents", aria_label="Incidents") }}
@@ -96,12 +98,12 @@
       {{ btn("Compare deploy", variant="ghost", size="sm") }}
       {{ btn("Kiosk", variant="ghost", size="sm") }}
     {% end %}
-    {% call chip_group(label="Ops console saved investigations") %}
-      {{ chip("Current incident", selected=true, href="/ops/incidents/current") }}
-      {{ chip("Deploy regression", href="/ops/views/deploy-regression") }}
-      {{ chip("P95 latency", href="/ops/views/p95-latency") }}
-      {{ chip("SLO burn", href="/ops/views/slo-burn") }}
-    {% end %}
+    {{ saved_view_strip(label="Ops console saved investigations", views=[
+      {"label": "Current incident", "href": "/ops/incidents/current", "selected": true},
+      {"label": "Deploy regression", "href": "/ops/views/deploy-regression"},
+      {"label": "P95 latency", "href": "/ops/views/p95-latency"},
+      {"label": "SLO burn", "href": "/ops/views/slo-burn"}
+    ]) }}
     {% call grid(cols=3, gap="md") %}
       {% call resource_card("/ops/monitors/api-5xx", "API 5xx monitor", description="Alerts when edge API errors exceed the burn-rate threshold.", top_meta="monitor") %}
         {% slot badges %}{{ badge("Firing", variant="error") }}{% end %}

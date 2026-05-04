@@ -6,6 +6,8 @@
 {% from "chirpui/primary_nav.html" import primary_nav %}
 {% from "chirpui/dropdown_menu.html" import dropdown_menu %}
 {% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/scope_switcher.html" import scope_switcher %}
+{% from "chirpui/saved_view_strip.html" import saved_view_strip %}
 {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
 {% from "chirpui/route_tabs.html" import route_tabs %}
 {% from "chirpui/inline_counter.html" import inline_counter %}
@@ -19,13 +21,13 @@
 {% call stack(gap="sm") %}
 {% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Cloud console global navigation") %}
   {{ logo(text="Nimbus", href="/cloud", variant="text") }}
-  {{ dropdown_menu(btn("Prod / us-east", variant="ghost", size="sm"), items=[
+  {{ scope_switcher("Prod / us-east", items=[
     {"label": "Prod / us-east", "href": "/cloud/scopes/prod-us-east"},
     {"label": "Prod / eu-west", "href": "/cloud/scopes/prod-eu-west"},
     {"label": "Staging", "href": "/cloud/scopes/staging"},
     {"divider": true},
     {"label": "Manage scopes", "href": "/cloud/scopes"}
-  ], id="cloud-scope-menu") }}
+  ], id="cloud-scope-menu", aria_label="Switch cloud scope") }}
   {{ dropdown_menu(btn("Services", variant="ghost", size="sm"), items=[
     {"label": "Compute", "href": "/cloud/services/compute"},
     {"label": "Storage", "href": "/cloud/services/storage"},
@@ -85,12 +87,12 @@
   {{ btn("Errors only", variant="ghost", size="sm") }}
   {{ btn("Refresh", variant="ghost", size="sm") }}
 {% end %}
-{% call chip_group(label="Cloud console saved views") %}
-  {{ chip("Recent deployments", selected=true, href="/cloud/deployments/recent") }}
-  {{ chip("Favorites", href="/cloud/favorites") }}
-  {{ chip("Failed builds", href="/cloud/deployments/failed") }}
-  {{ chip("Cost spike", href="/cloud/cost/spikes") }}
-{% end %}
+{{ saved_view_strip(label="Cloud console saved views", views=[
+  {"label": "Recent deployments", "href": "/cloud/deployments/recent", "selected": true},
+  {"label": "Favorites", "href": "/cloud/favorites"},
+  {"label": "Failed builds", "href": "/cloud/deployments/failed"},
+  {"label": "Cost spike", "href": "/cloud/cost/spikes"}
+]) }}
 {% call grid(cols=3, gap="md") %}
   {% call resource_card("/cloud/projects/api-gateway", "api-gateway", description="Public edge API with three active regions.", top_meta="project") %}
     {% slot badges %}{{ badge("Healthy", variant="success") }}{% end %}

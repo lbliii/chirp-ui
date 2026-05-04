@@ -6,6 +6,8 @@
 {% from "chirpui/primary_nav.html" import primary_nav %}
 {% from "chirpui/dropdown_menu.html" import dropdown_menu %}
 {% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/scope_switcher.html" import scope_switcher %}
+{% from "chirpui/saved_view_strip.html" import saved_view_strip %}
 {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
 {% from "chirpui/route_tabs.html" import route_tabs %}
 {% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
@@ -20,13 +22,13 @@
 {% call stack(gap="sm") %}
 {% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Tracker global navigation") %}
   {{ logo(text="Linepath", href="/tracker", variant="text") }}
-  {{ dropdown_menu(btn("Product team", variant="ghost", size="sm"), items=[
+  {{ scope_switcher("Product team", items=[
     {"label": "Product team", "href": "/tracker/teams/product"},
     {"label": "Platform team", "href": "/tracker/teams/platform"},
     {"label": "Support team", "href": "/tracker/teams/support"},
     {"divider": true},
     {"label": "All teams", "href": "/tracker/teams"}
-  ], id="tracker-team-menu") }}
+  ], id="tracker-team-menu", aria_label="Switch tracker team") }}
   {{ command_palette_trigger(target="tracker-palette", label="Open tracker command menu", placeholder="Go to issue, project, view", shortcut="K", icon="shortcut", density="sm") }}
   {{ btn("New issue", variant="primary", size="sm") }}
   {{ icon_btn("alert", href="/tracker/notifications", aria_label="Notifications") }}
@@ -95,12 +97,12 @@
       {{ btn("Estimate", variant="ghost", size="sm") }}
       {{ btn("Save view", variant="ghost", size="sm") }}
     {% end %}
-    {% call chip_group(label="Tracker saved views") %}
-      {{ chip("My open issues", selected=true, href="/tracker/views/my-open") }}
-      {{ chip("Needs design", href="/tracker/views/needs-design") }}
-      {{ chip("Blocked", href="/tracker/views/blocked") }}
-      {{ chip("Launch cut", href="/tracker/views/launch-cut") }}
-    {% end %}
+    {{ saved_view_strip(label="Tracker saved views", views=[
+      {"label": "My open issues", "href": "/tracker/views/my-open", "selected": true},
+      {"label": "Needs design", "href": "/tracker/views/needs-design"},
+      {"label": "Blocked", "href": "/tracker/views/blocked"},
+      {"label": "Launch cut", "href": "/tracker/views/launch-cut"}
+    ]) }}
     {% call grid(cols=3, gap="md") %}
       {% call resource_card("/tracker/issues/PRO-128", "PRO-128 Payment retry copy", description="Issue card reachable from visible route and command search.", top_meta="issue") %}
         {% slot badges %}{{ badge("High", variant="warning") }}{% end %}

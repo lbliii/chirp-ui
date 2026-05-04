@@ -191,18 +191,19 @@ The recipe family study found that ChirpUI should continue to prefer layered
 composition over product-specific navigation components. The current blessed
 path is:
 
-- scope switchers as `dropdown_menu` compositions,
+- scope selection as `scope_switcher`,
 - search/jump as `command_palette_trigger` plus `command_palette`,
 - broad navigation as `sidebar`, `primary_nav`, or `nav_tree`,
 - local URL-backed views as `route_tabs`,
-- saved views and nearby discovery as `chip_group` or `resource_card`,
+- saved views and shortcut rows as `saved_view_strip`,
+- nearby discovery as `chip_group` or `resource_card`,
 - page tools as `command_bar`.
 
-The first implementation candidate is sidebar badge parity with `route_tabs` and
-`primary_nav`: side navigation should be able to reserve/loading-render badge
-states and expose accessible badge labels. Broader macros such as
-`scope_switcher`, `saved_view_strip`, `workspace_shell`, or `dense_nav_frame`
-remain recipe-level ideas until repeated app usage proves a stable shape.
+Sidebar links now share the badge stability contract from `route_tabs` and
+`primary_nav`: side navigation can reserve/loading-render badge states and
+expose accessible badge labels. Broader shells such as `workspace_shell` or
+`dense_nav_frame` remain recipe-level ideas until repeated app usage proves a
+stable shape.
 
 See [DENSE-NAVIGATION-SYNTHESIS.md](DENSE-NAVIGATION-SYNTHESIS.md) for the
 candidate backlog and anti-decisions.

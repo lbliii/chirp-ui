@@ -78,6 +78,9 @@ class TestDataPage:
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
             assert "chirpui-route-tab__badge--reserved" in response.text
+            assert "chirpui-sidebar__badge--loading" in response.text
+            assert "chirpui-scope-switcher" in response.text
+            assert "chirpui-saved-view-strip" in response.text
             assert "chirpui-command-palette-trigger--sm" in response.text
             assert "Find service, project, deployment" in response.text
             assert "Search work, people, projects" in response.text

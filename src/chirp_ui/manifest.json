@@ -15007,6 +15007,63 @@
         "frost"
       ]
     },
+    "saved-view-strip": {
+      "authoring": "available",
+      "block": "saved-view-strip",
+      "category": "navigation",
+      "composes": [
+        "chip"
+      ],
+      "consumes": [],
+      "description": "Saved view strip\n    Compact route shortcuts for saved views, favorites, nearby topics, unread\n    filters, assigned work, or other user-owned navigation shortcuts.\n    Data-in: views = [{label, href?, selected?, muted?, color?, cls?}].\n    Pass current_href to derive selected state from href when selected is absent.",
+      "elements": [],
+      "emits": [
+        "chirpui-saved-view-strip"
+      ],
+      "extra_emits": [],
+      "lineno": 9,
+      "macro": "saved_view_strip",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "views"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "current_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "saved_view_strip.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "scanline": {
       "authoring": "available",
       "block": "scanline",
@@ -15057,6 +15114,82 @@
         "crt",
         "heavy"
       ]
+    },
+    "scope-switcher": {
+      "authoring": "available",
+      "block": "scope-switcher",
+      "category": "navigation",
+      "composes": [
+        "btn",
+        "dropdown"
+      ],
+      "consumes": [],
+      "description": "Scope switcher\n    Compact dropdown trigger for choosing workspace, org, project, environment,\n    file, account, channel, docs version, or other navigation scope.\n    Items use dropdown_menu's item contract: {label, href?} or {label, action?,\n    variant?, icon?, divider?}.",
+      "elements": [],
+      "emits": [
+        "chirpui-scope-switcher"
+      ],
+      "extra_emits": [],
+      "lineno": 10,
+      "macro": "scope_switcher",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "label"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "aria_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "icon"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "scope_switcher.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
     },
     "scroll-x": {
       "authoring": "compatibility",
@@ -15985,7 +16118,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
+      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Badge state: badge_label gives a richer accessible label for visible counts.\n    badge_expected reserves count space, and badge_loading renders a pending\n    count without layout shift.\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
       "elements": [
         "badge",
         "header",
@@ -15999,6 +16132,8 @@
       "emits": [
         "chirpui-sidebar",
         "chirpui-sidebar__badge",
+        "chirpui-sidebar__badge--loading",
+        "chirpui-sidebar__badge--reserved",
         "chirpui-sidebar__footer",
         "chirpui-sidebar__header",
         "chirpui-sidebar__icon",
@@ -16011,11 +16146,13 @@
         "chirpui-sidebar__section-title"
       ],
       "extra_emits": [
+        "chirpui-sidebar__badge--loading",
+        "chirpui-sidebar__badge--reserved",
         "chirpui-sidebar__footer",
         "chirpui-sidebar__link--active",
         "chirpui-sidebar__section-links"
       ],
-      "lineno": 33,
+      "lineno": 37,
       "macro": "sidebar",
       "maturity": "stable",
       "modifiers": [],
@@ -16065,7 +16202,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
+      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Badge state: badge_label gives a richer accessible label for visible counts.\n    badge_expected reserves count space, and badge_loading renders a pending\n    count without layout shift.\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
       "elements": [
         "icon"
       ],
@@ -16074,7 +16211,7 @@
         "chirpui-sidebar-toggle__icon"
       ],
       "extra_emits": [],
-      "lineno": 89,
+      "lineno": 94,
       "macro": "sidebar_toggle",
       "maturity": "stable",
       "modifiers": [],
@@ -21007,7 +21144,7 @@
   "schema": "chirpui-manifest@3",
   "stats": {
     "component_authoring": {
-      "available": 281,
+      "available": 283,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -21027,7 +21164,7 @@
       "layout": 46,
       "marketing": 11,
       "media": 6,
-      "navigation": 22,
+      "navigation": 24,
       "overlay": 3,
       "social": 4,
       "typography": 29
@@ -21036,22 +21173,22 @@
       "experimental": 124,
       "internal": 2,
       "legacy": 39,
-      "stable": 167
+      "stable": 169
     },
     "component_requirements": {
-      "alpine": 18,
+      "alpine": 19,
       "htmx": 23
     },
     "component_roles": {
       "component": 174,
       "effect": 32,
       "infrastructure": 2,
-      "pattern": 15,
+      "pattern": 17,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 222,
-    "components_with_params": 222,
+    "components_with_description": 224,
+    "components_with_params": 224,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -21059,7 +21196,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 220
+      "public_templated_components": 222
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -21068,7 +21205,7 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 122,
-      "explicit_extra_classes": 520,
+      "explicit_extra_classes": 522,
       "explicit_trim_blocks": 72,
       "explicit_trim_classes": 102
     },
@@ -21082,7 +21219,7 @@
       "spacing": 22,
       "typography": 40
     },
-    "total_components": 332,
+    "total_components": 334,
     "total_tokens": 356
   },
   "tokens": {

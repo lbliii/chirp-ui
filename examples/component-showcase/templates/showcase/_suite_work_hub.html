@@ -6,6 +6,8 @@
 {% from "chirpui/primary_nav.html" import primary_nav %}
 {% from "chirpui/dropdown_menu.html" import dropdown_menu %}
 {% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/scope_switcher.html" import scope_switcher %}
+{% from "chirpui/saved_view_strip.html" import saved_view_strip %}
 {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
 {% from "chirpui/route_tabs.html" import route_tabs %}
 {% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
@@ -20,13 +22,13 @@
 {% call stack(gap="sm") %}
 {% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Suite work hub global navigation") %}
   {{ logo(text="Workgrid", href="/suite", variant="text") }}
-  {{ dropdown_menu(btn("Design Org", variant="ghost", size="sm"), items=[
+  {{ scope_switcher("Design Org", items=[
     {"label": "Design Org", "href": "/suite/orgs/design"},
     {"label": "Platform Org", "href": "/suite/orgs/platform"},
     {"label": "Customer Ops", "href": "/suite/orgs/customer-ops"},
     {"divider": true},
     {"label": "Manage organizations", "href": "/suite/orgs"}
-  ], id="suite-org-menu") }}
+  ], id="suite-org-menu", aria_label="Switch suite organization") }}
   {{ primary_nav([
     {"label": "Work", "href": "/suite/work", "match": "prefix"},
     {"label": "Strategy", "href": "/suite/strategy", "match": "prefix", "badge_expected": true},
@@ -68,7 +70,7 @@
     {% call sidebar_section("Apps and spaces", collapsible=true) %}
       {{ sidebar_link("/suite/work", "Work", icon="grid", match="prefix") }}
       {{ sidebar_link("/suite/workflow", "Workflow", icon="bolt", badge=6) }}
-      {{ sidebar_link("/suite/company", "Company", icon="user") }}
+      {{ sidebar_link("/suite/company", "Company", icon="user", badge_loading=true) }}
     {% end %}
     {% slot footer %}
       <span class="chirpui-text-muted chirpui-font-sm">Personalized sidebar shortcuts stay navigable links.</span>
@@ -113,12 +115,12 @@
       {{ btn("Blocked", variant="ghost", size="sm") }}
       {{ btn("Automate", variant="ghost", size="sm") }}
     {% end %}
-    {% call chip_group(label="Suite work hub saved views") %}
-      {{ chip("Launch focus", selected=true, href="/suite/work/projects/launch/views/focus") }}
-      {{ chip("Needs decision", href="/suite/work/projects/launch/views/decision") }}
-      {{ chip("Cross-team", href="/suite/work/projects/launch/views/cross-team") }}
-      {{ chip("This week", href="/suite/work/projects/launch/views/week") }}
-    {% end %}
+    {{ saved_view_strip(label="Suite work hub saved views", views=[
+      {"label": "Launch focus", "href": "/suite/work/projects/launch/views/focus", "selected": true},
+      {"label": "Needs decision", "href": "/suite/work/projects/launch/views/decision"},
+      {"label": "Cross-team", "href": "/suite/work/projects/launch/views/cross-team"},
+      {"label": "This week", "href": "/suite/work/projects/launch/views/week"}
+    ]) }}
     {% call grid(cols=3, gap="md") %}
       {% call resource_card("/suite/work/projects/launch/tasks/review-copy", "Review launch copy", description="Content task assigned to Brand, due this week.", top_meta="task") %}
         {% slot badges %}{{ badge("Due Fri", variant="warning") }}{% end %}

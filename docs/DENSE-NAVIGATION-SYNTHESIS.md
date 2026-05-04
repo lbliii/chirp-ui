@@ -64,8 +64,10 @@ These are already supported well enough to document as the blessed path:
 - Use `breadcrumbs(overflow="collapse")` for deep object or page paths.
 - Use `primary_nav` for compact horizontal route movement.
 - Use `command_bar` for page-local controls and display options.
-- Use `chip_group` for saved views, nearby topics, favorites, and compact
-  shortcut rows.
+- Use `scope_switcher` for visible workspace, org, project, environment,
+  account, file, channel, or docs-version scope selection.
+- Use `saved_view_strip` for saved views, favorites, nearby topics, unread
+  filters, assigned work, and compact shortcut rows.
 - Use `resource_card` for nearby resource discovery below the chrome.
 
 ## Primitive Candidates
@@ -74,13 +76,13 @@ These candidates showed up repeatedly, but they should move at different speeds.
 
 ### 1. Sidebar Badge Parity
 
-Readiness: ready for implementation planning.
+Readiness: codified.
 
 Why: `route_tabs` and `primary_nav` already support `badge_label`,
 `badge_expected`, and `badge_loading`. Several recipes need the same stability
 and accessible-label contract in side navigation.
 
-Candidate API:
+API:
 
 ```html
 {{ sidebar_link(
@@ -94,7 +96,7 @@ Candidate API:
 ) }}
 ```
 
-Required proof:
+Proof:
 
 - sidebar render tests for visible, reserved, loading, and labelled badges,
 - template/CSS contract coverage for emitted badge state classes,
@@ -103,41 +105,42 @@ Required proof:
 
 ### 2. Scope Switcher Pattern
 
-Readiness: document as a recipe first.
+Readiness: codified as a small pattern macro.
 
 Why: every dense app needs scope before local controls, but scope varies:
 workspace, org, project, account, environment, file, customer, channel, or docs
-version. A premature macro would either be too generic to help or too specific
-to one product family.
+version. The stable contract is intentionally small: render a compact dropdown
+trigger for choosing scope using the existing `dropdown_menu` item model.
 
-Current blessed composition:
+API:
 
 ```html
-{{ dropdown_menu(btn("Prod / us-east", variant="ghost", size="sm"), items=scopes) }}
+{{ scope_switcher("Prod / us-east", items=scopes, aria_label="Switch cloud scope") }}
 ```
 
-Do not add a public `scope_switcher` until at least two real apps need the same
-item shape, status treatment, and keyboard/focus contract.
+Do not add product-specific scope item schemas until at least two real apps need
+the same status treatment, metadata, and keyboard/focus contract.
 
 ### 3. Saved View Strip Pattern
 
-Readiness: document as a recipe first.
+Readiness: codified as a small pattern macro.
 
 Why: saved views, favorites, starred items, nearby topics, unread filters, and
 recent resources all benefit from the same compact row shape. Today `chip_group`
-already expresses the pattern without extra API.
+already expressed the low-level shape; `saved_view_strip` names the navigation
+contract and keeps shortcut rows distinct from generic tag/facet chips.
 
-Current blessed composition:
+API:
 
 ```html
-{% call chip_group(label="Saved views") %}
-  {{ chip("Mine", selected=true, href="/views/mine") }}
-  {{ chip("Blocked", href="/views/blocked") }}
-{% end %}
+{{ saved_view_strip(label="Saved views", views=[
+  {"label": "Mine", "href": "/views/mine", "selected": true},
+  {"label": "Blocked", "href": "/views/blocked"}
+]) }}
 ```
 
-Do not introduce `saved_view_strip` until the recipes prove missing behavior
-such as overflow actions, editable saved views, or async counts.
+Do not add saved-view editing, persistence, overflow menus, or async counts
+until real apps prove the missing behavior.
 
 ### 4. Dense Navigation Frame
 
@@ -190,9 +193,8 @@ Do not add:
 
 | Priority | Item | Reason |
 |----------|------|--------|
-| P1 | Add sidebar badge parity | Aligns side navigation with route tab and primary nav count stability. |
-| P2 | Publish a dense navigation recipes page | The showcase is copyable, but a focused docs page would teach the layer model more directly. |
-| P2 | Document scope switcher and saved view strip as recipes | These repeat often but do not need public macros yet. |
+| P1 | Publish a dense navigation recipes page | The showcase is copyable, but a focused docs page would teach the layer model more directly. |
+| P2 | Add browser proof for `scope_switcher` and `saved_view_strip` in dense chrome | Needed if their layout or overflow behavior becomes more ambitious. |
 | P3 | Revisit `workspace_shell` after real app usage | A shell macro should remove duplication, not freeze a speculative layout. |
 | P3 | Add browser responsive proof for selected recipes | Needed only when CSS or layout behavior changes, not for static composition examples. |
 

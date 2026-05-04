@@ -11,6 +11,45 @@ def test_sidebar_link_renders_badge(env: Environment) -> None:
     assert ">3<" in html
 
 
+def test_sidebar_link_renders_stable_badge_states(env: Environment) -> None:
+    html = env.from_string(
+        '{% from "chirpui/sidebar.html" import sidebar_link %}'
+        '{{ sidebar_link("/runs", "Runs", badge_loading=true) }}'
+        '{{ sidebar_link("/inbox", "Inbox", badge=3, badge_label="3 unread inbox items") }}'
+    ).render()
+
+    assert "chirpui-sidebar__badge--reserved" in html
+    assert "chirpui-sidebar__badge--loading" in html
+    assert 'aria-hidden="true"' in html
+    assert 'aria-label="3 unread inbox items"' in html
+
+
+def test_scope_switcher_renders_dropdown_scope_control(env: Environment) -> None:
+    html = env.from_string(
+        '{% from "chirpui/scope_switcher.html" import scope_switcher %}'
+        '{{ scope_switcher("Prod", items=[{"label": "Prod", "href": "/prod"}], aria_label="Switch scope") }}'
+    ).render()
+
+    assert "chirpui-scope-switcher" in html
+    assert "chirpui-dropdown" in html
+    assert 'aria-label="Switch scope"' in html
+
+
+def test_saved_view_strip_renders_selected_views(env: Environment) -> None:
+    html = env.from_string(
+        '{% from "chirpui/saved_view_strip.html" import saved_view_strip %}'
+        '{{ saved_view_strip(label="Saved views", current_href="/mine", views=['
+        '{"label": "Mine", "href": "/mine"},'
+        '{"label": "Blocked", "href": "/blocked"}'
+        "]) }}"
+    ).render()
+
+    assert "chirpui-saved-view-strip" in html
+    assert 'aria-label="Saved views"' in html
+    assert 'aria-current="page"' in html
+    assert "Mine" in html
+
+
 def test_primary_nav_renders_badges_dividers_and_active_links(env: Environment) -> None:
     html = env.from_string(
         '{% from "chirpui/primary_nav.html" import primary_nav %}'

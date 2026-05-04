@@ -1557,7 +1557,7 @@ Sidebar navigation for dashboards and app shells. Use `sidebar`, `sidebar_sectio
 |-------|--------|-------------|
 | `sidebar` | `cls` | Container with header, nav, footer slots |
 | `sidebar_section` | `title`, `collapsible`, `cls` | Section group; `collapsible=true` uses details/summary |
-| `sidebar_link` | `href`, `label`, `icon`, `active`, `match`, `boost`, `cls`, `badge` | Nav link; `icon` recommended for collapsible mode; `badge` renders counts/status outside the label |
+| `sidebar_link` | `href`, `label`, `icon`, `active`, `match`, `boost`, `cls`, `badge`, `badge_label`, `badge_expected`, `badge_loading` | Nav link; `icon` recommended for collapsible mode; badge params render stable counts/status outside the label |
 | `sidebar_toggle` | `cls` | Toggle button for icon-only collapsed state |
 
 ### Active state
@@ -1568,6 +1568,12 @@ Two approaches:
 - **`active=`** (explicit) — Pass a boolean directly. Use when active state depends on something other than the URL path (e.g. `active=is_admin`).
 
 When `match=` is set, it takes precedence over `active=`. Both emit `aria-current="page"` on active links.
+
+### Stable badges
+
+Use `badge_label` when the visible count needs fuller assistive text. Use
+`badge_expected=true` to reserve count space before a value is available, and
+`badge_loading=true` for pending counts.
 
 **Client-side sync:** `app_shell_layout.html` includes a built-in script that updates sidebar and navbar active classes after htmx history navigation (`htmx:pushedIntoHistory`, `htmx:replacedInHistory`). This covers the case where `hx-boost` swaps `#main` but leaves the sidebar DOM untouched.
 
@@ -7569,6 +7575,26 @@ Rune Field
 | `variant` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `saved-view-strip`
+
+Saved view strip
+
+- **Template:** `chirpui/saved_view_strip.html`
+- **Macro:** `saved_view_strip`
+- **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+- **Composes:** `chip`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `views` | no | (has default) |
+| `label` | no | (has default) |
+| `current_href` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `scanline`
 
 Scanline Overlay
@@ -7585,6 +7611,30 @@ Scanline Overlay
 | Param | Required | Default |
 |-------|----------|---------|
 | `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `scope-switcher`
+
+Scope switcher
+
+- **Template:** `chirpui/scope_switcher.html`
+- **Macro:** `scope_switcher`
+- **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+- **Composes:** `btn`, `dropdown`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | yes | — |
+| `items` | yes | — |
+| `id` | no | (has default) |
+| `aria_label` | no | (has default) |
+| `variant` | no | (has default) |
+| `size` | no | (has default) |
+| `icon` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `scroll-x`

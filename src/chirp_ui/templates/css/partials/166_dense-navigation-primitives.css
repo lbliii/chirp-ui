@@ -1,0 +1,28 @@
+@layer chirpui.component {
+@scope (.chirpui-scope-switcher) to (.chirpui-scope-switcher .chirpui-scope-switcher) {
+.chirpui-scope-switcher {
+    display: inline-flex;
+    min-inline-size: 0;
+}
+
+.chirpui-scope-switcher .chirpui-dropdown {
+    min-inline-size: 0;
+}
+}
+
+@scope (.chirpui-saved-view-strip) to (.chirpui-saved-view-strip .chirpui-saved-view-strip) {
+.chirpui-saved-view-strip {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    max-inline-size: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-block: var(--chirpui-spacing-2xs);
+}
+
+.chirpui-saved-view-strip > .chirpui-chip {
+    flex: 0 0 auto;
+}
+}
+}
