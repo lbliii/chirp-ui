@@ -175,6 +175,9 @@ layer hierarchy, canvas context, comments/prototype routes, and inspector
 properties in distinct regions without adding canvas-specific API. The business
 object console recipe separates app/resource navigation, global object search,
 object ID context, saved searches, and object-local event/invoice/log routes.
+The collaboration inbox recipe separates unread navigation, jump-to-conversation
+search, activity/later surfaces, and conversation-local message/thread/file
+routes.
 
 On phones:
 

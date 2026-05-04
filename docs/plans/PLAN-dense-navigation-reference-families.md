@@ -56,6 +56,9 @@ systems without cloning any specific product.
 - Family 7 accepted: the component showcase now includes a business object
   console recipe with app launching, global object search, resource navigation,
   saved searches, object ID context, and object-local event/invoice/log routes.
+- Family 8 accepted: the component showcase now includes a collaboration inbox
+  recipe with workspace switching, unread side navigation, jump-to-conversation
+  search, activity/later surfaces, and conversation-local routes.
 
 ## Research Sources
 

@@ -26,6 +26,7 @@
 {% from "showcase/_knowledge_workspace_nav.html" import knowledge_workspace_navigation %}
 {% from "showcase/_editor_workbench_nav.html" import editor_workbench_navigation %}
 {% from "showcase/_business_object_console.html" import business_object_console_navigation %}
+{% from "showcase/_collaboration_inbox_nav.html" import collaboration_inbox_navigation %}
 
 
 {% from "chirpui/nav_progress.html" import nav_progress %}
@@ -136,6 +137,12 @@
   Business object recipe: app launcher, global object search, resource sidebar, saved searches, object ID context, and object-local tabs.
 </p>
 {{ business_object_console_navigation() }}
+
+<h2>Collaboration Inbox Navigation</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Collaboration recipe: workspace switcher, unread sidebar, jump-to-conversation, activity/later surfaces, and conversation-local routes.
+</p>
+{{ collaboration_inbox_navigation() }}
 
 <h2>Stepper</h2>
 {% call block() %}

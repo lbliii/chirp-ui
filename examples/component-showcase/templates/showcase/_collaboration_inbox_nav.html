@@ -1,0 +1,127 @@
+{% from "chirpui/layout.html" import stack, cluster, grid, block, frame %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/card.html" import card, resource_card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+{% from "chirpui/avatar.html" import avatar %}
+
+{% def collaboration_inbox_navigation() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Collaboration inbox global navigation") %}
+  {{ logo(text="Relay", href="/inbox", variant="text") }}
+  {{ dropdown_menu(btn("Acme workspace", variant="ghost", size="sm"), items=[
+    {"label": "Acme workspace", "href": "/inbox/workspaces/acme"},
+    {"label": "Launch room", "href": "/inbox/workspaces/launch"},
+    {"label": "Support desk", "href": "/inbox/workspaces/support"},
+    {"divider": true},
+    {"label": "Workspace settings", "href": "/inbox/settings"}
+  ], id="collab-workspace-menu") }}
+  {{ command_palette_trigger(target="collaboration-inbox-palette", label="Jump to conversation", placeholder="Jump to channel, DM, thread", shortcut="J", icon="search", density="sm") }}
+  {{ btn("Compose", variant="primary", size="sm") }}
+  {{ icon_btn("alert", href="/inbox/activity", aria_label="Activity") }}
+  {{ avatar(initials="RL", alt="Relay user", size="sm") }}
+{% end %}
+{{ command_palette(id="collaboration-inbox-palette", search_url="/data/table", placeholder="Search conversations, people, threads, and files...") }}
+{% call frame(variant="balanced", gap="md") %}
+  {% call sidebar(current_path="/inbox/channels/launch/thread") %}
+    {% slot header %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <strong>Acme workspace</strong>
+        <span class="chirpui-text-muted chirpui-font-sm">Unread navigation is still navigation.</span>
+      </div>
+    {% end %}
+    {% call sidebar_section("Activity") %}
+      {{ sidebar_link("/inbox/activity", "Activity", icon="alert", badge=9) }}
+      {{ sidebar_link("/inbox/later", "Later", icon="star", badge=4) }}
+      {{ sidebar_link("/inbox/mentions", "Mentions", icon="chat", badge=3) }}
+    {% end %}
+    {% call sidebar_section("Channels") %}
+      {{ sidebar_link("/inbox/channels/launch", "# launch", icon="chat", match="prefix", badge=12) }}
+      {{ sidebar_link("/inbox/channels/design", "# design", icon="chat", badge=2) }}
+      {{ sidebar_link("/inbox/channels/support", "# support", icon="chat", badge=7) }}
+    {% end %}
+    {% call sidebar_section("Direct messages", collapsible=true) %}
+      {{ sidebar_link("/inbox/dm/mira", "Mira", icon="user", badge=1) }}
+      {{ sidebar_link("/inbox/dm/kai", "Kai", icon="user") }}
+      {{ sidebar_link("/inbox/dm/ops-bot", "Ops bot", icon="bolt", badge=5) }}
+    {% end %}
+  {% end %}
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs([
+      {"label": "Relay", "href": "/inbox"},
+      {"label": "Channels", "href": "/inbox/channels"},
+      {"label": "# launch"}
+    ], overflow="collapse", max_items=4) }}
+    {% call cluster(gap="sm") %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <h3># launch</h3>
+        <div class="chirpui-cluster chirpui-cluster--sm">
+          {{ inline_counter("U", 12, "unread") }}
+          {{ inline_counter("T", 4, "threads") }}
+          {{ inline_counter("F", 8, "files") }}
+        </div>
+      </div>
+      {{ badge("Live", variant="success") }}
+      {{ btn("Start thread", variant="primary", size="sm") }}
+      {{ dropdown_menu(btn("Channel actions", variant="ghost", size="sm"), items=[
+        {"label": "Mark read", "action": "mark-read"},
+        {"label": "Copy channel link", "action": "copy-channel-link"},
+        {"label": "Mute channel", "action": "mute-channel"},
+        {"divider": true},
+        {"label": "Leave channel", "action": "leave-channel", "variant": "danger"}
+      ], id="collab-channel-actions-menu") }}
+    {% end %}
+    {{ route_tabs(tabs=[
+      {"href": "/inbox/channels/launch", "label": "Messages", "badge": 12, "badge_label": "12 unread messages"},
+      {"href": "/inbox/channels/launch/thread", "label": "Threads", "badge": 4, "badge_label": "4 active threads"},
+      {"href": "/inbox/channels/launch/files", "label": "Files", "badge": 8, "badge_label": "8 shared files"},
+      {"href": "/inbox/channels/launch/canvas", "label": "Canvas", "badge_expected": true},
+    ], current_path="/inbox/channels/launch/thread") }}
+    {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Collaboration inbox controls") %}
+      {{ btn("Unread", variant="ghost", size="sm") }}
+      {{ btn("Threads", variant="ghost", size="sm") }}
+      {{ btn("Mentions", variant="ghost", size="sm") }}
+      {{ btn("Files", variant="ghost", size="sm") }}
+      {{ btn("Later", variant="ghost", size="sm") }}
+    {% end %}
+    {% call chip_group(label="Collaboration inbox focus views") %}
+      {{ chip("Unread first", selected=true, href="/inbox/views/unread") }}
+      {{ chip("Mentions", href="/inbox/mentions") }}
+      {{ chip("Saved for later", href="/inbox/later") }}
+      {{ chip("Files shared", href="/inbox/files") }}
+    {% end %}
+    {% call grid(cols=3, gap="md") %}
+      {% call card(title="Launch decision thread", subtitle="Mira, Kai, and 4 others", variant="muted") %}
+        <p class="chirpui-text-muted chirpui-font-sm">Thread preview keeps conversation content separate from navigation chrome.</p>
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">4 unread replies</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/inbox/files/readiness.pdf", "readiness.pdf", description="Shared in #launch with launch checklist context.", top_meta="file") %}
+        {% slot badges %}{{ badge("New", variant="info") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">8 min ago</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/inbox/later/payment-copy", "Payment copy follow-up", description="Saved item from the launch channel.", top_meta="later") %}
+        {% slot badges %}{{ badge("Later", variant="warning") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Due tomorrow</span>
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

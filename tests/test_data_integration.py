@@ -63,6 +63,10 @@ class TestDataPage:
             assert "Business object console global navigation" in response.text
             assert "Business object list controls" in response.text
             assert "Search customers, invoices, IDs" in response.text
+            assert "Collaboration Inbox Navigation" in response.text
+            assert "Collaboration inbox global navigation" in response.text
+            assert "Collaboration inbox controls" in response.text
+            assert "Jump to channel, DM, thread" in response.text
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
             assert "chirpui-route-tab__badge--reserved" in response.text
