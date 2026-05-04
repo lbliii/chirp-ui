@@ -7669,6 +7669,13 @@ class TestWobble:
         ).render()
         assert "chirpui-bounce-in" in html
 
+    def test_css_makes_motion_wrappers_transformable(self) -> None:
+        css = _chirpui_css()
+        motion_rule = css.split(".chirpui-wobble,", 1)[1].split(".chirpui-wobble {", 1)[0]
+        assert "display: inline-block" in motion_rule
+        assert "transform-origin: center" in motion_rule
+        assert ".chirpui-bounce-in { animation: chirpui-bounce-in 0.6s ease-out both; }" in css
+
 
 # ---------------------------------------------------------------------------
 # Pre-hydration safety — overlays must be inert before Alpine initializes

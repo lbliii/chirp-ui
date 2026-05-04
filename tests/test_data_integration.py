@@ -218,6 +218,13 @@ class TestDataPage:
                 re.S,
             ), f"{root_class} showcase demo must call the wrapper macro with height"
 
+        for replayable_class in (
+            "chirpui-hover-wobble",
+            "chirpui-hover-jello",
+            "chirpui-hover-rubber",
+        ):
+            assert replayable_class in html
+
     @pytest.mark.asyncio
     async def test_data_page_returns_200(self, showcase_app) -> None:
         async with TestClient(showcase_app) as client:
