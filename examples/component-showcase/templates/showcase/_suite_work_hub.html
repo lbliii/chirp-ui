@@ -50,6 +50,7 @@
   ], current_path="/suite/work/projects/launch/tasks", aria_label="Suite personal shortcuts") }}
 {% end %}
 {% call frame(variant="balanced", gap="md") %}
+<div data-showcase-nav-sidebar-viewport style="max-block-size: min(34rem, 72vh); overflow-y: auto; overflow-x: hidden; padding-inline-end: var(--chirpui-spacing-2xs);">
   {% call sidebar(current_path="/suite/work/projects/launch/tasks") %}
     {% slot header %}
       <div class="chirpui-stack chirpui-stack--sm">
@@ -76,6 +77,7 @@
       <span class="chirpui-text-muted chirpui-font-sm">Personalized sidebar shortcuts stay navigable links.</span>
     {% end %}
   {% end %}
+</div>
   {% call stack(gap="sm") %}
     {{ breadcrumbs([
       {"label": "Workgrid", "href": "/suite"},

@@ -191,6 +191,8 @@ class TestDataPage:
             assert "chirpui-command-palette-trigger--sm" in response.text
             assert "Find service, project, deployment" in response.text
             assert "Search work, people, projects" in response.text
+            assert response.text.count("data-showcase-nav-sidebar-viewport") >= 2
+            assert "max-block-size: min(34rem, 72vh)" in response.text
 
     @pytest.mark.asyncio
     async def test_effects_page_wraps_background_macros_with_canvas_height(
