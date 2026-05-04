@@ -50,6 +50,9 @@ systems without cloning any specific product.
   recipe with workspace switching, linked nested page navigation, team/private
   boundaries, collapsed breadcrumbs, page-local routes, and nearby-topic
   discovery.
+- Family 6 accepted: the component showcase now includes an editor workbench
+  recipe with compact file navigation, tool controls, linked layer hierarchy,
+  canvas context, route-backed comments/prototype views, and an inspector panel.
 
 ## Research Sources
 

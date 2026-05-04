@@ -1,0 +1,123 @@
+{% from "chirpui/layout.html" import stack, cluster, grid, block %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
+{% from "chirpui/nav_tree.html" import nav_tree %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/card.html" import card, resource_card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+{% from "chirpui/avatar.html" import avatar %}
+
+{% def editor_workbench_navigation() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Editor workbench global navigation") %}
+  {{ logo(text="CanvasLab", href="/editor", variant="text") }}
+  {{ dropdown_menu(btn("Launch flows.fig", variant="ghost", size="sm"), items=[
+    {"label": "Rename file", "action": "rename-file"},
+    {"label": "Move to project", "action": "move-file"},
+    {"label": "Version history", "href": "/editor/files/launch-flows/history"},
+    {"divider": true},
+    {"label": "Export", "action": "export-file"}
+  ], id="editor-file-menu") }}
+  {{ command_palette_trigger(target="editor-workbench-palette", label="Search editor actions", placeholder="Find file, frame, action", shortcut="K", icon="search", density="sm") }}
+  {{ btn("Share", variant="primary", size="sm") }}
+  {{ icon_btn("comment", href="/editor/files/launch-flows/comments", aria_label="Comments") }}
+  {{ avatar(initials="CL", alt="CanvasLab user", size="sm") }}
+{% end %}
+{{ command_palette(id="editor-workbench-palette", search_url="/data/table", placeholder="Search files, layers, components, and actions...") }}
+{% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Editor tool navigation") %}
+  {{ btn("Move", variant="ghost", size="sm") }}
+  {{ btn("Frame", variant="ghost", size="sm") }}
+  {{ btn("Text", variant="ghost", size="sm") }}
+  {{ btn("Component", variant="ghost", size="sm") }}
+  {{ btn("Prototype", variant="ghost", size="sm") }}
+  {{ btn("Inspect", variant="ghost", size="sm") }}
+{% end %}
+{% call grid(cols=3, gap="md") %}
+  {% call sidebar(current_path="/editor/files/launch-flows/pages/checkout") %}
+    {% slot header %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <strong>File navigator</strong>
+        <span class="chirpui-text-muted chirpui-font-sm">Panels stay secondary to the canvas.</span>
+      </div>
+    {% end %}
+    {% call sidebar_section("Pages") %}
+      {{ sidebar_link("/editor/files/launch-flows/pages/checkout", "Checkout", icon="grid", match="exact") }}
+      {{ sidebar_link("/editor/files/launch-flows/pages/onboarding", "Onboarding", icon="grid") }}
+      {{ sidebar_link("/editor/files/launch-flows/pages/components", "Components", icon="diamond") }}
+    {% end %}
+    {% call sidebar_section("Layers", collapsible=true) %}
+      {{ nav_tree(items=[
+        {"title": "Checkout flow", "href": "/editor/files/launch-flows/layers/checkout", "open": true, "children": [
+          {"title": "Cart review", "href": "/editor/files/launch-flows/layers/cart-review"},
+          {"title": "Payment panel", "href": "/editor/files/launch-flows/layers/payment-panel", "active": true},
+          {"title": "Success state", "href": "/editor/files/launch-flows/layers/success-state"}
+        ]},
+        {"title": "Shared components", "href": "/editor/files/launch-flows/layers/components"}
+      ], branch_mode="linked") }}
+    {% end %}
+  {% end %}
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs([
+      {"label": "CanvasLab", "href": "/editor"},
+      {"label": "Growth", "href": "/editor/projects/growth"},
+      {"label": "Launch flows.fig", "href": "/editor/files/launch-flows"},
+      {"label": "Checkout"}
+    ], overflow="collapse", max_items=4) }}
+    {% call cluster(gap="sm") %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <h3>Checkout canvas</h3>
+        <div class="chirpui-cluster chirpui-cluster--sm">
+          {{ inline_counter("F", 8, "frames") }}
+          {{ inline_counter("C", 26, "components") }}
+          {{ inline_counter("P", 4, "prototypes") }}
+        </div>
+      </div>
+      {{ badge("Editing", variant="success") }}
+      {{ btn("Present", variant="ghost", size="sm") }}
+    {% end %}
+    {{ route_tabs(tabs=[
+      {"href": "/editor/files/launch-flows/pages/checkout", "label": "Design"},
+      {"href": "/editor/files/launch-flows/pages/checkout/prototype", "label": "Prototype", "badge": 4, "badge_label": "4 prototype flows"},
+      {"href": "/editor/files/launch-flows/pages/checkout/comments", "label": "Comments", "badge": 6, "badge_label": "6 comments"},
+      {"href": "/editor/files/launch-flows/pages/checkout/inspect", "label": "Inspect", "badge_expected": true},
+    ], current_path="/editor/files/launch-flows/pages/checkout") }}
+    {% call card(title="Canvas viewport", subtitle="Static recipe preview of a canvas-first workbench.", variant="muted") %}
+      {% call stack(gap="sm") %}
+        {% call chip_group(label="Editor canvas frames") %}
+          {{ chip("Cart review", href="/editor/files/launch-flows/layers/cart-review") }}
+          {{ chip("Payment panel", selected=true, href="/editor/files/launch-flows/layers/payment-panel") }}
+          {{ chip("Success state", href="/editor/files/launch-flows/layers/success-state") }}
+        {% end %}
+        <p class="chirpui-text-muted chirpui-font-sm">The central surface keeps document context, route tabs, and page tools visible while side panels carry hierarchy and properties.</p>
+      {% end %}
+    {% end %}
+  {% end %}
+  {% call stack(gap="sm") %}
+    {% call card(title="Inspector", subtitle="Selected layer properties", variant="muted") %}
+      {% call stack(gap="sm") %}
+        {{ badge("Payment panel", variant="info") }}
+        {{ inline_counter("A", 3, "auto layout") }}
+        {{ inline_counter("V", 5, "variants") }}
+        {{ inline_counter("C", 2, "constraints") }}
+      {% end %}
+    {% end %}
+    {% call resource_card("/editor/files/launch-flows/comments", "Open comments", description="Conversation route stays separate from canvas tools.", top_meta="panel") %}
+      {% slot badges %}{{ badge("6", variant="warning") }}{% end %}
+      {% slot footer %}
+        <span class="chirpui-font-sm chirpui-text-muted">2 unresolved</span>
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

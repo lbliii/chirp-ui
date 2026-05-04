@@ -170,7 +170,9 @@ navigation evidence, pairing command launch with visible favorites, team views,
 route-backed issue tabs, and display controls. The knowledge workspace recipe
 uses linked disclosure navigation for nested pages, collapsed breadcrumbs for
 deep page location, and separate page-local routes for tasks, comments, and
-history.
+history. The editor workbench recipe keeps file identity, tool navigation,
+layer hierarchy, canvas context, comments/prototype routes, and inspector
+properties in distinct regions without adding canvas-specific API.
 
 On phones:
 

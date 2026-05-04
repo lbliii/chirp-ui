@@ -24,6 +24,7 @@
 {% from "showcase/_ops_console_nav.html" import ops_console_navigation %}
 {% from "showcase/_tracker_nav.html" import tracker_navigation %}
 {% from "showcase/_knowledge_workspace_nav.html" import knowledge_workspace_navigation %}
+{% from "showcase/_editor_workbench_nav.html" import editor_workbench_navigation %}
 
 
 {% from "chirpui/nav_progress.html" import nav_progress %}
@@ -122,6 +123,12 @@
   Knowledge recipe: workspace switcher, nested linked pages, team/private boundaries, collapsed breadcrumbs, page tabs, and nearby-topic discovery.
 </p>
 {{ knowledge_workspace_navigation() }}
+
+<h2>Editor Workbench Navigation</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Editor recipe: compact file menu, tool navigation, file tree, canvas context, route-backed comments/prototype views, and inspector panel.
+</p>
+{{ editor_workbench_navigation() }}
 
 <h2>Stepper</h2>
 {% call block() %}

@@ -55,6 +55,10 @@ class TestDataPage:
             assert "Knowledge workspace global navigation" in response.text
             assert "Knowledge page controls" in response.text
             assert "Search or jump to page" in response.text
+            assert "Editor Workbench Navigation" in response.text
+            assert "Editor workbench global navigation" in response.text
+            assert "Editor tool navigation" in response.text
+            assert "Find file, frame, action" in response.text
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
             assert "chirpui-route-tab__badge--reserved" in response.text
