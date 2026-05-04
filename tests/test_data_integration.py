@@ -3,6 +3,8 @@
 Requires chirp (pip install chirp or uv sync --group showcase).
 """
 
+import ast
+import re
 import sys
 import warnings
 from pathlib import Path
@@ -16,6 +18,80 @@ pytest.importorskip("chirp")
 from chirp.testing import TestClient
 
 _SHOWCASE_DIR = Path(__file__).resolve().parent.parent / "examples" / "component-showcase"
+_SHOWCASE_APP = _SHOWCASE_DIR / "app.py"
+
+SHOWCASE_ROUTE_SMOKE_PATHS = (
+    "/",
+    "/demo",
+    "/htmx",
+    "/navigation",
+    "/layout",
+    "/chrome",
+    "/shell-actions",
+    "/sections",
+    "/carousel",
+    "/cards",
+    "/forms",
+    "/ui",
+    "/islands",
+    "/islands/grid-state",
+    "/islands/wizard-state",
+    "/islands/upload-state",
+    "/streaming",
+    "/data-display",
+    "/calendar",
+    "/calendar/2026/5",
+    "/calendar/2026/05",
+    "/data",
+    "/effects",
+    "/typography",
+    "/ascii-primitives",
+    "/buttons",
+    "/dashboard",
+    "/animation",
+    "/ascii",
+    "/messenger",
+    "/social",
+    "/video",
+    "/data/table?page=1&sort=name",
+    "/data/bulk-bar",
+    "/data/export",
+    "/layout/dir?dir=rtl",
+    "/animation/swap-demo",
+    "/islands/remount",
+)
+
+SHOWCASE_FRAGMENT_OR_ACTION_ROUTES = {
+    "/toast",
+    "/demo/submit",
+    "/demo/stream",
+    "/forms/demo",
+    "/ui/tab/{name}",
+    "/streaming/demo",
+    "/data/table",
+    "/data/bulk-bar",
+    "/data/export",
+    "/layout/dir",
+    "/animation/swap-demo",
+}
+
+
+def _showcase_route_patterns() -> set[str]:
+    patterns: set[str] = set()
+    for line in _SHOWCASE_APP.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line.startswith("@app.route("):
+            continue
+        expr = ast.parse(line[1:]).body[0].value
+        patterns.add(ast.literal_eval(expr.args[0]))
+    return patterns
+
+
+def _route_pattern_matches(pattern: str, path: str) -> bool:
+    path = path.split("?", 1)[0]
+    regex = re.escape(pattern)
+    regex = re.sub(r"\\\{[^/]+\\\}", r"[^/]+", regex)
+    return re.fullmatch(regex, path) is not None
 
 
 @pytest.fixture
@@ -31,48 +107,18 @@ def showcase_app():
 class TestDataPage:
     """Verify /data and /data/table routes return 200 and expected HTML."""
 
+    def test_showcase_page_routes_have_smoke_representatives(self) -> None:
+        missing = sorted(
+            route
+            for route in _showcase_route_patterns() - SHOWCASE_FRAGMENT_OR_ACTION_ROUTES
+            if not any(_route_pattern_matches(route, path) for path in SHOWCASE_ROUTE_SMOKE_PATHS)
+        )
+        assert not missing, "Showcase page routes missing route-smoke coverage: " + ", ".join(
+            missing
+        )
+
     @pytest.mark.asyncio
-    @pytest.mark.parametrize(
-        "path",
-        [
-            "/",
-            "/demo",
-            "/htmx",
-            "/navigation",
-            "/layout",
-            "/chrome",
-            "/shell-actions",
-            "/sections",
-            "/carousel",
-            "/cards",
-            "/forms",
-            "/ui",
-            "/islands",
-            "/islands/grid-state",
-            "/islands/wizard-state",
-            "/islands/upload-state",
-            "/streaming",
-            "/data-display",
-            "/calendar",
-            "/data",
-            "/effects",
-            "/typography",
-            "/ascii-primitives",
-            "/buttons",
-            "/dashboard",
-            "/animation",
-            "/ascii",
-            "/messenger",
-            "/social",
-            "/video",
-            "/data/table?page=1&sort=name",
-            "/data/bulk-bar",
-            "/data/export",
-            "/layout/dir?dir=rtl",
-            "/animation/swap-demo",
-            "/islands/remount",
-        ],
-    )
+    @pytest.mark.parametrize("path", SHOWCASE_ROUTE_SMOKE_PATHS)
     async def test_showcase_routes_return_200(self, showcase_app, path: str) -> None:
         with warnings.catch_warnings(record=True) as caught:
             warnings.simplefilter("always", ChirpUIValidationWarning)
