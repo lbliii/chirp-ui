@@ -1,7 +1,9 @@
 {#- chirp-ui: App layout — extends chirp boost with CSS and toast.
 
     Extend this instead of chirp/layouts/boost.html when using chirp-ui.
-    Provides: chirpui.css, holy-light theme, chirpui-transitions.css, toast_container.
+    Provides: chirpui.css, app theme starter, chirpui-transitions.css, toast_container.
+    Alpine and chirpui-alpine.js are injected by Chirp when use_chirp_ui(app)
+    is registered.
 
     Import layout macros per-page: {% from "chirpui/layout.html" import container, grid, stack, block %}
 
@@ -17,16 +19,11 @@
 {% extends "chirp/layouts/boost.html" %}
 {% block head %}
 <link rel="stylesheet" href="/static/chirpui.css">
-<link rel="stylesheet" href="/static/themes/holy-light.css">
+<link rel="stylesheet" href="/static/themes/app-theme-starter.css">
 <link rel="stylesheet" href="/static/chirpui-transitions.css">
 <script>
 (function(){var t=localStorage.getItem("chirpui-theme")||"system";var s=localStorage.getItem("chirpui-style")||"default";document.documentElement.setAttribute("data-theme",t);document.documentElement.setAttribute("data-style",s);})();
 </script>
-<script defer src="/static/chirpui-alpine.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.15.8/dist/cdn.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.15.8/dist/cdn.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.15.8/dist/cdn.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.8/dist/cdn.min.js"></script>
 {% end %}
 {% block body_after %}
 {% from "chirpui/toast.html" import toast_container %}

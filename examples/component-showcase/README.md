@@ -23,7 +23,7 @@ uv run python chirp-ui/examples/component-showcase/app.py
 Then open http://localhost:8000.
 
 > **Note:** chirp-ui requires `kida-templates>=0.8.0` and the showcase extra
-> installs `bengal-chirp>=0.2.0`. If you see `ModuleNotFoundError`, ensure
+> installs `bengal-chirp>=0.6.0`. If you see `ModuleNotFoundError`, ensure
 > you're using the same Python environment where the showcase extra was installed.
 
 ## Optional: Holy Light theme

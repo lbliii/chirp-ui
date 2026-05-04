@@ -5561,7 +5561,10 @@ class TestAppLayout:
         assert path.exists()
         content = path.read_text()
         assert "chirpui.css" in content
-        assert "chirpui-alpine.js" in content
+        assert "app-theme-starter.css" in content
+        assert "cdn.jsdelivr.net/npm/alpinejs" not in content
+        assert 'src="/static/chirpui-alpine.js"' not in content
+        assert "use_chirp_ui(app)" in content
         assert "toast_container" in content
 
 

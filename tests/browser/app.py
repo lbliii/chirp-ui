@@ -594,6 +594,10 @@ def create_app() -> App:
     async def theme_toggle_page(request: Request):
         return Template("theme_toggle_page.html", page_title="Theme Toggle")
 
+    @app.route("/app-layout-theme")
+    async def app_layout_theme_page(request: Request):
+        return Template("app_layout_theme_page.html", page_title="App Layout Theme")
+
     # ── Split panel ───────────────────────────────────────────────────
 
     @app.route("/split-panel")

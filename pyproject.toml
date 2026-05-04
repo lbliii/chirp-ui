@@ -36,7 +36,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-showcase = ["bengal-chirp>=0.2.0"] # For examples/component-showcase
+showcase = ["bengal-chirp>=0.6.0"] # For examples/component-showcase
 
 [project.entry-points."bengal.themes"]
 chirp-theme = "bengal_themes.chirp_theme"
@@ -184,7 +184,7 @@ dev = [
 ]
 browser = [
     # Browser integration tests (Playwright + real Chirp app)
-    "bengal-chirp>=0.2.0",
+    "bengal-chirp>=0.6.0",
     "playwright>=1.50.0",
     "pytest-asyncio>=0.25.0",
     "bengal-pounce>=0.2.1",
