@@ -157,6 +157,15 @@ Hero/media region:
 {% end %}
 ```
 
+Left navigation shell:
+
+```kida
+{% call frame(variant="sidebar-start", gap="md") %}
+  {% call sidebar(current_path="/work") %}…{% end %}
+  {% call stack(gap="md") %}…workspace content…{% end %}
+{% end %}
+```
+
 ### `block()`
 
 Default grid cell:

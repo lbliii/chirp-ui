@@ -26,9 +26,10 @@ For **`grid()`** fixed-track **presets**, **aliases**, and layout breakpoints, s
 
 | `variant`        | Purpose                                      |
 |------------------|----------------------------------------------|
-| `balanced`       | Two equal columns (`1fr` / `1fr`)          |
-| `hero`           | Media + copy; second column slightly wider  |
-| `sidebar-end`    | Fluid main + fixed-width sidebar column     |
+| `balanced`       | Two equal columns (`1fr` / `1fr`)            |
+| `hero`           | Media + copy; second column slightly wider   |
+| `sidebar-start`  | Fixed-width left rail + fluid main content   |
+| `sidebar-end`    | Fluid main content + fixed-width right rail  |
 
 **Tokens:** `--chirpui-frame-gap`, `--chirpui-frame-balanced-columns`, `--chirpui-frame-hero-columns`, `--chirpui-frame-sidebar-width` (defaults align with `--chirpui-split-sidebar-width`).
 
@@ -48,6 +49,23 @@ Override columns for one page:
 ```html
 <div class="chirpui-frame chirpui-frame--hero" style="--chirpui-frame-hero-columns: minmax(0, 1fr) minmax(0, 2fr)">
   …
+</div>
+```
+
+Left navigation shell:
+
+```html
+{% call frame(variant="sidebar-start", gap="md") %}
+  {% call sidebar(current_path="/work") %}…{% end %}
+  {% call stack(gap="md") %}…workspace content…{% end %}
+{% end %}
+```
+
+Override the rail width on a wrapper when a shell needs a different density:
+
+```html
+<div style="--chirpui-frame-sidebar-width: 18rem">
+  {% call frame(variant="sidebar-start", gap="md") %}…{% end %}
 </div>
 ```
 

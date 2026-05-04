@@ -3585,6 +3585,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-frame--gap-sm",
             "chirpui-frame--hero",
             "chirpui-frame--sidebar-end",
+            "chirpui-frame--sidebar-start",
         ),
         category="layout",
         role="primitive",

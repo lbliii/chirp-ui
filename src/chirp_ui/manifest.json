@@ -9232,7 +9232,8 @@
         "chirpui-frame--gap-md",
         "chirpui-frame--gap-sm",
         "chirpui-frame--hero",
-        "chirpui-frame--sidebar-end"
+        "chirpui-frame--sidebar-end",
+        "chirpui-frame--sidebar-start"
       ],
       "extra_emits": [
         "chirpui-frame--balanced",
@@ -9241,7 +9242,8 @@
         "chirpui-frame--gap-md",
         "chirpui-frame--gap-sm",
         "chirpui-frame--hero",
-        "chirpui-frame--sidebar-end"
+        "chirpui-frame--sidebar-end",
+        "chirpui-frame--sidebar-start"
       ],
       "lineno": 0,
       "macro": null,
@@ -21208,7 +21210,7 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 122,
-      "explicit_extra_classes": 522,
+      "explicit_extra_classes": 523,
       "explicit_trim_blocks": 72,
       "explicit_trim_classes": 102
     },

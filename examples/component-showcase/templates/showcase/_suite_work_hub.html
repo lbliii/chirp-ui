@@ -49,8 +49,7 @@
     {"label": "Waiting", "href": "/suite/waiting", "badge_loading": true},
   ], current_path="/suite/work/projects/launch/tasks", aria_label="Suite personal shortcuts") }}
 {% end %}
-<div data-showcase-nav-shell-frame style="--chirpui-frame-balanced-columns: minmax(15rem, 18rem) minmax(0, 1fr);">
-{% call frame(variant="balanced", gap="md") %}
+{% call frame(variant="sidebar-start", gap="md") %}
   {% call sidebar(current_path="/suite/work/projects/launch/tasks") %}
     {% slot header %}
       <div class="chirpui-stack chirpui-stack--sm">
@@ -144,7 +143,6 @@
     {% end %}
   {% end %}
 {% end %}
-</div>
 {% end %}
 {% end %}
 {% end %}

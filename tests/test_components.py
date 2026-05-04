@@ -285,6 +285,13 @@ class TestLayout:
         ).render()
         assert "chirpui-frame--sidebar-end" in html
 
+    def test_frame_sidebar_start(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import frame %}'
+            '{% call frame(variant="sidebar-start") %}A{% end %}'
+        ).render()
+        assert "chirpui-frame--sidebar-start" in html
+
     def test_frame_gap_lg(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import frame %}{% call frame(gap="lg") %}A{% end %}'

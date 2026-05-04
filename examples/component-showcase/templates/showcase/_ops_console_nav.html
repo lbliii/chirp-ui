@@ -35,8 +35,7 @@
   {{ avatar(initials="OP", alt="PulseOps user", size="sm") }}
 {% end %}
 {{ command_palette(id="ops-console-palette", search_url="/data/table", placeholder="Search dashboards, monitors, traces, and logs...") }}
-<div data-showcase-nav-shell-frame style="--chirpui-frame-balanced-columns: minmax(15rem, 18rem) minmax(0, 1fr);">
-{% call frame(variant="balanced", gap="md") %}
+{% call frame(variant="sidebar-start", gap="md") %}
   {% call sidebar(current_path="/ops/dashboards/api-health/logs") %}
     {% slot header %}
       <div class="chirpui-stack chirpui-stack--sm">
@@ -127,7 +126,6 @@
     {% end %}
   {% end %}
 {% end %}
-</div>
 {% end %}
 {% end %}
 {% end %}

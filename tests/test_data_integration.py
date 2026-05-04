@@ -191,11 +191,8 @@ class TestDataPage:
             assert "chirpui-command-palette-trigger--sm" in response.text
             assert "Find service, project, deployment" in response.text
             assert "Search work, people, projects" in response.text
-            assert response.text.count("data-showcase-nav-shell-frame") >= 2
-            assert (
-                "--chirpui-frame-balanced-columns: minmax(15rem, 18rem) minmax(0, 1fr)"
-                in response.text
-            )
+            assert response.text.count("chirpui-frame--sidebar-start") >= 2
+            assert "data-showcase-nav-shell-frame" not in response.text
             assert "data-showcase-nav-sidebar-viewport" not in response.text
 
     @pytest.mark.asyncio
