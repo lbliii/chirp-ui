@@ -17,10 +17,12 @@
 {# @consumes _hero_variant from: hero_effects — falls back to "" #}
 {% set _variant = (variant if variant else consume("_hero_variant", "")) | validate_variant(("", "default", "accent", "muted"), "") %}
 {% set variant_class = " chirpui-particle-bg--" ~ _variant if _variant else "" %}
+{% set positions = [(8, 22), (72, 14), (34, 58), (88, 44), (18, 76), (56, 28), (42, 86), (82, 72), (24, 38), (66, 64), (12, 52), (92, 18), (48, 12), (30, 82), (78, 34), (60, 90)] %}
 <div class="chirpui-particle-bg{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-particle-bg__canvas" aria-hidden="true">
         {% for i in range(count) %}
-        <span class="chirpui-particle-bg__dot" style="left: {{ (i * 12 + 5) % 95 }}%; top: {{ (i * 17 + 10) % 90 }}%"></span>
+        {% set pos = positions[i % 16] %}
+        <span class="chirpui-particle-bg__dot" style="left: {{ pos[0] }}%; top: {{ pos[1] }}%"></span>
         {% end %}
     </div>
     <div class="chirpui-particle-bg__content">

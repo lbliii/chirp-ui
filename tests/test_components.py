@@ -10,6 +10,7 @@ import re
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from itertools import pairwise
+from pathlib import Path
 
 import pytest
 from kida import Environment
@@ -7309,6 +7310,12 @@ def _assert_scattered_effect_positions(html: str) -> None:
     assert not all(left >= right for left, right in pairwise(ys))
 
 
+def _chirpui_css() -> str:
+    return (
+        Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates" / "chirpui.css"
+    ).read_text(encoding="utf-8")
+
+
 class TestTypewriter:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
@@ -7439,6 +7446,15 @@ class TestAurora:
 
 
 class TestDecorativeScatter:
+    def test_particle_background_positions_are_not_formulaic_diagonal(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/particle_bg.html" import particle_bg %}'
+            "{% call particle_bg(count=12) %}Particles{% end %}"
+        ).render()
+        _assert_scattered_effect_positions(html)
+
     def test_holy_light_positions_are_not_formulaic_diagonal(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/holy_light.html" import holy_light %}'
@@ -7484,6 +7500,12 @@ class TestScanline:
         ).render()
         assert "chirpui-scanline--heavy" in html
 
+    def test_css_uses_visible_overlay_layers(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-scanline::before" in css
+        assert "radial-gradient(circle at 50% 48%" in css
+        assert "rgba(255, 255, 255, 0.07)" in css
+
 
 class TestGrain:
     def test_basic(self, env: Environment) -> None:
@@ -7512,6 +7534,12 @@ class TestGrain:
             "{% call grain(attrs='data-testid=\"gr\"') %}P{% end %}"
         ).render()
         assert 'data-testid="gr"' in html
+
+    def test_css_uses_visible_noise_layers(self) -> None:
+        css = _chirpui_css()
+        assert "radial-gradient(circle at 12% 18%" in css
+        assert "opacity: 0.18" in css
+        assert "@keyframes chirpui-grain-shift" in css
 
 
 class TestOrbit:
