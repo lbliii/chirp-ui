@@ -68,7 +68,7 @@
 }
 
 .chirpui-stepper__item--completed .chirpui-stepper__indicator {
-    background: color-mix(in srgb, var(--chirpui-accent) 15%, transparent);
+    background: color-mix(in srgb, var(--chirpui-accent) 18%, var(--chirpui-bg-subtle));
     color: var(--chirpui-accent);
     border-color: var(--chirpui-accent);
 }
@@ -103,4 +103,3 @@
 .chirpui-stepper__connector {
     display: none;
 }
-

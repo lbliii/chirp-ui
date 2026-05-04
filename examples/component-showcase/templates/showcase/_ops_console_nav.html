@@ -1,0 +1,131 @@
+{% from "chirpui/layout.html" import stack, cluster, grid, block, frame %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/primary_nav.html" import primary_nav %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/scope_switcher.html" import scope_switcher %}
+{% from "chirpui/saved_view_strip.html" import saved_view_strip %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+{% from "chirpui/avatar.html" import avatar %}
+
+{% def ops_console_navigation() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Ops console global navigation") %}
+  {{ logo(text="PulseOps", href="/ops", variant="text") }}
+  {{ scope_switcher("Prod monitors", items=[
+    {"label": "Prod monitors", "href": "/ops/scopes/prod"},
+    {"label": "Staging monitors", "href": "/ops/scopes/staging"},
+    {"label": "Customer edge", "href": "/ops/scopes/edge"},
+    {"divider": true},
+    {"label": "Manage scopes", "href": "/ops/scopes"}
+  ], id="ops-scope-menu", aria_label="Switch ops scope") }}
+  {{ command_palette_trigger(target="ops-console-palette", label="Search dashboards and signals", placeholder="Jump to dashboard, log, trace", shortcut="J", icon="search", density="sm") }}
+  {{ btn("New monitor", variant="primary", size="sm") }}
+  {{ icon_btn("alert", href="/ops/incidents", aria_label="Incidents") }}
+  {{ avatar(initials="OP", alt="PulseOps user", size="sm") }}
+{% end %}
+{{ command_palette(id="ops-console-palette", search_url="/data/table", placeholder="Search dashboards, monitors, traces, and logs...") }}
+{% call frame(variant="sidebar-start", gap="lg") %}
+  {% call sidebar(current_path="/ops/dashboards/api-health/logs") %}
+    {% slot header %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <strong>Operational domains</strong>
+        <span class="chirpui-text-muted chirpui-font-sm">Recent troubleshooting stays nearby.</span>
+      </div>
+    {% end %}
+    {% call sidebar_section("Observe") %}
+      {{ sidebar_link("/ops/dashboards", "Dashboards", icon="chart", match="prefix") }}
+      {{ sidebar_link("/ops/explore", "Explore", icon="search") }}
+      {{ sidebar_link("/ops/incidents", "Incidents", icon="alert", badge=3) }}
+    {% end %}
+    {% call sidebar_section("Signals") %}
+      {{ sidebar_link("/ops/logs", "Logs", icon="logs") }}
+      {{ sidebar_link("/ops/metrics", "Metrics", icon="chart") }}
+      {{ sidebar_link("/ops/traces", "Traces", icon="chain") }}
+      {{ sidebar_link("/ops/slo", "SLOs", icon="status", badge=2) }}
+    {% end %}
+    {% call sidebar_section("Recent dashboards", collapsible=true) %}
+      {{ sidebar_link("/ops/dashboards/api-health", "API health", icon="star", match="prefix") }}
+      {{ sidebar_link("/ops/dashboards/edge-errors", "Edge errors", icon="alert") }}
+      {{ sidebar_link("/ops/dashboards/payment-latency", "Payment latency", icon="chart") }}
+    {% end %}
+  {% end %}
+  {% call stack(gap="md") %}
+    {{ breadcrumbs([
+      {"label": "PulseOps", "href": "/ops"},
+      {"label": "Dashboards", "href": "/ops/dashboards"},
+      {"label": "API health"}
+    ], overflow="collapse", max_items=4) }}
+    {% call cluster(gap="sm") %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <h3>API health</h3>
+        <div class="chirpui-cluster chirpui-cluster--sm">
+          {{ inline_counter("M", 18, "monitors") }}
+          {{ inline_counter("A", 3, "alerts") }}
+          {{ inline_counter("S", 99.95, "slo") }}
+        </div>
+      </div>
+      {{ badge("Degraded", variant="warning") }}
+      {{ dropdown_menu(btn("Last 30m", variant="ghost", size="sm"), items=[
+        {"label": "Last 15m", "action": "range-15m"},
+        {"label": "Last 30m", "action": "range-30m"},
+        {"label": "Last 6h", "action": "range-6h"},
+        {"label": "Custom range", "action": "range-custom"}
+      ], id="ops-time-range-menu") }}
+      {{ btn("Refresh", variant="ghost", size="sm") }}
+    {% end %}
+    {{ route_tabs(tabs=[
+      {"href": "/ops/dashboards/api-health", "label": "Overview"},
+      {"href": "/ops/dashboards/api-health/logs", "label": "Logs", "badge": 124, "badge_label": "124 matching log events"},
+      {"href": "/ops/dashboards/api-health/metrics", "label": "Metrics"},
+      {"href": "/ops/dashboards/api-health/traces", "label": "Traces", "badge_loading": true},
+      {"href": "/ops/dashboards/api-health/alerts", "label": "Alerts", "badge": 3, "badge_label": "3 active alerts"},
+    ], current_path="/ops/dashboards/api-health/logs") }}
+    {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Ops dashboard controls") %}
+      {{ btn("Errors only", variant="ghost", size="sm") }}
+      {{ btn("Group by service", variant="ghost", size="sm") }}
+      {{ btn("Live tail", variant="ghost", size="sm") }}
+      {{ btn("Compare deploy", variant="ghost", size="sm") }}
+      {{ btn("Kiosk", variant="ghost", size="sm") }}
+    {% end %}
+    {{ saved_view_strip(label="Ops console saved investigations", views=[
+      {"label": "Current incident", "href": "/ops/incidents/current", "selected": true},
+      {"label": "Deploy regression", "href": "/ops/views/deploy-regression"},
+      {"label": "P95 latency", "href": "/ops/views/p95-latency"},
+      {"label": "SLO burn", "href": "/ops/views/slo-burn"}
+    ]) }}
+    {% call grid(cols=3, gap="md") %}
+      {% call resource_card("/ops/monitors/api-5xx", "API 5xx monitor", description="Alerts when edge API errors exceed the burn-rate threshold.", top_meta="monitor") %}
+        {% slot badges %}{{ badge("Firing", variant="error") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Triggered 12 min ago</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/ops/logs/api-gateway", "api-gateway logs", description="Filtered log stream for production gateway pods.", top_meta="logs") %}
+        {% slot badges %}{{ badge("Live", variant="info") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">124 events in range</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/ops/traces/checkout", "Checkout trace sample", description="Recent slow trace crossing gateway, billing, and ledger.", top_meta="trace") %}
+        {% slot badges %}{{ badge("Slow", variant="warning") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">P95: 812ms</span>
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

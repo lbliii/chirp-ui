@@ -1,0 +1,120 @@
+{% from "chirpui/layout.html" import stack, cluster, block %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/primary_nav.html" import primary_nav %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/avatar.html" import avatar %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/badge.html" import badge %}
+
+{% def dense_project_object_chrome() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Project workspace navigation") %}
+  {{ logo(text="chirp-ui", image_src="/static/chirpui-logo.svg", href="/", variant="both") }}
+  {{ primary_nav([
+    {"label": "Code", "href": "/workspaces/chirp-ui/code", "match": "prefix"},
+    {"label": "Issues", "href": "/workspaces/chirp-ui/issues", "badge": 27, "badge_label": "27 open issues"},
+    {"label": "Runs", "href": "/workspaces/chirp-ui/runs", "badge_loading": true},
+    {"divider": true},
+    {"label": "Inbox", "href": "/inbox", "badge_expected": true},
+  ], current_path="/workspaces/chirp-ui/code/navigation") }}
+  {{ command_palette_trigger(target="project-object-palette", label="Search project", placeholder="Search or jump", shortcut="/", icon="search", density="sm") }}
+  {{ dropdown_menu(btn("Create", variant="ghost", size="sm"), items=[
+    {"label": "New issue", "href": "/workspaces/chirp-ui/issues/new"},
+    {"label": "New branch", "href": "/workspaces/chirp-ui/branches/new"},
+    {"divider": true},
+    {"label": "Import workflow", "action": "import-workflow"}
+  ], id="project-create-menu") }}
+  {{ icon_btn("envelope", href="/notifications", aria_label="Notifications") }}
+  {{ avatar(initials="LL", alt="Lawrence Lane", size="sm") }}
+{% end %}
+{{ command_palette(id="project-object-palette", search_url="/data/table", placeholder="Search project...") }}
+{{ breadcrumbs([
+  {"label": "Workspaces", "href": "/workspaces"},
+  {"label": "chirp-ui", "href": "/workspaces/chirp-ui"},
+  {"label": "Packages", "href": "/workspaces/chirp-ui/packages"},
+  {"label": "Python", "href": "/workspaces/chirp-ui/packages/python"},
+  {"label": "Navigation"}
+], overflow="collapse", max_items=4) }}
+{% call cluster(gap="sm") %}
+  <div class="chirpui-stack chirpui-stack--sm">
+    <h3>chirp-ui / navigation</h3>
+    <div class="chirpui-cluster chirpui-cluster--sm">
+      {{ inline_counter("B", 8, "branches") }}
+      {{ inline_counter("P", 3, "pulls") }}
+      {{ inline_counter("R", 12, "reviews") }}
+    </div>
+  </div>
+  {{ btn("New section", variant="primary", size="sm") }}
+  {{ dropdown_menu(btn("More", variant="ghost", size="sm"), items=[
+    {"label": "Export routes", "action": "export-routes"},
+    {"label": "Archive section", "action": "archive-section", "variant": "danger"}
+  ], id="project-object-more-menu") }}
+{% end %}
+{{ route_tabs(tabs=[
+  {"href": "/workspaces/chirp-ui/code/navigation", "label": "Overview", "badge": 12, "badge_label": "12 overview updates"},
+  {"href": "/workspaces/chirp-ui/code/navigation/examples", "label": "Examples", "badge": 4, "badge_label": "4 examples"},
+  {"href": "/workspaces/chirp-ui/code/navigation/accessibility", "label": "Accessibility"},
+  {"href": "/workspaces/chirp-ui/code/navigation/overflow", "label": "Overflow", "badge_loading": true},
+], current_path="/workspaces/chirp-ui/code/navigation") }}
+{% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Project page tools") %}
+  {{ btn("Filter", variant="ghost", size="sm") }}
+  {{ btn("Sort", variant="ghost", size="sm") }}
+  {{ btn("Bulk edit", variant="ghost", size="sm") }}
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+
+{% def dense_settings_object_chrome() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Settings workspace navigation") %}
+  {{ logo(text="Acme", href="/admin", variant="text") }}
+  {{ primary_nav([
+    {"label": "Overview", "href": "/admin"},
+    {"label": "Settings", "href": "/admin/settings", "match": "prefix"},
+    {"label": "Members", "href": "/admin/members", "badge": 14, "badge_label": "14 members"},
+    {"label": "Billing", "href": "/admin/billing", "badge_expected": true},
+  ], current_path="/admin/settings/access") }}
+  {{ command_palette_trigger(target="settings-object-palette", label="Search settings", placeholder="Find setting", shortcut="⌘K", icon="search", density="sm") }}
+  {{ badge("Unsaved", variant="warning") }}
+  {{ btn("Save", variant="primary", size="sm") }}
+  {{ avatar(initials="AC", alt="Acme Admin", size="sm") }}
+{% end %}
+{{ command_palette(id="settings-object-palette", search_url="/data/table", placeholder="Search settings...") }}
+{{ breadcrumbs([
+  {"label": "Admin", "href": "/admin"},
+  {"label": "Settings", "href": "/admin/settings"},
+  {"label": "Access"}
+], overflow="collapse", max_items=4) }}
+{% call cluster(gap="sm") %}
+  <div class="chirpui-stack chirpui-stack--sm">
+    <h3>Access policy</h3>
+    <div class="chirpui-cluster chirpui-cluster--sm">
+      {{ inline_counter("G", 6, "groups") }}
+      {{ inline_counter("K", 2, "keys") }}
+      {{ inline_counter("S", 1, "staged") }}
+    </div>
+  </div>
+  {{ btn("Invite", variant="ghost", size="sm") }}
+  {{ dropdown_menu(btn("Audit", variant="ghost", size="sm"), items=[
+    {"label": "View log", "href": "/admin/settings/access/audit"},
+    {"label": "Export CSV", "action": "export-csv"}
+  ], id="settings-audit-menu") }}
+{% end %}
+{{ route_tabs(tabs=[
+  {"href": "/admin/settings/access", "label": "Access"},
+  {"href": "/admin/settings/access/groups", "label": "Groups", "badge": 6, "badge_label": "6 groups"},
+  {"href": "/admin/settings/access/keys", "label": "Keys", "badge": 2, "badge_label": "2 keys"},
+  {"href": "/admin/settings/access/audit", "label": "Audit", "badge_expected": true},
+], current_path="/admin/settings/access") }}
+{% end %}
+{% end %}
+{% end %}

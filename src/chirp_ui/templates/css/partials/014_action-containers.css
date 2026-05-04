@@ -9,7 +9,7 @@
 .chirpui-action-strip__inner {
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-end;
+    align-items: center;
     gap: var(--chirpui-space-control-gap);
     width: 100%;
 }
@@ -47,10 +47,15 @@
     gap: var(--chirpui-spacing-xs);
 }
 
+.chirpui-action-strip--md .chirpui-action-strip__inner {
+    gap: var(--chirpui-space-control-gap);
+}
+
 .chirpui-action-strip--scroll .chirpui-action-strip__inner {
     flex-wrap: nowrap;
     overflow-x: auto;
-    padding-bottom: var(--chirpui-spacing-2xs);
+    padding-block: var(--chirpui-spacing-2xs);
+    scroll-padding-inline: var(--chirpui-spacing-sm);
 }
 
 .chirpui-action-strip--scroll .chirpui-action-strip__primary,
@@ -112,4 +117,3 @@
         flex: 0 0 auto;
     }
 }
-

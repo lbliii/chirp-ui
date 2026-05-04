@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block brand %}Effects Visual Contracts{% end %}
+{% block sidebar %}{% end %}
+{% block content %}
+{% from "chirpui/aurora.html" import aurora %}
+{% from "chirpui/meteor.html" import meteor %}
+{% from "chirpui/particle_bg.html" import particle_bg %}
+{% from "chirpui/symbol_rain.html" import symbol_rain %}
+{% from "chirpui/holy_light.html" import holy_light %}
+{% from "chirpui/rune_field.html" import rune_field %}
+{% from "chirpui/constellation.html" import constellation %}
+{% from "chirpui/scanline.html" import scanline %}
+{% from "chirpui/grain.html" import grain %}
+{% from "chirpui/wobble.html" import wobble, jello, rubber_band, bounce_in %}
+
+<style>
+  .effect-probe {
+    width: 320px;
+    height: 180px;
+    padding: 1rem;
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+  }
+</style>
+
+<h1 data-testid="page-heading">Effects Visual Contracts</h1>
+
+<section data-testid="scanline">
+  {% call scanline() %}<div class="effect-probe">Scanline</div>{% end %}
+</section>
+
+<section data-testid="grain">
+  {% call grain(animated=true) %}<div class="effect-probe">Grain</div>{% end %}
+</section>
+
+<section data-testid="particle">
+  {% call particle_bg(count=12, variant="accent") %}<div class="effect-probe">Particle</div>{% end %}
+</section>
+
+<section data-testid="aurora">
+  {% call aurora() %}<div class="effect-probe">Aurora</div>{% end %}
+</section>
+
+<section data-testid="meteor">
+  {% call meteor(count=4) %}<div class="effect-probe">Meteor</div>{% end %}
+</section>
+
+<section data-testid="symbol-rain">
+  {% call symbol_rain(count=6) %}<div class="effect-probe">Symbol rain</div>{% end %}
+</section>
+
+<section data-testid="holy-light">
+  {% call holy_light() %}<div class="effect-probe">Holy light</div>{% end %}
+</section>
+
+<section data-testid="rune-field">
+  {% call rune_field() %}<div class="effect-probe">Rune field</div>{% end %}
+</section>
+
+<section data-testid="constellation">
+  {% call constellation() %}<div class="effect-probe">Constellation</div>{% end %}
+</section>
+
+<section data-testid="motion-wobble">
+  {% call wobble(trigger="hover") %}<button type="button">Wobble</button>{% end %}
+</section>
+
+<section data-testid="motion-jello">
+  {% call jello(trigger="hover") %}<button type="button">Jello</button>{% end %}
+</section>
+
+<section data-testid="motion-rubber">
+  {% call rubber_band(trigger="hover") %}<button type="button">Rubber</button>{% end %}
+</section>
+
+<section data-testid="motion-bounce">
+  {% call bounce_in() %}<button type="button">Bounce</button>{% end %}
+</section>
+{% end %}

@@ -1,0 +1,70 @@
+@layer chirpui.component {
+@scope (.chirpui-scope-switcher) to (.chirpui-scope-switcher .chirpui-scope-switcher) {
+.chirpui-scope-switcher {
+    display: inline-flex;
+    min-inline-size: 0;
+}
+
+.chirpui-scope-switcher .chirpui-dropdown {
+    min-inline-size: 0;
+}
+}
+
+@scope (.chirpui-saved-view-strip) to (.chirpui-saved-view-strip .chirpui-saved-view-strip) {
+.chirpui-saved-view-strip {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+    max-inline-size: 100%;
+    overflow-x: auto;
+    padding-block: var(--chirpui-spacing-2xs);
+}
+
+.chirpui-saved-view-strip > :where(.chirpui-chip, a) {
+    flex: 0 0 auto;
+}
+
+.chirpui-saved-view-strip > a:not(.chirpui-chip) {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: calc(var(--chirpui-spacing) + var(--chirpui-spacing-xs));
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    border: 1px solid var(--chirpui-border-subtle);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--chirpui-accent) 7%, var(--chirpui-bg-subtle));
+    color: color-mix(in srgb, var(--chirpui-text) 84%, var(--chirpui-text-muted));
+    font-size: var(--chirpui-font-xs);
+    line-height: var(--chirpui-line-height-tight);
+    text-decoration: none;
+}
+
+.chirpui-saved-view-strip > a:not(.chirpui-chip):hover {
+    border-color: color-mix(in srgb, var(--chirpui-accent) 70%, var(--chirpui-border));
+    background: color-mix(in srgb, var(--chirpui-accent) 14%, var(--chirpui-bg-subtle));
+    color: var(--chirpui-text);
+}
+}
+
+@scope (.chirpui-nav-link) to (.chirpui-nav-link .chirpui-nav-link) {
+.chirpui-nav-link {
+    display: inline-flex;
+    align-items: center;
+    inline-size: fit-content;
+    min-block-size: calc(var(--chirpui-spacing) + var(--chirpui-spacing-xs));
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    border: 1px solid var(--chirpui-border-subtle);
+    border-radius: var(--chirpui-radius-sm);
+    background: color-mix(in srgb, var(--chirpui-accent) 6%, var(--chirpui-bg-subtle));
+    color: var(--chirpui-accent);
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
+    text-decoration: none;
+}
+
+.chirpui-nav-link:hover {
+    border-color: color-mix(in srgb, var(--chirpui-accent) 62%, var(--chirpui-border));
+    background: color-mix(in srgb, var(--chirpui-accent) 13%, var(--chirpui-bg-subtle));
+    color: var(--chirpui-text);
+}
+}
+}

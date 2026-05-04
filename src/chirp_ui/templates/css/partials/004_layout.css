@@ -153,6 +153,10 @@
     grid-template-columns: var(--chirpui-frame-hero-columns);
 }
 
+.chirpui-frame--sidebar-start {
+    grid-template-columns: minmax(0, min(var(--chirpui-frame-sidebar-width), 100%)) minmax(0, 1fr);
+}
+
 .chirpui-frame--sidebar-end {
     grid-template-columns: minmax(0, 1fr) minmax(0, min(var(--chirpui-frame-sidebar-width), 100%));
 }
@@ -160,6 +164,7 @@
 @container chirpui-layout (width < 48rem) {
     .chirpui-frame--balanced,
     .chirpui-frame--hero,
+    .chirpui-frame--sidebar-start,
     .chirpui-frame--sidebar-end {
         grid-template-columns: minmax(0, 1fr);
     }
@@ -172,6 +177,7 @@
 @media (max-width: 48rem) {
     .chirpui-frame--balanced,
     .chirpui-frame--hero,
+    .chirpui-frame--sidebar-start,
     .chirpui-frame--sidebar-end {
         grid-template-columns: minmax(0, 1fr);
     }
@@ -568,4 +574,3 @@
 .chirpui-section-collapsible__summary::marker {
     display: none;
 }
-

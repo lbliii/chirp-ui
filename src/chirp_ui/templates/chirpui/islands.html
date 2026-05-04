@@ -15,13 +15,14 @@
     cls="",
     raw_attrs=none
 ) %}
+{% set _cls = "chirpui-island-root" ~ (" " ~ cls if cls else "") %}
 {% if raw_attrs is not none %}
 <section{{ raw_attrs | safe }}>
 {% else %}
 {% if primitive is not none %}
-<section{{ primitive_attrs(primitive, props=props, mount_id=mount_id, version=version, src=src, cls=cls) }}>
+<section{{ primitive_attrs(primitive, props=props, mount_id=mount_id, version=version, src=src, cls=_cls) }}>
 {% else %}
-<section{{ island_attrs(name, props=props, mount_id=mount_id, version=version, src=src, cls=cls) }}>
+<section{{ island_attrs(name, props=props, mount_id=mount_id, version=version, src=src, cls=_cls) }}>
 {% end %}
 {% end %}
     <div class="chirpui-island-fallback">

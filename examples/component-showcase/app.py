@@ -1,16 +1,14 @@
 """chirp-ui Component Showcase — spin up to see all components.
 
-Requires: pip install chirp chirp-ui
-Run: python app.py
+Requires: pip install -e ".[showcase]"
+Run: python examples/component-showcase/app.py
 """
 
 import asyncio
 import calendar as cal_mod
 import csv
-import inspect
 import io
 import re
-from dataclasses import dataclass, field
 from pathlib import Path
 from urllib.parse import quote
 
@@ -22,97 +20,40 @@ from chirp import (
     Fragment,
     Request,
     Response,
+    ShellAction,
+    ShellActions,
+    ShellActionZone,
     SSEEvent,
     Template,
     ValidationError,
+    use_chirp_ui,
 )
-from chirp.middleware.static import StaticFiles
-
-import chirp_ui
-
-try:
-    from chirp import ShellAction, ShellActions, ShellActionZone
-except ImportError:
-
-    @dataclass(frozen=True, slots=True)
-    class _ShellMenuItem:
-        label: str = ""
-        href: str | None = None
-        action: str | None = None
-        variant: str = "default"
-        icon: str | None = None
-
-        def get(self, key: str, default: object = None) -> object:
-            value = getattr(self, key, default)
-            return default if value is None else value
-
-    @dataclass(frozen=True, slots=True)
-    class ShellAction:
-        id: str
-        label: str
-        kind: str = "link"
-        href: str | None = None
-        action: str | None = None
-        variant: str = "default"
-        icon: str | None = None
-        size: str = "sm"
-        disabled: bool = False
-        menu_items: tuple[_ShellMenuItem, ...] = ()
-
-        def as_menu_item(self) -> _ShellMenuItem:
-            return _ShellMenuItem(
-                label=self.label,
-                href=self.href,
-                action=self.action,
-                variant=self.variant,
-                icon=self.icon,
-            )
-
-    @dataclass(frozen=True, slots=True)
-    class ShellActionZone:
-        items: tuple[ShellAction, ...] = ()
-
-        @property
-        def overflow_items(self) -> tuple[_ShellMenuItem, ...]:
-            return tuple(item.as_menu_item() for item in self.items)
-
-    @dataclass(frozen=True, slots=True)
-    class ShellActions:
-        primary: ShellActionZone = field(default_factory=ShellActionZone)
-        controls: ShellActionZone = field(default_factory=ShellActionZone)
-        overflow: ShellActionZone = field(default_factory=ShellActionZone)
-        target: str = "chirp-shell-actions"
-
-        @property
-        def has_items(self) -> bool:
-            return bool(self.primary.items or self.controls.items or self.overflow.items)
-
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
 # Use source chirp-ui templates (many components not yet in installed package)
 _CHIRPUI_SRC_TEMPLATES = Path(__file__).resolve().parents[2] / "src" / "chirp_ui" / "templates"
 
-# Build config with only params supported by installed Chirp (islands added in newer versions)
-_config_kwargs: dict[str, object] = {
-    "template_dir": TEMPLATES_DIR,
-    "debug": False,
-    "view_transitions": True,
-    "delegation": True,
-    "islands": True,
-    "component_dirs": (_CHIRPUI_SRC_TEMPLATES,) if _CHIRPUI_SRC_TEMPLATES.is_dir() else (),
-}
-_sig = inspect.signature(AppConfig)
-_allowed = {k: v for k, v in _config_kwargs.items() if k in _sig.parameters}
-app = App(AppConfig(**_allowed))
-try:
-    from chirp import use_chirp_ui
+app = App(
+    AppConfig(
+        template_dir=TEMPLATES_DIR,
+        debug=False,
+        view_transitions=True,
+        delegation=True,
+        islands=True,
+        component_dirs=(_CHIRPUI_SRC_TEMPLATES,) if _CHIRPUI_SRC_TEMPLATES.is_dir() else (),
+    )
+)
+use_chirp_ui(app)
 
-    use_chirp_ui(app)
-except ImportError:
-    app.add_middleware(StaticFiles(directory=str(chirp_ui.static_path()), prefix="/static"))
 
-chirp_ui.register_filters(app)
+def _query_list(request: Request, key: str) -> list[str]:
+    """Return repeated query values, accepting older comma-joined showcase links."""
+    values = request.query.get_list(key)
+    items: list[str] = []
+    for value in values:
+        items.extend(part.strip() for part in str(value).split(",") if part.strip())
+    return items
 
 
 @app.route("/toast", methods=["POST"])
@@ -398,7 +339,7 @@ async def data_table(request: Request) -> Fragment:
 @app.route("/data/bulk-bar", methods=["GET"])
 async def data_bulk_bar(request: Request) -> Fragment:
     """Return bulk action bar fragment when rows are selected."""
-    selected = request.query.getlist("selected")
+    selected = _query_list(request, "selected")
     if not selected:
         return Fragment("showcase/_bulk_bar.html", "bulk_bar", count=0)
     return Fragment("showcase/_bulk_bar.html", "bulk_bar", count=len(selected), selected=selected)
@@ -411,7 +352,7 @@ async def data_export(request: Request) -> Response:
     role = (request.query.get("role") or "").strip()
     sort_col = request.query.get("sort", "name")
     sort_dir = request.query.get("dir", "asc")
-    selected = request.query.getlist("selected")
+    selected = _query_list(request, "selected")
 
     sorted_data = _filter_table_data(q, role, sort_col, sort_dir)
     if selected:

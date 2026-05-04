@@ -569,6 +569,17 @@ input[type="date"].chirpui-field__input {
     /* No layout; just a wrapper for hx-disinherit */
 }
 
+.chirpui-island-root {
+    display: block;
+    min-width: 0;
+}
+
+.chirpui-island-fallback {
+    display: grid;
+    gap: var(--chirpui-spacing-sm);
+    min-width: 0;
+}
+
 /* DnD primitives — row and board variants */
 .chirpui-dnd {
     display: flex;

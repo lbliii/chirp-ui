@@ -6,8 +6,11 @@ Each test verifies:
 - Slot content injection where applicable
 """
 
+import re
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from itertools import pairwise
+from pathlib import Path
 
 import pytest
 from kida import Environment
@@ -281,6 +284,13 @@ class TestLayout:
             '{% call frame(variant="sidebar-end") %}A{% end %}'
         ).render()
         assert "chirpui-frame--sidebar-end" in html
+
+    def test_frame_sidebar_start(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/layout.html" import frame %}'
+            '{% call frame(variant="sidebar-start") %}A{% end %}'
+        ).render()
+        assert "chirpui-frame--sidebar-start" in html
 
     def test_frame_gap_lg(self, env: Environment) -> None:
         html = env.from_string(
@@ -631,6 +641,7 @@ class TestIslands:
         ).render()
         assert 'data-island="editor"' in html
         assert 'id="editor-root"' in html
+        assert 'class="chirpui-island-root"' in html
         assert "data-island-props=" in html
         assert "chirpui-island-fallback" in html
         assert "Fallback" in html
@@ -1276,6 +1287,37 @@ class TestNavTree:
         assert "chirpui-nav-tree__hint" in html
         assert 'hx-target="#site-content"' in html
         assert 'hx-boost="true"' in html
+
+
+class TestPrimaryNav:
+    def test_primary_nav_badge_accessible_label_and_reserved_state(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/primary_nav.html" import primary_nav %}'
+            '{{ primary_nav(items=[{"label": "Issues", "href": "/issues", "badge": 12, "badge_label": "12 open issues"}, '
+            '{"label": "Runs", "href": "/runs", "badge_loading": true}, '
+            '{"label": "Inbox", "href": "/inbox", "badge_expected": true}], current_path="/issues") }}'
+        ).render()
+        assert 'aria-label="12 open issues"' in html
+        assert "chirpui-primary-nav__badge--loading" in html
+        assert "chirpui-primary-nav__badge--reserved" in html
+        assert html.count('aria-hidden="true"') == 2
+
+
+class TestRouteTabs:
+    def test_route_tabs_badge_accessible_label_and_reserved_state(self, env: Environment) -> None:
+        from chirp_ui.route_tabs import tab_is_active
+
+        env.add_global("tab_is_active", tab_is_active)
+        html = env.from_string(
+            '{% from "chirpui/route_tabs.html" import route_tabs %}'
+            '{{ route_tabs(tabs=[{"label": "Pulls", "href": "/pulls", "badge": 2, "badge_label": "2 pull requests"}, '
+            '{"label": "Runs", "href": "/runs", "badge_loading": true}, '
+            '{"label": "Audit", "href": "/audit", "badge_expected": true}], current_path="/pulls") }}'
+        ).render()
+        assert 'aria-label="2 pull requests"' in html
+        assert "chirpui-route-tab__badge--loading" in html
+        assert "chirpui-route-tab__badge--reserved" in html
+        assert html.count('aria-hidden="true"') == 2
 
 
 # ---------------------------------------------------------------------------
@@ -3595,6 +3637,18 @@ class TestActionContainers:
         assert "Filters" in html
         assert "Create" in html
 
+    def test_action_strip_scroll_css_reserves_hover_lift_room(self) -> None:
+        css = _chirpui_css()
+        scroll_rule = css.split(".chirpui-action-strip--scroll .chirpui-action-strip__inner", 1)[
+            1
+        ].split("}", 1)[0]
+        assert "padding-block: var(--chirpui-spacing-2xs)" in scroll_rule
+        assert "overflow-x: auto" in scroll_rule
+        assert (
+            "align-items: center"
+            in css.split(".chirpui-action-strip__inner", 1)[1].split("}", 1)[0]
+        )
+
     def test_filter_bar(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/filter_bar.html" import filter_bar %}'
@@ -4392,6 +4446,14 @@ class TestStepper:
         assert "chirpui-stepper__item--completed" in html
         assert "chirpui-stepper__item--active" in html
 
+    def test_stepper_completed_indicator_uses_opaque_fill(self) -> None:
+        css = _chirpui_css()
+        completed_rule = css.split(
+            ".chirpui-stepper__item--completed .chirpui-stepper__indicator", 1
+        )[1].split("}", 1)[0]
+        assert "var(--chirpui-bg-subtle)" in completed_rule
+        assert "15%, transparent" not in completed_rule
+
 
 class TestWizardForm:
     def test_wizard_form_safe_region_caller_scoping(self, env: Environment) -> None:
@@ -4666,6 +4728,15 @@ class TestTimeline:
         assert "chirpui-timeline__link-overlay" not in html
         assert 'href="/detail"' in html
 
+    def test_timeline_density_and_card_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/timeline.html" import timeline %}'
+            '{% set items = [{"title": "Step 1", "date": "Jan 1"}] %}'
+            '{{ timeline(items=items, density="compact", variant="cards") }}'
+        ).render()
+        assert "chirpui-timeline--compact" in html
+        assert "chirpui-timeline--cards" in html
+
     def test_timeline_items_title_link_mode_uses_route_link_attrs_when_available(
         self, env: Environment
     ) -> None:
@@ -4878,6 +4949,20 @@ class TestCommandPalette:
         assert "chirpui-command-palette-trigger" in html
         assert 'x-data="chirpuiDialogTarget()"' in html
         assert 'data-dialog-target="palette"' in html
+        assert 'aria-label="Search"' in html
+
+    def test_command_palette_trigger_dense_chrome_options(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_palette.html" import command_palette_trigger %}'
+            '{{ command_palette_trigger("palette", label="Search project", placeholder="Search or jump", shortcut="/", icon="search", density="sm") }}'
+        ).render()
+        assert "chirpui-command-palette-trigger--sm" in html
+        assert "chirpui-command-palette__trigger-icon" in html
+        assert "chirpui-command-palette__trigger-label" in html
+        assert "Search or jump" in html
+        assert "<kbd" in html
+        assert ">/" in html
+        assert 'aria-label="Search project"' in html
 
 
 class TestSplitButton:
@@ -5516,7 +5601,10 @@ class TestAppLayout:
         assert path.exists()
         content = path.read_text()
         assert "chirpui.css" in content
-        assert "chirpui-alpine.js" in content
+        assert "app-theme-starter.css" in content
+        assert "cdn.jsdelivr.net/npm/alpinejs" not in content
+        assert 'src="/static/chirpui-alpine.js"' not in content
+        assert "use_chirp_ui(app)" in content
         assert "toast_container" in content
 
 
@@ -6477,6 +6565,7 @@ class TestNotificationDot:
             '{% from "chirpui/notification_dot.html" import notification_dot %}'
             "{% call notification_dot(count=5) %}<span>Mail</span>{% end %}"
         ).render()
+        assert "chirpui-notification-dot--count" in html
         assert "5" in html
         assert 'aria-label="5 notifications"' in html
 
@@ -7244,6 +7333,27 @@ class TestMetricCardEnhanced:
 # ==========================================================================
 
 
+def _position_pairs(html: str) -> list[tuple[int, int]]:
+    return [(int(x), int(y)) for x, y in re.findall(r"left: (\d+)%; (?:top|bottom): (\d+)%", html)]
+
+
+def _assert_scattered_effect_positions(html: str) -> None:
+    points = sorted(_position_pairs(html))
+    assert len(points) >= 6
+    xs = [x for x, _ in points]
+    ys = [y for _, y in points]
+    assert max(xs) - min(xs) >= 40
+    assert max(ys) - min(ys) >= 40
+    assert not all(left <= right for left, right in pairwise(ys))
+    assert not all(left >= right for left, right in pairwise(ys))
+
+
+def _chirpui_css() -> str:
+    return (
+        Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates" / "chirpui.css"
+    ).read_text(encoding="utf-8")
+
+
 class TestTypewriter:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
@@ -7373,6 +7483,38 @@ class TestAurora:
         assert "chirpui-aurora--subtle" in html
 
 
+class TestDecorativeScatter:
+    def test_particle_background_positions_are_not_formulaic_diagonal(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/particle_bg.html" import particle_bg %}'
+            "{% call particle_bg(count=12) %}Particles{% end %}"
+        ).render()
+        _assert_scattered_effect_positions(html)
+
+    def test_holy_light_positions_are_not_formulaic_diagonal(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/holy_light.html" import holy_light %}'
+            "{% call holy_light() %}Glow{% end %}"
+        ).render()
+        _assert_scattered_effect_positions(html)
+
+    def test_rune_field_positions_are_not_formulaic_diagonal(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/rune_field.html" import rune_field %}'
+            "{% call rune_field() %}Runes{% end %}"
+        ).render()
+        _assert_scattered_effect_positions(html)
+
+    def test_constellation_positions_are_not_formulaic_diagonal(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/constellation.html" import constellation %}'
+            "{% call constellation() %}Stars{% end %}"
+        ).render()
+        _assert_scattered_effect_positions(html)
+
+
 class TestScanline:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(
@@ -7395,6 +7537,12 @@ class TestScanline:
             '{% call scanline(variant="heavy") %}Bold{% end %}'
         ).render()
         assert "chirpui-scanline--heavy" in html
+
+    def test_css_uses_visible_overlay_layers(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-scanline::before" in css
+        assert "radial-gradient(circle at 50% 48%" in css
+        assert "rgba(255, 255, 255, 0.07)" in css
 
 
 class TestGrain:
@@ -7424,6 +7572,15 @@ class TestGrain:
             "{% call grain(attrs='data-testid=\"gr\"') %}P{% end %}"
         ).render()
         assert 'data-testid="gr"' in html
+
+    def test_css_uses_visible_noise_layers(self) -> None:
+        css = _chirpui_css()
+        grain_rule = css.split(".chirpui-grain::after", 1)[1].split(".chirpui-grain--", 1)[0]
+        assert "feTurbulence" in grain_rule
+        assert "radial-gradient" not in grain_rule
+        assert "background-size: 97px 89px, 173px 149px" in grain_rule
+        assert "opacity: 0.2" in css
+        assert "@keyframes chirpui-grain-shift" in css
 
 
 class TestOrbit:
@@ -7550,6 +7707,13 @@ class TestWobble:
         ).render()
         assert "chirpui-bounce-in" in html
 
+    def test_css_makes_motion_wrappers_transformable(self) -> None:
+        css = _chirpui_css()
+        motion_rule = css.split(".chirpui-wobble,", 1)[1].split(".chirpui-wobble {", 1)[0]
+        assert "display: inline-block" in motion_rule
+        assert "transform-origin: center" in motion_rule
+        assert ".chirpui-bounce-in { animation: chirpui-bounce-in 0.6s ease-out both; }" in css
+
 
 # ---------------------------------------------------------------------------
 # Pre-hydration safety — overlays must be inert before Alpine initializes
@@ -7645,6 +7809,7 @@ class TestHtmxCorrectness:
         html = env.from_string(
             '{% from "chirpui/nav_link.html" import nav_link %}{{ nav_link("/page", "Next") }}'
         ).render()
+        assert 'class="chirpui-nav-link"' in html
         assert 'hx-target="#main"' in html
         assert 'hx-select="#page-content"' in html
 
@@ -7653,8 +7818,16 @@ class TestHtmxCorrectness:
             '{% from "chirpui/nav_link.html" import nav_link %}'
             '{% call nav_link("/details") %}View{% end %}'
         ).render()
+        assert "chirpui-nav-link" in html
         assert 'hx-select="#page-content"' in html
         assert "View" in html
+
+    def test_nav_link_preserves_custom_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_link.html" import nav_link %}'
+            '{{ nav_link("/page", "Next", cls="extra-link") }}'
+        ).render()
+        assert 'class="chirpui-nav-link extra-link"' in html
 
     def test_inline_edit_cancel_has_boost_false(self, env: Environment) -> None:
         html = env.from_string(

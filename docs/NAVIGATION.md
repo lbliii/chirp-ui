@@ -11,6 +11,7 @@ See also:
 - [SHELL-TABS-CONTRACT.md](SHELL-TABS-CONTRACT.md)
 - [RESPONSIVE.md](RESPONSIVE.md)
 - [UI-LAYERS.md](UI-LAYERS.md)
+- [DENSE-NAVIGATION-SYNTHESIS.md](DENSE-NAVIGATION-SYNTHESIS.md)
 - [PLAN-navigation-density-study.md](plans/PLAN-navigation-density-study.md)
 
 ## Decision Matrix
@@ -107,6 +108,19 @@ Keyboard hints are supplemental.
 
 Use `command_palette_trigger` for the chrome control and `command_palette` for
 the overlay. Keep search/jump behavior out of ordinary route navigation.
+Dense chrome triggers can use a short visible placeholder while keeping a more
+specific accessible name:
+
+```html
+{{ command_palette_trigger(
+  target="project-palette",
+  label="Search project",
+  placeholder="Search or jump",
+  shortcut="/",
+  icon="search",
+  density="sm"
+) }}
+```
 
 ## Counters And Badges
 
@@ -119,9 +133,18 @@ Counters in navigation should be stable:
 - include accessible count text when the visual badge is compact or hidden from
   assistive technologies
 
-This is guidance for existing badge-bearing surfaces (`route_tabs`,
-`primary_nav`, `sidebar_link`, and `nav_tree`). New count-loading API should not
-be added until an example or app proves the need.
+`route_tabs` and `primary_nav` support `badge_label`, `badge_expected`, and
+`badge_loading` on items. Use `badge_label` when the visual count needs fuller
+assistive text, `badge_expected` when a count is intentionally reserved but not
+loaded yet, and `badge_loading` when a count is pending.
+
+```html
+{{ route_tabs(tabs=[
+  {"href": "/issues", "label": "Issues", "badge": 12, "badge_label": "12 open issues"},
+  {"href": "/runs", "label": "Runs", "badge_loading": true},
+  {"href": "/audit", "label": "Audit", "badge_expected": true},
+], current_path="/issues") }}
+```
 
 ## Dense Object Navigation Recipe
 
@@ -132,6 +155,58 @@ For GitHub-like object pages, compose existing primitives in this order:
 2. object row: breadcrumbs, title/meta, object-level actions
 3. local row: `render_route_tabs` for route-backed object views
 4. page row: filters, sort, bulk actions, and content-local tools
+
+The component showcase includes two copyable dense object chrome recipes:
+a repository/project page and an admin/settings page. Both keep global
+navigation, object context, local routes, and page tools as separate layers.
+It also includes a cloud/control-plane recipe for scope switching, service
+menus, favorites quickbars, resource search, deployment tabs, and page-local
+controls. The suite work hub recipe extends the same layer model to product
+suites: top utilities, product modes, personal shortcuts, customizable sidebar
+sections, project-local route tabs, and saved views stay distinct. The ops
+console recipe applies it to observability: command-first dashboard search,
+operational side navigation, time range controls, signal tabs, and stable alert
+counts stay in separate layers. The tracker recipe treats shortcut hints as
+navigation evidence, pairing command launch with visible favorites, team views,
+route-backed issue tabs, and display controls. The knowledge workspace recipe
+uses linked disclosure navigation for nested pages, collapsed breadcrumbs for
+deep page location, and separate page-local routes for tasks, comments, and
+history. The editor workbench recipe keeps file identity, tool navigation,
+layer hierarchy, canvas context, comments/prototype routes, and inspector
+properties in distinct regions without adding canvas-specific API. The business
+object console recipe separates app/resource navigation, global object search,
+object ID context, saved searches, and object-local event/invoice/log routes.
+The collaboration inbox recipe separates unread navigation, jump-to-conversation
+search, activity/later surfaces, and conversation-local message/thread/file
+routes. The developer platform recipe combines project/group/profile scope,
+search-or-go-to, workflow navigation, a context-sensitive project sidebar, and
+project-local tabs without creating a product-specific header clone. The
+reference docs recipe applies the same contract to workflow information
+architecture, persistent left navigation, docs search, page-local controls, and
+nearby-topic discovery.
+
+## Primitive Synthesis
+
+The recipe family study found that ChirpUI should continue to prefer layered
+composition over product-specific navigation components. The current blessed
+path is:
+
+- scope selection as `scope_switcher`,
+- search/jump as `command_palette_trigger` plus `command_palette`,
+- broad navigation as `sidebar`, `primary_nav`, or `nav_tree`,
+- local URL-backed views as `route_tabs`,
+- saved views and shortcut rows as `saved_view_strip`,
+- nearby discovery as `chip_group` or `resource_card`,
+- page tools as `command_bar`.
+
+Sidebar links now share the badge stability contract from `route_tabs` and
+`primary_nav`: side navigation can reserve/loading-render badge states and
+expose accessible badge labels. Broader shells such as `workspace_shell` or
+`dense_nav_frame` remain recipe-level ideas until repeated app usage proves a
+stable shape.
+
+See [DENSE-NAVIGATION-SYNTHESIS.md](DENSE-NAVIGATION-SYNTHESIS.md) for the
+candidate backlog and anti-decisions.
 
 On phones:
 

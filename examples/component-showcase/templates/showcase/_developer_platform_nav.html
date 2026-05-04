@@ -1,0 +1,136 @@
+{% from "chirpui/layout.html" import stack, cluster, grid, block, frame %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/primary_nav.html" import primary_nav %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+{% from "chirpui/avatar.html" import avatar %}
+
+{% def developer_platform_navigation() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Developer platform global navigation") %}
+  {{ logo(text="ForgeHub", href="/dev", variant="text") }}
+  {{ dropdown_menu(btn("Project scope", variant="ghost", size="sm"), items=[
+    {"label": "Project: api-gateway", "href": "/dev/groups/platform/projects/api-gateway"},
+    {"label": "Group: platform", "href": "/dev/groups/platform"},
+    {"label": "Profile: Maya", "href": "/dev/users/maya"},
+    {"divider": true},
+    {"label": "Browse all projects", "href": "/dev/projects"}
+  ], id="developer-scope-menu") }}
+  {{ command_palette_trigger(target="developer-platform-palette", label="Search or go to", placeholder="Search or go to project, issue, MR", shortcut="/", icon="search", density="sm") }}
+  {{ btn("New", variant="primary", size="sm") }}
+  {{ icon_btn("alert", href="/dev/todos", aria_label="To-dos") }}
+  {{ avatar(initials="FH", alt="ForgeHub user", size="sm") }}
+{% end %}
+{{ command_palette(id="developer-platform-palette", search_url="/data/table", placeholder="Search projects, issues, merge requests, and files...") }}
+{% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Developer platform workflow navigation") %}
+  {{ primary_nav([
+    {"label": "Projects", "href": "/dev/projects", "match": "prefix"},
+    {"label": "Groups", "href": "/dev/groups", "match": "prefix"},
+    {"label": "Issues", "href": "/dev/issues", "badge": 17, "badge_label": "17 assigned issues"},
+    {"label": "Merge requests", "href": "/dev/merge-requests", "badge_loading": true},
+    {"label": "To-dos", "href": "/dev/todos", "badge": 6, "badge_label": "6 to-dos"},
+  ], current_path="/dev/groups/platform/projects/api-gateway/pipelines", aria_label="Developer workflows") }}
+{% end %}
+{% call frame(variant="sidebar-start", gap="md") %}
+  {% call sidebar(current_path="/dev/groups/platform/projects/api-gateway/pipelines") %}
+    {% slot header %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <strong>api-gateway</strong>
+        <span class="chirpui-text-muted chirpui-font-sm">Context sidebar changes with scope.</span>
+      </div>
+    {% end %}
+    {% call sidebar_section("Project") %}
+      {{ sidebar_link("/dev/groups/platform/projects/api-gateway", "Project overview", icon="home") }}
+      {{ sidebar_link("/dev/groups/platform/projects/api-gateway/repository", "Repository", icon="sources") }}
+      {{ sidebar_link("/dev/groups/platform/projects/api-gateway/issues", "Issues", icon="list", badge=12) }}
+      {{ sidebar_link("/dev/groups/platform/projects/api-gateway/merge-requests", "Merge requests", icon="chain", badge=4) }}
+      {{ sidebar_link("/dev/groups/platform/projects/api-gateway/pipelines", "Pipelines", icon="status", match="exact", badge=2) }}
+    {% end %}
+    {% call sidebar_section("Operate", collapsible=true) %}
+      {{ sidebar_link("/dev/groups/platform/projects/api-gateway/environments", "Environments", icon="cloud") }}
+      {{ sidebar_link("/dev/groups/platform/projects/api-gateway/security", "Security", icon="settings") }}
+      {{ sidebar_link("/dev/groups/platform/projects/api-gateway/settings", "Settings", icon="gear") }}
+    {% end %}
+  {% end %}
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs([
+      {"label": "ForgeHub", "href": "/dev"},
+      {"label": "platform", "href": "/dev/groups/platform"},
+      {"label": "api-gateway", "href": "/dev/groups/platform/projects/api-gateway"},
+      {"label": "Pipelines"}
+    ], overflow="collapse", max_items=4) }}
+    {% call cluster(gap="sm") %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <h3>api-gateway</h3>
+        <div class="chirpui-cluster chirpui-cluster--sm">
+          {{ inline_counter("I", 12, "issues") }}
+          {{ inline_counter("M", 4, "mrs") }}
+          {{ inline_counter("P", 2, "running") }}
+        </div>
+      </div>
+      {{ badge("Protected", variant="success") }}
+      {{ btn("Run pipeline", variant="primary", size="sm") }}
+      {{ dropdown_menu(btn("Project actions", variant="ghost", size="sm"), items=[
+        {"label": "Clone", "action": "clone-project"},
+        {"label": "Add member", "action": "add-member"},
+        {"label": "Create issue", "action": "create-issue"},
+        {"divider": true},
+        {"label": "Archive project", "action": "archive-project", "variant": "danger"}
+      ], id="developer-project-actions-menu") }}
+    {% end %}
+    {{ route_tabs(tabs=[
+      {"href": "/dev/groups/platform/projects/api-gateway", "label": "Overview"},
+      {"href": "/dev/groups/platform/projects/api-gateway/repository", "label": "Repository"},
+      {"href": "/dev/groups/platform/projects/api-gateway/issues", "label": "Issues", "badge": 12, "badge_label": "12 project issues"},
+      {"href": "/dev/groups/platform/projects/api-gateway/merge-requests", "label": "Merge requests", "badge": 4, "badge_label": "4 merge requests"},
+      {"href": "/dev/groups/platform/projects/api-gateway/pipelines", "label": "Pipelines", "badge_loading": true},
+    ], current_path="/dev/groups/platform/projects/api-gateway/pipelines") }}
+    {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Developer platform list controls") %}
+      {{ btn("Running", variant="ghost", size="sm") }}
+      {{ btn("Failed", variant="ghost", size="sm") }}
+      {{ btn("Protected branch", variant="ghost", size="sm") }}
+      {{ btn("My changes", variant="ghost", size="sm") }}
+      {{ btn("Refresh", variant="ghost", size="sm") }}
+    {% end %}
+    {% call chip_group(label="Developer platform project views") %}
+      {{ chip("Pipeline health", selected=true, href="/dev/groups/platform/projects/api-gateway/pipelines") }}
+      {{ chip("Review queue", href="/dev/groups/platform/projects/api-gateway/merge-requests") }}
+      {{ chip("Assigned issues", href="/dev/groups/platform/projects/api-gateway/issues?assignee=me") }}
+      {{ chip("Security findings", href="/dev/groups/platform/projects/api-gateway/security") }}
+    {% end %}
+    {% call grid(cols=3, gap="md") %}
+      {% call resource_card("/dev/groups/platform/projects/api-gateway/pipelines/884", "Pipeline #884", description="Main branch pipeline with deploy and smoke stages running.", top_meta="pipeline") %}
+        {% slot badges %}{{ badge("Running", variant="info") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Started 9 min ago</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/dev/groups/platform/projects/api-gateway/merge-requests/42", "MR !42 Auth cleanup", description="Merge request waiting on review from platform owners.", top_meta="merge request") %}
+        {% slot badges %}{{ badge("Review", variant="warning") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">2 approvals needed</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/dev/groups/platform/projects/api-gateway/issues/118", "Issue #118 Retry budget", description="Assigned issue linked to the running pipeline.", top_meta="issue") %}
+        {% slot badges %}{{ badge("Assigned", variant="success") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Due this week</span>
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

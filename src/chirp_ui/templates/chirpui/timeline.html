@@ -46,13 +46,17 @@
 {% end %}
 {% end %}
 
-{% def timeline(items=none, hoverable=false, link_mode="overlay", cls="") %}
+{% def timeline(items=none, hoverable=false, link_mode="overlay", density="", variant="", cls="") %}
 {# @consumes _surface_variant from: panel, surface — falls back to "" #}
 {% set _surface = consume("_surface_variant", "") %}
 {% set _on_surface = " chirpui-timeline--on-" ~ _surface if _surface and _surface != "default" else "" %}
 {% set hover_class = " chirpui-timeline--hoverable" if hoverable else "" %}
 {% set _default_link_mode = link_mode | validate_variant(("overlay", "title"), "overlay") %}
-<div class="chirpui-timeline{{ _on_surface }}{{ hover_class }}{{ " " ~ cls if cls else "" }}">
+{% set _density = density | validate_variant(("", "compact", "spacious"), "") %}
+{% set _variant = variant | validate_variant(("", "cards"), "") %}
+{% set _density_class = " chirpui-timeline--" ~ _density if _density else "" %}
+{% set _variant_class = " chirpui-timeline--" ~ _variant if _variant else "" %}
+<div class="chirpui-timeline{{ _on_surface }}{{ hover_class }}{{ _density_class }}{{ _variant_class }}{{ " " ~ cls if cls else "" }}">
     {% if items %}
         {% for item in items %}
         {% set _href = item.get("href") %}

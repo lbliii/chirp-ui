@@ -65,6 +65,31 @@ For deep object paths, prefer breadcrumb overflow instead of letting the header 
 {{ breadcrumbs(items, overflow="collapse", max_items=4) }}
 ```
 
+For dense object chrome, reserve count space instead of letting counters shift
+as they load:
+
+```html
+{{ route_tabs(tabs=[
+  {"href": "/issues", "label": "Issues", "badge": 12, "badge_label": "12 open issues"},
+  {"href": "/runs", "label": "Runs", "badge_loading": true},
+  {"href": "/audit", "label": "Audit", "badge_expected": true},
+], current_path="/issues") }}
+```
+
+Use a compact command launcher for global search/jump, and keep the full search
+surface in `command_palette`:
+
+```html
+{{ command_palette_trigger(
+  target="project-palette",
+  label="Search project",
+  placeholder="Search or jump",
+  shortcut="/",
+  icon="search",
+  density="sm"
+) }}
+```
+
 ## Golden Path
 
 The recommended app path is now:
@@ -178,7 +203,7 @@ For route-backed subsection tabs (e.g. Workspace → Analytics, Events, Logs), t
 {{ render_route_tabs(tab_items, current_path, target="#page-root") }}
 ```
 
-Tab items: `{label, href, icon?, badge?, match?}`. `match`: `"exact"` or `"prefix"`. ChirpUI registers `tab_is_active` as a template global via `use_chirp_ui()`. The older `route_tabs(...)` name still works as a compatibility alias, but `render_route_tabs(...)` avoids the common macro/context name collision footgun.
+Tab items: `{label, href, icon?, badge?, badge_label?, badge_expected?, badge_loading?, match?}`. `match`: `"exact"` or `"prefix"`. ChirpUI registers `tab_is_active` as a template global via `use_chirp_ui()`. The older `route_tabs(...)` name still works as a compatibility alias, but `render_route_tabs(...)` avoids the common macro/context name collision footgun.
 
 For the full tabbed layout structure, prefer extending `chirpui/tabbed_page_layout.html` so the template itself exposes Chirp's `page_root`, `page_root_inner`, and `page_content` contract blocks:
 

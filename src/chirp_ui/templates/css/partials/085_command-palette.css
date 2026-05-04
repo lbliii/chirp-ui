@@ -102,9 +102,31 @@
     font-family: inherit;
 }
 
+.chirpui-command-palette-trigger--md {
+    min-block-size: var(--chirpui-control-block-size);
+}
+
+.chirpui-command-palette-trigger--sm {
+    min-block-size: var(--chirpui-control-block-size-sm);
+    padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-font-xs);
+}
+
 .chirpui-command-palette__trigger:hover {
     color: var(--chirpui-text);
     border-color: var(--chirpui-text-muted);
+}
+
+.chirpui-command-palette__trigger-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1em;
+    block-size: 1em;
+}
+
+.chirpui-command-palette__trigger-label {
+    min-inline-size: 0;
 }
 
 .chirpui-command-palette__kbd {
@@ -114,4 +136,3 @@
     background: var(--chirpui-bg-subtle);
     border: 1px solid var(--chirpui-border);
 }
-

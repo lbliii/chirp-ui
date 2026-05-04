@@ -18,8 +18,9 @@
 {% set size = size | validate_variant(("", "sm", "md", "lg"), "") %}
 {% set variant_class = " chirpui-notification-dot--" ~ variant if variant else "" %}
 {% set size_class = " chirpui-notification-dot--" ~ size if size else "" %}
+{% set count_class = " chirpui-notification-dot--count" if count else "" %}
 {% set _label = aria_label if aria_label else (count | string ~ " notification" ~ ("s" if count != 1 else "") if count else "notification") %}
-<span class="chirpui-notification-dot{{ variant_class }}{{ size_class }}{{ " " ~ cls if cls else "" }}">
+<span class="chirpui-notification-dot{{ variant_class }}{{ size_class }}{{ count_class }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
     <span class="chirpui-notification-dot__ping" aria-hidden="true"></span>
     <span class="chirpui-notification-dot__dot" aria-label="{{ _label }}">

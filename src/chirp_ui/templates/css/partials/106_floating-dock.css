@@ -24,6 +24,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
+    text-decoration: none;
     transition: transform var(--chirpui-motion-fast) var(--chirpui-ease-spring),
                 color var(--chirpui-motion-fast);
 }
@@ -51,5 +52,4 @@
 }
 .chirpui-dock--sm .chirpui-dock__item { width: 32px; height: 32px; }
 .chirpui-dock--lg .chirpui-dock__item { width: 48px; height: 48px; }
-
 

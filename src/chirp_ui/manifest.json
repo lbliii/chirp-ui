@@ -126,6 +126,7 @@
       "emits": [
         "chirpui-action-strip",
         "chirpui-action-strip--collapse",
+        "chirpui-action-strip--md",
         "chirpui-action-strip--scroll",
         "chirpui-action-strip--sm",
         "chirpui-action-strip--sticky",
@@ -140,6 +141,7 @@
       "maturity": "stable",
       "modifiers": [
         "collapse",
+        "md",
         "scroll",
         "sm",
         "sticky"
@@ -4425,6 +4427,7 @@
         "danger",
         "ghost",
         "primary",
+        "secondary",
         "success",
         "warning"
       ]
@@ -5858,10 +5861,14 @@
         "item-label",
         "kbd",
         "results",
-        "trigger"
+        "trigger",
+        "trigger-icon",
+        "trigger-label"
       ],
       "emits": [
         "chirpui-command-palette",
+        "chirpui-command-palette-trigger--md",
+        "chirpui-command-palette-trigger--sm",
         "chirpui-command-palette__group-title",
         "chirpui-command-palette__inner",
         "chirpui-command-palette__input",
@@ -5870,9 +5877,14 @@
         "chirpui-command-palette__item-label",
         "chirpui-command-palette__kbd",
         "chirpui-command-palette__results",
-        "chirpui-command-palette__trigger"
+        "chirpui-command-palette__trigger",
+        "chirpui-command-palette__trigger-icon",
+        "chirpui-command-palette__trigger-label"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-command-palette-trigger--md",
+        "chirpui-command-palette-trigger--sm"
+      ],
       "lineno": 12,
       "macro": "command_palette",
       "maturity": "stable",
@@ -9222,7 +9234,8 @@
         "chirpui-frame--gap-md",
         "chirpui-frame--gap-sm",
         "chirpui-frame--hero",
-        "chirpui-frame--sidebar-end"
+        "chirpui-frame--sidebar-end",
+        "chirpui-frame--sidebar-start"
       ],
       "extra_emits": [
         "chirpui-frame--balanced",
@@ -9231,7 +9244,8 @@
         "chirpui-frame--gap-md",
         "chirpui-frame--gap-sm",
         "chirpui-frame--hero",
-        "chirpui-frame--sidebar-end"
+        "chirpui-frame--sidebar-end",
+        "chirpui-frame--sidebar-start"
       ],
       "lineno": 0,
       "macro": null,
@@ -10500,6 +10514,84 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "code.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "island-root": {
+      "authoring": "available",
+      "block": "island-root",
+      "category": "interactive",
+      "composes": [],
+      "consumes": [],
+      "description": "Framework-agnostic island mount wrappers\n    Keeps fallback content server-rendered while exposing a stable\n    mount root contract for client adapters.\n\n    Requires Chirp's `island_attrs(...)` global unless raw_attrs is provided.",
+      "elements": [],
+      "emits": [
+        "chirpui-island-fallback",
+        "chirpui-island-root"
+      ],
+      "extra_emits": [
+        "chirpui-island-fallback"
+      ],
+      "lineno": 8,
+      "macro": "island_root",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "props"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "mount_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "version"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "src"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "primitive"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "raw_attrs"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "islands.html",
       "tokens": [],
       "trim_emits": [],
       "variants": []
@@ -12300,6 +12392,56 @@
       "trim_emits": [],
       "variants": []
     },
+    "nav-link": {
+      "authoring": "available",
+      "block": "nav-link",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "SPA-style link for content areas\n    Opt-in navigation link with explicit HTMX attributes for SPA transitions.\n    Use for pagination, breadcrumbs, or interlinked content pages that should\n    swap without a full page reload.\n\n    Uses hx-boost on the link itself so the server receives HX-Boosted and\n    renders the page_block (not the narrow fragment). Boost on a leaf <a>\n    element cannot leak to children.\n\n    Plain <a> tags work fine for most links. Use nav_link only when you want\n    the smooth SPA transition effect within the app shell.\n\n    Usage:\n        {% from \"chirpui/nav_link.html\" import nav_link %}\n\n        {{ nav_link(\"/page-2\", \"Next page\") }}\n\n        {% call nav_link(\"/details\") %}View details{% end %}",
+      "elements": [],
+      "emits": [
+        "chirpui-nav-link"
+      ],
+      "extra_emits": [],
+      "lineno": 22,
+      "macro": "nav_link",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "nav_link.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "nav-progress": {
       "authoring": "available",
       "block": "nav-progress",
@@ -12672,6 +12814,7 @@
       "elements": [],
       "emits": [
         "chirpui-notification-dot",
+        "chirpui-notification-dot--count",
         "chirpui-notification-dot--lg",
         "chirpui-notification-dot--sm",
         "chirpui-notification-dot--success",
@@ -12680,6 +12823,7 @@
         "chirpui-notification-dot__ping"
       ],
       "extra_emits": [
+        "chirpui-notification-dot--count",
         "chirpui-notification-dot__dot",
         "chirpui-notification-dot__ping"
       ],
@@ -13805,7 +13949,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Primary navigation\n    Broad route navigation for app shell topbars and section bars.\n    Data-in: items = [{label, href?, badge?, active?, match?, divider?}].\n    Use for cross-feature navigation; use route_tabs for local subsection views.",
+      "description": "Primary navigation\n    Broad route navigation for app shell topbars and section bars.\n    Data-in: items = [{label, href?, badge?, badge_label?, badge_expected?,\n    badge_loading?, active?, match?, divider?}].\n    Use for cross-feature navigation; use route_tabs for local subsection views.",
       "elements": [
         "badge",
         "divider",
@@ -13815,6 +13959,8 @@
       "emits": [
         "chirpui-primary-nav",
         "chirpui-primary-nav__badge",
+        "chirpui-primary-nav__badge--loading",
+        "chirpui-primary-nav__badge--reserved",
         "chirpui-primary-nav__divider",
         "chirpui-primary-nav__label",
         "chirpui-primary-nav__link",
@@ -13822,10 +13968,12 @@
         "chirpui-primary-nav__link--disabled"
       ],
       "extra_emits": [
+        "chirpui-primary-nav__badge--loading",
+        "chirpui-primary-nav__badge--reserved",
         "chirpui-primary-nav__link--active",
         "chirpui-primary-nav__link--disabled"
       ],
-      "lineno": 7,
+      "lineno": 8,
       "macro": "primary_nav",
       "maturity": "stable",
       "modifiers": [],
@@ -14755,7 +14903,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Route-backed subsection tabs\n    Route-backed nav links with aria-current=\"page\".\n    Use role=\"navigation\", not role=\"tablist\" — each tab loads a new URL.\n    Requires: tab_is_active (template global), current_path, tab_items.\n    Tab item: {label, href, icon?, badge?, match?} — match: \"exact\" | \"prefix\"",
+      "description": "Route-backed subsection tabs\n    Route-backed nav links with aria-current=\"page\".\n    Use role=\"navigation\", not role=\"tablist\" — each tab loads a new URL.\n    Requires: tab_is_active (template global), current_path, tab_items.\n    Tab item: {label, href, icon?, badge?, badge_label?, badge_expected?, badge_loading?, match?}\n    match: \"exact\" | \"prefix\"",
       "elements": [
         "badge",
         "icon",
@@ -14765,13 +14913,17 @@
         "chirpui-route-tab",
         "chirpui-route-tab--active",
         "chirpui-route-tab__badge",
+        "chirpui-route-tab__badge--loading",
+        "chirpui-route-tab__badge--reserved",
         "chirpui-route-tab__icon",
         "chirpui-route-tab__label"
       ],
       "extra_emits": [
-        "chirpui-route-tab--active"
+        "chirpui-route-tab--active",
+        "chirpui-route-tab__badge--loading",
+        "chirpui-route-tab__badge--reserved"
       ],
-      "lineno": 7,
+      "lineno": 8,
       "macro": "render_route_tabs",
       "maturity": "stable",
       "modifiers": [],
@@ -14990,6 +15142,63 @@
         "frost"
       ]
     },
+    "saved-view-strip": {
+      "authoring": "available",
+      "block": "saved-view-strip",
+      "category": "navigation",
+      "composes": [
+        "chip"
+      ],
+      "consumes": [],
+      "description": "Saved view strip\n    Compact route shortcuts for saved views, favorites, nearby topics, unread\n    filters, assigned work, or other user-owned navigation shortcuts.\n    Data-in: views = [{label, href?, selected?, muted?, color?, cls?}].\n    Pass current_href to derive selected state from href when selected is absent.",
+      "elements": [],
+      "emits": [
+        "chirpui-saved-view-strip"
+      ],
+      "extra_emits": [],
+      "lineno": 9,
+      "macro": "saved_view_strip",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "views"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "current_href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "saved_view_strip.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "scanline": {
       "authoring": "available",
       "block": "scanline",
@@ -15040,6 +15249,82 @@
         "crt",
         "heavy"
       ]
+    },
+    "scope-switcher": {
+      "authoring": "available",
+      "block": "scope-switcher",
+      "category": "navigation",
+      "composes": [
+        "btn",
+        "dropdown"
+      ],
+      "consumes": [],
+      "description": "Scope switcher\n    Compact dropdown trigger for choosing workspace, org, project, environment,\n    file, account, channel, docs version, or other navigation scope.\n    Items use dropdown_menu's item contract: {label, href?} or {label, action?,\n    variant?, icon?, divider?}.",
+      "elements": [],
+      "emits": [
+        "chirpui-scope-switcher"
+      ],
+      "extra_emits": [],
+      "lineno": 10,
+      "macro": "scope_switcher",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "label"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "aria_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "icon"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "scope_switcher.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
     },
     "scroll-x": {
       "authoring": "compatibility",
@@ -15968,7 +16253,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
+      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Badge state: badge_label gives a richer accessible label for visible counts.\n    badge_expected reserves count space, and badge_loading renders a pending\n    count without layout shift.\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
       "elements": [
         "badge",
         "header",
@@ -15982,6 +16267,8 @@
       "emits": [
         "chirpui-sidebar",
         "chirpui-sidebar__badge",
+        "chirpui-sidebar__badge--loading",
+        "chirpui-sidebar__badge--reserved",
         "chirpui-sidebar__footer",
         "chirpui-sidebar__header",
         "chirpui-sidebar__icon",
@@ -15994,11 +16281,13 @@
         "chirpui-sidebar__section-title"
       ],
       "extra_emits": [
+        "chirpui-sidebar__badge--loading",
+        "chirpui-sidebar__badge--reserved",
         "chirpui-sidebar__footer",
         "chirpui-sidebar__link--active",
         "chirpui-sidebar__section-links"
       ],
-      "lineno": 33,
+      "lineno": 37,
       "macro": "sidebar",
       "maturity": "stable",
       "modifiers": [],
@@ -16048,7 +16337,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
+      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Badge state: badge_label gives a richer accessible label for visible counts.\n    badge_expected reserves count space, and badge_loading renders a pending\n    count without layout shift.\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
       "elements": [
         "icon"
       ],
@@ -16057,7 +16346,7 @@
         "chirpui-sidebar-toggle__icon"
       ],
       "extra_emits": [],
-      "lineno": 89,
+      "lineno": 94,
       "macro": "sidebar_toggle",
       "maturity": "stable",
       "modifiers": [],
@@ -18269,6 +18558,7 @@
       "description": "Table component\n    Responsive table with header configuration and row helper.\n\n    Usage:\n        from \"chirpui/table.html\" import table, row\n\n        Slot-based (complex rows):\n        call table(headers=[\"Name\", \"Email\", \"Role\"])\n            row(\"Alice\", \"alice@example.com\", \"Admin\")\n            row(\"Bob\", \"bob@example.com\", \"User\")\n        end\n\n        Data-driven (alignment flows to all cells automatically):\n        table(headers=[\"Name\", \"Status\", \"Count\"],\n              rows=[(\"Alice\", \"Active\", \"42\"), (\"Bob\", \"Idle\", \"7\")],\n              align=[\"left\", \"center\", \"right\"])\n\n        Per-column alignment (slot-based, auto-inherited):\n        call table(headers=[\"Name\", \"Status\", \"Count\"],\n                   align=[\"left\", \"center\", \"right\"])\n            row(\"Alice\", \"Active\", \"42\")\n        end\n\n        Column widths (CSS values or proportions):\n        call table(headers=[\"Name\", \"Status\"],\n                   widths=[\"2fr\", \"1fr\"])\n\n        Slots: caption (table caption), row_actions (header cell for actions column).\n        Sortable headers:\n        call table(headers=[\"Name\", \"Email\"], sortable=true,\n                   sort_url=\"/users\", hx_target=\"#user-table\")\n            row(user.name, user.email)\n        end\n        Row with actions: pass row_actions(...) as last cell when actions_header=true\n        Sticky header:\n        call table(headers=[...], sticky_header=true)",
       "elements": [
         "avatar",
+        "body",
         "caption",
         "empty",
         "head",
@@ -18282,6 +18572,7 @@
         "chirpui-table--compact",
         "chirpui-table--striped",
         "chirpui-table__avatar",
+        "chirpui-table__body",
         "chirpui-table__caption",
         "chirpui-table__empty",
         "chirpui-table__head",
@@ -19101,9 +19392,12 @@
       ],
       "emits": [
         "chirpui-timeline",
+        "chirpui-timeline--cards",
+        "chirpui-timeline--compact",
         "chirpui-timeline--hoverable",
         "chirpui-timeline--on-accent",
         "chirpui-timeline--on-muted",
+        "chirpui-timeline--spacious",
         "chirpui-timeline__avatar",
         "chirpui-timeline__body",
         "chirpui-timeline__content",
@@ -19135,9 +19429,12 @@
       "macro": "timeline",
       "maturity": "stable",
       "modifiers": [
+        "cards",
+        "compact",
         "hoverable",
         "on-accent",
-        "on-muted"
+        "on-muted",
+        "spacious"
       ],
       "params": [
         {
@@ -19154,6 +19451,16 @@
           "has_default": true,
           "is_required": false,
           "name": "link_mode"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "density"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
         },
         {
           "has_default": true,
@@ -20824,13 +21131,13 @@
       "category": "effect",
       "composes": [],
       "consumes": [],
-      "description": "Wobble / Jello / Rubber-band / Bounce-in\n    Micro-interaction animation utilities. Apply on hover, click, or one-shot.\n\n    Usage:\n        from \"chirpui/wobble.html\" import wobble, jello, rubber_band, bounce_in\n\n        {% call wobble(trigger=\"hover\") %}\n            <button>Hover me</button>\n        {% end %}\n\n        {% call jello() %}\n            <div>Jello on load</div>\n        {% end %}\n\n        {% call rubber_band(trigger=\"hover\") %}\n            <span>🎈 Stretch!</span>\n        {% end %}\n\n        {% call bounce_in() %}\n            <div class=\"chirpui-card\">Appears with bounce</div>\n        {% end %}",
+      "description": "Wobble / Jello / Rubber-band / Bounce-in\n    Micro-interaction animation utilities. Load-triggered variants play once\n    when inserted into the document; use trigger=\"hover\" for replayable\n    interaction demos or controls.\n\n    Usage:\n        from \"chirpui/wobble.html\" import wobble, jello, rubber_band, bounce_in\n\n        {% call wobble(trigger=\"hover\") %}\n            <button>Hover me</button>\n        {% end %}\n\n        {% call jello() %}\n            <div>Jello on load</div>\n        {% end %}\n\n        {% call rubber_band(trigger=\"hover\") %}\n            <span>🎈 Stretch!</span>\n        {% end %}\n\n        {% call bounce_in() %}\n            <div class=\"chirpui-card\">Appears with bounce</div>\n        {% end %}",
       "elements": [],
       "emits": [
         "chirpui-wobble"
       ],
       "extra_emits": [],
-      "lineno": 24,
+      "lineno": 26,
       "macro": "wobble",
       "maturity": "experimental",
       "modifiers": [],
@@ -20990,7 +21297,7 @@
   "schema": "chirpui-manifest@3",
   "stats": {
     "component_authoring": {
-      "available": 281,
+      "available": 285,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -21006,11 +21313,11 @@
       "feedback": 25,
       "form": 17,
       "infrastructure": 2,
-      "interactive": 8,
+      "interactive": 9,
       "layout": 46,
       "marketing": 11,
       "media": 6,
-      "navigation": 22,
+      "navigation": 25,
       "overlay": 3,
       "social": 4,
       "typography": 29
@@ -21019,22 +21326,22 @@
       "experimental": 124,
       "internal": 2,
       "legacy": 39,
-      "stable": 167
+      "stable": 171
     },
     "component_requirements": {
-      "alpine": 18,
+      "alpine": 19,
       "htmx": 23
     },
     "component_roles": {
-      "component": 174,
+      "component": 176,
       "effect": 32,
       "infrastructure": 2,
-      "pattern": 15,
+      "pattern": 17,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 222,
-    "components_with_params": 222,
+    "components_with_description": 226,
+    "components_with_params": 226,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -21042,7 +21349,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 220
+      "public_templated_components": 224
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -21050,8 +21357,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 121,
-      "explicit_extra_classes": 514,
+      "explicit_extra_blocks": 123,
+      "explicit_extra_classes": 525,
       "explicit_trim_blocks": 72,
       "explicit_trim_classes": 102
     },
@@ -21065,7 +21372,7 @@
       "spacing": 22,
       "typography": 40
     },
-    "total_components": 332,
+    "total_components": 336,
     "total_tokens": 356
   },
   "tokens": {
