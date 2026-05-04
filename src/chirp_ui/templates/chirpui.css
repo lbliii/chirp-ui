@@ -13012,19 +13012,16 @@ body.htmx-request .chirpui-nav-progress::after {
     width: 200%;
     height: 200%;
     background-image:
-        radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.4) 0 0.7px, transparent 1px),
-        radial-gradient(circle at 76% 34%, rgba(255, 255, 255, 0.28) 0 0.6px, transparent 1px),
-        radial-gradient(circle at 38% 82%, rgba(0, 0, 0, 0.42) 0 0.8px, transparent 1px),
-        radial-gradient(circle at 88% 72%, rgba(255, 255, 255, 0.22) 0 0.5px, transparent 1px),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-position: 0 0, 13px 7px, 5px 19px, 23px 11px, 0 0;
-    background-size: 23px 29px, 31px 37px, 41px 35px, 47px 43px, 128px 128px;
-    opacity: 0.18;
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.9 0 0 0 0 0.9 0 0 0 0 0.9 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.47' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.08 0 0 0 0 0.08 0 0 0 0.42 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-position: 0 0, 37px 19px;
+    background-size: 97px 89px, 173px 149px;
+    opacity: 0.2;
     pointer-events: none;
     z-index: 1;
     mix-blend-mode: screen;
 }
-.chirpui-grain--heavy::after { opacity: 0.32; }
+.chirpui-grain--heavy::after { opacity: 0.36; }
 .chirpui-grain--subtle::after { opacity: 0.1; }
 .chirpui-grain--dot::after {
     background-image: radial-gradient(circle, currentColor 0.5px, transparent 0.5px);
@@ -13043,7 +13040,6 @@ body.htmx-request .chirpui-nav-progress::after {
     75% { transform: translate3d(2%, 2%, 0); }
     100% { transform: translate3d(0, 0, 0); }
 }
-
 }
 
 /* === partials/120_svg-pattern-tiles.css === */

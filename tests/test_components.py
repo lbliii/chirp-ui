@@ -7537,8 +7537,11 @@ class TestGrain:
 
     def test_css_uses_visible_noise_layers(self) -> None:
         css = _chirpui_css()
-        assert "radial-gradient(circle at 12% 18%" in css
-        assert "opacity: 0.18" in css
+        grain_rule = css.split(".chirpui-grain::after", 1)[1].split(".chirpui-grain--", 1)[0]
+        assert "feTurbulence" in grain_rule
+        assert "radial-gradient" not in grain_rule
+        assert "background-size: 97px 89px, 173px 149px" in grain_rule
+        assert "opacity: 0.2" in css
         assert "@keyframes chirpui-grain-shift" in css
 
 
