@@ -1,0 +1,129 @@
+{% from "chirpui/layout.html" import stack, cluster, grid, block, frame %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/primary_nav.html" import primary_nav %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+{% from "chirpui/avatar.html" import avatar %}
+
+{% def business_object_console_navigation() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Business object console global navigation") %}
+  {{ logo(text="LedgerDesk", href="/objects", variant="text") }}
+  {{ dropdown_menu(btn("App launcher", variant="ghost", size="sm"), items=[
+    {"label": "Payments", "href": "/objects/apps/payments"},
+    {"label": "Billing", "href": "/objects/apps/billing"},
+    {"label": "Customers", "href": "/objects/apps/customers"},
+    {"divider": true},
+    {"label": "Customize navigation", "href": "/objects/apps/customize"}
+  ], id="business-app-launcher") }}
+  {{ command_palette_trigger(target="business-object-palette", label="Search business objects", placeholder="Search customers, invoices, IDs", shortcut="O", icon="search", density="sm") }}
+  {{ btn("Create", variant="primary", size="sm") }}
+  {{ icon_btn("alert", href="/objects/alerts", aria_label="Alerts") }}
+  {{ avatar(initials="LD", alt="LedgerDesk user", size="sm") }}
+{% end %}
+{{ command_palette(id="business-object-palette", search_url="/data/table", placeholder="Search object IDs, customers, payments, and invoices...") }}
+{% call frame(variant="balanced", gap="md") %}
+  {% call sidebar(current_path="/objects/customers/cus_9XQ2/events") %}
+    {% slot header %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <strong>Payments app</strong>
+        <span class="chirpui-text-muted chirpui-font-sm">Object resources and saved searches.</span>
+      </div>
+    {% end %}
+    {% call sidebar_section("Resources") %}
+      {{ sidebar_link("/objects/customers", "Customers", icon="user", match="prefix") }}
+      {{ sidebar_link("/objects/payments", "Payments", icon="list", badge=8) }}
+      {{ sidebar_link("/objects/invoices", "Invoices", icon="list", badge=14) }}
+      {{ sidebar_link("/objects/products", "Products", icon="grid") }}
+    {% end %}
+    {% call sidebar_section("Saved searches") %}
+      {{ sidebar_link("/objects/search/high-value", "High value accounts", icon="star") }}
+      {{ sidebar_link("/objects/search/failed-payments", "Failed payments", icon="alert", badge=3) }}
+      {{ sidebar_link("/objects/search/trial-ending", "Trial ending", icon="status") }}
+    {% end %}
+    {% call sidebar_section("Admin", collapsible=true) %}
+      {{ sidebar_link("/objects/settings/team", "Team settings", icon="settings") }}
+      {{ sidebar_link("/objects/settings/audit", "Audit log", icon="logs") }}
+    {% end %}
+  {% end %}
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs([
+      {"label": "LedgerDesk", "href": "/objects"},
+      {"label": "Customers", "href": "/objects/customers"},
+      {"label": "cus_9XQ2"}
+    ], overflow="collapse", max_items=4) }}
+    {% call cluster(gap="sm") %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <h3>Acme Markets</h3>
+        <div class="chirpui-cluster chirpui-cluster--sm">
+          {{ inline_counter("ID", "cus_9XQ2", "customer") }}
+          {{ inline_counter("$", "42k", "arr") }}
+          {{ inline_counter("I", 14, "invoices") }}
+        </div>
+      </div>
+      {{ badge("Active", variant="success") }}
+      {{ btn("Send invoice", variant="primary", size="sm") }}
+      {{ dropdown_menu(btn("More", variant="ghost", size="sm"), items=[
+        {"label": "Copy customer ID", "action": "copy-customer-id"},
+        {"label": "Create payment link", "action": "create-payment-link"},
+        {"label": "Export activity", "action": "export-activity"},
+        {"divider": true},
+        {"label": "Disable customer", "action": "disable-customer", "variant": "danger"}
+      ], id="business-object-actions-menu") }}
+    {% end %}
+    {{ route_tabs(tabs=[
+      {"href": "/objects/customers/cus_9XQ2", "label": "Overview"},
+      {"href": "/objects/customers/cus_9XQ2/events", "label": "Events", "badge": 31, "badge_label": "31 customer events"},
+      {"href": "/objects/customers/cus_9XQ2/invoices", "label": "Invoices", "badge": 14, "badge_label": "14 invoices"},
+      {"href": "/objects/customers/cus_9XQ2/logs", "label": "Logs", "badge_loading": true},
+      {"href": "/objects/customers/cus_9XQ2/settings", "label": "Settings"},
+    ], current_path="/objects/customers/cus_9XQ2/events") }}
+    {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Business object list controls") %}
+      {{ btn("All events", variant="ghost", size="sm") }}
+      {{ btn("Payments", variant="ghost", size="sm") }}
+      {{ btn("Failures", variant="ghost", size="sm") }}
+      {{ btn("Export", variant="ghost", size="sm") }}
+      {{ btn("Save search", variant="ghost", size="sm") }}
+    {% end %}
+    {% call chip_group(label="Business object saved searches") %}
+      {{ chip("High value", selected=true, href="/objects/search/high-value") }}
+      {{ chip("Failed payments", href="/objects/search/failed-payments") }}
+      {{ chip("Trial ending", href="/objects/search/trial-ending") }}
+      {{ chip("Needs tax ID", href="/objects/search/needs-tax-id") }}
+    {% end %}
+    {% call grid(cols=3, gap="md") %}
+      {% call resource_card("/objects/payments/pay_8E2", "pay_8E2", description="Latest successful card payment for Acme Markets.", top_meta="payment") %}
+        {% slot badges %}{{ badge("Succeeded", variant="success") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">$4,200 today</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/objects/invoices/in_1AB", "in_1AB", description="Open invoice with payment reminder scheduled.", top_meta="invoice") %}
+        {% slot badges %}{{ badge("Open", variant="warning") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Due May 18</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/objects/events/evt_77P", "evt_77P", description="Webhook delivery failed and is queued for retry.", top_meta="event") %}
+        {% slot badges %}{{ badge("Retrying", variant="error") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Attempt 2 of 5</span>
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

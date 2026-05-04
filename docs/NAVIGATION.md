@@ -172,7 +172,9 @@ uses linked disclosure navigation for nested pages, collapsed breadcrumbs for
 deep page location, and separate page-local routes for tasks, comments, and
 history. The editor workbench recipe keeps file identity, tool navigation,
 layer hierarchy, canvas context, comments/prototype routes, and inspector
-properties in distinct regions without adding canvas-specific API.
+properties in distinct regions without adding canvas-specific API. The business
+object console recipe separates app/resource navigation, global object search,
+object ID context, saved searches, and object-local event/invoice/log routes.
 
 On phones:
 

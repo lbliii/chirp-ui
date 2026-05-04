@@ -53,6 +53,9 @@ systems without cloning any specific product.
 - Family 6 accepted: the component showcase now includes an editor workbench
   recipe with compact file navigation, tool controls, linked layer hierarchy,
   canvas context, route-backed comments/prototype views, and an inspector panel.
+- Family 7 accepted: the component showcase now includes a business object
+  console recipe with app launching, global object search, resource navigation,
+  saved searches, object ID context, and object-local event/invoice/log routes.
 
 ## Research Sources
 

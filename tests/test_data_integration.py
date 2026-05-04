@@ -59,6 +59,10 @@ class TestDataPage:
             assert "Editor workbench global navigation" in response.text
             assert "Editor tool navigation" in response.text
             assert "Find file, frame, action" in response.text
+            assert "Business Object Console Navigation" in response.text
+            assert "Business object console global navigation" in response.text
+            assert "Business object list controls" in response.text
+            assert "Search customers, invoices, IDs" in response.text
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
             assert "chirpui-route-tab__badge--reserved" in response.text
