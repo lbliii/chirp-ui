@@ -47,6 +47,10 @@ class TestDataPage:
             assert "Ops console global navigation" in response.text
             assert "Ops dashboard controls" in response.text
             assert "Jump to dashboard, log, trace" in response.text
+            assert "Keyboard-First Tracker Navigation" in response.text
+            assert "Tracker global navigation" in response.text
+            assert "Tracker display controls" in response.text
+            assert "Go to issue, project, view" in response.text
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
             assert "chirpui-route-tab__badge--reserved" in response.text

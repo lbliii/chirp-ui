@@ -43,6 +43,9 @@ systems without cloning any specific product.
   console recipe with command-first dashboard search, operational side
   navigation, time range controls, signal tabs, saved investigations, and stable
   alert counts.
+- Family 4 accepted: the component showcase now includes a keyboard-first
+  tracker recipe with favorites, team pages, shortcut-labeled command launch,
+  route-backed issue views, saved views, and compact display controls.
 
 ## Research Sources
 

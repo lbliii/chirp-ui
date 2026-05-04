@@ -165,7 +165,9 @@ suites: top utilities, product modes, personal shortcuts, customizable sidebar
 sections, project-local route tabs, and saved views stay distinct. The ops
 console recipe applies it to observability: command-first dashboard search,
 operational side navigation, time range controls, signal tabs, and stable alert
-counts stay in separate layers.
+counts stay in separate layers. The tracker recipe treats shortcut hints as
+navigation evidence, pairing command launch with visible favorites, team views,
+route-backed issue tabs, and display controls.
 
 On phones:
 
