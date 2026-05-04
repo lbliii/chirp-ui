@@ -23,7 +23,7 @@
 
 <h2>Table (htmx-driven)</h2>
 {% call block() %}
-<div id="data_bulk_bar" class="chirpui-bulk-bar-wrapper" style="margin-bottom: 0.5rem;"></div>
+<div id="data_bulk_bar" style="margin-bottom: 0.5rem;"></div>
 {% call filter_bar("/data/export", attrs_map={"id": "data_filters", "style": "margin-bottom: 1rem;"}) %}
   <div class="chirpui-action-strip__primary">
     {{ search_bar(

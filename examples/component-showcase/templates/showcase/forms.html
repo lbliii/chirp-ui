@@ -159,8 +159,8 @@
     </form>
   </div>
   <div class="chirpui-action-strip__controls">
-    {{ btn("Status: all", variant="default", size="sm") }}
-    {{ btn("Sort", variant="default", size="sm") }}
+    {{ btn("Status: all", size="sm") }}
+    {{ btn("Sort", size="sm") }}
   </div>
   <div class="chirpui-action-strip__actions">
     {{ btn("Invite user", variant="primary", size="sm") }}
@@ -171,8 +171,8 @@
     {{ search_bar("q_filter", variant="with-icon", placeholder="Filter form fields...") }}
   </div>
   <div class="chirpui-action-strip__controls">
-    {{ btn("Required only", variant="default", size="sm") }}
-    {{ btn("With errors", variant="default", size="sm") }}
+    {{ btn("Required only", size="sm") }}
+    {{ btn("With errors", size="sm") }}
   </div>
   <div class="chirpui-action-strip__actions">
     {{ btn("Apply", variant="primary", size="sm", type="submit") }}
@@ -180,8 +180,8 @@
 {% end %}
 {% call command_bar(surface_variant="default", density="sm") %}
   <div class="chirpui-action-strip__controls">
-    {{ btn("Bulk edit", variant="default", size="sm") }}
-    {{ btn("Archive", variant="default", size="sm") }}
+    {{ btn("Bulk edit", size="sm") }}
+    {{ btn("Archive", size="sm") }}
   </div>
   <div class="chirpui-action-strip__actions">
     {{ btn("Create", variant="primary", size="sm") }}
@@ -189,13 +189,13 @@
   </div>
 {% end %}
 {% call search_header("Search Header", "/forms", query="", subtitle="Search-first list header with optional controls.", search_placeholder="Search forms...") %}
-  {{ btn("Sort", variant="default", size="sm") }}
-  {{ btn("View", variant="default", size="sm") }}
+  {{ btn("Sort", size="sm") }}
+  {{ btn("View", size="sm") }}
   {{ btn("New form", variant="primary", size="sm") }}
 {% end %}
 {% call selection_bar(count=3, live_region=true) %}
   {{ btn("Export selected", variant="secondary", size="sm") }}
-  {{ btn("Clear", variant="default", size="sm") }}
+  {{ btn("Clear", size="sm") }}
 {% end %}
 {% call resource_index(
   "Resource Index",
@@ -210,13 +210,13 @@
   results_cols=2
 ) %}
   {% slot toolbar_controls %}
-  {{ btn("Filters", variant="default", size="sm") }}
+  {{ btn("Filters", size="sm") }}
   {% end %}
   {% slot filter_controls %}
-  {{ btn("Open filters", variant="default", size="sm") }}
+  {{ btn("Open filters", size="sm") }}
   {% end %}
   {% slot filter_actions %}
-  {{ btn("Clear all", variant="default", size="sm") }}
+  {{ btn("Clear all", size="sm") }}
   {% end %}
   {% slot selection %}
   <a class="chirpui-badge chirpui-badge--primary">draft ×</a>
@@ -266,7 +266,7 @@
     {{ text_field("display_name", value="", label="Display Name", placeholder="How others see you") }}
     {{ textarea_field("about", value="", label="About", rows=3, placeholder="A short bio...") }}
     {% call form_actions() %}
-    <button type="button" class="chirpui-btn chirpui-btn--default">Back</button>
+    <button type="button" class="chirpui-btn">Back</button>
     <button type="submit" class="chirpui-btn chirpui-btn--primary">Continue</button>
     {% end %}
   </form>
@@ -279,9 +279,9 @@
 </p>
 {% call block() %}
 <p class="chirpui-text-muted chirpui-font-sm chirpui-mb-md">Display mode:</p>
-{{ inline_edit_field_display(value="John Doe", edit_url="/forms/demo") }}
+{{ inline_edit_field_display(swap_id="showcase-inline-name", value="John Doe", edit_url="/forms/demo") }}
 <p class="chirpui-text-muted chirpui-font-sm chirpui-mb-md chirpui-mt-md">Edit mode:</p>
-{{ inline_edit_field_form(name="name", value="John Doe", save_url="/forms/demo") }}
+{{ inline_edit_field_form(swap_id="showcase-inline-name", name="name", value="John Doe", save_url="/forms/demo") }}
 {% end %}
 
 <h2>Drag &amp; Drop</h2>

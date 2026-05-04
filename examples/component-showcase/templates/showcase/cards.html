@@ -22,7 +22,8 @@
 {% end %}
 {% end %}
 {% call block() %}
-{% call card(title="With Footer", footer="Last updated today") %}
+{% call card(title="With Footer") %}
+{% slot footer %}Last updated today{% end %}
 <p>Card with header and footer.</p>
 {% end %}
 {% end %}
@@ -31,12 +32,12 @@
 <h2>Cards with Icons</h2>
 {% call grid(cols=2) %}
 {% call block() %}
-{% call card(title="With Icon", subtitle="Optional subtitle", icon="◆") %}
+{% call card(title="With Icon", subtitle="Optional subtitle", icon="diamond") %}
 <p>Card with <code>icon</code> and <code>subtitle</code> params.</p>
 {% end %}
 {% end %}
 {% call block() %}
-{% call card(title="Settings", icon="⚙") %}
+{% call card(title="Settings", icon="gear") %}
 {% slot header_actions %}
 {{ btn("⋯", variant="ghost", cls="chirpui-btn--sm") }}
 {% end %}
@@ -53,7 +54,7 @@
 {% end %}
 {% end %}
 {% call block() %}
-{% call card(title="Gradient Header", header_variant="gradient", icon="◆") %}
+{% call card(title="Gradient Header", header_variant="gradient", icon="diamond") %}
 <p>Card with <code>header_variant="gradient"</code> — gradient header background.</p>
 {% end %}
 {% end %}
@@ -116,7 +117,7 @@
 {% end %}
 {% end %}
 {% call block() %}
-{{ config_card(title="Pipeline", icon="◇", attrs_map={"id": "showcase-config-widget"}, items=[
+{{ config_card(title="Pipeline", icon="diamond", attrs_map={"id": "showcase-config-widget"}, items=[
     {"term": "enabled", "detail": "Yes", "type": "bool"},
     {"term": "endpoint", "detail": "https://api.example.com", "type": "url"},
 ]) }}
@@ -150,7 +151,7 @@
 {% call alert(variant="info", dismissible=true) %}
 <strong>Dismissible.</strong> Click × to close.
 {% end %}
-{% call alert(variant="warning", icon="⚠", title="Heads up") %}
+{% call alert(variant="warning", icon="alert", title="Heads up") %}
 This alert has an icon and title. Use <code>icon</code> and <code>title</code> params.
 {% end %}
 {% end %}

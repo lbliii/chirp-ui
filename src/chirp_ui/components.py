@@ -226,7 +226,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     # -- Controls -----------------------------------------------------------
     "btn": ComponentDescriptor(
         block="btn",
-        variants=("", "primary", "ghost", "danger", "success", "warning"),
+        variants=("", "primary", "secondary", "ghost", "danger", "success", "warning"),
         sizes=("", "sm", "md", "lg"),
         modifiers=("loading",),
         elements=("icon", "label", "spinner"),
@@ -1846,6 +1846,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         modifiers=("striped", "compact"),
         elements=(
             "caption",
+            "body",
             "head",
             "row",
             "th",

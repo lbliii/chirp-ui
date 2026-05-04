@@ -4,9 +4,12 @@ Requires chirp (pip install chirp or uv sync --group showcase).
 """
 
 import sys
+import warnings
 from pathlib import Path
 
 import pytest
+
+from chirp_ui.validation import ChirpUIDeprecationWarning, ChirpUIValidationWarning
 
 pytest.importorskip("chirp")
 
@@ -71,9 +74,20 @@ class TestDataPage:
         ],
     )
     async def test_showcase_routes_return_200(self, showcase_app, path: str) -> None:
-        async with TestClient(showcase_app) as client:
-            response = await client.get(path)
-            assert response.status == 200
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always", ChirpUIValidationWarning)
+            warnings.simplefilter("always", ChirpUIDeprecationWarning)
+            async with TestClient(showcase_app) as client:
+                response = await client.get(path)
+        assert response.status == 200
+        chirp_warnings = [
+            warning
+            for warning in caught
+            if issubclass(warning.category, (ChirpUIValidationWarning, ChirpUIDeprecationWarning))
+        ]
+        assert not chirp_warnings, f"{path} emitted chirp-ui warnings: " + "; ".join(
+            str(warning.message) for warning in chirp_warnings
+        )
 
     @pytest.mark.asyncio
     async def test_navigation_page_returns_dense_example(self, showcase_app) -> None:

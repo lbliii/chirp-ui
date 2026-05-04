@@ -4756,7 +4756,7 @@ Button component. Use chirpui-btn with variants. Supports loading state for htmx
 - **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`
-- **Variants:** `(default)`, `danger`, `ghost`, `primary`, `success`, `warning`
+- **Variants:** `(default)`, `danger`, `ghost`, `primary`, `secondary`, `success`, `warning`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 - **Modifiers:** `loading`
 - **Consumes:** `_bar_density`, `_suspense_busy`

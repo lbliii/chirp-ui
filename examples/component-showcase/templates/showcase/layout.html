@@ -226,7 +226,8 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 </p>
 
 {% call stack() %}
-{% call card(title="Feature list", footer="stack(gap=default)") %}
+{% call card(title="Feature list") %}
+{% slot footer %}stack(gap=default){% end %}
 {% call stack(gap="sm") %}
 <div style="display: flex; align-items: center; gap: 0.5rem;">
   <span style="font-size: 1.25rem;">◆</span>
@@ -255,13 +256,14 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 {% end %}
 {% end %}
 
-{% call card(title="Profile card", footer="stack(gap=sm)") %}
+{% call card(title="Profile card") %}
+{% slot footer %}stack(gap=sm){% end %}
 {% call stack(gap="sm") %}
 <div style="display: flex; align-items: center; gap: 0.75rem;">
   <div style="width: 3rem; height: 3rem; border-radius: 50%; background: var(--chirpui-accent); opacity: 0.3; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">◇</div>
   <div>
     <strong>Alex Chen</strong>
-    {{ badge("Active", variant="success", icon="●") }}
+    {{ badge("Active", variant="success", icon="bullet") }}
     <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0; font-size: 0.875rem;">Engineer · San Francisco</p>
   </div>
 </div>
@@ -271,7 +273,8 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 {% end %}
 {% end %}
 
-{% call card(title="Step list", footer="stack(gap=lg)") %}
+{% call card(title="Step list") %}
+{% slot footer %}stack(gap=lg){% end %}
 {% call stack(gap="lg") %}
 <div style="display: flex; gap: 0.75rem;">
   <span style="flex-shrink: 0; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--chirpui-accent); color: var(--chirpui-surface); font-size: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 600;">1</span>
@@ -297,12 +300,14 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 <h3>Grid (cols=2)</h3>
 {% call grid(cols=2) %}
 {% call block() %}
-{% call card(title="12.4k", footer="Users") %}
+{% call card(title="12.4k") %}
+{% slot footer %}Users{% end %}
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 0.875rem;">+1.2k this month</p>
 {% end %}
 {% end %}
 {% call block() %}
-{% call card(title="98%", footer="Uptime") %}
+{% call card(title="98%") %}
+{% slot footer %}Uptime{% end %}
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 0.875rem;">Last 30 days</p>
 {% end %}
 {% end %}
@@ -311,12 +316,14 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 <h3>Grid (cols=3) with span</h3>
 {% call grid(cols=3) %}
 {% call block() %}
-{% call card(title="Compact", footer="1 col") %}
+{% call card(title="Compact") %}
+{% slot footer %}1 col{% end %}
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 0.875rem;">Single column block.</p>
 {% end %}
 {% end %}
 {% call block(span=2) %}
-{% call card(title="Wide block", footer="span=2") %}
+{% call card(title="Wide block") %}
+{% slot footer %}span=2{% end %}
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); font-size: 0.875rem;">This block spans two columns. On narrow viewports it collapses to one.</p>
 {% end %}
 {% end %}
@@ -434,7 +441,8 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 <h2>Stack + Grid combined</h2>
 {% call grid(cols=3) %}
 {% call block() %}
-{% call card(title="Sidebar", footer="stack inside block") %}
+{% call card(title="Sidebar") %}
+{% slot footer %}stack inside block{% end %}
 {% call stack(gap="sm") %}
 <a href="/cards" style="color: var(--chirpui-accent); text-decoration: none;">Cards</a>
 <a href="/forms" style="color: var(--chirpui-accent); text-decoration: none;">Forms</a>
@@ -444,7 +452,8 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 {% end %}
 {% end %}
 {% call block(span=2) %}
-{% call card(title="Main content", footer="grid cols=2 inside block") %}
+{% call card(title="Main content") %}
+{% slot footer %}grid cols=2 inside block{% end %}
 {% call grid(cols=2) %}
 {% call block() %}
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0;">Stacks and grids compose. Put a grid inside a block, or stack cards in a grid.</p>
@@ -492,7 +501,7 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
   Title + meta + contextual actions for entity detail pages.
 </p>
 {% call block() %}
-{% call entity_header(title="Project Alpha", meta="Created 3 days ago", icon="◆") %}
+{% call entity_header(title="Project Alpha", meta="Created 3 days ago", icon="diamond") %}
   {% slot actions %}
   <button type="button" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Edit</button>
   <button type="button" class="chirpui-btn chirpui-btn--secondary chirpui-btn--sm">Archive</button>
@@ -524,12 +533,12 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 {% call block() %}
 {% call filter_bar(action="/data/table") %}
 <div class="chirpui-action-strip__primary">
-  <select class="chirpui-input chirpui-input--sm" name="status">
+  <select class="chirpui-field__input" name="status">
     <option value="">All statuses</option>
     <option value="active">Active</option>
     <option value="archived">Archived</option>
   </select>
-  <select class="chirpui-input chirpui-input--sm" name="category">
+  <select class="chirpui-field__input" name="category">
     <option value="">All categories</option>
     <option value="layout">Layout</option>
     <option value="forms">Forms</option>
@@ -596,9 +605,9 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 </p>
 {% call block() %}
 {% call action_strip() %}
-<input type="search" class="chirpui-input chirpui-input--sm" placeholder="Search components..." style="max-width: 16rem;">
-<button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Filter</button>
-<button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Sort</button>
+<input type="search" class="chirpui-field__input" placeholder="Search components..." style="max-width: 16rem;">
+<button type="button" class="chirpui-btn chirpui-btn--sm">Filter</button>
+<button type="button" class="chirpui-btn chirpui-btn--sm">Sort</button>
 <button type="button" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Create New</button>
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
@@ -612,9 +621,9 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 </p>
 {% call block() %}
 {% call action_bar() %}
-{{ action_bar_item(icon="♡", label="Like", count=42) }}
-{{ action_bar_item(icon="↻", label="Share") }}
-{{ action_bar_item(icon="⋯", label="More") }}
+{{ action_bar_item(icon="follow", label="Like", count=42) }}
+{{ action_bar_item(icon="share", label="Share") }}
+{{ action_bar_item(icon="dots", label="More") }}
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
   action_bar() wraps action_bar_item(icon, label, count=none, href=none, active=false)
@@ -635,7 +644,7 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">Description text for the media object. Uses the classic OOCSS pattern.</p>
 {% end %}
 {% call media_object_actions() %}
-<button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm">Action</button>
+<button type="button" class="chirpui-btn chirpui-btn--sm">Action</button>
 {% end %}
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
@@ -648,14 +657,14 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
   Slide-out panel triggered by a button. Requires Alpine.js.
 </p>
 {% call block() %}
-{{ tray_trigger("demo-tray", "Open Tray", icon="⚙") }}
+{{ tray_trigger("demo-tray", "Open Tray", icon="gear") }}
 {% call tray("demo-tray", "Settings") %}
 <p>Tray content goes here. Click the backdrop or the close button to dismiss.</p>
 <div class="chirpui-stack chirpui-stack--sm">
-  <label class="chirpui-label">Setting One</label>
-  <input type="text" class="chirpui-input" placeholder="Value...">
-  <label class="chirpui-label">Setting Two</label>
-  <input type="text" class="chirpui-input" placeholder="Value...">
+  <label class="chirpui-field__label" for="tray-setting-one">Setting One</label>
+  <input id="tray-setting-one" type="text" class="chirpui-field__input" placeholder="Value...">
+  <label class="chirpui-field__label" for="tray-setting-two">Setting Two</label>
+  <input id="tray-setting-two" type="text" class="chirpui-field__input" placeholder="Value...">
 </div>
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">

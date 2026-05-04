@@ -6940,6 +6940,10 @@ a.chirpui-tag:active {
     border-collapse: collapse;
 }
 
+.chirpui-table__body {
+    vertical-align: inherit;
+}
+
 .chirpui-table__th,
 .chirpui-table__td {
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);

@@ -19,9 +19,9 @@
 
 <h2>Icon button</h2>
 {% call cluster() %}
-{{ icon_btn("⚙", variant="ghost", aria_label="Settings") }}
-{{ icon_btn("✕", variant="danger", aria_label="Close") }}
-{{ icon_btn("◇", href="/layout", variant="default", aria_label="Go to layout") }}
+{{ icon_btn("gear", variant="ghost", aria_label="Settings") }}
+{{ icon_btn("alert", variant="danger", aria_label="Close") }}
+{{ icon_btn("diamond", href="/layout", aria_label="Go to layout") }}
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
   icon_btn — square icon-only control for toolbar and dense layouts.
@@ -43,7 +43,7 @@
 
 <h3>With Icon</h3>
 {% call cluster() %}
-{{ ripple_button("Save", variant="primary", icon="✦") }}
+{{ ripple_button("Save", variant="primary", icon="spark") }}
 {% end %}
 
 <h2>Shimmer Button</h2>
@@ -133,10 +133,10 @@
 
 <h2>Dock</h2>
 <h3>Default</h3>
-{{ dock(items=[{"icon": "◆", "label": "Home", "href": "/"}, {"icon": "⚙", "label": "Settings", "href": "/forms"}, {"icon": "★", "label": "Favorites", "href": "/cards"}]) }}
+{{ dock(items=[{"icon": "home", "label": "Home", "href": "/"}, {"icon": "gear", "label": "Settings", "href": "/forms"}, {"icon": "star", "label": "Favorites", "href": "/cards"}]) }}
 
 <h3>Glass Variant</h3>
-{{ dock(items=[{"icon": "◆", "label": "Home", "href": "/"}, {"icon": "⚙", "label": "Settings", "href": "/forms"}, {"icon": "★", "label": "Favorites", "href": "/cards"}], variant="glass") }}
+{{ dock(items=[{"icon": "home", "label": "Home", "href": "/"}, {"icon": "gear", "label": "Settings", "href": "/forms"}, {"icon": "star", "label": "Favorites", "href": "/cards"}], variant="glass") }}
 
 <h2>Notification Dot</h2>
 <h3>Variants</h3>

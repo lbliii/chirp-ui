@@ -31,7 +31,7 @@
 <h2>Config card</h2>
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: -0.25rem;">Uses <code>attrs_map={"id": "showcase-dashboard-pipeline"}</code> for a stable HTMX swap target on the widget root.</p>
 {% call block() %}
-{{ config_card(title="Pipeline", icon="◇", attrs_map={"id": "showcase-dashboard-pipeline"}, items=[
+{{ config_card(title="Pipeline", icon="diamond", attrs_map={"id": "showcase-dashboard-pipeline"}, items=[
     {"term": "enabled", "detail": "Yes", "type": "bool"},
     {"term": "endpoint", "detail": "https://api.example.com", "type": "url"},
     {"term": "retention_days", "detail": "14", "type": "number"},

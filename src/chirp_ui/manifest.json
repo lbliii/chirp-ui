@@ -4425,6 +4425,7 @@
         "danger",
         "ghost",
         "primary",
+        "secondary",
         "success",
         "warning"
       ]
@@ -18423,6 +18424,7 @@
       "description": "Table component\n    Responsive table with header configuration and row helper.\n\n    Usage:\n        from \"chirpui/table.html\" import table, row\n\n        Slot-based (complex rows):\n        call table(headers=[\"Name\", \"Email\", \"Role\"])\n            row(\"Alice\", \"alice@example.com\", \"Admin\")\n            row(\"Bob\", \"bob@example.com\", \"User\")\n        end\n\n        Data-driven (alignment flows to all cells automatically):\n        table(headers=[\"Name\", \"Status\", \"Count\"],\n              rows=[(\"Alice\", \"Active\", \"42\"), (\"Bob\", \"Idle\", \"7\")],\n              align=[\"left\", \"center\", \"right\"])\n\n        Per-column alignment (slot-based, auto-inherited):\n        call table(headers=[\"Name\", \"Status\", \"Count\"],\n                   align=[\"left\", \"center\", \"right\"])\n            row(\"Alice\", \"Active\", \"42\")\n        end\n\n        Column widths (CSS values or proportions):\n        call table(headers=[\"Name\", \"Status\"],\n                   widths=[\"2fr\", \"1fr\"])\n\n        Slots: caption (table caption), row_actions (header cell for actions column).\n        Sortable headers:\n        call table(headers=[\"Name\", \"Email\"], sortable=true,\n                   sort_url=\"/users\", hx_target=\"#user-table\")\n            row(user.name, user.email)\n        end\n        Row with actions: pass row_actions(...) as last cell when actions_header=true\n        Sticky header:\n        call table(headers=[...], sticky_header=true)",
       "elements": [
         "avatar",
+        "body",
         "caption",
         "empty",
         "head",
@@ -18436,6 +18438,7 @@
         "chirpui-table--compact",
         "chirpui-table--striped",
         "chirpui-table__avatar",
+        "chirpui-table__body",
         "chirpui-table__caption",
         "chirpui-table__empty",
         "chirpui-table__head",

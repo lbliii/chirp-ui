@@ -11,9 +11,9 @@
 
 <h2>Section with icon and actions</h2>
 {% call block() %}
-{% call section("System status", icon="◎", surface_variant="elevated") %}
+{% call section("System status", icon="status", surface_variant="elevated") %}
 {% slot actions %}
-{{ btn("Refresh", variant="default", icon="↻", type="button") }}
+{{ btn("Refresh", icon="refresh", type="button") }}
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Section with icon and header actions. Uses surface(variant="elevated").</p>
 {% end %}
@@ -24,9 +24,9 @@
 
 <h2>Section with subtitle</h2>
 {% call block() %}
-{% call section("Validation center", subtitle="Run checks and view results", icon="◎", surface_variant="accent") %}
+{% call section("Validation center", subtitle="Run checks and view results", icon="status", surface_variant="accent") %}
 {% slot actions %}
-{{ btn("Run validation", variant="primary", icon="◎", type="button") }}
+{{ btn("Run validation", variant="primary", icon="status", type="button") }}
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Optional subtitle below the title.</p>
 {% end %}
@@ -42,7 +42,7 @@
 <h2>Surface variants</h2>
 <h2>Blade (full-width section)</h2>
 {% call block() %}
-{% call section("Edge-to-edge", subtitle="full_width=true wraps in chirpui-blade for bleeding sections.", icon="▸", full_width=true, surface_variant="gradient-accent") %}
+{% call section("Edge-to-edge", subtitle="full_width=true wraps in chirpui-blade for bleeding sections.", icon="arrow", full_width=true, surface_variant="gradient-accent") %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">This section stretches edge-to-edge with a gradient accent surface.</p>
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
@@ -52,7 +52,7 @@
 
 <h2>Blade with parallax</h2>
 {% call block() %}
-{% call section("Scroll motion", subtitle="Subtle scroll-driven background shift (Chrome 115+).", icon="◎", full_width=true, parallax=true, surface_variant="gradient-mesh") %}
+{% call section("Scroll motion", subtitle="Subtle scroll-driven background shift (Chrome 115+).", icon="status", full_width=true, parallax=true, surface_variant="gradient-mesh") %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">full_width + parallax adds <code>chirpui-blade--parallax</code> for scroll-driven motion. Falls back gracefully.</p>
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
@@ -66,28 +66,28 @@
   All 11 surface variants via surface_variant param. Default is muted.
 </p>
 {% call stack(gap="sm") %}
-{% call section("default", icon="◇", surface_variant="default") %}
+{% call section("default", icon="diamond", surface_variant="default") %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Primary surface color.</p>
 {% end %}
-{% call section("muted", icon="◇", surface_variant="muted") %}
+{% call section("muted", icon="diamond", surface_variant="muted") %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Subtle background (default).</p>
 {% end %}
-{% call section("elevated", icon="◇", surface_variant="elevated") %}
+{% call section("elevated", icon="diamond", surface_variant="elevated") %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">With shadow.</p>
 {% end %}
-{% call section("accent", icon="◇", surface_variant="accent") %}
+{% call section("accent", icon="diamond", surface_variant="accent") %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Accent tint.</p>
 {% end %}
-{% call section("gradient-subtle", icon="◇", surface_variant="gradient-subtle") %}
+{% call section("gradient-subtle", icon="diamond", surface_variant="gradient-subtle") %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Soft gradient.</p>
 {% end %}
-{% call section("gradient-accent", icon="◇", surface_variant="gradient-accent") %}
+{% call section("gradient-accent", icon="diamond", surface_variant="gradient-accent") %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Accent gradient.</p>
 {% end %}
-{% call section("gradient-border", icon="◇", surface_variant="gradient-border") %}
+{% call section("gradient-border", icon="diamond", surface_variant="gradient-border") %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Gradient border, solid fill.</p>
 {% end %}
-{% call section("gradient-mesh", icon="◇", surface_variant="gradient-mesh") %}
+{% call section("gradient-mesh", icon="diamond", surface_variant="gradient-mesh") %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0;">Mesh-style gradient.</p>
 {% end %}
 {% end %}
@@ -103,7 +103,7 @@
 {% call block() %}
 {% call document_header("README.md", eyebrow="Documentation", path="docs/README.md", status="Draft", meta_items=["Last edited 3h ago"]) %}
 {% slot actions %}
-{{ btn("Save", variant="default") }}
+{{ btn("Save") }}
 {% end %}
 {% end %}
 {% end %}
@@ -111,7 +111,7 @@
 {% call block() %}
 {% call document_header("Architecture Overview", subtitle="System design reference", eyebrow="Engineering", path="docs/architecture.md", provenance="Created by Alice", status="Published") %}
 {% slot actions %}
-{{ btn("Edit", variant="default") }}
+{{ btn("Edit") }}
 {{ btn("Share", variant="ghost") }}
 {% end %}
 {% end %}

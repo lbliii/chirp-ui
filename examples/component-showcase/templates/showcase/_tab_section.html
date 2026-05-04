@@ -6,7 +6,7 @@
 {{ tab("details", "Details", url="/ui/tab/details", hx_target="#tab-demo", hx_swap="outerHTML", active=(active_tab == "details")) }}
 {{ tab("settings", "Settings", url="/ui/tab/settings", hx_target="#tab-demo", hx_swap="outerHTML", active=(active_tab == "settings")) }}
 {% end %}
-<div class="chirpui-tab-content" style="padding: var(--chirpui-spacing) 0;">
+<div class="chirpui-stack chirpui-stack--sm" style="padding: var(--chirpui-spacing) 0;">
   {% if active_tab == "overview" %}
   <p>Overview content. Tabs use htmx to swap this content without a full page reload.</p>
   {% elif active_tab == "details" %}
