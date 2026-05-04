@@ -4483,9 +4483,12 @@
       ],
       "emits": [
         "chirpui-bulk-bar",
+        "chirpui-bulk-bar-wrapper",
         "chirpui-bulk-bar__count"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-bulk-bar-wrapper"
+      ],
       "lineno": 0,
       "macro": null,
       "maturity": "experimental",
@@ -16266,6 +16269,7 @@
       ],
       "emits": [
         "chirpui-sidebar",
+        "chirpui-sidebar--responsive-dropdowns",
         "chirpui-sidebar__badge",
         "chirpui-sidebar__badge--loading",
         "chirpui-sidebar__badge--reserved",
@@ -16290,7 +16294,9 @@
       "lineno": 37,
       "macro": "sidebar",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "responsive-dropdowns"
+      ],
       "params": [
         {
           "has_default": true,
@@ -16306,7 +16312,9 @@
       "provides": [
         "_nav_current_path"
       ],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -16346,7 +16354,7 @@
         "chirpui-sidebar-toggle__icon"
       ],
       "extra_emits": [],
-      "lineno": 94,
+      "lineno": 96,
       "macro": "sidebar_toggle",
       "maturity": "stable",
       "modifiers": [],
@@ -21329,7 +21337,7 @@
       "stable": 171
     },
     "component_requirements": {
-      "alpine": 19,
+      "alpine": 20,
       "htmx": 23
     },
     "component_roles": {
@@ -21357,8 +21365,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 123,
-      "explicit_extra_classes": 525,
+      "explicit_extra_blocks": 124,
+      "explicit_extra_classes": 526,
       "explicit_trim_blocks": 72,
       "explicit_trim_classes": 102
     },

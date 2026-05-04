@@ -37,7 +37,9 @@
 {% def sidebar(cls="", current_path="") %}
 {# @provides _nav_current_path — consumed by: sidebar_link #}
 {% provide _nav_current_path = current_path %}
-<nav class="chirpui-sidebar{{ " " ~ cls if cls else "" }}">
+{% set _responsive_dropdowns = cls and "chirpui-sidebar--responsive-dropdowns" in cls %}
+<nav class="chirpui-sidebar{{ " " ~ cls if cls else "" }}"
+     {% if _responsive_dropdowns %}x-data="chirpuiResponsiveSidebar()" x-init="init()" @keydown.escape.window="closeMenus()" @click.outside="closeMenus()"{% end %}>
     <div class="chirpui-sidebar__header">{% slot header %}</div>
     <div class="chirpui-sidebar__nav">
         {% slot %}

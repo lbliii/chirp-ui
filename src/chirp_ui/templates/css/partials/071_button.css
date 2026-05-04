@@ -31,6 +31,14 @@ a.chirpui-btn {
         box-shadow var(--chirpui-transition);
 }
 
+.chirpui-btn__label,
+.chirpui-btn__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
 .chirpui-btn:hover:not(:disabled) {
     background: var(--chirpui-bg-subtle);
     border-color: var(--chirpui-border);

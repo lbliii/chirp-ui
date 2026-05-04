@@ -395,4 +395,90 @@
             },
         };
     });
+
+    register("chirpuiResponsiveSidebar", function () {
+        return {
+            query: null,
+            sections: [],
+            _listeners: [],
+            init: function () {
+                this.query = window.matchMedia("(max-width: 48rem)");
+                this.sections = Array.from(
+                    this.$el.querySelectorAll("details.chirpui-sidebar__section")
+                );
+                this.sections.forEach(
+                    function (section) {
+                        var onToggle = function () {
+                            this.syncOpenSection(section);
+                        }.bind(this);
+                        section.addEventListener("toggle", onToggle);
+                        this._listeners.push([section, "toggle", onToggle]);
+                    }.bind(this)
+                );
+
+                var onChange = function () {
+                    this.syncMode();
+                }.bind(this);
+                if (typeof this.query.addEventListener === "function") {
+                    this.query.addEventListener("change", onChange);
+                    this._listeners.push([this.query, "change", onChange]);
+                } else if (typeof this.query.addListener === "function") {
+                    this.query.addListener(onChange);
+                    this._listeners.push([this.query, "legacy-change", onChange]);
+                }
+                this.syncMode();
+            },
+            destroy: function () {
+                this._listeners.forEach(function (entry) {
+                    var target = entry[0];
+                    var event = entry[1];
+                    var listener = entry[2];
+                    if (event === "legacy-change" && typeof target.removeListener === "function") {
+                        target.removeListener(listener);
+                    } else if (typeof target.removeEventListener === "function") {
+                        target.removeEventListener(event, listener);
+                    }
+                });
+                this._listeners = [];
+            },
+            isResponsive: function () {
+                return Boolean(this.query && this.query.matches);
+            },
+            syncMode: function () {
+                if (this.isResponsive()) {
+                    this.closeMenus();
+                    return;
+                }
+                this.sections.forEach(function (section) {
+                    section.open = true;
+                });
+            },
+            syncOpenSection: function (activeSection) {
+                if (!this.isResponsive()) {
+                    if (!activeSection.open) {
+                        window.requestAnimationFrame(function () {
+                            activeSection.open = true;
+                        });
+                    }
+                    return;
+                }
+                if (!activeSection.open) {
+                    return;
+                }
+                this.sections.forEach(function (section) {
+                    if (section !== activeSection) {
+                        section.open = false;
+                    }
+                });
+            },
+            closeMenus: function () {
+                if (!this.isResponsive()) {
+                    return;
+                }
+                this.sections.forEach(function (section) {
+                    section.open = false;
+                });
+            },
+        };
+    });
 })();

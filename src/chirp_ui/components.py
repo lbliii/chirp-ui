@@ -2268,6 +2268,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "sidebar": ComponentDescriptor(
         block="sidebar",
+        modifiers=("responsive-dropdowns",),
         elements=(
             "header",
             "nav",
@@ -3363,6 +3364,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     "bulk-bar": ComponentDescriptor(
         block="bulk-bar",
         elements=("count",),
+        extra_emits=("chirpui-bulk-bar-wrapper",),
         category="control",
         role="primitive",
         maturity="experimental",

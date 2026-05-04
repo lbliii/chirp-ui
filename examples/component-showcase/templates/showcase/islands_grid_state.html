@@ -1,33 +1,64 @@
 {% extends "base.html" %}
 
 {% block main %}
-{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/layout.html" import container, stack, block, page_header, cluster %}
 {% from "chirpui/state_primitives.html" import grid_state %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/forms.html" import text_field %}
 
 {% call container() %}
-{% call stack() %}
-{{ page_header("grid_state", subtitle="Client-side grid state without build tooling.") }}
+{% call stack(gap="lg") %}
+{{ page_header("Grid state", subtitle="Client-side filtering, sorting, and row selection without build tooling.") }}
+
+{% call cluster(gap="sm") %}
+{{ btn("Back to islands", href="/islands", variant="ghost") }}
+{% end %}
 
 {% call block() %}
-{% call grid_state("team_grid", ["name", "role"], mount_id="grid-state-root", cls="chirpui-card") %}
-<div style="display:flex; gap:0.5rem; margin-bottom:0.75rem;">
-  <input data-grid-filter type="text" placeholder="Filter rows..." style="flex:1;">
-  <button type="button" class="chirpui-btn chirpui-btn--secondary" data-grid-sort>Toggle sort</button>
-</div>
-<table class="chirpui-table">
-  <thead>
-    <tr><th></th><th>Name</th><th>Role</th></tr>
-  </thead>
-  <tbody data-grid-body>
-    <tr data-grid-row data-grid-id="alice"><td><input data-grid-select type="checkbox"></td><td>Alice</td><td>Admin</td></tr>
-    <tr data-grid-row data-grid-id="bob"><td><input data-grid-select type="checkbox"></td><td>Bob</td><td>User</td></tr>
-    <tr data-grid-row data-grid-id="carol"><td><input data-grid-select type="checkbox"></td><td>Carol</td><td>User</td></tr>
-  </tbody>
-</table>
+{% call surface(variant="muted") %}
+{% call stack(gap="md") %}
+<h2>Team roster state</h2>
+<p class="chirpui-text-muted chirpui-font-sm">The island owns client-side row visibility, sort order, and selection while reporting state changes.</p>
+{% call grid_state("team_grid", ["name", "role"], mount_id="grid-state-root") %}
+{% call stack(gap="sm") %}
+  {% call cluster(gap="sm") %}
+    {{ text_field("team_filter", label="Filter", placeholder="Filter rows...", attrs_unsafe="data-grid-filter") }}
+    {{ btn("Toggle sort", variant="ghost", attrs_unsafe="data-grid-sort") }}
+  {% end %}
+  <div class="chirpui-table-wrap">
+    <table class="chirpui-table">
+      <thead class="chirpui-table__head">
+        <tr>
+          <th class="chirpui-table__th" scope="col">Select</th>
+          <th class="chirpui-table__th" scope="col">Name</th>
+          <th class="chirpui-table__th" scope="col">Role</th>
+        </tr>
+      </thead>
+      <tbody class="chirpui-table__body" data-grid-body>
+        <tr class="chirpui-table__row" data-grid-row data-grid-id="alice">
+          <td class="chirpui-table__td"><input class="chirpui-field__checkbox" data-grid-select type="checkbox" aria-label="Select Alice"></td>
+          <td class="chirpui-table__td">Alice</td>
+          <td class="chirpui-table__td">Admin</td>
+        </tr>
+        <tr class="chirpui-table__row" data-grid-row data-grid-id="bob">
+          <td class="chirpui-table__td"><input class="chirpui-field__checkbox" data-grid-select type="checkbox" aria-label="Select Bob"></td>
+          <td class="chirpui-table__td">Bob</td>
+          <td class="chirpui-table__td">User</td>
+        </tr>
+        <tr class="chirpui-table__row" data-grid-row data-grid-id="carol">
+          <td class="chirpui-table__td"><input class="chirpui-field__checkbox" data-grid-select type="checkbox" aria-label="Select Carol"></td>
+          <td class="chirpui-table__td">Carol</td>
+          <td class="chirpui-table__td">User</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 {% end %}
 {% end %}
-
-<p><a href="/islands">← Back to islands</a></p>
+{% end %}
+{% end %}
+{% end %}
 {% end %}
 {% end %}
 {% end %}

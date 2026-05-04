@@ -1,36 +1,48 @@
 {% extends "base.html" %}
 
 {% block main %}
-{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/layout.html" import container, stack, block, page_header, cluster %}
 {% from "chirpui/state_primitives.html" import wizard_state %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/button.html" import btn %}
 
 {% call container() %}
-{% call stack() %}
-{{ page_header("wizard_state", subtitle="Step state, guards, and progress UI without an SPA shell.") }}
+{% call stack(gap="lg") %}
+{{ page_header("Wizard state", subtitle="Step state, guards, and progress UI without an SPA shell.") }}
+
+{% call cluster(gap="sm") %}
+{{ btn("Back to islands", href="/islands", variant="ghost") }}
+{% end %}
 
 {% call block() %}
-{% call wizard_state("signup_wizard", ["account", "profile", "confirm"], mount_id="wizard-state-root", cls="chirpui-card") %}
+{% call surface(variant="muted") %}
+{% call stack(gap="md") %}
+<h2>Signup flow state</h2>
+<p class="chirpui-text-muted chirpui-font-sm">The island keeps visible steps, guard state, and button disabled state local to the flow.</p>
+{% call wizard_state("signup_wizard", ["account", "profile", "confirm"], mount_id="wizard-state-root") %}
+{% call stack(gap="sm") %}
 <p class="chirpui-text-muted" data-wizard-status></p>
-<section data-wizard-step data-step-id="account">
+{% call surface(variant="default", attrs_unsafe='data-wizard-step data-step-id="account"') %}
   <h3>Account</h3>
   <p>Create account credentials.</p>
-</section>
-<section data-wizard-step data-step-id="profile" hidden>
+{% end %}
+{% call surface(variant="default", attrs_unsafe='data-wizard-step data-step-id="profile" hidden') %}
   <h3>Profile</h3>
   <p>Fill profile details.</p>
-</section>
-<section data-wizard-step data-step-id="confirm" hidden>
+{% end %}
+{% call surface(variant="default", attrs_unsafe='data-wizard-step data-step-id="confirm" hidden') %}
   <h3>Confirm</h3>
   <p>Review and submit.</p>
-</section>
-<div style="display:flex; gap:0.5rem; margin-top:0.75rem;">
-  <button type="button" class="chirpui-btn chirpui-btn--secondary" data-wizard-prev>Previous</button>
-  <button type="button" class="chirpui-btn chirpui-btn--primary" data-wizard-next>Next</button>
-</div>
+{% end %}
+{% call cluster(gap="sm") %}
+  {{ btn("Previous", variant="ghost", attrs_unsafe="data-wizard-prev") }}
+  {{ btn("Next", variant="primary", attrs_unsafe="data-wizard-next") }}
 {% end %}
 {% end %}
-
-<p><a href="/islands">← Back to islands</a></p>
+{% end %}
+{% end %}
+{% end %}
+{% end %}
 {% end %}
 {% end %}
 {% end %}

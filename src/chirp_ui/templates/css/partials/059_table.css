@@ -256,6 +256,10 @@
     font-size: var(--chirpui-font-sm);
 }
 
+.chirpui-bulk-bar-wrapper:not(:empty) {
+    margin-block-end: var(--chirpui-spacing-sm);
+}
+
 .chirpui-selection-bar__count,
 .chirpui-bulk-bar__count {
     font-weight: var(--chirpui-ui-font-weight-semibold);

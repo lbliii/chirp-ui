@@ -23,8 +23,8 @@
 
 <h2>Table (htmx-driven)</h2>
 {% call block() %}
-<div id="data_bulk_bar" style="margin-bottom: 0.5rem;"></div>
-{% call filter_bar("/data/export", attrs_map={"id": "data_filters", "style": "margin-bottom: 1rem;"}) %}
+<div id="data_bulk_bar" class="chirpui-bulk-bar-wrapper"></div>
+{% call filter_bar("/data/export", attrs_map={"id": "data_filters"}) %}
   <div class="chirpui-action-strip__primary">
     {{ search_bar(
         "q",
@@ -43,7 +43,7 @@
     ) }}
   </div>
   <div class="chirpui-action-strip__controls">
-    <div style="min-width: 8rem;">
+    <div class="chirpui-field chirpui-field--dense">
       <label class="chirpui-field__label" for="data_role">Role</label>
       <select class="chirpui-field__input" id="data_role" name="role"
               hx-get="/data/table"
@@ -58,7 +58,7 @@
         <option value="Guest">Guest</option>
       </select>
     </div>
-    <div style="min-width: 8rem;">
+    <div class="chirpui-field chirpui-field--dense">
       <label class="chirpui-field__label" for="data_density">Density</label>
       <select class="chirpui-field__input" id="data_density" name="density"
               hx-get="/data/table"

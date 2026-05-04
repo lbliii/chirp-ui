@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% from "chirpui/islands.html" import island_root %}
 {% from "chirpui/state_primitives.html" import state_sync, action_queue, draft_store, error_boundary %}
-{% from "chirpui/layout.html" import cluster %}
+{% from "chirpui/layout.html" import cluster, stack %}
 {% from "chirpui/surface.html" import surface %}
 {% from "chirpui/button.html" import btn %}
 
 {% block main %}
-{% from "chirpui/layout.html" import container, stack, block, page_header, grid %}
-{% from "chirpui/nav_link.html" import nav_link %}
+{% from "chirpui/layout.html" import container, block, page_header, grid %}
 {% from "chirpui/forms.html" import text_field %}
 
 {% call container() %}
@@ -16,19 +15,25 @@
 
 {% call surface(variant="muted") %}
 {% call stack(gap="md") %}
-<p class="chirpui-text-muted">
-  Foundational primitives: <code>state_sync</code>, <code>action_queue</code>,
-  <code>draft_store</code>, and <code>error_boundary</code>.
+<p class="chirpui-text-muted chirpui-font-sm">
+  Copyable island recipes for state sync, queued actions, autosaved drafts,
+  recoverable regions, and route-specific primitive demos.
 </p>
 
 {% call cluster(gap="sm") %}
-{{ btn("Trigger htmx remount", variant="secondary", hx_get="/islands/remount", hx_target="#island-shell", hx_swap="outerHTML") }}
-{{ nav_link("/islands/grid-state", "grid_state") }}
-{{ nav_link("/islands/wizard-state", "wizard_state") }}
-{{ nav_link("/islands/upload-state", "upload_state") }}
+{{ btn("Trigger htmx remount", variant="ghost", hx_get="/islands/remount", hx_target="#island-shell", hx_swap="outerHTML") }}
+{{ btn("Grid state", variant="ghost", href="/islands/grid-state") }}
+{{ btn("Wizard state", variant="ghost", href="/islands/wizard-state") }}
+{{ btn("Upload state", variant="ghost", href="/islands/upload-state") }}
 {% end %}
 
+{% call surface(variant="default", attrs_map={"aria-live": "polite"}) %}
+{% call stack(gap="sm") %}
+<h3>Island event log</h3>
+<p id="island-events-empty" class="chirpui-text-muted chirpui-font-sm">Interact with the demos to see island lifecycle, state, action, and error events.</p>
 <div id="island-events" class="chirpui-stack chirpui-stack--sm"></div>
+{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -42,12 +47,14 @@
   version="1",
   src="/static/islands/counter.js"
 ) %}
+  {% call stack(gap="sm") %}
   <h3>Counter island</h3>
-  <p class="chirpui-text-muted">Custom adapter mounted by <code>/static/islands/counter.js</code>.</p>
+  <p class="chirpui-text-muted chirpui-font-sm">Custom adapter mounted by <code>/static/islands/counter.js</code>.</p>
   <p><strong data-counter-value>0</strong></p>
   {% call cluster(gap="sm") %}
-    {{ btn("-1", variant="secondary", attrs_unsafe="data-counter-minus") }}
+    {{ btn("-1", variant="ghost", attrs_unsafe="data-counter-minus") }}
     {{ btn("+1", variant="primary", attrs_unsafe="data-counter-plus") }}
+  {% end %}
   {% end %}
 {% end %}
 {% end %}
@@ -58,7 +65,8 @@
 {% call block() %}
 {% call surface(variant="muted") %}
 {% call stack(gap="sm") %}
-<h3>state_sync</h3>
+<h3>URL-synced search</h3>
+<p class="chirpui-text-muted chirpui-font-sm">Mirrors a field into a query parameter without a page-level controller.</p>
 {% call state_sync("search_text", query_param="q", initial="", mount_id="state-sync-root") %}
 {{ text_field("query", label="Query", placeholder="Type to sync URL...", attrs_unsafe="data-state-field") }}
 {% end %}
@@ -69,7 +77,8 @@
 {% call block() %}
 {% call surface(variant="muted") %}
 {% call stack(gap="sm") %}
-<h3>action_queue</h3>
+<h3>Queued action</h3>
+<p class="chirpui-text-muted chirpui-font-sm">Tracks pending and completed work while keeping the control local to the island.</p>
 {% call action_queue("save_profile", mount_id="action-queue-root") %}
 {{ btn("Run action", variant="primary", attrs_unsafe="data-action-trigger") }}
 <p class="chirpui-text-muted" data-action-status>Ready.</p>
@@ -81,7 +90,8 @@
 {% call block() %}
 {% call surface(variant="muted") %}
 {% call stack(gap="sm") %}
-<h3>draft_store</h3>
+<h3>Autosaved draft</h3>
+<p class="chirpui-text-muted chirpui-font-sm">Persists local draft fields and emits save state without a framework store.</p>
 {% call draft_store("profile_draft", mount_id="draft-store-root") %}
 {{ text_field("name", label="Name", attrs_unsafe="data-draft-field") }}
 <div class="chirpui-field">
@@ -97,11 +107,12 @@
 {% call block() %}
 {% call surface(variant="muted") %}
 {% call stack(gap="sm") %}
-<h3>error_boundary</h3>
+<h3>Recoverable region</h3>
+<p class="chirpui-text-muted chirpui-font-sm">Swaps to fallback content when an island error is reported, then resets in place.</p>
 {% call error_boundary("profile-boundary", mount_id="boundary-root") %}
 <div data-error-body>
   <p>Healthy content region.</p>
-  {{ btn("Trigger boundary error", variant="secondary", attrs_map={"id": "trigger-boundary-error"}) }}
+  {{ btn("Trigger boundary error", variant="ghost", attrs_map={"id": "trigger-boundary-error"}) }}
 </div>
 <div data-error-fallback hidden>
   <p>Fallback active due to runtime error.</p>
@@ -136,6 +147,7 @@
   events.forEach((name) => {
     document.addEventListener(name, (event) => {
       const detail = event.detail || {};
+      document.getElementById("island-events-empty")?.setAttribute("hidden", "hidden");
       const item = document.createElement("p");
       item.className = "chirpui-text-muted";
       item.textContent = `${name}: ${detail.name || "unknown"} (${detail.id || "no-id"}) ${detail.status || detail.reason || ""}`.trim();

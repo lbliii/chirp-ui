@@ -10,14 +10,14 @@
 {% slot brand %}{{ logo(text="chirp-ui", variant="text") }}{% end %}
 {% slot topbar_end %}{{ theme_toggle() }}{% end %}
 {% slot sidebar %}
-{% call sidebar() %}
+{% call sidebar(cls="chirpui-sidebar--responsive-dropdowns") %}
 
-{% call sidebar_section("Core") %}
+{% call sidebar_section("Core", collapsible=true) %}
 {{ sidebar_link("/", "Home", icon="sources", match="exact") }}
 {{ sidebar_link("/demo", "Quick Demo", icon="run", match="prefix") }}
 {% end %}
 
-{% call sidebar_section("Components") %}
+{% call sidebar_section("Components", collapsible=true) %}
 {{ sidebar_link("/htmx", "HTMX Patterns", match="prefix") }}
 {{ sidebar_link("/navigation", "Navigation", match="prefix") }}
 {{ sidebar_link("/layout", "Layout", match="prefix") }}
@@ -30,25 +30,25 @@
 {{ sidebar_link("/ui", "UI Components", match="prefix") }}
 {% end %}
 
-{% call sidebar_section("Data") %}
+{% call sidebar_section("Data", collapsible=true) %}
 {{ sidebar_link("/data-display", "Data Display", match="prefix") }}
 {{ sidebar_link("/data", "Team Roster", match="exact") }}
 {{ sidebar_link("/calendar", "Calendar", match="prefix") }}
 {{ sidebar_link("/dashboard", "Dashboard", match="prefix") }}
 {% end %}
 
-{% call sidebar_section("Effects") %}
+{% call sidebar_section("Effects", collapsible=true) %}
 {{ sidebar_link("/effects", "Visual Effects", match="prefix") }}
 {{ sidebar_link("/typography", "Typography", match="prefix") }}
 {{ sidebar_link("/animation", "Animation", match="prefix") }}
 {% end %}
 
-{% call sidebar_section("ASCII") %}
+{% call sidebar_section("ASCII", collapsible=true) %}
 {{ sidebar_link("/ascii", "ASCII Icons", match="exact") }}
 {{ sidebar_link("/ascii-primitives", "ASCII Primitives", match="prefix") }}
 {% end %}
 
-{% call sidebar_section("Rich") %}
+{% call sidebar_section("Rich", collapsible=true) %}
 {{ sidebar_link("/buttons", "Buttons & Cards", match="prefix") }}
 {{ sidebar_link("/streaming", "Streaming & AI", match="prefix") }}
 {{ sidebar_link("/islands", "Islands", match="prefix") }}

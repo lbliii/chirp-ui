@@ -5998,7 +5998,7 @@ class TestSpinner:
             '{% from "chirpui/spinner.html" import spinner_thinking %}{{ spinner_thinking() }}'
         ).render()
         assert "chirpui-spinner-thinking" in html
-        assert "chirpui-spinner__char" in html
+        assert "chirpui-spinner-thinking__char" in html
         assert "◜" in html
         assert 'aria-label="Processing"' in html
 

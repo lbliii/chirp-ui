@@ -34,6 +34,23 @@ def test_app_shell_collapses_to_single_column_on_phone_widths() -> None:
     assert "@media (max-width: 48rem)" in sidebar
     assert ".chirpui-app-shell__sidebar .chirpui-sidebar__section-links" in sidebar
     assert "flex-direction: row;" in sidebar
+    assert ".chirpui-sidebar--responsive-dropdowns" in sidebar
+    assert ".chirpui-app-shell__sidebar:has(.chirpui-sidebar--responsive-dropdowns)" in sidebar
+    assert "max-block-size: none;" in sidebar
+    assert "position: absolute;" in sidebar
+
+
+def test_showcase_sidebar_opts_into_responsive_dropdown_groups() -> None:
+    base = (
+        ROOT
+        / "examples"
+        / "component-showcase"
+        / "templates"
+        / "base.html"
+    ).read_text(encoding="utf-8")
+
+    assert 'sidebar(cls="chirpui-sidebar--responsive-dropdowns")' in base
+    assert base.count("collapsible=true") >= 6
 
 
 def test_navigation_strips_scroll_horizontally_on_phone_widths() -> None:
@@ -117,6 +134,32 @@ def test_single_line_controls_share_baseline_block_size() -> None:
     assert "min-inline-size: var(--chirpui-control-block-size);" in pagination
     assert "min-block-size: var(--chirpui-control-block-size);" in theme_toggle
     assert "min-block-size: var(--chirpui-control-block-size);" in ascii_toggle
+
+
+def test_dense_action_surfaces_align_controls_by_context() -> None:
+    action_containers = _partial("014_action-containers.css")
+    button = _partial("071_button.css")
+
+    assert ".chirpui-filter-bar .chirpui-action-strip__inner" in action_containers
+    assert ".chirpui-filter-bar .chirpui-field" in action_containers
+    assert "min-inline-size: 8rem;" in action_containers
+    assert ".chirpui-command-bar .chirpui-action-strip__inner" in action_containers
+    assert ".chirpui-btn__label,\n.chirpui-btn__icon" in button
+    assert "line-height: 1;" in button
+
+
+def test_motion_and_stepper_primitives_have_visible_animation_layers() -> None:
+    spinner = _partial("073_spinner.css")
+    stepper = _partial("030_stepper.css")
+
+    assert ".chirpui-spinner-thinking__char" in spinner
+    assert "animation: chirpui-spiral-spin" in spinner
+    assert "@keyframes chirpui-spiral-spin" in spinner
+    assert "transform: rotate(1turn);" in spinner
+    assert ".chirpui-stepper__item--completed .chirpui-stepper__indicator" in stepper
+    assert "var(--chirpui-bg)" in stepper
+    assert ".chirpui-stepper__check" in stepper
+    assert "background: inherit;" in stepper
 
 
 def test_tables_and_rendered_content_have_mobile_overflow_guards() -> None:

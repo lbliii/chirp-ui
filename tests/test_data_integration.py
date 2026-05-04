@@ -93,6 +93,21 @@ def _route_pattern_matches(pattern: str, path: str) -> bool:
     regex = re.sub(r"\\\{[^/]+\\\}", r"[^/]+", regex)
     return re.fullmatch(regex, path) is not None
 
+ISLAND_ROUTE_SMOKE_PATHS = (
+    "/islands",
+    "/islands/grid-state",
+    "/islands/wizard-state",
+    "/islands/upload-state",
+    "/islands/remount",
+)
+
+ISLAND_TEMPLATE_PATHS = (
+    "showcase/islands.html",
+    "showcase/islands_grid_state.html",
+    "showcase/islands_wizard_state.html",
+    "showcase/islands_upload_state.html",
+)
+
 
 @pytest.fixture
 def showcase_app():
@@ -194,6 +209,10 @@ class TestDataPage:
             assert response.text.count("chirpui-frame--sidebar-start") >= 8
             assert "data-showcase-nav-shell-frame" not in response.text
             assert "data-showcase-nav-sidebar-viewport" not in response.text
+            assert "/static/chirpui-logo.svg" in response.text
+            logo_response = await client.get("/static/chirpui-logo.svg")
+            assert logo_response.status == 200
+            assert "<svg" in logo_response.text
 
     @pytest.mark.asyncio
     async def test_htmx_page_does_not_emit_demo_toasts_on_load(self, showcase_app) -> None:
@@ -240,13 +259,36 @@ class TestDataPage:
             assert replayable_class in html
 
     @pytest.mark.asyncio
-    async def test_navigation_page_returns_dense_example(self, showcase_app) -> None:
-        async with TestClient(showcase_app) as client:
-            response = await client.get("/navigation")
-            assert response.status == 200
-            assert "Dense Object Navigation" in response.text
-            assert "chirpui-breadcrumbs__overflow" in response.text
-            assert "chirpui-route-tab__badge" in response.text
+    @pytest.mark.parametrize("path", ISLAND_ROUTE_SMOKE_PATHS)
+    async def test_island_showcase_routes_return_200(self, showcase_app, path: str) -> None:
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always", ChirpUIValidationWarning)
+            warnings.simplefilter("always", ChirpUIDeprecationWarning)
+            async with TestClient(showcase_app) as client:
+                response = await client.get(path)
+        assert response.status == 200
+        chirp_warnings = [
+            warning
+            for warning in caught
+            if issubclass(warning.category, (ChirpUIValidationWarning, ChirpUIDeprecationWarning))
+        ]
+        assert not chirp_warnings, f"{path} emitted chirp-ui warnings: " + "; ".join(
+            str(warning.message) for warning in chirp_warnings
+        )
+
+    def test_island_showcase_templates_use_composed_patterns(self) -> None:
+        stale_patterns = {
+            "inline style": r"\bstyle=",
+            "direct card class": r'cls="chirpui-card"',
+            "raw back link": r"<p><a href=",
+            "missing field modifier": r"chirpui-field--file",
+        }
+        for rel_path in ISLAND_TEMPLATE_PATHS:
+            template = (_SHOWCASE_DIR / "templates" / rel_path).read_text(encoding="utf-8")
+            for label, pattern in stale_patterns.items():
+                assert not re.search(pattern, template), (
+                    f"{rel_path} still uses stale island showcase pattern: {label}"
+                )
 
     @pytest.mark.asyncio
     async def test_data_page_returns_200(self, showcase_app) -> None:
@@ -256,6 +298,8 @@ class TestDataPage:
             assert "Data Display" in response.text
             assert 'id="data_table_content"' in response.text
             assert "chirpui-spinner" in response.text
+            assert "chirpui-field--dense" in response.text
+            assert "style=\"min-width" not in response.text
 
     @pytest.mark.asyncio
     async def test_data_table_fragment_returns_200(self, showcase_app) -> None:

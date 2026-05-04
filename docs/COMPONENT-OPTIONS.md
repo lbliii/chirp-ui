@@ -7943,7 +7943,9 @@ Sidebar component
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
+- **Requires:** `alpine`
 - **Slots:** `(default)`, `footer`, `header`
+- **Modifiers:** `responsive-dropdowns`
 - **Provides:** `_nav_current_path`
 
 | Param | Required | Default |
