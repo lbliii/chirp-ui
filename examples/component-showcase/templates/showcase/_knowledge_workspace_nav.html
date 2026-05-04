@@ -1,0 +1,138 @@
+{% from "chirpui/layout.html" import stack, cluster, grid, block, frame %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
+{% from "chirpui/nav_tree.html" import nav_tree %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+{% from "chirpui/avatar.html" import avatar %}
+
+{% def knowledge_workspace_navigation() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Knowledge workspace global navigation") %}
+  {{ logo(text="Notebook", href="/knowledge", variant="text") }}
+  {{ dropdown_menu(btn("Design Space", variant="ghost", size="sm"), items=[
+    {"label": "Design Space", "href": "/knowledge/spaces/design"},
+    {"label": "Engineering Space", "href": "/knowledge/spaces/engineering"},
+    {"label": "Company Wiki", "href": "/knowledge/spaces/company"},
+    {"divider": true},
+    {"label": "Create space", "action": "create-space"}
+  ], id="knowledge-space-menu") }}
+  {{ command_palette_trigger(target="knowledge-palette", label="Search pages", placeholder="Search or jump to page", shortcut="P", icon="search", density="sm") }}
+  {{ btn("New page", variant="primary", size="sm") }}
+  {{ icon_btn("alert", href="/knowledge/inbox", aria_label="Page inbox") }}
+  {{ avatar(initials="NW", alt="Notebook user", size="sm") }}
+{% end %}
+{{ command_palette(id="knowledge-palette", search_url="/data/table", placeholder="Search pages, owners, tasks, and mentions...") }}
+{% call frame(variant="balanced", gap="md") %}
+  {% call sidebar(current_path="/knowledge/spaces/design/projects/launch/readiness") %}
+    {% slot header %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <strong>Design Space</strong>
+        <span class="chirpui-text-muted chirpui-font-sm">Nested pages stay link-native.</span>
+      </div>
+    {% end %}
+    {% call sidebar_section("Workspace") %}
+      {{ sidebar_link("/knowledge/search", "Search", icon="search") }}
+      {{ sidebar_link("/knowledge/inbox", "Inbox", icon="alert", badge=5) }}
+      {{ sidebar_link("/knowledge/favorites", "Favorites", icon="star") }}
+    {% end %}
+    {% call sidebar_section("Teamspaces") %}
+      {{ nav_tree(items=[
+        {"title": "Projects", "href": "/knowledge/spaces/design/projects", "open": true, "children": [
+          {"title": "Launch", "href": "/knowledge/spaces/design/projects/launch", "open": true, "children": [
+            {"title": "Readiness", "href": "/knowledge/spaces/design/projects/launch/readiness", "active": true},
+            {"title": "Messaging", "href": "/knowledge/spaces/design/projects/launch/messaging"}
+          ]},
+          {"title": "Design system", "href": "/knowledge/spaces/design/projects/system"}
+        ]},
+        {"title": "Research", "href": "/knowledge/spaces/design/research", "children": [
+          {"title": "Interviews", "href": "/knowledge/spaces/design/research/interviews"},
+          {"title": "Insights", "href": "/knowledge/spaces/design/research/insights"}
+        ]}
+      ], branch_mode="linked") }}
+    {% end %}
+    {% call sidebar_section("Private", collapsible=true) %}
+      {{ sidebar_link("/knowledge/private/notes", "Notes", icon="pencil") }}
+      {{ sidebar_link("/knowledge/private/drafts", "Drafts", icon="list") }}
+    {% end %}
+  {% end %}
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs([
+      {"label": "Notebook", "href": "/knowledge"},
+      {"label": "Design Space", "href": "/knowledge/spaces/design"},
+      {"label": "Projects", "href": "/knowledge/spaces/design/projects"},
+      {"label": "Launch", "href": "/knowledge/spaces/design/projects/launch"},
+      {"label": "Readiness"}
+    ], overflow="collapse", max_items=4) }}
+    {% call cluster(gap="sm") %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <h3>Launch readiness</h3>
+        <div class="chirpui-cluster chirpui-cluster--sm">
+          {{ inline_counter("C", 12, "checks") }}
+          {{ inline_counter("O", 4, "owners") }}
+          {{ inline_counter("M", 9, "mentions") }}
+        </div>
+      </div>
+      {{ badge("Shared", variant="info") }}
+      {{ btn("Share", variant="primary", size="sm") }}
+      {{ dropdown_menu(btn("Page actions", variant="ghost", size="sm"), items=[
+        {"label": "Copy link", "action": "copy-page"},
+        {"label": "Move page", "action": "move-page"},
+        {"label": "Add to favorites", "action": "favorite-page"},
+        {"divider": true},
+        {"label": "Archive page", "action": "archive-page", "variant": "danger"}
+      ], id="knowledge-page-actions-menu") }}
+    {% end %}
+    {{ route_tabs(tabs=[
+      {"href": "/knowledge/spaces/design/projects/launch/readiness", "label": "Page"},
+      {"href": "/knowledge/spaces/design/projects/launch/readiness/tasks", "label": "Tasks", "badge": 12, "badge_label": "12 checklist tasks"},
+      {"href": "/knowledge/spaces/design/projects/launch/readiness/comments", "label": "Comments", "badge": 9, "badge_label": "9 comments"},
+      {"href": "/knowledge/spaces/design/projects/launch/readiness/history", "label": "History", "badge_expected": true},
+    ], current_path="/knowledge/spaces/design/projects/launch/readiness") }}
+    {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Knowledge page controls") %}
+      {{ btn("Edit", variant="ghost", size="sm") }}
+      {{ btn("Mention", variant="ghost", size="sm") }}
+      {{ btn("Convert to task", variant="ghost", size="sm") }}
+      {{ btn("Follow", variant="ghost", size="sm") }}
+    {% end %}
+    {% call chip_group(label="Knowledge workspace nearby pages") %}
+      {{ chip("Launch", selected=true, href="/knowledge/spaces/design/projects/launch") }}
+      {{ chip("Messaging", href="/knowledge/spaces/design/projects/launch/messaging") }}
+      {{ chip("Research", href="/knowledge/spaces/design/research") }}
+      {{ chip("Private notes", href="/knowledge/private/notes") }}
+    {% end %}
+    {% call grid(cols=3, gap="md") %}
+      {% call resource_card("/knowledge/spaces/design/projects/launch/readiness/tasks", "Checklist tasks", description="Page-local tasks remain a route, not an in-place tab widget.", top_meta="page section") %}
+        {% slot badges %}{{ badge("12 open", variant="warning") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">4 owners</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/knowledge/spaces/design/projects/launch/messaging", "Messaging", description="Sibling page visible through nearby-topic discovery.", top_meta="sibling page") %}
+        {% slot badges %}{{ badge("Draft", variant="info") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Updated today</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/knowledge/spaces/design/research/insights", "Research insights", description="Teamspace page outside the current branch.", top_meta="teamspace") %}
+        {% slot badges %}{{ badge("Pinned", variant="success") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Linked from Launch</span>
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

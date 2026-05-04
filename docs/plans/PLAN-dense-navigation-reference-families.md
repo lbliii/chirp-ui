@@ -46,6 +46,10 @@ systems without cloning any specific product.
 - Family 4 accepted: the component showcase now includes a keyboard-first
   tracker recipe with favorites, team pages, shortcut-labeled command launch,
   route-backed issue views, saved views, and compact display controls.
+- Family 5 accepted: the component showcase now includes a knowledge workspace
+  recipe with workspace switching, linked nested page navigation, team/private
+  boundaries, collapsed breadcrumbs, page-local routes, and nearby-topic
+  discovery.
 
 ## Research Sources
 

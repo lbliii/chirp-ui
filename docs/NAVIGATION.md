@@ -167,7 +167,10 @@ console recipe applies it to observability: command-first dashboard search,
 operational side navigation, time range controls, signal tabs, and stable alert
 counts stay in separate layers. The tracker recipe treats shortcut hints as
 navigation evidence, pairing command launch with visible favorites, team views,
-route-backed issue tabs, and display controls.
+route-backed issue tabs, and display controls. The knowledge workspace recipe
+uses linked disclosure navigation for nested pages, collapsed breadcrumbs for
+deep page location, and separate page-local routes for tasks, comments, and
+history.
 
 On phones:
 

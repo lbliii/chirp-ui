@@ -51,6 +51,10 @@ class TestDataPage:
             assert "Tracker global navigation" in response.text
             assert "Tracker display controls" in response.text
             assert "Go to issue, project, view" in response.text
+            assert "Knowledge Workspace Navigation" in response.text
+            assert "Knowledge workspace global navigation" in response.text
+            assert "Knowledge page controls" in response.text
+            assert "Search or jump to page" in response.text
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
             assert "chirpui-route-tab__badge--reserved" in response.text
