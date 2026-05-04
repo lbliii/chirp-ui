@@ -39,6 +39,10 @@ systems without cloning any specific product.
 - Family 2 accepted: the component showcase now includes a cloud/control-plane
   console recipe with scope switching, service menu, favorites quickbar,
   resource search, object-local route tabs, stable counts, and deployment tools.
+- Family 3 accepted: the component showcase now includes an observability/ops
+  console recipe with command-first dashboard search, operational side
+  navigation, time range controls, signal tabs, saved investigations, and stable
+  alert counts.
 
 ## Research Sources
 

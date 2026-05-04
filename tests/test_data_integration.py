@@ -43,6 +43,10 @@ class TestDataPage:
             assert "Suite work hub global navigation" in response.text
             assert "Suite work hub personal shortcuts" in response.text
             assert "Suite work hub saved views" in response.text
+            assert "Ops Console Navigation" in response.text
+            assert "Ops console global navigation" in response.text
+            assert "Ops dashboard controls" in response.text
+            assert "Jump to dashboard, log, trace" in response.text
             assert "chirpui-breadcrumbs__overflow" in response.text
             assert "chirpui-route-tab__badge" in response.text
             assert "chirpui-route-tab__badge--reserved" in response.text

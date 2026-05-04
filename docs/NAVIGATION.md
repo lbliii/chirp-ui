@@ -162,7 +162,10 @@ It also includes a cloud/control-plane recipe for scope switching, service
 menus, favorites quickbars, resource search, deployment tabs, and page-local
 controls. The suite work hub recipe extends the same layer model to product
 suites: top utilities, product modes, personal shortcuts, customizable sidebar
-sections, project-local route tabs, and saved views stay distinct.
+sections, project-local route tabs, and saved views stay distinct. The ops
+console recipe applies it to observability: command-first dashboard search,
+operational side navigation, time range controls, signal tabs, and stable alert
+counts stay in separate layers.
 
 On phones:
 

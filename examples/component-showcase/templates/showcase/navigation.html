@@ -21,6 +21,7 @@
 {% from "showcase/_dense_object_chrome.html" import dense_project_object_chrome, dense_settings_object_chrome %}
 {% from "showcase/_cloud_console_nav.html" import cloud_control_plane_console %}
 {% from "showcase/_suite_work_hub.html" import suite_work_hub_navigation %}
+{% from "showcase/_ops_console_nav.html" import ops_console_navigation %}
 
 
 {% from "chirpui/nav_progress.html" import nav_progress %}
@@ -101,6 +102,12 @@
   Product-suite recipe: top utilities, mode navigation, personal shortcuts, customizable sidebar sections, project tabs, and saved views.
 </p>
 {{ suite_work_hub_navigation() }}
+
+<h2>Ops Console Navigation</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Observability recipe: command-first dashboard search, operational sidebar, time range controls, signal tabs, and alert counts.
+</p>
+{{ ops_console_navigation() }}
 
 <h2>Stepper</h2>
 {% call block() %}
