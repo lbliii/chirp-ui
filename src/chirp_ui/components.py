@@ -1956,7 +1956,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="donut",
         variants=("", "gold", "success", "muted"),
         sizes=("", "sm", "md", "lg"),
-        elements=("ring", "center", "caption"),
+        elements=("ring", "center", "caption", "value"),
         tokens=(
             "--chirpui-donut-size",
             "--chirpui-donut-pct",
@@ -3523,7 +3523,6 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     "filter-bar": ComponentDescriptor(
         block="filter-bar",
         elements=("form",),
-        trim_emits=("chirpui-filter-bar",),
         category="form",
         role="primitive",
         maturity="stable",

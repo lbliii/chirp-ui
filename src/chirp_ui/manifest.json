@@ -7497,7 +7497,8 @@
       "elements": [
         "caption",
         "center",
-        "ring"
+        "ring",
+        "value"
       ],
       "emits": [
         "chirpui-donut",
@@ -7509,7 +7510,8 @@
         "chirpui-donut--success",
         "chirpui-donut__caption",
         "chirpui-donut__center",
-        "chirpui-donut__ring"
+        "chirpui-donut__ring",
+        "chirpui-donut__value"
       ],
       "extra_emits": [],
       "lineno": 13,
@@ -8597,6 +8599,7 @@
         "form"
       ],
       "emits": [
+        "chirpui-filter-bar",
         "chirpui-filter-bar__form"
       ],
       "extra_emits": [],
@@ -8615,9 +8618,7 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
-      "trim_emits": [
-        "chirpui-filter-bar"
-      ],
+      "trim_emits": [],
       "variants": []
     },
     "filter-group": {
@@ -21367,8 +21368,8 @@
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 124,
       "explicit_extra_classes": 526,
-      "explicit_trim_blocks": 72,
-      "explicit_trim_classes": 102
+      "explicit_trim_blocks": 71,
+      "explicit_trim_classes": 101
     },
     "token_categories": {
       "color": 181,

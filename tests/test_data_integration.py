@@ -93,6 +93,7 @@ def _route_pattern_matches(pattern: str, path: str) -> bool:
     regex = re.sub(r"\\\{[^/]+\\\}", r"[^/]+", regex)
     return re.fullmatch(regex, path) is not None
 
+
 ISLAND_ROUTE_SMOKE_PATHS = (
     "/islands",
     "/islands/grid-state",
@@ -299,7 +300,7 @@ class TestDataPage:
             assert 'id="data_table_content"' in response.text
             assert "chirpui-spinner" in response.text
             assert "chirpui-field--dense" in response.text
-            assert "style=\"min-width" not in response.text
+            assert 'style="min-width' not in response.text
 
     @pytest.mark.asyncio
     async def test_data_table_fragment_returns_200(self, showcase_app) -> None:

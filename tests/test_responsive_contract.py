@@ -41,15 +41,14 @@ def test_app_shell_collapses_to_single_column_on_phone_widths() -> None:
 
 
 def test_showcase_sidebar_opts_into_responsive_dropdown_groups() -> None:
-    base = (
-        ROOT
-        / "examples"
-        / "component-showcase"
-        / "templates"
-        / "base.html"
-    ).read_text(encoding="utf-8")
+    base = (ROOT / "examples" / "component-showcase" / "templates" / "base.html").read_text(
+        encoding="utf-8"
+    )
 
-    assert 'sidebar(cls="chirpui-sidebar--responsive-dropdowns", current_path=current_path | default(""))' in base
+    assert (
+        'sidebar(cls="chirpui-sidebar--responsive-dropdowns", current_path=current_path | default(""))'
+        in base
+    )
     assert base.count("collapsible=true") >= 6
 
 
