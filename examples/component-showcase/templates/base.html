@@ -10,7 +10,7 @@
 {% slot brand %}{{ logo(text="chirp-ui", variant="text") }}{% end %}
 {% slot topbar_end %}{{ theme_toggle() }}{% end %}
 {% slot sidebar %}
-{% call sidebar(cls="chirpui-sidebar--responsive-dropdowns") %}
+{% call sidebar(cls="chirpui-sidebar--responsive-dropdowns", current_path=current_path | default("")) %}
 
 {% call sidebar_section("Core", collapsible=true) %}
 {{ sidebar_link("/", "Home", icon="sources", match="exact") }}

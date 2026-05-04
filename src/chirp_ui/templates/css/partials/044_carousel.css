@@ -13,6 +13,28 @@
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     padding-inline: var(--chirpui-spacing);
+    padding-block-end: var(--chirpui-spacing-xs);
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--chirpui-border) 75%, transparent) transparent;
+    scrollbar-gutter: stable;
+}
+
+.chirpui-carousel__track::-webkit-scrollbar {
+    height: 0.45rem;
+}
+
+.chirpui-carousel__track::-webkit-scrollbar-track {
+    background: color-mix(in srgb, var(--chirpui-border) 18%, transparent);
+    border-radius: var(--chirpui-radius-full);
+}
+
+.chirpui-carousel__track::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--chirpui-border) 70%, transparent);
+    border-radius: var(--chirpui-radius-full);
+}
+
+.chirpui-carousel__track:hover::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--chirpui-accent) 45%, var(--chirpui-border));
 }
 
 .chirpui-carousel__slide {
@@ -57,4 +79,3 @@
 .chirpui-carousel:has(#slide-5:target) .chirpui-carousel__dot[href="#slide-5"] {
     background: var(--chirpui-accent);
 }
-

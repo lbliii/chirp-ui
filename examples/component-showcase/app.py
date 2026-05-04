@@ -47,6 +47,12 @@ app = App(
 use_chirp_ui(app)
 
 
+def _page(request: Request, template: str, **context: object) -> Template:
+    """Render a full showcase page with route context for shell navigation."""
+    context.setdefault("current_path", request.path)
+    return Template(template, **context)
+
+
 def _query_list(request: Request, key: str) -> list[str]:
     """Return repeated query values, accepting older comma-joined showcase links."""
     values = request.query.get_list(key)
@@ -62,13 +68,13 @@ async def show_toast(request: Request) -> Fragment:
 
 
 @app.route("/", template="index.html")
-async def index() -> Template:
-    return Template("index.html")
+async def index(request: Request) -> Template:
+    return _page(request, "index.html")
 
 
 @app.route("/demo", template="showcase/demo.html")
-async def demo() -> Template:
-    return Template("showcase/demo.html")
+async def demo(request: Request) -> Template:
+    return _page(request, "showcase/demo.html")
 
 
 @app.route("/demo/submit", methods=["POST"])
@@ -99,27 +105,27 @@ async def demo_stream(request: Request) -> EventStream:
 
 
 @app.route("/htmx", template="showcase/htmx.html")
-async def htmx_patterns() -> Template:
-    return Template("showcase/htmx.html")
+async def htmx_patterns(request: Request) -> Template:
+    return _page(request, "showcase/htmx.html")
 
 
 @app.route("/navigation", template="showcase/navigation.html")
-async def navigation() -> Template:
-    return Template("showcase/navigation.html")
+async def navigation(request: Request) -> Template:
+    return _page(request, "showcase/navigation.html")
 
 
 @app.route("/layout", template="showcase/layout.html")
-async def layout() -> Template:
-    return Template("showcase/layout.html")
+async def layout(request: Request) -> Template:
+    return _page(request, "showcase/layout.html")
 
 
 @app.route("/chrome", template="showcase/chrome.html")
-async def chrome() -> Template:
-    return Template("showcase/chrome.html")
+async def chrome(request: Request) -> Template:
+    return _page(request, "showcase/chrome.html")
 
 
 @app.route("/shell-actions", template="showcase/shell_actions.html")
-async def shell_actions() -> Template:
+async def shell_actions(request: Request) -> Template:
     actions = ShellActions(
         primary=ShellActionZone(
             items=(
@@ -144,12 +150,12 @@ async def shell_actions() -> Template:
             )
         ),
     )
-    return Template("showcase/shell_actions.html", shell_actions=actions)
+    return _page(request, "showcase/shell_actions.html", shell_actions=actions)
 
 
 @app.route("/sections", template="showcase/sections.html")
-async def sections() -> Template:
-    return Template("showcase/sections.html")
+async def sections(request: Request) -> Template:
+    return _page(request, "showcase/sections.html")
 
 
 @app.route("/layout/dir", methods=["GET"])
@@ -160,18 +166,18 @@ async def layout_dir(request: Request) -> Fragment:
 
 
 @app.route("/carousel", template="showcase/carousel.html")
-async def carousel_page() -> Template:
-    return Template("showcase/carousel.html")
+async def carousel_page(request: Request) -> Template:
+    return _page(request, "showcase/carousel.html")
 
 
 @app.route("/cards", template="showcase/cards.html")
-async def cards() -> Template:
-    return Template("showcase/cards.html")
+async def cards(request: Request) -> Template:
+    return _page(request, "showcase/cards.html")
 
 
 @app.route("/forms", template="showcase/forms.html")
-async def forms() -> Template:
-    return Template("showcase/forms.html")
+async def forms(request: Request) -> Template:
+    return _page(request, "showcase/forms.html")
 
 
 @app.route("/forms/demo", methods=["POST"])
@@ -205,8 +211,8 @@ async def forms_demo(request: Request) -> FormAction | ValidationError:
 
 
 @app.route("/ui", template="showcase/ui.html")
-async def ui() -> Template:
-    return Template("showcase/ui.html")
+async def ui(request: Request) -> Template:
+    return _page(request, "showcase/ui.html")
 
 
 @app.route("/ui/tab/{name}", methods=["GET"])
@@ -215,8 +221,8 @@ async def ui_tab(request: Request, name: str) -> Fragment:
 
 
 @app.route("/islands", template="showcase/islands.html")
-async def islands_demo() -> Template:
-    return Template("showcase/islands.html")
+async def islands_demo(request: Request) -> Template:
+    return _page(request, "showcase/islands.html")
 
 
 @app.route("/islands/remount", methods=["GET"])
@@ -225,23 +231,23 @@ async def islands_remount() -> Fragment:
 
 
 @app.route("/islands/grid-state", template="showcase/islands_grid_state.html")
-async def islands_grid_state() -> Template:
-    return Template("showcase/islands_grid_state.html")
+async def islands_grid_state(request: Request) -> Template:
+    return _page(request, "showcase/islands_grid_state.html")
 
 
 @app.route("/islands/wizard-state", template="showcase/islands_wizard_state.html")
-async def islands_wizard_state() -> Template:
-    return Template("showcase/islands_wizard_state.html")
+async def islands_wizard_state(request: Request) -> Template:
+    return _page(request, "showcase/islands_wizard_state.html")
 
 
 @app.route("/islands/upload-state", template="showcase/islands_upload_state.html")
-async def islands_upload_state() -> Template:
-    return Template("showcase/islands_upload_state.html")
+async def islands_upload_state(request: Request) -> Template:
+    return _page(request, "showcase/islands_upload_state.html")
 
 
 @app.route("/streaming", template="showcase/streaming.html")
-async def streaming() -> Template:
-    return Template("showcase/streaming.html")
+async def streaming(request: Request) -> Template:
+    return _page(request, "showcase/streaming.html")
 
 
 @app.route("/streaming/demo", methods=["GET"])
@@ -371,13 +377,17 @@ async def data_export(request: Request) -> Response:
 
 
 @app.route("/data-display", template="showcase/data-display.html")
-async def data_display() -> Template:
-    return Template("showcase/data-display.html")
+async def data_display(request: Request) -> Template:
+    return _page(request, "showcase/data-display.html")
 
 
 @app.route("/calendar", template="showcase/calendar.html")
 @app.route("/calendar/{year}/{month}", template="showcase/calendar.html")
-async def calendar_view(year: int | str | None = None, month: int | str | None = None) -> Template:
+async def calendar_view(
+    request: Request,
+    year: int | str | None = None,
+    month: int | str | None = None,
+) -> Template:
     from datetime import date
 
     today = date.today()
@@ -393,7 +403,8 @@ async def calendar_view(year: int | str | None = None, month: int | str | None =
     next_year = year if month < 12 else year + 1
     prev_url = f"/calendar/{prev_year}/{prev_month}"
     next_url = f"/calendar/{next_year}/{next_month}"
-    return Template(
+    return _page(
+        request,
         "showcase/calendar.html",
         weeks=weeks,
         month_label=month_label,
@@ -403,43 +414,43 @@ async def calendar_view(year: int | str | None = None, month: int | str | None =
 
 
 @app.route("/data", template="showcase/data.html")
-async def data() -> Template:
-    return Template("showcase/data.html")
+async def data(request: Request) -> Template:
+    return _page(request, "showcase/data.html")
 
 
 @app.route("/effects", template="showcase/effects.html")
-async def effects() -> Template:
-    return Template("showcase/effects.html")
+async def effects(request: Request) -> Template:
+    return _page(request, "showcase/effects.html")
 
 
 @app.route("/typography", template="showcase/typography.html")
-async def typography() -> Template:
-    return Template("showcase/typography.html")
+async def typography(request: Request) -> Template:
+    return _page(request, "showcase/typography.html")
 
 
 @app.route("/ascii-primitives", template="showcase/ascii_primitives.html")
-async def ascii_primitives() -> Template:
-    return Template("showcase/ascii_primitives.html")
+async def ascii_primitives(request: Request) -> Template:
+    return _page(request, "showcase/ascii_primitives.html")
 
 
 @app.route("/buttons", template="showcase/buttons.html")
-async def buttons() -> Template:
-    return Template("showcase/buttons.html")
+async def buttons(request: Request) -> Template:
+    return _page(request, "showcase/buttons.html")
 
 
 @app.route("/dashboard", template="showcase/dashboard.html")
-async def dashboard() -> Template:
-    return Template("showcase/dashboard.html")
+async def dashboard(request: Request) -> Template:
+    return _page(request, "showcase/dashboard.html")
 
 
 @app.route("/animation", template="showcase/animation.html")
-async def animation() -> Template:
-    return Template("showcase/animation.html")
+async def animation(request: Request) -> Template:
+    return _page(request, "showcase/animation.html")
 
 
 @app.route("/ascii", template="showcase/ascii.html")
-async def ascii_icons() -> Template:
-    return Template("showcase/ascii.html")
+async def ascii_icons(request: Request) -> Template:
+    return _page(request, "showcase/ascii.html")
 
 
 @app.route("/animation/swap-demo", methods=["GET"])
@@ -448,18 +459,18 @@ async def animation_swap_demo(request: Request) -> Fragment:
 
 
 @app.route("/messenger", template="showcase/messenger.html")
-async def messenger() -> Template:
-    return Template("showcase/messenger.html")
+async def messenger(request: Request) -> Template:
+    return _page(request, "showcase/messenger.html")
 
 
 @app.route("/social", template="showcase/social.html")
-async def social() -> Template:
-    return Template("showcase/social.html")
+async def social(request: Request) -> Template:
+    return _page(request, "showcase/social.html")
 
 
 @app.route("/video", template="showcase/video.html")
-async def video() -> Template:
-    return Template("showcase/video.html")
+async def video(request: Request) -> Template:
+    return _page(request, "showcase/video.html")
 
 
 if __name__ == "__main__":

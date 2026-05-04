@@ -4380,6 +4380,18 @@ class TestSidebar:
         assert "Dashboard" in html
         assert 'hx-select="#page-content"' in html
 
+    def test_sidebar_current_path_marks_matching_link_active(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import sidebar, sidebar_link %}'
+            '{% call sidebar(current_path="/carousel") %}'
+            '{{ sidebar_link("/carousel", "Carousel", match="exact") }}'
+            "{{ sidebar_link('/cards', 'Cards', match='exact') }}"
+            "{% end %}"
+        ).render()
+        assert 'href="/carousel"' in html
+        assert html.count("chirpui-sidebar__link--active") == 1
+        assert 'aria-current="page"' in html
+
     def test_shell_brand_link_matches_sidebar_contract(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/sidebar.html" import shell_brand_link %}'

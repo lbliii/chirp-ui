@@ -49,7 +49,7 @@ def test_showcase_sidebar_opts_into_responsive_dropdown_groups() -> None:
         / "base.html"
     ).read_text(encoding="utf-8")
 
-    assert 'sidebar(cls="chirpui-sidebar--responsive-dropdowns")' in base
+    assert 'sidebar(cls="chirpui-sidebar--responsive-dropdowns", current_path=current_path | default(""))' in base
     assert base.count("collapsible=true") >= 6
 
 
@@ -71,7 +71,7 @@ def test_navigation_strips_scroll_horizontally_on_phone_widths() -> None:
 def test_blade_is_sidebar_aware_inside_app_shells() -> None:
     surface = _partial("039_surface.css")
 
-    assert ".chirpui-app-shell__main .chirpui-blade" in surface
+    assert ".chirpui-app-shell .chirpui-app-shell__main .chirpui-blade" in surface
     assert "width: 100%;" in surface
     assert "margin-inline: 0;" in surface
 

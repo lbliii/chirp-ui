@@ -57,6 +57,7 @@
     font-weight: var(--chirpui-ui-font-weight-semibold);
     flex-shrink: 0;
     border: 2px solid var(--chirpui-border);
+    box-shadow: 0 0 0 0.25rem var(--chirpui-bg);
     transition: all var(--chirpui-transition);
 }
 
@@ -64,11 +65,13 @@
     background: var(--chirpui-accent);
     color: var(--chirpui-on-accent);
     border-color: var(--chirpui-accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--chirpui-accent) 25%, transparent);
+    box-shadow:
+        0 0 0 0.25rem var(--chirpui-bg),
+        0 0 0 calc(0.25rem + 3px) color-mix(in srgb, var(--chirpui-accent) 25%, transparent);
 }
 
 .chirpui-stepper__item--completed .chirpui-stepper__indicator {
-    background: color-mix(in srgb, var(--chirpui-accent) 15%, var(--chirpui-bg));
+    background: color-mix(in srgb, var(--chirpui-accent) 15%, var(--chirpui-bg-subtle));
     color: var(--chirpui-accent);
     border-color: var(--chirpui-accent);
 }

@@ -1221,7 +1221,7 @@ html {
 
 .chirpui-section-header__title-block {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--chirpui-space-control-gap);
 }
 
@@ -1229,6 +1229,7 @@ html {
     font-size: 1em;
     line-height: 1;
     flex-shrink: 0;
+    margin-top: 0.15em;
 }
 
 .chirpui-section-header__top {
@@ -1296,6 +1297,10 @@ html {
 
 .chirpui-section-header--inline .chirpui-section-header__title-block {
     align-items: center;
+}
+
+.chirpui-section-header--inline .chirpui-section-header__icon {
+    margin-top: 0;
 }
 
 .chirpui-section-header--inline .chirpui-section-header__title-inline {
@@ -3422,6 +3427,7 @@ a.chirpui-mention:focus-visible {
     font-weight: var(--chirpui-ui-font-weight-semibold);
     flex-shrink: 0;
     border: 2px solid var(--chirpui-border);
+    box-shadow: 0 0 0 0.25rem var(--chirpui-bg);
     transition: all var(--chirpui-transition);
 }
 
@@ -3429,11 +3435,13 @@ a.chirpui-mention:focus-visible {
     background: var(--chirpui-accent);
     color: var(--chirpui-on-accent);
     border-color: var(--chirpui-accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--chirpui-accent) 25%, transparent);
+    box-shadow:
+        0 0 0 0.25rem var(--chirpui-bg),
+        0 0 0 calc(0.25rem + 3px) color-mix(in srgb, var(--chirpui-accent) 25%, transparent);
 }
 
 .chirpui-stepper__item--completed .chirpui-stepper__indicator {
-    background: color-mix(in srgb, var(--chirpui-accent) 15%, var(--chirpui-bg));
+    background: color-mix(in srgb, var(--chirpui-accent) 15%, var(--chirpui-bg-subtle));
     color: var(--chirpui-accent);
     border-color: var(--chirpui-accent);
 }
@@ -4630,7 +4638,7 @@ a.chirpui-mention:focus-visible {
         margin-inline: calc(50% - 50vw);
     }
 
-    .chirpui-app-shell__main .chirpui-blade {
+    .chirpui-app-shell .chirpui-app-shell__main .chirpui-blade {
         width: 100%;
         max-width: 100%;
         margin-inline: 0;
@@ -5032,6 +5040,28 @@ a.chirpui-mention:focus-visible {
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     padding-inline: var(--chirpui-spacing);
+    padding-block-end: var(--chirpui-spacing-xs);
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--chirpui-border) 75%, transparent) transparent;
+    scrollbar-gutter: stable;
+}
+
+.chirpui-carousel__track::-webkit-scrollbar {
+    height: 0.45rem;
+}
+
+.chirpui-carousel__track::-webkit-scrollbar-track {
+    background: color-mix(in srgb, var(--chirpui-border) 18%, transparent);
+    border-radius: var(--chirpui-radius-full);
+}
+
+.chirpui-carousel__track::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--chirpui-border) 70%, transparent);
+    border-radius: var(--chirpui-radius-full);
+}
+
+.chirpui-carousel__track:hover::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--chirpui-accent) 45%, var(--chirpui-border));
 }
 
 .chirpui-carousel__slide {
@@ -5076,7 +5106,6 @@ a.chirpui-mention:focus-visible {
 .chirpui-carousel:has(#slide-5:target) .chirpui-carousel__dot[href="#slide-5"] {
     background: var(--chirpui-accent);
 }
-
 }
 
 /* === partials/045_card.css === */
@@ -5110,7 +5139,7 @@ a.chirpui-mention:focus-visible {
 
         .chirpui-card__header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: var(--chirpui-space-card-gap);
             padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
             font-family: var(--chirpui-ui-font-family);
@@ -5124,6 +5153,7 @@ a.chirpui-mention:focus-visible {
             font-size: 1em;
             line-height: 1;
             flex-shrink: 0;
+            margin-top: 0.15em;
         }
 
         .chirpui-card__header-content {
@@ -8436,6 +8466,33 @@ button.chirpui-pagination__link {
     min-block-size: var(--chirpui-control-block-size);
 }
 
+select.chirpui-field__input:not([multiple]) {
+    appearance: none;
+    padding-inline-end: calc(var(--chirpui-spacing-xl) + var(--chirpui-spacing-xs));
+    background-image:
+        linear-gradient(45deg, transparent 50%, currentColor 50%),
+        linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+        calc(100% - var(--chirpui-spacing)) 50%,
+        calc(100% - (var(--chirpui-spacing) - 0.35rem)) 50%;
+    background-size: 0.35rem 0.35rem, 0.35rem 0.35rem;
+    background-repeat: no-repeat;
+}
+
+select.chirpui-field__input:not([multiple]):disabled {
+    background-image:
+        linear-gradient(45deg, transparent 50%, currentColor 50%),
+        linear-gradient(135deg, currentColor 50%, transparent 50%);
+}
+
+@media (forced-colors: active) {
+    select.chirpui-field__input:not([multiple]) {
+        appearance: auto;
+        padding-inline-end: var(--chirpui-spacing-sm);
+        background-image: none;
+    }
+}
+
 @media (max-width: 48rem), (pointer: coarse) {
     .chirpui-field__input:not([type="checkbox"]):not([type="radio"]) {
         min-block-size: var(--chirpui-control-touch-target);
@@ -10556,13 +10613,26 @@ a.chirpui-badge--custom-solid:hover {
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-text);
+    line-height: 1.05;
+    text-align: center;
+    text-shadow:
+        0 1px 2px var(--chirpui-surface),
+        0 0 0.55rem var(--chirpui-surface);
+}
+
+.chirpui-donut__value {
+    display: block;
+    max-width: 85%;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-donut__caption {
     font-size: var(--chirpui-font-xs);
     font-weight: 400;
     color: var(--chirpui-text-muted);
-    line-height: 1;
+    line-height: 1.05;
+    max-width: 85%;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-donut--gold .chirpui-donut__ring {
@@ -10576,7 +10646,6 @@ a.chirpui-badge--custom-solid:hover {
 .chirpui-donut--muted .chirpui-donut__ring {
     --chirpui-donut-fill: var(--chirpui-text-muted);
 }
-
 }
 
 /* === partials/082_status-indicator.css === */
