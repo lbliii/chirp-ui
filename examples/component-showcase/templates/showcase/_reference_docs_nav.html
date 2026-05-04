@@ -37,7 +37,7 @@
   {{ icon_btn("share", href="/docs/build/navigation/dense-recipes?share=1", aria_label="Share page") }}
 {% end %}
 {{ command_palette(id="reference-docs-palette", search_url="/data/table", placeholder="Search docs, APIs, examples, and release notes...") }}
-{% call frame(variant="balanced", gap="md") %}
+{% call frame(variant="sidebar-start", gap="md") %}
   {% call sidebar(current_path="/docs/build/navigation/dense-recipes") %}
     {% slot header %}
       <div class="chirpui-stack chirpui-stack--sm">

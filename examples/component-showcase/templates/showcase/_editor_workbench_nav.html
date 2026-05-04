@@ -18,7 +18,7 @@
 {% def editor_workbench_navigation() %}
 {% call block() %}
 {% call stack(gap="sm") %}
-{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Editor workbench global navigation") %}
+{% call command_bar(surface_variant="default", density="md", wrap="scroll", aria_label="Editor workbench global navigation") %}
   {{ logo(text="CanvasLab", href="/editor", variant="text") }}
   {{ dropdown_menu(btn("Launch flows.fig", variant="ghost", size="sm"), items=[
     {"label": "Rename file", "action": "rename-file"},

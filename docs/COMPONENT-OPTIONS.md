@@ -3737,7 +3737,7 @@ Action Strip component
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
-- **Modifiers:** `collapse`, `scroll`, `sm`, `sticky`
+- **Modifiers:** `collapse`, `md`, `scroll`, `sm`, `sticky`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -6856,6 +6856,24 @@ Forum and social pattern assets
 - **Maturity:** `legacy`
 - **Role:** `primitive`
 - **Authoring:** `compatibility`
+
+### `nav-link`
+
+SPA-style link for content areas
+
+- **Template:** `chirpui/nav_link.html`
+- **Macro:** `nav_link`
+- **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `href` | yes | — |
+| `label` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `nav-progress`
 

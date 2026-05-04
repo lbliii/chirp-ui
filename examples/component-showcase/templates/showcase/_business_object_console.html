@@ -33,7 +33,7 @@
   {{ avatar(initials="LD", alt="LedgerDesk user", size="sm") }}
 {% end %}
 {{ command_palette(id="business-object-palette", search_url="/data/table", placeholder="Search object IDs, customers, payments, and invoices...") }}
-{% call frame(variant="balanced", gap="md") %}
+{% call frame(variant="sidebar-start", gap="md") %}
   {% call sidebar(current_path="/objects/customers/cus_9XQ2/events") %}
     {% slot header %}
       <div class="chirpui-stack chirpui-stack--sm">

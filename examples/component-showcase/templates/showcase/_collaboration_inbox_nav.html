@@ -32,7 +32,7 @@
   {{ avatar(initials="RL", alt="Relay user", size="sm") }}
 {% end %}
 {{ command_palette(id="collaboration-inbox-palette", search_url="/data/table", placeholder="Search conversations, people, threads, and files...") }}
-{% call frame(variant="balanced", gap="md") %}
+{% call frame(variant="sidebar-start", gap="md") %}
   {% call sidebar(current_path="/inbox/channels/launch/thread") %}
     {% slot header %}
       <div class="chirpui-stack chirpui-stack--sm">

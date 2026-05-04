@@ -1,4 +1,12 @@
+from pathlib import Path
+
 from kida import Environment
+
+
+def _chirpui_css() -> str:
+    return (
+        Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates" / "chirpui.css"
+    ).read_text(encoding="utf-8")
 
 
 def test_sidebar_link_renders_badge(env: Environment) -> None:
@@ -48,6 +56,12 @@ def test_saved_view_strip_renders_selected_views(env: Environment) -> None:
     assert 'aria-label="Saved views"' in html
     assert 'aria-current="page"' in html
     assert "Mine" in html
+
+
+def test_saved_view_strip_css_styles_raw_slot_links() -> None:
+    css = _chirpui_css()
+    assert ".chirpui-saved-view-strip > a:not(.chirpui-chip)" in css
+    assert "border-radius: 999px" in css
 
 
 def test_primary_nav_renders_badges_dividers_and_active_links(env: Environment) -> None:

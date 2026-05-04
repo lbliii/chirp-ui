@@ -20,7 +20,7 @@
 {% def suite_work_hub_navigation() %}
 {% call block() %}
 {% call stack(gap="sm") %}
-{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Suite work hub global navigation") %}
+{% call command_bar(surface_variant="default", density="md", wrap="scroll", aria_label="Suite work hub global navigation") %}
   {{ logo(text="Workgrid", href="/suite", variant="text") }}
   {{ scope_switcher("Design Org", items=[
     {"label": "Design Org", "href": "/suite/orgs/design"},

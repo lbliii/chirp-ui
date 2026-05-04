@@ -2539,6 +2539,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         role="pattern",
         macro="saved_view_strip",
     ),
+    "nav-link": ComponentDescriptor(
+        block="nav-link",
+        slots=("",),
+        template="nav_link.html",
+        category="navigation",
+        maturity="stable",
+        macro="nav_link",
+    ),
     "nav-tree": ComponentDescriptor(
         block="nav-tree",
         modifiers=("linked-branches",),
@@ -2655,7 +2663,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "action-strip": ComponentDescriptor(
         block="action-strip",
-        modifiers=("sm", "scroll", "collapse", "sticky"),
+        modifiers=("sm", "md", "scroll", "collapse", "sticky"),
         elements=("inner", "primary", "controls", "actions"),
         slots=("",),
         template="action_strip.html",

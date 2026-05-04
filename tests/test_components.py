@@ -3636,6 +3636,18 @@ class TestActionContainers:
         assert "Filters" in html
         assert "Create" in html
 
+    def test_action_strip_scroll_css_reserves_hover_lift_room(self) -> None:
+        css = _chirpui_css()
+        scroll_rule = css.split(".chirpui-action-strip--scroll .chirpui-action-strip__inner", 1)[
+            1
+        ].split("}", 1)[0]
+        assert "padding-block: var(--chirpui-spacing-2xs)" in scroll_rule
+        assert "overflow-x: auto" in scroll_rule
+        assert (
+            "align-items: center"
+            in css.split(".chirpui-action-strip__inner", 1)[1].split("}", 1)[0]
+        )
+
     def test_filter_bar(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/filter_bar.html" import filter_bar %}'
@@ -4432,6 +4444,14 @@ class TestStepper:
         ).render()
         assert "chirpui-stepper__item--completed" in html
         assert "chirpui-stepper__item--active" in html
+
+    def test_stepper_completed_indicator_uses_opaque_fill(self) -> None:
+        css = _chirpui_css()
+        completed_rule = css.split(
+            ".chirpui-stepper__item--completed .chirpui-stepper__indicator", 1
+        )[1].split("}", 1)[0]
+        assert "var(--chirpui-bg-subtle)" in completed_rule
+        assert "15%, transparent" not in completed_rule
 
 
 class TestWizardForm:
@@ -7778,6 +7798,7 @@ class TestHtmxCorrectness:
         html = env.from_string(
             '{% from "chirpui/nav_link.html" import nav_link %}{{ nav_link("/page", "Next") }}'
         ).render()
+        assert 'class="chirpui-nav-link"' in html
         assert 'hx-target="#main"' in html
         assert 'hx-select="#page-content"' in html
 
@@ -7786,8 +7807,16 @@ class TestHtmxCorrectness:
             '{% from "chirpui/nav_link.html" import nav_link %}'
             '{% call nav_link("/details") %}View{% end %}'
         ).render()
+        assert "chirpui-nav-link" in html
         assert 'hx-select="#page-content"' in html
         assert "View" in html
+
+    def test_nav_link_preserves_custom_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/nav_link.html" import nav_link %}'
+            '{{ nav_link("/page", "Next", cls="extra-link") }}'
+        ).render()
+        assert 'class="chirpui-nav-link extra-link"' in html
 
     def test_inline_edit_cancel_has_boost_false(self, env: Environment) -> None:
         html = env.from_string(

@@ -126,6 +126,7 @@
       "emits": [
         "chirpui-action-strip",
         "chirpui-action-strip--collapse",
+        "chirpui-action-strip--md",
         "chirpui-action-strip--scroll",
         "chirpui-action-strip--sm",
         "chirpui-action-strip--sticky",
@@ -140,6 +141,7 @@
       "maturity": "stable",
       "modifiers": [
         "collapse",
+        "md",
         "scroll",
         "sm",
         "sticky"
@@ -12312,6 +12314,56 @@
       "trim_emits": [],
       "variants": []
     },
+    "nav-link": {
+      "authoring": "available",
+      "block": "nav-link",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "SPA-style link for content areas\n    Opt-in navigation link with explicit HTMX attributes for SPA transitions.\n    Use for pagination, breadcrumbs, or interlinked content pages that should\n    swap without a full page reload.\n\n    Uses hx-boost on the link itself so the server receives HX-Boosted and\n    renders the page_block (not the narrow fragment). Boost on a leaf <a>\n    element cannot leak to children.\n\n    Plain <a> tags work fine for most links. Use nav_link only when you want\n    the smooth SPA transition effect within the app shell.\n\n    Usage:\n        {% from \"chirpui/nav_link.html\" import nav_link %}\n\n        {{ nav_link(\"/page-2\", \"Next page\") }}\n\n        {% call nav_link(\"/details\") %}View details{% end %}",
+      "elements": [],
+      "emits": [
+        "chirpui-nav-link"
+      ],
+      "extra_emits": [],
+      "lineno": 22,
+      "macro": "nav_link",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "nav_link.html",
+      "tokens": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "nav-progress": {
       "authoring": "available",
       "block": "nav-progress",
@@ -21149,7 +21201,7 @@
   "schema": "chirpui-manifest@3",
   "stats": {
     "component_authoring": {
-      "available": 283,
+      "available": 284,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -21169,7 +21221,7 @@
       "layout": 46,
       "marketing": 11,
       "media": 6,
-      "navigation": 24,
+      "navigation": 25,
       "overlay": 3,
       "social": 4,
       "typography": 29
@@ -21178,22 +21230,22 @@
       "experimental": 124,
       "internal": 2,
       "legacy": 39,
-      "stable": 169
+      "stable": 170
     },
     "component_requirements": {
       "alpine": 19,
       "htmx": 23
     },
     "component_roles": {
-      "component": 174,
+      "component": 175,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 17,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 224,
-    "components_with_params": 224,
+    "components_with_description": 225,
+    "components_with_params": 225,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -21201,7 +21253,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 222
+      "public_templated_components": 223
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -21224,7 +21276,7 @@
       "spacing": 22,
       "typography": 40
     },
-    "total_components": 334,
+    "total_components": 335,
     "total_tokens": 356
   },
   "tokens": {

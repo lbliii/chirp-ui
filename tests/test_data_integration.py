@@ -191,9 +191,20 @@ class TestDataPage:
             assert "chirpui-command-palette-trigger--sm" in response.text
             assert "Find service, project, deployment" in response.text
             assert "Search work, people, projects" in response.text
-            assert response.text.count("chirpui-frame--sidebar-start") >= 2
+            assert response.text.count("chirpui-frame--sidebar-start") >= 8
             assert "data-showcase-nav-shell-frame" not in response.text
             assert "data-showcase-nav-sidebar-viewport" not in response.text
+
+    @pytest.mark.asyncio
+    async def test_htmx_page_does_not_emit_demo_toasts_on_load(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/htmx")
+        assert response.status == 200
+        toast_section = response.text.split("<h3>oob_toast</h3>", 1)[1].split(
+            "<h3>counter_badge</h3>", 1
+        )[0]
+        assert "oob_toast(&quot;Item saved!&quot;" in toast_section
+        assert 'hx-swap-oob="beforeend:#chirpui-toasts"' not in toast_section
 
     @pytest.mark.asyncio
     async def test_effects_page_wraps_background_macros_with_canvas_height(

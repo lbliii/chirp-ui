@@ -35,7 +35,7 @@
   {{ avatar(initials="LP", alt="Linepath user", size="sm") }}
 {% end %}
 {{ command_palette(id="tracker-palette", search_url="/data/table", placeholder="Search issues, projects, views, and commands...") }}
-{% call frame(variant="balanced", gap="md") %}
+{% call frame(variant="sidebar-start", gap="lg") %}
   {% call sidebar(current_path="/tracker/teams/product/issues/active") %}
     {% slot header %}
       <div class="chirpui-stack chirpui-stack--sm">
@@ -60,7 +60,7 @@
       {{ sidebar_link("/tracker/shortcuts/create", "Create...", icon="add") }}
     {% end %}
   {% end %}
-  {% call stack(gap="sm") %}
+  {% call stack(gap="md") %}
     {{ breadcrumbs([
       {"label": "Linepath", "href": "/tracker"},
       {"label": "Product", "href": "/tracker/teams/product"},

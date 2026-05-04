@@ -66,8 +66,12 @@
 </p>
 {% call block() %}
 {% call grid(cols=2) %}
-<div>{{ oob_toast("Item saved!", variant="success") }}</div>
-<div>{{ oob_toast("Something went wrong.", variant="error") }}</div>
+<div>
+  <code>{{ '{{ oob_toast("Item saved!", variant="success") }}' }}</code>
+</div>
+<div>
+  <code>{{ '{{ oob_toast("Something went wrong.", variant="error") }}' }}</code>
+</div>
 {% end %}
 {% end %}
 
