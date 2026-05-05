@@ -30,6 +30,14 @@ jobs:
             exit 0
           fi
 
+          # Release-prep PRs consume fragments into CHANGELOG.md instead of adding
+          # a new fragment.
+          if git diff --name-only "$BASE" "$HEAD" | grep -q '^CHANGELOG\.md$' \
+            && git diff --name-only --diff-filter=D "$BASE" "$HEAD" | grep -q '^changelog\.d/.*\.md$'; then
+            echo "Release changelog update found."
+            exit 0
+          fi
+
           echo "::error::PR changes src/ but no new changelog.d/*.md fragment."
           echo "Add a fragment (e.g. changelog.d/added/my-change.md) or label the PR with 'skip-changelog'."
           exit 1
