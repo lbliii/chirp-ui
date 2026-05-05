@@ -7,6 +7,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.7.0] - 2026-05-05
+
+### Added
+
+- Add a cloud/control-plane dense navigation recipe for scope, services, favorites, resource search, and deployment views.
+- Add dense object chrome recipes, stable nav badge states, and compact command palette trigger options.
+- Added a browser-test product page pattern fixture that exercises the documented recipes across responsive widths.
+- Added a browser-tested forum-site pattern fixture covering dense community, thread, Q&A, moderation, and activity compositions.
+- Added a business object console navigation recipe to the component showcase.
+- Added a collaboration inbox navigation recipe to the component showcase.
+- Added a developer platform navigation recipe to the component showcase.
+- Added a keyboard-first tracker navigation recipe to the component showcase.
+- Added a knowledge workspace navigation recipe to the component showcase.
+- Added a product-suite work hub navigation recipe to the component showcase.
+- Added a reference documentation navigation recipe to the component showcase.
+- Added an active plan for product-page composition recipes inspired by the LangChain homepage design review.
+- Added an editor workbench navigation recipe to the component showcase.
+- Added an experimental `cta_band` marketing pattern for final and mid-page product calls to action.
+- Added an experimental `logo_cloud` marketing pattern for accessible customer, partner, integration, and ecosystem proof bands.
+- Added an experimental `story_card` marketing pattern for customer outcome and use-case proof grids.
+- Added an observability and ops console navigation recipe to the component showcase.
+- Added canonical navigation contract guidance, a dense object-navigation showcase example, and opt-in breadcrumb overflow for deep path trails.
+- Added dense navigation synthesis guidance with primitive candidates and anti-decisions.
+- Added experimental official pattern assets for marketing, media, forum/social, and detail surfaces, including `detail_header`, `facet_chip`, `thread_reader_layout`, `topic_card`, `answer_card`, `moderation_queue_item`, and media catalog/watch patterns.
+- Added product-page pattern recipes for hero/proof, lifecycle showcase, proof bands, product choice grids, customer story strips, and CTA bands.
+- Added scope switcher and saved view strip navigation patterns plus stable sidebar badge states.
+- Added scoped AGENTS.md steward guidance for registry, rendering, theme, build, CI/release, tests, docs, planning, examples, and published site ownership.
+
+### Changed
+
+- Action bar items now resolve semantic icon names through the ChirpUI icon registry, with forum/social action names for reply, vote, watch, follow, report, and share.
+- Added `arrow-up` and `arrow-down` icon aliases so forum vote recipes resolve through the icon registry.
+- Added a forum-pattern friction log that separates resolved action/icon ergonomics from Elbysodic surfaces that still need migration evidence before component promotion.
+- Hardened component showcase contracts so examples must use generated CSS, manifest-backed templates, and warning-free current component APIs.
+- Recorded the Elbysodic forum-pattern consumer pass, including which PBP surfaces should try existing ChirpUI vocabulary before any new public forum macros are proposed.
+- Recorded the forum pattern promotion checkpoint: the browser fixture does not yet justify public forum-specific macros, while action-bar semantic icons address the first validated friction point.
+- Updated action-bar and post-card API examples to teach semantic icon names instead of raw glyphs.
+- Updated the AGENTS.md steward system with swarm protocol guidance, contract checklists, and CI/release stewardship.
+
+### Fixed
+
+- Fixed `app_layout.html` to use Chirp's current injected Alpine runtime, load the data-theme-aware starter theme, and avoid duplicate/stale Alpine scripts in showcase-style apps.
+- Fixed dropdown select events to preserve option values and hardened split button menu positioning and fused visual styling.
+- Fixed shell-frame boosted navigation scroll restoration, hash-anchor landing, and split panel Alpine drag state issues found while running the 0.6.0 browser release gate.
+
+
 ## [0.6.0] - 2026-04-26
 
 ### Added
