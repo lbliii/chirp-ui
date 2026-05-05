@@ -226,7 +226,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     # -- Controls -----------------------------------------------------------
     "btn": ComponentDescriptor(
         block="btn",
-        variants=("", "primary", "ghost", "danger", "success", "warning"),
+        variants=("", "primary", "secondary", "ghost", "danger", "success", "warning"),
         sizes=("", "sm", "md", "lg"),
         modifiers=("loading",),
         elements=("icon", "label", "spinner"),
@@ -408,6 +408,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         sizes=("", "sm", "md", "lg"),
         template="notification_dot.html",
         extra_emits=(
+            "chirpui-notification-dot--count",
             "chirpui-notification-dot__dot",
             "chirpui-notification-dot__ping",
         ),
@@ -1846,6 +1847,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         modifiers=("striped", "compact"),
         elements=(
             "caption",
+            "body",
             "head",
             "row",
             "th",
@@ -1954,7 +1956,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="donut",
         variants=("", "gold", "success", "muted"),
         sizes=("", "sm", "md", "lg"),
-        elements=("ring", "center", "caption"),
+        elements=("ring", "center", "caption", "value"),
         tokens=(
             "--chirpui-donut-size",
             "--chirpui-donut-pct",
@@ -2039,7 +2041,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "timeline": ComponentDescriptor(
         block="timeline",
-        modifiers=("on-muted", "on-accent", "hoverable"),
+        modifiers=("on-muted", "on-accent", "hoverable", "compact", "spacious", "cards"),
         elements=(
             "item",
             "dot",
@@ -2266,6 +2268,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "sidebar": ComponentDescriptor(
         block="sidebar",
+        modifiers=("responsive-dropdowns",),
         elements=(
             "header",
             "nav",
@@ -2285,6 +2288,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="sidebar.html",
         extra_emits=(
+            "chirpui-sidebar__badge--loading",
+            "chirpui-sidebar__badge--reserved",
             "chirpui-sidebar__footer",
             "chirpui-sidebar__link--active",
             "chirpui-sidebar__section-links",
@@ -2510,9 +2515,39 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         category="navigation",
         maturity="stable",
         extra_emits=(
+            "chirpui-primary-nav__badge--loading",
+            "chirpui-primary-nav__badge--reserved",
             "chirpui-primary-nav__link--active",
             "chirpui-primary-nav__link--disabled",
         ),
+    ),
+    "scope-switcher": ComponentDescriptor(
+        block="scope-switcher",
+        composes=("btn", "dropdown"),
+        template="scope_switcher.html",
+        category="navigation",
+        maturity="stable",
+        role="pattern",
+        requires=("alpine",),
+        macro="scope_switcher",
+    ),
+    "saved-view-strip": ComponentDescriptor(
+        block="saved-view-strip",
+        slots=("",),
+        composes=("chip",),
+        template="saved_view_strip.html",
+        category="navigation",
+        maturity="stable",
+        role="pattern",
+        macro="saved_view_strip",
+    ),
+    "nav-link": ComponentDescriptor(
+        block="nav-link",
+        slots=("",),
+        template="nav_link.html",
+        category="navigation",
+        maturity="stable",
+        macro="nav_link",
     ),
     "nav-tree": ComponentDescriptor(
         block="nav-tree",
@@ -2576,7 +2611,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="route-tab",
         elements=("icon", "label", "badge"),
         template="route_tabs.html",
-        extra_emits=("chirpui-route-tab--active",),
+        extra_emits=(
+            "chirpui-route-tab--active",
+            "chirpui-route-tab__badge--loading",
+            "chirpui-route-tab__badge--reserved",
+        ),
         category="navigation",
         maturity="stable",
         macro="render_route_tabs",
@@ -2593,10 +2632,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "item-hint",
             "kbd",
             "trigger",
+            "trigger-icon",
+            "trigger-label",
         ),
         template="command_palette.html",
         category="interactive",
         maturity="stable",
+        extra_emits=(
+            "chirpui-command-palette-trigger--md",
+            "chirpui-command-palette-trigger--sm",
+        ),
     ),
     "collapse": ComponentDescriptor(
         block="collapse",
@@ -2620,7 +2665,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "action-strip": ComponentDescriptor(
         block="action-strip",
-        modifiers=("sm", "scroll", "collapse", "sticky"),
+        modifiers=("sm", "md", "scroll", "collapse", "sticky"),
         elements=("inner", "primary", "controls", "actions"),
         slots=("",),
         template="action_strip.html",
@@ -2826,6 +2871,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         template="fragment_island.html",
         category="infrastructure",
         maturity="internal",
+    ),
+    "island-root": ComponentDescriptor(
+        block="island-root",
+        slots=("",),
+        template="islands.html",
+        extra_emits=("chirpui-island-fallback",),
+        category="interactive",
+        maturity="stable",
     ),
     "label-overline": ComponentDescriptor(
         block="label-overline",
@@ -3311,6 +3364,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     "bulk-bar": ComponentDescriptor(
         block="bulk-bar",
         elements=("count",),
+        extra_emits=("chirpui-bulk-bar-wrapper",),
         category="control",
         role="primitive",
         maturity="experimental",
@@ -3469,7 +3523,6 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     "filter-bar": ComponentDescriptor(
         block="filter-bar",
         elements=("form",),
-        trim_emits=("chirpui-filter-bar",),
         category="form",
         role="primitive",
         maturity="stable",
@@ -3550,6 +3603,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
             "chirpui-frame--gap-sm",
             "chirpui-frame--hero",
             "chirpui-frame--sidebar-end",
+            "chirpui-frame--sidebar-start",
         ),
         category="layout",
         role="primitive",

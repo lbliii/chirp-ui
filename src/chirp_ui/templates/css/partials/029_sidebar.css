@@ -71,6 +71,15 @@
     line-height: var(--chirpui-line-height-tight);
 }
 
+.chirpui-sidebar__badge--reserved {
+    min-inline-size: 1.75rem;
+    opacity: 0.58;
+}
+
+.chirpui-sidebar__badge--loading::before {
+    content: "...";
+}
+
 .chirpui-sidebar__link:hover {
     color: var(--chirpui-text);
     background: var(--chirpui-state-surface-hover);

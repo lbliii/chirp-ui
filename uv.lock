@@ -138,29 +138,29 @@ wheels = [
 
 [[package]]
 name = "bengal-chirp"
-version = "0.2.0"
+version = "0.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
     { name = "bengal-pounce" },
     { name = "kida-templates" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/da/50/b422a1b6086f1f1a5258fbe83ba77b14bf90cb5c87fdcf7d3ad361d46a34/bengal_chirp-0.2.0.tar.gz", hash = "sha256:e763c8c4d31ec98028eacdc26a11ffe2b1f24f7caeaa8363ba93048d824cede5", size = 365435, upload-time = "2026-03-23T23:39:32.372Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/37/c3/49b033f67c735fb4385d67e070c907e7db4d46e3b68ef15dc6db08e72a85/bengal_chirp-0.6.0.tar.gz", hash = "sha256:500d929c4d788edf99f311c0a0ee1fad6a1a52b6b57f39cef8a9af0cd0ccffb4", size = 559314, upload-time = "2026-05-02T18:12:59.997Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ce/7d/b0063e6156844e628594bce792e6af27b156589cf5d22fed0beedff81341/bengal_chirp-0.2.0-py3-none-any.whl", hash = "sha256:d00d3cdc0ad1aae2e859551e5dfff744caf8eab217ef88647a86e812c73f77b3", size = 319789, upload-time = "2026-03-23T23:39:30.419Z" },
+    { url = "https://files.pythonhosted.org/packages/73/ae/8c6daf5e969c9ff36d7d4218a98e44fca56dd60b9c7e171de2e80dfebe67/bengal_chirp-0.6.0-py3-none-any.whl", hash = "sha256:3088c651d9e59ceb505e73b05b22bf8ca1b404d76dd7701cd08cb806aed7091b", size = 480323, upload-time = "2026-05-02T18:12:58.178Z" },
 ]
 
 [[package]]
 name = "bengal-pounce"
-version = "0.5.1"
+version = "0.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "h11" },
     { name = "milo-cli" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4b/fa/51951f312e34c24834dda0b971cd76d5f5e63c651efd9e40f8a80c3f7122/bengal_pounce-0.5.1.tar.gz", hash = "sha256:6f5c965fbcc7c19bd341de499e51e33d3ba46f9470d8c5abb30c65f52b0370b7", size = 155783, upload-time = "2026-04-07T15:25:08.693Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a9/99/3bf019a9c1c4a0f710d897c72e669b2133cc3be7278b6d53d9548753cab8/bengal_pounce-0.6.0.tar.gz", hash = "sha256:3c5834a3ba7e5822f292661286e77ad7c651d80b34149a1dc02f653532acdde6", size = 181583, upload-time = "2026-04-14T00:27:59.006Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6e/8c/071fe9a3b3682213c2397539a836b165c24fdf1d402d8141e59cebe0f76c/bengal_pounce-0.5.1-py3-none-any.whl", hash = "sha256:0ae46913e82644d8bdc6cdf59ada54cff716821302012894c845f1fd6336e789", size = 187528, upload-time = "2026-04-07T15:25:07.012Z" },
+    { url = "https://files.pythonhosted.org/packages/b2/4e/b28ad5fcf2e6ef8152738e8982aadeeb24f81035521774a87af69d495c06/bengal_pounce-0.6.0-py3-none-any.whl", hash = "sha256:48a192de4b926aefd1f053aca25271c9b8e6e637e1e617e92b449aca8f72b5e9", size = 210857, upload-time = "2026-04-14T00:27:57.346Z" },
 ]
 
 [[package]]
@@ -220,14 +220,14 @@ docs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "bengal-chirp", marker = "extra == 'showcase'", specifier = ">=0.2.0" },
+    { name = "bengal-chirp", marker = "extra == 'showcase'", specifier = ">=0.6.0" },
     { name = "kida-templates", specifier = ">=0.8.0" },
 ]
 provides-extras = ["showcase"]
 
 [package.metadata.requires-dev]
 browser = [
-    { name = "bengal-chirp", specifier = ">=0.2.0" },
+    { name = "bengal-chirp", specifier = ">=0.6.0" },
     { name = "bengal-pounce", specifier = ">=0.2.1" },
     { name = "playwright", specifier = ">=1.50.0" },
     { name = "pytest-asyncio", specifier = ">=0.25.0" },
@@ -575,14 +575,14 @@ wheels = [
 
 [[package]]
 name = "milo-cli"
-version = "0.2.0"
+version = "0.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "kida-templates" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5f/26/9679110da229f756708d5836759a2f1c4b5dfb038089810542ed572a7da4/milo_cli-0.2.0.tar.gz", hash = "sha256:1179699f832b05cb8ad798232004c53c7c87150169b3d685de9fc2f30aa439ea", size = 181178, upload-time = "2026-04-10T18:32:07.98Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ac/54/a74ac8a91b4d56026dd08cbd4e7da80dfeb3904e26056e7aba94ff3ecce1/milo_cli-0.2.2.tar.gz", hash = "sha256:e33593d13999c69c7f38ce70b20888c8c6a13dba1147f07c6aa4cc861b7799bf", size = 211244, upload-time = "2026-04-13T23:52:25.931Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/54/26/95be25661cb90738ff8cd07deb8f9fe0160805b67a3f0b98bd707cd9bfad/milo_cli-0.2.0-py3-none-any.whl", hash = "sha256:d04b0393509879af015b99bfbc6000b149e63fc6b36921ba9054a1a2322e1520", size = 115718, upload-time = "2026-04-10T18:32:06.124Z" },
+    { url = "https://files.pythonhosted.org/packages/74/c3/878d2725d6aab7d3fb99db2c2ae0ed02e1d8e96aed0f467de735000d80c3/milo_cli-0.2.2-py3-none-any.whl", hash = "sha256:27d82f9374b911461957b2240d6ddae5b214fcd86ebc6aa6e1fc61c1ada63bc7", size = 128514, upload-time = "2026-04-13T23:52:24.609Z" },
 ]
 
 [[package]]

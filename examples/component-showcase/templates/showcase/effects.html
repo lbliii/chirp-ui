@@ -18,6 +18,17 @@
 {% from "chirpui/orbit.html" import orbit %}
 {% from "chirpui/hero_effects.html" import hero_effects %}
 
+{% def effect_preview(label) %}
+<div data-showcase-effect-preview="{{ label }}" style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
+  {{ caller() }}
+  <span style="position: absolute; z-index: 2; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">{{ label }}</span>
+</div>
+{% end %}
+
+{% def effect_fill() %}
+<div data-showcase-effect-fill style="min-height: 12rem;" aria-hidden="true"></div>
+{% end %}
+
 {% call container() %}
 {% call stack() %}
 {{ page_header("Visual Effects", subtitle="Background effects, decorative overlays, and playful motion primitives from the chirp-ui design system.") }}
@@ -30,22 +41,19 @@
 </p>
 {% call grid(cols=3) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ aurora() }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call aurora() %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ aurora(variant="intense") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">intense</span>
-</div>
+{% call effect_preview("intense") %}
+  {% call aurora(variant="intense") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ aurora(variant="subtle") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">subtle</span>
-</div>
+{% call effect_preview("subtle") %}
+  {% call aurora(variant="subtle") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -57,22 +65,19 @@
 </p>
 {% call grid(cols=3) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ meteor(count=4) }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call meteor(count=4) %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ meteor(count=4, variant="accent") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">accent</span>
-</div>
+{% call effect_preview("accent") %}
+  {% call meteor(count=4, variant="accent") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ meteor(count=4, variant="muted") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">muted</span>
-</div>
+{% call effect_preview("muted") %}
+  {% call meteor(count=4, variant="muted") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -84,22 +89,19 @@
 </p>
 {% call grid(cols=3) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ particle_bg(count=8) }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call particle_bg(count=8) %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ particle_bg(count=8, variant="accent") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">accent</span>
-</div>
+{% call effect_preview("accent") %}
+  {% call particle_bg(count=8, variant="accent") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ particle_bg(count=8, variant="muted") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">muted</span>
-</div>
+{% call effect_preview("muted") %}
+  {% call particle_bg(count=8, variant="muted") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -111,28 +113,24 @@
 </p>
 {% call grid(cols=2) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ symbol_rain(count=6) }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call symbol_rain(count=6) %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ symbol_rain(count=6, variant="accent") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">accent</span>
-</div>
+{% call effect_preview("accent") %}
+  {% call symbol_rain(count=6, variant="accent") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ symbol_rain(count=6, variant="gold") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">gold</span>
-</div>
+{% call effect_preview("gold") %}
+  {% call symbol_rain(count=6, variant="gold") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ symbol_rain(count=6, variant="muted") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">muted</span>
-</div>
+{% call effect_preview("muted") %}
+  {% call symbol_rain(count=6, variant="muted") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -144,22 +142,19 @@
 </p>
 {% call grid(cols=3) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ holy_light() }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call holy_light() %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ holy_light(variant="gold") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">gold</span>
-</div>
+{% call effect_preview("gold") %}
+  {% call holy_light(variant="gold") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ holy_light(variant="silver") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">silver</span>
-</div>
+{% call effect_preview("silver") %}
+  {% call holy_light(variant="silver") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -171,28 +166,24 @@
 </p>
 {% call grid(cols=2) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ rune_field() }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call rune_field() %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ rune_field(variant="arcane") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">arcane</span>
-</div>
+{% call effect_preview("arcane") %}
+  {% call rune_field(variant="arcane") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ rune_field(variant="frost") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">frost</span>
-</div>
+{% call effect_preview("frost") %}
+  {% call rune_field(variant="frost") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ rune_field(variant="ember") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">ember</span>
-</div>
+{% call effect_preview("ember") %}
+  {% call rune_field(variant="ember") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -204,28 +195,24 @@
 </p>
 {% call grid(cols=2) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ constellation() }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call constellation() %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ constellation(variant="warm") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">warm</span>
-</div>
+{% call effect_preview("warm") %}
+  {% call constellation(variant="warm") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ constellation(variant="cool") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">cool</span>
-</div>
+{% call effect_preview("cool") %}
+  {% call constellation(variant="cool") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ constellation(variant="mono") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">mono</span>
-</div>
+{% call effect_preview("mono") %}
+  {% call constellation(variant="mono") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -237,22 +224,19 @@
 </p>
 {% call grid(cols=3) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ scanline() }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call scanline() %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ scanline(variant="heavy") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">heavy</span>
-</div>
+{% call effect_preview("heavy") %}
+  {% call scanline(variant="heavy") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ scanline(variant="crt") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">crt</span>
-</div>
+{% call effect_preview("crt") %}
+  {% call scanline(variant="crt") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -264,28 +248,24 @@
 </p>
 {% call grid(cols=2) %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ grain() }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">default</span>
-</div>
+{% call effect_preview("default") %}
+  {% call grain() %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ grain(variant="heavy") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">heavy</span>
-</div>
+{% call effect_preview("heavy") %}
+  {% call grain(variant="heavy") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ grain(variant="subtle") }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">subtle</span>
-</div>
+{% call effect_preview("subtle") %}
+  {% call grain(variant="subtle") %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% call block() %}
-<div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ grain(animated=true) }}
-  <span style="position: absolute; bottom: 0.5rem; left: 0.75rem; font-size: 0.75rem; color: var(--chirpui-text-muted);">animated=true</span>
-</div>
+{% call effect_preview("animated=true") %}
+  {% call grain(animated=true) %}{{ effect_fill() }}{% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -377,28 +357,28 @@
 </p>
 {% call grid(cols=2) %}
 {% call block() %}
-{% call wobble(trigger="load") %}
+{% call wobble(trigger="hover") %}
 <div style="padding: 1.5rem; text-align: center; background: var(--chirpui-surface); border-radius: var(--chirpui-radius-lg); border: 1px solid var(--chirpui-border);">
   <p style="margin: 0; font-weight: 600;">Wobble</p>
 </div>
 {% end %}
 {% end %}
 {% call block() %}
-{% call jello(trigger="load") %}
+{% call jello(trigger="hover") %}
 <div style="padding: 1.5rem; text-align: center; background: var(--chirpui-surface); border-radius: var(--chirpui-radius-lg); border: 1px solid var(--chirpui-border);">
   <p style="margin: 0; font-weight: 600;">Jello</p>
 </div>
 {% end %}
 {% end %}
 {% call block() %}
-{% call rubber_band(trigger="load") %}
+{% call rubber_band(trigger="hover") %}
 <div style="padding: 1.5rem; text-align: center; background: var(--chirpui-surface); border-radius: var(--chirpui-radius-lg); border: 1px solid var(--chirpui-border);">
   <p style="margin: 0; font-weight: 600;">Rubber Band</p>
 </div>
 {% end %}
 {% end %}
 {% call block() %}
-{% call bounce_in(trigger="load") %}
+{% call bounce_in() %}
 <div style="padding: 1.5rem; text-align: center; background: var(--chirpui-surface); border-radius: var(--chirpui-radius-lg); border: 1px solid var(--chirpui-border);">
   <p style="margin: 0; font-weight: 600;">Bounce In</p>
 </div>
@@ -436,20 +416,22 @@
 {% call grid(cols=2) %}
 {% call block() %}
 <div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ hero_effects(effect="particles") }}
+  {% call hero_effects(effect="particles") %}
   <div style="position: relative; z-index: 1; padding: 2rem; text-align: center;">
     <h3>Particles</h3>
     <p class="chirpui-text-muted">effect="particles"</p>
   </div>
+  {% end %}
 </div>
 {% end %}
 {% call block() %}
 <div style="position: relative; min-height: 12rem; overflow: hidden; border-radius: var(--chirpui-radius-lg); background: var(--chirpui-surface); border: 1px solid var(--chirpui-border);">
-  {{ hero_effects(effect="meteor") }}
+  {% call hero_effects(effect="meteors") %}
   <div style="position: relative; z-index: 1; padding: 2rem; text-align: center;">
     <h3>Meteor</h3>
-    <p class="chirpui-text-muted">effect="meteor"</p>
+    <p class="chirpui-text-muted">effect="meteors"</p>
   </div>
+  {% end %}
 </div>
 {% end %}
 {% end %}

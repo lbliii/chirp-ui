@@ -1,4 +1,12 @@
+from pathlib import Path
+
 from kida import Environment
+
+
+def _chirpui_css() -> str:
+    return (
+        Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates" / "chirpui.css"
+    ).read_text(encoding="utf-8")
 
 
 def test_sidebar_link_renders_badge(env: Environment) -> None:
@@ -9,6 +17,51 @@ def test_sidebar_link_renders_badge(env: Environment) -> None:
 
     assert "chirpui-sidebar__badge" in html
     assert ">3<" in html
+
+
+def test_sidebar_link_renders_stable_badge_states(env: Environment) -> None:
+    html = env.from_string(
+        '{% from "chirpui/sidebar.html" import sidebar_link %}'
+        '{{ sidebar_link("/runs", "Runs", badge_loading=true) }}'
+        '{{ sidebar_link("/inbox", "Inbox", badge=3, badge_label="3 unread inbox items") }}'
+    ).render()
+
+    assert "chirpui-sidebar__badge--reserved" in html
+    assert "chirpui-sidebar__badge--loading" in html
+    assert 'aria-hidden="true"' in html
+    assert 'aria-label="3 unread inbox items"' in html
+
+
+def test_scope_switcher_renders_dropdown_scope_control(env: Environment) -> None:
+    html = env.from_string(
+        '{% from "chirpui/scope_switcher.html" import scope_switcher %}'
+        '{{ scope_switcher("Prod", items=[{"label": "Prod", "href": "/prod"}], aria_label="Switch scope") }}'
+    ).render()
+
+    assert "chirpui-scope-switcher" in html
+    assert "chirpui-dropdown" in html
+    assert 'aria-label="Switch scope"' in html
+
+
+def test_saved_view_strip_renders_selected_views(env: Environment) -> None:
+    html = env.from_string(
+        '{% from "chirpui/saved_view_strip.html" import saved_view_strip %}'
+        '{{ saved_view_strip(label="Saved views", current_href="/mine", views=['
+        '{"label": "Mine", "href": "/mine"},'
+        '{"label": "Blocked", "href": "/blocked"}'
+        "]) }}"
+    ).render()
+
+    assert "chirpui-saved-view-strip" in html
+    assert 'aria-label="Saved views"' in html
+    assert 'aria-current="page"' in html
+    assert "Mine" in html
+
+
+def test_saved_view_strip_css_styles_raw_slot_links() -> None:
+    css = _chirpui_css()
+    assert ".chirpui-saved-view-strip > a:not(.chirpui-chip)" in css
+    assert "border-radius: 999px" in css
 
 
 def test_primary_nav_renders_badges_dividers_and_active_links(env: Environment) -> None:

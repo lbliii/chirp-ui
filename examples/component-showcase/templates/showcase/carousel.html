@@ -19,22 +19,26 @@
 <h2>Compact (card strip)</h2>
 {% call carousel(variant="compact", slide_count=4, show_dots=true) %}
 {% call carousel_slide(1) %}
-{% call card(title="Slide 1", footer="Card") %}
+{% call card(title="Slide 1") %}
+{% slot footer %}Card{% end %}
 <p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted); font-size: 0.875rem;">Swipe or scroll horizontally. Dots jump to slide.</p>
 {% end %}
 {% end %}
 {% call carousel_slide(2) %}
-{% call card(title="Slide 2", footer="Card") %}
+{% call card(title="Slide 2") %}
+{% slot footer %}Card{% end %}
 <p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted); font-size: 0.875rem;">Multiple slides visible on wide viewports.</p>
 {% end %}
 {% end %}
 {% call carousel_slide(3) %}
-{% call card(title="Slide 3", footer="Card") %}
+{% call card(title="Slide 3") %}
+{% slot footer %}Card{% end %}
 <p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted); font-size: 0.875rem;">Touch swipe works natively.</p>
 {% end %}
 {% end %}
 {% call carousel_slide(4) %}
-{% call card(title="Slide 4", footer="Card") %}
+{% call card(title="Slide 4") %}
+{% slot footer %}Card{% end %}
 <p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted); font-size: 0.875rem;">No JavaScript required.</p>
 {% end %}
 {% end %}

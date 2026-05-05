@@ -66,8 +66,12 @@
 </p>
 {% call block() %}
 {% call grid(cols=2) %}
-<div>{{ oob_toast("Item saved!", variant="success") }}</div>
-<div>{{ oob_toast("Something went wrong.", variant="danger") }}</div>
+<div>
+  <pre class="chirpui-code"><code>oob_toast(&quot;Item saved!&quot;, variant=&quot;success&quot;)</code></pre>
+</div>
+<div>
+  <pre class="chirpui-code"><code>oob_toast(&quot;Something went wrong.&quot;, variant=&quot;error&quot;)</code></pre>
+</div>
 {% end %}
 {% end %}
 
@@ -136,7 +140,7 @@
 
 <h3>suspense_slot (custom placeholder)</h3>
 <p class="chirpui-text-muted chirpui-font-sm">
-  Use <code>{%- call -%}</code> to provide custom loading content.
+  Use <code>call</code> blocks to provide custom loading content.
 </p>
 {% call block() %}
 {% call suspense_slot("dashboard-stats") %}
@@ -187,10 +191,10 @@
 <p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
   Use inside an error state to let users manually recover:
 </p>
-<pre class="chirpui-code"><code>{% call streaming_bubble(role="assistant", streaming=false) %}
+<pre class="chirpui-code"><code>streaming_bubble(role="assistant", streaming=false)
   &lt;p&gt;Connection lost.&lt;/p&gt;
-  {{"{{" }} sse_retry("/api/stream/123") {{ "}}" }}
-{% end %}</code></pre>
+  sse_retry("/api/stream/123")
+end</code></pre>
 {% end %}
 
 {# ── Form A11y ────────────────────────────────────────── #}

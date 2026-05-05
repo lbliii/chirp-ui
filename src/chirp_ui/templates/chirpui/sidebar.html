@@ -12,6 +12,10 @@
     match="prefix" — active when current_path starts with href (or equals it)
     active=true    — always active (explicit override)
 
+    Badge state: badge_label gives a richer accessible label for visible counts.
+    badge_expected reserves count space, and badge_loading renders a pending
+    count without layout shift.
+
     Named slots: header, footer, default (nav content).
 
     Usage:
@@ -33,7 +37,9 @@
 {% def sidebar(cls="", current_path="") %}
 {# @provides _nav_current_path — consumed by: sidebar_link #}
 {% provide _nav_current_path = current_path %}
-<nav class="chirpui-sidebar{{ " " ~ cls if cls else "" }}">
+{% set _responsive_dropdowns = cls and "chirpui-sidebar--responsive-dropdowns" in cls %}
+<nav class="chirpui-sidebar{{ " " ~ cls if cls else "" }}"
+     {% if _responsive_dropdowns %}x-data="chirpuiResponsiveSidebar()" x-init="init()" @keydown.escape.window="closeMenus()" @click.outside="closeMenus()"{% end %}>
     <div class="chirpui-sidebar__header">{% slot header %}</div>
     <div class="chirpui-sidebar__nav">
         {% slot %}
@@ -57,14 +63,15 @@
 {% end %}
 {% end %}
 
-{% def sidebar_link(href, label, icon="", active=false, match="", boost=true, cls="", badge=none) %}
+{% def sidebar_link(href, label, icon="", active=false, match="", boost=true, cls="", badge=none, badge_label=none, badge_expected=false, badge_loading=false) %}
 {# @consumes _nav_current_path from: sidebar — falls back to "" #}
 {% set _cp = (consume("_nav_current_path", "") or (current_path | default(""))) if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
+{% set _badge_expected = badge_expected or badge_loading %}
 <a class="chirpui-sidebar__link{{ " chirpui-sidebar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
    href="{{ href }}" title="{{ label }}"
    {% if _active %}aria-current="page"{% end %}
-   {% if boost %}{{ shell_outlet_attrs() }}{% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span>{% if badge is not none %}<span class="chirpui-sidebar__badge">{{ badge }}</span>{% end %}</a>
+   {% if boost %}{{ shell_outlet_attrs() }}{% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span>{% if badge is not none or _badge_expected %}<span class="chirpui-sidebar__badge{% if badge is none %} chirpui-sidebar__badge--reserved{% end %}{% if badge_loading %} chirpui-sidebar__badge--loading{% end %}"{% if badge_label and badge is not none %} aria-label="{{ badge_label }}"{% elif badge is none %} aria-hidden="true"{% end %}>{% if badge is not none %}{{ badge }}{% end %}</span>{% end %}</a>
 {% end %}
 
 {# Topbar brand — same shell outlet contract as sidebar_link. #}

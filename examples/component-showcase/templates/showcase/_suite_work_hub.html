@@ -1,0 +1,148 @@
+{% from "chirpui/layout.html" import stack, cluster, grid, block, frame %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/primary_nav.html" import primary_nav %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/scope_switcher.html" import scope_switcher %}
+{% from "chirpui/saved_view_strip.html" import saved_view_strip %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+{% from "chirpui/avatar.html" import avatar %}
+
+{% def suite_work_hub_navigation() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="md", wrap="scroll", aria_label="Suite work hub global navigation") %}
+  {{ logo(text="Workgrid", href="/suite", variant="text") }}
+  {{ scope_switcher("Design Org", items=[
+    {"label": "Design Org", "href": "/suite/orgs/design"},
+    {"label": "Platform Org", "href": "/suite/orgs/platform"},
+    {"label": "Customer Ops", "href": "/suite/orgs/customer-ops"},
+    {"divider": true},
+    {"label": "Manage organizations", "href": "/suite/orgs"}
+  ], id="suite-org-menu", aria_label="Switch suite organization") }}
+  {{ primary_nav([
+    {"label": "Work", "href": "/suite/work", "match": "prefix"},
+    {"label": "Strategy", "href": "/suite/strategy", "match": "prefix", "badge_expected": true},
+    {"label": "Workflow", "href": "/suite/workflow", "match": "prefix", "badge": 6, "badge_label": "6 workflow automations need review"},
+    {"label": "Company", "href": "/suite/company", "match": "prefix"},
+  ], current_path="/suite/work/projects/launch", aria_label="Suite modes") }}
+  {{ command_palette_trigger(target="suite-work-hub-palette", label="Search workspace", placeholder="Search work, people, projects", shortcut="K", icon="search", density="sm") }}
+  {{ btn("Create", variant="primary", size="sm") }}
+  {{ icon_btn("alert", href="/suite/inbox", aria_label="Inbox") }}
+  {{ avatar(initials="WL", alt="Workgrid user", size="sm") }}
+{% end %}
+{{ command_palette(id="suite-work-hub-palette", search_url="/data/table", placeholder="Find projects, people, tasks, and pages...") }}
+{% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Suite work hub personal shortcuts") %}
+  {{ primary_nav([
+    {"label": "Assigned to me", "href": "/suite/work/assigned", "badge": 12, "badge_label": "12 items assigned to me"},
+    {"label": "Recent", "href": "/suite/recent"},
+    {"label": "Starred", "href": "/suite/starred", "badge": 4, "badge_label": "4 starred items"},
+    {"label": "Waiting", "href": "/suite/waiting", "badge_loading": true},
+  ], current_path="/suite/work/projects/launch/tasks", aria_label="Suite personal shortcuts") }}
+{% end %}
+{% call frame(variant="sidebar-start", gap="md") %}
+  {% call sidebar(current_path="/suite/work/projects/launch/tasks") %}
+    {% slot header %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <strong>Design Org</strong>
+        <span class="chirpui-text-muted chirpui-font-sm">Workspace navigation</span>
+      </div>
+    {% end %}
+    {% call sidebar_section("For you") %}
+      {{ sidebar_link("/suite/work/assigned", "Assigned to me", icon="home", badge=12) }}
+      {{ sidebar_link("/suite/inbox", "Inbox", icon="alert", badge=3) }}
+      {{ sidebar_link("/suite/recent", "Recent", icon="list") }}
+    {% end %}
+    {% call sidebar_section("Starred") %}
+      {{ sidebar_link("/suite/work/projects/launch", "Launch plan", icon="star", match="prefix") }}
+      {{ sidebar_link("/suite/work/projects/design-system", "Design system", icon="grid") }}
+      {{ sidebar_link("/suite/strategy/q3", "Q3 strategy", icon="chart") }}
+    {% end %}
+    {% call sidebar_section("Apps and spaces", collapsible=true) %}
+      {{ sidebar_link("/suite/work", "Work", icon="grid", match="prefix") }}
+      {{ sidebar_link("/suite/workflow", "Workflow", icon="bolt", badge=6) }}
+      {{ sidebar_link("/suite/company", "Company", icon="user", badge_loading=true) }}
+    {% end %}
+    {% slot footer %}
+      <span class="chirpui-text-muted chirpui-font-sm">Personalized sidebar shortcuts stay navigable links.</span>
+    {% end %}
+  {% end %}
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs([
+      {"label": "Workgrid", "href": "/suite"},
+      {"label": "Work", "href": "/suite/work"},
+      {"label": "Projects", "href": "/suite/work/projects"},
+      {"label": "Launch plan"}
+    ], overflow="collapse", max_items=4) }}
+    {% call cluster(gap="sm") %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <h3>Launch plan</h3>
+        <div class="chirpui-cluster chirpui-cluster--sm">
+          {{ inline_counter("T", 38, "tasks") }}
+          {{ inline_counter("D", 7, "docs") }}
+          {{ inline_counter("B", 2, "blocked") }}
+        </div>
+      </div>
+      {{ badge("On track", variant="success") }}
+      {{ btn("Share", variant="ghost", size="sm") }}
+      {{ dropdown_menu(btn("More", variant="ghost", size="sm"), items=[
+        {"label": "Copy project link", "action": "copy-project-link"},
+        {"label": "Add to starred", "action": "star-project"},
+        {"divider": true},
+        {"label": "Archive project", "action": "archive-project", "variant": "danger"}
+      ], id="suite-project-more-menu") }}
+    {% end %}
+    {{ route_tabs(tabs=[
+      {"href": "/suite/work/projects/launch", "label": "Overview"},
+      {"href": "/suite/work/projects/launch/tasks", "label": "Tasks", "badge": 38, "badge_label": "38 project tasks"},
+      {"href": "/suite/work/projects/launch/docs", "label": "Docs", "badge": 7, "badge_label": "7 project documents"},
+      {"href": "/suite/work/projects/launch/timeline", "label": "Timeline"},
+      {"href": "/suite/work/projects/launch/updates", "label": "Updates", "badge_loading": true},
+    ], current_path="/suite/work/projects/launch/tasks") }}
+    {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Project task controls") %}
+      {{ btn("Board", variant="ghost", size="sm") }}
+      {{ btn("List", variant="ghost", size="sm") }}
+      {{ btn("My tasks", variant="ghost", size="sm") }}
+      {{ btn("Blocked", variant="ghost", size="sm") }}
+      {{ btn("Automate", variant="ghost", size="sm") }}
+    {% end %}
+    {{ saved_view_strip(label="Suite work hub saved views", views=[
+      {"label": "Launch focus", "href": "/suite/work/projects/launch/views/focus", "selected": true},
+      {"label": "Needs decision", "href": "/suite/work/projects/launch/views/decision"},
+      {"label": "Cross-team", "href": "/suite/work/projects/launch/views/cross-team"},
+      {"label": "This week", "href": "/suite/work/projects/launch/views/week"}
+    ]) }}
+    {% call grid(cols=3, gap="md") %}
+      {% call resource_card("/suite/work/projects/launch/tasks/review-copy", "Review launch copy", description="Content task assigned to Brand, due this week.", top_meta="task") %}
+        {% slot badges %}{{ badge("Due Fri", variant="warning") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Owner: Mira</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/suite/work/projects/launch/docs/readiness", "Readiness checklist", description="Shared launch checklist with owners and approvals.", top_meta="doc") %}
+        {% slot badges %}{{ badge("Shared", variant="info") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Updated 18 min ago</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/suite/workflow/rules/launch-intake", "Launch intake automation", description="Routes launch requests into project tasks and review queues.", top_meta="workflow") %}
+        {% slot badges %}{{ badge("Needs review", variant="warning") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">6 pending runs</span>
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

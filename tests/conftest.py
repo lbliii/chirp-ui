@@ -24,9 +24,17 @@ from chirp_ui.filters import (
     value_type,
 )
 from chirp_ui.icons import icon as icon_filter
-from chirp_ui.validation import ChirpUIValidationWarning, _warn
+from chirp_ui.validation import ChirpUIValidationWarning, _warn, set_strict
 
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates"
+
+
+@pytest.fixture(autouse=True)
+def _reset_chirpui_strict_mode():
+    """Keep validation strictness isolated across tests."""
+    set_strict(False)
+    yield
+    set_strict(False)
 
 
 def _field_errors_stub(errors: Any, field_name: str) -> Sequence[str]:

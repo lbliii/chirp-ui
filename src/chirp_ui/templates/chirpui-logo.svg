@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">chirp-ui logo</title>
+  <desc id="desc">A compact radiant mark used by the chirp-ui showcase.</desc>
+  <rect width="64" height="64" rx="14" fill="#102033"/>
+  <path d="M32 8l5.8 16.2L54 30l-16.2 5.8L32 52l-5.8-16.2L10 30l16.2-5.8L32 8z" fill="#63b8ff"/>
+  <path d="M32 17l3.7 10.3L46 31l-10.3 3.7L32 45l-3.7-10.3L18 31l10.3-3.7L32 17z" fill="#f6f1d2"/>
+  <circle cx="32" cy="31" r="4" fill="#0b0f14"/>
+</svg>

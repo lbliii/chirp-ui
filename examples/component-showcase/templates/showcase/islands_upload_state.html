@@ -1,25 +1,43 @@
 {% extends "base.html" %}
 
 {% block main %}
-{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/layout.html" import container, stack, block, page_header, cluster %}
 {% from "chirpui/state_primitives.html" import upload_state %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/button.html" import btn %}
 
 {% call container() %}
-{% call stack() %}
-{{ page_header("upload_state", subtitle="Queued upload progress state for common file workflows.") }}
+{% call stack(gap="lg") %}
+{{ page_header("Upload state", subtitle="Queued upload progress state for common file workflows.") }}
+
+{% call cluster(gap="sm") %}
+{{ btn("Back to islands", href="/islands", variant="ghost") }}
+{% end %}
 
 {% call block() %}
-{% call upload_state("avatar_upload", "/upload/mock", mount_id="upload-state-root", cls="chirpui-card") %}
-<input type="file" data-upload-input multiple>
-<div style="display:flex; gap:0.5rem; margin-top:0.75rem;">
-  <button type="button" class="chirpui-btn chirpui-btn--primary" data-upload-start>Start upload</button>
-</div>
-<progress data-upload-progress max="100" value="0" style="width:100%; margin-top:0.75rem;"></progress>
-<p class="chirpui-text-muted" data-upload-status>Idle</p>
+{% call surface(variant="muted") %}
+{% call stack(gap="md") %}
+<h2>Avatar upload queue</h2>
+<p class="chirpui-text-muted chirpui-font-sm">The island reports file count, progress, and action status while the native file input remains server-friendly.</p>
+{% call upload_state("avatar_upload", "/upload/mock", mount_id="upload-state-root") %}
+{% call stack(gap="sm") %}
+  <div class="chirpui-field">
+    <label class="chirpui-field__label" for="avatar_upload_input">Files</label>
+    <input class="chirpui-field__file" id="avatar_upload_input" name="avatar_upload_input" type="file" data-upload-input multiple>
+  </div>
+  {% call cluster(gap="sm") %}
+    {{ btn("Start upload", variant="primary", attrs_unsafe="data-upload-start") }}
+  {% end %}
+  <div class="chirpui-field">
+    <label class="chirpui-field__label" for="avatar_upload_progress">Progress</label>
+    <progress class="chirpui-field__input" id="avatar_upload_progress" data-upload-progress max="100" value="0"></progress>
+  </div>
+  <p class="chirpui-text-muted" data-upload-status>Idle</p>
 {% end %}
 {% end %}
-
-<p><a href="/islands">← Back to islands</a></p>
+{% end %}
+{% end %}
+{% end %}
 {% end %}
 {% end %}
 {% end %}

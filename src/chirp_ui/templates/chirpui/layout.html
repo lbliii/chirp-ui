@@ -36,7 +36,7 @@
 {% end %}
 
 {#- frame(): structural regions with explicit tracks — two direct children by default.
-    variant= balanced | hero | sidebar-end. Override columns via style="--chirpui-frame-hero-columns: …" on this element or a parent.
+    variant= balanced | hero | sidebar-start | sidebar-end. Override columns via frame tokens on this element or a parent.
 -#}
 {% def frame(variant="balanced", gap=none, cls="") %}
 {% set _cls = [c for c in [

@@ -1,0 +1,13 @@
+{% extends "chirpui/app_layout.html" %}
+{% block title %}App Layout Theme{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import container, stack %}
+{% from "chirpui/theme_toggle.html" import theme_toggle %}
+
+{% call container() %}
+{% call stack() %}
+<h1>App layout theme runtime</h1>
+{{ theme_toggle() }}
+{% end %}
+{% end %}
+{% end %}

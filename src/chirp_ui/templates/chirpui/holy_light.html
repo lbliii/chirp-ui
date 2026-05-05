@@ -22,21 +22,27 @@
 {% set far_glyphs = ["✦", "·", "✦", "·", "✦"] %}
 {% set mid_glyphs = ["★", "✦", "◇", "✦", "★"] %}
 {% set near_glyphs = ["✦", "★", "✦", "★"] %}
+{% set far_positions = [(8, 18), (76, 36), (34, 8), (62, 16), (18, 54)] %}
+{% set mid_positions = [(50, 58), (30, 30), (72, 20), (16, 42), (84, 62)] %}
+{% set near_positions = [(12, 78), (66, 68), (42, 44), (88, 38)] %}
 <div class="chirpui-holy-light{{ variant_class }}{{ intensity_class }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-holy-light__layers" aria-hidden="true">
         <div class="chirpui-holy-light__layer chirpui-holy-light__layer--far">
             {% for i in range(5) %}
-            <span class="chirpui-holy-light__mote" style="left: {{ (i * 20 + 6) % 94 }}%; bottom: {{ (i * 13 + 5) % 40 }}%">{{ far_glyphs[i] }}</span>
+            {% set pos = far_positions[i] %}
+            <span class="chirpui-holy-light__mote" style="left: {{ pos[0] }}%; bottom: {{ pos[1] }}%">{{ far_glyphs[i] }}</span>
             {% end %}
         </div>
         <div class="chirpui-holy-light__layer chirpui-holy-light__layer--mid">
             {% for i in range(5) %}
-            <span class="chirpui-holy-light__mote" style="left: {{ (i * 18 + 12) % 90 }}%; bottom: {{ (i * 17 + 8) % 50 }}%">{{ mid_glyphs[i] }}</span>
+            {% set pos = mid_positions[i] %}
+            <span class="chirpui-holy-light__mote" style="left: {{ pos[0] }}%; bottom: {{ pos[1] }}%">{{ mid_glyphs[i] }}</span>
             {% end %}
         </div>
         <div class="chirpui-holy-light__layer chirpui-holy-light__layer--near">
             {% for i in range(4) %}
-            <span class="chirpui-holy-light__mote" style="left: {{ (i * 22 + 10) % 88 }}%; bottom: {{ (i * 19 + 3) % 45 }}%">{{ near_glyphs[i] }}</span>
+            {% set pos = near_positions[i] %}
+            <span class="chirpui-holy-light__mote" style="left: {{ pos[0] }}%; bottom: {{ pos[1] }}%">{{ near_glyphs[i] }}</span>
             {% end %}
         </div>
     </div>

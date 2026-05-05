@@ -54,9 +54,9 @@
 {% end %}
 {% slot actions %}
 {% call action_bar() %}
-{{ action_bar_item(icon="♥", label="Like", count=42) }}
-{{ action_bar_item(icon="💬", label="Comment", count=12) }}
-{{ action_bar_item(icon="↗", label="Share") }}
+{{ action_bar_item(icon="follow", label="Like", count=42) }}
+{{ action_bar_item(icon="comment", label="Comment", count=12) }}
+{{ action_bar_item(icon="share", label="Share") }}
 {% end %}
 {{ share_menu(label="Share", share_url="https://example.com/post/1") }}
 {% end %}

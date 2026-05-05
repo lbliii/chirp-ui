@@ -169,6 +169,12 @@
         margin-inline: calc(50% - 50vw);
     }
 
+    .chirpui-app-shell .chirpui-app-shell__main .chirpui-blade {
+        width: 100%;
+        max-width: 100%;
+        margin-inline: 0;
+    }
+
     /* Parallax — subtle scroll-driven opacity (Chrome 115+); respects prefers-reduced-motion */
     @supports (animation-timeline: view()) {
         @media (prefers-reduced-motion: no-preference) {

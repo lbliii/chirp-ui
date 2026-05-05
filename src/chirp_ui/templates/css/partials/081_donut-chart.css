@@ -38,13 +38,26 @@
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-semibold);
     color: var(--chirpui-text);
+    line-height: 1.05;
+    text-align: center;
+    text-shadow:
+        0 1px 2px var(--chirpui-surface),
+        0 0 0.55rem var(--chirpui-surface);
+}
+
+.chirpui-donut__value {
+    display: block;
+    max-width: 85%;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-donut__caption {
     font-size: var(--chirpui-font-xs);
     font-weight: 400;
     color: var(--chirpui-text-muted);
-    line-height: 1;
+    line-height: 1.05;
+    max-width: 85%;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-donut--gold .chirpui-donut__ring {
@@ -58,4 +71,3 @@
 .chirpui-donut--muted .chirpui-donut__ring {
     --chirpui-donut-fill: var(--chirpui-text-muted);
 }
-

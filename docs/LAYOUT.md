@@ -141,9 +141,15 @@ Canonical names, aliases, and breakpoint tokens: [LAYOUT-PRESETS.md](LAYOUT-PRES
 |-----------|---------|
 | `balanced` | Two equal columns (`1fr / 1fr`) |
 | `hero` | Media + copy; second column slightly wider |
-| `sidebar-end` | Fluid main + fixed-width sidebar |
+| `sidebar-start` | Fixed-width left rail + fluid main content |
+| `sidebar-end` | Fluid main content + fixed-width right sidebar |
 
 **Tokens:** `--chirpui-frame-gap`, `--chirpui-frame-balanced-columns`, `--chirpui-frame-hero-columns`, `--chirpui-frame-sidebar-width`.
+
+`sidebar-start` and `sidebar-end` both use `--chirpui-frame-sidebar-width`.
+Use `sidebar-start` for workspace shells where navigation appears before the
+content and the content should expand into the remaining row. Use `sidebar-end`
+for detail pages where secondary context sits after the main content.
 
 ### Anti-patterns
 

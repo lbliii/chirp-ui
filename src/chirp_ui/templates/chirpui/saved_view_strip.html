@@ -1,0 +1,21 @@
+{#- chirp-ui: Saved view strip
+    Compact route shortcuts for saved views, favorites, nearby topics, unread
+    filters, assigned work, or other user-owned navigation shortcuts.
+    Data-in: views = [{label, href?, selected?, muted?, color?, cls?}].
+    Pass current_href to derive selected state from href when selected is absent.
+-#}
+{% from "chirpui/chip_group.html" import chip %}
+
+{% def saved_view_strip(views=none, label="Saved views", current_href="", cls="") %}
+<nav class="chirpui-saved-view-strip{{ " " ~ cls if cls else "" }}" aria-label="{{ label }}">
+    {% if views is not none %}
+    {% for item in views %}
+    {% set href = item.get("href") %}
+    {% set selected = item.get("selected") if item.get("selected") is not none else (href and current_href == href) %}
+    {{ chip(item.get("label", ""), href=href, selected=selected, muted=item.get("muted", false), color=item.get("color"), cls=item.get("cls", "")) }}
+    {% end %}
+    {% else %}
+    {% slot %}
+    {% end %}
+</nav>
+{% end %}

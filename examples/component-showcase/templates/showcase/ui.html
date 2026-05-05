@@ -140,8 +140,8 @@
 {{ badge("Success", variant="success") }}
 {{ badge("Warning", variant="warning") }}
 {{ badge("Error", variant="error") }}
-{{ badge("With icon", variant="primary", icon="◆") }}
-{{ badge("Active", variant="success", icon="✓") }}
+{{ badge("With icon", variant="primary", icon="diamond") }}
+{{ badge("Active", variant="success", icon="validate") }}
 </div>
 {% end %}
 
@@ -209,7 +209,7 @@ Go to Settings → Profile to edit your name, email, and preferences.
 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
 {{ status_indicator(label="Active", variant="success", pulse=true) }}
 {{ status_indicator(label="Away", variant="warning") }}
-{{ status_indicator(label="Offline", variant="default") }}
+{{ status_indicator(label="Offline") }}
 {{ status_indicator(label="Error", variant="error") }}
 </div>
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
@@ -230,13 +230,13 @@ Go to Settings → Profile to edit your name, email, and preferences.
 
 <h2>Empty State</h2>
 {% call block() %}
-{{ empty_state(icon="◇", title="No results found", action_label="Clear filters", action_href="/data") }}
+{{ empty_state(icon="diamond", title="No results found", action_label="Clear filters", action_href="/data") }}
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
   With action button. Use for zero-result screens, onboarding, or blank slates.
 </p>
 {% end %}
 {% call block() %}
-{{ empty_state(icon="◇", title="Nothing here yet") }}
+{{ empty_state(icon="diamond", title="Nothing here yet") }}
 <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
   Without action — just an icon and a title.
 </p>

@@ -20,21 +20,27 @@
 {% set far_runes = ["⊙", "◎", "⊞", "◎", "⊙", "⊞"] %}
 {% set mid_runes = ["◇", "⚙", "⛓", "◇", "⚙"] %}
 {% set near_runes = ["★", "⚡︎", "✦", "◇"] %}
+{% set far_positions = [(6, 18), (86, 12), (24, 72), (68, 46), (14, 42), (78, 82)] %}
+{% set mid_positions = [(18, 28), (52, 22), (36, 58), (84, 64), (62, 78)] %}
+{% set near_positions = [(12, 72), (46, 42), (66, 62), (82, 28)] %}
 <div class="chirpui-rune-field{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-rune-field__layers" aria-hidden="true">
         <div class="chirpui-rune-field__layer chirpui-rune-field__layer--far">
             {% for i in range(6) %}
-            <span class="chirpui-rune-field__rune" style="left: {{ (i * 16 + 3) % 92 }}%; top: {{ (i * 14 + 8) % 85 }}%">{{ far_runes[i] }}</span>
+            {% set pos = far_positions[i] %}
+            <span class="chirpui-rune-field__rune" style="left: {{ pos[0] }}%; top: {{ pos[1] }}%">{{ far_runes[i] }}</span>
             {% end %}
         </div>
         <div class="chirpui-rune-field__layer chirpui-rune-field__layer--mid">
             {% for i in range(5) %}
-            <span class="chirpui-rune-field__rune" style="left: {{ (i * 19 + 7) % 88 }}%; top: {{ (i * 18 + 12) % 80 }}%">{{ mid_runes[i] }}</span>
+            {% set pos = mid_positions[i] %}
+            <span class="chirpui-rune-field__rune" style="left: {{ pos[0] }}%; top: {{ pos[1] }}%">{{ mid_runes[i] }}</span>
             {% end %}
         </div>
         <div class="chirpui-rune-field__layer chirpui-rune-field__layer--near">
             {% for i in range(4) %}
-            <span class="chirpui-rune-field__rune" style="left: {{ (i * 23 + 5) % 90 }}%; top: {{ (i * 21 + 10) % 78 }}%">{{ near_runes[i] }}</span>
+            {% set pos = near_positions[i] %}
+            <span class="chirpui-rune-field__rune" style="left: {{ pos[0] }}%; top: {{ pos[1] }}%">{{ near_runes[i] }}</span>
             {% end %}
         </div>
     </div>

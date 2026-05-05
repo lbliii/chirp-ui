@@ -20,9 +20,11 @@ uv sync
 uv run python chirp-ui/examples/component-showcase/app.py
 ```
 
-Then open http://localhost:8000
+Then open http://localhost:8000.
 
-> **Note:** chirp-ui requires `kida-templates>=0.2.0` (provides the `kida` module). If you see `ModuleNotFoundError: No module named 'kida'`, ensure you're using the same Python environment where dependencies were installed.
+> **Note:** chirp-ui requires `kida-templates>=0.8.0` and the showcase extra
+> installs `bengal-chirp>=0.6.0`. If you see `ModuleNotFoundError`, ensure
+> you're using the same Python environment where the showcase extra was installed.
 
 ## Optional: Holy Light theme
 

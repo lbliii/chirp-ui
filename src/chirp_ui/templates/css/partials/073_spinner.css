@@ -44,14 +44,14 @@
 
 .chirpui-spinner-thinking__char {
     display: inline-block;
-    animation: chirpui-spiral-rotate var(--chirpui-anim-pace) steps(4) infinite;
+    transform-origin: 50% 52%;
+    animation: chirpui-spiral-spin var(--chirpui-anim-pace) steps(4) infinite;
 }
 
-@keyframes chirpui-spiral-rotate {
-    0% { content: "◜"; }
-    25% { content: "◝"; }
-    50% { content: "◞"; }
-    75% { content: "◟"; }
+@keyframes chirpui-spiral-spin {
+    to {
+        transform: rotate(1turn);
+    }
 }
 
 /* Accessibility: Reduced motion */
@@ -63,4 +63,3 @@
         scale: 1;
     }
 }
-

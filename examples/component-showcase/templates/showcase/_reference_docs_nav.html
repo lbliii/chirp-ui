@@ -1,0 +1,130 @@
+{% from "chirpui/layout.html" import stack, cluster, grid, block, frame %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/primary_nav.html" import primary_nav %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_section, sidebar_link %}
+{% from "chirpui/nav_tree.html" import nav_tree %}
+{% from "chirpui/inline_counter.html" import inline_counter %}
+{% from "chirpui/card.html" import card, resource_card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group, chip %}
+
+{% def reference_docs_navigation() %}
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Reference docs global navigation") %}
+  {{ logo(text="DocsHub", href="/docs", variant="text") }}
+  {{ dropdown_menu(btn("Docs version 2.4", variant="ghost", size="sm"), items=[
+    {"label": "Version 2.4", "href": "/docs/2.4"},
+    {"label": "Version 2.3", "href": "/docs/2.3"},
+    {"label": "Next", "href": "/docs/next"},
+    {"divider": true},
+    {"label": "Release notes", "href": "/docs/releases"}
+  ], id="reference-version-menu") }}
+  {{ primary_nav([
+    {"label": "Get started", "href": "/docs/start", "match": "prefix"},
+    {"label": "Build", "href": "/docs/build", "match": "prefix"},
+    {"label": "Operate", "href": "/docs/operate", "match": "prefix"},
+    {"label": "Reference", "href": "/docs/reference", "match": "prefix", "badge_expected": true},
+  ], current_path="/docs/build/navigation/dense-recipes", aria_label="Docs workflows") }}
+  {{ command_palette_trigger(target="reference-docs-palette", label="Search documentation", placeholder="Search docs or jump to topic", shortcut="S", icon="search", density="sm") }}
+  {{ icon_btn("share", href="/docs/build/navigation/dense-recipes?share=1", aria_label="Share page") }}
+{% end %}
+{{ command_palette(id="reference-docs-palette", search_url="/data/table", placeholder="Search docs, APIs, examples, and release notes...") }}
+{% call frame(variant="sidebar-start", gap="md") %}
+  {% call sidebar(current_path="/docs/build/navigation/dense-recipes") %}
+    {% slot header %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <strong>Build workflow</strong>
+        <span class="chirpui-text-muted chirpui-font-sm">Left nav keeps place in the docs tree.</span>
+      </div>
+    {% end %}
+    {% call sidebar_section("Workflow topics") %}
+      {{ nav_tree(items=[
+        {"title": "Foundations", "href": "/docs/build/foundations", "children": [
+          {"title": "Install", "href": "/docs/build/foundations/install"},
+          {"title": "Tokens", "href": "/docs/build/foundations/tokens"}
+        ]},
+        {"title": "Navigation", "href": "/docs/build/navigation", "open": true, "children": [
+          {"title": "Layer model", "href": "/docs/build/navigation/layers"},
+          {"title": "Dense recipes", "href": "/docs/build/navigation/dense-recipes", "active": true},
+          {"title": "Overflow policy", "href": "/docs/build/navigation/overflow"}
+        ]},
+        {"title": "Forms", "href": "/docs/build/forms"}
+      ], branch_mode="linked") }}
+    {% end %}
+    {% call sidebar_section("Nearby") %}
+      {{ sidebar_link("/docs/build/navigation/layers", "Layer model", icon="list") }}
+      {{ sidebar_link("/docs/build/navigation/overflow", "Overflow policy", icon="list") }}
+      {{ sidebar_link("/docs/reference/route-tabs", "route_tabs API", icon="sources") }}
+    {% end %}
+  {% end %}
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs([
+      {"label": "DocsHub", "href": "/docs"},
+      {"label": "Build", "href": "/docs/build"},
+      {"label": "Navigation", "href": "/docs/build/navigation"},
+      {"label": "Dense recipes"}
+    ], overflow="collapse", max_items=4) }}
+    {% call cluster(gap="sm") %}
+      <div class="chirpui-stack chirpui-stack--sm">
+        <h3>Dense navigation recipes</h3>
+        <div class="chirpui-cluster chirpui-cluster--sm">
+          {{ inline_counter("R", 10, "recipes") }}
+          {{ inline_counter("A", 4, "apis") }}
+          {{ inline_counter("E", 12, "examples") }}
+        </div>
+      </div>
+      {{ badge("Guide", variant="info") }}
+      {{ btn("Edit page", variant="ghost", size="sm") }}
+    {% end %}
+    {{ route_tabs(tabs=[
+      {"href": "/docs/build/navigation/dense-recipes", "label": "Guide"},
+      {"href": "/docs/build/navigation/dense-recipes/examples", "label": "Examples", "badge": 12, "badge_label": "12 examples"},
+      {"href": "/docs/build/navigation/dense-recipes/api", "label": "APIs", "badge": 4, "badge_label": "4 related APIs"},
+      {"href": "/docs/build/navigation/dense-recipes/changelog", "label": "Changes", "badge_loading": true},
+    ], current_path="/docs/build/navigation/dense-recipes") }}
+    {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Reference docs page controls") %}
+      {{ btn("Copy link", variant="ghost", size="sm") }}
+      {{ btn("View source", variant="ghost", size="sm") }}
+      {{ btn("Report issue", variant="ghost", size="sm") }}
+      {{ btn("Print", variant="ghost", size="sm") }}
+    {% end %}
+    {% call chip_group(label="Reference docs related topics") %}
+      {{ chip("Layer model", selected=true, href="/docs/build/navigation/layers") }}
+      {{ chip("Overflow policy", href="/docs/build/navigation/overflow") }}
+      {{ chip("route_tabs", href="/docs/reference/route-tabs") }}
+      {{ chip("command_palette", href="/docs/reference/command-palette") }}
+    {% end %}
+    {% call grid(cols=3, gap="md") %}
+      {% call card(title="On this page", subtitle="Page-local wayfinding", variant="muted") %}
+        {% call stack(gap="sm") %}
+          {{ sidebar_link("#layer-model", "Layer model", icon="list", boost=false) }}
+          {{ sidebar_link("#recipe-families", "Recipe families", icon="list", boost=false) }}
+          {{ sidebar_link("#acceptance", "Acceptance checklist", icon="list", boost=false) }}
+        {% end %}
+      {% end %}
+      {% call resource_card("/docs/build/navigation/overflow", "Overflow policy", description="Nearby topic that explains what collapses first.", top_meta="next topic") %}
+        {% slot badges %}{{ badge("Recommended", variant="success") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">6 min read</span>
+        {% end %}
+      {% end %}
+      {% call resource_card("/docs/reference/route-tabs", "route_tabs API", description="Related API reference for route-backed local views.", top_meta="reference") %}
+        {% slot badges %}{{ badge("API", variant="info") }}{% end %}
+        {% slot footer %}
+          <span class="chirpui-font-sm chirpui-text-muted">Stable route contract</span>
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}
+{% end %}

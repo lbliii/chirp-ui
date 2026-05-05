@@ -68,6 +68,33 @@
     min-block-size: var(--chirpui-control-block-size);
 }
 
+select.chirpui-field__input:not([multiple]) {
+    appearance: none;
+    padding-inline-end: calc(var(--chirpui-spacing-xl) + var(--chirpui-spacing-xs));
+    background-image:
+        linear-gradient(45deg, transparent 50%, currentColor 50%),
+        linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+        calc(100% - var(--chirpui-spacing)) 50%,
+        calc(100% - (var(--chirpui-spacing) - 0.35rem)) 50%;
+    background-size: 0.35rem 0.35rem, 0.35rem 0.35rem;
+    background-repeat: no-repeat;
+}
+
+select.chirpui-field__input:not([multiple]):disabled {
+    background-image:
+        linear-gradient(45deg, transparent 50%, currentColor 50%),
+        linear-gradient(135deg, currentColor 50%, transparent 50%);
+}
+
+@media (forced-colors: active) {
+    select.chirpui-field__input:not([multiple]) {
+        appearance: auto;
+        padding-inline-end: var(--chirpui-spacing-sm);
+        background-image: none;
+    }
+}
+
 @media (max-width: 48rem), (pointer: coarse) {
     .chirpui-field__input:not([type="checkbox"]):not([type="radio"]) {
         min-block-size: var(--chirpui-control-touch-target);
@@ -567,6 +594,17 @@ input[type="date"].chirpui-field__input {
 /* Fragment island — HTMX-safe mutation region */
 .chirpui-fragment-island {
     /* No layout; just a wrapper for hx-disinherit */
+}
+
+.chirpui-island-root {
+    display: block;
+    min-width: 0;
+}
+
+.chirpui-island-fallback {
+    display: grid;
+    gap: var(--chirpui-spacing-sm);
+    min-width: 0;
 }
 
 /* DnD primitives — row and board variants */

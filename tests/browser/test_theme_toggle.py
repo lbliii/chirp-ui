@@ -54,3 +54,55 @@ async def test_theme_toggle_has_aria_label(page, base_url):
     label = await btn.get_attribute("aria-label")
     assert label is not None
     assert "theme" in label.lower() or "Theme" in label
+
+
+async def test_app_layout_uses_single_chirp_alpine_runtime(page, base_url):
+    """app_layout should rely on Chirp injection instead of duplicating Alpine scripts."""
+    await page.goto(base_url + "/app-layout-theme")
+    await wait_for_alpine(page)
+
+    scripts = await page.evaluate(
+        """() => [...document.scripts].map((script) => ({
+            src: script.src,
+            chirp: script.getAttribute("data-chirp")
+        }))"""
+    )
+
+    alpine_core = [script for script in scripts if script["chirp"] == "alpine"]
+    chirpui_runtime = [script for script in scripts if script["chirp"] == "chirpui-alpine"]
+    bare_alpine = [
+        script
+        for script in scripts
+        if script["src"].endswith("npm/alpinejs@3.15.8") and script["chirp"] == "alpine"
+    ]
+
+    assert len(alpine_core) == 1
+    assert len(chirpui_runtime) == 1
+    assert bare_alpine == []
+
+
+async def test_app_layout_theme_toggle_changes_computed_theme_tokens(page, base_url):
+    """app_layout loads a data-theme-aware starter theme, so the toggle changes colors."""
+    await page.goto(base_url + "/app-layout-theme")
+    await wait_for_alpine(page)
+
+    await page.evaluate(
+        """() => {
+            localStorage.setItem("chirpui-theme", "light");
+            document.documentElement.setAttribute("data-theme", "light");
+        }"""
+    )
+    await page.reload()
+    await wait_for_alpine(page)
+    light_bg = await page.evaluate(
+        "() => getComputedStyle(document.documentElement).getPropertyValue('--chirpui-bg').trim()"
+    )
+
+    await page.locator(".chirpui-theme-toggle").click()
+    await page.wait_for_timeout(100)
+    dark_bg = await page.evaluate(
+        "() => getComputedStyle(document.documentElement).getPropertyValue('--chirpui-bg').trim()"
+    )
+
+    assert await page.evaluate("document.documentElement.getAttribute('data-theme')") == "dark"
+    assert light_bg != dark_bg

@@ -58,6 +58,15 @@
     line-height: var(--chirpui-line-height-tight);
 }
 
+.chirpui-primary-nav__badge--reserved {
+    min-inline-size: 1.75rem;
+    opacity: 0.58;
+}
+
+.chirpui-primary-nav__badge--loading::before {
+    content: "...";
+}
+
 .chirpui-primary-nav__divider {
     display: inline-block;
     inline-size: 1px;

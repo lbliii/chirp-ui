@@ -2,10 +2,22 @@
    Wobble/Jello/Rubber-band — micro-interaction utilities
    ========================================================================== */
 
+.chirpui-wobble,
+.chirpui-jello,
+.chirpui-rubber-band,
+.chirpui-bounce-in,
+.chirpui-hover-wobble,
+.chirpui-hover-jello,
+.chirpui-hover-rubber {
+    display: inline-block;
+    transform-origin: center;
+    will-change: transform;
+}
+
 .chirpui-wobble { animation: chirpui-wobble 1s ease-in-out; }
 .chirpui-jello { animation: chirpui-jello 1s ease-in-out; }
 .chirpui-rubber-band { animation: chirpui-rubber-band 1s ease-in-out; }
-.chirpui-bounce-in { animation: chirpui-bounce-in 0.6s ease-out; }
+.chirpui-bounce-in { animation: chirpui-bounce-in 0.6s ease-out both; }
 
 /* Hover-triggered variants */
 .chirpui-hover-wobble:hover { animation: chirpui-wobble 1s ease-in-out; }
@@ -15,5 +27,4 @@
 /* Click-triggered (via :active or Alpine) */
 .chirpui-click-wobble:active { animation: chirpui-wobble 0.6s ease-in-out; }
 .chirpui-click-jello:active { animation: chirpui-jello 0.6s ease-in-out; }
-
 

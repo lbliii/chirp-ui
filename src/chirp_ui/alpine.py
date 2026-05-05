@@ -89,6 +89,11 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         macros=("app_shell", "app_shell_layout"),
         conditional="sidebar_collapsible=true",
     ),
+    "chirpuiResponsiveSidebar": AlpineRequirement(
+        factory="chirpuiResponsiveSidebar",
+        macros=("sidebar",),
+        conditional='cls includes "chirpui-sidebar--responsive-dropdowns"',
+    ),
 }
 
 

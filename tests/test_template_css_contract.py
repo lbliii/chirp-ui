@@ -1,3 +1,4 @@
+import json
 import re
 from pathlib import Path
 
@@ -7,6 +8,7 @@ TRANSITIONS_CSS_PATH = (
     Path(__file__).resolve().parents[1] / "src/chirp_ui/templates/chirpui-transitions.css"
 )
 EXAMPLES_DIR = Path(__file__).resolve().parents[1] / "examples/component-showcase/templates"
+MANIFEST_PATH = Path(__file__).resolve().parents[1] / "src/chirp_ui/manifest.json"
 
 
 TARGET_PREFIXES = (
@@ -38,21 +40,36 @@ TARGET_PREFIXES = (
     "chirpui-feature-stack",
 )
 
-EXAMPLE_LAYOUT_PREFIXES = (
-    "chirpui-action-strip",
-    "chirpui-cluster",
-    "chirpui-flow",
-    "chirpui-frame",
-    "chirpui-grid",
-    "chirpui-inline",
-    "chirpui-mb-",
-    "chirpui-measure",
-    "chirpui-metric-",
-    "chirpui-mt-",
-    "chirpui-resource-",
-    "chirpui-result-slot",
-    "chirpui-stack",
-)
+SHOWCASE_TEMPLATE_PACKS = {
+    # These files expose macro groups whose shipped classes are registry-backed
+    # by CSS-only descriptors or by the nested components they compose.
+    "ascii_icon.html",
+    "auth.html",
+    "bento_grid.html",
+    "command_bar.html",
+    "config_card.html",
+    "config_dashboard.html",
+    "islands.html",
+    "modal_overlay.html",
+    "nav_link.html",
+    "oob.html",
+    "share_menu.html",
+    "shell_frame.html",
+    "state_primitives.html",
+    "status_with_hint.html",
+    "tabbed_page_layout.html",
+}
+
+STABLE_COMPONENT_SHOWCASE_DEFERRALS = {
+    # These are stable but have focused docs/browser coverage elsewhere; keep
+    # them explicit so new stable components cannot silently skip the showcase.
+    "copy-btn",
+    "empty-panel-state",
+    "latest-line",
+    "panel",
+    "rendered-content",
+    "tag-browse",
+}
 
 
 def _extract_template_classes(base_dir: Path) -> set[str]:
@@ -84,6 +101,22 @@ def _extract_css_defined_classes() -> set[str]:
     return {match.group(1) for match in class_selector_pattern.finditer(content)}
 
 
+def _extract_showcase_imports() -> set[str]:
+    import_pattern = re.compile(
+        r"""\{%\s*(?:from|include)\s+["']chirpui/([^"']+)["']""",
+        re.IGNORECASE,
+    )
+    imports: set[str] = set()
+    for template_file in EXAMPLES_DIR.rglob("*.html"):
+        imports.update(import_pattern.findall(template_file.read_text(encoding="utf-8")))
+    return imports
+
+
+def _manifest_components() -> dict[str, dict[str, object]]:
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    return manifest["components"]
+
+
 def test_target_template_classes_exist_in_css() -> None:
     template_classes = _extract_template_classes(TEMPLATES_DIR)
     css_classes = _extract_css_defined_classes()
@@ -97,16 +130,47 @@ def test_target_template_classes_exist_in_css() -> None:
     )
 
 
-def test_example_chirpui_classes_exist_in_css() -> None:
+def test_example_static_chirpui_classes_exist_in_css() -> None:
     template_classes = _extract_template_classes(EXAMPLES_DIR)
     css_classes = _extract_css_defined_classes()
     missing = sorted(
         class_name
         for class_name in template_classes
-        if class_name.startswith(EXAMPLE_LAYOUT_PREFIXES) and class_name not in css_classes
+        if class_name.startswith("chirpui-") and class_name not in css_classes
     )
-    assert not missing, "Example templates reference missing spacing/layout classes: " + ", ".join(
+    assert not missing, "Example templates reference missing chirpui-* CSS classes: " + ", ".join(
         missing
+    )
+
+
+def test_showcase_imported_templates_are_manifest_backed() -> None:
+    components = _manifest_components()
+    manifest_templates = {
+        str(entry["template"]) for entry in components.values() if entry.get("template")
+    }
+    imported_templates = _extract_showcase_imports()
+    missing = sorted(imported_templates - manifest_templates - SHOWCASE_TEMPLATE_PACKS)
+    assert not missing, (
+        "Showcase imports chirpui templates that are not in manifest.json and not "
+        "documented as macro packs: " + ", ".join(missing)
+    )
+
+
+def test_stable_templated_components_have_showcase_coverage() -> None:
+    components = _manifest_components()
+    imported_templates = _extract_showcase_imports()
+    missing = sorted(
+        name
+        for name, entry in components.items()
+        if entry["maturity"] == "stable"
+        and entry["role"] == "component"
+        and entry.get("template")
+        and entry["template"] not in imported_templates
+        and name not in STABLE_COMPONENT_SHOWCASE_DEFERRALS
+    )
+    assert not missing, (
+        "Stable templated components need showcase coverage or an explicit deferral: "
+        + ", ".join(missing)
     )
 
 
