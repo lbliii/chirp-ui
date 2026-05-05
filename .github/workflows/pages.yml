@@ -38,30 +38,27 @@ jobs:
         env:
           PYTHON_GIL: "0"
 
-      # Use bengal cache hash for accurate cache invalidation
-      # This includes all build inputs: content, config, autodoc sources, templates, etc.
-      - name: Get cache hash
-        id: cache
-        working-directory: site
-        run: echo "hash=$(uv run bengal cache hash)" >> $GITHUB_OUTPUT
-        env:
-          PYTHON_GIL: "0"
-
       - name: Cache Bengal build state
         uses: actions/cache@v5
         with:
           path: site/.bengal
-          key: bengal-${{ runner.os }}-${{ steps.cache.outputs.hash }}
+          key: bengal-${{ runner.os }}-${{ hashFiles('uv.lock', 'pyproject.toml', 'site/config/**', 'site/content/**', 'site/assets/**', 'src/bengal_themes/chirp_theme/**', 'src/chirp_ui/components.py', 'src/chirp_ui/manifest.py', 'src/chirp_ui/templates/**') }}
           # No restore-keys - we want exact match for correctness
 
       - name: Build documentation site
-        working-directory: site
-        run: uv run bengal site build --environment production
+        run: uv run bengal build --source site --environment production --clean-output
         env:
           PYTHON_GIL: "0"
 
       - name: Assemble static component showcase
         run: bash scripts/assemble-static-showcase.sh "$GITHUB_WORKSPACE/site/public/showcase"
+
+      - name: Emit Chirp UI manifest
+        run: |
+          mkdir -p site/public
+          uv run python -m chirp_ui.manifest --json > site/public/chirpui.manifest.json
+        env:
+          PYTHON_GIL: "0"
 
       - name: Prepare for upload
         run: |

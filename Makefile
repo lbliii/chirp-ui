@@ -136,7 +136,7 @@ showcase:
 	@bash scripts/assemble-static-showcase.sh "$(CURDIR)/_site"
 	@echo "Open _site/index.html in a browser to preview"
 
-# Run after: uv run bengal site build site
+# Run after: uv run bengal build --source site
 showcase-public:
 	@bash scripts/assemble-static-showcase.sh "$(CURDIR)/site/public/showcase"
 

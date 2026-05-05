@@ -2,7 +2,7 @@
 # Assemble the static HTML component showcase with copied CSS and rewritten hrefs.
 # Usage: scripts/assemble-static-showcase.sh [DEST_DIR]
 # Default DEST_DIR is repo-root/_site (standalone preview).
-# For the Bengal site, pass repo-root/site/public/showcase after `bengal site build`.
+# For the Bengal site, pass repo-root/site/public/showcase after `bengal build --source site`.
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

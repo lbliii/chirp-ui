@@ -5,31 +5,19 @@
 {% from 'partials/components/tiles.html' import content_tiles %}
 {% from 'partials/theme-primitives.html' import theme_docs_frame %}
 
-{% def parse_discover_config(discover_config, default_title, default_variant='compact', default_limit=5) %}
-{% match discover_config %}
-  {% case false %}
-    {{ {'enabled': false, 'title': none, 'variant': none, 'limit': 0} }}
-  {% case _ if discover_config is mapping %}
-    {{ {
-      'enabled': true,
-      'title': discover_config.title ?? default_title if discover_config.title is not sameas false else none,
-      'variant': discover_config.variant ?? default_variant,
-      'limit': discover_config.limit ?? default_limit
-    } }}
-  {% case _ if discover_config is number %}
-    {{ {'enabled': true, 'title': default_title, 'variant': default_variant, 'limit': discover_config} }}
-  {% case _ %}
-    {{ {'enabled': true, 'title': default_title, 'variant': default_variant, 'limit': default_limit} }}
-{% end %}
-{% end %}
-
 {% block content %}
 {% let discover = params?.discover ?? {} %}
-{% let children_config = parse_discover_config(discover?.children, 'In This Section', 'compact', 999) %}
-{% let related_config = parse_discover_config(discover?.related, 'Related Pages', 'compact', 5) %}
+{% let children_discover = discover.get("children") if discover is mapping else none %}
+{% let related_discover = discover.get("related") if discover is mapping else none %}
+{% let children_enabled = children_discover is not sameas false %}
+{% let related_enabled = related_discover is not sameas false %}
+{% let children_title = none if (children_discover is mapping and children_discover.get("title") is sameas false) else ((children_discover.get("title") if children_discover is mapping else none) ?? 'In This Section') %}
+{% let related_title = none if (related_discover is mapping and related_discover.get("title") is sameas false) else ((related_discover.get("title") if related_discover is mapping else none) ?? 'Related Pages') %}
+{% let children_variant = (children_discover.get("variant") if children_discover is mapping else none) ?? 'compact' %}
+{% let related_limit = (related_discover.get("limit") if related_discover is mapping else (related_discover if related_discover is number else none)) ?? 5 %}
 {% let show_children_feature = 'content.children' in (theme?.features ?? []) %}
-{% let show_children = children_config.enabled and show_children_feature %}
-{% let show_related = related_config.enabled %}
+{% let show_children = children_enabled and show_children_feature %}
+{% let show_related = related_enabled %}
 {% let has_children = (posts | length > 0) or (subsections | length > 0) %}
 {% let related_posts = page?.related_posts ?? [] %}
 {% let has_related = show_related and (related_posts | length > 0) %}
@@ -51,12 +39,12 @@
   {% cache "doc-list-tiles-" ~ (page?.href ?? '') ~ "-" ~ (site?.build_id ?? '') %}
   <div class="docs-children chirp-theme-docs-layout__children">
     {{ content_tiles(
-      title=children_config.title if has_children else none,
+      title=children_title if has_children else none,
       children=posts if show_children else none,
       subsections=subsections if show_children else none,
-      related=related_posts[:related_config.limit] if has_related else none,
-      related_title=related_config.title,
-      variant=children_config.variant,
+      related=related_posts[:related_limit] if has_related else none,
+      related_title=related_title,
+      variant=children_variant,
       group_by='type' if has_children and has_related else none,
       page=page
     ) }}

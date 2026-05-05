@@ -27,8 +27,8 @@ _path, kind, tags are always defined - no defensive checks needed.
 {% let _per_page_md = 'markdown' in (config.output_formats.per_page ?? []) %}
 
 {# Derived values #}
-{% let _main_menu = get_menu_lang('main', _current_lang) %}
-{% let _footer_menu = get_menu_lang('footer', _current_lang) %}
+{% let _main_menu = [] %}
+{% let _footer_menu = [] %}
 
 {% let _doc_app_nav = _doc_app?.navigation %}
 {% let _view_transitions = _doc_app.enabled and _doc_app_nav?.view_transitions %}
@@ -41,8 +41,8 @@ _path, kind, tags are always defined - no defensive checks needed.
 HELPER: Render a menu item (desktop/mobile)
 ============================================================================= #}
 {% def render_menu_item(item, is_mobile=false) %}
-{% let has_children = item.children | length > 0 %}
-{% let is_active = item.active or (_page_url == item.href) %}
+{% let has_children = (item.children ?? []) | length > 0 %}
+{% let is_active = (item.active ?? false) or (_page_url == item.href) %}
 {% let is_trail = item.active_trail ?? false %}
 
 <li
@@ -53,7 +53,7 @@ HELPER: Render a menu item (desktop/mobile)
         {% if item.href == '#' %}
         <span class="nav-dropdown-trigger" tabindex="0" role="button" aria-haspopup="true"><bdi>{{ item.name }}</bdi></span>
         {% else %}
-        <a href="{{ item.href | absolute_url }}" {{ 'aria-current="page"' | safe if is_active else '' }}><bdi>{{ item.name }}</bdi></a>
+        <a href="{{ item.href | absolute_url }}"{% if is_active %} aria-current="page"{% end %}><bdi>{{ item.name }}</bdi></a>
         {% end %}
         <button type="button" class="mobile-nav-toggle-submenu" aria-label="Toggle {{ item.name }} submenu" aria-expanded="false">
             {{ icon('caret-down', size=16) }}
@@ -64,13 +64,13 @@ HELPER: Render a menu item (desktop/mobile)
     <span class="nav-dropdown-trigger" tabindex="0" role="button" aria-haspopup="true"><bdi>{{ item.name }}</bdi></span>
     {% else %}
     {# Regular navigation link #}
-    <a href="{{ item.href | absolute_url }}" {{ 'aria-current="page"' | safe if is_active else '' }}><bdi>{{ item.name }}</bdi></a>
+    <a href="{{ item.href | absolute_url }}"{% if is_active %} aria-current="page"{% end %}><bdi>{{ item.name }}</bdi></a>
     {% end %}
 
     {% if has_children %}
     <ul class="submenu">
-        {% for child in item.children %}
-        <li class="{{ ['active' if child.active] | classes }}">
+        {% for child in item.children ?? [] %}
+        <li class="{{ ['active' if (child.active ?? false)] | classes }}">
             <a href="{{ child.href | absolute_url }}">
                 {% with child.icon as icon_name %}
                 {% if icon_name %}<span class="submenu-icon">{{ icon(icon_name, size=16) }}</span>{% end %}
@@ -256,7 +256,7 @@ HELPER: Render a menu item (desktop/mobile)
     {% end %}{# /cache base-theme-init #}
 
     {% block extra_head %}{% end %}
-    {% cache 'base-meta-generator-' ~ (bengal.build.timestamp ?? '') %}
+    {% cache 'base-meta-generator-' ~ (bengal?.build?.timestamp ?? '') %}
     {% include 'partials/meta-generator.html' %}
     {% end %}{# /cache base-meta-generator #}
     {% include 'partials/article-jsonld.html' %}
@@ -265,7 +265,7 @@ HELPER: Render a menu item (desktop/mobile)
 </head>
 
 <body data-type="{{ page.type }}" data-variant="{{ page.variant or '' }}"
-    class="page-kind-{{ page.kind or 'page' }}{% if page.is_draft %} draft-page{% end %}{% if page.hidden %} hidden-page{% end %}{% if page.is_featured %} featured-content{% end %}">
+    class="page-kind-{{ page.kind or 'page' }}{% if page.is_draft | default(false) %} draft-page{% end %}{% if page.hidden | default(false) %} hidden-page{% end %}{% if page.is_featured | default(false) %} featured-content{% end %}">
 
     {% if 'accessibility.skip_link' in (theme.features ?? []) %}
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -294,9 +294,11 @@ HELPER: Render a menu item (desktop/mobile)
                     <li class="{{ ['active' if _page_url == '/'] | classes }}"><a href="{{ '/' | absolute_url }}">Home</a>
                     </li>
                     {% for item in _auto_nav %}
+                    {% let item_href = item.href | default('') %}
+                    {% let item_path = item._path | default(item_href) %}
                     <li
-                        class="{{ ['active' if (_page_url is string and item._path is string and _page_url.startswith(item._path) and item._path != '/')] | classes }}">
-                        <a href="{{ item.href | absolute_url }}">{{ item.name }}</a>
+                        class="{{ ['active' if (_page_url is string and item_path is string and _page_url.startswith(item_path) and item_path != '/')] | classes }}">
+                        <a href="{{ item_href | absolute_url }}">{{ item.name }}</a>
                     </li>
                     {% end %}
                     {% end %}
@@ -369,9 +371,12 @@ HELPER: Render a menu item (desktop/mobile)
                 {% for item in _main_menu %}{{ render_menu_item(item, is_mobile=true) }}{% end %}
                 {% if _auto_nav %}
                 <li class="{{ ['active' if _page_url == '/'] | classes }}"><a href="{{ '/' | absolute_url }}">Home</a></li>
-                {% for item in _auto_nav %}<li
-                    class="{{ ['active' if (_page_url is string and item._path is string and _page_url.startswith(item._path) and item._path != '/')] | classes }}">
-                    <a href="{{ item.href | absolute_url }}">{{ item.name }}</a>
+                {% for item in _auto_nav %}
+                {% let item_href = item.href | default('') %}
+                {% let item_path = item._path | default(item_href) %}
+                <li
+                    class="{{ ['active' if (_page_url is string and item_path is string and _page_url.startswith(item_path) and item_path != '/')] | classes }}">
+                    <a href="{{ item_href | absolute_url }}">{{ item.name }}</a>
                 </li>{% end %}
                 {% end %}
                 {% with site.params.repo_url as repo_url %}
@@ -384,13 +389,13 @@ HELPER: Render a menu item (desktop/mobile)
             </ul>
         </nav>
         {% end %}
-        <div class="mobile-nav-footer">{% cache 'base-theme-ctrl-m-' ~ _current_lang ~ '-' ~ (bengal.build.timestamp ?? '') %}{% with theme_menu_id='theme-menu-mobile' %}{% include
+        <div class="mobile-nav-footer">{% cache 'base-theme-ctrl-m-' ~ _current_lang ~ '-' ~ (bengal?.build?.timestamp ?? '') %}{% with theme_menu_id='theme-menu-mobile' %}{% include
             'partials/theme-controls.html' %}{% end %}{% end %}{# /cache base-theme-ctrl-m #}</div>
     </dialog>
 
     {# Footer #}
     {% block site_footer %}
-    {% cache 'base-footer-' ~ _current_lang ~ '-' ~ (bengal.build.timestamp ?? '') %}
+    {% cache 'base-footer-' ~ _current_lang ~ '-' ~ (bengal?.build?.timestamp ?? '') %}
     {% let footer_links = _footer_menu if _footer_menu | length > 0 else _main_menu %}
     {% let repo_url = site.params?.repo_url ?? '' %}
     {% let site_desc = site.description ?? '' %}

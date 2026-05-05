@@ -57,7 +57,7 @@ page=none
 {% if children %}
 {% for post in children %}
 {# Skip the current page #}
-{% if post?._path != page_path %}
+{% if (post._path | default('')) != page_path %}
 {% let post_content = post?.content ?? '' %}
 {% let post_desc = post?.metadata?.description ?? '' %}
 {% let desc = post_desc ?? (post_content | strip_html | excerpt(120) if post_content else '') %}
@@ -69,7 +69,7 @@ page=none
 'href': post?.href ?? post?._path ?? '',
 'description': desc,
 'weight': post?.weight ?? 999,
-'date': post?.date,
+'date': post.date | default(none),
 'icon': post?.metadata?.icon ?? ''
 }) %}
 {% end %}
@@ -129,13 +129,14 @@ sort(attribute='weight,title') %}
   {% case 'cards' %}
   <div class="content-tiles-grid">
     {% for item in sorted_items %}
-    <article class="content-tile-card{{ ' content-tile-card--related' if item.type == 'related' else '' }}">
+    {% let item_type = item?.type ?? '' %}
+    <article class="content-tile-card{{ ' content-tile-card--related' if item_type == 'related' else '' }}">
       {% if show_icons %}
       <div class="content-tile-card-icon">
-        {% if item.icon %}
+        {% if item?.icon %}
         {{ icon(item.icon, size=24) }}
         {% else %}
-        {% match item.type %}
+        {% match item_type %}
         {% case 'section' %}{{ icon('folder', size=24) }}
         {% case 'related' %}{{ icon('link', size=24) }}
         {% case _ %}{{ icon('file-text', size=24) }}
@@ -144,21 +145,21 @@ sort(attribute='weight,title') %}
       </div>
       {% end %}
       <h3 class="content-tile-card-title">
-        <a href="{{ item.href }}">{{ item.title }}</a>
+        <a href="{{ item?.href ?? '' }}">{{ item?.title ?? item }}</a>
       </h3>
-      {% if show_descriptions and item.description %}
-      <p class="content-tile-card-description">{{ item.description | excerpt_for_card(item.title) | excerpt(120) }}</p>
+      {% if show_descriptions and item?.description %}
+      <p class="content-tile-card-description">{{ item.description | excerpt_for_card(item?.title ?? '') | excerpt(120) }}</p>
       {% end %}
       <div class="content-tile-card-meta">
-        {% match item.type %}
+        {% match item_type %}
         {% case 'section' %}
-        {% if item.page_count > 0 %}
+        {% if (item?.page_count ?? 0) > 0 %}
         <span>{{ item.page_count }} page{{ 's' if item.page_count != 1 else '' }}</span>
         {% end %}
         {% case 'related' %}
         <span class="content-tile-badge">Related</span>
         {% case _ %}
-        {% if item.date %}
+        {% if item?.date %}
         <span>{{ item.date | time_ago }}</span>
         {% end %}
         {% end %}
@@ -171,9 +172,10 @@ sort(attribute='weight,title') %}
   {% case 'minimal' %}
   <ul class="content-tiles-minimal">
     {% for item in sorted_items %}
-    <li class="{{ 'content-tile--related' if item.type == 'related' else '' }}">
-      <a href="{{ item.href }}">{{ item.title }}</a>
-      {% if item.type == 'related' %}<span class="content-tile-badge">Related</span>{% end %}
+    {% let item_type = item?.type ?? '' %}
+    <li class="{{ 'content-tile--related' if item_type == 'related' else '' }}">
+      <a href="{{ item?.href ?? '' }}">{{ item?.title ?? item }}</a>
+      {% if item_type == 'related' %}<span class="content-tile-badge">Related</span>{% end %}
     </li>
     {% end %}
   </ul>
@@ -181,7 +183,9 @@ sort(attribute='weight,title') %}
   {# ===== COMPACT VARIANT (default) ===== #}
   {% case _ %}
   <div class="content-tiles-list">
-    {% for group_name, group_items in sorted_items | groupby('group') %}
+    {% for group in sorted_items | groupby('group') %}
+    {% let group_name = group.grouper %}
+    {% let group_items = group.list %}
     {# Group headers when group_by='type' #}
     {% if group_by == 'type' and group_name == 'related' and related_title %}
     <div class="content-tiles-group-header">
@@ -189,14 +193,15 @@ sort(attribute='weight,title') %}
     </div>
     {% end %}
     {% for item in group_items %}
-    <article class="content-tile{{ ' content-tile--related' if item.type == 'related' else '' }}">
+    {% let item_type = item?.type ?? '' %}
+    <article class="content-tile{{ ' content-tile--related' if item_type == 'related' else '' }}">
       {% if show_icons %}
       <div class="content-tile-icon">
-        {% if item.icon %}
+        {% if item?.icon %}
         {{ icon(item.icon, size=20) }}
-        {% elif item.type == 'section' %}
+        {% elif item_type == 'section' %}
         {{ icon('folder', size=20) }}
-        {% elif item.type == 'related' %}
+        {% elif item_type == 'related' %}
         {{ icon('link', size=20) }}
         {% else %}
         {{ icon('file-text', size=20) }}
@@ -205,16 +210,16 @@ sort(attribute='weight,title') %}
       {% end %}
       <div class="content-tile-content">
         <span class="content-tile-title">
-          <a href="{{ item.href }}">{{ item.title }}</a>
-          {% if show_descriptions and item.description %}
-          <span class="content-tile-description">{{ item.description | excerpt_for_card(item.title) }}</span>
+          <a href="{{ item?.href ?? '' }}">{{ item?.title ?? item }}</a>
+          {% if show_descriptions and item?.description %}
+          <span class="content-tile-description">{{ item.description | excerpt_for_card(item?.title ?? '') }}</span>
           {% end %}
           <span class="content-tile-meta">
-            {% if item.type == 'section' and item.page_count > 0 %}
+            {% if item_type == 'section' and (item?.page_count ?? 0) > 0 %}
             <span class="meta-item">{{ item.page_count }} page{{ 's' if item.page_count != 1 else '' }}</span>
-            {% elif item.type == 'related' %}
+            {% elif item_type == 'related' %}
             <span class="meta-item content-tile-badge">Related</span>
-            {% elif item.date %}
+            {% elif item?.date %}
             <span class="meta-item">{{ item.date | time_ago }}</span>
             {% end %}
           </span>
