@@ -84,6 +84,11 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         factory="chirpuiCopy",
         macros=("code", "copy_button", "streaming"),
     ),
+    "chirpuiSseRetry": AlpineRequirement(
+        factory="chirpuiSseRetry",
+        macros=("sse_status",),
+        conditional="sse_retry()",
+    ),
     "chirpuiSidebar": AlpineRequirement(
         factory="chirpuiSidebar",
         macros=("app_shell", "app_shell_layout"),

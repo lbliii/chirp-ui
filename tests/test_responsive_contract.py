@@ -69,10 +69,14 @@ def test_navigation_strips_scroll_horizontally_on_phone_widths() -> None:
 
 def test_blade_is_sidebar_aware_inside_app_shells() -> None:
     surface = _partial("039_surface.css")
+    app_shell = _partial("083_app-shell.css")
 
     assert ".chirpui-app-shell .chirpui-app-shell__main .chirpui-blade" in surface
-    assert "width: 100%;" in surface
-    assert "margin-inline: 0;" in surface
+    assert "width: 100vw;" in surface
+    assert "max-width: 100vw;" in surface
+    assert "margin-inline: calc(50% - 50vw);" in surface
+    assert ".chirpui-app-shell__main" in app_shell
+    assert "overflow-x: clip;" in app_shell
 
 
 def test_feedback_primitives_keep_dense_labels_readable() -> None:

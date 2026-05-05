@@ -211,7 +211,7 @@
                 this.close(this.$refs.trigger);
                 this.$dispatch("chirpui:dropdown-selected", {
                     label: this.selected,
-                    value: this.selected,
+                    value: element.dataset.value || this.selected,
                 });
             },
         };
@@ -241,6 +241,34 @@
                     }.bind(this),
                     this.resolveDelay()
                 );
+            },
+        };
+    });
+
+    register("chirpuiSseRetry", function () {
+        return {
+            retrying: false,
+            init: function () {
+                var reset = function () {
+                    this.retrying = false;
+                }.bind(this);
+                [
+                    "htmx:afterRequest",
+                    "htmx:after-request",
+                    "htmx:afterSettle",
+                    "htmx:after-settle",
+                    "htmx:responseError",
+                    "htmx:response-error",
+                    "htmx:sendError",
+                    "htmx:send-error",
+                ].forEach(
+                    function (eventName) {
+                        this.$el.addEventListener(eventName, reset);
+                    }.bind(this)
+                );
+            },
+            retry: function () {
+                this.retrying = true;
             },
         };
     });

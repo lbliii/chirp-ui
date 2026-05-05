@@ -1,5 +1,17 @@
 {#- Fragment for RTL/LTR toggle — direction-aware layout demo #}
 {% block dir_block %}
+<div class="chirpui-btn-group">
+  <button type="button"
+          class="chirpui-btn {{ "chirpui-btn--primary" if direction == "ltr" else "chirpui-btn--secondary" }}"
+          hx-get="/layout/dir?dir=ltr"
+          hx-target="#rtl_demo"
+          hx-swap="innerHTML transition:false">LTR</button>
+  <button type="button"
+          class="chirpui-btn {{ "chirpui-btn--primary" if direction == "rtl" else "chirpui-btn--secondary" }}"
+          hx-get="/layout/dir?dir=rtl"
+          hx-target="#rtl_demo"
+          hx-swap="innerHTML transition:false">RTL</button>
+</div>
 <div dir="{{ direction }}" style="padding-inline: 1rem; margin-inline: 0.5rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); background: var(--chirpui-bg-subtle);">
   <p style="margin: 0 0 0.5rem;"><strong>{{ direction | upper }}</strong> — padding-inline and margin-inline flip with direction.</p>
   <ul style="margin: 0; padding-inline-start: 1.5rem;">

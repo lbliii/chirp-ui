@@ -32,14 +32,14 @@
 
 /* The rail draws the track characters via pseudo-elements */
 .chirpui-ascii-toggle__rail::before {
-    content: "╶───";
+    content: "╶";
     position: absolute;
     left: 0;
     pointer-events: none;
     transition: opacity var(--chirpui-transition);
 }
 .chirpui-ascii-toggle__rail::after {
-    content: "───╴";
+    content: "╴";
     position: absolute;
     right: 0;
     pointer-events: none;

@@ -119,7 +119,10 @@ Connection lost. Please try again.
   so users can manually reconnect.
 </p>
 {% call block() %}
-{{ sse_retry("/streaming/demo", label="Reconnect") }}
+<div id="streaming-retry-status" class="chirpui-stack chirpui-stack--sm">
+  <span class="chirpui-text-muted chirpui-font-sm">Disconnected. Retry fetches a mock recovery fragment.</span>
+  {{ sse_retry("/streaming/retry", label="Reconnect", target="#streaming-retry-status", swap="innerHTML") }}
+</div>
 {% end %}
 
 <h2>Try it — Live SSE Demo</h2>

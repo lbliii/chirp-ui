@@ -5,10 +5,19 @@
 .chirpui-message-thread {
     list-style: none;
     margin: 0;
-    padding: var(--chirpui-spacing);
+    padding: var(--chirpui-spacing-md);
     display: flex;
     flex-direction: column;
-    gap: var(--chirpui-spacing-sm);
+    gap: var(--chirpui-spacing);
+    border: 1px solid var(--chirpui-border-subtle);
+    border-radius: var(--chirpui-radius-lg);
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--chirpui-bg-subtle) 78%, transparent),
+            color-mix(in srgb, var(--chirpui-surface) 88%, transparent)
+        );
+    min-height: 16rem;
 }
 
 .chirpui-message-bubble {
@@ -18,13 +27,26 @@
     padding: var(--chirpui-message-bubble-padding);
     border-radius: var(--chirpui-message-bubble-radius);
     background: var(--chirpui-bg-subtle);
+    border: 1px solid color-mix(in srgb, var(--chirpui-border) 68%, transparent);
+    box-shadow: 0 1px 2px color-mix(in srgb, black 12%, transparent);
+    min-width: 0;
+}
+
+.chirpui-message-bubble > * {
+    min-width: 0;
+}
+
+.chirpui-message-bubble p {
+    margin-block: 0 var(--chirpui-spacing-xs);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-message-bubble--right {
     align-self: flex-end;
     flex-direction: row-reverse;
     background: var(--chirpui-accent);
-    color: var(--chirpui-surface);
+    border-color: color-mix(in srgb, var(--chirpui-accent) 74%, var(--chirpui-bg));
+    color: var(--chirpui-on-accent);
 }
 
 .chirpui-message-bubble--left {
@@ -36,6 +58,7 @@
     color: var(--chirpui-message-bubble-user-color);
     align-self: flex-end;
     flex-direction: row-reverse;
+    border-color: color-mix(in srgb, var(--chirpui-message-bubble-user-bg) 74%, var(--chirpui-bg));
 }
 
 .chirpui-message-bubble--assistant {
@@ -61,4 +84,3 @@
 .chirpui-message-bubble--pending {
     opacity: 0.85;
 }
-

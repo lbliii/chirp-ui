@@ -3,11 +3,12 @@
    ========================================================================== */
 
 .chirpui-gradient-text {
-    background: linear-gradient(135deg, var(--chirpui-accent), var(--chirpui-accent-bright));
+    background: linear-gradient(135deg, var(--chirpui-accent), var(--chirpui-accent-bright), var(--chirpui-accent));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     display: inline;
+    background-size: 180% 180%;
 }
 .chirpui-gradient-text--secondary {
     background: linear-gradient(135deg, var(--chirpui-accent), var(--chirpui-accent-secondary));
@@ -16,8 +17,7 @@
     background: linear-gradient(135deg, var(--chirpui-accent), var(--chirpui-accent-secondary), var(--chirpui-accent-bright));
 }
 .chirpui-gradient-text--animated {
-    background-size: 200% 200%;
+    background-size: 320% 320%;
     animation: chirpui-gradient-shift var(--chirpui-anim-cycle) ease infinite;
 }
-
 

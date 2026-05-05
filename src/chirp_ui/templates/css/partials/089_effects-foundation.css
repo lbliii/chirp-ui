@@ -63,6 +63,12 @@
     100% { transform: translateX(-50%); }
 }
 
+/* --- Gradient text: visible background travel --- */
+@keyframes chirpui-gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
 /* --- Text reveal: clip-path wipe --- */
 @keyframes chirpui-text-reveal {
     0% { clip-path: inset(0 100% 0 0); }
@@ -363,5 +369,4 @@
     .chirpui-number-ticker__value { --chirpui-num: var(--chirpui-num-target, 0); }
     .chirpui-typewriter__text { width: 100%; border-color: transparent; }
 }
-
 

@@ -147,6 +147,12 @@ async def test_dropdown_select_arrow_keys(page, base_url):
     """
     await page.goto(base_url + "/dropdown")
     await wait_for_alpine(page)
+    await page.evaluate("""
+        window._dropdownEvents = [];
+        document.addEventListener('chirpui:dropdown-selected', (e) => {
+            window._dropdownEvents.push(e.detail);
+        });
+    """)
 
     trigger = page.locator("[data-testid='dropdown-select-container'] .chirpui-dropdown__trigger")
     await trigger.click()
@@ -180,12 +186,21 @@ async def test_dropdown_select_arrow_keys(page, base_url):
         "[data-testid='dropdown-select-container'] .chirpui-dropdown__selected"
     ).text_content()
     assert selected.strip() == "Option B"
+    events = await page.evaluate("window._dropdownEvents")
+    assert events[-1]["label"] == "Option B"
+    assert events[-1]["value"] == "b"
 
 
 async def test_dropdown_select_click_item(page, base_url):
     """Clicking an item in dropdown select updates the selected text."""
     await page.goto(base_url + "/dropdown")
     await wait_for_alpine(page)
+    await page.evaluate("""
+        window._dropdownEvents = [];
+        document.addEventListener('chirpui:dropdown-selected', (e) => {
+            window._dropdownEvents.push(e.detail);
+        });
+    """)
 
     trigger = page.locator("[data-testid='dropdown-select-container'] .chirpui-dropdown__trigger")
     await trigger.click()
@@ -203,3 +218,6 @@ async def test_dropdown_select_click_item(page, base_url):
         "[data-testid='dropdown-select-container'] .chirpui-dropdown__selected"
     ).text_content()
     assert selected.strip() == "Option B"
+    events = await page.evaluate("window._dropdownEvents")
+    assert events[-1]["label"] == "Option B"
+    assert events[-1]["value"] == "b"

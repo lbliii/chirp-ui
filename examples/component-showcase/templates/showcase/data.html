@@ -11,6 +11,7 @@
 {% from "chirpui/status.html" import status_indicator %}
 {% from "chirpui/spinner.html" import spinner, spinner_thinking %}
 {% from "chirpui/skeleton.html" import skeleton %}
+{% from "chirpui/button.html" import btn %}
 
 {% call container() %}
 {% call stack() %}
@@ -82,36 +83,81 @@
 {% end %}
 <div id="data_table_content"
      hx-get="/data/table"
-     hx-trigger="load"
      hx-target="#data_table_content"
      hx-include="#data_filters"
      hx-swap="innerHTML transition:true">
+  {% set pagination_base = "/data/table?page={page}&sort=" ~ sort_col ~ "&dir=" ~ sort_dir ~ "&q=" ~ (q | e) ~ "&role=" ~ (role | e) ~ "&density=" ~ (density | default("comfortable") | e) %}
+  {% if total_rows > 0 %}
+  <p class="chirpui-text-muted chirpui-font-sm" style="margin-bottom: 0.5rem;">
+    Showing {{ start_row }}–{{ end_row }} of {{ total_rows }}
+  </p>
+  {% end %}
+  {% if rows %}
+  <form id="data_table_form">
   <div class="chirpui-table-wrap">
-    <table class="chirpui-table chirpui-table--striped">
+    <table class="chirpui-table chirpui-table--striped chirpui-table--{{ density | default("comfortable") }}">
       <thead class="chirpui-table__head">
         <tr>
           <th class="chirpui-table__th" style="width: 2.5rem;"></th>
-          <th class="chirpui-table__th">Name</th>
-          <th class="chirpui-table__th">Email</th>
-          <th class="chirpui-table__th">Role</th>
+          <th class="chirpui-table__th">
+            <button type="button" class="chirpui-table__sort"
+                    hx-boost="false"
+                    hx-get="/data/table?page=1&sort=name&dir=desc&q=&role=&density={{ density | default("comfortable") | e }}"
+                    hx-target="#data_table_content"
+                    hx-swap="innerHTML transition:true"
+                    hx-push-url="true">Name ↑</button>
+          </th>
+          <th class="chirpui-table__th">
+            <button type="button" class="chirpui-table__sort"
+                    hx-boost="false"
+                    hx-get="/data/table?page=1&sort=email&dir=asc&q=&role=&density={{ density | default("comfortable") | e }}"
+                    hx-target="#data_table_content"
+                    hx-swap="innerHTML transition:true"
+                    hx-push-url="true">Email</button>
+          </th>
+          <th class="chirpui-table__th">
+            <button type="button" class="chirpui-table__sort"
+                    hx-boost="false"
+                    hx-get="/data/table?page=1&sort=role&dir=asc&q=&role=&density={{ density | default("comfortable") | e }}"
+                    hx-target="#data_table_content"
+                    hx-swap="innerHTML transition:true"
+                    hx-push-url="true">Role</button>
+          </th>
           <th class="chirpui-table__th">Status</th>
           <th class="chirpui-table__th">Last active</th>
         </tr>
       </thead>
       <tbody class="chirpui-table__body">
-        {% for _ in range(5) %}
+        {% for r in rows %}
         <tr class="chirpui-table__row">
-          <td class="chirpui-table__td">{{ skeleton(width="1rem", height="1rem") }}</td>
-          <td class="chirpui-table__td">{{ skeleton(width="60%", height="1em") }}</td>
-          <td class="chirpui-table__td">{{ skeleton(width="80%", height="1em") }}</td>
-          <td class="chirpui-table__td">{{ skeleton(width="40%", height="1em") }}</td>
-          <td class="chirpui-table__td">{{ skeleton(width="3rem", height="1em") }}</td>
-          <td class="chirpui-table__td">{{ skeleton(width="4rem", height="1em") }}</td>
+          <td class="chirpui-table__td">
+            <input type="checkbox" name="selected" value="{{ r[1] | e }}"
+                   hx-get="/data/bulk-bar"
+                   hx-trigger="change"
+                   hx-include="#data_table_form"
+                   hx-target="#data_bulk_bar"
+                   hx-swap="innerHTML">
+          </td>
+          <td class="chirpui-table__td">
+            <span class="chirpui-table__avatar" aria-hidden="true">{{ r[5] }}</span>
+            {{ r[0] }}
+          </td>
+          <td class="chirpui-table__td">{{ r[1] }}</td>
+          <td class="chirpui-table__td">{{ r[2] }}</td>
+          <td class="chirpui-table__td">{{ status_indicator({"success": "Active", "warning": "Away", "default": "Offline"}[r[3]], variant=r[3]) }}</td>
+          <td class="chirpui-table__td chirpui-text-muted chirpui-font-sm">{{ r[4] }}</td>
         </tr>
         {% end %}
       </tbody>
     </table>
   </div>
+  {{ pagination(current=page, total=total_pages, url_pattern=pagination_base, hx_target="#data_table_content", hx_push_url=true, hx_swap="innerHTML transition:true") }}
+  </form>
+  {% else %}
+  {% call empty_state(icon="✧", title="No results") %}
+  <p>Try adjusting your search or filters.</p>
+  {% end %}
+  {% end %}
 </div>
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
   Search, filter, pagination, and column sort via Fragment routes. No full page reload.
@@ -137,7 +183,7 @@
 {% call stack(gap="sm") %}
 {% call empty_state(icon="✧", title="No Projects") %}
 <p>Create your first project to get started.</p>
-<button type="button">+ New Project</button>
+{% slot actions %}{{ btn("+ New Project", variant="primary", type="button") }}{% end %}
 {% end %}
 {% call empty_state(title="No items yet", action_label="Create item", action_href="/new") %}
 <p>Use <code>action_label</code> and <code>action_href</code> for a primary CTA.</p>

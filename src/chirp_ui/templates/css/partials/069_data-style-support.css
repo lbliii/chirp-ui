@@ -329,6 +329,29 @@
     box-shadow: var(--chirpui-neu-pressed);
 }
 
+[data-style="neumorphic"] .chirpui-split-btn {
+    box-shadow: var(--chirpui-neu-raised-sm);
+}
+
+[data-style="neumorphic"] .chirpui-split-btn .chirpui-split-btn__primary,
+[data-style="neumorphic"] .chirpui-split-btn .chirpui-split-btn__trigger {
+    background: var(--chirpui-split-btn-bg);
+    border-color: var(--chirpui-split-btn-border);
+    color: var(--chirpui-split-btn-color);
+    box-shadow: none;
+}
+
+[data-style="neumorphic"] .chirpui-split-btn .chirpui-split-btn__trigger {
+    border-inline-start-color: var(--chirpui-split-btn-divider);
+}
+
+[data-style="neumorphic"] .chirpui-split-btn .chirpui-split-btn__primary:hover:not(:disabled),
+[data-style="neumorphic"] .chirpui-split-btn .chirpui-split-btn__trigger:hover,
+[data-style="neumorphic"] .chirpui-split-btn .chirpui-split-btn__trigger[aria-expanded="true"] {
+    background: var(--chirpui-split-btn-bg-hover);
+    box-shadow: none;
+}
+
 /* --- Active sidebar link accent --- */
 [data-style="neumorphic"] :is(.chirpui-sidebar__link--active, .chirpui-sidebar__link[aria-current="page"]) {
     background: color-mix(in srgb, var(--chirpui-accent) 16%, var(--chirpui-neu-surface-alt));
@@ -425,4 +448,3 @@
 }
 
 /* end neumorphic theme */
-

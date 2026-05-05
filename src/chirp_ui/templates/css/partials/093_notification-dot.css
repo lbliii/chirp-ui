@@ -51,13 +51,13 @@
     align-items: center;
     justify-content: center;
     padding-inline: 0.375rem;
-    border: 2px solid var(--chirpui-bg);
+    border: 1px solid color-mix(in srgb, var(--chirpui-bg) 55%, currentColor 45%);
     color: var(--chirpui-on-accent);
     font-size: var(--chirpui-font-xs);
     font-weight: var(--chirpui-ui-font-weight-semibold);
     line-height: 1;
     font-variant-numeric: tabular-nums;
-    box-shadow: var(--chirpui-shadow-sm);
+    box-shadow: 0 1px 2px color-mix(in srgb, black 18%, transparent);
 }
 
 .chirpui-notification-dot--count.chirpui-notification-dot--warning .chirpui-notification-dot__dot {
@@ -95,4 +95,3 @@
     background: var(--chirpui-error);
     color: var(--chirpui-on-accent);
 }
-

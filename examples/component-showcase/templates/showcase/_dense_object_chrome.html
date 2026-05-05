@@ -16,23 +16,29 @@
 {% call block() %}
 {% call stack(gap="sm") %}
 {% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Project workspace navigation") %}
-  {{ logo(text="chirp-ui", image_src="/static/chirpui-logo.svg", href="/", variant="both") }}
-  {{ primary_nav([
-    {"label": "Code", "href": "/workspaces/chirp-ui/code", "match": "prefix"},
-    {"label": "Issues", "href": "/workspaces/chirp-ui/issues", "badge": 27, "badge_label": "27 open issues"},
-    {"label": "Runs", "href": "/workspaces/chirp-ui/runs", "badge_loading": true},
-    {"divider": true},
-    {"label": "Inbox", "href": "/inbox", "badge_expected": true},
-  ], current_path="/workspaces/chirp-ui/code/navigation") }}
-  {{ command_palette_trigger(target="project-object-palette", label="Search project", placeholder="Search or jump", shortcut="/", icon="search", density="sm") }}
-  {{ dropdown_menu(btn("Create", variant="ghost", size="sm"), items=[
-    {"label": "New issue", "href": "/workspaces/chirp-ui/issues/new"},
-    {"label": "New branch", "href": "/workspaces/chirp-ui/branches/new"},
-    {"divider": true},
-    {"label": "Import workflow", "action": "import-workflow"}
-  ], id="project-create-menu") }}
-  {{ icon_btn("envelope", href="/notifications", aria_label="Notifications") }}
-  {{ avatar(initials="LL", alt="Lawrence Lane", size="sm") }}
+  <div class="chirpui-action-strip__primary">
+    {{ logo(text="chirp-ui", image_src="/static/chirpui-logo.svg", href="/", variant="both") }}
+  </div>
+  <div class="chirpui-action-strip__controls">
+    {{ primary_nav([
+      {"label": "Code", "href": "/workspaces/chirp-ui/code", "match": "prefix"},
+      {"label": "Issues", "href": "/workspaces/chirp-ui/issues", "badge": 27, "badge_label": "27 open issues"},
+      {"label": "Runs", "href": "/workspaces/chirp-ui/runs", "badge_loading": true},
+      {"divider": true},
+      {"label": "Inbox", "href": "/inbox", "badge_expected": true},
+    ], current_path="/workspaces/chirp-ui/code/navigation") }}
+    {{ command_palette_trigger(target="project-object-palette", label="Search project", placeholder="Search or jump", shortcut="/", icon="search", density="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ dropdown_menu(btn("Create", variant="ghost", size="sm"), items=[
+      {"label": "New issue", "href": "/workspaces/chirp-ui/issues/new"},
+      {"label": "New branch", "href": "/workspaces/chirp-ui/branches/new"},
+      {"divider": true},
+      {"label": "Import workflow", "action": "import-workflow"}
+    ], id="project-create-menu") }}
+    {{ icon_btn("envelope", href="/notifications", aria_label="Notifications") }}
+    {{ avatar(initials="LL", alt="Lawrence Lane", size="sm") }}
+  </div>
 {% end %}
 {{ command_palette(id="project-object-palette", search_url="/data/table", placeholder="Search project...") }}
 {{ breadcrumbs([
@@ -76,17 +82,23 @@
 {% call block() %}
 {% call stack(gap="sm") %}
 {% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Settings workspace navigation") %}
-  {{ logo(text="Acme", href="/admin", variant="text") }}
-  {{ primary_nav([
-    {"label": "Overview", "href": "/admin"},
-    {"label": "Settings", "href": "/admin/settings", "match": "prefix"},
-    {"label": "Members", "href": "/admin/members", "badge": 14, "badge_label": "14 members"},
-    {"label": "Billing", "href": "/admin/billing", "badge_expected": true},
-  ], current_path="/admin/settings/access") }}
-  {{ command_palette_trigger(target="settings-object-palette", label="Search settings", placeholder="Find setting", shortcut="⌘K", icon="search", density="sm") }}
-  {{ badge("Unsaved", variant="warning") }}
-  {{ btn("Save", variant="primary", size="sm") }}
-  {{ avatar(initials="AC", alt="Acme Admin", size="sm") }}
+  <div class="chirpui-action-strip__primary">
+    {{ logo(text="Acme", href="/admin", variant="text") }}
+  </div>
+  <div class="chirpui-action-strip__controls">
+    {{ primary_nav([
+      {"label": "Overview", "href": "/admin"},
+      {"label": "Settings", "href": "/admin/settings", "match": "prefix"},
+      {"label": "Members", "href": "/admin/members", "badge": 14, "badge_label": "14 members"},
+      {"label": "Billing", "href": "/admin/billing", "badge_expected": true},
+    ], current_path="/admin/settings/access") }}
+    {{ command_palette_trigger(target="settings-object-palette", label="Search settings", placeholder="Find setting", shortcut="⌘K", icon="search", density="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ badge("Unsaved", variant="warning") }}
+    {{ btn("Save", variant="primary", size="sm") }}
+    {{ avatar(initials="AC", alt="Acme Admin", size="sm") }}
+  </div>
 {% end %}
 {{ command_palette(id="settings-object-palette", search_url="/data/table", placeholder="Search settings...") }}
 {{ breadcrumbs([

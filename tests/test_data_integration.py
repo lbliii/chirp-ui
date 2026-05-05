@@ -68,6 +68,7 @@ SHOWCASE_FRAGMENT_OR_ACTION_ROUTES = {
     "/forms/demo",
     "/ui/tab/{name}",
     "/streaming/demo",
+    "/streaming/retry",
     "/data/table",
     "/data/bulk-bar",
     "/data/export",

@@ -8,7 +8,6 @@
     white-space: nowrap;
     padding: 0 var(--chirpui-spacing-sm);
     font-size: var(--chirpui-ui-sm);
-    color: var(--chirpui-text-muted);
+    color: color-mix(in srgb, currentColor 76%, transparent);
 }
-
 

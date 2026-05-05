@@ -16,8 +16,8 @@
 {% from "chirpui/nav_tree.html" import nav_tree %}
 {% from "chirpui/panel.html" import panel %}
 
-{% def file_tree(items, title=none, subtitle=none, show_icons=false, branch_mode="disclosure", surface_variant="muted", scroll_body=true, cls="") %}
-{% set tree_cls = "chirpui-file-tree" ~ (" " ~ cls if cls else "") %}
+{% def file_tree(items, title=none, subtitle=none, show_icons=false, branch_mode="disclosure", surface_variant="muted", scroll_body=true, variant="explorer", cls="") %}
+{% set tree_cls = "chirpui-file-tree chirpui-file-tree--" ~ variant ~ (" " ~ cls if cls else "") %}
 {% call panel(title=title, subtitle=subtitle, surface_variant=surface_variant, scroll_body=scroll_body, cls=tree_cls) %}
 {% slot actions %}{% yield actions %}{% end %}
 {% call nav_tree(items=items, show_icons=show_icons, branch_mode=branch_mode, cls="chirpui-file-tree__nav") %}

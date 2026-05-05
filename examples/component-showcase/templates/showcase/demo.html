@@ -3,22 +3,29 @@
 {% block main %}
 {% from "chirpui/layout.html" import container, stack, block, page_header %}
 {% from "chirpui/streaming.html" import model_card %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/button.html" import btn %}
 
 {% call container() %}
 {% call stack() %}
 {{ page_header("Unified Demo", subtitle="Form submit → Fragment (card) → SSE stream → OOB toast. Full Chirp stack in one flow.") }}
 
-<div id="demo_content" class="chirpui-stack chirpui-stack--sm">
+<div id="demo_content" class="chirpui-stack chirpui-stack--sm" aria-live="polite">
+  {% call surface(variant="muted") %}
   <form hx-post="/demo/submit"
         hx-target="#demo_content"
         hx-swap="innerHTML"
-        class="chirpui-stack chirpui-stack--sm"
-        style="max-width: 24rem;">
-    <label class="chirpui-field__label" for="prompt">Prompt</label>
-    <input class="chirpui-field__input" id="prompt" name="prompt" type="text"
-           placeholder="Type something..." value="Hello">
-    <button type="submit" class="chirpui-btn chirpui-btn--primary">Submit</button>
+        class="chirpui-stack chirpui-stack--sm">
+    <div class="chirpui-field">
+      <label class="chirpui-field__label" for="prompt">Prompt</label>
+      <input class="chirpui-field__input" id="prompt" name="prompt" type="text"
+             placeholder="Ask for a short UI summary..." value="Hello">
+    </div>
+    <div class="chirpui-actions">
+      {{ btn("Submit", variant="primary", type="submit") }}
+    </div>
   </form>
+  {% end %}
 </div>
 
 {% end %}

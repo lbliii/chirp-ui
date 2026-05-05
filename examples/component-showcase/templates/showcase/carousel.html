@@ -17,7 +17,7 @@
 </header>
 
 <h2>Compact (card strip)</h2>
-{% call carousel(variant="compact", slide_count=4, show_dots=true) %}
+{% call carousel(variant="compact", slide_count=5, show_dots=true) %}
 {% call carousel_slide(1) %}
 {% call card(title="Slide 1") %}
 {% slot footer %}Card{% end %}
@@ -42,9 +42,15 @@
 <p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted); font-size: 0.875rem;">No JavaScript required.</p>
 {% end %}
 {% end %}
+{% call carousel_slide(5) %}
+{% call card(title="Slide 5") %}
+{% slot footer %}Card{% end %}
+<p class="chirpui-text-muted" style="margin: 0; color: var(--chirpui-text-muted); font-size: 0.875rem;">Overflow is available without a visible scrollbar.</p>
+{% end %}
+{% end %}
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
-  carousel(variant="compact", slide_count=4, show_dots=true)
+  carousel(variant="compact", slide_count=5, show_dots=true)
 </p>
 
 <h2>Page (hero)</h2>

@@ -380,6 +380,7 @@
     padding: var(--chirpui-page-header-padding);
     background: var(--chirpui-page-header-bg);
     border: var(--chirpui-page-header-border);
+    margin-inline: calc(var(--chirpui-page-header-padding) * -1);
 }
 
 .chirpui-page-header__top {
@@ -534,6 +535,10 @@
     --chirpui-page-header-border: 1px solid var(--chirpui-border-subtle);
     flex-direction: row;
     align-items: center;
+}
+
+.chirpui-page-header--compact {
+    margin-inline: 0;
 }
 
 .chirpui-page-header--compact .chirpui-page-header__top {

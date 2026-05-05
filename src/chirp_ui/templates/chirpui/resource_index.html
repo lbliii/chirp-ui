@@ -16,7 +16,6 @@
 {% from "chirpui/empty.html" import empty_state %}
 {% from "chirpui/filter_bar.html" import filter_bar %}
 {% from "chirpui/search_header.html" import search_header %}
-{% from "chirpui/selection_bar.html" import selection_bar %}
 
 {% def resource_index(title, search_action, query="", subtitle=none, search_name="q", search_placeholder="Search...", button_label="Search", button_icon="⌕", search_method="get", filter_action=none, filter_method="get", filter_surface_variant="default", filter_density="sm", filter_label=none, filter_state_name=none, filter_state_value=none, selected_count=0, selected_label="filters selected", selected_aria_label=none, results_title=none, results_subtitle=none, results_layout="stack", results_cols=2, results_gap="md", has_results=true, empty_title="No results found", empty_icon="search", empty_hint=none, empty_message=none, mutation_result_id=none, cls="") %}
 {% set results_layout = results_layout | validate_variant(("stack", "grid"), "stack") %}
@@ -52,10 +51,13 @@
 {% end %}
 {% endif %}
 
-{% call selection_bar(count=selected_count, label=selected_label, aria_label=selected_aria_label or selected_label) %}
-{% slot selection %}
-{% end %}
-{% end %}
+<div class="chirpui-selection-bar" role="toolbar" aria-label="{{ selected_aria_label or selected_label }}"{% if selected_count <= 0 %} hidden{% endif %}>
+    <span class="chirpui-selection-bar__count">{{ selected_count }} {{ selected_label }}</span>
+    <div class="chirpui-selection-bar__actions">
+        {% slot selection %}
+        {% end %}
+    </div>
+</div>
 
 {% slot filters_panel %}
 {% end %}

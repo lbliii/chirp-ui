@@ -51,8 +51,15 @@
 }
 
 .chirpui-empty-state__action {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     margin-top: var(--chirpui-spacing);
+}
+
+.chirpui-empty-state__action.chirpui-btn,
+.chirpui-empty-state__action .chirpui-btn {
+    line-height: 1;
 }
 
 .chirpui-empty-state__action:empty {
@@ -89,4 +96,3 @@
 .chirpui-empty-panel-state--compact .chirpui-empty-state__action {
     margin-top: var(--chirpui-spacing-sm);
 }
-
