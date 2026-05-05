@@ -53,7 +53,7 @@ HELPER: Render a menu item (desktop/mobile)
         {% if item.href == '#' %}
         <span class="nav-dropdown-trigger" tabindex="0" role="button" aria-haspopup="true"><bdi>{{ item.name }}</bdi></span>
         {% else %}
-        <a href="{{ item.href | absolute_url }}" {{ 'aria-current="page"' | safe if is_active else '' }}><bdi>{{ item.name }}</bdi></a>
+        <a href="{{ item.href | absolute_url }}"{% if is_active %} aria-current="page"{% end %}><bdi>{{ item.name }}</bdi></a>
         {% end %}
         <button type="button" class="mobile-nav-toggle-submenu" aria-label="Toggle {{ item.name }} submenu" aria-expanded="false">
             {{ icon('caret-down', size=16) }}
@@ -64,7 +64,7 @@ HELPER: Render a menu item (desktop/mobile)
     <span class="nav-dropdown-trigger" tabindex="0" role="button" aria-haspopup="true"><bdi>{{ item.name }}</bdi></span>
     {% else %}
     {# Regular navigation link #}
-    <a href="{{ item.href | absolute_url }}" {{ 'aria-current="page"' | safe if is_active else '' }}><bdi>{{ item.name }}</bdi></a>
+    <a href="{{ item.href | absolute_url }}"{% if is_active %} aria-current="page"{% end %}><bdi>{{ item.name }}</bdi></a>
     {% end %}
 
     {% if has_children %}

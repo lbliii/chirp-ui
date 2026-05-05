@@ -160,12 +160,12 @@ exclude_lines = [
 
 [dependency-groups]
 docs = [
-    "bengal>=0.3.0",
+    "bengal>=0.3.2",
     "lunr>=0.7.0",
 ]
 dev = [
     # Bengal-backed theme packaging/build tests run in the normal test suite
-    "bengal>=0.3.0",
+    "bengal>=0.3.2",
     # Task runner (poe tasks in [tool.poe.tasks])
     "poethepoet>=0.32.0",
     # Testing
