@@ -1,5 +1,6 @@
 {#- chirp-ui: Split button component
     Primary action + dropdown of secondary actions.
+    Requires Alpine.js for positioned menu behavior.
 
     Usage:
         from "chirpui/split_button.html" import split_button
@@ -18,7 +19,15 @@
 {% def split_button(primary_label, primary_href=none, primary_submit=false,
                    variant="primary", cls="") %}
 {% set variant_class = " chirpui-btn--" ~ variant if variant else "" %}
-<div class="chirpui-split-btn{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-split-btn{{ " " ~ cls if cls else "" }}"
+     x-id="['split-button-menu']"
+     :data-align-x="alignX"
+     :data-align-y="alignY"
+     x-data="chirpuiDropdown()"
+     @keydown.escape.prevent.stop="close($refs.trigger)"
+     @focusin.window="!$refs.panel?.contains($event.target) && close($refs.trigger)"
+     @click.outside="close($refs.trigger)"
+     @resize.window="open && reposition()">
     {% if primary_href %}
     <a class="chirpui-btn chirpui-split-btn__primary{{ variant_class }}" href="{{ primary_href }}"{{ route_link_attrs(primary_href) | html_attrs }}>
         {{ primary_label }}
@@ -32,13 +41,18 @@
         {{ primary_label }}
     </button>
     {% end %}
-    <details class="chirpui-split-btn__dropdown">
-        <summary class="chirpui-split-btn__trigger" aria-label="More options">▾</summary>
-        <div class="chirpui-split-btn__menu">
+    <div class="chirpui-split-btn__dropdown">
+        <button type="button" class="chirpui-split-btn__trigger" x-ref="trigger"
+                aria-label="More options" aria-haspopup="menu" :aria-expanded="open"
+                :aria-controls="$id('split-button-menu')"
+                @click="toggle()">▾</button>
+        <div class="chirpui-split-btn__menu" x-ref="panel" :id="$id('split-button-menu')" role="menu"
+             x-show="open" x-cloak x-transition
+             @click="close()">
             <div class="chirpui-split-btn__menu-header">{% slot header %}</div>
             {% slot %}
             <div class="chirpui-split-btn__menu-footer">{% slot footer %}</div>
         </div>
-    </details>
+    </div>
 </div>
 {% end %}

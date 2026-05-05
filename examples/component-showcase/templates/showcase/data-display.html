@@ -39,7 +39,24 @@
 
 <h2>Tree View</h2>
 {% call block() %}
-{{ tree_view(nodes=[{"id": "1", "label": "Docs", "children": [{"id": "1a", "label": "API", "children": []}, {"id": "1b", "label": "Guide", "children": []}]}, {"id": "2", "label": "Source", "children": []}]) }}
+{{ tree_view(nodes=[
+  {"id": "1", "label": "Docs", "children": [
+    {"id": "1a", "label": "API", "children": [
+      {"id": "1a1", "label": "components.md", "children": []},
+      {"id": "1a2", "label": "routes.md", "children": []},
+    ]},
+    {"id": "1b", "label": "Guide", "children": [
+      {"id": "1b1", "label": "layout.md", "children": []},
+      {"id": "1b2", "label": "forms.md", "children": []},
+    ]},
+  ]},
+  {"id": "2", "label": "Source", "children": [
+    {"id": "2a", "label": "chirp_ui", "children": [
+      {"id": "2a1", "label": "components.py", "children": []},
+      {"id": "2a2", "label": "templates", "children": []},
+    ]},
+  ]},
+], variant="explorer") }}
 {% end %}
 
 <h2>Calendar</h2>

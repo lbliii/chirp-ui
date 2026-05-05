@@ -3,6 +3,10 @@
    ========================================================================== */
 
 .chirpui-pulsing-btn {
+    --chirpui-pulsing-btn-bg: var(--chirpui-surface);
+    --chirpui-pulsing-btn-bg-hover: var(--chirpui-bg-subtle);
+    --chirpui-pulsing-btn-color: var(--chirpui-text);
+    --chirpui-pulsing-btn-ring: color-mix(in srgb, var(--chirpui-border) 70%, transparent);
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -11,21 +15,45 @@
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
     font-size: var(--chirpui-ui-sm);
     font-weight: 500;
-    color: var(--chirpui-bg);
-    background: var(--chirpui-accent);
-    border: none;
+    color: var(--chirpui-pulsing-btn-color);
+    background: var(--chirpui-pulsing-btn-bg);
+    border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius);
     cursor: pointer;
-    transition: background var(--chirpui-transition);
+    transition: background var(--chirpui-transition), border-color var(--chirpui-transition),
+        color var(--chirpui-transition);
 }
-.chirpui-pulsing-btn:hover { background: var(--chirpui-accent-hover); }
+.chirpui-pulsing-btn:hover { background: var(--chirpui-pulsing-btn-bg-hover); }
 .chirpui-pulsing-btn__ring {
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: var(--chirpui-accent);
+    background: var(--chirpui-pulsing-btn-ring);
     animation: chirpui-pulse-ring 2s var(--chirpui-ease-decel) infinite;
     z-index: -1;
 }
 
+.chirpui-pulsing-btn--primary {
+    --chirpui-pulsing-btn-bg: var(--chirpui-accent);
+    --chirpui-pulsing-btn-bg-hover: var(--chirpui-accent-hover);
+    --chirpui-pulsing-btn-color: var(--chirpui-on-accent);
+    --chirpui-pulsing-btn-ring: var(--chirpui-accent);
+    border-color: var(--chirpui-accent);
+}
+
+.chirpui-pulsing-btn--success {
+    --chirpui-pulsing-btn-bg: var(--chirpui-success);
+    --chirpui-pulsing-btn-bg-hover: color-mix(in srgb, var(--chirpui-success) 86%, black);
+    --chirpui-pulsing-btn-color: var(--chirpui-on-accent);
+    --chirpui-pulsing-btn-ring: var(--chirpui-success);
+    border-color: var(--chirpui-success);
+}
+
+.chirpui-pulsing-btn--danger {
+    --chirpui-pulsing-btn-bg: var(--chirpui-error);
+    --chirpui-pulsing-btn-bg-hover: color-mix(in srgb, var(--chirpui-error) 86%, black);
+    --chirpui-pulsing-btn-color: var(--chirpui-on-accent);
+    --chirpui-pulsing-btn-ring: var(--chirpui-error);
+    border-color: var(--chirpui-error);
+}
 

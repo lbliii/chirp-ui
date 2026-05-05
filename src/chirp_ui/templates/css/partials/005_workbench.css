@@ -67,6 +67,10 @@
     padding: 0;
 }
 
+.chirpui-file-tree--plain {
+    --chirpui-file-tree-padding: var(--chirpui-spacing-md);
+}
+
 .chirpui-file-tree__nav {
     height: 100%;
 }
@@ -78,6 +82,61 @@
 
 .chirpui-file-tree__nav .chirpui-nav-tree__list {
     padding: 0 var(--chirpui-file-tree-padding) var(--chirpui-file-tree-padding);
+}
+
+.chirpui-file-tree--explorer .chirpui-nav-tree__list {
+    display: grid;
+    gap: var(--chirpui-spacing-2xs);
+}
+
+.chirpui-file-tree--explorer .chirpui-nav-tree__list--nested {
+    position: relative;
+    margin-inline-start: var(--chirpui-spacing);
+    padding: var(--chirpui-spacing-2xs) 0 var(--chirpui-spacing-2xs) var(--chirpui-spacing);
+    border-inline-start: 1px solid color-mix(in srgb, var(--chirpui-border) 70%, transparent);
+}
+
+.chirpui-file-tree--explorer :where(.chirpui-nav-tree__link, .chirpui-nav-tree__text) {
+    min-block-size: calc(var(--chirpui-spacing-xl) + var(--chirpui-spacing-xs));
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    border: 1px solid transparent;
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-file-tree--explorer :where(.chirpui-nav-tree__link, .chirpui-nav-tree__text):hover {
+    border-color: var(--chirpui-border-subtle);
+    background: var(--chirpui-state-surface-hover);
+    color: var(--chirpui-text);
+}
+
+.chirpui-file-tree--explorer .chirpui-nav-tree__link--active {
+    border-color: color-mix(in srgb, var(--chirpui-accent) 46%, var(--chirpui-border));
+}
+
+.chirpui-file-tree--explorer .chirpui-nav-tree__link--leaf,
+.chirpui-file-tree--explorer .chirpui-nav-tree__text--leaf {
+    padding-inline-start: var(--chirpui-spacing-sm);
+}
+
+.chirpui-file-tree--explorer .chirpui-nav-tree__title::before {
+    display: inline-flex;
+    justify-content: center;
+    inline-size: 1rem;
+    margin-inline-end: var(--chirpui-spacing-xs);
+    color: var(--chirpui-text-muted);
+    font-family: var(--chirpui-ascii-font);
+}
+
+.chirpui-file-tree--explorer .chirpui-nav-tree__item--branch > .chirpui-nav-tree__node > .chirpui-nav-tree__label .chirpui-nav-tree__title::before {
+    content: "▾";
+}
+
+.chirpui-file-tree--explorer .chirpui-nav-tree__item--branch > .chirpui-nav-tree__node:not([open]) > .chirpui-nav-tree__label .chirpui-nav-tree__title::before {
+    content: "▸";
+}
+
+.chirpui-file-tree--explorer .chirpui-nav-tree__item:not(.chirpui-nav-tree__item--branch) .chirpui-nav-tree__title::before {
+    content: "◇";
 }
 
 .chirpui-split-layout {
@@ -190,4 +249,3 @@
         grid-template-columns: minmax(0, 1fr);
     }
 }
-

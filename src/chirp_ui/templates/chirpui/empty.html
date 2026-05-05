@@ -29,7 +29,7 @@
     {% if illustration %}
     <div class="chirpui-empty-state__illustration">{{ illustration }}</div>
     {% elif icon %}
-    <div class="chirpui-empty-state__icon">{{ icon }}</div>
+    <div class="chirpui-empty-state__icon">{{ icon | icon }}</div>
     {% end %}
     <h2 class="chirpui-empty-state__title">{{ title }}</h2>
     {% if code %}

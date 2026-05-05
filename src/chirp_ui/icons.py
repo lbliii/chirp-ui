@@ -37,6 +37,7 @@ ICON_REGISTRY: dict[str, str] = {
     "bullet": "●",
     "star": "★",
     "spark": "✦",
+    "✧": "✧",
     # Domain / nav
     "home": "◉",
     "grid": "⊞",

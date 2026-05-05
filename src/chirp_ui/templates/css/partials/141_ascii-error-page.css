@@ -15,11 +15,14 @@
 .chirpui-ascii-error__art {
     font-family: var(--chirpui-ascii-font);
     font-size: 0.875rem;
-    line-height: 1.6;
+    font-variant-ligatures: none;
+    line-height: 1.15;
     color: var(--chirpui-text-muted);
     opacity: 0.6;
     margin: 0 0 var(--chirpui-spacing);
     white-space: pre;
+    text-align: left;
+    tab-size: 2;
     user-select: none;
 }
 .chirpui-ascii-error__code {
@@ -49,5 +52,4 @@
 .chirpui-ascii-error__action:empty {
     display: none;
 }
-
 

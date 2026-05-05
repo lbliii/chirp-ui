@@ -170,9 +170,9 @@
     }
 
     .chirpui-app-shell .chirpui-app-shell__main .chirpui-blade {
-        width: 100%;
-        max-width: 100%;
-        margin-inline: 0;
+        width: 100vw;
+        max-width: 100vw;
+        margin-inline: calc(50% - 50vw);
     }
 
     /* Parallax — subtle scroll-driven opacity (Chrome 115+); respects prefers-reduced-motion */

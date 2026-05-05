@@ -6,6 +6,9 @@
     overflow: clip;
     position: relative;
     width: 100%;
+    color: inherit;
+    isolation: isolate;
+    --chirpui-marquee-edge-bg: var(--chirpui-surface, var(--chirpui-bg));
 }
 .chirpui-marquee__track {
     display: flex;
@@ -31,11 +34,10 @@
 }
 .chirpui-marquee__fade--start {
     left: 0;
-    background: linear-gradient(to right, var(--chirpui-bg), transparent);
+    background: linear-gradient(to right, var(--chirpui-marquee-edge-bg), transparent);
 }
 .chirpui-marquee__fade--end {
     right: 0;
-    background: linear-gradient(to left, var(--chirpui-bg), transparent);
+    background: linear-gradient(to left, var(--chirpui-marquee-edge-bg), transparent);
 }
-
 

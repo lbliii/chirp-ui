@@ -35,11 +35,12 @@
 {% set _parent_state = consume("_sse_state", "") %}
 <button type="button"
         class="chirpui-sse-retry chirpui-btn chirpui-btn--sm{{ " " ~ cls if cls else "" }}"
-        x-data="{ retrying: false }"
-        @click="retrying = true"
-        @htmx:after-request.window="retrying = false"
+        x-data="chirpuiSseRetry()"
+        @click="retry()"
         :aria-busy="retrying"
         :class="{ 'chirpui-sse-retry--loading': retrying }"
+        hx-disinherit="hx-select"
+        hx-select="unset"
         hx-{{ method }}="{{ url }}"
         hx-target="{{ target }}"
         hx-swap="{{ swap }}"{% if _parent_state == "connected" %} disabled aria-disabled="true"{% end %}>

@@ -5,18 +5,19 @@
 .chirpui-streaming-block {
     min-height: 2rem;
     position: relative;
-    white-space: pre-wrap;
+    line-height: var(--chirpui-line-height-relaxed);
+    white-space: normal;
     overflow-wrap: anywhere;
 }
 
 .chirpui-streaming-block__cursor {
     display: inline-block;
     width: 2px;
-    height: 1em;
+    height: 1.05em;
     background: var(--chirpui-accent);
-    margin-left: 2px;
+    margin-inline-start: 0.15rem;
     animation: chirpui-cursor-blink var(--chirpui-anim-breath) step-end infinite;
-    vertical-align: text-bottom;
+    vertical-align: -0.12em;
 }
 
 .chirpui-streaming-block--active .chirpui-streaming-block__cursor {
@@ -117,6 +118,11 @@
     opacity: 0.8;
 }
 
+.chirpui-message-bubble .chirpui-streaming-block {
+    min-height: 0;
+    padding-block: var(--chirpui-spacing-2xs);
+}
+
 .chirpui-streaming-bubble__thinking {
     display: inline-flex;
     gap: 3px;
@@ -200,4 +206,3 @@
         animation: none;
     }
 }
-

@@ -291,12 +291,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         variants=("", "default", "primary", "success", "danger"),
         template="pulsing_button.html",
         extra_emits=("chirpui-pulsing-btn__ring",),
-        trim_emits=(
-            "chirpui-pulsing-btn--danger",
-            "chirpui-pulsing-btn--default",
-            "chirpui-pulsing-btn--primary",
-            "chirpui-pulsing-btn--success",
-        ),
+        trim_emits=("chirpui-pulsing-btn--default",),
         category="effect",
         maturity="experimental",
         macro="pulsing_button",
@@ -2072,6 +2067,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "tree": ComponentDescriptor(
         block="tree",
+        modifiers=("branch", "explorer", "plain"),
         elements=("item", "node", "label"),
         template="tree_view.html",
         extra_emits=("chirpui-tree__label--leaf",),
@@ -2841,6 +2837,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "file-tree": ComponentDescriptor(
         block="file-tree",
+        modifiers=("explorer", "plain"),
         elements=("nav",),
         slots=("actions", "header", "footer"),
         composes=("panel", "nav-tree"),
@@ -3049,6 +3046,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         template="split_button.html",
         category="control",
         maturity="stable",
+        requires=("alpine",),
         macro="split_button",
     ),
     "empty-state": ComponentDescriptor(

@@ -163,6 +163,7 @@ pre-paint theme/style initializer only.
 | Template / Component | Required JS | Notes |
 |---------------------|-------------|-------|
 | `dropdown_menu.html` | Alpine.js + `chirpui-alpine.js` | Uses `chirpuiDropdown()` / `chirpuiDropdownSelect()` |
+| `split_button.html` | Alpine.js + `chirpui-alpine.js` | Uses `chirpuiDropdown()` for positioned menu behavior |
 | `modal.html` | Alpine.js + `chirpui-alpine.js` | `modal_trigger` uses `chirpuiDialogTarget()`; native `<dialog>` remains the dialog surface |
 | `modal_overlay.html` | Alpine.js | Overlay behavior |
 | `tray.html` | Alpine.js | Slide-in panel |
@@ -5829,6 +5830,7 @@ File tree
 - **Authoring:** `available`
 - **Slots:** `actions`, `footer`, `header`
 - **Composes:** `nav-tree`, `panel`
+- **Modifiers:** `explorer`, `plain`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5839,6 +5841,7 @@ File tree
 | `branch_mode` | no | (has default) |
 | `surface_variant` | no | (has default) |
 | `scroll_body` | no | (has default) |
+| `variant` | no | (has default) |
 | `cls` | no | (has default) |
 
 | Slot | Target | Target slot |
@@ -8159,6 +8162,7 @@ Split button component
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
+- **Requires:** `alpine`
 - **Slots:** `(default)`, `footer`, `header`
 
 | Param | Required | Default |
@@ -8285,7 +8289,7 @@ SSE connection status and error recovery
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
-- **Requires:** `htmx`
+- **Requires:** `alpine`, `htmx`
 - **Modifiers:** `connected`, `disconnected`, `error`
 
 | Param | Required | Default |
@@ -8960,10 +8964,12 @@ Tree view component
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
+- **Modifiers:** `branch`, `explorer`, `plain`
 
 | Param | Required | Default |
 |-------|----------|---------|
 | `nodes` | yes | — |
+| `variant` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `trending-tag`

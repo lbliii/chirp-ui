@@ -229,30 +229,24 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 {% call card(title="Feature list") %}
 {% slot footer %}stack(gap=default){% end %}
 {% call stack(gap="sm") %}
-<div style="display: flex; align-items: center; gap: 0.5rem;">
-  <span style="font-size: 1.25rem;">◆</span>
-  <div>
-    <strong>Responsive grid</strong>
-    {{ badge("New", variant="success") }}
-    <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">Auto-fit columns with minmax. Resize to see it adapt.</p>
-  </div>
-</div>
-<div style="display: flex; align-items: center; gap: 0.5rem;">
-  <span style="font-size: 1.25rem;">◇</span>
-  <div>
-    <strong>Container queries</strong>
-    {{ badge("CSS", variant="primary") }}
-    <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">@container for component-level breakpoints.</p>
-  </div>
-</div>
-<div style="display: flex; align-items: center; gap: 0.5rem;">
-  <span style="font-size: 1.25rem;">○</span>
-  <div>
-    <strong>Direction-aware</strong>
-    {{ badge("RTL", variant="warning") }}
-    <p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">padding-inline, margin-inline for i18n.</p>
-  </div>
-</div>
+{% call media_object(align="start", use_slots=true) %}
+{% slot media %}<span style="font-size: 1.25rem; line-height: 1;">◆</span>{% end %}
+<strong>Responsive grid</strong>
+{{ badge("New", variant="success") }}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">Auto-fit columns with minmax. Resize to see it adapt.</p>
+{% end %}
+{% call media_object(align="start", use_slots=true) %}
+{% slot media %}<span style="font-size: 1.25rem; line-height: 1;">◇</span>{% end %}
+<strong>Container queries</strong>
+{{ badge("CSS", variant="primary") }}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">@container for component-level breakpoints.</p>
+{% end %}
+{% call media_object(align="start", use_slots=true) %}
+{% slot media %}<span style="font-size: 1.25rem; line-height: 1;">○</span>{% end %}
+<strong>Direction-aware</strong>
+{{ badge("RTL", variant="warning") }}
+<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin: 0.25rem 0 0; font-size: 0.875rem;">padding-inline, margin-inline for i18n.</p>
+{% end %}
 {% end %}
 {% end %}
 
@@ -381,26 +375,24 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 
 <h2>RTL toggle</h2>
 {% call block() %}
-<div class="chirpui-stack chirpui-stack--sm">
-  <div style="display: flex; gap: 0.5rem;">
-    <button type="button" class="chirpui-btn chirpui-btn--primary"
-            hx-get="/layout/dir?dir=ltr"
-            hx-target="#rtl_demo_content"
-            hx-swap="innerHTML">LTR</button>
-    <button type="button" class="chirpui-btn chirpui-btn--secondary"
-            hx-get="/layout/dir?dir=rtl"
-            hx-target="#rtl_demo_content"
-            hx-swap="innerHTML">RTL</button>
+<div id="rtl_demo" class="chirpui-stack chirpui-stack--sm">
+  <div class="chirpui-btn-group">
+    <a class="chirpui-btn {{ "chirpui-btn--primary" if direction == "ltr" else "chirpui-btn--secondary" }}"
+       href="/layout?dir=ltr#rtl_demo"
+       hx-boost="false"
+       {% if direction == "ltr" %}aria-current=page{% end %}>LTR</a>
+    <a class="chirpui-btn {{ "chirpui-btn--primary" if direction == "rtl" else "chirpui-btn--secondary" }}"
+       href="/layout?dir=rtl#rtl_demo"
+       hx-boost="false"
+       {% if direction == "rtl" %}aria-current=page{% end %}>RTL</a>
   </div>
-  <div id="rtl_demo_content">
-    <div dir="ltr" style="padding-inline: 1rem; margin-inline: 0.5rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); background: var(--chirpui-bg-subtle);">
-      <p style="margin: 0 0 0.5rem;"><strong>LTR</strong> — padding-inline and margin-inline flip with direction.</p>
-      <ul style="margin: 0; padding-inline-start: 1.5rem;">
-        <li>First item</li>
-        <li>Second item</li>
-        <li>Third item</li>
-      </ul>
-    </div>
+  <div dir="{{ direction }}" style="padding-inline: 1rem; margin-inline: 0.5rem; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius); background: var(--chirpui-bg-subtle);">
+    <p style="margin: 0 0 0.5rem;"><strong>{{ direction | upper }}</strong> — padding-inline and margin-inline flip with direction.</p>
+    <ul style="margin: 0; padding-inline-start: 1.5rem;">
+      <li>First item</li>
+      <li>Second item</li>
+      <li>Third item</li>
+    </ul>
   </div>
 </div>
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">

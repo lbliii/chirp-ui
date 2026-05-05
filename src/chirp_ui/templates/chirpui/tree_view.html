@@ -13,16 +13,17 @@
         ])
 
     nodes: list of {id, label, children} where children is list of same structure.
+    variant: "branch" (default), "explorer", or "plain".
 -#}
 
-{% def tree_view(nodes, cls="") %}
-<ul class="chirpui-tree{{ " " ~ cls if cls else "" }}">
+{% def tree_view(nodes, variant="branch", cls="") %}
+<ul class="chirpui-tree chirpui-tree--{{ variant }}{{ " " ~ cls if cls else "" }}">
     {% for node in nodes %}
     <li class="chirpui-tree__item">
         {% if node.get("children") %}
         <details class="chirpui-tree__node">
             <summary class="chirpui-tree__label">{{ node.label | default("") }}</summary>
-            {{ tree_view(node.children) }}
+            {{ tree_view(node.children, variant=variant) }}
         </details>
         {% else %}
         <span class="chirpui-tree__label chirpui-tree__label--leaf">{{ node.label | default("") }}</span>

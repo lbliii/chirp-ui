@@ -72,11 +72,20 @@
 {% call block() %}
 {% call file_tree(items=[
     {"title": "src", "open": true, "children": [
-        {"title": "main.py", "href": "/chrome"},
-        {"title": "app", "children": [{"title": "routes.py", "href": "/chrome"}]},
+        {"title": "main.py", "href": "/chrome", "active": true},
+        {"title": "app", "open": true, "children": [
+            {"title": "routes.py", "href": "/chrome"},
+            {"title": "views.py", "href": "/chrome"},
+        ]},
+        {"title": "static", "children": [
+            {"title": "app.css", "href": "/chrome"},
+        ]},
+    ]},
+    {"title": "tests", "children": [
+        {"title": "test_app.py", "href": "/chrome"},
     ]},
     {"title": "README.md", "href": "/"},
-], title="Repository", show_icons=true) %}
+], title="Repository", subtitle="Workbench file explorer", show_icons=false) %}
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
   file_tree(items=[…], title=…) — wraps <code>nav_tree</code> in a scrollable panel.

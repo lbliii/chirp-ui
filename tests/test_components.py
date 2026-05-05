@@ -994,6 +994,15 @@ class TestEmptyState:
         assert 'href="/new"' in html
         assert "Create" in html
 
+    def test_empty_state_resolves_semantic_icon_names(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/empty.html" import empty_state %}'
+            '{{ empty_state(icon="diamond", title="No results") }}'
+        ).render()
+        assert "chirpui-empty-state__icon" in html
+        assert "◇" in html
+        assert "diamond" not in html
+
     def test_empty_state_action_uses_route_link_attrs_when_available(
         self, env: Environment
     ) -> None:
@@ -3648,6 +3657,8 @@ class TestActionContainers:
             "align-items: center"
             in css.split(".chirpui-action-strip__inner", 1)[1].split("}", 1)[0]
         )
+        field_rule = css.split(".chirpui-action-strip__inner .chirpui-field", 1)[1].split("}", 1)[0]
+        assert "margin-block-end: 0" in field_rule
 
     def test_filter_bar(self, env: Environment) -> None:
         html = env.from_string(
@@ -3690,6 +3701,7 @@ class TestActionContainers:
     def test_resource_index_grid_results(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/resource_index.html" import resource_index %}'
+            '{% from "chirpui/card.html" import resource_card %}'
             "{% call resource_index("
             '"Skills", "/skills", query="doc", subtitle="Browse skills", '
             'filter_action="/skills", filter_label="Tag filters", selected_count=2, '
@@ -3698,7 +3710,7 @@ class TestActionContainers:
             "{% slot toolbar_controls %}<button>Filters</button>{% end %}"
             '{% slot filter_actions %}<button type="submit">Clear</button>{% end %}'
             "{% slot selection %}<a>python x</a>{% end %}"
-            "<article>Skill A</article>"
+            '{{ resource_card("/skills/a", "Skill A", description="Docs") }}'
             "{% end %}"
         ).render()
         assert "chirpui-resource-index" in html
@@ -3707,6 +3719,10 @@ class TestActionContainers:
         assert "chirpui-selection-bar" in html
         assert "chirpui-grid--cols-2" in html
         assert "Skill A" in html
+        selection_segment = html.split("chirpui-selection-bar", 1)[1].split(
+            "chirpui-resource-index__results", 1
+        )[0]
+        assert "Skill A" not in selection_segment
 
     def test_resource_index_empty_state(self, env: Environment) -> None:
         html = env.from_string(
@@ -5013,6 +5029,19 @@ class TestSplitButton:
         ).render()
         assert 'type="submit"' in html
 
+    def test_split_button_uses_positioned_alpine_menu(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/split_button.html" import split_button %}'
+            '{% call split_button("Save", primary_href="/save") %}'
+            '<a href="/export">Export</a>'
+            "{% end %}"
+        ).render()
+        assert 'x-data="chirpuiDropdown()"' in html
+        assert 'x-ref="trigger"' in html
+        assert 'aria-haspopup="menu"' in html
+        assert 'role="menu"' in html
+        assert "x-cloak" in html
+
 
 class TestPopover:
     def test_popover(self, env: Environment) -> None:
@@ -5380,6 +5409,8 @@ class TestSseStatus:
         ).render()
         assert "chirpui-sse-retry" in html
         assert 'hx-get="/api/stream/123"' in html
+        assert 'hx-select="unset"' in html
+        assert 'hx-disinherit="hx-select"' in html
         assert "Retry" in html
 
     def test_sse_retry_custom_label(self, env: Environment) -> None:
@@ -6419,6 +6450,24 @@ class TestCSS:
         assert ".chirpui-collapse" in content
         assert ".chirpui-tooltip" in content
         assert ".chirpui-toggle" in content
+
+    def test_split_button_css_keeps_segments_fused(self) -> None:
+        """Split buttons should render as one compound control, not two adjacent buttons."""
+        from pathlib import Path
+
+        css_path = (
+            Path(__file__).resolve().parent.parent
+            / "src"
+            / "chirp_ui"
+            / "templates"
+            / "chirpui.css"
+        )
+        content = css_path.read_text()
+        assert "--chirpui-split-btn-divider" in content
+        assert ".chirpui-split-btn:has(.chirpui-btn--primary)" in content
+        assert ".chirpui-split-btn .chirpui-split-btn__primary" in content
+        assert "box-shadow: none;" in content
+        assert "border-inline-start: 1px solid var(--chirpui-split-btn-divider)" in content
 
     def test_ascii_animation_classes_exist(self) -> None:
         """All ascii animation variants must have matching CSS."""
@@ -7752,10 +7801,12 @@ class TestPreHydrationSafety:
     def test_dropdown_select_menu_has_x_cloak(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/dropdown_menu.html" import dropdown_select %}'
-            '{{ dropdown_select("Pick", items=[{"label": "A"}, {"label": "B"}]) }}'
+            '{{ dropdown_select("Pick", items=[{"label": "A", "value": "a"}, {"label": "B", "value": "b"}]) }}'
         ).render()
         assert "x-cloak" in html
         assert 'x-data="chirpuiDropdownSelect()"' in html
+        assert 'aria-label="Pick"' in html
+        assert 'data-value="b"' in html
 
     def test_dropdown_split_menu_has_x_cloak(self, env: Environment) -> None:
         html = env.from_string(

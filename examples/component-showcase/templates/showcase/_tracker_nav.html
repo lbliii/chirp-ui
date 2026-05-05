@@ -21,18 +21,24 @@
 {% call block() %}
 {% call stack(gap="sm") %}
 {% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Tracker global navigation") %}
-  {{ logo(text="Linepath", href="/tracker", variant="text") }}
-  {{ scope_switcher("Product team", items=[
-    {"label": "Product team", "href": "/tracker/teams/product"},
-    {"label": "Platform team", "href": "/tracker/teams/platform"},
-    {"label": "Support team", "href": "/tracker/teams/support"},
-    {"divider": true},
-    {"label": "All teams", "href": "/tracker/teams"}
-  ], id="tracker-team-menu", aria_label="Switch tracker team") }}
-  {{ command_palette_trigger(target="tracker-palette", label="Open tracker command menu", placeholder="Go to issue, project, view", shortcut="K", icon="shortcut", density="sm") }}
-  {{ btn("New issue", variant="primary", size="sm") }}
-  {{ icon_btn("alert", href="/tracker/notifications", aria_label="Notifications") }}
-  {{ avatar(initials="LP", alt="Linepath user", size="sm") }}
+  <div class="chirpui-action-strip__primary">
+    {{ logo(text="Linepath", href="/tracker", variant="text") }}
+    {{ scope_switcher("Product team", items=[
+      {"label": "Product team", "href": "/tracker/teams/product"},
+      {"label": "Platform team", "href": "/tracker/teams/platform"},
+      {"label": "Support team", "href": "/tracker/teams/support"},
+      {"divider": true},
+      {"label": "All teams", "href": "/tracker/teams"}
+    ], id="tracker-team-menu", aria_label="Switch tracker team") }}
+  </div>
+  <div class="chirpui-action-strip__controls">
+    {{ command_palette_trigger(target="tracker-palette", label="Open tracker command menu", placeholder="Go to issue, project, view", shortcut="K", icon="shortcut", density="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ btn("New issue", variant="primary", size="sm") }}
+    {{ icon_btn("alert", href="/tracker/notifications", aria_label="Notifications") }}
+    {{ avatar(initials="LP", alt="Linepath user", size="sm") }}
+  </div>
 {% end %}
 {{ command_palette(id="tracker-palette", search_url="/data/table", placeholder="Search issues, projects, views, and commands...") }}
 {% call frame(variant="sidebar-start", gap="lg") %}

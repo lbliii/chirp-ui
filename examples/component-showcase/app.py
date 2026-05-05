@@ -116,7 +116,10 @@ async def navigation(request: Request) -> Template:
 
 @app.route("/layout", template="showcase/layout.html")
 async def layout(request: Request) -> Template:
-    return _page(request, "showcase/layout.html")
+    direction = request.query.get("dir", "ltr")
+    if direction not in {"ltr", "rtl"}:
+        direction = "ltr"
+    return _page(request, "showcase/layout.html", direction=direction)
 
 
 @app.route("/chrome", template="showcase/chrome.html")
@@ -264,6 +267,11 @@ async def streaming_demo(request: Request) -> EventStream:
         yield SSEEvent(event="done", data="complete")
 
     return EventStream(generate())
+
+
+@app.route("/streaming/retry", methods=["GET"])
+async def streaming_retry(request: Request) -> Fragment:
+    return Fragment("showcase/_streaming_retry.html", "retry_status")
 
 
 # Team roster: name, email, role, status, last_active, avatar
@@ -415,7 +423,24 @@ async def calendar_view(
 
 @app.route("/data", template="showcase/data.html")
 async def data(request: Request) -> Template:
-    return _page(request, "showcase/data.html")
+    rows = _filter_table_data("", "", "name", "asc")[:PAGE_SIZE]
+    total_rows = len(TABLE_DATA)
+    total_pages = max(1, (total_rows + PAGE_SIZE - 1) // PAGE_SIZE)
+    return _page(
+        request,
+        "showcase/data.html",
+        rows=rows,
+        page=1,
+        total_pages=total_pages,
+        total_rows=total_rows,
+        start_row=1,
+        end_row=len(rows),
+        sort_col="name",
+        sort_dir="asc",
+        q="",
+        role="",
+        density="comfortable",
+    )
 
 
 @app.route("/effects", template="showcase/effects.html")

@@ -154,7 +154,7 @@
 </p>
 {% call action_strip(surface_variant="muted", density="sm") %}
   <div class="chirpui-action-strip__primary">
-    <form class="chirpui-measure-sm">
+    <form>
       {{ search_bar("q_actions", variant="with-button", placeholder="Search users...") }}
     </form>
   </div>
@@ -286,26 +286,26 @@
 
 <h2>Drag &amp; Drop</h2>
 <p class="chirpui-text-muted chirpui-font-sm">
-  Row-based sortable list and kanban board variants. Alpine/HTMX wiring is left to the consumer.
+  Row-based sortable list and kanban board variants with showcase-only Alpine wiring.
 </p>
 {% call block() %}
 <p class="chirpui-text-muted chirpui-font-sm chirpui-mb-md">Row variant (dnd_list + dnd_item + dnd_handle):</p>
-{% call dnd_list() %}
-  {% call dnd_item() %}{{ dnd_handle() }} Item one{% end %}
-  {% call dnd_item() %}{{ dnd_handle() }} Item two{% end %}
-  {% call dnd_item() %}{{ dnd_handle() }} Item three{% end %}
+{% call dnd_list(attrs_unsafe='x-data="{ dragging: null, move(target) { if (!this.dragging || this.dragging === target) return; const rows = Array.from(target.parentElement.children); rows.indexOf(this.dragging) < rows.indexOf(target) ? target.after(this.dragging) : target.before(this.dragging); } }" @dragover.prevent') %}
+  {% call dnd_item(attrs_unsafe='draggable="true" @dragstart="$el.classList.add(&quot;chirpui-dnd__item--dragging&quot;); dragging = $el" @dragend="$el.classList.remove(&quot;chirpui-dnd__item--dragging&quot;); dragging = null" @dragover.prevent @drop.prevent="move($el)"') %}{{ dnd_handle() }} Item one{% end %}
+  {% call dnd_item(attrs_unsafe='draggable="true" @dragstart="$el.classList.add(&quot;chirpui-dnd__item--dragging&quot;); dragging = $el" @dragend="$el.classList.remove(&quot;chirpui-dnd__item--dragging&quot;); dragging = null" @dragover.prevent @drop.prevent="move($el)"') %}{{ dnd_handle() }} Item two{% end %}
+  {% call dnd_item(attrs_unsafe='draggable="true" @dragstart="$el.classList.add(&quot;chirpui-dnd__item--dragging&quot;); dragging = $el" @dragend="$el.classList.remove(&quot;chirpui-dnd__item--dragging&quot;); dragging = null" @dragover.prevent @drop.prevent="move($el)"') %}{{ dnd_handle() }} Item three{% end %}
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm chirpui-mb-md chirpui-mt-md">Board variant (dnd_board + dnd_column + dnd_card):</p>
-{% call dnd_board() %}
-  {% call dnd_column(title="To Do") %}
-    {% call dnd_card() %}Task 1{% end %}
-    {% call dnd_card() %}Task 2{% end %}
+{% call dnd_board(attrs_unsafe='x-data="{ dragging: null }"') %}
+  {% call dnd_column(title="To Do", attrs_unsafe='@dragover.prevent="$el.querySelector(&quot;.chirpui-dnd__column-body&quot;).classList.add(&quot;chirpui-dnd__column-body--over&quot;)" @dragleave="$el.querySelector(&quot;.chirpui-dnd__column-body&quot;).classList.remove(&quot;chirpui-dnd__column-body--over&quot;)" @drop.prevent="$el.querySelector(&quot;.chirpui-dnd__column-body&quot;).classList.remove(&quot;chirpui-dnd__column-body--over&quot;); if (dragging) $el.querySelector(&quot;.chirpui-dnd__column-body&quot;).appendChild(dragging)"') %}
+    {% call dnd_card(attrs_unsafe='draggable="true" @dragstart="$el.classList.add(&quot;chirpui-dnd__card--dragging&quot;); dragging = $el" @dragend="$el.classList.remove(&quot;chirpui-dnd__card--dragging&quot;); dragging = null"') %}Task 1{% end %}
+    {% call dnd_card(attrs_unsafe='draggable="true" @dragstart="$el.classList.add(&quot;chirpui-dnd__card--dragging&quot;); dragging = $el" @dragend="$el.classList.remove(&quot;chirpui-dnd__card--dragging&quot;); dragging = null"') %}Task 2{% end %}
   {% end %}
-  {% call dnd_column(title="In Progress") %}
-    {% call dnd_card() %}Task 3{% end %}
+  {% call dnd_column(title="In Progress", attrs_unsafe='@dragover.prevent="$el.querySelector(&quot;.chirpui-dnd__column-body&quot;).classList.add(&quot;chirpui-dnd__column-body--over&quot;)" @dragleave="$el.querySelector(&quot;.chirpui-dnd__column-body&quot;).classList.remove(&quot;chirpui-dnd__column-body--over&quot;)" @drop.prevent="$el.querySelector(&quot;.chirpui-dnd__column-body&quot;).classList.remove(&quot;chirpui-dnd__column-body--over&quot;); if (dragging) $el.querySelector(&quot;.chirpui-dnd__column-body&quot;).appendChild(dragging)"') %}
+    {% call dnd_card(attrs_unsafe='draggable="true" @dragstart="$el.classList.add(&quot;chirpui-dnd__card--dragging&quot;); dragging = $el" @dragend="$el.classList.remove(&quot;chirpui-dnd__card--dragging&quot;); dragging = null"') %}Task 3{% end %}
   {% end %}
-  {% call dnd_column(title="Done") %}
-    {% call dnd_card() %}Task 4{% end %}
+  {% call dnd_column(title="Done", attrs_unsafe='@dragover.prevent="$el.querySelector(&quot;.chirpui-dnd__column-body&quot;).classList.add(&quot;chirpui-dnd__column-body--over&quot;)" @dragleave="$el.querySelector(&quot;.chirpui-dnd__column-body&quot;).classList.remove(&quot;chirpui-dnd__column-body--over&quot;)" @drop.prevent="$el.querySelector(&quot;.chirpui-dnd__column-body&quot;).classList.remove(&quot;chirpui-dnd__column-body--over&quot;); if (dragging) $el.querySelector(&quot;.chirpui-dnd__column-body&quot;).appendChild(dragging)"') %}
+    {% call dnd_card(attrs_unsafe='draggable="true" @dragstart="$el.classList.add(&quot;chirpui-dnd__card--dragging&quot;); dragging = $el" @dragend="$el.classList.remove(&quot;chirpui-dnd__card--dragging&quot;); dragging = null"') %}Task 4{% end %}
   {% end %}
 {% end %}
 {% end %}

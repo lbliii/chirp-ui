@@ -82,12 +82,20 @@
 </div>
 {% end %}
 
-<h2>Extended palette</h2>
+<h2>Historic & technical signs</h2>
 <p class="chirpui-text-muted" style="margin-top: -0.5rem;">
-  Chains, shortcuts, sequence, flow — all support blink, pulse, rotate, etc.
+  Symbols from writing systems, astronomy, craft, math, and interface notation — all support blink, pulse, rotate, etc.
 </p>
 {% call block() %}
 <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 1.5rem;">
+  {{ ascii_icon("𒀭") }}
+  {{ ascii_icon("☉") }}
+  {{ ascii_icon("☽") }}
+  {{ ascii_icon("☿") }}
+  {{ ascii_icon("♄") }}
+  {{ ascii_icon("☷") }}
+  {{ ascii_icon("⌬") }}
+  {{ ascii_icon("⟁") }}
   {{ ascii_icon("⛓") }}
   {{ ascii_icon("⌘") }}
   {{ ascii_icon("⋯") }}
@@ -102,16 +110,28 @@
   {{ ascii_icon("→") }}
 </div>
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
-  ⛓ chains · ⌘ shortcut · ⋯ sequence · ⇢ flow · ⟶ pipeline · ↻ cycle · ⌕ search · ◊ link · ↔ compare · ⇒ strong action · ≡ settings
+  𒀭 star/divine sign · ☉ sun · ☽ moon · ☿ mercury · ♄ saturn · ☷ trigram · ⌬ benzene · ⟁ triangle · ⛓ chain · ⌘ shortcut · ⋯ sequence · ⇢ flow · ⟶ pipeline · ↻ cycle · ⌕ search
 </p>
 {% end %}
 
-<h2>Extended palette with states</h2>
+<h2>Animated signs</h2>
 <p class="chirpui-text-muted" style="margin-top: -0.5rem;">
-  Animated variants for extended symbols.
+  Animated variants for the broader symbol palette.
 </p>
 {% call block() %}
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)); gap: 1rem;">
+  <div style="text-align: center; padding: 0.75rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 1.5rem;">{{ ascii_icon("𒀭", animation="glow") }}</div>
+    <code class="chirpui-font-xs">𒀭 glow</code>
+  </div>
+  <div style="text-align: center; padding: 0.75rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 1.5rem;">{{ ascii_icon("☉", animation="pulse") }}</div>
+    <code class="chirpui-font-xs">☉ pulse</code>
+  </div>
+  <div style="text-align: center; padding: 0.75rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
+    <div style="font-size: 1.5rem;">{{ ascii_icon("⌬", animation="wiggle") }}</div>
+    <code class="chirpui-font-xs">⌬ wiggle</code>
+  </div>
   <div style="text-align: center; padding: 0.75rem; background: var(--chirpui-bg-subtle); border-radius: var(--chirpui-radius);">
     <div style="font-size: 1.5rem;">{{ ascii_icon("⛓", animation="pulse") }}</div>
     <code class="chirpui-font-xs">⛓ pulse</code>

@@ -8,10 +8,12 @@
 
 .chirpui-dl {
     margin: 0;
+    min-width: 0;
 }
 
 .chirpui-dl__row {
     margin-bottom: var(--chirpui-spacing-sm);
+    min-width: 0;
 }
 
 .chirpui-dl__row:last-child {
@@ -23,12 +25,15 @@
     font-weight: 500;
     color: var(--chirpui-text-muted);
     margin: 0 0 var(--chirpui-spacing-xs) 0;
+    min-width: 0;
 }
 
 .chirpui-dl__detail {
     margin: 0;
     font-size: var(--chirpui-font-base);
     color: var(--chirpui-text);
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-dl--horizontal {
@@ -38,7 +43,7 @@
 
 .chirpui-dl--horizontal .chirpui-dl__row {
     display: grid;
-    grid-template-columns: minmax(var(--chirpui-dl-term-width, 8rem), auto) 1fr;
+    grid-template-columns: minmax(0, var(--chirpui-dl-term-width, 8rem)) minmax(0, 1fr);
     gap: var(--chirpui-spacing);
     align-items: baseline;
     margin-bottom: var(--chirpui-spacing-sm);
@@ -60,13 +65,25 @@
 .chirpui-dl__detail--path {
     font-family: var(--chirpui-mono-font-family);
     font-size: var(--chirpui-font-sm);
-    overflow: clip;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
 }
 
 .chirpui-dl__detail--number {
     text-align: right;
+}
+
+@container chirpui-layout (width < 28rem) {
+    .chirpui-dl--horizontal .chirpui-dl__row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--chirpui-spacing-xs);
+        align-items: start;
+    }
+
+    .chirpui-dl__detail--number {
+        text-align: left;
+    }
 }
 
 /* Detail alignment overrides */
@@ -78,4 +95,3 @@
     color: var(--chirpui-text-muted);
     font-style: italic;
 }
-

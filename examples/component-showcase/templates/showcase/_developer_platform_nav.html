@@ -19,18 +19,24 @@
 {% call block() %}
 {% call stack(gap="sm") %}
 {% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Developer platform global navigation") %}
-  {{ logo(text="ForgeHub", href="/dev", variant="text") }}
-  {{ dropdown_menu(btn("Project scope", variant="ghost", size="sm"), items=[
-    {"label": "Project: api-gateway", "href": "/dev/groups/platform/projects/api-gateway"},
-    {"label": "Group: platform", "href": "/dev/groups/platform"},
-    {"label": "Profile: Maya", "href": "/dev/users/maya"},
-    {"divider": true},
-    {"label": "Browse all projects", "href": "/dev/projects"}
-  ], id="developer-scope-menu") }}
-  {{ command_palette_trigger(target="developer-platform-palette", label="Search or go to", placeholder="Search or go to project, issue, MR", shortcut="/", icon="search", density="sm") }}
-  {{ btn("New", variant="primary", size="sm") }}
-  {{ icon_btn("alert", href="/dev/todos", aria_label="To-dos") }}
-  {{ avatar(initials="FH", alt="ForgeHub user", size="sm") }}
+  <div class="chirpui-action-strip__primary">
+    {{ logo(text="ForgeHub", href="/dev", variant="text") }}
+    {{ dropdown_menu(btn("Project scope", variant="ghost", size="sm"), items=[
+      {"label": "Project: api-gateway", "href": "/dev/groups/platform/projects/api-gateway"},
+      {"label": "Group: platform", "href": "/dev/groups/platform"},
+      {"label": "Profile: Maya", "href": "/dev/users/maya"},
+      {"divider": true},
+      {"label": "Browse all projects", "href": "/dev/projects"}
+    ], id="developer-scope-menu") }}
+  </div>
+  <div class="chirpui-action-strip__controls">
+    {{ command_palette_trigger(target="developer-platform-palette", label="Search or go to", placeholder="Search or go to project, issue, MR", shortcut="/", icon="search", density="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ btn("New", variant="primary", size="sm") }}
+    {{ icon_btn("alert", href="/dev/todos", aria_label="To-dos") }}
+    {{ avatar(initials="FH", alt="ForgeHub user", size="sm") }}
+  </div>
 {% end %}
 {{ command_palette(id="developer-platform-palette", search_url="/data/table", placeholder="Search projects, issues, merge requests, and files...") }}
 {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Developer platform workflow navigation") %}

@@ -14,13 +14,15 @@
     scroll-behavior: smooth;
     padding-inline: var(--chirpui-spacing);
     padding-block-end: var(--chirpui-spacing-xs);
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--chirpui-border) 75%, transparent) transparent;
-    scrollbar-gutter: stable;
+    scrollbar-width: none;
+    scrollbar-gutter: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .chirpui-carousel__track::-webkit-scrollbar {
-    height: 0.45rem;
+    display: none;
+    width: 0;
+    height: 0;
 }
 
 .chirpui-carousel__track::-webkit-scrollbar-track {

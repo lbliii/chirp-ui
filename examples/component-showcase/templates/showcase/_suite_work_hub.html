@@ -21,24 +21,30 @@
 {% call block() %}
 {% call stack(gap="sm") %}
 {% call command_bar(surface_variant="default", density="md", wrap="scroll", aria_label="Suite work hub global navigation") %}
-  {{ logo(text="Workgrid", href="/suite", variant="text") }}
-  {{ scope_switcher("Design Org", items=[
-    {"label": "Design Org", "href": "/suite/orgs/design"},
-    {"label": "Platform Org", "href": "/suite/orgs/platform"},
-    {"label": "Customer Ops", "href": "/suite/orgs/customer-ops"},
-    {"divider": true},
-    {"label": "Manage organizations", "href": "/suite/orgs"}
-  ], id="suite-org-menu", aria_label="Switch suite organization") }}
-  {{ primary_nav([
-    {"label": "Work", "href": "/suite/work", "match": "prefix"},
-    {"label": "Strategy", "href": "/suite/strategy", "match": "prefix", "badge_expected": true},
-    {"label": "Workflow", "href": "/suite/workflow", "match": "prefix", "badge": 6, "badge_label": "6 workflow automations need review"},
-    {"label": "Company", "href": "/suite/company", "match": "prefix"},
-  ], current_path="/suite/work/projects/launch", aria_label="Suite modes") }}
-  {{ command_palette_trigger(target="suite-work-hub-palette", label="Search workspace", placeholder="Search work, people, projects", shortcut="K", icon="search", density="sm") }}
-  {{ btn("Create", variant="primary", size="sm") }}
-  {{ icon_btn("alert", href="/suite/inbox", aria_label="Inbox") }}
-  {{ avatar(initials="WL", alt="Workgrid user", size="sm") }}
+  <div class="chirpui-action-strip__primary">
+    {{ logo(text="Workgrid", href="/suite", variant="text") }}
+    {{ scope_switcher("Design Org", items=[
+      {"label": "Design Org", "href": "/suite/orgs/design"},
+      {"label": "Platform Org", "href": "/suite/orgs/platform"},
+      {"label": "Customer Ops", "href": "/suite/orgs/customer-ops"},
+      {"divider": true},
+      {"label": "Manage organizations", "href": "/suite/orgs"}
+    ], id="suite-org-menu", aria_label="Switch suite organization") }}
+  </div>
+  <div class="chirpui-action-strip__controls">
+    {{ primary_nav([
+      {"label": "Work", "href": "/suite/work", "match": "prefix"},
+      {"label": "Strategy", "href": "/suite/strategy", "match": "prefix", "badge_expected": true},
+      {"label": "Workflow", "href": "/suite/workflow", "match": "prefix", "badge": 6, "badge_label": "6 workflow automations need review"},
+      {"label": "Company", "href": "/suite/company", "match": "prefix"},
+    ], current_path="/suite/work/projects/launch", aria_label="Suite modes") }}
+    {{ command_palette_trigger(target="suite-work-hub-palette", label="Search workspace", placeholder="Search work, people, projects", shortcut="K", icon="search", density="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ btn("Create", variant="primary", size="sm") }}
+    {{ icon_btn("alert", href="/suite/inbox", aria_label="Inbox") }}
+    {{ avatar(initials="WL", alt="Workgrid user", size="sm") }}
+  </div>
 {% end %}
 {{ command_palette(id="suite-work-hub-palette", search_url="/data/table", placeholder="Find projects, people, tasks, and pages...") }}
 {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Suite work hub personal shortcuts") %}

@@ -8502,13 +8502,18 @@
       ],
       "emits": [
         "chirpui-file-tree",
+        "chirpui-file-tree--explorer",
+        "chirpui-file-tree--plain",
         "chirpui-file-tree__nav"
       ],
       "extra_emits": [],
       "lineno": 19,
       "macro": "file_tree",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "explorer",
+        "plain"
+      ],
       "params": [
         {
           "has_default": false,
@@ -8544,6 +8549,11 @@
           "has_default": true,
           "is_required": false,
           "name": "scroll_body"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
         },
         {
           "has_default": true,
@@ -14336,6 +14346,9 @@
       "elements": [],
       "emits": [
         "chirpui-pulsing-btn",
+        "chirpui-pulsing-btn--danger",
+        "chirpui-pulsing-btn--primary",
+        "chirpui-pulsing-btn--success",
         "chirpui-pulsing-btn__ring"
       ],
       "extra_emits": [
@@ -14393,10 +14406,7 @@
       "template": "pulsing_button.html",
       "tokens": [],
       "trim_emits": [
-        "chirpui-pulsing-btn--danger",
-        "chirpui-pulsing-btn--default",
-        "chirpui-pulsing-btn--primary",
-        "chirpui-pulsing-btn--success"
+        "chirpui-pulsing-btn--default"
       ],
       "variants": [
         "",
@@ -14567,7 +14577,7 @@
         "chirpui-resource-index__search"
       ],
       "extra_emits": [],
-      "lineno": 21,
+      "lineno": 20,
       "macro": "resource_index",
       "maturity": "stable",
       "modifiers": [],
@@ -17062,7 +17072,7 @@
       "category": "control",
       "composes": [],
       "consumes": [],
-      "description": "Split button component\n    Primary action + dropdown of secondary actions.\n\n    Usage:\n        from \"chirpui/split_button.html\" import split_button\n\n        call split_button(\"Save\", primary_href=\"/save\", variant=\"primary\")\n            <a href=\"/save-as\">Save as...</a>\n            <a href=\"/export\">Export</a>\n        end\n\n        Inside a form (primary = submit):\n        call split_button(\"Submit\", primary_submit=true, variant=\"primary\")\n            <button type=\"button\" formaction=\"/draft\">Save draft</button>\n        end",
+      "description": "Split button component\n    Primary action + dropdown of secondary actions.\n    Requires Alpine.js for positioned menu behavior.\n\n    Usage:\n        from \"chirpui/split_button.html\" import split_button\n\n        call split_button(\"Save\", primary_href=\"/save\", variant=\"primary\")\n            <a href=\"/save-as\">Save as...</a>\n            <a href=\"/export\">Export</a>\n        end\n\n        Inside a form (primary = submit):\n        call split_button(\"Submit\", primary_submit=true, variant=\"primary\")\n            <button type=\"button\" formaction=\"/draft\">Save draft</button>\n        end",
       "elements": [
         "dropdown",
         "menu",
@@ -17081,7 +17091,7 @@
         "chirpui-split-btn__trigger"
       ],
       "extra_emits": [],
-      "lineno": 18,
+      "lineno": 19,
       "macro": "split_button",
       "maturity": "stable",
       "modifiers": [],
@@ -17113,7 +17123,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -17584,6 +17596,7 @@
       ],
       "provides": [],
       "requires": [
+        "alpine",
         "htmx"
       ],
       "role": "component",
@@ -20199,7 +20212,7 @@
       "category": "data-display",
       "composes": [],
       "consumes": [],
-      "description": "Tree view component\n    Hierarchical data with expand/collapse via native details/summary.\n\n    Usage:\n        from \"chirpui/tree_view.html\" import tree_view\n\n        tree_view(nodes=[\n            {\"id\": \"1\", \"label\": \"Docs\", \"children\": [\n                {\"id\": \"1a\", \"label\": \"API\", \"children\": []},\n                {\"id\": \"1b\", \"label\": \"Guide\", \"children\": []}\n            ]},\n            {\"id\": \"2\", \"label\": \"Source\", \"children\": []}\n        ])\n\n    nodes: list of {id, label, children} where children is list of same structure.",
+      "description": "Tree view component\n    Hierarchical data with expand/collapse via native details/summary.\n\n    Usage:\n        from \"chirpui/tree_view.html\" import tree_view\n\n        tree_view(nodes=[\n            {\"id\": \"1\", \"label\": \"Docs\", \"children\": [\n                {\"id\": \"1a\", \"label\": \"API\", \"children\": []},\n                {\"id\": \"1b\", \"label\": \"Guide\", \"children\": []}\n            ]},\n            {\"id\": \"2\", \"label\": \"Source\", \"children\": []}\n        ])\n\n    nodes: list of {id, label, children} where children is list of same structure.\n    variant: \"branch\" (default), \"explorer\", or \"plain\".",
       "elements": [
         "item",
         "label",
@@ -20207,6 +20220,9 @@
       ],
       "emits": [
         "chirpui-tree",
+        "chirpui-tree--branch",
+        "chirpui-tree--explorer",
+        "chirpui-tree--plain",
         "chirpui-tree__item",
         "chirpui-tree__label",
         "chirpui-tree__label--leaf",
@@ -20215,15 +20231,24 @@
       "extra_emits": [
         "chirpui-tree__label--leaf"
       ],
-      "lineno": 18,
+      "lineno": 19,
       "macro": "tree_view",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "branch",
+        "explorer",
+        "plain"
+      ],
       "params": [
         {
           "has_default": false,
           "is_required": true,
           "name": "nodes"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
         },
         {
           "has_default": true,
@@ -21338,7 +21363,7 @@
       "stable": 171
     },
     "component_requirements": {
-      "alpine": 20,
+      "alpine": 22,
       "htmx": 23
     },
     "component_roles": {
@@ -21369,7 +21394,7 @@
       "explicit_extra_blocks": 124,
       "explicit_extra_classes": 526,
       "explicit_trim_blocks": 71,
-      "explicit_trim_classes": 101
+      "explicit_trim_classes": 98
     },
     "token_categories": {
       "color": 181,

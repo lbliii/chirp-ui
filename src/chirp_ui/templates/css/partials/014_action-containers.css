@@ -3,7 +3,17 @@
    ========================================================================== */
 
 .chirpui-action-strip {
+    --chirpui-action-control-block-size: var(--chirpui-control-block-size);
+    --chirpui-action-control-padding-block: var(--chirpui-spacing-sm);
+    --chirpui-action-control-padding-inline: var(--chirpui-spacing-sm);
     width: 100%;
+}
+
+.chirpui-action-strip--sm,
+.chirpui-action-strip:has(.chirpui-btn--sm, .chirpui-icon-btn--sm) {
+    --chirpui-action-control-block-size: var(--chirpui-control-block-size-sm);
+    --chirpui-action-control-padding-block: var(--chirpui-spacing-xs);
+    --chirpui-action-control-padding-inline: var(--chirpui-spacing-sm);
 }
 
 .chirpui-action-strip__inner {
@@ -16,6 +26,21 @@
 
 .chirpui-action-strip__inner > * {
     flex: 0 0 auto;
+}
+
+.chirpui-action-strip__inner .chirpui-field {
+    margin-block-end: 0;
+}
+
+.chirpui-action-strip__inner .chirpui-field__input:not(textarea):not([type="checkbox"]):not([type="radio"]):not([multiple]),
+.chirpui-action-strip__inner .chirpui-search-bar__input {
+    min-block-size: var(--chirpui-action-control-block-size);
+    padding-block: var(--chirpui-action-control-padding-block);
+    padding-inline: var(--chirpui-action-control-padding-inline);
+}
+
+.chirpui-action-strip__inner select.chirpui-field__input:not([multiple]) {
+    padding-inline-end: calc(var(--chirpui-spacing-xl) + var(--chirpui-spacing-xs));
 }
 
 .chirpui-action-strip__primary,
@@ -86,7 +111,7 @@
 .chirpui-filter-bar .chirpui-action-strip__primary,
 .chirpui-filter-bar .chirpui-action-strip__controls,
 .chirpui-filter-bar .chirpui-action-strip__actions {
-    align-items: flex-end;
+    align-items: center;
 }
 
 .chirpui-filter-bar .chirpui-field {
@@ -99,7 +124,7 @@
 }
 
 .chirpui-filter-bar .chirpui-action-strip__actions {
-    align-self: flex-end;
+    align-self: center;
 }
 
 .chirpui-filter-row {
@@ -126,11 +151,30 @@
 }
 
 .chirpui-command-bar .chirpui-action-strip__primary {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
 }
 
 .chirpui-command-bar .chirpui-action-strip__primary > * {
     width: auto;
+}
+
+.chirpui-command-bar .chirpui-action-strip__controls {
+    flex: 1 1 24rem;
+    min-inline-size: min(100%, 16rem);
+}
+
+.chirpui-command-bar .chirpui-action-strip__actions {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+}
+
+.chirpui-command-bar .chirpui-primary-nav {
+    flex: 0 1 auto;
+}
+
+.chirpui-command-bar .chirpui-command-palette__trigger {
+    flex: 1 1 18rem;
+    max-inline-size: 24rem;
 }
 
 .chirpui-search-header__form {

@@ -84,7 +84,7 @@
      @click.outside="close($refs.trigger)"
      @resize.window="open && reposition()">
     <div class="chirpui-dropdown__trigger chirpui-dropdown__trigger--select" x-ref="trigger"
-         role="combobox" tabindex="0" aria-haspopup="listbox" :aria-expanded="open"
+         role="combobox" tabindex="0" aria-label="{{ trigger_label }}" aria-haspopup="listbox" :aria-expanded="open"
          :aria-controls="$id('dropdown-select')" :aria-activedescendant="open ? $id('listbox-option', focusedIndex) : ''"
          @click="toggle()">
         <span class="chirpui-dropdown__selected" x-text="selected">{{ display }}</span>
@@ -103,8 +103,8 @@
              x-ref="item-{{ loop.index0 }}"
              :id="$id('listbox-option', {{ loop.index0 }})"
              :class="{ 'chirpui-dropdown__item--selected': selected === $el.dataset.label }"
-             role="option" tabindex="-1" data-label="{{ lbl | e }}"
-             @click="selected = $el.dataset.label; close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: $el.dataset.label, value: $el.dataset.label })">
+             role="option" tabindex="-1" data-label="{{ lbl | e }}" data-value="{{ val | e }}"
+             @click="selected = $el.dataset.label; close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: $el.dataset.label, value: $el.dataset.value })">
             {% if item.get("icon") %}<span class="chirpui-dropdown__icon">{{ item.get("icon") }}</span>{% endif %}
             {{ lbl }}
         </div>
