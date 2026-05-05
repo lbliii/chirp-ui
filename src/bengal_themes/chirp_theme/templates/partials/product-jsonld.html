@@ -32,22 +32,22 @@ Usage in base.html or product layout:
   {% include "partials/product-jsonld.html" %}
 -#}
 
-{%- if page.structured_data and page.type == 'product' %}
+{%- if page.metadata.get('structured_data') and page.type == 'product' %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org/",
   "@type": "Product",
-  "name": {{ page.title | tojson }},
-  "description": {{ (page.description ?? page.summary ?? '') | tojson }},
-  {%- match page.images, page.image %}
+  "name": {{ page?.title | tojson }},
+  "description": {{ (page?.description ?? page?.summary ?? '') | tojson }},
+  {%- match page?.images, page?.image %}
     {% case images, _ if images %}"image": {{ images | tojson }},
     {% case _, image if image %}"image": {{ [image] | tojson }},
     {% case _ %}"image": [],
   {% end %}
-  {%- with page.sku as sku %}
+  {%- with page?.sku as sku %}
   "sku": {{ sku | tojson }},
   {% end %}
-  {%- with page.brand as brand %}
+  {%- with page?.brand as brand %}
   "brand": {
     "@type": "Brand",
     "name": {{ brand | tojson }}
@@ -55,17 +55,17 @@ Usage in base.html or product layout:
   {% end %}
   "offers": {
     "@type": "Offer",
-    {%- with page.price as price %}
+    {%- with page?.price as price %}
     "price": {{ price | string | tojson }},
     {% end %}
-    "priceCurrency": {{ (page.currency ?? "USD") | tojson }},
-    "availability": "https://schema.org/{{ 'InStock' if (page.in_stock ?? true) else 'OutOfStock' }}",
-    {%- with page.url as url %}
+    "priceCurrency": {{ (page?.currency ?? "USD") | tojson }},
+    "availability": "https://schema.org/{{ 'InStock' if (page?.in_stock ?? true) else 'OutOfStock' }}",
+    {%- with page?.url as url %}
     "url": "{{ site.baseurl }}{{ url }}",
     {% end %}
-    "priceValidUntil": "{{ page.price_valid_until ?? (now() | dateformat('%Y-12-31')) }}"
+    "priceValidUntil": "{{ page?.price_valid_until ?? (now() | dateformat('%Y-12-31')) }}"
   }
-  {%- with page.aggregate_rating as rating %}
+  {%- with page?.aggregate_rating as rating %}
   ,
   "aggregateRating": {
     "@type": "AggregateRating",

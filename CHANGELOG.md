@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed `app_layout.html` to use Chirp's current injected Alpine runtime, load the data-theme-aware starter theme, and avoid duplicate/stale Alpine scripts in showcase-style apps.
+- Fixed the docs-site build wrapper and chirp-theme optional metadata/menu defaults so published release pages render under the current Bengal CLI.
 - Fixed dropdown select events to preserve option values and hardened split button menu positioning and fused visual styling.
 - Fixed shell-frame boosted navigation scroll restoration, hash-anchor landing, and split panel Alpine drag state issues found while running the 0.6.0 browser release gate.
 

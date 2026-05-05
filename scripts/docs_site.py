@@ -104,10 +104,10 @@ def main(argv: list[str]) -> int:
 
     command = argv[1]
     if command == "build":
-        _run_bengal("site", "build", "--clean-output", str(SITE_ROOT))
+        _run_bengal("build", "--clean-output", "--source", str(SITE_ROOT))
         return 0
 
-    _run_bengal("site", "serve", str(SITE_ROOT))
+    _run_bengal("serve", "--source", str(SITE_ROOT))
     return 0
 
 
