@@ -191,15 +191,25 @@ def test_theme_package_contains_required_resources() -> None:
     assert (package_root / "assets" / "favicon.svg").is_file()
 
 
-def test_chirp_theme_docs_frame_owns_grid_layout() -> None:
-    """The docs frame class should render as the actual sidebar/content layout."""
+def test_chirp_theme_templates_do_not_use_theme_adapter_macros() -> None:
+    """Theme templates should import Chirp UI macros directly instead of theme adapters."""
     package_root = resources.files(THEME_PACKAGE)
     primitives = (package_root / "templates" / "partials" / "theme-primitives.html").read_text(
         encoding="utf-8"
     )
+    template_text = "\n".join(
+        resource.read_text(encoding="utf-8")
+        for rel_path, resource in _iter_resource_files(package_root / "templates")
+        if rel_path.endswith(".html")
+    )
     css = (package_root / "assets" / "css" / "chirp-theme.css").read_text(encoding="utf-8")
 
-    assert "chirp-theme-docs-layout" in primitives
+    assert "def theme_" not in primitives
+    assert "theme_page_header" not in template_text
+    assert "theme_surface" not in template_text
+    assert "theme_link_card" not in template_text
+    assert "theme_docs_frame" not in template_text
+    assert "theme_feed" not in template_text
     assert ".chirp-theme-docs-layout {" in css
     assert "display: grid;" in css
     assert "grid-template-columns:" in css

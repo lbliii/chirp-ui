@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% from 'partials/theme-primitives.html' import theme_link_card %}
 {% from 'chirpui/button.html' import btn %}
+{% from 'chirpui/card.html' import resource_card %}
 {% from 'chirpui/hero.html' import page_hero %}
 {% from 'chirpui/layout.html' import cluster, container, grid %}
 
@@ -31,11 +31,7 @@
   {% if features | length > 0 %}
   {% call grid(cols=3, gap='md', cls='chirp-theme-home__grid') %}
     {% for feature in features %}
-    {{ theme_link_card(
-      feature?.href ?? feature?.url ?? '#',
-      feature?.title ?? 'Feature',
-      feature?.description ?? ''
-    ) }}
+    {{ resource_card((feature?.href ?? feature?.url ?? '#') | absolute_url, feature?.title ?? 'Feature', feature?.description ?? '') }}
     {% end %}
   {% end %}
   {% end %}
@@ -43,11 +39,7 @@
   {% if quick_links | length > 0 %}
   {% call grid(cols=3, gap='md', cls='chirp-theme-home__grid chirp-theme-home__grid--links') %}
     {% for link in quick_links %}
-    {{ theme_link_card(
-      link?.href ?? link?.url ?? '#',
-      link?.title ?? 'Link',
-      link?.description ?? ''
-    ) }}
+    {{ resource_card((link?.href ?? link?.url ?? '#') | absolute_url, link?.title ?? 'Link', link?.description ?? '') }}
     {% end %}
   {% end %}
   {% end %}

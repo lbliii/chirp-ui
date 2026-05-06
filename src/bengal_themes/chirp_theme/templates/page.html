@@ -3,8 +3,10 @@
 {% from 'partials/navigation-components.html' import page_navigation %}
 {% from 'partials/components/tags.html' import tag_list %}
 {% from 'partials/components/related-posts-simple.html' import related_posts_simple %}
-{% from 'partials/theme-primitives.html' import theme_page_header, theme_surface %}
+{% from 'partials/navigation-components.html' import breadcrumbs %}
+{% from 'chirpui/hero.html' import page_hero %}
 {% from 'chirpui/layout.html' import container %}
+{% from 'chirpui/surface.html' import surface %}
 
 {% block content %}
 {% let page_title = page?.title ?? 'Page' %}
@@ -12,9 +14,13 @@
 {% let css_class = params?.css_class ?? '' %}
 
 {% call container(cls='chirp-theme-page') %}
-  {% call theme_surface('chirp-theme-page__article ' ~ css_class) %}
+  {% call surface(variant='default', cls='chirp-theme-page__article ' ~ css_class) %}
   <article class="page prose chirp-theme-page__article">
-    {{ theme_page_header(page_title, params?.description ?? meta_desc ?? none, 'Page', breadcrumb_page=page, cls='chirp-theme-page__header') }}
+    {% call page_hero(title=page_title, subtitle=params?.description ?? meta_desc ?? none, variant='minimal', background='solid', cls='chirp-theme-page__header') %}
+      {% slot eyebrow %}
+      {{ breadcrumbs(page) }}
+      {% end %}
+    {% end %}
 
     <div class="page-content chirp-theme-page__content">
       {{ content | safe }}
