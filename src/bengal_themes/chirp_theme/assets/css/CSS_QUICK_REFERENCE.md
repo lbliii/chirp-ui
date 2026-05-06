@@ -98,7 +98,7 @@ base/
 components/
   dropdown.css       → .dropdown* scoping
   api-docs.css       → .prose.api-content scoping
-  hub-cards.css      → retained hub/card-like landing patterns
+  docs-nav.css       → retained docs shell integration
 ```
 
 ---

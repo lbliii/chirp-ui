@@ -24,11 +24,6 @@
 
 }
 
-/* Scroll-driven fade-in for hero content */
-.hero.fade-in-on-scroll {
-  /* Will be animated by scroll-animations.css */
-}
-
 [data-theme="dark"] .hero {
   background: linear-gradient(135deg,
       var(--color-bg-primary) 0%,
@@ -68,11 +63,6 @@
   letter-spacing: var(--letter-spacing-tighter);
   color: var(--color-text-primary);
 
-}
-
-/* Scroll-driven slide-up animation */
-.hero__title.slide-up-on-scroll {
-  /* Will be animated by scroll-animations.css */
 }
 
 .hero__subtitle {

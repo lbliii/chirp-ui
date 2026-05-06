@@ -62,14 +62,11 @@ Displays a tag cloud widget with most frequently used tags.
 {% if top_tags | length > 0 %}
 <div class="popular-tags-widget">
   <h3>{{ t('tags.popular', default='Popular Topics') }}</h3>
-  <div class="tag-cloud">
+  {% call cluster(gap='xs', cls='tag-cloud') %}
     {% for tag, count in top_tags %}
-    <a href="{{ tag_url(tag) }}" class="tag-bubble squeeze" data-count="{{ count }}">
-      {{ tag }}
-      <span class="tag-count">{{ count }}</span>
-    </a>
+    {{ badge(tag ~ ' ' ~ count, href=tag_url(tag), variant='muted', cls='tag-bubble') }}
     {% end %}
-  </div>
+  {% end %}
 </div>
 {% end %}
 {% end %}

@@ -59,11 +59,7 @@
 
 @layer utilities {
   @import url('utilities/motion.css');
-  @import url('utilities/scroll-animations.css');
   @import url('utilities/gradient-borders.css');
-  @import url('utilities/fluid-blobs.css');
-  @import url('utilities/micro-interactions.css');
-  @import url('utilities/skeleton.css');
 }
 
 @layer base {
@@ -185,11 +181,6 @@
 
 @layer components {
   @import url('components/icons.css');
-}
-
-@layer components {
-  /* Shared hub landing page styles (tracks, api-hub, etc.) */
-  @import url('components/hub-cards.css');
 }
 
 @layer components {

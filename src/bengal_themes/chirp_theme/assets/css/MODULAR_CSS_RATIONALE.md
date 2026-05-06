@@ -25,7 +25,7 @@ Bengal uses **modular CSS architecture** with 45+ component files instead of con
 
 **Modular (Current):**
 - Find button styles: `components/buttons.css` (408 lines)
-- Find retained hub-card styles: `components/hub-cards.css`
+- Find retained docs navigation styles: `components/docs-nav.css`
 - Clear, predictable file names
 
 **Consolidated (Proposed):**
@@ -107,7 +107,7 @@ Bengal uses **modular CSS architecture** with 45+ component files instead of con
 | Component | File | Lines | Status |
 |-----------|------|-------|--------|
 | Buttons | `buttons.css` | 408 | ✅ Manageable |
-| Hub cards | `hub-cards.css` | retained | ✅ Scoped to hub surfaces |
+| Docs navigation | `docs-nav.css` | retained | ✅ Scoped to docs shell integration |
 | Navigation | `navigation.css` | ~100 | ✅ Small |
 | TOC | `toc.css` | 758 | ✅ Manageable |
 | Code | `code.css` | 768 | ✅ Manageable |

@@ -46,7 +46,7 @@
    - Dark mode via `[data-theme="dark"]`
 
 2. **Modular CSS** ✅
-   - retained component files (buttons.css, forms.css, hub-cards.css, etc.)
+   - retained component files (buttons.css, forms.css, docs-nav.css, etc.)
    - Base utilities (reset, typography, utilities)
    - Layout patterns (header, footer, grid)
    - Clear file organization

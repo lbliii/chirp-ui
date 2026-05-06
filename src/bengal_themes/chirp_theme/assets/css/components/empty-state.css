@@ -15,11 +15,6 @@
     animation: fadeIn 0.4s var(--ease-smooth);
 }
 
-/* Scroll-driven animation support */
-.empty-state.fade-in-on-scroll {
-    /* Will be animated by scroll-animations.css */
-}
-
 .empty-state__code {
     /* Responsive display size - larger than --text-display for emphasis */
     font-size: clamp(5rem, 4rem + 5vw, 7.5rem);
