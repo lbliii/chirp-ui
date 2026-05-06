@@ -25,7 +25,7 @@ Bengal uses **modular CSS architecture** with 45+ component files instead of con
 
 **Modular (Current):**
 - Find button styles: `components/buttons.css` (408 lines)
-- Find card styles: `components/cards.css` (1,338 lines)
+- Find retained hub-card styles: `components/hub-cards.css`
 - Clear, predictable file names
 
 **Consolidated (Proposed):**
@@ -57,7 +57,7 @@ Bengal uses **modular CSS architecture** with 45+ component files instead of con
 
 **Modular:**
 - Multiple developers can work on different components simultaneously
-- Low merge conflict risk: `buttons.css` vs `cards.css` don't conflict
+- Low merge conflict risk: `buttons.css` vs `forms.css` don't conflict
 - Clear ownership: Each file has a single purpose
 
 **Consolidated:**
@@ -87,7 +87,7 @@ Bengal uses **modular CSS architecture** with 45+ component files instead of con
 ### 5. **Discoverability** ✅
 
 **Modular:**
-- Clear file names: `buttons.css`, `cards.css`, `tabs.css`
+- Clear file names: `buttons.css`, `forms.css`, `tabs.css`
 - Easy to find: Look for component name in filename
 - Self-documenting structure
 
@@ -107,7 +107,7 @@ Bengal uses **modular CSS architecture** with 45+ component files instead of con
 | Component | File | Lines | Status |
 |-----------|------|-------|--------|
 | Buttons | `buttons.css` | 408 | ✅ Manageable |
-| Cards | `cards.css` | 1,338 | ✅ Large but focused |
+| Hub cards | `hub-cards.css` | retained | ✅ Scoped to hub surfaces |
 | Navigation | `navigation.css` | ~100 | ✅ Small |
 | TOC | `toc.css` | 758 | ✅ Manageable |
 | Code | `code.css` | 768 | ✅ Manageable |
@@ -161,7 +161,7 @@ Instead of consolidating files, we **extract common patterns** into reusable uti
    - Hover/active states
    - Transition patterns
 
-2. **Keep components modular** → `components/buttons.css`, `components/cards.css`
+2. **Keep components modular** → `components/buttons.css`, `components/forms.css`
    - Component-specific styles stay in component files
    - Common patterns extracted to base utilities
 
@@ -193,9 +193,8 @@ css/
 │   └── print.css
 ├── components/          # Component-specific styles (modular)
 │   ├── buttons.css     # Button component (408 lines)
-│   ├── cards.css       # Card component (1,338 lines)
 │   ├── forms.css       # Form component
-│   └── ... (45 files total)
+│   └── ... (retained theme-specific components)
 ├── layouts/            # Layout patterns
 └── style.css           # Main entry point (imports all)
 ```
@@ -261,7 +260,7 @@ css/
 
 - **Total component files:** 45
 - **Average file size:** ~500-800 lines
-- **Largest file:** `cards.css` (1,338 lines) - acceptable for a complex component
+- **Large retained files:** remain acceptable only while tied to an active retained surface
 - **Common patterns extracted:** Focus, touch, transitions, states
 
 ### If Consolidated

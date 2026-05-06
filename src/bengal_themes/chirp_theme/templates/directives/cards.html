@@ -1,0 +1,12 @@
+{#- chirp-theme cards directive.
+
+Rendered through Bengal's directive-template hook. The Markdown directive syntax
+stays Bengal-authored, but the emitted HTML uses Chirp UI layout primitives.
+-#}
+{% from "chirpui/layout.html" import grid %}
+
+{% set grid_cols = columns if columns == "2" or columns == "3" or columns == "4" else none %}
+{% set grid_class = "chirp-theme-directive-cards" ~ (" " ~ extra_class if extra_class else "") %}
+{% call grid(cols=grid_cols, gap=chirpui_gap, cls=grid_class) %}
+{{ children | safe }}
+{% end %}

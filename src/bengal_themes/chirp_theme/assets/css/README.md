@@ -62,11 +62,10 @@ css/
 │   ├── interactive-patterns.css  # Common interactive patterns (extracted)
 │   ├── accessibility.css # A11y styles
 │   └── print.css         # Print styles
-├── components/           # UI components (buttons, cards, etc.) - MODULAR
+├── components/           # Retained theme-specific components - MODULAR
 │   ├── buttons.css       # Button component (408 lines)
-│   ├── cards.css         # Card component (1,338 lines)
 │   ├── forms.css         # Form component
-│   └── ... (45 files total, modular architecture)
+│   └── ... (component files kept only while the copied theme surface needs them)
 ├── layouts/              # Layout patterns (header, footer, grid)
 ├── composition/          # Layout primitives
 ├── pages/                # Page-specific styles

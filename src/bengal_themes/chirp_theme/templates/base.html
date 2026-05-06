@@ -11,8 +11,8 @@ _path, kind, tags are always defined - no defensive checks needed.
 #}
 {# Template-wide variables using {% let %} for explicit scope #}
 {% let params = params ?? {} %}
-{% let _page_title = page.title %}
-{% let _page_url = page._path %}
+{% let _page_title = page?.title ?? none %}
+{% let _page_url = page?._path ?? page?.href ?? "/" %}
 
 {# Navigation - cache function calls #}
 {% let _current_lang = current_lang() %}
@@ -27,8 +27,8 @@ _path, kind, tags are always defined - no defensive checks needed.
 {% let _per_page_md = 'markdown' in (config.output_formats.per_page ?? []) %}
 
 {# Derived values #}
-{% let _main_menu = [] %}
-{% let _footer_menu = [] %}
+{% let _main_menu = get_menu_lang("main", _current_lang) %}
+{% let _footer_menu = get_menu_lang("footer", _current_lang) %}
 
 {% let _doc_app_nav = _doc_app?.navigation %}
 {% let _view_transitions = _doc_app.enabled and _doc_app_nav?.view_transitions %}
@@ -41,41 +41,55 @@ _path, kind, tags are always defined - no defensive checks needed.
 HELPER: Render a menu item (desktop/mobile)
 ============================================================================= #}
 {% def render_menu_item(item, is_mobile=false) %}
-{% let has_children = (item.children ?? []) | length > 0 %}
-{% let is_active = (item.active ?? false) or (_page_url == item.href) %}
-{% let is_trail = item.active_trail ?? false %}
+{% let item_children = item?.children ?? [] %}
+{% let item_href = item?.href ?? item?.url ?? '#' %}
+{% let item_name = item?.name ?? item?.title ?? 'Untitled' %}
+{% let has_children = item_children | length > 0 %}
+{% let is_current = _page_url == item_href %}
+{% set active_children = [] %}
+{% for child in item_children %}
+    {% let child_href = child?.href ?? child?.url ?? '#' %}
+    {% if child_href != '#' and (_page_url == child_href or (child_href != '/' and _page_url.startswith(child_href))) %}
+        {% set _ = active_children.append(true) %}
+    {% end %}
+{% end %}
+{% let is_active = (item?.active ?? false) or (_page_url == item_href) or (item_href != '/' and item_href != '#' and _page_url.startswith(item_href)) or (active_children | length > 0) %}
+{% let is_trail = item?.active_trail ?? false %}
 
 <li
     class="{{ ['has-submenu' if has_children, 'active' if is_active, 'active-trail' if is_trail] | classes }}">
     {% if is_mobile and has_children %}
     {# Mobile: Split button pattern - link + chevron toggle #}
     <div class="mobile-nav-item-row">
-        {% if item.href == '#' %}
-        <span class="nav-dropdown-trigger" tabindex="0" role="button" aria-haspopup="true"><bdi>{{ item.name }}</bdi></span>
+        {% if item_href == '#' %}
+        <span class="nav-dropdown-trigger" tabindex="0" role="button" aria-haspopup="true"><bdi>{{ item_name }}</bdi></span>
         {% else %}
-        <a href="{{ item.href | absolute_url }}"{% if is_active %} aria-current="page"{% end %}><bdi>{{ item.name }}</bdi></a>
+        <a href="{{ item_href | absolute_url }}"{% if is_current %} aria-current="page"{% end %}><bdi>{{ item_name }}</bdi></a>
         {% end %}
-        <button type="button" class="mobile-nav-toggle-submenu" aria-label="Toggle {{ item.name }} submenu" aria-expanded="false">
+        <button type="button" class="mobile-nav-toggle-submenu" aria-label="Toggle {{ item_name }} submenu" aria-expanded="false">
             {{ icon('caret-down', size=16) }}
         </button>
     </div>
-    {% elif has_children and item.href == '#' %}
+    {% elif has_children and item_href == '#' %}
     {# Desktop: Non-navigable dropdown trigger #}
-    <span class="nav-dropdown-trigger" tabindex="0" role="button" aria-haspopup="true"><bdi>{{ item.name }}</bdi></span>
+    <span class="nav-dropdown-trigger" tabindex="0" role="button" aria-haspopup="true"><bdi>{{ item_name }}</bdi></span>
     {% else %}
     {# Regular navigation link #}
-    <a href="{{ item.href | absolute_url }}"{% if is_active %} aria-current="page"{% end %}><bdi>{{ item.name }}</bdi></a>
+    <a href="{{ item_href | absolute_url }}"{% if is_current %} aria-current="page"{% end %}><bdi>{{ item_name }}</bdi></a>
     {% end %}
 
     {% if has_children %}
     <ul class="submenu">
-        {% for child in item.children ?? [] %}
-        <li class="{{ ['active' if (child.active ?? false)] | classes }}">
-            <a href="{{ child.href | absolute_url }}">
-                {% with child.icon as icon_name %}
+        {% for child in item_children %}
+        {% let child_href = child?.href ?? child?.url ?? '#' %}
+        {% let child_current = _page_url == child_href %}
+        {% let child_active = child_href != '#' and (child_current or (child_href != '/' and _page_url.startswith(child_href))) %}
+        <li class="{{ ['active' if ((child?.active ?? false) or child_active)] | classes }}">
+            <a href="{{ child_href | absolute_url }}"{% if child_current %} aria-current="page"{% end %}>
+                {% with child?.icon as icon_name %}
                 {% if icon_name %}<span class="submenu-icon">{{ icon(icon_name, size=16) }}</span>{% end %}
                 {% end %}
-                <span class="submenu-text"><bdi>{{ child.name }}</bdi></span>
+                <span class="submenu-text"><bdi>{{ child?.name ?? child?.title ?? 'Untitled' }}</bdi></span>
             </a>
         </li>
         {% end %}
@@ -216,7 +230,10 @@ HELPER: Render a menu item (desktop/mobile)
     <link rel="preconnect" href="https://d3js.org" crossorigin>
 
     {# Stylesheets #}
+    <link rel="stylesheet" href="{{ asset_url('chirp_ui/chirpui.css') }}">
+    <link rel="stylesheet" href="{{ asset_url('chirp_ui/chirpui-transitions.css') }}">
     <link rel="stylesheet" href="{{ asset_url('css/style.css') }}">
+    <script src="{{ asset_url('chirp_ui/chirpui.js') }}"></script>
     {% if 'content.math' in (theme.features ?? []) %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin>
     {% end %}
@@ -281,6 +298,9 @@ HELPER: Render a menu item (desktop/mobile)
                     {% match site.logo, site.logo_text %}
                     {% case logo, _ if logo %}<img src="{{ logo | absolute_url }}" alt="{{ _site_title }}"
                         class="brand-image" />
+                    {% case _, text if text and text != _site_title %}
+                    <span class="brand-mark" aria-hidden="true">{{ text }}</span>
+                    <span class="brand-word">{{ _site_title }}</span>
                     {% case _, text if text %}<span class="brand-text">{{ text }}</span>
                     {% case _ %}<span class="brand-text">{{ _site_title }}</span>
                     {% end %}
@@ -294,11 +314,11 @@ HELPER: Render a menu item (desktop/mobile)
                     <li class="{{ ['active' if _page_url == '/'] | classes }}"><a href="{{ '/' | absolute_url }}">Home</a>
                     </li>
                     {% for item in _auto_nav %}
-                    {% let item_href = item.href | default('') %}
-                    {% let item_path = item._path | default(item_href) %}
+                    {% let item_href = item?.href ?? item?.url ?? item?._path ?? '#' %}
+                    {% let item_path = item?._path ?? item_href %}
                     <li
-                        class="{{ ['active' if (_page_url is string and item_path is string and _page_url.startswith(item_path) and item_path != '/')] | classes }}">
-                        <a href="{{ item_href | absolute_url }}">{{ item.name }}</a>
+                        class="{{ ['active' if (_page_url is string and item_path is string and (_page_url == item_path or (item_path != '/' and item_path != '#' and _page_url.startswith(item_path))))] | classes }}">
+                        <a href="{{ item_href | absolute_url }}">{{ item?.name ?? item?.title ?? 'Untitled' }}</a>
                     </li>
                     {% end %}
                     {% end %}
@@ -351,6 +371,9 @@ HELPER: Render a menu item (desktop/mobile)
                 {% match site.logo, site.logo_text %}
                 {% case logo, _ if logo %}<img src="{{ logo | absolute_url }}" alt="{{ _site_title }}"
                     class="brand-image" />
+                {% case _, text if text and text != _site_title %}
+                <span class="brand-mark" aria-hidden="true">{{ text }}</span>
+                <span class="brand-word">{{ _site_title }}</span>
                 {% case _, text if text %}<span class="brand-text">{{ text }}</span>
                 {% case _ %}<span class="brand-text">{{ _site_title }}</span>
                 {% end %}
@@ -372,11 +395,11 @@ HELPER: Render a menu item (desktop/mobile)
                 {% if _auto_nav %}
                 <li class="{{ ['active' if _page_url == '/'] | classes }}"><a href="{{ '/' | absolute_url }}">Home</a></li>
                 {% for item in _auto_nav %}
-                {% let item_href = item.href | default('') %}
-                {% let item_path = item._path | default(item_href) %}
+                {% let item_href = item?.href ?? item?.url ?? item?._path ?? '#' %}
+                {% let item_path = item?._path ?? item_href %}
                 <li
-                    class="{{ ['active' if (_page_url is string and item_path is string and _page_url.startswith(item_path) and item_path != '/')] | classes }}">
-                    <a href="{{ item_href | absolute_url }}">{{ item.name }}</a>
+                    class="{{ ['active' if (_page_url is string and item_path is string and (_page_url == item_path or (item_path != '/' and item_path != '#' and _page_url.startswith(item_path))))] | classes }}">
+                    <a href="{{ item_href | absolute_url }}">{{ item?.name ?? item?.title ?? 'Untitled' }}</a>
                 </li>{% end %}
                 {% end %}
                 {% with site.params.repo_url as repo_url %}

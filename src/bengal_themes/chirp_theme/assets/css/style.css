@@ -148,10 +148,6 @@
 }
 
 @layer components {
-  @import url('components/cards.css');
-}
-
-@layer components {
   @import url('components/tags.css');
 }
 

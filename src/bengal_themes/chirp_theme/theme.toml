@@ -1,1 +1,2 @@
 name = "chirp-theme"
+libraries = ["chirp_ui"]

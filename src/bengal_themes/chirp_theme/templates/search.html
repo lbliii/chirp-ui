@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
+{% from "chirpui/layout.html" import container %}
+
 {% block title %}Search - {{ config?.title ?? 'Site' }}{% end %}
 
 {% block content %}
 {% let site_pages = site?.pages ?? [] %}
 {% let page_count = site_pages | length %}
 
-<div class="container">
+{% call container() %}
   <div class="search-page">
     <header class="search-page__header">
       <div class="search-page__title-row">
@@ -100,5 +102,5 @@
       </div>
     </div>
   </div>
-</div>
+{% end %}
 {% end %}

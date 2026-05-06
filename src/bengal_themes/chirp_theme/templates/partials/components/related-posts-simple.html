@@ -11,20 +11,21 @@ Usage:
 ================================================================================
 #}
 
+{% from 'chirpui/layout.html' import container %}
 {% from 'partials/components/related-post-card.html' import related_post_card %}
 
 {% def related_posts_simple(posts, heading='Related Posts') %}
 {% let display_posts = (posts | default([]))[:3] %}
 {% if display_posts | length > 0 %}
 <aside class="related-posts">
-    <div class="container">
+    {% call container() %}
         <h2>{{ heading }}</h2>
         <div class="related-posts-grid">
             {% for post in display_posts %}
             {{ related_post_card(post) }}
             {% end %}
         </div>
-    </div>
+    {% end %}
 </aside>
 {% end %}
 {% end %}

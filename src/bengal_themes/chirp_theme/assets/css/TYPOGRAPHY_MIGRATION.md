@@ -18,9 +18,10 @@
    - Before: `font-size: 0.75rem;` and `font-weight: bold;`
    - After: `font-size: var(--text-caption);` and `font-weight: var(--weight-bold);`
 
-3. **`layouts/resume.css`** (line 605 - print media)
-   - Before: `font-size: 11pt;`
-   - After: `font-size: var(--text-body);`
+3. **Future parity verticals**
+   - Resume-specific copied CSS is no longer part of the active theme asset
+     graph. When resume output returns, it should use Chirp UI-native tokens
+     directly instead of restoring the old file.
 
 ### JavaScript Files Updated
 

@@ -1,4 +1,5 @@
 {% from 'partials/navigation-components.html' import breadcrumbs %}
+{% from 'chirpui/card.html' import resource_card %}
 
 {% def theme_shell_container(cls='') %}
 <div class="chirp-theme-shell{{ ' ' ~ cls if cls else '' }}">
@@ -40,15 +41,7 @@
 {% end %}
 
 {% def theme_link_card(href, title, description=none, meta=none, cls='') %}
-<a href="{{ href | absolute_url }}" class="chirp-theme-link-card{{ ' ' ~ cls if cls else '' }}">
-  <span class="chirp-theme-link-card__title">{{ title }}</span>
-  {% if description %}
-  <span class="chirp-theme-link-card__description">{{ description }}</span>
-  {% end %}
-  {% if meta %}
-  <span class="chirp-theme-link-card__meta">{{ meta }}</span>
-  {% end %}
-</a>
+{{ resource_card(href | absolute_url, title, description, top_meta=meta, cls=cls) }}
 {% end %}
 
 {% def theme_docs_frame(has_toc=false, cls='') %}

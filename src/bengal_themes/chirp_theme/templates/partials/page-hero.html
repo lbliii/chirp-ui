@@ -1,5 +1,6 @@
 {% from 'partials/theme-primitives.html' import theme_page_header %}
 {% from 'partials/page-hero/_macros.html' import hero_element as _hero_element, hero_section as _hero_section %}
+{% from 'chirpui/button.html' import btn %}
 
 {# Compatibility wrappers for deferred/pruned surfaces that still import
    hero macros from partials/page-hero.html. #}
@@ -41,9 +42,7 @@
 ) %}
 {% slot actions %}
 {% if _params?.hero_link?.href %}
-<a href="{{ _params.hero_link.href | absolute_url }}" class="chirp-theme-home__button chirp-theme-home__button--secondary">
-  {{ _params.hero_link.label ?? 'Explore' }}
-</a>
+{{ btn(_params.hero_link.label ?? 'Explore', href=_params.hero_link.href | absolute_url, variant='secondary') }}
 {% end %}
 {% end %}
 {% end %}

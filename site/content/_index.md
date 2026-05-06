@@ -22,6 +22,17 @@ cta_buttons:
     url: /docs/components/
     style: secondary
 
+features:
+  - title: Component Library
+    href: /docs/components/
+    description: Explore Chirp UI macros for forms, cards, navigation, overlays, marketing pages, and application chrome.
+  - title: Site Patterns
+    href: /docs/patterns/
+    description: Translate product, media, forum, and documentation ideas into composable Chirp UI primitives.
+  - title: Release Notes
+    href: /releases/
+    description: Track shipped contracts, migration notes, and the latest Bengal theme adoption work.
+
 show_recent_posts: false
 ---
 
