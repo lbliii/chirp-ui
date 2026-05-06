@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "chirpui/resource_index.html" import resource_index %}
+
+{% block content %}
+{% let title = page?.title ?? section?.title ?? site?.title ?? "Index" %}
+{% let description = params?.description ?? section?.params?.description ?? site?.description ?? none %}
+{% let items = posts ?? pages ?? section?.pages ?? [] %}
+{% let subsections = subsections ?? section?.subsections ?? [] %}
+{% let resources = items + subsections %}
+
+{% call container(cls="chirp-theme-section-index") %}
+  {% call resource_index(title, page?.href ?? section?.href ?? "/", subtitle=description, search_placeholder="Filter this section...", button_icon="magnifying-glass", results_title="In this section", results_subtitle=(resources | length) ~ " entries", results_layout="grid", results_cols=3, has_results=resources | length > 0, empty_title="No section content yet", empty_message="Pages and subsections appear here when added.", cls="chirp-theme-section-index__resources") %}
+    {% let items = resources %}
+    {% include "autodoc/partials/cards.html" %}
+  {% end %}
+
+  {% if content and content.strip() %}
+  {% call rendered_content(cls="chirp-theme-section-index__content") %}
+  {{ content | safe }}
+  {% end %}
+  {% end %}
+{% end %}
+{% end %}

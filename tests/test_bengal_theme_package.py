@@ -25,6 +25,7 @@ if _WORKSPACE_BENGAL.exists():
         sys.path.insert(0, str(bengal_parent))
 
 CANONICAL_TEMPLATES = (
+    "index.html",
     "base.html",
     "home.html",
     "page.html",
@@ -34,6 +35,8 @@ CANONICAL_TEMPLATES = (
 )
 CORE_PARITY_TEMPLATES = (
     "blog/shell.html",
+    "blog/about.html",
+    "blog/contact.html",
     "blog/home.html",
     "blog/list.html",
     "blog/single.html",
@@ -592,6 +595,27 @@ def test_chirp_theme_reference_hubs_use_chirpui_patterns() -> None:
     assert "openapi-sidebar" not in combined
     assert "endpoint-card" not in combined
     assert "api-hub-card" not in combined
+
+
+def test_chirp_theme_utility_pages_use_retained_chirpui_primitives() -> None:
+    """Root aliases and utility blog pages should not reintroduce one-off shells."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    utility_templates = ("index.html", "blog/about.html", "blog/contact.html")
+    combined = "\n".join(
+        (templates_root / template_name).read_text(encoding="utf-8")
+        for template_name in utility_templates
+    )
+
+    assert "chirpui/resource_index.html" in combined
+    assert "blog/shell.html" in combined
+    assert "chirpui/hero.html" in combined
+    assert "chirpui/rendered_content.html" in combined
+    assert "chirpui/surface.html" in combined
+    assert "<script" not in combined
+    assert "blog-about-header" not in combined
+    assert "blog-contact-header" not in combined
+    assert "contact-social" not in combined
 
 
 def test_docs_site_cards_and_tiles_render_with_chirpui_templates(tmp_path: Path) -> None:

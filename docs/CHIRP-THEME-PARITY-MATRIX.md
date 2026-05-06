@@ -31,6 +31,7 @@ for niche or legacy-heavy verticals while they are redesigned.
 | Python and CLI autodoc | `autodoc/python/`, `autodoc/cli/`, `autodoc/partials/` | `core-parity` | Rebuilt as Chirp UI reference pages with resource indexes, signatures, parameter tables, badges, accordions, code blocks, and shared member cards. |
 | OpenAPI and API hubs | `autodoc/openapi/`, `api-reference/`, `cli-reference/`, `openapi-reference/`, `api-hub/` | `core-parity` | Rebuilt as Chirp UI endpoint/schema/hub pages with resource indexes, nav trees, parameter tables, accordions, code samples, and shared Python/CLI reference aliases. |
 | Shortcodes and embeds | `shortcodes/` | `core-parity` | Mapped onto Chirp UI callouts, accordion/details, card-backed media/figure embeds, code blocks, and safe link primitives. |
+| Root aliases and utility pages | `index.html`, `blog/about.html`, `blog/contact.html` | `core-parity` | Kept as Chirp UI-native generic section/blog utility pages over resource indexes, blog shell, page hero, surface, rendered content, badge, and card primitives. |
 | Niche graph/data-table/experimental UI | graph/minimap/data-table/holo families | `deferred` | Keep only capabilities that still map to an actual output contract; redesign through Chirp UI when they are promoted. |
 
 ## Chirp UI Translation Rules
@@ -109,6 +110,7 @@ The current retained contract is:
 - shortcode templates: `tip`, `warning`, `danger`, `details`, `figure`,
   `img`, `audio`, `gallery`, `highlight`, `blockquote`, `param`, `ref`,
   `relref`
+- utility templates: `index.html`, `blog/about.html`, `blog/contact.html`
 - docs dogfood site builds using only emitted packaged assets
 - Bengal can resolve `chirpui/*` templates through the theme library provider
 - Bengal card directives render through `templates/directives/` into

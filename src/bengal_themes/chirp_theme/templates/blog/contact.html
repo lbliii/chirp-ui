@@ -1,0 +1,30 @@
+{% extends "blog/shell.html" %}
+
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import cluster %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "chirpui/surface.html" import surface %}
+
+{% block blog_content %}
+{% let page_title = page?.title ?? "Contact" %}
+{% let page_desc = params?.description ?? "" %}
+{% let site_params = site?.params ?? {} %}
+{% let contact_email = params?.email ?? site_params?.email ?? "" %}
+{% let contact_social = params?.social ?? site_params?.social ?? [] %}
+
+{% call surface(variant="default", cls="chirp-theme-blog__surface chirp-theme-blog__surface--contact") %}
+  {% call page_hero(title=page_title, subtitle=page_desc, variant="minimal", background="solid", cls="chirp-theme-blog__hero") %}
+    {% slot eyebrow %}Contact{% end %}
+  {% end %}
+  {% call rendered_content(cls="chirp-theme-blog__prose") %}{{ content | safe }}{% end %}
+  {% if contact_email or contact_social | length > 0 %}
+  {% call cluster(gap="xs", cls="chirp-theme-blog__contact-links") %}
+    {% if contact_email %}{{ badge("Email", href="mailto:" ~ contact_email, variant="muted") }}{% end %}
+    {% for link in contact_social %}
+    {{ badge(link?.name ?? link?.platform ?? "Link", href=link?.href ?? link?.url ?? "#", variant="muted") }}
+    {% end %}
+  {% end %}
+  {% end %}
+{% end %}
+{% end %}

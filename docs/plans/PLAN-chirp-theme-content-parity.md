@@ -125,6 +125,8 @@ scripts.
 
 ### Wave 6 — Root Aliases and Utility Pages
 
+Status: shipped in the current chirp-theme migration stack.
+
 Rebuild `index.html`, `blog/about.html`, `blog/contact.html`, and any remaining
 single-purpose aliases from retained page/blog primitives.
 
@@ -132,6 +134,11 @@ Required proof:
 - No new one-off page shell CSS.
 - Pages use `page_hero`, `surface`, `grid`, `stack`, and `resource_card` where
   appropriate.
+
+Implemented proof currently covers packaged template resolution and source
+contracts requiring the generic section resource index, retained blog shell,
+Chirp UI page heroes, surfaces, rendered content, badges, and cards while
+forbidding copied blog about/contact classes and inline scripts.
 
 ## Not Now
 
