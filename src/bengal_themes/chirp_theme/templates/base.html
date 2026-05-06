@@ -107,8 +107,9 @@ HELPER: Render a menu item (desktop/mobile)
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     {# AI/Agent discovery — early in <head> for fast detection #}
-    {% if _per_page_md and page.href is defined and page.href is string %}
-    {% let _href_early = page.href %}
+    {% let _href_for_markdown = page?.href ?? '' %}
+    {% if _per_page_md and _href_for_markdown is string and _href_for_markdown %}
+    {% let _href_early = _href_for_markdown %}
     {% let _md_url_early = _href_early | replace('.html', '.md') if _href_early.endswith('.html') else (_href_early ~ 'index.md' if _href_early.endswith('/') else _href_early ~ '/index.md') %}
     <link rel="alternate" type="text/markdown" href="{{ _md_url_early }}">
     {% end %}
@@ -124,7 +125,7 @@ HELPER: Render a menu item (desktop/mobile)
     {# Title - captured for reuse in Open Graph and Twitter Card #}
     {% capture page_title %}
     {% block title %}
-    {% match page.title %}
+    {% match _page_title %}
     {% case title if title and _site_title %}{{ title }} - {{ _site_title }}
     {% case title if title %}{{ title }}
     {% case _ %}{{ _site_title }}
@@ -140,21 +141,26 @@ HELPER: Render a menu item (desktop/mobile)
     <meta name="description" content="{{ meta_desc | trim }}">
 
     {# Meta Keywords - use page.keywords or fallback to tags #}
-    {% if page.keywords %}
-    <meta name="keywords" content="{{ page.keywords | join(', ') }}">
-    {% elif page.tags %}
-    <meta name="keywords" content="{{ page.tags | meta_keywords(10) }}">
+    {% let _page_keywords = page?.keywords ?? [] %}
+    {% let _page_tags = page?.tags ?? [] %}
+    {% if _page_keywords %}
+    <meta name="keywords" content="{{ _page_keywords | join(', ') }}">
+    {% elif _page_tags %}
+    <meta name="keywords" content="{{ _page_tags | meta_keywords(10) }}">
     {% end %}
 
     {# Robots directive for hidden/unlisted pages #}
-    {% if page.robots_meta and page.robots_meta != 'index, follow' %}
-    <meta name="robots" content="{{ page.robots_meta }}">
+    {% let _robots_meta = page?.robots_meta ?? '' %}
+    {% if _robots_meta and _robots_meta != 'index, follow' %}
+    <meta name="robots" content="{{ _robots_meta }}">
     {% end %}
 
     {# Content Signals — per-page AI directives (only when restricted) #}
-    {% if not page.in_ai_train or not page.in_ai_input %}
-    <meta name="content-signal:ai-train" content="{{ 'yes' if page.in_ai_train else 'no' }}">
-    <meta name="content-signal:ai-input" content="{{ 'yes' if page.in_ai_input else 'no' }}">
+    {% let _in_ai_train = page?.in_ai_train ?? true %}
+    {% let _in_ai_input = page?.in_ai_input ?? true %}
+    {% if not _in_ai_train or not _in_ai_input %}
+    <meta name="content-signal:ai-train" content="{{ 'yes' if _in_ai_train else 'no' }}">
+    <meta name="content-signal:ai-input" content="{{ 'yes' if _in_ai_input else 'no' }}">
     {% end %}
 
     {# Open Graph / Facebook #}
@@ -189,8 +195,9 @@ HELPER: Render a menu item (desktop/mobile)
     {% if bengal.capabilities.prebuilt_search %}
     <meta name="bengal:search_index_url" content="{{ '/search-index.json' | absolute_url }}">
     {% end %}
-    {% if page.version %}
-    <meta name="bengal:version" content="{{ page.version }}">
+    {% let _page_version = page?.version ?? none %}
+    {% if _page_version %}
+    <meta name="bengal:version" content="{{ _page_version }}">
     {% end %}
 
     {# Canonical URL #}
@@ -281,8 +288,14 @@ HELPER: Render a menu item (desktop/mobile)
 
 </head>
 
-<body data-type="{{ page.type }}" data-variant="{{ page.variant or '' }}"
-    class="page-kind-{{ page.kind or 'page' }}{% if page.is_draft | default(false) %} draft-page{% end %}{% if page.hidden | default(false) %} hidden-page{% end %}{% if page.is_featured | default(false) %} featured-content{% end %}">
+{% let _page_type = page?.type ?? 'page' %}
+{% let _page_variant = page?.variant ?? '' %}
+{% let _page_kind = page?.kind ?? 'page' %}
+{% let _page_is_draft = page?.is_draft ?? false %}
+{% let _page_hidden = page?.hidden ?? false %}
+{% let _page_is_featured = page?.is_featured ?? false %}
+<body data-type="{{ _page_type }}" data-variant="{{ _page_variant }}"
+    class="page-kind-{{ _page_kind }}{% if _page_is_draft %} draft-page{% end %}{% if _page_hidden %} hidden-page{% end %}{% if _page_is_featured %} featured-content{% end %}">
 
     {% if 'accessibility.skip_link' in (theme.features ?? []) %}
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -477,7 +490,8 @@ HELPER: Render a menu item (desktop/mobile)
     {% else %}
     <script defer src="{{ asset_url('js/utils.js') }}"></script>
     <script defer src="{{ asset_url('js/core/theme.js') }}"></script>
-    {% if (config.search.ui.modal ?? false) or page.template == 'search.html' %}
+    {% let _page_template = page?.template ?? '' %}
+    {% if (config.search.ui.modal ?? false) or _page_template == 'search.html' %}
     <script defer src="{{ asset_url('js/vendor/lunr.min.js') }}"></script>
     <script defer src="{{ asset_url('js/core/search.js') }}"></script>
     {% end %}

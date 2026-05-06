@@ -438,6 +438,61 @@ result_path.write_text(
     assert 'href="/docs/"' in combined_nav
 
 
+def test_docs_site_build_emits_special_pages(tmp_path: Path) -> None:
+    """Bengal post-processing should render chirp-theme 404 and search pages."""
+    _prefer_workspace_bengal()
+    pytest.importorskip("bengal")
+    site_root = _copy_docs_site(tmp_path)
+    result_path = tmp_path / "special-pages-check.json"
+    script = r"""
+import json
+import sys
+from pathlib import Path
+
+from bengal.core import Site
+from bengal.orchestration.build.options import BuildOptions
+
+site_root = Path(sys.argv[1])
+result_path = Path(sys.argv[2])
+
+site = Site.from_config(site_root)
+site.build(BuildOptions(force_sequential=True, incremental=False, quiet=True))
+
+not_found = site.output_dir / "404.html"
+search = site.output_dir / "search" / "index.html"
+result_path.write_text(
+    json.dumps(
+        {
+            "has_404": not_found.is_file(),
+            "has_search": search.is_file(),
+            "not_found_html": not_found.read_text(encoding="utf-8") if not_found.is_file() else "",
+            "search_html": search.read_text(encoding="utf-8") if search.is_file() else "",
+        }
+    ),
+    encoding="utf-8",
+)
+"""
+    env = dict(os.environ)
+    if _WORKSPACE_BENGAL.exists():
+        env["PYTHONPATH"] = (
+            str(_WORKSPACE_BENGAL.parent)
+            if "PYTHONPATH" not in env
+            else str(_WORKSPACE_BENGAL.parent) + os.pathsep + env["PYTHONPATH"]
+        )
+    subprocess.run(
+        [sys.executable, "-c", script, str(site_root), str(result_path)],
+        check=True,
+        env=env,
+        cwd=str(_WORKSPACE_BENGAL if _WORKSPACE_BENGAL.exists() else REPO_ROOT),
+    )
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+
+    assert result["has_404"]
+    assert result["has_search"]
+    assert "Page Not Found" in result["not_found_html"]
+    assert "search-input" in result["search_html"]
+
+
 @pytest.mark.xfail(reason="chirp-theme asset pipeline not yet complete", strict=False)
 def test_docs_site_build_only_references_emitted_assets(tmp_path: Path) -> None:
     """Built docs HTML should only reference fingerprinted assets that were emitted."""
