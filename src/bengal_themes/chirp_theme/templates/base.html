@@ -222,8 +222,8 @@ HELPER: Render a menu item (desktop/mobile)
     <link rel="alternate" hreflang="{{ alt.hreflang }}" href="{{ alt.href }}">
     {% end %}
 
-    {# Favicon, preconnect, fonts, stylesheets — site-stable, same for every page in a build #}
-    {% cache 'base-head-assets-' ~ (bengal.build.timestamp ?? '') %}
+    {# Favicon, preconnect, fonts, stylesheets #}
+    {# asset_url() is manifest-sensitive; keep this outside fragment caches. #}
     {# Favicon - use let for safer nil handling #}
     {% let favicon_path = site.favicon ?? none %}
     {% if favicon_path %}
@@ -244,7 +244,6 @@ HELPER: Render a menu item (desktop/mobile)
     {% if 'content.math' in (theme.features ?? []) %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin>
     {% end %}
-    {% end %}{# /cache base-head-assets #}
 
     {# Theme init scripts — site-stable, same for every page in a build #}
     {% cache 'base-theme-init-' ~ (bengal.build.timestamp ?? '') %}
@@ -486,7 +485,7 @@ HELPER: Render a menu item (desktop/mobile)
 
     {# Scripts #}
     {% block site_scripts %}
-    {% cache 'base-scripts-' ~ (bengal.build.timestamp ?? '') %}
+    {# asset_url() is manifest-sensitive; keep this outside fragment caches. #}
     {% if config.assets.bundle_js ?? false %}
     <script defer src="{{ asset_url('js/bundle.js') }}"></script>
     <script defer src="{{ asset_url('js/vendor/lunr.min.js') }}"></script>
@@ -515,7 +514,6 @@ HELPER: Render a menu item (desktop/mobile)
     <script defer src="{{ asset_url('js/enhancements/math.js') }}"></script>
     {% end %}
     {% end %}
-    {% end %}{# /cache base-scripts #}
     {% end %}
 
     {% block extra_js %}{% end %}
