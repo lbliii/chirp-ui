@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import container, stack %}
+{% from "partials/learning-pages.html" import content_cards, progress_for, rendered_body %}
+
+{% block content %}
+{% let title = page?.title ?? "Tutorial" %}
+{% let description = page?.description ?? params?.description ?? none %}
+{% let steps = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
+{% let current_step = params?.current_step ?? 1 %}
+
+{% call container(cls="chirp-theme-learning-page chirp-theme-tutorial-page") %}
+  {% call stack(gap="lg") %}
+    {% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
+      {% slot metadata %}{{ steps | length }} step{{ "s" if steps | length != 1 else "" }}{% end %}
+    {% end %}
+    {{ progress_for(steps, current_step) }}
+    {{ rendered_body(content) }}
+    {{ content_cards(steps, "No tutorial steps have been added yet.", "step") }}
+  {% end %}
+{% end %}
+{% end %}

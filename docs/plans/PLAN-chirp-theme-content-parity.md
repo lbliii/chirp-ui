@@ -55,6 +55,8 @@ fixtures still need dedicated content fixtures before this plan moves to done.
 
 ### Wave 2 — Learning Content
 
+Status: shipped in the current chirp-theme migration stack.
+
 Rebuild `tracks/`, `tutorial/`, `notebook/single.html`, and changelog/resume
 views as learning/content systems rather than copied shells.
 
@@ -62,6 +64,11 @@ Required proof:
 - Track and tutorial pages expose progress/navigation with Chirp UI primitives.
 - Notebook pages keep prose, code, media, and outputs contained at mobile widths.
 - Changelog/resume pages share the same resource/list primitives where possible.
+
+Implemented proof currently covers packaged template resolution and source
+contracts that require Chirp UI resource indexes, rendered content, stepper
+progress, and retained post cards while forbidding copied inline scripts and
+legacy learning card shells.
 
 ### Wave 3 — Python and CLI Autodoc
 

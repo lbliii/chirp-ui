@@ -48,6 +48,15 @@ CORE_PARITY_TEMPLATES = (
     "authors/list.html",
     "authors/single.html",
     "category-browser.html",
+    "tracks/list.html",
+    "tracks/single.html",
+    "tutorial/list.html",
+    "tutorial/single.html",
+    "notebook/single.html",
+    "changelog/list.html",
+    "changelog/single.html",
+    "resume/list.html",
+    "resume/single.html",
 )
 REQUIRED_PARTIALS = (
     "partials/navigation-components.html",
@@ -60,6 +69,7 @@ REQUIRED_PARTIALS = (
     "partials/version-banner.html",
     "partials/stale-content-banner.html",
     "partials/taxonomy-pages.html",
+    "partials/learning-pages.html",
     "partials/components/tags.html",
     "partials/components/tiles.html",
     "partials/components/related-posts-simple.html",
@@ -412,6 +422,39 @@ def test_chirp_theme_taxonomy_templates_use_chirpui_resource_patterns() -> None:
     assert "archive-post-card" not in combined
     assert "category-card" not in combined
     assert "author-card-link" not in combined
+
+
+def test_chirp_theme_learning_templates_use_chirpui_patterns() -> None:
+    """Learning/content verticals should compose Chirp UI primitives."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    learning_templates = (
+        "tracks/list.html",
+        "tracks/single.html",
+        "tutorial/list.html",
+        "tutorial/single.html",
+        "notebook/single.html",
+        "changelog/list.html",
+        "changelog/single.html",
+        "resume/list.html",
+        "resume/single.html",
+        "partials/learning-pages.html",
+    )
+
+    combined = "\n".join(
+        (templates_root / template_name).read_text(encoding="utf-8")
+        for template_name in learning_templates
+    )
+
+    assert "chirpui/resource_index.html" in combined
+    assert "chirpui/stepper.html" in combined
+    assert "chirpui/rendered_content.html" in combined
+    assert "partials/components/post-card.html" in combined
+    assert "chirp-theme-learning-index" in combined
+    assert "<script" not in combined
+    assert "track-card" not in combined
+    assert "tutorial-card" not in combined
+    assert "notebook-cell" not in combined
 
 
 def test_docs_site_cards_and_tiles_render_with_chirpui_templates(tmp_path: Path) -> None:

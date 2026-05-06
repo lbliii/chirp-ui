@@ -27,7 +27,7 @@ for niche or legacy-heavy verticals while they are redesigned.
 | Search and errors | `search.html`, `404.html` | `core-parity` | Retained because they are part of the basic site UX contract. |
 | Shared post/list components | `partials/components/post-card.html`, `article.html`, `related-posts-simple.html`, `tags.html`, `tiles.html` | `core-parity` | Reused by docs, generic pages, and blog surfaces. |
 | Taxonomy, archive, authors | `tag.html`, `tags.html`, `archive*.html`, `author*.html`, `category-browser.html` | `core-parity` | Rebuilt on retained post/list/resource primitives and Chirp UI resource-index/card patterns instead of copied default-theme verticals. |
-| Tracks, tutorial, notebook, changelog, resume | `tracks/`, `tutorial/`, `notebook/`, `changelog/`, `resume/` | `future-parity` | Required long-term, but should be re-expressed as Chirp UI learning/content systems rather than older bespoke shells. |
+| Tracks, tutorial, notebook, changelog, resume | `tracks/`, `tutorial/`, `notebook/`, `changelog/`, `resume/` | `core-parity` | Re-expressed as Chirp UI learning/content systems using resource indexes, stepper progress, rendered content, and retained post/resource cards. |
 | Autodoc and reference trees | `autodoc/`, `api-reference/`, `cli-reference/`, `openapi-reference/`, `api-hub/` | `future-parity` | Required long-term, but needs a dedicated reference-surface redesign with Chirp UI navigation, tables, signatures, and search patterns. |
 | Shortcodes and embeds | `shortcodes/` | `future-parity` | Required long-term, but should map onto Chirp UI callouts, media/figure embeds, disclosure, code, and safe link primitives. |
 | Niche graph/data-table/experimental UI | graph/minimap/data-table/holo families | `deferred` | Keep only capabilities that still map to an actual output contract; redesign through Chirp UI when they are promoted. |
@@ -88,6 +88,10 @@ The current retained contract is:
 - taxonomy/archive/author templates: `tag.html`, `tags.html`, `archive.html`,
   `archive-year.html`, `author.html`, `authors/list.html`,
   `authors/single.html`, `category-browser.html`
+- learning/content templates: `tracks/list.html`, `tracks/single.html`,
+  `tutorial/list.html`, `tutorial/single.html`, `notebook/single.html`,
+  `changelog/list.html`, `changelog/single.html`, `resume/list.html`,
+  `resume/single.html`
 - docs dogfood site builds using only emitted packaged assets
 - Bengal can resolve `chirpui/*` templates through the theme library provider
 - Bengal card directives render through `templates/directives/` into

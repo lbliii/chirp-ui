@@ -1,0 +1,60 @@
+{#- Shared learning/content vertical patterns for chirp-theme. -#}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/layout.html" import grid, stack %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "chirpui/stepper.html" import stepper %}
+{% from "partials/components/post-card.html" import post_card %}
+{% from "partials/taxonomy-pages.html" import count_label %}
+
+{% def content_cards(items, empty_message="No content yet.", card_kind="page") %}
+{% let safe_items = items ?? [] %}
+{% if safe_items | length > 0 %}
+{% call grid(cols=3, gap="md", cls="chirp-theme-learning-grid") %}
+  {% for item in safe_items %}
+  {% let title = item?.title ?? item?.name ?? "Untitled" %}
+  {% let href = item?.href ?? item?._path ?? "#" %}
+  {% let desc = item?.description ?? item?.summary ?? item?.metadata?.description ?? none %}
+  {% call resource_card(href, title, description=desc, cls="chirp-theme-learning-card chirp-theme-learning-card--" ~ card_kind) %}
+    {% slot footer %}
+    {{ badge(item?.type ?? item?.kind ?? card_kind, variant="muted") }}
+    {% end %}
+  {% end %}
+  {% end %}
+{% end %}
+{% else %}
+<p class="chirpui-text-muted">{{ empty_message }}</p>
+{% end %}
+{% end %}
+
+{% def learning_feed(items, empty_message="No entries yet.") %}
+{% let safe_items = items ?? [] %}
+{% if safe_items | length > 0 %}
+{% call stack(gap="md", cls="chirp-theme-learning-feed") %}
+  {% for item in safe_items %}
+  {{ post_card(item, variant="compact", show_image=false) }}
+  {% end %}
+{% end %}
+{% else %}
+<p class="chirpui-text-muted">{{ empty_message }}</p>
+{% end %}
+{% end %}
+
+{% def progress_for(items, current=1) %}
+{% let safe_items = items ?? [] %}
+{% if safe_items | length > 1 %}
+{% let steps = [] %}
+{% for item in safe_items %}
+{% set _ = steps.append({"id": loop.index | string, "label": item?.title ?? item?.name ?? "Step " ~ loop.index}) %}
+{% end %}
+{{ stepper(steps, current=current, cls="chirp-theme-learning-progress") }}
+{% end %}
+{% end %}
+
+{% def rendered_body(content=none) %}
+{% if content %}
+{% call rendered_content(compact=false, cls="chirp-theme-learning-content") %}
+{{ content | safe }}
+{% end %}
+{% end %}
+{% end %}
