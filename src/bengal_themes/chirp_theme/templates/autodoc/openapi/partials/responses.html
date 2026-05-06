@@ -1,0 +1,17 @@
+{% from "chirpui/accordion.html" import accordion, accordion_item %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/code.html" import code_block %}
+
+{% let responses = element?.metadata?.responses ?? element?.responses ?? [] %}
+{% if responses | length > 0 %}
+{% call accordion(name="openapi-responses", cls="chirp-theme-reference-responses") %}
+  {% for response in responses %}
+  {% let status = response?.status ?? response?.code ?? "Response" %}
+  {% call accordion_item(status, open=loop.first, cls="chirp-theme-reference-response") %}
+    {{ badge(status, variant="muted") }}
+    {% if response?.description ?? none %}<p>{{ response.description }}</p>{% end %}
+    {% if response?.example ?? none %}{{ code_block(response.example, cls="chirp-theme-reference-example", copy=true) }}{% end %}
+  {% end %}
+  {% end %}
+{% end %}
+{% end %}

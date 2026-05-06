@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container, stack %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+
+{% block content %}
+{% let element = element | default(metadata?.autodoc_element ?? none) %}
+{% call container(cls="chirp-theme-reference-page chirp-theme-reference-page--openapi-endpoint") %}
+  {% call stack(gap="lg") %}
+    {% include "autodoc/openapi/partials/endpoint-header.html" %}
+    {% include "autodoc/openapi/partials/playground-bar.html" %}
+    {% if element?.description ?? none %}
+    {% call rendered_content(compact=true, cls="chirp-theme-reference-description") %}{{ element.description | safe }}{% end %}
+    {% end %}
+    {% include "autodoc/partials/params-table.html" %}
+    {% include "autodoc/openapi/partials/request-body.html" %}
+    {% include "autodoc/openapi/partials/responses.html" %}
+    {% include "autodoc/openapi/partials/code-samples.html" %}
+  {% end %}
+{% end %}
+{% end %}

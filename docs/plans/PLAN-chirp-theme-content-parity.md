@@ -90,6 +90,8 @@ default autodoc table/card shells and inline scripts.
 
 ### Wave 4 — OpenAPI and API Hubs
 
+Status: shipped in the current chirp-theme migration stack.
+
 Rebuild `autodoc/openapi/`, `openapi-reference/`, `api-reference/`, `api-hub/`,
 and `cli-reference/section-index.html`.
 
@@ -98,6 +100,11 @@ Required proof:
   code samples, request/response panels, and schema tables.
 - Large schemas and code samples scroll within their containers without widening
   the page.
+
+Implemented proof currently covers packaged template resolution and source
+contracts requiring Chirp UI resource indexes, nav trees, parameter tables,
+accordions, code blocks, and shared reference aliases while forbidding copied
+default OpenAPI/API hub shells and inline scripts.
 
 ### Wave 5 — Shortcodes and Media Embeds
 

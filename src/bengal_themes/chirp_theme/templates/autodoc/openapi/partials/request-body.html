@@ -1,0 +1,16 @@
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/code.html" import code_block %}
+{% from "chirpui/params_table.html" import params_table %}
+
+{% let body = element?.metadata?.request_body ?? element?.request_body ?? none %}
+{% if body %}
+{% call card(title="Request body", cls="chirp-theme-reference-request") %}
+  {% let properties = body?.properties ?? body?.schema?.properties ?? [] %}
+  {% if properties | length > 0 %}
+  {{ params_table(properties, title=none, columns=["name", "type", "description"], cls="chirp-theme-reference-schema-table") }}
+  {% end %}
+  {% if body?.example ?? none %}
+  {{ code_block(body.example, cls="chirp-theme-reference-example", copy=true) }}
+  {% end %}
+{% end %}
+{% end %}

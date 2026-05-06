@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container, stack %}
+
+{% block content %}
+{% let element = element | default(metadata?.autodoc_element ?? none) %}
+{% call container(cls="chirp-theme-reference-page chirp-theme-reference-page--openapi-schema") %}
+  {% call stack(gap="lg") %}
+    {% include "autodoc/partials/header.html" %}
+    {% include "autodoc/openapi/partials/schema-viewer.html" %}
+    {% include "autodoc/partials/examples.html" %}
+  {% end %}
+{% end %}
+{% end %}

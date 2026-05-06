@@ -29,7 +29,7 @@ for niche or legacy-heavy verticals while they are redesigned.
 | Taxonomy, archive, authors | `tag.html`, `tags.html`, `archive*.html`, `author*.html`, `category-browser.html` | `core-parity` | Rebuilt on retained post/list/resource primitives and Chirp UI resource-index/card patterns instead of copied default-theme verticals. |
 | Tracks, tutorial, notebook, changelog, resume | `tracks/`, `tutorial/`, `notebook/`, `changelog/`, `resume/` | `core-parity` | Re-expressed as Chirp UI learning/content systems using resource indexes, stepper progress, rendered content, and retained post/resource cards. |
 | Python and CLI autodoc | `autodoc/python/`, `autodoc/cli/`, `autodoc/partials/` | `core-parity` | Rebuilt as Chirp UI reference pages with resource indexes, signatures, parameter tables, badges, accordions, code blocks, and shared member cards. |
-| OpenAPI and API hubs | `autodoc/openapi/`, `api-reference/`, `cli-reference/`, `openapi-reference/`, `api-hub/` | `future-parity` | Required long-term, but needs a dedicated endpoint/schema/hub redesign with Chirp UI navigation, tables, code samples, and request/response panels. |
+| OpenAPI and API hubs | `autodoc/openapi/`, `api-reference/`, `cli-reference/`, `openapi-reference/`, `api-hub/` | `core-parity` | Rebuilt as Chirp UI endpoint/schema/hub pages with resource indexes, nav trees, parameter tables, accordions, code samples, and shared Python/CLI reference aliases. |
 | Shortcodes and embeds | `shortcodes/` | `core-parity` | Mapped onto Chirp UI callouts, accordion/details, card-backed media/figure embeds, code blocks, and safe link primitives. |
 | Niche graph/data-table/experimental UI | graph/minimap/data-table/holo families | `deferred` | Keep only capabilities that still map to an actual output contract; redesign through Chirp UI when they are promoted. |
 
@@ -100,6 +100,12 @@ The current retained contract is:
   `autodoc/cli/single.html`, `autodoc/cli/home.html`,
   `autodoc/cli/section-index.html`, `autodoc/cli/list.html`, and shared
   `autodoc/partials/`
+- OpenAPI/API hub templates: `autodoc/openapi/endpoint.html`,
+  `autodoc/openapi/schema.html`, `autodoc/openapi/home.html`,
+  `autodoc/openapi/list.html`, `autodoc/openapi/section-index.html`,
+  `autodoc/openapi/layouts/`, `autodoc/openapi/partials/`,
+  `openapi-reference/`, `api-reference/`, `api-hub/`, and
+  `cli-reference/section-index.html`
 - shortcode templates: `tip`, `warning`, `danger`, `details`, `figure`,
   `img`, `audio`, `gallery`, `highlight`, `blockquote`, `param`, `ref`,
   `relref`

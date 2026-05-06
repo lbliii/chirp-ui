@@ -122,6 +122,32 @@ REQUIRED_AUTODOC_TEMPLATES = (
     "autodoc/cli/section-index.html",
     "autodoc/cli/list.html",
 )
+REQUIRED_REFERENCE_HUB_TEMPLATES = (
+    "autodoc/openapi/endpoint.html",
+    "autodoc/openapi/schema.html",
+    "autodoc/openapi/home.html",
+    "autodoc/openapi/list.html",
+    "autodoc/openapi/section-index.html",
+    "autodoc/openapi/layouts/explorer.html",
+    "autodoc/openapi/layouts/reference.html",
+    "autodoc/openapi/partials/endpoint-header.html",
+    "autodoc/openapi/partials/param-row.html",
+    "autodoc/openapi/partials/playground-bar.html",
+    "autodoc/openapi/partials/request-body.html",
+    "autodoc/openapi/partials/responses.html",
+    "autodoc/openapi/partials/code-samples.html",
+    "autodoc/openapi/partials/schema-viewer.html",
+    "autodoc/openapi/partials/sidebar-nav.html",
+    "openapi-reference/endpoint.html",
+    "openapi-reference/overview.html",
+    "openapi-reference/schema.html",
+    "openapi-reference/section-index.html",
+    "api-reference/module.html",
+    "api-reference/section-index.html",
+    "api-hub/home.html",
+    "api-hub/section-index.html",
+    "cli-reference/section-index.html",
+)
 ASSET_STRING_RE = re.compile(
     r"""["'](/?assets/[^"'?#]+\.[A-Za-z0-9]+(?:\?[^"']*)?(?:#[^"']*)?)["']"""
 )
@@ -393,6 +419,7 @@ def test_docs_site_theme_templates_load_via_bengal_kida_engine() -> None:
         *REQUIRED_DIRECTIVE_TEMPLATES,
         *REQUIRED_SHORTCODE_TEMPLATES,
         *REQUIRED_AUTODOC_TEMPLATES,
+        *REQUIRED_REFERENCE_HUB_TEMPLATES,
     ):
         template = engine._env.get_template(template_name)
 
@@ -542,6 +569,29 @@ def test_chirp_theme_autodoc_templates_use_chirpui_reference_patterns() -> None:
     assert "autodoc-summary-table" not in combined
     assert "autodoc-table" not in combined
     assert "command-card" not in combined
+
+
+def test_chirp_theme_reference_hubs_use_chirpui_patterns() -> None:
+    """OpenAPI/API hub paths should resolve to Chirp UI reference components."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    combined = "\n".join(
+        (templates_root / template_name).read_text(encoding="utf-8")
+        for template_name in REQUIRED_REFERENCE_HUB_TEMPLATES
+    )
+
+    assert "chirpui/resource_index.html" in combined
+    assert "chirpui/params_table.html" in combined
+    assert "chirpui/accordion.html" in combined
+    assert "chirpui/code.html" in combined
+    assert "chirpui/nav_tree.html" in combined
+    assert "autodoc/openapi/endpoint.html" in combined
+    assert "autodoc/python/module.html" in combined
+    assert "autodoc/cli/list.html" in combined
+    assert "<script" not in combined
+    assert "openapi-sidebar" not in combined
+    assert "endpoint-card" not in combined
+    assert "api-hub-card" not in combined
 
 
 def test_docs_site_cards_and_tiles_render_with_chirpui_templates(tmp_path: Path) -> None:

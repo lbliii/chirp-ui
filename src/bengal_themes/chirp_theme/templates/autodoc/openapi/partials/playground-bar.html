@@ -1,0 +1,15 @@
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/layout.html" import cluster %}
+
+{% let meta = element?.metadata ?? {} %}
+{% let servers = meta?.servers ?? [] %}
+{% if servers | length > 0 %}
+{% call card(title="Servers", cls="chirp-theme-reference-playground") %}
+  {% call cluster(gap="xs") %}
+    {% for server in servers %}
+    {{ badge(server?.url ?? server, variant="muted") }}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
