@@ -516,6 +516,8 @@ def test_chirp_theme_learning_templates_use_chirpui_patterns() -> None:
         "resume/list.html",
         "resume/single.html",
         "partials/learning-pages.html",
+        "partials/track-sidebar.html",
+        "partials/track_nav.html",
     )
 
     combined = "\n".join(
@@ -532,6 +534,9 @@ def test_chirp_theme_learning_templates_use_chirpui_patterns() -> None:
     assert "track-card" not in combined
     assert "tutorial-card" not in combined
     assert "notebook-cell" not in combined
+    assert "card mb-4" not in combined
+    assert "btn btn-" not in combined
+    assert 'class="progress"' not in combined
 
 
 def test_chirp_theme_shortcodes_use_chirpui_components() -> None:
