@@ -1,0 +1,13 @@
+{% let author = shortcode.Get("author") %}
+{% let cite = shortcode.Get("cite") %}
+
+<figure class="chirpui-callout chirpui-callout--neutral chirp-theme-shortcode-blockquote">
+  <blockquote class="chirpui-callout__body">
+    {{ shortcode.Inner | safe }}
+  </blockquote>
+  {% if author or cite %}
+  <figcaption class="chirpui-callout__header chirpui-text-muted chirpui-font-sm">
+    {% if cite %}<cite>{{ cite }}</cite>{% else %}{{ author }}{% end %}
+  </figcaption>
+  {% end %}
+</figure>

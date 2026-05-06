@@ -1,0 +1,5 @@
+{% from "chirpui/callout.html" import callout %}
+
+{% call callout(variant="error", title=shortcode.Get("title", "Danger"), cls="chirp-theme-shortcode-callout chirp-theme-shortcode-callout--danger") %}
+{{ shortcode.Inner | safe }}
+{% end %}

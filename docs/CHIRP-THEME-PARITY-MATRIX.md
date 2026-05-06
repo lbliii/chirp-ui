@@ -29,7 +29,7 @@ for niche or legacy-heavy verticals while they are redesigned.
 | Taxonomy, archive, authors | `tag.html`, `tags.html`, `archive*.html`, `author*.html`, `category-browser.html` | `core-parity` | Rebuilt on retained post/list/resource primitives and Chirp UI resource-index/card patterns instead of copied default-theme verticals. |
 | Tracks, tutorial, notebook, changelog, resume | `tracks/`, `tutorial/`, `notebook/`, `changelog/`, `resume/` | `core-parity` | Re-expressed as Chirp UI learning/content systems using resource indexes, stepper progress, rendered content, and retained post/resource cards. |
 | Autodoc and reference trees | `autodoc/`, `api-reference/`, `cli-reference/`, `openapi-reference/`, `api-hub/` | `future-parity` | Required long-term, but needs a dedicated reference-surface redesign with Chirp UI navigation, tables, signatures, and search patterns. |
-| Shortcodes and embeds | `shortcodes/` | `future-parity` | Required long-term, but should map onto Chirp UI callouts, media/figure embeds, disclosure, code, and safe link primitives. |
+| Shortcodes and embeds | `shortcodes/` | `core-parity` | Mapped onto Chirp UI callouts, accordion/details, card-backed media/figure embeds, code blocks, and safe link primitives. |
 | Niche graph/data-table/experimental UI | graph/minimap/data-table/holo families | `deferred` | Keep only capabilities that still map to an actual output contract; redesign through Chirp UI when they are promoted. |
 
 ## Chirp UI Translation Rules
@@ -92,6 +92,9 @@ The current retained contract is:
   `tutorial/list.html`, `tutorial/single.html`, `notebook/single.html`,
   `changelog/list.html`, `changelog/single.html`, `resume/list.html`,
   `resume/single.html`
+- shortcode templates: `tip`, `warning`, `danger`, `details`, `figure`,
+  `img`, `audio`, `gallery`, `highlight`, `blockquote`, `param`, `ref`,
+  `relref`
 - docs dogfood site builds using only emitted packaged assets
 - Bengal can resolve `chirpui/*` templates through the theme library provider
 - Bengal card directives render through `templates/directives/` into

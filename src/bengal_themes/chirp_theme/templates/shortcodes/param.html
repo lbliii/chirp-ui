@@ -1,0 +1,6 @@
+{% let key = shortcode.Get(0) or shortcode.Get("key") %}
+{% if key %}
+  {% let config_value = config.get(key) %}
+  {% let page_value = page.metadata.get(key) if page?.metadata else none %}
+  {{ config_value ?? page_value ?? "" }}
+{% end %}

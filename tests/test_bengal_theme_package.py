@@ -80,6 +80,21 @@ REQUIRED_DIRECTIVE_TEMPLATES = (
     "directives/card.html",
     "directives/child_cards.html",
 )
+REQUIRED_SHORTCODE_TEMPLATES = (
+    "shortcodes/audio.html",
+    "shortcodes/blockquote.html",
+    "shortcodes/danger.html",
+    "shortcodes/details.html",
+    "shortcodes/figure.html",
+    "shortcodes/gallery.html",
+    "shortcodes/highlight.html",
+    "shortcodes/img.html",
+    "shortcodes/param.html",
+    "shortcodes/ref.html",
+    "shortcodes/relref.html",
+    "shortcodes/tip.html",
+    "shortcodes/warning.html",
+)
 ASSET_STRING_RE = re.compile(
     r"""["'](/?assets/[^"'?#]+\.[A-Za-z0-9]+(?:\?[^"']*)?(?:#[^"']*)?)["']"""
 )
@@ -349,6 +364,7 @@ def test_docs_site_theme_templates_load_via_bengal_kida_engine() -> None:
         *CORE_PARITY_TEMPLATES,
         *REQUIRED_PARTIALS,
         *REQUIRED_DIRECTIVE_TEMPLATES,
+        *REQUIRED_SHORTCODE_TEMPLATES,
     ):
         template = engine._env.get_template(template_name)
 
@@ -455,6 +471,28 @@ def test_chirp_theme_learning_templates_use_chirpui_patterns() -> None:
     assert "track-card" not in combined
     assert "tutorial-card" not in combined
     assert "notebook-cell" not in combined
+
+
+def test_chirp_theme_shortcodes_use_chirpui_components() -> None:
+    """Shortcodes should map authored embeds to Chirp UI-backed output."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    combined = "\n".join(
+        (templates_root / template_name).read_text(encoding="utf-8")
+        for template_name in REQUIRED_SHORTCODE_TEMPLATES
+    )
+
+    assert "chirpui/callout.html" in combined
+    assert "chirpui/accordion.html" in combined
+    assert "chirpui-card" in combined
+    assert "chirpui-code-block" in combined
+    assert "chirp-theme-shortcode-gallery" in combined
+    assert "<script" not in combined
+    assert "callout callout-tip" not in combined
+    assert "callout callout-warning" not in combined
+    assert "callout callout-danger" not in combined
+    assert 'class="figure"' not in combined
+    assert 'class="gallery' not in combined
 
 
 def test_docs_site_cards_and_tiles_render_with_chirpui_templates(tmp_path: Path) -> None:

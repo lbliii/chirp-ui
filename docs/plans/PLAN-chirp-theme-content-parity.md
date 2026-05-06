@@ -94,6 +94,8 @@ Required proof:
 
 ### Wave 5 — Shortcodes and Media Embeds
 
+Status: shipped in the current chirp-theme migration stack.
+
 Rebuild `shortcodes/` through safe, component-backed templates.
 
 Required proof:
@@ -101,6 +103,11 @@ Required proof:
 - `figure`, `img`, `audio`, and `gallery` use retained media/embed components.
 - `ref` and `relref` preserve Bengal link semantics and escaping.
 - `details`, `blockquote`, `highlight`, and `param` have render tests.
+
+Implemented proof currently covers packaged template resolution plus source
+contracts that require Chirp UI callout, accordion, card, gallery, and code
+classes while forbidding copied default callout/gallery shells and inline
+scripts.
 
 ### Wave 6 — Root Aliases and Utility Pages
 

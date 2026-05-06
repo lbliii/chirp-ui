@@ -1,0 +1,2 @@
+{% let lang = shortcode.Get("lang") or shortcode.Get(0) %}
+<pre class="chirpui-code-block chirp-theme-shortcode-highlight"><code{% if lang %} class="language-{{ lang }}"{% end %}>{{ shortcode.Inner }}</code></pre>

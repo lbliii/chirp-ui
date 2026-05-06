@@ -1,0 +1,7 @@
+{% from "chirpui/accordion.html" import accordion_item %}
+
+{% let summary = shortcode.Get("summary", shortcode.Get(0, "Details")) %}
+{% let open = shortcode.GetBool("open", false) %}
+{% call accordion_item(summary, open=open, cls="chirp-theme-shortcode-details") %}
+{{ shortcode.Inner | safe }}
+{% end %}
