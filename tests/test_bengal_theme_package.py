@@ -95,6 +95,33 @@ REQUIRED_SHORTCODE_TEMPLATES = (
     "shortcodes/tip.html",
     "shortcodes/warning.html",
 )
+REQUIRED_AUTODOC_TEMPLATES = (
+    "autodoc/partials/header.html",
+    "autodoc/partials/signature.html",
+    "autodoc/partials/params-table.html",
+    "autodoc/partials/params-list.html",
+    "autodoc/partials/returns.html",
+    "autodoc/partials/raises.html",
+    "autodoc/partials/examples.html",
+    "autodoc/partials/usage.html",
+    "autodoc/partials/badges.html",
+    "autodoc/partials/cards.html",
+    "autodoc/partials/members.html",
+    "autodoc/partials/_macros/element-card.html",
+    "autodoc/partials/_macros/function-member.html",
+    "autodoc/partials/_macros/class-member.html",
+    "autodoc/python/module.html",
+    "autodoc/python/single.html",
+    "autodoc/python/home.html",
+    "autodoc/python/section-index.html",
+    "autodoc/python/list.html",
+    "autodoc/cli/command.html",
+    "autodoc/cli/command-group.html",
+    "autodoc/cli/single.html",
+    "autodoc/cli/home.html",
+    "autodoc/cli/section-index.html",
+    "autodoc/cli/list.html",
+)
 ASSET_STRING_RE = re.compile(
     r"""["'](/?assets/[^"'?#]+\.[A-Za-z0-9]+(?:\?[^"']*)?(?:#[^"']*)?)["']"""
 )
@@ -365,6 +392,7 @@ def test_docs_site_theme_templates_load_via_bengal_kida_engine() -> None:
         *REQUIRED_PARTIALS,
         *REQUIRED_DIRECTIVE_TEMPLATES,
         *REQUIRED_SHORTCODE_TEMPLATES,
+        *REQUIRED_AUTODOC_TEMPLATES,
     ):
         template = engine._env.get_template(template_name)
 
@@ -493,6 +521,27 @@ def test_chirp_theme_shortcodes_use_chirpui_components() -> None:
     assert "callout callout-danger" not in combined
     assert 'class="figure"' not in combined
     assert 'class="gallery' not in combined
+
+
+def test_chirp_theme_autodoc_templates_use_chirpui_reference_patterns() -> None:
+    """Python and CLI autodoc pages should be Chirp UI-native reference surfaces."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    combined = "\n".join(
+        (templates_root / template_name).read_text(encoding="utf-8")
+        for template_name in REQUIRED_AUTODOC_TEMPLATES
+    )
+
+    assert "chirpui/resource_index.html" in combined
+    assert "chirpui/params_table.html" in combined
+    assert "chirpui/accordion.html" in combined
+    assert "chirpui/code.html" in combined
+    assert "chirpui/badge.html" in combined
+    assert "chirp-theme-reference" in combined
+    assert "<script" not in combined
+    assert "autodoc-summary-table" not in combined
+    assert "autodoc-table" not in combined
+    assert "command-card" not in combined
 
 
 def test_docs_site_cards_and_tiles_render_with_chirpui_templates(tmp_path: Path) -> None:

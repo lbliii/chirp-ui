@@ -1,0 +1,12 @@
+{% from "chirpui/callout.html" import callout %}
+
+{% let raises = element?.metadata?.raises ?? element?.raises ?? [] %}
+{% if raises | length > 0 %}
+{% call callout(variant="warning", title="Raises", cls="chirp-theme-reference-raises") %}
+<ul>
+  {% for item in raises %}
+  <li><code>{{ item?.type ?? item?.name ?? "Exception" }}</code>{% if item?.description %}: {{ item.description }}{% end %}</li>
+  {% end %}
+</ul>
+{% end %}
+{% end %}

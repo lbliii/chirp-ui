@@ -453,7 +453,10 @@ HELPER: Render a menu item (desktop/mobile)
           <span class="chirp-theme-footer__heading">Navigate</span>
           <ul class="chirp-theme-footer__list">
             {% for item in footer_links[:6] %}
-            <li><a href="{{ item.href | absolute_url }}">{{ item.name }}</a></li>
+            {% let item_href = item?.href ?? item?.url ?? '#' %}
+            {% if item_href != '#' and item_href != '#/' %}
+            <li><a href="{{ item_href | absolute_url }}">{{ item.name }}</a></li>
+            {% end %}
             {% end %}
           </ul>
         </nav>

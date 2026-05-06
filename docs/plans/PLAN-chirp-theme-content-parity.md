@@ -72,6 +72,8 @@ legacy learning card shells.
 
 ### Wave 3 — Python and CLI Autodoc
 
+Status: shipped in the current chirp-theme migration stack.
+
 Rebuild `autodoc/python/`, `autodoc/cli/`, and `autodoc/partials/` around a
 single reference-page contract.
 
@@ -80,6 +82,11 @@ Required proof:
 - Signatures, params, returns, raises, usage, examples, and member cards use
   Chirp UI code/table/card/badge primitives.
 - Generated autodoc pages do not emit `/#/` placeholder links.
+
+Implemented proof currently covers packaged template resolution and source
+contracts requiring Chirp UI resource indexes, parameter tables, accordions,
+code blocks, badges, and shared reference classes while forbidding copied
+default autodoc table/card shells and inline scripts.
 
 ### Wave 4 — OpenAPI and API Hubs
 

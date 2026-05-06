@@ -1,0 +1,18 @@
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/layout.html" import cluster %}
+
+{% let meta = element?.metadata ?? {} %}
+{% let title = element?.qualified_name ?? element?.name ?? page?.title ?? title ?? "Reference" %}
+{% let description = element?.description ?? page?.description ?? description ?? none %}
+{% let element_type = element?.element_type ?? page?.type ?? "reference" %}
+
+{% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-reference-hero") %}
+  {% slot metadata %}
+  {% call cluster(gap="xs") %}
+    {{ badge(element_type, variant="muted") }}
+    {% if meta?.is_deprecated ?? false %}{{ badge("deprecated", variant="error") }}{% end %}
+    {% if meta?.is_async ?? false %}{{ badge("async", variant="info") }}{% end %}
+  {% end %}
+  {% end %}
+{% end %}

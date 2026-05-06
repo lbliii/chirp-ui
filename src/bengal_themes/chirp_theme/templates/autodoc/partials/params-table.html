@@ -1,0 +1,6 @@
+{% from "chirpui/params_table.html" import params_table %}
+
+{% let rows = parameters ?? params ?? element?.metadata?.parameters ?? element?.metadata?.args ?? [] %}
+{% if rows | length > 0 %}
+{{ params_table(rows, title=title ?? "Parameters", cls="chirp-theme-reference-params") }}
+{% end %}

@@ -1,0 +1,12 @@
+{% from "chirpui/callout.html" import callout %}
+
+{% let returns = element?.metadata?.returns ?? element?.returns ?? none %}
+{% if returns %}
+{% call callout(variant="neutral", title="Returns", cls="chirp-theme-reference-returns") %}
+{% if returns?.description %}
+{{ returns.description | safe }}
+{% else %}
+{{ returns | safe }}
+{% end %}
+{% end %}
+{% end %}

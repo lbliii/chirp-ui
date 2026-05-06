@@ -28,7 +28,8 @@ for niche or legacy-heavy verticals while they are redesigned.
 | Shared post/list components | `partials/components/post-card.html`, `article.html`, `related-posts-simple.html`, `tags.html`, `tiles.html` | `core-parity` | Reused by docs, generic pages, and blog surfaces. |
 | Taxonomy, archive, authors | `tag.html`, `tags.html`, `archive*.html`, `author*.html`, `category-browser.html` | `core-parity` | Rebuilt on retained post/list/resource primitives and Chirp UI resource-index/card patterns instead of copied default-theme verticals. |
 | Tracks, tutorial, notebook, changelog, resume | `tracks/`, `tutorial/`, `notebook/`, `changelog/`, `resume/` | `core-parity` | Re-expressed as Chirp UI learning/content systems using resource indexes, stepper progress, rendered content, and retained post/resource cards. |
-| Autodoc and reference trees | `autodoc/`, `api-reference/`, `cli-reference/`, `openapi-reference/`, `api-hub/` | `future-parity` | Required long-term, but needs a dedicated reference-surface redesign with Chirp UI navigation, tables, signatures, and search patterns. |
+| Python and CLI autodoc | `autodoc/python/`, `autodoc/cli/`, `autodoc/partials/` | `core-parity` | Rebuilt as Chirp UI reference pages with resource indexes, signatures, parameter tables, badges, accordions, code blocks, and shared member cards. |
+| OpenAPI and API hubs | `autodoc/openapi/`, `api-reference/`, `cli-reference/`, `openapi-reference/`, `api-hub/` | `future-parity` | Required long-term, but needs a dedicated endpoint/schema/hub redesign with Chirp UI navigation, tables, code samples, and request/response panels. |
 | Shortcodes and embeds | `shortcodes/` | `core-parity` | Mapped onto Chirp UI callouts, accordion/details, card-backed media/figure embeds, code blocks, and safe link primitives. |
 | Niche graph/data-table/experimental UI | graph/minimap/data-table/holo families | `deferred` | Keep only capabilities that still map to an actual output contract; redesign through Chirp UI when they are promoted. |
 
@@ -92,6 +93,13 @@ The current retained contract is:
   `tutorial/list.html`, `tutorial/single.html`, `notebook/single.html`,
   `changelog/list.html`, `changelog/single.html`, `resume/list.html`,
   `resume/single.html`
+- Python and CLI autodoc templates: `autodoc/python/module.html`,
+  `autodoc/python/single.html`, `autodoc/python/home.html`,
+  `autodoc/python/section-index.html`, `autodoc/python/list.html`,
+  `autodoc/cli/command.html`, `autodoc/cli/command-group.html`,
+  `autodoc/cli/single.html`, `autodoc/cli/home.html`,
+  `autodoc/cli/section-index.html`, `autodoc/cli/list.html`, and shared
+  `autodoc/partials/`
 - shortcode templates: `tip`, `warning`, `danger`, `details`, `figure`,
   `img`, `audio`, `gallery`, `highlight`, `blockquote`, `param`, `ref`,
   `relref`

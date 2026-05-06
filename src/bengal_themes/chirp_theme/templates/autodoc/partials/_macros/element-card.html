@@ -1,0 +1,7 @@
+{% from "chirpui/card.html" import resource_card %}
+
+{% def element_card(element) %}
+{% let name = element?.name ?? element?.title ?? "Reference" %}
+{% let href = element?.href ?? element?.url ?? "#" ~ name %}
+{{ resource_card(href, name, description=element?.description ?? none, top_meta=element?.element_type ?? none, cls="chirp-theme-reference-card") }}
+{% end %}

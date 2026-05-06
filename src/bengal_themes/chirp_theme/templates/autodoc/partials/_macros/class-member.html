@@ -1,0 +1,5 @@
+{% from "autodoc/partials/_macros/element-card.html" import element_card %}
+
+{% def class_member(element, is_first=false) %}
+{{ element_card(element) }}
+{% end %}
