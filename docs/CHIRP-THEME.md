@@ -60,6 +60,8 @@ The retained `chirp-theme` contract is intentionally explicit:
 
 The current parity and redesign decisions live in
 [`docs/CHIRP-THEME-PARITY-MATRIX.md`](./CHIRP-THEME-PARITY-MATRIX.md).
+The active implementation backlog for unported content families lives in
+[`docs/plans/PLAN-chirp-theme-content-parity.md`](./plans/PLAN-chirp-theme-content-parity.md).
 Anything not listed there as retained is intentionally outside the current
 runtime contract until a later redesign slice brings it back through Chirp
 UI-native templates and tokens.

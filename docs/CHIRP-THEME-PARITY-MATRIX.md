@@ -21,7 +21,7 @@ for niche or legacy-heavy verticals while they are redesigned.
 |---|---|---|---|
 | Shell and shared runtime | `templates/base.html`, shared JS/CSS entrypoints | `foundation` | Keep Bengal metadata/runtime hooks, replace structural shell composition with theme-owned primitives. |
 | Canonical pages | `home.html`, `page.html`, `doc/home.html`, `doc/list.html`, `doc/single.html` | `foundation` | These are the acceptance target for the dogfood docs site; new repeated UI should come from `chirpui/*` macros. |
-| Markdown card directives | `cards`, `card`, `child-cards` directive output | `foundation` | Bengal provides structured directive context; `chirp-theme` supplies Kida directive templates that emit Chirp UI grid/card markup. |
+| Markdown directives | `admonition`, `cards`, `card`, `child-cards` directive output | `foundation` | Bengal provides structured directive context; `chirp-theme` supplies Kida directive templates that emit Chirp UI callout/grid/card markup. |
 | Shell partials | `partials/navigation-components.html`, `partials/docs-nav.html`, `partials/docs-toc-sidebar.html`, `partials/page-hero.html`, `partials/theme-controls.html`, `partials/search-modal.html` | `foundation` | Rewritten or re-scoped to use `chirp-ui` primitives before adding theme-specific markup. |
 | Blog shell and posts | `blog/shell.html`, `blog/list.html`, `blog/single.html`, `post.html` | `core-parity` | Retained as the primary non-docs content vertical. |
 | Search and errors | `search.html`, `404.html` | `core-parity` | Retained because they are part of the basic site UX contract. |
@@ -29,6 +29,7 @@ for niche or legacy-heavy verticals while they are redesigned.
 | Taxonomy, archive, authors | `tag.html`, `tags.html`, `archive*.html`, `author*.html`, `category-browser.html` | `future-parity` | Rebuild on retained post/list/resource primitives instead of copying the default-theme verticals. |
 | Tracks, tutorial, notebook, changelog, resume | `tracks/`, `tutorial/`, `notebook/`, `changelog/`, `resume/` | `future-parity` | Required long-term, but should be re-expressed as Chirp UI learning/content systems rather than older bespoke shells. |
 | Autodoc and reference trees | `autodoc/`, `api-reference/`, `cli-reference/`, `openapi-reference/`, `api-hub/` | `future-parity` | Required long-term, but needs a dedicated reference-surface redesign with Chirp UI navigation, tables, signatures, and search patterns. |
+| Shortcodes and embeds | `shortcodes/` | `future-parity` | Required long-term, but should map onto Chirp UI callouts, media/figure embeds, disclosure, code, and safe link primitives. |
 | Niche graph/data-table/experimental UI | graph/minimap/data-table/holo families | `deferred` | Keep only capabilities that still map to an actual output contract; redesign through Chirp UI when they are promoted. |
 
 ## Chirp UI Translation Rules
@@ -88,6 +89,8 @@ The current retained contract is:
 - Bengal can resolve `chirpui/*` templates through the theme library provider
 - Bengal card directives render through `templates/directives/` into
   `chirpui-grid` and `chirpui-card` markup on the dogfood docs site
+- Bengal admonition directives render through `templates/directives/` into
+  `chirpui-callout` markup
 - the old default-theme `components/cards.css` bundle is not part of the
   retained theme asset graph; card-shaped UI should come from Chirp UI macros
   or scoped retained vertical CSS
