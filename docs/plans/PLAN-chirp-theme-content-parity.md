@@ -103,8 +103,11 @@ Required proof:
 
 Implemented proof currently covers packaged template resolution and source
 contracts requiring Chirp UI resource indexes, nav trees, parameter tables,
-accordions, code blocks, and shared reference aliases while forbidding copied
-default OpenAPI/API hub shells and inline scripts.
+accordions, sticky request/response examples, code blocks, and shared reference
+aliases while forbidding copied default OpenAPI/API hub shells and inline
+scripts. REST endpoint pages should intentionally follow the familiar
+Mintlify/Fern-style API reference convention rather than inventing a novel
+navigation or reading model.
 
 ### Wave 5 — Shortcodes and Media Embeds
 

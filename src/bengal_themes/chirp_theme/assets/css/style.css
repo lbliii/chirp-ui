@@ -221,6 +221,10 @@
 }
 
 @layer components {
+  @import url('components/reference.css');
+}
+
+@layer components {
   @import url('components/versioning.css');
   @import url('components/stale-banner.css');
 }

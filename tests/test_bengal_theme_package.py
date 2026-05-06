@@ -139,6 +139,9 @@ REQUIRED_REFERENCE_HUB_TEMPLATES = (
     "autodoc/openapi/partials/request-body.html",
     "autodoc/openapi/partials/responses.html",
     "autodoc/openapi/partials/code-samples.html",
+    "autodoc/openapi/partials/example-rail.html",
+    "autodoc/openapi/partials/request-example.html",
+    "autodoc/openapi/partials/response-example.html",
     "autodoc/openapi/partials/schema-viewer.html",
     "autodoc/openapi/partials/sidebar-nav.html",
     "openapi-reference/endpoint.html",
@@ -588,6 +591,8 @@ def test_chirp_theme_reference_hubs_use_chirpui_patterns() -> None:
     assert "chirpui/accordion.html" in combined
     assert "chirpui/code.html" in combined
     assert "chirpui/nav_tree.html" in combined
+    assert "chirp-theme-rest-reference__examples" in combined
+    assert "Request and response examples" in combined
     assert "autodoc/openapi/endpoint.html" in combined
     assert "autodoc/python/module.html" in combined
     assert "autodoc/cli/list.html" in combined
