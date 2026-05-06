@@ -363,6 +363,9 @@ site = Site.from_config(site_root)
 site.build(BuildOptions(force_sequential=True, incremental=False, quiet=True))
 
 docs_html = (site.output_dir / "docs" / "index.html").read_text(encoding="utf-8")
+docs_section_html = (site.output_dir / "docs" / "get-started" / "index.html").read_text(
+    encoding="utf-8"
+)
 home_html = (site.output_dir / "index.html").read_text(encoding="utf-8")
 releases_html = (site.output_dir / "releases" / "index.html").read_text(encoding="utf-8")
 legacy_content_tile_re = re.compile(r'class="[^"]*\bcontent-(?:tile|tiles)\b')
@@ -371,6 +374,9 @@ result_path.write_text(
         {
             "has_chirpui_grid": "chirpui-grid" in docs_html,
             "has_chirpui_card": "chirpui-card" in docs_html,
+            "docs_section_has_chirpui_sidebar": "chirpui-sidebar" in docs_section_html,
+            "docs_section_has_chirpui_breadcrumbs": "chirpui-breadcrumbs" in docs_section_html,
+            "docs_section_has_legacy_docs_nav": 'class="docs-nav"' in docs_section_html,
             "home_has_chirpui_hero": "chirpui-hero chirpui-hero--page" in home_html,
             "home_has_chirpui_grid": "chirpui-grid" in home_html,
             "home_has_chirpui_resource_card": "chirpui-resource-card" in home_html,
@@ -401,6 +407,9 @@ result_path.write_text(
 
     assert result["has_chirpui_grid"]
     assert result["has_chirpui_card"]
+    assert result["docs_section_has_chirpui_sidebar"]
+    assert result["docs_section_has_chirpui_breadcrumbs"]
+    assert not result["docs_section_has_legacy_docs_nav"]
     assert result["home_has_chirpui_hero"]
     assert result["home_has_chirpui_grid"]
     assert result["home_has_chirpui_resource_card"]
