@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "partials/navigation-components.html" import pagination %}
+{% from "partials/taxonomy-pages.html" import count_label, taxonomy_post_feed, term_resource_card %}
+
+{% block content %}
+{% let page_title = page?.title ?? section?.title ?? title ?? "Archive" %}
+{% let page_desc = page?.description ?? section?.description ?? description ?? "Browse published content." %}
+{% let archive_posts = posts ?? pages ?? [] %}
+{% let archive_sections = subsections ?? [] %}
+{% let total_count = total_posts ?? (archive_posts | length) %}
+{% let total_pages = (total_pages ?? 1) | int %}
+{% let current_page = (current_page ?? 1) | int %}
+{% let base_url = base_url ?? section?.href ?? page?.href ?? "/archive/" %}
+
+{% call container(cls="chirp-theme-taxonomy-page") %}
+  {% call resource_index(
+    page_title,
+    page?.href ?? base_url,
+    subtitle=page_desc,
+    search_placeholder="Filter archive...",
+    button_icon="magnifying-glass",
+    results_title="Archive",
+    results_subtitle=count_label(total_count, "entry"),
+    has_results=(archive_posts | length > 0) or (archive_sections | length > 0),
+    empty_title="No archived content yet",
+    empty_message="Published content will appear here automatically.",
+    cls="chirp-theme-taxonomy-index"
+  ) %}
+    {% if content %}
+    {% call rendered_content(compact=true) %}{{ content | safe }}{% end %}
+    {% end %}
+
+    {% if archive_posts | length > 0 %}
+    {{ taxonomy_post_feed(archive_posts, "No archived content yet.") }}
+    {% elif archive_sections | length > 0 %}
+    {% for subsection in archive_sections %}
+    {% let sub_title = subsection?.title ?? subsection?.name ?? "Section" %}
+    {% let sub_href = subsection?.href ?? "#" %}
+    {% let sub_desc = subsection?.description ?? subsection?.params?.description ?? none %}
+    {% let sub_count = subsection?.pages | length if subsection?.pages else 0 %}
+    {{ term_resource_card(sub_title, sub_href, sub_count, sub_desc, "page") }}
+    {% end %}
+    {% end %}
+  {% end %}
+
+  {% if total_pages > 1 %}
+  {{ pagination(current_page, total_pages, base_url) }}
+  {% end %}
+{% end %}
+{% end %}

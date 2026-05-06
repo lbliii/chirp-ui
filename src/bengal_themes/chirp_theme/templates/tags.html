@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "partials/taxonomy-pages.html" import count_label, term_resource_card %}
+
+{% block content %}
+{% let page_title = page?.title ?? "Tags" %}
+{% let all_tags = tags ?? [] %}
+{% let total_count = total_tags ?? (all_tags | length) %}
+
+{% call container(cls="chirp-theme-taxonomy-page") %}
+  {% call resource_index(
+    page_title,
+    page?.href ?? "/tags/",
+    subtitle="Browse content by topic.",
+    search_placeholder="Filter tags...",
+    button_icon="magnifying-glass",
+    results_title="Topics",
+    results_subtitle=count_label(total_count, "tag"),
+    results_layout="grid",
+    results_cols=3,
+    has_results=all_tags | length > 0,
+    empty_title="No tags yet",
+    empty_message="Tag pages appear after published content declares tags.",
+    cls="chirp-theme-taxonomy-index"
+  ) %}
+    {% if content %}
+    {% call rendered_content(compact=true) %}{{ content | safe }}{% end %}
+    {% end %}
+    {% for item in all_tags %}
+    {% let tag_name = item?.name ?? item %}
+    {% let tag_href = item?.href ?? tag_url(tag_name) %}
+    {% let tag_count = item?.count ?? ((item.pages | length) if item?.pages else 0) %}
+    {{ term_resource_card(tag_name, tag_href, tag_count, "Content tagged " ~ tag_name, "post") }}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}

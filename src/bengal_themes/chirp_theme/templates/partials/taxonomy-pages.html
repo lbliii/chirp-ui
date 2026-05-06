@@ -1,0 +1,62 @@
+{#- Shared taxonomy/archive resource patterns for chirp-theme. -#}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/layout.html" import cluster, grid, stack %}
+{% from "partials/components/post-card.html" import post_card %}
+
+{% def count_label(count, singular="entry", plural=none) %}
+{% let plural_label = plural ?? singular ~ "s" %}
+{{ count }} {{ singular if count == 1 else plural_label }}
+{% end %}
+
+{% def taxonomy_post_feed(items, empty_message="No content yet.", variant="default", show_image=false) %}
+{% let safe_items = items ?? [] %}
+{% if safe_items | length > 0 %}
+{% call stack(gap="md", cls="chirp-theme-taxonomy-feed") %}
+  {% for item in safe_items %}
+  <div data-chirpui-search-item data-search-text="{{ item?.title ?? '' }} {{ item?.description ?? item?.summary ?? '' }} {{ item?.tags | join(' ') if item?.tags else '' }}">
+    {{ post_card(item, variant=variant, show_image=show_image) }}
+  </div>
+  {% end %}
+{% end %}
+{% else %}
+<p class="chirpui-text-muted">{{ empty_message }}</p>
+{% end %}
+{% end %}
+
+{% def term_resource_card(title, href, count=0, description=none, kind="entry", cls="") %}
+{% call resource_card(href, title, description=description, cls="chirp-theme-taxonomy-card" ~ (" " ~ cls if cls else "")) %}
+  {% slot footer %}
+  {{ badge(count_label(count, kind), variant="muted") }}
+  {% end %}
+{% end %}
+{% end %}
+
+{% def term_resource_grid(items, empty_message="No entries yet.", kind="entry") %}
+{% let safe_items = items ?? [] %}
+{% if safe_items | length > 0 %}
+{% call grid(cols=3, gap="md", cls="chirp-theme-taxonomy-grid") %}
+  {% for item in safe_items %}
+  {% let item_name = item?.name ?? item?.title ?? item %}
+  {% let item_href = item?.href ?? "#" %}
+  {% let item_count = item?.count ?? item?.post_count ?? ((item.pages | length) if item?.pages else 0) %}
+  {% let item_desc = item?.description ?? item?.bio ?? none %}
+  {{ term_resource_card(item_name, item_href, item_count, item_desc, kind) }}
+  {% end %}
+{% end %}
+{% else %}
+<p class="chirpui-text-muted">{{ empty_message }}</p>
+{% end %}
+{% end %}
+
+{% def social_links(social=none) %}
+{% let safe_social = social ?? {} %}
+{% if safe_social %}
+{% call cluster(gap="xs", cls="chirp-theme-taxonomy-social") %}
+  {% if safe_social?.website %}{{ badge("Website", href=safe_social.website, variant="muted") }}{% end %}
+  {% if safe_social?.github %}{{ badge("GitHub", href="https://github.com/" ~ safe_social.github, variant="muted") }}{% end %}
+  {% if safe_social?.linkedin %}{{ badge("LinkedIn", href="https://linkedin.com/in/" ~ safe_social.linkedin, variant="muted") }}{% end %}
+  {% if safe_social?.email %}{{ badge("Email", href="mailto:" ~ safe_social.email, variant="muted") }}{% end %}
+{% end %}
+{% end %}
+{% end %}

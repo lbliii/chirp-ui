@@ -37,6 +37,8 @@ are shared and 83 default-theme output templates remain unported.
 
 ### Wave 1 — Taxonomy and Archive Listings
 
+Status: shipped in the current chirp-theme migration stack.
+
 Rebuild `tag.html`, `tags.html`, `archive.html`, `archive-year.html`,
 `author.html`, `authors/list.html`, `authors/single.html`, and
 `category-browser.html` using retained post/resource card macros.
@@ -46,6 +48,10 @@ Required proof:
 - Assert output uses `chirpui-resource-card`, `chirpui-badge`, and retained
   pagination/navigation components.
 - No dormant taxonomy-specific CSS unless an active template references it.
+
+Implemented proof currently covers packaged template resolution plus the dogfood
+docs site's generated tag index and tag pages. Authors, categories, and archive
+fixtures still need dedicated content fixtures before this plan moves to done.
 
 ### Wave 2 — Learning Content
 

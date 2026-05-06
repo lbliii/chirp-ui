@@ -40,6 +40,14 @@ CORE_PARITY_TEMPLATES = (
     "post.html",
     "search.html",
     "404.html",
+    "tag.html",
+    "tags.html",
+    "archive.html",
+    "archive-year.html",
+    "author.html",
+    "authors/list.html",
+    "authors/single.html",
+    "category-browser.html",
 )
 REQUIRED_PARTIALS = (
     "partials/navigation-components.html",
@@ -51,6 +59,7 @@ REQUIRED_PARTIALS = (
     "partials/theme-controls.html",
     "partials/version-banner.html",
     "partials/stale-content-banner.html",
+    "partials/taxonomy-pages.html",
     "partials/components/tags.html",
     "partials/components/tiles.html",
     "partials/components/related-posts-simple.html",
@@ -372,6 +381,39 @@ def test_chirp_theme_admonition_directive_uses_chirpui_callout() -> None:
     assert 'class="admonition' not in html
 
 
+def test_chirp_theme_taxonomy_templates_use_chirpui_resource_patterns() -> None:
+    """Taxonomy/archive pages should be Chirp UI-native, not copied default shells."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    taxonomy_templates = (
+        "tag.html",
+        "tags.html",
+        "archive.html",
+        "archive-year.html",
+        "author.html",
+        "authors/list.html",
+        "authors/single.html",
+        "category-browser.html",
+        "partials/taxonomy-pages.html",
+    )
+
+    combined = "\n".join(
+        (templates_root / template_name).read_text(encoding="utf-8")
+        for template_name in taxonomy_templates
+    )
+
+    assert "chirpui/resource_index.html" in combined
+    assert "chirpui/card.html" in combined
+    assert "chirpui/badge.html" in combined
+    assert "partials/components/post-card.html" in combined
+    assert "chirp-theme-taxonomy-index" in combined
+    assert "<script" not in combined
+    assert "tag-card gradient-border" not in combined
+    assert "archive-post-card" not in combined
+    assert "category-card" not in combined
+    assert "author-card-link" not in combined
+
+
 def test_docs_site_cards_and_tiles_render_with_chirpui_templates(tmp_path: Path) -> None:
     """Bengal card-like content should render through chirp-theme's Chirp UI templates."""
     _prefer_workspace_bengal()
@@ -399,6 +441,8 @@ docs_section_html = (site.output_dir / "docs" / "get-started" / "index.html").re
 )
 home_html = (site.output_dir / "index.html").read_text(encoding="utf-8")
 releases_html = (site.output_dir / "releases" / "index.html").read_text(encoding="utf-8")
+tags_html = (site.output_dir / "tags" / "index.html").read_text(encoding="utf-8")
+tag_html = (site.output_dir / "tags" / "installation" / "index.html").read_text(encoding="utf-8")
 legacy_content_tile_re = re.compile(r'class="[^"]*\bcontent-(?:tile|tiles)\b')
 result_path.write_text(
     json.dumps(
@@ -416,6 +460,11 @@ result_path.write_text(
             "has_legacy_card": 'class="card"' in docs_html,
             "has_chirpui_resource_card": "chirpui-resource-card" in releases_html,
             "has_legacy_content_tile": bool(legacy_content_tile_re.search(releases_html)),
+            "tags_has_resource_index": "chirpui-resource-index" in tags_html,
+            "tags_has_taxonomy_card": "chirp-theme-taxonomy-card" in tags_html,
+            "tag_page_has_resource_index": "chirpui-resource-index" in tag_html,
+            "tag_page_has_post_card": "chirp-theme-post-card" in tag_html,
+            "tags_has_legacy_tag_card": "tag-card gradient-border" in tags_html,
         }
     ),
     encoding="utf-8",
@@ -449,6 +498,11 @@ result_path.write_text(
     assert not result["has_legacy_card"]
     assert result["has_chirpui_resource_card"]
     assert not result["has_legacy_content_tile"]
+    assert result["tags_has_resource_index"]
+    assert result["tags_has_taxonomy_card"]
+    assert result["tag_page_has_resource_index"]
+    assert result["tag_page_has_post_card"]
+    assert not result["tags_has_legacy_tag_card"]
 
 
 def test_docs_site_build_resolves_header_navigation_links(tmp_path: Path) -> None:
