@@ -105,6 +105,15 @@ The direction of dependency matters:
   theme classes when a Chirp UI token, primitive, or macro should own the
   contract
 
+The current CSS loading contract is a transitional boundary, not the final
+architecture. Until Bengal has first-class library asset modes with matching dev
+and static-build behavior, `assets/css/style.css` is the single stylesheet
+entrypoint and imports Chirp UI's generated CSS and transition CSS before theme
+tokens and overrides. Theme templates should not add separate
+`chirp_ui/chirpui.css` or `chirp_ui/chirpui-transitions.css` links. The desired
+platform contract is tracked in
+[`docs/plans/PLAN-bengal-chirpui-library-contract.md`](./plans/PLAN-bengal-chirpui-library-contract.md).
+
 The theme should eventually cover the same broad content/output families as the
 original Bengal default theme: autodoc and reference pages, tutorials, tracks,
 notebooks, changelog and resume views, taxonomy/archive/author pages, search,
@@ -119,7 +128,9 @@ shrinking the copied default-theme surface:
 
 - remove implicit dependence on Bengal default theme inheritance
 - declare `chirp_ui` as a Bengal theme library dependency
-- load Chirp UI CSS/JS through Bengal's provider asset system
+- load Chirp UI JS through Bengal's provider asset system
+- bundle Chirp UI CSS through the theme stylesheet until Bengal supports
+  first-class library CSS inclusion modes
 - replace default-theme partial dependencies with `chirpui/*` macros where a
   registry-backed component already exists
 - render high-value Markdown directives through Kida directive templates when a

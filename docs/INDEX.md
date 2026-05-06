@@ -74,6 +74,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-media-site-patterns-from-streaming.md](plans/PLAN-media-site-patterns-from-streaming.md) — Media-site composition recipes from Netflix, YouTube, and Apple TV research
 - [PLAN-forum-site-patterns-from-communities.md](plans/PLAN-forum-site-patterns-from-communities.md) — Forum-site composition recipes from Reddit, Discourse, Stack Overflow, and GitHub Discussions research
 - [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Bengal default content/output parity waves for chirp-theme
+- [PLAN-bengal-chirpui-library-contract.md](plans/PLAN-bengal-chirpui-library-contract.md) — First-class Bengal library asset/macro contract for Chirp UI
 
 ### Shipped plans (`docs/plans/done/`)
 
