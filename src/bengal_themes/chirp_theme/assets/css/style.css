@@ -107,10 +107,6 @@
    ============================================ */
 
 @layer components {
-  @import url('components/admonitions.css');
-}
-
-@layer components {
   @import url('components/alerts.css');
 }
 

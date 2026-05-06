@@ -56,6 +56,7 @@ REQUIRED_PARTIALS = (
     "partials/components/related-posts-simple.html",
 )
 REQUIRED_DIRECTIVE_TEMPLATES = (
+    "directives/admonition.html",
     "directives/cards.html",
     "directives/card.html",
     "directives/child_cards.html",
@@ -339,6 +340,36 @@ def test_docs_site_theme_templates_load_via_bengal_kida_engine() -> None:
     provider_template = engine._env.get_template("chirpui/card.html")
     assert provider_template is not None
     assert "chirp_ui/templates/chirpui/card.html" in provider_template.filename.replace("\\", "/")
+
+
+def test_chirp_theme_admonition_directive_uses_chirpui_callout() -> None:
+    """Bengal admonitions should render through Chirp UI callout semantics."""
+    _prefer_workspace_bengal()
+    pytest.importorskip("bengal")
+
+    from bengal.core import Site
+    from bengal.rendering.engines.kida import KidaTemplateEngine
+
+    site = Site.from_config(SITE_ROOT)
+    engine = KidaTemplateEngine(site)
+    template = engine._env.get_template("directives/admonition.html")
+
+    html = template.render(
+        name="danger",
+        title="Danger",
+        css_class="danger user-class",
+        icon_name="alert",
+        icon_html='<svg aria-hidden="true"></svg>',
+        extra_class="user-class",
+        children="<p>Do not continue.</p>",
+    )
+
+    assert "chirpui-callout chirpui-callout--error" in html
+    assert "chirp-theme-directive-admonition--danger" in html
+    assert "user-class" in html
+    assert "<p>Do not continue.</p>" in html
+    assert '<svg aria-hidden="true"></svg>' in html
+    assert 'class="admonition' not in html
 
 
 def test_docs_site_cards_and_tiles_render_with_chirpui_templates(tmp_path: Path) -> None:

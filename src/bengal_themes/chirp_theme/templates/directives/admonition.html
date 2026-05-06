@@ -1,0 +1,28 @@
+{#- chirp-theme admonition directive.
+
+Consumes Bengal's admonition directive context and emits Chirp UI callout markup.
+-#}
+{% from "chirpui/callout.html" import callout %}
+
+{% let VARIANTS = {
+  'attention': 'warning',
+  'caution': 'warning',
+  'danger': 'error',
+  'error': 'error',
+  'example': 'neutral',
+  'hint': 'success',
+  'important': 'warning',
+  'info': 'info',
+  'note': 'info',
+  'success': 'success',
+  'tip': 'success',
+  'todo': 'neutral',
+  'warning': 'warning'
+} %}
+{% let callout_variant = VARIANTS[name] ?? 'info' %}
+{% let callout_class = "chirp-theme-directive-admonition chirp-theme-directive-admonition--" ~ name %}
+{% if extra_class %}{% let callout_class = callout_class ~ " " ~ extra_class %}{% end %}
+
+{% call callout(variant=callout_variant, title=title, icon=(icon_html | safe if icon_html else none), cls=callout_class) %}
+{{ children | safe }}
+{% end %}
