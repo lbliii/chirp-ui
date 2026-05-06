@@ -3,6 +3,7 @@
 {% from 'partials/navigation-components.html' import pagination %}
 {% from 'partials/components/post-card.html' import post_card %}
 {% from 'partials/theme-primitives.html' import theme_page_header, theme_feed %}
+{% from 'chirpui/layout.html' import grid, stack %}
 
 {% let total_pages = (total_pages ?? 1) | int %}
 {% let current_page = (current_page ?? 1) | int %}
@@ -26,20 +27,20 @@
 
 {% if featured_posts | length > 0 %}
 {% call theme_feed('Featured') %}
-<div class="blog-featured-grid">
+{% call grid(cols=2, gap='md', cls='chirp-theme-blog__featured-grid') %}
   {% for post in featured_posts %}
   {{ post_card(post, variant='featured') }}
   {% end %}
-</div>
+{% end %}
 {% end %}
 {% end %}
 
 {% call theme_feed('Recent Posts') %}
-<div class="blog-post-list">
+{% call stack(gap='md', cls='chirp-theme-blog__post-list') %}
   {% for post in regular_posts %}
   {{ post_card(post, variant='default') }}
   {% end %}
-</div>
+{% end %}
 {% end %}
 
 {% if total_pages > 1 %}

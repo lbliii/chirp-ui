@@ -18,136 +18,54 @@ Variants:
 #}
 
 {% from 'partials/components/tags.html' import tag_list %}
+{% from 'chirpui/card.html' import resource_card %}
 
 {% def post_card(post, variant='default', show_image=true, show_excerpt=true) %}
 {% let p = post | post_view %}
 {% if p %}
 {% let theme_features = theme?.features ?? [] %}
-
-{% match variant %}
-{% case 'featured' %}
-<article class="article-card article-card--featured gradient-border-strong fluid-bg">
-  {% if show_image and p.image %}
-  <div class="blog-card-image">
-    <a href="{{ p.href }}">
-      <img src="{{ p.image }}" alt="{{ p.title }}" loading="lazy">
-    </a>
-  </div>
-  {% end %}
-  <div class="blog-card-content">
-    {% if (p.author and 'content.author' in theme_features) or p.date or (p.reading_time > 0 and 'content.reading_time' in theme_features) %}
-    <div class="blog-card-meta blog-card-meta--top">
-      {% if p.author and 'content.author' in theme_features %}
-      <span class="blog-author">
-        {% if p.author_avatar %}
-        <img src="{{ p.author_avatar | avatar_url }}" alt="{{ p.author }}" class="author-avatar">
-        {% end %}
-        {{ p.author }}
-      </span>
-      {% end %}
-      {% if p.date %}
-      <time datetime="{{ p.date | date_iso }}">
-        {{ p.date | dateformat('%B %d, %Y') }}
-      </time>
-      {% end %}
-      {% if p.reading_time > 0 and 'content.reading_time' in theme_features %}
-      <span class="reading-time">{{ p.reading_time }} min read</span>
-      {% end %}
-    </div>
-    {% end %}
-    <h3 class="blog-card-title">
-      <a href="{{ p.href }}">{{ p.title }}</a>
-    </h3>
-    {% if show_excerpt and p.excerpt and 'content.excerpts' in theme_features %}
-    <div class="blog-card-excerpt">{{ p.excerpt | card_excerpt_html((p.excerpt_words ?? config.content.excerpt_words ?? 150) | coerce_int(150), p.title, p.description) | safe }}</div>
-    {% end %}
-    {% if p.tags | length > 0 %}
-    <div class="blog-card-tags">
-      {{ tag_list(p.tags[:3]) }}
-    </div>
-    {% end %}
-  </div>
-</article>
-
-{% case 'compact' %}
-<article class="article-card article-card--compact gradient-border fluid-combined">
-  {% if show_image and p.image %}
-  <div class="blog-card-image">
-    <a href="{{ p.href }}">
-      <img src="{{ p.image }}" alt="{{ p.title }}" loading="lazy">
-    </a>
-  </div>
-  {% end %}
-  <div class="blog-card-content">
-    {% if (p.author and 'content.author' in theme_features) or p.date %}
-    <div class="blog-card-meta blog-card-meta--top">
-      {% if p.author and 'content.author' in theme_features %}
-      <span class="blog-author">
-        {% if p.author_avatar %}
-        <img src="{{ p.author_avatar | avatar_url }}" alt="{{ p.author }}" class="author-avatar">
-        {% end %}
-        {{ p.author }}
-      </span>
-      {% end %}
-      {% if p.date %}
-      <time datetime="{{ p.date | date_iso }}">{{ p.date | time_ago }}</time>
-      {% end %}
-    </div>
-    {% end %}
-    <h3 class="blog-card-title">
-      <a href="{{ p.href }}">{{ p.title }}</a>
-    </h3>
-    {% if show_excerpt and p.excerpt and 'content.excerpts' in theme_features %}
-    <div class="blog-card-excerpt">{{ p.excerpt | card_excerpt_html(p.excerpt_words ?? config.content.excerpt_words ?? 150, p.title, p.description, halve_words=true) | safe }}</div>
-    {% end %}
-  </div>
-</article>
-
-{% case _ %}
-<article class="article-card gradient-border fluid-combined">
-  {% if show_image and p.image %}
-  <div class="blog-card-image">
-    <a href="{{ p.href }}">
-      <img src="{{ p.image }}" alt="{{ p.title }}" loading="lazy">
-    </a>
-  </div>
-  {% end %}
-  <div class="blog-card-content">
-    {% if (p.author and 'content.author' in theme_features) or p.date or (p.reading_time > 0 and 'content.reading_time' in theme_features) %}
-    <div class="blog-card-meta blog-card-meta--top">
-      {% if p.author and 'content.author' in theme_features %}
-      <span class="blog-author">
-        {% if p.author_avatar %}
-        <img src="{{ p.author_avatar | avatar_url }}" alt="{{ p.author }}" class="author-avatar">
-        {% end %}
-        {{ p.author }}
-      </span>
-      {% end %}
-      {% if p.date %}
-      <time datetime="{{ p.date | date_iso }}">{{ p.date | time_ago }}</time>
-      {% end %}
-      {% if p.reading_time > 0 and 'content.reading_time' in theme_features %}
-      <span class="reading-time">{{ p.reading_time }} min read</span>
-      {% end %}
-    </div>
-    {% end %}
-    <h3 class="blog-card-title">
-      <a href="{{ p.href }}">{{ p.title }}</a>
-    </h3>
-    {% if show_excerpt and p.excerpt and 'content.excerpts' in theme_features %}
-    <div class="blog-card-excerpt">{{ p.excerpt | card_excerpt_html((p.excerpt_words ?? config.content.excerpt_words ?? 150) | coerce_int(150), p.title, p.description) | safe }}</div>
-    {% end %}
-    <div class="blog-card-footer">
-      {% if p.tags | length > 0 %}
-      <div class="blog-card-tags">
-        {{ tag_list(p.tags[:4]) }}
-      </div>
-      {% end %}
-      {% let has_excerpt = show_excerpt and p.excerpt and 'content.excerpts' in theme_features %}
-      <a href="{{ p.href }}" class="blog-read-more">{{ t('blog.read_more', default='Read more') if has_excerpt else t('blog.read', default='Read') }} →</a>
-    </div>
-  </div>
-</article>
+{% let show_author = p.author and 'content.author' in theme_features %}
+{% let show_reading_time = p.reading_time > 0 and 'content.reading_time' in theme_features %}
+{% let show_full_date = variant == 'featured' %}
+{% let meta_parts = [] %}
+{% if show_author %}
+{% set _ = meta_parts.append(p.author) %}
 {% end %}
+{% if p.date %}
+{% set _ = meta_parts.append(p.date | dateformat('%B %d, %Y') if show_full_date else p.date | time_ago) %}
+{% end %}
+{% if show_reading_time %}
+{% set _ = meta_parts.append(p.reading_time ~ ' min read') %}
+{% end %}
+{% let top_meta = meta_parts | join(' · ') if meta_parts | length > 0 else none %}
+{% let excerpt_words = (p.excerpt_words ?? config.content.excerpt_words ?? 150) | coerce_int(150) %}
+{% let excerpt_html = '' %}
+{% if show_excerpt and p.excerpt and 'content.excerpts' in theme_features %}
+{% let excerpt_html = p.excerpt | card_excerpt_html(excerpt_words, p.title, p.description, halve_words=(variant == 'compact')) %}
+{% end %}
+{% let tag_limit = 3 if variant == 'featured' else 2 if variant == 'compact' else 4 %}
+
+{% call resource_card(
+  p.href,
+  p.title,
+  top_meta=top_meta,
+  cls='chirp-theme-post-card chirp-theme-post-card--' ~ variant,
+  link_mode='main'
+) %}
+  {% if p.tags | length > 0 %}
+  {% slot footer %}
+  {{ tag_list(p.tags[:tag_limit], small=true) }}
+  {% end %}
+  {% end %}
+
+  {% if show_image and p.image %}
+  <img class="chirp-theme-post-card__image" src="{{ p.image }}" alt="{{ p.title }}" loading="lazy">
+  {% end %}
+
+  {% if excerpt_html %}
+  <div class="chirp-theme-post-card__excerpt">{{ excerpt_html | safe }}</div>
+{% end %}
+{% end %}
+
 {% end %}
 {% end %}

@@ -226,6 +226,29 @@ def test_chirp_theme_style_uses_chirpui_cards_instead_of_legacy_card_bundle() ->
     assert "components/cards.css" not in css
 
 
+def test_chirp_theme_blog_cards_use_chirpui_resources() -> None:
+    """Blog/list card templates should use Chirp UI cards instead of copied article-card markup."""
+    package_root = resources.files(THEME_PACKAGE)
+    post_card = (
+        package_root / "templates" / "partials" / "components" / "post-card.html"
+    ).read_text(encoding="utf-8")
+    related_card = (
+        package_root / "templates" / "partials" / "components" / "related-post-card.html"
+    ).read_text(encoding="utf-8")
+    tags = (package_root / "templates" / "partials" / "components" / "tags.html").read_text(
+        encoding="utf-8"
+    )
+    style = (package_root / "assets" / "css" / "style.css").read_text(encoding="utf-8")
+
+    assert "resource_card" in post_card
+    assert "resource_card" in related_card
+    assert "chirpui/badge.html" in tags
+    assert "article-card" not in post_card
+    assert "blog-card-" not in post_card
+    assert "blog-read-more" not in post_card
+    assert "components/related-posts.css" not in style
+
+
 def test_chirp_theme_css_assets_are_reachable_from_style_entrypoint() -> None:
     """The package should not ship copied CSS files outside the active theme graph."""
     package_root = resources.files(THEME_PACKAGE)

@@ -11,6 +11,8 @@ Usage:
 ================================================================================
 #}
 
+{% from 'chirpui/card.html' import resource_card %}
+
 {% def related_post_card(post) %}
 {% let post_title = post?.title ?? 'Untitled' %}
 {% let post_href = post?.href ?? post?._path ?? post?.path ?? '#' %}
@@ -20,13 +22,15 @@ Usage:
 {% let post_desc = post?.description ?? '' %}
 {% let preview = post_excerpt or post_content %}
 
-<article class="related-post-card gradient-border fluid-combined">
-    <h3><a href="{{ post_href }}">{{ post_title }}</a></h3>
-    {% if post_date %}
-    <time datetime="{{ post_date | date_iso }}">{{ post_date | time_ago }}</time>
-    {% end %}
+{% call resource_card(
+  post_href,
+  post_title,
+  top_meta=(post_date | time_ago) if post_date else none,
+  cls='chirp-theme-related-post-card',
+  link_mode='main'
+) %}
     {% if preview %}
-    <div class="blog-card-excerpt">{{ preview | card_excerpt_html(config.content.excerpt_words | default(150), post_title, post_desc) | safe }}</div>
+    <div class="chirp-theme-post-card__excerpt">{{ preview | card_excerpt_html(config.content.excerpt_words | default(150), post_title, post_desc) | safe }}</div>
     {% end %}
-</article>
+{% end %}
 {% end %}

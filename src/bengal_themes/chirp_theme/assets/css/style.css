@@ -168,10 +168,6 @@
 }
 
 @layer components {
-  @import url('components/related-posts.css');
-}
-
-@layer components {
   @import url('components/navigation.css');
 }
 
