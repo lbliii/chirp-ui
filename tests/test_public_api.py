@@ -11,7 +11,7 @@ See ``docs/PLAN-agent-grounding-depth.md § Sprint 3`` and
 from __future__ import annotations
 
 import chirp_ui
-from chirp_ui import MANIFEST_PATH, load_manifest
+from chirp_ui import LIBRARY_CONTRACT, MANIFEST_PATH, load_manifest
 
 
 def test_manifest_path_exists() -> None:
@@ -60,6 +60,53 @@ def test_manifest_public_api_listed_in_all() -> None:
     """Both names must be in ``__all__`` so ``from chirp_ui import *`` picks them up."""
     assert "MANIFEST_PATH" in chirp_ui.__all__
     assert "load_manifest" in chirp_ui.__all__
+
+
+def test_library_contract_public_api_listed_in_all() -> None:
+    """Library metadata is public so frameworks can wire Chirp UI without guesses."""
+    assert "LIBRARY_CONTRACT" in chirp_ui.__all__
+    assert "LibraryAsset" in chirp_ui.__all__
+    assert "LibraryContract" in chirp_ui.__all__
+    assert "get_library_contract" in chirp_ui.__all__
+
+
+def test_library_contract_describes_package_roots() -> None:
+    contract = chirp_ui.get_library_contract()
+
+    assert contract is LIBRARY_CONTRACT
+    assert contract.package == "chirp_ui"
+    assert contract.template_package == "chirp_ui"
+    assert contract.template_path == "templates"
+    assert contract.static_root == chirp_ui.static_path()
+    assert contract.manifest_path == MANIFEST_PATH
+    assert contract.manifest_schema == load_manifest()["schema"]
+
+
+def test_library_contract_declares_ordered_assets() -> None:
+    contract = chirp_ui.get_library_contract()
+
+    assert [asset.path for asset in contract.css] == [
+        "chirpui.css",
+        "chirpui-transitions.css",
+    ]
+    assert [asset.path for asset in contract.js] == [
+        "chirpui.js",
+        "chirpui-alpine.js",
+    ]
+    assert [asset.path for asset in contract.required_assets] == [
+        "chirpui.css",
+        "chirpui-transitions.css",
+        "chirpui.js",
+    ]
+
+
+def test_library_contract_assets_are_shipped() -> None:
+    contract = chirp_ui.get_library_contract()
+
+    for asset in contract.assets:
+        resolved = contract.asset_path(asset)
+        assert resolved.exists(), f"{asset.path} declared but not shipped"
+        assert resolved.is_file()
 
 
 def test_committed_manifest_matches_live_build() -> None:

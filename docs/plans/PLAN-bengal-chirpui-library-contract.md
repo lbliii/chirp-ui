@@ -81,8 +81,10 @@ Required proof:
 
 ### Wave 2 — Define Chirp UI Package Metadata
 
-Add a small, importable package contract for library consumers. This should be
-minimal and evidence-backed:
+Status: shipped in the current migration stack.
+
+Add a small, importable package contract for library consumers. This is
+intentionally minimal and evidence-backed:
 
 - package name: `chirp_ui`
 - template loader root
@@ -98,8 +100,10 @@ Required proof:
 - Docs explain how frameworks should consume the metadata.
 - No Bengal-specific behavior enters the Chirp UI package contract.
 
-Public API note: this wave touches importable API surface and should be reviewed
-as a deliberate public contract before implementation.
+Implemented proof currently covers `chirp_ui.get_library_contract()`, the frozen
+`LIBRARY_CONTRACT`, ordered CSS/JS asset entries, optional Alpine runtime assets,
+manifest schema parity, and asset existence checks under the package static
+root.
 
 ### Wave 3 — Bengal Library Asset Modes
 
