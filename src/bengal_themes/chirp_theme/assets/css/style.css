@@ -6,6 +6,9 @@
  * The retained contract is shell + docs + page + blog + search/error pages.
  */
 
+@import url('../../../../chirp_ui/templates/chirpui.css');
+@import url('../../../../chirp_ui/templates/chirpui-transitions.css');
+
 /* ============================================
    DESIGN TOKENS (Variables First!)
    ============================================ */

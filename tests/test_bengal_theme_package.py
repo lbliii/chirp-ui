@@ -357,6 +357,7 @@ def test_chirp_theme_css_assets_are_reachable_from_style_entrypoint() -> None:
     """The package should not ship copied CSS files outside the active theme graph."""
     package_root = resources.files(THEME_PACKAGE)
     css_root = package_root / "assets" / "css"
+    style = (css_root / "style.css").read_text(encoding="utf-8")
 
     all_css = {
         rel_path
@@ -368,6 +369,8 @@ def test_chirp_theme_css_assets_are_reachable_from_style_entrypoint() -> None:
 
     assert not missing, "style.css imports missing CSS assets: " + ", ".join(sorted(missing))
     assert not orphaned, "CSS assets are not reachable from style.css: " + ", ".join(orphaned)
+    assert "../../../../chirp_ui/templates/chirpui.css" in style
+    assert "../../../../chirp_ui/templates/chirpui-transitions.css" in style
 
 
 def test_theme_manifest_declares_standalone_package() -> None:
@@ -860,19 +863,17 @@ site.build(BuildOptions(force_sequential=True, incremental=False, quiet=True))
 
 manifest = AssetManifest.load(site.output_dir / "asset-manifest.json")
 manifest_outputs = {entry.output_path.lstrip("/") for entry in manifest.entries.values()}
-provider_logical_assets = [
-    "chirp_ui/chirpui.css",
-    "chirp_ui/chirpui-transitions.css",
+expected_asset_entries = [
     "chirp_ui/chirpui.js",
     "css/style.css",
 ]
-provider_outputs = {
+asset_outputs = {
     logical_path: (
         manifest.entries[logical_path].output_path.lstrip("/")
         if logical_path in manifest.entries
         else None
     )
-    for logical_path in provider_logical_assets
+    for logical_path in expected_asset_entries
 }
 referenced_assets = set()
 for html_path in site.output_dir.rglob("*.html"):
@@ -891,7 +892,7 @@ result_path.write_text(
             "referenced_assets": sorted(referenced_assets),
             "missing_manifest_entries": missing_manifest_entries,
             "missing_files": missing_files,
-            "provider_outputs": provider_outputs,
+            "asset_outputs": asset_outputs,
         }
     ),
     encoding="utf-8",
@@ -914,30 +915,34 @@ result_path.write_text(
     referenced_assets = result["referenced_assets"]
     missing_manifest_entries = result["missing_manifest_entries"]
     missing_files = result["missing_files"]
-    provider_outputs = result["provider_outputs"]
-    expected_logical_refs = {f"assets/{logical_path}" for logical_path in provider_outputs}
-    stale_provider_refs = sorted(expected_logical_refs & set(referenced_assets))
-    missing_provider_outputs = sorted(
-        logical_path for logical_path, output_path in provider_outputs.items() if not output_path
+    asset_outputs = result["asset_outputs"]
+    forbidden_provider_css_refs = sorted(
+        {
+            "assets/chirp_ui/chirpui.css",
+            "assets/chirp_ui/chirpui-transitions.css",
+        }
+        & set(referenced_assets)
     )
-    unreferenced_provider_outputs = sorted(
+    missing_asset_outputs = sorted(
+        logical_path for logical_path, output_path in asset_outputs.items() if not output_path
+    )
+    unreferenced_asset_outputs = sorted(
         output_path
-        for output_path in provider_outputs.values()
+        for output_path in asset_outputs.values()
         if output_path and output_path not in referenced_assets
     )
 
     assert referenced_assets, "Expected built docs HTML to reference packaged theme assets."
-    assert not missing_provider_outputs, (
-        "Expected Chirp theme provider assets in asset-manifest.json: "
-        + ", ".join(missing_provider_outputs)
+    assert not missing_asset_outputs, (
+        "Expected Chirp theme assets in asset-manifest.json: " + ", ".join(missing_asset_outputs)
     )
-    assert not stale_provider_refs, (
-        "Built HTML referenced logical provider asset paths instead of fingerprinted outputs: "
-        + ", ".join(stale_provider_refs)
+    assert not forbidden_provider_css_refs, (
+        "Built HTML referenced standalone Chirp UI provider CSS instead of the theme stylesheet: "
+        + ", ".join(forbidden_provider_css_refs)
     )
-    assert not unreferenced_provider_outputs, (
-        "Built HTML did not reference emitted Chirp theme provider assets: "
-        + ", ".join(unreferenced_provider_outputs)
+    assert not unreferenced_asset_outputs, (
+        "Built HTML did not reference emitted Chirp theme assets: "
+        + ", ".join(unreferenced_asset_outputs)
     )
     assert not missing_manifest_entries, (
         "Built HTML referenced assets missing from asset-manifest.json: "
