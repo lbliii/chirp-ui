@@ -238,7 +238,7 @@ HELPER: Render a menu item (desktop/mobile)
 
     {# Stylesheets #}
     <link rel="stylesheet" href="{{ asset_url('css/style.css') }}">
-    <script src="{{ asset_url('chirp_ui/chirpui.js') }}"></script>
+    <script src="{{ asset_url(chirpui_asset_path('chirpui.js')) }}"></script>
     {% if 'content.math' in (theme.features ?? []) %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin>
     {% end %}

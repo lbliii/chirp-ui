@@ -853,6 +853,7 @@ from pathlib import Path
 from bengal.assets.manifest import AssetManifest
 from bengal.core import Site
 from bengal.orchestration.build.options import BuildOptions
+from chirp_ui.filters import chirpui_asset_path
 
 site_root = Path(sys.argv[1])
 result_path = Path(sys.argv[2])
@@ -864,7 +865,7 @@ site.build(BuildOptions(force_sequential=True, incremental=False, quiet=True))
 manifest = AssetManifest.load(site.output_dir / "asset-manifest.json")
 manifest_outputs = {entry.output_path.lstrip("/") for entry in manifest.entries.values()}
 expected_asset_entries = [
-    "chirp_ui/chirpui.js",
+    chirpui_asset_path("chirpui.js"),
     "css/style.css",
 ]
 asset_outputs = {

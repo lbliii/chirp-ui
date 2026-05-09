@@ -6,6 +6,7 @@ from chirp_ui.filters import (
     STATUS_WORDS,
     bem,
     build_hx_attrs,
+    chirpui_asset_path,
     contrast_text,
     deprecate_param,
     field_errors,
@@ -1045,9 +1046,11 @@ class TestRegisterFiltersWithTemplateGlobal:
         register_filters(app)
 
         assert "tab_is_active" in registered_globals
+        assert "chirpui_asset_path" in registered_globals
         from chirp_ui.route_tabs import tab_is_active
 
         assert registered_globals["tab_is_active"] is tab_is_active
+        assert registered_globals["chirpui_asset_path"] is chirpui_asset_path
 
     def test_without_template_global_warns(self) -> None:
         registered: dict[str, object] = {}

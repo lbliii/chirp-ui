@@ -9,12 +9,14 @@ Everything not in __all__ is internal and may change without notice.
 import math
 import re
 import warnings
+from importlib import metadata
 from pathlib import PurePath
 
 __all__ = [
     "bem",
     "build_hx_attrs",
     "check_required_id",
+    "chirpui_asset_path",
     "contrast_text",
     "deprecate_param",
     "field_errors",
@@ -62,6 +64,7 @@ _COLOR_RE = re.compile(
     r"|^(?:rgb|hsl|oklch|lab|lch)a?\([-\d.,%/ a-z]+\)$",
 )
 _URI_SCHEME_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:")
+_BENGAL_CONTRACT_ASSETS_VERSION = (0, 3, 3)
 
 _chirpui_named_colors: ContextVar[dict[str, str] | None] = ContextVar(
     "chirpui_named_colors",
@@ -786,6 +789,37 @@ def shell_action_btn_variant(variant: str) -> str:
     return variant
 
 
+def _version_tuple(value: str) -> tuple[int, int, int]:
+    parts = [int(part) for part in re.findall(r"\d+", value)[:3]]
+    padded = [*parts, 0, 0, 0]
+    return (padded[0], padded[1], padded[2])
+
+
+def _bengal_uses_contract_asset_paths() -> bool:
+    version = ""
+    try:
+        import bengal
+
+        version = str(getattr(bengal, "__version__", ""))
+    except Exception:
+        version = ""
+    if version:
+        return _version_tuple(version) >= _BENGAL_CONTRACT_ASSETS_VERSION
+    try:
+        return _version_tuple(metadata.version("bengal")) >= _BENGAL_CONTRACT_ASSETS_VERSION
+    except metadata.PackageNotFoundError:
+        return True
+
+
+def chirpui_asset_path(path: str) -> str:
+    """Return the Bengal logical asset path for a Chirp UI provider asset."""
+    clean = str(path or "").strip().lstrip("/")
+    prefix = "chirp_ui/"
+    if _bengal_uses_contract_asset_paths():
+        return clean if clean.startswith(prefix) else f"{prefix}{clean}"
+    return clean.removeprefix(prefix)
+
+
 def register_filters(app: TemplateFilterApp) -> None:
     """Register chirp-ui filters and globals on a Chirp app.
 
@@ -825,6 +859,7 @@ def register_filters(app: TemplateFilterApp) -> None:
         tg("tab_is_active")(tab_is_active)
         tg("build_hx_attrs")(build_hx_attrs)
         tg("check_required_id")(check_required_id)
+        tg("chirpui_asset_path")(chirpui_asset_path)
         tg("route_link_attrs")(make_route_link_attrs())
     else:
         warnings.warn(
