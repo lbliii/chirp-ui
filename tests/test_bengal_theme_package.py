@@ -154,9 +154,7 @@ REQUIRED_REFERENCE_HUB_TEMPLATES = (
     "api-hub/section-index.html",
     "cli-reference/section-index.html",
 )
-ASSET_STRING_RE = re.compile(
-    r"""(?:["']|=)\s*((?:(?:\.\.?/)+|/)?assets/[^"'\s<>?#]+\.[A-Za-z0-9]+(?:\?[^"'\s<>]*)?(?:#[^"'\s<>]*)?)["']?"""
-)
+ASSET_ATTR_RE = re.compile(r"""(?:href|src|content)\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+))""")
 CSS_IMPORT_RE = re.compile(r"""@import\s+url\(['"]?([^'")]+\.css)['"]?\)""")
 
 
@@ -201,16 +199,19 @@ def _iter_local_asset_paths(output_dir: Path) -> set[str]:
     paths: set[str] = set()
     for html_path in output_dir.rglob("*.html"):
         text = html_path.read_text(encoding="utf-8")
-        for match in ASSET_STRING_RE.finditer(text):
-            raw = html_lib.unescape(match.group(1))
+        for match in ASSET_ATTR_RE.finditer(text):
+            raw = html_lib.unescape(next(group for group in match.groups() if group))
             asset_path = _normalize_referenced_asset(raw)
-            if asset_path.startswith("assets/"):
+            if asset_path:
                 paths.add(asset_path)
     return paths
 
 
 def _normalize_referenced_asset(raw: str) -> str:
-    asset_path = raw.split("?", 1)[0].split("#", 1)[0].lstrip("/")
+    asset_path = raw.split("?", 1)[0].split("#", 1)[0]
+    if "assets/" not in asset_path:
+        return ""
+    asset_path = asset_path[asset_path.index("assets/") :].lstrip("/")
     while asset_path.startswith("./"):
         asset_path = asset_path[2:]
     while asset_path.startswith("../"):
@@ -872,11 +873,16 @@ from chirp_ui.filters import chirpui_asset_path
 
 site_root = Path(sys.argv[1])
 result_path = Path(sys.argv[2])
-asset_re = re.compile(r'''(?:["']|=)\s*((?:(?:\.\.?/)+|/)?assets/[^"'\s<>?#]+\.[A-Za-z0-9]+(?:\?[^"'\s<>]*)?(?:#[^"'\s<>]*)?)["']?''')
+asset_attr_re = re.compile(
+    r'''(?:href|src|content)\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+))'''
+)
 
 
 def normalize_referenced_asset(raw):
-    asset_path = raw.split("?", 1)[0].split("#", 1)[0].lstrip("/")
+    asset_path = raw.split("?", 1)[0].split("#", 1)[0]
+    if "assets/" not in asset_path:
+        return ""
+    asset_path = asset_path[asset_path.index("assets/") :].lstrip("/")
     while asset_path.startswith("./"):
         asset_path = asset_path[2:]
     while asset_path.startswith("../"):
@@ -903,9 +909,11 @@ asset_outputs = {
 referenced_assets = set()
 for html_path in site.output_dir.rglob("*.html"):
     text = html_path.read_text(encoding="utf-8")
-    for match in asset_re.finditer(text):
-        raw = html_lib.unescape(match.group(1))
-        referenced_assets.add(normalize_referenced_asset(raw))
+    for match in asset_attr_re.finditer(text):
+        raw = html_lib.unescape(next(group for group in match.groups() if group))
+        asset_path = normalize_referenced_asset(raw)
+        if asset_path:
+            referenced_assets.add(asset_path)
 
 missing_manifest_entries = sorted(referenced_assets - manifest_outputs)
 missing_files = sorted(
