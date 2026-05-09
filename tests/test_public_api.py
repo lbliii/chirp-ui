@@ -10,6 +10,8 @@ See ``docs/PLAN-agent-grounding-depth.md § Sprint 3`` and
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 import chirp_ui
 from chirp_ui import LIBRARY_CONTRACT, MANIFEST_PATH, load_manifest
 
@@ -80,6 +82,9 @@ def test_library_contract_describes_package_roots() -> None:
     assert contract.static_root == chirp_ui.static_path()
     assert contract.manifest_path == MANIFEST_PATH
     assert contract.manifest_schema == load_manifest()["schema"]
+    assert isinstance(contract, Mapping)
+    assert contract["asset_root"] == chirp_ui.static_path()
+    assert contract["manifest_schema"] == "chirpui-manifest@3"
 
 
 def test_library_contract_declares_ordered_assets() -> None:
@@ -98,6 +103,15 @@ def test_library_contract_declares_ordered_assets() -> None:
         "chirpui-transitions.css",
         "chirpui.js",
     ]
+    assert [asset["path"] for asset in contract["css"]] == [
+        "chirpui.css",
+        "chirpui-transitions.css",
+    ]
+    assert [asset["type"] for asset in contract["js"]] == [
+        "javascript",
+        "javascript",
+    ]
+    assert contract["runtime"] == ("alpine",)
 
 
 def test_library_contract_assets_are_shipped() -> None:

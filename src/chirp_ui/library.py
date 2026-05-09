@@ -7,11 +7,12 @@ package internals or hardcoding filenames in theme templates.
 
 from __future__ import annotations
 
+from collections.abc import Iterator, Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
-AssetKind = Literal["css", "js", "other"]
+AssetKind = Literal["css", "javascript", "other"]
 
 __all__ = [
     "LIBRARY_CONTRACT",
@@ -33,7 +34,7 @@ class LibraryAsset:
 
 
 @dataclass(frozen=True, slots=True)
-class LibraryContract:
+class LibraryContract(Mapping[str, object]):
     """Importable metadata that lets host frameworks wire Chirp UI safely."""
 
     package: str
@@ -60,6 +61,42 @@ class LibraryContract:
         """Resolve an asset path relative to ``static_root``."""
         return self.static_root / asset.path
 
+    def as_mapping(self) -> dict[str, object]:
+        """Return the host-integration contract as plain mapping data."""
+        return {
+            "package": self.package,
+            "template_package": self.template_package,
+            "template_path": self.template_path,
+            "asset_root": self.static_root,
+            "static_path": self.static_root,
+            "manifest_path": self.manifest_path,
+            "manifest_schema": self.manifest_schema,
+            "css": tuple(_asset_mapping(asset) for asset in self.css),
+            "js": tuple(_asset_mapping(asset) for asset in self.js),
+            "other": tuple(_asset_mapping(asset) for asset in self.other),
+            "runtime": tuple(
+                dict.fromkeys(asset.runtime for asset in self.assets if asset.runtime)
+            ),
+        }
+
+    def __getitem__(self, key: str) -> object:
+        return self.as_mapping()[key]
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self.as_mapping())
+
+    def __len__(self) -> int:
+        return len(self.as_mapping())
+
+
+def _asset_mapping(asset: LibraryAsset) -> dict[str, object]:
+    return {
+        "path": asset.path,
+        "type": asset.kind,
+        "required": asset.required,
+        "runtime": asset.runtime,
+    }
+
 
 _PACKAGE_ROOT = Path(__file__).parent
 _STATIC_ROOT = _PACKAGE_ROOT / "templates"
@@ -76,8 +113,13 @@ LIBRARY_CONTRACT = LibraryContract(
         LibraryAsset("chirpui-transitions.css", "css"),
     ),
     js=(
-        LibraryAsset("chirpui.js", "js"),
-        LibraryAsset("chirpui-alpine.js", "js", required=False, runtime="alpine"),
+        LibraryAsset("chirpui.js", "javascript"),
+        LibraryAsset(
+            "chirpui-alpine.js",
+            "javascript",
+            required=False,
+            runtime="alpine",
+        ),
     ),
     other=(LibraryAsset("chirpui-logo.svg", "other", required=False),),
 )
