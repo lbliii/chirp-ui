@@ -155,7 +155,7 @@ REQUIRED_REFERENCE_HUB_TEMPLATES = (
     "cli-reference/section-index.html",
 )
 ASSET_STRING_RE = re.compile(
-    r"""(?:["']|=)(/?assets/[^"'\s<>?#]+\.[A-Za-z0-9]+(?:\?[^"'\s<>]*)?(?:#[^"'\s<>]*)?)["']?"""
+    r"""(?:["']|=)\s*((?:(?:\.\.?/)+|/)?assets/[^"'\s<>?#]+\.[A-Za-z0-9]+(?:\?[^"'\s<>]*)?(?:#[^"'\s<>]*)?)["']?"""
 )
 CSS_IMPORT_RE = re.compile(r"""@import\s+url\(['"]?([^'")]+\.css)['"]?\)""")
 
@@ -203,10 +203,19 @@ def _iter_local_asset_paths(output_dir: Path) -> set[str]:
         text = html_path.read_text(encoding="utf-8")
         for match in ASSET_STRING_RE.finditer(text):
             raw = html_lib.unescape(match.group(1))
-            asset_path = raw.split("?", 1)[0].split("#", 1)[0].lstrip("/")
+            asset_path = _normalize_referenced_asset(raw)
             if asset_path.startswith("assets/"):
                 paths.add(asset_path)
     return paths
+
+
+def _normalize_referenced_asset(raw: str) -> str:
+    asset_path = raw.split("?", 1)[0].split("#", 1)[0].lstrip("/")
+    while asset_path.startswith("./"):
+        asset_path = asset_path[2:]
+    while asset_path.startswith("../"):
+        asset_path = asset_path[3:]
+    return asset_path
 
 
 def _iter_resource_files(root, prefix: PurePosixPath | None = None):
@@ -777,9 +786,15 @@ result_path.write_text(
     assert result["mobile"], "Expected built home page to include mobile navigation."
     assert 'href=""' not in combined_nav
     assert "Component showcase" in combined_nav
-    assert re.search(r"""href=(?:"/showcase/"|'/showcase/'|/showcase/)""", combined_nav)
+    assert re.search(
+        r"""href\s*=\s*(?:"[^"]*showcase/"|'[^']*showcase/'|[^\s>]*showcase/)""",
+        combined_nav,
+    )
     assert "Documentation" in combined_nav
-    assert re.search(r"""href=(?:"/docs/"|'/docs/'|/docs/)""", combined_nav)
+    assert re.search(
+        r"""href\s*=\s*(?:"[^"]*docs/"|'[^']*docs/'|[^\s>]*docs/)""",
+        combined_nav,
+    )
 
 
 def test_docs_site_build_emits_special_pages(tmp_path: Path) -> None:
@@ -857,7 +872,16 @@ from chirp_ui.filters import chirpui_asset_path
 
 site_root = Path(sys.argv[1])
 result_path = Path(sys.argv[2])
-asset_re = re.compile(r'''(?:["']|=)(/?assets/[^"'\s<>?#]+\.[A-Za-z0-9]+(?:\?[^"'\s<>]*)?(?:#[^"'\s<>]*)?)["']?''')
+asset_re = re.compile(r'''(?:["']|=)\s*((?:(?:\.\.?/)+|/)?assets/[^"'\s<>?#]+\.[A-Za-z0-9]+(?:\?[^"'\s<>]*)?(?:#[^"'\s<>]*)?)["']?''')
+
+
+def normalize_referenced_asset(raw):
+    asset_path = raw.split("?", 1)[0].split("#", 1)[0].lstrip("/")
+    while asset_path.startswith("./"):
+        asset_path = asset_path[2:]
+    while asset_path.startswith("../"):
+        asset_path = asset_path[3:]
+    return asset_path
 
 site = Site.from_config(site_root)
 site.build(BuildOptions(force_sequential=True, incremental=False, quiet=True))
@@ -881,7 +905,7 @@ for html_path in site.output_dir.rglob("*.html"):
     text = html_path.read_text(encoding="utf-8")
     for match in asset_re.finditer(text):
         raw = html_lib.unescape(match.group(1))
-        referenced_assets.add(raw.split("?", 1)[0].split("#", 1)[0].lstrip("/"))
+        referenced_assets.add(normalize_referenced_asset(raw))
 
 missing_manifest_entries = sorted(referenced_assets - manifest_outputs)
 missing_files = sorted(
