@@ -155,7 +155,7 @@ REQUIRED_REFERENCE_HUB_TEMPLATES = (
     "cli-reference/section-index.html",
 )
 ASSET_STRING_RE = re.compile(
-    r"""["'](/?assets/[^"'?#]+\.[A-Za-z0-9]+(?:\?[^"']*)?(?:#[^"']*)?)["']"""
+    r"""(?:["']|=)(/?assets/[^"'\s<>?#]+\.[A-Za-z0-9]+(?:\?[^"'\s<>]*)?(?:#[^"'\s<>]*)?)["']?"""
 )
 CSS_IMPORT_RE = re.compile(r"""@import\s+url\(['"]?([^'")]+\.css)['"]?\)""")
 
@@ -777,9 +777,9 @@ result_path.write_text(
     assert result["mobile"], "Expected built home page to include mobile navigation."
     assert 'href=""' not in combined_nav
     assert "Component showcase" in combined_nav
-    assert 'href="/showcase/"' in combined_nav
+    assert re.search(r"""href=(?:"/showcase/"|'/showcase/'|/showcase/)""", combined_nav)
     assert "Documentation" in combined_nav
-    assert 'href="/docs/"' in combined_nav
+    assert re.search(r"""href=(?:"/docs/"|'/docs/'|/docs/)""", combined_nav)
 
 
 def test_docs_site_build_emits_special_pages(tmp_path: Path) -> None:
@@ -857,7 +857,7 @@ from chirp_ui.filters import chirpui_asset_path
 
 site_root = Path(sys.argv[1])
 result_path = Path(sys.argv[2])
-asset_re = re.compile(r'''["'](/?assets/[^"'?#]+\.[A-Za-z0-9]+(?:\?[^"']*)?(?:#[^"']*)?)["']''')
+asset_re = re.compile(r'''(?:["']|=)(/?assets/[^"'\s<>?#]+\.[A-Za-z0-9]+(?:\?[^"'\s<>]*)?(?:#[^"'\s<>]*)?)["']?''')
 
 site = Site.from_config(site_root)
 site.build(BuildOptions(force_sequential=True, incremental=False, quiet=True))
