@@ -127,6 +127,26 @@ The shipped manifest schema is `chirpui-manifest@3`. It is available as:
 This is the agent contract: downstream tools should cite the manifest instead
 of guessing component names, slots, variants, or CSS classes.
 
+## Framework Integration Metadata
+
+Frameworks and static-site generators should use Chirp UI's package contract
+instead of hardcoding shipped asset names or filesystem paths:
+
+```python
+import chirp_ui
+
+contract = chirp_ui.get_library_contract()
+
+print(contract.static_root)
+print([asset.path for asset in contract.css])
+print([asset.path for asset in contract.js])
+```
+
+The contract is framework-neutral. It describes the template package/path,
+static root, manifest path/schema, ordered CSS entries, ordered JS entries, and
+optional runtime assets. Hosts still own how those assets are bundled, linked,
+fingerprinted, and served.
+
 ## CSS Contract
 
 chirp-ui CSS is generated from partials and guarded by registry parity tests.

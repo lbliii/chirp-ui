@@ -1,0 +1,42 @@
+{#- chirp-theme card directive.
+
+Consumes Bengal card directive context and emits Chirp UI card markup.
+-#}
+{% set card_class = "chirp-theme-directive-card" %}
+{% if color %}{% set card_class = card_class ~ " chirp-theme-directive-card--" ~ color %}{% end %}
+{% if layout %}{% set card_class = card_class ~ " chirp-theme-directive-card--" ~ layout %}{% end %}
+{% if extra_class %}{% set card_class = card_class ~ " " ~ extra_class %}{% end %}
+
+{% if href %}
+<a href="{{ href | e }}" class="chirpui-card chirpui-card--link chirpui-resource-card {{ card_class | e }}">
+{% else %}
+<article class="chirpui-card {{ card_class | e }}">
+{% end %}
+  {% if image %}
+  <div class="chirpui-card__media">
+    <img src="{{ image | e }}" alt="{{ title | e }}" loading="lazy">
+  </div>
+  {% end %}
+  {% if icon_html or title or badge %}
+  <header class="chirpui-card__header">
+    {% if icon_html %}
+    <span class="chirpui-card__icon" data-icon="{{ icon | e }}">{{ icon_html | safe }}</span>
+    {% end %}
+    <div class="chirpui-card__header-content">
+      {% if title %}<span class="chirpui-card__title">{{ title | e }}</span>{% end %}
+      {% if badge %}<div class="chirpui-card__header-subtitle">{{ badge | e }}</div>{% end %}
+    </div>
+  </header>
+  {% end %}
+  <div class="chirpui-card__body">
+    {% if description %}<p class="chirpui-text-muted chirpui-font-sm">{{ description | e }}</p>{% end %}
+{{ children | safe }}
+  </div>
+  {% if footer %}
+  <div class="chirpui-card__footer-wrap">{{ footer | safe }}</div>
+  {% end %}
+{% if href %}
+</a>
+{% else %}
+</article>
+{% end %}

@@ -1,0 +1,23 @@
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/code.html" import code %}
+{% from "chirpui/layout.html" import cluster %}
+
+{% let meta = element?.metadata ?? {} %}
+{% let method = meta?.method ?? element?.method ?? "GET" %}
+{% let path = meta?.path ?? element?.path ?? element?.qualified_name ?? element?.name ?? "/" %}
+{% let title = element?.name ?? page?.title ?? "Endpoint" %}
+{% let description = element?.description ?? page?.description ?? none %}
+
+{% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-reference-hero chirp-theme-reference-hero--endpoint") %}
+  {% slot metadata %}
+  {% call cluster(gap="xs") %}
+    {{ badge(method | upper, variant="info") }}
+    {{ code(path, cls="chirp-theme-reference-endpoint-path") }}
+  {% end %}
+  {% end %}
+{% end %}
+<div class="chirp-theme-rest-endpoint-bar" aria-label="Endpoint">
+  <span class="chirp-theme-rest-method chirp-theme-rest-method--{{ method | lower }}">{{ method | upper }}</span>
+  <code class="chirp-theme-rest-path">{{ path }}</code>
+</div>

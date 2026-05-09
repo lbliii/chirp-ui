@@ -141,4 +141,4 @@
   }
 }
 
-/* Card Grid - Moved to components/cards.css for proper data-attribute support */
+/* Card grids now render through Chirp UI macros or retained vertical-specific CSS. */

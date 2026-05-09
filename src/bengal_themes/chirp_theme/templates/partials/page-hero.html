@@ -1,5 +1,7 @@
-{% from 'partials/theme-primitives.html' import theme_page_header %}
+{% from 'partials/navigation-components.html' import breadcrumbs %}
 {% from 'partials/page-hero/_macros.html' import hero_element as _hero_element, hero_section as _hero_section %}
+{% from 'chirpui/button.html' import btn %}
+{% from 'chirpui/hero.html' import page_hero %}
 
 {# Compatibility wrappers for deferred/pruned surfaces that still import
    hero macros from partials/page-hero.html. #}
@@ -31,19 +33,21 @@
 {% set _ = _meta_parts.append('Version ' ~ _page.version) %}
 {% end %}
 
-{% call theme_page_header(
-  _title,
-  _description,
-  _eyebrow,
-  breadcrumb_page=_page,
-  meta=_meta_parts | join(' · ') if _meta_parts | length > 0 else none,
-  cls='page-hero page-hero--chirp'
-) %}
-{% slot actions %}
-{% if _params?.hero_link?.href %}
-<a href="{{ _params.hero_link.href | absolute_url }}" class="chirp-theme-home__button chirp-theme-home__button--secondary">
-  {{ _params.hero_link.label ?? 'Explore' }}
-</a>
-{% end %}
-{% end %}
+{% call page_hero(title=_title, subtitle=_description, variant='editorial', background='solid', cls='page-hero page-hero--chirp') %}
+  {% slot eyebrow %}
+  {% if _page %}
+  {{ breadcrumbs(_page) }}
+  {% else %}
+  {{ _eyebrow }}
+  {% end %}
+  {% end %}
+  {% slot metadata %}
+  {% if _meta_parts | length > 0 %}
+  {{ _meta_parts | join(' · ') }}
+  {% end %}
+  {% slot actions %}
+  {% if _params?.hero_link?.href %}
+  {{ btn(_params.hero_link.label ?? 'Explore', href=_params.hero_link.href | absolute_url, variant='secondary') }}
+  {% end %}
+  {% end %}
 {% end %}

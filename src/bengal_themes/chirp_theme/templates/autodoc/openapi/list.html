@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/resource_index.html" import resource_index %}
+
+{% block content %}
+{% let title = page?.title ?? section?.title ?? "API Reference" %}
+{% let description = page?.description ?? section?.description ?? "Browse endpoint and schema reference." %}
+{% let items = posts ?? pages ?? section?.pages ?? page?.children ?? [] %}
+{% call container(cls="chirp-theme-reference-page chirp-theme-reference-page--openapi-index") %}
+  {% call resource_index(title, page?.href ?? section?.href ?? "/api/", subtitle=description, search_placeholder="Filter endpoints and schemas...", button_icon="magnifying-glass", results_title="Reference", results_subtitle=(items | length) ~ " entries", results_layout="grid", results_cols=3, has_results=items | length > 0, empty_title="No API entries yet", empty_message="OpenAPI endpoints and schemas appear here when generated.", cls="chirp-theme-reference-index") %}
+    {% let items = items %}
+    {% include "autodoc/partials/cards.html" %}
+  {% end %}
+{% end %}
+{% end %}

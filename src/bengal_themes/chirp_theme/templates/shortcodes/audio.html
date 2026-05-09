@@ -1,0 +1,11 @@
+{% let src = shortcode.Get("src") %}
+{% let title = shortcode.Get("title") %}
+
+{% if src %}
+<figure class="chirpui-card chirp-theme-shortcode-audio">
+  <div class="chirpui-card__body">
+    {% if title %}<figcaption class="chirpui-card__title">{{ title }}</figcaption>{% end %}
+    <audio controls preload="{{ shortcode.Get("preload", "metadata") }}" src="{{ src }}"></audio>
+  </div>
+</figure>
+{% end %}

@@ -1,0 +1,11 @@
+{% from "chirpui/code.html" import code_block %}
+
+{% let examples = element?.metadata?.examples ?? element?.examples ?? [] %}
+{% if examples | length > 0 %}
+<section class="chirp-theme-reference-section chirp-theme-reference-examples">
+  <h2>Examples</h2>
+  {% for example in examples %}
+  {{ code_block(example?.code ?? example, cls="chirp-theme-reference-example", copy=true) }}
+  {% end %}
+</section>
+{% end %}

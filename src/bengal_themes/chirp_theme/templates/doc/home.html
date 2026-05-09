@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-{% from 'partials/theme-primitives.html' import theme_page_header, theme_surface, theme_link_card %}
+{% from 'partials/navigation-components.html' import breadcrumbs %}
+{% from 'chirpui/card.html' import resource_card %}
+{% from 'chirpui/hero.html' import page_hero %}
+{% from 'chirpui/surface.html' import surface %}
 
 {% block content %}
 {% let page_title = page?.title ?? config?.title ?? 'Documentation' %}
@@ -23,8 +26,12 @@
 {% end %}
 
 <div class="chirp-theme-doc-home">
-  {% call theme_surface('chirp-theme-doc-home__hero') %}
-  {{ theme_page_header(page_title, page_desc, 'Documentation', breadcrumb_page=page, cls='chirp-theme-doc-home__header') }}
+  {% call surface(variant='default', cls='chirp-theme-doc-home__hero') %}
+  {% call page_hero(title=page_title, subtitle=page_desc, variant='editorial', background='solid', cls='chirp-theme-doc-home__header') %}
+    {% slot eyebrow %}
+    {{ breadcrumbs(page) }}
+    {% end %}
+  {% end %}
   {% end %}
 
   {% if content and content.strip() %}
@@ -42,12 +49,11 @@
     </div>
     <div class="chirp-theme-doc-home__grid">
       {% for section in sorted_sections %}
-      {{ theme_link_card(
-        section?.href ?? section?._path ?? '#',
+      {{ resource_card(
+        (section?.href ?? section?._path ?? '#') | absolute_url,
         section?.title ?? 'Untitled',
         section?.metadata?.description ?? '',
-        ((section?.pages ?? []) | length) ~ ' page' ~ ('s' if ((section?.pages ?? []) | length) != 1 else ''),
-        cls='chirp-theme-doc-home__card'
+        top_meta=((section?.pages ?? []) | length) ~ ' page' ~ ('s' if ((section?.pages ?? []) | length) != 1 else '')
       ) }}
       {% end %}
     </div>
@@ -62,12 +68,7 @@
     </div>
     <div class="chirp-theme-doc-home__link-grid">
       {% for link in custom_quick_links %}
-      {{ theme_link_card(
-        link?.href ?? link?.url ?? '#',
-        link?.title ?? 'Link',
-        link?.description ?? '',
-        cls='chirp-theme-doc-home__link'
-      ) }}
+      {{ resource_card((link?.href ?? link?.url ?? '#') | absolute_url, link?.title ?? 'Link', link?.description ?? '') }}
       {% end %}
     </div>
   </section>

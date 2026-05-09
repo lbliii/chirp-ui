@@ -98,7 +98,7 @@ base/
 components/
   dropdown.css       → .dropdown* scoping
   api-docs.css       → .prose.api-content scoping
-  cards.css          → .card* scoping
+  docs-nav.css       → retained docs shell integration
 ```
 
 ---

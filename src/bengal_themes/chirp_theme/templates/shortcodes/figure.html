@@ -1,0 +1,17 @@
+{% let src = shortcode.Get("src") %}
+{% let alt = shortcode.Get("alt") %}
+{% let caption = shortcode.Get("caption") %}
+{% let link = shortcode.Get("link") %}
+
+{% if src %}
+<figure class="chirpui-card chirp-theme-shortcode-figure">
+  <div class="chirpui-card__media">
+    {% if link %}<a href="{{ link }}">{% end %}
+    <img src="{{ src }}" alt="{{ alt }}" loading="lazy">
+    {% if link %}</a>{% end %}
+  </div>
+  {% if caption %}
+  <figcaption class="chirpui-card__body chirpui-text-muted chirpui-font-sm">{{ caption }}</figcaption>
+  {% end %}
+</figure>
+{% end %}

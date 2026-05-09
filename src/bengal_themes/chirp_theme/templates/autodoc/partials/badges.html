@@ -1,0 +1,10 @@
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/layout.html" import cluster %}
+
+{% let meta = element?.metadata ?? {} %}
+{% call cluster(gap="xs", cls="chirp-theme-reference-badges") %}
+  {% if element?.element_type %}{{ badge(element.element_type, variant="muted") }}{% end %}
+  {% if meta?.is_deprecated %}{{ badge("deprecated", variant="error") }}{% end %}
+  {% if meta?.is_async %}{{ badge("async", variant="info") }}{% end %}
+  {% if meta?.required %}{{ badge("required", variant="warning") }}{% end %}
+{% end %}

@@ -1,0 +1,7 @@
+{% from "chirpui/code.html" import code_block %}
+
+{% let usage_text = usage | default(none) %}
+{% let signature = element?.signature ?? element?.metadata?.signature ?? usage_text %}
+{% if signature %}
+{{ code_block(signature, cls="chirp-theme-reference-signature", copy=true) }}
+{% end %}

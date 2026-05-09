@@ -1,0 +1,28 @@
+{% from "chirpui/accordion.html" import accordion, accordion_item %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/code.html" import code_block %}
+{% from "chirpui/params_table.html" import params_table %}
+
+{% let member_items = element?.children ?? [] %}
+{% if member_items | length > 0 %}
+{% call accordion(name="reference-members", cls="chirp-theme-reference-members") %}
+  {% for member in member_items %}
+  {% let member_name = member?.name ?? member?.title ?? "Member" %}
+  {% call accordion_item(member_name, open=loop.first, cls="chirp-theme-reference-member") %}
+    <div id="{{ member_name }}" class="chirp-theme-reference-member__body">
+      {{ badge(member?.element_type ?? member?.type ?? "member", variant="muted") }}
+      {% if member?.signature ?? none %}
+      {{ code_block(member.signature, cls="chirp-theme-reference-member__signature") }}
+      {% end %}
+      {% if member?.description ?? none %}
+      <p>{{ member.description }}</p>
+      {% end %}
+      {% let member_params = member?.metadata?.parameters ?? member?.metadata?.args ?? [] %}
+      {% if member_params | length > 0 %}
+      {{ params_table(member_params, title="Parameters", cls="chirp-theme-reference-member__params") }}
+      {% end %}
+    </div>
+  {% end %}
+  {% end %}
+{% end %}
+{% end %}

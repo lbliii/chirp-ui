@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "partials/taxonomy-pages.html" import count_label, term_resource_card %}
+
+{% block content %}
+{% let page_title = page?.title ?? "Authors" %}
+{% let page_desc = page?.description ?? "Browse contributors and their published content." %}
+{% let authors_data = site?.data?.authors ?? {} %}
+{% let author_index = site?.indexes?.author ?? {} %}
+{% let author_pages = page?.children ?? [] %}
+{% let author_items = authors ?? [] %}
+
+{% if author_items | length == 0 %}
+{% let author_items = [] %}
+{% for author_key, author_data in authors_data | items %}
+{% let author_posts = author_index.get(author_key) ?? [] %}
+{% set _ = author_items.append({
+  'name': author_data?.name ?? author_key,
+  'href': '/authors/' ~ author_key ~ '/',
+  'bio': author_data?.bio ?? '',
+  'post_count': author_posts | length
+}) %}
+{% end %}
+{% for child in author_pages %}
+{% set _ = author_items.append({
+  'name': child?.title ?? 'Author',
+  'href': child?.href ?? '#',
+  'bio': child?.description ?? child?.params?.bio ?? '',
+  'post_count': (author_index.get(child?.params?.author_name ?? child?.title ?? '') ?? []) | length
+}) %}
+{% end %}
+{% end %}
+
+{% call container(cls="chirp-theme-taxonomy-page") %}
+  {% call resource_index(
+    page_title,
+    page?.href ?? "/authors/",
+    subtitle=page_desc,
+    search_placeholder="Filter authors...",
+    button_icon="magnifying-glass",
+    results_title="Authors",
+    results_subtitle=count_label(author_items | length, "author"),
+    results_layout="grid",
+    results_cols=3,
+    has_results=author_items | length > 0,
+    empty_title="No authors yet",
+    empty_message="Add author data or author pages to list contributors.",
+    cls="chirp-theme-taxonomy-index"
+  ) %}
+    {% if content %}
+    {% call rendered_content(compact=true) %}{{ content | safe }}{% end %}
+    {% end %}
+    {% for author in author_items | sort(attribute="name") %}
+    {{ term_resource_card(author.name, author.href, author.post_count ?? 0, author.bio, "post", "chirp-theme-author-card") }}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}

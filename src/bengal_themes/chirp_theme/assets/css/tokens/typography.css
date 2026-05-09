@@ -121,7 +121,7 @@
    /**
    * Display/Heading font - Distinctive typeface for h1/h2/hero text.
    *
-   * DEFAULT: Instrument Serif (loaded via base/fonts.css)
+   * DEFAULT: Instrument Serif when configured by the Bengal font pipeline.
    *
    * OVERRIDE OPTIONS:
    *

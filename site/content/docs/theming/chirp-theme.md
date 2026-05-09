@@ -79,12 +79,14 @@ runtime dependence on Bengal default internals.
 
 ## Parity Policy
 
-`chirp-theme` does not treat every historical Bengal default vertical as a
-must-keep surface.
+`chirp-theme` treats Bengal default's broad output coverage as the long-term
+target, but it does not treat the copied default templates and CSS as the target
+implementation.
 
 - Retained: shell, docs, generic pages, blog/post, search, and 404
-- Deferred: taxonomy/archive/authors, tracks/tutorial/notebook/changelog/resume
-- Pruned until redesign: autodoc/reference/API-hub families and niche legacy extras
+- Future parity: taxonomy/archive/authors, tracks/tutorial/notebook/changelog/resume
+- Future parity: autodoc/reference/API-hub families, rebuilt with Chirp UI-native reference patterns
+- Deferred: niche graph/data-table/experimental UI until an output contract needs them
 
 The repo-level parity matrix in `docs/CHIRP-THEME-PARITY-MATRIX.md` is the
 source of truth for those decisions.

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "partials/learning-pages.html" import learning_feed, rendered_body %}
+{% from "partials/taxonomy-pages.html" import count_label %}
+
+{% block content %}
+{% let title = page?.title ?? section?.title ?? "Changelog" %}
+{% let description = page?.description ?? section?.description ?? "Release notes and project updates." %}
+{% let items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
+
+{% call container(cls="chirp-theme-learning-page") %}
+  {% call resource_index(title, page?.href ?? section?.href ?? "/changelog/", subtitle=description, search_placeholder="Filter releases...", button_icon="magnifying-glass", results_title="Updates", results_subtitle=count_label(items | length, "update"), has_results=items | length > 0, empty_title="No updates yet", empty_message="Release notes appear here when published.", cls="chirp-theme-learning-index") %}
+    {{ rendered_body(content) }}
+    {{ learning_feed(items, "No updates yet.") }}
+  {% end %}
+{% end %}
+{% end %}

@@ -1,0 +1,4 @@
+{% from "chirpui/nav_tree.html" import nav_tree %}
+
+{% let items = items ?? section?.pages ?? pages ?? [] %}
+{{ nav_tree(items, branch_mode="linked", cls="chirp-theme-reference-sidebar") }}

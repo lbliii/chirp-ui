@@ -6,6 +6,9 @@
  * The retained contract is shell + docs + page + blog + search/error pages.
  */
 
+@import url('../../../../chirp_ui/templates/chirpui.css');
+@import url('../../../../chirp_ui/templates/chirpui-transitions.css');
+
 /* ============================================
    DESIGN TOKENS (Variables First!)
    ============================================ */
@@ -59,11 +62,7 @@
 
 @layer utilities {
   @import url('utilities/motion.css');
-  @import url('utilities/scroll-animations.css');
   @import url('utilities/gradient-borders.css');
-  @import url('utilities/fluid-blobs.css');
-  @import url('utilities/micro-interactions.css');
-  @import url('utilities/skeleton.css');
 }
 
 @layer base {
@@ -111,10 +110,6 @@
    ============================================ */
 
 @layer components {
-  @import url('components/admonitions.css');
-}
-
-@layer components {
   @import url('components/alerts.css');
 }
 
@@ -148,10 +143,6 @@
 }
 
 @layer components {
-  @import url('components/cards.css');
-}
-
-@layer components {
   @import url('components/tags.css');
 }
 
@@ -172,10 +163,6 @@
 }
 
 @layer components {
-  @import url('components/related-posts.css');
-}
-
-@layer components {
   @import url('components/navigation.css');
 }
 
@@ -193,11 +180,6 @@
 
 @layer components {
   @import url('components/icons.css');
-}
-
-@layer components {
-  /* Shared hub landing page styles (tracks, api-hub, etc.) */
-  @import url('components/hub-cards.css');
 }
 
 @layer components {
@@ -239,6 +221,10 @@
 
 @layer components {
   @import url('components/author.css');
+}
+
+@layer components {
+  @import url('components/reference.css');
 }
 
 @layer components {

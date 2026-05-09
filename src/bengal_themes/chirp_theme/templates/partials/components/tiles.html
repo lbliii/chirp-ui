@@ -7,14 +7,18 @@ Flexible content display with optional headers, multiple content sources,
 and variant display modes.
 
 Variants:
-- compact: Row-based list with icons (default)
-- cards: Grid of preview cards
-- minimal: Simple link list
+- compact: Stacked Chirp UI resource cards (default)
+- cards: Chirp UI resource-card grid
+- minimal: Compact Chirp UI resource-card list
 
 Usage:
 {{ content_tiles(title='Section', children=posts, variant='cards') }}
 ================================================================================
 #}
+
+{% from 'chirpui/badge.html' import badge %}
+{% from 'chirpui/card.html' import resource_card %}
+{% from 'chirpui/layout.html' import grid, stack %}
 
 {# =============================================================================
 CONTENT TILES COMPONENT
@@ -119,116 +123,79 @@ page=none
 {% let sorted_items = all_items | sort(attribute='group,weight,title') if group_by == 'type' else all_items |
 sort(attribute='weight,title') %}
 
-<section class="content-tiles content-tiles--{{ variant }}">
+<section class="chirp-theme-resource-list chirp-theme-resource-list--{{ variant }}">
   {% if title %}
-  <h2 class="content-tiles-title">{{ title }}</h2>
+  <h2 class="chirp-theme-resource-list__title">{{ title }}</h2>
   {% end %}
 
   {% match variant %}
   {# ===== CARDS VARIANT ===== #}
   {% case 'cards' %}
-  <div class="content-tiles-grid">
+  {% call grid(cols=3, gap='md', cls='chirp-theme-resource-list__grid') %}
     {% for item in sorted_items %}
     {% let item_type = item?.type ?? '' %}
-    <article class="content-tile-card{{ ' content-tile-card--related' if item_type == 'related' else '' }}">
-      {% if show_icons %}
-      <div class="content-tile-card-icon">
-        {% if item?.icon %}
-        {{ icon(item.icon, size=24) }}
-        {% else %}
-        {% match item_type %}
-        {% case 'section' %}{{ icon('folder', size=24) }}
-        {% case 'related' %}{{ icon('link', size=24) }}
-        {% case _ %}{{ icon('file-text', size=24) }}
-        {% end %}
-        {% end %}
-      </div>
-      {% end %}
-      <h3 class="content-tile-card-title">
-        <a href="{{ item?.href ?? '' }}">{{ item?.title ?? item }}</a>
-      </h3>
-      {% if show_descriptions and item?.description %}
-      <p class="content-tile-card-description">{{ item.description | excerpt_for_card(item?.title ?? '') | excerpt(120) }}</p>
-      {% end %}
-      <div class="content-tile-card-meta">
-        {% match item_type %}
-        {% case 'section' %}
-        {% if (item?.page_count ?? 0) > 0 %}
-        <span>{{ item.page_count }} page{{ 's' if item.page_count != 1 else '' }}</span>
-        {% end %}
-        {% case 'related' %}
-        <span class="content-tile-badge">Related</span>
-        {% case _ %}
-        {% if item?.date %}
-        <span>{{ item.date | time_ago }}</span>
-        {% end %}
-        {% end %}
-      </div>
-    </article>
+    {% let item_icon = item?.icon ?? ('folder' if item_type == 'section' else ('link' if item_type == 'related' else 'file-text')) %}
+    {% let item_meta = (item.page_count ~ ' page' ~ ('s' if item.page_count != 1 else '')) if item_type == 'section' and (item?.page_count ?? 0) > 0 else ('Related' if item_type == 'related' else (item.date | time_ago if item?.date else none)) %}
+    {% call resource_card(
+      item?.href ?? '',
+      item?.title ?? item,
+      description=(item.description | excerpt_for_card(item?.title ?? '') | excerpt(120)) if show_descriptions and item?.description else none,
+      top_meta=item_meta,
+      cls='chirp-theme-resource-item chirp-theme-resource-item--' ~ item_type
+    ) %}
+    {% slot badges %}
+    {% if show_icons %}<span class="chirpui-card__icon">{{ item_icon | icon }}</span>{% end %}
+    {% if item_type == 'related' %}{{ badge('Related', variant='secondary') }}{% end %}
     {% end %}
-  </div>
+    {% end %}
+    {% end %}
+  {% end %}
 
   {# ===== MINIMAL VARIANT ===== #}
   {% case 'minimal' %}
-  <ul class="content-tiles-minimal">
+  {% call stack(gap='xs', cls='chirp-theme-resource-list__stack') %}
     {% for item in sorted_items %}
     {% let item_type = item?.type ?? '' %}
-    <li class="{{ 'content-tile--related' if item_type == 'related' else '' }}">
-      <a href="{{ item?.href ?? '' }}">{{ item?.title ?? item }}</a>
-      {% if item_type == 'related' %}<span class="content-tile-badge">Related</span>{% end %}
-    </li>
+    {% call resource_card(
+      item?.href ?? '',
+      item?.title ?? item,
+      top_meta='Related' if item_type == 'related' else none,
+      cls='chirp-theme-resource-item chirp-theme-resource-item--minimal chirp-theme-resource-item--' ~ item_type
+    ) %}
+    {% slot badges %}{% if item_type == 'related' %}{{ badge('Related', variant='secondary') }}{% end %}{% end %}
     {% end %}
-  </ul>
+    {% end %}
+  {% end %}
 
   {# ===== COMPACT VARIANT (default) ===== #}
   {% case _ %}
-  <div class="content-tiles-list">
+  {% call stack(gap='xs', cls='chirp-theme-resource-list__stack') %}
     {% for group in sorted_items | groupby('group') %}
     {% let group_name = group.grouper %}
     {% let group_items = group.list %}
     {# Group headers when group_by='type' #}
     {% if group_by == 'type' and group_name == 'related' and related_title %}
-    <div class="content-tiles-group-header">
-      <span class="content-tiles-group-label">{{ related_title }}</span>
-    </div>
+    <h3 class="chirp-theme-resource-list__group-title">{{ related_title }}</h3>
     {% end %}
     {% for item in group_items %}
     {% let item_type = item?.type ?? '' %}
-    <article class="content-tile{{ ' content-tile--related' if item_type == 'related' else '' }}">
-      {% if show_icons %}
-      <div class="content-tile-icon">
-        {% if item?.icon %}
-        {{ icon(item.icon, size=20) }}
-        {% elif item_type == 'section' %}
-        {{ icon('folder', size=20) }}
-        {% elif item_type == 'related' %}
-        {{ icon('link', size=20) }}
-        {% else %}
-        {{ icon('file-text', size=20) }}
-        {% end %}
-      </div>
-      {% end %}
-      <div class="content-tile-content">
-        <span class="content-tile-title">
-          <a href="{{ item?.href ?? '' }}">{{ item?.title ?? item }}</a>
-          {% if show_descriptions and item?.description %}
-          <span class="content-tile-description">{{ item.description | excerpt_for_card(item?.title ?? '') }}</span>
-          {% end %}
-          <span class="content-tile-meta">
-            {% if item_type == 'section' and (item?.page_count ?? 0) > 0 %}
-            <span class="meta-item">{{ item.page_count }} page{{ 's' if item.page_count != 1 else '' }}</span>
-            {% elif item_type == 'related' %}
-            <span class="meta-item content-tile-badge">Related</span>
-            {% elif item?.date %}
-            <span class="meta-item">{{ item.date | time_ago }}</span>
-            {% end %}
-          </span>
-        </span>
-      </div>
-    </article>
+    {% let item_icon = item?.icon ?? ('folder' if item_type == 'section' else ('link' if item_type == 'related' else 'file-text')) %}
+    {% let item_meta = (item.page_count ~ ' page' ~ ('s' if item.page_count != 1 else '')) if item_type == 'section' and (item?.page_count ?? 0) > 0 else ('Related' if item_type == 'related' else (item.date | time_ago if item?.date else none)) %}
+    {% call resource_card(
+      item?.href ?? '',
+      item?.title ?? item,
+      description=(item.description | excerpt_for_card(item?.title ?? '')) if show_descriptions and item?.description else none,
+      top_meta=item_meta,
+      cls='chirp-theme-resource-item chirp-theme-resource-item--compact chirp-theme-resource-item--' ~ item_type
+    ) %}
+    {% slot badges %}
+    {% if show_icons %}<span class="chirpui-card__icon">{{ item_icon | icon }}</span>{% end %}
+    {% if item_type == 'related' %}{{ badge('Related', variant='secondary') }}{% end %}
     {% end %}
     {% end %}
-  </div>
+    {% end %}
+    {% end %}
+  {% end %}
   {% end %}
 </section>
 {% end %}

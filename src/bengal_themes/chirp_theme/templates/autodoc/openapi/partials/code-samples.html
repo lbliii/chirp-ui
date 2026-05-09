@@ -1,0 +1,13 @@
+{% from "chirpui/accordion.html" import accordion, accordion_item %}
+{% from "chirpui/code.html" import code_block %}
+
+{% let samples = samples ?? element?.metadata?.code_samples ?? element?.metadata?.examples ?? element?.examples ?? [] %}
+{% if samples | length > 0 %}
+{% call accordion(name="openapi-code-samples", cls="chirp-theme-reference-code-samples") %}
+  {% for sample in samples %}
+  {% call accordion_item(sample?.label ?? sample?.language ?? "Example", open=loop.first, cls="chirp-theme-reference-code-sample") %}
+    {{ code_block(sample?.code ?? sample, cls="chirp-theme-reference-example", copy=true) }}
+  {% end %}
+  {% end %}
+{% end %}
+{% end %}

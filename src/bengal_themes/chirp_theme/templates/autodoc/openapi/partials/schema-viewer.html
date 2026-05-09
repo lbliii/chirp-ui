@@ -1,0 +1,13 @@
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/params_table.html" import params_table %}
+{% from "chirpui/code.html" import code_block %}
+
+{% let schema = element?.metadata?.schema ?? element?.schema ?? element?.metadata ?? {} %}
+{% let properties = schema?.properties ?? element?.metadata?.properties ?? [] %}
+{% call card(title="Schema", cls="chirp-theme-reference-schema") %}
+  {% if properties | length > 0 %}
+  {{ params_table(properties, title=none, columns=["name", "type", "description"], cls="chirp-theme-reference-schema-table") }}
+  {% elif schema %}
+  {{ code_block(schema | tojson, cls="chirp-theme-reference-schema-json", copy=true) }}
+  {% end %}
+{% end %}

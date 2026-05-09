@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "partials/navigation-components.html" import pagination %}
+{% from "partials/taxonomy-pages.html" import count_label, taxonomy_post_feed %}
+
+{% block content %}
+{% let current_tag = tag ?? page?.title ?? "Tag" %}
+{% let tagged_posts = posts ?? [] %}
+{% let total_count = total_posts ?? (tagged_posts | length) %}
+{% let total_pages = (total_pages ?? 1) | int %}
+{% let current_page = (current_page ?? 1) | int %}
+{% let base_url = base_url ?? page?.href ?? tag_url(current_tag) %}
+
+{% call container(cls="chirp-theme-taxonomy-page") %}
+  {% call resource_index(
+    current_tag,
+    page?.href ?? base_url,
+    subtitle=count_label(total_count, "entry") ~ " filed under this tag.",
+    search_placeholder="Filter tagged content...",
+    button_icon="magnifying-glass",
+    results_title="Tagged content",
+    results_subtitle=count_label(tagged_posts | length, "result"),
+    has_results=tagged_posts | length > 0,
+    empty_title="No tagged content yet",
+    empty_message="No published content currently uses this tag.",
+    cls="chirp-theme-taxonomy-index"
+  ) %}
+    {% if content %}
+    {% call rendered_content(compact=true) %}{{ content | safe }}{% end %}
+    {% end %}
+    {{ taxonomy_post_feed(tagged_posts, "No published content currently uses this tag.") }}
+  {% end %}
+
+  {% if total_pages > 1 %}
+  {{ pagination(current_page, total_pages, base_url) }}
+  {% end %}
+{% end %}
+{% end %}

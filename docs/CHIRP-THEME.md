@@ -24,20 +24,24 @@ chirp-theme = "bengal_themes.chirp_theme"
 
 ## Product Direction
 
-`chirp-theme` is not meant to be a thin skin on Bengal default.
+`chirp-theme` is not meant to be a thin skin on Bengal default, and it should
+not grow a private design system beside `chirp-ui`.
 
 The long-term goal is:
 
 1. A real standalone Bengal theme package fully supported by `chirp-ui`
 2. A better-organized replacement for the original Bengal default theme
-3. A theme that uses modern `chirp-ui`, Kida, and Alpine-friendly patterns as
+3. A translation of the original default-theme ideas into `chirp-ui` components,
+   slots, and `--chirpui-*` tokens
+4. A theme that uses modern `chirp-ui`, Kida, and Alpine-friendly patterns as
    the foundation for a future Bengal default v2
 
-The current standalone cutover is an ownership cutover first. Today the package
-vendors the legacy Bengal default asset/partial surface into `chirp-theme`,
-then layers `chirp-theme` styling and shell changes on top of that owned
-baseline. That keeps the runtime contract standalone now while leaving room for
-future visual and structural replacement work.
+The current standalone cutover started as an ownership cutover: the package
+carried forward a large default-theme asset/partial surface so the docs site
+could dogfood a packaged Bengal theme immediately. That is a transitional
+blueprint, not the target architecture. Each migration slice should ask what
+the copied default-theme pattern was trying to do, then re-express the useful
+parts with `chirp-ui` primitives and tokens.
 
 That means the package should own:
 
@@ -54,10 +58,13 @@ The retained `chirp-theme` contract is intentionally explicit:
 - retained core parity: `blog/shell.html`, `blog/list.html`, `blog/single.html`, `post.html`, `search.html`, and `404.html`
 - shared shell partials and components that support those templates
 
-The current parity and defer/prune decisions live in
+The current parity and redesign decisions live in
 [`docs/CHIRP-THEME-PARITY-MATRIX.md`](./CHIRP-THEME-PARITY-MATRIX.md).
-Anything not listed there as retained is intentionally deferred or pruned until a
-later redesign slice proves it is still worth carrying forward.
+The active implementation backlog for unported content families lives in
+[`docs/plans/PLAN-chirp-theme-content-parity.md`](./plans/PLAN-chirp-theme-content-parity.md).
+Anything not listed there as retained is intentionally outside the current
+runtime contract until a later redesign slice brings it back through Chirp
+UI-native templates and tokens.
 
 ## Design Principles
 
@@ -78,20 +85,58 @@ The theme is shipped inside the `chirp-ui` repo because it is part of the same
 design-system effort. The docs site dogfoods the package directly, so the theme
 is exercised on a real Bengal site rather than living as an isolated demo.
 
-The goal is not runtime indirection through `chirp_ui` template imports. The
-goal is a strong, installable Bengal theme package whose implementation happens
-to be owned and evolved by the `chirp-ui` project.
+The theme should treat `chirp-ui` as a real library, not as an optional CSS file
+to adapt after the fact. New templates should prefer `chirpui/*` macros for
+cards, buttons, layout primitives, site chrome, navigation, and repeated
+content patterns. Theme CSS should tune `--chirpui-*` tokens first. Bengal
+legacy variables such as `--color-*` may remain temporarily only to support
+copied default-theme CSS while that CSS is deleted or translated.
+
+The direction of dependency matters:
+
+- preferred: `chirp-theme` sets `--chirpui-*` tokens and composes `chirpui/*`
+  macros
+- preferred for Markdown directives: Bengal handlers expose structured context
+  and `chirp-theme` owns `templates/directives/*.html` so directive output is
+  Chirp UI markup, not copied default-theme markup
+- acceptable transitional step: copied Bengal CSS aliases old variables to
+  `--chirpui-*` tokens while the owning template is converted
+- not acceptable for new work: creating `--chirp-theme-*` or component-specific
+  theme classes when a Chirp UI token, primitive, or macro should own the
+  contract
+
+The current CSS loading contract is a transitional boundary, not the final
+architecture. Until Bengal has first-class library asset modes with matching dev
+and static-build behavior, `assets/css/style.css` is the single stylesheet
+entrypoint and imports Chirp UI's generated CSS and transition CSS before theme
+tokens and overrides. Theme templates should not add separate
+`chirp_ui/chirpui.css` or `chirp_ui/chirpui-transitions.css` links. The desired
+platform contract is tracked in
+[`docs/plans/PLAN-bengal-chirpui-library-contract.md`](./plans/PLAN-bengal-chirpui-library-contract.md).
+
+The theme should eventually cover the same broad content/output families as the
+original Bengal default theme: autodoc and reference pages, tutorials, tracks,
+notebooks, changelog and resume views, taxonomy/archive/author pages, search,
+errors, and content-heavy pages. The migration should not copy those verticals
+forward as-is. It should rebuild them as Chirp UI-native contracts when each
+surface is promoted.
 
 ## Near-Term Execution
 
-The current cutover work focuses on making the theme truly standalone:
+The current cutover work focuses on making the theme truly standalone while
+shrinking the copied default-theme surface:
 
 - remove implicit dependence on Bengal default theme inheritance
-- give the theme a real Bengal-supported `assets/css/style.css` entrypoint
-- replace hidden default-theme partial dependencies with theme-owned resources
+- declare `chirp_ui` as a Bengal theme library dependency
+- load Chirp UI JS through Bengal's provider asset system
+- bundle Chirp UI CSS through the theme stylesheet until Bengal supports
+  first-class library CSS inclusion modes
+- replace default-theme partial dependencies with `chirpui/*` macros where a
+  registry-backed component already exists
+- render high-value Markdown directives through Kida directive templates when a
+  Chirp UI component or primitive is the correct output contract
 - ensure generated output only references assets shipped by the theme package
 
 That standalone baseline is the platform for future parity and beyond. The next
-phase is no longer “copy every legacy family forward”; it is “grow from a clear
-retained surface, and restore only the verticals that still make sense with the
-new primitive layer.”
+phase is no longer “copy every legacy family forward”; it is “translate and
+improve every original theme output using Chirp UI as the primitive layer.”

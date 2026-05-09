@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/metric_grid.html" import metric_card, metric_grid %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "partials/taxonomy-pages.html" import count_label, taxonomy_post_feed %}
+
+{% block content %}
+{% let year = params?.year ?? page?.year ?? page?.title ?? "Archive" %}
+{% let date_range_index = site?.indexes?.date_range ?? {} %}
+{% let indexed_posts = (date_range_index[year] | resolve_pages) if date_range_index[year] else [] %}
+{% let year_posts = posts ?? indexed_posts %}
+
+{% call container(cls="chirp-theme-taxonomy-page") %}
+  {% call resource_index(
+    year ~ " Archive",
+    page?.href ?? "/archive/" ~ year ~ "/",
+    subtitle=page?.description ?? "Content published during this year.",
+    search_placeholder="Filter this year...",
+    button_icon="magnifying-glass",
+    results_title="Entries",
+    results_subtitle=count_label(year_posts | length, "entry"),
+    has_results=year_posts | length > 0,
+    empty_title="No content for this year yet",
+    empty_message="There is no published content for this archive year.",
+    cls="chirp-theme-taxonomy-index"
+  ) %}
+    {% if content %}
+    {% call rendered_content(compact=true) %}{{ content | safe }}{% end %}
+    {% end %}
+    {% call metric_grid(cols=2, gap="md") %}
+      {{ metric_card(value=year_posts | length, label="Entries") }}
+      {{ metric_card(value=year, label="Year") }}
+    {% end %}
+    {{ taxonomy_post_feed(year_posts, "There is no published content for this archive year.", variant="compact") }}
+  {% end %}
+{% end %}
+{% end %}

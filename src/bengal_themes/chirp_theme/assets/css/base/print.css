@@ -186,7 +186,7 @@
      ADMONITIONS / CALLOUTS
      ============================================ */
 
-  .admonition,
+  .chirpui-callout,
   .callout {
     background: white !important;
     border: 1pt solid #ccc !important;
@@ -194,7 +194,7 @@
     page-break-inside: avoid;
   }
 
-  .admonition-title,
+  .chirpui-callout__title,
   .callout-title {
     color: black !important;
     font-weight: bold;

@@ -1,1 +1,6 @@
 name = "chirp-theme"
+
+# Bengal discovers chirp-ui templates and package assets through this library
+# dependency. CSS is intentionally bundled through assets/css/style.css until
+# Bengal has first-class library asset modes with dev/build parity.
+libraries = ["chirp_ui"]

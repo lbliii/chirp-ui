@@ -2,17 +2,17 @@
 
 {% from 'partials/navigation-components.html' import page_navigation %}
 {% from 'partials/components/tags.html' import tag_list %}
-{% from 'partials/theme-primitives.html' import theme_docs_frame %}
 
 {% block content %}
 {% let page_tags = page?.tags ?? [] %}
 {% let page_href = page?.href ?? '' %}
 {% let css_class = params?.css_class ?? '' %}
 
-{% call theme_docs_frame(has_toc=toc_items | length > 0) %}
-{% slot sidebar %}
-{% include 'partials/docs-nav.html' %}
-{% end %}
+<div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if toc_items | length > 0 else '' }}">
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="Documentation navigation">
+  {% include 'partials/docs-nav.html' %}
+</aside>
+<div class="chirp-theme-docs-layout__main">
 
 {% include 'partials/version-banner.html' %}
 {% include 'partials/stale-content-banner.html' %}
@@ -33,10 +33,13 @@
 
 {{ page_navigation(page) }}
 
-{% slot toc %}
+  </div>
+{% if toc_items | length > 0 %}
+<aside class="chirp-theme-docs-layout__toc" role="complementary" aria-label="Table of contents">
 {% include 'partials/docs-toc-sidebar.html' %}
+</aside>
 {% end %}
-{% end %}
+</div>
 
 <button class="docs-sidebar-toggle" aria-label="Toggle navigation sidebar" aria-expanded="false"
   aria-controls="docs-sidebar">

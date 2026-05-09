@@ -1,0 +1,9 @@
+{% from "chirpui/code.html" import code_block %}
+
+{% let usage_text = usage ?? element?.usage ?? element?.metadata?.usage ?? element?.signature ?? none %}
+{% if usage_text %}
+<section class="chirp-theme-reference-section chirp-theme-reference-usage">
+  <h2>Usage</h2>
+  {{ code_block(usage_text, cls="chirp-theme-reference-usage__code", copy=true) }}
+</section>
+{% end %}

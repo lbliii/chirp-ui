@@ -1,0 +1,21 @@
+{% from "chirpui/card.html" import card %}
+
+{% let meta = element?.metadata ?? {} %}
+{% let request_samples = meta?.request_examples ?? meta?.code_samples ?? meta?.examples ?? element?.examples ?? [] %}
+{% let response_samples = meta?.response_examples ?? [] %}
+{% let responses = meta?.responses ?? element?.responses ?? [] %}
+{% let body = meta?.request_body ?? element?.request_body ?? none %}
+{% let has_request = (request_samples | length > 0) or (body?.example ?? none) %}
+{% let has_response = (response_samples | length > 0) or (responses | length > 0) %}
+
+{% call card(title="Examples", subtitle="Request and response", cls="chirp-theme-rest-examples-card") %}
+  {% if has_request %}
+  {% include "autodoc/openapi/partials/request-example.html" %}
+  {% end %}
+  {% if has_response %}
+  {% include "autodoc/openapi/partials/response-example.html" %}
+  {% end %}
+  {% if not has_request and not has_response %}
+  <p class="chirp-theme-rest-examples-card__empty">Examples appear here when the OpenAPI document provides samples.</p>
+  {% end %}
+{% end %}

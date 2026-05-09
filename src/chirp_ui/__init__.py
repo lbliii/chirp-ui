@@ -30,6 +30,7 @@ from chirp_ui.alpine import (
 )
 from chirp_ui.components import DesignSystemReport, DesignSystemStats, design_system_report
 from chirp_ui.filters import TemplateFilterApp, register_colors, reset_colors
+from chirp_ui.library import LIBRARY_CONTRACT, LibraryAsset, LibraryContract, get_library_contract
 from chirp_ui.validation import (
     ChirpUIDeprecationWarning,
     ChirpUIValidationWarning,
@@ -45,6 +46,7 @@ __version__ = "0.7.0"
 
 __all__ = [
     "ALPINE_REQUIRED_COMPONENTS",
+    "LIBRARY_CONTRACT",
     "MANIFEST_PATH",
     "AlpineRequirement",
     "AlpineRuntimeCheck",
@@ -53,8 +55,11 @@ __all__ = [
     "ChirpUIWarning",
     "DesignSystemReport",
     "DesignSystemStats",
+    "LibraryAsset",
+    "LibraryContract",
     "check_alpine_runtime",
     "design_system_report",
+    "get_library_contract",
     "get_loader",
     "is_strict",
     "load_manifest",
@@ -105,7 +110,7 @@ def static_path() -> Path:
             prefix="/static"
         ))
     """
-    return Path(__file__).parent / "templates"
+    return LIBRARY_CONTRACT.static_root
 
 
 def get_loader() -> PackageLoader:

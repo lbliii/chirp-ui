@@ -6,6 +6,12 @@ import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOCS_SITE_SCRIPT = REPO_ROOT / "scripts" / "docs_site.py"
+PATTERN_DOCS = {
+    "navigation.md": "docs/NAVIGATION.md",
+    "product-pages.md": "docs/PRODUCT-PAGE-PATTERNS.md",
+    "media-sites.md": "docs/MEDIA-SITE-PATTERNS.md",
+    "forums.md": "docs/FORUM-SITE-PATTERNS.md",
+}
 
 
 def _load_docs_site_module():
@@ -65,3 +71,15 @@ def test_ensure_workspace_bengal_rejects_site_packages(monkeypatch, tmp_path: Pa
     stderr = capsys.readouterr().err
     assert "installed Bengal package" in stderr
     assert "uv run poe docs-serve" in stderr
+
+
+def test_pattern_docs_are_published_site_sources() -> None:
+    """The Bengal-published docs should expose the shipped 0.7 pattern families."""
+    pattern_dir = REPO_ROOT / "site" / "content" / "docs" / "patterns"
+
+    assert (pattern_dir / "_index.md").is_file()
+    for filename, canonical_doc in PATTERN_DOCS.items():
+        text = (pattern_dir / filename).read_text(encoding="utf-8")
+
+        assert "type: doc" in text
+        assert canonical_doc in text

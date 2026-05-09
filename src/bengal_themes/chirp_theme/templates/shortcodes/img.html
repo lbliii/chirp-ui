@@ -1,0 +1,7 @@
+{% let src = shortcode.Get("src") %}
+{% let alt = shortcode.Get("alt") %}
+{% let cls = shortcode.Parent.Get("class") if shortcode.Parent else shortcode.Get("class") %}
+
+{% if src %}
+<img src="{{ src }}" alt="{{ alt }}" loading="lazy" class="chirp-theme-shortcode-image{{ " " ~ cls if cls else "" }}">
+{% end %}

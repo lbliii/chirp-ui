@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "partials/learning-pages.html" import content_cards, rendered_body %}
+{% from "partials/taxonomy-pages.html" import count_label %}
+
+{% block content %}
+{% let title = page?.title ?? section?.title ?? "Tracks" %}
+{% let description = page?.description ?? section?.description ?? "Follow curated learning paths." %}
+{% let items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
+
+{% call container(cls="chirp-theme-learning-page") %}
+  {% call resource_index(title, page?.href ?? section?.href ?? "/tracks/", subtitle=description, search_placeholder="Filter tracks...", button_icon="magnifying-glass", results_title="Tracks", results_subtitle=count_label(items | length, "track"), results_layout="grid", results_cols=3, has_results=items | length > 0, empty_title="No tracks yet", empty_message="Tracks appear here when published.", cls="chirp-theme-learning-index") %}
+    {{ rendered_body(content) }}
+    {{ content_cards(items, "No tracks yet.", "track") }}
+  {% end %}
+{% end %}
+{% end %}

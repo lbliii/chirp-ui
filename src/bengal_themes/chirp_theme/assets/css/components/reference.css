@@ -1,0 +1,129 @@
+/* Chirp UI-native API reference composition. */
+
+.chirp-theme-rest-reference {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(22rem, 27rem);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.chirp-theme-rest-reference__main {
+  min-width: 0;
+}
+
+.chirp-theme-rest-reference__examples {
+  position: sticky;
+  top: 5.5rem;
+  min-width: 0;
+}
+
+.chirp-theme-rest-endpoint-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--chirpui-border);
+  border-radius: var(--chirpui-radius-lg);
+  background: var(--chirpui-surface);
+  box-shadow: var(--chirpui-elevation-theme);
+}
+
+.chirp-theme-rest-method {
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 0.9rem;
+  border-right: 1px solid var(--chirpui-border);
+  background: color-mix(in srgb, var(--chirpui-accent) 12%, transparent);
+  color: var(--chirpui-accent-hover);
+  font-family: var(--chirpui-mono-font-family);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.chirp-theme-rest-method--post,
+.chirp-theme-rest-method--put,
+.chirp-theme-rest-method--patch {
+  background: color-mix(in srgb, var(--chirpui-accent-secondary) 14%, transparent);
+  color: var(--chirpui-accent-secondary);
+}
+
+.chirp-theme-rest-method--delete {
+  background: color-mix(in srgb, #dc2626 12%, transparent);
+  color: #b91c1c;
+}
+
+.chirp-theme-rest-path {
+  display: block;
+  min-width: 0;
+  flex: 1;
+  overflow-x: auto;
+  padding: 0.78rem 0.9rem;
+  color: var(--chirpui-text);
+  font-family: var(--chirpui-mono-font-family);
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.chirp-theme-rest-examples-card {
+  overflow: hidden;
+}
+
+.chirp-theme-rest-examples-card .chirpui-card__body-content {
+  display: grid;
+  gap: 1rem;
+}
+
+.chirp-theme-rest-example-group {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.chirp-theme-rest-example-group__title {
+  margin: 0;
+  color: var(--chirpui-text-muted);
+  font-family: var(--chirpui-ui-font-family);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.chirp-theme-rest-examples-card__empty {
+  margin: 0;
+  color: var(--chirpui-text-muted);
+  font-size: 0.92rem;
+}
+
+.chirp-theme-reference-example,
+.chirp-theme-reference-schema-json {
+  max-height: 28rem;
+  overflow: auto;
+}
+
+.chirp-theme-rest-reference__examples .chirpui-code-block {
+  max-height: 22rem;
+}
+
+@media (max-width: 64rem) {
+  .chirp-theme-rest-reference {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .chirp-theme-rest-reference__examples {
+    position: static;
+  }
+}
+
+@media (max-width: 42rem) {
+  .chirp-theme-rest-endpoint-bar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .chirp-theme-rest-method {
+    border-right: 0;
+    border-bottom: 1px solid var(--chirpui-border);
+    padding-block: 0.6rem;
+  }
+}

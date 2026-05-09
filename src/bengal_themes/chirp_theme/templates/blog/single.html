@@ -1,23 +1,28 @@
 {% extends "blog/shell.html" %}
 
 {% from 'partials/navigation-components.html' import page_navigation %}
+{% from 'partials/navigation-components.html' import breadcrumbs %}
 {% from 'partials/components/tags.html' import tag_list %}
 {% from 'partials/components/related-posts-simple.html' import related_posts_simple %}
-{% from 'partials/theme-primitives.html' import theme_page_header, theme_surface %}
+{% from 'chirpui/hero.html' import page_hero %}
+{% from 'chirpui/surface.html' import surface %}
 
 {% block blog_hero %}
-{{ theme_page_header(
-  page?.title ?? 'Post',
-  params?.description ?? meta_desc ?? none,
-  'Blog Post',
-  breadcrumb_page=page,
-  meta=(page?.date | dateformat('%B %d, %Y')) if page?.date else none,
-  cls='chirp-theme-blog__hero'
-) }}
+{% let post_date = page?.date ?? none %}
+{% call page_hero(title=page?.title ?? 'Post', subtitle=params?.description ?? meta_desc ?? none, variant='editorial', background='solid', cls='chirp-theme-blog__hero') %}
+  {% slot eyebrow %}
+  {{ breadcrumbs(page) }}
+  {% end %}
+  {% slot metadata %}
+  {% if post_date %}
+  {{ post_date | dateformat('%B %d, %Y') }}
+  {% end %}
+  {% end %}
+{% end %}
 {% end %}
 
 {% block blog_content %}
-{% call theme_surface('chirp-theme-blog__article-shell') %}
+{% call surface(variant='default', cls='chirp-theme-blog__article-shell') %}
 <article class="blog-post prose">
   <div class="blog-post-content">
     {{ content | safe }}

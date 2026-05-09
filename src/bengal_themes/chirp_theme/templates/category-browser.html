@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "partials/taxonomy-pages.html" import count_label, term_resource_card %}
+
+{% block content %}
+{% let page_title = page?.title ?? "Browse by Category" %}
+{% let page_desc = page?.description ?? params?.description ?? "Explore content organized by category." %}
+{% let category_index = site?.indexes?.category ?? {} %}
+{% let category_names = categories ?? (category_index.keys() | list if category_index else []) %}
+
+{% call container(cls="chirp-theme-taxonomy-page") %}
+  {% call resource_index(
+    page_title,
+    page?.href ?? "/categories/",
+    subtitle=page_desc,
+    search_placeholder="Filter categories...",
+    button_icon="magnifying-glass",
+    results_title="Categories",
+    results_subtitle=count_label(category_names | length, "category", "categories"),
+    results_layout="grid",
+    results_cols=3,
+    has_results=category_names | length > 0,
+    empty_title="No categories yet",
+    empty_message="Add category frontmatter to create category groups.",
+    cls="chirp-theme-taxonomy-index"
+  ) %}
+    {% if content %}
+    {% call rendered_content(compact=true) %}{{ content | safe }}{% end %}
+    {% end %}
+    {% for category in category_names | sort %}
+    {% let category_name = category?.name ?? category %}
+    {% let category_href = category?.href ?? "/category/" ~ category_name ~ "/" %}
+    {% let category_posts = (category_index.get(category_name) | resolve_pages) if category_index.get(category_name) else (category?.pages ?? []) %}
+    {{ term_resource_card(category_name | title, category_href, category_posts | length, "Content in " ~ (category_name | title), "page") }}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}

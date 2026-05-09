@@ -81,7 +81,6 @@ Each pattern has specific naming conventions to make the implementation clear.
 - `core/theme.js` - Popover positioning + theme logic
 - `layouts/header.css` - `.theme-dropdown__menu--popover` styles
 - `enhancements/action-bar.js` - Share dropdown positioning + actions
-- `components/action-bar.css` - `.action-bar-share-dropdown--popover` styles
 - `components/page-hero.css` - `.page-hero__share-dropdown--popover` styles
 
 **Components Using Popover:**

@@ -1,0 +1,11 @@
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/code.html" import code %}
+
+{% def param_row(param) %}
+<tr class="chirp-theme-reference-param-row">
+  <td>{{ code(param?.name ?? "") }}</td>
+  <td>{{ code(param?.type ?? param?.schema?.type ?? "") }}</td>
+  <td>{% if param?.required ?? false %}{{ badge("required", variant="warning") }}{% else %}{{ badge("optional", variant="muted") }}{% end %}</td>
+  <td>{{ param?.description ?? "" }}</td>
+</tr>
+{% enddef %}

@@ -1,0 +1,5 @@
+{% let path = shortcode.Get(0) or shortcode.Get("path") %}
+{% let label = shortcode.Get("text") or shortcode.Get("label") or path %}
+{% if path %}
+<a href="{{ shortcode.RelRef(path) }}">{{ label }}</a>
+{% end %}

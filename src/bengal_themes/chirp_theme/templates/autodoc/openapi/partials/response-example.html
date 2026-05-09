@@ -1,0 +1,29 @@
+{% from "chirpui/accordion.html" import accordion, accordion_item %}
+{% from "chirpui/code.html" import code_block %}
+
+{% let meta = element?.metadata ?? {} %}
+{% let response_samples = meta?.response_examples ?? [] %}
+{% let responses = meta?.responses ?? element?.responses ?? [] %}
+
+<section class="chirp-theme-rest-example-group" aria-label="Response example">
+  <h2 class="chirp-theme-rest-example-group__title">Response</h2>
+  {% if response_samples | length > 0 %}
+  {% call accordion(name="openapi-response-examples", cls="chirp-theme-reference-code-samples") %}
+    {% for sample in response_samples %}
+    {% call accordion_item(sample?.label ?? sample?.status ?? "Response", open=loop.first, cls="chirp-theme-reference-code-sample") %}
+      {{ code_block(sample?.code ?? sample?.example ?? sample, cls="chirp-theme-reference-example", copy=true) }}
+    {% end %}
+    {% end %}
+  {% end %}
+  {% elif responses | length > 0 %}
+  {% call accordion(name="openapi-response-examples", cls="chirp-theme-reference-code-samples") %}
+    {% for response in responses %}
+    {% if response?.example ?? none %}
+    {% call accordion_item(response?.status ?? response?.code ?? "Response", open=loop.first, cls="chirp-theme-reference-code-sample") %}
+      {{ code_block(response.example, cls="chirp-theme-reference-example", copy=true) }}
+    {% end %}
+    {% end %}
+    {% end %}
+  {% end %}
+  {% end %}
+</section>

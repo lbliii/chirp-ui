@@ -22,6 +22,17 @@ cta_buttons:
     url: /docs/components/
     style: secondary
 
+features:
+  - title: Component Library
+    href: /docs/components/
+    description: Explore Chirp UI macros for forms, cards, navigation, overlays, marketing pages, and application chrome.
+  - title: Site Patterns
+    href: /docs/patterns/
+    description: Translate product, media, forum, and documentation ideas into composable Chirp UI primitives.
+  - title: Release Notes
+    href: /releases/
+    description: Track shipped contracts, migration notes, and the latest Bengal theme adoption work.
+
 show_recent_posts: false
 ---
 
@@ -47,31 +58,48 @@ chirp-ui is an optional companion design system for [Chirp](https://lbliii.githu
 
 ## What's good about it
 
-:::{cards}
-:columns: 2
-:gap: medium
-
-:::{card} Gorgeous by Default
-:icon: palette
-Full visual design out of the box. Override `--chirpui-*` CSS variables to customize.
-:::{/card}
-
-:::{card} htmx-Native
-:icon: zap
-Interactive components use htmx or native HTML. Dropdown, modal, tray, tabs use Alpine.js for declarative behavior.
-:::{/card}
-
-:::{card} Composable
-:icon: layers
-`{% slot %}` for content injection. Components nest freely. No wrapper classes.
-:::{/card}
-
-:::{card} Modern CSS
-:icon: code
-`:has()`, container queries, fluid typography, `prefers-color-scheme` dark mode.
-:::{/card}
-
-:::{/cards}
+<div class="chirpui-grid chirpui-grid--cols-2 chirpui-grid--gap-md chirp-theme-directive-cards">
+  <article class="chirpui-card chirp-theme-directive-card">
+    <header class="chirpui-card__header">
+      <div class="chirpui-card__header-content">
+        <span class="chirpui-card__title">Gorgeous by Default</span>
+      </div>
+    </header>
+    <div class="chirpui-card__body">
+      <p class="chirpui-text-muted chirpui-font-sm">Full visual design out of the box. Override <code>--chirpui-*</code> CSS variables to customize.</p>
+    </div>
+  </article>
+  <article class="chirpui-card chirp-theme-directive-card">
+    <header class="chirpui-card__header">
+      <div class="chirpui-card__header-content">
+        <span class="chirpui-card__title">htmx-Native</span>
+      </div>
+    </header>
+    <div class="chirpui-card__body">
+      <p class="chirpui-text-muted chirpui-font-sm">Interactive components use htmx or native HTML. Dropdown, modal, tray, tabs use Alpine.js for declarative behavior.</p>
+    </div>
+  </article>
+  <article class="chirpui-card chirp-theme-directive-card">
+    <header class="chirpui-card__header">
+      <div class="chirpui-card__header-content">
+        <span class="chirpui-card__title">Composable</span>
+      </div>
+    </header>
+    <div class="chirpui-card__body">
+      <p class="chirpui-text-muted chirpui-font-sm"><code>&#123;% slot %&#125;</code> for content injection. Components nest freely. No wrapper classes.</p>
+    </div>
+  </article>
+  <article class="chirpui-card chirp-theme-directive-card">
+    <header class="chirpui-card__header">
+      <div class="chirpui-card__header-content">
+        <span class="chirpui-card__title">Modern CSS</span>
+      </div>
+    </header>
+    <div class="chirpui-card__body">
+      <p class="chirpui-text-muted chirpui-font-sm"><code>:has()</code>, container queries, fluid typography, <code>prefers-color-scheme</code> dark mode.</p>
+    </div>
+  </article>
+</div>
 
 ---
 

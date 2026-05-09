@@ -1,0 +1,35 @@
+{#- chirp-theme child-cards directive.
+
+Auto-generated child page cards should use the same Chirp UI vocabulary as
+hand-authored cards.
+-#}
+{% from "chirpui/layout.html" import grid %}
+
+{% set grid_cols = columns if columns == "2" or columns == "3" or columns == "4" else none %}
+{% call grid(cols=grid_cols, gap=chirpui_gap, cls="chirp-theme-directive-cards chirp-theme-directive-cards--children") %}
+{% if empty_message %}
+  <article class="chirpui-card chirp-theme-directive-card">
+    <div class="chirpui-card__body">
+      <p class="chirpui-text-muted chirpui-font-sm"><em>{{ empty_message | e }}</em></p>
+    </div>
+  </article>
+{% else %}
+  {% for item in cards %}
+  <a href="{{ item.href | e }}" class="chirpui-card chirpui-card--link chirpui-resource-card chirp-theme-directive-card chirp-theme-directive-card--child chirp-theme-directive-card--{{ item.type | e }}">
+    {% if item.icon_html or item.title %}
+    <header class="chirpui-card__header">
+      {% if item.icon_html %}
+      <span class="chirpui-card__icon" data-icon="{{ item.icon | e }}">{{ item.icon_html | safe }}</span>
+      {% end %}
+      <div class="chirpui-card__header-content">
+        {% if item.title %}<span class="chirpui-card__title">{{ item.title | e }}</span>{% end %}
+      </div>
+    </header>
+    {% end %}
+    <div class="chirpui-card__body">
+      {% if item.description_html %}<p class="chirpui-text-muted chirpui-font-sm">{{ item.description_html | safe }}</p>{% end %}
+    </div>
+  </a>
+  {% end %}
+{% end %}
+{% end %}
