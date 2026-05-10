@@ -16,6 +16,8 @@ from kida.lexer import Lexer
 from kida.nodes import Block, Def, FromImport, Import, Node
 from kida.parser import Parser
 
+from chirp_ui._macro_introspect import macros_in_template
+
 TEMPLATES_DIR = Path("src/chirp_ui/templates/chirpui")
 SHOWCASE_TEMPLATES_DIR = Path("examples/component-showcase/templates")
 PRIVACY_LINT_DIRS = (
@@ -82,6 +84,13 @@ SHOWCASE_PAGE_CONTEXTS = {
     "showcase/typography.html": {"current_path"},
     "showcase/ui.html": {"current_path"},
     "showcase/video.html": {"current_path"},
+}
+KIDA_DEF_METADATA_PARITY = {
+    "button.html": "btn",
+    "card.html": "card",
+    "layout.html": "page_header",
+    "navbar.html": "navbar",
+    "route_tabs.html": "render_route_tabs",
 }
 
 
@@ -202,3 +211,25 @@ def test_showcase_page_templates_match_route_context_contracts() -> None:
         )
 
     assert missing_context == []
+
+
+def test_kida_def_metadata_matches_chirp_macro_introspection(env) -> None:
+    """Probe Kida's public def metadata before replacing Chirp's parser wrapper."""
+    mismatches: list[str] = []
+    for template_name, macro_name in KIDA_DEF_METADATA_PARITY.items():
+        template = env.get_template(f"chirpui/{template_name}")
+        kida_meta = template.def_metadata()[macro_name]
+        chirp_meta = macros_in_template(template_name)[macro_name]
+
+        kida_params = [(p.name, p.has_default, p.is_required) for p in kida_meta.params]
+        chirp_params = [(p.name, p.has_default, p.is_required) for p in chirp_meta.params]
+        if kida_params != chirp_params:
+            mismatches.append(f"{template_name}:{macro_name} params")
+
+        kida_slots = set(kida_meta.slots)
+        if kida_meta.has_default_slot:
+            kida_slots.add("")
+        if kida_slots != set(chirp_meta.slots):
+            mismatches.append(f"{template_name}:{macro_name} slots")
+
+    assert mismatches == []
