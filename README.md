@@ -229,7 +229,7 @@ from `chirp_ui.static_path()`.
 | Package | Requirement |
 |---|---|
 | Python | `>=3.14` |
-| Kida | `kida-templates>=0.8.0` |
+| Kida | `kida-templates>=0.9.0` |
 | Chirp | Optional, but recommended for `use_chirp_ui(app)` |
 | Browser JS | Alpine 3.x for interactive components; auto-injected by Chirp integration |
 

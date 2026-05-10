@@ -36,7 +36,7 @@
 <form{% if action %} action="{{ action }}"{% end %} method="{{ method }}"
       class="chirpui-cluster chirpui-cluster--gap-{{ gap }} chirpui-filter-row chirpui-font-sm{{ " " ~ cls if cls else "" }}"
       {{ hx | html_attrs }}
-      {{ _attrs_raw | safe }}>
+      {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% slot %}
 </form>
 {% end %}

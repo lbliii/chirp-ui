@@ -18098,7 +18098,7 @@
       "category": "feedback",
       "composes": [],
       "consumes": [],
-      "description": "Streaming and AI components\n    For LLM Playground, RAG demo, and SSE-driven UIs.\n    Works with htmx SSE and event delegation for copy buttons.\n\n    Usage:\n        {% from \"chirpui/streaming.html\" import streaming_block, copy_btn, prose %}\n\n        {% call streaming_block(streaming=true) %}\n            Content or thinking...\n        {% end %}\n\n        {% call copy_btn(text=\"Copy\", copy_text=answer_text) %}\n\n        <div class=\"chirpui-prose\">{{ content | markdown | safe }}</div>",
+      "description": "Streaming and AI components\n    For LLM Playground, RAG demo, and SSE-driven UIs.\n    Works with htmx SSE and event delegation for copy buttons.\n\n    Usage:\n        {% from \"chirpui/streaming.html\" import streaming_block, copy_btn, prose %}\n\n        {% call streaming_block(streaming=true) %}\n            Content or thinking...\n        {% end %}\n\n        {% call copy_btn(text=\"Copy\", copy_text=answer_text) %}\n\n        <div class=\"chirpui-prose\">{{ content | markdown | safe(reason=\"markdown output\") }}</div>",
       "elements": [
         "thinking"
       ],

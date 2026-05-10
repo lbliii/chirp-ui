@@ -125,7 +125,7 @@
        {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
        aria-describedby="errors-{{ name }}"
-       {{ _attrs_raw | safe }}>
+       {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
 {% end %}
 {% end %}
 
@@ -142,7 +142,7 @@
        {% if autocomplete %}autocomplete="{{ autocomplete }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
        aria-describedby="errors-{{ name }}"
-       {{ _attrs_raw | safe }}>
+       {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
 {% end %}
 {% end %}
 
@@ -518,7 +518,7 @@
                {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
                {% if _has_errors %}aria-invalid="true"{% end %}
                aria-describedby="errors-{{ name }}"
-               {{ _attrs_raw | safe }}>
+               {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
         {% if suffix %}
         <span class="chirpui-input-group__suffix">{{ suffix }}</span>
         {% else %}
@@ -555,7 +555,7 @@
        {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
        aria-describedby="errors-{{ name }}"
-       {{ _attrs_raw | safe }}>
+       {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
 {% end %}
 {% end %}
 
@@ -573,7 +573,7 @@
        {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
        aria-describedby="errors-{{ name }}"
-       {{ _attrs_raw | safe }}>
+       {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
 {% end %}
 {% end %}
 
@@ -593,7 +593,7 @@
        {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
        aria-describedby="errors-{{ name }}"
-       {{ _attrs_raw | safe }}>
+       {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
 {% end %}
 {% end %}
 

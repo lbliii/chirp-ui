@@ -22,7 +22,7 @@
 <div id="{{ id }}"
      class="chirpui-wizard-form{{ " " ~ cls if cls else "" }}"
      hx-disinherit="hx-select hx-target hx-swap"
-     {{ _attrs_raw | safe }}>
+     {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {{ stepper(steps=steps, current=current) }}
     <div class="chirpui-wizard-form__body">{% slot %}</div>
 </div>

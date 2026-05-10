@@ -34,7 +34,7 @@
         hx-swap="{{ swap }}"
         {% if select %}hx-select="{{ select }}"{% end %}
         aria-hidden="true"
-        {{ _attrs_raw | safe }}></button>
+        {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}></button>
 {% end %}
 
 {% def safe_region(
@@ -54,7 +54,7 @@
      {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
      {% if hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
      {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
-     {{ _attrs_raw | safe }}>
+     {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% try %}{% slot %}{% fallback %}{% end %}
 </div>
 {% end %}
