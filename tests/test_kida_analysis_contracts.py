@@ -1,6 +1,8 @@
 """Contracts backed by Kida's static analysis APIs."""
 
 import re
+import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -233,3 +235,15 @@ def test_kida_def_metadata_matches_chirp_macro_introspection(env) -> None:
             mismatches.append(f"{template_name}:{macro_name} slots")
 
     assert mismatches == []
+
+
+def test_escape_audit_script_prints_review_report() -> None:
+    result = subprocess.run(
+        [sys.executable, "scripts/escape_audit.py"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+    assert "# chirp-ui Kida Escape Audit" in result.stdout
+    assert "attrs_unsafe trust boundary" in result.stdout
