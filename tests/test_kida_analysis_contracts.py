@@ -39,6 +39,26 @@ ALLOWED_PRIVACY_FINDINGS = frozenset(
             "examples/component-showcase/templates/showcase/forms.html",
             "password_field",
         ),
+        (
+            "K-PRI-001",
+            "src/bengal_themes/chirp_theme/templates/blog/contact.html",
+            "contact_email",
+        ),
+        (
+            "K-PRI-001",
+            "src/bengal_themes/chirp_theme/templates/blog/contact.html",
+            "params.email",
+        ),
+        (
+            "K-PRI-001",
+            "src/bengal_themes/chirp_theme/templates/blog/contact.html",
+            "site_params.email",
+        ),
+        (
+            "K-PRI-001",
+            "src/bengal_themes/chirp_theme/templates/partials/taxonomy-pages.html",
+            "safe_social.email",
+        ),
     }
 )
 SHOWCASE_PAGE_CONTEXTS = {
