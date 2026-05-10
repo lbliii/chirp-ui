@@ -32,7 +32,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "kida-templates>=0.8.0", # Template engine (strict_undefined=True default, Mapping-soft optional chaining)
+    "kida-templates>=0.9.0", # Template engine (strict undefined, Mapping-soft optional chaining, markdown-safe Markup)
 ]
 
 [project.optional-dependencies]
@@ -217,6 +217,7 @@ build-manifest = { cmd = "python scripts/build_manifest.py", help = "Emit src/ch
 build-manifest-check = { cmd = "python scripts/build_manifest.py --check", help = "Fail if manifest.json is stale relative to the registry" }
 build-docs = { cmd = "python scripts/build_component_options.py", help = "Regenerate docs/COMPONENT-OPTIONS.md API reference section from the manifest" }
 build-docs-check = { cmd = "python scripts/build_component_options.py --check", help = "Fail if docs/COMPONENT-OPTIONS.md is stale relative to the manifest" }
+escape-audit = { cmd = "python scripts/escape_audit.py", help = "Print Kida escape audit for trusted markup sites" }
 css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS parses cleanly" }
 css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }
 css-transition-check = { cmd = "pytest tests/test_transition_tokens.py -q", help = "Check transitions use motion tokens" }

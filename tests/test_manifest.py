@@ -26,7 +26,14 @@ from chirp_ui.components import (
     COMPONENTS,
     RUNTIME_REQUIREMENTS,
 )
-from chirp_ui.manifest import SCHEMA, _macro_source, _resolve_macro, build_manifest, to_json
+from chirp_ui.manifest import (
+    SCHEMA,
+    _literal_attribute_names,
+    _macro_source,
+    _resolve_macro,
+    build_manifest,
+    to_json,
+)
 from chirp_ui.tokens import TOKEN_CATALOG
 
 
@@ -380,6 +387,16 @@ def test_manifest_runtime_requirements_include_known_htmx_macros() -> None:
     assert "htmx" in m["components"]["infinite-scroll"]["requires"]
     assert "htmx" in m["components"]["streaming_bubble"]["requires"]
     assert "htmx" in m["components"]["fragment-island"]["requires"]
+
+
+def test_manifest_runtime_detection_uses_literal_attributes() -> None:
+    htmx_macro = _resolve_macro(COMPONENTS["infinite-scroll"])
+    alpine_macro = _resolve_macro(COMPONENTS["theme-toggle"])
+    assert htmx_macro is not None
+    assert alpine_macro is not None
+
+    assert "hx-indicator" in _literal_attribute_names(htmx_macro)
+    assert "x-data" in _literal_attribute_names(alpine_macro)
 
 
 def test_manifest_runtime_requirements_cover_template_runtime_markers() -> None:

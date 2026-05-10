@@ -11,7 +11,7 @@
 
         {% call copy_btn(text="Copy", copy_text=answer_text) %}
 
-        <div class="chirpui-prose">{{ content | markdown | safe }}</div>
+        <div class="chirpui-prose">{{ content | markdown | safe(reason="markdown output") }}</div>
 -#}
 
 {% def streaming_bubble(role="assistant", state="", streaming=true, sse_swap_target=false, sse_connect=none, sse_close="done", cls="") %}

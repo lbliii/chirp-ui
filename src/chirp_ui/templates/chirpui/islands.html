@@ -17,7 +17,7 @@
 ) %}
 {% set _cls = "chirpui-island-root" ~ (" " ~ cls if cls else "") %}
 {% if raw_attrs is not none %}
-<section{{ raw_attrs | safe }}>
+<section{{ raw_attrs | safe(reason="raw_attrs trust boundary") }}>
 {% else %}
 {% if primitive is not none %}
 <section{{ primitive_attrs(primitive, props=props, mount_id=mount_id, version=version, src=src, cls=_cls) }}>

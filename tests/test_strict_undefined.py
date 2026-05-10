@@ -17,7 +17,7 @@ def _render(env: Environment, src: str, **ctx: Any) -> str:
 
 
 def test_mapping_optional_chain_missing_key_renders_empty(env: Environment) -> None:
-    """Kida 0.8.0 makes Mapping optional-chain misses soft under strict mode."""
+    """Kida 0.8+ makes Mapping optional-chain misses soft under strict mode."""
     out = _render(env, "{{ params?.description }}", params={})
     assert out == ""
 

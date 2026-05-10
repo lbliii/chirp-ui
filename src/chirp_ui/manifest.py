@@ -65,7 +65,12 @@ import argparse
 import json
 import re
 import sys
+from functools import cache
 from typing import Any
+
+from kida.analysis import extract_literal_attributes
+from kida.lexer import Lexer
+from kida.parser import Parser
 
 from chirp_ui import __version__
 from chirp_ui._macro_introspect import (
@@ -88,6 +93,8 @@ _ALPINE_DIRECTIVE_RE = re.compile(
     r"""(?<![\w-])(?:x-data|x-show|x-ref|x-cloak|x-transition|x-on:|x-bind:|:aria-[\w-]+|:class|:id|@(?:click|keydown|keyup|submit|input|change|focus|blur|mouseenter|mouseleave)[\w:.-]*)\b"""
 )
 _HTMX_CONTRACT_RE = re.compile(r"""\b(?:hx-[\w:-]+|sse-[\w:-]+|hx_[A-Za-z]\w*)\b""")
+_ALPINE_LITERAL_PREFIXES = ("x-", ":", "@")
+_HTMX_LITERAL_PREFIXES = ("hx-", "sse-")
 
 
 def _resolve_macro(desc: ComponentDescriptor) -> MacroInfo | None:
@@ -111,9 +118,18 @@ def _runtime_requirements(desc: ComponentDescriptor, macro_info: MacroInfo | Non
     requires = set(desc.requires)
     if macro_info is not None:
         macro_source = _macro_source(macro_info)
-        if macro_info.name in _ALPINE_MACROS or _ALPINE_DIRECTIVE_RE.search(macro_source):
+        literal_attrs = _literal_attribute_names(macro_info)
+        has_alpine_literal = any(
+            attr.startswith(_ALPINE_LITERAL_PREFIXES) for attr in literal_attrs
+        )
+        has_htmx_literal = any(attr.startswith(_HTMX_LITERAL_PREFIXES) for attr in literal_attrs)
+        if (
+            macro_info.name in _ALPINE_MACROS
+            or has_alpine_literal
+            or _ALPINE_DIRECTIVE_RE.search(macro_source)
+        ):
             requires.add("alpine")
-        if _HTMX_CONTRACT_RE.search(macro_source):
+        if has_htmx_literal or _HTMX_CONTRACT_RE.search(macro_source):
             requires.add("htmx")
     return sorted(requires)
 
@@ -128,6 +144,19 @@ def _macro_source(macro_info: MacroInfo) -> str:
     following = [info.lineno for info in macros if info.lineno > macro_info.lineno]
     end_line = min(following) - 1 if following else len(lines)
     return "\n".join(lines[macro_info.lineno - 1 : end_line])
+
+
+@cache
+def _literal_attribute_names(macro_info: MacroInfo) -> frozenset[str]:
+    """Return literal HTML attribute names in a macro body using Kida analysis."""
+    source = _macro_source(macro_info)
+    if not source:
+        return frozenset()
+    tokens = list(Lexer(source).tokenize())
+    ast = Parser(
+        tokens, name=f"chirpui/{macro_info.template}:{macro_info.name}", source=source
+    ).parse()
+    return frozenset(attr.name for attr in extract_literal_attributes(ast))
 
 
 def _manifest_quality(components: dict[str, dict[str, Any]]) -> dict[str, int]:

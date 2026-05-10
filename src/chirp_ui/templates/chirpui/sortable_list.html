@@ -18,7 +18,7 @@
 {% def sortable_list(cls="", attrs="", attrs_unsafe="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <div class="chirpui-sortable{{ " " ~ cls if cls else "" }}"
-     role="listbox" {{ _attrs_raw | safe }}>
+     role="listbox" {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% slot %}
 </div>
 {% end %}
@@ -26,7 +26,7 @@
 {% def sortable_item(cls="", attrs="", attrs_unsafe="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <div class="chirpui-sortable__item{{ " " ~ cls if cls else "" }}"
-     role="option" {{ _attrs_raw | safe }}>
+     role="option" {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% slot %}
 </div>
 {% end %}

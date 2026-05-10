@@ -102,7 +102,7 @@
             <p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>
             {% end %}
             {% if meta %}
-            <p class="chirpui-text-muted chirpui-font-sm chirpui-page-header__meta">{{ meta | safe }}</p>
+            <p class="chirpui-text-muted chirpui-font-sm chirpui-page-header__meta">{{ meta | safe(reason="trusted meta markup") }}</p>
             {% end %}
         </div>
         <div class="chirpui-page-header__actions">{% slot actions %}</div>

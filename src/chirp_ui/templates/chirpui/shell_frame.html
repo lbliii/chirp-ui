@@ -38,7 +38,7 @@
     select="#page-content"
 ) %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
-<div id="{{ id }}"{% if cls %} class="{{ cls }}"{% end %}{% if include_boost_attrs %} {{ shell_outlet_attrs(target=target, swap=swap, select=select) }}{% end %}{% if _attrs_raw %} {{ _attrs_raw | safe }}{% end %}>
+<div id="{{ id }}"{% if cls %} class="{{ cls }}"{% end %}{% if include_boost_attrs %} {{ shell_outlet_attrs(target=target, swap=swap, select=select) }}{% end %}{% if _attrs_raw %} {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}{% end %}>
     {% slot %}
 </div>
 {% end %}
