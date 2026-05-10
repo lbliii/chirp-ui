@@ -62,10 +62,10 @@ See ``docs/PLAN-agent-grounding-depth.md`` and
 """
 
 import argparse
-from functools import cache
 import json
 import re
 import sys
+from functools import cache
 from typing import Any
 
 from kida.analysis import extract_literal_attributes
@@ -153,7 +153,9 @@ def _literal_attribute_names(macro_info: MacroInfo) -> frozenset[str]:
     if not source:
         return frozenset()
     tokens = list(Lexer(source).tokenize())
-    ast = Parser(tokens, name=f"chirpui/{macro_info.template}:{macro_info.name}", source=source).parse()
+    ast = Parser(
+        tokens, name=f"chirpui/{macro_info.template}:{macro_info.name}", source=source
+    ).parse()
     return frozenset(attr.name for attr in extract_literal_attributes(ast))
 
 
