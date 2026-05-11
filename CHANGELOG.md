@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.8.0] - 2026-05-11
+
+### Added
+
+- Added a framework-neutral Chirp UI library contract for host integrations and
+  advanced `chirp-theme` toward Chirp UI-native Bengal theme templates, assets,
+  and content surfaces. ([#102](https://github.com/lbliii/chirp-ui/issues/102))
+
+### Changed
+
+- Upgrade the Kida dependency floor to `kida-templates>=0.9.0`, refresh the lockfile, and add Kida-backed escape-audit coverage for trusted markup sites. ([#103](https://github.com/lbliii/chirp-ui/issues/103))
+
+
 ## [0.7.0] - 2026-05-05
 
 ### Added
