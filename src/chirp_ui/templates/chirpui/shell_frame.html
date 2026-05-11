@@ -25,7 +25,10 @@
         </div>
 -#}
 
-{% def shell_outlet_attrs(target="#main", swap="innerHTML", select="#page-content") %}hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-select="{{ select }}"{% end %}{% end %}
+{% def shell_outlet_attrs(target="#main", swap="innerHTML", select="#page-content", sync="auto") %}
+{% set _sync = (target ~ ":replace") if sync == "auto" else sync %}
+hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-select="{{ select }}"{% end %}{% if _sync %} hx-sync="{{ _sync }}"{% end %}
+{% end %}
 
 {% def shell_outlet(
     id="page-content",
@@ -35,10 +38,11 @@
     include_boost_attrs=true,
     target="#main",
     swap="innerHTML",
-    select="#page-content"
+    select="#page-content",
+    sync="auto"
 ) %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
-<div id="{{ id }}"{% if cls %} class="{{ cls }}"{% end %}{% if include_boost_attrs %} {{ shell_outlet_attrs(target=target, swap=swap, select=select) }}{% end %}{% if _attrs_raw %} {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}{% end %}>
+<div id="{{ id }}"{% if cls %} class="{{ cls }}"{% end %}{% if include_boost_attrs %} {{ shell_outlet_attrs(target=target, swap=swap, select=select, sync=sync) }}{% end %}{% if _attrs_raw %} {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}{% end %}>
     {% slot %}
 </div>
 {% end %}

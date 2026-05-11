@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar() %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/search-sync", "Search Sync") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/forms.html" import search_field %}
+
+<h1 data-testid="page-heading">Search Sync</h1>
+{{ search_field("q", search_url="/search/slow", search_target="#search-results",
+                search_trigger="keyup changed delay:10ms") }}
+<div id="search-results" data-testid="search-results"></div>
+{% end %}

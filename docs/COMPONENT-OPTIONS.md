@@ -1459,7 +1459,7 @@ All core form/button helpers now support both:
 
 Forms with `hx-post`/`hx-put`/`hx-patch`/`hx-delete` (via params or `attrs_map`) reset on successful response by default. Use `hx_reset_on_success=false` to opt out. See [htmx reset user input](https://htmx.org/examples/reset-user-input/).
 
-For forms with htmx, add `hx_sync="this:replace"` (or via `attrs_map`) to prevent double-submit. See [htmx synchronization](https://htmx.org/docs/#synchronization).
+Mutating htmx forms default to `hx-sync="this:drop"` and disable local submit controls during the request. Override with `hx_sync` / `hx_disabled_elt` (or matching `attrs_map` values) when app semantics require queueing, aborting, or repeatable actions. See [htmx synchronization](https://htmx.org/docs/#synchronization).
 
 ### BEM-based components (alert, badge)
 
@@ -4788,6 +4788,8 @@ Button component. Use chirpui-btn with variants. Supports loading state for htmx
 | `hx_select` | no | (has default) |
 | `hx_ext` | no | (has default) |
 | `hx_vals` | no | (has default) |
+| `hx_sync` | no | (has default) |
+| `hx_disabled_elt` | no | (has default) |
 | `disabled` | no | (has default) |
 | `data_action` | no | (has default) |
 | `aria_label` | no | (has default) |
@@ -5886,6 +5888,7 @@ Filter Bar composite
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
+- **Requires:** `htmx`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -6230,8 +6233,13 @@ Icon Button
 | `hx` | no | (has default) |
 | `hx_get` | no | (has default) |
 | `hx_post` | no | (has default) |
+| `hx_put` | no | (has default) |
+| `hx_patch` | no | (has default) |
+| `hx_delete` | no | (has default) |
 | `hx_target` | no | (has default) |
 | `hx_swap` | no | (has default) |
+| `hx_sync` | no | (has default) |
+| `hx_disabled_elt` | no | (has default) |
 
 ### `index-card`
 

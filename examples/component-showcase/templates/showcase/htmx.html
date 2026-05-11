@@ -234,7 +234,9 @@ end</code></pre>
 {% end %}
 <p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
   This form has <code>hx-post</code>, so it automatically gets
-  <code>hx-select="unset"</code>. Explicit <code>hx_select</code> overrides the default.
+  <code>hx-select="unset"</code>, <code>hx-sync="this:drop"</code>, and disabled submit
+  controls while the request is in flight. Explicit <code>hx_select</code>,
+  <code>hx_sync</code>, and <code>hx_disabled_elt</code> override the defaults.
 </p>
 <div id="form-result"></div>
 {% end %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar() %}
+  {% call sidebar_section("Rapid") %}
+    {{ sidebar_link("/rapid-a", "Slow A") }}
+    {{ sidebar_link("/rapid-b", "Fast B") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+<h1 data-testid="page-heading">{{ page_title }}</h1>
+<p data-testid="rapid-label">{{ rapid_label }}</p>
+{% end %}

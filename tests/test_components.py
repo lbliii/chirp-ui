@@ -1667,6 +1667,8 @@ class TestButton:
         assert 'hx-post="/save"' in html
         assert 'hx-target="#result"' in html
         assert 'hx-select="unset"' in html
+        assert 'hx-sync="this:drop"' in html
+        assert 'hx-disabled-elt="this"' in html
 
     def test_btn_hx_button_explicit_select_overrides_unset(self, env: Environment) -> None:
         html = env.from_string(
@@ -1675,6 +1677,16 @@ class TestButton:
         ).render()
         assert 'hx-select="#fragment"' in html
         assert 'hx-select="unset"' not in html
+
+    def test_btn_hx_button_explicit_sync_overrides_drop_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Save", hx={"post": "/save", "target": "#result"},'
+            ' hx_sync="#result:queue last", hx_disabled_elt="closest form") }}'
+        ).render()
+        assert 'hx-sync="#result:queue last"' in html
+        assert 'hx-disabled-elt="closest form"' in html
+        assert 'hx-sync="this:drop"' not in html
 
     def test_btn_hx_dict_on_link(self, env: Environment) -> None:
         """hx={} on a link button emits hx-boost=false and hx-select=unset."""
@@ -2994,11 +3006,28 @@ class TestFilterBar:
         html = env.from_string(
             '{% from "chirpui/filter_bar.html" import filter_row %}'
             '{% call filter_row("/filter",'
-            ' attrs_map={"hx-target": "#results", "hx-swap": "innerHTML"}) %}'
+            ' attrs_map={"hx-get": "/filter", "hx-target": "#results", "hx-swap": "innerHTML"}) %}'
             "x{% end %}"
         ).render()
+        assert 'hx-get="/filter"' in html
         assert 'hx-target="#results"' in html
         assert 'hx-swap="innerHTML"' in html
+        assert 'hx-select="unset"' in html
+        assert 'hx-disinherit="hx-select"' in html
+        assert 'hx-sync="this:replace"' in html
+
+    def test_filter_row_preserves_explicit_htmx_coordination(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_row %}'
+            '{% call filter_row("/filter",'
+            ' attrs_map={"hx-get": "/filter", "hx-target": "#results",'
+            ' "hx-select": "#rows", "hx-sync": "#results:queue last"}) %}'
+            "x{% end %}"
+        ).render()
+        assert 'hx-select="#rows"' in html
+        assert 'hx-sync="#results:queue last"' in html
+        assert 'hx-select="unset"' not in html
+        assert html.count("hx-sync=") == 1
 
     def test_filter_row_no_action(self, env: Environment) -> None:
         html = env.from_string(
@@ -3160,6 +3189,8 @@ class TestForms:
             '{% call form("/x", hx_post="/x", hx_target="#y") %}Body{% end %}'
         ).render()
         assert 'hx-on::after-request="if(event.detail.successful) this.reset()"' in html
+        assert 'hx-sync="this:drop"' in html
+        assert 'hx-disabled-elt="find button, find input[type=submit]"' in html
 
     def test_form_macro_reset_on_success_via_attrs_map(self, env: Environment) -> None:
         """Forms with hx-post in attrs_map get reset-on-success by default."""
@@ -3168,6 +3199,19 @@ class TestForms:
             '{% call form("/x", attrs_map={"hx-post": "/x", "hx-target": "#y"}) %}Body{% end %}'
         ).render()
         assert 'hx-on::after-request="if(event.detail.successful) this.reset()"' in html
+        assert 'hx-sync="this:drop"' in html
+
+    def test_form_macro_explicit_submit_coordination_overrides_defaults(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import form %}'
+            '{% call form("/x", hx_post="/x", hx_sync="#result:queue last",'
+            ' hx_disabled_elt="closest form") %}Body{% end %}'
+        ).render()
+        assert 'hx-sync="#result:queue last"' in html
+        assert 'hx-disabled-elt="closest form"' in html
+        assert 'hx-sync="this:drop"' not in html
 
     def test_form_macro_reset_on_success_opt_out(self, env: Environment) -> None:
         """hx_reset_on_success=false disables form reset."""
@@ -3483,6 +3527,9 @@ class TestForms:
         assert "hx-target" in html
         assert "#results" in html
         assert "hx-trigger" in html
+        assert 'hx-select="unset"' in html
+        assert 'hx-disinherit="hx-select"' in html
+        assert 'hx-sync="this:replace"' in html
 
     def test_search_field_with_htmx_select(self, env: Environment) -> None:
         html = env.from_string(
@@ -3491,6 +3538,27 @@ class TestForms:
         ).render()
         assert 'hx-select="#page-content"' in html
         assert 'hx-target="#main"' in html
+        assert "hx-disinherit" not in html
+
+    def test_search_field_preserves_explicit_search_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_field %}'
+            '{{ search_field("q", search_url="/search", search_target="#results",'
+            ' search_attrs_map={"hx-select": "#items", "hx-sync": "#results:queue last"}) }}'
+        ).render()
+        assert 'hx-select="#items"' in html
+        assert 'hx-sync="#results:queue last"' in html
+        assert 'hx-select="unset"' not in html
+        assert html.count("hx-sync=") == 1
+
+    def test_search_bar_with_htmx_uses_fragment_safe_sync(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_bar %}'
+            '{{ search_bar("q", search_url="/search", search_target="#results") }}'
+        ).render()
+        assert 'hx-select="unset"' in html
+        assert 'hx-disinherit="hx-select"' in html
+        assert 'hx-sync="this:replace"' in html
 
     def test_form_actions(self, env: Environment) -> None:
         html = env.from_string(
@@ -3920,6 +3988,8 @@ class TestAppShell:
         assert 'action="/items"' in html
         assert 'hx-post="/items"' in html
         assert 'hx-target="#toast"' in html
+        assert 'hx-sync="this:drop"' in html
+        assert 'hx-disabled-elt="find button, find input[type=submit]"' in html
         assert 'name="id"' in html
         assert 'value="1"' in html
         assert "chirpui-shimmer-btn" in html
@@ -4932,6 +5002,8 @@ class TestConfirmDialog:
         assert 'hx-swap="innerHTML"' in html
         assert 'hx-select="#content"' in html
         assert 'hx-push-url="/list"' in html
+        assert 'hx-sync="this:drop"' in html
+        assert 'hx-disabled-elt="find button, find input[type=submit]"' in html
 
     def test_confirm_dialog_form_content_slot(self, env: Environment) -> None:
         html = env.from_string(
@@ -7143,12 +7215,14 @@ class TestIconBtn:
     def test_button_with_explicit_hx_emits_select_unset(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/icon_btn.html" import icon_btn %}'
-            '{{ icon_btn("→", aria_label="Next", hx_get="/next", hx_target="#content") }}'
+            '{{ icon_btn("→", aria_label="Next", hx_post="/next", hx_target="#content") }}'
         ).render()
         assert "<button " in html
-        assert 'hx-get="/next"' in html
+        assert 'hx-post="/next"' in html
         assert 'hx-target="#content"' in html
         assert 'hx-select="unset"' in html
+        assert 'hx-sync="this:drop"' in html
+        assert 'hx-disabled-elt="this"' in html
 
     def test_external_link_stays_plain(self, env: Environment) -> None:
         env.add_global(
@@ -7875,6 +7949,7 @@ class TestHtmxCorrectness:
         assert 'class="chirpui-nav-link"' in html
         assert 'hx-target="#main"' in html
         assert 'hx-select="#page-content"' in html
+        assert 'hx-sync="#main:replace"' in html
 
     def test_nav_link_with_slot(self, env: Environment) -> None:
         html = env.from_string(

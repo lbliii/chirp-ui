@@ -13,6 +13,8 @@
     hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.
     Auto-behaviors: hx-select="unset" + hx-disinherit="hx-select" when htmx is detected;
     hx-on::after-request reset on success for mutating methods.
+    Mutating htmx forms default to hx-sync="this:drop" plus hx-disabled-elt
+    for submit controls to prevent accidental duplicate in-flight submissions.
 -#}
 
 {% def form(action, method="get", enctype=none, density="", cls="", attrs="", attrs_unsafe="", attrs_map=none,
@@ -26,7 +28,8 @@
 {#- hx_reset_on_success: when true, form resets after successful htmx response (2xx).
    Defaults to true when form has hx-post/put/patch/delete (via params or attrs_map).
    See https://htmx.org/examples/reset-user-input/
-   hx_sync: pass explicitly or via attrs_map to prevent double-submit; e.g. "this:replace".
+   hx_sync: mutating htmx forms default to "this:drop"; pass explicitly or
+   via attrs_map to override, or pass "" to opt out.
    See https://htmx.org/docs/#synchronization -#}
 {% set _hx_dict = build_hx_attrs(hx=hx, hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
     hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target,
@@ -35,7 +38,9 @@
 {% set _has_hx = _hx_dict.get("hx-post") or _hx_dict.get("hx-put") or _hx_dict.get("hx-patch") or _hx_dict.get("hx-delete") or (attrs_map or {}).get("hx-post") or (attrs_map or {}).get("hx-put") or (attrs_map or {}).get("hx-patch") or (attrs_map or {}).get("hx-delete") %}
 {% set _reset = hx_reset_on_success if hx_reset_on_success is not none else _has_hx %}
 {% set _sync_from_attrs = (attrs_map or {}).get("hx-sync") %}
-{% set _sync = hx_sync if hx_sync is not none else _sync_from_attrs %}
+{% set _disabled_from_attrs = (attrs_map or {}).get("hx-disabled-elt") %}
+{% set _sync = hx_sync if hx_sync is not none else ("this:drop" if _has_hx and not _sync_from_attrs else none) %}
+{% set _disabled_elt = hx_disabled_elt if hx_disabled_elt is not none else ("find button, find input[type=submit]" if _has_hx and not _disabled_from_attrs else none) %}
 {% set _select = hx_select if hx_select is not none else ("unset" if _has_hx else none) %}
 {% set _disinherit = "hx-select" if _has_hx and hx_select is none else none %}
 <form action="{{ action }}" method="{{ method }}"
@@ -45,7 +50,7 @@
       {{ attrs_map | html_attrs }}
       {% if _reset %}hx-on::after-request="if(event.detail.successful) this.reset()"{% end %}
       {{ build_hx_attrs(hx_select=_select, hx_disinherit=_disinherit,
-          hx_select_oob=hx_select_oob, hx_disabled_elt=hx_disabled_elt,
+          hx_select_oob=hx_select_oob, hx_disabled_elt=_disabled_elt,
           hx_sync=_sync) | html_attrs }}
       {{ _hx_dict | html_attrs }}>
     {% slot %}
@@ -624,6 +629,14 @@
                     search_attrs_map=none, search_hx_select=none) %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set _has_errors = errors and errors | field_errors(name) %}
+{% set _search_live = search_url and search_target %}
+{% set _search_attrs = search_attrs_map or {} %}
+{% set _search_select_from_attrs = _search_attrs.get("hx-select") %}
+{% set _search_disinherit_from_attrs = _search_attrs.get("hx-disinherit") %}
+{% set _search_sync_from_attrs = _search_attrs.get("hx-sync") %}
+{% set _search_select = search_hx_select if search_hx_select is not none else ("unset" if _search_live and not _search_select_from_attrs else none) %}
+{% set _search_disinherit = "hx-select" if _search_select == "unset" and not _search_disinherit_from_attrs else none %}
+{% set _search_sync = search_sync if search_sync is not none else ("this:replace" if _search_live and not _search_sync_from_attrs else none) %}
 <div id="field-{{ name }}" class="chirpui-field{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
@@ -637,13 +650,13 @@
            {{ _attrs_raw | html_attrs }}
            {{ attrs_map | html_attrs }}
            {{ search_attrs_map | html_attrs }}
-           {% if search_url and search_target %}hx-get="{{ search_url }}"{% end %}
-           {% if search_url and search_target %}hx-trigger="{{ search_trigger }}"{% end %}
-           {% if search_url and search_target %}hx-target="{{ search_target }}"{% end %}
-           {% if search_url and search_target %}hx-swap="innerHTML"{% end %}
-           {% if search_url and search_target and search_hx_select %}hx-select="{{ search_hx_select }}"{% end %}
-           {% if search_url and search_target and search_include %}hx-include="{{ search_include }}"{% end %}
-           {% set _search_sync = search_sync if search_sync is not none else ("this:replace" if (search_url and search_target) else none) %}
+           {% if _search_live %}hx-get="{{ search_url }}"{% end %}
+           {% if _search_live %}hx-trigger="{{ search_trigger }}"{% end %}
+           {% if _search_live %}hx-target="{{ search_target }}"{% end %}
+           {% if _search_live %}hx-swap="innerHTML"{% end %}
+           {% if _search_live and _search_select %}hx-select="{{ _search_select }}"{% end %}
+           {% if _search_live and _search_disinherit %}hx-disinherit="{{ _search_disinherit }}"{% end %}
+           {% if _search_live and search_include %}hx-include="{{ search_include }}"{% end %}
            {% if _search_sync %}hx-sync="{{ _search_sync }}"{% end %}>
     <div id="errors-{{ name }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
@@ -664,6 +677,14 @@
                   errors=none, attrs="", attrs_unsafe="", attrs_map=none, search_attrs_map=none, search_hx_select=none) %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set _has_errors = errors and errors | field_errors(name) %}
+{% set _search_live = search_url and search_target %}
+{% set _search_attrs = search_attrs_map or {} %}
+{% set _search_select_from_attrs = _search_attrs.get("hx-select") %}
+{% set _search_disinherit_from_attrs = _search_attrs.get("hx-disinherit") %}
+{% set _search_sync_from_attrs = _search_attrs.get("hx-sync") %}
+{% set _search_select = search_hx_select if search_hx_select is not none else ("unset" if _search_live and not _search_select_from_attrs else none) %}
+{% set _search_disinherit = "hx-select" if _search_select == "unset" and not _search_disinherit_from_attrs else none %}
+{% set _search_sync = search_sync if search_sync is not none else ("this:replace" if _search_live and not _search_sync_from_attrs else none) %}
 <div id="field-{{ name }}" class="chirpui-field chirpui-search-bar chirpui-search-bar--{{ variant }}{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
@@ -681,13 +702,13 @@
                {{ _attrs_raw | html_attrs }}
                {{ attrs_map | html_attrs }}
                {{ search_attrs_map | html_attrs }}
-               {% if search_url and search_target %}hx-get="{{ search_url }}"{% end %}
-               {% if search_url and search_target %}hx-trigger="{{ search_trigger }}"{% end %}
-               {% if search_url and search_target %}hx-target="{{ search_target }}"{% end %}
-               {% if search_url and search_target %}hx-swap="innerHTML"{% end %}
-               {% if search_url and search_target and search_hx_select %}hx-select="{{ search_hx_select }}"{% end %}
-               {% if search_url and search_target and search_include %}hx-include="{{ search_include }}"{% end %}
-               {% set _search_sync = search_sync if search_sync is not none else ("this:replace" if (search_url and search_target) else none) %}
+               {% if _search_live %}hx-get="{{ search_url }}"{% end %}
+               {% if _search_live %}hx-trigger="{{ search_trigger }}"{% end %}
+               {% if _search_live %}hx-target="{{ search_target }}"{% end %}
+               {% if _search_live %}hx-swap="innerHTML"{% end %}
+               {% if _search_live and _search_select %}hx-select="{{ _search_select }}"{% end %}
+               {% if _search_live and _search_disinherit %}hx-disinherit="{{ _search_disinherit }}"{% end %}
+               {% if _search_live and search_include %}hx-include="{{ search_include }}"{% end %}
                {% if _search_sync %}hx-sync="{{ _search_sync }}"{% end %}>
         {% if variant == "with-button" %}
         <button type="submit" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm chirpui-search-bar__btn">

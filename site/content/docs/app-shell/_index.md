@@ -229,7 +229,11 @@ ChirpUI registers its page shell contract via `use_chirp_ui()`. That contract ma
 | `#page-root` | `page_root_inner` | Tab clicks (tabs + content) |
 | `#page-content-inner` | `page_content` | Narrow content swaps |
 
-`<main id="main">` carries `hx-boost="true"`, `hx-target="#main"`, `hx-swap="innerHTML"`, and `hx-select="#page-content"` — all links inside inherit SPA navigation automatically. The `#main` element persists in the DOM (never replaced), so its `view-transition-name` is never duplicated during swaps. Content is wrapped in `<div id="page-content">` inside `#main`. Sidebar links (outside `#main`) carry their own `hx-target="#main"` via `sidebar_link()`. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
+`<main id="main">` carries `hx-boost="true"`, `hx-target="#main"`, `hx-swap="innerHTML"`, `hx-select="#page-content"`, and `hx-sync="#main:replace"` — all links inside inherit SPA navigation automatically, and rapid navigation clicks resolve as latest intent wins for the shared shell target. The `#main` element persists in the DOM (never replaced), so its `view-transition-name` is never duplicated during swaps. Content is wrapped in `<div id="page-content">` inside `#main`. Sidebar links (outside `#main`) carry their own `hx-target="#main"` via `sidebar_link()`. Section tab links use `hx-target="#page-root"`. For custom targets, use `app.register_fragment_target("target-id", fragment_block="block_name")` before `mount_pages()`. Set `triggers_shell_update=False` for narrow content swaps that should not update the topbar (e.g. inline form results).
+
+Chirp UI owns this transport-level shell behavior. Apps still own endpoint cost,
+authorization, idempotency, and any business rule where repeated actions should
+queue, retry, or intentionally execute more than once.
 
 Boosted navigation follows the shell scroll policy:
 

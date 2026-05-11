@@ -5,6 +5,7 @@
 {% from "chirpui/streaming.html" import model_card %}
 {% from "chirpui/surface.html" import surface %}
 {% from "chirpui/button.html" import btn %}
+{% from "chirpui/forms.html" import form %}
 
 {% call container() %}
 {% call stack() %}
@@ -12,10 +13,9 @@
 
 <div id="demo_content" class="chirpui-stack chirpui-stack--sm" aria-live="polite">
   {% call surface(variant="muted") %}
-  <form hx-post="/demo/submit"
-        hx-target="#demo_content"
-        hx-swap="innerHTML"
-        class="chirpui-stack chirpui-stack--sm">
+  {% call form("/demo/submit", method="post", hx_post="/demo/submit",
+               hx_target="#demo_content", hx_swap="innerHTML",
+               cls="chirpui-stack chirpui-stack--sm") %}
     <div class="chirpui-field">
       <label class="chirpui-field__label" for="prompt">Prompt</label>
       <input class="chirpui-field__input" id="prompt" name="prompt" type="text"
@@ -24,7 +24,7 @@
     <div class="chirpui-actions">
       {{ btn("Submit", variant="primary", type="submit") }}
     </div>
-  </form>
+  {% end %}
   {% end %}
 </div>
 
