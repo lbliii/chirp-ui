@@ -30,6 +30,20 @@ def test_app_shell_layout_has_main_and_page_content_contract() -> None:
     assert "shell_runtime_script()" in text
 
 
+def test_shell_outlet_attrs_has_latest_navigation_sync_contract() -> None:
+    text = (
+        Path(__file__).resolve().parents[1]
+        / "src"
+        / "chirp_ui"
+        / "templates"
+        / "chirpui"
+        / "shell_frame.html"
+    ).read_text(encoding="utf-8")
+    assert 'sync="auto"' in text
+    assert 'target ~ ":replace"' in text
+    assert 'hx-sync="{{ _sync }}"' in text
+
+
 def test_app_shell_macro_shares_shell_runtime_markers() -> None:
     text = APP_SHELL_MACRO.read_text(encoding="utf-8")
     assert 'id="main"' in text

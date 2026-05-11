@@ -7875,6 +7875,7 @@ class TestHtmxCorrectness:
         assert 'class="chirpui-nav-link"' in html
         assert 'hx-target="#main"' in html
         assert 'hx-select="#page-content"' in html
+        assert 'hx-sync="#main:replace"' in html
 
     def test_nav_link_with_slot(self, env: Environment) -> None:
         html = env.from_string(
