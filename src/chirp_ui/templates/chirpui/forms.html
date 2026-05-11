@@ -35,7 +35,9 @@
 {% set _has_hx = _hx_dict.get("hx-post") or _hx_dict.get("hx-put") or _hx_dict.get("hx-patch") or _hx_dict.get("hx-delete") or (attrs_map or {}).get("hx-post") or (attrs_map or {}).get("hx-put") or (attrs_map or {}).get("hx-patch") or (attrs_map or {}).get("hx-delete") %}
 {% set _reset = hx_reset_on_success if hx_reset_on_success is not none else _has_hx %}
 {% set _sync_from_attrs = (attrs_map or {}).get("hx-sync") %}
-{% set _sync = hx_sync if hx_sync is not none else _sync_from_attrs %}
+{% set _disabled_from_attrs = (attrs_map or {}).get("hx-disabled-elt") %}
+{% set _sync = hx_sync if hx_sync is not none else ("this:drop" if _has_hx and not _sync_from_attrs else none) %}
+{% set _disabled_elt = hx_disabled_elt if hx_disabled_elt is not none else ("find button, find input[type=submit]" if _has_hx and not _disabled_from_attrs else none) %}
 {% set _select = hx_select if hx_select is not none else ("unset" if _has_hx else none) %}
 {% set _disinherit = "hx-select" if _has_hx and hx_select is none else none %}
 <form action="{{ action }}" method="{{ method }}"
@@ -45,7 +47,7 @@
       {{ attrs_map | html_attrs }}
       {% if _reset %}hx-on::after-request="if(event.detail.successful) this.reset()"{% end %}
       {{ build_hx_attrs(hx_select=_select, hx_disinherit=_disinherit,
-          hx_select_oob=hx_select_oob, hx_disabled_elt=hx_disabled_elt,
+          hx_select_oob=hx_select_oob, hx_disabled_elt=_disabled_elt,
           hx_sync=_sync) | html_attrs }}
       {{ _hx_dict | html_attrs }}>
     {% slot %}

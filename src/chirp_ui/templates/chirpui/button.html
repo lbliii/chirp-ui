@@ -13,7 +13,8 @@
            attrs="", attrs_unsafe="", attrs_map=none, hx=none, hx_get=none, hx_post=none, hx_put=none,
            hx_patch=none, hx_delete=none, hx_target=none, hx_swap=none,
            hx_trigger=none, hx_include=none, hx_select=none, hx_ext=none,
-           hx_vals=none, disabled=false, data_action=none, aria_label=none) %}
+           hx_vals=none, hx_sync=none, hx_disabled_elt=none,
+           disabled=false, data_action=none, aria_label=none) %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set _variant = variant | validate_variant_block("btn", "") %}
 {# @consumes _bar_density from: command_bar, filter_bar — falls back to "" #}
@@ -28,8 +29,17 @@
     hx_trigger=hx_trigger, hx_include=hx_include,
     hx_select=hx_select, hx_ext=hx_ext, hx_vals=hx_vals) %}
 {% set _btn_has_hx_request = _hx_dict.get("hx-get") or _hx_dict.get("hx-post") or _hx_dict.get("hx-put") or _hx_dict.get("hx-patch") or _hx_dict.get("hx-delete") %}
+{% set _btn_has_hx_mutation = _hx_dict.get("hx-post") or _hx_dict.get("hx-put") or _hx_dict.get("hx-patch") or _hx_dict.get("hx-delete") %}
 {% set _btn_has_hx_config = _hx_dict | length > 0 %}
 {% set _explicit_hx_select = _hx_dict.get("hx-select") %}
+{% set _attrs_hx_select = (attrs_map or {}).get("hx-select") %}
+{% set _hx_sync_from_attrs = (attrs_map or {}).get("hx-sync") %}
+{% set _hx_disabled_from_attrs = (attrs_map or {}).get("hx-disabled-elt") %}
+{% set _hx_sync_from_dict = _hx_dict.get("hx-sync") %}
+{% set _hx_disabled_from_dict = _hx_dict.get("hx-disabled-elt") %}
+{% set _default_hx_select = "unset" if _btn_has_hx_request and not _explicit_hx_select and not _attrs_hx_select else none %}
+{% set _default_hx_sync = hx_sync if hx_sync is not none else ("this:drop" if _btn_has_hx_mutation and not _hx_sync_from_attrs and not _hx_sync_from_dict else none) %}
+{% set _default_hx_disabled = hx_disabled_elt if hx_disabled_elt is not none else ("this" if _btn_has_hx_mutation and not href and not _hx_disabled_from_attrs and not _hx_disabled_from_dict else none) %}
 {% set _route_attrs = route_link_attrs(href, disabled=_disabled, attrs=_attrs_raw, attrs_map=attrs_map) if not _btn_has_hx_config else {} %}
 {% if href %}
 <a class="{{ base_class }}"{% if not _disabled %} href="{{ href }}"{% endif %}
@@ -39,7 +49,7 @@
    {{ _attrs_raw | html_attrs }}
    {{ attrs_map | html_attrs }}
    {% if not _disabled and _btn_has_hx_request %}hx-boost="false"{% end %}
-   {% if not _disabled and _btn_has_hx_request and not _explicit_hx_select %}hx-select="unset"{% end %}
+   {% if not _disabled %}{{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync) | html_attrs }}{% end %}
    {% if not _disabled %}{{ _route_attrs | html_attrs }}{% end %}
    {% if not _disabled %}{{ _hx_dict | html_attrs }}{% end %}>
     {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
@@ -52,7 +62,7 @@
         {% if _disabled %}disabled{% end %}
         {{ _attrs_raw | html_attrs }}
         {{ attrs_map | html_attrs }}
-        {% if not _disabled and _btn_has_hx_request and not _explicit_hx_select %}hx-select="unset"{% end %}
+        {{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync, hx_disabled_elt=_default_hx_disabled) | html_attrs }}
         {{ _hx_dict | html_attrs }}>
     {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
     <span class="chirpui-btn__label">{{ label }}</span>
