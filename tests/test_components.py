@@ -2994,11 +2994,28 @@ class TestFilterBar:
         html = env.from_string(
             '{% from "chirpui/filter_bar.html" import filter_row %}'
             '{% call filter_row("/filter",'
-            ' attrs_map={"hx-target": "#results", "hx-swap": "innerHTML"}) %}'
+            ' attrs_map={"hx-get": "/filter", "hx-target": "#results", "hx-swap": "innerHTML"}) %}'
             "x{% end %}"
         ).render()
+        assert 'hx-get="/filter"' in html
         assert 'hx-target="#results"' in html
         assert 'hx-swap="innerHTML"' in html
+        assert 'hx-select="unset"' in html
+        assert 'hx-disinherit="hx-select"' in html
+        assert 'hx-sync="this:replace"' in html
+
+    def test_filter_row_preserves_explicit_htmx_coordination(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_row %}'
+            '{% call filter_row("/filter",'
+            ' attrs_map={"hx-get": "/filter", "hx-target": "#results",'
+            ' "hx-select": "#rows", "hx-sync": "#results:queue last"}) %}'
+            "x{% end %}"
+        ).render()
+        assert 'hx-select="#rows"' in html
+        assert 'hx-sync="#results:queue last"' in html
+        assert 'hx-select="unset"' not in html
+        assert html.count("hx-sync=") == 1
 
     def test_filter_row_no_action(self, env: Environment) -> None:
         html = env.from_string(
@@ -3483,6 +3500,9 @@ class TestForms:
         assert "hx-target" in html
         assert "#results" in html
         assert "hx-trigger" in html
+        assert 'hx-select="unset"' in html
+        assert 'hx-disinherit="hx-select"' in html
+        assert 'hx-sync="this:replace"' in html
 
     def test_search_field_with_htmx_select(self, env: Environment) -> None:
         html = env.from_string(
@@ -3491,6 +3511,27 @@ class TestForms:
         ).render()
         assert 'hx-select="#page-content"' in html
         assert 'hx-target="#main"' in html
+        assert "hx-disinherit" not in html
+
+    def test_search_field_preserves_explicit_search_attrs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_field %}'
+            '{{ search_field("q", search_url="/search", search_target="#results",'
+            ' search_attrs_map={"hx-select": "#items", "hx-sync": "#results:queue last"}) }}'
+        ).render()
+        assert 'hx-select="#items"' in html
+        assert 'hx-sync="#results:queue last"' in html
+        assert 'hx-select="unset"' not in html
+        assert html.count("hx-sync=") == 1
+
+    def test_search_bar_with_htmx_uses_fragment_safe_sync(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_bar %}'
+            '{{ search_bar("q", search_url="/search", search_target="#results") }}'
+        ).render()
+        assert 'hx-select="unset"' in html
+        assert 'hx-disinherit="hx-select"' in html
+        assert 'hx-sync="this:replace"' in html
 
     def test_form_actions(self, env: Environment) -> None:
         html = env.from_string(

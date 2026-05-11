@@ -33,9 +33,15 @@
 {% def filter_row(action=none, method="get", attrs="", attrs_unsafe="", attrs_map=none, gap="sm", cls="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set hx = attrs_map or {} %}
+{% set _has_hx_request = hx.get("hx-get") or hx.get("hx-post") or hx.get("hx-put") or hx.get("hx-patch") or hx.get("hx-delete") %}
+{% set _has_hx_target = hx.get("hx-target") %}
+{% set _default_select = "unset" if _has_hx_request and _has_hx_target and not hx.get("hx-select") else none %}
+{% set _default_disinherit = "hx-select" if _default_select and not hx.get("hx-disinherit") else none %}
+{% set _default_sync = "this:replace" if _has_hx_request and _has_hx_target and not hx.get("hx-sync") else none %}
 <form{% if action %} action="{{ action }}"{% end %} method="{{ method }}"
       class="chirpui-cluster chirpui-cluster--gap-{{ gap }} chirpui-filter-row chirpui-font-sm{{ " " ~ cls if cls else "" }}"
       {{ hx | html_attrs }}
+      {{ build_hx_attrs(hx_select=_default_select, hx_disinherit=_default_disinherit, hx_sync=_default_sync) | html_attrs }}
       {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% slot %}
 </form>
