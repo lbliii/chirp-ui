@@ -163,3 +163,19 @@ async def test_main_receives_focus_after_swap(page, base_url):
 
     focused_id = await page.evaluate("document.activeElement?.id")
     assert focused_id == "main"
+
+
+async def test_rapid_boosted_nav_keeps_latest_click(page, base_url):
+    """A slow earlier boosted response must not overwrite the later click."""
+    await page.goto(base_url + "/rapid-nav")
+    await wait_for_alpine(page)
+
+    await page.click("a[href='/rapid-a']")
+    await page.click("a[href='/rapid-b']")
+    await wait_for_htmx(page, timeout=8000)
+
+    assert page.url.endswith("/rapid-b")
+    assert await page.text_content("[data-testid='page-heading']") == "Rapid B"
+    assert await page.text_content("[data-testid='rapid-label']") == "Fast B"
+    focused_id = await page.evaluate("document.activeElement?.id")
+    assert focused_id == "main"

@@ -77,3 +77,18 @@ async def test_form_submit_then_nav_works(page, base_url):
 
     assert await page.text_content("[data-testid='page-heading']") == "Home"
     assert await page.is_visible(".chirpui-app-shell__sidebar")
+
+
+async def test_mutating_form_drops_rapid_double_submit(page, base_url):
+    """The form macro drops accidental repeated submits while one is in flight."""
+    await page.goto(base_url + "/form/slow")
+    await wait_for_alpine(page)
+
+    submit = page.locator("[data-testid='slow-form-submit']")
+    await submit.click()
+    await submit.click(force=True)
+    await wait_for_htmx(page, timeout=8000)
+
+    result = page.locator("#slow-form-result")
+    assert await result.get_attribute("data-count") == "1"
+    assert await result.text_content() == "Saved 1"

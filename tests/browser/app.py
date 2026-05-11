@@ -5,6 +5,7 @@ hx-boost, Alpine.js, and all the runtime machinery that production apps use.
 Each route exercises a specific nesting/interaction pattern.
 """
 
+import asyncio
 import os
 
 from chirp import App, AppConfig
@@ -426,6 +427,20 @@ def create_app() -> App:
     async def page_b(request: Request):
         return Template("page_b.html", page_title="Page B")
 
+    @app.route("/rapid-nav")
+    async def rapid_nav(request: Request):
+        return Template("rapid_page.html", page_title="Rapid Nav", rapid_label="Start")
+
+    @app.route("/rapid-a")
+    async def rapid_a(request: Request):
+        await asyncio.sleep(0.3)
+        return Template("rapid_page.html", page_title="Rapid A", rapid_label="Slow A")
+
+    @app.route("/rapid-b")
+    async def rapid_b(request: Request):
+        await asyncio.sleep(0.05)
+        return Template("rapid_page.html", page_title="Rapid B", rapid_label="Fast B")
+
     # ── Fragment form: form inside boosted layout ────────────────────
 
     @app.route("/form")
@@ -435,6 +450,20 @@ def create_app() -> App:
     @app.route("/form/submit", methods=["POST"])
     async def form_submit(request: Request):
         return Response('<div id="form-result">Saved successfully</div>')
+
+    slow_form_submits = {"count": 0}
+
+    @app.route("/form/slow")
+    async def slow_form_page(request: Request):
+        slow_form_submits["count"] = 0
+        return Template("slow_form_page.html", page_title="Slow Form")
+
+    @app.route("/form/slow-submit", methods=["POST"])
+    async def slow_form_submit(request: Request):
+        slow_form_submits["count"] += 1
+        await asyncio.sleep(0.25)
+        count = slow_form_submits["count"]
+        return Response(f'<div id="slow-form-result" data-count="{count}">Saved {count}</div>')
 
     # ── Tabs: server-driven htmx tabs ────────────────────────────────
 
@@ -552,6 +581,19 @@ def create_app() -> App:
         items = [f"Result for '{q}' #{i}" for i in range(1, 4)] if q else []
         html = "".join(f'<div class="chirpui-command-palette__item">{item}</div>' for item in items)
         return Response(html or '<div class="chirpui-command-palette__empty">No results</div>')
+
+    @app.route("/search-sync")
+    async def search_sync_page(request: Request):
+        return Template("search_sync_page.html", page_title="Search Sync")
+
+    @app.route("/search/slow")
+    async def slow_search(request: Request):
+        q = request.query.get("q", "")
+        if q == "a":
+            await asyncio.sleep(0.3)
+        elif q == "ab":
+            await asyncio.sleep(0.05)
+        return Response(f'<div data-testid="search-result">Result for {q}</div>')
 
     # ── Drawer ────────────────────────────────────────────────────────
 
