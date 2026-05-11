@@ -4381,6 +4381,16 @@
         {
           "has_default": true,
           "is_required": false,
+          "name": "hx_sync"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_disabled_elt"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
           "name": "disabled"
         },
         {
@@ -8317,7 +8327,7 @@
       "consumes": [
         "_form_density"
       ],
-      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.",
+      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.\n    Mutating htmx forms default to hx-sync=\"this:drop\" plus hx-disabled-elt\n    for submit controls to prevent accidental duplicate in-flight submissions.",
       "elements": [
         "checkbox",
         "error",
@@ -8364,7 +8374,7 @@
         "chirpui-field__input--multi",
         "chirpui-field__label--inline"
       ],
-      "lineno": 65,
+      "lineno": 70,
       "macro": "field_wrapper",
       "maturity": "stable",
       "modifiers": [],
@@ -8443,7 +8453,7 @@
       "category": "form",
       "composes": [],
       "consumes": [],
-      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.",
+      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.\n    Mutating htmx forms default to hx-sync=\"this:drop\" plus hx-disabled-elt\n    for submit controls to prevent accidental duplicate in-flight submissions.",
       "elements": [
         "legend"
       ],
@@ -8452,7 +8462,7 @@
         "chirpui-fieldset__legend"
       ],
       "extra_emits": [],
-      "lineno": 56,
+      "lineno": 61,
       "macro": "fieldset",
       "maturity": "stable",
       "modifiers": [],
@@ -8740,7 +8750,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -9069,14 +9081,14 @@
       "category": "form",
       "composes": [],
       "consumes": [],
-      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.",
+      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.\n    Mutating htmx forms default to hx-sync=\"this:drop\" plus hx-disabled-elt\n    for submit controls to prevent accidental duplicate in-flight submissions.",
       "elements": [],
       "emits": [
         "chirpui-form-actions",
         "chirpui-form-actions--end"
       ],
       "extra_emits": [],
-      "lineno": 799,
+      "lineno": 820,
       "macro": "form_actions",
       "maturity": "stable",
       "modifiers": [
@@ -9117,7 +9129,7 @@
       "category": "form",
       "composes": [],
       "consumes": [],
-      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.",
+      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.\n    Mutating htmx forms default to hx-sync=\"this:drop\" plus hx-disabled-elt\n    for submit controls to prevent accidental duplicate in-flight submissions.",
       "elements": [
         "heading",
         "list"
@@ -9128,7 +9140,7 @@
         "chirpui-form-error-summary__list"
       ],
       "extra_emits": [],
-      "lineno": 764,
+      "lineno": 785,
       "macro": "form_error_summary",
       "maturity": "stable",
       "modifiers": [],
@@ -10009,12 +10021,37 @@
         {
           "has_default": true,
           "is_required": false,
+          "name": "hx_put"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_patch"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_delete"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
           "name": "hx_target"
         },
         {
           "has_default": true,
           "is_required": false,
           "name": "hx_swap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_sync"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_disabled_elt"
         }
       ],
       "provides": [],
@@ -10367,7 +10404,7 @@
       "category": "form",
       "composes": [],
       "consumes": [],
-      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.",
+      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.\n    Mutating htmx forms default to hx-sync=\"this:drop\" plus hx-disabled-elt\n    for submit controls to prevent accidental duplicate in-flight submissions.",
       "elements": [
         "input",
         "prefix",
@@ -10380,7 +10417,7 @@
         "chirpui-input-group__suffix"
       ],
       "extra_emits": [],
-      "lineno": 497,
+      "lineno": 502,
       "macro": "input_group",
       "maturity": "stable",
       "modifiers": [],
@@ -15376,7 +15413,7 @@
       "category": "form",
       "composes": [],
       "consumes": [],
-      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.",
+      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.\n    Mutating htmx forms default to hx-sync=\"this:drop\" plus hx-disabled-elt\n    for submit controls to prevent accidental duplicate in-flight submissions.",
       "elements": [
         "btn",
         "icon",
@@ -15391,7 +15428,7 @@
         "chirpui-search-bar__input"
       ],
       "extra_emits": [],
-      "lineno": 661,
+      "lineno": 674,
       "macro": "search_bar",
       "maturity": "stable",
       "modifiers": [
@@ -16093,7 +16130,7 @@
         "chirpui-shell-actions__group"
       ],
       "extra_emits": [],
-      "lineno": 51,
+      "lineno": 53,
       "macro": "shell_actions_bar",
       "maturity": "stable",
       "modifiers": [],
@@ -19789,7 +19826,7 @@
       "category": "form",
       "composes": [],
       "consumes": [],
-      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.",
+      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.\n    Mutating htmx forms default to hx-sync=\"this:drop\" plus hx-disabled-elt\n    for submit controls to prevent accidental duplicate in-flight submissions.",
       "elements": [],
       "emits": [
         "chirpui-toggle-wrap",
@@ -19800,7 +19837,7 @@
         "chirpui-toggle-wrap--success"
       ],
       "extra_emits": [],
-      "lineno": 204,
+      "lineno": 209,
       "macro": "toggle_field",
       "maturity": "stable",
       "modifiers": [],
@@ -21364,7 +21401,7 @@
     },
     "component_requirements": {
       "alpine": 22,
-      "htmx": 23
+      "htmx": 24
     },
     "component_roles": {
       "component": 176,

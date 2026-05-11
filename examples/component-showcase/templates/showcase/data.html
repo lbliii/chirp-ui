@@ -32,12 +32,14 @@
         label="Search",
         variant="solo",
         placeholder="Name, email, role...",
+        search_url="/data/table",
+        search_target="#data_table_content",
+        search_trigger="keyup changed delay:200ms",
+        search_include="#data_filters",
         attrs_map={
-          "id": "data_search",
-          "hx-get": "/data/table",
-          "hx-trigger": "keyup changed delay:200ms",
-          "hx-target": "#data_table_content",
-          "hx-include": "#data_filters",
+          "id": "data_search"
+        },
+        search_attrs_map={
           "hx-swap": "innerHTML transition:true",
           "hx-vals": {"page": "1"}
         }
@@ -52,6 +54,9 @@
               hx-target="#data_table_content"
               hx-include="#data_filters"
               hx-swap="innerHTML transition:true"
+              hx-select="unset"
+              hx-disinherit="hx-select"
+              hx-sync="this:replace"
               hx-vals='{"page":"1"}'>
         <option value="">All</option>
         <option value="Admin">Admin</option>
@@ -66,7 +71,10 @@
               hx-trigger="change"
               hx-target="#data_table_content"
               hx-include="#data_filters"
-              hx-swap="innerHTML transition:true">
+              hx-swap="innerHTML transition:true"
+              hx-select="unset"
+              hx-disinherit="hx-select"
+              hx-sync="this:replace">
         <option value="comfortable">Comfortable</option>
         <option value="compact">Compact</option>
       </select>
@@ -85,7 +93,10 @@
      hx-get="/data/table"
      hx-target="#data_table_content"
      hx-include="#data_filters"
-     hx-swap="innerHTML transition:true">
+     hx-swap="innerHTML transition:true"
+     hx-select="unset"
+     hx-disinherit="hx-select"
+     hx-sync="this:replace">
   {% set pagination_base = "/data/table?page={page}&sort=" ~ sort_col ~ "&dir=" ~ sort_dir ~ "&q=" ~ (q | e) ~ "&role=" ~ (role | e) ~ "&density=" ~ (density | default("comfortable") | e) %}
   {% if total_rows > 0 %}
   <p class="chirpui-text-muted chirpui-font-sm" style="margin-bottom: 0.5rem;">
@@ -105,6 +116,8 @@
                     hx-get="/data/table?page=1&sort=name&dir=desc&q=&role=&density={{ density | default("comfortable") | e }}"
                     hx-target="#data_table_content"
                     hx-swap="innerHTML transition:true"
+                    hx-select="unset"
+                    hx-sync="#data_table_content:replace"
                     hx-push-url="true">Name ↑</button>
           </th>
           <th class="chirpui-table__th">
@@ -113,6 +126,8 @@
                     hx-get="/data/table?page=1&sort=email&dir=asc&q=&role=&density={{ density | default("comfortable") | e }}"
                     hx-target="#data_table_content"
                     hx-swap="innerHTML transition:true"
+                    hx-select="unset"
+                    hx-sync="#data_table_content:replace"
                     hx-push-url="true">Email</button>
           </th>
           <th class="chirpui-table__th">
@@ -121,6 +136,8 @@
                     hx-get="/data/table?page=1&sort=role&dir=asc&q=&role=&density={{ density | default("comfortable") | e }}"
                     hx-target="#data_table_content"
                     hx-swap="innerHTML transition:true"
+                    hx-select="unset"
+                    hx-sync="#data_table_content:replace"
                     hx-push-url="true">Role</button>
           </th>
           <th class="chirpui-table__th">Status</th>

@@ -48,6 +48,21 @@ chirp-ui components automatically inject certain htmx attributes to prevent
 common integration bugs. These are **not** visible in the macro signature but
 are added at render time.
 
+### Rapid-click defaults
+
+chirp-ui owns safe transport defaults for the HTML it emits. Apps still own
+business semantics: idempotency, permissions, destructive-action policy,
+endpoint cost, rate limits, and conflict handling.
+
+| Surface | Default | Override |
+|---------|---------|----------|
+| App-shell boosted navigation | `shell_outlet_attrs()` emits `hx-sync="<target>:replace"` so the latest navigation intent wins for the shared shell target. | Pass `sync="..."` or `sync=""` to shell helpers when a custom shell needs different queueing. |
+| Live search and local filters | `search_field()`, `search_bar()`, and `filter_row()` use `hx-sync="this:replace"` for local fragment GETs, and default to `hx-select="unset"` plus `hx-disinherit="hx-select"` so app-shell selectors do not empty-swap fragments. | Pass `search_sync`, `search_hx_select`, `search_attrs_map`, or explicit `attrs_map` htmx attributes. |
+| Mutating forms and action buttons | `form()`, mutating `btn()` / `icon_btn()` htmx requests, confirm dialogs, and shell action forms drop repeated in-flight submissions and disable local submit/action controls when possible. | Pass `hx_sync`, `hx_disabled_elt`, or matching `attrs_map` / `hx={}` values. Use `""` where supported to opt out. |
+
+These defaults reduce accidental duplicate requests and stale swaps. They do
+not replace server-side idempotency or authorization checks.
+
 ### `hx-boost="false"` on links with htmx requests
 
 **Components:** `btn`, `tabs`, `route_tabs`
@@ -63,7 +78,8 @@ isolation but breaks inside the app shell."
 
 ### `hx-select="unset"` on forms with htmx
 
-**Components:** `form`
+**Components:** `form`, local live-search/filter helpers, mutating `btn` /
+`icon_btn` requests
 
 **What:** When a form has an htmx mutating method (`hx-post`, `hx-put`,
 `hx-patch`, `hx-delete`), `hx-select="unset"` and
@@ -80,6 +96,24 @@ leaking into child elements that might have their own htmx requests.
 
 **Override:** Pass `hx_select="..."` explicitly to set a custom value. The
 auto-injection only fires when `hx_select` is not provided.
+
+### `hx-sync` request coordination
+
+**Components:** `app_shell_layout`, `app_shell` shell links, `nav_link`,
+`sidebar_link`, `shell_brand_link`, `search_field`, `search_bar`,
+`filter_row`, `form`, `btn`, `icon_btn`, `confirm_dialog`, `shell_actions`
+
+**What:** Shell navigation coordinates on the shell target with replacement
+semantics. Live search and filter controls replace stale local requests.
+Mutating submits and actions drop repeated in-flight submissions.
+
+**Why:** Rapid clicks or typing should not let older responses overwrite newer
+UI, and accidental double-submit should not be the default behavior of shipped
+Chirp UI helpers.
+
+**Override:** Use the exposed sync parameters (`sync`, `search_sync`,
+`hx_sync`) or explicit htmx attrs when app semantics need queueing, aborting, or
+repeatable actions.
 
 ### `hx-on::after-request` form reset
 

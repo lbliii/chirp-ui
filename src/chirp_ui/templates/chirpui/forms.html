@@ -13,6 +13,8 @@
     hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.
     Auto-behaviors: hx-select="unset" + hx-disinherit="hx-select" when htmx is detected;
     hx-on::after-request reset on success for mutating methods.
+    Mutating htmx forms default to hx-sync="this:drop" plus hx-disabled-elt
+    for submit controls to prevent accidental duplicate in-flight submissions.
 -#}
 
 {% def form(action, method="get", enctype=none, density="", cls="", attrs="", attrs_unsafe="", attrs_map=none,
@@ -26,7 +28,8 @@
 {#- hx_reset_on_success: when true, form resets after successful htmx response (2xx).
    Defaults to true when form has hx-post/put/patch/delete (via params or attrs_map).
    See https://htmx.org/examples/reset-user-input/
-   hx_sync: pass explicitly or via attrs_map to prevent double-submit; e.g. "this:replace".
+   hx_sync: mutating htmx forms default to "this:drop"; pass explicitly or
+   via attrs_map to override, or pass "" to opt out.
    See https://htmx.org/docs/#synchronization -#}
 {% set _hx_dict = build_hx_attrs(hx=hx, hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
     hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target,

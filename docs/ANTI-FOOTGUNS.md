@@ -224,6 +224,8 @@ chirp-ui auto-injects several htmx attributes to prevent common bugs. If you're 
 
 - **`hx-boost="false"`** on `<a>` elements with explicit htmx requests (prevents boost from hijacking the click)
 - **`hx-select="unset"`** on forms with htmx (prevents inherited `hx-select` from breaking fragment swaps)
+- **`hx-sync`** on shell navigation, live search/filter helpers, and mutating form/action helpers (prevents stale swaps and accidental duplicate in-flight submits)
+- **`hx-disabled-elt`** on mutating form/action helpers where native controls can be disabled during the request
 - **`hx-disinherit`** on fragment islands (isolates local htmx context from shell attributes)
 
 Use `hx={"post": "/url", "target": "#id"}` instead of individual `hx_post`/`hx_target` kwargs.

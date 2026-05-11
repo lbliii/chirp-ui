@@ -235,18 +235,17 @@
 
 <h2>Live validation</h2>
 {% call block() %}
-<form hx-post="/forms/demo"
-      hx-target="#form_body"
-      hx-swap="innerHTML transition:true"
-      class="chirpui-stack chirpui-stack--sm">
+{% call form("/forms/demo", method="post", hx_post="/forms/demo",
+             hx_target="#form_body", hx_swap="innerHTML transition:true",
+             cls="chirpui-stack chirpui-stack--sm") %}
   <div id="form_body" class="chirpui-stack chirpui-stack--sm">
     {{ text_field("name", value="", label="Name", placeholder="Your name", required=true) }}
     {{ text_field("email", value="", label="Email", type="email", placeholder="you@example.com", required=true) }}
   </div>
   {% call form_actions() %}
-  <button type="submit" class="chirpui-btn chirpui-btn--primary">Submit</button>
+  {{ btn("Submit", type="submit", variant="primary") }}
   {% end %}
-</form>
+{% end %}
 <p class="chirpui-text-muted chirpui-font-sm">
   Server-side validation: required fields, email format. On error: ValidationError fragment. On success: FormAction + toast.
 </p>
