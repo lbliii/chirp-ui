@@ -4701,10 +4701,20 @@ Bar Chart component
 
 ### `block`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `block`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `span` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `border-beam`
 
@@ -5111,10 +5121,20 @@ Chip group
 
 ### `cluster`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `cluster`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `gap` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `code`
 
@@ -5329,10 +5349,21 @@ Constellation
 
 ### `container`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `container`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `max_width` | no | (has default) |
+| `padding` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `conversation-item`
 
@@ -6051,10 +6082,21 @@ Safe region / Fragment island primitives
 
 ### `frame`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `frame`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `gap` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `glitch`
 
@@ -6141,10 +6183,24 @@ Grain Overlay
 
 ### `grid`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `grid`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cols` | no | (has default) |
+| `gap` | no | (has default) |
+| `preset` | no | (has default) |
+| `items` | no | (has default) |
+| `detail_single` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `hero`
 
@@ -6478,10 +6534,23 @@ Latest line
 
 ### `layer`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `layer`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `direction` | no | (has default) |
+| `overlap` | no | (has default) |
+| `angle` | no | (has default) |
+| `hover` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `lifecycle-showcase`
 
@@ -8328,10 +8397,20 @@ SSE connection status and error recovery
 
 ### `stack`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `stack`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `gap` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `star-rating`
 

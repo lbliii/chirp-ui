@@ -4167,7 +4167,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-block",
@@ -4184,20 +4184,35 @@
         "chirpui-block--tall",
         "chirpui-block--wide"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 83,
+      "macro": "block",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "span"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -5915,7 +5930,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-cluster",
@@ -5932,20 +5947,35 @@
         "chirpui-cluster--sm",
         "chirpui-cluster--xs"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 60,
+      "macro": "cluster",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "gap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -6834,26 +6864,46 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-container"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 8,
+      "macro": "container",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "max_width"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "padding"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -9682,7 +9732,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-frame",
@@ -9705,20 +9755,40 @@
         "chirpui-frame--sidebar-end",
         "chirpui-frame--sidebar-start"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 41,
+      "macro": "frame",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "gap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -10014,7 +10084,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-grid",
@@ -10049,20 +10119,55 @@
         "chirpui-grid--preset-detail-two",
         "chirpui-grid--preset-thirds"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 16,
+      "macro": "grid",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cols"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "gap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "preset"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "detail_single"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -11339,7 +11444,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-layer",
@@ -11366,20 +11471,50 @@
         "chirpui-layer--overlap-sm",
         "chirpui-layer--right"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 69,
+      "macro": "layer",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "direction"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "overlap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "angle"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hover"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -18353,7 +18488,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-stack",
@@ -18370,20 +18505,35 @@
         "chirpui-stack--xl",
         "chirpui-stack--xs"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 53,
+      "macro": "stack",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "gap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -22268,8 +22418,8 @@
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 226,
-    "components_with_params": 226,
+    "components_with_description": 233,
+    "components_with_params": 233,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -22277,7 +22427,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 224
+      "public_templated_components": 231
     },
     "registry_debt": {
       "auto_category_components": 0,

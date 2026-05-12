@@ -3376,6 +3376,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "block": ComponentDescriptor(
         block="block",
+        slots=("",),
         extra_emits=(
             "chirpui-block--span-2",
             "chirpui-block--span-3",
@@ -3387,6 +3388,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         role="primitive",
         maturity="stable",
         authoring="preferred",
+        template="layout.html",
     ),
     "bounce-in": ComponentDescriptor(
         block="bounce-in",
@@ -3456,6 +3458,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "cluster": ComponentDescriptor(
         block="cluster",
+        slots=("",),
         extra_emits=(
             "chirpui-cluster--detail-two-sprites",
             "chirpui-cluster--lg",
@@ -3467,6 +3470,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         role="primitive",
         maturity="stable",
         authoring="preferred",
+        template="layout.html",
     ),
     "code": ComponentDescriptor(
         block="code",
@@ -3512,10 +3516,12 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "container": ComponentDescriptor(
         block="container",
+        slots=("",),
         category="layout",
         role="primitive",
         maturity="stable",
         authoring="preferred",
+        template="layout.html",
     ),
     "counter-badge": ComponentDescriptor(
         block="counter-badge",
@@ -3640,6 +3646,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "frame": ComponentDescriptor(
         block="frame",
+        slots=("",),
         extra_emits=(
             "chirpui-frame--balanced",
             "chirpui-frame--bento",
@@ -3654,9 +3661,11 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         role="primitive",
         maturity="stable",
         authoring="preferred",
+        template="layout.html",
     ),
     "grid": ComponentDescriptor(
         block="grid",
+        slots=("",),
         extra_emits=(
             "chirpui-grid--auto-fill",
             "chirpui-grid--cols-2",
@@ -3677,6 +3686,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         role="primitive",
         maturity="stable",
         authoring="preferred",
+        template="layout.html",
     ),
     "hover-jello": ComponentDescriptor(
         block="hover-jello",
@@ -3718,6 +3728,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "layer": ComponentDescriptor(
         block="layer",
+        slots=("",),
         extra_emits=(
             "chirpui-layer--angle-moderate",
             "chirpui-layer--angle-none",
@@ -3734,6 +3745,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         role="primitive",
         maturity="stable",
         authoring="preferred",
+        template="layout.html",
     ),
     "list-reset": ComponentDescriptor(
         block="list-reset",
@@ -3948,6 +3960,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "stack": ComponentDescriptor(
         block="stack",
+        slots=("",),
         extra_emits=(
             "chirpui-stack--lg",
             "chirpui-stack--md",
@@ -3959,6 +3972,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         role="primitive",
         maturity="stable",
         authoring="preferred",
+        template="layout.html",
     ),
     "streaming": ComponentDescriptor(
         block="streaming",

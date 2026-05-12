@@ -289,3 +289,15 @@ def test_unmapped_descriptors_emit_empty_provides_consumes() -> None:
         assert entry["provides"] == []
         assert entry["consumes"] == []
         assert entry["slots_extracted"] == []
+
+
+def test_preferred_layout_primitives_are_macro_grounded() -> None:
+    """Preferred layout primitives should expose callable macro metadata."""
+    components = build_manifest()["components"]
+    for name in ("block", "cluster", "container", "frame", "grid", "layer", "stack"):
+        entry = components[name]
+        assert entry["template"] == "layout.html"
+        assert entry["macro"] == name
+        assert entry["params"]
+        assert "" in entry["slots"]
+        assert entry["description"].startswith("Layout primitives")
