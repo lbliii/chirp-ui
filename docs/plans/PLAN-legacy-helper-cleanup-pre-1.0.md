@@ -246,3 +246,4 @@ Acceptance:
 | Date | Change | Reason |
 |------|--------|--------|
 | 2026-05-12 | Initial cleanup plan | Captures the follow-up from the Skeleton-inspired design-system audit and separates safe first-party cleanup from public compatibility removals. |
+| 2026-05-12 | Phases 1-5 executed | Visual audit, high-visibility showcase templates, static showcase inventory, docs policy, and 1.0 decision gate now have committed proof and tests. |

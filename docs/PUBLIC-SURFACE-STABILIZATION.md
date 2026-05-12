@@ -73,3 +73,16 @@ Initial policy:
   accessibility/reset helpers.
 - `truncate`, `clamp-*`, `scroll-x`, `min-w-0`, and `placeholder-inline` stay
   narrow containment escape hatches.
+
+## 1.0 Helper Decision Gate
+
+No helper removal is approved by this document alone. A helper can be removed at
+the 1.0 boundary only when a migration path exists, first-party usage has been
+counted, and release notes call out the breaking change.
+
+| Helpers | 1.0 decision | Migration path | Gate |
+| --- | --- | --- | --- |
+| `mt-sm`, `mt-md`, `mb-md` | Docs-only deprecation now; possible 1.0 removal candidate. | Replace with `stack()`, `flow`, component slots, or local page chrome. | Zero first-party usage outside legacy examples. |
+| `font-*`, `ui-*`, `text-muted` | Keep compatibility through 1.0 unless a separate removal RFC lands. | Replace page chrome with local classes; replace product UI with component slots or tokens. | First-party audit and showcase chrome remain helper-free. |
+| `truncate`, `clamp-*`, `scroll-x`, `min-w-0`, `placeholder-inline` | Keep compatibility. | Prefer component-native containment first; use helper only for narrow escape hatches. | Component alternatives cover the same overflow/text-bounding cases. |
+| `visually-hidden`, `focus-ring`, `list-reset` | Keep. | No migration required; these remain narrow accessibility/reset helpers. | Revisit only if component-native input hiding fully replaces the helper. |

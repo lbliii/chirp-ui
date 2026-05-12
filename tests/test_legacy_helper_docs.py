@@ -33,9 +33,12 @@ def test_public_surface_policy_separates_preferred_and_compatibility() -> None:
 
     for required in [
         "Legacy Helper Authoring Policy",
+        "1.0 Helper Decision Gate",
+        "No helper removal is approved by this document alone.",
         "`authoring=compatibility`",
         "`find --authoring preferred` should not include utility-like typography",
         "`mt-sm`, `mt-md`, and `mb-md` are deprecate-later candidates",
+        "Zero first-party usage outside legacy examples.",
         "`visually-hidden`, `focus-ring`, and `list-reset` stay narrow",
     ]:
         assert required in text
