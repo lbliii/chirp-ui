@@ -13,7 +13,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 import chirp_ui
-from chirp_ui import LIBRARY_CONTRACT, MANIFEST_PATH, load_manifest
+from chirp_ui import LIBRARY_CONTRACT, MANIFEST_PATH, THEME_PACKS, load_manifest
 
 
 def test_manifest_path_exists() -> None:
@@ -37,7 +37,7 @@ def test_manifest_path_lives_beside_package() -> None:
 def test_load_manifest_returns_dict_with_schema() -> None:
     m = load_manifest()
     assert isinstance(m, dict)
-    assert m["schema"] == "chirpui-manifest@3"
+    assert m["schema"] == "chirpui-manifest@5"
     assert m["version"] == chirp_ui.__version__
 
 
@@ -45,6 +45,7 @@ def test_load_manifest_exposes_components_and_tokens() -> None:
     m = load_manifest()
     assert "components" in m
     assert "tokens" in m
+    assert "theme_packs" in m
     assert "stats" in m
     assert m["stats"]["total_components"] > 100
     # Spot-check: metric-card's signature fields made it through the build pipeline.
@@ -70,6 +71,10 @@ def test_library_contract_public_api_listed_in_all() -> None:
     assert "LibraryAsset" in chirp_ui.__all__
     assert "LibraryContract" in chirp_ui.__all__
     assert "get_library_contract" in chirp_ui.__all__
+    assert "THEME_PACKS" in chirp_ui.__all__
+    assert "ThemePack" in chirp_ui.__all__
+    assert "get_theme_pack" in chirp_ui.__all__
+    assert "list_theme_packs" in chirp_ui.__all__
 
 
 def test_library_contract_describes_package_roots() -> None:
@@ -84,7 +89,7 @@ def test_library_contract_describes_package_roots() -> None:
     assert contract.manifest_schema == load_manifest()["schema"]
     assert isinstance(contract, Mapping)
     assert contract["asset_root"] == chirp_ui.static_path()
-    assert contract["manifest_schema"] == "chirpui-manifest@3"
+    assert contract["manifest_schema"] == "chirpui-manifest@5"
 
 
 def test_library_contract_declares_ordered_assets() -> None:
@@ -112,6 +117,27 @@ def test_library_contract_declares_ordered_assets() -> None:
         "javascript",
     ]
     assert contract["runtime"] == ("alpine",)
+
+
+def test_theme_pack_catalog_is_immutable_and_ordered() -> None:
+    contract = chirp_ui.get_library_contract()
+
+    assert chirp_ui.list_theme_packs() is THEME_PACKS
+    assert contract.theme_packs is THEME_PACKS
+    assert [pack.name for pack in THEME_PACKS] == ["atlas", "ember", "sage"]
+    assert chirp_ui.get_theme_pack("ember").path == "themes/ember.css"
+    assert chirp_ui.get_theme_pack("missing") is None
+    assert [pack["name"] for pack in contract["theme_packs"]] == ["atlas", "ember", "sage"]
+    assert all(pack.modes == ("light", "dark", "system") for pack in THEME_PACKS)
+
+
+def test_theme_pack_resources_are_shipped() -> None:
+    contract = chirp_ui.get_library_contract()
+
+    for pack in contract.theme_packs:
+        resolved = contract.static_root / pack.path
+        assert resolved.exists(), f"{pack.path} declared but not shipped"
+        assert resolved.is_file()
 
 
 def test_library_contract_assets_are_shipped() -> None:

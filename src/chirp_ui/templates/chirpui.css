@@ -4651,6 +4651,74 @@ a.chirpui-mention:focus-visible {
             background: var(--chirpui-surface);
         }
 
+        /* Appearance axis */
+        :scope.chirpui-surface--filled {
+            background: var(--chirpui-surface);
+        }
+
+        :scope.chirpui-surface--tonal {
+            background: var(--chirpui-bg-subtle);
+        }
+
+        :scope.chirpui-surface--outlined {
+            background: transparent;
+            border: 1px solid var(--chirpui-border);
+        }
+
+        :scope.chirpui-surface--ghost {
+            background: transparent;
+            border-color: transparent;
+        }
+
+        /* Tone axis */
+        :scope.chirpui-surface--surface {
+            background: var(--chirpui-surface);
+        }
+
+        :scope.chirpui-surface--neutral {
+            background: var(--chirpui-bg-subtle);
+        }
+
+        :scope.chirpui-surface--primary {
+            --_surface-tone: var(--chirpui-accent);
+            background: color-mix(in srgb, var(--_surface-tone) 9%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--secondary {
+            --_surface-tone: var(--chirpui-primary);
+            background: color-mix(in srgb, var(--_surface-tone) 7%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--success {
+            --_surface-tone: var(--chirpui-success);
+            background: color-mix(in srgb, var(--_surface-tone) 9%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--warning {
+            --_surface-tone: var(--chirpui-warning);
+            background: color-mix(in srgb, var(--_surface-tone) 9%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--danger {
+            --_surface-tone: var(--chirpui-danger);
+            background: color-mix(in srgb, var(--_surface-tone) 9%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--info {
+            --_surface-tone: var(--chirpui-info);
+            background: color-mix(in srgb, var(--_surface-tone) 9%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--outlined.chirpui-surface--primary,
+        :scope.chirpui-surface--outlined.chirpui-surface--secondary,
+        :scope.chirpui-surface--outlined.chirpui-surface--success,
+        :scope.chirpui-surface--outlined.chirpui-surface--warning,
+        :scope.chirpui-surface--outlined.chirpui-surface--danger,
+        :scope.chirpui-surface--outlined.chirpui-surface--info {
+            background: transparent;
+            border-color: var(--_surface-tone);
+        }
+
         :scope.chirpui-surface--muted {
             background: var(--chirpui-bg-subtle);
         }
@@ -5287,6 +5355,96 @@ a.chirpui-mention:focus-visible {
                 opacity: 0;
                 transform: translateY(8px);
             }
+        }
+
+        /* Appearance axis */
+        :scope.chirpui-card--filled {
+            background: var(--chirpui-surface);
+            border-color: var(--chirpui-border);
+        }
+
+        :scope.chirpui-card--tonal {
+            background: var(--chirpui-bg-subtle);
+            border-color: transparent;
+        }
+
+        :scope.chirpui-card--outlined {
+            background: transparent;
+            border-color: var(--chirpui-border);
+        }
+
+        :scope.chirpui-card--ghost {
+            background: transparent;
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+        /* Tone axis */
+        :scope.chirpui-card--neutral {
+            --_card-tone: var(--chirpui-border);
+        }
+
+        :scope.chirpui-card--primary {
+            --_card-tone: var(--chirpui-accent);
+        }
+
+        :scope.chirpui-card--secondary {
+            --_card-tone: var(--chirpui-primary);
+        }
+
+        :scope.chirpui-card--success {
+            --_card-tone: var(--chirpui-success);
+        }
+
+        :scope.chirpui-card--warning {
+            --_card-tone: var(--chirpui-warning);
+        }
+
+        :scope.chirpui-card--danger {
+            --_card-tone: var(--chirpui-danger);
+        }
+
+        :scope.chirpui-card--info {
+            --_card-tone: var(--chirpui-info);
+        }
+
+        :scope.chirpui-card--primary,
+        :scope.chirpui-card--secondary,
+        :scope.chirpui-card--success,
+        :scope.chirpui-card--warning,
+        :scope.chirpui-card--danger,
+        :scope.chirpui-card--info {
+            background: color-mix(in srgb, var(--_card-tone) 7%, var(--chirpui-surface));
+            border-color: color-mix(in srgb, var(--_card-tone) 45%, var(--chirpui-border));
+        }
+
+        :scope.chirpui-card--outlined.chirpui-card--primary,
+        :scope.chirpui-card--outlined.chirpui-card--secondary,
+        :scope.chirpui-card--outlined.chirpui-card--success,
+        :scope.chirpui-card--outlined.chirpui-card--warning,
+        :scope.chirpui-card--outlined.chirpui-card--danger,
+        :scope.chirpui-card--outlined.chirpui-card--info {
+            background: transparent;
+            border-color: var(--_card-tone);
+        }
+
+        :scope.chirpui-card--ghost.chirpui-card--primary,
+        :scope.chirpui-card--ghost.chirpui-card--secondary,
+        :scope.chirpui-card--ghost.chirpui-card--success,
+        :scope.chirpui-card--ghost.chirpui-card--warning,
+        :scope.chirpui-card--ghost.chirpui-card--danger,
+        :scope.chirpui-card--ghost.chirpui-card--info {
+            background: transparent;
+            border-color: transparent;
+        }
+
+        :scope.chirpui-card--primary .chirpui-card__title,
+        :scope.chirpui-card--secondary .chirpui-card__title,
+        :scope.chirpui-card--success .chirpui-card__title,
+        :scope.chirpui-card--warning .chirpui-card__title,
+        :scope.chirpui-card--danger .chirpui-card__title,
+        :scope.chirpui-card--info .chirpui-card__title {
+            color: color-mix(in srgb, var(--_card-tone) 78%, var(--chirpui-text));
         }
 
         .chirpui-card__header {
@@ -7727,6 +7885,28 @@ button.chirpui-pagination__link {
 .chirpui-alert--success { --chirpui-alert-accent: var(--chirpui-success); background: var(--chirpui-alert-success-bg); }
 .chirpui-alert--warning { --chirpui-alert-accent: var(--chirpui-warning); background: var(--chirpui-alert-warning-bg); }
 .chirpui-alert--error   { --chirpui-alert-accent: var(--chirpui-error); background: var(--chirpui-alert-error-bg); }
+.chirpui-alert--danger  { --chirpui-alert-accent: var(--chirpui-danger); background: color-mix(in srgb, var(--chirpui-danger) 10%, transparent); }
+
+/* Appearance axis */
+.chirpui-alert--tonal {
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-alert--outlined {
+    background: transparent;
+    box-shadow: none;
+}
+
+.chirpui-alert--filled {
+    background: color-mix(in srgb, var(--chirpui-alert-accent) 88%, var(--chirpui-surface));
+    border-color: var(--chirpui-alert-accent);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-alert--filled .chirpui-alert__icon {
+    background: color-mix(in srgb, var(--chirpui-on-accent) 18%, transparent);
+    color: var(--chirpui-on-accent);
+}
 
 .chirpui-alert__icon {
     display: inline-flex;
@@ -8758,6 +8938,74 @@ button.chirpui-pagination__link {
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
     font-size: var(--chirpui-font-sm);
 }
+
+.chirpui-field--file,
+.chirpui-field--masked,
+.chirpui-field--phone,
+.chirpui-field--money {
+    max-width: 100%;
+}
+
+/* Appearance axis */
+.chirpui-field--filled .chirpui-field__input {
+    background: var(--chirpui-surface);
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-field--tonal .chirpui-field__input {
+    background: var(--chirpui-bg-subtle);
+    border-color: transparent;
+}
+
+.chirpui-field--outlined .chirpui-field__input {
+    background: transparent;
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-field--ghost .chirpui-field__input {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+/* Tone axis. Error remains validation state via .chirpui-field--error. */
+.chirpui-field--neutral .chirpui-field__input {
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-field--primary .chirpui-field__input {
+    border-color: var(--chirpui-accent);
+}
+
+.chirpui-field--success .chirpui-field__input {
+    border-color: var(--chirpui-success);
+}
+
+.chirpui-field--warning .chirpui-field__input {
+    border-color: var(--chirpui-warning);
+}
+
+.chirpui-field--danger .chirpui-field__input {
+    border-color: var(--chirpui-danger);
+}
+
+.chirpui-field--info .chirpui-field__input {
+    border-color: var(--chirpui-info);
+}
+
+.chirpui-field--primary .chirpui-field__label,
+.chirpui-field--success .chirpui-field__label,
+.chirpui-field--warning .chirpui-field__label,
+.chirpui-field--danger .chirpui-field__label,
+.chirpui-field--info .chirpui-field__label {
+    color: var(--_field-tone, currentColor);
+}
+
+.chirpui-field--primary { --_field-tone: var(--chirpui-accent); }
+.chirpui-field--success { --_field-tone: var(--chirpui-success); }
+.chirpui-field--warning { --_field-tone: var(--chirpui-warning); }
+.chirpui-field--danger { --_field-tone: var(--chirpui-danger); }
+.chirpui-field--info { --_field-tone: var(--chirpui-info); }
 
 .chirpui-field__label {
     display: block;
@@ -9884,6 +10132,30 @@ a.chirpui-btn {
     pointer-events: none;
 }
 
+/* Appearance axis */
+.chirpui-btn--filled {
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-btn--tonal {
+    background: var(--chirpui-bg-subtle);
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.chirpui-btn--outlined {
+    background: transparent;
+    border-color: var(--chirpui-border);
+    box-shadow: none;
+}
+
+/* Tone axis */
+.chirpui-btn--neutral {
+    background: var(--chirpui-surface);
+    border-color: var(--chirpui-border);
+    color: var(--chirpui-text);
+}
+
 /* Primary variant */
 .chirpui-btn--primary {
     background: var(--chirpui-accent);
@@ -9934,19 +10206,19 @@ a.chirpui-btn {
 
 /* Danger variant */
 .chirpui-btn--danger {
-    background: var(--chirpui-error);
-    border-color: var(--chirpui-error);
+    background: var(--chirpui-danger);
+    border-color: var(--chirpui-danger);
     color: var(--chirpui-on-accent);
 }
 
 .chirpui-btn--danger:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--chirpui-error) 85%, black);
-    border-color: color-mix(in srgb, var(--chirpui-error) 85%, black);
+    background: color-mix(in srgb, var(--chirpui-danger) 85%, black);
+    border-color: color-mix(in srgb, var(--chirpui-danger) 85%, black);
 }
 
 .chirpui-btn--danger:active:not(:disabled) {
-    background: color-mix(in srgb, var(--chirpui-error) 75%, black);
-    border-color: color-mix(in srgb, var(--chirpui-error) 75%, black);
+    background: color-mix(in srgb, var(--chirpui-danger) 75%, black);
+    border-color: color-mix(in srgb, var(--chirpui-danger) 75%, black);
 }
 
 /* Success variant */
@@ -9981,6 +10253,32 @@ a.chirpui-btn {
 .chirpui-btn--warning:active:not(:disabled) {
     background: color-mix(in srgb, var(--chirpui-warning) 75%, black);
     border-color: color-mix(in srgb, var(--chirpui-warning) 75%, black);
+}
+
+.chirpui-btn--outlined.chirpui-btn--primary {
+    background: transparent;
+    color: var(--chirpui-accent);
+}
+
+.chirpui-btn--outlined.chirpui-btn--secondary,
+.chirpui-btn--outlined.chirpui-btn--neutral {
+    background: transparent;
+    color: var(--chirpui-text);
+}
+
+.chirpui-btn--outlined.chirpui-btn--success {
+    background: transparent;
+    color: var(--chirpui-success);
+}
+
+.chirpui-btn--outlined.chirpui-btn--warning {
+    background: transparent;
+    color: var(--chirpui-warning);
+}
+
+.chirpui-btn--outlined.chirpui-btn--danger {
+    background: transparent;
+    color: var(--chirpui-danger);
 }
 
 /* Small button — compact for search bars, toolbars */
@@ -10162,6 +10460,25 @@ a.chirpui-badge:focus-visible {
     overflow-wrap: anywhere;
 }
 
+/* Appearance axis */
+.chirpui-badge--tonal {
+    box-shadow: none;
+}
+
+.chirpui-badge--outlined {
+    background: transparent;
+}
+
+.chirpui-badge--filled {
+    box-shadow: none;
+}
+
+.chirpui-badge--neutral {
+    background: var(--chirpui-muted-bg);
+    color: var(--chirpui-text-muted);
+    border-color: var(--chirpui-border);
+}
+
 .chirpui-badge--primary {
     background: var(--chirpui-primary-muted);
     color: var(--chirpui-primary);
@@ -10213,6 +10530,12 @@ a.chirpui-badge--warning:active {
     border-color: var(--chirpui-error);
 }
 
+.chirpui-badge--danger {
+    background: color-mix(in srgb, var(--chirpui-danger) 12%, transparent);
+    color: var(--chirpui-danger);
+    border-color: var(--chirpui-danger);
+}
+
 a.chirpui-badge--error:hover {
     background: color-mix(in srgb, var(--chirpui-error) 25%, var(--chirpui-error-muted));
     color: color-mix(in srgb, var(--chirpui-error) var(--chirpui-shade-hover), black);
@@ -10250,6 +10573,45 @@ a.chirpui-badge--info:hover {
 
 a.chirpui-badge--info:active {
     background: color-mix(in srgb, var(--chirpui-info) 30%, var(--chirpui-alert-info-bg));
+}
+
+.chirpui-badge--outlined.chirpui-badge--primary,
+.chirpui-badge--outlined.chirpui-badge--success,
+.chirpui-badge--outlined.chirpui-badge--warning,
+.chirpui-badge--outlined.chirpui-badge--danger,
+.chirpui-badge--outlined.chirpui-badge--info,
+.chirpui-badge--outlined.chirpui-badge--neutral {
+    background: transparent;
+}
+
+.chirpui-badge--filled.chirpui-badge--primary {
+    background: var(--chirpui-primary);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-badge--filled.chirpui-badge--success {
+    background: var(--chirpui-success);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-badge--filled.chirpui-badge--warning {
+    background: var(--chirpui-warning);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-badge--filled.chirpui-badge--danger {
+    background: var(--chirpui-danger);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-badge--filled.chirpui-badge--info {
+    background: var(--chirpui-info);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-badge--filled.chirpui-badge--neutral {
+    background: var(--chirpui-text-muted);
+    color: var(--chirpui-bg);
 }
 
 /* Custom color (scoped --chirpui-badge-color) */

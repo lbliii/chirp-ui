@@ -11,12 +11,47 @@
 {% end %}
 {% block content %}
 {% from "chirpui/modal_overlay.html" import modal_overlay, modal_overlay_trigger %}
+{% from "chirpui/modal.html" import modal, modal_trigger %}
+{% from "chirpui/confirm.html" import confirm_dialog, confirm_trigger %}
 
 <h1 data-testid="page-heading">Modal Test</h1>
 
+<section data-testid="overlay-modal-container">
 {{ modal_overlay_trigger("test-modal", "Open Modal", variant="default") }}
 
 {% call modal_overlay("test-modal", "Test Modal") %}
   <p data-testid="modal-body">Modal content here.</p>
 {% end %}
+</section>
+
+<section data-testid="native-modal-container">
+{{ modal_trigger("native-modal", label="Open Native Modal") }}
+
+{% call modal("native-modal", title="Native Modal") %}
+  <p data-testid="native-modal-body">Native modal content here.</p>
+  {% slot footer %}
+    <form method="dialog">
+      <button type="submit" data-testid="native-modal-footer-close">Done</button>
+    </form>
+  {% end %}
+{% end %}
+</section>
+
+<section data-testid="confirm-dialog-container">
+{{ confirm_trigger("confirm-delete", label="Delete Item") }}
+
+{{ confirm_dialog(
+  "confirm-delete",
+  title="Delete item?",
+  message="This cannot be undone.",
+  confirm_label="Delete",
+  cancel_label="Cancel",
+  variant="danger",
+  confirm_url="/modal/delete",
+  confirm_method="DELETE",
+  hx_target="#confirm-result",
+  hx_select="#content"
+) }}
+<div id="confirm-result"></div>
+</section>
 {% end %}

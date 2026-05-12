@@ -15,9 +15,20 @@ async def test_drawer_opens_on_trigger(page, base_url):
     await page.click(".chirpui-drawer-trigger")
     dialog = page.locator("#test-drawer")
     await dialog.wait_for(state="visible", timeout=2000)
+    assert await dialog.evaluate("el => el.open")
 
     body = await page.text_content("[data-testid='drawer-body']")
     assert "Drawer content here" in body
+
+
+async def test_drawer_trigger_uses_dialog_target_controller(page, base_url):
+    """Drawer trigger is wired to the shared native dialog target controller."""
+    await page.goto(base_url + "/drawer")
+    await wait_for_alpine(page)
+
+    trigger = page.locator(".chirpui-drawer-trigger")
+    assert await trigger.get_attribute("x-data") == "chirpuiDialogTarget()"
+    assert await trigger.get_attribute("data-dialog-target") == "test-drawer"
 
 
 async def test_drawer_closes_on_close_button(page, base_url):

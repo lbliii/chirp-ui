@@ -29,6 +29,8 @@ from chirp import (
     use_chirp_ui,
 )
 
+from chirp_ui.theme_packs import get_theme_pack, list_theme_packs
+
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
 # Use source chirp-ui templates (many components not yet in installed package)
@@ -181,6 +183,24 @@ async def cards(request: Request) -> Template:
 @app.route("/forms", template="showcase/forms.html")
 async def forms(request: Request) -> Template:
     return _page(request, "showcase/forms.html")
+
+
+@app.route("/appearance-tone", template="showcase/appearance-tone.html")
+async def appearance_tone(request: Request) -> Template:
+    return _page(request, "showcase/appearance-tone.html")
+
+
+@app.route("/theme-packs", template="showcase/theme-packs.html")
+async def theme_packs(request: Request) -> Template:
+    return _page(request, "showcase/theme-packs.html", theme_packs=list_theme_packs())
+
+
+@app.route("/theme-packs/preview/{name}/{mode}", template="showcase/theme_pack_preview.html")
+async def theme_pack_preview(request: Request, name: str, mode: str) -> Template | Response:
+    pack = get_theme_pack(name)
+    if pack is None or mode not in pack.modes:
+        return Response("Theme pack preview not found", status=404)
+    return Template("showcase/theme_pack_preview.html", pack=pack, mode=mode)
 
 
 @app.route("/forms/demo", methods=["POST"])

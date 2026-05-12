@@ -59,3 +59,28 @@ Example:
 ```
 
 Use these helpers instead of hand-writing hidden htmx buttons in each template.
+
+## Visual presets
+
+The `appearance` / `tone` pilot gives high-traffic components a shared macro
+vocabulary for visual treatment and semantic intent without introducing utility
+classes. See [Appearance and tone](/docs/components/appearance-tone/) for the
+published guide.
+
+## Interactive anatomy
+
+Dropdown menus, selects, and split menus have a published rendered contract for
+ARIA roles, Alpine controllers, focus behavior, event payloads, and HTMX link
+attrs. See [Dropdown anatomy](/docs/components/dropdowns/).
+
+Native modals, overlay modals, and confirm dialogs have a published rendered
+contract for `<dialog>` usage, Alpine target/store behavior, close controls,
+events, and HTMX confirm forms. See [Modal anatomy](/docs/components/modals/).
+
+Htmx tabs, client-side tab panels, and URL-backed route tabs have a published
+rendered contract that keeps ARIA tab widgets distinct from navigation links.
+See [Tabs anatomy](/docs/components/tabs/).
+
+Native drawers and store-backed trays have a published rendered contract for
+slide-out dialog behavior, Alpine store state, close events, and focus trapping.
+See [Drawer and tray anatomy](/docs/components/drawers-trays/).

@@ -90,6 +90,36 @@ async def test_dropdown_item_click_dispatches_event(page, base_url):
     assert events[0]["action"] == "edit"
 
 
+async def test_dropdown_item_event_payload_reads_data_attributes(page, base_url):
+    """Escaped labels/actions should round-trip through dataset-based event payloads."""
+    await page.goto(base_url + "/dropdown")
+    await wait_for_alpine(page)
+    await page.evaluate("""
+        window._dropdownEvents = [];
+        document.addEventListener('chirpui:dropdown-selected', (e) => {
+            window._dropdownEvents.push(e.detail);
+        });
+    """)
+
+    trigger = page.locator(
+        "[data-testid='dropdown-menu-special-payload'] .chirpui-dropdown__trigger"
+    )
+    await trigger.click()
+
+    menu = page.locator("[data-testid='dropdown-menu-special-payload'] .chirpui-dropdown__menu")
+    await menu.wait_for(state="visible", timeout=2000)
+
+    await page.locator(
+        "[data-testid='dropdown-menu-special-payload'] .chirpui-dropdown__item",
+        has_text="Quote",
+    ).click()
+    await page.wait_for_timeout(200)
+
+    events = await page.evaluate("window._dropdownEvents")
+    assert events[-1]["label"] == "Quote ' <tag>"
+    assert events[-1]["action"] == "archive ' <tag>"
+
+
 async def test_dropdown_aria_expanded(page, base_url):
     """Trigger aria-expanded toggles between true and false."""
     await page.goto(base_url + "/dropdown")

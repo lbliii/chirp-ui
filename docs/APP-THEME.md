@@ -25,6 +25,21 @@ as:
 <link rel="stylesheet" href="/static/themes/app-theme-starter.css">
 ```
 
+Sprint 3 also packages a small curated catalog:
+
+| Name | Path | Best fit |
+|---|---|---|
+| Atlas | `/static/themes/atlas.css` | Cool operational SaaS and dashboards |
+| Ember | `/static/themes/ember.css` | Warm editorial products and docs |
+| Sage | `/static/themes/sage.css` | Low-glare review and planning tools |
+
+These packs are discoverable through `chirp_ui.list_theme_packs()` and
+`chirp_ui.get_library_contract().theme_packs`. They are token-only CSS
+resources, not component skins.
+
+The component showcase publishes the live matrix at `/theme-packs`, with each
+pack rendered in isolated light, dark, and `system` preview frames.
+
 ## Ownership
 
 - **Chirp-UI owns** the `--chirpui-*` token names, component classes, theme
@@ -32,6 +47,7 @@ as:
 - **Chirp owns** project bootstrapping and static asset wiring.
 - **The app owns** concrete brand values: color, typeface, shape, and any
   deliberate component-level overrides.
+- **Theme packs own** curated starting values for `--chirpui-*` tokens only.
 
 Keep app themes token-only by default. Do not introduce `chirpui-*` classes in
 an app theme file, and do not create utility-class vocabulary to express brand
@@ -127,3 +143,22 @@ or `--chirp-theme-*` when a `--chirpui-*` token already carries the job. If a
 component genuinely lacks a token hook, add a narrow rule in
 `@layer app.overrides` and treat that rule as evidence for a future Chirp UI
 token.
+
+## Catalog Rules
+
+Curated packs are intentionally constrained:
+
+- They must define light, dark, and `system` branches.
+- They may set cataloged `--chirpui-*` tokens only.
+- They must not emit `.chirpui-*` selectors, utility classes, or component
+  overrides.
+- They are immutable package resources; export/write commands are deferred.
+
+Use the Python API when a host needs to present a theme picker:
+
+```python
+import chirp_ui
+
+for pack in chirp_ui.list_theme_packs():
+    print(pack.name, pack.label, pack.path)
+```

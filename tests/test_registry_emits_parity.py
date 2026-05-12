@@ -116,7 +116,7 @@ def test_registry_emits_are_defined_in_css() -> None:
 
 
 def test_emits_is_derived_from_grammar() -> None:
-    """Sanity check: the property derives block/elements/variants/sizes/modifiers.
+    """Sanity check: the property derives block/elements/axes/sizes/modifiers.
 
     Grammar-derived classes appear in ``emits`` unless explicitly listed in
     the descriptor's ``trim_emits``.
@@ -128,6 +128,8 @@ def test_emits_is_derived_from_grammar() -> None:
         expected: list[tuple[str, str]] = [(f"chirpui-{desc.block}", "block")]
         expected.extend((f"chirpui-{desc.block}__{e}", e) for e in desc.elements)
         expected.extend((f"chirpui-{desc.block}--{v}", v) for v in desc.variants if v)
+        expected.extend((f"chirpui-{desc.block}--{a}", a) for a in desc.appearances if a)
+        expected.extend((f"chirpui-{desc.block}--{t}", t) for t in desc.tones if t)
         expected.extend((f"chirpui-{desc.block}--{s}", s) for s in desc.sizes if s)
         expected.extend((f"chirpui-{desc.block}--{m}", m) for m in desc.modifiers if m)
         expected.extend((x, x) for x in desc.extra_emits)

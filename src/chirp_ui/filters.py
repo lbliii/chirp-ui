@@ -28,7 +28,9 @@ __all__ = [
     "resolve_color",
     "resolve_status_variant",
     "sanitize_color",
+    "validate_appearance_block",
     "validate_size",
+    "validate_tone_block",
     "validate_variant",
     "validate_variant_block",
     "value_type",
@@ -44,7 +46,9 @@ from kida.template import Markup
 from chirp_ui.icons import ICON_REGISTRY
 from chirp_ui.icons import icon as _resolve_icon
 from chirp_ui.validation import (
+    APPEARANCE_REGISTRY,
     SIZE_REGISTRY,
+    TONE_REGISTRY,
     VARIANT_REGISTRY,
     ChirpUIDeprecationWarning,
     ChirpUIValidationWarning,
@@ -330,16 +334,21 @@ class TemplateFilterApp(Protocol):
 def bem(
     block: str,
     variant: str = "",
+    appearance: str = "",
+    tone: str = "",
     size: str = "",
     modifier: str | list[str] = "",
     cls: str = "",
 ) -> str:
-    """Build chirpui BEM class string from block, variant, size, and modifiers.
+    """Build chirpui BEM class string from block, axes, size, and modifiers.
 
     Example::
 
         class="{{ "btn" | bem(variant="primary", size="lg", modifier="loading") }}"
         → "chirpui-btn chirpui-btn--primary chirpui-btn--lg chirpui-btn--loading"
+
+        class="{{ "btn" | bem(appearance="outlined", tone="danger") }}"
+        → "chirpui-btn chirpui-btn--outlined chirpui-btn--danger"
 
     *modifier* accepts a single string or a list of strings for additive flags.
     """
@@ -354,6 +363,36 @@ def bem(
                 f"chirp-ui: {block} variant {variant!r} invalid; valid: {', '.join(allowed)}",
             )
             variant = allowed[0] if allowed else ""
+
+    if appearance:
+        allowed = APPEARANCE_REGISTRY.get(block, ())
+        if allowed and appearance not in allowed:
+            fallback = ""
+            _warn(
+                f"chirp-ui: {block} appearance {appearance!r} invalid; "
+                f"valid: {', '.join(allowed)}; using {fallback!r}",
+            )
+            appearance = fallback
+        elif desc and not allowed:
+            _warn(
+                f"chirp-ui: {block} appearance {appearance!r} invalid; valid: ; using ''",
+            )
+            appearance = ""
+
+    if tone:
+        allowed = TONE_REGISTRY.get(block, ())
+        if allowed and tone not in allowed:
+            fallback = ""
+            _warn(
+                f"chirp-ui: {block} tone {tone!r} invalid; "
+                f"valid: {', '.join(allowed)}; using {fallback!r}",
+            )
+            tone = fallback
+        elif desc and not allowed:
+            _warn(
+                f"chirp-ui: {block} tone {tone!r} invalid; valid: ; using ''",
+            )
+            tone = ""
 
     if size and desc and desc.sizes and size not in desc.sizes:
         _warn(
@@ -380,11 +419,24 @@ def bem(
         modifiers = valid_modifiers
 
     parts = [f"chirpui-{block}"]
-    if variant:
-        parts.append(f"chirpui-{block}--{variant}")
+    seen = set(parts)
+    for axis_value in (appearance, tone, variant):
+        if not axis_value:
+            continue
+        axis_class = f"chirpui-{block}--{axis_value}"
+        if axis_class not in seen:
+            parts.append(axis_class)
+            seen.add(axis_class)
     if size:
-        parts.append(f"chirpui-{block}--{size}")
-    parts.extend(f"chirpui-{block}--{m}" for m in modifiers)
+        size_class = f"chirpui-{block}--{size}"
+        if size_class not in seen:
+            parts.append(size_class)
+            seen.add(size_class)
+    for m in modifiers:
+        modifier_class = f"chirpui-{block}--{m}"
+        if modifier_class not in seen:
+            parts.append(modifier_class)
+            seen.add(modifier_class)
     if cls:
         parts.append(cls)
     return " ".join(parts)
@@ -415,6 +467,39 @@ def validate_variant_block(value: str, block: str, default: str = "") -> str:
     """Return value if in VARIANT_REGISTRY for block, else default. When strict, log warning."""
     allowed = VARIANT_REGISTRY.get(block, ())
     return validate_variant(value, allowed, default)
+
+
+def _validate_axis_block(
+    value: str,
+    block: str,
+    registry: dict[str, tuple[str, ...]],
+    axis: str,
+    default: str = "",
+) -> str:
+    """Return a descriptor-backed axis value or fallback with an actionable warning."""
+    allowed = registry.get(block, ())
+    if value in allowed:
+        return value
+    if not value:
+        return default if default in allowed or default == "" else ""
+    result = default if default in allowed or default == "" else (allowed[0] if allowed else "")
+    if allowed:
+        allowed_text = ", ".join(allowed)
+        _warn(
+            f"chirp-ui: {block} {axis} {value!r} invalid; valid: {allowed_text}; using {result!r}",
+            category=ChirpUIValidationWarning,
+        )
+    return result
+
+
+def validate_appearance_block(value: str, block: str, default: str = "") -> str:
+    """Return value if in APPEARANCE_REGISTRY for block, else fallback."""
+    return _validate_axis_block(value, block, APPEARANCE_REGISTRY, "appearance", default)
+
+
+def validate_tone_block(value: str, block: str, default: str = "") -> str:
+    """Return value if in TONE_REGISTRY for block, else fallback."""
+    return _validate_axis_block(value, block, TONE_REGISTRY, "tone", default)
 
 
 def deprecate_param(value: Any, old_name: str, new_name: str) -> Any:
@@ -842,6 +927,8 @@ def register_filters(app: TemplateFilterApp) -> None:
     app.template_filter("deprecate_param")(deprecate_param)
     app.template_filter("validate_variant")(validate_variant)
     app.template_filter("validate_variant_block")(validate_variant_block)
+    app.template_filter("validate_appearance_block")(validate_appearance_block)
+    app.template_filter("validate_tone_block")(validate_tone_block)
     app.template_filter("validate_size")(validate_size)
     app.template_filter("value_type")(value_type)
     app.template_filter("sanitize_color")(sanitize_color)

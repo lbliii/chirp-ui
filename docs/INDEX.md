@@ -10,6 +10,7 @@ Navigation guide for all chirp-ui documentation.
 - [PRIMITIVES.md](PRIMITIVES.md) — Blessed composition primitives vs legacy compatibility helpers
 - [LAYOUT-PRESETS.md](LAYOUT-PRESETS.md) — Grid preset names, aliases, and breakpoint tokens
 - [COMPOSITION.md](COMPOSITION.md) — Component composition patterns and slot mechanics
+- [APPEARANCE-TONE.md](APPEARANCE-TONE.md) — Chirp-native visual preset axes for pilot components
 - [TYPOGRAPHY.md](TYPOGRAPHY.md) — Type scale, font tokens, and text utilities
 - [RESPONSIVE.md](RESPONSIVE.md) — Phone/tablet/desktop component behavior contract
 - [TOKENS.md](TOKENS.md) — CSS custom property reference (spacing, color, radius, z-index)
@@ -30,6 +31,10 @@ Navigation guide for all chirp-ui documentation.
 - [HTMX-PATTERNS.md](HTMX-PATTERNS.md) — `hx={}` dict, auto-injected attrs, `build_hx_attrs()`
 - [HTMX-ADVANCEMENT.md](HTMX-ADVANCEMENT.md) — Design decisions for htmx integration
 - [ALPINE-MAGICS.md](ALPINE-MAGICS.md) — Alpine.js store, `safeData`, shared controllers
+- [DROPDOWN-ANATOMY.md](DROPDOWN-ANATOMY.md) — Dropdown menu, select, and split-menu rendered anatomy
+- [MODAL-ANATOMY.md](MODAL-ANATOMY.md) — Native modal, overlay modal, and confirm dialog anatomy
+- [TABS-ANATOMY.md](TABS-ANATOMY.md) — htmx tabs, tab panels, route tabs, and tabbed page layout anatomy
+- [DRAWER-TRAY-ANATOMY.md](DRAWER-TRAY-ANATOMY.md) — Native drawer and store-backed tray anatomy
 - [DND-FRAGMENT-ISLAND.md](DND-FRAGMENT-ISLAND.md) — Fragment islands, safe regions, drag-and-drop
 - [PROVIDE-CONSUME-KEYS.md](PROVIDE-CONSUME-KEYS.md) — All provide/consume context keys and their contracts
 - [SHELL-TABS-CONTRACT.md](SHELL-TABS-CONTRACT.md) — Route tabs and shell tab integration contract
@@ -45,13 +50,17 @@ Navigation guide for all chirp-ui documentation.
 
 ## Reference
 
+- [AGENT-SOURCE-INVENTORY.md](AGENT-SOURCE-INVENTORY.md) — Sprint 6 agent source provenance, snippet eligibility, and exclusion contract
+- [AGENT-SOURCE-MAP.md](AGENT-SOURCE-MAP.md) — Sprint 6 generated-output ownership and agent source-input map
 - [COMPONENT-OPTIONS.md](COMPONENT-OPTIONS.md) — Full parameter reference for all components
+- [DOCS-IA-MIGRATION.md](DOCS-IA-MIGRATION.md) — Sprint 4 published-docs IA map and LLM endpoint source map
 - [DEEP-DIVE-masked-field-use-cases.md](DEEP-DIVE-masked-field-use-cases.md) — Masked input field patterns and examples
 
 ## Theming
 
 - [CHIRP-THEME.md](CHIRP-THEME.md) — Theme package architecture and token system
 - [CHIRP-THEME-PARITY-MATRIX.md](CHIRP-THEME-PARITY-MATRIX.md) — Theme token coverage across components
+- [BENGAL-THEME-ANATOMY.md](BENGAL-THEME-ANATOMY.md) — Packaged Bengal theme controls, search, mobile nav, TOC, and docs tab hooks
 
 ## Planning
 
@@ -67,6 +76,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-ascii-maturity.md](plans/PLAN-ascii-maturity.md) — Residual ASCII accessibility and stabilization backlog
 - [PLAN-test-coverage-hardening.md](plans/PLAN-test-coverage-hardening.md) — Residual visual verification and coverage backlog
 - [PLAN-theme-tokens.md](plans/PLAN-theme-tokens.md) — Theme gallery and token parity proof backlog
+- [PLAN-skeleton-equivalent-roadmap.md](plans/PLAN-skeleton-equivalent-roadmap.md) — Skeleton-inspired roadmap for Chirp-native appearance, themes, docs, LLM, and anatomy contracts
 - [PLAN-primitive-vocabulary-hardening.md](plans/PLAN-primitive-vocabulary-hardening.md) — Legacy helper stabilization backlog
 - [PLAN-legacy-helper-cleanup-pre-1.0.md](plans/PLAN-legacy-helper-cleanup-pre-1.0.md) — First-party legacy helper cleanup plan before 1.0
 - [PLAN-navigation-contract-application.md](plans/PLAN-navigation-contract-application.md) — Apply dense navigation guidance to ChirpUI
@@ -106,6 +116,10 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 
 - [DESIGN-css-registry-projection.md](DESIGN-css-registry-projection.md) — CSS epic S0 design lock-in
 - [DESIGN-manifest-signature-extraction.md](DESIGN-manifest-signature-extraction.md) — Manifest signature-extraction RFC (Sprint 0 of agent-grounding)
+- [DESIGN-appearance-tone.md](DESIGN-appearance-tone.md) — Descriptor-backed appearance and tone vocabulary
+- [DESIGN-theme-pack-catalog.md](DESIGN-theme-pack-catalog.md) — Token-only curated theme pack catalog
+- [DESIGN-llm-endpoints.md](DESIGN-llm-endpoints.md) — Generated LLM and agent-facing site artifacts
+- [DESIGN-interactive-anatomy.md](DESIGN-interactive-anatomy.md) — Executable anatomy contracts for interactive components
 - [SPRINT-0-behavior-layer-design.md](SPRINT-0-behavior-layer-design.md) — Sprint 0 design for behavior layer
 
 ## Consolidated (redirects)

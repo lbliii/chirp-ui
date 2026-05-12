@@ -3770,11 +3770,15 @@ Alert component
 - **Requires:** `alpine`
 - **Slots:** `(default)`, `actions`, `header_actions`
 - **Variants:** `error`, `info`, `success`, `warning`
+- **Appearances:** `filled`, `outlined`, `tonal`
+- **Tones:** `danger`, `info`, `success`, `warning`
 - **Consumes:** `_card_variant`
 
 | Param | Required | Default |
 |-------|----------|---------|
 | `variant` | no | (has default) |
+| `appearance` | no | (has default) |
+| `tone` | no | (has default) |
 | `dismissible` | no | (has default) |
 | `icon` | no | (has default) |
 | `title` | no | (has default) |
@@ -4615,12 +4619,16 @@ Badge component
 - **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `custom`, `custom-solid`, `error`, `info`, `muted`, `primary`, `success`, `warning`
+- **Appearances:** `filled`, `outlined`, `tonal`
+- **Tones:** `danger`, `info`, `neutral`, `primary`, `success`, `warning`
 - **Consumes:** `_card_variant`, `_surface_variant`
 
 | Param | Required | Default |
 |-------|----------|---------|
 | `text` | yes | — |
 | `variant` | no | (has default) |
+| `appearance` | no | (has default) |
+| `tone` | no | (has default) |
 | `icon` | no | (has default) |
 | `cls` | no | (has default) |
 | `color` | no | (has default) |
@@ -4758,6 +4766,8 @@ Button component. Use chirpui-btn with variants. Supports loading state for htmx
 - **Requires:** `htmx`
 - **Slots:** `(default)`
 - **Variants:** `(default)`, `danger`, `ghost`, `primary`, `secondary`, `success`, `warning`
+- **Appearances:** `filled`, `ghost`, `outlined`, `tonal`
+- **Tones:** `danger`, `neutral`, `primary`, `secondary`, `success`, `warning`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
 - **Modifiers:** `loading`
 - **Consumes:** `_bar_density`, `_suspense_busy`
@@ -4766,6 +4776,8 @@ Button component. Use chirpui-btn with variants. Supports loading state for htmx
 |-------|----------|---------|
 | `label` | yes | — |
 | `variant` | no | (has default) |
+| `appearance` | no | (has default) |
+| `tone` | no | (has default) |
 | `size` | no | (has default) |
 | `loading` | no | (has default) |
 | `type` | no | (has default) |
@@ -4859,6 +4871,8 @@ Card component
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`, `body_actions`, `footer`, `header_actions`, `media`
+- **Appearances:** `filled`, `ghost`, `outlined`, `tonal`
+- **Tones:** `danger`, `info`, `neutral`, `primary`, `secondary`, `success`, `warning`
 - **Modifiers:** `collapsible`, `gradient-border`, `gradient-header`, `hoverable`, `link`, `linked`
 - **Provides:** `_card_variant`
 
@@ -4870,6 +4884,8 @@ Card component
 | `collapsible` | no | (has default) |
 | `open` | no | (has default) |
 | `variant` | no | (has default) |
+| `appearance` | no | (has default) |
+| `tone` | no | (has default) |
 | `icon` | no | (has default) |
 | `border_variant` | no | (has default) |
 | `header_variant` | no | (has default) |
@@ -5788,7 +5804,9 @@ Form field macros
 - **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`
-- **Variants:** `checkbox`, `dense`, `error`, `radio`, `radio-horizontal`, `range`, `toggle`
+- **Variants:** `checkbox`, `dense`, `error`, `file`, `masked`, `money`, `phone`, `radio`, `radio-horizontal`, `range`, `toggle`
+- **Appearances:** `filled`, `ghost`, `outlined`, `tonal`
+- **Tones:** `danger`, `info`, `neutral`, `primary`, `success`, `warning`
 - **Consumes:** `_form_density`
 
 | Param | Required | Default |
@@ -5801,6 +5819,8 @@ Form field macros
 | `modifier` | no | (has default) |
 | `field_id` | no | (has default) |
 | `oob` | no | (has default) |
+| `appearance` | no | (has default) |
+| `tone` | no | (has default) |
 
 ### `fieldset`
 
@@ -8456,12 +8476,16 @@ Surface component
 - **Authoring:** `available`
 - **Slots:** `(default)`
 - **Variants:** `accent`, `default`, `elevated`, `frosted`, `glass`, `gradient-accent`, `gradient-border`, `gradient-mesh`, `gradient-subtle`, `muted`, `smoke`
+- **Appearances:** `filled`, `ghost`, `outlined`, `tonal`
+- **Tones:** `danger`, `info`, `neutral`, `primary`, `secondary`, `success`, `surface`, `warning`
 - **Modifiers:** `bento`, `full`, `no-padding`
 - **Provides:** `_surface_variant`
 
 | Param | Required | Default |
 |-------|----------|---------|
 | `variant` | no | (has default) |
+| `appearance` | no | (has default) |
+| `tone` | no | (has default) |
 | `full_width` | no | (has default) |
 | `padding` | no | (has default) |
 | `cls` | no | (has default) |

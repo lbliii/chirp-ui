@@ -4,7 +4,7 @@
 **Created**: 2026-04-24
 **Target**: pre-1.0
 **Estimated Effort**: 10-16h across 4 PRs
-**Dependencies**: Registry auto-category debt cleared; `chirpui-manifest@3`
+**Dependencies**: Registry auto-category debt cleared; current manifest schema
 
 > Current note: primitive docs, authoring hints, and legacy-helper decisions
 > have shipped. Remaining work is pre-1.0 stabilization: promote, keep, or

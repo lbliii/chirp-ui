@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, grid, stack, block, cluster, page_header %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/button.html" import btn %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Theme Packs", subtitle="Token-only catalog packs rendered across light, dark, and system modes.") }}
+
+{% call block() %}
+{% call cluster(gap="sm") %}
+{% for pack in theme_packs %}
+  {{ badge(pack.label, tone="primary") }}
+{% end %}
+{% end %}
+{% end %}
+
+{% for pack in theme_packs %}
+{% call card(title=pack.label, appearance="outlined", tone="primary") %}
+<p class="chirpui-text-muted chirpui-font-sm">{{ pack.description }}</p>
+<p class="chirpui-text-muted chirpui-font-sm"><code>/static/{{ pack.path }}</code></p>
+{% call grid(cols=3) %}
+{% for mode in pack.modes %}
+{% call block() %}
+<h3>{{ mode }}</h3>
+<iframe
+  src="/theme-packs/preview/{{ pack.name }}/{{ mode }}"
+  title="{{ pack.label }} {{ mode }} theme preview"
+  width="420"
+  height="520"
+  loading="lazy"></iframe>
+{% end %}
+{% end %}
+{% end %}
+{% slot footer %}
+{{ btn("Open light preview", href="/theme-packs/preview/" ~ pack.name ~ "/light", appearance="outlined", tone="primary", size="sm") }}
+{% end %}
+{% end %}
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

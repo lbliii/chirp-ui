@@ -34,12 +34,28 @@ Set `data-theme="light"` or `data-theme="dark"` on `<html>`.
 <link rel="stylesheet" href="/static/themes/holy-light.css">
 ```
 
+## Curated Theme Packs
+
+Chirp UI also ships token-only catalog packs for fresh apps:
+
+```html
+<link rel="stylesheet" href="/static/chirpui.css">
+<link rel="stylesheet" href="/static/themes/atlas.css">
+```
+
+Packaged options are `atlas`, `ember`, and `sage`. Each defines light, dark,
+and `system` branches using only `--chirpui-*` tokens. The canonical source
+guide is
+[`docs/APP-THEME.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/APP-THEME.md?plain=1).
+The runnable component showcase includes a theme-pack matrix at `/theme-packs`.
+
 ## Bengal Theme
 
 For fully static Bengal sites, `chirp-ui` now also ships `chirp-theme`, a
 static-first docs and marketing theme packaged in this project.
 
 - [chirp-theme](/docs/theming/chirp-theme/) - packaged Bengal theme with the `b-site`-inspired aesthetic
+- [Bengal theme controls anatomy](/docs/theming/bengal-theme-controls/) - packaged theme hooks for appearance, search, mobile navigation, TOC, and docs tabs
 
 ## Motion
 

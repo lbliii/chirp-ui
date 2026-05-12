@@ -32,6 +32,74 @@
             background: var(--chirpui-surface);
         }
 
+        /* Appearance axis */
+        :scope.chirpui-surface--filled {
+            background: var(--chirpui-surface);
+        }
+
+        :scope.chirpui-surface--tonal {
+            background: var(--chirpui-bg-subtle);
+        }
+
+        :scope.chirpui-surface--outlined {
+            background: transparent;
+            border: 1px solid var(--chirpui-border);
+        }
+
+        :scope.chirpui-surface--ghost {
+            background: transparent;
+            border-color: transparent;
+        }
+
+        /* Tone axis */
+        :scope.chirpui-surface--surface {
+            background: var(--chirpui-surface);
+        }
+
+        :scope.chirpui-surface--neutral {
+            background: var(--chirpui-bg-subtle);
+        }
+
+        :scope.chirpui-surface--primary {
+            --_surface-tone: var(--chirpui-accent);
+            background: color-mix(in srgb, var(--_surface-tone) 9%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--secondary {
+            --_surface-tone: var(--chirpui-primary);
+            background: color-mix(in srgb, var(--_surface-tone) 7%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--success {
+            --_surface-tone: var(--chirpui-success);
+            background: color-mix(in srgb, var(--_surface-tone) 9%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--warning {
+            --_surface-tone: var(--chirpui-warning);
+            background: color-mix(in srgb, var(--_surface-tone) 9%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--danger {
+            --_surface-tone: var(--chirpui-danger);
+            background: color-mix(in srgb, var(--_surface-tone) 9%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--info {
+            --_surface-tone: var(--chirpui-info);
+            background: color-mix(in srgb, var(--_surface-tone) 9%, var(--chirpui-surface));
+        }
+
+        :scope.chirpui-surface--outlined.chirpui-surface--primary,
+        :scope.chirpui-surface--outlined.chirpui-surface--secondary,
+        :scope.chirpui-surface--outlined.chirpui-surface--success,
+        :scope.chirpui-surface--outlined.chirpui-surface--warning,
+        :scope.chirpui-surface--outlined.chirpui-surface--danger,
+        :scope.chirpui-surface--outlined.chirpui-surface--info {
+            background: transparent;
+            border-color: var(--_surface-tone);
+        }
+
         :scope.chirpui-surface--muted {
             background: var(--chirpui-bg-subtle);
         }

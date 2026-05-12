@@ -23,10 +23,12 @@
     Variants: info (default), success, warning, error
 -#}
 
-{% def alert(variant="info", dismissible=false, icon=none, title=none, cls="", collapsible=false, open=true) %}
+{% def alert(variant="info", appearance="", tone="", dismissible=false, icon=none, title=none, cls="", collapsible=false, open=true) %}
 {# @consumes _card_variant from: card — falls back to "" if not in card context #}
 {% set _variant = variant if variant != "info" else (consume("_card_variant", "") or variant) %}
-{% set alert_class = "alert" | bem(variant=_variant, cls=cls) %}
+{% set _appearance = appearance | validate_appearance_block("alert", "") %}
+{% set _tone = tone | validate_tone_block("alert", "") %}
+{% set alert_class = "alert" | bem(variant=_variant, appearance=_appearance, tone=_tone, cls=cls) %}
 {% if collapsible %}
 <details class="{{ alert_class }}" role="alert"{% if open %} open{% endif %}>
     <summary class="chirpui-alert__body">

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-theme="{{ mode }}" data-style="default" data-theme-pack="{{ pack.name }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title }}</title>
+  <link rel="stylesheet" href="/static/chirpui.css">
+  <link rel="stylesheet" href="/static/{{ pack.path }}">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--chirpui-bg);
+      color: var(--chirpui-text);
+    }
+
+    .theme-pack-browser-proof {
+      padding-block: var(--chirpui-space-2xl);
+    }
+
+    .theme-pack-browser-proof__header {
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .theme-pack-browser-proof__media {
+      position: relative;
+      min-height: 10rem;
+      overflow: hidden;
+      border: 1px solid var(--chirpui-border);
+      border-radius: var(--chirpui-radius-lg);
+      background:
+        linear-gradient(135deg, var(--chirpui-surface), var(--chirpui-surface-alt)),
+        var(--chirpui-bg-subtle);
+    }
+
+    .theme-pack-browser-proof__media-content {
+      position: absolute;
+      inset: auto 1rem 1rem;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+{% from "chirpui/layout.html" import container, stack, cluster, grid %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/alert.html" import alert %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/forms.html" import text_field, select_field, checkbox_field %}
+{% from "chirpui/overlay.html" import overlay %}
+{% from "chirpui/primary_nav.html" import primary_nav %}
+{% from "chirpui/table.html" import table %}
+
+<main class="theme-pack-browser-proof">
+  {% call container(max_width="58rem") %}
+    {% call stack(gap="lg") %}
+      {% call cluster(cls="theme-pack-browser-proof__header") %}
+        <div>
+          <p class="chirpui-text-muted">{{ pack.description }}</p>
+          <h1>{{ pack.label }} Theme Pack</h1>
+        </div>
+        {{ badge(mode, variant="primary", fill="solid") }}
+      {% end %}
+
+      {% call surface(variant="elevated", attrs_map={"data-testid": "surface-probe"}) %}
+        {% call stack(gap="md") %}
+          {% call alert(variant="success", title="Token proof") %}
+            Browser-rendered variables are applied to real Chirp UI components.
+          {% end %}
+
+          {% call grid(cols=2, gap="md") %}
+            {% call card(title="Actions", subtitle="Buttons inherit the pack accent", attrs_map={"data-testid": "card-probe"}) %}
+              {% call cluster(gap="sm") %}
+                {{ btn("Primary", variant="primary") }}
+                {{ btn("Neutral", variant="secondary") }}
+              {% end %}
+            {% end %}
+
+            {% call card(title="Vocabulary", subtitle="The preview route uses packaged CSS only") %}
+              {% call cluster(gap="sm") %}
+                {{ badge(pack.name, variant="info") }}
+                {{ badge(pack.path, variant="muted") }}
+              {% end %}
+            {% end %}
+          {% end %}
+
+          <div data-testid="navigation-probe">
+            {{ primary_nav([
+              {"label": "Overview", "href": "/theme-pack-preview/" ~ pack.name ~ "/" ~ mode, "active": true, "badge": 3},
+              {"label": "Forms", "href": "/forms", "badge_expected": true},
+              {"label": "Data", "href": "/data"}
+            ], aria_label="Theme pack proof") }}
+          </div>
+
+          {% call grid(cols=2, gap="md") %}
+            {% call card(title="Form controls", subtitle="Inputs inherit field, border, and focus tokens") %}
+              <div data-testid="form-probe">
+                {% call stack(gap="sm") %}
+                  {{ text_field("project", label="Project", value=pack.label ~ " rollout", appearance="outlined", tone="primary") }}
+                  {{ select_field("owner", label="Owner", options=[{"value": "design", "label": "Design"}, {"value": "eng", "label": "Engineering"}], selected="eng") }}
+                  {{ checkbox_field("ship", checked=true, label="Ready to ship") }}
+                {% end %}
+              </div>
+            {% end %}
+
+            {% call card(title="Overlay", subtitle="Layer treatment remains legible on token surfaces") %}
+              <div class="theme-pack-browser-proof__media" data-testid="overlay-probe">
+                {{ overlay("gradient-bottom") }}
+                <div class="theme-pack-browser-proof__media-content">
+                  <strong>{{ pack.label }} operations</strong>
+                  <p>Review queue and release posture</p>
+                </div>
+              </div>
+            {% end %}
+          {% end %}
+
+          <div data-testid="dense-data-probe">
+            {{ table(
+              headers=["Queue", "State", "Count"],
+              rows=[("Registry", "Ready", "128"), ("Tokens", "Reviewing", "32"), ("Docs", "Queued", "17")],
+              align=["left", "left", "right"],
+              compact=true,
+              striped=true
+            ) }}
+          </div>
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+</main>
+</body>
+</html>

@@ -9,7 +9,9 @@ from chirp_ui.filters import (
     field_errors,
     html_attrs,
     icon,
+    validate_appearance_block,
     validate_size,
+    validate_tone_block,
     validate_variant,
     validate_variant_block,
 )
@@ -46,8 +48,10 @@ class TestGetLoader:
                 "field_errors": field_errors,
                 "html_attrs": html_attrs,
                 "icon": icon,
+                "validate_appearance_block": validate_appearance_block,
                 "validate_variant": validate_variant,
                 "validate_variant_block": validate_variant_block,
+                "validate_tone_block": validate_tone_block,
                 "validate_size": validate_size,
             }
         )
@@ -77,6 +81,8 @@ class TestRegisterFilters:
         assert "field_errors" in registered
         assert "html_attrs" in registered
         assert "icon" in registered
+        assert "validate_appearance_block" in registered
         assert "validate_variant" in registered
         assert "validate_variant_block" in registered
+        assert "validate_tone_block" in registered
         assert "validate_size" in registered

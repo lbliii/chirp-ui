@@ -19,7 +19,9 @@ from chirp_ui.filters import (
     resolve_status_variant,
     sanitize_color,
     shell_action_btn_variant,
+    validate_appearance_block,
     validate_size,
+    validate_tone_block,
     validate_variant,
     validate_variant_block,
     value_type,
@@ -41,6 +43,12 @@ class TestBem:
 
     def test_with_modifier(self) -> None:
         assert bem("btn", modifier="loading") == "chirpui-btn chirpui-btn--loading"
+
+    def test_with_appearance_and_tone(self) -> None:
+        assert (
+            bem("btn", appearance="outlined", tone="danger")
+            == "chirpui-btn chirpui-btn--outlined chirpui-btn--danger"
+        )
 
     def test_with_cls(self) -> None:
         assert bem("card", cls="custom") == "chirpui-card custom"
@@ -98,6 +106,22 @@ class TestValidateVariantBlock:
     def test_invalid_returns_default(self) -> None:
         assert validate_variant_block("bad", "btn", default="") == ""
         assert validate_variant_block("x", "dropdown__item", default="default") == "default"
+
+
+class TestValidateAppearanceToneBlock:
+    def test_valid_appearance_returns_value(self) -> None:
+        assert validate_appearance_block("outlined", "btn") == "outlined"
+
+    def test_valid_tone_returns_value(self) -> None:
+        assert validate_tone_block("danger", "btn") == "danger"
+
+    def test_empty_axis_returns_empty_default(self) -> None:
+        assert validate_appearance_block("", "btn") == ""
+        assert validate_tone_block("", "btn") == ""
+
+    def test_invalid_axis_returns_default(self) -> None:
+        assert validate_appearance_block("raised", "btn", default="") == ""
+        assert validate_tone_block("error", "btn", default="") == ""
 
 
 class TestValidateSize:
@@ -606,6 +630,8 @@ class TestRegisterFilters:
         assert "icon" in registered
         assert "validate_variant" in registered
         assert "validate_variant_block" in registered
+        assert "validate_appearance_block" in registered
+        assert "validate_tone_block" in registered
         assert "validate_size" in registered
         assert "value_type" in registered
         assert registered["value_type"] is value_type
