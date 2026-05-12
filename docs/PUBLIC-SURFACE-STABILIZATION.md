@@ -52,3 +52,24 @@ Promote a component only when all of these are true:
   reduced-motion, and gauntlet checks settle.
 - Review dense navigation composites only after object-page browser proof lands.
 - Keep legacy primitive decisions in `PLAN-primitive-vocabulary-hardening.md`.
+- Keep first-party legacy-helper cleanup under
+  `PLAN-legacy-helper-cleanup-pre-1.0.md`; current static showcase usage is
+  inventoried in `STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md`.
+
+## Legacy Helper Authoring Policy
+
+Legacy helpers remain public compatibility surface before 1.0, but generated
+docs and examples should not present them as preferred authoring. The manifest
+must continue to project these entries as `authoring=compatibility`, and
+`find --authoring preferred` should not include utility-like typography or
+spacing helpers.
+
+Initial policy:
+
+- `mt-sm`, `mt-md`, and `mb-md` are deprecate-later candidates.
+- `font-*`, `ui-*`, and `text-muted` stay compatibility until first-party page
+  chrome is clean and a removal path exists.
+- `visually-hidden`, `focus-ring`, and `list-reset` stay narrow
+  accessibility/reset helpers.
+- `truncate`, `clamp-*`, `scroll-x`, `min-w-0`, and `placeholder-inline` stay
+  narrow containment escape hatches.

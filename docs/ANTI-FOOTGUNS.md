@@ -8,7 +8,7 @@ Common pitfalls and how to avoid them.
 
 ChirpUI's authoring vocabulary is composition primitives and components, not chains of CSS helper classes. If new template code starts to look like `chirpui-mt-md chirpui-font-sm chirpui-text-muted`, reshape it around `stack()`, `cluster()`, `grid()`, `frame()`, `block()`, `container()`, `flow`, `actions`, or `prose` instead.
 
-**Fix:** Treat helpers such as `.chirpui-truncate`, `.chirpui-scroll-x`, `.chirpui-min-w-0`, `.chirpui-clamp-2`, `.chirpui-focus-ring`, and typography shorthands as legacy compatibility surface. Use them for narrow containment, accessibility, or migration cases; do not add new stable helpers in that style without a vocabulary review. Full guide: [PRIMITIVES.md](PRIMITIVES.md).
+**Fix:** Treat helpers such as `.chirpui-truncate`, `.chirpui-scroll-x`, `.chirpui-min-w-0`, `.chirpui-clamp-2`, `.chirpui-focus-ring`, and typography shorthands as legacy compatibility surface. Use them for narrow containment, accessibility, or migration cases; do not add new stable helpers in that style without a vocabulary review. Treat `.chirpui-mt-sm`, `.chirpui-mt-md`, and `.chirpui-mb-md` as deprecate-later spacing shortcuts in new first-party examples. Full guide: [PRIMITIVES.md](PRIMITIVES.md).
 
 ---
 
