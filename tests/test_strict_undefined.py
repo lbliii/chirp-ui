@@ -111,6 +111,16 @@ def test_nav_tree_minimal_item(env: Environment) -> None:
     assert "chirpui-nav-tree" in out
 
 
+def test_media_hero_shelf_title_only_item(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/media_patterns.html" import media_hero_shelf %}'
+        '{{ media_hero_shelf(items=[{"href": "/watch", "title": "Only title"}]) }}',
+    )
+    assert "Only title" in out
+    assert "chirpui-media-hero-shelf" in out
+
+
 def test_tree_view_minimal_node(env: Environment) -> None:
     out = _render(
         env,

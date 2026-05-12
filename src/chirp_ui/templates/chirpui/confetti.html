@@ -18,8 +18,9 @@
 {% set ncolors = colors | length %}
 {% set nshapes = shapes | length %}
 <div class="chirpui-confetti{{ " " ~ cls if cls else "" }}"
-     x-data="{ active: false }"
-     @{{ event }}.window="active = true; setTimeout(() => active = false, 3500)"
+     x-data="{ active: false, burst() { this.active = true; setTimeout(() => this.active = false, 3500) } }"
+     data-confetti-event="{{ event }}"
+     x-init="window.addEventListener($el.dataset.confettiEvent, () => burst())"
      x-show="active"
      x-cloak
      aria-hidden="true">
@@ -32,5 +33,5 @@
 {% end %}
 
 {% def confetti_trigger(label, event="confetti", tag="button", cls="") %}
-<{{ tag }} class="{{ cls }}" @click="$dispatch('{{ event }}')">{{ label }}</{{ tag }}>
+<{{ tag }} class="{{ cls }}" x-data data-confetti-event="{{ event }}" @click="$dispatch($el.dataset.confettiEvent)">{{ label }}</{{ tag }}>
 {% end %}

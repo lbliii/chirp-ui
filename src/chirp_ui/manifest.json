@@ -21154,7 +21154,7 @@
         "chirpui-tray__title"
       ],
       "extra_emits": [],
-      "lineno": 23,
+      "lineno": 24,
       "macro": "tray",
       "maturity": "stable",
       "modifiers": [

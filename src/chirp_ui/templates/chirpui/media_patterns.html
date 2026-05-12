@@ -72,7 +72,7 @@
     {% call carousel_slide(loop.index) %}
         {{ title_card(
             item.href,
-            item.title | default(item.name),
+            item.get("title") or item.get("name", ""),
             artwork=item.artwork | default(item.thumbnail | default(artwork)),
             duration=item.duration | default("Preview"),
             meta=item.meta | default(none),

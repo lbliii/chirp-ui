@@ -12,9 +12,10 @@
 
 {% def tray_trigger(id, label, icon=none) %}
 <button type="button" class="chirpui-btn chirpui-btn--default chirpui-btn--sm"
-        x-data
-        @click="$store.trays['{{ id }}'] = true"
-        aria-controls="tray-{{ id }}" :aria-expanded="$store.trays['{{ id }}']">
+        x-data="{ get trayId() { return $el.dataset.trayId } }"
+        data-tray-id="{{ id }}"
+        @click="$store.trays[trayId] = true"
+        aria-controls="tray-{{ id }}" :aria-expanded="$store.trays[trayId]">
     {% if icon %}<span aria-hidden="true">{{ icon | icon }}</span>{% endif %}
     {{ label }}
 </button>
@@ -22,18 +23,19 @@
 
 {% def tray(id, title, position="right") %}
 <div class="chirpui-tray chirpui-tray--{{ position }} chirpui-tray--closed" id="tray-{{ id }}"
-     :class="{ 'chirpui-tray--closed': !$store.trays['{{ id }}'], 'chirpui-tray--open': $store.trays['{{ id }}'] }"
+     data-tray-id="{{ id }}"
+     :class="{ 'chirpui-tray--closed': !$store.trays[trayId], 'chirpui-tray--open': $store.trays[trayId] }"
      role="dialog" aria-modal="true"
      aria-labelledby="tray-{{ id }}-title"
      aria-hidden="true"
-     :aria-hidden="!$store.trays['{{ id }}']"
-     x-data>
-    <div class="chirpui-tray__backdrop" @click="$store.trays['{{ id }}'] = false; $dispatch('chirpui:tray-closed', { id: '{{ id }}' })"></div>
-    <div class="chirpui-tray__panel" x-trap.inert.noscroll="$store.trays['{{ id }}']">
+     :aria-hidden="!$store.trays[trayId]"
+     x-data="{ get trayId() { return $el.dataset.trayId }, close() { $store.trays[this.trayId] = false; $dispatch('chirpui:tray-closed', { id: this.trayId }) } }">
+    <div class="chirpui-tray__backdrop" @click="close()"></div>
+    <div class="chirpui-tray__panel" x-trap.inert.noscroll="$store.trays[trayId]">
         <header class="chirpui-tray__header">
             <h2 class="chirpui-tray__title" id="tray-{{ id }}-title">{{ title }}</h2>
             <button type="button" class="chirpui-tray__close"
-                    @click="$store.trays['{{ id }}'] = false; $dispatch('chirpui:tray-closed', { id: '{{ id }}' })"
+                    @click="close()"
                     aria-label="Close">×</button>
         </header>
         <div class="chirpui-tray__body">

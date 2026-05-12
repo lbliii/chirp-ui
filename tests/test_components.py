@@ -2759,22 +2759,33 @@ class TestAlpineMagics:
             '{% call tray("filters", "Filters", position="left") %}content{% end %}'
         ).render()
         assert 'class="chirpui-btn chirpui-btn--default chirpui-btn--sm"' in html
-        assert "@click=\"$store.trays['filters'] = true\"" in html
+        assert 'data-tray-id="filters"' in html
+        assert '@click="$store.trays[trayId] = true"' in html
         assert 'aria-controls="tray-filters"' in html
-        assert ":aria-expanded=\"$store.trays['filters']\"" in html
+        assert ':aria-expanded="$store.trays[trayId]"' in html
         assert 'class="chirpui-tray chirpui-tray--left chirpui-tray--closed"' in html
         assert 'id="tray-filters"' in html
         assert 'role="dialog"' in html
         assert 'aria-modal="true"' in html
         assert 'aria-labelledby="tray-filters-title"' in html
         assert 'aria-hidden="true"' in html
-        assert ":aria-hidden=\"!$store.trays['filters']\"" in html
+        assert ':aria-hidden="!$store.trays[trayId]"' in html
         assert "chirpui-tray__backdrop" in html
         assert "chirpui-tray__panel" in html
-        assert "x-trap.inert.noscroll=\"$store.trays['filters']\"" in html
+        assert 'x-trap.inert.noscroll="$store.trays[trayId]"' in html
         assert 'id="tray-filters-title"' in html
         assert "chirpui-tray__close" in html
         assert "chirpui:tray-closed" in html
+
+    def test_tray_id_stays_out_of_alpine_literals(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tray.html" import tray, tray_trigger %}'
+            '{{ tray_trigger("bad\\\'];alert(1)//", "Open") }}'
+            '{% call tray("bad\\\'];alert(1)//", "Bad") %}content{% end %}'
+        ).render()
+        assert "$store.trays['bad" not in html
+        assert "$store.trays[trayId]" in html
+        assert "data-tray-id=" in html
 
     def test_tray_renders_closed_by_default(self, env: Environment) -> None:
         html = env.from_string(
@@ -2798,19 +2809,30 @@ class TestAlpineMagics:
             '{% call modal_overlay("confirm", "Confirm") %}content{% end %}'
         ).render()
         assert 'class="chirpui-btn chirpui-btn--danger chirpui-btn--sm"' in html
-        assert "@click=\"$store.modals['confirm'] = true\"" in html
+        assert 'data-modal-id="confirm"' in html
+        assert '@click="$store.modals[modalId] = true"' in html
         assert 'aria-controls="modal-confirm"' in html
-        assert ":aria-expanded=\"$store.modals['confirm']\"" in html
+        assert ':aria-expanded="$store.modals[modalId]"' in html
         assert 'class="chirpui-modal chirpui-modal--closed"' in html
         assert 'id="modal-confirm"' in html
         assert 'role="dialog"' in html
         assert 'aria-modal="true"' in html
         assert 'aria-labelledby="modal-confirm-title"' in html
-        assert ":aria-hidden=\"!$store.modals['confirm']\"" in html
+        assert ':aria-hidden="!$store.modals[modalId]"' in html
         assert "chirpui-modal__backdrop" in html
         assert "chirpui-modal__panel" in html
-        assert "x-trap.inert.noscroll=\"$store.modals['confirm']\"" in html
+        assert 'x-trap.inert.noscroll="$store.modals[modalId]"' in html
         assert 'id="modal-confirm-title"' in html
+
+    def test_modal_id_stays_out_of_alpine_literals(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/modal_overlay.html" import modal_overlay, modal_overlay_trigger %}'
+            '{{ modal_overlay_trigger("bad\\\'];alert(1)//", "Open") }}'
+            '{% call modal_overlay("bad\\\'];alert(1)//", "Bad") %}content{% end %}'
+        ).render()
+        assert "$store.modals['bad" not in html
+        assert "$store.modals[modalId]" in html
+        assert "data-modal-id=" in html
 
 
 # ---------------------------------------------------------------------------
@@ -8138,6 +8160,8 @@ class TestConfetti:
         assert "chirpui-confetti" in html
         assert "chirpui-confetti__piece" in html
         assert "x-data" in html
+        assert 'data-confetti-event="confetti"' in html
+        assert "@confetti.window" not in html
 
     def test_trigger_button(self, env: Environment) -> None:
         html = env.from_string(
@@ -8146,6 +8170,17 @@ class TestConfetti:
         ).render()
         assert "Party!" in html
         assert "$dispatch" in html
+        assert 'data-confetti-event="confetti"' in html
+
+    def test_confetti_event_stays_out_of_alpine_literals(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/confetti.html" import confetti, confetti_trigger %}'
+            '{{ confetti(event="bad\\\'];alert(1)//") }}'
+            '{{ confetti_trigger("Party!", event="bad\\\'];alert(1)//") }}'
+        ).render()
+        assert "$dispatch('bad" not in html
+        assert "@bad" not in html
+        assert "$el.dataset.confettiEvent" in html
 
     def test_custom_count(self, env: Environment) -> None:
         html = env.from_string(
