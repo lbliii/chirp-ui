@@ -17,9 +17,7 @@ LEGACY_HELPER_RE = re.compile(
 def _legacy_helper_classes(text: str) -> Counter[str]:
     classes: list[str] = []
     for match in re.finditer(r'class="([^"]*)"', text):
-        classes.extend(
-            cls for cls in match.group(1).split() if LEGACY_HELPER_RE.fullmatch(cls)
-        )
+        classes.extend(cls for cls in match.group(1).split() if LEGACY_HELPER_RE.fullmatch(cls))
     return Counter(classes)
 
 
@@ -42,6 +40,4 @@ def test_static_showcase_legacy_helper_triage_doc_matches_inventory() -> None:
     ]:
         assert required in text
 
-    assert "STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md" in INDEX.read_text(
-        encoding="utf-8"
-    )
+    assert "STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md" in INDEX.read_text(encoding="utf-8")

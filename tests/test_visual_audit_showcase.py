@@ -157,9 +157,7 @@ def test_visual_audit_showcase_does_not_teach_legacy_helper_classes() -> None:
     }
 
     assert parser.classes.isdisjoint(legacy_helpers)
-    assert parser.classes.intersection({"chirpui-visually-hidden"}) == {
-        "chirpui-visually-hidden"
-    }
+    assert parser.classes.intersection({"chirpui-visually-hidden"}) == {"chirpui-visually-hidden"}
 
 
 def test_visual_audit_showcase_status_tokens_use_base_semantics() -> None:
