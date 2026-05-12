@@ -5,8 +5,9 @@ escalate to ``ValueError``.  In non-strict mode, :func:`_warn` emits a
 filterable :class:`ChirpUIValidationWarning` so developers see feedback
 without crashes.
 
-``VARIANT_REGISTRY`` and ``SIZE_REGISTRY`` are derived from the canonical
-component descriptors in :mod:`chirp_ui.components`.
+``VARIANT_REGISTRY``, ``APPEARANCE_REGISTRY``, ``TONE_REGISTRY``, and
+``SIZE_REGISTRY`` are derived from the canonical component descriptors in
+:mod:`chirp_ui.components`.
 
 Everything not in __all__ is internal and may change without notice.
 """
@@ -19,8 +20,10 @@ from typing import Literal
 from chirp_ui.components import COMPONENTS
 
 __all__ = [
+    "APPEARANCE_REGISTRY",
     "CHIRP_UI_DEV_ENV",
     "SIZE_REGISTRY",
+    "TONE_REGISTRY",
     "VARIANT_REGISTRY",
     "ChirpUIDeprecationWarning",
     "ChirpUIValidationWarning",
@@ -36,6 +39,14 @@ _chirpui_strict: ContextVar[bool] = ContextVar("chirpui_strict", default=False)
 
 VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     name: desc.variants for name, desc in COMPONENTS.items() if desc.variants
+}
+
+APPEARANCE_REGISTRY: dict[str, tuple[str, ...]] = {
+    name: desc.appearances for name, desc in COMPONENTS.items() if desc.appearances
+}
+
+TONE_REGISTRY: dict[str, tuple[str, ...]] = {
+    name: desc.tones for name, desc in COMPONENTS.items() if desc.tones
 }
 
 SIZE_REGISTRY: dict[str, tuple[str, ...]] = {

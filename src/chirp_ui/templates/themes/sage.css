@@ -1,0 +1,111 @@
+/* chirp-ui Sage theme pack
+ *
+ * Token-only catalog pack for low-glare knowledge and planning tools.
+ * Load after /static/chirpui.css.
+ */
+
+@layer app.theme {
+    :root {
+        color-scheme: light dark;
+        --chirpui-accent: oklch(0.55 0.13 155);
+        --chirpui-accent-hover: oklch(0.48 0.14 155);
+        --chirpui-accent-secondary: oklch(0.56 0.11 218);
+        --chirpui-on-accent: #ffffff;
+        --chirpui-radius: 0.375rem;
+        --chirpui-radius-lg: 0.625rem;
+        --chirpui-radius-xl: 0.875rem;
+    }
+
+    [data-theme="light"] {
+        color-scheme: light;
+        --chirpui-bg: oklch(0.982 0.008 145);
+        --chirpui-bg-subtle: oklch(0.952 0.016 145);
+        --chirpui-surface: oklch(0.995 0.004 145);
+        --chirpui-surface-alt: oklch(0.965 0.014 145);
+        --chirpui-surface-elevated: oklch(1 0.004 145);
+        --chirpui-border: oklch(0.86 0.03 145);
+        --chirpui-text: oklch(0.22 0.03 145);
+        --chirpui-text-muted: oklch(0.48 0.032 145);
+        --chirpui-primary: var(--chirpui-accent);
+        --chirpui-success: oklch(0.56 0.15 145);
+        --chirpui-warning: oklch(0.72 0.14 74);
+        --chirpui-danger: oklch(0.55 0.18 28);
+        --chirpui-error: var(--chirpui-danger);
+        --chirpui-info: oklch(0.58 0.13 218);
+        --chirpui-muted: var(--chirpui-text-muted);
+        --chirpui-alert-info-bg: oklch(0.96 0.024 218);
+        --chirpui-alert-info-border: oklch(0.8 0.07 218);
+        --chirpui-alert-success-bg: oklch(0.96 0.03 145);
+        --chirpui-alert-success-border: oklch(0.8 0.08 145);
+        --chirpui-alert-warning-bg: oklch(0.97 0.036 74);
+        --chirpui-alert-warning-border: oklch(0.82 0.11 74);
+        --chirpui-alert-error-bg: oklch(0.96 0.03 28);
+        --chirpui-alert-error-border: oklch(0.78 0.1 28);
+    }
+
+    [data-theme="dark"] {
+        color-scheme: dark;
+        --chirpui-bg: oklch(0.17 0.024 145);
+        --chirpui-bg-subtle: oklch(0.22 0.028 145);
+        --chirpui-surface: oklch(0.24 0.03 145);
+        --chirpui-surface-alt: oklch(0.29 0.034 145);
+        --chirpui-surface-elevated: oklch(0.33 0.037 145);
+        --chirpui-border: oklch(0.42 0.04 145);
+        --chirpui-text: oklch(0.94 0.01 145);
+        --chirpui-text-muted: oklch(0.72 0.02 145);
+        --chirpui-accent: oklch(0.72 0.12 155);
+        --chirpui-accent-hover: oklch(0.8 0.1 155);
+        --chirpui-accent-secondary: oklch(0.75 0.1 218);
+        --chirpui-primary: var(--chirpui-accent);
+        --chirpui-success: oklch(0.72 0.14 145);
+        --chirpui-warning: oklch(0.82 0.12 74);
+        --chirpui-danger: oklch(0.72 0.15 28);
+        --chirpui-error: var(--chirpui-danger);
+        --chirpui-info: oklch(0.74 0.11 218);
+        --chirpui-muted: var(--chirpui-text-muted);
+        --chirpui-alert-info-bg: oklch(0.26 0.05 218);
+        --chirpui-alert-info-border: oklch(0.56 0.11 218);
+        --chirpui-alert-success-bg: oklch(0.25 0.045 145);
+        --chirpui-alert-success-border: oklch(0.56 0.12 145);
+        --chirpui-alert-warning-bg: oklch(0.28 0.05 74);
+        --chirpui-alert-warning-border: oklch(0.68 0.12 74);
+        --chirpui-alert-error-bg: oklch(0.26 0.05 28);
+        --chirpui-alert-error-border: oklch(0.62 0.13 28);
+    }
+
+    @media (prefers-color-scheme: light) {
+        [data-theme="system"] {
+            color-scheme: light;
+            --chirpui-bg: oklch(0.982 0.008 145);
+            --chirpui-bg-subtle: oklch(0.952 0.016 145);
+            --chirpui-surface: oklch(0.995 0.004 145);
+            --chirpui-surface-alt: oklch(0.965 0.014 145);
+            --chirpui-surface-elevated: oklch(1 0.004 145);
+            --chirpui-border: oklch(0.86 0.03 145);
+            --chirpui-text: oklch(0.22 0.03 145);
+            --chirpui-text-muted: oklch(0.48 0.032 145);
+            --chirpui-accent: oklch(0.55 0.13 155);
+            --chirpui-accent-hover: oklch(0.48 0.14 155);
+            --chirpui-accent-secondary: oklch(0.56 0.11 218);
+            --chirpui-primary: var(--chirpui-accent);
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        [data-theme="system"] {
+            color-scheme: dark;
+            --chirpui-bg: oklch(0.17 0.024 145);
+            --chirpui-bg-subtle: oklch(0.22 0.028 145);
+            --chirpui-surface: oklch(0.24 0.03 145);
+            --chirpui-surface-alt: oklch(0.29 0.034 145);
+            --chirpui-surface-elevated: oklch(0.33 0.037 145);
+            --chirpui-border: oklch(0.42 0.04 145);
+            --chirpui-text: oklch(0.94 0.01 145);
+            --chirpui-text-muted: oklch(0.72 0.02 145);
+            --chirpui-accent: oklch(0.72 0.12 155);
+            --chirpui-accent-hover: oklch(0.8 0.1 155);
+            --chirpui-accent-secondary: oklch(0.75 0.1 218);
+            --chirpui-primary: var(--chirpui-accent);
+        }
+    }
+}

@@ -1,8 +1,9 @@
 """Component descriptors — single source of truth for chirp-ui's BEM API surface.
 
 Each :class:`ComponentDescriptor` declares the full public contract of a component:
-block name, allowed variants (mutually exclusive), sizes, boolean modifiers
-(additive), BEM elements, Kida slot names, and overridable CSS custom properties.
+block name, allowed variants (legacy/mutually exclusive), appearances, tones,
+sizes, boolean modifiers (additive), BEM elements, Kida slot names, and
+overridable CSS custom properties.
 
 Downstream consumers:
 
@@ -74,6 +75,14 @@ class ComponentDescriptor:
     variants : tuple[str, ...]
         Mutually-exclusive modifiers (``chirpui-{block}--{variant}``).
         Empty string ``""`` means "no variant class emitted".
+    appearances : tuple[str, ...]
+        Cross-component visual treatment values the component opts into
+        (``chirpui-{block}--{appearance}``). These are descriptor-backed macro
+        params, not global utility classes.
+    tones : tuple[str, ...]
+        Semantic intent values the component opts into
+        (``chirpui-{block}--{tone}``). ``danger`` is the shared destructive
+        tone; legacy ``error`` values remain component-local variants.
     sizes : tuple[str, ...]
         Size modifiers (``chirpui-{block}--{size}``).
     modifiers : tuple[str, ...]
@@ -129,6 +138,8 @@ class ComponentDescriptor:
 
     block: str
     variants: tuple[str, ...] = ()
+    appearances: tuple[str, ...] = ()
+    tones: tuple[str, ...] = ()
     sizes: tuple[str, ...] = ()
     modifiers: tuple[str, ...] = ()
     elements: tuple[str, ...] = ()
@@ -201,12 +212,15 @@ class ComponentDescriptor:
         """Every ``chirpui-*`` class the component's CSS may legitimately emit.
 
         Derived from the BEM grammar: block + ``__element`` + ``--variant`` /
-        ``--size`` / ``--modifier``, plus any :attr:`extra_emits` escape
-        hatches, minus descriptor-local :attr:`trim_emits`.
+        ``--appearance`` / ``--tone`` / ``--size`` / ``--modifier``, plus any
+        :attr:`extra_emits` escape hatches, minus descriptor-local
+        :attr:`trim_emits`.
         """
         classes: set[str] = {f"chirpui-{self.block}"}
         classes |= {f"chirpui-{self.block}__{e}" for e in self.elements}
         classes |= {f"chirpui-{self.block}--{v}" for v in self.variants if v}
+        classes |= {f"chirpui-{self.block}--{a}" for a in self.appearances if a}
+        classes |= {f"chirpui-{self.block}--{t}" for t in self.tones if t}
         classes |= {f"chirpui-{self.block}--{s}" for s in self.sizes if s}
         classes |= {f"chirpui-{self.block}--{m}" for m in self.modifiers if m}
         classes |= set(self.extra_emits)
@@ -227,6 +241,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "btn": ComponentDescriptor(
         block="btn",
         variants=("", "primary", "secondary", "ghost", "danger", "success", "warning"),
+        appearances=("filled", "tonal", "outlined", "ghost"),
+        tones=("neutral", "primary", "secondary", "success", "warning", "danger"),
         sizes=("", "sm", "md", "lg"),
         modifiers=("loading",),
         elements=("icon", "label", "spinner"),
@@ -300,6 +316,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "alert": ComponentDescriptor(
         block="alert",
         variants=("info", "success", "warning", "error"),
+        appearances=("tonal", "outlined", "filled"),
+        tones=("info", "success", "warning", "danger"),
         elements=("icon", "body", "title", "actions", "close"),
         slots=("", "actions"),
         template="alert.html",
@@ -318,6 +336,8 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "custom",
             "custom-solid",
         ),
+        appearances=("tonal", "filled", "outlined"),
+        tones=("neutral", "primary", "success", "warning", "danger", "info"),
         elements=("icon", "text"),
         slots=("",),
         tokens=("--chirpui-badge-color", "--chirpui-badge-text"),
@@ -427,6 +447,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     # -- Containers ---------------------------------------------------------
     "card": ComponentDescriptor(
         block="card",
+        appearances=("filled", "tonal", "outlined", "ghost"),
+        tones=(
+            "neutral",
+            "primary",
+            "secondary",
+            "success",
+            "warning",
+            "danger",
+            "info",
+        ),
         modifiers=(
             "collapsible",
             "hoverable",
@@ -477,6 +507,17 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "glass",
             "frosted",
             "smoke",
+        ),
+        appearances=("filled", "tonal", "outlined", "ghost"),
+        tones=(
+            "surface",
+            "neutral",
+            "primary",
+            "secondary",
+            "success",
+            "warning",
+            "danger",
+            "info",
         ),
         modifiers=("full", "no-padding", "bento"),
         elements=("eyebrow", "title", "lede", "body"),
@@ -2382,7 +2423,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "range",
             "radio",
             "radio-horizontal",
+            "file",
+            "masked",
+            "phone",
+            "money",
         ),
+        appearances=("filled", "tonal", "outlined", "ghost"),
+        tones=("neutral", "primary", "success", "warning", "danger", "info"),
         elements=(
             "label",
             "input",

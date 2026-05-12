@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, grid, stack, block, cluster, page_header %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/alert.html" import alert %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/forms.html" import text_field %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Appearance & Tone", subtitle="Descriptor-backed visual preset axes for buttons, badges, alerts, surfaces, and fields.") }}
+
+<h2>Buttons</h2>
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call cluster(gap="sm") %}
+  {{ btn("Primary", tone="primary") }}
+  {{ btn("Success", tone="success") }}
+  {{ btn("Warning", tone="warning") }}
+  {{ btn("Delete", tone="danger") }}
+{% end %}
+{% call cluster(gap="sm") %}
+  {{ btn("Outlined primary", appearance="outlined", tone="primary") }}
+  {{ btn("Outlined danger", appearance="outlined", tone="danger") }}
+  {{ btn("Ghost", appearance="ghost", tone="neutral") }}
+  {{ btn("Legacy ghost", variant="ghost") }}
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Cards</h2>
+{% call grid(cols=2) %}
+{% call card(title="Outlined primary", appearance="outlined", tone="primary") %}
+<p class="chirpui-text-muted chirpui-font-sm">Cards use component-owned BEM modifiers for preset treatment.</p>
+{% slot footer %}{{ badge("Pilot", tone="primary") }}{% end %}
+{% end %}
+{% call card(title="Danger review", appearance="tonal", tone="danger") %}
+<p class="chirpui-text-muted chirpui-font-sm">Danger remains the shared destructive tone; error stays component-local.</p>
+{% slot footer %}{{ btn("Review", appearance="outlined", tone="danger") }}{% end %}
+{% end %}
+{% end %}
+
+<h2>Badges</h2>
+{% call block() %}
+{% call cluster(gap="sm") %}
+  {{ badge("Primary", tone="primary") }}
+  {{ badge("Success", tone="success") }}
+  {{ badge("Warning", tone="warning") }}
+  {{ badge("Danger", tone="danger") }}
+  {{ badge("Legacy error", variant="error") }}
+  {{ badge("Info outline", appearance="outlined", tone="info") }}
+{% end %}
+{% end %}
+
+<h2>Alerts</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call alert(tone="danger", appearance="outlined", title="Danger tone") %}
+This uses the shared destructive tone without introducing a shared error tone.
+{% end %}
+{% end %}
+{% call block() %}
+{% call alert(variant="error", title="Legacy error variant") %}
+Existing error variants keep rendering during migration.
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Surfaces</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{% call surface(appearance="outlined", tone="primary") %}
+<strong>Outlined primary surface</strong>
+<p class="chirpui-text-muted chirpui-font-sm">Token-backed tone on a container.</p>
+{% end %}
+{% end %}
+{% call block() %}
+{% call surface(appearance="tonal", tone="danger") %}
+<strong>Tonal danger surface</strong>
+<p class="chirpui-text-muted chirpui-font-sm">Useful for review or destructive-action panels.</p>
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Fields</h2>
+{% call grid(cols=2) %}
+{% call block() %}
+{{ text_field("project", label="Project", placeholder="Atlas", appearance="outlined", tone="primary", hint="Appearance and tone style the wrapper and input.") }}
+{% end %}
+{% call block() %}
+{{ text_field("budget", label="Budget", value="$12,400", appearance="tonal", tone="success") }}
+{% end %}
+{% call block() %}
+{{ text_field("risk", label="Risk note", appearance="outlined", tone="danger", hint="Danger can emphasize intent without being a validation error.") }}
+{% end %}
+{% call block() %}
+{{ text_field("email", label="Email", errors={"email": ["Required"]}, appearance="outlined", tone="danger") }}
+{% end %}
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

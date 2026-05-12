@@ -20,6 +20,74 @@
     font-size: var(--chirpui-font-sm);
 }
 
+.chirpui-field--file,
+.chirpui-field--masked,
+.chirpui-field--phone,
+.chirpui-field--money {
+    max-width: 100%;
+}
+
+/* Appearance axis */
+.chirpui-field--filled .chirpui-field__input {
+    background: var(--chirpui-surface);
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-field--tonal .chirpui-field__input {
+    background: var(--chirpui-bg-subtle);
+    border-color: transparent;
+}
+
+.chirpui-field--outlined .chirpui-field__input {
+    background: transparent;
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-field--ghost .chirpui-field__input {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+/* Tone axis. Error remains validation state via .chirpui-field--error. */
+.chirpui-field--neutral .chirpui-field__input {
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-field--primary .chirpui-field__input {
+    border-color: var(--chirpui-accent);
+}
+
+.chirpui-field--success .chirpui-field__input {
+    border-color: var(--chirpui-success);
+}
+
+.chirpui-field--warning .chirpui-field__input {
+    border-color: var(--chirpui-warning);
+}
+
+.chirpui-field--danger .chirpui-field__input {
+    border-color: var(--chirpui-danger);
+}
+
+.chirpui-field--info .chirpui-field__input {
+    border-color: var(--chirpui-info);
+}
+
+.chirpui-field--primary .chirpui-field__label,
+.chirpui-field--success .chirpui-field__label,
+.chirpui-field--warning .chirpui-field__label,
+.chirpui-field--danger .chirpui-field__label,
+.chirpui-field--info .chirpui-field__label {
+    color: var(--_field-tone, currentColor);
+}
+
+.chirpui-field--primary { --_field-tone: var(--chirpui-accent); }
+.chirpui-field--success { --_field-tone: var(--chirpui-success); }
+.chirpui-field--warning { --_field-tone: var(--chirpui-warning); }
+.chirpui-field--danger { --_field-tone: var(--chirpui-danger); }
+.chirpui-field--info { --_field-tone: var(--chirpui-info); }
+
 .chirpui-field__label {
     display: block;
     margin-bottom: var(--chirpui-spacing-xs);

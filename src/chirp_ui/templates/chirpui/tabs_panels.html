@@ -21,10 +21,11 @@
 
 {% def tab_button(id, label, active=false) %}
 <button type="button" class="chirpui-tabs__tab"
-        :class="{ 'chirpui-tabs__tab--active': active === '{{ id }}' }"
-        role="tab" :aria-selected="active === '{{ id }}'"
-        :aria-controls="$id('tabpanel', '{{ id }}')" :id="$id('tab', '{{ id }}')"
-        @click="active = '{{ id }}'; $dispatch('chirpui:tab-changed', { tab: '{{ id }}' })">
+        data-tab-id="{{ id }}"
+        :class="{ 'chirpui-tabs__tab--active': active === $el.dataset.tabId }"
+        role="tab" :aria-selected="active === $el.dataset.tabId"
+        :aria-controls="$id('tabpanel', $el.dataset.tabId)" :id="$id('tab', $el.dataset.tabId)"
+        @click="selectTab($el)">
     {{ label }}
 </button>
 {% end %}
@@ -33,15 +34,15 @@
 {% def tab(id, label, active=false) %}{{ tab_button(id, label, active=active) }}{% end %}
 
 {% def tab_panel(id, active=false) %}
-<div class="chirpui-tab-panel" :id="$id('tabpanel', '{{ id }}')" role="tabpanel"
-     :aria-labelledby="$id('tab', '{{ id }}')"
-     x-show="active === '{{ id }}'" x-cloak x-transition>
+<div class="chirpui-tab-panel" data-tab-id="{{ id }}" :id="$id('tabpanel', $el.dataset.tabId)" role="tabpanel"
+     :aria-labelledby="$id('tab', $el.dataset.tabId)"
+     x-show="active === $el.dataset.tabId" x-cloak x-transition>
     {% slot %}
 </div>
 {% end %}
 
 {% def tabs_container(active=none) %}
-<div class="chirpui-tabs" x-id="['tab', 'tabpanel']" x-data="{ active: '{{ active or '' }}' }">
+<div class="chirpui-tabs" x-id="['tab', 'tabpanel']" x-data="chirpuiTabs()" data-active="{{ active or '' }}">
     {% slot %}
 </div>
 {% end %}

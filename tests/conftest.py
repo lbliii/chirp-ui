@@ -66,6 +66,8 @@ def _field_errors_stub(errors: Any, field_name: str) -> Sequence[str]:
 def _bem_stub(
     block: str,
     variant: str = "",
+    appearance: str = "",
+    tone: str = "",
     size: str = "",
     modifier: str | list[str] = "",
     cls: str = "",
@@ -77,11 +79,24 @@ def _bem_stub(
     else:
         modifiers = [modifier] if modifier else []
     parts = [f"chirpui-{block}"]
-    if variant:
-        parts.append(f"chirpui-{block}--{variant}")
+    seen = set(parts)
+    for value in (appearance, tone, variant):
+        if not value:
+            continue
+        cls_name = f"chirpui-{block}--{value}"
+        if cls_name not in seen:
+            parts.append(cls_name)
+            seen.add(cls_name)
     if size:
-        parts.append(f"chirpui-{block}--{size}")
-    parts.extend(f"chirpui-{block}--{m}" for m in modifiers)
+        cls_name = f"chirpui-{block}--{size}"
+        if cls_name not in seen:
+            parts.append(cls_name)
+            seen.add(cls_name)
+    for m in modifiers:
+        cls_name = f"chirpui-{block}--{m}"
+        if cls_name not in seen:
+            parts.append(cls_name)
+            seen.add(cls_name)
     if cls:
         parts.append(cls)
     return " ".join(parts)
@@ -126,6 +141,24 @@ def _validate_size_stub(value: str, block: str, default: str = "") -> str:
             category=ChirpUIValidationWarning,
         )
     return result
+
+
+def _validate_appearance_block_stub(value: str, block: str, default: str = "") -> str:
+    """Stub for chirp-ui ``validate_appearance_block`` filter."""
+    from chirp_ui.validation import APPEARANCE_REGISTRY
+
+    if not value:
+        return default
+    return _validate_variant_stub(value, APPEARANCE_REGISTRY.get(block, ()), default)
+
+
+def _validate_tone_block_stub(value: str, block: str, default: str = "") -> str:
+    """Stub for chirp-ui ``validate_tone_block`` filter."""
+    from chirp_ui.validation import TONE_REGISTRY
+
+    if not value:
+        return default
+    return _validate_variant_stub(value, TONE_REGISTRY.get(block, ()), default)
 
 
 def _html_attrs_stub(value: Any) -> str | Markup:
@@ -223,6 +256,8 @@ def env() -> Environment:
             "icon": icon_filter,
             "validate_variant": _validate_variant_stub,
             "validate_variant_block": _validate_variant_block_stub,
+            "validate_appearance_block": _validate_appearance_block_stub,
+            "validate_tone_block": _validate_tone_block_stub,
             "validate_size": _validate_size_stub,
             "value_type": value_type,
             "sanitize_color": sanitize_color,

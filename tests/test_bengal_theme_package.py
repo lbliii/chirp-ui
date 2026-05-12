@@ -13,11 +13,21 @@ from pathlib import Path, PurePosixPath
 
 import pytest
 
+from chirp_ui.theme_packs import THEME_PACKS
+
 THEME_PACKAGE = "bengal_themes.chirp_theme"
 THEME_TEMPLATE_PATH_FRAGMENT = "bengal_themes/chirp_theme/templates"
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SITE_ROOT = REPO_ROOT / "site"
 _WORKSPACE_BENGAL = REPO_ROOT.parent / "b-stack" / "bengal"
+LEGACY_BENGAL_PALETTE_THEME_PACKS = {
+    "": "ember",
+    "snow-lynx": "sage",
+    "brown-bengal": "ember",
+    "silver-bengal": "atlas",
+    "charcoal-bengal": "ember",
+    "blue-bengal": "atlas",
+}
 
 if _WORKSPACE_BENGAL.exists():
     bengal_parent = _WORKSPACE_BENGAL.parent
@@ -329,6 +339,114 @@ def test_chirp_theme_tokens_use_chirpui_vocabulary() -> None:
     assert "--chirpui-container-max:" in css
     assert "--chirpui-prose-max-width:" in css
     assert "--chirp-theme-" not in css
+
+
+def test_chirp_theme_palette_controls_map_to_theme_pack_vocabulary() -> None:
+    """Legacy Bengal palettes should identify their nearest curated theme pack."""
+    package_root = resources.files(THEME_PACKAGE)
+    controls = (package_root / "templates" / "partials" / "theme-controls.html").read_text(
+        encoding="utf-8"
+    )
+    known_packs = {pack.name for pack in THEME_PACKS}
+
+    for palette, theme_pack in LEGACY_BENGAL_PALETTE_THEME_PACKS.items():
+        assert theme_pack in known_packs
+        assert f"theme_option('palette', '{palette}'" in controls
+
+    assert 'data-theme-pack="ember"' in controls
+    assert 'data-theme-pack="atlas"' in controls
+    assert 'data-theme-pack="sage"' in controls
+    assert "theme.palette_default" in controls
+    assert 'data-{{ type }}="{{ value }}"' in controls
+
+
+def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
+    """Theme partials and static JS should agree on packaged control hooks."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    assets_root = package_root / "assets"
+
+    base = (templates_root / "base.html").read_text(encoding="utf-8")
+    theme_controls = (templates_root / "partials" / "theme-controls.html").read_text(
+        encoding="utf-8"
+    )
+    search_modal = (templates_root / "partials" / "search-modal.html").read_text(encoding="utf-8")
+    inline_search = (templates_root / "partials" / "search.html").read_text(encoding="utf-8")
+    navigation = (templates_root / "partials" / "navigation-components.html").read_text(
+        encoding="utf-8"
+    )
+    theme_js = (assets_root / "js" / "core" / "theme.js").read_text(encoding="utf-8")
+    search_js = (assets_root / "js" / "core" / "search.js").read_text(encoding="utf-8")
+    mobile_nav_js = (assets_root / "js" / "enhancements" / "mobile-nav.js").read_text(
+        encoding="utf-8"
+    )
+    tabs_js = (assets_root / "js" / "enhancements" / "tabs.js").read_text(encoding="utf-8")
+    toc_js = (assets_root / "js" / "enhancements" / "toc.js").read_text(encoding="utf-8")
+    style = (assets_root / "css" / "style.css").read_text(encoding="utf-8")
+
+    assert 'popovertarget="{{ _theme_menu_id }}"' in theme_controls
+    assert 'popover class="theme-dropdown__menu--popover"' in theme_controls
+    assert 'class="theme-option"' in theme_controls
+    assert "querySelectorAll('.theme-dropdown__menu--popover[popover]')" in theme_js
+    assert "window.BengalTheme" in theme_js
+
+    assert 'id="search-modal"' in search_modal
+    assert 'id="search-modal-input"' in search_modal
+    assert 'id="search-modal-results-list"' in search_modal
+    assert "data-close-modal" in search_modal
+    assert "document.getElementById('search-modal')" in search_js
+    assert "window.BengalSearchModal" in search_js
+    assert "#nav-search-trigger" in search_js
+
+    assert 'id="search-container"' in inline_search
+    assert 'data-variant="{{ variant }}"' in inline_search
+    assert 'id="search-input"' in inline_search
+    assert "document.getElementById('search-input')" in search_js
+
+    assert 'id="mobile-nav-dialog"' in base
+    assert 'class="mobile-nav-search" data-open-search' in base
+    assert "theme-menu-desktop" in base
+    assert "theme-menu-mobile" in base
+    assert "document.getElementById('mobile-nav-dialog')" in mobile_nav_js
+    assert "window.BengalNav" in mobile_nav_js
+    assert "window.BengalSearchModal.open()" in mobile_nav_js
+
+    assert 'data-bengal="toc"' in navigation
+    assert 'data-toc-mode="normal"' in navigation
+    assert 'data-toc-item="#{{ node_id }}"' in navigation
+    assert "details.toc-group" in toc_js
+    assert "window.BengalTOC" in toc_js
+
+    assert "const SELECTOR_TABS = '.tabs, .code-tabs';" in tabs_js
+    assert "data-tab-target" in tabs_js
+    assert "data-sync-value" in tabs_js
+    assert "window.BengalTabs" in tabs_js
+
+    assert "components/tabs-native.css" in style
+    assert "components/search-modal.css" in style
+    assert "components/toc.css" in style
+
+
+def test_chirp_theme_palette_files_are_documented_transitional_aliases() -> None:
+    """Retained data-palette CSS must stay explicit and map to documented aliases."""
+    package_root = resources.files(THEME_PACKAGE)
+    css_root = package_root / "assets" / "css"
+    style = (css_root / "style.css").read_text(encoding="utf-8")
+    palette_root = css_root / "tokens" / "palettes"
+    palette_files = sorted(
+        rel_path
+        for rel_path, _resource in _iter_resource_files(palette_root)
+        if rel_path.endswith(".css")
+    )
+    expected_files = sorted(
+        f"{palette}.css" for palette in LEGACY_BENGAL_PALETTE_THEME_PACKS if palette
+    )
+
+    assert palette_files == expected_files
+    for filename in expected_files:
+        assert f"tokens/palettes/{filename}" in style
+
+    assert not ({pack.name for pack in THEME_PACKS} & set(LEGACY_BENGAL_PALETTE_THEME_PACKS))
 
 
 def test_chirp_theme_style_uses_chirpui_cards_instead_of_legacy_card_bundle() -> None:

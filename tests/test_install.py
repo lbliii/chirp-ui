@@ -3,7 +3,16 @@
 from kida import Environment
 
 import chirp_ui
-from chirp_ui.filters import bem, deprecate_param, field_errors, html_attrs, icon, validate_variant
+from chirp_ui.filters import (
+    bem,
+    deprecate_param,
+    field_errors,
+    html_attrs,
+    icon,
+    validate_appearance_block,
+    validate_tone_block,
+    validate_variant,
+)
 
 
 def test_import_chirp_ui() -> None:
@@ -24,6 +33,8 @@ def test_get_loader_loads_template() -> None:
             "field_errors": field_errors,
             "html_attrs": html_attrs,
             "icon": icon,
+            "validate_appearance_block": validate_appearance_block,
+            "validate_tone_block": validate_tone_block,
             "validate_variant": validate_variant,
         }
     )
@@ -40,3 +51,6 @@ def test_static_path_exists() -> None:
     assert path.exists()
     assert (path / "chirpui.css").exists()
     assert (path / "themes" / "app-theme-starter.css").exists()
+    assert (path / "themes" / "atlas.css").exists()
+    assert (path / "themes" / "ember.css").exists()
+    assert (path / "themes" / "sage.css").exists()

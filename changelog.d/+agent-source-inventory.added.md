@@ -1,0 +1,1 @@
+Added a Sprint 6 agent source inventory with provenance labels, snippet eligibility states, and tests that prevent generated, static-showcase, docs-wrapper, and browser-fixture sources from becoming copyable snippets.

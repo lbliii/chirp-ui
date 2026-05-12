@@ -31,6 +31,7 @@ from chirp_ui.alpine import (
 from chirp_ui.components import DesignSystemReport, DesignSystemStats, design_system_report
 from chirp_ui.filters import TemplateFilterApp, register_colors, reset_colors
 from chirp_ui.library import LIBRARY_CONTRACT, LibraryAsset, LibraryContract, get_library_contract
+from chirp_ui.theme_packs import THEME_PACKS, ThemePack, get_theme_pack, list_theme_packs
 from chirp_ui.validation import (
     ChirpUIDeprecationWarning,
     ChirpUIValidationWarning,
@@ -48,6 +49,7 @@ __all__ = [
     "ALPINE_REQUIRED_COMPONENTS",
     "LIBRARY_CONTRACT",
     "MANIFEST_PATH",
+    "THEME_PACKS",
     "AlpineRequirement",
     "AlpineRuntimeCheck",
     "ChirpUIDeprecationWarning",
@@ -57,11 +59,14 @@ __all__ = [
     "DesignSystemStats",
     "LibraryAsset",
     "LibraryContract",
+    "ThemePack",
     "check_alpine_runtime",
     "design_system_report",
     "get_library_contract",
     "get_loader",
+    "get_theme_pack",
     "is_strict",
+    "list_theme_packs",
     "load_manifest",
     "register_colors",
     "register_filters",
@@ -70,7 +75,7 @@ __all__ = [
     "static_path",
 ]
 
-# Path to the shipped ``chirpui-manifest@3`` JSON. Populated at build time by
+# Path to the shipped ``chirpui-manifest@5`` JSON. Populated at build time by
 # ``scripts/build_manifest.py`` and committed as package data; CI's
 # ``build-manifest-check`` task guards against drift. Agents and tooling can
 # ground against this file after a clean ``pip install chirp-ui`` with no

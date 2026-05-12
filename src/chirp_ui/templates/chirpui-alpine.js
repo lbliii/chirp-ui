@@ -97,6 +97,17 @@
                 this.open = false;
                 focusElement(focusAfter);
             },
+            selectItem: function (element, focusAfter) {
+                var detail = { label: element.dataset.label || "" };
+                if (element.dataset.href) {
+                    detail.href = element.dataset.href;
+                }
+                if (element.dataset.action) {
+                    detail.action = element.dataset.action;
+                }
+                this.close(focusAfter);
+                this.$dispatch("chirpui:dropdown-selected", detail);
+            },
             reposition: function () {
                 var panel = this.$refs.panel;
                 var trigger = this.$refs.trigger;
@@ -213,6 +224,19 @@
                     label: this.selected,
                     value: element.dataset.value || this.selected,
                 });
+            },
+        };
+    });
+
+    register("chirpuiTabs", function () {
+        return {
+            active: "",
+            init: function () {
+                this.active = this.$el.dataset.active || "";
+            },
+            selectTab: function (element) {
+                this.active = element.dataset.tabId || "";
+                this.$dispatch("chirpui:tab-changed", { tab: this.active });
             },
         };
     });

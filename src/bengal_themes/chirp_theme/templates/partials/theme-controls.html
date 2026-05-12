@@ -5,7 +5,11 @@
 
 {# HELPER: Render a theme option button #}
 {% def theme_option(type, value, label_key, default_label, icon_name=none) %}
-<button type="button" data-{{ type }}="{{ value }}" class="theme-option">
+<button type="button" data-{{ type }}="{{ value }}"
+    {% if type == 'palette' and (value == '' or value == 'brown-bengal' or value == 'charcoal-bengal') %}data-theme-pack="ember"{% end %}
+    {% if type == 'palette' and (value == 'blue-bengal' or value == 'silver-bengal') %}data-theme-pack="atlas"{% end %}
+    {% if type == 'palette' and value == 'snow-lynx' %}data-theme-pack="sage"{% end %}
+    class="theme-option">
     {% if icon_name %}{{ icon(icon_name, size=18) }}{% end %}
     <span>{{ t(label_key, default=default_label) }}</span>
 </button>
@@ -30,6 +34,7 @@
         </fieldset>
         <fieldset class="theme-menu-section">
             <legend class="separator">{{ t('theme.palette', default='Palette') }}</legend>
+            {{ theme_option('palette', '', 'theme.palette_default', 'Default') }}
             {{ theme_option('palette', 'snow-lynx', 'theme.palette_snow_lynx', 'Snow Lynx') }}
             {{ theme_option('palette', 'brown-bengal', 'theme.palette_brown_bengal', 'Brown Bengal') }}
             {{ theme_option('palette', 'silver-bengal', 'theme.palette_silver_bengal', 'Silver Bengal') }}

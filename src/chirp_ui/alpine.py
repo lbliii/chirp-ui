@@ -80,6 +80,10 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         factory="chirpuiDropdownSelect",
         macros=("dropdown_menu",),
     ),
+    "chirpuiTabs": AlpineRequirement(
+        factory="chirpuiTabs",
+        macros=("tabs_panels",),
+    ),
     "chirpuiCopy": AlpineRequirement(
         factory="chirpuiCopy",
         macros=("code", "copy_button", "streaming"),

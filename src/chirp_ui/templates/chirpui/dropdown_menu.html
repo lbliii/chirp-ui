@@ -39,21 +39,23 @@
         {% set icon = item.get("icon", "") %}
         {% if href %}
         <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ href }}" role="menuitem"
+           data-label="{{ item.get("label", "") }}" data-href="{{ href }}"
            {{ route_link_attrs(href) | html_attrs }}
-           @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', href: '{{ href | e }}' })">
+           @click="selectItem($el, $refs.trigger)">
             {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
             {{ item.get("label", "") }}
         </a>
         {% elif action %}
         <button type="button" class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}"
-                data-action="{{ action }}" role="menuitem"
-                @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', action: '{{ action | e }}' })">
+                data-label="{{ item.get("label", "") }}" data-action="{{ action }}" role="menuitem"
+                @click="selectItem($el, $refs.trigger)">
             {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
             {{ item.get("label", "") }}
         </button>
         {% else %}
         <span class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" role="menuitem"
-              @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}' })">
+              data-label="{{ item.get("label", "") }}"
+              @click="selectItem($el, $refs.trigger)">
             {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
             {{ item.get("label", "") }}
         </span>
@@ -151,15 +153,16 @@
         {% set variant = item.get("variant", "default") | validate_variant_block("dropdown__item", "default") %}
         {% if item_href %}
         <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ item_href }}" role="menuitem"
+           data-label="{{ item.get("label", "") }}" data-href="{{ item_href }}"
            {{ route_link_attrs(item_href) | html_attrs }}
-           @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', href: '{{ item_href | e }}' })">
+           @click="selectItem($el, $refs.trigger)">
             {% if item.get("icon") %}<span class="chirpui-dropdown__icon">{{ item.get("icon") }}</span>{% endif %}
             {{ item.get("label", "") }}
         </a>
         {% else %}
         <button type="button" class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}"
-                data-action="{{ item.get('action', '') }}" role="menuitem"
-                @click="close($refs.trigger); $dispatch('chirpui:dropdown-selected', { label: '{{ item.get("label", "") | e }}', action: '{{ item.get("action", "") | e }}' })">
+                data-label="{{ item.get("label", "") }}" data-action="{{ item.get('action', '') }}" role="menuitem"
+                @click="selectItem($el, $refs.trigger)">
             {% if item.get("icon") %}<span class="chirpui-dropdown__icon">{{ item.get("icon") }}</span>{% endif %}
             {{ item.get("label", "") }}
         </button>

@@ -115,7 +115,7 @@ report = design_system_report()
 print(report["stats"]["total_components"])  # 309
 ```
 
-The shipped manifest schema is `chirpui-manifest@3`. It is available as:
+The shipped manifest schema is `chirpui-manifest@5`. It is available as:
 
 | Surface | How to read it |
 |---|---|
@@ -140,11 +140,13 @@ contract = chirp_ui.get_library_contract()
 print(contract.static_root)
 print([asset.path for asset in contract.css])
 print([asset.path for asset in contract.js])
+print([pack.path for pack in contract.theme_packs])
 ```
 
 The contract is framework-neutral. It describes the template package/path,
 static root, manifest path/schema, ordered CSS entries, ordered JS entries, and
-optional runtime assets. Hosts still own how those assets are bundled, linked,
+optional runtime assets. It also lists packaged token-only theme packs under
+`contract.theme_packs`. Hosts still own how those assets are bundled, linked,
 fingerprinted, and served.
 
 ## CSS Contract
@@ -178,14 +180,23 @@ properties for theming. Do not fight the design system with specificity.
 
 Fresh apps should start with a token-only app theme layer loaded after
 `chirpui.css`. Chirp-UI ships a starter at
-`/static/themes/app-theme-starter.css`; it covers light, dark, and `system`
-mode so `theme_toggle()` has coherent app-owned tokens immediately.
+`/static/themes/app-theme-starter.css`, plus curated catalog packs at
+`/static/themes/atlas.css`, `/static/themes/ember.css`, and
+`/static/themes/sage.css`; each covers light, dark, and `system` mode so
+`theme_toggle()` has coherent app-owned tokens immediately. The runnable
+component showcase includes a `/theme-packs` matrix for visual comparison.
 
 For token and override details, see
 [APP-THEME.md](docs/APP-THEME.md),
 [TOKENS.md](docs/TOKENS.md),
 [CSS-OVERRIDE-SURFACE.md](docs/CSS-OVERRIDE-SURFACE.md), and
 [COMPONENT-OPTIONS.md](docs/COMPONENT-OPTIONS.md).
+
+High-traffic components also support descriptor-backed visual presets through
+macro parameters such as `appearance="outlined"` and `tone="danger"`.
+Use these instead of hand-written preset classes. See
+[APPEARANCE-TONE.md](docs/APPEARANCE-TONE.md) for the pilot vocabulary and
+migration map.
 
 ## Interactivity
 

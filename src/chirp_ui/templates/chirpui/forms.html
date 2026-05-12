@@ -67,13 +67,15 @@
 
 {# Shared wrapper: label, slot (control), hint, errors. modifier adds chirpui-field--X.
    field_id: override wrapper id (default: "field-{name}"). oob: emit hx-swap-oob="true". #}
-{% def field_wrapper(name, label=none, errors=none, required=false, hint=none, modifier="", field_id=none, oob=false) %}
+{% def field_wrapper(name, label=none, errors=none, required=false, hint=none, modifier="", field_id=none, oob=false, appearance="", tone="") %}
 {% set _fid = field_id if field_id else "field-" ~ name %}
 {% set _eid = "errors-" ~ name %}
 {% set _has_errors = errors and errors | field_errors(name) %}
+{% set _appearance = appearance | validate_appearance_block("field", "") %}
+{% set _tone = tone | validate_tone_block("field", "") %}
 {# @consumes _form_density from: form — falls back to "" #}
 {% set _density = consume("_form_density", "") %}
-<div id="{{ _fid }}" class="chirpui-field{{ " chirpui-field--" ~ modifier if modifier else "" }}{{ " chirpui-field--dense" if _density else "" }}{{ " chirpui-field--error" if _has_errors else "" }}"{% if oob %} hx-swap-oob="true"{% end %}>
+<div id="{{ _fid }}" class="{{ "field" | bem(variant=modifier, appearance=_appearance, tone=_tone, modifier=(["dense"] if _density else []) + (["error"] if _has_errors else [])) }}"{% if oob %} hx-swap-oob="true"{% end %}>
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">
             {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
@@ -120,9 +122,9 @@
 
 {# Text input with label and error display #}
 {% def text_field(name, value="", label=none, errors=none, type="text",
-                  required=false, placeholder="", hint=none, attrs="", attrs_unsafe="") %}
+                  required=false, placeholder="", hint=none, attrs="", attrs_unsafe="", appearance="", tone="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
-{% call field_wrapper(name, label, errors, required, hint) %}
+{% call field_wrapper(name, label, errors, required, hint, appearance=appearance, tone=tone) %}
 <input class="chirpui-field__input"
        type="{{ type }}" id="{{ name }}" name="{{ name }}"
        value="{{ value }}"
@@ -136,9 +138,9 @@
 
 {# Password field with secure browser autocomplete defaults #}
 {% def password_field(name="password", value="", label=none, errors=none, required=true,
-                     placeholder="", hint=none, autocomplete="current-password", attrs="", attrs_unsafe="") %}
+                     placeholder="", hint=none, autocomplete="current-password", attrs="", attrs_unsafe="", appearance="", tone="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
-{% call field_wrapper(name, label, errors, required, hint) %}
+{% call field_wrapper(name, label, errors, required, hint, appearance=appearance, tone=tone) %}
 <input class="chirpui-field__input"
        type="password" id="{{ name }}" name="{{ name }}"
        value="{{ value }}"
@@ -153,8 +155,8 @@
 
 {# Textarea with label and error display #}
 {% def textarea_field(name, value="", label=none, errors=none,
-                      rows=4, required=false, placeholder="", hint=none) %}
-{% call field_wrapper(name, label, errors, required, hint) %}
+                      rows=4, required=false, placeholder="", hint=none, appearance="", tone="") %}
+{% call field_wrapper(name, label, errors, required, hint, appearance=appearance, tone=tone) %}
 <textarea class="chirpui-field__input"
           id="{{ name }}" name="{{ name }}" rows="{{ rows }}"
           {% if required %}required{% end %}
@@ -166,8 +168,8 @@
 
 {# Select dropdown with label and error display #}
 {% def select_field(name, options, selected="", label=none, errors=none,
-                    required=false, hint=none) %}
-{% call field_wrapper(name, label, errors, required, hint) %}
+                    required=false, hint=none, appearance="", tone="") %}
+{% call field_wrapper(name, label, errors, required, hint, appearance=appearance, tone=tone) %}
 <select class="chirpui-field__input"
         id="{{ name }}" name="{{ name }}"
         {% if required %}required{% end %}

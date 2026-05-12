@@ -263,14 +263,36 @@ def test_component_descriptor_key_variants_exist_in_css() -> None:
     )
 
 
+def test_component_descriptor_appearance_tone_axes_exist_in_css() -> None:
+    """Appearance/tone pilot classes must be registry-derived and CSS-defined."""
+    from chirp_ui.components import COMPONENTS
+
+    css_classes = _extract_css_defined_classes()
+    missing: list[str] = []
+    for name in ("btn", "alert", "badge", "card", "field", "surface"):
+        desc = COMPONENTS[name]
+        for value in (*desc.appearances, *desc.tones):
+            expected = f"chirpui-{desc.block}--{value}"
+            if expected not in css_classes:
+                missing.append(expected)
+    assert not missing, f"Appearance/tone classes missing from CSS ({len(missing)}): " + ", ".join(
+        sorted(missing)
+    )
+
+
 def test_token_catalog_covers_css() -> None:
-    """Every token in TOKEN_CATALOG must exist in chirpui.css."""
+    """TOKEN_CATALOG and chirpui.css must define the same --chirpui-* tokens."""
     from chirp_ui.tokens import TOKEN_CATALOG, extract_css_tokens
 
     css_tokens = extract_css_tokens()
     catalog_names = set(TOKEN_CATALOG)
     missing_from_css = sorted(catalog_names - css_tokens)
+    missing_from_catalog = sorted(css_tokens - catalog_names)
     assert not missing_from_css, (
         f"TOKEN_CATALOG has {len(missing_from_css)} entries not in CSS: "
         + ", ".join(missing_from_css[:10])
+    )
+    assert not missing_from_catalog, (
+        f"chirpui.css defines {len(missing_from_catalog)} tokens missing from TOKEN_CATALOG: "
+        + ", ".join(missing_from_catalog[:10])
     )

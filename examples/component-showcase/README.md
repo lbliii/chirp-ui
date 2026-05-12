@@ -22,6 +22,13 @@ uv run python chirp-ui/examples/component-showcase/app.py
 
 Then open http://localhost:8000.
 
+The appearance/tone pilot lives at `/appearance-tone` and shows the shared
+macro-parameter vocabulary across buttons, badges, alerts, cards, surfaces, and
+fields.
+
+The curated theme-pack gallery lives at `/theme-packs` and renders the packaged
+Atlas, Ember, and Sage token packs across light, dark, and system modes.
+
 > **Note:** chirp-ui requires `kida-templates>=0.9.0` and the showcase extra
 > installs `bengal-chirp>=0.6.0`. If you see `ModuleNotFoundError`, ensure
 > you're using the same Python environment where the showcase extra was installed.

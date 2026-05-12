@@ -12,6 +12,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
+from chirp_ui.theme_packs import THEME_PACKS, ThemePack
+
 AssetKind = Literal["css", "javascript", "other"]
 
 __all__ = [
@@ -19,6 +21,7 @@ __all__ = [
     "AssetKind",
     "LibraryAsset",
     "LibraryContract",
+    "ThemePack",
     "get_library_contract",
 ]
 
@@ -46,6 +49,7 @@ class LibraryContract(Mapping[str, object]):
     css: tuple[LibraryAsset, ...]
     js: tuple[LibraryAsset, ...]
     other: tuple[LibraryAsset, ...] = ()
+    theme_packs: tuple[ThemePack, ...] = ()
 
     @property
     def assets(self) -> tuple[LibraryAsset, ...]:
@@ -74,6 +78,7 @@ class LibraryContract(Mapping[str, object]):
             "css": tuple(_asset_mapping(asset) for asset in self.css),
             "js": tuple(_asset_mapping(asset) for asset in self.js),
             "other": tuple(_asset_mapping(asset) for asset in self.other),
+            "theme_packs": tuple(pack.as_mapping() for pack in self.theme_packs),
             "runtime": tuple(
                 dict.fromkeys(asset.runtime for asset in self.assets if asset.runtime)
             ),
@@ -107,7 +112,7 @@ LIBRARY_CONTRACT = LibraryContract(
     template_path="templates",
     static_root=_STATIC_ROOT,
     manifest_path=_PACKAGE_ROOT / "manifest.json",
-    manifest_schema="chirpui-manifest@3",
+    manifest_schema="chirpui-manifest@5",
     css=(
         LibraryAsset("chirpui.css", "css"),
         LibraryAsset("chirpui-transitions.css", "css"),
@@ -122,6 +127,7 @@ LIBRARY_CONTRACT = LibraryContract(
         ),
     ),
     other=(LibraryAsset("chirpui-logo.svg", "other", required=False),),
+    theme_packs=THEME_PACKS,
 )
 
 

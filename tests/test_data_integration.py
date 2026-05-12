@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pytest
 
+from chirp_ui.theme_packs import THEME_PACKS
 from chirp_ui.validation import ChirpUIDeprecationWarning, ChirpUIValidationWarning
 
 pytest.importorskip("chirp")
@@ -32,6 +33,9 @@ SHOWCASE_ROUTE_SMOKE_PATHS = (
     "/carousel",
     "/cards",
     "/forms",
+    "/appearance-tone",
+    "/theme-packs",
+    "/theme-packs/preview/atlas/light",
     "/ui",
     "/islands",
     "/islands/grid-state",
@@ -226,6 +230,46 @@ class TestDataPage:
         )[0]
         assert "oob_toast(&quot;Item saved!&quot;" in toast_section
         assert 'hx-swap-oob="beforeend:#chirpui-toasts"' not in toast_section
+
+    @pytest.mark.asyncio
+    async def test_theme_pack_showcase_uses_pack_catalog(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/theme-packs")
+        assert response.status == 200
+        assert "Theme Packs" in response.text
+        for pack in THEME_PACKS:
+            assert pack.label in response.text
+            assert f"/static/{pack.path}" in response.text
+            for mode in pack.modes:
+                assert f'/theme-packs/preview/{pack.name}/{mode}"' in response.text
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        ("pack_name", "mode"),
+        [(pack.name, mode) for pack in THEME_PACKS for mode in pack.modes],
+    )
+    async def test_theme_pack_preview_routes_render_isolated_css(
+        self, showcase_app, pack_name: str, mode: str
+    ) -> None:
+        pack = next(pack for pack in THEME_PACKS if pack.name == pack_name)
+        async with TestClient(showcase_app) as client:
+            response = await client.get(f"/theme-packs/preview/{pack_name}/{mode}")
+        assert response.status == 200
+        assert f'data-theme="{mode}"' in response.text
+        assert f'href="/static/{pack.path}"' in response.text
+        assert pack.label in response.text
+        assert "chirpui-btn" in response.text
+        assert "chirpui-card" in response.text
+        assert "chirpui-alert" in response.text
+        assert "chirpui-field" in response.text
+
+    @pytest.mark.asyncio
+    async def test_theme_pack_preview_rejects_unknown_pack_or_mode(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            missing_pack = await client.get("/theme-packs/preview/missing/light")
+            missing_mode = await client.get("/theme-packs/preview/atlas/sepia")
+        assert missing_pack.status == 404
+        assert missing_mode.status == 404
 
     @pytest.mark.asyncio
     async def test_effects_page_wraps_background_macros_with_canvas_height(

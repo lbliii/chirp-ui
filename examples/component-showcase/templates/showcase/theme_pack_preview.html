@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" data-theme="{{ mode }}" data-style="default">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ pack.label }} {{ mode }} theme preview</title>
+  <link rel="stylesheet" href="/static/chirpui.css">
+  <link rel="stylesheet" href="/static/{{ pack.path }}">
+  <link rel="stylesheet" href="/static/chirpui-transitions.css">
+</head>
+<body>
+{% from "chirpui/layout.html" import container, grid, stack, block, cluster, page_header %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/alert.html" import alert %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/forms.html" import text_field, select_field %}
+{% from "chirpui/metric_grid.html" import metric_card %}
+
+{% call container(max_width="44rem") %}
+{% call stack(gap="md") %}
+{{ page_header(pack.label, subtitle=pack.description, meta=mode ~ " mode") }}
+
+{% call cluster(gap="sm") %}
+  {{ btn("Primary", tone="primary") }}
+  {{ btn("Ghost", appearance="ghost", tone="neutral") }}
+  {{ btn("Danger", appearance="outlined", tone="danger") }}
+  {{ badge(pack.maturity, tone="info") }}
+{% end %}
+
+{% call grid(cols=2) %}
+{{ metric_card(value="98.4%", label="Uptime", trend="+1.2%", trend_direction="up", hint="Last 24 hours") }}
+{{ metric_card(value="27", label="Queued reviews", trend="-4", trend_direction="down", hint="Since yesterday") }}
+{% end %}
+
+{% call alert(tone="warning", appearance="tonal", title="Attention needed") %}
+Token contrast should hold across semantic surfaces, form controls, and status colors.
+{% end %}
+
+{% call card(title="Project health", appearance="outlined", tone="primary") %}
+<p class="chirpui-text-muted chirpui-font-sm">Cards, muted text, borders, and accent actions should read as one system.</p>
+{% slot footer %}
+{% call cluster(gap="sm") %}
+  {{ badge("Ready", tone="success") }}
+  {{ btn("Review", appearance="outlined", tone="primary", size="sm") }}
+{% end %}
+{% end %}
+{% end %}
+
+{% call surface(appearance="tonal", tone="info") %}
+{% call stack(gap="sm") %}
+<strong>Dense form sample</strong>
+{{ text_field("project", label="Project", value=pack.label ~ " rollout", appearance="outlined", tone="primary") }}
+{{ select_field("owner", label="Owner", options=[{"value": "design", "label": "Design"}, {"value": "eng", "label": "Engineering"}], selected="eng") }}
+{% end %}
+{% end %}
+
+{% call grid(cols=3) %}
+{% for tone in ("primary", "success", "warning", "danger", "info", "neutral") %}
+{% call block() %}
+{{ badge(tone, tone=tone) }}
+{% end %}
+{% end %}
+{% end %}
+
+{% end %}
+{% end %}
+</body>
+</html>

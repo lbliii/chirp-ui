@@ -1,0 +1,111 @@
+/* chirp-ui Atlas theme pack
+ *
+ * Token-only catalog pack for cool, operational interfaces.
+ * Load after /static/chirpui.css.
+ */
+
+@layer app.theme {
+    :root {
+        color-scheme: light dark;
+        --chirpui-accent: oklch(0.56 0.16 250);
+        --chirpui-accent-hover: oklch(0.49 0.17 250);
+        --chirpui-accent-secondary: oklch(0.58 0.12 285);
+        --chirpui-on-accent: #ffffff;
+        --chirpui-radius: 0.5rem;
+        --chirpui-radius-lg: 0.75rem;
+        --chirpui-radius-xl: 1rem;
+    }
+
+    [data-theme="light"] {
+        color-scheme: light;
+        --chirpui-bg: oklch(0.985 0.004 250);
+        --chirpui-bg-subtle: oklch(0.955 0.009 250);
+        --chirpui-surface: oklch(1 0 0);
+        --chirpui-surface-alt: oklch(0.972 0.007 250);
+        --chirpui-surface-elevated: oklch(1 0 0);
+        --chirpui-border: oklch(0.88 0.018 250);
+        --chirpui-text: oklch(0.22 0.032 250);
+        --chirpui-text-muted: oklch(0.5 0.028 250);
+        --chirpui-primary: var(--chirpui-accent);
+        --chirpui-success: oklch(0.58 0.15 155);
+        --chirpui-warning: oklch(0.72 0.14 78);
+        --chirpui-danger: oklch(0.55 0.19 28);
+        --chirpui-error: var(--chirpui-danger);
+        --chirpui-info: oklch(0.61 0.14 230);
+        --chirpui-muted: var(--chirpui-text-muted);
+        --chirpui-alert-info-bg: oklch(0.96 0.024 230);
+        --chirpui-alert-info-border: oklch(0.8 0.07 230);
+        --chirpui-alert-success-bg: oklch(0.96 0.028 155);
+        --chirpui-alert-success-border: oklch(0.8 0.08 155);
+        --chirpui-alert-warning-bg: oklch(0.97 0.034 78);
+        --chirpui-alert-warning-border: oklch(0.82 0.1 78);
+        --chirpui-alert-error-bg: oklch(0.96 0.03 28);
+        --chirpui-alert-error-border: oklch(0.79 0.1 28);
+    }
+
+    [data-theme="dark"] {
+        color-scheme: dark;
+        --chirpui-bg: oklch(0.17 0.024 250);
+        --chirpui-bg-subtle: oklch(0.22 0.028 250);
+        --chirpui-surface: oklch(0.24 0.03 250);
+        --chirpui-surface-alt: oklch(0.29 0.032 250);
+        --chirpui-surface-elevated: oklch(0.33 0.034 250);
+        --chirpui-border: oklch(0.42 0.038 250);
+        --chirpui-text: oklch(0.94 0.008 250);
+        --chirpui-text-muted: oklch(0.72 0.02 250);
+        --chirpui-accent: oklch(0.75 0.13 250);
+        --chirpui-accent-hover: oklch(0.82 0.11 250);
+        --chirpui-accent-secondary: oklch(0.77 0.11 285);
+        --chirpui-primary: var(--chirpui-accent);
+        --chirpui-success: oklch(0.72 0.15 155);
+        --chirpui-warning: oklch(0.82 0.12 78);
+        --chirpui-danger: oklch(0.72 0.15 28);
+        --chirpui-error: var(--chirpui-danger);
+        --chirpui-info: oklch(0.75 0.12 230);
+        --chirpui-muted: var(--chirpui-text-muted);
+        --chirpui-alert-info-bg: oklch(0.26 0.05 230);
+        --chirpui-alert-info-border: oklch(0.56 0.11 230);
+        --chirpui-alert-success-bg: oklch(0.25 0.045 155);
+        --chirpui-alert-success-border: oklch(0.56 0.12 155);
+        --chirpui-alert-warning-bg: oklch(0.28 0.05 78);
+        --chirpui-alert-warning-border: oklch(0.68 0.11 78);
+        --chirpui-alert-error-bg: oklch(0.26 0.05 28);
+        --chirpui-alert-error-border: oklch(0.62 0.13 28);
+    }
+
+    @media (prefers-color-scheme: light) {
+        [data-theme="system"] {
+            color-scheme: light;
+            --chirpui-bg: oklch(0.985 0.004 250);
+            --chirpui-bg-subtle: oklch(0.955 0.009 250);
+            --chirpui-surface: oklch(1 0 0);
+            --chirpui-surface-alt: oklch(0.972 0.007 250);
+            --chirpui-surface-elevated: oklch(1 0 0);
+            --chirpui-border: oklch(0.88 0.018 250);
+            --chirpui-text: oklch(0.22 0.032 250);
+            --chirpui-text-muted: oklch(0.5 0.028 250);
+            --chirpui-accent: oklch(0.56 0.16 250);
+            --chirpui-accent-hover: oklch(0.49 0.17 250);
+            --chirpui-accent-secondary: oklch(0.58 0.12 285);
+            --chirpui-primary: var(--chirpui-accent);
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        [data-theme="system"] {
+            color-scheme: dark;
+            --chirpui-bg: oklch(0.17 0.024 250);
+            --chirpui-bg-subtle: oklch(0.22 0.028 250);
+            --chirpui-surface: oklch(0.24 0.03 250);
+            --chirpui-surface-alt: oklch(0.29 0.032 250);
+            --chirpui-surface-elevated: oklch(0.33 0.034 250);
+            --chirpui-border: oklch(0.42 0.038 250);
+            --chirpui-text: oklch(0.94 0.008 250);
+            --chirpui-text-muted: oklch(0.72 0.02 250);
+            --chirpui-accent: oklch(0.75 0.13 250);
+            --chirpui-accent-hover: oklch(0.82 0.11 250);
+            --chirpui-accent-secondary: oklch(0.77 0.11 285);
+            --chirpui-primary: var(--chirpui-accent);
+        }
+    }
+}

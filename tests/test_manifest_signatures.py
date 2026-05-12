@@ -1,6 +1,7 @@
 """Manifest signature contract tests (Sprint 1 of agent-grounding-depth epic).
 
-These tests pin the ``@3`` schema additions: every component descriptor with
+These tests pin the ``@5`` schema contract, including the earlier signature and
+composition additions: every component descriptor with
 a discoverable macro surfaces ``params`` (positional order, ``has_default`` /
 ``is_required`` flags), ``macro`` (resolved identifier), ``lineno``, and
 composite slot-forwarding metadata.
@@ -15,9 +16,9 @@ from chirp_ui.components import COMPONENTS
 from chirp_ui.manifest import SCHEMA, build_manifest
 
 
-def test_schema_is_v3() -> None:
-    assert SCHEMA == "chirpui-manifest@3"
-    assert build_manifest()["schema"] == "chirpui-manifest@3"
+def test_schema_is_v5() -> None:
+    assert SCHEMA == "chirpui-manifest@5"
+    assert build_manifest()["schema"] == "chirpui-manifest@5"
 
 
 def test_metric_card_signature() -> None:
