@@ -33,6 +33,7 @@ These controller names are the stable behavior API for chirp-ui templates.
 |------------|---------|---------|
 | `chirpuiDropdown()` | Shared floating-menu open/close/reposition state | `dropdown_menu`, `dropdown_split` |
 | `chirpuiDropdownSelect()` | Dropdown select state, focus, keyboard navigation | `dropdown_select` |
+| `chirpuiTabs()` | Client-side tab-panel state and tab-change dispatch | `tabs_panels` |
 | `chirpuiCopy()` | Clipboard copy + timed feedback | `copy_button`, `code`, `streaming` |
 | `chirpuiThemeToggle()` | Theme cycle + persistence | `theme_toggle` |
 | `chirpuiStyleToggle()` | Style cycle + persistence | `style_toggle` |
@@ -79,7 +80,7 @@ Promote to a named controller when any of the following appear:
 
 | Magic | Purpose | Components |
 |-------|---------|------------|
-| **$el** | Current DOM element / dataset access | `chirpuiCopy`, `chirpuiDialogTarget`, `chirpuiStyleSelect` |
+| **$el** | Current DOM element / dataset access | `chirpuiCopy`, `chirpuiDialogTarget`, `chirpuiStyleSelect`, `chirpuiTabs` |
 | **$refs** | Focus and panel references | `chirpuiDropdown`, `chirpuiDropdownSelect` |
 | **$store** | Cross-instance UI state | `tray`, `modal_overlay` |
 | **$id** | Unique IDs for ARIA wiring | dropdowns, `tabs_panels` |
@@ -106,11 +107,17 @@ document.addEventListener("chirpui:dropdown-selected", (event) => {
 });
 ```
 
+Dropdown menu and split-menu item payloads are read from escaped `data-label`,
+`data-href`, and `data-action` attributes by `chirpuiDropdown().selectItem()`.
+Templates must not interpolate server-provided labels, URLs, or actions into
+Alpine JavaScript object literals.
+
 ## Accessibility Guarantees
 
 - **Dropdowns** return focus to the trigger on close and support Escape and click-outside dismissal.
 - **Dropdown select** focuses the first option on open and keeps combobox ARIA wiring stable.
 - **Tabs** use `$id` so multiple tab sets can coexist safely.
+- **Tab panels** read tab ids from escaped `data-tab-id` attributes; templates do not interpolate ids into Alpine JavaScript string literals.
 - **Dialog triggers** only open native `<dialog>` elements; the dialog itself remains the accessibility authority.
 
 ## References

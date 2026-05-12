@@ -43,6 +43,10 @@ for niche or legacy-heavy verticals while they are redesigned.
 - Legacy `--color-*`, `--radius-*`, and `--font-family-*` aliases are
   temporary compatibility for copied Bengal CSS. New CSS should read from
   `--chirpui-*` directly.
+- Legacy `data-palette` values are transitional aliases. Theme controls expose
+  `data-theme-pack` metadata so `snow-lynx` maps to `sage`,
+  `brown-bengal`/`charcoal-bengal`/default map to `ember`, and
+  `silver-bengal`/`blue-bengal` map to `atlas`.
 - If a copied default-theme pattern needs component-specific CSS, first ask
   whether the missing hook belongs in the Chirp UI component registry.
 - If a Markdown directive maps to an existing Chirp UI primitive, prefer a Kida
@@ -124,6 +128,8 @@ The current retained contract is:
   `assets/css/style.css`; future-parity CSS should not ship as dormant copied
   baseline baggage
 - theme CSS contains no `--chirp-theme-*` private token vocabulary
+- theme controls keep legacy `data-palette` choices mapped to `atlas`, `ember`,
+  or `sage`; the old palette names are not new theme-pack names
 - `chirp-theme.css` and `style.css` continue to parse cleanly
 
 Anything not listed above is intentionally outside the current retained runtime

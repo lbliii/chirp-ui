@@ -14,6 +14,8 @@ from chirp.http.request import Request
 from chirp.http.response import Response
 from chirp.templating.returns import Template
 
+from chirp_ui.theme_packs import get_theme_pack
+
 GAUNTLET_NAV_ITEMS = [
     {
         "title": "Workspace with a very long branch label",
@@ -440,6 +442,22 @@ def create_app() -> App:
     async def rapid_b(request: Request):
         await asyncio.sleep(0.05)
         return Template("rapid_page.html", page_title="Rapid B", rapid_label="Fast B")
+
+    @app.route("/theme-pack-preview/{name}/{mode}")
+    async def theme_pack_preview(request: Request, name: str, mode: str):
+        if mode not in {"light", "dark", "system"}:
+            return Response("Unknown theme mode", status=404)
+
+        pack = get_theme_pack(name)
+        if pack is None:
+            return Response("Unknown theme pack", status=404)
+
+        return Template(
+            "theme_pack_preview_page.html",
+            page_title=f"{pack.label} theme pack",
+            mode=mode,
+            pack=pack,
+        )
 
     # ── Fragment form: form inside boosted layout ────────────────────
 

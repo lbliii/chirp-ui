@@ -5,8 +5,10 @@ import threading
 import pytest
 
 from chirp_ui.validation import (
+    APPEARANCE_REGISTRY,
     CHIRP_UI_DEV_ENV,
     SIZE_REGISTRY,
+    TONE_REGISTRY,
     VARIANT_REGISTRY,
     _is_strict,
     set_strict,
@@ -116,6 +118,18 @@ class TestStrictEscalatesEveryValidationSite:
         with pytest.raises(ValueError, match="variant"):
             validate_variant_block("gold", "badge")
 
+    def test_invalid_appearance_raises(self) -> None:
+        from chirp_ui.filters import validate_appearance_block
+
+        with pytest.raises(ValueError, match="appearance"):
+            validate_appearance_block("raised", "btn")
+
+    def test_invalid_tone_raises(self) -> None:
+        from chirp_ui.filters import validate_tone_block
+
+        with pytest.raises(ValueError, match="tone"):
+            validate_tone_block("error", "btn")
+
     def test_invalid_size_raises(self) -> None:
         from chirp_ui.filters import validate_size
 
@@ -223,6 +237,31 @@ class TestVariantRegistry:
     def test_no_duplicate_variants(self) -> None:
         for block, variants in VARIANT_REGISTRY.items():
             assert len(variants) == len(set(variants)), f"{block} has duplicate variants"
+
+
+class TestAppearanceToneRegistry:
+    """Appearance/tone registries derive from component descriptors."""
+
+    def test_known_blocks_present(self) -> None:
+        expected = {"alert", "badge", "btn", "card", "field", "surface"}
+        assert expected <= set(APPEARANCE_REGISTRY)
+        assert expected <= set(TONE_REGISTRY)
+
+    def test_all_values_are_tuples_of_strings(self) -> None:
+        for registry in (APPEARANCE_REGISTRY, TONE_REGISTRY):
+            for block, values in registry.items():
+                assert isinstance(values, tuple), f"{block} value is not a tuple"
+                for value in values:
+                    assert isinstance(value, str), f"{block} axis value {value!r} is not str"
+
+    def test_shared_tone_excludes_error(self) -> None:
+        offenders = sorted(block for block, tones in TONE_REGISTRY.items() if "error" in tones)
+        assert not offenders, "shared tones must not include error: " + ", ".join(offenders)
+
+    def test_no_duplicate_axis_values(self) -> None:
+        for registry in (APPEARANCE_REGISTRY, TONE_REGISTRY):
+            for block, values in registry.items():
+                assert len(values) == len(set(values)), f"{block} has duplicate axis values"
 
 
 class TestSizeRegistry:

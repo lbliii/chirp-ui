@@ -73,6 +73,45 @@ def test_render_route_tabs_macro_renders_htmx_attrs(env: Environment) -> None:
     assert "chirpui-route-tab--active" in html
 
 
+def test_render_route_tabs_anatomy_contract(env: Environment) -> None:
+    env.add_global("tab_is_active", tab_is_active)
+    html = env.from_string(
+        '{% from "chirpui/route_tabs.html" import render_route_tabs %}'
+        '{{ render_route_tabs(tab_items, current_path, target="#page-root") }}'
+    ).render(
+        tab_items=(
+            {
+                "label": "Pulls",
+                "href": "/pulls",
+                "icon": "git-pull-request",
+                "badge": 2,
+                "badge_label": "2 pull requests",
+            },
+            {"label": "Runs", "href": "/runs", "badge_loading": True},
+            {"label": "Audit", "href": "/audit", "badge_expected": True},
+        ),
+        current_path="/pulls",
+    )
+
+    assert (
+        '<nav role="navigation" aria-label="Subsection navigation" class="chirpui-route-tabs">'
+        in html
+    )
+    assert 'class="chirpui-route-tab chirpui-route-tab--active"' in html
+    assert 'aria-current="page"' in html
+    assert 'hx-boost="false"' in html
+    assert 'hx-select="unset"' in html
+    assert 'hx-get="/pulls"' in html
+    assert 'hx-target="#page-root"' in html
+    assert 'hx-push-url="true"' in html
+    assert 'hx-swap="innerHTML"' in html
+    assert "chirpui-route-tab__icon" in html
+    assert "chirpui-route-tab__label" in html
+    assert 'aria-label="2 pull requests"' in html
+    assert "chirpui-route-tab__badge--loading" in html
+    assert "chirpui-route-tab__badge--reserved" in html
+
+
 def test_route_tabs_alias_still_renders(env: Environment) -> None:
     env.add_global("tab_is_active", tab_is_active)
     html = env.from_string(

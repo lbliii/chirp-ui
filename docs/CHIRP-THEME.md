@@ -92,6 +92,26 @@ content patterns. Theme CSS should tune `--chirpui-*` tokens first. Bengal
 legacy variables such as `--color-*` may remain temporarily only to support
 copied default-theme CSS while that CSS is deleted or translated.
 
+The curated app theme packs (`atlas`, `ember`, and `sage`) do not replace the
+Bengal `chirp-theme` package. They are token-only Chirp UI resources exposed
+from `chirp_ui.static_path()`. Bengal palette controls should either map to
+those pack names or be documented as transitional aliases until the retained
+default-theme palette surface is removed.
+
+Current Bengal palette controls are transitional `data-palette` aliases. The
+menu exposes `data-theme-pack` metadata so tools and future UI can line them up
+with the curated pack vocabulary without treating the old names as new Chirp UI
+theme packs:
+
+| Bengal palette | Forward theme-pack family | Status |
+|---|---|---|
+| Default | `ember` | Transitional alias for the current warm editorial package identity |
+| `snow-lynx` | `sage` | Transitional alias; soft low-glare palette |
+| `brown-bengal` | `ember` | Transitional alias; warm editorial palette |
+| `silver-bengal` | `atlas` | Transitional alias; cool operational neutral palette |
+| `charcoal-bengal` | `ember` | Transitional alias; warm dark editorial palette |
+| `blue-bengal` | `atlas` | Transitional alias; cool operational blue palette |
+
 The direction of dependency matters:
 
 - preferred: `chirp-theme` sets `--chirpui-*` tokens and composes `chirpui/*`

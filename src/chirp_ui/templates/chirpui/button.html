@@ -9,7 +9,7 @@
 
 {% from "chirpui/spinner.html" import spinner %}
 
-{% def btn(label, variant="", size="", loading=false, type="button", href=none, icon=none, cls="",
+{% def btn(label, variant="", appearance="", tone="", size="", loading=false, type="button", href=none, icon=none, cls="",
            attrs="", attrs_unsafe="", attrs_map=none, hx=none, hx_get=none, hx_post=none, hx_put=none,
            hx_patch=none, hx_delete=none, hx_target=none, hx_swap=none,
            hx_trigger=none, hx_include=none, hx_select=none, hx_ext=none,
@@ -17,13 +17,15 @@
            disabled=false, data_action=none, aria_label=none) %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set _variant = variant | validate_variant_block("btn", "") %}
+{% set _appearance = appearance | validate_appearance_block("btn", "") %}
+{% set _tone = tone | validate_tone_block("btn", "") %}
 {# @consumes _bar_density from: command_bar, filter_bar — falls back to "" #}
 {% set _bar_size = consume("_bar_density", "") %}
 {# @consumes _suspense_busy from: suspense_group — falls back to "" #}
 {% set _busy = consume("_suspense_busy", "") %}
 {% set _size = (size or _bar_size or "") | validate_size("btn", "") %}
 {% set _disabled = disabled or (_busy == "true") %}
-{% set base_class = "btn" | bem(variant=_variant, size=_size, modifier="loading" if loading else "", cls=cls) %}
+{% set base_class = "btn" | bem(variant=_variant, appearance=_appearance, tone=_tone, size=_size, modifier="loading" if loading else "", cls=cls) %}
 {% set _hx_dict = build_hx_attrs(hx=hx, hx_get=hx_get, hx_post=hx_post, hx_put=hx_put,
     hx_patch=hx_patch, hx_delete=hx_delete, hx_target=hx_target, hx_swap=hx_swap,
     hx_trigger=hx_trigger, hx_include=hx_include,

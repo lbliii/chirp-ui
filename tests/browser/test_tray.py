@@ -42,6 +42,41 @@ async def test_tray_closes_on_close_button(page, base_url):
     assert not await panel.is_visible()
 
 
+async def test_tray_closes_on_backdrop_click(page, base_url):
+    """Clicking the backdrop closes the tray."""
+    await page.goto(base_url + "/tray")
+    await wait_for_alpine(page)
+
+    await page.click("[aria-controls='tray-test-tray']")
+    await page.wait_for_timeout(300)
+
+    await page.locator(".chirpui-tray__backdrop").dispatch_event("click")
+    await page.wait_for_timeout(300)
+
+    panel = page.locator(".chirpui-tray--open")
+    assert not await panel.is_visible()
+
+
+async def test_tray_dispatches_close_event(page, base_url):
+    """Tray dispatches chirpui:tray-closed on close."""
+    await page.goto(base_url + "/tray")
+    await wait_for_alpine(page)
+    await page.evaluate("""
+        window._trayCloseEvents = [];
+        document.addEventListener('chirpui:tray-closed', (e) => {
+            window._trayCloseEvents.push(e.detail);
+        });
+    """)
+
+    await page.click("[aria-controls='tray-test-tray']")
+    await page.wait_for_timeout(300)
+    await page.locator(".chirpui-tray__close").dispatch_event("click")
+    await page.wait_for_timeout(300)
+
+    events = await page.evaluate("window._trayCloseEvents")
+    assert events[-1]["id"] == "test-tray"
+
+
 async def test_tray_has_dialog_role(page, base_url):
     """Tray panel has correct ARIA role and label."""
     await page.goto(base_url + "/tray")
@@ -50,3 +85,5 @@ async def test_tray_has_dialog_role(page, base_url):
     panel = page.locator("#tray-test-tray")
     assert await panel.get_attribute("role") == "dialog"
     assert await panel.get_attribute("aria-modal") == "true"
+    assert await panel.get_attribute("aria-labelledby") == "tray-test-tray-title"
+    assert await panel.get_attribute("aria-hidden") == "true"

@@ -67,6 +67,25 @@ a.chirpui-badge:focus-visible {
     overflow-wrap: anywhere;
 }
 
+/* Appearance axis */
+.chirpui-badge--tonal {
+    box-shadow: none;
+}
+
+.chirpui-badge--outlined {
+    background: transparent;
+}
+
+.chirpui-badge--filled {
+    box-shadow: none;
+}
+
+.chirpui-badge--neutral {
+    background: var(--chirpui-muted-bg);
+    color: var(--chirpui-text-muted);
+    border-color: var(--chirpui-border);
+}
+
 .chirpui-badge--primary {
     background: var(--chirpui-primary-muted);
     color: var(--chirpui-primary);
@@ -118,6 +137,12 @@ a.chirpui-badge--warning:active {
     border-color: var(--chirpui-error);
 }
 
+.chirpui-badge--danger {
+    background: color-mix(in srgb, var(--chirpui-danger) 12%, transparent);
+    color: var(--chirpui-danger);
+    border-color: var(--chirpui-danger);
+}
+
 a.chirpui-badge--error:hover {
     background: color-mix(in srgb, var(--chirpui-error) 25%, var(--chirpui-error-muted));
     color: color-mix(in srgb, var(--chirpui-error) var(--chirpui-shade-hover), black);
@@ -155,6 +180,45 @@ a.chirpui-badge--info:hover {
 
 a.chirpui-badge--info:active {
     background: color-mix(in srgb, var(--chirpui-info) 30%, var(--chirpui-alert-info-bg));
+}
+
+.chirpui-badge--outlined.chirpui-badge--primary,
+.chirpui-badge--outlined.chirpui-badge--success,
+.chirpui-badge--outlined.chirpui-badge--warning,
+.chirpui-badge--outlined.chirpui-badge--danger,
+.chirpui-badge--outlined.chirpui-badge--info,
+.chirpui-badge--outlined.chirpui-badge--neutral {
+    background: transparent;
+}
+
+.chirpui-badge--filled.chirpui-badge--primary {
+    background: var(--chirpui-primary);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-badge--filled.chirpui-badge--success {
+    background: var(--chirpui-success);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-badge--filled.chirpui-badge--warning {
+    background: var(--chirpui-warning);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-badge--filled.chirpui-badge--danger {
+    background: var(--chirpui-danger);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-badge--filled.chirpui-badge--info {
+    background: var(--chirpui-info);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-badge--filled.chirpui-badge--neutral {
+    background: var(--chirpui-text-muted);
+    color: var(--chirpui-bg);
 }
 
 /* Custom color (scoped --chirpui-badge-color) */

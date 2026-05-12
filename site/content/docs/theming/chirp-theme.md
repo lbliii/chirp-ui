@@ -90,3 +90,6 @@ implementation.
 
 The repo-level parity matrix in `docs/CHIRP-THEME-PARITY-MATRIX.md` is the
 source of truth for those decisions.
+
+The canonical source guide is
+[`docs/CHIRP-THEME.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/CHIRP-THEME.md?plain=1).

@@ -16,8 +16,8 @@ Per-component entry (one per manifest key, sorted):
 * ``- Macro:`` resolved macro identifier (when extractable)
 * ``- Maturity:``, ``- Role:``, ``- Authoring:``, ``- Requires:`` manifest metadata
 * Params table (name | required | default?)  — only when ``params`` non-empty
-* Slots / Composes / Variants / Sizes / Modifiers / Provides / Consumes — one
-  bullet each, only when the list is non-empty
+* Slots / Composes / Variants / Appearances / Tones / Sizes / Modifiers /
+  Provides / Consumes — one bullet each, only when the list is non-empty
 * Slot forwards table (slot | target | target slot) — only when present
 
 Pure-Python, stdlib only, deterministic. Mirrors ``scripts/build_manifest.py``
@@ -120,6 +120,8 @@ def _render_component(name: str, entry: dict) -> list[str]:
         ("Slots", entry.get("slots") or []),
         ("Composes", entry.get("composes") or []),
         ("Variants", entry.get("variants") or []),
+        ("Appearances", entry.get("appearances") or []),
+        ("Tones", entry.get("tones") or []),
         ("Sizes", entry.get("sizes") or []),
         ("Modifiers", entry.get("modifiers") or []),
         ("Provides", entry.get("provides") or []),

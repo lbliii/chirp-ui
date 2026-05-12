@@ -767,6 +767,14 @@ class TestSurface:
             ).render()
             assert f"chirpui-surface--{variant}" in html
 
+    def test_surface_appearance_tone(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/surface.html" import surface %}'
+            '{% call surface(appearance="outlined", tone="primary") %}X{% end %}'
+        ).render()
+        assert "chirpui-surface--outlined" in html
+        assert "chirpui-surface--primary" in html
+
     def test_surface_style_and_attrs(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/surface.html" import surface %}'
@@ -1514,6 +1522,14 @@ class TestButton:
         ).render()
         assert "chirpui-btn--primary" in html
 
+    def test_btn_appearance_tone(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/button.html" import btn %}'
+            '{{ btn("Delete", appearance="outlined", tone="danger") }}'
+        ).render()
+        assert "chirpui-btn--outlined" in html
+        assert "chirpui-btn--danger" in html
+
     def test_btn_loading(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/button.html" import btn %}'
@@ -2007,6 +2023,14 @@ class TestCard:
         assert "chirpui-card__header" in html
         assert "Hello" in html
 
+    def test_card_appearance_tone(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/card.html" import card %}'
+            '{% call card(title="Review", appearance="outlined", tone="danger") %}Content{% end %}'
+        ).render()
+        assert "chirpui-card--outlined" in html
+        assert "chirpui-card--danger" in html
+
     def test_card_with_footer(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/card.html" import card %}'
@@ -2359,6 +2383,33 @@ class TestModal:
         ).render()
         assert "chirpui-modal__header" not in html
 
+    def test_modal_anatomy_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/modal.html" import modal, modal_trigger %}'
+            '{{ modal_trigger("dlg", label="Open") }}'
+            '{% call modal("dlg", title="Settings", size="lg") %}'
+            "Body"
+            "{% slot header_actions %}<button>Help</button>{% end %}"
+            '{% slot footer %}<form method="dialog"><button>Done</button></form>{% end %}'
+            "{% end %}"
+        ).render()
+        assert '<dialog id="dlg"' in html
+        assert 'class="chirpui-modal chirpui-modal--lg"' in html
+        assert 'closedby="any"' in html
+        assert 'class="chirpui-modal-trigger"' in html
+        assert 'type="button"' in html
+        assert 'x-data="chirpuiDialogTarget()"' in html
+        assert 'data-dialog-target="dlg"' in html
+        assert '@click="open()"' in html
+        assert "chirpui-modal__header" in html
+        assert "chirpui-modal__title" in html
+        assert "chirpui-modal__header-actions" in html
+        assert 'form method="dialog"' in html
+        assert 'class="chirpui-modal__close"' in html
+        assert 'aria-label="Close"' in html
+        assert "chirpui-modal__body" in html
+        assert "chirpui-modal__footer" in html
+
 
 # ---------------------------------------------------------------------------
 # Tabs
@@ -2438,6 +2489,69 @@ class TestTabs:
         assert 'hx-target="#content"' in html
         assert 'hx-target="#site-content"' not in html
 
+    def test_tabs_htmx_anatomy_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tabs.html" import tabs, tab %}'
+            '{% call tabs(cls="extra-tabs") %}'
+            '{{ tab("details", "Details", url="/tabs/details", hx_target="#tab-content", active=true) }}'
+            "{% end %}"
+        ).render()
+        assert 'class="chirpui-tabs extra-tabs"' in html
+        assert 'role="tablist"' in html
+        assert 'class="chirpui-tab chirpui-tab--active"' in html
+        assert 'id="tab-details"' in html
+        assert 'role="tab"' in html
+        assert 'aria-selected="true"' in html
+        assert 'href="/tabs/details"' in html
+        assert 'hx-boost="false"' in html
+        assert 'hx-select="unset"' in html
+        assert 'hx-get="/tabs/details"' in html
+        assert 'hx-target="#tab-content"' in html
+        assert 'hx-swap="innerHTML"' in html
+        assert 'hx-push-url="false"' in html
+
+    def test_tabs_panels_anatomy_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel %}'
+            '{% call tabs_container(active="overview") %}'
+            '{{ tab_button("overview", "Overview") }}'
+            "{% call tab_panel('overview') %}Panel{% end %}"
+            "{% end %}"
+        ).render()
+        assert 'class="chirpui-tabs"' in html
+        assert "x-id=\"['tab', 'tabpanel']\"" in html
+        assert 'x-data="chirpuiTabs()"' in html
+        assert 'data-active="overview"' in html
+        assert 'class="chirpui-tabs__tab"' in html
+        assert 'data-tab-id="overview"' in html
+        assert 'role="tab"' in html
+        assert ':aria-selected="active === $el.dataset.tabId"' in html
+        assert ":aria-controls=\"$id('tabpanel', $el.dataset.tabId)\"" in html
+        assert ":id=\"$id('tab', $el.dataset.tabId)\"" in html
+        assert '@click="selectTab($el)"' in html
+        assert 'class="chirpui-tab-panel"' in html
+        assert 'role="tabpanel"' in html
+        assert ":aria-labelledby=\"$id('tab', $el.dataset.tabId)\"" in html
+        assert "x-cloak" in html
+        assert "x-transition" in html
+
+    def test_tabs_panels_payload_uses_data_attributes_not_inline_js_literals(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tabs_panels.html" import tabs_container, tab_button, tab_panel %}'
+            '{% call tabs_container(active="bad\' } ); alert(1)//") %}'
+            '{{ tab_button("bad\' } ); alert(1)//", "Bad <tab>") }}'
+            '{% call tab_panel("bad\' } ); alert(1)//") %}Panel{% end %}'
+            "{% end %}"
+        ).render()
+        assert "chirpui:tab-changed" not in html
+        assert '@click="selectTab($el)"' in html
+        assert 'data-active="bad&#39; } ); alert(1)//"' in html
+        assert 'data-tab-id="bad&#39; } ); alert(1)//"' in html
+        assert "&lt;tab&gt;" in html
+        assert "<tab>" not in html
+
 
 class TestAsciiTabs:
     def test_ascii_tab_uses_route_link_attrs_when_available(self, env: Environment) -> None:
@@ -2489,6 +2603,80 @@ class TestDropdown:
         ).render()
         assert "chirpui-dropdown extra" in html
 
+    def test_dropdown_menu_anatomy_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_menu %}'
+            "{{ dropdown_menu('Actions', items=["
+            '{"label": "Edit", "action": "edit"},'
+            '{"divider": true},'
+            '{"label": "Docs", "href": "/docs"},'
+            '{"label": "Plain"}'
+            "]) }}"
+        ).render()
+        assert 'x-data="chirpuiDropdown()"' in html
+        assert "x-id=\"['dropdown-menu']\"" in html
+        assert ':data-align-x="alignX"' in html
+        assert ':data-align-y="alignY"' in html
+        assert 'x-ref="trigger"' in html
+        assert 'role="button"' in html
+        assert 'tabindex="0"' in html
+        assert 'aria-haspopup="menu"' in html
+        assert ':aria-expanded="open"' in html
+        assert ":aria-controls=\"$id('dropdown-menu')\"" in html
+        assert 'x-ref="panel"' in html
+        assert 'role="menu"' in html
+        assert 'aria-orientation="vertical"' in html
+        assert "x-cloak" in html
+        assert 'role="separator"' in html
+        assert 'role="menuitem"' in html
+        assert 'data-label="Edit"' in html
+        assert 'data-action="edit"' in html
+        assert 'data-label="Docs"' in html
+        assert 'data-href="/docs"' in html
+        assert '@click="selectItem($el, $refs.trigger)"' in html
+
+    def test_dropdown_select_anatomy_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_select %}'
+            '{{ dropdown_select("View", items=[{"label": "Open", "value": "open"}]) }}'
+        ).render()
+        assert 'class="chirpui-dropdown chirpui-dropdown--select"' in html
+        assert 'x-data="chirpuiDropdownSelect()"' in html
+        assert 'x-init="init()"' in html
+        assert "x-id=\"['dropdown-select', 'listbox-option']\"" in html
+        assert 'data-item-count="1"' in html
+        assert 'data-selected="Open"' in html
+        assert 'role="combobox"' in html
+        assert 'aria-haspopup="listbox"' in html
+        assert ':aria-expanded="open"' in html
+        assert ":aria-activedescendant=\"open ? $id('listbox-option', focusedIndex) : ''\"" in html
+        assert 'role="listbox"' in html
+        assert 'role="option"' in html
+        assert 'tabindex="-1"' in html
+        assert 'data-label="Open"' in html
+        assert 'data-value="open"' in html
+
+    def test_dropdown_split_anatomy_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_split %}'
+            '{{ dropdown_split("Export", primary_href="/export", items=[{"label": "CSV", "href": "/csv"}]) }}'
+        ).render()
+        assert 'class="chirpui-dropdown chirpui-dropdown--split"' in html
+        assert 'x-data="chirpuiDropdown()"' in html
+        assert "x-id=\"['dropdown-split']\"" in html
+        assert (
+            'class="chirpui-dropdown__split-primary chirpui-btn chirpui-btn--primary chirpui-btn--sm"'
+            in html
+        )
+        assert 'href="/export"' in html
+        assert 'class="chirpui-dropdown__trigger chirpui-dropdown__trigger--split"' in html
+        assert 'aria-haspopup="menu"' in html
+        assert ":aria-controls=\"$id('dropdown-split')\"" in html
+        assert 'role="menu"' in html
+        assert 'data-label="CSV"' in html
+        assert 'data-href="/csv"' in html
+        assert '@click="selectItem($el, $refs.trigger)"' in html
+
 
 # ---------------------------------------------------------------------------
 # Alpine magics and chirpui:* events
@@ -2498,16 +2686,35 @@ class TestDropdown:
 class TestAlpineMagics:
     """Verify dropdown_menu, tabs_panels, tray, modal_overlay emit chirpui:* events."""
 
-    def test_dropdown_menu_emits_dispatch(self, env: Environment) -> None:
+    def test_dropdown_menu_emits_selection_handler(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/dropdown_menu.html" import dropdown_menu %}'
             '{{ dropdown_menu("<span>X</span>", items=[{"label": "A", "href": "/a"}]) }}'
         ).render()
-        assert "chirpui:dropdown-selected" in html
+        assert 'data-label="A"' in html
+        assert 'data-href="/a"' in html
+        assert '@click="selectItem($el, $refs.trigger)"' in html
+        assert "chirpui:dropdown-selected" not in html
         assert 'x-ref="trigger"' in html
         assert 'x-ref="panel"' in html
         assert ':data-align-x="alignX"' in html
         assert 'x-data="chirpuiDropdown()"' in html
+
+    def test_dropdown_menu_payload_uses_data_attributes_not_inline_js_literals(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_menu %}'
+            "{{ dropdown_menu('Payloads', items=["
+            '{"label": "Quote \\\' <script>", "action": "archive\\\' } ); alert(1);//"}'
+            "]) }}"
+        ).render()
+        click_handlers = re.findall(r'@click="([^"]*)"', html)
+        assert "selectItem($el, $refs.trigger)" in click_handlers
+        assert "chirpui:dropdown-selected" not in html
+        assert "&lt;script&gt;" in html
+        assert "<script>" not in html
+        assert 'data-action="archive&#39; } ); alert(1);//"' in html
 
     def test_dropdown_menu_link_uses_route_link_attrs_when_available(
         self, env: Environment
@@ -2530,7 +2737,11 @@ class TestAlpineMagics:
             '{% call tab_panel("a") %}x{% end %}{% call tab_panel("b") %}y{% end %}'
             "{% end %}"
         ).render()
-        assert "chirpui:tab-changed" in html
+        assert "chirpui:tab-changed" not in html
+        assert 'x-data="chirpuiTabs()"' in html
+        assert 'data-active="a"' in html
+        assert 'data-tab-id="a"' in html
+        assert '@click="selectTab($el)"' in html
         assert "x-id=\"['tab'" in html or "x-id=" in html
 
     def test_tray_emits_dispatch(self, env: Environment) -> None:
@@ -2540,6 +2751,30 @@ class TestAlpineMagics:
         ).render()
         assert "chirpui:tray-closed" in html
         assert "x-trap.inert.noscroll" in html
+
+    def test_tray_anatomy_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tray.html" import tray, tray_trigger %}'
+            '{{ tray_trigger("filters", "Filters", icon="settings") }}'
+            '{% call tray("filters", "Filters", position="left") %}content{% end %}'
+        ).render()
+        assert 'class="chirpui-btn chirpui-btn--default chirpui-btn--sm"' in html
+        assert "@click=\"$store.trays['filters'] = true\"" in html
+        assert 'aria-controls="tray-filters"' in html
+        assert ":aria-expanded=\"$store.trays['filters']\"" in html
+        assert 'class="chirpui-tray chirpui-tray--left chirpui-tray--closed"' in html
+        assert 'id="tray-filters"' in html
+        assert 'role="dialog"' in html
+        assert 'aria-modal="true"' in html
+        assert 'aria-labelledby="tray-filters-title"' in html
+        assert 'aria-hidden="true"' in html
+        assert ":aria-hidden=\"!$store.trays['filters']\"" in html
+        assert "chirpui-tray__backdrop" in html
+        assert "chirpui-tray__panel" in html
+        assert "x-trap.inert.noscroll=\"$store.trays['filters']\"" in html
+        assert 'id="tray-filters-title"' in html
+        assert "chirpui-tray__close" in html
+        assert "chirpui:tray-closed" in html
 
     def test_tray_renders_closed_by_default(self, env: Environment) -> None:
         html = env.from_string(
@@ -2555,6 +2790,27 @@ class TestAlpineMagics:
         ).render()
         assert "chirpui:modal-closed" in html
         assert "x-trap.inert.noscroll" in html
+
+    def test_modal_overlay_anatomy_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/modal_overlay.html" import modal_overlay, modal_overlay_trigger %}'
+            '{{ modal_overlay_trigger("confirm", "Open", variant="danger") }}'
+            '{% call modal_overlay("confirm", "Confirm") %}content{% end %}'
+        ).render()
+        assert 'class="chirpui-btn chirpui-btn--danger chirpui-btn--sm"' in html
+        assert "@click=\"$store.modals['confirm'] = true\"" in html
+        assert 'aria-controls="modal-confirm"' in html
+        assert ":aria-expanded=\"$store.modals['confirm']\"" in html
+        assert 'class="chirpui-modal chirpui-modal--closed"' in html
+        assert 'id="modal-confirm"' in html
+        assert 'role="dialog"' in html
+        assert 'aria-modal="true"' in html
+        assert 'aria-labelledby="modal-confirm-title"' in html
+        assert ":aria-hidden=\"!$store.modals['confirm']\"" in html
+        assert "chirpui-modal__backdrop" in html
+        assert "chirpui-modal__panel" in html
+        assert "x-trap.inert.noscroll=\"$store.modals['confirm']\"" in html
+        assert 'id="modal-confirm-title"' in html
 
 
 # ---------------------------------------------------------------------------
@@ -3076,6 +3332,14 @@ class TestAlert:
             ).render()
             assert f"chirpui-alert--{variant}" in html
 
+    def test_alert_appearance_tone(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/alert.html" import alert %}'
+            '{% call alert(appearance="outlined", tone="danger") %}msg{% end %}'
+        ).render()
+        assert "chirpui-alert--outlined" in html
+        assert "chirpui-alert--danger" in html
+
     def test_alert_dismissible(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/alert.html" import alert %}'
@@ -3301,6 +3565,23 @@ class TestForms:
         ).render()
         assert "chirpui-field__hint" in html
         assert "Enter your full name" in html
+
+    def test_text_field_appearance_tone(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import text_field %}'
+            '{{ text_field("budget", label="Budget", appearance="outlined", tone="primary") }}'
+        ).render()
+        assert "chirpui-field--outlined" in html
+        assert "chirpui-field--primary" in html
+
+    def test_text_field_error_state_is_not_shared_error_tone(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import text_field %}'
+            '{{ text_field("email", label="Email", errors={"email": ["Required"]}, tone="danger") }}'
+        ).render()
+        assert "chirpui-field--danger" in html
+        assert "chirpui-field--error" in html
+        assert 'tone="error"' not in html
 
     def test_masked_field_static(self, env: Environment) -> None:
         html = env.from_string(
@@ -5016,6 +5297,37 @@ class TestConfirmDialog:
         assert 'value="my-collection"' in html
         assert "Uninstall?" in html
 
+    def test_confirm_dialog_anatomy_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/confirm.html" import confirm_dialog, confirm_trigger %}'
+            '{{ confirm_trigger("d", label="Delete") }}'
+            '{{ confirm_dialog("d", title="Delete?", message="Sure?", variant="danger",'
+            ' confirm_url="/del", confirm_method="DELETE", hx_target="#main", hx_select="#content") }}'
+        ).render()
+        assert 'class="chirpui-modal-trigger chirpui-confirm-trigger"' in html
+        assert 'x-data="chirpuiDialogTarget()"' in html
+        assert 'data-dialog-target="d"' in html
+        assert '@click="open()"' in html
+        assert '<dialog id="d"' in html
+        assert "chirpui-confirm chirpui-modal chirpui-modal--small chirpui-confirm--danger" in html
+        assert 'closedby="any"' in html
+        assert "chirpui-confirm__icon" in html
+        assert "chirpui-modal__header" in html
+        assert "chirpui-modal__title" in html
+        assert "chirpui-modal__close" in html
+        assert 'aria-label="Close"' in html
+        assert "chirpui-modal__body" in html
+        assert "chirpui-confirm__message" in html
+        assert "chirpui-confirm__footer" in html
+        assert html.count('form method="dialog"') == 2
+        assert 'method="DELETE"' in html
+        assert 'action="/del"' in html
+        assert 'hx-delete="/del"' in html
+        assert 'hx-disinherit="hx-select hx-target hx-swap"' in html
+        assert 'hx-target="#main"' in html
+        assert 'hx-select="#content"' in html
+        assert 'class="chirpui-btn chirpui-btn--danger"' in html
+
 
 class TestDrawer:
     def test_drawer(self, env: Environment) -> None:
@@ -5037,6 +5349,32 @@ class TestDrawer:
         assert "chirpui-drawer-trigger" in html
         assert "Open" in html
         assert 'x-data="chirpuiDialogTarget()"' in html
+
+    def test_drawer_anatomy_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/drawer.html" import drawer, drawer_trigger %}'
+            '{{ drawer_trigger("filters", label="Open filters", cls="extra-trigger") }}'
+            '{% call drawer("filters", title="Filters", side="left", cls="extra-drawer") %}'
+            "{% slot header_actions %}<button>Reset</button>{% end %}"
+            "Drawer body"
+            "{% end %}"
+        ).render()
+        assert '<dialog id="filters"' in html
+        assert 'class="chirpui-drawer chirpui-drawer--left extra-drawer"' in html
+        assert 'closedby="any"' in html
+        assert 'class="chirpui-drawer-trigger extra-trigger"' in html
+        assert 'type="button"' in html
+        assert 'x-data="chirpuiDialogTarget()"' in html
+        assert 'data-dialog-target="filters"' in html
+        assert '@click="open()"' in html
+        assert "chirpui-drawer__panel" in html
+        assert "chirpui-drawer__header" in html
+        assert "chirpui-drawer__title" in html
+        assert "chirpui-drawer__header-actions" in html
+        assert 'form method="dialog"' in html
+        assert "chirpui-drawer__close" in html
+        assert 'aria-label="Close"' in html
+        assert "chirpui-drawer__body" in html
 
 
 class TestCommandPalette:
@@ -5216,6 +5554,14 @@ class TestBadge:
             '{% from "chirpui/badge.html" import badge %}{{ badge("Error", variant="error") }}'
         ).render()
         assert "chirpui-badge--error" in html
+
+    def test_badge_appearance_tone(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/badge.html" import badge %}'
+            '{{ badge("Danger", appearance="outlined", tone="danger") }}'
+        ).render()
+        assert "chirpui-badge--outlined" in html
+        assert "chirpui-badge--danger" in html
 
     def test_badge_with_icon(self, env: Environment) -> None:
         html = env.from_string(
@@ -7903,6 +8249,22 @@ class TestPreHydrationSafety:
         ).render()
         assert html.count('hx-target="#site-content"') == 2
         assert html.count('hx-boost="true"') == 2
+
+    def test_dropdown_split_payload_uses_data_attributes_not_inline_js_literals(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dropdown_menu.html" import dropdown_split %}'
+            "{{ dropdown_split('Go', primary_href='/go', items=["
+            '{"label": "Quote \\\' <script>", "action": "archive\\\' } ); alert(1);//"}'
+            "]) }}"
+        ).render()
+        click_handlers = re.findall(r'@click="([^"]*)"', html)
+        assert "selectItem($el, $refs.trigger)" in click_handlers
+        assert "chirpui:dropdown-selected" not in html
+        assert "&lt;script&gt;" in html
+        assert "<script>" not in html
+        assert 'data-action="archive&#39; } ); alert(1);//"' in html
 
     def test_copy_button_copied_span_has_x_cloak(self, env: Environment) -> None:
         html = env.from_string(

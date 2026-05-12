@@ -59,6 +59,30 @@ a.chirpui-btn {
     pointer-events: none;
 }
 
+/* Appearance axis */
+.chirpui-btn--filled {
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-btn--tonal {
+    background: var(--chirpui-bg-subtle);
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.chirpui-btn--outlined {
+    background: transparent;
+    border-color: var(--chirpui-border);
+    box-shadow: none;
+}
+
+/* Tone axis */
+.chirpui-btn--neutral {
+    background: var(--chirpui-surface);
+    border-color: var(--chirpui-border);
+    color: var(--chirpui-text);
+}
+
 /* Primary variant */
 .chirpui-btn--primary {
     background: var(--chirpui-accent);
@@ -109,19 +133,19 @@ a.chirpui-btn {
 
 /* Danger variant */
 .chirpui-btn--danger {
-    background: var(--chirpui-error);
-    border-color: var(--chirpui-error);
+    background: var(--chirpui-danger);
+    border-color: var(--chirpui-danger);
     color: var(--chirpui-on-accent);
 }
 
 .chirpui-btn--danger:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--chirpui-error) 85%, black);
-    border-color: color-mix(in srgb, var(--chirpui-error) 85%, black);
+    background: color-mix(in srgb, var(--chirpui-danger) 85%, black);
+    border-color: color-mix(in srgb, var(--chirpui-danger) 85%, black);
 }
 
 .chirpui-btn--danger:active:not(:disabled) {
-    background: color-mix(in srgb, var(--chirpui-error) 75%, black);
-    border-color: color-mix(in srgb, var(--chirpui-error) 75%, black);
+    background: color-mix(in srgb, var(--chirpui-danger) 75%, black);
+    border-color: color-mix(in srgb, var(--chirpui-danger) 75%, black);
 }
 
 /* Success variant */
@@ -156,6 +180,32 @@ a.chirpui-btn {
 .chirpui-btn--warning:active:not(:disabled) {
     background: color-mix(in srgb, var(--chirpui-warning) 75%, black);
     border-color: color-mix(in srgb, var(--chirpui-warning) 75%, black);
+}
+
+.chirpui-btn--outlined.chirpui-btn--primary {
+    background: transparent;
+    color: var(--chirpui-accent);
+}
+
+.chirpui-btn--outlined.chirpui-btn--secondary,
+.chirpui-btn--outlined.chirpui-btn--neutral {
+    background: transparent;
+    color: var(--chirpui-text);
+}
+
+.chirpui-btn--outlined.chirpui-btn--success {
+    background: transparent;
+    color: var(--chirpui-success);
+}
+
+.chirpui-btn--outlined.chirpui-btn--warning {
+    background: transparent;
+    color: var(--chirpui-warning);
+}
+
+.chirpui-btn--outlined.chirpui-btn--danger {
+    background: transparent;
+    color: var(--chirpui-danger);
 }
 
 /* Small button — compact for search bars, toolbars */

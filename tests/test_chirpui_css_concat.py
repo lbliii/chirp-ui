@@ -42,6 +42,25 @@ def test_build_is_deterministic() -> None:
     assert first == second, "concat build must be byte-for-byte deterministic"
 
 
+def test_all_css_partials_are_manifested_once() -> None:
+    build_chirpui_css = _load_build_module()
+    partials_root = build_chirpui_css.CSS_SRC / "partials"
+    discovered = {
+        str(path.relative_to(build_chirpui_css.CSS_SRC)) for path in partials_root.glob("*.css")
+    }
+    manifest = list(build_chirpui_css.MANIFEST)
+    manifest_set = set(manifest)
+    duplicates = sorted({item for item in manifest if manifest.count(item) > 1})
+    missing = sorted(discovered - manifest_set)
+    extra = sorted(manifest_set - discovered)
+
+    assert not duplicates, "CSS build manifest lists partials more than once: " + ", ".join(
+        duplicates
+    )
+    assert not missing, "CSS partials are not included in chirpui.css build: " + ", ".join(missing)
+    assert not extra, "CSS build manifest references missing partials: " + ", ".join(extra)
+
+
 def test_layer_declaration_at_top() -> None:
     """The cascade order is part of the public API — first @-rule in the file
     must be the exact declaration documented in docs/CSS-OVERRIDE-SURFACE.md.

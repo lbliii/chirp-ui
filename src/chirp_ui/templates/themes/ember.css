@@ -1,0 +1,111 @@
+/* chirp-ui Ember theme pack
+ *
+ * Token-only catalog pack for warm editorial and docs surfaces.
+ * Load after /static/chirpui.css.
+ */
+
+@layer app.theme {
+    :root {
+        color-scheme: light dark;
+        --chirpui-accent: oklch(0.58 0.16 42);
+        --chirpui-accent-hover: oklch(0.5 0.17 42);
+        --chirpui-accent-secondary: oklch(0.55 0.12 320);
+        --chirpui-on-accent: #ffffff;
+        --chirpui-radius: 0.625rem;
+        --chirpui-radius-lg: 0.875rem;
+        --chirpui-radius-xl: 1.125rem;
+    }
+
+    [data-theme="light"] {
+        color-scheme: light;
+        --chirpui-bg: oklch(0.982 0.01 78);
+        --chirpui-bg-subtle: oklch(0.95 0.018 78);
+        --chirpui-surface: oklch(0.995 0.006 78);
+        --chirpui-surface-alt: oklch(0.965 0.016 78);
+        --chirpui-surface-elevated: oklch(1 0.004 78);
+        --chirpui-border: oklch(0.86 0.035 70);
+        --chirpui-text: oklch(0.23 0.035 55);
+        --chirpui-text-muted: oklch(0.5 0.04 55);
+        --chirpui-primary: var(--chirpui-accent);
+        --chirpui-success: oklch(0.56 0.14 150);
+        --chirpui-warning: oklch(0.7 0.16 70);
+        --chirpui-danger: oklch(0.54 0.2 28);
+        --chirpui-error: var(--chirpui-danger);
+        --chirpui-info: oklch(0.58 0.13 225);
+        --chirpui-muted: var(--chirpui-text-muted);
+        --chirpui-alert-info-bg: oklch(0.96 0.024 225);
+        --chirpui-alert-info-border: oklch(0.8 0.07 225);
+        --chirpui-alert-success-bg: oklch(0.96 0.03 150);
+        --chirpui-alert-success-border: oklch(0.8 0.08 150);
+        --chirpui-alert-warning-bg: oklch(0.97 0.04 70);
+        --chirpui-alert-warning-border: oklch(0.82 0.12 70);
+        --chirpui-alert-error-bg: oklch(0.96 0.032 28);
+        --chirpui-alert-error-border: oklch(0.78 0.11 28);
+    }
+
+    [data-theme="dark"] {
+        color-scheme: dark;
+        --chirpui-bg: oklch(0.17 0.032 48);
+        --chirpui-bg-subtle: oklch(0.22 0.038 48);
+        --chirpui-surface: oklch(0.24 0.04 48);
+        --chirpui-surface-alt: oklch(0.29 0.044 48);
+        --chirpui-surface-elevated: oklch(0.33 0.047 48);
+        --chirpui-border: oklch(0.42 0.055 48);
+        --chirpui-text: oklch(0.94 0.014 70);
+        --chirpui-text-muted: oklch(0.72 0.028 70);
+        --chirpui-accent: oklch(0.74 0.14 48);
+        --chirpui-accent-hover: oklch(0.82 0.12 48);
+        --chirpui-accent-secondary: oklch(0.75 0.11 320);
+        --chirpui-primary: var(--chirpui-accent);
+        --chirpui-success: oklch(0.7 0.14 150);
+        --chirpui-warning: oklch(0.81 0.13 70);
+        --chirpui-danger: oklch(0.72 0.15 28);
+        --chirpui-error: var(--chirpui-danger);
+        --chirpui-info: oklch(0.73 0.12 225);
+        --chirpui-muted: var(--chirpui-text-muted);
+        --chirpui-alert-info-bg: oklch(0.26 0.05 225);
+        --chirpui-alert-info-border: oklch(0.56 0.11 225);
+        --chirpui-alert-success-bg: oklch(0.25 0.045 150);
+        --chirpui-alert-success-border: oklch(0.56 0.12 150);
+        --chirpui-alert-warning-bg: oklch(0.28 0.052 70);
+        --chirpui-alert-warning-border: oklch(0.68 0.12 70);
+        --chirpui-alert-error-bg: oklch(0.26 0.052 28);
+        --chirpui-alert-error-border: oklch(0.62 0.13 28);
+    }
+
+    @media (prefers-color-scheme: light) {
+        [data-theme="system"] {
+            color-scheme: light;
+            --chirpui-bg: oklch(0.982 0.01 78);
+            --chirpui-bg-subtle: oklch(0.95 0.018 78);
+            --chirpui-surface: oklch(0.995 0.006 78);
+            --chirpui-surface-alt: oklch(0.965 0.016 78);
+            --chirpui-surface-elevated: oklch(1 0.004 78);
+            --chirpui-border: oklch(0.86 0.035 70);
+            --chirpui-text: oklch(0.23 0.035 55);
+            --chirpui-text-muted: oklch(0.5 0.04 55);
+            --chirpui-accent: oklch(0.58 0.16 42);
+            --chirpui-accent-hover: oklch(0.5 0.17 42);
+            --chirpui-accent-secondary: oklch(0.55 0.12 320);
+            --chirpui-primary: var(--chirpui-accent);
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        [data-theme="system"] {
+            color-scheme: dark;
+            --chirpui-bg: oklch(0.17 0.032 48);
+            --chirpui-bg-subtle: oklch(0.22 0.038 48);
+            --chirpui-surface: oklch(0.24 0.04 48);
+            --chirpui-surface-alt: oklch(0.29 0.044 48);
+            --chirpui-surface-elevated: oklch(0.33 0.047 48);
+            --chirpui-border: oklch(0.42 0.055 48);
+            --chirpui-text: oklch(0.94 0.014 70);
+            --chirpui-text-muted: oklch(0.72 0.028 70);
+            --chirpui-accent: oklch(0.74 0.14 48);
+            --chirpui-accent-hover: oklch(0.82 0.12 48);
+            --chirpui-accent-secondary: oklch(0.75 0.11 320);
+            --chirpui-primary: var(--chirpui-accent);
+        }
+    }
+}

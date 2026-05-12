@@ -34,7 +34,39 @@ from chirp_ui.manifest import (
     build_manifest,
     to_json,
 )
+from chirp_ui.theme_packs import THEME_PACKS
 from chirp_ui.tokens import TOKEN_CATALOG
+
+TOKEN_CATEGORIES = {
+    "color",
+    "spacing",
+    "typography",
+    "radius",
+    "elevation",
+    "motion",
+    "layout",
+    "component",
+}
+
+NON_COLOR_TOKEN_HINTS = (
+    "aspect-ratio",
+    "block-size",
+    "font-family",
+    "font-size",
+    "gap",
+    "height",
+    "icon-size",
+    "letter-spacing",
+    "line-height",
+    "max-width",
+    "min-height",
+    "padding",
+    "radius",
+    "size",
+    "transition",
+    "width",
+    "-bp-",
+)
 
 
 def test_manifest_is_deterministic() -> None:
@@ -67,6 +99,8 @@ def test_manifest_covers_every_component() -> None:
         assert entry["emits"] == sorted(desc.emits)
         assert entry["elements"] == sorted(desc.elements)
         assert entry["variants"] == sorted(desc.variants)
+        assert entry["appearances"] == sorted(desc.appearances)
+        assert entry["tones"] == sorted(desc.tones)
         assert entry["sizes"] == sorted(desc.sizes)
         assert entry["modifiers"] == sorted(desc.modifiers)
         assert entry["composes"] == sorted(desc.composes)
@@ -83,6 +117,15 @@ def test_manifest_covers_every_component() -> None:
         assert entry["trim_emits"] == sorted(desc.trim_emits)
 
 
+def test_shared_tones_do_not_include_error() -> None:
+    """The shared appearance/tone pilot uses danger, not error, as public tone."""
+    m = build_manifest()
+    offenders = sorted(
+        name for name, entry in m["components"].items() if "error" in entry.get("tones", ())
+    )
+    assert not offenders, "component tones must not include shared `error`: " + ", ".join(offenders)
+
+
 def test_manifest_covers_every_token() -> None:
     m = build_manifest()
     assert set(m["tokens"]) == set(TOKEN_CATALOG)
@@ -90,10 +133,36 @@ def test_manifest_covers_every_token() -> None:
         assert m["tokens"][name] == {"category": t.category, "scope": t.scope}
 
 
+def test_manifest_projects_theme_packs() -> None:
+    m = build_manifest()
+
+    assert m["theme_packs"] == [pack.as_mapping() for pack in THEME_PACKS]
+    assert [pack["name"] for pack in m["theme_packs"]] == ["atlas", "ember", "sage"]
+    assert all(pack["modes"] == ["light", "dark", "system"] for pack in m["theme_packs"])
+
+
+def test_token_categories_are_known_and_semantic() -> None:
+    invalid_categories = sorted(
+        {token.category for token in TOKEN_CATALOG.values()} - TOKEN_CATEGORIES
+    )
+    assert not invalid_categories, "unknown token categories: " + ", ".join(invalid_categories)
+
+    suspicious_color_tokens = sorted(
+        name
+        for name, token in TOKEN_CATALOG.items()
+        if token.category == "color" and any(hint in name for hint in NON_COLOR_TOKEN_HINTS)
+    )
+    assert not suspicious_color_tokens, (
+        "dimension, motion, layout, or typography tokens categorized as color: "
+        + ", ".join(suspicious_color_tokens[:20])
+    )
+
+
 def test_manifest_stats_match_counts() -> None:
     m = build_manifest()
     assert m["stats"]["total_components"] == len(COMPONENTS)
     assert m["stats"]["total_tokens"] == len(TOKEN_CATALOG)
+    assert m["stats"]["total_theme_packs"] == len(THEME_PACKS)
     assert sum(m["stats"]["component_maturity"].values()) == len(COMPONENTS)
     assert sum(m["stats"]["component_roles"].values()) == len(COMPONENTS)
     assert sum(m["stats"]["component_authoring"].values()) == len(COMPONENTS)

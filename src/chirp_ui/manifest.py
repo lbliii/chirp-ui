@@ -7,15 +7,16 @@ and templates instead of plausible-sounding ones.
 
 Schema
 ------
-``{"schema": "chirpui-manifest@3", "version": "<pkg>", "components": {...},
- "tokens": {...}, "stats": {...}}``
+``{"schema": "chirpui-manifest@5", "version": "<pkg>", "components": {...},
+ "tokens": {...}, "theme_packs": [...], "stats": {...}}``
 
 * ``components`` keys sorted; each entry contains ``block``, ``variants``,
-  ``sizes``, ``modifiers``, ``elements``, ``slots``, ``tokens``, ``extra_emits``,
-  ``trim_emits``, ``emits``, ``template``, ``category``, ``maturity``, ``role``,
-  ``authoring``, ``requires``, plus the ``@2`` additions ``macro``, ``params``,
-  and ``lineno`` and the ``@3`` composition additions ``composes``,
-  ``slot_forwards``, and ``slots_yielded``.
+  ``sizes``, ``modifiers``, ``elements``, ``slots``, ``tokens``,
+  ``extra_emits``, ``trim_emits``, ``emits``, ``template``, ``category``,
+  ``maturity``, ``role``, ``authoring``, ``requires``, plus the ``@2``
+  additions ``macro``, ``params``, and ``lineno``, the ``@3`` composition
+  additions ``composes``, ``slot_forwards``, and ``slots_yielded``, and the
+  ``@4`` appearance/tone additions ``appearances`` and ``tones``.
 * ``params`` is a list of ``{"name": str, "has_default": bool,
   "is_required": bool}`` derived from the template AST via
   :mod:`chirp_ui._macro_introspect`. Empty when the descriptor has no
@@ -47,6 +48,8 @@ Schema
   template. New chirp-ui templates must carry a doc-block
   (``tests/test_description_coverage.py``).
 * ``tokens`` keys sorted; each entry is ``{"category": …, "scope": …}``.
+* ``theme_packs`` lists packaged token-only theme CSS resources in stable
+  catalog order.
 * ``stats`` aggregates counts, including ``components_with_params``, a
   ``registry_debt`` scorecard for descriptor/CSS reconciliation burn-down,
   and a ``manifest_quality`` scorecard for agent-facing metadata coverage.
@@ -82,9 +85,10 @@ from chirp_ui._macro_introspect import (
 from chirp_ui.alpine import ALPINE_REQUIRED_COMPONENTS
 from chirp_ui.components import _AUTO_EXTRAS, _AUTO_TRIMS, COMPONENTS, ComponentDescriptor
 from chirp_ui.inspect import list_consumes, list_provides
+from chirp_ui.theme_packs import THEME_PACKS
 from chirp_ui.tokens import TOKEN_CATALOG
 
-SCHEMA = "chirpui-manifest@3"
+SCHEMA = "chirpui-manifest@5"
 
 _ALPINE_MACROS = frozenset(
     macro for requirement in ALPINE_REQUIRED_COMPONENTS.values() for macro in requirement.macros
@@ -272,6 +276,8 @@ def build_manifest() -> dict[str, Any]:
         components[name] = {
             "block": desc.block,
             "variants": sorted(desc.variants),
+            "appearances": sorted(desc.appearances),
+            "tones": sorted(desc.tones),
             "sizes": sorted(desc.sizes),
             "modifiers": sorted(desc.modifiers),
             "elements": sorted(desc.elements),
@@ -344,8 +350,10 @@ def build_manifest() -> dict[str, Any]:
         "version": __version__,
         "components": components,
         "tokens": tokens,
+        "theme_packs": [pack.as_mapping() for pack in THEME_PACKS],
         "stats": {
             "total_components": len(COMPONENTS),
+            "total_theme_packs": len(THEME_PACKS),
             "components_with_params": components_with_params,
             "components_with_provides": components_with_provides,
             "components_with_consumes": components_with_consumes,

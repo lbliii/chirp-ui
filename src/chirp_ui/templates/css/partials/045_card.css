@@ -26,6 +26,96 @@
             }
         }
 
+        /* Appearance axis */
+        :scope.chirpui-card--filled {
+            background: var(--chirpui-surface);
+            border-color: var(--chirpui-border);
+        }
+
+        :scope.chirpui-card--tonal {
+            background: var(--chirpui-bg-subtle);
+            border-color: transparent;
+        }
+
+        :scope.chirpui-card--outlined {
+            background: transparent;
+            border-color: var(--chirpui-border);
+        }
+
+        :scope.chirpui-card--ghost {
+            background: transparent;
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+        /* Tone axis */
+        :scope.chirpui-card--neutral {
+            --_card-tone: var(--chirpui-border);
+        }
+
+        :scope.chirpui-card--primary {
+            --_card-tone: var(--chirpui-accent);
+        }
+
+        :scope.chirpui-card--secondary {
+            --_card-tone: var(--chirpui-primary);
+        }
+
+        :scope.chirpui-card--success {
+            --_card-tone: var(--chirpui-success);
+        }
+
+        :scope.chirpui-card--warning {
+            --_card-tone: var(--chirpui-warning);
+        }
+
+        :scope.chirpui-card--danger {
+            --_card-tone: var(--chirpui-danger);
+        }
+
+        :scope.chirpui-card--info {
+            --_card-tone: var(--chirpui-info);
+        }
+
+        :scope.chirpui-card--primary,
+        :scope.chirpui-card--secondary,
+        :scope.chirpui-card--success,
+        :scope.chirpui-card--warning,
+        :scope.chirpui-card--danger,
+        :scope.chirpui-card--info {
+            background: color-mix(in srgb, var(--_card-tone) 7%, var(--chirpui-surface));
+            border-color: color-mix(in srgb, var(--_card-tone) 45%, var(--chirpui-border));
+        }
+
+        :scope.chirpui-card--outlined.chirpui-card--primary,
+        :scope.chirpui-card--outlined.chirpui-card--secondary,
+        :scope.chirpui-card--outlined.chirpui-card--success,
+        :scope.chirpui-card--outlined.chirpui-card--warning,
+        :scope.chirpui-card--outlined.chirpui-card--danger,
+        :scope.chirpui-card--outlined.chirpui-card--info {
+            background: transparent;
+            border-color: var(--_card-tone);
+        }
+
+        :scope.chirpui-card--ghost.chirpui-card--primary,
+        :scope.chirpui-card--ghost.chirpui-card--secondary,
+        :scope.chirpui-card--ghost.chirpui-card--success,
+        :scope.chirpui-card--ghost.chirpui-card--warning,
+        :scope.chirpui-card--ghost.chirpui-card--danger,
+        :scope.chirpui-card--ghost.chirpui-card--info {
+            background: transparent;
+            border-color: transparent;
+        }
+
+        :scope.chirpui-card--primary .chirpui-card__title,
+        :scope.chirpui-card--secondary .chirpui-card__title,
+        :scope.chirpui-card--success .chirpui-card__title,
+        :scope.chirpui-card--warning .chirpui-card__title,
+        :scope.chirpui-card--danger .chirpui-card__title,
+        :scope.chirpui-card--info .chirpui-card__title {
+            color: color-mix(in srgb, var(--_card-tone) 78%, var(--chirpui-text));
+        }
+
         .chirpui-card__header {
             display: flex;
             align-items: flex-start;

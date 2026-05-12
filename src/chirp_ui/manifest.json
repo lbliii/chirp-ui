@@ -1,6 +1,7 @@
 {
   "components": {
     "accordion": {
+      "appearances": [],
       "authoring": "available",
       "block": "accordion",
       "category": "interactive",
@@ -55,10 +56,12 @@
       "slots_yielded": [],
       "template": "accordion.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "action-bar": {
+      "appearances": [],
       "authoring": "available",
       "block": "action-bar",
       "category": "control",
@@ -107,10 +110,12 @@
       "slots_yielded": [],
       "template": "action_bar.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "action-strip": {
+      "appearances": [],
       "authoring": "available",
       "block": "action-strip",
       "category": "control",
@@ -195,10 +200,12 @@
       "slots_yielded": [],
       "template": "action_strip.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "actions": {
+      "appearances": [],
       "authoring": "preferred",
       "block": "actions",
       "category": "layout",
@@ -238,10 +245,16 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "alert": {
+      "appearances": [
+        "filled",
+        "outlined",
+        "tonal"
+      ],
       "authoring": "available",
       "block": "alert",
       "category": "feedback",
@@ -259,9 +272,13 @@
       ],
       "emits": [
         "chirpui-alert",
+        "chirpui-alert--danger",
         "chirpui-alert--error",
+        "chirpui-alert--filled",
         "chirpui-alert--info",
+        "chirpui-alert--outlined",
         "chirpui-alert--success",
+        "chirpui-alert--tonal",
         "chirpui-alert--warning",
         "chirpui-alert__actions",
         "chirpui-alert__body",
@@ -279,6 +296,16 @@
           "has_default": true,
           "is_required": false,
           "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "appearance"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "tone"
         },
         {
           "has_default": true,
@@ -331,6 +358,12 @@
       "slots_yielded": [],
       "template": "alert.html",
       "tokens": [],
+      "tones": [
+        "danger",
+        "info",
+        "success",
+        "warning"
+      ],
       "trim_emits": [],
       "variants": [
         "error",
@@ -340,6 +373,7 @@
       ]
     },
     "ambient": {
+      "appearances": [],
       "authoring": "available",
       "block": "ambient",
       "category": "effect",
@@ -366,10 +400,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ambient-root": {
+      "appearances": [],
       "authoring": "available",
       "block": "ambient-root",
       "category": "effect",
@@ -396,10 +432,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "animated-counter": {
+      "appearances": [],
       "authoring": "available",
       "block": "animated-counter",
       "category": "effect",
@@ -465,6 +503,7 @@
       "slots_yielded": [],
       "template": "animated_counter.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-animated-counter--default"
       ],
@@ -475,6 +514,7 @@
       ]
     },
     "animated-stat-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "animated-stat-card",
       "category": "data-display",
@@ -550,10 +590,12 @@
       "slots_yielded": [],
       "template": "animated_stat_card.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "answer-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "answer-card",
       "category": "social",
@@ -633,10 +675,12 @@
       ],
       "template": "forum_patterns.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "app-shell": {
+      "appearances": [],
       "authoring": "available",
       "block": "app-shell",
       "category": "layout",
@@ -764,10 +808,12 @@
         "--chirpui-sidebar-max-width",
         "--chirpui-sidebar-width"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii",
       "category": "ascii",
@@ -834,10 +880,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-7seg": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-7seg",
       "category": "ascii",
@@ -898,6 +946,7 @@
       "slots_yielded": [],
       "template": "ascii_7seg.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-7seg--default"
       ],
@@ -911,6 +960,7 @@
       ]
     },
     "ascii-badge": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-badge",
       "category": "ascii",
@@ -977,6 +1027,7 @@
       "slots_yielded": [],
       "template": "ascii_badge.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-badge--default"
       ],
@@ -991,6 +1042,7 @@
       ]
     },
     "ascii-border": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-border",
       "category": "ascii",
@@ -1055,6 +1107,7 @@
       "slots_yielded": [],
       "template": "ascii_border.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-border--rounded",
         "chirpui-ascii-border--single"
@@ -1069,6 +1122,7 @@
       ]
     },
     "ascii-breaker-panel": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-breaker-panel",
       "category": "ascii",
@@ -1141,10 +1195,12 @@
       "slots_yielded": [],
       "template": "ascii_breaker_panel.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-card",
       "category": "ascii",
@@ -1217,6 +1273,7 @@
       "slots_yielded": [],
       "template": "ascii_card.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -1227,6 +1284,7 @@
       ]
     },
     "ascii-checkbox": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-checkbox",
       "category": "ascii",
@@ -1296,6 +1354,7 @@
       "slots_yielded": [],
       "template": "ascii_checkbox.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-checkbox--default"
       ],
@@ -1308,6 +1367,7 @@
       ]
     },
     "ascii-checkbox-group": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-checkbox-group",
       "category": "ascii",
@@ -1337,10 +1397,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-divider": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-divider",
       "category": "ascii",
@@ -1392,6 +1454,7 @@
       "slots_yielded": [],
       "template": "ascii_divider.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-divider--single"
       ],
@@ -1407,6 +1470,7 @@
       ]
     },
     "ascii-empty": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-empty",
       "category": "ascii",
@@ -1474,6 +1538,7 @@
       "slots_yielded": [],
       "template": "ascii_empty.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-empty--default"
       ],
@@ -1485,6 +1550,7 @@
       ]
     },
     "ascii-error": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-error",
       "category": "ascii",
@@ -1547,10 +1613,12 @@
       "slots_yielded": [],
       "template": "ascii_error.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-fader": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-fader",
       "category": "ascii",
@@ -1622,6 +1690,7 @@
       "slots_yielded": [],
       "template": "ascii_fader.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-fader--default"
       ],
@@ -1635,6 +1704,7 @@
       ]
     },
     "ascii-fader-bank": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-fader-bank",
       "category": "ascii",
@@ -1666,10 +1736,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-fill": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-fill",
       "category": "ascii",
@@ -1696,10 +1768,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-fill-hover": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-fill-hover",
       "category": "ascii",
@@ -1726,10 +1800,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-indicator": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-indicator",
       "category": "ascii",
@@ -1796,6 +1872,7 @@
       "slots_yielded": [],
       "template": "ascii_indicator.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "accent",
@@ -1806,6 +1883,7 @@
       ]
     },
     "ascii-indicator-row": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-indicator-row",
       "category": "ascii",
@@ -1832,10 +1910,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-knob": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-knob",
       "category": "ascii",
@@ -1913,6 +1993,7 @@
       "slots_yielded": [],
       "template": "ascii_knob.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-knob--default"
       ],
@@ -1923,6 +2004,7 @@
       ]
     },
     "ascii-modal": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-modal",
       "category": "ascii",
@@ -1988,6 +2070,7 @@
       "slots_yielded": [],
       "template": "ascii_modal.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -1997,6 +2080,7 @@
       ]
     },
     "ascii-modal-trigger": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-modal-trigger",
       "category": "ascii",
@@ -2023,10 +2107,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-progress": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-progress",
       "category": "ascii",
@@ -2093,6 +2179,7 @@
       "slots_yielded": [],
       "template": "ascii_progress.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-progress--default"
       ],
@@ -2105,6 +2192,7 @@
       ]
     },
     "ascii-radio": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-radio",
       "category": "ascii",
@@ -2141,10 +2229,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-radio-group": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-radio-group",
       "category": "ascii",
@@ -2207,6 +2297,7 @@
       "slots_yielded": [],
       "template": "ascii_radio.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-radio-group--default"
       ],
@@ -2217,6 +2308,7 @@
       ]
     },
     "ascii-skeleton": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-skeleton",
       "category": "ascii",
@@ -2275,6 +2367,7 @@
       "slots_yielded": [],
       "template": "ascii_skeleton.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -2285,6 +2378,7 @@
       ]
     },
     "ascii-sparkline": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-sparkline",
       "category": "ascii",
@@ -2333,6 +2427,7 @@
       "slots_yielded": [],
       "template": "ascii_sparkline.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-sparkline--default"
       ],
@@ -2345,6 +2440,7 @@
       ]
     },
     "ascii-spinner": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-spinner",
       "category": "ascii",
@@ -2410,6 +2506,7 @@
       "slots_yielded": [],
       "template": "ascii_spinner.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -2421,6 +2518,7 @@
       ]
     },
     "ascii-stepper": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-stepper",
       "category": "ascii",
@@ -2487,6 +2585,7 @@
       "slots_yielded": [],
       "template": "ascii_stepper.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-stepper--default"
       ],
@@ -2498,6 +2597,7 @@
       ]
     },
     "ascii-switch": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-switch",
       "category": "ascii",
@@ -2589,6 +2689,7 @@
       "slots_yielded": [],
       "template": "ascii_toggle.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-switch--default",
         "chirpui-ascii-switch--md"
@@ -2602,6 +2703,7 @@
       ]
     },
     "ascii-tab": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-tab",
       "category": "ascii",
@@ -2673,6 +2775,7 @@
       "slots_yielded": [],
       "template": "ascii_tabs.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-tab--accent",
         "chirpui-ascii-tab--default"
@@ -2684,6 +2787,7 @@
       ]
     },
     "ascii-table": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-table",
       "category": "ascii",
@@ -2785,6 +2889,7 @@
       "slots_yielded": [],
       "template": "ascii_table.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "double",
@@ -2794,6 +2899,7 @@
       ]
     },
     "ascii-tabs": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-tabs",
       "category": "ascii",
@@ -2836,6 +2942,7 @@
       "slots_yielded": [],
       "template": "ascii_tabs.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-tabs--default"
       ],
@@ -2846,6 +2953,7 @@
       ]
     },
     "ascii-ticker": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-ticker",
       "category": "ascii",
@@ -2908,6 +3016,7 @@
       "slots_yielded": [],
       "template": "ascii_ticker.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-ticker--default"
       ],
@@ -2921,6 +3030,7 @@
       ]
     },
     "ascii-tile-btn": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-tile-btn",
       "category": "ascii",
@@ -3005,6 +3115,7 @@
       "slots_yielded": [],
       "template": "ascii_tile_btn.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-tile-btn--default"
       ],
@@ -3018,6 +3129,7 @@
       ]
     },
     "ascii-tile-grid": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-tile-grid",
       "category": "ascii",
@@ -3044,10 +3156,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ascii-toggle": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-toggle",
       "category": "ascii",
@@ -3133,6 +3247,7 @@
       "slots_yielded": [],
       "template": "ascii_toggle.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-toggle--default",
         "chirpui-ascii-toggle--md"
@@ -3146,6 +3261,7 @@
       ]
     },
     "ascii-vu": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-vu",
       "category": "ascii",
@@ -3235,6 +3351,7 @@
       "slots_yielded": [],
       "template": "ascii_vu_meter.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ascii-vu--default"
       ],
@@ -3247,6 +3364,7 @@
       ]
     },
     "ascii-vu-stack": {
+      "appearances": [],
       "authoring": "available",
       "block": "ascii-vu-stack",
       "category": "ascii",
@@ -3276,10 +3394,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "aura": {
+      "appearances": [],
       "authoring": "available",
       "block": "aura",
       "category": "effect",
@@ -3359,10 +3479,12 @@
       "slots_yielded": [],
       "template": "aura.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "aura_tone": {
+      "appearances": [],
       "authoring": "available",
       "block": "aura",
       "category": "effect",
@@ -3394,6 +3516,7 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "accent",
@@ -3404,6 +3527,7 @@
       ]
     },
     "aurora": {
+      "appearances": [],
       "authoring": "available",
       "block": "aurora",
       "category": "effect",
@@ -3454,6 +3578,7 @@
       "slots_yielded": [],
       "template": "aurora.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -3462,6 +3587,7 @@
       ]
     },
     "avatar": {
+      "appearances": [],
       "authoring": "available",
       "block": "avatar",
       "category": "data-display",
@@ -3542,10 +3668,12 @@
       "slots_yielded": [],
       "template": "avatar.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "avatar-stack": {
+      "appearances": [],
       "authoring": "available",
       "block": "avatar-stack",
       "category": "data-display",
@@ -3597,10 +3725,16 @@
       "slots_yielded": [],
       "template": "avatar_stack.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "badge": {
+      "appearances": [
+        "filled",
+        "outlined",
+        "tonal"
+      ],
       "authoring": "available",
       "block": "badge",
       "category": "feedback",
@@ -3618,11 +3752,16 @@
         "chirpui-badge",
         "chirpui-badge--custom",
         "chirpui-badge--custom-solid",
+        "chirpui-badge--danger",
         "chirpui-badge--error",
+        "chirpui-badge--filled",
         "chirpui-badge--info",
         "chirpui-badge--muted",
+        "chirpui-badge--neutral",
+        "chirpui-badge--outlined",
         "chirpui-badge--primary",
         "chirpui-badge--success",
+        "chirpui-badge--tonal",
         "chirpui-badge--warning",
         "chirpui-badge__icon",
         "chirpui-badge__text"
@@ -3642,6 +3781,16 @@
           "has_default": true,
           "is_required": false,
           "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "appearance"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "tone"
         },
         {
           "has_default": true,
@@ -3684,6 +3833,14 @@
         "--chirpui-badge-color",
         "--chirpui-badge-text"
       ],
+      "tones": [
+        "danger",
+        "info",
+        "neutral",
+        "primary",
+        "success",
+        "warning"
+      ],
       "trim_emits": [],
       "variants": [
         "custom",
@@ -3697,6 +3854,7 @@
       ]
     },
     "band": {
+      "appearances": [],
       "authoring": "available",
       "block": "band",
       "category": "marketing",
@@ -3772,6 +3930,7 @@
         "--chirpui-band-padding",
         "--chirpui-band-radius"
       ],
+      "tones": [],
       "trim_emits": [
         "chirpui-band--default"
       ],
@@ -3784,6 +3943,7 @@
       ]
     },
     "bar-chart": {
+      "appearances": [],
       "authoring": "available",
       "block": "bar-chart",
       "category": "data-display",
@@ -3866,6 +4026,7 @@
       "slots_yielded": [],
       "template": "bar_chart.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -3876,6 +4037,7 @@
       ]
     },
     "bento": {
+      "appearances": [],
       "authoring": "available",
       "block": "bento",
       "category": "effect",
@@ -3912,10 +4074,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "bg-pattern": {
+      "appearances": [],
       "authoring": "available",
       "block": "bg-pattern",
       "category": "effect",
@@ -3957,10 +4121,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "blade": {
+      "appearances": [],
       "authoring": "available",
       "block": "blade",
       "category": "effect",
@@ -3990,10 +4156,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "block": {
+      "appearances": [],
       "authoring": "preferred",
       "block": "block",
       "category": "layout",
@@ -4031,10 +4199,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "border-beam": {
+      "appearances": [],
       "authoring": "available",
       "block": "border-beam",
       "category": "effect",
@@ -4104,6 +4274,7 @@
       "slots_yielded": [],
       "template": "border_beam.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-border-beam--default",
         "chirpui-border-beam--lg",
@@ -4119,6 +4290,7 @@
       ]
     },
     "bounce-in": {
+      "appearances": [],
       "authoring": "available",
       "block": "bounce-in",
       "category": "effect",
@@ -4145,10 +4317,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "breadcrumbs": {
+      "appearances": [],
       "authoring": "available",
       "block": "breadcrumbs",
       "category": "navigation",
@@ -4214,12 +4388,19 @@
       "slots_yielded": [],
       "template": "breadcrumbs.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-breadcrumbs"
       ],
       "variants": []
     },
     "btn": {
+      "appearances": [
+        "filled",
+        "ghost",
+        "outlined",
+        "tonal"
+      ],
       "authoring": "available",
       "block": "btn",
       "category": "control",
@@ -4237,12 +4418,16 @@
       "emits": [
         "chirpui-btn",
         "chirpui-btn--danger",
+        "chirpui-btn--filled",
         "chirpui-btn--ghost",
         "chirpui-btn--loading",
+        "chirpui-btn--neutral",
+        "chirpui-btn--outlined",
         "chirpui-btn--primary",
         "chirpui-btn--secondary",
         "chirpui-btn--sm",
         "chirpui-btn--success",
+        "chirpui-btn--tonal",
         "chirpui-btn--warning",
         "chirpui-btn__icon",
         "chirpui-btn__label",
@@ -4267,6 +4452,16 @@
           "has_default": true,
           "is_required": false,
           "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "appearance"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "tone"
         },
         {
           "has_default": true,
@@ -4428,6 +4623,14 @@
         "--chirpui-btn-color",
         "--chirpui-btn-radius"
       ],
+      "tones": [
+        "danger",
+        "neutral",
+        "primary",
+        "secondary",
+        "success",
+        "warning"
+      ],
       "trim_emits": [
         "chirpui-btn--lg",
         "chirpui-btn--md"
@@ -4443,6 +4646,7 @@
       ]
     },
     "btn-group": {
+      "appearances": [],
       "authoring": "available",
       "block": "btn-group",
       "category": "control",
@@ -4478,10 +4682,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "bulk-bar": {
+      "appearances": [],
       "authoring": "available",
       "block": "bulk-bar",
       "category": "control",
@@ -4514,10 +4720,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "calendar": {
+      "appearances": [],
       "authoring": "available",
       "block": "calendar",
       "category": "data-display",
@@ -4592,10 +4800,12 @@
       "slots_yielded": [],
       "template": "calendar.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "callout": {
+      "appearances": [],
       "authoring": "available",
       "block": "callout",
       "category": "feedback",
@@ -4677,10 +4887,17 @@
       "slots_yielded": [],
       "template": "callout.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "card": {
+      "appearances": [
+        "filled",
+        "ghost",
+        "outlined",
+        "tonal"
+      ],
       "authoring": "available",
       "block": "card",
       "category": "container",
@@ -4706,16 +4923,27 @@
       "emits": [
         "chirpui-card",
         "chirpui-card--collapsible",
+        "chirpui-card--danger",
         "chirpui-card--feature",
+        "chirpui-card--filled",
+        "chirpui-card--ghost",
         "chirpui-card--glass",
         "chirpui-card--gradient-border",
         "chirpui-card--gradient-header",
         "chirpui-card--horizontal",
         "chirpui-card--hoverable",
+        "chirpui-card--info",
         "chirpui-card--link",
         "chirpui-card--linked",
         "chirpui-card--media",
+        "chirpui-card--neutral",
+        "chirpui-card--outlined",
+        "chirpui-card--primary",
+        "chirpui-card--secondary",
         "chirpui-card--stats",
+        "chirpui-card--success",
+        "chirpui-card--tonal",
+        "chirpui-card--warning",
         "chirpui-card__body",
         "chirpui-card__body-actions",
         "chirpui-card__footer",
@@ -4783,6 +5011,16 @@
         {
           "has_default": true,
           "is_required": false,
+          "name": "appearance"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "tone"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
           "name": "icon"
         },
         {
@@ -4845,10 +5083,20 @@
       "slots_yielded": [],
       "template": "card.html",
       "tokens": [],
+      "tones": [
+        "danger",
+        "info",
+        "neutral",
+        "primary",
+        "secondary",
+        "success",
+        "warning"
+      ],
       "trim_emits": [],
       "variants": []
     },
     "carousel": {
+      "appearances": [],
       "authoring": "available",
       "block": "carousel",
       "category": "interactive",
@@ -4914,10 +5162,12 @@
       "slots_yielded": [],
       "template": "carousel.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "catalog-rail": {
+      "appearances": [],
       "authoring": "available",
       "block": "catalog-rail",
       "category": "media",
@@ -4998,10 +5248,12 @@
       ],
       "template": "media_patterns.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "channel-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "channel-card",
       "category": "data-display",
@@ -5085,10 +5337,12 @@
       "slots_yielded": [],
       "template": "channel_card.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "chapter-item": {
+      "appearances": [],
       "authoring": "available",
       "block": "chapter-item",
       "category": "data-display",
@@ -5143,10 +5397,12 @@
       "slots_yielded": [],
       "template": "chapter_list.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "chapter-list": {
+      "appearances": [],
       "authoring": "available",
       "block": "chapter-list",
       "category": "data-display",
@@ -5204,10 +5460,12 @@
       "slots_yielded": [],
       "template": "chapter_list.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "chat-input": {
+      "appearances": [],
       "authoring": "available",
       "block": "chat-input",
       "category": "form",
@@ -5276,10 +5534,12 @@
       "slots_yielded": [],
       "template": "chat_input.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "chat-layout": {
+      "appearances": [],
       "authoring": "available",
       "block": "chat-layout",
       "category": "layout",
@@ -5351,10 +5611,12 @@
         "--chirpui-chat-layout-messages-padding",
         "--chirpui-chat-layout-min-height"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "children": {
+      "appearances": [],
       "authoring": "available",
       "block": "children",
       "category": "layout",
@@ -5395,12 +5657,14 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-children"
       ],
       "variants": []
     },
     "chip": {
+      "appearances": [],
       "authoring": "available",
       "block": "chip",
       "category": "data-display",
@@ -5465,10 +5729,12 @@
       "slots_yielded": [],
       "template": "chip_group.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "chip-group": {
+      "appearances": [],
       "authoring": "available",
       "block": "chip-group",
       "category": "data-display",
@@ -5510,10 +5776,12 @@
       "slots_yielded": [],
       "template": "chip_group.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "clamp-2": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "clamp-2",
       "category": "layout",
@@ -5540,10 +5808,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "clamp-3": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "clamp-3",
       "category": "layout",
@@ -5570,10 +5840,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "click-jello": {
+      "appearances": [],
       "authoring": "available",
       "block": "click-jello",
       "category": "effect",
@@ -5600,10 +5872,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "click-wobble": {
+      "appearances": [],
       "authoring": "available",
       "block": "click-wobble",
       "category": "effect",
@@ -5630,10 +5904,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "cluster": {
+      "appearances": [],
       "authoring": "preferred",
       "block": "cluster",
       "category": "layout",
@@ -5671,10 +5947,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "code": {
+      "appearances": [],
       "authoring": "available",
       "block": "code",
       "category": "content",
@@ -5701,10 +5979,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "code-block": {
+      "appearances": [],
       "authoring": "available",
       "block": "code-block",
       "category": "content",
@@ -5734,10 +6014,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "code-block-wrapper": {
+      "appearances": [],
       "authoring": "available",
       "block": "code-block-wrapper",
       "category": "content",
@@ -5764,10 +6046,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "collapse": {
+      "appearances": [],
       "authoring": "available",
       "block": "collapse",
       "category": "interactive",
@@ -5825,10 +6109,12 @@
       "slots_yielded": [],
       "template": "collapse.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "command-bar": {
+      "appearances": [],
       "authoring": "available",
       "block": "command-bar",
       "category": "control",
@@ -5855,10 +6141,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "command-palette": {
+      "appearances": [],
       "authoring": "available",
       "block": "command-palette",
       "category": "interactive",
@@ -5936,10 +6224,12 @@
       "slots_yielded": [],
       "template": "command_palette.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "comment": {
+      "appearances": [],
       "authoring": "available",
       "block": "comment",
       "category": "data-display",
@@ -6034,10 +6324,12 @@
       "slots_yielded": [],
       "template": "comment.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "comment-thread": {
+      "appearances": [],
       "authoring": "available",
       "block": "comment-thread",
       "category": "content",
@@ -6064,10 +6356,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "composer-shell": {
+      "appearances": [],
       "authoring": "available",
       "block": "composer-shell",
       "category": "form",
@@ -6137,10 +6431,12 @@
       "slots_yielded": [],
       "template": "composer_shell.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "confetti": {
+      "appearances": [],
       "authoring": "available",
       "block": "confetti",
       "category": "effect",
@@ -6196,12 +6492,14 @@
       "slots_yielded": [],
       "template": "confetti.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         ""
       ]
     },
     "config-row": {
+      "appearances": [],
       "authoring": "available",
       "block": "config-row",
       "category": "container",
@@ -6289,10 +6587,12 @@
       "slots_yielded": [],
       "template": "config_row.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "config-row-list": {
+      "appearances": [],
       "authoring": "available",
       "block": "config-row-list",
       "category": "container",
@@ -6326,10 +6626,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "confirm": {
+      "appearances": [],
       "authoring": "available",
       "block": "confirm",
       "category": "feedback",
@@ -6439,6 +6741,7 @@
       "slots_yielded": [],
       "template": "confirm.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-confirm",
         "chirpui-confirm--default"
@@ -6449,6 +6752,7 @@
       ]
     },
     "constellation": {
+      "appearances": [],
       "authoring": "available",
       "block": "constellation",
       "category": "effect",
@@ -6511,6 +6815,7 @@
       "slots_yielded": [],
       "template": "constellation.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-constellation--default"
       ],
@@ -6523,6 +6828,7 @@
       ]
     },
     "container": {
+      "appearances": [],
       "authoring": "preferred",
       "block": "container",
       "category": "layout",
@@ -6549,10 +6855,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "conversation-item": {
+      "appearances": [],
       "authoring": "available",
       "block": "conversation-item",
       "category": "navigation",
@@ -6641,10 +6949,12 @@
       "slots_yielded": [],
       "template": "conversation_item.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "conversation-list": {
+      "appearances": [],
       "authoring": "available",
       "block": "conversation-list",
       "category": "navigation",
@@ -6681,10 +6991,12 @@
       "slots_yielded": [],
       "template": "conversation_list.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "copy-btn": {
+      "appearances": [],
       "authoring": "available",
       "block": "copy-btn",
       "category": "control",
@@ -6734,6 +7046,7 @@
       "slots_yielded": [],
       "template": "copy_button.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -6743,6 +7056,7 @@
       ]
     },
     "counter-badge": {
+      "appearances": [],
       "authoring": "available",
       "block": "counter-badge",
       "category": "feedback",
@@ -6774,10 +7088,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "cta-band": {
+      "appearances": [],
       "authoring": "available",
       "block": "cta-band",
       "category": "marketing",
@@ -6876,10 +7192,12 @@
         "--chirpui-cta-band-copy-gap",
         "--chirpui-cta-band-gap"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "description_list": {
+      "appearances": [],
       "authoring": "available",
       "block": "description-list",
       "category": "layout",
@@ -6958,6 +7276,7 @@
       "slots_yielded": [],
       "template": "description_list.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-description-list--horizontal",
         "chirpui-description-list--stacked"
@@ -6968,6 +7287,7 @@
       ]
     },
     "detail-header": {
+      "appearances": [],
       "authoring": "available",
       "block": "detail-header",
       "category": "layout",
@@ -7057,10 +7377,12 @@
       ],
       "template": "detail_header.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "display": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "display",
       "category": "typography",
@@ -7090,10 +7412,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "divider": {
+      "appearances": [],
       "authoring": "available",
       "block": "divider",
       "category": "layout",
@@ -7164,10 +7488,12 @@
       "slots_yielded": [],
       "template": "divider.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "dl": {
+      "appearances": [],
       "authoring": "available",
       "block": "dl",
       "category": "data-display",
@@ -7232,10 +7558,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "dnd": {
+      "appearances": [],
       "authoring": "available",
       "block": "dnd",
       "category": "interactive",
@@ -7311,10 +7639,12 @@
       "slots_yielded": [],
       "template": "dnd.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "dock": {
+      "appearances": [],
       "authoring": "available",
       "block": "dock",
       "category": "effect",
@@ -7381,6 +7711,7 @@
       "slots_yielded": [],
       "template": "dock.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-dock--default",
         "chirpui-dock--md"
@@ -7392,6 +7723,7 @@
       ]
     },
     "document-header": {
+      "appearances": [],
       "authoring": "available",
       "block": "document-header",
       "category": "layout",
@@ -7494,10 +7826,12 @@
       ],
       "template": "document_header.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "donut": {
+      "appearances": [],
       "authoring": "available",
       "block": "donut",
       "category": "data-display",
@@ -7589,6 +7923,7 @@
         "--chirpui-donut-pct",
         "--chirpui-donut-size"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -7598,6 +7933,7 @@
       ]
     },
     "drawer": {
+      "appearances": [],
       "authoring": "available",
       "block": "drawer",
       "category": "overlay",
@@ -7668,6 +8004,7 @@
       "slots_yielded": [],
       "template": "drawer.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "left",
@@ -7675,6 +8012,7 @@
       ]
     },
     "dropdown": {
+      "appearances": [],
       "authoring": "available",
       "block": "dropdown",
       "category": "navigation",
@@ -7744,10 +8082,12 @@
       "slots_yielded": [],
       "template": "dropdown.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "dropdown__item": {
+      "appearances": [],
       "authoring": "available",
       "block": "dropdown__item",
       "category": "navigation",
@@ -7796,6 +8136,7 @@
       "slots_yielded": [],
       "template": "dropdown_menu.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-dropdown__item--default",
         "chirpui-dropdown__item--muted"
@@ -7807,6 +8148,7 @@
       ]
     },
     "empty-panel-state": {
+      "appearances": [],
       "authoring": "available",
       "block": "empty-panel-state",
       "category": "feedback",
@@ -7915,10 +8257,12 @@
       ],
       "template": "empty_panel_state.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "empty-state": {
+      "appearances": [],
       "authoring": "available",
       "block": "empty-state",
       "category": "feedback",
@@ -8016,10 +8360,12 @@
       "slots_yielded": [],
       "template": "empty.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "entity-header": {
+      "appearances": [],
       "authoring": "available",
       "block": "entity-header",
       "category": "layout",
@@ -8083,10 +8429,12 @@
       "slots_yielded": [],
       "template": "entity_header.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "facet-chip": {
+      "appearances": [],
       "authoring": "available",
       "block": "facet-chip",
       "category": "control",
@@ -8177,10 +8525,12 @@
       "slots_yielded": [],
       "template": "facet_chip.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "feature-section": {
+      "appearances": [],
       "authoring": "available",
       "block": "feature-section",
       "category": "marketing",
@@ -8269,6 +8619,7 @@
         "--chirpui-feature-section-columns",
         "--chirpui-feature-section-gap"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "balanced",
@@ -8280,6 +8631,7 @@
       ]
     },
     "feature-stack": {
+      "appearances": [],
       "authoring": "available",
       "block": "feature-stack",
       "category": "marketing",
@@ -8316,10 +8668,17 @@
       "slots_yielded": [],
       "template": "feature_section.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "field": {
+      "appearances": [
+        "filled",
+        "ghost",
+        "outlined",
+        "tonal"
+      ],
       "authoring": "available",
       "block": "field",
       "category": "form",
@@ -8347,12 +8706,26 @@
       "emits": [
         "chirpui-field",
         "chirpui-field--checkbox",
+        "chirpui-field--danger",
         "chirpui-field--dense",
         "chirpui-field--error",
+        "chirpui-field--file",
+        "chirpui-field--filled",
+        "chirpui-field--ghost",
+        "chirpui-field--info",
+        "chirpui-field--masked",
+        "chirpui-field--money",
+        "chirpui-field--neutral",
+        "chirpui-field--outlined",
+        "chirpui-field--phone",
+        "chirpui-field--primary",
         "chirpui-field--radio",
         "chirpui-field--radio-horizontal",
         "chirpui-field--range",
+        "chirpui-field--success",
         "chirpui-field--toggle",
+        "chirpui-field--tonal",
+        "chirpui-field--warning",
         "chirpui-field__checkbox",
         "chirpui-field__error",
         "chirpui-field__errors",
@@ -8418,6 +8791,16 @@
           "has_default": true,
           "is_required": false,
           "name": "oob"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "appearance"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "tone"
         }
       ],
       "provides": [],
@@ -8436,11 +8819,23 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "tones": [
+        "danger",
+        "info",
+        "neutral",
+        "primary",
+        "success",
+        "warning"
+      ],
       "trim_emits": [],
       "variants": [
         "checkbox",
         "dense",
         "error",
+        "file",
+        "masked",
+        "money",
+        "phone",
         "radio",
         "radio-horizontal",
         "range",
@@ -8448,6 +8843,7 @@
       ]
     },
     "fieldset": {
+      "appearances": [],
       "authoring": "available",
       "block": "fieldset",
       "category": "form",
@@ -8494,10 +8890,12 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "file-tree": {
+      "appearances": [],
       "authoring": "available",
       "block": "file-tree",
       "category": "data-display",
@@ -8605,10 +9003,12 @@
       ],
       "template": "file_tree.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "filter-bar": {
+      "appearances": [],
       "authoring": "available",
       "block": "filter-bar",
       "category": "form",
@@ -8638,10 +9038,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "filter-group": {
+      "appearances": [],
       "authoring": "available",
       "block": "filter-group",
       "category": "control",
@@ -8693,10 +9095,12 @@
       "slots_yielded": [],
       "template": "filter_chips.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "filter-row": {
+      "appearances": [],
       "authoring": "available",
       "block": "filter-row",
       "category": "control",
@@ -8765,10 +9169,12 @@
       "slots_yielded": [],
       "template": "filter_bar.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "flow": {
+      "appearances": [],
       "authoring": "preferred",
       "block": "flow",
       "category": "layout",
@@ -8802,10 +9208,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "focus-ring": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "focus-ring",
       "category": "layout",
@@ -8832,10 +9240,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "font-2xl": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "font-2xl",
       "category": "typography",
@@ -8862,10 +9272,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "font-base": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "font-base",
       "category": "typography",
@@ -8892,10 +9304,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "font-lg": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "font-lg",
       "category": "typography",
@@ -8922,10 +9336,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "font-medium": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "font-medium",
       "category": "typography",
@@ -8952,10 +9368,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "font-mono": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "font-mono",
       "category": "typography",
@@ -8982,10 +9400,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "font-sm": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "font-sm",
       "category": "typography",
@@ -9012,10 +9432,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "font-xl": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "font-xl",
       "category": "typography",
@@ -9042,10 +9464,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "font-xs": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "font-xs",
       "category": "typography",
@@ -9072,10 +9496,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "form-actions": {
+      "appearances": [],
       "authoring": "available",
       "block": "form-actions",
       "category": "form",
@@ -9088,7 +9514,7 @@
         "chirpui-form-actions--end"
       ],
       "extra_emits": [],
-      "lineno": 820,
+      "lineno": 822,
       "macro": "form_actions",
       "maturity": "stable",
       "modifiers": [
@@ -9120,10 +9546,12 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "form-error-summary": {
+      "appearances": [],
       "authoring": "available",
       "block": "form-error-summary",
       "category": "form",
@@ -9140,7 +9568,7 @@
         "chirpui-form-error-summary__list"
       ],
       "extra_emits": [],
-      "lineno": 785,
+      "lineno": 787,
       "macro": "form_error_summary",
       "maturity": "stable",
       "modifiers": [],
@@ -9173,10 +9601,12 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "fragment-island": {
+      "appearances": [],
       "authoring": "internal",
       "block": "fragment-island",
       "category": "infrastructure",
@@ -9241,10 +9671,12 @@
       "slots_yielded": [],
       "template": "fragment_island.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "frame": {
+      "appearances": [],
       "authoring": "preferred",
       "block": "frame",
       "category": "layout",
@@ -9288,10 +9720,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "glitch": {
+      "appearances": [],
       "authoring": "available",
       "block": "glitch",
       "category": "effect",
@@ -9341,6 +9775,7 @@
       "slots_yielded": [],
       "template": "glitch_text.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -9349,6 +9784,7 @@
       ]
     },
     "glow-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "glow-card",
       "category": "effect",
@@ -9419,6 +9855,7 @@
       "slots_yielded": [],
       "template": "glow_card.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-glow-card--default",
         "chirpui-glow-card--lg",
@@ -9433,6 +9870,7 @@
       ]
     },
     "gradient-text": {
+      "appearances": [],
       "authoring": "available",
       "block": "gradient-text",
       "category": "effect",
@@ -9487,10 +9925,12 @@
       "slots_yielded": [],
       "template": "gradient_text.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "grain": {
+      "appearances": [],
       "authoring": "available",
       "block": "grain",
       "category": "effect",
@@ -9559,6 +9999,7 @@
       "slots_yielded": [],
       "template": "grain.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -9567,6 +10008,7 @@
       ]
     },
     "grid": {
+      "appearances": [],
       "authoring": "preferred",
       "block": "grid",
       "category": "layout",
@@ -9622,10 +10064,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "hero": {
+      "appearances": [],
       "authoring": "available",
       "block": "hero",
       "category": "layout",
@@ -9709,6 +10153,7 @@
       "slots_yielded": [],
       "template": "hero.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "animated-gradient",
@@ -9719,6 +10164,7 @@
       ]
     },
     "hero-effects": {
+      "appearances": [],
       "authoring": "available",
       "block": "hero-effects",
       "category": "effect",
@@ -9763,10 +10209,12 @@
       "slots_yielded": [],
       "template": "hero_effects.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "holy-light": {
+      "appearances": [],
       "authoring": "available",
       "block": "holy-light",
       "category": "effect",
@@ -9837,6 +10285,7 @@
       "slots_yielded": [],
       "template": "holy_light.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-holy-light--default"
       ],
@@ -9849,6 +10298,7 @@
       ]
     },
     "hover-jello": {
+      "appearances": [],
       "authoring": "available",
       "block": "hover-jello",
       "category": "effect",
@@ -9875,10 +10325,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "hover-rubber": {
+      "appearances": [],
       "authoring": "available",
       "block": "hover-rubber",
       "category": "effect",
@@ -9905,10 +10357,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "hover-wobble": {
+      "appearances": [],
       "authoring": "available",
       "block": "hover-wobble",
       "category": "effect",
@@ -9935,10 +10389,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "icon-btn": {
+      "appearances": [],
       "authoring": "available",
       "block": "icon-btn",
       "category": "control",
@@ -10071,6 +10527,7 @@
       "slots_yielded": [],
       "template": "icon_btn.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-icon-btn--default",
         "chirpui-icon-btn--md"
@@ -10084,6 +10541,7 @@
       ]
     },
     "index-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "index-card",
       "category": "navigation",
@@ -10145,10 +10603,12 @@
       "slots_yielded": [],
       "template": "index_card.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "infinite-scroll": {
+      "appearances": [],
       "authoring": "available",
       "block": "infinite-scroll",
       "category": "interactive",
@@ -10214,12 +10674,14 @@
       "slots_yielded": [],
       "template": "infinite_scroll.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-infinite-scroll"
       ],
       "variants": []
     },
     "inline": {
+      "appearances": [],
       "authoring": "available",
       "block": "inline",
       "category": "layout",
@@ -10246,10 +10708,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "inline-counter": {
+      "appearances": [],
       "authoring": "available",
       "block": "inline-counter",
       "category": "data-display",
@@ -10309,10 +10773,12 @@
       "slots_yielded": [],
       "template": "inline_counter.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "inline-edit": {
+      "appearances": [],
       "authoring": "available",
       "block": "inline-edit",
       "category": "form",
@@ -10392,6 +10858,7 @@
       "slots_yielded": [],
       "template": "inline_edit_field.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "display",
@@ -10399,6 +10866,7 @@
       ]
     },
     "input-group": {
+      "appearances": [],
       "authoring": "available",
       "block": "input-group",
       "category": "form",
@@ -10417,7 +10885,7 @@
         "chirpui-input-group__suffix"
       ],
       "extra_emits": [],
-      "lineno": 502,
+      "lineno": 504,
       "macro": "input_group",
       "maturity": "stable",
       "modifiers": [],
@@ -10499,10 +10967,12 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "install-snippet": {
+      "appearances": [],
       "authoring": "available",
       "block": "install-snippet",
       "category": "content",
@@ -10566,10 +11036,12 @@
       "slots_yielded": [],
       "template": "code.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "island-root": {
+      "appearances": [],
       "authoring": "available",
       "block": "island-root",
       "category": "interactive",
@@ -10644,10 +11116,12 @@
       "slots_yielded": [],
       "template": "islands.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "jello": {
+      "appearances": [],
       "authoring": "available",
       "block": "jello",
       "category": "effect",
@@ -10674,10 +11148,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "key-value-form": {
+      "appearances": [],
       "authoring": "available",
       "block": "key-value-form",
       "category": "form",
@@ -10712,12 +11188,14 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-key-value-form"
       ],
       "variants": []
     },
     "label-overline": {
+      "appearances": [],
       "authoring": "available",
       "block": "label-overline",
       "category": "content",
@@ -10768,10 +11246,12 @@
       "slots_yielded": [],
       "template": "label_overline.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "latest-line": {
+      "appearances": [],
       "authoring": "available",
       "block": "latest-line",
       "category": "data-display",
@@ -10848,10 +11328,12 @@
       "slots_yielded": [],
       "template": "latest_line.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "layer": {
+      "appearances": [],
       "authoring": "preferred",
       "block": "layer",
       "category": "layout",
@@ -10899,10 +11381,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "lifecycle-showcase": {
+      "appearances": [],
       "authoring": "available",
       "block": "lifecycle-showcase",
       "category": "marketing",
@@ -10945,10 +11429,12 @@
       "slots_yielded": [],
       "template": "marketing_patterns.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "link": {
+      "appearances": [],
       "authoring": "available",
       "block": "link",
       "category": "navigation",
@@ -10996,10 +11482,12 @@
       "slots_yielded": [],
       "template": "link.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "list": {
+      "appearances": [],
       "authoring": "available",
       "block": "list",
       "category": "data-display",
@@ -11059,10 +11547,12 @@
       "slots_yielded": [],
       "template": "list.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "list-reset": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "list-reset",
       "category": "layout",
@@ -11089,10 +11579,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "live-badge": {
+      "appearances": [],
       "authoring": "available",
       "block": "live-badge",
       "category": "feedback",
@@ -11135,10 +11627,12 @@
       "slots_yielded": [],
       "template": "live_badge.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "live-event-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "live-event-card",
       "category": "media",
@@ -11214,10 +11708,12 @@
       "slots_yielded": [],
       "template": "media_patterns.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "logo": {
+      "appearances": [],
       "authoring": "available",
       "block": "logo",
       "category": "content",
@@ -11307,10 +11803,12 @@
       "slots_yielded": [],
       "template": "logo.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "logo-cloud": {
+      "appearances": [],
       "authoring": "available",
       "block": "logo-cloud",
       "category": "marketing",
@@ -11381,10 +11879,12 @@
         "--chirpui-logo-cloud-item-min",
         "--chirpui-logo-cloud-opacity"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "marquee": {
+      "appearances": [],
       "authoring": "available",
       "block": "marquee",
       "category": "effect",
@@ -11457,6 +11957,7 @@
       "slots_yielded": [],
       "template": "marquee.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-marquee--default"
       ],
@@ -11467,6 +11968,7 @@
       ]
     },
     "mb-md": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "mb-md",
       "category": "layout",
@@ -11493,10 +11995,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "measure-lg": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "measure-lg",
       "category": "typography",
@@ -11523,10 +12027,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "measure-md": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "measure-md",
       "category": "typography",
@@ -11553,10 +12059,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "measure-sm": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "measure-sm",
       "category": "typography",
@@ -11583,10 +12091,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "media-hero-shelf": {
+      "appearances": [],
       "authoring": "available",
       "block": "media-hero-shelf",
       "category": "media",
@@ -11632,10 +12142,12 @@
       "slots_yielded": [],
       "template": "media_patterns.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "media-object": {
+      "appearances": [],
       "authoring": "available",
       "block": "media-object",
       "category": "layout",
@@ -11696,10 +12208,12 @@
       "slots_yielded": [],
       "template": "media_object.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "mention": {
+      "appearances": [],
       "authoring": "available",
       "block": "mention",
       "category": "content",
@@ -11742,10 +12256,12 @@
       "slots_yielded": [],
       "template": "mention.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "message-reactions": {
+      "appearances": [],
       "authoring": "available",
       "block": "message-reactions",
       "category": "content",
@@ -11772,10 +12288,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "message-thread": {
+      "appearances": [],
       "authoring": "available",
       "block": "message-thread",
       "category": "data-display",
@@ -11812,10 +12330,12 @@
       "slots_yielded": [],
       "template": "message_thread.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "message_bubble": {
+      "appearances": [],
       "authoring": "available",
       "block": "message-bubble",
       "category": "layout",
@@ -11881,6 +12401,7 @@
       "slots_yielded": [],
       "template": "message_bubble.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-message-bubble--default"
       ],
@@ -11892,6 +12413,7 @@
       ]
     },
     "meteor": {
+      "appearances": [],
       "authoring": "available",
       "block": "meteor",
       "category": "effect",
@@ -11945,6 +12467,7 @@
       "slots_yielded": [],
       "template": "meteor.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-meteor--default"
       ],
@@ -11956,6 +12479,7 @@
       ]
     },
     "metric-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "metric-card",
       "category": "data-display",
@@ -12085,10 +12609,12 @@
       "slots_yielded": [],
       "template": "metric_grid.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "metric-grid": {
+      "appearances": [],
       "authoring": "available",
       "block": "metric-grid",
       "category": "layout",
@@ -12133,10 +12659,12 @@
       "slots_yielded": [],
       "template": "metric_grid.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "min-w-0": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "min-w-0",
       "category": "layout",
@@ -12163,10 +12691,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "modal": {
+      "appearances": [],
       "authoring": "available",
       "block": "modal",
       "category": "container",
@@ -12252,12 +12782,14 @@
       "slots_yielded": [],
       "template": "modal.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-modal--md"
       ],
       "variants": []
     },
     "model-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "model-card",
       "category": "data-display",
@@ -12294,12 +12826,14 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-model-card"
       ],
       "variants": []
     },
     "moderation-queue-item": {
+      "appearances": [],
       "authoring": "available",
       "block": "moderation-queue-item",
       "category": "social",
@@ -12380,10 +12914,12 @@
       ],
       "template": "forum_patterns.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "mt-md": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "mt-md",
       "category": "layout",
@@ -12410,10 +12946,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "mt-sm": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "mt-sm",
       "category": "layout",
@@ -12440,10 +12978,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "nav-link": {
+      "appearances": [],
       "authoring": "available",
       "block": "nav-link",
       "category": "navigation",
@@ -12490,10 +13030,12 @@
       "slots_yielded": [],
       "template": "nav_link.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "nav-progress": {
+      "appearances": [],
       "authoring": "available",
       "block": "nav-progress",
       "category": "navigation",
@@ -12526,10 +13068,12 @@
       "slots_yielded": [],
       "template": "nav_progress.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "nav-tree": {
+      "appearances": [],
       "authoring": "available",
       "block": "nav-tree",
       "category": "navigation",
@@ -12627,10 +13171,12 @@
       "slots_yielded": [],
       "template": "nav_tree.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "navbar": {
+      "appearances": [],
       "authoring": "available",
       "block": "navbar",
       "category": "navigation",
@@ -12713,10 +13259,12 @@
       "slots_yielded": [],
       "template": "navbar.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "navbar-dropdown": {
+      "appearances": [],
       "authoring": "available",
       "block": "navbar-dropdown",
       "category": "navigation",
@@ -12778,10 +13326,12 @@
       "slots_yielded": [],
       "template": "navbar.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "neon": {
+      "appearances": [],
       "authoring": "available",
       "block": "neon",
       "category": "effect",
@@ -12845,6 +13395,7 @@
       "slots_yielded": [],
       "template": "neon_text.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "blue",
@@ -12856,6 +13407,7 @@
       ]
     },
     "notification-dot": {
+      "appearances": [],
       "authoring": "available",
       "block": "notification-dot",
       "category": "feedback",
@@ -12928,6 +13480,7 @@
       "slots_yielded": [],
       "template": "notification_dot.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-notification-dot--default",
         "chirpui-notification-dot--error",
@@ -12942,6 +13495,7 @@
       ]
     },
     "number-scale": {
+      "appearances": [],
       "authoring": "available",
       "block": "number-scale",
       "category": "form",
@@ -12975,10 +13529,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "number-ticker": {
+      "appearances": [],
       "authoring": "available",
       "block": "number-ticker",
       "category": "effect",
@@ -13050,6 +13606,7 @@
       "slots_yielded": [],
       "template": "number_ticker.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-number-ticker--default"
       ],
@@ -13060,6 +13617,7 @@
       ]
     },
     "orbit": {
+      "appearances": [],
       "authoring": "available",
       "block": "orbit",
       "category": "effect",
@@ -13137,6 +13695,7 @@
       "slots_yielded": [],
       "template": "orbit.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -13146,6 +13705,7 @@
       ]
     },
     "overlay": {
+      "appearances": [],
       "authoring": "available",
       "block": "overlay",
       "category": "container",
@@ -13186,6 +13746,7 @@
       "slots_yielded": [],
       "template": "overlay.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "dark",
@@ -13194,6 +13755,7 @@
       ]
     },
     "page-fill": {
+      "appearances": [],
       "authoring": "available",
       "block": "page-fill",
       "category": "layout",
@@ -13220,10 +13782,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "page_header": {
+      "appearances": [],
       "authoring": "available",
       "block": "page-header",
       "category": "layout",
@@ -13295,6 +13859,7 @@
       "slots_yielded": [],
       "template": "layout.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-page-header--default"
       ],
@@ -13304,6 +13869,7 @@
       ]
     },
     "page_hero": {
+      "appearances": [],
       "authoring": "available",
       "block": "page-hero",
       "category": "layout",
@@ -13366,6 +13932,7 @@
       "slots_yielded": [],
       "template": "hero.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-page-hero",
         "chirpui-page-hero--editorial",
@@ -13377,6 +13944,7 @@
       ]
     },
     "pagination": {
+      "appearances": [],
       "authoring": "available",
       "block": "pagination",
       "category": "navigation",
@@ -13461,10 +14029,12 @@
       "slots_yielded": [],
       "template": "pagination.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "panel": {
+      "appearances": [],
       "authoring": "available",
       "block": "panel",
       "category": "container",
@@ -13544,10 +14114,12 @@
       "slots_yielded": [],
       "template": "panel.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "params-table": {
+      "appearances": [],
       "authoring": "available",
       "block": "params-table",
       "category": "data-display",
@@ -13624,12 +14196,14 @@
       "slots_yielded": [],
       "template": "params_table.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-params-table"
       ],
       "variants": []
     },
     "particle-bg": {
+      "appearances": [],
       "authoring": "available",
       "block": "particle-bg",
       "category": "effect",
@@ -13687,6 +14261,7 @@
       "slots_yielded": [],
       "template": "particle_bg.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-particle-bg--default"
       ],
@@ -13698,6 +14273,7 @@
       ]
     },
     "placeholder-inline": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "placeholder-inline",
       "category": "layout",
@@ -13724,10 +14300,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "playlist": {
+      "appearances": [],
       "authoring": "available",
       "block": "playlist",
       "category": "data-display",
@@ -13780,10 +14358,12 @@
       "slots_yielded": [],
       "template": "playlist.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "playlist-item": {
+      "appearances": [],
       "authoring": "available",
       "block": "playlist-item",
       "category": "data-display",
@@ -13846,10 +14426,12 @@
       "slots_yielded": [],
       "template": "playlist.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "popover": {
+      "appearances": [],
       "authoring": "available",
       "block": "popover",
       "category": "overlay",
@@ -13904,10 +14486,12 @@
       "slots_yielded": [],
       "template": "popover.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "post-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "post-card",
       "category": "data-display",
@@ -13991,10 +14575,12 @@
       "slots_yielded": [],
       "template": "post_card.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "primary-nav": {
+      "appearances": [],
       "authoring": "available",
       "block": "primary-nav",
       "category": "navigation",
@@ -14060,10 +14646,12 @@
       "slots_yielded": [],
       "template": "primary_nav.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "profile-header": {
+      "appearances": [],
       "authoring": "available",
       "block": "profile-header",
       "category": "data-display",
@@ -14147,10 +14735,12 @@
       "slots_yielded": [],
       "template": "profile_header.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "progress": {
+      "appearances": [],
       "authoring": "available",
       "block": "progress",
       "category": "feedback",
@@ -14181,12 +14771,14 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-progress"
       ],
       "variants": []
     },
     "progress-bar": {
+      "appearances": [],
       "authoring": "available",
       "block": "progress-bar",
       "category": "feedback",
@@ -14274,6 +14866,7 @@
       "slots_yielded": [],
       "template": "progress.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "custom",
@@ -14284,6 +14877,7 @@
       ]
     },
     "prose": {
+      "appearances": [],
       "authoring": "preferred",
       "block": "prose",
       "category": "typography",
@@ -14310,10 +14904,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "prose-lg": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "prose-lg",
       "category": "typography",
@@ -14340,10 +14936,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "prose-sm": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "prose-sm",
       "category": "typography",
@@ -14370,10 +14968,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "pulsing-btn": {
+      "appearances": [],
       "authoring": "available",
       "block": "pulsing-btn",
       "category": "effect",
@@ -14442,6 +15042,7 @@
       "slots_yielded": [],
       "template": "pulsing_button.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-pulsing-btn--default"
       ],
@@ -14454,6 +15055,7 @@
       ]
     },
     "reaction-pill": {
+      "appearances": [],
       "authoring": "available",
       "block": "reaction-pill",
       "category": "interactive",
@@ -14511,10 +15113,12 @@
       "slots_yielded": [],
       "template": "reaction_pill.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "rendered-content": {
+      "appearances": [],
       "authoring": "available",
       "block": "rendered-content",
       "category": "typography",
@@ -14559,10 +15163,12 @@
       "slots_yielded": [],
       "template": "rendered_content.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "resource-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "resource-card",
       "category": "data-display",
@@ -14592,10 +15198,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "resource-index": {
+      "appearances": [],
       "authoring": "available",
       "block": "resource-index",
       "category": "composite",
@@ -14794,10 +15402,12 @@
       "slots_yielded": [],
       "template": "resource_index.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "result-slot": {
+      "appearances": [],
       "authoring": "available",
       "block": "result-slot",
       "category": "feedback",
@@ -14827,10 +15437,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "reveal-on-scroll": {
+      "appearances": [],
       "authoring": "available",
       "block": "reveal-on-scroll",
       "category": "effect",
@@ -14869,10 +15481,12 @@
       "slots_yielded": [],
       "template": "reveal_on_scroll.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ripple-btn": {
+      "appearances": [],
       "authoring": "available",
       "block": "ripple-btn",
       "category": "effect",
@@ -14938,6 +15552,7 @@
       "slots_yielded": [],
       "template": "ripple_button.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-ripple-btn--default",
         "chirpui-ripple-btn--md"
@@ -14949,6 +15564,7 @@
       ]
     },
     "route-tab": {
+      "appearances": [],
       "authoring": "available",
       "block": "route-tab",
       "category": "navigation",
@@ -15012,10 +15628,12 @@
       "slots_yielded": [],
       "template": "route_tabs.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "route-tabs": {
+      "appearances": [],
       "authoring": "available",
       "block": "route-tabs",
       "category": "navigation",
@@ -15042,10 +15660,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "row-actions": {
+      "appearances": [],
       "authoring": "available",
       "block": "row-actions",
       "category": "control",
@@ -15085,12 +15705,14 @@
       "slots_yielded": [],
       "template": "row_actions.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-row-actions"
       ],
       "variants": []
     },
     "rubber-band": {
+      "appearances": [],
       "authoring": "available",
       "block": "rubber-band",
       "category": "effect",
@@ -15117,10 +15739,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "rune-field": {
+      "appearances": [],
       "authoring": "available",
       "block": "rune-field",
       "category": "effect",
@@ -15182,6 +15806,7 @@
       "slots_yielded": [],
       "template": "rune_field.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-rune-field--default"
       ],
@@ -15194,6 +15819,7 @@
       ]
     },
     "saved-view-strip": {
+      "appearances": [],
       "authoring": "available",
       "block": "saved-view-strip",
       "category": "navigation",
@@ -15247,10 +15873,12 @@
       "slots_yielded": [],
       "template": "saved_view_strip.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "scanline": {
+      "appearances": [],
       "authoring": "available",
       "block": "scanline",
       "category": "effect",
@@ -15294,6 +15922,7 @@
       "slots_yielded": [],
       "template": "scanline.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -15302,6 +15931,7 @@
       ]
     },
     "scope-switcher": {
+      "appearances": [],
       "authoring": "available",
       "block": "scope-switcher",
       "category": "navigation",
@@ -15374,10 +16004,12 @@
       "slots_yielded": [],
       "template": "scope_switcher.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "scroll-x": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "scroll-x",
       "category": "layout",
@@ -15404,10 +16036,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "search-bar": {
+      "appearances": [],
       "authoring": "available",
       "block": "search-bar",
       "category": "form",
@@ -15428,7 +16062,7 @@
         "chirpui-search-bar__input"
       ],
       "extra_emits": [],
-      "lineno": 674,
+      "lineno": 676,
       "macro": "search_bar",
       "maturity": "stable",
       "modifiers": [
@@ -15538,12 +16172,14 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-search-bar"
       ],
       "variants": []
     },
     "search-header": {
+      "appearances": [],
       "authoring": "available",
       "block": "search-header",
       "category": "layout",
@@ -15670,12 +16306,14 @@
       "slots_yielded": [],
       "template": "search_header.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-search-header"
       ],
       "variants": []
     },
     "section-collapsible": {
+      "appearances": [],
       "authoring": "available",
       "block": "section-collapsible",
       "category": "layout",
@@ -15736,12 +16374,14 @@
       "slots_yielded": [],
       "template": "layout.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-section-collapsible"
       ],
       "variants": []
     },
     "section_header": {
+      "appearances": [],
       "authoring": "available",
       "block": "section-header",
       "category": "layout",
@@ -15810,6 +16450,7 @@
       "slots_yielded": [],
       "template": "layout.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-section-header--default"
       ],
@@ -15819,6 +16460,7 @@
       ]
     },
     "segmented": {
+      "appearances": [],
       "authoring": "available",
       "block": "segmented",
       "category": "control",
@@ -15884,12 +16526,14 @@
       "slots_yielded": [],
       "template": "segmented_control.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-segmented--md"
       ],
       "variants": []
     },
     "selection-bar": {
+      "appearances": [],
       "authoring": "available",
       "block": "selection-bar",
       "category": "control",
@@ -15949,10 +16593,12 @@
       "slots_yielded": [],
       "template": "selection_bar.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "settings-row": {
+      "appearances": [],
       "authoring": "available",
       "block": "settings-row",
       "category": "container",
@@ -16012,10 +16658,12 @@
       "slots_yielded": [],
       "template": "settings_row.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "settings-row-list": {
+      "appearances": [],
       "authoring": "available",
       "block": "settings-row-list",
       "category": "container",
@@ -16082,10 +16730,12 @@
       "slots_yielded": [],
       "template": "settings_row.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "shell-action-form": {
+      "appearances": [],
       "authoring": "available",
       "block": "shell-action-form",
       "category": "layout",
@@ -16112,10 +16762,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "shell-actions": {
+      "appearances": [],
       "authoring": "available",
       "block": "shell-actions",
       "category": "layout",
@@ -16156,10 +16808,12 @@
       "slots_yielded": [],
       "template": "shell_actions.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "shell-section": {
+      "appearances": [],
       "authoring": "available",
       "block": "shell-section",
       "category": "layout",
@@ -16191,10 +16845,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "shimmer-btn": {
+      "appearances": [],
       "authoring": "available",
       "block": "shimmer-btn",
       "category": "effect",
@@ -16288,6 +16944,7 @@
       "slots_yielded": [],
       "template": "shimmer_button.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-shimmer-btn--default",
         "chirpui-shimmer-btn--md"
@@ -16299,6 +16956,7 @@
       ]
     },
     "sidebar": {
+      "appearances": [],
       "authoring": "available",
       "block": "sidebar",
       "category": "navigation",
@@ -16384,10 +17042,12 @@
         "--chirpui-sidebar-link-gap",
         "--chirpui-sidebar-section-gap"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "sidebar-toggle": {
+      "appearances": [],
       "authoring": "available",
       "block": "sidebar-toggle",
       "category": "navigation",
@@ -16425,10 +17085,12 @@
       "slots_yielded": [],
       "template": "sidebar.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "signature": {
+      "appearances": [],
       "authoring": "available",
       "block": "signature",
       "category": "content",
@@ -16474,10 +17136,12 @@
       "slots_yielded": [],
       "template": "signature.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "site-footer": {
+      "appearances": [],
       "authoring": "available",
       "block": "site-footer",
       "category": "marketing",
@@ -16557,6 +17221,7 @@
         "--chirpui-site-footer-max-width",
         "--chirpui-site-footer-padding-inline"
       ],
+      "tones": [],
       "trim_emits": [
         "chirpui-site-footer--columns"
       ],
@@ -16567,6 +17232,7 @@
       ]
     },
     "site-header": {
+      "appearances": [],
       "authoring": "available",
       "block": "site-header",
       "category": "marketing",
@@ -16666,6 +17332,7 @@
         "--chirpui-site-header-max-width",
         "--chirpui-site-header-padding-inline"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "glass",
@@ -16674,6 +17341,7 @@
       ]
     },
     "site-nav-link": {
+      "appearances": [],
       "authoring": "available",
       "block": "site-nav",
       "category": "marketing",
@@ -16747,12 +17415,14 @@
       "slots_yielded": [],
       "template": "site_header.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-site-nav"
       ],
       "variants": []
     },
     "site-shell": {
+      "appearances": [],
       "authoring": "available",
       "block": "site-shell",
       "category": "marketing",
@@ -16803,10 +17473,12 @@
       "tokens": [
         "--chirpui-site-shell-bg"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "skeleton": {
+      "appearances": [],
       "authoring": "available",
       "block": "skeleton",
       "category": "feedback",
@@ -16869,6 +17541,7 @@
       "slots_yielded": [],
       "template": "skeleton.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -16878,6 +17551,7 @@
       ]
     },
     "sortable": {
+      "appearances": [],
       "authoring": "available",
       "block": "sortable",
       "category": "interactive",
@@ -16938,10 +17612,12 @@
       "slots_yielded": [],
       "template": "sortable_list.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "sparkle": {
+      "appearances": [],
       "authoring": "available",
       "block": "sparkle",
       "category": "effect",
@@ -16999,6 +17675,7 @@
       "slots_yielded": [],
       "template": "sparkle.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-sparkle--lg",
         "chirpui-sparkle--md",
@@ -17012,6 +17689,7 @@
       ]
     },
     "spinner": {
+      "appearances": [],
       "authoring": "available",
       "block": "spinner",
       "category": "feedback",
@@ -17060,10 +17738,12 @@
       "slots_yielded": [],
       "template": "spinner.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "spinner-thinking": {
+      "appearances": [],
       "authoring": "available",
       "block": "spinner-thinking",
       "category": "feedback",
@@ -17100,10 +17780,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "split-btn": {
+      "appearances": [],
       "authoring": "available",
       "block": "split-btn",
       "category": "control",
@@ -17179,10 +17861,12 @@
       "slots_yielded": [],
       "template": "split_button.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "split-flap": {
+      "appearances": [],
       "authoring": "available",
       "block": "split-flap",
       "category": "ascii",
@@ -17237,6 +17921,7 @@
       "slots_yielded": [],
       "template": "ascii_split_flap.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-split-flap--default"
       ],
@@ -17248,6 +17933,7 @@
       ]
     },
     "split-flap-board": {
+      "appearances": [],
       "authoring": "available",
       "block": "split-flap-board",
       "category": "ascii",
@@ -17284,10 +17970,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "split-flap-row": {
+      "appearances": [],
       "authoring": "available",
       "block": "split-flap-row",
       "category": "ascii",
@@ -17314,10 +18002,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "split-layout": {
+      "appearances": [],
       "authoring": "available",
       "block": "split-layout",
       "category": "layout",
@@ -17389,6 +18079,7 @@
       "slots_yielded": [],
       "template": "split_layout.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "balanced",
@@ -17400,6 +18091,7 @@
       ]
     },
     "split-panel": {
+      "appearances": [],
       "authoring": "available",
       "block": "split-panel",
       "category": "layout",
@@ -17475,10 +18167,12 @@
       "slots_yielded": [],
       "template": "split_panel.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "spotlight-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "spotlight-card",
       "category": "effect",
@@ -17543,6 +18237,7 @@
       "slots_yielded": [],
       "template": "spotlight_card.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-spotlight-card--default"
       ],
@@ -17553,6 +18248,7 @@
       ]
     },
     "sse-retry": {
+      "appearances": [],
       "authoring": "available",
       "block": "sse-retry",
       "category": "feedback",
@@ -17585,10 +18281,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "sse-status": {
+      "appearances": [],
       "authoring": "available",
       "block": "sse-status",
       "category": "feedback",
@@ -17644,10 +18342,12 @@
       "slots_yielded": [],
       "template": "sse_status.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "stack": {
+      "appearances": [],
       "authoring": "preferred",
       "block": "stack",
       "category": "layout",
@@ -17685,10 +18385,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "star-rating": {
+      "appearances": [],
       "authoring": "available",
       "block": "star-rating",
       "category": "control",
@@ -17727,12 +18429,14 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-star-rating--md"
       ],
       "variants": []
     },
     "stat": {
+      "appearances": [],
       "authoring": "available",
       "block": "stat",
       "category": "data-display",
@@ -17787,10 +18491,12 @@
       "slots_yielded": [],
       "template": "stat.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "status-indicator": {
+      "appearances": [],
       "authoring": "available",
       "block": "status-indicator",
       "category": "feedback",
@@ -17870,6 +18576,7 @@
       "slots_yielded": [],
       "template": "status.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "custom",
@@ -17882,6 +18589,7 @@
       ]
     },
     "stepper": {
+      "appearances": [],
       "authoring": "available",
       "block": "stepper",
       "category": "navigation",
@@ -17942,10 +18650,12 @@
       "slots_yielded": [],
       "template": "stepper.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "story-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "story-card",
       "category": "marketing",
@@ -18056,10 +18766,12 @@
         "--chirpui-story-card-logo-size",
         "--chirpui-story-card-padding"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "streaming": {
+      "appearances": [],
       "authoring": "available",
       "block": "streaming",
       "category": "feedback",
@@ -18086,6 +18798,7 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-streaming"
       ],
@@ -18094,6 +18807,7 @@
       ]
     },
     "streaming-block": {
+      "appearances": [],
       "authoring": "available",
       "block": "streaming-block",
       "category": "feedback",
@@ -18126,10 +18840,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "streaming_bubble": {
+      "appearances": [],
       "authoring": "available",
       "block": "streaming-bubble",
       "category": "feedback",
@@ -18204,6 +18920,7 @@
       "slots_yielded": [],
       "template": "streaming.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-streaming-bubble"
       ],
@@ -18213,6 +18930,12 @@
       ]
     },
     "surface": {
+      "appearances": [
+        "filled",
+        "ghost",
+        "outlined",
+        "tonal"
+      ],
       "authoring": "available",
       "block": "surface",
       "category": "container",
@@ -18230,22 +18953,34 @@
         "chirpui-surface--accent",
         "chirpui-surface--bento",
         "chirpui-surface--cornered",
+        "chirpui-surface--danger",
         "chirpui-surface--deep",
         "chirpui-surface--default",
         "chirpui-surface--elevated",
+        "chirpui-surface--filled",
         "chirpui-surface--frosted",
         "chirpui-surface--full",
+        "chirpui-surface--ghost",
         "chirpui-surface--glass",
         "chirpui-surface--gradient-accent",
         "chirpui-surface--gradient-border",
         "chirpui-surface--gradient-mesh",
         "chirpui-surface--gradient-subtle",
+        "chirpui-surface--info",
         "chirpui-surface--inset-glow",
         "chirpui-surface--muted",
+        "chirpui-surface--neutral",
         "chirpui-surface--no-padding",
         "chirpui-surface--noise-overlay",
+        "chirpui-surface--outlined",
+        "chirpui-surface--primary",
+        "chirpui-surface--secondary",
         "chirpui-surface--smoke",
         "chirpui-surface--static-overlay",
+        "chirpui-surface--success",
+        "chirpui-surface--surface",
+        "chirpui-surface--tonal",
+        "chirpui-surface--warning",
         "chirpui-surface__body",
         "chirpui-surface__eyebrow",
         "chirpui-surface__lede",
@@ -18271,6 +19006,16 @@
           "has_default": true,
           "is_required": false,
           "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "appearance"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "tone"
         },
         {
           "has_default": true,
@@ -18324,6 +19069,16 @@
       "slots_yielded": [],
       "template": "surface.html",
       "tokens": [],
+      "tones": [
+        "danger",
+        "info",
+        "neutral",
+        "primary",
+        "secondary",
+        "success",
+        "surface",
+        "warning"
+      ],
       "trim_emits": [],
       "variants": [
         "accent",
@@ -18340,6 +19095,7 @@
       ]
     },
     "suspense-group": {
+      "appearances": [],
       "authoring": "available",
       "block": "suspense-group",
       "category": "feedback",
@@ -18366,10 +19122,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "suspense-slot": {
+      "appearances": [],
       "authoring": "internal",
       "block": "suspense-slot",
       "category": "infrastructure",
@@ -18431,10 +19189,12 @@
       "slots_yielded": [],
       "template": "suspense.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "symbol-rain": {
+      "appearances": [],
       "authoring": "available",
       "block": "symbol-rain",
       "category": "effect",
@@ -18493,6 +19253,7 @@
       "slots_yielded": [],
       "template": "symbol_rain.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-symbol-rain--default"
       ],
@@ -18505,6 +19266,7 @@
       ]
     },
     "tab": {
+      "appearances": [],
       "authoring": "available",
       "block": "tab",
       "category": "navigation",
@@ -18575,10 +19337,12 @@
       "slots_yielded": [],
       "template": "tabs.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "tab-panel": {
+      "appearances": [],
       "authoring": "available",
       "block": "tab-panel",
       "category": "navigation",
@@ -18605,10 +19369,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "table": {
+      "appearances": [],
       "authoring": "available",
       "block": "table",
       "category": "data-display",
@@ -18751,10 +19517,12 @@
       "slots_yielded": [],
       "template": "table.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "table-wrap": {
+      "appearances": [],
       "authoring": "available",
       "block": "table-wrap",
       "category": "data-display",
@@ -18855,10 +19623,12 @@
       "slots_yielded": [],
       "template": "table.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "tabs": {
+      "appearances": [],
       "authoring": "available",
       "block": "tabs",
       "category": "navigation",
@@ -18905,10 +19675,12 @@
       "slots_yielded": [],
       "template": "tabs.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "tag": {
+      "appearances": [],
       "authoring": "available",
       "block": "tag",
       "category": "form",
@@ -18976,10 +19748,12 @@
       "slots_yielded": [],
       "template": "tag_input.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "tag-browse": {
+      "appearances": [],
       "authoring": "available",
       "block": "tag-browse",
       "category": "control",
@@ -19045,12 +19819,14 @@
       "slots_yielded": [],
       "template": "tag_browse.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-tag-browse"
       ],
       "variants": []
     },
     "tag-input": {
+      "appearances": [],
       "authoring": "available",
       "block": "tag-input",
       "category": "form",
@@ -19122,10 +19898,12 @@
       "slots_yielded": [],
       "template": "tag_input.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "text-muted": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "text-muted",
       "category": "typography",
@@ -19152,10 +19930,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "text-reveal": {
+      "appearances": [],
       "authoring": "available",
       "block": "text-reveal",
       "category": "effect",
@@ -19204,6 +19984,7 @@
       "slots_yielded": [],
       "template": "text_reveal.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-text-reveal--default"
       ],
@@ -19214,6 +19995,7 @@
       ]
     },
     "texture": {
+      "appearances": [],
       "authoring": "available",
       "block": "texture",
       "category": "effect",
@@ -19261,10 +20043,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "theme-toggle": {
+      "appearances": [],
       "authoring": "available",
       "block": "theme-toggle",
       "category": "control",
@@ -19296,10 +20080,12 @@
       "slots_yielded": [],
       "template": "theme_toggle.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "thread-reader-layout": {
+      "appearances": [],
       "authoring": "available",
       "block": "thread-reader-layout",
       "category": "social",
@@ -19377,10 +20163,12 @@
       ],
       "template": "thread_reader_layout.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "thumbs": {
+      "appearances": [],
       "authoring": "available",
       "block": "thumbs",
       "category": "control",
@@ -19419,12 +20207,14 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-thumbs--md"
       ],
       "variants": []
     },
     "timeline": {
+      "appearances": [],
       "authoring": "available",
       "block": "timeline",
       "category": "data-display",
@@ -19541,10 +20331,12 @@
       "slots_yielded": [],
       "template": "timeline.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "title-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "title-card",
       "category": "media",
@@ -19662,10 +20454,12 @@
       ],
       "template": "media_patterns.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "toast": {
+      "appearances": [],
       "authoring": "available",
       "block": "toast",
       "category": "feedback",
@@ -19740,6 +20534,7 @@
       "slots_yielded": [],
       "template": "toast.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "error",
@@ -19749,6 +20544,7 @@
       ]
     },
     "toast-container": {
+      "appearances": [],
       "authoring": "available",
       "block": "toast-container",
       "category": "feedback",
@@ -19775,10 +20571,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "toggle": {
+      "appearances": [],
       "authoring": "available",
       "block": "toggle",
       "category": "control",
@@ -19817,10 +20615,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "toggle-wrap": {
+      "appearances": [],
       "authoring": "available",
       "block": "toggle-wrap",
       "category": "form",
@@ -19837,7 +20637,7 @@
         "chirpui-toggle-wrap--success"
       ],
       "extra_emits": [],
-      "lineno": 209,
+      "lineno": 211,
       "macro": "toggle_field",
       "maturity": "stable",
       "modifiers": [],
@@ -19888,6 +20688,7 @@
       "slots_yielded": [],
       "template": "forms.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -19899,6 +20700,7 @@
       ]
     },
     "token-input": {
+      "appearances": [],
       "authoring": "available",
       "block": "token-input",
       "category": "form",
@@ -19978,10 +20780,12 @@
       "slots_yielded": [],
       "template": "token_input.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "tooltip": {
+      "appearances": [],
       "authoring": "available",
       "block": "tooltip",
       "category": "navigation",
@@ -20048,6 +20852,7 @@
       "slots_yielded": [],
       "template": "tooltip.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "bottom",
@@ -20057,6 +20862,7 @@
       ]
     },
     "topic-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "topic-card",
       "category": "social",
@@ -20163,10 +20969,12 @@
       ],
       "template": "forum_patterns.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "tray": {
+      "appearances": [],
       "authoring": "available",
       "block": "tray",
       "category": "overlay",
@@ -20236,6 +21044,7 @@
       "slots_yielded": [],
       "template": "tray.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "bottom",
@@ -20244,6 +21053,7 @@
       ]
     },
     "tree": {
+      "appearances": [],
       "authoring": "available",
       "block": "tree",
       "category": "data-display",
@@ -20303,10 +21113,12 @@
       "slots_yielded": [],
       "template": "tree_view.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "trending-tag": {
+      "appearances": [],
       "authoring": "available",
       "block": "trending-tag",
       "category": "data-display",
@@ -20367,10 +21179,12 @@
       "slots_yielded": [],
       "template": "trending_tag.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "truncate": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "truncate",
       "category": "layout",
@@ -20397,10 +21211,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "typewriter": {
+      "appearances": [],
       "authoring": "available",
       "block": "typewriter",
       "category": "effect",
@@ -20471,6 +21287,7 @@
       "slots_yielded": [],
       "template": "typewriter.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": [
         "",
@@ -20479,6 +21296,7 @@
       ]
     },
     "typing-indicator": {
+      "appearances": [],
       "authoring": "available",
       "block": "typing-indicator",
       "category": "feedback",
@@ -20514,10 +21332,12 @@
       "slots_yielded": [],
       "template": "typing_indicator.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-base": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-base",
       "category": "typography",
@@ -20544,10 +21364,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-bold": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-bold",
       "category": "typography",
@@ -20574,10 +21396,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-label": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-label",
       "category": "typography",
@@ -20604,10 +21428,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-lg": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-lg",
       "category": "typography",
@@ -20634,10 +21460,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-medium": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-medium",
       "category": "typography",
@@ -20664,10 +21492,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-meta": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-meta",
       "category": "typography",
@@ -20694,10 +21524,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-normal": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-normal",
       "category": "typography",
@@ -20724,10 +21556,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-semibold": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-semibold",
       "category": "typography",
@@ -20754,10 +21588,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-sm": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-sm",
       "category": "typography",
@@ -20784,10 +21620,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-title": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-title",
       "category": "typography",
@@ -20814,10 +21652,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-xl": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-xl",
       "category": "typography",
@@ -20844,10 +21684,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "ui-xs": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "ui-xs",
       "category": "typography",
@@ -20874,10 +21716,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "video-card": {
+      "appearances": [],
       "authoring": "available",
       "block": "video-card",
       "category": "data-display",
@@ -20973,10 +21817,12 @@
       "slots_yielded": [],
       "template": "video_card.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "video-thumbnail": {
+      "appearances": [],
       "authoring": "available",
       "block": "video-thumbnail",
       "category": "media",
@@ -21045,10 +21891,12 @@
       "tokens": [
         "--chirpui-video-aspect-ratio"
       ],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "visually-hidden": {
+      "appearances": [],
       "authoring": "compatibility",
       "block": "visually-hidden",
       "category": "layout",
@@ -21075,10 +21923,12 @@
       "slots_yielded": [],
       "template": "",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "watch-companion-layout": {
+      "appearances": [],
       "authoring": "available",
       "block": "watch-companion-layout",
       "category": "media",
@@ -21122,10 +21972,12 @@
       "slots_yielded": [],
       "template": "media_patterns.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     },
     "wizard-form": {
+      "appearances": [],
       "authoring": "available",
       "block": "wizard-form",
       "category": "form",
@@ -21191,12 +22043,14 @@
       "slots_yielded": [],
       "template": "wizard_form.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-wizard-form"
       ],
       "variants": []
     },
     "wobble": {
+      "appearances": [],
       "authoring": "available",
       "block": "wobble",
       "category": "effect",
@@ -21238,6 +22092,7 @@
       "slots_yielded": [],
       "template": "wobble.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [
         "chirpui-wobble--bounce-in",
         "chirpui-wobble--jello",
@@ -21252,6 +22107,7 @@
       ]
     },
     "workspace-shell": {
+      "appearances": [],
       "authoring": "available",
       "block": "workspace-shell",
       "category": "layout",
@@ -21361,11 +22217,12 @@
       ],
       "template": "workspace_shell.html",
       "tokens": [],
+      "tones": [],
       "trim_emits": [],
       "variants": []
     }
   },
-  "schema": "chirpui-manifest@3",
+  "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
       "available": 285,
@@ -21434,18 +22291,57 @@
       "explicit_trim_classes": 98
     },
     "token_categories": {
-      "color": 181,
-      "component": 74,
+      "color": 142,
+      "component": 134,
       "elevation": 7,
-      "layout": 14,
-      "motion": 13,
-      "radius": 5,
-      "spacing": 22,
-      "typography": 40
+      "layout": 44,
+      "motion": 24,
+      "radius": 7,
+      "spacing": 25,
+      "typography": 45
     },
     "total_components": 336,
-    "total_tokens": 356
+    "total_theme_packs": 3,
+    "total_tokens": 428
   },
+  "theme_packs": [
+    {
+      "description": "Cool operational palette for dense SaaS and dashboard interfaces.",
+      "label": "Atlas",
+      "maturity": "experimental",
+      "modes": [
+        "light",
+        "dark",
+        "system"
+      ],
+      "name": "atlas",
+      "path": "themes/atlas.css"
+    },
+    {
+      "description": "Warm editorial palette for content-heavy products and documentation.",
+      "label": "Ember",
+      "maturity": "experimental",
+      "modes": [
+        "light",
+        "dark",
+        "system"
+      ],
+      "name": "ember",
+      "path": "themes/ember.css"
+    },
+    {
+      "description": "Low-glare green palette for review, planning, and knowledge work.",
+      "label": "Sage",
+      "maturity": "experimental",
+      "modes": [
+        "light",
+        "dark",
+        "system"
+      ],
+      "name": "sage",
+      "path": "themes/sage.css"
+    }
+  ],
   "tokens": {
     "--chirpui-accent": {
       "category": "color",
@@ -21478,6 +22374,22 @@
     "--chirpui-accent-secondary-muted": {
       "category": "color",
       "scope": "global"
+    },
+    "--chirpui-action-control-block-size": {
+      "category": "component",
+      "scope": "control"
+    },
+    "--chirpui-action-control-padding-block": {
+      "category": "component",
+      "scope": "control"
+    },
+    "--chirpui-action-control-padding-inline": {
+      "category": "component",
+      "scope": "control"
+    },
+    "--chirpui-alert-accent": {
+      "category": "component",
+      "scope": "alert"
     },
     "--chirpui-alert-error-bg": {
       "category": "component",
@@ -21539,6 +22451,38 @@
       "category": "component",
       "scope": "alert"
     },
+    "--chirpui-anim-ambient": {
+      "category": "motion",
+      "scope": "global"
+    },
+    "--chirpui-anim-breath": {
+      "category": "motion",
+      "scope": "global"
+    },
+    "--chirpui-anim-cycle": {
+      "category": "motion",
+      "scope": "global"
+    },
+    "--chirpui-anim-drift": {
+      "category": "motion",
+      "scope": "global"
+    },
+    "--chirpui-anim-flash": {
+      "category": "motion",
+      "scope": "global"
+    },
+    "--chirpui-anim-pace": {
+      "category": "motion",
+      "scope": "global"
+    },
+    "--chirpui-anim-pulse": {
+      "category": "motion",
+      "scope": "global"
+    },
+    "--chirpui-anim-quick": {
+      "category": "motion",
+      "scope": "global"
+    },
     "--chirpui-ascii-border-color": {
       "category": "component",
       "scope": "ascii"
@@ -21580,16 +22524,24 @@
       "scope": "aura"
     },
     "--chirpui-avatar-size-lg": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "avatar"
     },
     "--chirpui-avatar-size-md": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "avatar"
     },
     "--chirpui-avatar-size-sm": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "avatar"
+    },
+    "--chirpui-band-bg": {
+      "category": "component",
+      "scope": "band"
+    },
+    "--chirpui-band-border": {
+      "category": "component",
+      "scope": "band"
     },
     "--chirpui-beam-color": {
       "category": "color",
@@ -21671,6 +22623,10 @@
       "category": "component",
       "scope": "chat-layout"
     },
+    "--chirpui-chip-color": {
+      "category": "component",
+      "scope": "chip"
+    },
     "--chirpui-code-bg": {
       "category": "component",
       "scope": "code"
@@ -21719,20 +22675,44 @@
       "category": "layout",
       "scope": "global"
     },
+    "--chirpui-control-block-size": {
+      "category": "component",
+      "scope": "control"
+    },
+    "--chirpui-control-block-size-sm": {
+      "category": "component",
+      "scope": "control"
+    },
+    "--chirpui-control-touch-target": {
+      "category": "component",
+      "scope": "control"
+    },
     "--chirpui-corner-accent-color": {
       "category": "color",
       "scope": "global"
     },
     "--chirpui-corner-accent-size": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "corner-accent"
     },
     "--chirpui-corner-accent-width": {
+      "category": "component",
+      "scope": "corner-accent"
+    },
+    "--chirpui-cta-band-copy-gap": {
+      "category": "component",
+      "scope": "cta-band"
+    },
+    "--chirpui-cta-band-gap": {
+      "category": "component",
+      "scope": "cta-band"
+    },
+    "--chirpui-danger": {
       "category": "color",
       "scope": "global"
     },
     "--chirpui-display-letter-spacing": {
-      "category": "color",
+      "category": "typography",
       "scope": "global"
     },
     "--chirpui-dnd-drag-opacity": {
@@ -21774,6 +22754,14 @@
     "--chirpui-donut-fill": {
       "category": "color",
       "scope": "global"
+    },
+    "--chirpui-dropdown-offset": {
+      "category": "component",
+      "scope": "dropdown"
+    },
+    "--chirpui-dropdown-viewport-padding": {
+      "category": "component",
+      "scope": "dropdown"
     },
     "--chirpui-ease-accel": {
       "category": "motion",
@@ -21848,8 +22836,8 @@
       "scope": "global"
     },
     "--chirpui-empty-panel-state-icon-size": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "empty-panel-state"
     },
     "--chirpui-error": {
       "category": "color",
@@ -21859,9 +22847,21 @@
       "category": "color",
       "scope": "global"
     },
-    "--chirpui-file-tree-padding": {
+    "--chirpui-facet-chip-color": {
+      "category": "component",
+      "scope": "chip"
+    },
+    "--chirpui-fg": {
       "category": "color",
       "scope": "global"
+    },
+    "--chirpui-fg-muted": {
+      "category": "color",
+      "scope": "global"
+    },
+    "--chirpui-file-tree-padding": {
+      "category": "component",
+      "scope": "file-tree"
     },
     "--chirpui-focus-ring": {
       "category": "color",
@@ -21875,7 +22875,15 @@
       "category": "typography",
       "scope": "global"
     },
+    "--chirpui-font-family": {
+      "category": "typography",
+      "scope": "global"
+    },
     "--chirpui-font-lg": {
+      "category": "typography",
+      "scope": "global"
+    },
+    "--chirpui-font-mono": {
       "category": "typography",
       "scope": "global"
     },
@@ -21900,15 +22908,15 @@
       "scope": "global"
     },
     "--chirpui-frame-gap": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-frame-hero-columns": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-frame-sidebar-width": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-frosted-bg": {
@@ -21964,47 +22972,47 @@
       "scope": "global"
     },
     "--chirpui-layer-angle": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-layer-angle-moderate": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-layer-angle-none": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-layer-angle-subtle": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-layer-overlap": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-layer-overlap-lg": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-layer-overlap-md": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-layer-overlap-sm": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-layout-bp-lg": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-layout-bp-md": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-layout-bp-sm": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-line-height-normal": {
@@ -22019,13 +23027,33 @@
       "category": "typography",
       "scope": "global"
     },
+    "--chirpui-logo-cloud-gap": {
+      "category": "component",
+      "scope": "logo-cloud"
+    },
+    "--chirpui-logo-cloud-image-height": {
+      "category": "component",
+      "scope": "logo-cloud"
+    },
+    "--chirpui-logo-cloud-item-min": {
+      "category": "component",
+      "scope": "logo-cloud"
+    },
+    "--chirpui-logo-cloud-opacity": {
+      "category": "component",
+      "scope": "logo-cloud"
+    },
     "--chirpui-logo-font-size": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "logo"
     },
     "--chirpui-logo-image-height": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "logo"
+    },
+    "--chirpui-marquee-edge-bg": {
+      "category": "component",
+      "scope": "marquee"
     },
     "--chirpui-measure-lg": {
       "category": "spacing",
@@ -22048,20 +23076,20 @@
       "scope": "global"
     },
     "--chirpui-message-bubble-gap": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "message-bubble"
     },
     "--chirpui-message-bubble-max-width": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "message-bubble"
     },
     "--chirpui-message-bubble-padding": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "message-bubble"
     },
     "--chirpui-message-bubble-radius": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "message-bubble"
     },
     "--chirpui-message-bubble-system-bg": {
       "category": "color",
@@ -22176,7 +23204,7 @@
       "scope": "modal"
     },
     "--chirpui-mono-font-family": {
-      "category": "color",
+      "category": "typography",
       "scope": "global"
     },
     "--chirpui-motion-base": {
@@ -22215,9 +23243,21 @@
       "category": "color",
       "scope": "global"
     },
+    "--chirpui-navbar-height": {
+      "category": "layout",
+      "scope": "navbar"
+    },
     "--chirpui-neu-chamfer": {
       "category": "color",
       "scope": "global"
+    },
+    "--chirpui-neu-gradient-control": {
+      "category": "component",
+      "scope": "neumorphic"
+    },
+    "--chirpui-neu-gradient-raised": {
+      "category": "component",
+      "scope": "neumorphic"
     },
     "--chirpui-neu-highlight-border": {
       "category": "color",
@@ -22259,9 +23299,17 @@
       "category": "color",
       "scope": "global"
     },
-    "--chirpui-orbit-radius": {
+    "--chirpui-on-accent": {
       "category": "color",
       "scope": "global"
+    },
+    "--chirpui-on-warning": {
+      "category": "color",
+      "scope": "global"
+    },
+    "--chirpui-orbit-radius": {
+      "category": "component",
+      "scope": "orbit"
     },
     "--chirpui-overlay-dark": {
       "category": "color",
@@ -22284,16 +23332,16 @@
       "scope": "global"
     },
     "--chirpui-page-header-gap": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "page-header"
     },
     "--chirpui-page-header-padding": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "page-header"
     },
     "--chirpui-page-header-title-size": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "page-header"
     },
     "--chirpui-page-header-title-weight": {
       "category": "color",
@@ -22356,8 +23404,8 @@
       "scope": "global"
     },
     "--chirpui-pre-padding": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "code"
     },
     "--chirpui-primary": {
       "category": "color",
@@ -22443,11 +23491,35 @@
       "category": "typography",
       "scope": "global"
     },
+    "--chirpui-prose-xs": {
+      "category": "typography",
+      "scope": "global"
+    },
+    "--chirpui-pulsing-btn-bg": {
+      "category": "component",
+      "scope": "pulsing-btn"
+    },
+    "--chirpui-pulsing-btn-bg-hover": {
+      "category": "component",
+      "scope": "pulsing-btn"
+    },
+    "--chirpui-pulsing-btn-color": {
+      "category": "component",
+      "scope": "pulsing-btn"
+    },
+    "--chirpui-pulsing-btn-ring": {
+      "category": "component",
+      "scope": "pulsing-btn"
+    },
     "--chirpui-radius": {
       "category": "radius",
       "scope": "global"
     },
     "--chirpui-radius-2xl": {
+      "category": "radius",
+      "scope": "global"
+    },
+    "--chirpui-radius-full": {
       "category": "radius",
       "scope": "global"
     },
@@ -22460,6 +23532,10 @@
       "scope": "global"
     },
     "--chirpui-radius-xl": {
+      "category": "radius",
+      "scope": "global"
+    },
+    "--chirpui-radius-xs": {
       "category": "radius",
       "scope": "global"
     },
@@ -22527,6 +23603,10 @@
       "category": "elevation",
       "scope": "global"
     },
+    "--chirpui-shell-offset-top": {
+      "category": "layout",
+      "scope": "global"
+    },
     "--chirpui-shimmer-from": {
       "category": "color",
       "scope": "global"
@@ -22562,6 +23642,10 @@
     "--chirpui-sidebar-max-width": {
       "category": "layout",
       "scope": "sidebar"
+    },
+    "--chirpui-sidebar-mobile-max-block-size": {
+      "category": "layout",
+      "scope": "global"
     },
     "--chirpui-sidebar-section-gap": {
       "category": "layout",
@@ -22615,6 +23699,10 @@
       "category": "spacing",
       "scope": "global"
     },
+    "--chirpui-space-sm": {
+      "category": "spacing",
+      "scope": "global"
+    },
     "--chirpui-space-stack-gap": {
       "category": "spacing",
       "scope": "global"
@@ -22623,11 +23711,19 @@
       "category": "spacing",
       "scope": "global"
     },
+    "--chirpui-space-xs": {
+      "category": "spacing",
+      "scope": "global"
+    },
     "--chirpui-spacing": {
       "category": "spacing",
       "scope": "global"
     },
     "--chirpui-spacing-2xl": {
+      "category": "spacing",
+      "scope": "global"
+    },
+    "--chirpui-spacing-2xs": {
       "category": "spacing",
       "scope": "global"
     },
@@ -22656,19 +23752,43 @@
       "scope": "global"
     },
     "--chirpui-split-balanced-width": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
+    "--chirpui-split-btn-bg": {
+      "category": "component",
+      "scope": "split-btn"
+    },
+    "--chirpui-split-btn-bg-hover": {
+      "category": "component",
+      "scope": "split-btn"
+    },
+    "--chirpui-split-btn-border": {
+      "category": "component",
+      "scope": "split-btn"
+    },
+    "--chirpui-split-btn-color": {
+      "category": "component",
+      "scope": "split-btn"
+    },
+    "--chirpui-split-btn-divider": {
+      "category": "component",
+      "scope": "split-btn"
+    },
+    "--chirpui-split-btn-shadow": {
+      "category": "component",
+      "scope": "split-btn"
+    },
     "--chirpui-split-narrow-width": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-split-sidebar-width": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-split-wide-width": {
-      "category": "color",
+      "category": "layout",
       "scope": "global"
     },
     "--chirpui-star-base-opacity": {
@@ -22706,6 +23826,18 @@
     "--chirpui-state-text-hover": {
       "category": "color",
       "scope": "global"
+    },
+    "--chirpui-story-card-gap": {
+      "category": "component",
+      "scope": "story-card"
+    },
+    "--chirpui-story-card-logo-size": {
+      "category": "component",
+      "scope": "story-card"
+    },
+    "--chirpui-story-card-padding": {
+      "category": "component",
+      "scope": "story-card"
     },
     "--chirpui-success": {
       "category": "color",
@@ -22748,8 +23880,28 @@
       "scope": "global"
     },
     "--chirpui-texture-size": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "texture"
+    },
+    "--chirpui-timeline-content-gap": {
+      "category": "component",
+      "scope": "timeline"
+    },
+    "--chirpui-timeline-marker-size": {
+      "category": "component",
+      "scope": "timeline"
+    },
+    "--chirpui-timeline-marker-top": {
+      "category": "component",
+      "scope": "timeline"
+    },
+    "--chirpui-timeline-rail-color": {
+      "category": "component",
+      "scope": "timeline"
+    },
+    "--chirpui-timeline-rail-x": {
+      "category": "component",
+      "scope": "timeline"
     },
     "--chirpui-toast-width": {
       "category": "component",
@@ -22804,15 +23956,15 @@
       "scope": "tooltip"
     },
     "--chirpui-transition": {
-      "category": "color",
+      "category": "motion",
       "scope": "global"
     },
     "--chirpui-transition-emphasized": {
-      "category": "color",
+      "category": "motion",
       "scope": "global"
     },
     "--chirpui-transition-slow": {
-      "category": "color",
+      "category": "motion",
       "scope": "global"
     },
     "--chirpui-ui-base": {
@@ -22856,8 +24008,8 @@
       "scope": "global"
     },
     "--chirpui-video-aspect-ratio": {
-      "category": "color",
-      "scope": "global"
+      "category": "component",
+      "scope": "video"
     },
     "--chirpui-warning": {
       "category": "color",
@@ -22868,7 +24020,39 @@
       "scope": "global"
     },
     "--chirpui-workspace-min-height": {
-      "category": "color",
+      "category": "layout",
+      "scope": "global"
+    },
+    "--chirpui-z-celebration": {
+      "category": "layout",
+      "scope": "global"
+    },
+    "--chirpui-z-command-palette": {
+      "category": "layout",
+      "scope": "global"
+    },
+    "--chirpui-z-dropdown": {
+      "category": "layout",
+      "scope": "global"
+    },
+    "--chirpui-z-modal": {
+      "category": "layout",
+      "scope": "global"
+    },
+    "--chirpui-z-popover": {
+      "category": "layout",
+      "scope": "global"
+    },
+    "--chirpui-z-sticky": {
+      "category": "layout",
+      "scope": "global"
+    },
+    "--chirpui-z-toast": {
+      "category": "layout",
+      "scope": "global"
+    },
+    "--chirpui-z-tray": {
+      "category": "layout",
       "scope": "global"
     }
   },

@@ -19,6 +19,28 @@
 .chirpui-alert--success { --chirpui-alert-accent: var(--chirpui-success); background: var(--chirpui-alert-success-bg); }
 .chirpui-alert--warning { --chirpui-alert-accent: var(--chirpui-warning); background: var(--chirpui-alert-warning-bg); }
 .chirpui-alert--error   { --chirpui-alert-accent: var(--chirpui-error); background: var(--chirpui-alert-error-bg); }
+.chirpui-alert--danger  { --chirpui-alert-accent: var(--chirpui-danger); background: color-mix(in srgb, var(--chirpui-danger) 10%, transparent); }
+
+/* Appearance axis */
+.chirpui-alert--tonal {
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-alert--outlined {
+    background: transparent;
+    box-shadow: none;
+}
+
+.chirpui-alert--filled {
+    background: color-mix(in srgb, var(--chirpui-alert-accent) 88%, var(--chirpui-surface));
+    border-color: var(--chirpui-alert-accent);
+    color: var(--chirpui-on-accent);
+}
+
+.chirpui-alert--filled .chirpui-alert__icon {
+    background: color-mix(in srgb, var(--chirpui-on-accent) 18%, transparent);
+    color: var(--chirpui-on-accent);
+}
 
 .chirpui-alert__icon {
     display: inline-flex;

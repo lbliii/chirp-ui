@@ -12,7 +12,7 @@ async def test_modal_opens_on_trigger_click(page, base_url):
     await page.goto(base_url + "/modal")
     await wait_for_alpine(page)
 
-    await page.click("button[aria-controls]")
+    await page.click("[data-testid='overlay-modal-container'] button[aria-controls]")
 
     modal = page.locator(".chirpui-modal--open")
     await modal.wait_for(state="visible", timeout=2000)
@@ -26,11 +26,11 @@ async def test_modal_closes_on_close_button(page, base_url):
     await page.goto(base_url + "/modal")
     await wait_for_alpine(page)
 
-    await page.click("button[aria-controls]")
+    await page.click("[data-testid='overlay-modal-container'] button[aria-controls]")
     modal = page.locator(".chirpui-modal--open")
     await modal.wait_for(state="visible", timeout=2000)
 
-    await page.click(".chirpui-modal__close")
+    await page.click("[data-testid='overlay-modal-container'] .chirpui-modal__close")
     await page.wait_for_timeout(300)
 
     assert not await page.locator(".chirpui-modal--open").is_visible()
@@ -41,7 +41,7 @@ async def test_modal_closes_on_backdrop_click(page, base_url):
     await page.goto(base_url + "/modal")
     await wait_for_alpine(page)
 
-    await page.click("button[aria-controls]")
+    await page.click("[data-testid='overlay-modal-container'] button[aria-controls]")
     modal = page.locator(".chirpui-modal--open")
     await modal.wait_for(state="visible", timeout=2000)
 
@@ -67,11 +67,11 @@ async def test_modal_dispatches_close_event(page, base_url):
         });
     """)
 
-    await page.click("button[aria-controls]")
+    await page.click("[data-testid='overlay-modal-container'] button[aria-controls]")
     modal = page.locator(".chirpui-modal--open")
     await modal.wait_for(state="visible", timeout=2000)
 
-    await page.click(".chirpui-modal__close")
+    await page.click("[data-testid='overlay-modal-container'] .chirpui-modal__close")
     await page.wait_for_timeout(300)
 
     events = await page.evaluate("window._modalCloseEvents")
@@ -84,10 +84,68 @@ async def test_modal_aria_attributes(page, base_url):
     await page.goto(base_url + "/modal")
     await wait_for_alpine(page)
 
-    modal = page.locator("[role='dialog']")
+    modal = page.locator("[data-testid='overlay-modal-container'] [role='dialog']")
     assert await modal.get_attribute("aria-modal") == "true"
     assert await modal.get_attribute("aria-labelledby") is not None
 
     # Trigger has aria-expanded
-    trigger = page.locator("button[aria-controls]")
+    trigger = page.locator("[data-testid='overlay-modal-container'] button[aria-controls]")
     assert await trigger.get_attribute("aria-controls") is not None
+
+
+async def test_native_modal_trigger_opens_dialog(page, base_url):
+    """modal_trigger opens the target native dialog through chirpuiDialogTarget."""
+    await page.goto(base_url + "/modal")
+    await wait_for_alpine(page)
+
+    await page.click("[data-testid='native-modal-container'] .chirpui-modal-trigger")
+
+    dialog = page.locator("#native-modal")
+    await dialog.wait_for(state="visible", timeout=2000)
+    assert await dialog.evaluate("el => el.open")
+
+    body = await page.text_content("[data-testid='native-modal-body']")
+    assert "Native modal content here" in body
+
+
+async def test_native_modal_footer_dialog_form_closes(page, base_url):
+    """Native dialog close controls rely on form method='dialog'."""
+    await page.goto(base_url + "/modal")
+    await wait_for_alpine(page)
+
+    await page.click("[data-testid='native-modal-container'] .chirpui-modal-trigger")
+    dialog = page.locator("#native-modal")
+    await dialog.wait_for(state="visible", timeout=2000)
+
+    await page.click("[data-testid='native-modal-footer-close']")
+    await page.wait_for_timeout(200)
+
+    assert not await dialog.evaluate("el => el.open")
+
+
+async def test_confirm_trigger_opens_native_dialog(page, base_url):
+    """confirm_trigger uses the same native dialog-target controller."""
+    await page.goto(base_url + "/modal")
+    await wait_for_alpine(page)
+
+    await page.click("[data-testid='confirm-dialog-container'] .chirpui-confirm-trigger")
+
+    dialog = page.locator("#confirm-delete")
+    await dialog.wait_for(state="visible", timeout=2000)
+    assert await dialog.evaluate("el => el.open")
+    assert "Delete item?" in await dialog.text_content()
+
+
+async def test_confirm_cancel_dialog_form_closes(page, base_url):
+    """Confirm dialog cancel remains a native dialog form close."""
+    await page.goto(base_url + "/modal")
+    await wait_for_alpine(page)
+
+    await page.click("[data-testid='confirm-dialog-container'] .chirpui-confirm-trigger")
+    dialog = page.locator("#confirm-delete")
+    await dialog.wait_for(state="visible", timeout=2000)
+
+    await page.locator("#confirm-delete form[method='dialog'] button", has_text="Cancel").click()
+    await page.wait_for_timeout(200)
+
+    assert not await dialog.evaluate("el => el.open")
