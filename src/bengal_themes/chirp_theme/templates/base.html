@@ -484,10 +484,6 @@ HELPER: Render a menu item (desktop/mobile)
     {# Scripts #}
     {% block site_scripts %}
     {# asset_url() is manifest-sensitive; keep this outside fragment caches. #}
-    {% if config.assets.bundle_js ?? false %}
-    <script defer src="{{ asset_url('js/bundle.js') }}"></script>
-    <script defer src="{{ asset_url('js/vendor/lunr.min.js') }}"></script>
-    {% else %}
     <script defer src="{{ asset_url('js/utils.js') }}"></script>
     <script defer src="{{ asset_url('js/core/theme.js') }}"></script>
     {% let _page_template = page?.template ?? '' %}
@@ -505,12 +501,12 @@ HELPER: Render a menu item (desktop/mobile)
     <script defer src="{{ asset_url('js/enhancements/tabs.js') }}"></script>
     <script defer src="{{ asset_url('js/enhancements/toc.js') }}"></script>
     <script defer src="{{ asset_url('js/enhancements/copy-link.js') }}"></script>
+    <script defer src="{{ asset_url('js/enhancements/action-bar.js') }}"></script>
     {% if 'content.lightbox' in theme.features %}
     <script defer src="{{ asset_url('js/enhancements/lightbox.js') }}"></script>{% end %}
     {% if 'content.math' in (theme.features ?? []) %}
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin></script>
     <script defer src="{{ asset_url('js/enhancements/math.js') }}"></script>
-    {% end %}
     {% end %}
     {% end %}
 

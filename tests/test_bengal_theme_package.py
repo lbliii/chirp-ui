@@ -380,9 +380,15 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     mobile_nav_js = (assets_root / "js" / "enhancements" / "mobile-nav.js").read_text(
         encoding="utf-8"
     )
+    action_bar_js = (assets_root / "js" / "enhancements" / "action-bar.js").read_text(
+        encoding="utf-8"
+    )
     tabs_js = (assets_root / "js" / "enhancements" / "tabs.js").read_text(encoding="utf-8")
     toc_js = (assets_root / "js" / "enhancements" / "toc.js").read_text(encoding="utf-8")
     style = (assets_root / "css" / "style.css").read_text(encoding="utf-8")
+
+    assert "asset_url('js/bundle.js')" not in base
+    assert "asset_url('js/enhancements/action-bar.js')" in base
 
     assert 'popovertarget="{{ _theme_menu_id }}"' in theme_controls
     assert 'popover class="theme-dropdown__menu--popover"' in theme_controls
@@ -410,6 +416,15 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     assert "document.getElementById('mobile-nav-dialog')" in mobile_nav_js
     assert "window.BengalNav" in mobile_nav_js
     assert "window.BengalSearchModal.open()" in mobile_nav_js
+
+    assert 'data-action="copy-url"' in (
+        templates_root / "partials" / "components" / "blog-share-dropdown.html"
+    ).read_text(encoding="utf-8")
+    assert "'action': 'copy-url'" in (
+        templates_root / "partials" / "page-hero" / "_macros.html"
+    ).read_text(encoding="utf-8")
+    assert "querySelectorAll('[popovertarget]')" in action_bar_js
+    assert "closest('[data-action^=\"copy\"]')" in action_bar_js
 
     assert 'data-bengal="toc"' in navigation
     assert 'data-toc-mode="normal"' in navigation
