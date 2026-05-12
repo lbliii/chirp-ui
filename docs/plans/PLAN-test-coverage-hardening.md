@@ -5,37 +5,39 @@
 **Target**: 0.3.0
 **Estimated Effort**: 18–28h
 **Dependencies**: None (all test infrastructure exists)
-**Source**: Codebase audit of 188 templates, test suite analysis (1,005 tests, 80% coverage gate)
+**Source**: Codebase audit of 188 templates, test suite analysis, and post-sprint verification steward review
 
 > Current note: render coverage, JS island tests, Alpine/browser tests, and
 > provide/consume wiring largely shipped after this plan was drafted. Remaining
-> work is visual verification, screenshot/gauntlet coverage decisions, and any
-> newly discovered untested public surfaces.
+> work is making the existing proof run in trusted gates: JavaScript island
+> tests in CI, generated docs freshness in hosted CI, explicit coverage-gate
+> policy, browser workflow policy, and any newly discovered untested public
+> surfaces.
 
 ---
 
 ## Why This Matters
 
-chirp-ui has 1,005 tests and an 80% coverage gate — respectable for a pre-alpha component library. But the coverage is **unevenly distributed**: the 137 tested components are well-exercised while 51 components (27%) have zero render tests. Worse, the interactive layer — 21 Alpine.js components and 9 island state helpers — has almost no behavioral testing beyond 8 Playwright test files covering basic modal/dropdown/tab flows.
+chirp-ui now has broad Python render coverage, 123 Vitest island-helper tests,
+and browser tests for the major Alpine/HTMX families. The remaining pre-1.0
+risk is gate wiring: proof can exist locally while hosted CI or `poe ci` omits
+it.
 
 ### Consequences
 
-1. **51 untested components can silently break** — A CSS contract test catches missing classes, but not broken macro signatures, missing slot injection, or wrong HTML structure. A rename in `forms.html` could break `chat_input.html` with no test failure.
-2. **Island state helpers are a black box** — 9 JS files (`foundation.js`, `action_queue.js`, `draft_store.js`, `grid_state.js`, etc.) provide the connective tissue between Alpine components and Chirp's server model. Zero unit tests means a batched action could silently drop, a draft could fail to persist, or an error boundary could swallow exceptions — all invisible until a user reports it.
-3. **21 Alpine interactions lack browser tests** — `copy_button`, `command_palette`, `drawer`, `toast`, `split_panel`, `theme_toggle`, `sse_status`, and `streaming` all use `x-data` but have no Playwright coverage. Theme persistence, clipboard API, SSE reconnection, and toast auto-dismiss are all untested interactive behaviors.
-4. **Provide/consume orphans mask dead code** — 6 providers emit context that nothing consumes. Without tests asserting consumption, these providers could be removed (or broken) without detection. The provide/consume expansion plan (PLAN-provide-consume-expansion.md) adds consumers but doesn't test the orphaned providers' intended behavior.
-5. **ASCII component suite is entirely untested** — 19 ASCII/TUI components added in recent sprints have zero render tests, despite having their own variant/size registrations in `validation.py`.
+1. **JS tests can be bypassed** — `tests/js/` covers island behavior, but the tests must run through `poe ci` and hosted CI to be trusted.
+2. **Generated docs can drift in hosted checks** — CSS and manifest have in-process tests, but `docs/COMPONENT-OPTIONS.md` freshness depends on `build-docs-check`.
+3. **Coverage policy is ambiguous** — `fail_under = 80` is configured, but `poe ci` does not currently run the coverage task.
+4. **Browser proof is explicit, not default** — browser tests remain a targeted/manual gate because they need Playwright and the browser dependency group.
 
 ### Evidence Table
 
 | Source | Finding | Proposal Impact |
 |--------|---------|-----------------|
-| Template count vs test count | 51/188 (27%) components have zero render tests | FIXES — Sprints 1-3 add render tests for all 51 |
-| `templates/islands/*.js` | 9 JS files, 0 unit tests | FIXES — Sprint 2 adds JS test infrastructure + tests |
-| Alpine `x-data` audit | 21 components with `x-data`, only 8 browser test files | FIXES — Sprint 3 adds Playwright tests for 13 untested interactive components |
-| Provide/consume audit | 6 orphaned providers, 1 orphaned consumer | MITIGATES — Sprint 1 adds "provider-without-consumer" render tests |
-| ASCII component audit | 19 ASCII components, 0 tests | FIXES — Sprint 1 batch covers all ASCII components |
-| Coverage config | 80% fail_under, branch coverage enabled | MITIGATES — higher coverage from this work may justify raising threshold to 85% |
+| `tests/js/` | 123 Vitest tests exist | WIRE — run them from `poe ci` and hosted CI |
+| `build-docs-check` | Generated component docs freshness is script-owned | WIRE — run `verify-generated` in hosted CI |
+| Coverage config | 80% fail_under, branch coverage enabled | DECIDE — enforce in CI or stop calling it a gate |
+| Browser tests | Broad Playwright suite exists outside default pytest | DECIDE — keep manual/targeted or add scheduled workflow |
 
 ### The Fix
 

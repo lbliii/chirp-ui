@@ -29,6 +29,23 @@ It verifies these committed generated files are fresh:
 - `src/chirp_ui/manifest.json`
 - `docs/COMPONENT-OPTIONS.md`
 
+Hosted CI runs this check through `uv run poe ci`. If the GitHub check fails
+here, regenerate the owned output locally and commit the generated file rather
+than editing generated output by hand.
+
+## JavaScript Island Helpers
+
+The JavaScript island helper suite is part of the full CI gate:
+
+```text
+npm ci
+uv run poe test-js
+```
+
+`uv run poe ci` also runs `test-js`, so local full-CI runs need the npm
+dependencies installed first. These tests cover browser-adjacent state helpers
+that Python render tests cannot exercise.
+
 If one is stale, regenerate the exact artifact:
 
 ```text
@@ -82,5 +99,6 @@ uv run --group browser pytest tests/browser/test_visual_audit_showcase.py -q --t
 Run the full gate before release or broad refactors:
 
 ```text
+npm ci
 uv run poe ci
 ```

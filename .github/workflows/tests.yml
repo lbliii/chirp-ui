@@ -22,6 +22,12 @@ jobs:
         with:
           python-version: "3.14t"
 
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+
       - name: Cache uv dependencies
         uses: actions/cache@v5
         with:
@@ -33,11 +39,14 @@ jobs:
       - name: Install dependencies
         run: uv sync --group dev
 
-      - name: Run tests
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      - name: Run CI
         env:
           CI: true
           PYTHON_GIL: "0"
-        run: uv run pytest -q --tb=short --maxfail=5
+        run: uv run poe ci
 
   lint:
     runs-on: ubuntu-latest
