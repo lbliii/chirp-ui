@@ -6083,6 +6083,12 @@ class TestAppLayout:
         )
         assert path.exists()
         content = path.read_text()
+        assert '{% extends "chirp/layouts/shell.html" %}' in content
+        assert "chirp/layouts/boost.html" not in content
+        assert 'id="main"' in content
+        assert 'hx-boost="true"' in content
+        assert 'hx-select="#page-content"' in content
+        assert "{% block head_extra %}{% end %}" in content
         assert "chirpui.css" in content
         assert "app-theme-starter.css" in content
         assert "cdn.jsdelivr.net/npm/alpinejs" not in content

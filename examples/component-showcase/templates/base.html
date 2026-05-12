@@ -1,7 +1,6 @@
 {% extends "chirpui/app_layout.html" %}
 {% block title %}{{ title | default("chirp-ui Component Showcase") }}{% end %}
-{% block head %}
-{{ super() }}
+{% block head_extra %}
 <style>
   .showcase-copy {
     margin: 0;
