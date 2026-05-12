@@ -1,6 +1,8 @@
 # chirp-ui: Route Tabs and Tabbed Page Layout
 
-> **See also:** [PLAN-primitives-and-components.md](PLAN-primitives-and-components.md) for full primitives inventory, component specs, and implementation details.
+Status: shipped and archived
+
+> **See also:** [PLAN-primitives-and-components.md](../PLAN-primitives-and-components.md) for full primitives inventory, component specs, and implementation details.
 
 ## Goal
 

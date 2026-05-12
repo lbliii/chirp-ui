@@ -284,6 +284,35 @@ def test_manifest_authoring_guidance_marks_only_blessed_primitives_preferred() -
     assert m["stats"]["component_authoring"]["preferred"] == len(expected_preferred)
 
 
+def test_audit_visible_public_surface_dispositions_are_intentional() -> None:
+    """Visual audit evidence should feed explicit pre-1.0 maturity decisions."""
+    m = build_manifest()
+
+    promoted = {
+        "logo-cloud",
+        "story-card",
+        "cta-band",
+    }
+    for name in sorted(promoted):
+        entry = m["components"][name]
+        assert entry["maturity"] == "stable"
+        assert entry["role"] == "pattern"
+        assert entry["category"] == "marketing"
+        assert entry["authoring"] == "available"
+
+    still_experimental = {
+        "ascii-badge",
+        "ascii-progress",
+        "ascii-table",
+        "ascii-toggle",
+    }
+    for name in sorted(still_experimental):
+        entry = m["components"][name]
+        assert entry["maturity"] == "experimental"
+        assert entry["category"] == "ascii"
+        assert entry["authoring"] == "available"
+
+
 def test_manifest_registry_debt_scorecard_matches_registry() -> None:
     """Stats expose the registry/CSS reconciliation burn-down as numbers."""
     debt = build_manifest()["stats"]["registry_debt"]

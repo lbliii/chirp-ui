@@ -1,11 +1,15 @@
 # Epic: ASCII Component Maturity — Tests, A11y, and Interactive Variants
 
-**Status**: Partially Complete
+**Status**: residual backlog
 **Created**: 2026-04-09
 **Target**: 0.3.0
 **Estimated Effort**: 16–24h
 **Dependencies**: None (ASCII components are self-contained)
 **Source**: Codebase exploration — 24 ASCII components with 0 dedicated tests, no keyboard support, no documentation
+
+> Current note: ASCII render tests, docs, and composite primitives shipped after
+> this plan was drafted. Remaining work is accessibility/keyboard proof and
+> deciding which ASCII controls become stable before 1.0.
 
 ---
 

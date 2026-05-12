@@ -1,6 +1,6 @@
 # chirp-ui: Navigation Density Study
 
-Status: study / backlog input
+Status: shipped and archived
 Date: 2026-05-03
 
 ## Goal

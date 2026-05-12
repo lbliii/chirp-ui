@@ -5406,7 +5406,7 @@ CTA Band
 - **Template:** `chirpui/cta_band.html`
 - **Macro:** `cta_band`
 - **Category:** `marketing`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `pattern`
 - **Authoring:** `available`
 - **Slots:** `(default)`, `actions`
@@ -6613,7 +6613,7 @@ Logo Cloud
 - **Template:** `chirpui/logo_cloud.html`
 - **Macro:** `logo_cloud`
 - **Category:** `marketing`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `pattern`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -8405,7 +8405,7 @@ Story Card
 - **Template:** `chirpui/story_card.html`
 - **Macro:** `story_card`
 - **Category:** `marketing`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `pattern`
 - **Authoring:** `available`
 - **Slots:** `(default)`, `footer`, `logo`, `metric`

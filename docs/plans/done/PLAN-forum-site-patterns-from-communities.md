@@ -1,5 +1,7 @@
 # chirp-ui: Forum Site Patterns from Community Platforms
 
+Status: shipped and archived
+
 ## Goal
 
 Turn the observed 2026 Reddit, Discourse, Stack Overflow, and GitHub
@@ -139,7 +141,7 @@ Add forum-site recipes to docs without changing component APIs.
 | `docs/FORUM-SITE-PATTERNS.md` | Added recipe documentation for community homes, topic lists, threads, Q&A, votes/reactions, pinned posts, composers, moderation, member identity, and activity |
 | `docs/PRIMITIVES.md` | Added a short forum-site compositions pointer |
 | `docs/INDEX.md` | Indexed the recipe doc under Patterns |
-| `docs/plans/PLAN-forum-site-patterns-from-communities.md` | Keep this plan as the active roadmap |
+| `docs/plans/done/PLAN-forum-site-patterns-from-communities.md` | Archived after docs, fixtures, and browser proof shipped |
 
 **Done when:**
 

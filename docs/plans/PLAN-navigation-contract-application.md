@@ -2,7 +2,7 @@
 
 Status: active plan
 Date: 2026-05-03
-Depends on: [PLAN-navigation-density-study.md](PLAN-navigation-density-study.md)
+Depends on: [PLAN-navigation-density-study.md](done/PLAN-navigation-density-study.md)
 
 Progress:
 

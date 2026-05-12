@@ -1,11 +1,16 @@
 # Epic: Test Coverage Hardening — Close the 27% Gap
 
-**Status**: Partially Complete
+**Status**: residual backlog
 **Created**: 2026-04-10
 **Target**: 0.3.0
 **Estimated Effort**: 18–28h
 **Dependencies**: None (all test infrastructure exists)
 **Source**: Codebase audit of 188 templates, test suite analysis (1,005 tests, 80% coverage gate)
+
+> Current note: render coverage, JS island tests, Alpine/browser tests, and
+> provide/consume wiring largely shipped after this plan was drafted. Remaining
+> work is visual verification, screenshot/gauntlet coverage decisions, and any
+> newly discovered untested public surfaces.
 
 ---
 

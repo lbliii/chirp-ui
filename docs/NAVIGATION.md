@@ -12,7 +12,8 @@ See also:
 - [RESPONSIVE.md](RESPONSIVE.md)
 - [UI-LAYERS.md](UI-LAYERS.md)
 - [DENSE-NAVIGATION-SYNTHESIS.md](DENSE-NAVIGATION-SYNTHESIS.md)
-- [PLAN-navigation-density-study.md](plans/PLAN-navigation-density-study.md)
+- [DENSE-NAVIGATION-RECIPES.md](DENSE-NAVIGATION-RECIPES.md)
+- [PLAN-navigation-density-study.md](plans/done/PLAN-navigation-density-study.md)
 
 ## Decision Matrix
 

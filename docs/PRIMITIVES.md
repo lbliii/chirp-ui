@@ -312,6 +312,13 @@ Legacy helpers remain available for compatibility, but they are not the growth p
 
 Use them when they solve a narrow edge that a primitive cannot own. Do not add new stable helpers in this style without a design review; prefer a macro, token, or existing primitive.
 
+Spacing shortcuts are **deprecate later** candidates. New first-party examples
+should not use `mt-sm`, `mt-md`, or `mb-md`; use `stack()`, `flow`, component
+slots, or local page chrome instead. The current static-showcase exception is
+documented in [STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md](STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md):
+only `visually-hidden` remains there, and it is classified as component-contract
+usage for native controls.
+
 ---
 
 ## Decision Lens

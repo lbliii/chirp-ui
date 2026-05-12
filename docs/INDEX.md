@@ -20,6 +20,8 @@ Navigation guide for all chirp-ui documentation.
 - [CSS-OVERRIDE-SURFACE.md](CSS-OVERRIDE-SURFACE.md) — Cascade order, `@layer app.overrides` contract, token vs layer vs unlayered paths
 - [NAVIGATION.md](NAVIGATION.md) — Navigation layer model, component decision matrix, and dense chrome guidance
 - [DENSE-NAVIGATION-SYNTHESIS.md](DENSE-NAVIGATION-SYNTHESIS.md) — Dense navigation recipe synthesis, primitive candidates, and anti-decisions
+- [DENSE-NAVIGATION-RECIPES.md](DENSE-NAVIGATION-RECIPES.md) — Copyable dense navigation recipes and layer model
+- [VISUAL-AUDIT-SHOWCASE.md](VISUAL-AUDIT-SHOWCASE.md) — Static visual QA surface and responsive audit checklist
 
 ## Patterns
 
@@ -41,6 +43,9 @@ Navigation guide for all chirp-ui documentation.
 ## Safety and Migration
 
 - [ANTI-FOOTGUNS.md](ANTI-FOOTGUNS.md) — Common pitfalls and how to avoid them
+- [VERIFICATION.md](VERIFICATION.md) — Locked-environment verification, generated artifact checks, and Kida mismatch troubleshooting
+- [PUBLIC-SURFACE-STABILIZATION.md](PUBLIC-SURFACE-STABILIZATION.md) — Pre-1.0 promotion, experimental, recipe-only, and compatibility decisions
+- [STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md](STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md) — Static showcase legacy-helper inventory and decisions
 - [DASHBOARD-MATURITY-CONTRACT.md](DASHBOARD-MATURITY-CONTRACT.md) — Dashboard component readiness checklist
 
 ## Reference
@@ -61,33 +66,29 @@ Navigation guide for all chirp-ui documentation.
 
 Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped work is archived under [`plans/done/`](plans/done/) so agents don't cite stale plans as live direction. (Sprint 6 of `PLAN-agent-grounding-depth.md`, 2026-04-20.)
 
+- [ROADMAP-pre-1.0.md](ROADMAP-pre-1.0.md) — Current pre-1.0 gap roadmap
+
 ### In-flight plans (`docs/plans/`)
 
-- [PLAN-agent-grounding-depth.md](plans/PLAN-agent-grounding-depth.md) — Manifest-as-full-registry-projection epic
-- [PLAN-css-scope-and-layer.md](plans/PLAN-css-scope-and-layer.md) — CSS-as-registry-projection epic
-- [PLAN-envelope-hardening-batch-1.md](plans/PLAN-envelope-hardening-batch-1.md) — Envelope-conversion batch 1
-- [PLAN-alpine-focus-plugin.md](plans/PLAN-alpine-focus-plugin.md) — Alpine Focus plugin adoption
-- [PLAN-ascii-maturity.md](plans/PLAN-ascii-maturity.md) — ASCII art component maturity (partial)
-- [PLAN-test-coverage-hardening.md](plans/PLAN-test-coverage-hardening.md) — Test coverage expansion (partial)
+- [PLAN-verification-and-visual-showcase.md](plans/PLAN-verification-and-visual-showcase.md) — Verification repair, visual audit page, theme gallery, and roadmap cleanup
+- [PLAN-agent-grounding-depth.md](plans/PLAN-agent-grounding-depth.md) — Residual manifest-depth backlog
+- [PLAN-css-scope-and-layer.md](plans/PLAN-css-scope-and-layer.md) — Ongoing `@scope` conversion policy and residual CSS hardening
+- [PLAN-ascii-maturity.md](plans/PLAN-ascii-maturity.md) — Residual ASCII accessibility and stabilization backlog
+- [PLAN-test-coverage-hardening.md](plans/PLAN-test-coverage-hardening.md) — Residual visual verification and coverage backlog
+- [PLAN-theme-tokens.md](plans/PLAN-theme-tokens.md) — Theme gallery and token parity proof backlog
 - [PLAN-skeleton-equivalent-roadmap.md](plans/PLAN-skeleton-equivalent-roadmap.md) — Skeleton-inspired roadmap for Chirp-native appearance, themes, docs, LLM, and anatomy contracts
-- [PLAN-theme-tokens.md](plans/PLAN-theme-tokens.md) — Theme token standardization
-- [PLAN-primitive-vocabulary-hardening.md](plans/PLAN-primitive-vocabulary-hardening.md) — Primitive vs legacy helper vocabulary hardening
-- [PLAN-sidebar-nav-refinements.md](plans/PLAN-sidebar-nav-refinements.md) — Sidebar nav refinements
-- [PLAN-navigation-density-study.md](plans/PLAN-navigation-density-study.md) — Dense high-utility navigation study
+- [PLAN-primitive-vocabulary-hardening.md](plans/PLAN-primitive-vocabulary-hardening.md) — Legacy helper stabilization backlog
+- [PLAN-legacy-helper-cleanup-pre-1.0.md](plans/PLAN-legacy-helper-cleanup-pre-1.0.md) — First-party legacy helper cleanup plan before 1.0
 - [PLAN-navigation-contract-application.md](plans/PLAN-navigation-contract-application.md) — Apply dense navigation guidance to ChirpUI
-- [PLAN-dense-object-chrome-next.md](plans/PLAN-dense-object-chrome-next.md) — Next dense object chrome recipes, counters, command launcher, and composite decision
-- [PLAN-dense-navigation-reference-families.md](plans/PLAN-dense-navigation-reference-families.md) — Roadmap for dense navigation recipe families beyond GitHub-style object pages
-- [PLAN-route-tabs-and-tabbed-layout.md](plans/PLAN-route-tabs-and-tabbed-layout.md) — Route tabs architecture
+- [PLAN-dense-object-chrome-next.md](plans/PLAN-dense-object-chrome-next.md) — Residual dense object chrome browser proof and composite-decision backlog
 - [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary
 - [PLAN-layout-widget-brainstorm.md](plans/PLAN-layout-widget-brainstorm.md) — Layout widget ideas
-- [PLAN-product-page-patterns-from-langchain.md](plans/PLAN-product-page-patterns-from-langchain.md) — Product-page composition recipes from LangChain design review
-- [PLAN-media-site-patterns-from-streaming.md](plans/PLAN-media-site-patterns-from-streaming.md) — Media-site composition recipes from Netflix, YouTube, and Apple TV research
-- [PLAN-forum-site-patterns-from-communities.md](plans/PLAN-forum-site-patterns-from-communities.md) — Forum-site composition recipes from Reddit, Discourse, Stack Overflow, and GitHub Discussions research
-- [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Bengal default content/output parity waves for chirp-theme
+- [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Residual chirp-theme fixture parity backlog
 - [PLAN-bengal-chirpui-library-contract.md](plans/PLAN-bengal-chirpui-library-contract.md) — First-class Bengal library asset/macro contract for Chirp UI
 
 ### Shipped plans (`docs/plans/done/`)
 
+- [PLAN-alpine-focus-plugin.md](plans/done/PLAN-alpine-focus-plugin.md) — Alpine Focus plugin adoption
 - [PLAN-sharp-edges.md](plans/done/PLAN-sharp-edges.md) — Sharp edges phases 1–2
 - [PLAN-sharp-edges-phase3.md](plans/done/PLAN-sharp-edges-phase3.md) — Sharp edges phase 3
 - [PLAN-sharp-edges-phase4.md](plans/done/PLAN-sharp-edges-phase4.md) — Sharp edges phase 4: API consistency
@@ -97,10 +98,18 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-color-system-hardening.md](plans/done/PLAN-color-system-hardening.md) — Color system validation and tokens
 - [PLAN-context-aware-theming.md](plans/done/PLAN-context-aware-theming.md) — Context-aware theme switching
 - [PLAN-descriptor-coverage.md](plans/done/PLAN-descriptor-coverage.md) — ComponentDescriptor coverage
+- [PLAN-dense-navigation-reference-families.md](plans/done/PLAN-dense-navigation-reference-families.md) — Dense navigation reference family study
+- [PLAN-envelope-hardening-batch-1.md](plans/done/PLAN-envelope-hardening-batch-1.md) — Envelope hardening batch 1
+- [PLAN-forum-site-patterns-from-communities.md](plans/done/PLAN-forum-site-patterns-from-communities.md) — Forum-site pattern recipes
 - [PLAN-island-js-test-infrastructure.md](plans/done/PLAN-island-js-test-infrastructure.md) — JS island test infrastructure
 - [PLAN-kida-0.4.0-adoption.md](plans/done/PLAN-kida-0.4.0-adoption.md) — Kida 0.4.0 feature adoption
+- [PLAN-media-site-patterns-from-streaming.md](plans/done/PLAN-media-site-patterns-from-streaming.md) — Media-site pattern recipes
 - [PLAN-modern-css-backgrounds.md](plans/done/PLAN-modern-css-backgrounds.md) — CSS background pattern system
+- [PLAN-navigation-density-study.md](plans/done/PLAN-navigation-density-study.md) — Dense navigation study
+- [PLAN-product-page-patterns-from-langchain.md](plans/done/PLAN-product-page-patterns-from-langchain.md) — Product-page pattern recipes
 - [PLAN-provide-consume-expansion.md](plans/done/PLAN-provide-consume-expansion.md) — Expand provide/consume usage
+- [PLAN-route-tabs-and-tabbed-layout.md](plans/done/PLAN-route-tabs-and-tabbed-layout.md) — Route tabs architecture
+- [PLAN-sidebar-nav-refinements.md](plans/done/PLAN-sidebar-nav-refinements.md) — Sidebar nav refinements
 - [PLAN-streaming-maturity.md](plans/done/PLAN-streaming-maturity.md) — SSE/streaming component maturity
 
 ### Design & sprint-0 docs

@@ -1,12 +1,16 @@
 # chirp-ui: Dense Object Chrome Next
 
-Status: active plan
+Status: residual backlog
 Date: 2026-05-03
 Depends on:
 
-- [PLAN-navigation-density-study.md](PLAN-navigation-density-study.md)
+- [PLAN-navigation-density-study.md](done/PLAN-navigation-density-study.md)
 - [PLAN-navigation-contract-application.md](PLAN-navigation-contract-application.md)
 - [../NAVIGATION.md](../NAVIGATION.md)
+
+Current note: the reusable dense object chrome pieces have largely shipped.
+Remaining work is browser proof, composite-decision discipline, and evidence
+from real app usage before introducing any larger shell macro.
 
 ## Goal
 

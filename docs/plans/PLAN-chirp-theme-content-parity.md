@@ -1,8 +1,12 @@
 # chirp-theme content parity waves
 
-**Status:** Active  
+**Status:** residual backlog  
 **Owner:** chirp-theme  
 **Scope:** Bengal default output parity through Chirp UI-native templates
+
+> Current note: all six parity waves have shipped at the source-contract level.
+> Remaining work is dedicated fixture coverage for authors, categories,
+> archives, and other content surfaces called out in the wave notes.
 
 ## Context
 

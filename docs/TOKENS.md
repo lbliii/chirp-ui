@@ -2,6 +2,12 @@
 
 This document defines the token contract for `chirpui.css`.
 
+For visual QA, use the static audit page at
+`examples/design-system-gap-showcase/index.html`. It groups the first app-owned
+tokens by job and compares the default/app starter, holy-light, and chirp-theme
+profiles. See [VISUAL-AUDIT-SHOWCASE.md](VISUAL-AUDIT-SHOWCASE.md) for the
+responsive audit checklist.
+
 ## Token tiers
 
 1. **Core primitives**: raw spacing, radius, typography, color foundations, motion, and shadows.
@@ -117,6 +123,24 @@ of defining only light/dark overrides.
 
 See [APP-THEME.md](APP-THEME.md) for the ownership contract and starter token
 list.
+
+### First override jobs
+
+When building a new theme, override tokens in this order:
+
+1. Page: `--chirpui-bg`, `--chirpui-bg-subtle`
+2. Surface: `--chirpui-surface`, `--chirpui-surface-alt`, `--chirpui-border`
+3. Text: `--chirpui-text`, `--chirpui-text-muted`
+4. Accent: `--chirpui-accent`, `--chirpui-accent-hover`,
+   `--chirpui-on-accent`
+5. Semantic: `--chirpui-success`, `--chirpui-warning`, `--chirpui-error`,
+   and their muted variants
+6. Focus: `--chirpui-focus-ring`, `--chirpui-state-focus-outline`
+7. Shape/depth/type/motion: radius, elevation, typography, and motion tokens
+
+Use the token explorer in `examples/design-system-gap-showcase/index.html` to
+check those jobs visually. Keep app themes in the `--chirpui-*` vocabulary;
+private theme token namespaces should not be necessary for normal branding.
 
 ## Motion tokens
 

@@ -15,7 +15,7 @@
 
 {% call surface(variant="muted") %}
 {% call stack(gap="md") %}
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Copyable island recipes for state sync, queued actions, autosaved drafts,
   recoverable regions, and route-specific primitive demos.
 </p>
@@ -30,7 +30,7 @@
 {% call surface(variant="default", attrs_map={"aria-live": "polite"}) %}
 {% call stack(gap="sm") %}
 <h3>Island event log</h3>
-<p id="island-events-empty" class="chirpui-text-muted chirpui-font-sm">Interact with the demos to see island lifecycle, state, action, and error events.</p>
+<p id="island-events-empty" class="showcase-copy">Interact with the demos to see island lifecycle, state, action, and error events.</p>
 <div id="island-events" class="chirpui-stack chirpui-stack--sm"></div>
 {% end %}
 {% end %}
@@ -49,7 +49,7 @@
 ) %}
   {% call stack(gap="sm") %}
   <h3>Counter island</h3>
-  <p class="chirpui-text-muted chirpui-font-sm">Custom adapter mounted by <code>/static/islands/counter.js</code>.</p>
+  <p class="showcase-copy">Custom adapter mounted by <code>/static/islands/counter.js</code>.</p>
   <p><strong data-counter-value>0</strong></p>
   {% call cluster(gap="sm") %}
     {{ btn("-1", variant="ghost", attrs_unsafe="data-counter-minus") }}
@@ -66,7 +66,7 @@
 {% call surface(variant="muted") %}
 {% call stack(gap="sm") %}
 <h3>URL-synced search</h3>
-<p class="chirpui-text-muted chirpui-font-sm">Mirrors a field into a query parameter without a page-level controller.</p>
+<p class="showcase-copy">Mirrors a field into a query parameter without a page-level controller.</p>
 {% call state_sync("search_text", query_param="q", initial="", mount_id="state-sync-root") %}
 {{ text_field("query", label="Query", placeholder="Type to sync URL...", attrs_unsafe="data-state-field") }}
 {% end %}
@@ -78,10 +78,10 @@
 {% call surface(variant="muted") %}
 {% call stack(gap="sm") %}
 <h3>Queued action</h3>
-<p class="chirpui-text-muted chirpui-font-sm">Tracks pending and completed work while keeping the control local to the island.</p>
+<p class="showcase-copy">Tracks pending and completed work while keeping the control local to the island.</p>
 {% call action_queue("save_profile", mount_id="action-queue-root") %}
 {{ btn("Run action", variant="primary", attrs_unsafe="data-action-trigger") }}
-<p class="chirpui-text-muted" data-action-status>Ready.</p>
+<p class="showcase-copy" data-action-status>Ready.</p>
 {% end %}
 {% end %}
 {% end %}
@@ -91,14 +91,14 @@
 {% call surface(variant="muted") %}
 {% call stack(gap="sm") %}
 <h3>Autosaved draft</h3>
-<p class="chirpui-text-muted chirpui-font-sm">Persists local draft fields and emits save state without a framework store.</p>
+<p class="showcase-copy">Persists local draft fields and emits save state without a framework store.</p>
 {% call draft_store("profile_draft", mount_id="draft-store-root") %}
 {{ text_field("name", label="Name", attrs_unsafe="data-draft-field") }}
 <div class="chirpui-field">
   <label class="chirpui-field__label" for="bio">Bio</label>
   <textarea class="chirpui-field__input" id="bio" name="bio" data-draft-field rows="3"></textarea>
 </div>
-<p class="chirpui-text-muted">Last saved: <span data-draft-saved-at>never</span></p>
+<p class="showcase-copy">Last saved: <span data-draft-saved-at>never</span></p>
 {% end %}
 {% end %}
 {% end %}
@@ -108,7 +108,7 @@
 {% call surface(variant="muted") %}
 {% call stack(gap="sm") %}
 <h3>Recoverable region</h3>
-<p class="chirpui-text-muted chirpui-font-sm">Swaps to fallback content when an island error is reported, then resets in place.</p>
+<p class="showcase-copy">Swaps to fallback content when an island error is reported, then resets in place.</p>
 {% call error_boundary("profile-boundary", mount_id="boundary-root") %}
 <div data-error-body>
   <p>Healthy content region.</p>
@@ -149,7 +149,7 @@
       const detail = event.detail || {};
       document.getElementById("island-events-empty")?.setAttribute("hidden", "hidden");
       const item = document.createElement("p");
-      item.className = "chirpui-text-muted";
+      item.className = "showcase-copy";
       item.textContent = `${name}: ${detail.name || "unknown"} (${detail.id || "no-id"}) ${detail.status || detail.reason || ""}`.trim();
       log.prepend(item);
     });

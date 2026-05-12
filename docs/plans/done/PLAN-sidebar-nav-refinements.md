@@ -1,5 +1,7 @@
 # chirp-ui: Sidebar Navigation Refinements
 
+Status: shipped and archived
+
 ## Goal
 
 Refine ChirpUI's sidebar navigation styles so sectioned nav (NAVIGATE, TOOLS, SETTINGS, etc.) looks clean and sleek by default, with theme-overridable tokens for apps like Dori that want a bolder active state.

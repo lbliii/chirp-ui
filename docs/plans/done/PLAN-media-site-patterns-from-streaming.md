@@ -1,5 +1,7 @@
 # chirp-ui: Media Site Patterns from Streaming Platforms
 
+Status: shipped and archived
+
 ## Goal
 
 Turn the observed 2026 Netflix, YouTube, and Apple TV media-site grammar into
@@ -390,7 +392,7 @@ Add media-site recipes to docs without changing component APIs.
 | `docs/MEDIA-SITE-PATTERNS.md` | Added recipe documentation for acquisition heroes, hero shelves, rails, format tabs, title details, live events, companion panels, plan comparison, and profile-safe catalogs |
 | `docs/PRIMITIVES.md` | Added a short media-site compositions pointer |
 | `docs/INDEX.md` | Indexed the recipe doc under Patterns |
-| `docs/plans/PLAN-media-site-patterns-from-streaming.md` | Keep this plan as the active roadmap |
+| `docs/plans/done/PLAN-media-site-patterns-from-streaming.md` | Archived after docs, fixtures, and browser proof shipped |
 
 **Done when:**
 

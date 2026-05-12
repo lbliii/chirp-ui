@@ -1,6 +1,6 @@
 # Epic: Envelope hardening batch 1 — close known bleed holes deliberately
 
-**Status**: Draft
+**Status**: shipped and archived
 **Created**: 2026-04-20
 **Target**: chirp-ui next minor (post-Sprint 26 base-layer hardening)
 **Estimated Effort**: 10–14h across 7 PRs
