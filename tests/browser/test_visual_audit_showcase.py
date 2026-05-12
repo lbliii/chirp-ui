@@ -281,8 +281,8 @@ def test_visual_audit_long_route_label_is_contained_by_scroll_strip(page):
             const style = getComputedStyle(el);
             const contained = rect.left >= -1 && rect.right <= viewport + 1;
             const canScroll = el.scrollWidth > el.clientWidth;
-            const clips = !["visible", "clip"].includes(style.overflowX);
-            if (contained && canScroll && clips) return null;
+            const scrollableOverflow = ["auto", "scroll"].includes(style.overflowX);
+            if (contained && canScroll && scrollableOverflow) return null;
             return {
                 overflowX: style.overflowX,
                 rect: { left: rect.left, right: rect.right, width: rect.width },
