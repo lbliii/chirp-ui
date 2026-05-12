@@ -13,7 +13,7 @@ while preserving its Python-native registry contract.
 Chirp UI already has the hard architectural pieces in place:
 
 - a registry-backed component vocabulary,
-- a shipped `chirpui-manifest@3` with params, slots, emitted classes, tokens,
+- a shipped `chirpui-manifest@5` with params, slots, emitted classes, tokens,
   maturity, runtime requirements, and authoring hints,
 - generated CSS partials with registry parity checks,
 - public cascade layers and token-first app overrides,
@@ -159,8 +159,9 @@ Tasks:
   experimental, recipe-only, or deprecate later.
 - Record decisions in `docs/PUBLIC-SURFACE-STABILIZATION.md`.
 - Review legacy helpers and prevent utility-class vocabulary growth.
-- Execute `docs/plans/PLAN-legacy-helper-cleanup-pre-1.0.md` so first-party
-  examples teach preferred primitives before any public helper removals.
+- Keep the completed legacy-helper cleanup plan archived under
+  `docs/plans/done/PLAN-legacy-helper-cleanup-pre-1.0.md`, and use its proof
+  when deciding future keep/deprecate outcomes.
 - Keep `find --authoring` and manifest authoring hints aligned with docs.
 
 Acceptance:
@@ -195,9 +196,10 @@ Acceptance:
 
 ## Sequencing
 
-1. Land the visual audit page and roadmap hygiene.
-2. Fix verification reliability so generated artifacts can be trusted.
-3. Publish dense navigation recipes and theme gallery.
+1. Keep verification reliability wired into local and hosted CI gates.
+2. Publish and maintain the theme gallery.
+3. Use dense navigation recipes and visual audit proof before promoting new
+   composites.
 4. Use the visual audit page to drive experimental component stabilization.
 5. Continue CSS scope conversion and Bengal integration in parallel with
    feature work.

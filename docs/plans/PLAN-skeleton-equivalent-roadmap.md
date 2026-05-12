@@ -122,8 +122,8 @@ Progress:
 - 2026-05-11: `TOKEN_CATALOG` parity made bidirectional and missing CSS-defined tokens cataloged.
 - 2026-05-11: token category guardrail added and obvious non-color category debt corrected.
 - 2026-05-11: token-only scanner added for packaged app theme CSS, with `holy-light.css` documented as legacy selector-bearing theme CSS.
-- 2026-05-11: `docs/VISION.md` manifest schema reference updated to `chirpui-manifest@3`
-  before the Sprint 2 schema bump.
+- 2026-05-11: `docs/VISION.md` manifest schema reference updated before the
+  Sprint 2 schema bump; current shipped schema is `chirpui-manifest@5`.
 
 Tasks:
 

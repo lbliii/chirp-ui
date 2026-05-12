@@ -70,7 +70,6 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 
 ### In-flight plans (`docs/plans/`)
 
-- [PLAN-verification-and-visual-showcase.md](plans/PLAN-verification-and-visual-showcase.md) — Verification repair, visual audit page, theme gallery, and roadmap cleanup
 - [PLAN-agent-grounding-depth.md](plans/PLAN-agent-grounding-depth.md) — Residual manifest-depth backlog
 - [PLAN-css-scope-and-layer.md](plans/PLAN-css-scope-and-layer.md) — Ongoing `@scope` conversion policy and residual CSS hardening
 - [PLAN-ascii-maturity.md](plans/PLAN-ascii-maturity.md) — Residual ASCII accessibility and stabilization backlog
@@ -78,7 +77,6 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-theme-tokens.md](plans/PLAN-theme-tokens.md) — Theme gallery and token parity proof backlog
 - [PLAN-skeleton-equivalent-roadmap.md](plans/PLAN-skeleton-equivalent-roadmap.md) — Skeleton-inspired roadmap for Chirp-native appearance, themes, docs, LLM, and anatomy contracts
 - [PLAN-primitive-vocabulary-hardening.md](plans/PLAN-primitive-vocabulary-hardening.md) — Legacy helper stabilization backlog
-- [PLAN-legacy-helper-cleanup-pre-1.0.md](plans/PLAN-legacy-helper-cleanup-pre-1.0.md) — First-party legacy helper cleanup plan before 1.0
 - [PLAN-navigation-contract-application.md](plans/PLAN-navigation-contract-application.md) — Apply dense navigation guidance to ChirpUI
 - [PLAN-dense-object-chrome-next.md](plans/PLAN-dense-object-chrome-next.md) — Residual dense object chrome browser proof and composite-decision backlog
 - [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary
@@ -103,6 +101,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-forum-site-patterns-from-communities.md](plans/done/PLAN-forum-site-patterns-from-communities.md) — Forum-site pattern recipes
 - [PLAN-island-js-test-infrastructure.md](plans/done/PLAN-island-js-test-infrastructure.md) — JS island test infrastructure
 - [PLAN-kida-0.4.0-adoption.md](plans/done/PLAN-kida-0.4.0-adoption.md) — Kida 0.4.0 feature adoption
+- [PLAN-legacy-helper-cleanup-pre-1.0.md](plans/done/PLAN-legacy-helper-cleanup-pre-1.0.md) — First-party legacy helper cleanup before 1.0
 - [PLAN-media-site-patterns-from-streaming.md](plans/done/PLAN-media-site-patterns-from-streaming.md) — Media-site pattern recipes
 - [PLAN-modern-css-backgrounds.md](plans/done/PLAN-modern-css-backgrounds.md) — CSS background pattern system
 - [PLAN-navigation-density-study.md](plans/done/PLAN-navigation-density-study.md) — Dense navigation study
@@ -111,6 +110,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-route-tabs-and-tabbed-layout.md](plans/done/PLAN-route-tabs-and-tabbed-layout.md) — Route tabs architecture
 - [PLAN-sidebar-nav-refinements.md](plans/done/PLAN-sidebar-nav-refinements.md) — Sidebar nav refinements
 - [PLAN-streaming-maturity.md](plans/done/PLAN-streaming-maturity.md) — SSE/streaming component maturity
+- [PLAN-verification-and-visual-showcase.md](plans/done/PLAN-verification-and-visual-showcase.md) — Verification repair, visual audit page, and roadmap cleanup
 
 ### Design & sprint-0 docs
 

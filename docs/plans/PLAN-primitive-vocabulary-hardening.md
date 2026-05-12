@@ -13,8 +13,8 @@
 > Public component promotion decisions are tracked in
 > [../PUBLIC-SURFACE-STABILIZATION.md](../PUBLIC-SURFACE-STABILIZATION.md);
 > this plan remains focused on primitive and legacy-helper vocabulary.
-> First-party example cleanup is tracked in
-> [PLAN-legacy-helper-cleanup-pre-1.0.md](PLAN-legacy-helper-cleanup-pre-1.0.md).
+> First-party example cleanup shipped in
+> [done/PLAN-legacy-helper-cleanup-pre-1.0.md](done/PLAN-legacy-helper-cleanup-pre-1.0.md).
 
 ---
 

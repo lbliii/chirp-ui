@@ -1,6 +1,6 @@
 # Plan: Legacy Helper Cleanup Before 1.0
 
-**Status**: active plan
+**Status**: complete
 **Created**: 2026-05-12
 **Target**: pre-1.0
 **Estimated Effort**: 8-14h across 3-4 PRs
@@ -247,3 +247,4 @@ Acceptance:
 |------|--------|--------|
 | 2026-05-12 | Initial cleanup plan | Captures the follow-up from the Skeleton-inspired design-system audit and separates safe first-party cleanup from public compatibility removals. |
 | 2026-05-12 | Phases 1-5 executed | Visual audit, high-visibility showcase templates, static showcase inventory, docs policy, and 1.0 decision gate now have committed proof and tests. |
+| 2026-05-12 | Archived to done | The plan now records shipped work; residual legacy-helper policy lives in `PUBLIC-SURFACE-STABILIZATION.md` and `PLAN-primitive-vocabulary-hardening.md`. |

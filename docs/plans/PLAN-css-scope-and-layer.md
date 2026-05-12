@@ -308,11 +308,28 @@ The envelope convention is the default for new components and for any partial mo
 grep -lE '^@layer chirpui\.component' src/chirp_ui/templates/css/partials/*.css
 ```
 
-**Converted (envelope form):**
+**Current converted count:** 14 partials as of 2026-05-12.
 
-- [x] `045_card.css` — S5 pilot
+Converted partials currently include:
 
-**Legacy (flat, opportunistic conversion):** every other partial in `src/chirp_ui/templates/css/partials/`. Roughly 159 partials as of S6 opening; converted partials will shift to the list above as routine PRs land. No global checklist is maintained — the grep above is the source of truth.
+- `039_surface.css`
+- `041_callout.css`
+- `045_card.css`
+- `046_video-card.css`
+- `047_channel-card.css`
+- `052_modal.css`
+- `053_drawer.css`
+- `065_tray.css`
+- `161_navigation-metadata-authoring.css`
+- `162_logo-cloud.css`
+- `163_story-card.css`
+- `164_cta-band.css`
+- `165_pattern-assets.css`
+- `166_dense-navigation-primitives.css`
+
+**Legacy (flat, opportunistic conversion):** all other partials in
+`src/chirp_ui/templates/css/partials/`. No global checklist is maintained —
+the grep above is the source of truth when this count drifts.
 
 **Epic closure signal.** The epic can close when:
 
