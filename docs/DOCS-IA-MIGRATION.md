@@ -30,7 +30,7 @@ manifest fields, and migration rules should come from the canonical source.
 
 | Published source | Target section | Canonical durable source | Migration action |
 |---|---|---|---|
-| `site/content/docs/_index.md` | Get Started | `docs/INDEX.md` | Replace raw class-heavy cards with source-owned macro examples or generated summaries. |
+| `site/content/docs/_index.md` | Get Started | `docs/INDEX.md` | Uses Bengal `cards`/`card` directives; keep links aligned with published reference surfaces. |
 | `site/content/docs/about/_index.md` | Integrations | `docs/VISION.md`, `README.md` | Keep as a short philosophy and integration overview; avoid new component facts. |
 | `site/content/docs/app-shell/_index.md` | Integrations | `docs/UI-LAYERS.md`, `docs/NAVIGATION.md`, `docs/COMPONENT-OPTIONS.md` | Keep quick-start snippet; move deeper shell contracts to canonical docs. |
 | `site/content/docs/app-shell/ui-layers.md` | Fundamentals | `docs/UI-LAYERS.md` | Keep aligned with Chirp shell vocabulary and avoid site-only terminology. |
@@ -44,7 +44,7 @@ manifest fields, and migration rules should come from the canonical source.
 | `site/content/docs/components/tabs.md` | Components | `docs/TABS-ANATOMY.md`, `docs/SHELL-TABS-CONTRACT.md`, `docs/NAVIGATION.md` | Keep as published mirror and preserve route-tab vs ARIA-tab distinction. |
 | `site/content/docs/components/type-aware-rendering.md` | Components | `docs/COMPONENT-OPTIONS.md` | Keep facts tied to `description_list` generated reference. |
 | `site/content/docs/get-started/_index.md` | Get Started | `README.md`, `docs/ANTI-FOOTGUNS.md` | Keep short; point deeper architecture to durable docs. |
-| `site/content/docs/get-started/installation.md` | Get Started | `README.md` | Keep install commands in sync with README and package metadata. |
+| `site/content/docs/get-started/installation.md` | Get Started | `README.md`, `pyproject.toml` | Keep install commands and version examples in sync with package metadata. |
 | `site/content/docs/patterns/_index.md` | Patterns | `docs/NAVIGATION.md`, `docs/PRODUCT-PAGE-PATTERNS.md`, `docs/MEDIA-SITE-PATTERNS.md`, `docs/FORUM-SITE-PATTERNS.md` | Keep as index; avoid inventing pattern contracts. |
 | `site/content/docs/patterns/forums.md` | Patterns | `docs/FORUM-SITE-PATTERNS.md` | Keep published summary with canonical guide link. |
 | `site/content/docs/patterns/media-sites.md` | Patterns | `docs/MEDIA-SITE-PATTERNS.md` | Keep published summary with canonical guide link. |
