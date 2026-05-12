@@ -40,7 +40,7 @@
 
 <h2>Modal overlay (Alpine)</h2>
 <div class="chirpui-block">
-<p class="chirpui-text-muted chirpui-font-sm" style="margin: 0 0 0.5rem;">
+<p class="showcase-copy showcase-copy--block">
   Div-based overlay using Alpine <code>$store.modals</code> — alternative when you avoid native <code>&lt;dialog&gt;</code>.
 </p>
 {{ modal_overlay_trigger("showcase-overlay", "Open overlay", variant="secondary") }}
@@ -53,7 +53,7 @@
 <div class="chirpui-block">
 {{ confirm_trigger("del-dlg", label="Delete item") }}
 {{ confirm_dialog("del-dlg", title="Delete item?", message="This action cannot be undone.", confirm_label="Delete", cancel_label="Cancel", variant="danger") }}
-<p class="chirpui-text-muted" style="margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Destructive actions. variant="danger" for red confirm button.
 </p>
 </div>
@@ -64,7 +64,7 @@
 {% call drawer("side-drawer", title="Filters", side="right") %}
 <p>Slide-out panel content. Use for filters, settings, or secondary nav.</p>
 {% end %}
-<p class="chirpui-text-muted" style="margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   side="left" or side="right". Native <code>&lt;dialog&gt;</code>.
 </p>
 </div>
@@ -75,7 +75,7 @@
 <a href="/save-as">Save as...</a>
 <a href="/export">Export</a>
 {% end %}
-<p class="chirpui-text-muted" style="margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Primary action + dropdown. Use primary_submit=true inside a form.
 </p>
 </div>
@@ -84,9 +84,9 @@
 <div class="chirpui-block">
 {% call popover(trigger_label="Filters") %}
 <p style="margin: 0 0 0.5rem;">Filter by status:</p>
-<button type="button" class="chirpui-btn chirpui-btn--primary chirpui-font-sm">Apply</button>
+<button type="button" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Apply</button>
 {% end %}
-<p class="chirpui-text-muted" style="margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Floating panel for forms, actions. Same HTML as dropdown, different styling.
 </p>
 </div>
@@ -106,7 +106,7 @@
     {"divider": true},
     {"label": "Delete", "href": "#", "variant": "danger"},
 ], id="showcase-dropdown-menu") }}
-<p class="chirpui-text-muted" style="margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   dropdown_menu(trigger, items=[…]) — Alpine-controlled; dispatches <code>chirpui:dropdown-selected</code>.
 </p>
 </div>
@@ -120,7 +120,7 @@
 <h2>Fragment island</h2>
 {% call block() %}
 {% call safe_region("ui-fragment-demo") %}
-<p class="chirpui-font-sm" style="margin: 0;">Safe region for HTMX mutations (see <code>/chrome</code> for more context).</p>
+<p class="showcase-copy">Safe region for HTMX mutations (see <code>/chrome</code> for more context).</p>
 {% end %}
 {% end %}
 
@@ -128,7 +128,7 @@
 <div class="chirpui-block">
 {% from "showcase/_tab_section.html" import tab_section %}
 {{ tab_section("overview") }}
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Click tabs to swap content via htmx. No full page reload.
 </p>
 </div>
@@ -158,7 +158,7 @@ Use the Forgot Password link on the login page. We'll email you a reset link.
 Go to Settings → Profile to edit your name, email, and preferences.
 {% end %}
 {% end %}
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Native <code>&lt;details&gt;</code> with <code>name</code> — only one open at a time.
 </p>
 {% end %}
@@ -178,7 +178,7 @@ Go to Settings → Profile to edit your name, email, and preferences.
 {% call tooltip(hint="Keyboard shortcut: ⌘K") %}
 <button type="button" class="chirpui-btn chirpui-btn--secondary">Search</button>
 {% end %}
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Pure CSS tooltip. Uses <code>title</code> for accessibility.
 </p>
 {% end %}
@@ -191,7 +191,7 @@ Go to Settings → Profile to edit your name, email, and preferences.
         hx-headers='{"HX-Request": "true"}'>
   Show toast
 </button>
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Toast appears via htmx OOB swap. Check top-right after clicking.
 </p>
 {% end %}
@@ -199,7 +199,7 @@ Go to Settings → Profile to edit your name, email, and preferences.
 <h2>Row Actions</h2>
 {% call block() %}
 {{ row_actions(items=[{"label": "Edit", "href": "/forms"}, {"label": "Duplicate", "href": "#"}, {"label": "Delete", "href": "#", "variant": "danger"}]) }}
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Kebab/dots menu for table rows. Supports variant="danger" for destructive actions.
 </p>
 {% end %}
@@ -212,7 +212,7 @@ Go to Settings → Profile to edit your name, email, and preferences.
 {{ status_indicator(label="Offline") }}
 {{ status_indicator(label="Error", variant="error") }}
 </div>
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Colored dot + label. Use pulse=true for live/active states.
 </p>
 {% end %}
@@ -223,7 +223,7 @@ Go to Settings → Profile to edit your name, email, and preferences.
 {{ status_with_hint(text="Deployed", variant="success", hint="Last deploy: 2 hours ago") }}
 {{ status_with_hint(text="Pending", variant="warning", hint="Waiting for approval") }}
 </div>
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Status badge paired with a secondary hint line for extra context.
 </p>
 {% end %}
@@ -231,13 +231,13 @@ Go to Settings → Profile to edit your name, email, and preferences.
 <h2>Empty State</h2>
 {% call block() %}
 {{ empty_state(icon="diamond", title="No results found", action_label="Clear filters", action_href="/data") }}
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   With action button. Use for zero-result screens, onboarding, or blank slates.
 </p>
 {% end %}
 {% call block() %}
 {{ empty_state(icon="diamond", title="Nothing here yet") }}
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Without action — just an icon and a title.
 </p>
 {% end %}
@@ -247,7 +247,7 @@ Go to Settings → Profile to edit your name, email, and preferences.
 {% call reveal_on_scroll() %}
 <p>This content reveals when scrolled into view.</p>
 {% end %}
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Fade/slide in on scroll using IntersectionObserver. Wrap any content.
 </p>
 {% end %}
@@ -255,7 +255,7 @@ Go to Settings → Profile to edit your name, email, and preferences.
 <h2>Infinite Scroll</h2>
 {% call block() %}
 {{ infinite_scroll(load_url="/data/table?page=2") }}
-<p class="chirpui-text-muted" style="color: var(--chirpui-text-muted); margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   Loads the next page automatically when scrolled into view. Shows a loading indicator.
 </p>
 {% end %}

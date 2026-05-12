@@ -23,13 +23,13 @@
 {{ animated_counter(1280, label="Active Users") }}
 {{ animated_counter(99, prefix="$", suffix="M", label="Revenue", variant="mono") }}
 </div>
-<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: 0.5rem;">
+<p class="showcase-copy showcase-copy--spaced">
   animated_counter — CSS-driven count-up on load.
 </p>
 {% end %}
 
 <h2>Config card</h2>
-<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: -0.25rem;">Uses <code>attrs_map={"id": "showcase-dashboard-pipeline"}</code> for a stable HTMX swap target on the widget root.</p>
+<p class="showcase-copy showcase-copy--section">Uses <code>attrs_map={"id": "showcase-dashboard-pipeline"}</code> for a stable HTMX swap target on the widget root.</p>
 {% call block() %}
 {{ config_card(title="Pipeline", icon="diamond", attrs_map={"id": "showcase-dashboard-pipeline"}, items=[
     {"term": "enabled", "detail": "Yes", "type": "bool"},
@@ -113,7 +113,7 @@
 {% end %}
 
 <h2>Config Dashboard</h2>
-<p class="chirpui-text-muted" style="margin-top: -0.5rem;">
+<p class="showcase-copy showcase-copy--pull">
   Full settings page layout composite with title, breadcrumbs, and optional key-value form.
 </p>
 {% call block() %}

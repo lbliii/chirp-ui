@@ -38,7 +38,7 @@
 {{ page_header("Navigation", subtitle="navbar, sidebar, stepper, nav_progress — Top nav, side nav, multi-step indicators, and loading bars.") }}
 
 <h2>Navigation Progress</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   CSS-only progress bar fixed to the viewport top. Animates automatically on
   <code>body.htmx-request</code>. Use outside <code>app_shell</code> (which has its
   own built-in bar). Place once in your base layout.
@@ -47,7 +47,7 @@
 <div style="position:relative;height:2rem;overflow:hidden;border-radius:var(--chirpui-radius-md);">
   {{ nav_progress() }}
 </div>
-<p class="chirpui-text-muted chirpui-font-sm chirpui-mt-sm">
+<p class="showcase-copy showcase-copy--compact">
   Contained preview. In production: <code>position:fixed; top:0; width:100%</code>.
 </p>
 {% end %}
@@ -85,75 +85,75 @@
 {% end %}
 {% end %}
 {% call block() %}
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Sidebar with sections. Use with grid(cols=2) for sidebar + main content layout.
 </p>
 {% end %}
 {% end %}
 
 <h2>Dense Object Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Contract-first dense chrome recipes: global commands, object context, local route views, and page tools stay separate.
 </p>
 {{ dense_project_object_chrome() }}
 {{ dense_settings_object_chrome() }}
 
 <h2>Cloud Console Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Control-plane recipe: scope switcher, service menu, favorites quickbar, resource search, object-local tabs, and deployment tools.
 </p>
 {{ cloud_control_plane_console() }}
 
 <h2>Suite Work Hub Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Product-suite recipe: top utilities, mode navigation, personal shortcuts, customizable sidebar sections, project tabs, and saved views.
 </p>
 {{ suite_work_hub_navigation() }}
 
 <h2>Ops Console Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Observability recipe: command-first dashboard search, operational sidebar, time range controls, signal tabs, and alert counts.
 </p>
 {{ ops_console_navigation() }}
 
 <h2>Keyboard-First Tracker Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Tracker recipe: favorites, team views, shortcut-labeled command launch, route-backed issue views, and compact display controls.
 </p>
 {{ tracker_navigation() }}
 
 <h2>Knowledge Workspace Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Knowledge recipe: workspace switcher, nested linked pages, team/private boundaries, collapsed breadcrumbs, page tabs, and nearby-topic discovery.
 </p>
 {{ knowledge_workspace_navigation() }}
 
 <h2>Editor Workbench Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Editor recipe: compact file menu, tool navigation, file tree, canvas context, route-backed comments/prototype views, and inspector panel.
 </p>
 {{ editor_workbench_navigation() }}
 
 <h2>Business Object Console Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Business object recipe: app launcher, global object search, resource sidebar, saved searches, object ID context, and object-local tabs.
 </p>
 {{ business_object_console_navigation() }}
 
 <h2>Collaboration Inbox Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Collaboration recipe: workspace switcher, unread sidebar, jump-to-conversation, activity/later surfaces, and conversation-local routes.
 </p>
 {{ collaboration_inbox_navigation() }}
 
 <h2>Developer Platform Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Developer platform recipe: project/group scope, search-or-go-to, context sidebar, workflow nav, project route tabs, and list filters.
 </p>
 {{ developer_platform_navigation() }}
 
 <h2>Reference Docs Navigation</h2>
-<p class="chirpui-text-muted chirpui-font-sm">
+<p class="showcase-copy">
   Reference recipe: workflow IA, docs search, persistent left nav, collapsed breadcrumbs, page controls, and nearby-topic discovery.
 </p>
 {{ reference_docs_navigation() }}
@@ -161,7 +161,7 @@
 <h2>Stepper</h2>
 {% call block() %}
 {{ stepper(steps=[{"id": "1", "label": "Details"}, {"id": "2", "label": "Review"}, {"id": "3", "label": "Confirm"}], current=2) }}
-<p class="chirpui-text-muted chirpui-font-sm" style="margin-top: var(--chirpui-spacing);">
+<p class="showcase-copy showcase-copy--rhythm">
   Multi-step forms: current=2 shows step 2 active, step 1 completed.
 </p>
 {% end %}
@@ -182,27 +182,27 @@
 {% end %}
 
 <h2>Route Tabs</h2>
-<p class="chirpui-text-muted chirpui-font-sm">Route-backed subsection tabs with aria-current support. Each tab navigates to a new URL.</p>
+<p class="showcase-copy">Route-backed subsection tabs with aria-current support. Each tab navigates to a new URL.</p>
 {% call block() %}
 {{ route_tabs(tabs=[{"href": "/navigation", "label": "Navigation"}, {"href": "/layout", "label": "Layout"}, {"href": "/forms", "label": "Forms"}], current_path="/navigation") }}
 {% end %}
 
 <h2>Nav Tree</h2>
-<p class="chirpui-text-muted chirpui-font-sm">Hierarchical navigation tree using native &lt;details&gt; for expand/collapse. Ideal for docs sidebars and admin nav.</p>
+<p class="showcase-copy">Hierarchical navigation tree using native &lt;details&gt; for expand/collapse. Ideal for docs sidebars and admin nav.</p>
 {% call block() %}
 {{ nav_tree(items=[{"title": "Getting Started", "href": "/", "children": [{"title": "Installation", "href": "/install"}, {"title": "Quick Start", "href": "/quickstart"}]}, {"title": "Components", "href": "/components", "children": [{"title": "Layout", "href": "/layout"}, {"title": "Forms", "href": "/forms"}, {"title": "Navigation", "href": "/navigation"}]}, {"title": "API Reference", "href": "/api"}]) }}
 {% end %}
 {% call block() %}
-<p class="chirpui-text-muted chirpui-font-sm">With show_icons=true:</p>
+<p class="showcase-copy">With show_icons=true:</p>
 {{ nav_tree(items=[{"title": "Getting Started", "href": "/", "children": [{"title": "Installation", "href": "/install"}, {"title": "Quick Start", "href": "/quickstart"}]}, {"title": "Components", "href": "/components", "children": [{"title": "Layout", "href": "/layout"}, {"title": "Forms", "href": "/forms"}, {"title": "Navigation", "href": "/navigation"}]}, {"title": "API Reference", "href": "/api"}], show_icons=true) }}
 {% end %}
 {% call block() %}
-<p class="chirpui-text-muted chirpui-font-sm">Link-first branches for server-controlled section trees:</p>
+<p class="showcase-copy">Link-first branches for server-controlled section trees:</p>
 {{ nav_tree(items=[{"title": "Worlds", "href": "/worlds", "open": true, "badge": 3, "children": [{"title": "Earth", "href": "/worlds/earth", "active": true}, {"title": "Mars", "href": "/worlds/mars", "muted": true}]}, {"title": "Archive", "href": "/archive", "children": [{"title": "Closed child", "href": "/archive/closed"}]}], branch_mode="linked") }}
 {% end %}
 
 <h2>Nav Link</h2>
-<p class="chirpui-text-muted chirpui-font-sm">SPA-style links with HTMX boost for smooth page transitions without full reloads.</p>
+<p class="showcase-copy">SPA-style links with HTMX boost for smooth page transitions without full reloads.</p>
 {% call block() %}
 <div class="chirpui-cluster chirpui-cluster--sm">
   {{ nav_link("/navigation", label="Navigation") }}
@@ -212,13 +212,13 @@
 {% end %}
 
 <h2>Pagination</h2>
-<p class="chirpui-text-muted chirpui-font-sm">HTMX-powered page navigation with ellipsis for large page counts.</p>
+<p class="showcase-copy">HTMX-powered page navigation with ellipsis for large page counts.</p>
 {% call block() %}
 {{ pagination(current=3, total=10, url_pattern="/data?page={page}") }}
 {% end %}
 
 <h2>Command Palette</h2>
-<p class="chirpui-text-muted chirpui-font-sm">Cmd+K search overlay using native &lt;dialog&gt;. Results load via HTMX.</p>
+<p class="showcase-copy">Cmd+K search overlay using native &lt;dialog&gt;. Results load via HTMX.</p>
 {% call block() %}
 {{ command_palette(id="demo-palette", search_url="/data/table", placeholder="Search components...") }}
 {{ command_palette_trigger(target="demo-palette", label="Search") }}
