@@ -40,6 +40,7 @@ Navigation guide for all chirp-ui documentation.
 - [ANTI-FOOTGUNS.md](ANTI-FOOTGUNS.md) — Common pitfalls and how to avoid them
 - [VERIFICATION.md](VERIFICATION.md) — Locked-environment verification, generated artifact checks, and Kida mismatch troubleshooting
 - [PUBLIC-SURFACE-STABILIZATION.md](PUBLIC-SURFACE-STABILIZATION.md) — Pre-1.0 promotion, experimental, recipe-only, and compatibility decisions
+- [STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md](STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md) — Static showcase legacy-helper inventory and decisions
 - [DASHBOARD-MATURITY-CONTRACT.md](DASHBOARD-MATURITY-CONTRACT.md) — Dashboard component readiness checklist
 
 ## Reference

@@ -23,6 +23,7 @@
         .sc-main{flex:1;min-width:0;overflow-x:hidden}
         .sc-header{position:sticky;top:0;z-index:100;background:var(--chirpui-surface);border-bottom:1px solid var(--chirpui-border);padding:0.6rem 1.5rem;display:flex;align-items:center;gap:1rem;backdrop-filter:blur(8px)}
         .sc-header strong{font-size:0.9rem}
+        .sc-header-note{font-size:0.75rem;color:var(--chirpui-text-muted)}
         .sc-section{max-width:1100px;padding:2rem 1.5rem;scroll-margin-top:3.5rem}
         .sc-section h2{font-size:1.15rem;font-weight:600;margin:0 0 0.2rem;scroll-margin-top:3.5rem}
         .sc-section .desc{font-size:0.82rem;color:var(--chirpui-text-muted);margin:0 0 1rem}
@@ -31,6 +32,10 @@
         .sc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0.75rem;margin-bottom:1.25rem}
         .sc-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.25rem}
         .sc-label{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--chirpui-text-muted);margin-bottom:0.4rem}
+        .sc-kicker{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--chirpui-text-muted)}
+        .sc-copy{margin:0;color:var(--chirpui-text-muted);font-size:0.82rem;line-height:1.45}
+        .sc-settings-label{font-size:0.875rem;font-weight:600}
+        .sc-settings-detail{color:var(--chirpui-text-muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.82rem}
         .sc-box{border:1px solid var(--chirpui-border);border-radius:var(--chirpui-radius-lg);padding:1rem;background:var(--chirpui-surface)}
         .sc-divider{border:none;border-top:1px solid var(--chirpui-border);margin:0 0 1.5rem}
         .sc-spacer{height:1rem}
@@ -195,7 +200,7 @@
 <!-- HEADER -->
 <header class="sc-header">
     <strong>Component Showcase</strong>
-    <span style="font-size:0.75rem;color:var(--chirpui-text-muted)">Static gallery assembled from generated Chirp UI CSS; the dynamic component showcase owns manifest and route-contract coverage.</span>
+    <span class="sc-header-note">Static gallery assembled from generated Chirp UI CSS; the dynamic component showcase owns manifest and route-contract coverage.</span>
     <div class="sc-theme" x-data="{ t: 'system' }">
         <button :class="{ active: t==='light' }" @click="t='light'; document.documentElement.style.colorScheme='light'">Light</button>
         <button :class="{ active: t==='dark' }" @click="t='dark'; document.documentElement.style.colorScheme='dark'">Dark</button>
@@ -1159,8 +1164,8 @@
     <p class="desc">Small caps section label inside cards and dense panels.</p>
     <hr class="sc-divider">
     <div class="chirpui-surface chirpui-surface--muted" style="padding:1rem;max-width:28rem">
-        <h3 class="chirpui-font-xs chirpui-text-muted chirpui-label-overline chirpui-label-overline--section" style="margin:0 0 0.35rem">Inventory</h3>
-        <p class="chirpui-font-sm" style="margin:0;color:var(--chirpui-text-muted)">Use <code>label_overline(..., section=true, tag="h3")</code> for accessible headings.</p>
+        <h3 class="chirpui-label-overline chirpui-label-overline--section sc-kicker" style="margin:0 0 0.35rem">Inventory</h3>
+        <p class="sc-copy">Use <code>label_overline(..., section=true, tag="h3")</code> for accessible headings.</p>
     </div>
 </section>
 
@@ -1189,7 +1194,7 @@
     <p class="desc">HTMX-safe region that opts out of inherited <code>hx-select</code> / swap rules (<code>safe_region</code> / <code>fragment_island</code>). See <code>docs/DND-FRAGMENT-ISLAND.md</code>.</p>
     <hr class="sc-divider">
     <div id="static-fragment-island" class="chirpui-fragment-island" hx-disinherit="hx-select hx-target hx-swap">
-        <p class="chirpui-font-sm" style="margin:0;color:var(--chirpui-text-muted)">Inner mutations do not inherit boosted navigation swap settings from the app shell.</p>
+        <p class="sc-copy">Inner mutations do not inherit boosted navigation swap settings from the app shell.</p>
     </div>
 </section>
 
@@ -1431,7 +1436,7 @@ register_filters(app)</code></pre>
                 <span class="chirpui-entity-header__icon">◆</span>
                 <div>
                     <h1 class="chirpui-entity-header__title" style="margin:0">Chain: My Workflow</h1>
-                    <p class="chirpui-text-muted chirpui-font-sm chirpui-entity-header__meta">3 steps · Updated 2h ago</p>
+                    <p class="chirpui-entity-header__meta sc-copy">3 steps · Updated 2h ago</p>
                 </div>
             </div>
             <div class="chirpui-entity-header__actions">
@@ -1447,7 +1452,7 @@ register_filters(app)</code></pre>
             <div class="chirpui-entity-header__content">
                 <div>
                     <h1 class="chirpui-entity-header__title" style="margin:0">User Profile</h1>
-                    <p class="chirpui-text-muted chirpui-font-sm chirpui-entity-header__meta">Member since Jan 2024</p>
+                    <p class="chirpui-entity-header__meta sc-copy">Member since Jan 2024</p>
                 </div>
             </div>
             <div class="chirpui-entity-header__actions">
@@ -4218,24 +4223,24 @@ register_filters(app)</code></pre>
     <div class="sc-box" style="max-width:600px">
         <div class="chirpui-settings-row-list chirpui-settings-row-list--hoverable chirpui-settings-row-list--divided">
             <div class="chirpui-settings-row">
-                <span class="chirpui-settings-row__label chirpui-font-sm chirpui-font-medium">Cursor IDE</span>
+                <span class="chirpui-settings-row__label sc-settings-label">Cursor IDE</span>
                 <span class="chirpui-settings-row__status"><span class="chirpui-badge chirpui-badge--success"><span class="chirpui-badge__text">Configured</span></span></span>
-                <span class="chirpui-settings-row__detail"><span class="chirpui-text-muted chirpui-font-sm chirpui-font-mono">dori setup cursor</span></span>
+                <span class="chirpui-settings-row__detail"><span class="sc-settings-detail">dori setup cursor</span></span>
             </div>
             <div class="chirpui-settings-row">
-                <span class="chirpui-settings-row__label chirpui-font-sm chirpui-font-medium">Skills directory</span>
+                <span class="chirpui-settings-row__label sc-settings-label">Skills directory</span>
                 <span class="chirpui-settings-row__status"><span class="chirpui-badge chirpui-badge--success"><span class="chirpui-badge__text">ok</span></span></span>
-                <span class="chirpui-settings-row__detail"><span class="chirpui-text-muted chirpui-font-sm chirpui-font-mono">/home/user/.dori/skills</span></span>
+                <span class="chirpui-settings-row__detail"><span class="sc-settings-detail">/home/user/.dori/skills</span></span>
             </div>
             <div class="chirpui-settings-row">
-                <span class="chirpui-settings-row__label chirpui-font-sm chirpui-font-medium">API Token</span>
+                <span class="chirpui-settings-row__label sc-settings-label">API Token</span>
                 <span class="chirpui-settings-row__status"><span class="chirpui-badge chirpui-badge--error"><span class="chirpui-badge__text">error</span></span></span>
-                <span class="chirpui-settings-row__detail"><span class="chirpui-text-muted chirpui-font-sm chirpui-font-mono">Not set</span></span>
+                <span class="chirpui-settings-row__detail"><span class="sc-settings-detail">Not set</span></span>
             </div>
             <div class="chirpui-settings-row">
-                <span class="chirpui-settings-row__label chirpui-font-sm chirpui-font-medium">Collections</span>
+                <span class="chirpui-settings-row__label sc-settings-label">Collections</span>
                 <span class="chirpui-settings-row__status"><span class="chirpui-badge chirpui-badge--muted"><span class="chirpui-badge__text">pending</span></span></span>
-                <span class="chirpui-settings-row__detail"><span class="chirpui-text-muted chirpui-font-sm chirpui-font-mono">3 installed</span></span>
+                <span class="chirpui-settings-row__detail"><span class="sc-settings-detail">3 installed</span></span>
             </div>
         </div>
     </div>
