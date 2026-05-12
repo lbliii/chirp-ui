@@ -15,7 +15,7 @@ Downstream consumers:
 """
 
 from dataclasses import dataclass
-from typing import TypedDict
+from typing import TypedDict, cast
 
 __all__ = [
     "COMPONENTS",
@@ -4122,8 +4122,14 @@ class DesignSystemStats(TypedDict):
     """Aggregate counts for the design system surface."""
 
     total_components: int
+    total_theme_packs: int
+    components_with_params: int
+    components_with_provides: int
+    components_with_consumes: int
+    components_with_description: int
     total_tokens: int
     registry_debt: dict[str, int]
+    manifest_quality: dict[str, int]
     component_categories: dict[str, int]
     component_maturity: dict[str, int]
     component_roles: dict[str, int]
@@ -4135,86 +4141,23 @@ class DesignSystemStats(TypedDict):
 class DesignSystemReport(TypedDict):
     """Machine-readable summary of the chirp-ui design system surface."""
 
+    schema: str
+    version: str
     components: dict[str, dict[str, object]]
     tokens: dict[str, dict[str, str]]
+    theme_packs: list[dict[str, object]]
     stats: DesignSystemStats
 
 
 def design_system_report() -> DesignSystemReport:
     """Machine-readable summary of the full chirp-ui design system surface.
 
-    Returns a dict with ``"components"`` keyed by block name,
-    ``"tokens"`` keyed by CSS property name, and ``"stats"`` with
-    aggregate counts.
+    Returns the same live projection as :func:`chirp_ui.manifest.build_manifest`,
+    including derived macro signatures, runtime requirements, provide/consume
+    keys, descriptions, theme packs, and aggregate quality stats. The historical
+    top-level keys (``"components"``, ``"tokens"``, and ``"stats"``) remain
+    present for existing callers.
     """
-    from chirp_ui.tokens import TOKEN_CATALOG
+    from chirp_ui.manifest import build_manifest
 
-    components: dict[str, dict[str, object]] = {}
-    for name, desc in COMPONENTS.items():
-        components[name] = {
-            "block": desc.block,
-            "variants": desc.variants,
-            "sizes": desc.sizes,
-            "modifiers": desc.modifiers,
-            "elements": desc.elements,
-            "slots": desc.slots,
-            "tokens": desc.tokens,
-            "extra_emits": desc.extra_emits,
-            "trim_emits": desc.trim_emits,
-            "emits": tuple(sorted(desc.emits)),
-            "template": desc.template,
-            "category": desc.category,
-            "maturity": desc.resolved_maturity,
-            "role": desc.resolved_role,
-            "authoring": desc.resolved_authoring,
-            "requires": desc.requires,
-        }
-    component_categories: dict[str, int] = {}
-    component_maturity: dict[str, int] = {}
-    component_roles: dict[str, int] = {}
-    component_authoring: dict[str, int] = {}
-    component_requirements: dict[str, int] = {}
-    for desc in COMPONENTS.values():
-        cat = desc.category or "uncategorized"
-        component_categories[cat] = component_categories.get(cat, 0) + 1
-        maturity = desc.resolved_maturity
-        component_maturity[maturity] = component_maturity.get(maturity, 0) + 1
-        role = desc.resolved_role
-        component_roles[role] = component_roles.get(role, 0) + 1
-        authoring = desc.resolved_authoring
-        component_authoring[authoring] = component_authoring.get(authoring, 0) + 1
-        for requirement in desc.requires:
-            component_requirements[requirement] = component_requirements.get(requirement, 0) + 1
-    registry_debt = {
-        "auto_category_components": sum(
-            1 for desc in COMPONENTS.values() if desc.category == "auto"
-        ),
-        "auto_extra_blocks": len(_AUTO_EXTRAS),
-        "auto_extra_classes": sum(len(classes) for classes in _AUTO_EXTRAS.values()),
-        "auto_trim_blocks": len(_AUTO_TRIMS),
-        "auto_trim_classes": sum(len(classes) for classes in _AUTO_TRIMS.values()),
-        "explicit_extra_blocks": sum(1 for desc in COMPONENTS.values() if desc.extra_emits),
-        "explicit_extra_classes": sum(len(desc.extra_emits) for desc in COMPONENTS.values()),
-        "explicit_trim_blocks": sum(1 for desc in COMPONENTS.values() if desc.trim_emits),
-        "explicit_trim_classes": sum(len(desc.trim_emits) for desc in COMPONENTS.values()),
-    }
-    token_categories: dict[str, int] = {}
-    for t in TOKEN_CATALOG.values():
-        token_categories[t.category] = token_categories.get(t.category, 0) + 1
-    return {
-        "components": components,
-        "tokens": {
-            name: {"category": t.category, "scope": t.scope} for name, t in TOKEN_CATALOG.items()
-        },
-        "stats": {
-            "total_components": len(COMPONENTS),
-            "total_tokens": len(TOKEN_CATALOG),
-            "registry_debt": registry_debt,
-            "component_categories": component_categories,
-            "component_maturity": component_maturity,
-            "component_roles": component_roles,
-            "component_authoring": component_authoring,
-            "component_requirements": component_requirements,
-            "token_categories": token_categories,
-        },
-    }
+    return cast(DesignSystemReport, build_manifest())

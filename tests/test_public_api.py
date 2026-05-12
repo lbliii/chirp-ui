@@ -54,6 +54,28 @@ def test_load_manifest_exposes_components_and_tokens() -> None:
     assert len(mc["params"]) >= 10
 
 
+def test_design_system_report_matches_live_manifest_projection() -> None:
+    """The public report should expose the schema-current registry projection."""
+    from chirp_ui.components import design_system_report
+    from chirp_ui.manifest import build_manifest
+
+    report = design_system_report()
+    manifest = build_manifest()
+
+    assert report["schema"] == manifest["schema"]
+    assert report["version"] == manifest["version"]
+    assert report["stats"]["component_requirements"] == manifest["stats"]["component_requirements"]
+    assert report["components"]["btn"]["requires"] == manifest["components"]["btn"]["requires"]
+    assert "htmx" in report["components"]["btn"]["requires"]
+    assert (
+        report["components"]["metric-card"]["params"]
+        == manifest["components"]["metric-card"]["params"]
+    )
+    assert (
+        report["components"]["card"]["description"] == manifest["components"]["card"]["description"]
+    )
+
+
 def test_load_manifest_is_cached() -> None:
     """Repeated calls return the same object — ``functools.cache`` is wired."""
     assert load_manifest() is load_manifest()
