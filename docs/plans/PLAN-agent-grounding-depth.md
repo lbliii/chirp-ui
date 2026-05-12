@@ -1,11 +1,16 @@
 # Epic: Agent Grounding Depth — make the manifest the whole registry
 
-**Status**: Draft
+**Status**: residual backlog
 **Created**: 2026-04-20
 **Target**: pre-1.0
 **Estimated Effort**: 30–48h (Sprint 0–6)
 **Dependencies**: None (builds on shipped `chirpui-manifest@1`)
 **Source**: Vibe-coding readiness evaluation — see conversation 2026-04-20 and `docs/VISION.md § Agent-groundable manifest`
+
+> Current note: the manifest API, package data, generated docs, `find` CLI,
+> and plan triage largely shipped after this epic was drafted. Keep this file
+> for residual manifest-depth work only; use
+> [ROADMAP-pre-1.0.md](../ROADMAP-pre-1.0.md) for current sequencing.
 
 ---
 

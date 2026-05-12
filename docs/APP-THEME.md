@@ -12,6 +12,11 @@ The packaged starter lives at:
 src/chirp_ui/templates/themes/app-theme-starter.css
 ```
 
+For a visual comparison of the starter profile against other token sets, open
+`examples/design-system-gap-showcase/index.html` and review the theme gallery
+and token explorer sections. The audit checklist lives in
+[VISUAL-AUDIT-SHOWCASE.md](VISUAL-AUDIT-SHOWCASE.md).
+
 When `chirp_ui.static_path()` is served at `/static`, the same file is available
 as:
 
@@ -97,3 +102,28 @@ unfinished if they are missing:
 Add component-level rules only when a token cannot express the intent. Put
 those rules in `@layer app.overrides`, after the token layer, so the split
 between brand values and component overrides stays obvious.
+
+## First Tokens To Override
+
+Start with token jobs, not component selectors. The visual audit token explorer
+uses the same grouping so an app author can compare changes without reading the
+full reference first.
+
+| Job | Override first | Controls |
+| --- | --- | --- |
+| Page | `--chirpui-bg`, `--chirpui-bg-subtle` | Canvas and page bands |
+| Surface | `--chirpui-surface`, `--chirpui-surface-alt`, `--chirpui-border` | Cards, panels, inputs, table rows |
+| Text | `--chirpui-text`, `--chirpui-text-muted` | Primary and secondary copy |
+| Accent | `--chirpui-accent`, `--chirpui-accent-hover`, `--chirpui-on-accent` | Primary buttons, links, active UI |
+| Semantic | `--chirpui-success`, `--chirpui-warning`, `--chirpui-error`, muted variants | Badges, alerts, validation, status |
+| Focus | `--chirpui-focus-ring`, `--chirpui-state-focus-outline` | Keyboard and input focus states |
+| Radius | `--chirpui-radius-sm`, `--chirpui-radius-md`, `--chirpui-radius-lg` | Shape across controls and surfaces |
+| Elevation | `--chirpui-elevation-card-rest`, `--chirpui-elevation-floating`, `--chirpui-elevation-overlay` | Card, menu, and overlay depth |
+| Typography | `--chirpui-ui-font-family`, `--chirpui-prose-font-family`, UI/prose scale tokens | Interface density and content reading |
+| Motion | `--chirpui-motion-*`, `--chirpui-ease-*` | Transition timing and easing |
+
+Avoid creating app-private token namespaces such as `--my-theme-card-border`
+or `--chirp-theme-*` when a `--chirpui-*` token already carries the job. If a
+component genuinely lacks a token hook, add a narrow rule in
+`@layer app.overrides` and treat that rule as evidence for a future Chirp UI
+token.

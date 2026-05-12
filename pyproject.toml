@@ -217,6 +217,7 @@ build-manifest = { cmd = "python scripts/build_manifest.py", help = "Emit src/ch
 build-manifest-check = { cmd = "python scripts/build_manifest.py --check", help = "Fail if manifest.json is stale relative to the registry" }
 build-docs = { cmd = "python scripts/build_component_options.py", help = "Regenerate docs/COMPONENT-OPTIONS.md API reference section from the manifest" }
 build-docs-check = { cmd = "python scripts/build_component_options.py --check", help = "Fail if docs/COMPONENT-OPTIONS.md is stale relative to the manifest" }
+verify-generated = { sequence = ["build-css-check", "build-manifest-check", "build-docs-check"], help = "Verify committed generated CSS, manifest, and component reference docs are fresh" }
 escape-audit = { cmd = "python scripts/escape_audit.py", help = "Print Kida escape audit for trusted markup sites" }
 css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS parses cleanly" }
 css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }
@@ -235,9 +236,7 @@ docs-build-all = { sequence = ["docs-build", "docs-assemble-showcase", "docs-emi
 ci = { sequence = [
     "lint",
     "format-check",
-    "build-css-check",
-    "build-manifest-check",
-    "build-docs-check",
+    "verify-generated",
     "css-check",
     "css-contract-check",
     "css-transition-check",
@@ -248,9 +247,7 @@ ci = { sequence = [
 check = { sequence = [
     "lint",
     "format-check",
-    "build-css-check",
-    "build-manifest-check",
-    "build-docs-check",
+    "verify-generated",
     "css-check",
     "css-contract-check",
     "css-transition-check",

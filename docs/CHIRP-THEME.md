@@ -62,6 +62,10 @@ The current parity and redesign decisions live in
 [`docs/CHIRP-THEME-PARITY-MATRIX.md`](./CHIRP-THEME-PARITY-MATRIX.md).
 The active implementation backlog for unported content families lives in
 [`docs/plans/PLAN-chirp-theme-content-parity.md`](./plans/PLAN-chirp-theme-content-parity.md).
+The visual token comparison for `chirp-theme` lives in
+`examples/design-system-gap-showcase/index.html`; use it alongside
+[`docs/VISUAL-AUDIT-SHOWCASE.md`](./VISUAL-AUDIT-SHOWCASE.md) before promoting
+theme-level token changes.
 Anything not listed there as retained is intentionally outside the current
 runtime contract until a later redesign slice brings it back through Chirp
 UI-native templates and tokens.

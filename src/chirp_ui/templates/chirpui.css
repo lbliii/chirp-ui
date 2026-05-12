@@ -18192,6 +18192,7 @@ a.chirpui-chip:hover,
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: var(--chirpui-space-control-gap);
         color: var(--chirpui-text-muted);
         text-align: center;
         text-decoration: none;

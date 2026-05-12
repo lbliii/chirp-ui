@@ -1,5 +1,15 @@
 # chirp-ui: Standardized Theme Token Set
 
+Status: residual backlog
+
+> Current note: broad token standardization and token-only theme examples have
+> mostly shipped. Remaining work is theme gallery UX, token parity proof, and
+> clearer guidance for the first app-owned tokens to override.
+>
+> 2026-05-12 slice: the visual audit token explorer now groups first overrides
+> by job, `APP-THEME.md` documents the first-token table, and visual audit tests
+> guard theme profiles against private token drift.
+
 ## Goal
 
 Define a minimal, standardized set of CSS custom properties that a user can fill in so their theme "just works" with chirp-ui. No component-specific overrides required. Convert holy-light as the first example.

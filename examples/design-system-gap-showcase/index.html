@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chirp UI Visual Audit</title>
+  <link rel="stylesheet" href="../../src/chirp_ui/templates/chirpui.css">
+  <link rel="stylesheet" href="../../src/chirp_ui/templates/themes/app-theme-starter.css">
+  <style>
+    @layer app.overrides {
+      body {
+        margin: 0;
+        background:
+          linear-gradient(180deg, var(--chirpui-bg), var(--chirpui-bg-subtle));
+        color: var(--chirpui-text);
+        font-family: var(--chirpui-ui-font-family);
+      }
+
+      .audit-shell {
+        min-height: 100dvh;
+        display: grid;
+        grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+      }
+
+      .audit-nav {
+        position: sticky;
+        top: 0;
+        height: 100dvh;
+        padding: var(--chirpui-spacing-lg);
+        border-inline-end: 1px solid var(--chirpui-border);
+        background: color-mix(in srgb, var(--chirpui-surface) 88%, transparent);
+        overflow: auto;
+      }
+
+      .audit-main {
+        min-width: 0;
+        padding: clamp(1rem, 3vw, 2rem);
+      }
+
+      .audit-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+        gap: var(--chirpui-space-page-gap);
+      }
+
+      .audit-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--chirpui-space-control-gap);
+        align-items: center;
+      }
+
+      .audit-token {
+        min-height: 6rem;
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-lg);
+        padding: var(--chirpui-space-card-padding);
+        background: var(--token-bg);
+        color: var(--token-fg, var(--chirpui-text));
+      }
+
+      .audit-token strong,
+      .audit-token span {
+        display: block;
+      }
+
+      .audit-token span {
+        margin-top: var(--chirpui-space-inline-gap);
+        color: color-mix(in srgb, currentColor 72%, transparent);
+        font-size: var(--chirpui-ui-sm);
+      }
+
+      .audit-swatch {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: var(--chirpui-space-control-gap);
+      }
+
+      .audit-token-board {
+        display: grid;
+        gap: var(--chirpui-space-page-gap);
+      }
+
+      .audit-token-group {
+        display: grid;
+        gap: var(--chirpui-spacing-sm);
+      }
+
+      .audit-token-group__title {
+        margin: 0;
+        color: var(--chirpui-text);
+        font-size: var(--chirpui-ui-sm);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        text-transform: uppercase;
+      }
+
+      .audit-token-group__rows {
+        display: grid;
+        gap: var(--chirpui-spacing-sm);
+      }
+
+      .audit-token-row {
+        display: grid;
+        grid-template-columns: minmax(7rem, 11rem) minmax(0, 1fr) minmax(5rem, 7rem);
+        gap: var(--chirpui-space-control-gap);
+        align-items: center;
+        padding: var(--chirpui-spacing-sm);
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-md);
+        background: var(--chirpui-surface-alt);
+      }
+
+      .audit-token-row code {
+        overflow-wrap: anywhere;
+        color: var(--chirpui-text-muted);
+      }
+
+      .audit-token-row strong {
+        color: var(--chirpui-text);
+        font-size: var(--chirpui-ui-sm);
+      }
+
+      .audit-token-row__bar {
+        min-height: 1.75rem;
+        border-radius: var(--chirpui-radius-sm);
+        background: var(--token-bg);
+        border: 1px solid color-mix(in srgb, var(--chirpui-border) 70%, transparent);
+      }
+
+      .audit-token-row__sample {
+        display: flex;
+        min-height: 1.75rem;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-sm);
+        background: var(--chirpui-surface);
+        color: var(--chirpui-text);
+        box-shadow: var(--sample-shadow, none);
+        font-family: var(--sample-font, inherit);
+        transition: transform var(--sample-transition, var(--chirpui-transition));
+      }
+
+      .audit-swatch span {
+        min-height: 2.75rem;
+        border-radius: var(--chirpui-radius-md);
+        border: 1px solid var(--chirpui-border);
+        background: var(--swatch);
+      }
+
+      .audit-frame {
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-lg);
+        background: var(--chirpui-surface);
+        color: var(--chirpui-text);
+        box-shadow: var(--chirpui-shadow-sm);
+        overflow: clip;
+      }
+
+      .audit-frame__header {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--chirpui-space-control-gap);
+        align-items: center;
+        padding: var(--chirpui-space-card-padding);
+        border-bottom: 1px solid var(--chirpui-border);
+      }
+
+      .audit-frame__body {
+        padding: var(--chirpui-space-card-padding);
+      }
+
+      .audit-command-preview {
+        display: grid;
+        gap: var(--chirpui-spacing-sm);
+        max-inline-size: 42rem;
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-lg);
+        padding: var(--chirpui-spacing-sm);
+        background: var(--chirpui-bg-subtle);
+      }
+
+      .audit-command-preview .chirpui-command-palette__inner {
+        position: static;
+        width: 100%;
+        max-width: none;
+        transform: none;
+      }
+
+      .audit-command-preview .chirpui-command-palette__item {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        display: flex;
+        justify-content: space-between;
+        gap: var(--chirpui-space-control-gap);
+        font: inherit;
+        text-align: start;
+        cursor: pointer;
+      }
+
+      .audit-overlay-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+        gap: var(--chirpui-space-page-gap);
+        align-items: stretch;
+      }
+
+      .audit-modal-preview,
+      .audit-drawer-preview {
+        display: flex;
+        min-height: 17rem;
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-lg);
+        background:
+          linear-gradient(135deg, color-mix(in srgb, var(--chirpui-bg-subtle) 82%, transparent), var(--chirpui-surface));
+        padding: var(--chirpui-spacing);
+      }
+
+      .audit-modal-preview {
+        align-items: center;
+        justify-content: center;
+      }
+
+      .audit-modal-preview dialog.chirpui-modal,
+      .audit-drawer-preview dialog.chirpui-drawer {
+        position: static;
+        inset: auto;
+        display: block;
+        margin: 0;
+      }
+
+      .audit-modal-preview dialog.chirpui-modal {
+        width: min(100%, 28rem);
+        max-width: none;
+        transform: none;
+      }
+
+      .audit-drawer-preview {
+        justify-content: flex-end;
+      }
+
+      .audit-drawer-preview dialog.chirpui-drawer {
+        width: min(100%, 28rem);
+        height: 100%;
+      }
+
+      .audit-drawer-preview .chirpui-drawer__panel {
+        position: static;
+        width: 100%;
+        max-width: none;
+        min-height: 100%;
+      }
+
+      .audit-ascii-panel {
+        display: grid;
+        gap: var(--chirpui-space-page-gap);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+        align-items: start;
+      }
+
+      .audit-proof-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+        gap: var(--chirpui-space-page-gap);
+      }
+
+      .audit-logo-mark {
+        display: inline-grid;
+        place-items: center;
+        inline-size: 2rem;
+        block-size: 2rem;
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-md);
+        color: var(--chirpui-accent);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+      }
+
+      .audit-mini-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .audit-mini-table th,
+      .audit-mini-table td {
+        padding: .75rem;
+        border-bottom: 1px solid var(--chirpui-border);
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      .audit-mini-table th {
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-ui-sm);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+      }
+
+      .audit-dark {
+        color-scheme: dark;
+        --chirpui-bg: oklch(0.18 0.024 248);
+        --chirpui-bg-subtle: oklch(0.23 0.026 248);
+        --chirpui-surface: oklch(0.24 0.028 248);
+        --chirpui-surface-alt: oklch(0.29 0.03 248);
+        --chirpui-border: oklch(0.42 0.035 248);
+        --chirpui-text: oklch(0.94 0.008 248);
+        --chirpui-text-muted: oklch(0.72 0.018 248);
+        --chirpui-accent: oklch(0.76 0.13 248);
+        --chirpui-accent-hover: oklch(0.84 0.11 248);
+      }
+
+      .audit-profile {
+        color-scheme: light;
+        --chirpui-bg: oklch(0.985 0.004 248);
+        --chirpui-bg-subtle: oklch(0.96 0.008 248);
+        --chirpui-surface: oklch(1 0 0);
+        --chirpui-surface-alt: oklch(0.975 0.006 248);
+        --chirpui-border: oklch(0.9 0.014 248);
+        --chirpui-text: oklch(0.22 0.028 248);
+        --chirpui-text-muted: oklch(0.5 0.028 248);
+        --chirpui-accent: oklch(0.58 0.16 248);
+        --chirpui-accent-hover: oklch(0.5 0.16 248);
+        --chirpui-success: oklch(0.58 0.17 150);
+        --chirpui-warning: oklch(0.72 0.15 70);
+        --chirpui-error: oklch(0.55 0.19 25);
+      }
+
+      .audit-profile--holy {
+        color-scheme: dark;
+        --chirpui-bg: #0d0d0d;
+        --chirpui-bg-subtle: #1a1a1a;
+        --chirpui-surface: #1a1a1a;
+        --chirpui-surface-alt: #262626;
+        --chirpui-border: #333333;
+        --chirpui-text: #e5e5e5;
+        --chirpui-text-muted: #a8a8a8;
+        --chirpui-accent: #c9a227;
+        --chirpui-accent-hover: #8a7235;
+        --chirpui-success: #22c55e;
+        --chirpui-warning: #4f46e5;
+        --chirpui-error: #7c3aed;
+      }
+
+      .audit-profile--chirp-theme {
+        --chirpui-bg: #f4f1eb;
+        --chirpui-bg-subtle: #fbf8f2;
+        --chirpui-surface: #fffdf8;
+        --chirpui-surface-alt: #f0ebe3;
+        --chirpui-border: #ccd6d0;
+        --chirpui-text: #111c24;
+        --chirpui-text-muted: #475463;
+        --chirpui-accent: #0e7490;
+        --chirpui-accent-hover: #155e75;
+        --chirpui-success: #0f766e;
+        --chirpui-warning: #b45309;
+        --chirpui-error: #be185d;
+      }
+
+      .audit-profile .audit-frame__body,
+      .audit-profile--holy .audit-frame__body,
+      .audit-profile--chirp-theme .audit-frame__body {
+        background:
+          linear-gradient(180deg, var(--chirpui-bg), var(--chirpui-bg-subtle));
+      }
+
+      @media (max-width: 860px) {
+        .audit-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .audit-nav {
+          position: static;
+          height: auto;
+          border-inline-end: 0;
+          border-bottom: 1px solid var(--chirpui-border);
+        }
+
+        .audit-token-row {
+          grid-template-columns: 1fr;
+        }
+
+        .audit-ascii-panel {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="audit-shell">
+    <aside class="audit-nav">
+      <div class="chirpui-stack chirpui-stack--md">
+        <div>
+          <div class="chirpui-ui-label">Chirp UI</div>
+          <h1 class="chirpui-ui-title">Visual Audit</h1>
+        </div>
+        <nav class="chirpui-sidebar">
+          <a class="chirpui-sidebar__link chirpui-sidebar__link--active" href="#tokens"><span class="chirpui-sidebar__label">Tokens</span><span class="chirpui-sidebar__badge">6</span></a>
+          <a class="chirpui-sidebar__link" href="#navigation"><span class="chirpui-sidebar__label">Navigation</span><span class="chirpui-sidebar__badge chirpui-sidebar__badge--loading"></span></a>
+          <a class="chirpui-sidebar__link" href="#components"><span class="chirpui-sidebar__label">Components</span><span class="chirpui-sidebar__badge chirpui-sidebar__badge--reserved"></span></a>
+          <a class="chirpui-sidebar__link" href="#interaction-chrome"><span class="chirpui-sidebar__label">Interaction</span><span class="chirpui-sidebar__badge">3</span></a>
+          <a class="chirpui-sidebar__link" href="#ascii-tui"><span class="chirpui-sidebar__label">ASCII/TUI</span><span class="chirpui-sidebar__badge">4</span></a>
+          <a class="chirpui-sidebar__link" href="#proof-patterns"><span class="chirpui-sidebar__label">Proof</span><span class="chirpui-sidebar__badge">3</span></a>
+          <a class="chirpui-sidebar__link" href="#theme-gallery"><span class="chirpui-sidebar__label">Theme gallery</span><span class="chirpui-sidebar__badge">4</span></a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="audit-main">
+      <div class="chirpui-stack chirpui-stack--xl">
+        <section class="chirpui-surface chirpui-surface--elevated">
+          <div class="chirpui-stack chirpui-stack--md">
+            <div class="audit-row">
+              <span class="chirpui-badge chirpui-badge--primary">manifest@3</span>
+              <span class="chirpui-badge chirpui-badge--success">336 components</span>
+              <span class="chirpui-badge chirpui-badge--warning">124 experimental</span>
+            </div>
+            <div>
+              <h2 class="chirpui-display">Design system audit surface</h2>
+              <p class="chirpui-text-muted">Tokens, density, states, themes, and nested surfaces rendered together.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="tokens" class="chirpui-stack chirpui-stack--md">
+          <div class="chirpui-section-header">
+            <div>
+              <h2 class="chirpui-section-header__title">Tokens</h2>
+              <p class="chirpui-section-header__subtitle">Core palette and semantic states.</p>
+            </div>
+          </div>
+          <div class="audit-grid">
+            <div class="audit-token" style="--token-bg: var(--chirpui-surface);">
+              <strong>Surface</strong><span>Cards, modals, panels</span>
+            </div>
+            <div class="audit-token" style="--token-bg: var(--chirpui-bg-subtle);">
+              <strong>Subtle</strong><span>Page bands, secondary regions</span>
+            </div>
+            <div class="audit-token" style="--token-bg: var(--chirpui-accent); --token-fg: var(--chirpui-on-accent);">
+              <strong>Accent</strong><span>Primary controls and focus</span>
+            </div>
+            <div class="audit-token" style="--token-bg: var(--chirpui-success); --token-fg: #fff;">
+              <strong>Success</strong><span>Positive status</span>
+            </div>
+            <div class="audit-token" style="--token-bg: var(--chirpui-warning); --token-fg: var(--chirpui-on-warning);">
+              <strong>Warning</strong><span>Attention state</span>
+            </div>
+            <div class="audit-token" style="--token-bg: var(--chirpui-error); --token-fg: #fff;">
+              <strong>Error</strong><span>Validation and failure</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="token-explorer" class="audit-frame" data-audit-section="token-explorer">
+          <div class="audit-frame__header">
+            <div>
+              <h2 class="chirpui-ui-title">Token explorer</h2>
+              <p class="chirpui-text-muted">First app-owned overrides by job.</p>
+            </div>
+            <span class="chirpui-badge chirpui-badge--primary">theme</span>
+          </div>
+          <div class="audit-frame__body audit-token-board">
+            <section class="audit-token-group" data-token-job="page">
+              <h3 class="audit-token-group__title">Page</h3>
+              <div class="audit-token-group__rows">
+                <div class="audit-token-row">
+                  <code>--chirpui-bg</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-bg);"></div>
+                  <span class="chirpui-ui-meta">canvas</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-bg-subtle</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-bg-subtle);"></div>
+                  <span class="chirpui-ui-meta">bands</span>
+                </div>
+              </div>
+            </section>
+            <section class="audit-token-group" data-token-job="surface">
+              <h3 class="audit-token-group__title">Surface</h3>
+              <div class="audit-token-group__rows">
+                <div class="audit-token-row">
+                  <code>--chirpui-surface</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-surface);"></div>
+                  <span class="chirpui-ui-meta">panel</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-border</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-border);"></div>
+                  <span class="chirpui-ui-meta">edge</span>
+                </div>
+              </div>
+            </section>
+            <section class="audit-token-group" data-token-job="text">
+              <h3 class="audit-token-group__title">Text</h3>
+              <div class="audit-token-group__rows">
+                <div class="audit-token-row">
+                  <code>--chirpui-text</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-text);"></div>
+                  <span class="chirpui-ui-meta">primary</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-text-muted</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-text-muted);"></div>
+                  <span class="chirpui-ui-meta">secondary</span>
+                </div>
+              </div>
+            </section>
+            <section class="audit-token-group" data-token-job="accent">
+              <h3 class="audit-token-group__title">Accent</h3>
+              <div class="audit-token-group__rows">
+                <div class="audit-token-row">
+                  <code>--chirpui-accent</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-accent);"></div>
+                  <span class="chirpui-ui-meta">action</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-accent-hover</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-accent-hover);"></div>
+                  <span class="chirpui-ui-meta">hover</span>
+                </div>
+              </div>
+            </section>
+            <section class="audit-token-group" data-token-job="semantic">
+              <h3 class="audit-token-group__title">Semantic</h3>
+              <div class="audit-token-group__rows">
+                <div class="audit-token-row">
+                  <code>--chirpui-success</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-success);"></div>
+                  <span class="chirpui-ui-meta">success</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-warning</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-warning);"></div>
+                  <span class="chirpui-ui-meta">warning</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-error</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-error);"></div>
+                  <span class="chirpui-ui-meta">error</span>
+                </div>
+              </div>
+            </section>
+            <section class="audit-token-group" data-token-job="focus">
+              <h3 class="audit-token-group__title">Focus</h3>
+              <div class="audit-token-group__rows">
+                <div class="audit-token-row">
+                  <code>--chirpui-focus-ring</code>
+                  <div class="audit-token-row__sample" style="box-shadow: 0 0 0 3px var(--chirpui-focus-ring);">focus</div>
+                  <span class="chirpui-ui-meta">halo</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-state-focus-outline</code>
+                  <div class="audit-token-row__sample" style="outline: var(--chirpui-state-focus-outline); outline-offset: var(--chirpui-state-focus-offset);">outline</div>
+                  <span class="chirpui-ui-meta">keyboard</span>
+                </div>
+              </div>
+            </section>
+            <section class="audit-token-group" data-token-job="radius">
+              <h3 class="audit-token-group__title">Radius</h3>
+              <div class="audit-token-group__rows">
+                <div class="audit-token-row">
+                  <code>--chirpui-radius-sm</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-accent); border-radius: var(--chirpui-radius-sm);"></div>
+                  <span class="chirpui-ui-meta">compact</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-radius-lg</code>
+                  <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-accent); border-radius: var(--chirpui-radius-lg);"></div>
+                  <span class="chirpui-ui-meta">panel</span>
+                </div>
+              </div>
+            </section>
+            <section class="audit-token-group" data-token-job="elevation">
+              <h3 class="audit-token-group__title">Elevation</h3>
+              <div class="audit-token-group__rows">
+                <div class="audit-token-row">
+                  <code>--chirpui-elevation-card-rest</code>
+                  <div class="audit-token-row__sample" style="--sample-shadow: var(--chirpui-elevation-card-rest);">card</div>
+                  <span class="chirpui-ui-meta">rest</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-elevation-overlay</code>
+                  <div class="audit-token-row__sample" style="--sample-shadow: var(--chirpui-elevation-overlay);">overlay</div>
+                  <span class="chirpui-ui-meta">float</span>
+                </div>
+              </div>
+            </section>
+            <section class="audit-token-group" data-token-job="typography">
+              <h3 class="audit-token-group__title">Typography</h3>
+              <div class="audit-token-group__rows">
+                <div class="audit-token-row">
+                  <code>--chirpui-ui-font-family</code>
+                  <div class="audit-token-row__sample" style="--sample-font: var(--chirpui-ui-font-family);">Aa</div>
+                  <span class="chirpui-ui-meta">ui</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-ui-lg</code>
+                  <div class="audit-token-row__sample" style="font-size: var(--chirpui-ui-lg);">Title</div>
+                  <span class="chirpui-ui-meta">scale</span>
+                </div>
+              </div>
+            </section>
+            <section class="audit-token-group" data-token-job="motion">
+              <h3 class="audit-token-group__title">Motion</h3>
+              <div class="audit-token-group__rows">
+                <div class="audit-token-row">
+                  <code>--chirpui-motion-base</code>
+                  <div class="audit-token-row__sample" style="--sample-transition: var(--chirpui-motion-base) var(--chirpui-ease-standard);">150ms</div>
+                  <span class="chirpui-ui-meta">timing</span>
+                </div>
+                <div class="audit-token-row">
+                  <code>--chirpui-ease-standard</code>
+                  <div class="audit-token-row__sample" style="--sample-transition: var(--chirpui-motion-base) var(--chirpui-ease-standard);">ease</div>
+                  <span class="chirpui-ui-meta">curve</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section id="navigation" class="audit-frame">
+          <div class="audit-frame__header">
+            <div>
+              <h2 class="chirpui-ui-title">Dense navigation</h2>
+              <p class="chirpui-text-muted">Scope, command, routes, and attention states.</p>
+            </div>
+            <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Search /</button>
+          </div>
+          <div class="audit-frame__body chirpui-stack chirpui-stack--md">
+            <div class="audit-row">
+              <button class="chirpui-btn chirpui-btn--secondary chirpui-btn--sm">Prod / us-east</button>
+              <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Deploy</button>
+              <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Refresh</button>
+            </div>
+            <nav class="chirpui-route-tabs">
+              <a class="chirpui-route-tab chirpui-route-tab--active" href="#"><span>Overview</span><span class="chirpui-route-tab__badge">12</span></a>
+              <a class="chirpui-route-tab" href="#"><span>Deployments</span><span class="chirpui-route-tab__badge chirpui-route-tab__badge--loading"></span></a>
+              <a class="chirpui-route-tab" href="#"><span>Logs with a deliberately long label</span><span class="chirpui-route-tab__badge">124</span></a>
+              <a class="chirpui-route-tab" href="#"><span>Settings</span><span class="chirpui-route-tab__badge chirpui-route-tab__badge--reserved"></span></a>
+            </nav>
+          </div>
+        </section>
+
+        <section id="components" class="audit-grid">
+          <article class="chirpui-card chirpui-card--feature">
+            <div class="chirpui-card__header">
+              <h3 class="chirpui-card__title">Card and status states</h3>
+              <p class="chirpui-card__subtitle">Nested surface and long content stress.</p>
+            </div>
+            <div class="chirpui-card__body chirpui-stack chirpui-stack--md">
+              <div class="audit-row">
+                <span class="chirpui-status-indicator chirpui-status-indicator--success"><span class="chirpui-status-indicator__dot"></span>Healthy</span>
+                <span class="chirpui-status-indicator chirpui-status-indicator--warning"><span class="chirpui-status-indicator__dot"></span>Delayed</span>
+                <span class="chirpui-status-indicator chirpui-status-indicator--error"><span class="chirpui-status-indicator__dot"></span>Blocked</span>
+              </div>
+              <div class="chirpui-surface chirpui-surface--muted">
+                <p>A nested surface should keep its own border, background, text rhythm, and link wrapping without leaking hover treatment from the parent card.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="chirpui-card">
+            <div class="chirpui-card__header">
+              <h3 class="chirpui-card__title">Form density</h3>
+              <p class="chirpui-card__subtitle">Inputs, validation, and actions.</p>
+            </div>
+            <div class="chirpui-card__body">
+              <form class="chirpui-form">
+                <div class="chirpui-field">
+                  <label class="chirpui-field__label" for="audit-name">Project</label>
+                  <input class="chirpui-field__input" id="audit-name" value="api-gateway-production-rollout">
+                </div>
+                <div class="chirpui-field chirpui-field--error">
+                  <label class="chirpui-field__label" for="audit-budget">Budget</label>
+                  <input class="chirpui-field__input" id="audit-budget" value="Needs approval">
+                  <p class="chirpui-field__error">Approval required before deployment.</p>
+                </div>
+                <div class="audit-row">
+                  <button class="chirpui-btn chirpui-btn--primary" type="button">Save</button>
+                  <button class="chirpui-btn chirpui-btn--ghost" type="button">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </article>
+        </section>
+
+        <section id="interaction-chrome" class="audit-frame" data-audit-section="interaction-chrome">
+          <div class="audit-frame__header">
+            <div>
+              <h2 class="chirpui-ui-title">Interaction chrome</h2>
+              <p class="chirpui-text-muted">Command palette, modal, and drawer surfaces rendered in one audit band.</p>
+            </div>
+            <button class="chirpui-command-palette__trigger chirpui-command-palette-trigger chirpui-command-palette-trigger--sm" type="button">
+              <span class="chirpui-command-palette__trigger-label">Search</span>
+              <kbd class="chirpui-command-palette__kbd">/</kbd>
+            </button>
+          </div>
+          <div class="audit-frame__body chirpui-stack chirpui-stack--lg">
+            <div class="audit-command-preview">
+              <div class="chirpui-command-palette__inner">
+                <input class="chirpui-command-palette__input" type="search" value="deploy" aria-label="Command search">
+                <div class="chirpui-command-palette__results">
+                  <div class="chirpui-command-palette__group-title">Actions</div>
+                  <button class="chirpui-command-palette__item" type="button">
+                    <span class="chirpui-command-palette__item-label">Deploy production</span>
+                    <span class="chirpui-command-palette__item-hint">enter</span>
+                  </button>
+                  <button class="chirpui-command-palette__item" type="button">
+                    <span class="chirpui-command-palette__item-label">Open rollout logs</span>
+                    <span class="chirpui-command-palette__item-hint">⌘L</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="audit-overlay-grid">
+              <div class="audit-modal-preview">
+                <dialog class="chirpui-modal" open aria-label="Audit modal preview">
+                  <header class="chirpui-modal__header">
+                    <h2 class="chirpui-modal__title">Approve release</h2>
+                    <form method="dialog"><button class="chirpui-modal__close" type="button" aria-label="Close">&times;</button></form>
+                  </header>
+                  <div class="chirpui-modal__body">
+                    <p>Compact overlay copy should keep readable rhythm while nested inside the audit surface.</p>
+                  </div>
+                  <footer class="chirpui-modal__footer">
+                    <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm" type="button">Cancel</button>
+                    <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm" type="button">Approve</button>
+                  </footer>
+                </dialog>
+              </div>
+              <div class="audit-drawer-preview">
+                <dialog class="chirpui-drawer chirpui-drawer--right" open aria-label="Audit drawer preview">
+                  <aside class="chirpui-drawer__panel">
+                    <header class="chirpui-drawer__header">
+                      <h2 class="chirpui-drawer__title">Filters</h2>
+                      <form method="dialog"><button class="chirpui-drawer__close" type="button" aria-label="Close">&times;</button></form>
+                    </header>
+                    <div class="chirpui-drawer__body chirpui-stack chirpui-stack--sm">
+                      <label class="chirpui-field">
+                        <span class="chirpui-field__label">Environment</span>
+                        <select class="chirpui-field__input">
+                          <option>Production</option>
+                          <option>Staging</option>
+                        </select>
+                      </label>
+                      <label class="chirpui-field">
+                        <span class="chirpui-field__label">Owner</span>
+                        <input class="chirpui-field__input" value="Platform">
+                      </label>
+                    </div>
+                  </aside>
+                </dialog>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ascii-tui" class="audit-frame" data-audit-section="ascii-tui">
+          <div class="audit-frame__header">
+            <div>
+              <h2 class="chirpui-ui-title">ASCII/TUI controls</h2>
+              <p class="chirpui-text-muted">Terminal-native controls beside tabular operational data.</p>
+            </div>
+            <span class="chirpui-ascii-badge chirpui-ascii-badge--accent"><span class="chirpui-ascii-badge__open">[</span><span class="chirpui-ascii-badge__text">live</span><span class="chirpui-ascii-badge__close">]</span></span>
+          </div>
+          <div class="audit-frame__body audit-ascii-panel">
+            <div class="chirpui-stack chirpui-stack--md">
+              <label class="chirpui-ascii-toggle chirpui-ascii-toggle--accent">
+                <input class="chirpui-ascii-toggle__input chirpui-visually-hidden" type="checkbox" checked>
+                <span class="chirpui-ascii-toggle__track" aria-hidden="true">
+                  <span class="chirpui-ascii-toggle__rail"><span class="chirpui-ascii-toggle__knob"></span></span>
+                </span>
+                <span class="chirpui-ascii-toggle__label">Edge routing</span>
+              </label>
+              <label class="chirpui-ascii-toggle chirpui-ascii-toggle--success">
+                <input class="chirpui-ascii-toggle__input chirpui-visually-hidden" type="checkbox" checked>
+                <span class="chirpui-ascii-toggle__track" aria-hidden="true">
+                  <span class="chirpui-ascii-toggle__rail"><span class="chirpui-ascii-toggle__knob"></span></span>
+                </span>
+                <span class="chirpui-ascii-toggle__label">Checks passing</span>
+              </label>
+              <div class="chirpui-ascii-progress chirpui-ascii-progress--success" aria-label="Rollout progress">
+                <div class="chirpui-ascii-progress__label">Rollout</div>
+                <div class="chirpui-ascii-progress__track">
+                  <span class="chirpui-ascii-progress__filled">████████</span><span class="chirpui-ascii-progress__empty">░░</span>
+                </div>
+                <div class="chirpui-ascii-progress__value">80%</div>
+              </div>
+            </div>
+            <div class="chirpui-scroll-x">
+              <div class="chirpui-ascii-table chirpui-ascii-table--compact chirpui-ascii-table--rounded">
+                <div class="chirpui-ascii-table__border chirpui-ascii-table__border--top" aria-hidden="true"></div>
+                <div class="chirpui-ascii-table__head">
+                  <div class="chirpui-ascii-table__row">
+                    <div class="chirpui-ascii-table__th">Node</div>
+                    <div class="chirpui-ascii-table__th">State</div>
+                    <div class="chirpui-ascii-table__th">Latency</div>
+                  </div>
+                </div>
+                <div class="chirpui-ascii-table__border chirpui-ascii-table__border--mid" aria-hidden="true"></div>
+                <div class="chirpui-ascii-table__body">
+                  <div class="chirpui-ascii-table__row">
+                    <div class="chirpui-ascii-table__td">iad-01</div>
+                    <div class="chirpui-ascii-table__td">ok</div>
+                    <div class="chirpui-ascii-table__td">18ms</div>
+                  </div>
+                  <div class="chirpui-ascii-table__row">
+                    <div class="chirpui-ascii-table__td">sfo-03</div>
+                    <div class="chirpui-ascii-table__td">warm</div>
+                    <div class="chirpui-ascii-table__td">24ms</div>
+                  </div>
+                </div>
+                <div class="chirpui-ascii-table__border chirpui-ascii-table__border--bottom" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="proof-patterns" class="chirpui-stack chirpui-stack--md" data-audit-section="proof-patterns">
+          <div class="chirpui-section-header">
+            <div>
+              <h2 class="chirpui-section-header__title">Proof patterns</h2>
+              <p class="chirpui-section-header__subtitle">Marketing-grade trust patterns without leaving the design system.</p>
+            </div>
+          </div>
+          <div class="audit-proof-grid">
+            <section class="chirpui-logo-cloud chirpui-logo-cloud--monochrome" aria-label="Customer logos">
+              <div class="chirpui-logo-cloud__track">
+                <span class="chirpui-logo-cloud__item"><span class="audit-logo-mark">A</span><span class="chirpui-logo-cloud__name">Atlas</span></span>
+                <span class="chirpui-logo-cloud__item"><span class="audit-logo-mark">B</span><span class="chirpui-logo-cloud__name">Beacon</span></span>
+                <span class="chirpui-logo-cloud__item"><span class="audit-logo-mark">C</span><span class="chirpui-logo-cloud__name">Canopy</span></span>
+              </div>
+            </section>
+            <article class="chirpui-story-card chirpui-story-card--link">
+              <header class="chirpui-story-card__header">
+                <div class="chirpui-story-card__logo"><span class="audit-logo-mark">Q</span></div>
+                <span class="chirpui-story-card__metric">42% faster</span>
+              </header>
+              <div class="chirpui-story-card__body">
+                <p class="chirpui-story-card__customer">Quartz Ops</p>
+                <h3 class="chirpui-story-card__outcome">Launch reviews moved into one interface.</h3>
+                <div class="chirpui-story-card__summary"><p>Story cards can carry proof, outcomes, and follow-up actions in a compact surface.</p></div>
+              </div>
+              <footer class="chirpui-story-card__footer">
+                <span class="chirpui-story-card__cta">Read story</span>
+              </footer>
+            </article>
+          </div>
+          <section class="chirpui-cta-band">
+            <div class="chirpui-cta-band__inner">
+              <div class="chirpui-cta-band__copy">
+                <h3 class="chirpui-cta-band__title">Ship a themed product surface.</h3>
+                <div class="chirpui-cta-band__body"><p>CTA bands now render in the same audit pass as tokens, navigation, and overlays.</p></div>
+              </div>
+              <div class="chirpui-cta-band__actions">
+                <button class="chirpui-btn chirpui-btn--primary" type="button">Start build</button>
+                <button class="chirpui-btn chirpui-btn--ghost" type="button">View docs</button>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section id="theme-gallery" class="audit-grid" data-audit-section="theme-gallery">
+          <article class="audit-frame audit-profile" data-theme-profile="app-starter-light">
+            <div class="audit-frame__header">
+              <h2 class="chirpui-ui-title">App starter light</h2>
+              <span class="chirpui-badge">starter</span>
+            </div>
+            <div class="audit-frame__body">
+              <div class="chirpui-stack chirpui-stack--md">
+                <div class="audit-swatch">
+                  <span style="--swatch: var(--chirpui-bg);"></span>
+                  <span style="--swatch: var(--chirpui-surface);"></span>
+                  <span style="--swatch: var(--chirpui-border);"></span>
+                  <span style="--swatch: var(--chirpui-accent);"></span>
+                  <span style="--swatch: var(--chirpui-text);"></span>
+                </div>
+                <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Primary</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="audit-frame audit-dark" data-theme-profile="app-starter-dark">
+            <div class="audit-frame__header">
+              <h2 class="chirpui-ui-title">App starter dark</h2>
+              <span class="chirpui-badge chirpui-badge--primary">system</span>
+            </div>
+            <div class="audit-frame__body">
+              <div class="chirpui-stack chirpui-stack--md">
+                <div class="audit-swatch">
+                  <span style="--swatch: var(--chirpui-bg);"></span>
+                  <span style="--swatch: var(--chirpui-surface);"></span>
+                  <span style="--swatch: var(--chirpui-border);"></span>
+                  <span style="--swatch: var(--chirpui-accent);"></span>
+                  <span style="--swatch: var(--chirpui-text);"></span>
+                </div>
+                <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Primary</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="audit-frame audit-profile--holy" data-theme-profile="holy-light">
+            <div class="audit-frame__header">
+              <h2 class="chirpui-ui-title">Holy light</h2>
+              <span class="chirpui-badge chirpui-badge--warning">preset</span>
+            </div>
+            <div class="audit-frame__body">
+              <div class="chirpui-stack chirpui-stack--md">
+                <div class="audit-swatch">
+                  <span style="--swatch: var(--chirpui-bg);"></span>
+                  <span style="--swatch: var(--chirpui-surface);"></span>
+                  <span style="--swatch: var(--chirpui-border);"></span>
+                  <span style="--swatch: var(--chirpui-accent);"></span>
+                  <span style="--swatch: var(--chirpui-text);"></span>
+                </div>
+                <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Primary</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="audit-frame audit-profile--chirp-theme" data-theme-profile="chirp-theme">
+            <div class="audit-frame__header">
+              <h2 class="chirpui-ui-title">chirp-theme</h2>
+              <span class="chirpui-badge chirpui-badge--success">Bengal</span>
+            </div>
+            <div class="audit-frame__body">
+              <div class="chirpui-stack chirpui-stack--md">
+                <div class="audit-swatch">
+                  <span style="--swatch: var(--chirpui-bg);"></span>
+                  <span style="--swatch: var(--chirpui-surface);"></span>
+                  <span style="--swatch: var(--chirpui-border);"></span>
+                  <span style="--swatch: var(--chirpui-accent);"></span>
+                  <span style="--swatch: var(--chirpui-text);"></span>
+                </div>
+                <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Primary</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section id="themes" class="audit-grid">
+          <article class="audit-frame">
+            <div class="audit-frame__header">
+              <h2 class="chirpui-ui-title">Semantic states</h2>
+              <span class="chirpui-badge">states</span>
+            </div>
+            <div class="audit-frame__body">
+              <div class="audit-swatch">
+                <span style="--swatch: var(--chirpui-bg);"></span>
+                <span style="--swatch: var(--chirpui-primary);"></span>
+                <span style="--swatch: var(--chirpui-success);"></span>
+                <span style="--swatch: var(--chirpui-warning);"></span>
+                <span style="--swatch: var(--chirpui-error);"></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="audit-frame audit-dark">
+            <div class="audit-frame__header">
+              <h2 class="chirpui-ui-title">Dark theme</h2>
+              <span class="chirpui-badge chirpui-badge--primary">system</span>
+            </div>
+            <div class="audit-frame__body">
+              <div class="audit-swatch">
+                <span style="--swatch: var(--chirpui-bg);"></span>
+                <span style="--swatch: var(--chirpui-surface);"></span>
+                <span style="--swatch: var(--chirpui-border);"></span>
+                <span style="--swatch: var(--chirpui-accent);"></span>
+                <span style="--swatch: var(--chirpui-text);"></span>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="audit-frame">
+          <div class="audit-frame__header">
+            <h2 class="chirpui-ui-title">Data density</h2>
+            <span class="chirpui-badge chirpui-badge--success">stable</span>
+          </div>
+          <div class="audit-frame__body chirpui-scroll-x">
+            <table class="audit-mini-table">
+              <thead>
+                <tr><th>Surface</th><th>Status</th><th>Owner</th><th>Updated</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Token explorer</td><td><span class="chirpui-badge chirpui-badge--warning">planned</span></td><td>theme</td><td>today</td></tr>
+                <tr><td>Dense navigation recipes</td><td><span class="chirpui-badge chirpui-badge--success">active</span></td><td>docs</td><td>today</td></tr>
+                <tr><td>Scope envelope conversion</td><td><span class="chirpui-badge">ongoing</span></td><td>css</td><td>opportunistic</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

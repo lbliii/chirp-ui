@@ -1,5 +1,7 @@
 # chirp-ui: Alpine Focus Plugin Integration
 
+Status: shipped and archived
+
 ## Goal
 
 Add the [Alpine Focus plugin](https://alpinejs.dev/plugins/focus) to ChirpUI and use `x-trap` for proper focus management in tray and modal overlay components. Improves accessibility (WCAG 2.1 focus containment) and reduces custom focus/scroll logic.

@@ -6805,7 +6805,7 @@
       "extra_emits": [],
       "lineno": 25,
       "macro": "cta_band",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -11336,7 +11336,7 @@
       "extra_emits": [],
       "lineno": 16,
       "macro": "logo_cloud",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [
         "monochrome"
       ],
@@ -17981,7 +17981,7 @@
       "extra_emits": [],
       "lineno": 20,
       "macro": "story_card",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [
         "link"
       ],
@@ -21394,10 +21394,10 @@
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 124,
+      "experimental": 121,
       "internal": 2,
       "legacy": 39,
-      "stable": 171
+      "stable": 174
     },
     "component_requirements": {
       "alpine": 22,

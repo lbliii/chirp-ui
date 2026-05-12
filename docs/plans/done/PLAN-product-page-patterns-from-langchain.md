@@ -1,5 +1,7 @@
 # chirp-ui: Product Page Patterns from LangChain
 
+Status: shipped and archived
+
 ## Goal
 
 Turn the design feedback from LangChain's 2026 homepage into ChirpUI-native product-site patterns without expanding the public component surface prematurely.
@@ -252,7 +254,7 @@ Add product-page recipes to docs without changing component APIs.
 | `docs/PRODUCT-PAGE-PATTERNS.md` | Added recipe documentation for product hero, lifecycle, proof, product choice, customer story, and CTA sections |
 | `docs/PRIMITIVES.md` | Added a short product-page compositions pointer after the blessed primitives section |
 | `docs/INDEX.md` | Indexed the recipe doc under Patterns |
-| `docs/plans/PLAN-product-page-patterns-from-langchain.md` | Kept this plan as the active roadmap |
+| `docs/plans/done/PLAN-product-page-patterns-from-langchain.md` | Archived after docs, fixtures, and browser proof shipped |
 
 **Done when:**
 

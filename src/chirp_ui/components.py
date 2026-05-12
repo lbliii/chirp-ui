@@ -1575,7 +1575,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="logo_cloud.html",
         category="marketing",
-        maturity="experimental",
+        maturity="stable",
         role="pattern",
     ),
     "story-card": ComponentDescriptor(
@@ -1601,7 +1601,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="story_card.html",
         category="marketing",
-        maturity="experimental",
+        maturity="stable",
         role="pattern",
     ),
     "cta-band": ComponentDescriptor(
@@ -1615,7 +1615,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="cta_band.html",
         category="marketing",
-        maturity="experimental",
+        maturity="stable",
         role="pattern",
     ),
     "lifecycle-showcase": ComponentDescriptor(
