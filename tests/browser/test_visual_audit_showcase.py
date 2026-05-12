@@ -258,7 +258,7 @@ def test_visual_audit_theme_profiles_define_public_semantic_tokens(page):
 def test_visual_audit_dark_profile_titles_inherit_dark_text(page):
     open_visual_audit(page, 768, 1024)
 
-    dark_titles = page.locator(".audit-dark .chirpui-ui-title").evaluate_all(
+    dark_titles = page.locator(".audit-dark .audit-title").evaluate_all(
         """(els) => els.map((el) => {
             const style = getComputedStyle(el);
             return { color: style.color, backgroundColor: getComputedStyle(el.closest(".audit-dark")).backgroundColor };

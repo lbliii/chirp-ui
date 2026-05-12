@@ -111,6 +111,57 @@ def test_visual_audit_showcase_keeps_theme_tokens_public() -> None:
     assert "--chirp_theme-" not in text
 
 
+def test_visual_audit_showcase_does_not_teach_legacy_helper_classes() -> None:
+    parser = _AuditParser()
+    parser.feed(SHOWCASE.read_text(encoding="utf-8"))
+
+    legacy_helpers = {
+        "chirpui-clamp-2",
+        "chirpui-clamp-3",
+        "chirpui-display",
+        "chirpui-focus-ring",
+        "chirpui-font-2xl",
+        "chirpui-font-base",
+        "chirpui-font-lg",
+        "chirpui-font-medium",
+        "chirpui-font-mono",
+        "chirpui-font-sm",
+        "chirpui-font-xl",
+        "chirpui-font-xs",
+        "chirpui-list-reset",
+        "chirpui-mb-md",
+        "chirpui-measure-lg",
+        "chirpui-measure-md",
+        "chirpui-measure-sm",
+        "chirpui-min-w-0",
+        "chirpui-mt-md",
+        "chirpui-mt-sm",
+        "chirpui-placeholder-inline",
+        "chirpui-prose-lg",
+        "chirpui-prose-sm",
+        "chirpui-scroll-x",
+        "chirpui-text-muted",
+        "chirpui-truncate",
+        "chirpui-ui-base",
+        "chirpui-ui-bold",
+        "chirpui-ui-label",
+        "chirpui-ui-lg",
+        "chirpui-ui-medium",
+        "chirpui-ui-meta",
+        "chirpui-ui-normal",
+        "chirpui-ui-semibold",
+        "chirpui-ui-sm",
+        "chirpui-ui-title",
+        "chirpui-ui-xl",
+        "chirpui-ui-xs",
+    }
+
+    assert parser.classes.isdisjoint(legacy_helpers)
+    assert parser.classes.intersection({"chirpui-visually-hidden"}) == {
+        "chirpui-visually-hidden"
+    }
+
+
 def test_visual_audit_showcase_status_tokens_use_base_semantics() -> None:
     text = SHOWCASE.read_text(encoding="utf-8")
 

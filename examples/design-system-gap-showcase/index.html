@@ -50,6 +50,42 @@
         align-items: center;
       }
 
+      .audit-kicker {
+        margin: 0 0 .25rem;
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-ui-xs);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        text-transform: uppercase;
+      }
+
+      .audit-title,
+      .audit-hero-title {
+        margin: 0;
+        color: var(--chirpui-text);
+        font-weight: var(--chirpui-ui-font-weight-bold);
+        line-height: var(--chirpui-ui-line-height-tight);
+      }
+
+      .audit-title {
+        font-size: var(--chirpui-ui-lg);
+      }
+
+      .audit-hero-title {
+        font-size: clamp(1.7rem, 3vw, 2.5rem);
+      }
+
+      .audit-copy {
+        margin: .35rem 0 0;
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-ui-base);
+        line-height: var(--chirpui-ui-line-height);
+      }
+
+      .audit-scroll {
+        min-width: 0;
+        overflow-x: auto;
+      }
+
       .audit-token {
         min-height: 6rem;
         border: 1px solid var(--chirpui-border);
@@ -118,6 +154,12 @@
       .audit-token-row strong {
         color: var(--chirpui-text);
         font-size: var(--chirpui-ui-sm);
+      }
+
+      .audit-token-row__meta {
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-ui-xs);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
       }
 
       .audit-token-row__bar {
@@ -390,8 +432,8 @@
     <aside class="audit-nav">
       <div class="chirpui-stack chirpui-stack--md">
         <div>
-          <div class="chirpui-ui-label">Chirp UI</div>
-          <h1 class="chirpui-ui-title">Visual Audit</h1>
+          <div class="audit-kicker">Chirp UI</div>
+          <h1 class="audit-title">Visual Audit</h1>
         </div>
         <nav class="chirpui-sidebar">
           <a class="chirpui-sidebar__link chirpui-sidebar__link--active" href="#tokens"><span class="chirpui-sidebar__label">Tokens</span><span class="chirpui-sidebar__badge">6</span></a>
@@ -415,8 +457,8 @@
               <span class="chirpui-badge chirpui-badge--warning">124 experimental</span>
             </div>
             <div>
-              <h2 class="chirpui-display">Design system audit surface</h2>
-              <p class="chirpui-text-muted">Tokens, density, states, themes, and nested surfaces rendered together.</p>
+              <h2 class="audit-hero-title">Design system audit surface</h2>
+              <p class="audit-copy">Tokens, density, states, themes, and nested surfaces rendered together.</p>
             </div>
           </div>
         </section>
@@ -453,8 +495,8 @@
         <section id="token-explorer" class="audit-frame" data-audit-section="token-explorer">
           <div class="audit-frame__header">
             <div>
-              <h2 class="chirpui-ui-title">Token explorer</h2>
-              <p class="chirpui-text-muted">First app-owned overrides by job.</p>
+              <h2 class="audit-title">Token explorer</h2>
+              <p class="audit-copy">First app-owned overrides by job.</p>
             </div>
             <span class="chirpui-badge chirpui-badge--primary">theme</span>
           </div>
@@ -465,12 +507,12 @@
                 <div class="audit-token-row">
                   <code>--chirpui-bg</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-bg);"></div>
-                  <span class="chirpui-ui-meta">canvas</span>
+                  <span class="audit-token-row__meta">canvas</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-bg-subtle</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-bg-subtle);"></div>
-                  <span class="chirpui-ui-meta">bands</span>
+                  <span class="audit-token-row__meta">bands</span>
                 </div>
               </div>
             </section>
@@ -480,12 +522,12 @@
                 <div class="audit-token-row">
                   <code>--chirpui-surface</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-surface);"></div>
-                  <span class="chirpui-ui-meta">panel</span>
+                  <span class="audit-token-row__meta">panel</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-border</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-border);"></div>
-                  <span class="chirpui-ui-meta">edge</span>
+                  <span class="audit-token-row__meta">edge</span>
                 </div>
               </div>
             </section>
@@ -495,12 +537,12 @@
                 <div class="audit-token-row">
                   <code>--chirpui-text</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-text);"></div>
-                  <span class="chirpui-ui-meta">primary</span>
+                  <span class="audit-token-row__meta">primary</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-text-muted</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-text-muted);"></div>
-                  <span class="chirpui-ui-meta">secondary</span>
+                  <span class="audit-token-row__meta">secondary</span>
                 </div>
               </div>
             </section>
@@ -510,12 +552,12 @@
                 <div class="audit-token-row">
                   <code>--chirpui-accent</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-accent);"></div>
-                  <span class="chirpui-ui-meta">action</span>
+                  <span class="audit-token-row__meta">action</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-accent-hover</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-accent-hover);"></div>
-                  <span class="chirpui-ui-meta">hover</span>
+                  <span class="audit-token-row__meta">hover</span>
                 </div>
               </div>
             </section>
@@ -525,17 +567,17 @@
                 <div class="audit-token-row">
                   <code>--chirpui-success</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-success);"></div>
-                  <span class="chirpui-ui-meta">success</span>
+                  <span class="audit-token-row__meta">success</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-warning</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-warning);"></div>
-                  <span class="chirpui-ui-meta">warning</span>
+                  <span class="audit-token-row__meta">warning</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-error</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-error);"></div>
-                  <span class="chirpui-ui-meta">error</span>
+                  <span class="audit-token-row__meta">error</span>
                 </div>
               </div>
             </section>
@@ -545,12 +587,12 @@
                 <div class="audit-token-row">
                   <code>--chirpui-focus-ring</code>
                   <div class="audit-token-row__sample" style="box-shadow: 0 0 0 3px var(--chirpui-focus-ring);">focus</div>
-                  <span class="chirpui-ui-meta">halo</span>
+                  <span class="audit-token-row__meta">halo</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-state-focus-outline</code>
                   <div class="audit-token-row__sample" style="outline: var(--chirpui-state-focus-outline); outline-offset: var(--chirpui-state-focus-offset);">outline</div>
-                  <span class="chirpui-ui-meta">keyboard</span>
+                  <span class="audit-token-row__meta">keyboard</span>
                 </div>
               </div>
             </section>
@@ -560,12 +602,12 @@
                 <div class="audit-token-row">
                   <code>--chirpui-radius-sm</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-accent); border-radius: var(--chirpui-radius-sm);"></div>
-                  <span class="chirpui-ui-meta">compact</span>
+                  <span class="audit-token-row__meta">compact</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-radius-lg</code>
                   <div class="audit-token-row__bar" style="--token-bg: var(--chirpui-accent); border-radius: var(--chirpui-radius-lg);"></div>
-                  <span class="chirpui-ui-meta">panel</span>
+                  <span class="audit-token-row__meta">panel</span>
                 </div>
               </div>
             </section>
@@ -575,12 +617,12 @@
                 <div class="audit-token-row">
                   <code>--chirpui-elevation-card-rest</code>
                   <div class="audit-token-row__sample" style="--sample-shadow: var(--chirpui-elevation-card-rest);">card</div>
-                  <span class="chirpui-ui-meta">rest</span>
+                  <span class="audit-token-row__meta">rest</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-elevation-overlay</code>
                   <div class="audit-token-row__sample" style="--sample-shadow: var(--chirpui-elevation-overlay);">overlay</div>
-                  <span class="chirpui-ui-meta">float</span>
+                  <span class="audit-token-row__meta">float</span>
                 </div>
               </div>
             </section>
@@ -590,12 +632,12 @@
                 <div class="audit-token-row">
                   <code>--chirpui-ui-font-family</code>
                   <div class="audit-token-row__sample" style="--sample-font: var(--chirpui-ui-font-family);">Aa</div>
-                  <span class="chirpui-ui-meta">ui</span>
+                  <span class="audit-token-row__meta">ui</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-ui-lg</code>
                   <div class="audit-token-row__sample" style="font-size: var(--chirpui-ui-lg);">Title</div>
-                  <span class="chirpui-ui-meta">scale</span>
+                  <span class="audit-token-row__meta">scale</span>
                 </div>
               </div>
             </section>
@@ -605,12 +647,12 @@
                 <div class="audit-token-row">
                   <code>--chirpui-motion-base</code>
                   <div class="audit-token-row__sample" style="--sample-transition: var(--chirpui-motion-base) var(--chirpui-ease-standard);">150ms</div>
-                  <span class="chirpui-ui-meta">timing</span>
+                  <span class="audit-token-row__meta">timing</span>
                 </div>
                 <div class="audit-token-row">
                   <code>--chirpui-ease-standard</code>
                   <div class="audit-token-row__sample" style="--sample-transition: var(--chirpui-motion-base) var(--chirpui-ease-standard);">ease</div>
-                  <span class="chirpui-ui-meta">curve</span>
+                  <span class="audit-token-row__meta">curve</span>
                 </div>
               </div>
             </section>
@@ -620,8 +662,8 @@
         <section id="navigation" class="audit-frame">
           <div class="audit-frame__header">
             <div>
-              <h2 class="chirpui-ui-title">Dense navigation</h2>
-              <p class="chirpui-text-muted">Scope, command, routes, and attention states.</p>
+              <h2 class="audit-title">Dense navigation</h2>
+              <p class="audit-copy">Scope, command, routes, and attention states.</p>
             </div>
             <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Search /</button>
           </div>
@@ -686,8 +728,8 @@
         <section id="interaction-chrome" class="audit-frame" data-audit-section="interaction-chrome">
           <div class="audit-frame__header">
             <div>
-              <h2 class="chirpui-ui-title">Interaction chrome</h2>
-              <p class="chirpui-text-muted">Command palette, modal, and drawer surfaces rendered in one audit band.</p>
+              <h2 class="audit-title">Interaction chrome</h2>
+              <p class="audit-copy">Command palette, modal, and drawer surfaces rendered in one audit band.</p>
             </div>
             <button class="chirpui-command-palette__trigger chirpui-command-palette-trigger chirpui-command-palette-trigger--sm" type="button">
               <span class="chirpui-command-palette__trigger-label">Search</span>
@@ -757,8 +799,8 @@
         <section id="ascii-tui" class="audit-frame" data-audit-section="ascii-tui">
           <div class="audit-frame__header">
             <div>
-              <h2 class="chirpui-ui-title">ASCII/TUI controls</h2>
-              <p class="chirpui-text-muted">Terminal-native controls beside tabular operational data.</p>
+              <h2 class="audit-title">ASCII/TUI controls</h2>
+              <p class="audit-copy">Terminal-native controls beside tabular operational data.</p>
             </div>
             <span class="chirpui-ascii-badge chirpui-ascii-badge--accent"><span class="chirpui-ascii-badge__open">[</span><span class="chirpui-ascii-badge__text">live</span><span class="chirpui-ascii-badge__close">]</span></span>
           </div>
@@ -786,7 +828,7 @@
                 <div class="chirpui-ascii-progress__value">80%</div>
               </div>
             </div>
-            <div class="chirpui-scroll-x">
+            <div class="audit-scroll">
               <div class="chirpui-ascii-table chirpui-ascii-table--compact chirpui-ascii-table--rounded">
                 <div class="chirpui-ascii-table__border chirpui-ascii-table__border--top" aria-hidden="true"></div>
                 <div class="chirpui-ascii-table__head">
@@ -862,7 +904,7 @@
         <section id="theme-gallery" class="audit-grid" data-audit-section="theme-gallery">
           <article class="audit-frame audit-profile" data-theme-profile="app-starter-light">
             <div class="audit-frame__header">
-              <h2 class="chirpui-ui-title">App starter light</h2>
+              <h2 class="audit-title">App starter light</h2>
               <span class="chirpui-badge">starter</span>
             </div>
             <div class="audit-frame__body">
@@ -881,7 +923,7 @@
 
           <article class="audit-frame audit-dark" data-theme-profile="app-starter-dark">
             <div class="audit-frame__header">
-              <h2 class="chirpui-ui-title">App starter dark</h2>
+              <h2 class="audit-title">App starter dark</h2>
               <span class="chirpui-badge chirpui-badge--primary">system</span>
             </div>
             <div class="audit-frame__body">
@@ -900,7 +942,7 @@
 
           <article class="audit-frame audit-profile--holy" data-theme-profile="holy-light">
             <div class="audit-frame__header">
-              <h2 class="chirpui-ui-title">Holy light</h2>
+              <h2 class="audit-title">Holy light</h2>
               <span class="chirpui-badge chirpui-badge--warning">preset</span>
             </div>
             <div class="audit-frame__body">
@@ -919,7 +961,7 @@
 
           <article class="audit-frame audit-profile--chirp-theme" data-theme-profile="chirp-theme">
             <div class="audit-frame__header">
-              <h2 class="chirpui-ui-title">chirp-theme</h2>
+              <h2 class="audit-title">chirp-theme</h2>
               <span class="chirpui-badge chirpui-badge--success">Bengal</span>
             </div>
             <div class="audit-frame__body">
@@ -940,7 +982,7 @@
         <section id="themes" class="audit-grid">
           <article class="audit-frame">
             <div class="audit-frame__header">
-              <h2 class="chirpui-ui-title">Semantic states</h2>
+              <h2 class="audit-title">Semantic states</h2>
               <span class="chirpui-badge">states</span>
             </div>
             <div class="audit-frame__body">
@@ -956,7 +998,7 @@
 
           <article class="audit-frame audit-dark">
             <div class="audit-frame__header">
-              <h2 class="chirpui-ui-title">Dark theme</h2>
+              <h2 class="audit-title">Dark theme</h2>
               <span class="chirpui-badge chirpui-badge--primary">system</span>
             </div>
             <div class="audit-frame__body">
@@ -973,10 +1015,10 @@
 
         <section class="audit-frame">
           <div class="audit-frame__header">
-            <h2 class="chirpui-ui-title">Data density</h2>
+            <h2 class="audit-title">Data density</h2>
             <span class="chirpui-badge chirpui-badge--success">stable</span>
           </div>
-          <div class="audit-frame__body chirpui-scroll-x">
+          <div class="audit-frame__body audit-scroll">
             <table class="audit-mini-table">
               <thead>
                 <tr><th>Surface</th><th>Status</th><th>Owner</th><th>Updated</th></tr>
