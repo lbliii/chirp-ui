@@ -44,6 +44,22 @@ Promote a component only when all of these are true:
 - token hooks are documented or intentionally absent,
 - no private theme token namespace is required to make it look correct.
 
+## Proof Tracks
+
+Inventory rows use these track labels so follow-up work knows which proof is
+missing before a component can change maturity or authoring status.
+
+| Track | Required proof | Collateral |
+| --- | --- | --- |
+| Motion/effects visual proof | Static showcase coverage plus reduced-motion or browser proof when animation affects interaction. | `examples/design-system-gap-showcase/index.html`, focused render tests, browser tests when computed motion/layout matters. |
+| ASCII maturity pass | ARIA, keyboard, disabled/state, reduced-motion, and render coverage appropriate to the ASCII control type. | `PLAN-ascii-maturity.md`, ASCII render tests, browser gauntlet for interactive composites. |
+| Marketing pattern proof | Recipe or component examples that prove responsive marketing layout without adding utility vocabulary. | Product/site pattern docs, visual audit coverage, manifest/docs maturity agreement. |
+| Layout recipe proof | Existing primitives cannot express the layout cleanly, or the item remains recipe-only. | Dense/layout docs, showcase recipe, no preferred authoring unless promoted. |
+| Media recipe proof | Media-site pattern usage stays recipe-first until repeated app usage proves a macro. | `MEDIA-SITE-PATTERNS.md`, visual audit/media examples. |
+| Social recipe proof | Social/forum patterns stay recipe-first until repeated app usage proves a macro. | `FORUM-SITE-PATTERNS.md`, visual audit/social examples. |
+| Form interaction proof | Render tests plus keyboard/focus/browser proof for interactive editing or token-input behavior. | Form/component tests, browser tests when focus or overflow matters. |
+| Control interaction proof | State, invalid fallback, ARIA, keyboard, and layout proof for controls. | Focused render tests plus browser proof for pointer/keyboard behavior. |
+
 ## Next Batches
 
 - Classify the remaining marketing patterns: feature sections, lifecycle

@@ -83,3 +83,24 @@ def test_recipe_only_rows_remain_pattern_role_and_not_preferred() -> None:
         assert entry["role"] == "pattern", name
         assert entry["maturity"] == "experimental", name
         assert entry["authoring"] != "preferred", name
+
+
+def test_experimental_disposition_tracks_have_required_proof_rows() -> None:
+    """The inventory's track labels should be backed by proof guidance."""
+    text = DOC.read_text(encoding="utf-8")
+    proof_section = text.split("## Proof Tracks", 1)[1].split("## Next Batches", 1)[0]
+    inventory = text.split("## Experimental Disposition Inventory", 1)[1].split(
+        "## Legacy Helper Authoring Policy", 1
+    )[0]
+    proof_tracks = {
+        line.split("|")[1].strip()
+        for line in proof_section.splitlines()
+        if line.startswith("| ") and not line.startswith("| ---") and "Required proof" not in line
+    }
+    inventory_tracks = {
+        line.split("|")[3].strip().split(";", 1)[0].rstrip(".")
+        for line in inventory.splitlines()
+        if line.startswith("| `")
+    }
+
+    assert inventory_tracks <= proof_tracks
