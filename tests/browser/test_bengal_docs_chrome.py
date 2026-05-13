@@ -117,4 +117,7 @@ async def test_bengal_docs_theme_controls_use_native_popover(page, static_site_u
     assert menu_id == "theme-menu-desktop"
     await trigger.click()
     await expect(page.locator("#theme-menu-desktop")).to_be_visible()
-    assert await page.locator("#theme-menu-desktop .theme-option[data-theme-pack='ember']").count() >= 1
+    assert (
+        await page.locator("#theme-menu-desktop .theme-option[data-theme-pack='ember']").count()
+        >= 1
+    )

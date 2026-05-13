@@ -31,9 +31,9 @@ def test_verification_gate_policy_matches_poe_tasks() -> None:
     assert tasks["test-browser-chrome"]["cmd"].startswith(
         "pytest tests/browser/test_rail_to_tray_chrome.py"
     )
-    assert "tests/browser/test_application_chrome_gauntlet.py" in tasks[
-        "test-browser-chrome"
-    ]["cmd"]
+    assert (
+        "tests/browser/test_application_chrome_gauntlet.py" in tasks["test-browser-chrome"]["cmd"]
+    )
     assert "tests/browser/test_bengal_docs_chrome.py" in tasks["test-browser-chrome"]["cmd"]
     assert tasks["ci-browser"]["sequence"] == ["test-browser"]
     assert coverage["fail_under"] == 80

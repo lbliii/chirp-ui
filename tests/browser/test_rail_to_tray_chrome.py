@@ -26,9 +26,7 @@ async def open_rail_to_tray(page, base_url: str, width: int = 1024, height: int 
 
 
 @pytest.mark.parametrize(("width", "height"), VIEWPORTS)
-async def test_rail_to_tray_recipe_keeps_core_chrome_reachable(
-    page, base_url, width, height
-):
+async def test_rail_to_tray_recipe_keeps_core_chrome_reachable(page, base_url, width, height):
     await open_rail_to_tray(page, base_url, width=width, height=height)
 
     await assert_no_document_horizontal_overflow(page, f"rail-to-tray-{width}x{height}")
@@ -36,9 +34,9 @@ async def test_rail_to_tray_recipe_keeps_core_chrome_reachable(
     await expect(page.get_by_role("button", name="Deploy")).to_be_visible()
     await expect(page.get_by_role("navigation", name="Subsection navigation")).to_be_visible()
 
-    active_visible_links = await page.locator(
-        "a[aria-current='page']:visible"
-    ).evaluate_all("(links) => links.map((link) => link.textContent.trim())")
+    active_visible_links = await page.locator("a[aria-current='page']:visible").evaluate_all(
+        "(links) => links.map((link) => link.textContent.trim())"
+    )
     assert active_visible_links.count("Overview8") <= 1
 
     if width <= 640:

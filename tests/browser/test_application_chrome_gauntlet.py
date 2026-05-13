@@ -46,7 +46,9 @@ async def test_application_chrome_gauntlet_keeps_family_chrome_intact(
         await expect(family.get_by_role("heading", name=title)).to_be_visible()
         await expect(family.get_by_role("button", name=action)).to_be_visible()
         await expect(family.get_by_role("button", name=search_label)).to_be_visible()
-        await expect(family.get_by_role("navigation", name="Navigation", exact=True)).to_be_visible()
+        await expect(
+            family.get_by_role("navigation", name="Navigation", exact=True)
+        ).to_be_visible()
         await expect(
             family.get_by_role("navigation", name="Subsection navigation", exact=True)
         ).to_be_visible()
@@ -70,12 +72,15 @@ async def test_application_chrome_gauntlet_keeps_family_chrome_intact(
             assert metrics["overflowX"] in {"auto", "scroll"}, metrics
 
 
-@pytest.mark.parametrize(("family_id", "search_label"), [
-    ("cloud", "Search cloud"),
-    ("suite", "Search work"),
-    ("knowledge", "Search docs"),
-    ("business", "Search accounts"),
-])
+@pytest.mark.parametrize(
+    ("family_id", "search_label"),
+    [
+        ("cloud", "Search cloud"),
+        ("suite", "Search work"),
+        ("knowledge", "Search docs"),
+        ("business", "Search accounts"),
+    ],
+)
 async def test_application_chrome_gauntlet_command_triggers_focus_palettes(
     page, base_url, family_id, search_label
 ):
