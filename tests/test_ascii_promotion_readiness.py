@@ -79,8 +79,13 @@ DEFERRED_TRACKS = {
     "static-display-deferred",
 }
 
-INTERACTIVE_DEFERRAL_REASONS = {
+REMAINING_DEFERRAL_REASONS = {
+    "ascii-error": "heading, code, and action conventions",
     "ascii-breaker-panel": "grouped panel semantics",
+    "ascii-card": "parity proof against non-ASCII component contracts",
+    "ascii-modal": "parity proof against non-ASCII component contracts",
+    "ascii-tab": "parity proof against non-ASCII component contracts",
+    "ascii-tabs": "parity proof against non-ASCII component contracts",
     "ascii-tile-btn": "momentary-vs-toggle API decision",
 }
 
@@ -154,11 +159,19 @@ def test_ascii_non_static_display_candidates_stay_deferred() -> None:
         assert entry["maturity"] == "experimental", name
 
 
-def test_ascii_remaining_interactive_deferrals_name_their_blockers() -> None:
+def test_ascii_remaining_deferrals_name_their_blockers() -> None:
     plan = (ROOT / "docs" / "plans" / "PLAN-ascii-maturity.md").read_text(encoding="utf-8")
     components = build_manifest()["components"]
+    remaining_experimental = {
+        name
+        for name, entry in components.items()
+        if entry["template"]
+        and (name.startswith("ascii-") or name == "split-flap")
+        and entry["maturity"] == "experimental"
+    }
 
-    for name, reason in INTERACTIVE_DEFERRAL_REASONS.items():
+    assert remaining_experimental == set(REMAINING_DEFERRAL_REASONS)
+    for name, reason in REMAINING_DEFERRAL_REASONS.items():
         assert components[name]["maturity"] == "experimental", name
         assert f"`{name}`" in plan, name
         assert reason in plan, name
