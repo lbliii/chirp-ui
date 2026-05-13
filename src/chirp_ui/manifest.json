@@ -1150,7 +1150,7 @@
       "extra_emits": [],
       "lineno": 40,
       "macro": "breaker_panel",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [
         "sm"
       ],
@@ -1235,7 +1235,7 @@
       ],
       "lineno": 30,
       "macro": "ascii_card",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1575,7 +1575,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "ascii_error",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2032,7 +2032,7 @@
       ],
       "lineno": 23,
       "macro": "ascii_modal",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2726,7 +2726,7 @@
       ],
       "lineno": 36,
       "macro": "ascii_tab",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2916,7 +2916,7 @@
       "extra_emits": [],
       "lineno": 28,
       "macro": "ascii_tabs",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -3063,7 +3063,7 @@
       ],
       "lineno": 25,
       "macro": "tile_btn",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -22403,10 +22403,10 @@
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 100,
+      "experimental": 93,
       "internal": 2,
       "legacy": 39,
-      "stable": 195
+      "stable": 202
     },
     "component_requirements": {
       "alpine": 23,

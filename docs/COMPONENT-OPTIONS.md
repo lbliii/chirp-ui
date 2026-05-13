@@ -3967,7 +3967,7 @@ ASCII Breaker Panel
 - **Template:** `chirpui/ascii_breaker_panel.html`
 - **Macro:** `breaker_panel`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -3988,7 +3988,7 @@ ASCII Card
 - **Template:** `chirpui/ascii_card.html`
 - **Macro:** `ascii_card`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4075,7 +4075,7 @@ ASCII Error Page
 - **Template:** `chirpui/ascii_error.html`
 - **Macro:** `ascii_error`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4184,7 +4184,7 @@ ASCII Modal
 - **Template:** `chirpui/ascii_modal.html`
 - **Macro:** `ascii_modal`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`
@@ -4358,7 +4358,7 @@ ASCII Tabs
 - **Template:** `chirpui/ascii_tabs.html`
 - **Macro:** `ascii_tab`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `htmx`
@@ -4404,7 +4404,7 @@ ASCII Tabs
 - **Template:** `chirpui/ascii_tabs.html`
 - **Macro:** `ascii_tabs`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4441,7 +4441,7 @@ ASCII Tile Button
 - **Template:** `chirpui/ascii_tile_btn.html`
 - **Macro:** `tile_btn`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`

@@ -1282,7 +1282,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-tile-btn--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
         macro="tile_btn",
     ),
     "ascii-knob": ComponentDescriptor(
@@ -1441,7 +1441,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii-card__top",
         ),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-tabs": ComponentDescriptor(
         block="ascii-tabs",
@@ -1449,7 +1449,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         template="ascii_tabs.html",
         trim_emits=("chirpui-ascii-tabs--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-tab": ComponentDescriptor(
         block="ascii-tab",
@@ -1465,7 +1465,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii-tab--default",
         ),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-modal": ComponentDescriptor(
         block="ascii-modal",
@@ -1478,7 +1478,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii-modal__title",
         ),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     # -- Marketing (site mode) ----------------------------------------------
     "site-shell": ComponentDescriptor(
@@ -2722,7 +2722,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("",),
         template="ascii_breaker_panel.html",
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
         macro="breaker_panel",
     ),
     "ascii-error": ComponentDescriptor(
@@ -2730,7 +2730,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         elements=("art", "code", "heading", "desc", "action"),
         template="ascii_error.html",
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "avatar": ComponentDescriptor(
         block="avatar",

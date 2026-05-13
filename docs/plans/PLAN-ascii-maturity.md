@@ -1,6 +1,6 @@
 # Epic: ASCII Component Maturity — Tests, A11y, and Interactive Variants
 
-**Status**: residual backlog
+**Status**: closed for public templated ASCII maturity
 **Created**: 2026-04-09
 **Target**: 0.3.0
 **Estimated Effort**: 16–24h
@@ -11,13 +11,11 @@
 > this plan was drafted. Interactive-control and composite/data proof passes
 > have now landed for checkbox, toggle, switch, radio group, fader, knob,
 > breaker panel, progress, stepper, modal, tabs, table, VU meter, split-flap,
-> spinner, ticker, indicator, sparkline, and 7-segment display. Remaining work
-> is deciding the remaining composite and recipe-style ASCII surfaces before
-> 1.0.
+> spinner, ticker, indicator, sparkline, and 7-segment display.
 > The first accepted promotion set is limited to static display primitives:
 > `ascii-badge`, `ascii-border`, `ascii-divider`, and `ascii-empty`.
-> `ascii-error` stays deferred until error-page recipe usage proves its heading
-> and action conventions.
+> `ascii-error` has since joined the stable set after visual audit error-page
+> composition proof landed.
 > The first accepted interactive promotion set is limited to controls whose
 > visible state is CSS-backed by native checked state: `ascii-checkbox`,
 > `ascii-toggle`, `ascii-switch`, `ascii-radio-group`, and `ascii-knob`.
@@ -30,6 +28,10 @@
 > `ascii-sparkline`, `ascii-spinner`, `ascii-ticker`, and `split-flap` have
 > joined the stable set after visual audit coverage was paired with accessible
 > name and reduced-motion proof.
+> The final composite/control pass promoted `ascii-error`,
+> `ascii-breaker-panel`, `ascii-tile-btn`, `ascii-card`, `ascii-modal`,
+> `ascii-tab`, and `ascii-tabs` after static showcase, visual audit, render,
+> browser, and generated projection proof agreed.
 
 ---
 
@@ -86,13 +88,14 @@ Completed proof in the display/motion batch:
 
 ### Remaining Not-Now List
 
-The first stable wave deliberately leaves these families experimental:
+The public templated ASCII set is closed; these families have no remaining
+pre-1.0 experimental template backlog:
 
 | Family | Components | Reason |
 | --- | --- | --- |
-| Error page primitive | `ascii-error` | Needs real recipe usage for heading, code, and action conventions before becoming normal vocabulary. |
-| Interactive controls | `ascii-breaker-panel`, `ascii-tile-btn` | Tile button needs a momentary-vs-toggle API decision; breaker panel needs grouped panel semantics. |
-| Composite navigation/dialogs | `ascii-card`, `ascii-modal`, `ascii-tab`, `ascii-tabs` | Needs parity proof against non-ASCII component contracts and route/dialog examples. |
+| Public templated ASCII components | None | All public templated ASCII components are stable with render, browser or visual audit, manifest, and generated docs proof. |
+| Interactive controls | None | Tile button mode semantics and breaker panel grouped status semantics are settled. |
+| Composite navigation/dialogs | None | Card, modal, tab, and tabs parity proof is complete. |
 | Data/status widgets | None | Current data/status widgets have render, browser, and visual audit proof. |
 | Motion/display widgets | None | Current display/motion widgets have render, browser, reduced-motion, and visual audit proof. |
 

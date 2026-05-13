@@ -304,21 +304,28 @@ def test_audit_visible_public_surface_dispositions_are_intentional() -> None:
         "ascii-7seg",
         "ascii-badge",
         "ascii-border",
+        "ascii-breaker-panel",
+        "ascii-card",
         "ascii-checkbox",
         "ascii-divider",
         "ascii-empty",
+        "ascii-error",
         "ascii-fader",
         "ascii-indicator",
         "ascii-knob",
+        "ascii-modal",
         "ascii-progress",
         "ascii-radio-group",
         "ascii-skeleton",
         "ascii-sparkline",
         "ascii-spinner",
         "ascii-switch",
+        "ascii-tab",
         "ascii-stepper",
         "ascii-table",
+        "ascii-tabs",
         "ascii-ticker",
+        "ascii-tile-btn",
         "ascii-toggle",
         "ascii-vu",
         "split-flap",
@@ -327,13 +334,6 @@ def test_audit_visible_public_surface_dispositions_are_intentional() -> None:
         entry = m["components"][name]
         assert entry["maturity"] == "stable"
         assert entry["role"] == "component"
-        assert entry["category"] == "ascii"
-        assert entry["authoring"] == "available"
-
-    still_experimental = {"ascii-error", "ascii-tile-btn"}
-    for name in sorted(still_experimental):
-        entry = m["components"][name]
-        assert entry["maturity"] == "experimental"
         assert entry["category"] == "ascii"
         assert entry["authoring"] == "available"
 

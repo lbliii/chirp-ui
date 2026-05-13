@@ -49,6 +49,13 @@ usage.
 | `ascii-spinner` | Promote to stable | Render and browser proof cover status naming, labelled mode, reduced-motion behavior, and visual audit coverage. |
 | `ascii-ticker` | Promote to stable | Render and browser proof cover marquee naming, hidden duplicated track text, reduced-motion behavior, and visual audit coverage. |
 | `split-flap` | Promote to stable | Render and browser proof expose readable text while hiding animated character boxes, stopping animation under reduced motion, and visual audit coverage. |
+| `ascii-error` | Promote to stable | Render proof covers default/custom error copy and hidden ASCII art; visual audit proof covers error-page composition. |
+| `ascii-card` | Promote to stable | Render proof covers titled, untitled, variant, and decorative-frame behavior; visual audit proof covers composite usage. |
+| `ascii-modal` | Promote to stable | Browser proof covers trigger open, native dialog close, Escape close, labelled dialog body, and visual audit coverage. |
+| `ascii-tabs` | Promote to stable | Render, browser, static showcase, and visual audit proof align on route-link navigation with `aria-current`, not ARIA tabpanels. |
+| `ascii-tab` | Promote to stable | Render and browser proof cover link/span fallback, HTMX route attributes, active state, and route-link semantics. |
+| `ascii-tile-btn` | Promote to stable | Toggle mode now uses native checked state for visible glow; render, browser, disabled-state, reduced-motion, and visual audit proof agree. |
+| `ascii-breaker-panel` | Promote to stable | Group semantics, native switch state, status indicator sync, render proof, browser proof, and visual audit coverage agree. |
 
 ## Promotion Rule
 
@@ -92,13 +99,10 @@ whole inventory on every pass.
 
 ## Next Batches
 
-- Decide the remaining ASCII/TUI composites and recipe-style primitives after
-  parity proof lands against non-ASCII cards, modals, tabs, and error-page
-  conventions.
+- Treat public templated ASCII/TUI maturity as closed; future ASCII work should
+  be new feature work or regression fixes, not a standing pre-1.0 deferral.
 - Classify the remaining marketing patterns: feature sections, lifecycle
   showcase, comparison/pricing surfaces, and pattern assets.
-- Keep remaining composite ASCII/TUI surfaces under `PLAN-ascii-maturity.md`
-  until parity checks settle.
 - Review dense navigation composites only after object-page browser proof lands.
 - Keep legacy primitive decisions in `PLAN-primitive-vocabulary-hardening.md`.
 - Keep first-party legacy-helper cleanup under
@@ -135,9 +139,13 @@ becoming stable.
 | `ascii-spinner` | Display/motion | Promoted; status naming, labelled mode, reduced-motion browser proof, visual audit, manifest, and generated docs evidence agree. |
 | `ascii-ticker` | Display/motion | Promoted; marquee naming, hidden duplicated track text, reduced-motion browser proof, visual audit, manifest, and generated docs evidence agree. |
 | `split-flap` | Display/motion | Promoted; readable text, hidden animated character boxes, reduced-motion browser proof, visual audit, manifest, and generated docs evidence agree. |
-| `ascii-error` | Static display deferred | Keep experimental until error-page usage proves heading/action conventions. |
-| Remaining interactive controls | Deferred | Keep experimental until controller sync, mixed momentary/toggle behavior, or panel composition decisions settle. |
-| Remaining composites | Deferred | Keep experimental until parity proof against non-ASCII component contracts and route/dialog examples is complete. |
+| `ascii-error` | Static display | Promoted; render, visual audit, manifest, and generated docs evidence agree. |
+| `ascii-breaker-panel` | Interactive control | Promoted; grouped switches and status indicators follow native checked state in browser proof. |
+| `ascii-tile-btn` | Interactive control | Promoted; momentary button and checkbox-backed toggle modes are explicit, and checked state drives toggle glow. |
+| `ascii-card` | Composite | Promoted; title, variant, decorative-frame, visual audit, manifest, and generated docs evidence agree. |
+| `ascii-modal` | Composite | Promoted; native dialog parity, trigger behavior, Escape/form close, visual audit, manifest, and generated docs evidence agree. |
+| `ascii-tab` | Composite | Promoted; route-link item semantics, active `aria-current`, HTMX attributes, visual audit, manifest, and generated docs evidence agree. |
+| `ascii-tabs` | Composite | Promoted; navigation container semantics, static showcase, visual audit, manifest, and generated docs evidence agree. |
 
 ## Experimental Disposition Inventory
 
@@ -151,13 +159,6 @@ vocabulary.
 | --- | --- | --- |
 | `animated-counter` | Keep experimental | Motion/effects visual proof. |
 | `answer-card` | Recipe-only | Social recipe proof; promote only after repeated app use. |
-| `ascii-breaker-panel` | Keep experimental | ASCII maturity pass. |
-| `ascii-card` | Keep experimental | ASCII maturity pass. |
-| `ascii-error` | Keep experimental | ASCII maturity pass. |
-| `ascii-modal` | Keep experimental | ASCII maturity pass. |
-| `ascii-tab` | Keep experimental | ASCII maturity pass. |
-| `ascii-tabs` | Keep experimental | ASCII maturity pass. |
-| `ascii-tile-btn` | Keep experimental | ASCII maturity pass. |
 | `aura` | Keep experimental | Motion/effects visual proof. |
 | `aurora` | Keep experimental | Motion/effects visual proof. |
 | `band` | Keep experimental | Marketing pattern proof. |

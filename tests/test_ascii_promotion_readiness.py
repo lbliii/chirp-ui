@@ -14,14 +14,17 @@ STATIC_DISPLAY_CANDIDATES = {
     "ascii-border",
     "ascii-divider",
     "ascii-empty",
+    "ascii-error",
 }
 
 INTERACTIVE_CONTROL_CANDIDATES = {
+    "ascii-breaker-panel",
     "ascii-checkbox",
     "ascii-fader",
     "ascii-knob",
     "ascii-radio-group",
     "ascii-switch",
+    "ascii-tile-btn",
     "ascii-toggle",
 }
 
@@ -40,6 +43,13 @@ DISPLAY_MOTION_CANDIDATES = {
     "ascii-spinner",
     "ascii-ticker",
     "split-flap",
+}
+
+COMPOSITE_CANDIDATES = {
+    "ascii-card",
+    "ascii-modal",
+    "ascii-tab",
+    "ascii-tabs",
 }
 
 ASCII_PROMOTION_MATRIX = {
@@ -73,21 +83,13 @@ ASCII_PROMOTION_MATRIX = {
     "split-flap": "display-motion",
 }
 
-DEFERRED_TRACKS = {
-    "composite",
-    "interactive-control",
-    "static-display-deferred",
-}
-
-REMAINING_DEFERRAL_REASONS = {
-    "ascii-error": "heading, code, and action conventions",
-    "ascii-breaker-panel": "grouped panel semantics",
-    "ascii-card": "parity proof against non-ASCII component contracts",
-    "ascii-modal": "parity proof against non-ASCII component contracts",
-    "ascii-tab": "parity proof against non-ASCII component contracts",
-    "ascii-tabs": "parity proof against non-ASCII component contracts",
-    "ascii-tile-btn": "momentary-vs-toggle API decision",
-}
+PROMOTED_CANDIDATES = (
+    STATIC_DISPLAY_CANDIDATES
+    | INTERACTIVE_CONTROL_CANDIDATES
+    | DATA_STATUS_CANDIDATES
+    | DISPLAY_MOTION_CANDIDATES
+    | COMPOSITE_CANDIDATES
+)
 
 
 def _ascii_components() -> dict[str, dict[str, object]]:
@@ -105,12 +107,7 @@ def test_ascii_promotion_matrix_covers_public_ascii_templates() -> None:
 def test_ascii_promotion_candidates_have_render_evidence() -> None:
     render_tests = ASCII_TESTS.read_text(encoding="utf-8")
 
-    for name in sorted(
-        STATIC_DISPLAY_CANDIDATES
-        | INTERACTIVE_CONTROL_CANDIDATES
-        | DATA_STATUS_CANDIDATES
-        | DISPLAY_MOTION_CANDIDATES
-    ):
+    for name in sorted(PROMOTED_CANDIDATES):
         css_class = f"chirpui-{name}"
         assert css_class in render_tests, name
 
@@ -119,12 +116,7 @@ def test_ascii_promotion_candidates_have_visual_audit_evidence() -> None:
     browser_tests = BROWSER_TESTS.read_text(encoding="utf-8")
     showcase = SHOWCASE.read_text(encoding="utf-8")
 
-    for name in sorted(
-        STATIC_DISPLAY_CANDIDATES
-        | INTERACTIVE_CONTROL_CANDIDATES
-        | DATA_STATUS_CANDIDATES
-        | DISPLAY_MOTION_CANDIDATES
-    ):
+    for name in sorted(PROMOTED_CANDIDATES):
         css_class = f"chirpui-{name}"
         assert css_class in browser_tests, name
         assert css_class in showcase, name
@@ -134,32 +126,20 @@ def test_ascii_promotion_candidates_are_stable_in_manifest_and_docs() -> None:
     docs = COMPONENT_OPTIONS.read_text(encoding="utf-8")
     components = build_manifest()["components"]
 
-    for name in sorted(
-        STATIC_DISPLAY_CANDIDATES
-        | INTERACTIVE_CONTROL_CANDIDATES
-        | DATA_STATUS_CANDIDATES
-        | DISPLAY_MOTION_CANDIDATES
-    ):
+    for name in sorted(PROMOTED_CANDIDATES):
         assert components[name]["maturity"] == "stable", name
         template_line = f"- **Template:** `chirpui/{components[name]['template']}`"
         section = docs.split(template_line, 1)[1][:400]
         assert "- **Maturity:** `stable`" in section, name
 
 
-def test_ascii_non_static_display_candidates_stay_deferred() -> None:
+def test_all_public_ascii_templates_are_promotion_candidates() -> None:
     for name, entry in _ascii_components().items():
-        if name in (
-            STATIC_DISPLAY_CANDIDATES
-            | INTERACTIVE_CONTROL_CANDIDATES
-            | DATA_STATUS_CANDIDATES
-            | DISPLAY_MOTION_CANDIDATES
-        ):
-            continue
-        assert ASCII_PROMOTION_MATRIX[name] in DEFERRED_TRACKS, name
-        assert entry["maturity"] == "experimental", name
+        assert name in PROMOTED_CANDIDATES, name
+        assert entry["maturity"] == "stable", name
 
 
-def test_ascii_remaining_deferrals_name_their_blockers() -> None:
+def test_ascii_maturity_plan_records_closed_public_template_set() -> None:
     plan = (ROOT / "docs" / "plans" / "PLAN-ascii-maturity.md").read_text(encoding="utf-8")
     components = build_manifest()["components"]
     remaining_experimental = {
@@ -170,8 +150,7 @@ def test_ascii_remaining_deferrals_name_their_blockers() -> None:
         and entry["maturity"] == "experimental"
     }
 
-    assert remaining_experimental == set(REMAINING_DEFERRAL_REASONS)
-    for name, reason in REMAINING_DEFERRAL_REASONS.items():
-        assert components[name]["maturity"] == "experimental", name
-        assert f"`{name}`" in plan, name
-        assert reason in plan, name
+    assert remaining_experimental == set()
+    assert "Public templated ASCII components | None" in plan
+    for name in sorted(PROMOTED_CANDIDATES):
+        assert components[name]["maturity"] == "stable", name
