@@ -42,3 +42,31 @@ def test_css_scope_migration_plan_matches_authored_layer_envelopes() -> None:
     assert f"**Current converted count:** {len(authored)} partials" in PLAN.read_text(
         encoding="utf-8"
     )
+
+
+def test_css_scope_plan_names_next_opportunistic_queue_and_proof() -> None:
+    text = PLAN.read_text(encoding="utf-8")
+    queue = text.split("### Next opportunistic queue", 1)[1].split(
+        "### Per-PR conversion template", 1
+    )[0]
+
+    for partial in [
+        "071_button.css",
+        "070_form-fields.css",
+        "059_table.css",
+        "027_navbar.css",
+        "029_sidebar.css",
+        "054_tabs.css",
+        "067_tabs-panels.css",
+    ]:
+        assert f"`{partial}`" in queue
+
+    for proof in [
+        "browser focus/hover proof",
+        "browser focus/error/disabled proof",
+        "browser proof for dense rows",
+        "mobile overflow behavior",
+        "active/focus and overflow behavior",
+        "panel ownership",
+    ]:
+        assert proof in queue

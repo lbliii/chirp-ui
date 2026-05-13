@@ -356,6 +356,21 @@ The opportunistic policy is the default, but a small bounded batch of deliberate
 
 After batch 1, opportunistic mode resumed for the remaining flat partials. **No further deliberate batch is planned**; future batches require their own justification document with evidence on par with this one.
 
+### Next opportunistic queue
+
+These flat partials are the highest-value conversions when touched for adjacent
+work. The queue is not permission for a bulk migration; it is proof routing for
+the next natural edits.
+
+| Partial | Why next | Required proof |
+|---|---|---|
+| `071_button.css` | Buttons appear inside cards, command bars, forms, tables, modals, and nav chrome; hover/focus state bleed is high-impact. | Render tests for link/button modes, CSS contract tests, and browser focus/hover proof if selectors change. |
+| `070_form-fields.css` | Fields nest inside surfaces, panels, modals, drawers, and inline-edit flows. | Form render tests plus browser focus/error/disabled proof for any selector rewrite. |
+| `059_table.css` | Tables host badges, buttons, row actions, links, and dense records. | Table render tests plus browser proof for dense rows and nested controls. |
+| `027_navbar.css` | Global nav contains links, dropdown triggers, badges, and responsive actions. | Navigation render tests plus browser proof for focus, dropdown, and mobile overflow behavior. |
+| `029_sidebar.css` | Sidebar hosts route links, nested sections, counters, and app shell overflow. | App-shell/sidebar render tests plus browser proof for active/focus and overflow behavior. |
+| `054_tabs.css` / `067_tabs-panels.css` | Tabs can be route navigation or true panels; active/focus styles are easy to over-broaden. | Tabs render tests plus browser proof for active state, focus, and panel ownership. |
+
 ### Per-PR conversion template
 
 Every conversion (deliberate or opportunistic) follows the same five steps:
