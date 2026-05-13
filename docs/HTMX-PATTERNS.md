@@ -140,6 +140,22 @@ disinherit, they inherit the shell's `hx-target`, `hx-swap`, and `hx-select`,
 which causes local updates to replace the wrong element or extract the wrong
 selector from the response.
 
+### App shell target boundaries
+
+App chrome pages usually have three HTMX boundaries at once. Keep them
+separate:
+
+| Boundary | Typical target | Response should include |
+|----------|----------------|-------------------------|
+| Shell navigation | `#main` | a full page response with `#page-content`; include OOB shell regions when topbar/sidebar metadata changes |
+| Route-tab navigation | `#page-root` | the route tabs, page header, toolbar, and inner content for the current subsection |
+| Local page tools | `#page-content-inner` or a named region | only the local fragment; clear inherited shell `hx-select` with `hx-select="unset"` / `hx-disinherit="hx-select"` |
+
+Do not branch server responses on `HX-Request` alone. Inspect `HX-Target` so a
+shell-level navigation request does not accidentally receive a page-root
+fragment. If a boosted shell route changes route-scoped shell actions, include
+an out-of-band update for `#chirp-shell-actions`.
+
 ---
 
 ## `build_hx_attrs()` — the merge function

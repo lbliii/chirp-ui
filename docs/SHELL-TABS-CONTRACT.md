@@ -41,6 +41,62 @@ Stable fragment targets (`#page-root`, `#page-content-inner`) are documented in 
 
 When a response must update sidebar, breadcrumbs, document title, or the tab strip without a full page load, use **`register_oob_region`** (or Chirp’s shell OOB helpers) with stable `target_id`s aligned to your layout. Fragment responses that change the current section should include matching OOB swaps so chrome stays consistent.
 
+## Consumer app chrome recipe
+
+Use this shape for filesystem-style app pages before proposing a new chrome
+macro:
+
+```html
+{% extends "chirpui/app_shell_layout.html" %}
+{% block sidebar %}
+  {% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+  {% call sidebar(current_path=current_path) %}
+    {% call sidebar_section("Workspace") %}
+      {{ sidebar_link("/workspace", "Overview", match="prefix") }}
+      {{ sidebar_link("/admin", "Admin", match="prefix") }}
+    {% end %}
+  {% end %}
+{% end %}
+{% block content %}
+  {% from "chirpui/route_tabs.html" import route_tabs %}
+  {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+  {% from "chirpui/command_bar.html" import command_bar %}
+  {% from "chirpui/button.html" import btn %}
+  {% from "chirpui/shell_actions.html" import shell_actions_bar %}
+
+  {% if include_shell_actions_oob %}
+  <div id="chirp-shell-actions" hx-swap-oob="innerHTML">
+    {{ shell_actions_bar(shell_actions) }}
+  </div>
+  {% end %}
+
+  <div id="page-root">
+    {{ route_tabs(tab_items, current_path) }}
+    {{ breadcrumbs(breadcrumb_items) }}
+    {% call command_bar(aria_label="Workspace tools") %}
+      {{ btn("Filter", hx_get="/workspace/filter", hx_target="#page-content-inner",
+        hx_swap="innerHTML", attrs_map={"hx-disinherit": "hx-select"}) }}
+    {% end %}
+    <div id="page-content-inner">
+      {% block page_inner %}{% end %}
+    </div>
+  </div>
+{% end %}
+```
+
+Server routes should branch on `HX-Target`, not only `HX-Request`:
+
+| Request target | Response shape |
+|---|---|
+| `main` | full page response containing `#page-content` plus any OOB shell regions that changed |
+| `page-root` | page chrome fragment for route-tab swaps |
+| `page-content-inner` or local target | local fragment only, with inherited shell selectors cleared |
+
+The first consumer-adoption proof lives in
+`tests/browser/test_consumer_workspace_chrome.py`,
+`tests/browser/test_consumer_admin_chrome.py`, and
+`tests/browser/test_consumer_chrome_htmx_boundaries.py`.
+
 ## Reliability tips
 
 - Keep **one source of truth** for tab definitions: `Section.tab_items` (`TabItem`), not a parallel app-only model.

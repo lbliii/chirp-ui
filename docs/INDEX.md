@@ -28,7 +28,7 @@ Navigation guide for all chirp-ui documentation.
 - [PRODUCT-PAGE-PATTERNS.md](PRODUCT-PAGE-PATTERNS.md) — Product-site composition recipes built from existing primitives
 - [MEDIA-SITE-PATTERNS.md](MEDIA-SITE-PATTERNS.md) — Streaming, video, catalog, live-event, and media-plan composition recipes
 - [FORUM-SITE-PATTERNS.md](FORUM-SITE-PATTERNS.md) — Forum, Q&A, threaded discussion, moderation, and community composition recipes
-- [HTMX-PATTERNS.md](HTMX-PATTERNS.md) — `hx={}` dict, auto-injected attrs, `build_hx_attrs()`
+- [HTMX-PATTERNS.md](HTMX-PATTERNS.md) — `hx={}` dict, auto-injected attrs, app-shell HTMX boundaries, `build_hx_attrs()`
 - [HTMX-ADVANCEMENT.md](HTMX-ADVANCEMENT.md) — Design decisions for htmx integration
 - [ALPINE-MAGICS.md](ALPINE-MAGICS.md) — Alpine.js store, `safeData`, shared controllers
 - [DROPDOWN-ANATOMY.md](DROPDOWN-ANATOMY.md) — Dropdown menu, select, and split-menu rendered anatomy
@@ -37,7 +37,7 @@ Navigation guide for all chirp-ui documentation.
 - [DRAWER-TRAY-ANATOMY.md](DRAWER-TRAY-ANATOMY.md) — Native drawer and store-backed tray anatomy
 - [DND-FRAGMENT-ISLAND.md](DND-FRAGMENT-ISLAND.md) — Fragment islands, safe regions, drag-and-drop
 - [PROVIDE-CONSUME-KEYS.md](PROVIDE-CONSUME-KEYS.md) — All provide/consume context keys and their contracts
-- [SHELL-TABS-CONTRACT.md](SHELL-TABS-CONTRACT.md) — Route tabs and shell tab integration contract
+- [SHELL-TABS-CONTRACT.md](SHELL-TABS-CONTRACT.md) — Route tabs, shell regions, and consumer app chrome recipe
 - [WIZARD-FORM.md](WIZARD-FORM.md) — Multi-step wizard form pattern
 
 ## Safety and Migration
