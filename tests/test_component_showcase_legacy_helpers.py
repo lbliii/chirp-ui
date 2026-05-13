@@ -12,6 +12,13 @@ HIGH_VISIBILITY_TEMPLATES = [
     SHOWCASE_TEMPLATES / "showcase" / "ui.html",
 ]
 
+HIGH_VISIBILITY_RECIPE_PARTIALS = [
+    SHOWCASE_TEMPLATES / "showcase" / "_dense_object_chrome.html",
+    SHOWCASE_TEMPLATES / "showcase" / "_cloud_console_nav.html",
+    SHOWCASE_TEMPLATES / "showcase" / "_suite_work_hub.html",
+    SHOWCASE_TEMPLATES / "showcase" / "_knowledge_workspace_nav.html",
+]
+
 LEGACY_CLASS_RE = re.compile(
     r'class="[^"]*chirpui-'
     r"(?:display|text-muted|font-[^\" ]+|mt-[^\" ]+|mb-[^\" ]+|ui-[^\" ]+|scroll-x)"
@@ -22,6 +29,14 @@ def test_high_visibility_showcase_templates_use_local_copy_chrome() -> None:
     for template in HIGH_VISIBILITY_TEMPLATES:
         text = template.read_text(encoding="utf-8")
         assert not LEGACY_CLASS_RE.search(text), template
+
+
+def test_high_visibility_navigation_recipes_do_not_expand_legacy_helper_usage() -> None:
+    for template in HIGH_VISIBILITY_RECIPE_PARTIALS:
+        text = template.read_text(encoding="utf-8")
+        assert "chirpui-display" not in text, template
+        assert "chirpui-ui-" not in text, template
+        assert "chirpui-scroll-x" not in text, template
 
 
 def test_component_showcase_defines_local_copy_chrome() -> None:

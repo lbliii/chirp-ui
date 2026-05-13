@@ -80,6 +80,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-primitive-vocabulary-hardening.md](plans/PLAN-primitive-vocabulary-hardening.md) — Legacy helper stabilization backlog
 - [PLAN-navigation-contract-application.md](plans/PLAN-navigation-contract-application.md) — Apply dense navigation guidance to ChirpUI
 - [PLAN-dense-object-chrome-next.md](plans/PLAN-dense-object-chrome-next.md) — Residual dense object chrome composite-decision backlog after browser proof
+- [PLAN-application-chrome-system.md](plans/PLAN-application-chrome-system.md) — Application chrome system contracts, rail/tray proof, rhythm audit, and composite gates
 - [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary
 - [PLAN-layout-widget-brainstorm.md](plans/PLAN-layout-widget-brainstorm.md) — Layout widget ideas
 - [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Residual chirp-theme fixture parity backlog

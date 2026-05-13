@@ -131,6 +131,33 @@ Acceptance:
 - Any new macro proposal answers the acceptance rule in
   `docs/DENSE-NAVIGATION-SYNTHESIS.md`.
 
+### 5a. Application Chrome System
+
+Goal: make layered app shells, rails, trays, command surfaces, object context,
+route rows, and page tools robust enough for modern applications without
+shipping a premature mega-shell macro.
+
+Tasks:
+
+- Use `docs/plans/PLAN-application-chrome-system.md` as the live contract map
+  for the five rocks: layer model, rail/tray contracts, visual rhythm,
+  responsive gauntlet, and recipe-first composite gates.
+- Add rail-to-tray recipes and browser proof before any application chrome
+  composite proposal.
+- Treat modern chrome rhythm as token/control-size/elevation proof, not
+  utility spacing classes.
+- Publish application chrome guidance through the navigation pattern docs
+  without inventing site-only component facts.
+
+Acceptance:
+
+- Application chrome remains recipe-first until repeated real app usage proves
+  a stable missing API.
+- Browser gauntlets cover 320px stress, phone, tablet, and desktop widths for
+  rail/tray fallback, command focus, route-tab scroll, badges, and overflow.
+- New public chrome API proposals include registry, CSS, manifest, generated
+  docs, examples, browser proof, and changelog collateral.
+
 ### 6. CSS Scope Hardening
 
 Goal: reduce style bleed as a normal maintenance practice.
@@ -207,6 +234,7 @@ parallel backlog.
 | `PLAN-chirp-theme-content-parity.md` | Bengal And chirp-theme Integration |
 | `PLAN-css-scope-and-layer.md` | CSS Scope Hardening |
 | `PLAN-dense-object-chrome-next.md` | Dense Navigation Productization |
+| `PLAN-application-chrome-system.md` | Application Chrome System |
 | `PLAN-layout-widget-brainstorm.md` | Public Surface Stabilization |
 | `PLAN-navigation-contract-application.md` | Dense Navigation Productization |
 | `PLAN-primitive-vocabulary-hardening.md` | Public Surface Stabilization |

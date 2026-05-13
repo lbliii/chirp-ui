@@ -44,6 +44,25 @@ See also:
 Dense navigation works when these layers stay distinct even when they share the
 same vertical space.
 
+## Application Chrome System
+
+Application chrome is the umbrella for app shell, product rails, secondary
+rails, object context, local route rows, page tools, command overlays, drawers,
+and trays. It is not a new component family by itself. Use the layer model to
+decide which existing surface owns each job before adding markup or API.
+
+The current system direction is recipe-first:
+
+- compose layers from existing primitives,
+- prove responsive behavior in the browser,
+- keep emitted classes registry-owned,
+- keep rhythm token-backed,
+- promote a composite only after repeated real app usage proves a missing
+  contract.
+
+See [PLAN-application-chrome-system.md](plans/PLAN-application-chrome-system.md)
+for the current application chrome roadmap.
+
 ## ARIA And Semantics
 
 Route navigation should stay link-native:
@@ -89,6 +108,17 @@ Use this priority order when a navigation surface becomes too dense:
 Avoid wrapping dense global chrome until it reads like content. Wrapping can be
 fine for chips, breadcrumbs, or metadata rows, but it usually fails for app
 headers with mixed route links, utilities, search, and account controls.
+
+Use this decision table for rail and overlay navigation:
+
+| Need | Prefer | Avoid |
+|---|---|---|
+| Persistent broad movement on desktop/tablet | `sidebar`, `primary_nav`, or `nav_tree` in a shell/rail region | hiding primary navigation behind an overlay when space is available |
+| Deep hierarchy on phones | `drawer` or `tray` fallback with labelled trigger and focus proof | squeezing nested sidebars into the main content column |
+| Compact top-level destinations | `primary_nav`, route anchors, or a future proven rail recipe | a drawer for three simple destinations that should stay visible |
+| Supplemental object detail or inspector | `tray` when it remains related to the current page | replacing object route navigation with an inspector |
+| Blocking or destructive confirmation | modal/confirm dialog | drawer/tray patterns that then need another confirmation surface |
+| Local object views | `route_tabs` | side rail items that look like mode switches but change URL-backed views |
 
 Deep breadcrumb trails should use breadcrumb overflow instead of widening the
 header:

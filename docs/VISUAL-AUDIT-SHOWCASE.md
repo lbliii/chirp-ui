@@ -29,6 +29,9 @@ The page should make these qualities visible:
 - component state consistency across default, hoverable, active, loading,
   reserved, success, warning, and error treatments,
 - dense navigation layer discipline,
+- application chrome rhythm: app shell, rails, route rows, command surfaces,
+  tray/drawer overlays, and page tools should feel related without merging
+  their semantics,
 - form density and validation state polish,
 - surface nesting and scoped CSS behavior,
 - long-label and narrow-viewport resilience,
@@ -48,6 +51,17 @@ Run the page at these widths:
 
 Check both default and dark/system theme modes when the browser or page supports
 them.
+
+For application chrome, inspect these rhythm checks before adding new API:
+
+- mixed controls share coherent block size and touch targets,
+- rails do not starve the primary content pane at tablet widths,
+- route tabs scroll instead of wrapping into a tall block,
+- tray/drawer overlays have clear elevation and reachable close controls,
+- reserved/loading badges keep layout stable without announcing incorrect
+  counts,
+- token-backed spacing and borders do the work instead of utility-style helper
+  classes.
 
 Browser proof lives in `tests/browser/test_visual_audit_showcase.py`. It opens
 the page through `file://` so the test preserves the no-server contract while

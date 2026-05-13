@@ -15,6 +15,10 @@ different semantics.
 
 Use the canonical repository guide for the full decision model:
 [`docs/NAVIGATION.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/NAVIGATION.md?plain=1).
+For copyable dense application chrome recipes, see
+[`docs/DENSE-NAVIGATION-RECIPES.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/DENSE-NAVIGATION-RECIPES.md?plain=1).
+For current roadmap status, see
+[`docs/plans/PLAN-application-chrome-system.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/plans/PLAN-application-chrome-system.md?plain=1).
 
 ## Use This When
 
@@ -27,6 +31,8 @@ Use the canonical repository guide for the full decision model:
 
 - `site_header`, `navbar`, `primary_nav`, `sidebar`, and `nav_tree` for broad
   navigation.
+- `drawer` and `tray` for phone fallback, inspectors, and supplemental overlay
+  chrome when persistent rails would starve the main surface.
 - `breadcrumbs` and page headers for object or path context.
 - `render_route_tabs` / `route_tabs` for URL-backed local views.
 - `tabs_panels` only for in-place tab panel switching.
@@ -41,3 +47,7 @@ Use the canonical repository guide for the full decision model:
 - Ordinary disclosure navigation is not modeled as an ARIA menu.
 - Dense nav reserves room for expected badge counts.
 - Mobile layouts keep context and primary actions reachable.
+- Application chrome remains recipe-first until repeated real app usage proves
+  a stable composite contract.
+- Browser proof covers rail/tray fallback, command focus, route-tab scroll, and
+  no unintended horizontal overflow before composite promotion.

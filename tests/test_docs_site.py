@@ -18,6 +18,10 @@ PATTERN_DOCS = {
     "media-sites.md": "docs/MEDIA-SITE-PATTERNS.md",
     "forums.md": "docs/FORUM-SITE-PATTERNS.md",
 }
+NAVIGATION_PATTERN_COLLATERAL = [
+    "docs/DENSE-NAVIGATION-RECIPES.md",
+    "docs/plans/PLAN-application-chrome-system.md",
+]
 COMPONENT_DOCS = {
     "appearance-tone.md": "docs/APPEARANCE-TONE.md",
     "dropdowns.md": "docs/DROPDOWN-ANATOMY.md",
@@ -189,6 +193,20 @@ def test_pattern_docs_are_published_site_sources() -> None:
 
         assert "type: doc" in text
         assert canonical_doc in text
+
+
+def test_navigation_pattern_publishes_application_chrome_sources() -> None:
+    text = (REPO_ROOT / "site" / "content" / "docs" / "patterns" / "navigation.md").read_text(
+        encoding="utf-8"
+    )
+    matrix = DOCS_IA_MIGRATION.read_text(encoding="utf-8")
+
+    for source in NAVIGATION_PATTERN_COLLATERAL:
+        assert source in text
+        assert source in matrix
+
+    assert "Application chrome remains recipe-first" in text
+    assert "recipe-first application chrome status" in matrix
 
 
 def test_component_docs_are_published_site_sources() -> None:
