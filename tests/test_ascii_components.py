@@ -1369,6 +1369,8 @@ class TestAsciiModal:
         ).render()
         assert "chirpui-ascii-modal" in html
         assert "<dialog" in html
+        assert 'aria-labelledby="dlg-title"' in html
+        assert 'id="dlg-title"' in html
         assert "Settings" in html
         assert "Body" in html
 

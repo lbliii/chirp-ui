@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import container, stack %}
+{% from "chirpui/ascii_modal.html" import ascii_modal, ascii_modal_trigger %}
+
+{% call container(max_width="42rem") %}
+{% call stack(gap="lg") %}
+<h1 data-testid="page-heading">ASCII Composites</h1>
+
+{{ ascii_modal_trigger("ascii-settings", label="Open ASCII Settings") }}
+
+{% call ascii_modal("ascii-settings", title="ASCII Settings") %}
+  <p data-testid="ascii-modal-body">Terminal-styled dialog body.</p>
+{% end %}
+{% end %}
+{% end %}
+{% end %}
