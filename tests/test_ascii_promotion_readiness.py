@@ -63,6 +63,12 @@ DEFERRED_TRACKS = {
     "static-display-deferred",
 }
 
+INTERACTIVE_DEFERRAL_REASONS = {
+    "ascii-breaker-panel": "grouped panel semantics",
+    "ascii-fader": "visible fill/readout sync",
+    "ascii-tile-btn": "momentary-vs-toggle API decision",
+}
+
 
 def _ascii_components() -> dict[str, dict[str, object]]:
     return {
@@ -111,3 +117,13 @@ def test_ascii_non_static_display_candidates_stay_deferred() -> None:
             continue
         assert ASCII_PROMOTION_MATRIX[name] in DEFERRED_TRACKS, name
         assert entry["maturity"] == "experimental", name
+
+
+def test_ascii_remaining_interactive_deferrals_name_their_blockers() -> None:
+    plan = (ROOT / "docs" / "plans" / "PLAN-ascii-maturity.md").read_text(encoding="utf-8")
+    components = build_manifest()["components"]
+
+    for name, reason in INTERACTIVE_DEFERRAL_REASONS.items():
+        assert components[name]["maturity"] == "experimental", name
+        assert f"`{name}`" in plan, name
+        assert reason in plan, name
