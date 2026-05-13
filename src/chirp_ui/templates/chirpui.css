@@ -17969,18 +17969,25 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 /* === partials/159_resource-card.css === */
-@layer chirpui.component {
 /* ==========================================================================
-   Resource card — thin wrapper used inside resource index grids.
+   Resource card — @scope + @layer envelope.
+
+   Thin wrapper used inside resource index grids. The scope boundary keeps
+   future resource-card descendants from leaking into nested resource cards as
+   this wrapper grows beyond height/description reset.
+   See docs/PLAN-css-scope-and-layer.md § Migration status.
    ========================================================================== */
 
-.chirpui-resource-card {
-    height: 100%;
-}
+@layer chirpui.component {
+    @scope (.chirpui-resource-card) to (.chirpui-resource-card .chirpui-resource-card) {
+        :scope {
+            height: 100%;
+        }
 
-.chirpui-resource-card__description {
-    margin: 0;
-}
+        .chirpui-resource-card__description {
+            margin: 0;
+        }
+    }
 }
 
 /* === partials/160_resource-index.css === */
