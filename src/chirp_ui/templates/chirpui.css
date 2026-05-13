@@ -3435,6 +3435,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-sidebar__link {
     display: flex;
     align-items: center;
+    min-block-size: var(--chirpui-control-block-size-sm);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-sm);
     color: var(--chirpui-text-muted);
     text-decoration: none;
@@ -6437,13 +6438,18 @@ a.chirpui-chapter-item__link:focus-visible {
         }
 
         .chirpui-drawer__close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-inline-size: var(--chirpui-control-block-size-sm);
+            min-block-size: var(--chirpui-control-block-size-sm);
             background: none;
             border: none;
             color: inherit;
             font-size: 1.5rem;
             cursor: pointer;
             line-height: 1;
-            padding: 0 var(--chirpui-spacing-xs);
+            padding: 0;
             border-radius: var(--chirpui-radius-sm);
             transition: background var(--chirpui-transition);
             &:hover {
@@ -8011,6 +8017,7 @@ button.chirpui-pagination__link {
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
+    min-block-size: var(--chirpui-control-block-size-sm);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     color: var(--chirpui-text-muted);
     text-decoration: none;
@@ -8321,15 +8328,24 @@ button.chirpui-pagination__link {
         }
 
         .chirpui-tray__close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-inline-size: var(--chirpui-control-block-size-sm);
+            min-block-size: var(--chirpui-control-block-size-sm);
             background: none;
             border: none;
             font-size: 1.5rem;
             line-height: 1;
             cursor: pointer;
             color: var(--chirpui-text-muted);
-            padding: 0.25rem;
+            padding: 0;
             &:hover {
                 color: var(--chirpui-text);
+            }
+            &:focus-visible {
+                outline: var(--chirpui-state-focus-outline);
+                outline-offset: var(--chirpui-state-focus-offset);
             }
         }
 
@@ -18050,7 +18066,7 @@ body.htmx-request .chirpui-nav-progress::after {
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-xs);
-    min-height: calc(var(--chirpui-spacing-xl) + var(--chirpui-spacing-xs));
+    min-block-size: var(--chirpui-control-block-size-sm);
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
     border-radius: var(--chirpui-radius-sm);
     color: var(--chirpui-text-muted);
@@ -18108,7 +18124,7 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-primary-nav__divider {
     display: inline-block;
     inline-size: 1px;
-    block-size: calc(var(--chirpui-spacing-xl) + var(--chirpui-spacing-xs));
+    block-size: var(--chirpui-control-block-size-sm);
     margin-inline: var(--chirpui-spacing-xs);
     background: var(--chirpui-border);
 }

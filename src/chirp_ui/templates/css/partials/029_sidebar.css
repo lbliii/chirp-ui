@@ -37,6 +37,7 @@
 .chirpui-sidebar__link {
     display: flex;
     align-items: center;
+    min-block-size: var(--chirpui-control-block-size-sm);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-sm);
     color: var(--chirpui-text-muted);
     text-decoration: none;
