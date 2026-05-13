@@ -4101,22 +4101,22 @@ register_filters(app)</code></pre>
 
 <section class="sc-section" id="ascii-tabs">
     <h2>ASCII Tabs</h2>
-    <p class="desc">Tab bar using box-drawing characters with active tab highlighting. Variants: default, accent.</p>
+    <p class="desc">Route-link tab navigation using box-drawing characters with active page highlighting. Variants: default, accent.</p>
     <hr class="sc-divider">
     <div class="sc-label">Default</div>
     <div style="max-width:500px;margin-bottom:1.25rem">
-        <nav class="chirpui-ascii-tabs" role="tablist">
-            <a class="chirpui-ascii-tab chirpui-ascii-tab--active" role="tab" aria-selected="true"><span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span><span class="chirpui-ascii-tab__label">Overview</span><span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span></a>
-            <a class="chirpui-ascii-tab" role="tab" aria-selected="false"><span class="chirpui-ascii-tab__label">Details</span></a>
-            <a class="chirpui-ascii-tab" role="tab" aria-selected="false"><span class="chirpui-ascii-tab__label">Logs</span></a>
+        <nav class="chirpui-ascii-tabs" aria-label="ASCII tabs">
+            <a class="chirpui-ascii-tab chirpui-ascii-tab--active" aria-current="page" href="#ascii-tabs"><span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span><span class="chirpui-ascii-tab__label">Overview</span><span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span></a>
+            <a class="chirpui-ascii-tab" href="#ascii-card"><span class="chirpui-ascii-tab__label">Details</span></a>
+            <a class="chirpui-ascii-tab" href="#ascii-modal"><span class="chirpui-ascii-tab__label">Logs</span></a>
         </nav>
     </div>
     <div class="sc-label">Accent</div>
     <div style="max-width:500px">
-        <nav class="chirpui-ascii-tabs chirpui-ascii-tabs--accent" role="tablist">
-            <a class="chirpui-ascii-tab" role="tab" aria-selected="false"><span class="chirpui-ascii-tab__label">Config</span></a>
-            <a class="chirpui-ascii-tab chirpui-ascii-tab--active" role="tab" aria-selected="true"><span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span><span class="chirpui-ascii-tab__label">Secrets</span><span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span></a>
-            <a class="chirpui-ascii-tab" role="tab" aria-selected="false"><span class="chirpui-ascii-tab__label">Env</span></a>
+        <nav class="chirpui-ascii-tabs chirpui-ascii-tabs--accent" aria-label="ASCII tabs">
+            <a class="chirpui-ascii-tab" href="#ascii-border"><span class="chirpui-ascii-tab__label">Config</span></a>
+            <a class="chirpui-ascii-tab chirpui-ascii-tab--active" aria-current="page" href="#ascii-tabs"><span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span><span class="chirpui-ascii-tab__label">Secrets</span><span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span></a>
+            <a class="chirpui-ascii-tab" href="#ascii-table"><span class="chirpui-ascii-tab__label">Env</span></a>
         </nav>
     </div>
 </section>

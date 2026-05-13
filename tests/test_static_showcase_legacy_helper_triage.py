@@ -41,3 +41,16 @@ def test_static_showcase_legacy_helper_triage_doc_matches_inventory() -> None:
         assert required in text
 
     assert "STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md" in INDEX.read_text(encoding="utf-8")
+
+
+def test_static_showcase_ascii_tabs_teach_route_link_navigation() -> None:
+    text = STATIC_SHOWCASE.read_text(encoding="utf-8")
+    section = text.split('<section class="sc-section" id="ascii-tabs">', 1)[1].split(
+        "</section>", 1
+    )[0]
+
+    assert 'role="tablist"' not in section
+    assert 'role="tab"' not in section
+    assert "aria-selected" not in section
+    assert 'aria-current="page"' in section
+    assert 'href="#' in section
