@@ -21,7 +21,8 @@
 {% def ascii_fader(name, value=0, label=none, variant="", cls="") %}
 {% set variant = variant | validate_variant(("", "default", "accent", "success", "warning", "danger"), "") %}
 {% set variant_class = " chirpui-ascii-fader--" ~ variant if variant and variant != "default" else "" %}
-{% set level = ((value / 100) * 8) | int %}
+{% set bounded_value = 100 if value > 100 else (0 if value < 0 else value) %}
+{% set level = ((bounded_value / 100) * 8) | int %}
 {% set level = 8 if level > 8 else (0 if level < 0 else level) %}
 <div class="chirpui-ascii-fader{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-ascii-fader__track" aria-hidden="true">
@@ -32,11 +33,11 @@
         <span class="chirpui-ascii-fader__cap">└─┘</span>
     </div>
     <input class="chirpui-ascii-fader__input chirpui-visually-hidden"
-           type="range" name="{{ name }}" value="{{ value }}"
+           type="range" name="{{ name }}" value="{{ bounded_value }}"
            min="0" max="100" step="1"
            {% if label %}aria-label="{{ label }}"{% end %}>
     {% if label %}<span class="chirpui-ascii-fader__label">{{ label }}</span>{% end %}
-    <span class="chirpui-ascii-fader__value">{{ value }}</span>
+    <span class="chirpui-ascii-fader__value">{{ bounded_value }}</span>
 </div>
 {% end %}
 

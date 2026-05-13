@@ -422,6 +422,17 @@ class TestAsciiFader:
         ).render()
         assert "chirpui-ascii-fader__segment--filled" not in html
 
+    def test_value_bounds_align_input_and_display(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_fader.html" import ascii_fader %}'
+            '{{ ascii_fader("hot", value=125) }}'
+            '{{ ascii_fader("cold", value=-5) }}'
+        ).render()
+        assert 'name="hot" value="100"' in html
+        assert 'name="cold" value="0"' in html
+        assert ">125<" not in html
+        assert ">-5<" not in html
+
     def test_variant(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_fader.html" import ascii_fader %}'
