@@ -188,6 +188,28 @@ Required promotion proof:
 - browser responsive proof,
 - changelog fragment.
 
+Evaluation docket:
+
+| Candidate | Evidence Required | Accept If | Reject If | Collateral If Accepted |
+|---|---|---|---|---|
+| `object_header` | Two consuming apps repeat breadcrumbs, title, metadata, actions, and route-row placement with existing primitives. | It removes repeated boilerplate while preserving link-native routes and clear slot ownership. | It mostly aliases `page_header`, `entity_header`, `breadcrumbs`, and `action_strip`. | Descriptor, macro, CSS partial, generated CSS, manifest, generated options, examples, published docs, browser proof, changelog. |
+| `chrome_frame` | Two consuming apps repeat the same shell region boundaries and overflow behavior beyond current `app_shell` and layout primitives. | The owned layer is explicit and does not hide product-specific navigation in generic slots. | It becomes a mega-shell or duplicates `app_shell`, `sidebar`, `drawer`, `tray`, and `route_tabs`. | Descriptor, macro, CSS partial, generated CSS, manifest, generated options, recipes, docs, browser proof, changelog. |
+| `workspace_shell` | Two consuming apps need the same workspace/sidebar/tab/page-tool contract and cannot express it with filesystem layouts plus current shell blocks. | It improves the Chirp shell contract across routes without app-local wrapper glue. | It encodes one product's IA or requires JavaScript-managed responsive overflow. | Shell contract docs, migration notes, app examples, HTMX/browser proof, generated docs where public API changes. |
+
+Docket entry template:
+
+```text
+Candidate:
+Consumers:
+Repeated shape:
+Existing primitives tried:
+Missing contract:
+Accepted / rejected:
+Required proof:
+Collateral:
+Not-now spillover:
+```
+
 ## Not Now
 
 - `application_chrome()`
