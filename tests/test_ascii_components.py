@@ -925,6 +925,16 @@ class TestAsciiStepper:
         assert "chirpui-ascii-stepper__step--complete" in html
         assert "chirpui-ascii-stepper__step--active" in html
         assert "chirpui-ascii-stepper__step--pending" in html
+        assert 'aria-current="step"' in html
+
+    def test_current_bounds_still_marks_one_active_step(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_stepper.html" import ascii_stepper %}'
+            '{{ ascii_stepper(steps=["A", "B"], current=9) }}'
+            '{{ ascii_stepper(steps=["A", "B"], current=-2) }}'
+        ).render()
+        assert html.count('aria-current="step"') == 2
+        assert html.count("chirpui-ascii-stepper__step--active") == 2
 
     def test_connector(self, env: Environment) -> None:
         html = env.from_string(

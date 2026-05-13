@@ -18,15 +18,18 @@
 {% def ascii_stepper(steps, current=0, variant="", cls="") %}
 {% set variant = variant | validate_variant(("", "default", "accent", "success"), "") %}
 {% set variant_class = " chirpui-ascii-stepper--" ~ variant if variant and variant != "default" else "" %}
+{% set last_index = (steps | length) - 1 %}
+{% set active_index = last_index if current > last_index else (0 if current < 0 else current) %}
 <div class="chirpui-ascii-stepper{{ variant_class }}{{ " " ~ cls if cls else "" }}" role="navigation" aria-label="Progress">
     <div class="chirpui-ascii-stepper__track">
         {% for step in steps %}
         {% set step_label = step.label if step is mapping else step %}
-        {% set state = "complete" if loop.index0 < current else ("active" if loop.index0 == current else "pending") %}
+        {% set state = "complete" if loop.index0 < active_index else ("active" if loop.index0 == active_index else "pending") %}
         {% if not loop.first %}
-        <span class="chirpui-ascii-stepper__connector{{ " chirpui-ascii-stepper__connector--complete" if loop.index0 <= current else "" }}" aria-hidden="true">───</span>
+        <span class="chirpui-ascii-stepper__connector{{ " chirpui-ascii-stepper__connector--complete" if loop.index0 <= active_index else "" }}" aria-hidden="true">───</span>
         {% end %}
-        <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--{{ state }}">
+        <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--{{ state }}"
+              {% if state == "active" %}aria-current="step"{% end %}>
             <span class="chirpui-ascii-stepper__node" aria-hidden="true">{% if state == "complete" %}[✓]{% elif state == "active" %}[●]{% else %}[○]{% end %}</span>
             <span class="chirpui-ascii-stepper__label">{{ step_label }}</span>
         </span>
