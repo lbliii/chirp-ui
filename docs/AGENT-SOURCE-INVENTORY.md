@@ -32,6 +32,19 @@ No current source is approved for automatic snippet extraction. Sprint 6 starts
 with the inventory and provenance tests so later generation work has a safe
 allowlist to build from.
 
+## Snippet Review Gate
+
+A `candidate-review` source can move to `copyable-curated` only in a PR that
+adds all of the following:
+
+| Gate | Required proof |
+|---|---|
+| Exact source path | The snippet cites the original durable doc or dynamic showcase template line of ownership. |
+| Macro-first shape | The snippet uses public macros, params, slots, `attrs_map`, and `hx={}` before raw classes. |
+| Exclusion scan | The snippet contains no static showcase classes, docs wrappers, inline scripts, browser-test selectors, or raw appearance/tone modifier classes. |
+| Runnable proof | A render, docs, example, or browser test exercises the snippet's public contract. |
+| Provenance note | The snippet declares `example-derived` or `docs-derived` provenance and links back to this inventory. |
+
 ## Source Inventory
 
 | Provenance | Source | Agent use | Snippet eligibility |

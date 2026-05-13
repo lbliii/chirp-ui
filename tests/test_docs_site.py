@@ -311,6 +311,22 @@ def test_agent_source_inventory_keeps_current_examples_review_gated() -> None:
     assert "No current source is approved for automatic snippet extraction." in text
 
 
+def test_agent_source_inventory_defines_copyable_snippet_review_gate() -> None:
+    text = AGENT_SOURCE_INVENTORY.read_text(encoding="utf-8")
+    rows = _parse_markdown_table(text, "## Snippet Review Gate")
+
+    gates = {row["Gate"] for row in rows}
+    assert gates == {
+        "Exact source path",
+        "Macro-first shape",
+        "Exclusion scan",
+        "Runnable proof",
+        "Provenance note",
+    }
+    assert "copyable-curated" in text
+    assert "raw appearance/tone modifier classes" in text
+
+
 def test_agent_source_map_names_generated_output_ownership() -> None:
     """Sprint 6 source map should preserve Bengal-owned output boundaries."""
     text = AGENT_SOURCE_MAP.read_text(encoding="utf-8")

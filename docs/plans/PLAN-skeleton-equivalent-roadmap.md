@@ -477,10 +477,14 @@ Collateral:
 
 ## Sprint 6 Candidate: Agent-Facing Synthesis
 
-**Status:** active
+**Status:** residual source contract
 
 Goal: turn the shipped docs, manifest, theme catalog, and showcase examples into
 agent-safe source maps without overriding Bengal-owned SSG artifacts.
+
+2026-05-13 status: the source inventory, generated-output map, no-new-artifact
+decision, and snippet provenance gates are in place. Remaining work is only
+candidate snippet curation after a concrete consumer asks for copyable examples.
 
 Candidate tasks:
 
