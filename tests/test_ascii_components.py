@@ -20,6 +20,8 @@ class TestAscii7Seg:
             '{% from "chirpui/ascii_7seg.html" import ascii_7seg %}{{ ascii_7seg("42") }}'
         ).render()
         assert "chirpui-ascii-7seg" in html
+        assert 'role="img"' in html
+        assert 'aria-label="7-segment display: 42"' in html
         assert 'data-char="4"' in html
         assert 'data-char="2"' in html
 
@@ -29,6 +31,7 @@ class TestAscii7Seg:
             '{{ ascii_7seg("99", label="UPTIME") }}'
         ).render()
         assert "chirpui-ascii-7seg__label" in html
+        assert 'aria-label="UPTIME: 99"' in html
         assert "UPTIME" in html
 
     def test_variant_accent(self, env: Environment) -> None:
@@ -515,7 +518,16 @@ class TestAsciiIndicator:
         ).render()
         assert "chirpui-ascii-indicator" in html
         assert "chirpui-ascii-indicator--success" in html
+        assert 'aria-hidden="true"' in html
         assert "PWR" in html
+
+    def test_unlabelled_indicator_exposes_variant_text(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_indicator.html" import indicator %}'
+            '{{ indicator(variant="warning") }}'
+        ).render()
+        assert "chirpui-visually-hidden" in html
+        assert "warning" in html
 
     def test_blink(self, env: Environment) -> None:
         html = env.from_string(
@@ -1034,6 +1046,8 @@ class TestAsciiTicker:
         ).render()
         assert "chirpui-ascii-ticker" in html
         assert 'role="marquee"' in html
+        assert 'aria-label="Breaking news"' in html
+        assert 'chirpui-ascii-ticker__track" aria-hidden="true"' in html
         assert "Breaking news" in html
 
     def test_variant(self, env: Environment) -> None:
