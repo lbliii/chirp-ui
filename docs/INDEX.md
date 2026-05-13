@@ -52,6 +52,7 @@ Navigation guide for all chirp-ui documentation.
 
 - [AGENT-SOURCE-INVENTORY.md](AGENT-SOURCE-INVENTORY.md) — Sprint 6 agent source provenance, snippet eligibility, and exclusion contract
 - [AGENT-SOURCE-MAP.md](AGENT-SOURCE-MAP.md) — Sprint 6 generated-output ownership and agent source-input map
+- [AGENT-CURATED-SNIPPETS.md](AGENT-CURATED-SNIPPETS.md) — Reviewed macro-first snippets for agent-facing examples
 - [COMPONENT-OPTIONS.md](COMPONENT-OPTIONS.md) — Full parameter reference for all components
 - [DOCS-IA-MIGRATION.md](DOCS-IA-MIGRATION.md) — Sprint 4 published-docs IA map and LLM endpoint source map
 - [DEEP-DIVE-masked-field-use-cases.md](DEEP-DIVE-masked-field-use-cases.md) — Masked input field patterns and examples

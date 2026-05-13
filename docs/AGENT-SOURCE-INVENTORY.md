@@ -28,9 +28,9 @@ Snippet eligibility uses these values:
 - `copyable-curated`: approved for copyable snippets after provenance tests.
 - `excluded`: must never be used as an agent-facing source.
 
-No current source is approved for automatic snippet extraction. Sprint 6 starts
-with the inventory and provenance tests so later generation work has a safe
-allowlist to build from.
+No `candidate-review` source is approved for automatic snippet extraction.
+Curated copyable snippets live in `docs/AGENT-CURATED-SNIPPETS.md` and must pass
+the review gate below.
 
 ## Snippet Review Gate
 
@@ -55,6 +55,7 @@ adds all of the following:
 | `docs-derived` | `docs/DOCS-IA-MIGRATION.md` | Published docs IA, durable-source map, and SSG ownership boundary. | `source-only` |
 | `docs-derived` | `docs/AGENT-SOURCE-INVENTORY.md` | Agent provenance policy and snippet source inventory. | `source-only` |
 | `docs-derived` | `docs/AGENT-SOURCE-MAP.md` | Generated-output ownership map and source-input map. | `source-only` |
+| `docs-derived` | `docs/AGENT-CURATED-SNIPPETS.md` | Hand-curated macro-first snippets that passed the review gate. | `copyable-curated` |
 | `docs-derived` | `docs/APPEARANCE-TONE.md` | Appearance/tone semantics and migration guidance. | `source-only` |
 | `docs-derived` | `docs/APP-THEME.md` | App theme-pack load order, token-only rules, and ownership guidance. | `source-only` |
 | `docs-derived` | `docs/DROPDOWN-ANATOMY.md` | Dropdown rendered anatomy and tested behavior. | `source-only` |

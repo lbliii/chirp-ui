@@ -1,5 +1,6 @@
 import importlib.util
 import os
+import re
 import tomllib
 from pathlib import Path
 
@@ -10,6 +11,7 @@ DOCS_SITE_SCRIPT = REPO_ROOT / "scripts" / "docs_site.py"
 PYPROJECT = REPO_ROOT / "pyproject.toml"
 AGENT_SOURCE_INVENTORY = REPO_ROOT / "docs" / "AGENT-SOURCE-INVENTORY.md"
 AGENT_SOURCE_MAP = REPO_ROOT / "docs" / "AGENT-SOURCE-MAP.md"
+AGENT_CURATED_SNIPPETS = REPO_ROOT / "docs" / "AGENT-CURATED-SNIPPETS.md"
 PATTERN_DOCS = {
     "navigation.md": "docs/NAVIGATION.md",
     "product-pages.md": "docs/PRODUCT-PAGE-PATTERNS.md",
@@ -308,7 +310,7 @@ def test_agent_source_inventory_keeps_current_examples_review_gated() -> None:
 
     assert candidates
     assert {row["Snippet eligibility"] for row in candidates} == {"candidate-review"}
-    assert "No current source is approved for automatic snippet extraction." in text
+    assert "No `candidate-review` source is approved for automatic snippet extraction." in text
 
 
 def test_agent_source_inventory_defines_copyable_snippet_review_gate() -> None:
@@ -325,6 +327,33 @@ def test_agent_source_inventory_defines_copyable_snippet_review_gate() -> None:
     }
     assert "copyable-curated" in text
     assert "raw appearance/tone modifier classes" in text
+
+
+def test_agent_curated_snippets_are_indexed_and_macro_first() -> None:
+    inventory = AGENT_SOURCE_INVENTORY.read_text(encoding="utf-8")
+    index = (REPO_ROOT / "docs" / "INDEX.md").read_text(encoding="utf-8")
+    snippets = AGENT_CURATED_SNIPPETS.read_text(encoding="utf-8")
+
+    assert "docs/AGENT-CURATED-SNIPPETS.md" in inventory
+    assert "[AGENT-CURATED-SNIPPETS.md](AGENT-CURATED-SNIPPETS.md)" in index
+    assert "Eligibility: `copyable-curated`" in snippets
+    assert 'from "chirpui/card.html" import card' in snippets
+    assert 'appearance="outlined"' in snippets
+    assert 'tone="primary"' in snippets
+
+    code_blocks = "\n".join(
+        match.group(1) for match in re.finditer(r"```jinja\n(.*?)\n```", snippets, flags=re.S)
+    )
+    assert code_blocks
+    for forbidden in [
+        'class="chirpui-',
+        "sc-",
+        "docs-",
+        "<script",
+        "attrs_unsafe",
+        "chirpui-card--",
+    ]:
+        assert forbidden not in code_blocks
 
 
 def test_agent_source_map_names_generated_output_ownership() -> None:
