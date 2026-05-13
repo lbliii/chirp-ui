@@ -18,6 +18,9 @@
 > `ascii-badge`, `ascii-border`, `ascii-divider`, and `ascii-empty`.
 > `ascii-error` stays deferred until error-page recipe usage proves its heading
 > and action conventions.
+> The first accepted interactive promotion set is limited to controls whose
+> visible state is CSS-backed by native checked state: `ascii-checkbox`,
+> `ascii-toggle`, `ascii-switch`, `ascii-radio-group`, and `ascii-knob`.
 
 ---
 
@@ -79,7 +82,7 @@ The first stable wave deliberately leaves these families experimental:
 | Family | Components | Reason |
 | --- | --- | --- |
 | Error page primitive | `ascii-error` | Needs real recipe usage for heading, code, and action conventions before becoming normal vocabulary. |
-| Interactive controls | `ascii-breaker-panel`, `ascii-checkbox`, `ascii-fader`, `ascii-knob`, `ascii-radio-group`, `ascii-switch`, `ascii-tile-btn`, `ascii-toggle` | Needs group-level browser proof for focus, disabled state, keyboard behavior, and dense layouts. |
+| Interactive controls | `ascii-breaker-panel`, `ascii-fader`, `ascii-tile-btn` | Fader needs visible fill/readout sync after range input changes; tile button needs a momentary-vs-toggle API decision; breaker panel needs grouped panel semantics. |
 | Composite navigation/dialogs | `ascii-card`, `ascii-modal`, `ascii-tab`, `ascii-tabs` | Needs parity proof against non-ASCII component contracts and route/dialog examples. |
 | Data/status widgets | `ascii-progress`, `ascii-stepper`, `ascii-table`, `ascii-vu` | Needs responsive visual audit proof and data-state contract review. |
 | Motion/display widgets | `ascii-7seg`, `ascii-indicator`, `ascii-skeleton`, `ascii-sparkline`, `ascii-spinner`, `ascii-ticker`, `split-flap` | Needs reduced-motion and accessible-name proof to stay paired with visual audit coverage before promotion. |

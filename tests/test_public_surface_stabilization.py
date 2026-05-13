@@ -20,9 +20,9 @@ def test_public_surface_stabilization_doc_records_current_slice() -> None:
         "`story-card` | Promote to stable",
         "`cta-band` | Promote to stable",
         "`ascii-badge` | Promote to stable",
+        "`ascii-toggle` | Promote to stable",
         "`ascii-progress` | Keep experimental",
         "`ascii-table` | Keep experimental",
-        "`ascii-toggle` | Keep experimental",
         "no private theme token namespace",
     ]:
         assert required in text

@@ -1205,7 +1205,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii-toggle--md",
         ),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-switch": ComponentDescriptor(
         block="ascii-switch",
@@ -1228,7 +1228,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii-switch--md",
         ),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-table": ComponentDescriptor(
         block="ascii-table",
@@ -1302,7 +1302,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-knob--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-fader": ComponentDescriptor(
         block="ascii-fader",
@@ -1367,7 +1367,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-checkbox--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-radio-group": ComponentDescriptor(
         block="ascii-radio-group",
@@ -1379,7 +1379,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-radio-group--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-stepper": ComponentDescriptor(
         block="ascii-stepper",

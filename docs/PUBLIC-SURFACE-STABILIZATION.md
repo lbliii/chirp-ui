@@ -30,11 +30,16 @@ usage.
 | `cta-band` | Promote to stable | Render tests for standard/slot actions, product/media recipe usage, visual audit coverage. |
 | `ascii-badge` | Promote to stable | Render proof covers variants and hidden decorative glyphs; visual audit/browser proof covers the static root. |
 | `ascii-border` | Promote to stable | Render proof covers variants and hidden decorative frame glyphs; visual audit/browser proof covers the static root. |
+| `ascii-checkbox` | Promote to stable | Native checkbox semantics, labelled state, disabled state, visual audit coverage, and browser checked-state proof. |
 | `ascii-divider` | Promote to stable | Render proof covers separator role, labelled glyph mode, and hidden decorative glyphs; visual audit/browser proof covers the static root. |
 | `ascii-empty` | Promote to stable | Render proof covers readable heading/description/action and hidden decorative glyphs; visual audit/browser proof covers the static root. |
+| `ascii-knob` | Promote to stable | Native radio group semantics, stable accessible name, decorative dial hiding, visual audit coverage, and browser checked-state proof. |
+| `ascii-radio-group` | Promote to stable | Native radio semantics, legend/name labelling, visual audit coverage, and browser checked-state proof. |
+| `ascii-switch` | Promote to stable | Native checkbox-backed switch semantics, explicit `aria-checked`, visual audit coverage, and browser checked-state proof. |
+| `ascii-toggle` | Promote to stable | Native checkbox-backed switch semantics, explicit `aria-checked`, visual audit coverage, and browser checked-state proof. |
+| `ascii-fader` | Keep experimental | Range naming and bounded render proof exists, but visual fill/readout do not update after keyboard input without a controller. |
 | `ascii-progress` | Keep experimental | Render and browser proof now align bounded ARIA, visual fill, and displayed value; visual audit/promotion review remains. |
 | `ascii-table` | Keep experimental | Render and browser proof now cover table naming, row cells, headers, and hidden decorative borders; responsive visual audit remains. |
-| `ascii-toggle` | Keep experimental | Render and browser proof now cover switch role, keyboard toggling, disabled state, and dense-row focus. |
 | `ascii-vu` | Keep experimental | Render and browser proof now align bounded meter value, readout, filled cells, peak marker, and reduced-motion behavior. |
 | `split-flap` | Keep experimental | Render and browser proof now expose readable text while hiding animated character boxes and stopping animation under reduced motion. |
 
@@ -105,8 +110,14 @@ contracts, and each already has render proof for default and non-default modes.
 | `ascii-border` | Static display | Promoted; render, visual audit, browser, manifest, and generated docs evidence agree. |
 | `ascii-divider` | Static display | Promoted; render, visual audit, browser, manifest, and generated docs evidence agree. |
 | `ascii-empty` | Static display | Promoted; render, visual audit, browser, manifest, and generated docs evidence agree. |
+| `ascii-checkbox` | Interactive control | Promoted; native checked state drives the visible control and browser proof covers toggling. |
+| `ascii-toggle` | Interactive control | Promoted; native checked state drives the visible switch and browser proof covers toggling. |
+| `ascii-switch` | Interactive control | Promoted; native checked state drives the visible switch and browser proof covers toggling. |
+| `ascii-radio-group` | Interactive control | Promoted; native radio state drives visible selection and browser proof covers selection changes. |
+| `ascii-knob` | Interactive control | Promoted; native radio state drives visible positions and browser proof covers selection changes. |
+| `ascii-fader` | Interactive control deferred | Keep experimental until changing the range input also updates the visible fill and readout. |
 | `ascii-error` | Static display deferred | Keep experimental until error-page usage proves heading/action conventions. |
-| Interactive controls | Deferred | Keep experimental until keyboard, focus, disabled-state, and browser proof remain green as a group. |
+| Remaining interactive controls | Deferred | Keep experimental until controller sync, mixed momentary/toggle behavior, or panel composition decisions settle. |
 | Composite/data/status/motion displays | Deferred | Keep experimental until reduced-motion, ARIA, and responsive browser proof are complete for each behavior family. |
 
 ## Experimental Disposition Inventory
@@ -124,25 +135,20 @@ vocabulary.
 | `ascii-7seg` | Keep experimental | ASCII maturity pass. |
 | `ascii-breaker-panel` | Keep experimental | ASCII maturity pass. |
 | `ascii-card` | Keep experimental | ASCII maturity pass. |
-| `ascii-checkbox` | Keep experimental | ASCII maturity pass. |
 | `ascii-error` | Keep experimental | ASCII maturity pass. |
 | `ascii-fader` | Keep experimental | ASCII maturity pass. |
 | `ascii-indicator` | Keep experimental | ASCII maturity pass. |
-| `ascii-knob` | Keep experimental | ASCII maturity pass. |
 | `ascii-modal` | Keep experimental | ASCII maturity pass. |
 | `ascii-progress` | Keep experimental | ASCII maturity pass. |
-| `ascii-radio-group` | Keep experimental | ASCII maturity pass. |
 | `ascii-skeleton` | Keep experimental | ASCII maturity pass. |
 | `ascii-sparkline` | Keep experimental | ASCII maturity pass. |
 | `ascii-spinner` | Keep experimental | ASCII maturity pass. |
 | `ascii-stepper` | Keep experimental | ASCII maturity pass. |
-| `ascii-switch` | Keep experimental | ASCII maturity pass. |
 | `ascii-tab` | Keep experimental | ASCII maturity pass. |
 | `ascii-table` | Keep experimental | ASCII maturity pass. |
 | `ascii-tabs` | Keep experimental | ASCII maturity pass. |
 | `ascii-ticker` | Keep experimental | ASCII maturity pass. |
 | `ascii-tile-btn` | Keep experimental | ASCII maturity pass. |
-| `ascii-toggle` | Keep experimental | ASCII maturity pass. |
 | `ascii-vu` | Keep experimental | ASCII maturity pass. |
 | `aura` | Keep experimental | Motion/effects visual proof. |
 | `aurora` | Keep experimental | Motion/effects visual proof. |

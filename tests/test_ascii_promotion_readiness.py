@@ -16,6 +16,14 @@ STATIC_DISPLAY_CANDIDATES = {
     "ascii-empty",
 }
 
+INTERACTIVE_CONTROL_CANDIDATES = {
+    "ascii-checkbox",
+    "ascii-knob",
+    "ascii-radio-group",
+    "ascii-switch",
+    "ascii-toggle",
+}
+
 ASCII_PROMOTION_MATRIX = {
     "ascii-7seg": "display-motion",
     "ascii-badge": "static-display",
@@ -68,30 +76,29 @@ def test_ascii_promotion_matrix_covers_public_ascii_templates() -> None:
     assert set(ASCII_PROMOTION_MATRIX) == set(_ascii_components())
 
 
-def test_ascii_static_display_candidates_have_render_evidence() -> None:
+def test_ascii_promotion_candidates_have_render_evidence() -> None:
     render_tests = ASCII_TESTS.read_text(encoding="utf-8")
 
-    for name in sorted(STATIC_DISPLAY_CANDIDATES):
+    for name in sorted(STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES):
         css_class = f"chirpui-{name}"
-        assert ASCII_PROMOTION_MATRIX[name] == "static-display"
         assert css_class in render_tests, name
 
 
-def test_ascii_static_display_candidates_have_visual_audit_evidence() -> None:
+def test_ascii_promotion_candidates_have_visual_audit_evidence() -> None:
     browser_tests = BROWSER_TESTS.read_text(encoding="utf-8")
     showcase = SHOWCASE.read_text(encoding="utf-8")
 
-    for name in sorted(STATIC_DISPLAY_CANDIDATES):
+    for name in sorted(STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES):
         css_class = f"chirpui-{name}"
         assert css_class in browser_tests, name
         assert css_class in showcase, name
 
 
-def test_ascii_static_display_candidates_are_stable_in_manifest_and_docs() -> None:
+def test_ascii_promotion_candidates_are_stable_in_manifest_and_docs() -> None:
     docs = COMPONENT_OPTIONS.read_text(encoding="utf-8")
     components = build_manifest()["components"]
 
-    for name in sorted(STATIC_DISPLAY_CANDIDATES):
+    for name in sorted(STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES):
         assert components[name]["maturity"] == "stable", name
         template_line = f"- **Template:** `chirpui/{components[name]['template']}`"
         section = docs.split(template_line, 1)[1][:400]
@@ -100,7 +107,7 @@ def test_ascii_static_display_candidates_are_stable_in_manifest_and_docs() -> No
 
 def test_ascii_non_static_display_candidates_stay_deferred() -> None:
     for name, entry in _ascii_components().items():
-        if name in STATIC_DISPLAY_CANDIDATES:
+        if name in STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES:
             continue
         assert ASCII_PROMOTION_MATRIX[name] in DEFERRED_TRACKS, name
         assert entry["maturity"] == "experimental", name

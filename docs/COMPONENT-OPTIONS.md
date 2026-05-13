@@ -4008,7 +4008,7 @@ ASCII Checkbox
 - **Template:** `chirpui/ascii_checkbox.html`
 - **Macro:** `ascii_checkbox`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
@@ -4162,7 +4162,7 @@ ASCII Knob / Rotary Selector
 - **Template:** `chirpui/ascii_knob.html`
 - **Macro:** `ascii_knob`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`
@@ -4238,7 +4238,7 @@ ASCII Radio
 - **Template:** `chirpui/ascii_radio.html`
 - **Macro:** `ascii_radio_group`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4334,7 +4334,7 @@ ASCII Toggle
 - **Template:** `chirpui/ascii_toggle.html`
 - **Macro:** `ascii_switch`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
@@ -4470,7 +4470,7 @@ ASCII Toggle
 - **Template:** `chirpui/ascii_toggle.html`
 - **Macro:** `ascii_toggle`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
