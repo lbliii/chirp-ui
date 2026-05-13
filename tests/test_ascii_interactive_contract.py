@@ -45,6 +45,18 @@ ASCII_PROOF_GROUPS = {
     },
 }
 
+ASCII_DISPLAY_CONTRACTS = {
+    "ascii_7seg.html": ("chirpui-ascii-7seg__display", "chirpui-ascii-7seg__frame"),
+    "ascii_icon.html": ('aria-hidden="true"',),
+    "ascii_indicator.html": ("chirpui-ascii-indicator__light", 'aria-hidden="true"'),
+    "ascii_skeleton.html": ('aria-hidden="true"',),
+    "ascii_sparkline.html": ('role="img"', "aria-label"),
+    "ascii_spinner.html": ('role="status"', "aria-label"),
+    "ascii_split_flap.html": ("chirpui-split-flap__char",),
+    "ascii_ticker.html": ('role="marquee"', "chirpui-ascii-ticker__text"),
+    "ascii_vu_meter.html": ('role="meter"', "aria-valuenow"),
+}
+
 
 def _template(name: str) -> str:
     return (TEMPLATE_DIR / name).read_text()
@@ -74,6 +86,13 @@ def test_ascii_interactive_controls_are_native_input_backed() -> None:
             assert needle in source, f"{template_name} must keep {needle!r}"
 
 
+def test_ascii_display_contracts_are_explicit() -> None:
+    for template_name, needles in ASCII_DISPLAY_CONTRACTS.items():
+        source = _template(template_name)
+        for needle in needles:
+            assert needle in source, f"{template_name} must keep {needle!r}"
+
+
 def test_ascii_interactive_templates_do_not_embed_script_tags() -> None:
     for template_path in TEMPLATE_DIR.glob("ascii_*.html"):
         assert "<script" not in template_path.read_text().lower()
@@ -93,6 +112,9 @@ def test_ascii_motion_variants_respect_reduced_motion() -> None:
         "144_ascii-switch.css",
         "146_ascii-indicator-light.css",
         "147_ascii-tile-button.css",
+        "150_ascii-vu-meter.css",
+        "155_ascii-split-flap-display.css",
+        "156_ascii-ticker.css",
     ]
 
     for partial in motion_partials:
