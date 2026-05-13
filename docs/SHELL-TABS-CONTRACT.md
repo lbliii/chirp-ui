@@ -158,6 +158,150 @@ trigger:
     attrs_map={"hx-disinherit": "hx-select"}) }}
 ```
 
+## Filesystem Mounted App Recipe
+
+For filesystem-routed Chirp apps, prefer letting `mount_pages()` and the
+registered Chirp UI page-shell contract choose response shape. The copyable
+test fixture is:
+
+```text
+tests/fixtures/filesystem_chrome/
+  app.py
+  pages/
+    _layout.html
+    workspace/
+      _context.py
+      _meta.py
+      page.py
+      page.html
+      runs.py
+      runs.html
+      filter_fragment.py
+    admin/
+      _context.py
+      _meta.py
+      page.py
+      page.html
+      audit.py
+      audit.html
+```
+
+App setup registers sections, enables Chirp UI, then mounts pages:
+
+```python
+from chirp import App, AppConfig
+from chirp.ext.chirp_ui import use_chirp_ui
+from chirp.pages import Section, TabItem
+
+app = App(AppConfig(template_dir="pages"))
+use_chirp_ui(app)
+app.register_section(
+    Section(
+        id="workspace",
+        label="Workspace",
+        tab_items=(
+            TabItem("Overview", "/workspace", match="exact"),
+            TabItem("Runs", "/workspace/runs", match="exact"),
+        ),
+        breadcrumb_prefix=({"label": "App", "href": "/workspace"},),
+        active_prefixes=("/workspace",),
+    )
+)
+app.mount_pages("pages")
+```
+
+The root `_layout.html` owns the app shell and sidebar:
+
+```html
+{# preset: chirpui-app-shell #}
+{# target: body #}
+{# domain: workspace #}
+{# shell: workspace #}
+{% extends "chirpui/app_shell_layout.html" %}
+{% block brand %}Workspace{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path=current_path) %}
+  {% call sidebar_section("App") %}
+    {{ sidebar_link("/workspace", "Workspace", match="prefix") }}
+    {{ sidebar_link("/admin", "Admin", match="prefix") }}
+  {% end %}
+{% end %}
+{% end %}
+```
+
+Each route family contributes route-scoped shell actions through `_context.py`:
+
+```python
+from chirp import ShellAction, ShellActions, ShellActionZone
+
+
+def context():
+    return {
+        "shell_actions": ShellActions(
+            primary=ShellActionZone(
+                items=(ShellAction(id="new-run", label="New run", href="/workspace/new"),)
+            )
+        )
+    }
+```
+
+`_meta.py` connects the route family to the registered section:
+
+```python
+from chirp.pages import RouteMeta
+
+META = RouteMeta(
+    title="Workspace",
+    section="workspace",
+    breadcrumb_label="Workspace",
+)
+```
+
+Page handlers can return context dictionaries when a sibling template exists:
+
+```python
+def get():
+    return {
+        "page_title": "Workspace",
+        "view_title": "Workspace overview",
+    }
+```
+
+The page template provides the three contract blocks directly:
+
+```html
+{% block page_root %}
+<div id="page-root">
+{% block page_root_inner %}
+  <div id="route-tabs">
+    {{ render_route_tabs(tab_items, current_path, target="#page-root") }}
+  </div>
+  <header>...</header>
+  <div id="page-content-inner">
+  {% block page_content %}
+    ...
+  {% end %}
+  </div>
+{% end %}
+</div>
+{% end %}
+```
+
+With that structure:
+
+| Request | Chirp UI contract result |
+|---|---|
+| full navigation | full shell with one `#main`, one `#page-content`, and one `#page-root` |
+| boosted sidebar navigation to `#main` | full page response with `#page-content` plus shell action OOB updates |
+| route-tab navigation to `#page-root` | `page_root_inner` fragment plus shell action OOB updates when route metadata changes |
+| local tool target `#page-content-inner` | `page_content` or endpoint-local fragment without shell wrappers |
+
+Proof:
+
+- `tests/test_filesystem_chrome_response_targets.py`
+- `tests/browser/test_filesystem_chrome_app.py`
+
 The first consumer-adoption proof lives in
 `tests/browser/test_consumer_workspace_chrome.py`,
 `tests/browser/test_consumer_admin_chrome.py`, and
