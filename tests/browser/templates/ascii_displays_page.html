@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import container, stack %}
+{% from "chirpui/ascii_7seg.html" import ascii_7seg %}
+{% from "chirpui/ascii_indicator.html" import indicator %}
+{% from "chirpui/ascii_sparkline.html" import ascii_sparkline %}
+{% from "chirpui/ascii_spinner.html" import ascii_spinner %}
+{% from "chirpui/ascii_split_flap.html" import split_flap %}
+{% from "chirpui/ascii_ticker.html" import ascii_ticker %}
+{% from "chirpui/ascii_vu_meter.html" import ascii_vu_meter %}
+
+{% call container(max_width="42rem") %}
+{% call stack(gap="lg") %}
+<h1 data-testid="page-heading">ASCII Displays</h1>
+
+{{ ascii_7seg("08:42", label="ETA") }}
+{{ indicator(variant="warning") }}
+{{ ascii_sparkline(values=[1, 3, 2, 8, 5]) }}
+{{ ascii_spinner(label="Loading feed") }}
+{{ split_flap("BOARD 12", variant="amber") }}
+{{ ascii_ticker("System healthy", speed="fast") }}
+{{ ascii_vu_meter("mix", value=135, label="MIX", width=10, peak=true, animate=true) }}
+{% end %}
+{% end %}
+{% end %}

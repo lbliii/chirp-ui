@@ -666,6 +666,10 @@ def create_app() -> App:
     async def ascii_composites_page(request: Request):
         return Template("ascii_composites_page.html", page_title="ASCII Composites")
 
+    @app.route("/ascii-displays")
+    async def ascii_displays_page(request: Request):
+        return Template("ascii_displays_page.html", page_title="ASCII Displays")
+
     # ── Split panel ───────────────────────────────────────────────────
 
     @app.route("/split-panel")

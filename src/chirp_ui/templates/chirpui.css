@@ -15406,6 +15406,16 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-spinner--blocks .chirpui-ascii-spinner__char:nth-child(3) { animation-delay: -0.4s; }
 .chirpui-ascii-spinner--blocks .chirpui-ascii-spinner__char:nth-child(4) { animation-delay: -0.2s; }
 
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-spinner__char {
+        animation: none;
+        opacity: 0;
+    }
+
+    .chirpui-ascii-spinner__char:first-child {
+        opacity: 1;
+    }
+}
 }
 
 /* === partials/139_ascii-badge.css === */

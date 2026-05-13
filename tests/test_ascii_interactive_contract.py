@@ -107,6 +107,7 @@ def test_ascii_fader_exposes_visible_focus_state() -> None:
 def test_ascii_motion_variants_respect_reduced_motion() -> None:
     motion_partials = [
         "074_ascii-icons.css",
+        "138_ascii-spinner.css",
         "142_ascii-skeleton.css",
         "143_ascii-toggle.css",
         "144_ascii-switch.css",
