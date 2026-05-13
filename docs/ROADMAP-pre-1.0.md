@@ -194,6 +194,27 @@ Acceptance:
 - `chirp-theme` CSS contains only theme tokens, content polish, and actively
   referenced vertical styles.
 
+## Active Plan Mapping
+
+Each active plan is mapped to this roadmap so planning docs do not drift into a
+parallel backlog.
+
+| Plan | Roadmap workstream |
+|---|---|
+| `PLAN-agent-grounding-depth.md` | Public Surface Stabilization |
+| `PLAN-ascii-maturity.md` | Public Surface Stabilization |
+| `PLAN-bengal-chirpui-library-contract.md` | Bengal And chirp-theme Integration |
+| `PLAN-chirp-theme-content-parity.md` | Bengal And chirp-theme Integration |
+| `PLAN-css-scope-and-layer.md` | CSS Scope Hardening |
+| `PLAN-dense-object-chrome-next.md` | Dense Navigation Productization |
+| `PLAN-layout-widget-brainstorm.md` | Public Surface Stabilization |
+| `PLAN-navigation-contract-application.md` | Dense Navigation Productization |
+| `PLAN-primitive-vocabulary-hardening.md` | Public Surface Stabilization |
+| `PLAN-primitives-and-components.md` | Public Surface Stabilization |
+| `PLAN-skeleton-equivalent-roadmap.md` | Visible Design-System Showcase |
+| `PLAN-test-coverage-hardening.md` | Verification Reliability |
+| `PLAN-theme-tokens.md` | Theme Authoring UX |
+
 ## Sequencing
 
 1. Keep verification reliability wired into local and hosted CI gates.
