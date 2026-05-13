@@ -563,6 +563,7 @@ class TestAsciiKnob:
         ).render()
         assert "chirpui-ascii-knob" in html
         assert "<fieldset" in html
+        assert 'role="radiogroup"' in html
         assert 'type="radio"' in html
 
     def test_selected(self, env: Environment) -> None:
@@ -578,6 +579,7 @@ class TestAsciiKnob:
             '{{ ascii_knob("m", options=["X"], label="Mode") }}'
         ).render()
         assert "<legend" in html
+        assert 'aria-label="Mode"' in html
         assert "Mode" in html
 
     def test_variant(self, env: Environment) -> None:
@@ -678,6 +680,8 @@ class TestAsciiRadio:
             "{% end %}"
         ).render()
         assert "<fieldset" in html
+        assert 'role="radiogroup"' in html
+        assert 'aria-label="Level"' in html
         assert "Level" in html
 
     def test_group_horizontal(self, env: Environment) -> None:
