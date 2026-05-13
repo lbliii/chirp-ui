@@ -973,8 +973,11 @@ class TestAsciiTable:
         ).render()
         assert "chirpui-ascii-table" in html
         assert 'role="table"' in html
+        assert 'aria-label="ASCII table"' in html
         assert 'role="columnheader"' in html
         assert 'role="cell"' in html
+        assert ">api</span>" in html
+        assert ">OK</span>" in html
 
     def test_variant_double(self, env: Environment) -> None:
         html = env.from_string(
