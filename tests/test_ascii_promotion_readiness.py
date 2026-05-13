@@ -25,6 +25,13 @@ INTERACTIVE_CONTROL_CANDIDATES = {
     "ascii-toggle",
 }
 
+DATA_STATUS_CANDIDATES = {
+    "ascii-progress",
+    "ascii-stepper",
+    "ascii-table",
+    "ascii-vu",
+}
+
 ASCII_PROMOTION_MATRIX = {
     "ascii-7seg": "display-motion",
     "ascii-badge": "static-display",
@@ -85,7 +92,9 @@ def test_ascii_promotion_matrix_covers_public_ascii_templates() -> None:
 def test_ascii_promotion_candidates_have_render_evidence() -> None:
     render_tests = ASCII_TESTS.read_text(encoding="utf-8")
 
-    for name in sorted(STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES):
+    for name in sorted(
+        STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES | DATA_STATUS_CANDIDATES
+    ):
         css_class = f"chirpui-{name}"
         assert css_class in render_tests, name
 
@@ -94,7 +103,9 @@ def test_ascii_promotion_candidates_have_visual_audit_evidence() -> None:
     browser_tests = BROWSER_TESTS.read_text(encoding="utf-8")
     showcase = SHOWCASE.read_text(encoding="utf-8")
 
-    for name in sorted(STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES):
+    for name in sorted(
+        STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES | DATA_STATUS_CANDIDATES
+    ):
         css_class = f"chirpui-{name}"
         assert css_class in browser_tests, name
         assert css_class in showcase, name
@@ -104,7 +115,9 @@ def test_ascii_promotion_candidates_are_stable_in_manifest_and_docs() -> None:
     docs = COMPONENT_OPTIONS.read_text(encoding="utf-8")
     components = build_manifest()["components"]
 
-    for name in sorted(STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES):
+    for name in sorted(
+        STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES | DATA_STATUS_CANDIDATES
+    ):
         assert components[name]["maturity"] == "stable", name
         template_line = f"- **Template:** `chirpui/{components[name]['template']}`"
         section = docs.split(template_line, 1)[1][:400]
@@ -113,7 +126,9 @@ def test_ascii_promotion_candidates_are_stable_in_manifest_and_docs() -> None:
 
 def test_ascii_non_static_display_candidates_stay_deferred() -> None:
     for name, entry in _ascii_components().items():
-        if name in STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES:
+        if name in (
+            STATIC_DISPLAY_CANDIDATES | INTERACTIVE_CONTROL_CANDIDATES | DATA_STATUS_CANDIDATES
+        ):
             continue
         assert ASCII_PROMOTION_MATRIX[name] in DEFERRED_TRACKS, name
         assert entry["maturity"] == "experimental", name

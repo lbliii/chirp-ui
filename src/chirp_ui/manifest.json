@@ -2142,7 +2142,7 @@
       ],
       "lineno": 14,
       "macro": "ascii_progress",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2553,7 +2553,7 @@
       ],
       "lineno": 18,
       "macro": "ascii_stepper",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2838,7 +2838,7 @@
       ],
       "lineno": 24,
       "macro": "ascii_table",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -3299,7 +3299,7 @@
       ],
       "lineno": 21,
       "macro": "ascii_vu_meter",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -22403,10 +22403,10 @@
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 111,
+      "experimental": 107,
       "internal": 2,
       "legacy": 39,
-      "stable": 184
+      "stable": 188
     },
     "component_requirements": {
       "alpine": 23,

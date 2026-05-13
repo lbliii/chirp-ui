@@ -38,9 +38,10 @@ usage.
 | `ascii-radio-group` | Promote to stable | Native radio semantics, legend/name labelling, visual audit coverage, and browser checked-state proof. |
 | `ascii-switch` | Promote to stable | Native checkbox-backed switch semantics, explicit `aria-checked`, visual audit coverage, and browser checked-state proof. |
 | `ascii-toggle` | Promote to stable | Native checkbox-backed switch semantics, explicit `aria-checked`, visual audit coverage, and browser checked-state proof. |
-| `ascii-progress` | Keep experimental | Render and browser proof now align bounded ARIA, visual fill, and displayed value; visual audit/promotion review remains. |
-| `ascii-table` | Keep experimental | Render and browser proof now cover table naming, row cells, headers, and hidden decorative borders; responsive visual audit remains. |
-| `ascii-vu` | Keep experimental | Render and browser proof now align bounded meter value, readout, filled cells, peak marker, and reduced-motion behavior. |
+| `ascii-progress` | Promote to stable | Render and browser proof align bounded ARIA, visual fill, displayed value, and visual audit coverage. |
+| `ascii-stepper` | Promote to stable | Render and browser proof cover bounded active state, `aria-current`, visible step state, and visual audit coverage. |
+| `ascii-table` | Promote to stable | Render and browser proof cover table naming, row cells, headers, hidden decorative borders, and visual audit coverage. |
+| `ascii-vu` | Promote to stable | Render and browser proof align bounded meter value, readout, filled cells, peak marker, reduced-motion behavior, and visual audit coverage. |
 | `split-flap` | Keep experimental | Render and browser proof now expose readable text while hiding animated character boxes and stopping animation under reduced motion. |
 
 ## Promotion Rule
@@ -116,6 +117,10 @@ contracts, and each already has render proof for default and non-default modes.
 | `ascii-radio-group` | Interactive control | Promoted; native radio state drives visible selection and browser proof covers selection changes. |
 | `ascii-knob` | Interactive control | Promoted; native radio state drives visible positions and browser proof covers selection changes. |
 | `ascii-fader` | Interactive control | Promoted; Alpine sync keeps native range state, visible fill, and readout aligned after keyboard changes. |
+| `ascii-progress` | Data/status | Promoted; bounded value drives ARIA, fill, and readout. |
+| `ascii-stepper` | Data/status | Promoted; bounded current step drives active, complete, pending, and `aria-current` state. |
+| `ascii-table` | Data/status | Promoted; table roles and decorative borders are browser-proven. |
+| `ascii-vu` | Data/status | Promoted; bounded value drives meter ARIA, visible cells, readout, and peak marker. |
 | `ascii-error` | Static display deferred | Keep experimental until error-page usage proves heading/action conventions. |
 | Remaining interactive controls | Deferred | Keep experimental until controller sync, mixed momentary/toggle behavior, or panel composition decisions settle. |
 | Composite/data/status/motion displays | Deferred | Keep experimental until reduced-motion, ARIA, and responsive browser proof are complete for each behavior family. |
@@ -138,17 +143,13 @@ vocabulary.
 | `ascii-error` | Keep experimental | ASCII maturity pass. |
 | `ascii-indicator` | Keep experimental | ASCII maturity pass. |
 | `ascii-modal` | Keep experimental | ASCII maturity pass. |
-| `ascii-progress` | Keep experimental | ASCII maturity pass. |
 | `ascii-skeleton` | Keep experimental | ASCII maturity pass. |
 | `ascii-sparkline` | Keep experimental | ASCII maturity pass. |
 | `ascii-spinner` | Keep experimental | ASCII maturity pass. |
-| `ascii-stepper` | Keep experimental | ASCII maturity pass. |
 | `ascii-tab` | Keep experimental | ASCII maturity pass. |
-| `ascii-table` | Keep experimental | ASCII maturity pass. |
 | `ascii-tabs` | Keep experimental | ASCII maturity pass. |
 | `ascii-ticker` | Keep experimental | ASCII maturity pass. |
 | `ascii-tile-btn` | Keep experimental | ASCII maturity pass. |
-| `ascii-vu` | Keep experimental | ASCII maturity pass. |
 | `aura` | Keep experimental | Motion/effects visual proof. |
 | `aurora` | Keep experimental | Motion/effects visual proof. |
 | `band` | Keep experimental | Marketing pattern proof. |

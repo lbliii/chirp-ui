@@ -308,9 +308,13 @@ def test_audit_visible_public_surface_dispositions_are_intentional() -> None:
         "ascii-empty",
         "ascii-fader",
         "ascii-knob",
+        "ascii-progress",
         "ascii-radio-group",
         "ascii-switch",
+        "ascii-stepper",
+        "ascii-table",
         "ascii-toggle",
+        "ascii-vu",
     }
     for name in sorted(promoted_ascii):
         entry = m["components"][name]
@@ -319,10 +323,7 @@ def test_audit_visible_public_surface_dispositions_are_intentional() -> None:
         assert entry["category"] == "ascii"
         assert entry["authoring"] == "available"
 
-    still_experimental = {
-        "ascii-progress",
-        "ascii-table",
-    }
+    still_experimental = {"ascii-error", "ascii-tile-btn"}
     for name in sorted(still_experimental):
         entry = m["components"][name]
         assert entry["maturity"] == "experimental"

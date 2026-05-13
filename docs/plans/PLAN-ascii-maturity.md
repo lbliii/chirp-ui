@@ -23,6 +23,9 @@
 > `ascii-toggle`, `ascii-switch`, `ascii-radio-group`, and `ascii-knob`.
 > `ascii-fader` has since joined the stable set after gaining Alpine-backed
 > runtime sync for its native range value, visible fill, and readout.
+> Data/status widgets `ascii-progress`, `ascii-stepper`, `ascii-table`, and
+> `ascii-vu` have joined the stable set after visual audit coverage landed for
+> the family.
 
 ---
 
@@ -86,7 +89,7 @@ The first stable wave deliberately leaves these families experimental:
 | Error page primitive | `ascii-error` | Needs real recipe usage for heading, code, and action conventions before becoming normal vocabulary. |
 | Interactive controls | `ascii-breaker-panel`, `ascii-tile-btn` | Tile button needs a momentary-vs-toggle API decision; breaker panel needs grouped panel semantics. |
 | Composite navigation/dialogs | `ascii-card`, `ascii-modal`, `ascii-tab`, `ascii-tabs` | Needs parity proof against non-ASCII component contracts and route/dialog examples. |
-| Data/status widgets | `ascii-progress`, `ascii-stepper`, `ascii-table`, `ascii-vu` | Needs responsive visual audit proof and data-state contract review. |
+| Data/status widgets | None | Current data/status widgets have render, browser, and visual audit proof. |
 | Motion/display widgets | `ascii-7seg`, `ascii-indicator`, `ascii-skeleton`, `ascii-sparkline`, `ascii-spinner`, `ascii-ticker`, `split-flap` | Needs reduced-motion and accessible-name proof to stay paired with visual audit coverage before promotion. |
 
 ### Interactive Control Gate

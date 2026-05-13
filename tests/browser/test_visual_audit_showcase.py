@@ -111,6 +111,7 @@ def test_visual_audit_gap_families_render(page):
         "[data-audit-section='ascii-tui'] .chirpui-ascii-empty": 1,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-fader": 1,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-knob": 1,
+        "[data-audit-section='ascii-tui'] .chirpui-ascii-progress": 1,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-radio": 2,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-radio-group": 1,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-switch": 1,

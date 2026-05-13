@@ -4212,7 +4212,7 @@ ASCII Progress
 - **Template:** `chirpui/ascii_progress.html`
 - **Macro:** `ascii_progress`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
@@ -4316,7 +4316,7 @@ ASCII Stepper
 - **Template:** `chirpui/ascii_stepper.html`
 - **Macro:** `ascii_stepper`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `success`
@@ -4381,7 +4381,7 @@ ASCII Table
 - **Template:** `chirpui/ascii_table.html`
 - **Macro:** `ascii_table`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4494,7 +4494,7 @@ ASCII VU Meter
 - **Template:** `chirpui/ascii_vu_meter.html`
 - **Macro:** `ascii_vu_meter`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`

@@ -1130,7 +1130,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-progress--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-empty": ComponentDescriptor(
         block="ascii-empty",
@@ -1252,7 +1252,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii-table__th",
         ),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-indicator": ComponentDescriptor(
         block="ascii-indicator",
@@ -1338,7 +1338,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-vu--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
         macro="ascii_vu_meter",
     ),
     "ascii-7seg": ComponentDescriptor(
@@ -1397,7 +1397,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-stepper--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "split-flap": ComponentDescriptor(
         block="split-flap",
