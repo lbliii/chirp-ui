@@ -28,6 +28,12 @@ def test_verification_gate_policy_matches_poe_tasks() -> None:
     assert "test-js" in tasks["ci"]["sequence"]
     assert "test-cov" not in tasks["ci"]["sequence"]
     assert "test-browser" not in tasks["ci"]["sequence"]
+    assert tasks["test-browser-chrome"]["cmd"].startswith(
+        "pytest tests/browser/test_rail_to_tray_chrome.py"
+    )
+    assert "tests/browser/test_application_chrome_gauntlet.py" in tasks[
+        "test-browser-chrome"
+    ]["cmd"]
     assert tasks["ci-browser"]["sequence"] == ["test-browser"]
     assert coverage["fail_under"] == 80
 
@@ -47,6 +53,7 @@ def test_verification_doc_names_locked_environment_and_kida_failure() -> None:
         "Gate Policy",
         "uv run poe test-cov",
         "uv run poe ci-browser",
+        "uv run poe test-browser-chrome",
         "fail_under = 80",
         "Browser tests stay outside",
     ]:
@@ -65,6 +72,8 @@ def test_verification_doc_routes_browser_sensitive_proof() -> None:
         "Token, CSS partial, cascade layer, or scope behavior",
         "Dialog, focus, overflow, htmx lifecycle, Alpine lifecycle, responsive layout",
         "uv run poe ci-browser",
+        "Application chrome rail/tray, command focus, route-tab scroll, badge stability",
+        "uv run poe test-browser-chrome",
         "uv run poe docs-build-all",
         "Theme packages, Bengal templates, packaged assets",
     ]:
