@@ -912,7 +912,7 @@
       ],
       "lineno": 16,
       "macro": "ascii_7seg",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1835,7 +1835,7 @@
       ],
       "lineno": 25,
       "macro": "indicator",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2335,7 +2335,7 @@
       ],
       "lineno": 17,
       "macro": "ascii_skeleton",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2400,7 +2400,7 @@
       ],
       "lineno": 16,
       "macro": "ascii_sparkline",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2474,7 +2474,7 @@
       ],
       "lineno": 13,
       "macro": "ascii_spinner",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2984,7 +2984,7 @@
       ],
       "lineno": 14,
       "macro": "ascii_ticker",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -18024,7 +18024,7 @@
       ],
       "lineno": 21,
       "macro": "split_flap",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -22403,10 +22403,10 @@
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 107,
+      "experimental": 100,
       "internal": 2,
       "legacy": 39,
-      "stable": 188
+      "stable": 195
     },
     "component_requirements": {
       "alpine": 23,

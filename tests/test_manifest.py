@@ -301,20 +301,27 @@ def test_audit_visible_public_surface_dispositions_are_intentional() -> None:
         assert entry["authoring"] == "available"
 
     promoted_ascii = {
+        "ascii-7seg",
         "ascii-badge",
         "ascii-border",
         "ascii-checkbox",
         "ascii-divider",
         "ascii-empty",
         "ascii-fader",
+        "ascii-indicator",
         "ascii-knob",
         "ascii-progress",
         "ascii-radio-group",
+        "ascii-skeleton",
+        "ascii-sparkline",
+        "ascii-spinner",
         "ascii-switch",
         "ascii-stepper",
         "ascii-table",
+        "ascii-ticker",
         "ascii-toggle",
         "ascii-vu",
+        "split-flap",
     }
     for name in sorted(promoted_ascii):
         entry = m["components"][name]

@@ -3909,7 +3909,7 @@ ASCII 7-Segment Display
 - **Template:** `chirpui/ascii_7seg.html`
 - **Macro:** `ascii_7seg`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
@@ -4136,7 +4136,7 @@ ASCII Indicator Light
 - **Template:** `chirpui/ascii_indicator.html`
 - **Macro:** `indicator`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `accent`, `error`, `muted`, `success`, `warning`
@@ -4260,7 +4260,7 @@ ASCII Skeleton
 - **Template:** `chirpui/ascii_skeleton.html`
 - **Macro:** `ascii_skeleton`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `avatar`, `card`, `heading`, `text`
@@ -4279,7 +4279,7 @@ ASCII Sparkline
 - **Template:** `chirpui/ascii_sparkline.html`
 - **Macro:** `ascii_sparkline`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `gradient`, `muted`
@@ -4297,7 +4297,7 @@ ASCII Spinner component
 - **Template:** `chirpui/ascii_spinner.html`
 - **Macro:** `ascii_spinner`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `arrows`, `blocks`, `box`, `braille`, `dots`
@@ -4422,7 +4422,7 @@ ASCII Ticker
 - **Template:** `chirpui/ascii_ticker.html`
 - **Macro:** `ascii_ticker`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
@@ -8278,7 +8278,7 @@ ASCII Split-Flap Display
 - **Template:** `chirpui/ascii_split_flap.html`
 - **Macro:** `split_flap`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `amber`, `default`, `green`

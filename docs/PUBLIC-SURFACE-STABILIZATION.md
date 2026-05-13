@@ -42,7 +42,13 @@ usage.
 | `ascii-stepper` | Promote to stable | Render and browser proof cover bounded active state, `aria-current`, visible step state, and visual audit coverage. |
 | `ascii-table` | Promote to stable | Render and browser proof cover table naming, row cells, headers, hidden decorative borders, and visual audit coverage. |
 | `ascii-vu` | Promote to stable | Render and browser proof align bounded meter value, readout, filled cells, peak marker, reduced-motion behavior, and visual audit coverage. |
-| `split-flap` | Keep experimental | Render and browser proof now expose readable text while hiding animated character boxes and stopping animation under reduced motion. |
+| `ascii-7seg` | Promote to stable | Render and browser proof cover readable display names, visible digit framing, and visual audit coverage. |
+| `ascii-indicator` | Promote to stable | Render proof covers labelled and visually-hidden fallback names; visual audit/browser proof covers display usage. |
+| `ascii-skeleton` | Promote to stable | Render proof covers text/card/avatar/heading modes, reduced-motion CSS, and visual audit coverage. |
+| `ascii-sparkline` | Promote to stable | Render and browser proof cover readable sparkline names, bounded bars, and visual audit coverage. |
+| `ascii-spinner` | Promote to stable | Render and browser proof cover status naming, labelled mode, reduced-motion behavior, and visual audit coverage. |
+| `ascii-ticker` | Promote to stable | Render and browser proof cover marquee naming, hidden duplicated track text, reduced-motion behavior, and visual audit coverage. |
+| `split-flap` | Promote to stable | Render and browser proof expose readable text while hiding animated character boxes, stopping animation under reduced motion, and visual audit coverage. |
 
 ## Promotion Rule
 
@@ -86,13 +92,13 @@ whole inventory on every pass.
 
 ## Next Batches
 
-- Promote only the ASCII/TUI static display subset once visual audit coverage
-  and generated docs/manifest projections agree.
+- Decide the remaining ASCII/TUI composites and recipe-style primitives after
+  parity proof lands against non-ASCII cards, modals, tabs, and error-page
+  conventions.
 - Classify the remaining marketing patterns: feature sections, lifecycle
   showcase, comparison/pricing surfaces, and pattern assets.
-- Keep interactive, composite, data/status, and motion ASCII/TUI controls under
-  `PLAN-ascii-maturity.md` until accessibility, reduced-motion, and gauntlet
-  checks settle.
+- Keep remaining composite ASCII/TUI surfaces under `PLAN-ascii-maturity.md`
+  until parity checks settle.
 - Review dense navigation composites only after object-page browser proof lands.
 - Keep legacy primitive decisions in `PLAN-primitive-vocabulary-hardening.md`.
 - Keep first-party legacy-helper cleanup under
@@ -101,9 +107,10 @@ whole inventory on every pass.
 
 ## ASCII Promotion Readiness
 
-The first ASCII/TUI promotion wave is intentionally limited to static display
-primitives. They do not add keyboard behavior, mutable state, or animation
-contracts, and each already has render proof for default and non-default modes.
+ASCII/TUI promotion is split by behavior family so static primitives,
+interactive controls, data/status widgets, and motion displays each carry the
+right render, browser, visual audit, and generated-docs evidence before
+becoming stable.
 
 | Component | Promotion class | Status |
 | --- | --- | --- |
@@ -121,9 +128,16 @@ contracts, and each already has render proof for default and non-default modes.
 | `ascii-stepper` | Data/status | Promoted; bounded current step drives active, complete, pending, and `aria-current` state. |
 | `ascii-table` | Data/status | Promoted; table roles and decorative borders are browser-proven. |
 | `ascii-vu` | Data/status | Promoted; bounded value drives meter ARIA, visible cells, readout, and peak marker. |
+| `ascii-7seg` | Display/motion | Promoted; readable display names, visual digits, browser proof, manifest, and generated docs evidence agree. |
+| `ascii-indicator` | Display/motion | Promoted; labelled and visually-hidden fallback names, visual audit, browser, manifest, and generated docs evidence agree. |
+| `ascii-skeleton` | Display/motion | Promoted; render, reduced-motion CSS, visual audit, browser, manifest, and generated docs evidence agree. |
+| `ascii-sparkline` | Display/motion | Promoted; readable sparkline names, render, visual audit, browser, manifest, and generated docs evidence agree. |
+| `ascii-spinner` | Display/motion | Promoted; status naming, labelled mode, reduced-motion browser proof, visual audit, manifest, and generated docs evidence agree. |
+| `ascii-ticker` | Display/motion | Promoted; marquee naming, hidden duplicated track text, reduced-motion browser proof, visual audit, manifest, and generated docs evidence agree. |
+| `split-flap` | Display/motion | Promoted; readable text, hidden animated character boxes, reduced-motion browser proof, visual audit, manifest, and generated docs evidence agree. |
 | `ascii-error` | Static display deferred | Keep experimental until error-page usage proves heading/action conventions. |
 | Remaining interactive controls | Deferred | Keep experimental until controller sync, mixed momentary/toggle behavior, or panel composition decisions settle. |
-| Composite/data/status/motion displays | Deferred | Keep experimental until reduced-motion, ARIA, and responsive browser proof are complete for each behavior family. |
+| Remaining composites | Deferred | Keep experimental until parity proof against non-ASCII component contracts and route/dialog examples is complete. |
 
 ## Experimental Disposition Inventory
 
@@ -137,18 +151,12 @@ vocabulary.
 | --- | --- | --- |
 | `animated-counter` | Keep experimental | Motion/effects visual proof. |
 | `answer-card` | Recipe-only | Social recipe proof; promote only after repeated app use. |
-| `ascii-7seg` | Keep experimental | ASCII maturity pass. |
 | `ascii-breaker-panel` | Keep experimental | ASCII maturity pass. |
 | `ascii-card` | Keep experimental | ASCII maturity pass. |
 | `ascii-error` | Keep experimental | ASCII maturity pass. |
-| `ascii-indicator` | Keep experimental | ASCII maturity pass. |
 | `ascii-modal` | Keep experimental | ASCII maturity pass. |
-| `ascii-skeleton` | Keep experimental | ASCII maturity pass. |
-| `ascii-sparkline` | Keep experimental | ASCII maturity pass. |
-| `ascii-spinner` | Keep experimental | ASCII maturity pass. |
 | `ascii-tab` | Keep experimental | ASCII maturity pass. |
 | `ascii-tabs` | Keep experimental | ASCII maturity pass. |
-| `ascii-ticker` | Keep experimental | ASCII maturity pass. |
 | `ascii-tile-btn` | Keep experimental | ASCII maturity pass. |
 | `aura` | Keep experimental | Motion/effects visual proof. |
 | `aurora` | Keep experimental | Motion/effects visual proof. |
@@ -192,7 +200,6 @@ vocabulary.
 | `site-nav-link` | Keep experimental | Marketing pattern proof. |
 | `site-shell` | Keep experimental | Marketing pattern proof. |
 | `sparkle` | Keep experimental | Motion/effects visual proof. |
-| `split-flap` | Keep experimental | ASCII maturity pass. |
 | `spotlight-card` | Keep experimental | Motion/effects visual proof. |
 | `symbol-rain` | Keep experimental | Motion/effects visual proof. |
 | `text-reveal` | Keep experimental | Motion/effects visual proof. |

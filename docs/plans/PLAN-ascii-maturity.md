@@ -12,7 +12,7 @@
 > have now landed for checkbox, toggle, switch, radio group, fader, knob,
 > breaker panel, progress, stepper, modal, tabs, table, VU meter, split-flap,
 > spinner, ticker, indicator, sparkline, and 7-segment display. Remaining work
-> is visual audit coverage and deciding which controls become stable before
+> is deciding the remaining composite and recipe-style ASCII surfaces before
 > 1.0.
 > The first accepted promotion set is limited to static display primitives:
 > `ascii-badge`, `ascii-border`, `ascii-divider`, and `ascii-empty`.
@@ -26,6 +26,10 @@
 > Data/status widgets `ascii-progress`, `ascii-stepper`, `ascii-table`, and
 > `ascii-vu` have joined the stable set after visual audit coverage landed for
 > the family.
+> Display/motion widgets `ascii-7seg`, `ascii-indicator`, `ascii-skeleton`,
+> `ascii-sparkline`, `ascii-spinner`, `ascii-ticker`, and `split-flap` have
+> joined the stable set after visual audit coverage was paired with accessible
+> name and reduced-motion proof.
 
 ---
 
@@ -90,7 +94,7 @@ The first stable wave deliberately leaves these families experimental:
 | Interactive controls | `ascii-breaker-panel`, `ascii-tile-btn` | Tile button needs a momentary-vs-toggle API decision; breaker panel needs grouped panel semantics. |
 | Composite navigation/dialogs | `ascii-card`, `ascii-modal`, `ascii-tab`, `ascii-tabs` | Needs parity proof against non-ASCII component contracts and route/dialog examples. |
 | Data/status widgets | None | Current data/status widgets have render, browser, and visual audit proof. |
-| Motion/display widgets | `ascii-7seg`, `ascii-indicator`, `ascii-skeleton`, `ascii-sparkline`, `ascii-spinner`, `ascii-ticker`, `split-flap` | Needs reduced-motion and accessible-name proof to stay paired with visual audit coverage before promotion. |
+| Motion/display widgets | None | Current display/motion widgets have render, browser, reduced-motion, and visual audit proof. |
 
 ### Interactive Control Gate
 

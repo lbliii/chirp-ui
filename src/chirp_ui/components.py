@@ -1115,7 +1115,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         extra_emits=("chirpui-ascii-sparkline__bar",),
         trim_emits=("chirpui-ascii-sparkline--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-progress": ComponentDescriptor(
         block="ascii-progress",
@@ -1173,7 +1173,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii-spinner__label",
         ),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-skeleton": ComponentDescriptor(
         block="ascii-skeleton",
@@ -1185,7 +1185,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii-skeleton__line--header",
         ),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-toggle": ComponentDescriptor(
         block="ascii-toggle",
@@ -1265,7 +1265,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii-indicator__light",
         ),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
         macro="indicator",
     ),
     "ascii-tile-btn": ComponentDescriptor(
@@ -1353,7 +1353,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-7seg--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-checkbox": ComponentDescriptor(
         block="ascii-checkbox",
@@ -1409,7 +1409,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-split-flap--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-ticker": ComponentDescriptor(
         block="ascii-ticker",
@@ -1424,7 +1424,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-ticker--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-card": ComponentDescriptor(
         block="ascii-card",
