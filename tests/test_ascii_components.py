@@ -434,6 +434,16 @@ class TestAsciiFader:
         ).render()
         assert "chirpui-ascii-fader" in html
         assert "VOL" in html
+        assert 'aria-label="VOL"' in html
+
+    def test_name_fallback_labels_range_input(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_fader.html" import ascii_fader %}'
+            '{{ ascii_fader("gain", value=25) }}'
+        ).render()
+        assert 'type="range"' in html
+        assert 'name="gain"' in html
+        assert 'aria-label="gain"' in html
 
     def test_range_input(self, env: Environment) -> None:
         html = env.from_string(

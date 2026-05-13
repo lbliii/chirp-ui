@@ -35,7 +35,7 @@
     <input class="chirpui-ascii-fader__input chirpui-visually-hidden"
            type="range" name="{{ name }}" value="{{ bounded_value }}"
            min="0" max="100" step="1"
-           {% if label %}aria-label="{{ label }}"{% end %}>
+           aria-label="{{ label or name }}">
     {% if label %}<span class="chirpui-ascii-fader__label">{{ label }}</span>{% end %}
     <span class="chirpui-ascii-fader__value">{{ bounded_value }}</span>
 </div>
