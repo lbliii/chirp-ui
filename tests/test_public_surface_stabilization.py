@@ -104,3 +104,26 @@ def test_experimental_disposition_tracks_have_required_proof_rows() -> None:
     }
 
     assert inventory_tracks <= proof_tracks
+
+
+def test_public_surface_closure_batches_cover_open_decision_families() -> None:
+    text = DOC.read_text(encoding="utf-8")
+    section = text.split("## Closure Batches", 1)[1].split("## Next Batches", 1)[0]
+
+    for batch in [
+        "ASCII/TUI controls",
+        "Marketing patterns",
+        "Motion/effects",
+        "Form and controls",
+        "Recipe-only patterns",
+    ]:
+        assert f"| {batch} |" in section
+
+    for proof in [
+        "ARIA, keyboard, reduced-motion, render, and browser proof",
+        "responsive pattern docs and visual audit coverage",
+        "reduced-motion and visual/browser proof",
+        "focus, keyboard, invalid-state, overflow, and render proof",
+        "pattern-role and non-preferred",
+    ]:
+        assert proof in section

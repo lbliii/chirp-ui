@@ -60,6 +60,19 @@ missing before a component can change maturity or authoring status.
 | Form interaction proof | Render tests plus keyboard/focus/browser proof for interactive editing or token-input behavior. | Form/component tests, browser tests when focus or overflow matters. |
 | Control interaction proof | State, invalid fallback, ARIA, keyboard, and layout proof for controls. | Focused render tests plus browser proof for pointer/keyboard behavior. |
 
+## Closure Batches
+
+Use these batches to finish the 1.0 public surface matrix without reopening the
+whole inventory on every pass.
+
+| Batch | Components | Closure gate |
+| --- | --- | --- |
+| ASCII/TUI controls | `ascii-*`, `split-flap` | Complete the ASCII maturity gate, then promote only controls with ARIA, keyboard, reduced-motion, render, and browser proof. |
+| Marketing patterns | `band`, `feature-section`, `feature-stack`, `site-*`, `lifecycle-showcase` | Prove responsive pattern docs and visual audit coverage; keep recipe-only items as patterns unless repeated app use appears. |
+| Motion/effects | `aura`, `aurora`, `border-beam`, `confetti`, `dock`, `glitch`, `glow-card`, `gradient-text`, `grain`, `hero-effects`, `holy-light`, `marquee`, `meteor`, `neon`, `number-ticker`, `orbit`, `particle-bg`, `pulsing-btn`, `reveal-on-scroll`, `ripple-btn`, `rune-field`, `scanline`, `shimmer-btn`, `sparkle`, `spotlight-card`, `symbol-rain`, `text-reveal`, `typewriter`, `wobble` | Separate decorative-only effects from interaction-bearing effects; require reduced-motion and visual/browser proof before promotion. |
+| Form and controls | `composer-shell`, `facet-chip`, `token-input` | Require focus, keyboard, invalid-state, overflow, and render proof before changing maturity. |
+| Recipe-only patterns | `answer-card`, `catalog-rail`, `detail-header`, `live-event-card`, `media-hero-shelf`, `moderation-queue-item`, `thread-reader-layout`, `title-card`, `topic-card`, `watch-companion-layout` | Stay pattern-role and non-preferred until repeated app usage proves a component API. |
+
 ## Next Batches
 
 - Classify the remaining marketing patterns: feature sections, lifecycle
