@@ -235,6 +235,28 @@ Chirp UI owns this transport-level shell behavior. Apps still own endpoint cost,
 authorization, idempotency, and any business rule where repeated actions should
 queue, retry, or intentionally execute more than once.
 
+When writing custom route handlers, branch on `HX-Target`, not only
+`HX-Request`:
+
+| Request target | Response shape |
+|----------------|----------------|
+| `main` | Full page response containing `#page-content`; include OOB shell regions when route-scoped topbar/sidebar metadata changes. |
+| `page-root` | Page chrome fragment for section tabs: route tabs, page header, toolbar, and inner content. |
+| `page-content-inner` or another local target | Local fragment only; clear inherited shell selection with `hx-select="unset"` / `hx-disinherit="hx-select"` on the trigger. |
+
+Route-scoped `shell_actions` live outside `#page-content`, so a boosted
+shell-navigation response that changes actions should include:
+
+```html
+{% from "chirpui/shell_actions.html" import shell_actions_bar %}
+
+<div id="chirp-shell-actions" hx-swap-oob="innerHTML">
+  {{ shell_actions_bar(shell_actions) }}
+</div>
+```
+
+The canonical source-tree checklist is `docs/SHELL-TABS-CONTRACT.md`.
+
 Boosted navigation follows the shell scroll policy:
 
 - New route: scroll the **document** to the top.
