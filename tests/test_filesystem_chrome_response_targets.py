@@ -67,3 +67,10 @@ async def test_filesystem_inner_fragment_target_returns_local_fragment_only():
     assert 'id="page-root"' not in html
     assert 'id="chirp-shell-actions"' not in html
     assert 'data-testid="fs-filter-result"' in html
+
+
+async def test_filesystem_search_escapes_query_text():
+    html = await get_text("/fs-search?q=%3Cimg%20src=x%20onerror=alert(1)%3E")
+
+    assert "&lt;img src=x onerror=alert(1)&gt;" in html
+    assert "<img src=x onerror=alert(1)>" not in html

@@ -42,6 +42,8 @@ async def test_admin_consumer_route_tabs_swap_page_root(page, base_url):
     await wait_for_htmx(page)
     await expect(page).to_have_url(base_url + "/consumer-admin/jobs")
     await expect(page.get_by_test_id("consumer-admin-view-title")).to_have_text("Background jobs")
+    await expect(page.get_by_role("navigation", name="Breadcrumb")).to_be_visible()
+    await expect(page.get_by_role("button", name="Search admin")).to_be_visible()
     await expect(page.locator("#page-root")).to_have_count(1)
     await expect(page.locator("#page-content-inner")).to_have_count(1)
     await expect(page.locator("#main")).to_have_count(1)

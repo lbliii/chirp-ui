@@ -76,9 +76,9 @@ dialog APIs, htmx lifecycle, or Alpine lifecycle. Browser tests stay outside
 binaries.
 
 For application chrome slices, use `uv run poe test-browser-chrome` as the
-focused proof loop. It runs the rail-to-drawer recipe and multi-family chrome
-gauntlet plus Bengal docs chrome without executing every browser fixture in the
-suite.
+focused proof loop. It builds the published docs output first, then runs the
+rail-to-drawer recipe and multi-family chrome gauntlet plus Bengal docs chrome
+without executing every browser fixture in the suite.
 
 ## Proof Routing
 

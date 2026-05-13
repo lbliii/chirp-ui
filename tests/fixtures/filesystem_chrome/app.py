@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from html import escape
 from pathlib import Path
 
 from chirp import App, AppConfig
@@ -55,7 +56,8 @@ def create_app() -> App:
         q = request.query.get("q", "")
         if not q:
             return Response('<div class="chirpui-command-palette__empty">No results</div>')
-        return Response(f'<div class="chirpui-command-palette__item">Result for {q}</div>')
+        result = escape(q, quote=True)
+        return Response(f'<div class="chirpui-command-palette__item">Result for {result}</div>')
 
     app.mount_pages(str(PAGES_DIR))
     return app

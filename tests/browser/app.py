@@ -512,7 +512,21 @@ def _workspace_page_root_fragment(path: str) -> str:
     <a href="/consumer-workspace/settings" class="chirpui-route-tab{active["/consumer-workspace/settings"]}"{current["/consumer-workspace/settings"]} hx-boost="false" hx-select="unset" hx-get="/consumer-workspace/settings" hx-target="#page-root" hx-push-url="true" hx-swap="innerHTML"><span class="chirpui-route-tab__label">Settings</span><span class="chirpui-route-tab__badge chirpui-route-tab__badge--reserved" aria-hidden="true"></span></a>
   </nav>
 </div>
-<h1 data-testid="consumer-heading">Workspace consumer</h1>
+<div class="chirpui-stack chirpui-stack--sm">
+  <nav class="chirpui-breadcrumbs" aria-label="Breadcrumb">
+    <ol class="chirpui-breadcrumbs__list">
+      <li class="chirpui-breadcrumbs__item"><a href="/consumer-workspace" class="chirpui-breadcrumbs__link">Consumers</a></li>
+      <li class="chirpui-breadcrumbs__item"><span class="chirpui-breadcrumbs__current" aria-current="page">Workspace</span></li>
+    </ol>
+  </nav>
+  <div class="chirpui-cluster chirpui-cluster--sm">
+    <h1 data-testid="consumer-heading">Workspace consumer</h1>
+    <button type="button" class="chirpui-command-palette__trigger chirpui-command-palette-trigger chirpui-command-palette-trigger--sm" aria-label="Search workspace" x-data="chirpuiDialogTarget()" data-dialog-target="workspace-consumer-palette" @click="open()">
+      <span class="chirpui-command-palette__trigger-label">Search or jump</span>
+      <kbd class="chirpui-command-palette__kbd">/</kbd>
+    </button>
+  </div>
+</div>
 <div class="chirpui-action-strip chirpui-action-strip--muted chirpui-action-strip--sm chirpui-action-strip--scroll" role="toolbar" aria-label="Workspace page tools">
   <div class="chirpui-action-strip__inner">
     <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm" hx-get="/consumer-workspace/filter-fragment" hx-target="#page-content-inner" hx-swap="innerHTML" hx-select="unset" hx-disinherit="hx-select">Filter</button>
@@ -585,7 +599,21 @@ def _admin_page_root_fragment(path: str) -> str:
     <a href="/consumer-admin/audit" class="chirpui-route-tab{active["/consumer-admin/audit"]}"{current["/consumer-admin/audit"]} hx-boost="false" hx-select="unset" hx-get="/consumer-admin/audit" hx-target="#page-root" hx-push-url="true" hx-swap="innerHTML"><span class="chirpui-route-tab__label">Audit</span></a>
   </nav>
 </div>
-<h1 data-testid="consumer-admin-heading">Admin console</h1>
+<div class="chirpui-stack chirpui-stack--sm">
+  <nav class="chirpui-breadcrumbs" aria-label="Breadcrumb">
+    <ol class="chirpui-breadcrumbs__list">
+      <li class="chirpui-breadcrumbs__item"><a href="/consumer-workspace" class="chirpui-breadcrumbs__link">Consumers</a></li>
+      <li class="chirpui-breadcrumbs__item"><span class="chirpui-breadcrumbs__current" aria-current="page">Admin console</span></li>
+    </ol>
+  </nav>
+  <div class="chirpui-cluster chirpui-cluster--sm">
+    <h1 data-testid="consumer-admin-heading">Admin console</h1>
+    <button type="button" class="chirpui-command-palette__trigger chirpui-command-palette-trigger chirpui-command-palette-trigger--sm" aria-label="Search admin" x-data="chirpuiDialogTarget()" data-dialog-target="admin-consumer-palette" @click="open()">
+      <span class="chirpui-command-palette__trigger-label">Search admin</span>
+      <kbd class="chirpui-command-palette__kbd">/</kbd>
+    </button>
+  </div>
+</div>
 <div class="chirpui-action-strip chirpui-action-strip--muted chirpui-action-strip--sm chirpui-action-strip--scroll" role="toolbar" aria-label="Admin console tools">
   <div class="chirpui-action-strip__inner">
     <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Review</button>
