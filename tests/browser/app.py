@@ -425,6 +425,10 @@ def create_app() -> App:
     async def gauntlet_room(request: Request, room: str):
         return Template("gauntlet_page.html", **_gauntlet_context(room))
 
+    @app.route("/dense-object-chrome")
+    async def dense_object_chrome_page(request: Request):
+        return Template("dense_object_chrome_page.html", page_title="Dense Object Chrome")
+
     @app.route("/page-b")
     async def page_b(request: Request):
         return Template("page_b.html", page_title="Page B")
