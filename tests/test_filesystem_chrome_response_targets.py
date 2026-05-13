@@ -1,6 +1,9 @@
 """Response-shape contracts for the filesystem app chrome fixture."""
 
 import pytest
+
+pytest.importorskip("chirp")
+
 from chirp.testing import TestClient
 
 from tests.fixtures.filesystem_chrome.app import create_app

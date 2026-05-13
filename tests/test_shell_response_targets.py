@@ -1,6 +1,9 @@
 """Server response-shape contracts for app-shell HTMX targets."""
 
 import pytest
+
+pytest.importorskip("chirp")
+
 from chirp.testing import TestClient
 
 from tests.browser.app import create_app
