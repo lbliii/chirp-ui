@@ -73,6 +73,32 @@ Reference implementation:
 
 - `examples/component-showcase/templates/showcase/_cloud_console_nav.html`
 
+## Rail To Drawer Application Chrome
+
+Use when broad product navigation should stay persistent on desktop/tablet but
+move into an overlay on phones.
+
+Recipe:
+
+- `nav_tree(branch_mode="linked")` owns broad product movement.
+- A desktop rail keeps frequent destinations visible when horizontal space is
+  available.
+- `drawer` provides the phone fallback for the same broad navigation.
+- `command_palette_trigger` remains reachable in the command row.
+- `route_tabs` stay URL-backed and horizontally scroll instead of becoming side
+  rail mode switches.
+- `badge_label`, `badge_expected`, and `badge_loading` keep dense counts stable.
+
+Keep out of the public API for now:
+
+- a generic `application_chrome()` macro,
+- JavaScript-managed responsive overflow,
+- product-specific shell clones.
+
+Reference implementation:
+
+- `examples/component-showcase/templates/showcase/_rail_to_tray_chrome.html`
+
 ## Observability And Ops Console
 
 Use when dashboards, logs, traces, alerts, incidents, saved investigations, and

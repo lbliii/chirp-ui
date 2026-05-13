@@ -19,6 +19,7 @@
 {% from "chirpui/pagination.html" import pagination %}
 {% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
 {% from "showcase/_dense_object_chrome.html" import dense_project_object_chrome, dense_settings_object_chrome %}
+{% from "showcase/_rail_to_tray_chrome.html" import rail_to_tray_chrome %}
 {% from "showcase/_cloud_console_nav.html" import cloud_control_plane_console %}
 {% from "showcase/_suite_work_hub.html" import suite_work_hub_navigation %}
 {% from "showcase/_ops_console_nav.html" import ops_console_navigation %}
@@ -97,6 +98,12 @@
 </p>
 {{ dense_project_object_chrome() }}
 {{ dense_settings_object_chrome() }}
+
+<h2>Rail To Drawer Navigation</h2>
+<p class="showcase-copy">
+  Application chrome recipe: persistent broad navigation on desktop and a drawer fallback on phones using existing primitives.
+</p>
+{{ rail_to_tray_chrome() }}
 
 <h2>Cloud Console Navigation</h2>
 <p class="showcase-copy">
