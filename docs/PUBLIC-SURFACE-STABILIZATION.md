@@ -32,6 +32,8 @@ usage.
 | `ascii-progress` | Keep experimental | Render and browser proof now align bounded ARIA, visual fill, and displayed value; visual audit/promotion review remains. |
 | `ascii-table` | Keep experimental | Render and browser proof now cover table naming, row cells, headers, and hidden decorative borders; responsive visual audit remains. |
 | `ascii-toggle` | Keep experimental | Render and browser proof now cover switch role, keyboard toggling, disabled state, and dense-row focus. |
+| `ascii-vu` | Keep experimental | Render and browser proof now align bounded meter value, readout, filled cells, peak marker, and reduced-motion behavior. |
+| `split-flap` | Keep experimental | Render and browser proof now expose readable text while hiding animated character boxes and stopping animation under reduced motion. |
 
 ## Promotion Rule
 

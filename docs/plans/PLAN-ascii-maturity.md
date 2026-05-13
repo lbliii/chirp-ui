@@ -10,9 +10,10 @@
 > Current note: ASCII render tests, docs, and composite primitives shipped after
 > this plan was drafted. Interactive-control and composite/data proof passes
 > have now landed for checkbox, toggle, switch, radio group, fader, knob,
-> breaker panel, progress, stepper, modal, tabs, and table. Remaining work is
-> display/status polish, visual audit coverage, and deciding which controls
-> become stable before 1.0.
+> breaker panel, progress, stepper, modal, tabs, table, VU meter, split-flap,
+> spinner, ticker, indicator, sparkline, and 7-segment display. Remaining work
+> is visual audit coverage and deciding which controls become stable before
+> 1.0.
 
 ---
 
@@ -51,6 +52,19 @@ Completed proof in the composite/data batch:
 - `ascii-table` has an accessible table name, restores the first documented row
   cell, hides decorative borders from assistive technology, and has browser
   proof for roles and bounded composite state.
+
+Completed proof in the display/motion batch:
+
+- Display/motion templates are classified by executable proof group.
+- `ascii-vu` now clamps ARIA value, filled cells, peak marker, and readout from
+  one bounded value.
+- `split-flap` now exposes readable text while hiding animated character boxes
+  from assistive technology.
+- `ascii-7seg`, unlabelled `ascii-indicator`, and `ascii-ticker` now expose
+  stable accessible names instead of relying on decorative glyphs or duplicated
+  marquee text.
+- Browser proof covers accessible names, bounded VU state, split-flap readable
+  text, and reduced-motion behavior for spinner, split-flap, ticker, and VU.
 
 ### Interactive Control Gate
 
