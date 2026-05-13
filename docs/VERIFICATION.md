@@ -77,7 +77,8 @@ binaries.
 
 For application chrome slices, use `uv run poe test-browser-chrome` as the
 focused proof loop. It runs the rail-to-drawer recipe and multi-family chrome
-gauntlet without executing every browser fixture in the suite.
+gauntlet plus Bengal docs chrome without executing every browser fixture in the
+suite.
 
 ## Proof Routing
 

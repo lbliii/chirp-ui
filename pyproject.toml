@@ -201,7 +201,7 @@ test-fast = { cmd = "pytest tests/ -x -q --timeout=10", help = "Fast feedback lo
 test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov=bengal_themes --cov-report=term-missing", help = "Run tests with coverage" }
 test-js = { cmd = "npm test", help = "Run JavaScript island helper tests with Vitest" }
 test-browser = { cmd = "pytest tests/browser/ -q --timeout=30 --override-ini='addopts='", help = "Run browser integration tests (requires: uv sync --group browser && playwright install chromium)" }
-test-browser-chrome = { cmd = "pytest tests/browser/test_rail_to_tray_chrome.py tests/browser/test_application_chrome_gauntlet.py -q --timeout=30 --override-ini='addopts='", help = "Run focused application chrome browser proof" }
+test-browser-chrome = { cmd = "pytest tests/browser/test_rail_to_tray_chrome.py tests/browser/test_application_chrome_gauntlet.py tests/browser/test_bengal_docs_chrome.py -q --timeout=30 --override-ini='addopts='", help = "Run focused application chrome browser proof" }
 ci-browser = { sequence = ["test-browser"], help = "Browser integration tests (release gate)" }
 
 # Type Checking

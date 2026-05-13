@@ -34,6 +34,7 @@ def test_verification_gate_policy_matches_poe_tasks() -> None:
     assert "tests/browser/test_application_chrome_gauntlet.py" in tasks[
         "test-browser-chrome"
     ]["cmd"]
+    assert "tests/browser/test_bengal_docs_chrome.py" in tasks["test-browser-chrome"]["cmd"]
     assert tasks["ci-browser"]["sequence"] == ["test-browser"]
     assert coverage["fail_under"] == 80
 
@@ -54,6 +55,7 @@ def test_verification_doc_names_locked_environment_and_kida_failure() -> None:
         "uv run poe test-cov",
         "uv run poe ci-browser",
         "uv run poe test-browser-chrome",
+        "Bengal docs chrome",
         "fail_under = 80",
         "Browser tests stay outside",
     ]:
