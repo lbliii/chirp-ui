@@ -1085,6 +1085,7 @@ class TestAsciiToggle:
         ).render()
         assert "chirpui-ascii-toggle" in html
         assert 'type="checkbox"' in html
+        assert 'role="switch"' in html
         assert "Dark Mode" in html
 
     def test_checked(self, env: Environment) -> None:
@@ -1122,6 +1123,7 @@ class TestAsciiToggle:
             '{{ ascii_switch("pwr", label="Power", variant="danger") }}'
         ).render()
         assert "chirpui-ascii-switch" in html
+        assert 'role="switch"' in html
         assert "chirpui-ascii-switch--danger" in html
         assert "Power" in html
 
