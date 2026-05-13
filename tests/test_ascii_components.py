@@ -1188,6 +1188,15 @@ class TestAsciiTileBtn:
         assert "<label" in html
         assert 'type="checkbox"' in html
 
+    def test_toggle_lit_state_is_native_checked_only(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_tile_btn.html" import tile_btn %}'
+            '{{ tile_btn(toggle=true, name="pwr", lit=true) }}'
+        ).render()
+        assert "<label" in html
+        assert "checked" in html
+        assert "chirpui-ascii-tile-btn--lit" not in html
+
     def test_disabled(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_tile_btn.html" import tile_btn %}{{ tile_btn(disabled=true) }}'

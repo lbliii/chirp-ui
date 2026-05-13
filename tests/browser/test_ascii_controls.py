@@ -63,6 +63,22 @@ async def test_ascii_fader_keyboard_updates_native_range_value(page, base_url):
     assert await filled.count() == 0
 
 
+async def test_ascii_tile_toggle_visual_state_follows_native_checked_state(page, base_url):
+    await page.goto(base_url + "/ascii-controls")
+
+    tile = page.get_by_role("checkbox", name="Power")
+    face = page.locator(".chirpui-ascii-tile-btn", has=tile).locator(
+        ".chirpui-ascii-tile-btn__face"
+    )
+
+    await expect(tile).to_be_checked()
+    assert await face.evaluate("el => getComputedStyle(el).boxShadow") != "none"
+
+    await tile.press("Space")
+    await expect(tile).not_to_be_checked()
+    assert await face.evaluate("el => getComputedStyle(el).boxShadow") == "none"
+
+
 async def test_ascii_reduced_motion_removes_indicator_animation(page, base_url):
     await page.emulate_media(reduced_motion="reduce")
     await page.goto(base_url + "/ascii-controls")

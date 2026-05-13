@@ -26,7 +26,7 @@
                 name=none, disabled=false, cls="") %}
 {% set variant = variant | validate_variant(("", "default", "success", "warning", "danger", "accent"), "") %}
 {% set variant_class = " chirpui-ascii-tile-btn--" ~ variant if variant and variant != "default" else "" %}
-{% set lit_class = " chirpui-ascii-tile-btn--lit" if lit else "" %}
+{% set lit_class = " chirpui-ascii-tile-btn--lit" if lit and not toggle else "" %}
 {% if toggle %}
 <label class="chirpui-ascii-tile-btn{{ variant_class }}{{ lit_class }}{{ " chirpui-ascii-tile-btn--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
     <input class="chirpui-ascii-tile-btn__input chirpui-visually-hidden"

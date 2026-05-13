@@ -7,6 +7,7 @@
 {% from "chirpui/ascii_radio.html" import ascii_radio, ascii_radio_group %}
 {% from "chirpui/ascii_fader.html" import ascii_fader %}
 {% from "chirpui/ascii_knob.html" import ascii_knob %}
+{% from "chirpui/ascii_tile_btn.html" import tile_btn %}
 {% from "chirpui/ascii_breaker_panel.html" import breaker_panel, breaker %}
 {% from "chirpui/ascii_indicator.html" import indicator %}
 
@@ -29,6 +30,7 @@
 
 {% call cluster(gap="lg") %}
   {{ ascii_fader("volume", value=40, label="Volume") }}
+  {{ tile_btn("◆", label="Power", variant="success", toggle=true, name="power", lit=true) }}
   {% call breaker_panel(title="Services", master="main") %}
     {{ breaker("api", label="API", checked=true) }}
     {{ breaker("worker", label="Worker") }}
