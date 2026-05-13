@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 from chirp_ui.manifest import build_manifest
@@ -30,6 +31,7 @@ def test_ascii_maturity_plan_names_accessibility_keyboard_and_browser_gates() ->
 
     for required in [
         "## Next Slice",
+        "### Interactive Control Gate",
         "ARIA",
         "keyboard",
         "reduced-motion",
@@ -37,3 +39,25 @@ def test_ascii_maturity_plan_names_accessibility_keyboard_and_browser_gates() ->
         "Public surface stabilization",
     ]:
         assert required in text
+
+
+def test_ascii_interactive_control_gate_covers_first_batch_controls() -> None:
+    text = PLAN.read_text(encoding="utf-8")
+    gate = text.split("### Interactive Control Gate", 1)[1].split("## Why This Matters", 1)[0]
+    controls = {
+        match for line in gate.splitlines() for match in re.findall(r"`(ascii-[^`]+)`", line)
+    }
+
+    assert controls == {
+        "ascii-breaker-panel",
+        "ascii-checkbox",
+        "ascii-fader",
+        "ascii-knob",
+        "ascii-modal",
+        "ascii-radio-group",
+        "ascii-switch",
+        "ascii-tabs",
+        "ascii-toggle",
+    }
+    for required in ["Role target", "Keyboard target", "Browser proof"]:
+        assert required in gate

@@ -25,6 +25,23 @@ Until that proof lands, ASCII/TUI components remain `experimental` in the
 manifest and use the `ASCII maturity pass` track in
 `docs/PUBLIC-SURFACE-STABILIZATION.md`.
 
+### Interactive Control Gate
+
+The first implementation batch should cover these controls before any ASCII/TUI
+promotion is reconsidered:
+
+| Control | Role target | Keyboard target | Browser proof |
+| --- | --- | --- | --- |
+| `ascii-checkbox` | `checkbox` with `aria-checked` and a stable accessible name. | Space toggles; disabled state blocks interaction. | Focus ring and checked/disabled state remain visible in dense rows. |
+| `ascii-toggle` | `switch` with `aria-checked` and a stable accessible name. | Space toggles; disabled state blocks interaction. | Small and large sizes keep the hit target and label readable. |
+| `ascii-switch` | `switch` with `aria-checked` and a stable accessible name. | Space toggles; disabled state blocks interaction. | Reduced-motion path preserves state legibility. |
+| `ascii-radio-group` | `radiogroup` with child `radio` items. | Arrow keys move selection; Space selects focused item. | Horizontal and vertical groups keep focus and checked state distinct. |
+| `ascii-fader` | `slider` with `aria-valuemin`, `aria-valuemax`, and `aria-valuenow`. | Arrow keys step; Home/End jump to min/max. | Value text, bar fill, and focus state stay synchronized. |
+| `ascii-knob` | `slider` with `aria-valuemin`, `aria-valuemax`, and `aria-valuenow`. | Arrow keys step; Home/End jump to min/max. | Rotation/position feedback respects reduced motion. |
+| `ascii-tabs` | Navigation links or true `tablist`, depending on behavior. | Link navigation uses normal link keys; true tabs use roving focus. | Active tab, panel ownership, and overflow survive narrow widths. |
+| `ascii-modal` | Dialog semantics aligned with modal anatomy. | Escape/close behavior follows the existing modal contract. | Focus trapping and backdrop behavior match non-ASCII modal proof. |
+| `ascii-breaker-panel` | Grouped switches or checkboxes with stable labels. | Space toggles each breaker; master control behavior is explicit. | Master and child states remain distinguishable under density. |
+
 ---
 
 ## Why This Matters
