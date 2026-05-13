@@ -127,6 +127,27 @@ CONSUMER_WORKSPACE_VIEWS = {
     ),
 }
 
+CONSUMER_ADMIN_TABS = [
+    {"label": "Access", "href": "/consumer-admin", "match": "exact", "badge": 2},
+    {"label": "Jobs", "href": "/consumer-admin/jobs", "match": "exact", "badge": 12},
+    {"label": "Audit", "href": "/consumer-admin/audit", "match": "exact"},
+]
+
+CONSUMER_ADMIN_VIEWS = {
+    "/consumer-admin": (
+        "Access controls",
+        "Access content proves a second app chrome consumer can own a distinct route family.",
+    ),
+    "/consumer-admin/jobs": (
+        "Background jobs",
+        "Jobs content arrived through the admin page-root boundary.",
+    ),
+    "/consumer-admin/audit": (
+        "Audit trail",
+        "Audit content keeps the admin shell, route tabs, and page tools stable.",
+    ),
+}
+
 PRODUCT_PATTERN_CUSTOMERS = [
     "Klarna",
     "Vanta",
@@ -497,6 +518,78 @@ def _workspace_page_root_fragment(path: str) -> str:
 """
 
 
+def _consumer_admin_shell_actions(label: str = "Invite member") -> ShellActions:
+    return ShellActions(
+        primary=ShellActionZone(
+            items=(
+                ShellAction(
+                    id="consumer-admin-primary",
+                    label=label,
+                    href="/consumer-admin/invite",
+                    variant="primary",
+                ),
+            )
+        ),
+        controls=ShellActionZone(
+            items=(
+                ShellAction(
+                    id="consumer-admin-audit",
+                    label="Audit",
+                    href="/consumer-admin/audit",
+                    variant="secondary",
+                ),
+            )
+        ),
+    )
+
+
+def _admin_context(path: str) -> dict[str, object]:
+    title, copy = CONSUMER_ADMIN_VIEWS.get(path, CONSUMER_ADMIN_VIEWS["/consumer-admin"])
+    return {
+        "page_title": title,
+        "current_path": path,
+        "tab_items": CONSUMER_ADMIN_TABS,
+        "view_title": title,
+        "view_copy": copy,
+        "shell_actions": _consumer_admin_shell_actions(),
+    }
+
+
+def _admin_page_root_fragment(path: str) -> str:
+    title, copy = CONSUMER_ADMIN_VIEWS.get(path, CONSUMER_ADMIN_VIEWS["/consumer-admin"])
+    active = {
+        tab["href"]: " chirpui-route-tab--active" if tab["href"] == path else ""
+        for tab in CONSUMER_ADMIN_TABS
+    }
+    current = {
+        tab["href"]: ' aria-current="page"' if tab["href"] == path else ""
+        for tab in CONSUMER_ADMIN_TABS
+    }
+    return f"""
+<div id="route-tabs">
+  <nav role="navigation" aria-label="Subsection navigation" class="chirpui-route-tabs">
+    <a href="/consumer-admin" class="chirpui-route-tab{active["/consumer-admin"]}"{current["/consumer-admin"]} hx-boost="false" hx-select="unset" hx-get="/consumer-admin" hx-target="#page-root" hx-push-url="true" hx-swap="innerHTML"><span class="chirpui-route-tab__label">Access</span><span class="chirpui-route-tab__badge">2</span></a>
+    <a href="/consumer-admin/jobs" class="chirpui-route-tab{active["/consumer-admin/jobs"]}"{current["/consumer-admin/jobs"]} hx-boost="false" hx-select="unset" hx-get="/consumer-admin/jobs" hx-target="#page-root" hx-push-url="true" hx-swap="innerHTML"><span class="chirpui-route-tab__label">Jobs</span><span class="chirpui-route-tab__badge">12</span></a>
+    <a href="/consumer-admin/audit" class="chirpui-route-tab{active["/consumer-admin/audit"]}"{current["/consumer-admin/audit"]} hx-boost="false" hx-select="unset" hx-get="/consumer-admin/audit" hx-target="#page-root" hx-push-url="true" hx-swap="innerHTML"><span class="chirpui-route-tab__label">Audit</span></a>
+  </nav>
+</div>
+<h1 data-testid="consumer-admin-heading">Admin console</h1>
+<div class="chirpui-action-strip chirpui-action-strip--muted chirpui-action-strip--sm chirpui-action-strip--scroll" role="toolbar" aria-label="Admin console tools">
+  <div class="chirpui-action-strip__inner">
+    <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Review</button>
+    <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Suspend</button>
+    <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Export</button>
+  </div>
+</div>
+<div id="page-content-inner">
+  <section class="chirpui-block">
+    <h2 data-testid="consumer-admin-view-title">{title}</h2>
+    <p data-testid="consumer-admin-view-copy">{copy}</p>
+  </section>
+</div>
+"""
+
+
 def create_app() -> App:
     """Create the test Chirp app with chirp-ui integration."""
     template_dir = os.path.join(os.path.dirname(__file__), "templates")
@@ -577,6 +670,24 @@ def create_app() -> App:
             "<p>Filter content arrived through the page-content-inner boundary.</p>"
             "</section>"
         )
+
+    @app.route("/consumer-admin")
+    async def consumer_admin_page(request: Request):
+        if _is_hx_request(request):
+            return Response(_admin_page_root_fragment("/consumer-admin"))
+        return Template("consumer_admin_page.html", **_admin_context("/consumer-admin"))
+
+    @app.route("/consumer-admin/jobs")
+    async def consumer_admin_jobs_page(request: Request):
+        if _is_hx_request(request):
+            return Response(_admin_page_root_fragment("/consumer-admin/jobs"))
+        return Template("consumer_admin_page.html", **_admin_context("/consumer-admin/jobs"))
+
+    @app.route("/consumer-admin/audit")
+    async def consumer_admin_audit_page(request: Request):
+        if _is_hx_request(request):
+            return Response(_admin_page_root_fragment("/consumer-admin/audit"))
+        return Template("consumer_admin_page.html", **_admin_context("/consumer-admin/audit"))
 
     @app.route("/application-chrome-gauntlet")
     async def application_chrome_gauntlet_page(request: Request):

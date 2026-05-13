@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block brand %}Consumer Chrome{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path=current_path) %}
+  {% call sidebar_section("Consumers") %}
+    {{ sidebar_link("/consumer-workspace", "Workspace", match="prefix") }}
+    {{ sidebar_link("/consumer-admin", "Admin console", match="prefix") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import stack, cluster, block %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+
+{{ command_palette(id="admin-consumer-palette", search_url="/search", placeholder="Search admin...") }}
+
+<div id="page-root">
+  <div id="route-tabs">
+    {{ route_tabs(tab_items, current_path) }}
+  </div>
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs([
+      {"label": "Consumers", "href": "/consumer-workspace"},
+      {"label": "Admin console"}
+    ], overflow="collapse", max_items=3) }}
+    {% call cluster(gap="sm") %}
+      <h1 data-testid="consumer-admin-heading">Admin console</h1>
+      {{ command_palette_trigger(target="admin-consumer-palette", label="Search admin", placeholder="Search admin", shortcut="/", icon="search", density="sm") }}
+    {% end %}
+  {% end %}
+  {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Admin console tools") %}
+    {{ btn("Review", variant="ghost", size="sm") }}
+    {{ btn("Suspend", variant="ghost", size="sm") }}
+    {{ btn("Export", variant="ghost", size="sm") }}
+  {% end %}
+  <div id="page-content-inner">
+  {% call block() %}
+    <h2 data-testid="consumer-admin-view-title">{{ view_title }}</h2>
+    <p data-testid="consumer-admin-view-copy">{{ view_copy }}</p>
+  {% end %}
+  </div>
+</div>
+{% end %}
