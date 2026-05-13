@@ -16,8 +16,14 @@
 {% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
 {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
 {% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/shell_actions.html" import shell_actions_bar %}
 
 {{ command_palette(id="admin-consumer-palette", search_url="/search", placeholder="Search admin...") }}
+{% if include_shell_actions_oob %}
+<div id="chirp-shell-actions" hx-swap-oob="innerHTML">
+  {{ shell_actions_bar(shell_actions) }}
+</div>
+{% end %}
 
 <div id="page-root">
   <div id="route-tabs">

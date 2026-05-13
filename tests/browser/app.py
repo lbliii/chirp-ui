@@ -461,13 +461,25 @@ def _consumer_shell_actions(label: str = "New run") -> ShellActions:
     )
 
 
-def _is_hx_request(request: Request) -> bool:
+def _hx_header(request: Request, name: str) -> str:
     headers = getattr(request, "headers", {})
     get = getattr(headers, "get", None)
-    return bool(get and get("HX-Request"))
+    if not get:
+        return ""
+    return get(name) or ""
 
 
-def _workspace_context(path: str) -> dict[str, object]:
+def _is_page_root_hx_request(request: Request) -> bool:
+    return (
+        bool(_hx_header(request, "HX-Request")) and _hx_header(request, "HX-Target") == "page-root"
+    )
+
+
+def _is_shell_hx_request(request: Request) -> bool:
+    return bool(_hx_header(request, "HX-Request")) and _hx_header(request, "HX-Target") == "main"
+
+
+def _workspace_context(path: str, *, include_shell_actions_oob: bool = False) -> dict[str, object]:
     title, copy = CONSUMER_WORKSPACE_VIEWS.get(
         path, CONSUMER_WORKSPACE_VIEWS["/consumer-workspace"]
     )
@@ -478,6 +490,7 @@ def _workspace_context(path: str) -> dict[str, object]:
         "view_title": title,
         "view_copy": copy,
         "shell_actions": _consumer_shell_actions(),
+        "include_shell_actions_oob": include_shell_actions_oob,
     }
 
 
@@ -543,7 +556,7 @@ def _consumer_admin_shell_actions(label: str = "Invite member") -> ShellActions:
     )
 
 
-def _admin_context(path: str) -> dict[str, object]:
+def _admin_context(path: str, *, include_shell_actions_oob: bool = False) -> dict[str, object]:
     title, copy = CONSUMER_ADMIN_VIEWS.get(path, CONSUMER_ADMIN_VIEWS["/consumer-admin"])
     return {
         "page_title": title,
@@ -552,6 +565,7 @@ def _admin_context(path: str) -> dict[str, object]:
         "view_title": title,
         "view_copy": copy,
         "shell_actions": _consumer_admin_shell_actions(),
+        "include_shell_actions_oob": include_shell_actions_oob,
     }
 
 
@@ -641,25 +655,38 @@ def create_app() -> App:
 
     @app.route("/consumer-workspace")
     async def consumer_workspace_page(request: Request):
-        if _is_hx_request(request):
+        if _is_page_root_hx_request(request):
             return Response(_workspace_page_root_fragment("/consumer-workspace"))
-        return Template("consumer_workspace_page.html", **_workspace_context("/consumer-workspace"))
+        return Template(
+            "consumer_workspace_page.html",
+            **_workspace_context(
+                "/consumer-workspace",
+                include_shell_actions_oob=_is_shell_hx_request(request),
+            ),
+        )
 
     @app.route("/consumer-workspace/runs")
     async def consumer_workspace_runs_page(request: Request):
-        if _is_hx_request(request):
+        if _is_page_root_hx_request(request):
             return Response(_workspace_page_root_fragment("/consumer-workspace/runs"))
         return Template(
-            "consumer_workspace_page.html", **_workspace_context("/consumer-workspace/runs")
+            "consumer_workspace_page.html",
+            **_workspace_context(
+                "/consumer-workspace/runs",
+                include_shell_actions_oob=_is_shell_hx_request(request),
+            ),
         )
 
     @app.route("/consumer-workspace/settings")
     async def consumer_workspace_settings_page(request: Request):
-        if _is_hx_request(request):
+        if _is_page_root_hx_request(request):
             return Response(_workspace_page_root_fragment("/consumer-workspace/settings"))
         return Template(
             "consumer_workspace_page.html",
-            **_workspace_context("/consumer-workspace/settings"),
+            **_workspace_context(
+                "/consumer-workspace/settings",
+                include_shell_actions_oob=_is_shell_hx_request(request),
+            ),
         )
 
     @app.route("/consumer-workspace/filter-fragment")
@@ -673,21 +700,39 @@ def create_app() -> App:
 
     @app.route("/consumer-admin")
     async def consumer_admin_page(request: Request):
-        if _is_hx_request(request):
+        if _is_page_root_hx_request(request):
             return Response(_admin_page_root_fragment("/consumer-admin"))
-        return Template("consumer_admin_page.html", **_admin_context("/consumer-admin"))
+        return Template(
+            "consumer_admin_page.html",
+            **_admin_context(
+                "/consumer-admin",
+                include_shell_actions_oob=_is_shell_hx_request(request),
+            ),
+        )
 
     @app.route("/consumer-admin/jobs")
     async def consumer_admin_jobs_page(request: Request):
-        if _is_hx_request(request):
+        if _is_page_root_hx_request(request):
             return Response(_admin_page_root_fragment("/consumer-admin/jobs"))
-        return Template("consumer_admin_page.html", **_admin_context("/consumer-admin/jobs"))
+        return Template(
+            "consumer_admin_page.html",
+            **_admin_context(
+                "/consumer-admin/jobs",
+                include_shell_actions_oob=_is_shell_hx_request(request),
+            ),
+        )
 
     @app.route("/consumer-admin/audit")
     async def consumer_admin_audit_page(request: Request):
-        if _is_hx_request(request):
+        if _is_page_root_hx_request(request):
             return Response(_admin_page_root_fragment("/consumer-admin/audit"))
-        return Template("consumer_admin_page.html", **_admin_context("/consumer-admin/audit"))
+        return Template(
+            "consumer_admin_page.html",
+            **_admin_context(
+                "/consumer-admin/audit",
+                include_shell_actions_oob=_is_shell_hx_request(request),
+            ),
+        )
 
     @app.route("/application-chrome-gauntlet")
     async def application_chrome_gauntlet_page(request: Request):
