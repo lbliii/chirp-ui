@@ -183,6 +183,8 @@ class TestAsciiBreakerPanel:
             "{% end %}"
         ).render()
         assert "chirpui-ascii-breaker-panel" in html
+        assert 'role="group"' in html
+        assert 'aria-label="Services"' in html
         assert "Services" in html
         assert "API" in html
 
@@ -201,7 +203,9 @@ class TestAsciiBreakerPanel:
             '{{ breaker("db", label="DB", checked=true) }}'
             "{% end %}"
         ).render()
-        assert "chirpui-ascii-indicator--success" in html
+        assert "chirpui-ascii-indicator--blink" in html
+        assert "chirpui-ascii-indicator--success" not in html
+        assert "chirpui-ascii-indicator--muted" not in html
 
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(

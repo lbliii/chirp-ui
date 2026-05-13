@@ -79,6 +79,26 @@ async def test_ascii_tile_toggle_visual_state_follows_native_checked_state(page,
     assert await face.evaluate("el => getComputedStyle(el).boxShadow") == "none"
 
 
+async def test_ascii_breaker_panel_groups_switches_and_status_follows_state(page, base_url):
+    await page.goto(base_url + "/ascii-controls")
+
+    panel = page.get_by_role("group", name="Services")
+    await expect(panel).to_be_visible()
+
+    worker = panel.get_by_role("switch", name="Worker")
+    worker_breaker = panel.locator(".chirpui-ascii-breaker-panel__breaker").filter(
+        has_text="Worker"
+    )
+    status = worker_breaker.locator(".chirpui-ascii-breaker-panel__status")
+
+    await expect(worker).not_to_be_checked()
+    assert await status.evaluate("el => getComputedStyle(el).opacity") == "0.45"
+
+    await worker.press("Space")
+    await expect(worker).to_be_checked()
+    assert await status.evaluate("el => getComputedStyle(el).opacity") == "1"
+
+
 async def test_ascii_reduced_motion_removes_indicator_animation(page, base_url):
     await page.emulate_media(reduced_motion="reduce")
     await page.goto(base_url + "/ascii-controls")
