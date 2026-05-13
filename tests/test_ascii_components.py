@@ -1210,6 +1210,21 @@ class TestAsciiVuMeter:
         ).render()
         assert "chirpui-ascii-vu__cell--peak" in html
 
+    def test_value_bounds_align_meter_cells_and_readout(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_vu_meter.html" import ascii_vu_meter %}'
+            "{{ ascii_vu_meter(value=140, width=10, peak=true) }}"
+            "{{ ascii_vu_meter(value=-20, width=10, peak=true) }}"
+        ).render()
+        assert 'aria-valuenow="100"' in html
+        assert 'aria-valuenow="0"' in html
+        assert ">100%</span>" in html
+        assert ">0%</span>" in html
+        assert ">140%</span>" not in html
+        assert ">-20%</span>" not in html
+        assert html.count("chirpui-ascii-vu__cell--filled") == 10
+        assert html.count("chirpui-ascii-vu__cell--peak") == 1
+
     def test_animate(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_vu_meter.html" import ascii_vu_meter %}'
