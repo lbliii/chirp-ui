@@ -251,11 +251,57 @@ Consumer adoption proof now covers:
 | Page tools | filter/refresh/export toolbar | review/suspend/export toolbar | inner filter targets only `#page-content-inner` |
 | Responsive sanity | workspace browser proof at desktop and phone widths | admin browser proof at phone width | no duplicate roots after HTMX swaps |
 
-Open consumer evidence required before composite work:
+## Composite Decision Review: Consumer Adoption Wave 1
 
-- one filesystem-routed Chirp app using persistent shell plus route-backed
-  object/workspace tabs,
-- one second app or packaged integration repeating the same missing shape,
+Date: 2026-05-13
+
+Decision: keep application chrome recipe-level. Do not add
+`application_chrome()`, `workspace_shell()`, `chrome_frame()`, or
+`object_header()` from this evidence wave.
+
+Why:
+
+- Two consumers repeated the same layered app chrome shape, but the visual
+  composition remained readable with existing primitives.
+- The only repeated hard part was response ownership across shell, page-root,
+  and inner-fragment HTMX targets.
+- That problem is a shell/OOB contract issue. A visual composite would hide the
+  failure mode instead of making route handlers return the right response
+  shape.
+- The route tabs, breadcrumbs, command trigger, command bar, shell actions,
+  sidebar, and block primitives all held their current contracts under browser
+  proof.
+
+Candidate review:
+
+| Candidate | Decision | Evidence | Follow-up |
+|---|---|---|---|
+| `application_chrome()` | Reject | The repeated shape spans app identity, sidebar, route tabs, page tools, shell actions, and local fragments. One macro would become a mega-shell. | Keep recipe docs and browser fixtures. |
+| `workspace_shell()` | Defer | Two consumers share route tabs and page tools, but differ in IA, actions, and content. | Revisit only after a real filesystem app shows the same wrapper glue is repeated across many routes. |
+| `chrome_frame()` | Defer | The target-boundary problem is real, but the owned layer is not a visual frame. | Consider a narrow shell response/OOB helper outside this plan if route code repeats. |
+| `object_header()` | Reject for this wave | The consumers are workspace/admin route families, not object-detail headers. | Wait for object-page repetition with metadata/actions/route row evidence. |
+
+Accepted next investments:
+
+- Keep the consumer browser fixtures as regression proof for shell/page-root
+  target ownership.
+- Prefer docs and examples that teach `HX-Target` branching and OOB shell
+  region updates.
+- If more consumers repeat the same route-handler boilerplate, evaluate a
+  shell-response helper before evaluating a visual macro.
+
+Not accepted:
+
+- Component registry work for a new app chrome composite.
+- CSS partials for a new chrome wrapper.
+- Manifest/generated-options/changelog work for any new public macro.
+
+Open consumer evidence still required before composite work:
+
+- one production or copyable filesystem-routed Chirp app beyond the browser
+  fixture using persistent shell plus route-backed object/workspace tabs,
+- one additional app or packaged integration repeating the same missing shape
+  after the shell/OOB guidance above has been applied,
 - notes showing which existing primitives were tried and where boilerplate or
   contract drift remained,
 - browser proof that the repeated shape fails recipe-level composition before
