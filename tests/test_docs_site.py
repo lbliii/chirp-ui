@@ -208,6 +208,9 @@ def test_navigation_pattern_publishes_application_chrome_sources() -> None:
 
     assert "Application chrome remains recipe-first" in text
     assert "recipe-first application chrome status" in matrix
+    assert "This page is a published bridge" in text
+    assert "Do not add a published-only application chrome API here" in text
+    assert "docs/VISUAL-AUDIT-SHOWCASE.md" in text
 
 
 def test_component_docs_are_published_site_sources() -> None:

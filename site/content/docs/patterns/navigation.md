@@ -20,6 +20,22 @@ For copyable dense application chrome recipes, see
 For current roadmap status, see
 [`docs/plans/PLAN-application-chrome-system.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/plans/PLAN-application-chrome-system.md?plain=1).
 
+## Source Of Truth
+
+This page is a published bridge. The repository docs remain the contract for
+component semantics, application chrome layering, and promotion decisions:
+
+- `docs/NAVIGATION.md` owns the layer model and component decision matrix.
+- `docs/DENSE-NAVIGATION-RECIPES.md` owns copyable recipe families.
+- `docs/plans/PLAN-application-chrome-system.md` owns the active app-chrome
+  backlog and composite gates.
+- `docs/RESPONSIVE.md` owns stress-width expectations.
+- `docs/VISUAL-AUDIT-SHOWCASE.md` owns rhythm and visual proof expectations.
+
+Do not add a published-only application chrome API here. New public macros,
+parameters, emitted classes, or manifest facts must ship through the registry,
+templates, generated CSS, generated component options, examples, and tests.
+
 ## Use This When
 
 - A page needs global app or site movement.
