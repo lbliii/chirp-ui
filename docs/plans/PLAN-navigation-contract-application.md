@@ -13,6 +13,14 @@ Progress:
   opt-in middle-crumb overflow for deep path trails.
 - Phases 4-6 remain not-now until a consuming app proves the need.
 
+## Next Slice
+
+Keep this plan in residual mode. The next accepted work is browser proof for
+dense object navigation recipes and breadcrumb overflow behavior, not a new
+composite navigation macro. Reopen Phases 4-6 only when a consuming app shows
+repeated counter, command-launcher, or object-header pressure that cannot be
+served by existing primitives.
+
 ## Goal
 
 Apply the navigation density study to ChirpUI in small, contract-first slices:

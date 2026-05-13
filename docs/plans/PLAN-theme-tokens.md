@@ -16,6 +16,19 @@ Define a minimal, standardized set of CSS custom properties that a user can fill
 
 ---
 
+## Next Slice
+
+Use this plan only for residual theme-authoring proof. The next accepted work is
+to keep the visual token explorer, `APP-THEME.md`, and `TOKENS.md` synchronized
+around the first app-owned override tokens, then decide whether `holy-light`
+still needs component-selector cleanup or can remain an effects showcase.
+
+Do not add a parallel private theme token namespace. Missing customization hooks
+should become `--chirpui-*` token proposals or documented `@layer app.overrides`
+escape hatches.
+
+---
+
 ## Current State
 
 - **chirpui.css** defines `--chirpui-*` tokens with defaults; most components use them

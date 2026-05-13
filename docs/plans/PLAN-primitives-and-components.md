@@ -4,6 +4,20 @@ Plan for ChirpUI primitives and components derived from Dori usage. Layout order
 
 ---
 
+## Next Slice
+
+This plan is historical source material for the route-tabs and primitive
+boundary work. The next accepted work is not to add the remaining sketched
+macros by default; it is to reconcile this file against shipped primitives and
+either archive the fulfilled route-tabs portions or move only unresolved
+primitive/component boundary questions into `docs/PUBLIC-SURFACE-STABILIZATION.md`.
+
+Any future implementation from this plan must first identify whether the need is
+already covered by `stack`, `cluster`, `grid`, `frame`, `block`, `route_tabs`,
+or a recipe in the dense-navigation docs.
+
+---
+
 ## 1. Primitives Inventory
 
 ### 1.1 Layout Primitives (existing)

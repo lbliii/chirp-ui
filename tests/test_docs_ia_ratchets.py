@@ -25,3 +25,25 @@ def test_archived_plans_do_not_claim_active_or_draft_status() -> None:
                 break
 
     assert not offenders, "archived plans with active/draft status: " + ", ".join(offenders)
+
+
+def test_active_plans_expose_next_work_marker() -> None:
+    """Live plans should point agents at remaining work, not only historical design."""
+    accepted_markers = (
+        "## Residual Work",
+        "## Next Slice",
+        "## Next Batches",
+        "## Ranked Backlog",
+        "## Recommended Execution Order",
+        "## Sprint Structure",
+        "## Open items",
+        "## Ranked Waves",
+    )
+    missing: list[str] = []
+
+    for path in sorted(PLANS.glob("PLAN-*.md")):
+        text = path.read_text(encoding="utf-8")
+        if not any(marker in text for marker in accepted_markers):
+            missing.append(path.name)
+
+    assert not missing, "active plans missing a next-work marker: " + ", ".join(missing)
