@@ -54,6 +54,26 @@ uv run poe build-manifest
 uv run poe build-docs
 ```
 
+## Gate Policy
+
+`uv run poe ci` is the trusted default gate for normal PRs. It runs lint,
+format, generated-artifact freshness, focused CSS/template checks, type checks,
+the full non-browser pytest suite, and Vitest island-helper tests.
+
+Coverage and browser proof are explicit gates, not hidden defaults:
+
+```text
+uv run poe test-cov
+uv run poe ci-browser
+```
+
+`test-cov` enforces the configured coverage floor (`fail_under = 80`) when a PR
+claims coverage movement or before a release hardening sweep. `ci-browser` is
+required for changes whose failure mode depends on Playwright, actual layout,
+dialog APIs, htmx lifecycle, or Alpine lifecycle. Browser tests stay outside
+`poe ci` because they require the browser dependency group and installed browser
+binaries.
+
 ## Release Preflight
 
 Use the Make target when preparing a package build or release:

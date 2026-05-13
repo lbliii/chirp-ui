@@ -10,9 +10,11 @@
 > Current note: render coverage, JS island tests, Alpine/browser tests, and
 > provide/consume wiring largely shipped after this plan was drafted. Remaining
 > work is making the existing proof run in trusted gates: JavaScript island
-> tests in CI, generated docs freshness in hosted CI, explicit coverage-gate
-> policy, browser workflow policy, and any newly discovered untested public
-> surfaces.
+> tests in CI, generated docs freshness in hosted CI, and any newly discovered
+> untested public surfaces. Coverage and browser policy are now explicit in
+> `docs/VERIFICATION.md`: `poe ci` is the default gate, `poe test-cov` enforces
+> the configured 80% floor when coverage is claimed, and `poe ci-browser` is
+> required for browser-sensitive behavior.
 
 ---
 
@@ -349,4 +351,5 @@ Delete `docs/test-coverage-checklist.md` (Sprint 0 artifact) now that all items 
 
 - **2026-04-10** — Sprint 2 (JS unit tests) superseded by PLAN-behavior-layer-hardening Sprint 3 + PLAN-island-js-test-infrastructure (123 vitest tests across 9 island helpers). Sprint 3 (Playwright) superseded by PLAN-behavior-layer-hardening Sprint 4 (23 browser tests for 8 Alpine components). Sprint 4 (orphan coverage) superseded by PLAN-behavior-layer-hardening Sprint 2 (all 7 orphaned providers wired to consumers, 30 contract tests). Remaining: coverage gate raise (Sprint 4 Task 4.3).
 - **2026-04-10** — Sprint 0+1 complete. Actual inventory: 33 untested components (not 51 — ASCII suite already had 152 tests). All 33 now covered in `tests/test_coverage_sprint1.py` (72 tests). `app_layout` excluded (requires Chirp). Total: 1062 tests passing, CI green.
+- **2026-05-13** — Coverage/browser gate policy closed in `docs/VERIFICATION.md`. `poe ci` remains the trusted default gate; `poe test-cov` keeps the explicit 80% coverage floor; `poe ci-browser` is the release/browser-sensitive proof path.
 - **2026-04-10** — Draft created from codebase audit (51 untested components, 0 JS tests, 21 untested Alpine interactions)
