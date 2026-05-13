@@ -56,6 +56,99 @@ Promote a component only when all of these are true:
   `PLAN-legacy-helper-cleanup-pre-1.0.md`; current static showcase usage is
   inventoried in `STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md`.
 
+## Experimental Disposition Inventory
+
+Every public templated component with `maturity=experimental` needs a named
+pre-1.0 disposition. This table is intentionally conservative: it does not
+promote a component by existing alone, and it treats pattern-role entries as
+recipe-first until repeated app usage proves that a macro should become stable
+vocabulary.
+
+| Component | Decision | Track |
+| --- | --- | --- |
+| `animated-counter` | Keep experimental | Motion/effects visual proof. |
+| `answer-card` | Recipe-only | Social recipe proof; promote only after repeated app use. |
+| `ascii-7seg` | Keep experimental | ASCII maturity pass. |
+| `ascii-badge` | Keep experimental | ASCII maturity pass. |
+| `ascii-border` | Keep experimental | ASCII maturity pass. |
+| `ascii-breaker-panel` | Keep experimental | ASCII maturity pass. |
+| `ascii-card` | Keep experimental | ASCII maturity pass. |
+| `ascii-checkbox` | Keep experimental | ASCII maturity pass. |
+| `ascii-divider` | Keep experimental | ASCII maturity pass. |
+| `ascii-empty` | Keep experimental | ASCII maturity pass. |
+| `ascii-error` | Keep experimental | ASCII maturity pass. |
+| `ascii-fader` | Keep experimental | ASCII maturity pass. |
+| `ascii-indicator` | Keep experimental | ASCII maturity pass. |
+| `ascii-knob` | Keep experimental | ASCII maturity pass. |
+| `ascii-modal` | Keep experimental | ASCII maturity pass. |
+| `ascii-progress` | Keep experimental | ASCII maturity pass. |
+| `ascii-radio-group` | Keep experimental | ASCII maturity pass. |
+| `ascii-skeleton` | Keep experimental | ASCII maturity pass. |
+| `ascii-sparkline` | Keep experimental | ASCII maturity pass. |
+| `ascii-spinner` | Keep experimental | ASCII maturity pass. |
+| `ascii-stepper` | Keep experimental | ASCII maturity pass. |
+| `ascii-switch` | Keep experimental | ASCII maturity pass. |
+| `ascii-tab` | Keep experimental | ASCII maturity pass. |
+| `ascii-table` | Keep experimental | ASCII maturity pass. |
+| `ascii-tabs` | Keep experimental | ASCII maturity pass. |
+| `ascii-ticker` | Keep experimental | ASCII maturity pass. |
+| `ascii-tile-btn` | Keep experimental | ASCII maturity pass. |
+| `ascii-toggle` | Keep experimental | ASCII maturity pass. |
+| `ascii-vu` | Keep experimental | ASCII maturity pass. |
+| `aura` | Keep experimental | Motion/effects visual proof. |
+| `aurora` | Keep experimental | Motion/effects visual proof. |
+| `band` | Keep experimental | Marketing pattern proof. |
+| `border-beam` | Keep experimental | Motion/effects visual proof. |
+| `catalog-rail` | Recipe-only | Media recipe proof; promote only after repeated app use. |
+| `composer-shell` | Keep experimental | Form interaction proof. |
+| `confetti` | Keep experimental | Motion/effects visual proof. |
+| `constellation` | Keep experimental | Motion/effects visual proof. |
+| `detail-header` | Recipe-only | Layout recipe proof; promote only after repeated app use. |
+| `dock` | Keep experimental | Motion/effects visual proof. |
+| `facet-chip` | Keep experimental | Control interaction proof. |
+| `feature-section` | Keep experimental | Marketing pattern proof. |
+| `feature-stack` | Keep experimental | Marketing pattern proof. |
+| `glitch` | Keep experimental | Motion/effects visual proof. |
+| `glow-card` | Keep experimental | Motion/effects visual proof. |
+| `gradient-text` | Keep experimental | Motion/effects visual proof. |
+| `grain` | Keep experimental | Motion/effects visual proof. |
+| `hero-effects` | Keep experimental | Motion/effects visual proof. |
+| `holy-light` | Keep experimental | Motion/effects visual proof. |
+| `lifecycle-showcase` | Recipe-only | Marketing pattern proof; promote only after repeated app use. |
+| `live-event-card` | Recipe-only | Media recipe proof; promote only after repeated app use. |
+| `marquee` | Keep experimental | Motion/effects visual proof. |
+| `media-hero-shelf` | Recipe-only | Media recipe proof; promote only after repeated app use. |
+| `meteor` | Keep experimental | Motion/effects visual proof. |
+| `moderation-queue-item` | Recipe-only | Social recipe proof; promote only after repeated app use. |
+| `neon` | Keep experimental | Motion/effects visual proof. |
+| `number-ticker` | Keep experimental | Motion/effects visual proof. |
+| `orbit` | Keep experimental | Motion/effects visual proof. |
+| `particle-bg` | Keep experimental | Motion/effects visual proof. |
+| `pulsing-btn` | Keep experimental | Motion/effects visual proof. |
+| `reveal-on-scroll` | Keep experimental | Motion/effects visual proof. |
+| `ripple-btn` | Keep experimental | Motion/effects visual proof. |
+| `rune-field` | Keep experimental | Motion/effects visual proof. |
+| `scanline` | Keep experimental | Motion/effects visual proof. |
+| `search-header` | Keep experimental | Layout recipe proof. |
+| `section-collapsible` | Keep experimental | Layout recipe proof. |
+| `shimmer-btn` | Keep experimental | Motion/effects visual proof. |
+| `site-footer` | Keep experimental | Marketing pattern proof. |
+| `site-header` | Keep experimental | Marketing pattern proof. |
+| `site-nav-link` | Keep experimental | Marketing pattern proof. |
+| `site-shell` | Keep experimental | Marketing pattern proof. |
+| `sparkle` | Keep experimental | Motion/effects visual proof. |
+| `split-flap` | Keep experimental | ASCII maturity pass. |
+| `spotlight-card` | Keep experimental | Motion/effects visual proof. |
+| `symbol-rain` | Keep experimental | Motion/effects visual proof. |
+| `text-reveal` | Keep experimental | Motion/effects visual proof. |
+| `thread-reader-layout` | Recipe-only | Social recipe proof; promote only after repeated app use. |
+| `title-card` | Recipe-only | Media recipe proof; promote only after repeated app use. |
+| `token-input` | Keep experimental | Form interaction proof. |
+| `topic-card` | Recipe-only | Social recipe proof; promote only after repeated app use. |
+| `typewriter` | Keep experimental | Motion/effects visual proof. |
+| `watch-companion-layout` | Recipe-only | Media recipe proof; promote only after repeated app use. |
+| `wobble` | Keep experimental | Motion/effects visual proof. |
+
 ## Legacy Helper Authoring Policy
 
 Legacy helpers remain public compatibility surface before 1.0, but generated

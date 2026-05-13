@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from chirp_ui.manifest import build_manifest
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOC = REPO_ROOT / "docs" / "PUBLIC-SURFACE-STABILIZATION.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
@@ -27,3 +29,17 @@ def test_public_surface_stabilization_doc_is_indexed() -> None:
     assert "[PUBLIC-SURFACE-STABILIZATION.md](PUBLIC-SURFACE-STABILIZATION.md)" in (
         INDEX.read_text(encoding="utf-8")
     )
+
+
+def test_every_experimental_public_template_has_disposition() -> None:
+    """New experimental public macros must get a pre-1.0 disposition row."""
+    text = DOC.read_text(encoding="utf-8")
+    manifest = build_manifest()
+    missing: list[str] = []
+    for name, entry in sorted(manifest["components"].items()):
+        if entry["template"] and entry["maturity"] == "experimental":
+            row_prefix = f"| `{name}` | "
+            if row_prefix not in text:
+                missing.append(name)
+
+    assert not missing, "missing public-surface dispositions: " + ", ".join(missing)
