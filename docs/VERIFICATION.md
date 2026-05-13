@@ -74,6 +74,21 @@ dialog APIs, htmx lifecycle, or Alpine lifecycle. Browser tests stay outside
 `poe ci` because they require the browser dependency group and installed browser
 binaries.
 
+## Proof Routing
+
+Choose the narrowest proof that can observe the contract being changed, then run
+`uv run poe ci` before broad merges or release-facing work.
+
+| Change surface | Required proof |
+|---|---|
+| Registry, manifest schema, generated CSS, generated component docs | `uv run poe verify-generated` plus affected manifest or generated-doc tests |
+| Kida macros, escaping, structured attrs, HTMX attributes | Targeted pytest render tests plus strict-undefined or template/CSS contract tests |
+| Alpine controllers, JavaScript island helpers, runtime state helpers | `uv run poe test-js` plus focused Python metadata tests when applicable |
+| Token, CSS partial, cascade layer, or scope behavior | CSS syntax/concat tests, template/CSS contract tests, and browser proof when computed layout or cascade interaction is the failure mode |
+| Dialog, focus, overflow, htmx lifecycle, Alpine lifecycle, responsive layout | `uv run poe ci-browser` or the targeted browser test that exercises the changed behavior |
+| Docs, examples, scaffold, or published site content | Relevant docs/site tests, `uv run poe docs-build-all` when published output changes, and examples proof when snippets are executable |
+| Theme packages, Bengal templates, packaged assets | Bengal package tests plus generated/site proof when templates or emitted assets change |
+
 ## Release Preflight
 
 Use the Make target when preparing a package build or release:

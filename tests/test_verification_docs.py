@@ -53,5 +53,23 @@ def test_verification_doc_names_locked_environment_and_kida_failure() -> None:
         assert required in text
 
 
+def test_verification_doc_routes_browser_sensitive_proof() -> None:
+    text = DOC.read_text(encoding="utf-8")
+
+    for required in [
+        "## Proof Routing",
+        "Registry, manifest schema, generated CSS, generated component docs",
+        "uv run poe verify-generated",
+        "Kida macros, escaping, structured attrs, HTMX attributes",
+        "uv run poe test-js",
+        "Token, CSS partial, cascade layer, or scope behavior",
+        "Dialog, focus, overflow, htmx lifecycle, Alpine lifecycle, responsive layout",
+        "uv run poe ci-browser",
+        "uv run poe docs-build-all",
+        "Theme packages, Bengal templates, packaged assets",
+    ]:
+        assert required in text
+
+
 def test_verification_doc_is_indexed() -> None:
     assert "[VERIFICATION.md](VERIFICATION.md)" in INDEX.read_text(encoding="utf-8")
