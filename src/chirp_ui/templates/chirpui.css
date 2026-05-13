@@ -15669,6 +15669,7 @@ body.htmx-request .chirpui-nav-progress::after {
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 
 .chirpui-ascii-toggle__rail {
@@ -15811,6 +15812,7 @@ body.htmx-request .chirpui-nav-progress::after {
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 
 /* Top and bottom caps: box-drawing corners + horizontal line */
@@ -15928,7 +15930,6 @@ body.htmx-request .chirpui-nav-progress::after {
         transition: none;
     }
 }
-
 }
 
 /* === partials/145_ascii-breaker-panel.css === */
@@ -16282,6 +16283,7 @@ body.htmx-request .chirpui-nav-progress::after {
     padding: 0 0.35em;
     transition: color var(--chirpui-transition);
     color: var(--chirpui-text-muted);
+    pointer-events: none;
 }
 
 .chirpui-ascii-knob__tick {
@@ -16325,7 +16327,6 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-knob:has(.chirpui-ascii-knob__input:checked) .chirpui-ascii-knob__dial {
     color: var(--chirpui-text);
 }
-
 }
 
 /* === partials/149_ascii-fader.css === */
@@ -16616,6 +16617,7 @@ body.htmx-request .chirpui-nav-progress::after {
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 .chirpui-ascii-checkbox__box::before {
     content: "☐";
@@ -16674,7 +16676,6 @@ body.htmx-request .chirpui-nav-progress::after {
     color: var(--chirpui-text-muted);
     margin-bottom: 0.35em;
 }
-
 }
 
 /* === partials/153_ascii-radio.css === */
@@ -16697,6 +16698,7 @@ body.htmx-request .chirpui-nav-progress::after {
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 .chirpui-ascii-radio__dot::before {
     content: "○";
@@ -16759,7 +16761,6 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-radio-group--accent .chirpui-ascii-radio:has(.chirpui-ascii-radio__input:checked) .chirpui-ascii-radio__dot {
     color: var(--chirpui-accent);
 }
-
 }
 
 /* === partials/154_ascii-stepper.css === */

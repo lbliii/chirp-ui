@@ -19,6 +19,7 @@
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 
 .chirpui-ascii-toggle__rail {

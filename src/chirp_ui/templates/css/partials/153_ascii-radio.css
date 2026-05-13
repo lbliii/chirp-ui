@@ -16,6 +16,7 @@
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 .chirpui-ascii-radio__dot::before {
     content: "○";
@@ -78,4 +79,3 @@
 .chirpui-ascii-radio-group--accent .chirpui-ascii-radio:has(.chirpui-ascii-radio__input:checked) .chirpui-ascii-radio__dot {
     color: var(--chirpui-accent);
 }
-

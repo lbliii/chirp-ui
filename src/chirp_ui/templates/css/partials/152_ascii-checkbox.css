@@ -16,6 +16,7 @@
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 .chirpui-ascii-checkbox__box::before {
     content: "☐";
@@ -74,4 +75,3 @@
     color: var(--chirpui-text-muted);
     margin-bottom: 0.35em;
 }
-
