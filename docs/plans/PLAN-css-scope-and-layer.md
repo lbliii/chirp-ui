@@ -308,7 +308,7 @@ The envelope convention is the default for new components and for any partial mo
 grep -lE '^@layer chirpui\.component' src/chirp_ui/templates/css/partials/*.css
 ```
 
-**Current converted count:** 15 partials as of 2026-05-13.
+**Current converted count:** 16 partials as of 2026-05-13.
 
 Converted partials currently include:
 
@@ -320,6 +320,7 @@ Converted partials currently include:
 - `052_modal.css`
 - `053_drawer.css`
 - `065_tray.css`
+- `072_badge.css`
 - `159_resource-card.css`
 - `161_navigation-metadata-authoring.css`
 - `162_logo-cloud.css`
