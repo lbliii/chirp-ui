@@ -32,6 +32,7 @@ def test_ascii_maturity_plan_names_accessibility_keyboard_and_browser_gates() ->
     for required in [
         "## Next Slice",
         "### Interactive Control Gate",
+        "### Remaining Not-Now List",
         "ARIA",
         "keyboard",
         "reduced-motion",
