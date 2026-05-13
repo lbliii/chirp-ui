@@ -65,3 +65,21 @@ def test_promoted_public_surface_rows_have_manifest_test_and_showcase_proof() ->
         assert manifest[name]["maturity"] == "stable"
         assert css_class in tests, name
         assert css_class in showcase, name
+
+
+def test_recipe_only_rows_remain_pattern_role_and_not_preferred() -> None:
+    """Recipe-only decisions should not leak into preferred component vocabulary."""
+    text = DOC.read_text(encoding="utf-8")
+    manifest = build_manifest()["components"]
+    recipe_only = [
+        line.split("|")[1].strip().strip("`")
+        for line in text.splitlines()
+        if "| Recipe-only |" in line and line.startswith("| `")
+    ]
+
+    assert recipe_only
+    for name in recipe_only:
+        entry = manifest[name]
+        assert entry["role"] == "pattern", name
+        assert entry["maturity"] == "experimental", name
+        assert entry["authoring"] != "preferred", name
