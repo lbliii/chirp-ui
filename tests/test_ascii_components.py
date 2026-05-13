@@ -869,6 +869,8 @@ class TestAsciiSplitFlap:
         ).render()
         assert "chirpui-split-flap" in html
         assert html.count("chirpui-split-flap__char") == 2
+        assert "chirpui-visually-hidden" in html
+        assert 'aria-hidden="true"' in html
 
     def test_variant_amber(self, env: Environment) -> None:
         html = env.from_string(
@@ -894,6 +896,7 @@ class TestAsciiSplitFlap:
         assert "chirpui-split-flap-board" in html
         assert "DEPARTURES" in html
         assert "chirpui-split-flap-row" in html
+        assert "chirpui-visually-hidden" in html
 
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
