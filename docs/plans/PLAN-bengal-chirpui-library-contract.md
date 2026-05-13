@@ -109,10 +109,15 @@ root.
 
 Bengal should consume library metadata and give themes explicit inclusion modes:
 
-- `bundle`: fold library CSS into the theme stylesheet output.
-- `link`: emit separate library CSS/JS links, fingerprinted in static builds and
-  stable in dev.
-- `none`: make assets available but let the theme handle inclusion manually.
+| Mode | Semantics |
+|---|---|
+| `bundle` | Fold required library CSS into the theme stylesheet output while preserving Chirp UI cascade order before theme overrides. |
+| `link` | Emit separate library CSS/JS links, fingerprinted in static builds and stable in dev. |
+| `none` | Make library assets available and register templates/helpers, but let the theme handle inclusion manually. |
+
+Bengal owns this mode switch. The selected mode is not Chirp UI package metadata;
+Chirp UI only declares assets, template roots, and runtime requirements. Bengal
+uses that metadata to make dev server and static build behavior match.
 
 Required proof:
 
