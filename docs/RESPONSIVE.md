@@ -9,6 +9,7 @@ layout onto small screens.
 
 | Tier | Width | Contract |
 |------|-------|----------|
+| Stress phone | 320px | Dense chrome, long labels, badge placeholders, drawers/trays, and route tabs must not create page-level horizontal overflow. Use this tier for application chrome gauntlets and hostile copy. |
 | Phone | 360-430px | No page-level horizontal overflow from shell, nav, action rows, rendered content, or tables. Navigation that cannot fit must scroll horizontally or move into an overlay. |
 | Tablet | 768-1024px | Two-column layouts may remain when content fits; sidebars and secondary panes must not starve the primary reading/writing surface. |
 | Desktop | 1280px+ | Dense layouts may use persistent sidebars, multi-column grids, sticky panels, and richer hover affordances. |
@@ -48,4 +49,6 @@ layout onto small screens.
   `inline_counter`, cast faces in `linked_avatar_stack`, and authoring surfaces
   in `composer_shell`.
 - Browser QA for responsive changes should cover at least 390px, 768px, 1024px,
-  and desktop widths.
+- Browser QA for responsive changes should cover at least 390px, 768px, 1024px,
+  and desktop widths. Application chrome and long-label stress tests should add
+  320px.

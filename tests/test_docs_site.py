@@ -1,5 +1,7 @@
 import importlib.util
 import os
+import re
+import tomllib
 from pathlib import Path
 
 import pytest
@@ -9,12 +11,17 @@ DOCS_SITE_SCRIPT = REPO_ROOT / "scripts" / "docs_site.py"
 PYPROJECT = REPO_ROOT / "pyproject.toml"
 AGENT_SOURCE_INVENTORY = REPO_ROOT / "docs" / "AGENT-SOURCE-INVENTORY.md"
 AGENT_SOURCE_MAP = REPO_ROOT / "docs" / "AGENT-SOURCE-MAP.md"
+AGENT_CURATED_SNIPPETS = REPO_ROOT / "docs" / "AGENT-CURATED-SNIPPETS.md"
 PATTERN_DOCS = {
     "navigation.md": "docs/NAVIGATION.md",
     "product-pages.md": "docs/PRODUCT-PAGE-PATTERNS.md",
     "media-sites.md": "docs/MEDIA-SITE-PATTERNS.md",
     "forums.md": "docs/FORUM-SITE-PATTERNS.md",
 }
+NAVIGATION_PATTERN_COLLATERAL = [
+    "docs/DENSE-NAVIGATION-RECIPES.md",
+    "docs/plans/PLAN-application-chrome-system.md",
+]
 COMPONENT_DOCS = {
     "appearance-tone.md": "docs/APPEARANCE-TONE.md",
     "dropdowns.md": "docs/DROPDOWN-ANATOMY.md",
@@ -27,6 +34,8 @@ THEME_DOCS = {
     "chirp-theme.md": "docs/CHIRP-THEME.md",
 }
 DOCS_IA_MIGRATION = REPO_ROOT / "docs" / "DOCS-IA-MIGRATION.md"
+DOCS_INDEX = REPO_ROOT / "site" / "content" / "docs" / "_index.md"
+INSTALL_DOC = REPO_ROOT / "site" / "content" / "docs" / "get-started" / "installation.md"
 SOURCE_ELIGIBILITY = {
     "source-only",
     "candidate-review",
@@ -118,6 +127,26 @@ def test_build_bengal_env_prepends_workspace_repo(monkeypatch, tmp_path: Path) -
     assert env["PYTHONPATH"] == str(workspace_bengal) + os.pathsep + "existing-path"
 
 
+def test_install_doc_version_example_matches_project_metadata() -> None:
+    project = tomllib.loads(PYPROJECT.read_text(encoding="utf-8"))["project"]
+    text = INSTALL_DOC.read_text(encoding="utf-8")
+
+    assert f'print(chirp_ui.__version__)  # e.g. "{project["version"]}"' in text
+    assert "0.2.2" not in text
+
+
+def test_docs_index_uses_chirpui_card_markup_for_cards() -> None:
+    text = DOCS_INDEX.read_text(encoding="utf-8")
+
+    assert "API Reference" not in text
+    assert 'href="./components/"' in text
+    assert '<div class="chirpui-grid' in text
+    assert 'class="chirpui-card' in text
+    assert "card-grid" not in text
+    assert ":::{cards}" not in text
+    assert ":::{card} Component Reference" not in text
+
+
 def test_ensure_workspace_bengal_accepts_workspace_checkout(monkeypatch, tmp_path: Path) -> None:
     module = _load_docs_site_module()
     workspace_bengal = tmp_path / "b-stack" / "bengal"
@@ -165,6 +194,20 @@ def test_pattern_docs_are_published_site_sources() -> None:
 
         assert "type: doc" in text
         assert canonical_doc in text
+
+
+def test_navigation_pattern_publishes_application_chrome_sources() -> None:
+    text = (REPO_ROOT / "site" / "content" / "docs" / "patterns" / "navigation.md").read_text(
+        encoding="utf-8"
+    )
+    matrix = DOCS_IA_MIGRATION.read_text(encoding="utf-8")
+
+    for source in NAVIGATION_PATTERN_COLLATERAL:
+        assert source in text
+        assert source in matrix
+
+    assert "Application chrome remains recipe-first" in text
+    assert "recipe-first application chrome status" in matrix
 
 
 def test_component_docs_are_published_site_sources() -> None:
@@ -286,7 +329,50 @@ def test_agent_source_inventory_keeps_current_examples_review_gated() -> None:
 
     assert candidates
     assert {row["Snippet eligibility"] for row in candidates} == {"candidate-review"}
-    assert "No current source is approved for automatic snippet extraction." in text
+    assert "No `candidate-review` source is approved for automatic snippet extraction." in text
+
+
+def test_agent_source_inventory_defines_copyable_snippet_review_gate() -> None:
+    text = AGENT_SOURCE_INVENTORY.read_text(encoding="utf-8")
+    rows = _parse_markdown_table(text, "## Snippet Review Gate")
+
+    gates = {row["Gate"] for row in rows}
+    assert gates == {
+        "Exact source path",
+        "Macro-first shape",
+        "Exclusion scan",
+        "Runnable proof",
+        "Provenance note",
+    }
+    assert "copyable-curated" in text
+    assert "raw appearance/tone modifier classes" in text
+
+
+def test_agent_curated_snippets_are_indexed_and_macro_first() -> None:
+    inventory = AGENT_SOURCE_INVENTORY.read_text(encoding="utf-8")
+    index = (REPO_ROOT / "docs" / "INDEX.md").read_text(encoding="utf-8")
+    snippets = AGENT_CURATED_SNIPPETS.read_text(encoding="utf-8")
+
+    assert "docs/AGENT-CURATED-SNIPPETS.md" in inventory
+    assert "[AGENT-CURATED-SNIPPETS.md](AGENT-CURATED-SNIPPETS.md)" in index
+    assert "Eligibility: `copyable-curated`" in snippets
+    assert 'from "chirpui/card.html" import card' in snippets
+    assert 'appearance="outlined"' in snippets
+    assert 'tone="primary"' in snippets
+
+    code_blocks = "\n".join(
+        match.group(1) for match in re.finditer(r"```jinja\n(.*?)\n```", snippets, flags=re.S)
+    )
+    assert code_blocks
+    for forbidden in [
+        'class="chirpui-',
+        "sc-",
+        "docs-",
+        "<script",
+        "attrs_unsafe",
+        "chirpui-card--",
+    ]:
+        assert forbidden not in code_blocks
 
 
 def test_agent_source_map_names_generated_output_ownership() -> None:

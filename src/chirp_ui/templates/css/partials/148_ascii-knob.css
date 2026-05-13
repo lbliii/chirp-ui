@@ -53,6 +53,7 @@
     padding: 0 0.35em;
     transition: color var(--chirpui-transition);
     color: var(--chirpui-text-muted);
+    pointer-events: none;
 }
 
 .chirpui-ascii-knob__tick {
@@ -96,4 +97,3 @@
 .chirpui-ascii-knob:has(.chirpui-ascii-knob__input:checked) .chirpui-ascii-knob__dial {
     color: var(--chirpui-text);
 }
-

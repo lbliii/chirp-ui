@@ -41,7 +41,9 @@
 {% set variant = variant | validate_variant(("", "default", "double", "heavy"), "double") %}
 {% set frame = "double" if variant in ("double", "") else variant %}
 {% set size_class = " chirpui-ascii-breaker-panel--" ~ size if size in ("sm",) else "" %}
-<div class="chirpui-ascii-breaker-panel{{ size_class }}{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-ascii-breaker-panel{{ size_class }}{{ " " ~ cls if cls else "" }}"
+     role="group"
+     aria-label="{{ title if title else "Breaker panel" }}">
     <div class="chirpui-ascii-border chirpui-ascii-border--{{ frame }}">
         {% if title %}
         <div class="chirpui-ascii-breaker-panel__title">{{ title }}</div>
@@ -64,8 +66,8 @@
 <div class="chirpui-ascii-breaker-panel__breaker">
     {{ ascii_switch(name, checked=checked, label=label, variant=variant, disabled=disabled, size="sm") }}
     <span class="chirpui-ascii-breaker-panel__status">
-        <span class="chirpui-ascii-indicator chirpui-ascii-indicator--{{ "success" if checked else "muted" }}{{ " chirpui-ascii-indicator--blink" if checked else "" }}">
-            <span class="chirpui-ascii-indicator__light">■</span>
+        <span class="chirpui-ascii-indicator chirpui-ascii-indicator--blink">
+            <span class="chirpui-ascii-indicator__light" aria-hidden="true">■</span>
         </span>
     </span>
 </div>

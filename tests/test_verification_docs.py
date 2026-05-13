@@ -20,6 +20,18 @@ def test_verify_generated_task_groups_generated_artifact_checks() -> None:
     assert "verify-generated" in tasks["check"]["sequence"]
 
 
+def test_verification_gate_policy_matches_poe_tasks() -> None:
+    data = tomllib.loads(PYPROJECT.read_text(encoding="utf-8"))
+    tasks = data["tool"]["poe"]["tasks"]
+    coverage = data["tool"]["coverage"]["report"]
+
+    assert "test-js" in tasks["ci"]["sequence"]
+    assert "test-cov" not in tasks["ci"]["sequence"]
+    assert "test-browser" not in tasks["ci"]["sequence"]
+    assert tasks["ci-browser"]["sequence"] == ["test-browser"]
+    assert coverage["fail_under"] == 80
+
+
 def test_verification_doc_names_locked_environment_and_kida_failure() -> None:
     text = DOC.read_text(encoding="utf-8")
 
@@ -32,6 +44,29 @@ def test_verification_doc_names_locked_environment_and_kida_failure() -> None:
         "uv run python -m chirp_ui.manifest --json",
         "Kida Mismatch Failure",
         "locked project environment",
+        "Gate Policy",
+        "uv run poe test-cov",
+        "uv run poe ci-browser",
+        "fail_under = 80",
+        "Browser tests stay outside",
+    ]:
+        assert required in text
+
+
+def test_verification_doc_routes_browser_sensitive_proof() -> None:
+    text = DOC.read_text(encoding="utf-8")
+
+    for required in [
+        "## Proof Routing",
+        "Registry, manifest schema, generated CSS, generated component docs",
+        "uv run poe verify-generated",
+        "Kida macros, escaping, structured attrs, HTMX attributes",
+        "uv run poe test-js",
+        "Token, CSS partial, cascade layer, or scope behavior",
+        "Dialog, focus, overflow, htmx lifecycle, Alpine lifecycle, responsive layout",
+        "uv run poe ci-browser",
+        "uv run poe docs-build-all",
+        "Theme packages, Bengal templates, packaged assets",
     ]:
         assert required in text
 

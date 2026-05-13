@@ -15,9 +15,11 @@
 {% set variant = variant | validate_variant(("", "default", "accent", "success", "warning", "error"), "") %}
 {% set variant_class = " chirpui-ascii-ticker--" ~ variant if variant and variant != "default" else "" %}
 {% set speed_class = " chirpui-ascii-ticker--" ~ speed if speed in ("slow", "fast") else "" %}
-<div class="chirpui-ascii-ticker{{ variant_class }}{{ speed_class }}{{ " " ~ cls if cls else "" }}" role="marquee">
+<div class="chirpui-ascii-ticker{{ variant_class }}{{ speed_class }}{{ " " ~ cls if cls else "" }}"
+     role="marquee"
+     aria-label="{{ text }}">
     <span class="chirpui-ascii-ticker__bracket" aria-hidden="true">▐</span>
-    <div class="chirpui-ascii-ticker__track">
+    <div class="chirpui-ascii-ticker__track" aria-hidden="true">
         <span class="chirpui-ascii-ticker__text">{{ text }}&nbsp;&nbsp;&nbsp;◆&nbsp;&nbsp;&nbsp;{{ text }}&nbsp;&nbsp;&nbsp;◆&nbsp;&nbsp;&nbsp;</span>
     </div>
     <span class="chirpui-ascii-ticker__bracket" aria-hidden="true">▌</span>

@@ -122,8 +122,8 @@ Progress:
 - 2026-05-11: `TOKEN_CATALOG` parity made bidirectional and missing CSS-defined tokens cataloged.
 - 2026-05-11: token category guardrail added and obvious non-color category debt corrected.
 - 2026-05-11: token-only scanner added for packaged app theme CSS, with `holy-light.css` documented as legacy selector-bearing theme CSS.
-- 2026-05-11: `docs/VISION.md` manifest schema reference updated to `chirpui-manifest@3`
-  before the Sprint 2 schema bump.
+- 2026-05-11: `docs/VISION.md` manifest schema reference updated before the
+  Sprint 2 schema bump; current shipped schema is `chirpui-manifest@5`.
 
 Tasks:
 
@@ -477,10 +477,14 @@ Collateral:
 
 ## Sprint 6 Candidate: Agent-Facing Synthesis
 
-**Status:** active
+**Status:** residual source contract
 
 Goal: turn the shipped docs, manifest, theme catalog, and showcase examples into
 agent-safe source maps without overriding Bengal-owned SSG artifacts.
+
+2026-05-13 status: the source inventory, generated-output map, no-new-artifact
+decision, and snippet provenance gates are in place. Remaining work is only
+candidate snippet curation after a concrete consumer asks for copyable examples.
 
 Candidate tasks:
 

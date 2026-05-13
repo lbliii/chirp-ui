@@ -308,11 +308,30 @@ The envelope convention is the default for new components and for any partial mo
 grep -lE '^@layer chirpui\.component' src/chirp_ui/templates/css/partials/*.css
 ```
 
-**Converted (envelope form):**
+**Current converted count:** 16 partials as of 2026-05-13.
 
-- [x] `045_card.css` — S5 pilot
+Converted partials currently include:
 
-**Legacy (flat, opportunistic conversion):** every other partial in `src/chirp_ui/templates/css/partials/`. Roughly 159 partials as of S6 opening; converted partials will shift to the list above as routine PRs land. No global checklist is maintained — the grep above is the source of truth.
+- `039_surface.css`
+- `041_callout.css`
+- `045_card.css`
+- `046_video-card.css`
+- `047_channel-card.css`
+- `052_modal.css`
+- `053_drawer.css`
+- `065_tray.css`
+- `072_badge.css`
+- `159_resource-card.css`
+- `161_navigation-metadata-authoring.css`
+- `162_logo-cloud.css`
+- `163_story-card.css`
+- `164_cta-band.css`
+- `165_pattern-assets.css`
+- `166_dense-navigation-primitives.css`
+
+**Legacy (flat, opportunistic conversion):** all other partials in
+`src/chirp_ui/templates/css/partials/`. No global checklist is maintained —
+the grep above is the source of truth when this count drifts.
 
 **Epic closure signal.** The epic can close when:
 
@@ -336,6 +355,21 @@ The opportunistic policy is the default, but a small bounded batch of deliberate
 | 6 | `046_video-card.css` + `047_channel-card.css` | Mirror `card`'s structure (border + radius + overflow-clip + hover) but live outside `.chirpui-card`'s `@scope`, so the pilot's bleed fix doesn't reach them. | `tests/browser/test_video_card_variants.py`, `tests/browser/test_channel_card_variants.py` (both new) |
 
 After batch 1, opportunistic mode resumed for the remaining flat partials. **No further deliberate batch is planned**; future batches require their own justification document with evidence on par with this one.
+
+### Next opportunistic queue
+
+These flat partials are the highest-value conversions when touched for adjacent
+work. The queue is not permission for a bulk migration; it is proof routing for
+the next natural edits.
+
+| Partial | Why next | Required proof |
+|---|---|---|
+| `071_button.css` | Buttons appear inside cards, command bars, forms, tables, modals, and nav chrome; hover/focus state bleed is high-impact. | Render tests for link/button modes, CSS contract tests, and browser focus/hover proof if selectors change. |
+| `070_form-fields.css` | Fields nest inside surfaces, panels, modals, drawers, and inline-edit flows. | Form render tests plus browser focus/error/disabled proof for any selector rewrite. |
+| `059_table.css` | Tables host badges, buttons, row actions, links, and dense records. | Table render tests plus browser proof for dense rows and nested controls. |
+| `027_navbar.css` | Global nav contains links, dropdown triggers, badges, and responsive actions. | Navigation render tests plus browser proof for focus, dropdown, and mobile overflow behavior. |
+| `029_sidebar.css` | Sidebar hosts route links, nested sections, counters, and app shell overflow. | App-shell/sidebar render tests plus browser proof for active/focus and overflow behavior. |
+| `054_tabs.css` / `067_tabs-panels.css` | Tabs can be route navigation or true panels; active/focus styles are easy to over-broaden. | Tabs render tests plus browser proof for active state, focus, and panel ownership. |
 
 ### Per-PR conversion template
 

@@ -119,6 +119,32 @@ Reference implementation:
 
 - `examples/component-showcase/templates/showcase/_knowledge_workspace_nav.html`
 
+## Object Page Console
+
+Use when one durable business object owns multiple local views, nearby records,
+status, saved filters, and page-local actions.
+
+Recipe:
+
+- `breadcrumbs(overflow="collapse")` for the object path.
+- `page_header` for object title, lifecycle status, and primary actions.
+- `route_tabs` for Overview, Activity, Related, History, and Settings.
+- `command_bar` for local filters, display mode, refresh, and export.
+- `saved_view_strip` for common object slices such as Mine, Blocked, Recently
+  changed, or Needs review.
+- `badge_label`, `badge_expected`, and `badge_loading` for every dense count
+  whose accessible meaning is not obvious from its visible number.
+
+Keep out of the public API for now:
+
+- object-type-specific headers,
+- persisted per-user object chrome,
+- generic `dense_object_header` or `object_console_shell` macros.
+
+Reference implementation:
+
+- `examples/component-showcase/templates/showcase/_business_object_console.html`
+
 ## Developer Platform
 
 Use when project/group/user scopes and workflow navigation are all first-class.
@@ -155,3 +181,9 @@ Promote a dense-navigation macro only when all of these are true:
   the API.
 
 Until then, keep the shape as a recipe.
+
+## Composite Promotion Boundary
+
+`workspace_shell`, dense object chrome, and product-specific shells stay
+recipe-level unless a real consuming app repeats the same layer contract. A
+showcase example is evidence for documentation; it is not enough evidence for a new stable macro.

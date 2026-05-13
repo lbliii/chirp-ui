@@ -425,6 +425,10 @@ def create_app() -> App:
     async def gauntlet_room(request: Request, room: str):
         return Template("gauntlet_page.html", **_gauntlet_context(room))
 
+    @app.route("/dense-object-chrome")
+    async def dense_object_chrome_page(request: Request):
+        return Template("dense_object_chrome_page.html", page_title="Dense Object Chrome")
+
     @app.route("/page-b")
     async def page_b(request: Request):
         return Template("page_b.html", page_title="Page B")
@@ -657,6 +661,18 @@ def create_app() -> App:
     @app.route("/app-layout-theme")
     async def app_layout_theme_page(request: Request):
         return Template("app_layout_theme_page.html", page_title="App Layout Theme")
+
+    @app.route("/ascii-controls")
+    async def ascii_controls_page(request: Request):
+        return Template("ascii_controls_page.html", page_title="ASCII Controls")
+
+    @app.route("/ascii-composites")
+    async def ascii_composites_page(request: Request):
+        return Template("ascii_composites_page.html", page_title="ASCII Composites")
+
+    @app.route("/ascii-displays")
+    async def ascii_displays_page(request: Request):
+        return Template("ascii_displays_page.html", page_title="ASCII Displays")
 
     # ── Split panel ───────────────────────────────────────────────────
 

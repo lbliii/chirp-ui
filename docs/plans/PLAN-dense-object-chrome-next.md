@@ -8,9 +8,10 @@ Depends on:
 - [PLAN-navigation-contract-application.md](PLAN-navigation-contract-application.md)
 - [../NAVIGATION.md](../NAVIGATION.md)
 
-Current note: the reusable dense object chrome pieces have largely shipped.
-Remaining work is browser proof, composite-decision discipline, and evidence
-from real app usage before introducing any larger shell macro.
+Current note: the reusable dense object chrome pieces have largely shipped and
+browser proof now covers the complete recipe. Remaining work is
+composite-decision discipline and evidence from real app usage before
+introducing any larger shell macro.
 
 ## Goal
 
@@ -37,8 +38,11 @@ The target is a blessed ChirpUI composition path, not a `github_header()` clone.
   accessible labels, reserved count space, and loading placeholders.
 - Phase 3 accepted: `command_palette_trigger()` supports compact dense-chrome
   options for icon, placeholder, shortcut, accessible label, and density.
-- Phases 4-5 remain not-now until the recipes prove a repeated object header
-  shape and responsive browser coverage is scheduled.
+- Phase 5 accepted: browser proof covers desktop, tablet, and phone widths;
+  route-tab scroll, breadcrumb overflow, command-trigger focus, overflow
+  actions, stable badge placeholders, and document overflow.
+- Phase 4 remains not-now until repeated app usage proves a stable object
+  header shape that existing primitives cannot express cleanly.
 
 ## Research Snapshot
 
@@ -46,14 +50,14 @@ Current primitives already cover most of the contract:
 
 | Need | Current surface | Gap |
 |------|-----------------|-----|
-| Broad product navigation | `primary_nav` | Needs clearer dense examples and badge stability proof. |
-| Object/path context | `breadcrumbs` | Middle-crumb collapse exists; object title/action composition still varies. |
+| Broad product navigation | `primary_nav` | Dense examples and badge stability proof exist; repeated app usage still determines whether a larger shell is needed. |
+| Object/path context | `breadcrumbs` | Middle-crumb collapse and browser proof exist; object title/action composition still varies. |
 | Local route-backed views | `route_tabs` | Uses link semantics; badge states are minimal. |
 | Commands/actions | `command_bar`, `action_strip`, `dropdown_menu` | Recipes need to separate navigation links from commands. |
-| Search/jump launch | `command_palette_trigger`, `command_palette` | Trigger is functional but not expressive enough for dense app chrome examples. |
-| Compact counts | `inline_counter`, route/primary nav badges | No reserved/loading count contract yet. |
+| Search/jump launch | `command_palette_trigger`, `command_palette` | Compact dense trigger options exist and browser proof covers opening named palettes. |
+| Compact counts | `inline_counter`, route/primary nav badges | Reserved/loading count contract exists for current dense recipes. |
 | Object headers | `entity_header`, `document_header`, `page_header` | No canonical dense object header recipe tying breadcrumbs, metadata, and actions together. |
-| Responsive overflow | route tabs, primary nav, breadcrumbs | Needs browser proof for complete object chrome composition. |
+| Responsive overflow | route tabs, primary nav, breadcrumbs | Browser proof exists for the complete dense object chrome composition. |
 
 ## Non-Goals
 
@@ -236,6 +240,10 @@ Proof:
 
 Add browser coverage for one complete dense object page.
 
+Status: accepted. `tests/browser/test_dense_object_chrome.py` mounts a dedicated
+browser fixture and exercises both project/repository and admin/settings dense
+object recipes.
+
 Coverage:
 
 - desktop, tablet, and phone widths,
@@ -259,7 +267,7 @@ Proof:
    desired dense launcher.
 4. Re-evaluate whether `entity_header` can be extended or whether a new
    `object_header` composite is justified.
-5. Add browser responsive coverage for the complete dense object page.
+5. Done: add browser responsive coverage for the complete dense object page.
 
 ## Not Now
 

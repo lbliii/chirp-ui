@@ -912,7 +912,7 @@
       ],
       "lineno": 16,
       "macro": "ascii_7seg",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -988,7 +988,7 @@
       ],
       "lineno": 16,
       "macro": "ascii_badge",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1074,7 +1074,7 @@
       ],
       "lineno": 22,
       "macro": "ascii_border",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1150,7 +1150,7 @@
       "extra_emits": [],
       "lineno": 40,
       "macro": "breaker_panel",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [
         "sm"
       ],
@@ -1235,7 +1235,7 @@
       ],
       "lineno": 30,
       "macro": "ascii_card",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1310,7 +1310,7 @@
       ],
       "lineno": 19,
       "macro": "ascii_checkbox",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1425,7 +1425,7 @@
       ],
       "lineno": 15,
       "macro": "ascii_divider",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1495,7 +1495,7 @@
       ],
       "lineno": 17,
       "macro": "ascii_empty",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1575,7 +1575,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "ascii_error",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1651,7 +1651,7 @@
       ],
       "lineno": 21,
       "macro": "ascii_fader",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1681,7 +1681,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -1833,7 +1835,7 @@
       ],
       "lineno": 25,
       "macro": "indicator",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -1949,7 +1951,7 @@
       ],
       "lineno": 17,
       "macro": "ascii_knob",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2030,7 +2032,7 @@
       ],
       "lineno": 23,
       "macro": "ascii_modal",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2140,7 +2142,7 @@
       ],
       "lineno": 14,
       "macro": "ascii_progress",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2254,7 +2256,7 @@
       ],
       "lineno": 28,
       "macro": "ascii_radio_group",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2333,7 +2335,7 @@
       ],
       "lineno": 17,
       "macro": "ascii_skeleton",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2398,7 +2400,7 @@
       ],
       "lineno": 16,
       "macro": "ascii_sparkline",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2472,7 +2474,7 @@
       ],
       "lineno": 13,
       "macro": "ascii_spinner",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2551,7 +2553,7 @@
       ],
       "lineno": 18,
       "macro": "ascii_stepper",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2633,9 +2635,9 @@
         "chirpui-ascii-switch__lever",
         "chirpui-ascii-switch__slot"
       ],
-      "lineno": 48,
+      "lineno": 49,
       "macro": "ascii_switch",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2709,7 +2711,7 @@
       "category": "ascii",
       "composes": [],
       "consumes": [],
-      "description": "ASCII Tabs\n    Tab bar using box-drawing characters with active tab highlighting.\n\n    Usage:\n        from \"chirpui/ascii_tabs.html\" import ascii_tabs, ascii_tab\n\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\") }}\n            {{ ascii_tab(\"logs\", \"Logs\") }}\n        {% end %}\n\n    With htmx:\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", url=\"/tabs/overview\", hx_target=\"#panel\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\", url=\"/tabs/details\", hx_target=\"#panel\") }}\n        {% end %}\n\n    Variants: default, accent.\n\n    Visual (active tab boxed):\n        ┌──────────┐\n        │ Overview  │  Details    Logs\n        └──────────┴──────────────────",
+      "description": "ASCII Tabs\n    Route/link tab navigation using box-drawing characters with active tab highlighting.\n\n    Usage:\n        from \"chirpui/ascii_tabs.html\" import ascii_tabs, ascii_tab\n\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\") }}\n            {{ ascii_tab(\"logs\", \"Logs\") }}\n        {% end %}\n\n    With htmx:\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", url=\"/tabs/overview\", hx_target=\"#panel\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\", url=\"/tabs/details\", hx_target=\"#panel\") }}\n        {% end %}\n\n    Variants: default, accent.\n    Contract: navigation links, not a roving-focus tabpanel controller.\n\n    Visual (active tab boxed):\n        ┌──────────┐\n        │ Overview  │  Details    Logs\n        └──────────┴──────────────────",
       "elements": [],
       "emits": [
         "chirpui-ascii-tab",
@@ -2722,9 +2724,9 @@
         "chirpui-ascii-tab__bracket",
         "chirpui-ascii-tab__label"
       ],
-      "lineno": 35,
+      "lineno": 36,
       "macro": "ascii_tab",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2836,7 +2838,7 @@
       ],
       "lineno": 24,
       "macro": "ascii_table",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2905,16 +2907,16 @@
       "category": "ascii",
       "composes": [],
       "consumes": [],
-      "description": "ASCII Tabs\n    Tab bar using box-drawing characters with active tab highlighting.\n\n    Usage:\n        from \"chirpui/ascii_tabs.html\" import ascii_tabs, ascii_tab\n\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\") }}\n            {{ ascii_tab(\"logs\", \"Logs\") }}\n        {% end %}\n\n    With htmx:\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", url=\"/tabs/overview\", hx_target=\"#panel\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\", url=\"/tabs/details\", hx_target=\"#panel\") }}\n        {% end %}\n\n    Variants: default, accent.\n\n    Visual (active tab boxed):\n        ┌──────────┐\n        │ Overview  │  Details    Logs\n        └──────────┴──────────────────",
+      "description": "ASCII Tabs\n    Route/link tab navigation using box-drawing characters with active tab highlighting.\n\n    Usage:\n        from \"chirpui/ascii_tabs.html\" import ascii_tabs, ascii_tab\n\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\") }}\n            {{ ascii_tab(\"logs\", \"Logs\") }}\n        {% end %}\n\n    With htmx:\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", url=\"/tabs/overview\", hx_target=\"#panel\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\", url=\"/tabs/details\", hx_target=\"#panel\") }}\n        {% end %}\n\n    Variants: default, accent.\n    Contract: navigation links, not a roving-focus tabpanel controller.\n\n    Visual (active tab boxed):\n        ┌──────────┐\n        │ Overview  │  Details    Logs\n        └──────────┴──────────────────",
       "elements": [],
       "emits": [
         "chirpui-ascii-tabs",
         "chirpui-ascii-tabs--accent"
       ],
       "extra_emits": [],
-      "lineno": 27,
+      "lineno": 28,
       "macro": "ascii_tabs",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -2982,7 +2984,7 @@
       ],
       "lineno": 14,
       "macro": "ascii_ticker",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -3061,7 +3063,7 @@
       ],
       "lineno": 25,
       "macro": "tile_btn",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -3193,7 +3195,7 @@
       ],
       "lineno": 29,
       "macro": "ascii_toggle",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -3297,7 +3299,7 @@
       ],
       "lineno": 21,
       "macro": "ascii_vu_meter",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -4167,7 +4169,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-block",
@@ -4184,20 +4186,35 @@
         "chirpui-block--tall",
         "chirpui-block--wide"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 83,
+      "macro": "block",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "span"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -5915,7 +5932,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-cluster",
@@ -5932,20 +5949,35 @@
         "chirpui-cluster--sm",
         "chirpui-cluster--xs"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 60,
+      "macro": "cluster",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "gap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -6834,26 +6866,46 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-container"
       ],
       "extra_emits": [],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 8,
+      "macro": "container",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "max_width"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "padding"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -9682,7 +9734,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-frame",
@@ -9705,20 +9757,40 @@
         "chirpui-frame--sidebar-end",
         "chirpui-frame--sidebar-start"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 41,
+      "macro": "frame",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "gap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -10014,7 +10086,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-grid",
@@ -10049,20 +10121,55 @@
         "chirpui-grid--preset-detail-two",
         "chirpui-grid--preset-thirds"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 16,
+      "macro": "grid",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cols"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "gap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "preset"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "detail_single"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -11339,7 +11446,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-layer",
@@ -11366,20 +11473,50 @@
         "chirpui-layer--overlap-sm",
         "chirpui-layer--right"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 69,
+      "macro": "layer",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "direction"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "overlap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "angle"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hover"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -17887,7 +18024,7 @@
       ],
       "lineno": 21,
       "macro": "split_flap",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -18353,7 +18490,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
       "elements": [],
       "emits": [
         "chirpui-stack",
@@ -18370,20 +18507,35 @@
         "chirpui-stack--xl",
         "chirpui-stack--xs"
       ],
-      "lineno": 0,
-      "macro": null,
+      "lineno": 53,
+      "macro": "stack",
       "maturity": "stable",
       "modifiers": [],
-      "params": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "gap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
       "provides": [],
       "requires": [],
       "role": "primitive",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [],
-      "slots_extracted": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
       "slots_yielded": [],
-      "template": "",
+      "template": "layout.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -21004,7 +21156,7 @@
         "chirpui-tray__title"
       ],
       "extra_emits": [],
-      "lineno": 23,
+      "lineno": 24,
       "macro": "tray",
       "maturity": "stable",
       "modifiers": [
@@ -22251,13 +22403,13 @@
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 121,
+      "experimental": 93,
       "internal": 2,
       "legacy": 39,
-      "stable": 174
+      "stable": 202
     },
     "component_requirements": {
-      "alpine": 22,
+      "alpine": 23,
       "htmx": 24
     },
     "component_roles": {
@@ -22268,8 +22420,8 @@
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 226,
-    "components_with_params": 226,
+    "components_with_description": 233,
+    "components_with_params": 233,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -22277,7 +22429,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 224
+      "public_templated_components": 231
     },
     "registry_debt": {
       "auto_category_components": 0,

@@ -3909,7 +3909,7 @@ ASCII 7-Segment Display
 - **Template:** `chirpui/ascii_7seg.html`
 - **Macro:** `ascii_7seg`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
@@ -3928,7 +3928,7 @@ ASCII Badge
 - **Template:** `chirpui/ascii_badge.html`
 - **Macro:** `ascii_badge`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `muted`, `success`, `warning`
@@ -3948,7 +3948,7 @@ ASCII Border
 - **Template:** `chirpui/ascii_border.html`
 - **Macro:** `ascii_border`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -3967,7 +3967,7 @@ ASCII Breaker Panel
 - **Template:** `chirpui/ascii_breaker_panel.html`
 - **Macro:** `breaker_panel`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -3988,7 +3988,7 @@ ASCII Card
 - **Template:** `chirpui/ascii_card.html`
 - **Macro:** `ascii_card`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4008,7 +4008,7 @@ ASCII Checkbox
 - **Template:** `chirpui/ascii_checkbox.html`
 - **Macro:** `ascii_checkbox`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
@@ -4036,7 +4036,7 @@ ASCII Divider
 - **Template:** `chirpui/ascii_divider.html`
 - **Macro:** `ascii_divider`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `dots`, `double`, `heavy`, `single`, `spin`, `spin-drift`, `spin-reverse`
@@ -4054,7 +4054,7 @@ ASCII Empty State component
 - **Template:** `chirpui/ascii_empty.html`
 - **Macro:** `ascii_empty`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4075,7 +4075,7 @@ ASCII Error Page
 - **Template:** `chirpui/ascii_error.html`
 - **Macro:** `ascii_error`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4094,9 +4094,10 @@ ASCII Fader / Slider
 - **Template:** `chirpui/ascii_fader.html`
 - **Macro:** `ascii_fader`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
+- **Requires:** `alpine`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
 
 | Param | Required | Default |
@@ -4135,7 +4136,7 @@ ASCII Indicator Light
 - **Template:** `chirpui/ascii_indicator.html`
 - **Macro:** `indicator`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `accent`, `error`, `muted`, `success`, `warning`
@@ -4162,7 +4163,7 @@ ASCII Knob / Rotary Selector
 - **Template:** `chirpui/ascii_knob.html`
 - **Macro:** `ascii_knob`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`
@@ -4183,7 +4184,7 @@ ASCII Modal
 - **Template:** `chirpui/ascii_modal.html`
 - **Macro:** `ascii_modal`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`
@@ -4211,7 +4212,7 @@ ASCII Progress
 - **Template:** `chirpui/ascii_progress.html`
 - **Macro:** `ascii_progress`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
@@ -4238,7 +4239,7 @@ ASCII Radio
 - **Template:** `chirpui/ascii_radio.html`
 - **Macro:** `ascii_radio_group`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4259,7 +4260,7 @@ ASCII Skeleton
 - **Template:** `chirpui/ascii_skeleton.html`
 - **Macro:** `ascii_skeleton`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `avatar`, `card`, `heading`, `text`
@@ -4278,7 +4279,7 @@ ASCII Sparkline
 - **Template:** `chirpui/ascii_sparkline.html`
 - **Macro:** `ascii_sparkline`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `gradient`, `muted`
@@ -4296,7 +4297,7 @@ ASCII Spinner component
 - **Template:** `chirpui/ascii_spinner.html`
 - **Macro:** `ascii_spinner`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `arrows`, `blocks`, `box`, `braille`, `dots`
@@ -4315,7 +4316,7 @@ ASCII Stepper
 - **Template:** `chirpui/ascii_stepper.html`
 - **Macro:** `ascii_stepper`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `success`
@@ -4334,7 +4335,7 @@ ASCII Toggle
 - **Template:** `chirpui/ascii_toggle.html`
 - **Macro:** `ascii_switch`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
@@ -4357,7 +4358,7 @@ ASCII Tabs
 - **Template:** `chirpui/ascii_tabs.html`
 - **Macro:** `ascii_tab`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `htmx`
@@ -4380,7 +4381,7 @@ ASCII Table
 - **Template:** `chirpui/ascii_table.html`
 - **Macro:** `ascii_table`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4403,7 +4404,7 @@ ASCII Tabs
 - **Template:** `chirpui/ascii_tabs.html`
 - **Macro:** `ascii_tabs`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4421,7 +4422,7 @@ ASCII Ticker
 - **Template:** `chirpui/ascii_ticker.html`
 - **Macro:** `ascii_ticker`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `success`, `warning`
@@ -4440,7 +4441,7 @@ ASCII Tile Button
 - **Template:** `chirpui/ascii_tile_btn.html`
 - **Macro:** `tile_btn`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
@@ -4470,7 +4471,7 @@ ASCII Toggle
 - **Template:** `chirpui/ascii_toggle.html`
 - **Macro:** `ascii_toggle`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`
@@ -4493,7 +4494,7 @@ ASCII VU Meter
 - **Template:** `chirpui/ascii_vu_meter.html`
 - **Macro:** `ascii_vu_meter`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `success`, `warning`
@@ -4701,10 +4702,20 @@ Bar Chart component
 
 ### `block`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `block`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `span` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `border-beam`
 
@@ -5111,10 +5122,20 @@ Chip group
 
 ### `cluster`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `cluster`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `gap` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `code`
 
@@ -5329,10 +5350,21 @@ Constellation
 
 ### `container`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `container`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `max_width` | no | (has default) |
+| `padding` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `conversation-item`
 
@@ -6051,10 +6083,21 @@ Safe region / Fragment island primitives
 
 ### `frame`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `frame`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `variant` | no | (has default) |
+| `gap` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `glitch`
 
@@ -6141,10 +6184,24 @@ Grain Overlay
 
 ### `grid`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `grid`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cols` | no | (has default) |
+| `gap` | no | (has default) |
+| `preset` | no | (has default) |
+| `items` | no | (has default) |
+| `detail_single` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `hero`
 
@@ -6478,10 +6535,23 @@ Latest line
 
 ### `layer`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `layer`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `direction` | no | (has default) |
+| `overlap` | no | (has default) |
+| `angle` | no | (has default) |
+| `hover` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `lifecycle-showcase`
 
@@ -8208,7 +8278,7 @@ ASCII Split-Flap Display
 - **Template:** `chirpui/ascii_split_flap.html`
 - **Macro:** `split_flap`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `amber`, `default`, `green`
@@ -8328,10 +8398,20 @@ SSE connection status and error recovery
 
 ### `stack`
 
+Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
+
+- **Template:** `chirpui/layout.html`
+- **Macro:** `stack`
 - **Category:** `layout`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `gap` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `star-rating`
 

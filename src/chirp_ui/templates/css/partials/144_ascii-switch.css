@@ -24,6 +24,7 @@
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 
 /* Top and bottom caps: box-drawing corners + horizontal line */
@@ -141,4 +142,3 @@
         transition: none;
     }
 }
-

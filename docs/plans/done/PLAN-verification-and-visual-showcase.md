@@ -1,6 +1,6 @@
 # Verification And Visual Showcase Plan
 
-Status: active plan
+Status: complete
 Date: 2026-05-12
 Depends on:
 
@@ -111,3 +111,10 @@ Acceptance:
 - Screenshot baselines before the visual audit page content stabilizes.
 - Replacing component contract tests with screenshots.
 - Adding Tailwind-style utility classes for showcase-only layout needs.
+
+## Changelog
+
+- 2026-05-12: Archived to `docs/plans/done/` after the verification docs,
+  generated-artifact gate, visual audit page, dense navigation recipes, and
+  roadmap cleanup landed. Remaining verification work is tracked by residual
+  test/CI plans, not this shipped slice.

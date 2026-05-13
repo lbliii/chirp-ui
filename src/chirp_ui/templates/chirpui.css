@@ -10390,259 +10390,265 @@ a.chirpui-btn {
 }
 
 /* === partials/072_badge.css === */
-@layer chirpui.component {
 /* ==========================================================================
-   Badge
+   Badge — @scope + @layer envelope.
    ========================================================================== */
 
-.chirpui-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--chirpui-spacing-xs);
-    max-width: 100%;
-    min-width: 0;
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--chirpui-radius-sm);
-    font-family: var(--chirpui-ui-font-family);
-    font-size: var(--chirpui-ui-sm);
-    font-weight: var(--chirpui-ui-font-weight-medium);
-    font-feature-settings: "tnum";
-    line-height: 1;
-    border: 1px solid;
-    text-decoration: none;
-    transition: background var(--chirpui-transition), color var(--chirpui-transition),
-        border-color var(--chirpui-transition), box-shadow var(--chirpui-transition);
-}
+@layer chirpui.component {
+    @scope (.chirpui-badge) to (.chirpui-badge .chirpui-badge) {
+        :scope {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--chirpui-spacing-xs);
+            max-width: 100%;
+            min-width: 0;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--chirpui-radius-sm);
+            font-family: var(--chirpui-ui-font-family);
+            font-size: var(--chirpui-ui-sm);
+            font-weight: var(--chirpui-ui-font-weight-medium);
+            font-feature-settings: "tnum";
+            line-height: 1;
+            border: 1px solid;
+            text-decoration: none;
+            transition: background var(--chirpui-transition), color var(--chirpui-transition),
+                border-color var(--chirpui-transition), box-shadow var(--chirpui-transition);
+        }
 
-a.chirpui-badge {
-    cursor: pointer;
-    box-shadow: var(--chirpui-shadow-sm);
-    border-width: 1.5px;
-}
+        :scope:is(a) {
+            cursor: pointer;
+            box-shadow: var(--chirpui-shadow-sm);
+            border-width: 1.5px;
+        }
 
-a.chirpui-badge:hover,
-a.chirpui-badge:focus {
-    text-decoration: none;
-}
+        :scope:is(a):hover,
+        :scope:is(a):focus {
+            text-decoration: none;
+        }
 
-a.chirpui-badge:focus-visible {
-    outline: var(--chirpui-state-focus-outline);
-    outline-offset: var(--chirpui-state-focus-offset);
-}
+        :scope:is(a):focus-visible {
+            outline: var(--chirpui-state-focus-outline);
+            outline-offset: var(--chirpui-state-focus-offset);
+        }
 
-@media (prefers-reduced-motion: no-preference) {
-    a.chirpui-badge {
-        transition: background var(--chirpui-transition), color var(--chirpui-transition),
-            border-color var(--chirpui-transition), box-shadow var(--chirpui-transition),
-            transform var(--chirpui-transition);
+        @media (prefers-reduced-motion: no-preference) {
+            :scope:is(a) {
+                transition: background var(--chirpui-transition), color var(--chirpui-transition),
+                    border-color var(--chirpui-transition), box-shadow var(--chirpui-transition),
+                    transform var(--chirpui-transition);
+            }
+
+            :scope:is(a):hover {
+                transform: translateY(-1px);
+                box-shadow: var(--chirpui-shadow-sm);
+            }
+
+            :scope:is(a):active {
+                transition: none;
+                transform: translateY(0);
+                box-shadow: none;
+            }
+        }
+
+        .chirpui-badge__icon {
+            font-size: 1em;
+            line-height: 1;
+        }
+
+        .chirpui-badge__text {
+            line-height: 1;
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        /* Appearance axis */
+        :scope.chirpui-badge--tonal {
+            box-shadow: none;
+        }
+
+        :scope.chirpui-badge--outlined {
+            background: transparent;
+        }
+
+        :scope.chirpui-badge--filled {
+            box-shadow: none;
+        }
+
+        :scope.chirpui-badge--neutral {
+            background: var(--chirpui-muted-bg);
+            color: var(--chirpui-text-muted);
+            border-color: var(--chirpui-border);
+        }
+
+        :scope.chirpui-badge--primary {
+            background: var(--chirpui-primary-muted);
+            color: var(--chirpui-primary);
+            border-color: var(--chirpui-primary);
+        }
+
+        :scope:is(a).chirpui-badge--primary:hover {
+            background: color-mix(in srgb, var(--chirpui-primary) 25%, var(--chirpui-primary-muted));
+            color: color-mix(in srgb, var(--chirpui-primary) var(--chirpui-shade-hover), black);
+        }
+
+        :scope:is(a).chirpui-badge--primary:active {
+            background: color-mix(in srgb, var(--chirpui-primary) 35%, var(--chirpui-primary-muted));
+        }
+
+        :scope.chirpui-badge--success {
+            background: var(--chirpui-success-muted);
+            color: var(--chirpui-success);
+            border-color: var(--chirpui-success);
+        }
+
+        :scope:is(a).chirpui-badge--success:hover {
+            background: color-mix(in srgb, var(--chirpui-success) 25%, var(--chirpui-success-muted));
+            color: color-mix(in srgb, var(--chirpui-success) var(--chirpui-shade-hover), black);
+        }
+
+        :scope:is(a).chirpui-badge--success:active {
+            background: color-mix(in srgb, var(--chirpui-success) 35%, var(--chirpui-success-muted));
+        }
+
+        :scope.chirpui-badge--warning {
+            background: var(--chirpui-warning-muted);
+            color: var(--chirpui-warning);
+            border-color: var(--chirpui-warning);
+        }
+
+        :scope:is(a).chirpui-badge--warning:hover {
+            background: color-mix(in srgb, var(--chirpui-warning) 25%, var(--chirpui-warning-muted));
+            color: color-mix(in srgb, var(--chirpui-warning) var(--chirpui-shade-hover), black);
+        }
+
+        :scope:is(a).chirpui-badge--warning:active {
+            background: color-mix(in srgb, var(--chirpui-warning) 35%, var(--chirpui-warning-muted));
+        }
+
+        :scope.chirpui-badge--error {
+            background: var(--chirpui-error-muted);
+            color: var(--chirpui-error);
+            border-color: var(--chirpui-error);
+        }
+
+        :scope.chirpui-badge--danger {
+            background: color-mix(in srgb, var(--chirpui-danger) 12%, transparent);
+            color: var(--chirpui-danger);
+            border-color: var(--chirpui-danger);
+        }
+
+        :scope:is(a).chirpui-badge--error:hover {
+            background: color-mix(in srgb, var(--chirpui-error) 25%, var(--chirpui-error-muted));
+            color: color-mix(in srgb, var(--chirpui-error) var(--chirpui-shade-hover), black);
+        }
+
+        :scope:is(a).chirpui-badge--error:active {
+            background: color-mix(in srgb, var(--chirpui-error) 35%, var(--chirpui-error-muted));
+        }
+
+        :scope.chirpui-badge--muted {
+            background: var(--chirpui-muted-bg);
+            color: var(--chirpui-text-muted);
+            border-color: var(--chirpui-border);
+        }
+
+        :scope:is(a).chirpui-badge--muted:hover {
+            background: var(--chirpui-border);
+            color: var(--chirpui-text);
+        }
+
+        :scope:is(a).chirpui-badge--muted:active {
+            background: color-mix(in srgb, var(--chirpui-border) 80%, black);
+        }
+
+        :scope.chirpui-badge--info {
+            background: var(--chirpui-alert-info-bg);
+            color: var(--chirpui-info);
+            border-color: var(--chirpui-alert-info-border);
+        }
+
+        :scope:is(a).chirpui-badge--info:hover {
+            background: color-mix(in srgb, var(--chirpui-info) 20%, var(--chirpui-alert-info-bg));
+            color: color-mix(in srgb, var(--chirpui-info) var(--chirpui-shade-hover), black);
+        }
+
+        :scope:is(a).chirpui-badge--info:active {
+            background: color-mix(in srgb, var(--chirpui-info) 30%, var(--chirpui-alert-info-bg));
+        }
+
+        :scope.chirpui-badge--outlined.chirpui-badge--primary,
+        :scope.chirpui-badge--outlined.chirpui-badge--success,
+        :scope.chirpui-badge--outlined.chirpui-badge--warning,
+        :scope.chirpui-badge--outlined.chirpui-badge--danger,
+        :scope.chirpui-badge--outlined.chirpui-badge--info,
+        :scope.chirpui-badge--outlined.chirpui-badge--neutral {
+            background: transparent;
+        }
+
+        :scope.chirpui-badge--filled.chirpui-badge--primary {
+            background: var(--chirpui-primary);
+            color: var(--chirpui-on-accent);
+        }
+
+        :scope.chirpui-badge--filled.chirpui-badge--success {
+            background: var(--chirpui-success);
+            color: var(--chirpui-on-accent);
+        }
+
+        :scope.chirpui-badge--filled.chirpui-badge--warning {
+            background: var(--chirpui-warning);
+            color: var(--chirpui-on-accent);
+        }
+
+        :scope.chirpui-badge--filled.chirpui-badge--danger {
+            background: var(--chirpui-danger);
+            color: var(--chirpui-on-accent);
+        }
+
+        :scope.chirpui-badge--filled.chirpui-badge--info {
+            background: var(--chirpui-info);
+            color: var(--chirpui-on-accent);
+        }
+
+        :scope.chirpui-badge--filled.chirpui-badge--neutral {
+            background: var(--chirpui-text-muted);
+            color: var(--chirpui-bg);
+        }
+
+        /* Custom color (scoped --chirpui-badge-color) */
+        :scope.chirpui-badge--custom {
+            --_bg-mix: light-dark(12%, 18%);
+            background: color-mix(in srgb, var(--chirpui-badge-color) var(--_bg-mix), transparent);
+            color: var(--chirpui-badge-color);
+            border-color: color-mix(in srgb, var(--chirpui-badge-color) 40%, transparent);
+        }
+
+        :scope.chirpui-badge--custom-solid {
+            background: var(--chirpui-badge-color);
+            color: var(--chirpui-badge-text, white);
+            border-color: var(--chirpui-badge-color);
+        }
+
+        :scope:is(a).chirpui-badge--custom:hover {
+            background: color-mix(
+                in srgb,
+                var(--chirpui-badge-color) light-dark(18%, 24%),
+                transparent
+            );
+        }
+
+        :scope:is(a).chirpui-badge--custom-solid:hover {
+            filter: brightness(1.05);
+        }
     }
 
-    a.chirpui-badge:hover {
-        transform: translateY(-1px);
-        box-shadow: var(--chirpui-shadow-sm);
+    /* filter_chips.html — filter_group row (not filter_bar.html form toolbar) */
+    .chirpui-filter-group {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--chirpui-spacing-sm);
     }
-
-    a.chirpui-badge:active {
-        transition: none;
-        transform: translateY(0);
-        box-shadow: none;
-    }
-}
-
-.chirpui-badge__icon {
-    font-size: 1em;
-    line-height: 1;
-}
-
-.chirpui-badge__text {
-    line-height: 1;
-    min-width: 0;
-    overflow-wrap: anywhere;
-}
-
-/* Appearance axis */
-.chirpui-badge--tonal {
-    box-shadow: none;
-}
-
-.chirpui-badge--outlined {
-    background: transparent;
-}
-
-.chirpui-badge--filled {
-    box-shadow: none;
-}
-
-.chirpui-badge--neutral {
-    background: var(--chirpui-muted-bg);
-    color: var(--chirpui-text-muted);
-    border-color: var(--chirpui-border);
-}
-
-.chirpui-badge--primary {
-    background: var(--chirpui-primary-muted);
-    color: var(--chirpui-primary);
-    border-color: var(--chirpui-primary);
-}
-
-a.chirpui-badge--primary:hover {
-    background: color-mix(in srgb, var(--chirpui-primary) 25%, var(--chirpui-primary-muted));
-    color: color-mix(in srgb, var(--chirpui-primary) var(--chirpui-shade-hover), black);
-}
-
-a.chirpui-badge--primary:active {
-    background: color-mix(in srgb, var(--chirpui-primary) 35%, var(--chirpui-primary-muted));
-}
-
-.chirpui-badge--success {
-    background: var(--chirpui-success-muted);
-    color: var(--chirpui-success);
-    border-color: var(--chirpui-success);
-}
-
-a.chirpui-badge--success:hover {
-    background: color-mix(in srgb, var(--chirpui-success) 25%, var(--chirpui-success-muted));
-    color: color-mix(in srgb, var(--chirpui-success) var(--chirpui-shade-hover), black);
-}
-
-a.chirpui-badge--success:active {
-    background: color-mix(in srgb, var(--chirpui-success) 35%, var(--chirpui-success-muted));
-}
-
-.chirpui-badge--warning {
-    background: var(--chirpui-warning-muted);
-    color: var(--chirpui-warning);
-    border-color: var(--chirpui-warning);
-}
-
-a.chirpui-badge--warning:hover {
-    background: color-mix(in srgb, var(--chirpui-warning) 25%, var(--chirpui-warning-muted));
-    color: color-mix(in srgb, var(--chirpui-warning) var(--chirpui-shade-hover), black);
-}
-
-a.chirpui-badge--warning:active {
-    background: color-mix(in srgb, var(--chirpui-warning) 35%, var(--chirpui-warning-muted));
-}
-
-.chirpui-badge--error {
-    background: var(--chirpui-error-muted);
-    color: var(--chirpui-error);
-    border-color: var(--chirpui-error);
-}
-
-.chirpui-badge--danger {
-    background: color-mix(in srgb, var(--chirpui-danger) 12%, transparent);
-    color: var(--chirpui-danger);
-    border-color: var(--chirpui-danger);
-}
-
-a.chirpui-badge--error:hover {
-    background: color-mix(in srgb, var(--chirpui-error) 25%, var(--chirpui-error-muted));
-    color: color-mix(in srgb, var(--chirpui-error) var(--chirpui-shade-hover), black);
-}
-
-a.chirpui-badge--error:active {
-    background: color-mix(in srgb, var(--chirpui-error) 35%, var(--chirpui-error-muted));
-}
-
-.chirpui-badge--muted {
-    background: var(--chirpui-muted-bg);
-    color: var(--chirpui-text-muted);
-    border-color: var(--chirpui-border);
-}
-
-a.chirpui-badge--muted:hover {
-    background: var(--chirpui-border);
-    color: var(--chirpui-text);
-}
-
-a.chirpui-badge--muted:active {
-    background: color-mix(in srgb, var(--chirpui-border) 80%, black);
-}
-
-.chirpui-badge--info {
-    background: var(--chirpui-alert-info-bg);
-    color: var(--chirpui-info);
-    border-color: var(--chirpui-alert-info-border);
-}
-
-a.chirpui-badge--info:hover {
-    background: color-mix(in srgb, var(--chirpui-info) 20%, var(--chirpui-alert-info-bg));
-    color: color-mix(in srgb, var(--chirpui-info) var(--chirpui-shade-hover), black);
-}
-
-a.chirpui-badge--info:active {
-    background: color-mix(in srgb, var(--chirpui-info) 30%, var(--chirpui-alert-info-bg));
-}
-
-.chirpui-badge--outlined.chirpui-badge--primary,
-.chirpui-badge--outlined.chirpui-badge--success,
-.chirpui-badge--outlined.chirpui-badge--warning,
-.chirpui-badge--outlined.chirpui-badge--danger,
-.chirpui-badge--outlined.chirpui-badge--info,
-.chirpui-badge--outlined.chirpui-badge--neutral {
-    background: transparent;
-}
-
-.chirpui-badge--filled.chirpui-badge--primary {
-    background: var(--chirpui-primary);
-    color: var(--chirpui-on-accent);
-}
-
-.chirpui-badge--filled.chirpui-badge--success {
-    background: var(--chirpui-success);
-    color: var(--chirpui-on-accent);
-}
-
-.chirpui-badge--filled.chirpui-badge--warning {
-    background: var(--chirpui-warning);
-    color: var(--chirpui-on-accent);
-}
-
-.chirpui-badge--filled.chirpui-badge--danger {
-    background: var(--chirpui-danger);
-    color: var(--chirpui-on-accent);
-}
-
-.chirpui-badge--filled.chirpui-badge--info {
-    background: var(--chirpui-info);
-    color: var(--chirpui-on-accent);
-}
-
-.chirpui-badge--filled.chirpui-badge--neutral {
-    background: var(--chirpui-text-muted);
-    color: var(--chirpui-bg);
-}
-
-/* Custom color (scoped --chirpui-badge-color) */
-.chirpui-badge--custom {
-    --_bg-mix: light-dark(12%, 18%);
-    background: color-mix(in srgb, var(--chirpui-badge-color) var(--_bg-mix), transparent);
-    color: var(--chirpui-badge-color);
-    border-color: color-mix(in srgb, var(--chirpui-badge-color) 40%, transparent);
-}
-
-.chirpui-badge--custom-solid {
-    background: var(--chirpui-badge-color);
-    color: var(--chirpui-badge-text, white);
-    border-color: var(--chirpui-badge-color);
-}
-
-a.chirpui-badge--custom:hover {
-    background: color-mix(in srgb, var(--chirpui-badge-color) light-dark(18%, 24%), transparent);
-}
-
-a.chirpui-badge--custom-solid:hover {
-    filter: brightness(1.05);
-}
-
-/* filter_chips.html — filter_group row (not filter_bar.html form toolbar) */
-.chirpui-filter-group {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--chirpui-spacing-sm);
-}
 }
 
 /* === partials/073_spinner.css === */
@@ -15400,6 +15406,16 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-spinner--blocks .chirpui-ascii-spinner__char:nth-child(3) { animation-delay: -0.4s; }
 .chirpui-ascii-spinner--blocks .chirpui-ascii-spinner__char:nth-child(4) { animation-delay: -0.2s; }
 
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-spinner__char {
+        animation: none;
+        opacity: 0;
+    }
+
+    .chirpui-ascii-spinner__char:first-child {
+        opacity: 1;
+    }
+}
 }
 
 /* === partials/139_ascii-badge.css === */
@@ -15632,6 +15648,12 @@ body.htmx-request .chirpui-nav-progress::after {
     font-size: inherit;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-skeleton__fill,
+    .chirpui-ascii-skeleton__line {
+        animation: none;
+    }
+}
 }
 
 /* === partials/143_ascii-toggle.css === */
@@ -15657,6 +15679,7 @@ body.htmx-request .chirpui-nav-progress::after {
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 
 .chirpui-ascii-toggle__rail {
@@ -15799,6 +15822,7 @@ body.htmx-request .chirpui-nav-progress::after {
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 
 /* Top and bottom caps: box-drawing corners + horizontal line */
@@ -15916,7 +15940,6 @@ body.htmx-request .chirpui-nav-progress::after {
         transition: none;
     }
 }
-
 }
 
 /* === partials/145_ascii-breaker-panel.css === */
@@ -16270,6 +16293,7 @@ body.htmx-request .chirpui-nav-progress::after {
     padding: 0 0.35em;
     transition: color var(--chirpui-transition);
     color: var(--chirpui-text-muted);
+    pointer-events: none;
 }
 
 .chirpui-ascii-knob__tick {
@@ -16313,7 +16337,6 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-knob:has(.chirpui-ascii-knob__input:checked) .chirpui-ascii-knob__dial {
     color: var(--chirpui-text);
 }
-
 }
 
 /* === partials/149_ascii-fader.css === */
@@ -16372,6 +16395,12 @@ body.htmx-request .chirpui-nav-progress::after {
 /* Range input (keyboard-accessible) — visually hidden but focusable */
 .chirpui-ascii-fader__input {}
 
+.chirpui-ascii-fader:has(.chirpui-ascii-fader__input:focus-visible) .chirpui-ascii-fader__track {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
 /* Color variants */
 .chirpui-ascii-fader--success .chirpui-ascii-fader__segment--filled { color: var(--chirpui-success); }
 .chirpui-ascii-fader--warning .chirpui-ascii-fader__segment--filled { color: var(--chirpui-warning, #e6a700); }
@@ -16397,7 +16426,6 @@ body.htmx-request .chirpui-nav-progress::after {
     gap: 0.75rem;
     align-items: flex-end;
 }
-
 }
 
 /* === partials/150_ascii-vu-meter.css === */
@@ -16599,6 +16627,7 @@ body.htmx-request .chirpui-nav-progress::after {
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 .chirpui-ascii-checkbox__box::before {
     content: "☐";
@@ -16657,7 +16686,6 @@ body.htmx-request .chirpui-nav-progress::after {
     color: var(--chirpui-text-muted);
     margin-bottom: 0.35em;
 }
-
 }
 
 /* === partials/153_ascii-radio.css === */
@@ -16680,6 +16708,7 @@ body.htmx-request .chirpui-nav-progress::after {
     line-height: 1;
     color: var(--chirpui-text-muted);
     transition: color var(--chirpui-transition);
+    pointer-events: none;
 }
 .chirpui-ascii-radio__dot::before {
     content: "○";
@@ -16742,7 +16771,6 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-ascii-radio-group--accent .chirpui-ascii-radio:has(.chirpui-ascii-radio__input:checked) .chirpui-ascii-radio__dot {
     color: var(--chirpui-accent);
 }
-
 }
 
 /* === partials/154_ascii-stepper.css === */
@@ -17969,18 +17997,25 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 
 /* === partials/159_resource-card.css === */
-@layer chirpui.component {
 /* ==========================================================================
-   Resource card — thin wrapper used inside resource index grids.
+   Resource card — @scope + @layer envelope.
+
+   Thin wrapper used inside resource index grids. The scope boundary keeps
+   future resource-card descendants from leaking into nested resource cards as
+   this wrapper grows beyond height/description reset.
+   See docs/PLAN-css-scope-and-layer.md § Migration status.
    ========================================================================== */
 
-.chirpui-resource-card {
-    height: 100%;
-}
+@layer chirpui.component {
+    @scope (.chirpui-resource-card) to (.chirpui-resource-card .chirpui-resource-card) {
+        :scope {
+            height: 100%;
+        }
 
-.chirpui-resource-card__description {
-    margin: 0;
-}
+        .chirpui-resource-card__description {
+            margin: 0;
+        }
+    }
 }
 
 /* === partials/160_resource-index.css === */

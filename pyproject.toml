@@ -199,6 +199,7 @@ browser = [
 test = { cmd = "pytest", help = "Run full test suite" }
 test-fast = { cmd = "pytest tests/ -x -q --timeout=10", help = "Fast feedback loop" }
 test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov=bengal_themes --cov-report=term-missing", help = "Run tests with coverage" }
+test-js = { cmd = "npm test", help = "Run JavaScript island helper tests with Vitest" }
 test-browser = { cmd = "pytest tests/browser/ -q --timeout=30 --override-ini='addopts='", help = "Run browser integration tests (requires: uv sync --group browser && playwright install chromium)" }
 ci-browser = { sequence = ["test-browser"], help = "Browser integration tests (release gate)" }
 
@@ -243,6 +244,7 @@ ci = { sequence = [
     "css-concat-check",
     "ty",
     "test",
+    "test-js",
 ], help = "Full CI check" }
 check = { sequence = [
     "lint",

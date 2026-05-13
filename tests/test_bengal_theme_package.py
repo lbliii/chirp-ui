@@ -305,6 +305,29 @@ def test_theme_package_contains_required_resources() -> None:
     assert (package_root / "assets" / "favicon.svg").is_file()
 
 
+def test_chirp_theme_literal_template_asset_urls_exist() -> None:
+    """Literal asset_url references in packaged templates should resolve to assets."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    assets_root = package_root / "assets"
+    asset_pattern = re.compile(r"""asset_url\(\s*['"]([^'"]+)['"]\s*\)""")
+    referenced: set[str] = set()
+
+    for rel_path, resource in _iter_resource_files(templates_root):
+        if not rel_path.endswith(".html"):
+            continue
+        text = resource.read_text(encoding="utf-8")
+        referenced.update(asset_pattern.findall(text))
+
+    missing = sorted(path for path in referenced if not (assets_root / path).is_file())
+
+    assert "css/style.css" in referenced
+    assert "js/enhancements/action-bar.js" in referenced
+    assert not missing, "Literal template asset_url references missing assets: " + ", ".join(
+        missing
+    )
+
+
 def test_chirp_theme_templates_do_not_use_theme_adapter_macros() -> None:
     """Theme templates should import Chirp UI macros directly instead of theme adapters."""
     package_root = resources.files(THEME_PACKAGE)
@@ -380,9 +403,15 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     mobile_nav_js = (assets_root / "js" / "enhancements" / "mobile-nav.js").read_text(
         encoding="utf-8"
     )
+    action_bar_js = (assets_root / "js" / "enhancements" / "action-bar.js").read_text(
+        encoding="utf-8"
+    )
     tabs_js = (assets_root / "js" / "enhancements" / "tabs.js").read_text(encoding="utf-8")
     toc_js = (assets_root / "js" / "enhancements" / "toc.js").read_text(encoding="utf-8")
     style = (assets_root / "css" / "style.css").read_text(encoding="utf-8")
+
+    assert "asset_url('js/bundle.js')" not in base
+    assert "asset_url('js/enhancements/action-bar.js')" in base
 
     assert 'popovertarget="{{ _theme_menu_id }}"' in theme_controls
     assert 'popover class="theme-dropdown__menu--popover"' in theme_controls
@@ -410,6 +439,15 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     assert "document.getElementById('mobile-nav-dialog')" in mobile_nav_js
     assert "window.BengalNav" in mobile_nav_js
     assert "window.BengalSearchModal.open()" in mobile_nav_js
+
+    assert 'data-action="copy-url"' in (
+        templates_root / "partials" / "components" / "blog-share-dropdown.html"
+    ).read_text(encoding="utf-8")
+    assert "'action': 'copy-url'" in (
+        templates_root / "partials" / "page-hero" / "_macros.html"
+    ).read_text(encoding="utf-8")
+    assert "querySelectorAll('[popovertarget]')" in action_bar_js
+    assert "closest('[data-action^=\"copy\"]')" in action_bar_js
 
     assert 'data-bengal="toc"' in navigation
     assert 'data-toc-mode="normal"' in navigation

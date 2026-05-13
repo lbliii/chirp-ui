@@ -135,8 +135,17 @@ and static-build behavior, `assets/css/style.css` is the single stylesheet
 entrypoint and imports Chirp UI's generated CSS and transition CSS before theme
 tokens and overrides. Theme templates should not add separate
 `chirp_ui/chirpui.css` or `chirp_ui/chirpui-transitions.css` links. The desired
-platform contract is tracked in
+platform contract is for Bengal to expose `bundle`, `link`, and `none` modes
+from the library declaration; that contract is tracked in
 [`docs/plans/PLAN-bengal-chirpui-library-contract.md`](./plans/PLAN-bengal-chirpui-library-contract.md).
+
+The JavaScript loading contract is similarly explicit. `chirp-theme` currently
+loads individual packaged scripts from `assets/js/`; it does not advertise a
+generated `js/bundle.js` path because no bundle artifact is produced by this
+package. Share and LLM-copy controls depend on
+`assets/js/enhancements/action-bar.js`, so templates that emit
+`data-action="copy-url"` or `data-action="copy-llm-txt"` must keep that script
+in the base script list.
 
 The theme should eventually cover the same broad content/output families as the
 original Bengal default theme: autodoc and reference pages, tutorials, tracks,

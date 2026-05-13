@@ -54,7 +54,7 @@ pip install "bengal-chirp[ui]"
 
 ```python
 import chirp_ui
-print(chirp_ui.__version__)  # e.g. "0.2.2"
+print(chirp_ui.__version__)  # e.g. "0.8.0"
 ```
 
 ## Next Steps

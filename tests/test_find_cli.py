@@ -84,6 +84,8 @@ def test_preferred_components_returns_manifest_entries() -> None:
     ]
     assert components["stack"]["authoring"] == "preferred"
     assert components["stack"]["role"] == "primitive"
+    assert components["stack"]["macro"] == "stack"
+    assert components["stack"]["params"]
 
 
 def test_compatibility_components_can_filter_category() -> None:

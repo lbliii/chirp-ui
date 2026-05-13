@@ -24,10 +24,11 @@
 {% set variant = variant | validate_variant(("", "single", "double", "heavy"), "") %}
 {% set variant_class = " chirpui-ascii-modal--" ~ variant if variant else "" %}
 <dialog id="{{ id }}" class="chirpui-ascii-modal{{ variant_class }}{{ " " ~ cls if cls else "" }}"
+        {% if title %}aria-labelledby="{{ id }}-title"{% end %}
         closedby="any">
     {% if title %}
     <header class="chirpui-ascii-modal__header">
-        <span class="chirpui-ascii-modal__title">{{ title }}</span>
+        <span class="chirpui-ascii-modal__title" id="{{ id }}-title">{{ title }}</span>
         <form method="dialog">
             <button class="chirpui-ascii-modal__close" aria-label="Close">[<span aria-hidden="true">×</span>]</button>
         </form>

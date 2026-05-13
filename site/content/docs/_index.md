@@ -15,56 +15,56 @@ cascade:
 ## Learn chirp-ui
 
 <div class="chirpui-grid chirpui-grid--cols-2 chirpui-grid--gap-md chirp-theme-directive-cards">
-  <a href="./get-started/" class="chirpui-card chirpui-card--link chirpui-resource-card chirp-theme-directive-card">
+  <article class="chirpui-card chirp-theme-directive-card">
     <header class="chirpui-card__header">
       <div class="chirpui-card__header-content">
-        <span class="chirpui-card__title">Get Started</span>
+        <a class="chirpui-card__title" href="./get-started/">Get Started</a>
       </div>
     </header>
     <div class="chirpui-card__body">
-      <p class="chirpui-text-muted chirpui-font-sm">Install chirp-ui and wire it into your Chirp app.</p>
+      <p>Install chirp-ui and wire it into your Chirp app.</p>
     </div>
-  </a>
-  <a href="/showcase/" class="chirpui-card chirpui-card--link chirpui-resource-card chirp-theme-directive-card">
+  </article>
+  <article class="chirpui-card chirp-theme-directive-card">
     <header class="chirpui-card__header">
       <div class="chirpui-card__header-content">
-        <span class="chirpui-card__title">Component showcase</span>
+        <a class="chirpui-card__title" href="/showcase/">Component showcase</a>
       </div>
     </header>
     <div class="chirpui-card__body">
-      <p class="chirpui-text-muted chirpui-font-sm">Browse every macro and pattern in a static, offline-friendly gallery.</p>
+      <p>Browse every macro and pattern in a static, offline-friendly gallery.</p>
     </div>
-  </a>
-  <a href="./components/" class="chirpui-card chirpui-card--link chirpui-resource-card chirp-theme-directive-card">
+  </article>
+  <article class="chirpui-card chirp-theme-directive-card">
     <header class="chirpui-card__header">
       <div class="chirpui-card__header-content">
-        <span class="chirpui-card__title">Components</span>
+        <a class="chirpui-card__title" href="./components/">Components</a>
       </div>
     </header>
     <div class="chirpui-card__body">
-      <p class="chirpui-text-muted chirpui-font-sm">Layout, UI, forms, streaming, and dashboard components.</p>
+      <p>Layout, UI, forms, streaming, and dashboard components.</p>
     </div>
-  </a>
-  <a href="./theming/" class="chirpui-card chirpui-card--link chirpui-resource-card chirp-theme-directive-card">
+  </article>
+  <article class="chirpui-card chirp-theme-directive-card">
     <header class="chirpui-card__header">
       <div class="chirpui-card__header-content">
-        <span class="chirpui-card__title">Theming</span>
+        <a class="chirpui-card__title" href="./theming/">Theming</a>
       </div>
     </header>
     <div class="chirpui-card__body">
-      <p class="chirpui-text-muted chirpui-font-sm">CSS variables, dark mode, and customization.</p>
+      <p>CSS variables, dark mode, and customization.</p>
     </div>
-  </a>
-  <a href="./app-shell/" class="chirpui-card chirpui-card--link chirpui-resource-card chirp-theme-directive-card">
+  </article>
+  <article class="chirpui-card chirp-theme-directive-card">
     <header class="chirpui-card__header">
       <div class="chirpui-card__header-content">
-        <span class="chirpui-card__title">App Shell</span>
+        <a class="chirpui-card__title" href="./app-shell/">App Shell</a>
       </div>
     </header>
     <div class="chirpui-card__body">
-      <p class="chirpui-text-muted chirpui-font-sm">Sidebar, breadcrumbs, command palette, and layout patterns.</p>
+      <p>Sidebar, breadcrumbs, command palette, and layout patterns.</p>
     </div>
-  </a>
+  </article>
 </div>
 
 ---
@@ -72,24 +72,24 @@ cascade:
 ## Reference
 
 <div class="chirpui-grid chirpui-grid--cols-2 chirpui-grid--gap-md chirp-theme-directive-cards">
-  <a href="./about/" class="chirpui-card chirpui-card--link chirpui-resource-card chirp-theme-directive-card">
+  <article class="chirpui-card chirp-theme-directive-card">
     <header class="chirpui-card__header">
       <div class="chirpui-card__header-content">
-        <span class="chirpui-card__title">About</span>
+        <a class="chirpui-card__title" href="./about/">About</a>
       </div>
     </header>
     <div class="chirpui-card__body">
-      <p class="chirpui-text-muted chirpui-font-sm">Architecture, Chirp integration, and thread safety.</p>
+      <p>Architecture, Chirp integration, and thread safety.</p>
     </div>
-  </a>
-  <a href="./about/" class="chirpui-card chirpui-card--link chirpui-resource-card chirp-theme-directive-card">
+  </article>
+  <article class="chirpui-card chirp-theme-directive-card">
     <header class="chirpui-card__header">
       <div class="chirpui-card__header-content">
-        <span class="chirpui-card__title">API Reference</span>
+        <a class="chirpui-card__title" href="./components/">Component Reference</a>
       </div>
     </header>
     <div class="chirpui-card__body">
-      <p class="chirpui-text-muted chirpui-font-sm">Python API - see About for architecture, Chirp integration, and thread safety.</p>
+      <p>Generated component categories, options, and manifest-backed reference surfaces.</p>
     </div>
-  </a>
+  </article>
 </div>

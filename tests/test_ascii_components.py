@@ -20,6 +20,8 @@ class TestAscii7Seg:
             '{% from "chirpui/ascii_7seg.html" import ascii_7seg %}{{ ascii_7seg("42") }}'
         ).render()
         assert "chirpui-ascii-7seg" in html
+        assert 'role="img"' in html
+        assert 'aria-label="7-segment display: 42"' in html
         assert 'data-char="4"' in html
         assert 'data-char="2"' in html
 
@@ -29,6 +31,7 @@ class TestAscii7Seg:
             '{{ ascii_7seg("99", label="UPTIME") }}'
         ).render()
         assert "chirpui-ascii-7seg__label" in html
+        assert 'aria-label="UPTIME: 99"' in html
         assert "UPTIME" in html
 
     def test_variant_accent(self, env: Environment) -> None:
@@ -95,6 +98,16 @@ class TestAsciiBadge:
         ).render()
         assert "chirpui-ascii-badge__open" not in html
 
+    def test_decorative_frame_and_glyph_are_hidden(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_badge.html" import ascii_badge %}'
+            '{{ ascii_badge(text="stable", glyph="*", frame="bracket") }}'
+        ).render()
+        assert 'class="chirpui-ascii-badge__open" aria-hidden="true"' in html
+        assert 'class="chirpui-ascii-badge__glyph" aria-hidden="true"' in html
+        assert 'class="chirpui-ascii-badge__close" aria-hidden="true"' in html
+        assert '<span class="chirpui-ascii-badge__text">stable</span>' in html
+
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_badge.html" import ascii_badge %}'
@@ -152,6 +165,8 @@ class TestAsciiBorder:
             "{% call ascii_border() %}X{% end %}"
         ).render()
         assert 'aria-hidden="true"' in html
+        assert '<div class="chirpui-ascii-border__content">' in html
+        assert "X" in html
 
 
 # ---------------------------------------------------------------------------
@@ -168,6 +183,8 @@ class TestAsciiBreakerPanel:
             "{% end %}"
         ).render()
         assert "chirpui-ascii-breaker-panel" in html
+        assert 'role="group"' in html
+        assert 'aria-label="Services"' in html
         assert "Services" in html
         assert "API" in html
 
@@ -186,7 +203,9 @@ class TestAsciiBreakerPanel:
             '{{ breaker("db", label="DB", checked=true) }}'
             "{% end %}"
         ).render()
-        assert "chirpui-ascii-indicator--success" in html
+        assert "chirpui-ascii-indicator--blink" in html
+        assert "chirpui-ascii-indicator--success" not in html
+        assert "chirpui-ascii-indicator--muted" not in html
 
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
@@ -217,6 +236,16 @@ class TestAsciiCheckbox:
             '{{ ascii_checkbox("opt", checked=true) }}'
         ).render()
         assert "checked" in html
+
+    def test_native_labelled_input_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_checkbox.html" import ascii_checkbox %}'
+            '{{ ascii_checkbox("terms", label="Accept terms") }}'
+        ).render()
+        assert '<label class="chirpui-ascii-checkbox">' in html
+        assert 'type="checkbox" name="terms" id="terms"' in html
+        assert 'aria-hidden="true"' in html
+        assert '<span class="chirpui-ascii-checkbox__label">Accept terms</span>' in html
 
     def test_disabled(self, env: Environment) -> None:
         html = env.from_string(
@@ -272,6 +301,9 @@ class TestAsciiDivider:
         ).render()
         assert "✦" in html
         assert "chirpui-ascii-divider__glyph" in html
+        assert 'role="separator"' in html
+        assert 'aria-label="✦"' in html
+        assert 'aria-hidden="true"' in html
 
     def test_variant_double(self, env: Environment) -> None:
         html = env.from_string(
@@ -323,6 +355,16 @@ class TestAsciiEmpty:
             "{% call ascii_empty() %}<button>Reset</button>{% end %}"
         ).render()
         assert "<button>Reset</button>" in html
+
+    def test_glyph_is_decorative_and_copy_is_readable(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_empty.html" import ascii_empty %}'
+            '{% call ascii_empty(glyph="*", heading="No alerts", description="All quiet") %}'
+            "{% end %}"
+        ).render()
+        assert 'class="chirpui-ascii-empty__glyph" aria-hidden="true"' in html
+        assert '<p class="chirpui-ascii-empty__heading">No alerts</p>' in html
+        assert '<p class="chirpui-ascii-empty__desc">All quiet</p>' in html
 
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
@@ -396,6 +438,16 @@ class TestAsciiFader:
         ).render()
         assert "chirpui-ascii-fader" in html
         assert "VOL" in html
+        assert 'aria-label="VOL"' in html
+
+    def test_name_fallback_labels_range_input(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_fader.html" import ascii_fader %}'
+            '{{ ascii_fader("gain", value=25) }}'
+        ).render()
+        assert 'type="range"' in html
+        assert 'name="gain"' in html
+        assert 'aria-label="gain"' in html
 
     def test_range_input(self, env: Environment) -> None:
         html = env.from_string(
@@ -406,6 +458,9 @@ class TestAsciiFader:
         assert 'min="0"' in html
         assert 'max="100"' in html
         assert 'aria-label="Volume"' in html
+        assert 'x-data="chirpuiFader({ value: 75, steps: 8 })"' in html
+        assert '@input="setValue($event.target.value)"' in html
+        assert 'x-text="value"' in html
 
     def test_value_rendering(self, env: Environment) -> None:
         html = env.from_string(
@@ -413,14 +468,38 @@ class TestAsciiFader:
             '{{ ascii_fader("vol", value=100) }}'
         ).render()
         # All 8 segments should be filled at 100%
-        assert html.count("chirpui-ascii-fader__segment--filled") == 8
+        assert (
+            html.count('class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled"')
+            == 8
+        )
 
     def test_value_zero(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_fader.html" import ascii_fader %}'
             '{{ ascii_fader("vol", value=0) }}'
         ).render()
-        assert "chirpui-ascii-fader__segment--filled" not in html
+        assert (
+            'class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled"' not in html
+        )
+
+    def test_segments_have_runtime_sync_bindings(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_fader.html" import ascii_fader %}'
+            '{{ ascii_fader("vol", value=50) }}'
+        ).render()
+        assert ":class=\"{ 'chirpui-ascii-fader__segment--filled': isFilled(8) }\"" in html
+        assert 'x-text="segmentGlyph(8)"' in html
+
+    def test_value_bounds_align_input_and_display(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_fader.html" import ascii_fader %}'
+            '{{ ascii_fader("hot", value=125) }}'
+            '{{ ascii_fader("cold", value=-5) }}'
+        ).render()
+        assert 'name="hot" value="100"' in html
+        assert 'name="cold" value="0"' in html
+        assert ">125<" not in html
+        assert ">-5<" not in html
 
     def test_variant(self, env: Environment) -> None:
         html = env.from_string(
@@ -504,7 +583,16 @@ class TestAsciiIndicator:
         ).render()
         assert "chirpui-ascii-indicator" in html
         assert "chirpui-ascii-indicator--success" in html
+        assert 'aria-hidden="true"' in html
         assert "PWR" in html
+
+    def test_unlabelled_indicator_exposes_variant_text(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_indicator.html" import indicator %}'
+            '{{ indicator(variant="warning") }}'
+        ).render()
+        assert "chirpui-visually-hidden" in html
+        assert "warning" in html
 
     def test_blink(self, env: Environment) -> None:
         html = env.from_string(
@@ -563,6 +651,8 @@ class TestAsciiKnob:
         ).render()
         assert "chirpui-ascii-knob" in html
         assert "<fieldset" in html
+        assert 'role="radiogroup"' in html
+        assert 'aria-label="vol"' in html
         assert 'type="radio"' in html
 
     def test_selected(self, env: Environment) -> None:
@@ -578,7 +668,18 @@ class TestAsciiKnob:
             '{{ ascii_knob("m", options=["X"], label="Mode") }}'
         ).render()
         assert "<legend" in html
+        assert 'aria-label="Mode"' in html
         assert "Mode" in html
+
+    def test_dial_is_decorative_and_options_are_readable(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_knob.html" import ascii_knob %}'
+            '{{ ascii_knob("mode", options=[{"value": "a", "label": "Auto"}], selected="a") }}'
+        ).render()
+        assert 'class="chirpui-ascii-knob__dial" aria-hidden="true"' in html
+        assert 'value="a"' in html
+        assert "checked" in html
+        assert '<span class="chirpui-ascii-knob__value">Auto</span>' in html
 
     def test_variant(self, env: Environment) -> None:
         html = env.from_string(
@@ -632,6 +733,21 @@ class TestAsciiProgress:
         ).render()
         assert html.count("chirpui-ascii-progress__filled") == 10
 
+    def test_value_bounds_align_aria_fill_and_display(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_progress.html" import ascii_progress %}'
+            "{{ ascii_progress(value=140, width=10) }}"
+            "{{ ascii_progress(value=-20, width=10) }}"
+        ).render()
+        assert 'aria-valuenow="100"' in html
+        assert 'aria-valuenow="0"' in html
+        assert ">100%</span>" in html
+        assert ">0%</span>" in html
+        assert ">140%</span>" not in html
+        assert ">-20%</span>" not in html
+        assert html.count("chirpui-ascii-progress__filled") == 10
+        assert html.count("chirpui-ascii-progress__empty") == 10
+
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_progress.html" import ascii_progress %}'
@@ -678,6 +794,8 @@ class TestAsciiRadio:
             "{% end %}"
         ).render()
         assert "<fieldset" in html
+        assert 'role="radiogroup"' in html
+        assert 'aria-label="Level"' in html
         assert "Level" in html
 
     def test_group_horizontal(self, env: Environment) -> None:
@@ -686,6 +804,14 @@ class TestAsciiRadio:
             '{% call ascii_radio_group(layout="horizontal") %}{% end %}'
         ).render()
         assert "chirpui-ascii-radio-group--horizontal" in html
+
+    def test_group_name_fallback_labels_radiogroup(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_radio.html" import ascii_radio_group %}'
+            '{% call ascii_radio_group(name="priority") %}{% end %}'
+        ).render()
+        assert 'role="radiogroup"' in html
+        assert 'aria-label="priority"' in html
 
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
@@ -839,6 +965,8 @@ class TestAsciiSplitFlap:
         ).render()
         assert "chirpui-split-flap" in html
         assert html.count("chirpui-split-flap__char") == 2
+        assert "chirpui-visually-hidden" in html
+        assert 'aria-hidden="true"' in html
 
     def test_variant_amber(self, env: Environment) -> None:
         html = env.from_string(
@@ -864,6 +992,7 @@ class TestAsciiSplitFlap:
         assert "chirpui-split-flap-board" in html
         assert "DEPARTURES" in html
         assert "chirpui-split-flap-row" in html
+        assert "chirpui-visually-hidden" in html
 
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
@@ -895,6 +1024,16 @@ class TestAsciiStepper:
         assert "chirpui-ascii-stepper__step--complete" in html
         assert "chirpui-ascii-stepper__step--active" in html
         assert "chirpui-ascii-stepper__step--pending" in html
+        assert 'aria-current="step"' in html
+
+    def test_current_bounds_still_marks_one_active_step(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_stepper.html" import ascii_stepper %}'
+            '{{ ascii_stepper(steps=["A", "B"], current=9) }}'
+            '{{ ascii_stepper(steps=["A", "B"], current=-2) }}'
+        ).render()
+        assert html.count('aria-current="step"') == 2
+        assert html.count("chirpui-ascii-stepper__step--active") == 2
 
     def test_connector(self, env: Environment) -> None:
         html = env.from_string(
@@ -933,8 +1072,11 @@ class TestAsciiTable:
         ).render()
         assert "chirpui-ascii-table" in html
         assert 'role="table"' in html
+        assert 'aria-label="ASCII table"' in html
         assert 'role="columnheader"' in html
         assert 'role="cell"' in html
+        assert ">api</span>" in html
+        assert ">OK</span>" in html
 
     def test_variant_double(self, env: Environment) -> None:
         html = env.from_string(
@@ -988,6 +1130,8 @@ class TestAsciiTicker:
         ).render()
         assert "chirpui-ascii-ticker" in html
         assert 'role="marquee"' in html
+        assert 'aria-label="Breaking news"' in html
+        assert 'chirpui-ascii-ticker__track" aria-hidden="true"' in html
         assert "Breaking news" in html
 
     def test_variant(self, env: Environment) -> None:
@@ -1048,6 +1192,15 @@ class TestAsciiTileBtn:
         assert "<label" in html
         assert 'type="checkbox"' in html
 
+    def test_toggle_lit_state_is_native_checked_only(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_tile_btn.html" import tile_btn %}'
+            '{{ tile_btn(toggle=true, name="pwr", lit=true) }}'
+        ).render()
+        assert "<label" in html
+        assert "checked" in html
+        assert "chirpui-ascii-tile-btn--lit" not in html
+
     def test_disabled(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_tile_btn.html" import tile_btn %}{{ tile_btn(disabled=true) }}'
@@ -1085,6 +1238,7 @@ class TestAsciiToggle:
         ).render()
         assert "chirpui-ascii-toggle" in html
         assert 'type="checkbox"' in html
+        assert 'role="switch"' in html
         assert "Dark Mode" in html
 
     def test_checked(self, env: Environment) -> None:
@@ -1093,6 +1247,14 @@ class TestAsciiToggle:
             '{{ ascii_toggle("x", checked=true) }}'
         ).render()
         assert "checked" in html
+        assert 'aria-checked="true"' in html
+
+    def test_switch_state_defaults_false(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_toggle.html" import ascii_toggle %}{{ ascii_toggle("x") }}'
+        ).render()
+        assert 'role="switch"' in html
+        assert 'aria-checked="false"' in html
 
     def test_variant(self, env: Environment) -> None:
         html = env.from_string(
@@ -1122,8 +1284,18 @@ class TestAsciiToggle:
             '{{ ascii_switch("pwr", label="Power", variant="danger") }}'
         ).render()
         assert "chirpui-ascii-switch" in html
+        assert 'role="switch"' in html
+        assert 'aria-checked="false"' in html
         assert "chirpui-ascii-switch--danger" in html
         assert "Power" in html
+
+    def test_switch_checked_state(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_toggle.html" import ascii_switch %}'
+            '{{ ascii_switch("pwr", label="Power", checked=true) }}'
+        ).render()
+        assert "checked" in html
+        assert 'aria-checked="true"' in html
 
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
@@ -1164,6 +1336,21 @@ class TestAsciiVuMeter:
             "{{ ascii_vu_meter(value=50, peak=true, width=10) }}"
         ).render()
         assert "chirpui-ascii-vu__cell--peak" in html
+
+    def test_value_bounds_align_meter_cells_and_readout(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_vu_meter.html" import ascii_vu_meter %}'
+            "{{ ascii_vu_meter(value=140, width=10, peak=true) }}"
+            "{{ ascii_vu_meter(value=-20, width=10, peak=true) }}"
+        ).render()
+        assert 'aria-valuenow="100"' in html
+        assert 'aria-valuenow="0"' in html
+        assert ">100%</span>" in html
+        assert ">0%</span>" in html
+        assert ">140%</span>" not in html
+        assert ">-20%</span>" not in html
+        assert html.count("chirpui-ascii-vu__cell--filled") == 10
+        assert html.count("chirpui-ascii-vu__cell--peak") == 1
 
     def test_animate(self, env: Environment) -> None:
         html = env.from_string(
@@ -1270,16 +1457,19 @@ class TestAsciiTabs:
             "{% end %}"
         ).render()
         assert "chirpui-ascii-tabs" in html
-        assert 'role="tablist"' in html
+        assert "<nav" in html
+        assert 'aria-label="ASCII tabs"' in html
+        assert 'role="tablist"' not in html
 
     def test_active_tab(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_tabs.html" import ascii_tab %}'
-            '{{ ascii_tab("ov", "Overview", active=true) }}'
+            '{{ ascii_tab("ov", "Overview", url="/overview", active=true) }}'
         ).render()
         assert "chirpui-ascii-tab--active" in html
-        assert 'role="tab"' in html
-        assert 'aria-selected="true"' in html
+        assert 'href="/overview"' in html
+        assert 'aria-current="page"' in html
+        assert 'role="tab"' not in html
         assert "chirpui-ascii-tab__bracket" in html
 
     def test_inactive_tab(self, env: Environment) -> None:
@@ -1287,7 +1477,8 @@ class TestAsciiTabs:
             '{% from "chirpui/ascii_tabs.html" import ascii_tab %}{{ ascii_tab("det", "Details") }}'
         ).render()
         assert "chirpui-ascii-tab--active" not in html
-        assert 'aria-selected="false"' in html
+        assert 'aria-current="page"' not in html
+        assert "<span" in html
         assert "chirpui-ascii-tab__bracket" not in html
 
     def test_htmx_attrs(self, env: Environment) -> None:
@@ -1327,6 +1518,8 @@ class TestAsciiModal:
         ).render()
         assert "chirpui-ascii-modal" in html
         assert "<dialog" in html
+        assert 'aria-labelledby="dlg-title"' in html
+        assert 'id="dlg-title"' in html
         assert "Settings" in html
         assert "Body" in html
 

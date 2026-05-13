@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import container, stack %}
+{% from "chirpui/ascii_modal.html" import ascii_modal, ascii_modal_trigger %}
+{% from "chirpui/ascii_progress.html" import ascii_progress %}
+{% from "chirpui/ascii_stepper.html" import ascii_stepper %}
+{% from "chirpui/ascii_table.html" import ascii_table, ascii_row %}
+{% from "chirpui/ascii_tabs.html" import ascii_tabs, ascii_tab %}
+
+{% call container(max_width="42rem") %}
+{% call stack(gap="lg") %}
+<h1 data-testid="page-heading">ASCII Composites</h1>
+
+{{ ascii_modal_trigger("ascii-settings", label="Open ASCII Settings") }}
+
+{% call ascii_modal("ascii-settings", title="ASCII Settings") %}
+  <p data-testid="ascii-modal-body">Terminal-styled dialog body.</p>
+{% end %}
+
+{% call ascii_tabs() %}
+  {{ ascii_tab("overview", "Overview", url="/ascii-composites", active=true) }}
+  {{ ascii_tab("logs", "Logs", url="/ascii-composites/logs") }}
+{% end %}
+
+{{ ascii_progress(value=125, label="Deploy") }}
+
+{{ ascii_stepper(steps=["Build", "Test", "Deploy"], current=8) }}
+
+<div data-testid="ascii-table-frame">
+{% call ascii_table(headers=["Service", "Status", "Detail"], striped=true) %}
+  {{ ascii_row("api", "OK", "short") }}
+  {{ ascii_row("worker", "Queued", "unbroken-token-0123456789abcdefghijklmnopqrstuvwxyz") }}
+{% end %}
+</div>
+{% end %}
+{% end %}
+{% end %}

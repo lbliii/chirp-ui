@@ -17,7 +17,8 @@
 {% def ascii_knob(name, options, selected=none, label=none, variant="", cls="") %}
 {% set variant = variant | validate_variant(("", "default", "accent"), "") %}
 {% set variant_class = " chirpui-ascii-knob--" ~ variant if variant and variant != "default" else "" %}
-<fieldset class="chirpui-ascii-knob{{ variant_class }}{{ " " ~ cls if cls else "" }}">
+<fieldset class="chirpui-ascii-knob{{ variant_class }}{{ " " ~ cls if cls else "" }}"
+          role="radiogroup" aria-label="{{ label or name }}">
     {% if label %}<legend class="chirpui-ascii-knob__legend">{{ label }}</legend>{% end %}
     <div class="chirpui-ascii-knob__dial" aria-hidden="true">
         <span class="chirpui-ascii-knob__frame">╭───╮</span>

@@ -288,27 +288,52 @@ def test_audit_visible_public_surface_dispositions_are_intentional() -> None:
     """Visual audit evidence should feed explicit pre-1.0 maturity decisions."""
     m = build_manifest()
 
-    promoted = {
+    promoted_marketing = {
         "logo-cloud",
         "story-card",
         "cta-band",
     }
-    for name in sorted(promoted):
+    for name in sorted(promoted_marketing):
         entry = m["components"][name]
         assert entry["maturity"] == "stable"
         assert entry["role"] == "pattern"
         assert entry["category"] == "marketing"
         assert entry["authoring"] == "available"
 
-    still_experimental = {
+    promoted_ascii = {
+        "ascii-7seg",
         "ascii-badge",
+        "ascii-border",
+        "ascii-breaker-panel",
+        "ascii-card",
+        "ascii-checkbox",
+        "ascii-divider",
+        "ascii-empty",
+        "ascii-error",
+        "ascii-fader",
+        "ascii-indicator",
+        "ascii-knob",
+        "ascii-modal",
         "ascii-progress",
+        "ascii-radio-group",
+        "ascii-skeleton",
+        "ascii-sparkline",
+        "ascii-spinner",
+        "ascii-switch",
+        "ascii-tab",
+        "ascii-stepper",
         "ascii-table",
+        "ascii-tabs",
+        "ascii-ticker",
+        "ascii-tile-btn",
         "ascii-toggle",
+        "ascii-vu",
+        "split-flap",
     }
-    for name in sorted(still_experimental):
+    for name in sorted(promoted_ascii):
         entry = m["components"][name]
-        assert entry["maturity"] == "experimental"
+        assert entry["maturity"] == "stable"
+        assert entry["role"] == "component"
         assert entry["category"] == "ascii"
         assert entry["authoring"] == "available"
 

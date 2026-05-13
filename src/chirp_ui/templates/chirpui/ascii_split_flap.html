@@ -23,9 +23,12 @@
 {% set variant_class = " chirpui-split-flap--" ~ variant if variant and variant != "default" else "" %}
 {% set anim_class = " chirpui-split-flap--animate" if animate else "" %}
 <span class="chirpui-split-flap{{ variant_class }}{{ anim_class }}{{ " " ~ cls if cls else "" }}">
+    <span class="chirpui-visually-hidden">{{ text }}</span>
+    <span aria-hidden="true">
     {% for ch in text %}
     <span class="chirpui-split-flap__char" style="{% if animate %}animation-delay: {{ loop.index0 * 0.06 }}s{% end %}">{% if ch == " " %}&nbsp;{% else %}{{ ch }}{% end %}</span>
     {% end %}
+    </span>
 </span>
 {% end %}
 
@@ -33,9 +36,12 @@
 <div class="chirpui-split-flap-row{{ " " ~ cls if cls else "" }}">
     {% for cell in cells %}
     <span class="chirpui-split-flap chirpui-split-flap--animate">
+        <span class="chirpui-visually-hidden">{{ cell }}</span>
+        <span aria-hidden="true">
         {% for ch in cell %}
         <span class="chirpui-split-flap__char" style="animation-delay: {{ loop.index0 * 0.06 }}s">{% if ch == " " %}&nbsp;{% else %}{{ ch }}{% end %}</span>
         {% end %}
+        </span>
     </span>
     {% end %}
 </div>

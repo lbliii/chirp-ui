@@ -109,10 +109,15 @@ root.
 
 Bengal should consume library metadata and give themes explicit inclusion modes:
 
-- `bundle`: fold library CSS into the theme stylesheet output.
-- `link`: emit separate library CSS/JS links, fingerprinted in static builds and
-  stable in dev.
-- `none`: make assets available but let the theme handle inclusion manually.
+| Mode | Semantics |
+|---|---|
+| `bundle` | Fold required library CSS into the theme stylesheet output while preserving Chirp UI cascade order before theme overrides. |
+| `link` | Emit separate library CSS/JS links, fingerprinted in static builds and stable in dev. |
+| `none` | Make library assets available and register templates/helpers, but let the theme handle inclusion manually. |
+
+Bengal owns this mode switch. The selected mode is not Chirp UI package metadata;
+Chirp UI only declares assets, template roots, and runtime requirements. Bengal
+uses that metadata to make dev server and static build behavior match.
 
 Required proof:
 
@@ -120,6 +125,14 @@ Required proof:
 - Static build rewrites linked library assets to fingerprinted outputs.
 - Build diagnostics identify the template and asset when a referenced library
   asset is not emitted.
+
+Fixture matrix:
+
+| Mode | Fixture proves | Required checks |
+|---|---|---|
+| `bundle` | A theme with `libraries = ["chirp_ui"]` and `asset_mode = "bundle"` emits one theme CSS output containing Chirp UI CSS before theme overrides. | Built HTML references the theme stylesheet only; asset manifest contains the bundled output; cascade layer order remains `chirpui.*` before `app.overrides`. |
+| `link` | The same theme with `asset_mode = "link"` emits separate logical library CSS/JS links in dev and fingerprinted library outputs in static builds. | Dev logical paths and static manifest outputs resolve; linked assets are copied and rewritten; missing linked assets are diagnostics. |
+| `none` | The same theme with `asset_mode = "none"` registers macros/helpers and makes assets available without automatic CSS/JS inclusion. | Chirp UI macros import successfully; built HTML has no automatic library links; explicit theme-managed links still resolve when present. |
 
 ### Wave 4 — Macro And Runtime Registration
 

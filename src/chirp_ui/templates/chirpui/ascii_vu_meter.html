@@ -23,12 +23,13 @@
 {% set variant = variant | validate_variant(("", "default", "accent", "success", "warning"), "") %}
 {% set variant_class = " chirpui-ascii-vu--" ~ variant if variant and variant != "default" else "" %}
 {% set anim_class = " chirpui-ascii-vu--animate" if animate else "" %}
-{% set filled = ((value / 100) * width) | int %}
+{% set bounded_value = 100 if value > 100 else (0 if value < 0 else value) %}
+{% set filled = ((bounded_value / 100) * width) | int %}
 {% set filled = width if filled > width else (0 if filled < 0 else filled) %}
 {% set hot_start = ((width * 0.75) | int) %}
 <div class="chirpui-ascii-vu{{ variant_class }}{{ anim_class }}{{ " " ~ cls if cls else "" }}"
      role="meter"
-     aria-valuenow="{{ value }}"
+     aria-valuenow="{{ bounded_value }}"
      aria-valuemin="0"
      aria-valuemax="100"
      {% if label %}aria-label="{{ label }}"{% end %}>
@@ -40,7 +41,7 @@
         {% end %}
         <span class="chirpui-ascii-vu__bracket" aria-hidden="true">▌</span>
     </span>
-    <span class="chirpui-ascii-vu__readout">{{ value }}%</span>
+    <span class="chirpui-ascii-vu__readout">{{ bounded_value }}%</span>
 </div>
 {% end %}
 

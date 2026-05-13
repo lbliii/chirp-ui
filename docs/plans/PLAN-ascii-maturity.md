@@ -1,6 +1,6 @@
 # Epic: ASCII Component Maturity — Tests, A11y, and Interactive Variants
 
-**Status**: residual backlog
+**Status**: closed for public templated ASCII maturity
 **Created**: 2026-04-09
 **Target**: 0.3.0
 **Estimated Effort**: 16–24h
@@ -8,8 +8,113 @@
 **Source**: Codebase exploration — 24 ASCII components with 0 dedicated tests, no keyboard support, no documentation
 
 > Current note: ASCII render tests, docs, and composite primitives shipped after
-> this plan was drafted. Remaining work is accessibility/keyboard proof and
-> deciding which ASCII controls become stable before 1.0.
+> this plan was drafted. Interactive-control and composite/data proof passes
+> have now landed for checkbox, toggle, switch, radio group, fader, knob,
+> breaker panel, progress, stepper, modal, tabs, table, VU meter, split-flap,
+> spinner, ticker, indicator, sparkline, and 7-segment display.
+> The first accepted promotion set is limited to static display primitives:
+> `ascii-badge`, `ascii-border`, `ascii-divider`, and `ascii-empty`.
+> `ascii-error` has since joined the stable set after visual audit error-page
+> composition proof landed.
+> The first accepted interactive promotion set is limited to controls whose
+> visible state is CSS-backed by native checked state: `ascii-checkbox`,
+> `ascii-toggle`, `ascii-switch`, `ascii-radio-group`, and `ascii-knob`.
+> `ascii-fader` has since joined the stable set after gaining Alpine-backed
+> runtime sync for its native range value, visible fill, and readout.
+> Data/status widgets `ascii-progress`, `ascii-stepper`, `ascii-table`, and
+> `ascii-vu` have joined the stable set after visual audit coverage landed for
+> the family.
+> Display/motion widgets `ascii-7seg`, `ascii-indicator`, `ascii-skeleton`,
+> `ascii-sparkline`, `ascii-spinner`, `ascii-ticker`, and `split-flap` have
+> joined the stable set after visual audit coverage was paired with accessible
+> name and reduced-motion proof.
+> The final composite/control pass promoted `ascii-error`,
+> `ascii-breaker-panel`, `ascii-tile-btn`, `ascii-card`, `ascii-modal`,
+> `ascii-tab`, and `ascii-tabs` after static showcase, visual audit, render,
+> browser, and generated projection proof agreed.
+
+---
+
+## Next Slice
+
+Public surface stabilization owns the maturity decision, but this plan owns the
+proof. The next accepted slice is an accessibility-first pass over the
+interactive ASCII/TUI controls: ARIA roles and names, keyboard behavior,
+disabled/state semantics, reduced-motion behavior, and a focused browser gauntlet
+for composites whose behavior cannot be proven by render tests alone.
+
+Unpromoted ASCII/TUI components remain `experimental` in the manifest and use
+the `ASCII maturity pass` track in `docs/PUBLIC-SURFACE-STABILIZATION.md`.
+Static display primitives can promote first because they have no keyboard,
+disabled-state, mutable data, or reduced-motion contract beyond decorative glyph
+handling.
+
+Completed proof in the first batch:
+
+- Native-input contract ratchet for checkbox, toggle, switch, radio group,
+  fader, knob, and breaker panel.
+- Render tests for switch roles, radio-group names, fader bounds alignment, CSS
+  focus, and reduced-motion coverage.
+- Browser proof for Space toggling, radio keyboard selection, range Home/End
+  behavior, disabled state, and reduced-motion animation removal.
+
+Completed proof in the composite/data batch:
+
+- `ascii-progress` now clamps ARIA value, visual fill, and displayed text from
+  one bounded value.
+- `ascii-stepper` clamps active step state and marks the current step with
+  `aria-current="step"`.
+- `ascii-modal` has a title-backed accessible name and browser proof for
+  trigger open, form close, and Escape close through the shared native dialog
+  controller.
+- `ascii-tabs` is now explicitly route/link navigation, not a roving-focus
+  tabpanel controller.
+- `ascii-table` has an accessible table name, restores the first documented row
+  cell, hides decorative borders from assistive technology, and has browser
+  proof for roles and bounded composite state.
+
+Completed proof in the display/motion batch:
+
+- Display/motion templates are classified by executable proof group.
+- `ascii-vu` now clamps ARIA value, filled cells, peak marker, and readout from
+  one bounded value.
+- `split-flap` now exposes readable text while hiding animated character boxes
+  from assistive technology.
+- `ascii-7seg`, unlabelled `ascii-indicator`, and `ascii-ticker` now expose
+  stable accessible names instead of relying on decorative glyphs or duplicated
+  marquee text.
+- Browser proof covers accessible names, bounded VU state, split-flap readable
+  text, and reduced-motion behavior for spinner, split-flap, ticker, and VU.
+
+### Remaining Not-Now List
+
+The public templated ASCII set is closed; these families have no remaining
+pre-1.0 experimental template backlog:
+
+| Family | Components | Reason |
+| --- | --- | --- |
+| Public templated ASCII components | None | All public templated ASCII components are stable with render, browser or visual audit, manifest, and generated docs proof. |
+| Interactive controls | None | Tile button mode semantics and breaker panel grouped status semantics are settled. |
+| Composite navigation/dialogs | None | Card, modal, tab, and tabs parity proof is complete. |
+| Data/status widgets | None | Current data/status widgets have render, browser, and visual audit proof. |
+| Motion/display widgets | None | Current display/motion widgets have render, browser, reduced-motion, and visual audit proof. |
+
+### Interactive Control Gate
+
+The first implementation batch should cover these controls before any ASCII/TUI
+promotion is reconsidered:
+
+| Control | Role target | Keyboard target | Browser proof |
+| --- | --- | --- | --- |
+| `ascii-checkbox` | `checkbox` with `aria-checked` and a stable accessible name. | Space toggles; disabled state blocks interaction. | Focus ring and checked/disabled state remain visible in dense rows. |
+| `ascii-toggle` | `switch` with `aria-checked` and a stable accessible name. | Space toggles; disabled state blocks interaction. | Small and large sizes keep the hit target and label readable. |
+| `ascii-switch` | `switch` with `aria-checked` and a stable accessible name. | Space toggles; disabled state blocks interaction. | Reduced-motion path preserves state legibility. |
+| `ascii-radio-group` | `radiogroup` with child `radio` items. | Arrow keys move selection; Space selects focused item. | Horizontal and vertical groups keep focus and checked state distinct. |
+| `ascii-fader` | `slider` with `aria-valuemin`, `aria-valuemax`, and `aria-valuenow`. | Arrow keys step; Home/End jump to min/max. | Value text, bar fill, and focus state stay synchronized. |
+| `ascii-knob` | `radiogroup` over native radio options with a stable group name. | Radio keyboard behavior selects discrete positions. | Position feedback remains distinct from fader slider behavior. |
+| `ascii-tabs` | Navigation links with `aria-current="page"` on the active route. | Link navigation uses normal link keys. | Active tab, link semantics, and HTMX attributes stay distinct from true tabpanels. |
+| `ascii-modal` | Dialog semantics aligned with modal anatomy. | Escape/close behavior follows the existing modal contract. | Focus trapping and backdrop behavior match non-ASCII modal proof. |
+| `ascii-breaker-panel` | Grouped switches or checkboxes with stable labels. | Space toggles each breaker; master control behavior is explicit. | Master and child states remain distinguishable under density. |
 
 ---
 

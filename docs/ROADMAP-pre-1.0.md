@@ -13,7 +13,7 @@ while preserving its Python-native registry contract.
 Chirp UI already has the hard architectural pieces in place:
 
 - a registry-backed component vocabulary,
-- a shipped `chirpui-manifest@3` with params, slots, emitted classes, tokens,
+- a shipped `chirpui-manifest@5` with params, slots, emitted classes, tokens,
   maturity, runtime requirements, and authoring hints,
 - generated CSS partials with registry parity checks,
 - public cascade layers and token-first app overrides,
@@ -131,6 +131,33 @@ Acceptance:
 - Any new macro proposal answers the acceptance rule in
   `docs/DENSE-NAVIGATION-SYNTHESIS.md`.
 
+### 5a. Application Chrome System
+
+Goal: make layered app shells, rails, trays, command surfaces, object context,
+route rows, and page tools robust enough for modern applications without
+shipping a premature mega-shell macro.
+
+Tasks:
+
+- Use `docs/plans/PLAN-application-chrome-system.md` as the live contract map
+  for the five rocks: layer model, rail/tray contracts, visual rhythm,
+  responsive gauntlet, and recipe-first composite gates.
+- Add rail-to-tray recipes and browser proof before any application chrome
+  composite proposal.
+- Treat modern chrome rhythm as token/control-size/elevation proof, not
+  utility spacing classes.
+- Publish application chrome guidance through the navigation pattern docs
+  without inventing site-only component facts.
+
+Acceptance:
+
+- Application chrome remains recipe-first until repeated real app usage proves
+  a stable missing API.
+- Browser gauntlets cover 320px stress, phone, tablet, and desktop widths for
+  rail/tray fallback, command focus, route-tab scroll, badges, and overflow.
+- New public chrome API proposals include registry, CSS, manifest, generated
+  docs, examples, browser proof, and changelog collateral.
+
 ### 6. CSS Scope Hardening
 
 Goal: reduce style bleed as a normal maintenance practice.
@@ -159,8 +186,9 @@ Tasks:
   experimental, recipe-only, or deprecate later.
 - Record decisions in `docs/PUBLIC-SURFACE-STABILIZATION.md`.
 - Review legacy helpers and prevent utility-class vocabulary growth.
-- Execute `docs/plans/PLAN-legacy-helper-cleanup-pre-1.0.md` so first-party
-  examples teach preferred primitives before any public helper removals.
+- Keep the completed legacy-helper cleanup plan archived under
+  `docs/plans/done/PLAN-legacy-helper-cleanup-pre-1.0.md`, and use its proof
+  when deciding future keep/deprecate outcomes.
 - Keep `find --authoring` and manifest authoring hints aligned with docs.
 
 Acceptance:
@@ -193,11 +221,34 @@ Acceptance:
 - `chirp-theme` CSS contains only theme tokens, content polish, and actively
   referenced vertical styles.
 
+## Active Plan Mapping
+
+Each active plan is mapped to this roadmap so planning docs do not drift into a
+parallel backlog.
+
+| Plan | Roadmap workstream |
+|---|---|
+| `PLAN-agent-grounding-depth.md` | Public Surface Stabilization |
+| `PLAN-ascii-maturity.md` | Public Surface Stabilization |
+| `PLAN-bengal-chirpui-library-contract.md` | Bengal And chirp-theme Integration |
+| `PLAN-chirp-theme-content-parity.md` | Bengal And chirp-theme Integration |
+| `PLAN-css-scope-and-layer.md` | CSS Scope Hardening |
+| `PLAN-dense-object-chrome-next.md` | Dense Navigation Productization |
+| `PLAN-application-chrome-system.md` | Application Chrome System |
+| `PLAN-layout-widget-brainstorm.md` | Public Surface Stabilization |
+| `PLAN-navigation-contract-application.md` | Dense Navigation Productization |
+| `PLAN-primitive-vocabulary-hardening.md` | Public Surface Stabilization |
+| `PLAN-primitives-and-components.md` | Public Surface Stabilization |
+| `PLAN-skeleton-equivalent-roadmap.md` | Visible Design-System Showcase |
+| `PLAN-test-coverage-hardening.md` | Verification Reliability |
+| `PLAN-theme-tokens.md` | Theme Authoring UX |
+
 ## Sequencing
 
-1. Land the visual audit page and roadmap hygiene.
-2. Fix verification reliability so generated artifacts can be trusted.
-3. Publish dense navigation recipes and theme gallery.
+1. Keep verification reliability wired into local and hosted CI gates.
+2. Publish and maintain the theme gallery.
+3. Use dense navigation recipes and visual audit proof before promoting new
+   composites.
 4. Use the visual audit page to drive experimental component stabilization.
 5. Continue CSS scope conversion and Bengal integration in parallel with
    feature work.

@@ -29,6 +29,23 @@ It verifies these committed generated files are fresh:
 - `src/chirp_ui/manifest.json`
 - `docs/COMPONENT-OPTIONS.md`
 
+Hosted CI runs this check through `uv run poe ci`. If the GitHub check fails
+here, regenerate the owned output locally and commit the generated file rather
+than editing generated output by hand.
+
+## JavaScript Island Helpers
+
+The JavaScript island helper suite is part of the full CI gate:
+
+```text
+npm ci
+uv run poe test-js
+```
+
+`uv run poe ci` also runs `test-js`, so local full-CI runs need the npm
+dependencies installed first. These tests cover browser-adjacent state helpers
+that Python render tests cannot exercise.
+
 If one is stale, regenerate the exact artifact:
 
 ```text
@@ -36,6 +53,41 @@ uv run poe build-css
 uv run poe build-manifest
 uv run poe build-docs
 ```
+
+## Gate Policy
+
+`uv run poe ci` is the trusted default gate for normal PRs. It runs lint,
+format, generated-artifact freshness, focused CSS/template checks, type checks,
+the full non-browser pytest suite, and Vitest island-helper tests.
+
+Coverage and browser proof are explicit gates, not hidden defaults:
+
+```text
+uv run poe test-cov
+uv run poe ci-browser
+```
+
+`test-cov` enforces the configured coverage floor (`fail_under = 80`) when a PR
+claims coverage movement or before a release hardening sweep. `ci-browser` is
+required for changes whose failure mode depends on Playwright, actual layout,
+dialog APIs, htmx lifecycle, or Alpine lifecycle. Browser tests stay outside
+`poe ci` because they require the browser dependency group and installed browser
+binaries.
+
+## Proof Routing
+
+Choose the narrowest proof that can observe the contract being changed, then run
+`uv run poe ci` before broad merges or release-facing work.
+
+| Change surface | Required proof |
+|---|---|
+| Registry, manifest schema, generated CSS, generated component docs | `uv run poe verify-generated` plus affected manifest or generated-doc tests |
+| Kida macros, escaping, structured attrs, HTMX attributes | Targeted pytest render tests plus strict-undefined or template/CSS contract tests |
+| Alpine controllers, JavaScript island helpers, runtime state helpers | `uv run poe test-js` plus focused Python metadata tests when applicable |
+| Token, CSS partial, cascade layer, or scope behavior | CSS syntax/concat tests, template/CSS contract tests, and browser proof when computed layout or cascade interaction is the failure mode |
+| Dialog, focus, overflow, htmx lifecycle, Alpine lifecycle, responsive layout | `uv run poe ci-browser` or the targeted browser test that exercises the changed behavior |
+| Docs, examples, scaffold, or published site content | Relevant docs/site tests, `uv run poe docs-build-all` when published output changes, and examples proof when snippets are executable |
+| Theme packages, Bengal templates, packaged assets | Bengal package tests plus generated/site proof when templates or emitted assets change |
 
 ## Release Preflight
 
@@ -82,5 +134,6 @@ uv run --group browser pytest tests/browser/test_visual_audit_showcase.py -q --t
 Run the full gate before release or broad refactors:
 
 ```text
+npm ci
 uv run poe ci
 ```

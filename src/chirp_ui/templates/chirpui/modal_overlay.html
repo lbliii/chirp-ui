@@ -12,9 +12,10 @@
 
 {% def modal_overlay_trigger(id, label, variant="", icon=none) %}
 <button type="button" class="chirpui-btn{{ " chirpui-btn--" ~ variant if variant else "" }} chirpui-btn--sm"
-        x-data
-        @click="$store.modals['{{ id }}'] = true"
-        aria-controls="modal-{{ id }}" :aria-expanded="$store.modals['{{ id }}']">
+        x-data="{ get modalId() { return $el.dataset.modalId } }"
+        data-modal-id="{{ id }}"
+        @click="$store.modals[modalId] = true"
+        aria-controls="modal-{{ id }}" :aria-expanded="$store.modals[modalId]">
     {% if icon %}<span aria-hidden="true">{{ icon }}</span>{% endif %}
     {{ label }}
 </button>
@@ -22,17 +23,18 @@
 
 {% def modal_overlay(id, title) %}
 <div class="chirpui-modal chirpui-modal--closed" id="modal-{{ id }}"
-     :class="{ 'chirpui-modal--closed': !$store.modals['{{ id }}'], 'chirpui-modal--open': $store.modals['{{ id }}'] }"
+     data-modal-id="{{ id }}"
+     :class="{ 'chirpui-modal--closed': !$store.modals[modalId], 'chirpui-modal--open': $store.modals[modalId] }"
      role="dialog" aria-modal="true"
      aria-labelledby="modal-{{ id }}-title"
-     :aria-hidden="!$store.modals['{{ id }}']"
-     x-data>
-    <div class="chirpui-modal__backdrop" @click="$store.modals['{{ id }}'] = false; $dispatch('chirpui:modal-closed', { id: '{{ id }}' })"></div>
-    <div class="chirpui-modal__panel" x-trap.inert.noscroll="$store.modals['{{ id }}']">
+     :aria-hidden="!$store.modals[modalId]"
+     x-data="{ get modalId() { return $el.dataset.modalId }, close() { $store.modals[this.modalId] = false; $dispatch('chirpui:modal-closed', { id: this.modalId }) } }">
+    <div class="chirpui-modal__backdrop" @click="close()"></div>
+    <div class="chirpui-modal__panel" x-trap.inert.noscroll="$store.modals[modalId]">
         <header class="chirpui-modal__header">
             <h2 class="chirpui-modal__title" id="modal-{{ id }}-title">{{ title }}</h2>
             <button type="button" class="chirpui-modal__close"
-                    @click="$store.modals['{{ id }}'] = false; $dispatch('chirpui:modal-closed', { id: '{{ id }}' })"
+                    @click="close()"
                     aria-label="Close">×</button>
         </header>
         <div class="chirpui-modal__body">

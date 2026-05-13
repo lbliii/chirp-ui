@@ -11,7 +11,7 @@
 
 ## Why This Matters
 
-The parent epic shipped the *mechanism* (concat build, layer order, registry-emits parity, envelope convention) and proved it on `card`. The remaining 159 partials are in flat form, queued for **opportunistic** conversion whenever a PR touches them for another reason.
+The parent epic shipped the *mechanism* (concat build, layer order, registry-emits parity, envelope convention) and proved it on `card`. After this batch and later dense-navigation work, 14 partials are in envelope form; the rest stay queued for **opportunistic** conversion whenever a PR touches them for another reason.
 
 That policy is correct as the steady-state default — but it has a known gap: **specific components have documented bleed risk in production today**, and waiting for an organic touch leaves the bleed in place indefinitely. Three components were called out explicitly in the parent epic's E2 ("`surface` inside `surface`") or in user memory (tray sharp edges); two more (`video-card`, `channel-card`) duplicate `card`'s structure but live outside its scope, so they did not inherit the pilot's bleed fix.
 
@@ -233,7 +233,7 @@ Mirror `tests/browser/test_card_variants.py`. For each component, exercise the v
 **Files**: `src/chirp_ui/templates/css/partials/046_video-card.css`, `src/chirp_ui/templates/css/partials/047_channel-card.css`
 **Acceptance**: standard envelope gate; both PRs (or one combined) listed under `Migration status § Converted`.
 
-**Note on `159_resource-card.css`.** Deferred from this batch — it's a thin 7-line wrapper used inside `resource_index` grids, with no independent bleed surface. Convert opportunistically when `resource_index` is next touched.
+**Note on `159_resource-card.css`.** Deferred from this batch — it was a thin 7-line wrapper used inside `resource_index` grids, with no independent bleed surface. Converted opportunistically on 2026-05-13 as part of the steady-state CSS scope policy.
 
 ---
 

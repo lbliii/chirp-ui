@@ -28,9 +28,22 @@ Snippet eligibility uses these values:
 - `copyable-curated`: approved for copyable snippets after provenance tests.
 - `excluded`: must never be used as an agent-facing source.
 
-No current source is approved for automatic snippet extraction. Sprint 6 starts
-with the inventory and provenance tests so later generation work has a safe
-allowlist to build from.
+No `candidate-review` source is approved for automatic snippet extraction.
+Curated copyable snippets live in `docs/AGENT-CURATED-SNIPPETS.md` and must pass
+the review gate below.
+
+## Snippet Review Gate
+
+A `candidate-review` source can move to `copyable-curated` only in a PR that
+adds all of the following:
+
+| Gate | Required proof |
+|---|---|
+| Exact source path | The snippet cites the original durable doc or dynamic showcase template line of ownership. |
+| Macro-first shape | The snippet uses public macros, params, slots, `attrs_map`, and `hx={}` before raw classes. |
+| Exclusion scan | The snippet contains no static showcase classes, docs wrappers, inline scripts, browser-test selectors, or raw appearance/tone modifier classes. |
+| Runnable proof | A render, docs, example, or browser test exercises the snippet's public contract. |
+| Provenance note | The snippet declares `example-derived` or `docs-derived` provenance and links back to this inventory. |
 
 ## Source Inventory
 
@@ -42,6 +55,7 @@ allowlist to build from.
 | `docs-derived` | `docs/DOCS-IA-MIGRATION.md` | Published docs IA, durable-source map, and SSG ownership boundary. | `source-only` |
 | `docs-derived` | `docs/AGENT-SOURCE-INVENTORY.md` | Agent provenance policy and snippet source inventory. | `source-only` |
 | `docs-derived` | `docs/AGENT-SOURCE-MAP.md` | Generated-output ownership map and source-input map. | `source-only` |
+| `docs-derived` | `docs/AGENT-CURATED-SNIPPETS.md` | Hand-curated macro-first snippets that passed the review gate. | `copyable-curated` |
 | `docs-derived` | `docs/APPEARANCE-TONE.md` | Appearance/tone semantics and migration guidance. | `source-only` |
 | `docs-derived` | `docs/APP-THEME.md` | App theme-pack load order, token-only rules, and ownership guidance. | `source-only` |
 | `docs-derived` | `docs/DROPDOWN-ANATOMY.md` | Dropdown rendered anatomy and tested behavior. | `source-only` |

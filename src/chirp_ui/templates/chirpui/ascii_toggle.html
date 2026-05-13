@@ -33,7 +33,8 @@
 {% set variant_class = " chirpui-ascii-toggle--" ~ variant if variant and variant != "default" else "" %}
 <label class="chirpui-ascii-toggle{{ size_class }}{{ variant_class }}{{ " chirpui-ascii-toggle--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
     <input class="chirpui-ascii-toggle__input chirpui-visually-hidden"
-           type="checkbox" name="{{ name }}" id="{{ name }}"
+           type="checkbox" role="switch" name="{{ name }}" id="{{ name }}"
+           aria-checked="{{ "true" if checked else "false" }}"
            {% if checked %}checked{% end %}
            {% if disabled %}disabled{% end %}>
     <span class="chirpui-ascii-toggle__track" aria-hidden="true">
@@ -52,7 +53,8 @@
 {% set variant_class = " chirpui-ascii-switch--" ~ variant if variant and variant != "default" else "" %}
 <label class="chirpui-ascii-switch{{ size_class }}{{ variant_class }}{{ " chirpui-ascii-switch--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
     <input class="chirpui-ascii-switch__input chirpui-visually-hidden"
-           type="checkbox" name="{{ name }}" id="{{ name }}"
+           type="checkbox" role="switch" name="{{ name }}" id="{{ name }}"
+           aria-checked="{{ "true" if checked else "false" }}"
            {% if checked %}checked{% end %}
            {% if disabled %}disabled{% end %}>
     <span class="chirpui-ascii-switch__body" aria-hidden="true">

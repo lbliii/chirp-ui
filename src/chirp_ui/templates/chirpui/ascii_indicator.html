@@ -29,7 +29,7 @@
 {% set glyph_char = "●" if glyph == "round" else ("◆" if glyph == "diamond" else "■") %}
 <span class="chirpui-ascii-indicator chirpui-ascii-indicator--{{ variant }}{{ blink_class }}{{ blink_fast }}{{ " " ~ cls if cls else "" }}">
     <span class="chirpui-ascii-indicator__light" aria-hidden="true">{{ glyph_char }}</span>
-    {% if label %}<span class="chirpui-ascii-indicator__label">{{ label }}</span>{% end %}
+    {% if label %}<span class="chirpui-ascii-indicator__label">{{ label }}</span>{% else %}<span class="chirpui-visually-hidden">{{ variant }}</span>{% end %}
 </span>
 {% end %}
 

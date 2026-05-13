@@ -13,8 +13,11 @@
 > Public component promotion decisions are tracked in
 > [../PUBLIC-SURFACE-STABILIZATION.md](../PUBLIC-SURFACE-STABILIZATION.md);
 > this plan remains focused on primitive and legacy-helper vocabulary.
-> First-party example cleanup is tracked in
-> [PLAN-legacy-helper-cleanup-pre-1.0.md](PLAN-legacy-helper-cleanup-pre-1.0.md).
+> First-party example cleanup shipped in
+> [done/PLAN-legacy-helper-cleanup-pre-1.0.md](done/PLAN-legacy-helper-cleanup-pre-1.0.md).
+> Current ratchet: manifest tests pin the compatibility helper set, and
+> `tests/test_legacy_helper_docs.py` requires every legacy primitive to have a
+> human-readable keep/deprecate-later decision in this plan.
 
 ---
 
@@ -214,3 +217,4 @@ Progress:
 | 2026-04-24 | Added manifest `authoring` hints | Gives coding agents a machine-readable preferred/compatibility signal without growing CSS vocabulary |
 | 2026-04-24 | Added `find --authoring` discovery | Lets humans and agents query preferred primitives or compatibility helpers without parsing JSON manually |
 | 2026-04-24 | Added Python authoring helpers | Lets downstream tooling query preferred/compatibility entries without hand-filtering the manifest |
+| 2026-05-13 | Added docs ratchet for legacy primitive decisions | Keeps the residual plan aligned with the registry-pinned compatibility helper set |

@@ -1,9 +1,12 @@
 from pathlib import Path
 
+from chirp_ui.components import COMPONENTS
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PRIMITIVES = REPO_ROOT / "docs" / "PRIMITIVES.md"
 ANTI_FOOTGUNS = REPO_ROOT / "docs" / "ANTI-FOOTGUNS.md"
 PUBLIC_SURFACE = REPO_ROOT / "docs" / "PUBLIC-SURFACE-STABILIZATION.md"
+PRIMITIVE_PLAN = REPO_ROOT / "docs" / "plans" / "PLAN-primitive-vocabulary-hardening.md"
 
 
 def test_primitive_docs_record_spacing_shortcut_deprecation_boundary() -> None:
@@ -42,3 +45,16 @@ def test_public_surface_policy_separates_preferred_and_compatibility() -> None:
         "`visually-hidden`, `focus-ring`, and `list-reset` stay narrow",
     ]:
         assert required in text
+
+
+def test_primitive_plan_names_every_legacy_primitive_decision() -> None:
+    """The residual primitive plan is the human-readable companion to the manifest ratchet."""
+    text = PRIMITIVE_PLAN.read_text(encoding="utf-8")
+    legacy_primitives = {
+        name
+        for name, desc in COMPONENTS.items()
+        if desc.resolved_role == "primitive" and desc.resolved_maturity == "legacy"
+    }
+
+    missing = [name for name in sorted(legacy_primitives) if f"`{name}`" not in text]
+    assert not missing, "legacy primitives missing plan decisions: " + ", ".join(missing)

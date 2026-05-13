@@ -4,6 +4,23 @@ A design exploration for more polished, less clunky layout widgets. Inspired by 
 
 ---
 
+## Next Slice
+
+Treat this brainstorm as input to public-surface stabilization, not as a direct
+component backlog. The next accepted work is to classify each still-useful idea
+as one of:
+
+- existing component guidance,
+- recipe-only documentation,
+- experimental macro that already exists,
+- or not-now pending repeated app usage.
+
+No new macro should be added from this file without first updating
+`docs/PUBLIC-SURFACE-STABILIZATION.md` and naming the proof that makes the idea
+more than local app chrome.
+
+---
+
 ## 1. Page & Section Headers
 
 ### Current pain
