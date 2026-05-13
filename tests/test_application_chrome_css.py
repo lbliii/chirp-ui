@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 PARTIALS = ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials"
 

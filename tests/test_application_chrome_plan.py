@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PLAN = REPO_ROOT / "docs" / "plans" / "PLAN-application-chrome-system.md"
 
@@ -73,6 +72,6 @@ def test_application_chrome_plan_distinguishes_recipe_proof_from_consumers() -> 
     assert "Counts As Real Consumer?" in text
     assert "not enough for `application_chrome`" in text
     assert "not enough for a stable shell API" in text
-    assert "Open consumer evidence required before composite work" in text
-    assert "one filesystem-routed Chirp app" in text
-    assert "one second app or packaged integration" in text
+    assert "Open consumer evidence still required before composite work" in text
+    assert "one production or copyable filesystem-routed Chirp app" in text
+    assert "one additional app or packaged integration" in text
