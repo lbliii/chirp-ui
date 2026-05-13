@@ -193,7 +193,7 @@ Do not add:
 
 | Priority | Item | Reason |
 |----------|------|--------|
-| P1 | Publish a dense navigation recipes page | The showcase is copyable, but a focused docs page would teach the layer model more directly. |
+| Done | Publish a dense navigation recipes page | Shipped as `docs/DENSE-NAVIGATION-RECIPES.md`; keep it recipe-first until real app usage proves new macros. |
 | P2 | Add browser proof for `scope_switcher` and `saved_view_strip` in dense chrome | Needed if their layout or overflow behavior becomes more ambitious. |
 | P3 | Revisit `workspace_shell` after real app usage | A shell macro should remove duplication, not freeze a speculative layout. |
 | P3 | Add browser responsive proof for selected recipes | Needed only when CSS or layout behavior changes, not for static composition examples. |
