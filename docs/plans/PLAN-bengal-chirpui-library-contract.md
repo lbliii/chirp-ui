@@ -126,6 +126,14 @@ Required proof:
 - Build diagnostics identify the template and asset when a referenced library
   asset is not emitted.
 
+Fixture matrix:
+
+| Mode | Fixture proves | Required checks |
+|---|---|---|
+| `bundle` | A theme with `libraries = ["chirp_ui"]` and `asset_mode = "bundle"` emits one theme CSS output containing Chirp UI CSS before theme overrides. | Built HTML references the theme stylesheet only; asset manifest contains the bundled output; cascade layer order remains `chirpui.*` before `app.overrides`. |
+| `link` | The same theme with `asset_mode = "link"` emits separate logical library CSS/JS links in dev and fingerprinted library outputs in static builds. | Dev logical paths and static manifest outputs resolve; linked assets are copied and rewritten; missing linked assets are diagnostics. |
+| `none` | The same theme with `asset_mode = "none"` registers macros/helpers and makes assets available without automatic CSS/JS inclusion. | Chirp UI macros import successfully; built HTML has no automatic library links; explicit theme-managed links still resolve when present. |
+
 ### Wave 4 — Macro And Runtime Registration
 
 Bengal should register Chirp UI's template loader and runtime helpers from the

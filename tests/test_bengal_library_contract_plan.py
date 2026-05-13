@@ -22,6 +22,23 @@ def test_bengal_library_asset_modes_are_defined_as_platform_contract() -> None:
         assert required in wave_3
 
 
+def test_bengal_library_asset_modes_define_fixture_matrix() -> None:
+    plan = PLAN.read_text(encoding="utf-8")
+    matrix = plan.split("Fixture matrix:", 1)[1].split("### Wave 4", 1)[0]
+
+    for mode in ("bundle", "link", "none"):
+        assert f"| `{mode}` |" in matrix
+
+    for required in [
+        "theme CSS output containing Chirp UI CSS before theme overrides",
+        "separate logical library CSS/JS links",
+        "registers macros/helpers",
+        "built HTML has no automatic library links",
+        "missing linked assets are diagnostics",
+    ]:
+        assert required in matrix
+
+
 def test_chirp_theme_docs_keep_current_css_loading_as_transitional() -> None:
     text = CHIRP_THEME.read_text(encoding="utf-8")
 
