@@ -98,6 +98,16 @@ class TestAsciiBadge:
         ).render()
         assert "chirpui-ascii-badge__open" not in html
 
+    def test_decorative_frame_and_glyph_are_hidden(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_badge.html" import ascii_badge %}'
+            '{{ ascii_badge(text="stable", glyph="*", frame="bracket") }}'
+        ).render()
+        assert 'class="chirpui-ascii-badge__open" aria-hidden="true"' in html
+        assert 'class="chirpui-ascii-badge__glyph" aria-hidden="true"' in html
+        assert 'class="chirpui-ascii-badge__close" aria-hidden="true"' in html
+        assert '<span class="chirpui-ascii-badge__text">stable</span>' in html
+
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_badge.html" import ascii_badge %}'
@@ -155,6 +165,8 @@ class TestAsciiBorder:
             "{% call ascii_border() %}X{% end %}"
         ).render()
         assert 'aria-hidden="true"' in html
+        assert '<div class="chirpui-ascii-border__content">' in html
+        assert "X" in html
 
 
 # ---------------------------------------------------------------------------
@@ -275,6 +287,9 @@ class TestAsciiDivider:
         ).render()
         assert "✦" in html
         assert "chirpui-ascii-divider__glyph" in html
+        assert 'role="separator"' in html
+        assert 'aria-label="✦"' in html
+        assert 'aria-hidden="true"' in html
 
     def test_variant_double(self, env: Environment) -> None:
         html = env.from_string(
@@ -326,6 +341,16 @@ class TestAsciiEmpty:
             "{% call ascii_empty() %}<button>Reset</button>{% end %}"
         ).render()
         assert "<button>Reset</button>" in html
+
+    def test_glyph_is_decorative_and_copy_is_readable(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_empty.html" import ascii_empty %}'
+            '{% call ascii_empty(glyph="*", heading="No alerts", description="All quiet") %}'
+            "{% end %}"
+        ).render()
+        assert 'class="chirpui-ascii-empty__glyph" aria-hidden="true"' in html
+        assert '<p class="chirpui-ascii-empty__heading">No alerts</p>' in html
+        assert '<p class="chirpui-ascii-empty__desc">All quiet</p>' in html
 
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
