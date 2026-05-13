@@ -288,20 +288,32 @@ def test_audit_visible_public_surface_dispositions_are_intentional() -> None:
     """Visual audit evidence should feed explicit pre-1.0 maturity decisions."""
     m = build_manifest()
 
-    promoted = {
+    promoted_marketing = {
         "logo-cloud",
         "story-card",
         "cta-band",
     }
-    for name in sorted(promoted):
+    for name in sorted(promoted_marketing):
         entry = m["components"][name]
         assert entry["maturity"] == "stable"
         assert entry["role"] == "pattern"
         assert entry["category"] == "marketing"
         assert entry["authoring"] == "available"
 
-    still_experimental = {
+    promoted_ascii = {
         "ascii-badge",
+        "ascii-border",
+        "ascii-divider",
+        "ascii-empty",
+    }
+    for name in sorted(promoted_ascii):
+        entry = m["components"][name]
+        assert entry["maturity"] == "stable"
+        assert entry["role"] == "component"
+        assert entry["category"] == "ascii"
+        assert entry["authoring"] == "available"
+
+    still_experimental = {
         "ascii-progress",
         "ascii-table",
         "ascii-toggle",

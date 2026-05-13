@@ -7,6 +7,7 @@ DOC = REPO_ROOT / "docs" / "PUBLIC-SURFACE-STABILIZATION.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
 SHOWCASE = REPO_ROOT / "examples" / "design-system-gap-showcase" / "index.html"
 COMPONENT_TESTS = REPO_ROOT / "tests" / "test_components.py"
+ASCII_TESTS = REPO_ROOT / "tests" / "test_ascii_components.py"
 
 
 def test_public_surface_stabilization_doc_records_current_slice() -> None:
@@ -18,7 +19,7 @@ def test_public_surface_stabilization_doc_records_current_slice() -> None:
         "`logo-cloud` | Promote to stable",
         "`story-card` | Promote to stable",
         "`cta-band` | Promote to stable",
-        "`ascii-badge` | Keep experimental",
+        "`ascii-badge` | Promote to stable",
         "`ascii-progress` | Keep experimental",
         "`ascii-table` | Keep experimental",
         "`ascii-toggle` | Keep experimental",
@@ -50,7 +51,7 @@ def test_every_experimental_public_template_has_disposition() -> None:
 def test_promoted_public_surface_rows_have_manifest_test_and_showcase_proof() -> None:
     """Promoting an experimental component to stable requires collateral proof."""
     text = DOC.read_text(encoding="utf-8")
-    tests = COMPONENT_TESTS.read_text(encoding="utf-8")
+    tests = COMPONENT_TESTS.read_text(encoding="utf-8") + ASCII_TESTS.read_text(encoding="utf-8")
     showcase = SHOWCASE.read_text(encoding="utf-8")
     manifest = build_manifest()["components"]
     promoted = [

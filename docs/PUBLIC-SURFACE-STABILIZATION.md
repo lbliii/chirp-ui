@@ -28,7 +28,10 @@ usage.
 | `logo-cloud` | Promote to stable | Render tests, product/media recipe usage, token hooks, visual audit coverage. |
 | `story-card` | Promote to stable | Render tests for link/slot modes, product recipe usage, visual audit coverage. |
 | `cta-band` | Promote to stable | Render tests for standard/slot actions, product/media recipe usage, visual audit coverage. |
-| `ascii-badge` | Keep experimental | Render coverage exists, but ASCII/TUI accessibility and maturity review are still active. |
+| `ascii-badge` | Promote to stable | Render proof covers variants and hidden decorative glyphs; visual audit/browser proof covers the static root. |
+| `ascii-border` | Promote to stable | Render proof covers variants and hidden decorative frame glyphs; visual audit/browser proof covers the static root. |
+| `ascii-divider` | Promote to stable | Render proof covers separator role, labelled glyph mode, and hidden decorative glyphs; visual audit/browser proof covers the static root. |
+| `ascii-empty` | Promote to stable | Render proof covers readable heading/description/action and hidden decorative glyphs; visual audit/browser proof covers the static root. |
 | `ascii-progress` | Keep experimental | Render and browser proof now align bounded ARIA, visual fill, and displayed value; visual audit/promotion review remains. |
 | `ascii-table` | Keep experimental | Render and browser proof now cover table naming, row cells, headers, and hidden decorative borders; responsive visual audit remains. |
 | `ascii-toggle` | Keep experimental | Render and browser proof now cover switch role, keyboard toggling, disabled state, and dense-row focus. |
@@ -98,10 +101,10 @@ contracts, and each already has render proof for default and non-default modes.
 
 | Component | Promotion class | Status |
 | --- | --- | --- |
-| `ascii-badge` | Static display | Candidate; needs explicit visual audit/browser evidence before descriptor promotion. |
-| `ascii-border` | Static display | Candidate; needs explicit visual audit/browser evidence before descriptor promotion. |
-| `ascii-divider` | Static display | Candidate; needs explicit visual audit/browser evidence before descriptor promotion. |
-| `ascii-empty` | Static display | Candidate; needs explicit visual audit/browser evidence before descriptor promotion. |
+| `ascii-badge` | Static display | Promoted; render, visual audit, browser, manifest, and generated docs evidence agree. |
+| `ascii-border` | Static display | Promoted; render, visual audit, browser, manifest, and generated docs evidence agree. |
+| `ascii-divider` | Static display | Promoted; render, visual audit, browser, manifest, and generated docs evidence agree. |
+| `ascii-empty` | Static display | Promoted; render, visual audit, browser, manifest, and generated docs evidence agree. |
 | `ascii-error` | Static display deferred | Keep experimental until error-page usage proves heading/action conventions. |
 | Interactive controls | Deferred | Keep experimental until keyboard, focus, disabled-state, and browser proof remain green as a group. |
 | Composite/data/status/motion displays | Deferred | Keep experimental until reduced-motion, ARIA, and responsive browser proof are complete for each behavior family. |
@@ -119,13 +122,9 @@ vocabulary.
 | `animated-counter` | Keep experimental | Motion/effects visual proof. |
 | `answer-card` | Recipe-only | Social recipe proof; promote only after repeated app use. |
 | `ascii-7seg` | Keep experimental | ASCII maturity pass. |
-| `ascii-badge` | Keep experimental | ASCII maturity pass. |
-| `ascii-border` | Keep experimental | ASCII maturity pass. |
 | `ascii-breaker-panel` | Keep experimental | ASCII maturity pass. |
 | `ascii-card` | Keep experimental | ASCII maturity pass. |
 | `ascii-checkbox` | Keep experimental | ASCII maturity pass. |
-| `ascii-divider` | Keep experimental | ASCII maturity pass. |
-| `ascii-empty` | Keep experimental | ASCII maturity pass. |
 | `ascii-error` | Keep experimental | ASCII maturity pass. |
 | `ascii-fader` | Keep experimental | ASCII maturity pass. |
 | `ascii-indicator` | Keep experimental | ASCII maturity pass. |

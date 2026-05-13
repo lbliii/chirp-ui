@@ -3928,7 +3928,7 @@ ASCII Badge
 - **Template:** `chirpui/ascii_badge.html`
 - **Macro:** `ascii_badge`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `accent`, `default`, `error`, `muted`, `success`, `warning`
@@ -3948,7 +3948,7 @@ ASCII Border
 - **Template:** `chirpui/ascii_border.html`
 - **Macro:** `ascii_border`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
@@ -4036,7 +4036,7 @@ ASCII Divider
 - **Template:** `chirpui/ascii_divider.html`
 - **Macro:** `ascii_divider`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Variants:** `(default)`, `dots`, `double`, `heavy`, `single`, `spin`, `spin-drift`, `spin-reverse`
@@ -4054,7 +4054,7 @@ ASCII Empty State component
 - **Template:** `chirpui/ascii_empty.html`
 - **Macro:** `ascii_empty`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`

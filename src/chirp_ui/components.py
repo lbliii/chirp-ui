@@ -1088,7 +1088,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-ascii-border--single",
         ),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-divider": ComponentDescriptor(
         block="ascii-divider",
@@ -1106,7 +1106,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         extra_emits=("chirpui-ascii-divider__glyph",),
         trim_emits=("chirpui-ascii-divider--single",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-sparkline": ComponentDescriptor(
         block="ascii-sparkline",
@@ -1144,7 +1144,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-empty--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-badge": ComponentDescriptor(
         block="ascii-badge",
@@ -1158,7 +1158,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-badge--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-spinner": ComponentDescriptor(
         block="ascii-spinner",

@@ -14,10 +14,10 @@
 > spinner, ticker, indicator, sparkline, and 7-segment display. Remaining work
 > is visual audit coverage and deciding which controls become stable before
 > 1.0.
-> The first accepted promotion candidate set is limited to static display
-> primitives: `ascii-badge`, `ascii-border`, `ascii-divider`, and
-> `ascii-empty`. `ascii-error` stays deferred until error-page recipe usage
-> proves its heading and action conventions.
+> The first accepted promotion set is limited to static display primitives:
+> `ascii-badge`, `ascii-border`, `ascii-divider`, and `ascii-empty`.
+> `ascii-error` stays deferred until error-page recipe usage proves its heading
+> and action conventions.
 
 ---
 
@@ -29,11 +29,11 @@ interactive ASCII/TUI controls: ARIA roles and names, keyboard behavior,
 disabled/state semantics, reduced-motion behavior, and a focused browser gauntlet
 for composites whose behavior cannot be proven by render tests alone.
 
-Until promotion is explicitly accepted, ASCII/TUI components remain
-`experimental` in the manifest and use the `ASCII maturity pass` track in
-`docs/PUBLIC-SURFACE-STABILIZATION.md`. Static display candidates may promote
-first because they have no keyboard, disabled-state, mutable data, or
-reduced-motion contract beyond decorative glyph handling.
+Unpromoted ASCII/TUI components remain `experimental` in the manifest and use
+the `ASCII maturity pass` track in `docs/PUBLIC-SURFACE-STABILIZATION.md`.
+Static display primitives can promote first because they have no keyboard,
+disabled-state, mutable data, or reduced-motion contract beyond decorative glyph
+handling.
 
 Completed proof in the first batch:
 
