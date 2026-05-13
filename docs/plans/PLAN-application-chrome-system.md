@@ -332,6 +332,55 @@ Promotion trigger:
 - tests cover shell, page-root, and local-fragment response shapes before the
   helper is public.
 
+## Filesystem Adoption Decision: Wave 3
+
+Date: 2026-05-13
+
+Decision: make filesystem-mounted app pages the recommended adoption path for
+application chrome. Keep manual route helpers and visual chrome composites
+deferred.
+
+Evidence:
+
+- `tests/fixtures/filesystem_chrome/` is a copyable mounted app with
+  `_layout.html`, `_context.py`, `_meta.py`, section registration, route tabs,
+  shell actions, command trigger, page tools, and a local fragment endpoint.
+- Server tests prove the mounted fixture returns the right response shape for
+  full navigation, boosted shell navigation, route-tab navigation, and local
+  fragments.
+- Browser tests prove sidebar navigation, route-tab swaps, shell-actions OOB
+  replacement, command-palette focus, local fragment swaps, horizontal overflow
+  sanity, and singleton `#main` / `#page-content` / `#page-root` ownership.
+- The mounted app no longer needs per-route `HX-Target` branching for normal
+  page responses. Chirp's page-shell contract maps `#main`, `#page-root`, and
+  `#page-content-inner` to the right blocks.
+
+What changed from Wave 2:
+
+- Manual-route consumers still need target branching.
+- Filesystem-mounted consumers can express the same contract declaratively with
+  layout metadata, `Section` registration, and page blocks.
+- Shell-actions OOB is automatic for targets that trigger shell updates.
+- The ergonomic gap moved from "we need a helper" to "we need clearer
+  filesystem recipes and proof."
+
+Decision matrix:
+
+| Candidate | Decision | Reason |
+|---|---|---|
+| Public `chirp_ui` response helper | Reject for filesystem pages | The mounted route contract already chooses the response shape. |
+| Public visual app chrome macro | Reject | The fixture composes existing primitives without visual-contract drift. |
+| Upstream Chirp routing/helper work | Defer | Only manual routes still show helper pressure; filesystem pages are already covered. |
+| Docs and fixture adoption | Accept | This gives app authors a copyable path with executable proof. |
+
+Next promotion trigger:
+
+- a production/copyable app repeats the filesystem block structure but still
+  needs wrapper glue outside the documented recipe,
+- the repeated glue belongs to Chirp UI rather than Chirp routing,
+- proof shows existing page blocks and shell regions cannot express the
+  contract cleanly.
+
 Open consumer evidence still required before composite work:
 
 - one production or copyable filesystem-routed Chirp app beyond the browser
