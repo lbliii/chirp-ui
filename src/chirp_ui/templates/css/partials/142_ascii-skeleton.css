@@ -85,3 +85,9 @@
     font-size: inherit;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-ascii-skeleton__fill,
+    .chirpui-ascii-skeleton__line {
+        animation: none;
+    }
+}

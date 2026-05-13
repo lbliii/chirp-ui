@@ -52,6 +52,12 @@
 /* Range input (keyboard-accessible) — visually hidden but focusable */
 .chirpui-ascii-fader__input {}
 
+.chirpui-ascii-fader:has(.chirpui-ascii-fader__input:focus-visible) .chirpui-ascii-fader__track {
+    outline: 2px solid var(--chirpui-focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
 /* Color variants */
 .chirpui-ascii-fader--success .chirpui-ascii-fader__segment--filled { color: var(--chirpui-success); }
 .chirpui-ascii-fader--warning .chirpui-ascii-fader__segment--filled { color: var(--chirpui-warning, #e6a700); }
@@ -77,4 +83,3 @@
     gap: 0.75rem;
     align-items: flex-end;
 }
-
