@@ -296,6 +296,42 @@ Not accepted:
 - CSS partials for a new chrome wrapper.
 - Manifest/generated-options/changelog work for any new public macro.
 
+## Shell Response Helper Decision: Wave 2
+
+Date: 2026-05-13
+
+Decision: keep shell response branching as a documented recipe for now. Do not
+promote a public `chirp_ui` helper in this wave.
+
+Evidence:
+
+- Server contract tests now pin the three response shapes:
+  `HX-Target: main`, `HX-Target: page-root`, and local inner-fragment targets.
+- Browser proof now verifies route-scoped shell actions replace through
+  `#chirp-shell-actions` OOB during boosted shell navigation.
+- The private browser-fixture helper reduced the repeated condition to:
+  `bool(HX-Request) and HX-Target == <target>`.
+- The helper did not reveal a new Chirp UI component, CSS, registry, manifest,
+  or macro contract. It is route-handler glue.
+
+Decision matrix:
+
+| Candidate | Decision | Reason |
+|---|---|---|
+| Public Python helper in `chirp_ui` | Defer | The current need is proven in browser fixtures, not yet in a production/copyable filesystem app. |
+| Chirp framework helper | Defer to Chirp evidence | `HX-Target` response selection is closer to routing/page-composition than to component rendering. |
+| Docs recipe | Accept | It solves the immediate ambiguity without expanding public API. |
+| Visual chrome macro | Reject | The issue is response ownership, not markup composition. |
+
+Promotion trigger:
+
+- three route families repeat the same branching and OOB-context boilerplate,
+- the helper can be named around response ownership rather than app chrome,
+- docs can show migration from the recipe to the helper without changing
+  template contracts,
+- tests cover shell, page-root, and local-fragment response shapes before the
+  helper is public.
+
 Open consumer evidence still required before composite work:
 
 - one production or copyable filesystem-routed Chirp app beyond the browser
