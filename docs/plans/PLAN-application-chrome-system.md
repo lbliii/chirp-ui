@@ -210,6 +210,25 @@ Collateral:
 Not-now spillover:
 ```
 
+## Release Readiness Ledger
+
+Every application chrome slice should close with a short ledger in the PR
+description or plan update:
+
+| Slice | Required Proof | Required Collateral |
+|---|---|---|
+| Docs bridge | docs source tests and `uv run poe build-docs-check` | `docs/NAVIGATION.md`, site pattern page, docs IA map |
+| Rail-to-tray recipe | render semantics plus browser proof at 320, 390, 768, 1024, and 1280 | recipe fixture/example, responsive notes, focused tests |
+| Chrome gauntlet | browser family checks for context, primary action, command focus, route-tab scroll, badges, and overflow | browser fixtures, test coverage, visual audit references |
+| Rhythm audit | visual-audit docs/tests and browser proof when markup changes | `docs/VISUAL-AUDIT-SHOWCASE.md`, visual audit page when needed |
+| Bengal parity | theme package tests plus browser proof for layout/focus changes | Bengal anatomy docs, theme parity docs, package data checks |
+| Composite promotion | full component contract proof | descriptor, macro, CSS partial, generated CSS, manifest, generated options, docs, examples, browser proof, changelog |
+
+Use `uv run poe ci` when a slice touches public macro/API, generated outputs,
+CSS, packaging, or multiple runtime surfaces. Narrower checks are acceptable for
+docs-only or browser-fixture-only slices when the PR names the checks and the
+remaining browser/environment gap.
+
 ## Not Now
 
 - `application_chrome()`

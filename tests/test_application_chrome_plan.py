@@ -32,3 +32,27 @@ def test_application_chrome_plan_keeps_recipe_first_boundary() -> None:
     assert "No `application_chrome()`" in text
     assert "two real consuming apps" in text
     assert "utility classes for density, hiding, spacing, alignment, or overflow" in text
+
+
+def test_application_chrome_plan_has_release_readiness_ledger() -> None:
+    text = PLAN.read_text(encoding="utf-8")
+
+    assert "## Release Readiness Ledger" in text
+    for slice_name in [
+        "Docs bridge",
+        "Rail-to-tray recipe",
+        "Chrome gauntlet",
+        "Rhythm audit",
+        "Bengal parity",
+        "Composite promotion",
+    ]:
+        assert slice_name in text
+
+    for proof in [
+        "`uv run poe build-docs-check`",
+        "browser proof at 320, 390, 768, 1024, and 1280",
+        "command focus, route-tab scroll, badges, and overflow",
+        "full component contract proof",
+        "remaining browser/environment gap",
+    ]:
+        assert proof in text
