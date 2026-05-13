@@ -4,8 +4,8 @@ This document defines the token contract for `chirpui.css`.
 
 For visual QA, use the static audit page at
 `examples/design-system-gap-showcase/index.html`. It groups the first app-owned
-tokens by job and compares the default token baseline, app starter light/dark,
-holy-light, and chirp-theme profiles. See
+tokens by job and compares the `default`, `app-starter-light`,
+`app-starter-dark`, `holy-light`, and `chirp-theme` profile IDs. See
 [VISUAL-AUDIT-SHOWCASE.md](VISUAL-AUDIT-SHOWCASE.md) for the responsive audit
 checklist.
 
