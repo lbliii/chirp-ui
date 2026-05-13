@@ -77,15 +77,34 @@ whole inventory on every pass.
 
 ## Next Batches
 
+- Promote only the ASCII/TUI static display subset once visual audit coverage
+  and generated docs/manifest projections agree.
 - Classify the remaining marketing patterns: feature sections, lifecycle
   showcase, comparison/pricing surfaces, and pattern assets.
-- Keep ASCII/TUI controls under `PLAN-ascii-maturity.md` until accessibility,
-  reduced-motion, and gauntlet checks settle.
+- Keep interactive, composite, data/status, and motion ASCII/TUI controls under
+  `PLAN-ascii-maturity.md` until accessibility, reduced-motion, and gauntlet
+  checks settle.
 - Review dense navigation composites only after object-page browser proof lands.
 - Keep legacy primitive decisions in `PLAN-primitive-vocabulary-hardening.md`.
 - Keep first-party legacy-helper cleanup under
   `PLAN-legacy-helper-cleanup-pre-1.0.md`; current static showcase usage is
   inventoried in `STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md`.
+
+## ASCII Promotion Readiness
+
+The first ASCII/TUI promotion wave is intentionally limited to static display
+primitives. They do not add keyboard behavior, mutable state, or animation
+contracts, and each already has render proof for default and non-default modes.
+
+| Component | Promotion class | Status |
+| --- | --- | --- |
+| `ascii-badge` | Static display | Candidate; needs explicit visual audit/browser evidence before descriptor promotion. |
+| `ascii-border` | Static display | Candidate; needs explicit visual audit/browser evidence before descriptor promotion. |
+| `ascii-divider` | Static display | Candidate; needs explicit visual audit/browser evidence before descriptor promotion. |
+| `ascii-empty` | Static display | Candidate; needs explicit visual audit/browser evidence before descriptor promotion. |
+| `ascii-error` | Static display deferred | Keep experimental until error-page usage proves heading/action conventions. |
+| Interactive controls | Deferred | Keep experimental until keyboard, focus, disabled-state, and browser proof remain green as a group. |
+| Composite/data/status/motion displays | Deferred | Keep experimental until reduced-motion, ARIA, and responsive browser proof are complete for each behavior family. |
 
 ## Experimental Disposition Inventory
 
