@@ -8,8 +8,10 @@
 **Source**: Codebase exploration — 24 ASCII components with 0 dedicated tests, no keyboard support, no documentation
 
 > Current note: ASCII render tests, docs, and composite primitives shipped after
-> this plan was drafted. Remaining work is accessibility/keyboard proof and
-> deciding which ASCII controls become stable before 1.0.
+> this plan was drafted. The first interactive-control proof pass has now
+> landed for checkbox, toggle, switch, radio group, fader, knob, and breaker
+> panel. Remaining work is broader ASCII composite proof and deciding which
+> controls become stable before 1.0.
 
 ---
 
@@ -21,9 +23,18 @@ interactive ASCII/TUI controls: ARIA roles and names, keyboard behavior,
 disabled/state semantics, reduced-motion behavior, and a focused browser gauntlet
 for composites whose behavior cannot be proven by render tests alone.
 
-Until that proof lands, ASCII/TUI components remain `experimental` in the
-manifest and use the `ASCII maturity pass` track in
+Until promotion is explicitly accepted, ASCII/TUI components remain
+`experimental` in the manifest and use the `ASCII maturity pass` track in
 `docs/PUBLIC-SURFACE-STABILIZATION.md`.
+
+Completed proof in the first batch:
+
+- Native-input contract ratchet for checkbox, toggle, switch, radio group,
+  fader, knob, and breaker panel.
+- Render tests for switch roles, radio-group names, fader bounds alignment, CSS
+  focus, and reduced-motion coverage.
+- Browser proof for Space toggling, radio keyboard selection, range Home/End
+  behavior, disabled state, and reduced-motion animation removal.
 
 ### Interactive Control Gate
 
@@ -37,7 +48,7 @@ promotion is reconsidered:
 | `ascii-switch` | `switch` with `aria-checked` and a stable accessible name. | Space toggles; disabled state blocks interaction. | Reduced-motion path preserves state legibility. |
 | `ascii-radio-group` | `radiogroup` with child `radio` items. | Arrow keys move selection; Space selects focused item. | Horizontal and vertical groups keep focus and checked state distinct. |
 | `ascii-fader` | `slider` with `aria-valuemin`, `aria-valuemax`, and `aria-valuenow`. | Arrow keys step; Home/End jump to min/max. | Value text, bar fill, and focus state stay synchronized. |
-| `ascii-knob` | `slider` with `aria-valuemin`, `aria-valuemax`, and `aria-valuenow`. | Arrow keys step; Home/End jump to min/max. | Rotation/position feedback respects reduced motion. |
+| `ascii-knob` | `radiogroup` over native radio options with a stable group name. | Radio keyboard behavior selects discrete positions. | Position feedback remains distinct from fader slider behavior. |
 | `ascii-tabs` | Navigation links or true `tablist`, depending on behavior. | Link navigation uses normal link keys; true tabs use roving focus. | Active tab, panel ownership, and overflow survive narrow widths. |
 | `ascii-modal` | Dialog semantics aligned with modal anatomy. | Escape/close behavior follows the existing modal contract. | Focus trapping and backdrop behavior match non-ASCII modal proof. |
 | `ascii-breaker-panel` | Grouped switches or checkboxes with stable labels. | Space toggles each breaker; master control behavior is explicit. | Master and child states remain distinguishable under density. |
