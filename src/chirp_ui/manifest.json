@@ -2709,7 +2709,7 @@
       "category": "ascii",
       "composes": [],
       "consumes": [],
-      "description": "ASCII Tabs\n    Tab bar using box-drawing characters with active tab highlighting.\n\n    Usage:\n        from \"chirpui/ascii_tabs.html\" import ascii_tabs, ascii_tab\n\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\") }}\n            {{ ascii_tab(\"logs\", \"Logs\") }}\n        {% end %}\n\n    With htmx:\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", url=\"/tabs/overview\", hx_target=\"#panel\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\", url=\"/tabs/details\", hx_target=\"#panel\") }}\n        {% end %}\n\n    Variants: default, accent.\n\n    Visual (active tab boxed):\n        ┌──────────┐\n        │ Overview  │  Details    Logs\n        └──────────┴──────────────────",
+      "description": "ASCII Tabs\n    Route/link tab navigation using box-drawing characters with active tab highlighting.\n\n    Usage:\n        from \"chirpui/ascii_tabs.html\" import ascii_tabs, ascii_tab\n\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\") }}\n            {{ ascii_tab(\"logs\", \"Logs\") }}\n        {% end %}\n\n    With htmx:\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", url=\"/tabs/overview\", hx_target=\"#panel\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\", url=\"/tabs/details\", hx_target=\"#panel\") }}\n        {% end %}\n\n    Variants: default, accent.\n    Contract: navigation links, not a roving-focus tabpanel controller.\n\n    Visual (active tab boxed):\n        ┌──────────┐\n        │ Overview  │  Details    Logs\n        └──────────┴──────────────────",
       "elements": [],
       "emits": [
         "chirpui-ascii-tab",
@@ -2722,7 +2722,7 @@
         "chirpui-ascii-tab__bracket",
         "chirpui-ascii-tab__label"
       ],
-      "lineno": 35,
+      "lineno": 36,
       "macro": "ascii_tab",
       "maturity": "experimental",
       "modifiers": [],
@@ -2905,14 +2905,14 @@
       "category": "ascii",
       "composes": [],
       "consumes": [],
-      "description": "ASCII Tabs\n    Tab bar using box-drawing characters with active tab highlighting.\n\n    Usage:\n        from \"chirpui/ascii_tabs.html\" import ascii_tabs, ascii_tab\n\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\") }}\n            {{ ascii_tab(\"logs\", \"Logs\") }}\n        {% end %}\n\n    With htmx:\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", url=\"/tabs/overview\", hx_target=\"#panel\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\", url=\"/tabs/details\", hx_target=\"#panel\") }}\n        {% end %}\n\n    Variants: default, accent.\n\n    Visual (active tab boxed):\n        ┌──────────┐\n        │ Overview  │  Details    Logs\n        └──────────┴──────────────────",
+      "description": "ASCII Tabs\n    Route/link tab navigation using box-drawing characters with active tab highlighting.\n\n    Usage:\n        from \"chirpui/ascii_tabs.html\" import ascii_tabs, ascii_tab\n\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\") }}\n            {{ ascii_tab(\"logs\", \"Logs\") }}\n        {% end %}\n\n    With htmx:\n        {% call ascii_tabs() %}\n            {{ ascii_tab(\"overview\", \"Overview\", url=\"/tabs/overview\", hx_target=\"#panel\", active=true) }}\n            {{ ascii_tab(\"details\", \"Details\", url=\"/tabs/details\", hx_target=\"#panel\") }}\n        {% end %}\n\n    Variants: default, accent.\n    Contract: navigation links, not a roving-focus tabpanel controller.\n\n    Visual (active tab boxed):\n        ┌──────────┐\n        │ Overview  │  Details    Logs\n        └──────────┴──────────────────",
       "elements": [],
       "emits": [
         "chirpui-ascii-tabs",
         "chirpui-ascii-tabs--accent"
       ],
       "extra_emits": [],
-      "lineno": 27,
+      "lineno": 28,
       "macro": "ascii_tabs",
       "maturity": "experimental",
       "modifiers": [],

@@ -98,3 +98,12 @@ def test_ascii_motion_variants_respect_reduced_motion() -> None:
     for partial in motion_partials:
         source = (CSS_PARTIAL_DIR / partial).read_text()
         assert "@media (prefers-reduced-motion: reduce)" in source
+
+
+def test_ascii_tabs_are_link_navigation_not_tabpanel_controller() -> None:
+    source = _template("ascii_tabs.html")
+
+    assert 'role="tablist"' not in source
+    assert 'role="tab"' not in source
+    assert 'aria-current="page"' in source
+    assert "href=" in source

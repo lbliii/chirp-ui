@@ -1312,16 +1312,19 @@ class TestAsciiTabs:
             "{% end %}"
         ).render()
         assert "chirpui-ascii-tabs" in html
-        assert 'role="tablist"' in html
+        assert "<nav" in html
+        assert 'aria-label="ASCII tabs"' in html
+        assert 'role="tablist"' not in html
 
     def test_active_tab(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_tabs.html" import ascii_tab %}'
-            '{{ ascii_tab("ov", "Overview", active=true) }}'
+            '{{ ascii_tab("ov", "Overview", url="/overview", active=true) }}'
         ).render()
         assert "chirpui-ascii-tab--active" in html
-        assert 'role="tab"' in html
-        assert 'aria-selected="true"' in html
+        assert 'href="/overview"' in html
+        assert 'aria-current="page"' in html
+        assert 'role="tab"' not in html
         assert "chirpui-ascii-tab__bracket" in html
 
     def test_inactive_tab(self, env: Environment) -> None:
@@ -1329,7 +1332,8 @@ class TestAsciiTabs:
             '{% from "chirpui/ascii_tabs.html" import ascii_tab %}{{ ascii_tab("det", "Details") }}'
         ).render()
         assert "chirpui-ascii-tab--active" not in html
-        assert 'aria-selected="false"' in html
+        assert 'aria-current="page"' not in html
+        assert "<span" in html
         assert "chirpui-ascii-tab__bracket" not in html
 
     def test_htmx_attrs(self, env: Environment) -> None:

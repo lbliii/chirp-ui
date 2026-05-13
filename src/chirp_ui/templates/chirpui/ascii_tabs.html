@@ -1,5 +1,5 @@
 {#- chirp-ui: ASCII Tabs
-    Tab bar using box-drawing characters with active tab highlighting.
+    Route/link tab navigation using box-drawing characters with active tab highlighting.
 
     Usage:
         from "chirpui/ascii_tabs.html" import ascii_tabs, ascii_tab
@@ -17,6 +17,7 @@
         {% end %}
 
     Variants: default, accent.
+    Contract: navigation links, not a roving-focus tabpanel controller.
 
     Visual (active tab boxed):
         ┌──────────┐
@@ -27,31 +28,38 @@
 {% def ascii_tabs(variant="", cls="") %}
 {% set variant = variant | validate_variant(("", "default", "accent"), "") %}
 {% set variant_class = " chirpui-ascii-tabs--" ~ variant if variant and variant != "default" else "" %}
-<nav class="chirpui-ascii-tabs{{ variant_class }}{{ " " ~ cls if cls else "" }}" role="tablist">
+<nav class="chirpui-ascii-tabs{{ variant_class }}{{ " " ~ cls if cls else "" }}" aria-label="ASCII tabs">
     {% slot %}
 </nav>
 {% end %}
 
 {% def ascii_tab(id, label, url=none, hx_target=none, hx_swap="innerHTML", active=false, cls="") %}
+{% if url %}
 <a class="chirpui-ascii-tab{{ " chirpui-ascii-tab--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
    id="tab-{{ id }}"
-   role="tab"
-   aria-selected="{{ "true" if active else "false" }}"
-   {% if url %}
-       href="{{ url }}"
-       {% if hx_target %}
-           hx-boost="false"
-           hx-select="unset"
-           hx-get="{{ url }}"
-           hx-target="{{ hx_target }}"
-           hx-swap="{{ hx_swap }}"
-           hx-push-url="false"
-       {% else %}
-           {{ route_link_attrs(url) | html_attrs }}
-       {% end %}
+   {% if active %}aria-current="page"{% end %}
+   href="{{ url }}"
+   {% if hx_target %}
+       hx-boost="false"
+       hx-select="unset"
+       hx-get="{{ url }}"
+       hx-target="{{ hx_target }}"
+       hx-swap="{{ hx_swap }}"
+       hx-push-url="false"
+   {% else %}
+       {{ route_link_attrs(url) | html_attrs }}
    {% end %}>
     {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span>{% end %}
     <span class="chirpui-ascii-tab__label">{{ label }}</span>
     {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span>{% end %}
 </a>
+{% else %}
+<span class="chirpui-ascii-tab{{ " chirpui-ascii-tab--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
+      id="tab-{{ id }}"
+      {% if active %}aria-current="page"{% end %}>
+    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span>{% end %}
+    <span class="chirpui-ascii-tab__label">{{ label }}</span>
+    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span>{% end %}
+</span>
+{% end %}
 {% end %}
