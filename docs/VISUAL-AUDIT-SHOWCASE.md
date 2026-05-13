@@ -63,6 +63,18 @@ For application chrome, inspect these rhythm checks before adding new API:
 - token-backed spacing and borders do the work instead of utility-style helper
   classes.
 
+Use this rhythm matrix for application chrome slices:
+
+| Surface | Rhythm contract | Proof |
+|---|---|---|
+| Global shell and command row | Brand, search, utilities, and primary actions share a coherent control height without merging route and command semantics. | Browser-visible command trigger, primary action, and no overlap at 320, 390, 768, and desktop widths. |
+| Product rail | Persistent broad navigation stays useful on tablet and desktop without starving the main pane. | Rail width leaves the main pane readable at 768 and 1024; phone fallback uses drawer or tray. |
+| Object context | Breadcrumbs, title, metadata, and object actions wrap or collapse before widening the page. | Breadcrumb overflow remains navigable and object action controls stay reachable. |
+| Local route row | URL-backed route links stay horizontally scrollable under dense labels and badges. | Route tabs keep `nowrap`, bounded height, and intended horizontal overflow. |
+| Page tools | Filters, sort, export, refresh, and bulk actions read as page-local controls rather than product navigation. | Page toolbar has a labelled command/action surface and does not duplicate global actions. |
+| Overlay chrome | Drawer, tray, command palette, and modal surfaces show clear elevation, focus behavior, and close affordances. | Open/focus/close proof covers click and keyboard behavior for the overlay used by the recipe. |
+| Attention states | Reserved/loading badges hold space without announcing false counts. | Badge placeholders are dimensioned, hidden from assistive tech when empty, and visible counts have accessible labels. |
+
 Browser proof lives in `tests/browser/test_visual_audit_showcase.py`. It opens
 the page through `file://` so the test preserves the no-server contract while
 checking horizontal overflow and required audit sections at phone, tablet, and

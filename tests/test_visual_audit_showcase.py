@@ -138,6 +138,32 @@ def test_visual_audit_showcase_keeps_theme_tokens_public() -> None:
     assert "--chirp_theme-" not in text
 
 
+def test_visual_audit_docs_pin_application_chrome_rhythm_matrix() -> None:
+    text = (REPO_ROOT / "docs" / "VISUAL-AUDIT-SHOWCASE.md").read_text(encoding="utf-8")
+
+    assert "Use this rhythm matrix for application chrome slices" in text
+    for surface in [
+        "Global shell and command row",
+        "Product rail",
+        "Object context",
+        "Local route row",
+        "Page tools",
+        "Overlay chrome",
+        "Attention states",
+    ]:
+        assert surface in text
+
+    for proof in [
+        "Browser-visible command trigger",
+        "Rail width leaves the main pane readable",
+        "Breadcrumb overflow remains navigable",
+        "Route tabs keep `nowrap`",
+        "Open/focus/close proof",
+        "Badge placeholders are dimensioned",
+    ]:
+        assert proof in text
+
+
 def test_visual_audit_showcase_does_not_teach_legacy_helper_classes() -> None:
     parser = _AuditParser()
     parser.feed(SHOWCASE.read_text(encoding="utf-8"))
