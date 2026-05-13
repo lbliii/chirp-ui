@@ -113,6 +113,33 @@ Minimal filesystem shell:
 {% extends "chirpui/app_shell_layout.html" %}
 ```
 
+Copyable filesystem route shape:
+
+```text
+pages/
+  _layout.html
+  workspace/
+    _context.py
+    _meta.py
+    page.py
+    page.html
+    runs.py
+    runs.html
+```
+
+- `_layout.html` extends `chirpui/app_shell_layout.html`, owns brand/sidebar,
+  and declares the shell target metadata.
+- `_context.py` contributes route-scoped `shell_actions`.
+- `_meta.py` connects the route family to a registered `Section`.
+- `page.py` and sibling route files can return context dictionaries when a
+  matching `.html` template exists.
+- Page templates provide `page_root`, `page_root_inner`, and `page_content`
+  blocks so `#main`, `#page-root`, and `#page-content-inner` each receive the
+  right response shape.
+
+The source-tree fixture `tests/fixtures/filesystem_chrome/` and the canonical
+checklist `docs/SHELL-TABS-CONTRACT.md` show the full version.
+
 For nested app shells, keep the preset and override the target:
 
 ```html

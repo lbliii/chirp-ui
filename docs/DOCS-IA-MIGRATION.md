@@ -32,7 +32,7 @@ manifest fields, and migration rules should come from the canonical source.
 |---|---|---|---|
 | `site/content/docs/_index.md` | Get Started | `docs/INDEX.md` | Uses Bengal `cards`/`card` directives; keep links aligned with published reference surfaces. |
 | `site/content/docs/about/_index.md` | Integrations | `docs/VISION.md`, `README.md` | Keep as a short philosophy and integration overview; avoid new component facts. |
-| `site/content/docs/app-shell/_index.md` | Integrations | `docs/UI-LAYERS.md`, `docs/SHELL-TABS-CONTRACT.md`, `docs/NAVIGATION.md`, `docs/COMPONENT-OPTIONS.md` | Keep quick-start snippet; mirror shell target-boundary guidance without adding site-only component facts. |
+| `site/content/docs/app-shell/_index.md` | Integrations | `docs/UI-LAYERS.md`, `docs/SHELL-TABS-CONTRACT.md`, `docs/NAVIGATION.md`, `docs/COMPONENT-OPTIONS.md` | Keep quick-start snippet; mirror shell target-boundary and filesystem recipe guidance without adding site-only component facts. |
 | `site/content/docs/app-shell/ui-layers.md` | Fundamentals | `docs/UI-LAYERS.md`, `docs/SHELL-TABS-CONTRACT.md` | Keep aligned with Chirp shell vocabulary and avoid site-only terminology. |
 | `site/content/docs/components/_index.md` | Components | `docs/COMPONENT-OPTIONS.md`, `src/chirp_ui/manifest.json` | Prefer generated category summaries once LLM/docs generator lands. |
 | `site/content/docs/components/appearance-tone.md` | Design System | `docs/APPEARANCE-TONE.md` | Keep as published mirror and cite the durable guide. |
