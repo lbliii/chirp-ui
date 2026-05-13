@@ -8,7 +8,7 @@ Each route exercises a specific nesting/interaction pattern.
 import asyncio
 import os
 
-from chirp import App, AppConfig
+from chirp import App, AppConfig, ShellAction, ShellActions, ShellActionZone
 from chirp.ext.chirp_ui import use_chirp_ui
 from chirp.http.request import Request
 from chirp.http.response import Response
@@ -95,6 +95,37 @@ GAUNTLET_TABLE_ROWS = [
         "unbroken-token-0123456789abcdefghijklmnopqrstuvwxyz",
     ),
 ]
+
+CONSUMER_WORKSPACE_TABS = [
+    {"label": "Overview", "href": "/consumer-workspace", "match": "exact", "badge": 4},
+    {
+        "label": "Runs",
+        "href": "/consumer-workspace/runs",
+        "match": "exact",
+        "badge_loading": True,
+    },
+    {
+        "label": "Settings",
+        "href": "/consumer-workspace/settings",
+        "match": "exact",
+        "badge_expected": True,
+    },
+]
+
+CONSUMER_WORKSPACE_VIEWS = {
+    "/consumer-workspace": (
+        "Workspace overview",
+        "Overview content proves persistent shell, route tabs, command launch, and page tools.",
+    ),
+    "/consumer-workspace/runs": (
+        "Workspace runs",
+        "Runs content arrived through the page-root route-tab boundary.",
+    ),
+    "/consumer-workspace/settings": (
+        "Workspace settings",
+        "Settings content keeps the same app shell and page chrome.",
+    ),
+}
 
 PRODUCT_PATTERN_CUSTOMERS = [
     "Klarna",
@@ -384,6 +415,88 @@ def _gauntlet_context(active_room: str = "all") -> dict[str, object]:
     }
 
 
+def _consumer_shell_actions(label: str = "New run") -> ShellActions:
+    return ShellActions(
+        primary=ShellActionZone(
+            items=(
+                ShellAction(
+                    id="consumer-primary",
+                    label=label,
+                    href="/consumer-workspace/new",
+                    variant="primary",
+                ),
+            )
+        ),
+        controls=ShellActionZone(
+            items=(
+                ShellAction(
+                    id="consumer-refresh",
+                    label="Refresh",
+                    action="refresh-consumer",
+                    variant="secondary",
+                ),
+            )
+        ),
+    )
+
+
+def _is_hx_request(request: Request) -> bool:
+    headers = getattr(request, "headers", {})
+    get = getattr(headers, "get", None)
+    return bool(get and get("HX-Request"))
+
+
+def _workspace_context(path: str) -> dict[str, object]:
+    title, copy = CONSUMER_WORKSPACE_VIEWS.get(
+        path, CONSUMER_WORKSPACE_VIEWS["/consumer-workspace"]
+    )
+    return {
+        "page_title": title,
+        "current_path": path,
+        "tab_items": CONSUMER_WORKSPACE_TABS,
+        "view_title": title,
+        "view_copy": copy,
+        "shell_actions": _consumer_shell_actions(),
+    }
+
+
+def _workspace_page_root_fragment(path: str) -> str:
+    title, copy = CONSUMER_WORKSPACE_VIEWS.get(
+        path, CONSUMER_WORKSPACE_VIEWS["/consumer-workspace"]
+    )
+    active = {
+        tab["href"]: " chirpui-route-tab--active" if tab["href"] == path else ""
+        for tab in CONSUMER_WORKSPACE_TABS
+    }
+    current = {
+        tab["href"]: ' aria-current="page"' if tab["href"] == path else ""
+        for tab in CONSUMER_WORKSPACE_TABS
+    }
+    return f"""
+<div id="route-tabs">
+  <nav role="navigation" aria-label="Subsection navigation" class="chirpui-route-tabs">
+    <a href="/consumer-workspace" class="chirpui-route-tab{active["/consumer-workspace"]}"{current["/consumer-workspace"]} hx-boost="false" hx-select="unset" hx-get="/consumer-workspace" hx-target="#page-root" hx-push-url="true" hx-swap="innerHTML"><span class="chirpui-route-tab__label">Overview</span><span class="chirpui-route-tab__badge">4</span></a>
+    <a href="/consumer-workspace/runs" class="chirpui-route-tab{active["/consumer-workspace/runs"]}"{current["/consumer-workspace/runs"]} hx-boost="false" hx-select="unset" hx-get="/consumer-workspace/runs" hx-target="#page-root" hx-push-url="true" hx-swap="innerHTML"><span class="chirpui-route-tab__label">Runs</span><span class="chirpui-route-tab__badge chirpui-route-tab__badge--reserved chirpui-route-tab__badge--loading" aria-hidden="true"></span></a>
+    <a href="/consumer-workspace/settings" class="chirpui-route-tab{active["/consumer-workspace/settings"]}"{current["/consumer-workspace/settings"]} hx-boost="false" hx-select="unset" hx-get="/consumer-workspace/settings" hx-target="#page-root" hx-push-url="true" hx-swap="innerHTML"><span class="chirpui-route-tab__label">Settings</span><span class="chirpui-route-tab__badge chirpui-route-tab__badge--reserved" aria-hidden="true"></span></a>
+  </nav>
+</div>
+<h1 data-testid="consumer-heading">Workspace consumer</h1>
+<div class="chirpui-action-strip chirpui-action-strip--muted chirpui-action-strip--sm chirpui-action-strip--scroll" role="toolbar" aria-label="Workspace page tools">
+  <div class="chirpui-action-strip__inner">
+    <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm" hx-get="/consumer-workspace/filter-fragment" hx-target="#page-content-inner" hx-swap="innerHTML" hx-select="unset" hx-disinherit="hx-select">Filter</button>
+    <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Refresh</button>
+    <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm">Export</button>
+  </div>
+</div>
+<div id="page-content-inner">
+  <section class="chirpui-block">
+    <h2 data-testid="consumer-view-title">{title}</h2>
+    <p data-testid="consumer-view-copy">{copy}</p>
+  </section>
+</div>
+"""
+
+
 def create_app() -> App:
     """Create the test Chirp app with chirp-ui integration."""
     template_dir = os.path.join(os.path.dirname(__file__), "templates")
@@ -432,6 +545,38 @@ def create_app() -> App:
     @app.route("/rail-to-tray")
     async def rail_to_tray_page(request: Request):
         return Template("rail_to_tray_page.html", page_title="Rail To Drawer Chrome")
+
+    @app.route("/consumer-workspace")
+    async def consumer_workspace_page(request: Request):
+        if _is_hx_request(request):
+            return Response(_workspace_page_root_fragment("/consumer-workspace"))
+        return Template("consumer_workspace_page.html", **_workspace_context("/consumer-workspace"))
+
+    @app.route("/consumer-workspace/runs")
+    async def consumer_workspace_runs_page(request: Request):
+        if _is_hx_request(request):
+            return Response(_workspace_page_root_fragment("/consumer-workspace/runs"))
+        return Template(
+            "consumer_workspace_page.html", **_workspace_context("/consumer-workspace/runs")
+        )
+
+    @app.route("/consumer-workspace/settings")
+    async def consumer_workspace_settings_page(request: Request):
+        if _is_hx_request(request):
+            return Response(_workspace_page_root_fragment("/consumer-workspace/settings"))
+        return Template(
+            "consumer_workspace_page.html",
+            **_workspace_context("/consumer-workspace/settings"),
+        )
+
+    @app.route("/consumer-workspace/filter-fragment")
+    async def consumer_workspace_filter_fragment(request: Request):
+        return Response(
+            '<section class="chirpui-block" data-testid="consumer-filter-result">'
+            "<h2>Filtered workspace</h2>"
+            "<p>Filter content arrived through the page-content-inner boundary.</p>"
+            "</section>"
+        )
 
     @app.route("/application-chrome-gauntlet")
     async def application_chrome_gauntlet_page(request: Request):

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block brand %}Consumer Chrome{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path=current_path) %}
+  {% call sidebar_section("Consumers") %}
+    {{ sidebar_link("/consumer-workspace", "Workspace", match="prefix") }}
+    {{ sidebar_link("/consumer-admin", "Admin console", match="prefix") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import stack, cluster, block %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+
+{{ command_palette(id="workspace-consumer-palette", search_url="/search", placeholder="Search workspace...") }}
+
+<div id="page-root">
+  <div id="route-tabs">
+    {{ route_tabs(tab_items, current_path) }}
+  </div>
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs([
+      {"label": "Consumers", "href": "/consumer-workspace"},
+      {"label": "Workspace"}
+    ], overflow="collapse", max_items=3) }}
+    {% call cluster(gap="sm") %}
+      <h1 data-testid="consumer-heading">Workspace consumer</h1>
+      {{ command_palette_trigger(target="workspace-consumer-palette", label="Search workspace", placeholder="Search or jump", shortcut="/", icon="search", density="sm") }}
+    {% end %}
+  {% end %}
+  {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Workspace page tools") %}
+    {{ btn("Filter", variant="ghost", size="sm",
+      hx_get="/consumer-workspace/filter-fragment",
+      hx_target="#page-content-inner",
+      hx_swap="innerHTML",
+      attrs_map={"hx-disinherit": "hx-select"}) }}
+    {{ btn("Refresh", variant="ghost", size="sm") }}
+    {{ btn("Export", variant="ghost", size="sm") }}
+  {% end %}
+  <div id="page-content-inner">
+  {% call block() %}
+    <h2 data-testid="consumer-view-title">{{ view_title }}</h2>
+    <p data-testid="consumer-view-copy">{{ view_copy }}</p>
+  {% end %}
+  </div>
+</div>
+{% end %}
