@@ -29,9 +29,9 @@ usage.
 | `story-card` | Promote to stable | Render tests for link/slot modes, product recipe usage, visual audit coverage. |
 | `cta-band` | Promote to stable | Render tests for standard/slot actions, product/media recipe usage, visual audit coverage. |
 | `ascii-badge` | Keep experimental | Render coverage exists, but ASCII/TUI accessibility and maturity review are still active. |
-| `ascii-progress` | Keep experimental | Render coverage exists, but terminal-style status semantics need the ASCII maturity pass. |
-| `ascii-table` | Keep experimental | Render coverage exists, but data-table accessibility and responsive behavior need more proof. |
-| `ascii-toggle` | Keep experimental | Render and responsive coverage exist, but control semantics need the ASCII maturity pass. |
+| `ascii-progress` | Keep experimental | Render and browser proof now align bounded ARIA, visual fill, and displayed value; visual audit/promotion review remains. |
+| `ascii-table` | Keep experimental | Render and browser proof now cover table naming, row cells, headers, and hidden decorative borders; responsive visual audit remains. |
+| `ascii-toggle` | Keep experimental | Render and browser proof now cover switch role, keyboard toggling, disabled state, and dense-row focus. |
 
 ## Promotion Rule
 
