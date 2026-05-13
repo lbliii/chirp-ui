@@ -645,6 +645,21 @@ class TestAsciiProgress:
         ).render()
         assert html.count("chirpui-ascii-progress__filled") == 10
 
+    def test_value_bounds_align_aria_fill_and_display(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_progress.html" import ascii_progress %}'
+            "{{ ascii_progress(value=140, width=10) }}"
+            "{{ ascii_progress(value=-20, width=10) }}"
+        ).render()
+        assert 'aria-valuenow="100"' in html
+        assert 'aria-valuenow="0"' in html
+        assert ">100%</span>" in html
+        assert ">0%</span>" in html
+        assert ">140%</span>" not in html
+        assert ">-20%</span>" not in html
+        assert html.count("chirpui-ascii-progress__filled") == 10
+        assert html.count("chirpui-ascii-progress__empty") == 10
+
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_progress.html" import ascii_progress %}'

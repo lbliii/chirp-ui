@@ -14,16 +14,18 @@
 {% def ascii_progress(value=0, label="", variant="", width=20, cls="") %}
 {% set variant = variant | validate_variant(("", "default", "accent", "success", "warning"), "") %}
 {% set variant_class = " chirpui-ascii-progress--" ~ variant if variant else "" %}
-{% set filled = ((value / 100) * width) | int %}
+{% set bounded_value = 100 if value > 100 else (0 if value < 0 else value) %}
+{% set filled = ((bounded_value / 100) * width) | int %}
+{% set filled = width if filled > width else (0 if filled < 0 else filled) %}
 {% set empty = width - filled %}
 <div class="chirpui-ascii-progress{{ variant_class }}{{ " " ~ cls if cls else "" }}"
      role="progressbar"
-     aria-valuenow="{{ value }}"
+     aria-valuenow="{{ bounded_value }}"
      aria-valuemin="0"
      aria-valuemax="100"
      {% if label %}aria-label="{{ label }}"{% end %}>
     {% if label %}<span class="chirpui-ascii-progress__label">{{ label }}</span>{% end %}
     <span class="chirpui-ascii-progress__track" aria-hidden="true">{% for i in range(filled) %}<span class="chirpui-ascii-progress__filled">█</span>{% end %}{% for i in range(empty) %}<span class="chirpui-ascii-progress__empty">░</span>{% end %}</span>
-    <span class="chirpui-ascii-progress__value">{{ value }}%</span>
+    <span class="chirpui-ascii-progress__value">{{ bounded_value }}%</span>
 </div>
 {% end %}
