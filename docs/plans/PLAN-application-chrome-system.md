@@ -218,6 +218,38 @@ Current evidence log:
 | Rail-to-drawer showcase recipe and browser fixture | No | Good responsive proof for existing primitives; not enough for `application_chrome`. |
 | Application chrome gauntlet families | No | Good browser stress evidence across product shapes; not enough for a stable shell API. |
 | Bengal docs chrome | Partial | Real packaged-theme consumer for token/layout parity, but not the same contract as Chirp app shell chrome. |
+| Workspace consumer browser fixture | Yes | Proves a filesystem-style app shell can compose brand, sidebar, route tabs, breadcrumbs, command trigger, page toolbar, shell actions, and inner HTMX fragments without a new chrome macro. |
+| Admin consumer browser fixture | Yes | Proves a second route family can repeat the recipe with different tabs, actions, copy, and page tools; the repeated pain is shell/OOB response wiring, not visual composition. |
+
+Consumer adoption findings from the first real-consumer wave:
+
+- The existing `app_shell_layout`, `sidebar`, `route_tabs`, `breadcrumbs`,
+  `command_palette_trigger`, `command_bar`, `btn`, and `block` primitives are
+  enough to build two app chrome consumers without adding
+  `application_chrome()`.
+- Shell navigation and page-root tab navigation are different HTMX contracts.
+  Shell-targeted requests should return a full page response with OOB shell
+  region updates; tab-targeted requests can return a `#page-root` fragment.
+- Local page tools need fragment-island behavior. Buttons/forms that target
+  `#page-content-inner` must clear inherited shell `hx-select`, using the
+  existing `hx-select="unset"` / `hx-disinherit="hx-select"` pattern.
+- The first failure mode was not spacing, tokens, or a missing visual macro.
+  It was target ownership: treating every `HX-Request` as a page-root request
+  made shell-level navigation empty-swap content.
+- The second failure mode was persistent shell metadata: shell actions live
+  outside `#page-content`, so shell navigation needs an OOB shell-actions
+  update when route-scoped actions change.
+
+Consumer adoption proof now covers:
+
+| Contract | Workspace Consumer | Admin Consumer | Boundary Proof |
+|---|---|---|---|
+| Persistent shell identity | `Consumer Chrome` brand and workspace sidebar state | same brand with admin sidebar state | shell navigation keeps one `#main` and one `#page-content` |
+| Route-backed page chrome | overview/runs/settings route tabs | access/jobs/audit route tabs | tab clicks target only `#page-root` |
+| Route-scoped shell actions | `New run` / `Refresh` | `Invite member` / `Audit` | shell navigation updates actions by OOB response |
+| Command surface | workspace command trigger opens and focuses palette | admin search trigger is reachable | palette remains page-local, not shell-owned |
+| Page tools | filter/refresh/export toolbar | review/suspend/export toolbar | inner filter targets only `#page-content-inner` |
+| Responsive sanity | workspace browser proof at desktop and phone widths | admin browser proof at phone width | no duplicate roots after HTMX swaps |
 
 Open consumer evidence required before composite work:
 
