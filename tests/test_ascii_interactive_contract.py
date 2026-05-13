@@ -7,9 +7,54 @@ CSS_PARTIAL_DIR = (
     Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates" / "css" / "partials"
 )
 
+ASCII_PROOF_GROUPS = {
+    "native_controls": {
+        "ascii_checkbox.html",
+        "ascii_fader.html",
+        "ascii_knob.html",
+        "ascii_radio.html",
+        "ascii_toggle.html",
+        "ascii_tile_btn.html",
+        "ascii_breaker_panel.html",
+    },
+    "composites": {
+        "ascii_card.html",
+        "ascii_modal.html",
+        "ascii_tabs.html",
+    },
+    "data_status": {
+        "ascii_progress.html",
+        "ascii_stepper.html",
+        "ascii_table.html",
+        "ascii_vu_meter.html",
+    },
+    "display_motion": {
+        "ascii_7seg.html",
+        "ascii_badge.html",
+        "ascii_border.html",
+        "ascii_divider.html",
+        "ascii_empty.html",
+        "ascii_error.html",
+        "ascii_icon.html",
+        "ascii_indicator.html",
+        "ascii_skeleton.html",
+        "ascii_sparkline.html",
+        "ascii_spinner.html",
+        "ascii_split_flap.html",
+        "ascii_ticker.html",
+    },
+}
+
 
 def _template(name: str) -> str:
     return (TEMPLATE_DIR / name).read_text()
+
+
+def test_ascii_maturity_proof_groups_cover_templates() -> None:
+    grouped = set().union(*ASCII_PROOF_GROUPS.values())
+    actual = {path.name for path in TEMPLATE_DIR.glob("ascii_*.html")}
+
+    assert grouped == actual
 
 
 def test_ascii_interactive_controls_are_native_input_backed() -> None:
