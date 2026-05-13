@@ -863,13 +863,25 @@ pre code {
 
   .chirp-theme-docs-layout__main {
     gap: 1rem;
+    min-width: 0;
   }
 
+  .chirp-theme-docs-layout .page-hero,
   .chirp-theme-home__hero,
   .chirp-theme-doc-home__hero,
   .chirp-theme-doc-home__section-block,
   .chirp-theme-docs-layout__article,
   .chirp-theme-page__article {
+    max-width: 100%;
+    min-width: 0;
     padding: 1rem;
+  }
+
+  .chirp-theme-docs-layout__content,
+  .chirp-theme-docs-layout .rosettes,
+  .chirp-theme-docs-layout .code-block-wrapper,
+  .chirp-theme-docs-layout pre {
+    max-width: 100%;
+    min-width: 0;
   }
 }

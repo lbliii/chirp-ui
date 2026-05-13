@@ -6,8 +6,9 @@ from pathlib import Path
 from threading import Thread
 
 import pytest
+from playwright.async_api import expect
 
-pytestmark = pytest.mark.integration
+pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SITE_PUBLIC = REPO_ROOT / "site" / "public"
@@ -36,27 +37,27 @@ def static_site_url():
 
 
 @pytest.fixture
-def page():
-    from playwright.sync_api import sync_playwright
+async def page():
+    from playwright.async_api import async_playwright
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        ctx = browser.new_context()
-        page = ctx.new_page()
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        ctx = await browser.new_context()
+        page = await ctx.new_page()
         yield page
-        ctx.close()
-        browser.close()
+        await ctx.close()
+        await browser.close()
 
 
-def open_app_shell_docs(page, static_site_url: str, width: int, height: int) -> None:
-    page.set_viewport_size({"width": width, "height": height})
-    page.goto(f"{static_site_url}/docs/app-shell/")
-    page.wait_for_load_state("networkidle")
-    page.wait_for_timeout(100)
+async def open_app_shell_docs(page, static_site_url: str, width: int, height: int) -> None:
+    await page.set_viewport_size({"width": width, "height": height})
+    await page.goto(f"{static_site_url}/docs/app-shell/")
+    await page.wait_for_load_state("networkidle")
+    await page.wait_for_timeout(100)
 
 
-def assert_no_document_horizontal_overflow(page, label: str) -> None:
-    result = page.evaluate(
+async def assert_no_document_horizontal_overflow(page, label: str) -> None:
+    result = await page.evaluate(
         """() => {
             const root = document.documentElement;
             return {
@@ -70,50 +71,50 @@ def assert_no_document_horizontal_overflow(page, label: str) -> None:
 
 
 @pytest.mark.parametrize(("width", "height"), VIEWPORTS)
-def test_bengal_docs_chrome_regions_survive_responsive_widths(
+async def test_bengal_docs_chrome_regions_survive_responsive_widths(
     page, static_site_url, width, height
 ):
-    open_app_shell_docs(page, static_site_url, width, height)
+    await open_app_shell_docs(page, static_site_url, width, height)
 
-    assert_no_document_horizontal_overflow(page, f"bengal-docs-chrome-{width}x{height}")
-    assert page.locator(".chirp-theme-docs-layout__main").is_visible()
-    assert page.locator(".chirp-theme-docs-layout__article").is_visible()
-    assert page.locator("#nav-search-trigger").count() == 1
-    assert page.locator(".theme-dropdown__button").count() >= 1
-    assert page.locator("#mobile-nav-dialog").count() == 1
+    await assert_no_document_horizontal_overflow(page, f"bengal-docs-chrome-{width}x{height}")
+    await expect(page.locator(".chirp-theme-docs-layout__main")).to_be_visible()
+    await expect(page.locator(".chirp-theme-docs-layout__article")).to_be_visible()
+    assert await page.locator("#nav-search-trigger").count() == 1
+    assert await page.locator(".theme-dropdown__button").count() >= 1
+    assert await page.locator("#mobile-nav-dialog").count() == 1
 
     if width <= 768:
-        assert page.locator(".chirp-theme-docs-layout__sidebar").is_hidden()
-        assert page.locator(".mobile-nav-toggle").is_visible()
+        await expect(page.locator(".chirp-theme-docs-layout__sidebar")).to_be_hidden()
+        await expect(page.locator(".mobile-nav-toggle")).to_be_visible()
     else:
-        assert page.locator(".chirp-theme-docs-layout__sidebar").is_visible()
+        await expect(page.locator(".chirp-theme-docs-layout__sidebar")).to_be_visible()
 
     if width >= 1280:
-        assert page.locator(".chirp-theme-docs-layout__toc").is_visible()
-        assert page.locator(".toc-sidebar[data-bengal='toc']").is_visible()
+        await expect(page.locator(".chirp-theme-docs-layout__toc")).to_be_visible()
+        await expect(page.locator(".toc-sidebar[data-bengal='toc']")).to_be_visible()
 
 
-def test_bengal_docs_mobile_nav_opens_and_keeps_search_reachable(page, static_site_url):
-    open_app_shell_docs(page, static_site_url, 390, 844)
+async def test_bengal_docs_mobile_nav_opens_and_keeps_search_reachable(page, static_site_url):
+    await open_app_shell_docs(page, static_site_url, 390, 844)
 
-    page.locator(".mobile-nav-toggle").click()
+    await page.locator(".mobile-nav-toggle").click()
     dialog = page.locator("#mobile-nav-dialog")
-    assert dialog.evaluate("el => el.open")
-    assert dialog.locator(".mobile-nav-content[role='navigation']").is_visible()
-    assert dialog.locator(".mobile-nav-search[data-open-search]").is_visible()
-    assert dialog.locator(".theme-dropdown__button").is_visible()
+    assert await dialog.evaluate("el => el.open")
+    await expect(dialog.locator(".mobile-nav-content[role='navigation']")).to_be_visible()
+    await expect(dialog.locator(".mobile-nav-search[data-open-search]")).to_be_visible()
+    await expect(dialog.locator(".theme-dropdown__button")).to_be_visible()
 
-    page.keyboard.press("Escape")
-    page.wait_for_timeout(100)
-    assert not dialog.evaluate("el => el.open")
+    await page.keyboard.press("Escape")
+    await page.wait_for_timeout(100)
+    assert not await dialog.evaluate("el => el.open")
 
 
-def test_bengal_docs_theme_controls_use_native_popover(page, static_site_url):
-    open_app_shell_docs(page, static_site_url, 1280, 900)
+async def test_bengal_docs_theme_controls_use_native_popover(page, static_site_url):
+    await open_app_shell_docs(page, static_site_url, 1280, 900)
 
-    trigger = page.locator(".site-nav .theme-dropdown__button").first
-    menu_id = trigger.get_attribute("popovertarget")
+    trigger = page.locator(".theme-dropdown__button[popovertarget='theme-menu-desktop']")
+    menu_id = await trigger.get_attribute("popovertarget")
     assert menu_id == "theme-menu-desktop"
-    trigger.click()
-    assert page.locator("#theme-menu-desktop").is_visible()
-    assert page.locator("#theme-menu-desktop .theme-option[data-theme-pack='ember']").count() >= 1
+    await trigger.click()
+    await expect(page.locator("#theme-menu-desktop")).to_be_visible()
+    assert await page.locator("#theme-menu-desktop .theme-option[data-theme-pack='ember']").count() >= 1

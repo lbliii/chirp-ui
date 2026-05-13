@@ -373,6 +373,24 @@ def test_bengal_theme_anatomy_records_application_chrome_parity() -> None:
         assert expectation in text
 
 
+def test_chirp_theme_docs_chrome_mobile_width_contract() -> None:
+    """Docs chrome should not give article or code content a fixed mobile width."""
+    package_root = resources.files(THEME_PACKAGE)
+    css = (package_root / "assets" / "css" / "chirp-theme.css").read_text(encoding="utf-8")
+    header_css = (package_root / "assets" / "css" / "layouts" / "header.css").read_text(
+        encoding="utf-8"
+    )
+
+    assert "@media (max-width: 768px)" in css
+    assert ".chirp-theme-docs-layout .page-hero" in css
+    assert ".chirp-theme-docs-layout__article" in css
+    assert ".chirp-theme-docs-layout__content" in css
+    assert ".chirp-theme-docs-layout .code-block-wrapper" in css
+    assert "max-width: 100%;" in css
+    assert "min-width: 0;" in css
+    assert "@media (min-width: 769px)" in header_css
+
+
 def test_chirp_theme_tokens_use_chirpui_vocabulary() -> None:
     """Theme-specific CSS should tune Chirp UI tokens instead of creating a parallel token API."""
     package_root = resources.files(THEME_PACKAGE)

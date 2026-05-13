@@ -46,8 +46,10 @@ async def test_application_chrome_gauntlet_keeps_family_chrome_intact(
         await expect(family.get_by_role("heading", name=title)).to_be_visible()
         await expect(family.get_by_role("button", name=action)).to_be_visible()
         await expect(family.get_by_role("button", name=search_label)).to_be_visible()
-        await expect(family.get_by_role("navigation", name="Navigation")).to_be_visible()
-        await expect(family.get_by_role("navigation", name="Subsection navigation")).to_be_visible()
+        await expect(family.get_by_role("navigation", name="Navigation", exact=True)).to_be_visible()
+        await expect(
+            family.get_by_role("navigation", name="Subsection navigation", exact=True)
+        ).to_be_visible()
 
         route_tabs = family.locator(".chirpui-route-tabs")
         await expect(route_tabs).to_be_visible()
