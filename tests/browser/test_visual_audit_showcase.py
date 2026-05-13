@@ -205,12 +205,14 @@ def test_visual_audit_theme_gallery_profiles_render(page):
     open_visual_audit(page, 768, 1024)
 
     gallery = page.locator("[data-audit-section='theme-gallery']")
+    assert gallery.locator(".audit-profile--default").count() == 1
     assert gallery.locator(".audit-profile").count() == 1
     assert gallery.locator(".audit-dark").count() == 1
     assert gallery.locator(".audit-profile--holy").count() == 1
     assert gallery.locator(".audit-profile--chirp-theme").count() == 1
 
     for selector in [
+        ".audit-profile--default .chirpui-btn--primary",
         ".audit-profile .chirpui-btn--primary",
         ".audit-dark .chirpui-btn--primary",
         ".audit-profile--holy .chirpui-btn--primary",
@@ -247,6 +249,7 @@ def test_visual_audit_theme_profiles_define_public_semantic_tokens(page):
     )
 
     assert {profile["profile"] for profile in profiles} == {
+        "default",
         "app-starter-light",
         "app-starter-dark",
         "holy-light",

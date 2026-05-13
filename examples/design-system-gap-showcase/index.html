@@ -366,6 +366,22 @@
         --chirpui-error: oklch(0.55 0.19 25);
       }
 
+      .audit-profile--default {
+        color-scheme: light;
+        --chirpui-bg: #f8fafc;
+        --chirpui-bg-subtle: #f1f5f9;
+        --chirpui-surface: #ffffff;
+        --chirpui-surface-alt: #f8fafc;
+        --chirpui-border: #e2e8f0;
+        --chirpui-text: #1e293b;
+        --chirpui-text-muted: #64748b;
+        --chirpui-accent: #0284c7;
+        --chirpui-accent-hover: #0369a1;
+        --chirpui-success: #22c55e;
+        --chirpui-warning: #f59e5b;
+        --chirpui-error: #dc2626;
+      }
+
       .audit-profile--holy {
         color-scheme: dark;
         --chirpui-bg: #0d0d0d;
@@ -397,6 +413,7 @@
         --chirpui-error: #be185d;
       }
 
+      .audit-profile--default .audit-frame__body,
       .audit-profile .audit-frame__body,
       .audit-profile--holy .audit-frame__body,
       .audit-profile--chirp-theme .audit-frame__body {
@@ -442,7 +459,7 @@
           <a class="chirpui-sidebar__link" href="#interaction-chrome"><span class="chirpui-sidebar__label">Interaction</span><span class="chirpui-sidebar__badge">3</span></a>
           <a class="chirpui-sidebar__link" href="#ascii-tui"><span class="chirpui-sidebar__label">ASCII/TUI</span><span class="chirpui-sidebar__badge">4</span></a>
           <a class="chirpui-sidebar__link" href="#proof-patterns"><span class="chirpui-sidebar__label">Proof</span><span class="chirpui-sidebar__badge">3</span></a>
-          <a class="chirpui-sidebar__link" href="#theme-gallery"><span class="chirpui-sidebar__label">Theme gallery</span><span class="chirpui-sidebar__badge">4</span></a>
+          <a class="chirpui-sidebar__link" href="#theme-gallery"><span class="chirpui-sidebar__label">Theme gallery</span><span class="chirpui-sidebar__badge">5</span></a>
         </nav>
       </div>
     </aside>
@@ -902,6 +919,25 @@
         </section>
 
         <section id="theme-gallery" class="audit-grid" data-audit-section="theme-gallery">
+          <article class="audit-frame audit-profile--default" data-theme-profile="default">
+            <div class="audit-frame__header">
+              <h2 class="audit-title">Default tokens</h2>
+              <span class="chirpui-badge">baseline</span>
+            </div>
+            <div class="audit-frame__body">
+              <div class="chirpui-stack chirpui-stack--md">
+                <div class="audit-swatch">
+                  <span style="--swatch: var(--chirpui-bg);"></span>
+                  <span style="--swatch: var(--chirpui-surface);"></span>
+                  <span style="--swatch: var(--chirpui-border);"></span>
+                  <span style="--swatch: var(--chirpui-accent);"></span>
+                  <span style="--swatch: var(--chirpui-text);"></span>
+                </div>
+                <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Primary</button>
+              </div>
+            </div>
+          </article>
+
           <article class="audit-frame audit-profile" data-theme-profile="app-starter-light">
             <div class="audit-frame__header">
               <h2 class="audit-title">App starter light</h2>

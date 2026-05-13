@@ -14,7 +14,9 @@ src/chirp_ui/templates/themes/app-theme-starter.css
 
 For a visual comparison of the starter profile against other token sets, open
 `examples/design-system-gap-showcase/index.html` and review the theme gallery
-and token explorer sections. The audit checklist lives in
+and token explorer sections. The gallery includes the default token baseline,
+app starter light/dark, holy-light, and chirp-theme profiles. The audit
+checklist lives in
 [VISUAL-AUDIT-SHOWCASE.md](VISUAL-AUDIT-SHOWCASE.md).
 
 When `chirp_ui.static_path()` is served at `/static`, the same file is available

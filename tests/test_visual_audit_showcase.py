@@ -74,6 +74,7 @@ def test_visual_audit_showcase_has_required_sections() -> None:
         "chirpui-logo-cloud",
         "chirpui-story-card",
         "chirpui-cta-band",
+        "audit-profile--default",
         "audit-profile--holy",
         "audit-profile--chirp-theme",
     }.issubset(parser.classes)
@@ -90,6 +91,7 @@ def test_visual_audit_showcase_has_required_sections() -> None:
         "motion",
     }.issubset(parser.token_jobs)
     assert {
+        "default",
         "app-starter-light",
         "app-starter-dark",
         "holy-light",
