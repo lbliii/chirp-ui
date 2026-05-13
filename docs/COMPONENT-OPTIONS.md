@@ -4094,7 +4094,7 @@ ASCII Fader / Slider
 - **Template:** `chirpui/ascii_fader.html`
 - **Macro:** `ascii_fader`
 - **Category:** `ascii`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`

@@ -306,6 +306,7 @@ def test_audit_visible_public_surface_dispositions_are_intentional() -> None:
         "ascii-checkbox",
         "ascii-divider",
         "ascii-empty",
+        "ascii-fader",
         "ascii-knob",
         "ascii-radio-group",
         "ascii-switch",
@@ -319,7 +320,6 @@ def test_audit_visible_public_surface_dispositions_are_intentional() -> None:
         assert entry["authoring"] == "available"
 
     still_experimental = {
-        "ascii-fader",
         "ascii-progress",
         "ascii-table",
     }

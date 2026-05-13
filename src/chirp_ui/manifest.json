@@ -1651,7 +1651,7 @@
       ],
       "lineno": 21,
       "macro": "ascii_fader",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -22403,10 +22403,10 @@
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 112,
+      "experimental": 111,
       "internal": 2,
       "legacy": 39,
-      "stable": 183
+      "stable": 184
     },
     "component_requirements": {
       "alpine": 23,

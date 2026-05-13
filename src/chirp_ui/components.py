@@ -1319,7 +1319,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         trim_emits=("chirpui-ascii-fader--default",),
         category="ascii",
-        maturity="experimental",
+        maturity="stable",
     ),
     "ascii-vu": ComponentDescriptor(
         block="ascii-vu",

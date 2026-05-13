@@ -18,6 +18,7 @@ STATIC_DISPLAY_CANDIDATES = {
 
 INTERACTIVE_CONTROL_CANDIDATES = {
     "ascii-checkbox",
+    "ascii-fader",
     "ascii-knob",
     "ascii-radio-group",
     "ascii-switch",
@@ -65,7 +66,6 @@ DEFERRED_TRACKS = {
 
 INTERACTIVE_DEFERRAL_REASONS = {
     "ascii-breaker-panel": "grouped panel semantics",
-    "ascii-fader": "visible fill/readout sync",
     "ascii-tile-btn": "momentary-vs-toggle API decision",
 }
 
