@@ -305,6 +305,29 @@ def test_theme_package_contains_required_resources() -> None:
     assert (package_root / "assets" / "favicon.svg").is_file()
 
 
+def test_chirp_theme_literal_template_asset_urls_exist() -> None:
+    """Literal asset_url references in packaged templates should resolve to assets."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    assets_root = package_root / "assets"
+    asset_pattern = re.compile(r"""asset_url\(\s*['"]([^'"]+)['"]\s*\)""")
+    referenced: set[str] = set()
+
+    for rel_path, resource in _iter_resource_files(templates_root):
+        if not rel_path.endswith(".html"):
+            continue
+        text = resource.read_text(encoding="utf-8")
+        referenced.update(asset_pattern.findall(text))
+
+    missing = sorted(path for path in referenced if not (assets_root / path).is_file())
+
+    assert "css/style.css" in referenced
+    assert "js/enhancements/action-bar.js" in referenced
+    assert not missing, "Literal template asset_url references missing assets: " + ", ".join(
+        missing
+    )
+
+
 def test_chirp_theme_templates_do_not_use_theme_adapter_macros() -> None:
     """Theme templates should import Chirp UI macros directly instead of theme adapters."""
     package_root = resources.files(THEME_PACKAGE)
