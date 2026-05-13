@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, cluster, block %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/nav_tree.html" import nav_tree %}
+{% from "chirpui/primary_nav.html" import primary_nav %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+
+<style>
+  .appchrome-gauntlet {
+    display: grid;
+    gap: var(--chirpui-spacing-lg);
+  }
+
+  .appchrome-gauntlet__family {
+    min-width: 0;
+  }
+
+  .appchrome-gauntlet__body {
+    display: grid;
+    grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+    gap: var(--chirpui-spacing);
+    align-items: start;
+  }
+
+  .appchrome-gauntlet__main {
+    min-width: 0;
+  }
+
+  @media (max-width: 640px) {
+    .appchrome-gauntlet__body {
+      display: block;
+    }
+
+    .appchrome-gauntlet__rail {
+      margin-bottom: var(--chirpui-spacing);
+    }
+  }
+</style>
+
+{% def family_chrome(id, title, primary_action, tabs, nav_items, current_path, search_label) %}
+<section class="appchrome-gauntlet__family" data-testid="chrome-family-{{ id }}">
+{% call block() %}
+{% call stack(gap="sm") %}
+{% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label=title ~ " global chrome") %}
+  <div class="chirpui-action-strip__primary">
+    {{ breadcrumbs([
+      {"label": "Apps", "href": "/application-chrome-gauntlet"},
+      {"label": title}
+    ], overflow="collapse", max_items=3) }}
+  </div>
+  <div class="chirpui-action-strip__controls">
+    {{ primary_nav([
+      {"label": "Home", "href": current_path, "match": "exact"},
+      {"label": "Alerts", "href": current_path ~ "/alerts", "badge_loading": true},
+      {"label": "Queue", "href": current_path ~ "/queue", "badge_expected": true}
+    ], current_path=current_path) }}
+    {{ command_palette_trigger(target=id ~ "-palette", label=search_label, placeholder="Search or jump", shortcut="/", icon="search", density="sm") }}
+  </div>
+  <div class="chirpui-action-strip__actions">
+    {{ btn(primary_action, variant="primary", size="sm") }}
+  </div>
+{% end %}
+{{ command_palette(id=id ~ "-palette", search_url="/search", placeholder=search_label ~ "...") }}
+
+<div class="appchrome-gauntlet__body">
+  <aside class="appchrome-gauntlet__rail">
+    {{ nav_tree(nav_items, branch_mode="linked", cls="appchrome-gauntlet-rail") }}
+  </aside>
+  <div class="appchrome-gauntlet__main">
+    {% call stack(gap="sm") %}
+    <h2>{{ title }}</h2>
+    {{ route_tabs(tabs=tabs, current_path=current_path) }}
+    {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label=title ~ " page tools") %}
+      {{ btn("Filter", variant="ghost", size="sm") }}
+      {{ btn("Sort", variant="ghost", size="sm") }}
+      {{ btn("Export", variant="ghost", size="sm") }}
+    {% end %}
+    {% end %}
+  </div>
+</div>
+{% end %}
+{% end %}
+</section>
+{% end %}
+
+{% call container(max_width="76rem") %}
+{% call stack(gap="lg") %}
+<h1>Application Chrome Gauntlet</h1>
+<div class="appchrome-gauntlet">
+{{ family_chrome(
+  "cloud",
+  "Cloud Control Plane",
+  "Deploy",
+  [
+    {"href": "/application-chrome-gauntlet/cloud", "label": "Overview", "badge": 7, "badge_label": "7 deployment updates"},
+    {"href": "/application-chrome-gauntlet/cloud/runs", "label": "Runs", "badge_loading": true},
+    {"href": "/application-chrome-gauntlet/cloud/resources", "label": "Resources With Long Label", "badge_expected": true}
+  ],
+  [
+    {"title": "Services", "href": "/application-chrome-gauntlet/cloud", "active": true},
+    {"title": "Regions", "href": "/application-chrome-gauntlet/cloud/regions", "children": [
+      {"title": "us-east", "href": "/application-chrome-gauntlet/cloud/regions/us-east"},
+      {"title": "eu-west", "href": "/application-chrome-gauntlet/cloud/regions/eu-west"}
+    ], "open": true}
+  ],
+  "/application-chrome-gauntlet/cloud",
+  "Search cloud"
+) }}
+
+{{ family_chrome(
+  "suite",
+  "Suite Work Hub",
+  "Create task",
+  [
+    {"href": "/application-chrome-gauntlet/suite", "label": "Inbox", "badge": 18, "badge_label": "18 unread work items"},
+    {"href": "/application-chrome-gauntlet/suite/projects", "label": "Projects"},
+    {"href": "/application-chrome-gauntlet/suite/automations", "label": "Automations With Long Label", "badge_expected": true}
+  ],
+  [
+    {"title": "Personal", "href": "/application-chrome-gauntlet/suite", "active": true},
+    {"title": "Teams", "href": "/application-chrome-gauntlet/suite/teams", "children": [
+      {"title": "Design Systems", "href": "/application-chrome-gauntlet/suite/teams/design"},
+      {"title": "Platform", "href": "/application-chrome-gauntlet/suite/teams/platform"}
+    ], "open": true}
+  ],
+  "/application-chrome-gauntlet/suite",
+  "Search work"
+) }}
+
+{{ family_chrome(
+  "knowledge",
+  "Knowledge Workbench",
+  "New note",
+  [
+    {"href": "/application-chrome-gauntlet/knowledge", "label": "Article", "match": "exact"},
+    {"href": "/application-chrome-gauntlet/knowledge/comments", "label": "Comments", "badge_loading": true},
+    {"href": "/application-chrome-gauntlet/knowledge/history", "label": "History With Long Label", "badge_expected": true}
+  ],
+  [
+    {"title": "Guide", "href": "/application-chrome-gauntlet/knowledge", "active": true},
+    {"title": "Library", "href": "/application-chrome-gauntlet/knowledge/library", "children": [
+      {"title": "Patterns", "href": "/application-chrome-gauntlet/knowledge/library/patterns"},
+      {"title": "Archive", "href": "/application-chrome-gauntlet/knowledge/library/archive"}
+    ], "open": true}
+  ],
+  "/application-chrome-gauntlet/knowledge",
+  "Search docs"
+) }}
+
+{{ family_chrome(
+  "business",
+  "Business Object Console",
+  "Add event",
+  [
+    {"href": "/application-chrome-gauntlet/business", "label": "Timeline", "badge": 5, "badge_label": "5 timeline events"},
+    {"href": "/application-chrome-gauntlet/business/invoices", "label": "Invoices", "badge_loading": true},
+    {"href": "/application-chrome-gauntlet/business/logs", "label": "Object Logs With Long Label", "badge_expected": true}
+  ],
+  [
+    {"title": "Accounts", "href": "/application-chrome-gauntlet/business", "active": true},
+    {"title": "Saved searches", "href": "/application-chrome-gauntlet/business/searches", "children": [
+      {"title": "High value", "href": "/application-chrome-gauntlet/business/searches/high-value"},
+      {"title": "Renewal risk", "href": "/application-chrome-gauntlet/business/searches/renewal-risk"}
+    ], "open": true}
+  ],
+  "/application-chrome-gauntlet/business",
+  "Search accounts"
+) }}
+</div>
+{% end %}
+{% end %}
+{% end %}

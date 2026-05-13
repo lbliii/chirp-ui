@@ -433,6 +433,13 @@ def create_app() -> App:
     async def rail_to_tray_page(request: Request):
         return Template("rail_to_tray_page.html", page_title="Rail To Drawer Chrome")
 
+    @app.route("/application-chrome-gauntlet")
+    async def application_chrome_gauntlet_page(request: Request):
+        return Template(
+            "application_chrome_gauntlet_page.html",
+            page_title="Application Chrome Gauntlet",
+        )
+
     @app.route("/page-b")
     async def page_b(request: Request):
         return Template("page_b.html", page_title="Page B")
