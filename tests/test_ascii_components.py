@@ -233,6 +233,16 @@ class TestAsciiCheckbox:
         ).render()
         assert "checked" in html
 
+    def test_native_labelled_input_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_checkbox.html" import ascii_checkbox %}'
+            '{{ ascii_checkbox("terms", label="Accept terms") }}'
+        ).render()
+        assert '<label class="chirpui-ascii-checkbox">' in html
+        assert 'type="checkbox" name="terms" id="terms"' in html
+        assert 'aria-hidden="true"' in html
+        assert '<span class="chirpui-ascii-checkbox__label">Accept terms</span>' in html
+
     def test_disabled(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_checkbox.html" import ascii_checkbox %}'
@@ -1179,6 +1189,14 @@ class TestAsciiToggle:
             '{{ ascii_toggle("x", checked=true) }}'
         ).render()
         assert "checked" in html
+        assert 'aria-checked="true"' in html
+
+    def test_switch_state_defaults_false(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_toggle.html" import ascii_toggle %}{{ ascii_toggle("x") }}'
+        ).render()
+        assert 'role="switch"' in html
+        assert 'aria-checked="false"' in html
 
     def test_variant(self, env: Environment) -> None:
         html = env.from_string(
@@ -1209,8 +1227,17 @@ class TestAsciiToggle:
         ).render()
         assert "chirpui-ascii-switch" in html
         assert 'role="switch"' in html
+        assert 'aria-checked="false"' in html
         assert "chirpui-ascii-switch--danger" in html
         assert "Power" in html
+
+    def test_switch_checked_state(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_toggle.html" import ascii_switch %}'
+            '{{ ascii_switch("pwr", label="Power", checked=true) }}'
+        ).render()
+        assert "checked" in html
+        assert 'aria-checked="true"' in html
 
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
