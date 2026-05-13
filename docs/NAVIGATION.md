@@ -160,6 +160,11 @@ For GitHub-like object pages, compose existing primitives in this order:
 The component showcase includes two copyable dense object chrome recipes:
 a repository/project page and an admin/settings page. Both keep global
 navigation, object context, local routes, and page tools as separate layers.
+Browser proof covers the same composition at desktop, tablet, and phone widths:
+route tabs scroll instead of wrapping into a tall block, breadcrumb overflow
+remains navigable, command triggers open named palettes and focus search,
+overflow actions remain reachable, and page-level horizontal overflow stays
+absent outside intended scroll strips.
 It also includes a cloud/control-plane recipe for scope switching, service
 menus, favorites quickbars, resource search, deployment tabs, and page-local
 controls. The suite work hub recipe extends the same layer model to product

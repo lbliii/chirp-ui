@@ -79,7 +79,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-skeleton-equivalent-roadmap.md](plans/PLAN-skeleton-equivalent-roadmap.md) — Skeleton-inspired roadmap for Chirp-native appearance, themes, docs, LLM, and anatomy contracts
 - [PLAN-primitive-vocabulary-hardening.md](plans/PLAN-primitive-vocabulary-hardening.md) — Legacy helper stabilization backlog
 - [PLAN-navigation-contract-application.md](plans/PLAN-navigation-contract-application.md) — Apply dense navigation guidance to ChirpUI
-- [PLAN-dense-object-chrome-next.md](plans/PLAN-dense-object-chrome-next.md) — Residual dense object chrome browser proof and composite-decision backlog
+- [PLAN-dense-object-chrome-next.md](plans/PLAN-dense-object-chrome-next.md) — Residual dense object chrome composite-decision backlog after browser proof
 - [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary
 - [PLAN-layout-widget-brainstorm.md](plans/PLAN-layout-widget-brainstorm.md) — Layout widget ideas
 - [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Residual chirp-theme fixture parity backlog

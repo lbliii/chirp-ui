@@ -103,7 +103,8 @@ whole inventory on every pass.
   be new feature work or regression fixes, not a standing pre-1.0 deferral.
 - Classify the remaining marketing patterns: feature sections, lifecycle
   showcase, comparison/pricing surfaces, and pattern assets.
-- Review dense navigation composites only after object-page browser proof lands.
+- Keep dense navigation composites recipe-level after object-page browser proof;
+  revisit only with repeated consuming app usage.
 - Keep legacy primitive decisions in `PLAN-primitive-vocabulary-hardening.md`.
 - Keep first-party legacy-helper cleanup under
   `PLAN-legacy-helper-cleanup-pre-1.0.md`; current static showcase usage is

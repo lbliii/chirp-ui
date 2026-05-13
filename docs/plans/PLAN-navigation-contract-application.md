@@ -11,15 +11,17 @@ Progress:
   composed from existing primitives.
 - Phase 3 accepted: `breadcrumbs(..., overflow="collapse", max_items=4)` ships
   opt-in middle-crumb overflow for deep path trails.
+- Browser proof accepted for dense object navigation recipes and breadcrumb
+  overflow behavior across desktop, tablet, and phone widths.
 - Phases 4-6 remain not-now until a consuming app proves the need.
 
 ## Next Slice
 
-Keep this plan in residual mode. The next accepted work is browser proof for
-dense object navigation recipes and breadcrumb overflow behavior, not a new
-composite navigation macro. Reopen Phases 4-6 only when a consuming app shows
-repeated counter, command-launcher, or object-header pressure that cannot be
-served by existing primitives.
+Keep this plan in residual mode. Dense object navigation now has browser proof;
+the next work is evidence from consuming app usage, not a new composite
+navigation macro. Reopen Phases 4-6 only when a consuming app shows repeated
+counter, command-launcher, or object-header pressure that cannot be served by
+existing primitives.
 
 ## Goal
 
