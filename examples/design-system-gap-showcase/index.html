@@ -294,6 +294,14 @@
         min-height: 100%;
       }
 
+      .audit-ascii-modal-preview dialog.chirpui-ascii-modal {
+        position: static;
+        display: block;
+        inline-size: 100%;
+        max-inline-size: none;
+        margin: 0;
+      }
+
       .audit-ascii-panel {
         display: grid;
         gap: var(--chirpui-space-page-gap);
@@ -1035,6 +1043,56 @@
                   </div>
                 </div>
                 <div class="chirpui-ascii-table__border chirpui-ascii-table__border--bottom" aria-hidden="true"></div>
+              </div>
+              <div class="chirpui-stack chirpui-stack--md">
+                <div class="chirpui-ascii-card chirpui-ascii-card--rounded">
+                  <div class="chirpui-ascii-card__top" aria-hidden="true"><span class="chirpui-ascii-card__corner">╭</span><span class="chirpui-ascii-card__line">── Release </span><span class="chirpui-ascii-card__corner">╮</span></div>
+                  <div class="chirpui-ascii-card__divider" aria-hidden="true"><span class="chirpui-ascii-card__corner">├</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">┤</span></div>
+                  <div class="chirpui-ascii-card__body"><span class="chirpui-ascii-card__side" aria-hidden="true">│</span><div class="chirpui-ascii-card__content">ASCII composite closure is ready for steward review.</div><span class="chirpui-ascii-card__side" aria-hidden="true">│</span></div>
+                  <div class="chirpui-ascii-card__bottom" aria-hidden="true"><span class="chirpui-ascii-card__corner">╰</span><span class="chirpui-ascii-card__line"></span><span class="chirpui-ascii-card__corner">╯</span></div>
+                </div>
+                <nav class="chirpui-ascii-tabs chirpui-ascii-tabs--accent" aria-label="ASCII audit views">
+                  <a class="chirpui-ascii-tab chirpui-ascii-tab--active" aria-current="page" href="#ascii-tui"><span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span><span class="chirpui-ascii-tab__label">Status</span><span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span></a>
+                  <a class="chirpui-ascii-tab" href="#proof-patterns"><span class="chirpui-ascii-tab__label">Proof</span></a>
+                </nav>
+                <div class="audit-ascii-modal-preview">
+                  <dialog class="chirpui-ascii-modal chirpui-ascii-modal--double" open aria-labelledby="audit-ascii-modal-title" closedby="any">
+                    <header class="chirpui-ascii-modal__header">
+                      <span class="chirpui-ascii-modal__title" id="audit-ascii-modal-title">ASCII Settings</span>
+                      <form method="dialog"><button class="chirpui-ascii-modal__close" aria-label="Close">[<span aria-hidden="true">×</span>]</button></form>
+                    </header>
+                    <div class="chirpui-ascii-modal__body">Native dialog frame with terminal styling.</div>
+                  </dialog>
+                </div>
+                <div class="chirpui-ascii-tile-grid" style="--_tile-cols: 2">
+                  <button class="chirpui-ascii-tile-btn chirpui-ascii-tile-btn--danger" type="button"><span class="chirpui-ascii-tile-btn__face"><span class="chirpui-ascii-tile-btn__glyph">■</span></span><span class="chirpui-ascii-tile-btn__label">Stop</span></button>
+                  <label class="chirpui-ascii-tile-btn chirpui-ascii-tile-btn--success chirpui-ascii-tile-btn--lit"><input class="chirpui-ascii-tile-btn__input chirpui-visually-hidden" type="checkbox" name="audit-tile-power" checked><span class="chirpui-ascii-tile-btn__face"><span class="chirpui-ascii-tile-btn__glyph">◆</span></span><span class="chirpui-ascii-tile-btn__label">Power</span></label>
+                </div>
+                <div class="chirpui-ascii-breaker-panel chirpui-ascii-breaker-panel--sm">
+                  <div class="chirpui-ascii-border chirpui-ascii-border--double">
+                    <div class="chirpui-ascii-breaker-panel__title">Services</div>
+                    <div class="chirpui-ascii-breaker-panel__divider" aria-hidden="true"></div>
+                    <div class="chirpui-ascii-breaker-panel__switches">
+                      <div class="chirpui-ascii-breaker-panel__breaker">
+                        <label class="chirpui-ascii-switch chirpui-ascii-switch--success chirpui-ascii-switch--sm">
+                          <input class="chirpui-ascii-switch__input chirpui-visually-hidden" type="checkbox" role="switch" aria-checked="true" checked>
+                          <span class="chirpui-ascii-switch__body" aria-hidden="true"><span class="chirpui-ascii-switch__cap chirpui-ascii-switch__cap--top"></span><span class="chirpui-ascii-switch__slot"><span class="chirpui-ascii-switch__lever"></span></span><span class="chirpui-ascii-switch__cap chirpui-ascii-switch__cap--bottom"></span></span>
+                          <span class="chirpui-ascii-switch__label">API</span>
+                        </label>
+                        <span class="chirpui-ascii-breaker-panel__status"><span class="chirpui-ascii-indicator chirpui-ascii-indicator--success chirpui-ascii-indicator--blink"><span class="chirpui-ascii-indicator__light">■</span></span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chirpui-ascii-error">
+                  <pre class="chirpui-ascii-error__art" aria-hidden="true">     ┌─────────┐
+     │  4 ◇ 4  │
+     └────┬────┘</pre>
+                  <span class="chirpui-ascii-error__code">404</span>
+                  <h2 class="chirpui-ascii-error__heading">Page not found</h2>
+                  <p class="chirpui-ascii-error__desc">The requested ASCII panel does not exist.</p>
+                  <div class="chirpui-ascii-error__action"></div>
+                </div>
               </div>
             </div>
           </div>
