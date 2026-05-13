@@ -30,7 +30,7 @@
 {% set variant_class = " chirpui-ascii-radio-group--" ~ variant if variant and variant != "default" else "" %}
 {% set layout_class = " chirpui-ascii-radio-group--horizontal" if layout == "horizontal" else "" %}
 <fieldset class="chirpui-ascii-radio-group{{ layout_class }}{{ variant_class }}{{ " " ~ cls if cls else "" }}"
-          role="radiogroup"{% if legend %} aria-label="{{ legend }}"{% end %}>
+          role="radiogroup"{% if legend or name %} aria-label="{{ legend or name }}"{% end %}>
     {% if legend %}<legend class="chirpui-ascii-radio-group__legend">{{ legend }}</legend>{% end %}
     {% slot %}
 </fieldset>

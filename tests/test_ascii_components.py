@@ -622,6 +622,7 @@ class TestAsciiKnob:
         assert "chirpui-ascii-knob" in html
         assert "<fieldset" in html
         assert 'role="radiogroup"' in html
+        assert 'aria-label="vol"' in html
         assert 'type="radio"' in html
 
     def test_selected(self, env: Environment) -> None:
@@ -639,6 +640,16 @@ class TestAsciiKnob:
         assert "<legend" in html
         assert 'aria-label="Mode"' in html
         assert "Mode" in html
+
+    def test_dial_is_decorative_and_options_are_readable(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_knob.html" import ascii_knob %}'
+            '{{ ascii_knob("mode", options=[{"value": "a", "label": "Auto"}], selected="a") }}'
+        ).render()
+        assert 'class="chirpui-ascii-knob__dial" aria-hidden="true"' in html
+        assert 'value="a"' in html
+        assert "checked" in html
+        assert '<span class="chirpui-ascii-knob__value">Auto</span>' in html
 
     def test_variant(self, env: Environment) -> None:
         html = env.from_string(
@@ -763,6 +774,14 @@ class TestAsciiRadio:
             '{% call ascii_radio_group(layout="horizontal") %}{% end %}'
         ).render()
         assert "chirpui-ascii-radio-group--horizontal" in html
+
+    def test_group_name_fallback_labels_radiogroup(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_radio.html" import ascii_radio_group %}'
+            '{% call ascii_radio_group(name="priority") %}{% end %}'
+        ).render()
+        assert 'role="radiogroup"' in html
+        assert 'aria-label="priority"' in html
 
     def test_cls(self, env: Environment) -> None:
         html = env.from_string(
