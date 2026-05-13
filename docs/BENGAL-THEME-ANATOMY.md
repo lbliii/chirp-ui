@@ -38,6 +38,31 @@ The Bengal theme may compose those contracts, but it should not fork component
 CSS or create a parallel design system. New app components should be added to
 the Chirp UI registry instead of being hidden in theme partials.
 
+## Application Chrome Parity
+
+Bengal docs chrome is a real application chrome consumer, but it is not the
+same contract as Chirp UI app shell chrome. Treat it as packaged theme chrome
+that proves token and behavior parity without creating new app-level APIs.
+
+Parity expectations:
+
+- header identity, docs rail, TOC rail, search trigger, mobile nav, and theme
+  controls stay separate layers,
+- persistent docs navigation uses Chirp UI sidebar/nav primitives where
+  practical instead of private theme navigation semantics,
+- mobile navigation uses the packaged dialog fallback and keeps search reachable,
+- search modal behavior remains Bengal-owned while matching the command-surface
+  rhythm expected from Chirp UI chrome,
+- TOC and docs rail do not starve article content at tablet widths,
+- spacing, borders, elevation, color, focus, and typography read from
+  `--chirpui-*` tokens or documented transitional aliases,
+- repeated theme-only structure must be evaluated as a Chirp UI registry
+  candidate before it becomes a public app component.
+
+Proof for Bengal chrome changes should include package-data tests, source-doc
+parity checks, and browser proof when layout, focus, mobile nav, search, theme
+controls, or TOC behavior changes.
+
 ## Theme Menu
 
 The theme menu is a native popover.

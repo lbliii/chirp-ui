@@ -28,6 +28,7 @@ LEGACY_BENGAL_PALETTE_THEME_PACKS = {
     "charcoal-bengal": "ember",
     "blue-bengal": "atlas",
 }
+BENGAL_ANATOMY_DOC = REPO_ROOT / "docs" / "BENGAL-THEME-ANATOMY.md"
 
 if _WORKSPACE_BENGAL.exists():
     bengal_parent = _WORKSPACE_BENGAL.parent
@@ -351,6 +352,25 @@ def test_chirp_theme_templates_do_not_use_theme_adapter_macros() -> None:
     assert "display: grid;" in css
     assert "grid-template-columns:" in css
     assert "chirp-theme-docs-layout--with-toc" in css
+
+
+def test_bengal_theme_anatomy_records_application_chrome_parity() -> None:
+    """Bengal docs chrome should stay a theme consumer, not a hidden Chirp UI API."""
+    text = BENGAL_ANATOMY_DOC.read_text(encoding="utf-8")
+
+    assert "## Application Chrome Parity" in text
+    assert "Bengal docs chrome is a real application chrome consumer" in text
+    assert "same contract as Chirp UI app shell chrome" in text
+    for expectation in [
+        "header identity, docs rail, TOC rail, search trigger, mobile nav, and theme",
+        "persistent docs navigation uses Chirp UI sidebar/nav primitives",
+        "mobile navigation uses the packaged dialog fallback",
+        "search modal behavior remains Bengal-owned",
+        "TOC and docs rail do not starve article content",
+        "`--chirpui-*` tokens",
+        "evaluated as a Chirp UI registry",
+    ]:
+        assert expectation in text
 
 
 def test_chirp_theme_tokens_use_chirpui_vocabulary() -> None:
