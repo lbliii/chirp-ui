@@ -106,8 +106,13 @@ def test_visual_audit_gap_families_render(page):
         "[data-audit-section='interaction-chrome'] .chirpui-drawer__header": 1,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-badge": 1,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-border": 1,
+        "[data-audit-section='ascii-tui'] .chirpui-ascii-checkbox": 2,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-divider": 1,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-empty": 1,
+        "[data-audit-section='ascii-tui'] .chirpui-ascii-fader": 1,
+        "[data-audit-section='ascii-tui'] .chirpui-ascii-knob": 1,
+        "[data-audit-section='ascii-tui'] .chirpui-ascii-radio": 2,
+        "[data-audit-section='ascii-tui'] .chirpui-ascii-switch": 1,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-toggle": 2,
         "[data-audit-section='ascii-tui'] .chirpui-ascii-table__row": 3,
         "[data-audit-section='proof-patterns'] .chirpui-logo-cloud__item": 3,
@@ -117,6 +122,26 @@ def test_visual_audit_gap_families_render(page):
 
     for selector, count in expectations.items():
         assert page.locator(selector).count() == count, selector
+
+
+def test_visual_audit_ascii_native_controls_change_checked_state(page):
+    open_visual_audit(page, 768, 1024)
+
+    section = page.locator("[data-audit-section='ascii-tui']")
+
+    watch = section.locator(".chirpui-ascii-checkbox").nth(1)
+    watch.click()
+    assert section.locator("#audit-watch").is_checked()
+
+    switch = section.locator(".chirpui-ascii-switch")
+    switch.click()
+    assert not section.locator(".chirpui-ascii-switch__input").is_checked()
+
+    section.locator(".chirpui-ascii-radio").nth(1).click()
+    assert section.locator("input[name='audit-channel'][value='stable']").is_checked()
+
+    section.locator(".chirpui-ascii-knob__position").nth(2).click()
+    assert section.locator("input[name='audit-traffic'][value='100']").is_checked()
 
 
 def test_visual_audit_interaction_previews_use_scoped_component_roots(page):

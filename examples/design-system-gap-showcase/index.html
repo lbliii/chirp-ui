@@ -837,6 +837,80 @@
                 </span>
                 <span class="chirpui-ascii-toggle__label">Checks passing</span>
               </label>
+              <label class="chirpui-ascii-switch chirpui-ascii-switch--accent">
+                <input class="chirpui-ascii-switch__input chirpui-visually-hidden" type="checkbox" role="switch" aria-checked="true" checked>
+                <span class="chirpui-ascii-switch__body" aria-hidden="true">
+                  <span class="chirpui-ascii-switch__cap chirpui-ascii-switch__cap--top"></span>
+                  <span class="chirpui-ascii-switch__slot"><span class="chirpui-ascii-switch__lever"></span></span>
+                  <span class="chirpui-ascii-switch__cap chirpui-ascii-switch__cap--bottom"></span>
+                </span>
+                <span class="chirpui-ascii-switch__label">Deploy gate</span>
+              </label>
+              <fieldset class="chirpui-ascii-checkbox-group">
+                <legend class="chirpui-ascii-checkbox-group__legend">Checklist</legend>
+                <label class="chirpui-ascii-checkbox chirpui-ascii-checkbox--success">
+                  <input class="chirpui-ascii-checkbox__input chirpui-visually-hidden" type="checkbox" name="audit-ready" id="audit-ready" checked>
+                  <span class="chirpui-ascii-checkbox__box" aria-hidden="true"></span>
+                  <span class="chirpui-ascii-checkbox__label">Artifacts rebuilt</span>
+                </label>
+                <label class="chirpui-ascii-checkbox">
+                  <input class="chirpui-ascii-checkbox__input chirpui-visually-hidden" type="checkbox" name="audit-watch" id="audit-watch">
+                  <span class="chirpui-ascii-checkbox__box" aria-hidden="true"></span>
+                  <span class="chirpui-ascii-checkbox__label">Watch rollout</span>
+                </label>
+              </fieldset>
+              <fieldset class="chirpui-ascii-radio-group chirpui-ascii-radio-group--horizontal" role="radiogroup" aria-label="Release channel">
+                <legend class="chirpui-ascii-radio-group__legend">Channel</legend>
+                <label class="chirpui-ascii-radio">
+                  <input class="chirpui-ascii-radio__input chirpui-visually-hidden" type="radio" name="audit-channel" value="canary" checked>
+                  <span class="chirpui-ascii-radio__dot" aria-hidden="true"></span>
+                  <span class="chirpui-ascii-radio__label">Canary</span>
+                </label>
+                <label class="chirpui-ascii-radio">
+                  <input class="chirpui-ascii-radio__input chirpui-visually-hidden" type="radio" name="audit-channel" value="stable">
+                  <span class="chirpui-ascii-radio__dot" aria-hidden="true"></span>
+                  <span class="chirpui-ascii-radio__label">Stable</span>
+                </label>
+              </fieldset>
+              <fieldset class="chirpui-ascii-knob chirpui-ascii-knob--accent" role="radiogroup" aria-label="Traffic split">
+                <legend class="chirpui-ascii-knob__legend">Traffic</legend>
+                <div class="chirpui-ascii-knob__dial" aria-hidden="true">
+                  <span class="chirpui-ascii-knob__frame">╭───╮</span>
+                  <span class="chirpui-ascii-knob__frame">│ ◉ │</span>
+                  <span class="chirpui-ascii-knob__frame">╰───╯</span>
+                </div>
+                <div class="chirpui-ascii-knob__positions">
+                  <label class="chirpui-ascii-knob__position">
+                    <input class="chirpui-ascii-knob__input chirpui-visually-hidden" type="radio" name="audit-traffic" value="10">
+                    <span class="chirpui-ascii-knob__notch"><span class="chirpui-ascii-knob__tick" aria-hidden="true">│</span><span class="chirpui-ascii-knob__value">10%</span></span>
+                  </label>
+                  <label class="chirpui-ascii-knob__position">
+                    <input class="chirpui-ascii-knob__input chirpui-visually-hidden" type="radio" name="audit-traffic" value="50" checked>
+                    <span class="chirpui-ascii-knob__notch"><span class="chirpui-ascii-knob__tick" aria-hidden="true">│</span><span class="chirpui-ascii-knob__value">50%</span></span>
+                  </label>
+                  <label class="chirpui-ascii-knob__position">
+                    <input class="chirpui-ascii-knob__input chirpui-visually-hidden" type="radio" name="audit-traffic" value="100">
+                    <span class="chirpui-ascii-knob__notch"><span class="chirpui-ascii-knob__tick" aria-hidden="true">│</span><span class="chirpui-ascii-knob__value">100%</span></span>
+                  </label>
+                </div>
+              </fieldset>
+              <div class="chirpui-ascii-fader chirpui-ascii-fader--accent">
+                <div class="chirpui-ascii-fader__track" aria-hidden="true">
+                  <span class="chirpui-ascii-fader__cap">┌─┐</span>
+                  <span class="chirpui-ascii-fader__segment">│░│</span>
+                  <span class="chirpui-ascii-fader__segment">│░│</span>
+                  <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                  <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                  <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                  <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                  <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                  <span class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled">│█│</span>
+                  <span class="chirpui-ascii-fader__cap">└─┘</span>
+                </div>
+                <input class="chirpui-ascii-fader__input chirpui-visually-hidden" type="range" name="audit-traffic-fader" value="75" min="0" max="100" step="1" aria-label="Traffic fader">
+                <span class="chirpui-ascii-fader__label">Traffic</span>
+                <span class="chirpui-ascii-fader__value">75</span>
+              </div>
               <div class="chirpui-ascii-progress chirpui-ascii-progress--success" aria-label="Rollout progress">
                 <div class="chirpui-ascii-progress__label">Rollout</div>
                 <div class="chirpui-ascii-progress__track">
