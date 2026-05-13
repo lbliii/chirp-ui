@@ -146,6 +146,20 @@ component genuinely lacks a token hook, add a narrow rule in
 `@layer app.overrides` and treat that rule as evidence for a future Chirp UI
 token.
 
+## Override Escalation Ladder
+
+Use this order when a brand or product style does not look right yet:
+
+| Step | Use | Stop when |
+| --- | --- | --- |
+| 1. Public token | A listed `--chirpui-*` token controls the job. | The visual audit profile shows the intended surface, state, or density. |
+| 2. Semantic alias | Several components need the same role-specific value. | A semantic `--chirpui-*` alias can describe the job without naming one component. |
+| 3. App override | One app has a deliberate local exception. | The rule lives in `@layer app.overrides` and targets the smallest component surface. |
+| 4. Token proposal | The same exception repeats across apps or examples. | Open a Chirp UI token proposal with the override rule as evidence. |
+
+Do not skip directly to component selectors for brand color, radius, spacing,
+type, focus, or state color. Those are token jobs unless proven otherwise.
+
 ## Catalog Rules
 
 Curated packs are intentionally constrained:

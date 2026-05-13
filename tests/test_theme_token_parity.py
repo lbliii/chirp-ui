@@ -49,3 +49,18 @@ def test_visual_audit_stays_in_public_token_namespace() -> None:
 
     assert "--chirp-theme-" not in text
     assert "--chirp_theme-" not in text
+
+
+def test_app_theme_docs_define_override_escalation_ladder() -> None:
+    text = APP_THEME.read_text(encoding="utf-8")
+
+    for required in [
+        "## Override Escalation Ladder",
+        "Public token",
+        "Semantic alias",
+        "App override",
+        "Token proposal",
+        "@layer app.overrides",
+        "Do not skip directly to component selectors",
+    ]:
+        assert required in text
