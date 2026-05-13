@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, cluster %}
+{% from "chirpui/ascii_checkbox.html" import ascii_checkbox, ascii_checkbox_group %}
+{% from "chirpui/ascii_toggle.html" import ascii_toggle, ascii_switch %}
+{% from "chirpui/ascii_radio.html" import ascii_radio, ascii_radio_group %}
+{% from "chirpui/ascii_fader.html" import ascii_fader %}
+{% from "chirpui/ascii_knob.html" import ascii_knob %}
+{% from "chirpui/ascii_breaker_panel.html" import breaker_panel, breaker %}
+{% from "chirpui/ascii_indicator.html" import indicator %}
+
+{% call container(max_width="42rem") %}
+{% call stack(gap="lg") %}
+<h1 data-testid="page-heading">ASCII Controls</h1>
+
+{% call cluster(gap="lg") %}
+  {{ ascii_checkbox("terms", label="Accept Terms") }}
+  {{ ascii_toggle("dark", label="Dark Mode") }}
+  {{ ascii_switch("disabled-switch", label="Disabled Switch", disabled=true) }}
+{% end %}
+
+{% call ascii_radio_group(legend="Priority", layout="horizontal") %}
+  {{ ascii_radio("priority", "low", label="Low", checked=true) }}
+  {{ ascii_radio("priority", "high", label="High") }}
+{% end %}
+
+{{ ascii_knob("mode", options=["Low", "Medium", "High"], selected="Medium", label="Mode") }}
+
+{% call cluster(gap="lg") %}
+  {{ ascii_fader("volume", value=40, label="Volume") }}
+  {% call breaker_panel(title="Services", master="main") %}
+    {{ breaker("api", label="API", checked=true) }}
+    {{ breaker("worker", label="Worker") }}
+  {% end %}
+  {{ indicator("RUN", blink=true, cls="motion-probe") }}
+{% end %}
+{% end %}
+{% end %}
+{% end %}
