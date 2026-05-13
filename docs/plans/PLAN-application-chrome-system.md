@@ -210,6 +210,25 @@ Collateral:
 Not-now spillover:
 ```
 
+Current evidence log:
+
+| Evidence | Counts As Real Consumer? | Composite Signal |
+|---|---:|---|
+| Dense object chrome showcase recipes | No | Good documentation evidence for layered composition; not enough for `object_header`. |
+| Rail-to-drawer showcase recipe and browser fixture | No | Good responsive proof for existing primitives; not enough for `application_chrome`. |
+| Application chrome gauntlet families | No | Good browser stress evidence across product shapes; not enough for a stable shell API. |
+| Bengal docs chrome | Partial | Real packaged-theme consumer for token/layout parity, but not the same contract as Chirp app shell chrome. |
+
+Open consumer evidence required before composite work:
+
+- one filesystem-routed Chirp app using persistent shell plus route-backed
+  object/workspace tabs,
+- one second app or packaged integration repeating the same missing shape,
+- notes showing which existing primitives were tried and where boilerplate or
+  contract drift remained,
+- browser proof that the repeated shape fails recipe-level composition before
+  a macro is proposed.
+
 ## Release Readiness Ledger
 
 Every application chrome slice should close with a short ledger in the PR

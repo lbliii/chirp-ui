@@ -56,3 +56,23 @@ def test_application_chrome_plan_has_release_readiness_ledger() -> None:
         "remaining browser/environment gap",
     ]:
         assert proof in text
+
+
+def test_application_chrome_plan_distinguishes_recipe_proof_from_consumers() -> None:
+    text = PLAN.read_text(encoding="utf-8")
+
+    assert "Current evidence log:" in text
+    for evidence in [
+        "Dense object chrome showcase recipes",
+        "Rail-to-drawer showcase recipe and browser fixture",
+        "Application chrome gauntlet families",
+        "Bengal docs chrome",
+    ]:
+        assert evidence in text
+
+    assert "Counts As Real Consumer?" in text
+    assert "not enough for `application_chrome`" in text
+    assert "not enough for a stable shell API" in text
+    assert "Open consumer evidence required before composite work" in text
+    assert "one filesystem-routed Chirp app" in text
+    assert "one second app or packaged integration" in text
