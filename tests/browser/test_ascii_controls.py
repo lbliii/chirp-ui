@@ -3,6 +3,8 @@
 import pytest
 from playwright.async_api import expect
 
+from tests.browser.conftest import wait_for_alpine
+
 pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
 
@@ -40,15 +42,25 @@ async def test_ascii_radio_and_knob_groups_keep_native_selection(page, base_url)
 
 async def test_ascii_fader_keyboard_updates_native_range_value(page, base_url):
     await page.goto(base_url + "/ascii-controls")
+    await wait_for_alpine(page)
 
     slider = page.get_by_role("slider", name="Volume")
+    value = page.locator(".chirpui-ascii-fader__value")
+    filled = page.locator(".chirpui-ascii-fader__segment--filled")
+
     await expect(slider).to_have_value("40")
+    await expect(value).to_have_text("40")
+    assert await filled.count() == 3
 
     await slider.press("End")
     await expect(slider).to_have_value("100")
+    await expect(value).to_have_text("100")
+    assert await filled.count() == 8
 
     await slider.press("Home")
     await expect(slider).to_have_value("0")
+    await expect(value).to_have_text("0")
+    assert await filled.count() == 0
 
 
 async def test_ascii_reduced_motion_removes_indicator_animation(page, base_url):

@@ -4097,6 +4097,7 @@ ASCII Fader / Slider
 - **Maturity:** `experimental`
 - **Role:** `component`
 - **Authoring:** `available`
+- **Requires:** `alpine`
 - **Variants:** `(default)`, `accent`, `danger`, `default`, `success`, `warning`
 
 | Param | Required | Default |

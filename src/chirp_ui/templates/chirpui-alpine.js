@@ -269,6 +269,41 @@
         };
     });
 
+    register("chirpuiFader", function (config) {
+        config = config || {};
+        return {
+            value: 0,
+            steps: 8,
+            init: function () {
+                this.steps = Math.max(parseInteger(config.steps, 8), 1);
+                var input = this.$el.querySelector(".chirpui-ascii-fader__input");
+                this.setValue(input ? input.value : config.value);
+            },
+            setValue: function (rawValue) {
+                var parsed = Number.parseFloat(rawValue);
+                if (!Number.isFinite(parsed)) {
+                    parsed = Number.parseFloat(config.value);
+                }
+                if (!Number.isFinite(parsed)) {
+                    parsed = 0;
+                }
+                this.value = Math.min(100, Math.max(0, Math.round(parsed)));
+            },
+            level: function () {
+                return Math.min(
+                    this.steps,
+                    Math.max(0, Math.trunc((this.value / 100) * this.steps))
+                );
+            },
+            isFilled: function (index) {
+                return index <= this.level();
+            },
+            segmentGlyph: function (index) {
+                return this.isFilled(index) ? "█" : "░";
+            },
+        };
+    });
+
     register("chirpuiSseRetry", function () {
         return {
             retrying: false,

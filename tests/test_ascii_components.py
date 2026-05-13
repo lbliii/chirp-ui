@@ -454,6 +454,9 @@ class TestAsciiFader:
         assert 'min="0"' in html
         assert 'max="100"' in html
         assert 'aria-label="Volume"' in html
+        assert 'x-data="chirpuiFader({ value: 75, steps: 8 })"' in html
+        assert '@input="setValue($event.target.value)"' in html
+        assert 'x-text="value"' in html
 
     def test_value_rendering(self, env: Environment) -> None:
         html = env.from_string(
@@ -461,14 +464,27 @@ class TestAsciiFader:
             '{{ ascii_fader("vol", value=100) }}'
         ).render()
         # All 8 segments should be filled at 100%
-        assert html.count("chirpui-ascii-fader__segment--filled") == 8
+        assert (
+            html.count('class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled"')
+            == 8
+        )
 
     def test_value_zero(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/ascii_fader.html" import ascii_fader %}'
             '{{ ascii_fader("vol", value=0) }}'
         ).render()
-        assert "chirpui-ascii-fader__segment--filled" not in html
+        assert (
+            'class="chirpui-ascii-fader__segment chirpui-ascii-fader__segment--filled"' not in html
+        )
+
+    def test_segments_have_runtime_sync_bindings(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/ascii_fader.html" import ascii_fader %}'
+            '{{ ascii_fader("vol", value=50) }}'
+        ).render()
+        assert ":class=\"{ 'chirpui-ascii-fader__segment--filled': isFilled(8) }\"" in html
+        assert 'x-text="segmentGlyph(8)"' in html
 
     def test_value_bounds_align_input_and_display(self, env: Environment) -> None:
         html = env.from_string(

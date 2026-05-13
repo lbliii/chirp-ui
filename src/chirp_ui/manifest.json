@@ -1681,7 +1681,9 @@
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -22407,7 +22409,7 @@
       "stable": 183
     },
     "component_requirements": {
-      "alpine": 22,
+      "alpine": 23,
       "htmx": 24
     },
     "component_roles": {
