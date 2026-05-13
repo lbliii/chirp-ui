@@ -819,7 +819,7 @@
               <h2 class="audit-title">ASCII/TUI controls</h2>
               <p class="audit-copy">Terminal-native controls beside tabular operational data.</p>
             </div>
-            <span class="chirpui-ascii-badge chirpui-ascii-badge--accent"><span class="chirpui-ascii-badge__open">[</span><span class="chirpui-ascii-badge__text">live</span><span class="chirpui-ascii-badge__close">]</span></span>
+            <span class="chirpui-ascii-badge chirpui-ascii-badge--accent"><span class="chirpui-ascii-badge__open" aria-hidden="true">[</span><span class="chirpui-ascii-badge__text">live</span><span class="chirpui-ascii-badge__close" aria-hidden="true">]</span></span>
           </div>
           <div class="audit-frame__body audit-ascii-panel">
             <div class="chirpui-stack chirpui-stack--md">
@@ -843,6 +843,24 @@
                   <span class="chirpui-ascii-progress__filled">████████</span><span class="chirpui-ascii-progress__empty">░░</span>
                 </div>
                 <div class="chirpui-ascii-progress__value">80%</div>
+              </div>
+              <div class="chirpui-ascii-border chirpui-ascii-border--rounded">
+                <div class="chirpui-ascii-border__top" aria-hidden="true"><span class="chirpui-ascii-border__corner">╭</span><span class="chirpui-ascii-border__line"></span><span class="chirpui-ascii-border__corner">╮</span></div>
+                <div class="chirpui-ascii-border__mid">
+                  <span class="chirpui-ascii-border__side" aria-hidden="true">│</span>
+                  <div class="chirpui-ascii-border__content">Rollout window closes at 18:00 UTC.</div>
+                  <span class="chirpui-ascii-border__side" aria-hidden="true">│</span>
+                </div>
+                <div class="chirpui-ascii-border__bottom" aria-hidden="true"><span class="chirpui-ascii-border__corner">╰</span><span class="chirpui-ascii-border__line"></span><span class="chirpui-ascii-border__corner">╯</span></div>
+              </div>
+              <div class="chirpui-ascii-divider chirpui-ascii-divider--dots" role="separator" aria-label="Deployment section">
+                <span class="chirpui-ascii-divider__glyph" aria-hidden="true">deploy</span>
+              </div>
+              <div class="chirpui-ascii-empty chirpui-ascii-empty--muted">
+                <span class="chirpui-ascii-empty__glyph" aria-hidden="true">◇</span>
+                <p class="chirpui-ascii-empty__heading">No blocked checks</p>
+                <p class="chirpui-ascii-empty__desc">The current batch has no manual intervention queued.</p>
+                <div class="chirpui-ascii-empty__action"></div>
               </div>
             </div>
             <div class="audit-scroll">

@@ -6,6 +6,8 @@ from chirp_ui.manifest import build_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 ASCII_TESTS = ROOT / "tests" / "test_ascii_components.py"
+BROWSER_TESTS = ROOT / "tests" / "browser" / "test_visual_audit_showcase.py"
+SHOWCASE = ROOT / "examples" / "design-system-gap-showcase" / "index.html"
 STATIC_DISPLAY_CANDIDATES = {
     "ascii-badge",
     "ascii-border",
@@ -72,6 +74,16 @@ def test_ascii_static_display_candidates_have_render_evidence_before_promotion()
         css_class = f"chirpui-{name}"
         assert ASCII_PROMOTION_MATRIX[name] == "static-display"
         assert css_class in render_tests, name
+
+
+def test_ascii_static_display_candidates_have_visual_audit_evidence() -> None:
+    browser_tests = BROWSER_TESTS.read_text(encoding="utf-8")
+    showcase = SHOWCASE.read_text(encoding="utf-8")
+
+    for name in sorted(STATIC_DISPLAY_CANDIDATES):
+        css_class = f"chirpui-{name}"
+        assert css_class in browser_tests, name
+        assert css_class in showcase, name
 
 
 def test_ascii_non_static_display_candidates_stay_deferred() -> None:
