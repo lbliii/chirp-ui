@@ -911,6 +911,42 @@
                 <span class="chirpui-ascii-fader__label">Traffic</span>
                 <span class="chirpui-ascii-fader__value">75</span>
               </div>
+              <nav class="chirpui-ascii-stepper chirpui-ascii-stepper--success" role="navigation" aria-label="Deploy steps">
+                <ol class="chirpui-ascii-stepper__list">
+                  <li class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--complete">
+                    <span class="chirpui-ascii-stepper__marker" aria-hidden="true">✓</span>
+                    <span class="chirpui-ascii-stepper__label">Build</span>
+                  </li>
+                  <li class="chirpui-ascii-stepper__connector chirpui-ascii-stepper__connector--complete" aria-hidden="true"></li>
+                  <li class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--active" aria-current="step">
+                    <span class="chirpui-ascii-stepper__marker" aria-hidden="true">●</span>
+                    <span class="chirpui-ascii-stepper__label">Deploy</span>
+                  </li>
+                  <li class="chirpui-ascii-stepper__connector" aria-hidden="true"></li>
+                  <li class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--pending">
+                    <span class="chirpui-ascii-stepper__marker" aria-hidden="true">○</span>
+                    <span class="chirpui-ascii-stepper__label">Observe</span>
+                  </li>
+                </ol>
+              </nav>
+              <div class="chirpui-ascii-vu chirpui-ascii-vu--success" role="meter" aria-label="Traffic load" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80">
+                <span class="chirpui-ascii-vu__label">LOAD</span>
+                <span class="chirpui-ascii-vu__bracket" aria-hidden="true">[</span>
+                <span class="chirpui-ascii-vu__track" aria-hidden="true">
+                  <span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled"></span>
+                  <span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled"></span>
+                  <span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled"></span>
+                  <span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled"></span>
+                  <span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled"></span>
+                  <span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled"></span>
+                  <span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled"></span>
+                  <span class="chirpui-ascii-vu__cell chirpui-ascii-vu__cell--filled chirpui-ascii-vu__cell--peak"></span>
+                  <span class="chirpui-ascii-vu__cell"></span>
+                  <span class="chirpui-ascii-vu__cell"></span>
+                </span>
+                <span class="chirpui-ascii-vu__bracket" aria-hidden="true">]</span>
+                <span class="chirpui-ascii-vu__readout">80%</span>
+              </div>
               <div class="chirpui-ascii-progress chirpui-ascii-progress--success" aria-label="Rollout progress">
                 <div class="chirpui-ascii-progress__label">Rollout</div>
                 <div class="chirpui-ascii-progress__track">
