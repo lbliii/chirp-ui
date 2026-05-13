@@ -429,6 +429,10 @@ def create_app() -> App:
     async def dense_object_chrome_page(request: Request):
         return Template("dense_object_chrome_page.html", page_title="Dense Object Chrome")
 
+    @app.route("/rail-to-tray")
+    async def rail_to_tray_page(request: Request):
+        return Template("rail_to_tray_page.html", page_title="Rail To Drawer Chrome")
+
     @app.route("/page-b")
     async def page_b(request: Request):
         return Template("page_b.html", page_title="Page B")
