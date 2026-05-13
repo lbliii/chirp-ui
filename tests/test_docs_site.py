@@ -135,15 +135,16 @@ def test_install_doc_version_example_matches_project_metadata() -> None:
     assert "0.2.2" not in text
 
 
-def test_docs_index_uses_site_directives_for_cards() -> None:
+def test_docs_index_uses_chirpui_card_markup_for_cards() -> None:
     text = DOCS_INDEX.read_text(encoding="utf-8")
 
     assert "API Reference" not in text
-    assert ":link: ./components/" in text
-    assert '<div class="chirpui-grid' not in text
-    assert 'class="chirpui-card' not in text
-    assert ":::{cards}" in text
-    assert ":::{card} Component Reference" in text
+    assert 'href="./components/"' in text
+    assert '<div class="chirpui-grid' in text
+    assert 'class="chirpui-card' in text
+    assert "card-grid" not in text
+    assert ":::{cards}" not in text
+    assert ":::{card} Component Reference" not in text
 
 
 def test_ensure_workspace_bengal_accepts_workspace_checkout(monkeypatch, tmp_path: Path) -> None:
