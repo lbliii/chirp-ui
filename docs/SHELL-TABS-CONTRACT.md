@@ -92,6 +92,72 @@ Server routes should branch on `HX-Target`, not only `HX-Request`:
 | `page-root` | page chrome fragment for route-tab swaps |
 | `page-content-inner` or local target | local fragment only, with inherited shell selectors cleared |
 
+### Server response patterns
+
+Use small route-local helpers when a page family needs all three response
+shapes:
+
+```python
+def hx_target(request: Request, target: str) -> bool:
+    headers = getattr(request, "headers", {})
+    return bool(headers.get("HX-Request")) and headers.get("HX-Target") == target
+
+
+def include_shell_actions_oob(request: Request) -> bool:
+    return hx_target(request, "main")
+```
+
+Full shell response for normal navigation and boosted shell navigation:
+
+```python
+@app.route("/workspace")
+async def workspace_page(request: Request):
+    if hx_target(request, "page-root"):
+        return Response(workspace_page_root_fragment("/workspace"))
+
+    return Template(
+        "workspace_page.html",
+        current_path="/workspace",
+        shell_actions=workspace_shell_actions(),
+        include_shell_actions_oob=include_shell_actions_oob(request),
+    )
+```
+
+The template owns the OOB shell region only when the route handler asks for it:
+
+```html
+{% from "chirpui/shell_actions.html" import shell_actions_bar %}
+
+{% if include_shell_actions_oob %}
+<div id="chirp-shell-actions" hx-swap-oob="innerHTML">
+  {{ shell_actions_bar(shell_actions) }}
+</div>
+{% end %}
+```
+
+Page-root fragments should contain page chrome and content for the route-tab
+target, but not the persistent shell:
+
+```python
+def workspace_page_root_fragment(path: str) -> str:
+    return f"""
+<div id="route-tabs">...</div>
+<header>...</header>
+<div id="page-content-inner">...</div>
+"""
+```
+
+Local fragments should stay local and clear shell selector inheritance from the
+trigger:
+
+```html
+{{ btn("Filter",
+    hx_get="/workspace/filter-fragment",
+    hx_target="#page-content-inner",
+    hx_swap="innerHTML",
+    attrs_map={"hx-disinherit": "hx-select"}) }}
+```
+
 The first consumer-adoption proof lives in
 `tests/browser/test_consumer_workspace_chrome.py`,
 `tests/browser/test_consumer_admin_chrome.py`, and
