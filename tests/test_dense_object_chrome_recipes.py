@@ -10,7 +10,7 @@ RECIPE = (
     / "_dense_object_chrome.html"
 )
 NAV_DOC = ROOT / "docs" / "NAVIGATION.md"
-PLAN = ROOT / "docs" / "plans" / "PLAN-dense-object-chrome-next.md"
+PLAN = ROOT / "docs" / "plans" / "done" / "PLAN-dense-object-chrome-next.md"
 
 
 def test_dense_object_chrome_showcase_exports_two_recipe_shapes() -> None:

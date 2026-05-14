@@ -4,7 +4,7 @@ from pathlib import Path
 from chirp_ui.manifest import build_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
-PLAN = ROOT / "docs" / "plans" / "PLAN-ascii-maturity.md"
+PLAN = ROOT / "docs" / "plans" / "done" / "PLAN-ascii-maturity.md"
 PUBLIC_SURFACE = ROOT / "docs" / "PUBLIC-SURFACE-STABILIZATION.md"
 
 

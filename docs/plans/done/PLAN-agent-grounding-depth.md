@@ -1,6 +1,6 @@
 # Epic: Agent Grounding Depth — make the manifest the whole registry
 
-**Status**: residual backlog
+**Status**: shipped and archived
 **Created**: 2026-04-20
 **Target**: pre-1.0
 **Estimated Effort**: 30–48h (Sprint 0–6)
@@ -9,8 +9,10 @@
 
 > Current note: the manifest API, package data, generated docs, `find` CLI,
 > and plan triage largely shipped after this epic was drafted. Keep this file
-> for residual manifest-depth work only; use
-> [ROADMAP-pre-1.0.md](../ROADMAP-pre-1.0.md) for current sequencing.
+> for historical manifest-depth context only. Use
+> [ROADMAP-pre-1.0.md](../ROADMAP-pre-1.0.md) and
+> [PLAN-pre-1.0-productization-saga.md](../PLAN-pre-1.0-productization-saga.md)
+> for current sequencing.
 
 ---
 

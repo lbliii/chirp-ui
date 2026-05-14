@@ -14,6 +14,13 @@ def test_active_plans_are_mapped_to_roadmap_workstreams() -> None:
     assert not missing, "active plans missing roadmap workstream mapping: " + ", ".join(missing)
 
 
+def test_active_plan_count_stays_intentional() -> None:
+    """Planning cleanup should keep live plans bounded and force explicit review on growth."""
+    active_plans = sorted(path.name for path in PLANS.glob("PLAN-*.md"))
+
+    assert len(active_plans) <= 5, "active plan count exceeded cap: " + ", ".join(active_plans)
+
+
 def test_archived_plans_do_not_claim_active_or_draft_status() -> None:
     """Archived plans may mention history, but their status line must not be active/draft."""
     offenders: list[str] = []

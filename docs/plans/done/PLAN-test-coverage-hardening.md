@@ -1,6 +1,6 @@
 # Epic: Test Coverage Hardening — Close the 27% Gap
 
-**Status**: residual backlog
+**Status**: superseded and archived
 **Created**: 2026-04-10
 **Target**: 0.3.0
 **Estimated Effort**: 18–28h
@@ -15,6 +15,9 @@
 > `docs/VERIFICATION.md`: `poe ci` is the default gate, `poe test-cov` enforces
 > the configured 80% floor when coverage is claimed, and `poe ci-browser` is
 > required for browser-sensitive behavior.
+> Forward verification reliability work now lives in
+> [`PLAN-pre-1.0-productization-saga.md`](../PLAN-pre-1.0-productization-saga.md)
+> and `docs/VERIFICATION.md`.
 
 ---
 

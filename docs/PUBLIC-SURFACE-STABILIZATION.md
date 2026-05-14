@@ -76,7 +76,7 @@ missing before a component can change maturity or authoring status.
 | Track | Required proof | Collateral |
 | --- | --- | --- |
 | Motion/effects visual proof | Static showcase coverage plus reduced-motion or browser proof when animation affects interaction. | `examples/design-system-gap-showcase/index.html`, focused render tests, browser tests when computed motion/layout matters. |
-| ASCII maturity pass | ARIA, keyboard, disabled/state, reduced-motion, and render coverage appropriate to the ASCII control type. | `PLAN-ascii-maturity.md`, ASCII render tests, browser gauntlet for interactive composites. |
+| ASCII maturity pass | ARIA, keyboard, disabled/state, reduced-motion, and render coverage appropriate to the ASCII control type. | `docs/plans/done/PLAN-ascii-maturity.md`, ASCII render tests, browser gauntlet for interactive composites. |
 | Marketing pattern proof | Recipe or component examples that prove responsive marketing layout without adding utility vocabulary. | Product/site pattern docs, visual audit coverage, manifest/docs maturity agreement. |
 | Layout recipe proof | Existing primitives cannot express the layout cleanly, or the item remains recipe-only. | Dense/layout docs, showcase recipe, no preferred authoring unless promoted. |
 | Media recipe proof | Media-site pattern usage stays recipe-first until repeated app usage proves a macro. | `MEDIA-SITE-PATTERNS.md`, visual audit/media examples. |
@@ -105,7 +105,9 @@ whole inventory on every pass.
   showcase, comparison/pricing surfaces, and pattern assets.
 - Keep dense navigation composites recipe-level after object-page browser proof;
   revisit only with repeated consuming app usage.
-- Keep legacy primitive decisions in `PLAN-primitive-vocabulary-hardening.md`.
+- Keep legacy primitive decisions in
+  `docs/plans/done/PLAN-primitive-vocabulary-hardening.md` until they move
+  fully into this document.
 - Keep first-party legacy-helper cleanup under
   `PLAN-legacy-helper-cleanup-pre-1.0.md`; current static showcase usage is
   inventoried in `STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md`.

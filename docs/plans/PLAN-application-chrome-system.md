@@ -4,8 +4,8 @@ Status: active plan
 Date: 2026-05-13
 Depends on:
 
-- [PLAN-navigation-contract-application.md](PLAN-navigation-contract-application.md)
-- [PLAN-dense-object-chrome-next.md](PLAN-dense-object-chrome-next.md)
+- [PLAN-navigation-contract-application.md](done/PLAN-navigation-contract-application.md)
+- [PLAN-dense-object-chrome-next.md](done/PLAN-dense-object-chrome-next.md)
 - [../UI-LAYERS.md](../UI-LAYERS.md)
 - [../NAVIGATION.md](../NAVIGATION.md)
 - [../DENSE-NAVIGATION-RECIPES.md](../DENSE-NAVIGATION-RECIPES.md)

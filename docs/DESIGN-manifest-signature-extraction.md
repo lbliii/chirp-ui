@@ -1,6 +1,6 @@
 # DESIGN: Manifest Signature Extraction
 
-**Status**: Locked — Sprint 0 of `docs/plans/PLAN-agent-grounding-depth.md`
+**Status**: Locked — Sprint 0 of `docs/plans/done/PLAN-agent-grounding-depth.md`
 **Created**: 2026-04-20
 **Decisions cover**: parser strategy, schema bump (`@1`→`@2`), packaging mechanism
 **One-line summary**: Use `kida.analysis.Template.def_metadata()` for AST-derived fields; tiny regex for comment-only fields; ship a build-time-generated `manifest.json` as package data, gated by a `poe build-manifest-check` CI hook modeled on `poe build-css-check`.
@@ -210,7 +210,7 @@ MANIFEST_PATH = files("chirp_ui").joinpath("manifest.json")
 def load_manifest() -> dict[str, object]:
     """Return the chirp-ui component manifest as a dict (cached after first call).
 
-    Schema: chirpui-manifest@2. See docs/plans/PLAN-agent-grounding-depth.md.
+    Schema: chirpui-manifest@2. See docs/plans/done/PLAN-agent-grounding-depth.md.
 
     Example:
         from chirp_ui import load_manifest

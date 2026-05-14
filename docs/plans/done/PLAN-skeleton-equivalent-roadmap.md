@@ -1,9 +1,15 @@
 # PLAN: Skeleton-Equivalent Roadmap
 
-**Status:** active
+**Status:** superseded and archived
 **Created:** 2026-05-11
 **Trigger:** User wants Chirp UI to become the Python-native equivalent of Skeleton's design-system quality.
 **Reference:** Skeleton v4 design system, themes, presets, framework components, and LLM docs.
+
+> Current note: this plan shipped the design lock-in, build/token guardrails,
+> appearance/tone pilot, theme packs, docs IA/source ownership, interactive
+> anatomy contracts, and agent-source mapping work. The forward productization
+> direction now lives in
+> [`PLAN-pre-1.0-productization-saga.md`](../PLAN-pre-1.0-productization-saga.md).
 
 ## Goal
 

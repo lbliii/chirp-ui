@@ -6,7 +6,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PRIMITIVES = REPO_ROOT / "docs" / "PRIMITIVES.md"
 ANTI_FOOTGUNS = REPO_ROOT / "docs" / "ANTI-FOOTGUNS.md"
 PUBLIC_SURFACE = REPO_ROOT / "docs" / "PUBLIC-SURFACE-STABILIZATION.md"
-PRIMITIVE_PLAN = REPO_ROOT / "docs" / "plans" / "PLAN-primitive-vocabulary-hardening.md"
+PRIMITIVE_PLAN = REPO_ROOT / "docs" / "plans" / "done" / "PLAN-primitive-vocabulary-hardening.md"
 
 
 def test_primitive_docs_record_spacing_shortcut_deprecation_boundary() -> None:

@@ -1,10 +1,12 @@
 # chirp-ui: Standardized Theme Token Set
 
-Status: residual backlog
+Status: shipped and archived
 
 > Current note: broad token standardization and token-only theme examples have
-> mostly shipped. Remaining work is theme gallery UX, token parity proof, and
-> clearer guidance for the first app-owned tokens to override.
+> mostly shipped. Forward theme-gallery, token-parity, and first-override UX
+> work now lives in
+> [PLAN-pre-1.0-productization-saga.md](../PLAN-pre-1.0-productization-saga.md),
+> `docs/APP-THEME.md`, and `docs/TOKENS.md`.
 >
 > 2026-05-12 slice: the visual audit token explorer now groups first overrides
 > by job, `APP-THEME.md` documents the first-token table, and visual audit tests

@@ -2,7 +2,7 @@
 
 **Status:** active Sprint 6 source contract
 **Created:** 2026-05-12
-**Plan:** `docs/plans/PLAN-skeleton-equivalent-roadmap.md` Sprint 6
+**Plan:** `docs/plans/done/PLAN-skeleton-equivalent-roadmap.md` Sprint 6
 
 This map connects generated agent-facing or machine-facing site outputs to the
 Chirp-owned source inputs that should inform them. It does not introduce a new

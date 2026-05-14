@@ -2,7 +2,9 @@
 
 Status: shipped and archived
 
-> **See also:** [PLAN-primitives-and-components.md](../PLAN-primitives-and-components.md) for full primitives inventory, component specs, and implementation details.
+> **Historical note:** `PLAN-primitives-and-components.md` was deleted during
+> the pre-1.0 planning cleanup after route-tabs and primitive-boundary decisions
+> moved into canonical route-tab, layout, and public-surface docs.
 
 ## Goal
 
