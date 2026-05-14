@@ -71,24 +71,17 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 
 ### In-flight plans (`docs/plans/`)
 
-- [PLAN-agent-grounding-depth.md](plans/PLAN-agent-grounding-depth.md) — Residual manifest-depth backlog
+- [PLAN-pre-1.0-productization-saga.md](plans/PLAN-pre-1.0-productization-saga.md) — Umbrella productization saga for visible quality, public surface, themes, app chrome, Bengal, and verification
 - [PLAN-css-scope-and-layer.md](plans/PLAN-css-scope-and-layer.md) — Ongoing `@scope` conversion policy and residual CSS hardening
-- [PLAN-ascii-maturity.md](plans/PLAN-ascii-maturity.md) — Residual ASCII accessibility and stabilization backlog
-- [PLAN-test-coverage-hardening.md](plans/PLAN-test-coverage-hardening.md) — Residual visual verification and coverage backlog
-- [PLAN-theme-tokens.md](plans/PLAN-theme-tokens.md) — Theme gallery and token parity proof backlog
-- [PLAN-skeleton-equivalent-roadmap.md](plans/PLAN-skeleton-equivalent-roadmap.md) — Skeleton-inspired roadmap for Chirp-native appearance, themes, docs, LLM, and anatomy contracts
-- [PLAN-primitive-vocabulary-hardening.md](plans/PLAN-primitive-vocabulary-hardening.md) — Legacy helper stabilization backlog
-- [PLAN-navigation-contract-application.md](plans/PLAN-navigation-contract-application.md) — Apply dense navigation guidance to ChirpUI
-- [PLAN-dense-object-chrome-next.md](plans/PLAN-dense-object-chrome-next.md) — Residual dense object chrome composite-decision backlog after browser proof
 - [PLAN-application-chrome-system.md](plans/PLAN-application-chrome-system.md) — Application chrome system contracts, rail/tray proof, rhythm audit, and composite gates
-- [PLAN-primitives-and-components.md](plans/PLAN-primitives-and-components.md) — Primitives vs components boundary
-- [PLAN-layout-widget-brainstorm.md](plans/PLAN-layout-widget-brainstorm.md) — Layout widget ideas
 - [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Residual chirp-theme fixture parity backlog
 - [PLAN-bengal-chirpui-library-contract.md](plans/PLAN-bengal-chirpui-library-contract.md) — First-class Bengal library asset/macro contract for Chirp UI
 
 ### Shipped plans (`docs/plans/done/`)
 
 - [PLAN-alpine-focus-plugin.md](plans/done/PLAN-alpine-focus-plugin.md) — Alpine Focus plugin adoption
+- [PLAN-agent-grounding-depth.md](plans/done/PLAN-agent-grounding-depth.md) — Manifest grounding, package data, generated docs, find CLI, and plan triage
+- [PLAN-ascii-maturity.md](plans/done/PLAN-ascii-maturity.md) — ASCII/TUI public template maturity proof
 - [PLAN-sharp-edges.md](plans/done/PLAN-sharp-edges.md) — Sharp edges phases 1–2
 - [PLAN-sharp-edges-phase3.md](plans/done/PLAN-sharp-edges-phase3.md) — Sharp edges phase 3
 - [PLAN-sharp-edges-phase4.md](plans/done/PLAN-sharp-edges-phase4.md) — Sharp edges phase 4: API consistency
@@ -99,6 +92,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-context-aware-theming.md](plans/done/PLAN-context-aware-theming.md) — Context-aware theme switching
 - [PLAN-descriptor-coverage.md](plans/done/PLAN-descriptor-coverage.md) — ComponentDescriptor coverage
 - [PLAN-dense-navigation-reference-families.md](plans/done/PLAN-dense-navigation-reference-families.md) — Dense navigation reference family study
+- [PLAN-dense-object-chrome-next.md](plans/done/PLAN-dense-object-chrome-next.md) — Dense object chrome recipe and composite-decision backlog after browser proof
 - [PLAN-envelope-hardening-batch-1.md](plans/done/PLAN-envelope-hardening-batch-1.md) — Envelope hardening batch 1
 - [PLAN-forum-site-patterns-from-communities.md](plans/done/PLAN-forum-site-patterns-from-communities.md) — Forum-site pattern recipes
 - [PLAN-island-js-test-infrastructure.md](plans/done/PLAN-island-js-test-infrastructure.md) — JS island test infrastructure
@@ -107,11 +101,16 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-media-site-patterns-from-streaming.md](plans/done/PLAN-media-site-patterns-from-streaming.md) — Media-site pattern recipes
 - [PLAN-modern-css-backgrounds.md](plans/done/PLAN-modern-css-backgrounds.md) — CSS background pattern system
 - [PLAN-navigation-density-study.md](plans/done/PLAN-navigation-density-study.md) — Dense navigation study
+- [PLAN-navigation-contract-application.md](plans/done/PLAN-navigation-contract-application.md) — Navigation contract application and dense object guidance
 - [PLAN-product-page-patterns-from-langchain.md](plans/done/PLAN-product-page-patterns-from-langchain.md) — Product-page pattern recipes
 - [PLAN-provide-consume-expansion.md](plans/done/PLAN-provide-consume-expansion.md) — Expand provide/consume usage
+- [PLAN-primitive-vocabulary-hardening.md](plans/done/PLAN-primitive-vocabulary-hardening.md) — Primitive authoring hints and legacy-helper decisions
 - [PLAN-route-tabs-and-tabbed-layout.md](plans/done/PLAN-route-tabs-and-tabbed-layout.md) — Route tabs architecture
+- [PLAN-skeleton-equivalent-roadmap.md](plans/done/PLAN-skeleton-equivalent-roadmap.md) — Skeleton-inspired appearance, theme, docs, source, and anatomy roadmap
 - [PLAN-sidebar-nav-refinements.md](plans/done/PLAN-sidebar-nav-refinements.md) — Sidebar nav refinements
 - [PLAN-streaming-maturity.md](plans/done/PLAN-streaming-maturity.md) — SSE/streaming component maturity
+- [PLAN-test-coverage-hardening.md](plans/done/PLAN-test-coverage-hardening.md) — Historical test coverage hardening plan, superseded by verification docs
+- [PLAN-theme-tokens.md](plans/done/PLAN-theme-tokens.md) — Standardized theme token set and token-only theme examples
 - [PLAN-verification-and-visual-showcase.md](plans/done/PLAN-verification-and-visual-showcase.md) — Verification repair, visual audit page, and roadmap cleanup
 
 ### Design & sprint-0 docs

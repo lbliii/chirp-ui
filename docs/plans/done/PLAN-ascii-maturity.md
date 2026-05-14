@@ -1,6 +1,6 @@
 # Epic: ASCII Component Maturity — Tests, A11y, and Interactive Variants
 
-**Status**: closed for public templated ASCII maturity
+**Status**: shipped and archived for public templated ASCII maturity
 **Created**: 2026-04-09
 **Target**: 0.3.0
 **Estimated Effort**: 16–24h
@@ -415,7 +415,9 @@ Add `site/content/docs/components/ascii.md` with:
 
 ## Relationship to Existing Work
 
-- **PLAN-primitives-and-components.md** — parallel; that plan focuses on layout/surface primitives, this focuses on ASCII family. No overlap.
+- **PLAN-primitives-and-components.md** — historical context; deleted during the
+  pre-1.0 planning cleanup after route-tabs and primitive-boundary decisions
+  moved into canonical docs and public-surface stabilization.
 - **PLAN-modern-css-backgrounds.md** — parallel; background effects are a separate visual family. ASCII and effects could share a "decorative" showcase section.
 - **Adoption flywheel** — ASCII components are a differentiator. Making them documented and testable supports the kida/chirp/chirp-ui adoption story.
 

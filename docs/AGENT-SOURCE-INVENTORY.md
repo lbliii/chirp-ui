@@ -2,7 +2,7 @@
 
 **Status:** active Sprint 6 source contract
 **Created:** 2026-05-12
-**Plan:** `docs/plans/PLAN-skeleton-equivalent-roadmap.md` Sprint 6
+**Plan:** `docs/plans/done/PLAN-skeleton-equivalent-roadmap.md` Sprint 6
 
 This inventory defines which Chirp UI sources may inform agent-facing content
 and which sources must never be scraped for copyable snippets. It complements

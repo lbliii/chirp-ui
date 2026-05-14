@@ -5,7 +5,7 @@ SYNTHESIS_DOC = ROOT / "docs" / "DENSE-NAVIGATION-SYNTHESIS.md"
 RECIPES_DOC = ROOT / "docs" / "DENSE-NAVIGATION-RECIPES.md"
 NAVIGATION_DOC = ROOT / "docs" / "NAVIGATION.md"
 INDEX_DOC = ROOT / "docs" / "INDEX.md"
-DENSE_OBJECT_PLAN = ROOT / "docs" / "plans" / "PLAN-dense-object-chrome-next.md"
+DENSE_OBJECT_PLAN = ROOT / "docs" / "plans" / "done" / "PLAN-dense-object-chrome-next.md"
 APPLICATION_CHROME_PLAN = ROOT / "docs" / "plans" / "PLAN-application-chrome-system.md"
 
 

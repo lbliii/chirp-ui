@@ -27,6 +27,29 @@ planning noise, and stabilizing the public surface before 1.0.
 
 ## Workstreams
 
+### 0. Productization Coordination
+
+Goal: keep the pre-1.0 push focused on making existing quality visible,
+teachable, and stable before expanding public surface area.
+
+Tasks:
+
+- Use `docs/plans/PLAN-pre-1.0-productization-saga.md` as the umbrella plan
+  for sequencing visible showcase, public-surface stabilization, theme
+  authoring, application chrome adoption, Bengal integration, and verification.
+- Update child plans when implementation starts; do not let the umbrella plan
+  become a second backlog with stale task detail.
+- Treat visual proof, docs/source collateral, and generated-output checks as
+  first-class acceptance criteria.
+
+Acceptance:
+
+- New work can point to one productization epic and one child plan.
+- Public surface expansion is deferred unless the promotion gates in the
+  productization saga are satisfied.
+- Planning updates reduce ambiguity about what is active, shipped, deferred, or
+  not-now.
+
 ### 1. Verification Reliability
 
 Goal: every maintainer and agent can regenerate and verify the system from a
@@ -228,20 +251,18 @@ parallel backlog.
 
 | Plan | Roadmap workstream |
 |---|---|
-| `PLAN-agent-grounding-depth.md` | Public Surface Stabilization |
-| `PLAN-ascii-maturity.md` | Public Surface Stabilization |
+| `PLAN-pre-1.0-productization-saga.md` | Productization Coordination |
 | `PLAN-bengal-chirpui-library-contract.md` | Bengal And chirp-theme Integration |
 | `PLAN-chirp-theme-content-parity.md` | Bengal And chirp-theme Integration |
 | `PLAN-css-scope-and-layer.md` | CSS Scope Hardening |
-| `PLAN-dense-object-chrome-next.md` | Dense Navigation Productization |
 | `PLAN-application-chrome-system.md` | Application Chrome System |
-| `PLAN-layout-widget-brainstorm.md` | Public Surface Stabilization |
-| `PLAN-navigation-contract-application.md` | Dense Navigation Productization |
-| `PLAN-primitive-vocabulary-hardening.md` | Public Surface Stabilization |
-| `PLAN-primitives-and-components.md` | Public Surface Stabilization |
-| `PLAN-skeleton-equivalent-roadmap.md` | Visible Design-System Showcase |
-| `PLAN-test-coverage-hardening.md` | Verification Reliability |
-| `PLAN-theme-tokens.md` | Theme Authoring UX |
+
+Archived planning inputs now live under `docs/plans/done/`. Notable archived
+inputs for the current productization push are `PLAN-skeleton-equivalent-roadmap.md`,
+`PLAN-ascii-maturity.md`, `PLAN-test-coverage-hardening.md`,
+`PLAN-navigation-contract-application.md`, and
+`PLAN-dense-object-chrome-next.md`, `PLAN-agent-grounding-depth.md`,
+`PLAN-theme-tokens.md`, and `PLAN-primitive-vocabulary-hardening.md`.
 
 ## Sequencing
 

@@ -140,7 +140,7 @@ def test_all_public_ascii_templates_are_promotion_candidates() -> None:
 
 
 def test_ascii_maturity_plan_records_closed_public_template_set() -> None:
-    plan = (ROOT / "docs" / "plans" / "PLAN-ascii-maturity.md").read_text(encoding="utf-8")
+    plan = (ROOT / "docs" / "plans" / "done" / "PLAN-ascii-maturity.md").read_text(encoding="utf-8")
     components = build_manifest()["components"]
     remaining_experimental = {
         name

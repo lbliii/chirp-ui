@@ -1,14 +1,16 @@
 # Epic: Primitive Vocabulary Hardening
 
-**Status**: residual backlog
+**Status**: shipped and archived
 **Created**: 2026-04-24
 **Target**: pre-1.0
 **Estimated Effort**: 10-16h across 4 PRs
 **Dependencies**: Registry auto-category debt cleared; current manifest schema
 
 > Current note: primitive docs, authoring hints, and legacy-helper decisions
-> have shipped. Remaining work is pre-1.0 stabilization: promote, keep, or
-> deprecate compatibility helpers without growing a utility vocabulary.
+> have shipped. Forward pre-1.0 stabilization for public surface and helper
+> decisions lives in
+> [../PUBLIC-SURFACE-STABILIZATION.md](../PUBLIC-SURFACE-STABILIZATION.md) and
+> [PLAN-pre-1.0-productization-saga.md](../PLAN-pre-1.0-productization-saga.md).
 >
 > Public component promotion decisions are tracked in
 > [../PUBLIC-SURFACE-STABILIZATION.md](../PUBLIC-SURFACE-STABILIZATION.md);

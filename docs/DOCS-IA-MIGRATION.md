@@ -2,7 +2,7 @@
 
 **Status:** active Sprint 4 source map
 **Created:** 2026-05-11
-**Plan:** `docs/plans/PLAN-skeleton-equivalent-roadmap.md` Sprint 4
+**Plan:** `docs/plans/done/PLAN-skeleton-equivalent-roadmap.md` Sprint 4
 
 This matrix maps the current published docs site to the target information
 architecture for Chirp UI's Skeleton-equivalent documentation work. The goal is

@@ -1,6 +1,6 @@
 # chirp-ui: Navigation Contract Application
 
-Status: active plan
+Status: shipped and archived
 Date: 2026-05-03
 Depends on: [PLAN-navigation-density-study.md](done/PLAN-navigation-density-study.md)
 
@@ -15,10 +15,12 @@ Progress:
   overflow behavior across desktop, tablet, and phone widths.
 - Phases 4-6 remain not-now until a consuming app proves the need.
 
-## Next Slice
+## Archived Boundary
 
-Keep this plan in residual mode. Dense object navigation now has browser proof;
-the next work is evidence from consuming app usage, not a new composite
+Dense object navigation now has browser proof and the active app-chrome
+boundary lives in
+[`PLAN-application-chrome-system.md`](../PLAN-application-chrome-system.md).
+The next work is evidence from consuming app usage, not a new composite
 navigation macro. Reopen Phases 4-6 only when a consuming app shows repeated
 counter, command-launcher, or object-header pressure that cannot be served by
 existing primitives.

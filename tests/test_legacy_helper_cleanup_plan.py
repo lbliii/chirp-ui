@@ -4,7 +4,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PLAN = REPO_ROOT / "docs" / "plans" / "done" / "PLAN-legacy-helper-cleanup-pre-1.0.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
 ROADMAP = REPO_ROOT / "docs" / "ROADMAP-pre-1.0.md"
-PRIMITIVE_PLAN = REPO_ROOT / "docs" / "plans" / "PLAN-primitive-vocabulary-hardening.md"
+PRIMITIVE_PLAN = REPO_ROOT / "docs" / "plans" / "done" / "PLAN-primitive-vocabulary-hardening.md"
 
 
 def test_legacy_helper_cleanup_plan_records_scope_and_safety() -> None:

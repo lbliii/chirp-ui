@@ -5,8 +5,8 @@ Date: 2026-05-03
 Depends on:
 
 - [PLAN-navigation-density-study.md](PLAN-navigation-density-study.md)
-- [PLAN-navigation-contract-application.md](../PLAN-navigation-contract-application.md)
-- [PLAN-dense-object-chrome-next.md](../PLAN-dense-object-chrome-next.md)
+- [PLAN-navigation-contract-application.md](PLAN-navigation-contract-application.md)
+- [PLAN-dense-object-chrome-next.md](PLAN-dense-object-chrome-next.md)
 - [../../NAVIGATION.md](../../NAVIGATION.md)
 - [../../DENSE-NAVIGATION-SYNTHESIS.md](../../DENSE-NAVIGATION-SYNTHESIS.md)
 
