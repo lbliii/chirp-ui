@@ -7,6 +7,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.9.0] - 2026-05-14
+
+### Added
+
+- Added a Bengal theme controls anatomy guide and published site mirror covering `chirp-theme` theme menus, search, mobile navigation, TOC, and content-tab hooks.
+- Added a Sprint 4 documentation IA migration matrix that maps published docs
+  pages to canonical durable sources and SSG-owned agent artifact source
+  provenance, without overriding Bengal's `llms.txt` or `agent.json` behavior.
+- Added a Sprint 6 agent source inventory with provenance labels, snippet eligibility states, and tests that prevent generated, static-showcase, docs-wrapper, and browser-fixture sources from becoming copyable snippets.
+- Added a Sprint 6 agent source map that records Bengal-owned generated outputs, Chirp-owned source inputs, the published manifest boundary, and forbidden output-name overlaps.
+- Added a drawer and tray anatomy guide plus published site mirror covering
+  native drawer and store-backed tray rendered contracts.
+- Added a dropdown anatomy guide and published site mirror covering dropdown
+  menu, select, and split-menu rendered contracts.
+- Added a modal anatomy guide and published site mirror covering native modals,
+  overlay modals, and confirm dialog rendered contracts.
+- Added a tabs anatomy guide and published site mirror covering htmx tabs,
+  client-side tab panels, route tabs, and tabbed page layout contracts.
+- Added an application chrome system plan and navigation collateral for layered
+  shells, rails, trays, route rows, command overlays, and recipe-first promotion
+  gates.
+- Added application chrome epic follow-up proof for rail-to-drawer recipes,
+  multi-family browser gauntlets, rhythm audits, Bengal parity, composite
+  evaluation, and release-readiness tracking.
+- Added descriptor-backed `appearance` and `tone` macro parameters for the pilot
+  components: `btn`, `badge`, `alert`, `card`, `surface`, and form fields.
+  The shared destructive tone is `danger`; existing component-local
+  `variant="error"` compatibility remains unchanged.
+- Added the first token-only theme-pack catalog with immutable Python metadata
+  and packaged `atlas`, `ember`, and `sage` CSS resources discoverable through
+  the library contract, manifest, a `/theme-packs` showcase matrix, and Bengal
+  palette-control mapping metadata. The catalog packs are also covered by
+  browser tests that verify packaged light, dark, and system token resolution
+  across navigation, forms, overlay layers, compact data tables, and desktop/mobile
+  viewports.
+
+### Changed
+
+- Added rapid-click request coordination defaults for boosted shell navigation, live search/filter helpers, and mutating HTMX form/action helpers.
+- Cleaned first-party showcase chrome so new examples stop teaching legacy
+  helper-class chains, added a static visual audit surface with browser
+  guardrails, and documented the pre-1.0 compatibility policy for legacy helpers.
+
+### Fixed
+
+- Fixed dropdown menu and split-menu selection payload handling so labels, URLs,
+  and actions are read from escaped `data-*` attributes instead of interpolated
+  into inline Alpine JavaScript literals.
+- Fixed tab-panel selection handling so tab ids are read from escaped `data-*`
+  attributes by `chirpuiTabs()` instead of interpolated into inline Alpine
+  JavaScript literals.
+
+
 ## [0.8.0] - 2026-05-11
 
 ### Added
