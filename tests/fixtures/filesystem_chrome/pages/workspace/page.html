@@ -1,0 +1,40 @@
+{% from "chirpui/layout.html" import stack, cluster, block %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import render_route_tabs %}
+
+{% block page_root %}
+{{ command_palette(id="fs-workspace-palette", search_url="/fs-search", placeholder="Search workspace...") }}
+<div id="page-root">
+{% block page_root_inner %}
+  <div id="route-tabs">
+    {{ render_route_tabs(tab_items, current_path, target="#page-root") }}
+  </div>
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs(breadcrumb_items, overflow="collapse", max_items=3) }}
+    {% call cluster(gap="sm") %}
+      <h1 data-testid="fs-workspace-heading">Filesystem workspace</h1>
+      {{ command_palette_trigger(target="fs-workspace-palette", label="Search workspace", placeholder="Search workspace", shortcut="/", icon="search", density="sm") }}
+    {% end %}
+  {% end %}
+  {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Filesystem workspace tools") %}
+    {{ btn("Filter", variant="ghost", size="sm",
+      hx_get="/workspace/filter_fragment",
+      hx_target="#page-content-inner",
+      hx_swap="innerHTML",
+      attrs_map={"hx-disinherit": "hx-select"}) }}
+    {{ btn("Refresh", variant="ghost", size="sm") }}
+  {% end %}
+  <div id="page-content-inner">
+  {% block page_content %}
+  {% call block() %}
+    <h2 data-testid="fs-workspace-view-title">{{ view_title }}</h2>
+    <p data-testid="fs-workspace-view-copy">{{ view_copy }}</p>
+  {% end %}
+  {% end %}
+  </div>
+{% end %}
+</div>
+{% end %}

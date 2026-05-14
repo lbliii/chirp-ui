@@ -1,0 +1,15 @@
+{# preset: chirpui-app-shell #}
+{# target: body #}
+{# domain: filesystem_chrome #}
+{# shell: filesystem_chrome #}
+{% extends "chirpui/app_shell_layout.html" %}
+{% block brand %}Filesystem Chrome{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path=current_path) %}
+  {% call sidebar_section("Filesystem") %}
+    {{ sidebar_link("/workspace", "Workspace", match="prefix") }}
+    {{ sidebar_link("/admin", "Admin", match="prefix") }}
+  {% end %}
+{% end %}
+{% end %}

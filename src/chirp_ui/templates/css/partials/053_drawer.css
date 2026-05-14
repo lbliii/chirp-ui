@@ -77,13 +77,18 @@
         }
 
         .chirpui-drawer__close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-inline-size: var(--chirpui-control-block-size-sm);
+            min-block-size: var(--chirpui-control-block-size-sm);
             background: none;
             border: none;
             color: inherit;
             font-size: 1.5rem;
             cursor: pointer;
             line-height: 1;
-            padding: 0 var(--chirpui-spacing-xs);
+            padding: 0;
             border-radius: var(--chirpui-radius-sm);
             transition: background var(--chirpui-transition);
             &:hover {

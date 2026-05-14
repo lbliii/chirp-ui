@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import container, stack, cluster, block %}
+{% from "chirpui/logo.html" import logo %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/drawer.html" import drawer, drawer_trigger %}
+{% from "chirpui/nav_tree.html" import nav_tree %}
+{% from "chirpui/route_tabs.html" import route_tabs %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+
+<style>
+  .appchrome-rail-recipe {
+    display: grid;
+    grid-template-columns: minmax(14rem, 17rem) minmax(0, 1fr);
+    gap: var(--chirpui-spacing-lg);
+    align-items: start;
+  }
+
+  .appchrome-rail-recipe__rail {
+    position: sticky;
+    top: var(--chirpui-spacing);
+  }
+
+  .appchrome-rail-recipe__mobile-trigger {
+    display: none;
+  }
+
+  .appchrome-rail-recipe__main {
+    min-width: 0;
+  }
+
+  @media (max-width: 640px) {
+    .appchrome-rail-recipe {
+      display: block;
+    }
+
+    .appchrome-rail-recipe__rail {
+      display: none;
+    }
+
+    .appchrome-rail-recipe__mobile-trigger {
+      display: flex;
+      margin-bottom: var(--chirpui-spacing);
+    }
+  }
+</style>
+
+{% set rail_items = [
+  {"title": "Overview", "href": "/rail-to-tray", "active": true, "badge": 8},
+  {"title": "Deployments", "href": "/rail-to-tray/deployments", "badge": 12},
+  {"title": "Runtime settings", "href": "/rail-to-tray/settings", "children": [
+    {"title": "Secrets", "href": "/rail-to-tray/settings/secrets"},
+    {"title": "Regions", "href": "/rail-to-tray/settings/regions"},
+    {"title": "Very long fallback route label", "href": "/rail-to-tray/settings/long-label"}
+  ], "open": true},
+  {"title": "Audit log", "href": "/rail-to-tray/audit"}
+] %}
+
+{% call container(max_width="72rem") %}
+{% call stack(gap="lg") %}
+<h1>Rail To Drawer Chrome</h1>
+
+<section class="appchrome-rail-recipe" data-testid="rail-to-tray-recipe">
+  <aside class="appchrome-rail-recipe__rail" data-testid="desktop-product-rail">
+    {% call block() %}
+    {{ logo(text="Control", href="/rail-to-tray", variant="text") }}
+    {{ nav_tree(rail_items, branch_mode="linked", cls="appchrome-product-rail") }}
+    {% end %}
+  </aside>
+
+  <div class="appchrome-rail-recipe__main">
+    <div class="appchrome-rail-recipe__mobile-trigger" data-testid="mobile-product-trigger">
+      {{ drawer_trigger("product-nav-drawer", label="Open product navigation") }}
+    </div>
+
+    {% call stack(gap="sm") %}
+    {% call command_bar(surface_variant="default", density="sm", wrap="scroll", aria_label="Workspace command surface") %}
+      <div class="chirpui-action-strip__primary">
+        {{ breadcrumbs([
+          {"label": "Control", "href": "/rail-to-tray"},
+          {"label": "Workspace", "href": "/rail-to-tray/workspace"},
+          {"label": "Production"}
+        ], overflow="collapse", max_items=3) }}
+      </div>
+      <div class="chirpui-action-strip__controls">
+        {{ command_palette_trigger(target="rail-to-tray-palette", label="Search workspace", placeholder="Search or jump", shortcut="/", icon="search", density="sm") }}
+      </div>
+      <div class="chirpui-action-strip__actions">
+        {{ btn("Deploy", variant="primary", size="sm") }}
+      </div>
+    {% end %}
+
+    {{ command_palette(id="rail-to-tray-palette", search_url="/search", placeholder="Search workspace...") }}
+
+    {{ route_tabs(tabs=[
+      {"href": "/rail-to-tray", "label": "Summary", "match": "exact", "badge": 3, "badge_label": "3 summary updates"},
+      {"href": "/rail-to-tray/activity", "label": "Activity", "badge_loading": true},
+      {"href": "/rail-to-tray/resources", "label": "Resources", "badge_expected": true},
+      {"href": "/rail-to-tray/settings", "label": "Settings With A Long Label"}
+    ], current_path="/rail-to-tray") }}
+
+    {% call block() %}
+    {% call cluster(gap="sm") %}
+      <h2>Production workspace</h2>
+      {{ btn("Refresh", variant="ghost", size="sm") }}
+    {% end %}
+    <p class="chirpui-text-muted">Persistent rail on wide viewports, drawer fallback on phones, route tabs remain link-native.</p>
+    {% end %}
+    {% end %}
+  </div>
+</section>
+
+{% call drawer("product-nav-drawer", title="Product navigation", side="left") %}
+  {{ nav_tree(rail_items, branch_mode="linked", cls="appchrome-product-drawer") }}
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

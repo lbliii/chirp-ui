@@ -190,6 +190,9 @@ For GitHub-like object pages, compose existing primitives in this order:
 The component showcase includes two copyable dense object chrome recipes:
 a repository/project page and an admin/settings page. Both keep global
 navigation, object context, local routes, and page tools as separate layers.
+It also includes a rail-to-drawer application chrome recipe that keeps broad
+product navigation persistent on larger viewports and moves the same navigation
+into a drawer fallback on phones.
 Browser proof covers the same composition at desktop, tablet, and phone widths:
 route tabs scroll instead of wrapping into a tall block, breadcrumb overflow
 remains navigable, command triggers open named palettes and focus search,

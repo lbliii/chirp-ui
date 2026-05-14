@@ -1,0 +1,7 @@
+{% extends "workspace/page.html" %}
+{% block page_content %}
+{% call block() %}
+  <h2 data-testid="fs-workspace-view-title">{{ view_title }}</h2>
+  <p data-testid="fs-workspace-view-copy">{{ view_copy }}</p>
+{% end %}
+{% end %}

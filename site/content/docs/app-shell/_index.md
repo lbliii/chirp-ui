@@ -113,6 +113,33 @@ Minimal filesystem shell:
 {% extends "chirpui/app_shell_layout.html" %}
 ```
 
+Copyable filesystem route shape:
+
+```text
+pages/
+  _layout.html
+  workspace/
+    _context.py
+    _meta.py
+    page.py
+    page.html
+    runs.py
+    runs.html
+```
+
+- `_layout.html` extends `chirpui/app_shell_layout.html`, owns brand/sidebar,
+  and declares the shell target metadata.
+- `_context.py` contributes route-scoped `shell_actions`.
+- `_meta.py` connects the route family to a registered `Section`.
+- `page.py` and sibling route files can return context dictionaries when a
+  matching `.html` template exists.
+- Page templates provide `page_root`, `page_root_inner`, and `page_content`
+  blocks so `#main`, `#page-root`, and `#page-content-inner` each receive the
+  right response shape.
+
+The source-tree fixture `tests/fixtures/filesystem_chrome/` and the canonical
+checklist `docs/SHELL-TABS-CONTRACT.md` show the full version.
+
 For nested app shells, keep the preset and override the target:
 
 ```html
@@ -234,6 +261,28 @@ ChirpUI registers its page shell contract via `use_chirp_ui()`. That contract ma
 Chirp UI owns this transport-level shell behavior. Apps still own endpoint cost,
 authorization, idempotency, and any business rule where repeated actions should
 queue, retry, or intentionally execute more than once.
+
+When writing custom route handlers, branch on `HX-Target`, not only
+`HX-Request`:
+
+| Request target | Response shape |
+|----------------|----------------|
+| `main` | Full page response containing `#page-content`; include OOB shell regions when route-scoped topbar/sidebar metadata changes. |
+| `page-root` | Page chrome fragment for section tabs: route tabs, page header, toolbar, and inner content. |
+| `page-content-inner` or another local target | Local fragment only; clear inherited shell selection with `hx-select="unset"` / `hx-disinherit="hx-select"` on the trigger. |
+
+Route-scoped `shell_actions` live outside `#page-content`, so a boosted
+shell-navigation response that changes actions should include:
+
+```html
+{% from "chirpui/shell_actions.html" import shell_actions_bar %}
+
+<div id="chirp-shell-actions" hx-swap-oob="innerHTML">
+  {{ shell_actions_bar(shell_actions) }}
+</div>
+```
+
+The canonical source-tree checklist is `docs/SHELL-TABS-CONTRACT.md`.
 
 Boosted navigation follows the shell scroll policy:
 

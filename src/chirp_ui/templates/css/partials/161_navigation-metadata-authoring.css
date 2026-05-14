@@ -12,7 +12,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-xs);
-    min-height: calc(var(--chirpui-spacing-xl) + var(--chirpui-spacing-xs));
+    min-block-size: var(--chirpui-control-block-size-sm);
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
     border-radius: var(--chirpui-radius-sm);
     color: var(--chirpui-text-muted);
@@ -70,7 +70,7 @@
 .chirpui-primary-nav__divider {
     display: inline-block;
     inline-size: 1px;
-    block-size: calc(var(--chirpui-spacing-xl) + var(--chirpui-spacing-xs));
+    block-size: var(--chirpui-control-block-size-sm);
     margin-inline: var(--chirpui-spacing-xs);
     background: var(--chirpui-border);
 }

@@ -65,6 +65,7 @@ Coverage and browser proof are explicit gates, not hidden defaults:
 ```text
 uv run poe test-cov
 uv run poe ci-browser
+uv run poe test-browser-chrome
 ```
 
 `test-cov` enforces the configured coverage floor (`fail_under = 80`) when a PR
@@ -73,6 +74,11 @@ required for changes whose failure mode depends on Playwright, actual layout,
 dialog APIs, htmx lifecycle, or Alpine lifecycle. Browser tests stay outside
 `poe ci` because they require the browser dependency group and installed browser
 binaries.
+
+For application chrome slices, use `uv run poe test-browser-chrome` as the
+focused proof loop. It builds the published docs output first, then runs the
+rail-to-drawer recipe and multi-family chrome gauntlet plus Bengal docs chrome
+without executing every browser fixture in the suite.
 
 ## Proof Routing
 
@@ -86,6 +92,7 @@ Choose the narrowest proof that can observe the contract being changed, then run
 | Alpine controllers, JavaScript island helpers, runtime state helpers | `uv run poe test-js` plus focused Python metadata tests when applicable |
 | Token, CSS partial, cascade layer, or scope behavior | CSS syntax/concat tests, template/CSS contract tests, and browser proof when computed layout or cascade interaction is the failure mode |
 | Dialog, focus, overflow, htmx lifecycle, Alpine lifecycle, responsive layout | `uv run poe ci-browser` or the targeted browser test that exercises the changed behavior |
+| Application chrome rail/tray, command focus, route-tab scroll, badge stability, and multi-family recipes | `uv run poe test-browser-chrome` |
 | Docs, examples, scaffold, or published site content | Relevant docs/site tests, `uv run poe docs-build-all` when published output changes, and examples proof when snippets are executable |
 | Theme packages, Bengal templates, packaged assets | Bengal package tests plus generated/site proof when templates or emitted assets change |
 

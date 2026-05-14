@@ -100,15 +100,24 @@
         }
 
         .chirpui-tray__close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-inline-size: var(--chirpui-control-block-size-sm);
+            min-block-size: var(--chirpui-control-block-size-sm);
             background: none;
             border: none;
             font-size: 1.5rem;
             line-height: 1;
             cursor: pointer;
             color: var(--chirpui-text-muted);
-            padding: 0.25rem;
+            padding: 0;
             &:hover {
                 color: var(--chirpui-text);
+            }
+            &:focus-visible {
+                outline: var(--chirpui-state-focus-outline);
+                outline-offset: var(--chirpui-state-focus-offset);
             }
         }
 

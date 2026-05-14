@@ -1,0 +1,36 @@
+{% from "chirpui/layout.html" import stack, cluster, block %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/route_tabs.html" import render_route_tabs %}
+
+{% block page_root %}
+{{ command_palette(id="fs-admin-palette", search_url="/fs-search", placeholder="Search admin...") }}
+<div id="page-root">
+{% block page_root_inner %}
+  <div id="route-tabs">
+    {{ render_route_tabs(tab_items, current_path, target="#page-root") }}
+  </div>
+  {% call stack(gap="sm") %}
+    {{ breadcrumbs(breadcrumb_items, overflow="collapse", max_items=3) }}
+    {% call cluster(gap="sm") %}
+      <h1 data-testid="fs-admin-heading">Filesystem admin</h1>
+      {{ command_palette_trigger(target="fs-admin-palette", label="Search admin", placeholder="Search admin", shortcut="/", icon="search", density="sm") }}
+    {% end %}
+  {% end %}
+  {% call command_bar(surface_variant="muted", density="sm", wrap="scroll", aria_label="Filesystem admin tools") %}
+    {{ btn("Review", variant="ghost", size="sm") }}
+    {{ btn("Suspend", variant="ghost", size="sm") }}
+  {% end %}
+  <div id="page-content-inner">
+  {% block page_content %}
+  {% call block() %}
+    <h2 data-testid="fs-admin-view-title">{{ view_title }}</h2>
+    <p data-testid="fs-admin-view-copy">{{ view_copy }}</p>
+  {% end %}
+  {% end %}
+  </div>
+{% end %}
+</div>
+{% end %}

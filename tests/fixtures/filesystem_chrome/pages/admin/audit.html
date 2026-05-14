@@ -1,0 +1,7 @@
+{% extends "admin/page.html" %}
+{% block page_content %}
+{% call block() %}
+  <h2 data-testid="fs-admin-view-title">{{ view_title }}</h2>
+  <p data-testid="fs-admin-view-copy">{{ view_copy }}</p>
+{% end %}
+{% end %}

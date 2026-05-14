@@ -13,6 +13,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
+    min-block-size: var(--chirpui-control-block-size-sm);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     color: var(--chirpui-text-muted);
     text-decoration: none;

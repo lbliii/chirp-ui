@@ -53,8 +53,23 @@ See the Chirp guide [Filesystem routing](https://lbliii.github.io/chirp/docs/rou
 - **`app_shell_layout.html`** — Defines the shell DOM, registers no extra Python; pairs with Chirp’s `use_chirp_ui(app)`.
 - **Shell coherence script** — Clears `#chirp-shell-actions` in `htmx:beforeSwap` when the response includes a shell-actions OOB, so users never see one frame of new page + stale actions (htmx runs primary swap before OOB).
 
+## Response boundaries
+
+Application pages normally use three nested HTMX targets:
+
+| Boundary | Target | Owner |
+|----------|--------|-------|
+| Shell navigation | `#main` | full page response with `#page-content` and any changed OOB shell regions |
+| Section navigation | `#page-root` | page chrome and inner content for route-tab clicks |
+| Local tools | `#page-content-inner` or a named fragment target | local fragment only, isolated from inherited shell selectors |
+
+Server code should inspect `HX-Target` before choosing a response shape. A
+generic `HX-Request` check is not enough: shell navigation and route-tab
+navigation are both HTMX requests, but they have different owners.
+
 ## Related docs
 
 - Repo: **`docs/UI-LAYERS.md`** (duplicate reference for editors)
+- Repo: **`docs/SHELL-TABS-CONTRACT.md`** (route-tab and response-shape checklist)
 - **`docs/LAYOUT-OVERFLOW.md`** — keeping the main column stable
 - **`docs/COMPONENT-OPTIONS.md`** — components; distinguishes surface chrome from shell
