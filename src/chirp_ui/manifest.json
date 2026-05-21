@@ -9153,6 +9153,68 @@
       "trim_emits": [],
       "variants": []
     },
+    "filter-rail": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "filter-rail",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "Dense workspace primitives\n    Small semantic shapes for serious multi-region workspaces.\n\n    These primitives are intentionally narrow: filter rails, metric strips,\n    result collections/cards, and inspector panels. They carry layout-affinity\n    attributes so workspace shells can resolve natural placement without\n    page-local grid wrappers.",
+      "elements": [
+        "body",
+        "count",
+        "item",
+        "label",
+        "list",
+        "mark",
+        "meta"
+      ],
+      "emits": [
+        "chirpui-filter-rail",
+        "chirpui-filter-rail__body",
+        "chirpui-filter-rail__count",
+        "chirpui-filter-rail__item",
+        "chirpui-filter-rail__label",
+        "chirpui-filter-rail__list",
+        "chirpui-filter-rail__mark",
+        "chirpui-filter-rail__meta"
+      ],
+      "extra_emits": [],
+      "lineno": 10,
+      "macro": "filter_rail",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "workspace_primitives.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "filter-row": {
       "appearances": [],
       "authoring": "available",
@@ -11080,6 +11142,77 @@
       "trim_emits": [],
       "variants": []
     },
+    "inspector-panel": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "inspector-panel",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Dense workspace primitives\n    Small semantic shapes for serious multi-region workspaces.\n\n    These primitives are intentionally narrow: filter rails, metric strips,\n    result collections/cards, and inspector panels. They carry layout-affinity\n    attributes so workspace shells can resolve natural placement without\n    page-local grid wrappers.",
+      "elements": [
+        "actions",
+        "body",
+        "copy",
+        "footer",
+        "header",
+        "subtitle",
+        "title"
+      ],
+      "emits": [
+        "chirpui-inspector-panel",
+        "chirpui-inspector-panel__actions",
+        "chirpui-inspector-panel__body",
+        "chirpui-inspector-panel__copy",
+        "chirpui-inspector-panel__footer",
+        "chirpui-inspector-panel__header",
+        "chirpui-inspector-panel__subtitle",
+        "chirpui-inspector-panel__title"
+      ],
+      "extra_emits": [],
+      "lineno": 91,
+      "macro": "inspector_panel",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "subtitle"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "",
+        "actions",
+        "footer"
+      ],
+      "slots_extracted": [
+        "",
+        "actions",
+        "footer"
+      ],
+      "slots_yielded": [],
+      "template": "workspace_primitives.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "install-snippet": {
       "appearances": [],
       "authoring": "available",
@@ -12797,6 +12930,60 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "metric_grid.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "metric-strip": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "metric-strip",
+      "category": "data-display",
+      "composes": [],
+      "consumes": [],
+      "description": "Dense workspace primitives\n    Small semantic shapes for serious multi-region workspaces.\n\n    These primitives are intentionally narrow: filter rails, metric strips,\n    result collections/cards, and inspector panels. They carry layout-affinity\n    attributes so workspace shells can resolve natural placement without\n    page-local grid wrappers.",
+      "elements": [
+        "item",
+        "label",
+        "value"
+      ],
+      "emits": [
+        "chirpui-metric-strip",
+        "chirpui-metric-strip__item",
+        "chirpui-metric-strip__label",
+        "chirpui-metric-strip__value"
+      ],
+      "extra_emits": [],
+      "lineno": 38,
+      "macro": "metric_strip",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "workspace_primitives.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -15540,6 +15727,149 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "resource_index.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "result-card": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "result-card",
+      "category": "data-display",
+      "composes": [],
+      "consumes": [],
+      "description": "Dense workspace primitives\n    Small semantic shapes for serious multi-region workspaces.\n\n    These primitives are intentionally narrow: filter rails, metric strips,\n    result collections/cards, and inspector panels. They carry layout-affinity\n    attributes so workspace shells can resolve natural placement without\n    page-local grid wrappers.",
+      "elements": [
+        "actions",
+        "body",
+        "copy",
+        "footer",
+        "header",
+        "mark",
+        "subtitle",
+        "title"
+      ],
+      "emits": [
+        "chirpui-result-card",
+        "chirpui-result-card__actions",
+        "chirpui-result-card__body",
+        "chirpui-result-card__copy",
+        "chirpui-result-card__footer",
+        "chirpui-result-card__header",
+        "chirpui-result-card__mark",
+        "chirpui-result-card__subtitle",
+        "chirpui-result-card__title"
+      ],
+      "extra_emits": [],
+      "lineno": 72,
+      "macro": "result_card",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "subtitle"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "",
+        "actions",
+        "footer",
+        "mark"
+      ],
+      "slots_extracted": [
+        "",
+        "actions",
+        "footer",
+        "mark"
+      ],
+      "slots_yielded": [],
+      "template": "workspace_primitives.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "result-collection": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "result-collection",
+      "category": "data-display",
+      "composes": [],
+      "consumes": [],
+      "description": "Dense workspace primitives\n    Small semantic shapes for serious multi-region workspaces.\n\n    These primitives are intentionally narrow: filter rails, metric strips,\n    result collections/cards, and inspector panels. They carry layout-affinity\n    attributes so workspace shells can resolve natural placement without\n    page-local grid wrappers.",
+      "elements": [
+        "header",
+        "items",
+        "meta",
+        "title"
+      ],
+      "emits": [
+        "chirpui-result-collection",
+        "chirpui-result-collection__header",
+        "chirpui-result-collection__items",
+        "chirpui-result-collection__meta",
+        "chirpui-result-collection__title"
+      ],
+      "extra_emits": [],
+      "lineno": 54,
+      "macro": "result_collection",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "pattern",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "",
+        "meta"
+      ],
+      "slots_extracted": [
+        "",
+        "meta"
+      ],
+      "slots_yielded": [],
+      "template": "workspace_primitives.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -22386,7 +22716,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 285,
+      "available": 290,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -22397,22 +22727,22 @@
       "container": 9,
       "content": 10,
       "control": 20,
-      "data-display": 33,
+      "data-display": 36,
       "effect": 46,
       "feedback": 25,
       "form": 17,
       "infrastructure": 2,
       "interactive": 9,
-      "layout": 46,
+      "layout": 47,
       "marketing": 11,
       "media": 6,
-      "navigation": 25,
+      "navigation": 26,
       "overlay": 3,
       "social": 4,
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 93,
+      "experimental": 98,
       "internal": 2,
       "legacy": 39,
       "stable": 202
@@ -22425,12 +22755,12 @@
       "component": 176,
       "effect": 32,
       "infrastructure": 2,
-      "pattern": 17,
+      "pattern": 22,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 233,
-    "components_with_params": 233,
+    "components_with_description": 238,
+    "components_with_params": 238,
     "components_with_provides": 11,
     "manifest_quality": {
       "missing_description": 0,
@@ -22438,7 +22768,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 231
+      "public_templated_components": 236
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -22461,7 +22791,7 @@
       "spacing": 25,
       "typography": 45
     },
-    "total_components": 336,
+    "total_components": 341,
     "total_theme_packs": 3,
     "total_tokens": 428
   },

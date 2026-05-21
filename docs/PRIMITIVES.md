@@ -34,6 +34,12 @@ Maintainers adding resolver behavior must follow
 [LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md)
 so low-level primitives do not become utility-class containers.
 
+Dense workspace primitives are the first promoted product-system layer on top
+of that contract. Use `filter_rail`, `result_collection`, `result_card`,
+`metric_strip`, and `inspector_panel` when a workspace needs navigable rails,
+responsive result grids, compact metrics, or a selected-object inspector
+without page-owned shell CSS.
+
 For product-site pages, use these primitives through the recipes in
 [PRODUCT-PAGE-PATTERNS.md](PRODUCT-PAGE-PATTERNS.md). Those recipes show how
 to compose hero, proof, lifecycle, customer story, and CTA sections without

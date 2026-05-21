@@ -613,6 +613,54 @@ class TestWorkbench:
         assert ".chirpui-workspace-shell [data-chirpui-pressure" not in css
         assert ".chirpui-workspace-shell [data-chirpui-affinity" not in css
 
+    def test_workspace_dense_primitives_render_layout_affinity(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/workspace_primitives.html" import filter_rail, filter_rail_item, metric_strip, metric_item, result_collection, result_card, inspector_panel %}'
+            '{% call filter_rail(label="Areas") %}'
+            '{{ filter_rail_item("/ops", "Operations", count=4, icon="OP", active=true) }}'
+            "{% end %}"
+            '{% call metric_strip(label="Readout") %}'
+            '{{ metric_item("12", "workloads") }}'
+            "{% end %}"
+            '{% call result_collection(label="Results", title="Workloads") %}'
+            "{% slot meta %}12 results{% end %}"
+            '{% call result_card("Forge Runners", subtitle="Queue workers") %}'
+            "{% slot mark %}FR{% end %}"
+            "{% slot actions %}<button>Inspect</button>{% end %}"
+            "<p>Queue depth above target.</p>"
+            "{% slot footer %}<span>Owner Platform</span>{% end %}"
+            "{% end %}"
+            "{% end %}"
+            '{% call inspector_panel(title="Forge Runners", subtitle="Selected workload") %}'
+            "{% slot actions %}<button>Refresh</button>{% end %}"
+            "<p>Healthy with warnings.</p>"
+            "{% slot footer %}<span>Inspector</span>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-filter-rail" in html
+        assert "chirpui-filter-rail__item is-active" in html
+        assert 'aria-current="page"' in html
+        assert "chirpui-metric-strip__item" in html
+        assert "chirpui-result-collection__items" in html
+        assert 'role="listitem"' in html
+        assert "chirpui-result-card__actions" in html
+        assert "chirpui-inspector-panel__body" in html
+        assert 'data-chirpui-role="rail nav"' in html
+        assert 'data-chirpui-pressure="compress"' in html
+        assert 'data-chirpui-affinity="fill"' in html
+
+    def test_workspace_primitives_css_uses_scoped_boundaries(self) -> None:
+        css = _chirpui_css()
+        for selector in (
+            "@scope (.chirpui-filter-rail)",
+            "@scope (.chirpui-metric-strip)",
+            "@scope (.chirpui-result-collection)",
+            "@scope (.chirpui-result-card)",
+            "@scope (.chirpui-inspector-panel)",
+        ):
+            assert selector in css
+        assert ".chirpui-result-card [data-chirpui-pressure" not in css
+
     def test_file_tree_with_header_actions_and_footer(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/file_tree.html" import file_tree %}'

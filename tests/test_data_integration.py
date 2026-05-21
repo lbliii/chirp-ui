@@ -423,10 +423,15 @@ class TestDataPage:
         assert "Workspace shell variant" in text
         assert "Forge Runners" in text
         assert "Queue depth above target" in text
-        assert "Workspace shell owns the inspector placement." in text
+        assert "inspector_panel owns the selected-object shape." in text
         assert "chirpui-workspace-shell" in text
         assert "chirpui-workspace-shell__sidebar" in text
         assert "chirpui-workspace-shell__inspector" in text
+        assert "chirpui-filter-rail" in text
+        assert "chirpui-result-collection" in text
+        assert "chirpui-result-card" in text
+        assert "chirpui-inspector-panel" in text
+        assert "chirpui-metric-strip" in text
         assert 'id="operations-workspace-shell-surface"' in text
         assert 'id="operations-workspace-shell-frame"' in text
         assert "ops-shell-command-bar" in text

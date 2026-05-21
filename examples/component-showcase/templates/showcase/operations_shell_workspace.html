@@ -6,10 +6,10 @@
 {% from "chirpui/command_bar.html" import command_bar %}
 {% from "chirpui/filter_bar.html" import filter_bar %}
 {% from "chirpui/workspace_shell.html" import workspace_shell %}
-{% from "chirpui/card.html" import card %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/chip_group.html" import chip_group %}
 {% from "chirpui/empty.html" import empty_state %}
+{% from "chirpui/workspace_primitives.html" import filter_rail, filter_rail_item, metric_strip, metric_item, result_collection, result_card, inspector_panel %}
 
 {% call container(cls="ops-shell-page") %}
 {% call stack() %}
@@ -142,23 +142,20 @@
   <span class="ops-shell-scope-label">{{ ops_area_label }}</span>
   {% end %}
   {% slot sidebar %}
-  <nav class="ops-shell-rail-list" aria-label="Operations areas">
+  {% call filter_rail(label="Operations areas") %}
     {% for area in ops_areas %}
-    <a class="ops-shell-rail-link{{ " is-active" if area.active else "" }}" href="{{ area.href }}"
-       hx-boost="false"
-       hx-get="{{ area.href }}"
-       hx-target="#operations-workspace-shell-surface"
-       hx-select="#operations-workspace-shell-surface"
-       hx-swap="outerHTML transition:true"
-       hx-push-url="true"
-       hx-sync="#operations-workspace-shell-surface:replace"
-       hx-indicator="#operations-workspace-shell-pending">
-      <span>{{ area.icon }}</span>
-      <strong>{{ area.label }}</strong>
-      <small>{{ area.count }}</small>
-    </a>
+    {{ filter_rail_item(area.href, area.label, count=area.count, icon=area.icon, active=area.active, attrs_map={
+      "hx-boost": "false",
+      "hx-get": area.href,
+      "hx-target": "#operations-workspace-shell-surface",
+      "hx-select": "#operations-workspace-shell-surface",
+      "hx-swap": "outerHTML transition:true",
+      "hx-push-url": "true",
+      "hx-sync": "#operations-workspace-shell-surface:replace",
+      "hx-indicator": "#operations-workspace-shell-pending"
+    }) }}
     {% end %}
-  </nav>
+  {% end %}
   {% end %}
 
   <section class="ops-shell-workspace-main" aria-label="Operations workload list">
@@ -170,22 +167,23 @@
       </div>
       {{ badge(ops_metrics.incidents ~ " incidents", variant="error" if ops_metrics.incidents else "muted") }}
     </div>
-    <div class="ops-shell-metrics" aria-label="Operations shell metrics">
-      {{ badge(ops_metrics.workloads ~ " workloads", variant="primary") }}
-      {{ badge(ops_metrics.watch ~ " watch", variant="warning" if ops_metrics.watch else "muted") }}
-      {{ badge(ops_metrics.regions ~ " regions", variant="info") }}
-      {{ badge(ops_metrics.avg_latency ~ " ms avg", variant="success" if ops_metrics.avg_latency < 100 else "warning") }}
-    </div>
+    {% call metric_strip(label="Operations shell metrics") %}
+      {{ metric_item(ops_metrics.workloads, "workloads") }}
+      {{ metric_item(ops_metrics.watch, "watch") }}
+      {{ metric_item(ops_metrics.regions, "regions") }}
+      {{ metric_item(ops_metrics.avg_latency ~ " ms", "average") }}
+    {% end %}
     <p class="ops-shell-payoff-copy">
       This route keeps the operations data but moves the shell structure into workspace_shell so the baseline comparison stays direct.
     </p>
     {% end %}
 
     {% if ops_filtered %}
-    <div class="ops-shell-card-grid" role="list">
+    {% call result_collection(label="Operations workload list") %}
       {% for workload in ops_filtered %}
-      {% call card(title=workload.name, subtitle=workload.summary, cls="ops-shell-workload-card", hoverable=true, attrs_map={"role": "listitem"}) %}
-        {% slot header_actions %}
+      {% call result_card(workload.name, subtitle=workload.summary, cls="ops-shell-workload-card") %}
+        {% slot mark %}{{ workload.name[:1] }}{% end %}
+        {% slot actions %}
         {{ badge(workload.status_label, variant=workload.status_variant) }}
         {% end %}
         <div class="ops-shell-workload-measures" aria-label="{{ workload.name }} measures">
@@ -213,7 +211,7 @@
         {% end %}
       {% end %}
       {% end %}
-    </div>
+    {% end %}
     {% else %}
     {% call empty_state(title="No workloads matched", icon="search") %}
       <p>Try another area, state, or search phrase.</p>
@@ -223,8 +221,8 @@
 
   {% slot inspector %}
   <div class="ops-shell-inspector" aria-label="Selected workload inspector">
-    {% call card(title=ops_selected.name, subtitle=ops_selected.summary, cls="ops-shell-inspector-card") %}
-      {% slot header_actions %}
+    {% call inspector_panel(title=ops_selected.name, subtitle=ops_selected.summary, cls="ops-shell-inspector-card") %}
+      {% slot actions %}
       {{ badge(ops_selected.status_label, variant=ops_selected.status_variant) }}
       {% end %}
       <dl class="ops-shell-inspector-list">
@@ -240,7 +238,7 @@
       </div>
       {% slot footer %}
       <span>Inspector rail</span>
-      <span>Workspace shell owns the inspector placement.</span>
+      <span>inspector_panel owns the selected-object shape.</span>
       {% end %}
     {% end %}
   </div>

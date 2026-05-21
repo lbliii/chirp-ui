@@ -260,6 +260,21 @@ the baseline yet. The same-data side-by-side route makes the payoff measurable
 and keeps us honest about whether `workspace_shell` solves the advanced-shell
 problem generally or only for the support page.
 
+## Dense Workspace Primitives
+
+The first promoted inner primitives are intentionally narrow:
+
+- `filter_rail` and `filter_rail_item` for sidebar navigation/filter rails.
+- `metric_strip` and `metric_item` for compact readouts that wrap predictably.
+- `result_collection` and `result_card` for dense searchable result surfaces.
+- `inspector_panel` for selected-object side panels.
+
+These primitives do not add a general positioning solver. They encode the
+repeated shapes that catalog, support, and operations workspaces were already
+hand-authoring, then emit the same layout-affinity attributes inside a
+registry-cited component surface. The `/operations-shell-workspace` route is
+the first migration target because it shares data with the page-owned baseline.
+
 ## Agent Contract
 
 The future agent-facing contract should answer:
