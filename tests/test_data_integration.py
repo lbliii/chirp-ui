@@ -456,12 +456,19 @@ class TestDataPage:
         assert "Workspace shell readout" in text
         assert "VectorShop" in text
         assert "Latency alert fired" in text
-        assert "Workspace shell owns the inspector placement." in text
+        assert "inspector_panel owns the selected-ticket shape." in text
         assert "chirpui-workspace-shell" in text
         assert "chirpui-workspace-shell__sidebar" in text
         assert "chirpui-workspace-shell__inspector" in text
+        assert "chirpui-filter-rail" in text
+        assert "chirpui-result-collection" in text
+        assert "chirpui-result-card" in text
+        assert "chirpui-inspector-panel" in text
+        assert "chirpui-metric-strip" in text
         assert 'class="support-shell-workspace"' not in text
         assert 'class="support-shell-rail support-shell-rail--queues"' not in text
+        assert "support-shell-rail-link" not in text
+        assert "support-shell-card-grid" not in text
         assert 'id="support-shell-surface"' in text
         assert 'id="support-shell-frame"' in text
         assert "support-shell-command-bar" in text

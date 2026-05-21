@@ -942,8 +942,7 @@
   .support-shell-surface,
   .support-shell-workspace-main,
   .support-shell-inspector-list,
-  .support-shell-timeline-list,
-  .support-shell-rail-list {
+  .support-shell-timeline-list {
     display: grid;
     gap: var(--chirpui-spacing);
   }
@@ -951,8 +950,7 @@
   .support-shell-page > .chirpui-stack,
   .support-shell-workspace-main,
   .support-shell-inspector-list,
-  .support-shell-timeline-list,
-  .support-shell-rail-list {
+  .support-shell-timeline-list {
     gap: var(--chirpui-spacing-xs);
   }
 
@@ -1019,9 +1017,7 @@
   .support-shell-frame-wrap,
   .support-shell-workspace-main,
   .support-shell-inspector,
-  .support-shell-card-grid,
-  .support-shell-ticket-measures,
-  .support-shell-metrics {
+  .support-shell-ticket-measures {
     min-width: 0;
   }
 
@@ -1029,56 +1025,6 @@
   .support-shell-inspector-card {
     border: 1px solid var(--support-shell-line);
     background: var(--support-shell-panel);
-  }
-
-  .support-shell-rail-link span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--support-shell-line);
-    background: color-mix(in srgb, var(--chirpui-bg) 92%, var(--chirpui-bg-subtle));
-    color: var(--chirpui-accent);
-    font-size: var(--chirpui-font-xs);
-    font-weight: var(--chirpui-font-weight-bold);
-  }
-
-  .support-shell-rail-link {
-    position: relative;
-    display: grid;
-    justify-items: center;
-    gap: var(--chirpui-spacing-xs);
-    min-height: 4.25rem;
-    border: 1px solid transparent;
-    border-radius: var(--chirpui-radius-md);
-    color: var(--chirpui-text);
-    text-align: center;
-    text-decoration: none;
-  }
-
-  .support-shell-rail-link span {
-    width: 2.35rem;
-    height: 2.35rem;
-    border-radius: var(--chirpui-radius-sm);
-  }
-
-  .support-shell-rail-link small {
-    position: absolute;
-    inset-block-start: var(--chirpui-spacing-xs);
-    inset-inline-end: var(--chirpui-spacing-xs);
-    min-width: 1.15rem;
-    border: 1px solid var(--support-shell-line);
-    border-radius: 999px;
-    background: var(--chirpui-bg);
-    color: var(--chirpui-text-muted);
-    font-size: .65rem;
-    font-weight: var(--chirpui-font-weight-bold);
-  }
-
-  .support-shell-rail-link:hover,
-  .support-shell-rail-link:focus-visible,
-  .support-shell-rail-link.is-active {
-    border-color: color-mix(in srgb, var(--chirpui-accent) 44%, var(--support-shell-line));
-    background: color-mix(in srgb, var(--chirpui-accent) 8%, var(--chirpui-bg));
   }
 
   .support-shell-spotlight {
@@ -1113,18 +1059,6 @@
     margin: 0;
     font-size: var(--chirpui-font-xl);
     line-height: var(--chirpui-line-height-tight);
-  }
-
-  .support-shell-metrics {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--chirpui-spacing-xs);
-  }
-
-  .support-shell-card-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--chirpui-spacing);
   }
 
   .support-shell-ticket-measures {
@@ -1171,21 +1105,8 @@
     margin: 0;
   }
 
-  @media (max-width: 78rem) {
-    .support-shell-rail-list {
-      display: flex;
-      overflow-x: auto;
-      padding-bottom: var(--chirpui-spacing-2xs);
-    }
-
-    .support-shell-rail-link {
-      min-width: 7rem;
-    }
-  }
-
   @media (max-width: 42rem) {
     .support-shell-search,
-    .support-shell-card-grid,
     .support-shell-ticket-measures {
       grid-template-columns: minmax(0, 1fr);
     }

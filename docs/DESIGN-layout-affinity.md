@@ -243,18 +243,20 @@ shell intentionally remains the page-owned baseline. A second operations route
 uses the same operations data through `workspace_shell`, so the comparison can
 separate domain differences from structural ownership.
 
-Measured on the shell body and example-local CSS after the support migration:
+Measured on the shell body and example-local CSS after the support migration
+and the dense primitive pass:
 
 | Surface | Structural owner | Shell template structural lines | Example CSS structural selector lines |
 |---|---|---:|---:|
 | Operations shell | page-owned `frame` + page grid | 13 | 37 |
 | Operations shell workspace variant | `workspace_shell` with same operations data | 8 | shared with baseline |
-| Support shell | `workspace_shell` | 8 | 26 |
+| Support shell | `workspace_shell` + dense workspace primitives | 8 | domain measures/timeline only |
 
 The reduction is not the main value by itself. The important change is contract
 ownership: sidebar/content/inspector placement moved from page CSS into
-`workspace_shell`, while page CSS now only owns product-specific rail links,
-cards, ticket measures, and copy density.
+`workspace_shell`, while the repeated rail/card/metric/inspector shapes moved
+into dense workspace primitives. Page CSS now only owns domain-specific
+measures, timeline rows, and copy density.
 
 Decision: keep `/operations-shell` as the baseline route and use
 `/operations-shell-workspace` as the direct migration candidate. Do not delete

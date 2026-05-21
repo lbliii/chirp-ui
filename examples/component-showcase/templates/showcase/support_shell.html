@@ -6,10 +6,10 @@
 {% from "chirpui/command_bar.html" import command_bar %}
 {% from "chirpui/filter_bar.html" import filter_bar %}
 {% from "chirpui/workspace_shell.html" import workspace_shell %}
-{% from "chirpui/card.html" import card %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/chip_group.html" import chip_group %}
 {% from "chirpui/empty.html" import empty_state %}
+{% from "chirpui/workspace_primitives.html" import filter_rail, filter_rail_item, metric_strip, metric_item, result_collection, result_card, inspector_panel %}
 
 {% call container(cls="support-shell-page") %}
 {% call stack() %}
@@ -142,23 +142,20 @@
   <span class="support-shell-scope-label">{{ support_queue_label }}</span>
   {% end %}
   {% slot sidebar %}
-  <nav class="support-shell-rail-list" aria-label="Support queues">
+  {% call filter_rail(label="Support queues") %}
     {% for queue in support_queues %}
-    <a class="support-shell-rail-link{{ " is-active" if queue.active else "" }}" href="{{ queue.href }}"
-       hx-boost="false"
-       hx-get="{{ queue.href }}"
-       hx-target="#support-shell-surface"
-       hx-select="#support-shell-surface"
-       hx-swap="outerHTML transition:true"
-       hx-push-url="true"
-       hx-sync="#support-shell-surface:replace"
-       hx-indicator="#support-shell-pending">
-      <span>{{ queue.icon }}</span>
-      <strong>{{ queue.label }}</strong>
-      <small>{{ queue.count }}</small>
-    </a>
+    {{ filter_rail_item(queue.href, queue.label, count=queue.count, icon=queue.icon, active=queue.active, attrs_map={
+      "hx-boost": "false",
+      "hx-get": queue.href,
+      "hx-target": "#support-shell-surface",
+      "hx-select": "#support-shell-surface",
+      "hx-swap": "outerHTML transition:true",
+      "hx-push-url": "true",
+      "hx-sync": "#support-shell-surface:replace",
+      "hx-indicator": "#support-shell-pending"
+    }) }}
     {% end %}
-  </nav>
+  {% end %}
   {% end %}
 
   <section class="support-shell-workspace-main" aria-label="Support ticket list">
@@ -170,21 +167,22 @@
       </div>
       {{ badge(support_metrics.escalated ~ " escalated", variant="error" if support_metrics.escalated else "muted") }}
     </div>
-    <div class="support-shell-metrics" aria-label="Support shell metrics">
-      {{ badge(support_metrics.tickets ~ " tickets", variant="primary") }}
-      {{ badge(support_metrics.waiting ~ " waiting", variant="warning" if support_metrics.waiting else "muted") }}
-      {{ badge(support_metrics.avg_score ~ " avg score", variant="success" if support_metrics.avg_score < 80 else "warning") }}
-    </div>
+    {% call metric_strip(label="Support shell metrics") %}
+      {{ metric_item(support_metrics.tickets, "tickets") }}
+      {{ metric_item(support_metrics.waiting, "waiting") }}
+      {{ metric_item(support_metrics.avg_score, "avg score") }}
+    {% end %}
     <p class="support-shell-payoff-copy">
       The repeated rail/content/inspector shape is now resolved by workspace_shell, while command and filter controls keep using action-strip affinity.
     </p>
     {% end %}
 
     {% if support_filtered %}
-    <div class="support-shell-card-grid" role="list">
+    {% call result_collection(label="Support ticket list") %}
       {% for ticket in support_filtered %}
-      {% call card(title=ticket.subject, subtitle=ticket.summary, cls="support-shell-ticket-card", hoverable=true, attrs_map={"role": "listitem"}) %}
-        {% slot header_actions %}
+      {% call result_card(ticket.subject, subtitle=ticket.summary, cls="support-shell-ticket-card") %}
+        {% slot mark %}{{ ticket.customer[:1] }}{% end %}
+        {% slot actions %}
         {{ badge(ticket.status_label, variant=ticket.status_variant) }}
         {% end %}
         <div class="support-shell-ticket-measures" aria-label="{{ ticket.subject }} measures">
@@ -212,7 +210,7 @@
         {% end %}
       {% end %}
       {% end %}
-    </div>
+    {% end %}
     {% else %}
     {% call empty_state(title="No tickets matched", icon="search") %}
       <p>Try another queue, state, or search phrase.</p>
@@ -222,8 +220,8 @@
 
   {% slot inspector %}
   <div class="support-shell-inspector" aria-label="Selected ticket inspector">
-    {% call card(title=support_selected.customer, subtitle=support_selected.subject, cls="support-shell-inspector-card") %}
-      {% slot header_actions %}
+    {% call inspector_panel(title=support_selected.customer, subtitle=support_selected.subject, cls="support-shell-inspector-card") %}
+      {% slot actions %}
       {{ badge(support_selected.status_label, variant=support_selected.status_variant) }}
       {% end %}
       <dl class="support-shell-inspector-list">
@@ -239,7 +237,7 @@
       </div>
       {% slot footer %}
       <span>Inspector rail</span>
-      <span>Workspace shell owns the inspector placement.</span>
+      <span>inspector_panel owns the selected-ticket shape.</span>
       {% end %}
     {% end %}
   </div>
