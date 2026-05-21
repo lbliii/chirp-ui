@@ -327,6 +327,12 @@ class TestLayout:
         assert "chirpui-stack--md" in html
         assert "chirpui-stack--xl" in html
 
+    def test_stack_css_owns_direct_child_rhythm_without_overriding_prose(self) -> None:
+        css = _chirpui_css()
+        stack_rule = css.split(":where(.chirpui-stack:not(.chirpui-prose))", 1)[1].split("}", 1)[0]
+        assert "margin-block: 0;" in stack_rule
+        assert ".chirpui-prose.chirpui-stack" in css
+
     def test_cluster(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import cluster %}'
@@ -334,6 +340,13 @@ class TestLayout:
         ).render()
         assert "chirpui-cluster" in html
         assert "chirpui-cluster--sm" in html
+
+    def test_cluster_css_owns_direct_child_rhythm(self) -> None:
+        css = _chirpui_css()
+        cluster_rule = css.split(
+            ":where(.chirpui-cluster) > :where(:not(script, style, template))", 1
+        )[1].split("}", 1)[0]
+        assert "margin: 0;" in cluster_rule
 
     def test_layer_default(self, env: Environment) -> None:
         html = env.from_string(

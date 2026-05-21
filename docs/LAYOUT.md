@@ -14,8 +14,9 @@ Wide content is still supported: put it in a child with **`overflow-x: auto`** (
 
 | Situation | Use |
 |-----------|-----|
+| Vertical rhythm | `stack()` — owns direct-child margin trimming so `gap` is the spacing source of truth. |
 | Responsive columns | `grid()` — `.chirpui-grid > *` sets `min-width: 0` automatically. Use `block()` when you need `span=`. Use `preset=` for fixed tracks (see *Grid presets* below). |
-| Chips, tags, variable-length rows | `cluster()` — `flex-wrap: wrap` by default. |
+| Chips, tags, variable-length rows | `cluster()` — `flex-wrap: wrap` by default and trims direct-child margins. |
 | LED-style indicators | `indicator_row()` — wraps by default; `nowrap=true` for single line. |
 | Flex row (title + actions) | `page_header`, `section_header`, `entity_header` harden the title column. For ad hoc flex rows, add `chirpui-min-w-0` on the shrinking child. |
 

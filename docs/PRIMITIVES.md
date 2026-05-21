@@ -107,6 +107,11 @@ Default vertical rhythm:
 {% end %}
 ```
 
+`stack()` owns spacing between its direct children. Ordinary child margins are
+trimmed so headings, paragraphs, cards, and controls use the stack gap instead
+of doubling or collapsing margins unpredictably. Use `.chirpui-prose` when you
+want long-form document margins to remain conventional.
+
 Non-default gap:
 
 ```kida
@@ -118,6 +123,10 @@ Non-default gap:
 ```
 
 ### `cluster()`
+
+`cluster()` owns inline wrapping rhythm and trims direct child margins. This
+keeps badges, buttons, chips, links, and small status fragments from bringing
+their own outside spacing into a row.
 
 Default wrapping row:
 

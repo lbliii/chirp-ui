@@ -209,6 +209,10 @@
     gap: var(--chirpui-space-stack-gap);
 }
 
+:where(.chirpui-stack:not(.chirpui-prose)) > :where(:not(script, style, template)) {
+    margin-block: 0;
+}
+
 .chirpui-stack--xs { gap: var(--chirpui-spacing-xs); }
 .chirpui-stack--sm { gap: var(--chirpui-spacing-sm); }
 .chirpui-stack--md { gap: var(--chirpui-spacing-md); }
@@ -220,6 +224,10 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--chirpui-space-cluster-gap);
+}
+
+:where(.chirpui-cluster) > :where(:not(script, style, template)) {
+    margin: 0;
 }
 
 .chirpui-cluster--xs { gap: var(--chirpui-spacing-xs); }
