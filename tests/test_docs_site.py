@@ -14,6 +14,8 @@ AGENT_SOURCE_MAP = REPO_ROOT / "docs" / "AGENT-SOURCE-MAP.md"
 AGENT_CURATED_SNIPPETS = REPO_ROOT / "docs" / "AGENT-CURATED-SNIPPETS.md"
 PATTERN_DOCS = {
     "navigation.md": "docs/NAVIGATION.md",
+    "search-shells.md": "docs/SEARCH-SHELL-RECIPES.md",
+    "layout-affinity.md": "docs/DESIGN-layout-affinity.md",
     "product-pages.md": "docs/PRODUCT-PAGE-PATTERNS.md",
     "media-sites.md": "docs/MEDIA-SITE-PATTERNS.md",
     "forums.md": "docs/FORUM-SITE-PATTERNS.md",
@@ -211,6 +213,31 @@ def test_navigation_pattern_publishes_application_chrome_sources() -> None:
     assert "This page is a published bridge" in text
     assert "Do not add a published-only application chrome API here" in text
     assert "docs/VISUAL-AUDIT-SHOWCASE.md" in text
+
+
+def test_layout_affinity_published_page_marks_prototype_contract() -> None:
+    text = (REPO_ROOT / "site" / "content" / "docs" / "patterns" / "layout-affinity.md").read_text(
+        encoding="utf-8"
+    )
+
+    for required in [
+        "type: doc",
+        "docs/DESIGN-layout-affinity.md",
+        "docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md",
+        "prototype",
+        "parent-scoped",
+        "layout_resolver",
+        "layout_parts",
+        "Prototype recipe attributes",
+        "Not yet descriptor API",
+        "Not yet manifest contract",
+        "Allowed only where documented parent resolvers consume them",
+        "not part of the current manifest contract",
+        "not promoted",
+        "Broad descendant selectors are",
+        "Authoring changes follow `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md`",
+    ]:
+        assert required in text
 
 
 def test_component_docs_are_published_site_sources() -> None:

@@ -201,6 +201,9 @@
     --chirpui-chip-color: var(--chirpui-accent);
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-2xs);
+    max-inline-size: 100%;
     min-height: calc(var(--chirpui-spacing) + var(--chirpui-spacing-xs));
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
     border: 1px solid var(--chirpui-border-subtle);
@@ -209,7 +212,10 @@
     color: color-mix(in srgb, var(--chirpui-text) 84%, var(--chirpui-text-muted));
     font-size: var(--chirpui-font-xs);
     line-height: var(--chirpui-line-height-tight);
+    overflow: hidden;
     text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 a.chirpui-chip:hover,
@@ -225,6 +231,11 @@ a.chirpui-chip:hover,
 
 .chirpui-chip--custom {
     border-color: color-mix(in srgb, var(--chirpui-chip-color) 42%, var(--chirpui-border));
+}
+
+a.chirpui-chip:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
 }
 }
 }

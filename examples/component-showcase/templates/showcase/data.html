@@ -26,7 +26,10 @@
 {% call block() %}
 <div id="data_bulk_bar" class="chirpui-bulk-bar-wrapper"></div>
 {% call filter_bar("/data/export", attrs_map={"id": "data_filters"}) %}
-  <div class="chirpui-action-strip__primary">
+  <div class="chirpui-action-strip__primary"
+       data-chirpui-role="search"
+       data-chirpui-pressure="flex"
+       data-chirpui-affinity="fill">
     {{ search_bar(
         "q",
         label="Search",
@@ -45,7 +48,9 @@
         }
     ) }}
   </div>
-  <div class="chirpui-action-strip__controls">
+  <div class="chirpui-action-strip__controls"
+       data-chirpui-role="filters"
+       data-chirpui-pressure="compress">
     <div class="chirpui-field chirpui-field--dense">
       <label class="chirpui-field__label" for="data_role">Role</label>
       <select class="chirpui-field__input" id="data_role" name="role"
@@ -83,7 +88,10 @@
     <input type="hidden" name="sort" value="name">
     <input type="hidden" name="dir" value="asc">
   </div>
-  <div class="chirpui-action-strip__actions">
+  <div class="chirpui-action-strip__actions"
+       data-chirpui-role="actions"
+       data-chirpui-pressure="rigid"
+       data-chirpui-affinity="end">
     <button type="submit" formtarget="_blank" class="chirpui-btn chirpui-btn--secondary">
       Export CSV
     </button>

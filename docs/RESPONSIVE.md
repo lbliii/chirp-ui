@@ -38,6 +38,22 @@ layout onto small screens.
   constrains long cell content at phone widths.
 - `rendered_content` constrains media and allows long links/code to wrap.
 
+## Dense Search Shells
+
+Recipe-level search shells are responsible for their full layout envelope, not
+only individual controls:
+
+| Tier | Expected behavior |
+|------|-------------------|
+| Stress phone | The query input, submit action, suggested queries, rails, and result cards must avoid page-level horizontal overflow at 320px. |
+| Phone | The command surface wraps, primary search controls use the available inline size, rails reflow into stacked or horizontal panels, and results use one column. |
+| Tablet | Search controls and hints can occupy separate rows. Facet rails may remain visible if the result workspace still has enough room to scan cards. |
+| Desktop | Multi-rail and multi-column result layouts are acceptable when each rail has stable minimums and the result workspace gets the flexible track. |
+
+Use wrapping command surfaces for primary search. Horizontal scrolling is
+reserved for secondary chip strips and tables where scrolling is the expected
+interaction.
+
 ## Guidance
 
 - Prefer `stack`, `cluster`, `grid`, and `frame` over app-defined utility
@@ -49,6 +65,5 @@ layout onto small screens.
   `inline_counter`, cast faces in `linked_avatar_stack`, and authoring surfaces
   in `composer_shell`.
 - Browser QA for responsive changes should cover at least 390px, 768px, 1024px,
-- Browser QA for responsive changes should cover at least 390px, 768px, 1024px,
-  and desktop widths. Application chrome and long-label stress tests should add
-  320px.
+  and desktop widths. Application chrome, dense search shells, and long-label
+  stress tests should add 320px.

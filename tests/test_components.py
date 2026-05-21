@@ -298,6 +298,18 @@ class TestLayout:
         ).render()
         assert "chirpui-frame--gap-lg" in html
 
+    def test_layout_affinity_frame_resolver_css_is_narrow_and_stack_cluster_unpromoted(
+        self,
+    ) -> None:
+        css = _chirpui_css()
+        assert '.chirpui-frame > [data-chirpui-role~="rail"]' in css
+        assert '.chirpui-frame > [data-chirpui-role~="content"]' in css
+        assert '.chirpui-frame > [data-chirpui-pressure~="compress"]' in css
+        assert ".chirpui-cluster > [data-chirpui-pressure" not in css
+        assert ".chirpui-cluster > [data-chirpui-affinity" not in css
+        assert ".chirpui-stack > [data-chirpui-pressure" not in css
+        assert ".chirpui-stack > [data-chirpui-affinity" not in css
+
     def test_stack(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import stack %}{% call stack() %}A{% end %}'
@@ -567,7 +579,11 @@ class TestWorkbench:
         assert "chirpui-workspace-shell" in html
         assert "chirpui-workspace-shell__toolbar" in html
         assert "chirpui-workspace-shell__layout" in html
+        assert "chirpui-workspace-shell__sidebar" in html
         assert "chirpui-workspace-shell__sidebar-panel" in html
+        assert 'data-chirpui-role="rail nav"' in html
+        assert 'data-chirpui-role="actions"' in html
+        assert 'data-chirpui-pressure="compress"' in html
         assert "Tree" in html
         assert "Main" in html
 
@@ -581,9 +597,21 @@ class TestWorkbench:
             "{% end %}"
         ).render()
         assert "chirpui-workspace-shell__content-layout" in html
+        assert "chirpui-workspace-shell__inspector" in html
         assert "chirpui-workspace-shell__inspector-panel" in html
+        assert 'data-chirpui-role="rail content"' in html
+        assert 'data-chirpui-affinity="end"' in html
         assert "Preview" in html
         assert "Preview body" in html
+
+    def test_workspace_shell_layout_affinity_css_is_component_scoped(self) -> None:
+        css = _chirpui_css()
+        assert '.chirpui-workspace-shell__heading[data-chirpui-pressure~="flex"]' in css
+        assert '.chirpui-workspace-shell__toolbar[data-chirpui-affinity~="end"]' in css
+        assert '.chirpui-workspace-shell__sidebar[data-chirpui-pressure~="compress"]' in css
+        assert '.chirpui-workspace-shell__inspector[data-chirpui-pressure~="compress"]' in css
+        assert ".chirpui-workspace-shell [data-chirpui-pressure" not in css
+        assert ".chirpui-workspace-shell [data-chirpui-affinity" not in css
 
     def test_file_tree_with_header_actions_and_footer(self, env: Environment) -> None:
         html = env.from_string(
@@ -2015,12 +2043,34 @@ class TestCard:
         assert "chirpui-card__body" in html
         assert "Body" in html
 
+    def test_card_css_has_quiet_header_footer_and_body_margin_reset(self) -> None:
+        css = _chirpui_css()
+        header_rule = css.split(".chirpui-card__header", 1)[1].split("}", 1)[0]
+        assert "flex-wrap: wrap" in header_rule
+        assert "background: color-mix" in header_rule
+        assert "var(--chirpui-border-subtle)" in header_rule
+        assert ".chirpui-card__body-content > :first-child" in css
+        assert ".chirpui-card__footer-wrap:not(:empty)" in css
+        assert "background: color-mix(in srgb, var(--chirpui-surface) 90%" in css
+        assert '.chirpui-card__header [data-chirpui-role~="content"]' in css
+        assert '.chirpui-card__header [data-chirpui-role~="actions"]' in css
+        assert '.chirpui-card__footer-wrap[data-chirpui-pressure~="compress"]' in css
+        assert '.chirpui-card__header-actions[data-chirpui-affinity~="end"]' in css
+        assert ":scope [data-chirpui-pressure" not in css
+        assert ":scope [data-chirpui-affinity" not in css
+
     def test_card_with_title(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/card.html" import card %}'
             '{% call card(title="Hello") %}Content{% end %}'
         ).render()
         assert "chirpui-card__header" in html
+        assert 'data-chirpui-role="content"' in html
+        assert 'data-chirpui-pressure="flex"' in html
+        assert 'data-chirpui-affinity="fill"' in html
+        assert 'data-chirpui-role="actions"' in html
+        assert 'data-chirpui-pressure="rigid"' in html
+        assert 'data-chirpui-affinity="end"' in html
         assert "Hello" in html
 
     def test_card_appearance_tone(self, env: Environment) -> None:
@@ -2213,6 +2263,10 @@ class TestCard:
         assert "builtin" in html
         assert "::demo" in html
         assert "tag" in html
+        assert 'data-chirpui-role="metadata"' in html
+        assert 'data-chirpui-pressure="compress"' in html
+        assert 'data-chirpui-affinity="block-start"' in html
+        assert 'data-chirpui-affinity="block-end"' in html
 
     def test_resource_card_full_link_uses_route_link_attrs_when_available(
         self, env: Environment
@@ -4031,6 +4085,32 @@ class TestActionContainers:
         field_rule = css.split(".chirpui-action-strip__inner .chirpui-field", 1)[1].split("}", 1)[0]
         assert "margin-block-end: 0" in field_rule
 
+    def test_command_bar_css_supports_direct_search_and_hint_groups(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-surface:has(> .chirpui-command-bar)" in css
+        assert (
+            '.chirpui-action-strip__inner\n    > :where([data-chirpui-role~="search"], form, [role="search"])'
+            in css
+        )
+        assert ":where(.chirpui-command-bar, .chirpui-filter-bar)" in css
+        assert '[data-chirpui-role~="hints"]' in css
+        assert '[data-chirpui-pressure~="compress"]' in css
+        assert '[data-chirpui-affinity~="end"]' in css
+        assert '.chirpui-action-strip__inner\n    > [data-chirpui-pressure~="flex"]' in css
+        assert '.chirpui-action-strip__inner\n    > [data-chirpui-affinity~="end"]' in css
+        assert ".chirpui-command-bar [data-chirpui-pressure" not in css
+        assert ".chirpui-command-bar [data-chirpui-affinity" not in css
+        assert ".chirpui-filter-bar [data-chirpui-pressure" not in css
+        assert ".chirpui-filter-bar [data-chirpui-affinity" not in css
+        assert "> div[aria-label]" in css
+        search_rule = css.split(
+            '[data-chirpui-role~="search"], form, [role="search"])',
+            1,
+        )[1].split("}", 1)[0]
+        assert "flex: 1 1 28rem" in search_rule
+        assert "flex-wrap: wrap" in search_rule
+        assert "min-inline-size: min(100%, 18rem)" in search_rule
+
     def test_filter_bar(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/filter_bar.html" import filter_bar %}'
@@ -4045,6 +4125,28 @@ class TestActionContainers:
         assert 'name="q"' in html
         assert "Apply" in html
 
+    def test_filter_bar_accepts_layout_affinity_recipe_markup(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_bar %}'
+            '{% call filter_bar("/items", attrs_map={"id": "item_filters"}) %}'
+            '<div class="chirpui-action-strip__primary" data-chirpui-role="search" '
+            'data-chirpui-pressure="flex" data-chirpui-affinity="fill">'
+            '<input name="q" type="search"></div>'
+            '<div class="chirpui-action-strip__controls" data-chirpui-role="filters" '
+            'data-chirpui-pressure="compress"><select name="role"><option>All</option></select></div>'
+            '<div class="chirpui-action-strip__actions" data-chirpui-role="actions" '
+            'data-chirpui-pressure="rigid" data-chirpui-affinity="end">'
+            '<button type="submit">Export</button></div>'
+            "{% end %}"
+        ).render()
+        assert 'id="item_filters"' in html
+        assert "chirpui-filter-bar" in html
+        assert 'data-chirpui-role="search"' in html
+        assert 'data-chirpui-role="filters"' in html
+        assert 'data-chirpui-role="actions"' in html
+        assert 'data-chirpui-pressure="rigid"' in html
+        assert 'data-chirpui-affinity="end"' in html
+
     def test_command_bar(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/command_bar.html" import command_bar %}'
@@ -4057,6 +4159,26 @@ class TestActionContainers:
         assert 'role="toolbar"' in html
         assert "Bulk edit" in html
         assert "Create" in html
+
+    def test_command_bar_accepts_link_native_search_recipe_markup(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_bar.html" import command_bar %}'
+            "{% call command_bar(wrap='wrap') %}"
+            '<form action="/catalog" method="get" role="search" '
+            'data-chirpui-role="search" data-chirpui-pressure="flex" '
+            'data-chirpui-affinity="fill">'
+            '<label for="q">Search</label><input id="q" name="q" type="search">'
+            '<button type="submit">Search</button></form>'
+            '<div aria-label="Suggested searches" data-chirpui-role="hints" '
+            'data-chirpui-pressure="compress" data-chirpui-affinity="end">'
+            '<a href="/catalog?q=api">API</a></div>'
+            "{% end %}"
+        ).render()
+        assert 'action="/catalog" method="get" role="search"' in html
+        assert 'data-chirpui-role="search"' in html
+        assert 'data-chirpui-pressure="compress"' in html
+        assert 'aria-label="Suggested searches"' in html
+        assert "chirpui-action-strip--wrap" in html
 
     def test_search_header(self, env: Environment) -> None:
         html = env.from_string(
@@ -5570,6 +5692,14 @@ class TestBadge:
         assert "chirpui-badge" in html
         assert "chirpui-badge--primary" in html
         assert "Active" in html
+
+    def test_badge_css_uses_compact_pill_shape_and_subtle_borders(self) -> None:
+        css = _chirpui_css()
+        badge_root = css.split("@scope (.chirpui-badge)", 1)[1].split(":scope:is(a)", 1)[0]
+        assert "border-radius: 999px" in badge_root
+        assert "min-block-size: 1.5rem" in badge_root
+        primary_rule = css.split(":scope.chirpui-badge--primary", 1)[1].split("}", 1)[0]
+        assert "color-mix(in srgb, var(--chirpui-primary) 40%" in primary_rule
 
     def test_badge_with_variant(self, env: Environment) -> None:
         html = env.from_string(

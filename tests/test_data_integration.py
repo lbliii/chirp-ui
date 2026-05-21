@@ -43,6 +43,14 @@ SHOWCASE_ROUTE_SMOKE_PATHS = (
     "/islands/upload-state",
     "/streaming",
     "/data-display",
+    "/catalog-shell",
+    "/catalog-shell?q=rag&category=intelligence",
+    "/operations-shell",
+    "/operations-shell?q=queues&area=compute&status=warning",
+    "/operations-shell-workspace",
+    "/operations-shell-workspace?q=queues&area=compute&status=warning",
+    "/support-shell",
+    "/support-shell?q=latency&queue=priority&status=danger",
     "/calendar",
     "/calendar/2026/5",
     "/calendar/2026/05",
@@ -219,6 +227,280 @@ class TestDataPage:
             logo_response = await client.get("/static/chirpui-logo.svg")
             assert logo_response.status == 200
             assert "<svg" in logo_response.text
+
+    @pytest.mark.asyncio
+    async def test_data_filter_bar_uses_layout_affinity_contract(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/data")
+
+        assert response.status == 200
+        text = response.text
+        assert 'id="data_filters"' in text
+        assert 'data-chirpui-role="search"' in text
+        assert 'data-chirpui-pressure="flex"' in text
+        assert 'data-chirpui-affinity="fill"' in text
+        assert 'data-chirpui-role="filters"' in text
+        assert 'data-chirpui-pressure="compress"' in text
+        assert 'data-chirpui-role="actions"' in text
+        assert 'data-chirpui-pressure="rigid"' in text
+        assert 'data-chirpui-affinity="end"' in text
+
+    @pytest.mark.asyncio
+    async def test_layout_page_uses_layout_affinity_primitives_contract(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/layout")
+
+        assert response.status == 200
+        text = response.text
+        assert "layout-affinity-demo" in text
+        assert 'data-chirpui-role="rail nav"' in text
+        assert 'data-chirpui-role="content"' in text
+        assert 'data-chirpui-role="metadata"' in text
+        assert 'data-chirpui-role="actions"' in text
+        assert 'data-chirpui-pressure="compress"' in text
+        assert 'data-chirpui-pressure="flex"' in text
+        assert 'data-chirpui-pressure="rigid"' in text
+        assert 'data-chirpui-affinity="fill"' in text
+        assert 'data-chirpui-affinity="end"' in text
+
+    @pytest.mark.asyncio
+    async def test_catalog_shell_returns_layered_catalog_recipe(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/catalog-shell?q=rag&category=intelligence")
+
+        assert response.status == 200
+        assert "Catalog search shell" in response.text
+        assert "Layered catalog browser" in response.text
+        assert "Intelligence" in response.text
+        assert "VectorLake" in response.text
+        assert "Design a RAG workflow" in response.text
+        assert "catalog-shell-product-card" in response.text
+        assert "catalog-shell-doc-link" in response.text
+        assert "catalog-shell-command-bar" in response.text
+        assert "chirpui-action-strip--wrap" in response.text
+        assert "chirpui-action-strip--scroll" not in response.text
+        assert "1 doc" in response.text
+        assert "1 records" not in response.text
+        assert 'id="catalog-shell-surface"' in response.text
+        assert 'id="catalog-shell-frame"' in response.text
+        assert 'hx-get="/catalog-shell"' in response.text
+        assert 'hx-trigger="input changed delay:120ms, search"' in response.text
+        assert 'hx-select="#catalog-shell-frame"' in response.text
+        assert 'hx-push-url="true"' in response.text
+        assert "x-on:htmx:before-request.window" in response.text
+        assert "catalog-shell-pending" in response.text
+
+    @pytest.mark.asyncio
+    async def test_catalog_shell_progressive_enhancement_contract(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get(
+                "/catalog-shell?q=rag&category=intelligence&family=Assistants&version=latest"
+            )
+
+        assert response.status == 200
+        text = response.text
+        assert (
+            '<form id="catalog-shell-controls" class="catalog-shell-search" action="/catalog-shell" method="get"'
+            in text
+        )
+        assert (
+            '<label class="chirpui-visually-hidden" for="catalog-shell-query">Search product documentation</label>'
+            in text
+        )
+        assert 'name="category" value="intelligence"' in text
+        assert 'name="family" value="Assistants"' in text
+        assert 'name="version" value="latest"' in text
+        assert 'id="catalog-shell-state" hidden' in text
+        assert 'hx-target="#catalog-shell-surface"' in text
+        assert 'hx-select="#catalog-shell-surface"' in text
+        assert 'hx-target="#catalog-shell-frame"' in text
+        assert 'hx-select="#catalog-shell-frame"' in text
+        assert 'hx-include="#catalog-shell-query, #catalog-shell-state"' in text
+        assert 'hx-sync="#catalog-shell-frame:replace"' in text
+        assert 'role="status" aria-live="polite"' in text
+        assert 'data-chirpui-role="search"' in text
+        assert 'data-chirpui-pressure="flex"' in text
+        assert 'data-chirpui-affinity="fill"' in text
+        assert 'data-chirpui-role="hints"' in text
+        assert 'data-chirpui-pressure="compress"' in text
+        assert 'data-chirpui-affinity="end"' in text
+        assert 'data-chirpui-role="status"' in text
+        assert 'data-chirpui-pressure="rigid"' in text
+        assert text.count('hx-indicator="#catalog-shell-pending"') >= 6
+        assert re.search(
+            r'<a class="catalog-shell-category-link[^"]*" href="/catalog-shell\?[^"]*category=data',
+            text,
+        )
+        assert re.search(
+            r'<a class="catalog-shell-family-link[^"]*" href="/catalog-shell\?[^"]*family=Assistants',
+            text,
+        )
+
+    @pytest.mark.asyncio
+    async def test_catalog_shell_scoped_counts_use_visible_doc_language(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            all_response = await client.get("/catalog-shell?version=latest")
+            intelligence_response = await client.get(
+                "/catalog-shell?category=intelligence&version=latest"
+            )
+            rag_response = await client.get(
+                "/catalog-shell?q=rag&category=intelligence&version=latest"
+            )
+            data_response = await client.get("/catalog-shell?category=data&version=latest")
+
+        assert all_response.status == 200
+        assert intelligence_response.status == 200
+        assert rag_response.status == 200
+        assert data_response.status == 200
+        assert "12 docs" in all_response.text
+        assert "3 docs" in intelligence_response.text
+        assert "1 doc" in rag_response.text
+        assert "2 docs" in data_response.text
+        assert "records" not in intelligence_response.text
+        assert "records" not in rag_response.text
+        assert "records" not in data_response.text
+
+    @pytest.mark.asyncio
+    async def test_catalog_shell_command_surface_wraps_instead_of_scrolling(
+        self, showcase_app
+    ) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/catalog-shell?version=latest")
+
+        assert response.status == 200
+        assert "catalog-shell-command-bar" in response.text
+        assert "chirpui-action-strip--wrap" in response.text
+        assert "chirpui-action-strip--scroll" not in response.text
+        assert 'aria-label="Suggested catalog searches"' in response.text
+
+    @pytest.mark.asyncio
+    async def test_operations_shell_returns_payoff_experiment(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/operations-shell?q=queues&area=compute&status=warning")
+
+        assert response.status == 200
+        text = response.text
+        assert "Operations workspace shell" in text
+        assert "Layout-affinity payoff experiment" in text
+        assert "Payoff readout" in text
+        assert "Forge Runners" in text
+        assert "Queue depth above target" in text
+        assert "Current resolver gap: panel placement is page-owned CSS." in text
+        assert 'id="operations-shell-surface"' in text
+        assert 'id="operations-shell-frame"' in text
+        assert "ops-shell-command-bar" in text
+        assert "ops-shell-filter-bar" in text
+        assert "chirpui-action-strip--wrap" in text
+        assert "chirpui-action-strip--scroll" not in text
+        assert 'data-chirpui-role="search"' in text
+        assert 'data-chirpui-role="hints"' in text
+        assert 'data-chirpui-role="status"' in text
+        assert 'data-chirpui-role="filters"' in text
+        assert 'data-chirpui-role="actions"' in text
+        assert 'data-chirpui-role="rail nav"' in text
+        assert 'data-chirpui-role="content"' in text
+        assert 'data-chirpui-pressure="flex"' in text
+        assert 'data-chirpui-pressure="compress"' in text
+        assert 'data-chirpui-pressure="rigid"' in text
+        assert 'data-chirpui-affinity="fill"' in text
+        assert 'data-chirpui-affinity="end"' in text
+        assert 'hx-target="#operations-shell-frame"' in text
+        assert 'hx-select="#operations-shell-frame"' in text
+        assert 'hx-indicator="#operations-shell-pending"' in text
+
+    @pytest.mark.asyncio
+    async def test_operations_shell_workspace_variant_preserves_baseline_comparison(
+        self, showcase_app
+    ) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get(
+                "/operations-shell-workspace?q=queues&area=compute&status=warning"
+            )
+
+        assert response.status == 200
+        text = response.text
+        assert "Operations workspace shell: workspace_shell" in text
+        assert "Workspace shell variant" in text
+        assert "Forge Runners" in text
+        assert "Queue depth above target" in text
+        assert "Workspace shell owns the inspector placement." in text
+        assert "chirpui-workspace-shell" in text
+        assert "chirpui-workspace-shell__sidebar" in text
+        assert "chirpui-workspace-shell__inspector" in text
+        assert 'id="operations-workspace-shell-surface"' in text
+        assert 'id="operations-workspace-shell-frame"' in text
+        assert "ops-shell-command-bar" in text
+        assert "ops-shell-filter-bar" in text
+        assert 'class="ops-shell-workspace"' not in text
+        assert 'class="ops-shell-rail ops-shell-rail--areas"' not in text
+        assert 'action="/operations-shell-workspace"' in text
+        assert 'hx-get="/operations-shell-workspace"' in text
+        assert 'hx-target="#operations-workspace-shell-frame"' in text
+        assert 'hx-select="#operations-workspace-shell-frame"' in text
+        assert 'hx-indicator="#operations-workspace-shell-pending"' in text
+
+    @pytest.mark.asyncio
+    async def test_support_shell_repeats_payoff_shape_in_second_domain(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/support-shell?q=latency&queue=priority&status=danger")
+
+        assert response.status == 200
+        text = response.text
+        assert "Support queue shell" in text
+        assert "Second layout-affinity payoff experiment" in text
+        assert "Workspace shell readout" in text
+        assert "VectorShop" in text
+        assert "Latency alert fired" in text
+        assert "Workspace shell owns the inspector placement." in text
+        assert "chirpui-workspace-shell" in text
+        assert "chirpui-workspace-shell__sidebar" in text
+        assert "chirpui-workspace-shell__inspector" in text
+        assert 'class="support-shell-workspace"' not in text
+        assert 'class="support-shell-rail support-shell-rail--queues"' not in text
+        assert 'id="support-shell-surface"' in text
+        assert 'id="support-shell-frame"' in text
+        assert "support-shell-command-bar" in text
+        assert "support-shell-filter-bar" in text
+        assert "chirpui-action-strip--wrap" in text
+        assert "chirpui-action-strip--scroll" not in text
+        assert 'data-chirpui-role="search"' in text
+        assert 'data-chirpui-role="hints"' in text
+        assert 'data-chirpui-role="status"' in text
+        assert 'data-chirpui-role="filters"' in text
+        assert 'data-chirpui-role="actions"' in text
+        assert 'data-chirpui-role="rail nav"' in text
+        assert 'data-chirpui-role="content"' in text
+        assert 'data-chirpui-pressure="flex"' in text
+        assert 'data-chirpui-pressure="compress"' in text
+        assert 'data-chirpui-pressure="rigid"' in text
+        assert 'data-chirpui-affinity="fill"' in text
+        assert 'data-chirpui-affinity="end"' in text
+        assert 'hx-target="#support-shell-frame"' in text
+        assert 'hx-select="#support-shell-frame"' in text
+        assert 'hx-indicator="#support-shell-pending"' in text
+
+    def test_support_shell_uses_workspace_shell_instead_of_page_owned_shell_grid(self) -> None:
+        support_template = (
+            _SHOWCASE_DIR / "templates" / "showcase" / "support_shell.html"
+        ).read_text(encoding="utf-8")
+        operations_template = (
+            _SHOWCASE_DIR / "templates" / "showcase" / "operations_shell.html"
+        ).read_text(encoding="utf-8")
+        operations_workspace_template = (
+            _SHOWCASE_DIR / "templates" / "showcase" / "operations_shell_workspace.html"
+        ).read_text(encoding="utf-8")
+        base_template = (_SHOWCASE_DIR / "templates" / "base.html").read_text(encoding="utf-8")
+
+        assert "workspace_shell(" in support_template
+        assert "frame(" not in support_template
+        assert "frame(" in operations_template
+        assert "workspace_shell(" in operations_workspace_template
+        assert "frame(" not in operations_workspace_template
+        assert ".support-shell-workspace {" not in base_template
+        assert ".support-shell-frame {" not in base_template
+        assert ".support-shell-rail {" not in base_template
+        assert ".ops-shell-workspace {" in base_template
+        assert ".ops-shell-frame {" in base_template
 
     @pytest.mark.asyncio
     async def test_htmx_page_does_not_emit_demo_toasts_on_load(self, showcase_app) -> None:

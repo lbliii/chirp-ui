@@ -132,6 +132,22 @@
     min-width: 0;
 }
 
+.chirpui-frame > [data-chirpui-role~="rail"],
+.chirpui-frame > [data-chirpui-role~="nav"] {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-frame > [data-chirpui-role~="content"],
+.chirpui-frame > [data-chirpui-pressure~="flex"] {
+    min-inline-size: 0;
+}
+
+.chirpui-frame > [data-chirpui-pressure~="compress"] {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+}
+
 .chirpui-frame--gap-sm {
     gap: var(--chirpui-spacing-sm);
 }

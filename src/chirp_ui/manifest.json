@@ -4924,6 +4924,7 @@
       "elements": [
         "body",
         "body-actions",
+        "body-content",
         "footer",
         "footer-wrap",
         "header",
@@ -4963,6 +4964,7 @@
         "chirpui-card--warning",
         "chirpui-card__body",
         "chirpui-card__body-actions",
+        "chirpui-card__body-content",
         "chirpui-card__footer",
         "chirpui-card__footer-wrap",
         "chirpui-card__header",
@@ -16192,6 +16194,7 @@
         "input"
       ],
       "emits": [
+        "chirpui-search-bar",
         "chirpui-search-bar--with-icon",
         "chirpui-search-bar__btn",
         "chirpui-search-bar__icon",
@@ -16310,9 +16313,7 @@
       "template": "forms.html",
       "tokens": [],
       "tones": [],
-      "trim_emits": [
-        "chirpui-search-bar"
-      ],
+      "trim_emits": [],
       "variants": []
     },
     "search-header": {
@@ -22273,8 +22274,12 @@
         "content-layout",
         "header",
         "heading",
+        "inspector",
+        "inspector-panel",
         "layout",
         "main",
+        "sidebar",
+        "sidebar-panel",
         "subtitle",
         "title",
         "toolbar"
@@ -22284,8 +22289,12 @@
         "chirpui-workspace-shell__content-layout",
         "chirpui-workspace-shell__header",
         "chirpui-workspace-shell__heading",
+        "chirpui-workspace-shell__inspector",
+        "chirpui-workspace-shell__inspector-panel",
         "chirpui-workspace-shell__layout",
         "chirpui-workspace-shell__main",
+        "chirpui-workspace-shell__sidebar",
+        "chirpui-workspace-shell__sidebar-panel",
         "chirpui-workspace-shell__subtitle",
         "chirpui-workspace-shell__title",
         "chirpui-workspace-shell__toolbar"
@@ -22439,8 +22448,8 @@
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 124,
       "explicit_extra_classes": 526,
-      "explicit_trim_blocks": 71,
-      "explicit_trim_classes": 98
+      "explicit_trim_blocks": 70,
+      "explicit_trim_classes": 97
     },
     "token_categories": {
       "color": 142,

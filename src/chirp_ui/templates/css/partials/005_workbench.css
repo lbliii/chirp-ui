@@ -205,6 +205,11 @@
     min-width: 0;
 }
 
+.chirpui-workspace-shell__heading[data-chirpui-pressure~="flex"],
+.chirpui-workspace-shell__main[data-chirpui-pressure~="flex"] {
+    min-inline-size: 0;
+}
+
 .chirpui-workspace-shell__title {
     margin: 0;
     font-family: var(--chirpui-ui-font-family);
@@ -227,6 +232,10 @@
     flex-shrink: 0;
 }
 
+.chirpui-workspace-shell__toolbar[data-chirpui-affinity~="end"] {
+    margin-inline-start: auto;
+}
+
 .chirpui-workspace-shell__toolbar:empty {
     display: none;
 }
@@ -234,6 +243,24 @@
 .chirpui-workspace-shell__layout,
 .chirpui-workspace-shell__content-layout {
     min-height: var(--chirpui-workspace-min-height);
+}
+
+.chirpui-workspace-shell__sidebar,
+.chirpui-workspace-shell__inspector {
+    min-inline-size: 0;
+    min-block-size: 0;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-workspace-shell__sidebar-panel,
+.chirpui-workspace-shell__inspector-panel {
+    min-inline-size: 0;
+    min-block-size: 0;
+}
+
+.chirpui-workspace-shell__sidebar[data-chirpui-pressure~="compress"],
+.chirpui-workspace-shell__inspector[data-chirpui-pressure~="compress"] {
+    max-inline-size: 100%;
 }
 
 .chirpui-workspace-shell__main {

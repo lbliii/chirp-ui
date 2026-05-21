@@ -23,6 +23,17 @@ Use legacy helpers only for narrow compatibility cases such as truncation or loc
 
 `actions`, `flow`, and `prose` are CSS primitives today. The rest are Kida macros in `chirpui/layout.html`.
 
+Experimental layout affinity is being explored as a recipe-level contract for
+agentic composition. See [DESIGN-layout-affinity.md](DESIGN-layout-affinity.md)
+for the proposed `data-chirpui-role`, `data-chirpui-pressure`, and
+`data-chirpui-affinity` vocabulary. Treat those attributes as prototype
+resolver hints until they are promoted through the registry and manifest.
+The active rollout is tracked in
+[PLAN-layout-affinity-rollout.md](plans/PLAN-layout-affinity-rollout.md).
+Maintainers adding resolver behavior must follow
+[LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md)
+so low-level primitives do not become utility-class containers.
+
 For product-site pages, use these primitives through the recipes in
 [PRODUCT-PAGE-PATTERNS.md](PRODUCT-PAGE-PATTERNS.md). Those recipes show how
 to compose hero, proof, lifecycle, customer story, and CTA sections without

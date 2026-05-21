@@ -13,8 +13,26 @@
             height: 100%;
         }
 
+        :scope .chirpui-card__header {
+            align-items: flex-start;
+        }
+
+        :scope .chirpui-card__body {
+            display: grid;
+            gap: var(--chirpui-spacing-sm);
+        }
+
         .chirpui-resource-card__description {
             margin: 0;
+            color: var(--chirpui-text-muted);
+            line-height: var(--chirpui-line-height-relaxed);
+        }
+
+        :scope .chirpui-card__footer-wrap:not(:empty) {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: var(--chirpui-spacing-sm);
         }
     }
 }

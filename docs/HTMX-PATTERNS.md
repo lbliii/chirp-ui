@@ -156,6 +156,20 @@ shell-level navigation request does not accidentally receive a page-root
 fragment. If a boosted shell route changes route-scoped shell actions, include
 an out-of-band update for `#chirp-shell-actions`.
 
+### Search shell progressive enhancement
+
+Dense search shells should use the same URL contract for native HTML and HTMX:
+
+| Surface | Required pattern |
+|---------|------------------|
+| Search form | Native `method="get"` and `action` with hidden inputs for active facets. HTMX submit targets/selects the whole search surface and pushes the URL. |
+| Live search input | Named query input with `hx-trigger="input changed delay:..."`, `hx-target` and `hx-select` on the result frame, `hx-include` for query plus hidden state, `hx-push-url="true"`, and replacement sync. |
+| Suggested queries and facets | Real `href` values first; matching `hx-get` values second. Use `hx-boost="false"` inside boosted shells. |
+| Pending status | One scoped `role="status"` indicator referenced by `hx-indicator` from every search-shell control. |
+
+See [SEARCH-SHELL-RECIPES.md](SEARCH-SHELL-RECIPES.md) for the full catalog
+shell recipe, scoped count semantics, responsive tiers, and browser proof.
+
 ---
 
 ## `build_hx_attrs()` — the merge function
@@ -187,5 +201,6 @@ Or with the dict pattern:
 ## See also
 
 - [DND-FRAGMENT-ISLAND.md](DND-FRAGMENT-ISLAND.md) — Fragment island patterns for drag-and-drop regions
+- [SEARCH-SHELL-RECIPES.md](SEARCH-SHELL-RECIPES.md) — Dense catalog/search shell progressive enhancement contracts
 - [HTMX-ADVANCEMENT.md](HTMX-ADVANCEMENT.md) — Design decisions for htmx integration
 - [ANTI-FOOTGUNS.md](ANTI-FOOTGUNS.md) — Common htmx pitfalls and how chirp-ui prevents them

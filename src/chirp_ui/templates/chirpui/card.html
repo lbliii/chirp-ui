@@ -44,11 +44,11 @@
     {% if title %}
         <summary class="chirpui-card__header">
             {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
-            <div class="chirpui-card__header-content">
+            <div class="chirpui-card__header-content" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
                 <span class="chirpui-card__title">{{ title }}</span>
                 {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
             </div>
-            <div class="chirpui-card__header-actions">{% slot header_actions %}</div>
+            <div class="chirpui-card__header-actions" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">{% slot header_actions %}</div>
         </summary>
     {% end %}
     <div class="chirpui-card__media">{% slot media %}</div>
@@ -57,18 +57,18 @@
         <div class="chirpui-card__body-actions">{% slot body_actions %}</div>
     </div>
     {#- footer= string param is deprecated; use {% slot footer %} instead -#}
-    <div class="chirpui-card__footer-wrap">{% slot footer %}{{ _footer_text or "" }}</div>
+    <div class="chirpui-card__footer-wrap" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}{{ _footer_text or "" }}</div>
 </details>
 {% else %}
 <article class="{{ _card_class }}"{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}>
     {% if title %}
         <header class="chirpui-card__header">
             {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
-            <div class="chirpui-card__header-content">
+            <div class="chirpui-card__header-content" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
                 <span class="chirpui-card__title">{{ title }}</span>
                 {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
             </div>
-            <div class="chirpui-card__header-actions">{% slot header_actions %}</div>
+            <div class="chirpui-card__header-actions" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">{% slot header_actions %}</div>
         </header>
     {% end %}
     <div class="chirpui-card__media">{% slot media %}</div>
@@ -77,7 +77,7 @@
         <div class="chirpui-card__body-actions">{% slot body_actions %}</div>
     </div>
     {#- footer= string param is deprecated; use {% slot footer %} instead -#}
-    <div class="chirpui-card__footer-wrap">{% slot footer %}{{ _footer_text or "" }}</div>
+    <div class="chirpui-card__footer-wrap" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}{{ _footer_text or "" }}</div>
 </article>
 {% end %}
 {% end %}
@@ -86,11 +86,11 @@
 {% def card_header(title, subtitle=none, icon=none, cls="") %}
 <header class="chirpui-card__header{{ " " ~ cls if cls else "" }}">
     {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
-    <div class="chirpui-card__header-content">
+    <div class="chirpui-card__header-content" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
         <span class="chirpui-card__title">{{ title }}</span>
         {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
     </div>
-    <div class="chirpui-card__header-actions">
+    <div class="chirpui-card__header-actions" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">
         {% slot %}
     </div>
 </header>
@@ -108,8 +108,8 @@
 {% def card_link(href, title, cls="") %}
 <a href="{{ href }}" class="chirpui-card chirpui-card--link{{ " " ~ cls if cls else "" }}"{{ route_link_attrs(href) | html_attrs }}>
     <header class="chirpui-card__header">
-        <div class="chirpui-card__header-badges">{% slot header_badge %}</div>
-        <div class="chirpui-card__header-content">
+        <div class="chirpui-card__header-badges" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="start">{% slot header_badge %}</div>
+        <div class="chirpui-card__header-content" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
             <span class="chirpui-card__title">{{ title }}</span>
             <div class="chirpui-card__header-subtitle">{% slot header_subtitle %}</div>
         </div>
@@ -117,7 +117,7 @@
     <div class="chirpui-card__body">
         {% slot %}
     </div>
-    <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
+    <div class="chirpui-card__footer-wrap" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}</div>
 </a>
 {% end %}
 
@@ -125,11 +125,11 @@
    Named slots: top_meta (above main link), header_badge, header_subtitle, footer, default (body). #}
 {% def card_main_link(href, title, cls="") %}
 <article class="chirpui-card chirpui-card--linked{{ " " ~ cls if cls else "" }}">
-    <div class="chirpui-card__top-meta">{% slot top_meta %}</div>
+    <div class="chirpui-card__top-meta" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-start">{% slot top_meta %}</div>
     <a href="{{ href }}" class="chirpui-card__main-link"{{ route_link_attrs(href) | html_attrs }}>
         <header class="chirpui-card__header">
-            <div class="chirpui-card__header-badges">{% slot header_badge %}</div>
-            <div class="chirpui-card__header-content">
+            <div class="chirpui-card__header-badges" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="start">{% slot header_badge %}</div>
+            <div class="chirpui-card__header-content" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
                 <span class="chirpui-card__title">{{ title }}</span>
                 <div class="chirpui-card__header-subtitle">{% slot header_subtitle %}</div>
             </div>
@@ -138,7 +138,7 @@
             {% slot %}
         </div>
     </a>
-    <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
+    <div class="chirpui-card__footer-wrap" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}</div>
 </article>
 {% end %}
 
@@ -150,7 +150,7 @@
 {% if link_mode == "main" %}
 <article class="chirpui-card chirpui-card--linked chirpui-resource-card{{ " " ~ cls if cls else "" }}">
     {% if top_meta %}
-    <div class="chirpui-card__top-meta">
+    <div class="chirpui-card__top-meta" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-start">
         {% if top_meta_href %}
         <a href="{{ top_meta_href }}" class="chirpui-font-xs chirpui-text-muted chirpui-font-mono"{% if top_meta_title %} title="{{ top_meta_title }}"{% endif %}{{ route_link_attrs(top_meta_href) | html_attrs }}>{{ top_meta }}</a>
         {% else %}
@@ -160,8 +160,8 @@
     {% endif %}
     <a href="{{ href }}" class="chirpui-card__main-link"{{ route_link_attrs(href) | html_attrs }}>
         <header class="chirpui-card__header">
-            <div class="chirpui-card__header-badges">{% slot badges %}</div>
-            <div class="chirpui-card__header-content">
+            <div class="chirpui-card__header-badges" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="start">{% slot badges %}</div>
+            <div class="chirpui-card__header-content" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
                 <span class="chirpui-card__title">{{ title }}</span>
                 <div class="chirpui-card__header-subtitle">{% slot subtitle %}</div>
             </div>
@@ -171,18 +171,18 @@
             {% slot %}
         </div>
     </a>
-    <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
+    <div class="chirpui-card__footer-wrap" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}</div>
 </article>
 {% else %}
 <a href="{{ href }}" class="chirpui-card chirpui-card--link chirpui-resource-card{{ " " ~ cls if cls else "" }}"{{ route_link_attrs(href) | html_attrs }}>
     {% if top_meta %}
-    <div class="chirpui-card__top-meta">
+    <div class="chirpui-card__top-meta" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-start">
         <span class="chirpui-font-xs chirpui-text-muted chirpui-font-mono"{% if top_meta_title %} title="{{ top_meta_title }}"{% endif %}>{{ top_meta }}</span>
     </div>
     {% endif %}
     <header class="chirpui-card__header">
-        <div class="chirpui-card__header-badges">{% slot badges %}</div>
-        <div class="chirpui-card__header-content">
+        <div class="chirpui-card__header-badges" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="start">{% slot badges %}</div>
+        <div class="chirpui-card__header-content" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
             <span class="chirpui-card__title">{{ title }}</span>
             <div class="chirpui-card__header-subtitle">{% slot subtitle %}</div>
         </div>
@@ -191,7 +191,7 @@
         {% if description %}<p class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description">{{ description }}</p>{% endif %}
         {% slot %}
     </div>
-    <div class="chirpui-card__footer-wrap">{% slot footer %}</div>
+    <div class="chirpui-card__footer-wrap" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}</div>
 </a>
 {% endif %}
 {% end %}

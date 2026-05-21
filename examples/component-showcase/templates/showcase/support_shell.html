@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/filter_bar.html" import filter_bar %}
+{% from "chirpui/workspace_shell.html" import workspace_shell %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group %}
+{% from "chirpui/empty.html" import empty_state %}
+
+{% call container(cls="support-shell-page") %}
+{% call stack() %}
+{{ page_header("Support queue shell", subtitle="Second layout-affinity payoff experiment for a high-density customer operations workspace.") }}
+
+<div id="support-shell-surface" class="support-shell-surface"
+     x-data="{ pending: false }"
+     x-bind:class="{ 'is-pending': pending }"
+     x-on:htmx:before-request.window="if ($event.target.closest && $event.target.closest('#support-shell-surface')) pending = true"
+     x-on:htmx:after-settle.window="if ($event.target.closest && $event.target.closest('#support-shell-surface')) pending = false"
+     x-on:htmx:response-error.window="pending = false">
+
+{% call command_bar(surface_variant="default", density="sm", wrap="wrap", aria_label="Support queue command controls", cls="support-shell-command-bar") %}
+  <form id="support-shell-controls" class="support-shell-search" action="/support-shell" method="get"
+        data-chirpui-role="search"
+        data-chirpui-pressure="flex"
+        data-chirpui-affinity="fill"
+        hx-get="/support-shell"
+        hx-trigger="submit"
+        hx-target="#support-shell-surface"
+        hx-select="#support-shell-surface"
+        hx-swap="outerHTML transition:true"
+        hx-push-url="true"
+        hx-sync="#support-shell-surface:replace"
+        hx-indicator="#support-shell-pending">
+    <input type="hidden" name="queue" value="{{ support_queue }}">
+    <input type="hidden" name="status" value="{{ support_status }}">
+    <label class="chirpui-visually-hidden" for="support-shell-query">Search support queue</label>
+    <input id="support-shell-query" class="chirpui-field__input" name="q" type="search"
+           value="{{ support_query }}" placeholder="Search customers, tickets, owners, tags..."
+           autocomplete="off"
+           x-ref="supportQuery"
+           hx-get="/support-shell"
+           hx-trigger="input changed delay:120ms, search"
+           hx-target="#support-shell-frame"
+           hx-select="#support-shell-frame"
+           hx-swap="outerHTML transition:true"
+           hx-include="#support-shell-controls"
+           hx-push-url="true"
+           hx-sync="#support-shell-frame:replace"
+           hx-indicator="#support-shell-pending">
+    {{ btn("Search", variant="primary", size="sm", type="submit") }}
+  </form>
+  <div class="support-shell-hints" aria-label="Suggested support searches"
+       data-chirpui-role="hints"
+       data-chirpui-pressure="compress"
+       data-chirpui-affinity="end">
+    <span id="support-shell-pending" class="support-shell-pending" role="status" aria-live="polite"
+          data-chirpui-role="status"
+          data-chirpui-pressure="rigid">Updating</span>
+    {% for hint in support_hints %}
+    <a class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm" href="{{ hint.href }}"
+       data-query="{{ hint.label }}"
+       x-on:click="$refs.supportQuery.value = $el.dataset.query"
+       hx-boost="false"
+       hx-get="{{ hint.href }}"
+       hx-target="#support-shell-surface"
+       hx-select="#support-shell-surface"
+       hx-swap="outerHTML transition:true"
+       hx-push-url="true"
+       hx-sync="#support-shell-surface:replace"
+       hx-indicator="#support-shell-pending"><span class="chirpui-btn__label">{{ hint.label }}</span></a>
+    {% end %}
+  </div>
+{% end %}
+
+{% call filter_bar("/support-shell", attrs_map={
+    "id": "support-shell-filter-form",
+    "hx-get": "/support-shell",
+    "hx-trigger": "change delay:80ms from:select",
+    "hx-target": "#support-shell-surface",
+    "hx-select": "#support-shell-surface",
+    "hx-swap": "outerHTML transition:true",
+    "hx-push-url": "true",
+    "hx-sync": "#support-shell-surface:replace",
+    "hx-indicator": "#support-shell-pending"
+  }, surface_variant="muted", density="sm", wrap="wrap", cls="support-shell-filter-bar") %}
+  <div class="chirpui-action-strip__primary"
+       data-chirpui-role="search"
+       data-chirpui-pressure="flex"
+       data-chirpui-affinity="fill">
+    <input type="hidden" name="q" value="{{ support_query }}">
+    <span class="support-shell-scope-label">{{ support_queue_label }}</span>
+  </div>
+  <div class="chirpui-action-strip__controls"
+       data-chirpui-role="filters"
+       data-chirpui-pressure="compress">
+    <div class="chirpui-field chirpui-field--dense">
+      <label class="chirpui-field__label" for="support-shell-queue">Queue</label>
+      <select class="chirpui-field__input" id="support-shell-queue" name="queue">
+        <option value="">All queues</option>
+        {% for queue in support_queues %}
+        <option value="{{ queue.id }}"{% if queue.active %} selected{% end %}>{{ queue.label }}</option>
+        {% end %}
+      </select>
+    </div>
+    <div class="chirpui-field chirpui-field--dense">
+      <label class="chirpui-field__label" for="support-shell-status">State</label>
+      <select class="chirpui-field__input" id="support-shell-status" name="status">
+        {% for item in support_status_items %}
+        <option value="{{ item.id }}"{% if item.active %} selected{% end %}>{{ item.label }}</option>
+        {% end %}
+      </select>
+    </div>
+  </div>
+  <div class="chirpui-action-strip__actions"
+       data-chirpui-role="actions"
+       data-chirpui-pressure="rigid"
+       data-chirpui-affinity="end">
+    <a class="chirpui-btn chirpui-btn--secondary chirpui-btn--sm" href="{{ support_reset_href }}"
+       hx-boost="false"
+       hx-get="{{ support_reset_href }}"
+       hx-target="#support-shell-surface"
+       hx-select="#support-shell-surface"
+       hx-swap="outerHTML transition:true"
+       hx-push-url="true"
+       hx-sync="#support-shell-surface:replace"
+       hx-indicator="#support-shell-pending"><span class="chirpui-btn__label">Reset shell</span></a>
+  </div>
+{% end %}
+
+<section id="support-shell-frame" class="support-shell-frame-wrap" aria-label="Support queue results" aria-live="polite">
+{% call workspace_shell("Support queue workspace",
+                        subtitle="workspace_shell now owns the sidebar, content, and inspector placement.",
+                        sidebar_title="Queues",
+                        show_inspector=true,
+                        inspector_title="Selected ticket",
+                        cls="support-shell-workspace-shell") %}
+  {% slot toolbar %}
+  <span class="support-shell-scope-label">{{ support_queue_label }}</span>
+  {% end %}
+  {% slot sidebar %}
+  <nav class="support-shell-rail-list" aria-label="Support queues">
+    {% for queue in support_queues %}
+    <a class="support-shell-rail-link{{ " is-active" if queue.active else "" }}" href="{{ queue.href }}"
+       hx-boost="false"
+       hx-get="{{ queue.href }}"
+       hx-target="#support-shell-surface"
+       hx-select="#support-shell-surface"
+       hx-swap="outerHTML transition:true"
+       hx-push-url="true"
+       hx-sync="#support-shell-surface:replace"
+       hx-indicator="#support-shell-pending">
+      <span>{{ queue.icon }}</span>
+      <strong>{{ queue.label }}</strong>
+      <small>{{ queue.count }}</small>
+    </a>
+    {% end %}
+  </nav>
+  {% end %}
+
+  <section class="support-shell-workspace-main" aria-label="Support ticket list">
+    {% call block(cls="support-shell-spotlight") %}
+    <div class="support-shell-spotlight-head">
+      <div>
+        <p class="support-shell-kicker">Workspace shell readout</p>
+        <h2>{{ support_metrics.tickets }} tickets in {{ support_queue_label }}</h2>
+      </div>
+      {{ badge(support_metrics.escalated ~ " escalated", variant="error" if support_metrics.escalated else "muted") }}
+    </div>
+    <div class="support-shell-metrics" aria-label="Support shell metrics">
+      {{ badge(support_metrics.tickets ~ " tickets", variant="primary") }}
+      {{ badge(support_metrics.waiting ~ " waiting", variant="warning" if support_metrics.waiting else "muted") }}
+      {{ badge(support_metrics.avg_score ~ " avg score", variant="success" if support_metrics.avg_score < 80 else "warning") }}
+    </div>
+    <p class="support-shell-payoff-copy">
+      The repeated rail/content/inspector shape is now resolved by workspace_shell, while command and filter controls keep using action-strip affinity.
+    </p>
+    {% end %}
+
+    {% if support_filtered %}
+    <div class="support-shell-card-grid" role="list">
+      {% for ticket in support_filtered %}
+      {% call card(title=ticket.subject, subtitle=ticket.summary, cls="support-shell-ticket-card", hoverable=true, attrs_map={"role": "listitem"}) %}
+        {% slot header_actions %}
+        {{ badge(ticket.status_label, variant=ticket.status_variant) }}
+        {% end %}
+        <div class="support-shell-ticket-measures" aria-label="{{ ticket.subject }} measures">
+          <span><strong>{{ ticket.score }}</strong><small>Score</small></span>
+          <span><strong>{{ ticket.age }}</strong><small>Age</small></span>
+          <span><strong>{{ ticket.plan }}</strong><small>Plan</small></span>
+        </div>
+        {% call chip_group(label=ticket.subject ~ " tags") %}
+          {% for tag in ticket.tags %}
+          <span class="chirpui-chip">{{ tag }}</span>
+          {% end %}
+        {% end %}
+        {% slot footer %}
+        <span>{{ ticket.customer }}</span>
+        <span>Owner {{ ticket.owner }}</span>
+        <a href="{{ ticket.href }}"
+           hx-boost="false"
+           hx-get="{{ ticket.href }}"
+           hx-target="#support-shell-frame"
+           hx-select="#support-shell-frame"
+           hx-swap="outerHTML transition:true"
+           hx-push-url="true"
+           hx-sync="#support-shell-frame:replace"
+           hx-indicator="#support-shell-pending">Inspect</a>
+        {% end %}
+      {% end %}
+      {% end %}
+    </div>
+    {% else %}
+    {% call empty_state(title="No tickets matched", icon="search") %}
+      <p>Try another queue, state, or search phrase.</p>
+    {% end %}
+    {% endif %}
+  </section>
+
+  {% slot inspector %}
+  <div class="support-shell-inspector" aria-label="Selected ticket inspector">
+    {% call card(title=support_selected.customer, subtitle=support_selected.subject, cls="support-shell-inspector-card") %}
+      {% slot header_actions %}
+      {{ badge(support_selected.status_label, variant=support_selected.status_variant) }}
+      {% end %}
+      <dl class="support-shell-inspector-list">
+        <div><dt>Owner</dt><dd>{{ support_selected.owner }}</dd></div>
+        <div><dt>Plan</dt><dd>{{ support_selected.plan }}</dd></div>
+        <div><dt>Age</dt><dd>{{ support_selected.age }}</dd></div>
+        <div><dt>Score</dt><dd>{{ support_selected.score }}</dd></div>
+      </dl>
+      <div class="support-shell-timeline-list" aria-label="{{ support_selected.customer }} ticket timeline">
+        {% for event in support_selected.timeline %}
+        <p>{{ event }}</p>
+        {% end %}
+      </div>
+      {% slot footer %}
+      <span>Inspector rail</span>
+      <span>Workspace shell owns the inspector placement.</span>
+      {% end %}
+    {% end %}
+  </div>
+  {% end %}
+{% end %}
+</section>
+</div>
+
+{% end %}
+{% end %}
+{% end %}

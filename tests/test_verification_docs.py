@@ -81,6 +81,8 @@ def test_verification_doc_routes_browser_sensitive_proof() -> None:
         "uv run poe ci-browser",
         "Application chrome rail/tray, command focus, route-tab scroll, badge stability",
         "uv run poe test-browser-chrome",
+        "Search shells, facet rails, scoped counts, and responsive command surfaces",
+        "320px, 390px, 768px, 1024px, and desktop width",
         "uv run poe docs-build-all",
         "Theme packages, Bengal templates, packaged assets",
     ]:

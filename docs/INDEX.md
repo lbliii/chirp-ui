@@ -29,6 +29,8 @@ Navigation guide for all chirp-ui documentation.
 - [MEDIA-SITE-PATTERNS.md](MEDIA-SITE-PATTERNS.md) — Streaming, video, catalog, live-event, and media-plan composition recipes
 - [FORUM-SITE-PATTERNS.md](FORUM-SITE-PATTERNS.md) — Forum, Q&A, threaded discussion, moderation, and community composition recipes
 - [HTMX-PATTERNS.md](HTMX-PATTERNS.md) — `hx={}` dict, auto-injected attrs, app-shell HTMX boundaries, `build_hx_attrs()`
+- [SEARCH-SHELL-RECIPES.md](SEARCH-SHELL-RECIPES.md) — Recipe-first dense catalog/search shells, scoped counts, responsive command surfaces, and HTMX/Alpine contracts
+- [LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md) — Prototype resolver authoring contract for parent-scoped layout intent
 - [HTMX-ADVANCEMENT.md](HTMX-ADVANCEMENT.md) — Design decisions for htmx integration
 - [ALPINE-MAGICS.md](ALPINE-MAGICS.md) — Alpine.js store, `safeData`, shared controllers
 - [DROPDOWN-ANATOMY.md](DROPDOWN-ANATOMY.md) — Dropdown menu, select, and split-menu rendered anatomy
@@ -74,6 +76,8 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-pre-1.0-productization-saga.md](plans/PLAN-pre-1.0-productization-saga.md) — Umbrella productization saga for visible quality, public surface, themes, app chrome, Bengal, and verification
 - [PLAN-css-scope-and-layer.md](plans/PLAN-css-scope-and-layer.md) — Ongoing `@scope` conversion policy and residual CSS hardening
 - [PLAN-application-chrome-system.md](plans/PLAN-application-chrome-system.md) — Application chrome system contracts, rail/tray proof, rhythm audit, and composite gates
+- [PLAN-search-shell-contracts.md](plans/PLAN-search-shell-contracts.md) — Search shell contracts, scoped counts, responsive command surfaces, facets, pending state, and catalog-shell recipe tasks
+- [PLAN-layout-affinity-rollout.md](plans/PLAN-layout-affinity-rollout.md) — Layout-affinity resolver rollout, vocabulary gates, manifest@6 migration plan, and proof matrix
 - [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Residual chirp-theme fixture parity backlog
 - [PLAN-bengal-chirpui-library-contract.md](plans/PLAN-bengal-chirpui-library-contract.md) — First-class Bengal library asset/macro contract for Chirp UI
 
@@ -121,6 +125,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [DESIGN-theme-pack-catalog.md](DESIGN-theme-pack-catalog.md) — Token-only curated theme pack catalog
 - [DESIGN-llm-endpoints.md](DESIGN-llm-endpoints.md) — Generated LLM and agent-facing site artifacts
 - [DESIGN-interactive-anatomy.md](DESIGN-interactive-anatomy.md) — Executable anatomy contracts for interactive components
+- [DESIGN-layout-affinity.md](DESIGN-layout-affinity.md) — Proposed role/pressure/affinity contract for self-composing primitives and agentic developers
 - [SPRINT-0-behavior-layer-design.md](SPRINT-0-behavior-layer-design.md) — Sprint 0 design for behavior layer
 
 ## Consolidated (redirects)

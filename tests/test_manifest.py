@@ -82,6 +82,22 @@ def test_manifest_schema_and_version_present() -> None:
     assert m["version"]
 
 
+def test_layout_affinity_manifest_projection_waits_for_schema_bump() -> None:
+    """Layout affinity is proven in HTML/CSS, but not yet manifest@5 schema."""
+    assert SCHEMA == "chirpui-manifest@5"
+
+    forbidden_keys = {"layout_affinity", "layout_resolver", "layout_parts"}
+    offenders = {
+        name: sorted(forbidden_keys & set(entry))
+        for name, entry in build_manifest()["components"].items()
+        if forbidden_keys & set(entry)
+    }
+
+    assert not offenders, "layout affinity keys require a manifest schema bump: " + ", ".join(
+        f"{name}={keys}" for name, keys in offenders.items()
+    )
+
+
 def test_manifest_covers_every_component() -> None:
     m = build_manifest()
     assert set(m["components"]) == set(COMPONENTS)
