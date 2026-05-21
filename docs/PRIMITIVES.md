@@ -42,6 +42,9 @@ without page-owned shell CSS.
 Those primitives also own relationship-based rhythm through attached, grouped,
 stacked, separated, and inset spacing conventions so app pages do not rebuild
 basic gaps and padding by hand.
+If a dense workspace element has a border or background, prefer a primitive
+that owns inset rhythm; do not make ordinary text sit directly against a
+decorative edge and patch it with page-local padding.
 
 For product-site pages, use these primitives through the recipes in
 [PRODUCT-PAGE-PATTERNS.md](PRODUCT-PAGE-PATTERNS.md). Those recipes show how

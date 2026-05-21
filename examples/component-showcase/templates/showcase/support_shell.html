@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block main %}
-{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/layout.html" import container, stack, page_header %}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/command_bar.html" import command_bar %}
 {% from "chirpui/filter_bar.html" import filter_bar %}
+{% from "chirpui/panel.html" import panel %}
 {% from "chirpui/workspace_shell.html" import workspace_shell %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/chip_group.html" import chip_group %}
@@ -138,9 +139,6 @@
                         show_inspector=true,
                         inspector_title="Selected ticket",
                         cls="support-shell-workspace-shell") %}
-  {% slot toolbar %}
-  <span class="support-shell-scope-label">{{ support_queue_label }}</span>
-  {% end %}
   {% slot sidebar %}
   {% call filter_rail(label="Support queues") %}
     {% for queue in support_queues %}
@@ -159,14 +157,14 @@
   {% end %}
 
   <section class="support-shell-workspace-main" aria-label="Support ticket list">
-    {% call block(cls="support-shell-spotlight") %}
-    <div class="support-shell-spotlight-head">
-      <div>
-        <p class="support-shell-kicker">Workspace shell readout</p>
-        <h2>{{ support_metrics.tickets }} tickets in {{ support_queue_label }}</h2>
-      </div>
+    {% call panel(title=support_metrics.tickets ~ " tickets in " ~ support_queue_label,
+                  subtitle="Workspace shell readout",
+                  surface_variant="default",
+                  cls="support-shell-spotlight") %}
+    {% slot actions %}
       {{ badge(support_metrics.escalated ~ " escalated", variant="error" if support_metrics.escalated else "muted") }}
-    </div>
+    {% end %}
+    {% call stack() %}
     {% call metric_strip(label="Support shell metrics") %}
       {{ metric_item(support_metrics.tickets, "tickets") }}
       {{ metric_item(support_metrics.waiting, "waiting") }}
@@ -175,6 +173,7 @@
     <p class="support-shell-payoff-copy">
       The repeated rail/content/inspector shape is now resolved by workspace_shell, while command and filter controls keep using action-strip affinity.
     </p>
+    {% end %}
     {% end %}
 
     {% if support_filtered %}

@@ -667,6 +667,8 @@ class TestWorkbench:
         assert "--chirpui-rhythm-group" in css
         assert "--chirpui-rhythm-stack" in css
         assert "--chirpui-rhythm-inset" in css
+        assert "padding: var(--chirpui-rhythm-inset);" in css
+        assert "padding-block-start: var(--chirpui-rhythm-separated);" in css
         assert ":scope {\n    display: grid;\n    gap: var(--chirpui-rhythm-stack);" in css
         assert ".chirpui-result-card [data-chirpui-pressure" not in css
 

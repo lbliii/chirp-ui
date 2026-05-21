@@ -122,3 +122,8 @@ Workspace primitives use relationship-based rhythm internally:
 Authors should not recreate these with page-owned `gap` or padding rules unless
 the spacing is truly domain-specific. Density-level shell controls are deferred
 until the public `workspace_shell` API explicitly accepts that surface.
+
+When a workspace primitive owns a border, background, or selected-object panel,
+its text must not rely on page CSS for edge inset. Use `result_card`,
+`inspector_panel`, `metric_strip`, or a titled `panel` before adding local
+padding around ordinary text.

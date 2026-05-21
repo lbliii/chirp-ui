@@ -19977,6 +19977,7 @@ a.chirpui-chip:focus-visible {
     display: grid;
     gap: var(--chirpui-rhythm-stack);
     min-inline-size: 0;
+    padding: var(--chirpui-rhythm-inset);
 }
 
 :scope[data-chirpui-pressure~="compress"] {
@@ -20027,6 +20028,8 @@ a.chirpui-chip:focus-visible {
     display: flex;
     flex-wrap: wrap;
     gap: var(--chirpui-rhythm-group);
+    padding-block-start: var(--chirpui-rhythm-separated);
+    border-block-start: 1px solid var(--chirpui-border-subtle);
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
 }

@@ -504,6 +504,9 @@ class TestDataPage:
         base_template = (_SHOWCASE_DIR / "templates" / "base.html").read_text(encoding="utf-8")
 
         assert "workspace_shell(" in support_template
+        assert "panel(title=support_metrics.tickets" in support_template
+        assert 'block(cls="support-shell-spotlight")' not in support_template
+        assert "support-shell-spotlight-head" not in support_template
         assert "frame(" not in support_template
         assert "frame(" in operations_template
         assert "workspace_shell(" in operations_workspace_template
@@ -512,6 +515,7 @@ class TestDataPage:
         assert ".support-shell-frame {" not in base_template
         assert ".support-shell-rail {" not in base_template
         assert ".support-shell-ticket-measures {" not in base_template
+        assert ".support-shell-spotlight-head" not in base_template
         assert ".ops-shell-workspace {" in base_template
         assert ".ops-shell-frame {" in base_template
 
