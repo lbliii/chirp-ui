@@ -96,7 +96,7 @@ Prototype-supported values currently emitted in source templates:
 
 | Attribute | Emitted values |
 |---|---|
-| `data-chirpui-role` | `actions`, `content`, `filters`, `hints`, `metadata`, `nav`, `rail`, `search`, `status` |
+| `data-chirpui-role` | `actions`, `aside`, `content`, `filters`, `hints`, `metadata`, `nav`, `rail`, `search`, `status` |
 | `data-chirpui-pressure` | `compress`, `flex`, `rigid` |
 | `data-chirpui-affinity` | `block-end`, `block-start`, `end`, `fill`, `start` |
 
@@ -136,6 +136,8 @@ Resolution is parent-scoped:
   structural shell recipes.
 - `workspace_shell` resolves its owned sidebar, main content, toolbar, and
   inspector parts for workbench-style shells.
+- `workspace_primitives` resolves its owned filter rails, result collections,
+  result cards, metric strips, and inspector panels.
 - `cluster` and `stack` are prototype-only experiments and are not
   manifest-promotion candidates yet.
 
@@ -274,6 +276,11 @@ repeated shapes that catalog, support, and operations workspaces were already
 hand-authoring, then emit the same layout-affinity attributes inside a
 registry-cited component surface. The `/operations-shell-workspace` route is
 the first migration target because it shares data with the page-owned baseline.
+
+The source vocabulary is now importable from `chirp_ui.layout_affinity`. That
+module is a contract helper for tests and agents, not a manifest schema
+projection. Manifest fields remain deferred until the resolver names and
+vocabulary survive more migrations.
 
 ## Agent Contract
 

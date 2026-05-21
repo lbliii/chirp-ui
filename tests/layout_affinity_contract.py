@@ -7,6 +7,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 ALLOWED_SOURCE_VALUES = {
     "data-chirpui-role": {
         "actions",
+        "aside",
         "content",
         "filters",
         "hints",
@@ -55,5 +56,10 @@ RESOLVER_MATRIX = {
         "css": REPO_ROOT / "src/chirp_ui/templates/css/partials/005_workbench.css",
         "docs": {"workspace_shell", "inspector/workspace resolver"},
         "browser": "test_workspace_shell_layout_affinity_has_no_overflow",
+    },
+    "workspace_primitives": {
+        "css": REPO_ROOT / "src/chirp_ui/templates/css/partials/167_workspace-primitives.css",
+        "docs": {"filter_rail", "result_collection", "inspector_panel"},
+        "browser": "test_operations_workspace_shell_variant_has_no_overflow",
     },
 }
