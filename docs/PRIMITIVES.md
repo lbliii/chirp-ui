@@ -33,6 +33,10 @@ The active rollout is tracked in
 Maintainers adding resolver behavior must follow
 [LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md)
 so low-level primitives do not become utility-class containers.
+The broader relationship ownership model lives in
+[RELATIONSHIP-CONTRACTS.md](RELATIONSHIP-CONTRACTS.md): children own internal
+shape, while parent primitives own inset, sibling rhythm, attachment,
+grouping, pressure, and local overflow.
 
 Dense workspace primitives are the first promoted product-system layer on top
 of that contract. Use `filter_rail`, `result_collection`, `result_card`,

@@ -8,6 +8,7 @@ Navigation guide for all chirp-ui documentation.
 
 - [LAYOUT.md](LAYOUT.md) — Horizontal overflow, vertical fill, grid vs frame primitives (consolidated)
 - [PRIMITIVES.md](PRIMITIVES.md) — Blessed composition primitives vs legacy compatibility helpers
+- [RELATIONSHIP-CONTRACTS.md](RELATIONSHIP-CONTRACTS.md) — Parent-owned inset, rhythm, attachment, grouping, pressure, and overflow contracts
 - [LAYOUT-PRESETS.md](LAYOUT-PRESETS.md) — Grid preset names, aliases, and breakpoint tokens
 - [COMPOSITION.md](COMPOSITION.md) — Component composition patterns and slot mechanics
 - [APPEARANCE-TONE.md](APPEARANCE-TONE.md) — Chirp-native visual preset axes for pilot components
@@ -80,6 +81,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-application-chrome-system.md](plans/PLAN-application-chrome-system.md) — Application chrome system contracts, rail/tray proof, rhythm audit, and composite gates
 - [PLAN-search-shell-contracts.md](plans/PLAN-search-shell-contracts.md) — Search shell contracts, scoped counts, responsive command surfaces, facets, pending state, and catalog-shell recipe tasks
 - [PLAN-layout-affinity-rollout.md](plans/PLAN-layout-affinity-rollout.md) — Layout-affinity resolver rollout, vocabulary gates, manifest@6 migration plan, and proof matrix
+- [PLAN-relationship-contracts.md](plans/PLAN-relationship-contracts.md) — Relationship ownership rollout for inset, rhythm, attachment, region, pressure, and overflow contracts
 - [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Residual chirp-theme fixture parity backlog
 - [PLAN-bengal-chirpui-library-contract.md](plans/PLAN-bengal-chirpui-library-contract.md) — First-class Bengal library asset/macro contract for Chirp UI
 

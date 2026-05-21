@@ -1,6 +1,6 @@
 # Layout Guide
 
-How chirp-ui layouts work: horizontal overflow, vertical fill, and grid vs frame primitives. For the broader authoring vocabulary, see [PRIMITIVES.md](PRIMITIVES.md).
+How chirp-ui layouts work: horizontal overflow, vertical fill, and grid vs frame primitives. For the broader authoring vocabulary, see [PRIMITIVES.md](PRIMITIVES.md). For parent-owned spacing and attachment rules, see [RELATIONSHIP-CONTRACTS.md](RELATIONSHIP-CONTRACTS.md).
 
 ---
 
