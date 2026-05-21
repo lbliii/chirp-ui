@@ -79,6 +79,11 @@ search controls. The command surface should follow these tiers:
 Use `command_bar(wrap="wrap")` or an equivalent wrapping command surface for
 search shells. `wrap="scroll"` is acceptable for secondary toolbars, not the
 main search form.
+`command_bar` and `filter_bar` own direct search, hint, and action rhythm:
+visible search labels get a full row, trailing hints align with
+`data-chirpui-affinity="end"` when space allows, and action-strip zones trim
+direct child margins. Page CSS should style domain tone only, not rebuild
+search-form columns or hint wrapping.
 
 The canonical layout-affinity prototype contract lives in
 [DESIGN-layout-affinity.md](DESIGN-layout-affinity.md). This search-shell guide

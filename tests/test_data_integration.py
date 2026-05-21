@@ -520,6 +520,8 @@ class TestDataPage:
         assert ".support-shell-rail {" not in base_template
         assert ".support-shell-ticket-measures {" not in base_template
         assert ".support-shell-spotlight-head" not in base_template
+        assert ".support-shell-command-bar .chirpui-action-strip__inner" not in base_template
+        assert ".ops-shell-command-bar .chirpui-action-strip__inner" not in base_template
         assert ".ops-shell-workspace {" in base_template
         assert ".ops-shell-frame {" in base_template
 

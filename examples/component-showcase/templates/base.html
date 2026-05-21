@@ -605,33 +605,19 @@
     gap: var(--chirpui-spacing);
   }
 
-  .ops-shell-command-bar .chirpui-action-strip__inner {
-    align-items: start;
-  }
-
   .ops-shell-search {
-    display: grid;
-    grid-template-columns: minmax(16rem, 1fr) auto;
-    gap: var(--chirpui-spacing-xs);
     width: 100%;
     min-width: 0;
   }
 
   .ops-shell-search .chirpui-field__input {
-    min-height: var(--chirpui-control-block-size-sm);
     border-color: var(--ops-shell-line);
     background: var(--chirpui-bg);
   }
 
   .ops-shell-hints {
     position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--chirpui-spacing-xs);
-    align-items: center;
-    justify-content: flex-end;
     width: 100%;
-    min-width: 0;
   }
 
   .ops-shell-pending {
@@ -929,14 +915,9 @@
   }
 
   @media (max-width: 42rem) {
-    .ops-shell-search,
     .ops-shell-card-grid,
     .ops-shell-workload-measures {
       grid-template-columns: minmax(0, 1fr);
-    }
-
-    .ops-shell-hints {
-      justify-content: flex-start;
     }
 
     .ops-shell-hints .chirpui-btn {
@@ -970,33 +951,19 @@
     gap: var(--chirpui-spacing-xs);
   }
 
-  .support-shell-command-bar .chirpui-action-strip__inner {
-    align-items: start;
-  }
-
   .support-shell-search {
-    display: grid;
-    grid-template-columns: minmax(16rem, 1fr) auto;
-    gap: var(--chirpui-spacing-xs);
     width: 100%;
     min-width: 0;
   }
 
   .support-shell-search .chirpui-field__input {
-    min-height: var(--chirpui-control-block-size-sm);
     border-color: var(--support-shell-line);
     background: var(--chirpui-bg);
   }
 
   .support-shell-hints {
     position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--chirpui-spacing-xs);
-    align-items: center;
-    justify-content: flex-end;
     width: 100%;
-    min-width: 0;
   }
 
   .support-shell-pending {
@@ -1099,14 +1066,6 @@
   }
 
   @media (max-width: 42rem) {
-    .support-shell-search {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .support-shell-hints {
-      justify-content: flex-start;
-    }
-
     .support-shell-hints .chirpui-btn {
       flex: 1 1 calc(50% - var(--chirpui-spacing-xs));
       justify-content: center;

@@ -4203,6 +4203,10 @@ class TestActionContainers:
         assert "flex: 1 1 28rem" in search_rule
         assert "flex-wrap: wrap" in search_rule
         assert "min-inline-size: min(100%, 18rem)" in search_rule
+        assert '.chirpui-action-strip__inner:has(> [data-chirpui-role~="hints"])' in css
+        assert "> label:not(.chirpui-visually-hidden)" in css
+        assert '[data-chirpui-role~="hints"][data-chirpui-affinity~="end"]' in css
+        assert ".chirpui-action-strip__primary > :where(:not(script, style, template))" in css
 
     def test_filter_bar(self, env: Environment) -> None:
         html = env.from_string(
