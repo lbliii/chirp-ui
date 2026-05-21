@@ -108,3 +108,17 @@ not race older responses into view.
 - Use `inspector_panel` for selected-object details.
 - Keep app-local classes for domain copy and data styling only.
 - Verify phone, tablet, and desktop widths before calling the shell done.
+
+## Rhythm Contract
+
+Workspace primitives use relationship-based rhythm internally:
+
+- `attached`: labels, subtitles, and headers attached to the content they name.
+- `group`: controls, metrics, badges, and short metadata that belong together.
+- `stack`: repeated records, inspector rows, and vertical content groups.
+- `separated`: footers or metadata that need a clearer boundary.
+- `inset`: component internal padding.
+
+Authors should not recreate these with page-owned `gap` or padding rules unless
+the spacing is truly domain-specific. Density-level shell controls are deferred
+until the public `workspace_shell` API explicitly accepts that surface.

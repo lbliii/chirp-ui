@@ -19708,6 +19708,14 @@ a.chirpui-chip:focus-visible {
 
 /* === partials/167_workspace-primitives.css === */
 @layer chirpui.component {
+:where(.chirpui-filter-rail, .chirpui-metric-strip, .chirpui-result-collection, .chirpui-result-card, .chirpui-inspector-panel) {
+    --chirpui-rhythm-attached: var(--chirpui-spacing-2xs);
+    --chirpui-rhythm-group: var(--chirpui-spacing-xs);
+    --chirpui-rhythm-stack: var(--chirpui-spacing);
+    --chirpui-rhythm-separated: var(--chirpui-spacing-sm);
+    --chirpui-rhythm-inset: var(--chirpui-spacing);
+}
+
 @scope (.chirpui-filter-rail) to (.chirpui-filter-rail .chirpui-filter-rail) {
 :scope {
     min-inline-size: 0;
@@ -19715,16 +19723,16 @@ a.chirpui-chip:focus-visible {
 
 .chirpui-filter-rail__list {
     display: grid;
-    gap: var(--chirpui-spacing-xs);
+    gap: var(--chirpui-rhythm-group);
 }
 
 .chirpui-filter-rail__item {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    gap: var(--chirpui-spacing-sm);
+    gap: var(--chirpui-rhythm-group);
     min-inline-size: 0;
-    padding: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-rhythm-group);
     border: 1px solid var(--chirpui-border-subtle);
     border-radius: var(--chirpui-radius-sm);
     background: color-mix(in srgb, var(--chirpui-bg-subtle) 82%, var(--chirpui-surface));
@@ -19763,7 +19771,7 @@ a.chirpui-chip:focus-visible {
 
 .chirpui-filter-rail__body {
     display: grid;
-    gap: var(--chirpui-spacing-2xs);
+    gap: var(--chirpui-rhythm-attached);
     min-inline-size: 0;
 }
 
@@ -19802,15 +19810,15 @@ a.chirpui-chip:focus-visible {
 :scope {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--chirpui-spacing-xs);
+    gap: var(--chirpui-rhythm-group);
     min-inline-size: 0;
 }
 
 .chirpui-metric-strip__item {
     display: grid;
-    gap: var(--chirpui-spacing-2xs);
+    gap: var(--chirpui-rhythm-attached);
     min-inline-size: 7rem;
-    padding: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-rhythm-group);
     border: 1px solid var(--chirpui-border-subtle);
     border-radius: var(--chirpui-radius-sm);
     background: color-mix(in srgb, var(--chirpui-surface) 88%, var(--chirpui-bg-subtle));
@@ -19831,7 +19839,7 @@ a.chirpui-chip:focus-visible {
 @scope (.chirpui-result-collection) to (.chirpui-result-collection .chirpui-result-collection) {
 :scope {
     display: grid;
-    gap: var(--chirpui-spacing);
+    gap: var(--chirpui-rhythm-stack);
     min-inline-size: 0;
 }
 
@@ -19843,7 +19851,7 @@ a.chirpui-chip:focus-visible {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--chirpui-spacing-sm);
+    gap: var(--chirpui-rhythm-group);
 }
 
 .chirpui-result-collection__title {
@@ -19865,7 +19873,7 @@ a.chirpui-chip:focus-visible {
 .chirpui-result-collection__items {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
-    gap: var(--chirpui-spacing);
+    gap: var(--chirpui-rhythm-stack);
     min-inline-size: 0;
 }
 }
@@ -19873,9 +19881,9 @@ a.chirpui-chip:focus-visible {
 @scope (.chirpui-result-card) to (.chirpui-result-card .chirpui-result-card) {
 :scope {
     display: grid;
-    gap: var(--chirpui-spacing-sm);
+    gap: var(--chirpui-rhythm-stack);
     min-inline-size: 0;
-    padding: var(--chirpui-spacing);
+    padding: var(--chirpui-rhythm-inset);
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius);
     background: var(--chirpui-surface);
@@ -19885,7 +19893,7 @@ a.chirpui-chip:focus-visible {
 .chirpui-result-card__header {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: var(--chirpui-spacing-sm);
+    gap: var(--chirpui-rhythm-group);
     align-items: start;
     min-inline-size: 0;
 }
@@ -19934,7 +19942,7 @@ a.chirpui-chip:focus-visible {
     display: inline-flex;
     flex-wrap: wrap;
     justify-content: end;
-    gap: var(--chirpui-spacing-xs);
+    gap: var(--chirpui-rhythm-group);
 }
 
 .chirpui-result-card__actions:empty {
@@ -19943,17 +19951,17 @@ a.chirpui-chip:focus-visible {
 
 .chirpui-result-card__body {
     display: grid;
-    gap: var(--chirpui-spacing-sm);
+    gap: var(--chirpui-rhythm-group);
     min-inline-size: 0;
 }
 
 .chirpui-result-card__footer {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--chirpui-spacing-sm);
+    gap: var(--chirpui-rhythm-group);
     align-items: center;
     min-inline-size: 0;
-    padding-block-start: var(--chirpui-spacing-sm);
+    padding-block-start: var(--chirpui-rhythm-separated);
     border-block-start: 1px solid var(--chirpui-border-subtle);
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
@@ -19967,7 +19975,7 @@ a.chirpui-chip:focus-visible {
 @scope (.chirpui-inspector-panel) to (.chirpui-inspector-panel .chirpui-inspector-panel) {
 :scope {
     display: grid;
-    gap: var(--chirpui-spacing);
+    gap: var(--chirpui-rhythm-stack);
     min-inline-size: 0;
 }
 
@@ -19977,7 +19985,7 @@ a.chirpui-chip:focus-visible {
 
 .chirpui-inspector-panel__header {
     display: flex;
-    gap: var(--chirpui-spacing-sm);
+    gap: var(--chirpui-rhythm-group);
     align-items: start;
     min-inline-size: 0;
 }
@@ -20011,14 +20019,14 @@ a.chirpui-chip:focus-visible {
 
 .chirpui-inspector-panel__body {
     display: grid;
-    gap: var(--chirpui-spacing-sm);
+    gap: var(--chirpui-rhythm-group);
     min-inline-size: 0;
 }
 
 .chirpui-inspector-panel__footer {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--chirpui-spacing-xs);
+    gap: var(--chirpui-rhythm-group);
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
 }

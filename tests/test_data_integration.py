@@ -511,6 +511,7 @@ class TestDataPage:
         assert ".support-shell-workspace {" not in base_template
         assert ".support-shell-frame {" not in base_template
         assert ".support-shell-rail {" not in base_template
+        assert ".support-shell-ticket-measures {" not in base_template
         assert ".ops-shell-workspace {" in base_template
         assert ".ops-shell-frame {" in base_template
 

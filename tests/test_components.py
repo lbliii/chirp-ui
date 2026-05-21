@@ -648,6 +648,10 @@ class TestWorkbench:
         assert 'data-chirpui-role="rail nav"' in html
         assert 'data-chirpui-pressure="compress"' in html
         assert 'data-chirpui-affinity="fill"' in html
+        assert 'data-chirpui-rhythm="stack"' in html
+        assert 'data-chirpui-rhythm="group"' in html
+        assert 'data-chirpui-rhythm="inset"' in html
+        assert 'data-chirpui-rhythm="group separated"' in html
 
     def test_workspace_primitives_css_uses_scoped_boundaries(self) -> None:
         css = _chirpui_css()
@@ -659,7 +663,11 @@ class TestWorkbench:
             "@scope (.chirpui-inspector-panel)",
         ):
             assert selector in css
-        assert ":scope {\n    display: grid;\n    gap: var(--chirpui-spacing-sm);" in css
+        assert "--chirpui-rhythm-attached" in css
+        assert "--chirpui-rhythm-group" in css
+        assert "--chirpui-rhythm-stack" in css
+        assert "--chirpui-rhythm-inset" in css
+        assert ":scope {\n    display: grid;\n    gap: var(--chirpui-rhythm-stack);" in css
         assert ".chirpui-result-card [data-chirpui-pressure" not in css
 
     def test_file_tree_with_header_actions_and_footer(self, env: Environment) -> None:

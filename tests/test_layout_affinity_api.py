@@ -7,6 +7,7 @@ from chirp_ui.layout_affinity import (
     LAYOUT_AFFINITY_PRESSURES,
     LAYOUT_AFFINITY_RESOLVERS,
     LAYOUT_AFFINITY_ROLES,
+    LAYOUT_RHYTHM_RELATIONSHIPS,
     validate_layout_affinity_values,
 )
 from tests.layout_affinity_contract import ALLOWED_SOURCE_VALUES, RESOLVER_MATRIX
@@ -16,6 +17,7 @@ def test_layout_affinity_importable_vocabulary_matches_source_scan_contract() ->
     assert set(ALLOWED_SOURCE_VALUES["data-chirpui-role"]).issubset(LAYOUT_AFFINITY_ROLES)
     assert set(ALLOWED_SOURCE_VALUES["data-chirpui-pressure"]).issubset(LAYOUT_AFFINITY_PRESSURES)
     assert set(ALLOWED_SOURCE_VALUES["data-chirpui-affinity"]).issubset(LAYOUT_AFFINITY_AFFINITIES)
+    assert set(ALLOWED_SOURCE_VALUES["data-chirpui-rhythm"]).issubset(LAYOUT_RHYTHM_RELATIONSHIPS)
 
 
 def test_layout_affinity_resolver_contracts_cover_documented_matrix() -> None:

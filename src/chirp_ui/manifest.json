@@ -11170,7 +11170,7 @@
         "chirpui-inspector-panel__title"
       ],
       "extra_emits": [],
-      "lineno": 91,
+      "lineno": 96,
       "macro": "inspector_panel",
       "maturity": "experimental",
       "modifiers": [],
@@ -12955,7 +12955,7 @@
         "chirpui-metric-strip__value"
       ],
       "extra_emits": [],
-      "lineno": 38,
+      "lineno": 40,
       "macro": "metric_strip",
       "maturity": "experimental",
       "modifiers": [],
@@ -15762,7 +15762,7 @@
         "chirpui-result-card__title"
       ],
       "extra_emits": [],
-      "lineno": 72,
+      "lineno": 76,
       "macro": "result_card",
       "maturity": "experimental",
       "modifiers": [],
@@ -15834,7 +15834,7 @@
         "chirpui-result-collection__title"
       ],
       "extra_emits": [],
-      "lineno": 54,
+      "lineno": 57,
       "macro": "result_collection",
       "maturity": "experimental",
       "modifiers": [],

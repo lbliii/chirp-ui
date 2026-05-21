@@ -29,6 +29,13 @@ ALLOWED_SOURCE_VALUES = {
         "fill",
         "start",
     },
+    "data-chirpui-rhythm": {
+        "attached",
+        "group",
+        "inset",
+        "separated",
+        "stack",
+    },
 }
 
 RESOLVER_MATRIX = {

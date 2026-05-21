@@ -1016,8 +1016,7 @@
 
   .support-shell-frame-wrap,
   .support-shell-workspace-main,
-  .support-shell-inspector,
-  .support-shell-ticket-measures {
+  .support-shell-inspector {
     min-width: 0;
   }
 
@@ -1061,13 +1060,6 @@
     line-height: var(--chirpui-line-height-tight);
   }
 
-  .support-shell-ticket-measures {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--chirpui-spacing-xs);
-  }
-
-  .support-shell-ticket-measures span,
   .support-shell-timeline-list p,
   .support-shell-inspector-list div {
     border: 1px solid var(--support-shell-line);
@@ -1076,15 +1068,12 @@
     padding: var(--chirpui-spacing-xs);
   }
 
-  .support-shell-ticket-measures strong,
-  .support-shell-ticket-measures small,
   .support-shell-inspector-list dt,
   .support-shell-inspector-list dd {
     display: block;
     min-width: 0;
   }
 
-  .support-shell-ticket-measures small,
   .support-shell-inspector-list dt {
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-xs);
@@ -1106,8 +1095,7 @@
   }
 
   @media (max-width: 42rem) {
-    .support-shell-search,
-    .support-shell-ticket-measures {
+    .support-shell-search {
       grid-template-columns: minmax(0, 1fr);
     }
 

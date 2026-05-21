@@ -17,6 +17,7 @@ __all__ = [
     "LAYOUT_AFFINITY_PRESSURES",
     "LAYOUT_AFFINITY_RESOLVERS",
     "LAYOUT_AFFINITY_ROLES",
+    "LAYOUT_RHYTHM_RELATIONSHIPS",
     "LayoutAffinityResolver",
     "validate_layout_affinity_values",
 ]
@@ -49,6 +50,14 @@ LAYOUT_AFFINITY_AFFINITIES = (
     "end",
     "fill",
     "start",
+)
+
+LAYOUT_RHYTHM_RELATIONSHIPS = (
+    "attached",
+    "group",
+    "inset",
+    "separated",
+    "stack",
 )
 
 

@@ -15,7 +15,7 @@ SOURCE_GLOBS = (
     "examples/component-showcase/templates/**/*.html",
 )
 
-ATTR_RE = re.compile(r'\b(data-chirpui-(?:role|pressure|affinity))="([^"]*)"')
+ATTR_RE = re.compile(r'\b(data-chirpui-(?:role|pressure|affinity|rhythm))="([^"]*)"')
 
 
 def test_layout_affinity_rfc_defines_recipe_first_contract() -> None:

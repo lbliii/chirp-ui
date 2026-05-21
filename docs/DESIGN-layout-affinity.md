@@ -99,6 +99,7 @@ Prototype-supported values currently emitted in source templates:
 | `data-chirpui-role` | `actions`, `aside`, `content`, `filters`, `hints`, `metadata`, `nav`, `rail`, `search`, `status` |
 | `data-chirpui-pressure` | `compress`, `flex`, `rigid` |
 | `data-chirpui-affinity` | `block-end`, `block-start`, `end`, `fill`, `start` |
+| `data-chirpui-rhythm` | `attached`, `group`, `inset`, `separated`, `stack` |
 
 Reserved vocabulary is documented in **Initial Vocabulary**, but reserved
 values should not appear in source templates until a resolver uses them and
@@ -284,6 +285,24 @@ module is a contract helper for tests and agents, not a manifest schema
 projection. Manifest fields remain deferred until the resolver names and
 vocabulary survive more migrations.
 
+## Relationship-Based Rhythm
+
+Spacing is part of the same layout-intent problem. The workspace primitive
+family now owns a small relationship vocabulary for sane vertical and
+horizontal rhythm:
+
+- `attached`: the smallest gap, for labels, subtitles, and headers attached to
+  their content.
+- `group`: compact related controls, metrics, tags, and metadata.
+- `stack`: repeated records and vertical content groups.
+- `separated`: footers or metadata boundaries.
+- `inset`: component internal padding.
+
+These are not margin or padding shorthands for app authors. They are
+component-owned relationships resolved through `--chirpui-rhythm-*` variables
+inside the workspace primitive CSS. Public shell density controls remain
+deferred because they would change the `workspace_shell` macro contract.
+
 ## Agent Contract
 
 The future agent-facing contract should answer:
@@ -349,8 +368,8 @@ layout_parts: tuple[LayoutPart, ...]
 
 Adding these fields requires a manifest schema bump, generated
 `manifest.json`, docs, examples, tests, changelog notes, and steward review.
-Until then, `data-chirpui-role`, `data-chirpui-pressure`, and
-`data-chirpui-affinity` are HTML/CSS contracts only.
+Until then, `data-chirpui-role`, `data-chirpui-pressure`,
+`data-chirpui-affinity`, and `data-chirpui-rhythm` are HTML/CSS contracts only.
 
 Promotion gates for `chirpui-manifest@6`:
 

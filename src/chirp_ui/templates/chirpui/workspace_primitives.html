@@ -12,8 +12,9 @@
      aria-label="{{ label }}"
      data-chirpui-role="rail nav"
      data-chirpui-pressure="compress"
-     data-chirpui-affinity="start">
-    <div class="chirpui-filter-rail__list">
+     data-chirpui-affinity="start"
+     data-chirpui-rhythm="stack">
+    <div class="chirpui-filter-rail__list" data-chirpui-rhythm="stack">
         {% slot %}
     </div>
 </nav>
@@ -25,6 +26,7 @@
    {% if active %}aria-current="page"{% end %}
    data-chirpui-role="nav"
    data-chirpui-pressure="compress"
+   data-chirpui-rhythm="group"
    {{ attrs_map | html_attrs }}>
     {% if icon %}<span class="chirpui-filter-rail__mark" aria-hidden="true">{{ icon }}</span>{% end %}
     <span class="chirpui-filter-rail__body">
@@ -39,7 +41,8 @@
 <div class="chirpui-metric-strip{{ " " ~ cls if cls else "" }}"
      aria-label="{{ label }}"
      data-chirpui-role="metadata"
-     data-chirpui-pressure="compress">
+     data-chirpui-pressure="compress"
+     data-chirpui-rhythm="group">
     {% slot %}
 </div>
 {% end %}
@@ -56,14 +59,15 @@
          aria-label="{{ label }}"
          data-chirpui-role="content"
          data-chirpui-pressure="flex"
-         data-chirpui-affinity="fill">
+         data-chirpui-affinity="fill"
+         data-chirpui-rhythm="stack">
     {% if title %}
     <header class="chirpui-result-collection__header">
         <h2 class="chirpui-result-collection__title">{{ title }}</h2>
         <div class="chirpui-result-collection__meta">{% slot meta %}</div>
     </header>
     {% end %}
-    <div class="chirpui-result-collection__items" role="list">
+    <div class="chirpui-result-collection__items" role="list" data-chirpui-rhythm="stack">
         {% slot %}
     </div>
 </section>
@@ -74,8 +78,9 @@
          role="listitem"
          data-chirpui-role="content"
          data-chirpui-pressure="compress"
+         data-chirpui-rhythm="inset"
          {{ attrs_map | html_attrs }}>
-    <header class="chirpui-result-card__header">
+    <header class="chirpui-result-card__header" data-chirpui-rhythm="attached">
         <div class="chirpui-result-card__mark">{% slot mark %}</div>
         <div class="chirpui-result-card__copy" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
             <h3 class="chirpui-result-card__title">{{ title }}</h3>
@@ -83,8 +88,8 @@
         </div>
         <div class="chirpui-result-card__actions" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">{% slot actions %}</div>
     </header>
-    <div class="chirpui-result-card__body">{% slot %}</div>
-    <footer class="chirpui-result-card__footer" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}</footer>
+    <div class="chirpui-result-card__body" data-chirpui-rhythm="stack">{% slot %}</div>
+    <footer class="chirpui-result-card__footer" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end" data-chirpui-rhythm="group separated">{% slot footer %}</footer>
 </article>
 {% end %}
 
@@ -92,9 +97,10 @@
 <section class="chirpui-inspector-panel{{ " " ~ cls if cls else "" }}"
          data-chirpui-role="aside content"
          data-chirpui-pressure="compress"
-         data-chirpui-affinity="end">
+         data-chirpui-affinity="end"
+         data-chirpui-rhythm="inset">
     {% if title or subtitle %}
-    <header class="chirpui-inspector-panel__header">
+    <header class="chirpui-inspector-panel__header" data-chirpui-rhythm="attached">
         <div class="chirpui-inspector-panel__copy" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
             {% if title %}<h3 class="chirpui-inspector-panel__title">{{ title }}</h3>{% end %}
             {% if subtitle %}<p class="chirpui-inspector-panel__subtitle">{{ subtitle }}</p>{% end %}
@@ -102,7 +108,7 @@
         <div class="chirpui-inspector-panel__actions" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">{% slot actions %}</div>
     </header>
     {% end %}
-    <div class="chirpui-inspector-panel__body">{% slot %}</div>
-    <footer class="chirpui-inspector-panel__footer" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}</footer>
+    <div class="chirpui-inspector-panel__body" data-chirpui-rhythm="stack">{% slot %}</div>
+    <footer class="chirpui-inspector-panel__footer" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end" data-chirpui-rhythm="group separated">{% slot footer %}</footer>
 </section>
 {% end %}

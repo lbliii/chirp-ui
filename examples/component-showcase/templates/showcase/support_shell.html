@@ -185,11 +185,11 @@
         {% slot actions %}
         {{ badge(ticket.status_label, variant=ticket.status_variant) }}
         {% end %}
-        <div class="support-shell-ticket-measures" aria-label="{{ ticket.subject }} measures">
-          <span><strong>{{ ticket.score }}</strong><small>Score</small></span>
-          <span><strong>{{ ticket.age }}</strong><small>Age</small></span>
-          <span><strong>{{ ticket.plan }}</strong><small>Plan</small></span>
-        </div>
+        {% call metric_strip(label=ticket.subject ~ " measures", cls="support-shell-ticket-measures") %}
+          {{ metric_item(ticket.score, "Score") }}
+          {{ metric_item(ticket.age, "Age") }}
+          {{ metric_item(ticket.plan, "Plan") }}
+        {% end %}
         {% call chip_group(label=ticket.subject ~ " tags") %}
           {% for tag in ticket.tags %}
           <span class="chirpui-chip">{{ tag }}</span>
