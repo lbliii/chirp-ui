@@ -42,6 +42,9 @@ Layout primitives solve the *cell* — the cell is the right width. Containment 
   component-owned internal spacing. App code should not need local padding just
   to keep text away from a border or background.
 - **`.chirpui-field__input`** (all inputs/textareas/selects rendered by `field_wrapper`) uses `width: 100%; max-width: 100%; min-width: 0` — form controls cannot overflow their parent.
+- **`.chirpui-form`** owns direct child rhythm: field margins, error summary
+  margins, and action-row margins are trimmed so the form's gap controls
+  vertical spacing. Standalone fields keep their compatibility margin.
 - **Links inside cards and surfaces** use `overflow-wrap: anywhere` — long URLs break mid-string.
 - **Code blocks** (`.chirpui-code-block`, prose `<pre>`) scroll horizontally via `overflow-x: auto` and use `overscroll-behavior: contain` so scroll doesn't chain to the page.
 - **Media elements** (`<img>`, `<video>`, `<canvas>`, `<iframe>`, `<embed>`, `<object>`, `<svg>`) have a zero-specificity `:where()` reset — `max-width: 100%` and `height: auto` where applicable — so raw media dropped anywhere can't widen its parent.

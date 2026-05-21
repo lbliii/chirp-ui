@@ -3595,6 +3595,18 @@ class TestForms:
         assert 'method="post"' in html
         assert "<input>" in html
 
+    def test_form_css_owns_direct_child_rhythm(self) -> None:
+        css = _chirpui_css()
+        form_rule = css.split(".chirpui-form {", 1)[1].split("}", 1)[0]
+        child_rule = css.split(".chirpui-form > :where(:not(script, style, template))", 1)[1].split(
+            "}", 1
+        )[0]
+        actions_rule = css.split(".chirpui-form > .chirpui-form-actions", 1)[1].split("}", 1)[0]
+        assert "display: flex;" in form_rule
+        assert "gap: var(--chirpui-space-stack-gap);" in form_rule
+        assert "margin-block: 0;" in child_rule
+        assert "margin-block-start: 0;" in actions_rule
+
     def test_form_macro_with_htmx_attrs(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/forms.html" import form %}'

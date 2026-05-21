@@ -347,6 +347,47 @@ async def test_layout_affinity_primitives_have_no_overflow(
 
 @pytest.mark.parametrize(
     ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
+async def test_showcase_forms_component_rhythm_has_no_overflow(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/forms")
+    await wait_for_alpine(showcase_page)
+
+    form = showcase_page.locator(
+        ".chirpui-form:has(> .chirpui-field):has(> .chirpui-form-actions)"
+    ).first
+    await expect(form).to_be_visible()
+    await expect(showcase_page.locator(".chirpui-form > .chirpui-field").first).to_be_visible()
+    rhythm = await form.evaluate(
+        """(form) => {
+            const field = form.querySelector(":scope > .chirpui-field");
+            const actions = form.querySelector(":scope > .chirpui-form-actions");
+            const formStyle = getComputedStyle(form);
+            return {
+                display: formStyle.display,
+                gap: formStyle.rowGap,
+                fieldMargin: field ? getComputedStyle(field).marginBlockEnd : null,
+                actionsMargin: actions ? getComputedStyle(actions).marginBlockStart : null,
+            };
+        }"""
+    )
+    assert rhythm["display"] == "flex"
+    assert rhythm["gap"] != "normal"
+    assert rhythm["fieldMargin"] == "0px"
+    assert rhythm["actionsMargin"] == "0px"
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"showcase-forms-rhythm-{width}x{height}"
+    )
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
     [(320, 640), (390, 844), (768, 1024), (1280, 900), (1440, 1000)],
 )
 async def test_workspace_shell_layout_affinity_has_no_overflow(

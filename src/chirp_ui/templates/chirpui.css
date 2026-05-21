@@ -9228,6 +9228,13 @@ button.chirpui-pagination__link {
    Form Fields
    ========================================================================== */
 
+.chirpui-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-space-stack-gap);
+    min-width: 0;
+}
+
 .chirpui-field {
     margin-bottom: var(--chirpui-spacing);
 }
@@ -10331,6 +10338,14 @@ input[type="date"].chirpui-field__input {
 
 .chirpui-form-actions--end {
     justify-content: flex-end;
+}
+
+.chirpui-form > :where(:not(script, style, template)) {
+    margin-block: 0;
+}
+
+.chirpui-form > .chirpui-form-actions {
+    margin-block-start: 0;
 }
 
 .chirpui-key-value-form__row {
