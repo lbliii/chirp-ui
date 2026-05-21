@@ -388,6 +388,40 @@ async def test_showcase_forms_component_rhythm_has_no_overflow(
 
 @pytest.mark.parametrize(
     ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
+async def test_showcase_fieldset_grouped_rhythm_has_no_overflow(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/forms")
+    await wait_for_alpine(showcase_page)
+
+    fieldset = showcase_page.locator(".chirpui-fieldset:has(> .chirpui-field)").first
+    await expect(fieldset).to_be_visible()
+    rhythm = await fieldset.evaluate(
+        """(fieldset) => {
+            const fields = [...fieldset.querySelectorAll(":scope > .chirpui-field")];
+            return {
+                firstMargin: fields[0] ? getComputedStyle(fields[0]).marginBlockEnd : null,
+                secondStart: fields[1] ? getComputedStyle(fields[1]).marginBlockStart : null,
+                minWidth: getComputedStyle(fieldset).minWidth,
+            };
+        }"""
+    )
+    assert rhythm["firstMargin"] == "0px"
+    assert rhythm["secondStart"] != "0px"
+    assert rhythm["minWidth"] == "0px"
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"showcase-fieldset-rhythm-{width}x{height}"
+    )
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
     [(320, 640), (390, 844), (768, 1024), (1280, 900), (1440, 1000)],
 )
 async def test_workspace_shell_layout_affinity_has_no_overflow(

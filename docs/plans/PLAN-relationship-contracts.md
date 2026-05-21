@@ -40,28 +40,29 @@ responsive pressure, or local overflow.
 | Action rows | command/filter/action strip | search/hints/actions wrapping and direct child rhythm |
 | Stack/cluster | layout primitives | direct child margin trimming under primitive gap |
 | Forms | form macro CSS | field/action/error-summary rhythm under form gap |
+| Fieldsets | form field CSS | grouped form-control rhythm and child margin trimming |
 
 ## Next 10 Tasks
 
-1. Audit `field_wrapper`, `fieldset`, radio, checkbox, range, input-group, and
-   search-bar subrelationships.
-2. Harden `fieldset` as a grouped form-control owner or move it out of utility
-   CSS into the form partial with proof.
-3. Audit `page_header`, `section_header`, and `entity_header` for title/action
+1. Audit `field_wrapper`, radio, checkbox, range, input-group, and search-bar
+   subrelationships.
+2. Audit `page_header`, `section_header`, and `entity_header` for title/action
    wrapping, title block margin trim, and long-title overflow.
-4. Audit `search_header` and `resource_index` as search-first relationship
+3. Audit `search_header` and `resource_index` as search-first relationship
    owners outside action containers.
-5. Audit modal, drawer, tray, and panel header/body/footer rhythm.
-6. Audit list, row, media-object, resource-card, params-table, signature, DnD,
+4. Audit modal, drawer, tray, and panel header/body/footer rhythm.
+5. Audit list, row, media-object, resource-card, params-table, signature, DnD,
    and sortable relationships.
-7. Add relationship-specific browser probes for high-risk surfaces instead of
+6. Add relationship-specific browser probes for high-risk surfaces instead of
    only document overflow probes.
-8. Remove first-party `chirpui-mt-*` / `chirpui-mb-*` usage when a component
+7. Remove first-party `chirpui-mt-*` / `chirpui-mb-*` usage when a component
    owner now exists.
-9. Promote repeated accepted contracts into `docs/RELATIONSHIP-CONTRACTS.md`
+8. Promote repeated accepted contracts into `docs/RELATIONSHIP-CONTRACTS.md`
    and keep `docs/INDEX.md` linked.
-10. Defer descriptor or manifest projection until relationships repeat across
-    enough owners to justify a public schema.
+9. Defer descriptor or manifest projection until relationships repeat across
+   enough owners to justify a public schema.
+10. Keep checking first-party examples for relationship patches after each
+    accepted owner lands.
 
 ## Parity Matrix
 
@@ -100,4 +101,3 @@ responsive pressure, or local overflow.
 - `chirpui-manifest@6` projection.
 - Global `[data-chirpui-*]` relationship rules.
 - New utility classes for margin, padding, flex, grid, or alignment.
-

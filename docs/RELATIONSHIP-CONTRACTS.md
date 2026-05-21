@@ -71,7 +71,7 @@ authors and agents fix spacing relationship by relationship.
 | workspace primitives | rails, result collections, cards, metrics, inspector panels | prototype | data/support/operations browser proof |
 | `search_header` / `resource_index` | search-first header and browse surface rhythm | partial | render tests; relationship audit needed |
 | `page_header` / `section_header` / `entity_header` | title/actions and title/subtitle attachment | partial | render/CSS tests; direct-child rhythm audit needed |
-| `fieldset` | grouped form controls | weak | utility CSS only; needs form relationship review |
+| `fieldset` | grouped form-control rhythm, child margin trim | shipped | `TestForms`, `/forms` browser proof |
 | `dnd` / `sortable` | drag row/board grouping | partial | visual structure tests; spacing/overflow proof needed |
 | `modal` / `drawer` / `tray` | header/body/footer region rhythm | partial | behavior tests; relationship audit needed |
 | navigation primitives | item metadata, rails, trays, dense chrome | partial | dense navigation docs and browser proof |
@@ -82,7 +82,6 @@ authors and agents fix spacing relationship by relationship.
 
 `form()` now owns field rhythm, but field internals still need a pass:
 
-- fieldset legend/body spacing;
 - radio and checkbox option grouping;
 - range header/value attachment;
 - input-group prefix/input/suffix sizing;

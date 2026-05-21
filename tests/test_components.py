@@ -3732,6 +3732,20 @@ class TestForms:
         assert "chirpui-fieldset__legend" not in html
         assert "Content" in html
 
+    def test_fieldset_css_owns_grouped_content_rhythm(self) -> None:
+        css = _chirpui_css()
+        fieldset_rule = css.split(".chirpui-fieldset {", 1)[1].split("}", 1)[0]
+        child_rule = css.split(
+            ".chirpui-fieldset > :where(:not(legend, script, style, template))", 1
+        )[1].split("}", 1)[0]
+        sibling_rule = css.split("+ :where(:not(legend, script, style, template))", 1)[1].split(
+            "}", 1
+        )[0]
+        assert "min-width: 0;" in fieldset_rule
+        assert "margin: 0 0 var(--chirpui-spacing);" in fieldset_rule
+        assert "margin-block: 0;" in child_rule
+        assert "margin-block-start: var(--chirpui-space-stack-gap);" in sibling_rule
+
     def test_text_field(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/forms.html" import text_field %}'

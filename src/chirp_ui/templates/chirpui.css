@@ -4520,18 +4520,6 @@ a.chirpui-mention:focus-visible {
     opacity: 1;
 }
 
-.chirpui-fieldset {
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius-sm);
-    padding: var(--chirpui-spacing);
-    margin: 0 0 var(--chirpui-spacing);
-}
-
-.chirpui-fieldset__legend {
-    padding: 0 0.5em;
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-}
-
 :where(.chirpui-prose) pre {
     overflow-x: auto;
     overscroll-behavior: contain;
@@ -4599,7 +4587,6 @@ a.chirpui-mention:focus-visible {
     font-weight: var(--chirpui-prose-font-weight-heading);
     background: var(--chirpui-bg-subtle);
 }
-
 }
 
 /* === partials/038_streaming-and-ai-components.css === */
@@ -10346,6 +10333,29 @@ input[type="date"].chirpui-field__input {
 
 .chirpui-form > .chirpui-form-actions {
     margin-block-start: 0;
+}
+
+.chirpui-fieldset {
+    min-width: 0;
+    padding: var(--chirpui-spacing);
+    margin: 0 0 var(--chirpui-spacing);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+}
+
+.chirpui-fieldset__legend {
+    padding: 0 0.5em;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+}
+
+.chirpui-fieldset > :where(:not(legend, script, style, template)) {
+    margin-block: 0;
+}
+
+.chirpui-fieldset
+    > :where(:not(legend, script, style, template))
+    + :where(:not(legend, script, style, template)) {
+    margin-block-start: var(--chirpui-space-stack-gap);
 }
 
 .chirpui-key-value-form__row {
