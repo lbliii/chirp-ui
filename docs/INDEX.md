@@ -31,6 +31,7 @@ Navigation guide for all chirp-ui documentation.
 - [HTMX-PATTERNS.md](HTMX-PATTERNS.md) — `hx={}` dict, auto-injected attrs, app-shell HTMX boundaries, `build_hx_attrs()`
 - [SEARCH-SHELL-RECIPES.md](SEARCH-SHELL-RECIPES.md) — Recipe-first dense catalog/search shells, scoped counts, responsive command surfaces, and HTMX/Alpine contracts
 - [WORKSPACE-SHELL-RECIPES.md](WORKSPACE-SHELL-RECIPES.md) — Agent-facing dense search, operations, support, and admin workspace recipes
+- [WORKSPACE-SHELL-PROOF.md](WORKSPACE-SHELL-PROOF.md) — Promotion proof comparing the operations baseline with the dense workspace variant
 - [LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md) — Prototype resolver authoring contract for parent-scoped layout intent
 - [HTMX-ADVANCEMENT.md](HTMX-ADVANCEMENT.md) — Design decisions for htmx integration
 - [ALPINE-MAGICS.md](ALPINE-MAGICS.md) — Alpine.js store, `safeData`, shared controllers

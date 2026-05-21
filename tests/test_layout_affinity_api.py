@@ -14,12 +14,8 @@ from tests.layout_affinity_contract import ALLOWED_SOURCE_VALUES, RESOLVER_MATRI
 
 def test_layout_affinity_importable_vocabulary_matches_source_scan_contract() -> None:
     assert set(ALLOWED_SOURCE_VALUES["data-chirpui-role"]).issubset(LAYOUT_AFFINITY_ROLES)
-    assert set(ALLOWED_SOURCE_VALUES["data-chirpui-pressure"]).issubset(
-        LAYOUT_AFFINITY_PRESSURES
-    )
-    assert set(ALLOWED_SOURCE_VALUES["data-chirpui-affinity"]).issubset(
-        LAYOUT_AFFINITY_AFFINITIES
-    )
+    assert set(ALLOWED_SOURCE_VALUES["data-chirpui-pressure"]).issubset(LAYOUT_AFFINITY_PRESSURES)
+    assert set(ALLOWED_SOURCE_VALUES["data-chirpui-affinity"]).issubset(LAYOUT_AFFINITY_AFFINITIES)
 
 
 def test_layout_affinity_resolver_contracts_cover_documented_matrix() -> None:
@@ -36,11 +32,14 @@ def test_layout_affinity_resolver_contracts_cover_documented_matrix() -> None:
 
 
 def test_validate_layout_affinity_values_returns_only_unknown_tokens() -> None:
-    assert validate_layout_affinity_values(
-        role="search hints",
-        pressure="flex compress",
-        affinity="fill end",
-    ) == ()
+    assert (
+        validate_layout_affinity_values(
+            role="search hints",
+            pressure="flex compress",
+            affinity="fill end",
+        )
+        == ()
+    )
     assert validate_layout_affinity_values(
         role="left search",
         pressure="grow flex",

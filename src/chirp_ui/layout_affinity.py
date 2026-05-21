@@ -126,17 +126,11 @@ def validate_layout_affinity_values(
     """Return invalid layout-affinity tokens in deterministic order."""
 
     invalid: list[str] = []
+    invalid.extend(value for value in _split_values(role) if value not in LAYOUT_AFFINITY_ROLES)
     invalid.extend(
-        value for value in _split_values(role) if value not in LAYOUT_AFFINITY_ROLES
+        value for value in _split_values(pressure) if value not in LAYOUT_AFFINITY_PRESSURES
     )
     invalid.extend(
-        value
-        for value in _split_values(pressure)
-        if value not in LAYOUT_AFFINITY_PRESSURES
-    )
-    invalid.extend(
-        value
-        for value in _split_values(affinity)
-        if value not in LAYOUT_AFFINITY_AFFINITIES
+        value for value in _split_values(affinity) if value not in LAYOUT_AFFINITY_AFFINITIES
     )
     return tuple(invalid)
