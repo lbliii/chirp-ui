@@ -45,6 +45,10 @@ basic gaps and padding by hand.
 If a dense workspace element has a border or background, prefer a primitive
 that owns inset rhythm; do not make ordinary text sit directly against a
 decorative edge and patch it with page-local padding.
+This rule applies outside workspace shells too: `surface()`, `card()`,
+`panel()`, and `callout()` trim direct slot margins and apply internal flow
+rhythm so fresh app screens do not need bespoke spacing repairs around ordinary
+copy.
 
 For product-site pages, use these primitives through the recipes in
 [PRODUCT-PAGE-PATTERNS.md](PRODUCT-PAGE-PATTERNS.md). Those recipes show how

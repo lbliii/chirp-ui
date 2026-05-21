@@ -510,6 +510,10 @@ class TestDataPage:
         assert "frame(" not in support_template
         assert "frame(" in operations_template
         assert "workspace_shell(" in operations_workspace_template
+        assert "panel(title=ops_metrics.workloads" in operations_workspace_template
+        assert 'block(cls="ops-shell-spotlight")' not in operations_workspace_template
+        assert "ops-shell-spotlight-head" not in operations_workspace_template
+        assert "ops-shell-workload-measures" not in operations_workspace_template
         assert "frame(" not in operations_workspace_template
         assert ".support-shell-workspace {" not in base_template
         assert ".support-shell-frame {" not in base_template

@@ -540,6 +540,15 @@ class TestWorkbench:
         assert "Refresh" in html
         assert "Status" in html
 
+    def test_panel_body_owns_slot_flow_rhythm(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-panel__body > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-panel__body > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert "margin-block-start: var(--chirpui-spacing-sm);" in css
+
     def test_split_layout_default(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/split_layout.html" import split_layout %}'
@@ -873,6 +882,18 @@ class TestSurface:
         assert 'id="s1"' in html
         assert "In" in html
 
+    def test_surface_owns_inset_and_flow_rhythm(self) -> None:
+        css = _chirpui_css()
+        assert (
+            ":scope:not(.chirpui-surface--no-padding) > :where(:not(script, style, template))"
+        ) in css
+        assert (
+            ":scope:not(.chirpui-surface--no-padding) > "
+            ":where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert "margin-block-start: var(--chirpui-space-card-gap);" in css
+
 
 # ---------------------------------------------------------------------------
 # Aura
@@ -972,6 +993,14 @@ class TestCallout:
         ).render()
         assert "chirpui-callout__icon" in html
         assert "💡" in html
+
+    def test_callout_body_owns_slot_flow_rhythm(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-callout__body > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-callout__body > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
 
 
 # ---------------------------------------------------------------------------
@@ -2109,6 +2138,11 @@ class TestCard:
         assert "background: color-mix" in header_rule
         assert "var(--chirpui-border-subtle)" in header_rule
         assert ".chirpui-card__body-content > :first-child" in css
+        assert ".chirpui-card__body-content > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-card__body-content > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
         assert ".chirpui-card__footer-wrap:not(:empty)" in css
         assert "background: color-mix(in srgb, var(--chirpui-surface) 90%" in css
         assert '.chirpui-card__header [data-chirpui-role~="content"]' in css

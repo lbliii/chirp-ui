@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block main %}
-{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/layout.html" import container, stack, page_header %}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/command_bar.html" import command_bar %}
 {% from "chirpui/filter_bar.html" import filter_bar %}
+{% from "chirpui/panel.html" import panel %}
 {% from "chirpui/workspace_shell.html" import workspace_shell %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/chip_group.html" import chip_group %}
@@ -138,9 +139,6 @@
                         show_inspector=true,
                         inspector_title="Selected workload",
                         cls="ops-shell-workspace-shell") %}
-  {% slot toolbar %}
-  <span class="ops-shell-scope-label">{{ ops_area_label }}</span>
-  {% end %}
   {% slot sidebar %}
   {% call filter_rail(label="Operations areas") %}
     {% for area in ops_areas %}
@@ -159,14 +157,14 @@
   {% end %}
 
   <section class="ops-shell-workspace-main" aria-label="Operations workload list">
-    {% call block(cls="ops-shell-spotlight") %}
-    <div class="ops-shell-spotlight-head">
-      <div>
-        <p class="ops-shell-kicker">Workspace shell variant</p>
-        <h2>{{ ops_metrics.workloads }} workloads in {{ ops_area_label }}</h2>
-      </div>
+    {% call panel(title=ops_metrics.workloads ~ " workloads in " ~ ops_area_label,
+                  subtitle="Workspace shell variant",
+                  surface_variant="default",
+                  cls="ops-shell-spotlight") %}
+    {% slot actions %}
       {{ badge(ops_metrics.incidents ~ " incidents", variant="error" if ops_metrics.incidents else "muted") }}
-    </div>
+    {% end %}
+    {% call stack() %}
     {% call metric_strip(label="Operations shell metrics") %}
       {{ metric_item(ops_metrics.workloads, "workloads") }}
       {{ metric_item(ops_metrics.watch, "watch") }}
@@ -177,6 +175,7 @@
       This route keeps the operations data but moves the shell structure into workspace_shell so the baseline comparison stays direct.
     </p>
     {% end %}
+    {% end %}
 
     {% if ops_filtered %}
     {% call result_collection(label="Operations workload list") %}
@@ -186,11 +185,11 @@
         {% slot actions %}
         {{ badge(workload.status_label, variant=workload.status_variant) }}
         {% end %}
-        <div class="ops-shell-workload-measures" aria-label="{{ workload.name }} measures">
-          <span><strong>{{ workload.latency }} ms</strong><small>Latency</small></span>
-          <span><strong>{{ workload.error_rate }}</strong><small>Error rate</small></span>
-          <span><strong>{{ workload.region }}</strong><small>Region</small></span>
-        </div>
+        {% call metric_strip(label=workload.name ~ " measures") %}
+          {{ metric_item(workload.latency ~ " ms", "Latency") }}
+          {{ metric_item(workload.error_rate, "Error rate") }}
+          {{ metric_item(workload.region, "Region") }}
+        {% end %}
         {% call chip_group(label=workload.name ~ " tags") %}
           {% for tag in workload.tags %}
           <span class="chirpui-chip">{{ tag }}</span>

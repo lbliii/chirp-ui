@@ -85,5 +85,13 @@
         .chirpui-callout__body {
             font-size: var(--chirpui-font-sm);
         }
+
+        .chirpui-callout__body > :where(:not(script, style, template)) {
+            margin-block: 0;
+        }
+
+        .chirpui-callout__body > :where(:not(script, style, template)) + :where(:not(script, style, template)) {
+            margin-block-start: var(--chirpui-spacing-xs);
+        }
     }
 }

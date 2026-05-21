@@ -36,6 +36,10 @@ Layout primitives solve the *cell* — the cell is the right width. Containment 
 
 - **`.chirpui-card`** and **`.chirpui-panel`** use `overflow: clip`. Content cannot visually escape.
 - **`.chirpui-surface`** and **`.chirpui-callout`** apply `min-width: 0` and `overflow-wrap: break-word` — long words break instead of widening the surface.
+- **Cards, panels, surfaces, and callouts own framed-content rhythm**: direct
+  slot children have their outer margins trimmed and adjacent children receive
+  component-owned internal spacing. App code should not need local padding just
+  to keep text away from a border or background.
 - **`.chirpui-field__input`** (all inputs/textareas/selects rendered by `field_wrapper`) uses `width: 100%; max-width: 100%; min-width: 0` — form controls cannot overflow their parent.
 - **Links inside cards and surfaces** use `overflow-wrap: anywhere` — long URLs break mid-string.
 - **Code blocks** (`.chirpui-code-block`, prose `<pre>`) scroll horizontally via `overflow-x: auto` and use `overscroll-behavior: contain` so scroll doesn't chain to the page.
