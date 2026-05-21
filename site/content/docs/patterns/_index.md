@@ -43,6 +43,13 @@ Build dense catalog, reference, and object-library search surfaces with scoped
 counts, facets, HTMX updates, and responsive command surfaces.
 :::{/card}
 
+:::{card} Workspace Shells
+:icon: panels-top-left
+:link: ./workspace-shells/
+Build dense search, operations, support, and admin workspaces with shell,
+rail, result, metric, and inspector primitives.
+:::{/card}
+
 :::{card} Layout Affinity
 :icon: layout-template
 :link: ./layout-affinity/

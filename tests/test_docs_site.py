@@ -15,6 +15,7 @@ AGENT_CURATED_SNIPPETS = REPO_ROOT / "docs" / "AGENT-CURATED-SNIPPETS.md"
 PATTERN_DOCS = {
     "navigation.md": "docs/NAVIGATION.md",
     "search-shells.md": "docs/SEARCH-SHELL-RECIPES.md",
+    "workspace-shells.md": "docs/WORKSPACE-SHELL-RECIPES.md",
     "layout-affinity.md": "docs/DESIGN-layout-affinity.md",
     "product-pages.md": "docs/PRODUCT-PAGE-PATTERNS.md",
     "media-sites.md": "docs/MEDIA-SITE-PATTERNS.md",
