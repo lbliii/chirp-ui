@@ -540,6 +540,19 @@ async def test_support_shell_second_domain_has_no_overflow(
     await expect(showcase_page.locator(".support-shell-inspector")).to_contain_text(
         "Inspector rail"
     )
+    card_style = await showcase_page.locator(".chirpui-result-card").first.evaluate(
+        """el => {
+            const style = getComputedStyle(el);
+            return {
+                display: style.display,
+                backgroundColor: style.backgroundColor,
+                paddingTop: parseFloat(style.paddingTop),
+            };
+        }"""
+    )
+    assert card_style["display"] == "grid"
+    assert card_style["backgroundColor"] != "rgba(0, 0, 0, 0)"
+    assert card_style["paddingTop"] > 0
     await assert_no_document_horizontal_overflow(showcase_page, f"support-shell-{width}x{height}")
     await _assert_locator_has_no_horizontal_overflow(
         showcase_page,

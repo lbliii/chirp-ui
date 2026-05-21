@@ -659,6 +659,7 @@ class TestWorkbench:
             "@scope (.chirpui-inspector-panel)",
         ):
             assert selector in css
+        assert ":scope {\n    display: grid;\n    gap: var(--chirpui-spacing-sm);" in css
         assert ".chirpui-result-card [data-chirpui-pressure" not in css
 
     def test_file_tree_with_header_actions_and_footer(self, env: Environment) -> None:

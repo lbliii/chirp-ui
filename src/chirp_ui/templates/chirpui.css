@@ -19709,7 +19709,7 @@ a.chirpui-chip:focus-visible {
 /* === partials/167_workspace-primitives.css === */
 @layer chirpui.component {
 @scope (.chirpui-filter-rail) to (.chirpui-filter-rail .chirpui-filter-rail) {
-.chirpui-filter-rail {
+:scope {
     min-inline-size: 0;
 }
 
@@ -19743,7 +19743,7 @@ a.chirpui-chip:focus-visible {
     outline-offset: var(--chirpui-state-focus-offset);
 }
 
-.chirpui-filter-rail[data-chirpui-pressure~="compress"],
+:scope[data-chirpui-pressure~="compress"],
 .chirpui-filter-rail__item[data-chirpui-pressure~="compress"] {
     max-inline-size: 100%;
 }
@@ -19799,7 +19799,7 @@ a.chirpui-chip:focus-visible {
 }
 
 @scope (.chirpui-metric-strip) to (.chirpui-metric-strip .chirpui-metric-strip) {
-.chirpui-metric-strip {
+:scope {
     display: flex;
     flex-wrap: wrap;
     gap: var(--chirpui-spacing-xs);
@@ -19829,13 +19829,13 @@ a.chirpui-chip:focus-visible {
 }
 
 @scope (.chirpui-result-collection) to (.chirpui-result-collection .chirpui-result-collection) {
-.chirpui-result-collection {
+:scope {
     display: grid;
     gap: var(--chirpui-spacing);
     min-inline-size: 0;
 }
 
-.chirpui-result-collection[data-chirpui-pressure~="flex"] {
+:scope[data-chirpui-pressure~="flex"] {
     inline-size: 100%;
 }
 
@@ -19871,7 +19871,7 @@ a.chirpui-chip:focus-visible {
 }
 
 @scope (.chirpui-result-card) to (.chirpui-result-card .chirpui-result-card) {
-.chirpui-result-card {
+:scope {
     display: grid;
     gap: var(--chirpui-spacing-sm);
     min-inline-size: 0;
@@ -19965,13 +19965,13 @@ a.chirpui-chip:focus-visible {
 }
 
 @scope (.chirpui-inspector-panel) to (.chirpui-inspector-panel .chirpui-inspector-panel) {
-.chirpui-inspector-panel {
+:scope {
     display: grid;
     gap: var(--chirpui-spacing);
     min-inline-size: 0;
 }
 
-.chirpui-inspector-panel[data-chirpui-pressure~="compress"] {
+:scope[data-chirpui-pressure~="compress"] {
     max-inline-size: 100%;
 }
 
