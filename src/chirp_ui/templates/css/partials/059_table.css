@@ -3,6 +3,9 @@
    ========================================================================== */
 
 .chirpui-table-wrap {
+    box-sizing: border-box;
+    min-inline-size: 0;
+    max-inline-size: 100%;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: thin;
@@ -16,13 +19,6 @@
     background: var(--chirpui-surface);
 }
 
-.chirpui-table__th--actions,
-.chirpui-table__td--actions {
-    width: 1%;
-    white-space: nowrap;
-    text-align: right;
-}
-
 .chirpui-table__caption:empty {
     display: none;
 }
@@ -31,6 +27,7 @@
     width: 100%;
     min-width: 100%;
     border-collapse: collapse;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-table__body {
@@ -39,10 +36,46 @@
 
 .chirpui-table__th,
 .chirpui-table__td {
+    box-sizing: border-box;
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     text-align: left;
     border-bottom: 1px solid var(--chirpui-border);
     vertical-align: top;
+}
+
+.chirpui-table__th--actions,
+.chirpui-table__td--actions,
+.chirpui-table__td:has(.chirpui-row-actions__trigger) {
+    width: 1%;
+    white-space: normal;
+    text-align: right;
+}
+
+.chirpui-table__td > :where(:not(script, style, template)) {
+    max-inline-size: 100%;
+    margin-block: 0;
+}
+
+.chirpui-table__td:not(.chirpui-table__td--actions):not(:has(.chirpui-row-actions__trigger))
+    > :where(:not(script, style, template))
+    + :where(:not(script, style, template)) {
+    margin-block-start: var(--chirpui-spacing-2xs);
+}
+
+.chirpui-table__td :where(a, code) {
+    overflow-wrap: anywhere;
+}
+
+.chirpui-table__td--actions > :where(.chirpui-cluster, .chirpui-dropdown, .chirpui-btn, .chirpui-icon-btn),
+.chirpui-table__td:has(.chirpui-row-actions__trigger)
+    > :where(.chirpui-cluster, .chirpui-dropdown, .chirpui-btn, .chirpui-icon-btn) {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--chirpui-spacing-xs);
+    max-inline-size: 100%;
+    margin-block: 0;
 }
 
 .chirpui-table__th {

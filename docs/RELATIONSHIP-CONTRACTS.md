@@ -75,6 +75,7 @@ authors and agents fix spacing relationship by relationship.
 | `list_group()` / `media_object()` | row separation, leading media/body/actions pressure, child margin trim | shipped | list/media CSS tests; `/layout` browser proof |
 | `params_table()` / `signature()` | code-heavy row containment, local horizontal overflow, title/code attachment | shipped | params/signature CSS tests; `/forms` browser proof |
 | `dnd` / `sortable` | drag row/board grouping, handle/content pressure, local board overflow | shipped | visual structure tests; `/forms` browser proof |
+| `table()` / `row_actions()` | cell child rhythm, action-cell alignment, local table overflow | shipped | table/row-action CSS tests; `/forms` browser proof |
 | `modal` / `drawer` / `tray` / `panel` | header/body/footer region rhythm | shipped | CSS/browser proof; region margins, wrapping, and local overflow owned by containers |
 | navigation primitives | item metadata, rails, trays, dense chrome | partial | dense navigation docs and browser proof |
 
@@ -114,7 +115,8 @@ status badges, and URLs.
 Remaining row-like work should focus on specialized row systems that have
 distinct interaction contracts:
 
-- table row action groups and dense metadata variants.
+- dense metadata variants that do not naturally belong to list, media, card, or
+  table owners.
 
 ### Drag And Sortable Rows
 
@@ -123,6 +125,16 @@ reorder surfaces. Sortable items and DnD rows wrap long labels inside the row,
 trim direct child margins, and keep handles/actions intrinsic. `dnd_board()`
 owns kanban-style local horizontal overflow, so columns can stay useful without
 widening the document.
+
+### Table Rows And Row Actions
+
+`table()` owns the cell-content relationship: table wrappers provide local
+horizontal overflow, cells trim direct child margins, and ordinary cells attach
+multiple child blocks with a small owned rhythm. Action cells stay compact and
+right-aligned when marked with `chirpui-table__td--actions` or when they contain
+the `row_actions()` trigger class. `row_actions()` triggers keep an intrinsic
+compact control shape so a kebab/menu action does not collapse, stretch, or
+create bespoke table spacing.
 
 ### Code-Heavy Documentation Rows
 

@@ -3387,6 +3387,19 @@ class TestTable:
         assert "chirpui-table__td--left" in html
         assert "chirpui-table__td--right" in html
 
+    def test_table_css_owns_cell_and_action_relationships(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-table-wrap" in css
+        assert "max-inline-size: 100%;" in css
+        assert ".chirpui-table__td > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-table__td:not(.chirpui-table__td--actions):not(:has(.chirpui-row-actions__trigger))"
+            in css
+        )
+        assert ".chirpui-table__td:has(.chirpui-row-actions__trigger)" in css
+        assert "overflow-x: auto;" in css
+        assert "overscroll-behavior-x: contain;" in css
+
 
 # ---------------------------------------------------------------------------
 # Donut
@@ -5724,6 +5737,13 @@ class TestDashboardPrimitives:
         assert "chirpui-dropdown__trigger" in html
         assert "Edit" in html
         assert "Delete" in html
+
+    def test_row_actions_css_uses_compact_trigger_shape(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-row-actions__trigger" in css
+        assert "display: inline-flex;" in css
+        assert "min-inline-size: var(--chirpui-control-block-size-sm);" in css
+        assert "min-block-size: var(--chirpui-control-block-size-sm);" in css
 
     def test_status_with_hint(self, env: Environment) -> None:
         html = env.from_string(

@@ -865,6 +865,117 @@ async def test_showcase_drag_rows_own_pressure_and_board_overflow(
     ("width", "height"),
     [(320, 640), (768, 1024), (1280, 900)],
 )
+async def test_showcase_table_rows_own_action_and_metadata_pressure(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/forms")
+    await wait_for_alpine(showcase_page)
+
+    await showcase_page.evaluate(
+        """() => {
+            const longText = "table-row-owner-" + "delta".repeat(24);
+            document.querySelector("#relationship-table-proof")?.remove();
+            document.querySelector("main")?.insertAdjacentHTML(
+                "afterbegin",
+                `<section id="relationship-table-proof" style="max-width: min(100%, 24rem);">
+                    <div class="chirpui-table-wrap">
+                        <table class="chirpui-table chirpui-table--compact">
+                            <thead class="chirpui-table__head">
+                                <tr class="chirpui-table__row">
+                                    <th class="chirpui-table__th">Name</th>
+                                    <th class="chirpui-table__th chirpui-table__th--actions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="chirpui-table__body">
+                                <tr class="chirpui-table__row">
+                                    <td class="chirpui-table__td">
+                                        <p><a href="#">${longText}</a></p>
+                                        <p>${longText}</p>
+                                    </td>
+                                    <td class="chirpui-table__td chirpui-table__td--actions">
+                                        <button class="chirpui-btn chirpui-btn--sm">Open</button>
+                                        <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-row-actions__trigger">...</button>
+                                    </td>
+                                </tr>
+                                <tr class="chirpui-table__row">
+                                    <td class="chirpui-table__td"><code>${longText}</code></td>
+                                    <td class="chirpui-table__td">
+                                        <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-row-actions__trigger">...</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>`
+            );
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"table-row-relationships-{width}x{height}"
+    )
+    metrics = await showcase_page.evaluate(
+        """() => {
+            const proof = document.querySelector("#relationship-table-proof");
+            const wrap = proof.querySelector(".chirpui-table-wrap");
+            const firstCell = proof.querySelector(".chirpui-table__td");
+            const paragraphs = [...firstCell.querySelectorAll("p")];
+            const actionCell = proof.querySelector(".chirpui-table__td--actions");
+            const inferredActionCell = proof.querySelector("tbody tr:nth-child(2) td:nth-child(2)");
+            const actionButton = actionCell.querySelector(".chirpui-btn");
+            const rowTrigger = inferredActionCell.querySelector(".chirpui-row-actions__trigger");
+            const actionButtonRect = actionButton.getBoundingClientRect();
+            const rowTriggerRect = rowTrigger.getBoundingClientRect();
+            const proofRect = proof.getBoundingClientRect();
+            const wrapRect = wrap.getBoundingClientRect();
+            const actionRect = actionCell.getBoundingClientRect();
+            const inferredRect = inferredActionCell.getBoundingClientRect();
+            return {
+                proofOverflow: Math.ceil(proof.scrollWidth - proof.clientWidth),
+                wrapOverflow: Math.ceil(wrap.scrollWidth - wrap.clientWidth),
+                wrapOverflowX: getComputedStyle(wrap).overflowX,
+                wrapContained: wrapRect.right <= proofRect.right + 1,
+                actionButtonContained: actionButtonRect.right <= actionRect.right + 1,
+                rowTriggerContained: rowTriggerRect.right <= inferredRect.right + 1,
+                paragraphMargins: paragraphs.map((node) => [
+                    getComputedStyle(node).marginBlockStart,
+                    getComputedStyle(node).marginBlockEnd,
+                ]),
+                secondParagraphMarginStart: getComputedStyle(paragraphs[1]).marginBlockStart,
+                actionAlign: getComputedStyle(actionCell).textAlign,
+                inferredActionAlign: getComputedStyle(inferredActionCell).textAlign,
+                actionButtonDisplay: getComputedStyle(actionButton).display,
+                rowTriggerDisplay: getComputedStyle(rowTrigger).display,
+                rowTriggerMinInline: getComputedStyle(rowTrigger).minInlineSize,
+                rowTriggerMinBlock: getComputedStyle(rowTrigger).minBlockSize,
+            };
+        }"""
+    )
+    assert metrics["proofOverflow"] <= 1, metrics
+    assert metrics["wrapOverflow"] >= 0, metrics
+    assert metrics["wrapOverflowX"] == "auto", metrics
+    assert metrics["wrapContained"], metrics
+    assert metrics["actionButtonContained"], metrics
+    assert metrics["rowTriggerContained"], metrics
+    assert metrics["paragraphMargins"][0] == ["0px", "0px"], metrics
+    assert metrics["paragraphMargins"][1][1] == "0px", metrics
+    assert metrics["secondParagraphMarginStart"] != "0px", metrics
+    assert metrics["actionAlign"] == "right", metrics
+    assert metrics["inferredActionAlign"] == "right", metrics
+    assert metrics["actionButtonDisplay"] == "inline-flex", metrics
+    assert metrics["rowTriggerDisplay"] == "inline-flex", metrics
+    assert metrics["rowTriggerMinInline"] != "0px", metrics
+    assert metrics["rowTriggerMinBlock"] != "0px", metrics
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
 async def test_showcase_search_browse_composites_own_rhythm(
     showcase_page,
     showcase_base_url: str,

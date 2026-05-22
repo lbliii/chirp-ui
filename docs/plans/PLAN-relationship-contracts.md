@@ -48,10 +48,12 @@ responsive pressure, or local overflow.
 | List and media rows | list/media/resource/workspace CSS | row separation, leading media/body/actions pressure, result card footer/body rhythm |
 | Code-heavy docs rows | params table/signature CSS | local horizontal overflow, code cell pressure, title/code attachment |
 | Drag/sort rows | sortable/dnd CSS | handle/content pressure, direct child trim, local board overflow |
+| Table row actions | table/row-actions CSS | cell child rhythm, action-cell alignment, local table overflow |
 
 ## Next 10 Tasks
 
-1. Audit table row-action relationships and dense metadata variants.
+1. Audit dense metadata variants that do not already belong to list, media,
+   card, workspace, or table owners.
 2. Add relationship-specific browser probes for high-risk surfaces instead of
    only document overflow probes.
 3. Remove first-party `chirpui-mt-*` / `chirpui-mb-*` usage when a component
