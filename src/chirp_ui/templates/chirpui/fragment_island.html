@@ -86,7 +86,7 @@
 ) %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 {% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs_unsafe=_attrs_raw) %}
-<div id="{{ mutation_result_id }}" class="chirpui-fragment-island chirpui-mb-sm" aria-live="polite"></div>
+<div id="{{ mutation_result_id }}" class="chirpui-fragment-island" aria-live="polite"></div>
 {{ caller() }}
 {% end %}
 {% end %}

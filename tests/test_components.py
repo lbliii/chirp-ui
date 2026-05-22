@@ -3753,6 +3753,16 @@ class TestAlert:
         assert "chirpui-alert__actions" in html
         assert "Retry" in html
 
+    def test_collapsible_alert_uses_owned_body_spacing(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/alert.html" import alert %}'
+            '{% call alert(collapsible=true, title="More") %}Details{% end %}'
+        ).render()
+        css = _chirpui_css()
+
+        assert "chirpui-mt-sm" not in html
+        assert ".chirpui-alert > .chirpui-alert__body + .chirpui-alert__body" in css
+
 
 # ---------------------------------------------------------------------------
 # Forms
@@ -5385,6 +5395,7 @@ class TestWizardForm:
         assert 'id="update-result"' in html
         assert 'aria-live="polite"' in html
         assert "Form content" in html
+        assert "chirpui-mb-sm" not in html
         # Result div must appear before caller content
         idx_result = html.find('id="update-result"')
         idx_content = html.find("Form content")

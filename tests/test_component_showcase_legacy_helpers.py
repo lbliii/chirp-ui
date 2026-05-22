@@ -39,6 +39,15 @@ def test_high_visibility_navigation_recipes_do_not_expand_legacy_helper_usage() 
         assert "chirpui-scroll-x" not in text, template
 
 
+def test_component_showcase_templates_do_not_use_legacy_spacing_helpers() -> None:
+    spacing_helpers = ("chirpui-mt-sm", "chirpui-mt-md", "chirpui-mb-md")
+
+    for template in SHOWCASE_TEMPLATES.rglob("*.html"):
+        text = template.read_text(encoding="utf-8")
+        for helper in spacing_helpers:
+            assert helper not in text, template
+
+
 def test_component_showcase_defines_local_copy_chrome() -> None:
     text = BASE.read_text(encoding="utf-8")
 
