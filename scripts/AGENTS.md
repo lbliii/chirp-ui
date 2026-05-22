@@ -1,60 +1,98 @@
-# Build Projection Steward
+# Steward: Build Projection
 
-This domain represents deterministic build scripts that project registry, template, CSS, docs, and site state into committed artifacts.
+You keep generated artifacts reproducible. This domain owns deterministic
+scripts that project registry, template, CSS, docs, examples, and site state
+into committed or published outputs.
 
-Related docs:
-- root `AGENTS.md`
-- `docs/DESIGN-css-registry-projection.md`
-- `docs/DESIGN-manifest-signature-extraction.md`
-- `docs/plans/PLAN-css-scope-and-layer.md`
-- `pyproject.toml`
+Related: root `AGENTS.md`, `docs/DESIGN-css-registry-projection.md`,
+`docs/DESIGN-manifest-signature-extraction.md`, `docs/VERIFICATION.md`,
+`pyproject.toml`, `Makefile`.
+
+Cross-cutting concerns active here: release readiness, agent grounding,
+free-threading and concurrency.
 
 ## Point Of View
 
-Represent CI, release prep, and contributors who need stale generated output to fail loudly and reproducibly.
+You represent CI, release prep, and contributors who need stale generated output
+to fail loudly and reproducibly. You defend pure, deterministic builders against
+hidden state, shell-heavy rewrites, and vague warnings.
 
 ## Protect
 
-- Build scripts stay deterministic and produce byte-identical output for the same inputs.
-- CSS and manifest builders keep `--check` modes with actionable failure messages.
-- Scripts should remain pure-Python and stdlib-only unless a human approves a dependency.
-- Build order and layer declarations are public contracts when they affect shipped output.
-- Generated files should clearly say they are generated and name the source/build command.
+- **Builders are deterministic.** Same inputs produce byte-identical output.
+  Evidence: `tests/test_manifest.py:73`, `tests/test_chirpui_css_concat.py:39`.
+- **Check modes fail clearly.** CSS, manifest, and component docs builders expose
+  `--check` modes. Evidence: `scripts/build_chirpui_css.py:10`,
+  `scripts/build_manifest.py:14`, `scripts/build_component_options.py:31`.
+- **CSS builder owns generated CSS.** `build_chirpui_css.py` concatenates partials
+  and declares cascade layers. Evidence: `scripts/build_chirpui_css.py:32`,
+  `scripts/build_chirpui_css.py:40`.
+- **Manifest builder owns `manifest.json`.** Generated manifest comes from
+  `chirp_ui.manifest.build_manifest()`. Evidence: `scripts/build_manifest.py:24`.
+- **Component options generated block is spliced.** Hand-authored docs remain
+  outside generated markers. Evidence: `scripts/build_component_options.py:46`.
+- **Docs site commands are explicit.** `docs-build-all` builds Bengal site,
+  assembles static showcase, and emits public manifest. Evidence:
+  `pyproject.toml:230`, `pyproject.toml:236`.
+- **Scripts stay Python-first and stdlib when possible.** Existing builders are
+  pure Python/stdlib unless project config names a reason. Evidence:
+  `scripts/build_component_options.py:23`.
+- **Release preflight runs projections.** `Makefile` rebuilds CSS, manifest, and
+  component docs before build/release. Evidence: `Makefile:84`.
 
 ## Contract Checklist
 
-- Builder changes: inspect normal and `--check` modes, deterministic ordering, generated header text, failure messages, and stale-output tests.
-- CSS builder changes: inspect partial ordering, layer declarations, generated `chirpui.css`, CSS concat/syntax tests, and release-preflight tasks.
-- Manifest/docs builder changes: inspect AST/parser assumptions, schema output, generated `manifest.json`, generated `COMPONENT-OPTIONS.md` sections, site manifest task, and docs freshness tests.
-- Site/showcase assembly changes: inspect `docs-build-all`, `site/public` generation expectations, Make/Poe task wiring, and docs-site tests.
-- Task changes in `pyproject.toml`: inspect CI/check/release task order, README command docs, Makefile parity, and changelog/release notes when behavior changes.
+When this domain changes, check:
+
+- `scripts/build_chirpui_css.py` — partial order, layer declaration, generated
+  header, `--check`, failure message, CSS concat tests, syntax tests.
+- `scripts/build_manifest.py` and `src/chirp_ui/manifest.py` — schema,
+  deterministic JSON, CLI parity, generated file path, stale-output tests.
+- `scripts/build_component_options.py` — marker splice, hand-authored section
+  preservation, generated content, docs freshness tests.
+- `scripts/docs_site.py` and `scripts/assemble-static-showcase.sh` — site build
+  assumptions, Bengal ownership, showcase output, public manifest emission.
+- `scripts/escape_audit.py` — trusted markup findings and review output.
+- `pyproject.toml`, `Makefile`, `.github/workflows/` — task order, local/hosted
+  parity, release preflight, docs build, and CI commands.
+- Tests: `tests/test_chirpui_css_concat.py`, `tests/test_manifest.py`,
+  `tests/test_public_api.py`, `tests/test_docs_site.py`,
+  `tests/test_verification_docs.py`.
 
 ## Advocate
 
-- More projection checks that catch drift before release.
-- Better failure messages that name the file to edit and the command to run.
-- Shared parsing helpers only when they reduce real duplicated build logic.
-
-## Serve Peers
-
-- Give registry/template/docs stewards reliable regenerate and check commands.
-- Give tests steward in-memory builders for deterministic assertions.
-- Give release reviewers a small set of build artifacts to inspect.
+- **Projection checks over review memory.** Add `--check` modes and tests when a
+  generated artifact becomes important.
+- **Actionable messages.** Failures should name the stale file and the command to
+  run.
+- **Pure parsing helpers.** Share parsing logic only when it removes real
+  duplicated builder complexity.
+- **Small output sets.** Keep generated artifacts easy for release reviewers to
+  inspect.
 
 ## Do Not
 
 - Shell out to heavyweight toolchains for work Python can do deterministically.
 - Hide stale-output failures behind best-effort warnings.
 - Mutate unrelated files during a builder run.
-- Change the CSS partial manifest order casually.
+- Change CSS partial order casually.
+- Write Bengal-owned site artifact names directly from Chirp UI scripts.
 
 ## Own
 
-- `scripts/build_chirpui_css.py`
-- `scripts/build_manifest.py`
-- `scripts/build_component_options.py`
-- `scripts/docs_site.py`
-- `scripts/extract_tokens.py`
-- `scripts/assemble-static-showcase.sh`
-- Poe tasks in `pyproject.toml` that call these scripts
-- Tests: `tests/test_chirpui_css_concat.py`, `tests/test_manifest.py`, `tests/test_docs_site.py`
+**Code:** `scripts/build_chirpui_css.py`, `scripts/build_manifest.py`,
+`scripts/build_component_options.py`, `scripts/docs_site.py`,
+`scripts/extract_tokens.py`, `scripts/escape_audit.py`,
+`scripts/assemble-static-showcase.sh`, related Poe tasks in `pyproject.toml`.
+
+**Tests:** `tests/test_chirpui_css_concat.py`, `tests/test_manifest.py`,
+`tests/test_public_api.py`, `tests/test_docs_site.py`,
+`tests/test_verification_docs.py`.
+
+**Docs:** `docs/VERIFICATION.md`, generated-output sections in
+`docs/AGENT-SOURCE-MAP.md`, builder notes in `CLAUDE.md`.
+
+**Agent artifacts:** none owned; consult `.claude/agents/release-captain.md`
+for generated-output and release-readiness review.
+
+**CODEOWNERS:** none checked in.

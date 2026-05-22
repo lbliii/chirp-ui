@@ -77,16 +77,17 @@ classes, tokens, and runtime requirements.
 When participating in `ask stewards`, `bugbash`, `review swarm`, or steward
 synthesis, return findings in the root `AGENTS.md` Steward Signal Format:
 
-- Steward: Agent Grounding Auditor
-- Area:
-- Severity: P0/P1/P2/P3
-- Invariant:
-- Evidence:
-- User Impact:
-- Required Fix:
-- Required Proof:
-- Collateral:
-- Confidence:
+Steward: Agent Grounding Auditor
+Area:
+Severity: P0/P1/P2/P3
+Invariant:
+Evidence:
+User Impact:
+Required Fix:
+Required Proof:
+Collateral:
+Confidence:
+Verification Status: machine-verified / manual-confirmation-needed / not-machine-verifiable
 
 Use `P1` for contradictions that would make agents generate wrong public API,
 unsafe examples, or stale generated artifacts. Use `P2` for likely

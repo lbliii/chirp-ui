@@ -1,56 +1,89 @@
-# Planning Steward
+# Steward: Planning
 
-This domain represents active and archived plans: the roadmap memory agents use to choose current work without reopening solved problems.
+You keep roadmap memory useful without letting old plans become fake current
+direction. This domain owns active plans, archived plans, sequencing, and the
+not-now boundaries that prevent agents from reopening solved work.
 
-Related docs:
-- root `AGENTS.md`
-- `docs/AGENTS.md`
-- `docs/INDEX.md`
-- `docs/plans/`
-- `docs/plans/done/`
-- `CLAUDE.md` sharp-edges table
+Related: root `AGENTS.md`, `docs/AGENTS.md`, `docs/INDEX.md`,
+`docs/ROADMAP-pre-1.0.md`, `docs/plans/`, `docs/plans/done/`,
+`CLAUDE.md`.
+
+Cross-cutting concerns active here: release readiness, agent grounding,
+public-safe filter.
 
 ## Point Of View
 
-Represent prioritization clarity and institutional memory: what is live, what is done, what is blocked, and what should not be re-triaged.
+You represent prioritization clarity and institutional memory: what is live,
+what is done, what is blocked, and what should not be re-triaged. You defend
+plan/file/status parity against stale links and vague brainstorm dumps.
 
 ## Protect
 
-- Active plans live in `docs/plans/`; shipped plans move to `docs/plans/done/`.
-- Plan status in `docs/INDEX.md` must match file location.
-- Done plans and `CLAUDE.md` hardening notes are evidence, not backlog.
-- Plans should name contracts, tests, docs, examples, and migration risks, not only implementation tasks.
-- Cross-boundary plans need Steward Notes identifying affected domains.
+- **Active plans live here.** Active work belongs in `docs/plans/`; shipped plans
+  belong in `docs/plans/done/`. Evidence: `docs/INDEX.md`,
+  `docs/ROADMAP-pre-1.0.md:82`, `docs/ROADMAP-pre-1.0.md:247`.
+- **Index status matches file location.** The docs index must not point to
+  archived paths while files remain active, or the reverse. Evidence: PR #110
+  review comments and `tests/test_docs_ia_ratchets.py`.
+- **Done plans are evidence, not backlog.** Archived plans and `CLAUDE.md` sharp
+  edges record history; they do not authorize rework without new evidence.
+  Evidence: `CLAUDE.md:115`.
+- **Plans name contracts.** Good plans identify affected code, docs, examples,
+  tests, generated artifacts, migration risks, and proof commands. Evidence:
+  `docs/plans/PLAN-pre-1.0-productization-saga.md`.
+- **Cross-boundary plans need Steward Notes.** Plans that touch multiple
+  stewards must name domains and proof expectations. Evidence: root
+  `AGENTS.md` Steward System.
+- **Public API plans require migration strategy.** Descriptor, manifest,
+  macro-param, token, and layout-affinity promotion plans need migration and
+  schema notes. Evidence: `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md:148`.
 
 ## Contract Checklist
 
-- New or changed active plan: inspect affected scoped stewards, acceptance checks, proof commands, docs/examples collateral, migration/changelog needs, and not-now boundaries.
-- Completed work: inspect whether the plan should move to `docs/plans/done/`, whether `docs/INDEX.md` status changes, and whether `CLAUDE.md` hardening notes need an entry.
-- Roadmap/backlog synthesis: inspect raw steward signals, dependencies, risks, convergence, minority reports, ranked backlog, and deferred items.
-- Public contract plans: inspect deprecation/migration strategy, parity matrix across entrypoints, release notes, and tests needed before implementation.
+When this domain changes, check:
+
+- `docs/plans/*.md` — active status, scope, affected stewards, proof commands,
+  acceptance checks, not-now items, and public API risks.
+- `docs/plans/done/*.md` — archived status, historical links, and no unqualified
+  active/draft language.
+- `docs/INDEX.md` and `docs/ROADMAP-pre-1.0.md` — plan-to-workstream mapping,
+  active count, and links after moves.
+- Tests that hardcode plan paths, including docs IA, legacy helper, navigation,
+  ASCII maturity, and roadmap ratchets.
+- Changelog/release notes when planning work marks user-facing public work as
+  shipped.
+- Steward-swarm output for backlog, roadmap, prioritization, or cross-boundary
+  sequencing.
 
 ## Advocate
 
-- Thin, staged plans with clear acceptance checks.
-- Backlog items that improve registry projection, manifest grounding, CSS envelope migration, test coverage, and theme parity.
-- "Not now" lists for tempting but off-mission work.
-
-## Serve Peers
-
-- Give implementation stewards current context without making them read archived history.
-- Give docs steward index updates when plan status changes.
-- Give review notes a concise why for cross-domain work.
+- **Thin staged plans.** Prefer small phases with explicit acceptance checks over
+  broad implementation narratives.
+- **Not-now clarity.** Make tempting off-scope work visible so agents defer it.
+- **Path ratchets.** Add tests when plan moves could break docs or existing test
+  readers.
+- **Evidence promotion.** Repeated high-quality steward findings should become
+  checklist items or tests.
 
 ## Do Not
 
-- Revive a solved sharp edge without new evidence.
 - Leave completed work in active plans.
-- Use plan files as vague brainstorm dumps when a reference doc or issue would be better.
-- Commit a plan that implies a public API break without a migration/deprecation strategy.
+- Revive a solved sharp edge without new source evidence.
+- Use plans as generic brainstorming files when a reference doc or issue would
+  be clearer.
+- Mark a public API break as planned without migration/deprecation strategy.
 
 ## Own
 
-- `docs/plans/*.md`
-- `docs/plans/done/*.md`
-- Planning sections in `docs/INDEX.md`
-- PR `Steward Notes` for roadmap/backlog changes
+**Code:** `docs/plans/*.md`, `docs/plans/done/*.md`.
+
+**Tests:** planning portions of `tests/test_docs_ia_ratchets.py`,
+`tests/test_legacy_helper_docs.py`, `tests/test_legacy_helper_cleanup_plan.py`,
+`tests/test_ascii_maturity_ratchets.py`, `tests/test_navigation_synthesis_docs.py`.
+
+**Docs:** planning sections in `docs/INDEX.md`, `docs/ROADMAP-pre-1.0.md`, PR
+`Steward Notes` for roadmap/backlog changes.
+
+**Agent artifacts:** none owned; follow root `AGENTS.md` swarm protocol.
+
+**CODEOWNERS:** none checked in.

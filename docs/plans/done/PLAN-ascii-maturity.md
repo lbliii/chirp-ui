@@ -35,13 +35,13 @@
 
 ---
 
-## Next Slice
+## Next Slice (historical, closed)
 
-Public surface stabilization owns the maturity decision, but this plan owns the
-proof. The next accepted slice is an accessibility-first pass over the
-interactive ASCII/TUI controls: ARIA roles and names, keyboard behavior,
+Public surface stabilization now owns maturity decisions, and this archived plan
+records the proof that closed the public templated ASCII set. The historical
+accessibility-first slice covered ARIA roles and names, keyboard behavior,
 disabled/state semantics, reduced-motion behavior, and a focused browser gauntlet
-for composites whose behavior cannot be proven by render tests alone.
+for composites whose behavior could not be proven by render tests alone.
 
 Unpromoted ASCII/TUI components remain `experimental` in the manifest and use
 the `ASCII maturity pass` track in `docs/PUBLIC-SURFACE-STABILIZATION.md`.

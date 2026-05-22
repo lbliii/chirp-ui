@@ -5,7 +5,7 @@ style, and verifies the bleed fix: outer-card :hover does NOT propagate to an
 inner nested card because the `@scope (.chirpui-card) to (.chirpui-card
 .chirpui-card)` upper boundary stops the outer rule at the first nested card.
 
-See docs/PLAN-css-scope-and-layer.md § Sprint 5.
+See docs/plans/PLAN-css-scope-and-layer.md § Sprint 5.
 """
 
 import pytest

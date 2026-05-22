@@ -4,7 +4,7 @@ The build is pure-Python concat (``scripts/build_chirpui_css.py``). This test
 regenerates into memory and diffs against the committed output — if someone
 edited a partial but forgot to rebuild, CI catches it here.
 
-See ``docs/PLAN-css-scope-and-layer.md § Sprint 1``.
+See ``docs/plans/PLAN-css-scope-and-layer.md § Sprint 1``.
 """
 
 from __future__ import annotations
@@ -65,7 +65,7 @@ def test_layer_declaration_at_top() -> None:
     """The cascade order is part of the public API — first @-rule in the file
     must be the exact declaration documented in docs/CSS-OVERRIDE-SURFACE.md.
 
-    See ``docs/PLAN-css-scope-and-layer.md § Sprint 3 T3.4``.
+    See ``docs/plans/PLAN-css-scope-and-layer.md § Sprint 3 T3.4``.
     """
     build_chirpui_css = _load_build_module()
     text = OUTPUT.read_text(encoding="utf-8")

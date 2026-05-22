@@ -65,6 +65,7 @@ adds all of the following:
 | `docs-derived` | `docs/BENGAL-THEME-ANATOMY.md` | Packaged Bengal theme controls, search, mobile nav, TOC, and docs tab hooks. | `source-only` |
 | `docs-derived` | `site/content/docs/` | Published docs source front matter and concise mirrors consumed by Bengal. | `source-only` |
 | `example-derived` | `examples/component-showcase/app.py` | Dynamic route map and server-side fragment context for runnable examples. | `source-only` |
+| `example-derived` | `examples/component-showcase/templates/showcase/` | Dynamic showcase templates may inform agents only through candidate-review policy; they are not automatic snippets. | `candidate-review` |
 | `example-derived` | `examples/component-showcase/templates/showcase/appearance-tone.html` | Runnable appearance/tone macro usage examples. | `candidate-review` |
 | `example-derived` | `examples/component-showcase/templates/showcase/theme-packs.html` | Runnable theme-pack catalog examples. | `candidate-review` |
 | `example-derived` | `examples/component-showcase/templates/showcase/htmx.html` | Runnable htmx pattern examples. | `candidate-review` |

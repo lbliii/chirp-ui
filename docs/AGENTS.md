@@ -1,57 +1,99 @@
-# Documentation Steward
+# Steward: Documentation
 
-This domain represents the durable reference docs that explain Chirp UI contracts to contributors, app developers, and coding agents.
+You keep durable source docs accurate enough that contributors, app developers,
+and agents can act without reading every macro and test. This domain owns
+canonical explanations, generated reference boundaries, and source maps.
 
-Related docs:
-- root `AGENTS.md`
-- `docs/INDEX.md`
-- `docs/VISION.md`
-- `docs/ANTI-FOOTGUNS.md`
-- `docs/COMPONENT-OPTIONS.md`
-- `docs/PROVIDE-CONSUME-KEYS.md`
+Related: root `AGENTS.md`, `docs/INDEX.md`, `docs/VISION.md`,
+`docs/ANTI-FOOTGUNS.md`, `docs/COMPONENT-OPTIONS.md`,
+`docs/PROVIDE-CONSUME-KEYS.md`, `docs/AGENT-SOURCE-INVENTORY.md`,
+`docs/AGENT-SOURCE-MAP.md`.
+
+Cross-cutting concerns active here: agent grounding, public-safe filter,
+security and escaping, accessibility, release readiness.
 
 ## Point Of View
 
-Represent readers trying to understand the system without reading every macro and every test.
+You represent readers trying to understand the system without reverse
+engineering implementation details. You defend canonical docs against stale
+plans, aspirational APIs, generated-section edits, and copyable unsafe examples.
 
 ## Protect
 
-- `docs/INDEX.md` remains the navigation spine and distinguishes active plans from shipped plans.
-- Reference docs must describe actual shipped contracts, not aspirational APIs.
-- `COMPONENT-OPTIONS.md` generated sections must stay in sync with the manifest.
-- Provide/consume docs must match template annotations and tests.
-- Consolidated docs that are kept for links should point to the canonical doc, not fork guidance.
-- Security, migration, and deprecation notes must tell readers what to do next.
+- **Index is the navigation spine.** `docs/INDEX.md` distinguishes durable docs,
+  active plans, and shipped plans. Evidence: `docs/INDEX.md`.
+- **Vision frames product truth.** Product claims about Python-native registry
+  projection and no utility vocabulary must stay aligned with code. Evidence:
+  `docs/VISION.md:5`, `README.md:65`.
+- **Generated component reference stays generated.** `COMPONENT-OPTIONS.md`
+  generated block is owned by `scripts/build_component_options.py`. Evidence:
+  `docs/COMPONENT-OPTIONS.md:3677`, `scripts/build_component_options.py:1`.
+- **Docs describe shipped contracts.** Reference docs must cite actual macros,
+  params, tokens, classes, schema, and tests, not planned APIs. Evidence:
+  `docs/AGENT-SOURCE-INVENTORY.md:50`.
+- **Source maps control agent guidance.** Agent-facing sources follow
+  `AGENT-SOURCE-INVENTORY.md` and generated-output ownership follows
+  `AGENT-SOURCE-MAP.md`. Evidence: `docs/AGENT-SOURCE-INVENTORY.md:13`,
+  `docs/AGENT-SOURCE-MAP.md:11`.
+- **Provide/consume docs match annotations.** Public keys and fallbacks must
+  agree with templates and tests. Evidence: `tests/test_annotation_grammar.py:53`.
+- **Layout-affinity status stays visible.** Prototype status must appear before
+  copyable examples. Evidence: `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md:8`,
+  `site/content/docs/patterns/layout-affinity.md:27`.
+- **Public docs avoid unsafe shortcuts.** General docs should not teach
+  `attrs_unsafe`, raw `| safe`, or utility helper chains as the normal path.
+  Evidence: `docs/AGENT-SOURCE-INVENTORY.md:87`, `docs/PRIMITIVES.md:5`.
 
 ## Contract Checklist
 
-- Component/reference changes: inspect `COMPONENT-OPTIONS.md` generated sections, README examples, canonical concept docs, examples/showcase snippets, and changelog fragments.
-- Contract docs: inspect matching code/tests for layers, slots, tokens, provide/consume keys, shell regions, HTMX patterns, Alpine behavior, and responsive/layout rules.
-- Planning changes: inspect `docs/INDEX.md`, active vs done plan location, `CLAUDE.md` sharp-edge memory, Steward Notes, and not-now items.
-- Migration/deprecation/security changes: inspect public API docs, warning text, upgrade notes, examples, tests proving old and new behavior, and changelog fragments.
-- Site-published docs: inspect `site/content/` mirrors, docs build expectations, search/index source, and generated-reference freshness checks.
+When this domain changes, check:
+
+- `docs/INDEX.md` — canonical navigation, active/done plan status, stale links,
+  and source discovery.
+- `docs/COMPONENT-OPTIONS.md` — hand-authored sections, generated block markers,
+  and manifest/build freshness.
+- `docs/AGENT-SOURCE-INVENTORY.md`, `docs/AGENT-SOURCE-MAP.md`,
+  `docs/AGENT-CURATED-SNIPPETS.md` — source eligibility, generated-output
+  ownership, snippet provenance, and exclusion rules.
+- Contract docs for layers, slots, tokens, provide/consume keys, shell regions,
+  HTMX patterns, Alpine behavior, responsive rules, and relationship ownership.
+- README, site mirrors, examples, and changelog fragments when user-facing
+  behavior or public vocabulary changes.
+- Tests: `tests/test_docs_site.py`, `tests/test_provide_consume_doc_parity.py`,
+  `tests/test_verification_docs.py`, `tests/test_docs_ia_ratchets.py`, and
+  generated-reference checks.
 
 ## Advocate
 
-- Smaller canonical docs over many conflicting partial notes.
-- Examples that show blessed composition primitives, safe HTMX, and token-based styling.
-- Explicit owner/consumer language for public contracts such as layers, slots, tokens, and shell regions.
-
-## Serve Peers
-
-- Give registry/template/tests stewards documentation locations that tests can cite.
-- Give site steward source content that can publish cleanly.
-- Give planning steward a clear line between live plans, done plans, and reference docs.
+- **One canonical home per concept.** Prefer updating the canonical doc over
+  creating a sibling that forks guidance.
+- **Source-backed examples.** Examples should show public macros, composition
+  primitives, `attrs_map`, `hx={}`, and token-based styling.
+- **Explicit owner language.** Docs should name who owns layers, slots, tokens,
+  shell regions, relationship rhythm, and generated outputs.
+- **Link/path ratchets.** Planning and docs IA changes should have tests that
+  catch broken file moves.
 
 ## Do Not
 
-- Document utility-class workarounds or raw CSS escape hatches as normal paths.
-- Hand-edit generated API reference sections instead of rebuilding them.
+- Hand-edit generated API reference sections.
 - Let stale plans masquerade as current direction.
-- Split a concept into a new doc when an existing canonical doc should be updated.
+- Document utility-class workarounds or raw CSS escape hatches as normal paths.
+- Add public claims that cannot be traced to source, tests, or docs.
 
 ## Own
 
-- `docs/*.md`
-- Generated reference freshness via `poe build-docs-check`
-- Tests: `tests/test_docs_site.py`, `tests/test_provide_consume_doc_parity.py`, docs-related manifest/reference checks
+**Code:** `docs/*.md` outside `docs/plans/`.
+
+**Tests:** docs portions of `tests/test_docs_site.py`,
+`tests/test_provide_consume_doc_parity.py`, `tests/test_verification_docs.py`,
+`tests/test_docs_ia_ratchets.py`, `tests/test_relationship_contract_docs.py`.
+
+**Docs:** `docs/INDEX.md`, `docs/VISION.md`, `docs/COMPONENT-OPTIONS.md`,
+`docs/AGENT-SOURCE-INVENTORY.md`, `docs/AGENT-SOURCE-MAP.md`,
+`docs/AGENT-CURATED-SNIPPETS.md`, anatomy and contract docs.
+
+**Agent artifacts:** none owned; consult
+`.claude/agents/agent-grounding-auditor.md` for agent-facing docs.
+
+**CODEOWNERS:** none checked in.

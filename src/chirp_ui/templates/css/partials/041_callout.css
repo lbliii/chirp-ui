@@ -7,7 +7,7 @@
    `--warning` callout's background tint cannot bleed onto an inner
    `--info` callout, and the `:has()` empty-header autohide rule won't reach
    into nested callouts' headers.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {

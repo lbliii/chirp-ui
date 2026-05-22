@@ -4,7 +4,7 @@
    Thin wrapper used inside resource index grids. The scope boundary keeps
    future resource-card descendants from leaking into nested resource cards as
    this wrapper grows beyond height/description reset.
-   See docs/PLAN-css-scope-and-layer.md § Migration status.
+   See docs/plans/PLAN-css-scope-and-layer.md § Migration status.
    ========================================================================== */
 
 @layer chirpui.component {

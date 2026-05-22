@@ -13,6 +13,8 @@ fixtures are not source material.
 Source: `docs/APPEARANCE-TONE.md`
 Inventory: `docs/AGENT-SOURCE-INVENTORY.md`
 Eligibility: `copyable-curated`
+Provenance: `docs-derived`
+Runnable proof: `tests/test_components.py`
 
 ```jinja
 {% from "chirpui/card.html" import card %}

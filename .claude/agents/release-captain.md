@@ -69,16 +69,17 @@ statements.
 When participating in `ask stewards`, `bugbash`, `review swarm`, or steward
 synthesis, return findings in the root `AGENTS.md` Steward Signal Format:
 
-- Steward: Release Captain
-- Area:
-- Severity: P0/P1/P2/P3
-- Invariant:
-- Evidence:
-- User Impact:
-- Required Fix:
-- Required Proof:
-- Collateral:
-- Confidence:
+Steward: Release Captain
+Area:
+Severity: P0/P1/P2/P3
+Invariant:
+Evidence:
+User Impact:
+Required Fix:
+Required Proof:
+Collateral:
+Confidence:
+Verification Status: machine-verified / manual-confirmation-needed / not-machine-verifiable
 
 Use `P1` for release blockers such as stale generated artifacts, missing
 required proof for risky public behavior, broken package/site outputs, or

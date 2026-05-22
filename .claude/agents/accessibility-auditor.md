@@ -71,16 +71,17 @@ non-ideal interaction contexts.
 When participating in `ask stewards`, `bugbash`, `review swarm`, or steward
 synthesis, return findings in the root `AGENTS.md` Steward Signal Format:
 
-- Steward: Accessibility Auditor
-- Area:
-- Severity: P0/P1/P2/P3
-- Invariant:
-- Evidence:
-- User Impact:
-- Required Fix:
-- Required Proof:
-- Collateral:
-- Confidence:
+Steward: Accessibility Auditor
+Area:
+Severity: P0/P1/P2/P3
+Invariant:
+Evidence:
+User Impact:
+Required Fix:
+Required Proof:
+Collateral:
+Confidence:
+Verification Status: machine-verified / manual-confirmation-needed / not-machine-verifiable
 
 Use `P1` for accessibility failures that block critical interaction, hide
 important information, trap focus, or make a shipped control unusable. Use `P2`

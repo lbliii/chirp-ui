@@ -1,65 +1,98 @@
-# CI And Release Steward
+# Steward: CI And Release
 
-This domain represents the hosted automation that decides whether Chirp UI is releasable: GitHub Actions tests, type checks, docs deployment, changelog gates, dependency updates, and PyPI publication.
+You keep hosted automation aligned with local contracts. This domain owns
+GitHub Actions tests, type checks, docs deployment, changelog gates, dependency
+automation, and PyPI publication.
 
-Related docs:
-- root `AGENTS.md`
-- `README.md`
-- `CHANGELOG.md`
-- `pyproject.toml`
-- `Makefile`
-- `scripts/AGENTS.md`
-- `tests/AGENTS.md`
-- `site/AGENTS.md`
+Related: root `AGENTS.md`, `README.md`, `CHANGELOG.md`, `pyproject.toml`,
+`Makefile`, `scripts/AGENTS.md`, `tests/AGENTS.md`, `site/AGENTS.md`.
+
+Cross-cutting concerns active here: release readiness, free-threading and
+concurrency, public-safe filter.
 
 ## Point Of View
 
-Represent maintainers, release consumers, and downstream users who rely on GitHub-hosted checks and published artifacts to match the local contract.
+You represent maintainers, release consumers, and downstream users who rely on
+hosted checks and published artifacts to match the local repository contract.
+You defend release gates against workflow-only behavior and broad permissions.
 
 ## Protect
 
-- CI must run on Python 3.14t with `PYTHON_GIL=0` where free-threading behavior matters.
-- Workflow gates should mirror local Poe/Make commands instead of inventing a second contract.
-- Pages deployment must build from source content and generated manifests, not committed `site/public/` edits.
-- PyPI publication should stay tied to GitHub releases and trusted publishing, not local credential assumptions.
-- Changelog enforcement must remain predictable: source changes need fragments unless a reviewer deliberately opts out.
-- Dependency automation must not silently broaden runtime/build requirements.
+- **Hosted CI mirrors local CI.** Tests workflow installs dependencies and runs
+  `uv run poe ci`. Evidence: `.github/workflows/tests.yml:39`,
+  `.github/workflows/tests.yml:45`.
+- **Python 3.14t is the hosted baseline.** Test, Pages, and publish workflows use
+  Python `3.14t` where configured. Evidence: `.github/workflows/tests.yml:20`,
+  `.github/workflows/pages.yml:23`, `.github/workflows/python-publish.yml:19`.
+- **Free-threading is exercised.** Test and Pages jobs set `PYTHON_GIL=0` where
+  relevant. Evidence: `.github/workflows/tests.yml:45`,
+  `.github/workflows/pages.yml:36`.
+- **Node is only JS test harness.** Hosted tests use Node 22 and `npm ci` for
+  Vitest. Evidence: `.github/workflows/tests.yml:25`,
+  `package.json:11`.
+- **Pages builds from source.** Pages workflow builds Bengal output, assembles
+  showcase, emits manifest, and uploads `site/public`. Evidence:
+  `.github/workflows/pages.yml:48`.
+- **Pages permissions are scoped.** Pages workflow uses `contents: read`,
+  `pages: write`, and `id-token: write`. Evidence:
+  `.github/workflows/pages.yml:8`.
+- **PyPI publication uses trusted publishing.** Release workflow publishes with
+  `id-token: write` and PyPI publish action. Evidence:
+  `.github/workflows/python-publish.yml:34`.
+- **Changelog enforcement stays predictable.** Changelog workflow and Towncrier
+  config decide source-change fragment expectations. Evidence:
+  `.github/workflows/changelog.yml`, `pyproject.toml:182`.
 
 ## Contract Checklist
 
-- Test/type workflow changes: inspect `pyproject.toml` Poe tasks, Makefile parity, Python version, dependency groups, `PYTHON_GIL`, cache keys, and local reproduction commands.
-- Pages workflow changes: inspect `site/AGENTS.md`, docs dependencies, Bengal cache hash, showcase assembly, manifest emission, Pages permissions, and generated artifact expectations.
-- Release workflow changes: inspect `Makefile` release-preflight, `python-publish.yml`, trusted publishing permissions, package build commands, and package-data tests.
-- Changelog workflow changes: inspect Towncrier config, fragment naming, PR label behavior, and README/release notes.
-- Dependency automation changes: inspect dependency groups, runtime vs dev/docs/browser scope, free-threading readiness, and lockfile/update policy.
+When this domain changes, check:
+
+- `.github/workflows/tests.yml` — Python version, Node version, dependency
+  install, `PYTHON_GIL`, `uv run poe ci`, caches, local reproduction commands.
+- `.github/workflows/ty.yml` — type-check parity, Python version, source scope,
+  warning behavior.
+- `.github/workflows/pages.yml` — docs dependencies, Bengal cache hash, source
+  roots, showcase assembly, manifest emission, Pages permissions.
+- `.github/workflows/python-publish.yml` — release trigger, build command,
+  trusted publishing permissions, artifact handling, package-data proof.
+- `.github/workflows/changelog.yml`, `changelog.d/`, `pyproject.toml` — fragment
+  naming, skip behavior, Towncrier config, release-note parity.
+- `.github/dependabot.yml`, `uv.lock`, `package-lock.json` — dependency scope,
+  runtime vs dev/docs/browser split, free-threading readiness.
+- `Makefile` and `pyproject.toml` — local release-preflight and CI task parity.
 
 ## Advocate
 
-- CI jobs that prove the same contracts contributors run locally.
-- Clear failure messages and artifact names that make release/debug loops short.
-- Adding hosted checks when a local contract becomes release-critical.
-
-## Serve Peers
-
-- Give build steward hosted coverage for deterministic projection checks.
-- Give tests steward a faithful hosted environment for unit, type, docs, and browser gates when added.
-- Give site steward Pages feedback when docs build assumptions drift.
-- Give theme/package stewards release confidence that package data ships.
+- **One command contract.** Hosted jobs should call the same Poe/Make commands
+  contributors run locally.
+- **Small permissions.** Keep workflow permissions task-scoped.
+- **Release confidence.** Add hosted gates when a local contract becomes
+  release-critical.
+- **Readable failures.** Workflow names and artifacts should make debugging
+  short.
 
 ## Do Not
 
 - Add a workflow-only workaround for a stale local command.
-- Hide failures behind `continue-on-error` without a documented temporary reason.
+- Hide failures behind `continue-on-error` without a documented temporary
+  reason.
 - Publish packages from local secrets when trusted publishing is available.
-- Change workflow permissions broadly; keep them task-scoped.
-- Add dependency update automation that ignores Python 3.14t/free-threading constraints.
+- Broaden workflow permissions without a specific need.
+- Add dependency update automation that ignores Python 3.14t/free-threading
+  constraints.
 
 ## Own
 
-- `.github/workflows/tests.yml`
-- `.github/workflows/ty.yml`
-- `.github/workflows/pages.yml`
-- `.github/workflows/python-publish.yml`
-- `.github/workflows/changelog.yml`
-- `.github/dependabot.yml`
-- Release/check command parity with `pyproject.toml` and `Makefile`
+**Code:** `.github/workflows/tests.yml`, `.github/workflows/ty.yml`,
+`.github/workflows/pages.yml`, `.github/workflows/python-publish.yml`,
+`.github/workflows/changelog.yml`, `.github/dependabot.yml`.
+
+**Tests:** hosted execution of local Poe/Make contracts.
+
+**Docs:** release/check command parity with `pyproject.toml`, `Makefile`,
+`README.md`, `CHANGELOG.md`, release pages.
+
+**Agent artifacts:** none owned; consult `.claude/agents/release-captain.md`
+for release-readiness review.
+
+**CODEOWNERS:** none checked in.

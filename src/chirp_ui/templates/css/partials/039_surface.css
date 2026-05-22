@@ -12,7 +12,7 @@
    `.chirpui-blade` rules (and `.chirpui-blade--parallax .chirpui-surface`)
    stay outside the envelope — blade is a sibling layout concept, not a
    surface variant.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {

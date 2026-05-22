@@ -3,7 +3,7 @@
 
    Upper scope boundary `.chirpui-tray .chirpui-tray` stops outer-tray rules
    at the first nested tray (defensive — tray-in-tray is unlikely but cheap to
-   scope). See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   scope). See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {

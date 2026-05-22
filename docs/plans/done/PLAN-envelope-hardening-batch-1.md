@@ -23,7 +23,7 @@ This plan executes one **deliberate hardening batch** — six conversions, one P
 |---|---------|--------|
 | E1 | 160 partials shipped; 1 (`045_card.css`) in envelope form. 159 legacy, all carrying the bleed risk class the pilot fixed. | `ls src/chirp_ui/templates/css/partials/`; `grep -lE '^@layer chirpui\.component' src/chirp_ui/templates/css/partials/*.css` |
 | E2 | Parent epic explicitly documented `surface`-inside-`surface` as a live bleed hazard. `039_surface.css` is 168 lines of flat selectors with 7+ `--variant` modifiers — exactly the shape the envelope was designed for. | `docs/plans/PLAN-css-scope-and-layer.md § Evidence E2`; `wc -l src/chirp_ui/templates/css/partials/039_surface.css`; `grep -c '^.chirpui-surface--' src/chirp_ui/templates/css/partials/039_surface.css` |
-| E3 | `tray` was independently flagged in user memory as a sharp-edge surface (initial state, `#page-root` double-styling, `hx-select` inheritance gap). Conversion gives the partial the same bleed protection card now has. | `memory/feedback_tray_shell_sharp_edges.md`; `src/chirp_ui/templates/css/partials/065_tray.css` (98 lines) |
+| E3 | `tray` was already treated as a sharp-edge surface because it combines initial state, `#page-root` double-styling, and `hx-select` inheritance risk. Conversion gives the partial the same bleed protection card now has. | `src/chirp_ui/templates/css/partials/065_tray.css` |
 | E4 | `video-card`, `channel-card`, `resource-card` mirror `chirpui-card`'s visual structure (border + radius + overflow-clip + hover transition) but use their own block name, so the card pilot's `@scope (.chirpui-card) to (.chirpui-card .chirpui-card)` upper boundary does not protect them. They re-incur the same hover-leak risk on every render that nests one inside another. | `head -10 src/chirp_ui/templates/css/partials/{046,047,159}_*.css` |
 | E5 | Browser-test scaffolding already exists for `tray`, `drawer`, `modals`, `card_variants`. These four components can be converted with the existing harness — no new test infrastructure required. `surface`, `callout`, `video-card`, `channel-card` need new browser tests (incremental, not net-new infra). | `ls tests/browser/test_*.py` |
 | E6 | The CI gates that made the pilot affordable (`css-check`, `css-contract-check`, `css-transition-check`, `test_chirpui_css_concat.py`, `test_registry_emits_parity.py`) are all in place and green. Each conversion runs through the same gate that caught the pilot's drift. | `pyproject.toml § poe`; `tests/test_chirpui_css_concat.py`; `tests/test_registry_emits_parity.py` |
@@ -271,8 +271,11 @@ Mirror `tests/browser/test_card_variants.py`. For each component, exercise the v
 
 - **Parent epic `docs/plans/PLAN-css-scope-and-layer.md`** — this is one explicit batch executed under that epic's Sprint 6 (opportunistic fan-out). Each PR adds an entry to that epic's `Migration status § Converted` list.
 - **Pilot `045_card.css`** — the structural template every conversion in this batch follows. New contributors should read it before attempting a conversion.
-- **`memory/feedback_tray_shell_sharp_edges.md`** — drove the inclusion of `tray` in S1.
-- **`memory/project_chirpui_vision.md`** — registry-as-bet thesis. This batch reinforces it by closing CSS bleed holes that would otherwise undermine the registry's claim to be the source of truth.
+- **`src/chirp_ui/templates/css/partials/065_tray.css`** — drove the inclusion
+  of `tray` in S1 because overlay shell styling was already sharp-edge surface.
+- **`docs/VISION.md`** — registry-as-source-of-truth thesis. This batch
+  reinforces it by closing CSS bleed holes that would otherwise undermine the
+  registry's claim to be the source of truth.
 - **CI gates added in parent epic S1, S3, S4** — all are the per-sprint acceptance gate here. No new CI infrastructure required.
 
 ---

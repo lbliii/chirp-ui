@@ -11,7 +11,7 @@ contained:
 - channel-card: `.chirpui-channel-card__link:hover .chirpui-channel-card__name`
   would otherwise tint a nested card's name when the outer link is hovered.
 
-See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
 """
 
 import pytest

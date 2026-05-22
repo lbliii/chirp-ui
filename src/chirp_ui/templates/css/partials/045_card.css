@@ -3,7 +3,7 @@
 
    Upper scope boundary `.chirpui-card .chirpui-card` stops outer-card rules at
    the first nested card, fixing bleed (e.g. outer :hover border-color leaking
-   into an inner card). See docs/PLAN-css-scope-and-layer.md § Sprint 5 and
+   into an inner card). See docs/plans/PLAN-css-scope-and-layer.md § Sprint 5 and
    examples/css-scope-prototype/card.scope.css.
    ========================================================================== */
 

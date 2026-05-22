@@ -2,7 +2,7 @@
 
 **Status:** residual backlog
 **Drafted:** 2026-04-17
-**Owner:** Lawrence Lane
+**Owner:** maintainers
 **Category:** architecture (load-bearing for `docs/VISION.md § CSS architecture as a registry projection`)
 
 > Current note: the CSS concat pipeline, layer order, registry-emits parity,
@@ -27,12 +27,15 @@ the registry, the CSS, the tests, and the agent manifest can no longer drift.
 | E1 | `chirpui.css` is 15 624 lines and 167 `/* =====… */` section dividers — a monolith that has already survived 26+ sprints of hardening. | `wc -l src/chirp_ui/templates/chirpui.css`; `grep -c '^/\* ====' src/chirp_ui/templates/chirpui.css` |
 | E2 | Style bleed across nested instances of the same block is an unavoidable hazard today. `card--link` inside `card--feature`, `surface` inside `surface`, and the `hover` rules on outer cards all leak unless the author pre-empts with verbose descendant selectors. | `examples/css-scope-prototype/card.scope.css` header; chirpui.css:4642–4985 |
 | E3 | Two prior sprints already paid the drift-cost tax: Sprint 17 consolidated **102 compound `[data-style="neumorphic"]` selectors → 44** after the vocabulary fractured; Sprint 7 tokenized **51 hardcoded `font-weight: 600`** after they had already diverged. | `CLAUDE.md § Sharp edges` rows for Sprint 7 and Sprint 17 |
-| E4 | The consumer override story today is specificity or `!important`. No layered API; no documented contract for "where does my site's override go so it wins without a fight." | `chirpui.css` contains zero `@layer` declarations (`grep -c '@layer' chirpui.css` == 0); consumer docs describe no override surface |
-| E5 | The registry knows about `elements` and `tokens` per component (`ComponentDescriptor`), but it does NOT know which CSS classes the shipped stylesheet actually emits. `design_system_report()` cannot answer "is this class orphaned." | `src/chirp_ui/components.py:28-50`; no `emits` field |
+| E4 | Shipped: the consumer override story now has a documented layer API. Remaining work is keeping that API stable while converting partials to scoped envelopes. | `src/chirp_ui/templates/chirpui.css:11`; `docs/CSS-OVERRIDE-SURFACE.md` |
+| E5 | Shipped: the registry now exposes emitted classes through descriptor-local `emits`, `extra_emits`, and `trim_emits`. Remaining work is keeping parity as partials move into envelopes. | `src/chirp_ui/components.py:150`; `src/chirp_ui/components.py:210`; `tests/test_registry_emits_parity.py` |
 | E6 | CI already has three CSS gates that would catch a regression within seconds of a bad partial: `css-check`, `css-contract-check`, `css-transition-check`. That safety net is the reason incremental migration is affordable. | `pyproject.toml:213-215, 224-232` |
-| E7 | Free-threading is a hard platform bet (Python 3.14+, `_Py_mod_gil = 0`), so any build tool with GIL-held Python bindings (Lightning CSS, esbuild-py, etc.) is disqualified. Pure Python or subprocess-to-binary only. | `pyproject.toml: requires-python = ">=3.14"`; `memory/project_free_threading_tooling_constraint.md` |
+| E7 | Free-threading is a hard platform bet (Python 3.14+, `_Py_mod_gil = 0`), so any build tool with GIL-held Python bindings (Lightning CSS, esbuild-py, etc.) is disqualified. Pure Python or subprocess-to-binary only. | `pyproject.toml: requires-python = ">=3.14"`; root `AGENTS.md` Non-Negotiables |
 
-**Problem statement.** A 15k-line monolith with no layered override API, demonstrated drift cost, and a registry that cannot see the CSS it is supposed to describe. Consumers override via specificity games. Agents cite classes they hallucinate. Every component rewrite re-pays the tax E3 quantified.
+**Current problem statement.** The concat pipeline, layer order, registry-emits
+parity, and manifest projection have shipped. The remaining risk is partial-level
+scope: legacy flat selectors can still bleed across nested component instances
+until touched partials are converted to the envelope convention.
 
 ### Evidence → mitigation map
 
@@ -267,7 +270,8 @@ Sprint 0 is always a design sprint — every downstream sprint has acceptance cr
 - [x] T7.4 Round-trip test — `tests/test_manifest.py` covers determinism, schema+version, per-component attribute parity, per-token parity, stats counts, valid JSON, and CLI parity with the Python API.
 
 **Acceptance:**
-- [x] `python -m chirp_ui.manifest --json | jq '.components | length'` returns 309.
+- [x] `python -m chirp_ui.manifest --json` returns a component map with the
+  registry-visible surface; exact counts now come from the generated manifest.
 - [x] The manifest is referenced from `docs/VISION.md § The flywheel` row 5 as the shipped artifact (Python API, CLI, site artifact).
 
 ---
@@ -281,7 +285,7 @@ Sprint 0 is always a design sprint — every downstream sprint has acceptance cr
 | R3 | Envelope rewrite introduces a subtle semantic change on a high-traffic component | Medium | High | Pilot on one component (S5) with browser screenshot test; fan-out (S6) repeats the gate per component | S5, S6 |
 | R4 | Registry-emits parity test becomes a productivity drag if drift is noisy | Low | Medium | `extra_emits` escape hatch; parity failures print exact symmetric diff so PR author knows which side to fix | S4 |
 | R5 | Consumer site relies on implicit cascade ordering that our explicit layer order changes | Low | Medium | `@layer app.overrides` is strictly-later than existing implicit rules; any consumer on specificity tricks continues to work (specificity beats layer outside layers) — document migration path in S3 | S3 |
-| R6 | Someone proposes Lightning CSS or another GIL-bound tool mid-epic | Medium | High (platform bet) | `memory/project_free_threading_tooling_constraint.md` + S0 decision doc disqualify these tools upfront | S0 |
+| R6 | Someone proposes Lightning CSS or another GIL-bound tool mid-epic | Medium | High (platform bet) | root `AGENTS.md` Non-Negotiables and S0 decision doc disqualify these tools upfront | S0 |
 | R7 | Pilot `card` rewrite exposes that the monolith had an unintentional cross-component style dependency | Low | Medium | Browser screenshot tests in S5 cover the call-sites we know; accept one hotfix PR if a latent dep surfaces | S5 |
 
 ## Success metrics
@@ -300,6 +304,23 @@ Sprint 0 is always a design sprint — every downstream sprint has acceptance cr
 ## Migration status
 
 The envelope convention is the default for new components and for any partial modified in an existing PR. Conversions do not need a dedicated PR — this is a flywheel, not a forced march.
+
+## Steward Notes
+
+- Consulted stewards: Core Registry and Python API; Template, CSS, and Behavior;
+  Build Projection; Test Contract; Documentation.
+- Contract touched: CSS partial authoring, cascade layer order, descriptor
+  `emits`, generated CSS, manifest/docs projection, and agent-facing guidance.
+- Accepted findings: keep this plan focused on residual `@scope` conversion and
+  do not present shipped layer/emits work as still missing.
+- Required proof: `uv run poe verify-generated`,
+  `uv run pytest tests/test_chirpui_css_concat.py tests/test_registry_emits_parity.py tests/test_template_css_contract.py tests/test_transition_tokens.py -q`,
+  plus browser proof for layout-sensitive envelope conversions.
+- Collateral: update `docs/CSS-OVERRIDE-SURFACE.md`, `docs/VISION.md`, generated
+  docs, examples, and changelog fragments only when the public CSS contract
+  changes.
+- Remaining risk: legacy flat partials remain until touched; this is accepted as
+  incremental migration scope.
 
 **Detection.** A partial is "converted" when its first non-comment token is `@layer chirpui.component` (the build's `_wrap_in_layer` treats that as authored layering). Audit:
 
@@ -407,5 +428,6 @@ Tests added in batch 1 (surface, callout, video-card, channel-card) all follow t
 - `docs/VISION.md § CSS architecture as a registry projection` — the *why* this epic exists
 - `examples/css-scope-prototype/card.scope.css` — S5 starting point
 - `CLAUDE.md § Sharp edges — what's been hardened` — the drift cost history (E3)
-- `memory/project_css_scope_layer_decision.md` — decision record for the @scope-as-authoring-format direction
-- `memory/project_free_threading_tooling_constraint.md` — R6 / E7 constraint
+- `docs/DESIGN-css-registry-projection.md` — decision record for CSS as a
+  registry projection
+- root `AGENTS.md` Non-Negotiables — R6 / E7 free-threading constraint

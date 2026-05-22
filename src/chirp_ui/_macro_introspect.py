@@ -5,7 +5,7 @@ metadata without compiling the template (so no chirp-ui filter stubs are
 required at manifest-build time).
 
 Used by :mod:`chirp_ui.manifest` to project macro Python signatures into the
-agent-groundable manifest. See ``docs/PLAN-agent-grounding-depth.md`` and
+agent-groundable manifest. See ``docs/plans/done/PLAN-agent-grounding-depth.md`` and
 ``docs/DESIGN-manifest-signature-extraction.md``.
 """
 
