@@ -73,7 +73,7 @@ authors and agents fix spacing relationship by relationship.
 | `page_header` / `section_header` / `entity_header` | title/actions and title/subtitle attachment | shipped | render/CSS/browser proof; direct-child margins trimmed under header owners |
 | `fieldset` | grouped form-control rhythm, child margin trim | shipped | `TestForms`, `/forms` browser proof |
 | `dnd` / `sortable` | drag row/board grouping | partial | visual structure tests; spacing/overflow proof needed |
-| `modal` / `drawer` / `tray` | header/body/footer region rhythm | partial | behavior tests; relationship audit needed |
+| `modal` / `drawer` / `tray` / `panel` | header/body/footer region rhythm | shipped | CSS/browser proof; region margins, wrapping, and local overflow owned by containers |
 | navigation primitives | item metadata, rails, trays, dense chrome | partial | dense navigation docs and browser proof |
 
 ## Known Gaps
@@ -97,12 +97,9 @@ add local margins between search, filters, selection state, and results.
 
 ### Overlay And Panel Regions
 
-Modals, drawers, trays, and panels should consistently own:
-
-- header/body/footer separation;
-- scroll ownership;
-- action row rhythm;
-- content margin trimming.
+Modals, drawers, trays, and panels own header/body/footer separation, scroll
+ownership, action row rhythm, direct child margin trimming, and long-token
+containment inside their local region.
 
 ### Lists, Rows, And Dense Collections
 

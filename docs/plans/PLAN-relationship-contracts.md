@@ -43,28 +43,30 @@ responsive pressure, or local overflow.
 | Fieldsets | form field CSS | grouped form-control rhythm and child margin trimming |
 | Headers | page/section/entity header CSS | title/meta attachment, action wrapping, long-title pressure |
 | Search browse | search_header/resource_index CSS | search/header/filter/results rhythm and result feedback placement |
+| Overlay regions | modal/drawer/tray/panel CSS | header/body/footer rhythm, margin trim, local long-token containment |
 
 ## Next 10 Tasks
 
 1. Audit `field_wrapper`, radio, checkbox, range, input-group, and search-bar
    subrelationships.
-2. Audit modal, drawer, tray, and panel header/body/footer rhythm.
-3. Audit list, row, media-object, resource-card, params-table, signature, DnD,
+2. Audit list, row, media-object, resource-card, params-table, signature, DnD,
    and sortable relationships.
-4. Add relationship-specific browser probes for high-risk surfaces instead of
+3. Add relationship-specific browser probes for high-risk surfaces instead of
    only document overflow probes.
-5. Remove first-party `chirpui-mt-*` / `chirpui-mb-*` usage when a component
+4. Remove first-party `chirpui-mt-*` / `chirpui-mb-*` usage when a component
    owner now exists.
-6. Promote repeated accepted contracts into `docs/RELATIONSHIP-CONTRACTS.md`
+5. Promote repeated accepted contracts into `docs/RELATIONSHIP-CONTRACTS.md`
    and keep `docs/INDEX.md` linked.
-7. Defer descriptor or manifest projection until relationships repeat across
+6. Defer descriptor or manifest projection until relationships repeat across
    enough owners to justify a public schema.
-8. Mine `lbliii/emdashCSS` for parent-owned stack/spread/fit ideas, translating
+7. Mine `lbliii/emdashCSS` for parent-owned stack/spread/fit ideas, translating
    only the contract model into existing ChirpUI owners.
-9. Keep checking first-party examples for relationship patches after each
+8. Keep checking first-party examples for relationship patches after each
    accepted owner lands.
-10. Revisit form subrelationships after search browse, since search_bar and
+9. Revisit form subrelationships after search browse, since search_bar and
    input_group share the same pressure model.
+10. Revisit overlay subvariants such as confirm and modal_overlay after native
+   overlay regions prove stable.
 
 ## Parity Matrix
 

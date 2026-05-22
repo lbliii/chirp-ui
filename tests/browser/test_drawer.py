@@ -59,3 +59,44 @@ async def test_drawer_closes_on_escape(page, base_url):
     await page.wait_for_timeout(300)
 
     assert not await dialog.evaluate("el => el.open")
+
+
+@pytest.mark.parametrize(("width", "height"), [(320, 640), (768, 1024)])
+async def test_drawer_region_rhythm_contains_long_content(page, base_url, width, height):
+    await page.set_viewport_size({"width": width, "height": height})
+    await page.goto(base_url + "/drawer")
+    await wait_for_alpine(page)
+
+    await page.click(".chirpui-drawer-trigger")
+    dialog = page.locator("#test-drawer")
+    await dialog.wait_for(state="visible", timeout=2000)
+    await page.evaluate(
+        """() => {
+            const text = "drawer-region-owner-" + "beta".repeat(30);
+            const drawer = document.querySelector("#test-drawer");
+            drawer.querySelector(".chirpui-drawer__title").textContent = text;
+            drawer.querySelector(".chirpui-drawer__body").innerHTML = `
+                <p>${text}</p>
+                <p>${text}</p>
+            `;
+        }"""
+    )
+
+    metrics = await dialog.evaluate(
+        """(dialog) => {
+            const panel = dialog.querySelector(".chirpui-drawer__panel");
+            const body = dialog.querySelector(".chirpui-drawer__body");
+            const title = dialog.querySelector(".chirpui-drawer__title");
+            const firstBodyChild = body.querySelector(":scope > :not(script, style, template)");
+            return {
+                panelOverflow: Math.ceil(panel.scrollWidth - panel.clientWidth),
+                bodyOverflow: Math.ceil(body.scrollWidth - body.clientWidth),
+                titleMarginEnd: getComputedStyle(title).marginBlockEnd,
+                bodyChildMargin: getComputedStyle(firstBodyChild).marginBlockStart,
+            };
+        }"""
+    )
+    assert metrics["panelOverflow"] <= 1, metrics
+    assert metrics["bodyOverflow"] <= 1, metrics
+    assert metrics["titleMarginEnd"] == "0px", metrics
+    assert metrics["bodyChildMargin"] == "0px", metrics

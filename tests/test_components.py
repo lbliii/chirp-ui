@@ -586,11 +586,17 @@ class TestWorkbench:
 
     def test_panel_body_owns_slot_flow_rhythm(self) -> None:
         css = _chirpui_css()
+        panel_rule = css.split(".chirpui-panel {", 1)[1].split("}", 1)[0]
+        assert "min-width: 0" in panel_rule
+        assert "overflow-wrap: anywhere" in panel_rule
+        assert ".chirpui-panel__heading" in css
+        assert "gap: var(--chirpui-spacing-xs)" in css
         assert ".chirpui-panel__body > :where(:not(script, style, template))" in css
         assert (
             ".chirpui-panel__body > :where(:not(script, style, template)) + "
             ":where(:not(script, style, template))"
         ) in css
+        assert ".chirpui-panel__footer > :where(:not(script, style, template))" in css
         assert "margin-block-start: var(--chirpui-spacing-sm);" in css
 
     def test_split_layout_default(self, env: Environment) -> None:
@@ -2601,6 +2607,19 @@ class TestModal:
         assert "chirpui-modal__body" in html
         assert "chirpui-modal__footer" in html
 
+    def test_modal_css_owns_region_rhythm_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        assert ".chirpui-modal__body" in css
+        assert ".chirpui-modal__body > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-modal__body > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert ".chirpui-modal__footer > :where(:not(script, style, template))" in css
+        assert ".chirpui-modal__header > form" in css
+        assert "overflow-wrap: anywhere" in css
+
 
 # ---------------------------------------------------------------------------
 # Tabs
@@ -2967,6 +2986,18 @@ class TestAlpineMagics:
         assert 'id="tray-filters-title"' in html
         assert "chirpui-tray__close" in html
         assert "chirpui:tray-closed" in html
+
+    def test_tray_css_owns_body_rhythm_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        assert ".chirpui-tray__panel" in css
+        assert ".chirpui-tray__body > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-tray__body > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert ".chirpui-tray__title" in css
+        assert "overflow-wrap: anywhere" in css
 
     def test_tray_id_stays_out_of_alpine_literals(self, env: Environment) -> None:
         html = env.from_string(
@@ -5721,6 +5752,18 @@ class TestDrawer:
         assert "chirpui-drawer__close" in html
         assert 'aria-label="Close"' in html
         assert "chirpui-drawer__body" in html
+
+    def test_drawer_css_owns_body_rhythm_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        assert ".chirpui-drawer__body > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-drawer__body > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert ".chirpui-drawer__header > form" in css
+        assert ".chirpui-drawer__title" in css
+        assert "overflow-wrap: anywhere" in css
 
 
 class TestCommandPalette:

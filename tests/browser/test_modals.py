@@ -123,6 +123,56 @@ async def test_native_modal_footer_dialog_form_closes(page, base_url):
     assert not await dialog.evaluate("el => el.open")
 
 
+@pytest.mark.parametrize(("width", "height"), [(320, 640), (768, 1024)])
+async def test_native_modal_region_rhythm_contains_long_content(page, base_url, width, height):
+    await page.set_viewport_size({"width": width, "height": height})
+    await page.goto(base_url + "/modal")
+    await wait_for_alpine(page)
+
+    await page.click("[data-testid='native-modal-container'] .chirpui-modal-trigger")
+    dialog = page.locator("#native-modal")
+    await dialog.wait_for(state="visible", timeout=2000)
+    await page.evaluate(
+        """() => {
+            const text = "modal-region-owner-" + "alpha".repeat(28);
+            const dialog = document.querySelector("#native-modal");
+            dialog.querySelector(".chirpui-modal__title").textContent = text;
+            dialog.querySelector(".chirpui-modal__body").innerHTML = `
+                <p>${text}</p>
+                <p>${text}</p>
+            `;
+            dialog.querySelector(".chirpui-modal__footer").insertAdjacentHTML(
+                "afterbegin",
+                `<span>${text}</span>`
+            );
+        }"""
+    )
+
+    metrics = await dialog.evaluate(
+        """(dialog) => {
+            const body = dialog.querySelector(".chirpui-modal__body");
+            const footer = dialog.querySelector(".chirpui-modal__footer");
+            const title = dialog.querySelector(".chirpui-modal__title");
+            const firstBodyChild = body.querySelector(":scope > :not(script, style, template)");
+            const firstFooterChild = footer.querySelector(":scope > :not(script, style, template)");
+            return {
+                dialogOverflow: Math.ceil(dialog.scrollWidth - dialog.clientWidth),
+                bodyOverflow: Math.ceil(body.scrollWidth - body.clientWidth),
+                footerOverflow: Math.ceil(footer.scrollWidth - footer.clientWidth),
+                titleMarginEnd: getComputedStyle(title).marginBlockEnd,
+                bodyChildMargin: getComputedStyle(firstBodyChild).marginBlockStart,
+                footerChildMargin: getComputedStyle(firstFooterChild).marginBlockStart,
+            };
+        }"""
+    )
+    assert metrics["dialogOverflow"] <= 1, metrics
+    assert metrics["bodyOverflow"] <= 1, metrics
+    assert metrics["footerOverflow"] <= 1, metrics
+    assert metrics["titleMarginEnd"] == "0px", metrics
+    assert metrics["bodyChildMargin"] == "0px", metrics
+    assert metrics["footerChildMargin"] == "0px", metrics
+
+
 async def test_confirm_trigger_opens_native_dialog(page, base_url):
     """confirm_trigger uses the same native dialog-target controller."""
     await page.goto(base_url + "/modal")

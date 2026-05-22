@@ -34,6 +34,8 @@
             display: flex;
             flex-direction: column;
             margin: 0;
+            min-width: 0;
+            overflow-wrap: anywhere;
             transition: transform var(--chirpui-transition-slow) var(--chirpui-ease-spring);
         }
 
@@ -57,23 +59,35 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: var(--chirpui-space-control-gap);
+            flex-wrap: wrap;
             padding: var(--chirpui-spacing) var(--chirpui-spacing-md);
             border-bottom: 1px solid var(--chirpui-border);
         }
 
         .chirpui-drawer__title {
-            margin: 0;
+            flex: 1 1 auto;
+            min-width: 0;
+            margin-block: 0;
             font-size: var(--chirpui-font-lg);
+            overflow-wrap: anywhere;
         }
 
         .chirpui-drawer__header-actions {
             display: flex;
             align-items: center;
             gap: var(--chirpui-spacing-xs);
+            flex-wrap: wrap;
+            max-width: 100%;
             margin-inline-start: auto;
             &:empty {
                 display: none;
             }
+        }
+
+        .chirpui-drawer__header > form {
+            margin: 0;
+            flex-shrink: 0;
         }
 
         .chirpui-drawer__close {
@@ -105,6 +119,16 @@
             overflow-y: auto;
             flex: 1;
             min-height: 0;
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .chirpui-drawer__body > :where(:not(script, style, template)) {
+            margin-block: 0;
+        }
+
+        .chirpui-drawer__body > :where(:not(script, style, template)) + :where(:not(script, style, template)) {
+            margin-block-start: var(--chirpui-spacing-sm);
         }
     }
 }
