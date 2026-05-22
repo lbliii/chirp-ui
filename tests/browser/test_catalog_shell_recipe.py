@@ -492,6 +492,80 @@ async def test_showcase_forms_component_rhythm_has_no_overflow(
     ("width", "height"),
     [(320, 640), (768, 1024), (1280, 900)],
 )
+async def test_showcase_form_control_internals_own_pressure(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/forms")
+    await wait_for_alpine(showcase_page)
+
+    await expect(showcase_page.locator("#field-price .chirpui-input-group")).to_be_visible()
+    await expect(showcase_page.locator("#field-plan .chirpui-field__radio-group")).to_be_visible()
+    await showcase_page.evaluate(
+        """() => {
+            const longText = "form-control-owner-" + "omega".repeat(24);
+            const checkboxLabel = document.querySelector("#field-newsletter .chirpui-field__label--inline");
+            checkboxLabel?.insertAdjacentHTML("beforeend", `<span>${longText}</span>`);
+            document
+                .querySelectorAll("#field-plan .chirpui-field__radio-label")
+                .forEach((label) => { label.textContent = longText; });
+            const rangeLabel = document.querySelector("#field-volume .chirpui-field__label");
+            if (rangeLabel) rangeLabel.textContent = longText;
+            const rangeValue = document.querySelector("#field-volume .chirpui-field__range-value");
+            if (rangeValue) rangeValue.textContent = "100";
+            const pricePrefix = document.querySelector("#field-price .chirpui-input-group__prefix");
+            const priceSuffix = document.querySelector("#field-price .chirpui-input-group__suffix");
+            if (pricePrefix) pricePrefix.textContent = longText;
+            if (priceSuffix) priceSuffix.textContent = longText;
+            const searchButton = document.querySelector("#field-q2 .chirpui-search-bar__btn .chirpui-btn__label");
+            if (searchButton) searchButton.textContent = "Search form relationships";
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"form-control-internals-{width}x{height}"
+    )
+    metrics = await showcase_page.evaluate(
+        """() => [
+            ["#field-newsletter", ".chirpui-field__label--inline"],
+            ["#field-plan", ".chirpui-field__radio-group"],
+            ["#field-volume", ".chirpui-field__range-header"],
+            ["#field-price", ".chirpui-input-group"],
+            ["#field-q2", ".chirpui-search-bar__inner"],
+        ].map(([rootSelector, childSelector]) => {
+            const root = document.querySelector(rootSelector);
+            const child = root?.querySelector(childSelector);
+            const firstChild = root?.querySelector(":scope > :not(script, style, template)");
+            const rootRect = root.getBoundingClientRect();
+            const childRect = child.getBoundingClientRect();
+            const firstChildStyle = getComputedStyle(firstChild);
+            return {
+                rootSelector,
+                overflow: Math.ceil(root.scrollWidth - root.clientWidth),
+                childContained: childRect.right <= rootRect.right + 1,
+                childWidth: childRect.width,
+                rootWidth: rootRect.width,
+                firstChildMarginStart: firstChildStyle.marginBlockStart,
+                firstChildMarginEnd: firstChildStyle.marginBlockEnd,
+            };
+        })"""
+    )
+    for metric in metrics:
+        label = metric["rootSelector"]
+        assert metric["overflow"] <= 1, {label: metric}
+        assert metric["childContained"], {label: metric}
+        assert metric["childWidth"] <= metric["rootWidth"] + 1, {label: metric}
+        assert metric["firstChildMarginStart"] == "0px", {label: metric}
+        assert metric["firstChildMarginEnd"] == "0px", {label: metric}
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
 async def test_showcase_search_browse_composites_own_rhythm(
     showcase_page,
     showcase_base_url: str,

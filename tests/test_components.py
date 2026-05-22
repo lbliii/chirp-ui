@@ -4049,6 +4049,35 @@ class TestForms:
         assert ".00" in html
         assert 'value="10"' in html
 
+    def test_form_control_internals_own_attachment_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        for selector in [
+            ".chirpui-field--checkbox > :where(:not(script, style, template))",
+            ".chirpui-field--radio > :where(:not(script, style, template))",
+            ".chirpui-field--range > :where(:not(script, style, template))",
+            ".chirpui-field--input-group > :where(:not(script, style, template))",
+            ".chirpui-search-bar > :where(:not(script, style, template))",
+        ]:
+            assert selector in css
+
+        radio_group_rule = css.split(".chirpui-field__radio-group", 1)[1].split("}", 1)[0]
+        assert "min-width: 0" in radio_group_rule
+        assert "max-width: 100%" in radio_group_rule
+
+        input_group_rule = css.split(".chirpui-input-group {", 1)[1].split("}", 1)[0]
+        assert "width: 100%" in input_group_rule
+        assert "min-width: 0" in input_group_rule
+
+        input_affix_rule = css.split(".chirpui-input-group__prefix,", 1)[1].split("}", 1)[0]
+        assert "max-inline-size: min(40%, 16rem)" in input_affix_rule
+        assert "overflow-wrap: anywhere" in input_affix_rule
+
+        search_inner_rule = css.split(".chirpui-search-bar__inner", 1)[1].split("}", 1)[0]
+        assert "width: 100%" in search_inner_rule
+        assert "min-width: 0" in search_inner_rule
+        assert ".chirpui-search-bar--with-button .chirpui-search-bar__inner" in css
+
     def test_multi_select_field(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/forms.html" import multi_select_field %}'

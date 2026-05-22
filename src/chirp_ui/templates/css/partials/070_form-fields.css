@@ -281,27 +281,66 @@ select.chirpui-field__input:not([multiple]):disabled {
 }
 
 .chirpui-field__checkbox {
+    flex: 0 0 auto;
     width: auto;
 }
 
 .chirpui-field--checkbox {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+    box-sizing: border-box;
     margin-bottom: var(--chirpui-spacing-sm);
+    min-width: 0;
+    min-inline-size: 0;
+    max-width: 100%;
+    overflow-x: clip;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-field--checkbox > :where(:not(script, style, template)),
+.chirpui-field--toggle > :where(:not(script, style, template)) {
+    margin-block: 0;
+}
+
+.chirpui-field--checkbox .chirpui-field__label--inline,
+.chirpui-field--toggle .chirpui-field__label--inline {
+    align-items: flex-start;
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 /* Radio group */
 .chirpui-field--radio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+    box-sizing: border-box;
     border: none;
     padding: 0;
+    min-width: 0;
+    min-inline-size: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-field--radio > :where(:not(script, style, template)) {
+    margin-block: 0;
 }
 
 .chirpui-field--radio .chirpui-field__label {
-    margin-bottom: var(--chirpui-spacing-sm);
+    margin-block: 0;
 }
 
 .chirpui-field__radio-group {
     display: flex;
     flex-direction: column;
     gap: var(--chirpui-spacing-sm);
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .chirpui-field--radio-horizontal .chirpui-field__radio-group {
@@ -313,16 +352,21 @@ select.chirpui-field__input:not([multiple]):disabled {
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
+    min-width: 0;
+    max-width: 100%;
     cursor: pointer;
 }
 
 .chirpui-field__radio-option .chirpui-field__input {
+    flex: 0 0 auto;
     width: auto;
     display: inline-block;
 }
 
 .chirpui-field__radio-label {
+    min-width: 0;
     font-weight: 400;
+    overflow-wrap: anywhere;
 }
 
 /* File input */
@@ -845,17 +889,38 @@ input[type="date"].chirpui-field__input {
 
 /* Range slider */
 .chirpui-field--range {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+    box-sizing: border-box;
     margin-bottom: var(--chirpui-spacing);
+    min-width: 0;
+    min-inline-size: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-field--range > :where(:not(script, style, template)) {
+    margin-block: 0;
 }
 
 .chirpui-field__range-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--chirpui-spacing-xs);
+    gap: var(--chirpui-space-control-gap);
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.chirpui-field__range-header > :where(:not(script, style, template)) {
+    margin-block: 0;
 }
 
 .chirpui-field__range-value {
+    flex: 0 0 auto;
     font-size: var(--chirpui-font-sm);
     font-weight: 500;
     color: var(--chirpui-text-muted);
@@ -864,7 +929,11 @@ input[type="date"].chirpui-field__input {
 .chirpui-field__range {
     display: block;
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
     height: 0.5rem;
+    margin: 0;
     accent-color: var(--chirpui-accent);
     cursor: pointer;
 }
@@ -879,8 +948,27 @@ input[type="date"].chirpui-field__input {
 }
 
 /* Input group (prefix/suffix) */
+.chirpui-field--input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+    box-sizing: border-box;
+    min-width: 0;
+    min-inline-size: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-field--input-group > :where(:not(script, style, template)) {
+    margin-block: 0;
+}
+
 .chirpui-input-group {
     display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-sm);
     overflow: clip;
@@ -890,10 +978,14 @@ input[type="date"].chirpui-field__input {
 .chirpui-input-group__suffix {
     display: flex;
     align-items: center;
+    flex: 0 1 auto;
+    max-inline-size: min(40%, 16rem);
+    min-width: 0;
     padding: var(--chirpui-spacing-sm);
     background: var(--chirpui-bg-subtle);
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-input-group__prefix:empty,
@@ -902,7 +994,7 @@ input[type="date"].chirpui-field__input {
 }
 
 .chirpui-input-group__input {
-    flex: 1;
+    flex: 1 1 8rem;
     min-width: 0;
     border: none;
     padding: var(--chirpui-spacing-sm);
@@ -941,14 +1033,33 @@ input[type="date"].chirpui-field__input {
 }
 
 /* Search bar — input + optional button/icon. Input flexes; button stays compact. */
+.chirpui-search-bar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-xs);
+    box-sizing: border-box;
+    min-width: 0;
+    min-inline-size: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-search-bar > :where(:not(script, style, template)) {
+    margin-block: 0;
+}
+
 .chirpui-search-bar__inner {
     display: flex;
     align-items: stretch;
     gap: var(--chirpui-spacing-sm);
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .chirpui-search-bar__input {
-    flex: 1 1 auto;
+    flex: 999 1 14rem;
     min-width: 0;
     padding: var(--chirpui-spacing-sm);
     border: 1px solid var(--chirpui-border);
@@ -991,7 +1102,7 @@ input[type="date"].chirpui-field__input {
 }
 
 .chirpui-search-bar__btn {
-    flex-shrink: 0;
+    flex: 0 1 auto;
     white-space: nowrap;
 }
 
@@ -1001,6 +1112,17 @@ input[type="date"].chirpui-field__input {
 
 .chirpui-field--error.chirpui-search-bar--with-icon .chirpui-search-bar__inner {
     border-color: var(--chirpui-alert-error-border);
+}
+
+@media (max-width: 32rem) {
+    .chirpui-search-bar--with-button .chirpui-search-bar__inner {
+        flex-wrap: wrap;
+    }
+
+    .chirpui-search-bar--with-button .chirpui-search-bar__btn {
+        justify-content: center;
+        inline-size: 100%;
+    }
 }
 
 /* Multi-select */

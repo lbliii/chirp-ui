@@ -65,7 +65,7 @@ authors and agents fix spacing relationship by relationship.
 | `panel` | inset rhythm and slot flow | shipped | panel CSS tests |
 | `callout` | inset rhythm and body flow | shipped | callout CSS tests |
 | `form()` | field/action/error-summary sibling rhythm | shipped | `TestForms`, `/forms` browser proof |
-| field wrappers | label/control/hint/error attachment | partial | form field render tests; spacing audit still needed |
+| field wrappers and form control internals | label/control/hint/error attachment, option grouping, prefix/suffix/search pressure | shipped | form field render/CSS tests; `/forms` browser proof |
 | `command_bar` / `filter_bar` | search, hints, filters, actions, visible-label rows | shipped/prototype mix | action-container tests, browser proof |
 | `workspace_shell` | rail/content/inspector/toolbars | prototype | workspace recipe docs and browser proof |
 | workspace primitives | rails, result collections, cards, metrics, inspector panels | prototype | data/support/operations browser proof |
@@ -80,13 +80,11 @@ authors and agents fix spacing relationship by relationship.
 
 ### Form Subrelationships
 
-`form()` now owns field rhythm, but field internals still need a pass:
-
-- radio and checkbox option grouping;
-- range header/value attachment;
-- input-group prefix/input/suffix sizing;
-- error summary spacing when followed by fields;
-- search bar button/input behavior outside action containers.
+`form()` owns field rhythm, and control internals now own common attachment
+and pressure relationships: checkbox/toggle label rows, radio option groups,
+range label/value rows, input-group prefix/input/suffix sizing, and search bar
+button/input wrapping. Remaining form work should focus on specialized controls
+that prove new relationship needs.
 
 ### Header And Section Relationships
 
