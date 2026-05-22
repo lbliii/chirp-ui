@@ -8181,78 +8181,121 @@ a.chirpui-tag:active {
 }
 
 /* Params table (API docs) */
-.chirpui-params-table__title {
-    margin: 0 0 var(--chirpui-spacing-sm);
-    font-size: var(--chirpui-font-lg);
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-}
+@scope (.chirpui-params-table) to (.chirpui-params-table .chirpui-params-table) {
+    :scope {
+        display: grid;
+        gap: var(--chirpui-spacing-sm);
+        box-sizing: border-box;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+    }
 
-.chirpui-params-table__wrap {
-    overflow-x: auto;
-}
+    :scope > :where(:not(script, style, template)) {
+        margin-block: 0;
+    }
 
-.chirpui-params-table__table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: var(--chirpui-font-sm);
-}
+    .chirpui-params-table__title {
+        margin: 0;
+        font-size: var(--chirpui-font-lg);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        overflow-wrap: anywhere;
+    }
 
-.chirpui-params-table__th,
-.chirpui-params-table__td {
-    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
-    text-align: left;
-    border-bottom: 1px solid var(--chirpui-border);
-}
+    .chirpui-params-table__wrap {
+        box-sizing: border-box;
+        max-inline-size: 100%;
+        min-inline-size: 0;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
 
-.chirpui-params-table__th {
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-    color: var(--chirpui-text-muted);
-}
+    .chirpui-params-table__table {
+        width: 100%;
+        min-width: max-content;
+        border-collapse: collapse;
+        font-size: var(--chirpui-font-sm);
+    }
 
-.chirpui-params-table__th--name,
-.chirpui-params-table__td--name {
-    min-width: 8rem;
-}
+    .chirpui-params-table__th,
+    .chirpui-params-table__td {
+        padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+        text-align: left;
+        border-bottom: 1px solid var(--chirpui-border);
+        vertical-align: top;
+    }
 
-.chirpui-params-table__th--type,
-.chirpui-params-table__td--type {
-    min-width: 6rem;
-}
+    .chirpui-params-table__th {
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        color: var(--chirpui-text-muted);
+    }
 
-.chirpui-params-table__th--default,
-.chirpui-params-table__td--default {
-    min-width: 5rem;
-}
+    .chirpui-params-table__th--name,
+    .chirpui-params-table__td--name {
+        min-width: 8rem;
+    }
 
-.chirpui-params-table__code {
-    font-family: ui-monospace, monospace;
-    font-size: 0.9em;
-    padding: 0.1em 0.3em;
-    background: var(--chirpui-bg-subtle);
-    border-radius: var(--chirpui-radius-sm);
-}
+    .chirpui-params-table__th--type,
+    .chirpui-params-table__td--type {
+        min-width: 6rem;
+    }
 
-.chirpui-params-table__code--muted {
-    color: var(--chirpui-text-muted);
-}
+    .chirpui-params-table__th--default,
+    .chirpui-params-table__td--default {
+        min-width: 5rem;
+    }
 
-.chirpui-params-table__empty {
-    color: var(--chirpui-text-muted);
+    .chirpui-params-table__td--description {
+        min-width: min(22rem, 72vw);
+        max-width: min(36rem, 80vw);
+        overflow-wrap: anywhere;
+    }
+
+    .chirpui-params-table__code {
+        display: inline-block;
+        max-inline-size: 100%;
+        padding: 0.1em 0.3em;
+        overflow-wrap: anywhere;
+        border-radius: var(--chirpui-radius-sm);
+        background: var(--chirpui-bg-subtle);
+        font-family: ui-monospace, monospace;
+        font-size: 0.9em;
+        vertical-align: top;
+    }
+
+    .chirpui-params-table__code--muted {
+        color: var(--chirpui-text-muted);
+    }
+
+    .chirpui-params-table__empty {
+        color: var(--chirpui-text-muted);
+    }
 }
 
 /* Signature (function/method signatures) */
-.chirpui-signature {
-    margin: 0 0 var(--chirpui-spacing);
-    padding: var(--chirpui-spacing);
-    overflow-x: auto;
-    background: var(--chirpui-bg-subtle);
-    border-radius: var(--chirpui-radius);
-    font-size: var(--chirpui-font-sm);
-}
+@scope (.chirpui-signature) to (.chirpui-signature .chirpui-signature) {
+    :scope {
+        box-sizing: border-box;
+        max-inline-size: 100%;
+        min-inline-size: 0;
+        margin: 0 0 var(--chirpui-spacing);
+        padding: var(--chirpui-spacing);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        border-radius: var(--chirpui-radius);
+        background: var(--chirpui-bg-subtle);
+        font-size: var(--chirpui-font-sm);
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
 
-.chirpui-signature__code {
-    font-family: ui-monospace, monospace;
-    white-space: pre;
+    .chirpui-signature__code {
+        display: block;
+        min-inline-size: max-content;
+        font-family: ui-monospace, monospace;
+        white-space: pre;
+    }
 }
 
 /* Index card (listing cards) */

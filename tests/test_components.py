@@ -1538,6 +1538,17 @@ class TestParamsTable:
         assert "0" in html
         assert "A number" in html
 
+    def test_params_table_css_owns_code_heavy_row_pressure(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-params-table)" in css
+        assert ":scope > :where(:not(script, style, template))" in css
+        assert ".chirpui-params-table__wrap" in css
+        assert "overflow-x: auto;" in css
+        assert "overscroll-behavior-x: contain;" in css
+        assert "min-width: max-content;" in css
+        assert ".chirpui-params-table__td--description" in css
+        assert "overflow-wrap: anywhere;" in css
+
 
 # ---------------------------------------------------------------------------
 # Signature
@@ -1553,6 +1564,15 @@ class TestSignature:
         assert "chirpui-signature" in html
         assert "def foo(): pass" in html
         assert 'data-language="python"' in html
+
+    def test_signature_css_owns_local_overflow(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-signature)" in css
+        assert ".chirpui-signature__code" in css
+        assert "max-inline-size: 100%;" in css
+        assert "overflow-x: auto;" in css
+        assert "min-inline-size: max-content;" in css
+        assert "white-space: pre;" in css
 
 
 # ---------------------------------------------------------------------------

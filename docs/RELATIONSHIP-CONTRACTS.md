@@ -73,6 +73,7 @@ authors and agents fix spacing relationship by relationship.
 | `page_header` / `section_header` / `entity_header` | title/actions and title/subtitle attachment | shipped | render/CSS/browser proof; direct-child margins trimmed under header owners |
 | `fieldset` | grouped form-control rhythm, child margin trim | shipped | `TestForms`, `/forms` browser proof |
 | `list_group()` / `media_object()` | row separation, leading media/body/actions pressure, child margin trim | shipped | list/media CSS tests; `/layout` browser proof |
+| `params_table()` / `signature()` | code-heavy row containment, local horizontal overflow, title/code attachment | shipped | params/signature CSS tests; `/forms` browser proof |
 | `dnd` / `sortable` | drag row/board grouping | partial | visual structure tests; spacing/overflow proof needed |
 | `modal` / `drawer` / `tray` / `panel` | header/body/footer region rhythm | shipped | CSS/browser proof; region margins, wrapping, and local overflow owned by containers |
 | navigation primitives | item metadata, rails, trays, dense chrome | partial | dense navigation docs and browser proof |
@@ -114,8 +115,16 @@ Remaining row-like work should focus on specialized row systems that have
 distinct interaction contracts:
 
 - drag/drop and sortable rows;
-- params/signature rows with code-heavy local overflow;
 - table row action groups and dense metadata variants.
+
+### Code-Heavy Documentation Rows
+
+`params_table()` and `signature()` own the code-heavy documentation case.
+Parameter tables keep names, types, defaults, and descriptions inside a local
+scroll wrapper when code cannot wrap cleanly. Signatures preserve code
+whitespace and scroll locally, so a long function, route, or command never
+widens the document. The root owners still trim direct child margins and define
+their own title/code attachment rhythm.
 
 ## Agent Checklist
 

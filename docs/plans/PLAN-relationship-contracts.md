@@ -46,11 +46,11 @@ responsive pressure, or local overflow.
 | Overlay regions | modal/drawer/tray/panel CSS | header/body/footer rhythm, margin trim, local long-token containment |
 | Form internals | form field CSS | checkbox/radio/range/input-group/search-bar attachment and pressure |
 | List and media rows | list/media/resource/workspace CSS | row separation, leading media/body/actions pressure, result card footer/body rhythm |
+| Code-heavy docs rows | params table/signature CSS | local horizontal overflow, code cell pressure, title/code attachment |
 
 ## Next 10 Tasks
 
-1. Audit params-table, signature, DnD, sortable, and table row-action
-   relationships.
+1. Audit DnD, sortable, and table row-action relationships.
 2. Add relationship-specific browser probes for high-risk surfaces instead of
    only document overflow probes.
 3. Remove first-party `chirpui-mt-*` / `chirpui-mb-*` usage when a component

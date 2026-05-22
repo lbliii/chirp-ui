@@ -654,6 +654,111 @@ async def test_showcase_list_and_media_rows_own_relationship_pressure(
     ("width", "height"),
     [(320, 640), (768, 1024), (1280, 900)],
 )
+async def test_showcase_code_docs_rows_own_local_overflow(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/forms")
+    await wait_for_alpine(showcase_page)
+
+    await showcase_page.evaluate(
+        """() => {
+            const longToken = "code-doc-owner-" + "lambda".repeat(28);
+            document.querySelector("#relationship-code-doc-proof")?.remove();
+            document.querySelector("main")?.insertAdjacentHTML(
+                "afterbegin",
+                `<section id="relationship-code-doc-proof" style="max-width: min(100%, 24rem);">
+                    <div class="chirpui-params-table">
+                        <h3 class="chirpui-params-table__title">${longToken}</h3>
+                        <div class="chirpui-params-table__wrap">
+                            <table class="chirpui-params-table__table">
+                                <thead class="chirpui-params-table__head">
+                                    <tr>
+                                        <th class="chirpui-params-table__th chirpui-params-table__th--name">Name</th>
+                                        <th class="chirpui-params-table__th chirpui-params-table__th--type">Type</th>
+                                        <th class="chirpui-params-table__th chirpui-params-table__th--default">Default</th>
+                                        <th class="chirpui-params-table__th chirpui-params-table__th--description">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="chirpui-params-table__body">
+                                    <tr class="chirpui-params-table__row">
+                                        <td class="chirpui-params-table__td chirpui-params-table__td--name"><code class="chirpui-params-table__code">${longToken}</code></td>
+                                        <td class="chirpui-params-table__td chirpui-params-table__td--type"><code class="chirpui-params-table__code">${longToken}</code></td>
+                                        <td class="chirpui-params-table__td chirpui-params-table__td--default"><code class="chirpui-params-table__code chirpui-params-table__code--muted">${longToken}</code></td>
+                                        <td class="chirpui-params-table__td chirpui-params-table__td--description">${longToken}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <pre class="chirpui-signature" data-language="python"><code class="chirpui-signature__code">async def ${longToken}(very_long_argument_name: str = "${longToken}") -> ${longToken}:</code></pre>
+                </section>`
+            );
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"code-doc-relationships-{width}x{height}"
+    )
+    metrics = await showcase_page.evaluate(
+        """() => {
+            const proof = document.querySelector("#relationship-code-doc-proof");
+            const params = proof.querySelector(".chirpui-params-table");
+            const title = proof.querySelector(".chirpui-params-table__title");
+            const wrap = proof.querySelector(".chirpui-params-table__wrap");
+            const signature = proof.querySelector(".chirpui-signature");
+            const code = proof.querySelector(".chirpui-signature__code");
+            const firstParamsChild = params.querySelector(":scope > :not(script, style, template)");
+            const titleStyle = getComputedStyle(title);
+            const firstParamsStyle = getComputedStyle(firstParamsChild);
+            const wrapStyle = getComputedStyle(wrap);
+            const signatureStyle = getComputedStyle(signature);
+            const codeStyle = getComputedStyle(code);
+            const proofRect = proof.getBoundingClientRect();
+            const paramsRect = params.getBoundingClientRect();
+            const wrapRect = wrap.getBoundingClientRect();
+            const signatureRect = signature.getBoundingClientRect();
+            return {
+                proofOverflow: Math.ceil(proof.scrollWidth - proof.clientWidth),
+                paramsOverflow: Math.ceil(params.scrollWidth - params.clientWidth),
+                wrapLocalOverflow: Math.ceil(wrap.scrollWidth - wrap.clientWidth),
+                signatureLocalOverflow: Math.ceil(signature.scrollWidth - signature.clientWidth),
+                wrapOverflowX: wrapStyle.overflowX,
+                signatureOverflowX: signatureStyle.overflowX,
+                codeWhiteSpace: codeStyle.whiteSpace,
+                titleMarginStart: titleStyle.marginBlockStart,
+                titleMarginEnd: titleStyle.marginBlockEnd,
+                firstParamsMarginStart: firstParamsStyle.marginBlockStart,
+                firstParamsMarginEnd: firstParamsStyle.marginBlockEnd,
+                paramsContained: paramsRect.right <= proofRect.right + 1,
+                wrapContained: wrapRect.right <= proofRect.right + 1,
+                signatureContained: signatureRect.right <= proofRect.right + 1,
+            };
+        }"""
+    )
+    assert metrics["proofOverflow"] <= 1, metrics
+    assert metrics["paramsOverflow"] <= 1, metrics
+    assert metrics["wrapLocalOverflow"] > 1, metrics
+    assert metrics["signatureLocalOverflow"] > 1, metrics
+    assert metrics["wrapOverflowX"] == "auto", metrics
+    assert metrics["signatureOverflowX"] == "auto", metrics
+    assert metrics["codeWhiteSpace"] == "pre", metrics
+    assert metrics["titleMarginStart"] == "0px", metrics
+    assert metrics["titleMarginEnd"] == "0px", metrics
+    assert metrics["firstParamsMarginStart"] == "0px", metrics
+    assert metrics["firstParamsMarginEnd"] == "0px", metrics
+    assert metrics["paramsContained"], metrics
+    assert metrics["wrapContained"], metrics
+    assert metrics["signatureContained"], metrics
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
 async def test_showcase_search_browse_composites_own_rhythm(
     showcase_page,
     showcase_base_url: str,
