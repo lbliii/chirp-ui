@@ -507,7 +507,9 @@ async def test_showcase_islands_own_fallback_and_mutation_region_rhythm(
     await showcase_page.goto(showcase_base_url + "/islands")
     await wait_for_alpine(showcase_page)
 
-    await expect(showcase_page.locator("#counter-widget-root .chirpui-island-fallback")).to_be_visible()
+    await expect(
+        showcase_page.locator("#counter-widget-root .chirpui-island-fallback")
+    ).to_be_visible()
     await showcase_page.evaluate(
         """() => {
             const longText = "island-region-owner-" + "kappa".repeat(24);
