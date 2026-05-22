@@ -2,47 +2,69 @@
    List
    ========================================================================== */
 
-.chirpui-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--chirpui-spacing-xs);
-}
+@layer chirpui.component {
+    @scope (.chirpui-list) to (.chirpui-list .chirpui-list) {
+        :scope {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-xs);
+            box-sizing: border-box;
+            min-inline-size: 0;
+            max-inline-size: 100%;
+            padding: 0;
+            margin: 0;
+            overflow-wrap: anywhere;
+            list-style: none;
+        }
 
-.chirpui-list__item {
-    transition: opacity var(--chirpui-transition-slow), transform var(--chirpui-transition-slow);
-    @starting-style {
-        opacity: 0;
-        transform: translateY(4px);
+        .chirpui-list__item {
+            box-sizing: border-box;
+            min-inline-size: 0;
+            max-inline-size: 100%;
+            overflow-wrap: anywhere;
+            transition:
+                opacity var(--chirpui-transition-slow),
+                transform var(--chirpui-transition-slow);
+            @starting-style {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+        }
+
+        .chirpui-list__item > :where(:not(script, style, template)) {
+            min-inline-size: 0;
+            margin-block: 0;
+        }
+
+        :scope.chirpui-list--bordered .chirpui-list__item {
+            padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-sm);
+            background: var(--chirpui-surface);
+        }
+
+        :scope.chirpui-list--bordered .chirpui-list__item + .chirpui-list__item {
+            margin-top: 0;
+        }
+
+        .chirpui-list__link {
+            display: inline-flex;
+            min-inline-size: 0;
+            max-inline-size: 100%;
+            overflow-wrap: anywhere;
+            color: var(--chirpui-accent);
+            text-decoration: none;
+            transition: color var(--chirpui-transition);
+        }
+
+        .chirpui-list__link:focus-visible {
+            outline: var(--chirpui-state-focus-outline);
+            outline-offset: var(--chirpui-state-focus-offset);
+        }
+
+        .chirpui-list__link:hover {
+            color: var(--chirpui-accent-hover);
+            text-decoration: underline;
+        }
     }
 }
-
-.chirpui-list--bordered .chirpui-list__item {
-    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius-sm);
-    background: var(--chirpui-surface);
-}
-
-.chirpui-list--bordered .chirpui-list__item + .chirpui-list__item {
-    margin-top: var(--chirpui-spacing-xs);
-}
-
-.chirpui-list__link {
-    color: var(--chirpui-accent);
-    text-decoration: none;
-    transition: color var(--chirpui-transition);
-}
-
-.chirpui-list__link:focus-visible {
-    outline: var(--chirpui-state-focus-outline);
-    outline-offset: var(--chirpui-state-focus-offset);
-}
-
-.chirpui-list__link:hover {
-    color: var(--chirpui-accent-hover);
-    text-decoration: underline;
-}
-

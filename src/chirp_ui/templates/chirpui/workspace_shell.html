@@ -17,7 +17,10 @@
 {% def workspace_shell(title=none, subtitle=none, sidebar_title=none, show_inspector=false, inspector_title=none, sidebar_surface_variant="muted", inspector_surface_variant="muted", cls="") %}
 <section class="chirpui-workspace-shell{{ " " ~ cls if cls else "" }}">
     <header class="chirpui-workspace-shell__header">
-        <div class="chirpui-workspace-shell__heading">
+        <div class="chirpui-workspace-shell__heading"
+             data-chirpui-role="content"
+             data-chirpui-pressure="flex"
+             data-chirpui-affinity="fill">
             {% if title %}
             <h1 class="chirpui-workspace-shell__title">{{ title }}</h1>
             {% end %}
@@ -25,28 +28,47 @@
             <p class="chirpui-workspace-shell__subtitle">{{ subtitle }}</p>
             {% end %}
         </div>
-        <div class="chirpui-workspace-shell__toolbar">{% slot toolbar %}</div>
+        <div class="chirpui-workspace-shell__toolbar"
+             data-chirpui-role="actions"
+             data-chirpui-pressure="rigid"
+             data-chirpui-affinity="end">{% slot toolbar %}</div>
     </header>
     {% call split_layout(ratio="sidebar", cls="chirpui-workspace-shell__layout") %}
     {% slot primary %}
+        <div class="chirpui-workspace-shell__sidebar"
+             data-chirpui-role="rail nav"
+             data-chirpui-pressure="compress"
+             data-chirpui-affinity="start">
         {% call panel(title=sidebar_title, surface_variant=sidebar_surface_variant, scroll_body=true, cls="chirpui-workspace-shell__sidebar-panel") %}
         {% yield sidebar %}
         {% end %}
+        </div>
     {% end %}
     {% slot secondary %}
         {% if show_inspector %}
             {% call split_layout(ratio="wide-primary", cls="chirpui-workspace-shell__content-layout") %}
             {% slot primary %}
-            <div class="chirpui-workspace-shell__main">{% yield %}</div>
+            <div class="chirpui-workspace-shell__main"
+                 data-chirpui-role="content"
+                 data-chirpui-pressure="flex"
+                 data-chirpui-affinity="fill">{% yield %}</div>
             {% end %}
             {% slot secondary %}
+                <div class="chirpui-workspace-shell__inspector"
+                     data-chirpui-role="rail content"
+                     data-chirpui-pressure="compress"
+                     data-chirpui-affinity="end">
                 {% call panel(title=inspector_title, surface_variant=inspector_surface_variant, scroll_body=true, cls="chirpui-workspace-shell__inspector-panel") %}
                 {% yield inspector %}
                 {% end %}
+                </div>
             {% end %}
             {% end %}
         {% else %}
-        <div class="chirpui-workspace-shell__main">{% yield %}</div>
+        <div class="chirpui-workspace-shell__main"
+             data-chirpui-role="content"
+             data-chirpui-pressure="flex"
+             data-chirpui-affinity="fill">{% yield %}</div>
         {% end %}
     {% end %}
     {% end %}

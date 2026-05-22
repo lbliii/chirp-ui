@@ -3,6 +3,11 @@
    ========================================================================== */
 
 .chirpui-row-actions__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-inline-size: var(--chirpui-control-block-size-sm);
+    min-block-size: var(--chirpui-control-block-size-sm);
     padding: var(--chirpui-spacing-xs);
 }
-

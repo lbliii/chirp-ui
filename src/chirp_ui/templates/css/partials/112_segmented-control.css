@@ -5,20 +5,27 @@
 .chirpui-segmented {
     --_chirpui-segmented-block-size: var(--chirpui-control-block-size);
     display: inline-flex;
+    flex-wrap: wrap;
     align-items: stretch;
     box-sizing: border-box;
-    block-size: var(--_chirpui-segmented-block-size);
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    min-block-size: var(--_chirpui-segmented-block-size);
     background: var(--chirpui-surface-alt);
     border-radius: var(--chirpui-radius);
     padding: var(--chirpui-spacing-2xs);
     gap: var(--chirpui-spacing-2xs);
+    overflow-wrap: anywhere;
 }
 .chirpui-segmented__option {
     display: inline-flex;
+    flex: 1 1 auto;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
     gap: var(--chirpui-spacing-2xs);
+    min-inline-size: 0;
+    max-inline-size: 100%;
     min-block-size: calc(var(--_chirpui-segmented-block-size) - var(--chirpui-spacing-xs));
     padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
     font-size: var(--chirpui-ui-sm);
@@ -27,7 +34,8 @@
     color: var(--chirpui-text-muted);
     border-radius: calc(var(--chirpui-radius) - 2px);
     cursor: pointer;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
     transition: background var(--chirpui-transition), color var(--chirpui-transition),
                 box-shadow var(--chirpui-transition);
     user-select: none;
@@ -44,6 +52,10 @@
     box-shadow: var(--chirpui-shadow-sm);
 }
 .chirpui-segmented__icon { font-size: 0.85em; }
+.chirpui-segmented__label {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+}
 
 /* Segmented sizes */
 .chirpui-segmented--sm {

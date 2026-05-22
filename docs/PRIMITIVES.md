@@ -23,6 +23,37 @@ Use legacy helpers only for narrow compatibility cases such as truncation or loc
 
 `actions`, `flow`, and `prose` are CSS primitives today. The rest are Kida macros in `chirpui/layout.html`.
 
+Experimental layout affinity is being explored as a recipe-level contract for
+agentic composition. See [DESIGN-layout-affinity.md](DESIGN-layout-affinity.md)
+for the proposed `data-chirpui-role`, `data-chirpui-pressure`, and
+`data-chirpui-affinity` vocabulary. Treat those attributes as prototype
+resolver hints until they are promoted through the registry and manifest.
+The active rollout is tracked in
+[PLAN-layout-affinity-rollout.md](plans/done/PLAN-layout-affinity-rollout.md).
+Maintainers adding resolver behavior must follow
+[LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md)
+so low-level primitives do not become utility-class containers.
+The broader relationship ownership model lives in
+[RELATIONSHIP-CONTRACTS.md](RELATIONSHIP-CONTRACTS.md): children own internal
+shape, while parent primitives own inset, sibling rhythm, attachment,
+grouping, pressure, and local overflow.
+
+Dense workspace primitives are the first promoted product-system layer on top
+of that contract. Use `filter_rail`, `result_collection`, `result_card`,
+`metric_strip`, and `inspector_panel` when a workspace needs navigable rails,
+responsive result grids, compact metrics, or a selected-object inspector
+without page-owned shell CSS.
+Those primitives also own relationship-based rhythm through attached, grouped,
+stacked, separated, and inset spacing conventions so app pages do not rebuild
+basic gaps and padding by hand.
+If a dense workspace element has a border or background, prefer a primitive
+that owns inset rhythm; do not make ordinary text sit directly against a
+decorative edge and patch it with page-local padding.
+This rule applies outside workspace shells too: `surface()`, `card()`,
+`panel()`, and `callout()` trim direct slot margins and apply internal flow
+rhythm so fresh app screens do not need bespoke spacing repairs around ordinary
+copy.
+
 For product-site pages, use these primitives through the recipes in
 [PRODUCT-PAGE-PATTERNS.md](PRODUCT-PAGE-PATTERNS.md). Those recipes show how
 to compose hero, proof, lifecycle, customer story, and CTA sections without
@@ -80,6 +111,11 @@ Default vertical rhythm:
 {% end %}
 ```
 
+`stack()` owns spacing between its direct children. Ordinary child margins are
+trimmed so headings, paragraphs, cards, and controls use the stack gap instead
+of doubling or collapsing margins unpredictably. Use `.chirpui-prose` when you
+want long-form document margins to remain conventional.
+
 Non-default gap:
 
 ```kida
@@ -91,6 +127,10 @@ Non-default gap:
 ```
 
 ### `cluster()`
+
+`cluster()` owns inline wrapping rhythm and trims direct child margins. This
+keeps badges, buttons, chips, links, and small status fragments from bringing
+their own outside spacing into a row.
 
 Default wrapping row:
 

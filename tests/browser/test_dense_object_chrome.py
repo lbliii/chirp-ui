@@ -4,7 +4,11 @@ import pytest
 from playwright.async_api import expect
 
 from tests.browser.conftest import wait_for_alpine
-from tests.browser.gauntlet_detectors import assert_no_document_horizontal_overflow
+from tests.browser.gauntlet_detectors import (
+    assert_direct_child_margins_trimmed,
+    assert_direct_children_contained,
+    assert_no_document_horizontal_overflow,
+)
 
 pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
@@ -80,6 +84,113 @@ async def test_dense_object_chrome_responsive_surfaces_do_not_overflow(
             assert metric["height"] < 96, metric
             assert metric["flexWrap"] == "nowrap", metric
             assert metric["overflowX"] in {"auto", "scroll"}, metric
+
+
+@pytest.mark.parametrize(("width", "height"), [(320, 640), (768, 1024)])
+async def test_dense_metadata_primitives_own_pressure(page, base_url, width, height):
+    await open_dense_object_chrome(page, base_url, width=width, height=height)
+
+    await page.evaluate(
+        """() => {
+            const longText = "metadata-owner-" + "theta".repeat(24);
+            document.querySelector("#dense-metadata-proof")?.remove();
+            document.querySelector("main")?.insertAdjacentHTML(
+                "afterbegin",
+                `<section id="dense-metadata-proof" style="max-width: min(100%, 20rem);">
+                    <span class="chirpui-inline-counter" title="${longText}">
+                        <span class="chirpui-inline-counter__mark">M</span>
+                        <span class="chirpui-inline-counter__value">${longText}</span>
+                        <span class="chirpui-inline-counter__label">${longText}</span>
+                    </span>
+                    <div class="chirpui-latest-line">
+                        <span class="chirpui-latest-line__label">Latest</span>
+                        <span class="chirpui-tooltip chirpui-latest-line__tooltip">
+                            <a class="chirpui-latest-line__title" href="#">${longText}</a>
+                        </span>
+                        <span class="chirpui-latest-line__meta">
+                            <a href="#">${longText}</a>
+                            <span>${longText}</span>
+                        </span>
+                    </div>
+                    <div class="chirpui-chip-group" aria-label="Metadata chips">
+                        <span class="chirpui-chip">${longText}</span>
+                        <a class="chirpui-chip" href="#">${longText}</a>
+                    </div>
+                </section>`
+            );
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(page, f"dense-metadata-{width}x{height}")
+    await assert_direct_children_contained(
+        page,
+        "#dense-metadata-proof .chirpui-latest-line",
+        f"dense-latest-line-{width}x{height}",
+    )
+    await assert_direct_child_margins_trimmed(
+        page,
+        "#dense-metadata-proof .chirpui-latest-line",
+        f"dense-latest-line-{width}x{height}",
+    )
+    await assert_direct_children_contained(
+        page,
+        "#dense-metadata-proof .chirpui-chip-group",
+        f"dense-chip-group-{width}x{height}",
+    )
+    await assert_direct_child_margins_trimmed(
+        page,
+        "#dense-metadata-proof .chirpui-chip-group",
+        f"dense-chip-group-{width}x{height}",
+    )
+    metrics = await page.evaluate(
+        """() => {
+            const proof = document.querySelector("#dense-metadata-proof");
+            const counter = proof.querySelector(".chirpui-inline-counter");
+            const mark = proof.querySelector(".chirpui-inline-counter__mark");
+            const value = proof.querySelector(".chirpui-inline-counter__value");
+            const latest = proof.querySelector(".chirpui-latest-line");
+            const latestFirstChild = latest.querySelector(":scope > :not(script, style, template)");
+            const tooltip = proof.querySelector(".chirpui-latest-line__tooltip");
+            const meta = proof.querySelector(".chirpui-latest-line__meta");
+            const chipGroup = proof.querySelector(".chirpui-chip-group");
+            const chip = proof.querySelector(".chirpui-chip");
+            const proofRect = proof.getBoundingClientRect();
+            return {
+                proofOverflow: Math.ceil(proof.scrollWidth - proof.clientWidth),
+                counterOverflow: Math.ceil(counter.scrollWidth - counter.clientWidth),
+                counterContained: counter.getBoundingClientRect().right <= proofRect.right + 1,
+                markFlex: getComputedStyle(mark).flex,
+                valueWrap: getComputedStyle(value).overflowWrap,
+                latestOverflow: Math.ceil(latest.scrollWidth - latest.clientWidth),
+                latestContained: latest.getBoundingClientRect().right <= proofRect.right + 1,
+                latestFirstMarginStart: getComputedStyle(latestFirstChild).marginBlockStart,
+                latestFirstMarginEnd: getComputedStyle(latestFirstChild).marginBlockEnd,
+                tooltipDisplay: getComputedStyle(tooltip).display,
+                metaWrap: getComputedStyle(meta).flexWrap,
+                chipGroupOverflow: Math.ceil(chipGroup.scrollWidth - chipGroup.clientWidth),
+                chipGroupContained: chipGroup.getBoundingClientRect().right <= proofRect.right + 1,
+                chipMarginStart: getComputedStyle(chip).marginBlockStart,
+                chipMarginEnd: getComputedStyle(chip).marginBlockEnd,
+                chipOverflow: Math.ceil(chip.scrollWidth - chip.clientWidth),
+            };
+        }"""
+    )
+    # The tooltip bubble is absolutely positioned and may expand the synthetic
+    # proof section's scroll width while remaining invisible and document-safe.
+    assert metrics["counterOverflow"] <= 1, metrics
+    assert metrics["counterContained"], metrics
+    assert metrics["markFlex"] == "0 0 auto", metrics
+    assert metrics["valueWrap"] == "anywhere", metrics
+    assert metrics["latestContained"], metrics
+    assert metrics["latestFirstMarginStart"] == "0px", metrics
+    assert metrics["latestFirstMarginEnd"] == "0px", metrics
+    assert metrics["tooltipDisplay"] == "inline-flex", metrics
+    assert metrics["metaWrap"] == "wrap", metrics
+    assert metrics["chipGroupOverflow"] <= 1, metrics
+    assert metrics["chipGroupContained"], metrics
+    assert metrics["chipMarginStart"] == "0px", metrics
+    assert metrics["chipMarginEnd"] == "0px", metrics
+    assert metrics["chipOverflow"] > 1, metrics
 
 
 async def test_dense_object_chrome_command_triggers_open_named_palettes(page, base_url):

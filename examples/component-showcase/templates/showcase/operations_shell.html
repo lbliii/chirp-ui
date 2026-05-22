@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, stack, frame, block, page_header %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/filter_bar.html" import filter_bar %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group %}
+{% from "chirpui/empty.html" import empty_state %}
+
+{% call container(cls="ops-shell-page") %}
+{% call stack() %}
+{{ page_header("Operations workspace shell", subtitle="Layout-affinity payoff experiment for multi-rail, multi-shell, dense application UI.") }}
+
+<div id="operations-shell-surface" class="ops-shell-surface"
+     x-data="{ pending: false }"
+     x-bind:class="{ 'is-pending': pending }"
+     x-on:htmx:before-request.window="if ($event.target.closest && $event.target.closest('#operations-shell-surface')) pending = true"
+     x-on:htmx:after-settle.window="if ($event.target.closest && $event.target.closest('#operations-shell-surface')) pending = false"
+     x-on:htmx:response-error.window="pending = false">
+
+{% call command_bar(surface_variant="default", density="sm", wrap="wrap", aria_label="Operations workspace command controls", cls="ops-shell-command-bar") %}
+  <form id="ops-shell-controls" class="ops-shell-search" action="/operations-shell" method="get"
+        data-chirpui-role="search"
+        data-chirpui-pressure="flex"
+        data-chirpui-affinity="fill"
+        hx-get="/operations-shell"
+        hx-trigger="submit"
+        hx-target="#operations-shell-surface"
+        hx-select="#operations-shell-surface"
+        hx-swap="outerHTML transition:true"
+        hx-push-url="true"
+        hx-sync="#operations-shell-surface:replace"
+        hx-indicator="#operations-shell-pending">
+    <input type="hidden" name="area" value="{{ ops_area }}">
+    <input type="hidden" name="status" value="{{ ops_status }}">
+    <label class="chirpui-visually-hidden" for="ops-shell-query">Search operations workspace</label>
+    <input id="ops-shell-query" class="chirpui-field__input" name="q" type="search"
+           value="{{ ops_query }}" placeholder="Search workloads, owners, regions, tags..."
+           autocomplete="off"
+           x-ref="opsQuery"
+           hx-get="/operations-shell"
+           hx-trigger="input changed delay:120ms, search"
+           hx-target="#operations-shell-frame"
+           hx-select="#operations-shell-frame"
+           hx-swap="outerHTML transition:true"
+           hx-include="#ops-shell-controls"
+           hx-push-url="true"
+           hx-sync="#operations-shell-frame:replace"
+           hx-indicator="#operations-shell-pending">
+    {{ btn("Search", variant="primary", size="sm", type="submit") }}
+  </form>
+  <div class="ops-shell-hints" aria-label="Suggested operations searches"
+       data-chirpui-role="hints"
+       data-chirpui-pressure="compress"
+       data-chirpui-affinity="end">
+    <span id="operations-shell-pending" class="ops-shell-pending" role="status" aria-live="polite"
+          data-chirpui-role="status"
+          data-chirpui-pressure="rigid">Updating</span>
+    {% for hint in ops_hints %}
+    <a class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm" href="{{ hint.href }}"
+       data-query="{{ hint.label }}"
+       x-on:click="$refs.opsQuery.value = $el.dataset.query"
+       hx-boost="false"
+       hx-get="{{ hint.href }}"
+       hx-target="#operations-shell-surface"
+       hx-select="#operations-shell-surface"
+       hx-swap="outerHTML transition:true"
+       hx-push-url="true"
+       hx-sync="#operations-shell-surface:replace"
+       hx-indicator="#operations-shell-pending"><span class="chirpui-btn__label">{{ hint.label }}</span></a>
+    {% end %}
+  </div>
+{% end %}
+
+{% call filter_bar("/operations-shell", attrs_map={
+    "id": "ops-shell-filter-form",
+    "hx-get": "/operations-shell",
+    "hx-trigger": "change delay:80ms from:select",
+    "hx-target": "#operations-shell-surface",
+    "hx-select": "#operations-shell-surface",
+    "hx-swap": "outerHTML transition:true",
+    "hx-push-url": "true",
+    "hx-sync": "#operations-shell-surface:replace",
+    "hx-indicator": "#operations-shell-pending"
+  }, surface_variant="muted", density="sm", wrap="wrap", cls="ops-shell-filter-bar") %}
+  <div class="chirpui-action-strip__primary"
+       data-chirpui-role="search"
+       data-chirpui-pressure="flex"
+       data-chirpui-affinity="fill">
+    <input type="hidden" name="q" value="{{ ops_query }}">
+    <span class="ops-shell-scope-label">{{ ops_area_label }}</span>
+  </div>
+  <div class="chirpui-action-strip__controls"
+       data-chirpui-role="filters"
+       data-chirpui-pressure="compress">
+    <div class="chirpui-field chirpui-field--dense">
+      <label class="chirpui-field__label" for="ops-shell-area">Area</label>
+      <select class="chirpui-field__input" id="ops-shell-area" name="area">
+        <option value="">All areas</option>
+        {% for area in ops_areas %}
+        <option value="{{ area.id }}"{% if area.active %} selected{% end %}>{{ area.label }}</option>
+        {% end %}
+      </select>
+    </div>
+    <div class="chirpui-field chirpui-field--dense">
+      <label class="chirpui-field__label" for="ops-shell-status">State</label>
+      <select class="chirpui-field__input" id="ops-shell-status" name="status">
+        {% for item in ops_status_items %}
+        <option value="{{ item.id }}"{% if item.active %} selected{% end %}>{{ item.label }}</option>
+        {% end %}
+      </select>
+    </div>
+  </div>
+  <div class="chirpui-action-strip__actions"
+       data-chirpui-role="actions"
+       data-chirpui-pressure="rigid"
+       data-chirpui-affinity="end">
+    <a class="chirpui-btn chirpui-btn--secondary chirpui-btn--sm" href="{{ ops_reset_href }}"
+       hx-boost="false"
+       hx-get="{{ ops_reset_href }}"
+       hx-target="#operations-shell-surface"
+       hx-select="#operations-shell-surface"
+       hx-swap="outerHTML transition:true"
+       hx-push-url="true"
+       hx-sync="#operations-shell-surface:replace"
+       hx-indicator="#operations-shell-pending"><span class="chirpui-btn__label">Reset shell</span></a>
+  </div>
+{% end %}
+
+<section id="operations-shell-frame" class="ops-shell-frame-wrap" aria-label="Operations workspace results" aria-live="polite">
+{% call frame(variant="sidebar-start", gap="md", cls="ops-shell-frame") %}
+  <aside class="ops-shell-rail ops-shell-rail--areas"
+         data-chirpui-role="rail nav"
+         data-chirpui-pressure="compress"
+         data-chirpui-affinity="start"
+         aria-label="Operations area rail">
+    <div class="ops-shell-rail-heading">
+      <span>01</span>
+      <strong>Areas</strong>
+    </div>
+    <nav class="ops-shell-rail-list" aria-label="Operations areas">
+      {% for area in ops_areas %}
+      <a class="ops-shell-rail-link{{ " is-active" if area.active else "" }}" href="{{ area.href }}"
+         hx-boost="false"
+         hx-get="{{ area.href }}"
+         hx-target="#operations-shell-surface"
+         hx-select="#operations-shell-surface"
+         hx-swap="outerHTML transition:true"
+         hx-push-url="true"
+         hx-sync="#operations-shell-surface:replace"
+         hx-indicator="#operations-shell-pending">
+        <span>{{ area.icon }}</span>
+        <strong>{{ area.label }}</strong>
+        <small>{{ area.count }}</small>
+      </a>
+      {% end %}
+    </nav>
+  </aside>
+
+  <section class="ops-shell-workspace"
+           data-chirpui-role="content"
+           data-chirpui-pressure="flex"
+           data-chirpui-affinity="fill"
+           aria-label="Operations workload workspace">
+    <section class="ops-shell-workspace-main" aria-label="Operations workload list">
+      {% call block(cls="ops-shell-spotlight") %}
+      <div class="ops-shell-spotlight-head">
+        <div>
+          <p class="ops-shell-kicker">Payoff readout</p>
+          <h2>{{ ops_metrics.workloads }} workloads in {{ ops_area_label }}</h2>
+        </div>
+        {{ badge(ops_metrics.incidents ~ " incidents", variant="error" if ops_metrics.incidents else "muted") }}
+      </div>
+      <div class="ops-shell-metrics" aria-label="Operations shell metrics">
+        {{ badge(ops_metrics.workloads ~ " workloads", variant="primary") }}
+        {{ badge(ops_metrics.watch ~ " watch", variant="warning" if ops_metrics.watch else "muted") }}
+        {{ badge(ops_metrics.regions ~ " regions", variant="info") }}
+        {{ badge(ops_metrics.avg_latency ~ " ms avg", variant="success" if ops_metrics.avg_latency < 100 else "warning") }}
+      </div>
+      <p class="ops-shell-payoff-copy">
+        Current resolvers carry command search, filter controls, frame rails, card headers, metadata, and actions before this page needs a new primitive.
+      </p>
+      {% end %}
+
+      {% if ops_filtered %}
+      <div class="ops-shell-card-grid" role="list">
+        {% for workload in ops_filtered %}
+        {% call card(title=workload.name, subtitle=workload.summary, cls="ops-shell-workload-card", hoverable=true, attrs_map={"role": "listitem"}) %}
+          {% slot header_actions %}
+          {{ badge(workload.status_label, variant=workload.status_variant) }}
+          {% end %}
+          <div class="ops-shell-workload-measures" aria-label="{{ workload.name }} measures">
+            <span><strong>{{ workload.latency }} ms</strong><small>Latency</small></span>
+            <span><strong>{{ workload.error_rate }}</strong><small>Error rate</small></span>
+            <span><strong>{{ workload.region }}</strong><small>Region</small></span>
+          </div>
+          {% call chip_group(label=workload.name ~ " tags") %}
+            {% for tag in workload.tags %}
+            <span class="chirpui-chip">{{ tag }}</span>
+            {% end %}
+          {% end %}
+          {% slot footer %}
+          <span>Owner {{ workload.owner }}</span>
+          <span>{{ workload.tier }}</span>
+          <a href="{{ workload.href }}"
+             hx-boost="false"
+             hx-get="{{ workload.href }}"
+             hx-target="#operations-shell-frame"
+             hx-select="#operations-shell-frame"
+             hx-swap="outerHTML transition:true"
+             hx-push-url="true"
+             hx-sync="#operations-shell-frame:replace"
+             hx-indicator="#operations-shell-pending">Inspect</a>
+          {% end %}
+        {% end %}
+        {% end %}
+      </div>
+      {% else %}
+      {% call empty_state(title="No workloads matched", icon="search") %}
+        <p>Try another area, state, or search phrase.</p>
+      {% end %}
+      {% endif %}
+    </section>
+
+    <aside class="ops-shell-inspector"
+           data-chirpui-role="rail content"
+           data-chirpui-pressure="compress"
+           data-chirpui-affinity="end"
+           aria-label="Selected workload inspector">
+      {% call card(title=ops_selected.name, subtitle=ops_selected.summary, cls="ops-shell-inspector-card") %}
+        {% slot header_actions %}
+        {{ badge(ops_selected.status_label, variant=ops_selected.status_variant) }}
+        {% end %}
+        <dl class="ops-shell-inspector-list">
+          <div><dt>Owner</dt><dd>{{ ops_selected.owner }}</dd></div>
+          <div><dt>Region</dt><dd>{{ ops_selected.region }}</dd></div>
+          <div><dt>Deploy</dt><dd>{{ ops_selected.deploy }}</dd></div>
+          <div><dt>Error rate</dt><dd>{{ ops_selected.error_rate }}</dd></div>
+        </dl>
+        <div class="ops-shell-event-list" aria-label="{{ ops_selected.name }} recent events">
+          {% for event in ops_selected.events %}
+          <p>{{ event }}</p>
+          {% end %}
+        </div>
+        {% slot footer %}
+        <span>Inspector rail</span>
+        <span>Current resolver gap: panel placement is page-owned CSS.</span>
+        {% end %}
+      {% end %}
+    </aside>
+  </section>
+{% end %}
+</section>
+</div>
+
+{% end %}
+{% end %}
+{% end %}

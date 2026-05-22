@@ -5836,7 +5836,7 @@ Form field macros
 - **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`
-- **Variants:** `checkbox`, `dense`, `error`, `file`, `masked`, `money`, `phone`, `radio`, `radio-horizontal`, `range`, `toggle`
+- **Variants:** `checkbox`, `dense`, `error`, `file`, `input-group`, `masked`, `money`, `phone`, `radio`, `radio-horizontal`, `range`, `toggle`
 - **Appearances:** `filled`, `ghost`, `outlined`, `tonal`
 - **Tones:** `danger`, `info`, `neutral`, `primary`, `success`, `warning`
 - **Consumes:** `_form_density`
@@ -5928,6 +5928,23 @@ Filter chips — radiogroup + pill chips (named colors / HTMX)
 | `name` | yes | — |
 | `param` | no | (has default) |
 | `value` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `filter-rail`
+
+Dense workspace primitives
+
+- **Template:** `chirpui/workspace_primitives.html`
+- **Macro:** `filter_rail`
+- **Category:** `navigation`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `filter-row`
@@ -6022,6 +6039,48 @@ Filter Bar composite
 - **Maturity:** `legacy`
 - **Role:** `primitive`
 - **Authoring:** `compatibility`
+
+### `form`
+
+Form field macros
+
+- **Template:** `chirpui/forms.html`
+- **Macro:** `form`
+- **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `htmx`
+- **Slots:** `(default)`
+- **Provides:** `_form_density`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `action` | yes | — |
+| `method` | no | (has default) |
+| `enctype` | no | (has default) |
+| `density` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs` | no | (has default) |
+| `attrs_unsafe` | no | (has default) |
+| `attrs_map` | no | (has default) |
+| `hx` | no | (has default) |
+| `hx_get` | no | (has default) |
+| `hx_post` | no | (has default) |
+| `hx_put` | no | (has default) |
+| `hx_patch` | no | (has default) |
+| `hx_delete` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `hx_swap` | no | (has default) |
+| `hx_trigger` | no | (has default) |
+| `hx_include` | no | (has default) |
+| `hx_select` | no | (has default) |
+| `hx_select_oob` | no | (has default) |
+| `hx_disabled_elt` | no | (has default) |
+| `hx_sync` | no | (has default) |
+| `hx_ext` | no | (has default) |
+| `hx_vals` | no | (has default) |
+| `hx_reset_on_success` | no | (has default) |
 
 ### `form-actions`
 
@@ -6433,6 +6492,24 @@ Form field macros
 | `hint` | no | (has default) |
 | `attrs` | no | (has default) |
 | `attrs_unsafe` | no | (has default) |
+
+### `inspector-panel`
+
+Dense workspace primitives
+
+- **Template:** `chirpui/workspace_primitives.html`
+- **Macro:** `inspector_panel`
+- **Category:** `layout`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `(default)`, `actions`, `footer`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `subtitle` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `install-snippet`
 
@@ -6906,6 +6983,23 @@ Metric grid/card
 |-------|----------|---------|
 | `cols` | no | (has default) |
 | `gap` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `metric-strip`
+
+Dense workspace primitives
+
+- **Template:** `chirpui/workspace_primitives.html`
+- **Macro:** `metric_strip`
+- **Category:** `data-display`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `min-w-0`
@@ -7603,6 +7697,43 @@ Resource Index composite
 | `mutation_result_id` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `result-card`
+
+Dense workspace primitives
+
+- **Template:** `chirpui/workspace_primitives.html`
+- **Macro:** `result_card`
+- **Category:** `data-display`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `(default)`, `actions`, `footer`, `mark`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | yes | — |
+| `subtitle` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
+### `result-collection`
+
+Dense workspace primitives
+
+- **Template:** `chirpui/workspace_primitives.html`
+- **Macro:** `result_collection`
+- **Category:** `data-display`
+- **Maturity:** `experimental`
+- **Role:** `pattern`
+- **Authoring:** `available`
+- **Slots:** `(default)`, `meta`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | no | (has default) |
+| `title` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `result-slot`
 
 - **Category:** `feedback`
@@ -7797,7 +7928,7 @@ Form field macros
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `htmx`
-- **Modifiers:** `with-icon`
+- **Modifiers:** `with-button`, `with-icon`
 
 | Param | Required | Default |
 |-------|----------|---------|

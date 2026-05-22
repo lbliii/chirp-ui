@@ -61,6 +61,10 @@
     min-width: 0;
 }
 
+.chirpui-alert > .chirpui-alert__body + .chirpui-alert__body {
+    margin-block-start: var(--chirpui-spacing-sm);
+}
+
 .chirpui-alert__title {
     font-weight: var(--chirpui-ui-font-weight-semibold);
     margin-bottom: var(--chirpui-spacing-xs);

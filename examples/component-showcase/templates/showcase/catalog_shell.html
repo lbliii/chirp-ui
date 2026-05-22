@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/chip_group.html" import chip_group %}
+{% from "chirpui/empty.html" import empty_state %}
+
+{% call container(cls="catalog-shell-page") %}
+{% call stack() %}
+{{ page_header("Catalog search shell", subtitle="Server-rendered product docs browser with layered navigation, search, and grouped results.") }}
+
+<div id="catalog-shell-surface" class="catalog-shell-surface"
+     x-data="{ pending: false }"
+     x-bind:class="{ 'is-pending': pending }"
+     x-on:htmx:before-request.window="if ($event.target.closest && $event.target.closest('#catalog-shell-surface')) pending = true"
+     x-on:htmx:after-settle.window="if ($event.target.closest && $event.target.closest('#catalog-shell-surface')) pending = false"
+     x-on:htmx:response-error.window="pending = false">
+{% call command_bar(surface_variant="default", density="sm", wrap="wrap", aria_label="Catalog shell search controls", cls="catalog-shell-command-bar") %}
+  <form id="catalog-shell-controls" class="catalog-shell-search" action="/catalog-shell" method="get"
+        data-chirpui-role="search"
+        data-chirpui-pressure="flex"
+        data-chirpui-affinity="fill"
+        hx-get="/catalog-shell"
+        hx-trigger="submit"
+        hx-target="#catalog-shell-surface"
+        hx-select="#catalog-shell-surface"
+        hx-swap="outerHTML transition:true"
+        hx-push-url="true"
+        hx-sync="#catalog-shell-surface:replace"
+        hx-indicator="#catalog-shell-pending">
+    <input type="hidden" name="category" value="{{ catalog_category }}">
+    <input type="hidden" name="family" value="{{ catalog_family }}">
+    <input type="hidden" name="version" value="{{ catalog_version }}">
+    <label class="chirpui-visually-hidden" for="catalog-shell-query">Search product documentation</label>
+    <input id="catalog-shell-query" class="chirpui-field__input" name="q" type="search" value="{{ catalog_query }}" placeholder="Search products, tasks, APIs, roles, topics..." autocomplete="off"
+           x-ref="query"
+           hx-get="/catalog-shell"
+           hx-trigger="input changed delay:120ms, search"
+           hx-target="#catalog-shell-frame"
+           hx-select="#catalog-shell-frame"
+           hx-swap="outerHTML transition:true"
+           hx-include="#catalog-shell-query, #catalog-shell-state"
+           hx-push-url="true"
+           hx-sync="#catalog-shell-frame:replace"
+           hx-indicator="#catalog-shell-pending">
+    {{ btn("Search", variant="primary", size="sm", type="submit") }}
+  </form>
+  <div class="catalog-shell-hints" aria-label="Suggested catalog searches"
+       data-chirpui-role="hints"
+       data-chirpui-pressure="compress"
+       data-chirpui-affinity="end">
+    <span id="catalog-shell-pending" class="catalog-shell-pending" role="status" aria-live="polite"
+          data-chirpui-role="status"
+          data-chirpui-pressure="rigid">Updating</span>
+    {% for hint in catalog_search_hints %}
+    <a class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm" href="{{ hint.href }}"
+       data-query="{{ hint.query }}"
+       x-on:click="$refs.query.value = $el.dataset.query"
+       hx-boost="false"
+       hx-get="{{ hint.href }}"
+       hx-target="#catalog-shell-surface"
+       hx-select="#catalog-shell-surface"
+       hx-swap="outerHTML transition:true"
+       hx-push-url="true"
+       hx-sync="#catalog-shell-surface:replace"
+       hx-indicator="#catalog-shell-pending"><span class="chirpui-btn__label">{{ hint.label }}</span></a>
+    {% end %}
+  </div>
+{% end %}
+
+<section id="catalog-shell-frame" class="catalog-shell-frame" aria-label="Layered catalog browser" aria-live="polite">
+  <div id="catalog-shell-state" hidden>
+    <input type="hidden" name="category" value="{{ catalog_category }}">
+    <input type="hidden" name="family" value="{{ catalog_family }}">
+    <input type="hidden" name="version" value="{{ catalog_version }}">
+  </div>
+  <aside class="catalog-shell-rail catalog-shell-rail--categories" aria-label="Product area rail">
+    <div class="catalog-shell-rail-heading">
+      <span>01</span>
+      <strong>Categories</strong>
+    </div>
+    <nav class="catalog-shell-category-list" aria-label="Product areas">
+      {% for category in catalog_categories %}
+      <a class="catalog-shell-category-link{{ " is-active" if category.active else "" }}" href="{{ category.href }}" aria-label="{{ category.label }}"
+         hx-boost="false"
+         hx-get="{{ category.href }}"
+         hx-target="#catalog-shell-surface"
+         hx-select="#catalog-shell-surface"
+         hx-swap="outerHTML transition:true"
+         hx-push-url="true"
+         hx-sync="#catalog-shell-surface:replace"
+         hx-indicator="#catalog-shell-pending">
+        <span>{{ category.icon }}</span>
+        <small>{{ category.count }}</small>
+      </a>
+      {% end %}
+    </nav>
+  </aside>
+
+  <aside class="catalog-shell-rail catalog-shell-rail--families" aria-label="Product family rail">
+    <div class="catalog-shell-rail-heading">
+      <span>02</span>
+      <strong>Families</strong>
+    </div>
+    <div class="catalog-shell-family-context">
+      <span>{{ catalog_selected_category.icon }}</span>
+      <strong>{{ catalog_selected_category.label }}</strong>
+    </div>
+    <nav class="catalog-shell-family-list" aria-label="Product families">
+      <a class="catalog-shell-family-link{{ " is-active" if not catalog_family else "" }}" href="{{ catalog_all_families_href }}"
+         hx-boost="false"
+         hx-get="{{ catalog_all_families_href }}"
+         hx-target="#catalog-shell-surface"
+         hx-select="#catalog-shell-surface"
+         hx-swap="outerHTML transition:true"
+         hx-push-url="true"
+         hx-sync="#catalog-shell-surface:replace"
+         hx-indicator="#catalog-shell-pending">
+        <span>*</span>
+        <strong>All families</strong>
+        <small>{{ catalog_all_families_record_count }} {{ "doc" if catalog_all_families_record_count == 1 else "docs" }}</small>
+      </a>
+      {% for family in catalog_families %}
+      <a class="catalog-shell-family-link{{ " is-active" if family.active else "" }}" href="{{ family.href }}"
+         hx-boost="false"
+         hx-get="{{ family.href }}"
+         hx-target="#catalog-shell-surface"
+         hx-select="#catalog-shell-surface"
+         hx-swap="outerHTML transition:true"
+         hx-push-url="true"
+         hx-sync="#catalog-shell-surface:replace"
+         hx-indicator="#catalog-shell-pending">
+        <span>{{ family.initials }}</span>
+        <strong>{{ family.name }}</strong>
+        <small>{{ family.product_count }} {{ "product" if family.product_count == 1 else "products" }} / {{ family.record_count }} {{ "doc" if family.record_count == 1 else "docs" }}</small>
+      </a>
+      {% end %}
+    </nav>
+  </aside>
+
+  <section class="catalog-shell-workspace" aria-label="Catalog results workspace">
+    {% call block(cls="catalog-shell-spotlight") %}
+    <div class="catalog-shell-spotlight-top">
+      <div>
+        <p class="catalog-shell-kicker">{{ "Search results" if catalog_query else catalog_selected_category.label }}</p>
+        <h2>{{ '"' ~ catalog_query ~ '"' if catalog_query else catalog_metrics.scope_label }}</h2>
+      </div>
+      <a class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm" href="{{ catalog_reset_href }}"
+         x-on:click="$refs.query.value = ''"
+         hx-boost="false"
+         hx-get="{{ catalog_reset_href }}"
+         hx-target="#catalog-shell-surface"
+         hx-select="#catalog-shell-surface"
+         hx-swap="outerHTML transition:true"
+         hx-push-url="true"
+         hx-sync="#catalog-shell-surface:replace"
+         hx-indicator="#catalog-shell-pending"><span class="chirpui-btn__label">Reset shell</span></a>
+    </div>
+    <div class="catalog-shell-metrics" aria-label="Catalog result metrics">
+      {{ badge(catalog_metrics.products ~ " " ~ ("product" if catalog_metrics.products == 1 else "products"), variant="primary") }}
+      {{ badge(catalog_metrics.docsets ~ " " ~ ("docset" if catalog_metrics.docsets == 1 else "docsets"), variant="muted") }}
+      {{ badge(catalog_metrics.records ~ " " ~ ("doc" if catalog_metrics.records == 1 else "docs"), variant="success") }}
+    </div>
+    <div class="catalog-shell-version-strip" aria-label="Version filter">
+      <span>Version</span>
+      {% for item in catalog_versions %}
+      <a class="chirpui-btn chirpui-btn--{{ "primary" if item.active else "ghost" }} chirpui-btn--sm" href="{{ item.href }}"
+         hx-boost="false"
+         hx-get="{{ item.href }}"
+         hx-target="#catalog-shell-surface"
+         hx-select="#catalog-shell-surface"
+         hx-swap="outerHTML transition:true"
+         hx-push-url="true"
+         hx-sync="#catalog-shell-surface:replace"
+         hx-indicator="#catalog-shell-pending"><span class="chirpui-btn__label">{{ item.label }}</span></a>
+      {% end %}
+    </div>
+    {% if catalog_metrics.top_topics %}
+    {% call chip_group(label="Top catalog topics") %}
+      {% for topic in catalog_metrics.top_topics %}
+      <a class="chirpui-chip" href="{{ topic.href }}"
+         data-query="{{ topic.label }}"
+         x-on:click="$refs.query.value = $el.dataset.query"
+         hx-boost="false"
+         hx-get="{{ topic.href }}"
+         hx-target="#catalog-shell-surface"
+         hx-select="#catalog-shell-surface"
+         hx-swap="outerHTML transition:true"
+         hx-push-url="true"
+         hx-sync="#catalog-shell-surface:replace"
+         hx-indicator="#catalog-shell-pending">{{ topic.label }}</a>
+      {% end %}
+    {% end %}
+    {% end %}
+    {% end %}
+
+    {% if catalog_products %}
+    <div class="catalog-shell-results" role="list">
+      {% for product in catalog_products %}
+      <article class="catalog-shell-product-card" role="listitem">
+        <div class="catalog-shell-product-head">
+          <div class="catalog-shell-card-mark" aria-hidden="true">{{ product.mark }}</div>
+          <div class="catalog-shell-product-copy">
+            <p>{{ product.family }}</p>
+            <h3><a href="{{ product.href }}">{{ product.name }}</a></h3>
+            <span>{{ product.site }}</span>
+          </div>
+          <div class="catalog-shell-product-count" aria-label="{{ product.record_count }} docs">{{ product.record_count }} {{ "doc" if product.record_count == 1 else "docs" }}</div>
+        </div>
+        <p class="catalog-shell-product-summary">{{ product.summary }}</p>
+        <div class="catalog-shell-coverage" aria-label="{{ product.name }} coverage">
+          <span>{{ product.docsets | length }} {{ "docset" if (product.docsets | length) == 1 else "docsets" }}</span>
+          <span>{{ product.content_types | length }} {{ "content type" if (product.content_types | length) == 1 else "content types" }}</span>
+        </div>
+        {% call chip_group(label=product.name ~ " topics") %}
+          {% for topic in product.topics %}
+          <a class="chirpui-chip" href="{{ topic.href }}"
+             data-query="{{ topic.label }}"
+             x-on:click="$refs.query.value = $el.dataset.query"
+             hx-boost="false"
+             hx-get="{{ topic.href }}"
+             hx-target="#catalog-shell-surface"
+             hx-select="#catalog-shell-surface"
+             hx-swap="outerHTML transition:true"
+             hx-push-url="true"
+             hx-sync="#catalog-shell-surface:replace"
+             hx-indicator="#catalog-shell-pending">{{ topic.label }}</a>
+          {% end %}
+        {% end %}
+        <ul class="catalog-shell-link-list">
+          {% for link in product.links %}
+          <li>
+            <a class="catalog-shell-doc-link" href="{{ link.href }}">
+              <span class="catalog-shell-docset">{{ link.docset }}</span>
+              <strong>{{ link.title }}</strong>
+              <small>{{ link.label }}</small>
+            </a>
+          </li>
+          {% end %}
+        </ul>
+      </article>
+      {% end %}
+    </div>
+    {% else %}
+    {% call empty_state(title="No catalog records", icon="search") %}
+      <p>No records matched this shell scope. Try another category, family, version, or search phrase.</p>
+      {% slot actions %}
+      <a class="chirpui-btn chirpui-btn--primary" href="{{ catalog_reset_href }}"
+         x-on:click="$refs.query.value = ''"
+         hx-boost="false"
+         hx-get="{{ catalog_reset_href }}"
+         hx-target="#catalog-shell-surface"
+         hx-select="#catalog-shell-surface"
+         hx-swap="outerHTML transition:true"
+         hx-push-url="true"
+         hx-sync="#catalog-shell-surface:replace"
+         hx-indicator="#catalog-shell-pending"><span class="chirpui-btn__label">Reset shell</span></a>
+      {% end %}
+    {% end %}
+    {% endif %}
+  </section>
+</section>
+</div>
+
+{% end %}
+{% end %}
+{% end %}

@@ -1,6 +1,6 @@
 # Layout Guide
 
-How chirp-ui layouts work: horizontal overflow, vertical fill, and grid vs frame primitives. For the broader authoring vocabulary, see [PRIMITIVES.md](PRIMITIVES.md).
+How chirp-ui layouts work: horizontal overflow, vertical fill, and grid vs frame primitives. For the broader authoring vocabulary, see [PRIMITIVES.md](PRIMITIVES.md). For parent-owned spacing and attachment rules, see [RELATIONSHIP-CONTRACTS.md](RELATIONSHIP-CONTRACTS.md).
 
 ---
 
@@ -14,8 +14,9 @@ Wide content is still supported: put it in a child with **`overflow-x: auto`** (
 
 | Situation | Use |
 |-----------|-----|
+| Vertical rhythm | `stack()` — owns direct-child margin trimming so `gap` is the spacing source of truth. |
 | Responsive columns | `grid()` — `.chirpui-grid > *` sets `min-width: 0` automatically. Use `block()` when you need `span=`. Use `preset=` for fixed tracks (see *Grid presets* below). |
-| Chips, tags, variable-length rows | `cluster()` — `flex-wrap: wrap` by default. |
+| Chips, tags, variable-length rows | `cluster()` — `flex-wrap: wrap` by default and trims direct-child margins. |
 | LED-style indicators | `indicator_row()` — wraps by default; `nowrap=true` for single line. |
 | Flex row (title + actions) | `page_header`, `section_header`, `entity_header` harden the title column. For ad hoc flex rows, add `chirpui-min-w-0` on the shrinking child. |
 
@@ -36,7 +37,14 @@ Layout primitives solve the *cell* — the cell is the right width. Containment 
 
 - **`.chirpui-card`** and **`.chirpui-panel`** use `overflow: clip`. Content cannot visually escape.
 - **`.chirpui-surface`** and **`.chirpui-callout`** apply `min-width: 0` and `overflow-wrap: break-word` — long words break instead of widening the surface.
+- **Cards, panels, surfaces, and callouts own framed-content rhythm**: direct
+  slot children have their outer margins trimmed and adjacent children receive
+  component-owned internal spacing. App code should not need local padding just
+  to keep text away from a border or background.
 - **`.chirpui-field__input`** (all inputs/textareas/selects rendered by `field_wrapper`) uses `width: 100%; max-width: 100%; min-width: 0` — form controls cannot overflow their parent.
+- **`.chirpui-form`** owns direct child rhythm: field margins, error summary
+  margins, and action-row margins are trimmed so the form's gap controls
+  vertical spacing. Standalone fields keep their compatibility margin.
 - **Links inside cards and surfaces** use `overflow-wrap: anywhere` — long URLs break mid-string.
 - **Code blocks** (`.chirpui-code-block`, prose `<pre>`) scroll horizontally via `overflow-x: auto` and use `overscroll-behavior: contain` so scroll doesn't chain to the page.
 - **Media elements** (`<img>`, `<video>`, `<canvas>`, `<iframe>`, `<embed>`, `<object>`, `<svg>`) have a zero-specificity `:where()` reset — `max-width: 100%` and `height: auto` where applicable — so raw media dropped anywhere can't widen its parent.

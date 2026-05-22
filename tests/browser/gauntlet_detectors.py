@@ -81,6 +81,100 @@ async def assert_no_document_horizontal_overflow(page, label: str) -> None:
     await assert_no_failures(page, failures, f"{label}-overflow")
 
 
+async def assert_direct_children_contained(
+    page,
+    selector: str,
+    label: str,
+    *,
+    child_selector: str = ":scope > :not(script, style, template)",
+) -> None:
+    failures = await page.locator(selector).first.evaluate(
+        """(root, childSelector) => {
+            const rootRect = root.getBoundingClientRect();
+            return [...root.querySelectorAll(childSelector)]
+                .filter((child) => {
+                    const style = getComputedStyle(child);
+                    const rect = child.getBoundingClientRect();
+                    return style.display !== "none"
+                        && style.visibility !== "hidden"
+                        && rect.width > 0
+                        && rect.height > 0;
+                })
+                .filter((child) => {
+                    const rect = child.getBoundingClientRect();
+                    return rect.left < rootRect.left - 1 || rect.right > rootRect.right + 1;
+                })
+                .map((child) => {
+                    const rect = child.getBoundingClientRect();
+                    return {
+                        className: child.className || child.tagName.toLowerCase(),
+                        text: (child.textContent || "").trim().slice(0, 80),
+                        rect: { left: rect.left, right: rect.right, width: rect.width },
+                        root: { left: rootRect.left, right: rootRect.right, width: rootRect.width },
+                    };
+                });
+        }""",
+        child_selector,
+    )
+    await assert_no_failures(page, failures, f"{label}-children-contained")
+
+
+async def assert_direct_child_margins_trimmed(
+    page,
+    selector: str,
+    label: str,
+    *,
+    child_selector: str = ":scope > :not(script, style, template)",
+) -> None:
+    failures = await page.locator(selector).first.evaluate(
+        """(root, childSelector) => [...root.querySelectorAll(childSelector)]
+            .filter((child) => {
+                const style = getComputedStyle(child);
+                const rect = child.getBoundingClientRect();
+                return style.display !== "none"
+                    && style.visibility !== "hidden"
+                    && rect.width > 0
+                    && rect.height > 0;
+            })
+            .map((child) => {
+                const style = getComputedStyle(child);
+                return {
+                    className: child.className || child.tagName.toLowerCase(),
+                    text: (child.textContent || "").trim().slice(0, 80),
+                    marginBlockStart: style.marginBlockStart,
+                    marginBlockEnd: style.marginBlockEnd,
+                };
+            })
+            .filter((child) =>
+                child.marginBlockStart !== "0px" || child.marginBlockEnd !== "0px"
+            )""",
+        child_selector,
+    )
+    await assert_no_failures(page, failures, f"{label}-child-margins")
+
+
+async def assert_local_overflow_owner(page, selector: str, label: str) -> None:
+    result = await page.locator(selector).first.evaluate(
+        """(root) => {
+            const style = getComputedStyle(root);
+            const rect = root.getBoundingClientRect();
+            const viewport = document.documentElement.clientWidth;
+            return {
+                overflowX: style.overflowX,
+                contained: rect.left >= -1 && rect.right <= viewport + 1,
+                rect: { left: rect.left, right: rect.right, width: rect.width },
+                localOverflow: Math.ceil(root.scrollWidth - root.clientWidth),
+            };
+        }"""
+    )
+    failures = []
+    if result["overflowX"] not in {"auto", "scroll"}:
+        failures.append({"reason": "expected local horizontal overflow owner", **result})
+    if not result["contained"]:
+        failures.append({"reason": "overflow owner is not viewport-contained", **result})
+    await assert_no_failures(page, failures, f"{label}-local-overflow-owner")
+
+
 async def assert_common_compositions_do_not_overlap(page, label: str) -> None:
     failures = await page.evaluate(
         """() => {

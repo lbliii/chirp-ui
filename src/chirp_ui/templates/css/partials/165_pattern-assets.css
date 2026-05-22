@@ -343,15 +343,16 @@
     :scope .chirpui-catalog-rail__header {
         min-width: 0;
         display: flex;
-        align-items: end;
+        flex-wrap: wrap;
+        align-items: start;
         justify-content: space-between;
-        gap: var(--chirpui-spacing);
+        gap: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     }
 
     :scope .chirpui-catalog-rail__title {
         margin: 0;
         color: var(--chirpui-text);
-        font-size: var(--chirpui-ui-xl);
+        font-size: var(--chirpui-ui-lg);
         line-height: var(--chirpui-line-height-tight);
     }
 
@@ -363,6 +364,7 @@
 
     :scope .chirpui-catalog-rail__actions {
         min-width: 0;
+        margin-inline-start: auto;
     }
 
     @media (max-width: 40rem) {

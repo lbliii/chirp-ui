@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block main %}
-{% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
+{% from "chirpui/layout.html" import container, grid, stack, cluster, frame, block, page_header %}
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/divider.html" import divider %}
@@ -455,6 +455,35 @@ Use <code>icon</code> for Unicode icons in callouts, alerts, cards, and buttons.
 {% end %}
 {% end %}
 {% end %}
+{% end %}
+{% end %}
+
+<h2>Layout affinity shell prototype</h2>
+{% call block() %}
+{% call frame(variant="sidebar-start", gap="md", cls="layout-affinity-demo") %}
+<aside data-chirpui-role="rail nav" data-chirpui-pressure="compress" data-chirpui-affinity="start">
+  {% call card(title="Workspace rail") %}
+  {% call stack(gap="sm") %}
+  <a href="/layout" data-chirpui-role="nav" data-chirpui-pressure="compress">Overview</a>
+  <a href="/data" data-chirpui-role="nav" data-chirpui-pressure="compress">Data table</a>
+  <a href="/catalog-shell" data-chirpui-role="nav" data-chirpui-pressure="compress">Catalog shell</a>
+  {% end %}
+  {% end %}
+</aside>
+<section data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
+  {% call card(title="Natural shell content") %}
+  {% call stack(gap="sm") %}
+  <p data-chirpui-role="content" data-chirpui-pressure="compress" data-chirpui-affinity="fill" class="chirpui-text-muted" style="margin: 0;">
+    Frame resolves rail/content/nav intent, while stack and cluster resolve small pressure decisions without app-local layout classes.
+  </p>
+  {% call cluster(gap="sm") %}
+  <span class="chirpui-badge chirpui-badge--muted" data-chirpui-role="metadata" data-chirpui-pressure="compress">docs</span>
+  <span class="chirpui-badge chirpui-badge--muted" data-chirpui-role="metadata" data-chirpui-pressure="compress">responsive</span>
+  <a href="/docs/DESIGN-layout-affinity" class="chirpui-btn chirpui-btn--secondary chirpui-btn--sm" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">Read RFC</a>
+  {% end %}
+  {% end %}
+  {% end %}
+</section>
 {% end %}
 {% end %}
 

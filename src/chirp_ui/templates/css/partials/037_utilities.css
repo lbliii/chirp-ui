@@ -244,18 +244,6 @@
     opacity: 1;
 }
 
-.chirpui-fieldset {
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius-sm);
-    padding: var(--chirpui-spacing);
-    margin: 0 0 var(--chirpui-spacing);
-}
-
-.chirpui-fieldset__legend {
-    padding: 0 0.5em;
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-}
-
 :where(.chirpui-prose) pre {
     overflow-x: auto;
     overscroll-behavior: contain;
@@ -323,4 +311,3 @@
     font-weight: var(--chirpui-prose-font-weight-heading);
     background: var(--chirpui-bg-subtle);
 }
-

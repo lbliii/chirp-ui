@@ -1,11 +1,11 @@
 ---
 title: Patterns
-description: Composition recipes for navigation, product, media, and community surfaces
+description: Composition recipes for navigation, search, product, media, and community surfaces
 draft: false
 weight: 45
 lang: en
 type: doc
-keywords: [chirp-ui, patterns, navigation, product pages, media sites, forums]
+keywords: [chirp-ui, patterns, navigation, search shells, product pages, media sites, forums]
 category: patterns
 
 cascade:
@@ -34,6 +34,27 @@ launchers, sidebars, and page-local tools.
 :link: ./product-pages/
 Build product, marketing, proof, lifecycle, story, and CTA pages from stable
 composition primitives.
+:::{/card}
+
+:::{card} Search Shells
+:icon: search
+:link: ./search-shells/
+Build dense catalog, reference, and object-library search surfaces with scoped
+counts, facets, HTMX updates, and responsive command surfaces.
+:::{/card}
+
+:::{card} Workspace Shells
+:icon: panels-top-left
+:link: ./workspace-shells/
+Build dense search, operations, support, and admin workspaces with shell,
+rail, result, metric, and inspector primitives.
+:::{/card}
+
+:::{card} Layout Affinity
+:icon: layout-template
+:link: ./layout-affinity/
+Describe parent-scoped layout intent for dense responsive recipes without
+adding utility classes or premature public manifest fields.
 :::{/card}
 
 :::{card} Media Sites

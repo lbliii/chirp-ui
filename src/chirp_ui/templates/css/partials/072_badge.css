@@ -9,16 +9,19 @@
             align-items: center;
             gap: var(--chirpui-spacing-xs);
             max-width: 100%;
+            min-block-size: 1.5rem;
             min-width: 0;
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--chirpui-radius-sm);
+            justify-content: center;
+            padding: 0.1875rem 0.55rem;
+            border-radius: 999px;
             font-family: var(--chirpui-ui-font-family);
             font-size: var(--chirpui-ui-sm);
             font-weight: var(--chirpui-ui-font-weight-medium);
             font-feature-settings: "tnum";
-            line-height: 1;
+            line-height: 1.1;
             border: 1px solid;
             text-decoration: none;
+            vertical-align: middle;
             transition: background var(--chirpui-transition), color var(--chirpui-transition),
                 border-color var(--chirpui-transition), box-shadow var(--chirpui-transition);
         }
@@ -90,8 +93,8 @@
 
         :scope.chirpui-badge--primary {
             background: var(--chirpui-primary-muted);
-            color: var(--chirpui-primary);
-            border-color: var(--chirpui-primary);
+            color: color-mix(in srgb, var(--chirpui-primary) 84%, var(--chirpui-text));
+            border-color: color-mix(in srgb, var(--chirpui-primary) 40%, var(--chirpui-border));
         }
 
         :scope:is(a).chirpui-badge--primary:hover {
@@ -105,8 +108,8 @@
 
         :scope.chirpui-badge--success {
             background: var(--chirpui-success-muted);
-            color: var(--chirpui-success);
-            border-color: var(--chirpui-success);
+            color: color-mix(in srgb, var(--chirpui-success) 84%, var(--chirpui-text));
+            border-color: color-mix(in srgb, var(--chirpui-success) 40%, var(--chirpui-border));
         }
 
         :scope:is(a).chirpui-badge--success:hover {
@@ -120,8 +123,8 @@
 
         :scope.chirpui-badge--warning {
             background: var(--chirpui-warning-muted);
-            color: var(--chirpui-warning);
-            border-color: var(--chirpui-warning);
+            color: color-mix(in srgb, var(--chirpui-warning) 84%, var(--chirpui-text));
+            border-color: color-mix(in srgb, var(--chirpui-warning) 40%, var(--chirpui-border));
         }
 
         :scope:is(a).chirpui-badge--warning:hover {
@@ -135,14 +138,14 @@
 
         :scope.chirpui-badge--error {
             background: var(--chirpui-error-muted);
-            color: var(--chirpui-error);
-            border-color: var(--chirpui-error);
+            color: color-mix(in srgb, var(--chirpui-error) 84%, var(--chirpui-text));
+            border-color: color-mix(in srgb, var(--chirpui-error) 40%, var(--chirpui-border));
         }
 
         :scope.chirpui-badge--danger {
             background: color-mix(in srgb, var(--chirpui-danger) 12%, transparent);
-            color: var(--chirpui-danger);
-            border-color: var(--chirpui-danger);
+            color: color-mix(in srgb, var(--chirpui-danger) 84%, var(--chirpui-text));
+            border-color: color-mix(in srgb, var(--chirpui-danger) 40%, var(--chirpui-border));
         }
 
         :scope:is(a).chirpui-badge--error:hover {
@@ -171,8 +174,8 @@
 
         :scope.chirpui-badge--info {
             background: var(--chirpui-alert-info-bg);
-            color: var(--chirpui-info);
-            border-color: var(--chirpui-alert-info-border);
+            color: color-mix(in srgb, var(--chirpui-info) 84%, var(--chirpui-text));
+            border-color: color-mix(in srgb, var(--chirpui-info) 40%, var(--chirpui-alert-info-border));
         }
 
         :scope:is(a).chirpui-badge--info:hover {

@@ -28,6 +28,14 @@
             overflow-wrap: anywhere;
         }
 
+        :scope:not(.chirpui-surface--no-padding) > :where(:not(script, style, template)) {
+            margin-block: 0;
+        }
+
+        :scope:not(.chirpui-surface--no-padding) > :where(:not(script, style, template)) + :where(:not(script, style, template)) {
+            margin-block-start: var(--chirpui-space-card-gap);
+        }
+
         :scope.chirpui-surface--default {
             background: var(--chirpui-surface);
         }

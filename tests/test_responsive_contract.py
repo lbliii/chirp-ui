@@ -151,6 +151,26 @@ def test_dense_action_surfaces_align_controls_by_context() -> None:
     assert "line-height: 1;" in button
 
 
+def test_dense_metadata_primitives_own_inline_pressure() -> None:
+    css = _partial("161_navigation-metadata-authoring.css")
+
+    assert "@scope (.chirpui-inline-counter)" in css
+    assert ".chirpui-inline-counter__mark" in css
+    assert "flex: 0 0 auto;" in css
+    assert ".chirpui-inline-counter__value" in css
+    assert "overflow-wrap: anywhere;" in css
+
+    assert "@scope (.chirpui-latest-line)" in css
+    assert ".chirpui-latest-line > :where(:not(script, style, template))" in css
+    assert ".chirpui-latest-line__tooltip" in css
+    assert "max-inline-size: 100%;" in css
+
+    assert "@scope (.chirpui-chip-group)" in css
+    assert ".chirpui-chip-group > :where(:not(script, style, template))" in css
+    assert ".chirpui-chip {" in css
+    assert "min-inline-size: 0;" in css
+
+
 def test_motion_and_stepper_primitives_have_visible_animation_layers() -> None:
     spinner = _partial("073_spinner.css")
     stepper = _partial("030_stepper.css")

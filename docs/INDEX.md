@@ -8,6 +8,7 @@ Navigation guide for all chirp-ui documentation.
 
 - [LAYOUT.md](LAYOUT.md) — Horizontal overflow, vertical fill, grid vs frame primitives (consolidated)
 - [PRIMITIVES.md](PRIMITIVES.md) — Blessed composition primitives vs legacy compatibility helpers
+- [RELATIONSHIP-CONTRACTS.md](RELATIONSHIP-CONTRACTS.md) — Parent-owned inset, rhythm, attachment, grouping, pressure, and overflow contracts
 - [LAYOUT-PRESETS.md](LAYOUT-PRESETS.md) — Grid preset names, aliases, and breakpoint tokens
 - [COMPOSITION.md](COMPOSITION.md) — Component composition patterns and slot mechanics
 - [APPEARANCE-TONE.md](APPEARANCE-TONE.md) — Chirp-native visual preset axes for pilot components
@@ -29,6 +30,10 @@ Navigation guide for all chirp-ui documentation.
 - [MEDIA-SITE-PATTERNS.md](MEDIA-SITE-PATTERNS.md) — Streaming, video, catalog, live-event, and media-plan composition recipes
 - [FORUM-SITE-PATTERNS.md](FORUM-SITE-PATTERNS.md) — Forum, Q&A, threaded discussion, moderation, and community composition recipes
 - [HTMX-PATTERNS.md](HTMX-PATTERNS.md) — `hx={}` dict, auto-injected attrs, app-shell HTMX boundaries, `build_hx_attrs()`
+- [SEARCH-SHELL-RECIPES.md](SEARCH-SHELL-RECIPES.md) — Recipe-first dense catalog/search shells, scoped counts, responsive command surfaces, and HTMX/Alpine contracts
+- [WORKSPACE-SHELL-RECIPES.md](WORKSPACE-SHELL-RECIPES.md) — Agent-facing dense search, operations, support, and admin workspace recipes
+- [WORKSPACE-SHELL-PROOF.md](WORKSPACE-SHELL-PROOF.md) — Promotion proof comparing the operations baseline with the dense workspace variant
+- [LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md) — Prototype resolver authoring contract for parent-scoped layout intent
 - [HTMX-ADVANCEMENT.md](HTMX-ADVANCEMENT.md) — Design decisions for htmx integration
 - [ALPINE-MAGICS.md](ALPINE-MAGICS.md) — Alpine.js store, `safeData`, shared controllers
 - [DROPDOWN-ANATOMY.md](DROPDOWN-ANATOMY.md) — Dropdown menu, select, and split-menu rendered anatomy
@@ -80,6 +85,9 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 ### Shipped plans (`docs/plans/done/`)
 
 - [PLAN-alpine-focus-plugin.md](plans/done/PLAN-alpine-focus-plugin.md) — Alpine Focus plugin adoption
+- [PLAN-layout-affinity-rollout.md](plans/done/PLAN-layout-affinity-rollout.md) — Layout-affinity resolver rollout, vocabulary gates, manifest@6 migration plan, and proof matrix
+- [PLAN-relationship-contracts.md](plans/done/PLAN-relationship-contracts.md) — Relationship ownership rollout for inset, rhythm, attachment, region, pressure, and overflow contracts
+- [PLAN-search-shell-contracts.md](plans/done/PLAN-search-shell-contracts.md) — Search shell contracts, scoped counts, responsive command surfaces, facets, pending state, and catalog-shell recipe tasks
 - [PLAN-agent-grounding-depth.md](plans/done/PLAN-agent-grounding-depth.md) — Manifest grounding, package data, generated docs, find CLI, and plan triage
 - [PLAN-ascii-maturity.md](plans/done/PLAN-ascii-maturity.md) — ASCII/TUI public template maturity proof
 - [PLAN-sharp-edges.md](plans/done/PLAN-sharp-edges.md) — Sharp edges phases 1–2
@@ -121,6 +129,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [DESIGN-theme-pack-catalog.md](DESIGN-theme-pack-catalog.md) — Token-only curated theme pack catalog
 - [DESIGN-llm-endpoints.md](DESIGN-llm-endpoints.md) — Generated LLM and agent-facing site artifacts
 - [DESIGN-interactive-anatomy.md](DESIGN-interactive-anatomy.md) — Executable anatomy contracts for interactive components
+- [DESIGN-layout-affinity.md](DESIGN-layout-affinity.md) — Proposed role/pressure/affinity contract for self-composing primitives and agentic developers
 - [SPRINT-0-behavior-layer-design.md](SPRINT-0-behavior-layer-design.md) — Sprint 0 design for behavior layer
 
 ## Consolidated (redirects)

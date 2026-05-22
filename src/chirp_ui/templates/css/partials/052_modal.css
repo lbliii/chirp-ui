@@ -29,6 +29,8 @@
             border-radius: var(--chirpui-radius);
             padding: 0;
             box-shadow: var(--chirpui-elevation-overlay);
+            min-width: 0;
+            overflow-wrap: anywhere;
             transition: transform var(--chirpui-transition-slow) var(--chirpui-ease-spring),
                 opacity var(--chirpui-transition-slow) var(--chirpui-ease-spring);
             @starting-style {
@@ -58,23 +60,35 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: var(--chirpui-space-control-gap);
+            flex-wrap: wrap;
             padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
             border-bottom: 1px solid var(--chirpui-border);
         }
 
         .chirpui-modal__title {
-            margin: 0;
+            flex: 1 1 auto;
+            min-width: 0;
+            margin-block: 0;
             font-size: 1.125rem;
+            overflow-wrap: anywhere;
         }
 
         .chirpui-modal__header-actions {
             display: flex;
             align-items: center;
             gap: var(--chirpui-spacing-xs);
+            flex-wrap: wrap;
+            max-width: 100%;
             margin-inline-start: auto;
             &:empty {
                 display: none;
             }
+        }
+
+        .chirpui-modal__header > form {
+            margin: 0;
+            flex-shrink: 0;
         }
 
         .chirpui-modal__close {
@@ -99,6 +113,8 @@
         .chirpui-modal__body {
             padding: var(--chirpui-spacing);
             color: inherit;
+            min-width: 0;
+            overflow-wrap: anywhere;
             & code {
                 color: inherit;
                 background: var(--chirpui-bg-subtle);
@@ -107,16 +123,30 @@
             }
         }
 
+        .chirpui-modal__body > :where(:not(script, style, template)) {
+            margin-block: 0;
+        }
+
+        .chirpui-modal__body > :where(:not(script, style, template)) + :where(:not(script, style, template)) {
+            margin-block-start: var(--chirpui-spacing-sm);
+        }
+
         .chirpui-modal__footer {
             display: flex;
             align-items: center;
             justify-content: flex-end;
             gap: var(--chirpui-spacing-sm);
+            flex-wrap: wrap;
             padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
             border-top: 1px solid var(--chirpui-border);
+            overflow-wrap: anywhere;
             &:empty {
                 display: none;
             }
+        }
+
+        .chirpui-modal__footer > :where(:not(script, style, template)) {
+            margin-block: 0;
         }
 
         /* Confirm dialog — sibling class composed onto .chirpui-modal */

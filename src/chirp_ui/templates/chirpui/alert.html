@@ -35,7 +35,7 @@
         {% if icon %}<span class="chirpui-alert__icon">{{ icon | icon }}</span>{% endif %}
         {% if title %}<span class="chirpui-alert__title">{{ title }}</span>{% endif %}
     </summary>
-    <div class="chirpui-alert__body chirpui-mt-sm">
+    <div class="chirpui-alert__body">
         {% slot %}
         {# header_actions is the canonical name; actions is kept for backward compat #}
         {% slot header_actions %}{% slot actions %}

@@ -298,6 +298,18 @@ class TestLayout:
         ).render()
         assert "chirpui-frame--gap-lg" in html
 
+    def test_layout_affinity_frame_resolver_css_is_narrow_and_stack_cluster_unpromoted(
+        self,
+    ) -> None:
+        css = _chirpui_css()
+        assert '.chirpui-frame > [data-chirpui-role~="rail"]' in css
+        assert '.chirpui-frame > [data-chirpui-role~="content"]' in css
+        assert '.chirpui-frame > [data-chirpui-pressure~="compress"]' in css
+        assert ".chirpui-cluster > [data-chirpui-pressure" not in css
+        assert ".chirpui-cluster > [data-chirpui-affinity" not in css
+        assert ".chirpui-stack > [data-chirpui-pressure" not in css
+        assert ".chirpui-stack > [data-chirpui-affinity" not in css
+
     def test_stack(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import stack %}{% call stack() %}A{% end %}'
@@ -315,6 +327,12 @@ class TestLayout:
         assert "chirpui-stack--md" in html
         assert "chirpui-stack--xl" in html
 
+    def test_stack_css_owns_direct_child_rhythm_without_overriding_prose(self) -> None:
+        css = _chirpui_css()
+        stack_rule = css.split(":where(.chirpui-stack:not(.chirpui-prose))", 1)[1].split("}", 1)[0]
+        assert "margin-block: 0;" in stack_rule
+        assert ".chirpui-prose.chirpui-stack" in css
+
     def test_cluster(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import cluster %}'
@@ -322,6 +340,13 @@ class TestLayout:
         ).render()
         assert "chirpui-cluster" in html
         assert "chirpui-cluster--sm" in html
+
+    def test_cluster_css_owns_direct_child_rhythm(self) -> None:
+        css = _chirpui_css()
+        cluster_rule = css.split(
+            ":where(.chirpui-cluster) > :where(:not(script, style, template))", 1
+        )[1].split("}", 1)[0]
+        assert "margin: 0;" in cluster_rule
 
     def test_layer_default(self, env: Environment) -> None:
         html = env.from_string(
@@ -446,6 +471,37 @@ class TestLayout:
         assert "<h2" in html
         assert "Edit" in html
 
+    def test_header_relationship_css_owns_child_rhythm_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        page_title_rule = css.split(".chirpui-page-header__top > div:first-child", 1)[1].split(
+            "}", 1
+        )[0]
+        assert "display: flex" in page_title_rule
+        assert "flex-direction: column" in page_title_rule
+        assert "overflow-wrap: anywhere" in page_title_rule
+        assert ".chirpui-page-header__top > div:first-child > *" in css
+
+        section_title_rule = css.split(".chirpui-section-header__title-block > div", 1)[1].split(
+            "}", 1
+        )[0]
+        assert "display: flex" in section_title_rule
+        assert "gap: var(--chirpui-spacing-xs)" in section_title_rule
+        assert "overflow-wrap: anywhere" in section_title_rule
+        assert ".chirpui-section-header__title-block > div > *" in css
+
+        entity_title_rule = css.split(".chirpui-entity-header__content > div", 1)[1].split("}", 1)[
+            0
+        ]
+        assert "display: flex" in entity_title_rule
+        assert "gap: var(--chirpui-spacing-xs)" in entity_title_rule
+        assert "overflow-wrap: anywhere" in entity_title_rule
+        assert ".chirpui-entity-header__content > div > *" in css
+
+        assert "@media (max-width: 42rem)" in css
+        assert ".chirpui-page-header__actions,\n    .chirpui-section-header__actions" in css
+        assert ".chirpui-entity-header__actions" in css
+
     def test_section_with_actions(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import section %}'
@@ -528,6 +584,21 @@ class TestWorkbench:
         assert "Refresh" in html
         assert "Status" in html
 
+    def test_panel_body_owns_slot_flow_rhythm(self) -> None:
+        css = _chirpui_css()
+        panel_rule = css.split(".chirpui-panel {", 1)[1].split("}", 1)[0]
+        assert "min-width: 0" in panel_rule
+        assert "overflow-wrap: anywhere" in panel_rule
+        assert ".chirpui-panel__heading" in css
+        assert "gap: var(--chirpui-spacing-xs)" in css
+        assert ".chirpui-panel__body > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-panel__body > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert ".chirpui-panel__footer > :where(:not(script, style, template))" in css
+        assert "margin-block-start: var(--chirpui-spacing-sm);" in css
+
     def test_split_layout_default(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/split_layout.html" import split_layout %}'
@@ -567,7 +638,11 @@ class TestWorkbench:
         assert "chirpui-workspace-shell" in html
         assert "chirpui-workspace-shell__toolbar" in html
         assert "chirpui-workspace-shell__layout" in html
+        assert "chirpui-workspace-shell__sidebar" in html
         assert "chirpui-workspace-shell__sidebar-panel" in html
+        assert 'data-chirpui-role="rail nav"' in html
+        assert 'data-chirpui-role="actions"' in html
+        assert 'data-chirpui-pressure="compress"' in html
         assert "Tree" in html
         assert "Main" in html
 
@@ -581,9 +656,96 @@ class TestWorkbench:
             "{% end %}"
         ).render()
         assert "chirpui-workspace-shell__content-layout" in html
+        assert "chirpui-workspace-shell__inspector" in html
         assert "chirpui-workspace-shell__inspector-panel" in html
+        assert 'data-chirpui-role="rail content"' in html
+        assert 'data-chirpui-affinity="end"' in html
         assert "Preview" in html
         assert "Preview body" in html
+
+    def test_workspace_shell_layout_affinity_css_is_component_scoped(self) -> None:
+        css = _chirpui_css()
+        assert '.chirpui-workspace-shell__heading[data-chirpui-pressure~="flex"]' in css
+        assert '.chirpui-workspace-shell__toolbar[data-chirpui-affinity~="end"]' in css
+        assert '.chirpui-workspace-shell__sidebar[data-chirpui-pressure~="compress"]' in css
+        assert '.chirpui-workspace-shell__inspector[data-chirpui-pressure~="compress"]' in css
+        assert ".chirpui-workspace-shell [data-chirpui-pressure" not in css
+        assert ".chirpui-workspace-shell [data-chirpui-affinity" not in css
+
+    def test_workspace_dense_primitives_render_layout_affinity(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/workspace_primitives.html" import filter_rail, filter_rail_item, metric_strip, metric_item, result_collection, result_card, inspector_panel %}'
+            '{% call filter_rail(label="Areas") %}'
+            '{{ filter_rail_item("/ops", "Operations", count=4, icon="OP", active=true) }}'
+            "{% end %}"
+            '{% call metric_strip(label="Readout") %}'
+            '{{ metric_item("12", "workloads") }}'
+            "{% end %}"
+            '{% call result_collection(label="Results", title="Workloads") %}'
+            "{% slot meta %}12 results{% end %}"
+            '{% call result_card("Forge Runners", subtitle="Queue workers") %}'
+            "{% slot mark %}FR{% end %}"
+            "{% slot actions %}<button>Inspect</button>{% end %}"
+            "<p>Queue depth above target.</p>"
+            "{% slot footer %}<span>Owner Platform</span>{% end %}"
+            "{% end %}"
+            "{% end %}"
+            '{% call inspector_panel(title="Forge Runners", subtitle="Selected workload") %}'
+            "{% slot actions %}<button>Refresh</button>{% end %}"
+            "<p>Healthy with warnings.</p>"
+            "{% slot footer %}<span>Inspector</span>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-filter-rail" in html
+        assert "chirpui-filter-rail__item is-active" in html
+        assert 'aria-current="page"' in html
+        assert "chirpui-metric-strip__item" in html
+        assert "chirpui-result-collection__items" in html
+        assert 'role="listitem"' in html
+        assert "chirpui-result-card__actions" in html
+        assert "chirpui-inspector-panel__body" in html
+        assert 'data-chirpui-role="rail nav"' in html
+        assert 'data-chirpui-pressure="compress"' in html
+        assert 'data-chirpui-affinity="fill"' in html
+        assert 'data-chirpui-rhythm="stack"' in html
+        assert 'data-chirpui-rhythm="group"' in html
+        assert 'data-chirpui-rhythm="inset"' in html
+        assert 'data-chirpui-rhythm="group separated"' in html
+
+    def test_workspace_primitives_css_uses_scoped_boundaries(self) -> None:
+        css = _chirpui_css()
+        for selector in (
+            "@scope (.chirpui-filter-rail)",
+            "@scope (.chirpui-metric-strip)",
+            "@scope (.chirpui-result-collection)",
+            "@scope (.chirpui-result-card)",
+            "@scope (.chirpui-inspector-panel)",
+        ):
+            assert selector in css
+        assert "--chirpui-rhythm-attached" in css
+        assert "--chirpui-rhythm-group" in css
+        assert "--chirpui-rhythm-stack" in css
+        assert "--chirpui-rhythm-inset" in css
+        assert "padding: var(--chirpui-rhythm-inset);" in css
+        assert "padding-block-start: var(--chirpui-rhythm-separated);" in css
+        assert ":scope {\n    display: grid;\n    gap: var(--chirpui-rhythm-stack);" in css
+        assert ".chirpui-result-card [data-chirpui-pressure" not in css
+
+    def test_workspace_result_card_css_owns_row_pressure_and_child_rhythm(self) -> None:
+        css = _chirpui_css()
+        for selector in (
+            ".chirpui-result-card__copy > :where(:not(script, style, template))",
+            ".chirpui-result-card__actions > :where(:not(script, style, template))",
+            ".chirpui-result-card__body > :where(:not(script, style, template))",
+            ".chirpui-result-card__footer > :where(:not(script, style, template))",
+            ".chirpui-inspector-panel__body > :where(:not(script, style, template))",
+            ".chirpui-inspector-panel__footer > :where(:not(script, style, template))",
+        ):
+            assert selector in css
+        assert ".chirpui-result-card__header" in css
+        assert "flex-wrap: wrap;" in css
+        assert "flex: 999 1 12rem;" in css
+        assert "max-inline-size: 100%;" in css
 
     def test_file_tree_with_header_actions_and_footer(self, env: Environment) -> None:
         html = env.from_string(
@@ -645,6 +807,14 @@ class TestIslands:
         assert "data-island-props=" in html
         assert "chirpui-island-fallback" in html
         assert "Fallback" in html
+
+    def test_island_root_css_owns_fallback_rhythm(self) -> None:
+        css = _chirpui_css()
+
+        assert ".chirpui-island-root" in css
+        assert ".chirpui-island-fallback" in css
+        assert ".chirpui-island-fallback > :where(:not(script, style, template))" in css
+        assert "max-inline-size: 100%;" in css
 
     def test_island_root_with_raw_attrs(self, env: Environment) -> None:
         html = env.from_string(
@@ -786,6 +956,18 @@ class TestSurface:
         assert 'id="s1"' in html
         assert "In" in html
 
+    def test_surface_owns_inset_and_flow_rhythm(self) -> None:
+        css = _chirpui_css()
+        assert (
+            ":scope:not(.chirpui-surface--no-padding) > :where(:not(script, style, template))"
+        ) in css
+        assert (
+            ":scope:not(.chirpui-surface--no-padding) > "
+            ":where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert "margin-block-start: var(--chirpui-space-card-gap);" in css
+
 
 # ---------------------------------------------------------------------------
 # Aura
@@ -885,6 +1067,14 @@ class TestCallout:
         ).render()
         assert "chirpui-callout__icon" in html
         assert "💡" in html
+
+    def test_callout_body_owns_slot_flow_rhythm(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-callout__body > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-callout__body > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
 
 
 # ---------------------------------------------------------------------------
@@ -1338,6 +1528,64 @@ class TestRouteTabs:
 
 
 # ---------------------------------------------------------------------------
+# Drag and sortable rows
+# ---------------------------------------------------------------------------
+
+
+class TestDragAndSortableRows:
+    def test_sortable_list_render(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sortable_list.html" import sortable_list, sortable_item %}'
+            "{% call sortable_list() %}"
+            "{% call sortable_item() %}"
+            '<span class="chirpui-sortable__handle">☰</span>'
+            '<span class="chirpui-sortable__content">First</span>'
+            "{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-sortable" in html
+        assert "chirpui-sortable__item" in html
+        assert 'role="listbox"' in html
+        assert 'role="option"' in html
+
+    def test_dnd_primitives_render(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dnd.html" import dnd_list, dnd_item, dnd_handle, dnd_drop_indicator, dnd_board, dnd_column, dnd_card %}'
+            "{% call dnd_list() %}"
+            "{% call dnd_item() %}{{ dnd_handle() }}{{ dnd_drop_indicator() }}Row{% end %}"
+            "{% end %}"
+            "{% call dnd_board() %}"
+            '{% call dnd_column(title="Todo") %}'
+            "{% call dnd_card() %}Card{% end %}"
+            "{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-dnd chirpui-dnd--row" in html
+        assert "chirpui-dnd__handle" in html
+        assert "chirpui-dnd__drop-indicator" in html
+        assert "chirpui-dnd chirpui-dnd--board" in html
+        assert "chirpui-dnd__column-header" in html
+        assert "chirpui-dnd__card" in html
+
+    def test_drag_and_sortable_css_owns_row_pressure(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-sortable)" in css
+        assert "@scope (.chirpui-dnd)" in css
+        for selector in (
+            ".chirpui-sortable__item > :where(:not(script, style, template))",
+            ".chirpui-sortable__content > :where(:not(script, style, template))",
+            ".chirpui-dnd__item > :where(:not(script, style, template))",
+            ".chirpui-dnd__column > :where(:not(script, style, template))",
+            ".chirpui-dnd__card > :where(:not(script, style, template))",
+        ):
+            assert selector in css
+        assert ":scope.chirpui-dnd--board" in css
+        assert "overflow-x: auto;" in css
+        assert "overscroll-behavior-x: contain;" in css
+        assert "flex-wrap: wrap;" in css
+
+
+# ---------------------------------------------------------------------------
 # Params table
 # ---------------------------------------------------------------------------
 
@@ -1356,6 +1604,17 @@ class TestParamsTable:
         assert "0" in html
         assert "A number" in html
 
+    def test_params_table_css_owns_code_heavy_row_pressure(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-params-table)" in css
+        assert ":scope > :where(:not(script, style, template))" in css
+        assert ".chirpui-params-table__wrap" in css
+        assert "overflow-x: auto;" in css
+        assert "overscroll-behavior-x: contain;" in css
+        assert "min-width: max-content;" in css
+        assert ".chirpui-params-table__td--description" in css
+        assert "overflow-wrap: anywhere;" in css
+
 
 # ---------------------------------------------------------------------------
 # Signature
@@ -1371,6 +1630,15 @@ class TestSignature:
         assert "chirpui-signature" in html
         assert "def foo(): pass" in html
         assert 'data-language="python"' in html
+
+    def test_signature_css_owns_local_overflow(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-signature)" in css
+        assert ".chirpui-signature__code" in css
+        assert "max-inline-size: 100%;" in css
+        assert "overflow-x: auto;" in css
+        assert "min-inline-size: max-content;" in css
+        assert "white-space: pre;" in css
 
 
 # ---------------------------------------------------------------------------
@@ -2015,12 +2283,39 @@ class TestCard:
         assert "chirpui-card__body" in html
         assert "Body" in html
 
+    def test_card_css_has_quiet_header_footer_and_body_margin_reset(self) -> None:
+        css = _chirpui_css()
+        header_rule = css.split(".chirpui-card__header", 1)[1].split("}", 1)[0]
+        assert "flex-wrap: wrap" in header_rule
+        assert "background: color-mix" in header_rule
+        assert "var(--chirpui-border-subtle)" in header_rule
+        assert ".chirpui-card__body-content > :first-child" in css
+        assert ".chirpui-card__body-content > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-card__body-content > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert ".chirpui-card__footer-wrap:not(:empty)" in css
+        assert "background: color-mix(in srgb, var(--chirpui-surface) 90%" in css
+        assert '.chirpui-card__header [data-chirpui-role~="content"]' in css
+        assert '.chirpui-card__header [data-chirpui-role~="actions"]' in css
+        assert '.chirpui-card__footer-wrap[data-chirpui-pressure~="compress"]' in css
+        assert '.chirpui-card__header-actions[data-chirpui-affinity~="end"]' in css
+        assert ":scope [data-chirpui-pressure" not in css
+        assert ":scope [data-chirpui-affinity" not in css
+
     def test_card_with_title(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/card.html" import card %}'
             '{% call card(title="Hello") %}Content{% end %}'
         ).render()
         assert "chirpui-card__header" in html
+        assert 'data-chirpui-role="content"' in html
+        assert 'data-chirpui-pressure="flex"' in html
+        assert 'data-chirpui-affinity="fill"' in html
+        assert 'data-chirpui-role="actions"' in html
+        assert 'data-chirpui-pressure="rigid"' in html
+        assert 'data-chirpui-affinity="end"' in html
         assert "Hello" in html
 
     def test_card_appearance_tone(self, env: Environment) -> None:
@@ -2213,6 +2508,10 @@ class TestCard:
         assert "builtin" in html
         assert "::demo" in html
         assert "tag" in html
+        assert 'data-chirpui-role="metadata"' in html
+        assert 'data-chirpui-pressure="compress"' in html
+        assert 'data-chirpui-affinity="block-start"' in html
+        assert 'data-chirpui-affinity="block-end"' in html
 
     def test_resource_card_full_link_uses_route_link_attrs_when_available(
         self, env: Environment
@@ -2260,6 +2559,18 @@ class TestCard:
         assert 'href="/skills/demo"' in html
         assert 'href="/collections/demo"' in html
         assert 'href="/tags/demo"' in html
+
+    def test_resource_card_css_owns_content_and_metadata_pressure(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-resource-card)" in css
+        for selector in (
+            ":scope .chirpui-card__body > :where(:not(script, style, template))",
+            ":scope .chirpui-card__footer-wrap > :where(:not(script, style, template))",
+            ":scope .chirpui-card__top-meta > :where(:not(script, style, template))",
+        ):
+            assert selector in css
+        assert ".chirpui-resource-card__description" in css
+        assert "overflow-wrap: anywhere;" in css
 
     def test_card_gradient_border(self, env: Environment) -> None:
         html = env.from_string(
@@ -2409,6 +2720,19 @@ class TestModal:
         assert 'aria-label="Close"' in html
         assert "chirpui-modal__body" in html
         assert "chirpui-modal__footer" in html
+
+    def test_modal_css_owns_region_rhythm_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        assert ".chirpui-modal__body" in css
+        assert ".chirpui-modal__body > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-modal__body > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert ".chirpui-modal__footer > :where(:not(script, style, template))" in css
+        assert ".chirpui-modal__header > form" in css
+        assert "overflow-wrap: anywhere" in css
 
 
 # ---------------------------------------------------------------------------
@@ -2777,6 +3101,18 @@ class TestAlpineMagics:
         assert "chirpui-tray__close" in html
         assert "chirpui:tray-closed" in html
 
+    def test_tray_css_owns_body_rhythm_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        assert ".chirpui-tray__panel" in css
+        assert ".chirpui-tray__body > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-tray__body > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert ".chirpui-tray__title" in css
+        assert "overflow-wrap: anywhere" in css
+
     def test_tray_id_stays_out_of_alpine_literals(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/tray.html" import tray, tray_trigger %}'
@@ -3058,6 +3394,19 @@ class TestTable:
         ).render()
         assert "chirpui-table__td--left" in html
         assert "chirpui-table__td--right" in html
+
+    def test_table_css_owns_cell_and_action_relationships(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-table-wrap" in css
+        assert "max-inline-size: 100%;" in css
+        assert ".chirpui-table__td > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-table__td:not(.chirpui-table__td--actions):not(:has(.chirpui-row-actions__trigger))"
+            in css
+        )
+        assert ".chirpui-table__td:has(.chirpui-row-actions__trigger)" in css
+        assert "overflow-x: auto;" in css
+        assert "overscroll-behavior-x: contain;" in css
 
 
 # ---------------------------------------------------------------------------
@@ -3412,6 +3761,16 @@ class TestAlert:
         assert "chirpui-alert__actions" in html
         assert "Retry" in html
 
+    def test_collapsible_alert_uses_owned_body_spacing(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/alert.html" import alert %}'
+            '{% call alert(collapsible=true, title="More") %}Details{% end %}'
+        ).render()
+        css = _chirpui_css()
+
+        assert "chirpui-mt-sm" not in html
+        assert ".chirpui-alert > .chirpui-alert__body + .chirpui-alert__body" in css
+
 
 # ---------------------------------------------------------------------------
 # Forms
@@ -3434,6 +3793,18 @@ class TestForms:
         assert 'action="/submit"' in html
         assert 'method="post"' in html
         assert "<input>" in html
+
+    def test_form_css_owns_direct_child_rhythm(self) -> None:
+        css = _chirpui_css()
+        form_rule = css.split(".chirpui-form {", 1)[1].split("}", 1)[0]
+        child_rule = css.split(".chirpui-form > :where(:not(script, style, template))", 1)[1].split(
+            "}", 1
+        )[0]
+        actions_rule = css.split(".chirpui-form > .chirpui-form-actions", 1)[1].split("}", 1)[0]
+        assert "display: flex;" in form_rule
+        assert "gap: var(--chirpui-space-stack-gap);" in form_rule
+        assert "margin-block: 0;" in child_rule
+        assert "margin-block-start: 0;" in actions_rule
 
     def test_form_macro_with_htmx_attrs(self, env: Environment) -> None:
         html = env.from_string(
@@ -3559,6 +3930,20 @@ class TestForms:
         assert "chirpui-fieldset" in html
         assert "chirpui-fieldset__legend" not in html
         assert "Content" in html
+
+    def test_fieldset_css_owns_grouped_content_rhythm(self) -> None:
+        css = _chirpui_css()
+        fieldset_rule = css.split(".chirpui-fieldset {", 1)[1].split("}", 1)[0]
+        child_rule = css.split(
+            ".chirpui-fieldset > :where(:not(legend, script, style, template))", 1
+        )[1].split("}", 1)[0]
+        sibling_rule = css.split("+ :where(:not(legend, script, style, template))", 1)[1].split(
+            "}", 1
+        )[0]
+        assert "min-width: 0;" in fieldset_rule
+        assert "margin: 0 0 var(--chirpui-spacing);" in fieldset_rule
+        assert "margin-block: 0;" in child_rule
+        assert "margin-block-start: var(--chirpui-space-stack-gap);" in sibling_rule
 
     def test_text_field(self, env: Environment) -> None:
         html = env.from_string(
@@ -3801,6 +4186,62 @@ class TestForms:
         assert ".00" in html
         assert 'value="10"' in html
 
+    def test_form_control_internals_own_attachment_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        for selector in [
+            ".chirpui-field--checkbox > :where(:not(script, style, template))",
+            ".chirpui-field--radio > :where(:not(script, style, template))",
+            ".chirpui-field--range > :where(:not(script, style, template))",
+            ".chirpui-field--input-group > :where(:not(script, style, template))",
+            ".chirpui-search-bar > :where(:not(script, style, template))",
+        ]:
+            assert selector in css
+
+        radio_group_rule = css.split(".chirpui-field__radio-group", 1)[1].split("}", 1)[0]
+        assert "min-width: 0" in radio_group_rule
+        assert "max-width: 100%" in radio_group_rule
+
+        input_group_rule = css.split(".chirpui-input-group {", 1)[1].split("}", 1)[0]
+        assert "width: 100%" in input_group_rule
+        assert "min-width: 0" in input_group_rule
+
+        input_affix_rule = css.split(".chirpui-input-group__prefix,", 1)[1].split("}", 1)[0]
+        assert "max-inline-size: min(40%, 16rem)" in input_affix_rule
+        assert "overflow-wrap: anywhere" in input_affix_rule
+
+        search_inner_rule = css.split(".chirpui-search-bar__inner", 1)[1].split("}", 1)[0]
+        assert "width: 100%" in search_inner_rule
+        assert "min-width: 0" in search_inner_rule
+
+    def test_specialized_form_controls_own_pressure(self) -> None:
+        css = _chirpui_css()
+
+        file_rule = css.split(".chirpui-field__file {", 1)[1].split("}", 1)[0]
+        assert "box-sizing: border-box" in file_rule
+        assert "min-inline-size: 0" in file_rule
+        assert "max-inline-size: 100%" in file_rule
+
+        for selector in [
+            ".chirpui-star-rating {",
+            ".chirpui-thumbs {",
+            ".chirpui-number-scale {",
+        ]:
+            rule = css.split(selector, 1)[1].split("}", 1)[0]
+            assert "flex-wrap: wrap" in rule
+            assert "max-inline-size: 100%" in rule
+
+        star_label_rule = css.split(".chirpui-star-rating__label {", 1)[1].split("}", 1)[0]
+        assert "display: inline-flex" in star_label_rule
+        assert "min-inline-size: var(--chirpui-control-block-size-sm)" in star_label_rule
+
+        segmented_label_rule = css.split(".chirpui-segmented > .chirpui-segmented__label {", 1)[
+            1
+        ].split("}", 1)[0]
+        assert "overflow-wrap: anywhere" in segmented_label_rule
+        assert "max-inline-size: 100%" in segmented_label_rule
+        assert ".chirpui-search-bar--with-button .chirpui-search-bar__inner" in css
+
     def test_multi_select_field(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/forms.html" import multi_select_field %}'
@@ -4031,6 +4472,36 @@ class TestActionContainers:
         field_rule = css.split(".chirpui-action-strip__inner .chirpui-field", 1)[1].split("}", 1)[0]
         assert "margin-block-end: 0" in field_rule
 
+    def test_command_bar_css_supports_direct_search_and_hint_groups(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-surface:has(> .chirpui-command-bar)" in css
+        assert (
+            '.chirpui-action-strip__inner\n    > :where([data-chirpui-role~="search"], form, [role="search"])'
+            in css
+        )
+        assert ":where(.chirpui-command-bar, .chirpui-filter-bar)" in css
+        assert '[data-chirpui-role~="hints"]' in css
+        assert '[data-chirpui-pressure~="compress"]' in css
+        assert '[data-chirpui-affinity~="end"]' in css
+        assert '.chirpui-action-strip__inner\n    > [data-chirpui-pressure~="flex"]' in css
+        assert '.chirpui-action-strip__inner\n    > [data-chirpui-affinity~="end"]' in css
+        assert ".chirpui-command-bar [data-chirpui-pressure" not in css
+        assert ".chirpui-command-bar [data-chirpui-affinity" not in css
+        assert ".chirpui-filter-bar [data-chirpui-pressure" not in css
+        assert ".chirpui-filter-bar [data-chirpui-affinity" not in css
+        assert "> div[aria-label]" in css
+        search_rule = css.split(
+            '[data-chirpui-role~="search"], form, [role="search"])',
+            1,
+        )[1].split("}", 1)[0]
+        assert "flex: 1 1 28rem" in search_rule
+        assert "flex-wrap: wrap" in search_rule
+        assert "min-inline-size: min(100%, 18rem)" in search_rule
+        assert '.chirpui-action-strip__inner:has(> [data-chirpui-role~="hints"])' in css
+        assert "> label:not(.chirpui-visually-hidden)" in css
+        assert '[data-chirpui-role~="hints"][data-chirpui-affinity~="end"]' in css
+        assert ".chirpui-action-strip__primary > :where(:not(script, style, template))" in css
+
     def test_filter_bar(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/filter_bar.html" import filter_bar %}'
@@ -4045,6 +4516,28 @@ class TestActionContainers:
         assert 'name="q"' in html
         assert "Apply" in html
 
+    def test_filter_bar_accepts_layout_affinity_recipe_markup(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/filter_bar.html" import filter_bar %}'
+            '{% call filter_bar("/items", attrs_map={"id": "item_filters"}) %}'
+            '<div class="chirpui-action-strip__primary" data-chirpui-role="search" '
+            'data-chirpui-pressure="flex" data-chirpui-affinity="fill">'
+            '<input name="q" type="search"></div>'
+            '<div class="chirpui-action-strip__controls" data-chirpui-role="filters" '
+            'data-chirpui-pressure="compress"><select name="role"><option>All</option></select></div>'
+            '<div class="chirpui-action-strip__actions" data-chirpui-role="actions" '
+            'data-chirpui-pressure="rigid" data-chirpui-affinity="end">'
+            '<button type="submit">Export</button></div>'
+            "{% end %}"
+        ).render()
+        assert 'id="item_filters"' in html
+        assert "chirpui-filter-bar" in html
+        assert 'data-chirpui-role="search"' in html
+        assert 'data-chirpui-role="filters"' in html
+        assert 'data-chirpui-role="actions"' in html
+        assert 'data-chirpui-pressure="rigid"' in html
+        assert 'data-chirpui-affinity="end"' in html
+
     def test_command_bar(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/command_bar.html" import command_bar %}'
@@ -4058,6 +4551,26 @@ class TestActionContainers:
         assert "Bulk edit" in html
         assert "Create" in html
 
+    def test_command_bar_accepts_link_native_search_recipe_markup(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_bar.html" import command_bar %}'
+            "{% call command_bar(wrap='wrap') %}"
+            '<form action="/catalog" method="get" role="search" '
+            'data-chirpui-role="search" data-chirpui-pressure="flex" '
+            'data-chirpui-affinity="fill">'
+            '<label for="q">Search</label><input id="q" name="q" type="search">'
+            '<button type="submit">Search</button></form>'
+            '<div aria-label="Suggested searches" data-chirpui-role="hints" '
+            'data-chirpui-pressure="compress" data-chirpui-affinity="end">'
+            '<a href="/catalog?q=api">API</a></div>'
+            "{% end %}"
+        ).render()
+        assert 'action="/catalog" method="get" role="search"' in html
+        assert 'data-chirpui-role="search"' in html
+        assert 'data-chirpui-pressure="compress"' in html
+        assert 'aria-label="Suggested searches"' in html
+        assert "chirpui-action-strip--wrap" in html
+
     def test_search_header(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/search_header.html" import search_header %}'
@@ -4068,6 +4581,23 @@ class TestActionContainers:
         assert 'action="/people"' in html
         assert 'value="alice"' in html
         assert "Directory" in html
+
+    def test_search_header_css_owns_composite_rhythm_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        search_rule = css.split(".chirpui-search-header {", 1)[1].split("}", 1)[0]
+        assert "width: 100%" in search_rule
+        assert "min-width: 0" in search_rule
+        assert ".chirpui-search-header > :where(:not(script, style, template))" in css
+        assert ".chirpui-search-header > .chirpui-page-header" in css
+
+        primary_rule = css.split(".chirpui-search-header__strip .chirpui-action-strip__primary", 1)[
+            1
+        ].split("}", 1)[0]
+        assert "flex: 999 1 24rem" in primary_rule
+        assert "min-inline-size: min(100%, 18rem)" in primary_rule
+        assert ".chirpui-search-header__strip .chirpui-action-strip__controls:empty" in css
+        assert ".chirpui-search-header__strip .chirpui-search-bar__inner" in css
 
     def test_resource_index_grid_results(self, env: Environment) -> None:
         html = env.from_string(
@@ -4094,6 +4624,24 @@ class TestActionContainers:
             "chirpui-resource-index__results", 1
         )[0]
         assert "Skill A" not in selection_segment
+
+    def test_resource_index_css_owns_results_rhythm_and_feedback(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/resource_index.html" import resource_index %}'
+            "{% call resource_index("
+            '"Skills", "/skills", results_layout="grid", mutation_result_id="update-result"'
+            ") %}"
+            "<article>Skill A</article>"
+            "{% end %}"
+        ).render()
+        css = _chirpui_css()
+
+        assert "chirpui-resource-index__results" in html
+        assert "chirpui-mb-sm" not in html
+        assert ".chirpui-resource-index > :where(:not(script, style, template))" in css
+        assert ".chirpui-resource-index__results > :where(:not(script, style, template))" in css
+        assert ".chirpui-resource-index__results > .chirpui-fragment-island" in css
+        assert ".chirpui-resource-index__results.chirpui-grid > .chirpui-fragment-island" in css
 
     def test_resource_index_empty_state(self, env: Environment) -> None:
         html = env.from_string(
@@ -4882,10 +5430,21 @@ class TestWizardForm:
         assert 'id="update-result"' in html
         assert 'aria-live="polite"' in html
         assert "Form content" in html
+        assert "chirpui-mb-sm" not in html
         # Result div must appear before caller content
         idx_result = html.find('id="update-result"')
         idx_content = html.find("Form content")
         assert idx_result < idx_content
+
+    def test_fragment_island_css_owns_mutation_region_rhythm(self) -> None:
+        css = _chirpui_css()
+
+        assert ".chirpui-fragment-island > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-fragment-island > :where(:not(script, style, template)) + :where(:not(script, style, template))"
+            in css
+        )
+        assert ".chirpui-fragment-island > .chirpui-fragment-island:empty" in css
 
     def test_poll_trigger_renders_hidden_htmx_button(self, env: Environment) -> None:
         html = env.from_string(
@@ -5235,6 +5794,13 @@ class TestDashboardPrimitives:
         assert "Edit" in html
         assert "Delete" in html
 
+    def test_row_actions_css_uses_compact_trigger_shape(self) -> None:
+        css = _chirpui_css()
+        assert ".chirpui-row-actions__trigger" in css
+        assert "display: inline-flex;" in css
+        assert "min-inline-size: var(--chirpui-control-block-size-sm);" in css
+        assert "min-block-size: var(--chirpui-control-block-size-sm);" in css
+
     def test_status_with_hint(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/status_with_hint.html" import status_with_hint %}'
@@ -5397,6 +5963,18 @@ class TestDrawer:
         assert "chirpui-drawer__close" in html
         assert 'aria-label="Close"' in html
         assert "chirpui-drawer__body" in html
+
+    def test_drawer_css_owns_body_rhythm_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        assert ".chirpui-drawer__body > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-drawer__body > :where(:not(script, style, template)) + "
+            ":where(:not(script, style, template))"
+        ) in css
+        assert ".chirpui-drawer__header > form" in css
+        assert ".chirpui-drawer__title" in css
+        assert "overflow-wrap: anywhere" in css
 
 
 class TestCommandPalette:
@@ -5570,6 +6148,14 @@ class TestBadge:
         assert "chirpui-badge" in html
         assert "chirpui-badge--primary" in html
         assert "Active" in html
+
+    def test_badge_css_uses_compact_pill_shape_and_subtle_borders(self) -> None:
+        css = _chirpui_css()
+        badge_root = css.split("@scope (.chirpui-badge)", 1)[1].split(":scope:is(a)", 1)[0]
+        assert "border-radius: 999px" in badge_root
+        assert "min-block-size: 1.5rem" in badge_root
+        primary_rule = css.split(":scope.chirpui-badge--primary", 1)[1].split("}", 1)[0]
+        assert "color-mix(in srgb, var(--chirpui-primary) 40%" in primary_rule
 
     def test_badge_with_variant(self, env: Environment) -> None:
         html = env.from_string(
@@ -5976,6 +6562,15 @@ class TestMediaObject:
         assert "chirpui-media-object" in html
         assert "Content" in html
 
+    def test_media_object_css_owns_row_pressure_and_child_rhythm(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-media-object)" in css
+        assert ".chirpui-media-object__body > :where(:not(script, style, template))" in css
+        assert ".chirpui-media-object__actions > :where(:not(script, style, template))" in css
+        assert "flex: 999 1 12rem;" in css
+        assert "margin-inline-start: auto;" in css
+        assert "overflow-wrap: anywhere;" in css
+
 
 class TestStat:
     def test_stat_basic(self, env: Environment) -> None:
@@ -6279,6 +6874,18 @@ class TestList:
         ).render()
         assert 'hx-target="#site-content"' in html
         assert 'hx-boost="true"' in html
+
+    def test_list_css_owns_row_separation_and_child_rhythm(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-list)" in css
+        assert ".chirpui-list__item > :where(:not(script, style, template))" in css
+        assert ":scope.chirpui-list--bordered .chirpui-list__item + .chirpui-list__item" in css
+        bordered_sibling_rule = css.split(
+            ":scope.chirpui-list--bordered .chirpui-list__item + .chirpui-list__item",
+            1,
+        )[1].split("}", 1)[0]
+        assert "margin-top: 0;" in bordered_sibling_rule
+        assert "overflow-wrap: anywhere;" in css
 
 
 class TestAccordion:
@@ -7644,6 +8251,23 @@ class TestSegmentedControl:
             '{{ segmented_control(items=[{"label": "A", "value": "a"}], size="sm") }}'
         ).render()
         assert "chirpui-segmented--sm" in html
+
+    def test_css_owns_label_pressure(self) -> None:
+        css = _chirpui_css()
+
+        root_rule = css.rsplit(".chirpui-segmented {", 1)[1].split("}", 1)[0]
+        assert "flex-wrap: wrap" in root_rule
+        assert "max-inline-size: 100%" in root_rule
+        assert "min-block-size: var(--_chirpui-segmented-block-size)" in root_rule
+
+        option_rule = css.split(".chirpui-segmented__option {", 1)[1].split("}", 1)[0]
+        assert "flex: 1 1 auto" in option_rule
+        assert "white-space: normal" in option_rule
+        assert "overflow-wrap: anywhere" in option_rule
+
+        label_rule = css.split(".chirpui-segmented__label {", 1)[1].split("}", 1)[0]
+        assert "min-inline-size: 0" in label_rule
+        assert "overflow-wrap: anywhere" in label_rule
 
 
 class TestSplitPanel:
