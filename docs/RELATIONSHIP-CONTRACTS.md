@@ -87,6 +87,7 @@ the benefit without turning Chirp UI into an atomic class language.
 | `callout` | inset rhythm and body flow | shipped | callout CSS tests |
 | `form()` | field/action/error-summary sibling rhythm | shipped | `TestForms`, `/forms` browser proof |
 | field wrappers and form control internals | label/control/hint/error attachment, option grouping, prefix/suffix/search pressure | shipped | form field render/CSS tests; `/forms` browser proof |
+| specialized form controls | star/thumb/segmented/file/number-scale pressure, wrapping, and local control containment | shipped | specialized form-control CSS tests; `/forms` browser proof |
 | `command_bar` / `filter_bar` | search, hints, filters, actions, visible-label rows | shipped/prototype mix | action-container tests, browser proof |
 | `workspace_shell` | rail/content/inspector/toolbars | prototype | workspace recipe docs and browser proof |
 | workspace primitives | rails, result collections, cards, metrics, inspector panels | shipped/prototype mix | data/support/operations browser proof; result cards own title/body/actions/footer pressure |
@@ -108,8 +109,11 @@ the benefit without turning Chirp UI into an atomic class language.
 `form()` owns field rhythm, and control internals now own common attachment
 and pressure relationships: checkbox/toggle label rows, radio option groups,
 range label/value rows, input-group prefix/input/suffix sizing, and search bar
-button/input wrapping. Remaining form work should focus on specialized controls
-that prove new relationship needs.
+button/input wrapping. Specialized controls now own their pressure relationships
+too: star and thumb pickers wrap as bounded control groups, segmented controls
+wrap long option labels without widening the page, file inputs stay inside their
+field, and number scales wrap locally under narrow parents. Remaining form work
+should focus on newly added controls that prove distinct relationship needs.
 
 ### Header And Section Relationships
 

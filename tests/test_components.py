@@ -4213,6 +4213,33 @@ class TestForms:
         search_inner_rule = css.split(".chirpui-search-bar__inner", 1)[1].split("}", 1)[0]
         assert "width: 100%" in search_inner_rule
         assert "min-width: 0" in search_inner_rule
+
+    def test_specialized_form_controls_own_pressure(self) -> None:
+        css = _chirpui_css()
+
+        file_rule = css.split(".chirpui-field__file {", 1)[1].split("}", 1)[0]
+        assert "box-sizing: border-box" in file_rule
+        assert "min-inline-size: 0" in file_rule
+        assert "max-inline-size: 100%" in file_rule
+
+        for selector in [
+            ".chirpui-star-rating {",
+            ".chirpui-thumbs {",
+            ".chirpui-number-scale {",
+        ]:
+            rule = css.split(selector, 1)[1].split("}", 1)[0]
+            assert "flex-wrap: wrap" in rule
+            assert "max-inline-size: 100%" in rule
+
+        star_label_rule = css.split(".chirpui-star-rating__label {", 1)[1].split("}", 1)[0]
+        assert "display: inline-flex" in star_label_rule
+        assert "min-inline-size: var(--chirpui-control-block-size-sm)" in star_label_rule
+
+        segmented_label_rule = css.split(".chirpui-segmented > .chirpui-segmented__label {", 1)[
+            1
+        ].split("}", 1)[0]
+        assert "overflow-wrap: anywhere" in segmented_label_rule
+        assert "max-inline-size: 100%" in segmented_label_rule
         assert ".chirpui-search-bar--with-button .chirpui-search-bar__inner" in css
 
     def test_multi_select_field(self, env: Environment) -> None:
@@ -8224,6 +8251,23 @@ class TestSegmentedControl:
             '{{ segmented_control(items=[{"label": "A", "value": "a"}], size="sm") }}'
         ).render()
         assert "chirpui-segmented--sm" in html
+
+    def test_css_owns_label_pressure(self) -> None:
+        css = _chirpui_css()
+
+        root_rule = css.rsplit(".chirpui-segmented {", 1)[1].split("}", 1)[0]
+        assert "flex-wrap: wrap" in root_rule
+        assert "max-inline-size: 100%" in root_rule
+        assert "min-block-size: var(--_chirpui-segmented-block-size)" in root_rule
+
+        option_rule = css.split(".chirpui-segmented__option {", 1)[1].split("}", 1)[0]
+        assert "flex: 1 1 auto" in option_rule
+        assert "white-space: normal" in option_rule
+        assert "overflow-wrap: anywhere" in option_rule
+
+        label_rule = css.split(".chirpui-segmented__label {", 1)[1].split("}", 1)[0]
+        assert "min-inline-size: 0" in label_rule
+        assert "overflow-wrap: anywhere" in label_rule
 
 
 class TestSplitPanel:

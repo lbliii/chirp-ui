@@ -650,6 +650,120 @@ async def test_showcase_form_control_internals_own_pressure(
     ("width", "height"),
     [(320, 640), (768, 1024), (1280, 900)],
 )
+async def test_showcase_specialized_form_controls_own_pressure(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/forms")
+    await wait_for_alpine(showcase_page)
+
+    await showcase_page.evaluate(
+        """() => {
+            const longText = "specialized-control-owner-" + "sigma".repeat(24);
+            const options = Array.from({ length: 8 }, (_, index) => {
+                const id = `proof-star-${index}`;
+                return `<input class="chirpui-star-rating__input" id="${id}" name="proof-star" type="radio">
+                    <label class="chirpui-star-rating__label" for="${id}">&#9733;</label>`;
+            }).join("");
+            document.querySelector("#relationship-specialized-control-proof")?.remove();
+            document.querySelector("main")?.insertAdjacentHTML(
+                "afterbegin",
+                `<section id="relationship-specialized-control-proof" style="max-width: min(100%, 20rem);">
+                    <div class="chirpui-field">
+                        <label class="chirpui-field__label" for="proof-file">${longText}</label>
+                        <input id="proof-file" class="chirpui-field__file" type="file">
+                    </div>
+                    <fieldset id="proof-star" class="chirpui-star-rating" aria-label="Star pressure">
+                        ${options}
+                    </fieldset>
+                    <fieldset id="proof-thumbs" class="chirpui-thumbs" aria-label="Thumb pressure">
+                        <input class="chirpui-thumbs__input" id="proof-thumb-up" name="proof-thumb" type="radio">
+                        <label class="chirpui-thumbs__label" for="proof-thumb-up">Up</label>
+                        <input class="chirpui-thumbs__input" id="proof-thumb-down" name="proof-thumb" type="radio">
+                        <label class="chirpui-thumbs__label" for="proof-thumb-down">Down</label>
+                    </fieldset>
+                    <div id="proof-form-segmented" class="chirpui-segmented" role="radiogroup">
+                        <input id="proof-segment-1" class="chirpui-segmented__input" name="proof-segment" type="radio" checked>
+                        <label class="chirpui-segmented__label" for="proof-segment-1">${longText}</label>
+                        <input id="proof-segment-2" class="chirpui-segmented__input" name="proof-segment" type="radio">
+                        <label class="chirpui-segmented__label" for="proof-segment-2">${longText}</label>
+                    </div>
+                    <div id="proof-number-scale" class="chirpui-number-scale">
+                        ${Array.from({ length: 10 }, (_, index) => {
+                            const value = index + 1;
+                            return `<input class="chirpui-number-scale__input" id="proof-scale-${value}" name="proof-scale" type="radio">
+                                <label class="chirpui-number-scale__label" for="proof-scale-${value}">${value}</label>`;
+                        }).join("")}
+                    </div>
+                    <div id="proof-display-segmented" class="chirpui-segmented" role="radiogroup" aria-label="Display segmented pressure">
+                        <label class="chirpui-segmented__option chirpui-segmented__option--active">
+                            <input class="chirpui-visually-hidden" name="proof-display" type="radio" checked>
+                            <span class="chirpui-segmented__label">${longText}</span>
+                        </label>
+                        <label class="chirpui-segmented__option">
+                            <input class="chirpui-visually-hidden" name="proof-display" type="radio">
+                            <span class="chirpui-segmented__label">${longText}</span>
+                        </label>
+                    </div>
+                </section>`
+            );
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"specialized-form-controls-{width}x{height}"
+    )
+    metrics = await showcase_page.evaluate(
+        """() => {
+            const proof = document.querySelector("#relationship-specialized-control-proof");
+            const proofRect = proof.getBoundingClientRect();
+            const entries = [
+                ["#proof-file", null],
+                ["#proof-star", ".chirpui-star-rating__label"],
+                ["#proof-thumbs", ".chirpui-thumbs__label"],
+                ["#proof-form-segmented", ".chirpui-segmented__label"],
+                ["#proof-number-scale", ".chirpui-number-scale__label"],
+                ["#proof-display-segmented", ".chirpui-segmented__option"],
+            ];
+            return entries.map(([selector, childSelector]) => {
+                const root = document.querySelector(selector);
+                const child = childSelector ? root.querySelector(childSelector) : root;
+                const rootRect = root.getBoundingClientRect();
+                const childRect = child.getBoundingClientRect();
+                const rootStyle = getComputedStyle(root);
+                const childStyle = getComputedStyle(child);
+                return {
+                    selector,
+                    overflow: Math.ceil(root.scrollWidth - root.clientWidth),
+                    rootContained: rootRect.right <= proofRect.right + 1,
+                    childContained: childRect.right <= rootRect.right + 1,
+                    flexWrap: rootStyle.flexWrap,
+                    maxInlineSize: rootStyle.maxInlineSize,
+                    childWhiteSpace: childStyle.whiteSpace,
+                    childOverflowWrap: childStyle.overflowWrap,
+                };
+            });
+        }"""
+    )
+    for metric in metrics:
+        assert metric["overflow"] <= 1, {metric["selector"]: metric}
+        assert metric["rootContained"], {metric["selector"]: metric}
+        assert metric["childContained"], {metric["selector"]: metric}
+        if metric["selector"] != "#proof-file":
+            assert metric["flexWrap"] == "wrap", {metric["selector"]: metric}
+        assert metric["maxInlineSize"] == "100%", {metric["selector"]: metric}
+        if metric["selector"] == "#proof-display-segmented":
+            assert metric["childWhiteSpace"] == "normal", metric
+            assert metric["childOverflowWrap"] == "anywhere", metric
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
 async def test_showcase_list_and_media_rows_own_relationship_pressure(
     showcase_page,
     showcase_base_url: str,

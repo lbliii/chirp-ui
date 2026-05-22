@@ -51,18 +51,19 @@ responsive pressure, or local overflow.
 | Table row actions | table/row-actions CSS | cell child rhythm, action-cell alignment, local table overflow |
 | Dense metadata | navigation metadata CSS | inline counts, latest lines, and chip groups own compact metadata pressure |
 | Islands/mutation regions | island/fragment CSS | fallback/result rhythm, mutation-region containment, empty result collapse |
+| Specialized form controls | form field/segmented CSS | star/thumb/file/segmented/number-scale pressure and wrapping |
 
 ## Remaining Follow-Ups
 
-1. Audit specialized form controls such as star, thumbs, segmented, and file
-   for relationship needs not already handled by common form internals.
-2. Revisit overlay subvariants such as confirm and modal_overlay after native
+1. Revisit overlay subvariants such as confirm and modal_overlay after native
    overlay regions prove stable under route-level browser probes.
-3. Continue removing local first-party spacing patches outside the component
+2. Continue removing local first-party spacing patches outside the component
    showcase when a shipped owner exists, especially docs-site and static
    examples.
-4. Keep spreading relationship-specific browser probes to real routes as new
+3. Keep spreading relationship-specific browser probes to real routes as new
    owners land.
+4. Audit newly added specialized form controls after common internals and the
+   current specialized controls prove stable in consumer pages.
 5. Reconsider descriptor/manifest metadata only after the current docs/CSS/test
    contract proves too opaque for agents.
 
@@ -77,8 +78,8 @@ responsive pressure, or local overflow.
 
 ## Objective Decisions
 
-- Dense metadata, table actions, drag/sort, code-heavy rows, and island mutation
-  regions now have shipped owner contracts.
+- Dense metadata, table actions, drag/sort, code-heavy rows, island mutation
+  regions, and specialized form controls now have shipped owner contracts.
 - Relationship probes are reusable browser test helpers, not product API.
 - First-party showcase spacing helpers are ratcheted away where owners exist;
   compatibility helper classes remain public for existing consumers.
