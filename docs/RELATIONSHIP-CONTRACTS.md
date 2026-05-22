@@ -52,6 +52,27 @@ authors and agents fix spacing relationship by relationship.
 6. New relationship behavior needs docs plus render/CSS/browser proof when
    computed layout matters.
 
+## Registry And Manifest Decision
+
+Relationship ownership is not a descriptor or manifest contract yet. The
+current payoff is CSS, docs, examples, and browser probes that keep component
+composition predictable for humans and agents without adding a premature schema.
+Future descriptor/manifest metadata should wait until repeated owners need
+machine-readable fields such as `owns_rhythm`, `owns_pressure`, `owns_overflow`,
+or `trims_child_margins` across enough components to justify a schema version.
+Until then, the registry remains the source of emitted classes and public
+component metadata, while this document names the relationship model.
+
+## External Takeaways
+
+The useful lesson from
+[emdashCSS](https://github.com/lbliii/emdashCSS) is not its utility vocabulary.
+Its repository describes a cascading, trait-based framework for content-first
+layouts. Chirp UI should keep translating that kind of idea into owner
+contracts: parents establish layout traits such as rhythm, grouping, spread,
+fit, pressure, and overflow; children keep their intrinsic shape. That preserves
+the benefit without turning Chirp UI into an atomic class language.
+
 ## Current Contract Matrix
 
 | Surface | Relationship Owned | Status | Proof |

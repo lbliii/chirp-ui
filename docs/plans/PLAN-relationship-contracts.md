@@ -52,28 +52,19 @@ responsive pressure, or local overflow.
 | Dense metadata | navigation metadata CSS | inline counts, latest lines, and chip groups own compact metadata pressure |
 | Islands/mutation regions | island/fragment CSS | fallback/result rhythm, mutation-region containment, empty result collapse |
 
-## Next 10 Tasks
+## Remaining Follow-Ups
 
-1. Audit dense metadata variants that do not already belong to inline counters,
-   latest lines, chip groups, list, media, card, workspace, or table owners.
-2. Add relationship-specific browser probes for high-risk surfaces instead of
-   only document overflow probes.
-3. Remove first-party `chirpui-mt-*` / `chirpui-mb-*` usage when a component
-   owner now exists.
-4. Promote repeated accepted contracts into `docs/RELATIONSHIP-CONTRACTS.md`
-   and keep `docs/INDEX.md` linked.
-5. Defer descriptor or manifest projection until relationships repeat across
-   enough owners to justify a public schema.
-6. Mine `lbliii/emdashCSS` for parent-owned stack/spread/fit ideas, translating
-   only the contract model into existing ChirpUI owners.
-7. Keep checking first-party examples for relationship patches after each
-   accepted owner lands.
-8. Revisit specialized form controls such as star, thumbs, segmented, and file
-   after common field internals prove stable.
-9. Revisit overlay subvariants such as confirm and modal_overlay after native
-   overlay regions prove stable.
-10. Decide whether repeated pressure contracts deserve descriptor metadata or
-   remain CSS/documentation-only.
+1. Audit specialized form controls such as star, thumbs, segmented, and file
+   for relationship needs not already handled by common form internals.
+2. Revisit overlay subvariants such as confirm and modal_overlay after native
+   overlay regions prove stable under route-level browser probes.
+3. Continue removing local first-party spacing patches outside the component
+   showcase when a shipped owner exists, especially docs-site and static
+   examples.
+4. Keep spreading relationship-specific browser probes to real routes as new
+   owners land.
+5. Reconsider descriptor/manifest metadata only after the current docs/CSS/test
+   contract proves too opaque for agents.
 
 ## Parity Matrix
 
@@ -83,6 +74,19 @@ responsive pressure, or local overflow.
 | Inset ownership | none | CSS behavior | component DOM | none | layout/primitive docs | cards/surfaces/workspaces | CSS + browser |
 | Layout affinity | none | data attrs in HTML | HTML attrs | planned only | RFC + resolver guide | catalog/data/cards/workspaces | source scan + browser |
 | Future manifest projection | not shipped | not shipped | not shipped | not shipped | not-now | none | manifest guard tests |
+
+## Objective Decisions
+
+- Dense metadata, table actions, drag/sort, code-heavy rows, and island mutation
+  regions now have shipped owner contracts.
+- Relationship probes are reusable browser test helpers, not product API.
+- First-party showcase spacing helpers are ratcheted away where owners exist;
+  compatibility helper classes remain public for existing consumers.
+- `lbliii/emdashCSS` is useful as prior art for cascading, trait-based
+  content-first layout thinking, but Chirp UI translates that idea into
+  component owners instead of trait/atomic utility classes.
+- Descriptor/manifest projection remains deferred. The relationship contract is
+  documented and tested, but not schema-level public API.
 
 ## Steward Notes
 

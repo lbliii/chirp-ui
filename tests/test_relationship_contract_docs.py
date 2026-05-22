@@ -18,6 +18,8 @@ def test_relationship_contracts_define_parent_ownership_model() -> None:
         "Ownership Rules",
         "Current Contract Matrix",
         "Known Gaps",
+        "Registry And Manifest Decision",
+        "External Takeaways",
         "Agent Checklist",
         "Inset",
         "Sibling rhythm",
@@ -67,8 +69,9 @@ def test_relationship_rollout_plan_sets_scope_proof_and_not_now_boundaries() -> 
         "No new public macro parameters",
         "No manifest schema change",
         "Current Accepted Slices",
-        "Next 10 Tasks",
+        "Remaining Follow-Ups",
         "Parity Matrix",
+        "Objective Decisions",
         "Steward Notes",
         "Required Proof Per Slice",
         "Not Now",
@@ -76,5 +79,7 @@ def test_relationship_rollout_plan_sets_scope_proof_and_not_now_boundaries() -> 
         "New descriptor fields",
         "`chirpui-manifest@6` projection",
         "Global `[data-chirpui-*]` relationship rules",
+        "Descriptor/manifest projection remains deferred",
+        "lbliii/emdashCSS",
     ]:
         assert required in text
