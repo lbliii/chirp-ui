@@ -1520,6 +1520,64 @@ class TestRouteTabs:
 
 
 # ---------------------------------------------------------------------------
+# Drag and sortable rows
+# ---------------------------------------------------------------------------
+
+
+class TestDragAndSortableRows:
+    def test_sortable_list_render(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sortable_list.html" import sortable_list, sortable_item %}'
+            "{% call sortable_list() %}"
+            "{% call sortable_item() %}"
+            '<span class="chirpui-sortable__handle">☰</span>'
+            '<span class="chirpui-sortable__content">First</span>'
+            "{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-sortable" in html
+        assert "chirpui-sortable__item" in html
+        assert 'role="listbox"' in html
+        assert 'role="option"' in html
+
+    def test_dnd_primitives_render(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/dnd.html" import dnd_list, dnd_item, dnd_handle, dnd_drop_indicator, dnd_board, dnd_column, dnd_card %}'
+            "{% call dnd_list() %}"
+            "{% call dnd_item() %}{{ dnd_handle() }}{{ dnd_drop_indicator() }}Row{% end %}"
+            "{% end %}"
+            "{% call dnd_board() %}"
+            '{% call dnd_column(title="Todo") %}'
+            "{% call dnd_card() %}Card{% end %}"
+            "{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-dnd chirpui-dnd--row" in html
+        assert "chirpui-dnd__handle" in html
+        assert "chirpui-dnd__drop-indicator" in html
+        assert "chirpui-dnd chirpui-dnd--board" in html
+        assert "chirpui-dnd__column-header" in html
+        assert "chirpui-dnd__card" in html
+
+    def test_drag_and_sortable_css_owns_row_pressure(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-sortable)" in css
+        assert "@scope (.chirpui-dnd)" in css
+        for selector in (
+            ".chirpui-sortable__item > :where(:not(script, style, template))",
+            ".chirpui-sortable__content > :where(:not(script, style, template))",
+            ".chirpui-dnd__item > :where(:not(script, style, template))",
+            ".chirpui-dnd__column > :where(:not(script, style, template))",
+            ".chirpui-dnd__card > :where(:not(script, style, template))",
+        ):
+            assert selector in css
+        assert ":scope.chirpui-dnd--board" in css
+        assert "overflow-x: auto;" in css
+        assert "overscroll-behavior-x: contain;" in css
+        assert "flex-wrap: wrap;" in css
+
+
+# ---------------------------------------------------------------------------
 # Params table
 # ---------------------------------------------------------------------------
 

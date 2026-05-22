@@ -759,6 +759,112 @@ async def test_showcase_code_docs_rows_own_local_overflow(
     ("width", "height"),
     [(320, 640), (768, 1024), (1280, 900)],
 )
+async def test_showcase_drag_rows_own_pressure_and_board_overflow(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/forms")
+    await wait_for_alpine(showcase_page)
+
+    await showcase_page.evaluate(
+        """() => {
+            const longText = "drag-row-owner-" + "sigma".repeat(28);
+            document.querySelector("#relationship-drag-proof")?.remove();
+            document.querySelector("main")?.insertAdjacentHTML(
+                "afterbegin",
+                `<section id="relationship-drag-proof" style="max-width: min(100%, 24rem);">
+                    <div class="chirpui-sortable" role="listbox">
+                        <div class="chirpui-sortable__item" role="option">
+                            <span class="chirpui-sortable__handle">☰</span>
+                            <span class="chirpui-sortable__content"><p>${longText}</p></span>
+                            <button class="chirpui-sortable__remove" type="button">x</button>
+                        </div>
+                    </div>
+                    <div class="chirpui-dnd chirpui-dnd--row" role="listbox">
+                        <div class="chirpui-dnd__item chirpui-dnd__item--row" role="option">
+                            <span class="chirpui-dnd__handle">☰</span>
+                            <span class="chirpui-dnd__drop-indicator"></span>
+                            <p>${longText}</p>
+                        </div>
+                    </div>
+                    <div class="chirpui-dnd chirpui-dnd--board" role="group" aria-label="Board proof">
+                        ${["Planning", "Doing", "Done"].map((title) => `
+                            <div class="chirpui-dnd__column" role="group">
+                                <div class="chirpui-dnd__column-header">${title}-${longText}</div>
+                                <div class="chirpui-dnd__column-body">
+                                    <div class="chirpui-dnd__card" role="article"><p>${longText}</p></div>
+                                </div>
+                            </div>
+                        `).join("")}
+                    </div>
+                </section>`
+            );
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"drag-row-relationships-{width}x{height}"
+    )
+    metrics = await showcase_page.evaluate(
+        """() => {
+            const proof = document.querySelector("#relationship-drag-proof");
+            const sortable = proof.querySelector(".chirpui-sortable");
+            const sortableItem = proof.querySelector(".chirpui-sortable__item");
+            const sortableContent = proof.querySelector(".chirpui-sortable__content");
+            const sortableParagraph = sortableContent.querySelector("p");
+            const dndRow = proof.querySelector(".chirpui-dnd--row");
+            const dndItem = proof.querySelector(".chirpui-dnd__item");
+            const dndParagraph = dndItem.querySelector("p");
+            const board = proof.querySelector(".chirpui-dnd--board");
+            const column = proof.querySelector(".chirpui-dnd__column");
+            const columnHeader = proof.querySelector(".chirpui-dnd__column-header");
+            const card = proof.querySelector(".chirpui-dnd__card");
+            const cardParagraph = card.querySelector("p");
+            const containers = [proof, sortable, sortableItem, sortableContent, dndRow, dndItem, column, card];
+            return {
+                containers: containers.map((el) => ({
+                    className: el.className || el.id,
+                    overflow: Math.ceil(el.scrollWidth - el.clientWidth),
+                })),
+                boardLocalOverflow: Math.ceil(board.scrollWidth - board.clientWidth),
+                boardOverflowX: getComputedStyle(board).overflowX,
+                sortableItemWrap: getComputedStyle(sortableItem).flexWrap,
+                dndItemWrap: getComputedStyle(dndItem).flexWrap,
+                sortableParagraphMargins: [
+                    getComputedStyle(sortableParagraph).marginBlockStart,
+                    getComputedStyle(sortableParagraph).marginBlockEnd,
+                ],
+                dndParagraphMargins: [
+                    getComputedStyle(dndParagraph).marginBlockStart,
+                    getComputedStyle(dndParagraph).marginBlockEnd,
+                ],
+                columnHeaderWrap: getComputedStyle(columnHeader).overflowWrap,
+                cardParagraphMargins: [
+                    getComputedStyle(cardParagraph).marginBlockStart,
+                    getComputedStyle(cardParagraph).marginBlockEnd,
+                ],
+            };
+        }"""
+    )
+    for metric in metrics["containers"]:
+        assert metric["overflow"] <= 1, {metric["className"]: metric}
+    assert metrics["boardLocalOverflow"] > 1, metrics
+    assert metrics["boardOverflowX"] == "auto", metrics
+    assert metrics["sortableItemWrap"] == "wrap", metrics
+    assert metrics["dndItemWrap"] == "wrap", metrics
+    assert metrics["sortableParagraphMargins"] == ["0px", "0px"], metrics
+    assert metrics["dndParagraphMargins"] == ["0px", "0px"], metrics
+    assert metrics["cardParagraphMargins"] == ["0px", "0px"], metrics
+    assert metrics["columnHeaderWrap"] == "anywhere", metrics
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
 async def test_showcase_search_browse_composites_own_rhythm(
     showcase_page,
     showcase_base_url: str,

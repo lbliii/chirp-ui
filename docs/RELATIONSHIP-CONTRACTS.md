@@ -74,7 +74,7 @@ authors and agents fix spacing relationship by relationship.
 | `fieldset` | grouped form-control rhythm, child margin trim | shipped | `TestForms`, `/forms` browser proof |
 | `list_group()` / `media_object()` | row separation, leading media/body/actions pressure, child margin trim | shipped | list/media CSS tests; `/layout` browser proof |
 | `params_table()` / `signature()` | code-heavy row containment, local horizontal overflow, title/code attachment | shipped | params/signature CSS tests; `/forms` browser proof |
-| `dnd` / `sortable` | drag row/board grouping | partial | visual structure tests; spacing/overflow proof needed |
+| `dnd` / `sortable` | drag row/board grouping, handle/content pressure, local board overflow | shipped | visual structure tests; `/forms` browser proof |
 | `modal` / `drawer` / `tray` / `panel` | header/body/footer region rhythm | shipped | CSS/browser proof; region margins, wrapping, and local overflow owned by containers |
 | navigation primitives | item metadata, rails, trays, dense chrome | partial | dense navigation docs and browser proof |
 
@@ -114,8 +114,15 @@ status badges, and URLs.
 Remaining row-like work should focus on specialized row systems that have
 distinct interaction contracts:
 
-- drag/drop and sortable rows;
 - table row action groups and dense metadata variants.
+
+### Drag And Sortable Rows
+
+`sortable_list()` and `dnd_list()` own handle/content/action spacing for row
+reorder surfaces. Sortable items and DnD rows wrap long labels inside the row,
+trim direct child margins, and keep handles/actions intrinsic. `dnd_board()`
+owns kanban-style local horizontal overflow, so columns can stay useful without
+widening the document.
 
 ### Code-Heavy Documentation Rows
 

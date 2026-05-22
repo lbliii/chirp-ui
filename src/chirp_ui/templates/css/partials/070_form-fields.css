@@ -632,82 +632,108 @@ input[type="date"].chirpui-field__input {
 /* Sortable list — drag-to-reorder container.
    Alpine wiring (x-data, @dragstart, etc.) is left to the consumer;
    ChirpUI provides the visual structure and drag affordances. */
-.chirpui-sortable {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
+@scope (.chirpui-sortable) to (.chirpui-sortable .chirpui-sortable) {
+    :scope {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        box-sizing: border-box;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+        overflow-wrap: anywhere;
+    }
 
-.chirpui-sortable__item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.625rem 0.75rem;
-    background: var(--chirpui-bg);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius-sm);
-    cursor: grab;
-    transition: box-shadow var(--chirpui-transition), opacity var(--chirpui-transition),
-                border-color var(--chirpui-transition);
-    user-select: none;
-}
+    .chirpui-sortable__item {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+        box-sizing: border-box;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+        padding: 0.625rem 0.75rem;
+        overflow-wrap: anywhere;
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-sm);
+        background: var(--chirpui-bg);
+        cursor: grab;
+        transition:
+            box-shadow var(--chirpui-transition),
+            opacity var(--chirpui-transition),
+            border-color var(--chirpui-transition);
+        user-select: none;
+    }
 
-.chirpui-sortable__item:hover {
-    box-shadow: var(--chirpui-shadow-sm);
-}
+    .chirpui-sortable__item > :where(:not(script, style, template)) {
+        margin: 0;
+    }
 
-.chirpui-sortable__item:active {
-    cursor: grabbing;
-}
+    .chirpui-sortable__item:hover {
+        box-shadow: var(--chirpui-shadow-sm);
+    }
 
-.chirpui-sortable__item--dragging {
-    opacity: 0.4;
-}
+    .chirpui-sortable__item:active {
+        cursor: grabbing;
+    }
 
-.chirpui-sortable__item--over {
-    border-top: 2px solid var(--chirpui-accent);
-    padding-top: calc(0.625rem - 1px);
-}
+    .chirpui-sortable__item--dragging {
+        opacity: 0.4;
+    }
 
-.chirpui-sortable__handle {
-    flex-shrink: 0;
-    color: var(--chirpui-muted);
-    font-size: 1rem;
-    line-height: 1;
-    cursor: grab;
-}
+    .chirpui-sortable__item--over {
+        border-top: 2px solid var(--chirpui-accent);
+        padding-top: calc(0.625rem - 1px);
+    }
 
-.chirpui-sortable__handle:active {
-    cursor: grabbing;
-}
+    .chirpui-sortable__handle {
+        flex: 0 0 auto;
+        color: var(--chirpui-muted);
+        font-size: 1rem;
+        line-height: 1;
+        cursor: grab;
+    }
 
-.chirpui-sortable__content {
-    flex: 1;
-    min-width: 0;
-}
+    .chirpui-sortable__handle:active {
+        cursor: grabbing;
+    }
 
-.chirpui-sortable__remove {
-    flex-shrink: 0;
-    margin-left: auto;
-    padding: 0.25rem 0.375rem;
-    font-size: 1rem;
-    line-height: 1;
-    color: var(--chirpui-muted);
-    background: none;
-    border: 1px solid transparent;
-    border-radius: var(--chirpui-radius-sm);
-    cursor: pointer;
-    transition: color var(--chirpui-transition), border-color var(--chirpui-transition);
-}
+    .chirpui-sortable__content {
+        flex: 999 1 12rem;
+        min-width: 0;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+        overflow-wrap: anywhere;
+    }
 
-.chirpui-sortable__remove:hover {
-    color: var(--chirpui-error);
-    border-color: var(--chirpui-error);
-}
+    .chirpui-sortable__content > :where(:not(script, style, template)) {
+        margin-block: 0;
+    }
 
-.chirpui-sortable__remove:focus-visible {
-    outline: 2px solid var(--chirpui-focus-ring);
-    outline-offset: var(--chirpui-state-focus-offset);
+    .chirpui-sortable__remove {
+        flex: 0 1 auto;
+        margin-left: auto;
+        padding: 0.25rem 0.375rem;
+        color: var(--chirpui-muted);
+        border: 1px solid transparent;
+        border-radius: var(--chirpui-radius-sm);
+        background: none;
+        cursor: pointer;
+        font-size: 1rem;
+        line-height: 1;
+        transition:
+            color var(--chirpui-transition),
+            border-color var(--chirpui-transition);
+    }
+
+    .chirpui-sortable__remove:hover {
+        color: var(--chirpui-error);
+        border-color: var(--chirpui-error);
+    }
+
+    .chirpui-sortable__remove:focus-visible {
+        outline: 2px solid var(--chirpui-focus-ring);
+        outline-offset: var(--chirpui-state-focus-offset);
+    }
 }
 
 /* Fragment island — HTMX-safe mutation region */
@@ -727,152 +753,189 @@ input[type="date"].chirpui-field__input {
 }
 
 /* DnD primitives — row and board variants */
-.chirpui-dnd {
-    display: flex;
-    gap: var(--chirpui-spacing-xs);
-}
+@scope (.chirpui-dnd) to (.chirpui-dnd .chirpui-dnd) {
+    :scope {
+        display: flex;
+        gap: var(--chirpui-spacing-xs);
+        box-sizing: border-box;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+        overflow-wrap: anywhere;
+    }
 
-.chirpui-dnd--row {
-    flex-direction: column;
-    gap: 2px;
-}
+    :scope.chirpui-dnd--row {
+        flex-direction: column;
+        gap: 2px;
+    }
 
-.chirpui-dnd--board {
-    flex-direction: row;
-    gap: var(--chirpui-spacing-md);
-    overflow-x: auto;
-    padding-bottom: var(--chirpui-spacing-sm);
-}
+    :scope.chirpui-dnd--board {
+        flex-direction: row;
+        gap: var(--chirpui-spacing-md);
+        max-inline-size: 100%;
+        padding-bottom: var(--chirpui-spacing-sm);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
 
-.chirpui-dnd__item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.625rem 0.75rem;
-    background: var(--chirpui-bg);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius-sm);
-    cursor: grab;
-    transition: transform var(--chirpui-dnd-transition),
-                box-shadow var(--chirpui-dnd-transition),
-                opacity var(--chirpui-dnd-drag-transition),
-                border-color var(--chirpui-dnd-transition);
-    user-select: none;
-}
+    .chirpui-dnd__item {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+        box-sizing: border-box;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+        padding: 0.625rem 0.75rem;
+        overflow-wrap: anywhere;
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-sm);
+        background: var(--chirpui-bg);
+        cursor: grab;
+        transition:
+            transform var(--chirpui-dnd-transition),
+            box-shadow var(--chirpui-dnd-transition),
+            opacity var(--chirpui-dnd-drag-transition),
+            border-color var(--chirpui-dnd-transition);
+        user-select: none;
+    }
 
-.chirpui-dnd__item:hover {
-    box-shadow: var(--chirpui-shadow-sm);
-}
+    .chirpui-dnd__item > :where(:not(script, style, template)) {
+        margin: 0;
+    }
 
-.chirpui-dnd__item:active {
-    cursor: grabbing;
-}
+    .chirpui-dnd__item:hover {
+        box-shadow: var(--chirpui-shadow-sm);
+    }
 
-.chirpui-dnd__item--dragging {
-    opacity: var(--chirpui-dnd-drag-opacity);
-    transform: scale(var(--chirpui-dnd-lift-scale))
-               translateY(var(--chirpui-dnd-lift-offset-y));
-    box-shadow: var(--chirpui-dnd-lift-shadow);
-}
+    .chirpui-dnd__item:active {
+        cursor: grabbing;
+    }
 
-.chirpui-dnd__item--over {
-    border-top: var(--chirpui-dnd-drop-indicator-width) solid
-               var(--chirpui-dnd-drop-indicator-color);
-    padding-top: calc(0.625rem - var(--chirpui-dnd-drop-indicator-width));
-}
+    .chirpui-dnd__item--dragging {
+        opacity: var(--chirpui-dnd-drag-opacity);
+        transform: scale(var(--chirpui-dnd-lift-scale))
+            translateY(var(--chirpui-dnd-lift-offset-y));
+        box-shadow: var(--chirpui-dnd-lift-shadow);
+    }
 
-.chirpui-dnd__handle {
-    flex-shrink: 0;
-    color: var(--chirpui-muted);
-    font-size: 1rem;
-    line-height: 1;
-    cursor: grab;
-}
+    .chirpui-dnd__item--over {
+        border-top: var(--chirpui-dnd-drop-indicator-width) solid
+            var(--chirpui-dnd-drop-indicator-color);
+        padding-top: calc(0.625rem - var(--chirpui-dnd-drop-indicator-width));
+    }
 
-.chirpui-dnd__handle:active {
-    cursor: grabbing;
-}
+    .chirpui-dnd__handle {
+        flex: 0 0 auto;
+        color: var(--chirpui-muted);
+        font-size: 1rem;
+        line-height: 1;
+        cursor: grab;
+    }
 
-.chirpui-dnd__handle:focus-visible {
-    outline: 2px solid var(--chirpui-focus-ring);
-    outline-offset: var(--chirpui-state-focus-offset);
-}
+    .chirpui-dnd__handle:active {
+        cursor: grabbing;
+    }
 
-.chirpui-dnd__drop-indicator {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--chirpui-dnd-drop-indicator-width);
-    background: var(--chirpui-dnd-drop-indicator-color);
-    border-radius: var(--chirpui-radius-sm);
-    opacity: 0;
-    transition: opacity var(--chirpui-dnd-transition);
-    pointer-events: none;
-}
+    .chirpui-dnd__handle:focus-visible {
+        outline: 2px solid var(--chirpui-focus-ring);
+        outline-offset: var(--chirpui-state-focus-offset);
+    }
 
-.chirpui-dnd__item--over .chirpui-dnd__drop-indicator {
-    opacity: 1;
-}
+    .chirpui-dnd__drop-indicator {
+        position: absolute;
+        inset-inline: 0;
+        top: 0;
+        height: var(--chirpui-dnd-drop-indicator-width);
+        border-radius: var(--chirpui-radius-sm);
+        background: var(--chirpui-dnd-drop-indicator-color);
+        opacity: 0;
+        transition: opacity var(--chirpui-dnd-transition);
+        pointer-events: none;
+    }
 
-.chirpui-dnd__column {
-    flex-shrink: 0;
-    width: min(18rem, 100%);
-    display: flex;
-    flex-direction: column;
-    gap: var(--chirpui-spacing-sm);
-    padding: var(--chirpui-spacing);
-    background: var(--chirpui-bg-subtle);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius);
-}
+    .chirpui-dnd__item--over .chirpui-dnd__drop-indicator {
+        opacity: 1;
+    }
 
-.chirpui-dnd__column-header {
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-size: var(--chirpui-font-sm);
-    color: var(--chirpui-text-muted);
-}
+    .chirpui-dnd__column {
+        display: flex;
+        flex: 0 0 min(18rem, 100%);
+        flex-direction: column;
+        gap: var(--chirpui-spacing-sm);
+        box-sizing: border-box;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+        padding: var(--chirpui-spacing);
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius);
+        background: var(--chirpui-bg-subtle);
+    }
 
-.chirpui-dnd__column-body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--chirpui-spacing-sm);
-    min-height: 4rem;
-    border-radius: var(--chirpui-radius-sm);
-    transition: background var(--chirpui-dnd-transition);
-}
+    .chirpui-dnd__column > :where(:not(script, style, template)) {
+        margin-block: 0;
+    }
 
-.chirpui-dnd__column-body--over {
-    background: color-mix(in srgb, var(--chirpui-accent) 8%, transparent);
-}
+    .chirpui-dnd__column-header {
+        color: var(--chirpui-text-muted);
+        font-size: var(--chirpui-font-sm);
+        font-weight: var(--chirpui-ui-font-weight-semibold);
+        overflow-wrap: anywhere;
+    }
 
-.chirpui-dnd__card {
-    padding: var(--chirpui-spacing);
-    background: var(--chirpui-bg);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius-sm);
-    cursor: grab;
-    transition: box-shadow var(--chirpui-dnd-transition),
-                opacity var(--chirpui-dnd-drag-transition);
-    user-select: none;
-}
+    .chirpui-dnd__column-body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--chirpui-spacing-sm);
+        min-height: 4rem;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+        border-radius: var(--chirpui-radius-sm);
+        transition: background var(--chirpui-dnd-transition);
+    }
 
-.chirpui-dnd__card:hover {
-    box-shadow: var(--chirpui-shadow-sm);
-}
+    .chirpui-dnd__column-body--over {
+        background: color-mix(in srgb, var(--chirpui-accent) 8%, transparent);
+    }
 
-.chirpui-dnd__card:active {
-    cursor: grabbing;
-}
+    .chirpui-dnd__card {
+        box-sizing: border-box;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+        padding: var(--chirpui-spacing);
+        overflow-wrap: anywhere;
+        border: 1px solid var(--chirpui-border);
+        border-radius: var(--chirpui-radius-sm);
+        background: var(--chirpui-bg);
+        cursor: grab;
+        transition:
+            box-shadow var(--chirpui-dnd-transition),
+            opacity var(--chirpui-dnd-drag-transition);
+        user-select: none;
+    }
 
-.chirpui-dnd__card--dragging {
-    opacity: var(--chirpui-dnd-drag-opacity);
-    box-shadow: var(--chirpui-dnd-lift-shadow);
-}
+    .chirpui-dnd__card > :where(:not(script, style, template)) {
+        margin-block: 0;
+    }
 
-.chirpui-dnd__column-body--over .chirpui-dnd__card {
-    border-color: var(--chirpui-dnd-drop-indicator-color);
+    .chirpui-dnd__card:hover {
+        box-shadow: var(--chirpui-shadow-sm);
+    }
+
+    .chirpui-dnd__card:active {
+        cursor: grabbing;
+    }
+
+    .chirpui-dnd__card--dragging {
+        opacity: var(--chirpui-dnd-drag-opacity);
+        box-shadow: var(--chirpui-dnd-lift-shadow);
+    }
+
+    .chirpui-dnd__column-body--over .chirpui-dnd__card {
+        border-color: var(--chirpui-dnd-drop-indicator-color);
+    }
 }
 
 /* Reduced motion */
