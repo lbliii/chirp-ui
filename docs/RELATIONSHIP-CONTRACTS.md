@@ -77,7 +77,7 @@ authors and agents fix spacing relationship by relationship.
 | `dnd` / `sortable` | drag row/board grouping, handle/content pressure, local board overflow | shipped | visual structure tests; `/forms` browser proof |
 | `table()` / `row_actions()` | cell child rhythm, action-cell alignment, local table overflow | shipped | table/row-action CSS tests; `/forms` browser proof |
 | `modal` / `drawer` / `tray` / `panel` | header/body/footer region rhythm | shipped | CSS/browser proof; region margins, wrapping, and local overflow owned by containers |
-| navigation primitives | item metadata, rails, trays, dense chrome | partial | dense navigation docs and browser proof |
+| navigation primitives and dense metadata primitives | item metadata, rails, trays, dense chrome, inline count/chip/activity rows | partial | dense navigation docs and browser proof |
 
 ## Known Gaps
 
@@ -115,8 +115,18 @@ status badges, and URLs.
 Remaining row-like work should focus on specialized row systems that have
 distinct interaction contracts:
 
-- dense metadata variants that do not naturally belong to list, media, card, or
-  table owners.
+- dense metadata variants that do not naturally belong to inline counters,
+  latest lines, chip groups, lists, media, cards, or table owners.
+
+### Dense Metadata Rows
+
+`inline_counter()`, `latest_line()`, and `chip_group()` own compact metadata
+pressure for counts, activity links, and topic/filter chips. They cap themselves
+to their parent width, keep fixed marks/badges intrinsic, allow long values and
+labels to wrap or truncate inside the primitive, and trim direct child margins
+where the group acts as the relationship owner. Dense app chrome should compose
+these primitives instead of adding local spacing around every count, chip, or
+activity row.
 
 ### Drag And Sortable Rows
 

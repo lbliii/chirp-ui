@@ -19088,9 +19088,13 @@ body.htmx-request .chirpui-nav-progress::after {
 @layer chirpui.component {
 @scope (.chirpui-inline-counter) to (.chirpui-inline-counter .chirpui-inline-counter) {
 .chirpui-inline-counter {
+    box-sizing: border-box;
     display: inline-flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--chirpui-spacing-xs);
+    min-inline-size: 0;
+    max-inline-size: 100%;
     min-height: calc(var(--chirpui-spacing) + var(--chirpui-spacing-xs));
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
@@ -19109,15 +19113,20 @@ body.htmx-request .chirpui-nav-progress::after {
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-xs);
     font-weight: var(--chirpui-ui-font-weight-bold);
+    flex: 0 0 auto;
 }
 
 .chirpui-inline-counter__value {
+    min-inline-size: 0;
     color: var(--chirpui-text);
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-inline-counter__label {
+    min-inline-size: 0;
     color: var(--chirpui-text-muted);
+    overflow-wrap: anywhere;
 }
 }
 }
@@ -19125,17 +19134,27 @@ body.htmx-request .chirpui-nav-progress::after {
 @layer chirpui.component {
 @scope (.chirpui-latest-line) to (.chirpui-latest-line .chirpui-latest-line) {
 .chirpui-latest-line {
+    box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     gap: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    min-inline-size: 0;
+    max-inline-size: 100%;
     padding-block-start: var(--chirpui-spacing-sm);
     border-block-start: 1px solid var(--chirpui-border-subtle);
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
 }
 
+.chirpui-latest-line > :where(:not(script, style, template)) {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    margin-block: 0;
+}
+
 .chirpui-latest-line__label {
+    flex: 0 0 auto;
     color: var(--chirpui-text-muted);
     font-weight: var(--chirpui-ui-font-weight-semibold);
 }
@@ -19148,6 +19167,7 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-latest-line__meta a {
     color: var(--chirpui-link);
     text-decoration: none;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-latest-line__title:hover,
@@ -19159,10 +19179,15 @@ body.htmx-request .chirpui-nav-progress::after {
     display: inline-flex;
     flex-wrap: wrap;
     gap: var(--chirpui-spacing-xs);
+    min-inline-size: 0;
+    max-inline-size: 100%;
     color: var(--chirpui-text-muted);
 }
 
 .chirpui-latest-line__tooltip {
+    display: inline-flex;
+    min-inline-size: 0;
+    max-inline-size: 100%;
     vertical-align: baseline;
 }
 }
@@ -19172,10 +19197,17 @@ body.htmx-request .chirpui-nav-progress::after {
 @layer chirpui.component {
 @scope (.chirpui-chip-group) to (.chirpui-chip-group .chirpui-chip-group) {
 .chirpui-chip-group {
+    box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--chirpui-spacing-xs);
+    min-inline-size: 0;
+    max-inline-size: 100%;
+}
+
+.chirpui-chip-group > :where(:not(script, style, template)) {
+    margin-block: 0;
 }
 }
 }
@@ -19184,10 +19216,12 @@ body.htmx-request .chirpui-nav-progress::after {
 @scope (.chirpui-chip) to (.chirpui-chip .chirpui-chip) {
 .chirpui-chip {
     --chirpui-chip-color: var(--chirpui-accent);
+    box-sizing: border-box;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: var(--chirpui-spacing-2xs);
+    min-inline-size: 0;
     max-inline-size: 100%;
     min-height: calc(var(--chirpui-spacing) + var(--chirpui-spacing-xs));
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
