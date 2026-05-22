@@ -808,6 +808,14 @@ class TestIslands:
         assert "chirpui-island-fallback" in html
         assert "Fallback" in html
 
+    def test_island_root_css_owns_fallback_rhythm(self) -> None:
+        css = _chirpui_css()
+
+        assert ".chirpui-island-root" in css
+        assert ".chirpui-island-fallback" in css
+        assert ".chirpui-island-fallback > :where(:not(script, style, template))" in css
+        assert "max-inline-size: 100%;" in css
+
     def test_island_root_with_raw_attrs(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/islands.html" import island_root %}'
@@ -5400,6 +5408,16 @@ class TestWizardForm:
         idx_result = html.find('id="update-result"')
         idx_content = html.find("Form content")
         assert idx_result < idx_content
+
+    def test_fragment_island_css_owns_mutation_region_rhythm(self) -> None:
+        css = _chirpui_css()
+
+        assert ".chirpui-fragment-island > :where(:not(script, style, template))" in css
+        assert (
+            ".chirpui-fragment-island > :where(:not(script, style, template)) + :where(:not(script, style, template))"
+            in css
+        )
+        assert ".chirpui-fragment-island > .chirpui-fragment-island:empty" in css
 
     def test_poll_trigger_renders_hidden_htmx_button(self, env: Environment) -> None:
         html = env.from_string(

@@ -50,6 +50,7 @@ responsive pressure, or local overflow.
 | Drag/sort rows | sortable/dnd CSS | handle/content pressure, direct child trim, local board overflow |
 | Table row actions | table/row-actions CSS | cell child rhythm, action-cell alignment, local table overflow |
 | Dense metadata | navigation metadata CSS | inline counts, latest lines, and chip groups own compact metadata pressure |
+| Islands/mutation regions | island/fragment CSS | fallback/result rhythm, mutation-region containment, empty result collapse |
 
 ## Next 10 Tasks
 

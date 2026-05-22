@@ -13,6 +13,7 @@ from playwright.async_api import expect
 from tests.browser.conftest import wait_for_alpine, wait_for_htmx
 from tests.browser.gauntlet_detectors import (
     assert_direct_child_margins_trimmed,
+    assert_direct_children_contained,
     assert_local_overflow_owner,
     assert_no_document_horizontal_overflow,
 )
@@ -490,6 +491,83 @@ async def test_showcase_forms_component_rhythm_has_no_overflow(
     await assert_no_document_horizontal_overflow(
         showcase_page, f"showcase-forms-rhythm-{width}x{height}"
     )
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
+async def test_showcase_islands_own_fallback_and_mutation_region_rhythm(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/islands")
+    await wait_for_alpine(showcase_page)
+
+    await expect(showcase_page.locator("#counter-widget-root .chirpui-island-fallback")).to_be_visible()
+    await showcase_page.evaluate(
+        """() => {
+            const longText = "island-region-owner-" + "kappa".repeat(24);
+            const fallback = document.querySelector("#counter-widget-root .chirpui-island-fallback");
+            fallback?.querySelector("h3")?.replaceChildren(longText);
+            fallback?.querySelector("p")?.replaceChildren(longText);
+            document.querySelector("#relationship-island-proof")?.remove();
+            document.querySelector("main")?.insertAdjacentHTML(
+                "afterbegin",
+                `<section id="relationship-island-proof" style="max-width: min(100%, 22rem);">
+                    <div id="proof-fragment" class="chirpui-fragment-island" hx-disinherit="hx-select hx-target hx-swap">
+                        <div id="proof-result" class="chirpui-fragment-island" aria-live="polite"></div>
+                        <p>${longText}</p>
+                        <p>${longText}</p>
+                    </div>
+                </section>`
+            );
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"island-region-relationships-{width}x{height}"
+    )
+    await assert_direct_children_contained(
+        showcase_page,
+        "#counter-widget-root .chirpui-island-fallback",
+        f"island-fallback-{width}x{height}",
+    )
+    await assert_direct_child_margins_trimmed(
+        showcase_page,
+        "#counter-widget-root .chirpui-island-fallback",
+        f"island-fallback-{width}x{height}",
+    )
+    await assert_direct_children_contained(
+        showcase_page,
+        "#proof-fragment",
+        f"island-fragment-{width}x{height}",
+    )
+    metrics = await showcase_page.evaluate(
+        """() => {
+            const fallback = document.querySelector("#counter-widget-root .chirpui-island-fallback");
+            const fragment = document.querySelector("#proof-fragment");
+            const emptyResult = document.querySelector("#proof-result");
+            const paragraphs = [...fragment.querySelectorAll("p")];
+            return {
+                fallbackDisplay: getComputedStyle(fallback).display,
+                fallbackGap: getComputedStyle(fallback).rowGap,
+                fallbackOverflow: Math.ceil(fallback.scrollWidth - fallback.clientWidth),
+                fragmentOverflow: Math.ceil(fragment.scrollWidth - fragment.clientWidth),
+                emptyResultDisplay: getComputedStyle(emptyResult).display,
+                secondParagraphMarginStart: getComputedStyle(paragraphs[1]).marginBlockStart,
+            };
+        }"""
+    )
+    assert metrics["fallbackDisplay"] == "grid", metrics
+    assert metrics["fallbackGap"] != "normal", metrics
+    assert metrics["fallbackOverflow"] <= 1, metrics
+    assert metrics["fragmentOverflow"] <= 1, metrics
+    assert metrics["emptyResultDisplay"] == "none", metrics
+    assert metrics["secondParagraphMarginStart"] != "0px", metrics
 
 
 @pytest.mark.parametrize(

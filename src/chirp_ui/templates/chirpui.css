@@ -10311,18 +10311,46 @@ input[type="date"].chirpui-field__input {
 
 /* Fragment island — HTMX-safe mutation region */
 .chirpui-fragment-island {
-    /* No layout; just a wrapper for hx-disinherit */
+    display: block;
+    box-sizing: border-box;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-fragment-island > :where(:not(script, style, template)) {
+    max-inline-size: 100%;
+    margin-block: 0;
+}
+
+.chirpui-fragment-island > :where(:not(script, style, template)) + :where(:not(script, style, template)) {
+    margin-block-start: var(--chirpui-spacing-sm);
+}
+
+.chirpui-fragment-island > .chirpui-fragment-island:empty {
+    display: none;
+    margin-block-start: 0;
 }
 
 .chirpui-island-root {
     display: block;
-    min-width: 0;
+    box-sizing: border-box;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-island-fallback {
     display: grid;
     gap: var(--chirpui-spacing-sm);
-    min-width: 0;
+    box-sizing: border-box;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+}
+
+.chirpui-island-fallback > :where(:not(script, style, template)) {
+    max-inline-size: 100%;
+    margin-block: 0;
 }
 
 /* DnD primitives — row and board variants */

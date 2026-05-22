@@ -76,6 +76,7 @@ authors and agents fix spacing relationship by relationship.
 | `params_table()` / `signature()` | code-heavy row containment, local horizontal overflow, title/code attachment | shipped | params/signature CSS tests; `/forms` browser proof |
 | `dnd` / `sortable` | drag row/board grouping, handle/content pressure, local board overflow | shipped | visual structure tests; `/forms` browser proof |
 | `table()` / `row_actions()` | cell child rhythm, action-cell alignment, local table overflow | shipped | table/row-action CSS tests; `/forms` browser proof |
+| `island_root()` / `fragment_island()` | fallback/result region rhythm, mutation-region containment | shipped | island/fragment CSS tests; `/islands` browser proof |
 | `modal` / `drawer` / `tray` / `panel` | header/body/footer region rhythm | shipped | CSS/browser proof; region margins, wrapping, and local overflow owned by containers |
 | navigation primitives and dense metadata primitives | item metadata, rails, trays, dense chrome, inline count/chip/activity rows | partial | dense navigation docs and browser proof |
 
@@ -101,6 +102,15 @@ add local margins between search, filters, selection state, and results.
 Modals, drawers, trays, and panels own header/body/footer separation, scroll
 ownership, action row rhythm, direct child margin trimming, and long-token
 containment inside their local region.
+
+### Islands And Mutation Regions
+
+`island_root()` owns the fallback relationship for no-build interactive regions:
+fallback children are contained, direct margins are trimmed, and long server
+fallback text cannot widen the page. `fragment_island()` and `safe_region()`
+own the HTMX mutation-region relationship: direct swapped children are trimmed
+and attached with a small owned rhythm, nested empty result regions collapse,
+and result/content pairs no longer need local margin helpers.
 
 ### Lists, Rows, And Dense Collections
 
