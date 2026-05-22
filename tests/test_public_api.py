@@ -4,7 +4,7 @@ Sprint 3.2 of the agent-grounding-depth epic: the shipped manifest is
 reachable offline via the package itself, so an agent can ground zero-shot
 after ``pip install chirp-ui`` with no build step.
 
-See ``docs/PLAN-agent-grounding-depth.md § Sprint 3`` and
+See ``docs/plans/done/PLAN-agent-grounding-depth.md § Sprint 3`` and
 ``docs/DESIGN-manifest-signature-extraction.md``.
 """
 

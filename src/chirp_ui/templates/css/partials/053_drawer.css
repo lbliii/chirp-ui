@@ -4,7 +4,7 @@
    Upper scope boundary `.chirpui-drawer .chirpui-drawer` stops outer-drawer
    rules at the first nested drawer. Drawer is a native `<dialog>` so its
    `::backdrop` is a pseudo-element on `:scope`, not a descendant.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {

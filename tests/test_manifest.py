@@ -9,7 +9,7 @@ manifest makes agents hallucinate. These tests pin the contract:
 * Every ``descriptor.emits`` class appears in the manifest.
 * Output serializes to valid JSON.
 
-See ``docs/PLAN-css-scope-and-layer.md § Sprint 7``.
+See ``docs/plans/PLAN-css-scope-and-layer.md § Sprint 7``.
 """
 
 import json

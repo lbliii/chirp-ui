@@ -21,9 +21,9 @@ Chirp UI has crossed the architecture-risk threshold:
 
 - `chirpui-manifest@5` projects registry metadata for components, params,
   slots, classes, tokens, runtime requirements, maturity, and authoring hints.
-- `336` components are manifest-visible.
-- `202` components are stable, `93` are experimental, `39` are legacy, and
-  `2` are internal.
+- Current component and maturity counts come from the generated manifest. Check
+  them from source with `python -m chirp_ui.manifest --json` or
+  `src/chirp_ui/manifest.json` instead of copying static counts into this plan.
 - The preferred authoring surface is intentionally narrow: composition
   primitives such as `stack`, `cluster`, `grid`, `frame`, `block`, `layer`,
   and `prose`.

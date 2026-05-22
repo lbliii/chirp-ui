@@ -56,11 +56,15 @@ This is exactly the shape the manifest needs. `metric_card`'s empty `slots` is *
 
 ### Decision
 
-**Primary**: use `kida.analysis.Template.def_metadata()` for everything AST-derived: `params`, direct `slots`, `has_default_slot`, `depends_on`, `lineno`, `template_name`.
+**Primary**: use `kida.analysis.Template.def_metadata()` for everything
+AST-derived: `params`, direct `slots`, `has_default_slot`, `depends_on`,
+`lineno`, `template_name`.
 
 **Comments-only fallback**: kida's AST drops `{# ... #}` comments. Two pieces of metadata live in comments only:
 - `{#- chirp-ui: <description> -#}` — leading doc-block convention (32/195 templates today).
-- `{# @provides _key #}` and `{# @consumes _key from: ... #}` — context-flow annotations (24/195 templates today).
+- `{# @provides _key #}` and `{# @consumes _key from: ... #}` —
+  context-flow annotations parsed by `chirp_ui.inspect.list_provides()` and
+  `chirp_ui.inspect.list_consumes()`.
 
 For these, parse the raw template source with two small stdlib `re` patterns (~10 LOC total). No third-party parser. No new runtime dependency.
 
@@ -99,10 +103,14 @@ btn:
   ]
   slots: ()
   has_default_slot: False
-  depends_on: frozenset({'_bar_density', '_suspense_busy'})  # — also gives us 'consumes' for free
+  depends_on: frozenset({'_bar_density', '_suspense_busy'})
 ```
 
-Note: `depends_on` appears to give us `consumes` automatically — the AST already tracks which context paths the macro reads. Sprint 2 should evaluate using `depends_on` as the source for `consumes` instead of regex on annotations. Annotations remain useful for *human-readable comment-cited intent*, but the AST is authoritative for what's actually read.
+Note: `depends_on` is a useful AST signal for context reads, but the shipped
+manifest builder gets `provides` and `consumes` from
+`chirp_ui.inspect.list_provides()` and `chirp_ui.inspect.list_consumes()`.
+Annotations remain both the human-readable intent and the builder source for the
+manifest context-flow fields.
 
 ---
 
@@ -130,8 +138,8 @@ Note: `depends_on` appears to give us `consumes` automatically — the AST alrea
       // ... 11 more
     ],
     "description": "Overview/KPI wrappers for dashboard-style pages...",  // from {#- chirp-ui: ... -#} block; "" if absent
-    "provides": ["_card_variant"],              // hand-authored {# @provides _key #} comment annotations
-    "consumes": ["_bar_density", "_suspense_busy"],  // from kida DefMetadata.depends_on (filtered to underscore-prefixed keys)
+    "provides": ["_card_variant"],              // from list_provides()
+    "consumes": ["_bar_density", "_suspense_busy"],  // from list_consumes()
     "has_default_slot": false,                  // from kida DefMetadata; true when {% slot %} (unnamed) appears
     "lineno": 16                                // source line of {% def %} — useful for editor jump-to-def
   }
@@ -145,8 +153,8 @@ Note: `depends_on` appears to give us `consumes` automatically — the AST alrea
 | `macro` | template AST | `str \| null` | `null` | Null when descriptor has no template (e.g. CSS-only `auto` category). |
 | `params` | kida `DefParamInfo` | array of `{name, has_default, is_required}` | `[]` | `is_required = !has_default`. Annotation field omitted in @2 (kida always emits `null` here today). |
 | `description` | regex on raw source | `str` | `""` | Stripped & dedented. First paragraph of the `{#- chirp-ui: ... -#}` doc-block. Newlines collapsed to spaces in a planned `description_short` future field — out of scope for @2. |
-| `provides` | regex on raw source | `array[str]` | `[]` | Sourced from `{# @provides _key — consumed by: ... #}` annotations. Sorted. |
-| `consumes` | kida `depends_on` (filtered to keys starting with `_`) | `array[str]` | `[]` | Authoritative source is the AST, not the annotation. Annotation comment becomes a documentation aid; manifest publishes the AST truth. |
+| `provides` | `chirp_ui.inspect.list_provides()` | `array[str]` | `[]` | Sourced from `{# @provides _key — consumed by: ... #}` annotations. Sorted. |
+| `consumes` | `chirp_ui.inspect.list_consumes()` | `array[str]` | `[]` | Sourced from `{# @consumes _key from: ... #}` annotations. Sorted. |
 | `has_default_slot` | kida `DefMetadata` | `bool` | `false` | |
 | `lineno` | kida `DefMetadata` | `int` | `0` | |
 
@@ -255,8 +263,8 @@ The build script itself runs single-threaded. No shared mutable state during gen
 
 These surfaced during investigation. Logged here so they get explicit treatment, not lost:
 
-1. **Should `consumes` come from `depends_on` (AST) or from `@consumes` annotations (comment)?** Recommendation: **AST is authoritative** in the manifest; annotations stay as documentation aids. Sprint 2 task 2.2 confirms with empirical comparison across 24 annotated templates.
-2. **Filter for `depends_on`**: kida's `depends_on` includes *all* context reads, not just provide/consume. We need to filter to underscore-prefixed keys (the convention in chirp-ui per `CLAUDE.md § Provided context keys`). Sprint 2 codifies this.
+1. **Should `consumes` come from `depends_on` (AST) or from `@consumes` annotations (comment)?** The shipped builder uses `chirp_ui.inspect.list_consumes()` so the annotated provide/consume contract remains the manifest source. `depends_on` remains an AST audit signal for future drift checks.
+2. **Filter for `depends_on`**: kida's `depends_on` includes *all* context reads, not just provide/consume. Future AST drift checks should filter to underscore-prefixed keys before comparing against annotated consumes.
 3. **Doc-block parsing**: the `{#- chirp-ui: ... -#}` convention currently has an informal multi-line shape — first line is the title, subsequent lines describe usage. For Sprint 4, capture the full block as `description`; future schema version may split into `summary` and `details`.
 4. **Param defaults in @3?** If a consumer asks for default values (e.g. to render docs showing `cols=3`), revisit. Today nobody asks.
 

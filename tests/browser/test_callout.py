@@ -5,7 +5,7 @@ variant rendering and that the upper boundary `.chirpui-callout .chirpui-callout
 keeps outer-callout variant backgrounds and `:has()`-driven header autohide
 from bleeding onto a nested callout.
 
-See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
 """
 
 import pytest

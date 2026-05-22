@@ -10,7 +10,7 @@
    The `.chirpui-confirm` variant lives on the same dialog as
    `.chirpui-modal` so it composes via `:scope.chirpui-confirm` inside
    the envelope.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {

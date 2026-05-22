@@ -56,6 +56,9 @@ The retained `chirp-theme` contract is intentionally explicit:
 
 - canonical shell/docs/pages: `base.html`, `home.html`, `page.html`, `doc/home.html`, `doc/list.html`, `doc/single.html`
 - retained core parity: `blog/shell.html`, `blog/list.html`, `blog/single.html`, `post.html`, `search.html`, and `404.html`
+- taxonomy/archive/author pages, learning/content pages, autodoc/API reference
+  pages, shortcodes, embeds, root aliases, and utility pages listed in the
+  parity matrix acceptance gates
 - shared shell partials and components that support those templates
 
 The current parity and redesign decisions live in

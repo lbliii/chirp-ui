@@ -32,6 +32,8 @@ theme:
 - A standalone theme package with its own shell templates, partials, and assets
 - Static-first templates for `base.html`, `home.html`, `page.html`, `doc/home.html`, `doc/list.html`, and `doc/single.html`
 - Retained core parity templates for `blog/shell.html`, `blog/list.html`, `blog/single.html`, `post.html`, `search.html`, and `404.html`
+- Retained taxonomy/archive/author, learning/content, autodoc/API reference,
+  shortcode/embed, root alias, and utility templates listed in the parity matrix
 
 ## Design Scope
 
@@ -83,9 +85,8 @@ runtime dependence on Bengal default internals.
 target, but it does not treat the copied default templates and CSS as the target
 implementation.
 
-- Retained: shell, docs, generic pages, blog/post, search, and 404
-- Future parity: taxonomy/archive/authors, tracks/tutorial/notebook/changelog/resume
-- Future parity: autodoc/reference/API-hub families, rebuilt with Chirp UI-native reference patterns
+- Retained: shell, docs, generic pages, blog/post, search, 404, taxonomy/archive/authors, learning/content, autodoc/reference/API-hub, shortcodes/embeds, root aliases, and utility pages
+- Retained surfaces should be rebuilt with Chirp UI-native templates and tokens rather than preserved as copied default-theme implementations
 - Deferred: niche graph/data-table/experimental UI until an output contract needs them
 
 The repo-level parity matrix in `docs/CHIRP-THEME-PARITY-MATRIX.md` is the

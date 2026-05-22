@@ -6,7 +6,7 @@ a discoverable macro surfaces ``params`` (positional order, ``has_default`` /
 ``is_required`` flags), ``macro`` (resolved identifier), ``lineno``, and
 composite slot-forwarding metadata.
 
-See ``docs/PLAN-agent-grounding-depth.md § Sprint 1`` and
+See ``docs/plans/done/PLAN-agent-grounding-depth.md § Sprint 1`` and
 ``docs/DESIGN-manifest-signature-extraction.md``.
 """
 

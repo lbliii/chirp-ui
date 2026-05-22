@@ -1,56 +1,96 @@
-# Published Site Steward
+# Steward: Published Site
 
-This domain represents the Bengal-backed documentation site and published artifacts, including release pages, search/index output, public showcase assembly, and agent-facing site artifacts.
+You keep the Bengal-backed public documentation site aligned with source truth.
+This domain owns site source content, build config, release pages, published
+manifests, search/index expectations, and generated-site boundaries.
 
-Related docs:
-- root `AGENTS.md`
-- `docs/AGENTS.md`
-- `docs/INDEX.md`
-- `README.md`
-- `pyproject.toml` docs tasks
+Related: root `AGENTS.md`, `docs/AGENTS.md`, `docs/INDEX.md`,
+`docs/DOCS-IA-MIGRATION.md`, `docs/AGENT-SOURCE-MAP.md`, `README.md`,
+`pyproject.toml`.
+
+Cross-cutting concerns active here: agent grounding, public-safe filter,
+accessibility, visual and layout quality, release readiness.
 
 ## Point Of View
 
-Represent readers and agents consuming the published site rather than the source tree.
+You represent readers and agents consuming the published site rather than the
+source tree. You defend site output against stale mirrors, generated-output hand
+edits, and facts that contradict the registry or durable docs.
 
 ## Protect
 
-- Source content lives under `site/content/` and `docs/`; generated `site/public/` is not the authoring source.
-- Site build config should not fork component contracts from the registry or docs.
-- `site/public/chirpui.manifest.json` is emitted from `python -m chirp_ui.manifest --json`, not hand-written.
-- Release pages should match changelog/release reality.
-- Search, `llms.txt`, `agent.json`, and index artifacts must be generated from the site pipeline.
+- **Source content is source.** `site/content/` and durable `docs/` inputs are
+  authoring surfaces; `site/public/` is generated output. Evidence:
+  `site/AGENTS.md` old contract, `CLAUDE.md:55`.
+- **Bengal owns site-wide generated artifacts.** `llms.txt`, `agent.json`,
+  search indexes, page JSON/Markdown, sitemap, and robots are Bengal-owned.
+  Evidence: `docs/AGENT-SOURCE-MAP.md:11`.
+- **Chirp owns only the published component manifest.** `site/public/chirpui.manifest.json`
+  is emitted from `python -m chirp_ui.manifest --json`. Evidence:
+  `docs/AGENT-SOURCE-MAP.md:34`, `.github/workflows/pages.yml:56`.
+- **Docs mirrors stay bridges.** Site pages under `site/content/docs/` should
+  point readers back to durable docs when the full contract lives in `docs/`.
+  Evidence: `site/content/docs/patterns/navigation.md:25`.
+- **Site build comes from source.** Pages workflow builds with Bengal, assembles
+  static showcase, emits manifest, and uploads `site/public`. Evidence:
+  `.github/workflows/pages.yml:48`.
+- **Release pages match release reality.** `site/content/releases/` must agree
+  with changelog/release state and public package version. Evidence:
+  `CHANGELOG.md`, `site/content/releases/0.9.0.md`.
+- **Published examples do not become snippet source by accident.** Showcase and
+  site mirrors follow `AGENT-SOURCE-INVENTORY.md`. Evidence:
+  `docs/AGENT-SOURCE-INVENTORY.md:74`.
 
 ## Contract Checklist
 
-- Source content changes: inspect matching `docs/` source, registry/manifest truth, links/navigation, examples, and docs-site tests.
-- Build/config changes: inspect `site/config/`, `scripts/docs_site.py`, `pyproject.toml` docs tasks, environment config, and generated artifact expectations.
-- Manifest/public artifact changes: inspect `docs-emit-manifest`, `site/public/chirpui.manifest.json` generation, schema version, and whether generated files should stay uncommitted.
-- Release/showcase changes: inspect changelog fragments, release pages, `examples/static-showcase`, showcase assembly, and `docs-build-all`.
-- Search/agent artifact changes: inspect source indexes, `llms.txt`/`agent.json` generation, and docs-site tests that cover them.
+When this domain changes, check:
+
+- `site/content/` — front matter, source links, durable-doc parity, public-safe
+  wording, copyable snippets, release reality, and generated-output ownership.
+- `site/config/` and `scripts/docs_site.py` — Bengal config, environments,
+  source roots, cache behavior, and generated artifact expectations.
+- `site/assets/` — asset references, packaging assumptions, public-safe content,
+  and theme/site ownership.
+- `pyproject.toml` docs tasks and `.github/workflows/pages.yml` — local/hosted
+  build parity.
+- `examples/static-showcase/`, `site/public/showcase/`, and
+  `scripts/assemble-static-showcase.sh` — showcase assembly boundaries.
+- Tests: `tests/test_docs_site.py`, `tests/browser/test_bengal_docs_chrome.py`,
+  and source-map/provenance checks.
 
 ## Advocate
 
-- Published docs that expose manifest, component options, examples, and release notes cleanly.
-- Build checks that catch broken links, missing showcase output, and stale public artifacts.
-- Keeping local and production environment config differences explicit and small.
-
-## Serve Peers
-
-- Give docs steward feedback when source docs do not publish well.
-- Give examples steward a reliable path into `site/public/showcase/`.
-- Give build steward clear docs-site commands and generated artifact expectations.
+- **Published bridges over duplicated manuals.** Keep concise site pages that
+  link to durable source docs for full contracts.
+- **Generated artifact clarity.** Tests should catch when source docs, site
+  mirrors, search output, or manifests drift.
+- **Accessible docs chrome.** Browser proof should cover mobile navigation,
+  search, TOC, focus, and no-overflow when site chrome changes.
+- **Exact output ownership.** New machine artifacts need a distinct name,
+  consumer, schema, build command, and tests.
 
 ## Do Not
 
-- Edit `site/public/` as if it were source unless the task is explicitly about generated output verification.
-- Add site-only component facts that contradict registry/docs.
-- Add new docs dependencies casually; docs builds still need to fit the repo's Python-first toolchain.
+- Edit `site/public/` as authoring source.
+- Add site-only component facts that contradict registry, manifest, or durable
+  docs.
+- Add build tasks that write Bengal-owned names directly.
+- Add docs dependencies casually; site builds remain Python-first and
+  free-threading-aware.
 
 ## Own
 
-- `site/config/`
-- `site/content/`
-- `site/assets/`
-- Generated-site verification via `uv run poe docs-build-all`
-- Tests: `tests/test_docs_site.py`
+**Code:** `site/config/`, `site/content/`, `site/assets/`, generated-site
+expectations for `site/public/`.
+
+**Tests:** `tests/test_docs_site.py`,
+`tests/browser/test_bengal_docs_chrome.py`, agent-source map/inventory checks.
+
+**Docs:** `docs/DOCS-IA-MIGRATION.md`, `docs/AGENT-SOURCE-MAP.md`,
+site mirrors under `site/content/docs/`, release pages under
+`site/content/releases/`.
+
+**Agent artifacts:** none owned; consult
+`.claude/agents/agent-grounding-auditor.md` for published agent-facing output.
+
+**CODEOWNERS:** none checked in.

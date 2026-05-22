@@ -7,7 +7,7 @@
    would otherwise cascade to descendant `.chirpui-video-card` instances
    and flip their borders on outer hover — same bleed pattern that the
    card pilot fixed.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {

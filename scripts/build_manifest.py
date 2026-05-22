@@ -5,7 +5,7 @@ Pure Python, stdlib only, deterministic. Mirrors
 when the committed manifest drifts from the registry.
 
 See ``docs/DESIGN-manifest-signature-extraction.md § Decision 3`` and
-``docs/PLAN-agent-grounding-depth.md § Sprint 3``.
+``docs/plans/done/PLAN-agent-grounding-depth.md § Sprint 3``.
 
 Usage
 -----

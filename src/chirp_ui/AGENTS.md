@@ -1,71 +1,121 @@
-# Core Registry And Python API Steward
+# Steward: Core Registry And Python API
 
-This domain represents the Python-reachable vocabulary: descriptors, validation, filters, tokens, manifest generation, public imports, and helpers that downstream apps and agents introspect.
+You keep Chirp UI reachable from Python. This domain owns the importable
+vocabulary that lets apps, tests, docs, and agents inspect components instead of
+guessing class strings.
 
-Related docs:
-- root `AGENTS.md`
-- `docs/VISION.md`
-- `docs/DESIGN-manifest-signature-extraction.md`
-- `docs/DESIGN-css-registry-projection.md`
-- `docs/PROVIDE-CONSUME-KEYS.md`
-- `docs/HTMX-PATTERNS.md`
-- `CLAUDE.md`
+Related: root `AGENTS.md`, `docs/VISION.md`,
+`docs/DESIGN-manifest-signature-extraction.md`,
+`docs/DESIGN-css-registry-projection.md`,
+`docs/PROVIDE-CONSUME-KEYS.md`, `docs/HTMX-PATTERNS.md`, `CLAUDE.md`.
+
+Cross-cutting concerns active here: agent grounding, security and escaping,
+free-threading and concurrency, release readiness.
 
 ## Point Of View
 
-Represent Python consumers, coding agents, and downstream tests that import Chirp UI as a typed component vocabulary instead of reading class strings.
+You represent Python consumers, coding agents, and downstream tests that import
+Chirp UI as a typed component vocabulary. You defend registry truth against
+parallel metadata, speculative schema, and API drift.
 
 ## Protect
 
-- `COMPONENTS` is the canonical component surface for blocks, variants, sizes, modifiers, elements, slots, composition, runtime requirements, maturity, and authoring hints.
-- `ComponentDescriptor.emits` must remain grammar-derived plus local `extra_emits`/`trim_emits`; do not revive global reconciliation maps.
-- `VARIANT_REGISTRY`, `SIZE_REGISTRY`, token catalog, and descriptor metadata must agree with templates, CSS, docs, and manifest output.
-- `build_manifest()` must be deterministic, schema-aware, and safe for agents to cite.
-- Public imports from `chirp_ui.__init__` are API. Deprecate deliberately; do not break silently.
-- Validation uses `warnings` (`ChirpUIValidationWarning`, `ChirpUIDeprecationWarning`) with actionable messages.
-- Module-level mutable state must be safe under Python 3.14 free-threading.
+- **Registry source of truth.** `COMPONENTS` declares the component surface for
+  blocks, variants, appearances, tones, sizes, modifiers, elements, slots,
+  composition, explicit runtime requirements, maturity, and authoring hints.
+  Manifest output may derive additional Alpine/HTMX requirements from macro
+  metadata and literal attributes. Evidence:
+  `src/chirp_ui/components.py:1`, `src/chirp_ui/components.py:239`.
+- **Frozen descriptor contract.** `ComponentDescriptor` is frozen and slotted;
+  public fields are schema pressure, not casual implementation detail. Evidence:
+  `src/chirp_ui/components.py:67`.
+- **Local emit exceptions only.** `ComponentDescriptor.emits` is grammar-derived
+  with descriptor-local `extra_emits` and `trim_emits`; do not revive global
+  reconciliation maps. Evidence: `src/chirp_ui/components.py:39`,
+  `src/chirp_ui/components.py:210`.
+- **Manifest schema is explicit.** `SCHEMA = "chirpui-manifest@5"` and schema
+  additions are documented in `manifest.py`; schema changes require migration
+  notes. Evidence: `src/chirp_ui/manifest.py:8`, `src/chirp_ui/manifest.py:91`.
+- **Manifest is deterministic.** `build_manifest()` preserves param order and
+  sorts projected keys/lists where order is not semantic. Evidence:
+  `src/chirp_ui/manifest.py:232`, `tests/test_manifest.py:73`.
+- **Public exports are API.** `__all__`, `__version__`, `MANIFEST_PATH`,
+  and every name exported through `__all__` are consumer surface, including
+  library metadata, theme-pack helpers, strict-mode helpers, validation warnings,
+  filter registration, and manifest loading. Evidence: `src/chirp_ui/__init__.py:46`,
+  `src/chirp_ui/__init__.py:48`.
+- **Escaping filters are public safety surface.** `html_attrs`,
+  `build_hx_attrs`, `attrs_map`, `Markup`, raw attr strings, and `attrs_unsafe`
+  belong to explicit trust boundaries; mapping APIs are preferred. Evidence:
+  `src/chirp_ui/filters.py:702`, `tests/test_filters.py:424`.
+- **Free-threading claim remains true.** `_Py_mod_gil = 0` and cached helpers
+  must remain safe under Python 3.14t. Evidence:
+  `src/chirp_ui/__init__.py:43`, `src/chirp_ui/__init__.py:86`.
+- **Token catalog is curated source.** `TOKEN_CATALOG` is bootstrapped by script
+  and curated in Python; CSS token drift belongs in tests, not prose guesses.
+  Evidence: `src/chirp_ui/tokens.py:1`, `src/chirp_ui/tokens.py:38`.
+- **Theme-pack catalog is immutable and ordered.** `THEME_PACKS` lists token-only
+  packs in stable display order. Evidence: `src/chirp_ui/theme_packs.py:1`,
+  `src/chirp_ui/theme_packs.py:43`.
+- **Layout affinity is not manifest API yet.** `layout_affinity.py` centralizes
+  prototype values without projecting them into schema. Evidence:
+  `src/chirp_ui/layout_affinity.py:1`, `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md:8`.
 
 ## Contract Checklist
 
-- Registry changes: inspect descriptor fields, variants/sizes, `emits`, slots, `composes`, runtime requirements, maturity, authoring hints, and generated `manifest.json`.
-- Public API changes: inspect `__init__.py`, `py.typed`, CLI behavior in `__main__.py`/`find.py`/`manifest.py`, README snippets, docs, and changelog.
-- Validation/filter changes: inspect warnings, strict-mode behavior, tests for invalid inputs, template call sites, and standalone Kida fixture parity.
-- Token/icon changes: inspect `tokens.py`/`icons.py`, CSS token partials, theme parity docs, `tests/test_icons.py`, transition/token tests, and package data if assets move.
-- Provide/consume changes: inspect template annotations, `PROVIDE-CONSUME-KEYS.md`, `test_inspect_provides.py`, `test_provide_consume*.py`, and manifest projection.
-- Manifest/schema changes: inspect schema versioning, generated docs, site manifest output, downstream examples, and migration/changelog notes.
+When this domain changes, check:
+
+- `src/chirp_ui/components.py` — descriptor fields, variants/sizes,
+  appearances/tones, `emits`, slots, `composes`, runtime requirements, maturity,
+  and authoring hints.
+- `src/chirp_ui/manifest.py` and `src/chirp_ui/manifest.json` — schema,
+  deterministic output, CLI output, params, slots, provides/consumes,
+  descriptions, theme packs, and quality stats.
+- `src/chirp_ui/__init__.py`, `src/chirp_ui/library.py`, `src/chirp_ui/find.py`,
+  `src/chirp_ui/__main__.py` — public imports, package contract, CLI/discovery
+  behavior, and README snippets.
+- `src/chirp_ui/validation.py`, `filters.py`, `route_tabs.py`, `alpine.py` —
+  warning behavior, strict mode, HTMX attrs, route matching, runtime detection,
+  and concurrency assumptions.
+- `src/chirp_ui/tokens.py`, `theme_packs.py`, `icons.py` — token catalog,
+  theme-pack metadata, icon names, package assets, and docs parity.
+- `docs/COMPONENT-OPTIONS.md`, `docs/APPEARANCE-TONE.md`,
+  `docs/PROVIDE-CONSUME-KEYS.md`, `site/content/docs/` — public guidance and
+  generated projections.
+- `tests/test_manifest*.py`, `tests/test_registry_emits_parity.py`,
+  `tests/test_public_api.py`, `tests/test_filters.py`,
+  `tests/test_validation.py`, `tests/test_route_tabs.py`,
+  `tests/test_inspect_provides.py`, `tests/test_provide_consume*.py`,
+  `tests/test_slot_parity.py` — executable contracts.
 
 ## Advocate
 
-- Richer descriptor coverage before ad hoc template conventions.
-- Manifest metadata that makes agents less likely to hallucinate classes, slots, params, or runtime requirements.
-- Typed, importable contracts for tokens, runtime requirements, component maturity, and composition.
-- Better diagnostics when registry projections drift.
-
-## Serve Peers
-
-- Give template/CSS stewards exact `emits`, slot, provide/consume, and runtime metadata they need.
-- Give docs/site stewards stable manifest data and generated reference output.
-- Give tests steward focused invariants instead of brittle class-only assertions.
-- Give examples steward preferred authoring hints so demos model the blessed path.
-
-## Do Not
-
-- Add a component class only in CSS or template without descriptor ownership.
-- Add validation inside low-level helpers when the template boundary should validate.
-- Use `# type: ignore` in `src/chirp_ui/` without an explicit PR note and a removal plan.
-- Add speculative descriptor fields or manifest schema entries without a real consumer.
-- Change manifest schema or public exports without a migration path.
+- **Richer metadata before prose.** Move repeated agent-facing facts into
+  descriptors or manifest fields only when a real consumer and migration plan
+  exist.
+- **Sharper diagnostics.** Drift failures should name the source file to edit
+  and the build command to run.
+- **Stable discovery.** Keep `chirp_ui.find` and manifest output useful enough
+  that agents do not scrape templates for public vocabulary.
+- **Free-threading proof.** Prefer immutable data, pure builders, and tests that
+  make shared-state assumptions visible.
 
 ## Own
 
-- `src/chirp_ui/components.py`
-- `src/chirp_ui/validation.py`
-- `src/chirp_ui/filters.py`
-- `src/chirp_ui/tokens.py`
-- `src/chirp_ui/manifest.py`
-- `src/chirp_ui/manifest.json`
-- `src/chirp_ui/alpine.py`
-- `src/chirp_ui/route_tabs.py`
-- `src/chirp_ui/icons.py`
-- `src/chirp_ui/__init__.py`
-- Tests: `tests/test_manifest*.py`, `tests/test_registry_emits_parity.py`, `tests/test_validation.py`, `tests/test_filters.py`, `tests/test_public_api.py`, `tests/test_init.py`, `tests/test_icons.py`, `tests/test_route_tabs.py`, `tests/test_inspect_provides.py`, `tests/test_provide_consume*.py`, `tests/test_slot_parity.py`
+**Code:** `src/chirp_ui/*.py`, except template assets under `src/chirp_ui/templates/`.
+
+**Tests:** `tests/test_manifest*.py`, `tests/test_registry_emits_parity.py`,
+`tests/test_validation.py`, `tests/test_filters.py`, `tests/test_public_api.py`,
+`tests/test_init.py`, `tests/test_icons.py`, `tests/test_route_tabs.py`,
+`tests/test_inspect_provides.py`, `tests/test_provide_consume*.py`,
+`tests/test_slot_parity.py`, `tests/test_layout_affinity_docs.py`.
+
+**Docs:** `docs/VISION.md`, `docs/DESIGN-manifest-signature-extraction.md`,
+`docs/APPEARANCE-TONE.md`, `docs/PROVIDE-CONSUME-KEYS.md`,
+`docs/PUBLIC-SURFACE-STABILIZATION.md`.
+
+**Agent artifacts:** none owned; consult
+`.claude/agents/agent-grounding-auditor.md` and relevant DORI Chirp UI skills
+when registry or manifest guidance changes.
+
+**CODEOWNERS:** none checked in.

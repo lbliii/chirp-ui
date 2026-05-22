@@ -4,7 +4,7 @@
  * Source partials: src/chirp_ui/templates/css/
  * Rebuild:         poe build-css   (or python scripts/build_chirpui_css.py)
  *
- * See docs/PLAN-css-scope-and-layer.md for the authoring model.
+ * See docs/plans/PLAN-css-scope-and-layer.md for the authoring model.
  * ============================================================================
  */
 
@@ -5026,7 +5026,7 @@ a.chirpui-mention:focus-visible {
    `.chirpui-blade` rules (and `.chirpui-blade--parallax .chirpui-surface`)
    stay outside the envelope — blade is a sibling layout concept, not a
    surface variant.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {
@@ -5429,7 +5429,7 @@ a.chirpui-mention:focus-visible {
    `--warning` callout's background tint cannot bleed onto an inner
    `--info` callout, and the `:has()` empty-header autohide rule won't reach
    into nested callouts' headers.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {
@@ -5745,7 +5745,7 @@ a.chirpui-mention:focus-visible {
 
    Upper scope boundary `.chirpui-card .chirpui-card` stops outer-card rules at
    the first nested card, fixing bleed (e.g. outer :hover border-color leaking
-   into an inner card). See docs/PLAN-css-scope-and-layer.md § Sprint 5 and
+   into an inner card). See docs/plans/PLAN-css-scope-and-layer.md § Sprint 5 and
    examples/css-scope-prototype/card.scope.css.
    ========================================================================== */
 
@@ -6245,7 +6245,7 @@ a.chirpui-mention:focus-visible {
    would otherwise cascade to descendant `.chirpui-video-card` instances
    and flip their borders on outer hover — same bleed pattern that the
    card pilot fixed.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {
@@ -6346,7 +6346,7 @@ a.chirpui-mention:focus-visible {
    `.chirpui-channel-card__link:hover .chirpui-channel-card__name` descendant
    rule is the main bleed candidate — without the boundary, hovering the
    outer card's link would tint a nested card's name too.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {
@@ -6695,7 +6695,7 @@ a.chirpui-chapter-item__link:focus-visible {
    The `.chirpui-confirm` variant lives on the same dialog as
    `.chirpui-modal` so it composes via `:scope.chirpui-confirm` inside
    the envelope.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {
@@ -6883,7 +6883,7 @@ a.chirpui-chapter-item__link:focus-visible {
    Upper scope boundary `.chirpui-drawer .chirpui-drawer` stops outer-drawer
    rules at the first nested drawer. Drawer is a native `<dialog>` so its
    `::backdrop` is a pseudo-element on `:scope`, not a descendant.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {
@@ -8853,7 +8853,7 @@ button.chirpui-pagination__link {
 
    Upper scope boundary `.chirpui-tray .chirpui-tray` stops outer-tray rules
    at the first nested tray (defensive — tray-in-tray is unlikely but cheap to
-   scope). See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   scope). See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {
@@ -18981,7 +18981,7 @@ body.htmx-request .chirpui-nav-progress::after {
    Thin wrapper used inside resource index grids. The scope boundary keeps
    future resource-card descendants from leaking into nested resource cards as
    this wrapper grows beyond height/description reset.
-   See docs/PLAN-css-scope-and-layer.md § Migration status.
+   See docs/plans/PLAN-css-scope-and-layer.md § Migration status.
    ========================================================================== */
 
 @layer chirpui.component {

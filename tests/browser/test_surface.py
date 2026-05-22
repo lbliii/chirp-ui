@@ -5,7 +5,7 @@ variant rendering and that the upper boundary `.chirpui-surface .chirpui-surface
 keeps outer-surface variant rules (cornered corner accents, --muted background)
 from bleeding onto a nested surface.
 
-See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
 """
 
 import pytest

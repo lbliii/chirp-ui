@@ -6,7 +6,7 @@
    `.chirpui-channel-card__link:hover .chirpui-channel-card__name` descendant
    rule is the main bleed candidate — without the boundary, hovering the
    outer card's link would tint a nested card's name too.
-   See docs/PLAN-css-scope-and-layer.md § Hardening batch 1.
+   See docs/plans/PLAN-css-scope-and-layer.md § Hardening batch 1.
    ========================================================================== */
 
 @layer chirpui.component {

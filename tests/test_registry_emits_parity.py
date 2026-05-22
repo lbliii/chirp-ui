@@ -13,7 +13,7 @@ a test failure — the printout tells the author which side to fix:
 * **Registry → CSS orphan.** A class the registry promises but that no partial
   defines. Either add the CSS, or trim the descriptor.
 
-See ``docs/PLAN-css-scope-and-layer.md § Sprint 4`` and
+See ``docs/plans/PLAN-css-scope-and-layer.md § Sprint 4`` and
 ``docs/DESIGN-css-registry-projection.md § Decision 4``.
 """
 

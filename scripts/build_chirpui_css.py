@@ -31,7 +31,7 @@ HEADER = """\
  * Source partials: src/chirp_ui/templates/css/
  * Rebuild:         poe build-css   (or python scripts/build_chirpui_css.py)
  *
- * See docs/PLAN-css-scope-and-layer.md for the authoring model.
+ * See docs/plans/PLAN-css-scope-and-layer.md for the authoring model.
  * ============================================================================
  */
 """

@@ -27,21 +27,20 @@ Consumers override via the reserved companion name `app.overrides`, declared *af
 
 `app.overrides` is not reserved by chirp-ui; consumers may name their layer anything, but the documented recipe uses `app.overrides`.
 
-## Decision 2 — Partials directory is `src/chirp_ui/templates/css/`
+## Decision 2 — Partials directory is `src/chirp_ui/templates/css/partials/`
 
 ```
 src/chirp_ui/templates/
     chirpui.css              # GENERATED — do not hand-edit
     css/                     # AUTHORING ROOT
-        _layers.css          # layer declaration line only
-        _reset.css
-        _tokens.css
-        _base.css
-        components/          # one partial per component
-            _card.css
-            _btn.css
+        partials/            # ordered authoring partials
+            001_tokens.css
+            002_reset.css
+            003_base.css
+            004_layout.css
+            045_card.css
+            076_button.css
             …
-        _utility.css
 ```
 
 **Why this path (not `src/chirp_ui/templates/chirpui/css/`):**
@@ -60,7 +59,8 @@ Pure Python, stdlib only, deterministic byte-for-byte given the same input.
 **Output:**
 - `src/chirp_ui/templates/chirpui.css`, containing:
   - A generated-file header comment (committed; warns against hand-edits).
-  - Each partial's contents, preceded by a `/* === <relative path> === */` banner.
+  - The generated layer declaration followed by each partial's contents,
+    preceded by a `/* === <relative path> === */` banner.
   - Trailing newline.
 
 **What the script does NOT do:**
@@ -70,7 +70,8 @@ Pure Python, stdlib only, deterministic byte-for-byte given the same input.
 - No optimization passes — `chirpui.css` stays a human-readable file.
 
 **Why stdlib-only:**
-- Free-threading constraint (see `memory/project_free_threading_tooling_constraint.md`).
+- Free-threading compatibility is a repo-wide non-negotiable; generated-output
+  builders should not add a dependency that becomes part of that review surface.
 - No new runtime deps, no new dev deps, no new supply-chain surface.
 
 **Deterministic:**
