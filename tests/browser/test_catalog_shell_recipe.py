@@ -566,6 +566,94 @@ async def test_showcase_form_control_internals_own_pressure(
     ("width", "height"),
     [(320, 640), (768, 1024), (1280, 900)],
 )
+async def test_showcase_list_and_media_rows_own_relationship_pressure(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/layout")
+    await wait_for_alpine(showcase_page)
+
+    await showcase_page.evaluate(
+        """() => {
+            const longText = "row-relationship-owner-" + "theta".repeat(24);
+            document.querySelector("#relationship-row-proof")?.remove();
+            document.querySelector("main")?.insertAdjacentHTML(
+                "afterbegin",
+                `<section id="relationship-row-proof" style="max-width: min(100%, 28rem);">
+                    <ul class="chirpui-list chirpui-list--bordered" aria-label="Row relationship proof">
+                        <li class="chirpui-list__item"><p>${longText}</p></li>
+                        <li class="chirpui-list__item"><p>${longText}</p></li>
+                    </ul>
+                    <div class="chirpui-media-object" style="margin-top: 1rem;">
+                        <div class="chirpui-media-object__media">
+                            <div style="inline-size: 3rem; block-size: 3rem; background: var(--chirpui-accent); border-radius: var(--chirpui-radius);"></div>
+                        </div>
+                        <div class="chirpui-media-object__body">
+                            <strong>${longText}</strong>
+                            <p>${longText}</p>
+                        </div>
+                        <div class="chirpui-media-object__actions">
+                            <button class="chirpui-btn chirpui-btn--sm" type="button"><span class="chirpui-btn__label">${longText}</span></button>
+                        </div>
+                    </div>
+                </section>`
+            );
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"list-media-row-relationships-{width}x{height}"
+    )
+    metrics = await showcase_page.evaluate(
+        """() => {
+            const proof = document.querySelector("#relationship-row-proof");
+            const list = proof.querySelector(".chirpui-list");
+            const listItems = [...proof.querySelectorAll(".chirpui-list__item")];
+            const mediaObject = proof.querySelector(".chirpui-media-object");
+            const mediaBody = proof.querySelector(".chirpui-media-object__body");
+            const mediaActions = proof.querySelector(".chirpui-media-object__actions");
+            const mediaParagraph = mediaBody.querySelector("p");
+            const listParagraph = listItems[0].querySelector("p");
+            const containers = [list, ...listItems, mediaObject, mediaBody, mediaActions];
+            return {
+                containers: containers.map((el) => ({
+                    className: el.className,
+                    overflow: Math.ceil(el.scrollWidth - el.clientWidth),
+                    width: el.getBoundingClientRect().width,
+                })),
+                listGap: getComputedStyle(list).rowGap,
+                secondItemMarginTop: getComputedStyle(listItems[1]).marginTop,
+                listParagraphMarginStart: getComputedStyle(listParagraph).marginBlockStart,
+                listParagraphMarginEnd: getComputedStyle(listParagraph).marginBlockEnd,
+                mediaParagraphMarginStart: getComputedStyle(mediaParagraph).marginBlockStart,
+                mediaParagraphMarginEnd: getComputedStyle(mediaParagraph).marginBlockEnd,
+                mediaBodyDisplay: getComputedStyle(mediaBody).display,
+                mediaActionsDisplay: getComputedStyle(mediaActions).display,
+                mediaActionsWidth: mediaActions.getBoundingClientRect().width,
+                mediaObjectWidth: mediaObject.getBoundingClientRect().width,
+            };
+        }"""
+    )
+    for metric in metrics["containers"]:
+        assert metric["overflow"] <= 1, {metric["className"]: metric}
+    assert metrics["listGap"] != "normal", metrics
+    assert metrics["secondItemMarginTop"] == "0px", metrics
+    assert metrics["listParagraphMarginStart"] == "0px", metrics
+    assert metrics["listParagraphMarginEnd"] == "0px", metrics
+    assert metrics["mediaParagraphMarginStart"] == "0px", metrics
+    assert metrics["mediaParagraphMarginEnd"] == "0px", metrics
+    assert metrics["mediaBodyDisplay"] == "grid", metrics
+    assert metrics["mediaActionsDisplay"] == "flex", metrics
+    assert metrics["mediaActionsWidth"] <= metrics["mediaObjectWidth"] + 1, metrics
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
 async def test_showcase_search_browse_composites_own_rhythm(
     showcase_page,
     showcase_base_url: str,
@@ -899,6 +987,84 @@ async def test_support_shell_second_domain_has_no_overflow(
         "#support-shell-frame",
         f"support-shell-frame-{width}x{height}",
     )
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
+async def test_support_shell_result_cards_own_relationship_pressure(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/support-shell?queue=product")
+    await wait_for_alpine(showcase_page)
+
+    await expect(showcase_page.locator(".chirpui-result-card").first).to_be_visible()
+    await showcase_page.evaluate(
+        """() => {
+            const longText = "support-result-owner-" + "kappa".repeat(24);
+            const card = document.querySelector(".chirpui-result-card");
+            card.querySelector(".chirpui-result-card__title").textContent = longText;
+            card.querySelector(".chirpui-result-card__subtitle").textContent = longText;
+            card.querySelector(".chirpui-result-card__actions").innerHTML =
+                `<span class="chirpui-badge chirpui-badge--error">${longText}</span>`;
+            card.querySelector(".chirpui-result-card__body").insertAdjacentHTML(
+                "afterbegin",
+                `<p>${longText}</p>`
+            );
+            card.querySelector(".chirpui-result-card__footer").insertAdjacentHTML(
+                "afterbegin",
+                `<span>${longText}</span>`
+            );
+            const inspector = document.querySelector(".chirpui-inspector-panel");
+            inspector.querySelector(".chirpui-inspector-panel__subtitle").textContent = longText;
+            inspector.querySelector(".chirpui-inspector-panel__body").insertAdjacentHTML(
+                "afterbegin",
+                `<p>${longText}</p>`
+            );
+            inspector.querySelector(".chirpui-inspector-panel__footer").insertAdjacentHTML(
+                "afterbegin",
+                `<span>${longText}</span>`
+            );
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"support-result-card-relationships-{width}x{height}"
+    )
+    metrics = await showcase_page.evaluate(
+        """() => [
+            ".chirpui-result-card",
+            ".chirpui-result-card__header",
+            ".chirpui-result-card__copy",
+            ".chirpui-result-card__actions",
+            ".chirpui-result-card__body",
+            ".chirpui-result-card__footer",
+            ".chirpui-inspector-panel",
+            ".chirpui-inspector-panel__body",
+            ".chirpui-inspector-panel__footer",
+        ].map((selector) => {
+            const el = document.querySelector(selector);
+            const firstChild = el.querySelector(":scope > :not(script, style, template)");
+            const style = firstChild ? getComputedStyle(firstChild) : null;
+            return {
+                selector,
+                overflow: Math.ceil(el.scrollWidth - el.clientWidth),
+                marginStart: style?.marginBlockStart ?? null,
+                marginEnd: style?.marginBlockEnd ?? null,
+                width: el.getBoundingClientRect().width,
+            };
+        })"""
+    )
+    for metric in metrics:
+        assert metric["overflow"] <= 1, {metric["selector"]: metric}
+        if metric["marginStart"] is not None:
+            assert metric["marginStart"] == "0px", {metric["selector"]: metric}
+            assert metric["marginEnd"] == "0px", {metric["selector"]: metric}
 
 
 async def test_support_shell_search_updates_dense_workspace_boundary(

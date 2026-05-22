@@ -45,11 +45,12 @@ responsive pressure, or local overflow.
 | Search browse | search_header/resource_index CSS | search/header/filter/results rhythm and result feedback placement |
 | Overlay regions | modal/drawer/tray/panel CSS | header/body/footer rhythm, margin trim, local long-token containment |
 | Form internals | form field CSS | checkbox/radio/range/input-group/search-bar attachment and pressure |
+| List and media rows | list/media/resource/workspace CSS | row separation, leading media/body/actions pressure, result card footer/body rhythm |
 
 ## Next 10 Tasks
 
-1. Audit list, row, media-object, resource-card, params-table, signature, DnD,
-   and sortable relationships.
+1. Audit params-table, signature, DnD, sortable, and table row-action
+   relationships.
 2. Add relationship-specific browser probes for high-risk surfaces instead of
    only document overflow probes.
 3. Remove first-party `chirpui-mt-*` / `chirpui-mb-*` usage when a component

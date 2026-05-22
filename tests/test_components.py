@@ -731,6 +731,22 @@ class TestWorkbench:
         assert ":scope {\n    display: grid;\n    gap: var(--chirpui-rhythm-stack);" in css
         assert ".chirpui-result-card [data-chirpui-pressure" not in css
 
+    def test_workspace_result_card_css_owns_row_pressure_and_child_rhythm(self) -> None:
+        css = _chirpui_css()
+        for selector in (
+            ".chirpui-result-card__copy > :where(:not(script, style, template))",
+            ".chirpui-result-card__actions > :where(:not(script, style, template))",
+            ".chirpui-result-card__body > :where(:not(script, style, template))",
+            ".chirpui-result-card__footer > :where(:not(script, style, template))",
+            ".chirpui-inspector-panel__body > :where(:not(script, style, template))",
+            ".chirpui-inspector-panel__footer > :where(:not(script, style, template))",
+        ):
+            assert selector in css
+        assert ".chirpui-result-card__header" in css
+        assert "flex-wrap: wrap;" in css
+        assert "flex: 999 1 12rem;" in css
+        assert "max-inline-size: 100%;" in css
+
     def test_file_tree_with_header_actions_and_footer(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/file_tree.html" import file_tree %}'
@@ -2457,6 +2473,18 @@ class TestCard:
         assert 'href="/skills/demo"' in html
         assert 'href="/collections/demo"' in html
         assert 'href="/tags/demo"' in html
+
+    def test_resource_card_css_owns_content_and_metadata_pressure(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-resource-card)" in css
+        for selector in (
+            ":scope .chirpui-card__body > :where(:not(script, style, template))",
+            ":scope .chirpui-card__footer-wrap > :where(:not(script, style, template))",
+            ":scope .chirpui-card__top-meta > :where(:not(script, style, template))",
+        ):
+            assert selector in css
+        assert ".chirpui-resource-card__description" in css
+        assert "overflow-wrap: anywhere;" in css
 
     def test_card_gradient_border(self, env: Environment) -> None:
         html = env.from_string(
@@ -6380,6 +6408,15 @@ class TestMediaObject:
         assert "chirpui-media-object" in html
         assert "Content" in html
 
+    def test_media_object_css_owns_row_pressure_and_child_rhythm(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-media-object)" in css
+        assert ".chirpui-media-object__body > :where(:not(script, style, template))" in css
+        assert ".chirpui-media-object__actions > :where(:not(script, style, template))" in css
+        assert "flex: 999 1 12rem;" in css
+        assert "margin-inline-start: auto;" in css
+        assert "overflow-wrap: anywhere;" in css
+
 
 class TestStat:
     def test_stat_basic(self, env: Environment) -> None:
@@ -6683,6 +6720,18 @@ class TestList:
         ).render()
         assert 'hx-target="#site-content"' in html
         assert 'hx-boost="true"' in html
+
+    def test_list_css_owns_row_separation_and_child_rhythm(self) -> None:
+        css = _chirpui_css()
+        assert "@scope (.chirpui-list)" in css
+        assert ".chirpui-list__item > :where(:not(script, style, template))" in css
+        assert ":scope.chirpui-list--bordered .chirpui-list__item + .chirpui-list__item" in css
+        bordered_sibling_rule = css.split(
+            ":scope.chirpui-list--bordered .chirpui-list__item + .chirpui-list__item",
+            1,
+        )[1].split("}", 1)[0]
+        assert "margin-top: 0;" in bordered_sibling_rule
+        assert "overflow-wrap: anywhere;" in css
 
 
 class TestAccordion:

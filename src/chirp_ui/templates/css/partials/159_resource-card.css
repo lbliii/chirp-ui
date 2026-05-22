@@ -11,21 +11,46 @@
     @scope (.chirpui-resource-card) to (.chirpui-resource-card .chirpui-resource-card) {
         :scope {
             height: 100%;
+            min-inline-size: 0;
+            max-inline-size: 100%;
+            overflow-wrap: anywhere;
         }
 
         :scope .chirpui-card__header {
             align-items: flex-start;
+            min-inline-size: 0;
+            max-inline-size: 100%;
         }
 
         :scope .chirpui-card__body {
             display: grid;
             gap: var(--chirpui-spacing-sm);
+            min-inline-size: 0;
+            max-inline-size: 100%;
+        }
+
+        :scope .chirpui-card__top-meta,
+        :scope .chirpui-card__header-content,
+        :scope .chirpui-card__body,
+        :scope .chirpui-card__footer-wrap {
+            min-inline-size: 0;
+        }
+
+        :scope .chirpui-card__body > :where(:not(script, style, template)),
+        :scope .chirpui-card__footer-wrap > :where(:not(script, style, template)),
+        :scope .chirpui-card__top-meta > :where(:not(script, style, template)) {
+            min-inline-size: 0;
+            max-inline-size: 100%;
+            margin-block: 0;
+            overflow-wrap: anywhere;
         }
 
         .chirpui-resource-card__description {
             margin: 0;
             color: var(--chirpui-text-muted);
             line-height: var(--chirpui-line-height-relaxed);
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         :scope .chirpui-card__footer-wrap:not(:empty) {
@@ -33,6 +58,8 @@
             flex-wrap: wrap;
             align-items: center;
             gap: var(--chirpui-spacing-sm);
+            min-inline-size: 0;
+            max-inline-size: 100%;
         }
     }
 }

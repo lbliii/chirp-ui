@@ -68,10 +68,11 @@ authors and agents fix spacing relationship by relationship.
 | field wrappers and form control internals | label/control/hint/error attachment, option grouping, prefix/suffix/search pressure | shipped | form field render/CSS tests; `/forms` browser proof |
 | `command_bar` / `filter_bar` | search, hints, filters, actions, visible-label rows | shipped/prototype mix | action-container tests, browser proof |
 | `workspace_shell` | rail/content/inspector/toolbars | prototype | workspace recipe docs and browser proof |
-| workspace primitives | rails, result collections, cards, metrics, inspector panels | prototype | data/support/operations browser proof |
+| workspace primitives | rails, result collections, cards, metrics, inspector panels | shipped/prototype mix | data/support/operations browser proof; result cards own title/body/actions/footer pressure |
 | `search_header` / `resource_index` | search-first header and browse surface rhythm | shipped | render/CSS/browser proof; search/header/filter/results rhythm owned by composites |
 | `page_header` / `section_header` / `entity_header` | title/actions and title/subtitle attachment | shipped | render/CSS/browser proof; direct-child margins trimmed under header owners |
 | `fieldset` | grouped form-control rhythm, child margin trim | shipped | `TestForms`, `/forms` browser proof |
+| `list_group()` / `media_object()` | row separation, leading media/body/actions pressure, child margin trim | shipped | list/media CSS tests; `/layout` browser proof |
 | `dnd` / `sortable` | drag row/board grouping | partial | visual structure tests; spacing/overflow proof needed |
 | `modal` / `drawer` / `tray` / `panel` | header/body/footer region rhythm | shipped | CSS/browser proof; region margins, wrapping, and local overflow owned by containers |
 | navigation primitives | item metadata, rails, trays, dense chrome | partial | dense navigation docs and browser proof |
@@ -101,12 +102,20 @@ containment inside their local region.
 
 ### Lists, Rows, And Dense Collections
 
-Rows and result-like patterns need contracts for:
+`list_group()` owns row separation and trims direct item-child margins, so
+bordered lists do not double-space rows with both `gap` and sibling margins.
+`media_object()` owns the leading media/body/actions relationship: media stays
+intrinsic, body content flexes and wraps, actions wrap as a trailing group, and
+direct body/action child margins are neutralized. Dense workspace result cards
+also own title/subtitle/action/body/footer pressure for long labels, owners,
+status badges, and URLs.
 
-- leading media + body + trailing actions;
-- status badges and metadata attachment;
-- row grouping versus row separation;
-- long labels, filenames, owners, and URLs.
+Remaining row-like work should focus on specialized row systems that have
+distinct interaction contracts:
+
+- drag/drop and sortable rows;
+- params/signature rows with code-heavy local overflow;
+- table row action groups and dense metadata variants.
 
 ## Agent Checklist
 

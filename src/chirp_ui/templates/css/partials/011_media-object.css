@@ -2,39 +2,79 @@
    Media Object
    ========================================================================== */
 
-.chirpui-media-object {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--chirpui-spacing);
-}
+@layer chirpui.component {
+    @scope (.chirpui-media-object) to (.chirpui-media-object .chirpui-media-object) {
+        :scope {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: var(--chirpui-spacing);
+            box-sizing: border-box;
+            min-inline-size: 0;
+            max-inline-size: 100%;
+            overflow-wrap: anywhere;
+        }
 
-.chirpui-media-object--align-center {
-    align-items: center;
-}
+        :scope.chirpui-media-object--align-center {
+            align-items: center;
+        }
 
-.chirpui-media-object__media {
-    flex-shrink: 0;
-}
+        .chirpui-media-object__media {
+            flex: 0 1 auto;
+            box-sizing: border-box;
+            min-inline-size: 0;
+            max-inline-size: 100%;
+        }
 
-.chirpui-media-object__media img,
-.chirpui-media-object__media video {
-    display: block;
-    max-width: 100%;
-    height: auto;
-}
+        .chirpui-media-object__media img,
+        .chirpui-media-object__media video {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
 
-.chirpui-media-object__body {
-    flex: 1;
-    min-width: 0;
-}
+        .chirpui-media-object__body {
+            display: grid;
+            flex: 999 1 12rem;
+            gap: var(--chirpui-spacing-xs);
+            min-inline-size: 0;
+            max-inline-size: 100%;
+            overflow-wrap: anywhere;
+        }
 
-.chirpui-media-object__actions {
-    flex-shrink: 0;
-}
+        .chirpui-media-object__body > :where(:not(script, style, template)) {
+            min-inline-size: 0;
+            margin-block: 0;
+        }
 
-.chirpui-media-object__media:empty,
-.chirpui-media-object__body:empty,
-.chirpui-media-object__actions:empty {
-    display: none;
-}
+        .chirpui-media-object__actions {
+            display: inline-flex;
+            flex: 0 1 auto;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            gap: var(--chirpui-spacing-xs);
+            min-inline-size: 0;
+            max-inline-size: 100%;
+            margin-inline-start: auto;
+            overflow-wrap: anywhere;
+        }
 
+        .chirpui-media-object__actions > :where(:not(script, style, template)) {
+            margin: 0;
+        }
+
+        .chirpui-media-object__media:empty,
+        .chirpui-media-object__body:empty,
+        .chirpui-media-object__actions:empty {
+            display: none;
+        }
+
+        @media (max-width: 36rem) {
+            .chirpui-media-object__actions {
+                justify-content: flex-start;
+                margin-inline-start: 0;
+            }
+        }
+    }
+}
