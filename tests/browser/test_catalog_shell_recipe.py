@@ -349,6 +349,108 @@ async def test_layout_affinity_primitives_have_no_overflow(
     ("width", "height"),
     [(320, 640), (768, 1024), (1280, 900)],
 )
+async def test_showcase_headers_own_title_action_relationships(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/layout")
+    await wait_for_alpine(showcase_page)
+
+    await expect(showcase_page.locator(".chirpui-page-header").first).to_be_visible()
+    await expect(showcase_page.locator(".chirpui-entity-header").first).to_be_visible()
+    await showcase_page.evaluate(
+        """() => {
+            const longTitle = "relationship-owner-title-" + "alpha".repeat(24);
+            const longMeta = "release-note-" + "beta".repeat(18);
+            const pageTitle = document.querySelector(".chirpui-page-header h1");
+            const pageSubtitle = document.querySelector(".chirpui-page-header p");
+            const pageActions = document.querySelector(".chirpui-page-header__actions");
+            if (pageTitle) pageTitle.textContent = longTitle;
+            if (pageSubtitle) pageSubtitle.textContent = longMeta;
+            if (pageActions) {
+                pageActions.innerHTML = `
+                    <button class="chirpui-btn chirpui-btn--sm">Primary action</button>
+                    <button class="chirpui-btn chirpui-btn--secondary chirpui-btn--sm">Secondary action</button>
+                `;
+            }
+
+            const entity = document.querySelector(".chirpui-entity-header");
+            const entityTitle = entity?.querySelector(".chirpui-entity-header__title");
+            const entityMeta = entity?.querySelector(".chirpui-entity-header__meta");
+            if (entityTitle) entityTitle.textContent = longTitle;
+            if (entityMeta) entityMeta.textContent = longMeta;
+
+            const host = document.querySelector(".chirpui-container");
+            host?.insertAdjacentHTML("beforeend", `
+                <div class="chirpui-section-header" data-testid="relationship-section-header">
+                    <div class="chirpui-section-header__top">
+                        <div class="chirpui-section-header__title-block">
+                            <span class="chirpui-section-header__icon">*</span>
+                            <div>
+                                <h2>${longTitle}</h2>
+                                <p class="chirpui-text-muted chirpui-font-sm">${longMeta}</p>
+                            </div>
+                        </div>
+                        <div class="chirpui-section-header__actions">
+                            <button class="chirpui-btn chirpui-btn--sm">Review</button>
+                            <button class="chirpui-btn chirpui-btn--secondary chirpui-btn--sm">Export report</button>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"header-relationships-{width}x{height}"
+    )
+    metrics = await showcase_page.evaluate(
+        """() => [
+            [".chirpui-page-header", ".chirpui-page-header__actions"],
+            ["[data-testid='relationship-section-header']", ".chirpui-section-header__actions"],
+            [".chirpui-entity-header", ".chirpui-entity-header__actions"],
+        ].map(([rootSelector, actionsSelector]) => {
+            const root = document.querySelector(rootSelector);
+            const title = root?.querySelector("h1, h2");
+            const meta = root?.querySelector("p");
+            const actions = root?.querySelector(actionsSelector);
+            const rootRect = root.getBoundingClientRect();
+            const titleRect = title.getBoundingClientRect();
+            const actionsRect = actions.getBoundingClientRect();
+            const titleStyle = getComputedStyle(title);
+            const metaStyle = getComputedStyle(meta);
+            return {
+                rootSelector,
+                overflow: Math.ceil(root.scrollWidth - root.clientWidth),
+                titleMarginStart: titleStyle.marginBlockStart,
+                titleMarginEnd: titleStyle.marginBlockEnd,
+                metaMarginStart: metaStyle.marginBlockStart,
+                metaMarginEnd: metaStyle.marginBlockEnd,
+                titleContained: titleRect.right <= rootRect.right + 1,
+                actionsContained: actionsRect.right <= rootRect.right + 1,
+                actionsWidth: actionsRect.width,
+                rootWidth: rootRect.width,
+            };
+        })"""
+    )
+    for metric in metrics:
+        assert metric["overflow"] <= 1, metric
+        assert metric["titleMarginStart"] == "0px", metric
+        assert metric["titleMarginEnd"] == "0px", metric
+        assert metric["metaMarginStart"] == "0px", metric
+        assert metric["metaMarginEnd"] == "0px", metric
+        assert metric["titleContained"], metric
+        assert metric["actionsContained"], metric
+        assert metric["actionsWidth"] <= metric["rootWidth"] + 1, metric
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
 async def test_showcase_forms_component_rhythm_has_no_overflow(
     showcase_page,
     showcase_base_url: str,

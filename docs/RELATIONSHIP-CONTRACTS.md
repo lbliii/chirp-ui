@@ -70,7 +70,7 @@ authors and agents fix spacing relationship by relationship.
 | `workspace_shell` | rail/content/inspector/toolbars | prototype | workspace recipe docs and browser proof |
 | workspace primitives | rails, result collections, cards, metrics, inspector panels | prototype | data/support/operations browser proof |
 | `search_header` / `resource_index` | search-first header and browse surface rhythm | partial | render tests; relationship audit needed |
-| `page_header` / `section_header` / `entity_header` | title/actions and title/subtitle attachment | partial | render/CSS tests; direct-child rhythm audit needed |
+| `page_header` / `section_header` / `entity_header` | title/actions and title/subtitle attachment | shipped | render/CSS/browser proof; direct-child margins trimmed under header owners |
 | `fieldset` | grouped form-control rhythm, child margin trim | shipped | `TestForms`, `/forms` browser proof |
 | `dnd` / `sortable` | drag row/board grouping | partial | visual structure tests; spacing/overflow proof needed |
 | `modal` / `drawer` / `tray` | header/body/footer region rhythm | partial | behavior tests; relationship audit needed |
@@ -90,12 +90,9 @@ authors and agents fix spacing relationship by relationship.
 
 ### Header And Section Relationships
 
-Headers should clearly own:
-
-- title/subtitle/meta attachment;
-- actions at inline end with mobile wrapping;
-- direct child margin trimming inside title blocks;
-- overflow-safe long titles.
+Headers now own title/subtitle/meta attachment, action wrapping, title block
+margin trimming, and overflow-safe long titles. Remaining header work should
+focus on specialized search-first surfaces instead of app-local header spacing.
 
 ### Overlay And Panel Regions
 

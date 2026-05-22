@@ -41,28 +41,29 @@ responsive pressure, or local overflow.
 | Stack/cluster | layout primitives | direct child margin trimming under primitive gap |
 | Forms | form macro CSS | field/action/error-summary rhythm under form gap |
 | Fieldsets | form field CSS | grouped form-control rhythm and child margin trimming |
+| Headers | page/section/entity header CSS | title/meta attachment, action wrapping, long-title pressure |
 
 ## Next 10 Tasks
 
 1. Audit `field_wrapper`, radio, checkbox, range, input-group, and search-bar
    subrelationships.
-2. Audit `page_header`, `section_header`, and `entity_header` for title/action
-   wrapping, title block margin trim, and long-title overflow.
-3. Audit `search_header` and `resource_index` as search-first relationship
+2. Audit `search_header` and `resource_index` as search-first relationship
    owners outside action containers.
-4. Audit modal, drawer, tray, and panel header/body/footer rhythm.
-5. Audit list, row, media-object, resource-card, params-table, signature, DnD,
+3. Audit modal, drawer, tray, and panel header/body/footer rhythm.
+4. Audit list, row, media-object, resource-card, params-table, signature, DnD,
    and sortable relationships.
-6. Add relationship-specific browser probes for high-risk surfaces instead of
+5. Add relationship-specific browser probes for high-risk surfaces instead of
    only document overflow probes.
-7. Remove first-party `chirpui-mt-*` / `chirpui-mb-*` usage when a component
+6. Remove first-party `chirpui-mt-*` / `chirpui-mb-*` usage when a component
    owner now exists.
-8. Promote repeated accepted contracts into `docs/RELATIONSHIP-CONTRACTS.md`
+7. Promote repeated accepted contracts into `docs/RELATIONSHIP-CONTRACTS.md`
    and keep `docs/INDEX.md` linked.
-9. Defer descriptor or manifest projection until relationships repeat across
+8. Defer descriptor or manifest projection until relationships repeat across
    enough owners to justify a public schema.
+9. Mine `lbliii/emdashCSS` for parent-owned stack/spread/fit ideas, translating
+   only the contract model into existing ChirpUI owners.
 10. Keep checking first-party examples for relationship patches after each
-    accepted owner lands.
+   accepted owner lands.
 
 ## Parity Matrix
 

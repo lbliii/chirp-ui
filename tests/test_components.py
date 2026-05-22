@@ -471,6 +471,37 @@ class TestLayout:
         assert "<h2" in html
         assert "Edit" in html
 
+    def test_header_relationship_css_owns_child_rhythm_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        page_title_rule = css.split(".chirpui-page-header__top > div:first-child", 1)[1].split(
+            "}", 1
+        )[0]
+        assert "display: flex" in page_title_rule
+        assert "flex-direction: column" in page_title_rule
+        assert "overflow-wrap: anywhere" in page_title_rule
+        assert ".chirpui-page-header__top > div:first-child > *" in css
+
+        section_title_rule = css.split(".chirpui-section-header__title-block > div", 1)[1].split(
+            "}", 1
+        )[0]
+        assert "display: flex" in section_title_rule
+        assert "gap: var(--chirpui-spacing-xs)" in section_title_rule
+        assert "overflow-wrap: anywhere" in section_title_rule
+        assert ".chirpui-section-header__title-block > div > *" in css
+
+        entity_title_rule = css.split(".chirpui-entity-header__content > div", 1)[1].split("}", 1)[
+            0
+        ]
+        assert "display: flex" in entity_title_rule
+        assert "gap: var(--chirpui-spacing-xs)" in entity_title_rule
+        assert "overflow-wrap: anywhere" in entity_title_rule
+        assert ".chirpui-entity-header__content > div > *" in css
+
+        assert "@media (max-width: 42rem)" in css
+        assert ".chirpui-page-header__actions,\n    .chirpui-section-header__actions" in css
+        assert ".chirpui-entity-header__actions" in css
+
     def test_section_with_actions(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/layout.html" import section %}'
