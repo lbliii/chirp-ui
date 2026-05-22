@@ -4358,6 +4358,23 @@ class TestActionContainers:
         assert 'value="alice"' in html
         assert "Directory" in html
 
+    def test_search_header_css_owns_composite_rhythm_and_pressure(self) -> None:
+        css = _chirpui_css()
+
+        search_rule = css.split(".chirpui-search-header {", 1)[1].split("}", 1)[0]
+        assert "width: 100%" in search_rule
+        assert "min-width: 0" in search_rule
+        assert ".chirpui-search-header > :where(:not(script, style, template))" in css
+        assert ".chirpui-search-header > .chirpui-page-header" in css
+
+        primary_rule = css.split(".chirpui-search-header__strip .chirpui-action-strip__primary", 1)[
+            1
+        ].split("}", 1)[0]
+        assert "flex: 999 1 24rem" in primary_rule
+        assert "min-inline-size: min(100%, 18rem)" in primary_rule
+        assert ".chirpui-search-header__strip .chirpui-action-strip__controls:empty" in css
+        assert ".chirpui-search-header__strip .chirpui-search-bar__inner" in css
+
     def test_resource_index_grid_results(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/resource_index.html" import resource_index %}'
@@ -4383,6 +4400,24 @@ class TestActionContainers:
             "chirpui-resource-index__results", 1
         )[0]
         assert "Skill A" not in selection_segment
+
+    def test_resource_index_css_owns_results_rhythm_and_feedback(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/resource_index.html" import resource_index %}'
+            "{% call resource_index("
+            '"Skills", "/skills", results_layout="grid", mutation_result_id="update-result"'
+            ") %}"
+            "<article>Skill A</article>"
+            "{% end %}"
+        ).render()
+        css = _chirpui_css()
+
+        assert "chirpui-resource-index__results" in html
+        assert "chirpui-mb-sm" not in html
+        assert ".chirpui-resource-index > :where(:not(script, style, template))" in css
+        assert ".chirpui-resource-index__results > :where(:not(script, style, template))" in css
+        assert ".chirpui-resource-index__results > .chirpui-fragment-island" in css
+        assert ".chirpui-resource-index__results.chirpui-grid > .chirpui-fragment-island" in css
 
     def test_resource_index_empty_state(self, env: Environment) -> None:
         html = env.from_string(

@@ -492,6 +492,85 @@ async def test_showcase_forms_component_rhythm_has_no_overflow(
     ("width", "height"),
     [(320, 640), (768, 1024), (1280, 900)],
 )
+async def test_showcase_search_browse_composites_own_rhythm(
+    showcase_page,
+    showcase_base_url: str,
+    width: int,
+    height: int,
+) -> None:
+    await showcase_page.set_viewport_size({"width": width, "height": height})
+    await showcase_page.goto(showcase_base_url + "/forms")
+    await wait_for_alpine(showcase_page)
+
+    await expect(showcase_page.locator(".chirpui-search-header").first).to_be_visible()
+    await expect(showcase_page.locator(".chirpui-resource-index").first).to_be_visible()
+    await showcase_page.evaluate(
+        """() => {
+            const longText = "search-browse-owner-" + "gamma".repeat(24);
+            const searchHeader = document.querySelector(".chirpui-search-header");
+            const title = searchHeader?.querySelector(".chirpui-page-header h1");
+            const subtitle = searchHeader?.querySelector(".chirpui-page-header p");
+            const input = searchHeader?.querySelector(".chirpui-search-bar__input");
+            const controls = searchHeader?.querySelector(".chirpui-action-strip__controls");
+            if (title) title.textContent = longText;
+            if (subtitle) subtitle.textContent = longText;
+            if (input) input.setAttribute("placeholder", longText);
+            if (controls) {
+                controls.innerHTML = `
+                    <button class="chirpui-btn chirpui-btn--sm">Sort by relationship</button>
+                    <button class="chirpui-btn chirpui-btn--secondary chirpui-btn--sm">Switch view</button>
+                    <button class="chirpui-btn chirpui-btn--primary chirpui-btn--sm">Create searchable record</button>
+                `;
+            }
+
+            const resourceIndex = document.querySelector(".chirpui-resource-index");
+            const results = resourceIndex?.querySelector(".chirpui-resource-index__results");
+            if (results && !results.querySelector(".chirpui-fragment-island")) {
+                results.insertAdjacentHTML(
+                    "afterbegin",
+                    `<div class="chirpui-fragment-island" aria-live="polite">${longText}</div>`
+                );
+            }
+        }"""
+    )
+
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"search-browse-composites-{width}x{height}"
+    )
+    metrics = await showcase_page.evaluate(
+        """() => [
+            [".chirpui-search-header", ".chirpui-search-header__strip"],
+            [".chirpui-resource-index", ".chirpui-resource-index__results"],
+        ].map(([rootSelector, childSelector]) => {
+            const root = document.querySelector(rootSelector);
+            const child = root?.querySelector(childSelector);
+            const rootRect = root.getBoundingClientRect();
+            const childRect = child.getBoundingClientRect();
+            const firstChild = root?.querySelector(":scope > :not(script, style, template)");
+            const firstChildStyle = getComputedStyle(firstChild);
+            return {
+                rootSelector,
+                overflow: Math.ceil(root.scrollWidth - root.clientWidth),
+                childContained: childRect.right <= rootRect.right + 1,
+                childWidth: childRect.width,
+                rootWidth: rootRect.width,
+                firstChildMarginStart: firstChildStyle.marginBlockStart,
+                firstChildMarginEnd: firstChildStyle.marginBlockEnd,
+            };
+        })"""
+    )
+    for metric in metrics:
+        assert metric["overflow"] <= 1, metric
+        assert metric["childContained"], metric
+        assert metric["childWidth"] <= metric["rootWidth"] + 1, metric
+        assert metric["firstChildMarginStart"] == "0px", metric
+        assert metric["firstChildMarginEnd"] == "0px", metric
+
+
+@pytest.mark.parametrize(
+    ("width", "height"),
+    [(320, 640), (768, 1024), (1280, 900)],
+)
 async def test_showcase_fieldset_grouped_rhythm_has_no_overflow(
     showcase_page,
     showcase_base_url: str,

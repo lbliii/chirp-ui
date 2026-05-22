@@ -4,10 +4,36 @@
 
 .chirpui-resource-index {
     width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-resource-index > :where(:not(script, style, template)) {
+    margin-block: 0;
 }
 
 .chirpui-resource-index__search,
 .chirpui-resource-index__filters,
 .chirpui-resource-index__results {
     width: 100%;
+    min-width: 0;
+}
+
+.chirpui-resource-index__results {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-resource-index__results > :where(:not(script, style, template)) {
+    margin-block: 0;
+}
+
+.chirpui-resource-index__results > .chirpui-fragment-island {
+    width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.chirpui-resource-index__results.chirpui-grid > .chirpui-fragment-island {
+    grid-column: 1 / -1;
 }

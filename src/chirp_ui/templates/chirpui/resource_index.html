@@ -69,12 +69,12 @@
 {% if has_results %}
 {% if results_layout == "grid" %}
 <div class="chirpui-grid{% if results_cols == 2 %} chirpui-grid--cols-2{% elif results_cols == 3 %} chirpui-grid--cols-3{% elif results_cols == 4 %} chirpui-grid--cols-4{% end %}{% if results_gap == "sm" %} chirpui-grid--gap-sm{% elif results_gap == "md" %} chirpui-grid--gap-md{% elif results_gap == "lg" %} chirpui-grid--gap-lg{% end %} chirpui-resource-index__results">
-    {% if mutation_result_id %}<div id="{{ mutation_result_id }}" class="chirpui-fragment-island chirpui-mb-sm" aria-live="polite"></div>{% end %}
+    {% if mutation_result_id %}<div id="{{ mutation_result_id }}" class="chirpui-fragment-island" aria-live="polite"></div>{% end %}
     {{ caller() }}
 </div>
 {% else %}
 <div class="chirpui-stack{% if results_gap == "xs" %} chirpui-stack--xs{% elif results_gap == "sm" %} chirpui-stack--sm{% elif results_gap == "md" %} chirpui-stack--md{% elif results_gap == "lg" %} chirpui-stack--lg{% elif results_gap == "xl" %} chirpui-stack--xl{% end %} chirpui-resource-index__results">
-    {% if mutation_result_id %}<div id="{{ mutation_result_id }}" class="chirpui-fragment-island chirpui-mb-sm" aria-live="polite"></div>{% end %}
+    {% if mutation_result_id %}<div id="{{ mutation_result_id }}" class="chirpui-fragment-island" aria-live="polite"></div>{% end %}
     {{ caller() }}
 </div>
 {% endif %}

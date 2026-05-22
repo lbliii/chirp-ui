@@ -69,7 +69,7 @@ authors and agents fix spacing relationship by relationship.
 | `command_bar` / `filter_bar` | search, hints, filters, actions, visible-label rows | shipped/prototype mix | action-container tests, browser proof |
 | `workspace_shell` | rail/content/inspector/toolbars | prototype | workspace recipe docs and browser proof |
 | workspace primitives | rails, result collections, cards, metrics, inspector panels | prototype | data/support/operations browser proof |
-| `search_header` / `resource_index` | search-first header and browse surface rhythm | partial | render tests; relationship audit needed |
+| `search_header` / `resource_index` | search-first header and browse surface rhythm | shipped | render/CSS/browser proof; search/header/filter/results rhythm owned by composites |
 | `page_header` / `section_header` / `entity_header` | title/actions and title/subtitle attachment | shipped | render/CSS/browser proof; direct-child margins trimmed under header owners |
 | `fieldset` | grouped form-control rhythm, child margin trim | shipped | `TestForms`, `/forms` browser proof |
 | `dnd` / `sortable` | drag row/board grouping | partial | visual structure tests; spacing/overflow proof needed |
@@ -91,8 +91,9 @@ authors and agents fix spacing relationship by relationship.
 ### Header And Section Relationships
 
 Headers now own title/subtitle/meta attachment, action wrapping, title block
-margin trimming, and overflow-safe long titles. Remaining header work should
-focus on specialized search-first surfaces instead of app-local header spacing.
+margin trimming, and overflow-safe long titles. Search-first `search_header`
+and `resource_index` also own their composite rhythm, so app pages should not
+add local margins between search, filters, selection state, and results.
 
 ### Overlay And Panel Regions
 
