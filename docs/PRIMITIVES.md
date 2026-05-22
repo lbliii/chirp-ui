@@ -29,7 +29,7 @@ for the proposed `data-chirpui-role`, `data-chirpui-pressure`, and
 `data-chirpui-affinity` vocabulary. Treat those attributes as prototype
 resolver hints until they are promoted through the registry and manifest.
 The active rollout is tracked in
-[PLAN-layout-affinity-rollout.md](plans/PLAN-layout-affinity-rollout.md).
+[PLAN-layout-affinity-rollout.md](plans/done/PLAN-layout-affinity-rollout.md).
 Maintainers adding resolver behavior must follow
 [LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md)
 so low-level primitives do not become utility-class containers.

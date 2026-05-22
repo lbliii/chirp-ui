@@ -1,0 +1,1 @@
+Added layout affinity conventions, workspace shell recipes, and relationship-owned spacing contracts so composed Chirp UI screens handle rhythm, pressure, wrapping, and local overflow with less page-specific CSS.

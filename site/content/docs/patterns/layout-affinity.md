@@ -18,7 +18,7 @@ Use the canonical repository guide for the full contract:
 For resolver authoring rules, see
 [`docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md?plain=1).
 For rollout status, see
-[`docs/plans/PLAN-layout-affinity-rollout.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/plans/PLAN-layout-affinity-rollout.md?plain=1).
+[`docs/plans/done/PLAN-layout-affinity-rollout.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/plans/done/PLAN-layout-affinity-rollout.md?plain=1).
 
 ## Status Block
 
@@ -36,7 +36,7 @@ promotion questions:
 - `docs/DESIGN-layout-affinity.md` owns the prototype contract.
 - `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md` owns maintainer rules for
   adding parent-scoped resolvers.
-- `docs/plans/PLAN-layout-affinity-rollout.md` owns rollout tasks and deferred
+- `docs/plans/done/PLAN-layout-affinity-rollout.md` owns rollout tasks and deferred
   manifest promotion.
 - `docs/SEARCH-SHELL-RECIPES.md` shows the search-shell consumer.
 - `docs/PRIMITIVES.md` keeps primitive composition guidance aligned.
@@ -77,6 +77,8 @@ Resolver CSS must start from the owning parent and stop at the owned boundary:
 direct children for command and filter bars, component-owned parts for cards
 and `workspace_shell`, and explicit rail/content children for frames. Broad
 descendant selectors are not part of the prototype contract.
+Broad descendant selectors are rejected because they make unrelated descendants
+react to recipe-only layout intent.
 
 ## Use This When
 

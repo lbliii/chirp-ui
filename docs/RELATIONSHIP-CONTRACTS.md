@@ -2,7 +2,7 @@
 
 Status: active design contract
 Date: 2026-05-21
-Plan: [PLAN-relationship-contracts.md](plans/PLAN-relationship-contracts.md)
+Plan: [PLAN-relationship-contracts.md](plans/done/PLAN-relationship-contracts.md)
 
 ChirpUI components should not only look correct in isolation. They should also
 know which relationships they own with neighboring pieces: inset, sibling

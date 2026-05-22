@@ -8,7 +8,7 @@ RFC = REPO_ROOT / "docs" / "DESIGN-layout-affinity.md"
 AUTHORING = REPO_ROOT / "docs" / "LAYOUT-AFFINITY-RESOLVER-AUTHORING.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
 PRIMITIVES = REPO_ROOT / "docs" / "PRIMITIVES.md"
-PLAN = REPO_ROOT / "docs" / "plans" / "PLAN-layout-affinity-rollout.md"
+PLAN = REPO_ROOT / "docs" / "plans" / "done" / "PLAN-layout-affinity-rollout.md"
 BROWSER_PROOF = REPO_ROOT / "tests" / "browser" / "test_catalog_shell_recipe.py"
 SOURCE_GLOBS = (
     "src/chirp_ui/templates/chirpui/**/*.html",
@@ -79,7 +79,7 @@ def test_layout_affinity_rfc_is_discoverable_from_docs_index_and_primitives() ->
     assert "[DESIGN-layout-affinity.md](DESIGN-layout-affinity.md)" in PRIMITIVES.read_text(
         encoding="utf-8"
     )
-    plan_link = "[PLAN-layout-affinity-rollout.md](plans/PLAN-layout-affinity-rollout.md)"
+    plan_link = "[PLAN-layout-affinity-rollout.md](plans/done/PLAN-layout-affinity-rollout.md)"
     authoring_link = (
         "[LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md)"
     )

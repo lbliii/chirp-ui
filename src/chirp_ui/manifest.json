@@ -8767,6 +8767,7 @@
         "chirpui-field--filled",
         "chirpui-field--ghost",
         "chirpui-field--info",
+        "chirpui-field--input-group",
         "chirpui-field--masked",
         "chirpui-field--money",
         "chirpui-field--neutral",
@@ -8887,6 +8888,7 @@
         "dense",
         "error",
         "file",
+        "input-group",
         "masked",
         "money",
         "phone",
@@ -9611,6 +9613,172 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "form": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "form",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Form field macros\n    Extended field macros with BEM styling. These complement (and can replace)\n    Chirp's built-in form macros from \"chirp/forms\".\n\n    Internal: field_wrapper provides label, hint, error display. Standard fields\n    use it; checkbox/toggle/radio/range/input_group have custom layouts.\n\n    form() htmx usage:\n        call form(\"/save\", hx={\"post\": \"/save\", \"target\": \"#result\", \"swap\": \"innerHTML\"})\n            ...fields...\n        end\n\n    hx={} — preferred for htmx attributes. Individual hx_* kwargs override dict keys.\n    Auto-behaviors: hx-select=\"unset\" + hx-disinherit=\"hx-select\" when htmx is detected;\n    hx-on::after-request reset on success for mutating methods.\n    Mutating htmx forms default to hx-sync=\"this:drop\" plus hx-disabled-elt\n    for submit controls to prevent accidental duplicate in-flight submissions.",
+      "elements": [],
+      "emits": [
+        "chirpui-form"
+      ],
+      "extra_emits": [],
+      "lineno": 20,
+      "macro": "form",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "action"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "method"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "enctype"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "density"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_unsafe"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_get"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_post"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_put"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_patch"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_delete"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_swap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_trigger"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_include"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_select"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_select_oob"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_disabled_elt"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_sync"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_ext"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_vals"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_reset_on_success"
+        }
+      ],
+      "provides": [
+        "_form_density"
+      ],
+      "requires": [
+        "htmx"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "forms.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -14462,12 +14630,14 @@
         "wrap"
       ],
       "emits": [
+        "chirpui-params-table",
         "chirpui-params-table__code",
         "chirpui-params-table__code--muted",
         "chirpui-params-table__empty",
         "chirpui-params-table__table",
         "chirpui-params-table__td",
         "chirpui-params-table__td--default",
+        "chirpui-params-table__td--description",
         "chirpui-params-table__td--name",
         "chirpui-params-table__td--type",
         "chirpui-params-table__th",
@@ -14480,6 +14650,7 @@
       "extra_emits": [
         "chirpui-params-table__code--muted",
         "chirpui-params-table__td--default",
+        "chirpui-params-table__td--description",
         "chirpui-params-table__td--name",
         "chirpui-params-table__td--type",
         "chirpui-params-table__th--default",
@@ -14523,9 +14694,7 @@
       "template": "params_table.html",
       "tokens": [],
       "tones": [],
-      "trim_emits": [
-        "chirpui-params-table"
-      ],
+      "trim_emits": [],
       "variants": []
     },
     "particle-bg": {
@@ -16525,6 +16694,7 @@
       ],
       "emits": [
         "chirpui-search-bar",
+        "chirpui-search-bar--with-button",
         "chirpui-search-bar--with-icon",
         "chirpui-search-bar__btn",
         "chirpui-search-bar__icon",
@@ -16536,6 +16706,7 @@
       "macro": "search_bar",
       "maturity": "stable",
       "modifiers": [
+        "with-button",
         "with-icon"
       ],
       "params": [
@@ -16659,6 +16830,7 @@
         "strip"
       ],
       "emits": [
+        "chirpui-search-header",
         "chirpui-search-header__form",
         "chirpui-search-header__strip"
       ],
@@ -16775,9 +16947,7 @@
       "template": "search_header.html",
       "tokens": [],
       "tones": [],
-      "trim_emits": [
-        "chirpui-search-header"
-      ],
+      "trim_emits": [],
       "variants": []
     },
     "section-collapsible": {
@@ -22716,7 +22886,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 290,
+      "available": 291,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -22730,7 +22900,7 @@
       "data-display": 36,
       "effect": 46,
       "feedback": 25,
-      "form": 17,
+      "form": 18,
       "infrastructure": 2,
       "interactive": 9,
       "layout": 47,
@@ -22745,30 +22915,30 @@
       "experimental": 98,
       "internal": 2,
       "legacy": 39,
-      "stable": 202
+      "stable": 203
     },
     "component_requirements": {
       "alpine": 23,
-      "htmx": 24
+      "htmx": 25
     },
     "component_roles": {
-      "component": 176,
+      "component": 177,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 238,
-    "components_with_params": 238,
-    "components_with_provides": 11,
+    "components_with_description": 239,
+    "components_with_params": 239,
+    "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
       "missing_macro": 0,
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 236
+      "public_templated_components": 237
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -22777,9 +22947,9 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 124,
-      "explicit_extra_classes": 526,
-      "explicit_trim_blocks": 70,
-      "explicit_trim_classes": 97
+      "explicit_extra_classes": 527,
+      "explicit_trim_blocks": 68,
+      "explicit_trim_classes": 95
     },
     "token_categories": {
       "color": 142,
@@ -22788,12 +22958,12 @@
       "layout": 44,
       "motion": 24,
       "radius": 7,
-      "spacing": 25,
+      "spacing": 30,
       "typography": 45
     },
-    "total_components": 341,
+    "total_components": 342,
     "total_theme_packs": 3,
-    "total_tokens": 428
+    "total_tokens": 433
   },
   "theme_packs": [
     {
@@ -24028,6 +24198,26 @@
     },
     "--chirpui-radius-xs": {
       "category": "radius",
+      "scope": "global"
+    },
+    "--chirpui-rhythm-attached": {
+      "category": "spacing",
+      "scope": "global"
+    },
+    "--chirpui-rhythm-group": {
+      "category": "spacing",
+      "scope": "global"
+    },
+    "--chirpui-rhythm-inset": {
+      "category": "spacing",
+      "scope": "global"
+    },
+    "--chirpui-rhythm-separated": {
+      "category": "spacing",
+      "scope": "global"
+    },
+    "--chirpui-rhythm-stack": {
+      "category": "spacing",
       "scope": "global"
     },
     "--chirpui-ripple-color": {

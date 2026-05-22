@@ -1,6 +1,6 @@
 # PLAN: Layout Affinity Rollout
 
-Status: in-flight
+Status: shipped
 Date: 2026-05-21
 
 ## Status Block

@@ -56,6 +56,11 @@ usage.
 | `ascii-tab` | Promote to stable | Render and browser proof cover link/span fallback, HTMX route attributes, active state, and route-link semantics. |
 | `ascii-tile-btn` | Promote to stable | Toggle mode now uses native checked state for visible glow; render, browser, disabled-state, reduced-motion, and visual audit proof agree. |
 | `ascii-breaker-panel` | Promote to stable | Group semantics, native switch state, status indicator sync, render proof, browser proof, and visual audit coverage agree. |
+| `filter-rail` | Recipe-only | Workspace shell recipe primitive; keep pattern-role and non-preferred until repeated consumer app usage proves the rail API. |
+| `metric-strip` | Recipe-only | Workspace readout primitive; keep pattern-role and non-preferred until operational dashboard usage proves the API shape. |
+| `result-collection` | Recipe-only | Dense result-list recipe primitive; keep pattern-role and non-preferred until search/workspace routes converge on one API. |
+| `result-card` | Recipe-only | Dense result-card recipe primitive; keep pattern-role and non-preferred until repeated catalog/support/operations usage proves the slots. |
+| `inspector-panel` | Recipe-only | Workspace inspector recipe primitive; keep pattern-role and non-preferred until selected-object panels converge across apps. |
 
 ## Promotion Rule
 

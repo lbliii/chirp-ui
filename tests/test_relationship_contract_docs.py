@@ -2,7 +2,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RELATIONSHIPS = REPO_ROOT / "docs" / "RELATIONSHIP-CONTRACTS.md"
-PLAN = REPO_ROOT / "docs" / "plans" / "PLAN-relationship-contracts.md"
+PLAN = REPO_ROOT / "docs" / "plans" / "done" / "PLAN-relationship-contracts.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
 LAYOUT = REPO_ROOT / "docs" / "LAYOUT.md"
 PRIMITIVES = REPO_ROOT / "docs" / "PRIMITIVES.md"
@@ -52,7 +52,7 @@ def test_relationship_contracts_name_current_and_gap_surfaces() -> None:
 
 def test_relationship_contracts_are_discoverable_from_core_docs() -> None:
     relationship_link = "[RELATIONSHIP-CONTRACTS.md](RELATIONSHIP-CONTRACTS.md)"
-    plan_link = "[PLAN-relationship-contracts.md](plans/PLAN-relationship-contracts.md)"
+    plan_link = "[PLAN-relationship-contracts.md](plans/done/PLAN-relationship-contracts.md)"
 
     assert relationship_link in INDEX.read_text(encoding="utf-8")
     assert relationship_link in LAYOUT.read_text(encoding="utf-8")
@@ -65,7 +65,7 @@ def test_relationship_rollout_plan_sets_scope_proof_and_not_now_boundaries() -> 
     text = PLAN.read_text(encoding="utf-8")
 
     for required in [
-        "Status: in-flight",
+        "Status: shipped",
         "No new public macro parameters",
         "No manifest schema change",
         "Current Accepted Slices",

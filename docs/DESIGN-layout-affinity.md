@@ -2,7 +2,7 @@
 
 Status: proposed recipe-first contract
 Date: 2026-05-21
-Plan: [PLAN-layout-affinity-rollout.md](plans/PLAN-layout-affinity-rollout.md)
+Plan: [PLAN-layout-affinity-rollout.md](plans/done/PLAN-layout-affinity-rollout.md)
 Resolver authoring: [LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md)
 
 ## Status Block

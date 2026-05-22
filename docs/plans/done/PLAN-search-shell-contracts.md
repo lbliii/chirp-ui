@@ -1,6 +1,6 @@
 # chirp-ui: Search Shell Contracts
 
-Status: active plan
+Status: shipped
 Date: 2026-05-21
 Trigger: The component showcase catalog shell proved that Chirp UI can build
 advanced HTMX/Alpine search surfaces, but also exposed missing contracts around
@@ -9,12 +9,12 @@ enhancement.
 
 Depends on:
 
-- [PLAN-application-chrome-system.md](PLAN-application-chrome-system.md)
-- [../HTMX-PATTERNS.md](../HTMX-PATTERNS.md)
-- [../RESPONSIVE.md](../RESPONSIVE.md)
-- [../LAYOUT.md](../LAYOUT.md)
-- [../DENSE-NAVIGATION-RECIPES.md](../DENSE-NAVIGATION-RECIPES.md)
-- [../PUBLIC-SURFACE-STABILIZATION.md](../PUBLIC-SURFACE-STABILIZATION.md)
+- [../PLAN-application-chrome-system.md](../PLAN-application-chrome-system.md)
+- [../../HTMX-PATTERNS.md](../../HTMX-PATTERNS.md)
+- [../../RESPONSIVE.md](../../RESPONSIVE.md)
+- [../../LAYOUT.md](../../LAYOUT.md)
+- [../../DENSE-NAVIGATION-RECIPES.md](../../DENSE-NAVIGATION-RECIPES.md)
+- [../../PUBLIC-SURFACE-STABILIZATION.md](../../PUBLIC-SURFACE-STABILIZATION.md)
 
 ## Goal
 

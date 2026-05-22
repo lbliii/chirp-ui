@@ -79,15 +79,15 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-pre-1.0-productization-saga.md](plans/PLAN-pre-1.0-productization-saga.md) — Umbrella productization saga for visible quality, public surface, themes, app chrome, Bengal, and verification
 - [PLAN-css-scope-and-layer.md](plans/PLAN-css-scope-and-layer.md) — Ongoing `@scope` conversion policy and residual CSS hardening
 - [PLAN-application-chrome-system.md](plans/PLAN-application-chrome-system.md) — Application chrome system contracts, rail/tray proof, rhythm audit, and composite gates
-- [PLAN-search-shell-contracts.md](plans/PLAN-search-shell-contracts.md) — Search shell contracts, scoped counts, responsive command surfaces, facets, pending state, and catalog-shell recipe tasks
-- [PLAN-layout-affinity-rollout.md](plans/PLAN-layout-affinity-rollout.md) — Layout-affinity resolver rollout, vocabulary gates, manifest@6 migration plan, and proof matrix
-- [PLAN-relationship-contracts.md](plans/PLAN-relationship-contracts.md) — Relationship ownership rollout for inset, rhythm, attachment, region, pressure, and overflow contracts
 - [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Residual chirp-theme fixture parity backlog
 - [PLAN-bengal-chirpui-library-contract.md](plans/PLAN-bengal-chirpui-library-contract.md) — First-class Bengal library asset/macro contract for Chirp UI
 
 ### Shipped plans (`docs/plans/done/`)
 
 - [PLAN-alpine-focus-plugin.md](plans/done/PLAN-alpine-focus-plugin.md) — Alpine Focus plugin adoption
+- [PLAN-layout-affinity-rollout.md](plans/done/PLAN-layout-affinity-rollout.md) — Layout-affinity resolver rollout, vocabulary gates, manifest@6 migration plan, and proof matrix
+- [PLAN-relationship-contracts.md](plans/done/PLAN-relationship-contracts.md) — Relationship ownership rollout for inset, rhythm, attachment, region, pressure, and overflow contracts
+- [PLAN-search-shell-contracts.md](plans/done/PLAN-search-shell-contracts.md) — Search shell contracts, scoped counts, responsive command surfaces, facets, pending state, and catalog-shell recipe tasks
 - [PLAN-agent-grounding-depth.md](plans/done/PLAN-agent-grounding-depth.md) — Manifest grounding, package data, generated docs, find CLI, and plan triage
 - [PLAN-ascii-maturity.md](plans/done/PLAN-ascii-maturity.md) — ASCII/TUI public template maturity proof
 - [PLAN-sharp-edges.md](plans/done/PLAN-sharp-edges.md) — Sharp edges phases 1–2

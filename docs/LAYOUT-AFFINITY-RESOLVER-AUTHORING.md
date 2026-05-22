@@ -3,7 +3,7 @@
 Status: prototype authoring guide
 Date: 2026-05-21
 Canonical contract: [DESIGN-layout-affinity.md](DESIGN-layout-affinity.md)
-Rollout plan: [PLAN-layout-affinity-rollout.md](plans/PLAN-layout-affinity-rollout.md)
+Rollout plan: [PLAN-layout-affinity-rollout.md](plans/done/PLAN-layout-affinity-rollout.md)
 
 ## Status Block
 

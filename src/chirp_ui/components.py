@@ -1970,13 +1970,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         extra_emits=(
             "chirpui-params-table__code--muted",
             "chirpui-params-table__td--default",
+            "chirpui-params-table__td--description",
             "chirpui-params-table__td--name",
             "chirpui-params-table__td--type",
             "chirpui-params-table__th--default",
             "chirpui-params-table__th--name",
             "chirpui-params-table__th--type",
         ),
-        trim_emits=("chirpui-params-table",),
         category="data-display",
         maturity="stable",
     ),
@@ -2480,6 +2480,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         maturity="stable",
     ),
     # -- Forms (Sprint 3) ---------------------------------------------------
+    "form": ComponentDescriptor(
+        block="form",
+        slots=("",),
+        template="forms.html",
+        category="form",
+        maturity="stable",
+    ),
     "field": ComponentDescriptor(
         block="field",
         variants=(
@@ -2494,6 +2501,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "masked",
             "phone",
             "money",
+            "input-group",
         ),
         appearances=("filled", "tonal", "outlined", "ghost"),
         tones=("neutral", "primary", "success", "warning", "danger", "info"),
@@ -2539,7 +2547,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "search-bar": ComponentDescriptor(
         block="search-bar",
-        modifiers=("with-icon",),
+        modifiers=("with-icon", "with-button"),
         elements=("input", "inner", "icon", "btn"),
         template="forms.html",
         category="form",
@@ -3957,7 +3965,6 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         block="search-header",
         elements=("form", "strip"),
         template="search_header.html",
-        trim_emits=("chirpui-search-header",),
         category="layout",
         maturity="experimental",
         role="primitive",

@@ -34,7 +34,7 @@ facet rails, and browser proof:
 - `docs/DESIGN-layout-affinity.md` owns the prototype parent-scoped layout
   intent vocabulary used by command surfaces.
 - `docs/VERIFICATION.md` owns required proof for search shells.
-- `docs/plans/PLAN-search-shell-contracts.md` owns active not-now promotion
+- `docs/plans/done/PLAN-search-shell-contracts.md` owns active not-now promotion
   questions.
 
 Do not add a published-only search-shell API here. New public macros,
