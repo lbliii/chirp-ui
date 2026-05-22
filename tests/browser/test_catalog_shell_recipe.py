@@ -11,7 +11,11 @@ import pytest
 from playwright.async_api import expect
 
 from tests.browser.conftest import wait_for_alpine, wait_for_htmx
-from tests.browser.gauntlet_detectors import assert_no_document_horizontal_overflow
+from tests.browser.gauntlet_detectors import (
+    assert_direct_child_margins_trimmed,
+    assert_local_overflow_owner,
+    assert_no_document_horizontal_overflow,
+)
 
 pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
@@ -703,6 +707,21 @@ async def test_showcase_code_docs_rows_own_local_overflow(
     await assert_no_document_horizontal_overflow(
         showcase_page, f"code-doc-relationships-{width}x{height}"
     )
+    await assert_direct_child_margins_trimmed(
+        showcase_page,
+        "#relationship-code-doc-proof .chirpui-params-table",
+        f"code-doc-params-table-{width}x{height}",
+    )
+    await assert_local_overflow_owner(
+        showcase_page,
+        "#relationship-code-doc-proof .chirpui-params-table__wrap",
+        f"code-doc-params-wrap-{width}x{height}",
+    )
+    await assert_local_overflow_owner(
+        showcase_page,
+        "#relationship-code-doc-proof .chirpui-signature",
+        f"code-doc-signature-{width}x{height}",
+    )
     metrics = await showcase_page.evaluate(
         """() => {
             const proof = document.querySelector("#relationship-code-doc-proof");
@@ -917,6 +936,11 @@ async def test_showcase_table_rows_own_action_and_metadata_pressure(
 
     await assert_no_document_horizontal_overflow(
         showcase_page, f"table-row-relationships-{width}x{height}"
+    )
+    await assert_local_overflow_owner(
+        showcase_page,
+        "#relationship-table-proof .chirpui-table-wrap",
+        f"table-row-wrap-{width}x{height}",
     )
     metrics = await showcase_page.evaluate(
         """() => {

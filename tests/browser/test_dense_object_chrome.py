@@ -4,7 +4,11 @@ import pytest
 from playwright.async_api import expect
 
 from tests.browser.conftest import wait_for_alpine
-from tests.browser.gauntlet_detectors import assert_no_document_horizontal_overflow
+from tests.browser.gauntlet_detectors import (
+    assert_direct_child_margins_trimmed,
+    assert_direct_children_contained,
+    assert_no_document_horizontal_overflow,
+)
 
 pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
@@ -118,6 +122,26 @@ async def test_dense_metadata_primitives_own_pressure(page, base_url, width, hei
     )
 
     await assert_no_document_horizontal_overflow(page, f"dense-metadata-{width}x{height}")
+    await assert_direct_children_contained(
+        page,
+        "#dense-metadata-proof .chirpui-latest-line",
+        f"dense-latest-line-{width}x{height}",
+    )
+    await assert_direct_child_margins_trimmed(
+        page,
+        "#dense-metadata-proof .chirpui-latest-line",
+        f"dense-latest-line-{width}x{height}",
+    )
+    await assert_direct_children_contained(
+        page,
+        "#dense-metadata-proof .chirpui-chip-group",
+        f"dense-chip-group-{width}x{height}",
+    )
+    await assert_direct_child_margins_trimmed(
+        page,
+        "#dense-metadata-proof .chirpui-chip-group",
+        f"dense-chip-group-{width}x{height}",
+    )
     metrics = await page.evaluate(
         """() => {
             const proof = document.querySelector("#dense-metadata-proof");
