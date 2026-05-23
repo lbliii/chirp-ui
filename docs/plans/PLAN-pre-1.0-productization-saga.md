@@ -301,6 +301,9 @@ Current application-chrome queue:
   unless they test a new failure mode; use new slices to build reference
   evidence, improve guidance, or stop and ask for an explicit public API/design
   plan.
+- Use `docs/reference-implementations/PROOF-ANALYSIS.md` as the decision ledger
+  for whether current proof routes to recipe guidance, more independent
+  reference evidence, or a public API/design stop-and-ask.
 
 ### 7. Bengal And chirp-theme Integration
 

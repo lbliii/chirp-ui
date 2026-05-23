@@ -397,6 +397,9 @@ Promotion evidence must come from work we can verify now:
   Chirp UI primitives before naming a gap.
 - Browser, render, server, escaping, and generated-output tests for the
   attempted composition and the remaining gap.
+- `docs/reference-implementations/PROOF-ANALYSIS.md` as the source-only ledger
+  that decides whether a proven scenario remains recipe guidance, needs another
+  independent reference, or is ready for a stop-and-ask public API plan.
 - Explicit stop-and-ask before any public macro/API, descriptor, CSS, manifest,
   generated docs, runtime, or extension-contract change.
 

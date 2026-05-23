@@ -275,7 +275,10 @@ Current promotion queue:
   branching.
 - Use [REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md)
   and [reference-implementations/README.md](reference-implementations/README.md)
-  as the queue for those reference scenarios before proposing public API.
+  as the queue for those reference scenarios before proposing public API. Use
+  [reference-implementations/PROOF-ANALYSIS.md](reference-implementations/PROOF-ANALYSIS.md)
+  to decide whether existing proof routes to guidance, more reference evidence,
+  or a stop-and-ask API plan.
 - Until that reference-implementation evidence exists, keep these surfaces recipe-first
   and do not add `application_chrome()`, `docs_shell`, `catalog_shell`,
   `compact_page_header`, `page_actions`, or shell response helper APIs.

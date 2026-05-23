@@ -68,6 +68,27 @@ def test_design_system_research_points_to_public_surface_labels() -> None:
     assert "evidence-label glossary" in text
 
 
+def test_design_system_research_routes_reference_proof_to_analysis_ledger() -> None:
+    """Market research should feed proof analysis, not direct public API promotion."""
+    text = DESIGN_RESEARCH.read_text(encoding="utf-8")
+    section = text.split("### Evidence Model Without A Userbase", 1)[1].split(
+        "### Wave 5: Bengal-Driven Primitive Maturation", 1
+    )[0]
+    normalized = " ".join(section.split())
+
+    for required in [
+        "Scenario-complete non-Bengal reference implementations",
+        "Browser, render, server, escaping, and generated-output tests",
+        "`docs/reference-implementations/PROOF-ANALYSIS.md`",
+        "source-only ledger",
+        "recipe guidance",
+        "another independent reference",
+        "stop-and-ask public API plan",
+        "Explicit stop-and-ask before any public macro/API",
+    ]:
+        assert required in normalized
+
+
 def test_design_system_research_has_component_parity_matrix() -> None:
     """External comparison should stay framed as strategy input, not API proof."""
     text = DESIGN_RESEARCH.read_text(encoding="utf-8")
