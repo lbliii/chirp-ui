@@ -5,6 +5,7 @@ from chirp_ui.manifest import build_manifest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOC = REPO_ROOT / "docs" / "PUBLIC-SURFACE-STABILIZATION.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
+DESIGN_RESEARCH = REPO_ROOT / "docs" / "DESIGN-SYSTEM-RESEARCH.md"
 SHOWCASE = REPO_ROOT / "examples" / "design-system-gap-showcase" / "index.html"
 COMPONENT_TESTS = REPO_ROOT / "tests" / "test_components.py"
 ASCII_TESTS = REPO_ROOT / "tests" / "test_ascii_components.py"
@@ -28,10 +29,92 @@ def test_public_surface_stabilization_doc_records_current_slice() -> None:
         assert required in text
 
 
+def test_public_surface_doc_defines_evidence_labels() -> None:
+    """Maturity and research labels should stay explicit for humans and agents."""
+    text = DOC.read_text(encoding="utf-8")
+    section = text.split("## Evidence Labels", 1)[1].split("## Current Slice", 1)[0]
+
+    for label in [
+        "`stable`",
+        "`experimental`",
+        "`recipe-only`",
+        "`compatibility`",
+        "`research`",
+    ]:
+        assert f"| {label} |" in section
+
+    for contract in [
+        "`maturity=stable`",
+        "`maturity=experimental`",
+        "`authoring=preferred`",
+        "`authoring=compatibility`",
+        "python -m chirp_ui find --maturity=experimental",
+        "No registry change unless a later implementation plan promotes it.",
+    ]:
+        assert contract in section
+
+
 def test_public_surface_stabilization_doc_is_indexed() -> None:
     assert "[PUBLIC-SURFACE-STABILIZATION.md](PUBLIC-SURFACE-STABILIZATION.md)" in (
         INDEX.read_text(encoding="utf-8")
     )
+
+
+def test_design_system_research_points_to_public_surface_labels() -> None:
+    """Research direction should route maturity labels through the canonical doc."""
+    text = DESIGN_RESEARCH.read_text(encoding="utf-8")
+
+    assert "[PUBLIC-SURFACE-STABILIZATION.md](PUBLIC-SURFACE-STABILIZATION.md)" in text
+    assert "evidence-label glossary" in text
+
+
+def test_design_system_research_has_component_parity_matrix() -> None:
+    """External comparison should stay framed as strategy input, not API proof."""
+    text = DESIGN_RESEARCH.read_text(encoding="utf-8")
+    section = text.split("## Component/Feature/Primitive Parity Matrix", 1)[1].split(
+        "## Core Findings", 1
+    )[0]
+
+    for source in [
+        "[shadcn/ui components](https://ui.shadcn.com/docs/components)",
+        "[shadcn/ui blocks](https://ui.shadcn.com/blocks)",
+        "[Material Design 3 components](https://m3.material.io/components)",
+        "[Carbon components overview](https://carbondesignsystem.com/components/overview/components/)",
+        "[Shopify Polaris components](https://polaris.shopify.com/components)",
+        "[Atlassian components](https://atlassian.design/components)",
+    ]:
+        assert source in text
+
+    for column in [
+        "Chirp UI Today",
+        "shadcn/ui",
+        "Material Design 3",
+        "Carbon",
+        "Shopify Polaris",
+        "Atlassian Design System",
+        "Chirp UI Strategy",
+    ]:
+        assert column in section
+
+    for surface in [
+        "Distribution and discovery",
+        "Layout primitives",
+        "App/site shell",
+        "Navigation hierarchy",
+        "Page header and actions",
+        "Dense data and object browsing",
+        "Agent/readiness metadata",
+    ]:
+        assert f"| {surface} |" in section
+
+    for boundary in [
+        "requirements proxy, not promotion evidence",
+        "not chase raw component count",
+        "copied-source/Tailwind model conflicts",
+        "contract maturity, not more names",
+        "components, docs, generated CSS, manifests, tests, and agents all agree",
+    ]:
+        assert boundary in section
 
 
 def test_every_experimental_public_template_has_disposition() -> None:

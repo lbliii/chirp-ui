@@ -41,11 +41,16 @@ generated artifact. Bengal remains the owner of site-wide generated outputs.
 | `src/chirp_ui/components.py` | `manifest-derived` | `src/chirp_ui/manifest.json`, `site/public/chirpui.manifest.json`, `docs/COMPONENT-OPTIONS.md` | Registry source of truth for components, options, emitted classes, runtime requirements, and metadata. |
 | `src/chirp_ui/manifest.py` | `manifest-derived` | `site/public/chirpui.manifest.json`, programmatic manifest API | Manifest builder and CLI output contract. |
 | `src/chirp_ui/manifest.json` | `manifest-derived` | `docs/COMPONENT-OPTIONS.md`, published manifest emission | Committed generated registry projection. |
+| `src/chirp_ui/find.py` | `manifest-derived` | Local human/agent discovery through `python -m chirp_ui find --details` | Installed-package registry discovery over existing manifest metadata; not a generated artifact. |
 | `docs/COMPONENT-OPTIONS.md` | `manifest-derived` | Bengal docs pages and generated site outputs | Human-readable generated component reference. |
 | `docs/INDEX.md` | `docs-derived` | Bengal docs pages and generated site outputs | Durable docs navigation spine. |
+| `docs/DESIGN-SYSTEM-RESEARCH.md` | `docs-derived` | Strategy docs and generated site outputs if mirrored by Bengal | Research ledger and categorical positioning; not copyable snippet source. |
+| `docs/PUBLIC-SURFACE-STABILIZATION.md` | `docs-derived` | Strategy docs, generated docs outputs, and agent maturity guidance | Evidence labels, promotion gates, recipe-only boundaries, and compatibility policy. |
+| `docs/DESIGN-interactive-anatomy.md` | `docs-derived` | Anatomy docs and generated site outputs if mirrored by Bengal | Evidence ledger and stop-and-ask boundaries for behavior-bearing promotions. |
 | `docs/DOCS-IA-MIGRATION.md` | `docs-derived` | Agent-source docs and generated site outputs | Published docs IA and SSG ownership map. |
 | `docs/AGENT-SOURCE-INVENTORY.md` | `docs-derived` | Agent-source docs and generated site outputs | Snippet eligibility and provenance inventory. |
 | `docs/AGENT-SOURCE-MAP.md` | `docs-derived` | Agent-source docs and generated site outputs | Generated-output ownership map. |
+| `docs/REGISTRY-DISCOVERY.md` | `docs-derived` | Agent-source docs and generated site outputs | CLI and Python discovery workflows over manifest labels and component metadata. |
 | `site/content/docs/` | `docs-derived` | Bengal generated docs, search, LLM, and agent outputs | Published docs source mirrors and front matter. |
 | `examples/component-showcase/templates/showcase/*.html` | `example-derived` | Future curated snippet extraction only after review | Candidate dynamic examples, not automatic snippet sources. |
 
