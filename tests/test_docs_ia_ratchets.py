@@ -79,6 +79,8 @@ def test_roadmap_records_application_chrome_reference_implementation_gate() -> N
         "Private evidence is complete for page actions, linked nav/sidebar semantics,",
         "shell response/OOB routing, and compact header/page hero comparison",
         "not waiting for a userbase or adding another artificial fixture",
+        "REFERENCE-IMPLEMENTATION-PLAYBOOK.md",
+        "reference-implementations/README.md",
         "second scenario-complete non-Bengal reference implementation",
         "third scenario-complete hand-written route family",
         "`application_chrome()`",
@@ -123,6 +125,25 @@ def test_productization_saga_records_application_chrome_queue_status() -> None:
         "stop and ask for an explicit public API/design plan",
     ]:
         assert signal in normalized
+
+
+def test_application_chrome_plan_links_reference_scenario_queue() -> None:
+    text = (PLANS / "PLAN-application-chrome-system.md").read_text(encoding="utf-8")
+    section = text.split("Reference scenario queue:", 1)[1].split(
+        "Disqualifiers for promotion evidence:", 1
+    )[0]
+
+    for link in [
+        "../REFERENCE-IMPLEMENTATION-PLAYBOOK.md",
+        "../reference-implementations/README.md",
+        "../reference-implementations/PAGE-ACTIONS-AI-REFERENCE.md",
+        "../reference-implementations/LINKED-NAV-CATALOG-REFERENCE.md",
+        "../reference-implementations/COMPACT-HEADER-REFERENCE.md",
+        "../reference-implementations/SHELL-RESPONSE-REFERENCE.md",
+        "../reference-implementations/DENSE-REFERENCE-DATA-REFERENCE.md",
+        "../reference-implementations/AGENT-DISCOVERY-REFERENCE.md",
+    ]:
+        assert link in section
 
 
 def test_navigation_contract_records_application_chrome_current_status() -> None:

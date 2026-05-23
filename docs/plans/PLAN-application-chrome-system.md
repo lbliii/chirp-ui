@@ -704,6 +704,17 @@ Reference implementation evidence intake:
 | Promotion boundary | Explicit statement that no public API, descriptor, CSS, manifest, generated docs, or runtime change is authorized by intake alone. |
 | Next decision | Either keep as recipe evidence, collect another reference implementation, or stop and ask for a public API/design plan. |
 
+Reference scenario queue:
+
+- [../REFERENCE-IMPLEMENTATION-PLAYBOOK.md](../REFERENCE-IMPLEMENTATION-PLAYBOOK.md)
+- [../reference-implementations/README.md](../reference-implementations/README.md)
+- [../reference-implementations/PAGE-ACTIONS-AI-REFERENCE.md](../reference-implementations/PAGE-ACTIONS-AI-REFERENCE.md)
+- [../reference-implementations/LINKED-NAV-CATALOG-REFERENCE.md](../reference-implementations/LINKED-NAV-CATALOG-REFERENCE.md)
+- [../reference-implementations/COMPACT-HEADER-REFERENCE.md](../reference-implementations/COMPACT-HEADER-REFERENCE.md)
+- [../reference-implementations/SHELL-RESPONSE-REFERENCE.md](../reference-implementations/SHELL-RESPONSE-REFERENCE.md)
+- [../reference-implementations/DENSE-REFERENCE-DATA-REFERENCE.md](../reference-implementations/DENSE-REFERENCE-DATA-REFERENCE.md)
+- [../reference-implementations/AGENT-DISCOVERY-REFERENCE.md](../reference-implementations/AGENT-DISCOVERY-REFERENCE.md)
+
 Disqualifiers for promotion evidence:
 
 - artificial/private fixtures without scenario completeness,

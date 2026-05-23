@@ -269,6 +269,9 @@ Current promotion queue:
   linked branch navigation, or compact docs/reference/catalog headers, or a
   third scenario-complete hand-written route family for shell response/OOB
   branching.
+- Use [REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md)
+  and [reference-implementations/README.md](reference-implementations/README.md)
+  as the queue for those reference scenarios before proposing public API.
 - Until that reference-implementation evidence exists, keep these surfaces recipe-first
   and do not add `application_chrome()`, `docs_shell`, `catalog_shell`,
   `compact_page_header`, `page_actions`, or shell response helper APIs.
