@@ -1,18 +1,10 @@
+import pytest
 from playwright.async_api import expect
 
 from tests.browser.conftest import wait_for_alpine
+from tests.browser.gauntlet_detectors import assert_no_document_horizontal_overflow
 
-
-async def _assert_no_document_horizontal_overflow(page) -> None:
-    metrics = await page.evaluate(
-        """() => ({
-            clientWidth: document.documentElement.clientWidth,
-            scrollWidth: document.documentElement.scrollWidth,
-            bodyScrollWidth: document.body.scrollWidth,
-        })"""
-    )
-    assert metrics["scrollWidth"] <= metrics["clientWidth"] + 1, metrics
-    assert metrics["bodyScrollWidth"] <= metrics["clientWidth"] + 1, metrics
+pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
 
 async def test_page_actions_candidate_uses_existing_primitives_only(page, base_url):
@@ -25,7 +17,7 @@ async def test_page_actions_candidate_uses_existing_primitives_only(page, base_u
     assert await fixture.get_attribute("data-scenario-complete") == "true"
     assert await fixture.get_attribute("data-public-api") == "false"
     assert await fixture.get_attribute("data-existing-primitives") == (
-        "page_header page_hero dropdown_menu share_menu action_bar copy_btn"
+        "page_header page_hero dropdown_menu share_menu action_bar copy_button"
     )
     assert await fixture.get_attribute("data-promotion-boundary") == (
         "no page_actions macro runtime descriptor css manifest generated-options"
@@ -138,4 +130,6 @@ async def test_page_actions_candidate_responsive_without_new_api(page, base_url)
 
         await expect(page.get_by_test_id("candidate-header-actions")).to_be_visible()
         await expect(page.locator(".chirpui-page-actions")).to_have_count(0)
-        await _assert_no_document_horizontal_overflow(page)
+        await assert_no_document_horizontal_overflow(
+            page, f"page-actions-candidate-{width}x{height}"
+        )

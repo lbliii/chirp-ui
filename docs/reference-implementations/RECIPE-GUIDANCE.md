@@ -103,14 +103,14 @@ Start with:
 - `dropdown_menu` for grouped page commands.
 - `share_menu` for canonical share/copy URL behavior.
 - `action_bar` for visible commands that should not hide in a menu.
-- `copy_btn` for known local text with feedback.
+- `copy_button` for known local text with feedback.
 
 Authoring rules:
 
 - Keep commands near page identity, usually in compact `page_header` actions.
 - Use `dropdown_menu` for grouped non-social commands and long labels.
 - Use `share_menu` when the command is truly share/copy URL behavior.
-- Use `copy_btn` only for known text; do not imply fetched LLM text support
+- Use `copy_button` only for known text; do not imply fetched LLM text support
   without a tested route and feedback contract.
 - Use ordinary safe external links for assistant handoff; do not claim a
   semantic AI handoff protocol.

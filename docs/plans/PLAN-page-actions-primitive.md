@@ -79,7 +79,7 @@ page-actions gap remains.
 
 | Candidate | Current Signals | Existing Primitives To Try | Qualifies Now? | Decision |
 |---|---|---|---:|---|
-| Component showcase Streaming & AI page | Has LLM/SSE context, assistant messages, copy buttons, model cards, and a stable page header. | `page_header` actions, `dropdown_menu`, `share_menu`, `action_bar`, existing `copy_btn`. | No | Best candidate for a private fixture because it could need copy demo URL plus open/copy transcript or prompt text, but the current page does not repeat Bengal's title-adjacent page-action shape. |
+| Component showcase Streaming & AI page | Has LLM/SSE context, assistant messages, copy buttons, model cards, and a stable page header. | `page_header` actions, `dropdown_menu`, `share_menu`, `action_bar`, existing `copy_button`. | No | Best candidate for a private fixture because it could need copy demo URL plus open/copy transcript or prompt text, but the current page does not repeat Bengal's title-adjacent page-action shape. |
 | Component showcase catalog/detail routes | Have browsable resource/detail context and existing command/search surfaces. | `page_hero` actions, `dropdown_menu`, `action_bar`, `share_menu`. | No | Useful for generic page tools, but there is no LLM text or AI handoff need. |
 | Forum site pattern detail page | Has thread/post sharing, replies, votes, watches, reports, and social share affordances. | Existing `share_menu` and `action_bar`. | No | Confirms the social/action-bar boundary; it should not be counted as page-actions pressure. |
 | Product/media pattern pages | Have public content actions and share-adjacent recipes. | `share_menu`, `action_bar`, `dropdown_menu`. | No | Pattern prose is not reference implementation evidence and does not need AI/LLM actions. |
@@ -90,7 +90,7 @@ Candidate fixture rule:
 - Start with the Streaming & AI page family only if the scenario naturally needs
   copy current URL plus open/copy transcript, prompt, or LLM sample text.
 - Use existing `page_header` actions, `dropdown_menu`, `share_menu`,
-  `action_bar`, and `copy_btn` before sketching any new macro.
+  `action_bar`, and `copy_button` before sketching any new macro.
 - If those primitives suffice, close the candidate as no-new-API evidence.
 - If they fail, record the exact missing anatomy: trigger placement, command
   grouping, copy/fetch behavior, status feedback, external link safety,
@@ -112,7 +112,7 @@ What the fixture proves:
 
 - A Streaming & AI page can place page-local tools in `page_header` actions
   using existing `dropdown_menu` and `share_menu`.
-- `action_bar` and `copy_btn` can cover visible local actions and known-text
+- `action_bar` and `copy_button` can cover visible local actions and known-text
   copy behavior without a new macro.
 - The fixture can expose non-social commands such as open prompt text and copy
   sample text while staying outside Bengal theme selectors.
@@ -155,7 +155,7 @@ does not prove a public `page_actions()` API gap.
 | Title-adjacent placement | `page_header` actions can hold `dropdown_menu` and `share_menu` in a compact header. | Layout works, but ownership is split across independent primitives. | Weak: composition is acceptable. |
 | Grouped non-social commands | `dropdown_menu` can expose open prompt text, copy sample text, and review links. | Generic menu actions do not own clipboard/fetch status or LLM/AI semantics. | Medium only if a second reference implementation repeats those semantics. |
 | Social/canonical URL share | `share_menu` covers copy/social URL affordances. | It remains a social-share compatibility surface, not a page-command primitive. | Weak: do not replace it yet. |
-| Known-text copy | `copy_btn` copies a known prompt string and shows local feedback. | It does not fetch LLM text, copy the current page URL, or coordinate with a page command menu. | Medium only for an eventual runtime question. |
+| Known-text copy | `copy_button` copies a known prompt string and shows local feedback. | It does not fetch LLM text, copy the current page URL, or coordinate with a page command menu. | Medium only for an eventual runtime question. |
 | Visible local actions | `action_bar` covers inline visible actions. | It is not title-adjacent overflow and does not group page-level commands. | Weak: boundary is clear. |
 | Responsive containment | Browser proof covers 320, 390, 768, and 1024 widths without document overflow. | A future owned popover would still need viewport, focus, and long-label proof. | Good fixture proof, not API proof. |
 
@@ -181,7 +181,7 @@ Next-slice options from this analysis:
 Private behavior stress result:
 
 - `tests/browser/test_page_actions_candidate.py` verifies the prompt text route,
-  `copy_btn` feedback, long dropdown command visibility, menu containment at
+  `copy_button` feedback, long dropdown command visibility, menu containment at
   320px, and no document-level horizontal overflow.
 - The stress result strengthens the existing-primitives recipe, not the public
   API case. A future owned primitive would still need focus, status, fetch,
@@ -214,13 +214,13 @@ Qualifying criteria:
 - LLM text, prompt/transcript, AI handoff, or another page-local command
   semantic beyond generic menu/share/social actions,
 - evidence that existing `page_header`, `page_hero`, `dropdown_menu`,
-  `share_menu`, `action_bar`, and `copy_btn` were tried or considered.
+  `share_menu`, `action_bar`, and `copy_button` were tried or considered.
 
 Search findings:
 
 | Candidate | Evidence Found | Why It Does Not Qualify |
 |---|---|---|
-| Private `/page-actions-candidate` fixture | Uses `page_header`, `dropdown_menu`, `share_menu`, `action_bar`, `copy_btn`, prompt text route, copy feedback, long labels, and dropdown containment proof. | Artificial evidence fixture, not a scenario-complete reference implementation; it proves current primitives can model the scenario. |
+| Private `/page-actions-candidate` fixture | Uses `page_header`, `dropdown_menu`, `share_menu`, `action_bar`, `copy_button`, prompt text route, copy feedback, long labels, and dropdown containment proof. | Artificial evidence fixture, not a scenario-complete reference implementation; it proves current primitives can model the scenario. |
 | Dense object chrome browser fixture | Uses several `dropdown_menu` command surfaces near dense object context. | Commands are object/workflow tools, not copy URL plus LLM/prompt/AI handoff semantics. |
 | Application chrome route fixtures | Use `page_header`, route tabs, breadcrumbs, command bars, page tools, and shell actions. | They prove app chrome composition and response ownership, not page-local copy/LLM actions. |
 | Gauntlet command surfaces | Stress dropdowns, command bars, edge menus, long labels, and overflow. | Browser stress evidence only; not a page/object header reference implementation with URL/LLM actions. |
@@ -245,7 +245,7 @@ Reference implementation evidence intake:
 | Evidence Field | Required Record |
 |---|---|
 | Implementation identity | Scenario-complete non-Bengal app, package, or docs/reference route family; private fixtures and pattern prose do not qualify. |
-| Existing primitives tried | `page_header` or `page_hero` actions, `dropdown_menu`, `share_menu`, `action_bar`, and `copy_btn` where applicable. |
+| Existing primitives tried | `page_header` or `page_hero` actions, `dropdown_menu`, `share_menu`, `action_bar`, and `copy_button` where applicable. |
 | Repeated gap | Exact page-local behavior still missing after composition, such as copy current URL, fetch/copy LLM text, AI handoff, grouped non-social commands, or status feedback. |
 | Proof | Browser or server proof that the page tried current primitives and still needs repeated app-owned glue. |
 | Boundary | Explicit no-authorization note for `page_actions()`, descriptors, CSS, manifest, generated options, runtime, docs, and changelog until the promotion gate is satisfied. |

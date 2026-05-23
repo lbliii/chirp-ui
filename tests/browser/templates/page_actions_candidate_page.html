@@ -15,7 +15,7 @@
       data-reference-implementation="page-actions-ai"
       data-scenario-complete="true"
       data-public-api="false"
-      data-existing-primitives="page_header page_hero dropdown_menu share_menu action_bar copy_btn"
+      data-existing-primitives="page_header page_hero dropdown_menu share_menu action_bar copy_button"
       data-promotion-boundary="no page_actions macro runtime descriptor css manifest generated-options">
   {% call stack(gap="lg") %}
     {% call page_header(
@@ -43,7 +43,7 @@
         </div>
         <p class="chirpui-text-muted">
           The dropdown can group links and local actions, the share menu can copy
-          a social URL, the action bar can expose visible actions, and copy_btn
+          a social URL, the action bar can expose visible actions, and copy_button
           can copy known text. The candidate gap is whether a page-local command
           popover should own URL, LLM text, and AI handoff semantics together.
         </p>
@@ -53,7 +53,7 @@
     {% call grid(cols=2, gap="md") %}
       {% call surface() %}
         {% call stack(gap="sm") %}
-          {{ section_header("Prompt sample", subtitle="copy_btn covers known local text.") }}
+          {{ section_header("Prompt sample", subtitle="copy_button covers known local text.") }}
           <p data-testid="candidate-prompt-text">{{ prompt_text }}</p>
           {{ copy_button(prompt_text, label="Copy prompt text") }}
           {{ btn("Open prompt text", href="/page-actions-candidate/prompt.txt", variant="secondary", size="sm", icon="share") }}

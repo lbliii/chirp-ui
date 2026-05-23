@@ -1,18 +1,10 @@
+import pytest
 from playwright.async_api import expect
 
 from tests.browser.conftest import wait_for_alpine
+from tests.browser.gauntlet_detectors import assert_no_document_horizontal_overflow
 
-
-async def _assert_no_document_horizontal_overflow(page) -> None:
-    metrics = await page.evaluate(
-        """() => ({
-            clientWidth: document.documentElement.clientWidth,
-            scrollWidth: document.documentElement.scrollWidth,
-            bodyScrollWidth: document.body.scrollWidth,
-        })"""
-    )
-    assert metrics["scrollWidth"] <= metrics["clientWidth"] + 1, metrics
-    assert metrics["bodyScrollWidth"] <= metrics["clientWidth"] + 1, metrics
+pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
 
 async def test_dense_reference_data_reference_uses_existing_primitives_only(page, base_url):
@@ -79,4 +71,6 @@ async def test_dense_reference_data_reference_long_names_stay_inside_document(pa
         await expect(
             page.get_by_text("module_reference_identifier_with_deliberately_long_unbroken_name")
         ).to_be_visible()
-        await _assert_no_document_horizontal_overflow(page)
+        await assert_no_document_horizontal_overflow(
+            page, f"dense-reference-data-reference-{width}x{height}"
+        )

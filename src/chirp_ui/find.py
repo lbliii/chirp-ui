@@ -235,7 +235,7 @@ def search(
 
 
 def _runtime_summary(entry: ComponentEntry) -> str:
-    requirements = entry.get("requirements") or entry.get("runtime") or ()
+    requirements = entry.get("requires") or entry.get("requirements") or entry.get("runtime") or ()
     if not requirements:
         return "-"
     if isinstance(requirements, str):

@@ -311,6 +311,12 @@ def test_format_detailed_rows_includes_header_and_metadata() -> None:
     assert "input,results,tokens" in text
 
 
+def test_detailed_rows_use_manifest_requires_for_runtime() -> None:
+    rows = detailed_search(load_manifest(), "copy-btn")
+    assert rows
+    assert rows[0][7] == "alpine"
+
+
 def test_format_detailed_rows_handles_empty() -> None:
     assert format_detailed_rows([]) == ""
 

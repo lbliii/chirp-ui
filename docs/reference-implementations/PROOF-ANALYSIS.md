@@ -122,7 +122,7 @@ Proof source: `/page-actions-candidate` and
 `tests/browser/test_page_actions_candidate.py`.
 
 Existing primitives tried: `page_header`, `page_hero`, `dropdown_menu`,
-`share_menu`, `action_bar`, and `copy_btn`.
+`share_menu`, `action_bar`, and `copy_button`.
 
 What worked:
 

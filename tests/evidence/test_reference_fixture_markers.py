@@ -9,7 +9,7 @@ REFERENCE_FIXTURES = {
     "page_actions_candidate_page.html": {
         "testid": "page-actions-candidate",
         "implementation": "page-actions-ai",
-        "primitives": "page_header page_hero dropdown_menu share_menu action_bar copy_btn",
+        "primitives": "page_header page_hero dropdown_menu share_menu action_bar copy_button",
         "blocked": "no page_actions macro runtime descriptor css manifest generated-options",
     },
     "linked_nav_candidate_page.html": {

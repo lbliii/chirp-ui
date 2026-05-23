@@ -18,7 +18,7 @@ surface, not a marketing page or social sharing example.
 - `dropdown_menu`
 - `share_menu`
 - `action_bar`
-- `copy_btn`
+- `copy_button`
 
 ## Required Proof
 

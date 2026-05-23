@@ -1,18 +1,10 @@
+import pytest
 from playwright.async_api import expect
 
 from tests.browser.conftest import wait_for_alpine
+from tests.browser.gauntlet_detectors import assert_no_document_horizontal_overflow
 
-
-async def _assert_no_document_horizontal_overflow(page) -> None:
-    metrics = await page.evaluate(
-        """() => ({
-            clientWidth: document.documentElement.clientWidth,
-            scrollWidth: document.documentElement.scrollWidth,
-            bodyScrollWidth: document.body.scrollWidth,
-        })"""
-    )
-    assert metrics["scrollWidth"] <= metrics["clientWidth"] + 1, metrics
-    assert metrics["bodyScrollWidth"] <= metrics["clientWidth"] + 1, metrics
+pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
 
 async def test_linked_nav_candidate_uses_existing_primitives_only(page, base_url):
@@ -93,7 +85,7 @@ async def test_linked_nav_candidate_long_child_label_stays_inside_sidebar(page, 
         ),
     )
     await expect(long_child).to_be_visible()
-    await _assert_no_document_horizontal_overflow(page)
+    await assert_no_document_horizontal_overflow(page, "linked-nav-candidate-sidebar")
 
     metrics = await long_child.evaluate(
         """(node) => {
@@ -141,7 +133,7 @@ async def test_linked_nav_candidate_phone_drawer_preserves_linked_tree(page, bas
         ),
     )
     await expect(long_child).to_be_visible()
-    await _assert_no_document_horizontal_overflow(page)
+    await assert_no_document_horizontal_overflow(page, "linked-nav-candidate-drawer")
 
     metrics = await long_child.evaluate(
         """(node) => {

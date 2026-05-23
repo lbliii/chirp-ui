@@ -136,7 +136,7 @@ def test_page_actions_candidate_fixture_rule_tries_existing_primitives_first() -
         "Streaming & AI page family",
         "copy current URL plus open/copy transcript, prompt, or LLM sample text",
         "Use existing `page_header` actions, `dropdown_menu`, `share_menu`,",
-        "`action_bar`, and `copy_btn` before sketching any new macro",
+        "`action_bar`, and `copy_button` before sketching any new macro",
         "If those primitives suffice, close the candidate as no-new-API evidence",
         "record the exact missing anatomy",
         "external link safety",
@@ -165,7 +165,7 @@ def test_page_actions_plan_records_private_candidate_fixture_without_api_promoti
     for proof in [
         "page-local tools in `page_header` actions",
         "existing `dropdown_menu` and `share_menu`",
-        "`action_bar` and `copy_btn`",
+        "`action_bar` and `copy_button`",
         "open prompt text and copy",
         "outside Bengal theme selectors",
         "without document-level horizontal overflow",
@@ -222,7 +222,7 @@ def test_page_actions_plan_fixture_analysis_classifies_gap_without_promotion() -
         "`page_header` actions can hold `dropdown_menu` and `share_menu`",
         "`dropdown_menu` can expose open prompt text",
         "`share_menu` covers copy/social URL affordances",
-        "`copy_btn` copies a known prompt string",
+        "`copy_button` copies a known prompt string",
         "`action_bar` covers inline visible actions",
         "Browser proof covers 320, 390, 768, and 1024 widths",
     ]:
@@ -268,7 +268,7 @@ def test_page_actions_plan_fixture_analysis_next_slices_stay_private_until_secon
     for stress_result in [
         "Private behavior stress result:",
         "prompt text route",
-        "`copy_btn` feedback",
+        "`copy_button` feedback",
         "long dropdown command visibility",
         "menu containment at",
         "320px",
@@ -308,7 +308,7 @@ def test_page_actions_plan_real_reference_implementation_search_finds_no_second_
         "at least one non-social page command",
         "LLM text, prompt/transcript, AI handoff",
         "`page_header`, `page_hero`, `dropdown_menu`,",
-        "`share_menu`, `action_bar`, and `copy_btn`",
+        "`share_menu`, `action_bar`, and `copy_button`",
     ]:
         assert criterion in section
 
@@ -527,7 +527,7 @@ def test_page_actions_plan_has_real_reference_implementation_evidence_intake() -
         "Scenario-complete non-Bengal app, package, or docs/reference route family",
         "private fixtures and pattern prose do not qualify",
         "`page_header` or `page_hero` actions",
-        "`dropdown_menu`, `share_menu`, `action_bar`, and `copy_btn`",
+        "`dropdown_menu`, `share_menu`, `action_bar`, and `copy_button`",
         "copy current URL",
         "fetch/copy LLM text",
         "AI handoff",

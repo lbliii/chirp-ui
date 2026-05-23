@@ -50,7 +50,7 @@ def test_reference_implementation_playbook_names_priority_candidates() -> None:
         assert f"| {candidate} |" in text
 
     for primitive in [
-        "`page_header`, `page_hero`, `dropdown_menu`, `share_menu`, `action_bar`, `copy_btn`",
+        "`page_header`, `page_hero`, `dropdown_menu`, `share_menu`, `action_bar`, `copy_button`",
         '`sidebar`, `sidebar_section`, `sidebar_link`, `nav_tree(branch_mode="linked")`',
         '`page_header(variant="compact")`, `page_hero(variant="minimal")`',
         "`resource_index`, `resource_card`, `filter_rail`, `filter_bar`, `table`",
@@ -215,7 +215,7 @@ def test_reference_recipe_guidance_covers_page_actions() -> None:
         "`dropdown_menu`",
         "`share_menu`",
         "`action_bar`",
-        "`copy_btn`",
+        "`copy_button`",
     ]:
         assert primitive in section
 
@@ -469,7 +469,7 @@ def test_reference_proof_analysis_records_page_actions_decision() -> None:
         "/page-actions-candidate",
         "tests/browser/test_page_actions_candidate.py",
         "`page_header`, `page_hero`, `dropdown_menu`",
-        "`share_menu`, `action_bar`, and `copy_btn`",
+        "`share_menu`, `action_bar`, and `copy_button`",
         "Title-adjacent actions fit inside",
         "copy URL, open LLM text, copy known prompt text",
         "external assistant handoff commands",
@@ -641,7 +641,7 @@ def test_page_actions_reference_brief_keeps_api_unauthorized() -> None:
         "`dropdown_menu`",
         "`share_menu`",
         "`action_bar`",
-        "`copy_btn`",
+        "`copy_button`",
     ]:
         assert primitive in text
 

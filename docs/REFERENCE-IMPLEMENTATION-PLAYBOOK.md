@@ -55,7 +55,7 @@ Not-now:
 
 | Candidate | Next Reference Implementation | Existing Primitives To Try | Stop-And-Ask Boundary |
 |---|---|---|---|
-| Page actions | AI/reference page with copy URL, open/copy LLM text, and non-social page commands. | `page_header`, `page_hero`, `dropdown_menu`, `share_menu`, `action_bar`, `copy_btn`. | `page_actions()` macro, runtime copy/fetch helpers, descriptor/CSS/manifest changes. |
+| Page actions | AI/reference page with copy URL, open/copy LLM text, and non-social page commands. | `page_header`, `page_hero`, `dropdown_menu`, `share_menu`, `action_bar`, `copy_button`. | `page_actions()` macro, runtime copy/fetch helpers, descriptor/CSS/manifest changes. |
 | Linked navigation | Docs/catalog workspace with broad sidebar plus contextual linked branch tree and phone drawer fallback. | `sidebar`, `sidebar_section`, `sidebar_link`, `nav_tree(branch_mode="linked")`, `drawer`, `drawer_trigger`. | New `nav_tree` parameters, sidebar branch macros, docs/catalog shell. |
 | Compact header | Dense docs/reference/catalog page comparing page identity, metadata, actions, search, and route proximity. | `page_header(variant="compact")`, `page_hero(variant="minimal")`, `search_header`, `entity_header`, `document_header`. | `compact_page_header`, `docs_header`, `page_hero` markup/slot changes. |
 | Shell response/OOB | Hand-written route family outside `mount_pages()` with shell navigation, route-tabs, local fragments, and shell-actions OOB. | Existing `HX-Target` branching recipe, `shell_outlet_attrs`, `route_tabs`, fragment islands. | Public shell response helper or new HTMX convention. |
