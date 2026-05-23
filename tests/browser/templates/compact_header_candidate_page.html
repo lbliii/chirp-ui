@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block brand %}Compact Header Candidate{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import block, grid, page_header, stack %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/search_header.html" import search_header %}
+{% from "chirpui/entity_header.html" import entity_header %}
+{% from "chirpui/document_header.html" import document_header %}
+{% from "chirpui/surface.html" import surface %}
+
+<main data-testid="compact-header-candidate"
+      data-candidate="compact-header-page-hero"
+      data-public-api="false"
+      data-existing-primitives="page_header page_hero search_header entity_header document_header">
+  {% call stack(gap="lg") %}
+    <section data-testid="compact-page-header-proof">
+      {% call page_header(
+        long_title,
+        subtitle="Existing compact page_header keeps dense page actions close to the title.",
+        meta="Private fixture evidence only.",
+        variant="compact"
+      ) %}
+        {% slot actions %}
+          {{ btn("Primary action", variant="primary", size="sm") }}
+          {{ btn("Secondary action with a deliberately long label", variant="secondary", size="sm") }}
+        {% end %}
+      {% end %}
+    </section>
+
+    <section data-testid="minimal-page-hero-empty-proof">
+      {% call page_hero(
+        title="Minimal page hero with no optional slot content",
+        subtitle="Empty optional wrappers are CSS-collapsed today.",
+        variant="minimal",
+        background="muted"
+      ) %}
+      {% end %}
+    </section>
+
+    <section data-testid="minimal-page-hero-filled-proof">
+      {% call page_hero(
+        title="Minimal page hero with explicit regions",
+        subtitle="Filled regions prove the current slot contract remains available.",
+        variant="minimal",
+        background="solid"
+      ) %}
+        {% slot eyebrow %}<span>Docs / Reference</span>{% end %}
+        {% slot actions %}
+          {{ btn("Copy link", variant="secondary", size="sm") }}
+          {{ btn("Open reference", variant="ghost", size="sm") }}
+        {% end %}
+        {% slot metadata %}<span>Updated today</span>{% end %}
+        <p>Short contextual content belongs in the current hero content slot.</p>
+        {% slot footer %}<span class="chirpui-text-muted">Footer metadata remains opt-in.</span>{% end %}
+      {% end %}
+    </section>
+
+    {% call grid(cols=2, gap="md") %}
+      {% call surface() %}
+        {% call search_header(
+          "Search-first dense header",
+          "/compact-header-candidate",
+          query="registry",
+          subtitle="search_header remains the better first choice for browse/catalog pages.",
+          search_placeholder="Search registry"
+        ) %}
+          {{ btn("Filter", variant="ghost", size="sm") }}
+        {% end %}
+      {% end %}
+
+      {% call surface() %}
+        {% call stack(gap="md") %}
+          {% call entity_header(
+            title="Entity header for object context",
+            meta="3 linked pages · status stable",
+            icon="status"
+          ) %}
+            {% slot actions %}
+              {{ btn("Edit", variant="secondary", size="sm") }}
+            {% end %}
+          {% end %}
+          {% call document_header(
+            "README.md",
+            subtitle="Document header keeps file metadata separate from hero semantics.",
+            path="docs/README.md",
+            status="Draft",
+            meta_items=["Owner: Docs", "Review: Pending"]
+          ) %}
+            {% slot actions %}
+              {{ btn("Preview", variant="secondary", size="sm") }}
+            {% end %}
+          {% end %}
+        {% end %}
+      {% end %}
+    {% end %}
+
+    {% call block() %}
+      <p>
+        This private fixture compares existing header primitives before any
+        compact header, docs header, catalog header, or page_hero markup change
+        is authorized.
+      </p>
+    {% end %}
+  {% end %}
+</main>
+{% end %}
