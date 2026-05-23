@@ -161,6 +161,28 @@ Modal overlays rely on Alpine state, `x-trap.inert.noscroll`, backdrop clicks,
 and explicit close buttons. Overlay close actions dispatch
 `chirpui:modal-closed`; native dialogs currently do not emit this event.
 
+## Evidence Ledger
+
+This ledger applies the interactive anatomy contract from
+[DESIGN-interactive-anatomy.md](DESIGN-interactive-anatomy.md). It is a
+docs/tests contract for the rendered modal family, not descriptor or manifest metadata.
+
+| Field | Native modal | Confirm dialog | Modal overlay |
+| --- | --- | --- | --- |
+| Surface | `modal` plus `modal_trigger` | `confirm_dialog` plus `confirm_trigger` | `modal_overlay` plus `modal_overlay_trigger` |
+| Label | `stable` | `stable` | `stable` |
+| Anatomy | `<dialog id>`, `.chirpui-modal`, size class, optional header, title, header actions slot, close form, body, footer, trigger button, `data-dialog-target`. | Native `<dialog>` with `.chirpui-confirm`, shared modal header/close/body structure, optional danger icon, message, footer, cancel form, confirm form, trigger button. | Store-backed root `#modal-{id}`, backdrop, panel, header, title, close button, body, trigger button, Alpine state bindings. |
+| Native semantics | Native `<dialog>` opened with `showModal()`; trigger is a `<button type="button">`; close is a `form method="dialog"` submit button with `aria-label="Close"`. | Native `<dialog>` opened with `showModal()`; cancel uses `form method="dialog"`; confirm action is either dialog-close form or explicit form submit/HTMX action. | Div-based dialog surface with `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, bound `aria-hidden`, trigger `aria-controls`, and bound `aria-expanded`. |
+| Keyboard | Native dialog keyboard behavior after `showModal()`; close/cancel controls are normal buttons. | Native dialog keyboard behavior after `showModal()`; cancel and confirm controls are normal form controls. | Alpine focus trap owns modal keyboard containment while open; close button and backdrop actions close the overlay. |
+| Focus | Browser owns native modal focus behavior after `showModal()`; visible focus comes from global control styles; focus-return behavior is covered by browser tests where triggered. | Browser owns native dialog focus behavior; cancel/close use native dialog close semantics; explicit confirm submits may navigate or swap content. | `x-trap.inert.noscroll` contains focus while open and releases it when store state closes; Alpine lifecycle tests cover store initialization across navigation. |
+| Runtime | `chirpuiDialogTarget()` resolves `data-dialog-target` or `data-target` and calls `showModal()`; requires native `<dialog>` support plus `chirpui-alpine.js` for the trigger factory. | Same `chirpuiDialogTarget()` trigger contract; optional HTMX submit contract emits `hx-delete` or `hx-post`; `hx-disinherit="hx-select hx-target hx-swap"` protects forms from shell inheritance. | Requires Alpine store `Alpine.store("modals")`, inline Alpine bindings, and `x-trap.inert.noscroll`; dispatches `chirpui:modal-closed` on explicit close paths. |
+| Motion | No anatomy-specific animation contract beyond component CSS and transition-token governance. | No anatomy-specific animation contract beyond component CSS and transition-token governance. | Overlay open/close classes are state-bound; reduced-motion expectations follow component CSS and transition-token governance. |
+| Responsive and overflow | Size classes own dialog width; modal body owns local content flow; no document-level horizontal overflow should be introduced by the shell. | Small modal sizing owns confirmation width; message/footer content should wrap locally. | Panel and body own overlay content overflow; backdrop covers the viewport without shifting the document. |
+| Security and escaping | Macro arguments render through normal template escaping and `html_attrs`/attribute helpers; no raw HTML escape hatch is part of the modal anatomy contract. | Message/title/action attributes render through normal escaping; HTMX attributes are emitted from explicit macro parameters; no inline JavaScript payload interpolation. | Id/title/content arguments render through template escaping and attributes; inline Alpine expressions use component-owned state access rather than user-provided JavaScript strings. |
+| Performance | Trigger lookup is local to the target id; no page-global listeners or observers are required by native modal anatomy. | Same native trigger lookup; HTMX form attributes do not add modal-family observers. | Uses one Alpine store and local bindings; no per-frame work, scroll listeners, or observers are part of the overlay contract. |
+| Proof | `tests/test_components.py` checks rendered native modal anatomy; `tests/browser/test_modals.py` checks `showModal()` opening and native close forms. | `tests/test_components.py` checks confirm anatomy and HTMX attributes; `tests/browser/test_modals.py` checks confirm trigger/cancel behavior. | `tests/test_components.py` checks overlay ARIA/anatomy; `tests/browser/test_modals.py` checks overlay open/close/events; `tests/browser/test_alpine_lifecycle.py` checks store initialization across navigation. |
+| Residual risk | Automated tests cover rendered semantics and browser behavior, but no manual screen-reader or assistive-technology proof is claimed. | Automated tests cover rendered semantics and browser behavior, but no manual screen-reader or assistive-technology proof is claimed. | Automated tests cover focus trap wiring and events, but no manual screen-reader or assistive-technology proof is claimed. |
+
 ## Proof
 
 Executable coverage lives in:

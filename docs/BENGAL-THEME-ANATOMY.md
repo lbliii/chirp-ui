@@ -15,8 +15,10 @@ The source of truth lives in:
 - `src/bengal_themes/chirp_theme/templates/partials/docs-nav.html`
 - `src/bengal_themes/chirp_theme/templates/partials/docs-toc-sidebar.html`
 - `src/bengal_themes/chirp_theme/templates/partials/navigation-components.html`
+- `src/bengal_themes/chirp_theme/templates/partials/page-actions.html`
 - `src/bengal_themes/chirp_theme/assets/js/core/theme.js`
 - `src/bengal_themes/chirp_theme/assets/js/core/search.js`
+- `src/bengal_themes/chirp_theme/assets/js/enhancements/action-bar.js`
 - `src/bengal_themes/chirp_theme/assets/js/enhancements/mobile-nav.js`
 - `src/bengal_themes/chirp_theme/assets/js/enhancements/tabs.js`
 - `src/bengal_themes/chirp_theme/assets/js/enhancements/toc.js`
@@ -163,6 +165,42 @@ Constraints:
 - Keep the variant set narrow unless a real Bengal template consumes a new
   variant.
 
+## Page Actions Popover
+
+The page actions popover is a native popover rendered near docs and reference
+heroes. It keeps copy, LLM text, and AI handoff actions close to the page title
+without making those actions Chirp UI registry components yet.
+
+Rendered structure:
+
+- root: `.chirp-theme-page-actions`
+- trigger: `.chirp-theme-page-actions__trigger`
+- trigger relationship: `popovertarget="<menu-id>"`
+- popover: `.chirp-theme-page-actions__menu[popover]`
+- header: `.chirp-theme-page-actions__header`
+- action item: `.chirp-theme-page-actions__item`
+- copy URL hook: `data-action="copy-url"`
+- copy LLM text hook: `data-action="copy-llm-txt"`
+- AI handoff hook: `data-ai="<assistant-id>"`
+
+Runtime:
+
+- `enhancements/action-bar.js` delegates copy actions through
+  `[data-action^="copy"]`.
+- The same script delegates AI handoff through `[data-ai]`, fetches the page's
+  LLM text URL when available, copies it to the clipboard, and opens the target
+  assistant in a new tab.
+- Browser popover behavior owns opening, light dismiss, escape handling, and
+  top-layer placement.
+
+Constraints:
+
+- Keep page action hooks data-driven and shared with older action-bar surfaces.
+- Keep AI assistant IDs explicit; do not infer behavior from link labels.
+- Keep `rel="noopener noreferrer"` on external AI and LLM text links.
+- Do not promote page actions into a Chirp UI component until the app-shell
+  page-action primitive has a registry-owned contract.
+
 ## Mobile Navigation
 
 The mobile navigation is a native dialog rendered by `base.html`.
@@ -272,6 +310,29 @@ Constraints:
 - Keep sync groups explicit through `data-sync`; do not infer sync from labels.
 - Keep code-copy targets text-based and avoid copying HTML.
 
+## Evidence Ledger
+
+This ledger applies the interactive anatomy contract from
+[DESIGN-interactive-anatomy.md](DESIGN-interactive-anatomy.md). It is a
+docs/tests contract for packaged Bengal theme chrome, not descriptor or
+manifest metadata.
+
+| Field | Packaged Bengal theme controls |
+| --- | --- |
+| Surface | Theme menu, search modal, inline search, page actions popover, mobile navigation, docs navigation, TOC, and Bengal content tabs in `chirp-theme`. |
+| Label | `stable` packaged theme contract; not a Chirp UI registry component API. Repeated shell patterns remain candidates for later registry promotion. |
+| Anatomy | Theme controls own native popover triggers/menus and `data-appearance`; search owns modal/inline IDs, status regions, result lists, and close hooks; page actions own popover trigger/menu and `data-action`/`data-ai` hooks; mobile nav owns native dialog, search bridge, submenu toggles, nav body, and footer theme controls; docs nav/TOC own sidebar, tree, heading, and progress hooks; content tabs own `.tabs`/`.code-tabs`, nav links, panes, sync hooks, and copy hooks. |
+| Native semantics | Theme and page actions use native `[popover]`; search modal and mobile nav use native `<dialog>`; inline search uses search input plus status/result regions; docs nav uses navigation/sidebar semantics; TOC uses tree/treeitem semantics; content tabs are docs-site tab surfaces and must not be conflated with Chirp UI route tabs. |
+| Keyboard | Browser popover/dialog behavior owns Escape, light dismiss, and modal stacking for native surfaces; search owns `Cmd/Ctrl+K`, `/`, Escape, Arrow keys, and Enter; mobile nav owns submenu toggles and closes after navigation; TOC and content tabs own their script-level keyboard behavior. |
+| Focus | Native dialogs/popovers own browser focus behavior where applicable; search opens from global/mobile triggers and focuses the modal workflow; mobile nav keeps search reachable from the dialog; TOC tracks active headings; content tab focus follows delegated link activation. |
+| Runtime | Requires packaged Bengal static assets: `core/theme.js`, `core/search.js`, `enhancements/action-bar.js`, `enhancements/mobile-nav.js`, `enhancements/tabs.js`, and `enhancements/toc.js`; search data loads from Bengal-generated index artifacts. |
+| Motion | Popover/dialog transitions and content-tab behavior are CSS/static-asset owned; reduced-motion expectations follow packaged theme CSS and Chirp UI transition-token governance where Chirp UI tokens are used. |
+| Responsive and overflow | Browser proof covers rail/header/mobile chrome across phone, tablet, compact desktop, and desktop widths; page actions and API/search surfaces are checked for viewport containment and no document-level horizontal overflow. |
+| Security and escaping | Templates render IDs, URLs, labels, and data hooks through normal template escaping; TOC raw HTML fallback is limited to Bengal-provided already-rendered markup; page actions keep external links `rel="noopener noreferrer"`; copy and AI handoff behavior reads explicit `data-action`, `data-url`, and `data-ai` hooks rather than inline script payloads. |
+| Performance | Theme scripts use bounded initialization and delegated events for copy/AI actions; search owns index loading and filtering; TOC owns active-heading and scroll-progress behavior; no Chirp UI component runtime or manifest projection is implied by these theme hooks. |
+| Proof | `tests/test_bengal_theme_package.py` checks packaged partial/static-asset hook parity, page-action hooks, search hooks, mobile nav hooks, TOC hooks, and content-tab hooks; `tests/browser/test_bengal_docs_chrome.py` checks responsive chrome, mobile nav, native theme popover, page actions popover, API/search surfaces, TOC top action, and no document horizontal overflow; `tests/test_docs_site.py` checks published docs bridge back to this guide. |
+| Residual risk | Automated tests cover packaged hooks, rendered semantics, browser behavior, responsive layout, and overflow, but no manual screen-reader or assistive-technology proof is claimed. Theme-owned selectors should not be promoted into registry APIs without a separate Chirp UI component plan and proof. |
+
 ## Proof
 
 Focused contracts live in `tests/test_bengal_theme_package.py`:
@@ -281,8 +342,14 @@ Focused contracts live in `tests/test_bengal_theme_package.py`:
   families
 - theme controls, search modal, inline search, mobile nav, docs TOC, and theme
   tabs keep their template/static JS hook parity
+- page actions keep copy, LLM text, and AI handoff hooks aligned with
+  `enhancements/action-bar.js`
 - built docs output includes non-empty header and mobile navigation links
 
 Published site coverage lives in `tests/test_docs_site.py`, which ensures the
 site mirror points back to this canonical guide and the docs IA migration matrix
 names every published docs source.
+
+Browser coverage lives in `tests/browser/test_bengal_docs_chrome.py`, which
+checks responsive docs chrome, mobile nav, native theme popovers, page actions,
+API/search surfaces, TOC actions, footer placement, and horizontal overflow.
