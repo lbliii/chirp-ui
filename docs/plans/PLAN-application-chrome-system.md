@@ -715,6 +715,17 @@ Reference scenario queue:
 - [../reference-implementations/DENSE-REFERENCE-DATA-REFERENCE.md](../reference-implementations/DENSE-REFERENCE-DATA-REFERENCE.md)
 - [../reference-implementations/AGENT-DISCOVERY-REFERENCE.md](../reference-implementations/AGENT-DISCOVERY-REFERENCE.md)
 
+Reference implementation proof status:
+
+| Candidate | Current Proof | What It Allows | What It Does Not Allow |
+|---|---|---|---|
+| Page actions | `/page-actions-candidate` plus `tests/browser/test_page_actions_candidate.py` | Analyze whether URL copy, LLM text, and AI handoff need a page-local command primitive. | No `page_actions()` macro, descriptor, CSS, manifest, or runtime helper. |
+| Linked navigation | `/linked-nav-candidate` plus `tests/browser/test_linked_nav_candidate.py` | Analyze linked parent routes, server-owned open state, active descendants, counts, and drawer fallback. | No new `nav_tree` parameters, sidebar branch macros, or docs/catalog shell. |
+| Compact headers | `/compact-header-candidate` plus `tests/browser/test_compact_header_candidate.py` | Analyze whether current header/hero primitives cover dense title/action/tab relationships. | No `compact_page_header`, `docs_header`, `page_hero` slot changes, CSS, or manifest changes. |
+| Shell response/OOB | workspace/admin route-family matrix in `tests/test_shell_response_targets.py` plus OOB browser proof | Analyze repeated response-target branching and shell-actions replacement pressure. | No visual shell macro, new HTMX protocol, descriptor, CSS, manifest, or public helper. |
+| Dense reference/data pages | `/dense-reference-data-reference` plus `tests/browser/test_dense_reference_data_reference.py` | Analyze whether existing resource, rail, table, params, badge, and callout primitives cover API density. | No data-grid engine, virtualized table, reference-page macro, filter-count API, CSS, manifest, or JavaScript layout runtime. |
+| Agent discovery | `tests/test_find_cli.py` details proof for page and pattern primitives | Analyze whether installed metadata steers agents toward real primitives. | No manifest schema changes, copied-source distribution, MCP tooling, or new CLI commands. |
+
 Disqualifiers for promotion evidence:
 
 - artificial/private fixtures without scenario completeness,

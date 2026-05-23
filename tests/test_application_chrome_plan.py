@@ -685,6 +685,37 @@ def test_application_chrome_plan_records_shell_response_route_local_gap_notes() 
         assert decision in normalized
 
 
+def test_application_chrome_plan_tracks_current_reference_proof_status() -> None:
+    text = PLAN.read_text(encoding="utf-8")
+    section = text.split("Reference implementation proof status:", 1)[1].split(
+        "Disqualifiers for promotion evidence:", 1
+    )[0]
+
+    for proof in [
+        "/page-actions-candidate",
+        "tests/browser/test_page_actions_candidate.py",
+        "/linked-nav-candidate",
+        "tests/browser/test_linked_nav_candidate.py",
+        "/compact-header-candidate",
+        "tests/browser/test_compact_header_candidate.py",
+        "tests/test_shell_response_targets.py",
+        "/dense-reference-data-reference",
+        "tests/browser/test_dense_reference_data_reference.py",
+        "tests/test_find_cli.py",
+    ]:
+        assert proof in section
+
+    for boundary in [
+        "No `page_actions()` macro",
+        "No new `nav_tree` parameters",
+        "No `compact_page_header`",
+        "No visual shell macro",
+        "No data-grid engine",
+        "No manifest schema changes",
+    ]:
+        assert boundary in section
+
+
 def test_application_chrome_plan_has_compact_header_investigation_boundary() -> None:
     text = PLAN.read_text(encoding="utf-8")
     section = text.split("## Compact Page Header/Page Hero Investigation", 1)[1].split(
