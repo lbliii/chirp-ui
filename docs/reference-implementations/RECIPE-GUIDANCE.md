@@ -182,3 +182,33 @@ Authoring rules:
 Not authorized: `compact_page_header`, `docs_header`, `catalog_header`,
 `docs_shell`, new `page_hero` parameters, slot changes, markup changes, emitted
 classes, CSS, descriptor changes, manifest updates, or generated options.
+
+## Shell Response/OOB
+
+Use this recipe when hand-written route families need persistent shell
+navigation, route-tab page roots, local fragments, and route-scoped shell
+actions.
+
+Start with:
+
+- Filesystem `mount_pages()` when the app can use filesystem-mounted pages.
+- `SHELL-TABS-CONTRACT.md` for response target rules.
+- `HX-Target` branching for hand-written routes.
+- `shell_outlet_attrs` for shell-owned outlets.
+- `route_tabs` targeting `#page-root`.
+- Local fragment targets such as `#page-content-inner`.
+- Shell actions OOB replacement only when shell-scoped actions change.
+
+Authoring rules:
+
+- Return a full page for normal requests.
+- Do not infer page-root fragments from `HX-Request` without `HX-Target`.
+- Return shell-owned content plus OOB shell actions for `HX-Target: main`.
+- Return only page-root chrome/content for `HX-Target: page-root`.
+- Return only local content for local fragment targets.
+- Keep helper functions route-local until three independent hand-written route
+  families repeat the same boilerplate and ownership is settled.
+
+Not authorized: public `chirp_ui` helper, Chirp routing API, visual shell macro,
+component descriptor, emitted classes, CSS, manifest updates, generated options,
+or new HTMX protocol.

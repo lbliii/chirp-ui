@@ -319,6 +319,46 @@ def test_reference_recipe_guidance_covers_compact_headers() -> None:
         assert blocked in normalized
 
 
+def test_reference_recipe_guidance_covers_shell_response_oob() -> None:
+    text = RECIPE_GUIDANCE.read_text(encoding="utf-8")
+    section = text.split("## Shell Response/OOB", 1)[1]
+    normalized = " ".join(section.split())
+
+    for surface in [
+        "Filesystem `mount_pages()`",
+        "`SHELL-TABS-CONTRACT.md`",
+        "`HX-Target` branching",
+        "`shell_outlet_attrs`",
+        "`route_tabs`",
+        "`#page-root`",
+        "`#page-content-inner`",
+        "Shell actions OOB replacement",
+    ]:
+        assert surface in section
+
+    for rule in [
+        "Return a full page for normal requests",
+        "Do not infer page-root fragments",
+        "`HX-Request` without `HX-Target`",
+        "`HX-Target: main`",
+        "`HX-Target: page-root`",
+        "local fragment targets",
+        "three independent hand-written route families",
+        "ownership is settled",
+    ]:
+        assert rule in normalized
+
+    for blocked in [
+        "public `chirp_ui` helper",
+        "Chirp routing API",
+        "visual shell macro",
+        "component descriptor",
+        "manifest updates",
+        "new HTMX protocol",
+    ]:
+        assert blocked in normalized
+
+
 def test_reference_proof_analysis_keeps_public_api_closed() -> None:
     text = PROOF_ANALYSIS.read_text(encoding="utf-8")
 
