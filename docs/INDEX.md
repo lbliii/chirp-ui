@@ -27,6 +27,7 @@ Navigation guide for all chirp-ui documentation.
 - [REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md) — Scenario-complete reference evidence rules for promotion candidates
 - [reference-implementations/README.md](reference-implementations/README.md) — Reference implementation brief index for blocked promotion candidates
 - [reference-implementations/PROOF-ANALYSIS.md](reference-implementations/PROOF-ANALYSIS.md) — Source-only proof-analysis ledger for reference fixture decisions
+- [reference-implementations/RECIPE-GUIDANCE.md](reference-implementations/RECIPE-GUIDANCE.md) — Recipe-first guidance for reference candidates kept on current primitives
 
 ## Patterns
 

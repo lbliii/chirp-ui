@@ -70,6 +70,10 @@ def test_reference_implementation_playbook_is_indexed() -> None:
         "[reference-implementations/PROOF-ANALYSIS.md](reference-implementations/PROOF-ANALYSIS.md)"
         in text
     )
+    assert (
+        "[reference-implementations/RECIPE-GUIDANCE.md](reference-implementations/RECIPE-GUIDANCE.md)"
+        in text
+    )
 
 
 def test_reference_implementation_index_links_all_briefs() -> None:
