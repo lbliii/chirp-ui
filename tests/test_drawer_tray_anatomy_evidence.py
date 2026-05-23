@@ -47,9 +47,9 @@ def test_drawer_tray_ledger_covers_surfaces_and_runtime_contracts() -> None:
 
     for contract in [
         "Native `<dialog>` opened with `showModal()`",
-        "`form method=\"dialog\"`",
+        '`form method="dialog"`',
         "`chirpuiDialogTarget()`",
-        "`Alpine.store(\"trays\")`",
+        '`Alpine.store("trays")`',
         "`data-tray-id`",
         "`x-trap.inert.noscroll`",
         "`chirpui:tray-closed`",

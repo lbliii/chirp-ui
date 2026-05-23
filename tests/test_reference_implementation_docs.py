@@ -10,9 +10,7 @@ PAGE_ACTIONS = ROOT / "docs" / "reference-implementations" / "PAGE-ACTIONS-AI-RE
 LINKED_NAV = ROOT / "docs" / "reference-implementations" / "LINKED-NAV-CATALOG-REFERENCE.md"
 COMPACT_HEADER = ROOT / "docs" / "reference-implementations" / "COMPACT-HEADER-REFERENCE.md"
 SHELL_RESPONSE = ROOT / "docs" / "reference-implementations" / "SHELL-RESPONSE-REFERENCE.md"
-DENSE_REFERENCE = (
-    ROOT / "docs" / "reference-implementations" / "DENSE-REFERENCE-DATA-REFERENCE.md"
-)
+DENSE_REFERENCE = ROOT / "docs" / "reference-implementations" / "DENSE-REFERENCE-DATA-REFERENCE.md"
 AGENT_DISCOVERY = ROOT / "docs" / "reference-implementations" / "AGENT-DISCOVERY-REFERENCE.md"
 
 
@@ -53,8 +51,8 @@ def test_reference_implementation_playbook_names_priority_candidates() -> None:
 
     for primitive in [
         "`page_header`, `page_hero`, `dropdown_menu`, `share_menu`, `action_bar`, `copy_btn`",
-        "`sidebar`, `sidebar_section`, `sidebar_link`, `nav_tree(branch_mode=\"linked\")`",
-        "`page_header(variant=\"compact\")`, `page_hero(variant=\"minimal\")`",
+        '`sidebar`, `sidebar_section`, `sidebar_link`, `nav_tree(branch_mode="linked")`',
+        '`page_header(variant="compact")`, `page_hero(variant="minimal")`',
         "`resource_index`, `resource_card`, `filter_rail`, `filter_bar`, `table`",
         "`python -m chirp_ui find --details`",
     ]:
@@ -675,7 +673,7 @@ def test_linked_nav_reference_brief_forces_existing_primitives_first() -> None:
         "`sidebar`",
         "`sidebar_section`",
         "`sidebar_link`",
-        "`nav_tree(branch_mode=\"linked\")`",
+        '`nav_tree(branch_mode="linked")`',
         "`drawer`",
         "`drawer_trigger`",
     ]:

@@ -73,7 +73,9 @@ async def test_dense_reference_data_reference_long_names_stay_inside_document(pa
         await page.goto(base_url + "/dense-reference-data-reference")
         await wait_for_alpine(page)
 
-        await expect(page.get_by_text("params_table_with_extremely_long_generated_member_name")).to_be_visible()
+        await expect(
+            page.get_by_text("params_table_with_extremely_long_generated_member_name")
+        ).to_be_visible()
         await expect(
             page.get_by_text("module_reference_identifier_with_deliberately_long_unbroken_name")
         ).to_be_visible()

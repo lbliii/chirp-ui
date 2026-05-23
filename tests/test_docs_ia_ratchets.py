@@ -164,9 +164,7 @@ def test_application_chrome_plan_links_reference_scenario_queue() -> None:
 def test_navigation_contract_records_application_chrome_current_status() -> None:
     """Canonical navigation docs should keep app chrome recipe-first until reference implementations repeat gaps."""
     text = (ROOT / "docs" / "NAVIGATION.md").read_text(encoding="utf-8")
-    section = text.split("## Application Chrome System", 1)[1].split(
-        "## ARIA And Semantics", 1
-    )[0]
+    section = text.split("## Application Chrome System", 1)[1].split("## ARIA And Semantics", 1)[0]
     normalized = " ".join(section.split())
 
     for signal in [

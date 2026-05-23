@@ -47,11 +47,11 @@ def test_modal_anatomy_ledger_covers_all_modal_family_surfaces() -> None:
 
     for contract in [
         "Native `<dialog>` opened with `showModal()`",
-        "`form method=\"dialog\"`",
+        '`form method="dialog"`',
         "`x-trap.inert.noscroll`",
         "`chirpuiDialogTarget()`",
-        "`hx-disinherit=\"hx-select hx-target hx-swap\"`",
-        "`Alpine.store(\"modals\")`",
+        '`hx-disinherit="hx-select hx-target hx-swap"`',
+        '`Alpine.store("modals")`',
     ]:
         assert contract in ledger
 

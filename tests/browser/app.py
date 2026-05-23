@@ -1052,7 +1052,10 @@ def create_app() -> App:
                     "href": "/page-actions-candidate/prompt.txt?variant=long-label",
                 },
                 {"divider": True},
-                {"label": "Review existing primitives", "href": "/page-actions-candidate#primitive-review"},
+                {
+                    "label": "Review existing primitives",
+                    "href": "/page-actions-candidate#primitive-review",
+                },
             ],
         )
 

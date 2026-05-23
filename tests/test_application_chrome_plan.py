@@ -57,7 +57,9 @@ def test_application_chrome_plan_has_release_readiness_ledger() -> None:
         assert proof in text
 
 
-def test_application_chrome_plan_distinguishes_recipe_proof_from_reference_implementations() -> None:
+def test_application_chrome_plan_distinguishes_recipe_proof_from_reference_implementations() -> (
+    None
+):
     text = PLAN.read_text(encoding="utf-8")
 
     assert "Current evidence log:" in text
@@ -167,8 +169,8 @@ def test_application_chrome_plan_has_linked_nav_investigation_boundary() -> None
 
     for surface in [
         "`sidebar` / `sidebar_section` / `sidebar_link`",
-        "`nav_tree(branch_mode=\"disclosure\")`",
-        "`nav_tree(branch_mode=\"linked\")`",
+        '`nav_tree(branch_mode="disclosure")`',
+        '`nav_tree(branch_mode="linked")`',
         "Bengal docs nav partials",
         "Rail-to-drawer recipe",
     ]:
@@ -200,7 +202,9 @@ def test_application_chrome_plan_linked_nav_reference_implementation_scan_is_not
         assert boundary in section
 
 
-def test_application_chrome_plan_linked_nav_real_reference_implementation_search_keeps_api_closed() -> None:
+def test_application_chrome_plan_linked_nav_real_reference_implementation_search_keeps_api_closed() -> (
+    None
+):
     text = PLAN.read_text(encoding="utf-8")
     section = text.split("### Linked Nav Reference Evidence Search", 1)[1].split(
         "Candidate contract questions:", 1
@@ -217,7 +221,7 @@ def test_application_chrome_plan_linked_nav_real_reference_implementation_search
         "CSS",
         "manifest",
         "generated docs",
-            "docs-shell",
+        "docs-shell",
     ]:
         assert forbidden in section
 
@@ -241,7 +245,7 @@ def test_application_chrome_plan_linked_nav_search_names_qualifying_criteria() -
     for criterion in [
         "scenario-complete app, packaged integration, or",
         "`sidebar`, `sidebar_section`, `sidebar_link`, and",
-        "`nav_tree(branch_mode=\"linked\")`",
+        '`nav_tree(branch_mode="linked")`',
         "parent",
         "route links",
         "server-owned open state",
@@ -286,18 +290,18 @@ def test_application_chrome_plan_linked_nav_search_records_near_misses() -> None
 
 def test_application_chrome_plan_linked_nav_search_routes_next_slice_to_private_fixture() -> None:
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("Decision after search:", 1)[1].split(
-        "### Private Linked Nav Fixture", 1
-    )[0]
+    section = text.split("Decision after search:", 1)[1].split("### Private Linked Nav Fixture", 1)[
+        0
+    ]
 
     for decision in [
         "Keep linked nav-tree/sidebar semantics unauthorized",
-        "`nav_tree(branch_mode=\"linked\")` as the current",
+        '`nav_tree(branch_mode="linked")` as the current',
         "Do not add `docs_sidebar`, `catalog_sidebar`, sidebar branch macros",
         "new",
         "branch metadata",
-                "scenario-complete first-party reference",
-        "`sidebar` and `nav_tree(branch_mode=\"linked\")`",
+        "scenario-complete first-party reference",
+        '`sidebar` and `nav_tree(branch_mode="linked")`',
         "active descendants",
         "child-count metadata",
         "compact",
@@ -322,7 +326,7 @@ def test_application_chrome_plan_records_private_linked_nav_fixture_without_api_
 
     for proof in [
         "`sidebar`, `sidebar_section`, and `sidebar_link`",
-        "`nav_tree(branch_mode=\"linked\")`",
+        '`nav_tree(branch_mode="linked")`',
         "`drawer` and `drawer_trigger`",
         "Linked branch parents render as route links",
         "not native disclosure summaries",
@@ -350,16 +354,16 @@ def test_application_chrome_plan_records_private_linked_nav_fixture_without_api_
         "generated docs",
         "docs-shell",
         "does not prove that active descendants",
-            "does not count as qualifying implementation evidence",
+        "does not count as qualifying implementation evidence",
     ]:
         assert boundary in section
 
 
-def test_application_chrome_plan_private_linked_nav_fixture_decision_keeps_next_slice_analytical() -> None:
+def test_application_chrome_plan_private_linked_nav_fixture_decision_keeps_next_slice_analytical() -> (
+    None
+):
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("Fixture decision:", 1)[1].split(
-        "### Linked Nav Fixture Analysis", 1
-    )[0]
+    section = text.split("Fixture decision:", 1)[1].split("### Linked Nav Fixture Analysis", 1)[0]
 
     for decision in [
         "Do existing primitives render the linked-sidebar candidate shape?",
@@ -369,12 +373,14 @@ def test_application_chrome_plan_private_linked_nav_fixture_decision_keeps_next_
         "What remains to analyze?",
         "active descendants, count metadata, compact rhythm, and mobile fallback",
         "What would unlock promotion?",
-            "A second independent reference implementation that repeats the same linked-branch gap",
+        "A second independent reference implementation that repeats the same linked-branch gap",
     ]:
         assert decision in section
 
 
-def test_application_chrome_plan_linked_nav_fixture_analysis_classifies_gap_without_promotion() -> None:
+def test_application_chrome_plan_linked_nav_fixture_analysis_classifies_gap_without_promotion() -> (
+    None
+):
     text = PLAN.read_text(encoding="utf-8")
     section = text.split("### Linked Nav Fixture Analysis", 1)[1].split(
         "Candidate contract questions:", 1
@@ -398,7 +404,7 @@ def test_application_chrome_plan_linked_nav_fixture_analysis_classifies_gap_with
     for outcome in [
         "`sidebar`, `sidebar_section`, and `sidebar_link` can host",
         "Linked branch parents render as anchors",
-        "Active children render `aria-current=\"page\"`",
+        'Active children render `aria-current="page"`',
         "Branch badges render visible counts",
         "Branches without `href` render as text",
         "Long child labels stay contained",
@@ -417,7 +423,9 @@ def test_application_chrome_plan_linked_nav_fixture_analysis_classifies_gap_with
         assert classification in section
 
 
-def test_application_chrome_plan_linked_nav_fixture_analysis_next_slices_stay_private_until_second_reference_implementation() -> None:
+def test_application_chrome_plan_linked_nav_fixture_analysis_next_slices_stay_private_until_second_reference_implementation() -> (
+    None
+):
     text = PLAN.read_text(encoding="utf-8")
     section = text.split("Next-slice options from this analysis:", 1)[1].split(
         "### Private Linked Nav Mobile Fallback Stress", 1
@@ -461,10 +469,10 @@ def test_application_chrome_plan_records_private_linked_nav_mobile_fallback_stre
         "hide the persistent sidebar at phone width",
         "drawer trigger",
         "without adding a shell/sidebar macro",
-        "`nav_tree(branch_mode=\"linked\")` keeps the same linked branch behavior",
+        '`nav_tree(branch_mode="linked")` keeps the same linked branch behavior',
         "branch parents remain anchors",
         "no `<summary>` disclosure",
-        "active children keep `aria-current=\"page\"`",
+        'active children keep `aria-current="page"`',
         "closed branch",
         "children remain omitted",
         "inside the open drawer at 320px",
@@ -478,8 +486,8 @@ def test_application_chrome_plan_records_private_linked_nav_mobile_fallback_stre
     for decision in [
         "closes the private mobile fallback stress slice",
         "weakens the case for an immediate public linked-sidebar primitive",
-            "remaining gap is policy and repetition",
-            "another independent reference implementation must repeat",
+        "remaining gap is policy and repetition",
+        "another independent reference implementation must repeat",
         "before promotion is justified",
     ]:
         assert decision in normalized
@@ -509,7 +517,7 @@ def test_application_chrome_plan_records_private_linked_nav_gap_notes() -> None:
         "Treat rhythm as CSS/recipe evidence, not a macro parameter.",
         "Do not add a shell-owned responsive policy",
         "Start with `sidebar`, `sidebar_section`, `sidebar_link`,",
-        "`nav_tree(branch_mode=\"linked\")`, `drawer`, and `drawer_trigger`",
+        '`nav_tree(branch_mode="linked")`, `drawer`, and `drawer_trigger`',
         "Mark branches `open=true` server-side",
         "Use badges for visible counts first",
         "Record the exact repeated boilerplate before proposing a public primitive.",
@@ -526,9 +534,9 @@ def test_application_chrome_plan_linked_nav_promotion_gate_and_not_now() -> None
     gate = section.split("Promotion gate:", 1)[1].split("Not now:", 1)[0]
     for requirement in [
         "Bengal plus one additional independent reference implementation",
-            "`sidebar`, `sidebar_section`,",
-            "`sidebar_link`, and `nav_tree(branch_mode=\"linked\")`",
-        "`nav_tree(branch_mode=\"linked\")`",
+        "`sidebar`, `sidebar_section`,",
+        '`sidebar_link`, and `nav_tree(branch_mode="linked")`',
+        '`nav_tree(branch_mode="linked")`',
         "item schema, active/open semantics, ARIA",
         "badge/count behavior",
         "compact branch/leaf rhythm",
@@ -579,12 +587,14 @@ def test_application_chrome_plan_has_shell_response_helper_investigation_boundar
         "`shell_outlet_attrs()` and shell OOB regions",
         "`route_tabs`",
         "`fragment_island` / `safe_region` patterns",
-            "Workspace/admin route fixtures",
+        "Workspace/admin route fixtures",
     ]:
         assert f"| {surface} |" in section
 
 
-def test_application_chrome_plan_shell_response_reference_implementation_scan_routes_helper_to_chirp_not_visual_shell() -> None:
+def test_application_chrome_plan_shell_response_reference_implementation_scan_routes_helper_to_chirp_not_visual_shell() -> (
+    None
+):
     text = PLAN.read_text(encoding="utf-8")
     section = text.split("## Shell Response/OOB Helper Investigation", 1)[1].split(
         "Promotion gate:", 1
@@ -592,7 +602,7 @@ def test_application_chrome_plan_shell_response_reference_implementation_scan_ro
 
     for evidence in [
         "Filesystem mounted app fixture",
-            "Manual route references from Wave 1/Wave 2",
+        "Manual route references from Wave 1/Wave 2",
         "Workspace/admin browser fixtures",
         "Bengal docs chrome",
         "Published recipe prose",
@@ -601,7 +611,7 @@ def test_application_chrome_plan_shell_response_reference_implementation_scan_ro
 
     for boundary in [
         "Covered | This path should prefer `mount_pages()`",
-            "Partial | Repeated internal pressure",
+        "Partial | Repeated internal pressure",
         "Partial | Good regression evidence",
         "No | It proves theme shell pressure",
         "No | Prose guidance is necessary collateral",
@@ -676,7 +686,7 @@ def test_application_chrome_plan_records_shell_response_route_local_gap_notes() 
         "documented [SHELL-TABS-CONTRACT.md](../SHELL-TABS-CONTRACT.md)",
         "Do not promote a public helper from two manual fixture route families",
         "close to Chirp routing/page composition",
-            "third scenario-complete route reference",
+        "third scenario-complete route reference",
         "Do not add descriptor, manifest, CSS, generated component options, or macro",
         "third hand-written route family",
         "outside `mount_pages()`",
@@ -750,7 +760,9 @@ def test_application_chrome_plan_has_compact_header_investigation_boundary() -> 
         assert f"| {surface} |" in section
 
 
-def test_application_chrome_plan_compact_header_reference_implementation_scan_is_not_enough() -> None:
+def test_application_chrome_plan_compact_header_reference_implementation_scan_is_not_enough() -> (
+    None
+):
     text = PLAN.read_text(encoding="utf-8")
     section = text.split("## Compact Page Header/Page Hero Investigation", 1)[1].split(
         "Promotion gate:", 1
@@ -873,9 +885,7 @@ def test_application_chrome_plan_records_private_compact_header_candidate_fixtur
 
 def test_application_chrome_plan_has_promotion_readiness_queue() -> None:
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("## Promotion Readiness Queue", 1)[1].split(
-        "## Ranked Backlog", 1
-    )[0]
+    section = text.split("## Promotion Readiness Queue", 1)[1].split("## Ranked Backlog", 1)[0]
 
     assert "Status: decision queue for future implementation slices" in section
     assert "no public API" in section
@@ -926,7 +936,7 @@ def test_application_chrome_plan_promotion_queue_ranks_candidates_by_blocker() -
         "non-Bengal page-action reference implementation",
         "`page_header`, `page_hero`, `dropdown_menu`, `share_menu`, and `action_bar`",
         "non-Bengal linked-branch reference implementation",
-        "`sidebar`, `nav_tree(branch_mode=\"linked\")`, `drawer`, and `drawer_trigger`",
+        '`sidebar`, `nav_tree(branch_mode="linked")`, `drawer`, and `drawer_trigger`',
         "third hand-written route family outside `mount_pages()`",
         "`HX-Target` branching and shell-actions OOB",
         "non-Bengal dense-header reference implementation",
@@ -937,8 +947,8 @@ def test_application_chrome_plan_promotion_queue_ranks_candidates_by_blocker() -
         assert next_slice in section
 
     for bias in [
-            "Promote a page-local command primitive only if the second independent reference implementation repeats the same gap",
-            "Prefer extending hierarchical navigation over a docs/sidebar shell macro only after implementation repetition",
+        "Promote a page-local command primitive only if the second independent reference implementation repeats the same gap",
+        "Prefer extending hierarchical navigation over a docs/sidebar shell macro only after implementation repetition",
         "Prefer Chirp routing or app-local recipe",
         "Prefer omitting/collapsing optional regions",
         "Reject until two independent reference implementations repeat the same missing owned layer",
@@ -949,13 +959,11 @@ def test_application_chrome_plan_promotion_queue_ranks_candidates_by_blocker() -
 
 def test_application_chrome_plan_promotion_queue_has_evidence_ladder_and_stop_rule() -> None:
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("## Promotion Readiness Queue", 1)[1].split(
-        "## Ranked Backlog", 1
-    )[0]
+    section = text.split("## Promotion Readiness Queue", 1)[1].split("## Ranked Backlog", 1)[0]
 
     for ladder_step in [
         "Recipe pressure",
-            "Partial implementation",
+        "Partial implementation",
         "Promotion candidate",
         "Public API proposal",
         "Shipped contract",
@@ -973,7 +981,7 @@ def test_application_chrome_plan_promotion_queue_has_evidence_ladder_and_stop_ru
         "generated component options",
         "runtime behavior",
         "stop and ask before implementing",
-            "cannot name two independent reference implementations",
+        "cannot name two independent reference implementations",
         "continue recipes and browser",
     ]:
         assert rule in section
@@ -1056,7 +1064,7 @@ def test_application_chrome_plan_records_post_fixture_reference_evidence_scan() 
         "keep sidebar/nav-tree API unchanged",
         "No third scenario-complete hand-written route family outside `mount_pages()`",
         "keep helpers fixture-local",
-            "No second scenario-complete compact docs/reference/catalog implementation",
+        "No second scenario-complete compact docs/reference/catalog implementation",
         "do not change `page_hero` markup or add compact header macros",
         "Keep mega-shell APIs deferred",
     ]:

@@ -49,9 +49,7 @@ async def test_page_actions_candidate_dropdown_exposes_non_social_commands(page,
     menu = page.locator("#candidate-page-tools .chirpui-dropdown__menu")
     await expect(menu).to_be_visible()
     await expect(menu.get_by_role("menuitem", name="Open current fixture")).to_be_visible()
-    await expect(
-        menu.get_by_role("menuitem", name="Open prompt text", exact=True)
-    ).to_be_visible()
+    await expect(menu.get_by_role("menuitem", name="Open prompt text", exact=True)).to_be_visible()
     await expect(menu.get_by_role("menuitem", name="Copy sample text")).to_be_visible()
     ai_handoff = menu.get_by_role("menuitem", name="Ask external assistant about this prompt")
     await expect(ai_handoff).to_be_visible()

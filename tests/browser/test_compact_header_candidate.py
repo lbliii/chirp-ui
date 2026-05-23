@@ -43,9 +43,7 @@ async def test_compact_header_candidate_uses_existing_primitives_only(page, base
     await expect(page.locator(".chirpui-catalog-header")).to_have_count(0)
 
 
-async def test_compact_header_candidate_empty_page_hero_optional_regions_collapse(
-    page, base_url
-):
+async def test_compact_header_candidate_empty_page_hero_optional_regions_collapse(page, base_url):
     await open_compact_header_candidate(page, base_url, width=1024, height=768)
 
     hero = page.get_by_test_id("minimal-page-hero-empty-proof")
@@ -58,21 +56,15 @@ async def test_compact_header_candidate_empty_page_hero_optional_regions_collaps
     await expect(hero.locator(".chirpui-hero__content")).to_have_count(1)
 
 
-async def test_compact_header_candidate_filled_page_hero_regions_remain_available(
-    page, base_url
-):
+async def test_compact_header_candidate_filled_page_hero_regions_remain_available(page, base_url):
     await open_compact_header_candidate(page, base_url, width=1024, height=768)
 
     hero = page.get_by_test_id("minimal-page-hero-filled-proof")
     await expect(hero.locator(".chirpui-hero__eyebrow")).to_contain_text("Docs / Reference")
     await expect(hero.locator(".chirpui-hero__actions")).to_contain_text("Copy link")
     await expect(hero.locator(".chirpui-hero__metadata")).to_contain_text("Updated today")
-    await expect(hero.locator(".chirpui-hero__content")).to_contain_text(
-        "Short contextual content"
-    )
-    await expect(hero.locator(".chirpui-hero__footer")).to_contain_text(
-        "Footer metadata"
-    )
+    await expect(hero.locator(".chirpui-hero__content")).to_contain_text("Short contextual content")
+    await expect(hero.locator(".chirpui-hero__footer")).to_contain_text("Footer metadata")
 
 
 @pytest.mark.parametrize(
@@ -83,14 +75,10 @@ async def test_compact_header_candidate_filled_page_hero_regions_remain_availabl
         pytest.param(1280, 900, id="desktop"),
     ],
 )
-async def test_compact_header_candidate_stays_within_viewport(
-    page, base_url, width, height
-):
+async def test_compact_header_candidate_stays_within_viewport(page, base_url, width, height):
     await open_compact_header_candidate(page, base_url, width=width, height=height)
 
-    await assert_no_document_horizontal_overflow(
-        page, f"compact-header-candidate-{width}x{height}"
-    )
+    await assert_no_document_horizontal_overflow(page, f"compact-header-candidate-{width}x{height}")
     await expect(page.get_by_role("button", name="Primary action")).to_be_visible()
     await expect(
         page.get_by_role("button", name="Secondary action with a deliberately long label")

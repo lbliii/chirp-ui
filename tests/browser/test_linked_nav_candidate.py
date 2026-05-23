@@ -34,9 +34,7 @@ async def test_linked_nav_candidate_uses_existing_primitives_only(page, base_url
     await expect(page.locator(".chirpui-sidebar")).to_be_visible()
     await expect(page.locator(".chirpui-sidebar__link--active")).to_be_visible()
     await expect(
-        page.get_by_test_id("linked-nav-sidebar-tree").locator(
-            ".chirpui-nav-tree--linked-branches"
-        )
+        page.get_by_test_id("linked-nav-sidebar-tree").locator(".chirpui-nav-tree--linked-branches")
     ).to_be_visible()
     await expect(page.locator(".chirpui-docs-sidebar")).to_have_count(0)
     await expect(page.locator(".chirpui-catalog-sidebar")).to_have_count(0)
@@ -91,8 +89,7 @@ async def test_linked_nav_candidate_long_child_label_stays_inside_sidebar(page, 
     long_child = page.get_by_role(
         "link",
         name=(
-            "Configuration with a deliberately long child label that must wrap "
-            "inside the sidebar"
+            "Configuration with a deliberately long child label that must wrap inside the sidebar"
         ),
     )
     await expect(long_child).to_be_visible()
@@ -140,8 +137,7 @@ async def test_linked_nav_candidate_phone_drawer_preserves_linked_tree(page, bas
     long_child = tree.get_by_role(
         "link",
         name=(
-            "Configuration with a deliberately long child label that must wrap "
-            "inside the sidebar"
+            "Configuration with a deliberately long child label that must wrap inside the sidebar"
         ),
     )
     await expect(long_child).to_be_visible()

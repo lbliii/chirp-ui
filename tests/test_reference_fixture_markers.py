@@ -60,8 +60,7 @@ def test_reference_browser_routes_stay_private_test_routes() -> None:
         assert f'@app.route("{route}")' in text
 
     template_text = "\n".join(
-        (TEMPLATES / filename).read_text(encoding="utf-8")
-        for filename in REFERENCE_FIXTURES
+        (TEMPLATES / filename).read_text(encoding="utf-8") for filename in REFERENCE_FIXTURES
     )
     for public_name in [
         "{{ page_actions(",

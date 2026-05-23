@@ -53,7 +53,9 @@ def test_page_actions_plan_records_existing_primitives_tried() -> None:
 
 def test_page_actions_reference_implementation_scan_keeps_promotion_gate_unmet() -> None:
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("## Reference Evidence Scan", 1)[1].split("## Candidate Contract Shape", 1)[0]
+    section = text.split("## Reference Evidence Scan", 1)[1].split(
+        "## Candidate Contract Shape", 1
+    )[0]
 
     assert "Current scan result: the promotion gate is not satisfied" in section
     assert "only qualifying implementation context" in section
@@ -126,9 +128,9 @@ def test_page_actions_non_bengal_candidate_scan_keeps_promotion_unmet() -> None:
 
 def test_page_actions_candidate_fixture_rule_tries_existing_primitives_first() -> None:
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("Candidate fixture rule:", 1)[1].split(
-        "## Private Candidate Fixture", 1
-    )[0]
+    section = text.split("Candidate fixture rule:", 1)[1].split("## Private Candidate Fixture", 1)[
+        0
+    ]
 
     for requirement in [
         "Streaming & AI page family",
@@ -177,16 +179,14 @@ def test_page_actions_plan_records_private_candidate_fixture_without_api_promoti
         "does not provide URL/LLM text/AI handoff semantics as one owned",
         "does not add a descriptor, macro, emitted class, CSS partial",
         "runtime controller",
-            "does not count as qualifying implementation evidence",
+        "does not count as qualifying implementation evidence",
     ]:
         assert boundary in section
 
 
 def test_page_actions_plan_fixture_decision_keeps_next_slice_analytical() -> None:
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("Fixture decision:", 1)[1].split(
-        "## Fixture Analysis", 1
-    )[0]
+    section = text.split("Fixture decision:", 1)[1].split("## Fixture Analysis", 1)[0]
 
     for decision in [
         "Do existing primitives render the candidate shape?",
@@ -195,16 +195,14 @@ def test_page_actions_plan_fixture_decision_keeps_next_slice_analytical() -> Non
         "No.",
         "Is the next slice implementation or analysis?",
         "Analysis: inspect fixture behavior",
-            "A second independent reference implementation that repeats copy URL plus non-social page commands",
+        "A second independent reference implementation that repeats copy URL plus non-social page commands",
     ]:
         assert decision in section
 
 
 def test_page_actions_plan_fixture_analysis_classifies_gap_without_promotion() -> None:
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("## Fixture Analysis", 1)[1].split(
-        "## Candidate Contract Shape", 1
-    )[0]
+    section = text.split("## Fixture Analysis", 1)[1].split("## Candidate Contract Shape", 1)[0]
 
     assert "Analysis date: 2026-05-23" in section
     assert "keep page actions in investigation" in section
@@ -241,7 +239,9 @@ def test_page_actions_plan_fixture_analysis_classifies_gap_without_promotion() -
         assert classification in section
 
 
-def test_page_actions_plan_fixture_analysis_next_slices_stay_private_until_second_reference_implementation() -> None:
+def test_page_actions_plan_fixture_analysis_next_slices_stay_private_until_second_reference_implementation() -> (
+    None
+):
     text = PLAN.read_text(encoding="utf-8")
     section = text.split("Next-slice options from this analysis:", 1)[1].split(
         "## Candidate Contract Shape", 1
@@ -280,7 +280,9 @@ def test_page_actions_plan_fixture_analysis_next_slices_stay_private_until_secon
         assert stress_result in section
 
 
-def test_page_actions_plan_real_reference_implementation_search_finds_no_second_reference_implementation() -> None:
+def test_page_actions_plan_real_reference_implementation_search_finds_no_second_reference_implementation() -> (
+    None
+):
     text = PLAN.read_text(encoding="utf-8")
     section = text.split("## Reference Evidence Search", 1)[1].split(
         "## Candidate Contract Shape", 1
@@ -313,9 +315,7 @@ def test_page_actions_plan_real_reference_implementation_search_finds_no_second_
 
 def test_page_actions_plan_real_reference_implementation_search_records_near_misses() -> None:
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("## Reference Evidence Search", 1)[1].split(
-        "Decision after search:", 1
-    )[0]
+    section = text.split("## Reference Evidence Search", 1)[1].split("Decision after search:", 1)[0]
 
     for candidate in [
         "Private `/page-actions-candidate` fixture",
@@ -340,11 +340,11 @@ def test_page_actions_plan_real_reference_implementation_search_records_near_mis
         assert reason in section
 
 
-def test_page_actions_plan_real_reference_implementation_search_keeps_api_closed_and_routes_next_slice() -> None:
+def test_page_actions_plan_real_reference_implementation_search_keeps_api_closed_and_routes_next_slice() -> (
+    None
+):
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("Decision after search:", 1)[1].split(
-        "## Candidate Contract Shape", 1
-    )[0]
+    section = text.split("Decision after search:", 1)[1].split("## Candidate Contract Shape", 1)[0]
 
     for decision in [
         "Keep `page_actions()` unauthorized.",
@@ -362,9 +362,9 @@ def test_page_actions_plan_real_reference_implementation_search_keeps_api_closed
 
 def test_page_actions_plan_defines_candidate_contract_without_implementation() -> None:
     text = PLAN.read_text(encoding="utf-8")
-    section = text.split("## Candidate Contract Shape", 1)[1].split(
-        "## Open Design Questions", 1
-    )[0]
+    section = text.split("## Candidate Contract Shape", 1)[1].split("## Open Design Questions", 1)[
+        0
+    ]
 
     for contract in [
         "Trigger, native popover/menu panel",
@@ -383,13 +383,13 @@ def test_page_actions_plan_has_promotion_gate_and_collateral() -> None:
     gate = text.split("## Promotion Gate", 1)[1].split("## Not Now", 1)[0]
 
     for requirement in [
-            "Bengal plus one additional independent reference implementation",
+        "Bengal plus one additional independent reference implementation",
         "`page_hero` actions, `dropdown_menu`,",
         "`share_menu`, and `action_bar`",
         "macro parameters, slots, action item shape, event hooks",
         "escaping, and strict undefined behavior",
         "copy success and failure states",
-        "`rel=\"noopener noreferrer\"`",
+        '`rel="noopener noreferrer"`',
         "descriptor, macro, CSS partial, generated CSS",
         "manifest, generated component options, docs, examples",
         "changelog",
@@ -497,7 +497,7 @@ def test_page_actions_plan_has_promotion_proof_matrix() -> None:
     for requirement in [
         "manifest projection tests",
         "empty action list",
-        "`rel=\"noopener noreferrer\"`",
+        '`rel="noopener noreferrer"`',
         "fetch failure",
         "focus return",
         "320, 390, 768, 1024, and desktop widths",

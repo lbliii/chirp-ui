@@ -56,10 +56,10 @@ def test_tabs_ledger_covers_htmx_alpine_and_layout_contracts() -> None:
     ledger = _ledger()
 
     for contract in [
-        "`hx-boost=\"false\"`",
-        "`hx-select=\"unset\"`",
-        "`hx-push-url=\"false\"`",
-        "`hx-push-url=\"true\"`",
+        '`hx-boost="false"`',
+        '`hx-select="unset"`',
+        '`hx-push-url="false"`',
+        '`hx-push-url="true"`',
         "`chirpuiTabs()`",
         "`chirpui:tab-changed`",
         "`tab_is_active`",
