@@ -51,6 +51,8 @@ generated artifact. Bengal remains the owner of site-wide generated outputs.
 | `docs/AGENT-SOURCE-INVENTORY.md` | `docs-derived` | Agent-source docs and generated site outputs | Snippet eligibility and provenance inventory. |
 | `docs/AGENT-SOURCE-MAP.md` | `docs-derived` | Agent-source docs and generated site outputs | Generated-output ownership map. |
 | `docs/REGISTRY-DISCOVERY.md` | `docs-derived` | Agent-source docs and generated site outputs | CLI and Python discovery workflows over manifest labels and component metadata. |
+| `docs/REFERENCE-IMPLEMENTATION-PLAYBOOK.md` | `docs-derived` | Agent-source docs, roadmap docs, and generated site outputs if mirrored by Bengal | Reference implementation evidence ladder and public-API stop boundaries. |
+| `docs/reference-implementations/README.md` | `docs-derived` | Agent-source docs, roadmap docs, and generated site outputs if mirrored by Bengal | Source-only index for scenario-complete reference briefs; not copyable snippet source. |
 | `site/content/docs/` | `docs-derived` | Bengal generated docs, search, LLM, and agent outputs | Published docs source mirrors and front matter. |
 | `examples/component-showcase/templates/showcase/*.html` | `example-derived` | Future curated snippet extraction only after review | Candidate dynamic examples, not automatic snippet sources. |
 

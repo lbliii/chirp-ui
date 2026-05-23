@@ -61,6 +61,8 @@ adds all of the following:
 | `docs-derived` | `docs/AGENT-SOURCE-MAP.md` | Generated-output ownership map and source-input map. | `source-only` |
 | `docs-derived` | `docs/AGENT-CURATED-SNIPPETS.md` | Hand-curated macro-first snippets that passed the review gate. | `copyable-curated` |
 | `docs-derived` | `docs/REGISTRY-DISCOVERY.md` | CLI and Python discovery workflows over manifest labels and component metadata. | `source-only` |
+| `docs-derived` | `docs/REFERENCE-IMPLEMENTATION-PLAYBOOK.md` | Reference implementation evidence ladder, scenario-complete criteria, and promotion boundaries. | `source-only` |
+| `docs-derived` | `docs/reference-implementations/README.md` | Index of reference implementation briefs for blocked promotion candidates. | `source-only` |
 | `docs-derived` | `docs/APPEARANCE-TONE.md` | Appearance/tone semantics and migration guidance. | `source-only` |
 | `docs-derived` | `docs/APP-THEME.md` | App theme-pack load order, token-only rules, and ownership guidance. | `source-only` |
 | `docs-derived` | `docs/DROPDOWN-ANATOMY.md` | Dropdown rendered anatomy and tested behavior. | `source-only` |
