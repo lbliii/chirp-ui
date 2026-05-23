@@ -4,6 +4,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PLAYBOOK = ROOT / "docs" / "REFERENCE-IMPLEMENTATION-PLAYBOOK.md"
 INDEX = ROOT / "docs" / "INDEX.md"
 PAGE_ACTIONS = ROOT / "docs" / "reference-implementations" / "PAGE-ACTIONS-AI-REFERENCE.md"
+LINKED_NAV = ROOT / "docs" / "reference-implementations" / "LINKED-NAV-CATALOG-REFERENCE.md"
 
 
 def test_reference_implementation_playbook_defines_evidence_ladder() -> None:
@@ -87,5 +88,43 @@ def test_page_actions_reference_brief_keeps_api_unauthorized() -> None:
         "manifest updates",
         "generated component",
         "public page-actions API",
+    ]:
+        assert boundary in text
+
+
+def test_linked_nav_reference_brief_forces_existing_primitives_first() -> None:
+    text = LINKED_NAV.read_text(encoding="utf-8")
+
+    for primitive in [
+        "`sidebar`",
+        "`sidebar_section`",
+        "`sidebar_link`",
+        "`nav_tree(branch_mode=\"linked\")`",
+        "`drawer`",
+        "`drawer_trigger`",
+    ]:
+        assert primitive in text
+
+    for proof in [
+        "Parent branches render as anchors",
+        "Closed branch children are omitted",
+        "Active child links render current-page state",
+        "Count badges are visible",
+        "Long labels stay contained",
+        "Drawer opens, closes with Escape",
+        "no document-level horizontal overflow at 320px",
+    ]:
+        assert proof in text
+
+    for boundary in [
+        "does not authorize new `nav_tree` parameters",
+        "sidebar branch macros",
+        "emitted classes",
+        "CSS",
+        "manifest updates",
+        "`docs_sidebar`",
+        "`catalog_sidebar`",
+        "`docs_shell`",
+        "ARIA tree claims",
     ]:
         assert boundary in text
