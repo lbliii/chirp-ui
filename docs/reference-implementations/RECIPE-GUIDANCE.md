@@ -56,3 +56,36 @@ Authoring rules:
 Not authorized: data-grid engine, virtualized table, reference-page macro,
 filter-count API, JavaScript layout runtime, emitted classes, CSS, descriptor
 changes, manifest updates, or generated options.
+
+## Agent Discovery
+
+Use this recipe when an agent or contributor needs to discover a component,
+primitive, pattern, or not-now boundary from an installed Chirp UI package.
+
+Start with:
+
+- `python -m chirp_ui find --details` for broad local discovery.
+- `python -m chirp_ui find --role=pattern --details` for recipe-like surfaces.
+- `python -m chirp_ui find --maturity=experimental --details` for stabilization
+  audits.
+- `docs/REGISTRY-DISCOVERY.md` for discovery workflow.
+- `docs/AGENT-SOURCE-INVENTORY.md` for snippet eligibility.
+- `docs/AGENT-SOURCE-MAP.md` for generated-output ownership.
+- `docs/COMPONENT-OPTIONS.md` for generated macro options.
+
+Authoring rules:
+
+- Discover first, then inspect durable docs, then verify with focused tests.
+- Treat `authoring=preferred` primitives as the first composition vocabulary.
+- Treat `maturity=experimental` and `role=pattern` as caution labels, not
+  preferred stable APIs.
+- Treat browser tests and proof ledgers as source-only evidence, never automatic
+  copyable snippets.
+- Add guidance before adding manifest schema when existing metadata answers the
+  user or agent task.
+- Record a schema gap only when repeated tasks need the same missing field or
+  query shape.
+
+Not authorized: manifest schema changes, descriptor fields, new CLI commands,
+MCP/server tooling, public extension protocols, generated option changes, or
+copied-source installation.

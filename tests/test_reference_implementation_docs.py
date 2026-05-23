@@ -164,6 +164,44 @@ def test_reference_recipe_guidance_covers_dense_reference_pages() -> None:
         assert blocked in normalized
 
 
+def test_reference_recipe_guidance_covers_agent_discovery() -> None:
+    text = RECIPE_GUIDANCE.read_text(encoding="utf-8")
+    section = text.split("## Agent Discovery", 1)[1]
+    normalized = " ".join(section.split())
+
+    for surface in [
+        "`python -m chirp_ui find --details`",
+        "`python -m chirp_ui find --role=pattern --details`",
+        "`python -m chirp_ui find --maturity=experimental --details`",
+        "`docs/REGISTRY-DISCOVERY.md`",
+        "`docs/AGENT-SOURCE-INVENTORY.md`",
+        "`docs/AGENT-SOURCE-MAP.md`",
+        "`docs/COMPONENT-OPTIONS.md`",
+    ]:
+        assert surface in section
+
+    for rule in [
+        "Discover first, then inspect durable docs, then verify",
+        "`authoring=preferred` primitives",
+        "`maturity=experimental` and `role=pattern` as caution labels",
+        "source-only evidence",
+        "never automatic copyable snippets",
+        "guidance before adding manifest schema",
+        "same missing field or query shape",
+    ]:
+        assert rule in normalized
+
+    for blocked in [
+        "manifest schema changes",
+        "descriptor fields",
+        "new CLI commands",
+        "MCP/server tooling",
+        "public extension protocols",
+        "copied-source installation",
+    ]:
+        assert blocked in normalized
+
+
 def test_reference_proof_analysis_keeps_public_api_closed() -> None:
     text = PROOF_ANALYSIS.read_text(encoding="utf-8")
 
