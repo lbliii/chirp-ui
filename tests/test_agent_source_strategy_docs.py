@@ -16,6 +16,7 @@ def test_agent_source_inventory_includes_strategy_and_evidence_sources() -> None
         "| `docs-derived` | `docs/REFERENCE-IMPLEMENTATION-PLAYBOOK.md` |",
         "| `docs-derived` | `docs/reference-implementations/README.md` |",
         "| `docs-derived` | `docs/reference-implementations/PROOF-ANALYSIS.md` |",
+        "| `docs-derived` | `docs/reference-implementations/RECIPE-GUIDANCE.md` |",
         "| `docs-derived` | `tests/browser/test_page_actions_candidate.py`,",
         "| `docs-derived` | `tests/test_shell_response_targets.py`,",
     ]:
@@ -29,6 +30,7 @@ def test_agent_source_inventory_includes_strategy_and_evidence_sources() -> None
         "Reference implementation evidence ladder",
         "Index of reference implementation briefs",
         "Source-only proof-analysis decisions",
+        "Source-only recipe guidance",
         "Browser proof for scenario-complete private reference fixtures",
         "Server/browser/CLI proof for shell response ownership and agent discovery",
         "| `source-only` |",
@@ -47,6 +49,7 @@ def test_agent_source_map_routes_strategy_sources_without_new_artifacts() -> Non
         "| `docs/REFERENCE-IMPLEMENTATION-PLAYBOOK.md` | `docs-derived` |",
         "| `docs/reference-implementations/README.md` | `docs-derived` |",
         "| `docs/reference-implementations/PROOF-ANALYSIS.md` | `docs-derived` |",
+        "| `docs/reference-implementations/RECIPE-GUIDANCE.md` | `docs-derived` |",
         "| `tests/browser/test_page_actions_candidate.py`,",
         "| `tests/test_shell_response_targets.py`,",
     ]:
@@ -59,6 +62,7 @@ def test_agent_source_map_routes_strategy_sources_without_new_artifacts() -> Non
         "Evidence ledger and stop-and-ask boundaries for behavior-bearing promotions.",
         "Reference implementation evidence ladder and public-API stop boundaries.",
         "Source-only proof-analysis ledger for reference fixture decisions",
+        "Source-only recipe guidance for current-primitive decisions",
         "Browser proof for private reference fixtures; source-only evidence, never copyable snippets.",
         "Server/browser/CLI proof for response ownership and registry discovery; source-only evidence, never copyable snippets.",
         "not copyable snippet source.",
