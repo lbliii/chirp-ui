@@ -10,6 +10,7 @@ SHELL_RESPONSE = ROOT / "docs" / "reference-implementations" / "SHELL-RESPONSE-R
 DENSE_REFERENCE = (
     ROOT / "docs" / "reference-implementations" / "DENSE-REFERENCE-DATA-REFERENCE.md"
 )
+AGENT_DISCOVERY = ROOT / "docs" / "reference-implementations" / "AGENT-DISCOVERY-REFERENCE.md"
 
 
 def test_reference_implementation_playbook_defines_evidence_ladder() -> None:
@@ -245,5 +246,41 @@ def test_dense_reference_data_brief_avoids_grid_engine_jump() -> None:
         "descriptor changes",
         "manifest updates",
         "JavaScript layout runtime",
+    ]:
+        assert boundary in text
+
+
+def test_agent_discovery_reference_brief_keeps_manifest_schema_closed() -> None:
+    text = AGENT_DISCOVERY.read_text(encoding="utf-8")
+
+    for surface in [
+        "`python -m chirp_ui find --details`",
+        "`python -m chirp_ui find --maturity=experimental --details`",
+        "`python -m chirp_ui find --role=pattern --details`",
+        "`build_manifest()`",
+        "`docs/AGENT-SOURCE-INVENTORY.md`",
+        "`docs/AGENT-SOURCE-MAP.md`",
+        "`docs/REGISTRY-DISCOVERY.md`",
+        "`docs/COMPONENT-OPTIONS.md`",
+    ]:
+        assert surface in text
+
+    for proof in [
+        "Search by job, category, maturity, authoring, and role",
+        "Details expose macro, template, runtime requirements, slots",
+        "source-only versus copyable-curated",
+        "not presented as preferred stable APIs",
+        "valid existing primitive or a documented not-now boundary",
+    ]:
+        assert proof in text
+
+    for boundary in [
+        "does not authorize manifest schema changes",
+        "new descriptor fields",
+        "new CLI commands",
+        "MCP/server tooling",
+        "public extension protocols",
+        "generated component option changes",
+        "copied-source installation",
     ]:
         assert boundary in text
