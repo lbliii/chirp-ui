@@ -89,3 +89,34 @@ Authoring rules:
 Not authorized: manifest schema changes, descriptor fields, new CLI commands,
 MCP/server tooling, public extension protocols, generated option changes, or
 copied-source installation.
+
+## Page Actions
+
+Use this recipe for page-local commands such as copy URL, open LLM text, copy
+known prompt text, visible secondary actions, and external assistant handoff
+links.
+
+Start with:
+
+- `page_header` actions for title-adjacent placement.
+- `page_hero` actions only when the page genuinely needs hero treatment.
+- `dropdown_menu` for grouped page commands.
+- `share_menu` for canonical share/copy URL behavior.
+- `action_bar` for visible commands that should not hide in a menu.
+- `copy_btn` for known local text with feedback.
+
+Authoring rules:
+
+- Keep commands near page identity, usually in compact `page_header` actions.
+- Use `dropdown_menu` for grouped non-social commands and long labels.
+- Use `share_menu` when the command is truly share/copy URL behavior.
+- Use `copy_btn` only for known text; do not imply fetched LLM text support
+  without a tested route and feedback contract.
+- Use ordinary safe external links for assistant handoff; do not claim a
+  semantic AI handoff protocol.
+- Record another reference only if URL, LLM text, AI handoff, grouped command,
+  or async copy/fetch ownership repeats as app-owned glue.
+
+Not authorized: `page_actions()` macro, copy/fetch runtime helper, AI handoff
+protocol, descriptor changes, emitted classes, CSS, manifest updates, generated
+options, or public page-actions docs.

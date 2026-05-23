@@ -202,6 +202,45 @@ def test_reference_recipe_guidance_covers_agent_discovery() -> None:
         assert blocked in normalized
 
 
+def test_reference_recipe_guidance_covers_page_actions() -> None:
+    text = RECIPE_GUIDANCE.read_text(encoding="utf-8")
+    section = text.split("## Page Actions", 1)[1]
+    normalized = " ".join(section.split())
+
+    for primitive in [
+        "`page_header` actions",
+        "`page_hero` actions",
+        "`dropdown_menu`",
+        "`share_menu`",
+        "`action_bar`",
+        "`copy_btn`",
+    ]:
+        assert primitive in section
+
+    for rule in [
+        "commands near page identity",
+        "compact `page_header` actions",
+        "grouped non-social commands and long labels",
+        "share/copy URL behavior",
+        "known text",
+        "do not imply fetched LLM text support",
+        "safe external links for assistant handoff",
+        "do not claim a semantic AI handoff protocol",
+        "async copy/fetch ownership repeats",
+    ]:
+        assert rule in normalized
+
+    for blocked in [
+        "`page_actions()` macro",
+        "copy/fetch runtime helper",
+        "AI handoff protocol",
+        "descriptor changes",
+        "manifest updates",
+        "public page-actions docs",
+    ]:
+        assert blocked in normalized
+
+
 def test_reference_proof_analysis_keeps_public_api_closed() -> None:
     text = PROOF_ANALYSIS.read_text(encoding="utf-8")
 
