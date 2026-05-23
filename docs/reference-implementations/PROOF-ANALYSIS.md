@@ -149,3 +149,37 @@ descriptor, CSS, manifest, generated options, or runtime helper. A public API
 proposal needs a second non-Bengal reference that repeats the same
 title-adjacent URL/LLM/AI command ownership gap after trying the existing
 primitives.
+
+## Linked Navigation Analysis
+
+Proof source: `/linked-nav-candidate` and
+`tests/browser/test_linked_nav_candidate.py`.
+
+Existing primitives tried: `sidebar`, `sidebar_section`, `sidebar_link`,
+`nav_tree(branch_mode="linked")`, `drawer`, and `drawer_trigger`.
+
+What worked:
+
+- Broad app sidebar links and a contextual linked branch tree can coexist in
+  one route without a docs/catalog shell macro.
+- Parent branches render as route anchors while children remain server-owned
+  and appear only when `open=true`.
+- Active child state, badges/counts, no-href groups, and long labels survive
+  persistent sidebar and phone drawer contexts.
+- Drawer fallback opens, closes with Escape, and keeps the linked tree usable
+  at phone width.
+
+Recorded gaps:
+
+- Active-descendant parent emphasis is still a recipe convention rather than a
+  registry-level semantic.
+- Counts are visually useful, but they are still badge-like rather than a
+  structured navigation metadata contract.
+- Sidebar-to-drawer fallback requires app-owned duplication of the tree shape.
+
+Decision: keep linked navigation as recipe/browser-proofed composition. Current
+primitives cover the reference well enough to block new `nav_tree` parameters,
+sidebar branch macros, emitted classes, CSS, manifest updates, `docs_sidebar`,
+`catalog_sidebar`, `docs_shell`, or ARIA tree claims. The next useful slice is
+guidance for linked branch recipes and a second independent reference only if
+the same active-descendant/count/fallback gap repeats.

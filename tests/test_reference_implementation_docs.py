@@ -222,6 +222,41 @@ def test_reference_proof_analysis_records_page_actions_decision() -> None:
         assert decision in normalized
 
 
+def test_reference_proof_analysis_records_linked_navigation_decision() -> None:
+    text = PROOF_ANALYSIS.read_text(encoding="utf-8")
+    section = text.split("## Linked Navigation Analysis", 1)[1]
+    normalized = " ".join(section.split())
+
+    for proof in [
+        "/linked-nav-candidate",
+        "tests/browser/test_linked_nav_candidate.py",
+        "`sidebar`, `sidebar_section`, `sidebar_link`",
+        '`nav_tree(branch_mode="linked")`',
+        "`drawer`, and `drawer_trigger`",
+        "Parent branches render as route anchors",
+        "children remain server-owned",
+        "`open=true`",
+        "Active child state, badges/counts, no-href groups",
+        "Drawer fallback opens, closes with Escape",
+    ]:
+        assert proof in normalized
+
+    for decision in [
+        "Active-descendant parent emphasis is still a recipe convention",
+        "Counts are visually useful",
+        "structured navigation metadata contract",
+        "Sidebar-to-drawer fallback requires app-owned duplication",
+        "keep linked navigation as recipe/browser-proofed composition",
+        "block new `nav_tree` parameters",
+        "`docs_sidebar`",
+        "`catalog_sidebar`",
+        "`docs_shell`",
+        "ARIA tree claims",
+        "same active-descendant/count/fallback gap repeats",
+    ]:
+        assert decision in normalized
+
+
 def test_reference_implementation_index_tracks_current_proof_routes() -> None:
     text = REFERENCE_INDEX.read_text(encoding="utf-8")
 
