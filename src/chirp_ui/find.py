@@ -313,7 +313,7 @@ def format_detailed_rows(rows: Iterable[DetailedSearchRow]) -> str:
         "summary",
     )
     widths = [
-        max(len(str(row[index])) for row in rows + [headers])
+        max(len(str(row[index])) for row in [*rows, headers])
         for index in range(len(headers) - 1)
     ]
     header = "  ".join(
@@ -322,7 +322,7 @@ def format_detailed_rows(rows: Iterable[DetailedSearchRow]) -> str:
     lines = [f"{header}  {headers[-1]}"]
     for row in rows:
         prefix = "  ".join(
-            f"{str(row[index]):<{widths[index]}}" for index in range(len(widths))
+            f"{row[index]!s:<{widths[index]}}" for index in range(len(widths))
         )
         lines.append(f"{prefix}  {row[-1]}")
     return "\n".join(lines)
