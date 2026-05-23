@@ -55,6 +55,27 @@ async def test_hx_request_without_page_root_target_does_not_get_page_root_fragme
     assert "Workspace runs" in html
 
 
+async def test_normal_request_returns_full_page_without_shell_actions_oob():
+    html = await get_text("/consumer-workspace/settings")
+
+    assert 'id="page-content"' in html
+    assert 'id="page-root"' in html
+    assert 'id="chirp-shell-actions" hx-swap-oob="innerHTML"' not in html
+    assert "Workspace settings" in html
+
+
+async def test_hx_request_without_target_returns_full_page_without_shell_actions_oob():
+    html = await get_text(
+        "/consumer-admin/audit",
+        headers={"HX-Request": "true"},
+    )
+
+    assert 'id="page-content"' in html
+    assert 'id="page-root"' in html
+    assert 'id="chirp-shell-actions" hx-swap-oob="innerHTML"' not in html
+    assert "Audit trail" in html
+
+
 async def test_inner_fragment_target_returns_local_fragment_only():
     html = await get_text(
         "/consumer-workspace/filter-fragment",
