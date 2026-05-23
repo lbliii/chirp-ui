@@ -57,9 +57,9 @@ When this domain changes, check:
   `tests/test_template_css_contract.py`, `tests/test_slot_parity.py`,
   `tests/test_provide_consume*.py` — projection parity.
 - `tests/test_css_syntax.py`, `tests/test_transition_tokens.py`,
-  `tests/test_chirpui_css_concat.py`, `tests/test_css_scope_ratchets.py` —
+  `tests/test_chirpui_css_concat.py`, `tests/evidence/test_css_scope_ratchets.py` —
   CSS syntax, tokens, concat, envelope, and cascade contracts.
-- `tests/test_docs_site.py`, `tests/test_verification_docs.py`,
+- `tests/test_docs_site.py`, `tests/docs_contracts/test_verification_docs.py`,
   docs/planning ratchets — docs, site, source-map, and plan-location contracts.
 - `tests/browser/` — browser-only behavior, focus, layout, screenshots/artifacts,
   route fixtures, and timeouts.

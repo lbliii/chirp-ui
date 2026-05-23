@@ -133,7 +133,7 @@ Proof:
 
 - Existing anatomy tests plus focused additions for changed surfaces.
 - Browser tests for focus/keyboard/overflow-sensitive changes.
-- `uv run pytest tests/test_public_surface_stabilization.py -q` when maturity
+- `uv run pytest tests/docs_contracts/test_public_surface_stabilization.py -q` when maturity
   labels change.
 
 Collateral:
@@ -199,7 +199,7 @@ Acceptance:
 
 Proof:
 
-- `uv run pytest tests/test_public_surface_stabilization.py tests/test_manifest.py tests/test_component_options_ratchets.py -q`
+- `uv run pytest tests/docs_contracts/test_public_surface_stabilization.py tests/test_manifest.py tests/docs_contracts/test_component_options_ratchets.py -q`
 - Browser proof when promotion depends on keyboard, focus, overflow, or motion.
 
 Collateral:

@@ -233,7 +233,7 @@ Parse the existing `{# @provides _key — consumed by: ... #}` and `{# @consumes
 
 Add a CI gate: keys in the manifest must match keys in `docs/PROVIDE-CONSUME-KEYS.md`. Drift fails CI, just like `test_template_css_contract.py`.
 
-**Files**: `tests/test_provide_consume_doc_parity.py` (new).
+**Files**: `tests/docs_contracts/test_provide_consume_doc_parity.py` (new).
 **Acceptance**: Test fails when a documented key disappears from the manifest, or when a manifest key is undocumented.
 
 ---

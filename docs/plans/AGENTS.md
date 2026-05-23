@@ -24,7 +24,7 @@ plan/file/status parity against stale links and vague brainstorm dumps.
   `docs/ROADMAP-pre-1.0.md:82`, `docs/ROADMAP-pre-1.0.md:247`.
 - **Index status matches file location.** The docs index must not point to
   archived paths while files remain active, or the reverse. Evidence: PR #110
-  review comments and `tests/test_docs_ia_ratchets.py`.
+  review comments and `tests/docs_contracts/test_docs_ia_ratchets.py`.
 - **Done plans are evidence, not backlog.** Archived plans and `CLAUDE.md` sharp
   edges record history; they do not authorize rework without new evidence.
   Evidence: `CLAUDE.md:115`.
@@ -77,9 +77,9 @@ When this domain changes, check:
 
 **Code:** `docs/plans/*.md`, `docs/plans/done/*.md`.
 
-**Tests:** planning portions of `tests/test_docs_ia_ratchets.py`,
-`tests/test_legacy_helper_docs.py`, `tests/test_legacy_helper_cleanup_plan.py`,
-`tests/test_ascii_maturity_ratchets.py`, `tests/test_navigation_synthesis_docs.py`.
+**Tests:** planning portions of `tests/docs_contracts/test_docs_ia_ratchets.py`,
+`tests/docs_contracts/test_legacy_helper_docs.py`, `tests/evidence/test_legacy_helper_cleanup_plan.py`,
+`tests/evidence/test_ascii_maturity_ratchets.py`, `tests/docs_contracts/test_navigation_synthesis_docs.py`.
 
 **Docs:** planning sections in `docs/INDEX.md`, `docs/ROADMAP-pre-1.0.md`, PR
 `Steward Notes` for roadmap/backlog changes.

@@ -102,7 +102,7 @@ Proposed production work, gated:
 
 ## Required Proof
 
-- `tests/test_layout_affinity_docs.py`
+- `tests/docs_contracts/test_layout_affinity_docs.py`
 - `tests/test_layout_affinity_descriptor_fixture.py`
 - focused render/CSS tests in `tests/test_components.py`
 - browser no-overflow proof in `tests/browser/test_catalog_shell_recipe.py`

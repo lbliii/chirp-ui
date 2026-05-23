@@ -18,7 +18,7 @@
 > First-party example cleanup shipped in
 > [done/PLAN-legacy-helper-cleanup-pre-1.0.md](done/PLAN-legacy-helper-cleanup-pre-1.0.md).
 > Current ratchet: manifest tests pin the compatibility helper set, and
-> `tests/test_legacy_helper_docs.py` requires every legacy primitive to have a
+> `tests/docs_contracts/test_legacy_helper_docs.py` requires every legacy primitive to have a
 > human-readable keep/deprecate-later decision in this plan.
 
 ---

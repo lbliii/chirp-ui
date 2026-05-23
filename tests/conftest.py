@@ -29,6 +29,36 @@ from chirp_ui.validation import ChirpUIValidationWarning, _warn, set_strict
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates"
 
 
+def pytest_collection_modifyitems(config, items):
+    """Apply suite-purpose markers from test location and naming conventions."""
+    del config
+    root = Path(__file__).resolve().parent
+    for item in items:
+        path = Path(str(item.fspath))
+        try:
+            rel = path.relative_to(root)
+        except ValueError:
+            continue
+
+        parts = rel.parts
+        name = path.name
+        if parts and parts[0] == "browser":
+            item.add_marker(pytest.mark.browser)
+        if len(parts) == 1 and name == "test_docs_site.py":
+            item.add_marker(pytest.mark.docs_contract)
+        elif len(parts) == 1 and name.startswith("test_"):
+            item.add_marker(pytest.mark.contract)
+        if "docs_contracts" in parts:
+            item.add_marker(pytest.mark.docs_contract)
+        if "evidence" in parts:
+            item.add_marker(pytest.mark.evidence)
+        if name.endswith("_plan.py") or "ratchet" in name:
+            item.add_marker(pytest.mark.research)
+        if "candidate" in name:
+            item.add_marker(pytest.mark.candidate)
+            item.add_marker(pytest.mark.evidence)
+
+
 @pytest.fixture(autouse=True)
 def _reset_chirpui_strict_mode():
     """Keep validation strictness isolated across tests."""

@@ -133,7 +133,7 @@ affinity.
 
 Every accepted resolver change needs focused proof:
 
-- `tests/test_layout_affinity_docs.py` keeps vocabulary, status, and resolver
+- `tests/docs_contracts/test_layout_affinity_docs.py` keeps vocabulary, status, and resolver
   documentation aligned.
 - CSS contract tests assert the intended parent-scoped selectors and reject
   broad descendant selectors.
