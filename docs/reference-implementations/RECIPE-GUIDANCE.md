@@ -150,3 +150,35 @@ Authoring rules:
 Not authorized: new `nav_tree` parameters, sidebar branch macros, emitted
 classes, CSS, manifest updates, generated options, `docs_sidebar`,
 `catalog_sidebar`, `docs_shell`, or ARIA tree claims.
+
+## Compact Headers
+
+Use this recipe when a docs, reference, catalog, or product page needs identity,
+metadata, search, route proximity, and actions without a large hero.
+
+Start with:
+
+- `page_header(variant="compact")` for ordinary dense page identity.
+- `page_hero(variant="minimal")` only when the page still needs hero slots.
+- `search_header` for search-first resource pages.
+- `entity_header` for object/detail surfaces.
+- `document_header` for document-oriented pages.
+- `route_tabs` for link-native local route navigation near page identity.
+
+Authoring rules:
+
+- Prefer `page_header(variant="compact")` for title, subtitle, metadata, and
+  actions that should stay close.
+- Use `page_hero` when eyebrow, metadata, content, actions, or footer regions
+  are part of the page's intended hero treatment.
+- Use `search_header` when search is the primary page action, not a header
+  accessory.
+- Use `entity_header` or `document_header` when object/document semantics are
+  stronger than generic page identity.
+- Keep `route_tabs` link-native; do not describe them as ARIA tab widgets.
+- Record another reference only if empty optional regions, title/action
+  placement, search adjacency, or route proximity repeats as a gap.
+
+Not authorized: `compact_page_header`, `docs_header`, `catalog_header`,
+`docs_shell`, new `page_hero` parameters, slot changes, markup changes, emitted
+classes, CSS, descriptor changes, manifest updates, or generated options.

@@ -279,6 +279,46 @@ def test_reference_recipe_guidance_covers_linked_navigation() -> None:
         assert blocked in normalized
 
 
+def test_reference_recipe_guidance_covers_compact_headers() -> None:
+    text = RECIPE_GUIDANCE.read_text(encoding="utf-8")
+    section = text.split("## Compact Headers", 1)[1]
+    normalized = " ".join(section.split())
+
+    for primitive in [
+        '`page_header(variant="compact")`',
+        '`page_hero(variant="minimal")`',
+        "`search_header`",
+        "`entity_header`",
+        "`document_header`",
+        "`route_tabs`",
+    ]:
+        assert primitive in section
+
+    for rule in [
+        "ordinary dense page identity",
+        "title, subtitle, metadata, and actions",
+        "page's intended hero treatment",
+        "search is the primary page action",
+        "object/document semantics",
+        "`route_tabs` link-native",
+        "do not describe them as ARIA tab widgets",
+        "empty optional regions, title/action placement",
+    ]:
+        assert rule in normalized
+
+    for blocked in [
+        "`compact_page_header`",
+        "`docs_header`",
+        "`catalog_header`",
+        "`docs_shell`",
+        "new `page_hero` parameters",
+        "slot changes",
+        "markup changes",
+        "manifest updates",
+    ]:
+        assert blocked in normalized
+
+
 def test_reference_proof_analysis_keeps_public_api_closed() -> None:
     text = PROOF_ANALYSIS.read_text(encoding="utf-8")
 
