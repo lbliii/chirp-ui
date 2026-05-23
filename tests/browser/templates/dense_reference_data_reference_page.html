@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/callout.html" import callout %}
+{% from "chirpui/card.html" import card, resource_card %}
+{% from "chirpui/forms.html" import select_field %}
+{% from "chirpui/layout.html" import cluster, grid, page_header, stack %}
+{% from "chirpui/params_table.html" import params_table %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/table.html" import table %}
+{% from "chirpui/workspace_primitives.html" import filter_rail, filter_rail_item %}
+
+<main data-testid="dense-reference-data-reference"
+      data-reference-implementation="dense-reference-data"
+      data-scenario-complete="true"
+      data-public-api="false"
+      data-existing-primitives="resource_index resource_card filter_rail filter_bar search_header table params_table card badge callout"
+      data-promotion-boundary="no data_grid virtual_table reference_page_macro filter_count_api css manifest runtime">
+  {% call stack(gap="lg") %}
+    {% call page_header(
+      "Dense API reference",
+      subtitle="Private fixture: existing resource, table, params, rail, and feedback primitives only.",
+      variant="compact"
+    ) %}
+      {% slot actions %}
+        {{ btn("Open registry", href="/dense-reference-data-reference?q=registry", variant="secondary", size="sm", icon="link") }}
+      {% end %}
+    {% end %}
+
+    {% call grid(cols=3, gap="md") %}
+      {% call filter_rail(label="Reference sections") %}
+        {{ filter_rail_item("/dense-reference-data-reference?section=modules", "Modules", count=3, meta="Primary API objects", active=true) }}
+        {{ filter_rail_item("/dense-reference-data-reference?section=members", "Members", count=12, meta="Functions and macros") }}
+        {{ filter_rail_item("/dense-reference-data-reference?section=states", "States", count=3, meta="Empty, loading, error") }}
+      {% end %}
+
+      {% call stack(gap="lg", cls="chirpui-grid__span-2") %}
+        {% call resource_index(
+          "Registry modules",
+          "/dense-reference-data-reference",
+          query="registry",
+          subtitle="Search, filter, cards, and dense tables share the same route family.",
+          filter_action="/dense-reference-data-reference",
+          filter_label="Scope",
+          results_title="Modules",
+          results_subtitle="Cards keep generated identifiers readable before a reference-page macro exists.",
+          results_layout="grid",
+          results_cols=2,
+          selected_count=1,
+          selected_label="scope selected"
+        ) %}
+          {% slot filter_controls %}
+            {{ select_field("kind", [{"value": "all", "label": "All objects"}, {"value": "macro", "label": "Macros"}, {"value": "module", "label": "Modules"}], selected="all", label="Kind") }}
+          {% end %}
+          {% slot filter_actions %}
+            {{ btn("Apply", type="submit", variant="primary", size="sm") }}
+            {{ btn("Reset", href="/dense-reference-data-reference", variant="ghost", size="sm") }}
+          {% end %}
+          {% slot selection %}
+            {{ badge("registry", variant="info") }}
+          {% end %}
+
+          {% for module in modules %}
+            {% call resource_card(module.href, module.title, description=module.summary, top_meta=module.kind) %}
+              {% slot badges %}
+                {{ badge(module.status, variant="success" if module.status == "Stable" else "warning") }}
+              {% end %}
+              {% slot subtitle %}
+                <span>{{ module.kind }}</span>
+              {% end %}
+              {% slot footer %}
+                <span class="chirpui-font-xs chirpui-text-muted">Existing card link pattern; no reference-page macro.</span>
+              {% end %}
+            {% end %}
+          {% end %}
+        {% end %}
+
+        {% call card(title="Members", subtitle="Compact table proof for dense API lists.") %}
+          {% call table(
+            headers=["Name", "Kind", "Maturity", "Summary"],
+            rows=member_rows,
+            striped=true,
+            compact=true,
+            widths=["2fr", "1fr", "1fr", "3fr"]
+          ) %}
+            {% slot caption %}Dense member list rendered by the existing table macro.{% end %}
+          {% end %}
+        {% end %}
+
+        {% call card(title="Parameters", subtitle="Existing params_table handles generated API names.") %}
+          {{ params_table(params, title="resource_index parameters") }}
+        {% end %}
+
+        {% call grid(cols=3, gap="md") %}
+          {% call callout(variant="neutral", title="Empty") %}
+            <p data-testid="dense-reference-empty-state">No members match this filter.</p>
+          {% end %}
+          {% call callout(variant="info", title="Loading") %}
+            <p data-testid="dense-reference-loading-state" aria-busy="true">Loading registry objects.</p>
+          {% end %}
+          {% call callout(variant="error", title="Error") %}
+            <p data-testid="dense-reference-error-state">Reference metadata failed to load.</p>
+          {% end %}
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+</main>
+{% end %}

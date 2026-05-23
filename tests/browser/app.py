@@ -1124,6 +1124,76 @@ def create_app() -> App:
             ),
         )
 
+    @app.route("/dense-reference-data-reference")
+    async def dense_reference_data_reference_page(request: Request):
+        return Template(
+            "dense_reference_data_reference_page.html",
+            page_title="Dense Reference Data Reference",
+            modules=[
+                {
+                    "href": "/dense-reference-data-reference/modules/chirp_ui.components",
+                    "title": "chirp_ui.components",
+                    "kind": "Registry",
+                    "summary": "Component descriptors, emitted classes, slots, and maturity metadata.",
+                    "status": "Stable",
+                },
+                {
+                    "href": "/dense-reference-data-reference/modules/chirp_ui.templates.reference_browser_with_exceptionally_long_slug",
+                    "title": "chirp_ui.templates.reference_browser_with_exceptionally_long_slug",
+                    "kind": "Templates",
+                    "summary": "Macro output contracts for dense docs and generated component pages.",
+                    "status": "Candidate",
+                },
+                {
+                    "href": "/dense-reference-data-reference/modules/chirp_ui.validation",
+                    "title": "chirp_ui.validation",
+                    "kind": "Runtime",
+                    "summary": "Validation helpers that keep variants, sizes, and appearances registry-bound.",
+                    "status": "Stable",
+                },
+            ],
+            member_rows=[
+                (
+                    "resource_index",
+                    "macro",
+                    "stable",
+                    "Search, filter, selection, empty state, and result layout wrapper.",
+                ),
+                (
+                    "params_table_with_extremely_long_generated_member_name",
+                    "macro",
+                    "candidate",
+                    "Reference table pressure case with a long generated identifier.",
+                ),
+                (
+                    "validate_variant_block",
+                    "filter",
+                    "stable",
+                    "Registry-aligned validation path for bounded option sets.",
+                ),
+            ],
+            params=[
+                {
+                    "name": "filter_state_name",
+                    "type": "str | None",
+                    "default": "None",
+                    "description": "Hidden field name that preserves server-owned filter context.",
+                },
+                {
+                    "name": "module_reference_identifier_with_deliberately_long_unbroken_name",
+                    "type": "Mapping[str, Sequence[ComponentDescriptor]]",
+                    "default": "",
+                    "description": "Pressure case for generated reference identifiers.",
+                },
+                {
+                    "name": "results_layout",
+                    "type": '"stack" | "grid"',
+                    "default": '"stack"',
+                    "description": "Existing bounded layout option, not a data-grid engine.",
+                },
+            ],
+        )
+
     # ── Card variants (Sprint 5 @scope pilot) ─────────────────────────
 
     @app.route("/card-variants")
