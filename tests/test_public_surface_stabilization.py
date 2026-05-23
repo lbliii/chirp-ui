@@ -84,6 +84,9 @@ def test_design_system_research_routes_reference_proof_to_analysis_ledger() -> N
         "recipe guidance",
         "another independent reference",
         "stop-and-ask public API plan",
+        "`docs/reference-implementations/RECIPE-GUIDANCE.md`",
+        "source-only authoring layer",
+        "keep current primitives and teach the recipe",
         "Explicit stop-and-ask before any public macro/API",
     ]:
         assert required in normalized

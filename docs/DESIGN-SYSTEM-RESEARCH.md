@@ -400,6 +400,9 @@ Promotion evidence must come from work we can verify now:
 - `docs/reference-implementations/PROOF-ANALYSIS.md` as the source-only ledger
   that decides whether a proven scenario remains recipe guidance, needs another
   independent reference, or is ready for a stop-and-ask public API plan.
+- `docs/reference-implementations/RECIPE-GUIDANCE.md` as the source-only
+  authoring layer when the proof decision is to keep current primitives and
+  teach the recipe.
 - Explicit stop-and-ask before any public macro/API, descriptor, CSS, manifest,
   generated docs, runtime, or extension-contract change.
 

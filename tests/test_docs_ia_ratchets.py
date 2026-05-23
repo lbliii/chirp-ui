@@ -86,6 +86,8 @@ def test_roadmap_records_application_chrome_reference_implementation_gate() -> N
         "reference-implementations/README.md",
         "reference-implementations/PROOF-ANALYSIS.md",
         "guidance, more reference evidence, or a stop-and-ask API plan",
+        "reference-implementations/RECIPE-GUIDANCE.md",
+        "keep current primitives and teach the recipe",
         "second scenario-complete non-Bengal reference implementation",
         "third scenario-complete hand-written route family",
         "`application_chrome()`",
@@ -133,6 +135,8 @@ def test_productization_saga_records_application_chrome_queue_status() -> None:
         "unless they test a new failure mode",
         "docs/reference-implementations/PROOF-ANALYSIS.md",
         "recipe guidance, more independent reference evidence",
+        "docs/reference-implementations/RECIPE-GUIDANCE.md",
+        "keeps the surface on current primitives",
         "stop and ask for an explicit public API/design plan",
     ]:
         assert signal in normalized

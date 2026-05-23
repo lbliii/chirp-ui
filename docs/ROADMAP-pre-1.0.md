@@ -278,7 +278,9 @@ Current promotion queue:
   as the queue for those reference scenarios before proposing public API. Use
   [reference-implementations/PROOF-ANALYSIS.md](reference-implementations/PROOF-ANALYSIS.md)
   to decide whether existing proof routes to guidance, more reference evidence,
-  or a stop-and-ask API plan.
+  or a stop-and-ask API plan. Use
+  [reference-implementations/RECIPE-GUIDANCE.md](reference-implementations/RECIPE-GUIDANCE.md)
+  when the decision is to keep current primitives and teach the recipe.
 - Until that reference-implementation evidence exists, keep these surfaces recipe-first
   and do not add `application_chrome()`, `docs_shell`, `catalog_shell`,
   `compact_page_header`, `page_actions`, or shell response helper APIs.

@@ -304,6 +304,9 @@ Current application-chrome queue:
 - Use `docs/reference-implementations/PROOF-ANALYSIS.md` as the decision ledger
   for whether current proof routes to recipe guidance, more independent
   reference evidence, or a public API/design stop-and-ask.
+- Use `docs/reference-implementations/RECIPE-GUIDANCE.md` when proof analysis
+  keeps the surface on current primitives and the next productization work is
+  author guidance.
 
 ### 7. Bengal And chirp-theme Integration
 
