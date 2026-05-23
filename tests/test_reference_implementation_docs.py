@@ -3,6 +3,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PLAYBOOK = ROOT / "docs" / "REFERENCE-IMPLEMENTATION-PLAYBOOK.md"
 INDEX = ROOT / "docs" / "INDEX.md"
+PAGE_ACTIONS = ROOT / "docs" / "reference-implementations" / "PAGE-ACTIONS-AI-REFERENCE.md"
 
 
 def test_reference_implementation_playbook_defines_evidence_ladder() -> None:
@@ -54,3 +55,37 @@ def test_reference_implementation_playbook_is_indexed() -> None:
     assert "[REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md)" in (
         INDEX.read_text(encoding="utf-8")
     )
+
+
+def test_page_actions_reference_brief_keeps_api_unauthorized() -> None:
+    text = PAGE_ACTIONS.read_text(encoding="utf-8")
+
+    for primitive in [
+        "`page_header` actions",
+        "`page_hero` actions",
+        "`dropdown_menu`",
+        "`share_menu`",
+        "`action_bar`",
+        "`copy_btn`",
+    ]:
+        assert primitive in text
+
+    for proof in [
+        "Browser proof at 320, 390, 768, and 1024 widths",
+        "Long command labels stay contained",
+        "Copy feedback works for known text",
+        "External assistant links use safe external-link attributes",
+        "No Bengal `.chirp-theme-*` selectors are used",
+    ]:
+        assert proof in text
+
+    for boundary in [
+        "does not authorize `page_actions()`",
+        "copy/fetch runtime helpers",
+        "descriptor changes",
+        "CSS",
+        "manifest updates",
+        "generated component",
+        "public page-actions API",
+    ]:
+        assert boundary in text
