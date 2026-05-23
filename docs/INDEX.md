@@ -23,6 +23,11 @@ Navigation guide for all chirp-ui documentation.
 - [DENSE-NAVIGATION-SYNTHESIS.md](DENSE-NAVIGATION-SYNTHESIS.md) — Dense navigation recipe synthesis, primitive candidates, and anti-decisions
 - [DENSE-NAVIGATION-RECIPES.md](DENSE-NAVIGATION-RECIPES.md) — Copyable dense navigation recipes and layer model
 - [VISUAL-AUDIT-SHOWCASE.md](VISUAL-AUDIT-SHOWCASE.md) — Static visual QA surface and responsive audit checklist
+- [DESIGN-SYSTEM-RESEARCH.md](DESIGN-SYSTEM-RESEARCH.md) — External design-system research, Chirp UI product opinion, Bengal shell implications, and maturity gates
+- [REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md) — Scenario-complete reference evidence rules for promotion candidates
+- [reference-implementations/README.md](reference-implementations/README.md) — Reference implementation brief index for blocked promotion candidates
+- [reference-implementations/PROOF-ANALYSIS.md](reference-implementations/PROOF-ANALYSIS.md) — Source-only proof-analysis ledger for reference fixture decisions
+- [reference-implementations/RECIPE-GUIDANCE.md](reference-implementations/RECIPE-GUIDANCE.md) — Recipe-first guidance for reference candidates kept on current primitives
 
 ## Patterns
 
@@ -58,6 +63,7 @@ Navigation guide for all chirp-ui documentation.
 - [AGENT-SOURCE-INVENTORY.md](AGENT-SOURCE-INVENTORY.md) — Sprint 6 agent source provenance, snippet eligibility, and exclusion contract
 - [AGENT-SOURCE-MAP.md](AGENT-SOURCE-MAP.md) — Sprint 6 generated-output ownership and agent source-input map
 - [AGENT-CURATED-SNIPPETS.md](AGENT-CURATED-SNIPPETS.md) — Reviewed macro-first snippets for agent-facing examples
+- [REGISTRY-DISCOVERY.md](REGISTRY-DISCOVERY.md) — CLI and Python discovery over the component registry and manifest labels
 - [COMPONENT-OPTIONS.md](COMPONENT-OPTIONS.md) — Full parameter reference for all components
 - [DOCS-IA-MIGRATION.md](DOCS-IA-MIGRATION.md) — Sprint 4 published-docs IA map and LLM endpoint source map
 - [DEEP-DIVE-masked-field-use-cases.md](DEEP-DIVE-masked-field-use-cases.md) — Masked input field patterns and examples
@@ -79,6 +85,7 @@ Plans are triaged by status. In-flight work sits in [`plans/`](plans/); shipped 
 - [PLAN-pre-1.0-productization-saga.md](plans/PLAN-pre-1.0-productization-saga.md) — Umbrella productization saga for visible quality, public surface, themes, app chrome, Bengal, and verification
 - [PLAN-css-scope-and-layer.md](plans/PLAN-css-scope-and-layer.md) — Ongoing `@scope` conversion policy and residual CSS hardening
 - [PLAN-application-chrome-system.md](plans/PLAN-application-chrome-system.md) — Application chrome system contracts, rail/tray proof, rhythm audit, and composite gates
+- [PLAN-page-actions-primitive.md](plans/PLAN-page-actions-primitive.md) — Page-local actions primitive investigation, promotion gate, and non-API boundary
 - [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Residual chirp-theme fixture parity backlog
 - [PLAN-bengal-chirpui-library-contract.md](plans/PLAN-bengal-chirpui-library-contract.md) — First-class Bengal library asset/macro contract for Chirp UI
 

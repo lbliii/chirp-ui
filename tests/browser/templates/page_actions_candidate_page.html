@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/action_bar.html" import action_bar, action_bar_item %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/copy_button.html" import copy_button %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/layout.html" import grid, page_header, section_header, stack %}
+{% from "chirpui/share_menu.html" import share_menu %}
+{% from "chirpui/streaming.html" import streaming_bubble %}
+{% from "chirpui/surface.html" import surface %}
+
+<main data-testid="page-actions-candidate"
+      data-candidate="page-actions"
+      data-reference-implementation="page-actions-ai"
+      data-scenario-complete="true"
+      data-public-api="false"
+      data-existing-primitives="page_header page_hero dropdown_menu share_menu action_bar copy_button"
+      data-promotion-boundary="no page_actions macro runtime descriptor css manifest generated-options">
+  {% call stack(gap="lg") %}
+    {% call page_header(
+      "Streaming & AI page-action candidate",
+      subtitle="Private fixture: existing primitives only, no page_actions() API.",
+      variant="compact"
+    ) %}
+      {% slot actions %}
+        <div data-testid="candidate-header-actions">
+          {{ dropdown_menu(btn("Page tools", variant="secondary", size="sm", icon="dots"), page_tool_items, id="candidate-page-tools") }}
+          {{ share_menu(label="Share", share_url=candidate_url) }}
+        </div>
+      {% end %}
+    {% end %}
+
+    {% call surface(variant="muted") %}
+      {% call stack(gap="md") %}
+        {{ section_header("Primitive review", subtitle="This fixture tries current surfaces before sketching a new macro.") }}
+        <div id="primitive-review" data-testid="candidate-primitive-review">
+          {% call action_bar() %}
+            {{ action_bar_item(icon="share", label="Share candidate", href=candidate_url) }}
+            {{ action_bar_item(icon="link", label="Copy prompt") }}
+            {{ action_bar_item(icon="share", label="Open LLM text", href="/page-actions-candidate/prompt.txt") }}
+          {% end %}
+        </div>
+        <p class="chirpui-text-muted">
+          The dropdown can group links and local actions, the share menu can copy
+          a social URL, the action bar can expose visible actions, and copy_button
+          can copy known text. The candidate gap is whether a page-local command
+          popover should own URL, LLM text, and AI handoff semantics together.
+        </p>
+      {% end %}
+    {% end %}
+
+    {% call grid(cols=2, gap="md") %}
+      {% call surface() %}
+        {% call stack(gap="sm") %}
+          {{ section_header("Prompt sample", subtitle="copy_button covers known local text.") }}
+          <p data-testid="candidate-prompt-text">{{ prompt_text }}</p>
+          {{ copy_button(prompt_text, label="Copy prompt text") }}
+          {{ btn("Open prompt text", href="/page-actions-candidate/prompt.txt", variant="secondary", size="sm", icon="share") }}
+        {% end %}
+      {% end %}
+
+      {% call surface() %}
+        {% call stack(gap="sm") %}
+          {{ section_header("Transcript sample", subtitle="Streaming primitives keep LLM output local.") }}
+          {% call streaming_bubble(role="assistant", state="", streaming=false) %}
+            <p data-testid="candidate-transcript">
+              The assistant response stays in the content flow; page-level copy
+              and AI handoff remain outside this component.
+            </p>
+          {% end %}
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+</main>
+{% end %}

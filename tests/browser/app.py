@@ -1024,6 +1024,179 @@ def create_app() -> App:
     async def streaming_page(request: Request):
         return Template("streaming_page.html", page_title="Streaming")
 
+    @app.route("/page-actions-candidate")
+    async def page_actions_candidate_page(request: Request):
+        return Template(
+            "page_actions_candidate_page.html",
+            page_title="Page Actions Candidate",
+            candidate_url="/page-actions-candidate",
+            prompt_text="Summarize the streaming transcript and identify the model handoff.",
+            page_tool_items=[
+                {
+                    "label": "Open current fixture",
+                    "href": "/page-actions-candidate",
+                    "icon": "link",
+                },
+                {"label": "Open prompt text", "href": "/page-actions-candidate/prompt.txt"},
+                {"label": "Copy sample text", "action": "copy-sample-text"},
+                {
+                    "label": "Ask external assistant about this prompt",
+                    "href": "https://chat.openai.com/",
+                    "icon": "share",
+                },
+                {
+                    "label": (
+                        "Open prompt text with a deliberately long label that should stay "
+                        "inside the existing dropdown menu"
+                    ),
+                    "href": "/page-actions-candidate/prompt.txt?variant=long-label",
+                },
+                {"divider": True},
+                {
+                    "label": "Review existing primitives",
+                    "href": "/page-actions-candidate#primitive-review",
+                },
+            ],
+        )
+
+    @app.route("/page-actions-candidate/prompt.txt")
+    async def page_actions_candidate_prompt(request: Request):
+        return Response(
+            "Summarize the streaming transcript and identify the model handoff.",
+            content_type="text/plain; charset=utf-8",
+        )
+
+    @app.route("/linked-nav-candidate")
+    async def linked_nav_candidate_page(request: Request):
+        return Template(
+            "linked_nav_candidate_page.html",
+            page_title="Linked Nav Candidate",
+            current_path="/linked-nav-candidate/guide/install",
+            linked_nav_items=[
+                {
+                    "title": "Guide",
+                    "href": "/linked-nav-candidate/guide",
+                    "open": True,
+                    "badge": 4,
+                    "children": [
+                        {
+                            "title": "Install",
+                            "href": "/linked-nav-candidate/guide/install",
+                            "active": True,
+                        },
+                        {
+                            "title": (
+                                "Configuration with a deliberately long child label "
+                                "that must wrap inside the sidebar"
+                            ),
+                            "href": "/linked-nav-candidate/guide/configuration",
+                        },
+                    ],
+                },
+                {
+                    "title": "Reference",
+                    "href": "/linked-nav-candidate/reference",
+                    "children": [
+                        {
+                            "title": "Hidden child until server marks branch open",
+                            "href": "/linked-nav-candidate/reference/hidden",
+                        },
+                    ],
+                },
+                {
+                    "title": "No-href group",
+                    "open": True,
+                    "children": [
+                        {
+                            "title": "Grouped child",
+                            "href": "/linked-nav-candidate/grouped-child",
+                        },
+                    ],
+                },
+            ],
+        )
+
+    @app.route("/compact-header-candidate")
+    async def compact_header_candidate_page(request: Request):
+        return Template(
+            "compact_header_candidate_page.html",
+            page_title="Compact Header Candidate",
+            long_title=(
+                "Compact header candidate with a deliberately long title that must wrap "
+                "without pushing actions or page chrome outside the viewport"
+            ),
+        )
+
+    @app.route("/dense-reference-data-reference")
+    async def dense_reference_data_reference_page(request: Request):
+        return Template(
+            "dense_reference_data_reference_page.html",
+            page_title="Dense Reference Data Reference",
+            modules=[
+                {
+                    "href": "/dense-reference-data-reference/modules/chirp_ui.components",
+                    "title": "chirp_ui.components",
+                    "kind": "Registry",
+                    "summary": "Component descriptors, emitted classes, slots, and maturity metadata.",
+                    "status": "Stable",
+                },
+                {
+                    "href": "/dense-reference-data-reference/modules/chirp_ui.templates.reference_browser_with_exceptionally_long_slug",
+                    "title": "chirp_ui.templates.reference_browser_with_exceptionally_long_slug",
+                    "kind": "Templates",
+                    "summary": "Macro output contracts for dense docs and generated component pages.",
+                    "status": "Candidate",
+                },
+                {
+                    "href": "/dense-reference-data-reference/modules/chirp_ui.validation",
+                    "title": "chirp_ui.validation",
+                    "kind": "Runtime",
+                    "summary": "Validation helpers that keep variants, sizes, and appearances registry-bound.",
+                    "status": "Stable",
+                },
+            ],
+            member_rows=[
+                (
+                    "resource_index",
+                    "macro",
+                    "stable",
+                    "Search, filter, selection, empty state, and result layout wrapper.",
+                ),
+                (
+                    "params_table_with_extremely_long_generated_member_name",
+                    "macro",
+                    "candidate",
+                    "Reference table pressure case with a long generated identifier.",
+                ),
+                (
+                    "validate_variant_block",
+                    "filter",
+                    "stable",
+                    "Registry-aligned validation path for bounded option sets.",
+                ),
+            ],
+            params=[
+                {
+                    "name": "filter_state_name",
+                    "type": "str | None",
+                    "default": "None",
+                    "description": "Hidden field name that preserves server-owned filter context.",
+                },
+                {
+                    "name": "module_reference_identifier_with_deliberately_long_unbroken_name",
+                    "type": "Mapping[str, Sequence[ComponentDescriptor]]",
+                    "default": "",
+                    "description": "Pressure case for generated reference identifiers.",
+                },
+                {
+                    "name": "results_layout",
+                    "type": '"stack" | "grid"',
+                    "default": '"stack"',
+                    "description": "Existing bounded layout option, not a data-grid engine.",
+                },
+            ],
+        )
+
     # ── Card variants (Sprint 5 @scope pilot) ─────────────────────────
 
     @app.route("/card-variants")

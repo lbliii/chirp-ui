@@ -40,5 +40,5 @@ The following static-page styling has been moved to local `sc-*` classes:
 
 ## Verification
 
-- `uv run pytest tests/test_static_showcase_legacy_helper_triage.py -q`
+- `uv run pytest tests/evidence/test_static_showcase_legacy_helper_triage.py -q`
 - `uv run poe check`

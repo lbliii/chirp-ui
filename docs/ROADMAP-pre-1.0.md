@@ -1,12 +1,13 @@
 # Chirp UI Pre-1.0 Gap Roadmap
 
 Status: active roadmap
-Date: 2026-05-12
+Date: 2026-05-23
 
-This roadmap turns the Skeleton-inspired design-system review into executable
-work. The goal is not to copy Skeleton's Tailwind/Svelte architecture. The goal
-is to make Chirp UI feel as inspectable, themeable, and visually convincing
-while preserving its Python-native registry contract.
+This roadmap turns the Skeleton-inspired review and current design-system
+research into executable work. The goal is not to copy Skeleton, shadcn/ui,
+Radix, Carbon, GOV.UK, or any other system. The goal is to make Chirp UI the
+best system in its own category: a Python-native, registry-verified design
+system for server-rendered apps.
 
 ## Current Position
 
@@ -24,6 +25,34 @@ Chirp UI already has the hard architectural pieces in place:
 
 The remaining work is mostly about making that quality obvious, reducing stale
 planning noise, and stabilizing the public surface before 1.0.
+
+## Categorical Strategy
+
+Chirp UI should not win by having the most components or the largest ecosystem.
+It should win by making UI contracts inspectable and verifiable from Python in a
+way Tailwind, shadcn/ui, Radix, and enterprise React systems cannot.
+
+The strategic bets are:
+
+- **Registry as product:** the Python registry, manifest, CLI discovery, docs,
+  and agent-facing source map become a coherent component catalog, not just
+  internal metadata.
+- **Contracts over classes:** public authoring stays centered on macros, slots,
+  tokens, variants, runtime requirements, and relationship contracts, not
+  utility class strings.
+- **Evidence-labeled maturity:** every surface is clearly stable,
+  experimental, recipe-only, compatibility, or research-backed-not-shipped.
+- **Anatomy as executable contract:** complex components document parts,
+  roles, state, focus, keyboard behavior, runtime requirements, and proof.
+- **Shell layer discipline:** app shell, docs/catalog shell, rails, trays,
+  page tools, and content flow mature through smaller contracts before any
+  composite shell macro.
+- **Bengal as proof path:** the packaged Bengal theme is a reference implementation for
+  docs/catalog shell pressure, theme asset contracts, and reference-page
+  primitives.
+
+See `docs/DESIGN-SYSTEM-RESEARCH.md` for the research ledger behind these
+decisions.
 
 ## Workstreams
 
@@ -49,6 +78,55 @@ Acceptance:
   productization saga are satisfied.
 - Planning updates reduce ambiguity about what is active, shipped, deferred, or
   not-now.
+
+### 0a. Registry Product Surface
+
+Goal: make the registry and manifest feel like a first-class design-system
+product, comparable in practical usefulness to shadcn's registry ecosystem but
+grounded in Python contracts instead of copied source.
+
+Tasks:
+
+- Improve discovery output around component maturity, authoring status,
+  runtime requirements, slots, and recipe-only boundaries.
+- Make generated docs and agent-facing sources point to real registry data and
+  proof, not hand-maintained claims.
+- Evaluate a future agent query surface only after `build_manifest()`, `find`,
+  and source inventory docs are strong enough locally.
+- Keep app-local extension stories typed and registry-preserving; do not make
+  copied component source the default ownership model.
+
+Acceptance:
+
+- A user or agent can discover the preferred component, its maturity, required
+  runtime, and relevant docs/tests without reading implementation files first.
+- Registry, manifest, generated docs, and source inventory agree.
+- Any manifest or descriptor expansion has a migration/schema plan before code
+  changes.
+
+### 0b. Anatomy And Evidence Ledgers
+
+Goal: raise complex component maturity by making accessibility, behavior,
+performance, and responsive proof explicit.
+
+Tasks:
+
+- Add anatomy-contract expectations to high-risk surfaces: overlays, drawers,
+  command palette, route tabs, shell navigation, page actions, and dense
+  reference primitives.
+- Track proof fields such as native semantics, keyboard, focus, overflow,
+  reduced motion, runtime requirements, and browser coverage.
+- Avoid claims of manual screen-reader proof unless manual verification was
+  actually performed.
+- Use evidence labels from `docs/PUBLIC-SURFACE-STABILIZATION.md` to keep
+  research, recipes, and stable APIs distinct.
+
+Acceptance:
+
+- Promotion PRs for complex surfaces cite anatomy and proof, not only visual
+  output.
+- Browser proof covers stress widths and focus movement when relevant.
+- Docs and tests name any residual accessibility or performance risk.
 
 ### 1. Verification Reliability
 
@@ -139,11 +217,11 @@ Goal: turn the dense navigation study into a teachable product surface.
 Tasks:
 
 - Publish a focused dense navigation recipes guide.
-- Keep product-specific shells as recipes until repeated real app usage proves
+- Keep product-specific shells as recipes until repeated reference implementation usage proves
   a macro should exist.
 - Add browser proof for `scope_switcher` and `saved_view_strip` only if their
   overflow or layout behavior becomes more ambitious.
-- Revisit `workspace_shell` after real app usage, not from showcase examples
+- Revisit `workspace_shell` after reference implementation usage, not from showcase examples
   alone.
 
 Acceptance:
@@ -174,12 +252,68 @@ Tasks:
 
 Acceptance:
 
-- Application chrome remains recipe-first until repeated real app usage proves
-  a stable missing API.
+- Application chrome remains recipe-first until deliberately built reference
+  implementations prove a stable missing API.
 - Browser gauntlets cover 320px stress, phone, tablet, and desktop widths for
   rail/tray fallback, command focus, route-tab scroll, badges, and overflow.
 - New public chrome API proposals include registry, CSS, manifest, generated
   docs, examples, browser proof, and changelog collateral.
+
+Current promotion queue:
+
+- Private evidence is complete for page actions, linked nav/sidebar semantics,
+  shell response/OOB routing, and compact header/page hero comparison.
+- Scenario-complete proof also exists for dense reference/data pages and agent
+  discovery. The next work there is proof analysis: compare current primitives
+  against the reference fixture outcomes before proposing a data-grid,
+  reference-page macro, manifest schema change, or copied-source workflow.
+- The next qualifying work is not waiting for a userbase or adding another
+  artificial fixture. It is deliberately building or identifying a second
+  scenario-complete non-Bengal reference implementation for page actions,
+  linked branch navigation, or compact docs/reference/catalog headers, or a
+  third scenario-complete hand-written route family for shell response/OOB
+  branching.
+- Use [REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md)
+  and [reference-implementations/README.md](reference-implementations/README.md)
+  as the queue for those reference scenarios before proposing public API. Use
+  [reference-implementations/PROOF-ANALYSIS.md](reference-implementations/PROOF-ANALYSIS.md)
+  to decide whether existing proof routes to guidance, more reference evidence,
+  or a stop-and-ask API plan. Use
+  [reference-implementations/RECIPE-GUIDANCE.md](reference-implementations/RECIPE-GUIDANCE.md)
+  when the decision is to keep current primitives and teach the recipe.
+- Until that reference-implementation evidence exists, keep these surfaces recipe-first
+  and do not add `application_chrome()`, `docs_shell`, `catalog_shell`,
+  `compact_page_header`, `page_actions`, or shell response helper APIs.
+
+### 5b. Bengal-Driven Component Maturation
+
+Goal: use the custom Bengal theme as a first-party docs/catalog proving ground
+that exposes which Chirp UI primitives should mature next.
+
+Tasks:
+
+- Treat Bengal docs chrome as evidence for smaller contracts first:
+  `page_hero` empty-slot behavior, compact headers, linked nav-tree/sidebar
+  semantics, page actions, reference cards, semantic icons, and footer/content
+  ownership.
+- Use `docs/plans/PLAN-page-actions-primitive.md` as the active investigation
+  gate before any registry-owned page-actions macro or runtime is proposed.
+- Keep Bengal shell pressure separate from generic app-shell pressure.
+- Promote recipes only after Bengal plus another independent reference
+  implementation repeat the same structural gap.
+- Treat private fixtures as proof of current composition, not as promotion
+  evidence by themselves.
+- Record accepted/deferred Bengal findings in the relevant child plan before
+  implementation.
+
+Acceptance:
+
+- Bengal-driven changes name the exact theme pressure and existing primitives
+  tried.
+- Public API changes include descriptor, template, CSS, manifest, docs,
+  examples, tests, generated-output, and changelog collateral.
+- `docs_shell`, `catalog_shell`, or similar composites remain deferred until
+  the composite promotion gate is satisfied.
 
 ### 6. CSS Scope Hardening
 
@@ -266,13 +400,16 @@ inputs for the current productization push are `PLAN-skeleton-equivalent-roadmap
 
 ## Sequencing
 
-1. Keep verification reliability wired into local and hosted CI gates.
-2. Publish and maintain the theme gallery.
-3. Use dense navigation recipes and visual audit proof before promoting new
-   composites.
-4. Use the visual audit page to drive experimental component stabilization.
-5. Continue CSS scope conversion and Bengal integration in parallel with
-   feature work.
+1. Lock the categorical story in docs: registry product surface, contract
+   verification, no utility vocabulary, and recipe-first promotion.
+2. Strengthen registry discovery and evidence labels before adding broad new
+   public API.
+3. Add anatomy/evidence ledgers for high-risk interactive and shell-adjacent
+   surfaces.
+4. Use Bengal and application chrome proof to mature smaller contracts before
+   shell composites.
+5. Publish and maintain visual/theme proof surfaces.
+6. Continue CSS scope conversion and verification hardening throughout.
 
 ## Decision Rule
 

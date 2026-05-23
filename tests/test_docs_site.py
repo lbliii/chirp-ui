@@ -210,10 +210,23 @@ def test_navigation_pattern_publishes_application_chrome_sources() -> None:
         assert source in matrix
 
     assert "Application chrome remains recipe-first" in text
-    assert "recipe-first application chrome status" in matrix
+    assert "current application chrome status" in matrix
+    assert "reference-implementation promotion gate" in matrix
+    assert "no published-only application chrome API" in matrix
     assert "This page is a published bridge" in text
     assert "Do not add a published-only application chrome API here" in text
     assert "docs/VISUAL-AUDIT-SHOWCASE.md" in text
+    assert "## Current Status" in text
+    assert "Private evidence is complete for page actions" in text
+    assert "linked nav/sidebar semantics" in text
+    assert "shell response/OOB branching" in text
+    assert "compact header/page hero comparison" in text
+    assert "deliberately built reference implementation" in text
+    assert "third" in text
+    assert "hand-written route family outside `mount_pages()`" in text
+    assert "`application_chrome()`" in text
+    assert "`page_actions`" in text
+    assert "shell response helper APIs" in text
 
 
 def test_layout_affinity_published_page_marks_prototype_contract() -> None:

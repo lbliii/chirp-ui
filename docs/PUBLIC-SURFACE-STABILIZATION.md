@@ -16,6 +16,35 @@ metadata, render tests, browser or visual audit coverage, and docs should agree.
 | Recipe-only | Keep as a documented composition until repeated app usage proves a macro. |
 | Deprecate later | Retain compatibility now, but do not teach for new app code. |
 
+## Evidence Labels
+
+Use these labels when recording or reviewing public-surface decisions. The
+labels keep research, recipes, compatibility, and stable API decisions from
+blurring together in docs, generated references, and agent-facing guidance.
+
+| Label | Meaning | Registry expectation |
+| --- | --- | --- |
+| `stable` | Normal public vocabulary. The surface is safe to teach as a component or primitive. | `maturity=stable`; `authoring=preferred` only for blessed primitives, otherwise `available`. |
+| `experimental` | Public and usable, but not yet proven enough for 1.0 stability. | `maturity=experimental`; not `authoring=preferred`. |
+| `recipe-only` | Copyable composition guidance. Useful pattern, but not a stable macro contract yet. | Usually `role=pattern`, `maturity=experimental`, and not `authoring=preferred`. |
+| `compatibility` | Retained for existing users or narrow escape hatches, but not taught first. | `authoring=compatibility`; docs point to preferred primitives or component-owned alternatives. |
+| `research` | External evidence or product direction that has not changed Chirp UI API. | No registry change unless a later implementation plan promotes it. |
+
+Promotion from `research` or `recipe-only` to public component API requires a
+separate implementation plan. Promotion from `experimental` to `stable`
+requires the proof rule below plus generated docs, manifest, examples, and
+tests moving together.
+
+To inspect labels from an installed package:
+
+```bash
+python -m chirp_ui find --maturity=experimental
+python -m chirp_ui find --maturity=experimental --details
+python -m chirp_ui find --role=pattern --maturity=experimental --details
+python -m chirp_ui find --maturity=stable --authoring=preferred
+python -m chirp_ui find --authoring=compatibility
+```
+
 ## Current Slice
 
 The visual audit page now includes proof/marketing patterns next to tokens,
@@ -72,6 +101,12 @@ Promote a component only when all of these are true:
 - it appears in the visual audit page or an equivalent browser-tested recipe,
 - token hooks are documented or intentionally absent,
 - no private theme token namespace is required to make it look correct.
+
+Interactive, shell-adjacent, theme-hook, and behavior-bearing promotions also
+need the evidence ledger from
+[DESIGN-interactive-anatomy.md](DESIGN-interactive-anatomy.md). The ledger must
+name anatomy, native semantics, keyboard, focus, runtime, motion, responsive and
+overflow behavior, security/escaping, performance, proof, and residual risk.
 
 ## Proof Tracks
 

@@ -70,7 +70,7 @@ When this domain changes, check:
   `docs/BENGAL-THEME-ANATOMY.md`, `site/content/docs/theming/` — public theme
   guidance and site mirrors.
 - `tests/test_bengal_theme_package.py`,
-  `tests/test_bengal_library_contract_plan.py`, `tests/test_theme_token_parity.py`,
+  `tests/evidence/test_bengal_library_contract_plan.py`, `tests/test_theme_token_parity.py`,
   `tests/test_docs_site.py`, `tests/browser/test_bengal_docs_chrome.py` —
   package, docs, token, library-mode, and browser proof.
 
@@ -104,7 +104,7 @@ When this domain changes, check:
 `src/bengal_themes/chirp_theme/assets/`.
 
 **Tests:** `tests/test_bengal_theme_package.py`,
-`tests/test_bengal_library_contract_plan.py`, `tests/test_theme_token_parity.py`,
+`tests/evidence/test_bengal_library_contract_plan.py`, `tests/test_theme_token_parity.py`,
 Bengal-related portions of `tests/test_docs_site.py`,
 `tests/browser/test_bengal_docs_chrome.py`.
 

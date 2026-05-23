@@ -57,11 +57,26 @@ The current system direction is recipe-first:
 - prove responsive behavior in the browser,
 - keep emitted classes registry-owned,
 - keep rhythm token-backed,
-- promote a composite only after repeated real app usage proves a missing
-  contract.
+- promote a composite only after deliberate reference implementations prove a
+  missing contract.
 
 See [PLAN-application-chrome-system.md](plans/PLAN-application-chrome-system.md)
 for the current application chrome roadmap.
+
+Current promotion status:
+
+- Private evidence is complete for page actions, linked nav/sidebar semantics,
+  shell response/OOB branching, and compact header/page hero comparison.
+- These fixtures prove current composition patterns; they do not count as the
+  second scenario-complete reference implementation required for public API
+  promotion.
+- Next qualifying evidence must come from a deliberately built or identified
+  non-Bengal page-action, linked-branch, or compact docs/reference/catalog
+  reference implementation, or from a third scenario-complete hand-written
+  route family outside `mount_pages()` for shell response/OOB helper pressure.
+- Until then, keep using existing primitives and do not introduce
+  `application_chrome()`, `docs_shell`, `catalog_shell`,
+  `compact_page_header`, `page_actions`, or shell response helper APIs.
 
 ## ARIA And Semantics
 

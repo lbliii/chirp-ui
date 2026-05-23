@@ -55,6 +55,27 @@ async def test_hx_request_without_page_root_target_does_not_get_page_root_fragme
     assert "Workspace runs" in html
 
 
+async def test_normal_request_returns_full_page_without_shell_actions_oob():
+    html = await get_text("/consumer-workspace/settings")
+
+    assert 'id="page-content"' in html
+    assert 'id="page-root"' in html
+    assert 'id="chirp-shell-actions" hx-swap-oob="innerHTML"' not in html
+    assert "Workspace settings" in html
+
+
+async def test_hx_request_without_target_returns_full_page_without_shell_actions_oob():
+    html = await get_text(
+        "/consumer-admin/audit",
+        headers={"HX-Request": "true"},
+    )
+
+    assert 'id="page-content"' in html
+    assert 'id="page-root"' in html
+    assert 'id="chirp-shell-actions" hx-swap-oob="innerHTML"' not in html
+    assert "Audit trail" in html
+
+
 async def test_inner_fragment_target_returns_local_fragment_only():
     html = await get_text(
         "/consumer-workspace/filter-fragment",
@@ -65,3 +86,39 @@ async def test_inner_fragment_target_returns_local_fragment_only():
     assert 'id="page-root"' not in html
     assert 'id="chirp-shell-actions"' not in html
     assert 'data-testid="consumer-filter-result"' in html
+
+
+@pytest.mark.parametrize(
+    ("path", "copy", "view_testid"),
+    [
+        ("/consumer-workspace/settings", "Workspace settings", "consumer-view-title"),
+        ("/consumer-admin/jobs", "Background jobs", "consumer-admin-view-title"),
+    ],
+)
+async def test_reference_route_families_share_shell_target_matrix(
+    path: str, copy: str, view_testid: str
+):
+    full_html = await get_text(path)
+    main_target_html = await get_text(
+        path,
+        headers={"HX-Request": "true", "HX-Target": "main"},
+    )
+    page_root_html = await get_text(
+        path,
+        headers={"HX-Request": "true", "HX-Target": "page-root"},
+    )
+
+    for html in [full_html, main_target_html]:
+        assert html.count('id="page-content"') == 1
+        assert html.count('id="page-root"') == 1
+        assert f'data-testid="{view_testid}"' in html
+        assert copy in html
+
+    assert 'id="chirp-shell-actions" hx-swap-oob="innerHTML"' not in full_html
+    assert 'id="chirp-shell-actions" hx-swap-oob="innerHTML"' in main_target_html
+
+    assert 'id="page-content"' not in page_root_html
+    assert 'id="chirp-shell-actions"' not in page_root_html
+    assert 'id="route-tabs"' in page_root_html
+    assert f'data-testid="{view_testid}"' in page_root_html
+    assert copy in page_root_html

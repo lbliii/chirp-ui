@@ -57,7 +57,7 @@ When this domain changes, check:
   parity, release preflight, docs build, and CI commands.
 - Tests: `tests/test_chirpui_css_concat.py`, `tests/test_manifest.py`,
   `tests/test_public_api.py`, `tests/test_docs_site.py`,
-  `tests/test_verification_docs.py`.
+  `tests/docs_contracts/test_verification_docs.py`.
 
 ## Advocate
 
@@ -87,7 +87,7 @@ When this domain changes, check:
 
 **Tests:** `tests/test_chirpui_css_concat.py`, `tests/test_manifest.py`,
 `tests/test_public_api.py`, `tests/test_docs_site.py`,
-`tests/test_verification_docs.py`.
+`tests/docs_contracts/test_verification_docs.py`.
 
 **Docs:** `docs/VERIFICATION.md`, generated-output sections in
 `docs/AGENT-SOURCE-MAP.md`, builder notes in `CLAUDE.md`.

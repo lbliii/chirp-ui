@@ -308,8 +308,8 @@ loading, Alpine registration metadata, build scripts, tests, and dependencies.
   helper tests.
 - **Layout-affinity schema leak.** Shape: prototype `data-chirpui-*` resolver
   vocabulary appears as descriptor fields or manifest keys before a schema bump.
-  Verification: `tests/test_layout_affinity_docs.py`,
-  `tests/test_relationship_contract_docs.py`, and manifest tests.
+  Verification: `tests/docs_contracts/test_layout_affinity_docs.py`,
+  `tests/docs_contracts/test_relationship_contract_docs.py`, and manifest tests.
 
 ## Done Criteria
 

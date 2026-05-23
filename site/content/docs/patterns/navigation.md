@@ -63,7 +63,21 @@ templates, generated CSS, generated component options, examples, and tests.
 - Ordinary disclosure navigation is not modeled as an ARIA menu.
 - Dense nav reserves room for expected badge counts.
 - Mobile layouts keep context and primary actions reachable.
-- Application chrome remains recipe-first until repeated real app usage proves
-  a stable composite contract.
+- Application chrome remains recipe-first until deliberate reference
+  implementations prove a stable composite contract.
 - Browser proof covers rail/tray fallback, command focus, route-tab scroll, and
   no unintended horizontal overflow before composite promotion.
+
+## Current Status
+
+Private evidence is complete for page actions, linked nav/sidebar semantics,
+shell response/OOB branching, and compact header/page hero comparison. That
+evidence proves current composition patterns, not public API promotion.
+
+The next qualifying step is deliberately built reference implementation
+repetition: a non-Bengal page-action, linked-branch, or compact
+docs/reference/catalog implementation, or a third scenario-complete
+hand-written route family outside `mount_pages()` for shell response/OOB helper
+pressure. Until that exists, keep these surfaces recipe-first and do not add
+`application_chrome()`, `docs_shell`, `catalog_shell`, `compact_page_header`,
+`page_actions`, or shell response helper APIs.

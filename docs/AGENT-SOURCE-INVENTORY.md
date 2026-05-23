@@ -50,12 +50,28 @@ adds all of the following:
 | Provenance | Source | Agent use | Snippet eligibility |
 |---|---|---|---|
 | `manifest-derived` | `src/chirp_ui/manifest.json` | Component inventory, macro names, params, slots, variants, sizes, appearance, tone, emitted classes, runtime requirements, theme-pack catalog. | `source-only` |
+| `manifest-derived` | `src/chirp_ui/find.py` | Human/agent registry discovery over the installed manifest through `python -m chirp_ui find --details`: component name, category, maturity, authoring, role, macro, template, runtime requirements, slots, and summary. | `source-only` |
 | `manifest-derived` | `docs/COMPONENT-OPTIONS.md` | Generated macro/options reference that mirrors the manifest for humans and agents. | `source-only` |
 | `docs-derived` | `docs/INDEX.md` | Durable documentation navigation and canonical source discovery. | `source-only` |
+| `docs-derived` | `docs/DESIGN-SYSTEM-RESEARCH.md` | External design-system research, Chirp UI product opinion, Bengal shell implications, and maturity gates. | `source-only` |
+| `docs-derived` | `docs/PUBLIC-SURFACE-STABILIZATION.md` | Evidence labels, promotion rules, recipe-only boundaries, compatibility policy, and maturity-discovery commands. | `source-only` |
+| `docs-derived` | `docs/DESIGN-interactive-anatomy.md` | Interactive anatomy contract and evidence ledger fields for behavior-bearing promotions. | `source-only` |
 | `docs-derived` | `docs/DOCS-IA-MIGRATION.md` | Published docs IA, durable-source map, and SSG ownership boundary. | `source-only` |
 | `docs-derived` | `docs/AGENT-SOURCE-INVENTORY.md` | Agent provenance policy and snippet source inventory. | `source-only` |
 | `docs-derived` | `docs/AGENT-SOURCE-MAP.md` | Generated-output ownership map and source-input map. | `source-only` |
 | `docs-derived` | `docs/AGENT-CURATED-SNIPPETS.md` | Hand-curated macro-first snippets that passed the review gate. | `copyable-curated` |
+| `docs-derived` | `docs/REGISTRY-DISCOVERY.md` | CLI and Python discovery workflows over manifest labels and component metadata. | `source-only` |
+| `docs-derived` | `docs/REFERENCE-IMPLEMENTATION-PLAYBOOK.md` | Reference implementation evidence ladder, scenario-complete criteria, and promotion boundaries. | `source-only` |
+| `docs-derived` | `docs/reference-implementations/README.md` | Index of reference implementation briefs for blocked promotion candidates. | `source-only` |
+| `docs-derived` | `docs/reference-implementations/PROOF-ANALYSIS.md` | Source-only proof-analysis decisions for scenario-complete reference fixtures and public-API non-authorizations. | `source-only` |
+| `docs-derived` | `docs/reference-implementations/RECIPE-GUIDANCE.md` | Source-only recipe guidance for reference candidates kept on current primitives. | `source-only` |
+| `docs-derived` | `tests/browser/test_page_actions_candidate.py` | Browser proof for private page-action reference fixtures and public-API boundaries. | `source-only` |
+| `docs-derived` | `tests/browser/test_linked_nav_candidate.py` | Browser proof for private linked-nav reference fixtures and public-API boundaries. | `source-only` |
+| `docs-derived` | `tests/browser/test_compact_header_candidate.py` | Browser proof for private compact-header reference fixtures and public-API boundaries. | `source-only` |
+| `docs-derived` | `tests/browser/test_dense_reference_data_reference.py` | Browser proof for private dense-reference fixtures and public-API boundaries. | `source-only` |
+| `docs-derived` | `tests/test_shell_response_targets.py` | Server proof for shell response ownership reference contracts. | `source-only` |
+| `docs-derived` | `tests/browser/test_consumer_shell_actions_oob.py` | Browser proof for consumer shell action response contracts. | `source-only` |
+| `docs-derived` | `tests/test_find_cli.py` | CLI proof for agent discovery reference contracts. | `source-only` |
 | `docs-derived` | `docs/APPEARANCE-TONE.md` | Appearance/tone semantics and migration guidance. | `source-only` |
 | `docs-derived` | `docs/APP-THEME.md` | App theme-pack load order, token-only rules, and ownership guidance. | `source-only` |
 | `docs-derived` | `docs/DROPDOWN-ANATOMY.md` | Dropdown rendered anatomy and tested behavior. | `source-only` |

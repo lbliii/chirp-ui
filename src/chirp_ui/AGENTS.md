@@ -108,7 +108,7 @@ When this domain changes, check:
 `tests/test_validation.py`, `tests/test_filters.py`, `tests/test_public_api.py`,
 `tests/test_init.py`, `tests/test_icons.py`, `tests/test_route_tabs.py`,
 `tests/test_inspect_provides.py`, `tests/test_provide_consume*.py`,
-`tests/test_slot_parity.py`, `tests/test_layout_affinity_docs.py`.
+`tests/test_slot_parity.py`, `tests/docs_contracts/test_layout_affinity_docs.py`.
 
 **Docs:** `docs/VISION.md`, `docs/DESIGN-manifest-signature-extraction.md`,
 `docs/APPEARANCE-TONE.md`, `docs/PROVIDE-CONSUME-KEYS.md`,

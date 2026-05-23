@@ -59,8 +59,8 @@ When this domain changes, check:
   HTMX patterns, Alpine behavior, responsive rules, and relationship ownership.
 - README, site mirrors, examples, and changelog fragments when user-facing
   behavior or public vocabulary changes.
-- Tests: `tests/test_docs_site.py`, `tests/test_provide_consume_doc_parity.py`,
-  `tests/test_verification_docs.py`, `tests/test_docs_ia_ratchets.py`, and
+- Tests: `tests/test_docs_site.py`, `tests/docs_contracts/test_provide_consume_doc_parity.py`,
+  `tests/docs_contracts/test_verification_docs.py`, `tests/docs_contracts/test_docs_ia_ratchets.py`, and
   generated-reference checks.
 
 ## Advocate
@@ -86,8 +86,8 @@ When this domain changes, check:
 **Code:** `docs/*.md` outside `docs/plans/`.
 
 **Tests:** docs portions of `tests/test_docs_site.py`,
-`tests/test_provide_consume_doc_parity.py`, `tests/test_verification_docs.py`,
-`tests/test_docs_ia_ratchets.py`, `tests/test_relationship_contract_docs.py`.
+`tests/docs_contracts/test_provide_consume_doc_parity.py`, `tests/docs_contracts/test_verification_docs.py`,
+`tests/docs_contracts/test_docs_ia_ratchets.py`, `tests/docs_contracts/test_relationship_contract_docs.py`.
 
 **Docs:** `docs/INDEX.md`, `docs/VISION.md`, `docs/COMPONENT-OPTIONS.md`,
 `docs/AGENT-SOURCE-INVENTORY.md`, `docs/AGENT-SOURCE-MAP.md`,

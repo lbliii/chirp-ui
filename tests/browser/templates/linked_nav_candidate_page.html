@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block brand %}Linked Nav Candidate{% end %}
+{% block head_extra %}
+<style>
+  .linked-nav-candidate-mobile-trigger {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .chirpui-app-shell__sidebar:has(.linked-nav-candidate-sidebar) {
+      display: none;
+    }
+
+    .linked-nav-candidate-mobile-trigger {
+      display: flex;
+      margin-block-end: var(--chirpui-spacing);
+    }
+  }
+</style>
+{% end %}
+{% block sidebar %}
+{% from "chirpui/nav_tree.html" import nav_tree %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path=current_path, cls="linked-nav-candidate-sidebar") %}
+  {% call sidebar_section("Workspace") %}
+    {{ sidebar_link("/linked-nav-candidate", "Docs workspace", match="prefix") }}
+    {{ sidebar_link("/consumer-workspace", "Consumer workspace", match="prefix") }}
+  {% end %}
+  {% call sidebar_section("Context tree") %}
+    <div data-testid="linked-nav-sidebar-tree">
+      {{ nav_tree(linked_nav_items, branch_mode="linked", cls="linked-nav-candidate-tree") }}
+    </div>
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/layout.html" import stack, block %}
+{% from "chirpui/breadcrumbs.html" import breadcrumbs %}
+{% from "chirpui/drawer.html" import drawer, drawer_trigger %}
+{% from "chirpui/nav_tree.html" import nav_tree %}
+
+<main data-testid="linked-nav-candidate"
+      data-candidate="linked-nav-sidebar"
+      data-reference-implementation="linked-nav-catalog"
+      data-scenario-complete="true"
+      data-public-api="false"
+      data-existing-primitives="sidebar sidebar_section sidebar_link nav_tree-linked drawer drawer_trigger"
+      data-promotion-boundary="no nav_tree params sidebar branch macros css manifest docs_shell">
+  <div class="linked-nav-candidate-mobile-trigger" data-testid="linked-nav-mobile-trigger">
+    {{ drawer_trigger("linked-nav-candidate-drawer", label="Open section navigation") }}
+  </div>
+
+  {% call stack(gap="md") %}
+    {{ breadcrumbs([
+      {"label": "Candidates", "href": "/linked-nav-candidate"},
+      {"label": "Guide", "href": "/linked-nav-candidate/guide"},
+      {"label": "Install"}
+    ], overflow="collapse", max_items=3) }}
+    <h1>Linked nav/sidebar candidate</h1>
+    {% call block() %}
+      <p>
+        Private fixture: existing sidebar primitives provide broad shell
+        navigation while <code>nav_tree(branch_mode="linked")</code> provides
+        server-opened contextual hierarchy. No linked sidebar macro or
+        additional nav-tree API is authorized.
+      </p>
+    {% end %}
+  {% end %}
+</main>
+
+{% call drawer("linked-nav-candidate-drawer", title="Section navigation", side="left", cls="linked-nav-candidate-drawer") %}
+  <div data-testid="linked-nav-drawer-tree">
+    {{ nav_tree(linked_nav_items, branch_mode="linked", cls="linked-nav-candidate-tree") }}
+  </div>
+{% end %}
+{% end %}
