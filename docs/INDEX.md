@@ -26,6 +26,7 @@ Navigation guide for all chirp-ui documentation.
 - [DESIGN-SYSTEM-RESEARCH.md](DESIGN-SYSTEM-RESEARCH.md) — External design-system research, Chirp UI product opinion, Bengal shell implications, and maturity gates
 - [REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md) — Scenario-complete reference evidence rules for promotion candidates
 - [reference-implementations/README.md](reference-implementations/README.md) — Reference implementation brief index for blocked promotion candidates
+- [reference-implementations/PROOF-ANALYSIS.md](reference-implementations/PROOF-ANALYSIS.md) — Source-only proof-analysis ledger for reference fixture decisions
 
 ## Patterns
 

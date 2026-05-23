@@ -65,6 +65,10 @@ def test_reference_implementation_playbook_is_indexed() -> None:
 
     assert "[REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md)" in text
     assert "[reference-implementations/README.md](reference-implementations/README.md)" in text
+    assert (
+        "[reference-implementations/PROOF-ANALYSIS.md](reference-implementations/PROOF-ANALYSIS.md)"
+        in text
+    )
 
 
 def test_reference_implementation_index_links_all_briefs() -> None:

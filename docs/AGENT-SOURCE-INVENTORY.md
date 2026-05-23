@@ -63,6 +63,7 @@ adds all of the following:
 | `docs-derived` | `docs/REGISTRY-DISCOVERY.md` | CLI and Python discovery workflows over manifest labels and component metadata. | `source-only` |
 | `docs-derived` | `docs/REFERENCE-IMPLEMENTATION-PLAYBOOK.md` | Reference implementation evidence ladder, scenario-complete criteria, and promotion boundaries. | `source-only` |
 | `docs-derived` | `docs/reference-implementations/README.md` | Index of reference implementation briefs for blocked promotion candidates. | `source-only` |
+| `docs-derived` | `docs/reference-implementations/PROOF-ANALYSIS.md` | Source-only proof-analysis decisions for scenario-complete reference fixtures and public-API non-authorizations. | `source-only` |
 | `docs-derived` | `tests/browser/test_page_actions_candidate.py`, `tests/browser/test_linked_nav_candidate.py`, `tests/browser/test_compact_header_candidate.py`, `tests/browser/test_dense_reference_data_reference.py` | Browser proof for scenario-complete private reference fixtures and their public-API boundaries. | `source-only` |
 | `docs-derived` | `tests/test_shell_response_targets.py`, `tests/browser/test_consumer_shell_actions_oob.py`, `tests/test_find_cli.py` | Server/browser/CLI proof for shell response ownership and agent discovery reference contracts. | `source-only` |
 | `docs-derived` | `docs/APPEARANCE-TONE.md` | Appearance/tone semantics and migration guidance. | `source-only` |
