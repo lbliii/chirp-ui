@@ -81,6 +81,38 @@ which Bengal selectors, data attributes, local storage keys, and assets are:
 - Bengal theme smoke coverage outside docs-site-only context.
 - Manifest/runtime requirement tests if anatomy metadata is projected.
 
+## Evidence Ledger
+
+Use this ledger for complex interactive, shell-adjacent, or promotion-sensitive
+surfaces. It is a docs/tests contract, not descriptor or manifest metadata.
+
+| Field | Required answer |
+| --- | --- |
+| Surface | Component, recipe, theme hook, or shell region being evaluated. |
+| Label | `stable`, `experimental`, `recipe-only`, `compatibility`, or `research`, matching [PUBLIC-SURFACE-STABILIZATION.md](PUBLIC-SURFACE-STABILIZATION.md). |
+| Anatomy | Owned parts, slots, ids, classes, state attributes, and parent/child relationships. |
+| Native semantics | Native element, role, name, state, and ARIA contract; prefer native HTML before ARIA. |
+| Keyboard | Keyboard entry, activation, navigation, Escape/close behavior, and disabled-state behavior when relevant. |
+| Focus | Initial focus, visible focus, focus containment, focus return, and HTMX/Alpine remount behavior when relevant. |
+| Runtime | Required browser API, HTMX contract, Alpine factory, CSS feature, or no-JS fallback. |
+| Motion | Reduced-motion handling and transition-token use when animation exists. |
+| Responsive and overflow | Stress widths, local overflow owner, wrapping/truncation behavior, and no document-level horizontal overflow when relevant. |
+| Security and escaping | Attribute/data trust boundary, `Markup`/`safe` use, raw HTML allowance, and escaping tests when inputs render into HTML or JS-adjacent data. |
+| Performance | Expensive selectors, layout/scroll listeners, observers, asset loading, and page-global behavior risks. |
+| Proof | Render tests, browser tests, JS tests, static showcase, visual audit, Bengal package tests, or explicit no-impact reason. |
+| Residual risk | Known manual-testing gaps, browser gaps, assistive-technology caveats, or deferred evidence. |
+
+For small static display components, the ledger can be a short note in the
+promotion row. For interactive components, shell regions, page actions, Bengal
+theme hooks, and dense reference surfaces, use the full ledger before changing
+public maturity, preferred authoring status, macro signatures, descriptor
+fields, runtime requirements, or generated docs.
+
+Do not claim screen-reader or assistive-technology proof unless it was manually
+verified and the environment is named. Automated render/browser proof can cover
+semantics, focus movement, and keyboard events, but it is not a substitute for
+manual AT verification.
+
 ## Projection Decision
 
 Descriptor and manifest anatomy metadata is intentionally not part of the
