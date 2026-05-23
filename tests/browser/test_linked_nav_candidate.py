@@ -21,9 +21,14 @@ async def test_linked_nav_candidate_uses_existing_primitives_only(page, base_url
 
     fixture = page.get_by_test_id("linked-nav-candidate")
     await expect(fixture).to_be_visible()
+    assert await fixture.get_attribute("data-reference-implementation") == "linked-nav-catalog"
+    assert await fixture.get_attribute("data-scenario-complete") == "true"
     assert await fixture.get_attribute("data-public-api") == "false"
     assert await fixture.get_attribute("data-existing-primitives") == (
         "sidebar sidebar_section sidebar_link nav_tree-linked drawer drawer_trigger"
+    )
+    assert await fixture.get_attribute("data-promotion-boundary") == (
+        "no nav_tree params sidebar branch macros css manifest docs_shell"
     )
 
     await expect(page.locator(".chirpui-sidebar")).to_be_visible()
