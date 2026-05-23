@@ -1040,6 +1040,11 @@ def create_app() -> App:
                 {"label": "Open prompt text", "href": "/page-actions-candidate/prompt.txt"},
                 {"label": "Copy sample text", "action": "copy-sample-text"},
                 {
+                    "label": "Ask external assistant about this prompt",
+                    "href": "https://chat.openai.com/",
+                    "icon": "share",
+                },
+                {
                     "label": (
                         "Open prompt text with a deliberately long label that should stay "
                         "inside the existing dropdown menu"

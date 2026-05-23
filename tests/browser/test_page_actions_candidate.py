@@ -21,9 +21,14 @@ async def test_page_actions_candidate_uses_existing_primitives_only(page, base_u
 
     fixture = page.get_by_test_id("page-actions-candidate")
     await expect(fixture).to_be_visible()
+    assert await fixture.get_attribute("data-reference-implementation") == "page-actions-ai"
+    assert await fixture.get_attribute("data-scenario-complete") == "true"
     assert await fixture.get_attribute("data-public-api") == "false"
     assert await fixture.get_attribute("data-existing-primitives") == (
-        "page_header dropdown_menu share_menu action_bar copy_btn"
+        "page_header page_hero dropdown_menu share_menu action_bar copy_btn"
+    )
+    assert await fixture.get_attribute("data-promotion-boundary") == (
+        "no page_actions macro runtime descriptor css manifest generated-options"
     )
 
     await expect(page.locator(".chirpui-page-header")).to_be_visible()
@@ -48,6 +53,9 @@ async def test_page_actions_candidate_dropdown_exposes_non_social_commands(page,
         menu.get_by_role("menuitem", name="Open prompt text", exact=True)
     ).to_be_visible()
     await expect(menu.get_by_role("menuitem", name="Copy sample text")).to_be_visible()
+    ai_handoff = menu.get_by_role("menuitem", name="Ask external assistant about this prompt")
+    await expect(ai_handoff).to_be_visible()
+    assert await ai_handoff.get_attribute("href") == "https://chat.openai.com/"
     await expect(
         menu.get_by_role(
             "menuitem",

@@ -12,8 +12,11 @@
 
 <main data-testid="page-actions-candidate"
       data-candidate="page-actions"
+      data-reference-implementation="page-actions-ai"
+      data-scenario-complete="true"
       data-public-api="false"
-      data-existing-primitives="page_header dropdown_menu share_menu action_bar copy_btn">
+      data-existing-primitives="page_header page_hero dropdown_menu share_menu action_bar copy_btn"
+      data-promotion-boundary="no page_actions macro runtime descriptor css manifest generated-options">
   {% call stack(gap="lg") %}
     {% call page_header(
       "Streaming & AI page-action candidate",
