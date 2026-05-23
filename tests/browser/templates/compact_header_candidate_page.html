@@ -11,8 +11,11 @@
 
 <main data-testid="compact-header-candidate"
       data-candidate="compact-header-page-hero"
+      data-reference-implementation="compact-header-reference"
+      data-scenario-complete="true"
       data-public-api="false"
-      data-existing-primitives="page_header page_hero search_header entity_header document_header">
+      data-existing-primitives="page_header page_hero search_header entity_header document_header route_tabs"
+      data-promotion-boundary="no compact_page_header docs_header page_hero params markup css manifest">
   {% call stack(gap="lg") %}
     <section data-testid="compact-page-header-proof">
       {% call page_header(

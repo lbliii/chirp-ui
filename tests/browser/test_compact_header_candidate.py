@@ -21,9 +21,16 @@ async def test_compact_header_candidate_uses_existing_primitives_only(page, base
 
     fixture = page.get_by_test_id("compact-header-candidate")
     await expect(fixture).to_be_visible()
+    assert await fixture.get_attribute("data-reference-implementation") == (
+        "compact-header-reference"
+    )
+    assert await fixture.get_attribute("data-scenario-complete") == "true"
     assert await fixture.get_attribute("data-public-api") == "false"
     assert await fixture.get_attribute("data-existing-primitives") == (
-        "page_header page_hero search_header entity_header document_header"
+        "page_header page_hero search_header entity_header document_header route_tabs"
+    )
+    assert await fixture.get_attribute("data-promotion-boundary") == (
+        "no compact_page_header docs_header page_hero params markup css manifest"
     )
 
     await expect(page.locator(".chirpui-page-header--compact")).to_be_visible()
