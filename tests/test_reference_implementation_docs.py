@@ -190,6 +190,38 @@ def test_reference_proof_analysis_records_agent_discovery_decision() -> None:
         assert boundary in normalized
 
 
+def test_reference_proof_analysis_records_page_actions_decision() -> None:
+    text = PROOF_ANALYSIS.read_text(encoding="utf-8")
+    section = text.split("## Page Actions Analysis", 1)[1]
+    normalized = " ".join(section.split())
+
+    for proof in [
+        "/page-actions-candidate",
+        "tests/browser/test_page_actions_candidate.py",
+        "`page_header`, `page_hero`, `dropdown_menu`",
+        "`share_menu`, `action_bar`, and `copy_btn`",
+        "Title-adjacent actions fit inside",
+        "copy URL, open LLM text, copy known prompt text",
+        "external assistant handoff commands",
+        "Long command labels stay inside the dropdown",
+        "Copy feedback for known text works",
+    ]:
+        assert proof in normalized
+
+    for decision in [
+        "Ownership is split",
+        "canonical URL, prompt text, AI handoff",
+        "did not exercise fetched LLM text",
+        "not a semantic AI handoff contract",
+        "keep page actions in investigation",
+        "blocks an immediate `page_actions()` macro",
+        "descriptor, CSS, manifest",
+        "second non-Bengal reference",
+        "title-adjacent URL/LLM/AI command ownership gap",
+    ]:
+        assert decision in normalized
+
+
 def test_reference_implementation_index_tracks_current_proof_routes() -> None:
     text = REFERENCE_INDEX.read_text(encoding="utf-8")
 

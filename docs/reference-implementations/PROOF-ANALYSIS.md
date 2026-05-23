@@ -115,3 +115,37 @@ metadata solves the immediate agent-routing problem without a copied-source
 workflow, new CLI command, MCP/server tool, or manifest expansion. The next
 useful slice is guidance and examples for a discover/apply/verify workflow; a
 schema change should wait for repeated tasks that need the same missing field.
+
+## Page Actions Analysis
+
+Proof source: `/page-actions-candidate` and
+`tests/browser/test_page_actions_candidate.py`.
+
+Existing primitives tried: `page_header`, `page_hero`, `dropdown_menu`,
+`share_menu`, `action_bar`, and `copy_btn`.
+
+What worked:
+
+- Title-adjacent actions fit inside `page_header(variant="compact")`.
+- Existing dropdown, share, visible action, and copy primitives can express
+  copy URL, open LLM text, copy known prompt text, and external assistant
+  handoff commands in one route.
+- Long command labels stay inside the dropdown at phone width without document
+  overflow.
+- Copy feedback for known text works without a page-actions runtime.
+
+Recorded gaps:
+
+- Ownership is split: canonical URL, prompt text, AI handoff, grouped commands,
+  and visible action affordances live across several primitives.
+- The fixture did not exercise fetched LLM text, async copy/fetch status, or
+  permissioned command visibility.
+- External assistant handoff is only a safe link pattern; it is not a semantic
+  AI handoff contract.
+
+Decision: keep page actions in investigation. The fixture proves current
+composition is viable, so it blocks an immediate `page_actions()` macro,
+descriptor, CSS, manifest, generated options, or runtime helper. A public API
+proposal needs a second non-Bengal reference that repeats the same
+title-adjacent URL/LLM/AI command ownership gap after trying the existing
+primitives.
