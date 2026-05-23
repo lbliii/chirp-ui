@@ -220,3 +220,38 @@ Decision: keep compact headers recipe-first. The proof blocks
 descriptor changes, manifest updates, or generated options. The next useful
 slice is header-choice guidance and another independent compact reference only
 if the same empty-region or title/action/metadata gap repeats.
+
+## Shell Response/OOB Analysis
+
+Proof source: `tests/test_shell_response_targets.py` and
+`tests/browser/test_consumer_shell_actions_oob.py`.
+
+Existing surfaces tried: `HX-Target` branching, `shell_outlet_attrs`,
+`route_tabs`, local fragment targets, shell-actions OOB replacement, and
+filesystem `mount_pages()` comparison.
+
+What worked:
+
+- Normal requests, `HX-Request` without target, `HX-Target: main`,
+  `HX-Target: page-root`, and local fragment targets are covered by server
+  response-shape tests.
+- Workspace and admin route families share the same full-page, shell-target,
+  page-root, and local-fragment matrix.
+- Browser proof confirms route-scoped shell actions replace through OOB swaps
+  during boosted shell navigation.
+- Filesystem mounted pages remain the preferred adoption path when an app can
+  use them.
+
+Recorded gaps:
+
+- Hand-written route families still repeat target classification and shell OOB
+  inclusion decisions.
+- The owner is not settled: this could belong to Chirp routing, Chirp UI, or
+  app-local recipe helpers.
+- The evidence is response ownership, not visual shell composition.
+
+Decision: keep shell response/OOB route-local and recipe-first. The proof blocks
+a public `chirp_ui` helper, Chirp routing API, visual shell macro, component
+descriptor, emitted classes, CSS, manifest updates, generated options, or new
+HTMX protocol. A helper proposal needs a third independent hand-written route
+family outside `mount_pages()` and an owner decision before implementation.

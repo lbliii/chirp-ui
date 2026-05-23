@@ -293,6 +293,41 @@ def test_reference_proof_analysis_records_compact_header_decision() -> None:
         assert decision in normalized
 
 
+def test_reference_proof_analysis_records_shell_response_decision() -> None:
+    text = PROOF_ANALYSIS.read_text(encoding="utf-8")
+    section = text.split("## Shell Response/OOB Analysis", 1)[1]
+    normalized = " ".join(section.split())
+
+    for proof in [
+        "tests/test_shell_response_targets.py",
+        "tests/browser/test_consumer_shell_actions_oob.py",
+        "`HX-Target` branching",
+        "`shell_outlet_attrs`",
+        "`route_tabs`",
+        "shell-actions OOB replacement",
+        "filesystem `mount_pages()` comparison",
+        "Normal requests, `HX-Request` without target",
+        "`HX-Target: main`",
+        "`HX-Target: page-root`",
+        "Workspace and admin route families",
+        "boosted shell navigation",
+    ]:
+        assert proof in normalized
+
+    for decision in [
+        "repeat target classification and shell OOB inclusion decisions",
+        "Chirp routing, Chirp UI, or app-local recipe helpers",
+        "response ownership, not visual shell composition",
+        "keep shell response/OOB route-local and recipe-first",
+        "blocks a public `chirp_ui` helper",
+        "visual shell macro",
+        "new HTMX protocol",
+        "third independent hand-written route family outside `mount_pages()`",
+        "owner decision before implementation",
+    ]:
+        assert decision in normalized
+
+
 def test_reference_implementation_index_tracks_current_proof_routes() -> None:
     text = REFERENCE_INDEX.read_text(encoding="utf-8")
 
