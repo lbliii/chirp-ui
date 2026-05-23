@@ -183,3 +183,40 @@ sidebar branch macros, emitted classes, CSS, manifest updates, `docs_sidebar`,
 `catalog_sidebar`, `docs_shell`, or ARIA tree claims. The next useful slice is
 guidance for linked branch recipes and a second independent reference only if
 the same active-descendant/count/fallback gap repeats.
+
+## Compact Header Analysis
+
+Proof source: `/compact-header-candidate` and
+`tests/browser/test_compact_header_candidate.py`.
+
+Existing primitives tried: `page_header(variant="compact")`,
+`page_hero(variant="minimal")`, `search_header`, `entity_header`,
+`document_header`, and `route_tabs`.
+
+What worked:
+
+- Compact `page_header` can keep dense titles, subtitles, metadata, actions,
+  and route proximity together without a docs-only header macro.
+- Filled `page_hero` optional regions remain available when a page really needs
+  hero treatment.
+- Empty `page_hero` optional regions can be verified as collapsed/quiet in the
+  current fixture without changing macro markup.
+- Route tabs stay link-native and near page identity without claiming ARIA tab
+  widget behavior.
+
+Recorded gaps:
+
+- The current choice between `page_header`, `page_hero`, `search_header`,
+  `entity_header`, and `document_header` is under-documented for dense docs and
+  reference pages.
+- Empty optional-region behavior is still a contract to clarify before changing
+  `page_hero` markup or slots.
+- The fixture did not prove a second independent compact docs/reference/catalog
+  implementation with the same missing contract.
+
+Decision: keep compact headers recipe-first. The proof blocks
+`compact_page_header`, `docs_header`, `catalog_header`, `docs_shell`, new
+`page_hero` parameters, slot changes, markup changes, emitted classes, CSS,
+descriptor changes, manifest updates, or generated options. The next useful
+slice is header-choice guidance and another independent compact reference only
+if the same empty-region or title/action/metadata gap repeats.

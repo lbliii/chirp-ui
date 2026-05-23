@@ -257,6 +257,42 @@ def test_reference_proof_analysis_records_linked_navigation_decision() -> None:
         assert decision in normalized
 
 
+def test_reference_proof_analysis_records_compact_header_decision() -> None:
+    text = PROOF_ANALYSIS.read_text(encoding="utf-8")
+    section = text.split("## Compact Header Analysis", 1)[1]
+    normalized = " ".join(section.split())
+
+    for proof in [
+        "/compact-header-candidate",
+        "tests/browser/test_compact_header_candidate.py",
+        '`page_header(variant="compact")`',
+        '`page_hero(variant="minimal")`',
+        "`search_header`, `entity_header`",
+        "`document_header`, and `route_tabs`",
+        "dense titles, subtitles, metadata, actions",
+        "Filled `page_hero` optional regions remain available",
+        "Empty `page_hero` optional regions",
+        "Route tabs stay link-native",
+    ]:
+        assert proof in normalized
+
+    for decision in [
+        "choice between `page_header`, `page_hero`, `search_header`",
+        "under-documented for dense docs and reference pages",
+        "Empty optional-region behavior is still a contract to clarify",
+        "did not prove a second independent compact docs/reference/catalog",
+        "keep compact headers recipe-first",
+        "blocks `compact_page_header`",
+        "`docs_header`",
+        "`catalog_header`",
+        "new `page_hero` parameters",
+        "slot changes",
+        "generated options",
+        "header-choice guidance",
+    ]:
+        assert decision in normalized
+
+
 def test_reference_implementation_index_tracks_current_proof_routes() -> None:
     text = REFERENCE_INDEX.read_text(encoding="utf-8")
 
