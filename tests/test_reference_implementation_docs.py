@@ -124,6 +124,36 @@ def test_reference_proof_analysis_keeps_public_api_closed() -> None:
         assert boundary in text
 
 
+def test_reference_proof_analysis_records_dense_reference_decision() -> None:
+    text = PROOF_ANALYSIS.read_text(encoding="utf-8")
+    section = text.split("## Dense Reference/Data Analysis", 1)[1]
+    normalized = " ".join(section.split())
+
+    for proof in [
+        "/dense-reference-data-reference",
+        "tests/browser/test_dense_reference_data_reference.py",
+        "`resource_index`, `resource_card`, `filter_rail`",
+        "`table`, `params_table`, `card`, `badge`, and",
+        "Long module, member, and parameter names stay inside the document",
+        "320,",
+        "768,",
+        "1280 widths",
+        "Filter counts currently read like navigation badges",
+        "Copyable anchors and route-local reference actions were not exercised",
+    ]:
+        assert proof in section
+
+    for decision in [
+        "keep dense reference/data pages recipe-first",
+        "evidence against immediate data-grid",
+        "virtualized table",
+        "reference-page macro",
+        "JavaScript layout runtime",
+        "another independent dense reference if a specific gap repeats",
+    ]:
+        assert decision in normalized
+
+
 def test_reference_implementation_index_tracks_current_proof_routes() -> None:
     text = REFERENCE_INDEX.read_text(encoding="utf-8")
 

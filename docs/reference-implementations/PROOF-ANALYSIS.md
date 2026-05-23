@@ -44,3 +44,39 @@ runtime helpers, or copied-source workflows by itself.
   layout runtime.
 - No manifest schema changes, new descriptor fields, copied-source component
   workflow, or MCP/server tooling.
+
+## Dense Reference/Data Analysis
+
+Proof source: `/dense-reference-data-reference` and
+`tests/browser/test_dense_reference_data_reference.py`.
+
+Existing primitives tried: `resource_index`, `resource_card`, `filter_rail`,
+`filter_bar`, `search_header`, `table`, `params_table`, `card`, `badge`, and
+`callout`.
+
+What worked:
+
+- Resource search, filter controls, selection state, and result cards compose
+  without a reference-page macro.
+- Module cards, member tables, parameter tables, and feedback states can coexist
+  in one dense route using existing primitives.
+- Long module, member, and parameter names stay inside the document at 320,
+  768, and 1280 widths.
+- Empty, loading, and error states can use `callout` and ordinary content
+  semantics without a reference-specific state primitive.
+
+Recorded gaps:
+
+- Filter counts currently read like navigation badges rather than structured
+  filter metadata.
+- Dense member-list rhythm is acceptable for a private fixture, but a second
+  reference should compare `table`, `params_table`, and card rhythm before a
+  data-display primitive is considered.
+- Copyable anchors and route-local reference actions were not exercised enough
+  to justify a reference-page action contract.
+
+Decision: keep dense reference/data pages recipe-first. The fixture is evidence
+against immediate data-grid, virtualized table, reference-page macro, or
+JavaScript layout runtime work. The next useful slice is guidance that shows
+when to combine `resource_index`, `resource_card`, `table`, and `params_table`,
+plus another independent dense reference if a specific gap repeats.
