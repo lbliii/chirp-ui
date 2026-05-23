@@ -13,12 +13,15 @@ Start with [../REFERENCE-IMPLEMENTATION-PLAYBOOK.md](../REFERENCE-IMPLEMENTATION
 Use [PROOF-ANALYSIS.md](PROOF-ANALYSIS.md) after a reference fixture exists to
 decide whether the next move is recipe guidance, more reference evidence, or a
 public API/design stop-and-ask.
+Use [RECIPE-GUIDANCE.md](RECIPE-GUIDANCE.md) when proof analysis says the next
+move is guidance with current primitives.
 
 ## Briefs
 
 | Brief | Candidate | Primary Question |
 |---|---|---|
 | [PROOF-ANALYSIS.md](PROOF-ANALYSIS.md) | Cross-candidate proof analysis | What did the current reference fixtures prove, what remains blocked, and what is explicitly not authorized? |
+| [RECIPE-GUIDANCE.md](RECIPE-GUIDANCE.md) | Recipe guidance | How should authors use current primitives after proof analysis keeps a candidate recipe-first? |
 | [PAGE-ACTIONS-AI-REFERENCE.md](PAGE-ACTIONS-AI-REFERENCE.md) | Page actions | Can existing header, dropdown, share, action, and copy primitives handle copy URL, LLM text, and AI handoff commands? |
 | [LINKED-NAV-CATALOG-REFERENCE.md](LINKED-NAV-CATALOG-REFERENCE.md) | Linked navigation | Can existing sidebar, linked nav tree, and drawer primitives handle parent route links, active children, counts, and phone fallback? |
 | [COMPACT-HEADER-REFERENCE.md](COMPACT-HEADER-REFERENCE.md) | Compact headers | Can existing header primitives cover dense docs/reference/catalog identity without new macros or `page_hero` changes? |
