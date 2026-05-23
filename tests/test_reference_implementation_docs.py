@@ -88,6 +88,40 @@ def test_reference_implementation_index_links_all_briefs() -> None:
         assert boundary in text
 
 
+def test_reference_implementation_index_tracks_current_proof_routes() -> None:
+    text = REFERENCE_INDEX.read_text(encoding="utf-8")
+
+    for route_or_surface in [
+        "/page-actions-candidate",
+        "/linked-nav-candidate",
+        "/compact-header-candidate",
+        "/dense-reference-data-reference",
+        "Consumer workspace/admin route families",
+        "`python -m chirp_ui find --details`",
+    ]:
+        assert route_or_surface in text
+
+    for proof_file in [
+        "tests/browser/test_page_actions_candidate.py",
+        "tests/browser/test_linked_nav_candidate.py",
+        "tests/browser/test_compact_header_candidate.py",
+        "tests/browser/test_dense_reference_data_reference.py",
+        "tests/test_shell_response_targets.py",
+        "tests/browser/test_consumer_shell_actions_oob.py",
+        "tests/test_find_cli.py",
+    ]:
+        assert proof_file in text
+
+    for implementation_marker in [
+        'data-reference-implementation="page-actions-ai"',
+        'data-reference-implementation="linked-nav-catalog"',
+        'data-reference-implementation="compact-header-reference"',
+        'data-reference-implementation="dense-reference-data"',
+        'data-public-api="false"',
+    ]:
+        assert implementation_marker in text
+
+
 def test_page_actions_reference_brief_keeps_api_unauthorized() -> None:
     text = PAGE_ACTIONS.read_text(encoding="utf-8")
 

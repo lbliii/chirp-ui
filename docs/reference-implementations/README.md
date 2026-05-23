@@ -22,6 +22,17 @@ Start with [../REFERENCE-IMPLEMENTATION-PLAYBOOK.md](../REFERENCE-IMPLEMENTATION
 | [DENSE-REFERENCE-DATA-REFERENCE.md](DENSE-REFERENCE-DATA-REFERENCE.md) | Dense reference/data pages | Can resource, filter, table, and feedback primitives cover API/reference density without a data-grid engine? |
 | [AGENT-DISCOVERY-REFERENCE.md](AGENT-DISCOVERY-REFERENCE.md) | Agent discovery | Can installed package metadata and durable docs guide agents without new manifest schema or copied-source distribution? |
 
+## Current Proof
+
+| Candidate | Scenario-Complete Evidence | Contract Test |
+|---|---|---|
+| Page actions | `/page-actions-candidate` marks `data-reference-implementation="page-actions-ai"` and `data-public-api="false"`. | `tests/browser/test_page_actions_candidate.py` |
+| Linked navigation | `/linked-nav-candidate` marks `data-reference-implementation="linked-nav-catalog"` and `data-public-api="false"`. | `tests/browser/test_linked_nav_candidate.py` |
+| Compact headers | `/compact-header-candidate` marks `data-reference-implementation="compact-header-reference"` and `data-public-api="false"`. | `tests/browser/test_compact_header_candidate.py` |
+| Shell response/OOB | Consumer workspace/admin route families cover full-page, `HX-Target: main`, `HX-Target: page-root`, and local-fragment response shapes. | `tests/test_shell_response_targets.py`, `tests/browser/test_consumer_shell_actions_oob.py` |
+| Dense reference/data pages | `/dense-reference-data-reference` marks `data-reference-implementation="dense-reference-data"` and `data-public-api="false"`. | `tests/browser/test_dense_reference_data_reference.py` |
+| Agent discovery | `python -m chirp_ui find --details` exposes real page/pattern primitives and excludes unpromoted proposal names. | `tests/test_find_cli.py` |
+
 ## Rules
 
 - Do not add public APIs from a reference brief.
