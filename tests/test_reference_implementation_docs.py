@@ -6,6 +6,7 @@ INDEX = ROOT / "docs" / "INDEX.md"
 PAGE_ACTIONS = ROOT / "docs" / "reference-implementations" / "PAGE-ACTIONS-AI-REFERENCE.md"
 LINKED_NAV = ROOT / "docs" / "reference-implementations" / "LINKED-NAV-CATALOG-REFERENCE.md"
 COMPACT_HEADER = ROOT / "docs" / "reference-implementations" / "COMPACT-HEADER-REFERENCE.md"
+SHELL_RESPONSE = ROOT / "docs" / "reference-implementations" / "SHELL-RESPONSE-REFERENCE.md"
 
 
 def test_reference_implementation_playbook_defines_evidence_ladder() -> None:
@@ -86,7 +87,7 @@ def test_page_actions_reference_brief_keeps_api_unauthorized() -> None:
         "copy/fetch runtime helpers",
         "descriptor changes",
         "CSS",
-        "manifest updates",
+        "manifest",
         "generated component",
         "public page-actions API",
     ]:
@@ -122,7 +123,7 @@ def test_linked_nav_reference_brief_forces_existing_primitives_first() -> None:
         "sidebar branch macros",
         "emitted classes",
         "CSS",
-        "manifest updates",
+        "manifest",
         "`docs_sidebar`",
         "`catalog_sidebar`",
         "`docs_shell`",
@@ -164,5 +165,42 @@ def test_compact_header_reference_brief_blocks_premature_header_api() -> None:
         "CSS",
         "descriptor changes",
         "manifest updates",
+    ]:
+        assert boundary in text
+
+
+def test_shell_response_reference_brief_keeps_problem_non_visual() -> None:
+    text = SHELL_RESPONSE.read_text(encoding="utf-8")
+
+    for primitive in [
+        "`HX-Target` branching",
+        "`shell_outlet_attrs`",
+        "`route_tabs`",
+        "`fragment_island`",
+        "`safe_region`",
+        "shell actions OOB replacement",
+        "`mount_pages()`",
+    ]:
+        assert primitive in text
+
+    for proof in [
+        "No `HX-Request` returns the full page response",
+        "`HX-Request` without `HX-Target`",
+        "`HX-Target: main` returns shell-owned content",
+        "`HX-Target: page-root` returns only page-root",
+        "Local fragment targets return local content",
+        "singleton `#main`, `#page-content`, and `#page-root`",
+    ]:
+        assert proof in text
+
+    for boundary in [
+        "does not authorize a public `chirp_ui` helper",
+        "Chirp routing API",
+        "visual shell macro",
+        "component descriptor",
+        "emitted classes",
+        "CSS",
+        "manifest",
+        "new HTMX protocol",
     ]:
         assert boundary in text
