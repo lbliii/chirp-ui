@@ -1,19 +1,23 @@
 # PLAN: Pre-1.0 Productization Saga
 
 Status: active plan
-Date: 2026-05-14
-Trigger: The project has strong Skeleton-comparable architecture, but needs a
-clear pre-1.0 push that makes the quality visible, teachable, and stable.
+Date: 2026-05-23
+Trigger: The project has strong Skeleton-comparable architecture and current
+design-system research now clarifies how Chirp UI can be categorically best
+without imitating Tailwind, shadcn/ui, Radix, Carbon, or enterprise React
+systems.
 
 ## Goal
 
 Make Chirp UI feel ready for serious Python application authors before adding
-more public surface area.
+more public surface area, and make the category unmistakable:
+
+> a Python-native contract design system for server-rendered apps.
 
 The next phase is not a component-count race. It is a productization pass over
-the quality that already exists: visual proof, theme authoring, public-surface
-decisions, application-chrome adoption, Bengal integration, and reliable
-verification.
+the quality that already exists: registry discovery, executable contracts,
+visual proof, theme authoring, public-surface decisions, application-chrome
+adoption, Bengal integration, and reliable verification.
 
 ## Current Position
 
@@ -29,15 +33,15 @@ Chirp UI has crossed the architecture-risk threshold:
   and `prose`.
 - Theme packs exist (`atlas`, `ember`, `sage`) with token-only proof, but remain
   experimental.
-- Application chrome has real consumer/browser proof and remains recipe-first.
+- Application chrome has reference implementation/browser proof and remains recipe-first.
 - Anatomy docs and tests cover the major interactive families.
 - CSS, manifest, docs, and examples are generated or checked as registry
   projections.
 
-Compared to Skeleton, Chirp UI is competitive on architecture, verification,
-and Python-native introspection. It is not yet at public product parity on
-docs polish, theme tooling, live examples, ecosystem affordances, or first-run
-teaching.
+Compared to Skeleton and shadcn/ui, Chirp UI is competitive on architecture,
+verification, and Python-native introspection. It is not yet at public product
+parity on registry discovery, docs polish, theme tooling, live examples,
+ecosystem affordances, anatomy/evidence ledgers, or first-run teaching.
 
 ## Productization Thesis
 
@@ -47,17 +51,99 @@ Chirp UI should win by being:
 - Token-first instead of utility-class-first.
 - HTMX/Alpine-aware without owning framework state.
 - Agent-groundable through generated manifests and curated examples.
-- Small enough to verify, but complete enough for real app chrome, forms,
+- Small enough to verify, but complete enough for application chrome, forms,
   overlays, navigation, and content surfaces.
+- Evidence-labeled: stable, experimental, recipe-only, compatibility, or
+  research-only surfaces are not blurred together.
+- Contract-first: anatomy, slots, runtime requirements, emitted classes, focus,
+  keyboard behavior, and proof are discoverable from source.
 
 Do not chase Skeleton by copying Tailwind utilities, framework components, or
 class aliases. Translate only the product strengths that match Chirp's category:
 coherent themes, clear docs, strong examples, visible quality, and predictable
 contracts.
 
+Do not chase shadcn/ui by copying component source into apps. Translate its best
+idea into Chirp's model: registry-backed discovery and agent workflows, but
+with package upgrades and verification instead of perpetual local forks.
+
 ## Ranked Epics
 
-### 1. Visible Design-System Showcase
+### 1. Registry Product Surface
+
+Goal: make the component registry and manifest as useful to humans and agents
+as shadcn's registry is, while preserving Chirp UI's library-owned contract.
+
+Next slices:
+
+- Improve `python -m chirp_ui find` and manifest-backed docs around preferred
+  authoring, maturity, runtime requirements, slots, and recipe-only boundaries.
+- Ensure generated docs, source inventory, and curated snippets tell the same
+  story as the registry.
+- Add proof links or evidence references where descriptor data already supports
+  them; defer descriptor/schema additions until a design RFC exists.
+- Design an agent-facing "discover, apply, verify" workflow after local
+  registry discovery is strong enough.
+
+Acceptance:
+
+- A user or agent can find the preferred primitive/component, understand when
+  not to use it, and identify required runtime/proof without reading templates.
+- Registry, manifest, generated docs, and source inventory agree.
+- No copied-source component ownership model is introduced.
+
+Proof:
+
+- `uv run pytest tests/test_manifest.py tests/test_manifest_signatures.py -q`
+- Focused `find`/inspect tests when CLI output changes.
+- Generated docs freshness checks when generated output changes.
+
+Collateral:
+
+- `docs/DESIGN-SYSTEM-RESEARCH.md`
+- `docs/AGENT-SOURCE-INVENTORY.md`
+- `docs/AGENT-SOURCE-MAP.md`
+- `docs/COMPONENT-OPTIONS.md` when generated output changes.
+- Manifest schema notes before any schema change.
+
+### 2. Anatomy And Evidence Ledgers
+
+Goal: make high-risk component quality explicit: anatomy, accessibility,
+behavior, responsive constraints, performance notes, and proof.
+
+Next slices:
+
+- Define a small evidence-ledger format for complex surfaces without changing
+  descriptor schema yet.
+- Apply it first to overlays, drawers/trays, command palette, route tabs, shell
+  navigation, page actions, forms/validation, and Bengal docs chrome.
+- Use Radix/Base/React Aria as behavior-proof inspiration and GOV.UK/Carbon as
+  evidence-status inspiration.
+- Record residual risk explicitly, especially when proof is automated browser
+  proof rather than manual assistive-technology testing.
+
+Acceptance:
+
+- Promotion PRs for complex surfaces cite anatomy and proof.
+- Docs do not imply manual screen-reader testing unless it happened.
+- Browser proof covers focus, keyboard, overflow, reduced motion, or stress
+  widths when those risks are relevant.
+
+Proof:
+
+- Existing anatomy tests plus focused additions for changed surfaces.
+- Browser tests for focus/keyboard/overflow-sensitive changes.
+- `uv run pytest tests/test_public_surface_stabilization.py -q` when maturity
+  labels change.
+
+Collateral:
+
+- Existing anatomy docs under `docs/*-ANATOMY.md`
+- `docs/PUBLIC-SURFACE-STABILIZATION.md`
+- `docs/VISUAL-AUDIT-SHOWCASE.md`
+- Relevant browser fixtures.
+
+### 3. Visible Design-System Showcase
 
 Goal: make quality obvious before readers inspect tests or plans.
 
@@ -90,7 +176,7 @@ Collateral:
 - `examples/design-system-gap-showcase/index.html`
 - Relevant pattern docs only when a pattern contract changes.
 
-### 2. Public Surface Stabilization
+### 4. Public Surface Stabilization
 
 Goal: make the pre-1.0 public vocabulary intentional.
 
@@ -123,7 +209,7 @@ Collateral:
 - Changelog fragment for user-facing promotion, deprecation, or authoring
   guidance changes.
 
-### 3. Theme Authoring UX
+### 5. Theme Authoring UX
 
 Goal: make token-driven theming feel obvious and powerful.
 
@@ -159,7 +245,7 @@ Collateral:
 - `docs/CHIRP-THEME-PARITY-MATRIX.md`
 - Site theming source pages when public docs change.
 
-### 4. Application Chrome Adoption
+### 6. Application Chrome Adoption
 
 Goal: make the recipe-first app-chrome system copyable for real Chirp apps.
 
@@ -173,7 +259,7 @@ Next slices:
   HTMX examples.
 - Keep browser fixtures as regression proof for shell/page-root ownership,
   OOB shell actions, command focus, and overflow.
-- Revisit helpers only after real apps repeat route-handler boilerplate outside
+- Revisit helpers only after independent reference implementations repeat route-handler boilerplate outside
   filesystem pages.
 
 Acceptance:
@@ -198,7 +284,21 @@ Collateral:
 - `docs/plans/PLAN-application-chrome-system.md`
 - Published navigation pattern source when site content changes.
 
-### 5. Bengal And chirp-theme Integration
+Current application-chrome queue:
+
+- Private fixtures now prove current composition for page actions, linked
+  nav/sidebar, compact headers/page heroes, and shell response/OOB branching.
+- The next qualifying evidence is deliberately built reference implementation
+  repetition: a second scenario-complete non-Bengal page-action, linked-branch,
+  or compact docs/reference/catalog implementation, or a third
+  scenario-complete hand-written route family outside `mount_pages()` for shell
+  response/OOB helpers.
+- Do not spend more productization slices creating artificial chrome fixtures
+  unless they test a new failure mode; use new slices to build reference
+  evidence, improve guidance, or stop and ask for an explicit public API/design
+  plan.
+
+### 7. Bengal And chirp-theme Integration
 
 Goal: prove Chirp UI as a first-class Bengal library surface, not only a
 standalone component catalog.
@@ -211,6 +311,9 @@ Next slices:
 - Continue migrating chirp-theme output to Chirp UI-native templates and
   token vocabulary.
 - Keep Bengal docs chrome separate from general Chirp app shell contracts.
+- Use Bengal as evidence for smaller contracts first: compact headers,
+  `page_hero` empty-slot behavior, linked branch navigation, page actions,
+  reference cards, semantic icons, and footer/content ownership.
 
 Acceptance:
 
@@ -233,7 +336,7 @@ Collateral:
 - `docs/plans/PLAN-bengal-chirpui-library-contract.md`
 - `docs/plans/PLAN-chirp-theme-content-parity.md`
 
-### 6. Verification Reliability
+### 8. Verification Reliability
 
 Goal: make every productization slice reproducible from a clean checkout.
 
@@ -266,13 +369,18 @@ Collateral:
 
 ## Recommended Execution Order
 
-1. Stabilize the visual audit and theme gallery enough that they become the
-   default proof surface.
-2. Use the proof surface to close public-surface decisions.
-3. Productize application chrome through filesystem recipes and HTMX target
+1. Make the registry product surface and evidence labels clear enough that
+   humans and agents can choose the right contracts.
+2. Add anatomy/evidence ledgers to high-risk surfaces before promoting more
+   public API.
+3. Stabilize the visual audit and theme gallery enough that they become default
+   proof surfaces.
+4. Use those proof surfaces to close public-surface decisions.
+5. Productize application chrome through filesystem recipes and HTMX target
    contracts.
-4. Finish Bengal integration as a real consumer path.
-5. Continue opportunistic CSS scope conversion and verification hardening
+6. Finish Bengal integration as a reference implementation path and use Bengal pressure to
+   mature smaller contracts before shell composites.
+7. Continue opportunistic CSS scope conversion and verification hardening
    throughout.
 
 ## Promotion Gates
@@ -292,6 +400,8 @@ Before promoting any component, pattern, or theme pack:
 
 | Contract | API/CLI | Programmatic | Protocol | Schema/Types | Docs | Examples | Tests |
 |---|---|---|---|---|---|---|---|
+| Registry product | Find/inspect only until designed | Registry and manifest queries | Local package data | No schema bump without RFC | Source inventory and generated docs | Curated snippets | Manifest/find/docs ratchets |
+| Anatomy/evidence | No new API initially | Anatomy and proof records in docs/tests | Roles, states, focus, runtime | Descriptor fields deferred | Anatomy docs and stabilization ledgers | Browser fixtures | Render/browser/a11y-risk proof |
 | Visual showcase | No new API | Existing macros only | Static/browser render | Existing manifest maturity | Visual audit docs | Design-system showcase | Visual audit and browser proof |
 | Public surface | No removal before 1.0 gate | Descriptor maturity/authoring | Macro compatibility retained | Manifest maturity/authoring | Stabilization doc and generated options | Preferred examples only | Manifest/docs ratchets |
 | Theme authoring | List/read only unless designed | Theme-pack catalog | Token CSS load order | Manifest theme packs | Theme docs and token explorer | Theme gallery | Token, package, browser tests |
@@ -309,7 +419,7 @@ Before promoting any component, pattern, or theme pack:
 - New framework-component ports.
 - Figma kit work.
 - New manifest schema fields for anatomy or chrome layers without a concrete
-  generated consumer.
+  generated-output consumer.
 - Broad component expansion while experimental and legacy surfaces remain
   ambiguous.
 
@@ -327,7 +437,8 @@ Accepted findings:
 - New planning direction must be indexed and tied to active roadmap workstreams.
 - Planning must not imply public APIs before registry, CSS, manifest, docs,
   examples, and proof are ready.
-- Application chrome stays recipe-first after the first consumer adoption wave.
+- Application chrome stays recipe-first after the first reference
+  implementation wave.
 - Productization work should reduce stale planning noise, not add a parallel
   backlog.
 

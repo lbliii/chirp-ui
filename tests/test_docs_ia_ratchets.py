@@ -4,6 +4,15 @@ ROOT = Path(__file__).resolve().parents[1]
 ROADMAP = ROOT / "docs" / "ROADMAP-pre-1.0.md"
 PLANS = ROOT / "docs" / "plans"
 
+EXPECTED_ACTIVE_PLANS = [
+    "PLAN-application-chrome-system.md",
+    "PLAN-bengal-chirpui-library-contract.md",
+    "PLAN-chirp-theme-content-parity.md",
+    "PLAN-css-scope-and-layer.md",
+    "PLAN-page-actions-primitive.md",
+    "PLAN-pre-1.0-productization-saga.md",
+]
+
 
 def test_active_plans_are_mapped_to_roadmap_workstreams() -> None:
     """Every live plan should be anchored to the current roadmap, not free-floating."""
@@ -18,7 +27,8 @@ def test_active_plan_count_stays_intentional() -> None:
     """Planning cleanup should keep live plans bounded and force explicit review on growth."""
     active_plans = sorted(path.name for path in PLANS.glob("PLAN-*.md"))
 
-    assert len(active_plans) <= 5, "active plan count exceeded cap: " + ", ".join(active_plans)
+    assert active_plans == EXPECTED_ACTIVE_PLANS
+    assert len(active_plans) <= 6
 
 
 def test_archived_plans_do_not_claim_active_or_draft_status() -> None:
@@ -54,3 +64,90 @@ def test_active_plans_expose_next_work_marker() -> None:
             missing.append(path.name)
 
     assert not missing, "active plans missing a next-work marker: " + ", ".join(missing)
+
+
+def test_roadmap_records_application_chrome_reference_implementation_gate() -> None:
+    """High-level roadmap should not route completed chrome investigations into fixture churn."""
+    text = ROADMAP.read_text(encoding="utf-8")
+    section = text.split("### 5a. Application Chrome System", 1)[1].split(
+        "### 5b. Bengal-Driven Component Maturation", 1
+    )[0]
+    normalized = " ".join(section.split())
+
+    for signal in [
+        "Current promotion queue:",
+        "Private evidence is complete for page actions, linked nav/sidebar semantics,",
+        "shell response/OOB routing, and compact header/page hero comparison",
+        "not waiting for a userbase or adding another artificial fixture",
+        "second scenario-complete non-Bengal reference implementation",
+        "third scenario-complete hand-written route family",
+        "`application_chrome()`",
+        "`docs_shell`",
+        "`catalog_shell`",
+        "`compact_page_header`",
+        "`page_actions`",
+        "shell response helper APIs",
+    ]:
+        assert signal in normalized
+
+    bengal_section = text.split("### 5b. Bengal-Driven Component Maturation", 1)[1].split(
+        "### 6. CSS Scope Hardening", 1
+    )[0]
+    bengal_normalized = " ".join(bengal_section.split())
+    assert "Treat private fixtures as proof of current composition" in bengal_normalized
+    assert "not as promotion evidence by themselves" in bengal_normalized
+
+
+def test_productization_saga_records_application_chrome_queue_status() -> None:
+    """The saga should send future slices toward reference implementation evidence or explicit API planning."""
+    text = (PLANS / "PLAN-pre-1.0-productization-saga.md").read_text(encoding="utf-8")
+    section = text.split("### 6. Application Chrome Adoption", 1)[1].split(
+        "### 7. Bengal And chirp-theme Integration", 1
+    )[0]
+    normalized = " ".join(section.split())
+
+    for signal in [
+        "Current application-chrome queue:",
+        "Private fixtures now prove current composition for page actions",
+        "linked",
+        "nav/sidebar",
+        "compact headers/page heroes",
+        "shell response/OOB branching",
+        "deliberately built reference implementation repetition",
+        "second scenario-complete non-Bengal page-action",
+        "linked-branch",
+        "compact docs/reference/catalog",
+        "third scenario-complete hand-written route family outside `mount_pages()`",
+        "Do not spend more productization slices creating artificial chrome fixtures",
+        "unless they test a new failure mode",
+        "stop and ask for an explicit public API/design plan",
+    ]:
+        assert signal in normalized
+
+
+def test_navigation_contract_records_application_chrome_current_status() -> None:
+    """Canonical navigation docs should keep app chrome recipe-first until reference implementations repeat gaps."""
+    text = (ROOT / "docs" / "NAVIGATION.md").read_text(encoding="utf-8")
+    section = text.split("## Application Chrome System", 1)[1].split(
+        "## ARIA And Semantics", 1
+    )[0]
+    normalized = " ".join(section.split())
+
+    for signal in [
+        "Current promotion status:",
+        "Private evidence is complete for page actions, linked nav/sidebar semantics,",
+        "shell response/OOB branching, and compact header/page hero comparison",
+        "do not count as the second scenario-complete reference implementation",
+        "deliberately built or identified non-Bengal page-action",
+        "linked-branch",
+        "compact docs/reference/catalog reference implementation",
+        "third",
+        "hand-written route family outside `mount_pages()`",
+        "`application_chrome()`",
+        "`docs_shell`",
+        "`catalog_shell`",
+        "`compact_page_header`",
+        "`page_actions`",
+        "shell response helper APIs",
+    ]:
+        assert signal in normalized
