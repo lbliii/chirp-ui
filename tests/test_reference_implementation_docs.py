@@ -154,6 +154,42 @@ def test_reference_proof_analysis_records_dense_reference_decision() -> None:
         assert decision in normalized
 
 
+def test_reference_proof_analysis_records_agent_discovery_decision() -> None:
+    text = PROOF_ANALYSIS.read_text(encoding="utf-8")
+    section = text.split("## Agent Discovery Analysis", 1)[1]
+    normalized = " ".join(section.split())
+
+    for proof in [
+        "tests/test_find_cli.py",
+        "docs/AGENT-SOURCE-INVENTORY.md",
+        "docs/AGENT-SOURCE-MAP.md",
+        "`python -m chirp_ui find --details`",
+        "`python -m chirp_ui find --role=pattern --details`",
+        "`build_manifest()`",
+        "component name, category, maturity, authoring",
+        "`page_header`",
+        "`page_hero`",
+        "`resource-index`",
+        "`filter-rail`",
+        "copyable-curated snippets",
+    ]:
+        assert proof in section
+
+    for boundary in [
+        "Unpromoted proposal names such as `page-actions`",
+        "`compact-page-header`",
+        "`reference-page`",
+        "`data-grid` are absent",
+        "keep the manifest schema and descriptor fields closed",
+        "without a copied-source workflow",
+        "new CLI command",
+        "MCP/server tool",
+        "manifest expansion",
+        "schema change should wait for repeated tasks",
+    ]:
+        assert boundary in normalized
+
+
 def test_reference_implementation_index_tracks_current_proof_routes() -> None:
     text = REFERENCE_INDEX.read_text(encoding="utf-8")
 
