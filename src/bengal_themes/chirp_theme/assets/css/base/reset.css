@@ -43,41 +43,8 @@ html {
   --navigation-arrow-color: var(--color-primary);
 }
 
-/* Ensure navigation arrows use theme primary color across all palettes */
-/* This will override any default blue colors browsers might use */
 html {
   --navigation-arrow-color: var(--color-primary);
-}
-
-/* Palette-specific overrides ensure each theme uses its own colors */
-/* Brown Bengal - warm amber navigation arrows */
-[data-palette="brown-bengal"],
-html[data-palette="brown-bengal"] {
-  --navigation-arrow-color: var(--color-primary); /* #D4850F - warm amber */
-}
-
-/* Blue Bengal - soft powder blue navigation arrows */
-[data-palette="blue-bengal"],
-html[data-palette="blue-bengal"] {
-  --navigation-arrow-color: var(--color-primary); /* #7FA3C3 - soft powder blue */
-}
-
-/* Silver Bengal - high contrast monochrome navigation arrows */
-[data-palette="silver-bengal"],
-html[data-palette="silver-bengal"] {
-  --navigation-arrow-color: var(--color-primary); /* Theme primary */
-}
-
-/* Charcoal Bengal - dramatic slate navigation arrows */
-[data-palette="charcoal-bengal"],
-html[data-palette="charcoal-bengal"] {
-  --navigation-arrow-color: var(--color-primary); /* Theme primary */
-}
-
-/* Snow Lynx - ice blue navigation arrows */
-[data-palette="snow-lynx"],
-html[data-palette="snow-lynx"] {
-  --navigation-arrow-color: var(--color-primary); /* Theme primary */
 }
 
 @media (prefers-reduced-motion: reduce) {

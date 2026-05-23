@@ -269,10 +269,8 @@
             }, 100);
 
             this._boundHandlers.themechange = debouncedUpdate;
-            this._boundHandlers.palettechange = debouncedUpdate;
 
             window.addEventListener('themechange', this._boundHandlers.themechange);
-            window.addEventListener('palettechange', this._boundHandlers.palettechange);
 
             // v2: NO MutationObserver - this was causing DevTools crashes
         }
@@ -365,9 +363,6 @@
 
             if (this._boundHandlers.themechange) {
                 window.removeEventListener('themechange', this._boundHandlers.themechange);
-            }
-            if (this._boundHandlers.palettechange) {
-                window.removeEventListener('palettechange', this._boundHandlers.palettechange);
             }
             this._boundHandlers = {};
 

@@ -1,0 +1,74 @@
+{#
+Page actions popover for docs/reference heroes.
+
+Keeps AI-friendly formats and copy actions close to the page title while using
+the existing action-bar.js data-action and data-ai hooks.
+#}
+
+{% let AI_PLATFORMS = [
+  {'id': 'claude', 'name': 'Claude', 'icon': 'ai-claude', 'url': 'https://claude.ai/new?q='},
+  {'id': 'chatgpt', 'name': 'ChatGPT', 'icon': 'ai-chatgpt', 'url': 'https://chatgpt.com/?q='},
+  {'id': 'gemini', 'name': 'Gemini', 'icon': 'ai-gemini', 'url': 'https://gemini.google.com/app?q='},
+  {'id': 'copilot', 'name': 'Copilot', 'icon': 'ai-copilot', 'url': 'https://copilot.microsoft.com/?q='}
+] %}
+
+{% def page_actions(page, menu_id='chirp-theme-page-actions-menu') %}
+{% if page %}
+{% let page_href = (page?.href ?? page?._path ?? '/') | trim %}
+{% let page_url = canonical_url(page_href) %}
+{% let llm_txt_url = ensure_trailing_slash(page_url) ~ 'index.txt' %}
+{% let share_prompt = "Please help me understand this documentation: " ~ llm_txt_url %}
+<div class="chirp-theme-page-actions">
+  <button
+    class="chirp-theme-page-actions__trigger"
+    type="button"
+    popovertarget="{{ menu_id }}"
+    aria-label="{{ t('share.page_actions', default='Open page actions') }}"
+    title="{{ t('share.page_actions', default='Open page actions') }}"
+  >
+    {{ icon('sparkle', size=15) }}
+    <span>{{ t('share.actions', default='Actions') }}</span>
+    {{ icon('caret-down', size=12, css_class='chirp-theme-page-actions__chevron') }}
+  </button>
+
+  <div id="{{ menu_id }}" popover class="chirp-theme-page-actions__menu">
+    <div class="chirp-theme-page-actions__header">
+      <span class="chirp-theme-page-actions__mark" aria-hidden="true">{{ icon('sparkle', size=15) }}</span>
+      <span>
+        <strong>{{ t('share.page_actions_title', default='Page actions') }}</strong>
+        <small>{{ t('share.page_actions_hint', default='AI-ready formats and sharing') }}</small>
+      </span>
+    </div>
+
+    <button class="chirp-theme-page-actions__item" data-action="copy-url" data-url="{{ page_url }}" type="button">
+      {{ icon('link', size=15) }}
+      <span>{{ t('share.copy_url', default='Copy URL') }}</span>
+    </button>
+
+    <a href="{{ llm_txt_url }}" target="_blank" rel="noopener noreferrer" class="chirp-theme-page-actions__item">
+      {{ icon('external', size=15) }}
+      <span>{{ t('share.open_llm_text', default='Open LLM text') }}</span>
+    </a>
+
+    <button class="chirp-theme-page-actions__item" data-action="copy-llm-txt" data-url="{{ llm_txt_url }}" type="button">
+      {{ icon('copy', size=15) }}
+      <span>{{ t('share.copy_llm_text', default='Copy LLM text') }}</span>
+    </button>
+
+    <div class="chirp-theme-page-actions__section">{{ t('share.with_ai', default='Share with AI') }}</div>
+    {% for ai in AI_PLATFORMS %}
+    <a
+      href="{{ ai.url ~ (share_prompt | urlencode) }}"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="chirp-theme-page-actions__item chirp-theme-page-actions__item--ai"
+      data-ai="{{ ai.id }}"
+    >
+      {{ icon(ai.icon, size=15) }}
+      <span>{{ t('share.ask_' ~ ai.id, default='Ask ' ~ ai.name) }}</span>
+    </a>
+    {% end %}
+  </div>
+</div>
+{% end %}
+{% end %}

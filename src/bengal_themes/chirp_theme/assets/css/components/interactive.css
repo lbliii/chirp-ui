@@ -48,6 +48,55 @@
   box-shadow: var(--neumorphic-subtle);
 }
 
+.back-to-top[hidden] {
+  display: none !important;
+}
+
+.chirp-theme-rail-top.back-to-top {
+  position: sticky;
+  inset-block-end: 1rem;
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: none;
+  block-size: auto;
+  min-block-size: 2.35rem;
+  max-block-size: none;
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: start;
+  margin-top: 0.85rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-bg-elevated) 80%, transparent);
+  color: var(--color-text-muted);
+  box-shadow: none;
+  transform: translate3d(0, 0.4rem, 0);
+}
+
+.chirp-theme-rail-top.back-to-top span {
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.05em;
+  text-align: start;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.chirp-theme-rail-top.back-to-top svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+  margin-inline: auto;
+}
+
+.chirp-theme-rail-top.back-to-top.visible {
+  transform: translate3d(0, 0, 0);
+}
+
 .back-to-top.visible {
   opacity: 1;
   visibility: visible;
@@ -69,6 +118,13 @@
   /* Neumorphic hover - raised key effect */
   box-shadow: var(--neumorphic-hover);
   transform: translateY(-1px);
+}
+
+.chirp-theme-rail-top.back-to-top:hover {
+  border-color: color-mix(in srgb, var(--chirpui-accent) 28%, transparent);
+  background: color-mix(in srgb, var(--chirpui-accent) 9%, transparent);
+  color: var(--color-text-primary);
+  box-shadow: none;
 }
 
 .back-to-top:active {

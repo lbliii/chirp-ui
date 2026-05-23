@@ -4,7 +4,6 @@
 theme:
   name: "chirp-theme"
   default_appearance: "light"
-  default_palette: "charcoal-bengal"
   syntax_highlighting:
     theme: "auto"
     css_class_style: "semantic"

@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
+{% from "chirpui/hero.html" import page_hero %}
 {% from "chirpui/layout.html" import container %}
+{% from "chirpui/surface.html" import surface %}
 
 {% block title %}Search - {{ config?.title ?? 'Site' }}{% end %}
 
@@ -8,18 +10,13 @@
 {% let site_pages = site?.pages ?? [] %}
 {% let page_count = site_pages | length %}
 
-{% call container() %}
-  <div class="search-page">
-    <header class="search-page__header">
-      <div class="search-page__title-row">
-        <h1 class="search-page__title">
-          {{ icon('magnifying-glass', size=24, css_class='search-page__title-icon') }}
-          <span>Search</span>
-        </h1>
-        <span class="search-page__page-count">{{ page_count }} pages indexed</span>
-      </div>
-    </header>
+{% call container(max_width='84rem', cls='chirp-theme-search') %}
+  <div class="search-page chirp-theme-search__spine" data-chirp-theme-surface="search">
+    {% call page_hero(title='Search', subtitle='Find documentation, release notes, patterns, and theme guidance.', variant='minimal', background='solid', cls='chirp-theme-search__hero') %}
+      {% slot eyebrow %}{{ page_count }} pages indexed{% end %}
+    {% end %}
 
+    {% call surface(variant='default', cls='chirp-theme-search__panel') %}
     <div class="search-page__container">
       <div class="search-page__input-section">
         <div class="search-page__input-wrapper">
@@ -101,6 +98,7 @@
         </div>
       </div>
     </div>
+    {% end %}
   </div>
 {% end %}
 {% end %}

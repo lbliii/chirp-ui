@@ -6,6 +6,9 @@
  * The retained contract is shell + docs + page + blog + search/error pages.
  */
 
+/* TRANSITIONAL ASSET SHIM
+   Bengal has not released first-class Chirp UI library asset modes yet.
+   Keep these imports until Bengal owns bundle/link/none mode parity. */
 @import url('../../../../chirp_ui/templates/chirpui.css');
 @import url('../../../../chirp_ui/templates/chirpui-transitions.css');
 
@@ -29,15 +32,6 @@
 /* Semantic tokens (purpose-based - use these in components) */
 @layer tokens {
   @import url('tokens/semantic.css');
-}
-
-/* Palette presets (optional overrides; activated via data-palette="...") */
-@layer tokens {
-  @import url('tokens/palettes/snow-lynx.css');
-  @import url('tokens/palettes/brown-bengal.css');
-  @import url('tokens/palettes/silver-bengal.css');
-  @import url('tokens/palettes/charcoal-bengal.css');
-  @import url('tokens/palettes/blue-bengal.css');
 }
 
 /* ============================================
@@ -86,7 +80,11 @@
 }
 
 /* ============================================
-   LAYOUT STYLES (Legacy - will be refactored)
+   RETAINED LEGACY CSS QUARANTINE
+
+   These imports are still reachable from shipped templates, but they are not
+   the target theme architecture. New bespoke shell/content work belongs in
+   chirp-theme.css below unless it graduates into Chirp UI itself.
    ============================================ */
 
 @layer pages {
@@ -473,6 +471,7 @@ main {
   }
 }
 
-/* Theme-owned overrides live outside the Bengal default layers so they can
+/* BESPOKE ACTIVE THEME SURFACE
+   Theme-owned overrides live outside the retained Bengal layers so they can
    fully restyle the shipped baseline without requiring theme inheritance. */
 @import url('chirp-theme.css');

@@ -304,28 +304,25 @@ setupKeyboardDetection() // Add .user-is-tabbing class
 ---
 
 #### `theme-toggle.js`
-**Purpose:** Appearance control (mode + palette)
+**Purpose:** Appearance control
 
 **Features:**
 - Mode selection: System, Light, Dark
-- Palette selection via dropdown (e.g., `snow-lynx`)
 - System preference detection (`prefers-color-scheme`)
-- localStorage persistence for mode (`bengal-theme`) and palette (`bengal-palette`)
-- Emits `themechange` and `palettechange` events
+- localStorage persistence for mode (`bengal-theme`)
+- Removes stale `bengal-palette` state from older builds
+- Emits `themechange` events
 
 **Key Functions (exposed as `window.BengalTheme`):**
 ```javascript
 get()                  // Get resolved theme ('light'|'dark') respecting 'system'
 set(theme)             // Set theme ('system'|'light'|'dark')
 toggle()               // Optional: toggle between light/dark if you add a button
-getPalette()           // Get current palette key or ''
-setPalette(palette)    // Set color palette key or '' to clear
 ```
 
 **Storage:**
 ```javascript
 localStorage.getItem('bengal-theme')   // 'system' | 'light' | 'dark'
-localStorage.getItem('bengal-palette') // '' | palette key
 ```
 
 **Usage (default theme):**
@@ -337,9 +334,6 @@ localStorage.getItem('bengal-palette') // '' | palette key
     <li role="menuitem"><button data-appearance="system">System</button></li>
     <li role="menuitem"><button data-appearance="light">Light</button></li>
     <li role="menuitem"><button data-appearance="dark">Dark</button></li>
-    <li role="separator" class="separator"></li>
-    <li role="menuitem"><button data-palette="">Default</button></li>
-    <li role="menuitem"><button data-palette="snow-lynx">Snow Lynx</button></li>
   </ul>
   <script src="assets/js/theme-toggle.js"></script>
 ```

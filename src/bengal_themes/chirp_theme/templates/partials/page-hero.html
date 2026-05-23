@@ -1,5 +1,6 @@
 {% from 'partials/navigation-components.html' import breadcrumbs %}
 {% from 'partials/page-hero/_macros.html' import hero_element as _hero_element, hero_section as _hero_section %}
+{% from 'partials/page-actions.html' import page_actions %}
 {% from 'chirpui/button.html' import btn %}
 {% from 'chirpui/hero.html' import page_hero %}
 
@@ -33,7 +34,7 @@
 {% set _ = _meta_parts.append('Version ' ~ _page.version) %}
 {% end %}
 
-{% call page_hero(title=_title, subtitle=_description, variant='editorial', background='solid', cls='page-hero page-hero--chirp') %}
+{% call page_hero(title=_title, subtitle=_description, variant='editorial', background='solid', cls='chirp-theme-docs-layout__hero chirp-theme-doc-hero') %}
   {% slot eyebrow %}
   {% if _page %}
   {{ breadcrumbs(_page) }}
@@ -43,9 +44,11 @@
   {% end %}
   {% slot metadata %}
   {% if _meta_parts | length > 0 %}
-  {{ _meta_parts | join(' · ') }}
+  <span>{{ _meta_parts | join(' · ') }}</span>
+  {% end %}
   {% end %}
   {% slot actions %}
+  {{ page_actions(_page) }}
   {% if _params?.hero_link?.href %}
   {{ btn(_params.hero_link.label ?? 'Explore', href=_params.hero_link.href | absolute_url, variant='secondary') }}
   {% end %}

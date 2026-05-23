@@ -1,0 +1,46 @@
+{% from "chirpui/site_footer.html" import site_footer, footer_column, footer_link %}
+
+{% let _footer_current_lang = current_lang() %}
+{% let _footer_menu = get_menu_lang("footer", _footer_current_lang) %}
+{% let _footer_main_menu = get_menu_lang("main", _footer_current_lang) %}
+{% let _footer_links = _footer_menu if _footer_menu | length > 0 else _footer_main_menu %}
+{% let _footer_repo_url = site.params?.repo_url ?? '' %}
+{% let _footer_site_desc = site.description ?? '' %}
+{% let _footer_site_title = site.title %}
+{% let _footer_class = footer_class ?? 'chirp-theme-footer' %}
+
+{% call site_footer(layout="columns", cls=_footer_class) %}
+  {% slot brand %}
+  <a href="{{ '/' | absolute_url }}" class="chirp-theme-footer__logo">
+    <span class="chirp-theme-footer__mark" aria-hidden="true">ᗢ</span>
+    <span class="chirp-theme-footer__word">{{ site.title }}</span>
+  </a>
+  {% if _footer_site_desc %}
+  <p class="chirp-theme-footer__tagline">{{ _footer_site_desc }}</p>
+  {% end %}
+  <p class="chirp-theme-footer__meta">Static-first docs and marketing pages powered by Bengal.</p>
+  {% end %}
+
+  {% if _footer_links | length > 0 %}
+  {% call footer_column(title="Navigate", cls="chirp-theme-footer__nav") %}
+    {% for item in _footer_links[:6] %}
+    {% let item_href = item?.href ?? item?.url ?? '#' %}
+    {% if item_href != '#' and item_href != '#/' %}
+    {{ footer_link(item_href | absolute_url, item.name) }}
+    {% end %}
+    {% end %}
+  {% end %}
+  {% end %}
+
+  {% call footer_column(title="Source", cls="chirp-theme-footer__links") %}
+    {% if _footer_repo_url %}
+    {{ footer_link(_footer_repo_url, "Repository", external=true) }}
+    {% end %}
+  {% end %}
+
+  {% slot rule %}<span class="chirp-theme-footer__rule-mark" aria-hidden="true">ᗢ</span>{% end %}
+  {% slot colophon %}
+  <span>&copy; {{ site.build_time | dateformat('%Y') }} {{ _footer_site_title }}</span>
+  <span class="chirp-theme-footer__hint">chirp-theme · packaged with chirp-ui</span>
+  {% end %}
+{% end %}

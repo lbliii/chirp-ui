@@ -4,22 +4,28 @@
 {% from 'partials/components/tags.html' import tag_list %}
 {% from 'partials/components/related-posts-simple.html' import related_posts_simple %}
 {% from 'partials/navigation-components.html' import breadcrumbs %}
+{% from 'partials/page-actions.html' import page_actions %}
 {% from 'chirpui/hero.html' import page_hero %}
 {% from 'chirpui/layout.html' import container %}
-{% from 'chirpui/surface.html' import surface %}
 
 {% block content %}
 {% let page_title = page?.title ?? 'Page' %}
 {% let page_tags = page?.tags ?? [] %}
 {% let css_class = params?.css_class ?? '' %}
 
+<div class="chirp-theme-docs-layout chirp-theme-docs-layout--page" data-chirp-theme-surface="page">
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="Site catalog navigation">
+  {% include 'partials/docs-nav.html' %}
+</aside>
+<div class="chirp-theme-docs-layout__main">
 {% call container(cls='chirp-theme-page') %}
-  {% call surface(variant='default', cls='chirp-theme-page__article ' ~ css_class) %}
+<div class="chirp-theme-page__spine">
   <article class="page prose chirp-theme-page__article">
     {% call page_hero(title=page_title, subtitle=params?.description ?? meta_desc ?? none, variant='minimal', background='solid', cls='chirp-theme-page__header') %}
       {% slot eyebrow %}
       {{ breadcrumbs(page) }}
       {% end %}
+      {% slot actions %}{{ page_actions(page, 'chirp-theme-page-header-actions-menu') }}{% end %}
     {% end %}
 
     <div class="page-content chirp-theme-page__content">
@@ -35,9 +41,14 @@
     </footer>
     {% end %}
   </article>
-  {% end %}
 
   {{ page_navigation(page) }}
   {{ related_posts_simple(page?.related_posts ?? [], 'Related Posts') }}
+  {% with footer_class='chirp-theme-footer chirp-theme-footer--shell' %}{% include 'partials/site-footer.html' %}{% end %}
+</div>
 {% end %}
+</div>
+</div>
 {% end %}
+
+{% block site_footer %}{% end %}

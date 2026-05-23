@@ -1,13 +1,18 @@
 {% from "chirpui/hero.html" import page_hero %}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/layout.html" import cluster %}
+{% from "partials/navigation-components.html" import breadcrumbs %}
+{% from "partials/page-actions.html" import page_actions %}
 
 {% let meta = element?.metadata ?? {} %}
 {% let title = element?.qualified_name ?? element?.name ?? page?.title ?? title ?? "Reference" %}
 {% let description = element?.description ?? page?.description ?? description ?? none %}
 {% let element_type = element?.element_type ?? page?.type ?? "reference" %}
 
-{% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-reference-hero") %}
+{% call page_hero(title=title, subtitle=description, variant="editorial", background="solid", cls="chirp-theme-docs-layout__hero chirp-theme-doc-hero chirp-theme-api-hero chirp-theme-reference-hero") %}
+  {% slot eyebrow %}
+  {{ breadcrumbs(page) }}
+  {% end %}
   {% slot metadata %}
   {% call cluster(gap="xs") %}
     {{ badge(element_type, variant="muted") }}
@@ -15,4 +20,5 @@
     {% if meta?.is_async ?? false %}{{ badge("async", variant="info") }}{% end %}
   {% end %}
   {% end %}
+  {% slot actions %}{{ page_actions(page, 'chirp-theme-reference-actions-menu') }}{% end %}
 {% end %}

@@ -75,17 +75,14 @@ Rendered structure:
 - sectioning: `.theme-menu-section` fieldsets with `legend.separator`
 - options: `.theme-option`
 - theme mode payload: `data-appearance="system|light|dark"`
-- palette payload: `data-palette="<legacy-palette>"`
-- forward catalog hint: `data-theme-pack="ember|atlas|sage"`
 
 Runtime:
 
-- `core/theme.js` initializes the stored theme and palette.
-- `window.BengalTheme` exposes `get`, `set`, `toggle`, `getPalette`, and
-  `setPalette`.
+- `core/theme.js` initializes the stored appearance preference.
+- `window.BengalTheme` exposes `get`, `set`, and `toggle`.
 - Selecting `data-appearance` updates `<html data-theme="light|dark">`.
-- Selecting `data-palette` updates `<html data-palette="...">` or removes the
-  attribute for the default palette.
+- Initialization removes stale `bengal-palette` localStorage state and clears
+  any `data-palette` attribute left by older builds.
 - Popover open/close, light dismiss, escape handling, and top-layer behavior are
   owned by the browser.
 - JavaScript only persists state, updates active option classes, watches system
@@ -94,10 +91,9 @@ Runtime:
 Constraints:
 
 - Keep the menu IDs unique when rendering desktop and mobile controls.
-- Keep legacy `data-palette` names documented as transitional aliases, not new
-  Chirp UI theme-pack names.
-- Preserve `data-theme-pack` metadata so agents and future UI can map old
-  Bengal palettes to the curated `atlas`, `ember`, and `sage` families.
+- Do not reintroduce legacy Bengal palette controls or `data-theme-pack` alias
+  metadata. Future palette/theme-pack work should use a new Chirp UI-owned
+  contract rather than old Bengal names.
 
 ## Search Modal
 

@@ -19,10 +19,6 @@
   function initNavDropdowns() {
     const navItems = document.querySelectorAll('.nav-main > li');
 
-    if (!navItems.length) {
-      return;
-    }
-
     navItems.forEach(function(navItem) {
       const submenu = navItem.querySelector('.submenu');
       // Support both <a> links and <span class="nav-dropdown-trigger"> for dropdown-only items
@@ -193,10 +189,114 @@
     });
   }
 
+  /**
+   * Initialize Chirp UI navbar dropdowns rendered as native details elements.
+   */
+  function initChirpNavbarDropdowns() {
+    const dropdowns = document.querySelectorAll('.chirp-theme-shell__nav-dropdown');
+
+    dropdowns.forEach(function(dropdown) {
+      const trigger = dropdown.querySelector(':scope > .chirpui-navbar-dropdown__trigger');
+      const menu = dropdown.querySelector(':scope > .chirpui-navbar-dropdown__menu');
+
+      if (!trigger || !menu || dropdown.dataset.dropdownInit) {
+        return;
+      }
+
+      dropdown.dataset.dropdownInit = 'true';
+      trigger.setAttribute('aria-haspopup', 'true');
+      trigger.setAttribute('aria-expanded', dropdown.open ? 'true' : 'false');
+
+      if (!menu.id) {
+        menu.id = `navbar-menu-${Math.random().toString(36).slice(2, 9)}`;
+      }
+      trigger.setAttribute('aria-controls', menu.id);
+
+      let closeTimer = null;
+      const hoverMedia = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+      function closeOtherDropdowns() {
+        document.querySelectorAll('.chirp-theme-shell__nav-dropdown[open]').forEach(function(other) {
+          if (other !== dropdown) {
+            other.removeAttribute('open');
+            other.querySelector(':scope > .chirpui-navbar-dropdown__trigger')
+              ?.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      function openDropdown() {
+        clearTimeout(closeTimer);
+        closeOtherDropdowns();
+        dropdown.setAttribute('open', '');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeDropdown() {
+        clearTimeout(closeTimer);
+        dropdown.removeAttribute('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+
+      function queueClose() {
+        clearTimeout(closeTimer);
+        closeTimer = setTimeout(closeDropdown, 140);
+      }
+
+      dropdown.addEventListener('pointerenter', function(event) {
+        if (hoverMedia.matches && event.pointerType !== 'touch') {
+          openDropdown();
+        }
+      });
+
+      dropdown.addEventListener('pointerleave', function(event) {
+        if (hoverMedia.matches && event.pointerType !== 'touch') {
+          queueClose();
+        }
+      });
+
+      dropdown.addEventListener('focusin', openDropdown);
+      dropdown.addEventListener('focusout', function(event) {
+        if (!dropdown.contains(event.relatedTarget)) {
+          queueClose();
+        }
+      });
+
+      dropdown.addEventListener('toggle', function() {
+        trigger.setAttribute('aria-expanded', dropdown.open ? 'true' : 'false');
+        if (dropdown.open) {
+          closeOtherDropdowns();
+        }
+      });
+
+      trigger.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          openDropdown();
+          menu.querySelector('a')?.focus();
+        } else if (event.key === 'Escape') {
+          closeDropdown();
+          trigger.focus();
+        }
+      });
+
+      menu.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeDropdown();
+          trigger.focus();
+        }
+      });
+    });
+  }
+
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNavDropdowns);
+    document.addEventListener('DOMContentLoaded', function() {
+      initNavDropdowns();
+      initChirpNavbarDropdowns();
+    });
   } else {
     initNavDropdowns();
+    initChirpNavbarDropdowns();
   }
 })();

@@ -531,13 +531,11 @@
             }, 100);
 
             this._boundHandlers.themechange = debouncedUpdate;
-            this._boundHandlers.palettechange = debouncedUpdate;
 
             window.addEventListener('themechange', this._boundHandlers.themechange);
-            window.addEventListener('palettechange', this._boundHandlers.palettechange);
 
             // Note: NO MutationObserver - this was causing DevTools crashes
-            // The theme.js dispatches themechange/palettechange events which is sufficient
+            // The theme.js dispatches themechange events which is sufficient
         }
 
         highlightConnections(d) {
@@ -636,9 +634,6 @@
             // Remove event listeners
             if (this._boundHandlers.themechange) {
                 window.removeEventListener('themechange', this._boundHandlers.themechange);
-            }
-            if (this._boundHandlers.palettechange) {
-                window.removeEventListener('palettechange', this._boundHandlers.palettechange);
             }
             this._boundHandlers = {};
         }

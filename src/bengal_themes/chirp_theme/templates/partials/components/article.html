@@ -11,6 +11,8 @@ Usage:
 #}
 
 {% from 'partials/components/tags.html' import tag_list %}
+{% from 'chirpui/badge.html' import badge %}
+{% from 'chirpui/card.html' import resource_card %}
 
 {# =============================================================================
 ARTICLE CARD COMPONENT
@@ -31,62 +33,50 @@ Displays a rich card preview of an article with metadata, tags, and image.
 {% let article_author = author_data?.name ?? article_meta?.author ?? article_params?.author ?? '' %}
 {% let is_featured = article is featured %}
 {% let theme_features = theme?.features ?? [] %}
+{% let article_excerpt = none %}
+{% if show_excerpt and 'content.excerpts' in theme_features %}
+{% if article_desc %}
+{% let article_excerpt = article_desc %}
+{% elif article_content %}
+{% let article_excerpt = article_content | strip_html | excerpt(150) %}
+{% end %}
+{% end %}
 
-<article class="article-card gradient-border fluid-combined{{ ' featured-card' if is_featured else '' }}">
+{% call resource_card(
+  article.href ?? article._path ?? article.path ?? '#',
+  article.title,
+  description=article_excerpt,
+  top_meta=(article_date | time_ago if article_date else none),
+  cls='chirp-theme-article-card' ~ (' chirp-theme-article-card--featured' if is_featured else ''),
+  link_mode='main'
+) %}
+  {% slot badges %}
+  {% if is_featured %}
+  {{ badge('Featured', variant='warning') }}
+  {% end %}
+  {% if article | has_tag('new') %}
+  {{ badge('New', variant='success') }}
+  {% end %}
+  {% end %}
+
+{% slot subtitle %}
+  {% if article_author and 'content.author' in theme_features %}
+  {{ article_author }}
+  {% end %}
+  {% if article?.reading_time and 'content.reading_time' in theme_features %}
+  {{ ' · ' if article_author and 'content.author' in theme_features else '' }}{{ article.reading_time }} min read
+  {% end %}
+  {% end %}
+
   {% if show_image and article_image %}
   <img src="{{ image_url(article_image, width=800) }}" srcset="{{ article_image | image_srcset([400, 800, 1200]) }}"
     sizes="(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px" alt="{{ article_image | image_alt }}"
-    class="article-card-image" loading="lazy">
+    class="chirp-theme-article-card__image" loading="lazy">
   {% end %}
 
-  <div class="article-card-content">
-    {# Badges #}
-    <div class="article-card-badges">
-      {% if is_featured %}
-      <span class="badge badge-featured">⭐ Featured</span>
-      {% end %}
-      {% if article | has_tag('new') %}
-      <span class="badge badge-new">New</span>
-      {% end %}
-    </div>
-
-    <h2 class="article-card-title">
-      <a href="{{ article.href ?? article._path ?? article.path ?? '#' }}">{{ article.title }}</a>
-    </h2>
-
-    <div class="article-card-meta">
-      {% if article_date %}
-      <time datetime="{{ article_date | date_iso }}" title="{{ article_date | dateformat('%B %d, %Y') }}">
-        {{ article_date | time_ago }}
-      </time>
-      {% end %}
-
-      {% if article_author and 'content.author' in theme_features %}
-      <span class="author">{{ article_author }}</span>
-      {% end %}
-
-      {% if article?.reading_time and 'content.reading_time' in theme_features %}
-      <span class="reading-time">
-        {{ article.reading_time }} min read
-      </span>
-      {% end %}
-    </div>
-
-    {% if show_excerpt and 'content.excerpts' in theme_features %}
-    <p class="article-card-excerpt">
-      {% if article_desc %}
-      {{ article_desc }}
-      {% elif article_content %}
-      {{ article_content | strip_html | excerpt(150) }}
-      {% end %}
-    </p>
-    {% end %}
-
-    {% if article_tags | length > 0 %}
-    <div class="article-card-footer">
-      {{ tag_list(article_tags, small=true) }}
-    </div>
-    {% end %}
-  </div>
-</article>
+  {% if article_tags | length > 0 %}
+  {% slot footer %}
+  {{ tag_list(article_tags, small=true) }}
+{% end %}
+{% end %}
 {% end %}

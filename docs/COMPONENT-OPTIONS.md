@@ -1557,7 +1557,7 @@ Sidebar navigation for dashboards and app shells. Use `sidebar`, `sidebar_sectio
 | Macro | Params | Description |
 |-------|--------|-------------|
 | `sidebar` | `cls` | Container with header, nav, footer slots |
-| `sidebar_section` | `title`, `collapsible`, `cls` | Section group; `collapsible=true` uses details/summary |
+| `sidebar_section` | `title`, `collapsible`, `cls`, `open` | Section group; `collapsible=true` uses details/summary, `open=false` starts collapsed |
 | `sidebar_link` | `href`, `label`, `icon`, `active`, `match`, `boost`, `cls`, `badge`, `badge_label`, `badge_expected`, `badge_loading` | Nav link; `icon` recommended for collapsible mode; badge params render stable counts/status outside the label |
 | `sidebar_toggle` | `cls` | Toggle button for icon-only collapsed state |
 

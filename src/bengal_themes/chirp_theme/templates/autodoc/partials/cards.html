@@ -1,13 +1,24 @@
-{% from "chirpui/card.html" import resource_card %}
-{% from "chirpui/layout.html" import grid %}
-
 {% let items = items ?? element?.children ?? posts ?? pages ?? [] %}
 {% if items | length > 0 %}
-{% call grid(cols=3, gap="md", cls="chirp-theme-reference-grid") %}
-  {% for item in items %}
-  {% let name = item?.name ?? item?.title ?? "Reference" %}
-  {% let href = item?.href ?? item?.url ?? "#" ~ name %}
-  {{ resource_card(href, name, description=item?.description ?? item?.summary ?? none, top_meta=item?.element_type ?? item?.type ?? none, cls="chirp-theme-reference-card") }}
+{% for item in items %}
+{% let name = item?.name ?? item?.title ?? "Reference" %}
+{% let href = item?.href ?? item?.url ?? "#" ~ name %}
+{% let description = item?.description ?? item?.summary ?? none %}
+{% let kind = item?.element_type ?? item?.type ?? "reference" %}
+<a href="{{ href | absolute_url }}"
+   class="chirp-theme-reference-card"
+   data-chirp-theme-reference-kind="{{ kind }}"
+   title="{{ name }}"{{ route_link_attrs(href | absolute_url) | html_attrs }}>
+  <span class="chirp-theme-reference-card__mark" aria-hidden="true">{{ icon('code', size=16) }}</span>
+  <span class="chirp-theme-reference-card__eyebrow">{{ kind }}</span>
+  <strong class="chirp-theme-reference-card__title">{{ name }}</strong>
+  {% if description %}
+  <span class="chirp-theme-reference-card__description">{{ description }}</span>
   {% end %}
+  <span class="chirp-theme-reference-card__footer">
+    <span>Open reference</span>
+    {{ icon('arrow-right', size=14) }}
+  </span>
+</a>
 {% end %}
 {% end %}

@@ -49,9 +49,9 @@
 {% end %}
 {% end %}
 
-{% def sidebar_section(title="", collapsible=false, cls="") %}
+{% def sidebar_section(title="", collapsible=false, cls="", open=true) %}
 {% if collapsible %}
-<details class="chirpui-sidebar__section{{ " " ~ cls if cls else "" }}" open>
+<details class="chirpui-sidebar__section{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
     <summary class="chirpui-sidebar__section-title">{{ title }}</summary>
     <div class="chirpui-sidebar__section-links">{% slot %}</div>
 </details>

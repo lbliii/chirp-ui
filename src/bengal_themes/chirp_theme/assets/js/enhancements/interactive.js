@@ -88,11 +88,18 @@
    * Shows a floating button when user scrolls down
    */
   function setupBackToTop() {
-    // Find existing button from template (static HTML is more reliable)
-    const button = document.querySelector('.back-to-top');
-    if (!button) {
+    // Find existing controls from templates (static HTML is more reliable)
+    const buttons = Array.from(document.querySelectorAll('.back-to-top'));
+    if (!buttons.length) {
       log('Back-to-top button not found in template');
       return;
+    }
+    const railButton = buttons.find((btn) => btn.classList.contains('chirp-theme-rail-top'));
+    const floatingButton = buttons.find((btn) => btn.classList.contains('chirp-theme-floating-top'));
+    const activeButtons = railButton ? [railButton] : buttons;
+    if (railButton && floatingButton) {
+      floatingButton.hidden = true;
+      floatingButton.setAttribute('aria-hidden', 'true');
     }
 
     // Show/hide based on scroll position
@@ -103,7 +110,9 @@
 
       if (shouldShow !== isVisible) {
         isVisible = shouldShow;
-        button.classList.toggle('visible', shouldShow);
+        activeButtons.forEach((button) => {
+          button.classList.toggle('visible', shouldShow);
+        });
       }
     };
 
@@ -115,10 +124,12 @@
     });
 
     // Scroll to top on click
-    button.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+    activeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       });
     });
 
