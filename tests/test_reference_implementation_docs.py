@@ -7,6 +7,9 @@ PAGE_ACTIONS = ROOT / "docs" / "reference-implementations" / "PAGE-ACTIONS-AI-RE
 LINKED_NAV = ROOT / "docs" / "reference-implementations" / "LINKED-NAV-CATALOG-REFERENCE.md"
 COMPACT_HEADER = ROOT / "docs" / "reference-implementations" / "COMPACT-HEADER-REFERENCE.md"
 SHELL_RESPONSE = ROOT / "docs" / "reference-implementations" / "SHELL-RESPONSE-REFERENCE.md"
+DENSE_REFERENCE = (
+    ROOT / "docs" / "reference-implementations" / "DENSE-REFERENCE-DATA-REFERENCE.md"
+)
 
 
 def test_reference_implementation_playbook_defines_evidence_ladder() -> None:
@@ -202,5 +205,45 @@ def test_shell_response_reference_brief_keeps_problem_non_visual() -> None:
         "CSS",
         "manifest",
         "new HTMX protocol",
+    ]:
+        assert boundary in text
+
+
+def test_dense_reference_data_brief_avoids_grid_engine_jump() -> None:
+    text = DENSE_REFERENCE.read_text(encoding="utf-8")
+
+    for primitive in [
+        "`resource_index`",
+        "`resource_card`",
+        "`filter_rail`",
+        "`filter_bar`",
+        "`search_header`",
+        "`table`",
+        "`params_table`",
+        "`card`",
+        "`badge`",
+        "`callout`",
+    ]:
+        assert primitive in text
+
+    for proof in [
+        "Filter and search controls stay reachable",
+        "Long module, function, parameter, and type names wrap without overflow",
+        "Empty, loading, and error states",
+        "without introducing a heavy grid engine",
+        "Browser proof covers 320, 768, and 1280 widths",
+    ]:
+        assert proof in text
+
+    for boundary in [
+        "does not authorize a data-grid engine",
+        "virtualized table",
+        "reference-page macro",
+        "new filter-count API",
+        "emitted classes",
+        "CSS",
+        "descriptor changes",
+        "manifest updates",
+        "JavaScript layout runtime",
     ]:
         assert boundary in text
