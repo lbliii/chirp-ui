@@ -23,3 +23,36 @@ before changing public contracts.
 | Linked navigation | Compose sidebar, linked nav tree, and drawer fallback before considering new nav-tree/sidebar API. |
 | Compact headers | Choose among existing header primitives before considering compact header or page-hero markup changes. |
 | Shell response/OOB | Keep target branching route-local or filesystem-mounted before considering response helper APIs. |
+
+## Dense Reference/Data Pages
+
+Use this recipe for API reference, module browser, object catalog, and dense
+documentation pages that need search, filters, cards, parameter tables, and
+feedback states.
+
+Start with:
+
+- `resource_index` for the search/filter/results frame.
+- `resource_card` for module, class, endpoint, or object summaries.
+- `filter_rail` only when the filter set is persistent navigation-like scope.
+- `filter_bar` for route-local filter controls.
+- `table` for compact member lists.
+- `params_table` for API parameter and return-value data.
+- `badge` for maturity/status labels, not overloaded filter metadata.
+- `callout` for empty, loading, warning, and error states.
+
+Authoring rules:
+
+- Keep dense reference pages recipe-first when existing primitives preserve
+  search reachability, readable names, and no document-level overflow.
+- Prefer `resource_index` plus `resource_card` before creating a bespoke
+  reference-page wrapper.
+- Prefer `table` or `params_table` before proposing a data-grid engine.
+- Treat counts in rails as navigation metadata only when they behave like scope
+  counts; do not reuse them for rich filter state without new proof.
+- Record another reference only if copyable anchors, route-local actions,
+  filter metadata, or member-list rhythm fails in a second dense reference.
+
+Not authorized: data-grid engine, virtualized table, reference-page macro,
+filter-count API, JavaScript layout runtime, emitted classes, CSS, descriptor
+changes, manifest updates, or generated options.

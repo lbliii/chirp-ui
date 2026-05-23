@@ -124,6 +124,46 @@ def test_reference_recipe_guidance_defines_source_only_boundary() -> None:
         assert f"| {candidate} |" in text
 
 
+def test_reference_recipe_guidance_covers_dense_reference_pages() -> None:
+    text = RECIPE_GUIDANCE.read_text(encoding="utf-8")
+    section = text.split("## Dense Reference/Data Pages", 1)[1]
+    normalized = " ".join(section.split())
+
+    for primitive in [
+        "`resource_index`",
+        "`resource_card`",
+        "`filter_rail`",
+        "`filter_bar`",
+        "`table`",
+        "`params_table`",
+        "`badge`",
+        "`callout`",
+    ]:
+        assert primitive in section
+
+    for rule in [
+        "search reachability",
+        "readable names",
+        "no document-level overflow",
+        "Prefer `resource_index` plus `resource_card`",
+        "Prefer `table` or `params_table`",
+        "counts in rails as navigation metadata",
+        "copyable anchors, route-local actions, filter metadata",
+        "second dense reference",
+    ]:
+        assert rule in normalized
+
+    for blocked in [
+        "data-grid engine",
+        "virtualized table",
+        "reference-page macro",
+        "filter-count API",
+        "JavaScript layout runtime",
+        "manifest updates",
+    ]:
+        assert blocked in normalized
+
+
 def test_reference_proof_analysis_keeps_public_api_closed() -> None:
     text = PROOF_ANALYSIS.read_text(encoding="utf-8")
 
