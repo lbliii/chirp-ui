@@ -29,8 +29,10 @@ USAGE:
 #}
 
 {% from 'chirpui/breadcrumbs.html' import breadcrumbs as chirp_breadcrumbs %}
+{% from 'chirpui/badge.html' import badge %}
 {% from 'chirpui/card.html' import resource_card %}
-{% from 'chirpui/layout.html' import grid %}
+{% from 'chirpui/layout.html' import cluster, grid, section_header, stack %}
+{% from 'chirpui/surface.html' import surface %}
 
 {# =============================================================================
 BREADCRUMBS COMPONENT
@@ -53,21 +55,6 @@ For display in HTML href attributes, apply the | absolute_url filter.
 {% enddef %}
 
 {# =============================================================================
-PAGINATION ITEM HELPER
-
-Renders a single pagination item (ellipsis, current page, or link).
-============================================================================= #}
-{% def pagination_item(item) %}
-{% if item?.is_ellipsis %}
-<span class="ellipsis">...</span>
-{% elif item?.is_current %}
-<span class="active" aria-current="page">{{ item.num }}</span>
-{% else %}
-<a href="{{ item.href }}">{{ item.num }}</a>
-{% end %}
-{% end %}
-
-{# =============================================================================
 PAGINATION COMPONENT
 
 Displays page number controls for paginated content with prev/next buttons.
@@ -76,45 +63,28 @@ Displays page number controls for paginated content with prev/next buttons.
 {% if total_pages > 1 %}
 {% let p = get_pagination_items(current_page, total_pages, base_url) %}
 
-<nav class="pagination" role="navigation" aria-label="Pagination">
-  <ul>
-    {# Previous Button #}
-    <li>
-      {% if p?.prev %}
-      <a href="{{ p.prev.href }}" aria-label="Previous page">
-        {{ icon('caret-left', size=20) }}
-        Previous
-      </a>
-      {% else %}
-      <span class="disabled">
-        {{ icon('caret-left', size=20) }}
-        Previous
-      </span>
-      {% end %}
-    </li>
+<nav class="chirpui-pagination chirp-theme-pagination" role="navigation" aria-label="Pagination">
+  {% if p?.prev %}
+  <a class="chirpui-pagination__link chirpui-pagination__prev" href="{{ p.prev.href }}" aria-label="Previous page"{{ route_link_attrs(p.prev.href) | html_attrs }}>&laquo;</a>
+  {% else %}
+  <button type="button" class="chirpui-pagination__link chirpui-pagination__prev chirpui-pagination__link--disabled" disabled aria-label="Previous page">&laquo;</button>
+  {% end %}
 
-    {# Page Numbers #}
     {% for item in p?.pages ?? [] %}
-    <li>
-      {{ pagination_item(item) }}
-    </li>
+    {% if item?.is_ellipsis %}
+    <span class="chirpui-pagination__ellipsis">&hellip;</span>
+    {% elif item?.is_current %}
+    <span class="chirpui-pagination__link chirpui-pagination__link--active" aria-current="page">{{ item.num }}</span>
+    {% else %}
+    <a class="chirpui-pagination__link" href="{{ item.href }}"{{ route_link_attrs(item.href) | html_attrs }}>{{ item.num }}</a>
+    {% end %}
     {% end %}
 
-    {# Next Button #}
-    <li>
-      {% if p?.next %}
-      <a href="{{ p.next.href }}" aria-label="Next page">
-        Next
-        {{ icon('caret-right', size=20) }}
-      </a>
-      {% else %}
-      <span class="disabled">
-        Next
-        {{ icon('caret-right', size=20) }}
-      </span>
-      {% end %}
-    </li>
-  </ul>
+  {% if p?.next %}
+  <a class="chirpui-pagination__link chirpui-pagination__next" href="{{ p.next.href }}" aria-label="Next page"{{ route_link_attrs(p.next.href) | html_attrs }}>&raquo;</a>
+  {% else %}
+  <button type="button" class="chirpui-pagination__link chirpui-pagination__next chirpui-pagination__link--disabled" disabled aria-label="Next page">&raquo;</button>
+  {% end %}
 </nav>
 {% end %}
 {% end %}
@@ -175,48 +145,31 @@ Displays statistics and subsection cards for exploring a section hierarchy.
 {% let recursive_pages = page?.regular_pages_recursive ?? [] %}
 
 {% if regular_pages | length > 0 or sections | length > 0 %}
-<div class="section-navigation">
-  {# Section stats #}
-  <div class="section-stats">
-    <p class="stat">
-      <strong>{{ regular_pages | length }}</strong> pages in this section
-    </p>
+{% call surface(variant='default', cls='chirp-theme-section-nav') %}
+  {{ section_header('Explore this section') }}
+  {% call cluster(gap='sm', cls='chirp-theme-section-nav__stats') %}
+    {{ badge((regular_pages | length) ~ ' page' ~ ('s' if (regular_pages | length) != 1 else ''), variant='muted') }}
     {% if sections | length > 0 %}
-    <p class="stat">
-      <strong>{{ sections | length }}</strong> subsections
-    </p>
+    {{ badge((sections | length) ~ ' subsection' ~ ('s' if (sections | length) != 1 else ''), variant='muted') }}
     {% end %}
     {% if recursive_pages | length > regular_pages | length %}
-    <p class="stat">
-      <strong>{{ recursive_pages | length }}</strong> total pages (including subsections)
-    </p>
+    {{ badge((recursive_pages | length) ~ ' total pages', variant='muted') }}
     {% end %}
-  </div>
+  {% end %}
 
-  {# Subsection cards #}
   {% if sections | length > 0 %}
-  <div class="subsections">
-    <h2>Subsections</h2>
-    <div class="subsection-grid">
+  {% call stack(gap='md', cls='chirp-theme-section-nav__subsections') %}
+    {{ section_header('Subsections', variant='inline') }}
+    {% call grid(cols=3, gap='md', cls='chirp-theme-section-nav__grid') %}
       {% for subsection in sections %}
       {% let sub_desc = subsection?.metadata?.description ?? '' %}
       {% let sub_pages = subsection?.regular_pages ?? [] %}
-      <div class="subsection-card gradient-border fluid-combined">
-        <h3>
-          <a href="{{ subsection.href }}">{{ subsection.title }}</a>
-        </h3>
-        {% if sub_desc %}
-        <p>{{ sub_desc }}</p>
-        {% end %}
-        <p class="subsection-meta">
-          {{ sub_pages | length }} pages
-        </p>
-      </div>
+      {{ resource_card(subsection.href | absolute_url, subsection.title, description=sub_desc, top_meta=(sub_pages | length) ~ ' page' ~ ('s' if (sub_pages | length) != 1 else ''), cls='chirp-theme-section-nav__card') }}
       {% end %}
-    </div>
-  </div>
+    {% end %}
   {% end %}
-</div>
+  {% end %}
+{% end %}
 {% end %}
 {% end %}
 
@@ -245,34 +198,36 @@ KIDA FEATURES SHOWCASED:
 {% let has_children = children | length > 0 %}
 
 {% if node_id %}
-<li class="toc-item toc-level-{{ node_level }}" role="treeitem" data-level="{{ node_level }}">
+<li class="chirpui-nav-tree__item toc-item toc-level-{{ node_level }} chirp-theme-doc-toc__item chirp-theme-doc-toc__item--level-{{ node_level }}" role="treeitem" data-level="{{ node_level }}">
   {% if has_children %}
   {# Auto-expand based on heading level using match #}
   {# Add data-toc-section for top-level groups (used by track filtering) #}
   {% match node_level %}
-  {% case 1 %}<details class="toc-group" {{ 'data-toc-section' if is_section else '' }} open>
-  {% case 2 %}<details class="toc-group" {{ 'data-toc-section' if is_section else '' }} open>
-  {% case _ %}<details class="toc-group">
+  {% case 1 %}<details class="chirpui-nav-tree__node toc-group chirp-theme-doc-toc__group" {{ 'data-toc-section' if is_section else '' }} open>
+  {% case 2 %}<details class="chirpui-nav-tree__node toc-group chirp-theme-doc-toc__group" {{ 'data-toc-section' if is_section else '' }} open>
+  {% case _ %}<details class="chirpui-nav-tree__node toc-group chirp-theme-doc-toc__group">
   {% end %}
-    <summary class="toc-group-header">
-      <a href="#{{ node_id }}" class="toc-link" data-toc-item="#{{ node_id }}">
+    <summary class="chirpui-nav-tree__label toc-group-header chirp-theme-doc-toc__group-header">
+      <span class="chirp-theme-doc-toc__mark" aria-hidden="true">H{{ node_level }}</span>
+      <a href="#{{ node_id }}" class="chirpui-nav-tree__link toc-link chirp-theme-doc-toc__link" data-toc-item="#{{ node_id }}">
         {{ node_title }}
       </a>
       {% spaceless %}
-      <span class="toc-count-badge" title="{{ children | length }} subsections">
+      <span class="chirpui-nav-tree__badge toc-count-badge chirp-theme-doc-toc__count" title="{{ children | length }} subsections">
         <span class="toc-count">{{ children | length }}</span>
       </span>
       {% end %}
     </summary>
-    <ul class="toc-subitems" role="group">
+    <ul class="chirpui-nav-tree__list chirpui-nav-tree__list--nested toc-subitems chirp-theme-doc-toc__subitems" role="group">
       {% for child in children %}
       {{ toc_node(child) }}
       {% end %}
     </ul>
   </details>
   {% else %}
-  <a href="#{{ node_id }}" class="toc-link" data-toc-item="#{{ node_id }}">
-    {{ node_title }}
+  <a href="#{{ node_id }}" class="chirpui-nav-tree__link chirpui-nav-tree__link--leaf toc-link chirp-theme-doc-toc__link" data-toc-item="#{{ node_id }}">
+    <span class="chirp-theme-doc-toc__mark" aria-hidden="true">H{{ node_level }}</span>
+    <span class="chirp-theme-doc-toc__label">{{ node_title }}</span>
   </a>
   {% end %}
 </li>
@@ -282,19 +237,31 @@ KIDA FEATURES SHOWCASED:
 {% def toc(toc_items=none, toc=none, page=none) %}
 {# Cache TOC rendering per-page for performance #}
 {% cache 'toc-' ~ (page?._path ?? 'unknown') %}
-<div class="toc-sidebar" data-bengal="toc">
+<div class="chirpui-nav-tree toc-sidebar chirp-theme-doc-toc" data-bengal="toc">
+  {% let toc_count = toc_items | length if toc_items else 0 %}
+  <div class="chirp-theme-doc-toc__context">
+    <span class="chirp-theme-doc-toc__context-mark" aria-hidden="true">{{ icon('list', size=16) }}</span>
+    <div class="chirp-theme-doc-toc__context-copy">
+      <span class="chirp-theme-doc-toc__eyebrow">Page map</span>
+      <strong>{{ page?.title ?? 'This page' }}</strong>
+    </div>
+    {% if toc_count > 0 %}
+    <span class="chirp-theme-doc-toc__context-count">{{ toc_count }}</span>
+    {% end %}
+  </div>
+
   {# Scroll Progress Indicator #}
   <div class="toc-progress" aria-hidden="true">
     <div class="toc-progress-bar"></div>
   </div>
 
   {# Table of Contents #}
-  <nav class="toc-nav" aria-label="Table of contents" data-toc-mode="normal">
+  <nav class="chirp-theme-doc-toc__nav" aria-label="Table of contents" data-toc-mode="normal">
     {% if toc_items %}
     {# Build nested tree structure for proper children/count badge display #}
     {% let nested_items = build_toc_tree(toc_items) %}
-    <div class="toc-scroll-container">
-      <ul class="toc-items" role="tree">
+    <div class="chirp-theme-doc-toc__scroll">
+      <ul class="chirpui-nav-tree__list toc-items chirp-theme-doc-toc__items" role="tree">
         {% for item in nested_items %}
         {{ toc_node(item, is_section=true) }}
         {% end %}
@@ -315,7 +282,7 @@ KIDA FEATURES SHOWCASED:
   {% let github_edit_base = config?.github_edit_base %}
   {% let source_path = page?.source_path %}
 
-  <div class="toc-metadata">
+  <div class="toc-metadata chirp-theme-doc-toc__metadata">
     {# Last Updated #}
     {% with page.date as date %}
     <div class="toc-meta-item">

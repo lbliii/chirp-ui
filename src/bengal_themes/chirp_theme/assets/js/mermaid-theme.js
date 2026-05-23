@@ -497,9 +497,8 @@
         }
 
         // v2: Use event listeners instead of MutationObserver
-        // The theme.js dispatches 'themechange' and 'palettechange' events
+        // The theme.js dispatches 'themechange' events
         window.addEventListener('themechange', handleThemeChange);
-        window.addEventListener('palettechange', handleThemeChange);
 
         // Note: Removed MutationObserver - it was causing DevTools performance issues
         // The theme system dispatches events which is sufficient for detecting changes

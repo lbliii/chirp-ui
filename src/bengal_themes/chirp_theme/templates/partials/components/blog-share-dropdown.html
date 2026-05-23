@@ -4,12 +4,15 @@ Blog Share Dropdown Component
 ================================================================================
 
 Share dropdown for blog posts - Copy URL + social links.
-Uses page-hero__share styling (same as docs). No LLM actions.
+Rendered with Chirp UI dropdown classes while retaining the packaged copy hook.
+No LLM actions.
 
 Usage:
   {{ blog_share_dropdown(page, page_href) }}
 ================================================================================
 #}
+
+{% from 'chirpui/dropdown.html' import dropdown %}
 
 {% def blog_share_dropdown(page, page_href) %}
 {% let platforms = [
@@ -19,34 +22,17 @@ Usage:
     {'id': 'reddit', 'label': 'Reddit', 'icon': 'reddit-logo'},
     {'id': 'email', 'label': 'Email', 'icon': 'envelope-simple'}
 ] %}
-<div class="page-hero__actions">
-    <div class="page-hero__share">
-        <button class="page-hero__share-trigger" popovertarget="blog-post-share-menu"
-            aria-label="{{ t('blog.share_post', default='Share this post') }}"
-            title="{{ t('blog.share_post', default='Share this post') }}">
-            <span>ᗢ</span>
-            {{ icon('caret-down', size=14, css_class='page-hero__share-chevron') }}
-        </button>
+{% call dropdown(label=t('blog.share_post', default='Share this post'), cls='chirp-theme-blog-share') %}
+    <button class="chirpui-dropdown__item" data-action="copy-url" data-url="{{ page_href }}" type="button">
+        {{ icon('link', size=16) }}
+        <span>{{ t('share.copy_url', default='Copy URL') }}</span>
+    </button>
 
-        <div id="blog-post-share-menu" popover class="page-hero__share-dropdown--popover">
-            <div class="page-hero__share-content">
-                <button class="page-hero__share-item" data-action="copy-url" data-url="{{ page_href }}" type="button">
-                    {{ icon('link', size=16) }}
-                    <span>{{ t('share.copy_url', default='Copy URL') }}</span>
-                </button>
-
-                <hr class="page-hero__share-separator">
-
-                <div class="page-hero__share-section-header">{{ t('blog.share_post', default='Share this post') }}</div>
-                {% for platform in platforms %}
-                <a href="{{ share_url(platform.id, page) }}" target="_blank" rel="noopener noreferrer"
-                    class="page-hero__share-item">
-                    {{ icon(platform.icon, size=16) }}
-                    <span>{{ platform.label }}</span>
-                </a>
-                {% end %}
-            </div>
-        </div>
-    </div>
-</div>
+    {% for platform in platforms %}
+    <a href="{{ share_url(platform.id, page) }}" target="_blank" rel="noopener noreferrer" class="chirpui-dropdown__item">
+        {{ icon(platform.icon, size=16) }}
+        <span>{{ platform.label }}</span>
+    </a>
+    {% end %}
+{% end %}
 {% end %}

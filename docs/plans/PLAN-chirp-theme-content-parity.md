@@ -1,23 +1,27 @@
-# chirp-theme content parity waves
+# chirp-theme bespoke rewrite waves
 
-**Status:** residual backlog  
+**Status:** active bespoke rewrite
 **Owner:** chirp-theme  
-**Scope:** Bengal default output parity through Chirp UI-native templates
+**Scope:** Fully custom Bengal theme implemented with Chirp UI primitives
 
-> Current note: all six parity waves have shipped at the source-contract level.
-> Remaining work is dedicated fixture coverage for authors, categories,
-> archives, and other content surfaces called out in the wave notes.
+> Current note: this plan has been reframed. `chirp-theme` is not a Bengal
+> default-theme parity project. It is a 100% bespoke theme whose implementation
+> language is Chirp UI macros, `--chirpui-*` tokens, and narrowly scoped
+> theme-owned CSS. The retained asset shim is temporary platform plumbing, not
+> the theme architecture.
 
 ## Context
 
 `chirp-theme` is no longer a thin clone of Bengal default. The retained shell,
-docs, blog, card directives, docs navigation, and admonition directive now route
+docs, blog, card directives, docs navigation, and admonition directive route
 through Chirp UI primitives or narrowly scoped integration CSS.
 
-The next goal is full content/output parity with the original Bengal default
-theme without copying its bespoke template and CSS architecture forward. Each
-wave should translate the default-theme idea into current Kida templates,
-`chirpui/*` macros, and `--chirpui-*` tokens.
+The next goal is not matching the original Bengal default theme. The goal is a
+fully bespoke Bengal theme with its own shell, content hierarchy, navigation
+model, page rhythm, and reference surfaces. When a default-theme surface is
+still useful as input, treat it as product research, then rebuild the output
+from first principles with current Kida templates, `chirpui/*` macros, and
+`--chirpui-*` tokens.
 
 Audit basis: compared
 `b-stack/bengal/bengal/themes/default/templates/` with
@@ -25,17 +29,70 @@ Audit basis: compared
 Excluding default-theme documentation files and `__pycache__`, 61 template paths
 are shared and 83 default-theme output templates remain unported.
 
-## Parity Gap
+## Custom Theme Backlog
 
-| Family | Missing templates | Primary Chirp UI translation |
-|---|---:|---|
-| Autodoc and reference internals | 41 | docs frame, sidebar, breadcrumbs, cards, tables, badges, code blocks, callouts |
-| Shortcodes | 13 | callout, figure/media embeds, disclosure/details, code/highlight, safe links |
-| Taxonomy/archive/author/category | 8 | resource cards, resource indexes, badges, list filters |
-| API/OpenAPI hubs | 8 | route tabs, endpoint cards, schema tables, code samples, request/response panels |
-| Tracks/tutorial/notebook/changelog/resume | 9 | learning layout, progress/stepper, sidebar, resource cards, prose surfaces |
-| Blog utility pages and root aliases | 3 | page templates composed from retained blog/page primitives |
-| CLI reference section index | 1 | reference index card/grid pattern |
+| Family | Legacy surface to retire | Bespoke Chirp UI target |
+|---|---|---|
+| Shell and navigation | copied header/menu/footer shape | Chirp UI navbar/footer shell with theme-owned identity, mobile dialog, search, and theme controls |
+| Docs and prose | generic docs/page frames | bespoke article frame, docs rail, TOC rail, breadcrumbs, prose surface, action bar |
+| Blog and editorial | post/list defaults | editorial hero, resource cards, tags, related content, archive rhythm |
+| Autodoc and reference internals | default reference tables/cards | reference frame, route tabs, schema tables, code panels, badges, callouts |
+| Shortcodes and embeds | copied shortcode wrappers | callout, figure/media embeds, disclosure/details, code/highlight, safe links |
+| Taxonomy/archive/author/category | default listing cards | resource indexes, badges, list filters, author/category landing surfaces |
+| API/OpenAPI hubs | default API hubs | endpoint cards, request/response panels, schema tables, reference nav |
+| Tracks/tutorial/notebook/changelog/resume | learning/resume defaults | learning layout, progress/stepper, sidebar, resource cards, prose surfaces |
+
+## Current Wave — Bespoke Shell And Content Spine
+
+Status: in progress.
+
+Build the theme's own visible spine before deeper verticals:
+
+- desktop shell uses Chirp UI navbar and site footer macros;
+- mobile navigation, search modal, theme controls, and the asset shim remain
+  Bengal/theme-owned until platform support replaces them;
+- body and main content expose stable `chirp-theme-shell` hooks;
+- core page, docs, blog, listing, search, and error templates keep moving
+  toward Chirp UI primitives and away from copied default-theme structure.
+- docs list/single pages call Chirp UI `page_hero` directly, and the legacy
+  page-hero compatibility macros now emit Chirp UI `page_hero` markup with
+  theme-owned hooks;
+- pagination, section navigation, and the docs TOC carry Chirp UI pagination,
+  card, badge, grid, surface, and nav-tree classes while retaining the JS hooks
+  Bengal still owns.
+- docs, generic page, blog, and section index single/list pages now stay inside
+  the app-shell frame and render only their owned content in the main panel.
+- the catalog-browser shape uses a symbol-only primary `filter_rail` with
+  hover/focus labels beside the existing Chirp UI sidebar section tree.
+- the inner rail now behaves like a contextual workbench: it has a section
+  identity card, article-set metadata, type-aware row icons, row metadata, and
+  active branch card styling.
+- the right TOC rail now follows the same rail language as a compact page map:
+  page identity, heading count, progress stripe, heading-level marks, and
+  active row/card styling.
+- the old floating back-to-top button is now a rail action when the TOC rail is
+  present, with the body-level control retained only as a fallback for pages
+  without that rail.
+- blog article, author, share, article-card, and card-base compatibility
+  surfaces now emit Chirp UI card, surface, dropdown, button, and resource-card
+  markup instead of the old `.blog-post`, `.article-card`, `.card__*`, and
+  share-button families.
+
+Required proof:
+- `base.html` imports and uses `chirpui/navbar.html` and
+  `chirpui/site_footer.html`;
+- body output carries `data-chirp-theme-spine="bespoke"`;
+- the theme stylesheet contains active `chirp-theme-shell` hooks;
+- the current `assets/css/style.css` Chirp UI imports remain until Bengal
+  library asset modes are released;
+- built docs pages use `chirp-theme-doc-hero`, `chirp-theme-doc-toc`, and
+  `chirpui-nav-tree` hooks instead of active legacy page-hero roots;
+- built article pages use `chirp-theme-doc-catalog` and `chirpui-filter-rail`
+  hooks for the full-page double-left-rail catalog shell;
+- source contracts cover blog single pages and article-card compatibility
+  surfaces with `chirp-theme-blog-article` and `chirpui-resource-card`
+  without active `.blog-post` roots;
+- built HTML references emitted assets only.
 
 ## Ranked Waves
 

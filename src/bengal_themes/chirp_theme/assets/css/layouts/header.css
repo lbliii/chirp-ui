@@ -837,58 +837,6 @@ header[role="banner"][data-sticky="false"] {
 }
 
 /* ============================================
-   PALETTE-SPECIFIC ACTIVE NAVIGATION STYLING
-   ============================================ */
-
-/* Brown Bengal - Warm amber active navigation */
-[data-palette="brown-bengal"] .nav-main li.active>a,
-[data-palette="brown-bengal"] .nav-main .submenu li.active>a {
-  color: var(--color-primary);
-  background-color: var(--color-primary-light);
-}
-
-[data-theme="dark"][data-palette="brown-bengal"] .nav-main li.active>a,
-[data-theme="dark"][data-palette="brown-bengal"] .nav-main .submenu li.active>a {
-  background-color: var(--color-primary-light);
-}
-
-/* Blue Bengal - Soft powder blue active navigation */
-[data-palette="blue-bengal"] .nav-main li.active>a,
-[data-palette="blue-bengal"] .nav-main .submenu li.active>a {
-  color: var(--color-primary);
-  background-color: var(--color-primary-light);
-}
-
-[data-theme="dark"][data-palette="blue-bengal"] .nav-main li.active>a,
-[data-theme="dark"][data-palette="blue-bengal"] .nav-main .submenu li.active>a {
-  background-color: var(--color-primary-light);
-}
-
-/* Silver Bengal - High contrast monochrome active navigation */
-[data-palette="silver-bengal"] .nav-main li.active>a,
-[data-palette="silver-bengal"] .nav-main .submenu li.active>a {
-  color: var(--color-primary);
-  background-color: var(--color-primary-light);
-}
-
-[data-theme="dark"][data-palette="silver-bengal"] .nav-main li.active>a,
-[data-theme="dark"][data-palette="silver-bengal"] .nav-main .submenu li.active>a {
-  background-color: var(--color-primary-light);
-}
-
-/* Charcoal Bengal - Dramatic slate active navigation */
-[data-palette="charcoal-bengal"] .nav-main li.active>a,
-[data-palette="charcoal-bengal"] .nav-main .submenu li.active>a {
-  color: var(--color-primary);
-  background-color: var(--color-primary-light);
-}
-
-[data-theme="dark"][data-palette="charcoal-bengal"] .nav-main li.active>a,
-[data-theme="dark"][data-palette="charcoal-bengal"] .nav-main .submenu li.active>a {
-  background-color: var(--color-primary-light);
-}
-
-/* ============================================
    POPOVER PATTERN: Theme Menu
    See: assets/COMPONENT-PATTERNS.md
 

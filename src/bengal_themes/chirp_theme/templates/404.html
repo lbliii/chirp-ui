@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
-{% from "chirpui/layout.html" import container %}
-{% from "partials/empty-state.html" import empty_state %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import container, grid %}
+{% from "chirpui/surface.html" import surface %}
 
 {% block title %}Page Not Found - {{ config?.title ?? 'Site' }}{% end %}
 
@@ -16,15 +19,29 @@
 {% let nav_items = main_menu if main_menu | length > 0 else auto_nav %}
 {% let home_url = '/' | absolute_url %}
 
-{% call container() %}
-  {{ empty_state(
-      title="Page Not Found",
-      message="The page you're looking for does not exist or may have moved.",
-      icon_name="compass",
-      code="404",
-      actions=[{'href': home_url, 'label': 'Go Home', 'icon': 'house'}],
-      suggestions=nav_items[:5] if nav_items | length > 0 else none,
-      show_search_hint=true
-  ) }}
+{% call container(max_width='72rem', cls='chirp-theme-error') %}
+  <div class="chirp-theme-error__spine" data-chirp-theme-surface="error">
+    {% call surface(variant='default', cls='chirp-theme-error__panel') %}
+      {% call page_hero(title='Page Not Found', subtitle="The page you're looking for does not exist or may have moved.", variant='minimal', background='solid', cls='chirp-theme-error__hero') %}
+        {% slot eyebrow %}404{% end %}
+        {% slot actions %}
+        {{ btn('Go Home', href=home_url, variant='primary', icon='home') }}
+        {{ btn('Search', href='/search/' | absolute_url, variant='secondary', icon='search') }}
+        {% end %}
+      {% end %}
+
+      {% if nav_items | length > 0 %}
+      <section class="chirp-theme-error__suggestions" aria-labelledby="chirp-theme-error-suggestions">
+        <h2 id="chirp-theme-error-suggestions">Try one of these entry points</h2>
+        {% call grid(cols=2, gap='md', cls='chirp-theme-error__grid') %}
+          {% for item in nav_items[:4] %}
+          {% let item_href = item?.href ?? item?.url ?? item?._path ?? '#' %}
+          {{ resource_card(item_href | absolute_url, item?.name ?? item?.title ?? 'Link', item?.description ?? item?.metadata?.description ?? '') }}
+          {% end %}
+        {% end %}
+      </section>
+      {% end %}
+    {% end %}
+  </div>
 {% end %}
 {% end %}

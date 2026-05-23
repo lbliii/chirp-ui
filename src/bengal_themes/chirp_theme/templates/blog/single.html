@@ -5,7 +5,6 @@
 {% from 'partials/components/tags.html' import tag_list %}
 {% from 'partials/components/related-posts-simple.html' import related_posts_simple %}
 {% from 'chirpui/hero.html' import page_hero %}
-{% from 'chirpui/surface.html' import surface %}
 
 {% block blog_hero %}
 {% let post_date = page?.date ?? none %}
@@ -22,19 +21,17 @@
 {% end %}
 
 {% block blog_content %}
-{% call surface(variant='default', cls='chirp-theme-blog__article-shell') %}
-<article class="blog-post prose">
-  <div class="blog-post-content">
+<article class="chirp-theme-blog-article prose chirp-theme-blog__article-shell">
+  <div class="chirp-theme-blog-article__content">
     {{ content | safe }}
   </div>
 
   {% if page?.tags | length > 0 %}
-  <footer class="blog-post-footer">
+  <footer class="chirp-theme-blog-article__footer">
     {{ tag_list(page.tags) }}
   </footer>
   {% end %}
 </article>
-{% end %}
 
 {{ page_navigation(page) }}
 {{ related_posts_simple(page?.related_posts ?? [], 'More to Read') }}

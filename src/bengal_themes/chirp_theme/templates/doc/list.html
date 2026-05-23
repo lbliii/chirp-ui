@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
-{% from 'partials/navigation-components.html' import page_navigation %}
+{% from 'partials/navigation-components.html' import breadcrumbs, page_navigation %}
 {% from 'partials/components/tags.html' import tag_list %}
 {% from 'partials/components/tiles.html' import content_tiles %}
+{% from 'partials/page-actions.html' import page_actions %}
+{% from 'chirpui/button.html' import btn %}
+{% from 'chirpui/hero.html' import page_hero %}
 
 {% block content %}
 {% let discover = params?.discover ?? {} %}
@@ -21,14 +24,41 @@
 {% let related_posts = page?.related_posts ?? [] %}
 {% let has_related = show_related and (related_posts | length > 0) %}
 
-<div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if toc_items | length > 0 else '' }}">
+<div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if toc_items | length > 0 else '' }}" data-chirp-theme-surface="doc-list">
 <aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="Documentation navigation">
   {% include 'partials/docs-nav.html' %}
 </aside>
 <div class="chirp-theme-docs-layout__main">
 
-{% let _list_hero_default = 'overview' %}
-{% include 'partials/page-hero.html' %}
+{% let doc_title = page?.title ?? section?.title ?? config?.title ?? 'Documentation' %}
+{% let doc_description = params?.description ?? page?.metadata?.description ?? meta_desc ?? '' %}
+{% let doc_child_total = (posts | length) + (subsections | length) %}
+{% let doc_meta_parts = [] %}
+{% if page?.date %}
+{% set _ = doc_meta_parts.append('Updated ' ~ (page.date | time_ago)) %}
+{% end %}
+{% if doc_child_total > 0 %}
+{% set _ = doc_meta_parts.append(doc_child_total ~ ' item' ~ ('s' if doc_child_total != 1 else '')) %}
+{% end %}
+{% if page?.version %}
+{% set _ = doc_meta_parts.append('Version ' ~ page.version) %}
+{% end %}
+{% call page_hero(title=doc_title, subtitle=doc_description, variant='editorial', background='solid', cls='chirp-theme-docs-layout__hero chirp-theme-doc-hero') %}
+  {% slot eyebrow %}
+  {{ breadcrumbs(page) }}
+  {% end %}
+  {% slot metadata %}
+  {% if doc_meta_parts | length > 0 %}
+  <span>{{ doc_meta_parts | join(' · ') }}</span>
+  {% end %}
+  {% end %}
+  {% slot actions %}
+  {{ page_actions(page) }}
+  {% if params?.hero_link?.href %}
+  {{ btn(params.hero_link.label ?? 'Explore', href=params.hero_link.href | absolute_url, variant='secondary') }}
+  {% end %}
+  {% end %}
+{% end %}
 
 <article class="prose chirp-theme-docs-layout__article {{ params?.css_class ?? '' }}">
   <div class="docs-content chirp-theme-docs-layout__content">
@@ -61,6 +91,8 @@
 
 {{ page_navigation(page) }}
 
+{% with footer_class='chirp-theme-footer chirp-theme-footer--shell' %}{% include 'partials/site-footer.html' %}{% end %}
+
 </div>
 {% if toc_items | length > 0 %}
 <aside class="chirp-theme-docs-layout__toc" role="complementary" aria-label="Table of contents">
@@ -77,3 +109,5 @@
 </button>
 <div class="docs-sidebar-overlay" aria-hidden="true"></div>
 {% end %}
+
+{% block site_footer %}{% end %}

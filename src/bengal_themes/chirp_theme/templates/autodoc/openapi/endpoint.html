@@ -1,15 +1,30 @@
 {% extends "base.html" %}
 
-{% from "chirpui/layout.html" import container, stack %}
+{% from "chirpui/layout.html" import stack %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
 
 {% block content %}
 {% let element = element | default(metadata?.autodoc_element ?? none) %}
-{% call container(cls="chirp-theme-reference-page chirp-theme-reference-page--openapi-endpoint") %}
+{% let meta = element?.metadata ?? {} %}
+{% let method = meta?.method ?? element?.method ?? "GET" %}
+{% let path = meta?.path ?? element?.path ?? element?.qualified_name ?? element?.name ?? "/" %}
+<div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if toc_items | length > 0 else '' }}" data-chirp-theme-surface="api-reference">
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="API reference navigation">
+  {% include 'partials/docs-nav.html' %}
+</aside>
+<div class="chirp-theme-docs-layout__main">
+
+{% include "autodoc/partials/header.html" %}
+
+<article class="prose chirp-theme-docs-layout__article chirp-theme-reference-page chirp-theme-reference-page--openapi-endpoint">
+  <div class="docs-content chirp-theme-docs-layout__content chirp-theme-reference-content">
   <div class="chirp-theme-rest-reference">
     <main class="chirp-theme-rest-reference__main">
       {% call stack(gap="lg") %}
-        {% include "autodoc/openapi/partials/endpoint-header.html" %}
+        <div class="chirp-theme-rest-endpoint-bar" aria-label="Endpoint">
+          <span class="chirp-theme-rest-method chirp-theme-rest-method--{{ method | lower }}">{{ method | upper }}</span>
+          <code class="chirp-theme-rest-path">{{ path }}</code>
+        </div>
         {% include "autodoc/openapi/partials/playground-bar.html" %}
         {% if element?.description ?? none %}
         {% call rendered_content(compact=true, cls="chirp-theme-reference-description") %}{{ element.description | safe }}{% end %}
@@ -23,5 +38,24 @@
       {% include "autodoc/openapi/partials/example-rail.html" %}
     </aside>
   </div>
+  </div>
+</article>
+
+{% with footer_class='chirp-theme-footer chirp-theme-footer--shell' %}{% include 'partials/site-footer.html' %}{% end %}
+
+</div>
+{% if toc_items | length > 0 %}
+<aside class="chirp-theme-docs-layout__toc" role="complementary" aria-label="Table of contents">
+{% include 'partials/docs-toc-sidebar.html' %}
+</aside>
 {% end %}
+</div>
+
+<button class="docs-sidebar-toggle" aria-label="Toggle navigation sidebar" aria-expanded="false"
+  aria-controls="docs-sidebar">
+  {{ icon('list', size=20) }}
+</button>
+<div class="docs-sidebar-overlay" aria-hidden="true"></div>
 {% end %}
+
+{% block site_footer %}{% end %}

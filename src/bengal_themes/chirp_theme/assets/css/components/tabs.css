@@ -203,62 +203,6 @@
   background-color: var(--color-bg-hover);
 }
 
-/* ============================================
-   PALETTE-SPECIFIC ACTIVE TAB STYLING
-   ============================================ */
-
-/* Brown Bengal - Warm amber active tabs */
-[data-palette="brown-bengal"] .tab-nav li.active a {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
-  border-bottom-width: 3px;
-  background-color: var(--color-primary-light);
-}
-
-[data-theme="dark"][data-palette="brown-bengal"] .tab-nav li.active a {
-  background-color: var(--color-primary-light);
-  border-bottom-width: 3px;
-}
-
-/* Blue Bengal - Soft powder blue active tabs */
-[data-palette="blue-bengal"] .tab-nav li.active a {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
-  border-bottom-width: 3px;
-  background-color: var(--color-primary-light);
-}
-
-[data-theme="dark"][data-palette="blue-bengal"] .tab-nav li.active a {
-  background-color: var(--color-primary-light);
-  border-bottom-width: 3px;
-}
-
-/* Silver Bengal - High contrast monochrome active tabs */
-[data-palette="silver-bengal"] .tab-nav li.active a {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
-  border-bottom-width: 3px;
-  background-color: var(--color-primary-light);
-}
-
-[data-theme="dark"][data-palette="silver-bengal"] .tab-nav li.active a {
-  background-color: var(--color-primary-light);
-  border-bottom-width: 3px;
-}
-
-/* Charcoal Bengal - Dramatic slate active tabs */
-[data-palette="charcoal-bengal"] .tab-nav li.active a {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
-  border-bottom-width: 3px;
-  background-color: var(--color-primary-light);
-}
-
-[data-theme="dark"][data-palette="charcoal-bengal"] .tab-nav li.active a {
-  background-color: var(--color-primary-light);
-  border-bottom-width: 3px;
-}
-
 /* ==============================================
    TAB ICONS, BADGES, AND DISABLED STATE
    ============================================== */

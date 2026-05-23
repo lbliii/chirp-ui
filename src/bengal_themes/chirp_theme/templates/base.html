@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% from "chirpui/navbar.html" import navbar, navbar_link, navbar_dropdown %}
+{% from "chirpui/site_footer.html" import site_footer, footer_column, footer_link %}
 {#
 ================================================================================
 TEMPLATE VARIABLES
@@ -96,6 +98,59 @@ HELPER: Render a menu item (desktop/mobile)
     </ul>
     {% end %}
 </li>
+{% enddef %}
+
+{# =============================================================================
+HELPER: Render a desktop Chirp UI navbar item.
+Keep imports at template top level so fragment/block renders do not depend on
+symbols imported inside another block.
+============================================================================= #}
+{% def render_navbar_item(item) %}
+{% let item_children = item?.children ?? [] %}
+{% let item_href = item?.href ?? item?.url ?? '#' %}
+{% let item_name = item?.name ?? item?.title ?? 'Untitled' %}
+{% let item_description = item?.description ?? item?.summary ?? item?.metadata?.description ?? 'Browse related Chirp UI resources.' %}
+{% set active_children = [] %}
+{% for child in item_children %}
+    {% let child_href = child?.href ?? child?.url ?? '#' %}
+    {% if child_href != '#' and (_page_url == child_href or (child_href != '/' and _page_url.startswith(child_href))) %}
+        {% set _ = active_children.append(true) %}
+    {% end %}
+{% end %}
+{% let item_active = (item?.active ?? false) or (_page_url == item_href) or (item_href != '/' and item_href != '#' and _page_url.startswith(item_href)) or (active_children | length > 0) %}
+{% if item_children | length > 0 %}
+    {% call navbar_dropdown(item_name, active=item_active, href=item_href, cls="chirp-theme-shell__nav-dropdown") %}
+        <div class="chirp-theme-shell__mega">
+        <div class="chirp-theme-shell__mega-header">
+            <span class="chirp-theme-shell__mega-eyebrow">Explore</span>
+            <strong>{{ item_name }}</strong>
+            <p>{{ item_description }}</p>
+        </div>
+        <div class="chirp-theme-shell__mega-list">
+        {% for child in item_children %}
+        {% let child_href = child?.href ?? child?.url ?? '#' %}
+        {% let child_current = _page_url == child_href %}
+        {% let child_active = child_href != '#' and (child_current or (child_href != '/' and _page_url.startswith(child_href))) %}
+        {% let child_title = child?.name ?? child?.title ?? 'Untitled' %}
+        {% let child_description = child?.description ?? child?.summary ?? child?.metadata?.description ?? 'Open this section' %}
+        {% let child_icon = child?.icon ?? none %}
+        <a class="chirpui-dropdown__item chirp-theme-shell__mega-item{{ ' chirpui-dropdown__item--active' if ((child?.active ?? false) or child_active) else '' }}"
+           href="{{ child_href | absolute_url }}"{% if child_current %} aria-current="page"{% end %}>
+            <span class="chirp-theme-shell__mega-item-mark" aria-hidden="true">
+            {% if child_icon %}{{ icon(child_icon, size=16) }}{% else %}{{ loop.index }}{% end %}
+            </span>
+            <span class="chirp-theme-shell__mega-item-copy">
+                <span class="chirp-theme-shell__mega-item-title"><bdi>{{ child_title }}</bdi></span>
+                <span class="chirp-theme-shell__mega-item-desc">{{ child_description }}</span>
+            </span>
+        </a>
+        {% end %}
+        </div>
+        </div>
+    {% end %}
+{% else %}
+    {{ navbar_link(item_href | absolute_url, item_name, active=item_active, cls="chirp-theme-shell__nav-link") }}
+{% end %}
 {% enddef %}
 
 <html lang="{{ _current_lang }}" dir="{{ _direction }}" {% if _view_transitions and _transition_style !='crossfade' %}
@@ -230,6 +285,10 @@ HELPER: Render a menu item (desktop/mobile)
     <link rel="icon" type="image/png" href="{{ favicon_path }}">
     {% else %}
     <link rel="icon" type="image/svg+xml" href="{{ asset_url('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset_url('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset_url('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset_url('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset_url('site.webmanifest') }}">
     {% end %}
 
     {# Preconnect #}
@@ -249,8 +308,7 @@ HELPER: Render a menu item (desktop/mobile)
     {% let _enhance_debug = config.enhancements?.debug ?? false %}
     <script>
         window.BENGAL_THEME_DEFAULTS = {
-            appearance: '{{ theme.default_appearance }}',
-            palette: '{{ theme.default_palette }}'
+            appearance: '{{ theme.default_appearance }}'
         };
         window.Bengal = window.Bengal || {};
         window.Bengal.debug = "{{ 'true' if _enhance_debug else 'false' }}" === "true";
@@ -260,17 +318,16 @@ HELPER: Render a menu item (desktop/mobile)
     <script>
         (function () {
             try {
-                var defaults = window.BENGAL_THEME_DEFAULTS || { appearance: 'system', palette: '' };
+                var defaults = window.BENGAL_THEME_DEFAULTS || { appearance: 'system' };
                 var defaultAppearance = defaults.appearance;
                 if (defaultAppearance === 'system') {
                     defaultAppearance = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
                 }
                 var storedTheme = localStorage.getItem('bengal-theme');
-                var storedPalette = localStorage.getItem('bengal-palette');
                 var theme = storedTheme ? (storedTheme === 'system' ? defaultAppearance : storedTheme) : defaultAppearance;
-                var palette = storedPalette ?? defaults.palette;
                 document.documentElement.setAttribute('data-theme', theme);
-                if (palette) { document.documentElement.setAttribute('data-palette', palette); }
+                localStorage.removeItem('bengal-palette');
+                document.documentElement.removeAttribute('data-palette');
             } catch (e) { document.documentElement.setAttribute('data-theme', 'light'); }
         })();
     </script>
@@ -291,8 +348,9 @@ HELPER: Render a menu item (desktop/mobile)
 {% let _page_is_draft = page?.is_draft ?? false %}
 {% let _page_hidden = page?.hidden ?? false %}
 {% let _page_is_featured = page?.is_featured ?? false %}
-<body data-type="{{ _page_type }}" data-variant="{{ _page_variant }}"
-    class="page-kind-{{ _page_kind }}{% if _page_is_draft %} draft-page{% end %}{% if _page_hidden %} hidden-page{% end %}{% if _page_is_featured %} featured-content{% end %}">
+{% let _page_is_catalog_shell = (_page_url is string) and (_page_url == '/docs/' or _page_url.startswith('/docs/') or _page_url == '/api/' or _page_url.startswith('/api/') or _page_url == '/releases/' or _page_url.startswith('/releases/')) %}
+<body data-type="{{ _page_type }}" data-variant="{{ _page_variant }}" data-chirp-theme-spine="bespoke"
+    class="chirp-theme-shell page-kind-{{ _page_kind }}{% if _page_is_catalog_shell %} chirp-theme-shell--rail-only{% end %}{% if _page_is_draft %} draft-page{% end %}{% if _page_hidden %} hidden-page{% end %}{% if _page_is_featured %} featured-content{% end %}">
 
     {% if 'accessibility.skip_link' in (theme.features ?? []) %}
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -301,10 +359,10 @@ HELPER: Render a menu item (desktop/mobile)
     {# Header #}
     {% let _header_sticky = theme.header_sticky ?? true %}
     {% let _header_nav_position = theme.header_nav_position ?? 'left' %}
-    <header role="banner" class="header-appshell" data-sticky="{{ _header_sticky | lower }}">
-        <nav role="navigation" aria-label="Main navigation">
-            <div class="header-nav-content" data-nav-position="{{ _header_nav_position }}">
-                <a href="{{ '/' | absolute_url }}" class="logo">
+    <header role="banner" class="chirp-theme-shell__header header-appshell" data-sticky="{{ _header_sticky | lower }}">
+        {% call navbar(brand_url='/' | absolute_url, cls='chirp-theme-shell__nav chirpui-navbar--sticky', use_slots=true, brand_slot=true, current_path=_page_url) %}
+            {% slot brand %}
+                <span class="logo chirp-theme-shell__brand">
                     {% match site.logo, site.logo_text %}
                     {% case logo, _ if logo %}<img src="{{ logo | absolute_url }}" alt="{{ _site_title }}"
                         class="brand-image" />
@@ -314,36 +372,35 @@ HELPER: Render a menu item (desktop/mobile)
                     {% case _, text if text %}<span class="brand-text">{{ text }}</span>
                     {% case _ %}<span class="brand-text">{{ _site_title }}</span>
                     {% end %}
-                </a>
+                </span>
+            {% end %}
 
                 {% if _main_menu or _auto_nav %}
                 {% spaceless %}
-                <ul class="nav-main hidden-mobile">
-                    {% for item in _main_menu %}{{ render_menu_item(item) }}{% end %}
+                <div class="chirp-theme-shell__desktop-nav hidden-mobile" data-nav-position="{{ _header_nav_position }}">
+                    {% for item in _main_menu %}{{ render_navbar_item(item) }}{% end %}
                     {% if _auto_nav %}
-                    <li class="{{ ['active' if _page_url == '/'] | classes }}"><a href="{{ '/' | absolute_url }}">Home</a>
-                    </li>
+                    {{ navbar_link('/' | absolute_url, 'Home', active=_page_url == '/', cls='chirp-theme-shell__nav-link') }}
                     {% for item in _auto_nav %}
                     {% let item_href = item?.href ?? item?.url ?? item?._path ?? '#' %}
                     {% let item_path = item?._path ?? item_href %}
-                    <li
-                        class="{{ ['active' if (_page_url is string and item_path is string and (_page_url == item_path or (item_path != '/' and item_path != '#' and _page_url.startswith(item_path))))] | classes }}">
-                        <a href="{{ item_href | absolute_url }}">{{ item?.name ?? item?.title ?? 'Untitled' }}</a>
-                    </li>
+                    {% let item_active = _page_url is string and item_path is string and (_page_url == item_path or (item_path != '/' and item_path != '#' and _page_url.startswith(item_path))) %}
+                    {{ navbar_link(item_href | absolute_url, item?.name ?? item?.title ?? 'Untitled', active=item_active, cls='chirp-theme-shell__nav-link') }}
                     {% end %}
                     {% end %}
                     {% with site.params.repo_url as repo_url %}
                     {% if repo_url and not (site._dev_menu_metadata?.github_bundled ?? false) %}
-                    <li><a href="{{ repo_url }}" target="_blank" rel="noopener" aria-label="GitHub">{{
-                            icon('github-logo', size=16) }} <span>GitHub</span></a></li>
+                    <a class="chirpui-navbar__link chirp-theme-shell__nav-link" href="{{ repo_url }}" target="_blank" rel="noopener" aria-label="GitHub">{{
+                            icon('github-logo', size=16) }} <span>GitHub</span></a>
                     {% end %}
                     {% end %}
                     {% block nav_items %}{% end %}
-                </ul>
+                </div>
                 {% end %}
                 {% end %}
 
-                <div class="header-actions hidden-mobile">
+                {% slot end %}
+                <div class="chirp-theme-shell__actions header-actions hidden-mobile">
                     {% with config.search.ui as ui %}
                     {% if ui.modal ?? false %}
                     <button type="button" class="nav-search-trigger" id="nav-search-trigger" title="Search (⌘K)">{{
@@ -357,15 +414,15 @@ HELPER: Render a menu item (desktop/mobile)
                     {% cache 'base-theme-ctrl-d-' ~ _current_lang ~ '-' ~ (bengal.build.timestamp ?? '') %}{% with theme_menu_id='theme-menu-desktop' %}{% include 'partials/theme-controls.html' %}{% end %}{% end %}{# /cache base-theme-ctrl-d #}
                 </div>
 
-                <button class="mobile-nav-toggle visible-mobile" aria-label="Open menu"
+                <button class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm mobile-nav-toggle visible-mobile" aria-label="Open menu"
                     onclick="document.getElementById('mobile-nav-dialog').showModal()">
                     {{ icon('list', size=24) }}
                 </button>
-            </div>
-        </nav>
+                {% end %}
+        {% end %}
     </header>
 
-    <main id="main-content" role="main">{% block content %}{% end %}</main>
+    <main id="main-content" class="chirp-theme-shell__main" role="main">{% block content %}{% end %}</main>
 
     {# Search Modal Block — placed after <main> so content starts early in DOM #}
     {% block site_search_modal %}
@@ -429,55 +486,7 @@ HELPER: Render a menu item (desktop/mobile)
     {# Footer #}
     {% block site_footer %}
     {% cache 'base-footer-' ~ _current_lang ~ '-' ~ (bengal?.build?.timestamp ?? '') %}
-    {% let footer_links = _footer_menu if _footer_menu | length > 0 else _main_menu %}
-    {% let repo_url = site.params?.repo_url ?? '' %}
-    {% let site_desc = site.description ?? '' %}
-    <footer class="chirp-theme-footer" role="contentinfo">
-      <div class="chirp-theme-footer__inner">
-        <div class="chirp-theme-footer__brand">
-          <a href="{{ '/' | absolute_url }}" class="chirp-theme-footer__logo">
-            <span class="chirp-theme-footer__mark" aria-hidden="true">ʘ</span>
-            <span class="chirp-theme-footer__word">{{ site.title }}</span>
-          </a>
-          {% if site_desc %}
-          <p class="chirp-theme-footer__tagline">{{ site_desc }}</p>
-          {% end %}
-          <p class="chirp-theme-footer__meta">Static-first docs and marketing pages powered by Bengal.</p>
-        </div>
-
-        {% if footer_links | length > 0 %}
-        <nav class="chirp-theme-footer__nav" aria-label="Footer">
-          <span class="chirp-theme-footer__heading">Navigate</span>
-          <ul class="chirp-theme-footer__list">
-            {% for item in footer_links[:6] %}
-            {% let item_href = item?.href ?? item?.url ?? '#' %}
-            {% if item_href != '#' and item_href != '#/' %}
-            <li><a href="{{ item_href | absolute_url }}">{{ item.name }}</a></li>
-            {% end %}
-            {% end %}
-          </ul>
-        </nav>
-        {% end %}
-
-        <div class="chirp-theme-footer__links">
-          <span class="chirp-theme-footer__heading">Source</span>
-          <ul class="chirp-theme-footer__list">
-            {% if repo_url %}
-            <li><a href="{{ repo_url }}" rel="noopener">Repository</a></li>
-            {% end %}
-          </ul>
-        </div>
-      </div>
-
-      <div class="chirp-theme-footer__rule">
-        <span class="chirp-theme-footer__rule-mark" aria-hidden="true">ᗢ</span>
-      </div>
-
-      <div class="chirp-theme-footer__colophon">
-        <span>&copy; {{ site.build_time | dateformat('%Y') }} {{ _site_title }}</span>
-        <span class="chirp-theme-footer__hint">chirp-theme · packaged with chirp-ui</span>
-      </div>
-    </footer>
+    {% include 'partials/site-footer.html' %}
     {% end %}{# /cache base-footer #}
     {% end %}
 
@@ -558,7 +567,7 @@ HELPER: Render a menu item (desktop/mobile)
     {% end %}
 
     {% block site_dialogs %}
-    {% if 'navigation.back_to_top' in theme.features %}<button class="back-to-top" aria-label="Scroll to top">{{
+    {% if 'navigation.back_to_top' in theme.features and ((toc_items ?? []) | length) == 0 %}<button class="back-to-top chirp-theme-floating-top" aria-label="Scroll to top">{{
         icon("arrow-up", size=24) }}</button>{% end %}
     {% if 'content.lightbox' in theme.features %}
     <dialog id="lightbox-dialog" class="lightbox-dialog" aria-label="Image lightbox">

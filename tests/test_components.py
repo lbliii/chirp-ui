@@ -5372,6 +5372,17 @@ class TestSidebar:
         assert "chirpui-sidebar__section" in html
         assert "Main" in html
 
+    def test_sidebar_section_can_start_collapsed(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import sidebar_section %}'
+            '{% call sidebar_section("Group", collapsible=true, open=false) %}'
+            '<a href="/docs">Docs</a>'
+            "{% end %}"
+        ).render()
+
+        assert "<details" in html
+        assert "open" not in html.split(">", 1)[0]
+
 
 class TestStepper:
     def test_stepper_basic(self, env: Environment) -> None:

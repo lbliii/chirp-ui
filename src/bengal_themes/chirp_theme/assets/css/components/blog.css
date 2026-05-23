@@ -5,16 +5,16 @@
  * This file only keeps Bengal theme spacing and article-reading integration.
  */
 
-.blog-post {
+.chirp-theme-blog-article {
   max-width: var(--chirpui-prose-max-width);
   margin-inline: auto;
 }
 
-.blog-post-content {
+.chirp-theme-blog-article__content {
   min-width: 0;
 }
 
-.blog-post-footer {
+.chirp-theme-blog-article__footer {
   margin-top: var(--chirpui-spacing-xl);
   padding-top: var(--chirpui-spacing);
   border-top: 1px solid var(--chirpui-border-subtle);

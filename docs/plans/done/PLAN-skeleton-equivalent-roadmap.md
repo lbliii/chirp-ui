@@ -270,7 +270,8 @@ Progress:
 - 2026-05-11: Added the component showcase `/theme-packs` matrix with isolated
   preview routes for each pack and mode.
 - 2026-05-11: Bengal `chirp-theme` palette controls now expose transitional
-  `data-theme-pack` mappings to `atlas`, `ember`, and `sage`.
+  `data-theme-pack` mappings to `atlas`, `ember`, and `sage`; later bespoke
+  theme work removed those transitional aliases.
 - 2026-05-11: Added browser-contract coverage that loads each catalog pack in
   Chromium and verifies light, dark, and system-mode token resolution.
 - 2026-05-11: Expanded theme-pack browser proof across desktop and mobile

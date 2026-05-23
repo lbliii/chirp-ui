@@ -3,6 +3,8 @@
 {% from "chirpui/layout.html" import container %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
 {% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/card.html" import resource_card %}
 
 {% block content %}
 {% let title = page?.title ?? section?.title ?? site?.title ?? "Index" %}
@@ -10,11 +12,37 @@
 {% let items = posts ?? pages ?? section?.pages ?? [] %}
 {% let subsections = subsections ?? section?.subsections ?? [] %}
 {% let resources = items + subsections %}
+{% let section_href = page?.href ?? section?.href ?? "/" %}
+{% let is_releases_index = section_href == "/releases/" or section_href == "releases/" or title == "Releases" %}
+{% let display_resources = resources | sort(attribute="metadata.date,title", reverse=true) if is_releases_index else resources %}
+{% let results_title = "Release history" if is_releases_index else "In this section" %}
+{% let search_placeholder = "Filter releases..." if is_releases_index else "Filter this section..." %}
 
+<div class="chirp-theme-docs-layout chirp-theme-docs-layout--section-index" data-chirp-theme-surface="{{ 'release-list' if is_releases_index else 'section-list' }}">
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="Site catalog navigation">
+  {% include 'partials/docs-nav.html' %}
+</aside>
+<div class="chirp-theme-docs-layout__main">
 {% call container(cls="chirp-theme-section-index") %}
-  {% call resource_index(title, page?.href ?? section?.href ?? "/", subtitle=description, search_placeholder="Filter this section...", button_icon="magnifying-glass", results_title="In this section", results_subtitle=(resources | length) ~ " entries", results_layout="grid", results_cols=3, has_results=resources | length > 0, empty_title="No section content yet", empty_message="Pages and subsections appear here when added.", cls="chirp-theme-section-index__resources") %}
-    {% let items = resources %}
-    {% include "autodoc/partials/cards.html" %}
+  {% call resource_index(title, section_href, subtitle=description, search_placeholder=search_placeholder, button_icon="magnifying-glass", results_title=results_title, results_subtitle=(display_resources | length) ~ " entries", results_layout="grid", results_cols=3, has_results=display_resources | length > 0, empty_title="No section content yet", empty_message="Pages and subsections appear here when added.", cls="chirp-theme-section-index__resources" ~ (" chirp-theme-release-index" if is_releases_index else "")) %}
+    {% for item in display_resources %}
+    {% let item_title = item?.title ?? item?.name ?? "Reference" %}
+    {% let item_href = item?.href ?? item?.url ?? "#" ~ item_title %}
+    {% let item_description = item?.description ?? item?.summary ?? none %}
+    {% let item_date = item?.metadata?.date ?? item?.date %}
+    {% if is_releases_index %}
+    {% call resource_card(item_href, item_title, description=item_description, top_meta=(item_date | dateformat("%B %d, %Y") if item_date else "Release notes"), cls="chirp-theme-release-card" ~ (" chirp-theme-release-card--latest" if loop.index == 1 else ""), link_mode="main") %}
+      {% slot badges %}
+      {{ badge("Latest", variant="success") if loop.index == 1 else badge("Release", variant="muted") }}
+      {% end %}
+      {% slot footer %}
+      <code class="chirp-theme-release-card__install">uv add chirp-ui=={{ item_title | replace("chirp-ui ", "") }}</code>
+      {% end %}
+    {% end %}
+    {% else %}
+    {{ resource_card(item_href, item_title, description=item_description, top_meta=item?.element_type ?? item?.type ?? none, cls="chirp-theme-reference-card") }}
+    {% end %}
+    {% end %}
   {% end %}
 
   {% if content and content.strip() %}
@@ -22,5 +50,10 @@
   {{ content | safe }}
   {% end %}
   {% end %}
+  {% with footer_class='chirp-theme-footer chirp-theme-footer--shell' %}{% include 'partials/site-footer.html' %}{% end %}
 {% end %}
+</div>
+</div>
 {% end %}
+
+{% block site_footer %}{% end %}

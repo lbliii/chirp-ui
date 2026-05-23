@@ -124,7 +124,7 @@ A structured reactive stack — every layer written in pure Python for 3.14t fre
 | **ᓚᘏᗢ** | [Bengal](https://lbliii.github.io/bengal/) | Static site generator | [Docs](https://lbliii.github.io/bengal/) |
 | **∿∿** | [Purr](https://github.com/lbliii/purr) | Content runtime | — |
 | **⌁⌁** | [Chirp](https://lbliii.github.io/chirp/) | Web framework | [Docs](https://lbliii.github.io/chirp/) |
-| **ʘ** | **chirp-ui** | Component library ← You are here | [Docs](/docs/) |
+| **ᗢ** | **chirp-ui** | Component library ← You are here | [Docs](/docs/) |
 | **=^..^=** | [Pounce](https://lbliii.github.io/pounce/) | ASGI server | [Docs](https://lbliii.github.io/pounce/) |
 | **)彡** | [Kida](https://lbliii.github.io/kida/) | Template engine | [Docs](https://lbliii.github.io/kida/) |
 | **ฅᨐฅ** | [Patitas](https://lbliii.github.io/patitas/) | Markdown parser | [Docs](https://lbliii.github.io/patitas/) |

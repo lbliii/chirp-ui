@@ -1,19 +1,19 @@
 {
-    "name": "Bengal Site",
-    "short_name": "Bengal",
+    "name": "chirp-ui",
+    "short_name": "chirp-ui",
     "icons": [
         {
-            "src": "/android-chrome-192x192.png",
-            "sizes": "192x192",
+            "src": "/assets/favicon-32x32.png",
+            "sizes": "32x32",
             "type": "image/png"
         },
         {
-            "src": "/android-chrome-512x512.png",
-            "sizes": "512x512",
+            "src": "/assets/apple-touch-icon.png",
+            "sizes": "180x180",
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
+    "theme_color": "#071312",
+    "background_color": "#071312",
     "display": "standalone"
 }

@@ -1,10 +1,9 @@
 # chirp-theme
 
 `chirp-theme` is the packaged Bengal theme that ships from the `chirp-ui`
-project. It is intended to become a fully owned, comprehensive alternative to
-Bengal's original default theme: a cleaner, more modern static-site shell built
-with current Kida patterns, stronger component discipline, and a design system
-that can eventually reach parity with Bengal default v1 and then move past it.
+project. It is a fully bespoke Bengal theme, not a Bengal default-theme skin or
+parity fork. Its implementation language is Chirp UI macros, `--chirpui-*`
+tokens, current Kida patterns, and narrowly scoped theme CSS.
 
 ## Package Layout
 
@@ -30,9 +29,11 @@ not grow a private design system beside `chirp-ui`.
 The long-term goal is:
 
 1. A real standalone Bengal theme package fully supported by `chirp-ui`
-2. A better-organized replacement for the original Bengal default theme
-3. A translation of the original default-theme ideas into `chirp-ui` components,
-   slots, and `--chirpui-*` tokens
+2. A better-organized custom theme that can replace default-theme usage without
+   copying default-theme architecture
+3. A translation of useful default-theme ideas into `chirp-ui` components,
+   slots, and `--chirpui-*` tokens, only when those ideas still serve the custom
+   product direction
 4. A theme that uses modern `chirp-ui`, Kida, and Alpine-friendly patterns as
    the foundation for a future Bengal default v2
 
@@ -49,6 +50,20 @@ That means the package should own:
 - its partials/macros
 - its stylesheet entrypoint
 - its icons, JS, fonts, favicons, and other referenced assets
+
+Current article surfaces use the app-shell frame as the persistent page model:
+docs pages, generic pages, blog posts/lists, and section indexes keep the left
+catalog chrome in place while only the route-owned article or list content
+changes in the main panel. The outer catalog rail is symbol-first, with
+hover/focus labels for titles, so the shell reads like application chrome
+rather than another text navigation column. The inner rail is a contextual
+workbench for the active article family: it carries a section identity card,
+article-set metadata, typed navigation rows, and active branch styling. The
+right TOC rail is the matching page map for the current article, preserving
+scroll progress and in-page anchors while using the same compact card, mark,
+and active-row language. Back-to-top is likewise treated as shell chrome: it
+appears as a right-rail action when the TOC rail exists, with the old floating
+control kept only as a fallback for pages without that rail.
 
 ## Supported Surface
 
@@ -101,23 +116,11 @@ copied default-theme CSS while that CSS is deleted or translated.
 
 The curated app theme packs (`atlas`, `ember`, and `sage`) do not replace the
 Bengal `chirp-theme` package. They are token-only Chirp UI resources exposed
-from `chirp_ui.static_path()`. Bengal palette controls should either map to
-those pack names or be documented as transitional aliases until the retained
-default-theme palette surface is removed.
-
-Current Bengal palette controls are transitional `data-palette` aliases. The
-menu exposes `data-theme-pack` metadata so tools and future UI can line them up
-with the curated pack vocabulary without treating the old names as new Chirp UI
-theme packs:
-
-| Bengal palette | Forward theme-pack family | Status |
-|---|---|---|
-| Default | `ember` | Transitional alias for the current warm editorial package identity |
-| `snow-lynx` | `sage` | Transitional alias; soft low-glare palette |
-| `brown-bengal` | `ember` | Transitional alias; warm editorial palette |
-| `silver-bengal` | `atlas` | Transitional alias; cool operational neutral palette |
-| `charcoal-bengal` | `ember` | Transitional alias; warm dark editorial palette |
-| `blue-bengal` | `atlas` | Transitional alias; cool operational blue palette |
+from `chirp_ui.static_path()`. The Bengal `chirp-theme` menu no longer exposes
+the old `data-palette` aliases or `data-theme-pack` metadata; it is an
+appearance-only control while the bespoke theme rewrite owns its color identity
+through shipped tokens. Future palette or theme-pack selection should use a new
+Chirp UI-owned contract rather than resurrecting the old Bengal palette names.
 
 The direction of dependency matters:
 
@@ -132,11 +135,13 @@ The direction of dependency matters:
   theme classes when a Chirp UI token, primitive, or macro should own the
   contract
 
-The current CSS loading contract is a transitional boundary, not the final
+The current CSS loading contract is a transitional boundary, not the theme
 architecture. Until Bengal has first-class library asset modes with matching dev
 and static-build behavior, `assets/css/style.css` is the single stylesheet
 entrypoint and imports Chirp UI's generated CSS and transition CSS before theme
-tokens and overrides. Theme templates should not add separate
+tokens and overrides. That shim must stay isolated while templates, layout, and
+content surfaces continue moving to the bespoke Chirp UI implementation. Theme
+templates should not add separate
 `chirp_ui/chirpui.css` or `chirp_ui/chirpui-transitions.css` links. The desired
 platform contract is for Bengal to expose `bundle`, `link`, and `none` modes
 from the library declaration; that contract is tracked in
@@ -150,20 +155,22 @@ package. Share and LLM-copy controls depend on
 `data-action="copy-url"` or `data-action="copy-llm-txt"` must keep that script
 in the base script list.
 
-The theme should eventually cover the same broad content/output families as the
-original Bengal default theme: autodoc and reference pages, tutorials, tracks,
-notebooks, changelog and resume views, taxonomy/archive/author pages, search,
-errors, and content-heavy pages. The migration should not copy those verticals
-forward as-is. It should rebuild them as Chirp UI-native contracts when each
-surface is promoted.
+The theme should eventually cover the same broad content/output families users
+expect from Bengal: autodoc and reference pages, tutorials, tracks, notebooks,
+changelog and resume views, taxonomy/archive/author pages, search, errors, and
+content-heavy pages. The goal is not default-theme parity. Treat the default
+theme as input when useful, then rebuild each promoted surface as a custom
+Chirp UI-native contract.
 
 ## Near-Term Execution
 
-The current cutover work focuses on making the theme truly standalone while
-shrinking the copied default-theme surface:
+The current wave focuses on making the theme visibly standalone while shrinking
+the copied default-theme surface:
 
-- remove implicit dependence on Bengal default theme inheritance
-- declare `chirp_ui` as a Bengal theme library dependency
+- route the desktop shell through Chirp UI navbar/footer macros
+- keep mobile navigation, search modal, and theme controls theme-owned until
+  they are deliberately promoted or replaced
+- keep `chirp_ui` declared as a Bengal theme library dependency
 - load Chirp UI JS through Bengal's provider asset system
 - bundle Chirp UI CSS through the theme stylesheet until Bengal supports
   first-class library CSS inclusion modes
@@ -173,6 +180,6 @@ shrinking the copied default-theme surface:
   Chirp UI component or primitive is the correct output contract
 - ensure generated output only references assets shipped by the theme package
 
-That standalone baseline is the platform for future parity and beyond. The next
-phase is no longer “copy every legacy family forward”; it is “translate and
-improve every original theme output using Chirp UI as the primitive layer.”
+That standalone baseline is the platform for the bespoke rewrite. The next
+phase is no longer “copy every legacy family forward”; it is “design and
+implement each promoted theme surface using Chirp UI as the primitive layer.”

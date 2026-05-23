@@ -60,20 +60,20 @@ KIDA FEATURES SHOWCASED:
 %}
 
 {# Build CSS classes based on configuration #}
-{% let card_classes = ['card', 'card--' ~ variant] %}
+{% let card_classes = ['chirpui-card', 'chirp-theme-card-base', 'chirp-theme-card-base--' ~ variant] %}
 {% if extra_class %}{% let card_classes = card_classes + [extra_class] %}{% end %}
-{% if elevation != 'none' %}{% let card_classes = card_classes + ['card--elevation-' ~ elevation] %}{% end %}
-{% if has_gradient %}{% let card_classes = card_classes + ['gradient-border'] %}{% end %}
+{% if elevation != 'none' %}{% let card_classes = card_classes + ['chirp-theme-card-base--elevation-' ~ elevation] %}{% end %}
+{% if has_gradient %}{% let card_classes = card_classes + ['chirpui-card--gradient-border'] %}{% end %}
 
 {# Render card structure #}
 {% if href %}
-<a href="{{ href }}" class="{{ card_classes | join(' ') }} card--linked">
+<a href="{{ href }}" class="{{ card_classes | join(' ') }} chirpui-card--link"{{ route_link_attrs(href) | html_attrs }}>
 {% else %}
 <article class="{{ card_classes | join(' ') }}">
 {% end %}
 
   {# Badges slot (optional) - top corner for tags, status indicators #}
-  <div class="card__badges">
+  <div class="chirpui-card__header-badges chirp-theme-card-base__badges">
     {% block badges %}{% end %}
   </div>
 
@@ -81,26 +81,26 @@ KIDA FEATURES SHOWCASED:
   {% block icon %}{% end %}
 
   {# Header slot - title area #}
-  <header class="card__header">
+  <header class="chirpui-card__header">
     {% block header %}
-    <h3 class="card__title">Card Title</h3>
+    <h3 class="chirpui-card__title">Card Title</h3>
     {% end %}
   </header>
 
   {# Body slot - main content area #}
-  <div class="card__body">
+  <div class="chirpui-card__body">
     {% block body %}
-    <p class="card__description">Card content goes here.</p>
+    <p class="chirpui-text-muted chirpui-font-sm">Card content goes here.</p>
     {% end %}
   </div>
 
   {# Footer slot - metadata, timestamps, secondary info #}
-  <footer class="card__footer">
+  <footer class="chirpui-card__footer-wrap">
     {% block footer %}{% end %}
   </footer>
 
   {# Actions slot - CTA buttons, links #}
-  <div class="card__actions">
+  <div class="chirpui-card__body-actions chirp-theme-card-base__actions">
     {% block actions %}{% end %}
   </div>
 

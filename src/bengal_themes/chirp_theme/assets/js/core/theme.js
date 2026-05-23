@@ -4,11 +4,10 @@
  * Pattern: POPOVER (see COMPONENT-PATTERNS.md)
  * - Element: <div id="theme-menu" popover class="*--popover">
  * - Browser handles: Show/hide, light dismiss, escape key, top layer
- * - JS handles: Positioning relative to trigger, theme/palette persistence
+ * - JS handles: Positioning relative to trigger and theme persistence
  *
  * Theme features:
  * - Light/Dark/System theme switching
- * - Palette selection
  * - System theme preference watching
  *
  * Note: Immediate theme initialization (to prevent FOUC) is kept inline in base.html.
@@ -22,7 +21,6 @@
 
   // Constants
   const THEME_KEY = 'bengal-theme';
-  const PALETTE_KEY = 'bengal-palette';
   const THEMES = {
     SYSTEM: 'system',
     LIGHT: 'light',
@@ -67,25 +65,6 @@
     }
   }
 
-  function getPalette() {
-    return localStorage.getItem(PALETTE_KEY) || '';
-  }
-
-  function setPalette(palette) {
-    if (palette !== null) {
-      if (palette) {
-        document.documentElement.setAttribute('data-palette', palette);
-      } else {
-        document.documentElement.removeAttribute('data-palette');
-      }
-      localStorage.setItem(PALETTE_KEY, palette);
-    } else {
-      document.documentElement.removeAttribute('data-palette');
-      localStorage.removeItem(PALETTE_KEY);
-    }
-    window.dispatchEvent(new CustomEvent('palettechange', { detail: { palette } }));
-  }
-
   /**
    * Toggle between light and dark theme
    */
@@ -103,8 +82,8 @@
   function initTheme() {
     const stored = localStorage.getItem(THEME_KEY) || THEMES.SYSTEM;
     setTheme(stored);
-    const palette = getPalette();
-    if (palette) setPalette(palette);
+    localStorage.removeItem('bengal-palette');
+    document.documentElement.removeAttribute('data-palette');
   }
 
   /**
@@ -141,17 +120,13 @@
 
       // Handle theme option clicks
       menu.addEventListener('click', function (e) {
-        const btn = e.target.closest('.theme-option, [data-appearance], [data-palette]');
+        const btn = e.target.closest('.theme-option, [data-appearance]');
         if (!btn) return;
 
         const appearance = btn.getAttribute('data-appearance');
-        const palette = btn.getAttribute('data-palette');
 
         if (appearance) {
           setTheme(appearance);
-        }
-        if (palette !== null && palette !== undefined) {
-          setPalette(palette);
         }
 
         updatePopoverActiveStates(menu);
@@ -205,18 +180,11 @@
    */
   function updatePopoverActiveStates(menu) {
     const currentAppearance = localStorage.getItem(THEME_KEY) || THEMES.SYSTEM;
-    const currentPalette = getPalette();
 
     // Update appearance buttons
     menu.querySelectorAll('[data-appearance]').forEach(function (btn) {
       const appearance = btn.getAttribute('data-appearance');
       btn.classList.toggle('active', appearance === currentAppearance);
-    });
-
-    // Update palette buttons
-    menu.querySelectorAll('[data-palette]').forEach(function (btn) {
-      const palette = btn.getAttribute('data-palette');
-      btn.classList.toggle('active', palette === currentPalette);
     });
   }
 
@@ -239,9 +207,7 @@
   window.BengalTheme = {
     get: getTheme,
     set: setTheme,
-    toggle: toggleTheme,
-    getPalette: getPalette,
-    setPalette: setPalette
+    toggle: toggleTheme
   };
 
   // Register with progressive enhancement system if available

@@ -11,51 +11,37 @@ Usage:
 ================================================================================
 #}
 
+{% from 'chirpui/badge.html' import badge %}
+{% from 'chirpui/card.html' import card %}
+{% from 'chirpui/layout.html' import cluster %}
+
 {% def blog_post_meta(author, avatar='', title='', date=none, reading_time=0, views=none, show_author=true, show_reading_time=true, updated=none) %}
-<div class="blog-post-meta">
-    {# Metadata row: date, reading time, last updated, views #}
-    <div class="blog-post-details">
+{% call cluster(gap='sm', cls='chirp-theme-blog-meta') %}
         {% if date %}
-        <time datetime="{{ date | date_iso }}"
-            title="{{ date | dateformat('%B %d, %Y at %I:%M %p') }}">
+        <time class="chirp-theme-blog-meta__date" datetime="{{ date | date_iso }}" title="{{ date | dateformat('%B %d, %Y at %I:%M %p') }}">
             {{ date | dateformat('%B %d, %Y') }}
         </time>
         {% end %}
 
         {% if show_reading_time and reading_time and reading_time > 0 %}
-        <span class="reading-time">
-            {{ icon('clock', size=14) }}
-            {{ reading_time }} min read
-        </span>
+        {{ badge(reading_time ~ ' min read', variant='muted', icon='clock') }}
         {% end %}
 
         {% if updated and updated != date %}
-        <span class="blog-updated-inline">
-            Updated {{ updated | dateformat('%B %d, %Y') }}
-        </span>
+        {{ badge('Updated ' ~ (updated | dateformat('%B %d, %Y')), variant='muted') }}
         {% end %}
 
         {% if views %}
-        <span class="view-count">
-            {{ icon('eye', size=14) }}
-            {{ views }} views
-        </span>
+        {{ badge(views ~ ' views', variant='muted', icon='eye') }}
         {% end %}
-    </div>
+{% end %}
 
-    {# Mini author card #}
-    {% if show_author and author %}
-    <div class="author-mini-card">
-        {% if avatar %}
-        <img src="{{ avatar | avatar_url }}" alt="{{ author }}" class="author-avatar">
-        {% end %}
-        <div class="author-info">
-            <strong>{{ author }}</strong>
-            {% if title %}
-            <span class="author-title">{{ title }}</span>
-            {% end %}
-        </div>
-    </div>
-    {% end %}
-</div>
+{% if show_author and author %}
+{% call card(title=author, subtitle=title if title else none, cls='chirp-theme-blog-author-card') %}
+    {% if avatar %}
+    {% slot media %}
+    <img src="{{ avatar | avatar_url }}" alt="{{ author }}" class="chirp-theme-blog-author-card__avatar" loading="lazy">
+{% end %}
+{% end %}
+{% end %}
 {% end %}

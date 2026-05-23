@@ -13,21 +13,11 @@ from pathlib import Path, PurePosixPath
 
 import pytest
 
-from chirp_ui.theme_packs import THEME_PACKS
-
 THEME_PACKAGE = "bengal_themes.chirp_theme"
 THEME_TEMPLATE_PATH_FRAGMENT = "bengal_themes/chirp_theme/templates"
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SITE_ROOT = REPO_ROOT / "site"
 _WORKSPACE_BENGAL = REPO_ROOT.parent / "b-stack" / "bengal"
-LEGACY_BENGAL_PALETTE_THEME_PACKS = {
-    "": "ember",
-    "snow-lynx": "sage",
-    "brown-bengal": "ember",
-    "silver-bengal": "atlas",
-    "charcoal-bengal": "ember",
-    "blue-bengal": "atlas",
-}
 BENGAL_ANATOMY_DOC = REPO_ROOT / "docs" / "BENGAL-THEME-ANATOMY.md"
 
 if _WORKSPACE_BENGAL.exists():
@@ -87,6 +77,12 @@ REQUIRED_PARTIALS = (
     "partials/components/tags.html",
     "partials/components/tiles.html",
     "partials/components/related-posts-simple.html",
+    "partials/components/article.html",
+    "partials/components/author-bio.html",
+    "partials/components/blog-post-meta.html",
+    "partials/components/blog-share-dropdown.html",
+    "partials/components/card-base.html",
+    "partials/components/social-share.html",
 )
 REQUIRED_DIRECTIVE_TEMPLATES = (
     "directives/admonition.html",
@@ -304,6 +300,11 @@ def test_theme_package_contains_required_resources() -> None:
     assert (package_root / "assets" / "js" / "core" / "theme.js").is_file()
     assert (package_root / "assets" / "icons" / "close.svg").is_file()
     assert (package_root / "assets" / "favicon.svg").is_file()
+    assert (package_root / "assets" / "favicon-16x16.png").is_file()
+    assert (package_root / "assets" / "favicon-32x32.png").is_file()
+    assert (package_root / "assets" / "favicon.ico").is_file()
+    assert (package_root / "assets" / "apple-touch-icon.png").is_file()
+    assert (package_root / "assets" / "site.webmanifest").is_file()
 
 
 def test_chirp_theme_literal_template_asset_urls_exist() -> None:
@@ -382,10 +383,14 @@ def test_chirp_theme_docs_chrome_mobile_width_contract() -> None:
     )
 
     assert "@media (max-width: 768px)" in css
-    assert ".chirp-theme-docs-layout .page-hero" in css
+    assert ".chirp-theme-docs-layout__hero" in css
     assert ".chirp-theme-docs-layout__article" in css
     assert ".chirp-theme-docs-layout__content" in css
+    assert ".chirp-theme-doc-catalog {" in css
+    assert ".chirp-theme-doc-catalog-rail__item" in css
     assert ".chirp-theme-docs-layout .code-block-wrapper" in css
+    assert ".chirp-theme-docs-layout .code-block-wrapper pre code" in css
+    assert '.chirp-theme-docs-layout .rosettes[data-language="plaintext"]' in css
     assert "max-width: 100%;" in css
     assert "min-width: 0;" in css
     assert "@media (min-width: 769px)" in header_css
@@ -402,23 +407,37 @@ def test_chirp_theme_tokens_use_chirpui_vocabulary() -> None:
     assert "--chirp-theme-" not in css
 
 
-def test_chirp_theme_palette_controls_map_to_theme_pack_vocabulary() -> None:
-    """Legacy Bengal palettes should identify their nearest curated theme pack."""
+def test_chirp_theme_theme_controls_are_appearance_only() -> None:
+    """The bespoke theme control surface should not expose legacy Bengal palettes."""
     package_root = resources.files(THEME_PACKAGE)
     controls = (package_root / "templates" / "partials" / "theme-controls.html").read_text(
         encoding="utf-8"
     )
-    known_packs = {pack.name for pack in THEME_PACKS}
+    base = (package_root / "templates" / "base.html").read_text(encoding="utf-8")
+    theme_js = (package_root / "assets" / "js" / "core" / "theme.js").read_text(encoding="utf-8")
 
-    for palette, theme_pack in LEGACY_BENGAL_PALETTE_THEME_PACKS.items():
-        assert theme_pack in known_packs
-        assert f"theme_option('palette', '{palette}'" in controls
+    assert "data-appearance" in controls
+    assert "appearance_option('system'" in controls
+    assert "appearance_option('light'" in controls
+    assert "appearance_option('dark'" in controls
 
-    assert 'data-theme-pack="ember"' in controls
-    assert 'data-theme-pack="atlas"' in controls
-    assert 'data-theme-pack="sage"' in controls
-    assert "theme.palette_default" in controls
-    assert 'data-{{ type }}="{{ value }}"' in controls
+    assert "data-palette" not in controls
+    assert "data-theme-pack" not in controls
+    assert "theme.palette_" not in controls
+
+    for source in (controls, base, theme_js):
+        assert "snow-lynx" not in source
+        assert "brown-bengal" not in source
+        assert "silver-bengal" not in source
+        assert "charcoal-bengal" not in source
+        assert "blue-bengal" not in source
+
+    assert "setAttribute('data-palette'" not in base
+    assert "setAttribute('data-palette'" not in theme_js
+    assert "bengal-palette" in base
+    assert "bengal-palette" in theme_js
+    assert "removeItem('bengal-palette')" in base
+    assert "removeItem('bengal-palette')" in theme_js
 
 
 def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
@@ -433,6 +452,9 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     )
     search_modal = (templates_root / "partials" / "search-modal.html").read_text(encoding="utf-8")
     inline_search = (templates_root / "partials" / "search.html").read_text(encoding="utf-8")
+    toc_sidebar = (templates_root / "partials" / "docs-toc-sidebar.html").read_text(
+        encoding="utf-8"
+    )
     navigation = (templates_root / "partials" / "navigation-components.html").read_text(
         encoding="utf-8"
     )
@@ -442,6 +464,9 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
         encoding="utf-8"
     )
     action_bar_js = (assets_root / "js" / "enhancements" / "action-bar.js").read_text(
+        encoding="utf-8"
+    )
+    interactive_js = (assets_root / "js" / "enhancements" / "interactive.js").read_text(
         encoding="utf-8"
     )
     tabs_js = (assets_root / "js" / "enhancements" / "tabs.js").read_text(encoding="utf-8")
@@ -474,6 +499,12 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     assert 'class="mobile-nav-search" data-open-search' in base
     assert "theme-menu-desktop" in base
     assert "theme-menu-mobile" in base
+    assert "chirp-theme-floating-top" in base
+    assert "chirp-theme-rail-top" in toc_sidebar
+    assert 'data-chirp-theme-rail-action="top"' in toc_sidebar
+    assert "querySelectorAll('.back-to-top')" in interactive_js
+    assert "chirp-theme-rail-top" in interactive_js
+    assert "chirp-theme-floating-top" in interactive_js
     assert "document.getElementById('mobile-nav-dialog')" in mobile_nav_js
     assert "window.BengalNav" in mobile_nav_js
     assert "window.BengalSearchModal.open()" in mobile_nav_js
@@ -481,7 +512,7 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     assert 'data-action="copy-url"' in (
         templates_root / "partials" / "components" / "blog-share-dropdown.html"
     ).read_text(encoding="utf-8")
-    assert "'action': 'copy-url'" in (
+    assert "'data-action': 'copy-url'" in (
         templates_root / "partials" / "page-hero" / "_macros.html"
     ).read_text(encoding="utf-8")
     assert "querySelectorAll('[popovertarget]')" in action_bar_js
@@ -503,26 +534,28 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     assert "components/toc.css" in style
 
 
-def test_chirp_theme_palette_files_are_documented_transitional_aliases() -> None:
-    """Retained data-palette CSS must stay explicit and map to documented aliases."""
+def test_chirp_theme_does_not_ship_legacy_palette_aliases() -> None:
+    """The bespoke theme should not ship or import old Bengal palette aliases."""
     package_root = resources.files(THEME_PACKAGE)
     css_root = package_root / "assets" / "css"
     style = (css_root / "style.css").read_text(encoding="utf-8")
     palette_root = css_root / "tokens" / "palettes"
-    palette_files = sorted(
-        rel_path
-        for rel_path, _resource in _iter_resource_files(palette_root)
+    css_files = {
+        rel_path: resource.read_text(encoding="utf-8")
+        for rel_path, resource in _iter_resource_files(css_root)
         if rel_path.endswith(".css")
-    )
-    expected_files = sorted(
-        f"{palette}.css" for palette in LEGACY_BENGAL_PALETTE_THEME_PACKS if palette
-    )
+    }
 
-    assert palette_files == expected_files
-    for filename in expected_files:
-        assert f"tokens/palettes/{filename}" in style
-
-    assert not ({pack.name for pack in THEME_PACKS} & set(LEGACY_BENGAL_PALETTE_THEME_PACKS))
+    assert "tokens/palettes/" not in style
+    if palette_root.is_dir():
+        assert not [rel_path for rel_path, _resource in _iter_resource_files(palette_root)]
+    for css in css_files.values():
+        assert "data-palette" not in css
+        assert "snow-lynx" not in css
+        assert "brown-bengal" not in css
+        assert "silver-bengal" not in css
+        assert "charcoal-bengal" not in css
+        assert "blue-bengal" not in css
 
 
 def test_chirp_theme_style_uses_chirpui_cards_instead_of_legacy_card_bundle() -> None:
@@ -587,12 +620,263 @@ def test_theme_manifest_declares_standalone_package() -> None:
     assert "extends" not in manifest_text
 
 
+def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
+    """The primary shell should be a custom Chirp UI composition, not default-theme nav."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    assets_root = package_root / "assets"
+    base = (templates_root / "base.html").read_text(encoding="utf-8")
+    css = (assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8")
+    style = (assets_root / "css" / "style.css").read_text(encoding="utf-8")
+
+    assert 'from "chirpui/navbar.html" import navbar, navbar_link, navbar_dropdown' in base
+    assert 'from "chirpui/site_footer.html" import site_footer, footer_column, footer_link' in base
+    assert "render_navbar_item" in base
+    assert 'data-chirp-theme-spine="bespoke"' in base
+    assert "_page_url == '/releases/' or _page_url.startswith('/releases/')" in base
+    assert "asset_url('favicon.svg')" in base
+    assert "asset_url('favicon-32x32.png')" in base
+    assert "asset_url('apple-touch-icon.png')" in base
+    assert "asset_url('site.webmanifest')" in base
+    assert "chirp-theme-shell__desktop-nav" in base
+    assert "chirp-theme-shell__mega" in base
+    assert "chirp-theme-shell__mega-item" in base
+    assert "chirp-theme-shell__main" in base
+    assert "partials/site-footer.html" in base
+    site_footer = (templates_root / "partials" / "site-footer.html").read_text(encoding="utf-8")
+    assert "call site_footer" in site_footer
+    assert "chirp-theme-footer__logo" in site_footer
+    assert '<span class="chirp-theme-footer__mark" aria-hidden="true">ᗢ</span>' in site_footer
+    assert '<ul class="nav-main hidden-mobile">' not in base
+    assert '<footer class="chirp-theme-footer" role="contentinfo">' not in base
+
+    assert ".chirp-theme-shell {" in css
+    assert ".chirp-theme-shell__nav" in css
+    assert ".chirp-theme-shell__mega {" in css
+    assert ".chirp-theme-shell__nav-dropdown:hover > .chirpui-navbar-dropdown__menu" in css
+    assert ".chirp-theme-shell .chirpui-navbar-dropdown__trigger::after" in css
+    assert ".chirp-theme-footer.chirpui-site-footer" in css
+    assert "../../../../chirp_ui/templates/chirpui.css" in style
+    assert "../../../../chirp_ui/templates/chirpui-transitions.css" in style
+
+    favicon = (assets_root / "favicon.svg").read_text(encoding="utf-8")
+    webmanifest = json.loads((assets_root / "site.webmanifest").read_text(encoding="utf-8"))
+    assert "<title>chirp-ui</title>" in favicon
+    assert ">ᗢ</text>" in favicon
+    assert webmanifest["name"] == "chirp-ui"
+    assert webmanifest["theme_color"] == "#071312"
+    assert "/android-chrome-" not in json.dumps(webmanifest)
+
+
+def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
+    """Core pages should share explicit custom-theme surface hooks."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    assets_root = package_root / "assets"
+    expected = {
+        "home.html": 'data-chirp-theme-surface="home"',
+        "page.html": 'data-chirp-theme-surface="page"',
+        "index.html": "data-chirp-theme-surface=\"{{ 'release-list' if is_releases_index else 'section-list' }}\"",
+        "doc/home.html": 'data-chirp-theme-surface="doc-home"',
+        "doc/list.html": 'data-chirp-theme-surface="doc-list"',
+        "doc/single.html": 'data-chirp-theme-surface="doc"',
+        "blog/shell.html": 'data-chirp-theme-surface="blog"',
+        "search.html": 'data-chirp-theme-surface="search"',
+        "404.html": 'data-chirp-theme-surface="error"',
+    }
+
+    for template_name, marker in expected.items():
+        text = (templates_root / template_name).read_text(encoding="utf-8")
+        assert marker in text, f"{template_name} missing {marker}"
+
+    search = (templates_root / "search.html").read_text(encoding="utf-8")
+    not_found = (templates_root / "404.html").read_text(encoding="utf-8")
+    doc_list = (templates_root / "doc" / "list.html").read_text(encoding="utf-8")
+    doc_single = (templates_root / "doc" / "single.html").read_text(encoding="utf-8")
+    page = (templates_root / "page.html").read_text(encoding="utf-8")
+    blog_shell = (templates_root / "blog" / "shell.html").read_text(encoding="utf-8")
+    section_index = (templates_root / "index.html").read_text(encoding="utf-8")
+    page_hero_partial = (templates_root / "partials" / "page-hero.html").read_text(encoding="utf-8")
+    page_actions = (templates_root / "partials" / "page-actions.html").read_text(encoding="utf-8")
+    css = (assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8")
+    interactive_css = (assets_root / "css" / "components" / "interactive.css").read_text(
+        encoding="utf-8"
+    )
+    style = (assets_root / "css" / "style.css").read_text(encoding="utf-8")
+
+    assert 'from "chirpui/hero.html" import page_hero' in search
+    assert 'from "chirpui/surface.html" import surface' in search
+    assert 'from "chirpui/card.html" import resource_card' in not_found
+    assert "chirpui/hero.html" in doc_list
+    assert "page_hero" in doc_list
+    assert "chirpui/hero.html" in doc_single
+    assert "page_hero" in doc_single
+    for article_template in (doc_list, doc_single, page, blog_shell, section_index):
+        assert "chirp-theme-docs-layout" in article_template
+        assert "include 'partials/docs-nav.html'" in article_template
+    assert "include 'partials/page-hero.html'" not in doc_list
+    assert "include 'partials/page-hero.html'" not in doc_single
+    assert 'from "partials/empty-state.html" import empty_state' not in not_found
+    assert ".chirp-theme-search__panel" in css
+    assert ".chirp-theme-error__panel" in css
+    assert "chirp-theme-docs-layout__hero chirp-theme-doc-hero" in page_hero_partial
+    assert "partials/page-actions.html" in doc_list
+    assert "partials/page-actions.html" in doc_single
+    assert "page_actions(page)" in doc_list
+    assert "page_actions(page)" in doc_single
+    assert "chirp-theme-page-actions__trigger" in page_actions
+    assert 'data-action="copy-url"' in page_actions
+    assert 'data-action="copy-llm-txt"' in page_actions
+    assert 'data-ai="{{ ai.id }}"' in page_actions
+    assert "ensure_trailing_slash(page_url) ~ 'index.txt'" in page_actions
+    assert "cls='page-hero page-hero--chirp'" not in page_hero_partial
+    page_hero_macros = (templates_root / "partials" / "page-hero" / "_macros.html").read_text(
+        encoding="utf-8"
+    )
+    navigation = (templates_root / "partials" / "navigation-components.html").read_text(
+        encoding="utf-8"
+    )
+    docs_nav = (templates_root / "partials" / "docs-nav.html").read_text(encoding="utf-8")
+    assert "chirp-theme-page-hero" in page_hero_macros
+    assert 'class="page-hero' not in page_hero_macros
+    assert "chirpui-pagination chirp-theme-pagination" in navigation
+    assert "section-navigation" not in navigation
+    assert "subsection-card gradient-border fluid-combined" not in navigation
+    assert "chirpui-nav-tree toc-sidebar chirp-theme-doc-toc" in navigation
+    assert "chirp-theme-doc-toc__context" in navigation
+    assert "chirp-theme-doc-toc__context-mark" in navigation
+    assert "chirp-theme-doc-toc__context-count" in navigation
+    assert "chirp-theme-doc-toc__mark" in navigation
+    assert "chirpui/workspace_primitives.html" in docs_nav
+    assert "chirp-theme-doc-catalog" in docs_nav
+    assert "chirp-theme-doc-catalog-rail" in docs_nav
+    assert "chirp-theme-doc-catalog-rail__brand-mark" in docs_nav
+    assert ">ᗢ</span>" in docs_nav
+    assert "def catalog_mark" in docs_nav
+    assert "icon('cube'" in docs_nav
+    assert "icon('book-open'" in docs_nav
+    assert "icon('rocket'" in docs_nav
+    assert "chirp-theme-doc-catalog-rail__label" in docs_nav
+    assert "def nav_type_icon" in docs_nav
+    assert "icon('folder'" in docs_nav
+    assert "icon('article'" in docs_nav
+    assert "icon('file-code'" in docs_nav
+    assert "nav_type_icon(item_kind, true)" in docs_nav
+    assert "chirp-theme-doc-catalog__context" not in docs_nav
+    assert "chirp-theme-doc-catalog__context-mark" not in docs_nav
+    assert "chirp-theme-doc-catalog__context-meta" not in docs_nav
+    assert "chirp-theme-docs-nav__type-icon" in docs_nav
+    assert "chirp-theme-docs-nav__summary-link" in docs_nav
+    assert "chirp-theme-docs-nav__meta" not in docs_nav
+    assert "chirp-theme-docs-nav__summary-count" not in docs_nav
+    assert "chirp-theme-doc-catalog-rail__count" not in docs_nav
+    assert "chirp-theme-docs-nav__link--{{ item_kind }}" in docs_nav
+    assert "chirp-theme-docs-nav__branch-link" not in docs_nav
+    assert "{% if is_branch_active %} open{% end %}" in docs_nav
+    assert "{{ item_kind_label }}" not in docs_nav
+    assert "chirp-theme-release-index" in section_index
+    assert 'sort(attribute="metadata.date,title", reverse=true)' in section_index
+    assert "chirp-theme-release-card" in section_index
+    assert "grid-template-columns: 3.5rem minmax(0, 1fr);" in css
+    assert ".chirp-theme-doc-catalog-rail__item:hover .chirp-theme-doc-catalog-rail__label" in css
+    assert ".chirp-theme-doc-catalog-rail__brand-mark" in css
+    assert ".chirp-theme-doc-catalog__context" not in css
+    assert ".chirp-theme-doc-catalog__context-mark" not in css
+    assert ".chirp-theme-docs-nav__section.is-active" in css
+    assert ".chirp-theme-docs-nav__link.chirpui-sidebar__link" in css
+    assert ".chirp-theme-docs-nav__link--component .chirp-theme-docs-nav__type-icon" in css
+    assert ".chirp-theme-docs-nav__summary-link" in css
+    assert ".chirp-theme-docs-nav__summary-copy" in css
+    assert ".chirp-theme-page-actions__trigger" in css
+    assert ".chirp-theme-page-actions__menu:popover-open" in css
+    assert ".chirp-theme-page-actions__item" in css
+    assert ".chirp-theme-docs-nav__meta" not in css
+    assert ".chirp-theme-docs-nav__summary-count" not in css
+    assert ".chirp-theme-doc-catalog-rail__count" not in css
+    assert ".chirp-theme-docs-layout__hero .chirpui-hero__metadata:not(:has(*))" in css
+    assert "scrollbar-color:" in css
+    assert "::-webkit-scrollbar-thumb" in css
+    assert "max-width: min(68ch, 100%);" in css
+    assert ".chirp-theme-docs-layout__content h2" in css
+    assert ".chirp-theme-docs-layout__content p > code" in css
+    assert ".chirp-theme-doc-catalog__primary {\n  padding: 0.75rem 0.5rem;\n}" in css
+    assert ".chirp-theme-docs-layout__sidebar {\n  padding: 0;\n}" in css
+    assert "border-inline-end: 1px solid var(--color-border-light)" not in css
+    assert ".chirp-theme-doc-toc__context" in css
+    assert ".chirp-theme-doc-toc__mark" in css
+    assert ".chirp-theme-doc-toc__group[open]" in css
+    assert ".chirp-theme-doc-toc__link.toc-link" in css
+    assert ".chirp-theme-rail-top.back-to-top" in interactive_css
+    assert ".back-to-top[hidden]" in interactive_css
+    assert "width: 100%;" in css
+    assert "min-height: calc(100svh - 2.875rem);" in css
+    assert "overflow-x: clip;" in css
+    assert ".chirp-theme-shell--rail-only .chirp-theme-docs-layout" in css
+    assert ".chirp-theme-shell--rail-only .chirp-theme-shell__header" in css
+    assert "TRANSITIONAL ASSET SHIM" in style
+    assert "RETAINED LEGACY CSS QUARANTINE" in style
+    assert "BESPOKE ACTIVE THEME SURFACE" in style
+
+
+def test_chirp_theme_blog_and_card_primitives_emit_chirpui_markup() -> None:
+    """Blog/card compatibility macros should render through Chirp UI primitives."""
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+    assets_root = package_root / "assets"
+
+    blog_single = (templates_root / "blog" / "single.html").read_text(encoding="utf-8")
+    article = (templates_root / "partials" / "components" / "article.html").read_text(
+        encoding="utf-8"
+    )
+    card_base = (templates_root / "partials" / "components" / "card-base.html").read_text(
+        encoding="utf-8"
+    )
+    author_bio = (templates_root / "partials" / "components" / "author-bio.html").read_text(
+        encoding="utf-8"
+    )
+    blog_share = (
+        templates_root / "partials" / "components" / "blog-share-dropdown.html"
+    ).read_text(encoding="utf-8")
+    social_share = (templates_root / "partials" / "components" / "social-share.html").read_text(
+        encoding="utf-8"
+    )
+    blog_css = (assets_root / "css" / "components" / "blog.css").read_text(encoding="utf-8")
+    author_css = (assets_root / "css" / "components" / "author.css").read_text(encoding="utf-8")
+    share_css = (assets_root / "css" / "components" / "share.css").read_text(encoding="utf-8")
+
+    assert "chirp-theme-blog-article" in blog_single
+    assert "blog-post" not in blog_single
+    assert "from 'chirpui/card.html' import resource_card" in article
+    assert "chirp-theme-article-card" in article
+    assert "article-card gradient-border fluid-combined" not in article
+    assert "chirpui-card" in card_base
+    assert 'class="card__' not in card_base
+    assert "from 'chirpui/card.html' import card" in author_bio
+    assert "chirp-theme-author-bio" in author_bio
+    assert 'class="author-bio"' not in author_bio
+    assert "chirp-theme-blog-share" in blog_share
+    assert "page-hero__share" not in blog_share
+    assert "chirp-theme-social-share" in social_share
+    assert "share-buttons" not in social_share
+    assert "onclick=" not in social_share
+
+    assert ".chirp-theme-blog-article" in blog_css
+    assert ".blog-post" not in blog_css
+    assert ".chirp-theme-author-bio" in author_css
+    assert ".author-bio" not in author_css
+    assert ".chirp-theme-social-share" in share_css
+    assert ".share-button" not in share_css
+
+
 def test_docs_site_config_points_at_chirp_theme() -> None:
     """The docs site should dogfood the packaged theme by default."""
     theme_config = SITE_ROOT / "config" / "_default" / "theme.yaml"
+    site_config = SITE_ROOT / "config" / "_default" / "site.yaml"
     text = theme_config.read_text(encoding="utf-8")
+    site_text = site_config.read_text(encoding="utf-8")
 
     assert 'name: "chirp-theme"' in text
+    assert 'logo_text: "ᗢ"' in site_text
 
 
 def test_bengal_resolves_packaged_theme() -> None:
@@ -783,6 +1067,8 @@ def test_chirp_theme_autodoc_templates_use_chirpui_reference_patterns() -> None:
     assert "chirpui/code.html" in combined
     assert "chirpui/badge.html" in combined
     assert "chirp-theme-reference" in combined
+    assert "partials/docs-nav.html" in combined
+    assert 'data-chirp-theme-surface="api-reference"' in combined
     assert "<script" not in combined
     assert "autodoc-summary-table" not in combined
     assert "autodoc-table" not in combined
@@ -803,6 +1089,9 @@ def test_chirp_theme_reference_hubs_use_chirpui_patterns() -> None:
     assert "chirpui/accordion.html" in combined
     assert "chirpui/code.html" in combined
     assert "chirpui/nav_tree.html" in combined
+    assert "partials/docs-nav.html" in combined
+    assert 'data-chirp-theme-surface="api-list"' in combined
+    assert 'data-chirp-theme-surface="api-reference"' in combined
     assert "chirp-theme-rest-reference__examples" in combined
     assert "Request and response examples" in combined
     assert "autodoc/openapi/endpoint.html" in combined
@@ -865,13 +1154,25 @@ releases_html = (site.output_dir / "releases" / "index.html").read_text(encoding
 tags_html = (site.output_dir / "tags" / "index.html").read_text(encoding="utf-8")
 tag_html = (site.output_dir / "tags" / "installation" / "index.html").read_text(encoding="utf-8")
 legacy_content_tile_re = re.compile(r'class="[^"]*\bcontent-(?:tile|tiles)\b')
+nested_resource_grid_re = re.compile(
+    r'chirpui-resource-index__results[^>]*>\s*<div class="chirpui-grid'
+)
+release_titles = [
+    item
+    for item in re.findall(r'<span class="chirpui-card__title">([^<]+)</span>', releases_html)
+    if item.startswith("chirp-ui ")
+]
 result_path.write_text(
     json.dumps(
         {
             "has_chirpui_grid": "chirpui-grid" in docs_html,
             "has_chirpui_card": "chirpui-card" in docs_html,
             "docs_section_has_chirpui_sidebar": "chirpui-sidebar" in docs_section_html,
+            "docs_section_has_filter_rail": "chirpui-filter-rail" in docs_section_html,
+            "docs_section_has_doc_catalog": "chirp-theme-doc-catalog" in docs_section_html,
             "docs_section_has_chirpui_breadcrumbs": "chirpui-breadcrumbs" in docs_section_html,
+            "docs_section_has_bespoke_doc_hero": "chirp-theme-doc-hero" in docs_section_html,
+            "docs_section_has_legacy_page_hero_root": 'class="page-hero' in docs_section_html,
             "docs_section_has_legacy_docs_nav": 'class="docs-nav"' in docs_section_html,
             "home_has_chirpui_hero": "chirpui-hero chirpui-hero--page" in home_html,
             "home_has_chirpui_grid": "chirpui-grid" in home_html,
@@ -880,6 +1181,9 @@ result_path.write_text(
             "has_legacy_card_grid": 'class="card-grid"' in docs_html,
             "has_legacy_card": 'class="card"' in docs_html,
             "has_chirpui_resource_card": "chirpui-resource-card" in releases_html,
+            "release_titles": release_titles,
+            "release_has_custom_cards": "chirp-theme-release-card" in releases_html,
+            "release_has_nested_resource_grid": bool(nested_resource_grid_re.search(releases_html)),
             "has_legacy_content_tile": bool(legacy_content_tile_re.search(releases_html)),
             "tags_has_resource_index": "chirpui-resource-index" in tags_html,
             "tags_has_taxonomy_card": "chirp-theme-taxonomy-card" in tags_html,
@@ -909,7 +1213,11 @@ result_path.write_text(
     assert result["has_chirpui_grid"]
     assert result["has_chirpui_card"]
     assert result["docs_section_has_chirpui_sidebar"]
+    assert result["docs_section_has_filter_rail"]
+    assert result["docs_section_has_doc_catalog"]
     assert result["docs_section_has_chirpui_breadcrumbs"]
+    assert result["docs_section_has_bespoke_doc_hero"]
+    assert not result["docs_section_has_legacy_page_hero_root"]
     assert not result["docs_section_has_legacy_docs_nav"]
     assert result["home_has_chirpui_hero"]
     assert result["home_has_chirpui_grid"]
@@ -918,6 +1226,15 @@ result_path.write_text(
     assert not result["has_legacy_card_grid"]
     assert not result["has_legacy_card"]
     assert result["has_chirpui_resource_card"]
+    assert result["release_has_custom_cards"]
+    assert result["release_titles"][:5] == [
+        "chirp-ui 0.9.0",
+        "chirp-ui 0.8.0",
+        "chirp-ui 0.7.0",
+        "chirp-ui 0.6.0",
+        "chirp-ui 0.5.0",
+    ]
+    assert not result["release_has_nested_resource_grid"]
     assert not result["has_legacy_content_tile"]
     assert result["tags_has_resource_index"]
     assert result["tags_has_taxonomy_card"]
