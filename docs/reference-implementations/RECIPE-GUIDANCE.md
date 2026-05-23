@@ -120,3 +120,33 @@ Authoring rules:
 Not authorized: `page_actions()` macro, copy/fetch runtime helper, AI handoff
 protocol, descriptor changes, emitted classes, CSS, manifest updates, generated
 options, or public page-actions docs.
+
+## Linked Navigation
+
+Use this recipe for catalog, docs, or workspace navigation where parent branch
+labels are real route links and children are controlled by server-owned open
+state.
+
+Start with:
+
+- `sidebar` for persistent broad navigation.
+- `sidebar_section` for app-level groups.
+- `sidebar_link` for broad app routes and active route matching.
+- `nav_tree(branch_mode="linked")` for contextual branch links.
+- `drawer` and `drawer_trigger` for phone fallback.
+
+Authoring rules:
+
+- Use linked branch mode when parent branch labels must navigate.
+- Let the server decide `open=true`; do not rely on hidden client-owned
+  children for route context.
+- Keep active child state as current-page state; do not imply parent
+  active-descendant semantics unless the recipe explicitly styles it.
+- Treat branch counts as lightweight metadata, not rich filter state.
+- Keep the persistent sidebar and drawer fallback data shape identical.
+- Record another reference only if active-descendant emphasis, count metadata,
+  sidebar-to-drawer duplication, or route HTMX ownership repeats as a gap.
+
+Not authorized: new `nav_tree` parameters, sidebar branch macros, emitted
+classes, CSS, manifest updates, generated options, `docs_sidebar`,
+`catalog_sidebar`, `docs_shell`, or ARIA tree claims.

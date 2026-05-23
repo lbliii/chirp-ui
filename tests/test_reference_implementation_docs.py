@@ -241,6 +241,44 @@ def test_reference_recipe_guidance_covers_page_actions() -> None:
         assert blocked in normalized
 
 
+def test_reference_recipe_guidance_covers_linked_navigation() -> None:
+    text = RECIPE_GUIDANCE.read_text(encoding="utf-8")
+    section = text.split("## Linked Navigation", 1)[1]
+    normalized = " ".join(section.split())
+
+    for primitive in [
+        "`sidebar`",
+        "`sidebar_section`",
+        "`sidebar_link`",
+        '`nav_tree(branch_mode="linked")`',
+        "`drawer`",
+        "`drawer_trigger`",
+    ]:
+        assert primitive in section
+
+    for rule in [
+        "parent branch labels must navigate",
+        "server decide `open=true`",
+        "active child state as current-page state",
+        "do not imply parent active-descendant semantics",
+        "branch counts as lightweight metadata",
+        "persistent sidebar and drawer fallback data shape identical",
+        "route HTMX ownership repeats as a gap",
+    ]:
+        assert rule in normalized
+
+    for blocked in [
+        "new `nav_tree` parameters",
+        "sidebar branch macros",
+        "manifest updates",
+        "`docs_sidebar`",
+        "`catalog_sidebar`",
+        "`docs_shell`",
+        "ARIA tree claims",
+    ]:
+        assert blocked in normalized
+
+
 def test_reference_proof_analysis_keeps_public_api_closed() -> None:
     text = PROOF_ANALYSIS.read_text(encoding="utf-8")
 
