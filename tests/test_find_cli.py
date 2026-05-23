@@ -375,6 +375,57 @@ def test_dispatch_find_supports_details() -> None:
     assert "input,results,tokens" in out
 
 
+def test_dispatch_find_details_points_agents_at_real_page_primitives() -> None:
+    """Page discovery should expose current primitives, not unpromoted proposal names."""
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        rc = dispatch_main(["find", "page", "--details"])
+
+    assert rc == 0
+    out = buf.getvalue()
+    for expected in [
+        "page_header",
+        "page_hero",
+        "page-fill",
+        "page_header",
+        "layout.html",
+        "hero.html",
+        "stable",
+        "experimental",
+    ]:
+        assert expected in out
+
+    for unpromoted in [
+        "page-actions",
+        "compact-page-header",
+        "reference-page",
+    ]:
+        assert unpromoted not in out
+
+
+def test_dispatch_find_pattern_details_surfaces_reference_building_blocks() -> None:
+    """Reference planning can inspect pattern primitives without manifest schema changes."""
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        rc = dispatch_main(["find", "--role=pattern", "--details"])
+
+    assert rc == 0
+    out = buf.getvalue()
+    for expected in [
+        "filter-rail",
+        "resource-index",
+        "result-card",
+        "workspace_primitives.html",
+        "resource_index.html",
+        "experimental",
+        "available",
+    ]:
+        assert expected in out
+
+    assert "data-grid" not in out
+    assert "reference-page" not in out
+
+
 def test_dispatch_help_prints_usage() -> None:
     buf = io.StringIO()
     with redirect_stdout(buf):
