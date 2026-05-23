@@ -288,6 +288,10 @@ Current application-chrome queue:
 
 - Private fixtures now prove current composition for page actions, linked
   nav/sidebar, compact headers/page heroes, and shell response/OOB branching.
+- Dense reference/data and agent-discovery proof now exist too. Their next
+  slice is proof analysis against current primitives, not another brief and not
+  an immediate data-grid, reference-page macro, manifest schema, or copied-source
+  workflow.
 - The next qualifying evidence is deliberately built reference implementation
   repetition: a second scenario-complete non-Bengal page-action, linked-branch,
   or compact docs/reference/catalog implementation, or a third

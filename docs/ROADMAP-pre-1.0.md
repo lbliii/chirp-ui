@@ -263,6 +263,10 @@ Current promotion queue:
 
 - Private evidence is complete for page actions, linked nav/sidebar semantics,
   shell response/OOB routing, and compact header/page hero comparison.
+- Scenario-complete proof also exists for dense reference/data pages and agent
+  discovery. The next work there is proof analysis: compare current primitives
+  against the reference fixture outcomes before proposing a data-grid,
+  reference-page macro, manifest schema change, or copied-source workflow.
 - The next qualifying work is not waiting for a userbase or adding another
   artificial fixture. It is deliberately building or identifying a second
   scenario-complete non-Bengal reference implementation for page actions,
