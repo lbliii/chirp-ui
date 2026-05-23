@@ -3,6 +3,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PLAYBOOK = ROOT / "docs" / "REFERENCE-IMPLEMENTATION-PLAYBOOK.md"
 INDEX = ROOT / "docs" / "INDEX.md"
+REFERENCE_INDEX = ROOT / "docs" / "reference-implementations" / "README.md"
 PAGE_ACTIONS = ROOT / "docs" / "reference-implementations" / "PAGE-ACTIONS-AI-REFERENCE.md"
 LINKED_NAV = ROOT / "docs" / "reference-implementations" / "LINKED-NAV-CATALOG-REFERENCE.md"
 COMPACT_HEADER = ROOT / "docs" / "reference-implementations" / "COMPACT-HEADER-REFERENCE.md"
@@ -59,9 +60,32 @@ def test_reference_implementation_playbook_names_priority_candidates() -> None:
 
 
 def test_reference_implementation_playbook_is_indexed() -> None:
-    assert "[REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md)" in (
-        INDEX.read_text(encoding="utf-8")
-    )
+    text = INDEX.read_text(encoding="utf-8")
+
+    assert "[REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md)" in text
+    assert "[reference-implementations/README.md](reference-implementations/README.md)" in text
+
+
+def test_reference_implementation_index_links_all_briefs() -> None:
+    text = REFERENCE_INDEX.read_text(encoding="utf-8")
+
+    for brief in [
+        "PAGE-ACTIONS-AI-REFERENCE.md",
+        "LINKED-NAV-CATALOG-REFERENCE.md",
+        "COMPACT-HEADER-REFERENCE.md",
+        "SHELL-RESPONSE-REFERENCE.md",
+        "DENSE-REFERENCE-DATA-REFERENCE.md",
+        "AGENT-DISCOVERY-REFERENCE.md",
+    ]:
+        assert f"[{brief}]({brief})" in text
+
+    for boundary in [
+        "They are not public API plans.",
+        "Do not add public APIs from a reference brief.",
+        "Do not count market research as promotion proof.",
+        "Do not count Bengal as the second independent reference.",
+    ]:
+        assert boundary in text
 
 
 def test_page_actions_reference_brief_keeps_api_unauthorized() -> None:

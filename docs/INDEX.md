@@ -25,6 +25,7 @@ Navigation guide for all chirp-ui documentation.
 - [VISUAL-AUDIT-SHOWCASE.md](VISUAL-AUDIT-SHOWCASE.md) — Static visual QA surface and responsive audit checklist
 - [DESIGN-SYSTEM-RESEARCH.md](DESIGN-SYSTEM-RESEARCH.md) — External design-system research, Chirp UI product opinion, Bengal shell implications, and maturity gates
 - [REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md) — Scenario-complete reference evidence rules for promotion candidates
+- [reference-implementations/README.md](reference-implementations/README.md) — Reference implementation brief index for blocked promotion candidates
 
 ## Patterns
 
