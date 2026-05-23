@@ -5,6 +5,7 @@ PLAYBOOK = ROOT / "docs" / "REFERENCE-IMPLEMENTATION-PLAYBOOK.md"
 INDEX = ROOT / "docs" / "INDEX.md"
 PAGE_ACTIONS = ROOT / "docs" / "reference-implementations" / "PAGE-ACTIONS-AI-REFERENCE.md"
 LINKED_NAV = ROOT / "docs" / "reference-implementations" / "LINKED-NAV-CATALOG-REFERENCE.md"
+COMPACT_HEADER = ROOT / "docs" / "reference-implementations" / "COMPACT-HEADER-REFERENCE.md"
 
 
 def test_reference_implementation_playbook_defines_evidence_ladder() -> None:
@@ -126,5 +127,42 @@ def test_linked_nav_reference_brief_forces_existing_primitives_first() -> None:
         "`catalog_sidebar`",
         "`docs_shell`",
         "ARIA tree claims",
+    ]:
+        assert boundary in text
+
+
+def test_compact_header_reference_brief_blocks_premature_header_api() -> None:
+    text = COMPACT_HEADER.read_text(encoding="utf-8")
+
+    for primitive in [
+        '`page_header(variant="compact")`',
+        '`page_hero(variant="minimal")`',
+        "`search_header`",
+        "`entity_header`",
+        "`document_header`",
+        "`route_tabs`",
+    ]:
+        assert primitive in text
+
+    for proof in [
+        "Long titles and action labels wrap without overlap",
+        "Empty `page_hero` optional regions collapse",
+        "Route tabs stay near page identity",
+        "Browser proof covers phone, tablet, and desktop widths",
+        "No document-level horizontal overflow",
+    ]:
+        assert proof in text
+
+    for boundary in [
+        "does not authorize `compact_page_header`",
+        "`docs_header`",
+        "`catalog_header`",
+        "`docs_shell`",
+        "new `page_hero` parameters",
+        "slot changes",
+        "markup changes",
+        "CSS",
+        "descriptor changes",
+        "manifest updates",
     ]:
         assert boundary in text
