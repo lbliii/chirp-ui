@@ -17,8 +17,10 @@ def test_agent_source_inventory_includes_strategy_and_evidence_sources() -> None
         "| `docs-derived` | `docs/reference-implementations/README.md` |",
         "| `docs-derived` | `docs/reference-implementations/PROOF-ANALYSIS.md` |",
         "| `docs-derived` | `docs/reference-implementations/RECIPE-GUIDANCE.md` |",
-        "| `docs-derived` | `tests/browser/test_page_actions_candidate.py`,",
-        "| `docs-derived` | `tests/test_shell_response_targets.py`,",
+        "| `docs-derived` | `tests/browser/test_page_actions_candidate.py` |",
+        "| `docs-derived` | `tests/browser/test_dense_reference_data_reference.py` |",
+        "| `docs-derived` | `tests/test_shell_response_targets.py` |",
+        "| `docs-derived` | `tests/test_find_cli.py` |",
     ]:
         assert row in text
 
@@ -31,8 +33,10 @@ def test_agent_source_inventory_includes_strategy_and_evidence_sources() -> None
         "Index of reference implementation briefs",
         "Source-only proof-analysis decisions",
         "Source-only recipe guidance",
-        "Browser proof for scenario-complete private reference fixtures",
-        "Server/browser/CLI proof for shell response ownership and agent discovery",
+        "Browser proof for private page-action reference fixtures",
+        "Browser proof for private dense-reference fixtures",
+        "Server proof for shell response ownership reference contracts",
+        "CLI proof for agent discovery reference contracts",
         "| `source-only` |",
     ]:
         assert phrase in text
@@ -50,8 +54,10 @@ def test_agent_source_map_routes_strategy_sources_without_new_artifacts() -> Non
         "| `docs/reference-implementations/README.md` | `docs-derived` |",
         "| `docs/reference-implementations/PROOF-ANALYSIS.md` | `docs-derived` |",
         "| `docs/reference-implementations/RECIPE-GUIDANCE.md` | `docs-derived` |",
-        "| `tests/browser/test_page_actions_candidate.py`,",
-        "| `tests/test_shell_response_targets.py`,",
+        "| `tests/browser/test_page_actions_candidate.py` | `docs-derived` |",
+        "| `tests/browser/test_dense_reference_data_reference.py` | `docs-derived` |",
+        "| `tests/test_shell_response_targets.py` | `docs-derived` |",
+        "| `tests/test_find_cli.py` | `docs-derived` |",
     ]:
         assert row in text
 
@@ -63,8 +69,10 @@ def test_agent_source_map_routes_strategy_sources_without_new_artifacts() -> Non
         "Reference implementation evidence ladder and public-API stop boundaries.",
         "Source-only proof-analysis ledger for reference fixture decisions",
         "Source-only recipe guidance for current-primitive decisions",
-        "Browser proof for private reference fixtures; source-only evidence, never copyable snippets.",
-        "Server/browser/CLI proof for response ownership and registry discovery; source-only evidence, never copyable snippets.",
+        "Browser proof for private page-action fixtures; source-only evidence, never copyable snippets.",
+        "Browser proof for private dense-reference fixtures; source-only evidence, never copyable snippets.",
+        "Server proof for response ownership; source-only evidence, never copyable snippets.",
+        "CLI proof for registry discovery; source-only evidence, never copyable snippets.",
         "not copyable snippet source.",
     ]:
         assert phrase in text
