@@ -10,11 +10,15 @@ boundaries, and the decision rule for staying recipe-only or stopping for API
 design approval.
 
 Start with [../REFERENCE-IMPLEMENTATION-PLAYBOOK.md](../REFERENCE-IMPLEMENTATION-PLAYBOOK.md).
+Use [PROOF-ANALYSIS.md](PROOF-ANALYSIS.md) after a reference fixture exists to
+decide whether the next move is recipe guidance, more reference evidence, or a
+public API/design stop-and-ask.
 
 ## Briefs
 
 | Brief | Candidate | Primary Question |
 |---|---|---|
+| [PROOF-ANALYSIS.md](PROOF-ANALYSIS.md) | Cross-candidate proof analysis | What did the current reference fixtures prove, what remains blocked, and what is explicitly not authorized? |
 | [PAGE-ACTIONS-AI-REFERENCE.md](PAGE-ACTIONS-AI-REFERENCE.md) | Page actions | Can existing header, dropdown, share, action, and copy primitives handle copy URL, LLM text, and AI handoff commands? |
 | [LINKED-NAV-CATALOG-REFERENCE.md](LINKED-NAV-CATALOG-REFERENCE.md) | Linked navigation | Can existing sidebar, linked nav tree, and drawer primitives handle parent route links, active children, counts, and phone fallback? |
 | [COMPACT-HEADER-REFERENCE.md](COMPACT-HEADER-REFERENCE.md) | Compact headers | Can existing header primitives cover dense docs/reference/catalog identity without new macros or `page_hero` changes? |

@@ -4,6 +4,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PLAYBOOK = ROOT / "docs" / "REFERENCE-IMPLEMENTATION-PLAYBOOK.md"
 INDEX = ROOT / "docs" / "INDEX.md"
 REFERENCE_INDEX = ROOT / "docs" / "reference-implementations" / "README.md"
+PROOF_ANALYSIS = ROOT / "docs" / "reference-implementations" / "PROOF-ANALYSIS.md"
 PAGE_ACTIONS = ROOT / "docs" / "reference-implementations" / "PAGE-ACTIONS-AI-REFERENCE.md"
 LINKED_NAV = ROOT / "docs" / "reference-implementations" / "LINKED-NAV-CATALOG-REFERENCE.md"
 COMPACT_HEADER = ROOT / "docs" / "reference-implementations" / "COMPACT-HEADER-REFERENCE.md"
@@ -70,6 +71,7 @@ def test_reference_implementation_index_links_all_briefs() -> None:
     text = REFERENCE_INDEX.read_text(encoding="utf-8")
 
     for brief in [
+        "PROOF-ANALYSIS.md",
         "PAGE-ACTIONS-AI-REFERENCE.md",
         "LINKED-NAV-CATALOG-REFERENCE.md",
         "COMPACT-HEADER-REFERENCE.md",
@@ -81,9 +83,43 @@ def test_reference_implementation_index_links_all_briefs() -> None:
 
     for boundary in [
         "They are not public API plans.",
+        "Use [PROOF-ANALYSIS.md](PROOF-ANALYSIS.md)",
         "Do not add public APIs from a reference brief.",
         "Do not count market research as promotion proof.",
         "Do not count Bengal as the second independent reference.",
+    ]:
+        assert boundary in text
+
+
+def test_reference_proof_analysis_keeps_public_api_closed() -> None:
+    text = PROOF_ANALYSIS.read_text(encoding="utf-8")
+
+    for decision in [
+        "Status: active proof-analysis ledger",
+        "not a public API plan",
+        "Existing primitives working in one private fixture means recipe guidance",
+        "Promotion requires two independent scenario-complete references",
+        "Response-helper promotion also requires owner clarity",
+    ]:
+        assert decision in text
+
+    for candidate in [
+        "Page actions",
+        "Linked navigation",
+        "Compact headers",
+        "Shell response/OOB",
+        "Dense reference/data pages",
+        "Agent discovery",
+    ]:
+        assert f"| {candidate} |" in text
+
+    for boundary in [
+        "No `page_actions()` macro.",
+        "No new `nav_tree` parameters",
+        "No `compact_page_header`",
+        "No visual shell macro",
+        "No data-grid engine",
+        "No manifest schema changes",
     ]:
         assert boundary in text
 
