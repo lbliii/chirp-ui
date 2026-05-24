@@ -192,6 +192,19 @@ def test_dynamic_bem_modifiers_used_in_templates_exist_in_css() -> None:
     assert not missing, "Required dynamic BEM classes missing from CSS: " + ", ".join(missing)
 
 
+def test_view_transition_name_scopes_to_direct_shell_boundary() -> None:
+    """Avoid duplicate names when app_shell() previews nest inside app_layout.html."""
+    content = TRANSITIONS_CSS_PATH.read_text(encoding="utf-8")
+    assert "body > #main" in content
+    assert "body > .chirpui-app-shell > #main" in content
+    broad_main_rule = re.compile(r"(?m)^#main\s*\{[^}]*view-transition-name")
+    assert not broad_main_rule.search(content), (
+        "chirpui-transitions.css must not assign view-transition-name through a "
+        "broad #main selector; duplicate ids in embedded shell previews would "
+        "duplicate the page-content view-transition name."
+    )
+
+
 def test_component_descriptor_elements_and_modifiers_exist_in_css() -> None:
     """Elements and modifiers declared in COMPONENTS must have CSS definitions.
 

@@ -1,18 +1,21 @@
-/* chirp-ui View Transitions — scoped to #main for app shell layouts.
+/* chirp-ui View Transitions — scoped to the direct shell main boundary.
    Include after chirpui.css when using AppConfig(view_transitions=True).
 
    Chirp base injects root-level crossfade for all layouts. This stylesheet
-   overrides that to scope transitions to #main so the app shell (topbar,
-   sidebar) stays frozen during navigation. Only the page content animates.
+   overrides that to scope transitions to the shell swap target so the app
+   shell (topbar, sidebar) stays frozen during navigation. Only the page
+   content animates.
 
-   #main persists in the DOM (innerHTML swap, not outerHTML) so
-   view-transition-name pairing works correctly for both htmx swaps
-   (SPA) and MPA navigations. Modals use view-transition-name: none
-   because multiple dialogs can coexist and would duplicate the name.
+   The broad #main selector is intentionally avoided: embedded app_shell()
+   previews can nest another #main inside app_layout.html, and view-transition
+   names must be unique in the rendered document. The direct-child selectors
+   below cover app_layout.html and app_shell_layout.html without naming nested
+   shell previews.
 */
 
-/* Scope transitions to the main content area */
-#main {
+/* Scope transitions to the direct shell swap boundary. */
+body > #main,
+body > .chirpui-app-shell > #main {
     view-transition-name: page-content;
 }
 
