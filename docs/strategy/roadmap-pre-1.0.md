@@ -50,6 +50,9 @@ The strategic bets are:
 - **Bengal as proof path:** the packaged Bengal theme is a reference implementation for
   docs/catalog shell pressure, theme asset contracts, and reference-page
   primitives.
+- **Screen catalog as taste floor:** complete product situations, profile
+  pairings, realistic data, agent guidance, and visual proof make default mocks
+  look designed before app authors write custom CSS.
 
 See `docs/decisions/design-system-research.md` for the research ledger behind these
 decisions.
@@ -189,6 +192,31 @@ Acceptance:
   loading/reserved badges, and nested surfaces.
 - The page contains no inline copy explaining how to use the library; it is a
   visual audit surface, not a landing page.
+
+### 3a. Screen Catalog And Taste Floor
+
+Goal: raise the default mock quality with complete product situations rather
+than isolated component examples.
+
+Tasks:
+
+- Use `docs/plans/PLAN-visual-taste-floor-saga.md` as the active plan for the
+  composition taxonomy, taste laws, profile/screen pairings, golden screens,
+  agent guidance, and proof ratchet.
+- Build golden screens before adding public screen macros: Command Center,
+  Review Queue, Agent Run Monitor, and Product/Docs Home.
+- Treat every local visual workaround in those screens as evidence for a
+  missing token, relationship, primitive, pattern, component, or recipe.
+- Promote only repeated semantic moves; keep one-off polish in recipes.
+
+Acceptance:
+
+- A polished mock starts from a screen archetype and profile, not from a generic
+  card grid.
+- Golden screens survive realistic data, stress states, and desktop/tablet/phone
+  widths.
+- Agent guidance can cite curated screen entries without inventing classes or
+  macros.
 
 ### 4. Theme Authoring UX
 
@@ -385,6 +413,7 @@ parallel backlog.
 
 | Plan | Roadmap workstream |
 |---|---|
+| `PLAN-visual-taste-floor-saga.md` | Screen Catalog And Taste Floor |
 | `PLAN-pre-1.0-productization-saga.md` | Productization Coordination |
 | `PLAN-bengal-chirpui-library-contract.md` | Bengal And chirp-theme Integration |
 | `PLAN-chirp-theme-content-parity.md` | Bengal And chirp-theme Integration |

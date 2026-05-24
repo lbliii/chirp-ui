@@ -145,6 +145,7 @@ plans as live direction. (Sprint 6 of `PLAN-agent-grounding-depth.md`,
 
 ### In-flight plans (`docs/plans/`)
 
+- [PLAN-visual-taste-floor-saga.md](plans/PLAN-visual-taste-floor-saga.md) — Screen catalog, profile, golden-screen, agent-guidance, and visual-proof saga for raising default visual quality
 - [PLAN-pre-1.0-productization-saga.md](plans/PLAN-pre-1.0-productization-saga.md) — Umbrella productization saga for visible quality, public surface, themes, app chrome, Bengal, and verification
 - [PLAN-css-scope-and-layer.md](plans/PLAN-css-scope-and-layer.md) — Ongoing `@scope` conversion policy and residual CSS hardening
 - [PLAN-application-chrome-system.md](plans/PLAN-application-chrome-system.md) — Application chrome system contracts, rail/tray proof, rhythm audit, and composite gates

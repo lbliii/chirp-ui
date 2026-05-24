@@ -11,6 +11,7 @@ EXPECTED_ACTIVE_PLANS = [
     "PLAN-css-scope-and-layer.md",
     "PLAN-page-actions-primitive.md",
     "PLAN-pre-1.0-productization-saga.md",
+    "PLAN-visual-taste-floor-saga.md",
 ]
 
 
@@ -28,7 +29,7 @@ def test_active_plan_count_stays_intentional() -> None:
     active_plans = sorted(path.name for path in PLANS.glob("PLAN-*.md"))
 
     assert active_plans == EXPECTED_ACTIVE_PLANS
-    assert len(active_plans) <= 6
+    assert len(active_plans) <= 7
 
 
 def test_archived_plans_do_not_claim_active_or_draft_status() -> None:
