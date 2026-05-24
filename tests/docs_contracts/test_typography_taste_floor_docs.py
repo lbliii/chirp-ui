@@ -282,7 +282,7 @@ def test_component_taste_pass_uses_existing_role_tokens() -> None:
     assert "font-variant-numeric: tabular-nums;" in partials["timeline"]
     assert ".chirpui-timeline__body" in partials["timeline"]
 
-    assert ".chirpui-table__td--number" in partials["table"]
+    assert ".chirpui-table__td--right" in partials["table"]
     assert "font-size: var(--chirpui-font-sm);" in partials["table"]
 
     assert ".chirpui-dl__detail--number" in partials["description_list"]

@@ -8275,8 +8275,6 @@ a.chirpui-tag:active {
 .chirpui-table__th--right,
 .chirpui-table__td--right { text-align: right; }
 
-.chirpui-table__td--number,
-.chirpui-table__th--number,
 .chirpui-table__td--right,
 .chirpui-table__th--right {
     font-variant-numeric: tabular-nums;
