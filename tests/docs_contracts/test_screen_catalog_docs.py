@@ -57,8 +57,61 @@ def test_screen_docs_pin_fixture_routes_profiles_and_proof() -> None:
         assert "tests/test_data_integration.py" in text
         assert "tests/browser/test_golden_screen_fixtures.py" in text
         assert "## Agent Guidance" in text
+        assert "## Typography Role Map" in text
+        assert "docs/decisions/typography-role-matrix.md" in text
         assert "## Extraction Candidates" in text
         assert "Do not" in text
+
+
+def test_screen_docs_map_recipe_only_typography_roles() -> None:
+    readme = (SCREENS / "README.md").read_text(encoding="utf-8")
+    assert "docs/decisions/typography-role-matrix.md" in readme
+    assert "not public token names or utility classes" in readme
+
+    expected_roles = {
+        "command-center.md": [
+            "`page-title`",
+            "`panel-title`",
+            "`object-title`",
+            "`dense-body`",
+            "`metadata`",
+            "`metric`",
+            "`status-label`",
+        ],
+        "review-queue.md": [
+            "`page-title`",
+            "`panel-title`",
+            "`object-title`",
+            "`dense-body`",
+            "`metadata`",
+            "`metric`",
+            "`status-label`",
+        ],
+        "agent-run-monitor.md": [
+            "`page-title`",
+            "`panel-title`",
+            "`object-title`",
+            "`dense-body`",
+            "`metadata`",
+            "`metric`",
+            "`status-label`",
+            "`log-line`",
+        ],
+        "product-docs-home.md": [
+            "`hero-display`",
+            "`proof-copy`",
+            "`panel-title`",
+            "`object-title`",
+            "`metadata`",
+            "`metric`",
+            "`status-label`",
+        ],
+    }
+
+    for filename, roles in expected_roles.items():
+        text = (SCREENS / filename).read_text(encoding="utf-8")
+        for role in roles:
+            assert role in text
 
 
 def test_screen_catalog_does_not_authorize_public_screen_macros() -> None:

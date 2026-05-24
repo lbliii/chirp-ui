@@ -42,6 +42,23 @@ record. Use Command Center or Review Queue instead.
 | Streaming output | `model_card`, `streaming_block`, stable output target. |
 | Artifacts | `result_collection`, `result_card`, artifact status badges. |
 
+## Typography Role Map
+
+Use the recipe-only role names from
+`docs/decisions/typography-role-matrix.md`. These names do not authorize public
+tokens or utility classes.
+
+| Role | Screen Surface | Intent |
+|---|---|---|
+| `page-title` | Page header | Name the live execution object without product-page display treatment. |
+| `panel-title` | Run summary, timeline, output, artifacts, and inspector panels | Make live-state regions distinct before their internal details. |
+| `object-title` | Artifact titles and selected step title | Keep run objects legible inside dense technical panels. |
+| `dense-body` | Artifact descriptions and recovery explanations | Support compact operational text near controls. |
+| `metadata` | Run id, trigger, source bundle, timestamps, and artifact footers | Keep provenance visible because it is part of agent trust. |
+| `metric` | Tool calls, latency, eval score, progress, and step counts | Make technical measures comparable without generic dashboard styling. |
+| `status-label` | Running, connected, watch, verified, pending, and retry labels | Pair state color with text for non-color-only state. |
+| `log-line` | Streaming output block | Preserve code/log rhythm, wrapping, and scroll containment. |
+
 ## Data Shape
 
 The fixture expects run records with:

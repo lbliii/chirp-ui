@@ -42,6 +42,22 @@ Product/Docs Home, or Resource Detail patterns instead.
 | Inspector | `inspector_panel`, selected ticket metadata, timeline list. |
 | Empty state | `empty_state` when filters remove all tickets. |
 
+## Typography Role Map
+
+Use the recipe-only role names from
+`docs/decisions/typography-role-matrix.md`. These names do not authorize public
+tokens or utility classes.
+
+| Role | Screen Surface | Intent |
+|---|---|---|
+| `page-title` | Page header | Keep queue purpose visible without turning review work into a dashboard hero. |
+| `panel-title` | Main readout and selected inspector | Separate queue scope from individual result cards. |
+| `object-title` | Ticket subject and selected customer/title | Make the record under review clear at scan speed. |
+| `dense-body` | Ticket summary and inspector notes | Preserve readable two-line triage copy in compact cards. |
+| `metadata` | Customer, owner, plan, age, timeline, and footer copy | Keep decision context available without high-contrast noise. |
+| `metric` | Score, age, plan, and queue strip values | Let reviewers compare records without decorative stat treatment. |
+| `status-label` | Ready, waiting, needs reply, and escalated badges | Make workflow state explicit beyond color. |
+
 ## Data Shape
 
 The fixture expects ticket/review records with:

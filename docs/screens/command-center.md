@@ -42,6 +42,22 @@ onboarding flow, or settings surface instead.
 | Inspector | Selected workload card with description metadata and event list. |
 | Empty state | `empty_state` when filters remove all workloads. |
 
+## Typography Role Map
+
+Use the recipe-only role names from
+`docs/decisions/typography-role-matrix.md`. These names do not authorize public
+tokens or utility classes.
+
+| Role | Screen Surface | Intent |
+|---|---|---|
+| `page-title` | Page header | Establish operational context without hero/display scale. |
+| `panel-title` | Workload collection and inspector headings | Make scoped regions readable before card-level content. |
+| `object-title` | Workload card title and selected workload title | Keep long workload names prominent but stable in dense cards. |
+| `dense-body` | Workload summaries and inspector explanation | Support two-line operational copy without cramped rhythm. |
+| `metadata` | Region, owner, route, queue, and footer copy | Keep provenance visible without making it disabled-looking. |
+| `metric` | Workload, incident, region, and latency badges/metrics | Make operational numbers scannable without generic stat-card styling. |
+| `status-label` | Incident, warning, success, and muted badges | Pair state color with readable labels so state is not color-only. |
+
 ## Data Shape
 
 The fixture expects workload records with:

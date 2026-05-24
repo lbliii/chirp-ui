@@ -43,6 +43,22 @@ Agent Run Monitor instead.
 | Outcomes | `story_card` grid. |
 | Closing action | `cta_band`. |
 
+## Typography Role Map
+
+Use the recipe-only role names from
+`docs/decisions/typography-role-matrix.md`. These names do not authorize public
+tokens or utility classes.
+
+| Role | Screen Surface | Intent |
+|---|---|---|
+| `hero-display` | Hero heading | Let the product identity feel expressive without leaking display type into app workspaces. |
+| `proof-copy` | Hero subtitle, proof band, lifecycle copy, stories, and CTA | Use measure and rhythm to make product claims readable. |
+| `panel-title` | Lifecycle, entry point, story, and CTA headings | Keep sections composed without generic card-grid sameness. |
+| `object-title` | Entry card and story titles | Make destinations and outcomes clear at scan speed. |
+| `metadata` | Profile labels, proof labels, badges, and footer navigation | Keep supporting context designed but secondary. |
+| `metric` | Proof metrics and story metrics | Make product proof scannable without dashboard mood. |
+| `status-label` | Profile and proof badges | Keep labels meaningful rather than decorative chips. |
+
 ## Data Shape
 
 The fixture expects:

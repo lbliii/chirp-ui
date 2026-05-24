@@ -10,6 +10,11 @@ composition map, fixture route, proof, and agent guidance.
 Screen entries are recipes, not public macros. They do not authorize new
 component APIs, manifest fields, theme-pack metadata, or utility classes.
 
+Typography guidance for these screens uses the recipe-only role matrix in
+`docs/decisions/typography-role-matrix.md`. Role names such as `metadata`,
+`metric`, `object-title`, and `hero-display` describe screen intent; they are
+not public token names or utility classes.
+
 ## Available Golden Screens
 
 | Screen | Profile | Fixture | Use When |
