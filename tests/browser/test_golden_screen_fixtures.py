@@ -19,6 +19,10 @@ _SHOWCASE_DIR = Path(__file__).resolve().parents[2] / "examples" / "component-sh
 _SHOWCASE_APP = _SHOWCASE_DIR / "app.py"
 
 
+def _px(value: str) -> float:
+    return float(value.replace("px", ""))
+
+
 def _find_free_port() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("127.0.0.1", 0))
@@ -196,3 +200,78 @@ async def test_product_docs_home_golden_screen_uses_product_pattern_surfaces(
     await expect(showcase_page.locator(".chirpui-logo-cloud")).to_have_count(1)
     await expect(showcase_page.locator(".chirpui-lifecycle-showcase")).to_have_count(1)
     await expect(showcase_page.locator(".chirpui-cta-band")).to_have_count(1)
+
+
+async def test_golden_screen_typography_roles_have_browser_proof(
+    showcase_page,
+    showcase_base_url: str,
+) -> None:
+    await showcase_page.set_viewport_size({"width": 390, "height": 844})
+    await showcase_page.goto(
+        showcase_base_url + "/screen-review-queue?q=latency&queue=priority&status=danger"
+    )
+    await wait_for_alpine(showcase_page)
+    await assert_no_document_horizontal_overflow(
+        showcase_page, "golden-screen-review-queue-typography"
+    )
+
+    review_styles = await showcase_page.locator(".chirpui-result-card__title").first.evaluate(
+        """el => {
+            const title = getComputedStyle(el);
+            const body = getComputedStyle(document.querySelector(".chirpui-result-card__body"));
+            const metric = getComputedStyle(document.querySelector(".chirpui-metric-strip__value"));
+            return {
+                titleWeight: title.fontWeight,
+                bodySize: body.fontSize,
+                bodyLineHeight: body.lineHeight,
+                metricVariant: metric.fontVariantNumeric
+            };
+        }"""
+    )
+    assert int(review_styles["titleWeight"]) >= 600
+    assert _px(review_styles["bodyLineHeight"]) > _px(review_styles["bodySize"])
+    assert "tabular-nums" in review_styles["metricVariant"]
+
+    await showcase_page.set_viewport_size({"width": 320, "height": 640})
+    await showcase_page.goto(showcase_base_url + "/screen-product-docs-home")
+    await wait_for_alpine(showcase_page)
+    await assert_no_document_horizontal_overflow(
+        showcase_page, "golden-screen-product-docs-home-typography"
+    )
+
+    product_styles = await showcase_page.locator(".chirpui-hero--page .chirpui-hero__title").evaluate(
+        """el => {
+            const title = getComputedStyle(el);
+            const subtitleEl = document.querySelector(".chirpui-hero--page .chirpui-hero__subtitle");
+            const subtitle = getComputedStyle(subtitleEl);
+            const titleRect = el.getBoundingClientRect();
+            const subtitleRect = subtitleEl.getBoundingClientRect();
+            return {
+                titleSize: title.fontSize,
+                titleWidth: titleRect.width,
+                subtitleSize: subtitle.fontSize,
+                subtitleLineHeight: subtitle.lineHeight,
+                subtitleWidth: subtitleRect.width,
+                viewportWidth: window.innerWidth
+            };
+        }"""
+    )
+    assert _px(product_styles["titleSize"]) > _px(product_styles["subtitleSize"])
+    assert _px(product_styles["subtitleLineHeight"]) > _px(product_styles["subtitleSize"])
+    assert product_styles["titleWidth"] <= product_styles["viewportWidth"]
+    assert product_styles["subtitleWidth"] <= product_styles["viewportWidth"]
+
+    await showcase_page.set_viewport_size({"width": 390, "height": 844})
+    await showcase_page.goto(showcase_base_url + "/screen-agent-run-monitor")
+    await wait_for_alpine(showcase_page)
+    await assert_no_document_horizontal_overflow(
+        showcase_page, "golden-screen-agent-run-monitor-typography"
+    )
+
+    log_styles = await showcase_page.locator("#agent-run-monitor-log .chirpui-streaming-block").evaluate(
+        """el => {
+            const style = getComputedStyle(el);
+            return { fontSize: style.fontSize, lineHeight: style.lineHeight };
+        }"""
+    )
+    assert _px(log_styles["lineHeight"]) > _px(log_styles["fontSize"])
