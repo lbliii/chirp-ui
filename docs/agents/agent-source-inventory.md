@@ -61,6 +61,7 @@ adds all of the following:
 | `docs-derived` | `docs/agents/agent-source-map.md` | Generated-output ownership map and source-input map. | `source-only` |
 | `docs-derived` | `docs/agents/agent-curated-snippets.md` | Hand-curated macro-first snippets that passed the review gate. | `copyable-curated` |
 | `docs-derived` | `docs/agents/registry-discovery.md` | CLI and Python discovery workflows over manifest labels and component metadata. | `source-only` |
+| `docs-derived` | `docs/screens/` | Screen archetype selection, profile pairing, fixture proof, and agent guidance for complete product situations. | `source-only` |
 | `docs-derived` | `docs/reference-implementations/playbook.md` | Reference implementation evidence ladder, scenario-complete criteria, and promotion boundaries. | `source-only` |
 | `docs-derived` | `docs/reference-implementations/README.md` | Index of reference implementation briefs for blocked promotion candidates. | `source-only` |
 | `docs-derived` | `docs/reference-implementations/PROOF-ANALYSIS.md` | Source-only proof-analysis decisions for scenario-complete reference fixtures and public-API non-authorizations. | `source-only` |
@@ -87,6 +88,8 @@ adds all of the following:
 | `example-derived` | `examples/component-showcase/templates/showcase/htmx.html` | Runnable htmx pattern examples. | `candidate-review` |
 | `example-derived` | `examples/component-showcase/templates/showcase/ui.html` | Runnable interactive component examples. | `candidate-review` |
 | `example-derived` | `examples/component-showcase/templates/showcase/navigation.html` | Runnable navigation examples and dense navigation recipes. | `candidate-review` |
+| `example-derived` | `examples/component-showcase/templates/showcase/operations_shell.html` | Source fixture for the Command Center golden screen; informs screen-level guidance only through `docs/screens/command-center.md`. | `candidate-review` |
+| `example-derived` | `examples/component-showcase/templates/showcase/support_shell.html` | Source fixture for the Review Queue golden screen; informs screen-level guidance only through `docs/screens/review-queue.md`. | `candidate-review` |
 
 ## Snippet Exclusions
 

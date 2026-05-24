@@ -66,6 +66,16 @@ new public APIs unless a linked plan or design record says so.
 - [FORUM-SITE-PATTERNS.md](patterns/forum-site-patterns.md) — Forum, Q&A, threaded discussion, moderation, and community composition recipes
 - [VISUAL-AUDIT-SHOWCASE.md](patterns/visual-audit-showcase.md) — Static visual QA surface and responsive audit checklist
 
+## Screen Catalog
+
+Screen catalog entries are complete product-situation recipes with profile
+pairings, fixture routes, realistic state coverage, proof, and agent guidance.
+They are not public macros.
+
+- [README.md](screens/README.md) — Screen catalog overview, selection rule, and promotion boundary
+- [COMMAND-CENTER.md](screens/command-center.md) — Atlas operational dashboard fixture for metrics, queues, incidents, activity, and selected-object inspection
+- [REVIEW-QUEUE.md](screens/review-queue.md) — Sage review/triage fixture for filter rails, result collections, inspectors, and stateful records
+
 ## Theming And Bengal
 
 - [APP-THEME.md](theming/app-theme.md) — Token-only app theme starter and fresh-project ownership contract
