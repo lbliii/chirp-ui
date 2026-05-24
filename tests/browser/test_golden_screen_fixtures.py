@@ -98,6 +98,18 @@ async def showcase_page():
             "sage",
             "Golden screen: Review Queue",
         ),
+        (
+            "/screen-agent-run-monitor",
+            "#agent-run-monitor-surface",
+            "signal",
+            "Golden screen: Agent Run Monitor",
+        ),
+        (
+            "/screen-product-docs-home",
+            "#product-docs-home-surface",
+            "ember",
+            "Signal Loom",
+        ),
     ],
 )
 @pytest.mark.parametrize(
@@ -155,3 +167,31 @@ async def test_command_center_golden_screen_keeps_inspector_visible(
     await expect(showcase_page.locator(".ops-shell-workspace")).to_have_count(1)
     await expect(showcase_page.locator(".ops-shell-inspector")).to_be_visible()
     await expect(showcase_page.locator(".ops-shell-workload-card")).not_to_have_count(0)
+
+
+async def test_agent_run_monitor_golden_screen_uses_state_and_artifact_surfaces(
+    showcase_page,
+    showcase_base_url: str,
+) -> None:
+    await showcase_page.set_viewport_size({"width": 1280, "height": 900})
+    await showcase_page.goto(showcase_base_url + "/screen-agent-run-monitor")
+    await wait_for_alpine(showcase_page)
+
+    await expect(showcase_page.locator(".chirpui-timeline")).to_have_count(1)
+    await expect(showcase_page.locator(".chirpui-streaming-block")).to_have_count(1)
+    await expect(showcase_page.locator(".chirpui-result-collection")).to_have_count(1)
+    await expect(showcase_page.locator(".chirpui-inspector-panel")).to_have_count(1)
+
+
+async def test_product_docs_home_golden_screen_uses_product_pattern_surfaces(
+    showcase_page,
+    showcase_base_url: str,
+) -> None:
+    await showcase_page.set_viewport_size({"width": 1280, "height": 900})
+    await showcase_page.goto(showcase_base_url + "/screen-product-docs-home")
+    await wait_for_alpine(showcase_page)
+
+    await expect(showcase_page.locator(".chirpui-site-header")).to_have_count(1)
+    await expect(showcase_page.locator(".chirpui-logo-cloud")).to_have_count(1)
+    await expect(showcase_page.locator(".chirpui-lifecycle-showcase")).to_have_count(1)
+    await expect(showcase_page.locator(".chirpui-cta-band")).to_have_count(1)

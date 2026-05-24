@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/site_shell.html" import site_shell %}
+{% from "chirpui/site_header.html" import site_header, site_nav_link %}
+{% from "chirpui/site_footer.html" import site_footer, footer_column, footer_link %}
+{% from "chirpui/hero.html" import hero %}
+{% from "chirpui/band.html" import band %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/cta_band.html" import cta_band %}
+{% from "chirpui/layout.html" import container, stack, cluster, grid, section_header %}
+{% from "chirpui/logo_cloud.html" import logo_cloud %}
+{% from "chirpui/marketing_patterns.html" import lifecycle_showcase %}
+{% from "chirpui/index_card.html" import index_card %}
+{% from "chirpui/story_card.html" import story_card %}
+{% from "chirpui/metric_grid.html" import metric_grid, metric_card %}
+
+<section id="product-docs-home-surface"
+         data-screen-archetype="product-docs-home"
+         data-screen-profile="ember"
+         aria-label="Product and docs home golden screen">
+{% call site_shell() %}
+  {% slot header %}
+    {% call site_header(current_path=current_path, variant="solid") %}
+      {% slot brand %}Signal Loom{% end %}
+      {% slot nav %}
+        {{ site_nav_link("/screen-product-docs-home", "Platform", match="exact") }}
+        {{ site_nav_link("/screen-product-docs-home/docs", "Docs", match="prefix") }}
+        {{ site_nav_link("/screen-product-docs-home/customers", "Customers", match="prefix") }}
+      {% end %}
+      {% slot tools %}
+        {{ btn("Get a demo", href="/screen-product-docs-home/demo", variant="ghost") }}
+        {{ btn("Start building", href="/screen-product-docs-home/start", variant="primary") }}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {% call hero(title="Signal Loom", subtitle="Observe, evaluate, and ship reliable agent workflows from one Python-native surface.", background="solid") %}
+    {% slot actions %}
+      {% call cluster() %}
+        {{ btn("Start building", href="/screen-product-docs-home/start", variant="primary") }}
+        {{ btn("Read the docs", href="/screen-product-docs-home/docs", variant="ghost") }}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {% call band(width="bleed", variant="default") %}
+    {% call container() %}
+      {{ logo_cloud(items=[
+        {"name": "Northstar"},
+        {"name": "Relay"},
+        {"name": "Forge"},
+        {"name": "VectorLake"}
+      ], label="Teams building with Signal Loom") }}
+    {% end %}
+  {% end %}
+
+  {% call container() %}
+    {% call stack(gap="xl") %}
+      {{ lifecycle_showcase([
+        {
+          "id": "compose",
+          "label": "Compose",
+          "eyebrow": "Compose",
+          "title": "Model agent work as explicit steps",
+          "body": "Shape tools, review points, and retry policy without hiding the workflow behind a client-side framework.",
+          "media": "Plan -> retrieve -> call tools -> review -> respond"
+        },
+        {
+          "id": "observe",
+          "label": "Observe",
+          "eyebrow": "Observe",
+          "title": "Trace every run as stateful product UI",
+          "body": "Expose timeline, artifacts, source provenance, and recovery actions as first-class screen objects.",
+          "media": "Run timeline with source bundle, retry, and reviewer handoff"
+        },
+        {
+          "id": "improve",
+          "label": "Improve",
+          "eyebrow": "Improve",
+          "title": "Turn production traces into evals",
+          "body": "Keep quality loops close to real user behavior and make regression evidence visible.",
+          "media": "Trace -> eval case -> reviewer score -> release gate"
+        }
+      ]) }}
+
+      {% call band(width="contained", variant="elevated") %}
+        {% call stack(gap="md") %}
+          {{ section_header("Proof before integration code") }}
+          {% call metric_grid(cols=3) %}
+            {{ metric_card(value="4", label="golden screens") }}
+            {{ metric_card(value="320px", label="phone proof") }}
+            {{ metric_card(value="0", label="utility classes added") }}
+          {% end %}
+        {% end %}
+      {% end %}
+
+      {% call stack(gap="lg") %}
+        {{ section_header("Choose an entry point") }}
+        {% call grid(cols=3, gap="lg") %}
+          {{ index_card(href="/screen-command-center", title="Command Center", description="Operational dashboard for metrics, queues, incidents, and selected-object inspection.", badge="atlas") }}
+          {{ index_card(href="/screen-review-queue", title="Review Queue", description="Triage surface with filters, result cards, state, and inspector detail.", badge="sage") }}
+          {{ index_card(href="/screen-agent-run-monitor", title="Agent Run Monitor", description="Live run state, artifacts, logs, timeline, and recovery actions.", badge="signal") }}
+        {% end %}
+      {% end %}
+
+      {% call stack(gap="lg") %}
+        {{ section_header("Teams use it for durable agent surfaces") }}
+        {% call grid(cols=3, gap="lg") %}
+          {{ story_card(customer="Northstar", outcome="Operational state stayed visible", summary="A command center replaced disconnected queue cards with a single inspected work surface.", href="/screen-product-docs-home/stories/northstar", metric="42%") }}
+          {{ story_card(customer="Relay", outcome="Review work moved faster", summary="Filters, records, and selected details shared one low-glare review rhythm.", href="/screen-product-docs-home/stories/relay", metric="3.2x") }}
+          {{ story_card(customer="Forge", outcome="Run recovery became obvious", summary="Agent traces, artifacts, and retry controls stopped feeling like raw logs.", href="/screen-product-docs-home/stories/forge", metric="18m") }}
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {{ cta_band(
+    title="Build the next mock from a screen, not a blank grid",
+    body="Start with a catalog archetype, choose a profile, then let primitives and components carry the details.",
+    primary_label="Open screen catalog",
+    primary_href="/screen-product-docs-home/docs",
+    secondary_label="View command center",
+    secondary_href="/screen-command-center"
+  ) }}
+
+  {% slot footer %}
+    {% call site_footer(layout="columns") %}
+      {% slot brand %}
+        <strong>Signal Loom</strong>
+        <p>Product/docs home golden screen fixture.</p>
+      {% end %}
+      {% call footer_column(title="Screens") %}
+        {{ footer_link("/screen-command-center", "Command Center") }}
+        {{ footer_link("/screen-review-queue", "Review Queue") }}
+      {% end %}
+      {% call footer_column(title="Docs") %}
+        {{ footer_link("/screen-product-docs-home/docs", "Screen catalog") }}
+        {{ footer_link("/screen-product-docs-home/proof", "Visual proof") }}
+      {% end %}
+      {% slot colophon %}Chirp UI taste-floor fixture{% end %}
+    {% end %}
+  {% end %}
+{% end %}
+</section>
+{% end %}

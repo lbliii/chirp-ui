@@ -1132,6 +1132,16 @@ async def screen_review_queue(request: Request) -> Template:
     )
 
 
+@app.route("/screen-agent-run-monitor", template="showcase/screen_agent_run_monitor.html")
+async def screen_agent_run_monitor(request: Request) -> Template:
+    return _page(request, "showcase/screen_agent_run_monitor.html")
+
+
+@app.route("/screen-product-docs-home", template="showcase/screen_product_docs_home.html")
+async def screen_product_docs_home(request: Request) -> Template:
+    return _page(request, "showcase/screen_product_docs_home.html")
+
+
 @app.route("/layout", template="showcase/layout.html")
 async def layout(request: Request) -> Template:
     direction = request.query.get("dir", "ltr")

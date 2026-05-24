@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, stack, grid, block, page_header, cluster %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/panel.html" import panel %}
+{% from "chirpui/progress.html" import progress_bar %}
+{% from "chirpui/sse_status.html" import sse_status, sse_retry %}
+{% from "chirpui/streaming.html" import streaming_block, model_card, copy_btn %}
+{% from "chirpui/timeline.html" import timeline %}
+{% from "chirpui/description_list.html" import description_list %}
+{% from "chirpui/workspace_primitives.html" import metric_strip, metric_item, result_collection, result_card, inspector_panel %}
+
+{% call container(cls="screen-agent-run-monitor-page") %}
+{% call stack(gap="xl") %}
+{{ page_header("Golden screen: Agent Run Monitor", subtitle="Signal profile fixture for live run state, timeline, artifacts, logs, retries, and recovery context.") }}
+
+<section id="agent-run-monitor-surface"
+         data-screen-archetype="agent-run-monitor"
+         data-screen-profile="signal"
+         aria-label="Agent run monitor golden screen">
+{% call stack(gap="lg") %}
+  {% call panel(title="Run 8729: procurement policy review", subtitle="Started 4m ago by scheduled evaluation", surface_variant="default") %}
+    {% slot actions %}
+      {{ sse_status("connected", label="Live stream") }}
+      {{ badge("running", variant="success") }}
+    {% end %}
+    {% call stack(gap="md") %}
+      {{ progress_bar(68, max=100, label="Step 4 of 6 complete", variant="success") }}
+      {% call cluster(gap="sm") %}
+        {{ badge("verified sources", variant="success") }}
+        {{ badge("tool latency watch", variant="warning") }}
+        {{ badge("1 retry reserved", variant="muted") }}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {% call grid(cols=3, gap="lg") %}
+    {% call block() %}
+      {% call metric_strip(label="Agent run metrics") %}
+        {{ metric_item("12", "tool calls") }}
+        {{ metric_item("3.8s", "p95 latency") }}
+        {{ metric_item("94", "eval score") }}
+      {% end %}
+    {% end %}
+    {% call block() %}
+      {{ copy_btn(label="Copy run ID", copy_text="run_8729_procurement_policy_review") }}
+    {% end %}
+    {% call block() %}
+      {{ sse_retry("/streaming/retry", label="Retry stream", target="#agent-run-monitor-log", swap="innerHTML") }}
+    {% end %}
+  {% end %}
+
+  {% call grid(cols=2, gap="lg") %}
+    {% call block() %}
+      {% call panel(title="Execution timeline", subtitle="State, tool calls, and review checkpoints", surface_variant="muted") %}
+        {{ timeline(items=[
+          {"title": "Input accepted", "date": "09:41", "content": "Policy packet and reviewer rubric attached.", "variant": "success"},
+          {"title": "Retrieved source context", "date": "09:42", "content": "6 source excerpts matched procurement policy and vendor risk.", "variant": "success"},
+          {"title": "Tool call latency watch", "date": "09:43", "content": "Vendor registry lookup crossed the watch threshold and recovered.", "variant": "warning"},
+          {"title": "Draft answer streaming", "date": "Now", "content": "Final response is still streaming into the review pane.", "variant": "info"}
+        ], density="compact", variant="cards") }}
+      {% end %}
+    {% end %}
+
+    {% call block() %}
+      {% call inspector_panel(title="Selected step", subtitle="Vendor registry lookup") %}
+        {% slot actions %}{{ badge("watch", variant="warning") }}{% end %}
+        {{ description_list(items=[
+          {"term": "Tool", "detail": "vendor_registry.search"},
+          {"term": "Runtime", "detail": "3.8s"},
+          {"term": "Retries", "detail": "1"},
+          {"term": "Owner", "detail": "Risk automation"}
+        ], variant="horizontal", compact=true, divided=true) }}
+        {% slot footer %}
+        <span>Inspector candidate</span>
+        <span>Track as `object_inspector` evidence.</span>
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+
+  {% call grid(cols=2, gap="lg") %}
+    {% call block() %}
+      {% call model_card(title="Run output", badge="streaming", footer="SSE target remains stable") %}
+        <div id="agent-run-monitor-log">
+        {% call streaming_block(streaming=true, sse_swap_target=true) %}
+        Reviewing vendor renewal clause against the latest procurement policy. The current draft cites source excerpts and flags one required approval.
+        {% end %}
+        </div>
+      {% end %}
+    {% end %}
+
+    {% call block() %}
+      {% call result_collection(label="Run artifacts", title="Artifacts") %}
+        {% slot meta %}{{ badge("4 files", variant="primary") }}{% end %}
+        {% call result_card("Source bundle", subtitle="6 excerpts, 2 policy sections") %}
+          {% slot mark %}SRC{% end %}
+          {% slot actions %}{{ badge("verified", variant="success") }}{% end %}
+          <p>Procurement policy, vendor registry result, and prior approval notes.</p>
+          {% slot footer %}<span>artifact</span><span>ready</span>{% end %}
+        {% end %}
+        {% call result_card("Reviewer handoff", subtitle="One approval required before publish") %}
+          {% slot mark %}REV{% end %}
+          {% slot actions %}{{ badge("pending", variant="warning") }}{% end %}
+          <p>Escalates the vendor-risk exception to the configured reviewer queue.</p>
+          {% slot footer %}<span>handoff</span><span>queued</span>{% end %}
+        {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+</section>
+{% end %}
+{% end %}
+{% end %}
