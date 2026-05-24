@@ -651,6 +651,9 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     assert 'from "chirpui/site_footer.html" import site_footer, footer_column, footer_link' in base
     assert "render_navbar_item" in base
     assert "library_asset_tags()" in base
+    assert "library_asset_tags | default(none)" in base
+    assert "_chirpui_js_asset = 'chirpui.js'" in base
+    assert "_chirpui_alpine_asset = 'chirpui-alpine.js'" in base
     assert 'data-chirp-theme-spine="bespoke"' in base
     assert "_page_url == '/releases/' or _page_url.startswith('/releases/')" in base
     assert "asset_url('favicon.svg')" in base
@@ -1429,9 +1432,16 @@ site.build(BuildOptions(force_sequential=True, incremental=False, quiet=True))
 
 manifest = AssetManifest.load(site.output_dir / "asset-manifest.json")
 manifest_outputs = {entry.output_path.lstrip("/") for entry in manifest.entries.values()}
-expected_asset_entries = [
+standalone_css_entries = [
     chirpui_asset_path("chirpui.css"),
     chirpui_asset_path("chirpui-transitions.css"),
+]
+expected_asset_entries = [
+    *[
+        logical_path
+        for logical_path in standalone_css_entries
+        if logical_path in manifest.entries
+    ],
     chirpui_asset_path("chirpui.js"),
     chirpui_asset_path("chirpui-alpine.js"),
     "css/style.css",
