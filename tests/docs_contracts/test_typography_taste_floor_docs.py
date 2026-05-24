@@ -3,6 +3,7 @@ from tests.helpers import REPO_ROOT
 ROOT = REPO_ROOT
 PLAN = ROOT / "docs" / "plans" / "PLAN-visual-taste-floor-saga.md"
 RESEARCH = ROOT / "docs" / "decisions" / "typography-rhythm-taste-floor.md"
+MATRIX = ROOT / "docs" / "decisions" / "typography-role-matrix.md"
 INDEX = ROOT / "docs" / "INDEX.md"
 ROADMAP = ROOT / "docs" / "strategy" / "roadmap-pre-1.0.md"
 INVENTORY = ROOT / "docs" / "agents" / "agent-source-inventory.md"
@@ -67,6 +68,7 @@ def test_visual_taste_plan_tracks_typography_next_phase() -> None:
         "docs/decisions/typography-rhythm-taste-floor.md",
         "Epic 5a. Typography And Rhythm Taste Floor",
         "Audit current CSS partials, theme packs, examples, and golden screens",
+        "docs/decisions/typography-role-matrix.md",
         "Draft a recipe-only role matrix",
         "Stop and ask before changing public token defaults",
         "Run the typography and rhythm audit before promoting visual patterns.",
@@ -83,11 +85,69 @@ def test_typography_research_is_indexed_and_mapped() -> None:
 
     assert "decisions/typography-rhythm-taste-floor.md" in index_text
     assert "Typography role and rhythm research" in index_text
+    assert "decisions/typography-role-matrix.md" in index_text
+    assert "Recipe-only typography audit matrix" in index_text
 
     assert "docs/decisions/typography-rhythm-taste-floor.md" in roadmap_text
+    assert "docs/decisions/typography-role-matrix.md" in roadmap_text
     assert "Typography improvements are role-backed and screen-proven" in roadmap_text
 
     for text in [inventory_text, source_map_text]:
         assert "docs/decisions/typography-rhythm-taste-floor.md" in text
+        assert "docs/decisions/typography-role-matrix.md" in text
         assert "planning input" in text
         assert "not public token vocabulary" in text
+        assert "source-only until public token promotion is approved" in text
+
+
+def test_typography_role_matrix_records_audit_and_recipe_boundary() -> None:
+    text = MATRIX.read_text(encoding="utf-8")
+    normalized = " ".join(text.split())
+
+    for phrase in [
+        "Status: recipe-only audit matrix",
+        "It does not add public token names",
+        "Core UI and prose sizes are fluid through viewport `clamp()` values.",
+        "Golden screen templates do not hard-code typography declarations.",
+        "Workspace primitives used an undefined typography token.",
+        "Fixed by using `--chirpui-font-base`",
+        "These role names are recipe vocabulary only.",
+        "Stop and ask for a public typography-token promotion plan.",
+    ]:
+        assert phrase in normalized
+
+    for role in [
+        "`page-title`",
+        "`panel-title`",
+        "`object-title`",
+        "`dense-body`",
+        "`metadata`",
+        "`count-label`",
+        "`metric`",
+        "`status-label`",
+        "`log-line`",
+        "`hero-display`",
+        "`proof-copy`",
+    ]:
+        assert role in text
+
+
+def test_workspace_primitives_do_not_reference_undefined_font_md_token() -> None:
+    partial = (
+        ROOT
+        / "src"
+        / "chirp_ui"
+        / "templates"
+        / "css"
+        / "partials"
+        / "167_workspace-primitives.css"
+    ).read_text(encoding="utf-8")
+    generated = (ROOT / "src" / "chirp_ui" / "templates" / "chirpui.css").read_text(
+        encoding="utf-8"
+    )
+
+    assert "--chirpui-font-md" not in partial
+    assert "--chirpui-font-md" not in generated
+    assert ".chirpui-result-card__title" in partial
+    assert ".chirpui-inspector-panel__title" in partial
+    assert "font-size: var(--chirpui-font-base);" in partial

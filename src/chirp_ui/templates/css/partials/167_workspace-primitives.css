@@ -239,7 +239,7 @@
 }
 
 .chirpui-result-card__title {
-    font-size: var(--chirpui-font-md);
+    font-size: var(--chirpui-font-base);
     line-height: var(--chirpui-line-height-tight);
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -350,7 +350,7 @@
 }
 
 .chirpui-inspector-panel__title {
-    font-size: var(--chirpui-font-md);
+    font-size: var(--chirpui-font-base);
     line-height: var(--chirpui-line-height-tight);
     overflow-wrap: anywhere;
     word-break: break-word;

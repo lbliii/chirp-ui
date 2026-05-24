@@ -375,7 +375,8 @@ Tasks:
   scaled dense UI type, weak muted hierarchy, and missing line-height/measure
   intent.
 - T5a.3: Draft a recipe-only role matrix for structure, reading, metadata,
-  controls, state, data, technical output, and expressive moments.
+  controls, state, data, technical output, and expressive moments in
+  `docs/decisions/typography-role-matrix.md`.
 - T5a.4: Map those roles to Command Center, Review Queue, Agent Run Monitor,
   and Product/Docs Home before proposing token names.
 - T5a.5: Improve screen typography with existing tokens and local recipes
@@ -519,10 +520,12 @@ Proof:
 - Typography and rhythm research is captured in
   `docs/decisions/typography-rhythm-taste-floor.md`; it is a planning input,
   not shipped token or macro vocabulary.
+- The first recipe-only role matrix and audit is captured in
+  `docs/decisions/typography-role-matrix.md`; it also fixed an undefined
+  workspace primitive token reference without adding new token vocabulary.
 
 Remaining work:
 
-- Run the typography audit and draft the recipe-only role matrix.
 - Apply a golden-screen typography pass using existing tokens before proposing
   public token changes.
 - Extract only repeated semantic patterns after another independent usage pass.

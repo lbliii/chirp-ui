@@ -210,6 +210,8 @@ Tasks:
 - Use `docs/decisions/typography-rhythm-taste-floor.md` for the typography
   pass: audit role, rhythm, measure, weight, metadata, metrics, logs, and
   expressive display needs before proposing token changes.
+- Use `docs/decisions/typography-role-matrix.md` as the recipe-only role
+  matrix until repeated screen evidence justifies public token promotion.
 - Promote only repeated semantic moves; keep one-off polish in recipes.
 
 Acceptance:
