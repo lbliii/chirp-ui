@@ -19,10 +19,11 @@ Use them for subtle opacity or layout transitions without JavaScript. Prefer **d
 Include `chirpui-transitions.css` after `chirpui.css` when using the View Transition API with Chirp’s shell layouts. The stylesheet:
 
 - Sets `view-transition-name: none` on modals and certain OOB shell regions to avoid duplicate-name glitches.
-- Defines `::view-transition-old(page-content)` / `::view-transition-new(root)` animations with short fade keyframes.
+- Assigns `view-transition-name: page-content` only to the direct shell main boundary (`body > #main` or `body > .chirpui-app-shell > #main`) so embedded shell previews cannot duplicate the transition name.
+- Defines `::view-transition-old(page-content)` / `::view-transition-new(page-content)` animations with short fade keyframes.
 - Respects `prefers-reduced-motion: reduce`.
 
-See comments in `src/chirp_ui/templates/chirpui-transitions.css` for caveats (e.g. avoiding `view-transition-name` on `#main` when it is the boost swap target).
+See comments in `src/chirp_ui/templates/chirpui-transitions.css` for caveats around nested shell previews and duplicate `#main` ids.
 
 ## Declarative hooks (future)
 
