@@ -4,7 +4,7 @@
 {% from "chirpui/site_shell.html" import site_shell %}
 {% from "chirpui/site_header.html" import site_header, site_nav_link %}
 {% from "chirpui/site_footer.html" import site_footer, footer_column, footer_link %}
-{% from "chirpui/hero.html" import hero %}
+{% from "chirpui/hero.html" import page_hero %}
 {% from "chirpui/band.html" import band %}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/cta_band.html" import cta_band %}
@@ -35,7 +35,7 @@
     {% end %}
   {% end %}
 
-  {% call hero(title="Signal Loom", subtitle="Observe, evaluate, and ship reliable agent workflows from one Python-native surface.", background="solid") %}
+  {% call page_hero(title="Signal Loom", subtitle="Observe, evaluate, and ship reliable agent workflows from one Python-native surface.", variant="editorial", background="solid") %}
     {% slot actions %}
       {% call cluster() %}
         {{ btn("Start building", href="/screen-product-docs-home/start", variant="primary") }}

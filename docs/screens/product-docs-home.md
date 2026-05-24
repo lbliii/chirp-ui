@@ -36,7 +36,7 @@ Agent Run Monitor instead.
 |---|---|
 | Profile | `ember` metadata for product/docs/editorial mood. |
 | Site shell | `site_shell`, `site_header`, `site_footer`. |
-| First viewport | `hero`, action slot, `btn`, `cluster`. |
+| First viewport | `page_hero`, actions slot, `btn`, `cluster`. |
 | Proof | `band`, `container`, `logo_cloud`, `metric_grid`, `metric_card`. |
 | Lifecycle explanation | `lifecycle_showcase`, `feature_section`, tabs. |
 | Entry points | `index_card` grid. |

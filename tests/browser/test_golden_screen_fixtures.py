@@ -192,6 +192,7 @@ async def test_product_docs_home_golden_screen_uses_product_pattern_surfaces(
     await wait_for_alpine(showcase_page)
 
     await expect(showcase_page.locator(".chirpui-site-header")).to_have_count(1)
+    await expect(showcase_page.locator(".chirpui-hero--page")).to_have_count(1)
     await expect(showcase_page.locator(".chirpui-logo-cloud")).to_have_count(1)
     await expect(showcase_page.locator(".chirpui-lifecycle-showcase")).to_have_count(1)
     await expect(showcase_page.locator(".chirpui-cta-band")).to_have_count(1)
