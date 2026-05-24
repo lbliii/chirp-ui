@@ -21,6 +21,8 @@ not public token names or utility classes.
   situations agents should choose from before assembling components.
 - [Screen Entry Template](entry-template.md) defines the required shape for
   planned recipe targets and fixture-backed golden screens.
+- [Screen Pattern Promotion Ledger](promotion-ledger.md) records repeated
+  composition pressure and the stop-and-ask boundary before public API work.
 - Fixture-backed entries below are the current proof set; planned recipe
   targets stay in the matrix until source templates and browser proof exist.
 
@@ -66,3 +68,8 @@ The first implementation routes live in the component showcase because the
 catalog is still recipe-first. Public macros such as `command_center()` or
 `review_queue()` remain not-now until repeated independent screens prove a
 stable API.
+
+Pattern promotion is tracked in [Screen Pattern Promotion Ledger](promotion-ledger.md).
+One fixture can identify pressure, two independent screens can strengthen a
+recipe, and three independent screens can justify a promotion brief. Public
+surface work still requires stop-and-ask review.

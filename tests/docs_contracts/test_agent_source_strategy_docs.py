@@ -14,6 +14,7 @@ def test_agent_source_inventory_includes_strategy_and_evidence_sources() -> None
         "| `docs-derived` | `docs/safety/public-surface-stabilization.md` |",
         "| `docs-derived` | `docs/decisions/interactive-anatomy.md` |",
         "| `docs-derived` | `docs/screens/` |",
+        "promotion-ledger boundaries",
         "| `docs-derived` | `docs/reference-implementations/playbook.md` |",
         "| `docs-derived` | `docs/reference-implementations/README.md` |",
         "| `docs-derived` | `docs/reference-implementations/PROOF-ANALYSIS.md` |",
@@ -28,7 +29,7 @@ def test_agent_source_inventory_includes_strategy_and_evidence_sources() -> None
     for phrase in [
         "python -m chirp_ui find --details",
         "maturity, authoring, role, macro, template, runtime requirements, slots",
-        "Screen archetype selection, profile pairing, fixture proof, and agent guidance",
+        "Screen archetype selection, profile pairing, fixture proof, promotion-ledger boundaries, and agent guidance",
         "Evidence labels, promotion rules, recipe-only boundaries",
         "Interactive anatomy contract and evidence ledger fields",
         "Reference implementation evidence ladder",
@@ -53,6 +54,7 @@ def test_agent_source_map_routes_strategy_sources_without_new_artifacts() -> Non
         "| `docs/safety/public-surface-stabilization.md` | `docs-derived` |",
         "| `docs/decisions/interactive-anatomy.md` | `docs-derived` |",
         "| `docs/screens/` | `docs-derived` |",
+        "promotion-ledger boundaries",
         "| `docs/reference-implementations/playbook.md` | `docs-derived` |",
         "| `docs/reference-implementations/README.md` | `docs-derived` |",
         "| `docs/reference-implementations/PROOF-ANALYSIS.md` | `docs-derived` |",
@@ -66,7 +68,7 @@ def test_agent_source_map_routes_strategy_sources_without_new_artifacts() -> Non
 
     for phrase in [
         "not a generated artifact",
-        "Screen archetype selection, profile pairing, fixture proof, and agent guidance for complete product situations",
+        "Screen archetype selection, profile pairing, fixture proof, promotion-ledger boundaries, and agent guidance for complete product situations",
         "Research ledger and categorical positioning; not copyable snippet source.",
         "Evidence labels, promotion gates, recipe-only boundaries, and compatibility policy.",
         "Evidence ledger and stop-and-ask boundaries for behavior-bearing promotions.",

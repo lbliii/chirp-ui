@@ -46,6 +46,7 @@ def test_screen_catalog_indexes_all_golden_screens() -> None:
     assert "Choose a screen archetype before choosing individual components." in readme
     assert "[Screen Archetype Matrix](archetype-matrix.md)" in readme
     assert "[Screen Entry Template](entry-template.md)" in readme
+    assert "[Screen Pattern Promotion Ledger](promotion-ledger.md)" in readme
 
 
 def test_screen_archetype_matrix_names_canonical_product_situations() -> None:
@@ -104,6 +105,42 @@ def test_screen_entry_template_preserves_recipe_first_contract() -> None:
         "Stop and ask before adding public vocabulary",
     ]:
         assert phrase in template
+
+
+def test_screen_promotion_ledger_keeps_public_api_boundary() -> None:
+    ledger = (SCREENS / "promotion-ledger.md").read_text(encoding="utf-8")
+    readme = (SCREENS / "README.md").read_text(encoding="utf-8")
+    index = INDEX.read_text(encoding="utf-8")
+
+    assert "Status: active promotion gate" in ledger
+    assert "screens/promotion-ledger.md" in index
+    assert "Pattern promotion is tracked" in readme
+
+    for level in ["Observation", "Repeated recipe", "Candidate", "Public surface"]:
+        assert level in ledger
+
+    for candidate in [
+        "`screen_header`",
+        "`object_inspector`",
+        "`status_timeline`",
+        "`artifact_strip`",
+        "`review_queue_shell`",
+        "`activity_rail`",
+        "`proof_band`",
+        "`workspace_summary`",
+        "`state_stack`",
+        "`metadata_bar`",
+    ]:
+        assert candidate in ledger
+
+    for phrase in [
+        "Three independent screens",
+        "stop-and-ask review",
+        "registry/CSS/manifest/docs/examples/tests/generated-output",
+        "Do not promote a pattern because",
+        "current Chirp UI path produces too much local workaround",
+    ]:
+        assert phrase in ledger
 
 
 def test_screen_docs_pin_fixture_routes_profiles_and_proof() -> None:
@@ -196,5 +233,7 @@ def test_visual_taste_floor_plan_records_golden_screen_progress() -> None:
         "Command Center and Review Queue fixtures are implemented",
         "Agent Run Monitor and Product/Docs Home fixtures are implemented",
         "The initial screen catalog is published under `docs/screens/`",
+        "Screen-pattern industrialization has started",
+        "Build independent settings-detail, data-index/detail, setup-flow, and",
     ]:
         assert phrase in text

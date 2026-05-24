@@ -527,10 +527,17 @@ Proof:
   golden screens: screen docs map recipe-only roles, workspace/product surfaces
   use existing tokens for hierarchy and rhythm, Product/Docs Home now uses
   `page_hero`, and browser proof checks computed type hierarchy plus overflow.
+- Screen-pattern industrialization has started with a canonical archetype
+  matrix, screen entry template, and promotion ledger under `docs/screens/`.
+  These expand the catalog beyond the first four golden fixtures without
+  authorizing public screen macros or new token/profile vocabulary.
 
 Remaining work:
 
-- Extract only repeated semantic patterns after another independent usage pass.
+- Build independent settings-detail, data-index/detail, setup-flow, and
+  dashboard-overview fixtures from the archetype matrix before promoting
+  screen-pattern vocabulary.
+- Extract only repeated semantic patterns after that independent usage pass.
 - Decide whether `signal` graduates from candidate profile to packaged
   token-only theme pack.
 - Mirror stable screen catalog guidance into the published site after source

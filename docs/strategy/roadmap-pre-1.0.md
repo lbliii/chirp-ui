@@ -212,12 +212,18 @@ Tasks:
   expressive display needs before proposing token changes.
 - Use `docs/decisions/typography-role-matrix.md` as the recipe-only role
   matrix until repeated screen evidence justifies public token promotion.
+- Use `docs/screens/archetype-matrix.md`,
+  `docs/screens/entry-template.md`, and
+  `docs/screens/promotion-ledger.md` to choose complete product situations,
+  add planned recipe targets, and record repeated pattern pressure.
 - Promote only repeated semantic moves; keep one-off polish in recipes.
 
 Acceptance:
 
 - A polished mock starts from a screen archetype and profile, not from a generic
   card grid.
+- Planned archetypes can guide mocks without implying public macros or manifest
+  fields.
 - Golden screens survive realistic data, stress states, and desktop/tablet/phone
   widths.
 - Agent guidance can cite curated screen entries without inventing classes or
