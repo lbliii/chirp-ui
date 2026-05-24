@@ -26,7 +26,7 @@ When a template is rendered as a **full page**, top-level `{% from "chirpui/…"
 
 ## View transitions
 
-Chirp injects the root-level `@view-transition` rule and meta tag when `AppConfig(view_transitions=True)` (default). `chirpui-transitions.css` scopes transitions to `#main` (via `view-transition-name: page-content`), suppresses root animations so the shell stays frozen, and disables VT on `.chirpui-fragment-island` elements. No custom VT CSS is needed for the common app shell case. With `view_transitions=False`, full-page swaps will not use the View Transitions API.
+Chirp injects the root-level `@view-transition` rule and meta tag when `AppConfig(view_transitions=True)` (default). `chirpui-transitions.css` scopes transitions to the direct shell main boundary (`body > #main` for `app_layout.html`, or `body > .chirpui-app-shell > #main` for `app_shell_layout.html`) via `view-transition-name: page-content`, suppresses root animations so the shell stays frozen, and disables VT on `.chirpui-fragment-island` elements. No custom VT CSS is needed for the common app shell case. With `view_transitions=False`, full-page swaps will not use the View Transitions API.
 
 ## Explicit Kida end tags
 
