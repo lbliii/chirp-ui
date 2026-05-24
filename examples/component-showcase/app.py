@@ -1040,15 +1040,11 @@ def _support_context(request: Request, *, base_path: str = "/support-shell") -> 
         "support_hints": [
             {
                 "label": "latency",
-                "href": _support_url(
-                    q="latency", queue=queue, status=status, base_path=base_path
-                ),
+                "href": _support_url(q="latency", queue=queue, status=status, base_path=base_path),
             },
             {
                 "label": "invoice",
-                "href": _support_url(
-                    q="invoice", queue=queue, status=status, base_path=base_path
-                ),
+                "href": _support_url(q="invoice", queue=queue, status=status, base_path=base_path),
             },
             {
                 "label": "migration",
@@ -1058,9 +1054,7 @@ def _support_context(request: Request, *, base_path: str = "/support-shell") -> 
             },
             {
                 "label": "webhooks",
-                "href": _support_url(
-                    q="webhooks", queue=queue, status=status, base_path=base_path
-                ),
+                "href": _support_url(q="webhooks", queue=queue, status=status, base_path=base_path),
             },
         ],
         "support_metrics": metrics,

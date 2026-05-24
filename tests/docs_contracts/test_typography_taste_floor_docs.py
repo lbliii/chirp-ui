@@ -175,25 +175,13 @@ def test_typography_role_polish_uses_existing_tokens() -> None:
         ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "012_stat.css"
     ).read_text(encoding="utf-8")
     story = (
-        ROOT
-        / "src"
-        / "chirp_ui"
-        / "templates"
-        / "css"
-        / "partials"
-        / "163_story-card.css"
+        ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "163_story-card.css"
     ).read_text(encoding="utf-8")
     cta = (
         ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "164_cta-band.css"
     ).read_text(encoding="utf-8")
     pattern_assets = (
-        ROOT
-        / "src"
-        / "chirp_ui"
-        / "templates"
-        / "css"
-        / "partials"
-        / "165_pattern-assets.css"
+        ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "165_pattern-assets.css"
     ).read_text(encoding="utf-8")
     index_card = (
         ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "059_table.css"
@@ -241,20 +229,8 @@ def test_typography_role_polish_uses_existing_tokens() -> None:
 def test_typography_polish_does_not_reference_removed_display_tokens() -> None:
     for path in [
         ROOT / "src" / "chirp_ui" / "templates" / "chirpui.css",
-        ROOT
-        / "src"
-        / "chirp_ui"
-        / "templates"
-        / "css"
-        / "partials"
-        / "164_cta-band.css",
-        ROOT
-        / "src"
-        / "chirp_ui"
-        / "templates"
-        / "css"
-        / "partials"
-        / "165_pattern-assets.css",
+        ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "164_cta-band.css",
+        ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "165_pattern-assets.css",
     ]:
         text = path.read_text(encoding="utf-8")
         assert "--chirpui-display-sm" not in text

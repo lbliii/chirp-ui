@@ -239,7 +239,9 @@ async def test_golden_screen_typography_roles_have_browser_proof(
         showcase_page, "golden-screen-product-docs-home-typography"
     )
 
-    product_styles = await showcase_page.locator(".chirpui-hero--page .chirpui-hero__title").evaluate(
+    product_styles = await showcase_page.locator(
+        ".chirpui-hero--page .chirpui-hero__title"
+    ).evaluate(
         """el => {
             const title = getComputedStyle(el);
             const subtitleEl = document.querySelector(".chirpui-hero--page .chirpui-hero__subtitle");
@@ -268,7 +270,9 @@ async def test_golden_screen_typography_roles_have_browser_proof(
         showcase_page, "golden-screen-agent-run-monitor-typography"
     )
 
-    log_styles = await showcase_page.locator("#agent-run-monitor-log .chirpui-streaming-block").evaluate(
+    log_styles = await showcase_page.locator(
+        "#agent-run-monitor-log .chirpui-streaming-block"
+    ).evaluate(
         """el => {
             const style = getComputedStyle(el);
             return { fontSize: style.fontSize, lineHeight: style.lineHeight };
