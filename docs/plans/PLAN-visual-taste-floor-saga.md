@@ -459,6 +459,28 @@ Proof:
 6. Extract only repeated semantic patterns from the golden screens.
 7. Add the visual proof ratchet and agent guidance once the catalog is real.
 
+## Current Progress
+
+- Milestone 0 planning checkpoint is complete.
+- Milestone 1 inventory is complete in
+  `docs/decisions/composition-taxonomy-inventory.md`.
+- Command Center and Review Queue fixtures are implemented as
+  `/screen-command-center` and `/screen-review-queue`.
+- Agent Run Monitor and Product/Docs Home fixtures are implemented as
+  `/screen-agent-run-monitor` and `/screen-product-docs-home`.
+- The initial screen catalog is published under `docs/screens/`.
+- Focused server and browser proof lives in `tests/test_data_integration.py`
+  and `tests/browser/test_golden_screen_fixtures.py`.
+
+Remaining work:
+
+- Extract only repeated semantic patterns after another independent usage pass.
+- Decide whether `signal` graduates from candidate profile to packaged
+  token-only theme pack.
+- Mirror stable screen catalog guidance into the published site after source
+  docs settle.
+- Re-run the full CI gate before release-facing taste-floor claims.
+
 ## Execution Milestones
 
 ### Milestone 0. Planning Checkpoint
