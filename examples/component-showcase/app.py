@@ -912,6 +912,7 @@ def _support_url(
     queue: str = "",
     status: str = "",
     ticket: str = "",
+    base_path: str = "/support-shell",
 ) -> str:
     params = {
         key: value
@@ -923,10 +924,10 @@ def _support_url(
         }.items()
         if value
     }
-    return "/support-shell" + (f"?{urlencode(params)}" if params else "")
+    return base_path + (f"?{urlencode(params)}" if params else "")
 
 
-def _support_context(request: Request) -> dict[str, object]:
+def _support_context(request: Request, *, base_path: str = "/support-shell") -> dict[str, object]:
     q = (request.query.get("q") or "").strip().lower()
     queue = (request.query.get("queue") or "").strip()
     status = (request.query.get("status") or "").strip()
@@ -965,7 +966,13 @@ def _support_context(request: Request) -> dict[str, object]:
                 "danger": "Escalated",
             }[status_id],
             "status_variant": "error" if status_id == "danger" else status_id,
-            "href": _support_url(q=q, queue=queue, status=status, ticket=str(item["id"])),
+            "href": _support_url(
+                q=q,
+                queue=queue,
+                status=status,
+                ticket=str(item["id"]),
+                base_path=base_path,
+            ),
         }
 
     filtered = [view(item) for item in SUPPORT_TICKETS if matches(item)]
@@ -987,7 +994,12 @@ def _support_context(request: Request) -> dict[str, object]:
                 **item,
                 "active": queue == item["id"],
                 "count": count,
-                "href": _support_url(q=q, queue=str(item["id"]), status=status),
+                "href": _support_url(
+                    q=q,
+                    queue=str(item["id"]),
+                    status=status,
+                    base_path=base_path,
+                ),
             }
         )
 
@@ -1026,17 +1038,38 @@ def _support_context(request: Request) -> dict[str, object]:
     return {
         "support_filtered": filtered,
         "support_hints": [
-            {"label": "latency", "href": _support_url(q="latency", queue=queue, status=status)},
-            {"label": "invoice", "href": _support_url(q="invoice", queue=queue, status=status)},
-            {"label": "migration", "href": _support_url(q="migration", queue=queue, status=status)},
-            {"label": "webhooks", "href": _support_url(q="webhooks", queue=queue, status=status)},
+            {
+                "label": "latency",
+                "href": _support_url(
+                    q="latency", queue=queue, status=status, base_path=base_path
+                ),
+            },
+            {
+                "label": "invoice",
+                "href": _support_url(
+                    q="invoice", queue=queue, status=status, base_path=base_path
+                ),
+            },
+            {
+                "label": "migration",
+                "href": _support_url(
+                    q="migration", queue=queue, status=status, base_path=base_path
+                ),
+            },
+            {
+                "label": "webhooks",
+                "href": _support_url(
+                    q="webhooks", queue=queue, status=status, base_path=base_path
+                ),
+            },
         ],
         "support_metrics": metrics,
         "support_query": q,
         "support_queue": queue,
         "support_queue_label": active_queue["label"] if active_queue else "All queues",
         "support_queues": queue_items,
-        "support_reset_href": "/support-shell",
+        "support_reset_href": base_path,
+        "support_route": base_path,
         "support_selected": selected,
         "support_status": status,
         "support_status_items": status_items,
@@ -1065,6 +1098,38 @@ async def operations_shell_workspace(request: Request) -> Template:
 @app.route("/support-shell", template="showcase/support_shell.html")
 async def support_shell(request: Request) -> Template:
     return _page(request, "showcase/support_shell.html", **_support_context(request))
+
+
+@app.route("/screen-command-center", template="showcase/operations_shell.html")
+async def screen_command_center(request: Request) -> Template:
+    return _page(
+        request,
+        "showcase/operations_shell.html",
+        **_ops_context(request, base_path="/screen-command-center"),
+        ops_screen_title="Golden screen: Command Center",
+        ops_screen_subtitle=(
+            "Atlas profile fixture for metrics, queues, incidents, activity, "
+            "and selected-object inspection."
+        ),
+        ops_screen_archetype="command-center",
+        ops_screen_profile="atlas",
+    )
+
+
+@app.route("/screen-review-queue", template="showcase/support_shell.html")
+async def screen_review_queue(request: Request) -> Template:
+    return _page(
+        request,
+        "showcase/support_shell.html",
+        **_support_context(request, base_path="/screen-review-queue"),
+        support_screen_title="Golden screen: Review Queue",
+        support_screen_subtitle=(
+            "Sage profile fixture for filter rail, result collection, inspector, "
+            "stateful tickets, and batch-ready review work."
+        ),
+        support_screen_archetype="review-queue",
+        support_screen_profile="sage",
+    )
 
 
 @app.route("/layout", template="showcase/layout.html")
