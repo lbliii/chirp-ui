@@ -1,6 +1,6 @@
 {#- chirp-ui: Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.
     grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).
-    See docs/LAYOUT-GRIDS-AND-FRAMES.md.
+    See docs/fundamentals/layout-grids-and-frames.md.
 -#}
 {% from "chirpui/surface.html" import surface %}
 {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
@@ -12,7 +12,7 @@
 </div>
 {% end %}
 
-{#- grid(): flow — auto-fit columns; cols=2|3|4 scales --chirpui-grid-min. Fixed tracks: preset + aliases — docs/LAYOUT-PRESETS.md. detail_single only for detail-two | split-1-1.35. items=start|end|center. -#}
+{#- grid(): flow — auto-fit columns; cols=2|3|4 scales --chirpui-grid-min. Fixed tracks: preset + aliases — docs/fundamentals/layout-presets.md. detail_single only for detail-two | split-1-1.35. items=start|end|center. -#}
 {% def grid(cols=none, gap=none, preset=none, items=none, detail_single=false, cls="") %}
 {% set pn = preset %}
 {% set _bento = pn == "bento-211" or pn == "split-2-1-1" %}

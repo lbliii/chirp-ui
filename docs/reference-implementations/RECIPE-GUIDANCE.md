@@ -68,9 +68,9 @@ Start with:
 - `python -m chirp_ui find --role=pattern --details` for recipe-like surfaces.
 - `python -m chirp_ui find --maturity=experimental --details` for stabilization
   audits.
-- `docs/REGISTRY-DISCOVERY.md` for discovery workflow.
-- `docs/AGENT-SOURCE-INVENTORY.md` for snippet eligibility.
-- `docs/AGENT-SOURCE-MAP.md` for generated-output ownership.
+- `docs/agents/registry-discovery.md` for discovery workflow.
+- `docs/agents/agent-source-inventory.md` for snippet eligibility.
+- `docs/agents/agent-source-map.md` for generated-output ownership.
 - `docs/COMPONENT-OPTIONS.md` for generated macro options.
 
 Authoring rules:

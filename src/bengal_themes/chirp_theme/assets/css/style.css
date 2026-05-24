@@ -6,12 +6,6 @@
  * The retained contract is shell + docs + page + blog + search/error pages.
  */
 
-/* TRANSITIONAL ASSET SHIM
-   Bengal has not released first-class Chirp UI library asset modes yet.
-   Keep these imports until Bengal owns bundle/link/none mode parity. */
-@import url('../../../../chirp_ui/templates/chirpui.css');
-@import url('../../../../chirp_ui/templates/chirpui-transitions.css');
-
 /* ============================================
    DESIGN TOKENS (Variables First!)
    ============================================ */

@@ -1191,7 +1191,7 @@
 
 <section class="sc-section" id="fragment-island">
     <h2>Fragment island</h2>
-    <p class="desc">HTMX-safe region that opts out of inherited <code>hx-select</code> / swap rules (<code>safe_region</code> / <code>fragment_island</code>). See <code>docs/DND-FRAGMENT-ISLAND.md</code>.</p>
+    <p class="desc">HTMX-safe region that opts out of inherited <code>hx-select</code> / swap rules (<code>safe_region</code> / <code>fragment_island</code>). See <code>docs/components/dnd-fragment-island.md</code>.</p>
     <hr class="sc-divider">
     <div id="static-fragment-island" class="chirpui-fragment-island" hx-disinherit="hx-select hx-target hx-swap">
         <p class="sc-copy">Inner mutations do not inherit boosted navigation swap settings from the app shell.</p>
@@ -1211,7 +1211,7 @@
 
 <section class="sc-section" id="full-height-main">
     <h2>Full-height main</h2>
-    <p class="desc">App shell pages that should own the viewport (chat, dashboards) use <code>chirpui-app-shell__main--fill</code> on <code>&lt;main&gt;</code>, a <code>chirpui-page-fill</code> root inside <code>#page-content</code>, and <code>chat_layout(..., fill=true)</code> when using the chat layout. Scroll stays on inner regions (e.g. <code>chirpui-chat-layout__messages-body</code>), not on <code>#main</code>. See <code>docs/LAYOUT-VERTICAL.md</code> in the chirp-ui repo.</p>
+    <p class="desc">App shell pages that should own the viewport (chat, dashboards) use <code>chirpui-app-shell__main--fill</code> on <code>&lt;main&gt;</code>, a <code>chirpui-page-fill</code> root inside <code>#page-content</code>, and <code>chat_layout(..., fill=true)</code> when using the chat layout. Scroll stays on inner regions (e.g. <code>chirpui-chat-layout__messages-body</code>), not on <code>#main</code>. See <code>docs/fundamentals/layout-vertical.md</code> in the chirp-ui repo.</p>
     <hr class="sc-divider">
     <div class="sc-label">Live structure (fixed height simulates the viewport)</div>
     <div class="sc-fill-demo">

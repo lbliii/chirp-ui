@@ -28,4 +28,4 @@ registry-cited primitives instead of page-owned shell grids.
 - Keep app-local classes for domain copy and data styling only.
 
 The durable authoring source is
-[`docs/WORKSPACE-SHELL-RECIPES.md`](https://github.com/llane/chirp-ui/blob/main/docs/WORKSPACE-SHELL-RECIPES.md).
+[`docs/patterns/workspace-shell-recipes.md`](https://github.com/llane/chirp-ui/blob/main/docs/patterns/workspace-shell-recipes.md).

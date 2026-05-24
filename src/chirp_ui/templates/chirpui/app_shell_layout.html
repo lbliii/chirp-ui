@@ -33,11 +33,11 @@
     Default app shells use document scrolling. Full-height main (chat, maps):
     override {% block main_shell_class %} with chirpui-app-shell__main--fill so
     #page-content receives flex:1 and inner panels handle bounded scroll below
-    the sticky topbar. See docs/LAYOUT-VERTICAL.md.
+    the sticky topbar. See docs/fundamentals/layout-vertical.md.
 
     HTMX: primary #main swap runs before out-of-band fragments; a beforeSwap
     handler clears #chirp-shell-actions when the response includes shell-actions
-    OOB (see docs/UI-LAYERS.md).
+    OOB (see docs/fundamentals/ui-layers.md).
 
     page_scripts block: renders after toast/CSRF/nav scripts near </body>.
     Only templates that {% extends %} this layout can override it (inner

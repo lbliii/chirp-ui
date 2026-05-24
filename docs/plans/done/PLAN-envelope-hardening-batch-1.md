@@ -273,7 +273,7 @@ Mirror `tests/browser/test_card_variants.py`. For each component, exercise the v
 - **Pilot `045_card.css`** — the structural template every conversion in this batch follows. New contributors should read it before attempting a conversion.
 - **`src/chirp_ui/templates/css/partials/065_tray.css`** — drove the inclusion
   of `tray` in S1 because overlay shell styling was already sharp-edge surface.
-- **`docs/VISION.md`** — registry-as-source-of-truth thesis. This batch
+- **`docs/strategy/vision.md`** — registry-as-source-of-truth thesis. This batch
   reinforces it by closing CSS bleed holes that would otherwise undermine the
   registry's claim to be the source of truth.
 - **CI gates added in parent epic S1, S3, S4** — all are the per-sprint acceptance gate here. No new CI infrastructure required.

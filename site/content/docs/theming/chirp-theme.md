@@ -89,8 +89,8 @@ implementation.
 - Retained surfaces should be rebuilt with Chirp UI-native templates and tokens rather than preserved as copied default-theme implementations
 - Deferred: niche graph/data-table/experimental UI until an output contract needs them
 
-The repo-level parity matrix in `docs/CHIRP-THEME-PARITY-MATRIX.md` is the
+The repo-level parity matrix in `docs/theming/chirp-theme-parity-matrix.md` is the
 source of truth for those decisions.
 
 The canonical source guide is
-[`docs/CHIRP-THEME.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/CHIRP-THEME.md?plain=1).
+[`docs/theming/chirp-theme.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/theming/chirp-theme.md?plain=1).

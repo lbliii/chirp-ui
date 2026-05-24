@@ -24,4 +24,4 @@ dialog controlled through `Alpine.store("modals")`, with
 
 The full rendered contract, ARIA roles, focus and close behavior, HTMX confirm
 form behavior, and proof locations live in the canonical source guide:
-[`docs/MODAL-ANATOMY.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/MODAL-ANATOMY.md?plain=1).
+[`docs/components/modal-anatomy.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/components/modal-anatomy.md?plain=1).

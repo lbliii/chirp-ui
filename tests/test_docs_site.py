@@ -9,34 +9,34 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOCS_SITE_SCRIPT = REPO_ROOT / "scripts" / "docs_site.py"
 PYPROJECT = REPO_ROOT / "pyproject.toml"
-AGENT_SOURCE_INVENTORY = REPO_ROOT / "docs" / "AGENT-SOURCE-INVENTORY.md"
-AGENT_SOURCE_MAP = REPO_ROOT / "docs" / "AGENT-SOURCE-MAP.md"
-AGENT_CURATED_SNIPPETS = REPO_ROOT / "docs" / "AGENT-CURATED-SNIPPETS.md"
+AGENT_SOURCE_INVENTORY = REPO_ROOT / "docs" / "agents" / "agent-source-inventory.md"
+AGENT_SOURCE_MAP = REPO_ROOT / "docs" / "agents" / "agent-source-map.md"
+AGENT_CURATED_SNIPPETS = REPO_ROOT / "docs" / "agents" / "agent-curated-snippets.md"
 PATTERN_DOCS = {
-    "navigation.md": "docs/NAVIGATION.md",
-    "search-shells.md": "docs/SEARCH-SHELL-RECIPES.md",
-    "workspace-shells.md": "docs/WORKSPACE-SHELL-RECIPES.md",
-    "layout-affinity.md": "docs/DESIGN-layout-affinity.md",
-    "product-pages.md": "docs/PRODUCT-PAGE-PATTERNS.md",
-    "media-sites.md": "docs/MEDIA-SITE-PATTERNS.md",
-    "forums.md": "docs/FORUM-SITE-PATTERNS.md",
+    "navigation.md": "docs/patterns/navigation.md",
+    "search-shells.md": "docs/patterns/search-shell-recipes.md",
+    "workspace-shells.md": "docs/patterns/workspace-shell-recipes.md",
+    "layout-affinity.md": "docs/decisions/layout-affinity.md",
+    "product-pages.md": "docs/patterns/product-page-patterns.md",
+    "media-sites.md": "docs/patterns/media-site-patterns.md",
+    "forums.md": "docs/patterns/forum-site-patterns.md",
 }
 NAVIGATION_PATTERN_COLLATERAL = [
-    "docs/DENSE-NAVIGATION-RECIPES.md",
+    "docs/patterns/dense-navigation-recipes.md",
     "docs/plans/PLAN-application-chrome-system.md",
 ]
 COMPONENT_DOCS = {
-    "appearance-tone.md": "docs/APPEARANCE-TONE.md",
-    "dropdowns.md": "docs/DROPDOWN-ANATOMY.md",
-    "drawers-trays.md": "docs/DRAWER-TRAY-ANATOMY.md",
-    "modals.md": "docs/MODAL-ANATOMY.md",
-    "tabs.md": "docs/TABS-ANATOMY.md",
+    "appearance-tone.md": "docs/components/appearance-tone.md",
+    "dropdowns.md": "docs/components/dropdown-anatomy.md",
+    "drawers-trays.md": "docs/components/drawer-tray-anatomy.md",
+    "modals.md": "docs/components/modal-anatomy.md",
+    "tabs.md": "docs/components/tabs-anatomy.md",
 }
 THEME_DOCS = {
-    "bengal-theme-controls.md": "docs/BENGAL-THEME-ANATOMY.md",
-    "chirp-theme.md": "docs/CHIRP-THEME.md",
+    "bengal-theme-controls.md": "docs/theming/bengal-theme-anatomy.md",
+    "chirp-theme.md": "docs/theming/chirp-theme.md",
 }
-DOCS_IA_MIGRATION = REPO_ROOT / "docs" / "DOCS-IA-MIGRATION.md"
+DOCS_IA_MIGRATION = REPO_ROOT / "docs" / "agents" / "docs-ia-migration.md"
 DOCS_INDEX = REPO_ROOT / "site" / "content" / "docs" / "_index.md"
 INSTALL_DOC = REPO_ROOT / "site" / "content" / "docs" / "get-started" / "installation.md"
 SOURCE_ELIGIBILITY = {
@@ -215,7 +215,7 @@ def test_navigation_pattern_publishes_application_chrome_sources() -> None:
     assert "no published-only application chrome API" in matrix
     assert "This page is a published bridge" in text
     assert "Do not add a published-only application chrome API here" in text
-    assert "docs/VISUAL-AUDIT-SHOWCASE.md" in text
+    assert "docs/patterns/visual-audit-showcase.md" in text
     assert "## Current Status" in text
     assert "Private evidence is complete for page actions" in text
     assert "linked nav/sidebar semantics" in text
@@ -236,8 +236,8 @@ def test_layout_affinity_published_page_marks_prototype_contract() -> None:
 
     for required in [
         "type: doc",
-        "docs/DESIGN-layout-affinity.md",
-        "docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md",
+        "docs/decisions/layout-affinity.md",
+        "docs/patterns/layout-affinity-resolver-authoring.md",
         "prototype",
         "parent-scoped",
         "layout_resolver",
@@ -249,7 +249,7 @@ def test_layout_affinity_published_page_marks_prototype_contract() -> None:
         "not part of the current manifest contract",
         "not promoted",
         "Broad descendant selectors are",
-        "Authoring changes follow `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md`",
+        "Authoring changes follow `docs/patterns/layout-affinity-resolver-authoring.md`",
     ]:
         assert required in text
 
@@ -397,8 +397,8 @@ def test_agent_curated_snippets_are_indexed_and_macro_first() -> None:
     index = (REPO_ROOT / "docs" / "INDEX.md").read_text(encoding="utf-8")
     snippets = AGENT_CURATED_SNIPPETS.read_text(encoding="utf-8")
 
-    assert "docs/AGENT-CURATED-SNIPPETS.md" in inventory
-    assert "[AGENT-CURATED-SNIPPETS.md](AGENT-CURATED-SNIPPETS.md)" in index
+    assert "docs/agents/agent-curated-snippets.md" in inventory
+    assert "[AGENT-CURATED-SNIPPETS.md](agents/agent-curated-snippets.md)" in index
     assert "Eligibility: `copyable-curated`" in snippets
     assert 'from "chirpui/card.html" import card' in snippets
     assert 'appearance="outlined"' in snippets
@@ -447,7 +447,7 @@ def test_agent_source_map_inputs_exist_and_reference_inventory() -> None:
     rows = _parse_markdown_table(text, "## Source Input Map")
 
     assert rows
-    assert "docs/AGENT-SOURCE-INVENTORY.md" in text
+    assert "docs/agents/agent-source-inventory.md" in text
     for row in rows:
         source = _inventory_source_path(row["Source input"].replace("*.html", ""))
         path = REPO_ROOT / source

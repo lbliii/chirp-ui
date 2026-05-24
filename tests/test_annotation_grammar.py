@@ -6,7 +6,7 @@ call must have a sibling `{# @consumes _key from: ... — falls back to ... #}`
 annotation. New uses without annotations break the contract — failures point
 at the file:line so authors can add the annotation immediately.
 
-Annotation grammar lives in ``docs/PROVIDE-CONSUME-KEYS.md`` and is parsed by
+Annotation grammar lives in ``docs/components/provide-consume-keys.md`` and is parsed by
 ``chirp_ui.inspect``. See ``.context/composite-contracts-plan.md`` § Sprint 2 D3.
 """
 
@@ -51,7 +51,7 @@ def test_all_provided_keys_are_known():
     unknown = sorted({r.key for r in list_provides()} - KNOWN_KEYS)
     assert not unknown, (
         f"unknown provided keys (add to KNOWN_KEYS or fix typo): {unknown}\n"
-        f"see docs/PROVIDE-CONSUME-KEYS.md for the canonical registry"
+        f"see docs/components/provide-consume-keys.md for the canonical registry"
     )
 
 
@@ -59,7 +59,7 @@ def test_all_consumed_keys_are_known():
     unknown = sorted({r.key for r in list_consumes()} - KNOWN_KEYS)
     assert not unknown, (
         f"unknown consumed keys (add to KNOWN_KEYS or fix typo): {unknown}\n"
-        f"see docs/PROVIDE-CONSUME-KEYS.md for the canonical registry"
+        f"see docs/components/provide-consume-keys.md for the canonical registry"
     )
 
 

@@ -295,9 +295,9 @@ symbols imported inside another block.
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://d3js.org" crossorigin>
 
-    {# Stylesheets #}
+    {# Library and theme assets #}
+    {{ library_asset_tags() }}
     <link rel="stylesheet" href="{{ asset_url('css/style.css') }}">
-    <script src="{{ asset_url(chirpui_asset_path('chirpui.js')) }}"></script>
     {% if 'content.math' in (theme.features ?? []) %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin>
     {% end %}

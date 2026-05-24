@@ -3,10 +3,10 @@ import re
 from tests.helpers import REPO_ROOT
 from tests.layout_affinity_contract import ALLOWED_SOURCE_VALUES, RESOLVER_MATRIX
 
-RFC = REPO_ROOT / "docs" / "DESIGN-layout-affinity.md"
-AUTHORING = REPO_ROOT / "docs" / "LAYOUT-AFFINITY-RESOLVER-AUTHORING.md"
+RFC = REPO_ROOT / "docs" / "decisions" / "layout-affinity.md"
+AUTHORING = REPO_ROOT / "docs" / "patterns" / "layout-affinity-resolver-authoring.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
-PRIMITIVES = REPO_ROOT / "docs" / "PRIMITIVES.md"
+PRIMITIVES = REPO_ROOT / "docs" / "fundamentals" / "primitives.md"
 PLAN = REPO_ROOT / "docs" / "plans" / "done" / "PLAN-layout-affinity-rollout.md"
 BROWSER_PROOF = REPO_ROOT / "tests" / "browser" / "test_catalog_shell_recipe.py"
 SOURCE_GLOBS = (
@@ -72,22 +72,34 @@ def test_layout_affinity_rfc_defines_recipe_first_contract() -> None:
 
 
 def test_layout_affinity_rfc_is_discoverable_from_docs_index_and_primitives() -> None:
-    assert "[DESIGN-layout-affinity.md](DESIGN-layout-affinity.md)" in INDEX.read_text(
+    assert "[DESIGN-layout-affinity.md](decisions/layout-affinity.md)" in INDEX.read_text(
         encoding="utf-8"
     )
-    assert "[DESIGN-layout-affinity.md](DESIGN-layout-affinity.md)" in PRIMITIVES.read_text(
+    assert "[DESIGN-layout-affinity.md](../decisions/layout-affinity.md)" in PRIMITIVES.read_text(
         encoding="utf-8"
     )
     plan_link = "[PLAN-layout-affinity-rollout.md](plans/done/PLAN-layout-affinity-rollout.md)"
     authoring_link = (
-        "[LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](LAYOUT-AFFINITY-RESOLVER-AUTHORING.md)"
+        "[LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](patterns/layout-affinity-resolver-authoring.md)"
+    )
+    authoring_link_from_fundamentals = (
+        "[LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](../patterns/layout-affinity-resolver-authoring.md)"
+    )
+    authoring_link_from_decisions = (
+        "[LAYOUT-AFFINITY-RESOLVER-AUTHORING.md](../patterns/layout-affinity-resolver-authoring.md)"
     )
     assert plan_link in INDEX.read_text(encoding="utf-8")
-    assert plan_link in PRIMITIVES.read_text(encoding="utf-8")
-    assert plan_link in RFC.read_text(encoding="utf-8")
+    assert (
+        "[PLAN-layout-affinity-rollout.md](../plans/done/PLAN-layout-affinity-rollout.md)"
+        in PRIMITIVES.read_text(encoding="utf-8")
+    )
+    assert (
+        "[PLAN-layout-affinity-rollout.md](../plans/done/PLAN-layout-affinity-rollout.md)"
+        in RFC.read_text(encoding="utf-8")
+    )
     assert authoring_link in INDEX.read_text(encoding="utf-8")
-    assert authoring_link in PRIMITIVES.read_text(encoding="utf-8")
-    assert authoring_link in RFC.read_text(encoding="utf-8")
+    assert authoring_link_from_fundamentals in PRIMITIVES.read_text(encoding="utf-8")
+    assert authoring_link_from_decisions in RFC.read_text(encoding="utf-8")
 
 
 def test_layout_affinity_resolver_authoring_guide_sets_safe_authoring_contract() -> None:

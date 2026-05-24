@@ -19,7 +19,7 @@
 <p class="chirpui-text-muted chirpui-font-sm" style="margin: 0 0 0.75rem;">
   Shipping apps extend <code>chirpui/app_shell_layout.html</code> on top of Chirp’s <code>chirp/layouts/shell.html</code>
   (tokens, toast, transitions). This interactive showcase uses <code>app_layout.html</code> + <code>app_shell.html</code>
-  instead; see the template comment in <code>app_shell_layout.html</code> and <code>docs/UI-LAYERS.md</code>.
+  instead; see the template comment in <code>app_shell_layout.html</code> and <code>docs/fundamentals/ui-layers.md</code>.
 </p>
 {% end %}
 
@@ -60,7 +60,7 @@
 <h2>Fragment island (safe region)</h2>
 <p class="chirpui-text-muted chirpui-font-sm" style="margin-bottom: 0.5rem;">
   HTMX-safe region that opts out of inherited <code>hx-select</code> / targets — use inside boosted shells for forms and lists.
-  See <code>docs/DND-FRAGMENT-ISLAND.md</code>.
+  See <code>docs/components/dnd-fragment-island.md</code>.
 </p>
 {% call block() %}
 {% call safe_region("demo-fragment-island") %}

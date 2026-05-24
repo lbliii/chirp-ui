@@ -17,9 +17,9 @@ or unsupported macro parameters.
 - `python -m chirp_ui find --maturity=experimental --details`
 - `python -m chirp_ui find --role=pattern --details`
 - `build_manifest()`
-- `docs/AGENT-SOURCE-INVENTORY.md`
-- `docs/AGENT-SOURCE-MAP.md`
-- `docs/REGISTRY-DISCOVERY.md`
+- `docs/agents/agent-source-inventory.md`
+- `docs/agents/agent-source-map.md`
+- `docs/agents/registry-discovery.md`
 - `docs/COMPONENT-OPTIONS.md`
 
 ## Required Proof

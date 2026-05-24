@@ -6,7 +6,7 @@ required at manifest-build time).
 
 Used by :mod:`chirp_ui.manifest` to project macro Python signatures into the
 agent-groundable manifest. See ``docs/plans/done/PLAN-agent-grounding-depth.md`` and
-``docs/DESIGN-manifest-signature-extraction.md``.
+``docs/decisions/manifest-signature-extraction.md``.
 """
 
 from __future__ import annotations

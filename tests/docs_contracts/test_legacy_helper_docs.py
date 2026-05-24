@@ -1,9 +1,9 @@
 from chirp_ui.components import COMPONENTS
 from tests.helpers import REPO_ROOT
 
-PRIMITIVES = REPO_ROOT / "docs" / "PRIMITIVES.md"
-ANTI_FOOTGUNS = REPO_ROOT / "docs" / "ANTI-FOOTGUNS.md"
-PUBLIC_SURFACE = REPO_ROOT / "docs" / "PUBLIC-SURFACE-STABILIZATION.md"
+PRIMITIVES = REPO_ROOT / "docs" / "fundamentals" / "primitives.md"
+ANTI_FOOTGUNS = REPO_ROOT / "docs" / "safety" / "anti-footguns.md"
+PUBLIC_SURFACE = REPO_ROOT / "docs" / "safety" / "public-surface-stabilization.md"
 PRIMITIVE_PLAN = REPO_ROOT / "docs" / "plans" / "done" / "PLAN-primitive-vocabulary-hardening.md"
 
 

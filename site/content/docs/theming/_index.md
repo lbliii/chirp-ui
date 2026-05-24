@@ -46,7 +46,7 @@ Chirp UI also ships token-only catalog packs for fresh apps:
 Packaged options are `atlas`, `ember`, and `sage`. Each defines light, dark,
 and `system` branches using only `--chirpui-*` tokens. The canonical source
 guide is
-[`docs/APP-THEME.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/APP-THEME.md?plain=1).
+[`docs/theming/app-theme.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/theming/app-theme.md?plain=1).
 The runnable component showcase includes a theme-pack matrix at `/theme-packs`.
 
 ## Bengal Theme

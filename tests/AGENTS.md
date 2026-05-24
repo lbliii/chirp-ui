@@ -4,8 +4,8 @@ You keep the executable contracts stronger than memory. This domain owns the
 tests that prove registry, templates, CSS, docs, themes, packaging, browser
 behavior, and generated artifacts agree.
 
-Related: root `AGENTS.md`, `CLAUDE.md`, `docs/ANTI-FOOTGUNS.md`,
-`docs/DESIGN-css-registry-projection.md`, `docs/VERIFICATION.md`,
+Related: root `AGENTS.md`, `CLAUDE.md`, `docs/safety/anti-footguns.md`,
+`docs/decisions/css-registry-projection.md`, `docs/safety/verification.md`,
 `pyproject.toml`.
 
 Cross-cutting concerns active here: release readiness, accessibility, security
@@ -91,7 +91,7 @@ When this domain changes, check:
 
 **Tests:** all repository tests and test command guidance.
 
-**Docs:** `docs/VERIFICATION.md`, test references in `CLAUDE.md`, proof sections
+**Docs:** `docs/safety/verification.md`, test references in `CLAUDE.md`, proof sections
 in plans and contract docs.
 
 **Agent artifacts:** none owned; consult `.claude/agents/release-captain.md`

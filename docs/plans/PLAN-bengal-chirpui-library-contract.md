@@ -6,27 +6,22 @@
 
 ## Context
 
-`chirp-theme` is proving the right product direction: Bengal themes should be
-able to think in Chirp UI components, tokens, macros, and runtime requirements
-instead of adapting a copied default theme after the fact.
+`chirp-theme` should declare `libraries = ["chirp_ui"]` and then use Chirp UI
+macros, tokens, CSS, and runtime assets through Bengal's library contract. Theme
+templates should not know package-relative asset paths, fingerprinting rules,
+or dev/static serving details.
 
-The migration also exposed the wrong kind of work. The theme has repeatedly had
-to understand provider asset paths, fingerprinting, live reload behavior, and
-whether Bengal serves library CSS at stable logical URLs. Those details are
-platform responsibilities. A theme should declare that it uses `chirp_ui`; Bengal
-should discover the package contract, make assets available consistently in dev
-and static builds, register Kida/macros/filters, and fail before the browser sees
-missing CSS or JS.
-
-The immediate theme posture is intentionally conservative:
+Current state:
 
 - `theme.toml` declares `libraries = ["chirp_ui"]`.
-- `assets/css/style.css` is the single CSS entrypoint and imports Chirp UI CSS.
-- `base.html` links the theme stylesheet and Chirp UI JS, not standalone provider
-  CSS files.
-- package tests reject HTML that references stale logical provider CSS paths.
+- `base.html` calls Bengal 0.3.3's `library_asset_tags()` helper.
+- `assets/css/style.css` contains only theme tokens, layout polish, and
+  content-specific overrides.
+- package tests require built HTML, emitted files, and `asset-manifest.json` to
+  agree on Chirp UI provider assets and the theme stylesheet.
 
-That is a safe local contract, not the final Bengal abstraction.
+The linked-asset path is validated. Bundle and none modes still need explicit
+fixture coverage before this plan can close.
 
 ## Target Contract
 
@@ -64,46 +59,12 @@ Bengal should then discover a library contract equivalent to:
 
 ## Ranked Waves
 
-### Wave 1 — Stabilize The Current Theme Boundary
+### Waves 1-2 — Shipped Boundary And Package Metadata
 
-Status: shipped in the current migration stack.
-
-Keep the theme on one CSS entrypoint and one JS provider link so dev/live reload
-and static builds use the same visible contract. Document the reason in
-`theme.toml`, `docs/CHIRP-THEME.md`, and package tests.
-
-Required proof:
-
-- Built HTML references `assets/css/style.*.css` or `/assets/css/style.css`, not
-  `/assets/chirp_ui/chirpui.css`.
-- The theme stylesheet contains the Chirp UI CSS imports.
-- Package tests reject stale standalone provider CSS links.
-
-### Wave 2 — Define Chirp UI Package Metadata
-
-Status: shipped in the current migration stack.
-
-Add a small, importable package contract for library consumers. This is
-intentionally minimal and evidence-backed:
-
-- package name: `chirp_ui`
-- template loader root
-- static root
-- ordered CSS entries
-- ordered JS entries
-- optional Alpine/runtime entries
-- manifest path and schema version
-
-Required proof:
-
-- Tests assert every declared asset exists under `static_path()`.
-- Docs explain how frameworks should consume the metadata.
-- No Bengal-specific behavior enters the Chirp UI package contract.
-
-Implemented proof currently covers `chirp_ui.get_library_contract()`, the frozen
-`LIBRARY_CONTRACT`, ordered CSS/JS asset entries, optional Alpine runtime assets,
-manifest schema parity, and asset existence checks under the package static
-root.
+| Wave | Status | Contract | Proof |
+|---|---|---|---|
+| 1. Stabilize theme boundary | Shipped | Theme uses Bengal-managed provider links plus one theme stylesheet; no filesystem-relative Chirp UI CSS imports. | Built HTML references emitted provider CSS/JS and theme CSS; package tests verify manifest entries and files. |
+| 2. Define Chirp UI package metadata | Shipped | `chirp_ui.get_library_contract()` and `LIBRARY_CONTRACT` expose package name, template root, static root, ordered CSS/JS entries, optional Alpine/runtime assets, manifest path, and schema. | Tests assert declared assets exist under `static_path()` and no Bengal build behavior enters the Chirp UI package contract. |
 
 ### Wave 3 — Bengal Library Asset Modes
 
@@ -134,30 +95,12 @@ Fixture matrix:
 | `link` | The same theme with `asset_mode = "link"` emits separate logical library CSS/JS links in dev and fingerprinted library outputs in static builds. | Dev logical paths and static manifest outputs resolve; linked assets are copied and rewritten; missing linked assets are diagnostics. |
 | `none` | The same theme with `asset_mode = "none"` registers macros/helpers and makes assets available without automatic CSS/JS inclusion. | Chirp UI macros import successfully; built HTML has no automatic library links; explicit theme-managed links still resolve when present. |
 
-### Wave 4 — Macro And Runtime Registration
+### Waves 4-5 — Registration And Theme Import Cleanup
 
-Bengal should register Chirp UI's template loader and runtime helpers from the
-same library declaration.
-
-Required proof:
-
-- A fixture theme using `libraries = ["chirp_ui"]` can import Chirp UI macros
-  without manual loader setup.
-- Runtime-dependent components can report required JS/Alpine assets before build
-  output is written.
-- Missing runtime assets are build diagnostics, not browser console surprises.
-
-### Wave 5 — Remove Transitional Theme Imports
-
-Once Bengal owns library CSS inclusion, remove filesystem-relative Chirp UI CSS
-imports from `chirp-theme` and make `style.css` pure theme tokens, layout polish,
-and content-specific overrides.
-
-Required proof:
-
-- `style.css` no longer imports package CSS by relative filesystem path.
-- Theme output remains visually equivalent under `bundle` mode.
-- Tests cover both dev logical paths and static fingerprinted paths.
+| Wave | Status | Required Proof |
+|---|---|---|
+| 4. Macro and runtime registration | Open | A fixture theme using `libraries = ["chirp_ui"]` imports Chirp UI macros without manual loader setup; runtime-dependent components report required JS/Alpine assets before build output; missing runtime assets become diagnostics. |
+| 5. Remove transitional theme imports | Shipped for linked mode | `style.css` no longer imports package CSS by relative filesystem path; built static HTML references fingerprinted provider CSS/JS plus theme CSS; bundle/none mode work remains separate fixtures. |
 
 ## Not Now
 
@@ -166,15 +109,15 @@ Required proof:
 - Creating a Bengal-specific public API inside Chirp UI before the package
   metadata shape is reviewed.
 - Copying generated `chirpui.css` into the theme package.
-- Treating current `@import "../../../../chirp_ui/..."` lines as the final
-  architecture.
+- Reintroducing filesystem-relative Chirp UI CSS imports as a theme
+  convenience.
 
 ## Steward Notes
 
 - Core registry/API steward: Wave 2 is a public metadata contract and must stay
   small, deterministic, and free-threading safe.
-- Template/CSS steward: Wave 5 removes transitional imports only after Bengal
-  can preserve cascade order and dev/build parity.
+- Template/CSS steward: linked-provider Wave 5 proof is shipped; bundle/none
+  fixtures still need cascade and dev/build parity coverage.
 - Planning steward: this plan is active because it blocks reducing theme CSS
   plumbing without losing Chirp UI styling.
 - Theme steward: continue converting page/content templates to Chirp UI

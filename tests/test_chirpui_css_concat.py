@@ -63,7 +63,7 @@ def test_all_css_partials_are_manifested_once() -> None:
 
 def test_layer_declaration_at_top() -> None:
     """The cascade order is part of the public API — first @-rule in the file
-    must be the exact declaration documented in docs/CSS-OVERRIDE-SURFACE.md.
+    must be the exact declaration documented in docs/fundamentals/css-override-surface.md.
 
     See ``docs/plans/PLAN-css-scope-and-layer.md § Sprint 3 T3.4``.
     """

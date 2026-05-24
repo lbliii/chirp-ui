@@ -3,7 +3,7 @@ from tests.helpers import REPO_ROOT
 ROOT = REPO_ROOT
 PLAN = ROOT / "docs" / "plans" / "PLAN-page-actions-primitive.md"
 INDEX = ROOT / "docs" / "INDEX.md"
-ROADMAP = ROOT / "docs" / "ROADMAP-pre-1.0.md"
+ROADMAP = ROOT / "docs" / "strategy" / "roadmap-pre-1.0.md"
 APP_CHROME_PLAN = ROOT / "docs" / "plans" / "PLAN-application-chrome-system.md"
 
 

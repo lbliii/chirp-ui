@@ -9,7 +9,7 @@ existing Chirp UI primitives to try, required proof, gaps to record, promotion
 boundaries, and the decision rule for staying recipe-only or stopping for API
 design approval.
 
-Start with [../REFERENCE-IMPLEMENTATION-PLAYBOOK.md](../REFERENCE-IMPLEMENTATION-PLAYBOOK.md).
+Start with [../REFERENCE-IMPLEMENTATION-PLAYBOOK.md](playbook.md).
 Use [PROOF-ANALYSIS.md](PROOF-ANALYSIS.md) after a reference fixture exists to
 decide whether the next move is recipe guidance, more reference evidence, or a
 public API/design stop-and-ask.

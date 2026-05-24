@@ -1,8 +1,8 @@
 from tests.helpers import REPO_ROOT
 
 ROOT = REPO_ROOT
-INVENTORY = ROOT / "docs" / "AGENT-SOURCE-INVENTORY.md"
-SOURCE_MAP = ROOT / "docs" / "AGENT-SOURCE-MAP.md"
+INVENTORY = ROOT / "docs" / "agents" / "agent-source-inventory.md"
+SOURCE_MAP = ROOT / "docs" / "agents" / "agent-source-map.md"
 
 
 def test_agent_source_inventory_includes_strategy_and_evidence_sources() -> None:
@@ -10,10 +10,10 @@ def test_agent_source_inventory_includes_strategy_and_evidence_sources() -> None
 
     for row in [
         "| `manifest-derived` | `src/chirp_ui/find.py` |",
-        "| `docs-derived` | `docs/DESIGN-SYSTEM-RESEARCH.md` |",
-        "| `docs-derived` | `docs/PUBLIC-SURFACE-STABILIZATION.md` |",
-        "| `docs-derived` | `docs/DESIGN-interactive-anatomy.md` |",
-        "| `docs-derived` | `docs/REFERENCE-IMPLEMENTATION-PLAYBOOK.md` |",
+        "| `docs-derived` | `docs/decisions/design-system-research.md` |",
+        "| `docs-derived` | `docs/safety/public-surface-stabilization.md` |",
+        "| `docs-derived` | `docs/decisions/interactive-anatomy.md` |",
+        "| `docs-derived` | `docs/reference-implementations/playbook.md` |",
         "| `docs-derived` | `docs/reference-implementations/README.md` |",
         "| `docs-derived` | `docs/reference-implementations/PROOF-ANALYSIS.md` |",
         "| `docs-derived` | `docs/reference-implementations/RECIPE-GUIDANCE.md` |",
@@ -47,10 +47,10 @@ def test_agent_source_map_routes_strategy_sources_without_new_artifacts() -> Non
 
     for row in [
         "| `src/chirp_ui/find.py` | `manifest-derived` | Local human/agent discovery through `python -m chirp_ui find --details` |",
-        "| `docs/DESIGN-SYSTEM-RESEARCH.md` | `docs-derived` |",
-        "| `docs/PUBLIC-SURFACE-STABILIZATION.md` | `docs-derived` |",
-        "| `docs/DESIGN-interactive-anatomy.md` | `docs-derived` |",
-        "| `docs/REFERENCE-IMPLEMENTATION-PLAYBOOK.md` | `docs-derived` |",
+        "| `docs/decisions/design-system-research.md` | `docs-derived` |",
+        "| `docs/safety/public-surface-stabilization.md` | `docs-derived` |",
+        "| `docs/decisions/interactive-anatomy.md` | `docs-derived` |",
+        "| `docs/reference-implementations/playbook.md` | `docs-derived` |",
         "| `docs/reference-implementations/README.md` | `docs-derived` |",
         "| `docs/reference-implementations/PROOF-ANALYSIS.md` | `docs-derived` |",
         "| `docs/reference-implementations/RECIPE-GUIDANCE.md` | `docs-derived` |",

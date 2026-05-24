@@ -18,7 +18,7 @@ THEME_TEMPLATE_PATH_FRAGMENT = "bengal_themes/chirp_theme/templates"
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SITE_ROOT = REPO_ROOT / "site"
 _WORKSPACE_BENGAL = REPO_ROOT.parent / "b-stack" / "bengal"
-BENGAL_ANATOMY_DOC = REPO_ROOT / "docs" / "BENGAL-THEME-ANATOMY.md"
+BENGAL_ANATOMY_DOC = REPO_ROOT / "docs" / "theming" / "bengal-theme-anatomy.md"
 
 if _WORKSPACE_BENGAL.exists():
     bengal_parent = _WORKSPACE_BENGAL.parent
@@ -606,8 +606,26 @@ def test_chirp_theme_css_assets_are_reachable_from_style_entrypoint() -> None:
 
     assert not missing, "style.css imports missing CSS assets: " + ", ".join(sorted(missing))
     assert not orphaned, "CSS assets are not reachable from style.css: " + ", ".join(orphaned)
-    assert "../../../../chirp_ui/templates/chirpui.css" in style
-    assert "../../../../chirp_ui/templates/chirpui-transitions.css" in style
+    assert "../../../../chirp_ui/templates/chirpui.css" not in style
+    assert "../../../../chirp_ui/templates/chirpui-transitions.css" not in style
+
+
+def test_chirp_theme_css_avoids_bengal_minifier_spacing_regression() -> None:
+    """Theme CSS should stay valid when Bengal minifies modern custom-property values."""
+    css_minifier = pytest.importorskip("bengal.assets.css_minifier")
+    package_root = resources.files(THEME_PACKAGE)
+    css = (package_root / "assets" / "css" / "chirp-theme.css").read_text(encoding="utf-8")
+
+    minified = css_minifier.minify_css(css)
+    broken_scrollbar_value = re.compile(
+        r"scrollbar-color:[^;]*(?:var\(--chirpui-accent\)34%|\)transparent)"
+    )
+
+    assert not broken_scrollbar_value.search(minified)
+    assert "scrollbar-color:#0e7490 transparent" in minified
+    assert "scrollbar-color:#2dd4bf transparent" in minified
+    assert "color-mix(in srgb" in minified
+    assert "calc(" in minified
 
 
 def test_theme_manifest_declares_standalone_package() -> None:
@@ -632,6 +650,7 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     assert 'from "chirpui/navbar.html" import navbar, navbar_link, navbar_dropdown' in base
     assert 'from "chirpui/site_footer.html" import site_footer, footer_column, footer_link' in base
     assert "render_navbar_item" in base
+    assert "library_asset_tags()" in base
     assert 'data-chirp-theme-spine="bespoke"' in base
     assert "_page_url == '/releases/' or _page_url.startswith('/releases/')" in base
     assert "asset_url('favicon.svg')" in base
@@ -656,8 +675,8 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     assert ".chirp-theme-shell__nav-dropdown:hover > .chirpui-navbar-dropdown__menu" in css
     assert ".chirp-theme-shell .chirpui-navbar-dropdown__trigger::after" in css
     assert ".chirp-theme-footer.chirpui-site-footer" in css
-    assert "../../../../chirp_ui/templates/chirpui.css" in style
-    assert "../../../../chirp_ui/templates/chirpui-transitions.css" in style
+    assert "../../../../chirp_ui/templates/chirpui.css" not in style
+    assert "../../../../chirp_ui/templates/chirpui-transitions.css" not in style
 
     favicon = (assets_root / "favicon.svg").read_text(encoding="utf-8")
     webmanifest = json.loads((assets_root / "site.webmanifest").read_text(encoding="utf-8"))
@@ -780,6 +799,11 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "grid-template-columns: 3.5rem minmax(0, 1fr);" in css
     assert ".chirp-theme-doc-catalog-rail__item:hover .chirp-theme-doc-catalog-rail__label" in css
     assert ".chirp-theme-doc-catalog-rail__brand-mark" in css
+    assert "box-shadow: 0 1px 0 color-mix(in srgb, var(--chirpui-accent) 10%, transparent)" in css
+    assert (
+        "border-inline-end: 1px solid color-mix(in srgb, var(--chirpui-accent) 14%, "
+        "var(--chirpui-border))" in css
+    )
     assert ".chirp-theme-doc-catalog__context" not in css
     assert ".chirp-theme-doc-catalog__context-mark" not in css
     assert ".chirp-theme-docs-nav__section.is-active" in css
@@ -813,7 +837,7 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "overflow-x: clip;" in css
     assert ".chirp-theme-shell--rail-only .chirp-theme-docs-layout" in css
     assert ".chirp-theme-shell--rail-only .chirp-theme-shell__header" in css
-    assert "TRANSITIONAL ASSET SHIM" in style
+    assert "TRANSITIONAL ASSET SHIM" not in style
     assert "RETAINED LEGACY CSS QUARANTINE" in style
     assert "BESPOKE ACTIVE THEME SURFACE" in style
 
@@ -1406,7 +1430,10 @@ site.build(BuildOptions(force_sequential=True, incremental=False, quiet=True))
 manifest = AssetManifest.load(site.output_dir / "asset-manifest.json")
 manifest_outputs = {entry.output_path.lstrip("/") for entry in manifest.entries.values()}
 expected_asset_entries = [
+    chirpui_asset_path("chirpui.css"),
+    chirpui_asset_path("chirpui-transitions.css"),
     chirpui_asset_path("chirpui.js"),
+    chirpui_asset_path("chirpui-alpine.js"),
     "css/style.css",
 ]
 asset_outputs = {
@@ -1460,13 +1487,6 @@ result_path.write_text(
     missing_manifest_entries = result["missing_manifest_entries"]
     missing_files = result["missing_files"]
     asset_outputs = result["asset_outputs"]
-    forbidden_provider_css_refs = sorted(
-        {
-            "assets/chirp_ui/chirpui.css",
-            "assets/chirp_ui/chirpui-transitions.css",
-        }
-        & set(referenced_assets)
-    )
     missing_asset_outputs = sorted(
         logical_path for logical_path, output_path in asset_outputs.items() if not output_path
     )
@@ -1479,10 +1499,6 @@ result_path.write_text(
     assert referenced_assets, "Expected built docs HTML to reference packaged theme assets."
     assert not missing_asset_outputs, (
         "Expected Chirp theme assets in asset-manifest.json: " + ", ".join(missing_asset_outputs)
-    )
-    assert not forbidden_provider_css_refs, (
-        "Built HTML referenced standalone Chirp UI provider CSS instead of the theme stylesheet: "
-        + ", ".join(forbidden_provider_css_refs)
     )
     assert not unreferenced_asset_outputs, (
         "Built HTML did not reference emitted Chirp theme assets: "

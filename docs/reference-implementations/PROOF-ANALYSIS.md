@@ -84,7 +84,7 @@ plus another independent dense reference if a specific gap repeats.
 ## Agent Discovery Analysis
 
 Proof source: `tests/test_find_cli.py`,
-`docs/AGENT-SOURCE-INVENTORY.md`, and `docs/AGENT-SOURCE-MAP.md`.
+`docs/agents/agent-source-inventory.md`, and `docs/agents/agent-source-map.md`.
 
 Existing surfaces tried: `python -m chirp_ui find --details`,
 `python -m chirp_ui find --role=pattern --details`,

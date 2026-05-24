@@ -5,7 +5,7 @@ direction. This domain owns active plans, archived plans, sequencing, and the
 not-now boundaries that prevent agents from reopening solved work.
 
 Related: root `AGENTS.md`, `docs/AGENTS.md`, `docs/INDEX.md`,
-`docs/ROADMAP-pre-1.0.md`, `docs/plans/`, `docs/plans/done/`,
+`docs/strategy/roadmap-pre-1.0.md`, `docs/plans/`, `docs/plans/done/`,
 `CLAUDE.md`.
 
 Cross-cutting concerns active here: release readiness, agent grounding,
@@ -21,7 +21,7 @@ plan/file/status parity against stale links and vague brainstorm dumps.
 
 - **Active plans live here.** Active work belongs in `docs/plans/`; shipped plans
   belong in `docs/plans/done/`. Evidence: `docs/INDEX.md`,
-  `docs/ROADMAP-pre-1.0.md:82`, `docs/ROADMAP-pre-1.0.md:247`.
+  `docs/strategy/roadmap-pre-1.0.md:82`, `docs/strategy/roadmap-pre-1.0.md:247`.
 - **Index status matches file location.** The docs index must not point to
   archived paths while files remain active, or the reverse. Evidence: PR #110
   review comments and `tests/docs_contracts/test_docs_ia_ratchets.py`.
@@ -36,7 +36,7 @@ plan/file/status parity against stale links and vague brainstorm dumps.
   `AGENTS.md` Steward System.
 - **Public API plans require migration strategy.** Descriptor, manifest,
   macro-param, token, and layout-affinity promotion plans need migration and
-  schema notes. Evidence: `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md:148`.
+  schema notes. Evidence: `docs/patterns/layout-affinity-resolver-authoring.md:148`.
 
 ## Contract Checklist
 
@@ -46,7 +46,7 @@ When this domain changes, check:
   acceptance checks, not-now items, and public API risks.
 - `docs/plans/done/*.md` — archived status, historical links, and no unqualified
   active/draft language.
-- `docs/INDEX.md` and `docs/ROADMAP-pre-1.0.md` — plan-to-workstream mapping,
+- `docs/INDEX.md` and `docs/strategy/roadmap-pre-1.0.md` — plan-to-workstream mapping,
   active count, and links after moves.
 - Tests that hardcode plan paths, including docs IA, legacy helper, navigation,
   ASCII maturity, and roadmap ratchets.
@@ -81,7 +81,7 @@ When this domain changes, check:
 `tests/docs_contracts/test_legacy_helper_docs.py`, `tests/evidence/test_legacy_helper_cleanup_plan.py`,
 `tests/evidence/test_ascii_maturity_ratchets.py`, `tests/docs_contracts/test_navigation_synthesis_docs.py`.
 
-**Docs:** planning sections in `docs/INDEX.md`, `docs/ROADMAP-pre-1.0.md`, PR
+**Docs:** planning sections in `docs/INDEX.md`, `docs/strategy/roadmap-pre-1.0.md`, PR
 `Steward Notes` for roadmap/backlog changes.
 
 **Agent artifacts:** none owned; follow root `AGENTS.md` swarm protocol.

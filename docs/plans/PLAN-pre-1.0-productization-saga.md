@@ -69,181 +69,13 @@ with package upgrades and verification instead of perpetual local forks.
 
 ## Ranked Epics
 
-### 1. Registry Product Surface
-
-Goal: make the component registry and manifest as useful to humans and agents
-as shadcn's registry is, while preserving Chirp UI's library-owned contract.
-
-Next slices:
-
-- Improve `python -m chirp_ui find` and manifest-backed docs around preferred
-  authoring, maturity, runtime requirements, slots, and recipe-only boundaries.
-- Ensure generated docs, source inventory, and curated snippets tell the same
-  story as the registry.
-- Add proof links or evidence references where descriptor data already supports
-  them; defer descriptor/schema additions until a design RFC exists.
-- Design an agent-facing "discover, apply, verify" workflow after local
-  registry discovery is strong enough.
-
-Acceptance:
-
-- A user or agent can find the preferred primitive/component, understand when
-  not to use it, and identify required runtime/proof without reading templates.
-- Registry, manifest, generated docs, and source inventory agree.
-- No copied-source component ownership model is introduced.
-
-Proof:
-
-- `uv run pytest tests/test_manifest.py tests/test_manifest_signatures.py -q`
-- Focused `find`/inspect tests when CLI output changes.
-- Generated docs freshness checks when generated output changes.
-
-Collateral:
-
-- `docs/DESIGN-SYSTEM-RESEARCH.md`
-- `docs/AGENT-SOURCE-INVENTORY.md`
-- `docs/AGENT-SOURCE-MAP.md`
-- `docs/COMPONENT-OPTIONS.md` when generated output changes.
-- Manifest schema notes before any schema change.
-
-### 2. Anatomy And Evidence Ledgers
-
-Goal: make high-risk component quality explicit: anatomy, accessibility,
-behavior, responsive constraints, performance notes, and proof.
-
-Next slices:
-
-- Define a small evidence-ledger format for complex surfaces without changing
-  descriptor schema yet.
-- Apply it first to overlays, drawers/trays, command palette, route tabs, shell
-  navigation, page actions, forms/validation, and Bengal docs chrome.
-- Use Radix/Base/React Aria as behavior-proof inspiration and GOV.UK/Carbon as
-  evidence-status inspiration.
-- Record residual risk explicitly, especially when proof is automated browser
-  proof rather than manual assistive-technology testing.
-
-Acceptance:
-
-- Promotion PRs for complex surfaces cite anatomy and proof.
-- Docs do not imply manual screen-reader testing unless it happened.
-- Browser proof covers focus, keyboard, overflow, reduced motion, or stress
-  widths when those risks are relevant.
-
-Proof:
-
-- Existing anatomy tests plus focused additions for changed surfaces.
-- Browser tests for focus/keyboard/overflow-sensitive changes.
-- `uv run pytest tests/docs_contracts/test_public_surface_stabilization.py -q` when maturity
-  labels change.
-
-Collateral:
-
-- Existing anatomy docs under `docs/*-ANATOMY.md`
-- `docs/PUBLIC-SURFACE-STABILIZATION.md`
-- `docs/VISUAL-AUDIT-SHOWCASE.md`
-- Relevant browser fixtures.
-
-### 3. Visible Design-System Showcase
-
-Goal: make quality obvious before readers inspect tests or plans.
-
-Next slices:
-
-- Promote `examples/design-system-gap-showcase/index.html` into the first QA
-  stop for visual decisions.
-- Ensure one pass covers tokens, theme modes, dense navigation, application
-  chrome, forms, overlays, feedback, data tables, ASCII/TUI primitives, long
-  labels, loading/reserved states, and responsive stress.
-- Add a screenshot checklist for phone, tablet, desktop, light mode, dark mode,
-  and at least one catalog theme pack.
-- Treat missing showcase coverage as a blocker for promoting experimental
-  visual components.
-
-Acceptance:
-
-- A new contributor can judge the design-system state from one local artifact.
-- The showcase contains no invented APIs and no utility-class teaching.
-- Visual audit docs name the component families and responsive widths covered.
-
-Proof:
-
-- `uv run pytest tests/test_visual_audit_showcase.py tests/test_pattern_assets.py -q`
-- Browser proof for any changed interactive or layout-sensitive fixture.
-
-Collateral:
-
-- `docs/VISUAL-AUDIT-SHOWCASE.md`
-- `examples/design-system-gap-showcase/index.html`
-- Relevant pattern docs only when a pattern contract changes.
-
-### 4. Public Surface Stabilization
-
-Goal: make the pre-1.0 public vocabulary intentional.
-
-Next slices:
-
-- Drive the `93` experimental components toward explicit outcomes: stable,
-  keep experimental, recipe-only, or deprecate later.
-- Finish marketing-pattern classification after the ASCII/TUI promotion pass.
-- Separate decorative effects from interaction-bearing effects and require
-  reduced-motion proof before promotion.
-- Keep recipe-only patterns out of preferred authoring until repeated app usage
-  proves an API.
-- Keep legacy helpers as compatibility unless a tested migration path exists.
-
-Acceptance:
-
-- Every experimental component has a named 1.0 disposition.
-- Generated docs and manifest agree on maturity and authoring status.
-- No recipe-only item is taught as a preferred component API.
-
-Proof:
-
-- `uv run pytest tests/docs_contracts/test_public_surface_stabilization.py tests/test_manifest.py tests/docs_contracts/test_component_options_ratchets.py -q`
-- Browser proof when promotion depends on keyboard, focus, overflow, or motion.
-
-Collateral:
-
-- `docs/PUBLIC-SURFACE-STABILIZATION.md`
-- `docs/COMPONENT-OPTIONS.md` when generated output changes.
-- Changelog fragment for user-facing promotion, deprecation, or authoring
-  guidance changes.
-
-### 5. Theme Authoring UX
-
-Goal: make token-driven theming feel obvious and powerful.
-
-Next slices:
-
-- Build a theme gallery that compares default, app starter, Bengal/chirp-theme,
-  and catalog packs across the same component matrix.
-- Add a token explorer organized by job: color, typography, radius, elevation,
-  spacing, z-index, and motion.
-- Document the first tokens app authors should override.
-- Decide promotion criteria for `atlas`, `ember`, and `sage` from experimental
-  to stable.
-- Keep theme packs token-only; no component selector forks.
-
-Acceptance:
-
-- A user can compare themes visually before reading token tables.
-- Theme-pack CSS remains token-only.
-- Docs teach app overrides through tokens first and `@layer app.overrides`
-  second.
-
-Proof:
-
-- `uv run pytest tests/test_theme_token_parity.py tests/test_bengal_theme_package.py tests/test_css_syntax.py -q`
-- `uv run poe build-manifest-check`
-- Theme browser proof for promoted packs across light, dark, and system modes.
-
-Collateral:
-
-- `docs/APP-THEME.md`
-- `docs/TOKENS.md`
-- `docs/CHIRP-THEME.md`
-- `docs/CHIRP-THEME-PARITY-MATRIX.md`
-- Site theming source pages when public docs change.
+| Epic | Goal | Next Slice | Proof |
+|---|---|---|---|
+| 1. Registry Product Surface | Make `python -m chirp_ui find`, the manifest, generated docs, source inventory, and curated snippets agree on preferred authoring, maturity, runtime, slots, and recipe-only boundaries. | Improve discovery output and agent-facing source maps before adding schema. | `uv run pytest tests/test_manifest.py tests/test_manifest_signatures.py -q`; focused find/inspect tests when CLI output changes. |
+| 2. Anatomy And Evidence Ledgers | Make high-risk component quality explicit without turning ledger fields into descriptor schema yet. | Keep applying ledgers to overlays, drawers/trays, route tabs, shell navigation, page actions, forms, and Bengal docs chrome. | Anatomy tests, browser focus/keyboard/overflow proof, and `tests/docs_contracts/test_public_surface_stabilization.py` when maturity labels change. |
+| 3. Visible Design-System Showcase | Make quality visible from one local artifact before readers inspect tests or plans. | Keep `examples/design-system-gap-showcase/index.html` aligned with tokens, theme modes, dense nav, app chrome, forms, overlays, data, ASCII/TUI, and stress states. | `uv run pytest tests/test_visual_audit_showcase.py tests/test_pattern_assets.py -q`; browser proof for interactive or layout-sensitive changes. |
+| 4. Public Surface Stabilization | Make the pre-1.0 vocabulary intentional: stable, experimental, recipe-only, compatibility, or deprecate-later. | Close remaining experimental dispositions and keep recipe-only surfaces out of preferred authoring until repeated implementation evidence exists. | `uv run pytest tests/docs_contracts/test_public_surface_stabilization.py tests/test_manifest.py tests/docs_contracts/test_component_options_ratchets.py -q`. |
+| 5. Theme Authoring UX | Make token-driven theming obvious and keep theme packs token-only. | Build theme comparison and token-explorer proof before promoting `atlas`, `ember`, or `sage`. | `uv run pytest tests/test_theme_token_parity.py tests/test_bengal_theme_package.py tests/test_css_syntax.py -q`; `uv run poe build-manifest-check`. |
 
 ### 6. Application Chrome Adoption
 
@@ -278,9 +110,9 @@ Proof:
 
 Collateral:
 
-- `docs/SHELL-TABS-CONTRACT.md`
-- `docs/NAVIGATION.md`
-- `docs/DENSE-NAVIGATION-RECIPES.md`
+- `docs/components/shell-tabs-contract.md`
+- `docs/patterns/navigation.md`
+- `docs/patterns/dense-navigation-recipes.md`
 - `docs/plans/PLAN-application-chrome-system.md`
 - Published navigation pattern source when site content changes.
 
@@ -308,74 +140,12 @@ Current application-chrome queue:
   keeps the surface on current primitives and the next productization work is
   author guidance.
 
-### 7. Bengal And chirp-theme Integration
+### 7-8. Bengal Integration And Verification
 
-Goal: prove Chirp UI as a first-class Bengal library surface, not only a
-standalone component catalog.
-
-Next slices:
-
-- Finish Bengal library asset modes: `bundle`, `link`, and `none`.
-- Ensure Bengal library declarations register Chirp UI macros, CSS, and runtime
-  helpers without filesystem-relative imports.
-- Continue migrating chirp-theme output to Chirp UI-native templates and
-  token vocabulary.
-- Keep Bengal docs chrome separate from general Chirp app shell contracts.
-- Use Bengal as evidence for smaller contracts first: compact headers,
-  `page_hero` empty-slot behavior, linked branch navigation, page actions,
-  reference cards, semantic icons, and footer/content ownership.
-
-Acceptance:
-
-- `libraries = ["chirp_ui"]` is enough for a Bengal app/theme to consume Chirp
-  UI assets and macros through the documented contract.
-- Static and dev outputs resolve the same logical assets.
-- `chirp-theme` CSS contains only theme tokens, content polish, and actively
-  referenced vertical styles.
-
-Proof:
-
-- `uv run pytest tests/test_bengal_theme_package.py tests/test_docs_site.py -q`
-- Bengal browser proof when layout, focus, search, nav, or theme controls move.
-
-Collateral:
-
-- `docs/BENGAL-THEME-ANATOMY.md`
-- `docs/CHIRP-THEME.md`
-- `docs/CHIRP-THEME-PARITY-MATRIX.md`
-- `docs/plans/PLAN-bengal-chirpui-library-contract.md`
-- `docs/plans/PLAN-chirp-theme-content-parity.md`
-
-### 8. Verification Reliability
-
-Goal: make every productization slice reproducible from a clean checkout.
-
-Next slices:
-
-- Keep generated `manifest.json`, `chirpui.css`, generated component docs, and
-  site artifacts inside drift gates.
-- Keep the Kida mismatch troubleshooting path current.
-- Run full CI for any slice that touches public macros, generated outputs, CSS,
-  packaging, or multiple runtime surfaces.
-
-Acceptance:
-
-- Local maintainers and agents can run the documented commands without guessing
-  which interpreter or generated outputs matter.
-- Narrow proof is allowed only when the PR states why full CI was not run.
-
-Proof:
-
-- `uv run poe build-manifest-check`
-- `uv run poe build-css-check`
-- `uv run poe build-docs-check`
-- `uv run poe ci` for cross-surface changes.
-
-Collateral:
-
-- `docs/VERIFICATION.md`
-- `docs/plans/done/PLAN-test-coverage-hardening.md`
-- `pyproject.toml` only when task definitions change.
+| Epic | Goal | Next Slice | Proof |
+|---|---|---|---|
+| 7. Bengal And chirp-theme Integration | Prove Chirp UI as a first-class Bengal library surface while keeping Bengal docs chrome separate from general app-shell contracts. | Deepen library asset mode coverage, keep `chirp-theme` on `library_asset_tags()`, and use Bengal pressure for smaller contracts such as compact headers, linked branch navigation, page actions, reference cards, semantic icons, and footer/content ownership. | `uv run pytest tests/test_bengal_theme_package.py tests/test_docs_site.py -q`; Bengal browser proof when layout, focus, search, nav, or theme controls move. |
+| 8. Verification Reliability | Keep every productization slice reproducible from a clean checkout. | Keep generated `manifest.json`, `chirpui.css`, component options, and site artifacts inside drift gates; run full CI for public macro/API, generated output, CSS, packaging, or cross-runtime changes. | `uv run poe build-manifest-check`; `uv run poe build-css-check`; `uv run poe build-docs-check`; `uv run poe ci` when scope crosses surfaces. |
 
 ## Recommended Execution Order
 

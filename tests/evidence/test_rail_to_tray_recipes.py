@@ -12,8 +12,8 @@ RECIPE = (
 SHOWCASE_NAV = (
     ROOT / "examples" / "component-showcase" / "templates" / "showcase" / "navigation.html"
 )
-NAV_DOC = ROOT / "docs" / "NAVIGATION.md"
-RECIPES_DOC = ROOT / "docs" / "DENSE-NAVIGATION-RECIPES.md"
+NAV_DOC = ROOT / "docs" / "patterns" / "navigation.md"
+RECIPES_DOC = ROOT / "docs" / "patterns" / "dense-navigation-recipes.md"
 
 
 def test_rail_to_tray_showcase_exports_copyable_recipe() -> None:

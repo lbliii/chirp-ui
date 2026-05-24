@@ -2,7 +2,7 @@ from tests.helpers import REPO_ROOT
 
 ROOT = REPO_ROOT
 PLAN = ROOT / "docs" / "plans" / "PLAN-bengal-chirpui-library-contract.md"
-CHIRP_THEME = ROOT / "docs" / "CHIRP-THEME.md"
+CHIRP_THEME = ROOT / "docs" / "theming" / "chirp-theme.md"
 
 
 def test_bengal_library_asset_modes_are_defined_as_platform_contract() -> None:
@@ -42,6 +42,6 @@ def test_bengal_library_asset_modes_define_fixture_matrix() -> None:
 def test_chirp_theme_docs_keep_current_css_loading_as_transitional() -> None:
     text = CHIRP_THEME.read_text(encoding="utf-8")
 
-    assert "current CSS loading contract is a transitional boundary" in text
-    assert "Bengal has first-class library asset modes" in text
-    assert "bundle`, `link`, and `none`" in text
+    assert "The current CSS loading contract uses Bengal library asset tags" in text
+    assert "library_asset_tags()" in text
+    assert "`assets/css/style.css` now contains only theme-owned tokens" in text

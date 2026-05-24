@@ -5,8 +5,8 @@ domain owns runnable showcases, static galleries, and integration patterns that
 teach the blessed way to compose Chirp UI.
 
 Related: root `AGENTS.md`, `docs/COMPONENT-OPTIONS.md`,
-`docs/COMPOSITION.md`, `docs/PRIMITIVES.md`, `docs/HTMX-PATTERNS.md`,
-`docs/UI-LAYERS.md`, `docs/AGENT-SOURCE-INVENTORY.md`,
+`docs/fundamentals/composition.md`, `docs/fundamentals/primitives.md`, `docs/components/htmx-patterns.md`,
+`docs/fundamentals/ui-layers.md`, `docs/agents/agent-source-inventory.md`,
 `src/chirp_ui/templates/AGENTS.md`.
 
 Cross-cutting concerns active here: agent grounding, security and escaping,
@@ -22,26 +22,26 @@ vocabulary, unsafe shortcuts, and stale macro usage.
 
 - **Examples use public contracts.** Demos must call real macros, params, slots,
   tokens, and HTMX/Alpine patterns. Evidence: `README.md:30`,
-  `docs/AGENT-SOURCE-INVENTORY.md:67`.
+  `docs/agents/agent-source-inventory.md:67`.
 - **Composition primitives come first.** Example layouts should prefer
   `stack()`, `cluster()`, `grid()`, `frame()`, and `block()` over utility-like
-  class strings. Evidence: `docs/PRIMITIVES.md:1`, `README.md:95`.
+  class strings. Evidence: `docs/fundamentals/primitives.md:1`, `README.md:95`.
 - **Candidate examples are not automatic snippets.** Showcase templates can
   inform agents only after explicit curation and runnable proof. Evidence:
-  `docs/AGENT-SOURCE-INVENTORY.md:26`.
+  `docs/agents/agent-source-inventory.md:26`.
 - **Static showcase is not source truth.** `examples/static-showcase/` and
   generated showcase output are visual surfaces, not public API sources.
-  Evidence: `docs/AGENT-SOURCE-INVENTORY.md:78`.
+  Evidence: `docs/agents/agent-source-inventory.md:78`.
 - **Showcase shell chrome is not copyable component guidance.** Base/index
   showcase wrappers are excluded from snippets. Evidence:
-  `docs/AGENT-SOURCE-INVENTORY.md:81`.
+  `docs/agents/agent-source-inventory.md:81`.
 - **Examples exercise meaningful states.** Non-default variants, empty/invalid
   states, HTMX fragments, accessible controls, and responsive pressure should be
   represented when relevant. Evidence: `tests/test_data_integration.py:674`,
   `tests/browser/test_catalog_shell_recipe.py:139`.
 - **Unsafe escape hatches stay explicit.** General examples must not normalize
   raw attrs, `attrs_unsafe`, inline scripts, or unescaped HTML. Evidence:
-  `docs/AGENT-SOURCE-INVENTORY.md:87`.
+  `docs/agents/agent-source-inventory.md:87`.
 - **Showcase assembly is generated.** Site showcase output is assembled by
   script, not hand-authored in `site/public/`. Evidence:
   `scripts/assemble-static-showcase.sh`, `pyproject.toml:233`.
@@ -60,7 +60,7 @@ When this domain changes, check:
 - `examples/design-system-gap-showcase/`, `examples/docs-theme-showcase/`,
   `examples/css-scope-prototype/` — stated purpose, public-safe content,
   theme/token boundaries, and no accidental API promotion.
-- `docs/AGENT-SOURCE-INVENTORY.md`, `docs/AGENT-CURATED-SNIPPETS.md`,
+- `docs/agents/agent-source-inventory.md`, `docs/agents/agent-curated-snippets.md`,
   `site/content/showcase/` — provenance and published bridge behavior.
 - Tests: example portions of `tests/test_template_css_contract.py`,
   `tests/test_data_integration.py`, `tests/test_component_showcase_legacy_helpers.py`,
@@ -95,8 +95,8 @@ When this domain changes, check:
 `tests/test_data_integration.py`, `tests/test_component_showcase_legacy_helpers.py`,
 browser route tests, showcase/site assembly checks.
 
-**Docs:** example entries in `docs/AGENT-SOURCE-INVENTORY.md`,
-`docs/AGENT-CURATED-SNIPPETS.md`, `site/content/showcase/`.
+**Docs:** example entries in `docs/agents/agent-source-inventory.md`,
+`docs/agents/agent-curated-snippets.md`, `site/content/showcase/`.
 
 **Agent artifacts:** none owned; consult
 `.claude/agents/agent-grounding-auditor.md` and

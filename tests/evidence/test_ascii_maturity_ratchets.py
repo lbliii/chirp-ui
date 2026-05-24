@@ -5,7 +5,7 @@ from tests.helpers import REPO_ROOT
 
 ROOT = REPO_ROOT
 PLAN = ROOT / "docs" / "plans" / "done" / "PLAN-ascii-maturity.md"
-PUBLIC_SURFACE = ROOT / "docs" / "PUBLIC-SURFACE-STABILIZATION.md"
+PUBLIC_SURFACE = ROOT / "docs" / "safety" / "public-surface-stabilization.md"
 
 
 def _ascii_maturity_components() -> list[str]:

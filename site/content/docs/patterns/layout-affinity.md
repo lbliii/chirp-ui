@@ -14,9 +14,9 @@ HTML attributes. It helps dense pages stay readable across screen sizes without
 turning Chirp UI into a utility-class vocabulary.
 
 Use the canonical repository guide for the full contract:
-[`docs/DESIGN-layout-affinity.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/DESIGN-layout-affinity.md?plain=1).
+[`docs/decisions/layout-affinity.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/decisions/layout-affinity.md?plain=1).
 For resolver authoring rules, see
-[`docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md?plain=1).
+[`docs/patterns/layout-affinity-resolver-authoring.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/patterns/layout-affinity-resolver-authoring.md?plain=1).
 For rollout status, see
 [`docs/plans/done/PLAN-layout-affinity-rollout.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/plans/done/PLAN-layout-affinity-rollout.md?plain=1).
 
@@ -33,13 +33,13 @@ This page is a published bridge. The repository docs remain the contract for
 the prototype vocabulary, parent-scoped resolver model, proof gates, and not-now
 promotion questions:
 
-- `docs/DESIGN-layout-affinity.md` owns the prototype contract.
-- `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md` owns maintainer rules for
+- `docs/decisions/layout-affinity.md` owns the prototype contract.
+- `docs/patterns/layout-affinity-resolver-authoring.md` owns maintainer rules for
   adding parent-scoped resolvers.
 - `docs/plans/done/PLAN-layout-affinity-rollout.md` owns rollout tasks and deferred
   manifest promotion.
-- `docs/SEARCH-SHELL-RECIPES.md` shows the search-shell consumer.
-- `docs/PRIMITIVES.md` keeps primitive composition guidance aligned.
+- `docs/patterns/search-shell-recipes.md` shows the search-shell consumer.
+- `docs/fundamentals/primitives.md` keeps primitive composition guidance aligned.
 
 Do not add a published-only layout-affinity API here. New descriptor fields,
 manifest facts, macro parameters, or emitted classes must ship through the
@@ -105,7 +105,7 @@ react to recipe-only layout intent.
 
 - Source values stay inside the documented vocabulary.
 - Resolver CSS is parent-scoped and avoids broad descendant selectors.
-- Authoring changes follow `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md`.
+- Authoring changes follow `docs/patterns/layout-affinity-resolver-authoring.md`.
 - Browser proof covers phone, tablet, and desktop widths with no horizontal
   overflow.
 - Published docs keep the prototype status visible before any code example.

@@ -1,4 +1,4 @@
-"""Parity between ``docs/PROVIDE-CONSUME-KEYS.md`` and the runtime registry.
+"""Parity between ``docs/components/provide-consume-keys.md`` and the runtime registry.
 
 Sprint 2.3 of the agent-grounding-depth epic: the docs table must be a
 *projection* of the manifest, not a parallel source. Drift in either
@@ -21,7 +21,7 @@ import re
 from chirp_ui.inspect import list_consumes, list_provides
 from tests.helpers import REPO_ROOT
 
-_DOC_PATH = REPO_ROOT / "docs" / "PROVIDE-CONSUME-KEYS.md"
+_DOC_PATH = REPO_ROOT / "docs" / "components" / "provide-consume-keys.md"
 
 # The Key column in the registry table: `| `_key_name` | ... | ... |`
 # Captures the underscore-prefixed identifier inside backticks.
@@ -53,7 +53,7 @@ def test_doc_lists_only_real_keys() -> None:
     live = _live_keys()
     rotted = sorted(documented - live)
     assert not rotted, (
-        f"docs/PROVIDE-CONSUME-KEYS.md lists keys not in any template: {rotted}\n"
+        f"docs/components/provide-consume-keys.md lists keys not in any template: {rotted}\n"
         f"either restore the provide/consume site or delete the row."
     )
 
@@ -68,7 +68,7 @@ def test_every_live_key_is_documented() -> None:
     live = _live_keys()
     undocumented = sorted(live - documented)
     assert not undocumented, (
-        f"context keys missing from docs/PROVIDE-CONSUME-KEYS.md: {undocumented}\n"
+        f"context keys missing from docs/components/provide-consume-keys.md: {undocumented}\n"
         f"add a row to the Key Registry table."
     )
 

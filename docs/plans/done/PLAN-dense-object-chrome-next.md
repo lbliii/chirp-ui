@@ -4,9 +4,9 @@ Status: shipped and archived
 Date: 2026-05-03
 Depends on:
 
-- [PLAN-navigation-density-study.md](done/PLAN-navigation-density-study.md)
+- [PLAN-navigation-density-study.md](PLAN-navigation-density-study.md)
 - [PLAN-navigation-contract-application.md](PLAN-navigation-contract-application.md)
-- [../NAVIGATION.md](../NAVIGATION.md)
+- [../NAVIGATION.md](../../patterns/navigation.md)
 
 Current note: the reusable dense object chrome pieces shipped and browser proof
 now covers the complete recipe. Composite-decision discipline and evidence from
@@ -149,7 +149,7 @@ Proof:
 
 Collateral:
 
-- `docs/NAVIGATION.md`,
+- `docs/patterns/navigation.md`,
 - `docs/COMPONENT-OPTIONS.md` if signatures change,
 - generated `src/chirp_ui/manifest.json` if descriptors change,
 - changelog fragment for public behavior.

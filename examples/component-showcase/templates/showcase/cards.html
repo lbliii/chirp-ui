@@ -109,7 +109,7 @@
 {% end %}
 
 <h2>Widget root (surface chrome + HTMX)</h2>
-<p class="chirpui-text-muted chirpui-font-sm">Pass <code>attrs_map={"id": "…"}</code> on <code>card</code>, <code>config_card</code>, or <code>metric_card</code> so the outer element is a stable <code>hx-target</code> without an extra wrapper <code>div</code>. See <code>docs/UI-LAYERS.md</code> (surface chrome).</p>
+<p class="chirpui-text-muted chirpui-font-sm">Pass <code>attrs_map={"id": "…"}</code> on <code>card</code>, <code>config_card</code>, or <code>metric_card</code> so the outer element is a stable <code>hx-target</code> without an extra wrapper <code>div</code>. See <code>docs/fundamentals/ui-layers.md</code> (surface chrome).</p>
 {% call grid(cols=2) %}
 {% call block() %}
 {% call card(title="Swappable panel", attrs_map={"id": "showcase-card-widget"}) %}

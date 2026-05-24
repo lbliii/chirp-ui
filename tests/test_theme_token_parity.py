@@ -3,8 +3,8 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP_THEME = ROOT / "docs" / "APP-THEME.md"
-TOKENS = ROOT / "docs" / "TOKENS.md"
+APP_THEME = ROOT / "docs" / "theming" / "app-theme.md"
+TOKENS = ROOT / "docs" / "fundamentals" / "tokens.md"
 SHOWCASE = ROOT / "examples" / "design-system-gap-showcase" / "index.html"
 
 

@@ -4,10 +4,10 @@ You keep Chirp UI reachable from Python. This domain owns the importable
 vocabulary that lets apps, tests, docs, and agents inspect components instead of
 guessing class strings.
 
-Related: root `AGENTS.md`, `docs/VISION.md`,
-`docs/DESIGN-manifest-signature-extraction.md`,
-`docs/DESIGN-css-registry-projection.md`,
-`docs/PROVIDE-CONSUME-KEYS.md`, `docs/HTMX-PATTERNS.md`, `CLAUDE.md`.
+Related: root `AGENTS.md`, `docs/strategy/vision.md`,
+`docs/decisions/manifest-signature-extraction.md`,
+`docs/decisions/css-registry-projection.md`,
+`docs/components/provide-consume-keys.md`, `docs/components/htmx-patterns.md`, `CLAUDE.md`.
 
 Cross-cutting concerns active here: agent grounding, security and escaping,
 free-threading and concurrency, release readiness.
@@ -59,7 +59,7 @@ parallel metadata, speculative schema, and API drift.
   `src/chirp_ui/theme_packs.py:43`.
 - **Layout affinity is not manifest API yet.** `layout_affinity.py` centralizes
   prototype values without projecting them into schema. Evidence:
-  `src/chirp_ui/layout_affinity.py:1`, `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md:8`.
+  `src/chirp_ui/layout_affinity.py:1`, `docs/patterns/layout-affinity-resolver-authoring.md:8`.
 
 ## Contract Checklist
 
@@ -79,8 +79,8 @@ When this domain changes, check:
   and concurrency assumptions.
 - `src/chirp_ui/tokens.py`, `theme_packs.py`, `icons.py` — token catalog,
   theme-pack metadata, icon names, package assets, and docs parity.
-- `docs/COMPONENT-OPTIONS.md`, `docs/APPEARANCE-TONE.md`,
-  `docs/PROVIDE-CONSUME-KEYS.md`, `site/content/docs/` — public guidance and
+- `docs/COMPONENT-OPTIONS.md`, `docs/components/appearance-tone.md`,
+  `docs/components/provide-consume-keys.md`, `site/content/docs/` — public guidance and
   generated projections.
 - `tests/test_manifest*.py`, `tests/test_registry_emits_parity.py`,
   `tests/test_public_api.py`, `tests/test_filters.py`,
@@ -110,9 +110,9 @@ When this domain changes, check:
 `tests/test_inspect_provides.py`, `tests/test_provide_consume*.py`,
 `tests/test_slot_parity.py`, `tests/docs_contracts/test_layout_affinity_docs.py`.
 
-**Docs:** `docs/VISION.md`, `docs/DESIGN-manifest-signature-extraction.md`,
-`docs/APPEARANCE-TONE.md`, `docs/PROVIDE-CONSUME-KEYS.md`,
-`docs/PUBLIC-SURFACE-STABILIZATION.md`.
+**Docs:** `docs/strategy/vision.md`, `docs/decisions/manifest-signature-extraction.md`,
+`docs/components/appearance-tone.md`, `docs/components/provide-consume-keys.md`,
+`docs/safety/public-surface-stabilization.md`.
 
 **Agent artifacts:** none owned; consult
 `.claude/agents/agent-grounding-auditor.md` and relevant DORI Chirp UI skills

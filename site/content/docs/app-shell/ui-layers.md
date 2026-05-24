@@ -69,7 +69,7 @@ navigation are both HTMX requests, but they have different owners.
 
 ## Related docs
 
-- Repo: **`docs/UI-LAYERS.md`** (duplicate reference for editors)
-- Repo: **`docs/SHELL-TABS-CONTRACT.md`** (route-tab and response-shape checklist)
-- **`docs/LAYOUT-OVERFLOW.md`** — keeping the main column stable
+- Repo: **`docs/fundamentals/ui-layers.md`** (duplicate reference for editors)
+- Repo: **`docs/components/shell-tabs-contract.md`** (route-tab and response-shape checklist)
+- **`docs/fundamentals/layout-overflow.md`** — keeping the main column stable
 - **`docs/COMPONENT-OPTIONS.md`** — components; distinguishes surface chrome from shell

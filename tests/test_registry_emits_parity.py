@@ -14,7 +14,7 @@ a test failure — the printout tells the author which side to fix:
   defines. Either add the CSS, or trim the descriptor.
 
 See ``docs/plans/PLAN-css-scope-and-layer.md § Sprint 4`` and
-``docs/DESIGN-css-registry-projection.md § Decision 4``.
+``docs/decisions/css-registry-projection.md § Decision 4``.
 """
 
 import re

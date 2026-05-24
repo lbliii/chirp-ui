@@ -21,4 +21,4 @@ component registry, macros, generated CSS, and manifest.
 
 The full rendered contract, selectors, browser-owned behavior, JavaScript
 exports, and proof locations live in the canonical source guide:
-[`docs/BENGAL-THEME-ANATOMY.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/BENGAL-THEME-ANATOMY.md?plain=1).
+[`docs/theming/bengal-theme-anatomy.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/theming/bengal-theme-anatomy.md?plain=1).

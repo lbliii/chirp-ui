@@ -10,11 +10,11 @@ enhancement.
 Depends on:
 
 - [../PLAN-application-chrome-system.md](../PLAN-application-chrome-system.md)
-- [../../HTMX-PATTERNS.md](../../HTMX-PATTERNS.md)
-- [../../RESPONSIVE.md](../../RESPONSIVE.md)
-- [../../LAYOUT.md](../../LAYOUT.md)
-- [../../DENSE-NAVIGATION-RECIPES.md](../../DENSE-NAVIGATION-RECIPES.md)
-- [../../PUBLIC-SURFACE-STABILIZATION.md](../../PUBLIC-SURFACE-STABILIZATION.md)
+- [../../HTMX-PATTERNS.md](../../components/htmx-patterns.md)
+- [../../RESPONSIVE.md](../../fundamentals/responsive.md)
+- [../../LAYOUT.md](../../fundamentals/layout.md)
+- [../../DENSE-NAVIGATION-RECIPES.md](../../patterns/dense-navigation-recipes.md)
+- [../../PUBLIC-SURFACE-STABILIZATION.md](../../safety/public-surface-stabilization.md)
 
 ## Goal
 
@@ -37,7 +37,7 @@ composition shapes.
   cards get quieter dense spacing, and catalog rails align headers without
   stretched side rails.
 - 2026-05-21: Started the layout-affinity rollout as a recipe-first prototype.
-  Added `docs/DESIGN-layout-affinity.md`, marked the catalog shell command
+  Added `docs/decisions/layout-affinity.md`, marked the catalog shell command
   surface with `data-chirpui-role` / `data-chirpui-pressure` /
   `data-chirpui-affinity`, and taught `command_bar` to resolve those signals
   without adding public macro params or registry fields.
@@ -95,7 +95,7 @@ Define the baseline rule for HTMX/Alpine recipes:
 
 Acceptance:
 
-- `docs/HTMX-PATTERNS.md` names the rule and shows a good and bad example.
+- `docs/components/htmx-patterns.md` names the rule and shows a good and bad example.
 - Catalog shell markup follows the contract for search, hints, reset, rails,
   version filters, topic filters, and empty states.
 - Render tests assert non-JS fallback paths exist.
@@ -108,7 +108,7 @@ Required proof:
 
 Collateral:
 
-- `docs/HTMX-PATTERNS.md`
+- `docs/components/htmx-patterns.md`
 - `examples/component-showcase/templates/showcase/catalog_shell.html`
 - `tests/test_data_integration.py`
 - Browser test fixture if the behavior moves beyond smoke coverage.
@@ -149,7 +149,7 @@ Required proof:
 
 Collateral:
 
-- `docs/HTMX-PATTERNS.md` or a new search-shell recipe doc.
+- `docs/components/htmx-patterns.md` or a new search-shell recipe doc.
 - `tests/test_data_integration.py`
 
 Not now:
@@ -182,8 +182,8 @@ Required proof:
 
 Collateral:
 
-- `docs/RESPONSIVE.md`
-- `docs/LAYOUT.md`
+- `docs/fundamentals/responsive.md`
+- `docs/fundamentals/layout.md`
 - `examples/component-showcase/templates/base.html`
 - `tests/test_responsive_contract.py`
 - `tests/browser/` coverage if promoted beyond showcase-local CSS.
@@ -224,7 +224,7 @@ Required proof:
 
 Collateral:
 
-- New `docs/SEARCH-SHELL-RECIPES.md` or a section in `docs/HTMX-PATTERNS.md`.
+- New `docs/patterns/search-shell-recipes.md` or a section in `docs/components/htmx-patterns.md`.
 - Showcase route and tests.
 - Published site page only after the recipe settles.
 
@@ -312,7 +312,7 @@ Required proof:
 Collateral:
 
 - Search-shell recipe docs.
-- `docs/RESPONSIVE.md` if a rail fallback rule is standardized.
+- `docs/fundamentals/responsive.md` if a rail fallback rule is standardized.
 
 Not now:
 
@@ -348,8 +348,8 @@ Required proof:
 
 Collateral:
 
-- `docs/HTMX-PATTERNS.md`
-- `docs/ALPINE-MAGICS.md` if behavior becomes named Alpine data.
+- `docs/components/htmx-patterns.md`
+- `docs/components/alpine-magics.md` if behavior becomes named Alpine data.
 - `src/chirp_ui/alpine.py` only if runtime metadata is added.
 
 Not now:
@@ -384,7 +384,7 @@ Required proof:
 Collateral:
 
 - Search-shell recipe docs.
-- Possibly `docs/NAVIGATION.md` if rail guidance generalizes.
+- Possibly `docs/patterns/navigation.md` if rail guidance generalizes.
 
 Not now:
 
@@ -419,8 +419,8 @@ Required proof:
 
 Collateral:
 
-- `docs/RESPONSIVE.md`
-- `docs/VERIFICATION.md`
+- `docs/fundamentals/responsive.md`
+- `docs/safety/verification.md`
 - `tests/browser/` helper or fixture.
 
 Not now:
@@ -454,7 +454,7 @@ Required proof:
 Collateral:
 
 - `examples/component-showcase/`
-- `docs/SEARCH-SHELL-RECIPES.md` or equivalent canonical recipe doc.
+- `docs/patterns/search-shell-recipes.md` or equivalent canonical recipe doc.
 - `site/content/` only when ready to publish.
 
 Not now:

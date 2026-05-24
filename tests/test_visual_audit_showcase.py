@@ -139,7 +139,9 @@ def test_visual_audit_showcase_keeps_theme_tokens_public() -> None:
 
 
 def test_visual_audit_docs_pin_application_chrome_rhythm_matrix() -> None:
-    text = (REPO_ROOT / "docs" / "VISUAL-AUDIT-SHOWCASE.md").read_text(encoding="utf-8")
+    text = (REPO_ROOT / "docs" / "patterns" / "visual-audit-showcase.md").read_text(
+        encoding="utf-8"
+    )
 
     assert "Use this rhythm matrix for application chrome slices" in text
     for surface in [

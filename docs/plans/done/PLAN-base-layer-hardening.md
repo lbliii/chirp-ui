@@ -67,7 +67,7 @@ chirpui.css:
   .chirpui-scroll-x,
   .chirpui-code-block       — overscroll-behavior: contain
 
-docs/LAYOUT.md              — append "Base defaults" subsection
+docs/fundamentals/layout.md              — append "Base defaults" subsection
 CLAUDE.md                   — Sprint 21–26 rows in sharp-edges table
 ```
 

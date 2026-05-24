@@ -27,4 +27,4 @@ controller. Item selection is dispatched through
 
 The full rendered contract, ARIA roles, focus behavior, keyboard behavior,
 HTMX link behavior, and proof locations live in the canonical source guide:
-[`docs/DROPDOWN-ANATOMY.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/DROPDOWN-ANATOMY.md?plain=1).
+[`docs/components/dropdown-anatomy.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/components/dropdown-anatomy.md?plain=1).

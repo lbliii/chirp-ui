@@ -126,7 +126,7 @@ The gap is a forum-site recipe layer:
     `conversation_item`, `timeline`, `notification_dot`, `counter_badge`,
     `message_thread`, `message_bubble`, and `empty_state`.
 
-Detailed recipes live in `docs/FORUM-SITE-PATTERNS.md`.
+Detailed recipes live in `docs/patterns/forum-site-patterns.md`.
 
 ---
 
@@ -138,8 +138,8 @@ Add forum-site recipes to docs without changing component APIs.
 
 | File | Action |
 |------|--------|
-| `docs/FORUM-SITE-PATTERNS.md` | Added recipe documentation for community homes, topic lists, threads, Q&A, votes/reactions, pinned posts, composers, moderation, member identity, and activity |
-| `docs/PRIMITIVES.md` | Added a short forum-site compositions pointer |
+| `docs/patterns/forum-site-patterns.md` | Added recipe documentation for community homes, topic lists, threads, Q&A, votes/reactions, pinned posts, composers, moderation, member identity, and activity |
+| `docs/fundamentals/primitives.md` | Added a short forum-site compositions pointer |
 | `docs/INDEX.md` | Indexed the recipe doc under Patterns |
 | `docs/plans/done/PLAN-forum-site-patterns-from-communities.md` | Archived after docs, fixtures, and browser proof shipped |
 
@@ -332,7 +332,7 @@ Full done criteria remain `uv run poe ci`.
 
 ## Open Questions
 
-- Should future forum recipes stay in `docs/FORUM-SITE-PATTERNS.md`, or should
+- Should future forum recipes stay in `docs/patterns/forum-site-patterns.md`, or should
   proven overlap move into a shared community/social pattern doc?
 - Is `topic_card` distinct enough from `resource_card` to justify promotion?
 - Should `vote_control` be generic community feedback, or forum-specific?

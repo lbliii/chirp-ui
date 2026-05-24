@@ -9,14 +9,14 @@
 > Current note: primitive docs, authoring hints, and legacy-helper decisions
 > have shipped. Forward pre-1.0 stabilization for public surface and helper
 > decisions lives in
-> [../PUBLIC-SURFACE-STABILIZATION.md](../PUBLIC-SURFACE-STABILIZATION.md) and
+> [../PUBLIC-SURFACE-STABILIZATION.md](../../safety/public-surface-stabilization.md) and
 > [PLAN-pre-1.0-productization-saga.md](../PLAN-pre-1.0-productization-saga.md).
 >
 > Public component promotion decisions are tracked in
-> [../PUBLIC-SURFACE-STABILIZATION.md](../PUBLIC-SURFACE-STABILIZATION.md);
+> [../PUBLIC-SURFACE-STABILIZATION.md](../../safety/public-surface-stabilization.md);
 > this plan remains focused on primitive and legacy-helper vocabulary.
 > First-party example cleanup shipped in
-> [done/PLAN-legacy-helper-cleanup-pre-1.0.md](done/PLAN-legacy-helper-cleanup-pre-1.0.md).
+> [done/PLAN-legacy-helper-cleanup-pre-1.0.md](PLAN-legacy-helper-cleanup-pre-1.0.md).
 > Current ratchet: manifest tests pin the compatibility helper set, and
 > `tests/docs_contracts/test_legacy_helper_docs.py` requires every legacy primitive to have a
 > human-readable keep/deprecate-later decision in this plan.
@@ -134,7 +134,7 @@ Progress:
 
 Tasks:
 
-- Add a guide section to `docs/COMPOSITION.md` or a new `docs/PRIMITIVES.md`.
+- Add a guide section to `docs/fundamentals/composition.md` or a new `docs/fundamentals/primitives.md`.
 - Show common recipes with `stack`, `cluster`, `grid`, `frame`, `block`, `actions`, and `prose`.
 - Prefer macro examples over raw class examples.
 - Cross-link from `LAYOUT.md`, `COMPOSITION.md`, and `COMPONENT-OPTIONS.md` intro text if needed.
@@ -146,8 +146,8 @@ Acceptance:
 
 Progress:
 
-- Added `docs/PRIMITIVES.md` with examples for stable macro primitives and CSS primitives.
-- Linked the guide from `docs/INDEX.md`, `docs/LAYOUT.md`, and `docs/COMPOSITION.md`.
+- Added `docs/fundamentals/primitives.md` with examples for stable macro primitives and CSS primitives.
+- Linked the guide from `docs/INDEX.md`, `docs/fundamentals/layout.md`, and `docs/fundamentals/composition.md`.
 
 ---
 
@@ -159,7 +159,7 @@ Tasks:
 
 - Add concise language to generated/reference docs: "Prefer composition primitives over legacy helpers."
 - Add an additive manifest `authoring` hint once docs prove the boundary: `preferred`, `available`, `compatibility`, or `internal`.
-- Update `docs/ANTI-FOOTGUNS.md` with the utility-helper boundary.
+- Update `docs/safety/anti-footguns.md` with the utility-helper boundary.
 
 Acceptance:
 
@@ -169,7 +169,7 @@ Acceptance:
 Progress:
 
 - Added primitive-first guidance to `docs/COMPONENT-OPTIONS.md`.
-- Added the utility-helper boundary to `docs/ANTI-FOOTGUNS.md`.
+- Added the utility-helper boundary to `docs/safety/anti-footguns.md`.
 - Added descriptor-backed `authoring` hints to the manifest and generated component reference.
 
 ---

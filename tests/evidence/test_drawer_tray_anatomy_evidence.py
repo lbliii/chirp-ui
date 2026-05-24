@@ -1,8 +1,8 @@
 from tests.helpers import REPO_ROOT
 
 ROOT = REPO_ROOT
-DOC = ROOT / "docs" / "DRAWER-TRAY-ANATOMY.md"
-DESIGN = ROOT / "docs" / "DESIGN-interactive-anatomy.md"
+DOC = ROOT / "docs" / "components" / "drawer-tray-anatomy.md"
+DESIGN = ROOT / "docs" / "decisions" / "interactive-anatomy.md"
 
 
 def _ledger() -> str:
@@ -13,7 +13,7 @@ def _ledger() -> str:
 def test_drawer_tray_anatomy_doc_applies_evidence_ledger() -> None:
     ledger = _ledger()
 
-    assert "[DESIGN-interactive-anatomy.md](DESIGN-interactive-anatomy.md)" in ledger
+    assert "[DESIGN-interactive-anatomy.md](../decisions/interactive-anatomy.md)" in ledger
     assert "docs/tests contract for the rendered drawer/tray family" in ledger
     assert "not descriptor or" in ledger
     assert "manifest metadata" in ledger

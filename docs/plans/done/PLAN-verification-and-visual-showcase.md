@@ -4,9 +4,9 @@ Status: complete
 Date: 2026-05-12
 Depends on:
 
-- [../ROADMAP-pre-1.0.md](../ROADMAP-pre-1.0.md)
-- [../VISUAL-AUDIT-SHOWCASE.md](../VISUAL-AUDIT-SHOWCASE.md)
-- [../DENSE-NAVIGATION-RECIPES.md](../DENSE-NAVIGATION-RECIPES.md)
+- [../ROADMAP-pre-1.0.md](../../strategy/roadmap-pre-1.0.md)
+- [../VISUAL-AUDIT-SHOWCASE.md](../../patterns/visual-audit-showcase.md)
+- [../DENSE-NAVIGATION-RECIPES.md](../../patterns/dense-navigation-recipes.md)
 
 ## Goal
 
@@ -18,9 +18,9 @@ this plan makes those qualities inspectable before 1.0.
 
 Shipped in this slice:
 
-- `docs/ROADMAP-pre-1.0.md` as the current gap-filling roadmap.
-- `docs/VISUAL-AUDIT-SHOWCASE.md` as the operating instructions for visual QA.
-- `docs/DENSE-NAVIGATION-RECIPES.md` as the focused dense navigation guide.
+- `docs/strategy/roadmap-pre-1.0.md` as the current gap-filling roadmap.
+- `docs/patterns/visual-audit-showcase.md` as the operating instructions for visual QA.
+- `docs/patterns/dense-navigation-recipes.md` as the focused dense navigation guide.
 - `examples/design-system-gap-showcase/index.html` as a static visual audit
   page with token explorer, interaction chrome, ASCII/TUI controls, proof
   patterns, and theme profile gallery.
@@ -29,7 +29,7 @@ Shipped in this slice:
   for the no-server visual audit page.
 - `uv run poe verify-generated` as the short generated-artifact verification
   task for CSS, manifest, and component reference docs.
-- `docs/VERIFICATION.md` as the locked-environment verification and Kida
+- `docs/safety/verification.md` as the locked-environment verification and Kida
   mismatch troubleshooting note.
 - Documentation index cleanup that moves shipped plans out of the active list.
 
