@@ -73,6 +73,8 @@ pairings, fixture routes, realistic state coverage, proof, and agent guidance.
 They are not public macros.
 
 - [README.md](screens/README.md) — Screen catalog overview, selection rule, and promotion boundary
+- [ARCHETYPE-MATRIX.md](screens/archetype-matrix.md) — Canonical screen archetype matrix for choosing complete product situations before components
+- [ENTRY-TEMPLATE.md](screens/entry-template.md) — Recipe-first screen entry template for planned targets and golden fixtures
 - [COMMAND-CENTER.md](screens/command-center.md) — Atlas operational dashboard fixture for metrics, queues, incidents, activity, and selected-object inspection
 - [REVIEW-QUEUE.md](screens/review-queue.md) — Sage review/triage fixture for filter rails, result collections, inspectors, and stateful records
 - [AGENT-RUN-MONITOR.md](screens/agent-run-monitor.md) — Signal-candidate live run fixture for timelines, streaming output, artifacts, retries, and selected-step inspection

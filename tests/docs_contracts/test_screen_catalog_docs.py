@@ -4,6 +4,7 @@ ROOT = REPO_ROOT
 SCREENS = ROOT / "docs" / "screens"
 PLAN = ROOT / "docs" / "plans" / "PLAN-visual-taste-floor-saga.md"
 SHOWCASE_APP = ROOT / "examples" / "component-showcase" / "app.py"
+INDEX = ROOT / "docs" / "INDEX.md"
 
 SCREEN_DOCS = {
     "command-center.md": {
@@ -43,6 +44,66 @@ def test_screen_catalog_indexes_all_golden_screens() -> None:
 
     assert "Screen entries are recipes, not public macros." in readme
     assert "Choose a screen archetype before choosing individual components." in readme
+    assert "[Screen Archetype Matrix](archetype-matrix.md)" in readme
+    assert "[Screen Entry Template](entry-template.md)" in readme
+
+
+def test_screen_archetype_matrix_names_canonical_product_situations() -> None:
+    matrix = (SCREENS / "archetype-matrix.md").read_text(encoding="utf-8")
+    index = INDEX.read_text(encoding="utf-8")
+
+    assert "Status: recipe catalog expansion" in matrix
+    assert "The matrix is recipe-only." in matrix
+    assert "screens/archetype-matrix.md" in index
+    assert "screens/entry-template.md" in index
+
+    for archetype in [
+        "`command-center`",
+        "`review-queue`",
+        "`agent-run-monitor`",
+        "`product-docs-home`",
+        "`settings-detail`",
+        "`data-index-detail`",
+        "`setup-flow`",
+        "`dashboard-overview`",
+    ]:
+        assert archetype in matrix
+
+    for phrase in [
+        "Choose the closest archetype and profile from the matrix.",
+        "planned recipe target",
+        "record the missing relationship as evidence",
+        "does not authorize",
+        "public screen macro",
+        "utility classes for spacing, layout, or text alignment",
+    ]:
+        assert phrase in matrix
+
+
+def test_screen_entry_template_preserves_recipe_first_contract() -> None:
+    template = (SCREENS / "entry-template.md").read_text(encoding="utf-8")
+
+    for heading in [
+        "## Use When",
+        "## Do Not Use When",
+        "## Composition Map",
+        "## Typography Role Map",
+        "## Data Shape",
+        "## Required States",
+        "## Agent Guidance",
+        "## Proof Checklist",
+        "## Extraction Candidates",
+    ]:
+        assert heading in template
+
+    for phrase in [
+        "planned recipe target | golden screen fixture",
+        "do not authorize public",
+        "docs/decisions/typography-role-matrix.md",
+        "data-screen-archetype",
+        "Stop and ask before adding public vocabulary",
+    ]:
+        assert phrase in template
 
 
 def test_screen_docs_pin_fixture_routes_profiles_and_proof() -> None:
@@ -118,9 +179,8 @@ def test_screen_catalog_does_not_authorize_public_screen_macros() -> None:
     readme = (SCREENS / "README.md").read_text(encoding="utf-8")
     assert "remain not-now" in readme
 
-    for path in sorted(SCREENS.glob("*.md")):
-        if path.name == "README.md":
-            continue
+    for filename in SCREEN_DOCS:
+        path = SCREENS / filename
         text = path.read_text(encoding="utf-8")
         normalized = " ".join(text.split())
         assert "Status: golden screen fixture" in text

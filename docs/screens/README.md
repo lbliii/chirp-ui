@@ -15,6 +15,15 @@ Typography guidance for these screens uses the recipe-only role matrix in
 `metric`, `object-title`, and `hero-display` describe screen intent; they are
 not public token names or utility classes.
 
+## Catalog Structure
+
+- [Screen Archetype Matrix](archetype-matrix.md) names the canonical product
+  situations agents should choose from before assembling components.
+- [Screen Entry Template](entry-template.md) defines the required shape for
+  planned recipe targets and fixture-backed golden screens.
+- Fixture-backed entries below are the current proof set; planned recipe
+  targets stay in the matrix until source templates and browser proof exist.
+
 ## Available Golden Screens
 
 | Screen | Profile | Fixture | Use When |
@@ -39,6 +48,9 @@ Choose a screen archetype before choosing individual components.
 - If the requested product situation does not match a catalog entry, start from
   the closest pattern doc and record the gap instead of inventing utility
   classes.
+- For settings, data index/detail, setup flow, and dashboard overview requests,
+  use the planned recipe targets in [Screen Archetype Matrix](archetype-matrix.md)
+  as the decision map, then compose from the nearest golden screen.
 
 ## Promotion Boundary
 
