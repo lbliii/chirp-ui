@@ -90,6 +90,8 @@ adds all of the following:
 | `example-derived` | `examples/component-showcase/templates/showcase/navigation.html` | Runnable navigation examples and dense navigation recipes. | `candidate-review` |
 | `example-derived` | `examples/component-showcase/templates/showcase/operations_shell.html` | Source fixture for the Command Center golden screen; informs screen-level guidance only through `docs/screens/command-center.md`. | `candidate-review` |
 | `example-derived` | `examples/component-showcase/templates/showcase/support_shell.html` | Source fixture for the Review Queue golden screen; informs screen-level guidance only through `docs/screens/review-queue.md`. | `candidate-review` |
+| `example-derived` | `examples/component-showcase/templates/showcase/screen_agent_run_monitor.html` | Source fixture for the Agent Run Monitor golden screen; informs screen-level guidance only through `docs/screens/agent-run-monitor.md`. | `candidate-review` |
+| `example-derived` | `examples/component-showcase/templates/showcase/screen_product_docs_home.html` | Source fixture for the Product/Docs Home golden screen; informs screen-level guidance only through `docs/screens/product-docs-home.md`. | `candidate-review` |
 
 ## Snippet Exclusions
 

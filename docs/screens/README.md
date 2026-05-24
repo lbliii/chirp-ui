@@ -16,6 +16,8 @@ component APIs, manifest fields, theme-pack metadata, or utility classes.
 |---|---|---|---|
 | [Command Center](command-center.md) | `atlas` | `/screen-command-center` | Operational dashboards need metrics, queues, incident state, activity, and selected-object inspection. |
 | [Review Queue](review-queue.md) | `sage` | `/screen-review-queue` | Triage/review tools need filters, a result collection, selected-object inspector, and state-rich items. |
+| [Agent Run Monitor](agent-run-monitor.md) | `signal` candidate | `/screen-agent-run-monitor` | Agent, automation, build, import, or evaluation jobs need live state, artifacts, logs, and retry context. |
+| [Product/Docs Home](product-docs-home.md) | `ember` | `/screen-product-docs-home` | Product and docs entry pages need identity, proof, lifecycle explanation, entry points, and CTA. |
 
 ## Agent Selection Rule
 
@@ -25,6 +27,10 @@ Choose a screen archetype before choosing individual components.
   monitoring, and executive/operator dashboards.
 - Use **Review Queue** for moderation, approval, support triage, inbox review,
   search results with selected detail, and queue-based work.
+- Use **Agent Run Monitor** for live agent traces, automation runs, evaluation
+  jobs, imports, builds, deploys, and recovery workflows.
+- Use **Product/Docs Home** for product pages, docs homes, library homepages,
+  launch pages, and internal platform entry pages.
 - If the requested product situation does not match a catalog entry, start from
   the closest pattern doc and record the gap instead of inventing utility
   classes.
