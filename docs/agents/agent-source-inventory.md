@@ -63,7 +63,7 @@ adds all of the following:
 | `docs-derived` | `docs/agents/agent-source-map.md` | Generated-output ownership map and source-input map. | `source-only` |
 | `docs-derived` | `docs/agents/agent-curated-snippets.md` | Hand-curated macro-first snippets that passed the review gate. | `copyable-curated` |
 | `docs-derived` | `docs/agents/registry-discovery.md` | CLI and Python discovery workflows over manifest labels and component metadata. | `source-only` |
-| `docs-derived` | `docs/screens/` | Screen archetype selection, profile pairing, fixture proof, and agent guidance for complete product situations. | `source-only` |
+| `docs-derived` | `docs/screens/` | Screen archetype selection, profile pairing, fixture proof, promotion-ledger boundaries, and agent guidance for complete product situations. | `source-only` |
 | `docs-derived` | `docs/reference-implementations/playbook.md` | Reference implementation evidence ladder, scenario-complete criteria, and promotion boundaries. | `source-only` |
 | `docs-derived` | `docs/reference-implementations/README.md` | Index of reference implementation briefs for blocked promotion candidates. | `source-only` |
 | `docs-derived` | `docs/reference-implementations/PROOF-ANALYSIS.md` | Source-only proof-analysis decisions for scenario-complete reference fixtures and public-API non-authorizations. | `source-only` |
