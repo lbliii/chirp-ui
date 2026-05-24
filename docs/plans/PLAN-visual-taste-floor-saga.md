@@ -479,7 +479,8 @@ Exit criteria:
 Deliverables:
 
 - Inventory of existing components, primitives, patterns, profiles, and
-  examples against the taxonomy.
+  examples against the taxonomy in
+  `docs/decisions/composition-taxonomy-inventory.md`.
 - Gap list for the first four golden screens.
 - Explicit not-now list for tempting API shortcuts.
 

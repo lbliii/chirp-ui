@@ -121,6 +121,7 @@ for shipped behavior.
 - [DESIGN-manifest-signature-extraction.md](decisions/manifest-signature-extraction.md) — Manifest signature-extraction RFC
 - [DESIGN-appearance-tone.md](decisions/appearance-tone.md) — Descriptor-backed appearance and tone vocabulary
 - [DESIGN-theme-pack-catalog.md](decisions/theme-pack-catalog.md) — Token-only curated theme pack catalog
+- [DESIGN-composition-taxonomy-inventory.md](decisions/composition-taxonomy-inventory.md) — Taste-floor taxonomy inventory and golden-screen readiness map
 - [DESIGN-llm-endpoints.md](decisions/llm-endpoints.md) — Generated LLM and agent-facing site artifacts
 - [DESIGN-interactive-anatomy.md](decisions/interactive-anatomy.md) — Executable anatomy contracts for interactive components
 - [DESIGN-layout-affinity.md](decisions/layout-affinity.md) — Proposed role/pressure/affinity contract for self-composing primitives and agentic developers
