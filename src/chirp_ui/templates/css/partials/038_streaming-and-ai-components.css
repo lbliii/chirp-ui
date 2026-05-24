@@ -5,6 +5,8 @@
 .chirpui-streaming-block {
     min-height: 2rem;
     position: relative;
+    font-family: var(--chirpui-prose-font-family);
+    font-size: var(--chirpui-font-sm);
     line-height: var(--chirpui-line-height-relaxed);
     white-space: normal;
     overflow-wrap: anywhere;
@@ -86,12 +88,16 @@
 .chirpui-model-card__header {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--chirpui-spacing-sm);
+    min-inline-size: 0;
 }
 
 .chirpui-model-card__title {
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    line-height: var(--chirpui-line-height-tight);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-model-card__badge {
@@ -102,14 +108,19 @@
     background: var(--chirpui-bg-subtle);
     border-radius: var(--chirpui-radius-sm);
     color: var(--chirpui-text-muted);
+    line-height: var(--chirpui-line-height-tight);
+    font-variant-numeric: tabular-nums;
 }
 
 .chirpui-model-card__body {
     min-height: 3rem;
+    line-height: var(--chirpui-line-height-normal);
 }
 
 .chirpui-model-card__footer {
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
+    font-variant-numeric: tabular-nums;
     color: var(--chirpui-text-muted);
 }
 
@@ -157,6 +168,8 @@
     align-items: center;
     gap: var(--chirpui-spacing-xs);
     font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
 

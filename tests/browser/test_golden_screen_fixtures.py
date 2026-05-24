@@ -365,3 +365,89 @@ async def test_golden_screen_typography_roles_have_browser_proof(
         }"""
     )
     assert _px(log_styles["lineHeight"]) > _px(log_styles["fontSize"])
+
+
+async def test_component_taste_defaults_render_in_golden_screens(
+    showcase_page,
+    showcase_base_url: str,
+) -> None:
+    await showcase_page.set_viewport_size({"width": 1280, "height": 900})
+    await showcase_page.goto(
+        showcase_base_url + "/screen-command-center?q=queues&area=compute&status=warning"
+    )
+    await wait_for_alpine(showcase_page)
+
+    card_styles = await showcase_page.locator(".ops-shell-workload-card").first.evaluate(
+        """el => {
+            const title = getComputedStyle(el.querySelector(".chirpui-card__title"));
+            const body = getComputedStyle(el.querySelector(".chirpui-card__body"));
+            const footer = getComputedStyle(
+                el.querySelector(".chirpui-card__footer, .chirpui-card__footer-wrap")
+            );
+            const hints = getComputedStyle(document.querySelector(".ops-shell-hints"));
+            return {
+                titleWeight: title.fontWeight,
+                titleLineHeight: title.lineHeight,
+                bodySize: body.fontSize,
+                bodyLineHeight: body.lineHeight,
+                footerNumeric: footer.fontVariantNumeric,
+                footerLineHeight: footer.lineHeight,
+                hintsLineHeight: hints.lineHeight
+            };
+        }"""
+    )
+    assert int(card_styles["titleWeight"]) >= 600
+    assert _px(card_styles["titleLineHeight"]) > 0
+    assert _px(card_styles["bodyLineHeight"]) > _px(card_styles["bodySize"])
+    assert "tabular-nums" in card_styles["footerNumeric"]
+    assert _px(card_styles["footerLineHeight"]) > 0
+    assert _px(card_styles["hintsLineHeight"]) > 0
+
+    await showcase_page.goto(showcase_base_url + "/screen-agent-run-monitor")
+    await wait_for_alpine(showcase_page)
+
+    timeline_styles = await showcase_page.locator(".chirpui-timeline__content").first.evaluate(
+        """el => {
+            const title = getComputedStyle(el.querySelector(".chirpui-timeline__title"));
+            const date = getComputedStyle(el.querySelector(".chirpui-timeline__date"));
+            const body = getComputedStyle(el.querySelector(".chirpui-timeline__body"));
+            const sse = getComputedStyle(document.querySelector(".chirpui-sse-status"));
+            return {
+                titleWeight: title.fontWeight,
+                dateNumeric: date.fontVariantNumeric,
+                bodySize: body.fontSize,
+                bodyLineHeight: body.lineHeight,
+                sseWeight: sse.fontWeight,
+                sseLineHeight: sse.lineHeight
+            };
+        }"""
+    )
+    assert int(timeline_styles["titleWeight"]) >= 600
+    assert "tabular-nums" in timeline_styles["dateNumeric"]
+    assert _px(timeline_styles["bodyLineHeight"]) > _px(timeline_styles["bodySize"])
+    assert int(timeline_styles["sseWeight"]) >= 500
+    assert _px(timeline_styles["sseLineHeight"]) > 0
+
+    await showcase_page.goto(
+        showcase_base_url + "/screen-review-queue?q=no-matching-ticket&queue=priority"
+    )
+    await wait_for_alpine(showcase_page)
+
+    empty_styles = await showcase_page.locator(".chirpui-empty-state").evaluate(
+        """el => {
+            const title = getComputedStyle(el.querySelector(".chirpui-empty-state__title"));
+            const body = getComputedStyle(el.querySelector(".chirpui-empty-state__body"));
+            const bodyRect = el.querySelector(".chirpui-empty-state__body").getBoundingClientRect();
+            return {
+                titleSize: title.fontSize,
+                titleLineHeight: title.lineHeight,
+                bodySize: body.fontSize,
+                bodyLineHeight: body.lineHeight,
+                bodyWidth: bodyRect.width,
+                viewportWidth: window.innerWidth
+            };
+        }"""
+    )
+    assert _px(empty_styles["titleLineHeight"]) > 0
+    assert _px(empty_styles["bodyLineHeight"]) > _px(empty_styles["bodySize"])
+    assert empty_styles["bodyWidth"] <= empty_styles["viewportWidth"]

@@ -73,6 +73,9 @@ def test_visual_taste_plan_tracks_typography_next_phase() -> None:
         "Stop and ask before changing public token defaults",
         "Run the typography and rhythm audit before promoting visual patterns.",
         "The typography and rhythm implementation pass is complete",
+        "The first component taste pass now applies the role/rhythm lessons",
+        "existing tokens only",
+        "Draft a public token promotion proposal only after repeated component",
         "Defer public typography role tokens until repeated screen workarounds justify",
         "Typography roles are screen-proven before becoming public token vocabulary.",
     ]:
@@ -234,3 +237,72 @@ def test_typography_polish_does_not_reference_removed_display_tokens() -> None:
     ]:
         text = path.read_text(encoding="utf-8")
         assert "--chirpui-display-sm" not in text
+
+
+def test_component_taste_pass_uses_existing_role_tokens() -> None:
+    partials = {
+        name: (ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / filename).read_text(
+            encoding="utf-8"
+        )
+        for name, filename in {
+            "action_bar": "013_action-bar.css",
+            "action_containers": "014_action-containers.css",
+            "description_list": "032_description-list.css",
+            "settings_row": "033_settings-row.css",
+            "timeline": "035_timeline.css",
+            "streaming": "038_streaming-and-ai-components.css",
+            "card": "045_card.css",
+            "table": "059_table.css",
+            "alert": "061_alert.css",
+            "form": "070_form-fields.css",
+            "button": "071_button.css",
+            "badge": "072_badge.css",
+            "empty": "078_empty-state.css",
+        }.items()
+    }
+
+    for name, text in partials.items():
+        assert "--chirpui-component-role" not in text, name
+        assert "--chirpui-type-role" not in text, name
+
+    for signal in [
+        "font-variant-numeric: tabular-nums;",
+        "line-height: var(--chirpui-line-height-tight);",
+    ]:
+        assert signal in partials["action_bar"]
+
+    assert "font-family: var(--chirpui-ui-font-family);" in partials["action_containers"]
+    assert "color: var(--chirpui-text-muted);" in partials["action_containers"]
+
+    assert "line-height: var(--chirpui-line-height-normal);" in partials["card"]
+    assert "font-variant-numeric: tabular-nums;" in partials["card"]
+    assert "overflow-wrap: anywhere;" in partials["card"]
+
+    assert ".chirpui-timeline__date" in partials["timeline"]
+    assert "font-variant-numeric: tabular-nums;" in partials["timeline"]
+    assert ".chirpui-timeline__body" in partials["timeline"]
+
+    assert ".chirpui-table__td--number" in partials["table"]
+    assert "font-size: var(--chirpui-font-sm);" in partials["table"]
+
+    assert ".chirpui-dl__detail--number" in partials["description_list"]
+    assert "font-variant-numeric: tabular-nums;" in partials["description_list"]
+
+    assert ".chirpui-settings-row__status" in partials["settings_row"]
+    assert "font-variant-numeric: tabular-nums;" in partials["settings_row"]
+
+    assert ".chirpui-streaming-block" in partials["streaming"]
+    assert "font-size: var(--chirpui-font-sm);" in partials["streaming"]
+    assert ".chirpui-sse-status" in partials["streaming"]
+
+    assert ".chirpui-field__error" in partials["form"]
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["form"]
+
+    assert ".chirpui-badge" in partials["badge"]
+    assert "font-variant-numeric: tabular-nums;" in partials["badge"]
+
+    assert ".chirpui-empty-state__body" in partials["empty"]
+    assert "max-inline-size: var(--chirpui-measure-sm);" in partials["empty"]
+
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["button"]
+    assert "font-size: var(--chirpui-font-sm);" in partials["alert"]

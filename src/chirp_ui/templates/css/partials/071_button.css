@@ -17,8 +17,8 @@ a.chirpui-btn {
     min-block-size: var(--chirpui-control-block-size);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     font-size: var(--chirpui-font-sm);
-    font-weight: 500;
-    line-height: 1.25;
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     text-decoration: none;
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius);

@@ -28,6 +28,7 @@
     align-items: center;
     gap: var(--chirpui-space-control-gap);
     width: 100%;
+    font-family: var(--chirpui-ui-font-family);
 }
 
 .chirpui-action-strip__inner > * {
@@ -134,6 +135,9 @@
 
 .chirpui-filter-bar .chirpui-field__label {
     margin-block-end: var(--chirpui-spacing-2xs);
+    font-size: var(--chirpui-font-xs);
+    line-height: var(--chirpui-line-height-tight);
+    color: var(--chirpui-text-muted);
 }
 
 .chirpui-filter-bar .chirpui-action-strip__actions {
@@ -221,6 +225,9 @@
     gap: var(--chirpui-spacing-xs);
     min-inline-size: 0;
     max-inline-size: 100%;
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
 }
 
 :where(.chirpui-command-bar, .chirpui-filter-bar)

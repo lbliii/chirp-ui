@@ -531,6 +531,10 @@ Proof:
   matrix, screen entry template, and promotion ledger under `docs/screens/`.
   These expand the catalog beyond the first four golden fixtures without
   authorizing public screen macros or new token/profile vocabulary.
+- The first component taste pass now applies the role/rhythm lessons to
+  shipped component defaults with existing tokens only: card, action bar,
+  command/filter bars, description list, settings row, timeline, streaming
+  surfaces, table, alert, form fields, button, badge, and empty state CSS.
 
 Remaining work:
 
@@ -538,6 +542,9 @@ Remaining work:
   dashboard-overview fixtures from the archetype matrix before promoting
   screen-pattern vocabulary.
 - Extract only repeated semantic patterns after that independent usage pass.
+- Draft a public token promotion proposal only after repeated component
+  workarounds prove that existing font, rhythm, measure, state, or data tokens
+  are not enough.
 - Decide whether `signal` graduates from candidate profile to packaged
   token-only theme pack.
 - Mirror stable screen catalog guidance into the published site after source

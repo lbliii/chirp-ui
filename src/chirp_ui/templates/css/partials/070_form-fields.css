@@ -98,8 +98,10 @@
 .chirpui-field__label {
     display: block;
     margin-bottom: var(--chirpui-spacing-xs);
-    font-weight: 500;
+    font-weight: var(--chirpui-ui-font-weight-medium);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
+    color: var(--chirpui-text);
 }
 
 .chirpui-field__label--inline {
@@ -134,6 +136,7 @@
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-sm);
     font: inherit;
+    line-height: var(--chirpui-line-height-normal);
     background: var(--chirpui-surface);
     color: var(--chirpui-text);
     transition: border-color var(--chirpui-transition), box-shadow var(--chirpui-transition);
@@ -235,6 +238,7 @@ select.chirpui-field__input:not([multiple]):disabled {
     display: block;
     margin-top: var(--chirpui-spacing-xs);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     color: var(--chirpui-text-muted);
 }
 
@@ -246,6 +250,8 @@ select.chirpui-field__input:not([multiple]):disabled {
     display: block;
     margin-top: var(--chirpui-spacing-xs);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
+    font-weight: var(--chirpui-ui-font-weight-medium);
     color: var(--chirpui-error);
 }
 

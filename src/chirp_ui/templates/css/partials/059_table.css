@@ -27,6 +27,8 @@
     width: 100%;
     min-width: 100%;
     border-collapse: collapse;
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     overflow-wrap: anywhere;
 }
 
@@ -81,6 +83,7 @@
 .chirpui-table__th {
     font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
 
@@ -131,6 +134,13 @@
 .chirpui-table__td--center { text-align: center; }
 .chirpui-table__th--right,
 .chirpui-table__td--right { text-align: right; }
+
+.chirpui-table__td--number,
+.chirpui-table__th--number,
+.chirpui-table__td--right,
+.chirpui-table__th--right {
+    font-variant-numeric: tabular-nums;
+}
 
 @media (max-width: 40rem) {
     .chirpui-table {
