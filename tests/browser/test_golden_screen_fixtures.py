@@ -451,3 +451,38 @@ async def test_component_taste_defaults_render_in_golden_screens(
     assert _px(empty_styles["titleLineHeight"]) > 0
     assert _px(empty_styles["bodyLineHeight"]) > _px(empty_styles["bodySize"])
     assert empty_styles["bodyWidth"] <= empty_styles["viewportWidth"]
+
+
+async def test_second_sweep_component_defaults_render_in_golden_screens(
+    showcase_page,
+    showcase_base_url: str,
+) -> None:
+    await showcase_page.set_viewport_size({"width": 1280, "height": 900})
+    await showcase_page.goto(showcase_base_url + "/screen-agent-run-monitor")
+    await wait_for_alpine(showcase_page)
+
+    panel_styles = await showcase_page.locator(".chirpui-panel").first.evaluate(
+        """el => {
+            const title = getComputedStyle(el.querySelector(".chirpui-panel__title"));
+            const body = getComputedStyle(el.querySelector(".chirpui-panel__body"));
+            const progressLabel = getComputedStyle(
+                document.querySelector(".chirpui-progress-bar__label")
+            );
+            return {
+                titleWeight: title.fontWeight,
+                titleLineHeight: title.lineHeight,
+                bodySize: body.fontSize,
+                bodyLineHeight: body.lineHeight,
+                progressWeight: progressLabel.fontWeight,
+                progressNumeric: progressLabel.fontVariantNumeric,
+                progressLineHeight: progressLabel.lineHeight
+            };
+        }"""
+    )
+
+    assert int(panel_styles["titleWeight"]) >= 600
+    assert _px(panel_styles["titleLineHeight"]) > 0
+    assert _px(panel_styles["bodyLineHeight"]) > _px(panel_styles["bodySize"])
+    assert int(panel_styles["progressWeight"]) >= 500
+    assert "tabular-nums" in panel_styles["progressNumeric"]
+    assert _px(panel_styles["progressLineHeight"]) > 0

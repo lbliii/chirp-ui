@@ -535,6 +535,10 @@ Proof:
   shipped component defaults with existing tokens only: card, action bar,
   command/filter bars, description list, settings row, timeline, streaming
   surfaces, table, alert, form fields, button, badge, and empty state CSS.
+- A second component taste sweep extends the same existing-token treatment to
+  panel, callout, modal, tabs, collapse, dropdown, toast, pagination, progress,
+  status indicator, and command palette defaults without adding public
+  vocabulary.
 
 Remaining work:
 

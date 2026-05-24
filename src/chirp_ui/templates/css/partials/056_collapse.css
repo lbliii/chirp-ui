@@ -14,6 +14,8 @@
     list-style: none;
     padding: var(--chirpui-spacing) var(--chirpui-spacing-md);
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
     display: flex;
     align-items: center;
     gap: var(--chirpui-spacing-xs);
@@ -21,6 +23,8 @@
 
 .chirpui-collapse__trigger-text {
     flex: 1;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-collapse__trigger-actions:empty {
@@ -61,9 +65,10 @@
     padding: var(--chirpui-spacing) var(--chirpui-spacing-md);
     border-top: 1px solid var(--chirpui-border);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-collapse[open] .chirpui-collapse__content {
     animation: chirpui-accordion-content-in var(--chirpui-transition-slow) var(--chirpui-ease-spring);
 }
-

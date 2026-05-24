@@ -70,7 +70,9 @@
             flex: 1 1 auto;
             min-width: 0;
             margin-block: 0;
-            font-size: 1.125rem;
+            font-size: var(--chirpui-font-lg);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+            line-height: var(--chirpui-line-height-tight);
             overflow-wrap: anywhere;
         }
 
@@ -114,6 +116,8 @@
             padding: var(--chirpui-spacing);
             color: inherit;
             min-width: 0;
+            font-size: var(--chirpui-font-sm);
+            line-height: var(--chirpui-line-height-normal);
             overflow-wrap: anywhere;
             & code {
                 color: inherit;
@@ -139,6 +143,10 @@
             flex-wrap: wrap;
             padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
             border-top: 1px solid var(--chirpui-border);
+            color: var(--chirpui-text-muted);
+            font-size: var(--chirpui-font-sm);
+            line-height: var(--chirpui-line-height-normal);
+            font-variant-numeric: tabular-nums;
             overflow-wrap: anywhere;
             &:empty {
                 display: none;

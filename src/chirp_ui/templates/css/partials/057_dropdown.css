@@ -34,6 +34,8 @@
     background: var(--chirpui-surface);
     box-shadow: var(--chirpui-elevation-floating);
     padding: var(--chirpui-spacing-xs) 0;
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
 }
 
 .chirpui-dropdown[data-align-x="end"] .chirpui-dropdown__menu {
@@ -60,6 +62,8 @@
     border: none;
     cursor: pointer;
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-dropdown__menu a:hover,
@@ -209,6 +213,8 @@
     border-radius: var(--chirpui-radius-sm);
     box-shadow: var(--chirpui-elevation-floating);
     z-index: var(--chirpui-z-popover);
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -258,6 +264,8 @@
     background: none;
     border: none;
     font: inherit;
+    line-height: var(--chirpui-line-height-normal);
+    overflow-wrap: anywhere;
     cursor: pointer;
     border-radius: var(--chirpui-radius-sm);
 }
@@ -310,6 +318,9 @@
     border-radius: var(--chirpui-radius-sm);
     box-shadow: var(--chirpui-elevation-overlay);
     z-index: var(--chirpui-z-popover);
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
+    overflow-wrap: anywhere;
 }
 
 /* Tag input */
@@ -320,6 +331,9 @@
 .chirpui-tag-input__label {
     display: block;
     margin-bottom: var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
 }
 
 .chirpui-tag-input__chips {
@@ -340,7 +354,8 @@
     font-size: var(--chirpui-font-sm);
     font-family: var(--chirpui-ui-font-family);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    line-height: 1.4;
+    line-height: var(--chirpui-line-height-tight);
+    font-variant-numeric: tabular-nums;
     transition: background var(--chirpui-transition), border-color var(--chirpui-transition),
         color var(--chirpui-transition), box-shadow var(--chirpui-transition);
 }
@@ -771,7 +786,7 @@ a.chirpui-tag:active {
 }
 
 .chirpui-calendar__day-num {
-    font-weight: 500;
+    font-weight: var(--chirpui-ui-font-weight-medium);
 }
 
 .chirpui-calendar__event {

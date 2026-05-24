@@ -23,6 +23,7 @@
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-lg);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    font-family: var(--chirpui-ui-font-family);
     overflow: clip;
 }
 
@@ -33,6 +34,7 @@
     border-bottom: 1px solid var(--chirpui-border);
     background: transparent;
     font-size: var(--chirpui-font-lg);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text);
     outline: none;
     font-family: inherit;
@@ -57,6 +59,7 @@
     font-weight: var(--chirpui-ui-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg);
 }
@@ -66,7 +69,9 @@
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg);
     color: var(--chirpui-text);
     text-decoration: none;
+    line-height: var(--chirpui-line-height-normal);
     transition: background var(--chirpui-transition);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-command-palette__item:hover {
@@ -79,11 +84,13 @@
 }
 
 .chirpui-command-palette__item-label {
-    font-weight: 500;
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
 }
 
 .chirpui-command-palette__item-hint {
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     color: var(--chirpui-text-muted);
 }
 
@@ -97,6 +104,8 @@
     background: transparent;
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     cursor: pointer;
     transition: color var(--chirpui-transition), border-color var(--chirpui-transition);
     font-family: inherit;
@@ -135,4 +144,6 @@
     border-radius: var(--chirpui-radius-xs, 3px);
     background: var(--chirpui-bg-subtle);
     border: 1px solid var(--chirpui-border);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
 }

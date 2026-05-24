@@ -15,13 +15,15 @@
 
 .chirpui-toast {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+    gap: var(--chirpui-spacing-sm);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-sm);
     background: var(--chirpui-surface);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     box-shadow: var(--chirpui-shadow-md);
     transition: opacity var(--chirpui-transition), transform var(--chirpui-transition);
     @starting-style {
@@ -38,6 +40,7 @@
 .chirpui-toast__message {
     flex: 1;
     min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-toast__close {
@@ -55,4 +58,3 @@
     outline: var(--chirpui-state-focus-outline);
     outline-offset: var(--chirpui-state-focus-offset);
 }
-

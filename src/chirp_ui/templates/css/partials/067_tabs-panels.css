@@ -16,8 +16,12 @@
     border-bottom: 2px solid transparent;
     color: var(--chirpui-text-muted);
     font: inherit;
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     cursor: pointer;
     margin-bottom: -1px;
+    overflow-wrap: anywhere;
 }
 .chirpui-tabs__tab:hover {
     color: var(--chirpui-text);
@@ -26,8 +30,8 @@
 .chirpui-tabs__tab[aria-selected="true"] {
     color: var(--chirpui-accent);
     border-bottom-color: var(--chirpui-accent);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
 }
 .chirpui-tab-panel[hidden] {
     display: none;
 }
-

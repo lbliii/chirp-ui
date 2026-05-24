@@ -35,6 +35,7 @@
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-base);
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    line-height: var(--chirpui-line-height-tight);
     overflow-wrap: anywhere;
 }
 
@@ -42,6 +43,7 @@
     margin-block: 0;
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-ui-sm);
+    line-height: var(--chirpui-line-height-normal);
     overflow-wrap: anywhere;
 }
 
@@ -63,6 +65,8 @@
 .chirpui-panel__body {
     padding: var(--chirpui-panel-body-padding);
     min-height: 0;
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     overflow-wrap: anywhere;
 }
 
@@ -87,6 +91,10 @@
     gap: var(--chirpui-space-control-gap);
     padding: var(--chirpui-panel-footer-padding);
     border-top: 1px solid var(--chirpui-border-subtle);
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
+    font-variant-numeric: tabular-nums;
     overflow-wrap: anywhere;
 }
 

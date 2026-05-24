@@ -75,6 +75,8 @@ def test_visual_taste_plan_tracks_typography_next_phase() -> None:
         "The typography and rhythm implementation pass is complete",
         "The first component taste pass now applies the role/rhythm lessons",
         "existing tokens only",
+        "A second component taste sweep extends the same existing-token treatment",
+        "panel, callout, modal, tabs, collapse, dropdown, toast, pagination",
         "Draft a public token promotion proposal only after repeated component",
         "Defer public typography role tokens until repeated screen workarounds justify",
         "Typography roles are screen-proven before becoming public token vocabulary.",
@@ -306,3 +308,61 @@ def test_component_taste_pass_uses_existing_role_tokens() -> None:
 
     assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["button"]
     assert "font-size: var(--chirpui-font-sm);" in partials["alert"]
+
+
+def test_second_component_taste_sweep_uses_existing_tokens() -> None:
+    partials = {
+        name: (ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / filename).read_text(
+            encoding="utf-8"
+        )
+        for name, filename in {
+            "panel": "005_workbench.css",
+            "callout": "041_callout.css",
+            "modal": "052_modal.css",
+            "tabs": "054_tabs.css",
+            "collapse": "056_collapse.css",
+            "dropdown": "057_dropdown.css",
+            "toast": "058_toast.css",
+            "pagination": "060_pagination.css",
+            "tabs_panels": "067_tabs-panels.css",
+            "progress": "079_progress-bar.css",
+            "status": "082_status-indicator.css",
+            "command_palette": "085_command-palette.css",
+        }.items()
+    }
+
+    for name, text in partials.items():
+        assert "--chirpui-component-role" not in text, name
+        assert "--chirpui-type-role" not in text, name
+        assert "font-weight: 500;" not in text, name
+
+    for name in ["panel", "callout", "modal", "collapse", "dropdown", "toast"]:
+        assert "line-height: var(--chirpui-line-height-normal);" in partials[name]
+
+    for name in [
+        "panel",
+        "modal",
+        "dropdown",
+        "pagination",
+        "progress",
+        "status",
+        "command_palette",
+    ]:
+        assert "font-variant-numeric: tabular-nums;" in partials[name]
+
+    assert ".chirpui-panel__title" in partials["panel"]
+    assert "line-height: var(--chirpui-line-height-tight);" in partials["panel"]
+    assert ".chirpui-modal__title" in partials["modal"]
+    assert "font-size: var(--chirpui-font-lg);" in partials["modal"]
+
+    assert ".chirpui-tab" in partials["tabs"]
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["tabs"]
+    assert ".chirpui-tabs__tab--active" in partials["tabs_panels"]
+    assert "font-weight: var(--chirpui-ui-font-weight-semibold);" in partials["tabs_panels"]
+
+    assert ".chirpui-command-palette__inner" in partials["command_palette"]
+    assert "font-family: var(--chirpui-ui-font-family);" in partials["command_palette"]
+    assert ".chirpui-command-palette__item-label" in partials["command_palette"]
+
+    assert ".chirpui-status-indicator__label" in partials["status"]
+    assert "overflow-wrap: anywhere;" in partials["status"]
