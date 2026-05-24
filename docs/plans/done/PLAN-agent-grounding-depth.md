@@ -5,12 +5,12 @@
 **Target**: pre-1.0
 **Estimated Effort**: 30–48h (Sprint 0–6)
 **Dependencies**: None (builds on shipped `chirpui-manifest@1`)
-**Source**: Vibe-coding readiness evaluation — see conversation 2026-04-20 and `docs/VISION.md § Agent-groundable manifest`
+**Source**: Vibe-coding readiness evaluation — see conversation 2026-04-20 and `docs/strategy/vision.md § Agent-groundable manifest`
 
 > Current note: the manifest API, package data, generated docs, `find` CLI,
 > and plan triage largely shipped after this epic was drafted. Keep this file
 > for historical manifest-depth context only. Use
-> [ROADMAP-pre-1.0.md](../ROADMAP-pre-1.0.md) and
+> [ROADMAP-pre-1.0.md](../../strategy/roadmap-pre-1.0.md) and
 > [PLAN-pre-1.0-productization-saga.md](../PLAN-pre-1.0-productization-saga.md)
 > for current sequencing.
 
@@ -18,7 +18,7 @@
 
 ## Why This Matters
 
-The manifest is the one bet (`docs/VISION.md`). Today it grounds the **CSS class surface** but not the **macro Python API**, so coding agents that "ground in the manifest" still have to grep templates to call a macro — re-introducing the hallucination risk the registry was built to eliminate.
+The manifest is the one bet (`docs/strategy/vision.md`). Today it grounds the **CSS class surface** but not the **macro Python API**, so coding agents that "ground in the manifest" still have to grep templates to call a macro — re-introducing the hallucination risk the registry was built to eliminate.
 
 1. **Manifest descriptors lack call signatures.** `metric_card` has 11 parameters in the macro definition (`value, label, icon, trend, trend_direction, hint, href, icon_bg, footer_label, footer_href, attrs_*`); the manifest entry exposes `slots: []`, `variants: []`, no `params` field. An agent reading the manifest cannot construct a valid call.
 2. **Historical: 64/309 components were signature-opaque from the manifest** — they had a `template` but neither slots nor variants nor params. The `category=auto` descriptor debt has since been cleared: CSS-only descriptors now carry explicit categories and maturity, with descriptor-local `extra_emits` / `trim_emits`.
@@ -154,7 +154,7 @@ Choose between:
 
 Decision criteria: free-threading-safe (rules out anything GIL-gated), zero new runtime deps, must handle multi-line `{% def %}` bodies and default values containing `,` (e.g. `attrs_map=none`).
 
-**Acceptance**: One-page RFC committed at `docs/DESIGN-manifest-signature-extraction.md` naming the chosen strategy, with a worked example for `btn` and `metric_card` showing the extracted shape.
+**Acceptance**: One-page RFC committed at `docs/decisions/manifest-signature-extraction.md` naming the chosen strategy, with a worked example for `btn` and `metric_card` showing the extracted shape.
 
 ### Task 0.2 — Lock in the schema bump (`@1` → `@2`)
 
@@ -229,9 +229,9 @@ Parse the existing `{# @provides _key — consumed by: ... #}` and `{# @consumes
 - `m["components"]["btn"]["consumes"]` includes `_bar_density`, `_suspense_busy`.
 - 24/195 currently-annotated templates surface their keys without manual descriptor edits.
 
-### Task 2.3 — Update `docs/PROVIDE-CONSUME-KEYS.md` to be a projection
+### Task 2.3 — Update `docs/components/provide-consume-keys.md` to be a projection
 
-Add a CI gate: keys in the manifest must match keys in `docs/PROVIDE-CONSUME-KEYS.md`. Drift fails CI, just like `test_template_css_contract.py`.
+Add a CI gate: keys in the manifest must match keys in `docs/components/provide-consume-keys.md`. Drift fails CI, just like `test_template_css_contract.py`.
 
 **Files**: `tests/docs_contracts/test_provide_consume_doc_parity.py` (new).
 **Acceptance**: Test fails when a documented key disappears from the manifest, or when a manifest key is undocumented.
@@ -395,10 +395,10 @@ python -m chirp_ui find --category=feedback
 
 ## Relationship to Existing Work
 
-- **`docs/VISION.md § Agent-groundable manifest`** — prerequisite vision; this epic is the first concrete delivery against the "registry as one bet" thesis beyond CSS class coverage.
+- **`docs/strategy/vision.md § Agent-groundable manifest`** — prerequisite vision; this epic is the first concrete delivery against the "registry as one bet" thesis beyond CSS class coverage.
 - **`docs/plans/PLAN-css-scope-and-layer.md`** — parallel; CSS is the *other* projection of the registry. This epic projects the *Python API*; together they make the registry a complete source of truth.
 - **`docs/plans/done/PLAN-descriptor-coverage.md`** — prerequisite-ish; descriptor coverage is now explicit enough that `category=auto` is a regression, enforced by manifest tests. The two epics can interleave: this one consumes whatever descriptors exist, drift is enforced by parity tests.
-- **`docs/PROVIDE-CONSUME-KEYS.md`** — Sprint 2 task 2.3 makes this doc a projection rather than a hand-authored register.
+- **`docs/components/provide-consume-keys.md`** — Sprint 2 task 2.3 makes this doc a projection rather than a hand-authored register.
 - **`AGENTS.md`** — Sprint 4 task 4.3 amends it. The escape-hatch and done-criteria sections are load-bearing for agents using the new contract.
 
 ---

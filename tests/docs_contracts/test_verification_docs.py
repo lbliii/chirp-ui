@@ -3,7 +3,7 @@ import tomllib
 from tests.helpers import REPO_ROOT
 
 PYPROJECT = REPO_ROOT / "pyproject.toml"
-DOC = REPO_ROOT / "docs" / "VERIFICATION.md"
+DOC = REPO_ROOT / "docs" / "safety" / "verification.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
 
 
@@ -90,4 +90,4 @@ def test_verification_doc_routes_browser_sensitive_proof() -> None:
 
 
 def test_verification_doc_is_indexed() -> None:
-    assert "[VERIFICATION.md](VERIFICATION.md)" in INDEX.read_text(encoding="utf-8")
+    assert "[VERIFICATION.md](safety/verification.md)" in INDEX.read_text(encoding="utf-8")

@@ -1,7 +1,7 @@
 from tests.helpers import REPO_ROOT
 
 ROOT = REPO_ROOT
-PLAYBOOK = ROOT / "docs" / "REFERENCE-IMPLEMENTATION-PLAYBOOK.md"
+PLAYBOOK = ROOT / "docs" / "reference-implementations" / "playbook.md"
 INDEX = ROOT / "docs" / "INDEX.md"
 REFERENCE_INDEX = ROOT / "docs" / "reference-implementations" / "README.md"
 PROOF_ANALYSIS = ROOT / "docs" / "reference-implementations" / "PROOF-ANALYSIS.md"
@@ -62,7 +62,7 @@ def test_reference_implementation_playbook_names_priority_candidates() -> None:
 def test_reference_implementation_playbook_is_indexed() -> None:
     text = INDEX.read_text(encoding="utf-8")
 
-    assert "[REFERENCE-IMPLEMENTATION-PLAYBOOK.md](REFERENCE-IMPLEMENTATION-PLAYBOOK.md)" in text
+    assert "[REFERENCE-IMPLEMENTATION-PLAYBOOK.md](reference-implementations/playbook.md)" in text
     assert "[reference-implementations/README.md](reference-implementations/README.md)" in text
     assert (
         "[reference-implementations/PROOF-ANALYSIS.md](reference-implementations/PROOF-ANALYSIS.md)"
@@ -175,9 +175,9 @@ def test_reference_recipe_guidance_covers_agent_discovery() -> None:
         "`python -m chirp_ui find --details`",
         "`python -m chirp_ui find --role=pattern --details`",
         "`python -m chirp_ui find --maturity=experimental --details`",
-        "`docs/REGISTRY-DISCOVERY.md`",
-        "`docs/AGENT-SOURCE-INVENTORY.md`",
-        "`docs/AGENT-SOURCE-MAP.md`",
+        "`docs/agents/registry-discovery.md`",
+        "`docs/agents/agent-source-inventory.md`",
+        "`docs/agents/agent-source-map.md`",
         "`docs/COMPONENT-OPTIONS.md`",
     ]:
         assert surface in section
@@ -431,8 +431,8 @@ def test_reference_proof_analysis_records_agent_discovery_decision() -> None:
 
     for proof in [
         "tests/test_find_cli.py",
-        "docs/AGENT-SOURCE-INVENTORY.md",
-        "docs/AGENT-SOURCE-MAP.md",
+        "docs/agents/agent-source-inventory.md",
+        "docs/agents/agent-source-map.md",
         "`python -m chirp_ui find --details`",
         "`python -m chirp_ui find --role=pattern --details`",
         "`build_manifest()`",
@@ -826,9 +826,9 @@ def test_agent_discovery_reference_brief_keeps_manifest_schema_closed() -> None:
         "`python -m chirp_ui find --maturity=experimental --details`",
         "`python -m chirp_ui find --role=pattern --details`",
         "`build_manifest()`",
-        "`docs/AGENT-SOURCE-INVENTORY.md`",
-        "`docs/AGENT-SOURCE-MAP.md`",
-        "`docs/REGISTRY-DISCOVERY.md`",
+        "`docs/agents/agent-source-inventory.md`",
+        "`docs/agents/agent-source-map.md`",
+        "`docs/agents/registry-discovery.md`",
         "`docs/COMPONENT-OPTIONS.md`",
     ]:
         assert surface in text

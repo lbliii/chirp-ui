@@ -7,7 +7,7 @@ a discoverable macro surfaces ``params`` (positional order, ``has_default`` /
 composite slot-forwarding metadata.
 
 See ``docs/plans/done/PLAN-agent-grounding-depth.md § Sprint 1`` and
-``docs/DESIGN-manifest-signature-extraction.md``.
+``docs/decisions/manifest-signature-extraction.md``.
 """
 
 from __future__ import annotations

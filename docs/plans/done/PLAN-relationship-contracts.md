@@ -5,7 +5,7 @@ Date: 2026-05-21
 
 ## Status Block
 
-- Reference contract: [RELATIONSHIP-CONTRACTS.md](../../RELATIONSHIP-CONTRACTS.md)
+- Reference contract: [RELATIONSHIP-CONTRACTS.md](../../fundamentals/relationship-contracts.md)
 - No new public macro parameters.
 - No manifest schema change.
 - CSS changes must stay owner-scoped and token-based.

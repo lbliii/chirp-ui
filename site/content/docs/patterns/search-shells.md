@@ -14,11 +14,11 @@ counts, and dense result cards. They remain recipe-first until repeated real
 applications prove a stable public macro surface.
 
 Use the canonical repository guide for the full contract:
-[`docs/SEARCH-SHELL-RECIPES.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/SEARCH-SHELL-RECIPES.md?plain=1).
+[`docs/patterns/search-shell-recipes.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/patterns/search-shell-recipes.md?plain=1).
 For HTMX target-boundary guidance, see
-[`docs/HTMX-PATTERNS.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/HTMX-PATTERNS.md?plain=1).
+[`docs/components/htmx-patterns.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/components/htmx-patterns.md?plain=1).
 For responsive proof expectations, see
-[`docs/RESPONSIVE.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/RESPONSIVE.md?plain=1).
+[`docs/fundamentals/responsive.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/fundamentals/responsive.md?plain=1).
 For the prototype parent-scoped layout-affinity attributes used by command
 surfaces, see [Layout Affinity](../layout-affinity/).
 
@@ -28,12 +28,12 @@ This page is a published bridge. The repository docs remain the contract for
 progressive enhancement, scoped count semantics, responsive command surfaces,
 facet rails, and browser proof:
 
-- `docs/SEARCH-SHELL-RECIPES.md` owns the recipe contract.
-- `docs/HTMX-PATTERNS.md` owns HTMX enhancement and target-boundary rules.
-- `docs/RESPONSIVE.md` owns stress-width behavior.
-- `docs/DESIGN-layout-affinity.md` owns the prototype parent-scoped layout
+- `docs/patterns/search-shell-recipes.md` owns the recipe contract.
+- `docs/components/htmx-patterns.md` owns HTMX enhancement and target-boundary rules.
+- `docs/fundamentals/responsive.md` owns stress-width behavior.
+- `docs/decisions/layout-affinity.md` owns the prototype parent-scoped layout
   intent vocabulary used by command surfaces.
-- `docs/VERIFICATION.md` owns required proof for search shells.
+- `docs/safety/verification.md` owns required proof for search shells.
 - `docs/plans/done/PLAN-search-shell-contracts.md` owns active not-now promotion
   questions.
 

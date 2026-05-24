@@ -61,7 +61,7 @@ CLI
 ``python -m chirp_ui.manifest --json`` writes JSON to stdout.
 
 See ``docs/plans/done/PLAN-agent-grounding-depth.md`` and
-``docs/DESIGN-manifest-signature-extraction.md``.
+``docs/decisions/manifest-signature-extraction.md``.
 """
 
 import argparse

@@ -106,9 +106,9 @@ Decide the streaming_bubble state enum: `content | thinking | error`. Map each t
 
 ### Task 0.2 — Define provide/consume keys
 
-Finalize 3 keys (`_streaming_role`, `_sse_state`, `_suspense_busy`). Validate that names don't collide with existing keys in `docs/PROVIDE-CONSUME-KEYS.md`.
+Finalize 3 keys (`_streaming_role`, `_sse_state`, `_suspense_busy`). Validate that names don't collide with existing keys in `docs/components/provide-consume-keys.md`.
 
-**Acceptance**: Keys added to PROVIDE-CONSUME-KEYS.md; `rg '_streaming_role\|_sse_state\|_suspense_busy' docs/PROVIDE-CONSUME-KEYS.md` returns 3 hits.
+**Acceptance**: Keys added to PROVIDE-CONSUME-KEYS.md; `rg '_streaming_role\|_sse_state\|_suspense_busy' docs/components/provide-consume-keys.md` returns 3 hits.
 
 ### Task 0.3 — Inventory forward CSS gaps
 
@@ -239,8 +239,8 @@ Expand streaming/SSE/suspense sections with: new state variants, provide/consume
 
 Add the 3 new keys with descriptions and usage examples.
 
-**Files**: `docs/PROVIDE-CONSUME-KEYS.md`
-**Acceptance**: `rg '_streaming_role\|_sse_state\|_suspense_busy' docs/PROVIDE-CONSUME-KEYS.md` returns 3 hits.
+**Files**: `docs/components/provide-consume-keys.md`
+**Acceptance**: `rg '_streaming_role\|_sse_state\|_suspense_busy' docs/components/provide-consume-keys.md` returns 3 hits.
 
 ### Task 4.3 — Add showcase coverage
 
@@ -327,7 +327,7 @@ Streaming states are phases (`content`, `thinking`, `error`). Orthogonal by desi
 
 ### 0.2 — Provide/Consume Key Design
 
-All 3 proposed keys validated against `docs/PROVIDE-CONSUME-KEYS.md` — no collisions.
+All 3 proposed keys validated against `docs/components/provide-consume-keys.md` — no collisions.
 
 | Key | Type | Default | Provider | Consumer(s) | Rationale |
 |-----|------|---------|----------|-------------|-----------|

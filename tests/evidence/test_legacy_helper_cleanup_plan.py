@@ -2,7 +2,7 @@ from tests.helpers import REPO_ROOT
 
 PLAN = REPO_ROOT / "docs" / "plans" / "done" / "PLAN-legacy-helper-cleanup-pre-1.0.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
-ROADMAP = REPO_ROOT / "docs" / "ROADMAP-pre-1.0.md"
+ROADMAP = REPO_ROOT / "docs" / "strategy" / "roadmap-pre-1.0.md"
 PRIMITIVE_PLAN = REPO_ROOT / "docs" / "plans" / "done" / "PLAN-primitive-vocabulary-hardening.md"
 
 

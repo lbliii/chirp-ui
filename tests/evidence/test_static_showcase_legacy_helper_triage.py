@@ -4,7 +4,7 @@ from collections import Counter
 from tests.helpers import REPO_ROOT
 
 STATIC_SHOWCASE = REPO_ROOT / "examples" / "static-showcase" / "index.html"
-DOC = REPO_ROOT / "docs" / "STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md"
+DOC = REPO_ROOT / "docs" / "safety" / "static-showcase-legacy-helper-triage.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
 
 LEGACY_HELPER_RE = re.compile(

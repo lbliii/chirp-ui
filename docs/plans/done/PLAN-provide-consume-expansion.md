@@ -100,12 +100,12 @@ Every consuming component:
 
 ### Task 0.1 — Finalize context key registry
 
-Document all keys in a `docs/PROVIDE-CONSUME-KEYS.md` reference:
+Document all keys in a `docs/components/provide-consume-keys.md` reference:
 - Key name, provider(s), consumer(s), type, default
 - Naming rule: `_<scope>_<property>` (e.g., `_surface_variant`, `_card_variant`)
 - Rule: keys are underscore-prefixed to signal "internal chirp-ui context, not user data"
 
-**Acceptance**: `docs/PROVIDE-CONSUME-KEYS.md` exists with all keys from Target Architecture section.
+**Acceptance**: `docs/components/provide-consume-keys.md` exists with all keys from Target Architecture section.
 
 ### Task 0.2 — Define test pattern
 
@@ -274,7 +274,7 @@ Test all three modes for sidebar and navbar links.
 
 **Goal**: Document the full provide/consume system and update showcase examples.
 
-### Task 5.1 — Write `docs/PROVIDE-CONSUME-KEYS.md`
+### Task 5.1 — Write `docs/components/provide-consume-keys.md`
 
 Full reference of all context keys with examples.
 
@@ -290,7 +290,7 @@ Add examples showing nested composition with automatic context flow.
 
 Add provide/consume expansion to key conventions.
 
-**Acceptance**: `docs/PROVIDE-CONSUME-KEYS.md` exists. COMPONENT-OPTIONS.md references it.
+**Acceptance**: `docs/components/provide-consume-keys.md` exists. COMPONENT-OPTIONS.md references it.
 
 ---
 

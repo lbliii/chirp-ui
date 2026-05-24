@@ -1,10 +1,10 @@
 from tests.helpers import REPO_ROOT
 
 ROOT = REPO_ROOT
-DOC = ROOT / "docs" / "REGISTRY-DISCOVERY.md"
+DOC = ROOT / "docs" / "agents" / "registry-discovery.md"
 INDEX = ROOT / "docs" / "INDEX.md"
-INVENTORY = ROOT / "docs" / "AGENT-SOURCE-INVENTORY.md"
-SOURCE_MAP = ROOT / "docs" / "AGENT-SOURCE-MAP.md"
+INVENTORY = ROOT / "docs" / "agents" / "agent-source-inventory.md"
+SOURCE_MAP = ROOT / "docs" / "agents" / "agent-source-map.md"
 
 
 def test_registry_discovery_doc_covers_cli_audits_and_boundaries() -> None:
@@ -41,19 +41,19 @@ def test_registry_discovery_doc_covers_python_helpers_and_labels() -> None:
         "`role`",
         "`category`",
         "Do not infer `recipe-only` from a name alone.",
-        "[PUBLIC-SURFACE-STABILIZATION.md](PUBLIC-SURFACE-STABILIZATION.md)",
-        "[DESIGN-interactive-anatomy.md](DESIGN-interactive-anatomy.md)",
+        "[PUBLIC-SURFACE-STABILIZATION.md](../safety/public-surface-stabilization.md)",
+        "[DESIGN-interactive-anatomy.md](../decisions/interactive-anatomy.md)",
     ]:
         assert required in text
 
 
 def test_registry_discovery_doc_is_indexed_and_agent_sourced() -> None:
-    link = "[REGISTRY-DISCOVERY.md](REGISTRY-DISCOVERY.md)"
+    link = "[REGISTRY-DISCOVERY.md](agents/registry-discovery.md)"
 
     assert link in INDEX.read_text(encoding="utf-8")
-    assert "| `docs-derived` | `docs/REGISTRY-DISCOVERY.md` |" in INVENTORY.read_text(
+    assert "| `docs-derived` | `docs/agents/registry-discovery.md` |" in INVENTORY.read_text(
         encoding="utf-8"
     )
-    assert "| `docs/REGISTRY-DISCOVERY.md` | `docs-derived` |" in SOURCE_MAP.read_text(
+    assert "| `docs/agents/registry-discovery.md` | `docs-derived` |" in SOURCE_MAP.read_text(
         encoding="utf-8"
     )

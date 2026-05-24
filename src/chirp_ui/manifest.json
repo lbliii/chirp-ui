@@ -4169,7 +4169,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/fundamentals/layout-grids-and-frames.md.",
       "elements": [],
       "emits": [
         "chirpui-block",
@@ -5934,7 +5934,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/fundamentals/layout-grids-and-frames.md.",
       "elements": [],
       "emits": [
         "chirpui-cluster",
@@ -6868,7 +6868,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/fundamentals/layout-grids-and-frames.md.",
       "elements": [],
       "emits": [
         "chirpui-container"
@@ -9966,7 +9966,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/fundamentals/layout-grids-and-frames.md.",
       "elements": [],
       "emits": [
         "chirpui-frame",
@@ -10318,7 +10318,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/fundamentals/layout-grids-and-frames.md.",
       "elements": [],
       "emits": [
         "chirpui-grid",
@@ -11749,7 +11749,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/fundamentals/layout-grids-and-frames.md.",
       "elements": [],
       "emits": [
         "chirpui-layer",
@@ -14287,7 +14287,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/fundamentals/layout-grids-and-frames.md.",
       "elements": [
         "actions",
         "breadcrumbs",
@@ -16960,7 +16960,7 @@
         "surface"
       ],
       "consumes": [],
-      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/fundamentals/layout-grids-and-frames.md.",
       "elements": [
         "summary"
       ],
@@ -17025,7 +17025,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/fundamentals/layout-grids-and-frames.md.",
       "elements": [
         "actions",
         "icon",
@@ -18991,7 +18991,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/LAYOUT-GRIDS-AND-FRAMES.md.",
+      "description": "Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.\n    grid() = repeat(auto-fit, …) for wrapping siblings. frame() = explicit columns (hero, sidebar, …).\n    See docs/fundamentals/layout-grids-and-frames.md.",
       "elements": [],
       "emits": [
         "chirpui-stack",

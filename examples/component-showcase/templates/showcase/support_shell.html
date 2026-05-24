@@ -14,9 +14,11 @@
 
 {% call container(cls="support-shell-page") %}
 {% call stack() %}
-{{ page_header("Support queue shell", subtitle="Second layout-affinity payoff experiment for a high-density customer operations workspace.") }}
+{{ page_header(support_screen_title | default("Support queue shell"), subtitle=support_screen_subtitle | default("Second layout-affinity payoff experiment for a high-density customer operations workspace.")) }}
 
 <div id="support-shell-surface" class="support-shell-surface"
+     data-screen-archetype="{{ support_screen_archetype | default("support-queue") }}"
+     data-screen-profile="{{ support_screen_profile | default("sage") }}"
      x-data="{ pending: false }"
      x-bind:class="{ 'is-pending': pending }"
      x-on:htmx:before-request.window="if ($event.target.closest && $event.target.closest('#support-shell-surface')) pending = true"
@@ -24,11 +26,11 @@
      x-on:htmx:response-error.window="pending = false">
 
 {% call command_bar(surface_variant="default", density="sm", wrap="wrap", aria_label="Support queue command controls", cls="support-shell-command-bar") %}
-  <form id="support-shell-controls" class="support-shell-search" action="/support-shell" method="get"
+  <form id="support-shell-controls" class="support-shell-search" action="{{ support_route }}" method="get"
         data-chirpui-role="search"
         data-chirpui-pressure="flex"
         data-chirpui-affinity="fill"
-        hx-get="/support-shell"
+        hx-get="{{ support_route }}"
         hx-trigger="submit"
         hx-target="#support-shell-surface"
         hx-select="#support-shell-surface"
@@ -43,7 +45,7 @@
            value="{{ support_query }}" placeholder="Search customers, tickets, owners, tags..."
            autocomplete="off"
            x-ref="supportQuery"
-           hx-get="/support-shell"
+           hx-get="{{ support_route }}"
            hx-trigger="input changed delay:120ms, search"
            hx-target="#support-shell-frame"
            hx-select="#support-shell-frame"
@@ -77,9 +79,9 @@
   </div>
 {% end %}
 
-{% call filter_bar("/support-shell", attrs_map={
+{% call filter_bar(support_route, attrs_map={
     "id": "support-shell-filter-form",
-    "hx-get": "/support-shell",
+    "hx-get": support_route,
     "hx-trigger": "change delay:80ms from:select",
     "hx-target": "#support-shell-surface",
     "hx-select": "#support-shell-surface",

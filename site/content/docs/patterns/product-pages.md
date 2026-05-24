@@ -13,7 +13,7 @@ Product pages should be composed from named primitives and registry-backed
 components, not page-specific utility classes.
 
 Use the canonical repository guide for the full recipe set:
-[`docs/PRODUCT-PAGE-PATTERNS.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/PRODUCT-PAGE-PATTERNS.md?plain=1).
+[`docs/patterns/product-page-patterns.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/patterns/product-page-patterns.md?plain=1).
 
 ## Use This When
 

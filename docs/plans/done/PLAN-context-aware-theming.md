@@ -212,14 +212,14 @@ If Sprint 0 design review shows meaningful contrast improvement, add consume to 
 
 `label_overline.html` is typographic only — consuming surface/card variant would be a CSS no-op. Remove it from the consumer columns in the key registry.
 
-**Files**: `docs/PROVIDE-CONSUME-KEYS.md`
-**Acceptance**: `rg 'label_overline' docs/PROVIDE-CONSUME-KEYS.md` returns zero hits in consumer columns (may still appear in other docs as a non-consumer example).
+**Files**: `docs/components/provide-consume-keys.md`
+**Acceptance**: `rg 'label_overline' docs/components/provide-consume-keys.md` returns zero hits in consumer columns (may still appear in other docs as a non-consumer example).
 
 ### Task 3.3 — Update KEYS.md with new consumers
 
 Add timeline, callout, status_indicator, settings_row_list to the consumer columns.
 
-**Files**: `docs/PROVIDE-CONSUME-KEYS.md`
+**Files**: `docs/components/provide-consume-keys.md`
 **Acceptance**: All new consumers appear in the registry.
 
 ---

@@ -149,7 +149,7 @@ docs/:                   INDEX.md created; layout docs consolidated
 - `form_attrs` / `form_attrs_unsafe` naming used in config_dashboard and search_header (domain-prefixed variant)
 - Updated test_init.py, test_install.py, conftest.py to register `deprecate_param` filter
 - Added 3 filter unit tests (`TestDeprecateParam`) + 2 component integration tests (card `attrs_unsafe`, card `attrs` legacy)
-- Updated `docs/ANTI-FOOTGUNS.md` with `attrs_unsafe` vs `attrs_map` safety guide and OWASP link
+- Updated `docs/safety/anti-footguns.md` with `attrs_unsafe` vs `attrs_map` safety guide and OWASP link
 
 ### Task 15.1 — Rename `attrs` → `attrs_unsafe` in macro signatures
 
@@ -169,14 +169,14 @@ docs/:                   INDEX.md created; layout docs consolidated
 
 ### Task 15.2 — Document the attrs safety model
 
-**Files:** `docs/ANTI-FOOTGUNS.md`
+**Files:** `docs/safety/anti-footguns.md`
 - Add section: "attrs_unsafe vs attrs_map — choosing the right escape hatch"
 - Explain when raw attrs are acceptable (static strings, framework-generated markup)
 - Explain when attrs_map is required (any user-controlled data)
 - Link to OWASP XSS prevention cheat sheet
 
 **Acceptance:**
-- `rg 'attrs_unsafe.*attrs_map' docs/ANTI-FOOTGUNS.md` returns hits
+- `rg 'attrs_unsafe.*attrs_map' docs/safety/anti-footguns.md` returns hits
 - Section includes concrete examples of safe and unsafe usage
 
 ---
@@ -190,8 +190,8 @@ docs/:                   INDEX.md created; layout docs consolidated
 - `icon_btn.html`: Added `hx={}` usage example and note to docstring
 - `forms.html`: Added `hx={}` usage example and auto-behavior note to docstring
 - `button.html`: Already had `hx={}` example (confirmed)
-- Created `docs/HTMX-PATTERNS.md`: comprehensive guide covering `hx={}` dict pattern, auto-injected attributes (`hx-boost="false"`, `hx-select="unset"`, form reset, fragment island isolation), `build_hx_attrs()` usage, and decision tree
-- Cross-referenced from `CLAUDE.md` and `docs/ANTI-FOOTGUNS.md`
+- Created `docs/components/htmx-patterns.md`: comprehensive guide covering `hx={}` dict pattern, auto-injected attributes (`hx-boost="false"`, `hx-select="unset"`, form reset, fragment island isolation), `build_hx_attrs()` usage, and decision tree
+- Cross-referenced from `CLAUDE.md` and `docs/safety/anti-footguns.md`
 
 ### Task 16.1 — Add `hx={}` examples to macro docstrings
 
@@ -209,7 +209,7 @@ docs/:                   INDEX.md created; layout docs consolidated
 
 ### Task 16.2 — Add "HTMX patterns" section to docs
 
-**Files:** `docs/HTMX-PATTERNS.md` (new)
+**Files:** `docs/components/htmx-patterns.md` (new)
 - Document: `hx={}` dict pattern, `hx-boost="false"` auto-injection, `hx-select="unset"` auto-injection, `hx-disinherit` in forms
 - Explain *why* each auto-injection exists (prevent boost hijack, prevent select inheritance)
 - Include decision tree: "Do I need individual kwargs or the dict?"
@@ -319,7 +319,7 @@ docs/:                   INDEX.md created; layout docs consolidated
 
 **Changelog:**
 - Created `docs/INDEX.md` — categorized index of all 45 docs files (Core Guides, Patterns, Safety, Reference, Theming, Planning, Consolidated)
-- Created `docs/LAYOUT.md` — consolidated guide merging content from LAYOUT-OVERFLOW.md, LAYOUT-VERTICAL.md, and LAYOUT-GRIDS-AND-FRAMES.md into a single "how do I..." reference
+- Created `docs/fundamentals/layout.md` — consolidated guide merging content from LAYOUT-OVERFLOW.md, LAYOUT-VERTICAL.md, and LAYOUT-GRIDS-AND-FRAMES.md into a single "how do I..." reference
 - Added redirect notes to the three original layout files (kept for existing links)
 - Updated CLAUDE.md cross-references to point to LAYOUT.md
 - All docs files verified present in INDEX.md
@@ -341,13 +341,13 @@ docs/:                   INDEX.md created; layout docs consolidated
 
 ### Task 19.2 — Consolidate layout documentation
 
-**Files:** `docs/LAYOUT.md` (new, consolidates content from 3 files)
+**Files:** `docs/fundamentals/layout.md` (new, consolidates content from 3 files)
 - Merge key content from `LAYOUT-OVERFLOW.md`, `LAYOUT-VERTICAL.md`, `LAYOUT-GRIDS-AND-FRAMES.md`
 - Keep original files with a redirect note: "This content has been consolidated into LAYOUT.md"
 - Organize by use case: "How do I..." structure
 
 **Acceptance:**
-- `docs/LAYOUT.md` covers overflow, vertical rhythm, and grid/frame patterns
+- `docs/fundamentals/layout.md` covers overflow, vertical rhythm, and grid/frame patterns
 - Original files redirect to new location
 - Cross-references in CLAUDE.md updated
 

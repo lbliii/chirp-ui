@@ -42,7 +42,7 @@ compatibility where they already shipped.
 
 The repository guide has the full vocabulary, migration map, validation
 behavior, and compatibility policy:
-[`docs/APPEARANCE-TONE.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/APPEARANCE-TONE.md?plain=1).
+[`docs/components/appearance-tone.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/components/appearance-tone.md?plain=1).
 
 The component showcase also includes a live `/appearance-tone` page for copyable
 examples across the pilot components.

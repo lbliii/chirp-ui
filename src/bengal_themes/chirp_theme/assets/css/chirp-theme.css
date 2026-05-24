@@ -365,6 +365,7 @@ a {
   border-block-end: 1px solid var(--chirpui-border);
   background: color-mix(in srgb, var(--chirpui-bg) 88%, transparent);
   backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
 }
 
 .chirp-theme-shell__nav {
@@ -997,6 +998,10 @@ a {
 
 .chirp-theme-doc-catalog__primary {
   overflow: visible;
+  border-inline-end: 1px solid color-mix(in srgb, var(--chirpui-accent) 14%, var(--chirpui-border));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--chirpui-accent) 7%, transparent), transparent 42%),
+    color-mix(in srgb, var(--chirpui-surface) 62%, transparent);
 }
 
 .chirp-theme-doc-catalog__secondary {
@@ -1004,7 +1009,7 @@ a {
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: clamp(0.5rem, 1vw, 1rem) 0.35rem 1.5rem 0;
-  scrollbar-color: color-mix(in srgb, var(--chirpui-accent) 34%, transparent) transparent;
+  scrollbar-color: #0e7490 transparent;
   scrollbar-width: thin;
 }
 
@@ -1176,8 +1181,13 @@ a {
   border-inline-end: 0;
   background: transparent;
   box-shadow: none;
-  scrollbar-color: color-mix(in srgb, var(--chirpui-accent) 34%, transparent) transparent;
+  scrollbar-color: #0e7490 transparent;
   scrollbar-width: thin;
+}
+
+[data-theme="dark"] .chirp-theme-doc-catalog__secondary,
+[data-theme="dark"] .chirp-theme-doc-catalog .chirp-theme-docs-nav {
+  scrollbar-color: #2dd4bf transparent;
 }
 
 .chirp-theme-doc-catalog__secondary::-webkit-scrollbar,
@@ -1834,8 +1844,12 @@ a {
   gap: 0.75rem;
   border: 0;
   background: transparent;
-  scrollbar-color: color-mix(in srgb, var(--chirpui-accent) 34%, transparent) transparent;
+  scrollbar-color: #0e7490 transparent;
   scrollbar-width: thin;
+}
+
+[data-theme="dark"] .chirp-theme-doc-toc {
+  scrollbar-color: #2dd4bf transparent;
 }
 
 .chirp-theme-doc-toc::-webkit-scrollbar,

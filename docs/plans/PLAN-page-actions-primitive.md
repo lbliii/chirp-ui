@@ -5,10 +5,10 @@ Date: 2026-05-23
 Depends on:
 
 - [PLAN-application-chrome-system.md](PLAN-application-chrome-system.md)
-- [../BENGAL-THEME-ANATOMY.md](../BENGAL-THEME-ANATOMY.md)
-- [../DROPDOWN-ANATOMY.md](../DROPDOWN-ANATOMY.md)
-- [../MODAL-ANATOMY.md](../MODAL-ANATOMY.md)
-- [../PUBLIC-SURFACE-STABILIZATION.md](../PUBLIC-SURFACE-STABILIZATION.md)
+- [../BENGAL-THEME-ANATOMY.md](../theming/bengal-theme-anatomy.md)
+- [../DROPDOWN-ANATOMY.md](../components/dropdown-anatomy.md)
+- [../MODAL-ANATOMY.md](../components/modal-anatomy.md)
+- [../PUBLIC-SURFACE-STABILIZATION.md](../safety/public-surface-stabilization.md)
 
 ## Goal
 

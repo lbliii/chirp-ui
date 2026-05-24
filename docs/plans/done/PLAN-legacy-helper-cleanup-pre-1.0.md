@@ -6,9 +6,9 @@
 **Estimated Effort**: 8-14h across 3-4 PRs
 **Dependencies**:
 [PLAN-primitive-vocabulary-hardening.md](PLAN-primitive-vocabulary-hardening.md),
-[../PRIMITIVES.md](../PRIMITIVES.md),
-[../PUBLIC-SURFACE-STABILIZATION.md](../PUBLIC-SURFACE-STABILIZATION.md),
-[../VISUAL-AUDIT-SHOWCASE.md](../VISUAL-AUDIT-SHOWCASE.md)
+[../PRIMITIVES.md](../../fundamentals/primitives.md),
+[../PUBLIC-SURFACE-STABILIZATION.md](../../safety/public-surface-stabilization.md),
+[../VISUAL-AUDIT-SHOWCASE.md](../../patterns/visual-audit-showcase.md)
 
 ---
 
@@ -177,11 +177,11 @@ Acceptance:
 
 Files:
 
-- `docs/PRIMITIVES.md`
-- `docs/ANTI-FOOTGUNS.md`
+- `docs/fundamentals/primitives.md`
+- `docs/safety/anti-footguns.md`
 - `docs/COMPONENT-OPTIONS.md`
-- `docs/PUBLIC-SURFACE-STABILIZATION.md`
-- `docs/ROADMAP-pre-1.0.md`
+- `docs/safety/public-surface-stabilization.md`
+- `docs/strategy/roadmap-pre-1.0.md`
 - `tests/test_manifest.py`
 
 Tasks:
@@ -226,7 +226,7 @@ Initial recommendations:
 
 Acceptance:
 
-- A 1.0 helper decision table exists in `docs/PUBLIC-SURFACE-STABILIZATION.md`.
+- A 1.0 helper decision table exists in `docs/safety/public-surface-stabilization.md`.
 - Any removal candidate has a migration path and first-party usage count.
 
 ---

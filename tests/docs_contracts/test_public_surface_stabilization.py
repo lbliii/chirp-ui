@@ -1,9 +1,9 @@
 from chirp_ui.manifest import build_manifest
 from tests.helpers import REPO_ROOT
 
-DOC = REPO_ROOT / "docs" / "PUBLIC-SURFACE-STABILIZATION.md"
+DOC = REPO_ROOT / "docs" / "safety" / "public-surface-stabilization.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
-DESIGN_RESEARCH = REPO_ROOT / "docs" / "DESIGN-SYSTEM-RESEARCH.md"
+DESIGN_RESEARCH = REPO_ROOT / "docs" / "decisions" / "design-system-research.md"
 SHOWCASE = REPO_ROOT / "examples" / "design-system-gap-showcase" / "index.html"
 COMPONENT_TESTS = REPO_ROOT / "tests" / "test_components.py"
 ASCII_TESTS = REPO_ROOT / "tests" / "test_ascii_components.py"
@@ -53,7 +53,7 @@ def test_public_surface_doc_defines_evidence_labels() -> None:
 
 
 def test_public_surface_stabilization_doc_is_indexed() -> None:
-    assert "[PUBLIC-SURFACE-STABILIZATION.md](PUBLIC-SURFACE-STABILIZATION.md)" in (
+    assert "[PUBLIC-SURFACE-STABILIZATION.md](safety/public-surface-stabilization.md)" in (
         INDEX.read_text(encoding="utf-8")
     )
 
@@ -62,7 +62,7 @@ def test_design_system_research_points_to_public_surface_labels() -> None:
     """Research direction should route maturity labels through the canonical doc."""
     text = DESIGN_RESEARCH.read_text(encoding="utf-8")
 
-    assert "[PUBLIC-SURFACE-STABILIZATION.md](PUBLIC-SURFACE-STABILIZATION.md)" in text
+    assert "[PUBLIC-SURFACE-STABILIZATION.md](../safety/public-surface-stabilization.md)" in text
     assert "evidence-label glossary" in text
 
 

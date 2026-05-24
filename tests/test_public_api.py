@@ -5,7 +5,7 @@ reachable offline via the package itself, so an agent can ground zero-shot
 after ``pip install chirp-ui`` with no build step.
 
 See ``docs/plans/done/PLAN-agent-grounding-depth.md § Sprint 3`` and
-``docs/DESIGN-manifest-signature-extraction.md``.
+``docs/decisions/manifest-signature-extraction.md``.
 """
 
 from __future__ import annotations

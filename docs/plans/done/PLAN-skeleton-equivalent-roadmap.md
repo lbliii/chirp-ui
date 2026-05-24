@@ -85,10 +85,10 @@ Goal: settle names and source-of-truth before changing public API.
 
 Design docs:
 
-- `docs/DESIGN-appearance-tone.md`
-- `docs/DESIGN-theme-pack-catalog.md`
-- `docs/DESIGN-llm-endpoints.md`
-- `docs/DESIGN-interactive-anatomy.md`
+- `docs/decisions/appearance-tone.md`
+- `docs/decisions/theme-pack-catalog.md`
+- `docs/decisions/llm-endpoints.md`
+- `docs/decisions/interactive-anatomy.md`
 
 Tasks:
 
@@ -128,7 +128,7 @@ Progress:
 - 2026-05-11: `TOKEN_CATALOG` parity made bidirectional and missing CSS-defined tokens cataloged.
 - 2026-05-11: token category guardrail added and obvious non-color category debt corrected.
 - 2026-05-11: token-only scanner added for packaged app theme CSS, with `holy-light.css` documented as legacy selector-bearing theme CSS.
-- 2026-05-11: `docs/VISION.md` manifest schema reference updated before the
+- 2026-05-11: `docs/strategy/vision.md` manifest schema reference updated before the
   Sprint 2 schema bump; current shipped schema is `chirpui-manifest@5`.
 
 Tasks:
@@ -144,7 +144,7 @@ Tasks:
 4. Add theme-pack token-only scanner before packs exist.
    - Scanner should reject `.chirpui-*` selectors and non-token component rules in theme-pack CSS.
 5. Fix stale manifest-schema docs.
-   - README and `docs/VISION.md` agree on the current shipped schema.
+   - README and `docs/strategy/vision.md` agree on the current shipped schema.
 
 Proof:
 
@@ -154,8 +154,8 @@ Proof:
 
 Collateral:
 
-- `docs/VISION.md`
-- `docs/TOKENS.md` if token categories move
+- `docs/strategy/vision.md`
+- `docs/fundamentals/tokens.md` if token categories move
 - Generated `src/chirp_ui/manifest.json` and `docs/COMPONENT-OPTIONS.md` if token metadata affects output
 
 ## Sprint 2: Appearance/Tone Pilot
@@ -175,7 +175,7 @@ Progress:
   cover the pilot classes and exclude shared `tone="error"`.
 - 2026-05-11: `field` / `text_field` joined the pilot with appearance/tone
   params while preserving validation error as component state, not shared tone.
-- 2026-05-11: `docs/APPEARANCE-TONE.md` and the component showcase
+- 2026-05-11: `docs/components/appearance-tone.md` and the component showcase
   `/appearance-tone` route added migration teaching and copyable macro examples.
 - 2026-05-11: `card` joined the pilot as the surface-like container path,
   with token-backed treatment CSS and showcase examples.
@@ -249,7 +249,7 @@ Closure synthesis:
 Collateral:
 
 - `docs/COMPONENT-OPTIONS.md`
-- `docs/COMPOSITION.md` or a new appearance/tone design-system doc
+- `docs/fundamentals/composition.md` or a new appearance/tone design-system doc
 - `site/content/docs/components/`
 - `examples/component-showcase/README.md`
 - README quick examples if the new params become preferred
@@ -286,8 +286,8 @@ Closure:
   deterministic ordering checks, Bengal transitional alias tests, data-route
   integration tests, showcase template analysis, targeted Playwright
   theme-pack proof, full `uv run poe ci`, and full `uv run poe ci-browser`.
-- Collateral updated: `docs/APP-THEME.md`, `docs/CHIRP-THEME.md`,
-  `docs/CHIRP-THEME-PARITY-MATRIX.md`, README, site theming docs, component
+- Collateral updated: `docs/theming/app-theme.md`, `docs/theming/chirp-theme.md`,
+  `docs/theming/chirp-theme-parity-matrix.md`, README, site theming docs, component
   showcase docs/routes/templates, changelog fragment, manifest, and package
   data tests.
 - Deferred: theme export/write commands stay out of scope until source format,
@@ -325,10 +325,10 @@ Proof:
 
 Collateral:
 
-- `docs/APP-THEME.md`
-- `docs/TOKENS.md`
-- `docs/CHIRP-THEME.md`
-- `docs/CHIRP-THEME-PARITY-MATRIX.md`
+- `docs/theming/app-theme.md`
+- `docs/fundamentals/tokens.md`
+- `docs/theming/chirp-theme.md`
+- `docs/theming/chirp-theme-parity-matrix.md`
 - `site/content/docs/theming/`
 - `examples/docs-theme-showcase/`
 - README CSS/theming section
@@ -339,7 +339,7 @@ Goal: make the system teachable like Skeleton without duplicating facts.
 
 Progress:
 
-- 2026-05-11: Added `docs/DOCS-IA-MIGRATION.md` as the Sprint 4
+- 2026-05-11: Added `docs/agents/docs-ia-migration.md` as the Sprint 4
   source-of-truth map from current published docs pages to the target IA,
   durable canonical sources, and future agent-facing source provenance labels.
 - 2026-05-12: Scoped Sprint 4 away from overriding Bengal/SSG-owned
@@ -434,19 +434,19 @@ Progress:
   menu and split-menu selection payload assembly out of inline Alpine object
   literals and into `data-*` attributes read by `chirpuiDropdown().selectItem()`.
 - 2026-05-12: Published the dropdown/menu anatomy contract in
-  `docs/DROPDOWN-ANATOMY.md` with a site mirror, docs IA coverage, render
+  `docs/components/dropdown-anatomy.md` with a site mirror, docs IA coverage, render
   tests, and browser proof for the menu family.
 - 2026-05-12: Started the modal/dialog anatomy slice with native modal,
   confirm dialog, and modal overlay render/browser proof plus
-  `docs/MODAL-ANATOMY.md` and a site mirror.
+  `docs/components/modal-anatomy.md` and a site mirror.
 - 2026-05-12: Started the tabs/route-tabs anatomy slice, hardened
   `tabs_panels` payloads to escaped `data-*` attributes read by
-  `chirpuiTabs()`, and published `docs/TABS-ANATOMY.md` with a site mirror.
+  `chirpuiTabs()`, and published `docs/components/tabs-anatomy.md` with a site mirror.
 - 2026-05-12: Published the drawer/tray anatomy slice in
-  `docs/DRAWER-TRAY-ANATOMY.md` with render tests, drawer/tray browser proof,
+  `docs/components/drawer-tray-anatomy.md` with render tests, drawer/tray browser proof,
   docs IA coverage, and a site mirror.
 - 2026-05-12: Published the Bengal theme controls anatomy slice in
-  `docs/BENGAL-THEME-ANATOMY.md` with a theming site mirror and package tests
+  `docs/theming/bengal-theme-anatomy.md` with a theming site mirror and package tests
   for theme popovers, search modal/inline hooks, mobile nav, docs TOC, and
   docs-site tab enhancement hooks.
 - 2026-05-12: Closed Sprint 5 with descriptor/manifest anatomy metadata
@@ -473,9 +473,9 @@ Closure synthesis:
 
 Collateral:
 
-- `docs/ALPINE-MAGICS.md`
-- `docs/HTMX-PATTERNS.md`
-- `docs/SHELL-TABS-CONTRACT.md`
+- `docs/components/alpine-magics.md`
+- `docs/components/htmx-patterns.md`
+- `docs/components/shell-tabs-contract.md`
 - New anatomy docs under `docs/`
 - `site/content/docs/components/`
 - `site/content/docs/theming/`
@@ -499,7 +499,7 @@ Candidate tasks:
    - Dynamic showcase routes and durable docs are allowed.
    - Static showcase scaffolding, browser test pages, and docs-site wrappers are
      excluded unless explicitly marked non-copyable.
-   - 2026-05-12: Added `docs/AGENT-SOURCE-INVENTORY.md` with provenance labels,
+   - 2026-05-12: Added `docs/agents/agent-source-inventory.md` with provenance labels,
      snippet eligibility states, candidate dynamic showcase sources, and
      explicit exclusions for generated/static/test surfaces.
 2. Add snippet provenance tests.
@@ -512,7 +512,7 @@ Candidate tasks:
 3. Add an agent-facing source map that points to existing generated SSG outputs
    and Chirp-owned source inputs without replacing Bengal `llms.txt` or
    `agent.json`.
-   - 2026-05-12: Added `docs/AGENT-SOURCE-MAP.md` to map Bengal-owned outputs,
+   - 2026-05-12: Added `docs/agents/agent-source-map.md` to map Bengal-owned outputs,
      the Chirp-owned published manifest, source inputs, and forbidden output
      name overlaps.
 4. Decide whether any Chirp-owned generated artifact is still needed after the
@@ -532,9 +532,9 @@ Proof:
 
 Collateral:
 
-- `docs/DOCS-IA-MIGRATION.md`
-- `docs/DESIGN-llm-endpoints.md`
-- `docs/DESIGN-interactive-anatomy.md` only if metadata projection is reopened
+- `docs/agents/docs-ia-migration.md`
+- `docs/decisions/llm-endpoints.md`
+- `docs/decisions/interactive-anatomy.md` only if metadata projection is reopened
 - `site/content/docs/**`
 - `scripts/docs_site.py` only if source enrichment changes
 

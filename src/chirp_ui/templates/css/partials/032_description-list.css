@@ -22,7 +22,8 @@
 
 .chirpui-dl__term {
     font-size: var(--chirpui-font-sm);
-    font-weight: 500;
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     margin: 0 0 var(--chirpui-spacing-xs) 0;
     min-width: 0;
@@ -31,6 +32,7 @@
 .chirpui-dl__detail {
     margin: 0;
     font-size: var(--chirpui-font-base);
+    line-height: var(--chirpui-line-height-normal);
     color: var(--chirpui-text);
     min-width: 0;
     overflow-wrap: anywhere;
@@ -72,6 +74,7 @@
 
 .chirpui-dl__detail--number {
     text-align: right;
+    font-variant-numeric: tabular-nums;
 }
 
 @container chirpui-layout (width < 28rem) {

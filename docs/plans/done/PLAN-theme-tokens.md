@@ -6,7 +6,7 @@ Status: shipped and archived
 > mostly shipped. Forward theme-gallery, token-parity, and first-override UX
 > work now lives in
 > [PLAN-pre-1.0-productization-saga.md](../PLAN-pre-1.0-productization-saga.md),
-> `docs/APP-THEME.md`, and `docs/TOKENS.md`.
+> `docs/theming/app-theme.md`, and `docs/fundamentals/tokens.md`.
 >
 > 2026-05-12 slice: the visual audit token explorer now groups first overrides
 > by job, `APP-THEME.md` documents the first-token table, and visual audit tests
@@ -105,7 +105,7 @@ escape hatches.
 
 ### Tier 6: Typography (UI vs. Prose)
 
-See [docs/TYPOGRAPHY.md](TYPOGRAPHY.md) for full reference. UI scale: `--chirpui-ui-xs` … `--chirpui-ui-xl`, `--chirpui-ui-font-family`, `--chirpui-ui-font-weight-*`. Prose scale: `--chirpui-prose-base` … `--chirpui-prose-3xl`, `--chirpui-prose-font-family`, `--chirpui-prose-font-weight-*`. Override independently for dashboard density vs. content readability.
+See [docs/fundamentals/typography.md](../../fundamentals/typography.md) for full reference. UI scale: `--chirpui-ui-xs` … `--chirpui-ui-xl`, `--chirpui-ui-font-family`, `--chirpui-ui-font-weight-*`. Prose scale: `--chirpui-prose-base` … `--chirpui-prose-3xl`, `--chirpui-prose-font-family`, `--chirpui-prose-font-weight-*`. Override independently for dashboard density vs. content readability.
 
 ---
 

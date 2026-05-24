@@ -26,15 +26,18 @@
 
     :scope .chirpui-cta-band__title {
         margin: 0;
+        max-inline-size: 14ch;
         color: var(--chirpui-text);
-        font-size: var(--chirpui-display-sm);
+        font-size: var(--chirpui-prose-3xl);
         font-weight: var(--chirpui-ui-font-weight-semibold);
         line-height: var(--chirpui-line-height-tight);
     }
 
     :scope .chirpui-cta-band__body {
+        max-inline-size: 58ch;
         color: var(--chirpui-text-muted);
         font-size: var(--chirpui-ui-base);
+        line-height: var(--chirpui-line-height-relaxed);
     }
 
     :scope .chirpui-cta-band__body :where(p) {

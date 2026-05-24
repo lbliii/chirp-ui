@@ -49,8 +49,10 @@
 .chirpui-timeline__header {
     display: flex;
     align-items: baseline;
+    flex-wrap: wrap;
     gap: var(--chirpui-spacing-sm);
     margin-bottom: var(--chirpui-spacing-xs);
+    min-inline-size: 0;
 }
 
 .chirpui-timeline__header-actions {
@@ -63,9 +65,11 @@
 }
 
 .chirpui-timeline__title {
-    font-weight: 500;
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-timeline__hint {
@@ -88,12 +92,16 @@
 
 .chirpui-timeline__date {
     font-size: var(--chirpui-font-xs);
+    line-height: var(--chirpui-line-height-tight);
+    font-variant-numeric: tabular-nums;
     color: var(--chirpui-text-muted);
 }
 
 .chirpui-timeline__body {
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     color: var(--chirpui-text-muted);
+    overflow-wrap: anywhere;
 }
 
 /* Timeline: icon/avatar variants */

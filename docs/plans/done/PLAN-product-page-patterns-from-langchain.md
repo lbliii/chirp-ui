@@ -251,8 +251,8 @@ Add product-page recipes to docs without changing component APIs.
 
 | File | Action |
 |------|--------|
-| `docs/PRODUCT-PAGE-PATTERNS.md` | Added recipe documentation for product hero, lifecycle, proof, product choice, customer story, and CTA sections |
-| `docs/PRIMITIVES.md` | Added a short product-page compositions pointer after the blessed primitives section |
+| `docs/patterns/product-page-patterns.md` | Added recipe documentation for product hero, lifecycle, proof, product choice, customer story, and CTA sections |
+| `docs/fundamentals/primitives.md` | Added a short product-page compositions pointer after the blessed primitives section |
 | `docs/INDEX.md` | Indexed the recipe doc under Patterns |
 | `docs/plans/done/PLAN-product-page-patterns-from-langchain.md` | Archived after docs, fixtures, and browser proof shipped |
 
@@ -364,7 +364,7 @@ Full done criteria remain `uv run poe ci`.
 
 ## Open Questions
 
-- Should product-page recipes live in a new `docs/PRODUCT-PAGE-PATTERNS.md`, or as sections in existing `PRIMITIVES.md` / `COMPOSITION.md`?
+- Should product-page recipes live in a new `docs/patterns/product-page-patterns.md`, or as sections in existing `PRIMITIVES.md` / `COMPOSITION.md`?
 - Should the first showcase live under browser tests only, or should it become part of the docs site?
 - Do downstream apps need image/logo handling in ChirpUI, or should app templates own brand assets entirely?
 - Is `site_nav_group` a real component need, or can `site_header` slots plus documented structure cover it?

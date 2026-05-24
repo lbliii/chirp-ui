@@ -14,7 +14,7 @@ moderation, and durable knowledge retrieval. Chirp UI can compose these pages
 from existing primitives before adding a public `forum_*` namespace.
 
 Use the canonical repository guide for the full recipe set:
-[`docs/FORUM-SITE-PATTERNS.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/FORUM-SITE-PATTERNS.md?plain=1).
+[`docs/patterns/forum-site-patterns.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/patterns/forum-site-patterns.md?plain=1).
 
 ## Use This When
 

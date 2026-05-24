@@ -86,11 +86,11 @@ def test_application_chrome_plan_synthesizes_anatomy_ledgers() -> None:
     assert "not ready for a generic `application_chrome()`" in text
 
     for ledger in [
-        "[MODAL-ANATOMY.md](../MODAL-ANATOMY.md)",
-        "[DROPDOWN-ANATOMY.md](../DROPDOWN-ANATOMY.md)",
-        "[DRAWER-TRAY-ANATOMY.md](../DRAWER-TRAY-ANATOMY.md)",
-        "[TABS-ANATOMY.md](../TABS-ANATOMY.md)",
-        "[BENGAL-THEME-ANATOMY.md](../BENGAL-THEME-ANATOMY.md)",
+        "[MODAL-ANATOMY.md](../components/modal-anatomy.md)",
+        "[DROPDOWN-ANATOMY.md](../components/dropdown-anatomy.md)",
+        "[DRAWER-TRAY-ANATOMY.md](../components/drawer-tray-anatomy.md)",
+        "[TABS-ANATOMY.md](../components/tabs-anatomy.md)",
+        "[BENGAL-THEME-ANATOMY.md](../theming/bengal-theme-anatomy.md)",
     ]:
         assert ledger in text
 
@@ -581,7 +581,7 @@ def test_application_chrome_plan_has_shell_response_helper_investigation_boundar
         assert forbidden in section
 
     for surface in [
-        "[SHELL-TABS-CONTRACT.md](../SHELL-TABS-CONTRACT.md) route-local helpers",
+        "[SHELL-TABS-CONTRACT.md](../components/shell-tabs-contract.md) route-local helpers",
         "Filesystem mounted pages with `mount_pages()`",
         "`shell_outlet_attrs()` and shell OOB regions",
         "`route_tabs`",
@@ -682,7 +682,7 @@ def test_application_chrome_plan_records_shell_response_route_local_gap_notes() 
 
     for decision in [
         "Keep `_is_hx_target()` and `_include_shell_actions_oob()` as fixture-local",
-        "documented [SHELL-TABS-CONTRACT.md](../SHELL-TABS-CONTRACT.md)",
+        "documented [SHELL-TABS-CONTRACT.md](../components/shell-tabs-contract.md)",
         "Do not promote a public helper from two manual fixture route families",
         "close to Chirp routing/page composition",
         "third scenario-complete route reference",

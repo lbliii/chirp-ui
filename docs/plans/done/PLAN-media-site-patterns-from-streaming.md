@@ -389,8 +389,8 @@ Add media-site recipes to docs without changing component APIs.
 
 | File | Action |
 |------|--------|
-| `docs/MEDIA-SITE-PATTERNS.md` | Added recipe documentation for acquisition heroes, hero shelves, rails, format tabs, title details, live events, companion panels, plan comparison, and profile-safe catalogs |
-| `docs/PRIMITIVES.md` | Added a short media-site compositions pointer |
+| `docs/patterns/media-site-patterns.md` | Added recipe documentation for acquisition heroes, hero shelves, rails, format tabs, title details, live events, companion panels, plan comparison, and profile-safe catalogs |
+| `docs/fundamentals/primitives.md` | Added a short media-site compositions pointer |
 | `docs/INDEX.md` | Indexed the recipe doc under Patterns |
 | `docs/plans/done/PLAN-media-site-patterns-from-streaming.md` | Archived after docs, fixtures, and browser proof shipped |
 
@@ -528,7 +528,7 @@ Full done criteria remain `uv run poe ci`.
 
 ## Open Questions
 
-- Should future media-site recipes stay in `docs/MEDIA-SITE-PATTERNS.md`, or should any proven overlap move into a shared product/media pattern doc?
+- Should future media-site recipes stay in `docs/patterns/media-site-patterns.md`, or should any proven overlap move into a shared product/media pattern doc?
 - Is `title_card` distinct enough from `video_card`, `card`, and `index_card` to justify promotion?
 - Does `carousel` need an accessible named-label param before media rails are documented heavily?
 - Should live-event state be modeled as a generic content-state recipe before any macro exists?

@@ -14,9 +14,9 @@ panel switch, disclosure, command launcher, or search entry, and those jobs have
 different semantics.
 
 Use the canonical repository guide for the full decision model:
-[`docs/NAVIGATION.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/NAVIGATION.md?plain=1).
+[`docs/patterns/navigation.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/patterns/navigation.md?plain=1).
 For copyable dense application chrome recipes, see
-[`docs/DENSE-NAVIGATION-RECIPES.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/DENSE-NAVIGATION-RECIPES.md?plain=1).
+[`docs/patterns/dense-navigation-recipes.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/patterns/dense-navigation-recipes.md?plain=1).
 For current roadmap status, see
 [`docs/plans/PLAN-application-chrome-system.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/plans/PLAN-application-chrome-system.md?plain=1).
 
@@ -25,12 +25,12 @@ For current roadmap status, see
 This page is a published bridge. The repository docs remain the contract for
 component semantics, application chrome layering, and promotion decisions:
 
-- `docs/NAVIGATION.md` owns the layer model and component decision matrix.
-- `docs/DENSE-NAVIGATION-RECIPES.md` owns copyable recipe families.
+- `docs/patterns/navigation.md` owns the layer model and component decision matrix.
+- `docs/patterns/dense-navigation-recipes.md` owns copyable recipe families.
 - `docs/plans/PLAN-application-chrome-system.md` owns the active app-chrome
   backlog and composite gates.
-- `docs/RESPONSIVE.md` owns stress-width expectations.
-- `docs/VISUAL-AUDIT-SHOWCASE.md` owns rhythm and visual proof expectations.
+- `docs/fundamentals/responsive.md` owns stress-width expectations.
+- `docs/patterns/visual-audit-showcase.md` owns rhythm and visual proof expectations.
 
 Do not add a published-only application chrome API here. New public macros,
 parameters, emitted classes, or manifest facts must ship through the registry,

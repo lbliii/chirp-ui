@@ -7,8 +7,8 @@ Depends on:
 - [PLAN-navigation-density-study.md](PLAN-navigation-density-study.md)
 - [PLAN-navigation-contract-application.md](PLAN-navigation-contract-application.md)
 - [PLAN-dense-object-chrome-next.md](PLAN-dense-object-chrome-next.md)
-- [../../NAVIGATION.md](../../NAVIGATION.md)
-- [../../DENSE-NAVIGATION-SYNTHESIS.md](../../DENSE-NAVIGATION-SYNTHESIS.md)
+- [../../NAVIGATION.md](../../patterns/navigation.md)
+- [../../DENSE-NAVIGATION-SYNTHESIS.md](../../patterns/dense-navigation-synthesis.md)
 
 ## Goal
 
@@ -67,7 +67,7 @@ systems without cloning any specific product.
   system recipe with workflow information architecture, persistent left
   navigation, docs search, collapsed breadcrumbs, page-local controls, and
   nearby-topic discovery.
-- Synthesis accepted: `docs/DENSE-NAVIGATION-SYNTHESIS.md` captures the common
+- Synthesis accepted: `docs/patterns/dense-navigation-synthesis.md` captures the common
   contracts, anti-decisions, primitive candidates, and backlog. The first
   implementation candidates are sidebar badge parity, `scope_switcher`, and
   `saved_view_strip`; dense shell/frame ideas remain recipe-level until real app

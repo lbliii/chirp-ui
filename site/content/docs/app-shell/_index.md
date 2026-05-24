@@ -11,7 +11,7 @@ category: app-shell
 
 # App Shell
 
-**Vocabulary:** [UI layers & terms](/docs/app-shell/ui-layers/) — app shell, page chrome, surface chrome, shell regions, and the built-in HTMX shell-coherence behavior. For dense topbars, object chrome, route tabs, command launchers, and overflow choices, use the repository guide `docs/NAVIGATION.md` as the canonical decision model.
+**Vocabulary:** [UI layers & terms](/docs/app-shell/ui-layers/) — app shell, page chrome, surface chrome, shell regions, and the built-in HTMX shell-coherence behavior. For dense topbars, object chrome, route tabs, command launchers, and overflow choices, use the repository guide `docs/patterns/navigation.md` as the canonical decision model.
 
 **Quick start:** Extend `chirpui/app_shell_layout.html` and fill the blocks. No manual HTML boilerplate.
 
@@ -33,11 +33,11 @@ category: app-shell
 
 ## Layout overflow
 
-The shell main area clips horizontal overflow, but **default app shells scroll with the document**. Build pages with **`grid()` + `block()`**, **`cluster()`**, and wrapping indicator rows so content stays in column; use **`overflow-x: auto`** only on inner wrappers for wide tables or code. See the repo doc **`docs/LAYOUT-OVERFLOW.md`** for the full checklist.
+The shell main area clips horizontal overflow, but **default app shells scroll with the document**. Build pages with **`grid()` + `block()`**, **`cluster()`**, and wrapping indicator rows so content stays in column; use **`overflow-x: auto`** only on inner wrappers for wide tables or code. See the repo doc **`docs/fundamentals/layout-overflow.md`** for the full checklist.
 
 ## Full-height main
 
-For chat, maps, or IDE-style surfaces that should **fill the viewport** below the topbar (with scroll **inside** panels), opt in with **`{% block main_shell_class %} chirpui-app-shell__main--fill{% end %}`**, put a direct child of **`#page-content`** with class **`chirpui-page-fill`**, and use **`chat_layout(..., fill=true)`** for chat pages. This is the explicit bounded-scroll exception to the document-scroll default. See **`docs/LAYOUT-VERTICAL.md`** for the flex chain, **`min-height: 0`**, and the **`chirpui-chat-layout__messages-body`** wrapper class for SSE/HTMX roots inside the messages column.
+For chat, maps, or IDE-style surfaces that should **fill the viewport** below the topbar (with scroll **inside** panels), opt in with **`{% block main_shell_class %} chirpui-app-shell__main--fill{% end %}`**, put a direct child of **`#page-content`** with class **`chirpui-page-fill`**, and use **`chat_layout(..., fill=true)`** for chat pages. This is the explicit bounded-scroll exception to the document-scroll default. See **`docs/fundamentals/layout-vertical.md`** for the flex chain, **`min-height: 0`**, and the **`chirpui-chat-layout__messages-body`** wrapper class for SSE/HTMX roots inside the messages column.
 
 ## Components
 
@@ -138,7 +138,7 @@ pages/
   right response shape.
 
 The source-tree fixture `tests/fixtures/filesystem_chrome/` and the canonical
-checklist `docs/SHELL-TABS-CONTRACT.md` show the full version.
+checklist `docs/components/shell-tabs-contract.md` show the full version.
 
 For nested app shells, keep the preset and override the target:
 
@@ -282,7 +282,7 @@ shell-navigation response that changes actions should include:
 </div>
 ```
 
-The canonical source-tree checklist is `docs/SHELL-TABS-CONTRACT.md`.
+The canonical source-tree checklist is `docs/components/shell-tabs-contract.md`.
 
 Boosted navigation follows the shell scroll policy:
 

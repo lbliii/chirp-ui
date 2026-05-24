@@ -22,4 +22,4 @@ with `x-trap.inert.noscroll` on the panel and a `chirpui:tray-closed` event.
 
 The full rendered contract, ARIA roles, focus and close behavior, event
 payloads, and proof locations live in the canonical source guide:
-[`docs/DRAWER-TRAY-ANATOMY.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/DRAWER-TRAY-ANATOMY.md?plain=1).
+[`docs/components/drawer-tray-anatomy.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/components/drawer-tray-anatomy.md?plain=1).

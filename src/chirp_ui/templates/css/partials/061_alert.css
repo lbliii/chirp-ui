@@ -13,6 +13,8 @@
     border-radius: var(--chirpui-radius-sm);
     background: var(--chirpui-alert-info-bg);
     box-shadow: var(--chirpui-shadow-sm);
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
 }
 
 .chirpui-alert--info    { --chirpui-alert-accent: var(--chirpui-info); background: var(--chirpui-alert-info-bg); }
@@ -67,6 +69,7 @@
 
 .chirpui-alert__title {
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    line-height: var(--chirpui-line-height-tight);
     margin-bottom: var(--chirpui-spacing-xs);
 }
 

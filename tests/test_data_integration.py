@@ -51,6 +51,12 @@ SHOWCASE_ROUTE_SMOKE_PATHS = (
     "/operations-shell-workspace?q=queues&area=compute&status=warning",
     "/support-shell",
     "/support-shell?q=latency&queue=priority&status=danger",
+    "/screen-command-center",
+    "/screen-command-center?q=queues&area=compute&status=warning",
+    "/screen-review-queue",
+    "/screen-review-queue?q=latency&queue=priority&status=danger",
+    "/screen-agent-run-monitor",
+    "/screen-product-docs-home",
     "/calendar",
     "/calendar/2026/5",
     "/calendar/2026/05",
@@ -490,6 +496,54 @@ class TestDataPage:
         assert 'hx-target="#support-shell-frame"' in text
         assert 'hx-select="#support-shell-frame"' in text
         assert 'hx-indicator="#support-shell-pending"' in text
+
+    @pytest.mark.asyncio
+    async def test_golden_screen_routes_expose_profile_and_archetype_metadata(
+        self, showcase_app
+    ) -> None:
+        async with TestClient(showcase_app) as client:
+            command = await client.get("/screen-command-center?q=queues&area=compute")
+            review = await client.get("/screen-review-queue?q=latency&queue=priority")
+
+        assert command.status == 200
+        assert 'data-screen-archetype="command-center"' in command.text
+        assert 'data-screen-profile="atlas"' in command.text
+        assert 'action="/screen-command-center"' in command.text
+        assert 'hx-get="/screen-command-center"' in command.text
+        assert "Golden screen: Command Center" in command.text
+        assert "Forge Runners" in command.text
+
+        assert review.status == 200
+        assert 'data-screen-archetype="review-queue"' in review.text
+        assert 'data-screen-profile="sage"' in review.text
+        assert 'action="/screen-review-queue"' in review.text
+        assert 'hx-get="/screen-review-queue"' in review.text
+        assert "Golden screen: Review Queue" in review.text
+        assert "VectorShop" in review.text
+
+    @pytest.mark.asyncio
+    async def test_remaining_golden_screen_routes_expose_profile_and_archetype_metadata(
+        self, showcase_app
+    ) -> None:
+        async with TestClient(showcase_app) as client:
+            agent = await client.get("/screen-agent-run-monitor")
+            product = await client.get("/screen-product-docs-home")
+
+        assert agent.status == 200
+        assert 'data-screen-archetype="agent-run-monitor"' in agent.text
+        assert 'data-screen-profile="signal"' in agent.text
+        assert "Golden screen: Agent Run Monitor" in agent.text
+        assert "Run 8729: procurement policy review" in agent.text
+        assert "chirpui-timeline" in agent.text
+        assert "chirpui-result-collection" in agent.text
+
+        assert product.status == 200
+        assert 'data-screen-archetype="product-docs-home"' in product.text
+        assert 'data-screen-profile="ember"' in product.text
+        assert "Signal Loom" in product.text
+        assert "Open screen catalog" in product.text
+        assert "chirpui-logo-cloud" in product.text
+        assert "chirpui-cta-band" in product.text
 
     def test_support_shell_uses_workspace_shell_instead_of_page_owned_shell_grid(self) -> None:
         support_template = (

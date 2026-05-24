@@ -11,8 +11,8 @@ Historical migration plan. The broad migration described here is complete:
 Use this file as background only. For the current runtime split and public
 controller/store/event contract, see:
 
-- `docs/ALPINE-MAGICS.md`
-- `docs/ANTI-FOOTGUNS.md`
+- `docs/components/alpine-magics.md`
+- `docs/safety/anti-footguns.md`
 - Chirp's `site/content/docs/guides/alpine.md`
 
 ## Goal
@@ -221,7 +221,7 @@ Alpine.js magics (`$refs`, `$id`, `$dispatch`, `$nextTick`) have been adopted ac
 - **$id**: Unique IDs for dropdown and tabs (avoids collisions when multiple instances exist)
 - **$dispatch**: `chirpui:dropdown-selected`, `chirpui:tab-changed`, `chirpui:tray-closed`, `chirpui:modal-closed` for app-level handling
 
-See [ALPINE-MAGICS.md](ALPINE-MAGICS.md) for full documentation.
+See [ALPINE-MAGICS.md](../../components/alpine-magics.md) for full documentation.
 
 ---
 

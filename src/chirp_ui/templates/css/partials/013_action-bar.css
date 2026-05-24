@@ -16,6 +16,9 @@
     background: none;
     border: none;
     font: inherit;
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     cursor: pointer;
     border-radius: var(--chirpui-radius-sm);
@@ -59,6 +62,7 @@ a.chirpui-action-bar__item {
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     color: inherit;
 }
-

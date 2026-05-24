@@ -1,6 +1,6 @@
 from tests.helpers import REPO_ROOT
 
-PROOF = REPO_ROOT / "docs" / "WORKSPACE-SHELL-PROOF.md"
+PROOF = REPO_ROOT / "docs" / "evidence" / "workspace-shell-proof.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
 BASELINE = REPO_ROOT / "examples/component-showcase/templates/showcase/operations_shell.html"
 WORKSPACE = (
@@ -22,7 +22,7 @@ def test_workspace_shell_proof_names_comparison_surfaces() -> None:
     ]:
         assert required in text
 
-    assert "[WORKSPACE-SHELL-PROOF.md](WORKSPACE-SHELL-PROOF.md)" in INDEX.read_text(
+    assert "[WORKSPACE-SHELL-PROOF.md](evidence/workspace-shell-proof.md)" in INDEX.read_text(
         encoding="utf-8"
     )
 

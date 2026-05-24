@@ -12,9 +12,11 @@
 
 {% call container(cls="ops-shell-page") %}
 {% call stack() %}
-{{ page_header("Operations workspace shell", subtitle="Layout-affinity payoff experiment for multi-rail, multi-shell, dense application UI.") }}
+{{ page_header(ops_screen_title | default("Operations workspace shell"), subtitle=ops_screen_subtitle | default("Layout-affinity payoff experiment for multi-rail, multi-shell, dense application UI.")) }}
 
 <div id="operations-shell-surface" class="ops-shell-surface"
+     data-screen-archetype="{{ ops_screen_archetype | default("operations-workspace") }}"
+     data-screen-profile="{{ ops_screen_profile | default("atlas") }}"
      x-data="{ pending: false }"
      x-bind:class="{ 'is-pending': pending }"
      x-on:htmx:before-request.window="if ($event.target.closest && $event.target.closest('#operations-shell-surface')) pending = true"
@@ -22,11 +24,11 @@
      x-on:htmx:response-error.window="pending = false">
 
 {% call command_bar(surface_variant="default", density="sm", wrap="wrap", aria_label="Operations workspace command controls", cls="ops-shell-command-bar") %}
-  <form id="ops-shell-controls" class="ops-shell-search" action="/operations-shell" method="get"
+  <form id="ops-shell-controls" class="ops-shell-search" action="{{ ops_route }}" method="get"
         data-chirpui-role="search"
         data-chirpui-pressure="flex"
         data-chirpui-affinity="fill"
-        hx-get="/operations-shell"
+        hx-get="{{ ops_route }}"
         hx-trigger="submit"
         hx-target="#operations-shell-surface"
         hx-select="#operations-shell-surface"
@@ -41,7 +43,7 @@
            value="{{ ops_query }}" placeholder="Search workloads, owners, regions, tags..."
            autocomplete="off"
            x-ref="opsQuery"
-           hx-get="/operations-shell"
+           hx-get="{{ ops_route }}"
            hx-trigger="input changed delay:120ms, search"
            hx-target="#operations-shell-frame"
            hx-select="#operations-shell-frame"
@@ -75,9 +77,9 @@
   </div>
 {% end %}
 
-{% call filter_bar("/operations-shell", attrs_map={
+{% call filter_bar(ops_route, attrs_map={
     "id": "ops-shell-filter-form",
-    "hx-get": "/operations-shell",
+    "hx-get": ops_route,
     "hx-trigger": "change delay:80ms from:select",
     "hx-target": "#operations-shell-surface",
     "hx-select": "#operations-shell-surface",

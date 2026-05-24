@@ -9,7 +9,7 @@ RECIPE = (
     / "showcase"
     / "_dense_object_chrome.html"
 )
-NAV_DOC = ROOT / "docs" / "NAVIGATION.md"
+NAV_DOC = ROOT / "docs" / "patterns" / "navigation.md"
 PLAN = ROOT / "docs" / "plans" / "done" / "PLAN-dense-object-chrome-next.md"
 
 

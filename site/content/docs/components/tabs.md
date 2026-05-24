@@ -23,4 +23,4 @@ use the `chirpuiTabs()` Alpine controller and escaped `data-tab-id` attributes.
 
 The full rendered contract, ARIA roles, htmx behavior, Alpine behavior, route
 tab semantics, and proof locations live in the canonical source guide:
-[`docs/TABS-ANATOMY.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/TABS-ANATOMY.md?plain=1).
+[`docs/components/tabs-anatomy.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/components/tabs-anatomy.md?plain=1).

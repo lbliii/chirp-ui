@@ -5,10 +5,11 @@ generated HTML, author CSS partials, generated CSS, HTMX attributes, Alpine
 hooks, packaged static behavior, and token-only theme CSS.
 
 Related: root `AGENTS.md`, `src/chirp_ui/AGENTS.md`,
-`docs/COMPOSITION.md`, `docs/PRIMITIVES.md`, `docs/LAYOUT.md`,
-`docs/UI-LAYERS.md`, `docs/CSS-OVERRIDE-SURFACE.md`,
-`docs/TRANSITIONS.md`, `docs/ALPINE-MAGICS.md`, `docs/HTMX-PATTERNS.md`,
-`docs/DND-FRAGMENT-ISLAND.md`.
+`docs/fundamentals/composition.md`, `docs/fundamentals/primitives.md`,
+`docs/fundamentals/layout.md`, `docs/fundamentals/ui-layers.md`,
+`docs/fundamentals/css-override-surface.md`,
+`docs/fundamentals/transitions.md`, `docs/components/alpine-magics.md`,
+`docs/components/htmx-patterns.md`, `docs/components/dnd-fragment-island.md`.
 
 Cross-cutting concerns active here: security and escaping, accessibility, visual
 and layout quality, agent grounding, release readiness.
@@ -44,7 +45,7 @@ against hidden script behavior, cascade bleed, utility drift, and stale CSS.
 - **Component CSS uses scoped envelopes when new or touched.** New component
   partials use `@layer chirpui.component` with an `@scope` boundary unless a
   documented exception applies. Evidence: `CLAUDE.md:94`,
-  `docs/VISION.md:70`.
+  `docs/strategy/vision.md:70`.
 - **Motion token checks are enforceable.** CSS transitions must use motion
   tokens; broader color, spacing, radius, z-index, and font-weight tokenization
   is a review expectation unless tests prove it. Evidence: `CLAUDE.md:90`,
@@ -54,7 +55,7 @@ against hidden script behavior, cascade bleed, utility drift, and stale CSS.
   `tests/test_template_css_contract.py`, `tests/test_registry_emits_parity.py`.
 - **Relationship resolvers stay parent-scoped.** Layout-affinity selectors must
   start from the owning parent and avoid arbitrary descendants. Evidence:
-  `docs/LAYOUT-AFFINITY-RESOLVER-AUTHORING.md:90`.
+  `docs/patterns/layout-affinity-resolver-authoring.md:90`.
 
 ## Contract Checklist
 
@@ -74,9 +75,9 @@ When this domain changes, check:
 - `src/chirp_ui/templates/islands/*.js`, `tests/js/*`, `package.json`,
   `vitest.config.js` — packaged island behavior, static asset paths, and
   Vitest proof.
-- `docs/COMPONENT-OPTIONS.md`, anatomy docs, `docs/HTMX-PATTERNS.md`,
-  `docs/ALPINE-MAGICS.md`, `docs/RESPONSIVE.md`, `docs/RELATIONSHIP-CONTRACTS.md`
-  — public guidance.
+- `docs/COMPONENT-OPTIONS.md`, anatomy docs, `docs/components/htmx-patterns.md`,
+  `docs/components/alpine-magics.md`, `docs/fundamentals/responsive.md`,
+  `docs/fundamentals/relationship-contracts.md` — public guidance.
 - `examples/component-showcase/`, `examples/static-showcase/`, browser fixtures
   — realistic rendered states.
 - `tests/test_components.py`, `tests/test_template_css_contract.py`,
@@ -113,10 +114,12 @@ When this domain changes, check:
 `tests/test_strict_undefined.py`, `tests/test_alpine.py`, `tests/js/*`,
 `tests/browser/*`.
 
-**Docs:** `docs/COMPOSITION.md`, `docs/PRIMITIVES.md`, `docs/LAYOUT.md`,
-`docs/UI-LAYERS.md`, `docs/CSS-OVERRIDE-SURFACE.md`, `docs/TRANSITIONS.md`,
-`docs/ALPINE-MAGICS.md`, `docs/HTMX-PATTERNS.md`,
-`docs/DND-FRAGMENT-ISLAND.md`, `docs/RELATIONSHIP-CONTRACTS.md`.
+**Docs:** `docs/fundamentals/composition.md`,
+`docs/fundamentals/primitives.md`, `docs/fundamentals/layout.md`,
+`docs/fundamentals/ui-layers.md`, `docs/fundamentals/css-override-surface.md`,
+`docs/fundamentals/transitions.md`, `docs/components/alpine-magics.md`,
+`docs/components/htmx-patterns.md`, `docs/components/dnd-fragment-island.md`,
+`docs/fundamentals/relationship-contracts.md`.
 
 **Agent artifacts:** none owned; consult
 `.claude/agents/accessibility-auditor.md`, `.claude/agents/lead-designer.md`,

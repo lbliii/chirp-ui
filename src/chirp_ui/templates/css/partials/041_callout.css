@@ -72,7 +72,9 @@
         .chirpui-callout__title {
             font-weight: var(--chirpui-ui-font-weight-semibold);
             font-size: var(--chirpui-font-base);
+            line-height: var(--chirpui-line-height-tight);
             margin-bottom: 0;
+            overflow-wrap: anywhere;
         }
 
         .chirpui-callout__header-actions {
@@ -84,6 +86,9 @@
 
         .chirpui-callout__body {
             font-size: var(--chirpui-font-sm);
+            line-height: var(--chirpui-line-height-normal);
+            color: var(--chirpui-text);
+            overflow-wrap: anywhere;
         }
 
         .chirpui-callout__body > :where(:not(script, style, template)) {

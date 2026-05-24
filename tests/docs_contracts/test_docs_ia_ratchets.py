@@ -1,7 +1,7 @@
 from tests.helpers import REPO_ROOT
 
 ROOT = REPO_ROOT
-ROADMAP = ROOT / "docs" / "ROADMAP-pre-1.0.md"
+ROADMAP = ROOT / "docs" / "strategy" / "roadmap-pre-1.0.md"
 PLANS = ROOT / "docs" / "plans"
 
 EXPECTED_ACTIVE_PLANS = [
@@ -11,6 +11,7 @@ EXPECTED_ACTIVE_PLANS = [
     "PLAN-css-scope-and-layer.md",
     "PLAN-page-actions-primitive.md",
     "PLAN-pre-1.0-productization-saga.md",
+    "PLAN-visual-taste-floor-saga.md",
 ]
 
 
@@ -28,7 +29,7 @@ def test_active_plan_count_stays_intentional() -> None:
     active_plans = sorted(path.name for path in PLANS.glob("PLAN-*.md"))
 
     assert active_plans == EXPECTED_ACTIVE_PLANS
-    assert len(active_plans) <= 6
+    assert len(active_plans) <= 7
 
 
 def test_archived_plans_do_not_claim_active_or_draft_status() -> None:
@@ -163,7 +164,7 @@ def test_application_chrome_plan_links_reference_scenario_queue() -> None:
 
 def test_navigation_contract_records_application_chrome_current_status() -> None:
     """Canonical navigation docs should keep app chrome recipe-first until reference implementations repeat gaps."""
-    text = (ROOT / "docs" / "NAVIGATION.md").read_text(encoding="utf-8")
+    text = (ROOT / "docs" / "patterns" / "navigation.md").read_text(encoding="utf-8")
     section = text.split("## Application Chrome System", 1)[1].split("## ARIA And Semantics", 1)[0]
     normalized = " ".join(section.split())
 

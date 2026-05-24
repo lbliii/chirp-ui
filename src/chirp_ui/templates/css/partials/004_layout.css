@@ -50,7 +50,7 @@
     align-items: center;
 }
 
-/* Fixed-track presets for grid() — see docs/LAYOUT-PRESETS.md (aliases: split-2-1-1, split-thirds, …) */
+/* Fixed-track presets for grid() — see docs/fundamentals/layout-presets.md (aliases: split-2-1-1, split-thirds, …) */
 .chirpui-grid.chirpui-grid--preset-bento-211 {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
 }
@@ -119,7 +119,7 @@
 
 /* --------------------------------------------------------------------------
    Frame — structural layouts (hero, sidebar, equal columns). Not auto-fit flow.
-   Use grid() for wrapping card/tile lists. See docs/LAYOUT-GRIDS-AND-FRAMES.md.
+   Use grid() for wrapping card/tile lists. See docs/fundamentals/layout-grids-and-frames.md.
    -------------------------------------------------------------------------- */
 
 .chirpui-frame {

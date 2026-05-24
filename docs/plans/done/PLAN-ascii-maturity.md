@@ -44,7 +44,7 @@ disabled/state semantics, reduced-motion behavior, and a focused browser gauntle
 for composites whose behavior could not be proven by render tests alone.
 
 Unpromoted ASCII/TUI components remain `experimental` in the manifest and use
-the `ASCII maturity pass` track in `docs/PUBLIC-SURFACE-STABILIZATION.md`.
+the `ASCII maturity pass` track in `docs/safety/public-surface-stabilization.md`.
 Static display primitives can promote first because they have no keyboard,
 disabled-state, mutable data, or reduced-motion contract beyond decorative glyph
 handling.

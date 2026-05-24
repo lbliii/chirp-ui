@@ -65,6 +65,7 @@
         color: var(--chirpui-accent);
         font-size: var(--chirpui-ui-lg);
         font-weight: var(--chirpui-ui-font-weight-semibold);
+        font-variant-numeric: tabular-nums;
         line-height: var(--chirpui-line-height-tight);
     }
 
@@ -94,6 +95,7 @@
     :scope .chirpui-story-card__summary {
         color: var(--chirpui-text-muted);
         font-size: var(--chirpui-ui-sm);
+        line-height: var(--chirpui-line-height-normal);
     }
 
     :scope .chirpui-story-card__summary :where(p) {
@@ -107,6 +109,7 @@
         gap: var(--chirpui-spacing-sm);
         color: var(--chirpui-text-muted);
         font-size: var(--chirpui-ui-sm);
+        line-height: var(--chirpui-line-height-normal);
     }
 
     :scope .chirpui-story-card__cta {

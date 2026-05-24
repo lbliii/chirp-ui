@@ -1,8 +1,8 @@
 from tests.helpers import REPO_ROOT
 
 ROOT = REPO_ROOT
-ANATOMY = ROOT / "docs" / "DESIGN-interactive-anatomy.md"
-PUBLIC_SURFACE = ROOT / "docs" / "PUBLIC-SURFACE-STABILIZATION.md"
+ANATOMY = ROOT / "docs" / "decisions" / "interactive-anatomy.md"
+PUBLIC_SURFACE = ROOT / "docs" / "safety" / "public-surface-stabilization.md"
 INDEX = ROOT / "docs" / "INDEX.md"
 
 
@@ -40,7 +40,7 @@ def test_public_surface_promotions_route_behavioral_work_through_ledger() -> Non
     text = PUBLIC_SURFACE.read_text(encoding="utf-8")
     promotion = text.split("## Promotion Rule", 1)[1].split("## Proof Tracks", 1)[0]
 
-    assert "[DESIGN-interactive-anatomy.md](DESIGN-interactive-anatomy.md)" in promotion
+    assert "[DESIGN-interactive-anatomy.md](../decisions/interactive-anatomy.md)" in promotion
     for required in [
         "Interactive, shell-adjacent, theme-hook, and behavior-bearing promotions",
         "native semantics",
@@ -54,6 +54,6 @@ def test_public_surface_promotions_route_behavioral_work_through_ledger() -> Non
 
 
 def test_interactive_anatomy_design_doc_is_indexed() -> None:
-    assert "[DESIGN-interactive-anatomy.md](DESIGN-interactive-anatomy.md)" in (
+    assert "[DESIGN-interactive-anatomy.md](decisions/interactive-anatomy.md)" in (
         INDEX.read_text(encoding="utf-8")
     )

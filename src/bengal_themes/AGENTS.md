@@ -4,9 +4,9 @@ You keep the packaged Bengal theme installable, useful, and distinct from the
 Chirp UI component registry. This domain owns `chirp-theme` as a real theme
 package, not a private fork of component CSS.
 
-Related: root `AGENTS.md`, `docs/CHIRP-THEME.md`,
-`docs/CHIRP-THEME-PARITY-MATRIX.md`, `docs/BENGAL-THEME-ANATOMY.md`,
-`docs/APP-THEME.md`, `src/chirp_ui/templates/AGENTS.md`.
+Related: root `AGENTS.md`, `docs/theming/chirp-theme.md`,
+`docs/theming/chirp-theme-parity-matrix.md`, `docs/theming/bengal-theme-anatomy.md`,
+`docs/theming/app-theme.md`, `src/chirp_ui/templates/AGENTS.md`.
 
 Cross-cutting concerns active here: visual and layout quality, accessibility,
 agent grounding, release readiness, security and escaping.
@@ -33,25 +33,26 @@ parallel design systems.
   `tests/test_bengal_theme_package.py:580`.
 - **Theme controls are not component macros.** Bengal theme controls are
   packaged theme hooks, not registry-owned Chirp UI component contracts.
-  Evidence: `docs/BENGAL-THEME-ANATOMY.md:3`.
+  Evidence: `docs/theming/bengal-theme-anatomy.md:3`.
 - **Use component contracts before private forks.** Repeated app components
   belong in Chirp UI registry, not hidden in theme partials. Evidence:
-  `docs/BENGAL-THEME-ANATOMY.md:32`.
+  `docs/theming/bengal-theme-anatomy.md:32`.
 - **Token parity beats selector forks.** Theme CSS should use `--chirpui-*`
   tokens and avoid private component skins. Evidence:
-  `docs/CHIRP-THEME-PARITY-MATRIX.md:59`, `docs/APP-THEME.md:54`.
+  `docs/theming/chirp-theme-parity-matrix.md:59`, `docs/theming/app-theme.md:54`.
 - **Theme packs remain token-only.** Atlas, Ember, and Sage are token-only app
   theme packs; they do not replace the Bengal theme package. Evidence:
-  `src/chirp_ui/theme_packs.py:43`, `docs/APP-THEME.md:38`.
+  `src/chirp_ui/theme_packs.py:43`, `docs/theming/app-theme.md:38`.
 - **Static-site controls keep stable hooks.** Appearance, search, mobile nav,
   TOC, and docs tabs expose documented hooks and globals. Evidence:
-  `docs/BENGAL-THEME-ANATOMY.md:68`, `docs/BENGAL-THEME-ANATOMY.md:126`.
+  `docs/theming/bengal-theme-anatomy.md:68`, `docs/theming/bengal-theme-anatomy.md:126`.
 - **Assets remain packaged and inspectable.** Favicons, manifests, images, and
   theme assets stay under `src/bengal_themes/chirp_theme/assets/`. Evidence:
   `src/bengal_themes/chirp_theme/assets/site.webmanifest`.
-- **Theme CSS loads through one entrypoint.** `assets/css/style.css` imports
-  provider CSS and transitions before theme overrides, and templates must not
-  link a nonexistent `js/bundle.js`. Evidence: `docs/CHIRP-THEME.md:132`,
+- **Theme CSS loads through one entrypoint.** `base.html` emits declared
+  `chirp_ui` provider assets with `library_asset_tags()`, and
+  `assets/css/style.css` stays theme-owned. Templates must not link a
+  nonexistent `js/bundle.js`. Evidence: `docs/theming/chirp-theme.md:132`,
   `tests/test_bengal_theme_package.py:560`.
 
 ## Contract Checklist
@@ -66,8 +67,8 @@ When this domain changes, check:
   independence.
 - `src/bengal_themes/chirp_theme/assets/` — filenames, package inclusion,
   documented hooks, JS globals, CSS token usage, and icon references.
-- `docs/CHIRP-THEME.md`, `docs/CHIRP-THEME-PARITY-MATRIX.md`,
-  `docs/BENGAL-THEME-ANATOMY.md`, `site/content/docs/theming/` — public theme
+- `docs/theming/chirp-theme.md`, `docs/theming/chirp-theme-parity-matrix.md`,
+  `docs/theming/bengal-theme-anatomy.md`, `site/content/docs/theming/` — public theme
   guidance and site mirrors.
 - `tests/test_bengal_theme_package.py`,
   `tests/evidence/test_bengal_library_contract_plan.py`, `tests/test_theme_token_parity.py`,
@@ -108,8 +109,8 @@ When this domain changes, check:
 Bengal-related portions of `tests/test_docs_site.py`,
 `tests/browser/test_bengal_docs_chrome.py`.
 
-**Docs:** `docs/CHIRP-THEME.md`, `docs/CHIRP-THEME-PARITY-MATRIX.md`,
-`docs/BENGAL-THEME-ANATOMY.md`, `docs/APP-THEME.md`,
+**Docs:** `docs/theming/chirp-theme.md`, `docs/theming/chirp-theme-parity-matrix.md`,
+`docs/theming/bengal-theme-anatomy.md`, `docs/theming/app-theme.md`,
 `site/content/docs/theming/`.
 
 **Agent artifacts:** none owned; consult `.claude/agents/lead-designer.md` and

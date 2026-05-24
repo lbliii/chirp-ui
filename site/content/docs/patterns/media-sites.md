@@ -14,7 +14,7 @@ catalog, explain availability, and keep users oriented across watched, live,
 upcoming, restricted, and profile-specific states.
 
 Use the canonical repository guide for the full recipe set:
-[`docs/MEDIA-SITE-PATTERNS.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/MEDIA-SITE-PATTERNS.md?plain=1).
+[`docs/patterns/media-site-patterns.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/patterns/media-site-patterns.md?plain=1).
 
 ## Use This When
 

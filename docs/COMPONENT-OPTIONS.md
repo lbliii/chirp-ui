@@ -2,7 +2,7 @@
 
 Valid variant, size, and option values for chirp-ui components. When **strict mode** is enabled (e.g. `app.debug=True` with Chirp's `use_chirp_ui`), invalid values log warnings and fall back to defaults.
 
-Prefer composition primitives and component slots over legacy helper-class chains when authoring templates. See [Primitive Vocabulary](PRIMITIVES.md) for the blessed primitive set and the compatibility-helper boundary.
+Prefer composition primitives and component slots over legacy helper-class chains when authoring templates. See [Primitive Vocabulary](fundamentals/primitives.md) for the blessed primitive set and the compatibility-helper boundary.
 
 See [Strict mode](#strict-mode) for setup.
 
@@ -190,13 +190,13 @@ core script.
 | `dnd_list`, `dnd_item`, `dnd_handle`, `dnd_drop_indicator` | Row drag-drop primitives |
 | `dnd_board`, `dnd_column`, `dnd_card` | Kanban board primitives |
 
-See [DND-FRAGMENT-ISLAND.md](DND-FRAGMENT-ISLAND.md) for cookbook examples and anti-footgun guidance.
+See [DND-FRAGMENT-ISLAND.md](components/dnd-fragment-island.md) for cookbook examples and anti-footgun guidance.
 
 ---
 
 ## Dashboard Primitives
 
-Dashboard-grade interaction components. See [DASHBOARD-MATURITY-CONTRACT.md](DASHBOARD-MATURITY-CONTRACT.md) for usage principles.
+Dashboard-grade interaction components. See [DASHBOARD-MATURITY-CONTRACT.md](components/dashboard-maturity-contract.md) for usage principles.
 
 | Component | Description |
 |-----------|-------------|
@@ -372,7 +372,7 @@ Responsive layout grid for cards and sections.
 | `preset` | `bento-211` or `thirds` for fixed-track dashboard cells (with `block()` spans) |
 | `cls` | Optional additional classes |
 
-Use `grid()` for **flow** — repeating items that wrap. Prefer `gap="md"` for page content and `gap="sm"` for denser internal layouts. For hero / sidebar **regions** with explicit columns, use `frame()` and see [LAYOUT-GRIDS-AND-FRAMES.md](LAYOUT-GRIDS-AND-FRAMES.md).
+Use `grid()` for **flow** — repeating items that wrap. Prefer `gap="md"` for page content and `gap="sm"` for denser internal layouts. For hero / sidebar **regions** with explicit columns, use `frame()` and see [LAYOUT-GRIDS-AND-FRAMES.md](fundamentals/layout-grids-and-frames.md).
 
 ### frame
 
@@ -384,7 +384,7 @@ Structural two-column layouts (explicit `grid-template-columns`). Pass **two dir
 | `gap` | `sm`, `md`, `lg` |
 | `cls` | Optional additional classes |
 
-Override tracks per page with CSS variables on the element (e.g. `--chirpui-frame-hero-columns`). Full detail: [LAYOUT-GRIDS-AND-FRAMES.md](LAYOUT-GRIDS-AND-FRAMES.md).
+Override tracks per page with CSS variables on the element (e.g. `--chirpui-frame-hero-columns`). Full detail: [LAYOUT-GRIDS-AND-FRAMES.md](fundamentals/layout-grids-and-frames.md).
 
 ### stack
 
@@ -1708,11 +1708,11 @@ For custom components with inline variants:
 
 ## Typography
 
-chirp-ui uses separate **UI** and **Prose** typography scales. Override `--chirpui-ui-*` and `--chirpui-prose-*` tokens to tune component vs. document typography. See [docs/TYPOGRAPHY.md](TYPOGRAPHY.md) for token reference and override examples.
+chirp-ui uses separate **UI** and **Prose** typography scales. Override `--chirpui-ui-*` and `--chirpui-prose-*` tokens to tune component vs. document typography. See [docs/fundamentals/typography.md](fundamentals/typography.md) for token reference and override examples.
 
 ## Tokens, Motion, and Elevation
 
-For the full token contract (tiering, theme precedence, motion, state, and elevation mapping), see [docs/TOKENS.md](TOKENS.md).
+For the full token contract (tiering, theme precedence, motion, state, and elevation mapping), see [docs/fundamentals/tokens.md](fundamentals/tokens.md).
 
 ## Theme and Style Presets
 

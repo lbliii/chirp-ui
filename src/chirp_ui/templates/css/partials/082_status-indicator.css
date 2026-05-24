@@ -11,6 +11,8 @@
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
+    font-variant-numeric: tabular-nums;
     transition: background var(--chirpui-transition), color var(--chirpui-transition);
 }
 
@@ -27,7 +29,8 @@
 }
 
 .chirpui-status-indicator__label {
-    line-height: 1;
+    line-height: var(--chirpui-line-height-tight);
+    overflow-wrap: anywhere;
 }
 
 /* Status variants - minimal styling, override with themes */
@@ -98,4 +101,3 @@
 .chirpui-status-indicator--on-accent .chirpui-status-indicator__dot {
     box-shadow: 0 0 0 2px var(--chirpui-surface);
 }
-

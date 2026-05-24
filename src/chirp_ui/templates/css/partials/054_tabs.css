@@ -4,8 +4,10 @@
 
 .chirpui-tabs {
     display: flex;
+    flex-wrap: wrap;
     gap: 0;
     border-bottom: 1px solid var(--chirpui-border);
+    min-inline-size: 0;
 }
 
 .chirpui-tab {
@@ -15,8 +17,11 @@
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     transition: border-color var(--chirpui-transition);
     cursor: pointer;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-tab:hover {
@@ -39,4 +44,3 @@
     cursor: not-allowed;
     pointer-events: none;
 }
-

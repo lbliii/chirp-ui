@@ -6,11 +6,11 @@ Depends on:
 
 - [PLAN-navigation-contract-application.md](done/PLAN-navigation-contract-application.md)
 - [PLAN-dense-object-chrome-next.md](done/PLAN-dense-object-chrome-next.md)
-- [../UI-LAYERS.md](../UI-LAYERS.md)
-- [../NAVIGATION.md](../NAVIGATION.md)
-- [../DENSE-NAVIGATION-RECIPES.md](../DENSE-NAVIGATION-RECIPES.md)
-- [../RESPONSIVE.md](../RESPONSIVE.md)
-- [../VISUAL-AUDIT-SHOWCASE.md](../VISUAL-AUDIT-SHOWCASE.md)
+- [../UI-LAYERS.md](../fundamentals/ui-layers.md)
+- [../NAVIGATION.md](../patterns/navigation.md)
+- [../DENSE-NAVIGATION-RECIPES.md](../patterns/dense-navigation-recipes.md)
+- [../RESPONSIVE.md](../fundamentals/responsive.md)
+- [../VISUAL-AUDIT-SHOWCASE.md](../patterns/visual-audit-showcase.md)
 
 ## Goal
 
@@ -107,11 +107,11 @@ helpers around shell response ownership and page actions. It is not ready for a 
 
 | Dependency | Evidence Ledger | Shell Readiness | Open Gap | Next Action |
 |---|---|---|---|---|
-| Modal and confirm surfaces | [MODAL-ANATOMY.md](../MODAL-ANATOMY.md) | Native dialog and overlay contracts are stable enough for shell recipes. | Native dialogs and store-backed overlays intentionally have different event models. | Compose them explicitly; do not hide both behind one shell slot. |
-| Dropdown command surfaces | [DROPDOWN-ANATOMY.md](../DROPDOWN-ANATOMY.md) | Command menus, selects, and split actions are stable enough for page tools. | Menu/split roving-arrow navigation is not published; select has stronger keyboard behavior than command menus. | Use dropdowns for actions/selects now; avoid claiming full menu-button keyboard parity until implemented and tested. |
-| Drawer and tray fallback chrome | [DRAWER-TRAY-ANATOMY.md](../DRAWER-TRAY-ANATOMY.md) | Native drawer and store-backed tray contracts are stable enough for rail-to-drawer/tray recipes. | A tray close browser test still records an app-shell topbar hit-target anomaly. | Keep browser proof in-context before promoting any responsive shell fallback helper. |
-| Tabs and route tabs | [TABS-ANATOMY.md](../TABS-ANATOMY.md) | Route tabs and tabbed layout are stable enough for URL-backed local views. | Route tabs are navigation, not ARIA tab widgets; roving-arrow tablist keyboard behavior is not published. | Keep route-tab shell recipes link-native and avoid tab-widget claims. |
-| Bengal theme controls | [BENGAL-THEME-ANATOMY.md](../BENGAL-THEME-ANATOMY.md) | Packaged theme chrome is strong evidence for shell pressure and page actions. | Theme selectors are not registry APIs; Bengal docs chrome is only a partial app-shell proving ground. | Promote smaller repeated contracts only after another reference implementation repeats the same gap. |
+| Modal and confirm surfaces | [MODAL-ANATOMY.md](../components/modal-anatomy.md) | Native dialog and overlay contracts are stable enough for shell recipes. | Native dialogs and store-backed overlays intentionally have different event models. | Compose them explicitly; do not hide both behind one shell slot. |
+| Dropdown command surfaces | [DROPDOWN-ANATOMY.md](../components/dropdown-anatomy.md) | Command menus, selects, and split actions are stable enough for page tools. | Menu/split roving-arrow navigation is not published; select has stronger keyboard behavior than command menus. | Use dropdowns for actions/selects now; avoid claiming full menu-button keyboard parity until implemented and tested. |
+| Drawer and tray fallback chrome | [DRAWER-TRAY-ANATOMY.md](../components/drawer-tray-anatomy.md) | Native drawer and store-backed tray contracts are stable enough for rail-to-drawer/tray recipes. | A tray close browser test still records an app-shell topbar hit-target anomaly. | Keep browser proof in-context before promoting any responsive shell fallback helper. |
+| Tabs and route tabs | [TABS-ANATOMY.md](../components/tabs-anatomy.md) | Route tabs and tabbed layout are stable enough for URL-backed local views. | Route tabs are navigation, not ARIA tab widgets; roving-arrow tablist keyboard behavior is not published. | Keep route-tab shell recipes link-native and avoid tab-widget claims. |
+| Bengal theme controls | [BENGAL-THEME-ANATOMY.md](../theming/bengal-theme-anatomy.md) | Packaged theme chrome is strong evidence for shell pressure and page actions. | Theme selectors are not registry APIs; Bengal docs chrome is only a partial app-shell proving ground. | Promote smaller repeated contracts only after another reference implementation repeats the same gap. |
 
 Cross-ledger primitive candidates:
 
@@ -230,37 +230,20 @@ Decision after search:
 
 Status: implemented as test evidence only, no public API authorized.
 
-Fixture:
+Fixture: route: `/linked-nav-candidate`, template
+`tests/browser/templates/linked_nav_candidate_page.html`, browser proof
+`tests/browser/test_linked_nav_candidate.py`.
 
-- route: `/linked-nav-candidate`
-- template: `tests/browser/templates/linked_nav_candidate_page.html`
-- browser proof: `tests/browser/test_linked_nav_candidate.py`
+Proof and boundary:
 
-What the fixture proves:
-
-- Existing `sidebar`, `sidebar_section`, and `sidebar_link` can provide broad
-  app-shell navigation while `nav_tree(branch_mode="linked")` provides a
-  contextual linked branch hierarchy inside the same sidebar.
-- Linked branch parents render as route links, not native disclosure summaries.
-- Children render only when the server marks a branch `open=true`; closed
-  branch children are omitted from the rendered tree.
-- Active child links, no-href groups, branch badges, and long child labels can
-  render in the private sidebar fixture without document-level horizontal
-  overflow.
-- The same linked tree can render inside a phone drawer fallback with existing
-  `drawer` and `drawer_trigger` primitives, preserving branch links,
-  server-opened children, active child state, omitted closed children, and focus
-  return.
-
-What the fixture does not prove:
-
-- It does not authorize new `nav_tree` parameters, sidebar branch macros,
-  emitted classes, CSS, manifest changes, generated docs, or a docs-shell
-  macro.
-- It does not prove that active descendants, child-count metadata, compact
-  branch/leaf rhythm, or mobile fallback need a new public contract.
-- It does not count as qualifying implementation evidence until it records a
-  repeated gap inside a scenario-complete reference implementation.
+| Area | Finding |
+|---|---|
+| Existing primitives | `sidebar`, `sidebar_section`, and `sidebar_link` can provide broad shell navigation while `nav_tree(branch_mode="linked")` provides contextual linked branch hierarchy. |
+| Branch behavior | Linked branch parents render as route links, not native disclosure summaries; children render when the server marks a branch `open=true`; closed children are omitted. |
+| Stress cases | Active child links, no-href groups, branch badges, and long child labels render without document-level horizontal overflow. |
+| Phone fallback | The same linked tree works in a phone drawer fallback with `drawer` and `drawer_trigger`, preserving focus return. |
+| Not authorized | The fixture does not authorize new `nav_tree` parameters, sidebar branch macros, emitted classes, CSS, manifest changes, generated docs, or a docs-shell macro. |
+| Not proven | It does not prove that active descendants, child-count metadata, compact branch/leaf rhythm, or mobile fallback need a new public contract, and does not count as qualifying implementation evidence. |
 
 Fixture decision:
 
@@ -289,16 +272,10 @@ it does not prove a public `nav_tree` or `sidebar` API gap.
 | Long labels and overflow | Long child labels stay contained in the sidebar at 320px with no document overflow. | Compact branch/leaf rhythm remains visual proof, not a new API need. | Weak: current CSS holds for the fixture. |
 | Mobile fallback | The fixture proves phone-width containment and a phone drawer fallback with the same linked tree. | A future public contract would still need policy for when apps choose horizontal sidebar, drawer, or tray fallback. | Medium only if a second reference implementation repeats mobile fallback boilerplate. |
 
-Current gap classification:
-
-- Real gap: Chirp UI does not automatically derive active-descendant parent
-  state, richer child-count metadata, or mobile fallback policy for linked
-  branch navigation inside sidebars.
-- Not yet a promotion gap: the private fixture is still artificial, and the
-  existing composition renders the candidate without new API or CSS.
-- Practical next step: keep the fixture as regression/evidence, record the
-  remaining gap notes, then build or identify a scenario-complete reference
-  implementation that repeats the same linked-branch gap.
+Current gap classification: Real gap: Chirp UI does not automatically derive active-descendant
+parent state, richer child-count metadata, or mobile fallback policy for linked
+branch navigation inside sidebars. Not yet a promotion gap:
+the private fixture is still artificial, and the existing composition renders the candidate without new API or CSS.
 
 Next-slice options from this analysis:
 
@@ -313,44 +290,30 @@ Next-slice options from this analysis:
 
 Status: implemented as private browser evidence, no public API authorized.
 
-Fixture delta:
+Fixture delta: `tests/browser/templates/linked_nav_candidate_page.html` and
+`tests/browser/test_linked_nav_candidate.py` add `drawer` and `drawer_trigger`
+to the private composition.
 
-- template: `tests/browser/templates/linked_nav_candidate_page.html`
-- browser proof: `tests/browser/test_linked_nav_candidate.py`
-- existing primitives added to the private composition: `drawer` and
-  `drawer_trigger`
+Result: the fixture can hide the persistent sidebar at phone width, expose a
+drawer trigger without adding a shell/sidebar macro, and
+`nav_tree(branch_mode="linked")` keeps the same linked branch behavior inside
+the drawer. branch parents remain anchors, no `<summary>` disclosure appears, active children keep
+`aria-current="page"`, closed branch children remain omitted, long labels stay
+inside the open drawer at 320px without document-level horizontal overflow, the
+drawer closes with Escape, and returns focus to the trigger.
 
-What the mobile fallback stress proves:
-
-- The private linked-nav fixture can hide the persistent sidebar at phone width
-  and expose a drawer trigger without adding a shell/sidebar macro.
-- `nav_tree(branch_mode="linked")` keeps the same linked branch behavior inside
-  a left drawer: branch parents remain anchors, no `<summary>` disclosure
-  appears, active children keep `aria-current="page"`, and closed branch
-  children remain omitted.
-- Long linked-nav child labels stay inside the open drawer at 320px without
-  document-level horizontal overflow.
-- The existing drawer contract opens, closes with Escape, and returns focus to
-  the trigger in this navigation fallback.
-
-Decision:
-
-- This closes the private mobile fallback stress slice.
-- It weakens the case for an immediate public linked-sidebar primitive because
-  existing `sidebar`, `nav_tree(branch_mode="linked")`, `drawer`, and
-  `drawer_trigger` compose the candidate across desktop and phone contexts.
-- The remaining gap is policy and repetition, not render capability: another
-  independent reference implementation must repeat the same active-descendant,
-  richer count metadata, or responsive fallback boilerplate before promotion is
-  justified.
+Decision: this closes the private mobile fallback stress slice and weakens the
+case for an immediate public linked-sidebar primitive. The remaining gap is
+policy and repetition; another independent reference implementation must repeat
+the same active-descendant, richer count metadata, or responsive fallback
+boilerplate before promotion is justified.
 
 ### Private Linked Nav Gap Notes
 
 Status: recorded as investigation notes only, no public API authorized.
 
-The private fixture now proves render capability across desktop sidebar and
-phone drawer contexts. The remaining questions are narrower than the original
-candidate:
+The private fixture proves render capability across desktop sidebar and phone
+drawer contexts. Remaining questions:
 
 | Gap | Fixture Evidence | Current Decision |
 |---|---|---|
@@ -359,16 +322,11 @@ candidate:
 | Compact branch/leaf rhythm | Long labels, open children, and no-href groups stay contained in sidebar and drawer fixtures. | Treat rhythm as CSS/recipe evidence, not a macro parameter. |
 | Responsive fallback policy | Existing `sidebar`, `drawer`, and `drawer_trigger` compose a phone fallback. | Do not add a shell-owned responsive policy until reference implementations repeat the same sidebar-to-drawer boilerplate. |
 
-Practical guidance for the next reference implementation:
-
-- Start with `sidebar`, `sidebar_section`, `sidebar_link`,
-  `nav_tree(branch_mode="linked")`, `drawer`, and `drawer_trigger`.
-- Mark branches `open=true` server-side when children should render.
-- Treat active child state and parent branch emphasis as app data until repeated
-  reference implementations prove Chirp UI should derive it.
-- Use badges for visible counts first; promote richer count metadata only when
-  accessibility or IA needs cannot be handled by existing badge labels.
-- Record the exact repeated boilerplate before proposing a public primitive.
+Next reference implementation guidance: Start with `sidebar`,
+`sidebar_section`, `sidebar_link`, `nav_tree(branch_mode="linked")`, `drawer`,
+and `drawer_trigger`. Mark branches `open=true` server-side, treat active child
+state and parent emphasis as app data. Use badges for visible counts first.
+Record the exact repeated boilerplate before proposing a public primitive.
 
 Candidate contract questions:
 
@@ -429,7 +387,7 @@ Existing surfaces tried:
 
 | Surface | What it solves | Remaining gap |
 |---|---|---|
-| [SHELL-TABS-CONTRACT.md](../SHELL-TABS-CONTRACT.md) route-local helpers | Documents `HX-Target` branching for `main`, `page-root`, and local fragment targets. | Manual routes can still repeat small request-target and OOB inclusion helpers. |
+| [SHELL-TABS-CONTRACT.md](../components/shell-tabs-contract.md) route-local helpers | Documents `HX-Target` branching for `main`, `page-root`, and local fragment targets. | Manual routes can still repeat small request-target and OOB inclusion helpers. |
 | Filesystem mounted pages with `mount_pages()` | Lets Chirp's page-shell contract choose full page, page-root, and local block responses declaratively. | Does not cover hand-written route families that bypass filesystem pages. |
 | `shell_outlet_attrs()` and shell OOB regions | Provide stable shell targets and replacement points such as shell actions. | Route handlers still decide when a response owns shell-level OOB updates. |
 | `route_tabs` | Keeps local URL-backed views link-native and targets `#page-root`. | Does not decide whether the server should return full page chrome or only local content. |
@@ -506,7 +464,7 @@ branches without adding a shared helper:
 Current decision:
 
 - Keep `_is_hx_target()` and `_include_shell_actions_oob()` as fixture-local
-  examples of the documented [SHELL-TABS-CONTRACT.md](../SHELL-TABS-CONTRACT.md)
+  examples of the documented [SHELL-TABS-CONTRACT.md](../components/shell-tabs-contract.md)
   pattern.
 - Do not promote a public helper from two manual fixture route families; this
   is still close to Chirp routing/page composition and has not appeared in a
@@ -706,7 +664,7 @@ Reference implementation evidence intake:
 
 Reference scenario queue:
 
-- [../REFERENCE-IMPLEMENTATION-PLAYBOOK.md](../REFERENCE-IMPLEMENTATION-PLAYBOOK.md)
+- [../REFERENCE-IMPLEMENTATION-PLAYBOOK.md](../reference-implementations/playbook.md)
 - [../reference-implementations/README.md](../reference-implementations/README.md)
 - [../reference-implementations/PAGE-ACTIONS-AI-REFERENCE.md](../reference-implementations/PAGE-ACTIONS-AI-REFERENCE.md)
 - [../reference-implementations/LINKED-NAV-CATALOG-REFERENCE.md](../reference-implementations/LINKED-NAV-CATALOG-REFERENCE.md)
@@ -792,11 +750,11 @@ Next implementation rule:
 
 Add a thin bridge from canonical docs to the application chrome system:
 
-- `docs/NAVIGATION.md`: layer and rail/tray decision table.
-- `docs/UI-LAYERS.md`: vocabulary boundary, if needed.
+- `docs/patterns/navigation.md`: layer and rail/tray decision table.
+- `docs/fundamentals/ui-layers.md`: vocabulary boundary, if needed.
 - `site/content/docs/patterns/navigation.md`: published summary sourced from
   canonical docs.
-- `docs/DOCS-IA-MIGRATION.md`: published-page source map.
+- `docs/agents/docs-ia-migration.md`: published-page source map.
 
 Proof:
 
@@ -1090,10 +1048,10 @@ description or plan update:
 
 | Slice | Required Proof | Required Collateral |
 |---|---|---|
-| Docs bridge | docs source tests and `uv run poe build-docs-check` | `docs/NAVIGATION.md`, site pattern page, docs IA map |
+| Docs bridge | docs source tests and `uv run poe build-docs-check` | `docs/patterns/navigation.md`, site pattern page, docs IA map |
 | Rail-to-tray recipe | render semantics plus browser proof at 320, 390, 768, 1024, and 1280 | recipe fixture/example, responsive notes, focused tests |
 | Chrome gauntlet | browser family checks for context, primary action, command focus, route-tab scroll, badges, and overflow | browser fixtures, test coverage, visual audit references |
-| Rhythm audit | visual-audit docs/tests and browser proof when markup changes | `docs/VISUAL-AUDIT-SHOWCASE.md`, visual audit page when needed |
+| Rhythm audit | visual-audit docs/tests and browser proof when markup changes | `docs/patterns/visual-audit-showcase.md`, visual audit page when needed |
 | Bengal parity | theme package tests plus browser proof for layout/focus changes | Bengal anatomy docs, theme parity docs, package data checks |
 | Composite promotion | full component contract proof | descriptor, macro, CSS partial, generated CSS, manifest, generated options, docs, examples, browser proof, changelog |
 

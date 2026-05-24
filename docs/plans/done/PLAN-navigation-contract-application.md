@@ -2,11 +2,11 @@
 
 Status: shipped and archived
 Date: 2026-05-03
-Depends on: [PLAN-navigation-density-study.md](done/PLAN-navigation-density-study.md)
+Depends on: [PLAN-navigation-density-study.md](PLAN-navigation-density-study.md)
 
 Progress:
 
-- Phase 1 accepted: `docs/NAVIGATION.md` is the canonical repository guidance.
+- Phase 1 accepted: `docs/patterns/navigation.md` is the canonical repository guidance.
 - Phase 2 accepted: component showcase includes a dense object-navigation example
   composed from existing primitives.
 - Phase 3 accepted: `breadcrumbs(..., overflow="collapse", max_items=4)` ships
@@ -65,7 +65,7 @@ launchers from being modeled as the same thing.
 
 ## Phase 1: Canonical Navigation Guidance
 
-Create `docs/NAVIGATION.md` and publish or mirror the relevant content into the
+Create `docs/patterns/navigation.md` and publish or mirror the relevant content into the
 site docs if the app-shell docs are the canonical site entrypoint.
 
 Content:
@@ -92,7 +92,7 @@ Content:
 
 Files:
 
-- `docs/NAVIGATION.md`
+- `docs/patterns/navigation.md`
 - `docs/INDEX.md`
 - likely `site/content/docs/app-shell/_index.md` or a new site docs page
 
@@ -141,7 +141,7 @@ Proof:
 
 Collateral:
 
-- `docs/NAVIGATION.md` should cite the example.
+- `docs/patterns/navigation.md` should cite the example.
 - `site/content/docs/app-shell/_index.md` can link to it if site docs publish
   examples.
 
@@ -195,8 +195,8 @@ Proof:
 
 Collateral:
 
-- `docs/NAVIGATION.md`
-- `docs/RESPONSIVE.md`
+- `docs/patterns/navigation.md`
+- `docs/fundamentals/responsive.md`
 - examples/showcase
 - changelog fragment if behavior ships
 
@@ -235,7 +235,7 @@ Proof:
 Collateral:
 
 - component docs
-- `docs/NAVIGATION.md`
+- `docs/patterns/navigation.md`
 - examples/showcase
 - changelog fragment if public behavior changes
 
@@ -309,7 +309,7 @@ Default decision: document composition rather than ship a composite.
 
 ## Done Criteria
 
-- Phase 1 is complete when `docs/NAVIGATION.md` is linked from `docs/INDEX.md`
+- Phase 1 is complete when `docs/patterns/navigation.md` is linked from `docs/INDEX.md`
   and site/app-shell docs point to the canonical guidance.
 - Phase 2 is complete when a dense navigation example exists using current
   primitives and responsive behavior has been inspected.

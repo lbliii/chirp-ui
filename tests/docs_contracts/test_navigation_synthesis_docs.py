@@ -1,9 +1,9 @@
 from tests.helpers import REPO_ROOT
 
 ROOT = REPO_ROOT
-SYNTHESIS_DOC = ROOT / "docs" / "DENSE-NAVIGATION-SYNTHESIS.md"
-RECIPES_DOC = ROOT / "docs" / "DENSE-NAVIGATION-RECIPES.md"
-NAVIGATION_DOC = ROOT / "docs" / "NAVIGATION.md"
+SYNTHESIS_DOC = ROOT / "docs" / "patterns" / "dense-navigation-synthesis.md"
+RECIPES_DOC = ROOT / "docs" / "patterns" / "dense-navigation-recipes.md"
+NAVIGATION_DOC = ROOT / "docs" / "patterns" / "navigation.md"
 INDEX_DOC = ROOT / "docs" / "INDEX.md"
 DENSE_OBJECT_PLAN = ROOT / "docs" / "plans" / "done" / "PLAN-dense-object-chrome-next.md"
 APPLICATION_CHROME_PLAN = ROOT / "docs" / "plans" / "PLAN-application-chrome-system.md"
