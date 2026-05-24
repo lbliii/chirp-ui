@@ -207,6 +207,9 @@ Tasks:
   Review Queue, Agent Run Monitor, and Product/Docs Home.
 - Treat every local visual workaround in those screens as evidence for a
   missing token, relationship, primitive, pattern, component, or recipe.
+- Use `docs/decisions/typography-rhythm-taste-floor.md` for the typography
+  pass: audit role, rhythm, measure, weight, metadata, metrics, logs, and
+  expressive display needs before proposing token changes.
 - Promote only repeated semantic moves; keep one-off polish in recipes.
 
 Acceptance:
@@ -217,6 +220,8 @@ Acceptance:
   widths.
 - Agent guidance can cite curated screen entries without inventing classes or
   macros.
+- Typography improvements are role-backed and screen-proven before they become
+  public token vocabulary.
 
 ### 4. Theme Authoring UX
 

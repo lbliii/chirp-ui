@@ -118,6 +118,7 @@ flowchart TD
 | Visual grammar | Rules for surfaces, hierarchy, state, metadata, and density. | Scattered across primitive, relationship, visual audit, and app chrome docs. | Needs one canonical taste checklist. |
 | Primitives | Layout composition and rhythm. | `stack`, `cluster`, `grid`, `frame`, `block`, `container`, `layer`, `flow`, `actions`, `prose`. | Need clearer mapping from product situations to primitive compositions. |
 | Components | Concrete UI objects and interaction contracts. | Broad registry-backed component vocabulary. | Default compositions can still feel generic without screen-level recipes. |
+| Typography roles | Semantic type jobs for structure, reading, metadata, controls, state, data, technical output, and expressive moments. | UI, prose, and code scales exist; research synthesis lives in `docs/decisions/typography-rhythm-taste-floor.md`. | Need screen-proven role bundles before public token promotion. |
 | Layout relationships | Attached, grouped, inset, separated, selected, local overflow, pressure. | Relationship contracts and layout-affinity recipes exist. | Need visual proof that relationships create polish by default. |
 | Patterns | Reusable arrangements such as filter rail plus results plus inspector. | Product, media, forum, search, dense navigation, and workspace recipes exist. | Need stronger screen archetype mapping and canonical screenshots. |
 | Screens | Complete product situations with realistic data and states. | Not yet a first-class catalog surface. | This is the main missing layer. |
@@ -360,6 +361,49 @@ Proof:
 - `uv run poe build-manifest-check`
 - Generated docs checks when component options change.
 
+### Epic 5a. Typography And Rhythm Taste Floor
+
+Goal: make the golden screens look designed through role-based typography,
+rhythm, measure, and emphasis before adding any new public typography surface.
+
+Tasks:
+
+- T5a.1: Use `docs/decisions/typography-rhythm-taste-floor.md` as the research
+  input for the typography pass.
+- T5a.2: Audit current CSS partials, theme packs, examples, and golden screens
+  for arbitrary font sizes, raw weights, negative letter spacing, viewport
+  scaled dense UI type, weak muted hierarchy, and missing line-height/measure
+  intent.
+- T5a.3: Draft a recipe-only role matrix for structure, reading, metadata,
+  controls, state, data, technical output, and expressive moments.
+- T5a.4: Map those roles to Command Center, Review Queue, Agent Run Monitor,
+  and Product/Docs Home before proposing token names.
+- T5a.5: Improve screen typography with existing tokens and local recipes
+  first; record repeated workarounds as token, component, pattern, or fixture
+  gaps.
+- T5a.6: Stop and ask before changing public token defaults, adding role
+  tokens, adding font dependencies, changing theme-pack contracts, or
+  generating new manifest/schema data.
+
+Acceptance:
+
+- The next visual pass can explain every typographic choice as a role and
+  context, not an arbitrary font-size tweak.
+- Dense app screens and expressive product/docs pages use different
+  typography intent without component skins.
+- Metadata, metrics, logs, captions, labels, titles, and proof copy have
+  documented treatment in the role matrix before public promotion.
+- Existing compatibility typography utilities are not presented as the normal
+  taste-floor authoring path.
+
+Proof:
+
+- Docs/source-map ratchets for research and agent grounding.
+- Focused grep/audit output for typography risks in CSS partials and golden
+  screens.
+- Browser overflow and text-stress proof when golden-screen typography changes.
+- CSS/generated-output checks only if token or CSS partial changes are made.
+
 ### Epic 6. Agent Taste Guidance
 
 Goal: teach agents to select polished screen situations instead of assembling
@@ -456,8 +500,9 @@ Proof:
 4. Add the initial screen catalog only after those two fixtures have proof.
 5. Build Agent Run Monitor and Product/Docs Home to cover agent and site
    contexts.
-6. Extract only repeated semantic patterns from the golden screens.
-7. Add the visual proof ratchet and agent guidance once the catalog is real.
+6. Run the typography and rhythm audit before promoting visual patterns.
+7. Extract only repeated semantic patterns from the golden screens.
+8. Add the visual proof ratchet and agent guidance once the catalog is real.
 
 ## Current Progress
 
@@ -471,9 +516,15 @@ Proof:
 - The initial screen catalog is published under `docs/screens/`.
 - Focused server and browser proof lives in `tests/test_data_integration.py`
   and `tests/browser/test_golden_screen_fixtures.py`.
+- Typography and rhythm research is captured in
+  `docs/decisions/typography-rhythm-taste-floor.md`; it is a planning input,
+  not shipped token or macro vocabulary.
 
 Remaining work:
 
+- Run the typography audit and draft the recipe-only role matrix.
+- Apply a golden-screen typography pass using existing tokens before proposing
+  public token changes.
 - Extract only repeated semantic patterns after another independent usage pass.
 - Decide whether `signal` graduates from candidate profile to packaged
   token-only theme pack.
@@ -582,6 +633,7 @@ This saga is successful when all of the following are true:
 - No utility-class vocabulary was added.
 - Generated CSS, manifest, docs, examples, and tests remain in sync for any
   promoted public surface.
+- Typography roles are screen-proven before becoming public token vocabulary.
 
 ## Proof Strategy
 
@@ -593,6 +645,7 @@ Prefer the narrowest proof that covers the touched layer:
 | Theme profile tokens | CSS syntax, token parity, theme-pack scanner, visual audit. |
 | Screen fixture | Render test, browser overflow/responsive proof, screenshot review. |
 | Agent guidance | Source inventory/source map tests. |
+| Typography research/role matrix | Docs IA/source-map tests; grep/audit proof when findings are claimed. |
 | Component promotion | Registry emits parity, template/CSS contract, generated CSS, manifest, docs. |
 | Site mirror | Docs site tests and generated-site checks. |
 | Cross-layer release | `uv run poe ci` unless explicitly scoped narrower. |
@@ -603,6 +656,9 @@ Stop before:
 
 - adding a public screen macro,
 - adding a public shell macro,
+- adding public typography role tokens,
+- changing default typography token values,
+- adding a bundled or runtime-loaded font dependency,
 - adding new profile metadata fields to the manifest,
 - adding a new theme pack,
 - allowing theme packs to target component selectors,

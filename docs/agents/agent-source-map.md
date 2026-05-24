@@ -45,6 +45,7 @@ generated artifact. Bengal remains the owner of site-wide generated outputs.
 | `docs/COMPONENT-OPTIONS.md` | `manifest-derived` | Bengal docs pages and generated site outputs | Human-readable generated component reference. |
 | `docs/INDEX.md` | `docs-derived` | Bengal docs pages and generated site outputs | Durable docs navigation spine. |
 | `docs/decisions/design-system-research.md` | `docs-derived` | Strategy docs and generated site outputs if mirrored by Bengal | Research ledger and categorical positioning; not copyable snippet source. |
+| `docs/decisions/typography-rhythm-taste-floor.md` | `docs-derived` | Strategy docs and generated site outputs if mirrored by Bengal | Typography role and rhythm research for visual taste-floor work; planning input only, not public token vocabulary. |
 | `docs/safety/public-surface-stabilization.md` | `docs-derived` | Strategy docs, generated docs outputs, and agent maturity guidance | Evidence labels, promotion gates, recipe-only boundaries, and compatibility policy. |
 | `docs/decisions/interactive-anatomy.md` | `docs-derived` | Anatomy docs and generated site outputs if mirrored by Bengal | Evidence ledger and stop-and-ask boundaries for behavior-bearing promotions. |
 | `docs/agents/docs-ia-migration.md` | `docs-derived` | Agent-source docs and generated site outputs | Published docs IA and SSG ownership map. |

@@ -54,6 +54,7 @@ adds all of the following:
 | `manifest-derived` | `docs/COMPONENT-OPTIONS.md` | Generated macro/options reference that mirrors the manifest for humans and agents. | `source-only` |
 | `docs-derived` | `docs/INDEX.md` | Durable documentation navigation and canonical source discovery. | `source-only` |
 | `docs-derived` | `docs/decisions/design-system-research.md` | External design-system research, Chirp UI product opinion, Bengal shell implications, and maturity gates. | `source-only` |
+| `docs-derived` | `docs/decisions/typography-rhythm-taste-floor.md` | Typography role, rhythm, measure, and screen-proof research for the visual taste-floor saga; planning input only, not public token vocabulary. | `source-only` |
 | `docs-derived` | `docs/safety/public-surface-stabilization.md` | Evidence labels, promotion rules, recipe-only boundaries, compatibility policy, and maturity-discovery commands. | `source-only` |
 | `docs-derived` | `docs/decisions/interactive-anatomy.md` | Interactive anatomy contract and evidence ledger fields for behavior-bearing promotions. | `source-only` |
 | `docs-derived` | `docs/agents/docs-ia-migration.md` | Published docs IA, durable-source map, and SSG ownership boundary. | `source-only` |
