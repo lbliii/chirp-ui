@@ -72,6 +72,8 @@ def test_visual_taste_plan_tracks_typography_next_phase() -> None:
         "Draft a recipe-only role matrix",
         "Stop and ask before changing public token defaults",
         "Run the typography and rhythm audit before promoting visual patterns.",
+        "The typography and rhythm implementation pass is complete",
+        "Defer public typography role tokens until repeated screen workarounds justify",
         "Typography roles are screen-proven before becoming public token vocabulary.",
     ]:
         assert phrase in normalized
@@ -112,6 +114,9 @@ def test_typography_role_matrix_records_audit_and_recipe_boundary() -> None:
         "Workspace primitives used an undefined typography token.",
         "Fixed by using `--chirpui-font-base`",
         "These role names are recipe vocabulary only.",
+        "Implementation Outcome",
+        "Product/Docs Home now uses `page_hero`",
+        "Browser proof checks computed typography hierarchy",
         "Stop and ask for a public typography-token promotion plan.",
     ]:
         assert phrase in normalized

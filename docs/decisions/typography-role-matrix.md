@@ -55,14 +55,23 @@ These role names are recipe vocabulary only.
 | `signal` | Technical live-state typography for metrics, logs, artifacts, and traces. | Logs and state labels need their own proof before token promotion. |
 | `ember` | Expressive product/docs type with stronger display and proof rhythm. | Display type must not leak into app workspace components. |
 
-## Next Implementation Pass
+## Implementation Outcome
 
-1. Update the four screen docs with role notes only after visual changes land.
-2. Polish workspace primitives with existing tokens first.
-3. Add browser text-stress proof for long object titles, metadata rows, log
-   lines, and product hero copy.
-4. If repeated workarounds remain, Stop and ask for a public typography-token
-   promotion plan.
+Completed in the typography implementation slice:
+
+1. The four screen docs now map their typography roles with recipe-only
+   language.
+2. Workspace primitives use existing tokens for object titles, dense body copy,
+   metadata rhythm, count labels, and metric values.
+3. Product/docs surfaces use existing prose/display, line-height, measure, and
+   numeric treatment tokens without adding public role tokens.
+4. Product/Docs Home now uses `page_hero` so the `hero-display` role actually
+   reaches the first viewport.
+5. Browser proof checks computed typography hierarchy, body/log line-height,
+   tabular numeric metrics, and no document horizontal overflow.
+
+If repeated workarounds remain after another independent screen pass, Stop and
+ask for a public typography-token promotion plan.
 
 ## Not Now
 

@@ -523,16 +523,20 @@ Proof:
 - The first recipe-only role matrix and audit is captured in
   `docs/decisions/typography-role-matrix.md`; it also fixed an undefined
   workspace primitive token reference without adding new token vocabulary.
+- The typography and rhythm implementation pass is complete for the current
+  golden screens: screen docs map recipe-only roles, workspace/product surfaces
+  use existing tokens for hierarchy and rhythm, Product/Docs Home now uses
+  `page_hero`, and browser proof checks computed type hierarchy plus overflow.
 
 Remaining work:
 
-- Apply a golden-screen typography pass using existing tokens before proposing
-  public token changes.
 - Extract only repeated semantic patterns after another independent usage pass.
 - Decide whether `signal` graduates from candidate profile to packaged
   token-only theme pack.
 - Mirror stable screen catalog guidance into the published site after source
   docs settle.
+- Defer public typography role tokens until repeated screen workarounds justify
+  a stop-and-ask promotion plan.
 - Re-run the full CI gate before release-facing taste-floor claims.
 
 ## Execution Milestones
