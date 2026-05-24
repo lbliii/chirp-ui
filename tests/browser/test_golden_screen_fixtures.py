@@ -202,6 +202,92 @@ async def test_product_docs_home_golden_screen_uses_product_pattern_surfaces(
     await expect(showcase_page.locator(".chirpui-cta-band")).to_have_count(1)
 
 
+@pytest.mark.parametrize(
+    ("path", "surface", "profile", "archetype"),
+    [
+        (
+            "/screen-command-center?q=queues&area=compute&status=warning",
+            "#operations-shell-surface",
+            "atlas",
+            "command-center",
+        ),
+        (
+            "/screen-review-queue?q=latency&queue=priority&status=danger",
+            "#support-shell-surface",
+            "sage",
+            "review-queue",
+        ),
+        (
+            "/screen-agent-run-monitor",
+            "#agent-run-monitor-surface",
+            "signal",
+            "agent-run-monitor",
+        ),
+        (
+            "/screen-product-docs-home",
+            "#product-docs-home-surface",
+            "ember",
+            "product-docs-home",
+        ),
+    ],
+)
+async def test_golden_screens_expose_screen_level_taste_signals(
+    showcase_page,
+    showcase_base_url: str,
+    path: str,
+    surface: str,
+    profile: str,
+    archetype: str,
+) -> None:
+    await showcase_page.set_viewport_size({"width": 1280, "height": 900})
+    await showcase_page.goto(showcase_base_url + path)
+    await wait_for_alpine(showcase_page)
+    await assert_no_document_horizontal_overflow(
+        showcase_page, f"golden-screen-taste-signals-{archetype}"
+    )
+
+    signals = await showcase_page.locator(surface).evaluate(
+        """root => {
+            const visible = el => {
+                const style = getComputedStyle(el);
+                const rect = el.getBoundingClientRect();
+                return style.visibility !== "hidden" && style.display !== "none" &&
+                    rect.width > 0 && rect.height > 0;
+            };
+            const h1 = Array.from(document.querySelectorAll("h1")).find(visible);
+            const regionHeading = Array.from(root.querySelectorAll(
+                "h2, h3, .chirpui-panel__title, .chirpui-card__title, " +
+                ".chirpui-result-collection__title, .chirpui-inspector-panel__title"
+            )).find(visible);
+            const tasteSignals = Array.from(root.querySelectorAll(
+                ".chirpui-badge, .chirpui-sse-status, [role='status'], " +
+                ".chirpui-metric-card, .chirpui-logo-cloud, " +
+                ".chirpui-lifecycle-showcase, .chirpui-cta-band"
+            )).filter(visible);
+            const controls = Array.from(root.querySelectorAll(
+                "a[href], button, input, select"
+            )).filter(visible);
+            return {
+                archetype: root.dataset.screenArchetype,
+                profile: root.dataset.screenProfile,
+                h1Size: h1 ? getComputedStyle(h1).fontSize : "0px",
+                regionHeadingSize: regionHeading ?
+                    getComputedStyle(regionHeading).fontSize : "0px",
+                tasteSignalCount: tasteSignals.length,
+                controlCount: controls.length
+            };
+        }"""
+    )
+
+    assert signals["archetype"] == archetype
+    assert signals["profile"] == profile
+    assert _px(signals["h1Size"]) > 0
+    assert _px(signals["regionHeadingSize"]) > 0
+    assert _px(signals["h1Size"]) != _px(signals["regionHeadingSize"])
+    assert signals["tasteSignalCount"] >= 2
+    assert signals["controlCount"] >= 2
+
+
 async def test_golden_screen_typography_roles_have_browser_proof(
     showcase_page,
     showcase_base_url: str,
