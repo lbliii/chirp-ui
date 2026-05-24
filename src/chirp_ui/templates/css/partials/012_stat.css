@@ -14,7 +14,8 @@
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-lg);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text);
 }
 
@@ -22,6 +23,7 @@
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
 
@@ -47,6 +49,7 @@
 .chirpui-metric-card__hint {
     margin: 0;
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     color: var(--chirpui-text-muted);
 }
 
@@ -94,4 +97,3 @@
     transition: color var(--chirpui-transition);
 }
 .chirpui-metric-card__footer:hover { color: var(--chirpui-accent-hover); }
-

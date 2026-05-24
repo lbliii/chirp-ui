@@ -75,6 +75,7 @@
 
 .chirpui-filter-rail__label {
     font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
     line-height: var(--chirpui-line-height-tight);
 }
 
@@ -94,6 +95,7 @@
     padding-inline: var(--chirpui-spacing-xs);
     border-radius: 999px;
     background: var(--chirpui-bg-subtle);
+    font-variant-numeric: tabular-nums;
 }
 }
 
@@ -117,6 +119,8 @@
 
 .chirpui-metric-strip__value {
     font-size: var(--chirpui-font-lg);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
     line-height: var(--chirpui-line-height-tight);
 }
 
@@ -240,6 +244,7 @@
 
 .chirpui-result-card__title {
     font-size: var(--chirpui-font-base);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     line-height: var(--chirpui-line-height-tight);
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -248,6 +253,7 @@
 .chirpui-result-card__subtitle {
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     overflow-wrap: anywhere;
     word-break: break-word;
 }
@@ -277,6 +283,8 @@
     gap: var(--chirpui-rhythm-group);
     min-inline-size: 0;
     max-inline-size: 100%;
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     overflow-wrap: anywhere;
 }
 
@@ -297,6 +305,7 @@
     border-block-start: 1px solid var(--chirpui-border-subtle);
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     overflow-wrap: anywhere;
 }
 
@@ -351,6 +360,7 @@
 
 .chirpui-inspector-panel__title {
     font-size: var(--chirpui-font-base);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     line-height: var(--chirpui-line-height-tight);
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -359,6 +369,7 @@
 .chirpui-inspector-panel__subtitle {
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     overflow-wrap: anywhere;
     word-break: break-word;
 }
@@ -388,6 +399,8 @@
     gap: var(--chirpui-rhythm-group);
     min-inline-size: 0;
     max-inline-size: 100%;
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     overflow-wrap: anywhere;
 }
 
@@ -407,6 +420,7 @@
     border-block-start: 1px solid var(--chirpui-border-subtle);
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     overflow-wrap: anywhere;
 }
 

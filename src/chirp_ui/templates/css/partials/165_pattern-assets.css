@@ -55,7 +55,7 @@
     :scope .chirpui-detail-header__title {
         margin: 0;
         color: var(--chirpui-text);
-        font-size: var(--chirpui-display-sm);
+        font-size: var(--chirpui-prose-3xl);
         line-height: var(--chirpui-line-height-tight);
     }
 

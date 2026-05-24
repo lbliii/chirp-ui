@@ -151,3 +151,105 @@ def test_workspace_primitives_do_not_reference_undefined_font_md_token() -> None
     assert ".chirpui-result-card__title" in partial
     assert ".chirpui-inspector-panel__title" in partial
     assert "font-size: var(--chirpui-font-base);" in partial
+
+
+def test_typography_role_polish_uses_existing_tokens() -> None:
+    workspace = (
+        ROOT
+        / "src"
+        / "chirp_ui"
+        / "templates"
+        / "css"
+        / "partials"
+        / "167_workspace-primitives.css"
+    ).read_text(encoding="utf-8")
+    hero = (
+        ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "042_hero.css"
+    ).read_text(encoding="utf-8")
+    stat = (
+        ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "012_stat.css"
+    ).read_text(encoding="utf-8")
+    story = (
+        ROOT
+        / "src"
+        / "chirp_ui"
+        / "templates"
+        / "css"
+        / "partials"
+        / "163_story-card.css"
+    ).read_text(encoding="utf-8")
+    cta = (
+        ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "164_cta-band.css"
+    ).read_text(encoding="utf-8")
+    pattern_assets = (
+        ROOT
+        / "src"
+        / "chirp_ui"
+        / "templates"
+        / "css"
+        / "partials"
+        / "165_pattern-assets.css"
+    ).read_text(encoding="utf-8")
+    index_card = (
+        ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "059_table.css"
+    ).read_text(encoding="utf-8")
+
+    for signal in [
+        ".chirpui-filter-rail__label",
+        "font-weight: var(--chirpui-ui-font-weight-medium);",
+        ".chirpui-metric-strip__value",
+        "font-variant-numeric: tabular-nums;",
+        ".chirpui-result-card__body",
+        "line-height: var(--chirpui-line-height-normal);",
+        ".chirpui-inspector-panel__body",
+    ]:
+        assert signal in workspace
+
+    assert ".chirpui-hero--page .chirpui-hero__title" in hero
+    assert "font-size: var(--chirpui-prose-5xl);" in hero
+    assert "letter-spacing: var(--chirpui-display-letter-spacing);" in hero
+    assert ".chirpui-hero--page .chirpui-hero__subtitle" in hero
+    assert "max-inline-size: 58ch;" in hero
+
+    assert "font-variant-numeric: tabular-nums;" in stat
+    assert "line-height: var(--chirpui-line-height-tight);" in stat
+
+    assert ".chirpui-story-card__metric" in story
+    assert "font-variant-numeric: tabular-nums;" in story
+    assert ".chirpui-story-card__summary" in story
+    assert "line-height: var(--chirpui-line-height-normal);" in story
+
+    assert ".chirpui-cta-band__title" in cta
+    assert "max-inline-size: 14ch;" in cta
+    assert "font-size: var(--chirpui-prose-3xl);" in cta
+    assert ".chirpui-cta-band__body" in cta
+    assert "line-height: var(--chirpui-line-height-relaxed);" in cta
+
+    assert ".chirpui-detail-header__title" in pattern_assets
+    assert "font-size: var(--chirpui-prose-3xl);" in pattern_assets
+
+    assert ".chirpui-index-card__badge" in index_card
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);\n    font-weight" not in index_card
+    assert "line-height: var(--chirpui-line-height-tight);" in index_card
+
+
+def test_typography_polish_does_not_reference_removed_display_tokens() -> None:
+    for path in [
+        ROOT / "src" / "chirp_ui" / "templates" / "chirpui.css",
+        ROOT
+        / "src"
+        / "chirp_ui"
+        / "templates"
+        / "css"
+        / "partials"
+        / "164_cta-band.css",
+        ROOT
+        / "src"
+        / "chirp_ui"
+        / "templates"
+        / "css"
+        / "partials"
+        / "165_pattern-assets.css",
+    ]:
+        text = path.read_text(encoding="utf-8")
+        assert "--chirpui-display-sm" not in text
