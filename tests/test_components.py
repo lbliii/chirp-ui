@@ -8281,6 +8281,171 @@ class TestSegmentedControl:
         assert "overflow-wrap: anywhere" in label_rule
 
 
+class TestMaturityPrimitives:
+    def test_kbd_renders_single_and_chord_keys(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/kbd.html" import kbd %}'
+            '{{ kbd(["Ctrl", "K"], size="sm", attrs_map={"aria-label": "Open search"}) }}'
+        ).render()
+        assert "<kbd" in html
+        assert "chirpui-kbd--sm" in html
+        assert html.count("chirpui-kbd__key") == 2
+        assert 'aria-label="Open search"' in html
+
+    def test_separator_supports_semantic_vertical_orientation(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/separator.html" import separator %}'
+            '{{ separator(orientation="vertical", decorative=false, label="Section") }}'
+        ).render()
+        assert "chirpui-separator--vertical" in html
+        assert 'role="separator"' in html
+        assert 'aria-orientation="vertical"' in html
+        assert "chirpui-separator__label" in html
+
+    def test_aspect_ratio_wraps_default_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/aspect_ratio.html" import aspect_ratio %}'
+            '{% call aspect_ratio("4 / 3", cls="preview") %}'
+            '<img src="/x.png" alt="Preview">'
+            '{% end %}'
+        ).render()
+        assert "chirpui-aspect-ratio preview" in html
+        assert "--chirpui-aspect-ratio: 4 / 3;" in html
+        assert "chirpui-aspect-ratio__inner" in html
+        assert '<img src="/x.png" alt="Preview">' in html
+
+    def test_ui_label_renders_required_and_hint(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/label.html" import ui_label %}'
+            '{{ ui_label("Email", for_id="email", required=true, hint="Work address") }}'
+        ).render()
+        assert 'for="email"' in html
+        assert "chirpui-label__text" in html
+        assert "chirpui-label__required" in html
+        assert "Work address" in html
+
+    def test_toggle_group_single_choice(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/toggle_group.html" import toggle_group %}'
+            "{{ toggle_group(items=["
+            '  {"label": "Left", "value": "left"},'
+            '  {"label": "Center", "value": "center"},'
+            "], name='align', value='center', size='sm') }}"
+        ).render()
+        assert "chirpui-toggle-group--single" in html
+        assert "chirpui-toggle-group--sm" in html
+        assert 'role="radiogroup"' in html
+        assert 'type="radio"' in html
+        assert 'value="center"' in html
+        assert "checked" in html
+
+    def test_toggle_group_multiple_choice_and_disabled_item(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/toggle_group.html" import toggle_group %}'
+            "{{ toggle_group(items=["
+            '  {"label": "Bold", "value": "bold", "pressed": true},'
+            '  {"label": "Italic", "value": "italic", "disabled": true},'
+            "], name='format', type='multiple', orientation='vertical', variant='outline') }}"
+        ).render()
+        assert "chirpui-toggle-group--multiple" in html
+        assert "chirpui-toggle-group--vertical" in html
+        assert "chirpui-toggle-group--outline" in html
+        assert 'role="group"' in html
+        assert 'type="checkbox"' in html
+        assert 'name="format[]"' in html
+        assert "chirpui-toggle-group__item--disabled" in html
+
+    def test_slider_renders_native_range_with_value_output(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/slider.html" import slider %}'
+            '{{ slider("volume", value=25, min=0, max=50, step=5, '
+            'label="Volume", show_value=true, size="lg") }}'
+        ).render()
+        assert "chirpui-slider--lg" in html
+        assert 'type="range"' in html
+        assert 'name="volume"' in html
+        assert 'value="25"' in html
+        assert 'min="0"' in html
+        assert 'max="50"' in html
+        assert "chirpui-slider__label" in html
+        assert "chirpui-slider__value" in html
+
+    def test_scroll_area_wraps_default_slot_and_orientation(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/scroll_area.html" import scroll_area %}'
+            '{% call scroll_area(max_block_size="12rem", orientation="both", fade=true) %}'
+            "<p>Scrollable content</p>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-scroll-area--both" in html
+        assert "chirpui-scroll-area--fade" in html
+        assert "--chirpui-scroll-area-max-block-size: 12rem;" in html
+        assert "chirpui-scroll-area__viewport" in html
+        assert "<p>Scrollable content</p>" in html
+
+    def test_item_renders_link_row_with_meta_and_action(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/item.html" import item %}'
+            '{% call item(title="Settings", description="Workspace controls", '
+            'href="/settings/", meta="Updated", selected=true) %}'
+            '{% slot action %}<span aria-hidden="true">Open</span>{% end %}'
+            "{% end %}"
+        ).render()
+        assert "<a" in html
+        assert 'href="/settings/"' in html
+        assert 'aria-current="page"' in html
+        assert "chirpui-item--selected" in html
+        assert "chirpui-item__title" in html
+        assert "chirpui-item__description" in html
+        assert "chirpui-item__meta" in html
+        assert "chirpui-item__action" in html
+
+    def test_item_disabled_omits_link_target(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/item.html" import item %}'
+            '{{ item(title="Locked", href="/locked/", disabled=true) }}'
+        ).render()
+        assert "<div" in html
+        assert 'href="/locked/"' not in html
+        assert 'aria-disabled="true"' in html
+        assert "chirpui-item--disabled" in html
+
+    def test_data_table_composes_filters_table_and_pagination(
+        self, env: Environment
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/data_table.html" import data_table %}'
+            '{% call data_table(title="Users", description="Account records", '
+            'headers=["Name", "Status"], rows=[["Ada", "Active"]], '
+            'filter_action="/users", current=2, total=3, '
+            'url_pattern="/users?page={page}", compact=true) %}'
+            '<input name="q" value="ada">'
+            "{% end %}"
+        ).render()
+        assert "chirpui-data-table--compact" in html
+        assert "chirpui-data-table__header" in html
+        assert "chirpui-data-table__filters" in html
+        assert 'action="/users"' in html
+        assert '<input name="q" value="ada">' in html
+        assert "chirpui-table" in html
+        assert "<td" in html
+        assert "Ada" in html
+        assert "chirpui-pagination" in html
+        assert "/users?page=1" in html
+        assert "/users?page=3" in html
+
+    def test_data_table_empty_state_uses_table_empty_row(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/data_table.html" import data_table %}'
+            '{{ data_table(headers=["Name"], rows=[], empty_message="No users") }}'
+        ).render()
+        assert "chirpui-data-table__body" in html
+        assert "chirpui-table__empty" in html
+        assert "No users" in html
+
+
 class TestSplitPanel:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(

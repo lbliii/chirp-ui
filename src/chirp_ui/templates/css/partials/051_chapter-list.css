@@ -11,6 +11,7 @@
 .chirpui-chapter-list__summary {
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    line-height: var(--chirpui-line-height-tight);
     cursor: pointer;
     list-style: none;
     display: flex;
@@ -23,7 +24,8 @@
     display: inline-block;
     transition: rotate var(--chirpui-transition);
     margin-inline-start: auto;
-    font-size: 0.75em;
+    font-size: var(--chirpui-font-xs);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
 
@@ -33,6 +35,8 @@
 
 .chirpui-chapter-list__summary-text {
     flex: 1;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-chapter-list__summary-actions:empty {
@@ -64,6 +68,7 @@
     text-decoration: none;
     color: inherit;
     border-radius: var(--chirpui-radius-sm);
+    min-inline-size: 0;
     transition: background var(--chirpui-transition);
 }
 
@@ -79,11 +84,14 @@ a.chirpui-chapter-item__link:focus-visible {
 .chirpui-chapter-item__timestamp {
     flex-shrink: 0;
     font-size: var(--chirpui-font-xs);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
 
 .chirpui-chapter-item__title {
     flex: 1;
     min-width: 0;
+    line-height: var(--chirpui-line-height-normal);
+    overflow-wrap: anywhere;
 }
-

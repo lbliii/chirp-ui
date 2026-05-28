@@ -19,10 +19,13 @@
     cursor: pointer;
     list-style: none;
     padding: var(--chirpui-spacing) var(--chirpui-spacing-md);
+    font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    line-height: var(--chirpui-line-height-tight);
     display: flex;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-accordion__trigger::-webkit-details-marker {
@@ -54,6 +57,8 @@
 
 .chirpui-accordion__trigger-text {
     flex: 1;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-accordion__trigger-actions {
@@ -68,7 +73,9 @@
     padding: 0 var(--chirpui-spacing-md) var(--chirpui-spacing) var(--chirpui-spacing-md);
     padding-inline-start: calc(var(--chirpui-spacing-md) + 1em);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
     color: var(--chirpui-text-muted);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-accordion__item[open] .chirpui-accordion__content {
@@ -79,4 +86,3 @@
     from { opacity: 0; }
     to { opacity: 1; }
 }
-

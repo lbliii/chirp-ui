@@ -14,7 +14,8 @@
     gap: var(--chirpui-spacing-xs);
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
     font-size: var(--chirpui-ui-sm);
-    font-weight: 500;
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-pulsing-btn-color);
     background: var(--chirpui-pulsing-btn-bg);
     border: 1px solid var(--chirpui-border);
@@ -56,4 +57,3 @@
     --chirpui-pulsing-btn-ring: var(--chirpui-error);
     border-color: var(--chirpui-error);
 }
-

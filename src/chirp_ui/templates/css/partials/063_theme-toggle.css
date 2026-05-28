@@ -6,6 +6,7 @@
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
     min-inline-size: var(--chirpui-control-block-size);
     min-block-size: var(--chirpui-control-block-size);
+    line-height: var(--chirpui-line-height-tight);
 }
 .chirpui-theme-toggle__icon {
     display: inline-flex;
@@ -13,8 +14,8 @@
     justify-content: center;
     width: 1em;
     height: 1em;
-    font-size: 1.25rem;
-    line-height: 1;
+    font-size: var(--chirpui-ui-lg);
+    line-height: var(--chirpui-line-height-tight);
     opacity: 0.85;
     font-family: var(--chirpui-ascii-font);
 }

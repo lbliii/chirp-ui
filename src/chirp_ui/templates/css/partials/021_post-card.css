@@ -30,7 +30,9 @@
 
 .chirpui-post-card__name {
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text);
+    overflow-wrap: anywhere;
 }
 
 a.chirpui-post-card__name:hover {
@@ -40,12 +42,16 @@ a.chirpui-post-card__name:hover {
 .chirpui-post-card__handle {
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
     margin-left: var(--chirpui-spacing-xs);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-post-card__time {
     display: block;
     font-size: var(--chirpui-font-xs);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
 
@@ -55,6 +61,8 @@ a.chirpui-post-card__name:hover {
 
 .chirpui-post-card__body p {
     margin: 0;
+    line-height: var(--chirpui-line-height-normal);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-post-card__media {
@@ -77,4 +85,3 @@ a.chirpui-post-card__name:hover {
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     border-top: 1px solid var(--chirpui-border);
 }
-

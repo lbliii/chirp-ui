@@ -6,6 +6,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
+    min-inline-size: 0;
 }
 
 .chirpui-inline-edit--display {
@@ -22,6 +23,8 @@
 .chirpui-inline-edit--display .chirpui-inline-edit__value {
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-base);
+    line-height: var(--chirpui-line-height-tight);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-inline-edit--edit .chirpui-inline-edit__form {
@@ -44,14 +47,15 @@
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-xs);
+    line-height: var(--chirpui-line-height-tight);
 }
 
 .chirpui-inline-edit__icon {
-    font-size: 0.85em;
+    font-size: var(--chirpui-ui-sm);
+    line-height: 1;
     opacity: 0.75;
 }
 
 .chirpui-inline-edit__trigger:hover .chirpui-inline-edit__icon {
     opacity: 1;
 }
-

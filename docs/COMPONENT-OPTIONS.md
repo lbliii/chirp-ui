@@ -4517,6 +4517,24 @@ ASCII VU Meter
 - **Role:** `primitive`
 - **Authoring:** `available`
 
+### `aspect-ratio`
+
+Aspect Ratio
+
+- **Template:** `chirpui/aspect_ratio.html`
+- **Macro:** `aspect_ratio`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `ratio` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
 ### `aura`
 
 Aura — chromatic halo behind stacked content (glass surfaces, cards, etc.)
@@ -5456,6 +5474,38 @@ CTA Band
 | `width` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `data-table`
+
+Data Table
+
+- **Template:** `chirpui/data_table.html`
+- **Macro:** `data_table`
+- **Category:** `data-display`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+- **Composes:** `filter-row`, `pagination`, `table`
+- **Modifiers:** `compact`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `description` | no | (has default) |
+| `headers` | no | (has default) |
+| `rows` | no | (has default) |
+| `filter_action` | no | (has default) |
+| `filter_method` | no | (has default) |
+| `current` | no | (has default) |
+| `total` | no | (has default) |
+| `url_pattern` | no | (has default) |
+| `empty_message` | no | (has default) |
+| `compact` | no | (has default) |
+| `striped` | no | (has default) |
+| `sticky_header` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
 ### `description_list`
 
 Description list component
@@ -5667,9 +5717,29 @@ Dropdown component
 | `label` | yes | — |
 | `cls` | no | (has default) |
 
+### `dropdown-select`
+
+Dropdown menu, select, and split-button primitives.
+
+- **Template:** `chirpui/dropdown_menu.html`
+- **Macro:** `dropdown_select`
+- **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+- **Modifiers:** `select`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `trigger_label` | yes | — |
+| `items` | yes | — |
+| `selected` | no | (has default) |
+| `id` | no | (has default) |
+
 ### `dropdown__item`
 
-Dropdown menu (items-based)
+Dropdown menu, select, and split-button primitives.
 
 - **Template:** `chirpui/dropdown_menu.html`
 - **Macro:** `dropdown_menu`
@@ -6555,6 +6625,31 @@ Framework-agnostic island mount wrappers
 | `cls` | no | (has default) |
 | `raw_attrs` | no | (has default) |
 
+### `item`
+
+Item
+
+- **Template:** `chirpui/item.html`
+- **Macro:** `item`
+- **Category:** `content`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Slots:** `action`
+- **Modifiers:** `disabled`, `selected`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `description` | no | (has default) |
+| `href` | no | (has default) |
+| `icon` | no | (has default) |
+| `meta` | no | (has default) |
+| `selected` | no | (has default) |
+| `disabled` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
 ### `jello`
 
 - **Category:** `effect`
@@ -6562,12 +6657,51 @@ Framework-agnostic island mount wrappers
 - **Role:** `primitive`
 - **Authoring:** `available`
 
+### `kbd`
+
+Keyboard key
+
+- **Template:** `chirpui/kbd.html`
+- **Macro:** `kbd`
+- **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Sizes:** `(default)`, `lg`, `sm`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `keys` | yes | — |
+| `size` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
 ### `key-value-form`
 
 - **Category:** `form`
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `available`
+
+### `label`
+
+Label
+
+- **Template:** `chirpui/label.html`
+- **Macro:** `ui_label`
+- **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `text` | no | (has default) |
+| `for_id` | no | (has default) |
+| `required` | no | (has default) |
+| `hint` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
 
 ### `label-overline`
 
@@ -7910,6 +8044,27 @@ Scope switcher
 | `icon` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `scroll-area`
+
+Scroll Area
+
+- **Template:** `chirpui/scroll_area.html`
+- **Macro:** `scroll_area`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+- **Modifiers:** `both`, `fade`, `horizontal`, `vertical`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `max_block_size` | no | (has default) |
+| `orientation` | no | (has default) |
+| `fade` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
 ### `scroll-x`
 
 - **Category:** `layout`
@@ -8067,6 +8222,26 @@ Selection Bar
 | `live_region` | no | (has default) |
 | `aria_label` | no | (has default) |
 | `cls` | no | (has default) |
+
+### `separator`
+
+Separator
+
+- **Template:** `chirpui/separator.html`
+- **Macro:** `separator`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Modifiers:** `decorative`, `horizontal`, `vertical`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `orientation` | no | (has default) |
+| `decorative` | no | (has default) |
+| `label` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
 
 ### `settings-row`
 
@@ -8318,6 +8493,33 @@ Skeleton component
 | `variant` | no | (has default) |
 | `lines` | no | (has default) |
 | `cls` | no | (has default) |
+
+### `slider`
+
+Slider
+
+- **Template:** `chirpui/slider.html`
+- **Macro:** `slider`
+- **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Sizes:** `(default)`, `lg`, `sm`
+- **Modifiers:** `disabled`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `value` | no | (has default) |
+| `min` | no | (has default) |
+| `max` | no | (has default) |
+| `step` | no | (has default) |
+| `label` | no | (has default) |
+| `show_value` | no | (has default) |
+| `disabled` | no | (has default) |
+| `size` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
 
 ### `sortable`
 
@@ -9083,6 +9285,32 @@ Toast component
 - **Maturity:** `experimental`
 - **Role:** `primitive`
 - **Authoring:** `available`
+
+### `toggle-group`
+
+Toggle Group
+
+- **Template:** `chirpui/toggle_group.html`
+- **Macro:** `toggle_group`
+- **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Sizes:** `(default)`, `lg`, `sm`
+- **Modifiers:** `horizontal`, `multiple`, `outline`, `single`, `vertical`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `name` | no | (has default) |
+| `type` | no | (has default) |
+| `value` | no | (has default) |
+| `size` | no | (has default) |
+| `orientation` | no | (has default) |
+| `variant` | no | (has default) |
+| `disabled` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
 
 ### `toggle-wrap`
 

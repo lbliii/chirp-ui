@@ -1,0 +1,20 @@
+{#- chirp-ui: Separator
+    Semantic or decorative separator for content, menus, and compact toolbars.
+
+    Usage:
+        from "chirpui/separator.html" import separator
+
+        {{ separator() }}
+        {{ separator(orientation="vertical", decorative=false) }}
+-#}
+
+{% def separator(orientation="horizontal", decorative=true, label=none, cls="", attrs_map=none) %}
+{% set _orientation = "vertical" if orientation == "vertical" else "horizontal" %}
+{% set _role = "none" if decorative else "separator" %}
+<div class="chirpui-separator chirpui-separator--{{ _orientation }}{{ " chirpui-separator--decorative" if decorative else "" }}{{ " " ~ cls if cls else "" }}"
+     role="{{ _role }}"
+     {% if not decorative %}aria-orientation="{{ _orientation }}"{% end %}
+     {{ attrs_map | html_attrs }}>
+    {% if label %}<span class="chirpui-separator__label">{{ label }}</span>{% end %}
+</div>
+{% end %}

@@ -37,8 +37,9 @@
     gap: 0;
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
     color: var(--chirpui-text);
-    line-height: 1.05;
+    line-height: var(--chirpui-line-height-tight);
     text-align: center;
     text-shadow:
         0 1px 2px var(--chirpui-surface),
@@ -53,9 +54,9 @@
 
 .chirpui-donut__caption {
     font-size: var(--chirpui-font-xs);
-    font-weight: 400;
+    font-weight: var(--chirpui-ui-font-weight-normal);
     color: var(--chirpui-text-muted);
-    line-height: 1.05;
+    line-height: var(--chirpui-line-height-tight);
     max-width: 85%;
     overflow-wrap: anywhere;
 }

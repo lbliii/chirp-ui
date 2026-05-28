@@ -15,15 +15,24 @@
 
 .chirpui-config-row__label {
     flex-shrink: 0;
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-config-row__control {
     min-width: 0;
+    line-height: var(--chirpui-line-height-normal);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-config-row__form {
     display: flex;
     align-items: center;
+    gap: var(--chirpui-spacing-sm);
+    min-inline-size: 0;
 }
 
 .chirpui-config-row__toggle-wrap {
@@ -38,9 +47,9 @@
     display: inline-flex;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
+    min-inline-size: 0;
 }
 
 .chirpui-config-row__editable.chirpui-inline-edit--display {
     margin-inline-start: calc(-1 * var(--chirpui-spacing-sm));
 }
-

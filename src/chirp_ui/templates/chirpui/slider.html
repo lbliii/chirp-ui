@@ -1,0 +1,32 @@
+{#- chirp-ui: Slider
+    Native range input wrapper for numeric settings and filters.
+
+    Usage:
+        from "chirpui/slider.html" import slider
+
+        {{ slider("volume", value=40, min=0, max=100, label="Volume", show_value=true) }}
+-#}
+
+{% def slider(name, value=50, min=0, max=100, step=1, label=none, show_value=false,
+              disabled=false, size="", cls="", attrs_map=none) %}
+{% set size = size | validate_size("slider", "") %}
+{% set size_class = " chirpui-slider--" ~ size if size else "" %}
+<div class="chirpui-slider{{ size_class }}{{ " chirpui-slider--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
+    {% if label or show_value %}
+    <div class="chirpui-slider__header">
+        {% if label %}<label class="chirpui-slider__label" for="{{ name }}">{{ label }}</label>{% end %}
+        {% if show_value %}<output class="chirpui-slider__value" for="{{ name }}">{{ value }}</output>{% end %}
+    </div>
+    {% end %}
+    <input class="chirpui-slider__input"
+           type="range"
+           id="{{ name }}"
+           name="{{ name }}"
+           value="{{ value }}"
+           min="{{ min }}"
+           max="{{ max }}"
+           step="{{ step }}"
+           {% if disabled %}disabled{% end %}
+           {{ attrs_map | html_attrs }}>
+</div>
+{% end %}

@@ -1,0 +1,21 @@
+{#- chirp-ui: Scroll Area
+    Contained overflow region for sidebars, menus, code previews, and panels.
+
+    Usage:
+        from "chirpui/scroll_area.html" import scroll_area
+
+        {% call scroll_area(max_block_size="18rem") %}
+            ...
+        {% end %}
+-#}
+
+{% def scroll_area(max_block_size="", orientation="vertical", fade=false, cls="", attrs_map=none) %}
+{% set _orientation = "both" if orientation == "both" else "horizontal" if orientation == "horizontal" else "vertical" %}
+<div class="chirpui-scroll-area chirpui-scroll-area--{{ _orientation }}{{ " chirpui-scroll-area--fade" if fade else "" }}{{ " " ~ cls if cls else "" }}"
+     {% if max_block_size %}style="--chirpui-scroll-area-max-block-size: {{ max_block_size | e }};"{% end %}
+     {{ attrs_map | html_attrs }}>
+    <div class="chirpui-scroll-area__viewport">
+        {% slot %}
+    </div>
+</div>
+{% end %}
