@@ -1583,7 +1583,8 @@ missing_manifest_entries = sorted(referenced_assets - manifest_outputs)
 stable_library_css = set()
 for logical_path in standalone_css_entries:
     normalized_path = logical_path.removeprefix("assets/")
-    for candidate in {logical_path, f"assets/{normalized_path}"}:
+    filename = Path(normalized_path).name
+    for candidate in {logical_path, f"assets/{normalized_path}", f"assets/{filename}"}:
         if candidate in referenced_assets and (site.output_dir / candidate).is_file():
             stable_library_css.add(candidate)
 missing_manifest_entries = [
