@@ -94,13 +94,26 @@
       log('Back-to-top button not found in template');
       return;
     }
-    const railButton = buttons.find((btn) => btn.classList.contains('chirp-theme-rail-top'));
     const floatingButton = buttons.find((btn) => btn.classList.contains('chirp-theme-floating-top'));
-    const activeButtons = railButton ? [railButton] : buttons;
-    if (railButton && floatingButton) {
-      floatingButton.hidden = true;
-      floatingButton.setAttribute('aria-hidden', 'true');
-    }
+    const activeButtons = floatingButton ? [floatingButton] : buttons;
+
+    const alignFloatingButton = () => {
+      if (!floatingButton) {
+        return;
+      }
+      const footerMark = document.querySelector('.chirp-theme-footer__rule-mark');
+      if (!footerMark) {
+        return;
+      }
+      const markRect = footerMark.getBoundingClientRect();
+      if (markRect.width === 0) {
+        return;
+      }
+      floatingButton.style.setProperty(
+        '--chirpui-floating-top-left',
+        `${markRect.left + markRect.width / 2}px`
+      );
+    };
 
     // Show/hide based on scroll position
     let isVisible = false;
@@ -123,6 +136,12 @@
       window.removeEventListener('scroll', throttledToggle);
     });
 
+    const debouncedAlign = debounce(alignFloatingButton, 120);
+    window.addEventListener('resize', debouncedAlign, { passive: true });
+    cleanupHandlers.resize.push(() => {
+      window.removeEventListener('resize', debouncedAlign);
+    });
+
     // Scroll to top on click
     activeButtons.forEach((button) => {
       button.addEventListener('click', () => {
@@ -134,6 +153,8 @@
     });
 
     // Initial check
+    alignFloatingButton();
+    window.requestAnimationFrame(alignFloatingButton);
     toggleVisibility();
   }
 

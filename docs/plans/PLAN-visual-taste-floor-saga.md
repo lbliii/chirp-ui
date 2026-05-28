@@ -539,6 +539,40 @@ Proof:
   panel, callout, modal, tabs, collapse, dropdown, toast, pagination, progress,
   status indicator, and command palette defaults without adding public
   vocabulary.
+- A third component taste sweep carries the same treatment into navigation,
+  segmented-control, disclosure, and overlay defaults: breadcrumbs, sidebar,
+  route tabs, segmented control, accordion, drawer, and tray now use existing
+  type/rhythm tokens for hierarchy, long-label resilience, and numeric badges.
+- A fourth component taste sweep covers smaller controls and effect-backed
+  primitives without changing public vocabulary: inline edit, logo/navbar
+  affordances, stepper, dropdown menu, app-shell sidebar disclosure, shimmer
+  button, ripple button, pulsing button, and animated stat card now use existing
+  type/rhythm tokens for labels, trend data, and selected state emphasis.
+- A fifth component taste sweep applies the same existing-token treatment to
+  header, setup, divider, tooltip, and compact affordance surfaces: entity
+  header, profile header, config row, wizard form, divider, theme toggle,
+  tooltip, and icon button now have explicit hierarchy, measure, wrapping, and
+  numeric-stat rhythm.
+- A sixth component taste sweep carries the existing-token treatment into
+  content and media surfaces: message bubble, conversation item, post card,
+  comment, video card, channel card, playlist, and chapter list now have
+  explicit body rhythm, metadata/timestamp treatment, long-label resilience,
+  and tabular numeric affordances.
+- A seventh component taste sweep carries the existing-token treatment into
+  data and loading feedback surfaces: spinner, infinite scroll, bar chart,
+  donut chart, number ticker, and animated counter now use explicit font,
+  line-height, caption, and tabular numeric treatment without adding new public
+  tokens.
+- An eighth component taste sweep applies the existing-token treatment to
+  special form controls and drag affordances: radio labels, file inputs, star
+  ratings, thumbs, segmented labels, number scale, sortable handles, drag
+  handles, and range values now use tokenized weight, size, rhythm, and tabular
+  numeric treatment.
+- A ninth component taste sweep applies the existing-token treatment to site and
+  resource metadata surfaces: site nav/footer links, feature sections, bento
+  surfaces, resource cards, resource index, and token-input removal controls now
+  use tokenized hierarchy, body rhythm, and wrapping without touching ASCII
+  construction rules.
 
 Remaining work:
 

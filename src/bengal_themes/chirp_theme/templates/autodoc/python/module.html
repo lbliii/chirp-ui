@@ -17,7 +17,7 @@
   <div class="docs-content chirp-theme-docs-layout__content chirp-theme-reference-content">
     {% include "autodoc/partials/signature.html" %}
     {% if element?.description ?? none %}
-    {% call rendered_content(compact=true, cls="chirp-theme-reference-description") %}{{ element.description | safe }}{% end %}
+    {% call rendered_content(compact=true, cls="chirp-theme-reference-description") %}{{ element.description |> markdownify |> safe }}{% end %}
     {% end %}
     {% include "autodoc/partials/members.html" %}
     {% include "autodoc/partials/examples.html" %}

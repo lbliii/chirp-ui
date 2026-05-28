@@ -5,15 +5,16 @@
 {% let href = item?.href ?? item?.url ?? "#" ~ name %}
 {% let description = item?.description ?? item?.summary ?? none %}
 {% let kind = item?.element_type ?? item?.type ?? "reference" %}
+{% let kind_icon = "folder" if kind == "module" else ("terminal" if "cli" in kind or "command" in kind else ("globe" if "endpoint" in kind or "schema" in kind else "file-code")) %}
 <a href="{{ href | absolute_url }}"
    class="chirp-theme-reference-card"
    data-chirp-theme-reference-kind="{{ kind }}"
    title="{{ name }}"{{ route_link_attrs(href | absolute_url) | html_attrs }}>
-  <span class="chirp-theme-reference-card__mark" aria-hidden="true">{{ icon('code', size=16) }}</span>
+  <span class="chirp-theme-reference-card__mark" aria-hidden="true">{{ icon(kind_icon, size=16) }}</span>
   <span class="chirp-theme-reference-card__eyebrow">{{ kind }}</span>
   <strong class="chirp-theme-reference-card__title">{{ name }}</strong>
   {% if description %}
-  <span class="chirp-theme-reference-card__description">{{ description }}</span>
+  <div class="chirp-theme-reference-card__description">{{ description |> markdownify |> truncatewords_html(28, '…') |> safe }}</div>
   {% end %}
   <span class="chirp-theme-reference-card__footer">
     <span>Open reference</span>

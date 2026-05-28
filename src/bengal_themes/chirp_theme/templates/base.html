@@ -299,8 +299,12 @@ symbols imported inside another block.
     {% if library_asset_tags | default(none) %}
     {{ library_asset_tags() }}
     {% else %}
-    {% let _chirpui_js_asset = 'chirpui.js' %}
-    {% let _chirpui_alpine_asset = 'chirpui-alpine.js' %}
+    {% let _chirpui_css_asset = chirpui_asset_path('chirpui.css') %}
+    {% let _chirpui_transitions_asset = chirpui_asset_path('chirpui-transitions.css') %}
+    {% let _chirpui_js_asset = chirpui_asset_path('chirpui.js') %}
+    {% let _chirpui_alpine_asset = chirpui_asset_path('chirpui-alpine.js') %}
+    <link rel="stylesheet" href="{{ asset_url(_chirpui_css_asset) }}">
+    <link rel="stylesheet" href="{{ asset_url(_chirpui_transitions_asset) }}">
     <script src="{{ asset_url(_chirpui_js_asset) }}" defer></script>
     <script src="{{ asset_url(_chirpui_alpine_asset) }}" defer></script>
     {% end %}

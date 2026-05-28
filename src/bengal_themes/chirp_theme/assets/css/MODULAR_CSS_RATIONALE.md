@@ -25,7 +25,8 @@ Bengal uses **modular CSS architecture** with 45+ component files instead of con
 
 **Modular (Current):**
 - Find button styles: `components/buttons.css` (408 lines)
-- Find retained docs navigation styles: `components/docs-nav.css`
+- Find retained docs navigation styles: `chirp-theme.css` because the docs rail
+  is a theme shell composition over Chirp UI sidebar primitives.
 - Clear, predictable file names
 
 **Consolidated (Proposed):**

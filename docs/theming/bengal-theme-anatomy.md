@@ -244,7 +244,8 @@ Docs navigation structure:
 - `partials/docs-nav.html` imports `chirpui/sidebar.html`.
 - root sidebar class: `.chirp-theme-docs-nav`
 - section class: `.chirp-theme-docs-nav__section`
-- branch link class: `.chirp-theme-docs-nav__branch-link`
+- nested links container: `.chirp-theme-docs-nav__section-links`
+- branch summary link class: `.chirp-theme-docs-nav__summary-link`
 - leaf link class: `.chirp-theme-docs-nav__leaf-link`
 - current path comes from `page.href` or `page._path`
 - tree data comes from `get_nav_context()` or `get_nav_tree()`
