@@ -1,0 +1,59 @@
+{% from "chirpui/aspect_ratio.html" import aspect_ratio %}
+{% from "chirpui/data_table.html" import data_table %}
+{% from "chirpui/item.html" import item %}
+{% from "chirpui/kbd.html" import kbd %}
+{% from "chirpui/label.html" import ui_label %}
+{% from "chirpui/scroll_area.html" import scroll_area %}
+{% from "chirpui/separator.html" import separator %}
+{% from "chirpui/slider.html" import slider %}
+{% from "chirpui/toggle_group.html" import toggle_group %}
+
+{% let name = shortcode.Get("name") or shortcode.Get(0) %}
+{% let title = shortcode.Get("title") or name %}
+{% let description = shortcode.Get("description") %}
+
+{% if name %}
+<figure class="chirp-theme-component-specimen" data-component="{{ name }}">
+  <figcaption class="chirp-theme-component-specimen__header">
+    <span class="chirp-theme-component-specimen__eyebrow">Component specimen</span>
+    <strong>{{ title }}</strong>
+    {% if description %}<span>{{ description }}</span>{% end %}
+  </figcaption>
+  <div class="chirp-theme-component-specimen__preview">
+    {% if name == "toggle_group" %}
+{{ toggle_group(items=[
+        {"label": "Preview", "value": "preview"},
+        {"label": "Code", "value": "code"},
+        {"label": "Docs", "value": "docs"},
+      ], name="specimen_view", value="preview", size="sm") | replace("\n", " ") | trim | safe }}
+    {% elif name == "slider" %}
+{{ slider("specimen_volume", value=68, min=0, max=100, label="Volume", show_value=true) | replace("\n", " ") | trim | safe }}
+    {% elif name == "scroll_area" %}
+<div class="chirpui-scroll-area chirpui-scroll-area--vertical chirpui-scroll-area--fade chirp-theme-component-specimen__scroll" style="--chirpui-scroll-area-max-block-size: 8rem;"><div class="chirpui-scroll-area__viewport">
+{{ item(title="Release notes", description="Latest package changes", meta="3") | replace("\n", " ") | trim | safe }}
+{{ item(title="Component docs", description="Stable macro guidance", selected=true) | replace("\n", " ") | trim | safe }}
+{{ item(title="API reference", description="Generated module docs") | replace("\n", " ") | trim | safe }}
+{{ item(title="Patterns", description="Composable page recipes") | replace("\n", " ") | trim | safe }}
+</div></div>
+    {% elif name == "item" %}
+{{ item(title="Workspace settings", description="Team, billing, and access controls", meta="Updated", selected=true) | replace("\n", " ") | trim | safe }}
+    {% elif name == "data_table" %}
+{{ data_table(title="Deployments", description="Recent environment activity",
+        headers=["Name", "Status"], rows=[["web", "Ready"], ["worker", "Queued"]],
+        current=1, total=1, compact=true) | replace("\n", " ") | trim | safe }}
+    {% elif name == "kbd" %}
+<div class="chirp-theme-component-specimen__inline">{{ kbd(["Ctrl", "K"], size="sm", attrs_map={"aria-label": "Open search"}) | replace("\n", " ") | trim | safe }}</div>
+    {% elif name == "separator" %}
+{{ separator(label="or") | replace("\n", " ") | trim | safe }}
+    {% elif name == "aspect_ratio" %}
+<div class="chirpui-aspect-ratio chirp-theme-component-specimen__frame" style="--chirpui-aspect-ratio: 16 / 9;"><div class="chirpui-aspect-ratio__inner"><div class="chirp-theme-component-specimen__media">16:9</div></div></div>
+    {% elif name == "label" %}
+<div class="chirp-theme-component-specimen__field">{{ ui_label("Email", for_id="specimen-email", required=true, hint="Work address") | replace("\n", " ") | trim | safe }}
+<input id="specimen-email" class="chirpui-field__input" type="email" value="team@example.com">
+</div>
+    {% else %}
+      {{ shortcode.Inner | safe }}
+    {% end %}
+  </div>
+</figure>
+{% end %}

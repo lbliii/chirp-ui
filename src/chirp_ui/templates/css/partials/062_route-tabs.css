@@ -18,12 +18,15 @@
     color: var(--chirpui-text-muted);
     text-decoration: none;
     font-size: var(--chirpui-font-sm);
-    font-weight: 500;
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     border-radius: var(--chirpui-radius-sm) var(--chirpui-radius-sm) 0 0;
     border: 1px solid transparent;
     border-bottom: none;
     margin-bottom: -1px;
     background: transparent;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
     transition: color var(--chirpui-transition), background var(--chirpui-transition),
         border-color var(--chirpui-transition);
 }
@@ -40,7 +43,8 @@
     box-shadow: 0 -1px 0 0 var(--chirpui-accent);
 }
 .chirpui-route-tab__label {
-    /* Inherits from parent; explicit for BEM consistency */
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
 }
 .chirpui-route-tab__icon {
     display: inline-flex;
@@ -60,6 +64,8 @@
     justify-content: center;
     min-inline-size: calc(var(--chirpui-spacing) + var(--chirpui-spacing-xs));
     font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
     padding: var(--chirpui-spacing-2xs) 0.375rem;
     background: var(--chirpui-surface-alt);
     border-radius: 9999px;

@@ -68,7 +68,7 @@ _COLOR_RE = re.compile(
     r"|^(?:rgb|hsl|oklch|lab|lch)a?\([-\d.,%/ a-z]+\)$",
 )
 _URI_SCHEME_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:")
-_BENGAL_CONTRACT_ASSETS_VERSION = (0, 3, 3)
+_BENGAL_CONTRACT_ASSETS_VERSION = (0, 3, 2)
 
 _chirpui_named_colors: ContextVar[dict[str, str] | None] = ContextVar(
     "chirpui_named_colors",

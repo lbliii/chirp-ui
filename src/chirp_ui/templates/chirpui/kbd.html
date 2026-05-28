@@ -1,0 +1,20 @@
+{#- chirp-ui: Keyboard key
+    Inline keyboard key primitive for shortcuts and command hints.
+
+    Usage:
+        from "chirpui/kbd.html" import kbd
+
+        {{ kbd("⌘K") }}
+        {{ kbd(["Ctrl", "K"], size="sm") }}
+-#}
+
+{% def kbd(keys, size="", cls="", attrs_map=none) %}
+{% set size = size | validate_size("kbd", "") %}
+{% set size_class = " chirpui-kbd--" ~ size if size else "" %}
+{% set _keys = keys if keys is iterable and keys is not string else [keys] %}
+<kbd class="chirpui-kbd{{ size_class }}{{ " " ~ cls if cls else "" }}"{{ attrs_map | html_attrs }}>
+    {% for key in _keys %}
+    <span class="chirpui-kbd__key">{{ key }}</span>
+    {% end %}
+</kbd>
+{% end %}

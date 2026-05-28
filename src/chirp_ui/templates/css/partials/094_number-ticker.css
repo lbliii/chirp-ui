@@ -4,9 +4,12 @@
 
 .chirpui-number-ticker {
     display: inline-block;
+    line-height: var(--chirpui-line-height-tight);
 }
 .chirpui-number-ticker__value {
+    display: inline-block;
     font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     counter-reset: chirpui-num var(--chirpui-num);
     animation: chirpui-count-up var(--chirpui-anim-pulse) var(--chirpui-ease-decel) forwards;
 }
@@ -18,5 +21,4 @@
 .chirpui-number-ticker--md { font-size: var(--chirpui-ui-base); }
 .chirpui-number-ticker--lg { font-size: var(--chirpui-ui-lg); }
 .chirpui-number-ticker--xl { font-size: var(--chirpui-prose-2xl); }
-
 

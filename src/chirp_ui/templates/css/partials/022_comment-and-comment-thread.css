@@ -20,12 +20,16 @@
 .chirpui-comment__meta {
     display: flex;
     align-items: baseline;
+    flex-wrap: wrap;
     gap: var(--chirpui-spacing-sm);
+    min-inline-size: 0;
 }
 
 .chirpui-comment__author {
     font-weight: var(--chirpui-ui-font-weight-semibold);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
+    overflow-wrap: anywhere;
 }
 
 a.chirpui-comment__author:hover {
@@ -34,7 +38,10 @@ a.chirpui-comment__author:hover {
 
 .chirpui-comment__time {
     font-size: var(--chirpui-font-xs);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
+    white-space: nowrap;
 }
 
 .chirpui-comment__body {
@@ -43,6 +50,8 @@ a.chirpui-comment__author:hover {
 
 .chirpui-comment__body p {
     margin: 0;
+    line-height: var(--chirpui-line-height-normal);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-comment__footer {
@@ -68,6 +77,8 @@ a.chirpui-comment__author:hover {
 
 .chirpui-comment__replies-link {
     font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-accent);
 }
 
@@ -84,4 +95,3 @@ a.chirpui-comment__author:hover {
 .chirpui-comment-thread .chirpui-comment:last-child {
     border-bottom: none;
 }
-

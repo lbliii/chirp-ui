@@ -43,6 +43,15 @@ def test_segmented_control_minimal_item(env: Environment) -> None:
     assert "chirpui-segmented__option" in out
 
 
+def test_toggle_group_minimal_item(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/toggle_group.html" import toggle_group %}'
+        '{{ toggle_group(items=[{}], name="t") }}',
+    )
+    assert "chirpui-toggle-group__item" in out
+
+
 def test_route_tabs_minimal_tab(env: Environment) -> None:
     from chirp_ui.route_tabs import tab_is_active
 

@@ -55,6 +55,8 @@
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     flex-shrink: 0;
     border: 2px solid var(--chirpui-border);
     box-shadow: 0 0 0 0.25rem var(--chirpui-bg);
@@ -84,14 +86,15 @@
     height: 100%;
     border-radius: inherit;
     background: inherit;
-    font-size: 0.875rem;
-    line-height: 1;
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
 }
 
 .chirpui-stepper__label {
     display: block;
     margin-top: var(--chirpui-spacing-xs);
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     white-space: nowrap;
     overflow: clip;

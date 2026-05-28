@@ -113,6 +113,18 @@
 
         const wrapper = document.createElement('div');
         wrapper.className = 'code-block-wrapper';
+        const nonEmptyLines = (codeBlock.textContent || '')
+          .split('\n')
+          .map((line) => line.trim())
+          .filter(Boolean);
+        if (
+          nonEmptyLines.length <= 1
+          && codeBlock.closest(
+            '.chirp-theme-reference-description, .chirp-theme-reference-member__description'
+          )
+        ) {
+          wrapper.classList.add('code-block-wrapper--specimen');
+        }
 
         ['gradient-border', 'gradient-border-subtle', 'gradient-border-strong', 'fluid-border', 'fluid-combined']
           .forEach((className) => {

@@ -16,6 +16,7 @@
     transition: background var(--chirpui-transition), color var(--chirpui-transition);
     text-decoration: none;
     font-size: var(--chirpui-ui-sm);
+    line-height: var(--chirpui-line-height-tight);
     flex-shrink: 0;
 }
 .chirpui-icon-btn:hover { background: var(--chirpui-surface-alt); color: var(--chirpui-text); }

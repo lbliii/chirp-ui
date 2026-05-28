@@ -3400,6 +3400,61 @@
       "trim_emits": [],
       "variants": []
     },
+    "aspect-ratio": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "aspect-ratio",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Aspect Ratio\n    Fixed-ratio frame for media, previews, charts, and embedded content.\n\n    Usage:\n        from \"chirpui/aspect_ratio.html\" import aspect_ratio\n\n        {% call aspect_ratio(\"16 / 9\") %}\n            <img src=\"/hero.jpg\" alt=\"\">\n        {% end %}",
+      "elements": [
+        "inner"
+      ],
+      "emits": [
+        "chirpui-aspect-ratio",
+        "chirpui-aspect-ratio__inner"
+      ],
+      "extra_emits": [],
+      "lineno": 12,
+      "macro": "aspect_ratio",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "ratio"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "aspect_ratio.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "aura": {
       "appearances": [],
       "authoring": "available",
@@ -7250,6 +7305,136 @@
       "trim_emits": [],
       "variants": []
     },
+    "data-table": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "data-table",
+      "category": "data-display",
+      "composes": [
+        "filter-row",
+        "pagination",
+        "table"
+      ],
+      "consumes": [],
+      "description": "Data Table\n    Composition wrapper for filter controls, table records, and pagination.\n\n    Usage:\n        from \"chirpui/data_table.html\" import data_table\n\n        data_table(\n            title=\"Users\",\n            headers=[\"Name\", \"Status\"],\n            rows=[[\"Ada\", \"Active\"]],\n            filter_action=\"/users\",\n            current=1,\n            total=4,\n            url_pattern=\"/users?page={page}\",\n        )",
+      "elements": [
+        "body",
+        "description",
+        "filters",
+        "footer",
+        "header",
+        "summary",
+        "title"
+      ],
+      "emits": [
+        "chirpui-data-table",
+        "chirpui-data-table--compact",
+        "chirpui-data-table__body",
+        "chirpui-data-table__description",
+        "chirpui-data-table__filters",
+        "chirpui-data-table__footer",
+        "chirpui-data-table__header",
+        "chirpui-data-table__summary",
+        "chirpui-data-table__title"
+      ],
+      "extra_emits": [],
+      "lineno": 21,
+      "macro": "data_table",
+      "maturity": "stable",
+      "modifiers": [
+        "compact"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "description"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "headers"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "rows"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "filter_action"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "filter_method"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "current"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "total"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "url_pattern"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "empty_message"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "compact"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "striped"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sticky_header"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "data_table.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "description_list": {
       "appearances": [],
       "authoring": "available",
@@ -8140,6 +8325,82 @@
       "trim_emits": [],
       "variants": []
     },
+    "dropdown-select": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "dropdown",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "Dropdown menu, select, and split-button primitives.\n    Includes item menus, combobox/listbox-style dropdown_select controls,\n    and primary-action split menus. Items: {label, href?} or\n    {label, action?, variant?, icon?, divider?}. Requires Alpine.js for behavior.\n\n    Usage:\n        from \"chirpui/dropdown_menu.html\" import dropdown_menu, dropdown_select, dropdown_split\n        from \"chirpui/button.html\" import btn\n\n        {{ dropdown_menu(btn(\"Actions\", icon=\"▾\"), items=[...]) }}",
+      "elements": [
+        "caret",
+        "item",
+        "menu",
+        "selected",
+        "trigger"
+      ],
+      "emits": [
+        "chirpui-dropdown",
+        "chirpui-dropdown--select",
+        "chirpui-dropdown__caret",
+        "chirpui-dropdown__item",
+        "chirpui-dropdown__item--select",
+        "chirpui-dropdown__item--selected",
+        "chirpui-dropdown__menu",
+        "chirpui-dropdown__selected",
+        "chirpui-dropdown__trigger",
+        "chirpui-dropdown__trigger--select"
+      ],
+      "extra_emits": [
+        "chirpui-dropdown__item--select",
+        "chirpui-dropdown__item--selected",
+        "chirpui-dropdown__trigger--select"
+      ],
+      "lineno": 70,
+      "macro": "dropdown_select",
+      "maturity": "stable",
+      "modifiers": [
+        "select"
+      ],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "trigger_label"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "selected"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "dropdown_menu.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "dropdown__item": {
       "appearances": [],
       "authoring": "available",
@@ -8147,7 +8408,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Dropdown menu (items-based)\n    Trigger + items list. Items: {label, href?} or {label, action?, variant?, icon?, divider?}\n    Requires Alpine.js for behavior.\n\n    Usage:\n        from \"chirpui/dropdown_menu.html\" import dropdown_menu, dropdown_select, dropdown_split\n        from \"chirpui/button.html\" import btn\n\n        {{ dropdown_menu(btn(\"Actions\", icon=\"▾\"), items=[...]) }}",
+      "description": "Dropdown menu, select, and split-button primitives.\n    Includes item menus, combobox/listbox-style dropdown_select controls,\n    and primary-action split menus. Items: {label, href?} or\n    {label, action?, variant?, icon?, divider?}. Requires Alpine.js for behavior.\n\n    Usage:\n        from \"chirpui/dropdown_menu.html\" import dropdown_menu, dropdown_select, dropdown_split\n        from \"chirpui/button.html\" import btn\n\n        {{ dropdown_menu(btn(\"Actions\", icon=\"▾\"), items=[...]) }}",
       "elements": [],
       "emits": [
         "chirpui-dropdown__item",
@@ -8157,7 +8418,7 @@
       "extra_emits": [
         "chirpui-dropdown__item--selected"
       ],
-      "lineno": 12,
+      "lineno": 13,
       "macro": "dropdown_menu",
       "maturity": "stable",
       "modifiers": [],
@@ -11530,6 +11791,106 @@
       "trim_emits": [],
       "variants": []
     },
+    "item": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "item",
+      "category": "content",
+      "composes": [],
+      "consumes": [],
+      "description": "Item\n    Reusable row anatomy for lists, menus, command results, and resource links.\n\n    Usage:\n        from \"chirpui/item.html\" import item\n\n        {{ item(title=\"Settings\", description=\"Manage workspace preferences\", href=\"/settings/\") }}",
+      "elements": [
+        "action",
+        "content",
+        "description",
+        "icon",
+        "meta",
+        "title"
+      ],
+      "emits": [
+        "chirpui-item",
+        "chirpui-item--disabled",
+        "chirpui-item--selected",
+        "chirpui-item__action",
+        "chirpui-item__content",
+        "chirpui-item__description",
+        "chirpui-item__icon",
+        "chirpui-item__meta",
+        "chirpui-item__title"
+      ],
+      "extra_emits": [],
+      "lineno": 10,
+      "macro": "item",
+      "maturity": "stable",
+      "modifiers": [
+        "disabled",
+        "selected"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "description"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "icon"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "meta"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "selected"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "disabled"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "action"
+      ],
+      "slots_extracted": [
+        "action"
+      ],
+      "slots_yielded": [],
+      "template": "item.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "jello": {
       "appearances": [],
       "authoring": "available",
@@ -11557,6 +11918,68 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "kbd": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "kbd",
+      "category": "control",
+      "composes": [],
+      "consumes": [],
+      "description": "Keyboard key\n    Inline keyboard key primitive for shortcuts and command hints.\n\n    Usage:\n        from \"chirpui/kbd.html\" import kbd\n\n        {{ kbd(\"⌘K\") }}\n        {{ kbd([\"Ctrl\", \"K\"], size=\"sm\") }}",
+      "elements": [
+        "key"
+      ],
+      "emits": [
+        "chirpui-kbd",
+        "chirpui-kbd--lg",
+        "chirpui-kbd--sm",
+        "chirpui-kbd__key"
+      ],
+      "extra_emits": [],
+      "lineno": 11,
+      "macro": "kbd",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "keys"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [
+        "",
+        "lg",
+        "sm"
+      ],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "kbd.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -11602,6 +12025,76 @@
       "trim_emits": [
         "chirpui-key-value-form"
       ],
+      "variants": []
+    },
+    "label": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "label",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Label\n    Standalone label primitive for custom controls and compact forms.\n\n    Usage:\n        from \"chirpui/label.html\" import ui_label\n\n        {{ ui_label(\"Email\", for_id=\"email\", required=true) }}",
+      "elements": [
+        "hint",
+        "required",
+        "text"
+      ],
+      "emits": [
+        "chirpui-label",
+        "chirpui-label__hint",
+        "chirpui-label__required",
+        "chirpui-label__text"
+      ],
+      "extra_emits": [],
+      "lineno": 10,
+      "macro": "ui_label",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "text"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "for_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "required"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hint"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "label.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
       "variants": []
     },
     "label-overline": {
@@ -16646,6 +17139,80 @@
       "trim_emits": [],
       "variants": []
     },
+    "scroll-area": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "scroll-area",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Scroll Area\n    Contained overflow region for sidebars, menus, code previews, and panels.\n\n    Usage:\n        from \"chirpui/scroll_area.html\" import scroll_area\n\n        {% call scroll_area(max_block_size=\"18rem\") %}\n            ...\n        {% end %}",
+      "elements": [
+        "viewport"
+      ],
+      "emits": [
+        "chirpui-scroll-area",
+        "chirpui-scroll-area--both",
+        "chirpui-scroll-area--fade",
+        "chirpui-scroll-area--horizontal",
+        "chirpui-scroll-area--vertical",
+        "chirpui-scroll-area__viewport"
+      ],
+      "extra_emits": [],
+      "lineno": 12,
+      "macro": "scroll_area",
+      "maturity": "stable",
+      "modifiers": [
+        "both",
+        "fade",
+        "horizontal",
+        "vertical"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "max_block_size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "orientation"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "fade"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "scroll_area.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "scroll-x": {
       "appearances": [],
       "authoring": "compatibility",
@@ -17230,6 +17797,74 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "selection_bar.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "separator": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "separator",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Separator\n    Semantic or decorative separator for content, menus, and compact toolbars.\n\n    Usage:\n        from \"chirpui/separator.html\" import separator\n\n        {{ separator() }}\n        {{ separator(orientation=\"vertical\", decorative=false) }}",
+      "elements": [
+        "label"
+      ],
+      "emits": [
+        "chirpui-separator",
+        "chirpui-separator--decorative",
+        "chirpui-separator--horizontal",
+        "chirpui-separator--vertical",
+        "chirpui-separator__label"
+      ],
+      "extra_emits": [],
+      "lineno": 11,
+      "macro": "separator",
+      "maturity": "stable",
+      "modifiers": [
+        "decorative",
+        "horizontal",
+        "vertical"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "orientation"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "decorative"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "separator.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -18187,6 +18822,112 @@
         "card",
         "text"
       ]
+    },
+    "slider": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "slider",
+      "category": "control",
+      "composes": [],
+      "consumes": [],
+      "description": "Slider\n    Native range input wrapper for numeric settings and filters.\n\n    Usage:\n        from \"chirpui/slider.html\" import slider\n\n        {{ slider(\"volume\", value=40, min=0, max=100, label=\"Volume\", show_value=true) }}",
+      "elements": [
+        "header",
+        "input",
+        "label",
+        "value"
+      ],
+      "emits": [
+        "chirpui-slider",
+        "chirpui-slider--disabled",
+        "chirpui-slider--lg",
+        "chirpui-slider--sm",
+        "chirpui-slider__header",
+        "chirpui-slider__input",
+        "chirpui-slider__label",
+        "chirpui-slider__value"
+      ],
+      "extra_emits": [],
+      "lineno": 10,
+      "macro": "slider",
+      "maturity": "stable",
+      "modifiers": [
+        "disabled"
+      ],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "value"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "min"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "max"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "step"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "show_value"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "disabled"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [
+        "",
+        "lg",
+        "sm"
+      ],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "slider.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
     },
     "sortable": {
       "appearances": [],
@@ -21272,6 +22013,120 @@
       "trim_emits": [],
       "variants": []
     },
+    "toggle-group": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "toggle-group",
+      "category": "control",
+      "composes": [],
+      "consumes": [],
+      "description": "Toggle Group\n    Grouped toggle buttons for single or multiple selection.\n\n    Usage:\n        from \"chirpui/toggle_group.html\" import toggle_group\n\n        {{ toggle_group(\n            items=[\n                {\"label\": \"Bold\", \"value\": \"bold\", \"pressed\": true},\n                {\"label\": \"Italic\", \"value\": \"italic\"},\n            ],\n            name=\"format\",\n            type=\"multiple\",\n        ) }}",
+      "elements": [
+        "icon",
+        "input",
+        "item",
+        "label"
+      ],
+      "emits": [
+        "chirpui-toggle-group",
+        "chirpui-toggle-group--horizontal",
+        "chirpui-toggle-group--lg",
+        "chirpui-toggle-group--multiple",
+        "chirpui-toggle-group--outline",
+        "chirpui-toggle-group--single",
+        "chirpui-toggle-group--sm",
+        "chirpui-toggle-group--vertical",
+        "chirpui-toggle-group__icon",
+        "chirpui-toggle-group__input",
+        "chirpui-toggle-group__item",
+        "chirpui-toggle-group__item--disabled",
+        "chirpui-toggle-group__item--pressed",
+        "chirpui-toggle-group__label"
+      ],
+      "extra_emits": [
+        "chirpui-toggle-group__item--disabled",
+        "chirpui-toggle-group__item--pressed"
+      ],
+      "lineno": 17,
+      "macro": "toggle_group",
+      "maturity": "stable",
+      "modifiers": [
+        "horizontal",
+        "multiple",
+        "outline",
+        "single",
+        "vertical"
+      ],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "type"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "value"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "orientation"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "disabled"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [
+        "",
+        "lg",
+        "sm"
+      ],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "toggle_group.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "toggle-wrap": {
       "appearances": [],
       "authoring": "available",
@@ -22886,7 +23741,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 291,
+      "available": 301,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -22895,18 +23750,18 @@
       "ascii": 40,
       "composite": 1,
       "container": 9,
-      "content": 10,
-      "control": 20,
-      "data-display": 36,
+      "content": 11,
+      "control": 23,
+      "data-display": 37,
       "effect": 46,
       "feedback": 25,
-      "form": 18,
+      "form": 19,
       "infrastructure": 2,
       "interactive": 9,
-      "layout": 47,
+      "layout": 50,
       "marketing": 11,
       "media": 6,
-      "navigation": 26,
+      "navigation": 27,
       "overlay": 3,
       "social": 4,
       "typography": 29
@@ -22915,22 +23770,22 @@
       "experimental": 98,
       "internal": 2,
       "legacy": 39,
-      "stable": 203
+      "stable": 213
     },
     "component_requirements": {
-      "alpine": 23,
+      "alpine": 24,
       "htmx": 25
     },
     "component_roles": {
-      "component": 177,
+      "component": 187,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 239,
-    "components_with_params": 239,
+    "components_with_description": 249,
+    "components_with_params": 249,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -22938,7 +23793,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 237
+      "public_templated_components": 247
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -22946,8 +23801,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 124,
-      "explicit_extra_classes": 527,
+      "explicit_extra_blocks": 126,
+      "explicit_extra_classes": 532,
       "explicit_trim_blocks": 68,
       "explicit_trim_classes": 95
     },
@@ -22961,7 +23816,7 @@
       "spacing": 30,
       "typography": 45
     },
-    "total_components": 342,
+    "total_components": 352,
     "total_theme_packs": 3,
     "total_tokens": 433
   },

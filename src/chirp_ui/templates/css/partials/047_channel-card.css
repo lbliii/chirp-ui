@@ -36,17 +36,22 @@
 
         .chirpui-channel-card__info {
             min-width: 0;
+            overflow-wrap: anywhere;
         }
 
         .chirpui-channel-card__name {
             margin: 0;
             font-size: var(--chirpui-font-base);
             font-weight: var(--chirpui-ui-font-weight-semibold);
+            line-height: var(--chirpui-line-height-tight);
+            overflow-wrap: anywhere;
         }
 
         .chirpui-channel-card__subscribers {
             margin: var(--chirpui-spacing-xs) 0 0;
             font-size: var(--chirpui-font-sm);
+            font-variant-numeric: tabular-nums;
+            line-height: var(--chirpui-line-height-tight);
             color: var(--chirpui-text-muted);
         }
 

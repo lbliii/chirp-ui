@@ -4,5 +4,16 @@
 
 .chirpui-wizard-form__body {
     margin-top: var(--chirpui-spacing-lg);
+    min-inline-size: 0;
+    font-size: var(--chirpui-font-base);
+    line-height: var(--chirpui-line-height-normal);
+    overflow-wrap: anywhere;
 }
 
+.chirpui-wizard-form__body > :where(:not(script, style, template)) {
+    margin-block: 0;
+}
+
+.chirpui-wizard-form__body > :where(:not(script, style, template)) + :where(:not(script, style, template)) {
+    margin-block-start: var(--chirpui-spacing);
+}

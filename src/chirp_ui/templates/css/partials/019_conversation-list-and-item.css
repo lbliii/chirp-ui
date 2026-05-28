@@ -42,19 +42,25 @@
     justify-content: space-between;
     align-items: baseline;
     gap: var(--chirpui-spacing-sm);
+    min-inline-size: 0;
 }
 
 .chirpui-conversation-item__name {
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-sm);
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    line-height: var(--chirpui-line-height-tight);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-conversation-item__time {
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-xs);
     font-weight: var(--chirpui-ui-font-weight-normal);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
+    white-space: nowrap;
 }
 
 .chirpui-conversation-item__preview {
@@ -62,6 +68,7 @@
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-sm);
     font-weight: var(--chirpui-ui-font-weight-normal);
+    line-height: var(--chirpui-line-height-normal);
     color: var(--chirpui-text-muted);
     white-space: nowrap;
     overflow: clip;
@@ -83,9 +90,10 @@
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-xs);
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     text-align: center;
     background: var(--chirpui-accent);
     color: var(--chirpui-surface);
     border-radius: 9999px;
 }
-

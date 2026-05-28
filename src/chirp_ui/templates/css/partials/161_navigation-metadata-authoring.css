@@ -491,8 +491,9 @@ a.chirpui-chip:focus-visible {
     background: transparent;
     color: var(--chirpui-text-muted);
     cursor: pointer;
-    font: inherit;
-    line-height: 1;
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
 }
 
 .chirpui-token-input__remove:hover {

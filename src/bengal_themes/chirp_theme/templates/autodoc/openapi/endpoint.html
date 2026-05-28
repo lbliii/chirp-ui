@@ -27,7 +27,7 @@
         </div>
         {% include "autodoc/openapi/partials/playground-bar.html" %}
         {% if element?.description ?? none %}
-        {% call rendered_content(compact=true, cls="chirp-theme-reference-description") %}{{ element.description | safe }}{% end %}
+        {% call rendered_content(compact=true, cls="chirp-theme-reference-description") %}{{ element.description |> markdownify |> safe }}{% end %}
         {% end %}
         {% include "autodoc/partials/params-table.html" %}
         {% include "autodoc/openapi/partials/request-body.html" %}

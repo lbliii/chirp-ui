@@ -1075,8 +1075,13 @@ header[role="banner"][data-sticky="false"] {
     overlay 0.3s allow-discrete;
 }
 
+.mobile-nav-dialog:not([open]) {
+  display: none;
+}
+
 /* Open state */
 .mobile-nav-dialog[open] {
+  display: flex;
   transform: translateX(0);
   opacity: 1;
 }

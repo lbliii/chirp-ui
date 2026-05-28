@@ -77,6 +77,20 @@ def test_visual_taste_plan_tracks_typography_next_phase() -> None:
         "existing tokens only",
         "A second component taste sweep extends the same existing-token treatment",
         "panel, callout, modal, tabs, collapse, dropdown, toast, pagination",
+        "A third component taste sweep carries the same treatment into navigation",
+        "breadcrumbs, sidebar, route tabs, segmented control, accordion, drawer, and tray",
+        "A fourth component taste sweep covers smaller controls",
+        "inline edit, logo/navbar",
+        "A fifth component taste sweep applies the same existing-token treatment",
+        "entity header, profile header, config row, wizard form, divider, theme toggle",
+        "A sixth component taste sweep carries the existing-token treatment into content",
+        "message bubble, conversation item, post card, comment, video card, channel card",
+        "A seventh component taste sweep carries the existing-token treatment into data",
+        "spinner, infinite scroll, bar chart, donut chart, number ticker, and animated counter",
+        "An eighth component taste sweep applies the existing-token treatment to special form controls",
+        "radio labels, file inputs, star ratings, thumbs, segmented labels, number scale",
+        "A ninth component taste sweep applies the existing-token treatment to site and resource metadata",
+        "site nav/footer links, feature sections, bento surfaces, resource cards, resource index",
         "Draft a public token promotion proposal only after repeated component",
         "Defer public typography role tokens until repeated screen workarounds justify",
         "Typography roles are screen-proven before becoming public token vocabulary.",
@@ -366,3 +380,342 @@ def test_second_component_taste_sweep_uses_existing_tokens() -> None:
 
     assert ".chirpui-status-indicator__label" in partials["status"]
     assert "overflow-wrap: anywhere;" in partials["status"]
+
+
+def test_navigation_and_disclosure_taste_sweep_uses_existing_tokens() -> None:
+    partials = {
+        name: (ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / filename).read_text(
+            encoding="utf-8"
+        )
+        for name, filename in {
+            "breadcrumbs": "026_breadcrumbs.css",
+            "sidebar": "029_sidebar.css",
+            "drawer": "053_drawer.css",
+            "accordion": "055_accordion.css",
+            "route_tabs": "062_route-tabs.css",
+            "tray": "065_tray.css",
+            "segmented": "112_segmented-control.css",
+        }.items()
+    }
+
+    for name, text in partials.items():
+        assert "--chirpui-component-role" not in text, name
+        assert "--chirpui-type-role" not in text, name
+        assert "font-weight: 500;" not in text, name
+
+    for name in [
+        "breadcrumbs",
+        "sidebar",
+        "drawer",
+        "accordion",
+        "route_tabs",
+        "tray",
+        "segmented",
+    ]:
+        assert "line-height: var(--chirpui-line-height-tight);" in partials[name]
+
+    for name in ["drawer", "accordion", "tray"]:
+        assert "line-height: var(--chirpui-line-height-normal);" in partials[name]
+
+    for name in ["sidebar", "route_tabs"]:
+        assert "font-variant-numeric: tabular-nums;" in partials[name]
+
+    assert ".chirpui-breadcrumbs__current" in partials["breadcrumbs"]
+    assert "font-weight: var(--chirpui-ui-font-weight-normal);" in partials["breadcrumbs"]
+    assert ".chirpui-sidebar__link--active" in partials["sidebar"]
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["sidebar"]
+    assert ".chirpui-drawer__title" in partials["drawer"]
+    assert "font-weight: var(--chirpui-ui-font-weight-semibold);" in partials["drawer"]
+    assert ".chirpui-accordion__trigger-text" in partials["accordion"]
+    assert "overflow-wrap: anywhere;" in partials["accordion"]
+    assert ".chirpui-route-tab__badge" in partials["route_tabs"]
+    assert "font-weight: var(--chirpui-ui-font-weight-semibold);" in partials["route_tabs"]
+    assert ".chirpui-tray__body" in partials["tray"]
+    assert "font-size: var(--chirpui-font-sm);" in partials["tray"]
+    assert ".chirpui-segmented__option--active" in partials["segmented"]
+    assert "font-weight: var(--chirpui-ui-font-weight-semibold);" in partials["segmented"]
+
+
+def test_small_control_taste_sweep_uses_existing_tokens() -> None:
+    partials = {
+        name: (ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / filename).read_text(
+            encoding="utf-8"
+        )
+        for name, filename in {
+            "inline_edit": "007_inline-edit-field.css",
+            "logo": "028_logo.css",
+            "stepper": "030_stepper.css",
+            "dropdown_menu": "064_dropdown-menu.css",
+            "app_shell_sidebar": "084_app-shell-sidebar.css",
+            "shimmer_button": "090_shimmer-button.css",
+            "ripple_button": "091_ripple-button.css",
+            "pulsing_button": "104_pulsing-button.css",
+            "animated_stat": "107_animated-stat-card.css",
+        }.items()
+    }
+
+    for name, text in partials.items():
+        assert "--chirpui-component-role" not in text, name
+        assert "--chirpui-type-role" not in text, name
+        assert "font-weight: 500;" not in text, name
+
+    for name in [
+        "inline_edit",
+        "logo",
+        "stepper",
+        "dropdown_menu",
+        "shimmer_button",
+        "ripple_button",
+        "pulsing_button",
+        "animated_stat",
+    ]:
+        assert "line-height: var(--chirpui-line-height-tight);" in partials[name]
+
+    for name in ["stepper", "animated_stat"]:
+        assert "font-variant-numeric: tabular-nums;" in partials[name]
+
+    assert ".chirpui-inline-edit--display .chirpui-inline-edit__value" in partials["inline_edit"]
+    assert "overflow-wrap: anywhere;" in partials["inline_edit"]
+    assert ".chirpui-logo__text" in partials["logo"]
+    assert "line-height: var(--chirpui-line-height-tight);" in partials["logo"]
+    assert ".chirpui-stepper__check" in partials["stepper"]
+    assert "font-size: var(--chirpui-font-sm);" in partials["stepper"]
+    assert ".chirpui-dropdown__item--selected" in partials["dropdown_menu"]
+    assert "font-weight: var(--chirpui-ui-font-weight-semibold);" in partials["dropdown_menu"]
+    assert ".chirpui-sidebar__section > summary::after" in partials["app_shell_sidebar"]
+    assert "font-size: var(--chirpui-font-xs);" in partials["app_shell_sidebar"]
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["shimmer_button"]
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["ripple_button"]
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["pulsing_button"]
+    assert ".chirpui-animated-stat-card__trend" in partials["animated_stat"]
+
+
+def test_header_setup_and_affordance_taste_sweep_uses_existing_tokens() -> None:
+    partials = {
+        name: (ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / filename).read_text(
+            encoding="utf-8"
+        )
+        for name, filename in {
+            "entity_header": "006_entity-header.css",
+            "divider": "009_divider.css",
+            "profile_header": "023_profile-header.css",
+            "wizard_form": "031_wizard-form.css",
+            "config_row": "034_config-row.css",
+            "theme_toggle": "063_theme-toggle.css",
+            "tooltip": "110_tooltip.css",
+            "icon_button": "111_icon-button.css",
+        }.items()
+    }
+
+    for name, text in partials.items():
+        assert "--chirpui-component-role" not in text, name
+        assert "--chirpui-type-role" not in text, name
+        assert "font-weight: 500;" not in text, name
+
+    for name in [
+        "entity_header",
+        "divider",
+        "profile_header",
+        "config_row",
+        "theme_toggle",
+        "icon_button",
+    ]:
+        assert "line-height: var(--chirpui-line-height-tight);" in partials[name]
+
+    for name in ["profile_header", "wizard_form", "config_row"]:
+        assert "line-height: var(--chirpui-line-height-normal);" in partials[name]
+
+    assert ".chirpui-entity-header__meta" in partials["entity_header"]
+    assert "color: var(--chirpui-text-muted);" in partials["entity_header"]
+    assert ".chirpui-divider__text" in partials["divider"]
+    assert ".chirpui-profile-header__stats" in partials["profile_header"]
+    assert "font-variant-numeric: tabular-nums;" in partials["profile_header"]
+    assert (
+        ".chirpui-wizard-form__body > :where(:not(script, style, template))"
+        in partials["wizard_form"]
+    )
+    assert ".chirpui-config-row__label" in partials["config_row"]
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["config_row"]
+    assert ".chirpui-theme-toggle__icon" in partials["theme_toggle"]
+    assert "font-size: var(--chirpui-ui-lg);" in partials["theme_toggle"]
+    assert ".chirpui-tooltip__bubble" in partials["tooltip"]
+    assert "overflow-wrap: anywhere;" in partials["tooltip"]
+    assert ".chirpui-icon-btn" in partials["icon_button"]
+
+
+def test_content_and_media_taste_sweep_uses_existing_tokens() -> None:
+    partials = {
+        name: (ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / filename).read_text(
+            encoding="utf-8"
+        )
+        for name, filename in {
+            "message": "016_message-bubble-and-thread.css",
+            "conversation": "019_conversation-list-and-item.css",
+            "post": "021_post-card.css",
+            "comment": "022_comment-and-comment-thread.css",
+            "video": "046_video-card.css",
+            "channel": "047_channel-card.css",
+            "playlist": "050_playlist.css",
+            "chapter": "051_chapter-list.css",
+        }.items()
+    }
+
+    for name, text in partials.items():
+        assert "--chirpui-component-role" not in text, name
+        assert "--chirpui-type-role" not in text, name
+        assert "font-weight: 500;" not in text, name
+
+    for name in [
+        "message",
+        "conversation",
+        "post",
+        "comment",
+        "video",
+        "channel",
+        "playlist",
+        "chapter",
+    ]:
+        assert "line-height: var(--chirpui-line-height-tight);" in partials[name]
+
+    for name in ["message", "conversation", "post", "comment", "chapter"]:
+        assert "line-height: var(--chirpui-line-height-normal);" in partials[name]
+
+    for name in ["conversation", "post", "comment", "video", "channel", "playlist", "chapter"]:
+        assert "font-variant-numeric: tabular-nums;" in partials[name]
+
+    assert ".chirpui-message-bubble" in partials["message"]
+    assert "overflow-wrap: anywhere;" in partials["message"]
+    assert ".chirpui-conversation-item__unread" in partials["conversation"]
+    assert ".chirpui-post-card__time" in partials["post"]
+    assert ".chirpui-comment__replies-link" in partials["comment"]
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["comment"]
+    assert ".chirpui-video-card__duration" in partials["video"]
+    assert ".chirpui-channel-card__subscribers" in partials["channel"]
+    assert ".chirpui-playlist-item__duration" in partials["playlist"]
+    assert ".chirpui-chapter-item__timestamp" in partials["chapter"]
+
+
+def test_data_and_loading_taste_sweep_uses_existing_tokens() -> None:
+    partials = {
+        name: (ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / filename).read_text(
+            encoding="utf-8"
+        )
+        for name, filename in {
+            "spinner": "073_spinner.css",
+            "infinite_scroll": "076_infinite-scroll.css",
+            "bar_chart": "080_bar-chart.css",
+            "donut": "081_donut-chart.css",
+            "number_ticker": "094_number-ticker.css",
+            "animated_counter": "103_animated-counter.css",
+        }.items()
+    }
+
+    for name, text in partials.items():
+        assert "--chirpui-component-role" not in text, name
+        assert "--chirpui-type-role" not in text, name
+        assert "font-weight: 500;" not in text, name
+        assert "font-weight: 400;" not in text, name
+
+    for name in [
+        "spinner",
+        "bar_chart",
+        "donut",
+        "number_ticker",
+        "animated_counter",
+    ]:
+        assert "line-height: var(--chirpui-line-height-tight);" in partials[name]
+
+    assert "line-height: var(--chirpui-line-height-normal);" in partials["infinite_scroll"]
+
+    for name in ["bar_chart", "donut", "number_ticker", "animated_counter"]:
+        assert "font-variant-numeric: tabular-nums;" in partials[name]
+
+    assert ".chirpui-spinner--sm { font-size: var(--chirpui-font-xs); }" in partials["spinner"]
+    assert ".chirpui-infinite-scroll__loading" in partials["infinite_scroll"]
+    assert "overflow-wrap: anywhere;" in partials["infinite_scroll"]
+    assert ".chirpui-bar-chart__label" in partials["bar_chart"]
+    assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["bar_chart"]
+    assert ".chirpui-donut__caption" in partials["donut"]
+    assert "font-weight: var(--chirpui-ui-font-weight-normal);" in partials["donut"]
+    assert ".chirpui-number-ticker__value" in partials["number_ticker"]
+    assert ".chirpui-animated-counter__label" in partials["animated_counter"]
+
+
+def test_special_form_control_taste_sweep_uses_existing_tokens() -> None:
+    text = (
+        ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "070_form-fields.css"
+    ).read_text(encoding="utf-8")
+
+    for phrase in [
+        "--chirpui-component-role",
+        "--chirpui-type-role",
+        "font-weight: 500;",
+        "font-weight: 400;",
+        "font-size: 1.125rem;",
+        "font-size: 1.5rem;",
+        "font-size: 2rem;",
+    ]:
+        assert phrase not in text
+
+    for signal in [
+        ".chirpui-field__radio-label",
+        "font-weight: var(--chirpui-ui-font-weight-normal);",
+        ".chirpui-field__file::file-selector-button",
+        "font-weight: var(--chirpui-ui-font-weight-medium);",
+        ".chirpui-star-rating__label",
+        "font-size: var(--chirpui-font-2xl);",
+        ".chirpui-star-rating--lg .chirpui-star-rating__label",
+        "font-size: var(--chirpui-prose-3xl);",
+        ".chirpui-thumbs__label",
+        ".chirpui-segmented > .chirpui-segmented__input:checked + .chirpui-segmented__label",
+        ".chirpui-number-scale__label",
+        "font-variant-numeric: tabular-nums;",
+        ".chirpui-sortable__handle",
+        ".chirpui-dnd__handle",
+        ".chirpui-field__range-value",
+        "line-height: var(--chirpui-line-height-tight);",
+    ]:
+        assert signal in text
+
+
+def test_site_resource_metadata_taste_sweep_uses_existing_tokens() -> None:
+    partials = {
+        name: (ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / filename).read_text(
+            encoding="utf-8"
+        )
+        for name, filename in {
+            "row_enhancements": "158_row-component-enhancements.css",
+            "resource_card": "159_resource-card.css",
+            "resource_index": "160_resource-index.css",
+            "navigation_metadata": "161_navigation-metadata-authoring.css",
+        }.items()
+    }
+
+    for phrase in [
+        "font-weight: 500;",
+        "font-size: 0.75em;",
+        "font-size: 0.85em;",
+        "line-height: 1.2;",
+        "line-height: var(--chirpui-line-height-relaxed, 1.65);",
+    ]:
+        assert phrase not in partials["row_enhancements"]
+
+    for signal in [
+        ".chirpui-site-nav__link",
+        "font-weight: var(--chirpui-ui-font-weight-medium);",
+        ".chirpui-site-nav__link--external::after",
+        ".chirpui-site-footer__link-glyph",
+        ".chirpui-feature-section__title",
+        "font-size: var(--chirpui-prose-2xl);",
+        ".chirpui-surface__title",
+        ".chirpui-surface__body",
+        "line-height: var(--chirpui-line-height-normal);",
+    ]:
+        assert signal in partials["row_enhancements"]
+
+    assert ".chirpui-resource-card__description" in partials["resource_card"]
+    assert "font-size: var(--chirpui-font-sm);" in partials["resource_card"]
+    assert ".chirpui-resource-index" in partials["resource_index"]
+    assert "font-size: var(--chirpui-font-base);" in partials["resource_index"]
+    assert ".chirpui-token-input__remove" in partials["navigation_metadata"]
+    assert "font-size: var(--chirpui-font-sm);" in partials["navigation_metadata"]

@@ -4,13 +4,13 @@
 
 .chirpui-spinner {
     display: inline-block;
-    line-height: 1;
-    font-size: 1rem;
+    line-height: var(--chirpui-line-height-tight);
+    font-size: var(--chirpui-font-base);
 }
 
-.chirpui-spinner--sm { font-size: 0.75rem; }
-.chirpui-spinner--md { font-size: 1rem; }
-.chirpui-spinner--lg { font-size: 1.5rem; }
+.chirpui-spinner--sm { font-size: var(--chirpui-font-xs); }
+.chirpui-spinner--md { font-size: var(--chirpui-font-base); }
+.chirpui-spinner--lg { font-size: var(--chirpui-font-xl); }
 
 .chirpui-spinner__mote {
     display: inline-block;
@@ -34,13 +34,13 @@
 
 .chirpui-spinner-thinking {
     display: inline-block;
-    line-height: 1;
-    font-size: 1rem;
+    line-height: var(--chirpui-line-height-tight);
+    font-size: var(--chirpui-font-base);
 }
 
-.chirpui-spinner-thinking--sm { font-size: 0.75rem; }
-.chirpui-spinner-thinking--md { font-size: 1rem; }
-.chirpui-spinner-thinking--lg { font-size: 1.5rem; }
+.chirpui-spinner-thinking--sm { font-size: var(--chirpui-font-xs); }
+.chirpui-spinner-thinking--md { font-size: var(--chirpui-font-base); }
+.chirpui-spinner-thinking--lg { font-size: var(--chirpui-font-xl); }
 
 .chirpui-spinner-thinking__char {
     display: inline-block;

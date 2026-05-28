@@ -417,6 +417,25 @@ def test_public_templated_manifest_entries_have_quality_fields() -> None:
     )
 
 
+def test_dropdown_select_manifest_entry_documents_combobox_boundary() -> None:
+    """The combobox-like dropdown macro should be agent-discoverable."""
+    m = build_manifest()
+    entry = m["components"]["dropdown-select"]
+
+    assert entry["block"] == "dropdown"
+    assert entry["template"] == "dropdown_menu.html"
+    assert entry["macro"] == "dropdown_select"
+    assert entry["maturity"] == "stable"
+    assert entry["role"] == "component"
+    assert "alpine" in entry["requires"]
+    assert "select" in entry["modifiers"]
+    assert {"trigger", "selected", "caret", "menu", "item"} <= set(entry["elements"])
+    assert "chirpui-dropdown--select" in entry["emits"]
+    assert "chirpui-dropdown__trigger--select" in entry["emits"]
+    assert "chirpui-dropdown__item--select" in entry["emits"]
+    assert "chirpui-dropdown__item--selected" in entry["emits"]
+
+
 def test_layout_descriptor_burndown_stays_explicit() -> None:
     """PR-sized layout descriptor burn-down should not regress into auto extras."""
     migrated_blocks = {

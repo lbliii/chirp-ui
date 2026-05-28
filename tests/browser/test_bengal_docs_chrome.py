@@ -148,6 +148,38 @@ async def test_bengal_docs_desktop_nav_dropdown_opens_on_hover(page, static_site
     dropdown = page.locator(".chirp-theme-shell__nav-dropdown").first
     trigger = dropdown.locator(".chirpui-navbar-dropdown__trigger")
     menu = dropdown.locator(".chirpui-navbar-dropdown__menu")
+    nav_alignment = await page.locator(".chirp-theme-shell__desktop-nav").evaluate(
+        """nav => {
+            const items = Array.from(nav.children).map((item) => {
+                const control = item.matches("a, summary")
+                    ? item
+                    : item.querySelector(":scope > summary, :scope > a");
+                const rect = control.getBoundingClientRect();
+                return {
+                    tag: control.tagName,
+                    top: rect.top,
+                    bottom: rect.bottom,
+                    center: rect.top + rect.height / 2,
+                    height: rect.height,
+                    display: getComputedStyle(control).display,
+                    alignItems: getComputedStyle(control).alignItems,
+                };
+            });
+            const centers = items.map((item) => item.center);
+            const heights = items.map((item) => item.height);
+            return {
+                items,
+                centerSpread: Math.max(...centers) - Math.min(...centers),
+                heightSpread: Math.max(...heights) - Math.min(...heights),
+            };
+        }"""
+    )
+
+    assert nav_alignment["items"]
+    assert nav_alignment["centerSpread"] <= 1
+    assert nav_alignment["heightSpread"] <= 1
+    assert {item["display"] for item in nav_alignment["items"]} <= {"flex", "inline-flex"}
+    assert {item["alignItems"] for item in nav_alignment["items"]} == {"center"}
 
     await expect(menu).to_be_hidden()
     await trigger.hover()
@@ -158,6 +190,72 @@ async def test_bengal_docs_desktop_nav_dropdown_opens_on_hover(page, static_site
     await page.mouse.move(1000, 850)
     await expect(menu).to_be_hidden()
     await expect(trigger).to_have_attribute("aria-expanded", "false")
+
+
+@pytest.mark.parametrize(("width", "height"), [(390, 844), (1280, 900)])
+async def test_bengal_home_landing_page_uses_product_marketing_shapes(
+    page, static_site_url, width, height
+):
+    await page.set_viewport_size({"width": width, "height": height})
+    await page.goto(f"{static_site_url}/")
+    await page.wait_for_load_state("networkidle")
+    await page.wait_for_timeout(100)
+
+    await assert_no_document_horizontal_overflow(page, f"bengal-home-landing-{width}x{height}")
+    await expect(page.locator(".chirp-theme-home__hero-stage")).to_be_visible()
+    await expect(page.locator(".chirp-theme-home__product-visual")).to_be_visible()
+    await expect(page.locator(".chirp-theme-home__visual-compose")).to_be_visible()
+    await expect(page.locator(".chirp-theme-home__visual-proof")).to_be_visible()
+    await expect(page.locator(".chirp-theme-home__metric-grid")).to_be_visible()
+    await expect(page.locator(".chirp-theme-home__bento")).to_be_visible()
+    await expect(page.locator(".chirp-theme-home__feature-stack")).to_be_visible()
+    await expect(page.locator(".chirp-theme-home__logo-cloud")).to_be_visible()
+    await expect(page.locator(".chirp-theme-home__cta")).to_be_visible()
+
+    metrics = await page.evaluate(
+        """() => {
+            const hero = document.querySelector(".chirp-theme-home__hero-stage");
+            const proof = document.querySelector(".chirp-theme-home__proof");
+            const title = document.querySelector(".chirp-theme-home__hero .chirpui-hero__title");
+            const visual = document.querySelector(".chirp-theme-home__product-visual");
+            const ctas = Array.from(document.querySelectorAll(".chirp-theme-home__actions .chirpui-btn"));
+            const heroRect = hero.getBoundingClientRect();
+            const proofRect = proof.getBoundingClientRect();
+            const titleRect = title.getBoundingClientRect();
+            const visualRect = visual.getBoundingClientRect();
+            const ctaRects = ctas.map((cta) => cta.getBoundingClientRect());
+            return {
+                heroHeight: Math.round(heroRect.height),
+                proofTop: Math.round(proofRect.top),
+                titleWidth: Math.round(titleRect.width),
+                visualWidth: Math.round(visualRect.width),
+                ctaOverflow: ctaRects.some((rect) => rect.width < 88 || rect.height < 32),
+                viewportHeight: window.innerHeight,
+            };
+        }"""
+    )
+
+    assert metrics["titleWidth"] > 180, metrics
+    assert metrics["visualWidth"] > 260, metrics
+    assert not metrics["ctaOverflow"], metrics
+    assert metrics["proofTop"] <= metrics["viewportHeight"] + 24, metrics
+
+    focus_metrics = await page.evaluate(
+        """() => {
+            const cta = document.querySelector(".chirp-theme-home__actions .chirpui-btn");
+            const bento = document.querySelector(".chirp-theme-home__shape-link");
+            cta.focus();
+            const ctaFocused = document.activeElement === cta;
+            bento.focus();
+            return {
+                ctaFocused,
+                bentoFocused: document.activeElement === bento,
+                bentoOutline: getComputedStyle(bento).outlineStyle,
+            };
+        }"""
+    )
+    assert focus_metrics["ctaFocused"], focus_metrics
+    assert focus_metrics["bentoFocused"], focus_metrics
 
 
 async def test_bengal_docs_catalog_shell_moves_global_chrome_to_rail(page, static_site_url):
@@ -219,6 +317,51 @@ async def test_bengal_docs_catalog_shell_moves_global_chrome_to_rail(page, stati
         assert 0 <= metrics["actionsBottomGap"] <= 18, metrics
 
 
+async def test_bengal_docs_catalog_action_buttons_match_section_rail_items(page, static_site_url):
+    await page.set_viewport_size({"width": 2309, "height": 1606})
+    await page.goto(f"{static_site_url}/docs/app-shell/")
+    await page.wait_for_load_state("networkidle")
+
+    metrics = await page.evaluate(
+        """() => {
+            const item = document.querySelector(
+                ".chirp-theme-doc-catalog-rail__group--sections "
+                + ".chirp-theme-doc-catalog-rail__item"
+            );
+            const search = document.querySelector(
+                ".chirp-theme-doc-catalog-rail__group--actions .nav-search-trigger"
+            );
+            const theme = document.querySelector(
+                ".chirp-theme-doc-catalog-rail__group--actions .theme-dropdown__button"
+            );
+            const itemMark = item.querySelector(".chirp-theme-doc-catalog-rail__mark");
+            const searchMark = search.querySelector(".chirp-theme-doc-catalog-rail__mark");
+            const themeMark = theme.querySelector(".theme-dropdown__icon");
+            const rect = (el) => {
+                const box = el.getBoundingClientRect();
+                return {
+                    width: Math.round(box.width),
+                    height: Math.round(box.height),
+                    radius: getComputedStyle(el).borderRadius,
+                    display: getComputedStyle(el).display,
+                };
+            };
+            return {
+                item: rect(item),
+                search: rect(search),
+                theme: rect(theme),
+                itemMark: rect(itemMark),
+                searchMark: rect(searchMark),
+                themeMark: rect(themeMark),
+            };
+        }"""
+    )
+    assert metrics["search"] == metrics["item"], metrics
+    assert metrics["theme"] == metrics["item"], metrics
+    assert metrics["searchMark"] == metrics["itemMark"], metrics
+    assert metrics["themeMark"] == metrics["itemMark"], metrics
+
+
 async def test_bengal_api_index_uses_catalog_shell_without_overflow(page, static_site_url):
     await page.set_viewport_size({"width": 889, "height": 863})
     await page.goto(f"{static_site_url}/api/")
@@ -244,6 +387,7 @@ async def test_bengal_api_index_uses_catalog_shell_without_overflow(page, static
             const search = document.querySelector(".chirp-theme-api-index .chirpui-resource-index__search");
             const card = document.querySelector(".chirp-theme-reference-card");
             const cardMark = card.querySelector(".chirp-theme-reference-card__mark");
+            const cardTitle = card.querySelector(".chirp-theme-reference-card__title");
             const cardDescription = card.querySelector(".chirp-theme-reference-card__description");
             const cardFooter = card.querySelector(".chirp-theme-reference-card__footer");
             const navBottom = nav.getBoundingClientRect().bottom;
@@ -264,6 +408,8 @@ async def test_bengal_api_index_uses_catalog_shell_without_overflow(page, static
                 cardWidth: Math.round(cardRect.width),
                 cardColumns: cardStyle.gridTemplateColumns,
                 markWidth: Math.round(cardMark.getBoundingClientRect().width),
+                markColor: getComputedStyle(cardMark).color,
+                titleOverflowWrap: getComputedStyle(cardTitle).overflowWrap,
                 descriptionClamp: descriptionStyle.webkitLineClamp,
                 footerDisplay: getComputedStyle(cardFooter).display,
             };
@@ -279,6 +425,8 @@ async def test_bengal_api_index_uses_catalog_shell_without_overflow(page, static
     assert metrics["cardWidth"] >= 240, metrics
     assert " " in metrics["cardColumns"], metrics
     assert metrics["markWidth"] >= 30, metrics
+    assert metrics["markColor"] != "", metrics
+    assert metrics["titleOverflowWrap"] == "anywhere", metrics
     assert metrics["descriptionClamp"] == "4", metrics
     assert metrics["footerDisplay"] == "flex", metrics
 
@@ -301,12 +449,36 @@ async def test_bengal_api_module_uses_app_shell_reference_frame(page, static_sit
             const article = document.querySelector(".chirp-theme-reference-page--python");
             const content = document.querySelector(".chirp-theme-reference-content");
             const hero = document.querySelector(".chirp-theme-reference-hero");
+            const description = document.querySelector(".chirp-theme-reference-description");
+            const descriptionCode = description.querySelector("code");
+            const member = document.querySelector(".chirp-theme-reference-member");
+            const memberTrigger = member.querySelector(".chirpui-accordion__trigger");
+            const memberActions = member.querySelector(".chirpui-accordion__trigger-actions");
+            const memberContent = member.querySelector(".chirpui-accordion__content");
+            const memberBodyBadge = member.querySelector(".chirp-theme-reference-member__body > .chirpui-badge");
             const heroStyle = getComputedStyle(hero);
+            const memberStyle = getComputedStyle(member);
+            const triggerStyle = getComputedStyle(memberTrigger);
+            const triggerMarkerStyle = getComputedStyle(memberTrigger, "::before");
+            const actionsStyle = getComputedStyle(memberActions);
+            const contentStyle = getComputedStyle(memberContent);
             return {
                 articleMaxWidth: getComputedStyle(article).maxWidth,
                 contentMaxWidth: getComputedStyle(content).maxWidth,
                 heroBorder: heroStyle.borderTopWidth,
                 heroBackground: heroStyle.backgroundImage,
+                descriptionHasParagraph: Boolean(description.querySelector("p")),
+                descriptionCodeText: descriptionCode ? descriptionCode.textContent : "",
+                memberOverflow: memberStyle.overflow,
+                memberTriggerDisplay: triggerStyle.display,
+                memberTriggerColumns: triggerStyle.gridTemplateColumns.split(" ").filter(Boolean).length,
+                memberTriggerMarkerContent: triggerMarkerStyle.content,
+                memberTriggerMarkerWidth: Math.round(Number.parseFloat(triggerMarkerStyle.width)),
+                memberActionsMarginStart: actionsStyle.marginInlineStart,
+                memberContentPaddingTop: Math.round(Number.parseFloat(contentStyle.paddingTop)),
+                memberContentBorderTop: contentStyle.borderTopWidth,
+                memberActionBadgeCount: memberActions.querySelectorAll(".chirpui-badge").length,
+                memberBodyBadgeCount: memberBodyBadge ? 1 : 0,
             };
         }"""
     )
@@ -314,6 +486,218 @@ async def test_bengal_api_module_uses_app_shell_reference_frame(page, static_sit
     assert metrics["contentMaxWidth"] != "65ch", metrics
     assert metrics["heroBorder"] == "0px", metrics
     assert "linear-gradient" in metrics["heroBackground"], metrics
+    assert metrics["descriptionHasParagraph"] is True, metrics
+    assert metrics["descriptionCodeText"] == "href", metrics
+    assert metrics["memberOverflow"] == "clip", metrics
+    assert metrics["memberTriggerDisplay"] == "grid", metrics
+    assert metrics["memberTriggerColumns"] == 3, metrics
+    assert metrics["memberTriggerMarkerContent"] == '""', metrics
+    assert metrics["memberTriggerMarkerWidth"] >= 5, metrics
+    assert metrics["memberActionsMarginStart"] == "0px", metrics
+    assert metrics["memberContentPaddingTop"] == 0, metrics
+    assert metrics["memberContentBorderTop"] == "1px", metrics
+    assert metrics["memberActionBadgeCount"] == 1, metrics
+    assert metrics["memberBodyBadgeCount"] == 0, metrics
+
+
+async def test_bengal_api_prose_code_specimens_use_compact_treatment(page, static_site_url):
+    await page.set_viewport_size({"width": 1280, "height": 900})
+    await page.goto(f"{static_site_url}/api/find/")
+    await page.wait_for_load_state("networkidle")
+    await page.wait_for_timeout(100)
+
+    specimen = page.locator(
+        ".chirp-theme-reference-description .code-block-wrapper--specimen"
+    ).first
+    await expect(specimen).to_be_visible()
+    metrics = await specimen.evaluate(
+        """el => {
+            const pre = el.querySelector("pre");
+            const code = el.querySelector("code");
+            const marker = getComputedStyle(el, "::before");
+            const copy = el.querySelector(".code-copy-button");
+            const copyLabel = copy.querySelector("span");
+            const style = getComputedStyle(el);
+            const preStyle = getComputedStyle(pre);
+            const codeStyle = getComputedStyle(code);
+            const labelStyle = getComputedStyle(copyLabel);
+            return {
+                text: code.textContent.trim(),
+                wrapperHeight: Math.round(el.getBoundingClientRect().height),
+                wrapperBorderWidth: style.borderTopWidth,
+                wrapperBoxShadow: style.boxShadow,
+                codeWhiteSpace: codeStyle.whiteSpace,
+                preLineHeight: Math.round(Number.parseFloat(preStyle.lineHeight)),
+                preBorderWidth: preStyle.borderTopWidth,
+                preBoxShadow: preStyle.boxShadow,
+                codeBorderWidth: codeStyle.borderTopWidth,
+                codeBoxShadow: codeStyle.boxShadow,
+                markerDisplay: marker.display,
+                copyWidth: Math.round(copy.getBoundingClientRect().width),
+                copyLabelClip: labelStyle.clipPath,
+            };
+        }"""
+    )
+    assert metrics["text"] == "{name:<30} {category:<16} {first-line-of-description}", metrics
+    assert metrics["wrapperHeight"] <= 48, metrics
+    assert metrics["wrapperBorderWidth"] == "0px", metrics
+    assert metrics["wrapperBoxShadow"] == "none", metrics
+    assert metrics["codeWhiteSpace"] == "pre-wrap", metrics
+    assert metrics["preLineHeight"] <= 20, metrics
+    assert metrics["preBorderWidth"] == "0px", metrics
+    assert metrics["preBoxShadow"] == "none", metrics
+    assert metrics["codeBorderWidth"] == "0px", metrics
+    assert metrics["codeBoxShadow"] == "none", metrics
+    assert metrics["markerDisplay"] == "none", metrics
+    assert 24 <= metrics["copyWidth"] <= 32, metrics
+    assert metrics["copyLabelClip"] == "inset(50%)", metrics
+
+    await page.goto(f"{static_site_url}/api/filters/")
+    await page.wait_for_load_state("networkidle")
+    await page.locator("#deprecate_param").evaluate("el => el.closest('details').open = true")
+    member_specimen = page.locator(
+        "#deprecate_param .chirp-theme-reference-member__description .code-block-wrapper--specimen"
+    )
+    await expect(member_specimen).to_be_visible()
+    member_metrics = await member_specimen.evaluate(
+        """el => {
+            const pre = el.querySelector("pre");
+            const code = el.querySelector("code");
+            const marker = getComputedStyle(el, "::before");
+            const preStyle = getComputedStyle(pre);
+            const codeStyle = getComputedStyle(code);
+            return {
+                text: code.textContent.trim(),
+                wrapperHeight: Math.round(el.getBoundingClientRect().height),
+                markerDisplay: marker.display,
+                preBorderWidth: preStyle.borderTopWidth,
+                preBoxShadow: preStyle.boxShadow,
+                codeBackground: codeStyle.backgroundColor,
+            };
+        }"""
+    )
+    assert member_metrics["text"].startswith("{% set _attrs_raw = attrs_unsafe"), member_metrics
+    assert member_metrics["wrapperHeight"] <= 60, member_metrics
+    assert member_metrics["markerDisplay"] == "none", member_metrics
+    assert member_metrics["preBorderWidth"] == "0px", member_metrics
+    assert member_metrics["preBoxShadow"] == "none", member_metrics
+    assert member_metrics["codeBackground"] == "rgba(0, 0, 0, 0)", member_metrics
+
+
+async def test_bengal_api_compact_summaries_render_markdown_code(page, static_site_url):
+    await page.set_viewport_size({"width": 1280, "height": 900})
+    await page.goto(f"{static_site_url}/api/manifest/")
+    await page.wait_for_load_state("networkidle")
+
+    hero_metrics = await page.evaluate(
+        """() => {
+            const summary = document.querySelector(".chirp-theme-reference-hero__summary");
+            const content = summary.closest(".chirpui-hero__content");
+            return {
+                text: summary.textContent,
+                codeTexts: Array.from(summary.querySelectorAll("code")).map((code) => code.textContent),
+                paragraphCount: summary.querySelectorAll("p").length,
+                contentGridColumn: getComputedStyle(content).gridColumnStart,
+                contentGridRow: getComputedStyle(content).gridRowStart,
+            };
+        }"""
+    )
+    assert "``" not in hero_metrics["text"], hero_metrics
+    assert "chirp_ui.components.COMPONENTS" in hero_metrics["codeTexts"], hero_metrics
+    assert "chirp_ui.tokens.TOKEN_CATALOG" in hero_metrics["codeTexts"], hero_metrics
+    assert hero_metrics["paragraphCount"] >= 1, hero_metrics
+    assert hero_metrics["contentGridColumn"] == "1", hero_metrics
+    assert hero_metrics["contentGridRow"] == "3", hero_metrics
+
+    await page.goto(f"{static_site_url}/api/")
+    await page.wait_for_load_state("networkidle")
+    card_metrics = await page.locator(
+        'a.chirp-theme-reference-card[href="/api/manifest/"]'
+    ).evaluate(
+        """card => {
+            const description = card.querySelector(".chirp-theme-reference-card__description");
+            return {
+                text: description.textContent,
+                codeTexts: Array.from(description.querySelectorAll("code")).map((code) => code.textContent),
+                paragraphCount: description.querySelectorAll("p").length,
+                display: getComputedStyle(description).display,
+            };
+        }"""
+    )
+    assert "``" not in card_metrics["text"], card_metrics
+    assert "chirp_ui.components.COMPONENTS" in card_metrics["codeTexts"], card_metrics
+    assert "chirp_ui.tokens.TOKEN_CATALOG" in card_metrics["codeTexts"], card_metrics
+    assert card_metrics["paragraphCount"] >= 1, card_metrics
+    assert card_metrics["display"] == "flow-root" or "-webkit-box" in card_metrics["display"], (
+        card_metrics
+    )
+
+
+async def test_bengal_api_member_accordion_rows_align_open_and_closed(page, static_site_url):
+    await page.set_viewport_size({"width": 1280, "height": 900})
+    await page.goto(f"{static_site_url}/api/find/")
+    await page.wait_for_load_state("networkidle")
+
+    await expect(page.locator(".chirp-theme-reference-members")).to_be_visible()
+    metrics = await page.evaluate(
+        """() => {
+            const members = Array.from(document.querySelectorAll(".chirp-theme-reference-member"));
+            const openMember = members.find((member) => member.open);
+            const closedMember = members.find((member) => !member.open);
+            const measure = (member) => {
+                const trigger = member.querySelector(".chirpui-accordion__trigger");
+                const title = trigger.querySelector(".chirpui-accordion__trigger-text");
+                const actions = trigger.querySelector(".chirpui-accordion__trigger-actions");
+                const content = member.querySelector(".chirpui-accordion__content");
+                const body = member.querySelector(".chirp-theme-reference-member__body");
+                const description = member.querySelector(".chirp-theme-reference-member__description");
+                const triggerRect = trigger.getBoundingClientRect();
+                const titleRect = title.getBoundingClientRect();
+                const actionsRect = actions.getBoundingClientRect();
+                const bodyRect = body.getBoundingClientRect();
+                const descriptionRect = description.getBoundingClientRect();
+                const triggerStyle = getComputedStyle(trigger);
+                const markerStyle = getComputedStyle(trigger, "::before");
+                const contentStyle = getComputedStyle(content);
+                const bodyStyle = getComputedStyle(body);
+                return {
+                    open: member.open,
+                    triggerColumns: triggerStyle.gridTemplateColumns.split(" ").filter(Boolean).length,
+                    triggerHeight: Math.round(triggerRect.height),
+                    titleLeft: Math.round(titleRect.left - triggerRect.left),
+                    titleRightGap: Math.round(actionsRect.left - titleRect.right),
+                    actionsRightGap: Math.round(triggerRect.right - actionsRect.right),
+                    markerContent: markerStyle.content,
+                    markerWidth: Math.round(Number.parseFloat(markerStyle.width)),
+                    markerTransform: markerStyle.transform,
+                    actionsMarginStart: getComputedStyle(actions).marginInlineStart,
+                    contentPaddingTop: Math.round(Number.parseFloat(contentStyle.paddingTop)),
+                    contentBorderTop: contentStyle.borderTopWidth,
+                    bodyLeft: Math.round(bodyRect.left - triggerRect.left),
+                    bodyPaddingLeft: Math.round(Number.parseFloat(bodyStyle.paddingLeft)),
+                    descriptionLeft: Math.round(descriptionRect.left - triggerRect.left),
+                };
+            };
+            return {
+                open: measure(openMember),
+                closed: measure(closedMember),
+            };
+        }"""
+    )
+    for state in (metrics["open"], metrics["closed"]):
+        assert state["triggerColumns"] == 3, metrics
+        assert 40 <= state["triggerHeight"] <= 52, metrics
+        assert state["titleLeft"] >= 28, metrics
+        assert state["titleRightGap"] >= 8, metrics
+        assert state["actionsRightGap"] >= 10, metrics
+        assert state["markerContent"] == '""', metrics
+        assert state["markerWidth"] >= 5, metrics
+        assert state["actionsMarginStart"] == "0px", metrics
+        assert state["contentPaddingTop"] == 0, metrics
+        assert state["contentBorderTop"] == "1px", metrics
+    assert metrics["open"]["markerTransform"] != metrics["closed"]["markerTransform"], metrics
+    assert metrics["open"]["bodyPaddingLeft"] >= metrics["open"]["titleLeft"] - 2, metrics
+    assert metrics["open"]["descriptionLeft"] >= metrics["open"]["titleLeft"] - 2, metrics
 
 
 async def test_bengal_catalog_footer_lives_inside_shell_content(page, static_site_url):
@@ -331,9 +715,14 @@ async def test_bengal_catalog_footer_lives_inside_shell_content(page, static_sit
             const mainColumn = document.querySelector(".chirp-theme-docs-layout__main");
             const article = document.querySelector(".chirp-theme-docs-layout__article");
             const footer = document.querySelector(".chirp-theme-footer--shell");
+            const footerGrid = footer.querySelector(".chirpui-site-footer__grid");
+            const footerList = footer.querySelector(".chirpui-site-footer__list");
+            const footerLink = footer.querySelector(".chirpui-site-footer__link");
             const mainRect = mainColumn.getBoundingClientRect();
             const articleRect = article.getBoundingClientRect();
             const footerRect = footer.getBoundingClientRect();
+            const linkRect = footerLink.getBoundingClientRect();
+            const linkBefore = getComputedStyle(footerLink, "::before");
             return {
                 footerParentClass: footer.parentElement.className,
                 footerLeft: Math.round(footerRect.left),
@@ -342,6 +731,13 @@ async def test_bengal_catalog_footer_lives_inside_shell_content(page, static_sit
                 footerWidth: Math.round(footerRect.width),
                 articleWidth: Math.round(articleRect.width),
                 viewportWidth: root.clientWidth,
+                gridColumns: getComputedStyle(footerGrid).gridTemplateColumns.split(" ").length,
+                listDisplay: getComputedStyle(footerList).display,
+                listStyle: getComputedStyle(footerList).listStyleType,
+                linkDisplay: getComputedStyle(footerLink).display,
+                linkMinHeight: Math.round(linkRect.height),
+                linkBeforeContent: linkBefore.content,
+                linkBeforeWidth: Math.round(parseFloat(linkBefore.width)),
             };
         }"""
     )
@@ -350,6 +746,13 @@ async def test_bengal_catalog_footer_lives_inside_shell_content(page, static_sit
     assert abs(metrics["footerLeft"] - metrics["articleLeft"]) <= 4, metrics
     assert abs(metrics["footerWidth"] - metrics["articleWidth"]) <= 4, metrics
     assert metrics["footerWidth"] < metrics["viewportWidth"] - 120, metrics
+    assert metrics["gridColumns"] == 3, metrics
+    assert metrics["listDisplay"] == "grid", metrics
+    assert metrics["listStyle"] == "none", metrics
+    assert metrics["linkDisplay"] == "inline-flex", metrics
+    assert metrics["linkMinHeight"] >= 20, metrics
+    assert metrics["linkBeforeContent"] == '""', metrics
+    assert metrics["linkBeforeWidth"] >= 3, metrics
 
 
 async def test_bengal_docs_desktop_content_starts_near_viewport_top(page, static_site_url):
@@ -533,8 +936,39 @@ async def test_bengal_docs_toc_owns_scroll_to_top_action(page, static_site_url):
     assert await page.locator(".back-to-top").count() == 1
     await page.evaluate("window.scrollTo(0, document.body.scrollHeight * 0.5)")
     await page.wait_for_timeout(100)
-    await expect(page.locator(".chirp-theme-rail-top.back-to-top")).to_be_visible()
-    assert await page.locator(".chirp-theme-floating-top.back-to-top").count() == 0
+    button = page.locator(".chirp-theme-floating-top.back-to-top")
+    await expect(button).to_be_visible()
+    assert await page.locator(".chirp-theme-rail-top.back-to-top").count() == 0
+    metrics = await button.evaluate(
+        """el => {
+            const rect = el.getBoundingClientRect();
+            const footer = document.querySelector(".chirp-theme-footer--shell");
+            const footerMark = document.querySelector(".chirp-theme-footer__rule-mark");
+            const footerStyle = getComputedStyle(footer);
+            const footerMarkRect = footerMark.getBoundingClientRect();
+            const buttonCenter = rect.left + rect.width / 2;
+            const footerCenter = footerMarkRect.left + footerMarkRect.width / 2;
+            const viewportCenter = window.innerWidth / 2;
+            return {
+                width: rect.width,
+                height: rect.height,
+                bottomGap: window.innerHeight - rect.bottom,
+                footerCenterDelta: Math.abs(buttonCenter - footerCenter),
+                viewportCenterDelta: Math.abs(buttonCenter - viewportCenter),
+                footerPosition: footerStyle.position,
+                footerOverflow: footerStyle.overflow,
+                position: getComputedStyle(el).position,
+            };
+        }"""
+    )
+    assert metrics["position"] == "fixed", metrics
+    assert 34 <= metrics["width"] <= 40, metrics
+    assert 34 <= metrics["height"] <= 40, metrics
+    assert 12 <= metrics["bottomGap"] <= 24, metrics
+    assert metrics["footerCenterDelta"] <= 2, metrics
+    assert metrics["viewportCenterDelta"] >= 32, metrics
+    assert metrics["footerPosition"] == "relative", metrics
+    assert metrics["footerOverflow"] == "visible", metrics
 
 
 async def test_bengal_docs_code_blocks_use_catalog_surface(page, static_site_url):
@@ -549,13 +983,24 @@ async def test_bengal_docs_code_blocks_use_catalog_surface(page, static_site_url
         """el => {
             const style = getComputedStyle(el);
             const marker = getComputedStyle(el, "::before");
+            const pre = el.querySelector("pre");
+            const code = el.querySelector("pre code");
+            const preStyle = getComputedStyle(pre);
+            const codeStyle = getComputedStyle(code);
             const copy = el.querySelector(".code-copy-button");
             const copyStyle = getComputedStyle(copy);
             return {
                 animationName: style.animationName,
                 borderWidth: style.borderTopWidth,
+                overflow: style.overflow,
                 background: style.backgroundImage,
                 markerWidth: Math.round(Number.parseFloat(marker.width)),
+                preAnimationName: preStyle.animationName,
+                preBorderWidth: preStyle.borderTopWidth,
+                preBoxShadow: preStyle.boxShadow,
+                codeBorderWidth: codeStyle.borderTopWidth,
+                codeBoxShadow: codeStyle.boxShadow,
+                preMarginTop: Math.round(Number.parseFloat(preStyle.marginTop)),
                 copyOpacity: copyStyle.opacity,
                 copyPointerEvents: copyStyle.pointerEvents,
             };
@@ -563,8 +1008,15 @@ async def test_bengal_docs_code_blocks_use_catalog_surface(page, static_site_url
     )
     assert metrics["animationName"] == "none", metrics
     assert metrics["borderWidth"] == "0px", metrics
+    assert metrics["overflow"] == "visible", metrics
     assert "linear-gradient" in metrics["background"], metrics
     assert metrics["markerWidth"] >= 3, metrics
+    assert metrics["preAnimationName"] == "none", metrics
+    assert metrics["preBorderWidth"] == "0px", metrics
+    assert metrics["preBoxShadow"] == "none", metrics
+    assert metrics["codeBorderWidth"] == "0px", metrics
+    assert metrics["codeBoxShadow"] == "none", metrics
+    assert metrics["preMarginTop"] == 0, metrics
     assert metrics["copyOpacity"] == "1", metrics
     assert metrics["copyPointerEvents"] == "auto", metrics
 
@@ -591,6 +1043,37 @@ async def test_bengal_docs_code_blocks_use_catalog_surface(page, static_site_url
     assert plaintext_metrics["preLineHeight"] <= 20, plaintext_metrics
     assert plaintext_metrics["wrapperHeight"] <= 175, plaintext_metrics
 
+    await page.goto(f"{static_site_url}/api/chirp_ui/")
+    await page.wait_for_load_state("networkidle")
+    await page.locator("#get_loader").evaluate("el => el.closest('details').open = true")
+    api_wrapper = page.locator("#get_loader .code-block-wrapper").first
+    await expect(api_wrapper).to_be_visible()
+    api_metrics = await api_wrapper.evaluate(
+        """el => {
+            const pre = el.querySelector("pre");
+            const code = el.querySelector("pre code");
+            const preStyle = getComputedStyle(pre);
+            const codeStyle = getComputedStyle(code);
+            const style = getComputedStyle(el);
+            return {
+                text: code.textContent.trim(),
+                overflow: style.overflow,
+                preBorderWidth: preStyle.borderTopWidth,
+                preBoxShadow: preStyle.boxShadow,
+                codeBorderWidth: codeStyle.borderTopWidth,
+                codeBoxShadow: codeStyle.boxShadow,
+                codeBackground: codeStyle.backgroundColor,
+            };
+        }"""
+    )
+    assert api_metrics["text"].startswith("from kida import ChoiceLoader"), api_metrics
+    assert api_metrics["overflow"] == "visible", api_metrics
+    assert api_metrics["preBorderWidth"] == "0px", api_metrics
+    assert api_metrics["preBoxShadow"] == "none", api_metrics
+    assert api_metrics["codeBorderWidth"] == "0px", api_metrics
+    assert api_metrics["codeBoxShadow"] == "none", api_metrics
+    assert api_metrics["codeBackground"] == "rgba(0, 0, 0, 0)", api_metrics
+
 
 async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
     await page.set_viewport_size({"width": 1423, "height": 1200})
@@ -613,28 +1096,71 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
     await expect(latest).to_be_visible()
     metrics = await page.evaluate(
         """() => {
+            const layout = document.querySelector(".chirp-theme-docs-layout");
             const results = document.querySelector(".chirp-theme-release-index .chirpui-resource-index__results");
             const latest = document.querySelector(".chirp-theme-release-card--latest");
             const regular = document.querySelector(
                 ".chirp-theme-release-card:not(.chirp-theme-release-card--latest)"
             );
+            const layoutStyle = getComputedStyle(layout);
             const latestStyle = getComputedStyle(latest);
+            const resultsStyle = getComputedStyle(results);
             const latestRect = latest.getBoundingClientRect();
             const regularRect = regular.getBoundingClientRect();
             const resultsRect = results.getBoundingClientRect();
+            const regularBadge = regular.querySelector(".chirpui-card__header-badges");
+            const regularBody = regular.querySelector(".chirpui-card__body");
+            const regularInstall = regular.querySelector(".chirp-theme-release-card__install");
+            const latestMeta = latest.querySelector(".chirpui-card__top-meta");
+            const regularMeta = regular.querySelector(".chirpui-card__top-meta");
+            const regularTitle = regular.querySelector(".chirpui-card__title");
+            const latestInstall = latest.querySelector(".chirp-theme-release-card__install");
+            const regularStyle = getComputedStyle(regular);
+            const latestPaddingLeft = Number.parseFloat(latestStyle.paddingLeft);
+            const regularPaddingLeft = Number.parseFloat(regularStyle.paddingLeft);
             return {
+                layoutColumns: layoutStyle.gridTemplateColumns.split(" ").filter(Boolean),
+                tocCount: document.querySelectorAll(".chirp-theme-docs-layout__toc").length,
                 latestWidth: Math.round(latestRect.width),
                 regularWidth: Math.round(regularRect.width),
                 resultsWidth: Math.round(resultsRect.width),
+                resultColumns: resultsStyle.gridTemplateColumns.split(" ").filter(Boolean).length,
                 latestColumns: latestStyle.gridTemplateColumns,
                 latestBackground: latestStyle.backgroundImage,
+                latestBorderLeft: latestStyle.borderLeftWidth,
+                regularBadgeDisplay: getComputedStyle(regularBadge).display,
+                regularBodyDisplay: getComputedStyle(regularBody).display,
+                regularInstallWidth: Math.round(regularInstall.getBoundingClientRect().width),
+                latestInset: Math.round(latestMeta.getBoundingClientRect().left - latestRect.left),
+                regularInset: Math.round(regularMeta.getBoundingClientRect().left - regularRect.left),
+                regularTitleInset: Math.round(regularTitle.getBoundingClientRect().left - regularRect.left),
+                latestInstallRightGap: Math.round(latestRect.right - latestInstall.getBoundingClientRect().right),
+                latestPaddingLeft: Math.round(latestPaddingLeft),
+                regularPaddingLeft: Math.round(regularPaddingLeft),
+                regularRegionPadding: getComputedStyle(regularMeta).paddingLeft,
+                regularFooterBackground: getComputedStyle(regular.querySelector(".chirpui-card__footer-wrap")).backgroundImage,
             };
         }"""
     )
+    assert len(metrics["layoutColumns"]) == 3, metrics
+    assert metrics["tocCount"] == 0, metrics
     assert metrics["latestWidth"] >= metrics["resultsWidth"] - 2, metrics
     assert metrics["latestWidth"] > metrics["regularWidth"] * 2, metrics
+    assert 2 <= metrics["resultColumns"] <= 4, metrics
     assert "linear-gradient" in metrics["latestBackground"], metrics
+    assert metrics["latestBorderLeft"] != "0px", metrics
     assert " " in metrics["latestColumns"], metrics
+    assert metrics["regularBadgeDisplay"] == "none", metrics
+    assert metrics["regularBodyDisplay"] == "none", metrics
+    assert metrics["regularInstallWidth"] >= metrics["regularWidth"] - 32, metrics
+    assert metrics["latestInset"] >= 16, metrics
+    assert metrics["regularInset"] >= 12, metrics
+    assert metrics["regularTitleInset"] >= 12, metrics
+    assert metrics["latestInstallRightGap"] >= 16, metrics
+    assert metrics["latestPaddingLeft"] >= 15, metrics
+    assert metrics["regularPaddingLeft"] >= 11, metrics
+    assert metrics["regularRegionPadding"] == "0px", metrics
+    assert metrics["regularFooterBackground"] == "none", metrics
     await expect(latest.locator(".chirpui-card__title")).to_have_text("chirp-ui 0.9.0")
     await expect(first_regular.locator(".chirpui-card__title")).to_have_text("chirp-ui 0.8.0")
 
@@ -744,7 +1270,7 @@ async def test_bengal_docs_medium_secondary_rail_starts_near_header(page, static
             return Math.round(sectionRect.top - headerRect.bottom);
         }"""
     )
-    assert 0 <= vertical_gap <= 18
+    assert 0 <= vertical_gap <= 20
 
 
 async def test_bengal_docs_secondary_rail_aligns_with_content_top(page, static_site_url):
@@ -761,23 +1287,39 @@ async def test_bengal_docs_secondary_rail_aligns_with_content_top(page, static_s
         """() => {
             const firstSection = document.querySelector(".chirp-theme-docs-nav__section");
             const hero = document.querySelector(".chirp-theme-docs-layout__hero");
-            const sidebar = document.querySelector(".chirp-theme-doc-catalog .chirp-theme-docs-nav");
+            const docsNav = document.querySelector(".chirp-theme-doc-catalog .chirp-theme-docs-nav");
             const secondary = document.querySelector(".chirp-theme-doc-catalog__secondary");
             const sectionTop = Math.round(firstSection.getBoundingClientRect().top);
+            const docsNavTop = Math.round(docsNav.getBoundingClientRect().top);
             const heroTop = Math.round(hero.getBoundingClientRect().top);
-            const sidebarStyle = getComputedStyle(sidebar);
+            const docsNavStyle = getComputedStyle(docsNav);
             const secondaryStyle = getComputedStyle(secondary);
             return {
                 sectionTop,
+                docsNavTop,
                 heroTop,
-                topDelta: Math.round(sectionTop - heroTop),
-                sidebarPaddingTop: Math.round(Number.parseFloat(sidebarStyle.paddingTop)),
+                topDelta: Math.round(docsNavTop - heroTop),
+                firstSectionInset: Math.round(sectionTop - docsNavTop),
+                docsNavPaddingTop: Math.round(Number.parseFloat(docsNavStyle.paddingTop)),
+                docsNavBorderTopWidth: Math.round(Number.parseFloat(docsNavStyle.borderTopWidth)),
+                docsNavBorderRadius: docsNavStyle.borderTopLeftRadius,
+                docsNavBackground: docsNavStyle.backgroundImage,
+                secondaryBackground: secondaryStyle.backgroundImage,
+                secondaryBackgroundColor: secondaryStyle.backgroundColor,
+                secondaryBorderLeftWidth: Math.round(Number.parseFloat(secondaryStyle.borderLeftWidth)),
                 secondaryPaddingTop: Math.round(Number.parseFloat(secondaryStyle.paddingTop)),
             };
         }"""
     )
     assert abs(alignment["topDelta"]) <= 2, alignment
-    assert alignment["sidebarPaddingTop"] == 0, alignment
+    assert 5 <= alignment["firstSectionInset"] <= 10, alignment
+    assert 5 <= alignment["docsNavPaddingTop"] <= 8, alignment
+    assert alignment["docsNavBorderTopWidth"] == 1, alignment
+    assert alignment["docsNavBorderRadius"] != "0px", alignment
+    assert "gradient" in alignment["docsNavBackground"], alignment
+    assert alignment["secondaryBackground"] == "none", alignment
+    assert alignment["secondaryBackgroundColor"] == "rgba(0, 0, 0, 0)", alignment
+    assert alignment["secondaryBorderLeftWidth"] == 0, alignment
     assert 8 <= alignment["secondaryPaddingTop"] <= 16, alignment
 
 
@@ -881,6 +1423,93 @@ async def test_bengal_docs_branch_summaries_render_as_compact_labels(page, stati
     assert metrics["textTransform"] == "uppercase"
 
 
+async def test_bengal_docs_root_single_pages_match_section_rows_with_page_icon(
+    page, static_site_url
+):
+    await page.set_viewport_size({"width": 1132, "height": 1606})
+    await page.goto(f"{static_site_url}/docs/")
+    await page.wait_for_load_state("networkidle")
+
+    root_leaf = page.locator(".chirp-theme-docs-nav__root-leaf[href='/docs/about/']")
+    branch = page.locator(
+        ".chirp-theme-docs-nav__section--depth-1 "
+        "> .chirp-theme-docs-nav__summary "
+        ".chirp-theme-docs-nav__summary-link[href='/docs/components/']"
+    )
+    await expect(root_leaf).to_be_visible()
+    await expect(branch).to_be_visible()
+    await expect(root_leaf.locator(".chirp-theme-docs-nav__label")).to_have_text("About")
+
+    metrics = await root_leaf.evaluate(
+        """(el) => {
+            const branch = document.querySelector(
+                ".chirp-theme-docs-nav__section--depth-1 "
+                + "> .chirp-theme-docs-nav__summary "
+                + ".chirp-theme-docs-nav__summary-link[href='/docs/components/']"
+            );
+            const icon = el.querySelector(".chirp-theme-docs-nav__type-icon");
+            const branchIcon = branch.querySelector(".chirp-theme-docs-nav__type-icon");
+            const iconSvg = icon.querySelector("svg");
+            const branchIconSvg = branchIcon.querySelector("svg");
+            const getStartedIcon = document.querySelector(
+                ".chirp-theme-docs-nav__section--depth-1 "
+                + "> .chirp-theme-docs-nav__summary "
+                + ".chirp-theme-docs-nav__summary-link[href='/docs/get-started/'] "
+                + ".chirp-theme-docs-nav__type-icon"
+            );
+            const style = getComputedStyle(el);
+            const branchStyle = getComputedStyle(branch);
+            return {
+                rootColumns: style.gridTemplateColumns,
+                branchColumns: branchStyle.gridTemplateColumns,
+                rootFirstColumn: style.gridTemplateColumns.split(" ")[0],
+                branchFirstColumn: branchStyle.gridTemplateColumns.split(" ")[0],
+                leftDelta: Math.round(
+                    el.getBoundingClientRect().left - branch.getBoundingClientRect().left
+                ),
+                rootHeight: Math.round(el.getBoundingClientRect().height),
+                branchHeight: Math.round(branch.getBoundingClientRect().height),
+                rootFontSize: parseFloat(style.fontSize),
+                branchFontSize: parseFloat(branchStyle.fontSize),
+                rootTextTransform: style.textTransform,
+                branchTextTransform: branchStyle.textTransform,
+                rootIconSize: Math.round(icon.getBoundingClientRect().width),
+                branchIconSize: Math.round(branchIcon.getBoundingClientRect().width),
+                componentFolderColor: getComputedStyle(branchIcon).color,
+                guideFolderColor: getComputedStyle(getStartedIcon).color,
+                rootIconClass: iconSvg.getAttribute("class"),
+                branchIconClass: branchIconSvg.getAttribute("class"),
+            };
+        }"""
+    )
+    assert metrics["rootFirstColumn"] == metrics["branchFirstColumn"], metrics
+    assert abs(metrics["leftDelta"]) <= 1, metrics
+    assert abs(metrics["rootHeight"] - metrics["branchHeight"]) <= 2, metrics
+    assert abs(metrics["rootFontSize"] - metrics["branchFontSize"]) <= 0.5, metrics
+    assert metrics["rootTextTransform"] == metrics["branchTextTransform"] == "uppercase", metrics
+    assert abs(metrics["rootIconSize"] - metrics["branchIconSize"]) <= 1, metrics
+    assert metrics["componentFolderColor"] == metrics["guideFolderColor"], metrics
+    assert "icon-article" in metrics["rootIconClass"], metrics
+    assert "icon-folder" in metrics["branchIconClass"], metrics
+
+    await page.goto(f"{static_site_url}/docs/about/")
+    await page.wait_for_load_state("networkidle")
+    active_metrics = await page.locator(
+        ".chirp-theme-docs-nav__root-leaf[href='/docs/about/']"
+    ).evaluate(
+        """(el) => {
+            const icon = el.querySelector(".chirp-theme-docs-nav__type-icon");
+            return {
+                ariaCurrent: el.getAttribute("aria-current"),
+                textColor: getComputedStyle(el).color,
+                iconColor: getComputedStyle(icon).color,
+            };
+        }"""
+    )
+    assert active_metrics["ariaCurrent"] == "page", active_metrics
+    assert active_metrics["iconColor"] == active_metrics["textColor"], active_metrics
+
+
 async def test_bengal_docs_child_entries_use_compact_iterable_rows(page, static_site_url):
     await page.set_viewport_size({"width": 1159, "height": 863})
     await page.goto(f"{static_site_url}/docs/theming/")
@@ -930,7 +1559,7 @@ async def test_bengal_docs_catalog_navigation_omits_notification_counts(page, st
 
 async def test_bengal_docs_toc_uses_surface_chrome_without_divider_lines(page, static_site_url):
     await page.set_viewport_size({"width": 2309, "height": 1606})
-    await page.goto(f"{static_site_url}/docs/components/")
+    await page.goto(f"{static_site_url}/docs/app-shell/")
     await page.wait_for_load_state("networkidle")
 
     await expect(page.locator(".chirp-theme-docs-layout__toc")).to_be_visible()
@@ -961,3 +1590,53 @@ async def test_bengal_docs_toc_uses_surface_chrome_without_divider_lines(page, s
     assert line_styles["link"]["borderTop"] == "0px"
     assert line_styles["metadata"]["borderTop"] == "0px"
     assert line_styles["progress"]["display"] == "none"
+
+
+async def test_bengal_docs_toc_count_pills_and_deep_labels_stay_compact(page, static_site_url):
+    await page.set_viewport_size({"width": 2309, "height": 1606})
+    await page.goto(f"{static_site_url}/docs/app-shell/")
+    await page.wait_for_load_state("networkidle")
+
+    await expect(page.locator(".chirp-theme-doc-toc__context-count")).to_be_visible()
+    await expect(page.locator(".chirp-theme-doc-toc__count .toc-count").first).to_be_visible()
+    metrics = await page.evaluate(
+        """() => {
+            const context = document.querySelector(".chirp-theme-doc-toc__context-count");
+            const nested = document.querySelector(".chirp-theme-doc-toc__count .toc-count");
+            const scroll = document.querySelector(".chirp-theme-doc-toc__scroll");
+            const groupHeader = document.querySelector(".chirp-theme-doc-toc__group-header");
+            const nestedBadge = document.querySelector(".chirp-theme-doc-toc__count");
+            const nestedItems = Array.from(document.querySelectorAll(".chirp-theme-doc-toc__subitems"));
+            const contextStyle = getComputedStyle(context);
+            const nestedStyle = getComputedStyle(nested);
+            const nestedBadgeStyle = getComputedStyle(nestedBadge);
+            const groupStyle = getComputedStyle(groupHeader);
+            return {
+                contextColor: contextStyle.color,
+                nestedColor: nestedStyle.color,
+                contextBackground: contextStyle.backgroundColor,
+                nestedBackground: nestedStyle.backgroundColor,
+                nestedBoxShadow: nestedStyle.boxShadow,
+                nestedOpacity: nestedStyle.opacity,
+                nestedBadgeBackground: nestedBadgeStyle.backgroundColor,
+                contextWhiteText: contextStyle.color === "rgb(255, 255, 255)",
+                scrollOverflowX: getComputedStyle(scroll).overflowX,
+                scrollWidth: Math.ceil(scroll.scrollWidth),
+                clientWidth: Math.ceil(scroll.clientWidth),
+                groupDisplay: groupStyle.display,
+                groupColumns: groupStyle.gridTemplateColumns.split(" ").filter(Boolean),
+                nestedInsetCount: nestedItems.length,
+            };
+        }"""
+    )
+    assert metrics["contextColor"] == metrics["nestedColor"], metrics
+    assert metrics["nestedBackground"] == "rgba(0, 0, 0, 0)", metrics
+    assert metrics["nestedBoxShadow"] == "none", metrics
+    assert metrics["nestedOpacity"] == "1", metrics
+    assert metrics["nestedBadgeBackground"] == "rgba(0, 0, 0, 0)", metrics
+    assert not metrics["contextWhiteText"], metrics
+    assert metrics["scrollOverflowX"] in {"auto", "hidden"}, metrics
+    assert metrics["scrollWidth"] <= metrics["clientWidth"] + 1, metrics
+    assert metrics["groupDisplay"] == "grid", metrics
+    assert len(metrics["groupColumns"]) == 3, metrics
+    assert metrics["nestedInsetCount"] > 0, metrics

@@ -25,6 +25,17 @@ controller. Item selection is dispatched through
 `dropdown_select` uses `chirpuiDropdownSelect()` and emits
 `chirpui:dropdown-selected` with `{ label, value }`.
 
+## Dropdown select vs combobox
+
+`dropdown_select(...)` is the current Chirp UI combobox-like surface. It is
+published as the `dropdown-select` registry/manifest component and renders a
+`role="combobox"` trigger with a `role="listbox"` menu. Use it for command
+choices, filters, density switches, and other app-state selections that should
+not submit a normal HTML form.
+
+Use `select_field(...)` from `chirpui/forms.html` when the value belongs to a
+form payload or should use the platform picker on mobile.
+
 The full rendered contract, ARIA roles, focus behavior, keyboard behavior,
 HTMX link behavior, and proof locations live in the canonical source guide:
 [`docs/components/dropdown-anatomy.md`](https://github.com/lbliii/chirp-ui/blob/main/docs/components/dropdown-anatomy.md?plain=1).

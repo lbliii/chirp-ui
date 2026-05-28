@@ -40,7 +40,11 @@
       {% end %}
     {% end %}
     {% else %}
-    {{ resource_card(item_href, item_title, description=item_description, top_meta=item?.element_type ?? item?.type ?? none, cls="chirp-theme-reference-card") }}
+    {% call resource_card(item_href, item_title, description=none, top_meta=item?.element_type ?? item?.type ?? none, cls="chirp-theme-reference-card") %}
+      {% if item_description %}
+      <div class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description chirp-theme-reference-card__description">{{ item_description |> markdownify |> truncatewords_html(28, '…') |> safe }}</div>
+      {% end %}
+    {% end %}
     {% end %}
     {% end %}
   {% end %}

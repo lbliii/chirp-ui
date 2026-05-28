@@ -1,0 +1,40 @@
+{#- chirp-ui: Item
+    Reusable row anatomy for lists, menus, command results, and resource links.
+
+    Usage:
+        from "chirpui/item.html" import item
+
+        {{ item(title="Settings", description="Manage workspace preferences", href="/settings/") }}
+-#}
+
+{% def item(title="", description=none, href=none, icon=none, meta=none, selected=false,
+            disabled=false, cls="", attrs_map=none) %}
+{% set state_class = (" chirpui-item--selected" if selected else "") ~ (" chirpui-item--disabled" if disabled else "") %}
+{% if href and not disabled %}
+<a class="chirpui-item{{ state_class }}{{ " " ~ cls if cls else "" }}"
+   href="{{ href }}"
+   {% if selected %}aria-current="page"{% end %}
+   {{ attrs_map | html_attrs }}>
+    {% if icon %}<span class="chirpui-item__icon" aria-hidden="true">{{ icon | icon }}</span>{% end %}
+    <span class="chirpui-item__content">
+        <span class="chirpui-item__title">{{ title }}</span>
+        {% if description %}<span class="chirpui-item__description">{{ description }}</span>{% end %}
+    </span>
+    {% if meta %}<span class="chirpui-item__meta">{{ meta }}</span>{% end %}
+    <span class="chirpui-item__action">{% slot action %}</span>
+</a>
+{% else %}
+<div class="chirpui-item{{ state_class }}{{ " " ~ cls if cls else "" }}"
+     {% if selected %}aria-current="page"{% end %}
+     {% if disabled %}aria-disabled="true"{% end %}
+     {{ attrs_map | html_attrs }}>
+    {% if icon %}<span class="chirpui-item__icon" aria-hidden="true">{{ icon | icon }}</span>{% end %}
+    <span class="chirpui-item__content">
+        <span class="chirpui-item__title">{{ title }}</span>
+        {% if description %}<span class="chirpui-item__description">{{ description }}</span>{% end %}
+    </span>
+    {% if meta %}<span class="chirpui-item__meta">{{ meta }}</span>{% end %}
+    <span class="chirpui-item__action">{% slot action %}</span>
+</div>
+{% end %}
+{% end %}

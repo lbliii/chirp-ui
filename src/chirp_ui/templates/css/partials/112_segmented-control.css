@@ -29,8 +29,8 @@
     min-block-size: calc(var(--_chirpui-segmented-block-size) - var(--chirpui-spacing-xs));
     padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
     font-size: var(--chirpui-ui-sm);
-    font-weight: 500;
-    line-height: 1.25;
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     border-radius: calc(var(--chirpui-radius) - 2px);
     cursor: pointer;
@@ -49,9 +49,13 @@
 .chirpui-segmented__option:has(input:checked) {
     background: var(--chirpui-surface);
     color: var(--chirpui-text);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
     box-shadow: var(--chirpui-shadow-sm);
 }
-.chirpui-segmented__icon { font-size: 0.85em; }
+.chirpui-segmented__icon {
+    font-size: var(--chirpui-ui-sm);
+    line-height: 1;
+}
 .chirpui-segmented__label {
     min-inline-size: 0;
     overflow-wrap: anywhere;

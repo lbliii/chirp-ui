@@ -214,7 +214,7 @@ KIDA FEATURES SHOWCASED:
       </a>
       {% spaceless %}
       <span class="chirpui-nav-tree__badge toc-count-badge chirp-theme-doc-toc__count" title="{{ children | length }} subsections">
-        <span class="toc-count">{{ children | length }}</span>
+        <span class="toc-count chirp-theme-doc-toc__count-pill">{{ children | length }}</span>
       </span>
       {% end %}
     </summary>
@@ -246,7 +246,7 @@ KIDA FEATURES SHOWCASED:
       <strong>{{ page?.title ?? 'This page' }}</strong>
     </div>
     {% if toc_count > 0 %}
-    <span class="chirp-theme-doc-toc__context-count">{{ toc_count }}</span>
+    <span class="chirp-theme-doc-toc__context-count chirp-theme-doc-toc__count-pill" aria-label="{{ toc_count }} page map entries">{{ toc_count }}</span>
     {% end %}
   </div>
 

@@ -68,7 +68,7 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
       </span>
       {% end %}
     </summary>
-    <div class="chirpui-sidebar__section-links">
+    <div class="chirpui-sidebar__section-links chirp-theme-docs-nav__section-links">
       {% for child in item_children %}
       {{ nav_node(child, depth + 1) }}
       {% end %}
@@ -94,7 +94,7 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
       </span>
     </span>
     {% end %}
-    <div class="chirpui-sidebar__section-links">
+    <div class="chirpui-sidebar__section-links chirp-theme-docs-nav__section-links">
     {% for child in item_children %}
     {{ nav_node(child, depth + 1) }}
     {% end %}
@@ -103,7 +103,7 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
   {% end %}
 {% else %}
   {% if item_href %}
-  <a class="chirpui-sidebar__link chirp-theme-docs-nav__link chirp-theme-docs-nav__leaf-link chirp-theme-docs-nav__link--{{ item_kind }}{{ ' chirpui-sidebar__link--active' if is_current else '' }}"
+  <a class="chirpui-sidebar__link chirp-theme-docs-nav__link chirp-theme-docs-nav__leaf-link{{ ' chirp-theme-docs-nav__root-leaf' if depth == 1 else '' }} chirp-theme-docs-nav__link--{{ item_kind }}{{ ' chirpui-sidebar__link--active' if is_current else '' }}"
      href="{{ item_href | absolute_url }}"
      title="{{ item_title }}"
      {% if is_current %}aria-current="page"{% end %}>
@@ -111,7 +111,7 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
     <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
   </a>
   {% else %}
-  <span class="chirpui-sidebar__link chirp-theme-docs-nav__link chirp-theme-docs-nav__leaf-link chirp-theme-docs-nav__link--{{ item_kind }}">
+  <span class="chirpui-sidebar__link chirp-theme-docs-nav__link chirp-theme-docs-nav__leaf-link{{ ' chirp-theme-docs-nav__root-leaf' if depth == 1 else '' }} chirp-theme-docs-nav__link--{{ item_kind }}">
     <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind) }}</span>
     <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
   </span>

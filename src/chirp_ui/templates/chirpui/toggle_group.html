@@ -1,0 +1,46 @@
+{#- chirp-ui: Toggle Group
+    Grouped toggle buttons for single or multiple selection.
+
+    Usage:
+        from "chirpui/toggle_group.html" import toggle_group
+
+        {{ toggle_group(
+            items=[
+                {"label": "Bold", "value": "bold", "pressed": true},
+                {"label": "Italic", "value": "italic"},
+            ],
+            name="format",
+            type="multiple",
+        ) }}
+-#}
+
+{% def toggle_group(items, name="toggle", type="single", value=none, size="", orientation="horizontal", variant="", disabled=false, cls="", attrs_map=none) %}
+{% set size = size | validate_size("toggle-group", "") %}
+{% set _type = "multiple" if type == "multiple" else "single" %}
+{% set _orientation = "vertical" if orientation == "vertical" else "horizontal" %}
+{% set _values = value if value is iterable and value is not string else ([value] if value else []) %}
+{% set size_class = " chirpui-toggle-group--" ~ size if size else "" %}
+{% set variant_class = " chirpui-toggle-group--outline" if variant == "outline" else "" %}
+<div class="chirpui-toggle-group chirpui-toggle-group--{{ _type }} chirpui-toggle-group--{{ _orientation }}{{ size_class }}{{ variant_class }}{{ " " ~ cls if cls else "" }}"
+     role="{{ "group" if _type == "multiple" else "radiogroup" }}"
+     aria-label="{{ name }}"
+     {{ attrs_map | html_attrs }}>
+    {% for item in items %}
+    {% set _value = item.get("value", item.get("label", "")) %}
+    {% set _pressed = item.get("pressed", false) or item.get("active", false) or _value in _values %}
+    {% set _disabled = disabled or item.get("disabled", false) %}
+    {% set _id = item.get("id", name ~ "-" ~ _value) %}
+    <label class="chirpui-toggle-group__item{% if _pressed %} chirpui-toggle-group__item--pressed{% end %}{% if _disabled %} chirpui-toggle-group__item--disabled{% end %}">
+        <input class="chirpui-toggle-group__input chirpui-visually-hidden"
+               type="{{ "checkbox" if _type == "multiple" else "radio" }}"
+               id="{{ _id }}"
+               name="{{ name }}{{ "[]" if _type == "multiple" else "" }}"
+               value="{{ _value }}"
+               {% if _pressed %}checked{% end %}
+               {% if _disabled %}disabled{% end %}>
+        {% if item.get("icon") %}<span class="chirpui-toggle-group__icon">{{ item.icon | icon }}</span>{% end %}
+        <span class="chirpui-toggle-group__label">{{ item.get("label", _value) }}</span>
+    </label>
+    {% end %}
+</div>
+{% end %}

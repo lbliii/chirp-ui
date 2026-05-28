@@ -1,0 +1,21 @@
+{#- chirp-ui: Aspect Ratio
+    Fixed-ratio frame for media, previews, charts, and embedded content.
+
+    Usage:
+        from "chirpui/aspect_ratio.html" import aspect_ratio
+
+        {% call aspect_ratio("16 / 9") %}
+            <img src="/hero.jpg" alt="">
+        {% end %}
+-#}
+
+{% def aspect_ratio(ratio="16 / 9", cls="", attrs_map=none) %}
+{% set _ratio = ratio if ratio else "16 / 9" %}
+<div class="chirpui-aspect-ratio{{ " " ~ cls if cls else "" }}"
+     style="--chirpui-aspect-ratio: {{ _ratio | e }};"
+     {{ attrs_map | html_attrs }}>
+    <div class="chirpui-aspect-ratio__inner">
+        {% slot %}
+    </div>
+</div>
+{% end %}

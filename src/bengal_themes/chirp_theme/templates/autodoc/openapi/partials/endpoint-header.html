@@ -8,13 +8,17 @@
 {% let path = meta?.path ?? element?.path ?? element?.qualified_name ?? element?.name ?? "/" %}
 {% let title = element?.name ?? page?.title ?? "Endpoint" %}
 {% let description = element?.description ?? page?.description ?? none %}
+{% let hero_description = description |> markdownify |> truncatewords_html(32, '…') |> safe if description else none %}
 
-{% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-reference-hero chirp-theme-reference-hero--endpoint") %}
+{% call page_hero(title=title, subtitle=none, variant="minimal", background="solid", cls="chirp-theme-reference-hero chirp-theme-reference-hero--endpoint") %}
   {% slot metadata %}
   {% call cluster(gap="xs") %}
     {{ badge(method | upper, variant="info") }}
     {{ code(path, cls="chirp-theme-reference-endpoint-path") }}
   {% end %}
+  {% end %}
+  {% if hero_description %}
+  <div class="chirpui-hero__subtitle chirp-theme-reference-hero__summary">{{ hero_description }}</div>
   {% end %}
 {% end %}
 <div class="chirp-theme-rest-endpoint-bar" aria-label="Endpoint">

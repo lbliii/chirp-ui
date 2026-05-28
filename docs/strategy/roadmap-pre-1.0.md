@@ -337,6 +337,9 @@ Tasks:
   `page_hero` empty-slot behavior, compact headers, linked nav-tree/sidebar
   semantics, page actions, reference cards, semantic icons, and footer/content
   ownership.
+- Use `docs/plans/PLAN-component-maturity-gap-sweep.md` as the active gap
+  ledger for expected UI-library primitives, current Chirp-native coverage, and
+  behavior-heavy components that still need anatomy and browser proof.
 - Use `docs/plans/PLAN-page-actions-primitive.md` as the active investigation
   gate before any registry-owned page-actions macro or runtime is proposed.
 - Keep Bengal shell pressure separate from generic app-shell pressure.
@@ -430,6 +433,7 @@ parallel backlog.
 | `PLAN-pre-1.0-productization-saga.md` | Productization Coordination |
 | `PLAN-bengal-chirpui-library-contract.md` | Bengal And chirp-theme Integration |
 | `PLAN-chirp-theme-content-parity.md` | Bengal And chirp-theme Integration |
+| `PLAN-component-maturity-gap-sweep.md` | Bengal-Driven Component Maturation |
 | `PLAN-css-scope-and-layer.md` | CSS Scope Hardening |
 | `PLAN-application-chrome-system.md` | Application Chrome System |
 

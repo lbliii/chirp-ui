@@ -28,8 +28,9 @@
 .chirpui-logo__text {
     font-size: var(--chirpui-logo-font-size);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    line-height: 1.2;
+    line-height: var(--chirpui-line-height-tight);
     color: inherit;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-logo--text .chirpui-logo__img {
@@ -78,6 +79,7 @@
     color: var(--chirpui-text-muted);
     text-decoration: none;
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
     border-radius: var(--chirpui-radius-sm);
     transition: color var(--chirpui-transition), background var(--chirpui-transition);
@@ -137,11 +139,11 @@
     display: inline-block;
     transition: rotate var(--chirpui-transition);
     margin-inline-start: auto;
-    font-size: 0.75em;
+    font-size: var(--chirpui-font-xs);
+    line-height: 1;
     color: var(--chirpui-text-muted);
 }
 
 .chirpui-navbar-dropdown[open] > .chirpui-navbar-dropdown__trigger::after {
     rotate: 90deg;
 }
-

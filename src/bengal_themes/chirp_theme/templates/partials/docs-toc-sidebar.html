@@ -3,9 +3,8 @@
 {% if toc_items %}
 {{ toc(toc_items=toc_items, page=page) }}
 {% if 'navigation.back_to_top' in (theme.features ?? []) %}
-<button class="back-to-top chirp-theme-rail-top" aria-label="Scroll to top" data-chirp-theme-rail-action="top">
+<button class="back-to-top chirp-theme-floating-top" aria-label="Scroll to top" data-chirp-theme-floating-action="top">
   {{ icon("arrow-up", size=16) }}
-  <span>Top</span>
 </button>
 {% end %}
 {% end %}

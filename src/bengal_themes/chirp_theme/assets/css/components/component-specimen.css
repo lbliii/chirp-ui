@@ -1,0 +1,81 @@
+.chirp-theme-component-specimen {
+  display: grid;
+  gap: var(--chirpui-spacing-md);
+  margin-block: var(--chirpui-spacing-lg);
+  padding: var(--chirpui-spacing-md);
+  border: 1px solid var(--chirpui-border);
+  border-radius: var(--chirpui-radius);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--chirpui-accent) 8%, transparent), transparent 42%),
+    var(--chirpui-surface);
+}
+
+.chirp-theme-component-specimen__header {
+  display: grid;
+  gap: var(--chirpui-spacing-2xs);
+  color: var(--chirpui-text-muted);
+  font-size: var(--chirpui-ui-sm);
+  line-height: var(--chirpui-line-height-normal);
+}
+
+.chirp-theme-component-specimen__header strong {
+  color: var(--chirpui-text);
+  font-size: var(--chirpui-ui-base);
+  line-height: var(--chirpui-line-height-tight);
+}
+
+.chirp-theme-component-specimen__eyebrow {
+  color: var(--chirpui-accent);
+  font-family: var(--chirpui-code-font-family);
+  font-size: var(--chirpui-ui-xs);
+  font-weight: var(--chirpui-ui-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.chirp-theme-component-specimen__preview {
+  display: grid;
+  align-items: center;
+  gap: var(--chirpui-spacing-sm);
+  min-inline-size: 0;
+  padding: var(--chirpui-spacing-md);
+  border: 1px solid color-mix(in srgb, var(--chirpui-border) 78%, transparent);
+  border-radius: calc(var(--chirpui-radius) - 0.125rem);
+  background: color-mix(in srgb, var(--chirpui-surface-alt) 68%, transparent);
+}
+
+.chirp-theme-component-specimen__inline,
+.chirp-theme-component-specimen__field {
+  display: grid;
+  gap: var(--chirpui-spacing-xs);
+  justify-items: start;
+}
+
+.chirp-theme-component-specimen__scroll {
+  max-inline-size: 26rem;
+}
+
+.chirp-theme-component-specimen__frame {
+  max-inline-size: 24rem;
+  border-radius: var(--chirpui-radius);
+  background: var(--chirpui-surface-alt);
+}
+
+.chirp-theme-component-specimen__media {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100%;
+  color: var(--chirpui-text-muted);
+  font-family: var(--chirpui-code-font-family);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--chirpui-accent) 18%, transparent), transparent 46%),
+    color-mix(in srgb, var(--chirpui-surface) 82%, transparent);
+}
+
+@media (min-width: 56rem) {
+  .chirp-theme-component-specimen {
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+    align-items: start;
+  }
+}

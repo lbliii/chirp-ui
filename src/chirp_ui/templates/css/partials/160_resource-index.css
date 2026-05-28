@@ -5,6 +5,8 @@
 .chirpui-resource-index {
     width: 100%;
     min-width: 0;
+    font-size: var(--chirpui-font-base);
+    line-height: var(--chirpui-line-height-normal);
     overflow-wrap: anywhere;
 }
 

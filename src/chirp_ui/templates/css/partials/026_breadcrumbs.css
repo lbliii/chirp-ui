@@ -11,23 +11,26 @@
     margin: 0;
     padding: 0;
     font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
 }
 
 .chirpui-breadcrumbs__item {
     display: flex;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
+    min-inline-size: 0;
 }
 
 .chirpui-breadcrumbs__item:not(:last-child)::after {
     content: "/";
     color: var(--chirpui-text-muted);
-    font-weight: 400;
+    font-weight: var(--chirpui-ui-font-weight-normal);
 }
 
 .chirpui-breadcrumbs__link {
     color: var(--chirpui-accent);
     text-decoration: none;
+    overflow-wrap: anywhere;
     transition: color var(--chirpui-transition);
 }
 
@@ -43,6 +46,8 @@
 
 .chirpui-breadcrumbs__current {
     color: var(--chirpui-text-muted);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    overflow-wrap: anywhere;
 }
 
 .chirpui-breadcrumbs__overflow {
@@ -98,6 +103,8 @@
     border-radius: var(--chirpui-radius-md);
     background: var(--chirpui-surface);
     box-shadow: var(--chirpui-shadow-lg);
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-tight);
     list-style: none;
 }
 

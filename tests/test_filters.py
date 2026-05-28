@@ -1096,6 +1096,19 @@ class TestRegisterFiltersWithTemplateGlobal:
         assert "tab_is_active" not in registered
 
 
+class TestChirpUIAssetPath:
+    """chirpui_asset_path emits Bengal provider asset contract paths."""
+
+    def test_namespaces_provider_assets_for_bengal_contract(self) -> None:
+        assert chirpui_asset_path("chirpui.css") == "chirp_ui/chirpui.css"
+        assert chirpui_asset_path("/chirpui-transitions.css") == (
+            "chirp_ui/chirpui-transitions.css"
+        )
+
+    def test_preserves_existing_provider_prefix(self) -> None:
+        assert chirpui_asset_path("chirp_ui/chirpui.js") == "chirp_ui/chirpui.js"
+
+
 class TestBuildHxAttrs:
     """build_hx_attrs converts kwargs to hyphenated dict for html_attrs."""
 

@@ -61,6 +61,8 @@
             padding: var(--chirpui-spacing-2xs) 0.35rem;
             font-size: var(--chirpui-font-xs);
             font-weight: var(--chirpui-ui-font-weight-semibold);
+            font-variant-numeric: tabular-nums;
+            line-height: var(--chirpui-line-height-tight);
             background: rgba(0, 0, 0, 0.75);
             color: var(--chirpui-on-accent);
             border-radius: var(--chirpui-radius-sm);
@@ -79,13 +81,17 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: clip;
+            overflow-wrap: anywhere;
         }
 
         .chirpui-video-card__channel,
         .chirpui-video-card__meta {
             margin: 0;
             font-size: var(--chirpui-font-xs);
+            font-variant-numeric: tabular-nums;
+            line-height: var(--chirpui-line-height-tight);
             color: var(--chirpui-text-muted);
+            overflow-wrap: anywhere;
         }
 
         .chirpui-video-card__channel-link {

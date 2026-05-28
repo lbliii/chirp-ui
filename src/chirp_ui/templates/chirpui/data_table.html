@@ -1,0 +1,59 @@
+{#- chirp-ui: Data Table
+    Composition wrapper for filter controls, table records, and pagination.
+
+    Usage:
+        from "chirpui/data_table.html" import data_table
+
+        data_table(
+            title="Users",
+            headers=["Name", "Status"],
+            rows=[["Ada", "Active"]],
+            filter_action="/users",
+            current=1,
+            total=4,
+            url_pattern="/users?page={page}",
+        )
+-#}
+{% from "chirpui/filter_bar.html" import filter_row %}
+{% from "chirpui/pagination.html" import pagination %}
+{% from "chirpui/table.html" import table, table_empty %}
+
+{% def data_table(title=none, description=none, headers=none, rows=none,
+                  filter_action=none, filter_method="get", current=1, total=1,
+                  url_pattern="", empty_message="No records found",
+                  compact=false, striped=false, sticky_header=false,
+                  cls="", attrs_map=none) %}
+<section class="chirpui-data-table{{ " chirpui-data-table--compact" if compact else "" }}{{ " " ~ cls if cls else "" }}"
+         {{ attrs_map | html_attrs }}>
+    {% if title or description %}
+    <div class="chirpui-data-table__header">
+        <div class="chirpui-data-table__summary">
+            {% if title %}<h2 class="chirpui-data-table__title">{{ title }}</h2>{% end %}
+            {% if description %}<p class="chirpui-data-table__description">{{ description }}</p>{% end %}
+        </div>
+    </div>
+    {% end %}
+
+    {% if filter_action %}
+    <div class="chirpui-data-table__filters">
+        {% call filter_row(action=filter_action, method=filter_method) %}{% slot %}{% end %}{% end %}
+    </div>
+    {% end %}
+
+    <div class="chirpui-data-table__body">
+        {% if rows %}
+            {{ table(headers=headers, rows=rows, compact=compact, striped=striped, sticky_header=sticky_header) }}
+        {% else %}
+            {% call table(headers=headers, compact=compact, striped=striped, sticky_header=sticky_header) %}
+                {{ table_empty(empty_message) }}
+            {% end %}
+        {% end %}
+    </div>
+
+    {% if total > 1 and url_pattern %}
+    <div class="chirpui-data-table__footer">
+        {{ pagination(current=current, total=total, url_pattern=url_pattern) }}
+    </div>
+    {% end %}
+</section>
+{% end %}

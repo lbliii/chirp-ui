@@ -17,10 +17,13 @@
     grid-template-columns: minmax(0, 1fr) minmax(4rem, 3fr) auto;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
+    min-inline-size: 0;
 }
 
 .chirpui-bar-chart__label {
     font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text);
     overflow: clip;
     text-overflow: ellipsis;
@@ -74,8 +77,8 @@
 .chirpui-bar-chart__value {
     font-size: var(--chirpui-font-sm);
     font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     min-width: 2ch;
     text-align: right;
 }
-

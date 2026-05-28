@@ -10,7 +10,8 @@
     gap: var(--chirpui-spacing-xs);
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-md);
     font-size: var(--chirpui-ui-sm);
-    font-weight: 500;
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text);
     background: var(--chirpui-surface);
     border: 1px solid var(--chirpui-border);
@@ -36,5 +37,4 @@
 .chirpui-ripple-btn--primary:hover { background: var(--chirpui-accent-hover); }
 .chirpui-ripple-btn--sm { padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm); font-size: var(--chirpui-ui-xs); }
 .chirpui-ripple-btn--lg { padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-lg); font-size: var(--chirpui-ui-base); }
-
 

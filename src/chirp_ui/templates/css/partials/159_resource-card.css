@@ -48,6 +48,7 @@
         .chirpui-resource-card__description {
             margin: 0;
             color: var(--chirpui-text-muted);
+            font-size: var(--chirpui-font-sm);
             line-height: var(--chirpui-line-height-relaxed);
             overflow-wrap: anywhere;
             word-break: break-word;

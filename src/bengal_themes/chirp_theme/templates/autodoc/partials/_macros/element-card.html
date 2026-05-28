@@ -3,5 +3,10 @@
 {% def element_card(element) %}
 {% let name = element?.name ?? element?.title ?? "Reference" %}
 {% let href = element?.href ?? element?.url ?? "#" ~ name %}
-{{ resource_card(href, name, description=element?.description ?? none, top_meta=element?.element_type ?? none, cls="chirp-theme-reference-card") }}
+{% let description = element?.description ?? none %}
+{% call resource_card(href, name, description=none, top_meta=element?.element_type ?? none, cls="chirp-theme-reference-card") %}
+  {% if description %}
+  <div class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description chirp-theme-reference-card__description">{{ description |> markdownify |> truncatewords_html(28, '…') |> safe }}</div>
+  {% end %}
+{% end %}
 {% end %}

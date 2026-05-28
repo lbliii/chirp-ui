@@ -21,7 +21,10 @@
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-semibold);
+    line-height: var(--chirpui-line-height-tight);
     flex: 1;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
 }
 
 .chirpui-playlist__header-actions:empty {
@@ -50,6 +53,7 @@
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
     text-decoration: none;
     color: inherit;
+    min-inline-size: 0;
     transition: background var(--chirpui-transition);
 }
 
@@ -71,6 +75,7 @@
 .chirpui-playlist-item__title {
     flex: 1;
     min-width: 0;
+    line-height: var(--chirpui-line-height-tight);
     white-space: nowrap;
     overflow: clip;
     text-overflow: ellipsis;
@@ -79,6 +84,7 @@
 .chirpui-playlist-item__duration {
     flex-shrink: 0;
     font-size: var(--chirpui-font-xs);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
-
