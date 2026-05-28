@@ -5484,7 +5484,6 @@ Data Table
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
-- **Slots:** `(default)`
 - **Composes:** `filter-row`, `pagination`, `table`
 - **Modifiers:** `compact`
 

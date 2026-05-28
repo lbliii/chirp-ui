@@ -1989,7 +1989,6 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "body",
             "footer",
         ),
-        slots=("",),
         composes=("filter-row", "table", "pagination"),
         category="data-display",
         role="component",

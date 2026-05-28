@@ -7426,9 +7426,7 @@
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
-      "slots": [
-        ""
-      ],
+      "slots": [],
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "data_table.html",

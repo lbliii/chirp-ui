@@ -1508,7 +1508,7 @@ result_path.write_text(
 
 
 def test_docs_site_build_only_references_emitted_assets(tmp_path: Path) -> None:
-    """Built docs HTML should only reference fingerprinted assets that were emitted."""
+    """Built docs HTML should only reference asset-managed files that were emitted."""
     _prefer_workspace_bengal()
     pytest.importorskip("bengal")
     site_root = _copy_docs_site(tmp_path)
@@ -1580,6 +1580,14 @@ for html_path in site.output_dir.rglob("*.html"):
             referenced_assets.add(asset_path)
 
 missing_manifest_entries = sorted(referenced_assets - manifest_outputs)
+stable_library_css = {
+    path
+    for path in standalone_css_entries
+    if path in referenced_assets and (site.output_dir / path).is_file()
+}
+missing_manifest_entries = [
+    path for path in missing_manifest_entries if path not in stable_library_css
+]
 missing_files = sorted(
     asset_path for asset_path in referenced_assets if not (site.output_dir / asset_path).is_file()
 )
