@@ -1548,18 +1548,18 @@ site.build(BuildOptions(force_sequential=True, incremental=False, quiet=True))
 
 manifest = AssetManifest.load(site.output_dir / "asset-manifest.json")
 manifest_outputs = {entry.output_path.lstrip("/") for entry in manifest.entries.values()}
-standalone_css_entries = [
+standalone_asset_entries = [
     chirpui_asset_path("chirpui.css"),
     chirpui_asset_path("chirpui-transitions.css"),
+    chirpui_asset_path("chirpui.js"),
+    chirpui_asset_path("chirpui-alpine.js"),
 ]
 expected_asset_entries = [
     *[
         logical_path
-        for logical_path in standalone_css_entries
+        for logical_path in standalone_asset_entries
         if logical_path in manifest.entries
     ],
-    chirpui_asset_path("chirpui.js"),
-    chirpui_asset_path("chirpui-alpine.js"),
     "css/style.css",
 ]
 asset_outputs = {
@@ -1580,15 +1580,15 @@ for html_path in site.output_dir.rglob("*.html"):
             referenced_assets.add(asset_path)
 
 missing_manifest_entries = sorted(referenced_assets - manifest_outputs)
-stable_library_css = set()
-for logical_path in standalone_css_entries:
+stable_library_assets = set()
+for logical_path in standalone_asset_entries:
     normalized_path = logical_path.removeprefix("assets/")
     filename = Path(normalized_path).name
     for candidate in {logical_path, f"assets/{normalized_path}", f"assets/{filename}"}:
         if candidate in referenced_assets and (site.output_dir / candidate).is_file():
-            stable_library_css.add(candidate)
+            stable_library_assets.add(candidate)
 missing_manifest_entries = [
-    path for path in missing_manifest_entries if path not in stable_library_css
+    path for path in missing_manifest_entries if path not in stable_library_assets
 ]
 missing_files = sorted(
     asset_path for asset_path in referenced_assets if not (site.output_dir / asset_path).is_file()
