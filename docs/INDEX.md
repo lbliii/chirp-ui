@@ -41,6 +41,8 @@ Canonical component, behavior, and macro-contract references.
 - [PROVIDE-CONSUME-KEYS.md](components/provide-consume-keys.md) — All provide/consume context keys and their contracts
 - [ALPINE-MAGICS.md](components/alpine-magics.md) — Alpine.js store, `safeData`, shared controllers
 - [HTMX-PATTERNS.md](components/htmx-patterns.md) — `hx={}` dict, auto-injected attrs, app-shell HTMX boundaries, `build_hx_attrs()`
+- [CONTROL-SELECTION.md](components/control-selection.md) — Native controls, dropdown-select, toggle groups, sliders, and data-table composition boundaries
+- [CONTEXT-MENU-ANATOMY.md](components/context-menu-anatomy.md) — Pre-implementation context-menu anatomy, focus, positioning, and proof gate
 - [DROPDOWN-ANATOMY.md](components/dropdown-anatomy.md) — Dropdown menu, select, and split-menu rendered anatomy
 - [MODAL-ANATOMY.md](components/modal-anatomy.md) — Native modal, overlay modal, and confirm dialog anatomy
 - [TABS-ANATOMY.md](components/tabs-anatomy.md) — htmx tabs, tab panels, route tabs, and tabbed page layout anatomy
@@ -168,6 +170,7 @@ plans as live direction. (Sprint 6 of `PLAN-agent-grounding-depth.md`,
 - [PLAN-css-scope-and-layer.md](plans/PLAN-css-scope-and-layer.md) — Ongoing `@scope` conversion policy and residual CSS hardening
 - [PLAN-application-chrome-system.md](plans/PLAN-application-chrome-system.md) — Application chrome system contracts, rail/tray proof, rhythm audit, and composite gates
 - [PLAN-page-actions-primitive.md](plans/PLAN-page-actions-primitive.md) — Page-local actions primitive investigation, promotion gate, and non-API boundary
+- [PLAN-component-maturity-gap-sweep.md](plans/PLAN-component-maturity-gap-sweep.md) — Component maturity gap sweep for expected UI-library primitives and behavior-heavy follow-up work
 - [PLAN-chirp-theme-content-parity.md](plans/PLAN-chirp-theme-content-parity.md) — Residual chirp-theme fixture parity backlog
 - [PLAN-bengal-chirpui-library-contract.md](plans/PLAN-bengal-chirpui-library-contract.md) — First-class Bengal library asset/macro contract for Chirp UI
 

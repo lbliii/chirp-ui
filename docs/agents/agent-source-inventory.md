@@ -76,6 +76,7 @@ adds all of the following:
 | `docs-derived` | `tests/browser/test_consumer_shell_actions_oob.py` | Browser proof for consumer shell action response contracts. | `source-only` |
 | `docs-derived` | `tests/test_find_cli.py` | CLI proof for agent discovery reference contracts. | `source-only` |
 | `docs-derived` | `docs/components/appearance-tone.md` | Appearance/tone semantics and migration guidance. | `source-only` |
+| `docs-derived` | `docs/components/context-menu-anatomy.md` | Pre-implementation context-menu anatomy, proof gate, and public-API boundary. | `source-only` |
 | `docs-derived` | `docs/theming/app-theme.md` | App theme-pack load order, token-only rules, and ownership guidance. | `source-only` |
 | `docs-derived` | `docs/components/dropdown-anatomy.md` | Dropdown rendered anatomy and tested behavior. | `source-only` |
 | `docs-derived` | `docs/components/modal-anatomy.md` | Modal, overlay, and confirm rendered anatomy and tested behavior. | `source-only` |

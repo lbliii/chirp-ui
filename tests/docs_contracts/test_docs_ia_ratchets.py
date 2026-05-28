@@ -8,6 +8,7 @@ EXPECTED_ACTIVE_PLANS = [
     "PLAN-application-chrome-system.md",
     "PLAN-bengal-chirpui-library-contract.md",
     "PLAN-chirp-theme-content-parity.md",
+    "PLAN-component-maturity-gap-sweep.md",
     "PLAN-css-scope-and-layer.md",
     "PLAN-page-actions-primitive.md",
     "PLAN-pre-1.0-productization-saga.md",
@@ -29,7 +30,7 @@ def test_active_plan_count_stays_intentional() -> None:
     active_plans = sorted(path.name for path in PLANS.glob("PLAN-*.md"))
 
     assert active_plans == EXPECTED_ACTIVE_PLANS
-    assert len(active_plans) <= 7
+    assert len(active_plans) <= 8
 
 
 def test_archived_plans_do_not_claim_active_or_draft_status() -> None:
