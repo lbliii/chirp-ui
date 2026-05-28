@@ -18,9 +18,9 @@ chirp-ui provides Kida macros organized by category. Import from `chirpui/` and 
 | Category | Examples |
 |----------|----------|
 | **Layout** | container, grid, stack, block, page_header, section_header, divider, breadcrumbs, navbar, sidebar, hero, surface, callout |
-| **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group |
-| **Forms** | text_field, password_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, form_error_summary |
-| **Data display** | badge, spinner, skeleton, progress, description_list (type-aware), timeline, tree_view, calendar |
+| **UI** | card, card_header, modal, drawer, tabs, accordion, dropdown, popover, toast, table, pagination, alert, button_group, toggle_group, item |
+| **Forms** | text_field, password_field, textarea_field, select_field, checkbox_field, toggle_field, radio_field, file_field, date_field, slider, form_error_summary |
+| **Data display** | badge, spinner, skeleton, progress, description_list (type-aware), timeline, tree_view, calendar, data_table |
 | **Streaming** | streaming_block, copy_btn, model_card, sse_status, sse_retry — for htmx SSE and LLM UIs |
 | **HTMX helpers** | oob_fragment, oob_toast, counter_badge — out-of-band swap composition |
 | **Suspense** | suspense_slot, suspense_group — skeleton-to-content deferred loading |
@@ -68,6 +68,10 @@ classes. See [Appearance and tone](/docs/components/appearance-tone/) for the
 published guide.
 
 ## Interactive anatomy
+
+Use [Control selection](/docs/components/controls/) when choosing between native
+fields, dropdown-select, toggle groups, sliders, date inputs, and composed data
+tables.
 
 Dropdown menus, selects, and split menus have a published rendered contract for
 ARIA roles, Alpine controllers, focus behavior, event payloads, and HTMX link

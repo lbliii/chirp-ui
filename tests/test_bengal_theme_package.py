@@ -93,6 +93,7 @@ REQUIRED_DIRECTIVE_TEMPLATES = (
 REQUIRED_SHORTCODE_TEMPLATES = (
     "shortcodes/audio.html",
     "shortcodes/blockquote.html",
+    "shortcodes/component_specimen.html",
     "shortcodes/danger.html",
     "shortcodes/details.html",
     "shortcodes/figure.html",
@@ -351,7 +352,10 @@ def test_chirp_theme_templates_do_not_use_theme_adapter_macros() -> None:
     assert "theme_feed" not in template_text
     assert ".chirp-theme-docs-layout {" in css
     assert "display: grid;" in css
-    assert "grid-template-columns:" in css
+    assert (
+        "grid-template-columns: minmax(18rem, 21rem) minmax(0, 1fr) minmax(10rem, 14rem)"
+        in css
+    )
     assert "chirp-theme-docs-layout--with-toc" in css
 
 
@@ -378,6 +382,7 @@ def test_chirp_theme_docs_chrome_mobile_width_contract() -> None:
     """Docs chrome should not give article or code content a fixed mobile width."""
     package_root = resources.files(THEME_PACKAGE)
     css = (package_root / "assets" / "css" / "chirp-theme.css").read_text(encoding="utf-8")
+    main_js = (package_root / "assets" / "js" / "main.js").read_text(encoding="utf-8")
     header_css = (package_root / "assets" / "css" / "layouts" / "header.css").read_text(
         encoding="utf-8"
     )
@@ -390,6 +395,10 @@ def test_chirp_theme_docs_chrome_mobile_width_contract() -> None:
     assert ".chirp-theme-doc-catalog-rail__item" in css
     assert ".chirp-theme-docs-layout .code-block-wrapper" in css
     assert ".chirp-theme-docs-layout .code-block-wrapper pre code" in css
+    assert ".chirp-theme-docs-layout .code-block-wrapper--specimen" in css
+    assert ".chirp-theme-docs-layout .code-block-wrapper--specimen::before" in css
+    assert "code-block-wrapper--specimen" in main_js
+    assert "chirp-theme-reference-member__description" in main_js
     assert '.chirp-theme-docs-layout .rosettes[data-language="plaintext"]' in css
     assert "max-width: 100%;" in css
     assert "min-width: 0;" in css
@@ -500,11 +509,13 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     assert "theme-menu-desktop" in base
     assert "theme-menu-mobile" in base
     assert "chirp-theme-floating-top" in base
-    assert "chirp-theme-rail-top" in toc_sidebar
-    assert 'data-chirp-theme-rail-action="top"' in toc_sidebar
+    assert "chirp-theme-floating-top" in toc_sidebar
+    assert 'data-chirp-theme-floating-action="top"' in toc_sidebar
+    assert "chirp-theme-rail-top" not in toc_sidebar
     assert "querySelectorAll('.back-to-top')" in interactive_js
-    assert "chirp-theme-rail-top" in interactive_js
     assert "chirp-theme-floating-top" in interactive_js
+    assert "chirp-theme-footer__rule-mark" in interactive_js
+    assert "--chirpui-floating-top-left" in interactive_js
     assert "document.getElementById('mobile-nav-dialog')" in mobile_nav_js
     assert "window.BengalNav" in mobile_nav_js
     assert "window.BengalSearchModal.open()" in mobile_nav_js
@@ -652,8 +663,15 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     assert "render_navbar_item" in base
     assert "library_asset_tags()" in base
     assert "library_asset_tags | default(none)" in base
-    assert "_chirpui_js_asset = 'chirpui.js'" in base
-    assert "_chirpui_alpine_asset = 'chirpui-alpine.js'" in base
+    assert "_chirpui_css_asset = chirpui_asset_path('chirpui.css')" in base
+    assert (
+        "_chirpui_transitions_asset = chirpui_asset_path('chirpui-transitions.css')"
+        in base
+    )
+    assert "_chirpui_js_asset = chirpui_asset_path('chirpui.js')" in base
+    assert "_chirpui_alpine_asset = chirpui_asset_path('chirpui-alpine.js')" in base
+    assert 'href="{{ asset_url(_chirpui_css_asset) }}"' in base
+    assert 'href="{{ asset_url(_chirpui_transitions_asset) }}"' in base
     assert 'data-chirp-theme-spine="bespoke"' in base
     assert "_page_url == '/releases/' or _page_url.startswith('/releases/')" in base
     assert "asset_url('favicon.svg')" in base
@@ -674,10 +692,20 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
 
     assert ".chirp-theme-shell {" in css
     assert ".chirp-theme-shell__nav" in css
+    assert ".chirp-theme-shell__nav {\n  display: flex;" in css
+    assert "flex-wrap: nowrap;" in css
+    assert ".chirp-theme-shell__nav > .chirpui-navbar__links:not(.chirpui-navbar__links--end)" in css
+    assert ".chirp-theme-shell__nav > .chirpui-navbar__links--end" in css
+    assert ".chirp-theme-shell__nav-dropdown {\n  position: relative;" in css
     assert ".chirp-theme-shell__mega {" in css
     assert ".chirp-theme-shell__nav-dropdown:hover > .chirpui-navbar-dropdown__menu" in css
-    assert ".chirp-theme-shell .chirpui-navbar-dropdown__trigger::after" in css
+    assert (
+        ".chirp-theme-shell__nav-dropdown > .chirpui-navbar-dropdown__trigger::after"
+        in css
+    )
+    assert ".chirp-theme-shell .chirpui-navbar__links" not in css
     assert ".chirp-theme-footer.chirpui-site-footer" in css
+    assert "components/docs-nav.css" not in style
     assert "../../../../chirp_ui/templates/chirpui.css" not in style
     assert "../../../../chirp_ui/templates/chirpui-transitions.css" not in style
 
@@ -768,6 +796,7 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "chirp-theme-doc-toc__context" in navigation
     assert "chirp-theme-doc-toc__context-mark" in navigation
     assert "chirp-theme-doc-toc__context-count" in navigation
+    assert "chirp-theme-doc-toc__count-pill" in navigation
     assert "chirp-theme-doc-toc__mark" in navigation
     assert "chirpui/workspace_primitives.html" in docs_nav
     assert "chirp-theme-doc-catalog" in docs_nav
@@ -789,6 +818,8 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "chirp-theme-doc-catalog__context-meta" not in docs_nav
     assert "chirp-theme-docs-nav__type-icon" in docs_nav
     assert "chirp-theme-docs-nav__summary-link" in docs_nav
+    assert "chirp-theme-docs-nav__section-links" in docs_nav
+    assert "chirp-theme-docs-nav__root-leaf" in docs_nav
     assert "chirp-theme-docs-nav__meta" not in docs_nav
     assert "chirp-theme-docs-nav__summary-count" not in docs_nav
     assert "chirp-theme-doc-catalog-rail__count" not in docs_nav
@@ -799,27 +830,52 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "chirp-theme-release-index" in section_index
     assert 'sort(attribute="metadata.date,title", reverse=true)' in section_index
     assert "chirp-theme-release-card" in section_index
+    assert "grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr))" in css
+    assert ".chirp-theme-release-card {\n  display: grid;" in css
+    assert "padding: clamp(0.7rem, 1vw, 0.95rem)" in css
+    assert ".chirp-theme-release-card .chirpui-card__top-meta" in css
+    assert ".chirp-theme-release-card .chirpui-card__main-link" in css
+    assert ".chirp-theme-release-card:not(.chirp-theme-release-card--latest) .chirpui-card__header-badges" in css
+    assert ".chirp-theme-release-card .chirpui-card__body:not(:has(*))" in css
+    assert (
+        ".chirp-theme-footer--shell .chirpui-site-footer__grid {\n"
+        "  grid-template-columns: minmax(13rem, 1.5fr) minmax(8rem, 0.8fr) minmax(7rem, 0.7fr);"
+        in css
+    )
+    assert ".chirp-theme-footer .chirpui-site-footer__list {\n  display: grid;" in css
+    assert ".chirp-theme-footer .chirpui-site-footer__link::before" in css
+    assert "background-color: color-mix(in srgb, var(--chirpui-accent) 8%, transparent)" in css
     assert "grid-template-columns: 3.5rem minmax(0, 1fr);" in css
     assert ".chirp-theme-doc-catalog-rail__item:hover .chirp-theme-doc-catalog-rail__label" in css
     assert ".chirp-theme-doc-catalog-rail__brand-mark" in css
     assert "box-shadow: 0 1px 0 color-mix(in srgb, var(--chirpui-accent) 10%, transparent)" in css
-    assert (
-        "border-inline-end: 1px solid color-mix(in srgb, var(--chirpui-accent) 14%, "
-        "var(--chirpui-border))" in css
-    )
     assert ".chirp-theme-doc-catalog__context" not in css
     assert ".chirp-theme-doc-catalog__context-mark" not in css
     assert ".chirp-theme-docs-nav__section.is-active" in css
-    assert ".chirp-theme-docs-nav__link.chirpui-sidebar__link" in css
+    assert ".chirp-theme-doc-catalog__primary {\n  overflow: visible;\n  border-inline-end: 0;\n  background: transparent;\n}" in css
+    assert ".chirp-theme-doc-catalog__secondary {\n  max-height: calc(100svh - 2.875rem);" in css
+    assert "border-inline-start: 0;\n  background: transparent;" in css
+    assert ".chirp-theme-doc-catalog .chirp-theme-docs-nav {\n  width: 100%;\n  padding: 0.4rem;" in css
+    assert "border: 1px solid color-mix(in srgb, var(--chirpui-accent) 22%, var(--chirpui-border))" in css
+    assert "border-radius: var(--radius-md)" in css
+    assert "color-mix(in srgb, var(--chirpui-surface) 62%, transparent)" in css
+    assert ".chirp-theme-docs-nav__section {\n  padding: 0.35rem;\n  border: 1px solid transparent;" in css
+    assert ".chirp-theme-docs-nav__section.is-active {\n  border-color: transparent;\n  background: transparent;\n}" in css
+    assert ".chirp-theme-docs-nav__link {\n  display: grid;" in css
+    assert ".chirp-theme-docs-nav__link[aria-current=\"page\"]" in css
     assert ".chirp-theme-docs-nav__link--component .chirp-theme-docs-nav__type-icon" in css
     assert ".chirp-theme-docs-nav__summary-link" in css
     assert ".chirp-theme-docs-nav__summary-copy" in css
+    assert ".chirp-theme-docs-nav__section--depth-1.is-active" in css
+    assert ".chirp-theme-docs-nav__root-leaf" in css
+    assert ".chirp-theme-docs-nav__root-leaf[aria-current=\"page\"]" in css
     assert ".chirp-theme-page-actions__trigger" in css
     assert ".chirp-theme-page-actions__menu:popover-open" in css
     assert ".chirp-theme-page-actions__item" in css
     assert ".chirp-theme-docs-nav__meta" not in css
     assert ".chirp-theme-docs-nav__summary-count" not in css
     assert ".chirp-theme-doc-catalog-rail__count" not in css
+    assert "components/docs-nav.css" not in style
     assert ".chirp-theme-docs-layout__hero .chirpui-hero__metadata:not(:has(*))" in css
     assert "scrollbar-color:" in css
     assert "::-webkit-scrollbar-thumb" in css
@@ -829,11 +885,16 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert ".chirp-theme-doc-catalog__primary {\n  padding: 0.75rem 0.5rem;\n}" in css
     assert ".chirp-theme-docs-layout__sidebar {\n  padding: 0;\n}" in css
     assert "border-inline-end: 1px solid var(--color-border-light)" not in css
+    assert "--chirpui-floating-top-left: calc((100vw + 21rem - 14rem) / 2)" in css
     assert ".chirp-theme-doc-toc__context" in css
+    assert ".chirp-theme-doc-toc__count-pill" in css
+    assert ".chirp-theme-doc-toc summary.toc-group-header:hover .toc-count" in css
+    assert ".chirp-theme-doc-toc details.toc-group[open] .toc-count" in css
     assert ".chirp-theme-doc-toc__mark" in css
     assert ".chirp-theme-doc-toc__group[open]" in css
     assert ".chirp-theme-doc-toc__link.toc-link" in css
-    assert ".chirp-theme-rail-top.back-to-top" in interactive_css
+    assert ".chirp-theme-floating-top.back-to-top" in interactive_css
+    assert "left: var(--chirpui-floating-top-left, 50vw)" in interactive_css
     assert ".back-to-top[hidden]" in interactive_css
     assert "width: 100%;" in css
     assert "min-height: calc(100svh - 2.875rem);" in css
@@ -1068,6 +1129,8 @@ def test_chirp_theme_shortcodes_use_chirpui_components() -> None:
 
     assert "chirpui/callout.html" in combined
     assert "chirpui/accordion.html" in combined
+    assert "chirpui/toggle_group.html" in combined
+    assert "chirpui/data_table.html" in combined
     assert "chirpui-card" in combined
     assert "chirpui-code-block" in combined
     assert "chirp-theme-shortcode-gallery" in combined
@@ -1093,13 +1156,30 @@ def test_chirp_theme_autodoc_templates_use_chirpui_reference_patterns() -> None:
     assert "chirpui/accordion.html" in combined
     assert "chirpui/code.html" in combined
     assert "chirpui/badge.html" in combined
+    assert "chirpui/rendered_content.html" in combined
     assert "chirp-theme-reference" in combined
+    assert "chirp-theme-reference-hero__summary" in combined
     assert "partials/docs-nav.html" in combined
+    assert "kind_icon" in combined
     assert 'data-chirp-theme-surface="api-reference"' in combined
+    assert "chirp-theme-docs-layout__sidebar" in combined
+    assert "chirp-theme-footer--shell" in combined
+    assert "|> markdownify |> safe" in combined
+    assert "|> markdownify |> truncatewords_html" in combined
     assert "<script" not in combined
     assert "autodoc-summary-table" not in combined
     assert "autodoc-table" not in combined
     assert "command-card" not in combined
+
+    css = (package_root / "assets" / "css" / "components" / "reference.css").read_text(
+        encoding="utf-8"
+    )
+    assert "grid-template-columns: 1.35rem minmax(0, 1fr) auto" in css
+    assert ".chirp-theme-reference-member .chirpui-accordion__trigger::before" in css
+    assert ".chirp-theme-reference-member .chirpui-accordion__content" in css
+    assert ".chirp-theme-reference-hero__summary > :where(p, ul, ol)" in css
+    assert ".chirp-theme-reference-card__description > :where(p, ul, ol)" in css
+    assert "margin-inline-start: 0;" in css
 
 
 def test_chirp_theme_reference_hubs_use_chirpui_patterns() -> None:
@@ -1176,6 +1256,9 @@ docs_html = (site.output_dir / "docs" / "index.html").read_text(encoding="utf-8"
 docs_section_html = (site.output_dir / "docs" / "get-started" / "index.html").read_text(
     encoding="utf-8"
 )
+controls_html = (site.output_dir / "docs" / "components" / "controls" / "index.html").read_text(
+    encoding="utf-8"
+)
 home_html = (site.output_dir / "index.html").read_text(encoding="utf-8")
 releases_html = (site.output_dir / "releases" / "index.html").read_text(encoding="utf-8")
 tags_html = (site.output_dir / "tags" / "index.html").read_text(encoding="utf-8")
@@ -1198,12 +1281,24 @@ result_path.write_text(
             "docs_section_has_filter_rail": "chirpui-filter-rail" in docs_section_html,
             "docs_section_has_doc_catalog": "chirp-theme-doc-catalog" in docs_section_html,
             "docs_section_has_chirpui_breadcrumbs": "chirpui-breadcrumbs" in docs_section_html,
+            "controls_has_component_specimen": "chirp-theme-component-specimen" in controls_html,
+            "controls_has_toggle_group": "chirpui-toggle-group" in controls_html,
+            "controls_has_data_table": "chirpui-data-table" in controls_html,
+            "controls_has_escaped_specimen_markup": bool(
+                re.search(r"<pre><code>\\s*&lt;(?:div|label|section|kbd)", controls_html)
+            ),
+            "controls_has_markdown_blockquote_artifact": "<blockquote>" in controls_html,
             "docs_section_has_bespoke_doc_hero": "chirp-theme-doc-hero" in docs_section_html,
             "docs_section_has_legacy_page_hero_root": 'class="page-hero' in docs_section_html,
             "docs_section_has_legacy_docs_nav": 'class="docs-nav"' in docs_section_html,
             "home_has_chirpui_hero": "chirpui-hero chirpui-hero--page" in home_html,
             "home_has_chirpui_grid": "chirpui-grid" in home_html,
             "home_has_chirpui_resource_card": "chirpui-resource-card" in home_html,
+            "home_has_chirpui_bento": "chirpui-bento" in home_html,
+            "home_has_chirpui_feature_section": "chirpui-feature-section" in home_html,
+            "home_has_chirpui_logo_cloud": "chirpui-logo-cloud" in home_html,
+            "home_has_chirpui_story_card": "chirpui-story-card" in home_html,
+            "home_has_product_visual": "chirp-theme-home__product-visual" in home_html,
             "home_has_legacy_hero_inner": "chirp-theme-home__hero-inner" in home_html,
             "has_legacy_card_grid": 'class="card-grid"' in docs_html,
             "has_legacy_card": 'class="card"' in docs_html,
@@ -1243,12 +1338,22 @@ result_path.write_text(
     assert result["docs_section_has_filter_rail"]
     assert result["docs_section_has_doc_catalog"]
     assert result["docs_section_has_chirpui_breadcrumbs"]
+    assert result["controls_has_component_specimen"]
+    assert result["controls_has_toggle_group"]
+    assert result["controls_has_data_table"]
+    assert not result["controls_has_escaped_specimen_markup"]
+    assert not result["controls_has_markdown_blockquote_artifact"]
     assert result["docs_section_has_bespoke_doc_hero"]
     assert not result["docs_section_has_legacy_page_hero_root"]
     assert not result["docs_section_has_legacy_docs_nav"]
     assert result["home_has_chirpui_hero"]
     assert result["home_has_chirpui_grid"]
     assert result["home_has_chirpui_resource_card"]
+    assert result["home_has_chirpui_bento"]
+    assert result["home_has_chirpui_feature_section"]
+    assert result["home_has_chirpui_logo_cloud"]
+    assert result["home_has_chirpui_story_card"]
+    assert result["home_has_product_visual"]
     assert not result["home_has_legacy_hero_inner"]
     assert not result["has_legacy_card_grid"]
     assert not result["has_legacy_card"]

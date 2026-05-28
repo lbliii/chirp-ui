@@ -707,6 +707,29 @@ class TestDataPage:
             assert 'style="min-width' not in response.text
 
     @pytest.mark.asyncio
+    async def test_maturity_primitives_render_in_showcase(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            forms_response = await client.get("/forms")
+            ui_response = await client.get("/ui")
+            data_response = await client.get("/data")
+
+        assert forms_response.status == 200
+        assert ui_response.status == 200
+        assert data_response.status == 200
+
+        assert "chirpui-toggle-group" in forms_response.text
+        assert "chirpui-slider" in forms_response.text
+        assert "chirpui-label" in forms_response.text
+
+        assert "chirpui-kbd" in ui_response.text
+        assert "chirpui-separator" in ui_response.text
+        assert "chirpui-aspect-ratio" in ui_response.text
+        assert "chirpui-scroll-area" in ui_response.text
+        assert "chirpui-item" in ui_response.text
+
+        assert "chirpui-data-table" in data_response.text
+
+    @pytest.mark.asyncio
     async def test_data_table_fragment_returns_200(self, showcase_app) -> None:
         async with TestClient(showcase_app) as client:
             response = await client.get("/data/table?page=1&sort=name")

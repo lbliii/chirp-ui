@@ -17,8 +17,13 @@
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/code.html" import code, code_block %}
 {% from "chirpui/fragment_island.html" import safe_region %}
-{% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/dropdown_menu.html" import dropdown_menu, dropdown_select %}
 {% from "chirpui/modal_overlay.html" import modal_overlay_trigger, modal_overlay %}
+{% from "chirpui/aspect_ratio.html" import aspect_ratio %}
+{% from "chirpui/item.html" import item %}
+{% from "chirpui/kbd.html" import kbd %}
+{% from "chirpui/scroll_area.html" import scroll_area %}
+{% from "chirpui/separator.html" import separator %}
 
 {% from "chirpui/status.html" import status_indicator %}
 {% from "chirpui/status_with_hint.html" import status_with_hint %}
@@ -111,10 +116,55 @@
 </p>
 </div>
 
+<h2>Dropdown Select</h2>
+<div class="chirpui-block">
+{{ dropdown_select("View density", items=[
+    {"label": "Comfortable", "value": "comfortable"},
+    {"label": "Compact", "value": "compact"},
+    {"label": "Dense", "value": "dense"},
+], selected="compact", id="showcase-dropdown-select") }}
+<p class="showcase-copy showcase-copy--spaced">
+  dropdown_select(label, items=[…]) — combobox/listbox anatomy for non-submit selections.
+</p>
+</div>
+
 <h2>Code</h2>
 {% call block() %}
 <p>Inline: {{ code("use_chirp_ui(app)") }} and block with optional copy:</p>
 {{ code_block("uv pip install -e \".[showcase]\"", copy=true) }}
+{% end %}
+
+<h2>Keyboard Shortcuts</h2>
+{% call block() %}
+<div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
+  <span>Open command palette {{ kbd(["Ctrl", "K"], size="sm") }}</span>
+  <span>Save draft {{ kbd(["Ctrl", "S"], size="sm") }}</span>
+</div>
+{% end %}
+
+<h2>Separator</h2>
+{% call block() %}
+{{ separator(label="or") }}
+{% end %}
+
+<h2>Aspect Ratio</h2>
+{% call block() %}
+{% call aspect_ratio("16 / 9", cls="chirpui-measure-md") %}
+  <div style="display: grid; place-items: center; width: 100%; height: 100%; background: color-mix(in srgb, var(--chirpui-accent) 12%, var(--chirpui-bg-subtle)); color: var(--chirpui-text-muted);">
+    16:9 preview frame
+  </div>
+{% end %}
+{% end %}
+
+<h2>Items and Scroll Area</h2>
+{% call block() %}
+{% call scroll_area(max_block_size="12rem", fade=true, cls="chirpui-measure-md") %}
+  {{ item(title="Release notes", description="Latest package changes", meta="3") }}
+  {{ item(title="Component docs", description="Stable macro guidance", selected=true) }}
+  {{ item(title="API reference", description="Generated module docs") }}
+  {{ item(title="Patterns", description="Composable page recipes") }}
+  {{ item(title="Showcase", description="Live component examples") }}
+{% end %}
 {% end %}
 
 <h2>Fragment island</h2>

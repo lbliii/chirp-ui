@@ -12,6 +12,7 @@
 {% from "chirpui/spinner.html" import spinner, spinner_thinking %}
 {% from "chirpui/skeleton.html" import skeleton %}
 {% from "chirpui/button.html" import btn %}
+{% from "chirpui/data_table.html" import data_table %}
 
 {% call container() %}
 {% call stack() %}
@@ -196,6 +197,21 @@
 {{ row("Task 2", "In progress") }}
 {{ row("Task 3", "Pending") }}
 {% end %}
+{% end %}
+
+<h2>Data Table Composition</h2>
+{% call block() %}
+{{ data_table(
+  title="Deployments",
+  description="Composite wrapper for table records, empty state, and pagination.",
+  headers=["Service", "Status", "Region"],
+  rows=[["web", "Ready", "iad"], ["worker", "Queued", "sfo"], ["scheduler", "Ready", "iad"]],
+  current=1,
+  total=3,
+  url_pattern="/data?page={page}",
+  compact=true,
+  striped=true
+) }}
 {% end %}
 
 <h2>Pagination</h2>

@@ -143,6 +143,10 @@
 }
 
 @layer components {
+  @import url('components/component-specimen.css');
+}
+
+@layer components {
   @import url('components/mermaid.css');
 }
 
@@ -156,10 +160,6 @@
 
 @layer components {
   @import url('components/navigation.css');
-}
-
-@layer components {
-  @import url('components/docs-nav.css');
 }
 
 @layer components {
