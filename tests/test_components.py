@@ -8307,7 +8307,7 @@ class TestMaturityPrimitives:
             '{% from "chirpui/aspect_ratio.html" import aspect_ratio %}'
             '{% call aspect_ratio("4 / 3", cls="preview") %}'
             '<img src="/x.png" alt="Preview">'
-            '{% end %}'
+            "{% end %}"
         ).render()
         assert "chirpui-aspect-ratio preview" in html
         assert "--chirpui-aspect-ratio: 4 / 3;" in html
@@ -8370,9 +8370,7 @@ class TestMaturityPrimitives:
         assert "chirpui-slider__label" in html
         assert "chirpui-slider__value" in html
 
-    def test_scroll_area_wraps_default_slot_and_orientation(
-        self, env: Environment
-    ) -> None:
+    def test_scroll_area_wraps_default_slot_and_orientation(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/scroll_area.html" import scroll_area %}'
             '{% call scroll_area(max_block_size="12rem", orientation="both", fade=true) %}'
@@ -8412,9 +8410,7 @@ class TestMaturityPrimitives:
         assert 'aria-disabled="true"' in html
         assert "chirpui-item--disabled" in html
 
-    def test_data_table_composes_filters_table_and_pagination(
-        self, env: Environment
-    ) -> None:
+    def test_data_table_composes_filters_table_and_pagination(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/data_table.html" import data_table %}'
             '{% call data_table(title="Users", description="Account records", '

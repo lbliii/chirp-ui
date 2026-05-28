@@ -530,7 +530,10 @@ def test_header_setup_and_affordance_taste_sweep_uses_existing_tokens() -> None:
     assert ".chirpui-divider__text" in partials["divider"]
     assert ".chirpui-profile-header__stats" in partials["profile_header"]
     assert "font-variant-numeric: tabular-nums;" in partials["profile_header"]
-    assert ".chirpui-wizard-form__body > :where(:not(script, style, template))" in partials["wizard_form"]
+    assert (
+        ".chirpui-wizard-form__body > :where(:not(script, style, template))"
+        in partials["wizard_form"]
+    )
     assert ".chirpui-config-row__label" in partials["config_row"]
     assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["config_row"]
     assert ".chirpui-theme-toggle__icon" in partials["theme_toggle"]
@@ -640,13 +643,7 @@ def test_data_and_loading_taste_sweep_uses_existing_tokens() -> None:
 
 def test_special_form_control_taste_sweep_uses_existing_tokens() -> None:
     text = (
-        ROOT
-        / "src"
-        / "chirp_ui"
-        / "templates"
-        / "css"
-        / "partials"
-        / "070_form-fields.css"
+        ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "070_form-fields.css"
     ).read_text(encoding="utf-8")
 
     for phrase in [

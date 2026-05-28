@@ -352,10 +352,7 @@ def test_chirp_theme_templates_do_not_use_theme_adapter_macros() -> None:
     assert "theme_feed" not in template_text
     assert ".chirp-theme-docs-layout {" in css
     assert "display: grid;" in css
-    assert (
-        "grid-template-columns: minmax(18rem, 21rem) minmax(0, 1fr) minmax(10rem, 14rem)"
-        in css
-    )
+    assert "grid-template-columns: minmax(18rem, 21rem) minmax(0, 1fr) minmax(10rem, 14rem)" in css
     assert "chirp-theme-docs-layout--with-toc" in css
 
 
@@ -664,10 +661,7 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     assert "library_asset_tags()" in base
     assert "library_asset_tags | default(none)" in base
     assert "_chirpui_css_asset = chirpui_asset_path('chirpui.css')" in base
-    assert (
-        "_chirpui_transitions_asset = chirpui_asset_path('chirpui-transitions.css')"
-        in base
-    )
+    assert "_chirpui_transitions_asset = chirpui_asset_path('chirpui-transitions.css')" in base
     assert "_chirpui_js_asset = chirpui_asset_path('chirpui.js')" in base
     assert "_chirpui_alpine_asset = chirpui_asset_path('chirpui-alpine.js')" in base
     assert 'href="{{ asset_url(_chirpui_css_asset) }}"' in base
@@ -694,15 +688,14 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     assert ".chirp-theme-shell__nav" in css
     assert ".chirp-theme-shell__nav {\n  display: flex;" in css
     assert "flex-wrap: nowrap;" in css
-    assert ".chirp-theme-shell__nav > .chirpui-navbar__links:not(.chirpui-navbar__links--end)" in css
+    assert (
+        ".chirp-theme-shell__nav > .chirpui-navbar__links:not(.chirpui-navbar__links--end)" in css
+    )
     assert ".chirp-theme-shell__nav > .chirpui-navbar__links--end" in css
     assert ".chirp-theme-shell__nav-dropdown {\n  position: relative;" in css
     assert ".chirp-theme-shell__mega {" in css
     assert ".chirp-theme-shell__nav-dropdown:hover > .chirpui-navbar-dropdown__menu" in css
-    assert (
-        ".chirp-theme-shell__nav-dropdown > .chirpui-navbar-dropdown__trigger::after"
-        in css
-    )
+    assert ".chirp-theme-shell__nav-dropdown > .chirpui-navbar-dropdown__trigger::after" in css
     assert ".chirp-theme-shell .chirpui-navbar__links" not in css
     assert ".chirp-theme-footer.chirpui-site-footer" in css
     assert "components/docs-nav.css" not in style
@@ -835,7 +828,10 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "padding: clamp(0.7rem, 1vw, 0.95rem)" in css
     assert ".chirp-theme-release-card .chirpui-card__top-meta" in css
     assert ".chirp-theme-release-card .chirpui-card__main-link" in css
-    assert ".chirp-theme-release-card:not(.chirp-theme-release-card--latest) .chirpui-card__header-badges" in css
+    assert (
+        ".chirp-theme-release-card:not(.chirp-theme-release-card--latest) .chirpui-card__header-badges"
+        in css
+    )
     assert ".chirp-theme-release-card .chirpui-card__body:not(:has(*))" in css
     assert (
         ".chirp-theme-footer--shell .chirpui-site-footer__grid {\n"
@@ -852,23 +848,38 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert ".chirp-theme-doc-catalog__context" not in css
     assert ".chirp-theme-doc-catalog__context-mark" not in css
     assert ".chirp-theme-docs-nav__section.is-active" in css
-    assert ".chirp-theme-doc-catalog__primary {\n  overflow: visible;\n  border-inline-end: 0;\n  background: transparent;\n}" in css
+    assert (
+        ".chirp-theme-doc-catalog__primary {\n  overflow: visible;\n  border-inline-end: 0;\n  background: transparent;\n}"
+        in css
+    )
     assert ".chirp-theme-doc-catalog__secondary {\n  max-height: calc(100svh - 2.875rem);" in css
     assert "border-inline-start: 0;\n  background: transparent;" in css
-    assert ".chirp-theme-doc-catalog .chirp-theme-docs-nav {\n  width: 100%;\n  padding: 0.4rem;" in css
-    assert "border: 1px solid color-mix(in srgb, var(--chirpui-accent) 22%, var(--chirpui-border))" in css
+    assert (
+        ".chirp-theme-doc-catalog .chirp-theme-docs-nav {\n  width: 100%;\n  padding: 0.4rem;"
+        in css
+    )
+    assert (
+        "border: 1px solid color-mix(in srgb, var(--chirpui-accent) 22%, var(--chirpui-border))"
+        in css
+    )
     assert "border-radius: var(--radius-md)" in css
     assert "color-mix(in srgb, var(--chirpui-surface) 62%, transparent)" in css
-    assert ".chirp-theme-docs-nav__section {\n  padding: 0.35rem;\n  border: 1px solid transparent;" in css
-    assert ".chirp-theme-docs-nav__section.is-active {\n  border-color: transparent;\n  background: transparent;\n}" in css
+    assert (
+        ".chirp-theme-docs-nav__section {\n  padding: 0.35rem;\n  border: 1px solid transparent;"
+        in css
+    )
+    assert (
+        ".chirp-theme-docs-nav__section.is-active {\n  border-color: transparent;\n  background: transparent;\n}"
+        in css
+    )
     assert ".chirp-theme-docs-nav__link {\n  display: grid;" in css
-    assert ".chirp-theme-docs-nav__link[aria-current=\"page\"]" in css
+    assert '.chirp-theme-docs-nav__link[aria-current="page"]' in css
     assert ".chirp-theme-docs-nav__link--component .chirp-theme-docs-nav__type-icon" in css
     assert ".chirp-theme-docs-nav__summary-link" in css
     assert ".chirp-theme-docs-nav__summary-copy" in css
     assert ".chirp-theme-docs-nav__section--depth-1.is-active" in css
     assert ".chirp-theme-docs-nav__root-leaf" in css
-    assert ".chirp-theme-docs-nav__root-leaf[aria-current=\"page\"]" in css
+    assert '.chirp-theme-docs-nav__root-leaf[aria-current="page"]' in css
     assert ".chirp-theme-page-actions__trigger" in css
     assert ".chirp-theme-page-actions__menu:popover-open" in css
     assert ".chirp-theme-page-actions__item" in css

@@ -317,9 +317,7 @@ async def test_bengal_docs_catalog_shell_moves_global_chrome_to_rail(page, stati
         assert 0 <= metrics["actionsBottomGap"] <= 18, metrics
 
 
-async def test_bengal_docs_catalog_action_buttons_match_section_rail_items(
-    page, static_site_url
-):
+async def test_bengal_docs_catalog_action_buttons_match_section_rail_items(page, static_site_url):
     await page.set_viewport_size({"width": 2309, "height": 1606})
     await page.goto(f"{static_site_url}/docs/app-shell/")
     await page.wait_for_load_state("networkidle")
@@ -558,8 +556,7 @@ async def test_bengal_api_prose_code_specimens_use_compact_treatment(page, stati
     await page.wait_for_load_state("networkidle")
     await page.locator("#deprecate_param").evaluate("el => el.closest('details').open = true")
     member_specimen = page.locator(
-        "#deprecate_param .chirp-theme-reference-member__description "
-        ".code-block-wrapper--specimen"
+        "#deprecate_param .chirp-theme-reference-member__description .code-block-wrapper--specimen"
     )
     await expect(member_specimen).to_be_visible()
     member_metrics = await member_specimen.evaluate(
@@ -614,7 +611,9 @@ async def test_bengal_api_compact_summaries_render_markdown_code(page, static_si
 
     await page.goto(f"{static_site_url}/api/")
     await page.wait_for_load_state("networkidle")
-    card_metrics = await page.locator('a.chirp-theme-reference-card[href="/api/manifest/"]').evaluate(
+    card_metrics = await page.locator(
+        'a.chirp-theme-reference-card[href="/api/manifest/"]'
+    ).evaluate(
         """card => {
             const description = card.querySelector(".chirp-theme-reference-card__description");
             return {
@@ -629,7 +628,9 @@ async def test_bengal_api_compact_summaries_render_markdown_code(page, static_si
     assert "chirp_ui.components.COMPONENTS" in card_metrics["codeTexts"], card_metrics
     assert "chirp_ui.tokens.TOKEN_CATALOG" in card_metrics["codeTexts"], card_metrics
     assert card_metrics["paragraphCount"] >= 1, card_metrics
-    assert card_metrics["display"] == "flow-root" or "-webkit-box" in card_metrics["display"], card_metrics
+    assert card_metrics["display"] == "flow-root" or "-webkit-box" in card_metrics["display"], (
+        card_metrics
+    )
 
 
 async def test_bengal_api_member_accordion_rows_align_open_and_closed(page, static_site_url):

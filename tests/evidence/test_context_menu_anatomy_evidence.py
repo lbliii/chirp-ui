@@ -132,4 +132,6 @@ def test_context_menu_source_is_indexed_but_not_marked_shipped() -> None:
     assert "source-only" in inventory
     assert "Context-menu anatomy is now drafted as a source-only design contract" in plan_normalized
     assert "no public context-menu macro or classes are shipped yet" in plan_normalized
-    assert "Implement `context_menu` only after accepting the source-only anatomy" in plan_normalized
+    assert (
+        "Implement `context_menu` only after accepting the source-only anatomy" in plan_normalized
+    )
