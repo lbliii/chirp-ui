@@ -1580,11 +1580,12 @@ for html_path in site.output_dir.rglob("*.html"):
             referenced_assets.add(asset_path)
 
 missing_manifest_entries = sorted(referenced_assets - manifest_outputs)
-stable_library_css = {
-    path
-    for path in standalone_css_entries
-    if path in referenced_assets and (site.output_dir / path).is_file()
-}
+stable_library_css = set()
+for logical_path in standalone_css_entries:
+    normalized_path = logical_path.removeprefix("assets/")
+    for candidate in {logical_path, f"assets/{normalized_path}"}:
+        if candidate in referenced_assets and (site.output_dir / candidate).is_file():
+            stable_library_css.add(candidate)
 missing_manifest_entries = [
     path for path in missing_manifest_entries if path not in stable_library_css
 ]
