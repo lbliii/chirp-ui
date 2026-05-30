@@ -660,10 +660,14 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     assert "render_navbar_item" in base
     assert "library_asset_tags()" in base
     assert "library_asset_tags | default(none)" in base
-    assert "chirpui_asset_path('chirpui.css')" not in base
-    assert "chirpui_asset_path('chirpui-transitions.css')" not in base
-    assert "chirpui_asset_path('chirpui.js')" not in base
-    assert "chirpui_asset_path('chirpui-alpine.js')" not in base
+    assert "_chirpui_css_asset = chirpui_asset_path('chirpui.css')" in base
+    assert "_chirpui_transitions_asset = chirpui_asset_path('chirpui-transitions.css')" in base
+    assert "_chirpui_js_asset = chirpui_asset_path('chirpui.js')" in base
+    assert "_chirpui_alpine_asset = chirpui_asset_path('chirpui-alpine.js')" in base
+    assert 'href="{{ asset_url(_chirpui_css_asset) }}"' in base
+    assert 'href="{{ asset_url(_chirpui_transitions_asset) }}"' in base
+    assert 'src="{{ asset_url(_chirpui_js_asset) }}"' in base
+    assert 'src="{{ asset_url(_chirpui_alpine_asset) }}"' in base
     assert 'data-chirp-theme-spine="bespoke"' in base
     assert "_page_url == '/releases/' or _page_url.startswith('/releases/')" in base
     assert "asset_url('favicon.svg')" in base
