@@ -9,6 +9,8 @@ ICON_REGISTRY: dict[str, str] = {
     "status": "◎",
     "validate": "◎",
     "run": "◎",
+    "activity": "◎",
+    "pause": "Ⅱ",
     # Actions
     "add": "+",
     "refresh": "↻",
@@ -55,6 +57,8 @@ ICON_REGISTRY: dict[str, str] = {
     "list": "≡",
     # Alerts / flow
     "alert": "↑",
+    "info": "◎",
+    "warning": "↑",
     "dots": "⋯",
     # Writing / authoring (Dingbats U+270E-U+2712, U+2709)
     "pencil": "✏",

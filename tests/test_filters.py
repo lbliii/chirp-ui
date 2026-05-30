@@ -294,6 +294,19 @@ class TestWarningInfrastructure:
         result = icon("status")
         assert result == "◎"
 
+    @pytest.mark.parametrize(
+        "name",
+        ["activity", "info", "pause", "warning"],
+    )
+    def test_integration_icon_aliases_no_warn(
+        self,
+        name: str,
+        recwarn: pytest.WarningsRecorder,
+    ) -> None:
+        result = icon(name)
+        assert result
+        assert not [w for w in recwarn if issubclass(w.category, ChirpUIValidationWarning)]
+
     def test_register_colors_raises_on_invalid(self) -> None:
         with pytest.raises(ValueError, match="invalid color"):
             register_colors({"brand": "not-a-color"})
@@ -459,6 +472,10 @@ class TestIcon:
         assert icon("search") == "⌕"
         assert icon("logs") == "⟳"
         assert icon("cloud") == "☁"
+        assert icon("activity") == "◎"
+        assert icon("info") == "◎"
+        assert icon("pause") == "Ⅱ"
+        assert icon("warning") == "↑"
 
     def test_unknown_name_passes_through(self) -> None:
         with pytest.warns(ChirpUIValidationWarning):
