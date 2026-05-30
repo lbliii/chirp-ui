@@ -3732,6 +3732,19 @@ class TestAlert:
         assert "chirpui-alert__icon" in html
         assert "⚠" in html
 
+    def test_alert_with_semantic_info_icon_no_warning(
+        self,
+        env: Environment,
+        recwarn: pytest.WarningsRecorder,
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/alert.html" import alert %}'
+            '{% call alert(icon="info") %}Info message{% end %}'
+        ).render()
+        assert "chirpui-alert__icon" in html
+        assert "◎" in html
+        assert not [w for w in recwarn if issubclass(w.category, ChirpUIValidationWarning)]
+
     def test_alert_with_title(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/alert.html" import alert %}'
@@ -6601,6 +6614,25 @@ class TestStat:
         ).render()
         assert "chirpui-stat__icon" in html
         assert "▶" in html
+
+    @pytest.mark.parametrize(
+        ("name", "glyph"),
+        [("activity", "◎"), ("pause", "Ⅱ"), ("warning", "↑")],
+    )
+    def test_stat_with_integration_icon_alias_no_warning(
+        self,
+        env: Environment,
+        recwarn: pytest.WarningsRecorder,
+        name: str,
+        glyph: str,
+    ) -> None:
+        html = env.from_string(
+            '{% from "chirpui/stat.html" import stat %}'
+            f'{{{{ stat(value="42", label="Runs", icon="{name}") }}}}'
+        ).render()
+        assert "chirpui-stat__icon" in html
+        assert glyph in html
+        assert not [w for w in recwarn if issubclass(w.category, ChirpUIValidationWarning)]
 
 
 class TestMetricGrid:

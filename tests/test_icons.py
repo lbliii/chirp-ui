@@ -46,6 +46,10 @@ class TestIconRegistry:
             "bolt",
             "chat",
             "alert",
+            "activity",
+            "info",
+            "pause",
+            "warning",
             "pencil",
         }
         missing = expected - set(ICON_REGISTRY)
@@ -63,6 +67,10 @@ class TestIconFunction:
         assert icon("status") == "◎"
         assert icon("add") == "+"
         assert icon("gear") == "⚙"
+        assert icon("activity") == "◎"
+        assert icon("info") == "◎"
+        assert icon("pause") == "Ⅱ"
+        assert icon("warning") == "↑"
 
     def test_unknown_name_passes_through(self) -> None:
         assert icon("nonexistent-icon") == "nonexistent-icon"
