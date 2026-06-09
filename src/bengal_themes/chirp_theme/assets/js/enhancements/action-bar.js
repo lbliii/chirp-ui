@@ -310,7 +310,7 @@
           showSuccess(button, 'URL copied!');
           break;
 
-        case 'copy-llm-txt':
+        case 'copy-llm-txt': {
           // Add timeout for fetch
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 5000);
@@ -329,6 +329,7 @@
             throw fetchError;
           }
           break;
+        }
 
         default:
           log('Unknown copy action:', action);

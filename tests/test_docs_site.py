@@ -25,6 +25,18 @@ THEME_AUTODOC_MEMBERS = (
 FONTS_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "fonts.yaml"
 SITE_PUBLIC = REPO_ROOT / "site" / "public"
 API_FILTERS_PAGE = SITE_PUBLIC / "api" / "filters" / "index.html"
+SITE_CONTENT = REPO_ROOT / "site" / "content"
+MENU_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "menu.yaml"
+# #145 — every shipped template family needs live content so its route renders
+# instead of 404ing. Each tuple is (section dir, the type/template token its
+# _index.md must declare so Bengal resolves the family list template).
+DOGFOOD_FAMILIES = {
+    "blog": "type: blog",
+    "tutorial": "type: tutorial",
+    "changelog": "type: changelog",
+    "authors": "template: authors/list.html",
+    "resume": "template: resume/list.html",
+}
 VALID_SEARCH_PRELOAD_MODES = {"smart", "immediate", "lazy"}
 AGENT_SOURCE_INVENTORY = REPO_ROOT / "docs" / "agents" / "agent-source-inventory.md"
 AGENT_SOURCE_MAP = REPO_ROOT / "docs" / "agents" / "agent-source-map.md"
@@ -629,3 +641,86 @@ def test_built_api_filters_renders_typed_params_tables() -> None:
         "no member signature rendered on /api/filters/ — signature is not being "
         "read from member.metadata.signature (see #158)"
     )
+
+
+# ---------------------------------------------------------------------------
+# #145 — dogfood content for every shipped template family
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("section", "type_token"), sorted(DOGFOOD_FAMILIES.items()))
+def test_dogfood_family_has_section_index_with_resolving_type(
+    section: str, type_token: str
+) -> None:
+    """#145 — each family has a real section index that resolves its list template.
+
+    blog/tutorial/changelog resolve via Bengal's content-type strategies
+    (``type: <family>``); authors/resume have no strategy and resolve by section
+    auto-detection, so their index pins the template explicitly. Either way the
+    section must exist or the route 404s.
+    """
+    index = SITE_CONTENT / section / "_index.md"
+    assert index.is_file(), f"missing {section}/_index.md — /{section}/ would 404 (#145)"
+
+    text = index.read_text(encoding="utf-8")
+    assert type_token in text, (
+        f"{section}/_index.md must declare `{type_token}` so Bengal resolves "
+        f"{section}/list.html (#145)"
+    )
+    # Non-placeholder: a real title and prose body, not an empty stub.
+    assert "title:" in text
+    body = text.split("---", 2)[-1].strip()
+    assert len(body) > 40, f"{section}/_index.md has placeholder/empty body (#145)"
+
+
+@pytest.mark.parametrize("section", sorted(DOGFOOD_FAMILIES))
+def test_dogfood_family_has_child_content(section: str) -> None:
+    """#145 — each family ships at least one child page so the list is non-empty."""
+    children = [p for p in (SITE_CONTENT / section).glob("*.md") if p.name != "_index.md"]
+    assert children, f"{section}/ has no child pages — its list would render empty (#145)"
+
+
+def test_dogfood_blog_post_dogfoods_lazy_features() -> None:
+    """#145/#149 — one blog post exercises a mermaid fence and a markdown table.
+
+    This seeds content for the lazy-feature wiring (#149): the mermaid block and
+    table exist in source so a built page proves the loaders once they are wired.
+    """
+    posts = list((SITE_CONTENT / "blog").glob("*.md"))
+    text = "\n".join(p.read_text(encoding="utf-8") for p in posts)
+
+    assert "```mermaid" in text, "no mermaid code-fence in any blog post (#145/#149)"
+    # A GitHub-flavored markdown table needs a header separator row.
+    assert re.search(r"^\|[\s\-:|]+\|\s*$", text, flags=re.MULTILINE), (
+        "no markdown table in any blog post (#145/#149)"
+    )
+
+
+def test_dogfood_families_are_wired_into_menu_config() -> None:
+    """#145 — the families are reachable from navigation via the real menu.yaml.
+
+    The footer menu (rendered by the theme) names each family; the top nav also
+    auto-discovers the sections, but the explicit menu makes the wiring durable.
+    """
+    text = MENU_CONFIG.read_text(encoding="utf-8")
+    for section in DOGFOOD_FAMILIES:
+        assert f"/{section}/" in text, f"/{section}/ not wired into menu.yaml (#145)"
+
+
+@pytest.mark.parametrize("section", sorted(DOGFOOD_FAMILIES))
+def test_built_dogfood_family_route_renders_non_placeholder(section: str) -> None:
+    """#145 — each family route builds to a 200-equivalent page with real content.
+
+    Skipped when the site is unbuilt; the Gate rebuilds the site before
+    verification. A built index.html is the static-site analogue of a 200.
+    """
+    page = SITE_PUBLIC / section / "index.html"
+    if not page.is_file():
+        pytest.skip("site/public not built; Gate rebuilds the site before verification")
+
+    html = page.read_text(encoding="utf-8")
+    # Not the Bengal emergency fallback page (which means the template crashed).
+    assert "fallback-notice" not in html, f"/{section}/ rendered the fallback page (#145)"
+    # Real chrome + content rendered, not an empty body.
+    assert "<title" in html
+    assert len(html) > 2000, f"/{section}/ index.html looks like a placeholder (#145)"

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% from "partials/learning-index.html" import learning_index %}
+
+{% block content %}
+{% let title = page?.title ?? section?.title ?? "Notebooks" %}
+{% let description = page?.description ?? section?.description ?? "Executable notes, experiments, and outputs." %}
+{% let items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
+
+{{ learning_index(title, page?.href ?? section?.href ?? "/notebook/", subtitle=description, items=items, content=content, search_placeholder="Filter notebooks...", results_title="Notebooks", item_singular="notebook", empty_title="No notebooks yet", empty_message="Published notebooks appear here.", layout="grid", card_kind="notebook") }}
+{% end %}

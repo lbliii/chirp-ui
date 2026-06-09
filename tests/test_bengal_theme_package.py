@@ -452,7 +452,10 @@ def test_chirp_theme_theme_controls_are_appearance_only() -> None:
     assert "bengal-palette" in base
     assert "bengal-palette" in theme_js
     assert "removeItem('bengal-palette')" in base
-    assert "removeItem('bengal-palette')" in theme_js
+    # theme.js purges the legacy palette key through the guarded storage
+    # wrapper (no raw localStorage in the module), so the cleanup reads as
+    # safeStorage.remove('bengal-palette') rather than a direct removeItem.
+    assert "remove('bengal-palette')" in theme_js
 
 
 def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:

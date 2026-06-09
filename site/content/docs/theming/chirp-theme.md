@@ -17,6 +17,60 @@ mode, cyan and amber accents, crisp radii, and an editorial docs chrome.
 The `chirp-ui` docs site uses this theme directly, so the package gets exercised
 on a real Bengal site rather than living as a disconnected example.
 
+## Quickstart: Adopt It on a Bengal Site
+
+If you have a [Bengal](https://github.com/lbliii/bengal) site, applying
+chirp-theme is three steps. No separate theme package — the theme ships inside
+`chirp-ui` and registers through the `bengal.themes` entry point.
+
+**1. Install (this also installs the theme).**
+
+```bash
+uv add chirp-ui
+# or
+pip install chirp-ui
+```
+
+`chirp-ui` declares the theme entry point
+`chirp-theme = "bengal_themes.chirp_theme"`, so Bengal discovers it
+automatically once the package is installed. You also need **Bengal >=0.3.3**
+(for the `library_asset_tags()` hook described below); add it as a build
+dependency if it is not already present:
+
+```bash
+uv add "bengal>=0.3.3"
+```
+
+**2. Set the theme in your site config.**
+
+```yaml
+# config/_default/theme.yaml  (or the theme block in bengal.toml)
+theme:
+  name: "chirp-theme"
+```
+
+**3. Build and serve.**
+
+```bash
+uv run bengal build
+uv run bengal serve
+```
+
+That is enough to render a Bengal docs or marketing site with chirp-theme's
+shell, typography, and dark mode.
+
+> **Requires Bengal >=0.3.3 — `library_asset_tags()`.** chirp-theme's
+> `base.html` calls Bengal's `library_asset_tags()` to inject the component
+> library's bundled `chirpui.css` (the base tokens, reset, layout grid, and
+> component styles). That hook ships in **Bengal 0.3.3**. On older Bengal the
+> call is silently skipped, `chirpui.css` never loads, and the page renders
+> with collapsed spacing and a broken grid in the footer and top bar. If your
+> theme looks unstyled, check your Bengal version first.
+
+A new-user adoption checklist also lives on the
+[[/docs/get-started/installation/#apply-the-chirp-theme-bengal-theme|Installation]]
+page.
+
 ## Enable It
 
 Set the active Bengal theme in your site configuration:

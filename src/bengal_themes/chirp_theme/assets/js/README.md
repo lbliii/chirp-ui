@@ -303,8 +303,8 @@ setupKeyboardDetection() // Add .user-is-tabbing class
 
 ---
 
-#### `theme-toggle.js`
-**Purpose:** Appearance control
+#### `core/theme.js`
+**Purpose:** Appearance control (shipped as `core/theme.js`; an early FOUC guard in `base.html` sets `data-theme` before paint)
 
 **Features:**
 - Mode selection: System, Light, Dark
@@ -335,7 +335,7 @@ localStorage.getItem('bengal-theme')   // 'system' | 'light' | 'dark'
     <li role="menuitem"><button data-appearance="light">Light</button></li>
     <li role="menuitem"><button data-appearance="dark">Dark</button></li>
   </ul>
-  <script src="assets/js/theme-toggle.js"></script>
+  <script src="assets/js/core/theme.js"></script>
 ```
 
 Note: The legacy single-button `.theme-toggle` is no longer used in the default markup. If present, the script will still wire it up for backwards compatibility.

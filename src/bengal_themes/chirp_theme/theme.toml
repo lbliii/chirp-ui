@@ -4,3 +4,18 @@ name = "chirp-theme"
 # dependency. CSS is intentionally bundled through assets/css/style.css until
 # Bengal has first-class library asset modes with dev/build parity.
 libraries = ["chirp_ui"]
+
+# Minimum Bengal version contract.
+# ---------------------------------------------------------------------------
+# chirp-theme's entire chirp-ui CSS/JS load goes through Bengal's
+# `library_asset_tags()`, which only exists in Bengal >= 0.3.3. On older Bengal
+# that template global is undefined and base.html would emit ONLY css/style.css,
+# silently dropping every --chirpui-* token + component style (collapsed
+# spacing/grid — the exact regression fixed in bd4e298). Declaring the floor
+# here lets theme resolution warn/refuse on too-old Bengal instead of producing
+# a broken style-only build. base.html also renders a dev-visible HTML-comment
+# diagnostic when `library_asset_tags` is missing at render time.
+requires_bengal = ">=0.3.3"
+
+[bengal]
+min_version = "0.3.3"

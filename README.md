@@ -235,6 +235,33 @@ In standalone setups, register equivalent filters/globals and serve
 `chirpui.css`, `chirpui.js`, `chirpui-alpine.js`, themes, and pattern assets
 from `chirp_ui.static_path()`.
 
+## Bengal Theme (chirp-theme)
+
+The same package ships **chirp-theme**, a static-first
+[Bengal](https://github.com/lbliii/bengal) theme that puts the chirp-ui design
+language on documentation and marketing sites. Installing `chirp-ui` registers
+the theme through the `bengal.themes` entry point — no separate install — and
+you adopt it by pointing your site config at it:
+
+```yaml
+# config/_default/theme.yaml  (or the theme block in bengal.toml)
+theme:
+  name: "chirp-theme"
+```
+
+```bash
+uv run bengal build
+uv run bengal serve
+```
+
+chirp-theme requires **Bengal >=0.3.3**, whose `library_asset_tags()` hook
+links the bundled `chirpui.css`. On older Bengal the base CSS is silently
+dropped and layouts collapse.
+
+Full adoption quickstart:
+[Apply chirp-theme to a Bengal site](https://lbliii.github.io/chirp-ui/docs/get-started/installation/#apply-the-chirp-theme-bengal-theme)
+and the [chirp-theme reference](https://lbliii.github.io/chirp-ui/docs/theming/chirp-theme/).
+
 ## Requirements
 
 | Package | Requirement |

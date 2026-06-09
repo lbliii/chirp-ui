@@ -1,7 +1,34 @@
 # Menu Configuration
 # ===================
+#
+# The top navigation auto-discovers top-level content sections (ordered by
+# weight) when no `main` menu is defined, so blog/, tutorial/, resume/,
+# authors/, and changelog/ surface in the header automatically.
+#
+# The `footer` menu below gives those families an explicit, discoverable home
+# in the site footer (the theme renders `footer`, falling back to `main`).
 
 menu:
+  footer:
+    - name: "Blog"
+      url: "/blog/"
+      weight: 10
+    - name: "Tutorial"
+      url: "/tutorial/"
+      weight: 20
+    - name: "Authors"
+      url: "/authors/"
+      weight: 30
+    - name: "Resume"
+      url: "/resume/"
+      weight: 40
+    - name: "Changelog"
+      url: "/changelog/"
+      weight: 50
+    - name: "Releases"
+      url: "/releases/"
+      weight: 60
+
   extra:
     - name: "Showcase"
       url: "/showcase/"

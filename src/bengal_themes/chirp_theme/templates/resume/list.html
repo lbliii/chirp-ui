@@ -1,19 +1,11 @@
 {% extends "base.html" %}
 
-{% from "chirpui/layout.html" import container %}
-{% from "chirpui/resource_index.html" import resource_index %}
-{% from "partials/learning-pages.html" import content_cards, rendered_body %}
-{% from "partials/taxonomy-pages.html" import count_label %}
+{% from "partials/learning-index.html" import learning_index %}
 
 {% block content %}
 {% let title = page?.title ?? section?.title ?? "Resumes" %}
 {% let description = page?.description ?? section?.description ?? "Profiles, experience, and work history." %}
 {% let items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
 
-{% call container(cls="chirp-theme-learning-page") %}
-  {% call resource_index(title, page?.href ?? section?.href ?? "/resume/", subtitle=description, search_placeholder="Filter profiles...", button_icon="magnifying-glass", results_title="Profiles", results_subtitle=count_label(items | length, "profile"), results_layout="grid", results_cols=3, has_results=items | length > 0, empty_title="No profiles yet", empty_message="Resume profiles appear here when published.", cls="chirp-theme-learning-index") %}
-    {{ rendered_body(content) }}
-    {{ content_cards(items, "No profiles yet.", "profile") }}
-  {% end %}
-{% end %}
+{{ learning_index(title, page?.href ?? section?.href ?? "/resume/", subtitle=description, items=items, content=content, search_placeholder="Filter profiles...", results_title="Profiles", item_singular="profile", empty_title="No profiles yet", empty_message="Resume profiles appear here when published.", layout="grid", card_kind="profile") }}
 {% end %}

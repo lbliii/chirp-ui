@@ -290,9 +290,12 @@ symbols imported inside another block.
     <link rel="manifest" href="{{ asset_url('site.webmanifest') }}">
     {% end %}
 
-    {# Preconnect #}
+    {# Preconnect — d3js.org is only contacted by graph pages, so gate the
+       preconnect behind the graph feature to keep the critical path lean. #}
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    {% if 'graph.contextual' in (theme.features ?? []) or 'graph.minimap' in (theme.features ?? []) %}
     <link rel="preconnect" href="https://d3js.org" crossorigin>
+    {% end %}
 
     {# Display webfont — Bengal generates assets/fonts.css from fonts.yaml
        (fonts.display: "Outfit:400,600,700"). Preload the above-the-fold weights
@@ -305,9 +308,20 @@ symbols imported inside another block.
     <link rel="stylesheet" href="{{ asset_url('fonts.css') }}">
     {% end %}
 
-    {# Library and theme assets #}
+    {# Library and theme assets.
+       library_asset_tags() (Bengal >= 0.3.3) emits the chirp-ui library CSS/JS
+       bundle that defines every --chirpui-* token + component style. If it is
+       missing the theme would otherwise silently ship style.css only, dropping
+       all tokens (collapsed spacing/grid — the regression fixed in bd4e298).
+       Make that degradation LOUD with a dev-visible diagnostic instead of a
+       silent style-only build. The happy path below is byte-identical. #}
     {% if library_asset_tags | default(none) %}
     {{ library_asset_tags() }}
+    {% else %}
+    <!-- chirp-theme: library_asset_tags() unavailable — Bengal >= 0.3.3 is required
+         (see theme.toml [bengal] min_version / requires_bengal). The chirp-ui token +
+         component CSS was NOT emitted; --chirpui-* tokens are undefined and layout
+         will collapse. Upgrade Bengal: `uv pip install -U "bengal>=0.3.3"`. -->
     {% end %}
     <link rel="stylesheet" href="{{ asset_url('css/style.css') }}">
     {% if 'content.math' in (theme.features ?? []) %}
@@ -506,6 +520,11 @@ symbols imported inside another block.
     {% block site_scripts %}
     {# asset_url() is manifest-sensitive; keep this outside fragment caches. #}
     <script defer src="{{ asset_url('js/utils.js') }}"></script>
+    {# Progressive-enhancement registry — must load BEFORE any enhancement module
+       so their defensive Bengal.enhance.register() calls land. enhanceAll() runs
+       on DOMContentLoaded and re-scans on htmx:afterSwap + via MutationObserver
+       so boosted/swapped content gets enhanced. #}
+    <script defer src="{{ asset_url('js/bengal-enhance.js') }}"></script>
     <script defer src="{{ asset_url('js/core/theme.js') }}"></script>
     {% let _page_template = page?.template ?? '' %}
     {% if (config.search.ui.modal ?? false) or _page_template == 'search.html' %}
@@ -528,6 +547,46 @@ symbols imported inside another block.
     {% if 'content.math' in (theme.features ?? []) %}
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin></script>
     <script defer src="{{ asset_url('js/enhancements/math.js') }}"></script>
+    {% end %}
+
+    {# Lazy library loaders — Mermaid diagrams, D3 graphs, Tabulator data tables.
+       lazy-loaders.js detects feature hooks in the DOM (.mermaid, .graph-*,
+       .bengal-data-table-wrapper) and only fetches the heavy lib + its support
+       modules when present. Gate the whole bundle behind theme.features, mirroring
+       the lightbox/math gating above, and inject the fingerprint-correct asset URLs
+       it needs (BENGAL_LAZY_ASSETS) plus toolbar icon URLs (BENGAL_ICONS). #}
+    {% let _ft = theme.features ?? [] %}
+    {% let _lazy_diagrams = 'content.mermaid' in _ft or 'content.diagrams' in _ft %}
+    {% let _lazy_graphs = 'graph.contextual' in _ft or 'graph.minimap' in _ft %}
+    {% let _lazy_tables = 'content.data_tables' in _ft or 'content.tables' in _ft %}
+    {% if _lazy_diagrams or _lazy_graphs or _lazy_tables %}
+    <script>
+        window.BENGAL_LAZY_ASSETS = Object.assign(window.BENGAL_LAZY_ASSETS || {}, {
+        {% if _lazy_tables %}
+            tabulator: "{{ asset_url('js/vendor/tabulator.min.js') }}",
+            dataTable: "{{ asset_url('js/enhancements/data-table.js') }}",
+        {% end %}
+        {% if _lazy_diagrams %}
+            mermaidToolbar: "{{ asset_url('js/mermaid-toolbar.js') }}",
+            mermaidTheme: "{{ asset_url('js/mermaid-theme.js') }}",
+        {% end %}
+        {% if _lazy_graphs %}
+            graphMinimap: "{{ asset_url('js/graph-minimap.js') }}",
+            graphContextual: "{{ asset_url('js/graph-contextual.js') }}",
+        {% end %}
+        });
+        {% if _lazy_diagrams %}
+        window.BENGAL_ICONS = Object.assign(window.BENGAL_ICONS || {}, {
+            close: "{{ asset_url('icons/close.svg') }}",
+            enlarge: "{{ asset_url('icons/enlarge.svg') }}",
+            copy: "{{ asset_url('icons/copy.svg') }}",
+            "zoom-in": "{{ asset_url('icons/zoom-in.svg') }}",
+            "zoom-out": "{{ asset_url('icons/zoom-out.svg') }}",
+            reset: "{{ asset_url('icons/reset.svg') }}"
+        });
+        {% end %}
+    </script>
+    <script defer src="{{ asset_url('js/enhancements/lazy-loaders.js') }}"></script>
     {% end %}
     {% end %}
 

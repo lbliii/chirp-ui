@@ -74,3 +74,24 @@ jobs:
 
       - name: Run ruff format check
         run: uv run ruff format --check .
+
+  # Advisory JS lint over the Bengal theme's assets/js. Kept as its own job
+  # (not part of the required `test`/`lint` jobs and not wired into `poe ci`)
+  # because the theme JS still carries ~305 advisory biome warnings. The gate
+  # that matters — `noUndeclaredVariables` — IS an error, so this job fails if a
+  # genuinely-undefined global slips in (e.g. a missing CDN library), while the
+  # style/complexity debt stays advisory until it is paid down.
+  lint-js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Run biome over theme assets/js
+        # biome 1.9.4 is a standalone Rust binary fetched on demand — no Node
+        # build step, free-threading-safe. Config: ./biome.json.
+        run: npx --yes @biomejs/biome@1.9.4 check src/bengal_themes/chirp_theme/assets/js

@@ -19,6 +19,39 @@
   // Utils are optional - graceful degradation if not available
   const log = window.BengalUtils?.log || (() => {});
 
+  // Route all persistence through the guarded helper so theme switching
+  // degrades gracefully where storage is blocked (Safari private, sandboxed
+  // iframes, quota exceeded). Falls back to a local try/catch shim if utils
+  // hasn't loaded yet, so no raw localStorage access lives in this module.
+  const safeStorage = window.BengalUtils?.safeStorage || {
+    get(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (err) {
+        console.warn('[BengalTheme] localStorage.getItem blocked:', err);
+        return null;
+      }
+    },
+    set(key, value) {
+      try {
+        localStorage.setItem(key, value);
+        return true;
+      } catch (err) {
+        console.warn('[BengalTheme] localStorage.setItem blocked:', err);
+        return false;
+      }
+    },
+    remove(key) {
+      try {
+        localStorage.removeItem(key);
+        return true;
+      } catch (err) {
+        console.warn('[BengalTheme] localStorage.removeItem blocked:', err);
+        return false;
+      }
+    }
+  };
+
   // Constants
   const THEME_KEY = 'bengal-theme';
   const THEMES = {
@@ -31,7 +64,7 @@
    * Get current theme from localStorage or system preference
    */
   function getTheme() {
-    const stored = localStorage.getItem(THEME_KEY);
+    const stored = safeStorage.get(THEME_KEY);
     if (stored && stored !== THEMES.SYSTEM) {
       return stored;
     }
@@ -48,7 +81,7 @@
   function setTheme(theme) {
     const resolved = theme === THEMES.SYSTEM ? getTheme() : theme;
     document.documentElement.setAttribute('data-theme', resolved);
-    localStorage.setItem(THEME_KEY, theme);
+    safeStorage.set(THEME_KEY, theme);
     window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: resolved } }));
   }
 
@@ -57,7 +90,7 @@
    * Used when system preference changes but user wants to keep 'system' selected
    */
   function updateResolvedTheme() {
-    const stored = localStorage.getItem(THEME_KEY);
+    const stored = safeStorage.get(THEME_KEY);
     if (stored === THEMES.SYSTEM || !stored) {
       const resolved = getTheme();
       document.documentElement.setAttribute('data-theme', resolved);
@@ -69,7 +102,7 @@
    * Toggle between light and dark theme
    */
   function toggleTheme() {
-    const stored = localStorage.getItem(THEME_KEY) || THEMES.SYSTEM;
+    const stored = safeStorage.get(THEME_KEY) || THEMES.SYSTEM;
     const current = stored === THEMES.SYSTEM ? getTheme() : stored;
     const next = current === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT;
     setTheme(next);
@@ -80,9 +113,9 @@
    * Note: Immediate init (to prevent FOUC) is kept inline in base.html
    */
   function initTheme() {
-    const stored = localStorage.getItem(THEME_KEY) || THEMES.SYSTEM;
+    const stored = safeStorage.get(THEME_KEY) || THEMES.SYSTEM;
     setTheme(stored);
-    localStorage.removeItem('bengal-palette');
+    safeStorage.remove('bengal-palette');
     document.documentElement.removeAttribute('data-palette');
   }
 
@@ -179,7 +212,7 @@
    * Update active states for popover-based menus
    */
   function updatePopoverActiveStates(menu) {
-    const currentAppearance = localStorage.getItem(THEME_KEY) || THEMES.SYSTEM;
+    const currentAppearance = safeStorage.get(THEME_KEY) || THEMES.SYSTEM;
 
     // Update appearance buttons
     menu.querySelectorAll('[data-appearance]').forEach(function (btn) {
@@ -196,7 +229,7 @@
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       mediaQuery.addEventListener('change', function () {
         // Only auto-switch if user prefers system appearance
-        if ((localStorage.getItem(THEME_KEY) || THEMES.SYSTEM) === THEMES.SYSTEM) {
+        if ((safeStorage.get(THEME_KEY) || THEMES.SYSTEM) === THEMES.SYSTEM) {
           updateResolvedTheme();
         }
       });

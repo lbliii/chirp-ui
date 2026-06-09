@@ -220,6 +220,14 @@ lint = { cmd = "ruff check .", help = "Run ruff linter" }
 lint-fix = { cmd = "ruff check . --fix", help = "Run ruff linter with auto-fix" }
 format = { cmd = "ruff format .", help = "Format code with ruff" }
 format-check = { cmd = "ruff format . --check", help = "Check formatting" }
+# Advisory JS lint (biome) over the Bengal theme's assets/js. NOT wired into
+# `ci`/`check` on purpose: the theme JS still carries ~305 advisory warnings
+# (useArrowFunction/useTemplate/noUnusedVariables, etc.) that are not yet fixed.
+# `noUndeclaredVariables` IS an error, so this fails on a genuinely-undefined
+# global (e.g. a missing CDN library) while staying green on style debt.
+# Run via `uv run poe lint-js`; CI runs it in a separate non-required job.
+lint-js = { cmd = "npx --yes @biomejs/biome@1.9.4 check src/bengal_themes/chirp_theme/assets/js", help = "Advisory biome lint over the Bengal theme assets/js (not part of `poe ci`)" }
+lint-js-fix = { cmd = "npx --yes @biomejs/biome@1.9.4 check --write src/bengal_themes/chirp_theme/assets/js", help = "Apply biome's safe auto-fixes to the Bengal theme assets/js" }
 build-css = { cmd = "python scripts/build_chirpui_css.py", help = "Concat CSS partials into chirpui.css" }
 build-css-check = { cmd = "python scripts/build_chirpui_css.py --check", help = "Fail if chirpui.css is stale relative to partials" }
 build-manifest = { cmd = "python scripts/build_manifest.py", help = "Emit src/chirp_ui/manifest.json from the registry" }
