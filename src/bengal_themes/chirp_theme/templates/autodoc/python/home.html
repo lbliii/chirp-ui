@@ -1,1 +1,69 @@
-{% extends "autodoc/python/list.html" %}
+{% extends "base.html" %}
+
+{#-
+  Python API home (/api/) — the package index.
+
+  Overrides list.html's content block for one reason: the page hero already
+  emits the page's single <h1> ("chirp-ui API Reference"), so the package grid
+  must NOT introduce a second <h1>. We pass title=none to resource_index
+  (suppressing search_header → page_header's <h1>) and surface the "Modules"
+  label as the results_title <h2> instead. Net: exactly one <h1> on /api/.
+  See issue #161 (autodoc visual floor) acceptance criteria.
+-#}
+
+{% from "partials/navigation-components.html" import breadcrumbs, page_navigation %}
+{% from "partials/page-actions.html" import page_actions %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/hero.html" import page_hero %}
+
+{% block content %}
+{% let title = page?.title ?? section?.title ?? "Python Reference" %}
+{% let description = page?.description ?? section?.description ?? "Browse Python API modules." %}
+{% let items = posts ?? pages ?? section?.pages ?? page?.children ?? [] %}
+{% let item_count = items | length %}
+
+<div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if toc_items | length > 0 else '' }}" data-chirp-theme-surface="api-list">
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="API reference navigation">
+  {% include 'partials/docs-nav.html' %}
+</aside>
+<div class="chirp-theme-docs-layout__main">
+
+{% call page_hero(title=title, subtitle=description, variant='editorial', background='solid', cls='chirp-theme-docs-layout__hero chirp-theme-doc-hero chirp-theme-api-hero') %}
+  {% slot eyebrow %}
+  {{ breadcrumbs(page) }}
+  {% end %}
+  {% slot metadata %}
+  <span>{{ item_count }} module{{ 's' if item_count != 1 else '' }}</span>
+  {% end %}
+  {% slot actions %}{{ page_actions(page, 'chirp-theme-api-list-actions-menu') }}{% end %}
+{% end %}
+
+<article class="chirp-theme-docs-layout__article chirp-theme-reference-page chirp-theme-reference-page--python-index">
+  <div class="docs-content chirp-theme-docs-layout__content chirp-theme-reference-content">
+  {% call resource_index(none, page?.href ?? section?.href ?? "/api/", subtitle=none, search_placeholder="Filter API reference...", button_icon="magnifying-glass", results_title="Modules", results_subtitle=item_count ~ " module" ~ ("s" if item_count != 1 else ""), results_layout="grid", results_cols=3, has_results=items | length > 0, empty_title="No API modules yet", empty_message="Autodoc modules appear here when generated.", cls="chirp-theme-reference-index chirp-theme-api-index") %}
+    {% let items = items %}
+    {% include "autodoc/partials/cards.html" %}
+  {% end %}
+  </div>
+</article>
+
+{% if page %}{{ page_navigation(page) }}{% end %}
+
+{% with footer_class='chirp-theme-footer chirp-theme-footer--shell' %}{% include 'partials/site-footer.html' %}{% end %}
+
+</div>
+{% if toc_items | length > 0 %}
+<aside class="chirp-theme-docs-layout__toc" role="complementary" aria-label="Table of contents">
+{% include 'partials/docs-toc-sidebar.html' %}
+</aside>
+{% end %}
+</div>
+
+<button class="docs-sidebar-toggle" aria-label="Toggle navigation sidebar" aria-expanded="false"
+  aria-controls="docs-sidebar">
+  {{ icon('list', size=20) }}
+</button>
+<div class="docs-sidebar-overlay" aria-hidden="true"></div>
+{% end %}
+
+{% block site_footer %}{% end %}

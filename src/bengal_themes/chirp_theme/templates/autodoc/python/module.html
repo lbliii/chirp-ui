@@ -15,7 +15,12 @@
 {% let github_edit_base = config?.params?.github_edit_base ?? config?.github_edit_base ?? none %}
 {% let repo_url = config?.params?.repo_url ?? config?.repo_url ?? none %}
 {% let source_href = (github_edit_base ~ source_file) if (github_edit_base and source_file) else ((repo_url ~ "/blob/main/" ~ source_file ~ ("#L" ~ source_line if source_line else "")) if (repo_url and source_file) else none) %}
-<div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if toc_items | length > 0 else '' }}" data-chirp-theme-surface="api-reference">
+{# Autodoc pages rarely carry prose toc_items, but a multi-member module gets a
+   dedicated on-page symbol rail so the right aside (and its sticky styling) is
+   used to jump between members. See #160. #}
+{% let has_symbol_rail = (toc_items | length == 0) and (symbols | length > 0) %}
+{% let show_toc_rail = (toc_items | length > 0) or has_symbol_rail %}
+<div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if show_toc_rail else '' }}" data-chirp-theme-surface="api-reference">
 <aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="API reference navigation">
   {% include 'partials/docs-nav.html' %}
 </aside>
@@ -64,9 +69,43 @@
 {% with footer_class='chirp-theme-footer chirp-theme-footer--shell' %}{% include 'partials/site-footer.html' %}{% end %}
 
 </div>
-{% if toc_items | length > 0 %}
-<aside class="chirp-theme-docs-layout__toc" role="complementary" aria-label="Table of contents">
+{% if show_toc_rail %}
+<aside class="chirp-theme-docs-layout__toc" role="complementary" aria-label="{{ 'Symbols on this page' if has_symbol_rail else 'Table of contents' }}">
+{% if has_symbol_rail %}
+<div class="chirpui-nav-tree toc-sidebar chirp-theme-doc-toc chirp-theme-symbol-rail" data-bengal="toc" data-symbol-rail>
+  <div class="chirp-theme-doc-toc__context">
+    <span class="chirp-theme-doc-toc__context-mark" aria-hidden="true">{{ icon('code', size=16) }}</span>
+    <div class="chirp-theme-doc-toc__context-copy">
+      <span class="chirp-theme-doc-toc__eyebrow">Symbols</span>
+      <strong>{{ element?.name ?? page?.title ?? 'This module' }}</strong>
+    </div>
+    <span class="chirp-theme-doc-toc__context-count chirp-theme-doc-toc__count-pill" aria-label="{{ symbols | length }} symbols">{{ symbols | length }}</span>
+  </div>
+  <nav class="chirp-theme-doc-toc__nav" aria-label="Symbols on this page" data-toc-mode="normal">
+    <div class="chirp-theme-doc-toc__scroll">
+      <ul class="chirpui-nav-tree__list toc-items chirp-theme-doc-toc__items chirp-theme-symbol-rail__items" role="list">
+        {% for symbol in symbols %}
+        {% let symbol_name = symbol?.name ?? symbol?.title ?? "Member" %}
+        {% let symbol_kind = symbol?.element_type ?? symbol?.type ?? "member" %}
+        {% let symbol_icon = "cube" if symbol_kind == "class" else ("function" if symbol_kind in ["function", "method"] else ("tag" if symbol_kind in ["property", "attribute"] else "code")) %}
+        <li class="chirpui-nav-tree__item toc-item chirp-theme-doc-toc__item chirp-theme-symbol-rail__item" role="listitem">
+          <a href="#{{ symbol_name }}"
+             class="chirpui-nav-tree__link chirpui-nav-tree__link--leaf toc-link chirp-theme-doc-toc__link chirp-theme-symbol-rail__link"
+             data-toc-item="#{{ symbol_name }}"
+             data-symbol-link
+             title="{{ symbol_kind }} {{ symbol_name }}">
+            <span class="chirp-theme-doc-toc__mark chirp-theme-symbol-rail__mark" aria-hidden="true" data-symbol-kind="{{ symbol_kind }}">{{ icon(symbol_icon, size=13) }}</span>
+            <span class="chirp-theme-doc-toc__label chirp-theme-symbol-rail__label">{{ symbol_name }}</span>
+          </a>
+        </li>
+        {% end %}
+      </ul>
+    </div>
+  </nav>
+</div>
+{% else %}
 {% include 'partials/docs-toc-sidebar.html' %}
+{% end %}
 </aside>
 {% end %}
 </div>

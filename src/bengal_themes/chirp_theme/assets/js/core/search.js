@@ -36,6 +36,19 @@
 
     const { log, escapeRegex, ready, debounce } = window.BengalUtils;
 
+    /**
+     * Reduced-motion-aware scrollIntoView behavior.
+     *
+     * Delegates to the shared helper on window.BengalMain (main.js) so the
+     * prefers-reduced-motion query lives in exactly one place. main.js and this
+     * module always ship together as deferred scripts, so the helper is present
+     * by the time any user-driven scroll fires; the 'smooth' fallback only
+     * matters if main.js is absent entirely.
+     */
+    function scrollBehavior() {
+        return window.BengalMain?.scrollBehavior?.() || 'smooth';
+    }
+
     // ============================================================
     // Configuration
     // ============================================================
@@ -1164,7 +1177,7 @@
         selectedItem.setAttribute('aria-selected', 'true');
 
         // Scroll into view
-        selectedItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        selectedItem.scrollIntoView({ block: 'nearest', behavior: scrollBehavior() });
 
         // Update status for screen readers
         const title = selectedItem.querySelector('.search-modal__result-title');
@@ -1799,7 +1812,7 @@
         const selected = pageResultItems[pageSelectedIndex];
         selected.classList.add('search-page__result-item--selected');
         selected.setAttribute('aria-selected', 'true');
-        selected.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        selected.scrollIntoView({ block: 'nearest', behavior: scrollBehavior() });
     }
 
     function selectPageResult() {
@@ -1871,7 +1884,7 @@
                 searchInput.focus();
                 setTimeout(() => {
                     const results = document.getElementById('search-results');
-                    if (results) results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    if (results) results.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
                 }, 100);
             });
         });

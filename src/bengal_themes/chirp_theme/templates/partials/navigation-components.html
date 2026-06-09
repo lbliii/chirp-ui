@@ -114,7 +114,7 @@ Intelligently chooses navigation scope based on content type:
 {% let next_link = page?.next_in_section if use_section_nav else page?.next %}
 
 {% if prev_link or next_link %}
-<nav class="page-navigation" aria-label="Page navigation">
+<nav class="page-navigation" aria-label="Previous and next pages">
   {% call grid(cols=2, gap='md', cls='nav-links') %}
     {% with prev_link as prev %}
     <div class="nav-previous">
@@ -256,7 +256,7 @@ KIDA FEATURES SHOWCASED:
   </div>
 
   {# Table of Contents #}
-  <nav class="chirp-theme-doc-toc__nav" aria-label="Table of contents" data-toc-mode="normal">
+  <nav class="chirp-theme-doc-toc__nav" aria-label="On this page" data-toc-mode="normal">
     {% if toc_items %}
     {# Build nested tree structure for proper children/count badge display #}
     {% let nested_items = build_toc_tree(toc_items) %}

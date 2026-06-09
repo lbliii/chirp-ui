@@ -129,3 +129,137 @@
   display: inline-block;
   transform: scaleX(-1);
 }
+
+/* ------------------------------------------------------------------ *
+ * Docs sidebar — disclosure section (issue #162)
+ *
+ * The expandable section no longer wraps a focusable <a> inside the
+ * activatable <summary> (which axe flagged as nested-interactive and
+ * produced two consecutive tab stops per section). Instead <details>
+ * is the row container, with three direct children:
+ *   1. <summary class="chirp-theme-docs-nav__toggle">  — disclosure only
+ *   2. <a class="chirp-theme-docs-nav__summary-link">  — the section link
+ *   3. <div class="chirp-theme-docs-nav__section-links"> — children
+ * The toggle and the link are siblings: exactly one tab stop each, and
+ * native <details> keeps Enter/Space expand/collapse with aria-expanded
+ * reflected automatically.
+ * ------------------------------------------------------------------ */
+.chirp-theme-docs-nav__section--has-toggle {
+  display: grid;
+  grid-template-columns: 1.35rem minmax(0, 1fr);
+  align-items: center;
+  column-gap: 0.15rem;
+}
+
+/* The section link occupies the main column; children span the full width. */
+.chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__summary-link {
+  grid-column: 2;
+}
+
+.chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links {
+  grid-column: 1 / -1;
+}
+
+/* Toggle is a real <summary>: strip the native marker, make it a tap target. */
+.chirp-theme-docs-nav__toggle {
+  grid-column: 1;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.35rem;
+  block-size: 1.35rem;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-fast), color var(--motion-fast);
+}
+
+.chirp-theme-docs-nav__toggle::marker,
+.chirp-theme-docs-nav__toggle::-webkit-details-marker {
+  display: none;
+  content: "";
+}
+
+.chirp-theme-docs-nav__toggle:hover,
+.chirp-theme-docs-nav__toggle:focus-visible {
+  background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+  color: var(--chirpui-accent);
+}
+
+.chirp-theme-docs-nav__toggle:focus-visible {
+  outline: 2px solid var(--chirpui-accent);
+  outline-offset: 1px;
+}
+
+/* Chevron rotates to point down when the section is open. */
+.chirp-theme-docs-nav__toggle-icon {
+  display: inline-flex;
+  transition: transform var(--motion-fast);
+}
+
+.chirp-theme-docs-nav__section--has-toggle[open] > .chirp-theme-docs-nav__toggle .chirp-theme-docs-nav__toggle-icon {
+  transform: rotate(90deg);
+}
+
+[dir="rtl"] .chirp-theme-docs-nav__toggle-icon {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .chirp-theme-docs-nav__section--has-toggle[open] > .chirp-theme-docs-nav__toggle .chirp-theme-docs-nav__toggle-icon {
+  transform: scaleX(-1) rotate(90deg);
+}
+
+/*
+ * The depth-1 link styling previously lived in chirp-theme.css under
+ * `.chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link`
+ * descendant selectors. Now that the link is a sibling of the summary
+ * (not a descendant), re-apply the compact depth-1 treatment here.
+ */
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary-link {
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: 0.36rem;
+  min-block-size: 1.65rem;
+  padding: 0.14rem 0.32rem;
+  border-color: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary-link:hover,
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary-link:focus-visible,
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary-link--active {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--chirpui-accent) 7%, transparent);
+  color: var(--chirpui-accent);
+}
+
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary-link .chirp-theme-docs-nav__type-icon {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  background: color-mix(in srgb, var(--chirpui-accent) 8%, transparent);
+  color: var(--color-text-muted);
+}
+
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1.is-active > .chirp-theme-docs-nav__summary-link .chirp-theme-docs-nav__type-icon,
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary-link:hover .chirp-theme-docs-nav__type-icon,
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary-link:focus-visible .chirp-theme-docs-nav__type-icon,
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary-link--active .chirp-theme-docs-nav__type-icon {
+  color: var(--chirpui-accent);
+}
+
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary-link .chirp-theme-docs-nav__type-icon svg {
+  inline-size: 0.72rem;
+  block-size: 0.72rem;
+}
+
+.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary-link .chirp-theme-docs-nav__summary-copy {
+  gap: 0.35rem;
+}

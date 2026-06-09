@@ -22,6 +22,22 @@
 
   const { throttleScroll, debounce, ready } = window.BengalUtils;
 
+  /**
+   * Resolve a reduced-motion check. Prefers a shared BengalUtils helper and
+   * falls back to a local matchMedia read so toc.js stays correct even when
+   * loaded standalone. (#164's reduced-motion guard for toc.js lives here —
+   * toc.js owns its own scrollIntoView/scrollTo call sites this wave.)
+   */
+  function prefersReducedMotion() {
+    if (typeof window.BengalUtils.prefersReducedMotion === 'function') {
+      return window.BengalUtils.prefersReducedMotion();
+    }
+    return (
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+  }
+
   // ============================================================================
   // State Management
   // ============================================================================
@@ -116,9 +132,10 @@
     // PHASE 1: Batch all DOM reads
     // ========================================
 
-    // Read all heading positions in one batch (avoids interleaved read/write)
+    // Read all heading positions in one batch (avoids interleaved read/write).
+    // Use spyElement so collapsed accordion members track by their summary.
     const headingRects = headings.map(heading => ({
-      top: heading.element.getBoundingClientRect().top,
+      top: (heading.spyElement || heading.element).getBoundingClientRect().top,
       heading: heading
     }));
 
@@ -225,7 +242,7 @@
     if (tocScrollContainer && activeLink && containerRect) {
       const linkRect = activeLink.getBoundingClientRect();
       if (linkRect.top < containerRect.top || linkRect.bottom > containerRect.bottom) {
-        activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        activeLink.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
       }
     }
   }
@@ -388,7 +405,27 @@
   // ============================================================================
 
   /**
+   * If the jump target lives inside a collapsed accordion item
+   * (<details class="chirpui-accordion__item">), open every ancestor
+   * <details> so the symbol is actually visible after the scroll.
+   * Used by the autodoc symbol rail (#160).
+   */
+  function expandAncestorDetails(target) {
+    let el = target.parentElement;
+    while (el) {
+      if (el.tagName === 'DETAILS' && !el.open) {
+        el.open = true;
+      }
+      el = el.parentElement;
+    }
+  }
+
+  /**
    * Initialize smooth scroll on TOC links
+   *
+   * Symbol-rail links (data-symbol-link) point at member anchors nested inside
+   * accordion <details>; opening the accordion before measuring offsetTop keeps
+   * the scroll position correct once the member body expands.
    */
   function initSmoothScroll() {
     tocItems.forEach(item => {
@@ -398,11 +435,23 @@
         const target = document.getElementById(id);
 
         if (target) {
+          // Expand the member's accordion item first so the layout is settled
+          // before we read offsetTop (symbol rail).
+          if (item.hasAttribute('data-symbol-link')) {
+            expandAncestorDetails(target);
+          }
+
           const offsetTop = target.offsetTop - 100; // Account for fixed header
           window.scrollTo({
             top: offsetTop,
-            behavior: 'smooth'
+            behavior: prefersReducedMotion() ? 'auto' : 'smooth'
           });
+
+          // Mark clicked symbol active immediately (scroll spy confirms on settle)
+          if (item.hasAttribute('data-symbol-link')) {
+            tocItems.forEach(link => link.classList.remove('active'));
+            item.classList.add('active');
+          }
 
           // Update URL without jumping
           history.replaceState(null, '', '#' + id);
@@ -494,7 +543,13 @@
     headings = tocItems.map(item => {
       const id = item.getAttribute('data-toc-item').slice(1);
       const element = document.getElementById(id);
-      return element ? { id, element, link: item } : null;
+      if (!element) return null;
+      // For symbol-rail anchors nested inside a collapsed accordion <details>,
+      // the body div has no reliable position when closed. Spy on the enclosing
+      // <details> (its <summary> is always laid out) so scroll tracking stays
+      // monotonic across members. (#160)
+      const spyElement = element.closest('details') || element;
+      return { id, element, spyElement, link: item };
     }).filter(Boolean);
 
     if (!headings.length) return;

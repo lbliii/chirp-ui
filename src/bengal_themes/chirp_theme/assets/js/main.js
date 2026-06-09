@@ -16,6 +16,26 @@
     }
   });
 
+  /**
+   * Returns true when the user has requested reduced motion.
+   * Single source of truth for scroll/animation behavior across theme JS —
+   * other modules reuse this via window.BengalMain.prefersReducedMotion()
+   * instead of duplicating their own matchMedia query.
+   */
+  function prefersReducedMotion() {
+    return typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  /**
+   * scrollIntoView behavior that collapses to 'auto' (instant) when the user
+   * prefers reduced motion. The CSS `scroll-behavior` reset does not cover the
+   * explicit JS option, so guard each call site through here.
+   */
+  function scrollBehavior() {
+    return prefersReducedMotion() ? 'auto' : 'smooth';
+  }
+
   function setupSmoothScroll() {
     const anchors = document.querySelectorAll('a[href^="#"]');
     anchors.forEach((anchor) => {
@@ -31,7 +51,7 @@
         }
 
         event.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        target.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
         history.pushState(null, '', href);
         if (!target.hasAttribute('tabindex')) {
           target.setAttribute('tabindex', '-1');
@@ -190,5 +210,9 @@
   }
 
   ready(init);
-  window.BengalMain = { cleanup: () => {} };
+  window.BengalMain = {
+    cleanup: () => {},
+    prefersReducedMotion,
+    scrollBehavior,
+  };
 })();

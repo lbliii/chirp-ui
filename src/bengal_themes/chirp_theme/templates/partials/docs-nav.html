@@ -47,27 +47,38 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
 
 {% if has_children %}
   {% if depth > 0 %}
-  <details class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}"{% if is_branch_active %} open{% end %}>
-    <summary class="chirpui-sidebar__section-title chirp-theme-docs-nav__summary">
-      {% if item_href %}
-      <a class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}{{ ' chirp-theme-docs-nav__summary-link--active' if is_current else '' }}"
-         href="{{ item_href | absolute_url }}"
-         title="{{ item_title }}"
-         {% if is_current %}aria-current="page"{% end %}{{ route_link_attrs(item_href | absolute_url) | html_attrs }}>
-        <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind, true) }}</span>
-        <span class="chirp-theme-docs-nav__summary-copy">
-          <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
-        </span>
-      </a>
-      {% else %}
-      <span class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}">
-        <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind, true) }}</span>
-        <span class="chirp-theme-docs-nav__summary-copy">
-          <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
-        </span>
-      </span>
-      {% end %}
+  {#
+    Disclosure section. The <summary> is the disclosure control and stays the
+    FIRST child of <details> (a hard requirement of the native widget). The
+    navigable section link is a *sibling* of the summary, never a descendant —
+    this avoids the nested-interactive defect (focusable <a> inside an
+    activatable <summary>) while preserving native Enter/Space toggling with
+    aria-expanded reflected automatically. CSS lays the toggle + link out as a
+    single row. See issue #162.
+  #}
+  <details class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--has-toggle chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}"{% if is_branch_active %} open{% end %}>
+    <summary class="chirp-theme-docs-nav__toggle"
+             aria-label="Toggle {{ item_title }} section">
+      <span class="chirp-theme-docs-nav__toggle-icon" aria-hidden="true">{{ icon('caret-right', size=14) }}</span>
     </summary>
+    {% if item_href %}
+    <a class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}{{ ' chirp-theme-docs-nav__summary-link--active' if is_current else '' }}"
+       href="{{ item_href | absolute_url }}"
+       title="{{ item_title }}"
+       {% if is_current %}aria-current="page"{% end %}{{ route_link_attrs(item_href | absolute_url) | html_attrs }}>
+      <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind, true) }}</span>
+      <span class="chirp-theme-docs-nav__summary-copy">
+        <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
+      </span>
+    </a>
+    {% else %}
+    <span class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}">
+      <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind, true) }}</span>
+      <span class="chirp-theme-docs-nav__summary-copy">
+        <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
+      </span>
+    </span>
+    {% end %}
     <div class="chirpui-sidebar__section-links chirp-theme-docs-nav__section-links">
       {% for child in item_children %}
       {{ nav_node(child, depth + 1) }}
@@ -125,10 +136,10 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
 {% let current_path = page?.href ?? page?._path ?? '' %}
 {% let catalog_items = get_nav_tree(page) ?? [] %}
 
-<div class="chirp-theme-doc-catalog" data-chirp-theme-doc-nav="catalog">
+<div class="chirp-theme-doc-catalog" data-chirp-theme-doc-nav="catalog" data-bengal="docs-nav">
   {% if catalog_items | length > 0 %}
   <div class="chirp-theme-doc-catalog__primary">
-    {% call filter_rail(label='Documentation catalog', cls='chirp-theme-doc-catalog-rail') %}
+    {% call filter_rail(label='Documentation sections', cls='chirp-theme-doc-catalog-rail') %}
       <div class="chirp-theme-doc-catalog-rail__group chirp-theme-doc-catalog-rail__group--home">
         <a class="chirpui-filter-rail__item chirp-theme-doc-catalog-rail__item chirp-theme-doc-catalog-rail__home{{ ' is-active' if current_path == '/' else '' }}"
            href="{{ '/' | absolute_url }}"
@@ -197,7 +208,7 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
   </div>
   {% end %}
 
-  <div class="chirp-theme-doc-catalog__secondary">
+  <div class="chirp-theme-doc-catalog__secondary" data-chirp-theme-doc-nav="sections">
   {% call sidebar(cls='chirp-theme-docs-nav', current_path=current_path) %}
     {% slot header %}
     {% unless is_autodoc %}
