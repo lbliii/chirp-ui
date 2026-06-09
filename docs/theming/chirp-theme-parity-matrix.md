@@ -34,6 +34,50 @@ for niche or legacy-heavy verticals while they are redesigned.
 | Root aliases and utility pages | `index.html`, `blog/about.html`, `blog/contact.html` | `core-parity` | Kept as Chirp UI-native generic section/blog utility pages over resource indexes, blog shell, page hero, surface, rendered content, badge, and card primitives. |
 | Niche graph/data-table/experimental UI | graph/minimap/data-table/holo families | `deferred` | Keep only capabilities that still map to an actual output contract; redesign through Chirp UI when they are promoted. |
 
+## Autodoc reference-completeness matrix
+
+Each autodoc family renders a known set of reference fields. The table below is
+the contract for which fields a layout surfaces, the partial that renders each,
+and the Bengal extractor field path it reads. OpenAPI is the depth bar (eleven
+dedicated partials); Python and CLI are wired up to the data their extractors
+emit. `—` means the extractor does not emit that field for the family.
+
+| Field | Python (`python/module.html`, `python/single.html`) | CLI (`cli/command.html`, `cli/single.html`) | OpenAPI (`openapi/endpoint.html`) |
+|---|---|---|---|
+| Signature | `signature.html` ← `metadata.signature` | `usage.html` ← `element.signature` (invocation) | endpoint bar ← `metadata.method` + `metadata.path` |
+| Badges (type / deprecated / async / property / classmethod / staticmethod / required) | `badges.html` ← `element_type`, `element.deprecated`, `metadata.is_*` | `badges.html` ← `element_type`, `element.deprecated` | `header.html` hero ← `element_type`, `metadata.is_deprecated`, `metadata.is_async` |
+| Deprecation notice | `callout` in layout ← `element.deprecated` | `callout` in layout ← `element.deprecated` | hero badge ← `metadata.is_deprecated` |
+| Description | `rendered_content` ← `element.description` | `rendered_content` (via hero) ← `element.description` | `rendered_content` ← `element.description` |
+| Parameters | `params-table.html` ← `metadata.args` (`docstring` → description) | `params-table.html` + `members.html` (options/arguments are children) | `params-table.html` ← endpoint params |
+| Returns | `returns.html` ← `metadata.returns` (type) + `metadata.parsed_doc.returns` (prose) | `returns.html` (no-op when absent) | `responses.html` |
+| Raises | `raises.html` ← `metadata.parsed_doc.raises` (`{type, description}`) | `raises.html` (no-op when absent) | `responses.html` (error status codes) |
+| Members | `members.html` accordion + symbol rail (`_macros/{function,class}-member` via `element-card`) ← `element.children` | `members.html` accordion ← `element.children` (options/arguments/subcommands) | `schema-viewer.html` / `request-body.html` |
+| Examples | `examples.html` ← `metadata.examples` / `element.examples` | `examples.html` ← `element.examples` | `code-samples.html`, `example-rail.html` |
+| Usage | — (signature stands in) | `usage.html` ← `element.usage` / `element.signature` | `playground-bar.html`, `request-example.html` |
+| Source link | layout ← `element.source_file` + `element.line_number` (× `params.github_edit_base` / `params.repo_url`) | layout ← `element.source_file` + `element.line_number` | — (spec-derived, no source file) |
+
+Notes:
+
+- The previous `returns.html` / `raises.html` read `metadata.returns` / `metadata.raises`
+  directly. The Python extractor only puts the *return type* under
+  `metadata.returns`; the docstring prose and exception list live under
+  `metadata.parsed_doc.returns` and `metadata.parsed_doc.raises` (a list of
+  `{type, description}` dicts). Both partials now read the verified paths, so a
+  module-level function page renders Returns and Raises when the docstring
+  carries them.
+- `badges.html` reads the DocElement-level `element.deprecated` (a notice string),
+  not a `metadata` flag — deprecation is set per element, while `async`/`property`/
+  `classmethod`/`staticmethod` are Python function flags under `metadata`, and
+  `required` is a CLI option / OpenAPI param flag.
+- Every autodoc partial is reachable from a layout. The Python member-overview
+  macros (`_macros/element-card.html`, `function-member.html`,
+  `class-member.html`) are wired into the `python/module.html` symbol rail. The
+  three OpenAPI partials (`param-row.html`, `endpoint-header.html`,
+  `sidebar-nav.html`) are superseded by `params-table.html`, the inline endpoint
+  bar + `header.html`, and `docs-nav.html` respectively; they remain in the
+  package as required templates (`tests/test_bengal_theme_package.py`) until that
+  contract is revised. See the residual note in the parity matrix steward notes.
+
 ## Chirp UI Translation Rules
 
 - Prefer `chirpui/*` macros for cards, buttons, layout primitives, page heroes,

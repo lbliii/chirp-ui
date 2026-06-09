@@ -1,5 +1,12 @@
 {% from "autodoc/partials/_macros/element-card.html" import element_card %}
 
+{#-
+  Overview card for a function/method member. Labels the card with an async or
+  plain function kind so a module's symbol rail reads at a glance. Detailed
+  signature/params/returns render in the member accordion (members.html).
+-#}
+
 {% def function_member(element, is_first=false) %}
-{{ element_card(element) }}
+{% let kind = "async function" if (element?.metadata?.is_async ?? false) else (element?.element_type ?? "function") %}
+{{ element_card(element, kind=kind) }}
 {% end %}

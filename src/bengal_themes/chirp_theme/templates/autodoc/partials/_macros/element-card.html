@@ -1,12 +1,22 @@
 {% from "chirpui/card.html" import resource_card %}
 
-{% def element_card(element) %}
+{#-
+  Compact reference card for a single documented element (a member, submodule,
+  or related symbol). Used by the function/class member overview macros and the
+  module symbol rail. Renders the element's kind as the card eyebrow and a
+  truncated description as the body. `href` falls back to an in-page anchor so
+  the card always links somewhere (the member detail accordion uses
+  `id="{{ name }}"`).
+-#}
+
+{% def element_card(element, kind=none) %}
 {% let name = element?.name ?? element?.title ?? "Reference" %}
+{% let card_kind = kind ?? element?.element_type ?? element?.type ?? none %}
 {% let href = element?.href ?? element?.url ?? "#" ~ name %}
-{% let description = element?.description ?? none %}
-{% call resource_card(href, name, description=none, top_meta=element?.element_type ?? none, cls="chirp-theme-reference-card") %}
+{% let description = element?.description ?? element?.summary ?? none %}
+{% call resource_card(href, name, description=none, top_meta=card_kind, cls="chirp-theme-reference-card chirp-theme-reference-card--symbol") %}
   {% if description %}
-  <div class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description chirp-theme-reference-card__description">{{ description |> markdownify |> truncatewords_html(28, '…') |> safe }}</div>
+  <div class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description chirp-theme-reference-card__description">{{ description |> markdownify |> truncatewords_html(24, '…') |> safe }}</div>
   {% end %}
 {% end %}
 {% end %}

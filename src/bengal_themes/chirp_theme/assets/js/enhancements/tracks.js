@@ -8,14 +8,22 @@
  * - Marks visited sections with visual indicators
  * - Accessibility: aria-current="step" for screen readers
  *
- * Data Attributes:
- * - data-bengal="track-nav": Track navigation container
- * - data-track-id="slug": Track identifier for localStorage
- * - data-track-section="N": Section link (number)
- * - data-track-target="#id": Target section element
- * - data-track-active: Set on active section link (by JS)
- * - data-track-visited: Set on visited section links (by JS)
- * - data-track-completed: Set when section scrolled fully past (by JS)
+ * DOM contract (reconciled with tracks/single.html + partials/track-sidebar.html):
+ * - nav[data-bengal="track-nav"][data-track-id]   .chirp-theme-track-sidebar
+ * - a[data-track-section="N"][data-track-target="#track-section-N"]
+ *     .chirp-theme-track-sidebar__link
+ *     .chirp-theme-track-sidebar__number  (read for the announcer step number)
+ *     .chirp-theme-track-sidebar__title   (read for the announcer section name)
+ * - section#track-section-N[data-track-section]   .chirp-theme-track-section
+ * - .chirp-theme-track-layout__main   (resume-banner insertion point)
+ * - .chirp-theme-track-layout__toc    (combined TOC rail, filtered by section)
+ *
+ * State attributes set by this script:
+ * - data-track-active:    active section link
+ * - data-track-visited:   visited section links
+ * - data-track-completed: section scrolled fully past
+ *
+ * See the "RECONCILED DOM VOCABULARY" block at the top of tracks/single.html.
  */
 
 (function() {
@@ -29,6 +37,32 @@
 
   const { throttleScroll, ready } = window.BengalUtils;
 
+  /**
+   * Resolve a reduced-motion check. Prefers a shared BengalUtils helper
+   * (added by the nav-landmarks/#164 work) and falls back to a local
+   * matchMedia read so tracks.js stays correct even when loaded standalone.
+   */
+  function prefersReducedMotion() {
+    if (typeof window.BengalUtils.prefersReducedMotion === 'function') {
+      return window.BengalUtils.prefersReducedMotion();
+    }
+    return (
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+  }
+
+  /**
+   * scrollIntoView that honors prefers-reduced-motion: smooth animation for
+   * everyone else, an instant jump for users who asked to reduce motion.
+   * (The tracks.js slice of #164 — CSS `scroll-behavior` does not affect an
+   * explicit `behavior:'smooth'` option, so it must be chosen in JS.)
+   */
+  function scrollToElement(el) {
+    if (!el) return;
+    el.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+  }
+
   // ============================================================================
   // Constants
   // ============================================================================
@@ -37,11 +71,20 @@
 
   const SELECTORS = {
     trackNav: '[data-bengal="track-nav"]',
-    trackSection: '[data-track-section]',
-    sectionTarget: '.track-section',
-    tocSidebar: '.track-layout .toc-sidebar',
+    // Sidebar section links live inside the track nav; scope the lookup so we
+    // do not match the section <section data-track-section> blocks themselves.
+    trackSection: 'a[data-track-section]',
+    // Pillar-page section blocks emitted by track_section_block (single.html).
+    sectionTarget: '.chirp-theme-track-section[data-track-section]',
+    // Resume banner insertion point: the center reading column.
+    trackContent: '.chirp-theme-track-layout__main',
+    // Combined-TOC right rail, filtered to the active section.
+    tocSidebar: '.chirp-theme-track-layout__toc',
     // Only select top-level section groups (not nested groups within sections)
-    tocSectionGroup: '.toc-group[data-toc-section]'
+    tocSectionGroup: '.toc-group[data-toc-section]',
+    // Label/number text inside each sidebar link (read by the announcer).
+    navLabel: '.chirp-theme-track-sidebar__title',
+    navNumber: '.chirp-theme-track-sidebar__number'
   };
 
   // ============================================================================
@@ -243,9 +286,11 @@
       const link = sidebarLinks[sectionIndex];
       if (!link) return;
 
-      const label = link.querySelector('.track-nav-label');
-      const number = link.querySelector('.track-nav-number');
-      const sectionName = label ? label.textContent.trim() : '';
+      const label = link.querySelector(SELECTORS.navLabel);
+      const number = link.querySelector(SELECTORS.navNumber);
+      // Fall back to the link's own text so the announcer is never empty even
+      // if the title/number sub-spans are missing.
+      const sectionName = (label ? label.textContent : link.textContent).trim();
       const sectionNum = number ? number.textContent.trim() : sectionIndex + 1;
 
       // Create or update live region
@@ -290,8 +335,10 @@
     if (!targetSection) return;
 
     const link = sidebarLinks[progress.lastSection];
-    const label = link ? link.querySelector('.track-nav-label') : null;
-    const sectionName = label ? label.textContent.trim() : `Section ${progress.lastSection + 1}`;
+    const label = link ? link.querySelector(SELECTORS.navLabel) : null;
+    const sectionName = label
+      ? label.textContent.trim()
+      : (link ? link.textContent.trim() : `Section ${progress.lastSection + 1}`);
 
     // Create resume banner
     const banner = document.createElement('div');
@@ -309,15 +356,15 @@
       </button>
     `;
 
-    // Add to page
-    const trackContent = document.querySelector('.track-content');
+    // Add to page — the center reading column of the pillar-page shell.
+    const trackContent = document.querySelector(SELECTORS.trackContent);
     if (trackContent) {
       trackContent.insertBefore(banner, trackContent.firstChild);
     }
 
     // Handle resume click
     banner.querySelector('.track-resume-button').addEventListener('click', () => {
-      targetSection.scrollIntoView({ behavior: 'smooth' });
+      scrollToElement(targetSection);
       banner.remove();
     });
 

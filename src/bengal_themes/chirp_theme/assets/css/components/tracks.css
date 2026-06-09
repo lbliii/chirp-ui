@@ -1,0 +1,771 @@
+/**
+ * chirp-theme — Tracks (learning paths)
+ * =====================================================================
+ * Styles the bespoke data-file pillar page (tracks/single.html), the LMS
+ * card-grid catalog (tracks/list.html), the shared helper macros
+ * (partials/track-helpers.html, track-sidebar.html, track_nav.html), and
+ * the resume banner that tracks.js injects at runtime.
+ *
+ * DOM contract: documented at the top of tracks/single.html and tracks/list.html.
+ * Keep this file in lockstep with those templates and assets/js/enhancements/tracks.js.
+ *
+ * Token policy (issue #141): prefer the --chirpui-* design tokens that ship with
+ * chirp-ui (loaded on every page via Bengal's library_asset_tags). No private
+ * --chirp-theme-* color forks where chirpui provides parity; no hardcoded colors.
+ * Motion uses chirpui motion/ease tokens and respects prefers-reduced-motion.
+ * The sticky header offset mirrors the sibling docs reading shell (2.875rem).
+ * =====================================================================
+ */
+
+/* ---------------------------------------------------------------------------
+ * SHELL — three-column LMS reading layout (tracks/single.html)
+ * ------------------------------------------------------------------------- */
+
+.chirp-theme-track-layout {
+  --track-header-offset: 2.875rem;
+  --track-rail-gap: var(--chirpui-spacing-xl);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  overflow-x: clip;
+}
+
+/* Two columns once a sidebar fits; three once a combined TOC exists. */
+@media (min-width: 60rem) {
+  .chirp-theme-track-layout {
+    grid-template-columns: minmax(16rem, 19rem) minmax(0, 1fr);
+    column-gap: var(--track-rail-gap);
+  }
+
+  .chirp-theme-track-layout--with-toc {
+    grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr) minmax(11rem, 15rem);
+  }
+}
+
+.chirp-theme-track-layout__sidebar,
+.chirp-theme-track-layout__toc {
+  position: sticky;
+  top: var(--track-header-offset);
+  align-self: start;
+  max-height: calc(100svh - var(--track-header-offset));
+  min-width: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--chirpui-accent) 55%, transparent) transparent;
+}
+
+/* On narrow viewports the rails stack inline above the reading column. */
+@media (max-width: 59.99rem) {
+  .chirp-theme-track-layout__sidebar,
+  .chirp-theme-track-layout__toc {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .chirp-theme-track-layout__toc {
+    display: none;
+  }
+}
+
+.chirp-theme-track-layout__sidebar {
+  padding-block: var(--chirpui-spacing-md);
+}
+
+.chirp-theme-track-layout__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chirpui-spacing-xl);
+  min-width: 0;
+  padding-block-end: var(--chirpui-spacing-2xl);
+}
+
+.chirp-theme-track-layout__toc {
+  padding-block: var(--chirpui-spacing-md);
+}
+
+.chirp-theme-track-layout__article {
+  min-width: 0;
+}
+
+/* Distinct surface accent so the track shell never reads as the doc shell. */
+[data-chirp-theme-surface="track"] {
+  --track-surface-tint: color-mix(in srgb, var(--chirpui-accent) 7%, var(--chirpui-surface));
+}
+
+/* ---------------------------------------------------------------------------
+ * HERO — page_hero override for the pillar page
+ * ------------------------------------------------------------------------- */
+
+.chirp-theme-track-layout__hero,
+.chirp-theme-tracks-index__hero {
+  width: 100%;
+  min-width: 0;
+}
+
+.chirp-theme-track-hero,
+.chirp-theme-tracks-index__hero {
+  position: relative;
+  border-radius: var(--chirpui-radius-lg);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--chirpui-accent) 16%, transparent),
+      transparent 58%
+    ),
+    var(--chirpui-surface-alt);
+  overflow: hidden;
+}
+
+.chirp-theme-track-hero::before {
+  content: "";
+  position: absolute;
+  inset-block: var(--chirpui-spacing-md);
+  inset-inline-start: 0;
+  width: 0.25rem;
+  border-radius: var(--chirpui-radius-full);
+  background: var(--chirpui-accent);
+}
+
+.chirp-theme-track-hero .chirpui-hero__metadata,
+.chirp-theme-tracks-index__hero .chirpui-hero__metadata {
+  color: var(--chirpui-text-muted);
+  font-size: var(--chirpui-ui-sm);
+}
+
+/* ---------------------------------------------------------------------------
+ * INTRO — the pillar page's own frontmatter body
+ * ------------------------------------------------------------------------- */
+
+.chirp-theme-track-intro {
+  min-width: 0;
+}
+
+.chirp-theme-track-intro > :last-child {
+  margin-block-end: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * SECTIONS — embedded member pages, rendered inline as pillar blocks
+ * ------------------------------------------------------------------------- */
+
+.chirp-theme-track-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chirpui-spacing-2xl);
+  margin-block-start: var(--chirpui-spacing-xl);
+}
+
+.chirp-theme-track-section {
+  scroll-margin-top: calc(var(--track-header-offset) + var(--chirpui-spacing-md));
+  min-width: 0;
+  padding-block-start: var(--chirpui-spacing-lg);
+  border-block-start: 1px solid var(--chirpui-border-subtle);
+}
+
+.chirp-theme-track-sections > .chirp-theme-track-section:first-child {
+  padding-block-start: 0;
+  border-block-start: 0;
+}
+
+.chirp-theme-track-section__header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  column-gap: var(--chirpui-spacing-md);
+  margin-block-end: var(--chirpui-spacing-md);
+}
+
+.chirp-theme-track-section__number {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--chirpui-radius-full);
+  background: color-mix(in srgb, var(--chirpui-accent) 14%, var(--chirpui-surface));
+  color: var(--chirpui-accent);
+  font-family: var(--chirpui-code-font-family);
+  font-size: var(--chirpui-ui-base);
+  font-weight: var(--chirpui-ui-font-weight-bold);
+  line-height: 1;
+}
+
+.chirp-theme-track-section__heading {
+  min-width: 0;
+}
+
+.chirp-theme-track-section__title {
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  line-height: var(--chirpui-line-height-tight);
+}
+
+.chirp-theme-track-section__lede {
+  margin: var(--chirpui-spacing-2xs) 0 0;
+  color: var(--chirpui-text-muted);
+  font-size: var(--chirpui-ui-lg);
+  line-height: var(--chirpui-line-height-normal);
+  text-wrap: pretty;
+}
+
+.chirp-theme-track-section__body {
+  min-width: 0;
+}
+
+.chirp-theme-track-section__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--chirpui-spacing-sm);
+  padding: var(--chirpui-spacing-lg);
+  border: 1px dashed var(--chirpui-border);
+  border-radius: var(--chirpui-radius);
+  background: color-mix(in srgb, var(--chirpui-surface-alt) 60%, transparent);
+  color: var(--chirpui-text-muted);
+}
+
+.chirp-theme-track-section__placeholder p {
+  margin: 0;
+}
+
+.chirp-theme-track-section__complete {
+  display: flex;
+  justify-content: center;
+  margin-block-start: var(--chirpui-spacing-xl);
+  padding-block-start: var(--chirpui-spacing-lg);
+  border-block-start: 1px solid var(--chirpui-border-subtle);
+}
+
+/* Broken tracks.yaml reference — keep the anchor, mute the block. */
+.chirp-theme-track-section--missing {
+  opacity: 0.72;
+}
+
+.chirp-theme-track-section--missing .chirp-theme-track-section__number {
+  background: color-mix(in srgb, var(--chirpui-warning) 16%, var(--chirpui-surface));
+  color: var(--chirpui-warning);
+}
+
+/* ---------------------------------------------------------------------------
+ * EMPTY STATES — "track not defined" / "no lessons yet"
+ * ------------------------------------------------------------------------- */
+
+.chirp-theme-track-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--chirpui-spacing-sm);
+  padding: var(--chirpui-spacing-2xl);
+  border: 1px dashed var(--chirpui-border);
+  border-radius: var(--chirpui-radius-lg);
+  background: color-mix(in srgb, var(--chirpui-surface-alt) 55%, transparent);
+}
+
+.chirp-theme-track-empty h2 {
+  margin: 0;
+}
+
+.chirp-theme-track-empty p {
+  margin: 0;
+  color: var(--chirpui-text-muted);
+  max-width: 60ch;
+}
+
+/* ---------------------------------------------------------------------------
+ * SIDEBAR — ordered section list + sibling tracks (track-sidebar.html)
+ * ------------------------------------------------------------------------- */
+
+.chirp-theme-track-sidebar {
+  min-width: 0;
+}
+
+.chirp-theme-track-sidebar__card {
+  min-width: 0;
+}
+
+/* "Other tracks" card — set apart from the current track's section list. */
+.chirp-theme-track-sidebar__card--siblings {
+  margin-block-start: var(--chirpui-spacing-md);
+}
+
+.chirp-theme-track-sidebar__list {
+  min-width: 0;
+}
+
+.chirp-theme-track-sidebar__item {
+  min-width: 0;
+}
+
+.chirp-theme-track-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: var(--chirpui-spacing-sm);
+  min-width: 0;
+  border-radius: var(--chirpui-radius-sm);
+  color: var(--chirpui-text);
+  text-decoration: none;
+  transition:
+    color var(--chirpui-transition),
+    background var(--chirpui-transition);
+}
+
+.chirp-theme-track-sidebar__link:hover {
+  color: var(--chirpui-accent);
+  background: color-mix(in srgb, var(--chirpui-accent) 8%, transparent);
+}
+
+.chirp-theme-track-sidebar__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chirp-theme-track-sidebar__number {
+  flex: 0 0 auto;
+  transition:
+    color var(--chirpui-transition),
+    background var(--chirpui-transition);
+}
+
+/* --- JS-driven scroll-spy states (data attrs + .is-active set by tracks.js) --- */
+
+.chirp-theme-track-sidebar__link.is-active,
+.chirp-theme-track-sidebar__link[data-track-active] {
+  color: var(--chirpui-accent);
+  font-weight: var(--chirpui-ui-font-weight-semibold);
+  background: color-mix(in srgb, var(--chirpui-accent) 12%, transparent);
+}
+
+.chirp-theme-track-sidebar__link[data-track-active] .chirp-theme-track-sidebar__number {
+  background: var(--chirpui-accent);
+  color: var(--chirpui-on-accent);
+}
+
+/* Visited but not current — subtle "seen" cue. */
+.chirp-theme-track-sidebar__link[data-track-visited]:not([data-track-active]) {
+  color: var(--chirpui-text-muted);
+}
+
+.chirp-theme-track-sidebar__link[data-track-visited]:not([data-track-active]) .chirp-theme-track-sidebar__number {
+  background: color-mix(in srgb, var(--chirpui-accent) 22%, var(--chirpui-surface-alt));
+  color: var(--chirpui-accent);
+}
+
+/* Fully scrolled past — show a completion check via ::after on the number. */
+.chirp-theme-track-sidebar__link[data-track-completed] .chirp-theme-track-sidebar__number {
+  background: color-mix(in srgb, var(--chirpui-success) 18%, var(--chirpui-surface));
+  color: var(--chirpui-success);
+}
+
+.chirp-theme-track-sidebar__link[data-track-completed]:not([data-track-active]) .chirp-theme-track-sidebar__number {
+  position: relative;
+  color: transparent;
+}
+
+.chirp-theme-track-sidebar__link[data-track-completed]:not([data-track-active]) .chirp-theme-track-sidebar__number::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--chirpui-success);
+  font-weight: var(--chirpui-ui-font-weight-bold);
+}
+
+/* ---------------------------------------------------------------------------
+ * PROGRESS RAIL — stepped indicator (track-helpers.html → track_progress_indicator)
+ * ------------------------------------------------------------------------- */
+
+.chirp-theme-track-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chirpui-spacing-xs);
+  min-width: 0;
+}
+
+.chirp-theme-track-progress__steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chirp-theme-track-progress__step {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.chirp-theme-track-progress__dot {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--chirpui-radius-full);
+  border: 2px solid var(--chirpui-border);
+  background: var(--chirpui-surface);
+  color: var(--chirpui-text-muted);
+  font-size: var(--chirpui-ui-xs);
+  font-weight: var(--chirpui-ui-font-weight-semibold);
+  line-height: 1;
+  transition:
+    color var(--chirpui-transition),
+    background var(--chirpui-transition),
+    border-color var(--chirpui-transition);
+}
+
+.chirp-theme-track-progress__step--complete .chirp-theme-track-progress__dot {
+  border-color: var(--chirpui-success);
+  background: color-mix(in srgb, var(--chirpui-success) 16%, var(--chirpui-surface));
+  color: var(--chirpui-success);
+}
+
+.chirp-theme-track-progress__step--current .chirp-theme-track-progress__dot {
+  border-color: var(--chirpui-accent);
+  background: var(--chirpui-accent);
+  color: var(--chirpui-on-accent);
+}
+
+.chirp-theme-track-progress__connector {
+  flex: 1 1 auto;
+  min-width: var(--chirpui-spacing-md);
+  height: 2px;
+  margin-inline: var(--chirpui-spacing-2xs);
+  border-radius: var(--chirpui-radius-full);
+  background: var(--chirpui-border);
+  transition: background var(--chirpui-transition);
+}
+
+.chirp-theme-track-progress__connector--complete {
+  background: var(--chirpui-success);
+}
+
+.chirp-theme-track-progress__label {
+  color: var(--chirpui-text-muted);
+  font-size: var(--chirpui-ui-sm);
+  font-weight: var(--chirpui-ui-font-weight-medium);
+}
+
+/* ---------------------------------------------------------------------------
+ * CATALOG — LMS card grid (tracks/list.html)
+ * ------------------------------------------------------------------------- */
+
+.chirp-theme-tracks-index {
+  min-width: 0;
+}
+
+.chirp-theme-track-grid {
+  min-width: 0;
+}
+
+.chirp-theme-track-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chirpui-spacing-sm);
+  min-width: 0;
+  height: 100%;
+  padding: var(--chirpui-spacing-lg);
+  border: 1px solid var(--chirpui-border);
+  border-radius: var(--chirpui-radius-lg);
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--chirpui-accent) 6%, transparent),
+      transparent 52%
+    ),
+    var(--chirpui-surface);
+  box-shadow: var(--chirpui-shadow-xs);
+  transition:
+    border-color var(--chirpui-transition),
+    box-shadow var(--chirpui-transition),
+    translate var(--chirpui-transition);
+}
+
+.chirp-theme-track-card:hover {
+  border-color: color-mix(in srgb, var(--chirpui-accent) 45%, var(--chirpui-border));
+  box-shadow: var(--chirpui-shadow-md);
+  translate: 0 -2px;
+}
+
+.chirp-theme-track-card:focus-within {
+  border-color: var(--chirpui-accent);
+}
+
+.chirp-theme-track-card__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--chirpui-spacing-sm);
+  min-width: 0;
+}
+
+.chirp-theme-track-card__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--chirpui-radius);
+  background: color-mix(in srgb, var(--chirpui-accent) 14%, var(--chirpui-surface));
+  color: var(--chirpui-accent);
+}
+
+.chirp-theme-track-card__title {
+  margin: 0;
+  min-width: 0;
+  font-size: var(--chirpui-ui-lg);
+  font-weight: var(--chirpui-ui-font-weight-semibold);
+  line-height: var(--chirpui-line-height-tight);
+}
+
+.chirp-theme-track-card__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--chirpui-transition);
+}
+
+.chirp-theme-track-card__title a:hover {
+  color: var(--chirpui-accent);
+}
+
+/* Stretch the title's link over the whole card so the card is one click target. */
+.chirp-theme-track-card__title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.chirp-theme-track-card {
+  position: relative;
+}
+
+.chirp-theme-track-card__count {
+  flex: 0 0 auto;
+}
+
+.chirp-theme-track-card__lede {
+  margin: 0;
+  color: var(--chirpui-text-muted);
+  line-height: var(--chirpui-line-height-normal);
+  text-wrap: pretty;
+}
+
+.chirp-theme-track-card__chips {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chirpui-spacing-2xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chirp-theme-track-card__chip {
+  display: flex;
+  align-items: center;
+  gap: var(--chirpui-spacing-sm);
+  min-width: 0;
+  font-size: var(--chirpui-ui-sm);
+  color: var(--chirpui-text);
+}
+
+.chirp-theme-track-card__chip-num {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--chirpui-radius-full);
+  background: color-mix(in srgb, var(--chirpui-accent) 12%, var(--chirpui-surface-alt));
+  color: var(--chirpui-accent);
+  font-family: var(--chirpui-code-font-family);
+  font-size: var(--chirpui-ui-xs);
+  font-weight: var(--chirpui-ui-font-weight-semibold);
+  line-height: 1;
+}
+
+.chirp-theme-track-card__chip-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chirp-theme-track-card__chip--more {
+  color: var(--chirpui-text-muted);
+  font-style: italic;
+  padding-inline-start: calc(1.5rem + var(--chirpui-spacing-sm));
+}
+
+.chirp-theme-track-card__cta {
+  display: flex;
+  margin-block-start: auto;
+  padding-block-start: var(--chirpui-spacing-xs);
+  /* Lift the CTA above the whole-card link overlay so it stays clickable. */
+  position: relative;
+  z-index: 1;
+}
+
+.chirp-theme-tracks-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--chirpui-spacing-sm);
+  padding: var(--chirpui-spacing-3xl) var(--chirpui-spacing-xl);
+  border: 1px dashed var(--chirpui-border);
+  border-radius: var(--chirpui-radius-lg);
+  background: color-mix(in srgb, var(--chirpui-surface-alt) 50%, transparent);
+  text-align: center;
+}
+
+.chirp-theme-tracks-empty h2 {
+  margin: 0;
+}
+
+.chirp-theme-tracks-empty p {
+  margin: 0;
+  color: var(--chirpui-text-muted);
+  max-width: 48ch;
+}
+
+.chirp-theme-tracks-empty__icon {
+  color: color-mix(in srgb, var(--chirpui-accent) 55%, var(--chirpui-text-muted));
+}
+
+/* ---------------------------------------------------------------------------
+ * PREV/NEXT WIDGET — sequential nav on a track member page (track_nav.html)
+ * ------------------------------------------------------------------------- */
+
+.chirp-theme-track-nav {
+  min-width: 0;
+}
+
+.chirp-theme-track-nav__actions {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 0;
+}
+
+.chirp-theme-track-nav__progress {
+  margin-block-start: var(--chirpui-spacing-sm);
+}
+
+/* ---------------------------------------------------------------------------
+ * RESUME BANNER — injected at runtime by tracks.js (no template emits these)
+ * ------------------------------------------------------------------------- */
+
+.track-resume-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--chirpui-spacing-sm);
+  margin-block-end: var(--chirpui-spacing-lg);
+  padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-md);
+  border: 1px solid color-mix(in srgb, var(--chirpui-accent) 35%, var(--chirpui-border));
+  border-radius: var(--chirpui-radius);
+  background: color-mix(in srgb, var(--chirpui-accent) 10%, var(--chirpui-surface));
+  box-shadow: var(--chirpui-shadow-sm);
+  /* Entry animation — capped + disabled under reduced motion below. */
+  animation: chirp-theme-track-resume-in var(--chirpui-motion-slow) var(--chirpui-ease-decel) both;
+}
+
+@keyframes chirp-theme-track-resume-in {
+  from {
+    opacity: 0;
+    translate: 0 -0.5rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Dismiss transition — tracks.js adds --dismissed, then removes after 300ms. */
+.track-resume-banner--dismissed {
+  opacity: 0;
+  translate: 0 -0.5rem;
+  transition:
+    opacity var(--chirpui-motion-slow) var(--chirpui-ease-accel),
+    translate var(--chirpui-motion-slow) var(--chirpui-ease-accel);
+}
+
+.track-resume-text {
+  color: var(--chirpui-text);
+  font-weight: var(--chirpui-ui-font-weight-medium);
+}
+
+.track-resume-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--chirpui-spacing-2xs);
+  padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-md);
+  border: 0;
+  border-radius: var(--chirpui-radius-sm);
+  background: var(--chirpui-accent);
+  color: var(--chirpui-on-accent);
+  font: inherit;
+  font-weight: var(--chirpui-ui-font-weight-semibold);
+  cursor: pointer;
+  transition:
+    background var(--chirpui-transition),
+    box-shadow var(--chirpui-transition);
+}
+
+.track-resume-button:hover {
+  background: var(--chirpui-accent-hover, color-mix(in srgb, var(--chirpui-accent) 88%, black));
+  box-shadow: var(--chirpui-shadow-sm);
+}
+
+.track-resume-dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: auto;
+  padding: var(--chirpui-spacing-2xs);
+  border: 0;
+  border-radius: var(--chirpui-radius-sm);
+  background: transparent;
+  color: var(--chirpui-text-muted);
+  cursor: pointer;
+  transition:
+    color var(--chirpui-transition),
+    background var(--chirpui-transition);
+}
+
+.track-resume-dismiss:hover {
+  color: var(--chirpui-text);
+  background: color-mix(in srgb, var(--chirpui-text) 8%, transparent);
+}
+
+.track-resume-dismiss svg {
+  display: block;
+}
+
+/* ---------------------------------------------------------------------------
+ * REDUCED MOTION — disable entry/dismiss animation and hover translate
+ * ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .chirp-theme-track-card,
+  .chirp-theme-track-card:hover {
+    transition: none;
+    translate: none;
+  }
+
+  .track-resume-banner {
+    animation: none;
+  }
+
+  .track-resume-banner--dismissed {
+    transition: none;
+  }
+}
