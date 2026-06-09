@@ -15,6 +15,7 @@ ICON_REGISTRY: dict[str, str] = {
     "add": "+",
     "refresh": "↻",
     "search": "⌕",
+    "magnifying-glass": "⌕",
     "reply": "↩",
     "comment": "◉",
     "share": "↗",

@@ -6,6 +6,10 @@ ROOT = Path(__file__).resolve().parents[1]
 APP_THEME = ROOT / "docs" / "theming" / "app-theme.md"
 TOKENS = ROOT / "docs" / "fundamentals" / "tokens.md"
 SHOWCASE = ROOT / "examples" / "design-system-gap-showcase" / "index.html"
+THEME_CSS = ROOT / "src" / "bengal_themes" / "chirp_theme" / "assets" / "css" / "chirp-theme.css"
+
+# WCAG 2.x AA contrast floor for normal-size text (button labels/icons).
+WCAG_AA_NORMAL = 4.5
 
 
 class _TokenJobParser(HTMLParser):
@@ -64,3 +68,124 @@ def test_app_theme_docs_define_override_escalation_ladder() -> None:
         "Do not skip directly to component selectors",
     ]:
         assert required in text
+
+
+# --- Accent / on-accent contrast parity -----------------------------------
+#
+# `.chirpui-btn--primary` renders `background: var(--chirpui-accent);
+# color: var(--chirpui-on-accent)`. When a theme block overrides the accent
+# (e.g. dark mode swaps the muted teal #0e7490 for the bright #2dd4bf) it MUST
+# also override --chirpui-on-accent, or the inherited :root ink fails WCAG AA.
+
+
+def _split_theme_blocks(css: str) -> dict[str, str]:
+    """Return {selector: declaration-body} for each top-level CSS block.
+
+    Brace-balanced so nested at-rules/blocks stay attached to their owner.
+    """
+    blocks: dict[str, str] = {}
+    i = 0
+    n = len(css)
+    while i < n:
+        brace = css.find("{", i)
+        if brace == -1:
+            break
+        selector = css[i:brace].strip().splitlines()[-1].strip()
+        depth = 1
+        j = brace + 1
+        while j < n and depth:
+            if css[j] == "{":
+                depth += 1
+            elif css[j] == "}":
+                depth -= 1
+            j += 1
+        body = css[brace + 1 : j - 1]
+        if selector:
+            blocks.setdefault(selector, "")
+            blocks[selector] += "\n" + body
+        i = j
+    return blocks
+
+
+def _declares(body: str, prop: str) -> str | None:
+    match = re.search(rf"(?<![\w-]){re.escape(prop)}\s*:\s*([^;}}]+)", body)
+    return match.group(1).strip() if match else None
+
+
+def _relative_luminance(hex_color: str) -> float:
+    hex_color = hex_color.lstrip("#")
+    if len(hex_color) == 3:
+        hex_color = "".join(ch * 2 for ch in hex_color)
+    r, g, b = (int(hex_color[k : k + 2], 16) / 255 for k in (0, 2, 4))
+
+    def _channel(c: float) -> float:
+        return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+
+    return 0.2126 * _channel(r) + 0.7152 * _channel(g) + 0.0722 * _channel(b)
+
+
+def _contrast_ratio(fg: str, bg: str) -> float:
+    l1 = _relative_luminance(fg)
+    l2 = _relative_luminance(bg)
+    hi, lo = max(l1, l2), min(l1, l2)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def _theme_accent_blocks() -> dict[str, str]:
+    css = THEME_CSS.read_text(encoding="utf-8")
+    blocks = _split_theme_blocks(css)
+    return {
+        selector: body
+        for selector, body in blocks.items()
+        if "[data-theme" in selector and _declares(body, "--chirpui-accent")
+    }
+
+
+def test_every_theme_accent_override_pairs_on_accent() -> None:
+    """Any [data-theme] block redefining --chirpui-accent must also redefine
+    --chirpui-on-accent so the primary button label keeps a checked contrast."""
+    accent_blocks = _theme_accent_blocks()
+
+    # The dark block is the canonical accent override; guard against the test
+    # silently passing if the parser ever stops finding it.
+    assert any("dark" in selector for selector in accent_blocks), (
+        "expected at least one [data-theme] accent override (e.g. dark)"
+    )
+
+    for selector, body in accent_blocks.items():
+        assert _declares(body, "--chirpui-on-accent"), (
+            f"{selector} overrides --chirpui-accent but not "
+            f"--chirpui-on-accent; the primary button label inherits the "
+            f":root ink and can fail WCAG AA"
+        )
+
+
+def test_primary_button_meets_aa_in_root_and_theme_overrides() -> None:
+    """--chirpui-on-accent on --chirpui-accent must clear 4.5:1 in :root and
+    in every theme block that overrides the accent."""
+    css = THEME_CSS.read_text(encoding="utf-8")
+    blocks = _split_theme_blocks(css)
+
+    root_body = blocks.get(":root", "")
+    root_accent = _declares(root_body, "--chirpui-accent")
+    root_on_accent = _declares(root_body, "--chirpui-on-accent")
+    assert root_accent, ":root must define --chirpui-accent"
+    assert root_on_accent, ":root must define --chirpui-on-accent"
+
+    pairs: list[tuple[str, str, str]] = [(":root", root_accent, root_on_accent)]
+    for selector, body in _theme_accent_blocks().items():
+        on_accent = _declares(body, "--chirpui-on-accent")
+        assert on_accent, f"{selector} missing --chirpui-on-accent"
+        pairs.append((selector, _declares(body, "--chirpui-accent"), on_accent))
+
+    hex_re = re.compile(r"^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$")
+    for selector, accent, on_accent in pairs:
+        # Only assert when both ends are concrete hex (not var()/keyword) so we
+        # measure resolved colors, not unresolved references.
+        if not (hex_re.match(accent) and hex_re.match(on_accent)):
+            continue
+        ratio = _contrast_ratio(on_accent, accent)
+        assert ratio >= WCAG_AA_NORMAL, (
+            f"{selector}: primary button label {on_accent} on accent "
+            f"{accent} is {ratio:.2f}:1, below WCAG AA {WCAG_AA_NORMAL}:1"
+        )

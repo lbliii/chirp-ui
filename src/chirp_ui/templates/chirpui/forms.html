@@ -675,7 +675,7 @@
    "with-icon" (input with ⌕ prefix). With with-button, input flexes; button stays compact. #}
 {% def search_bar(name, value="", variant="solo", label=none, search_url=none, search_target=none,
                   search_trigger="keyup changed delay:300ms", search_include=none, search_sync=none,
-                  placeholder="Search...", button_label="Search", button_icon="⌕",
+                  placeholder="Search...", button_label="Search", button_icon="search",
                   errors=none, attrs="", attrs_unsafe="", attrs_map=none, search_attrs_map=none, search_hx_select=none) %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
 {% set _has_errors = errors and errors | field_errors(name) %}
@@ -693,7 +693,7 @@
     {% end %}
     <div class="chirpui-search-bar__inner">
         {% if variant == "with-icon" %}
-        <span class="chirpui-search-bar__icon" aria-hidden="true">{{ button_icon }}</span>
+        <span class="chirpui-search-bar__icon" aria-hidden="true">{{ button_icon | icon }}</span>
         {% end %}
         <input class="chirpui-search-bar__input"
                type="search" id="{{ name }}" name="{{ name }}"
@@ -714,7 +714,7 @@
                {% if _search_sync %}hx-sync="{{ _search_sync }}"{% end %}>
         {% if variant == "with-button" %}
         <button type="submit" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm chirpui-search-bar__btn">
-            <span class="chirpui-btn__icon">{{ button_icon }}</span>
+            <span class="chirpui-btn__icon">{{ button_icon | icon }}</span>
             <span class="chirpui-btn__label">{{ button_label }}</span>
         </button>
         {% end %}

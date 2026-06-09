@@ -99,6 +99,12 @@
   --chirpui-accent: #2dd4bf;
   --chirpui-accent-hover: #5eead4;
   --chirpui-accent-secondary: #fbbf24;
+  /* Dark ink on the bright teal accent: white-on-#2dd4bf is ~1.86:1 (fails
+     WCAG AA); #0a1012 ink is ~10.3:1, and ~12.96:1 on the #5eead4 hover.
+     Token-parity rule: every theme that overrides --chirpui-accent must pair
+     it with a contrast-checked --chirpui-on-accent (enforced by
+     tests/test_theme_token_parity.py). */
+  --chirpui-on-accent: #0a1012;
   --chirpui-elevation-theme:
     0 1px 0 rgba(255, 255, 255, 0.03),
     0 22px 48px rgba(0, 0, 0, 0.42);

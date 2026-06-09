@@ -9,6 +9,12 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOCS_SITE_SCRIPT = REPO_ROOT / "scripts" / "docs_site.py"
 PYPROJECT = REPO_ROOT / "pyproject.toml"
+THEME_BASE_TEMPLATE = (
+    REPO_ROOT / "src" / "bengal_themes" / "chirp_theme" / "templates" / "base.html"
+)
+FONTS_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "fonts.yaml"
+SITE_PUBLIC = REPO_ROOT / "site" / "public"
+VALID_SEARCH_PRELOAD_MODES = {"smart", "immediate", "lazy"}
 AGENT_SOURCE_INVENTORY = REPO_ROOT / "docs" / "agents" / "agent-source-inventory.md"
 AGENT_SOURCE_MAP = REPO_ROOT / "docs" / "agents" / "agent-source-map.md"
 AGENT_CURATED_SNIPPETS = REPO_ROOT / "docs" / "agents" / "agent-curated-snippets.md"
@@ -477,3 +483,83 @@ def test_docs_build_tasks_do_not_override_ssg_agent_artifacts() -> None:
     assert "build_llm_endpoints" not in pyproject
     assert "docs-emit-llm" not in pyproject
     assert "docs-llm-endpoints" not in pyproject
+
+
+def _built_html_pages() -> list[Path]:
+    """Built index pages to assert head-meta correctness against (skip if unbuilt)."""
+    candidates = [SITE_PUBLIC / "index.html", SITE_PUBLIC / "search" / "index.html"]
+    return [path for path in candidates if path.is_file()]
+
+
+def test_base_template_links_fonts_css_when_display_font_configured() -> None:
+    """#135 — fonts.css must be linked, gated on a fonts-configured check, with
+    the above-the-fold Outfit weights preloaded as woff2 (font-display:swap is in
+    the generated stylesheet)."""
+    template = THEME_BASE_TEMPLATE.read_text(encoding="utf-8")
+
+    # The gate keys off the configured display font (fonts.yaml: fonts.display).
+    assert "config?.fonts?.display" in template
+    # Generated stylesheet is linked so var(--font-display) resolves to Outfit.
+    assert "asset_url('fonts.css')" in template
+    # 400 (body/headings) and 600 (section labels) are above the fold — preload both.
+    assert 'rel="preload"' in template
+    assert 'as="font"' in template
+    assert 'type="font/woff2"' in template
+    assert "asset_url('fonts/outfit-400.woff2')" in template
+    assert "asset_url('fonts/outfit-600.woff2')" in template
+    # crossorigin is required for font preloads to be reused by the @font-face fetch.
+    fonts_block = template[template.index("config?.fonts?.display") :]
+    fonts_block = fonts_block[: fonts_block.index("{% end %}")]
+    for line in fonts_block.splitlines():
+        if 'rel="preload"' in line and 'as="font"' in line:
+            assert "crossorigin" in line, line
+
+
+def test_fonts_config_defines_a_display_font() -> None:
+    """The fonts gate is only meaningful while a display font is configured."""
+    text = FONTS_CONFIG.read_text(encoding="utf-8")
+
+    # fonts.display: "Outfit:400,600,700" — the weights the preloads/stylesheet serve.
+    assert "display:" in text
+    assert "Outfit" in text
+
+
+def test_base_template_reads_real_search_preload_config_path() -> None:
+    """#139 — the meta must read search.lunr.preload (not the non-existent
+    config.search_preload) so it never leaks a stringified ConfigSection."""
+    template = THEME_BASE_TEMPLATE.read_text(encoding="utf-8")
+
+    assert "config.search?.lunr?.preload ?? 'smart'" in template
+    # The old mis-keyed path is gone for good.
+    assert "config.search_preload" not in template
+
+
+def test_built_pages_link_fonts_css() -> None:
+    """#135 — every built page links fonts.css while a display font is configured."""
+    pages = _built_html_pages()
+    if not pages:
+        pytest.skip("site/public not built; Gate rebuilds the site before verification")
+
+    for page in pages:
+        html = page.read_text(encoding="utf-8")
+        assert "fonts.css" in html, f"fonts.css not linked in {page}"
+        assert re.search(r'rel="preload"[^>]*as="font"[^>]*type="font/woff2"', html), (
+            f"no woff2 font preload in {page}"
+        )
+
+
+def test_built_pages_render_clean_search_preload_meta() -> None:
+    """#139 — bengal:search_preload renders one of the three valid modes with no
+    stringified config object, on every page including /search."""
+    pages = _built_html_pages()
+    if not pages:
+        pytest.skip("site/public not built; Gate rebuilds the site before verification")
+
+    pattern = re.compile(r'<meta\s+name="bengal:search_preload"\s+content="([^"]*)"', re.IGNORECASE)
+    for page in pages:
+        html = page.read_text(encoding="utf-8")
+        match = pattern.search(html)
+        assert match is not None, f"bengal:search_preload meta missing in {page}"
+        value = match.group(1)
+        assert "ConfigSection" not in value, f"stringified config leaked in {page}: {value!r}"
+        assert value in VALID_SEARCH_PRELOAD_MODES, f"invalid preload mode in {page}: {value!r}"

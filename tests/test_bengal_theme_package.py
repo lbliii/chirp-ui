@@ -66,7 +66,6 @@ REQUIRED_PARTIALS = (
     "partials/navigation-components.html",
     "partials/docs-nav.html",
     "partials/docs-toc-sidebar.html",
-    "partials/page-hero.html",
     "partials/search-modal.html",
     "partials/theme-primitives.html",
     "partials/theme-controls.html",
@@ -322,7 +321,17 @@ def test_chirp_theme_literal_template_asset_urls_exist() -> None:
         text = resource.read_text(encoding="utf-8")
         referenced.update(asset_pattern.findall(text))
 
-    missing = sorted(path for path in referenced if not (assets_root / path).is_file())
+    # Bengal generates the display-font stylesheet and woff2 weights at build
+    # time from site fonts config (fonts.yaml: fonts.display). They are not
+    # committed source assets, so exclude them from the source-asset check.
+    def _is_generated(path: str) -> bool:
+        return path == "fonts.css" or (path.startswith("fonts/") and path.endswith(".woff2"))
+
+    missing = sorted(
+        path
+        for path in referenced
+        if not _is_generated(path) and not (assets_root / path).is_file()
+    )
 
     assert "css/style.css" in referenced
     assert "js/enhancements/action-bar.js" in referenced
@@ -457,7 +466,7 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
         encoding="utf-8"
     )
     search_modal = (templates_root / "partials" / "search-modal.html").read_text(encoding="utf-8")
-    inline_search = (templates_root / "partials" / "search.html").read_text(encoding="utf-8")
+    search_page = (templates_root / "search.html").read_text(encoding="utf-8")
     toc_sidebar = (templates_root / "partials" / "docs-toc-sidebar.html").read_text(
         encoding="utf-8"
     )
@@ -496,9 +505,8 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     assert "window.BengalSearchModal" in search_js
     assert "#nav-search-trigger" in search_js
 
-    assert 'id="search-container"' in inline_search
-    assert 'data-variant="{{ variant }}"' in inline_search
-    assert 'id="search-input"' in inline_search
+    assert 'id="search-input"' in search_page
+    assert 'data-chirp-theme-surface="search"' in search_page
     assert "document.getElementById('search-input')" in search_js
 
     assert 'id="mobile-nav-dialog"' in base
@@ -521,7 +529,7 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
         templates_root / "partials" / "components" / "blog-share-dropdown.html"
     ).read_text(encoding="utf-8")
     assert "'data-action': 'copy-url'" in (
-        templates_root / "partials" / "page-hero" / "_macros.html"
+        templates_root / "partials" / "components" / "social-share.html"
     ).read_text(encoding="utf-8")
     assert "querySelectorAll('[popovertarget]')" in action_bar_js
     assert "closest('[data-action^=\"copy\"]')" in action_bar_js
@@ -737,7 +745,6 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     page = (templates_root / "page.html").read_text(encoding="utf-8")
     blog_shell = (templates_root / "blog" / "shell.html").read_text(encoding="utf-8")
     section_index = (templates_root / "index.html").read_text(encoding="utf-8")
-    page_hero_partial = (templates_root / "partials" / "page-hero.html").read_text(encoding="utf-8")
     page_actions = (templates_root / "partials" / "page-actions.html").read_text(encoding="utf-8")
     css = (assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8")
     interactive_css = (assets_root / "css" / "components" / "interactive.css").read_text(
@@ -760,7 +767,11 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert 'from "partials/empty-state.html" import empty_state' not in not_found
     assert ".chirp-theme-search__panel" in css
     assert ".chirp-theme-error__panel" in css
-    assert "chirp-theme-docs-layout__hero chirp-theme-doc-hero" in page_hero_partial
+    # The bespoke doc hero is now composed via the chirpui page_hero macro with a
+    # theme cls (the old partials/page-hero.html + page-hero/_macros.html are gone).
+    assert "chirp-theme-docs-layout__hero chirp-theme-doc-hero" in doc_list
+    assert "chirp-theme-docs-layout__hero chirp-theme-doc-hero" in doc_single
+    assert ".chirp-theme-page-hero" in css
     assert "partials/page-actions.html" in doc_list
     assert "partials/page-actions.html" in doc_single
     assert "page_actions(page)" in doc_list
@@ -770,16 +781,14 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert 'data-action="copy-llm-txt"' in page_actions
     assert 'data-ai="{{ ai.id }}"' in page_actions
     assert "ensure_trailing_slash(page_url) ~ 'index.txt'" in page_actions
-    assert "cls='page-hero page-hero--chirp'" not in page_hero_partial
-    page_hero_macros = (templates_root / "partials" / "page-hero" / "_macros.html").read_text(
-        encoding="utf-8"
-    )
+    # The legacy flat page-hero markup must not reappear in the doc templates that
+    # now drive the hero through the chirpui page_hero macro.
+    assert "page-hero--chirp" not in doc_list
+    assert "page-hero--chirp" not in doc_single
     navigation = (templates_root / "partials" / "navigation-components.html").read_text(
         encoding="utf-8"
     )
     docs_nav = (templates_root / "partials" / "docs-nav.html").read_text(encoding="utf-8")
-    assert "chirp-theme-page-hero" in page_hero_macros
-    assert 'class="page-hero' not in page_hero_macros
     assert "chirpui-pagination chirp-theme-pagination" in navigation
     assert "section-navigation" not in navigation
     assert "subsection-card gradient-border fluid-combined" not in navigation

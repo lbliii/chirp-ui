@@ -24,7 +24,6 @@ _path, kind, tags are always defined - no defensive checks needed.
 {# Normalized config objects (pre-processed by Site with defaults applied) #}
 {% let _build_badge = site.build_badge %}
 {% let _doc_app = site.document_application %}
-{% let _link_previews = site.link_previews %}
 {% let _per_page_json = 'json' in (config.output_formats.per_page ?? []) %}
 {% let _per_page_md = 'markdown' in (config.output_formats.per_page ?? []) %}
 
@@ -244,7 +243,7 @@ symbols imported inside another block.
     {% end %}
 
     {# Bengal config meta #}
-    <meta name="bengal:search_preload" content="{{ config.search_preload ?? 'smart' }}">
+    <meta name="bengal:search_preload" content="{{ config.search?.lunr?.preload ?? 'smart' }}">
     <meta name="bengal:baseurl" content="{{ site.baseurl }}">
     <meta name="bengal:index_url" content="{{ '/index.json' | absolute_url }}">
     {% if bengal.capabilities.prebuilt_search %}
@@ -294,6 +293,17 @@ symbols imported inside another block.
     {# Preconnect #}
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://d3js.org" crossorigin>
+
+    {# Display webfont — Bengal generates assets/fonts.css from fonts.yaml
+       (fonts.display: "Outfit:400,600,700"). Preload the above-the-fold weights
+       (400 body/headings, 600 section labels) and link the generated stylesheet so
+       var(--font-display) resolves to Outfit. fonts.css keeps font-display:swap. #}
+    {% let _fonts_display = config?.fonts?.display ?? none %}
+    {% if _fonts_display %}
+    <link rel="preload" href="{{ asset_url('fonts/outfit-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset_url('fonts/outfit-600.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{ asset_url('fonts.css') }}">
+    {% end %}
 
     {# Library and theme assets #}
     {% if library_asset_tags | default(none) %}

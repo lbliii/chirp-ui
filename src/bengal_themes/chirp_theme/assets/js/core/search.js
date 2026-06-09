@@ -1943,7 +1943,22 @@
     }
 
     /**
-     * Initialize preloading based on configured mode
+     * Warm the search index during browser idle time.
+     * Uses requestIdleCallback when available so the fetch never competes
+     * with first paint / critical-path work; falls back to a short timeout.
+     */
+    function warmIndexWhenIdle() {
+        if (typeof window.requestIdleCallback === 'function') {
+            window.requestIdleCallback(preloadSearch, { timeout: 2000 });
+        } else {
+            setTimeout(preloadSearch, 500);
+        }
+    }
+
+    /**
+     * Initialize preloading based on configured mode.
+     * This is the sole entry point for index preloading — there is no
+     * unconditional background fetch, so 'lazy' truly defers to first search.
      */
     function initPreload() {
         // Get preload mode from meta tag
@@ -1951,8 +1966,8 @@
         const preloadMode = (metaEl && metaEl.getAttribute('content')) || 'smart';
 
         if (preloadMode === 'immediate') {
-            // Load right away (best for small sites <100 pages)
-            preloadSearch();
+            // Warm right away during idle time (best for small sites <100 pages)
+            warmIndexWhenIdle();
         } else if (preloadMode === 'smart') {
             // Load on user intent signals (default, best for most sites)
             setupSmartPreload();
@@ -2030,11 +2045,8 @@
             initSearchPage();
         }
 
-        // Initialize preloading
+        // Initialize preloading (sole authority — honors smart/immediate/lazy)
         initPreload();
-
-        // Pre-load index on page load (in background, delayed)
-        setTimeout(loadSearchIndex, 500);
     });
 
     log('Bengal Search initialized (consolidated)');
