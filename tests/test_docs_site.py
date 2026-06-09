@@ -12,8 +12,19 @@ PYPROJECT = REPO_ROOT / "pyproject.toml"
 THEME_BASE_TEMPLATE = (
     REPO_ROOT / "src" / "bengal_themes" / "chirp_theme" / "templates" / "base.html"
 )
+THEME_AUTODOC_MEMBERS = (
+    REPO_ROOT
+    / "src"
+    / "bengal_themes"
+    / "chirp_theme"
+    / "templates"
+    / "autodoc"
+    / "partials"
+    / "members.html"
+)
 FONTS_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "fonts.yaml"
 SITE_PUBLIC = REPO_ROOT / "site" / "public"
+API_FILTERS_PAGE = SITE_PUBLIC / "api" / "filters" / "index.html"
 VALID_SEARCH_PRELOAD_MODES = {"smart", "immediate", "lazy"}
 AGENT_SOURCE_INVENTORY = REPO_ROOT / "docs" / "agents" / "agent-source-inventory.md"
 AGENT_SOURCE_MAP = REPO_ROOT / "docs" / "agents" / "agent-source-map.md"
@@ -563,3 +574,58 @@ def test_built_pages_render_clean_search_preload_meta() -> None:
         value = match.group(1)
         assert "ConfigSection" not in value, f"stringified config leaked in {page}: {value!r}"
         assert value in VALID_SEARCH_PRELOAD_MODES, f"invalid preload mode in {page}: {value!r}"
+
+
+def test_autodoc_members_read_signature_and_params_from_metadata() -> None:
+    """#158 — member detail must read the Bengal extractor's real field paths.
+
+    Bengal's Python extractor emits a member's signature/params under
+    `member.metadata.*` (signature -> metadata.signature, parameters ->
+    metadata.args). The previous template gated the signature on the
+    non-existent top-level `member.signature` and looked for
+    `metadata.parameters`/`metadata.args` without remapping the arg dicts'
+    `docstring` key to params_table's `description` column, so on real data
+    zero signatures and zero params tables rendered.
+    """
+    template = THEME_AUTODOC_MEMBERS.read_text(encoding="utf-8")
+
+    # Signature/params are sourced from metadata, not the (absent) top-level keys.
+    assert "member_meta?.signature" in template
+    assert "member_meta?.args" in template
+    # The arg dicts' per-param prose (`docstring`) is remapped to the
+    # params_table `description` column, or it would render blank.
+    assert 'arg.get("docstring"' in template
+    assert "params_table(member_param_rows" in template
+    # Member-level flags surfaced from metadata (not only the page hero).
+    assert "member_meta?.is_async" in template
+    assert "member_meta?.is_property" in template
+    assert "member_meta?.is_classmethod" in template
+    assert "member_meta?.is_staticmethod" in template
+    # Deprecation notice is a DocElement-level field, not a metadata flag.
+    assert "member?.deprecated" in template
+
+
+def test_built_api_filters_renders_typed_params_tables() -> None:
+    """#158 — a parametered member on /api/filters/ must emit a params table.
+
+    `bem`, `validate_variant`, and friends in chirp_ui.filters have typed
+    parameters; after the field-path fix the rebuilt page must surface them as
+    chirpui-params-table elements (name/type/default/description). Skipped when
+    the site is unbuilt — the Gate rebuilds the site before verification.
+    """
+    if not API_FILTERS_PAGE.is_file():
+        pytest.skip("site/public not built; Gate rebuilds the site before verification")
+
+    html = API_FILTERS_PAGE.read_text(encoding="utf-8")
+
+    # The page documents parametered filters, so at least one member's
+    # parameters must render as a chirpui-params-table.
+    assert html.count("chirpui-params-table") > 0, (
+        "no chirpui-params-table on /api/filters/ — member params are not "
+        "being read from member.metadata.args (see #158)"
+    )
+    # And the typed signature itself must be surfaced as a code block.
+    assert "chirp-theme-reference-member__signature" in html, (
+        "no member signature rendered on /api/filters/ — signature is not being "
+        "read from member.metadata.signature (see #158)"
+    )

@@ -1,71 +1,145 @@
 {#
-Track Helper Macros
+================================================================================
+Track Helper Macros (Kida-Native)
+================================================================================
 
-Reusable macros for track-related template logic.
+Reusable PRESENTATIONAL macros for the data-file track pillar page.
 
-Usage:
-{% from 'partials/track-helpers.html' import get_track_id, get_track, validate_track_id %}
+WHY NO get_track_id()/get_track() VALUE-RETURNING MACROS:
+  Kida `{% def %}` emits TEXT, not Python objects. A macro that "returns" a
+  track id or dict via `{{ track_id }}` yields rendered whitespace, not a
+  usable value. Resolve track state INLINE in the consuming template with
+  `{% let %}` + null-coalescing instead:
+
+    {% let track_id   = params?.track_id ?? page?.slug ?? '' %}
+    {% let tracks     = site?.data?.tracks ?? {} %}
+    {% let track      = tracks[track_id] if (track_id and track_id in tracks) else none %}
+    {% let track_items = track?.items ?? [] %}
+
+  This file therefore exports HTML-emitting macros only. They are the shared
+  visual vocabulary consumed by tracks/single.html and the CSS/JS waves
+  (see the DOM contract documented at the top of tracks/single.html).
+
+EXPORTS:
+  track_progress_indicator(total_steps, current_step)  — stepped progress rail
+  track_section_block(item_page, index, is_last)        — one embedded lesson
+  track_section_missing(item_slug, index)               — placeholder for a
+                                                          slug with no page
+
+USAGE:
+  {% from 'partials/track-helpers.html' import
+        track_progress_indicator, track_section_block, track_section_missing %}
+================================================================================
 #}
+{% from "chirpui/badge.html" import badge %}
 
-{% def get_track_id(page) %}
-  {#
-    Get track_id for a page, with fallback to slug.
+{# =============================================================================
+   PROGRESS INDICATOR
 
-    Returns the track_id if valid, or None if track doesn't exist.
-
-    Usage:
-      {% set track_id = get_track_id(page) %}
-      {% if track_id %}
-        {% set track = site.data.tracks[track_id] %}
+   Stepped rail showing how many sections a track contains. `current_step`
+   marks the section a reader has reached (defaults to the first).
+   DOM contract: .chirp-theme-track-progress[role="progressbar"]
+   ============================================================================= #}
+{% def track_progress_indicator(total_steps, current_step=1) %}
+{% let total = total_steps ?? 0 %}
+{% if total > 0 %}
+<div class="chirp-theme-track-progress" role="progressbar"
+     aria-valuenow="{{ current_step }}" aria-valuemin="1" aria-valuemax="{{ total }}"
+     aria-label="Track progress: step {{ current_step }} of {{ total }}"
+     data-track-progress>
+  <ol class="chirp-theme-track-progress__steps">
+    {% let step = 1 %}
+    {% while step <= total %}
+    {% let is_complete = step < current_step %}
+    {% let is_current = step == current_step %}
+    <li class="chirp-theme-track-progress__step{{ ' chirp-theme-track-progress__step--complete' if is_complete else '' }}{{ ' chirp-theme-track-progress__step--current' if is_current else '' }}"
+        data-track-step="{{ step }}"{% if is_current %} aria-current="step"{% end %}>
+      <span class="chirp-theme-track-progress__dot" aria-hidden="true">
+        {% if is_complete %}{{ icon('check', size=14) }}{% else %}{{ step }}{% end %}
+      </span>
+      {% if step < total %}
+      <span class="chirp-theme-track-progress__connector{{ ' chirp-theme-track-progress__connector--complete' if is_complete else '' }}" aria-hidden="true"></span>
       {% end %}
-  #}
-  {% set track_id = params.track_id or page.slug %}
-  {% if site.data.tracks and track_id in site.data.tracks %}
-    {{ track_id }}
-  {% else %}
-    {{ none }}
-  {% end %}
-{% end %}
-
-{% def get_track(page) %}
-  {#
-    Get track object for a page.
-
-    Returns the track dict if found, or None.
-
-    Usage:
-      {% set track = get_track(page) %}
-      {% if track %}
-        <h1>{{ track.title }}</h1>
-      {% end %}
-  #}
-  {% set track_id = get_track_id(page) %}
-  {% if track_id and site.data.tracks %}
-    {% set track = site.data.tracks[track_id] %}
-    {% if track %}
-      {{ track }}
-    {% else %}
-      {{ none }}
+    </li>
+    {% let step = step + 1 %}
     {% end %}
-  {% else %}
-    {{ none }}
-  {% end %}
+  </ol>
+  <span class="chirp-theme-track-progress__label">Step {{ current_step }} of {{ total }}</span>
+</div>
+{% end %}
 {% end %}
 
-{% def validate_track_id(track_id) %}
-  {#
-    Validate that a track_id exists in tracks data.
+{# =============================================================================
+   TRACK SECTION BLOCK
 
-    Returns True if valid, False otherwise.
+   Renders one track member page inline as a pillar-page section. Headings are
+   demoted one level and prefixed with `s{index}-` so anchors stay unique and
+   the combined TOC (combine_track_toc) can link into them. Relative links are
+   resolved to absolute so they keep working when embedded.
 
-    Usage:
-      {% if validate_track_id('getting-started') %}
-        Track exists!
+   DOM contract:
+     <section id="track-section-{index}" class="chirp-theme-track-section">
+       .chirp-theme-track-section__header
+         .chirp-theme-track-section__number  (the {index})
+         .chirp-theme-track-section__title    (h2)
+         .chirp-theme-track-section__lede      (optional description)
+       .chirp-theme-track-section__body  (embedded, demoted HTML)
+       .chirp-theme-track-section__complete (only on the final section)
+   ============================================================================= #}
+{% def track_section_block(item_page, index, is_last=false) %}
+{% let section_prefix = "s" ~ index ~ "-" %}
+{% let item_title = item_page?.title ?? 'Section' %}
+{% let item_lede = item_page?.description ?? '' %}
+{% let item_html = item_page?.html_content ?? none %}
+{% let item_content = item_page?.content ?? '' %}
+{% let item_href = item_page?.href ?? '#' %}
+
+<section id="track-section-{{ index }}" class="chirp-theme-track-section" data-track-section="{{ index }}">
+  <header class="chirp-theme-track-section__header">
+    <span class="chirp-theme-track-section__number" aria-hidden="true">{{ index }}</span>
+    <div class="chirp-theme-track-section__heading">
+      <h2 class="chirp-theme-track-section__title">{{ item_title }}</h2>
+      {% if item_lede %}
+      <p class="chirp-theme-track-section__lede">{{ item_lede }}</p>
       {% end %}
-  #}
-  {% if site.data.tracks and track_id in site.data.tracks %}
-    {{ true }}
-  {% else %}
-    {{ false }}
+    </div>
+  </header>
+
+  <div class="chirp-theme-track-section__body prose">
+    {% if item_html %}
+    {{ item_html | resolve_links_for_embedding(item_page) | demote_headings | prefix_heading_ids(section_prefix) | safe }}
+    {% elif item_content %}
+    {{ item_content | resolve_links_for_embedding(item_page) | demote_headings | prefix_heading_ids(section_prefix) | safe }}
+    {% else %}
+    <div class="chirp-theme-track-section__placeholder">
+      <p>This lesson has no inline content yet.</p>
+      {{ badge('Open full page', variant='primary', icon='arrow-right', href=item_href) }}
+    </div>
+    {% end %}
+  </div>
+
+  {% if is_last %}
+  <div class="chirp-theme-track-section__complete">
+    {{ badge('Track complete', variant='success', icon='check') }}
+  </div>
   {% end %}
+</section>
+{% end %}
+
+{# =============================================================================
+   MISSING SECTION PLACEHOLDER
+
+   Shown when a track item slug resolves to no page (broken `tracks.yaml`
+   reference). Keeps the section anchor stable so the TOC does not break.
+   ============================================================================= #}
+{% def track_section_missing(item_slug, index) %}
+<section id="track-section-{{ index }}" class="chirp-theme-track-section chirp-theme-track-section--missing" data-track-section="{{ index }}">
+  <header class="chirp-theme-track-section__header">
+    <span class="chirp-theme-track-section__number" aria-hidden="true">{{ index }}</span>
+    <div class="chirp-theme-track-section__heading">
+      <h2 class="chirp-theme-track-section__title">Section {{ index }} unavailable</h2>
+      <p class="chirp-theme-track-section__lede">No page matches <code>{{ item_slug }}</code>.</p>
+    </div>
+  </header>
+</section>
 {% end %}

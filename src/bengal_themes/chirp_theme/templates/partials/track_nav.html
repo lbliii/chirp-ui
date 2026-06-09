@@ -1,25 +1,61 @@
+{#
+================================================================================
+Track Prev/Next Navigation (Kida-Native)
+================================================================================
+
+Sequential prev/next control for a reader sitting ON a track member page
+(NOT the pillar page). Finds which track owns the current page, then derives
+the previous/next siblings WITHOUT `.index()` (unavailable in kida) by walking
+`track.items` with a loop and recording the neighbours of the matching slug.
+
+DOM contract: .chirp-theme-track-nav card with
+  .chirp-theme-track-nav__actions  (prev/next buttons)
+  .chirp-theme-track-nav__progress (progress bar)
+
+USAGE:
+  {% include 'partials/track_nav.html' %}
+================================================================================
+#}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/layout.html" import cluster %}
 {% from "chirpui/progress.html" import progress_bar %}
 
-{% set current_slug = page.relative_path | replace('.md', '') %}
+{% let current_slug = page.relative_path | replace('.md', '') %}
+{% let all_tracks = site?.data?.tracks ?? {} %}
 
-{% if site.data.tracks %}
-{% for track_id, track in site.data.tracks | items %}
-{% if current_slug in track.items %}
+{% for track_id, track in all_tracks | items %}
+{% let track_items = track?.items ?? [] %}
+{% if current_slug in track_items %}
 
-{% set current_index = track.items.index(current_slug) %}
-{% set prev_slug = track.items[current_index - 1] if current_index > 0 else None %}
-{% set next_slug = track.items[current_index + 1] if current_index < (track.items|length - 1) else None %}
-{% let progress_value = ((current_index + 1) / track.items|length) * 100 %}
+{# Walk the item list once to find the current position + neighbours.
+   Avoids `.index()` (not available in kida) and capital `None`.
+   Accumulate into lists (append survives loop scope) instead of mutating a
+   {% let %} across the loop boundary. #}
+{% set _positions = [] %}
+{% set _prev = [] %}
+{% set _next = [] %}
+{% for item_slug in track_items %}
+{% if item_slug == current_slug %}
+{% set _ = _positions.append(loop.index) %}
+{% if not loop.first %}{% set _ = _prev.append(track_items[loop.index0 - 1]) %}{% end %}
+{% if not loop.last %}{% set _ = _next.append(track_items[loop.index0 + 1]) %}{% end %}
+{% end %}
+{% end %}
 
-{% call card(title=track.title, subtitle=(current_index + 1) ~ " of " ~ (track.items | length), cls="chirp-theme-track-nav") %}
+{% let total = track_items | length %}
+{% let position = _positions[0] if _positions | length > 0 else 0 %}
+{% let prev_slug = _prev[0] if _prev | length > 0 else none %}
+{% let next_slug = _next[0] if _next | length > 0 else none %}
+{% let progress_value = (position / total) * 100 if total > 0 else 0 %}
+{% let position_label = position ~ " of " ~ total %}
+
+{% call card(title=track?.title ?? 'Track', subtitle=position_label, cls="chirp-theme-track-nav") %}
   {% slot header_actions %}{{ badge("Track", variant="primary") }}{% end %}
   {% call cluster(gap="sm", cls="chirp-theme-track-nav__actions") %}
     {% if prev_slug %}
-    {% set prev_page = get_page(prev_slug) %}
+    {% let prev_page = get_page(prev_slug) %}
     {% if prev_page %}
     {{ btn(prev_page.title, href=prev_page.href, variant="ghost", size="sm", icon="arrow-left") }}
     {% else %}
@@ -30,19 +66,18 @@
     {% end %}
 
     {% if next_slug %}
-    {% set next_page = get_page(next_slug) %}
+    {% let next_page = get_page(next_slug) %}
     {% if next_page %}
     {{ btn(next_page.title, href=next_page.href, variant="primary", size="sm", icon="arrow-right") }}
     {% else %}
     <span class="chirpui-text-muted chirpui-font-sm">Next unavailable</span>
     {% end %}
     {% else %}
-    {{ btn("Finish Track", href=('/tracks/' | absolute_url), variant="success", size="sm", icon="check") }}
+    {{ btn("Finish track", href=('/tracks/' | absolute_url), variant="success", size="sm", icon="check") }}
     {% end %}
   {% end %}
-  {{ progress_bar(progress_value, label=(current_index + 1) ~ " of " ~ (track.items | length), variant="gold", size="sm", cls="chirp-theme-track-nav__progress") }}
+  {{ progress_bar(progress_value, label=position_label, variant="gold", size="sm", cls="chirp-theme-track-nav__progress") }}
 {% end %}
 
-{% end %}
 {% end %}
 {% end %}

@@ -1,23 +1,166 @@
+{#
+================================================================================
+TRACK SINGLE — Bespoke Data-File Pillar Page (Kida-Native)
+================================================================================
+
+A learning track is defined in `site/data/tracks.yaml` as:
+
+    getting-started:
+      title: "Getting Started"
+      description: "..."
+      items: ["intro", "install", "first-steps"]   # page slugs, in order
+
+This template reads `site.data.tracks[track_id]`, pre-computes every member
+page via `get_page`, and stitches them into ONE long pillar page — a self-paced
+"reading mode" for the whole track. This is deliberately NOT the tutorial layout
+(tutorial/single.html is a flat hero + stepper + card grid that links OUT to
+each step). Tracks read INLINE in a three-column LMS shell.
+
+--------------------------------------------------------------------------------
+RECONCILED DOM VOCABULARY — the contract for waves #141 (CSS) and #142 (JS).
+Do not rename these without updating those waves.
+--------------------------------------------------------------------------------
+Shell (this file):
+  .chirp-theme-track-layout                     three-column reading shell root
+    [data-chirp-theme-surface="track"]          surface hook (distinct from doc)
+  .chirp-theme-track-layout--with-toc           modifier when a combined TOC exists
+  .chirp-theme-track-layout__sidebar            left rail (track-sidebar.html)
+  .chirp-theme-track-layout__main               center reading column
+  .chirp-theme-track-layout__toc                right rail (combined TOC)
+  .chirp-theme-track-layout__article            the pillar <article>
+  .chirp-theme-track-intro                       leading frontmatter content
+  .chirp-theme-track-sections                    wrapper for all section blocks
+  .chirp-theme-track-empty                       "no track defined" state
+
+Sidebar (partials/track-sidebar.html):
+  nav.chirp-theme-track-sidebar[data-bengal="track-nav"][data-track-id]
+  .chirp-theme-track-sidebar__list / __item / __link[data-track-target]
+  .chirp-theme-track-sidebar__number / __title / __card
+
+Progress (partials/track-helpers.html → track_progress_indicator):
+  .chirp-theme-track-progress[role="progressbar"][data-track-progress]
+  .chirp-theme-track-progress__steps / __step(--complete|--current)
+  .chirp-theme-track-progress__dot / __connector / __label
+
+Section (partials/track-helpers.html → track_section_block):
+  section#track-section-{n}.chirp-theme-track-section[data-track-section]
+  .chirp-theme-track-section__header / __number / __heading
+  .chirp-theme-track-section__title (h2) / __lede / __body / __complete
+  Section content headings are demoted + prefixed `s{n}-` so the combined
+  TOC anchors (#s{n}-<heading-id>) resolve and ids stay unique.
+
+Anchor contract: sidebar link href === section id === `#track-section-{n}`,
+where {n} is the 1-based position in `track.items`.
+--------------------------------------------------------------------------------
+
+USAGE: set `type: track` in frontmatter, or `template: tracks/single.html`.
+       Set `track_id` in frontmatter when the page slug != the tracks.yaml key.
+================================================================================
+#}
 {% extends "base.html" %}
 
+{% from "chirpui/badge.html" import badge %}
 {% from "chirpui/hero.html" import page_hero %}
-{% from "chirpui/layout.html" import container, stack %}
-{% from "partials/learning-pages.html" import content_cards, progress_for, rendered_body %}
+{% from "partials/navigation-components.html" import toc, breadcrumbs %}
+{% from "partials/track-helpers.html" import
+      track_progress_indicator, track_section_block, track_section_missing %}
 
 {% block content %}
-{% let title = page?.title ?? "Track" %}
-{% let description = page?.description ?? params?.description ?? none %}
-{% let lessons = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
-{% let current_step = params?.current_step ?? 1 %}
+{# ---- Resolve track state INLINE (kida {% def %} cannot return values) ---- #}
+{% let track_id = params?.track_id ?? page?.slug ?? '' %}
+{% let tracks_data = site?.data?.tracks ?? {} %}
+{% let current_track = tracks_data[track_id] if (track_id and track_id in tracks_data) else none %}
+{% let track_items = current_track?.items ?? [] %}
+{% let track_title = current_track?.title ?? page?.title ?? 'Learning track' %}
+{% let track_desc = current_track?.description ?? page?.description ?? params?.description ?? '' %}
+{% let item_count = track_items | length %}
 
-{% call container(cls="chirp-theme-learning-page chirp-theme-track-page") %}
-  {% call stack(gap="lg") %}
-    {% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
-      {% slot metadata %}{{ lessons | length }} lesson{{ "s" if lessons | length != 1 else "" }}{% end %}
+{# Pre-compute every member page ONCE — reused by sidebar + sections. #}
+{% let track_item_pages = {} %}
+{% for item_slug in track_items %}
+{% let item_page = get_page(item_slug) %}
+{% if item_page %}
+{% let track_item_pages = track_item_pages | merge({item_slug: item_page}) %}
+{% end %}
+{% end %}
+
+{# Combined TOC across all sections (Bengal global; empty when no track). #}
+{% let combined_toc_items = combine_track_toc(track_items) if item_count > 0 else [] %}
+{% let has_toc = combined_toc_items | length > 0 %}
+
+<div class="chirp-theme-track-layout{{ ' chirp-theme-track-layout--with-toc' if has_toc else '' }}"
+     data-chirp-theme-surface="track" data-track-id="{{ track_id }}">
+
+  <aside class="chirp-theme-track-layout__sidebar" id="track-sidebar" role="navigation"
+         aria-label="Track navigation">
+    {% include 'partials/track-sidebar.html' %}
+  </aside>
+
+  <div class="chirp-theme-track-layout__main">
+    {% call page_hero(title=track_title, subtitle=track_desc, variant='editorial', background='solid', cls='chirp-theme-track-layout__hero chirp-theme-track-hero') %}
+      {% slot eyebrow %}
+      {{ badge('Learning track', variant='primary', icon='graduation-cap') }}
+      {% end %}
+      {% slot metadata %}
+      <span>{{ item_count }} lesson{{ 's' if item_count != 1 else '' }}</span>
+      {% end %}
+      {% slot footer %}
+      {% if item_count > 0 %}
+      {{ track_progress_indicator(item_count, 1) }}
+      {% end %}
+      {% end %}
     {% end %}
-    {{ progress_for(lessons, current_step) }}
-    {{ rendered_body(content) }}
-    {{ content_cards(lessons, "No lessons have been added to this track yet.", "lesson") }}
+
+    <article class="prose chirp-theme-track-layout__article">
+      {# Pillar intro = the track page's own frontmatter body. #}
+      {% if content %}
+      <div class="chirp-theme-track-intro">
+        {{ content | safe }}
+      </div>
+      {% end %}
+
+      {% if current_track and item_count > 0 %}
+      <div class="chirp-theme-track-sections">
+        {% for item_slug in track_items %}
+        {% let item_page = track_item_pages[item_slug] if item_slug in track_item_pages else none %}
+        {% if item_page %}
+        {{ track_section_block(item_page, loop.index, loop.last) }}
+        {% else %}
+        {{ track_section_missing(item_slug, loop.index) }}
+        {% end %}
+        {% end %}
+      </div>
+      {% elif not current_track %}
+      <div class="chirp-theme-track-empty">
+        <h2>Track not defined</h2>
+        <p>No track with id <code>{{ track_id }}</code> was found in
+          <code>site/data/tracks.yaml</code>. Match the page slug to a track key,
+          or set <code>track_id</code> in this page's frontmatter.</p>
+        {{ badge('Browse all tracks', variant='primary', icon='arrow-right', href=('/tracks/' | absolute_url)) }}
+      </div>
+      {% else %}
+      <div class="chirp-theme-track-empty">
+        <h2>No lessons yet</h2>
+        <p>This track has no <code>items</code> listed in <code>tracks.yaml</code>.</p>
+      </div>
+      {% end %}
+    </article>
+
+    {% with footer_class='chirp-theme-footer chirp-theme-footer--shell' %}{% include 'partials/site-footer.html' %}{% end %}
+  </div>
+
+  {% if has_toc %}
+  <aside class="chirp-theme-track-layout__toc" role="complementary" aria-label="Table of contents">
+    {{ toc(toc_items=combined_toc_items, page=page) }}
+  </aside>
   {% end %}
+</div>
+
+<button class="docs-sidebar-toggle" aria-label="Toggle navigation sidebar" aria-expanded="false"
+        aria-controls="track-sidebar">
+  {{ icon('list', size=20) }}
+</button>
+<div class="docs-sidebar-overlay" aria-hidden="true"></div>
 {% end %}
-{% end %}
+
+{% block site_footer %}{% end %}

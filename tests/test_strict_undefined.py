@@ -7,13 +7,92 @@ If a new component ships with `{% if item.foo %}` style guards on
 optional keys, add a test here so strict-mode breakage is caught fast.
 """
 
+import importlib.util
+import sys
+from pathlib import Path
 from typing import Any
 
-from kida import Environment
+import pytest
+from kida import Environment, FileSystemLoader
+from kida.template import Markup
+
+from chirp_ui.filters import (
+    build_hx_attrs,
+    check_required_id,
+    contrast_text,
+    deprecate_param,
+    make_route_link_attrs,
+    resolve_color,
+    resolve_status_variant,
+    sanitize_color,
+    shell_action_btn_variant,
+    value_type,
+)
+from chirp_ui.icons import icon as icon_filter
+
+_ROOT = Path(__file__).resolve().parent.parent
+_CHIRPUI_TEMPLATES = _ROOT / "src" / "chirp_ui" / "templates"
+_THEME_TEMPLATES = _ROOT / "src" / "bengal_themes" / "chirp_theme" / "templates"
+
+# Load conftest's filter stubs by file path (not importable as a bare module).
+_conftest_path = Path(__file__).parent / "conftest.py"
+_conftest_spec = importlib.util.spec_from_file_location("_conftest", _conftest_path)
+_conftest = importlib.util.module_from_spec(_conftest_spec)
+sys.modules["_conftest"] = _conftest
+_conftest_spec.loader.exec_module(_conftest)
 
 
 def _render(env: Environment, src: str, **ctx: Any) -> str:
     return env.from_string(src, name="strict_probe").render(**ctx)
+
+
+@pytest.fixture
+def theme_env() -> Environment:
+    """Kida env that resolves chirp-theme partials AND chirpui macros.
+
+    Stubs the Bengal-provided filters/globals the track partials depend on
+    (content embedding, ``merge``, ``items``, the theme ``icon()`` global)
+    so the self-contained track macros can render without a full site build.
+    """
+    e = Environment(
+        loader=FileSystemLoader([str(_THEME_TEMPLATES), str(_CHIRPUI_TEMPLATES)]),
+        autoescape=True,
+    )
+    e.update_filters(
+        {
+            "field_errors": _conftest._field_errors_stub,
+            "bem": _conftest._bem_stub,
+            "html_attrs": _conftest._html_attrs_stub,
+            "icon": icon_filter,
+            "validate_variant": _conftest._validate_variant_stub,
+            "validate_variant_block": _conftest._validate_variant_block_stub,
+            "validate_appearance_block": _conftest._validate_appearance_block_stub,
+            "validate_tone_block": _conftest._validate_tone_block_stub,
+            "validate_size": _conftest._validate_size_stub,
+            "value_type": value_type,
+            "sanitize_color": sanitize_color,
+            "contrast_text": contrast_text,
+            "resolve_color": resolve_color,
+            "deprecate_param": deprecate_param,
+            "resolve_status_variant": resolve_status_variant,
+            "shell_action_btn_variant": shell_action_btn_variant,
+        }
+    )
+    # Bengal-provided filters used by the track partials.
+    e.add_filter("resolve_links_for_embedding", lambda html, page=None: html)
+    e.add_filter("demote_headings", lambda html, levels=1: html)
+    e.add_filter("prefix_heading_ids", lambda html, prefix="": html)
+    e.add_filter("merge", lambda d1, d2, deep=True: {**(d1 or {}), **(d2 or {})})
+    e.add_filter("items", lambda d: list((d or {}).items()))
+    e.add_filter("absolute_url", lambda u: u)
+    e.add_global("build_hx_attrs", build_hx_attrs)
+    e.add_global("check_required_id", check_required_id)
+    e.add_global("route_link_attrs", make_route_link_attrs())
+    # The theme's icon() GLOBAL accepts size=; the chirp_ui icon FILTER does not.
+    e.add_global("icon", lambda name, size=16, **kw: Markup(f'<svg data-icon="{name}"></svg>'))
+    # No page resolves -> exercises the "missing"/fallback branches.
+    e.add_global("get_page", lambda slug: None)
+    return e
 
 
 def test_mapping_optional_chain_missing_key_renders_empty(env: Environment) -> None:
@@ -215,3 +294,48 @@ def test_dropdown_menu_minimal_item(env: Environment) -> None:
         '{{ dropdown_menu("Trigger", items=[{}]) }}',
     )
     assert "chirpui-dropdown__item" in out
+
+
+# --- chirp-theme track templates (issue #140) ----------------------------------
+# The data-file track pillar page reads site.data.tracks[id]; guard the empty
+# `{}` track + empty member-page cases so strict_undefined never crashes a build.
+
+
+def test_track_section_block_empty_page(theme_env: Environment) -> None:
+    """A track member page with NO fields still renders a section shell."""
+    out = _render(
+        theme_env,
+        '{% from "partials/track-helpers.html" import track_section_block %}'
+        "{{ track_section_block({}, 1, true) }}",
+    )
+    assert 'id="track-section-1"' in out
+    assert "chirp-theme-track-section__title" in out
+
+
+def test_track_section_missing_placeholder(theme_env: Environment) -> None:
+    out = _render(
+        theme_env,
+        '{% from "partials/track-helpers.html" import track_section_missing %}'
+        '{{ track_section_missing("", 1) }}',
+    )
+    assert "chirp-theme-track-section--missing" in out
+    assert 'id="track-section-1"' in out
+
+
+def test_track_progress_indicator_zero_steps(theme_env: Environment) -> None:
+    """Zero-length track => no progressbar (no division/range errors)."""
+    out = _render(
+        theme_env,
+        '{% from "partials/track-helpers.html" import track_progress_indicator %}'
+        "{{ track_progress_indicator(0, 1) }}",
+    )
+    assert "chirp-theme-track-progress" not in out
+
+
+def test_track_progress_indicator_renders_steps(theme_env: Environment) -> None:
+    out = _render(
+        theme_env,
+        '{% from "partials/track-helpers.html" import track_progress_indicator %}'
+        "{{ track_progress_indicator(3, 2) }}",
+    )
+    assert "chirp-theme-track-progress__step--current" in out

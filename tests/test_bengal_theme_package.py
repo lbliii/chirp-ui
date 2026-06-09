@@ -1128,7 +1128,10 @@ def test_chirp_theme_learning_templates_use_chirpui_patterns() -> None:
     assert "partials/components/post-card.html" in combined
     assert "chirp-theme-learning-index" in combined
     assert "<script" not in combined
-    assert "track-card" not in combined
+    # Forbid the legacy un-namespaced `track-card` class while allowing the
+    # flagship `chirp-theme-track-card` BEM block (#140 Tracks flagship).
+    assert 'class="track-card' not in combined
+    assert " track-card " not in combined
     assert "tutorial-card" not in combined
     assert "notebook-cell" not in combined
     assert "card mb-4" not in combined

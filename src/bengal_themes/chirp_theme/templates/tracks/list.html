@@ -1,19 +1,134 @@
+{#
+================================================================================
+TRACK LIST — LMS Card Grid over site.data.tracks (Kida-Native)
+================================================================================
+
+Catalog of every learning track defined in `site/data/tracks.yaml`. Each track
+becomes an LMS-style card: title, lesson count, description, a chip preview of
+the first lessons, and a "Start learning" CTA pointing at the track's pillar
+page (or its first lesson as a fallback).
+
+DOM contract (CSS wave #141):
+  .chirp-theme-tracks-index                 page root
+  .chirp-theme-track-grid                   the card grid
+  .chirp-theme-track-card                    one track card
+    .chirp-theme-track-card__head / __icon / __title / __count
+    .chirp-theme-track-card__lede
+    .chirp-theme-track-card__chips / __chip / __chip-num / __chip(--more)
+    .chirp-theme-track-card__cta
+  .chirp-theme-tracks-empty                  empty state
+
+USAGE: set `template: tracks/list.html` on the tracks landing page.
+================================================================================
+#}
 {% extends "base.html" %}
 
-{% from "chirpui/layout.html" import container %}
-{% from "chirpui/resource_index.html" import resource_index %}
-{% from "partials/learning-pages.html" import content_cards, rendered_body %}
-{% from "partials/taxonomy-pages.html" import count_label %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import container, grid, stack %}
+{% from "partials/learning-pages.html" import rendered_body %}
+
+{# =============================================================================
+   TRACK CARD — one LMS card. `track_page` is the resolved pillar page (or none).
+   ============================================================================= #}
+{% def track_card(id, track, track_page) %}
+{% let card_title = track?.title ?? id %}
+{% let card_lede = track?.description ?? 'Start your learning journey with this curated track.' %}
+{% let card_items = track?.items ?? [] %}
+{% let count = card_items | length %}
+{% let preview_limit = 3 %}
+{% let start_href = track_page?.href ?? none %}
+
+<article class="chirp-theme-track-card" data-track-id="{{ id }}">
+  <header class="chirp-theme-track-card__head">
+    <span class="chirp-theme-track-card__icon" aria-hidden="true">{{ icon('graduation-cap', size=20) }}</span>
+    <h2 class="chirp-theme-track-card__title">
+      {% if start_href %}
+      <a href="{{ start_href }}"{{ route_link_attrs(start_href) | html_attrs }}>{{ card_title }}</a>
+      {% else %}
+      {{ card_title }}
+      {% end %}
+    </h2>
+    {{ badge(count ~ ' lesson' ~ ('s' if count != 1 else ''), variant='muted', cls='chirp-theme-track-card__count') }}
+  </header>
+
+  <p class="chirp-theme-track-card__lede">{{ card_lede }}</p>
+
+  {% if count > 0 %}
+  <ol class="chirp-theme-track-card__chips">
+    {% for item_slug in card_items[:preview_limit] %}
+    {% let item_page = get_page(item_slug) %}
+    <li class="chirp-theme-track-card__chip">
+      <span class="chirp-theme-track-card__chip-num" aria-hidden="true">{{ loop.index }}</span>
+      <span class="chirp-theme-track-card__chip-label">{{ item_page?.title ?? item_slug }}</span>
+    </li>
+    {% end %}
+    {% if count > preview_limit %}
+    <li class="chirp-theme-track-card__chip chirp-theme-track-card__chip--more">
+      +{{ count - preview_limit }} more
+    </li>
+    {% end %}
+  </ol>
+  {% end %}
+
+  <div class="chirp-theme-track-card__cta">
+    {% if start_href %}
+    {{ btn('Start learning', href=start_href, variant='primary', size='sm', icon='arrow-right') }}
+    {% elif count > 0 %}
+    {% let first_page = get_page(card_items[0]) %}
+    {% if first_page %}
+    {{ btn('Start learning', href=first_page.href, variant='primary', size='sm', icon='arrow-right') }}
+    {% else %}
+    {{ badge('Unavailable', variant='muted') }}
+    {% end %}
+    {% else %}
+    {{ badge('No lessons yet', variant='muted') }}
+    {% end %}
+  </div>
+</article>
+{% end %}
 
 {% block content %}
-{% let title = page?.title ?? section?.title ?? "Tracks" %}
-{% let description = page?.description ?? section?.description ?? "Follow curated learning paths." %}
-{% let items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
+{% let page_title = page?.title ?? section?.title ?? 'Learning tracks' %}
+{% let page_desc = page?.description ?? section?.description ?? 'Follow curated, self-paced learning paths.' %}
+{% let tracks_data = site?.data?.tracks ?? {} %}
+{% let track_count = tracks_data | length %}
 
-{% call container(cls="chirp-theme-learning-page") %}
-  {% call resource_index(title, page?.href ?? section?.href ?? "/tracks/", subtitle=description, search_placeholder="Filter tracks...", button_icon="magnifying-glass", results_title="Tracks", results_subtitle=count_label(items | length, "track"), results_layout="grid", results_cols=3, has_results=items | length > 0, empty_title="No tracks yet", empty_message="Tracks appear here when published.", cls="chirp-theme-learning-index") %}
+{# Pre-compute track_id → pillar page map ONCE. #}
+{% let track_page_map = {} %}
+{% for p in (site?.pages ?? []) %}
+{% let tid = p?.metadata?.track_id ?? '' %}
+{% if tid %}
+{% let track_page_map = track_page_map | merge({tid: p}) %}
+{% end %}
+{% end %}
+
+{% call container(cls="chirp-theme-tracks-index") %}
+  {% call stack(gap="lg") %}
+    {% call page_hero(title=page_title, subtitle=page_desc, variant='editorial', background='solid', cls='chirp-theme-tracks-index__hero') %}
+      {% slot eyebrow %}{{ badge('Tracks', variant='primary', icon='graduation-cap') }}{% end %}
+      {% slot metadata %}
+      <span>{{ track_count }} track{{ 's' if track_count != 1 else '' }}</span>
+      {% end %}
+    {% end %}
+
     {{ rendered_body(content) }}
-    {{ content_cards(items, "No tracks yet.", "track") }}
+
+    {% if track_count > 0 %}
+    {% call grid(cols=3, gap="md", cls="chirp-theme-track-grid") %}
+      {% for id, track in tracks_data | items %}
+      {% let track_page = track_page_map[id] if id in track_page_map else none %}
+      {{ track_card(id, track, track_page) }}
+      {% end %}
+    {% end %}
+    {% else %}
+    <div class="chirp-theme-tracks-empty">
+      <span class="chirp-theme-tracks-empty__icon" aria-hidden="true">{{ icon('graduation-cap', size=48) }}</span>
+      <h2>No tracks yet</h2>
+      <p>Define learning tracks in <code>site/data/tracks.yaml</code> and they will appear here.</p>
+    </div>
+    {% end %}
   {% end %}
 {% end %}
 {% end %}
