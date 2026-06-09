@@ -16,7 +16,7 @@ wheels = [
 
 [[package]]
 name = "bengal"
-version = "0.3.2"
+version = "0.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "bengal-pounce" },
@@ -36,9 +36,9 @@ dependencies = [
     { name = "uvloop", marker = "sys_platform != 'win32'" },
     { name = "watchfiles" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b3/6c/01b30f6d05d45cddbe17904f2a5f88b372e6309c42403a130749d764a651/bengal-0.3.2.tar.gz", hash = "sha256:b3d656f064585f73707144f33a3a0a556cf105e2f60e2648de6b96405eb2c5f2", size = 3204663, upload-time = "2026-05-02T16:15:22.25Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f9/73/a73d0c200f82a34c2441216959f91219abf2907274c13605a81a51e31a7a/bengal-0.3.3.tar.gz", hash = "sha256:1b031cf86584c6ca73dacf2f9f0207b3762cbb4be7cb9d830277de2e867bd7c6", size = 3314360, upload-time = "2026-05-23T20:04:52.842Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9e/3d/5b32e28aaf44ef396d713aaa77cd31e7bc943c9ea61e347f8f23b9f15489/bengal-0.3.2-py3-none-any.whl", hash = "sha256:d12ae8b107d2d68b8d5298ffb85d8e51bcc3601c3e66e3d5935c8426f36dd06a", size = 3884721, upload-time = "2026-05-02T16:15:20.197Z" },
+    { url = "https://files.pythonhosted.org/packages/de/44/2f2f1966065c6ed72781ab8832bb9d82ee1c4a03d05fe1729dcabbfe0cf4/bengal-0.3.3-py3-none-any.whl", hash = "sha256:6a0ed40154c12d09b0be2f82ca324bc9bdc6e6632a2daedf895acd6ce93918bf", size = 4022314, upload-time = "2026-05-23T20:04:50.332Z" },
 ]
 
 [[package]]
@@ -57,15 +57,15 @@ wheels = [
 
 [[package]]
 name = "bengal-pounce"
-version = "0.6.0"
+version = "0.7.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "h11" },
     { name = "milo-cli" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a9/99/3bf019a9c1c4a0f710d897c72e669b2133cc3be7278b6d53d9548753cab8/bengal_pounce-0.6.0.tar.gz", hash = "sha256:3c5834a3ba7e5822f292661286e77ad7c651d80b34149a1dc02f653532acdde6", size = 181583, upload-time = "2026-04-14T00:27:59.006Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1e/89/987fe874d2aa008b8a777676f34a524aea04d8f5c0066854aae6fc940a9d/bengal_pounce-0.7.1.tar.gz", hash = "sha256:326452f317351488319292ee5b1032e98054993a146f63ba3550275eab853331", size = 201077, upload-time = "2026-05-23T16:49:26.62Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b2/4e/b28ad5fcf2e6ef8152738e8982aadeeb24f81035521774a87af69d495c06/bengal_pounce-0.6.0-py3-none-any.whl", hash = "sha256:48a192de4b926aefd1f053aca25271c9b8e6e637e1e617e92b449aca8f72b5e9", size = 210857, upload-time = "2026-04-14T00:27:57.346Z" },
+    { url = "https://files.pythonhosted.org/packages/6e/0b/868403f83e95b3048a244014eff1f932a522372eccb699fca5f5040c01fd/bengal_pounce-0.7.1-py3-none-any.whl", hash = "sha256:63a04aab2596be51dbccba4146a8ab44223f9451f59fe16206ce05ffbed8b2ca", size = 232327, upload-time = "2026-05-23T16:49:24.372Z" },
 ]
 
 [[package]]
@@ -138,7 +138,7 @@ browser = [
     { name = "pytest-asyncio", specifier = ">=0.25.0" },
 ]
 dev = [
-    { name = "bengal", specifier = ">=0.3.2" },
+    { name = "bengal", specifier = ">=0.3.3" },
     { name = "poethepoet", specifier = ">=0.32.0" },
     { name = "pre-commit", specifier = ">=4.0.0" },
     { name = "pytest", specifier = ">=9.0.2" },
@@ -150,7 +150,7 @@ dev = [
     { name = "ty", specifier = ">=0.0.11" },
 ]
 docs = [
-    { name = "bengal", specifier = ">=0.3.2" },
+    { name = "bengal", specifier = ">=0.3.3" },
     { name = "lunr", specifier = ">=0.7.0" },
 ]
 
@@ -389,14 +389,14 @@ wheels = [
 
 [[package]]
 name = "milo-cli"
-version = "0.2.2"
+version = "0.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "kida-templates" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ac/54/a74ac8a91b4d56026dd08cbd4e7da80dfeb3904e26056e7aba94ff3ecce1/milo_cli-0.2.2.tar.gz", hash = "sha256:e33593d13999c69c7f38ce70b20888c8c6a13dba1147f07c6aa4cc861b7799bf", size = 211244, upload-time = "2026-04-13T23:52:25.931Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e2/21/58f8d65fcd0f9ec4b4bfdfa68c231711bb8060e23e07e41be53d52dc2aa0/milo_cli-0.3.1.tar.gz", hash = "sha256:aa925e16bde657b977f1fc68906b60e51a25a3b3995921b0d80ec87a99088854", size = 248662, upload-time = "2026-05-23T18:53:21.577Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/74/c3/878d2725d6aab7d3fb99db2c2ae0ed02e1d8e96aed0f467de735000d80c3/milo_cli-0.2.2-py3-none-any.whl", hash = "sha256:27d82f9374b911461957b2240d6ddae5b214fcd86ebc6aa6e1fc61c1ada63bc7", size = 128514, upload-time = "2026-04-13T23:52:24.609Z" },
+    { url = "https://files.pythonhosted.org/packages/84/f2/b20eeef19562652314d0dc950d0ff360953b00d2eb68c573998b343d625d/milo_cli-0.3.1-py3-none-any.whl", hash = "sha256:5eb7a5232dae515d905935379efd35a6fa494f7905d45ea2c41bfff8b138992a", size = 149625, upload-time = "2026-05-23T18:53:19.882Z" },
 ]
 
 [[package]]
