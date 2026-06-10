@@ -275,8 +275,17 @@ async def test_bengal_outfit_display_font_loads_and_styles_brand_titles(page, st
     await page.set_viewport_size({"width": 1280, "height": 900})
     await page.goto(f"{static_site_url}/")
     await page.wait_for_load_state("networkidle")
-    # Give the woff2 fetch + face activation a moment to settle.
-    await page.evaluate("() => document.fonts.ready")
+    # Explicitly activate both declared weights, then wait for the font set to
+    # settle. A preloaded-but-not-yet-rendered weight (e.g. 600, if nothing above
+    # the fold uses it at load time) reports unloaded to ``document.fonts.check``;
+    # ``document.fonts.load`` forces the @font-face woff2 to resolve so the check
+    # proves the face is *available*, not merely that it happens to be painted.
+    await page.evaluate(
+        """() => Promise.all([
+            document.fonts.load("400 1rem Outfit"),
+            document.fonts.load("600 1rem Outfit"),
+        ]).then(() => document.fonts.ready)"""
+    )
     await page.wait_for_timeout(100)
 
     font_state = await page.evaluate(
