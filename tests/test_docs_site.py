@@ -6,6 +6,7 @@ import tomllib
 from pathlib import Path
 
 import pytest
+import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOCS_SITE_SCRIPT = REPO_ROOT / "scripts" / "docs_site.py"
@@ -28,6 +29,10 @@ SITE_PUBLIC = REPO_ROOT / "site" / "public"
 API_FILTERS_PAGE = SITE_PUBLIC / "api" / "filters" / "index.html"
 SITE_CONTENT = REPO_ROOT / "site" / "content"
 MENU_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "menu.yaml"
+SITE_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "site.yaml"
+PRODUCTION_ENV_CONFIG = REPO_ROOT / "site" / "config" / "environments" / "production.yaml"
+LOCAL_ENV_CONFIG = REPO_ROOT / "site" / "config" / "environments" / "local.yaml"
+OUTPUTS_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "outputs.yaml"
 # #145 — every shipped template family needs live content so its route renders
 # instead of 404ing. Each tuple is (section dir, the type/template token its
 # _index.md must declare so Bengal resolves the family list template).
@@ -853,3 +858,73 @@ def test_components_catalog_covers_every_manifest_category() -> None:
         assert category in text or spaced in text, (
             f"manifest category '{category}' has no home in components/_index.md (#166)"
         )
+
+
+# ---------------------------------------------------------------------------
+# #169/#170 — SEO: absolute origins, og:image, and RSS
+# ---------------------------------------------------------------------------
+
+
+def test_production_baseurl_is_an_absolute_origin() -> None:
+    """#169 — production must build canonical/og/sitemap URLs from an absolute
+    origin. A path-only baseurl ("/chirp-ui") makes <loc>/canonical/og:url and
+    the robots.txt Sitemap directive relative and machine-invalid.
+    """
+    data = yaml.safe_load(PRODUCTION_ENV_CONFIG.read_text(encoding="utf-8"))
+    baseurl = data["site"]["baseurl"]
+    assert baseurl.startswith("https://"), (
+        f"production baseurl must be an absolute https origin, got {baseurl!r} (#169)"
+    )
+    assert baseurl == "https://lbliii.github.io/chirp-ui", baseurl
+    # The default config carries the same absolute origin (the env override must
+    # not silently narrow it back to a path).
+    default_baseurl = yaml.safe_load(SITE_CONFIG.read_text(encoding="utf-8"))["site"]["baseurl"]
+    assert default_baseurl.startswith("https://"), default_baseurl
+
+
+def test_local_baseurl_is_empty_for_local_preview() -> None:
+    """#169 — local preview keeps baseurl empty so links stay root-relative and
+    work under bengal serve without the production path prefix.
+    """
+    data = yaml.safe_load(LOCAL_ENV_CONFIG.read_text(encoding="utf-8"))
+    assert data["site"]["baseurl"] == "", data["site"]["baseurl"]
+
+
+def test_base_template_builds_absolute_og_image() -> None:
+    """#169 — og:image/twitter:image must resolve to an absolute https URL.
+
+    asset_url() returns a path-only (fingerprinted) reference; social scrapers
+    (Facebook/X/LinkedIn) reject relative image URLs, so the LOCAL branch must be
+    wrapped in canonical_url(...) (full origin + path), while external http(s)
+    image URLs pass through untouched.
+    """
+    template = THEME_BASE_TEMPLATE.read_text(encoding="utf-8")
+
+    # The local-asset branch is wrapped in canonical_url(asset_url(...)).
+    assert "canonical_url(asset_url(_og_src))" in template, (
+        "og:image local branch must wrap asset_url in canonical_url for an "
+        "absolute https URL (#169)"
+    )
+    # External http(s) image URLs still pass through (not double-prefixed).
+    assert "_og_src if (_og_src and _og_src.startswith('http'))" in template
+    # Both og:image and twitter:image are emitted from the same absolute path.
+    assert '<meta property="og:image" content="{{ _og_image_path }}">' in template
+    assert '<meta name="twitter:image" content="{{ _og_image_path }}">' in template
+    # The old path-only construction is gone.
+    assert "(asset_url(_og_src) if _og_src else '')" not in template
+
+
+def test_outputs_config_enables_rss_feed() -> None:
+    """#170 — RSS 2.0 syndication (rss.xml) must be enabled so the advertised
+    <head> alternate link and the content-signals `rss` capability resolve to a
+    real feed. (Confirming the emitted rss.xml needs a full production build.)
+    """
+    outputs = yaml.safe_load(OUTPUTS_CONFIG.read_text(encoding="utf-8"))
+    assert outputs.get("generate_rss") is True, "generate_rss must be enabled (#170)"
+    # The site-wide rss output format must also be requested.
+    site_wide = outputs.get("output_formats", {}).get("site_wide", [])
+    assert "rss" in site_wide, "rss not in output_formats.site_wide (#170)"
+
+    # site.yaml also flips generate_rss on (Bengal reads either; keep them aligned).
+    site_cfg = yaml.safe_load(SITE_CONFIG.read_text(encoding="utf-8"))
+    assert site_cfg.get("generate_rss") is True, "site.yaml generate_rss must be true (#170)"
