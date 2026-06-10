@@ -60,6 +60,13 @@
 
 {{ page_navigation(page) }}
 
+{# Cross-track membership widget. Renders one .chirp-theme-track-nav card per
+   track whose items[] includes this doc's slug (multi-track membership emits
+   multiple cards); a non-member doc emits nothing (the partial guards on
+   membership, so there is no empty card wrapper). All current track members
+   are type:doc, so only doc/single.html wires this in -- page.html does not. #}
+{% include 'partials/track_nav.html' %}
+
 {% with footer_class='chirp-theme-footer chirp-theme-footer--shell' %}{% include 'partials/site-footer.html' %}{% end %}
 
   </div>
