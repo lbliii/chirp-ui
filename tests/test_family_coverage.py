@@ -296,3 +296,40 @@ def test_author_landing_has_multiple_posts() -> None:
     assert multi, (
         "no author is credited on 2+ pages, so no author landing aggregates a real feed (#147)."
     )
+
+
+def _category_frequency() -> dict[str, int]:
+    """Count how many content pages declare each ``category`` (singular).
+
+    Bengal's taxonomy orchestrator collects categories from the singular
+    ``page.metadata["category"]`` key (``bengal/orchestration/taxonomy.py``), so
+    this mirrors exactly what feeds ``site.taxonomies["categories"]`` and the
+    ``category-browser.html`` landing. The ``categories`` taxonomy is enabled by
+    Bengal's defaults (``{"tags": {}, "categories": {}}``) — no ``taxonomies``
+    config block is needed in ``site/config/_default``.
+    """
+    pytest.importorskip("yaml", reason="PyYAML not installed")
+    freq: dict[str, int] = {}
+    for md in _content_md_files():
+        front = _read_frontmatter(md)
+        category = front.get("category")
+        if isinstance(category, str) and category.strip():
+            freq[category.strip()] = freq.get(category.strip(), 0) + 1
+    return freq
+
+
+def test_category_landing_has_multiple_pages() -> None:
+    """#147 — at least one category landing aggregates >=2 associated pages.
+
+    Mirrors ``test_author_landing_has_multiple_posts``: source-level so it holds
+    before a rebuild. Bengal reads the singular ``category:`` frontmatter into
+    ``site.taxonomies["categories"]``; a category with only one page renders a
+    near-empty landing, so require >=1 category shared by 2+ pages (the docs
+    ``components`` and ``patterns`` categories already satisfy this).
+    """
+    freq = _category_frequency()
+    multi = {category: count for category, count in freq.items() if count >= 2}
+    assert multi, (
+        "no category is declared on 2+ pages, so no category landing aggregates a "
+        "real set (#147). Add a `category:` frontmatter key to related pages."
+    )

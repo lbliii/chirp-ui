@@ -853,3 +853,60 @@ def test_components_catalog_covers_every_manifest_category() -> None:
         assert category in text or spaced in text, (
             f"manifest category '{category}' has no home in components/_index.md (#166)"
         )
+
+
+# ---------------------------------------------------------------------------
+# #153 — adoption quickstart: applying chirp-theme to a Bengal site
+# ---------------------------------------------------------------------------
+
+
+def test_install_doc_documents_chirp_theme_adoption() -> None:
+    """#153 — the install doc walks a Bengal user through adopting chirp-theme.
+
+    The get-started page must name the theme, state the minimum Bengal version,
+    explain the ``library_asset_tags`` requirement, and show setting
+    ``theme.name: "chirp-theme"`` — the four facts a new adopter needs and the
+    acceptance criteria for #153.
+    """
+    text = INSTALL_DOC.read_text(encoding="utf-8")
+
+    # Names the theme and shows wiring it into a Bengal site config.
+    assert "chirp-theme" in text
+    assert 'name: "chirp-theme"' in text
+    # States the minimum Bengal version.
+    assert "0.3.3" in text
+    assert ">=0.3.3" in text or ">= 0.3.3" in text
+    # Names the library_asset_tags requirement (why >=0.3.3 is needed).
+    assert "library_asset_tags" in text
+    # The README links to the adoption path, so the entry point is discoverable.
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "chirp-theme" in readme
+    assert "get-started/installation" in readme
+
+
+# ---------------------------------------------------------------------------
+# #167 — /docs/ landing destinations get an icon per card
+# ---------------------------------------------------------------------------
+
+
+def test_docs_index_cards_carry_an_icon_each() -> None:
+    """#167 — every destination card on /docs/ leads with an icon.
+
+    The landing keeps raw ``chirpui-card`` markup (guarded by
+    ``test_docs_index_uses_chirpui_card_markup_for_cards``), so the icons are
+    inline ``chirpui-card__icon`` spans wrapping a shipped Phosphor SVG — one per
+    card, not the directive form. There are seven destination cards (five Learn,
+    two Reference), so there must be at least seven icon spans, each with an
+    accessible-hidden inline ``<svg>``.
+    """
+    text = DOCS_INDEX.read_text(encoding="utf-8")
+
+    card_count = text.count('class="chirpui-card chirp-theme-directive-card"')
+    icon_spans = text.count('class="chirpui-card__icon"')
+    assert card_count >= 7, f"expected the documented destination cards, found {card_count}"
+    assert icon_spans >= card_count, (
+        f"only {icon_spans} icon spans for {card_count} cards — every /docs/ "
+        f"destination card must lead with an icon (#167)"
+    )
+    # Icons are decorative (the title is the label) and rendered as inline SVG.
+    assert '<span class="chirpui-card__icon" aria-hidden="true"><svg' in text
