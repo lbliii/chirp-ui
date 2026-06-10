@@ -47,6 +47,41 @@ export function mockLocalStorage() {
 }
 
 /**
+ * Install a mock localStorage whose every accessor throws, simulating the
+ * Safari-private / sandboxed-iframe / quota-exceeded conditions where the
+ * Storage API is present but raises on access (it throws rather than returning
+ * null). Use this to prove guarded modules degrade gracefully.
+ *
+ * Returns { error, mock, teardown: () => void }. `error` is the
+ * DOMException-like object each accessor throws so tests can assert against it.
+ */
+export function mockDeniedStorage() {
+  const error = new DOMException("The operation is insecure.", "SecurityError");
+  const reject = () => {
+    throw error;
+  };
+  const mock = {
+    getItem: vi.fn(reject),
+    setItem: vi.fn(reject),
+    removeItem: vi.fn(reject),
+    clear: vi.fn(reject),
+    get length() {
+      throw error;
+    },
+    key: vi.fn(reject),
+  };
+  Object.defineProperty(window, "localStorage", { value: mock, writable: true, configurable: true });
+  return {
+    error,
+    mock,
+    teardown() {
+      // Restore a benign Map-backed mock so later tests aren't poisoned.
+      mockLocalStorage();
+    },
+  };
+}
+
+/**
  * Create a minimal island payload object for testing mount functions.
  *
  * @param {HTMLElement} element - The root DOM element for the island

@@ -8,7 +8,6 @@
  * Libraries handled:
  * - Mermaid.js (~930KB) - Diagram rendering (loads when diagrams near viewport)
  * - D3.js (~92KB) - Graph visualizations (loads when graphs near viewport)
- * - Tabulator (~100KB) - Interactive data tables (loads immediately if present)
  *
  * Performance optimizations:
  * - IntersectionObserver for viewport-based loading
@@ -25,8 +24,7 @@
     // Track loaded libraries to prevent duplicate loads
     const loaded = {
         mermaid: false,
-        d3: false,
-        tabulator: false
+        d3: false
     };
 
     // Track pending loads to prevent race conditions
@@ -63,21 +61,6 @@
         link.as = 'script';
         link.href = src;
         document.head.appendChild(link);
-    }
-
-    /**
-     * Tabulator (~100KB) - Only load if data tables exist
-     * Loads immediately since tables are typically above-the-fold
-     */
-    function loadTabulator() {
-        if (loaded.tabulator) return;
-        if (!document.querySelector('.bengal-data-table-wrapper')) return;
-        if (!assets.tabulator) return;
-
-        loaded.tabulator = true;
-        loadScript(assets.tabulator, function () {
-            if (assets.dataTable) loadScript(assets.dataTable);
-        });
     }
 
     /**
@@ -205,13 +188,11 @@
 
     // Dispatch: only do work for feature hooks that are actually in the DOM.
     // base.html gates this script behind theme.features and injects
-    // BENGAL_LAZY_ASSETS, but a gated page may still have no diagrams/graphs/
-    // tables — short-circuit so we never build an observer or preload for nothing.
-    const hasTables = !!document.querySelector('.bengal-data-table-wrapper');
+    // BENGAL_LAZY_ASSETS, but a gated page may still have no diagrams/graphs —
+    // short-circuit so we never build an observer or preload for nothing.
     const hasDiagrams = !!document.querySelector('.mermaid');
     const hasGraphs = !!document.querySelector('.graph-minimap, .graph-contextual, [data-graph]');
 
-    if (hasTables) loadTabulator(); // Tables load immediately (typically above-fold)
     if (hasDiagrams || hasGraphs) {
         setupIntersectionObserver(); // Mermaid & D3 load on scroll
         schedulePreloads(); // Hint browser to preload during idle
@@ -221,7 +202,6 @@
     window.BENGAL_LAZY_LOADERS = {
         loadMermaid: loadMermaid,
         loadD3: loadD3,
-        loadTabulator: loadTabulator,
         loaded: loaded
     };
 

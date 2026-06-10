@@ -10,6 +10,19 @@
 > (`window.Bengal.enhance`) is live — `enhanceAll()` runs on DOMContentLoaded and
 > re-scans on `htmx:afterSwap` / via MutationObserver. Enhancement modules register
 > defensively against it and also keep their own `ready()` auto-init as a fallback.
+> The dual-init paths are deduplicated per module rather than removed: `toc.js`
+> stamps `data-toc-bound` on its nav so the registry callback and the `ready()`
+> bootstrap can't double-bind; `docs-nav.js` is idempotent via `data-docs-nav-bound`;
+> `tracks.js` registers a no-op (its `ready(initTracks)` owns the real work). Dead
+> listeners for events the theme never dispatches (`contentLoaded`, `turbo:load`,
+> `pjax:end`) have been removed from `toc.js`, `tracks.js`, and `graph-contextual.js`.
+>
+> Retired subsystems (referenced by zero templates): `enhancements/holo.js`,
+> `core/session-path-tracker.js`, `enhancements/data-table.js`, and
+> `vendor/tabulator.min.js` were deleted. The Tabulator/data-table branch was
+> removed from `lazy-loaders.js` and the `base.html` lazy bundle; the `data-table.js`
+> entry in section 14 below is therefore historical only. Mermaid + D3 graphs remain
+> the live lazy features (`content.mermaid` / `graph.contextual` feature gates).
 
 **Date**: 2025-01-27  
 **Status**: ✅ Completed
