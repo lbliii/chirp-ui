@@ -95,13 +95,14 @@ release-preflight:
 	uv run poe build-css
 	uv run poe build-manifest
 	uv run poe build-docs
+	uv run poe build-component-index
 	@echo "Verifying no uncommitted changes to generated artifacts..."
-	@if ! git diff --quiet -- src/chirp_ui/manifest.json src/chirp_ui/templates/chirpui.css docs/COMPONENT-OPTIONS.md; then \
+	@if ! git diff --quiet -- src/chirp_ui/manifest.json src/chirp_ui/templates/chirpui.css docs/COMPONENT-OPTIONS.md site/content/docs/components/all.md; then \
 		echo ""; \
 		echo "ERROR: one or more generated artifacts are stale." >&2; \
 		echo "       Commit the regenerated files below, then re-run:" >&2; \
 		echo ""; \
-		git diff --stat -- src/chirp_ui/manifest.json src/chirp_ui/templates/chirpui.css docs/COMPONENT-OPTIONS.md >&2; \
+		git diff --stat -- src/chirp_ui/manifest.json src/chirp_ui/templates/chirpui.css docs/COMPONENT-OPTIONS.md site/content/docs/components/all.md >&2; \
 		exit 1; \
 	fi
 	@echo "✓ Generated artifacts are fresh and committed"

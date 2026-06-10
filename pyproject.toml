@@ -234,7 +234,9 @@ build-manifest = { cmd = "python scripts/build_manifest.py", help = "Emit src/ch
 build-manifest-check = { cmd = "python scripts/build_manifest.py --check", help = "Fail if manifest.json is stale relative to the registry" }
 build-docs = { cmd = "python scripts/build_component_options.py", help = "Regenerate docs/COMPONENT-OPTIONS.md API reference section from the manifest" }
 build-docs-check = { cmd = "python scripts/build_component_options.py --check", help = "Fail if docs/COMPONENT-OPTIONS.md is stale relative to the manifest" }
-verify-generated = { sequence = ["build-css-check", "build-manifest-check", "build-docs-check"], help = "Verify committed generated CSS, manifest, and component reference docs are fresh" }
+build-component-index = { cmd = "python scripts/build_component_index.py", help = "Regenerate the on-site complete component index (site/content/docs/components/all.md) from the manifest" }
+build-component-index-check = { cmd = "python scripts/build_component_index.py --check", help = "Fail if the on-site component index is stale relative to the manifest" }
+verify-generated = { sequence = ["build-css-check", "build-manifest-check", "build-docs-check", "build-component-index-check"], help = "Verify committed generated CSS, manifest, and component reference docs are fresh" }
 # Fast theme guards (no site build): template reachability (no orphan partials)
 # + packaging/icon-reference (no shipped cruft, no dangling icon names).
 theme-guards = { cmd = "pytest tests/test_template_reachability.py tests/test_packaging.py -q", help = "Theme template-reachability + packaging/icon-reference guards" }

@@ -15,6 +15,7 @@ def test_verify_generated_task_groups_generated_artifact_checks() -> None:
         "build-css-check",
         "build-manifest-check",
         "build-docs-check",
+        "build-component-index-check",
     ]
     assert "verify-generated" in tasks["ci"]["sequence"]
     assert "verify-generated" in tasks["check"]["sequence"]
@@ -52,6 +53,7 @@ def test_verification_doc_names_locked_environment_and_kida_failure() -> None:
         "uv run poe build-css-check",
         "uv run poe build-manifest-check",
         "uv run poe build-docs-check",
+        "uv run poe build-component-index-check",
         "make release-preflight",
         "uv run python -m chirp_ui.manifest --json",
         "Kida Mismatch Failure",
