@@ -2,7 +2,12 @@
 # =======================
 
 site:
-  baseurl: "/chirp-ui"
+  # FULL absolute origin (scheme + host + path-prefix). Bengal derives the
+  # canonical/og:url surface, og:image, sitemap.xml <loc> entries, and the
+  # robots.txt Sitemap: directive from baseurl — a path-only "/chirp-ui" makes
+  # all of those relative and machine-invalid for crawlers/social scrapers.
+  # The site deploys to GitHub Pages under /chirp-ui. (#169)
+  baseurl: "https://lbliii.github.io/chirp-ui"
 
 build:
   incremental: true
