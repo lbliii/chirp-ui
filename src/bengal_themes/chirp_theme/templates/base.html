@@ -571,23 +571,18 @@ symbols imported inside another block.
     <script defer src="{{ asset_url('js/enhancements/math.js') }}"></script>
     {% end %}
 
-    {# Lazy library loaders — Mermaid diagrams, D3 graphs, Tabulator data tables.
-       lazy-loaders.js detects feature hooks in the DOM (.mermaid, .graph-*,
-       .bengal-data-table-wrapper) and only fetches the heavy lib + its support
-       modules when present. Gate the whole bundle behind theme.features, mirroring
-       the lightbox/math gating above, and inject the fingerprint-correct asset URLs
-       it needs (BENGAL_LAZY_ASSETS) plus toolbar icon URLs (BENGAL_ICONS). #}
+    {# Lazy library loaders — Mermaid diagrams + D3 contextual graphs.
+       lazy-loaders.js detects feature hooks in the DOM (.mermaid, .graph-*)
+       and only fetches the heavy lib + its support modules when present. Gate
+       the whole bundle behind theme.features, mirroring the lightbox/math
+       gating above, and inject the fingerprint-correct asset URLs it needs
+       (BENGAL_LAZY_ASSETS) plus toolbar icon URLs (BENGAL_ICONS). #}
     {% let _ft = theme.features ?? [] %}
     {% let _lazy_diagrams = 'content.mermaid' in _ft or 'content.diagrams' in _ft %}
     {% let _lazy_graphs = 'graph.contextual' in _ft or 'graph.minimap' in _ft %}
-    {% let _lazy_tables = 'content.data_tables' in _ft or 'content.tables' in _ft %}
-    {% if _lazy_diagrams or _lazy_graphs or _lazy_tables %}
+    {% if _lazy_diagrams or _lazy_graphs %}
     <script>
         window.BENGAL_LAZY_ASSETS = Object.assign(window.BENGAL_LAZY_ASSETS || {}, {
-        {% if _lazy_tables %}
-            tabulator: "{{ asset_url('js/vendor/tabulator.min.js') }}",
-            dataTable: "{{ asset_url('js/enhancements/data-table.js') }}",
-        {% end %}
         {% if _lazy_diagrams %}
             mermaidToolbar: "{{ asset_url('js/mermaid-toolbar.js') }}",
             mermaidTheme: "{{ asset_url('js/mermaid-theme.js') }}",

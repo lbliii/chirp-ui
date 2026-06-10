@@ -539,6 +539,15 @@
 
     if (!tocItems.length) return;
 
+    // Idempotency guard: both the Bengal.enhance.register('toc') callback and
+    // the ready(initTOC) auto-init below can fire for the same sidebar. Stamp
+    // the TOC host (.toc-sidebar carries data-bengal="toc") once bound so a
+    // second pass is a no-op (prevents double scroll/resize/keyboard listeners).
+    // cleanup() clears the flag so an htmx swap can re-init a fresh sidebar.
+    const tocHost = document.querySelector('.toc-sidebar') || tocNav;
+    if (tocHost && tocHost.dataset.tocBound === 'true') return;
+    if (tocHost) tocHost.dataset.tocBound = 'true';
+
     // Get all heading targets
     headings = tocItems.map(item => {
       const id = item.getAttribute('data-toc-item').slice(1);
@@ -598,6 +607,8 @@
       document.removeEventListener('keydown', keyboardHandler);
       keyboardHandler = null;
     }
+    const tocHost = document.querySelector('.toc-sidebar') || tocNav;
+    if (tocHost) delete tocHost.dataset.tocBound;
   }
 
   // ============================================================================
@@ -616,10 +627,11 @@
   // Auto-initialize
   // ============================================================================
 
+  // Self-bootstrap so the TOC works even when loaded standalone. The
+  // Bengal.enhance.register('toc') path above covers registry-driven and
+  // htmx-swapped init; the data-toc-bound guard in initTOC() keeps the two
+  // paths from double-binding.
   ready(initTOC);
-
-  // Re-initialize on dynamic content load
-  window.addEventListener('contentLoaded', initTOC);
 
   // Export for use by other scripts (backward compatibility)
   window.BengalTOC = {

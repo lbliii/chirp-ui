@@ -15,7 +15,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { mockLocalStorage } from "./helpers.js";
+import { mockLocalStorage, mockDeniedStorage } from "./helpers.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const THEME_JS_PATH = path.resolve(
@@ -136,5 +136,55 @@ describe("theme.js public API", () => {
     loadThemeScript();
     document.querySelector(".theme-toggle").click();
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+  });
+});
+
+describe("theme.js localStorage is guarded (#151)", () => {
+  let denied;
+
+  beforeEach(() => {
+    // Replace the benign Map-backed mock from the outer beforeEach with one
+    // whose every accessor throws, mimicking Safari private mode / sandboxed
+    // iframes / quota-exceeded where Storage is present but raises on access.
+    denied = mockDeniedStorage();
+    mockMatchMedia(false); // system = light
+    document.documentElement.removeAttribute("data-theme");
+    document.body.innerHTML = "";
+  });
+
+  afterEach(() => {
+    denied.teardown();
+  });
+
+  it("getTheme() falls back to the system theme when getItem throws", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    loadThemeScript();
+    // No raw throw escaped initTheme(), and the system fallback (light) wins
+    // because the guarded read swallowed the SecurityError and returned null.
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(window.BengalTheme.get()).toBe("light");
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  it("set('dark') still flips <html data-theme> and does not throw when setItem throws", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    loadThemeScript();
+    expect(() => window.BengalTheme.set("dark")).not.toThrow();
+    // The attribute is written before the (failing) persistence call, so the
+    // visible theme switch survives even though storage is blocked.
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  it("clicking .theme-toggle still toggles and does not throw with storage blocked", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    document.body.innerHTML = `<button class="theme-toggle"></button>`;
+    loadThemeScript();
+    // System resolves to light, so the first toggle must land on dark.
+    expect(() => document.querySelector(".theme-toggle").click()).not.toThrow();
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+    warn.mockRestore();
   });
 });

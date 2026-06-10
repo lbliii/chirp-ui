@@ -712,17 +712,6 @@
     window.addEventListener('beforeunload', cleanup);
     window.addEventListener('pagehide', cleanup);
 
-    // Re-initialize on SPA-like navigation (Turbo, PJAX, etc.)
-    document.addEventListener('turbo:load', () => {
-        cleanup();
-        initContextualGraph();
-    });
-    document.addEventListener('turbo:before-visit', cleanup);
-    document.addEventListener('pjax:end', () => {
-        cleanup();
-        initContextualGraph();
-    });
-
     // Export
     if (typeof window !== 'undefined') {
         window.ContextualGraphMinimap = ContextualGraphMinimap;

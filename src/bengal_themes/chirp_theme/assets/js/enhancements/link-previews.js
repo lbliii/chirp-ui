@@ -742,9 +742,9 @@
     document.addEventListener('touchend', handleTouchEnd, { passive: false });
     document.addEventListener('click', handleDocumentClick);
 
-    // SPA cleanup
-    document.addEventListener('turbo:before-visit', destroyPreview);
-    document.addEventListener('astro:before-preparation', destroyPreview);
+    // Dynamic-content cleanup. Bengal does not dispatch Turbo/Astro SPA events,
+    // so we tear down any open preview on htmx boosted navigation swaps instead.
+    document.addEventListener('htmx:beforeSwap', destroyPreview);
 
     let resizeTimeout;
     window.addEventListener('resize', () => {

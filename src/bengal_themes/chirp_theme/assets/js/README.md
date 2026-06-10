@@ -169,8 +169,7 @@ js/
 ├── core/                       # Always-loaded modules
 │   ├── theme.js               # Theme/palette switching
 │   ├── search.js              # Full-text search with Lunr
-│   ├── nav-dropdown.js        # Navigation dropdowns
-│   └── session-path-tracker.js # Session tracking
+│   └── nav-dropdown.js        # Navigation dropdowns
 │
 ├── enhancements/              # Core enhancements (explicitly loaded)
 │   ├── interactive.js         # Docs nav, back-to-top, scroll spy
@@ -179,14 +178,11 @@ js/
 │   ├── mobile-nav.js          # Mobile navigation
 │   ├── action-bar.js          # Action bar component
 │   ├── copy-link.js           # Copy heading links
-│   ├── holo.js                # Holographic effects
 │   ├── lightbox.js            # Image lightbox (feature-gated)
-│   ├── lazy-loaders.js        # Lazy loading (Mermaid, D3)
-│   └── data-table.js          # Data table enhancements
+│   └── lazy-loaders.js        # Lazy loading (Mermaid, D3)
 │
 ├── vendor/                    # Third-party libraries
-│   ├── lunr.min.js           # Full-text search
-│   └── tabulator.min.js      # Data tables
+│   └── lunr.min.js           # Full-text search
 │
 ├── graph-*.js                 # Graph visualization (lazy-loaded)
 ├── mermaid-*.js               # Mermaid diagrams (lazy-loaded)
@@ -220,7 +216,6 @@ Scripts load in this order (configured in `base.html` and `js_bundler.py`):
 | Tabs | `enhancements/tabs.js` | `data-bengal="tabs"` |
 | Mobile nav | `enhancements/mobile-nav.js` | Auto-init |
 | Lightbox | `enhancements/lightbox.js` | Feature-gated |
-| Holo effects | `enhancements/holo.js` | Auto-init |
 
 ### Module Pattern
 

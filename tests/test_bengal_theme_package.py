@@ -1715,3 +1715,154 @@ result_path.write_text(
     assert not missing_files, "Built HTML referenced assets missing on disk: " + ", ".join(
         missing_files
     )
+
+
+# ---------------------------------------------------------------------------
+# Progressive-enhancement registry parity (#148) and lazy-asset wiring (#149)
+# ---------------------------------------------------------------------------
+
+# data-bengal values that are handled by a foreign/host registry rather than
+# the theme's own bengal-enhance.js (none today). Kept as an explicit, empty
+# allowlist so a future host-provided enhancement can be documented here
+# instead of silently passing.
+_EXTERNAL_DATA_BENGAL: set[str] = set()
+
+
+def _theme_js_sources() -> dict[str, str]:
+    """Map every packaged .js file (posix rel path) to its text, excluding docs."""
+    package_root = resources.files(THEME_PACKAGE)
+    js_root = package_root / "assets" / "js"
+    sources: dict[str, str] = {}
+    for rel_path, resource in _iter_resource_files(js_root):
+        if rel_path.endswith(".js"):
+            sources[rel_path] = resource.read_text(encoding="utf-8")
+    return sources
+
+
+def test_every_data_bengal_value_has_a_registered_enhancement() -> None:
+    """Each data-bengal="<name>" in templates must have a Bengal.enhance.register('<name>').
+
+    The progressive-enhancement registry (bengal-enhance.js) is the wired init
+    path (loaded in base.html before the enhancement modules). A data-bengal
+    hook with no matching register() is a dead declaration: the registry would
+    try to lazy-load `<name>.js`, 404, and never enhance the element. This is
+    the build-time assertion #148 asks for.
+    """
+    package_root = resources.files(THEME_PACKAGE)
+    templates_root = package_root / "templates"
+
+    # Capture both quoting styles; data-bengal values are simple slugs.
+    data_bengal_re = re.compile(r"""data-bengal=["']([a-z0-9][a-z0-9-]*)["']""")
+    declared: set[str] = set()
+    for rel_path, resource in _iter_resource_files(templates_root):
+        if not rel_path.endswith(".html"):
+            continue
+        declared.update(data_bengal_re.findall(resource.read_text(encoding="utf-8")))
+
+    assert declared, "Expected at least one data-bengal hook in theme templates."
+
+    register_re = re.compile(r"""\.register\(\s*["']([a-z0-9][a-z0-9-]*)["']""")
+    registered: set[str] = set()
+    for text in _theme_js_sources().values():
+        registered.update(register_re.findall(text))
+
+    missing = sorted(declared - registered - _EXTERNAL_DATA_BENGAL)
+    assert not missing, (
+        "data-bengal hooks with no Bengal.enhance.register('<name>') init path: "
+        + ", ".join(missing)
+    )
+
+
+def test_no_dead_spa_navigation_listeners_remain() -> None:
+    """Theme JS must not listen for events the theme never dispatches (#148).
+
+    contentLoaded / turbo:* / pjax:* are SPA-framework events (Turbo, PJAX) that
+    Bengal does not emit; htmx:afterSwap (handled centrally in bengal-enhance.js)
+    is the real dynamic-content hook. Listening for the dead events is misleading
+    dead code, so guard against regressions.
+    """
+    dead_event_re = re.compile(
+        r"""addEventListener\(\s*['"](contentLoaded|turbo:[a-z-]+|pjax:[a-z-]+)['"]"""
+    )
+    offenders: dict[str, list[str]] = {}
+    for rel_path, text in _theme_js_sources().items():
+        hits = dead_event_re.findall(text)
+        if hits:
+            offenders[rel_path] = sorted(set(hits))
+
+    assert not offenders, f"Dead SPA-navigation listeners found: {offenders}"
+
+
+def test_retired_dead_js_modules_are_deleted() -> None:
+    """Out-of-scope, template-unreferenced JS subsystems stay deleted (#149)."""
+    package_root = resources.files(THEME_PACKAGE)
+    retired = [
+        ("assets", "js", "enhancements", "holo.js"),
+        ("assets", "js", "core", "session-path-tracker.js"),
+        ("assets", "js", "enhancements", "data-table.js"),
+        ("assets", "js", "vendor", "tabulator.min.js"),
+    ]
+    present = []
+    for parts in retired:
+        node = package_root
+        for part in parts:
+            node = node / part
+        if node.is_file():
+            present.append("/".join(parts))
+    assert not present, f"Retired dead JS modules still shipped: {present}"
+
+    # The Tabulator/data-table wiring must be gone from the live lazy loader too.
+    lazy = (package_root / "assets" / "js" / "enhancements" / "lazy-loaders.js").read_text(
+        encoding="utf-8"
+    )
+    assert "tabulator" not in lazy.lower(), "lazy-loaders.js still references Tabulator"
+    assert "bengal-data-table-wrapper" not in lazy, (
+        "lazy-loaders.js still probes for .bengal-data-table-wrapper"
+    )
+
+
+def test_base_html_lazy_assets_match_enabled_features() -> None:
+    """BENGAL_LAZY_ASSETS in base.html carries exactly the keys for live features (#149).
+
+    Mermaid (content.mermaid / content.diagrams) and D3 graphs (graph.contextual /
+    graph.minimap) are the surviving lazy features; their asset keys must sit under
+    the right feature gate, and the retired Tabulator/data-table keys must be gone.
+    """
+    package_root = resources.files(THEME_PACKAGE)
+    base_html = (package_root / "templates" / "base.html").read_text(encoding="utf-8")
+
+    # The lazy bundle and its gates.
+    assert "window.BENGAL_LAZY_ASSETS" in base_html
+    assert "_lazy_diagrams = 'content.mermaid' in _ft or 'content.diagrams' in _ft" in base_html
+    assert "_lazy_graphs = 'graph.contextual' in _ft or 'graph.minimap' in _ft" in base_html
+
+    # Retired keys/gate are gone.
+    assert "_lazy_tables" not in base_html, "Tabulator lazy gate (_lazy_tables) not removed"
+    assert "tabulator" not in base_html.lower(), "Tabulator asset key not removed from base.html"
+    assert "dataTable" not in base_html, "data-table asset key not removed from base.html"
+
+    # Diagram keys live under the diagrams gate; graph keys under the graphs gate.
+    diagrams_block = base_html.split("{% if _lazy_diagrams %}", 1)[1].split("{% end %}", 1)[0]
+    assert "mermaidToolbar" in diagrams_block
+    assert "mermaidTheme" in diagrams_block
+
+    graphs_block = base_html.split("{% if _lazy_graphs %}", 1)[1].split("{% end %}", 1)[0]
+    assert "graphMinimap" in graphs_block
+    assert "graphContextual" in graphs_block
+
+
+def test_mermaid_dogfood_feature_is_enabled() -> None:
+    """The site enables content.mermaid so the blog mermaid dogfood renders (#149)."""
+    import yaml
+
+    theme_cfg = yaml.safe_load((SITE_ROOT / "config" / "_default" / "theme.yaml").read_text())
+    features = theme_cfg["theme"]["features"]
+    assert "content.mermaid" in features, (
+        "content.mermaid must be enabled so the blog mermaid block gets the lazy "
+        "toolbar/theme bundle"
+    )
+
+    # The dogfood page that exercises it must still ship a mermaid fence.
+    dogfood = SITE_ROOT / "content" / "blog" / "how-a-request-becomes-a-fragment-swap.md"
+    assert dogfood.is_file()
+    assert "```mermaid" in dogfood.read_text(encoding="utf-8")
