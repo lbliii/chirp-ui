@@ -58,43 +58,63 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
 {% if has_children %}
   {% if depth > 0 %}
   {#
-    Disclosure section. The <summary> is the disclosure control and stays the
-    FIRST child of <details> (a hard requirement of the native widget). The
-    navigable section link is a *sibling* of the summary, never a descendant —
-    this avoids the nested-interactive defect (focusable <a> inside an
-    activatable <summary>) while preserving native Enter/Space toggling with
-    aria-expanded reflected automatically. CSS lays the toggle + link out as a
-    single row. See issue #162.
+    Disclosure section (header row, NOT native <details>).
+
+    A closed <details> hides ALL non-<summary> content via
+    `::details-content { content-visibility: hidden }`. Because issue #162
+    moved the navigable section label OUT of the <summary> and into a sibling
+    <a>, a *collapsed* native <details> rendered only the bare caret with no
+    label — the section names ("Components", "Reference", …) vanished until
+    expanded. (getBoundingClientRect still reported a box, so naive DOM checks
+    looked fine.) See issue #162 regression.
+
+    Fix: an explicit, ALWAYS-VISIBLE header row. The <button> is the disclosure
+    control (caret only — no nested interactive); the section link is its
+    sibling. The children live in a separate region toggled by JS. The #162
+    a11y win is preserved: no focusable element lives inside an activatable
+    control, exactly one tab stop for the toggle and one for the link.
+
+    No-JS fallback: the children region defaults to visible (no `hidden`), so
+    content is reachable without scripting. docs-nav.js progressively collapses
+    the non-active sections and wires the button (aria-expanded + show/hide +
+    chevron). The active branch (is_branch_active) starts open either way.
   #}
-  <details class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--has-toggle chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}"{% if is_branch_active %} open{% end %}>
-    <summary class="chirp-theme-docs-nav__toggle"
-             aria-label="Toggle {{ item_title }} section">
-      <span class="chirp-theme-docs-nav__toggle-icon" aria-hidden="true">{{ icon('caret-right', size=14) }}</span>
-    </summary>
-    {% if item_href %}
-    <a class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}{{ ' chirp-theme-docs-nav__summary-link--active' if is_current else '' }}"
-       href="{{ item_href | absolute_url }}"
-       title="{{ item_title }}"
-       {% if is_current %}aria-current="page"{% end %}{{ route_link_attrs(item_href | absolute_url) | html_attrs }}>
-      <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind, true) }}</span>
-      <span class="chirp-theme-docs-nav__summary-copy">
-        <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
+  {% let section_slug = item_href if item_href else (item_title | lower) %}
+  {% let section_id = 'docs-nav-sect-' ~ (section_slug | replace('/', '-') | replace(' ', '-') | replace('.', '-') | trim('-')) %}
+  <div class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--has-toggle chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}">
+    <div class="chirp-theme-docs-nav__section-header">
+      <button type="button"
+              class="chirp-theme-docs-nav__toggle"
+              aria-expanded="{{ 'true' if is_branch_active else 'false' }}"
+              aria-controls="{{ section_id }}"
+              aria-label="Toggle {{ item_title }} section">
+        <span class="chirp-theme-docs-nav__toggle-icon" aria-hidden="true">{{ icon('caret-right', size=14) }}</span>
+      </button>
+      {% if item_href %}
+      <a class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}{{ ' chirp-theme-docs-nav__summary-link--active' if is_current else '' }}"
+         href="{{ item_href | absolute_url }}"
+         title="{{ item_title }}"
+         {% if is_current %}aria-current="page"{% end %}{{ route_link_attrs(item_href | absolute_url) | html_attrs }}>
+        <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind, true) }}</span>
+        <span class="chirp-theme-docs-nav__summary-copy">
+          <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
+        </span>
+      </a>
+      {% else %}
+      <span class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}">
+        <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind, true) }}</span>
+        <span class="chirp-theme-docs-nav__summary-copy">
+          <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
+        </span>
       </span>
-    </a>
-    {% else %}
-    <span class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}">
-      <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind, true) }}</span>
-      <span class="chirp-theme-docs-nav__summary-copy">
-        <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
-      </span>
-    </span>
-    {% end %}
-    <div class="chirpui-sidebar__section-links chirp-theme-docs-nav__section-links">
+      {% end %}
+    </div>
+    <div class="chirpui-sidebar__section-links chirp-theme-docs-nav__section-links" id="{{ section_id }}">
       {% for child in item_children %}
       {{ nav_node(child, depth + 1) }}
       {% end %}
     </div>
-  </details>
+  </div>
   {% else %}
   <div class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}">
     {% if item_href %}
