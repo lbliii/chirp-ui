@@ -20,6 +20,16 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
 {{ icon('newspaper', size=18) }}
 {% elif 'doc' in key or 'guide' in key %}
 {{ icon('book-open', size=18) }}
+{% elif 'tutorial' in key %}
+{{ icon('graduation-cap', size=18) }}
+{% elif 'track' in key %}
+{{ icon('map', size=18) }}
+{% elif 'resume' in key %}
+{{ icon('briefcase', size=18) }}
+{% elif 'author' in key %}
+{{ icon('users', size=18) }}
+{% elif 'changelog' in key %}
+{{ icon('git-commit', size=18) }}
 {% else %}
 <span>{{ index }}</span>
 {% end %}
