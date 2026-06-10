@@ -24,6 +24,7 @@ THEME_AUTODOC_MEMBERS = (
     / "members.html"
 )
 FONTS_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "fonts.yaml"
+FONTS_CSS = REPO_ROOT / "site" / "assets" / "fonts.css"
 SITE_PUBLIC = REPO_ROOT / "site" / "public"
 API_FILTERS_PAGE = SITE_PUBLIC / "api" / "filters" / "index.html"
 SITE_CONTENT = REPO_ROOT / "site" / "content"
@@ -103,6 +104,7 @@ FORBIDDEN_OUTPUT_NAMES = (
 
 # #165/#166 — on-site reference so users never leave for GitHub.
 THEME_TEMPLATES = REPO_ROOT / "src" / "bengal_themes" / "chirp_theme" / "templates"
+SEARCH_PAGE_TEMPLATE = THEME_TEMPLATES / "search.html"
 SHORTCODES_DIR = THEME_TEMPLATES / "shortcodes"
 DIRECTIVES_DIR = THEME_TEMPLATES / "directives"
 REFERENCE_DIR = SITE_CONTENT / "docs" / "reference"
@@ -575,6 +577,44 @@ def test_fonts_config_defines_a_display_font() -> None:
     assert "Outfit" in text
 
 
+def test_fonts_css_declares_font_faces_for_all_weights() -> None:
+    """#135 — the generated stylesheet must define @font-face for 400/600/700 with
+    font-display:swap so the preloaded woff2 weights actually resolve to Outfit.
+
+    base.html links this file (gated on config.fonts.display) and preloads the
+    400/600 woff2; this guards the other half of the contract — that the linked
+    stylesheet wires those weights to the Outfit family with swap behavior.
+    """
+    css = FONTS_CSS.read_text(encoding="utf-8")
+
+    assert css.count("@font-face") >= 3, (
+        "fonts.css must declare at least 3 @font-face blocks (#135)"
+    )
+    assert "font-family: 'Outfit'" in css or 'font-family: "Outfit"' in css
+    for weight in (400, 600, 700):
+        assert f"font-weight: {weight}" in css, f"no @font-face for Outfit {weight} (#135)"
+    # swap keeps text visible during the woff2 fetch (no invisible-text FOIT).
+    assert css.count("font-display: swap") >= 3, (
+        "every @font-face must use font-display:swap (#135)"
+    )
+    # The stylesheet serves woff2 only (the .ttf duplicates were dropped — see below).
+    assert ".woff2" in css
+    assert ".ttf" not in css
+
+
+def test_fonts_dir_ships_woff2_only_no_ttf_duplicates() -> None:
+    """#135 — the unused .ttf duplicates were removed; only woff2 weights ship.
+
+    fonts.css references woff2 only, so the .ttf copies were dead weight in the
+    build. This fails if a .ttf font sneaks back into the source fonts dir.
+    """
+    fonts_dir = REPO_ROOT / "site" / "assets" / "fonts"
+    ttf = sorted(p.name for p in fonts_dir.glob("*.ttf"))
+    assert not ttf, f"unused .ttf font duplicates shipped in site/assets/fonts: {ttf} (#135)"
+    woff2 = sorted(p.name for p in fonts_dir.glob("*.woff2"))
+    assert woff2, "expected woff2 Outfit weights in site/assets/fonts (#135)"
+
+
 def test_base_template_reads_real_search_preload_config_path() -> None:
     """#139 — the meta must read search.lunr.preload (not the non-existent
     config.search_preload) so it never leaks a stringified ConfigSection."""
@@ -643,6 +683,136 @@ def test_autodoc_members_read_signature_and_params_from_metadata() -> None:
     assert "member_meta?.is_staticmethod" in template
     # Deprecation notice is a DocElement-level field, not a metadata flag.
     assert "member?.deprecated" in template
+
+
+def _render_autodoc_members(theme_env, element: dict) -> str:
+    """Render the theme's autodoc members partial against a fabricated element.
+
+    Uses the ``theme_env`` fixture (theme + chirp_ui loader roots, conftest
+    filter stubs, ``markdownify`` stub) so the members -> returns/raises ->
+    chirpui macro chain renders without a real Chirp/Bengal app.
+    """
+    template = theme_env.get_template("autodoc/partials/members.html")
+    return template.render(element=element)
+
+
+def test_autodoc_member_returns_and_raises_render_in_accordion_body(theme_env) -> None:
+    """#158 — a member with return/raises detail emits Returns/Raises blocks.
+
+    Mirrors Bengal's Python extractor shape: the return type lives under
+    ``member.metadata.returns``, the return prose under
+    ``member.metadata.parsed_doc.returns``, and the exception list under
+    ``member.metadata.parsed_doc.raises`` (a list of ``{type, description}``).
+    ``register_colors`` on /api/filters/ documents ``Raises ValueError``; the
+    rebuilt member body must surface a structured Raises block, and a
+    return-annotated member must surface a Returns block — inside each member's
+    accordion body, after the params table.
+    """
+    element = {
+        "children": [
+            {
+                "name": "register_colors",
+                "element_type": "function",
+                "metadata": {
+                    "signature": "register_colors(colors: dict) -> None",
+                    "args": [
+                        {
+                            "name": "colors",
+                            "type": "dict",
+                            "default": "",
+                            "docstring": "Mapping of name to color value.",
+                        }
+                    ],
+                    "returns": "None",
+                    "parsed_doc": {
+                        "returns": "Nothing.",
+                        "raises": [
+                            {
+                                "type": "ValueError",
+                                "description": "If a registered color is invalid.",
+                            }
+                        ],
+                    },
+                },
+            },
+            {
+                "name": "resolve_color",
+                "element_type": "function",
+                "metadata": {
+                    "signature": "resolve_color(name: str) -> str",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "str",
+                            "default": "",
+                            "docstring": "Registered color name.",
+                        }
+                    ],
+                    "returns": "str",
+                    "parsed_doc": {"returns": "The resolved CSS color string."},
+                },
+            },
+        ]
+    }
+
+    html = _render_autodoc_members(theme_env, element)
+
+    # The raising member surfaces a structured Raises block naming the exception.
+    assert "chirp-theme-reference-raises" in html, (
+        "raising member did not emit a Raises block (#158)"
+    )
+    assert "ValueError" in html
+    # The return-annotated member surfaces a Returns block.
+    assert "chirp-theme-reference-returns" in html, (
+        "return-annotated member did not emit a Returns block (#158)"
+    )
+
+
+def test_autodoc_member_without_return_or_raises_emits_no_blocks(theme_env) -> None:
+    """#158 — members with no return/raises detail must not emit empty blocks.
+
+    Strict-undefined guards (``member.metadata.get(...)``) gate the includes, so
+    a bare member renders neither a Returns nor a Raises callout.
+    """
+    element = {
+        "children": [
+            {
+                "name": "noop",
+                "element_type": "function",
+                "metadata": {
+                    "signature": "noop()",
+                    "args": [],
+                    "parsed_doc": {},
+                },
+            }
+        ]
+    }
+
+    html = _render_autodoc_members(theme_env, element)
+
+    assert "chirp-theme-reference-returns" not in html
+    assert "chirp-theme-reference-raises" not in html
+
+
+def test_autodoc_members_template_renders_returns_and_raises_partials() -> None:
+    """#158 — the members partial wires the shared returns/raises partials.
+
+    Source-level guard so the wiring cannot silently regress: each member's
+    accordion body includes the returns.html / raises.html partials, guarded on
+    the member's own metadata (strict-undefined ``.get`` access), and the
+    "intentionally NOT wired here" note is gone.
+    """
+    template = THEME_AUTODOC_MEMBERS.read_text(encoding="utf-8")
+
+    assert 'include "autodoc/partials/returns.html"' in template
+    assert 'include "autodoc/partials/raises.html"' in template
+    # Read from the member's own metadata, per the Bengal extractor field paths.
+    assert 'member_meta.get("returns")' in template
+    assert 'member_meta.get("parsed_doc")' in template
+    assert 'member_parsed_doc.get("returns")' in template
+    assert 'member_parsed_doc.get("raises")' in template
+    # The stale "not wired here" note must be removed.
+    assert "intentionally NOT wired here" not in template
 
 
 def test_built_api_filters_renders_typed_params_tables() -> None:
@@ -853,3 +1023,161 @@ def test_components_catalog_covers_every_manifest_category() -> None:
         assert category in text or spaced in text, (
             f"manifest category '{category}' has no home in components/_index.md (#166)"
         )
+
+
+class _NoscriptPage:
+    """Minimal page stand-in for the noscript fallback render tests (#171)."""
+
+    def __init__(self, title: str, href: str) -> None:
+        self.title = title
+        self.href = href
+
+
+class _NoscriptSection:
+    """Minimal section stand-in carrying regular_pages for the noscript loop."""
+
+    def __init__(self, title: str, pages: list) -> None:
+        self.title = title
+        self.name = title
+        self.regular_pages = pages
+        self.pages = pages
+
+
+class _NoscriptSite:
+    """Fake `site` exposing sections + a flat page list for noscript rendering."""
+
+    def __init__(self, sections: list, pages: list) -> None:
+        self.sections = sections
+        self.regular_pages = pages
+        self.pages = pages
+
+
+def _absolute_url_stub(value: object) -> str:
+    """Base-prefix passthrough mirroring Bengal's `absolute_url` filter."""
+    text = str(value)
+    return ("/base" + text) if text.startswith("/") else text
+
+
+def _extract_noscript_block(template_text: str) -> str:
+    """Pull the <noscript>...</noscript> fragment out of a template source.
+
+    The full search.html extends base.html and pulls in the whole shell
+    (navbar, hero, globals like current_lang()), which is too much context for
+    a unit test. The server-side fallback we care about lives entirely inside a
+    single <noscript> block of plain kida, so we render *that* fragment through
+    the real engine — if the loop, the `?.` access, or the `absolute_url`
+    pipeline regresses, this test fails.
+    """
+    match = re.search(r"<noscript>.*?</noscript>", template_text, re.DOTALL)
+    assert match, "search.html no longer contains a <noscript> fallback block (#171)"
+    return match.group(0)
+
+
+def _render_search_noscript(site: _NoscriptSite) -> str:
+    """Render the real search.html <noscript> fragment with fake site data."""
+    kida = pytest.importorskip("kida")
+    noscript = _extract_noscript_block(SEARCH_PAGE_TEMPLATE.read_text(encoding="utf-8"))
+    env = kida.Environment(autoescape=True)
+    # absolute_url is a Bengal-provided filter; the passthrough is enough to
+    # prove links are emitted and run through the pipeline.
+    env.update_filters({"absolute_url": _absolute_url_stub})
+    return env.from_string(noscript).render(site=site)
+
+
+def test_search_page_noscript_renders_indexed_page_links() -> None:
+    """#171 — /search renders a real, server-side list of indexed pages with JS off.
+
+    Renders the actual <noscript> fragment from search.html via the kida engine
+    with fake site data and asserts it emits a search-page__noscript-list with
+    anchors to each page (not a dead input over an empty state).
+    """
+    site = _NoscriptSite(
+        sections=[
+            _NoscriptSection("Guides", [_NoscriptPage("Installation", "/docs/install/")]),
+            _NoscriptSection("API Reference", [_NoscriptPage("filters", "/api/filters/")]),
+        ],
+        pages=[_NoscriptPage("Installation", "/docs/install/")],
+    )
+
+    html = _render_search_noscript(site)
+
+    # Grouped list container is present.
+    assert "search-page__noscript-list" in html, (
+        "noscript fallback did not render a search-page__noscript-list (#171)"
+    )
+    # Section headings render from site data.
+    assert "Guides" in html
+    assert "API Reference" in html
+    # Real anchors to indexed pages, run through absolute_url.
+    assert '<a href="/base/docs/install/">Installation</a>' in html
+    assert '<a href="/base/api/filters/">filters</a>' in html
+
+
+def test_search_page_noscript_falls_back_to_flat_page_list() -> None:
+    """#171 — with no sections, the noscript block lists site.pages directly."""
+    site = _NoscriptSite(
+        sections=[],
+        pages=[_NoscriptPage("Quickstart", "/docs/quickstart/")],
+    )
+
+    html = _render_search_noscript(site)
+
+    assert "search-page__noscript-list" in html
+    assert '<a href="/base/docs/quickstart/">Quickstart</a>' in html
+
+
+# ---------------------------------------------------------------------------
+# #153 — adoption quickstart: applying chirp-theme to a Bengal site
+# ---------------------------------------------------------------------------
+
+
+def test_install_doc_documents_chirp_theme_adoption() -> None:
+    """#153 — the install doc walks a Bengal user through adopting chirp-theme.
+
+    The get-started page must name the theme, state the minimum Bengal version,
+    explain the ``library_asset_tags`` requirement, and show setting
+    ``theme.name: "chirp-theme"`` — the four facts a new adopter needs and the
+    acceptance criteria for #153.
+    """
+    text = INSTALL_DOC.read_text(encoding="utf-8")
+
+    # Names the theme and shows wiring it into a Bengal site config.
+    assert "chirp-theme" in text
+    assert 'name: "chirp-theme"' in text
+    # States the minimum Bengal version.
+    assert "0.3.3" in text
+    assert ">=0.3.3" in text or ">= 0.3.3" in text
+    # Names the library_asset_tags requirement (why >=0.3.3 is needed).
+    assert "library_asset_tags" in text
+    # The README links to the adoption path, so the entry point is discoverable.
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "chirp-theme" in readme
+    assert "get-started/installation" in readme
+
+
+# ---------------------------------------------------------------------------
+# #167 — /docs/ landing destinations get an icon per card
+# ---------------------------------------------------------------------------
+
+
+def test_docs_index_cards_carry_an_icon_each() -> None:
+    """#167 — every destination card on /docs/ leads with an icon.
+
+    The landing keeps raw ``chirpui-card`` markup (guarded by
+    ``test_docs_index_uses_chirpui_card_markup_for_cards``), so the icons are
+    inline ``chirpui-card__icon`` spans wrapping a shipped Phosphor SVG — one per
+    card, not the directive form. There are seven destination cards (five Learn,
+    two Reference), so there must be at least seven icon spans, each with an
+    accessible-hidden inline ``<svg>``.
+    """
+    text = DOCS_INDEX.read_text(encoding="utf-8")
+
+    card_count = text.count('class="chirpui-card chirp-theme-directive-card"')
+    icon_spans = text.count('class="chirpui-card__icon"')
+    assert card_count >= 7, f"expected the documented destination cards, found {card_count}"
+    assert icon_spans >= card_count, (
+        f"only {icon_spans} icon spans for {card_count} cards — every /docs/ "
+        f"destination card must lead with an icon (#167)"
+    )
+    # Icons are decorative (the title is the label) and rendered as inline SVG.
+    assert '<span class="chirpui-card__icon" aria-hidden="true"><svg' in text

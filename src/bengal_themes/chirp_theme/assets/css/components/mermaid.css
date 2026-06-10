@@ -14,7 +14,6 @@
 
 /* Mermaid container - scoped to prose/content areas */
 .prose .mermaid,
-.has-prose-content .mermaid,
 .mermaid {
   display: flex;
   justify-content: center;
@@ -29,7 +28,6 @@
 
 /* Ensure Mermaid SVGs are responsive */
 .prose .mermaid svg,
-.has-prose-content .mermaid svg,
 .mermaid svg {
   max-width: 100%;
   height: auto;
@@ -109,7 +107,6 @@
 
 /* Dark theme adjustments */
 [data-theme="dark"] .prose .mermaid,
-[data-theme="dark"] .has-prose-content .mermaid,
 [data-theme="dark"] .mermaid {
   background: var(--color-bg-tertiary);
 }
@@ -243,7 +240,6 @@
 /* Print styles - ensure diagrams are visible */
 @media print {
   .prose .mermaid,
-  .has-prose-content .mermaid,
   .mermaid {
     page-break-inside: avoid;
     background: transparent;

@@ -235,7 +235,7 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
   {% end %}
 
   <div class="chirp-theme-doc-catalog__secondary" data-chirp-theme-doc-nav="sections">
-  {% call sidebar(cls='chirp-theme-docs-nav', current_path=current_path) %}
+  {% call sidebar(cls='chirp-theme-docs-nav', current_path=current_path, aria_label='Documentation sections') %}
     {% slot header %}
     {% unless is_autodoc %}
     {% include 'partials/version-selector.html' %}

@@ -14169,7 +14169,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Navbar component\n    Top navigation bar with brand and links.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Named slots (Kida 0.3+, use_slots=true): default (links), end (right-aligned),\n    brand (brand area, when brand_slot=true).\n\n    Usage:\n        from \"chirpui/navbar.html\" import navbar, navbar_link, navbar_end, navbar_dropdown\n\n        call navbar(brand=\"My App\", brand_url=\"/\", use_slots=true)\n            navbar_link(\"/docs\", \"Docs\", match=\"prefix\")\n            navbar_link(\"/about\", \"About\", match=\"exact\")\n            {% slot end %}btn(\"Login\", href=\"/login\"){% end %}\n        end\n\n        call navbar(brand_url=\"/\", use_slots=true, brand_slot=true)\n            {% slot brand %}logo(text=\"My App\", image_src=\"/static/logo.svg\", variant=\"both\"){% end %}\n            navbar_link(\"/docs\", \"Docs\", match=\"prefix\")\n        end\n\n    Legacy: wrap right-aligned content in navbar_end(). Add cls=\"chirpui-navbar--sticky\" for sticky nav.",
+      "description": "Navbar component\n    Top navigation bar with brand and links.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Named slots (Kida 0.3+, use_slots=true): default (links), end (right-aligned),\n    brand (brand area, when brand_slot=true).\n\n    aria_label: static accessible name for the <nav> landmark. Pass a unique\n    name (e.g. \"Primary\") when the page has multiple navigation landmarks so\n    each is distinct (axe-core landmark-unique). Default \"\" omits the attribute.\n\n    Usage:\n        from \"chirpui/navbar.html\" import navbar, navbar_link, navbar_end, navbar_dropdown\n\n        call navbar(brand=\"My App\", brand_url=\"/\", use_slots=true)\n            navbar_link(\"/docs\", \"Docs\", match=\"prefix\")\n            navbar_link(\"/about\", \"About\", match=\"exact\")\n            {% slot end %}btn(\"Login\", href=\"/login\"){% end %}\n        end\n\n        call navbar(brand_url=\"/\", use_slots=true, brand_slot=true)\n            {% slot brand %}logo(text=\"My App\", image_src=\"/static/logo.svg\", variant=\"both\"){% end %}\n            navbar_link(\"/docs\", \"Docs\", match=\"prefix\")\n        end\n\n    Legacy: wrap right-aligned content in navbar_end(). Add cls=\"chirpui-navbar--sticky\" for sticky nav.",
       "elements": [
         "brand",
         "link",
@@ -14188,7 +14188,7 @@
         "chirpui-navbar__link--active",
         "chirpui-navbar__links--end"
       ],
-      "lineno": 31,
+      "lineno": 35,
       "macro": "navbar",
       "maturity": "stable",
       "modifiers": [
@@ -14224,6 +14224,11 @@
           "has_default": true,
           "is_required": false,
           "name": "current_path"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "aria_label"
         }
       ],
       "provides": [
@@ -14259,7 +14264,7 @@
       "consumes": [
         "_nav_current_path"
       ],
-      "description": "Navbar component\n    Top navigation bar with brand and links.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Named slots (Kida 0.3+, use_slots=true): default (links), end (right-aligned),\n    brand (brand area, when brand_slot=true).\n\n    Usage:\n        from \"chirpui/navbar.html\" import navbar, navbar_link, navbar_end, navbar_dropdown\n\n        call navbar(brand=\"My App\", brand_url=\"/\", use_slots=true)\n            navbar_link(\"/docs\", \"Docs\", match=\"prefix\")\n            navbar_link(\"/about\", \"About\", match=\"exact\")\n            {% slot end %}btn(\"Login\", href=\"/login\"){% end %}\n        end\n\n        call navbar(brand_url=\"/\", use_slots=true, brand_slot=true)\n            {% slot brand %}logo(text=\"My App\", image_src=\"/static/logo.svg\", variant=\"both\"){% end %}\n            navbar_link(\"/docs\", \"Docs\", match=\"prefix\")\n        end\n\n    Legacy: wrap right-aligned content in navbar_end(). Add cls=\"chirpui-navbar--sticky\" for sticky nav.",
+      "description": "Navbar component\n    Top navigation bar with brand and links.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Named slots (Kida 0.3+, use_slots=true): default (links), end (right-aligned),\n    brand (brand area, when brand_slot=true).\n\n    aria_label: static accessible name for the <nav> landmark. Pass a unique\n    name (e.g. \"Primary\") when the page has multiple navigation landmarks so\n    each is distinct (axe-core landmark-unique). Default \"\" omits the attribute.\n\n    Usage:\n        from \"chirpui/navbar.html\" import navbar, navbar_link, navbar_end, navbar_dropdown\n\n        call navbar(brand=\"My App\", brand_url=\"/\", use_slots=true)\n            navbar_link(\"/docs\", \"Docs\", match=\"prefix\")\n            navbar_link(\"/about\", \"About\", match=\"exact\")\n            {% slot end %}btn(\"Login\", href=\"/login\"){% end %}\n        end\n\n        call navbar(brand_url=\"/\", use_slots=true, brand_slot=true)\n            {% slot brand %}logo(text=\"My App\", image_src=\"/static/logo.svg\", variant=\"both\"){% end %}\n            navbar_link(\"/docs\", \"Docs\", match=\"prefix\")\n        end\n\n    Legacy: wrap right-aligned content in navbar_end(). Add cls=\"chirpui-navbar--sticky\" for sticky nav.",
       "elements": [
         "trigger"
       ],
@@ -14268,7 +14273,7 @@
         "chirpui-navbar-dropdown__trigger"
       ],
       "extra_emits": [],
-      "lineno": 70,
+      "lineno": 74,
       "macro": "navbar_dropdown",
       "maturity": "stable",
       "modifiers": [],
@@ -18235,7 +18240,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Badge state: badge_label gives a richer accessible label for visible counts.\n    badge_expected reserves count space, and badge_loading renders a pending\n    count without layout shift.\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
+      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Badge state: badge_label gives a richer accessible label for visible counts.\n    badge_expected reserves count space, and badge_loading renders a pending\n    count without layout shift.\n\n    Named slots: header, footer, default (nav content).\n\n    aria_label: static accessible name for the <nav> landmark. Set this when a\n    page has more than one navigation landmark so each has a unique name\n    (axe-core landmark-unique). Default \"\" omits the attribute (back-compat).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
       "elements": [
         "badge",
         "header",
@@ -18270,7 +18275,7 @@
         "chirpui-sidebar__link--active",
         "chirpui-sidebar__section-links"
       ],
-      "lineno": 37,
+      "lineno": 41,
       "macro": "sidebar",
       "maturity": "stable",
       "modifiers": [
@@ -18286,6 +18291,11 @@
           "has_default": true,
           "is_required": false,
           "name": "current_path"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "aria_label"
         }
       ],
       "provides": [
@@ -18326,7 +18336,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Badge state: badge_label gives a richer accessible label for visible counts.\n    badge_expected reserves count space, and badge_loading renders a pending\n    count without layout shift.\n\n    Named slots: header, footer, default (nav content).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
+      "description": "Sidebar component\n    Vertical sidebar navigation for dashboards and admin panels.\n\n    Boosted links use the shell outlet contract: target #main, swap innerHTML,\n    and select #page-content so full-page GET responses only replace the page\n    outlet inside the persistent shell.\n\n    Active state: use match= for automatic path comparison (requires current_path\n    in template context), or active= for explicit control.\n\n    match=\"exact\"  — active when current_path == href\n    match=\"prefix\" — active when current_path starts with href (or equals it)\n    active=true    — always active (explicit override)\n\n    Badge state: badge_label gives a richer accessible label for visible counts.\n    badge_expected reserves count space, and badge_loading renders a pending\n    count without layout shift.\n\n    Named slots: header, footer, default (nav content).\n\n    aria_label: static accessible name for the <nav> landmark. Set this when a\n    page has more than one navigation landmark so each has a unique name\n    (axe-core landmark-unique). Default \"\" omits the attribute (back-compat).\n\n    Usage:\n        from \"chirpui/sidebar.html\" import sidebar, sidebar_link, sidebar_section,\n        shell_brand_link, shell_boosted_link\n\n        call sidebar()\n            {% slot header %}<div class=\"chirpui-sidebar__brand\">My App</div>{% end %}\n            call sidebar_section(\"Main\")\n                sidebar_link(\"/\", \"Home\", match=\"exact\")\n                sidebar_link(\"/dashboard\", \"Dashboard\", match=\"prefix\")\n                sidebar_link(\"/admin\", \"Admin\", active=is_admin)\n            end\n            {% slot footer %}<span>v1.0</span>{% end %}\n        end",
       "elements": [
         "icon"
       ],
@@ -18335,7 +18345,7 @@
         "chirpui-sidebar-toggle__icon"
       ],
       "extra_emits": [],
-      "lineno": 96,
+      "lineno": 100,
       "macro": "sidebar_toggle",
       "maturity": "stable",
       "modifiers": [],

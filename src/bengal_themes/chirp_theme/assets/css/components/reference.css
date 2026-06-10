@@ -55,10 +55,6 @@
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--chirpui-accent) 16%, transparent);
 }
 
-.chirp-theme-api-index .chirpui-search-header__content {
-  display: none;
-}
-
 .chirp-theme-api-index .chirpui-search-header__form {
   margin: 0;
 }
