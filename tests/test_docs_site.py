@@ -103,6 +103,7 @@ FORBIDDEN_OUTPUT_NAMES = (
 
 # #165/#166 — on-site reference so users never leave for GitHub.
 THEME_TEMPLATES = REPO_ROOT / "src" / "bengal_themes" / "chirp_theme" / "templates"
+SEARCH_PAGE_TEMPLATE = THEME_TEMPLATES / "search.html"
 SHORTCODES_DIR = THEME_TEMPLATES / "shortcodes"
 DIRECTIVES_DIR = THEME_TEMPLATES / "directives"
 REFERENCE_DIR = SITE_CONTENT / "docs" / "reference"
@@ -853,3 +854,104 @@ def test_components_catalog_covers_every_manifest_category() -> None:
         assert category in text or spaced in text, (
             f"manifest category '{category}' has no home in components/_index.md (#166)"
         )
+
+
+class _NoscriptPage:
+    """Minimal page stand-in for the noscript fallback render tests (#171)."""
+
+    def __init__(self, title: str, href: str) -> None:
+        self.title = title
+        self.href = href
+
+
+class _NoscriptSection:
+    """Minimal section stand-in carrying regular_pages for the noscript loop."""
+
+    def __init__(self, title: str, pages: list) -> None:
+        self.title = title
+        self.name = title
+        self.regular_pages = pages
+        self.pages = pages
+
+
+class _NoscriptSite:
+    """Fake `site` exposing sections + a flat page list for noscript rendering."""
+
+    def __init__(self, sections: list, pages: list) -> None:
+        self.sections = sections
+        self.regular_pages = pages
+        self.pages = pages
+
+
+def _absolute_url_stub(value: object) -> str:
+    """Base-prefix passthrough mirroring Bengal's `absolute_url` filter."""
+    text = str(value)
+    return ("/base" + text) if text.startswith("/") else text
+
+
+def _extract_noscript_block(template_text: str) -> str:
+    """Pull the <noscript>...</noscript> fragment out of a template source.
+
+    The full search.html extends base.html and pulls in the whole shell
+    (navbar, hero, globals like current_lang()), which is too much context for
+    a unit test. The server-side fallback we care about lives entirely inside a
+    single <noscript> block of plain kida, so we render *that* fragment through
+    the real engine — if the loop, the `?.` access, or the `absolute_url`
+    pipeline regresses, this test fails.
+    """
+    match = re.search(r"<noscript>.*?</noscript>", template_text, re.DOTALL)
+    assert match, "search.html no longer contains a <noscript> fallback block (#171)"
+    return match.group(0)
+
+
+def _render_search_noscript(site: _NoscriptSite) -> str:
+    """Render the real search.html <noscript> fragment with fake site data."""
+    kida = pytest.importorskip("kida")
+    noscript = _extract_noscript_block(SEARCH_PAGE_TEMPLATE.read_text(encoding="utf-8"))
+    env = kida.Environment(autoescape=True)
+    # absolute_url is a Bengal-provided filter; the passthrough is enough to
+    # prove links are emitted and run through the pipeline.
+    env.update_filters({"absolute_url": _absolute_url_stub})
+    return env.from_string(noscript).render(site=site)
+
+
+def test_search_page_noscript_renders_indexed_page_links() -> None:
+    """#171 — /search renders a real, server-side list of indexed pages with JS off.
+
+    Renders the actual <noscript> fragment from search.html via the kida engine
+    with fake site data and asserts it emits a search-page__noscript-list with
+    anchors to each page (not a dead input over an empty state).
+    """
+    site = _NoscriptSite(
+        sections=[
+            _NoscriptSection("Guides", [_NoscriptPage("Installation", "/docs/install/")]),
+            _NoscriptSection("API Reference", [_NoscriptPage("filters", "/api/filters/")]),
+        ],
+        pages=[_NoscriptPage("Installation", "/docs/install/")],
+    )
+
+    html = _render_search_noscript(site)
+
+    # Grouped list container is present.
+    assert "search-page__noscript-list" in html, (
+        "noscript fallback did not render a search-page__noscript-list (#171)"
+    )
+    # Section headings render from site data.
+    assert "Guides" in html
+    assert "API Reference" in html
+    # Real anchors to indexed pages, run through absolute_url.
+    assert '<a href="/base/docs/install/">Installation</a>' in html
+    assert '<a href="/base/api/filters/">filters</a>' in html
+
+
+def test_search_page_noscript_falls_back_to_flat_page_list() -> None:
+    """#171 — with no sections, the noscript block lists site.pages directly."""
+    site = _NoscriptSite(
+        sections=[],
+        pages=[_NoscriptPage("Quickstart", "/docs/quickstart/")],
+    )
+
+    html = _render_search_noscript(site)
+
+    assert "search-page__noscript-list" in html
+    assert '<a href="/base/docs/quickstart/">Quickstart</a>' in html

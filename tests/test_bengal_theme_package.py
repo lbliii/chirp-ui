@@ -533,6 +533,14 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     assert "window.BengalSearchModal" in search_js
     assert "#nav-search-trigger" in search_js
 
+    # #172 — Cmd+K modal scope chips (Docs / API / Releases) wired to search.js.
+    assert 'class="search-modal__scopes"' in search_modal
+    assert 'data-scope="docs"' in search_modal
+    assert 'data-scope="api"' in search_modal
+    assert 'data-scope="releases"' in search_modal
+    assert "querySelectorAll('.search-modal__scope')" in search_js
+    assert "filterByScope" in search_js
+
     assert 'id="search-input"' in search_page
     assert 'data-chirp-theme-surface="search"' in search_page
     assert "document.getElementById('search-input')" in search_js

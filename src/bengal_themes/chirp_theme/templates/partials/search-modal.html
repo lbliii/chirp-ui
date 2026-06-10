@@ -65,6 +65,21 @@ Usage:
     {# Status for screen readers #}
     <div id="search-modal-status" class="sr-only" role="status" aria-live="polite"></div>
 
+    {# Scope chips — filter results to Docs / API / Releases. The active chip
+       carries aria-pressed=true; "All" is the default. JS re-runs the current
+       query on chip change (search.js). Mirrors the /search filter affordance. #}
+    <div class="search-modal__scopes" id="search-modal-scopes" role="group"
+      aria-label="{{ t('search.scopes_aria_label', default='Filter results by type') }}">
+      <button type="button" class="search-modal__scope search-modal__scope--active"
+        data-scope="all" aria-pressed="true">{{ t('search.scope_all', default='All') }}</button>
+      <button type="button" class="search-modal__scope"
+        data-scope="docs" aria-pressed="false">{{ t('search.scope_docs', default='Docs') }}</button>
+      <button type="button" class="search-modal__scope"
+        data-scope="api" aria-pressed="false">{{ t('search.scope_api', default='API') }}</button>
+      <button type="button" class="search-modal__scope"
+        data-scope="releases" aria-pressed="false">{{ t('search.scope_releases', default='Releases') }}</button>
+    </div>
+
     {# Recent searches section #}
     <section class="search-modal__recent" id="search-modal-recent"
       aria-label="{{ t('search.recent_aria_label', default='Recent searches') }}">
