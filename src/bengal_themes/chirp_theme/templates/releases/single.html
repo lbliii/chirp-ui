@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/code.html" import install_snippet %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import cluster, container, stack %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "chirpui/surface.html" import surface %}
+{% from "partials/navigation-components.html" import breadcrumbs, page_navigation %}
+
+{% block content %}
+{#- "chirp-ui 0.9.0" -> "0.9.0"; explicit metadata.version always wins. -#}
+{% let version = (params?.version ?? ((page?.title ?? "Release") | replace("chirp-ui ", ""))) | trim %}
+{% let parts = version.split(".") %}
+{% let patch = (parts[2] if parts | length > 2 else "0") | int %}
+{% let is_feature = patch == 0 %}
+{% let release_date = page?.metadata?.date ?? page?.date %}
+{% let release_github = params?.github_release ?? params?.github ?? "https://github.com/lbliii/chirp-ui/releases/tag/v" ~ version %}
+{% let release_pypi = params?.pypi ?? params?.download_url ?? "https://pypi.org/project/chirp-ui/" ~ version ~ "/" %}
+
+{% call container(cls="chirp-theme-learning-page chirp-theme-release-single") %}
+  {% call stack(gap="lg") %}
+    {% call page_hero(title="chirp-ui " ~ version, subtitle=(params?.summary ?? params?.highlight ?? none), variant="minimal", background="solid", cls="chirp-theme-release-hero") %}
+      {% slot eyebrow %}
+      {{ breadcrumbs(page) }}
+      {% end %}
+      {% slot metadata %}
+      {% call cluster(gap="xs", cls="chirp-theme-release-hero__meta") %}
+        {% if is_feature %}{{ badge("Feature release", variant="info") }}{% else %}{{ badge("Patch release", variant="muted") }}{% end %}
+        {% if release_date %}{{ badge("Released " ~ (release_date | dateformat("%B %d, %Y")), variant="muted") }}{% end %}
+      {% end %}
+      {% end %}
+      {% slot actions %}
+      {{ btn("View on GitHub", href=release_github, variant="secondary", size="sm") }}
+      {{ btn("PyPI", href=release_pypi, variant="primary", size="sm") }}
+      {% end %}
+    {% end %}
+
+    {% call surface(variant="muted", cls="chirp-theme-release-single__install") %}
+      {{ install_snippet("uv add chirp-ui==" ~ version, label="install") }}
+    {% end %}
+
+    {% if content and content.strip() %}
+    {% call surface(variant="default", cls="chirp-theme-release-notes") %}
+      {% call rendered_content(compact=false, cls="chirp-theme-learning-content") %}
+      {{ content | safe }}
+      {% end %}
+    {% end %}
+    {% end %}
+
+    {{ page_navigation(page) }}
+  {% end %}
+{% end %}
+{% end %}

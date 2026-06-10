@@ -6,6 +6,7 @@ weight: 15
 lang: en
 type: doc
 keywords: [chirp-ui, search, htmx, catalog, facets, responsive]
+tags: [patterns, search, htmx]
 category: patterns
 ---
 

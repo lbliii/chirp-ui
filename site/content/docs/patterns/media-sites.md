@@ -6,6 +6,7 @@ weight: 30
 lang: en
 type: doc
 keywords: [chirp-ui, media sites, streaming, catalog, video, live events]
+tags: [patterns, media, marketing]
 category: patterns
 ---
 

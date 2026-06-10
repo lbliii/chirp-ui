@@ -53,7 +53,7 @@ checkers, and coding agents can inspect. Public guidance is in `README.md` and
 | --- | --- |
 | `src/chirp_ui/` | Core registry, Python API, and manifest contracts. |
 | `src/chirp_ui/templates/` | Kida macros, CSS, Alpine, and HTMX. |
-| `src/bengal_themes/` | Installable `chirp-theme` package. |
+| `src/bengal_themes/` | Installable `chirp-theme` package. Scoped steward: `src/bengal_themes/AGENTS.md`. |
 | `docs/` | Durable docs, generated references, and source maps. |
 | `docs/plans/` | Active plans, archives, roadmap, and not-now boundaries. |
 | `site/` | Bengal site source and generated-site expectations. |

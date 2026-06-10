@@ -235,6 +235,15 @@ build-manifest-check = { cmd = "python scripts/build_manifest.py --check", help 
 build-docs = { cmd = "python scripts/build_component_options.py", help = "Regenerate docs/COMPONENT-OPTIONS.md API reference section from the manifest" }
 build-docs-check = { cmd = "python scripts/build_component_options.py --check", help = "Fail if docs/COMPONENT-OPTIONS.md is stale relative to the manifest" }
 verify-generated = { sequence = ["build-css-check", "build-manifest-check", "build-docs-check"], help = "Verify committed generated CSS, manifest, and component reference docs are fresh" }
+# Fast theme guards (no site build): template reachability (no orphan partials)
+# + packaging/icon-reference (no shipped cruft, no dangling icon names).
+theme-guards = { cmd = "pytest tests/test_template_reachability.py tests/test_packaging.py -q", help = "Theme template-reachability + packaging/icon-reference guards" }
+# Pre-deploy gate for the GitHub Pages workflow: prove the committed generated
+# artifacts are fresh AND the theme is structurally sane before a public build.
+# Kept cheap on purpose (no full test suite, no JS lint) so the cached Pages
+# build flow is preserved. NOT wired into `ci`/`check` — those run the broader
+# suite already; this is the deploy-path entry point.
+deploy-gate = { sequence = ["verify-generated", "theme-guards"], help = "Gate the Pages deploy on generated-artifact freshness + theme structural guards" }
 escape-audit = { cmd = "python scripts/escape_audit.py", help = "Print Kida escape audit for trusted markup sites" }
 css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS parses cleanly" }
 css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }

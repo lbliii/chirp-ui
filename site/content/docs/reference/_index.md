@@ -28,8 +28,8 @@ directive below has its parameters and a rendered example on the page.
 :gap: medium
 
 :::{card} Shortcodes
-:icon: braces
-:link: ./shortcodes/
+:icon: code
+:link: /docs/reference/shortcodes/
 Inline `{{</* name */>}}` helpers — `component_specimen`, the `tip` /
 `warning` / `danger` callout family, `figure` / `gallery` / `img` / `audio`
 media, `details`, `highlight`, `blockquote`, and the `ref` / `relref` / `param`
@@ -37,8 +37,8 @@ link helpers.
 :::{/card}
 
 :::{card} Directives
-:icon: layout-grid
-:link: ./directives/
+:icon: layers
+:link: /docs/reference/directives/
 Block `:::{name}` containers — `admonition` for the full semantic callout
 family, plus `card`, `cards`, and `child_cards` for card grids that mirror the
 component vocabulary.

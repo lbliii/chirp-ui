@@ -96,7 +96,7 @@ Deleting a project removes every environment and cannot be undone.
 {{< /danger >}}
 
 For the complete semantic admonition family (note, hint, caution, …) as a block
-directive, see [directives — admonition](./directives/#admonition).
+directive, see [directives — admonition](/docs/reference/directives/#admonition).
 
 ---
 
@@ -268,4 +268,4 @@ The current version is {{</* param "version" */>}}.
 ```
 
 Looking for block-level containers instead? See the
-[directives reference](./directives/).
+[directives reference](/docs/reference/directives/).

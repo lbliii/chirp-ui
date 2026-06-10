@@ -6,6 +6,7 @@ weight: 23
 lang: en
 type: doc
 keywords: [chirp-ui, controls, forms, select, combobox, slider, table]
+tags: [components, forms]
 search_keywords:
   - button
   - buttons

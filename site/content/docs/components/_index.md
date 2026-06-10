@@ -37,7 +37,7 @@ In-page `component_specimen` demos for high-traffic primitives.
 :::{/card}
 
 :::{card} Authoring vocabulary
-:icon: braces
+:icon: code
 :link: /docs/reference/
 Shortcodes and directives for embedding components and callouts in prose.
 :::{/card}
@@ -84,7 +84,7 @@ moving parts.
 :gap: medium
 
 :::{card} Control selection
-:icon: sliders
+:icon: settings
 :link: ./controls/
 Native fields, dropdown selects, toggle groups, sliders, date inputs, and
 composed data tables — each with a live specimen.
@@ -105,27 +105,27 @@ attributes for menus, selects, and split menus.
 :::{/card}
 
 :::{card} Modal anatomy
-:icon: square-dashed
+:icon: enlarge
 :link: ./modals/
 Native `<dialog>` usage, Alpine target/store behavior, close controls, events,
 and HTMX confirm forms.
 :::{/card}
 
 :::{card} Tabs anatomy
-:icon: panels-top-left
+:icon: list
 :link: ./tabs/
 HTMX tabs, client-side tab panels, and URL-backed route tabs — keeping ARIA tab
 widgets distinct from navigation links.
 :::{/card}
 
 :::{card} Drawer & tray anatomy
-:icon: panel-right
+:icon: sidebar
 :link: ./drawers-trays/
 Slide-out dialog behavior, Alpine store state, close events, and focus trapping.
 :::{/card}
 
 :::{card} Type-aware rendering
-:icon: type
+:icon: file-text
 :link: ./type-aware-rendering/
 How `description_list` and friends adapt their markup to the shape of the data
 you pass.
@@ -139,7 +139,7 @@ seven-segment displays.
 :::{/card}
 
 :::{card} Islands & mutation
-:icon: boxes
+:icon: package
 :link: ./islands/
 HTMX fragment islands, polling triggers, and confirm flows for server-driven
 dashboards.

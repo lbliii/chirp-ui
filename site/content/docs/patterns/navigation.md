@@ -6,6 +6,7 @@ weight: 10
 lang: en
 type: doc
 keywords: [chirp-ui, navigation, route tabs, command palette, sidebar]
+tags: [patterns, navigation]
 category: patterns
 ---
 

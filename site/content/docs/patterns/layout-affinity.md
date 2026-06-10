@@ -6,6 +6,7 @@ weight: 16
 lang: en
 type: doc
 keywords: [chirp-ui, layout, affinity, recipes, responsive, agents]
+tags: [patterns, layout, responsive]
 category: patterns
 ---
 

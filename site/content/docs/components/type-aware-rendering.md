@@ -6,6 +6,7 @@ weight: 25
 lang: en
 type: doc
 keywords: [chirp-ui, description_list, value_type, Path, bool, type-aware]
+tags: [components, data-display]
 search_keywords:
   - type-aware
   - value type

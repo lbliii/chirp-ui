@@ -40,9 +40,13 @@
       {% end %}
     {% end %}
     {% else %}
-    {% call resource_card(item_href, item_title, description=none, top_meta=item?.element_type ?? item?.type ?? none, cls="chirp-theme-reference-card") %}
+    {% let item_icon = item?.metadata?.icon ?? ("folder" if item?.pages else "file-text") %}
+    {% call resource_card(item_href, item_title, description=none, top_meta=item?.element_type ?? item?.type ?? none, cls="chirp-theme-taxonomy-card chirp-theme-taxonomy-card--reference") %}
+      {% slot badges %}
+      <span class="chirpui-card__icon chirp-theme-taxonomy-card__mark" aria-hidden="true">{{ icon(item_icon, size=18) }}</span>
+      {% end %}
       {% if item_description %}
-      <div class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description chirp-theme-reference-card__description">{{ item_description |> markdownify |> truncatewords_html(28, '…') |> safe }}</div>
+      <div class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description">{{ item_description |> markdownify |> truncatewords_html(28, '…') |> safe }}</div>
       {% end %}
     {% end %}
     {% end %}

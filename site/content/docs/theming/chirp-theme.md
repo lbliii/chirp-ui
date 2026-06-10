@@ -6,6 +6,7 @@ weight: 35
 lang: en
 type: doc
 keywords: [chirp-theme, bengal theme, chirp-ui, docs theme]
+tags: [theme, theming]
 category: theming
 ---
 

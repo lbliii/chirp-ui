@@ -81,7 +81,7 @@ With no title, the type name becomes the heading.
 :::
 
 For the inline (non-block) equivalents, the `tip` / `warning` / `danger`
-[shortcodes](./shortcodes/#tip-warning-danger) wrap the same callout markup.
+[shortcodes](/docs/reference/shortcodes/#tip-warning-danger) wrap the same callout markup.
 
 ---
 
@@ -105,7 +105,7 @@ card becomes a link. Use it standalone, or nest it inside a `cards` grid.
 
 ```
 :::{card} Component reference
-:icon: layout-grid
+:icon: layers
 :link: /docs/components/
 :badge: Live
 Browse every public macro with options and a rendered example.
@@ -134,14 +134,14 @@ A responsive grid container for `card` blocks. Nest one `card` per cell.
 :gap: medium
 
 :::{card} Shortcodes
-:icon: braces
-:link: ./shortcodes/
+:icon: code
+:link: /docs/reference/shortcodes/
 Inline helpers for media, callouts, and live specimens.
 :::{/card}
 
 :::{card} Directives
-:icon: layout-grid
-:link: ./directives/
+:icon: layers
+:link: /docs/reference/directives/
 Block containers for admonitions and card grids.
 :::{/card}
 
@@ -153,14 +153,14 @@ Block containers for admonitions and card grids.
 :gap: medium
 
 :::{card} Shortcodes
-:icon: braces
-:link: ./shortcodes/
+:icon: code
+:link: /docs/reference/shortcodes/
 Inline `{{</* name */>}}` helpers for media, callouts, and live specimens.
 :::{/card}
 
 :::{card} Directives
-:icon: layout-grid
-:link: ./directives/
+:icon: layers
+:link: /docs/reference/directives/
 Block `:::{name}` containers for admonitions and card grids.
 :::{/card}
 
@@ -195,4 +195,4 @@ When a section has no matching children, the directive renders a single muted
 card with an explanatory message instead of crashing the page.
 
 Looking for inline helpers instead? See the
-[shortcodes reference](./shortcodes/).
+[shortcodes reference](/docs/reference/shortcodes/).

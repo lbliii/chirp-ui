@@ -38,6 +38,20 @@ jobs:
         env:
           PYTHON_GIL: "0"
 
+      # Gate the public deploy BEFORE the cached Bengal build runs.
+      # `make release-preflight` enforces artifact freshness for PyPI releases;
+      # the Pages path reused none of it, so a push that left chirpui.css /
+      # manifest.json / COMPONENT-OPTIONS.md stale would still publish the live
+      # site. `poe deploy-gate` = verify-generated (build-css/manifest/docs
+      # freshness) + theme-guards (template reachability + packaging/icon
+      # reference). No JS lint, no full test suite, so it fails fast and keeps
+      # the cached-build flow cheap. The showcase sentinel guard runs below,
+      # after the static showcase is assembled.
+      - name: Gate deploy on freshness + theme guards
+        run: uv run poe deploy-gate
+        env:
+          PYTHON_GIL: "0"
+
       - name: Cache Bengal build state
         uses: actions/cache@v5
         with:

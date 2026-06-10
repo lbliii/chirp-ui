@@ -6,6 +6,7 @@ weight: 25
 lang: en
 type: doc
 keywords: [chirp-ui, modal, dialog, confirm, alpine, anatomy]
+tags: [components, overlays, alpine]
 search_keywords:
   - modal
   - modals
