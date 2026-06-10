@@ -38,6 +38,7 @@ THEME_YAML = THEME_CONFIG / "theme.yaml"
 SHIPPED_FAMILIES = (
     "blog",
     "tutorial",
+    "notebook",
     "resume",
     "authors",
     "changelog",
