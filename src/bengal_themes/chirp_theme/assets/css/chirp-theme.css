@@ -1872,6 +1872,20 @@
     color: var(--chirpui-accent);
   }
 
+  /*
+   * Root (depth-0) "Documentation" header: icon + label on ONE line.
+   * The base .chirp-theme-docs-nav__summary-link rule is a single-column grid,
+   * which stacks the rounded folder-icon box above the label. Force a two-track
+   * row (icon | label) so they sit side by side, vertically centered — matching
+   * the visual rhythm of the depth>0 folder rows. Keeps the rounded-box icon.
+   */
+  .chirp-theme-docs-nav__section--depth-0 > .chirpui-sidebar__section-title {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.5rem;
+    align-items: center;
+  }
+
   .chirp-theme-docs-nav__section-header {
     display: flex;
     align-items: center;

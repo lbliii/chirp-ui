@@ -97,6 +97,14 @@
       if (!pre || pre.closest('.code-block-wrapper') || pre.querySelector('.code-copy-button')) {
         return;
       }
+      // Skip chirp-ui's own code blocks: code_block(copy=true) already ships a
+      // `.chirpui-code-block-wrapper` + `.chirpui-code-block__copy` button.
+      // Re-wrapping them inserts a stray `.code-block-wrapper` ahead of the
+      // member's docstring example, hijacking the first-code-block selector.
+      if (pre.classList.contains('chirpui-code-block')
+        || pre.closest('.chirpui-code-block-wrapper')) {
+        return;
+      }
 
       const highlightTable = pre.closest('.highlighttable');
       const languageMatch = codeBlock.className.match(/language-(\w+)|hljs-(\w+)/);
