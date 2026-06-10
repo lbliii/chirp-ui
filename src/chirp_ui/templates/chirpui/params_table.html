@@ -15,9 +15,9 @@
 {% set cols = columns if columns else default_columns %}
 <div class="chirpui-params-table{{ " " ~ cls if cls else "" }}">
     {% if title %}
-    <h3 class="chirpui-params-table__title">{{ title }}</h3>
+    <p class="chirpui-params-table__title">{{ title }}</p>
     {% end %}
-    <div class="chirpui-params-table__wrap">
+    <div class="chirpui-params-table__wrap" tabindex="0" aria-label="{{ title if title else "Parameters" }}">
         <table class="chirpui-params-table__table">
             <thead class="chirpui-params-table__head">
                 <tr>

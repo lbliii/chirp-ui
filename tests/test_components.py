@@ -1604,6 +1604,45 @@ class TestParamsTable:
         assert "0" in html
         assert "A number" in html
 
+    def test_params_table_title_is_not_a_heading(self, env: Environment) -> None:
+        # The title is a table label, not a document section: it must not
+        # impose a heading level (would cause an h1->h3 heading-order jump on
+        # /api/ pages). It keeps its class + text but renders as a <p>.
+        html = env.from_string(
+            '{% from "chirpui/params_table.html" import params_table %}'
+            '{{ params_table(rows=[{"name": "x", "type": "int"}], '
+            'title="Parameters", columns=["name", "type"]) }}'
+        ).render()
+        assert "chirpui-params-table__title" in html
+        assert "Parameters" in html
+        assert "<h3" not in html
+        assert "</h3>" not in html
+
+    def test_params_table_wrap_is_keyboard_scrollable(self, env: Environment) -> None:
+        # The horizontally-scrollable wrap must be focusable (tabindex) and
+        # carry an accessible name (aria-label) so keyboard users can scroll
+        # it — axe scrollable-region-focusable. No role="region" (would add a
+        # landmark per table -> landmark-unique).
+        html = env.from_string(
+            '{% from "chirpui/params_table.html" import params_table %}'
+            '{{ params_table(rows=[{"name": "x", "type": "int"}], '
+            'title="Arguments", columns=["name", "type"]) }}'
+        ).render()
+        assert 'class="chirpui-params-table__wrap"' in html
+        assert 'tabindex="0"' in html
+        assert 'aria-label="Arguments"' in html
+        assert 'role="region"' not in html
+
+    def test_params_table_wrap_has_default_accessible_name(self, env: Environment) -> None:
+        # When no title is given the wrap still needs an accessible name.
+        html = env.from_string(
+            '{% from "chirpui/params_table.html" import params_table %}'
+            '{{ params_table(rows=[{"name": "x", "type": "int"}], '
+            'columns=["name", "type"]) }}'
+        ).render()
+        assert 'tabindex="0"' in html
+        assert 'aria-label="Parameters"' in html
+
     def test_params_table_css_owns_code_heavy_row_pressure(self) -> None:
         css = _chirpui_css()
         assert "@scope (.chirpui-params-table)" in css
