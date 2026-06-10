@@ -10,8 +10,15 @@
    DESIGN TOKENS (Variables First!)
    ============================================ */
 
-/* Use CSS Layers to stabilize cascade */
-@layer tokens, base, utilities, components, pages;
+/* Use CSS Layers to stabilize cascade.
+   `chirp-theme` is declared LAST on purpose: chirpui.css (loaded first via
+   library_asset_tags()) declares `@layer chirpui.reset, …, chirpui.utility`,
+   then these theme layers, then `chirp-theme`. Pinning the name here fixes the
+   theme layer's position after `pages` regardless of @import timing, so the
+   bespoke theme surface (chirp-theme.css, self-wrapped in `@layer chirp-theme`)
+   beats the shipped chirp-ui baseline while staying overridable: a consumer
+   layer declared even later (e.g. `@layer app.overrides`) still wins. */
+@layer tokens, base, utilities, components, pages, chirp-theme;
 
 /* Foundation tokens (primitives - never use directly) */
 @layer tokens {
@@ -470,6 +477,9 @@ main {
 }
 
 /* BESPOKE ACTIVE THEME SURFACE
-   Theme-owned overrides live outside the retained Bengal layers so they can
-   fully restyle the shipped baseline without requiring theme inheritance. */
+   Theme-owned overrides live in the late-declared `chirp-theme` cascade layer
+   (the file self-wraps in `@layer chirp-theme { … }`). Declared after every
+   chirpui.* and theme layer, it fully restyles the shipped baseline yet stays
+   overridable: downstream apps win by adding an even-later layer such as
+   `@layer app.overrides`. See chirp-theme.css for the contract note. */
 @import url('chirp-theme.css');

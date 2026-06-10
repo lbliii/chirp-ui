@@ -6,6 +6,16 @@ weight: 27
 lang: en
 type: doc
 keywords: [chirp-ui, drawer, tray, dialog, alpine, anatomy]
+search_keywords:
+  - drawer
+  - drawers
+  - tray
+  - trays
+  - side panel
+  - off-canvas
+  - slide-out
+  - sheet
+  - panel
 category: components
 ---
 

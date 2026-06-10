@@ -1,11 +1,25 @@
 ---
 title: Control selection
-description: Choose native fields, dropdown selects, toggle groups, sliders, and table composition
+description: Pick the right Chirp UI control — buttons, native fields, dropdown selects, toggle groups, sliders, and tables
 draft: false
 weight: 23
 lang: en
 type: doc
 keywords: [chirp-ui, controls, forms, select, combobox, slider, table]
+search_keywords:
+  - button
+  - buttons
+  - btn
+  - button group
+  - button_group
+  - icon button
+  - icon_btn
+  - submit button
+  - link button
+  - cta
+  - controls
+  - form controls
+  - toggle group
 category: components
 ---
 
@@ -16,6 +30,9 @@ interactive components where the interaction is not a normal form submit.
 
 | Need | Use |
 |------|-----|
+| Trigger an action or submit a form | `btn(...)` |
+| Icon-only action | `icon_btn(...)` |
+| Cluster of related actions | `button_group(...)` |
 | Normal form option list | `select_field(...)` |
 | App-state or filter selection menu | `dropdown_select(...)` |
 | Small visible single-choice group | `toggle_group(type="single", ...)` |
@@ -26,6 +43,37 @@ interactive components where the interaction is not a normal form submit.
 | Bounded overflow region | `scroll_area(...)` |
 | Reusable list/menu/result row | `item(...)` |
 | Record table with filters and pagination | `data_table(...)` |
+
+## Buttons and button groups
+
+`btn(...)` is the primary action control. A button renders a `<button>` by
+default and switches to a boost-aware `<a>` when you pass `href`. The same
+button macro carries `variant`, `appearance`, and `tone`, so a submit button, a
+link button, and a destructive button stay visually consistent:
+
+```html
+{% from "chirpui/button.html" import btn, button_group %}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+
+{{ btn("Save changes", variant="primary", type="submit") }}
+{{ btn("View docs", href="/docs/", variant="ghost") }}
+{{ btn("Delete", variant="danger", hx={"delete": "/items/4", "target": "#row-4"}) }}
+```
+
+Reach for `icon_btn(...)` when the action is an icon alone (always pass an
+`aria_label`), and wrap several related buttons in `button_group(...)` to render
+one segmented action cluster:
+
+```html
+{% call button_group() %}
+  {{ btn("Cut", variant="ghost") }}
+  {{ btn("Copy", variant="ghost") }}
+  {{ icon_btn("more", aria_label="More actions") }}
+{% end %}
+```
+
+Use a `toggle_group(...)` instead of a button group when the cluster is a single-
+or multi-choice selection rather than a row of discrete actions.
 
 ## Native select or dropdown select
 

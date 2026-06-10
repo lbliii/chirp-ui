@@ -6,6 +6,16 @@ weight: 22
 lang: en
 type: doc
 keywords: [chirp-ui, appearance, tone, presets, components]
+search_keywords:
+  - appearance
+  - tone
+  - variant
+  - presets
+  - elevation
+  - neumorphic
+  - glass
+  - styling axes
+  - visual style
 category: components
 ---
 

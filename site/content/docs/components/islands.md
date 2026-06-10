@@ -6,6 +6,17 @@ weight: 30
 lang: en
 type: doc
 keywords: [chirp-ui, islands, primitives, state, htmx, fragment, draft, wizard, upload, grid]
+search_keywords:
+  - island
+  - islands
+  - state primitive
+  - wizard
+  - stepper
+  - file upload
+  - draft
+  - fragment
+  - htmx island
+  - client state
 category: components
 tags: [islands, primitives, state]
 ---

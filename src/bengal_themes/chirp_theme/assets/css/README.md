@@ -1,23 +1,43 @@
-# Bengal Default Theme - CSS Architecture
+# chirp-theme - CSS Architecture
 
-**Last Updated:** October 18, 2025  
-**Architecture:** Semantic Design Token System + Scoping Rules + Responsive Design System
+**Architecture:** Cascade layers + Semantic Design Token System + Responsive Design System
+
+The shipped surface is the bespoke `chirp-theme.css` (active palette + every
+`.chirp-theme-*` rule), composed over a retained Bengal token/base/component
+baseline. chirp-theme.css overrides the chirp-ui component library
+(`--chirpui-*` tokens + classes) emitted by `library_asset_tags()`.
 
 ---
 
-## ⚠️ Important: CSS Scoping Rules
+## ⚠️ Important: Cascade layers & override contract
 
-**Bengal follows strict CSS scoping rules to prevent conflicts.**
+`chirpui.css` (loaded first) declares
+`@layer chirpui.reset, chirpui.token, chirpui.base, chirpui.component, chirpui.utility`.
+`style.css` then declares its own layers and pins the active theme last:
 
-**📖 Read before writing CSS:**
-- [CSS Scoping Rules](./CSS_SCOPING_RULES.md) - Full documentation
-- [Quick Reference](./CSS_QUICK_REFERENCE.md) - Keep this handy!
+```css
+@layer tokens, base, utilities, components, pages, chirp-theme;
+```
+
+`chirp-theme.css` wraps **all** of its rules — including the `:root` /
+`[data-theme="dark"]` token blocks — in `@layer chirp-theme { … }`. Because that
+layer is declared after every chirpui and theme layer, the theme fully restyles
+the chirp-ui baseline **and stays overridable**: a downstream site wins by
+adding an even-later layer, e.g. `@layer app.overrides { … }`, with no
+specificity tricks. The contrast-checked `--chirpui-on-accent` pairing rides
+inside the layer so it travels with the theme (enforced by
+`tests/test_theme_token_parity.py`).
 
 **Key principles:**
-1. All selectors must be scoped (no bare elements in components)
-2. Use `.has-prose-content` utility for user content
-3. Content-type specific styles use `.prose.api-content`, etc.
-4. Test with nested components
+1. New theme CSS goes in `chirp-theme.css` (the `chirp-theme` layer).
+2. Author new rules against the public `--chirpui-*` token namespace; the legacy
+   `--color-*` bridge in `tokens/semantic.css` is being migrated away (issue
+   #173) and is steward-frozen so it can only shrink.
+3. Scope selectors to a `.chirp-theme-*` block; test with nested components.
+
+**📖 Background:**
+- [CSS Scoping Rules](./CSS_SCOPING_RULES.md)
+- [Quick Reference](./CSS_QUICK_REFERENCE.md)
 
 ---
 
@@ -51,26 +71,32 @@ Foundation Tokens → Semantic Tokens → Components
 ```
 css/
 ├── tokens/
-│   ├── foundation.css    # Primitive values (colors, sizes, fonts)
+│   ├── foundation.css    # Primitive values (color scales, sizes, fonts)
 │   ├── typography.css    # Typography tokens
-│   ├── semantic.css      # Purpose-based tokens (THE source of truth)
-│   └── palettes/         # Color palette presets (user-switchable)
+│   └── semantic.css      # Purpose-based --color-* tokens + chirpui bridge
 ├── base/
 │   ├── reset.css         # CSS reset
 │   ├── typography.css    # Text styling
 │   ├── utilities.css     # Utility classes
 │   ├── interactive-patterns.css  # Common interactive patterns (extracted)
 │   ├── accessibility.css # A11y styles
-│   └── print.css         # Print styles
-├── components/           # Retained theme-specific components - MODULAR
-│   ├── buttons.css       # Button component (408 lines)
+│   ├── print.css         # Print styles
+│   └── transitions.css   # Shared transition rules
+├── composition/
+│   └── layouts.css       # Layout primitives
+├── layouts/              # Retained layout chrome (header, footer, grid, page-header)
+├── utilities/            # motion.css, gradient-borders.css
+├── components/           # ~39 retained theme-specific component files - MODULAR
+│   ├── buttons.css       # Button component (~464 lines)
 │   ├── forms.css         # Form component
-│   └── ... (component files kept only while the copied theme surface needs them)
-├── layouts/              # Layout patterns (header, footer, grid)
-├── composition/          # Layout primitives
-├── pages/                # Page-specific styles
-└── style.css             # Main entry point (imports all)
+│   └── ... (kept only while the retained theme surface needs them)
+├── style.css             # @layer entry point (imports the above, then chirp-theme.css)
+└── chirp-theme.css       # BESPOKE ACTIVE SURFACE — active palette + .chirp-theme-* rules
+                          #   (self-wrapped in `@layer chirp-theme`)
 ```
+
+There is no `tokens/palettes/` or `pages/` directory — the active palette lives
+in `chirp-theme.css`'s `:root` / `[data-theme="dark"]` blocks.
 
 **📖 Why Modular CSS?** See [MODULAR_CSS_RATIONALE.md](./MODULAR_CSS_RATIONALE.md) for detailed explanation of why we keep components separate instead of consolidating.
 
@@ -160,38 +186,55 @@ Maps foundation tokens to semantic purposes:
 
 ## Dark Mode
 
-Dark mode is handled automatically in `semantic.css`:
+The **active** dark palette lives in `chirp-theme.css` (the shipped surface),
+which redefines the `--chirpui-*` tokens and the legacy `--color-*` aliases for
+`[data-theme="dark"]`:
 
 ```css
-[data-theme="dark"] {
-  --color-text-primary: var(--gray-50);
-  --color-bg-primary: #1a1a1a;
-  /* ... other overrides */
-}
-
-/* System preference support */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    /* Same overrides */
+@layer chirp-theme {
+  [data-theme="dark"] {
+    --chirpui-text: #e8efea;
+    --chirpui-accent: #2dd4bf;
+    /* A theme that overrides --chirpui-accent MUST pair it with a
+       contrast-checked --chirpui-on-accent (enforced by the parity test). */
+    --chirpui-on-accent: #0a1012;
+    /* ... legacy --color-* aliases remapped onto the above */
   }
 }
 ```
 
+The retained `semantic.css` still ships its own neutral `[data-theme="dark"]`
+block plus a `@media (prefers-color-scheme: dark)` fallback for the baseline
+token system; `chirp-theme.css` overrides it via the late `chirp-theme` layer.
+
 ## Adding New Tokens
 
-### For New Colors:
-1. Add primitive to `foundation.css` (if needed)
-2. Map to semantic purpose in `semantic.css`
-3. Add dark mode override if needed
+### For New Colors (active theme):
+1. Define the value as a `--chirpui-*` token in `chirp-theme.css`'s `:root`
+   (and `[data-theme="dark"]`) — this is the active palette.
+2. If a `--color-*` alias is needed for retained baseline CSS, map it in the
+   same block.
 
-### For New Components:
-1. Create file in appropriate directory (`components/`, `layouts/`, etc.)
-2. Use ONLY semantic tokens
-3. Import in `style.css`
+### For New Components (active theme):
+1. Add `.chirp-theme-*` rules to `chirp-theme.css` (the `chirp-theme` layer).
+2. Author against the public `--chirpui-*` namespace; fall back to a `--color-*`
+   alias only for tokens with no chirpui equivalent.
 
-## Migration from Legacy
+> Retained baseline files (`components/`, `layouts/`, `semantic.css`) still use
+> the `--color-*` semantic tokens; new bespoke work belongs in `chirp-theme.css`.
 
-The legacy `base/variables.css` file has been removed (October 2025). All variables are now in the semantic token system. No breaking changes - all variable names still work.
+## Migration: legacy `--color-*` → public `--chirpui-*`
+
+`chirp-theme.css` historically styled itself through the legacy `--color-*`
+namespace. It is migrating onto the public `--chirpui-*` tokens (issue #173) so
+upstream chirp-ui token changes reach theme components directly. The migration
+is **incremental**:
+
+- New rules author against `--chirpui-*` directly.
+- `tokens/semantic.css` documents the 1:1 legacy→chirpui mapping and remains the
+  bridge for not-yet-migrated rules and tokens with no chirpui equivalent.
+- `tests/test_theme_token_parity.py` freezes the legacy reference count at a
+  ceiling that may only shrink, blocking any **new** legacy color token.
 
 ## Best Practices
 
@@ -209,10 +252,11 @@ The legacy `base/variables.css` file has been removed (October 2025). All variab
 
 ## Performance
 
-- **Total CSS Variables:** ~200 semantic tokens
-- **File Size:** ~10KB (tokens only)
-- **Build Impact:** Minimal (~5ms)
-- **Runtime:** Optimized CSS custom property cascade
+- **Semantic tokens:** ~240 `--color-*`/`--space-*`/etc. definitions in
+  `semantic.css`, plus the active `--chirpui-*` palette in `chirp-theme.css`.
+- **Build:** concat-from-`@import`, stdlib-only — no preprocessor step.
+- **Runtime:** cascade-layer ordering resolves overrides without specificity
+  inflation; optimized CSS custom property cascade.
 
 ## Resources
 
@@ -222,4 +266,7 @@ The legacy `base/variables.css` file has been removed (October 2025). All variab
 
 ## Questions?
 
-See `plan/completed/CSS_ARCHITECTURE_ANALYSIS.md` for the full migration history and rationale.
+- [CSS_ARCHITECTURE_EVALUATION.md](./CSS_ARCHITECTURE_EVALUATION.md) — local
+  architecture evaluation.
+- `docs/plans/PLAN-css-scope-and-layer.md` (repo root) — the `@scope` + `@layer`
+  decision and migration plan that this theme dogfoods.

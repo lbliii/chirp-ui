@@ -218,18 +218,34 @@ symbols imported inside another block.
     {% end %}
 
     {# Open Graph / Facebook #}
-    <meta property="og:type" content="article">
+    {# og:type — `article` only for actual long-form content (docs/posts);
+       `website` for the home page, section listings, tag/tag-index pages, and
+       API/showcase indexes. Mirrors the is_doc/is_post detection in
+       article-jsonld.html so the structured data and OG type agree. #}
+    {% let _og_kind = page?.kind ?? 'page' %}
+    {% let _og_ptype = page?.type ?? '' %}
+    {% let _og_is_article = (_og_ptype == 'doc') or (_og_kind == 'doc') or (_og_ptype == 'post') or (_og_kind == 'post') or (_og_ptype in ['tutorial', 'changelog', 'track']) %}
+    {% let _og_type = 'article' if _og_is_article else 'website' %}
+    <meta property="og:type" content="{{ _og_type }}">
     <meta property="og:title" content="{{ page_title | trim }}">
     {% if meta_desc %}
     <meta property="og:description" content="{{ meta_desc | trim }}">
     {% end %}
-    {% if site.baseurl %}
+    {# Absolute og:url — canonical_url() returns the full https origin + path
+       when site.baseurl carries a scheme/host (see config/_default/site.yaml). #}
     <meta property="og:url" content="{{ canonical_url(_page_url) }}">
-    {% end %}
-    {# Open Graph Image #}
+    <meta property="og:site_name" content="{{ _site_title }}">
+    <meta property="og:locale" content="{{ _current_lang | replace('-', '_') }}">
+    {# Open Graph Image — per-page frontmatter `image:` wins, else the site-wide
+       fallback card (config.og_image → /assets/social/og-default.png). og_image()
+       prefixes the absolute origin from baseurl, so this is a full https URL and
+       always references an image that exists (no broken social cards). #}
     {% let _og_image_path = og_image(params?.image ?? config?.og_image ?? '', page) %}
     {% if _og_image_path %}
     <meta property="og:image" content="{{ _og_image_path }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ page_title | trim }}">
     {% end %}
 
     {# Twitter Card #}
@@ -254,10 +270,11 @@ symbols imported inside another block.
     <meta name="bengal:version" content="{{ _page_version }}">
     {% end %}
 
-    {# Canonical URL #}
-    {% if site.baseurl %}
+    {# Canonical URL — always emitted. canonical_url() resolves to the absolute
+       https origin + path because baseurl carries a full scheme/host (see
+       config/_default/site.yaml). No longer gated on a truthy baseurl: a missing
+       canonical is worse for SEO than one derived from a path-only origin. #}
     <link rel="canonical" href="{{ canonical_url(_page_url) }}">
-    {% end %}
 
     {# RSS Feed #}
     {% with config.i18n as i18n %}
@@ -364,6 +381,7 @@ symbols imported inside another block.
     {% include 'partials/meta-generator.html' %}
     {% end %}{# /cache base-meta-generator #}
     {% include 'partials/article-jsonld.html' %}
+    {% include 'partials/breadcrumb-jsonld.html' %}
     {% include 'partials/product-jsonld.html' %}
 
 </head>

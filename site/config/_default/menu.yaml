@@ -10,6 +10,12 @@
 
 menu:
   footer:
+    - name: "Components"
+      url: "/docs/components/"
+      weight: 4
+    - name: "Reference"
+      url: "/docs/reference/"
+      weight: 6
     - name: "Blog"
       url: "/blog/"
       weight: 10

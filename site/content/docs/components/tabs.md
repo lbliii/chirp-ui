@@ -6,6 +6,15 @@ weight: 26
 lang: en
 type: doc
 keywords: [chirp-ui, tabs, route tabs, htmx, alpine, anatomy]
+search_keywords:
+  - tab
+  - tabs
+  - tab panel
+  - tabbed
+  - route tabs
+  - segmented control
+  - tab bar
+  - tab navigation
 category: components
 ---
 

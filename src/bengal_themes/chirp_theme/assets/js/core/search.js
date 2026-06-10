@@ -97,6 +97,7 @@
     let selectedIndex = -1;
     let currentResults = [];
     let recentSearches = [];
+    let modalReturnFocus = null; // element to restore focus to on close
 
     // Preload state
     let preloadTriggered = false;
@@ -328,7 +329,10 @@
             this.field('tags', { boost: 3 });
             this.field('section', { boost: 2 });
             this.field('author', { boost: 2 });
-            this.field('search_keywords', { boost: 8 });
+            // search_keywords is populated on ~0 pages today, so an 8x boost only
+            // amplifies noise; keep the field indexed but unweighted until the
+            // corpus carries frontmatter keywords. See #172.
+            this.field('search_keywords', { boost: 1 });
             this.field('kind', { boost: 1 });  // Content type
 
             // Add all pages to index (excluding those marked search_exclude)
@@ -479,6 +483,12 @@
             // Apply filters
             results = applyFilters(results, filters);
 
+            // Re-rank so product nouns ("button", "card") surface docs above
+            // changelog/release-note entries. Lunr scores a release note that
+            // merely mentions a noun as highly as a doc about it; nudge those
+            // entries down without dropping them. See #172.
+            results = demoteReleaseNotes(results);
+
             // Transform results (add highlights, format dates, etc.)
             results = transformResults(results, query);
 
@@ -491,6 +501,50 @@
             console.error('Search error:', error);
             return [];
         }
+    }
+
+    /**
+     * Detect changelog / release-note pages from data that exists in the index.
+     * Matches on kind/type ("changelog", "release", "release-note") or a
+     * /changelog/ or /releases/ path. Keyword-only frontmatter is intentionally
+     * out of scope — this stays conservative to avoid demoting real docs.
+     *
+     * @param {Object} result - A search result (full page data).
+     * @returns {boolean} True if the result is a changelog/release note.
+     */
+    function isReleaseNote(result) {
+        if (!result) return false;
+        const kind = (result.kind || result.type || '').toLowerCase();
+        if (kind.includes('changelog') || kind.includes('release')) return true;
+
+        const section = (result.section || '').toLowerCase();
+        if (section.includes('changelog') || section.includes('release')) return true;
+
+        const href = (result.href || result.uri || '').toLowerCase();
+        return /\/(changelog|releases?|release-notes?)\//.test(href);
+    }
+
+    /**
+     * Demote changelog/release-note results so documentation outranks them for
+     * product nouns, without removing them from the result set. Applies a flat
+     * multiplier to their score, then re-sorts by adjusted score (stable for
+     * ties). Pure post-processing — works for both runtime and pre-built indexes.
+     *
+     * @param {Array} results - Search results carrying a numeric `score`.
+     * @returns {Array} Re-ranked results.
+     */
+    function demoteReleaseNotes(results) {
+        const RELEASE_NOTE_PENALTY = 0.35;
+
+        return results
+            .map(result => {
+                const baseScore = typeof result.score === 'number' ? result.score : 0;
+                const adjustedScore = isReleaseNote(result)
+                    ? baseScore * RELEASE_NOTE_PENALTY
+                    : baseScore;
+                return { ...result, score: adjustedScore };
+            })
+            .sort((a, b) => (b.score || 0) - (a.score || 0));
     }
 
     /**
@@ -883,6 +937,17 @@
             trigger.addEventListener('click', openModal);
         });
 
+        // First-open suggestion pills: fill the input and run the search.
+        modal.querySelectorAll('.search-modal__suggestion').forEach(pill => {
+            pill.addEventListener('click', () => {
+                const query = pill.dataset.query || pill.textContent.trim();
+                if (!query) return;
+                modalInput.value = query;
+                modalInput.focus();
+                performModalSearch(query);
+            });
+        });
+
         // Handle search index ready
         window.addEventListener('searchIndexLoaded', () => {
             if (loading) loading.classList.add('hidden');
@@ -1013,6 +1078,9 @@
         hideNoResults();
         resultsList.innerHTML = '';
         selectedIndex = -1;
+        // New result set: no option is active until the user arrows down.
+        clearModalActiveDescendant();
+        setModalExpanded(true);
 
         // Group results by autodoc status
         const { docs, api } = groupByAutodoc(results);
@@ -1036,12 +1104,36 @@
         resultsList.parentElement.classList.remove('hidden');
     }
 
+    /**
+     * Decide whether a search result is API-reference (autodoc) content.
+     *
+     * index.json has no `isAutodoc` field — autodoc pages are identified by
+     * a `kind`/`type` of "autodoc-python" (e.g. "autodoc-python-module") or by
+     * living under the /api/ path. Derive from data that actually exists so the
+     * "API Reference (N)" group and per-item API badges render.
+     *
+     * @param {Object} result - A search result (full page data).
+     * @returns {boolean} True if the result is API-reference content.
+     */
+    function isApiResult(result) {
+        if (!result) return false;
+        const kind = (result.kind || result.type || '').toLowerCase();
+        if (kind.startsWith('autodoc')) return true;
+
+        const href = (result.href || result.uri || '').toLowerCase();
+        // Strip the baseurl prefix before checking the path, so /docs/api/ on a
+        // sub-path deploy still matches.
+        const baseurl = resolveBaseUrl().toLowerCase();
+        const path = baseurl && href.startsWith(baseurl) ? href.slice(baseurl.length) : href;
+        return path.startsWith('/api/') || path.includes('/api/');
+    }
+
     function groupByAutodoc(results) {
         const docs = [];
         const api = [];
 
         results.forEach(result => {
-            if (result.isAutodoc) {
+            if (isApiResult(result)) {
                 api.push(result);
             } else {
                 docs.push(result);
@@ -1080,7 +1172,7 @@
             const item = createResultItem(result, globalIdx, query);
 
             // Add API badge for autodoc items
-            if (result.isAutodoc) {
+            if (isApiResult(result)) {
                 const badge = document.createElement('span');
                 badge.className = 'search-modal__autodoc-badge';
                 badge.textContent = 'API';
@@ -1125,6 +1217,7 @@
     function createResultItem(result, index, query) {
         const item = document.createElement('div');
         item.className = 'search-modal__result-item';
+        item.id = `search-opt-${index}`;
         item.setAttribute('role', 'option');
         item.setAttribute('aria-selected', 'false');
         item.setAttribute('data-index', index);
@@ -1175,6 +1268,12 @@
         const selectedItem = items[selectedIndex];
         selectedItem.classList.add('search-modal__result-item--selected');
         selectedItem.setAttribute('aria-selected', 'true');
+
+        // Wire the combobox active-descendant so screen readers announce the
+        // active option without moving DOM focus off the input.
+        if (modalInput && selectedItem.id) {
+            modalInput.setAttribute('aria-activedescendant', selectedItem.id);
+        }
 
         // Scroll into view
         selectedItem.scrollIntoView({ block: 'nearest', behavior: scrollBehavior() });
@@ -1242,9 +1341,16 @@
     function openModal() {
         if (isModalOpen) return;
 
+        // Remember what had focus (the trigger button, or whatever element the
+        // ⌘K/"/" shortcut fired from) so we can return focus there on close.
+        modalReturnFocus = document.activeElement;
+
         modal.showModal();
         isModalOpen = true;
         selectedIndex = -1;
+        // Combobox starts collapsed with no active option.
+        clearModalActiveDescendant();
+        setModalExpanded(false);
 
         // Focus input
         requestAnimationFrame(() => {
@@ -1283,9 +1389,19 @@
         // Reset UI
         hideResults();
         showEmptyState();
+        clearModalActiveDescendant();
+        setModalExpanded(false);
 
         // Remove body class
         document.body.classList.remove('search-modal-open');
+
+        // Return focus to the element that opened the modal, so keyboard and
+        // screen-reader users land back where they were (not on <body>).
+        if (modalReturnFocus && typeof modalReturnFocus.focus === 'function' &&
+            document.contains(modalReturnFocus)) {
+            modalReturnFocus.focus();
+        }
+        modalReturnFocus = null;
 
         log('Search modal closed');
     }
@@ -1335,10 +1451,14 @@
 
         recentList.innerHTML = '';
         selectedIndex = -1;
+        // Recent searches form the active listbox; nothing selected yet.
+        clearModalActiveDescendant();
+        setModalExpanded(true);
 
         recentSearches.forEach((search, index) => {
             const item = document.createElement('li');
             item.className = 'search-modal__recent-item';
+            item.id = `search-opt-${index}`;
             item.setAttribute('role', 'option');
             item.setAttribute('aria-selected', 'false');
             item.setAttribute('data-index', index);
@@ -1397,6 +1517,9 @@
         const queryEl = document.getElementById('search-modal-no-results-query');
         if (queryEl) queryEl.textContent = query;
         noResults.classList.remove('hidden');
+        // No options to point at.
+        clearModalActiveDescendant();
+        setModalExpanded(false);
     }
 
     function hideNoResults() {
@@ -1405,6 +1528,9 @@
 
     function showEmptyState() {
         emptyState.classList.remove('hidden');
+        // The empty state offers suggestion pills, not listbox options.
+        clearModalActiveDescendant();
+        setModalExpanded(false);
     }
 
     function hideEmptyState() {
@@ -1416,11 +1542,29 @@
         resultsList.parentElement.classList.add('hidden');
         selectedIndex = -1;
         currentResults = [];
+        clearModalActiveDescendant();
     }
 
     function updateStatus(message) {
         if (status) {
             status.textContent = message;
+        }
+    }
+
+    /**
+     * Reflect combobox popup state on the modal input.
+     * @param {boolean} expanded - Whether the listbox/recent popup is showing.
+     */
+    function setModalExpanded(expanded) {
+        if (modalInput) {
+            modalInput.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        }
+    }
+
+    /** Drop the modal input's active-descendant pointer (no active option). */
+    function clearModalActiveDescendant() {
+        if (modalInput) {
+            modalInput.removeAttribute('aria-activedescendant');
         }
     }
 
@@ -1666,20 +1810,38 @@
         updatePageURL(query);
     }
 
+    /** Reflect combobox popup state on the /search page input. */
+    function setPageExpanded(expanded) {
+        if (pageInput) {
+            pageInput.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        }
+    }
+
+    /** Drop the page input's active-descendant pointer. */
+    function clearPageActiveDescendant() {
+        if (pageInput) {
+            pageInput.removeAttribute('aria-activedescendant');
+        }
+    }
+
     function displayPageResults(results, query) {
         if (pageEmptyState) pageEmptyState.classList.add('hidden');
         if (pageResultsList) pageResultsList.innerHTML = '';
+        // New result set: no active option until the user arrows down.
+        clearPageActiveDescendant();
 
         if (results.length === 0) {
             if (pageResults) pageResults.classList.remove('hidden');
             if (pageNoResults) pageNoResults.classList.remove('hidden');
             if (pageNoResultsQuery) pageNoResultsQuery.textContent = query;
+            setPageExpanded(false);
             return;
         }
 
         // Show results
         if (pageResults) pageResults.classList.remove('hidden');
         if (pageNoResults) pageNoResults.classList.add('hidden');
+        setPageExpanded(true);
         if (pageResultsCount) {
             pageResultsCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
         }
@@ -1764,6 +1926,7 @@
     function createPageResultItem(result, index) {
         const item = document.createElement('div');
         item.className = 'search-page__result-item';
+        item.id = `search-page-opt-${index}`;
         item.setAttribute('role', 'option');
         item.setAttribute('aria-selected', 'false');
         item.setAttribute('data-index', index);
@@ -1778,7 +1941,7 @@
                 <div class="search-page__result-content">
                     <span class="search-page__result-title">${title}</span>
                     ${section ? `<span class="search-page__result-section">${section}</span>` : ''}
-                    ${result.isAutodoc ? '<span class="search-page__autodoc-badge">API</span>' : ''}
+                    ${isApiResult(result) ? '<span class="search-page__autodoc-badge">API</span>' : ''}
                 </div>
                 ${description ? `<p class="search-page__result-excerpt">${description}</p>` : ''}
             </a>
@@ -1812,6 +1975,12 @@
         const selected = pageResultItems[pageSelectedIndex];
         selected.classList.add('search-page__result-item--selected');
         selected.setAttribute('aria-selected', 'true');
+
+        // Wire the combobox active-descendant on the page input.
+        if (pageInput && selected.id) {
+            pageInput.setAttribute('aria-activedescendant', selected.id);
+        }
+
         selected.scrollIntoView({ block: 'nearest', behavior: scrollBehavior() });
     }
 
@@ -1828,6 +1997,8 @@
         if (pageResultsList) pageResultsList.innerHTML = '';
         pageSelectedIndex = -1;
         pageResultItems = [];
+        clearPageActiveDescendant();
+        setPageExpanded(false);
     }
 
     function clearPageSearch() {

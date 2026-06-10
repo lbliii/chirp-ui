@@ -4,6 +4,31 @@
  *
  * These map foundation tokens to semantic purposes.
  * Components should ONLY use these tokens, never foundation tokens directly.
+ *
+ * ── Legacy → chirp-ui token bridge (issue #173) ─────────────────────────────
+ * chirp-theme.css remaps this legacy `--color-*` namespace onto the public
+ * `--chirpui-*` tokens so the theme tracks upstream chirp-ui changes. New
+ * theme rules SHOULD author against `--chirpui-*` directly; this file is the
+ * bridge that keeps already-migrated and not-yet-migrated rules consistent.
+ * The migration is incremental — a steward test
+ * (tests/test_theme_token_parity.py::test_no_new_legacy_color_tokens) freezes
+ * the legacy-token count so it can only shrink. Clean 1:1 mappings:
+ *
+ *   --color-text-primary    → --chirpui-text
+ *   --color-text-secondary  → --chirpui-text-muted
+ *   --color-bg-primary      → --chirpui-bg
+ *   --color-bg-secondary    → --chirpui-bg-subtle
+ *   --color-bg-elevated     → --chirpui-surface
+ *   --color-surface         → --chirpui-surface
+ *   --color-border          → --chirpui-border
+ *   --color-border-light    → --chirpui-border-subtle
+ *   --color-primary         → --chirpui-accent
+ *   --color-primary-hover   → --chirpui-accent-hover
+ *   --color-text-inverse    → --chirpui-on-accent
+ *
+ * Tokens WITHOUT a 1:1 chirpui equivalent (e.g. --color-text-tertiary,
+ * --color-primary-light, --color-bg-code) stay on the bridge until chirp-ui
+ * grows a matching token.
  */
 
 :root {

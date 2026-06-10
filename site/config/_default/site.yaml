@@ -6,5 +6,31 @@ site:
   logo_text: "ᗢ"
   description: "Gorgeous Chirp components — htmx-native, Kida macros, Alpine.js for interactivity"
   language: "en"
+  # Canonical origin (scheme + host + path-prefix). Bengal derives canonical
+  # URLs, og:image, sitemap <loc>, and the robots.txt Sitemap directive from
+  # baseurl, so it must be a FULL absolute origin for those to be machine-valid.
+  # Environment overrides (config/environments/*.yaml) may narrow this for local
+  # preview; production deploys to GitHub Pages under /chirp-ui.
+  baseurl: "https://lbliii.github.io/chirp-ui"
 
 template_engine: kida
+
+# Universal Open Graph / Twitter fallback card. Per-page social cards (Pillow)
+# are off in free-threading builds, so this stable 1200x630 image is the
+# guaranteed-present fallback for every shared link (resolved to
+# /assets/social/og-default.png by the og_image() filter).
+og_image: "social/og-default.png"
+
+# Schema.org JSON-LD publisher identity (Organization) used by the homepage
+# WebSite node and as the article publisher.
+organization:
+  name: "chirp-ui"
+  url: "https://lbliii.github.io/chirp-ui"
+  logo: "/assets/chirp_ui/favicon.svg"
+
+# Content syndication — emit an RSS 2.0 feed (rss.xml) for the site. Pages with
+# a `date:` (notably the releases stream) are syndicated. The advertised
+# alternate link in <head> and the content-signals `rss` capability now resolve
+# to a real feed instead of a dead link. The output-format wiring lives in
+# outputs.yaml.
+generate_rss: true

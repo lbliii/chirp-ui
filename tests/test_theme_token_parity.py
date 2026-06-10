@@ -6,10 +6,19 @@ ROOT = Path(__file__).resolve().parents[1]
 APP_THEME = ROOT / "docs" / "theming" / "app-theme.md"
 TOKENS = ROOT / "docs" / "fundamentals" / "tokens.md"
 SHOWCASE = ROOT / "examples" / "design-system-gap-showcase" / "index.html"
-THEME_CSS = ROOT / "src" / "bengal_themes" / "chirp_theme" / "assets" / "css" / "chirp-theme.css"
+THEME_CSS_DIR = ROOT / "src" / "bengal_themes" / "chirp_theme" / "assets" / "css"
+THEME_CSS = THEME_CSS_DIR / "chirp-theme.css"
+STYLE_CSS = THEME_CSS_DIR / "style.css"
 
 # WCAG 2.x AA contrast floor for normal-size text (button labels/icons).
 WCAG_AA_NORMAL = 4.5
+
+# Frozen ceiling for legacy `var(--color-*)` references in chirp-theme.css
+# (occurrence count, not lines — a single rule may reference several). The theme
+# is migrating off this bridge onto the public --chirpui-* namespace (issue
+# #173). This count may only SHRINK: shipping a NEW legacy color token fails the
+# steward below. Lower it whenever a migration batch lands.
+LEGACY_COLOR_TOKEN_CEILING = 184
 
 
 class _TokenJobParser(HTMLParser):
@@ -82,6 +91,10 @@ def _split_theme_blocks(css: str) -> dict[str, str]:
     """Return {selector: declaration-body} for each top-level CSS block.
 
     Brace-balanced so nested at-rules/blocks stay attached to their owner.
+    A ``@layer name { … }`` wrapper is transparent: the theme now ships inside
+    a late-declared ``@layer chirp-theme`` (issue #173), so we descend into the
+    layer body and surface its :root / [data-theme] blocks as if they were
+    top-level. Bare ``@layer a, b;`` statements (no block) are ignored.
     """
     blocks: dict[str, str] = {}
     i = 0
@@ -100,7 +113,12 @@ def _split_theme_blocks(css: str) -> dict[str, str]:
                 depth -= 1
             j += 1
         body = css[brace + 1 : j - 1]
-        if selector:
+        if selector.startswith("@layer"):
+            # Transparent wrapper: recurse so nested blocks are surfaced.
+            for sel, sub in _split_theme_blocks(body).items():
+                blocks.setdefault(sel, "")
+                blocks[sel] += sub
+        elif selector:
             blocks.setdefault(selector, "")
             blocks[selector] += "\n" + body
         i = j
@@ -189,3 +207,90 @@ def test_primary_button_meets_aa_in_root_and_theme_overrides() -> None:
             f"{selector}: primary button label {on_accent} on accent "
             f"{accent} is {ratio:.2f}:1, below WCAG AA {WCAG_AA_NORMAL}:1"
         )
+
+
+# --- Cascade-layer override contract (issue #173) --------------------------
+#
+# chirp-theme.css must ride a single late-declared `@layer chirp-theme` so the
+# theme dogfoods the chirp-ui override contract (consumers win via an even
+# later layer such as `@layer app.overrides`) instead of beating every layer
+# with unlayered rules. style.css must pin that layer name LAST in its named
+# order so the position is deterministic regardless of @import timing.
+
+
+def test_theme_css_rules_live_in_a_single_chirp_theme_layer() -> None:
+    css = THEME_CSS.read_text(encoding="utf-8")
+
+    layer_blocks = re.findall(r"@layer\s+([\w.-]+)\s*\{", css)
+    assert layer_blocks == ["chirp-theme"], (
+        "chirp-theme.css must wrap all rules in exactly one "
+        f"`@layer chirp-theme {{ … }}` block, found: {layer_blocks}"
+    )
+
+    # No rule may sit outside the layer: only the file header comment and the
+    # single layer wrapper precede the first selector. Strip comments, then the
+    # first non-space character after the header must open the @layer block.
+    no_comments = re.sub(r"/\*.*?\*/", "", css, flags=re.DOTALL).strip()
+    assert no_comments.startswith("@layer chirp-theme"), (
+        "every chirp-theme.css rule (incl. :root / [data-theme] token blocks) "
+        "must live inside the @layer; no unlayered rules allowed"
+    )
+
+    # The contrast-checked dark on-accent pairing (wave-1 fix) rides inside the
+    # layer — the parser already descends into it, so this also guards that the
+    # token blocks were not accidentally hoisted out of the wrapper.
+    blocks = _split_theme_blocks(css)
+    dark = next((b for s, b in blocks.items() if "[data-theme" in s and "dark" in s), None)
+    assert dark is not None, "dark [data-theme] block must be present inside the layer"
+    assert _declares(dark, "--chirpui-on-accent"), (
+        "dark accent override must keep its --chirpui-on-accent pairing"
+    )
+
+
+def test_style_css_declares_chirp_theme_layer_last() -> None:
+    css = STYLE_CSS.read_text(encoding="utf-8")
+
+    match = re.search(r"@layer\s+([\w.\-,\s]+);", css)
+    assert match, "style.css must declare a named @layer order"
+    layers = [name.strip() for name in match.group(1).split(",")]
+    assert layers[-1] == "chirp-theme", (
+        "`chirp-theme` must be the LAST layer in style.css's @layer "
+        f"declaration so it overrides every theme layer; got order: {layers}"
+    )
+
+
+# --- Legacy color-token migration steward (issue #173) ---------------------
+#
+# The theme is migrating off the legacy `--color-*` bridge onto the public
+# `--chirpui-*` namespace. This steward freezes the legacy reference count at a
+# ceiling that may only shrink, so a new rule cannot quietly reintroduce the
+# bridge. Lower LEGACY_COLOR_TOKEN_CEILING when a migration batch lands.
+
+
+def _legacy_color_refs(css: str) -> list[str]:
+    return re.findall(r"var\(\s*--color-[\w-]+", css)
+
+
+def test_no_new_legacy_color_tokens() -> None:
+    css = THEME_CSS.read_text(encoding="utf-8")
+    count = len(_legacy_color_refs(css))
+
+    assert count <= LEGACY_COLOR_TOKEN_CEILING, (
+        f"chirp-theme.css has {count} legacy `var(--color-*)` references, above "
+        f"the frozen ceiling of {LEGACY_COLOR_TOKEN_CEILING}. New theme rules "
+        f"must author against the public --chirpui-* namespace (see "
+        f"tokens/semantic.css for the bridge mapping)."
+    )
+
+
+def test_legacy_color_ceiling_is_not_stale() -> None:
+    """Keep the ceiling honest: it should track the real count, not drift far
+    above it. If a migration batch shrinks the count, lower the ceiling too."""
+    css = THEME_CSS.read_text(encoding="utf-8")
+    count = len(_legacy_color_refs(css))
+
+    assert count == LEGACY_COLOR_TOKEN_CEILING, (
+        f"chirp-theme.css now has {count} legacy `var(--color-*)` references but "
+        f"LEGACY_COLOR_TOKEN_CEILING is {LEGACY_COLOR_TOKEN_CEILING}. A migration "
+        f"reduced the count — lower the ceiling to {count} to lock in the gain."
+    )

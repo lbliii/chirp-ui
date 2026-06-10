@@ -1,11 +1,20 @@
 {#-
-Article JSON-LD Structured Data Component
+Article + Organization + WebSite JSON-LD Structured Data
 
-Generates schema.org TechArticle (docs) or BlogPosting (posts) for SEO and AI discovery.
-Renders when structured_data.article is enabled (default: true) and page is doc or post.
+Emits three schema.org graphs for SEO and AI discovery:
 
-Uses page: title, description, date, section, word_count, toc_items, author
-Uses site: baseurl, title
+1. Organization (publisher identity) — site-wide, from site.organization config.
+2. WebSite + SearchAction — homepage only, advertising the on-site search so
+   search engines can surface a sitelinks search box.
+3. TechArticle (docs) / BlogPosting (posts) — content pages, with the
+   Organization as `publisher`.
+
+URLs are absolute (origin + path) once site.baseurl carries a full scheme/host
+(see config/_default/site.yaml), matching the canonical/og:url surface.
+
+Uses page: title, description, date, section, word_count, toc_items, author, kind
+Uses site: baseurl, title, organization
+Uses config: structured_data.article (default: true)
 
 Usage in base.html head:
   {% include "partials/article-jsonld.html" %}
@@ -14,16 +23,67 @@ Usage in base.html head:
 {%- set article_enabled = (config.structured_data ?? {}).article ?? true %}
 {%- set is_doc = page.type == 'doc' or page.kind == 'doc' %}
 {%- set is_post = page.type == 'post' or page.kind == 'post' %}
+{%- set is_home = (page.kind ?? '') == 'home' %}
 {%- set _toc = page.toc_items ?? toc_items ?? [] %}
+
+{#- Organization publisher identity (reused as article `publisher`).
+    `site.organization` is unset on special pages (404/search) and other configs,
+    so coalesce with `?? {}` — a bare attribute access raises K-RUN-001 under
+    kida strict_undefined. Guard on a mapping before subscripting. -#}
+{%- set _org_raw = site.organization ?? {} %}
+{%- set _org = _org_raw if (_org_raw is mapping) else {} %}
+{%- set _org_name = _org.get('name') ?? site.title ?? '' %}
+{%- set _org_url = (_org.get('url') ?? '/') | absolute_url %}
+{%- set _org_logo = _org.get('logo') ?? '' %}
+
+{%- if _org_name %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ _org_name | tojson }},
+  "url": {{ _org_url | tojson }}{{ "," if _org_logo else "" }}
+  {%- if _org_logo %}
+  "logo": {{ (_org_logo | absolute_url) | tojson }}
+  {% end %}
+}
+</script>
+{% end %}
+
+{#- Homepage WebSite node with on-site SearchAction (sitelinks search box). -#}
+{%- if is_home %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ (site.title ?? '') | tojson }},
+  "url": {{ ('/' | absolute_url) | tojson }},
+  "description": {{ (site.description ?? '') | tojson }},
+  "potentialAction": {
+    "@type": "SearchAction",
+    {#- absolute_url() is applied to the path only; the query string is appended
+        afterwards so the {search_term_string} placeholder is not normalized or
+        given a stray trailing slash. -#}
+    {%- set _search_base = '/search/' | absolute_url %}
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": {{ (_search_base ~ '?q={search_term_string}') | tojson }}
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{% end %}
+
 {%- if article_enabled and (is_doc or is_post) %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": {{ "TechArticle" if is_doc else "BlogPosting" | tojson }},
+  "@type": {{ ("TechArticle" if is_doc else "BlogPosting") | tojson }},
   "headline": {{ page.title | tojson }},
   "description": {{ (page.description ?? page.summary ?? '') | tojson }},
   {%- if page.date %}
-  "datePublished": {{ page.date.isoformat() if page.date is defined and hasattr(page.date, 'isoformat') else page.date | tojson }},
+  "datePublished": {{ (page.date.isoformat() if hasattr(page.date, 'isoformat') else page.date) | tojson }},
   {% end %}
   {%- set last_mod = page.metadata.get('lastmod') ?? page.metadata.get('last_modified') ?? page.metadata.get('updated') %}
   {%- if last_mod %}
@@ -35,19 +95,29 @@ Usage in base.html head:
     "name": {{ (page.author ?? site.author ?? '') | tojson }}
   },
   {% end %}
-  {%- set wc = page.word_count ?? 0 %}
-  "wordCount": {{ wc }}{{ "," if section or (site.baseurl and page.href) or site.title or (_toc | length > 0) else "" }}
-  {%- if section %}
-  "articleSection": {{ (section.title ?? section.name ?? '') | tojson }}{{ "," if (site.baseurl and page.href) or site.title or (_toc | length > 0) else "" }}
+  {%- if _org_name %}
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ _org_name | tojson }}{% if _org_logo %},
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ (_org_logo | absolute_url) | tojson }}
+    }{% end %}
+  },
   {% end %}
-  {%- if site.baseurl and page.href %}
-  "url": {{ (site.baseurl ~ page.href) | tojson }}{{ "," if (site.title or _toc | length > 0) else "" }}
+  {%- set wc = page.word_count ?? 0 %}
+  "wordCount": {{ wc }}{{ "," if section or page.href or site.title or (_toc | length > 0) else "" }}
+  {%- if section %}
+  "articleSection": {{ (section.title ?? section.name ?? '') | tojson }}{{ "," if page.href or site.title or (_toc | length > 0) else "" }}
+  {% end %}
+  {%- if page.href %}
+  "url": {{ (page.href | absolute_url) | tojson }}{{ "," if (site.title or _toc | length > 0) else "" }}
   {% end %}
   {%- if site.title %}
   "isPartOf": {
     "@type": "WebSite",
-    "name": {{ site.title | tojson }}{% if site.baseurl %},
-    "url": {{ site.baseurl | tojson }}{% end %}
+    "name": {{ site.title | tojson }},
+    "url": {{ ('/' | absolute_url) | tojson }}
   }{{ "," if (_toc | length > 0) else "" }}
   {% end %}
   {%- if _toc | length > 0 %}
@@ -56,7 +126,7 @@ Usage in base.html head:
     {
       "@type": "WebPageElement",
       "name": {{ item.title | tojson }},
-      "url": {{ ((site.baseurl ?? '') ~ page.href ~ '#' ~ item.id) | tojson }}
+      "url": {{ ((page.href ~ '#' ~ item.id) | absolute_url) | tojson }}
     }{{ "," if not loop.last else "" }}
     {% end %}
   ]

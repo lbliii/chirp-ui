@@ -6,6 +6,15 @@ weight: 25
 lang: en
 type: doc
 keywords: [chirp-ui, description_list, value_type, Path, bool, type-aware]
+search_keywords:
+  - type-aware
+  - value type
+  - description list
+  - description_list
+  - auto format
+  - render value
+  - bool badge
+  - path rendering
 category: components
 ---
 

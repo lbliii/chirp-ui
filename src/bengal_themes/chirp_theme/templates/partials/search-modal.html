@@ -37,8 +37,9 @@ Usage:
   {# Backdrop for clicking outside to close #}
   <div class="search-modal__backdrop" data-close-modal></div>
 
-  {# Modal container #}
-  <div class="search-modal__container" role="dialog" aria-modal="true">
+  {# Modal container — the native <dialog> opened via showModal() already
+     carries modal semantics, so no nested role=dialog/aria-modal here. #}
+  <div class="search-modal__container">
     {# Header with search input #}
     <header class="search-modal__header">
       <div class="search-modal__input-wrapper">
@@ -47,8 +48,9 @@ Usage:
         <input type="search" id="search-modal-input" class="search-modal__input"
           placeholder="{{ ui_config.placeholder ?? t('search.placeholder', default='Search documentation...') }}"
           autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+          role="combobox" aria-expanded="false"
           aria-label="{{ t('search.aria_label', default='Search') }}" aria-describedby="search-modal-status"
-          aria-controls="search-modal-results" aria-autocomplete="list">
+          aria-controls="search-modal-results-list" aria-autocomplete="list">
 
         <div class="search-modal__loading hidden" id="search-modal-loading">
           <div class="search-modal__spinner"></div>
@@ -94,9 +96,18 @@ Usage:
           your spelling') }}</p>
       </div>
 
-      {# Empty state (before search) #}
+      {# Empty state (before search) — first-open suggestions the JS binds. #}
       <div class="search-modal__empty" id="search-modal-empty">
         <p class="search-modal__empty-hint">{{ t('search.empty_hint', default='Start typing to search...') }}</p>
+        {% let modal_suggestions = ui_config?.suggestions ?? ['button', 'card', 'modal', 'tabs', 'theming', 'layout'] %}
+        <div class="search-page__suggestions">
+          <span class="search-page__suggestions-label" id="search-modal-suggestions-label">{{ t('search.popular', default='Popular searches') }}</span>
+          <div class="search-page__suggestion-pills" role="group" aria-labelledby="search-modal-suggestions-label">
+            {% for term in modal_suggestions %}
+            <button type="button" class="search-page__suggestion search-modal__suggestion" data-query="{{ term }}">{{ term }}</button>
+            {% end %}
+          </div>
+        </div>
       </div>
     </section>
 
@@ -123,5 +134,13 @@ Usage:
     </footer>
   </div>
 </dialog>
+
+{# The Cmd/Ctrl+K palette is JS-driven; without JS, point to the full
+   search page, which renders a server-side list of every indexed page. #}
+<noscript>
+  <a class="search-modal__noscript-link" href="{{ '/search/' | absolute_url }}">
+    {{ t('search.noscript_link', default='Browse all pages') }}
+  </a>
+</noscript>
 
 {% end %}

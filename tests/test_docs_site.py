@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import os
 import re
 import tomllib
@@ -99,6 +100,33 @@ FORBIDDEN_OUTPUT_NAMES = (
     "sitemap.xml",
     "robots.txt",
 )
+
+# #165/#166 — on-site reference so users never leave for GitHub.
+THEME_TEMPLATES = REPO_ROOT / "src" / "bengal_themes" / "chirp_theme" / "templates"
+SHORTCODES_DIR = THEME_TEMPLATES / "shortcodes"
+DIRECTIVES_DIR = THEME_TEMPLATES / "directives"
+REFERENCE_DIR = SITE_CONTENT / "docs" / "reference"
+COMPONENTS_INDEX = SITE_CONTENT / "docs" / "components" / "_index.md"
+MANIFEST_JSON = REPO_ROOT / "src" / "chirp_ui" / "manifest.json"
+# The Markdown directive name differs from its template filename for child-cards.
+DIRECTIVE_TEMPLATE_TO_NAME = {"child_cards": "child-cards"}
+
+
+def _shipped_shortcode_names() -> set[str]:
+    return {p.stem for p in SHORTCODES_DIR.glob("*.html")}
+
+
+def _shipped_directive_names() -> set[str]:
+    return {DIRECTIVE_TEMPLATE_TO_NAME.get(p.stem, p.stem) for p in DIRECTIVES_DIR.glob("*.html")}
+
+
+def _manifest_public_categories() -> set[str]:
+    manifest = json.loads(MANIFEST_JSON.read_text(encoding="utf-8"))
+    return {
+        comp.get("category")
+        for comp in manifest["components"].values()
+        if comp.get("authoring") != "internal" and comp.get("category")
+    }
 
 
 def _load_docs_site_module():
@@ -724,3 +752,104 @@ def test_built_dogfood_family_route_renders_non_placeholder(section: str) -> Non
     # Real chrome + content rendered, not an empty body.
     assert "<title" in html
     assert len(html) > 2000, f"/{section}/ index.html looks like a placeholder (#145)"
+
+
+# ---------------------------------------------------------------------------
+# #165/#166 — on-site shortcode/directive reference + component catalog
+# ---------------------------------------------------------------------------
+
+
+def test_reference_section_pages_exist_as_docs() -> None:
+    """#165 — the reference section ships an index plus shortcode/directive pages."""
+    index = REFERENCE_DIR / "_index.md"
+    shortcodes = REFERENCE_DIR / "shortcodes.md"
+    directives = REFERENCE_DIR / "directives.md"
+
+    for page in (index, shortcodes, directives):
+        assert page.is_file(), f"missing reference page: {page} (#165)"
+        assert "type: doc" in page.read_text(encoding="utf-8"), page
+
+
+def test_shortcodes_reference_documents_every_shipped_shortcode() -> None:
+    """#165 — every shipped shortcode template has an on-site reference entry.
+
+    Test-guarded sync: adding a shortcode template without documenting it here
+    fails, so the reference never silently drifts from what the theme ships.
+    """
+    text = (REFERENCE_DIR / "shortcodes.md").read_text(encoding="utf-8")
+    shipped = _shipped_shortcode_names()
+
+    assert shipped, "no shortcode templates found — wrong path?"
+    for name in shipped:
+        assert name in text, f"shortcode '{name}' is shipped but not in shortcodes.md (#165)"
+
+    # component_specimen and the admonition family are first-class (issue ask).
+    assert "component_specimen" in text
+    for inline in ("tip", "warning", "danger"):
+        assert inline in text
+
+    # A rendered example, not only a syntax dump: live shortcode invocations
+    # (no comment-escape) must appear on the page.
+    assert "{{< component_specimen" in text
+    assert "{{< tip" in text
+
+
+def test_directives_reference_documents_every_shipped_directive() -> None:
+    """#165 — every shipped directive template has an on-site reference entry."""
+    text = (REFERENCE_DIR / "directives.md").read_text(encoding="utf-8")
+    shipped = _shipped_directive_names()
+
+    assert shipped, "no directive templates found — wrong path?"
+    for name in shipped:
+        assert name in text, f"directive '{name}' is shipped but not in directives.md (#165)"
+
+    # admonition is documented as a first-class authoring feature (issue ask),
+    # and a live rendered directive (not just a code fence) must appear.
+    assert "admonition" in text
+    assert ":::{tip}" in text
+    assert ":::{cards}" in text
+
+
+def test_reference_section_is_wired_into_menu_config() -> None:
+    """#165 — the reference section is reachable from the real menu.yaml."""
+    text = MENU_CONFIG.read_text(encoding="utf-8")
+    assert "/docs/reference/" in text, "/docs/reference/ not wired into menu.yaml (#165)"
+
+
+def test_components_index_is_an_onsite_catalog_not_a_github_pointer() -> None:
+    """#166 — the component catalog lives on-site, not behind a GitHub README.
+
+    The old index punted to a GitHub README anchor and `python examples/...app.py`
+    to see examples; the rebuilt catalog must keep visitors on the site.
+    """
+    text = COMPONENTS_INDEX.read_text(encoding="utf-8")
+
+    # No off-site / local-app pointers for seeing examples.
+    assert "github.com/lbliii/chirp-ui#usage" not in text
+    assert "examples/component-showcase/app.py" not in text
+    assert "localhost:8000" not in text
+
+    # On-site equivalents are present: the showcase, live specimen pages, and the
+    # generated API reference.
+    assert "/showcase/" in text
+    assert "/api/" in text
+    assert "./controls/" in text
+
+
+def test_components_catalog_covers_every_manifest_category() -> None:
+    """#166 — the catalog stays in sync with the manifest (test-guarded).
+
+    Every public component category in manifest.json must be named in the
+    catalog, so a new category cannot ship without a home in the docs.
+    """
+    text = COMPONENTS_INDEX.read_text(encoding="utf-8").lower()
+    categories = _manifest_public_categories()
+
+    assert categories, "no public categories found in manifest.json"
+    for category in categories:
+        # Catalog headings use spaced labels (e.g. "data display"); match the
+        # manifest's hyphenated category either form.
+        spaced = category.replace("-", " ")
+        assert category in text or spaced in text, (
+            f"manifest category '{category}' has no home in components/_index.md (#166)"
+        )

@@ -165,6 +165,31 @@ ASSET_ATTR_RE = re.compile(r"""(?:href|src|content)\s*=\s*(?:"([^"]+)"|'([^']+)'
 CSS_IMPORT_RE = re.compile(r"""@import\s+url\(['"]?([^'")]+\.css)['"]?\)""")
 
 
+def _unwrap_theme_layer(css: str) -> str:
+    """Strip the outer ``@layer chirp-theme { ... }`` wrapper for content assertions.
+
+    The theme CSS now lives entirely inside a single ``@layer chirp-theme`` block
+    (the cascade contract that lets the theme restyle the chirp-ui baseline while
+    staying downstream-overridable). The wrapper indents every rule by two spaces.
+    Tests that assert exact block formatting (``.selector {\\n  decl;``) describe the
+    *authored* rule, not the layer wrapper, so we de-indent the layer body by two
+    spaces before matching. Substring/selector-presence assertions are unaffected.
+    """
+    marker = "@layer chirp-theme {"
+    start = css.find(marker)
+    if start == -1:
+        return css
+    body_start = start + len(marker)
+    end = css.rfind("}")
+    if end <= body_start:
+        return css
+    body = css[body_start:end]
+    deindented = "\n".join(
+        line[2:] if line.startswith("  ") else line for line in body.splitlines()
+    )
+    return deindented
+
+
 def _prefer_workspace_bengal() -> None:
     """Force Bengal imports to resolve from a sibling workspace checkout when available."""
     if not _WORKSPACE_BENGAL.exists():
@@ -663,7 +688,7 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     templates_root = package_root / "templates"
     assets_root = package_root / "assets"
     base = (templates_root / "base.html").read_text(encoding="utf-8")
-    css = (assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8")
+    css = _unwrap_theme_layer((assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8"))
     style = (assets_root / "css" / "style.css").read_text(encoding="utf-8")
 
     assert 'from "chirpui/navbar.html" import navbar, navbar_link, navbar_dropdown' in base
@@ -749,7 +774,7 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     blog_shell = (templates_root / "blog" / "shell.html").read_text(encoding="utf-8")
     section_index = (templates_root / "index.html").read_text(encoding="utf-8")
     page_actions = (templates_root / "partials" / "page-actions.html").read_text(encoding="utf-8")
-    css = (assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8")
+    css = _unwrap_theme_layer((assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8"))
     interactive_css = (assets_root / "css" / "components" / "interactive.css").read_text(
         encoding="utf-8"
     )
