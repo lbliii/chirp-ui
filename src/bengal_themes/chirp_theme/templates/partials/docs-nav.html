@@ -72,19 +72,28 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
   #}
   <details class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}"{% if is_branch_active %} open{% end %}>
     <summary class="chirpui-sidebar__section-title chirp-theme-docs-nav__summary">
+      {#
+        The folder icon IS the disclosure control. It is a plain (non-interactive)
+        <span> inside the <summary>, so clicking it toggles the native <details>,
+        while clicking the section link navigates. Both folder states ship; CSS
+        keyed on `details[open]` shows the closed folder when collapsed and the
+        open folder when expanded — pure CSS, no caret, no JavaScript.
+      #}
+      <span class="chirp-theme-docs-nav__disclosure" aria-hidden="true">
+        <span class="chirp-theme-docs-nav__folder chirp-theme-docs-nav__folder--closed">{{ icon('folder', size=14) }}</span>
+        <span class="chirp-theme-docs-nav__folder chirp-theme-docs-nav__folder--open">{{ icon('folder-open', size=14) }}</span>
+      </span>
       {% if item_href %}
       <a class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}{{ ' chirp-theme-docs-nav__summary-link--active' if is_current else '' }}"
          href="{{ item_href | absolute_url }}"
          title="{{ item_title }}"
          {% if is_current %}aria-current="page"{% end %}{{ route_link_attrs(item_href | absolute_url) | html_attrs }}>
-        <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind, true) }}</span>
         <span class="chirp-theme-docs-nav__summary-copy">
           <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
         </span>
       </a>
       {% else %}
       <span class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}">
-        <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">{{ nav_type_icon(item_kind, true) }}</span>
         <span class="chirp-theme-docs-nav__summary-copy">
           <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ item_title }}</span>
         </span>

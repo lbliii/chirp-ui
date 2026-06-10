@@ -137,10 +137,65 @@
  * section link, so the label stays painted whether the section is collapsed
  * or open (a closed <details> only hides its NON-summary content). There is
  * NO explicit caret control — the owner prefers the clean pre-#162 nav. The
+ * FOLDER ICON is the disclosure control: a closed folder when collapsed, an
+ * open folder when expanded, swapped purely by `details[open]` in CSS. The
+ * folder is a non-interactive <span> inside the <summary>, so clicking it
+ * toggles the section while clicking the section link still navigates. The
  * native disclosure marker is suppressed and the cursor reads as clickable.
  * The depth-1 summary-link, marker-hiding, and active-trail styling live in
  * chirp-theme.css under `.chirp-theme-docs-nav__summary …` selectors.
  * ------------------------------------------------------------------ */
 .chirp-theme-docs-nav__summary {
   cursor: pointer;
+}
+
+/* Folder disclosure control — fills the slot the old type-icon occupied so the
+ * label stays aligned. Clicking it toggles the native <details>. */
+.chirp-theme-docs-nav__disclosure {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--motion-fast), background-color var(--motion-fast);
+}
+
+.chirp-theme-docs-nav__disclosure:hover,
+.chirp-theme-docs-nav__summary:focus-visible .chirp-theme-docs-nav__disclosure {
+  color: var(--chirpui-accent);
+  background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+}
+
+.chirp-theme-docs-nav__section.is-active > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__disclosure {
+  color: var(--chirpui-accent);
+}
+
+.chirp-theme-docs-nav__folder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chirp-theme-docs-nav__folder svg {
+  inline-size: 0.85rem;
+  block-size: 0.85rem;
+}
+
+/* Default (collapsed): show the closed folder, hide the open folder. */
+.chirp-theme-docs-nav__folder--open {
+  display: none;
+}
+
+/* Expanded: swap closed → open. Child combinators keep a parent section from
+ * cross-triggering a nested section's folder. */
+.chirp-theme-docs-nav__section[open] > summary > .chirp-theme-docs-nav__disclosure > .chirp-theme-docs-nav__folder--closed {
+  display: none;
+}
+
+.chirp-theme-docs-nav__section[open] > summary > .chirp-theme-docs-nav__disclosure > .chirp-theme-docs-nav__folder--open {
+  display: inline-flex;
 }

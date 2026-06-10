@@ -8,13 +8,21 @@ or open. This keeps the "collapsed labels visible" guard with zero JavaScript
 and — per the owner's preference — NO explicit caret control: the native
 disclosure marker is suppressed in CSS.
 
+The FOLDER ICON is the disclosure control: a non-interactive <span> inside the
+<summary> that renders BOTH a closed-folder and an open-folder glyph. Pure CSS
+keyed on `details[open]` shows the closed folder when collapsed and the open
+folder when expanded. Clicking the folder toggles the native <details>; clicking
+the section link still navigates.
+
 These tests assert the labels are genuinely PAINTED while collapsed (Playwright
 is_visible plus a non-zero painted rect that is NOT inside a
 content-visibility:hidden subtree), that there is NO caret/toggle button in the
-section headers, that toggling the native <details> shows/hides the children,
-and that the active branch arrives open with aria-current. The section label
-link intentionally lives back inside the <summary> — a deliberate UX choice by
-the project owner (no caret), so the older "no <a>/<button> inside <summary>"
+section headers, that a collapsed section shows the CLOSED folder (open hidden)
+and an expanded section shows the OPEN folder (closed hidden), that clicking the
+folder toggles the native <details>, that toggling shows/hides the children, and
+that the active branch arrives open with aria-current. The section label link
+intentionally lives back inside the <summary> — a deliberate UX choice by the
+project owner (no caret), so the older "no <a>/<button> inside <summary>"
 assertion does not apply here.
 """
 
@@ -204,6 +212,78 @@ async def test_toggle_shows_and_hides_children(page, static_site_url):
     await section.evaluate("el => { el.open = false; }")
     assert await section.evaluate("el => el.open") is False
     assert not await panel.is_visible()
+
+
+async def test_collapsed_section_shows_closed_folder(page, static_site_url):
+    """A COLLAPSED section paints the closed folder; the open folder is hidden."""
+    await _open_docs(page, static_site_url)
+
+    collapsed = _secondary_section(page, collapsed=True)
+    if await collapsed.count() == 0:
+        pytest.skip("every section is on the active trail; none collapsed")
+
+    section = collapsed.first
+    closed = section.locator("> summary .chirp-theme-docs-nav__folder--closed")
+    opened = section.locator("> summary .chirp-theme-docs-nav__folder--open")
+
+    await expect(closed).to_be_visible()
+    await expect(opened).to_be_hidden()
+
+
+async def test_expanded_section_shows_open_folder(page, static_site_url):
+    """An EXPANDED section paints the open folder; the closed folder is hidden."""
+    await _open_docs(page, static_site_url)
+
+    expanded = _secondary_section(page, collapsed=False)
+    if await expanded.count() == 0:
+        pytest.skip("no open sections rendered")
+
+    section = expanded.first
+    closed = section.locator("> summary .chirp-theme-docs-nav__folder--closed")
+    opened = section.locator("> summary .chirp-theme-docs-nav__folder--open")
+
+    await expect(opened).to_be_visible()
+    await expect(closed).to_be_hidden()
+
+
+async def test_clicking_folder_toggles_section_and_swaps_glyph(page, static_site_url):
+    """Clicking the folder disclosure toggles the <details> and swaps the glyph.
+
+    A plain <span> inside a <summary> is non-interactive, so a click on the
+    folder triggers the native disclosure toggle (not navigation). The
+    closed/open folder swap is keyed on `details[open]` in pure CSS.
+    """
+    await _open_docs(page, static_site_url)
+
+    collapsed = _secondary_section(page, collapsed=True)
+    if await collapsed.count() == 0:
+        pytest.skip("every section is on the active trail; none collapsed")
+
+    section = await collapsed.first.element_handle()
+    assert section is not None
+    disclosure = await section.query_selector(":scope > summary .chirp-theme-docs-nav__disclosure")
+    assert disclosure is not None
+    closed = await section.query_selector(":scope > summary .chirp-theme-docs-nav__folder--closed")
+    opened = await section.query_selector(":scope > summary .chirp-theme-docs-nav__folder--open")
+    assert closed is not None
+    assert opened is not None
+
+    # Collapsed: closed folder shown, open folder hidden.
+    assert await section.evaluate("el => el.open") is False
+    assert await closed.is_visible()
+    assert not await opened.is_visible()
+
+    # Click the folder → section expands, glyph swaps to open.
+    await disclosure.click()
+    assert await section.evaluate("el => el.open") is True
+    assert await opened.is_visible()
+    assert not await closed.is_visible()
+
+    # Click again → collapses, glyph swaps back to closed.
+    await disclosure.click()
+    assert await section.evaluate("el => el.open") is False
+    assert await closed.is_visible()
+    assert not await opened.is_visible()
 
 
 async def test_active_branch_is_open_with_aria_current(page, static_site_url):

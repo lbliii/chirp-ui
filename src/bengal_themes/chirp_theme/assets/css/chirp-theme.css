@@ -1875,6 +1875,7 @@
   .chirp-theme-docs-nav__summary.chirpui-sidebar__section-title {
     display: flex;
     align-items: center;
+    gap: 0.36rem;
     min-width: 0;
     padding: 0;
     list-style: none;
@@ -1893,7 +1894,7 @@
 
   .chirp-theme-docs-nav__summary-link {
     display: grid;
-    grid-template-columns: 1.75rem minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.5rem;
     align-items: center;
     flex: 1 1 auto;
@@ -1932,7 +1933,7 @@
   }
 
   .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link {
-    grid-template-columns: 1.25rem minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.36rem;
     min-block-size: 1.65rem;
     padding: 0.14rem 0.32rem;
