@@ -68,7 +68,13 @@ jobs:
       - name: Run docs-chrome browser/a11y smoke
         # poe test-browser-chrome = docs-build-all + test-browser-chrome-check
         # (focused chrome + docs-nav folder-toggle + landmark/axe a11y proof).
+        # BENGAL_ENV=local forces a root baseurl ("") for the built test site:
+        # the browser fixtures serve site/public from "/", so a production
+        # baseurl ("/chirp-ui", auto-selected when CI=true) would 404 every
+        # asset → unstyled pages → false layout/overflow failures. Deployment
+        # still uses the production baseurl via the Pages workflow.
         run: uv run poe test-browser-chrome
         env:
           CI: true
+          BENGAL_ENV: local
           PYTHON_GIL: "0"

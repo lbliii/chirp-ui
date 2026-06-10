@@ -1647,8 +1647,16 @@ for logical_path in standalone_asset_entries:
     for candidate in {logical_path, f"assets/{normalized_path}", f"assets/{filename}"}:
         if candidate in referenced_assets and (site.output_dir / candidate).is_file():
             stable_library_assets.add(candidate)
+# Social / Open Graph cards (assets/social/*) are deliberately served at a
+# STABLE, unfingerprinted URL because social scrapers cache by URL — a hashed
+# filename would break shared cards on every rebuild. They are therefore
+# referenced raw and never appear in the fingerprint asset-manifest. Exclude
+# them from the manifest requirement; `missing_files` below still guarantees
+# the file is actually emitted to the build.
 missing_manifest_entries = [
-    path for path in missing_manifest_entries if path not in stable_library_assets
+    path
+    for path in missing_manifest_entries
+    if path not in stable_library_assets and not path.startswith("assets/social/")
 ]
 missing_files = sorted(
     asset_path for asset_path in referenced_assets if not (site.output_dir / asset_path).is_file()
