@@ -20,7 +20,13 @@
   not a metadata flag. The arg dicts use `docstring` for the per-param prose,
   which we remap to params_table's `description` column below.
 
-  Returns / Raises blocks are intentionally NOT wired here (see #159).
+  Returns / Raises blocks (#158): after the params table we render the shared
+  returns.html / raises.html partials for each member by binding the member as
+  `element` (the partials read `element.metadata.returns` for the return type,
+  `element.metadata.parsed_doc.returns` for the return prose, and
+  `element.metadata.parsed_doc.raises` for the exception list). Each include is
+  guarded on the member's own metadata so a member with no return/raises detail
+  emits nothing.
 -#}
 
 {% let member_items = element?.children ?? [] %}
@@ -63,6 +69,13 @@
       {{ params_table(member_param_rows, title="Parameters", cls="chirp-theme-reference-member__params") }}
       {% elif member_signature %}
       <p class="chirp-theme-reference-member__no-params chirpui-text-muted chirpui-font-sm">No parameters.</p>
+      {% end %}
+      {% let member_parsed_doc = member_meta.get("parsed_doc") ?? {} %}
+      {% if member_meta.get("returns") or member_parsed_doc.get("returns") %}
+      {% with member as element %}{% include "autodoc/partials/returns.html" %}{% end %}
+      {% end %}
+      {% if member_parsed_doc.get("raises") %}
+      {% with member as element %}{% include "autodoc/partials/raises.html" %}{% end %}
       {% end %}
     </div>
   {% end %}

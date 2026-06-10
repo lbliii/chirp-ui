@@ -645,6 +645,136 @@ def test_autodoc_members_read_signature_and_params_from_metadata() -> None:
     assert "member?.deprecated" in template
 
 
+def _render_autodoc_members(theme_env, element: dict) -> str:
+    """Render the theme's autodoc members partial against a fabricated element.
+
+    Uses the ``theme_env`` fixture (theme + chirp_ui loader roots, conftest
+    filter stubs, ``markdownify`` stub) so the members -> returns/raises ->
+    chirpui macro chain renders without a real Chirp/Bengal app.
+    """
+    template = theme_env.get_template("autodoc/partials/members.html")
+    return template.render(element=element)
+
+
+def test_autodoc_member_returns_and_raises_render_in_accordion_body(theme_env) -> None:
+    """#158 — a member with return/raises detail emits Returns/Raises blocks.
+
+    Mirrors Bengal's Python extractor shape: the return type lives under
+    ``member.metadata.returns``, the return prose under
+    ``member.metadata.parsed_doc.returns``, and the exception list under
+    ``member.metadata.parsed_doc.raises`` (a list of ``{type, description}``).
+    ``register_colors`` on /api/filters/ documents ``Raises ValueError``; the
+    rebuilt member body must surface a structured Raises block, and a
+    return-annotated member must surface a Returns block — inside each member's
+    accordion body, after the params table.
+    """
+    element = {
+        "children": [
+            {
+                "name": "register_colors",
+                "element_type": "function",
+                "metadata": {
+                    "signature": "register_colors(colors: dict) -> None",
+                    "args": [
+                        {
+                            "name": "colors",
+                            "type": "dict",
+                            "default": "",
+                            "docstring": "Mapping of name to color value.",
+                        }
+                    ],
+                    "returns": "None",
+                    "parsed_doc": {
+                        "returns": "Nothing.",
+                        "raises": [
+                            {
+                                "type": "ValueError",
+                                "description": "If a registered color is invalid.",
+                            }
+                        ],
+                    },
+                },
+            },
+            {
+                "name": "resolve_color",
+                "element_type": "function",
+                "metadata": {
+                    "signature": "resolve_color(name: str) -> str",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "str",
+                            "default": "",
+                            "docstring": "Registered color name.",
+                        }
+                    ],
+                    "returns": "str",
+                    "parsed_doc": {"returns": "The resolved CSS color string."},
+                },
+            },
+        ]
+    }
+
+    html = _render_autodoc_members(theme_env, element)
+
+    # The raising member surfaces a structured Raises block naming the exception.
+    assert "chirp-theme-reference-raises" in html, (
+        "raising member did not emit a Raises block (#158)"
+    )
+    assert "ValueError" in html
+    # The return-annotated member surfaces a Returns block.
+    assert "chirp-theme-reference-returns" in html, (
+        "return-annotated member did not emit a Returns block (#158)"
+    )
+
+
+def test_autodoc_member_without_return_or_raises_emits_no_blocks(theme_env) -> None:
+    """#158 — members with no return/raises detail must not emit empty blocks.
+
+    Strict-undefined guards (``member.metadata.get(...)``) gate the includes, so
+    a bare member renders neither a Returns nor a Raises callout.
+    """
+    element = {
+        "children": [
+            {
+                "name": "noop",
+                "element_type": "function",
+                "metadata": {
+                    "signature": "noop()",
+                    "args": [],
+                    "parsed_doc": {},
+                },
+            }
+        ]
+    }
+
+    html = _render_autodoc_members(theme_env, element)
+
+    assert "chirp-theme-reference-returns" not in html
+    assert "chirp-theme-reference-raises" not in html
+
+
+def test_autodoc_members_template_renders_returns_and_raises_partials() -> None:
+    """#158 — the members partial wires the shared returns/raises partials.
+
+    Source-level guard so the wiring cannot silently regress: each member's
+    accordion body includes the returns.html / raises.html partials, guarded on
+    the member's own metadata (strict-undefined ``.get`` access), and the
+    "intentionally NOT wired here" note is gone.
+    """
+    template = THEME_AUTODOC_MEMBERS.read_text(encoding="utf-8")
+
+    assert 'include "autodoc/partials/returns.html"' in template
+    assert 'include "autodoc/partials/raises.html"' in template
+    # Read from the member's own metadata, per the Bengal extractor field paths.
+    assert 'member_meta.get("returns")' in template
+    assert 'member_meta.get("parsed_doc")' in template
+    assert 'member_parsed_doc.get("returns")' in template
+    assert 'member_parsed_doc.get("raises")' in template
+    # The stale "not wired here" note must be removed.
+    assert "intentionally NOT wired here" not in template
+
+
 def test_built_api_filters_renders_typed_params_tables() -> None:
     """#158 — a parametered member on /api/filters/ must emit a params table.
 

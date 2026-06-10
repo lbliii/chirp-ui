@@ -27,6 +27,9 @@ from chirp_ui.icons import icon as icon_filter
 from chirp_ui.validation import ChirpUIValidationWarning, _warn, set_strict
 
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates"
+THEME_TEMPLATES_DIR = (
+    Path(__file__).resolve().parent.parent / "src" / "bengal_themes" / "chirp_theme" / "templates"
+)
 
 
 def pytest_collection_modifyitems(config, items):
@@ -296,6 +299,53 @@ def env() -> Environment:
             "deprecate_param": deprecate_param,
             "resolve_status_variant": resolve_status_variant,
             "shell_action_btn_variant": shell_action_btn_variant,
+        }
+    )
+    e.add_global("build_hx_attrs", build_hx_attrs)
+    e.add_global("check_required_id", check_required_id)
+    e.add_global("route_link_attrs", make_route_link_attrs())
+    e.add_global("island_attrs", _island_attrs_stub)
+    e.add_global("primitive_attrs", _primitive_attrs_stub)
+    e.add_global(
+        "csrf_field",
+        lambda: Markup('<input type="hidden" name="_csrf_token" value="test-csrf">'),
+    )
+    return e
+
+
+@pytest.fixture
+def theme_env() -> Environment:
+    """Kida environment with both the chirp_theme and chirp_ui template roots.
+
+    Bengal composes the theme templates and the bundled chirp_ui templates into
+    a single loader search path at build time. Tests that render theme partials
+    (e.g. autodoc/partials/members.html, which includes chirpui/* macros and
+    sibling theme partials) need both roots, plus a ``markdownify`` stub that
+    Bengal provides in production.
+    """
+    e = Environment(
+        loader=FileSystemLoader([str(THEME_TEMPLATES_DIR), str(TEMPLATES_DIR)]),
+        autoescape=True,
+    )
+    e.update_filters(
+        {
+            "field_errors": _field_errors_stub,
+            "bem": _bem_stub,
+            "html_attrs": _html_attrs_stub,
+            "icon": icon_filter,
+            "validate_variant": _validate_variant_stub,
+            "validate_variant_block": _validate_variant_block_stub,
+            "validate_appearance_block": _validate_appearance_block_stub,
+            "validate_tone_block": _validate_tone_block_stub,
+            "validate_size": _validate_size_stub,
+            "value_type": value_type,
+            "sanitize_color": sanitize_color,
+            "contrast_text": contrast_text,
+            "resolve_color": resolve_color,
+            "deprecate_param": deprecate_param,
+            "resolve_status_variant": resolve_status_variant,
+            "shell_action_btn_variant": shell_action_btn_variant,
+            "markdownify": lambda value: Markup(str(value)),
         }
     )
     e.add_global("build_hx_attrs", build_hx_attrs)
