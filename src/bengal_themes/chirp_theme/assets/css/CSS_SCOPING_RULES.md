@@ -70,28 +70,16 @@ Use these on the root `.prose` element:
 /* These conflict! */
 ```
 
-### **Solution Option A: Use utility class**
-```css
-/* ✅ GOOD: Shared pattern */
-.has-prose-content ul { ... }
-```
-
-```html
-<div class="dropdown-content has-prose-content">
-  <ul>...</ul>
-</div>
-```
-
-### **Solution Option B: Direct scoping**
+### **Solution: Direct scoping**
 ```css
 /* ✅ GOOD: Direct child selector */
 .dropdown-content > ul { ... }
 .dropdown-content > ol { ... }
 ```
 
-**When to use:**
-- Option A: For general user content (markdown, HTML)
-- Option B: For specific component needs
+**When to use:** Scope each component's content directly so a nested
+component (e.g. a `.card` inside a `.dropdown`) can't inherit the wrong list
+styling.
 
 ---
 
@@ -239,61 +227,7 @@ ul, ol { margin: 0; padding: 0; }
 
 ---
 
-## Rule 7: The has-prose-content Utility
-
-### **Purpose:**
-Shared pattern for components that contain user content.
-
-### **Usage:**
-```html
-<div class="dropdown-content has-prose-content">
-  <p>User content here...</p>
-  <ul>
-    <li>List item</li>
-  </ul>
-</div>
-```
-
-### **Definition:**
-```css
-/* base/prose-content.css */
-.has-prose-content ul,
-.has-prose-content ol {
-  padding-left: var(--space-8);
-  margin: var(--space-3) 0;
-}
-
-.has-prose-content ul {
-  list-style-type: disc;
-}
-
-.has-prose-content ol {
-  list-style-type: decimal;
-}
-
-.has-prose-content li {
-  margin: var(--space-1) 0;
-}
-
-.has-prose-content p {
-  margin-bottom: var(--space-4);
-}
-
-.has-prose-content code {
-  /* Inherits from base styles */
-}
-```
-
-### **When to use:**
-- Dropdown content
-- Tab panes
-- Card bodies
-- Modal content
-- Any component that displays markdown/HTML
-
----
-
-## Rule 8: Defensive CSS
+## Rule 7: Defensive CSS
 
 ### **Always assume conflicts will happen.**
 
@@ -321,20 +255,19 @@ Shared pattern for components that contain user content.
 
 ---
 
-## Rule 9: Scoping Checklist
+## Rule 8: Scoping Checklist
 
 Before adding a new CSS rule, ask:
 
 - [ ] Is this scoped to a component?
 - [ ] Will this affect nested components?
 - [ ] Is this specific to a content type?
-- [ ] Does this need `.has-prose-content`?
 - [ ] Will this conflict with existing styles?
 - [ ] Is the selector as specific as needed, no more?
 
 ---
 
-## Rule 10: Anti-Patterns to Avoid
+## Rule 9: Anti-Patterns to Avoid
 
 ### **❌ Don't:**
 
@@ -376,10 +309,10 @@ Before adding a new CSS rule, ask:
    .prose.api-content ul { border: 1px solid red; }
    ```
 
-3. **Utility classes for shared patterns:**
+3. **Direct child selectors for shared patterns:**
    ```css
-   /* ✅ Reusable */
-   .has-prose-content ul { list-style: disc; }
+   /* ✅ Won't leak into nested components */
+   .dropdown-content > ul { list-style: disc; }
    ```
 
 4. **Shallow, specific selectors:**
@@ -400,7 +333,6 @@ Before adding a new CSS rule, ask:
 | `base/typography.css` | `.prose elements` | `.prose ul { ... }` |
 | `components/*.css` | `.component elements` | `.dropdown ul { ... }` |
 | Content-specific | `.prose.type elements` | `.prose.api-content ul { ... }` |
-| Shared content | `.has-prose-content` | `.has-prose-content ul { ... }` |
 
 ---
 
@@ -417,12 +349,7 @@ Before adding a new CSS rule, ask:
   border-radius: var(--radius-md);
 }
 
-/* Content area - use utility */
-.callout-body {
-  /* Add .has-prose-content in HTML */
-}
-
-/* OR: Define directly */
+/* Content area - scope lists to the body directly */
 .callout-body ul {
   padding-left: var(--space-8);
   list-style-type: disc;
@@ -436,7 +363,7 @@ Before adding a new CSS rule, ask:
 
 ```html
 <div class="callout callout--warning">
-  <div class="callout-body has-prose-content">
+  <div class="callout-body">
     <!-- User content here -->
   </div>
 </div>
@@ -485,9 +412,6 @@ Before adding a new CSS rule, ask:
 .dropdown-content > ul {
   /* Only affects direct children */
 }
-
-/* OR: Use utility class in HTML */
-/* <div class="dropdown-content has-prose-content"> */
 ```
 
 ---
@@ -511,7 +435,7 @@ For existing code:
 
 1. **Audit:** Find all `.prose` selectors outside `typography.css`
 2. **Scope:** Add appropriate content-type class (`.api-content`, etc.)
-3. **Refactor:** Move shared patterns to `.has-prose-content`
+3. **Refactor:** Scope shared patterns with direct child selectors (`.component-content > ul`)
 4. **Test:** Verify no visual regressions
 5. **Document:** Update component docs with scoping requirements
 
@@ -553,7 +477,6 @@ A: Keep the same scoping:
 
 - [CSS Architecture Review](../plan/completed/CSS_ARCHITECTURE_REVIEW.md)
 - [Component Fixes](../plan/completed/CSS_COMPONENT_FIXES_2025-10-08.md)
-- [Content Container Pattern](./base/prose-content.css)
 - [Theme README](./README.md)
 
 ---
