@@ -237,10 +237,13 @@ symbols imported inside another block.
     <meta property="og:site_name" content="{{ _site_title }}">
     <meta property="og:locale" content="{{ _current_lang | replace('-', '_') }}">
     {# Open Graph Image — per-page frontmatter `image:` wins, else the site-wide
-       fallback card (config.og_image → /assets/social/og-default.png). og_image()
-       prefixes the absolute origin from baseurl, so this is a full https URL and
-       always references an image that exists (no broken social cards). #}
-    {% let _og_image_path = og_image(params?.image ?? config?.og_image ?? '', page) %}
+       fallback card (config.og_image → social/og-default.png). Resolve LOCAL paths
+       through asset_url so the reference points at the EMITTED (fingerprinted) file:
+       og_image() alone returns the raw, un-fingerprinted name, which 404s in
+       production/fingerprinting builds (broken social cards). External http(s) image
+       URLs pass through untouched. #}
+    {% let _og_src = params?.image ?? config?.og_image ?? '' %}
+    {% let _og_image_path = _og_src if (_og_src and _og_src.startswith('http')) else (asset_url(_og_src) if _og_src else '') %}
     {% if _og_image_path %}
     <meta property="og:image" content="{{ _og_image_path }}">
     <meta property="og:image:width" content="1200">
