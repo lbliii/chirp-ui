@@ -8,6 +8,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tomllib
 from importlib import metadata, resources
 from pathlib import Path, PurePosixPath
 
@@ -17,6 +18,8 @@ THEME_PACKAGE = "bengal_themes.chirp_theme"
 THEME_TEMPLATE_PATH_FRAGMENT = "bengal_themes/chirp_theme/templates"
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SITE_ROOT = REPO_ROOT / "site"
+THEME_TOML = REPO_ROOT / "src" / "bengal_themes" / "chirp_theme" / "theme.toml"
+BASE_TEMPLATE = REPO_ROOT / "src" / "bengal_themes" / "chirp_theme" / "templates" / "base.html"
 _WORKSPACE_BENGAL = REPO_ROOT.parent / "b-stack" / "bengal"
 BENGAL_ANATOMY_DOC = REPO_ROOT / "docs" / "theming" / "bengal-theme-anatomy.md"
 
@@ -743,6 +746,148 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     assert webmanifest["name"] == "chirp-ui"
     assert webmanifest["theme_color"] == "#071312"
     assert "/android-chrome-" not in json.dumps(webmanifest)
+
+
+def test_theme_toml_declares_minimum_bengal_version() -> None:
+    """#154 — theme.toml must declare the Bengal floor BOTH ways so resolution can
+    warn/refuse on too-old Bengal (the bd4e298 regression class).
+
+    The theme's whole chirp-ui CSS/JS load goes through Bengal's
+    ``library_asset_tags()`` (>= 0.3.3). Declare the floor as the top-level
+    ``requires_bengal`` string AND a ``[bengal] min_version`` table so whichever
+    key Bengal's theme resolver reads finds it.
+    """
+    data = tomllib.loads(THEME_TOML.read_text(encoding="utf-8"))
+
+    assert data.get("requires_bengal") == ">=0.3.3", (
+        'theme.toml must declare requires_bengal = ">=0.3.3" (#154)'
+    )
+    assert data.get("bengal", {}).get("min_version") == "0.3.3", (
+        'theme.toml must declare [bengal] min_version = "0.3.3" (#154)'
+    )
+
+
+def test_base_template_emits_loud_library_asset_fallback() -> None:
+    """#154 — the library_asset_tags() guard must NOT silently no-op on old Bengal.
+
+    Under Bengal < 0.3.3 ``library_asset_tags`` is undefined and the guard is
+    falsy; the {% else %} branch must emit a dev-visible diagnostic that names the
+    >= 0.3.3 floor instead of shipping a token-less style-only build.
+    """
+    base = BASE_TEMPLATE.read_text(encoding="utf-8")
+
+    # The happy path stays.
+    assert "library_asset_tags | default(none)" in base
+    assert "library_asset_tags()" in base
+
+    # The missing-provider path is a real, named diagnostic — not an empty no-op.
+    else_index = base.index("{% if library_asset_tags | default(none) %}")
+    block = base[else_index:]
+    block = block[: block.index("{% end %}") + len("{% end %}")]
+    assert "{% else %}" in block, "library_asset_tags guard has no {% else %} branch (#154)"
+    fallback = block[block.index("{% else %}") :]
+    # Names the Bengal floor so the failure is self-explaining.
+    assert "Bengal >= 0.3.3" in fallback or "bengal>=0.3.3" in fallback, fallback
+    assert "library_asset_tags" in fallback, fallback
+    assert "--chirpui-" in fallback, fallback
+    # The diagnostic is an HTML comment so it never paints but is visible in
+    # devtools / view-source.
+    assert "<!--" in fallback, fallback
+    assert "-->" in fallback, fallback
+
+
+def test_base_template_gates_d3_preconnect_behind_graph_feature() -> None:
+    """#157 — the d3js.org preconnect is contacted only by graph pages, so it must
+    be gated behind the graph feature flag, not emitted unconditionally.
+
+    The jsdelivr preconnect stays unconditional (it serves chirp-ui/Alpine/katex
+    CDNs), but d3 is a graph-only third party.
+    """
+    base = BASE_TEMPLATE.read_text(encoding="utf-8")
+
+    assert 'href="https://d3js.org"' in base, "d3 preconnect should still exist (gated) (#157)"
+
+    # Find the d3 preconnect line and assert it sits inside a graph-feature gate.
+    d3_index = base.index('href="https://d3js.org"')
+    preceding = base[:d3_index]
+    last_if = preceding.rindex("{% if ")
+    gate = base[last_if:d3_index]
+    assert "graph." in gate, (
+        "d3 preconnect must be gated behind a graph.* feature flag, not emitted "
+        f"unconditionally (#157). Gate seen: {gate!r}"
+    )
+    assert "theme.features" in gate, gate
+
+
+def test_base_template_loads_style_css_non_render_blocking() -> None:
+    """#157 — style.css must load via preload+onload swap with a <noscript> fallback,
+    not as a synchronous render-blocking <link rel=stylesheet>.
+
+    First paint should not wait on the full theme bundle; the FOUC theme-guard
+    script stays synchronous independently.
+    """
+    base = BASE_TEMPLATE.read_text(encoding="utf-8")
+
+    # The async pattern: rel=preload as=style, flipped to a real stylesheet onload.
+    preload_link = next(
+        (line for line in base.splitlines() if 'rel="preload"' in line and 'as="style"' in line),
+        None,
+    )
+    assert preload_link is not None, "no <link rel=preload as=style> for style.css (#157)"
+    assert "css/style.css" in preload_link or "_style_href" in preload_link, preload_link
+    assert "onload=" in preload_link, preload_link
+    assert "this.rel='stylesheet'" in preload_link, preload_link
+
+    # A JS-less fallback keeps the stylesheet render-blocking when JS is off.
+    assert '<noscript><link rel="stylesheet"' in base, (
+        "no <noscript> render-blocking fallback for style.css (#157)"
+    )
+
+    # The old unconditional synchronous link is gone for good.
+    assert '<link rel="stylesheet" href="{{ asset_url(\'css/style.css\') }}">' not in base, (
+        "style.css still loads as a synchronous render-blocking <link> (#157)"
+    )
+
+
+def _built_index_html():
+    """The built home page, if the site has been built (else None)."""
+    page = SITE_ROOT / "public" / "index.html"
+    return page.read_text(encoding="utf-8") if page.is_file() else None
+
+
+def test_built_home_gates_d3_preconnect_with_graph_feature_on() -> None:
+    """#157 — with graph.contextual enabled in the docs site config, the built home
+    page emits the d3 preconnect (proving the gate's ON path).
+
+    The OFF path is covered by the template-gate test above (the docs site keeps
+    graph on, so we cannot exercise both branches from one build); skipped when
+    the site is unbuilt — the Gate rebuilds the site before verification.
+    """
+    html = _built_index_html()
+    if html is None:
+        pytest.skip("site/public not built; Gate rebuilds the site before verification")
+
+    features = (SITE_ROOT / "config" / "_default" / "theme.yaml").read_text(encoding="utf-8")
+    graph_on = "graph.contextual" in features or "graph.minimap" in features
+    has_d3 = "https://d3js.org" in html
+    assert has_d3 == graph_on, (
+        "d3 preconnect presence must track the graph feature flag: "
+        f"graph_on={graph_on} but d3_in_html={has_d3} (#157)"
+    )
+
+
+def test_built_home_loads_style_css_non_render_blocking() -> None:
+    """#157 — the built home page must request style.css via the preload+onload swap
+    with a <noscript> fallback (no bare synchronous render-blocking link)."""
+    html = _built_index_html()
+    if html is None:
+        pytest.skip("site/public not built; Gate rebuilds the site before verification")
+
+    assert re.search(r'<link[^>]*rel="preload"[^>]*as="style"[^>]*onload=', html), (
+        "built home does not load style.css via preload+onload swap (#157)"
+    )
+    assert "<noscript>" in html, "built home lacks a <noscript> fallback (#157)"
+    assert "style.css" in html, "built home does not reference style.css (#157)"
 
 
 def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:

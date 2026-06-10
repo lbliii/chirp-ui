@@ -24,6 +24,7 @@ THEME_AUTODOC_MEMBERS = (
     / "members.html"
 )
 FONTS_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "fonts.yaml"
+FONTS_CSS = REPO_ROOT / "site" / "assets" / "fonts.css"
 SITE_PUBLIC = REPO_ROOT / "site" / "public"
 API_FILTERS_PAGE = SITE_PUBLIC / "api" / "filters" / "index.html"
 SITE_CONTENT = REPO_ROOT / "site" / "content"
@@ -573,6 +574,44 @@ def test_fonts_config_defines_a_display_font() -> None:
     # fonts.display: "Outfit:400,600,700" — the weights the preloads/stylesheet serve.
     assert "display:" in text
     assert "Outfit" in text
+
+
+def test_fonts_css_declares_font_faces_for_all_weights() -> None:
+    """#135 — the generated stylesheet must define @font-face for 400/600/700 with
+    font-display:swap so the preloaded woff2 weights actually resolve to Outfit.
+
+    base.html links this file (gated on config.fonts.display) and preloads the
+    400/600 woff2; this guards the other half of the contract — that the linked
+    stylesheet wires those weights to the Outfit family with swap behavior.
+    """
+    css = FONTS_CSS.read_text(encoding="utf-8")
+
+    assert css.count("@font-face") >= 3, (
+        "fonts.css must declare at least 3 @font-face blocks (#135)"
+    )
+    assert "font-family: 'Outfit'" in css or 'font-family: "Outfit"' in css
+    for weight in (400, 600, 700):
+        assert f"font-weight: {weight}" in css, f"no @font-face for Outfit {weight} (#135)"
+    # swap keeps text visible during the woff2 fetch (no invisible-text FOIT).
+    assert css.count("font-display: swap") >= 3, (
+        "every @font-face must use font-display:swap (#135)"
+    )
+    # The stylesheet serves woff2 only (the .ttf duplicates were dropped — see below).
+    assert ".woff2" in css
+    assert ".ttf" not in css
+
+
+def test_fonts_dir_ships_woff2_only_no_ttf_duplicates() -> None:
+    """#135 — the unused .ttf duplicates were removed; only woff2 weights ship.
+
+    fonts.css references woff2 only, so the .ttf copies were dead weight in the
+    build. This fails if a .ttf font sneaks back into the source fonts dir.
+    """
+    fonts_dir = REPO_ROOT / "site" / "assets" / "fonts"
+    ttf = sorted(p.name for p in fonts_dir.glob("*.ttf"))
+    assert not ttf, f"unused .ttf font duplicates shipped in site/assets/fonts: {ttf} (#135)"
+    woff2 = sorted(p.name for p in fonts_dir.glob("*.woff2"))
+    assert woff2, "expected woff2 Outfit weights in site/assets/fonts (#135)"
 
 
 def test_base_template_reads_real_search_preload_config_path() -> None:
