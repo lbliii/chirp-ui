@@ -28,6 +28,9 @@ menu:
     - name: "Resume"
       url: "/resume/"
       weight: 40
+    - name: "Notebooks"
+      url: "/notebook/"
+      weight: 45
     - name: "Changelog"
       url: "/changelog/"
       weight: 50
