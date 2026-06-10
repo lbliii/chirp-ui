@@ -131,141 +131,16 @@
 }
 
 /* ------------------------------------------------------------------ *
- * Docs sidebar — disclosure section (issue #162 + regression fix)
+ * Docs sidebar — native <details> disclosure section (no caret).
  *
- * History: #162 moved the navigable section label out of <summary> and
- * into a sibling <a> to kill the nested-interactive defect. But a CLOSED
- * native <details> hides ALL non-<summary> content via
- * `::details-content { content-visibility: hidden }`, so every collapsed
- * section showed only the bare caret with NO label.
- *
- * Fix: drop <details>. The section is now a plain container with an
- * ALWAYS-VISIBLE header row (`__section-header`) holding two siblings —
- *   1. <button class="chirp-theme-docs-nav__toggle">  — disclosure only
- *   2. <a class="chirp-theme-docs-nav__summary-link"> — the section link
- * followed by a separate children region (`__section-links`) that JS
- * collapses with the `hidden` attribute. The button carries aria-expanded
- * + aria-controls; exactly one tab stop each, no nested-interactive.
+ * The section is a native <details>: its <summary> contains the navigable
+ * section link, so the label stays painted whether the section is collapsed
+ * or open (a closed <details> only hides its NON-summary content). There is
+ * NO explicit caret control — the owner prefers the clean pre-#162 nav. The
+ * native disclosure marker is suppressed and the cursor reads as clickable.
+ * The depth-1 summary-link, marker-hiding, and active-trail styling live in
+ * chirp-theme.css under `.chirp-theme-docs-nav__summary …` selectors.
  * ------------------------------------------------------------------ */
-.chirp-theme-docs-nav__section--has-toggle {
-  display: block;
-}
-
-/* Header row: caret button + navigable link, ALWAYS visible. */
-.chirp-theme-docs-nav__section-header {
-  display: grid;
-  grid-template-columns: 1.35rem minmax(0, 1fr);
-  align-items: center;
-  column-gap: 0.15rem;
-}
-
-.chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link {
-  grid-column: 2;
-}
-
-/* Toggle is a real <button>: borderless, a centered tap target for the caret. */
-.chirp-theme-docs-nav__toggle {
-  grid-column: 1;
-  display: inline-grid;
-  place-items: center;
-  inline-size: 1.35rem;
-  block-size: 1.35rem;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  border-radius: var(--radius-sm);
-  color: var(--color-text-muted);
+.chirp-theme-docs-nav__summary {
   cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color var(--motion-fast), color var(--motion-fast);
-}
-
-.chirp-theme-docs-nav__toggle:hover,
-.chirp-theme-docs-nav__toggle:focus-visible {
-  background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
-  color: var(--chirpui-accent);
-}
-
-.chirp-theme-docs-nav__toggle:focus-visible {
-  outline: 2px solid var(--chirpui-accent);
-  outline-offset: 1px;
-}
-
-/* Chevron rotates to point down when the section is expanded. */
-.chirp-theme-docs-nav__toggle-icon {
-  display: inline-flex;
-  transition: transform var(--motion-fast);
-}
-
-.chirp-theme-docs-nav__toggle[aria-expanded="true"] .chirp-theme-docs-nav__toggle-icon {
-  transform: rotate(90deg);
-}
-
-[dir="rtl"] .chirp-theme-docs-nav__toggle-icon {
-  transform: scaleX(-1);
-}
-
-[dir="rtl"] .chirp-theme-docs-nav__toggle[aria-expanded="true"] .chirp-theme-docs-nav__toggle-icon {
-  transform: scaleX(-1) rotate(90deg);
-}
-
-/* Honor reduced-motion: the chevron snaps instead of sweeping. */
-@media (prefers-reduced-motion: reduce) {
-  .chirp-theme-docs-nav__toggle,
-  .chirp-theme-docs-nav__toggle-icon {
-    transition: none;
-  }
-}
-
-/*
- * The depth-1 link styling previously lived in chirp-theme.css under
- * `.chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link`
- * descendant selectors. Now that the link sits in the `__section-header`
- * row (not under a <summary>), re-apply the compact depth-1 treatment here.
- */
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link {
-  grid-template-columns: 1.25rem minmax(0, 1fr);
-  gap: 0.36rem;
-  min-block-size: 1.65rem;
-  padding: 0.14rem 0.32rem;
-  border-color: transparent;
-  border-radius: var(--radius-sm);
-  color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  font-weight: var(--weight-semibold);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link:hover,
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link:focus-visible,
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link--active {
-  border-color: transparent;
-  background: color-mix(in srgb, var(--chirpui-accent) 7%, transparent);
-  color: var(--chirpui-accent);
-}
-
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link .chirp-theme-docs-nav__type-icon {
-  inline-size: 1.25rem;
-  block-size: 1.25rem;
-  background: color-mix(in srgb, var(--chirpui-accent) 8%, transparent);
-  color: var(--color-text-muted);
-}
-
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1.is-active > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link .chirp-theme-docs-nav__type-icon,
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link:hover .chirp-theme-docs-nav__type-icon,
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link:focus-visible .chirp-theme-docs-nav__type-icon,
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link--active .chirp-theme-docs-nav__type-icon {
-  color: var(--chirpui-accent);
-}
-
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link .chirp-theme-docs-nav__type-icon svg {
-  inline-size: 0.72rem;
-  block-size: 0.72rem;
-}
-
-.chirp-theme-docs-nav__section--has-toggle.chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__summary-link .chirp-theme-docs-nav__summary-copy {
-  gap: 0.35rem;
 }

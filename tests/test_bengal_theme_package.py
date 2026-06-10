@@ -853,18 +853,20 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "chirp-theme-doc-catalog-rail__count" not in docs_nav
     assert "chirp-theme-docs-nav__link--{{ item_kind }}" in docs_nav
     assert "chirp-theme-docs-nav__branch-link" not in docs_nav
-    # Disclosure is an always-visible header row with a <button> toggle (no
-    # native <details>, whose closed state hid the section label — #162
-    # regression). The server seeds aria-expanded from is_branch_active so the
-    # active trail starts open even before docs-nav.js runs.
-    assert "chirp-theme-docs-nav__section-header" in docs_nav
-    assert "aria-expanded=\"{{ 'true' if is_branch_active else 'false' }}\"" in docs_nav
-    assert 'aria-controls="{{ section_id }}"' in docs_nav
-    # The disclosure control is a real <button>, not a native <details>/<summary>
-    # element (whose closed state hid the section label — the #162 regression).
-    assert 'class="chirp-theme-docs-nav__toggle"' in docs_nav
-    assert "<details " not in docs_nav
-    assert "<summary " not in docs_nav
+    # Disclosure is a native <details>/<summary>: the section label lives INSIDE
+    # the <summary>, so a collapsed section still paints its label (a closed
+    # <details> hides only NON-summary content). There is NO explicit caret
+    # control — the owner prefers the clean pre-#162 nav. The server seeds the
+    # `open` attribute from is_branch_active so the active trail starts open
+    # with zero JavaScript.
+    assert "<details " in docs_nav
+    assert 'class="chirpui-sidebar__section-title chirp-theme-docs-nav__summary"' in docs_nav
+    assert "{% if is_branch_active %} open{% end %}" in docs_nav
+    # No caret/button toggle and no header-row scaffolding from the #162 era.
+    assert "chirp-theme-docs-nav__toggle" not in docs_nav
+    assert "chirp-theme-docs-nav__section-header" not in docs_nav
+    assert "chirp-theme-docs-nav__section--has-toggle" not in docs_nav
+    assert "aria-controls=" not in docs_nav
     assert "{{ item_kind_label }}" not in docs_nav
     assert "chirp-theme-release-index" in section_index
     assert 'sort(attribute="metadata.date,title", reverse=true)' in section_index

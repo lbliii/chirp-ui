@@ -58,38 +58,20 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
 {% if has_children %}
   {% if depth > 0 %}
   {#
-    Disclosure section (header row, NOT native <details>).
+    Native <details> disclosure section.
 
-    A closed <details> hides ALL non-<summary> content via
-    `::details-content { content-visibility: hidden }`. Because issue #162
-    moved the navigable section label OUT of the <summary> and into a sibling
-    <a>, a *collapsed* native <details> rendered only the bare caret with no
-    label — the section names ("Components", "Reference", …) vanished until
-    expanded. (getBoundingClientRect still reported a box, so naive DOM checks
-    looked fine.) See issue #162 regression.
-
-    Fix: an explicit, ALWAYS-VISIBLE header row. The <button> is the disclosure
-    control (caret only — no nested interactive); the section link is its
-    sibling. The children live in a separate region toggled by JS. The #162
-    a11y win is preserved: no focusable element lives inside an activatable
-    control, exactly one tab stop for the toggle and one for the link.
-
-    No-JS fallback: the children region defaults to visible (no `hidden`), so
-    content is reachable without scripting. docs-nav.js progressively collapses
-    the non-active sections and wires the button (aria-expanded + show/hide +
-    chevron). The active branch (is_branch_active) starts open either way.
+    The navigable section label lives INSIDE the <summary>, so it stays
+    painted whether the section is collapsed or open — a closed <details>
+    only hides its NON-summary content (`::details-content` is
+    content-visibility:hidden), never the summary itself. This keeps the
+    "collapsed labels visible" behaviour with zero JavaScript and NO explicit
+    caret control: the owner's preference is the clean pre-#162 nav. The
+    native disclosure marker is suppressed in CSS (list-style:none + marker
+    display:none). The server seeds `open` from is_branch_active so the active
+    trail starts expanded on a fresh load, no script required.
   #}
-  {% let section_slug = item_href if item_href else (item_title | lower) %}
-  {% let section_id = 'docs-nav-sect-' ~ (section_slug | replace('/', '-') | replace(' ', '-') | replace('.', '-') | trim('-')) %}
-  <div class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--has-toggle chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}">
-    <div class="chirp-theme-docs-nav__section-header">
-      <button type="button"
-              class="chirp-theme-docs-nav__toggle"
-              aria-expanded="{{ 'true' if is_branch_active else 'false' }}"
-              aria-controls="{{ section_id }}"
-              aria-label="Toggle {{ item_title }} section">
-        <span class="chirp-theme-docs-nav__toggle-icon" aria-hidden="true">{{ icon('caret-right', size=14) }}</span>
-      </button>
+  <details class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}"{% if is_branch_active %} open{% end %}>
+    <summary class="chirpui-sidebar__section-title chirp-theme-docs-nav__summary">
       {% if item_href %}
       <a class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}{{ ' chirp-theme-docs-nav__summary-link--active' if is_current else '' }}"
          href="{{ item_href | absolute_url }}"
@@ -108,13 +90,13 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
         </span>
       </span>
       {% end %}
-    </div>
-    <div class="chirpui-sidebar__section-links chirp-theme-docs-nav__section-links" id="{{ section_id }}">
+    </summary>
+    <div class="chirpui-sidebar__section-links chirp-theme-docs-nav__section-links">
       {% for child in item_children %}
       {{ nav_node(child, depth + 1) }}
       {% end %}
     </div>
-  </div>
+  </details>
   {% else %}
   <div class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}">
     {% if item_href %}

@@ -1,17 +1,21 @@
 """Regression proof: docs-nav section labels stay PAINTED when collapsed.
 
-Issue #162 moved the navigable section label out of the disclosure
-<summary> and into a sibling <a>. A *closed* native <details> hides every
-non-<summary> descendant via `::details-content { content-visibility:
-hidden }`, so collapsed sections rendered only the bare caret — the labels
-("Get Started", "Components", "Reference", …) vanished until expanded.
+The docs sidebar uses a native <details> per collapsible section, with the
+navigable section label INSIDE the <summary>. A closed <details> hides only
+its NON-summary content (`::details-content { content-visibility: hidden }`),
+so a label inside the summary stays painted whether the section is collapsed
+or open. This keeps the "collapsed labels visible" guard with zero JavaScript
+and — per the owner's preference — NO explicit caret control: the native
+disclosure marker is suppressed in CSS.
 
-The fix replaces <details> with an always-visible header row (caret <button>
-+ sibling label link) and a JS-toggled children region. These tests assert
-the labels are genuinely PAINTED while collapsed (Playwright is_visible plus a
-non-zero painted rect that is NOT inside a content-visibility:hidden subtree),
-that toggling shows/hides the children, that the caret is keyboard-operable,
-and that no focusable control lives inside a <summary>.
+These tests assert the labels are genuinely PAINTED while collapsed (Playwright
+is_visible plus a non-zero painted rect that is NOT inside a
+content-visibility:hidden subtree), that there is NO caret/toggle button in the
+section headers, that toggling the native <details> shows/hides the children,
+and that the active branch arrives open with aria-current. The section label
+link intentionally lives back inside the <summary> — a deliberate UX choice by
+the project owner (no caret), so the older "no <a>/<button> inside <summary>"
+assertion does not apply here.
 """
 
 from functools import partial
@@ -67,33 +71,51 @@ async def _open_docs(page, static_site_url):
     await page.set_viewport_size(DESKTOP)
     await page.goto(f"{static_site_url}{DOCS_PAGE}")
     await page.wait_for_load_state("networkidle")
-    # Let docs-nav.js run its collapse pass.
+    # Let docs-nav.js run (landmark label + active-link scroll).
     await page.wait_for_timeout(150)
 
 
 def _secondary_section(page, *, collapsed: bool):
-    """Locate a has-toggle section in the secondary tree in the wanted state."""
-    state = "false" if collapsed else "true"
+    """Locate a <details> section in the secondary tree in the wanted state."""
+    suffix = ":not([open])" if collapsed else "[open]"
     return page.locator(
-        ".chirp-theme-doc-catalog__secondary "
-        ".chirp-theme-docs-nav__section--has-toggle:has("
-        f'.chirp-theme-docs-nav__toggle[aria-expanded="{state}"]'
-        ")"
+        f".chirp-theme-doc-catalog__secondary details.chirp-theme-docs-nav__section{suffix}"
     )
 
 
 async def test_secondary_tree_has_collapsible_sections(page, static_site_url):
-    """Sanity: the page actually exercises the has-toggle disclosure."""
+    """Sanity: the page actually exercises the native <details> disclosure."""
     await _open_docs(page, static_site_url)
     await expect(page.locator(".chirp-theme-doc-catalog__secondary")).to_be_visible()
     sections = page.locator(
-        ".chirp-theme-doc-catalog__secondary .chirp-theme-docs-nav__section--has-toggle"
+        ".chirp-theme-doc-catalog__secondary details.chirp-theme-docs-nav__section"
     )
-    assert await sections.count() >= 1, "no collapsible docs-nav sections rendered"
+    assert await sections.count() >= 1, "no collapsible docs-nav <details> sections rendered"
+
+
+async def test_no_caret_toggle_in_section_headers(page, static_site_url):
+    """No explicit caret/toggle control anywhere in the docs-nav (owner's no-caret choice)."""
+    await _open_docs(page, static_site_url)
+    secondary = page.locator(".chirp-theme-doc-catalog__secondary")
+    # The #162-era button toggle must be gone entirely.
+    assert await secondary.locator(".chirp-theme-docs-nav__toggle").count() == 0, (
+        "found a docs-nav caret/toggle button — should be removed"
+    )
+    assert await secondary.locator(".chirp-theme-docs-nav__section-header").count() == 0, (
+        "found a docs-nav __section-header scaffold — should be removed"
+    )
+    # The summary's native disclosure marker is suppressed: list-style is none.
+    summary = secondary.locator("summary.chirp-theme-docs-nav__summary").first
+    if await summary.count():
+        list_style = await summary.evaluate("el => getComputedStyle(el).listStyleType")
+        assert list_style == "none", f"native disclosure marker not suppressed: {list_style!r}"
 
 
 async def test_collapsed_section_label_is_painted(page, static_site_url):
-    """A COLLAPSED section's label is visible and genuinely painted."""
+    """A COLLAPSED <details> section's label is visible and genuinely painted.
+
+    The label lives inside the <summary>, so it survives the closed state.
+    """
     await _open_docs(page, static_site_url)
 
     collapsed = _secondary_section(page, collapsed=True)
@@ -101,10 +123,9 @@ async def test_collapsed_section_label_is_painted(page, static_site_url):
         pytest.skip("every section is on the active trail; none collapsed")
 
     section = collapsed.first
-    toggle = section.locator(".chirp-theme-docs-nav__toggle")
-    label = section.locator(".chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__label")
+    label = section.locator("> summary .chirp-theme-docs-nav__label")
 
-    await expect(toggle).to_have_attribute("aria-expanded", "false")
+    await expect(section).not_to_have_attribute("open", "")
     await expect(label).to_be_visible()
     assert (await label.inner_text()).strip(), "collapsed section label is empty"
 
@@ -130,104 +151,79 @@ async def test_collapsed_section_label_is_painted(page, static_site_url):
     assert paint["height"] > 0, paint
     assert not paint["hiddenAncestor"], paint
 
-    # The children region of a collapsed section must NOT be visible.
-    panel_id = await toggle.get_attribute("aria-controls")
-    assert panel_id, "toggle is missing aria-controls"
-    panel = page.locator(f"#{panel_id}")
+    # The children region of a collapsed <details> must NOT be visible.
+    panel = section.locator("> .chirp-theme-docs-nav__section-links")
     await expect(panel).to_be_hidden()
 
 
-async def test_no_interactive_control_inside_summary(page, static_site_url):
-    """#162 a11y win preserved: no focusable element nested in a <summary>."""
+async def test_label_link_lives_inside_summary(page, static_site_url):
+    """The section label link is intentionally INSIDE the <summary>.
+
+    This is a deliberate UX choice by the project owner (no caret control): a
+    closed <details> only hides its NON-summary content, so keeping the label
+    link in the summary is what keeps collapsed labels visible without a caret.
+    """
     await _open_docs(page, static_site_url)
-    nested = await page.locator(
-        ".chirp-theme-doc-catalog__secondary summary :is(a, button)"
+    inside = await page.locator(
+        ".chirp-theme-doc-catalog__secondary "
+        "summary.chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link"
     ).count()
-    assert nested == 0, "found a focusable control nested inside a <summary>"
-    # The disclosure control itself is a real <button>, never inside <summary>.
-    assert (
-        await page.locator(
-            ".chirp-theme-doc-catalog__secondary button.chirp-theme-docs-nav__toggle"
-        ).count()
-        >= 1
-    )
+    assert inside >= 1, "expected the section label link inside <summary>"
 
 
 async def test_toggle_shows_and_hides_children(page, static_site_url):
-    """Clicking the caret toggles aria-expanded AND children visibility."""
+    """Toggling the native <details> shows/hides its children.
+
+    The label link fills the <summary>, so a click on the label navigates
+    rather than toggles — by design (the summary IS the section link). We
+    exercise the native disclosure mechanism directly via the `open` property,
+    which is exactly what the browser flips and what the CSS keys off.
+    """
     await _open_docs(page, static_site_url)
 
     collapsed = _secondary_section(page, collapsed=True)
     if await collapsed.count() == 0:
         pytest.skip("every section is on the active trail; none collapsed")
 
-    # Pin a STABLE selector via aria-controls so re-resolution does not jump to
-    # another section once this one's aria-expanded flips to "true".
-    panel_id = await collapsed.first.locator(".chirp-theme-docs-nav__toggle").get_attribute(
-        "aria-controls"
-    )
-    toggle = page.locator(f'.chirp-theme-docs-nav__toggle[aria-controls="{panel_id}"]')
-    panel = page.locator(f"#{panel_id}")
+    # Pin a STABLE element handle: the `:not([open])` locator would stop
+    # matching this section the moment we open it and jump to another one.
+    section = await collapsed.first.element_handle()
+    assert section is not None
+    panel = await section.query_selector(":scope > .chirp-theme-docs-nav__section-links")
+    assert panel is not None
 
-    await expect(panel).to_be_hidden()
-    await toggle.click()
-    await expect(toggle).to_have_attribute("aria-expanded", "true")
-    await expect(panel).to_be_visible()
+    # Collapsed: children hidden via the native ::details-content content-visibility.
+    assert not await panel.is_visible()
 
-    await toggle.click()
-    await expect(toggle).to_have_attribute("aria-expanded", "false")
-    await expect(panel).to_be_hidden()
+    # Open the native <details>: children become visible.
+    await section.evaluate("el => { el.open = true; }")
+    assert await section.evaluate("el => el.open") is True
+    assert await panel.is_visible()
 
-
-async def test_toggle_is_keyboard_operable(page, static_site_url):
-    """The caret is focusable and Enter/Space toggle aria-expanded."""
-    await _open_docs(page, static_site_url)
-
-    collapsed = _secondary_section(page, collapsed=True)
-    if await collapsed.count() == 0:
-        pytest.skip("every section is on the active trail; none collapsed")
-
-    # Pin a stable selector via aria-controls (see test_toggle_shows_and_hides).
-    panel_id = await collapsed.first.locator(".chirp-theme-docs-nav__toggle").get_attribute(
-        "aria-controls"
-    )
-    toggle = page.locator(f'.chirp-theme-docs-nav__toggle[aria-controls="{panel_id}"]')
-    await toggle.focus()
-    assert await toggle.evaluate("el => el === document.activeElement")
-
-    await expect(toggle).to_have_attribute("aria-expanded", "false")
-    await page.keyboard.press("Enter")
-    await expect(toggle).to_have_attribute("aria-expanded", "true")
-    await page.keyboard.press("Space")
-    await expect(toggle).to_have_attribute("aria-expanded", "false")
+    # Close it again: children hide.
+    await section.evaluate("el => { el.open = false; }")
+    assert await section.evaluate("el => el.open") is False
+    assert not await panel.is_visible()
 
 
-async def test_active_branch_is_expanded_with_aria_current(page, static_site_url):
-    """The active section auto-expands and the current page is aria-current."""
+async def test_active_branch_is_open_with_aria_current(page, static_site_url):
+    """The active section arrives open (server-seeded) and the page is aria-current."""
     await _open_docs(page, static_site_url)
 
     current = page.locator('.chirp-theme-doc-catalog__secondary [aria-current="page"]')
     assert await current.count() >= 1, "no aria-current marker in the docs tree"
 
-    # Any has-toggle section ancestor of the current page must be expanded.
-    expanded = await current.first.evaluate(
+    # Every <details> section ancestor of the current page must be open.
+    all_open = await current.first.evaluate(
         """el => {
-            let node = el.closest('.chirp-theme-docs-nav__section--has-toggle');
+            let node = el.closest('details.chirp-theme-docs-nav__section');
             while (node) {
-                const toggle = node.querySelector(
-                    ':scope > .chirp-theme-docs-nav__section-header '
-                    + '> .chirp-theme-docs-nav__toggle'
-                );
-                if (toggle && toggle.getAttribute('aria-expanded') !== 'true') {
-                    return false;
-                }
+                if (!node.open) return false;
                 node = node.parentElement
-                    ? node.parentElement.closest(
-                        '.chirp-theme-docs-nav__section--has-toggle'
-                      )
+                    ? node.parentElement.closest('details.chirp-theme-docs-nav__section')
                     : null;
             }
             return true;
         }"""
     )
-    assert expanded, "an active-trail section was left collapsed"
+    assert all_open, "an active-trail <details> section was left collapsed"
