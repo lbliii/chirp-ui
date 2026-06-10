@@ -164,7 +164,7 @@ class TestStrictEscalatesEveryValidationSite:
         from chirp_ui.filters import icon
 
         with pytest.raises(ValueError, match="icon"):
-            icon("arrow-left")
+            icon("definitely-not-a-real-icon")
 
     def test_contrast_text_unparseable_raises(self) -> None:
         from chirp_ui.filters import contrast_text
