@@ -4858,6 +4858,22 @@ class TestNavbar:
         assert "chirpui-logo" in html
         assert 'src="/static/logo.svg"' in html
 
+    def test_navbar_aria_label_labels_landmark(self, env: Environment) -> None:
+        """aria_label gives the <nav> a static accessible name (#164)."""
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar %}'
+            '{% call navbar(brand="App", aria_label="Primary") %}X{% end %}'
+        ).render()
+        assert 'aria-label="Primary"' in html
+
+    def test_navbar_omits_aria_label_by_default(self, env: Environment) -> None:
+        """Back-compat: no aria_label means no aria-label attribute on <nav>."""
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar %}{% call navbar(brand="App") %}X{% end %}'
+        ).render()
+        nav_open = html[html.index("<nav") : html.index(">", html.index("<nav")) + 1]
+        assert "aria-label" not in nav_open
+
 
 class TestShellFrame:
     def test_shell_outlet_renders_boost_contract(self, env: Environment) -> None:
@@ -5406,6 +5422,23 @@ class TestSidebar:
         assert "chirpui-sidebar__link--active" in html
         assert "Dashboard" in html
         assert 'hx-select="#page-content"' in html
+
+    def test_sidebar_aria_label_labels_landmark(self, env: Environment) -> None:
+        """aria_label gives the <nav> a static accessible name so it does not
+        rely on docs-nav.js runtime injection (#164)."""
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import sidebar %}'
+            '{% call sidebar(aria_label="Documentation sections") %}X{% end %}'
+        ).render()
+        assert 'aria-label="Documentation sections"' in html
+
+    def test_sidebar_omits_aria_label_by_default(self, env: Environment) -> None:
+        """Back-compat: no aria_label means no aria-label attribute on <nav>."""
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import sidebar %}{% call sidebar() %}X{% end %}'
+        ).render()
+        nav_open = html[html.index("<nav") : html.index(">", html.index("<nav")) + 1]
+        assert "aria-label" not in nav_open
 
     def test_sidebar_current_path_marks_matching_link_active(self, env: Environment) -> None:
         html = env.from_string(
@@ -10043,3 +10076,63 @@ class TestStructuralEmpty:
         assert "chirpui-empty-state__action" in html
         assert "Retry" in html
         assert "No results" in html
+
+
+class TestNavLandmarkNames:
+    """Every <nav> rendered for the docs / showcase / app-shell page families
+    must have a UNIQUE, non-empty accessible name so that screen-reader
+    landmark menus do not list 'navigation, navigation, navigation' and
+    axe-core's landmark-unique rule passes (#164/#129).
+    """
+
+    @staticmethod
+    def _nav_labels(html: str) -> list[str]:
+        """Collect the aria-label of every <nav> opening tag in ``html``."""
+        labels: list[str] = []
+        for nav_open in re.findall(r"<nav\b[^>]*>", html):
+            match = re.search(r'aria-label="([^"]*)"', nav_open)
+            # Record every <nav>, using None for an absent/empty name so the
+            # uniqueness + non-empty assertions catch the unlabelled case.
+            labels.append(match.group(1) if match else "")
+        return labels
+
+    def test_docs_page_family_navs_have_unique_names(self, env: Environment) -> None:
+        """The docs page renders two navigation landmarks side by side: the
+        filter_rail catalog and the sidebar sections tree. Mirror that
+        composition and assert each <nav> has a distinct non-empty name.
+        """
+        html = env.from_string(
+            '{% from "chirpui/workspace_primitives.html" import filter_rail %}'
+            '{% from "chirpui/sidebar.html" import sidebar, sidebar_link %}'
+            "{% call filter_rail(label='Documentation catalog') %}"
+            '<a href="/">Home</a>'
+            "{% end %}"
+            "{% call sidebar(aria_label='Documentation sections') %}"
+            '{{ sidebar_link("/start", "Getting started") }}'
+            "{% end %}"
+        ).render()
+        labels = self._nav_labels(html)
+        assert len(labels) == 2
+        assert all(labels), f"a docs <nav> has no accessible name: {labels!r}"
+        assert len(set(labels)) == len(labels), f"duplicate nav names: {labels!r}"
+        assert "Documentation catalog" in labels
+        assert "Documentation sections" in labels
+
+    def test_app_shell_family_navs_have_unique_names(self, env: Environment) -> None:
+        """The primary navbar and a labelled sidebar must not collide."""
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar, navbar_link %}'
+            '{% from "chirpui/sidebar.html" import sidebar, sidebar_link %}'
+            "{% call navbar(brand='App', aria_label='Primary') %}"
+            '{{ navbar_link("/docs", "Docs") }}'
+            "{% end %}"
+            "{% call sidebar(aria_label='Showcase sections') %}"
+            '{{ sidebar_link("/x", "X") }}'
+            "{% end %}"
+        ).render()
+        labels = self._nav_labels(html)
+        assert len(labels) == 2
+        assert all(labels), f"an app-shell <nav> has no accessible name: {labels!r}"
+        assert len(set(labels)) == len(labels), f"duplicate nav names: {labels!r}"
+        assert "Primary" in labels
+        assert "Showcase sections" in labels

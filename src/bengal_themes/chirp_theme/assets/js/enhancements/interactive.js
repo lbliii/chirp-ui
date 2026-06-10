@@ -75,6 +75,24 @@
     }
   });
 
+  /**
+   * Resolve a reduced-motion check. Prefers the shared BengalUtils helper
+   * (the single source of truth in utils.js) and falls back to a local
+   * matchMedia read so interactive.js stays correct even when loaded
+   * standalone. Part of the #164 nav-landmarks/reduced-motion work — CSS
+   * `scroll-behavior` does NOT override an explicit `behavior:'smooth'`
+   * option, so the choice must be made in JS at each scroll call site.
+   */
+  function prefersReducedMotion() {
+    if (typeof window.BengalUtils?.prefersReducedMotion === 'function') {
+      return window.BengalUtils.prefersReducedMotion();
+    }
+    return (
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+  }
+
   // Store references for cleanup to prevent memory leaks
   const cleanupHandlers = {
     scroll: [],
@@ -147,7 +165,9 @@
       button.addEventListener('click', () => {
         window.scrollTo({
           top: 0,
-          behavior: 'smooth'
+          // Honor prefers-reduced-motion: instant jump for users who asked
+          // to reduce motion, smooth scroll for everyone else (#164).
+          behavior: prefersReducedMotion() ? 'auto' : 'smooth'
         });
       });
     });
@@ -493,10 +513,9 @@
     // This prevents memory leaks if init is called multiple times
     cleanup();
 
-    // Check if user prefers reduced motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (prefersReducedMotion) {
+    // Check if user prefers reduced motion (shared helper — no duplicate
+    // matchMedia read; see prefersReducedMotion() above, #164).
+    if (prefersReducedMotion()) {
       // Disable animations for accessibility
       document.documentElement.classList.add('reduce-motion');
     }

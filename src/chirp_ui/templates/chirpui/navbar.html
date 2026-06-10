@@ -11,6 +11,10 @@
     Named slots (Kida 0.3+, use_slots=true): default (links), end (right-aligned),
     brand (brand area, when brand_slot=true).
 
+    aria_label: static accessible name for the <nav> landmark. Pass a unique
+    name (e.g. "Primary") when the page has multiple navigation landmarks so
+    each is distinct (axe-core landmark-unique). Default "" omits the attribute.
+
     Usage:
         from "chirpui/navbar.html" import navbar, navbar_link, navbar_end, navbar_dropdown
 
@@ -28,10 +32,10 @@
     Legacy: wrap right-aligned content in navbar_end(). Add cls="chirpui-navbar--sticky" for sticky nav.
 -#}
 
-{% def navbar(brand=none, brand_url="/", cls="", use_slots=false, brand_slot=false, current_path="") %}
+{% def navbar(brand=none, brand_url="/", cls="", use_slots=false, brand_slot=false, current_path="", aria_label="") %}
 {# @provides _nav_current_path — consumed by: navbar_link, navbar_dropdown #}
 {% provide _nav_current_path = current_path %}
-<nav class="chirpui-navbar{{ " " ~ cls if cls else "" }}">
+<nav class="chirpui-navbar{{ " " ~ cls if cls else "" }}"{% if aria_label %} aria-label="{{ aria_label }}"{% end %}>
     {% if brand or brand_slot %}
     <a class="chirpui-navbar__brand" href="{{ brand_url }}"{{ route_link_attrs(brand_url) | html_attrs }}>
         {% if brand_slot %}
