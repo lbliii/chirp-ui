@@ -415,7 +415,7 @@ symbols imported inside another block.
     {% let _header_sticky = theme.header_sticky ?? true %}
     {% let _header_nav_position = theme.header_nav_position ?? 'left' %}
     <header role="banner" class="chirp-theme-shell__header header-appshell" data-sticky="{{ _header_sticky | lower }}">
-        {% call navbar(brand_url='/' | absolute_url, cls='chirp-theme-shell__nav chirpui-navbar--sticky', use_slots=true, brand_slot=true, current_path=_page_url) %}
+        {% call navbar(brand_url='/' | absolute_url, cls='chirp-theme-shell__nav chirpui-navbar--sticky', use_slots=true, brand_slot=true, current_path=_page_url, aria_label='Primary') %}
             {% slot brand %}
                 <span class="logo chirp-theme-shell__brand">
                     {% match site.logo, site.logo_text %}

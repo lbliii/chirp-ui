@@ -7283,6 +7283,7 @@ Navbar component
 | `use_slots` | no | (has default) |
 | `brand_slot` | no | (has default) |
 | `current_path` | no | (has default) |
+| `aria_label` | no | (has default) |
 
 ### `navbar-dropdown`
 
@@ -8358,6 +8359,7 @@ Sidebar component
 |-------|----------|---------|
 | `cls` | no | (has default) |
 | `current_path` | no | (has default) |
+| `aria_label` | no | (has default) |
 
 ### `sidebar-toggle`
 

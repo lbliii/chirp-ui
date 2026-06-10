@@ -45,10 +45,11 @@ def test_showcase_sidebar_opts_into_responsive_dropdown_groups() -> None:
         encoding="utf-8"
     )
 
-    assert (
-        'sidebar(cls="chirpui-sidebar--responsive-dropdowns", current_path=current_path | default(""))'
-        in base
-    )
+    # The showcase opts into responsive-dropdown groups and forwards the current
+    # path. Assert the load-bearing args independently so adding further kwargs
+    # (e.g. a static aria_label for landmark naming) does not break the contract.
+    assert 'sidebar(cls="chirpui-sidebar--responsive-dropdowns"' in base
+    assert 'current_path=current_path | default("")' in base
     assert base.count("collapsible=true") >= 6
 
 
