@@ -1872,24 +1872,12 @@
     color: var(--chirpui-accent);
   }
 
-  .chirp-theme-docs-nav__summary.chirpui-sidebar__section-title {
+  .chirp-theme-docs-nav__section-header {
     display: flex;
     align-items: center;
     gap: 0.36rem;
     min-width: 0;
     padding: 0;
-    list-style: none;
-  }
-
-  .chirp-theme-docs-nav__summary.chirpui-sidebar__section-title::marker,
-  .chirp-theme-docs-nav__summary.chirpui-sidebar__section-title::-webkit-details-marker {
-    display: none;
-    content: "";
-  }
-
-  .chirp-theme-docs-nav__summary.chirpui-sidebar__section-title::after {
-    display: none;
-    content: none;
   }
 
   .chirp-theme-docs-nav__summary-link {
@@ -1928,11 +1916,11 @@
     flex: 1 1 auto;
   }
 
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary {
+  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header {
     margin-bottom: 0.1rem;
   }
 
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link {
+  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.36rem;
     min-block-size: 1.65rem;
@@ -1947,34 +1935,15 @@
     text-transform: uppercase;
   }
 
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link:hover,
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link:focus-visible,
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link--active {
+  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link:hover,
+  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link:focus-visible,
+  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link--active {
     border-color: transparent;
     background: color-mix(in srgb, var(--chirpui-accent) 7%, transparent);
     color: var(--chirpui-accent);
   }
 
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__type-icon {
-    inline-size: 1.25rem;
-    block-size: 1.25rem;
-    background: color-mix(in srgb, var(--chirpui-accent) 8%, transparent);
-    color: var(--color-text-muted);
-  }
-
-  .chirp-theme-docs-nav__section--depth-1.is-active > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__type-icon,
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link:hover .chirp-theme-docs-nav__type-icon,
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link:focus-visible .chirp-theme-docs-nav__type-icon,
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-link--active .chirp-theme-docs-nav__type-icon {
-    color: var(--chirpui-accent);
-  }
-
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__type-icon svg {
-    inline-size: 0.72rem;
-    block-size: 0.72rem;
-  }
-
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__summary .chirp-theme-docs-nav__summary-copy {
+  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-copy {
     gap: 0.35rem;
   }
 

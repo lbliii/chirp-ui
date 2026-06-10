@@ -3,25 +3,38 @@
  *
  * Progressive enhancement for the docs sidebar (`partials/docs-nav.html`).
  *
- * The sidebar is fully functional with ZERO JavaScript. Each collapsible
- * section is a native <details> whose <summary> CONTAINS the navigable
- * section label, so the label stays painted whether the section is collapsed
- * or open — a closed <details> hides only its NON-summary content. The server
- * seeds the `open` attribute from the active trail, so a deep-linked page
- * arrives with its branch already expanded. The native disclosure marker is
- * suppressed in CSS (no caret) per the owner's preference. `aria-current`
- * marks the active link. No toggle wiring is needed.
+ * Each collapsible section renders an ALWAYS-VISIBLE header row
+ * (`__section-header`) holding two SIBLINGS — a folder <button> (`__toggle`)
+ * and the navigable section <a> (`__summary-link`). Neither nests inside the
+ * other, so axe-core's `nested-interactive` rule passes (a link inside a
+ * <summary>'s implicit button role used to trip it). The section label stays
+ * painted whether the section is collapsed or open because it lives in the
+ * always-visible header row, not in a control that gets hidden.
  *
- * This module layers on the two niceties HTML cannot express on its own:
+ * The sidebar works with ZERO JavaScript: the children region renders visible
+ * by default (no `hidden` in the markup), so all content is reachable without
+ * scripting. `aria-current="page"` marks the active link. This module layers
+ * on the disclosure behaviour HTML cannot express on its own:
  *
  *   1. Unique landmark label — the chirp-ui `sidebar()` macro emits a generic
  *      <nav class="chirpui-sidebar"> with no accessible name, which collides
  *      with the surrounding "Documentation catalog" landmarks. We give it a
  *      distinct label so AT users can tell the two navs apart (issue #164,
  *      docs-nav slice).
- *   2. Active-link scroll — bring the current page's link into view inside the
- *      scrollable sidebar on load, so a deep-linked page reveals its place
- *      without manual scrolling.
+ *   2. Disclosure toggle — wire each `__toggle` <button> to show/hide its
+ *      `aria-controls` children region, keeping aria-expanded in sync (which
+ *      drives the closed/open folder swap in CSS). On load, mirror the
+ *      server-rendered aria-expanded into actual visibility: the server marks
+ *      the active branch with `is-active` and pre-sets aria-expanded="true".
+ *   3. Deep-link disclosure — ensure every section ancestor of the active
+ *      link is expanded so a bookmarked/deep-linked page reveals its place.
+ *
+ * Why inline `style.display` for hiding: the children region
+ * (`.chirp-theme-docs-nav__section-links`) is given `display: grid` by a rule
+ * in the late `@layer chirp-theme` cascade layer, which beats any rule this
+ * theme's component layer (or a bare `[hidden]` UA rule) could add. An inline
+ * style wins over every author layer, so we set it directly and keep the
+ * `hidden` attribute in sync for semantics.
  */
 
 (function () {
@@ -29,6 +42,8 @@
 
   var ROOT_SELECTOR = '[data-chirp-theme-doc-nav="catalog"]';
   var SIDEBAR_LABEL = 'Documentation sections';
+  var SECTION_SELECTOR = '.chirp-theme-docs-nav__section--has-toggle';
+  var TOGGLE_SELECTOR = '.chirp-theme-docs-nav__toggle';
   var ACTIVE_SELECTOR =
     '.chirp-theme-docs-nav__summary-link--active,' +
     '.chirp-theme-docs-nav [aria-current="page"],' +
@@ -47,28 +62,93 @@
   }
 
   /**
-   * Scroll the active link into view inside the scrollable sidebar so a
-   * deep-linked page reveals its place in the tree. Best-effort and silent.
-   * @param {HTMLElement|Document} root
+   * Find the children region a toggle controls (its aria-controls target,
+   * falling back to the section-links sibling within the same section).
+   * @param {HTMLElement} toggle
+   * @returns {HTMLElement|null}
    */
-  function scrollActiveIntoView(root) {
-    var active = root.querySelector(ACTIVE_SELECTOR);
-    if (!active || active.dataset.docsNavScrolled === '1') return;
-    active.dataset.docsNavScrolled = '1';
-    if (typeof active.scrollIntoView === 'function') {
-      active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  function panelFor(toggle) {
+    var id = toggle.getAttribute('aria-controls');
+    var panel = id ? document.getElementById(id) : null;
+    if (panel) return panel;
+    var section = toggle.closest(SECTION_SELECTOR);
+    return section
+      ? section.querySelector(':scope > .chirp-theme-docs-nav__section-links')
+      : null;
+  }
+
+  /**
+   * Expand or collapse a section, keeping aria-expanded (which drives the
+   * folder glyph swap), the `hidden` attribute, and the inline display in sync.
+   * @param {HTMLElement} toggle
+   * @param {boolean} expanded
+   */
+  function setExpanded(toggle, expanded) {
+    var panel = panelFor(toggle);
+    toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    if (!panel) return;
+    if (expanded) {
+      panel.hidden = false;
+      panel.style.removeProperty('display');
+    } else {
+      panel.hidden = true;
+      // Inline style beats the `@layer chirp-theme` `display: grid` rule.
+      panel.style.display = 'none';
     }
   }
 
   /**
-   * Apply all enhancements to a docs-nav root. Idempotent: the landmark label
-   * is only set when absent and the scroll runs once per active link.
+   * Wire each disclosure toggle and set its initial collapsed/expanded state
+   * from the server-rendered aria-expanded (true on the active trail). The
+   * folder button toggles the section open/closed WITH NO navigation.
+   * @param {HTMLElement|Document} root
+   */
+  function initToggles(root) {
+    var toggles = root.querySelectorAll(TOGGLE_SELECTOR);
+    toggles.forEach(function (toggle) {
+      // Mirror the server-rendered expanded state into actual visibility.
+      var expanded = toggle.getAttribute('aria-expanded') === 'true';
+      setExpanded(toggle, expanded);
+
+      if (toggle.dataset.docsNavBound === '1') return;
+      toggle.dataset.docsNavBound = '1';
+      toggle.addEventListener('click', function () {
+        var isOpen = toggle.getAttribute('aria-expanded') === 'true';
+        setExpanded(toggle, !isOpen);
+      });
+    });
+  }
+
+  /**
+   * Open every section ancestor of the current page's active link so a
+   * deep-linked page reveals its place in the tree.
+   * @param {HTMLElement|Document} root
+   */
+  function openActiveTrail(root) {
+    var active = root.querySelector(ACTIVE_SELECTOR);
+    if (!active) return;
+
+    var node = active.parentElement;
+    while (node && !(node.matches && node.matches(ROOT_SELECTOR))) {
+      if (node.matches && node.matches(SECTION_SELECTOR)) {
+        var toggle = node.querySelector(':scope > .chirp-theme-docs-nav__section-header > ' + TOGGLE_SELECTOR);
+        if (toggle && toggle.getAttribute('aria-expanded') !== 'true') {
+          setExpanded(toggle, true);
+        }
+      }
+      node = node.parentElement;
+    }
+  }
+
+  /**
+   * Apply all enhancements to a docs-nav root.
    * @param {HTMLElement|Document} root
    */
   function enhance(root) {
     var scope = root || document;
     labelSidebarLandmark(scope);
-    scrollActiveIntoView(scope);
+    initToggles(scope);
+    openActiveTrail(scope);
   }
 
   /** Find every docs-nav root in the document and enhance it. */
@@ -90,7 +170,8 @@
   }
 
   // Self-bootstrap so the enhancements run even when this module is loaded
-  // directly. enhance() is idempotent.
+  // directly. enhance() is idempotent: toggles carry a `data-docs-nav-bound`
+  // guard, and re-applying visibility state is harmless.
   function ready(fn) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', fn, { once: true });

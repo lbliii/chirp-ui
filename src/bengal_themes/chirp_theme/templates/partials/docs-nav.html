@@ -58,31 +58,36 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
 {% if has_children %}
   {% if depth > 0 %}
   {#
-    Native <details> disclosure section.
+    Disclosure section — explicit header row, NOT native <details>.
 
-    The navigable section label lives INSIDE the <summary>, so it stays
-    painted whether the section is collapsed or open — a closed <details>
-    only hides its NON-summary content (`::details-content` is
-    content-visibility:hidden), never the summary itself. This keeps the
-    "collapsed labels visible" behaviour with zero JavaScript and NO explicit
-    caret control: the owner's preference is the clean pre-#162 nav. The
-    native disclosure marker is suppressed in CSS (list-style:none + marker
-    display:none). The server seeds `open` from is_branch_active so the active
-    trail starts expanded on a fresh load, no script required.
+    The folder icon is a real <button> (`__toggle`); the navigable section
+    label is its SIBLING <a> (`__summary-link`) in the always-visible
+    `__section-header` row. NEITHER nests inside the other, so axe-core's
+    `nested-interactive` rule passes (a link inside a <summary>, which carries
+    an implicit button role, used to trip it). Clicking the folder toggles the
+    section open/closed via JS (aria-expanded + the children region's
+    visibility) with NO navigation; clicking the label navigates. The folder
+    glyph swaps closed→open off the button's aria-expanded state in CSS — no
+    caret, same look as before. The server seeds aria-expanded from
+    is_branch_active so the active trail starts expanded on a fresh load.
+
+    No-JS fallback: the children region renders visible by default (no
+    `hidden` in the markup), so content stays reachable without scripting.
   #}
-  <details class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}"{% if is_branch_active %} open{% end %}>
-    <summary class="chirpui-sidebar__section-title chirp-theme-docs-nav__summary">
-      {#
-        The folder icon IS the disclosure control. It is a plain (non-interactive)
-        <span> inside the <summary>, so clicking it toggles the native <details>,
-        while clicking the section link navigates. Both folder states ship; CSS
-        keyed on `details[open]` shows the closed folder when collapsed and the
-        open folder when expanded — pure CSS, no caret, no JavaScript.
-      #}
-      <span class="chirp-theme-docs-nav__disclosure" aria-hidden="true">
-        <span class="chirp-theme-docs-nav__folder chirp-theme-docs-nav__folder--closed">{{ icon('folder', size=14) }}</span>
-        <span class="chirp-theme-docs-nav__folder chirp-theme-docs-nav__folder--open">{{ icon('folder-open', size=14) }}</span>
-      </span>
+  {% let section_slug = (item_href if item_href else (item_title | lower)) | replace('/', '-') | replace(' ', '-') | replace('.', '-') | trim('-') %}
+  {% let section_id = 'docs-nav-sect-' ~ section_slug %}
+  <div class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--has-toggle chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}">
+    <div class="chirp-theme-docs-nav__section-header">
+      <button type="button"
+              class="chirp-theme-docs-nav__toggle"
+              aria-expanded="{{ 'true' if is_branch_active else 'false' }}"
+              aria-controls="{{ section_id }}"
+              aria-label="Toggle {{ item_title }} section">
+        <span class="chirp-theme-docs-nav__disclosure" aria-hidden="true">
+          <span class="chirp-theme-docs-nav__folder chirp-theme-docs-nav__folder--closed">{{ icon('folder', size=14) }}</span>
+          <span class="chirp-theme-docs-nav__folder chirp-theme-docs-nav__folder--open">{{ icon('folder-open', size=14) }}</span>
+        </span>
+      </button>
       {% if item_href %}
       <a class="chirp-theme-docs-nav__summary-link chirp-theme-docs-nav__link--{{ item_kind }}{{ ' chirp-theme-docs-nav__summary-link--active' if is_current else '' }}"
          href="{{ item_href | absolute_url }}"
@@ -99,13 +104,13 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
         </span>
       </span>
       {% end %}
-    </summary>
-    <div class="chirpui-sidebar__section-links chirp-theme-docs-nav__section-links">
+    </div>
+    <div class="chirpui-sidebar__section-links chirp-theme-docs-nav__section-links" id="{{ section_id }}">
       {% for child in item_children %}
       {{ nav_node(child, depth + 1) }}
       {% end %}
     </div>
-  </details>
+  </div>
   {% else %}
   <div class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}">
     {% if item_href %}

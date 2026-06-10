@@ -853,20 +853,28 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "chirp-theme-doc-catalog-rail__count" not in docs_nav
     assert "chirp-theme-docs-nav__link--{{ item_kind }}" in docs_nav
     assert "chirp-theme-docs-nav__branch-link" not in docs_nav
-    # Disclosure is a native <details>/<summary>: the section label lives INSIDE
-    # the <summary>, so a collapsed section still paints its label (a closed
-    # <details> hides only NON-summary content). There is NO explicit caret
-    # control — the owner prefers the clean pre-#162 nav. The server seeds the
-    # `open` attribute from is_branch_active so the active trail starts open
-    # with zero JavaScript.
-    assert "<details " in docs_nav
-    assert 'class="chirpui-sidebar__section-title chirp-theme-docs-nav__summary"' in docs_nav
-    assert "{% if is_branch_active %} open{% end %}" in docs_nav
-    # No caret/button toggle and no header-row scaffolding from the #162 era.
-    assert "chirp-theme-docs-nav__toggle" not in docs_nav
-    assert "chirp-theme-docs-nav__section-header" not in docs_nav
-    assert "chirp-theme-docs-nav__section--has-toggle" not in docs_nav
-    assert "aria-controls=" not in docs_nav
+    # Disclosure section is an ALWAYS-VISIBLE header row, NOT a native
+    # <details>/<summary>. The folder is a real <button> (`__toggle`) and the
+    # navigable section label is its SIBLING <a> (`__summary-link`) — neither
+    # nests in the other, so axe-core's `nested-interactive` stays clean. The
+    # server seeds aria-expanded from is_branch_active so the active trail
+    # starts expanded; JS mirrors that into the children region's visibility.
+    # The folder glyph swaps closed→open off the button's aria-expanded state.
+    assert "<details " not in docs_nav
+    assert "chirp-theme-docs-nav__section-header" in docs_nav
+    assert "chirp-theme-docs-nav__section--has-toggle" in docs_nav
+    assert 'class="chirp-theme-docs-nav__toggle"' in docs_nav
+    assert 'type="button"' in docs_nav
+    assert "aria-expanded=\"{{ 'true' if is_branch_active else 'false' }}\"" in docs_nav
+    assert "aria-controls=" in docs_nav
+    assert "chirp-theme-docs-nav__folder--closed" in docs_nav
+    assert "chirp-theme-docs-nav__folder--open" in docs_nav
+    assert "icon('folder-open'" in docs_nav
+    # No native disclosure markup or caret/chevron control.
+    assert 'chirp-theme-docs-nav__summary"' not in docs_nav
+    assert "icon('caret-right'" not in docs_nav
+    assert "chirp-theme-docs-nav__toggle-icon" not in docs_nav
+    assert "{% if is_branch_active %} open{% end %}" not in docs_nav
     assert "{{ item_kind_label }}" not in docs_nav
     assert "chirp-theme-release-index" in section_index
     assert 'sort(attribute="metadata.date,title", reverse=true)' in section_index
@@ -925,7 +933,8 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert ".chirp-theme-docs-nav__link--component .chirp-theme-docs-nav__type-icon" in css
     assert ".chirp-theme-docs-nav__summary-link" in css
     assert ".chirp-theme-docs-nav__summary-copy" in css
-    assert ".chirp-theme-docs-nav__section--depth-1.is-active" in css
+    assert ".chirp-theme-docs-nav__section-header" in css
+    assert ".chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header" in css
     assert ".chirp-theme-docs-nav__root-leaf" in css
     assert '.chirp-theme-docs-nav__root-leaf[aria-current="page"]' in css
     assert ".chirp-theme-page-actions__trigger" in css
