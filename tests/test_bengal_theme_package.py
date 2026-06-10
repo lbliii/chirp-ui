@@ -895,7 +895,11 @@ def test_built_home_loads_style_css_non_render_blocking() -> None:
         "built home does not load style.css via preload+onload swap (#157)"
     )
     assert "<noscript>" in html, "built home lacks a <noscript> fallback (#157)"
-    assert "style.css" in html, "built home does not reference style.css (#157)"
+    # Bengal fingerprints assets in built output (style.<hash>.css), so match the
+    # stylesheet by stem+extension rather than the literal unhashed filename.
+    assert re.search(r"style\.(?:[0-9a-f]+\.)?css", html), (
+        "built home does not reference style.css (#157)"
+    )
 
 
 def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
