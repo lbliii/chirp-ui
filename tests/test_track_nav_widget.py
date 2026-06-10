@@ -4,7 +4,7 @@ Covers #144: a doc whose slug appears in two tracks must render two
 ``.chirp-theme-track-nav`` cards (one per membership) with working prev/next
 hrefs; a doc in no track must render zero cards (and no empty card wrapper).
 
-The widget reads ``page.relative_path``, ``site.data.tracks`` and the
+The widget reads ``page.href``, ``site.data.tracks`` and the
 ``get_page(slug)`` global, so the test loads the real theme template through
 Bengal's Kida engine and injects a stub page registry + a synthetic
 ``site.data.tracks`` map. Requires Bengal (``pytest.importorskip``).
@@ -82,7 +82,13 @@ def track_nav_template():
 
 
 def _render(template, slug: str) -> str:
-    page = SimpleNamespace(relative_path=f"{slug}.md")
+    # The widget matches the current page against each track item by resolving
+    # the item via get_page() and comparing hrefs (the Page object exposes no
+    # content-relative-path attribute under strict undefined). So the current
+    # page is identified by its href: use the stub href for a known slug, else a
+    # synthetic href that resolves to no track item (the non-member case).
+    href = STUB_PAGES[slug].href if slug in STUB_PAGES else f"/{slug}/"
+    page = SimpleNamespace(href=href)
     site = SimpleNamespace(data={"tracks": STUB_TRACKS})
     return template.render(page=page, site=site)
 
