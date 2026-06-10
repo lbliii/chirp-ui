@@ -790,6 +790,43 @@
 }
 
 /* ============================================
+   NOSCRIPT FALLBACK (server-side page list)
+   ============================================ */
+
+/* Hidden by default in JS-capable browsers; <noscript> reveals it. The block
+   lists every indexed page (grouped by section) so JS-disabled users still get
+   real links instead of a dead input over an empty state. See #171. */
+.search-page__noscript {
+  padding: var(--space-6, 1.5rem);
+}
+
+.search-page__noscript-group {
+  margin-bottom: var(--space-6, 1.5rem);
+}
+
+.search-page__noscript-heading {
+  margin: 0 0 var(--space-2, 0.5rem);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: var(--weight-semibold, 600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-tertiary);
+}
+
+.search-page__noscript-list {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+}
+
+.search-page__noscript-list li {
+  margin: 0.25rem 0;
+}
+
+.search-page__noscript-list a {
+  color: var(--color-primary);
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 

@@ -18,7 +18,7 @@ WCAG_AA_NORMAL = 4.5
 # is migrating off this bridge onto the public --chirpui-* namespace (issue
 # #173). This count may only SHRINK: shipping a NEW legacy color token fails the
 # steward below. Lower it whenever a migration batch lands.
-LEGACY_COLOR_TOKEN_CEILING = 183
+LEGACY_COLOR_TOKEN_CEILING = 178
 
 
 class _TokenJobParser(HTMLParser):

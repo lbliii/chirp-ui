@@ -22,30 +22,33 @@ USAGE:
 {% from "chirpui/layout.html" import cluster %}
 {% from "chirpui/progress.html" import progress_bar %}
 
-{% let current_slug = page.relative_path | replace('.md', '') %}
+{% let _current_href = page?.href ?? '' %}
 {% let all_tracks = site?.data?.tracks ?? {} %}
 
 {% for track_id, track in all_tracks | items %}
 {% let track_items = track?.items ?? [] %}
-{% if current_slug in track_items %}
 
-{# Walk the item list once to find the current position + neighbours.
+{# Walk the item list once to find the current page's position + neighbours.
+   Match on resolved page identity (href), not a slug string: the Page object
+   exposes no content-relative-path attribute under strict undefined, so we
+   resolve each item via get_page() and compare its href to the current page.
    Avoids `.index()` (not available in kida) and capital `None`.
-   Accumulate into lists (append survives loop scope) instead of mutating a
-   {% let %} across the loop boundary. #}
+   Accumulate into lists (append survives loop scope). #}
 {% set _positions = [] %}
 {% set _prev = [] %}
 {% set _next = [] %}
 {% for item_slug in track_items %}
-{% if item_slug == current_slug %}
+{% let _item_page = get_page(item_slug) %}
+{% if _item_page and _current_href and (_item_page.href == _current_href) %}
 {% set _ = _positions.append(loop.index) %}
 {% if not loop.first %}{% set _ = _prev.append(track_items[loop.index0 - 1]) %}{% end %}
 {% if not loop.last %}{% set _ = _next.append(track_items[loop.index0 + 1]) %}{% end %}
 {% end %}
 {% end %}
 
+{% if _positions | length > 0 %}
 {% let total = track_items | length %}
-{% let position = _positions[0] if _positions | length > 0 else 0 %}
+{% let position = _positions[0] %}
 {% let prev_slug = _prev[0] if _prev | length > 0 else none %}
 {% let next_slug = _next[0] if _next | length > 0 else none %}
 {% let progress_value = (position / total) * 100 if total > 0 else 0 %}

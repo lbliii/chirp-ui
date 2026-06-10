@@ -98,6 +98,7 @@
     let currentResults = [];
     let recentSearches = [];
     let modalReturnFocus = null; // element to restore focus to on close
+    let modalScope = 'all'; // active scope chip: all | docs | api | releases
 
     // Preload state
     let preloadTriggered = false;
@@ -948,6 +949,20 @@
             });
         });
 
+        // Scope chips (All / Docs / API / Releases): set the active scope, then
+        // re-run the current query so the displayed results filter immediately.
+        modal.querySelectorAll('.search-modal__scope').forEach(chip => {
+            chip.addEventListener('click', () => {
+                const scope = chip.dataset.scope || 'all';
+                if (scope === modalScope) return;
+                setModalScope(scope);
+                const query = modalInput.value.trim();
+                if (query.length >= CONFIG.minQueryLength) {
+                    performModalSearch(query);
+                }
+            });
+        });
+
         // Handle search index ready
         window.addEventListener('searchIndexLoaded', () => {
             if (loading) loading.classList.add('hidden');
@@ -1054,8 +1069,8 @@
 
         if (loading) loading.classList.add('hidden');
 
-        // Perform search
-        const results = search(query);
+        // Perform search, then narrow to the active scope chip (Docs/API/Releases).
+        const results = filterByScope(search(query), modalScope);
         currentResults = results.slice(0, 20); // Modal uses smaller max
 
         // Update UI
@@ -1383,6 +1398,9 @@
         selectedIndex = -1;
         currentResults = [];
 
+        // Reset the scope chip to "All" so the next open starts unfiltered.
+        if (modalScope !== 'all') setModalScope('all');
+
         // Clear input
         modalInput.value = '';
 
@@ -1566,6 +1584,44 @@
         if (modalInput) {
             modalInput.removeAttribute('aria-activedescendant');
         }
+    }
+
+    /**
+     * Restrict a result set to the active scope chip.
+     * 'all' is a pass-through; 'api' keeps autodoc/API pages, 'releases' keeps
+     * changelog/release notes, 'docs' keeps everything that is neither. Reuses
+     * the same isApiResult()/isReleaseNote() predicates that drive grouping and
+     * demotion, so a result is classified consistently everywhere.
+     *
+     * @param {Array} results - Search results (full page data).
+     * @param {string} scope - One of 'all' | 'docs' | 'api' | 'releases'.
+     * @returns {Array} The filtered results.
+     */
+    function filterByScope(results, scope) {
+        if (!Array.isArray(results) || scope === 'all') return results;
+        if (scope === 'api') return results.filter(isApiResult);
+        if (scope === 'releases') return results.filter(isReleaseNote);
+        if (scope === 'docs') {
+            return results.filter(r => !isApiResult(r) && !isReleaseNote(r));
+        }
+        return results;
+    }
+
+    /**
+     * Set the active scope chip and reflect it in the DOM (active class +
+     * aria-pressed). Does not re-run the search — the caller decides whether a
+     * query is present.
+     *
+     * @param {string} scope - One of 'all' | 'docs' | 'api' | 'releases'.
+     */
+    function setModalScope(scope) {
+        modalScope = scope || 'all';
+        if (!modal) return;
+        modal.querySelectorAll('.search-modal__scope').forEach(chip => {
+            const isActive = (chip.dataset.scope || 'all') === modalScope;
+            chip.classList.toggle('search-modal__scope--active', isActive);
+            chip.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
     }
 
     function handleModalClick(e) {

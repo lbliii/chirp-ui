@@ -349,7 +349,15 @@ symbols imported inside another block.
          component CSS was NOT emitted; --chirpui-* tokens are undefined and layout
          will collapse. Upgrade Bengal: `uv pip install -U "bengal>=0.3.3"`. -->
     {% end %}
-    <link rel="stylesheet" href="{{ asset_url('css/style.css') }}">
+    {# Theme stylesheet — load non-render-blocking so first paint is not gated on
+       the full theme bundle. `rel=preload as=style` fetches at high priority; the
+       onload swap flips it to a real stylesheet once downloaded. The <noscript>
+       fallback keeps it a normal render-blocking <link> when JS is disabled. The
+       FOUC theme-guard script above stays synchronous so the appearance is set
+       before paint regardless of this swap. Stdlib/no-JS-build (#157). #}
+    {% let _style_href = asset_url('css/style.css') %}
+    <link rel="preload" as="style" href="{{ _style_href }}" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ _style_href }}"></noscript>
     {% if 'content.math' in (theme.features ?? []) %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin>
     {% end %}
@@ -413,7 +421,7 @@ symbols imported inside another block.
     {% let _header_sticky = theme.header_sticky ?? true %}
     {% let _header_nav_position = theme.header_nav_position ?? 'left' %}
     <header role="banner" class="chirp-theme-shell__header header-appshell" data-sticky="{{ _header_sticky | lower }}">
-        {% call navbar(brand_url='/' | absolute_url, cls='chirp-theme-shell__nav chirpui-navbar--sticky', use_slots=true, brand_slot=true, current_path=_page_url) %}
+        {% call navbar(brand_url='/' | absolute_url, cls='chirp-theme-shell__nav chirpui-navbar--sticky', use_slots=true, brand_slot=true, current_path=_page_url, aria_label='Primary') %}
             {% slot brand %}
                 <span class="logo chirp-theme-shell__brand">
                     {% match site.logo, site.logo_text %}

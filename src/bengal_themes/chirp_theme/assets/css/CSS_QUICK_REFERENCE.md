@@ -16,7 +16,7 @@
 Need to style content?
 │
 ├─ Is it markdown/user HTML?
-│  ├─ YES → Use .has-prose-content utility
+│  ├─ YES → Use .prose typography styles
 │  └─ NO  → Continue...
 │
 ├─ Is it API documentation specific?
@@ -41,8 +41,8 @@ Need to style content?
 /* Content type scoping */
 .prose.api-content p + ul { border: 1px solid var(--color-border); }
 
-/* Utility class */
-.has-prose-content ul { list-style: disc; }
+/* Direct child (won't leak into nested components) */
+.card-body > ul { list-style: disc; }
 
 /* Direct child */
 .card-body > ul { margin: 0; }
@@ -79,7 +79,6 @@ ul { list-style: none; }
 
 | Situation | Use This | Example |
 |-----------|----------|---------|
-| User content container | `.has-prose-content` | `<div class="card-body has-prose-content">` |
 | API docs specific | `.prose.api-content` | `.prose.api-content p + ul` |
 | Component styling | `.component-name` | `.dropdown-content ul` |
 | UI lists (nav, etc.) | Explicit reset | `.nav-list { list-style: none; }` |
@@ -93,7 +92,6 @@ ul { list-style: none; }
 base/
   reset.css          → Bare elements only (ul, ol, p)
   typography.css     → .prose elements only
-  prose-content.css  → .has-prose-content utility ⭐
 
 components/
   dropdown.css       → .dropdown* scoping
@@ -127,8 +125,6 @@ components/
 **Fix:**
 ```css
 .card-body > ul { list-style: square; }  /* Direct child */
-/* OR */
-.card-body.has-prose-content ul { ... }  /* Utility pattern */
 ```
 
 ---
@@ -146,29 +142,10 @@ components/
 
 - [ ] All selectors are scoped to a class
 - [ ] No bare element selectors (except in reset.css)
-- [ ] Used `.has-prose-content` for generic containers
 - [ ] Content-type specific styles use `.prose.api-content` etc.
 - [ ] Tested with nested components
 - [ ] No `!important` (unless documented why)
 - [ ] Works in both light and dark mode
-
----
-
-## Template Updates
-
-**Add utility class to content containers:**
-
-```html
-<!-- Before -->
-<div class="dropdown-content">
-  {{ content }}
-</div>
-
-<!-- After -->
-<div class="dropdown-content has-prose-content">
-  {{ content }}
-</div>
-```
 
 ---
 
