@@ -21,7 +21,7 @@
 {% let has_symbol_rail = (toc_items | length == 0) and (symbols | length > 0) %}
 {% let show_toc_rail = (toc_items | length > 0) or has_symbol_rail %}
 <div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if show_toc_rail else '' }}" data-chirp-theme-surface="api-reference">
-<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="API reference navigation">
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar">
   {% include 'partials/docs-nav.html' %}
 </aside>
 <div class="chirp-theme-docs-layout__main">

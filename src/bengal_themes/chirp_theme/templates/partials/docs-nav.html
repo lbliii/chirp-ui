@@ -165,7 +165,7 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
 <div class="chirp-theme-doc-catalog" data-chirp-theme-doc-nav="catalog" data-bengal="docs-nav">
   {% if catalog_items | length > 0 %}
   <div class="chirp-theme-doc-catalog__primary">
-    {% call filter_rail(label='Documentation sections', cls='chirp-theme-doc-catalog-rail') %}
+    {% call filter_rail(label='Documentation catalog', cls='chirp-theme-doc-catalog-rail') %}
       <div class="chirp-theme-doc-catalog-rail__group chirp-theme-doc-catalog-rail__group--home">
         <a class="chirpui-filter-rail__item chirp-theme-doc-catalog-rail__item chirp-theme-doc-catalog-rail__home{{ ' is-active' if current_path == '/' else '' }}"
            href="{{ '/' | absolute_url }}"

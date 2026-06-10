@@ -17,10 +17,11 @@
  * on the disclosure behaviour HTML cannot express on its own:
  *
  *   1. Unique landmark label — the chirp-ui `sidebar()` macro emits a generic
- *      <nav class="chirpui-sidebar"> with no accessible name, which collides
- *      with the surrounding "Documentation catalog" landmarks. We give it a
- *      distinct label so AT users can tell the two navs apart (issue #164,
- *      docs-nav slice).
+ *      <nav class="chirpui-sidebar"> with no accessible name. The icon rail
+ *      beside it is the "Documentation catalog" landmark; this inner tree is
+ *      the "Documentation sections" landmark. We name this nav so the two
+ *      navigation landmarks have DISTINCT accessible names and axe-core's
+ *      `landmark-unique` rule passes (issues #164/#129, docs-nav slice).
  *   2. Disclosure toggle — wire each `__toggle` <button> to show/hide its
  *      `aria-controls` children region, keeping aria-expanded in sync (which
  *      drives the closed/open folder swap in CSS). On load, mirror the

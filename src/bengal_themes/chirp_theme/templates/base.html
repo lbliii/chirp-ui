@@ -500,7 +500,7 @@ symbols imported inside another block.
         </form>
 
         {% if _main_menu or _auto_nav %}
-        <nav class="mobile-nav-content" role="navigation">
+        <nav class="mobile-nav-content" aria-label="Mobile navigation">
             <ul>
                 {% for item in _main_menu %}{{ render_menu_item(item, is_mobile=true) }}{% end %}
                 {% if _auto_nav %}

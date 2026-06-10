@@ -91,8 +91,7 @@ USAGE: set `type: track` in frontmatter, or `template: tracks/single.html`.
 <div class="chirp-theme-track-layout{{ ' chirp-theme-track-layout--with-toc' if has_toc else '' }}"
      data-chirp-theme-surface="track" data-track-id="{{ track_id }}">
 
-  <aside class="chirp-theme-track-layout__sidebar" id="track-sidebar" role="navigation"
-         aria-label="Track navigation">
+  <aside class="chirp-theme-track-layout__sidebar" id="track-sidebar">
     {% include 'partials/track-sidebar.html' %}
   </aside>
 

@@ -13,7 +13,7 @@
 {% let source_href = (github_edit_base ~ source_file) if (github_edit_base and source_file) else ((repo_url ~ "/blob/main/" ~ source_file ~ ("#L" ~ source_line if source_line else "")) if (repo_url and source_file) else none) %}
 
 <div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if toc_items | length > 0 else '' }}" data-chirp-theme-surface="api-reference">
-<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="CLI reference navigation">
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar">
   {% include 'partials/docs-nav.html' %}
 </aside>
 <div class="chirp-theme-docs-layout__main">
