@@ -4,7 +4,7 @@
 PYTHON_VERSION ?= 3.14t
 VENV_DIR ?= .venv
 
-.PHONY: all help setup install test test-js test-cov test-browser lint lint-fix format ty clean shell build publish release gh-release release-preflight showcase showcase-public showcase-guard
+.PHONY: all help setup install test test-js test-cov test-browser pre-pr lint lint-fix format ty clean shell build publish release gh-release release-preflight showcase showcase-public showcase-guard
 
 all: help
 
@@ -19,6 +19,7 @@ help:
 	@echo "  make test       - Run the test suite"
 	@echo "  make test-cov   - Run tests with coverage report"
 	@echo "  make test-browser - Run browser integration tests (Playwright)"
+	@echo "  make pre-pr     - Pre-PR gate: full ci + docs-chrome browser/a11y smoke"
 	@echo "  make lint       - Run ruff linter"
 	@echo "  make lint-fix   - Run ruff linter with auto-fix"
 	@echo "  make format     - Run ruff formatter"
@@ -57,6 +58,13 @@ test-js:
 
 test-browser:
 	uv run --group browser pytest tests/browser/ -q --timeout=30 --override-ini='addopts='
+
+# Pre-PR gate a contributor runs before opening a PR: the full blocking `ci`
+# gate plus the docs-chrome browser/a11y smoke (docs-build-all + focused chrome
+# + docs-nav/landmark axe proof). The browser suite is intentionally NOT in
+# `poe ci`; CI runs the same smoke in a separate, non-required job.
+pre-pr:
+	uv run --group browser poe pre-pr
 
 lint:
 	@echo "Running ruff linter..."

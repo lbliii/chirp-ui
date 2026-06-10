@@ -207,8 +207,8 @@ test-fast = { cmd = "pytest tests/ -x -q --timeout=10", help = "Fast feedback lo
 test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov=bengal_themes --cov-report=term-missing", help = "Run tests with coverage" }
 test-js = { cmd = "npm test", help = "Run JavaScript island helper tests with Vitest" }
 test-browser = { cmd = "pytest tests/browser/ -q --timeout=30 --override-ini='addopts='", help = "Run browser integration tests (requires: uv sync --group browser && playwright install chromium)" }
-test-browser-chrome-check = { cmd = "pytest tests/browser/test_rail_to_tray_chrome.py tests/browser/test_application_chrome_gauntlet.py tests/browser/test_bengal_docs_chrome.py -q --timeout=30 --override-ini='addopts='", help = "Run focused application chrome browser proof against built docs output" }
-test-browser-chrome = { sequence = ["docs-build-all", "test-browser-chrome-check"], help = "Build docs output, then run focused application chrome browser proof" }
+test-browser-chrome-check = { cmd = "pytest tests/browser/test_rail_to_tray_chrome.py tests/browser/test_application_chrome_gauntlet.py tests/browser/test_bengal_docs_chrome.py tests/browser/test_docs_nav_labels.py tests/browser/test_docs_landmarks_a11y.py -q --timeout=30 --override-ini='addopts='", help = "Run focused application chrome + docs-nav/landmark a11y browser proof against built docs output" }
+test-browser-chrome = { sequence = ["docs-build-all", "test-browser-chrome-check"], help = "Build docs output, then run focused application chrome + docs-chrome a11y browser proof" }
 ci-browser = { sequence = ["test-browser"], help = "Browser integration tests (release gate)" }
 
 # Type Checking
@@ -303,6 +303,14 @@ check = { sequence = [
     "css-transition-check",
     "ty",
 ], help = "Quick check (no tests)" }
+# Pre-PR gate a contributor runs before opening a PR. Runs the full blocking
+# `ci` gate (lint/format/generated-freshness/css/ty/unit/js) AND the docs-chrome
+# browser/a11y smoke (`test-browser-chrome` = docs-build-all + the focused
+# chrome + docs-nav/landmark a11y Playwright proof). The browser suite is
+# intentionally NOT part of `ci` (it must stay fast + green for unit gating and
+# needs `--group browser` + a chromium install), so this task layers it on top.
+# CI runs the same browser smoke in a separate, NON-REQUIRED job.
+pre-pr = { sequence = ["ci", "test-browser-chrome"], help = "Pre-PR gate: full ci + docs-chrome browser/a11y smoke (browser suite is not in ci)" }
 
 # Changelog
 changelog = { cmd = "towncrier build --yes", help = "Build changelog from fragments" }
