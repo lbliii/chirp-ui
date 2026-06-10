@@ -261,6 +261,77 @@ async def test_bengal_home_landing_page_uses_product_marketing_shapes(
     assert focus_metrics["bentoFocused"], focus_metrics
 
 
+async def test_bengal_outfit_display_font_loads_and_styles_brand_titles(page, static_site_url):
+    """#135 — the Outfit display webfont must actually load and style brand titles.
+
+    Two halves of the contract:
+      1. ``document.fonts`` reports Outfit (400 + 600) as loaded — proving the
+         preloaded woff2 + linked fonts.css resolved, not the system fallback.
+      2. A *brand* title (the home hero title, ``var(--font-display)``) resolves
+         to the Outfit family. We deliberately do NOT assert a prose docs <h2>:
+         inside ``.chirp-theme-docs-layout__content`` headings are intentionally
+         re-set to the sans UI family, so Outfit there would be a false negative.
+    """
+    await page.set_viewport_size({"width": 1280, "height": 900})
+    await page.goto(f"{static_site_url}/")
+    await page.wait_for_load_state("networkidle")
+    # Explicitly activate both declared weights, then wait for the font set to
+    # settle. A preloaded-but-not-yet-rendered weight (e.g. 600, if nothing above
+    # the fold uses it at load time) reports unloaded to ``document.fonts.check``;
+    # ``document.fonts.load`` forces the @font-face woff2 to resolve so the check
+    # proves the face is *available*, not merely that it happens to be painted.
+    await page.evaluate(
+        """() => Promise.all([
+            document.fonts.load("400 1rem Outfit"),
+            document.fonts.load("600 1rem Outfit"),
+        ]).then(() => document.fonts.ready)"""
+    )
+    await page.wait_for_timeout(100)
+
+    font_state = await page.evaluate(
+        """() => {
+            const loadedFamilies = new Set();
+            document.fonts.forEach((face) => {
+                if (face.status === "loaded") {
+                    loadedFamilies.add(face.family.replace(/['\"]/g, ""));
+                }
+            });
+            return {
+                outfit400: document.fonts.check("400 1rem Outfit"),
+                outfit600: document.fonts.check("600 1rem Outfit"),
+                loadedFamilies: Array.from(loadedFamilies),
+            };
+        }"""
+    )
+    assert font_state["outfit400"], font_state
+    assert font_state["outfit600"], font_state
+    assert "Outfit" in font_state["loadedFamilies"], font_state
+
+    # A brand title (display font) resolves to Outfit; a prose docs heading is
+    # intentionally sans and must NOT be Outfit.
+    title = page.locator(".chirp-theme-home__hero .chirpui-hero__title").first
+    await expect(title).to_be_visible()
+    title_font = await title.evaluate("(el) => getComputedStyle(el).fontFamily")
+    assert "Outfit" in title_font, {"home_hero_title_font_family": title_font}
+
+    # Cross-check a docs section hero title also picks up Outfit (the section
+    # header treatment uses var(--font-display)), not the prose-content override.
+    await page.goto(f"{static_site_url}/docs/patterns/")
+    await page.wait_for_load_state("networkidle")
+    await page.evaluate("() => document.fonts.ready")
+    section_title = page.locator(".chirp-theme-docs-layout__hero .chirpui-hero__title").first
+    await expect(section_title).to_be_visible()
+    section_font = await section_title.evaluate("(el) => getComputedStyle(el).fontFamily")
+    assert "Outfit" in section_font, {"docs_section_hero_title_font_family": section_font}
+
+    # The prose docs heading is intentionally the sans UI family (issue #135 note):
+    # if a docs-content <h2> exists, it should NOT resolve to Outfit.
+    prose_h2 = page.locator(".chirp-theme-docs-layout__content h2").first
+    if await prose_h2.count() > 0:
+        prose_font = await prose_h2.evaluate("(el) => getComputedStyle(el).fontFamily")
+        assert "Outfit" not in prose_font, {"prose_h2_should_be_sans_not_outfit": prose_font}
+
+
 async def test_bengal_docs_catalog_shell_moves_global_chrome_to_rail(page, static_site_url):
     for width, height in ((2309, 1606), (1159, 863), (889, 863)):
         await page.set_viewport_size({"width": width, "height": height})
