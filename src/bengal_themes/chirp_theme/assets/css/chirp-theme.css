@@ -177,6 +177,22 @@
     text-underline-offset: 0.16em;
   }
 
+  /* The theme's base-layer `a { color: inherit }` (assets/css/base/reset.css)
+     is declared in a later cascade layer than chirp-ui's `chirpui.component`,
+     so it defeats `.chirpui-btn--primary { color: var(--chirpui-on-accent) }`
+     whenever a filled chirp-ui button renders as an <a> (e.g. the home hero
+     CTA "Start building"). The link then inherits --chirpui-text — dark ink on
+     the teal accent (3.22:1 light / 1.41:1 dark, both fail WCAG AA). Restore
+     the contrast-checked on-accent pairing here in the winning chirp-theme
+     layer, token-driven, for every accent/semantic-filled variant. Outlined
+     variants set their own color on a transparent fill and are unaffected. */
+  a.chirpui-btn--primary,
+  a.chirpui-btn--danger,
+  a.chirpui-btn--success,
+  a.chirpui-btn--warning {
+    color: var(--chirpui-on-accent);
+  }
+
   .container,
   .docs-home,
   .chirp-theme-home,
@@ -421,7 +437,8 @@
 
   .chirp-theme-shell__main {
     min-block-size: 55vh;
-    padding-block: 0;
+    /* Mobile/tablet/home keep the layered `main` padding (style.css @layer
+       pages). Desktop rail-only zeroes the top inset below — see #131. */
   }
 
   @media (min-width: 769px) {
@@ -431,6 +448,11 @@
 
     .chirp-theme-shell--rail-only .chirp-theme-shell__main {
       min-block-size: 100svh;
+      /* No global header at desktop rail-only, so the docs layout/hero must
+         start flush with the viewport top (layoutTop == 0). This wins over the
+         `@layer pages` `main { padding-block }` without !important because the
+         chirp-theme layer is declared last. */
+      padding-block: 0;
     }
   }
 

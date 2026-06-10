@@ -270,10 +270,17 @@
 }
 
 /* Main Content Area */
-main {
-  flex: 1 0 auto;
-  padding-block: var(--space-6) var(--space-10);
-  /* Reduced top from --space-10 (40px) to --space-6 (24px) for tighter spacing beneath navbar */
+/* Layered into `pages` (declared before `chirp-theme`) so the theme's
+   shell padding — notably the rail-only `padding-block: 0` at desktop in
+   chirp-theme.css — wins without !important. An unlayered rule here used to
+   beat the layered shell rule and add a top gap, pushing content away from the
+   viewport top in desktop rail-only mode (#131 visual-contract tests). */
+@layer pages {
+  main {
+    flex: 1 0 auto;
+    padding-block: var(--space-6) var(--space-10);
+    /* Reduced top from --space-10 (40px) to --space-6 (24px) for tighter spacing beneath navbar */
+  }
 }
 
 /* Home Page Hero: moved to components/hero.css; keep this section empty intentionally */
