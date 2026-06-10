@@ -32,6 +32,13 @@ THEME_PACKAGE = "bengal_themes.chirp_theme"
 # theme-template inbound edge.
 REFERENCE_RE = re.compile(r"""\{%-?\s*(?:extends|include|from|import)\s+['"]([^'"]+\.html)['"]""")
 
+# Kida ``{# ... #}`` comment blocks. Many partials carry a USAGE doc-block that
+# literally quotes their own ``{% include 'partials/<self>.html' %}`` example.
+# Those are documentation, not live graph edges -- counting them lets a partial
+# "reference itself" and silently masks a real orphan. Strip comments before
+# scanning so inbound edges reflect only live template code.
+COMMENT_RE = re.compile(r"\{#.*?#\}", re.DOTALL)
+
 # Top-level templates Bengal route-maps directly from a page's kind/layout.
 # These never carry an inbound edge but are real, reachable entry points.
 TOPLEVEL_ENTRIES = frozenset(
@@ -103,6 +110,18 @@ INTENTIONALLY_RETAINED = frozenset(
         "partials/nav-menu.html",
         "partials/tag-nav.html",
         "partials/theme-primitives.html",
+        # Docstring-masked orphans surfaced when the graph builder began
+        # stripping ``{# ... #}`` USAGE comments (#143/#144). Each carried a
+        # self-referencing include only inside its own doc-block, so it used to
+        # look "reachable". They have no live inbound edge today; they are kept
+        # (not deleted) pending a dedicated wiring/cleanup pass. ``track_nav``
+        # is intentionally NOT here -- it gained a genuine ``doc/single.html``
+        # include edge in this change.
+        "partials/archive-sidebar.html",
+        "partials/docs-meta.html",
+        "partials/empty-state.html",
+        "partials/language-switcher.html",
+        "partials/series-nav.html",
     }
 )
 
@@ -123,10 +142,14 @@ def _build_graph() -> tuple[set[str], dict[str, set[str]]]:
     inbound: dict[str, set[str]] = {name: set() for name in names}
 
     for name, resource in files.items():
-        text = resource.read_text(encoding="utf-8")
+        text = COMMENT_RE.sub("", resource.read_text(encoding="utf-8"))
         for match in REFERENCE_RE.finditer(text):
             target = match.group(1)
             if target.startswith("chirpui/"):
+                continue
+            if target == name:
+                # A partial quoting its own include in a USAGE doc-block is not
+                # a real edge (comments are already stripped, but guard anyway).
                 continue
             if target in names:
                 inbound[target].add(name)
@@ -149,7 +172,7 @@ def test_no_referenced_template_is_missing() -> None:
     dangling: dict[str, set[str]] = {}
 
     for name, resource in files.items():
-        text = resource.read_text(encoding="utf-8")
+        text = COMMENT_RE.sub("", resource.read_text(encoding="utf-8"))
         for match in REFERENCE_RE.finditer(text):
             target = match.group(1)
             if target.startswith("chirpui/"):
@@ -202,6 +225,29 @@ def test_allowlist_entries_still_exist_and_stay_orphaned() -> None:
     assert not now_wired, (
         "These partials are now referenced by a live template; drop them from "
         "INTENTIONALLY_RETAINED so the allowlist stays minimal: " + ", ".join(now_wired)
+    )
+
+
+def test_track_nav_is_wired_into_doc_single() -> None:
+    """The cross-track membership widget has a genuine inbound include edge.
+
+    Regression guard for #144: ``partials/track_nav.html`` used to look
+    "reachable" only because its USAGE doc-block quoted its own
+    ``{% include 'partials/track_nav.html' %}`` example. Now the comment-strip
+    pass discards that fake self-edge, so the partial must be reached by a real
+    live include from ``doc/single.html`` -- and must NOT be on the
+    INTENTIONALLY_RETAINED allowlist (it is wired, not shipped-but-unwired).
+    """
+    names, inbound = _build_graph()
+
+    assert "partials/track_nav.html" in names
+    assert "doc/single.html" in inbound["partials/track_nav.html"], (
+        "track_nav.html must be included by doc/single.html (the cross-track "
+        "membership widget wiring)."
+    )
+    assert "partials/track_nav.html" not in INTENTIONALLY_RETAINED, (
+        "track_nav.html is wired into a live template; it must not be on the "
+        "ship-but-do-not-wire allowlist."
     )
 
 
