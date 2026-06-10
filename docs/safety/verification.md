@@ -22,12 +22,14 @@ That task is the short path for:
 - `uv run poe build-css-check`
 - `uv run poe build-manifest-check`
 - `uv run poe build-docs-check`
+- `uv run poe build-component-index-check`
 
 It verifies these committed generated files are fresh:
 
 - `src/chirp_ui/templates/chirpui.css`
 - `src/chirp_ui/manifest.json`
 - `docs/COMPONENT-OPTIONS.md`
+- `site/content/docs/components/all.md`
 
 Hosted CI runs this check through `uv run poe ci`. If the GitHub check fails
 here, regenerate the owned output locally and commit the generated file rather

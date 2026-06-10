@@ -30,6 +30,13 @@ never need to leave the site or run a local app to see a component rendered.
 Every macro and pattern rendered in one static, offline-friendly gallery.
 :::{/card}
 
+:::{card} All components
+:icon: list
+:link: ./all/
+The complete generated index — every public macro, grouped by category, with its
+one-line description.
+:::{/card}
+
 :::{card} Live specimens
 :icon: eye
 :link: ./controls/
@@ -69,9 +76,10 @@ The registry groups macros into the categories below. Counts reflect the public
 | **ASCII** | Terminal-flavored primitives | `ascii_card`, `ascii_tabs`, `ascii_modal`, `ascii_border`, `ascii_table`, `ascii_7seg`, `ascii_fader`, `ascii_knob`, and more |
 | **Composite** | Full assembled surfaces | `resource_index` |
 
-For the complete, machine-readable list of every macro with its parameters,
-slots, variants, and maturity, see the [API reference](/api/) (generated from
-`manifest.json`).
+For the complete list of **every** public macro grouped by category — generated
+from `manifest.json` and guarded against drift — see [All components](./all/).
+For each macro's full parameters, slots, variants, and maturity, see the
+[API reference](/api/).
 
 ## Live examples
 
