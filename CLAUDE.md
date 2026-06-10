@@ -196,7 +196,7 @@ Individual `hx_*` kwargs still work and override keys from the `hx` dict. `build
 3. Add any new variants/sizes to `VARIANT_REGISTRY` / `SIZE_REGISTRY` in `validation.py`.
 4. For htmx-enabled components, use `build_hx_attrs(...) | html_attrs` instead of individual `{% if hx_* %}` blocks.
 5. Add render tests to `tests/test_components.py`.
-6. Run `uv run poe ci` before opening a PR (regenerates `manifest.json` via `poe build-manifest` if a descriptor changed).
+6. Before opening a PR run **`make pre-pr`** (or `uv run poe pre-pr`) — it runs the full blocking `poe ci` gate (lint/format/generated-freshness/css/ty/unit/js; regenerates `manifest.json` via `poe build-manifest` if a descriptor changed) **and then** the docs-chrome browser/a11y smoke (`poe test-browser-chrome` = `docs-build-all` + the focused chrome + docs-nav folder-toggle + landmark/axe proof). The Playwright browser suite (`tests/browser/`) is **intentionally not part of `poe ci`** — it needs `--group browser` + a chromium install and must stay out of the fast unit gate — so `pre-pr` layers it on top. CI runs the same browser smoke in a separate, **non-required** `browser-smoke` job (`.github/workflows/browser-smoke.yml`); it does not block merges.
 
 ## Testing without Chirp
 

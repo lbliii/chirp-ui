@@ -1604,6 +1604,45 @@ class TestParamsTable:
         assert "0" in html
         assert "A number" in html
 
+    def test_params_table_title_is_not_a_heading(self, env: Environment) -> None:
+        # The title is a table label, not a document section: it must not
+        # impose a heading level (would cause an h1->h3 heading-order jump on
+        # /api/ pages). It keeps its class + text but renders as a <p>.
+        html = env.from_string(
+            '{% from "chirpui/params_table.html" import params_table %}'
+            '{{ params_table(rows=[{"name": "x", "type": "int"}], '
+            'title="Parameters", columns=["name", "type"]) }}'
+        ).render()
+        assert "chirpui-params-table__title" in html
+        assert "Parameters" in html
+        assert "<h3" not in html
+        assert "</h3>" not in html
+
+    def test_params_table_wrap_is_keyboard_scrollable(self, env: Environment) -> None:
+        # The horizontally-scrollable wrap must be focusable (tabindex) and
+        # carry an accessible name (aria-label) so keyboard users can scroll
+        # it — axe scrollable-region-focusable. No role="region" (would add a
+        # landmark per table -> landmark-unique).
+        html = env.from_string(
+            '{% from "chirpui/params_table.html" import params_table %}'
+            '{{ params_table(rows=[{"name": "x", "type": "int"}], '
+            'title="Arguments", columns=["name", "type"]) }}'
+        ).render()
+        assert 'class="chirpui-params-table__wrap"' in html
+        assert 'tabindex="0"' in html
+        assert 'aria-label="Arguments"' in html
+        assert 'role="region"' not in html
+
+    def test_params_table_wrap_has_default_accessible_name(self, env: Environment) -> None:
+        # When no title is given the wrap still needs an accessible name.
+        html = env.from_string(
+            '{% from "chirpui/params_table.html" import params_table %}'
+            '{{ params_table(rows=[{"name": "x", "type": "int"}], '
+            'columns=["name", "type"]) }}'
+        ).render()
+        assert 'tabindex="0"' in html
+        assert 'aria-label="Parameters"' in html
+
     def test_params_table_css_owns_code_heavy_row_pressure(self) -> None:
         css = _chirpui_css()
         assert "@scope (.chirpui-params-table)" in css
@@ -4316,6 +4355,44 @@ class TestForms:
         assert 'hx-select="unset"' in html
         assert 'hx-disinherit="hx-select"' in html
         assert 'hx-sync="this:replace"' in html
+
+    def test_search_bar_resolves_button_icon_name_with_button(self, env: Environment) -> None:
+        """with-button variant resolves a button_icon NAME via `| icon` (#136).
+
+        In chirp-ui the `icon` filter resolves a registered name to its glyph
+        (the SVG-equivalent at theme runtime, where Bengal's `icon` filter
+        emits an <svg>). The literal name must not leak into the markup.
+        """
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_bar %}'
+            '{{ search_bar("q", variant="with-button", button_icon="search") }}'
+        ).render()
+        assert "chirpui-btn__icon" in html
+        assert "⌕" in html
+        # the raw icon name must not appear inside the button icon span
+        icon_span = html.split("chirpui-btn__icon")[1].split("</span>")[0]
+        assert "search" not in icon_span
+
+    def test_search_bar_resolves_button_icon_name_with_icon(self, env: Environment) -> None:
+        """with-icon (solo prefix) variant resolves button_icon NAME via `| icon` (#136)."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_bar %}'
+            '{{ search_bar("q", variant="with-icon", button_icon="search") }}'
+        ).render()
+        assert "chirpui-search-bar__icon" in html
+        assert "⌕" in html
+        # the raw icon name must not appear inside the icon span
+        icon_span = html.split("chirpui-search-bar__icon")[1].split("</span>")[0]
+        assert "search" not in icon_span
+
+    def test_search_bar_default_icon_renders_glyph(self, env: Environment) -> None:
+        """Default search_bar() still renders the ⌕ glyph (registered name 'search')."""
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import search_bar %}'
+            '{{ search_bar("q", variant="with-icon") }}'
+        ).render()
+        assert "chirpui-search-bar__icon" in html
+        assert "⌕" in html
 
     def test_form_actions(self, env: Environment) -> None:
         html = env.from_string(

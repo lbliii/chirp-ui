@@ -6,6 +6,7 @@ weight: 40
 lang: en
 type: doc
 keywords: [chirp-ui, forums, community, discussion, moderation, q&a]
+tags: [patterns, community, moderation]
 category: patterns
 ---
 

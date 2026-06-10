@@ -166,13 +166,17 @@
    * instead of width for GPU-accelerated updates.
    */
   function setupReadingProgress() {
-    // Create progress bar
+    // Create progress bar.
+    //
+    // DECORATIVE ONLY: this bar is injected as a direct <body> child, OUTSIDE
+    // every landmark, so a `role="progressbar"` here trips axe-core's `region`
+    // rule (content not contained by a landmark). It also conveys nothing an
+    // AT user can't already get from scroll position, so we hide it from the
+    // accessibility tree with aria-hidden and omit role / aria-value*. This
+    // matches the chirp-ui nav_progress.html precedent (issue #129).
     const progressBar = document.createElement('div');
     progressBar.className = 'reading-progress';
-    progressBar.setAttribute('role', 'progressbar');
-    progressBar.setAttribute('aria-label', 'Reading progress');
-    progressBar.setAttribute('aria-valuemin', '0');
-    progressBar.setAttribute('aria-valuemax', '100');
+    progressBar.setAttribute('aria-hidden', 'true');
 
     const progressFill = document.createElement('div');
     progressFill.className = 'reading-progress__fill';
@@ -211,7 +215,6 @@
         lastProgress = roundedProgress;
         // Use transform for GPU-accelerated animation (no reflow)
         progressFill.style.transform = `scaleX(${progress / 100})`;
-        progressBar.setAttribute('aria-valuenow', roundedProgress);
       }
     };
 

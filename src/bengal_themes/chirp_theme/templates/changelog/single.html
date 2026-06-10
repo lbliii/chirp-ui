@@ -1,1 +1,104 @@
-{% extends "page.html" %}
+{% extends "base.html" %}
+
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/callout.html" import callout %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/label_overline.html" import label_overline %}
+{% from "chirpui/layout.html" import cluster, container, stack %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "chirpui/surface.html" import surface %}
+{% from "partials/navigation-components.html" import breadcrumbs, page_navigation %}
+
+{#- One change-category section (Added / Changed / Fixed / ...). Rendered as a
+    labelled surface block with a bulleted list. Skipped when the list is empty. -#}
+{% def change_section(label, items, variant="muted") %}
+{% let safe_items = items ?? [] %}
+{% if safe_items | length > 0 %}
+{% call surface(variant="muted", padding=true, cls="chirp-theme-changelog-section chirp-theme-changelog-section--" ~ (label | lower)) %}
+  {% call cluster(gap="xs", cls="chirp-theme-changelog-section__head") %}
+    {{ label_overline(label, section=true, tag="h2") }}
+    {{ badge(safe_items | length, variant=variant) }}
+  {% end %}
+  <ul class="chirp-theme-changelog-section__list">
+    {% for change in safe_items %}
+    <li>{{ change }}</li>
+    {% end %}
+  </ul>
+{% end %}
+{% end %}
+{% end %}
+
+{% block content %}
+{% let version = page?.title ?? "Release" %}
+{% let release_name = params?.name ?? "" %}
+{% let release_status = params?.status ?? "" %}
+{% let release_desc = params?.description ?? params?.summary ?? "" %}
+{% let release_date = page?.metadata?.date ?? page?.date %}
+{% let release_github = params?.github_release ?? "" %}
+{% let release_download = params?.download_url ?? "" %}
+
+{% let changes_breaking = params?.breaking ?? [] %}
+{% let changes_added = params?.added ?? [] %}
+{% let changes_changed = params?.changed ?? [] %}
+{% let changes_fixed = params?.fixed ?? [] %}
+{% let changes_deprecated = params?.deprecated ?? [] %}
+{% let changes_removed = params?.removed ?? [] %}
+{% let changes_security = params?.security ?? [] %}
+{% let has_sections = (changes_added | length) + (changes_changed | length) + (changes_fixed | length) + (changes_deprecated | length) + (changes_removed | length) + (changes_security | length) > 0 %}
+
+{% call container(cls="chirp-theme-learning-page chirp-theme-changelog-single") %}
+  {% call stack(gap="lg") %}
+    {% call page_hero(title=version, subtitle=(release_name if release_name else none), variant="minimal", background="solid", cls="chirp-theme-changelog-hero") %}
+      {% slot eyebrow %}
+      {{ breadcrumbs(page) }}
+      {% end %}
+      {% slot metadata %}
+      {% call cluster(gap="xs", cls="chirp-theme-changelog-hero__meta") %}
+        {% if release_date %}{{ badge("Released " ~ (release_date | dateformat("%B %d, %Y")), variant="muted") }}{% end %}
+        {% if release_status %}{{ badge(release_status, variant=("success" if release_status | lower == "stable" else "warning")) }}{% end %}
+      {% end %}
+      {% end %}
+      {% slot actions %}
+      {% if release_github %}{{ btn("View on GitHub", href=release_github, variant="secondary", size="sm") }}{% end %}
+      {% if release_download %}{{ btn("Download", href=release_download, variant="primary", size="sm") }}{% end %}
+      {% end %}
+    {% end %}
+
+    {% if release_desc %}
+    <p class="chirp-theme-changelog-summary chirpui-text-muted">{{ release_desc }}</p>
+    {% end %}
+
+    {% if changes_breaking | length > 0 %}
+    {% call callout(variant="warning", title="Breaking changes", cls="chirp-theme-changelog-breaking") %}
+      <ul class="chirp-theme-changelog-section__list">
+        {% for change in changes_breaking %}
+        <li>{{ change }}</li>
+        {% end %}
+      </ul>
+    {% end %}
+    {% end %}
+
+    {% if has_sections %}
+    {% call stack(gap="md", cls="chirp-theme-changelog-sections") %}
+      {{ change_section("Added", changes_added, "success") }}
+      {{ change_section("Changed", changes_changed, "info") }}
+      {{ change_section("Fixed", changes_fixed, "info") }}
+      {{ change_section("Deprecated", changes_deprecated, "warning") }}
+      {{ change_section("Removed", changes_removed, "error") }}
+      {{ change_section("Security", changes_security, "error") }}
+    {% end %}
+    {% end %}
+
+    {% if content and content.strip() %}
+    {% call surface(variant="default", cls="chirp-theme-changelog-notes") %}
+      {% call rendered_content(compact=false, cls="chirp-theme-learning-content") %}
+      {{ content | safe }}
+      {% end %}
+    {% end %}
+    {% end %}
+
+    {{ page_navigation(page) }}
+  {% end %}
+{% end %}
+{% end %}

@@ -23,6 +23,72 @@
   }
 
   /**
+   * Guarded localStorage access.
+   *
+   * localStorage throws (not returns null) in Safari private mode,
+   * sandboxed iframes, and when the storage quota is exceeded. Every
+   * persistence call site should route through here so a blocked store
+   * degrades gracefully instead of breaking theme switching, scroll
+   * resume, etc. Mirrors the guarded inline FOUC script in base.html and
+   * chirp-ui's safeSetItem pattern.
+   */
+  const safeStorage = {
+    /**
+     * @param {string} key
+     * @returns {string|null} Stored value, or null when storage is unavailable.
+     */
+    get(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (err) {
+        console.warn('[Bengal] localStorage.getItem blocked:', err);
+        return null;
+      }
+    },
+
+    /**
+     * @param {string} key
+     * @param {string} value
+     * @returns {boolean} True if the write succeeded.
+     */
+    set(key, value) {
+      try {
+        localStorage.setItem(key, value);
+        return true;
+      } catch (err) {
+        console.warn('[Bengal] localStorage.setItem blocked:', err);
+        return false;
+      }
+    },
+
+    /**
+     * @param {string} key
+     * @returns {boolean} True if the removal succeeded.
+     */
+    remove(key) {
+      try {
+        localStorage.removeItem(key);
+        return true;
+      } catch (err) {
+        console.warn('[Bengal] localStorage.removeItem blocked:', err);
+        return false;
+      }
+    }
+  };
+
+  /**
+   * Returns true when the user has requested reduced motion.
+   * Single source of truth shared across theme JS — tracks.js and toc.js
+   * call window.BengalUtils.prefersReducedMotion() (with a local matchMedia
+   * fallback) so the three modules converge on one query.
+   * @returns {boolean}
+   */
+  function prefersReducedMotion() {
+    return typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  /**
    * Copy text to clipboard with fallback
    * @param {string} text - Text to copy
    * @returns {Promise<void>}
@@ -268,6 +334,8 @@
   // Export utilities
   window.BengalUtils = {
     log,
+    safeStorage,
+    prefersReducedMotion,
     copyToClipboard,
     throttleScroll,
     debounce,

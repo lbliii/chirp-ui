@@ -242,6 +242,23 @@
   }
 
   /**
+   * Re-scan after htmx swaps so boosted/swapped content gets enhanced.
+   * The MutationObserver covers most dynamic insertions, but htmx:afterSwap is
+   * the authoritative hook for boosted navigation and fragment swaps and scans
+   * exactly the swap target (cheaper than waiting for the debounced observer).
+   * @param {Event} evt - htmx:afterSwap / htmx:load event
+   */
+  function enhanceAfterSwap(evt) {
+    const root = (evt && evt.detail && evt.detail.target) || evt.target || document;
+    // querySelectorAll excludes the root itself, so enhance it directly if it
+    // is itself a declared enhancement host.
+    if (root.dataset && root.dataset.bengal) {
+      enhanceElement(root);
+    }
+    enhanceAll(root);
+  }
+
+  /**
    * Initialize the enhancement system
    */
   function init() {
@@ -250,6 +267,11 @@
 
     // Watch for dynamic content
     setupDomWatcher();
+
+    // Re-scan htmx-swapped / boosted content (idempotent — applyEnhancement
+    // guards against double-enhance via the ENHANCED WeakSet).
+    document.body.addEventListener('htmx:afterSwap', enhanceAfterSwap);
+    document.body.addEventListener('htmx:load', enhanceAfterSwap);
 
     log('Enhancement system initialized');
   }

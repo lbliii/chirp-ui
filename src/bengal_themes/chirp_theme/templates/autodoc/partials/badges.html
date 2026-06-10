@@ -1,10 +1,30 @@
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/layout.html" import cluster %}
 
+{#-
+  Status badges for a documented element.
+
+  Field paths verified against Bengal's autodoc extractors:
+    element_type    -> element.element_type        (e.g. "function", "class")
+    deprecated      -> element.deprecated            (DocElement-level notice string)
+    is_async        -> element.metadata.is_async     (Python function flag)
+    is_property     -> element.metadata.is_property
+    is_classmethod  -> element.metadata.is_classmethod
+    is_staticmethod -> element.metadata.is_staticmethod
+    required        -> element.metadata.required      (CLI option / OpenAPI param flag)
+  Deprecation is a DocElement-level field, not a metadata flag; the page hero
+  (header.html) reads metadata.is_deprecated for OpenAPI elements, so both
+  spellings are honored here for safety.
+-#}
+
 {% let meta = element?.metadata ?? {} %}
+{% let is_deprecated = (element?.deprecated ?? none) or (meta?.is_deprecated ?? false) %}
 {% call cluster(gap="xs", cls="chirp-theme-reference-badges") %}
   {% if element?.element_type %}{{ badge(element.element_type, variant="muted") }}{% end %}
-  {% if meta?.is_deprecated %}{{ badge("deprecated", variant="error") }}{% end %}
-  {% if meta?.is_async %}{{ badge("async", variant="info") }}{% end %}
-  {% if meta?.required %}{{ badge("required", variant="warning") }}{% end %}
+  {% if is_deprecated %}{{ badge("deprecated", variant="error") }}{% end %}
+  {% if meta?.is_async ?? false %}{{ badge("async", variant="info") }}{% end %}
+  {% if meta?.is_property ?? false %}{{ badge("property", variant="muted") }}{% end %}
+  {% if meta?.is_classmethod ?? false %}{{ badge("classmethod", variant="muted") }}{% end %}
+  {% if meta?.is_staticmethod ?? false %}{{ badge("staticmethod", variant="muted") }}{% end %}
+  {% if meta?.required ?? false %}{{ badge("required", variant="warning") }}{% end %}
 {% end %}

@@ -10,8 +10,15 @@
    DESIGN TOKENS (Variables First!)
    ============================================ */
 
-/* Use CSS Layers to stabilize cascade */
-@layer tokens, base, utilities, components, pages;
+/* Use CSS Layers to stabilize cascade.
+   `chirp-theme` is declared LAST on purpose: chirpui.css (loaded first via
+   library_asset_tags()) declares `@layer chirpui.reset, …, chirpui.utility`,
+   then these theme layers, then `chirp-theme`. Pinning the name here fixes the
+   theme layer's position after `pages` regardless of @import timing, so the
+   bespoke theme surface (chirp-theme.css, self-wrapped in `@layer chirp-theme`)
+   beats the shipped chirp-ui baseline while staying overridable: a consumer
+   layer declared even later (e.g. `@layer app.overrides`) still wins. */
+@layer tokens, base, utilities, components, pages, chirp-theme;
 
 /* Foundation tokens (primitives - never use directly) */
 @layer tokens {
@@ -220,6 +227,10 @@
 }
 
 @layer components {
+  @import url('components/tracks.css');
+}
+
+@layer components {
   @import url('components/versioning.css');
   @import url('components/stale-banner.css');
 }
@@ -259,10 +270,17 @@
 }
 
 /* Main Content Area */
-main {
-  flex: 1 0 auto;
-  padding-block: var(--space-6) var(--space-10);
-  /* Reduced top from --space-10 (40px) to --space-6 (24px) for tighter spacing beneath navbar */
+/* Layered into `pages` (declared before `chirp-theme`) so the theme's
+   shell padding — notably the rail-only `padding-block: 0` at desktop in
+   chirp-theme.css — wins without !important. An unlayered rule here used to
+   beat the layered shell rule and add a top gap, pushing content away from the
+   viewport top in desktop rail-only mode (#131 visual-contract tests). */
+@layer pages {
+  main {
+    flex: 1 0 auto;
+    padding-block: var(--space-6) var(--space-10);
+    /* Reduced top from --space-10 (40px) to --space-6 (24px) for tighter spacing beneath navbar */
+  }
 }
 
 /* Home Page Hero: moved to components/hero.css; keep this section empty intentionally */
@@ -466,6 +484,9 @@ main {
 }
 
 /* BESPOKE ACTIVE THEME SURFACE
-   Theme-owned overrides live outside the retained Bengal layers so they can
-   fully restyle the shipped baseline without requiring theme inheritance. */
+   Theme-owned overrides live in the late-declared `chirp-theme` cascade layer
+   (the file self-wraps in `@layer chirp-theme { … }`). Declared after every
+   chirpui.* and theme layer, it fully restyles the shipped baseline yet stays
+   overridable: downstream apps win by adding an even-later layer such as
+   `@layer app.overrides`. See chirp-theme.css for the contract note. */
 @import url('chirp-theme.css');

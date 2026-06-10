@@ -405,6 +405,94 @@
 }
 
 /* ============================================
+   TAXONOMY INDEX CARDS (tag / archive / section landing)
+   --------------------------------------------
+   Icon + title + count-badge chip-cards rendered through the chirp-ui
+   resource_card. Used by tags.html, archive.html, and the generic section
+   landing (index.html). The base chirpui-card supplies structure; this layer
+   adds the destination icon mark, accent rail, and hover lift so discovery
+   surfaces read as a card grid rather than a flat link list.
+   ============================================ */
+
+.chirp-theme-taxonomy-card {
+  position: relative;
+  border-inline-start: 3px solid color-mix(in srgb, var(--chirpui-accent) 65%, transparent);
+  transition: box-shadow var(--motion-medium), transform var(--motion-medium),
+              border-color var(--transition-fast);
+}
+
+.chirp-theme-taxonomy-card:hover {
+  border-inline-start-color: var(--chirpui-accent);
+  box-shadow: var(--elevation-high),
+    0 0 0 1px color-mix(in srgb, var(--chirpui-accent) 14%, transparent);
+  transform: translate3d(0, calc(-1 * var(--motion-distance-2)), 0);
+}
+
+.chirp-theme-taxonomy-card:focus-within {
+  border-inline-start-color: var(--chirpui-accent);
+}
+
+/* Destination icon: a small accent-tinted mark in the card header badge row. */
+.chirp-theme-taxonomy-card__mark {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.85rem;
+  block-size: 1.85rem;
+  border-radius: var(--radius-md);
+  color: var(--chirpui-accent);
+  background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+}
+
+.chirp-theme-taxonomy-card__mark svg {
+  inline-size: 1.05rem;
+  block-size: 1.05rem;
+}
+
+/* Tighten clamped descriptions on the section landing reference cards. */
+.chirp-theme-taxonomy-card--reference .chirpui-resource-card__description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+/* The count chip sits flush-left in the footer like a status pill. */
+.chirp-theme-taxonomy-card .chirpui-card__footer-wrap {
+  justify-content: flex-start;
+}
+
+/* De-emphasis guard: the resource_index selection toolbar is empty on these
+   read-only discovery pages (no facets to select). chirp-ui sets it [hidden]
+   when the count is 0; this keeps it collapsed even if a later layer reasserts
+   display on .chirpui-selection-bar. */
+.chirp-theme-taxonomy-index .chirpui-selection-bar[hidden] {
+  display: none;
+}
+
+/* Responsive floor: single column below the xxs breakpoint so icon + title +
+   badge never smoosh on a 390px viewport. The chirp-ui auto-fit grid already
+   expands cleanly toward 1440px. */
+@media (max-width: 480px) {
+  .chirp-theme-taxonomy-index .chirpui-grid--cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .chirp-theme-taxonomy-card__mark {
+    inline-size: 1.65rem;
+    block-size: 1.65rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chirp-theme-taxonomy-card,
+  .chirp-theme-taxonomy-card:hover {
+    transition: border-color 0s !important;
+    transform: none !important;
+  }
+}
+
+/* ============================================
    TAG NAVIGATION SIDEBAR
    ============================================ */
 

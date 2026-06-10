@@ -2,6 +2,8 @@
 title: Workspace Shell Recipes
 description: Dense app workspace recipes for search, operations, support, and admin surfaces.
 type: doc
+tags: [patterns, app-shell]
+category: patterns
 ---
 
 # Workspace Shell Recipes

@@ -38,6 +38,20 @@ jobs:
         env:
           PYTHON_GIL: "0"
 
+      # Gate the public deploy BEFORE the cached Bengal build runs.
+      # `make release-preflight` enforces artifact freshness for PyPI releases;
+      # the Pages path reused none of it, so a push that left chirpui.css /
+      # manifest.json / COMPONENT-OPTIONS.md stale would still publish the live
+      # site. `poe deploy-gate` = verify-generated (build-css/manifest/docs
+      # freshness) + theme-guards (template reachability + packaging/icon
+      # reference). No JS lint, no full test suite, so it fails fast and keeps
+      # the cached-build flow cheap. The showcase sentinel guard runs below,
+      # after the static showcase is assembled.
+      - name: Gate deploy on freshness + theme guards
+        run: uv run poe deploy-gate
+        env:
+          PYTHON_GIL: "0"
+
       - name: Cache Bengal build state
         uses: actions/cache@v5
         with:
@@ -52,6 +66,26 @@ jobs:
 
       - name: Assemble static component showcase
         run: bash scripts/assemble-static-showcase.sh "$GITHUB_WORKSPACE/site/public/showcase"
+
+      - name: Guard published showcase against placeholder leakage
+        # Fail the deploy if /showcase/ still serves the section-index/build-command
+        # placeholder ("No section content yet" / "injected here after ...") instead
+        # of the assembled gallery the home-page "Browse components" CTA points at.
+        run: |
+          out="$GITHUB_WORKSPACE/site/public/showcase/index.html"
+          if [ ! -f "$out" ]; then
+            echo "::error::$out missing — the static showcase was not assembled."
+            exit 1
+          fi
+          if grep -Fq 'injected here after' "$out" || grep -Fq 'No section content' "$out"; then
+            echo "::error::Published showcase still contains the placeholder sentinel; the real gallery was not injected over the section index."
+            exit 1
+          fi
+          if ! grep -Fq 'Complete Component Showcase' "$out"; then
+            echo "::error::Published showcase is missing the assembled gallery marker; a fallback page was served instead of the static showcase."
+            exit 1
+          fi
+          echo "✓ /showcase/ serves the assembled gallery (no placeholder sentinels)"
 
       - name: Emit Chirp UI manifest
         run: |

@@ -1,10 +1,32 @@
 # Output Configuration
 # ====================
+#
+# Bengal reads `output_formats` (per-page + site-wide artifacts) and the
+# `generate_*` feature flags. The earlier `outputs:` block was a no-op custom
+# key Bengal never consumed, so the advertised RSS feed never built. These are
+# the real keys.
 
-outputs:
-  html:
-    enabled: true
-  json:
-    enabled: true
-  txt:
-    enabled: true
+# RSS 2.0 content syndication (rss.xml). Also see site.yaml `generate_rss`.
+# The releases stream (and any dated page) is syndicated; the <head> RSS
+# alternate link and the content-signals `rss` capability resolve to a real
+# feed. RSS is regenerated on full builds; incremental dev reloads skip it.
+generate_rss: true
+
+# Sitemap (sitemap.xml) — <loc> entries are absolute once baseurl carries a
+# full origin (see site.yaml).
+generate_sitemap: true
+
+output_formats:
+  enabled: true
+  # Per-page machine-readable companions for AI/agent grounding.
+  per_page:
+    - json       # /{path}/index.json
+    - llm_txt    # /{path}/index.txt
+    - markdown   # /{path}/index.md (alternate link in <head>)
+  # Site-wide aggregate artifacts.
+  site_wide:
+    - index_json     # /index.json (search)
+    - llms_txt       # /llms.txt
+    - changelog      # /changelog.json
+    - agent_manifest # /agent.json (hierarchical site map for agents)
+    - rss            # /rss.xml (content syndication)

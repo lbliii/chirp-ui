@@ -1,0 +1,1 @@
+Dogfooded every shipped chirp-theme template family on the live docs site (blog, tutorial, resume, authors, changelog) and added an on-site shortcodes/directives reference plus a component catalog, so the theme's surfaces are demonstrated and regression-guarded rather than undocumented.

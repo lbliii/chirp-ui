@@ -250,10 +250,27 @@
 }
 
 .chirp-theme-reference-description code,
-.chirp-theme-reference-member__description code {
+.chirp-theme-reference-member__description code,
+.chirp-theme-reference-card__description code,
+.chirp-theme-reference-hero__summary code {
   border: 1px solid color-mix(in srgb, var(--chirpui-accent) 12%, transparent);
   background: color-mix(in srgb, var(--chirpui-accent) 7%, transparent);
   color: var(--chirpui-accent);
+}
+
+/* Inline <code> in rendered autodoc prose runs flush against adjacent words
+   ("Return<code>white</code>or…") because docstrings carry no surrounding
+   whitespace. Add a hair of horizontal margin — scoped to autodoc description
+   contexts only so non-autodoc prose code chips are untouched. `:not(pre) > code`
+   excludes block code so only true inline chips pick up the spacing. */
+.chirp-theme-reference-description :not(pre) > code,
+.chirp-theme-reference-member__description :not(pre) > code,
+.chirp-theme-reference-card__description :not(pre) > code,
+.chirp-theme-reference-hero__summary :not(pre) > code {
+  margin-inline: 0.15em;
+  /* Never let a long token (URL, dotted path) punch out of a narrow card. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .chirp-theme-reference-members {
@@ -399,6 +416,24 @@
   min-width: 0;
 }
 
+/* Keyboard a11y + mobile overflow: <pre> code blocks inside reference cards
+   scroll horizontally (overflow-x:auto) but carry no focusable content, so axe
+   flags `scrollable-region-focusable` (serious). Per #161 the autodoc card
+   context wraps rather than scrolls — long signatures/imports fold onto the next
+   line instead of creating an untabbable scroll region. This also removes the
+   horizontal overflow at 390px. `!important` is required because the global
+   `pre { overflow-x: auto }` and chirp-ui's `.chirpui-code-block` live in
+   separately-declared cascade layers; the override must win deterministically. */
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-member__signature,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-member__body pre,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-description pre,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-card__description pre {
+  overflow-x: visible !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .chirp-theme-rest-endpoint-bar {
   display: flex;
   align-items: center;
@@ -487,6 +522,76 @@
   max-height: 22rem;
 }
 
+/* ---------------------------------------------------------------------------
+   API reference sidebar — public / private grouping + contrast + kind glyph
+
+   The autodoc nav sidebar (partials/docs-nav.html, styled in chirp-theme.css)
+   lists every module/member as a low-contrast, uppercase mono leaf-link with no
+   visual separation between public API and private/dunder helpers. Per #161 we
+   raise the floor *from the API surface only* so the global docs nav is untouched.
+
+   chirp-theme.css owns the base leaf styling and is imported UNLAYERED, so it
+   beats this @layer-components file at equal specificity. The contrast bump on
+   `color` therefore needs `!important`; the glyph/weight/separation additions
+   set properties chirp-theme.css does not declare and win without it. Private
+   and dunder modules are matched structurally by their `title` attribute
+   (title="_macro_introspect", title="__main__") — the only signal available in
+   CSS — and visually demoted so the public surface reads first.
+   --------------------------------------------------------------------------- */
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__root-leaf,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__leaf-link {
+  color: var(--color-text-primary) !important;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  font-size: 0.82rem;
+}
+
+/* Re-assert the accent on interactive states: the base contrast bump above is
+   `!important`, which would otherwise swallow chirp-theme.css's hover/active
+   accent color (also unlayered, but not !important). */
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__root-leaf:hover,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__root-leaf:focus-visible,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__root-leaf[aria-current="page"],
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__root-leaf.chirpui-sidebar__link--active,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__leaf-link:hover,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__leaf-link:focus-visible,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__leaf-link[aria-current="page"],
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__leaf-link.chirpui-sidebar__link--active {
+  color: var(--chirpui-accent) !important;
+}
+
+/* Private + dunder modules sink: dimmer text, lighter weight, a "private" rail.
+   Public modules keep full contrast and stand out by contrast. */
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__root-leaf[title^="_"],
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__leaf-link[title^="_"] {
+  color: var(--color-text-tertiary) !important;
+  font-weight: var(--weight-normal, 400);
+  /* A quiet inset rail on the private tier — box-shadow, not border, so it does
+     not fight chirp-theme.css's `border-color: transparent` shorthand. */
+  box-shadow: inset 0.16rem 0 0 -0.04rem color-mix(in srgb, var(--color-text-tertiary) 45%, transparent);
+}
+
+/* Private items still light up on interaction. Equal specificity to the private
+   base rule above, but declared later so it wins the hover/focus/current state. */
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__root-leaf[title^="_"]:hover,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__root-leaf[title^="_"]:focus-visible,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__root-leaf[title^="_"][aria-current="page"],
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__leaf-link[title^="_"]:hover,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__leaf-link[title^="_"]:focus-visible,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__leaf-link[title^="_"][aria-current="page"] {
+  color: var(--chirpui-accent) !important;
+}
+
+/* Private kind glyph recedes too. `!important` because chirp-theme.css sets the
+   glyph color/background unlayered (wins over this @layer-components file at any
+   specificity); the override must beat it deterministically so private helpers
+   read as a quieter tier than the public API. */
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__root-leaf[title^="_"] .chirp-theme-docs-nav__type-icon,
+.chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-nav__leaf-link[title^="_"] .chirp-theme-docs-nav__type-icon {
+  color: var(--color-text-tertiary) !important;
+  background: color-mix(in srgb, var(--color-text-tertiary) 8%, transparent) !important;
+}
+
 @media (max-width: 64rem) {
   .chirp-theme-api-index .chirpui-resource-index__results {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
@@ -519,5 +624,32 @@
     border-right: 0;
     border-bottom: 1px solid var(--chirpui-border);
     padding-block: 0.6rem;
+  }
+}
+
+/* Narrow phones (≈390px): guarantee inline code, import blocks, and signatures
+   fold inside the column instead of forcing a horizontal scroll on the page.
+   Pairs with the autodoc code-wrap rule above (which kills the scroll region);
+   here we also let unbreakable tokens break mid-word as a last resort. */
+@media (max-width: 26rem) {
+  .chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-member__body,
+  .chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-description,
+  .chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-card__description {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-member__body code,
+  .chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-member__signature,
+  .chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-member__body pre,
+  .chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-description pre,
+  .chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-reference-card__description pre {
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  /* Tighten the deep member body indent so signatures keep usable width. */
+  .chirp-theme-reference-member__body {
+    padding-inline: 0.85rem 0.85rem;
   }
 }

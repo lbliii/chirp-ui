@@ -6,6 +6,17 @@ weight: 24
 lang: en
 type: doc
 keywords: [chirp-ui, dropdown, menu, select, alpine, anatomy]
+tags: [components, navigation, alpine]
+search_keywords:
+  - dropdown
+  - dropdowns
+  - menu
+  - context menu
+  - select
+  - combobox
+  - split button
+  - split menu
+  - popover menu
 category: components
 ---
 

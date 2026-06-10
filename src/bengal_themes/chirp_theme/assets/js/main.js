@@ -16,6 +16,26 @@
     }
   });
 
+  /**
+   * Returns true when the user has requested reduced motion.
+   * Single source of truth for scroll/animation behavior across theme JS —
+   * other modules reuse this via window.BengalMain.prefersReducedMotion()
+   * instead of duplicating their own matchMedia query.
+   */
+  function prefersReducedMotion() {
+    return typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  /**
+   * scrollIntoView behavior that collapses to 'auto' (instant) when the user
+   * prefers reduced motion. The CSS `scroll-behavior` reset does not cover the
+   * explicit JS option, so guard each call site through here.
+   */
+  function scrollBehavior() {
+    return prefersReducedMotion() ? 'auto' : 'smooth';
+  }
+
   function setupSmoothScroll() {
     const anchors = document.querySelectorAll('a[href^="#"]');
     anchors.forEach((anchor) => {
@@ -31,7 +51,7 @@
         }
 
         event.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        target.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
         history.pushState(null, '', href);
         if (!target.hasAttribute('tabindex')) {
           target.setAttribute('tabindex', '-1');
@@ -75,6 +95,14 @@
     codeBlocks.forEach((codeBlock) => {
       const pre = codeBlock.parentElement;
       if (!pre || pre.closest('.code-block-wrapper') || pre.querySelector('.code-copy-button')) {
+        return;
+      }
+      // Skip chirp-ui's own code blocks: code_block(copy=true) already ships a
+      // `.chirpui-code-block-wrapper` + `.chirpui-code-block__copy` button.
+      // Re-wrapping them inserts a stray `.code-block-wrapper` ahead of the
+      // member's docstring example, hijacking the first-code-block selector.
+      if (pre.classList.contains('chirpui-code-block')
+        || pre.closest('.chirpui-code-block-wrapper')) {
         return;
       }
 
@@ -190,5 +218,9 @@
   }
 
   ready(init);
-  window.BengalMain = { cleanup: () => {} };
+  window.BengalMain = {
+    cleanup: () => {},
+    prefersReducedMotion,
+    scrollBehavior,
+  };
 })();

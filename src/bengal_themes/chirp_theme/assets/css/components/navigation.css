@@ -129,3 +129,98 @@
   display: inline-block;
   transform: scaleX(-1);
 }
+
+/* ------------------------------------------------------------------ *
+ * Docs sidebar — disclosure section (folder-as-button, no caret).
+ *
+ * The section is a plain container with an ALWAYS-VISIBLE header row
+ * (`__section-header`) holding two SIBLINGS — a real <button> (`__toggle`,
+ * the folder disclosure control) and the navigable section <a>
+ * (`__summary-link`). Neither nests inside the other, so axe-core's
+ * `nested-interactive` rule passes (a link inside a <summary>'s implicit
+ * button role used to trip it). The children region (`__section-links`) is
+ * toggled by JS via the `hidden` attribute + inline display.
+ *
+ * There is NO explicit caret control — the owner prefers the clean
+ * pre-#162 nav. The FOLDER ICON is the disclosure glyph: a closed folder
+ * when collapsed, an open folder when expanded, swapped off the button's
+ * `aria-expanded` state in CSS. The button occupies the SAME footprint the
+ * folder did before, so the row renders identically.
+ *
+ * The depth-1 summary-link, header-row, and active-trail styling live in
+ * chirp-theme.css under `.chirp-theme-docs-nav__section-header …` selectors.
+ * ------------------------------------------------------------------ */
+
+/* Folder disclosure control — a BARE icon button: no border/background, fills
+ * the slot the old type-icon occupied so the label stays aligned. Clicking it
+ * toggles the section (JS); it never navigates. */
+.chirp-theme-docs-nav__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--motion-fast), background-color var(--motion-fast);
+}
+
+.chirp-theme-docs-nav__toggle:hover {
+  color: var(--chirpui-accent);
+  background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+}
+
+.chirp-theme-docs-nav__toggle:focus-visible {
+  color: var(--chirpui-accent);
+  background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+  outline: 2px solid var(--chirpui-accent);
+  outline-offset: 1px;
+}
+
+.chirp-theme-docs-nav__section.is-active > .chirp-theme-docs-nav__section-header > .chirp-theme-docs-nav__toggle {
+  color: var(--chirpui-accent);
+}
+
+.chirp-theme-docs-nav__disclosure {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chirp-theme-docs-nav__folder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chirp-theme-docs-nav__folder svg {
+  inline-size: 0.85rem;
+  block-size: 0.85rem;
+}
+
+/* Default (collapsed): show the closed folder, hide the open folder. */
+.chirp-theme-docs-nav__folder--open {
+  display: none;
+}
+
+/* Expanded: swap closed → open, driven by the button's aria-expanded state. */
+.chirp-theme-docs-nav__toggle[aria-expanded="true"] .chirp-theme-docs-nav__folder--closed {
+  display: none;
+}
+
+.chirp-theme-docs-nav__toggle[aria-expanded="true"] .chirp-theme-docs-nav__folder--open {
+  display: inline-flex;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chirp-theme-docs-nav__toggle {
+    transition: none;
+  }
+}

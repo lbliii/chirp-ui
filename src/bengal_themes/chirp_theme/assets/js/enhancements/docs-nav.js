@@ -1,35 +1,187 @@
 /**
  * Bengal SSG - Documentation Navigation Enhancement
  *
- * Handles scroll spy and active state management for docs navigation.
- * The actual functionality is implemented in interactive.js, this file
- * exists to satisfy the auto-loading enhancement system.
+ * Progressive enhancement for the docs sidebar (`partials/docs-nav.html`).
  *
- * @see enhancements/interactive.js for implementation
+ * Each collapsible section renders an ALWAYS-VISIBLE header row
+ * (`__section-header`) holding two SIBLINGS — a folder <button> (`__toggle`)
+ * and the navigable section <a> (`__summary-link`). Neither nests inside the
+ * other, so axe-core's `nested-interactive` rule passes (a link inside a
+ * <summary>'s implicit button role used to trip it). The section label stays
+ * painted whether the section is collapsed or open because it lives in the
+ * always-visible header row, not in a control that gets hidden.
+ *
+ * The sidebar works with ZERO JavaScript: the children region renders visible
+ * by default (no `hidden` in the markup), so all content is reachable without
+ * scripting. `aria-current="page"` marks the active link. This module layers
+ * on the disclosure behaviour HTML cannot express on its own:
+ *
+ *   1. Unique landmark label — the chirp-ui `sidebar()` macro emits a generic
+ *      <nav class="chirpui-sidebar"> with no accessible name. The icon rail
+ *      beside it is the "Documentation catalog" landmark; this inner tree is
+ *      the "Documentation sections" landmark. We name this nav so the two
+ *      navigation landmarks have DISTINCT accessible names and axe-core's
+ *      `landmark-unique` rule passes (issues #164/#129, docs-nav slice).
+ *   2. Disclosure toggle — wire each `__toggle` <button> to show/hide its
+ *      `aria-controls` children region, keeping aria-expanded in sync (which
+ *      drives the closed/open folder swap in CSS). On load, mirror the
+ *      server-rendered aria-expanded into actual visibility: the server marks
+ *      the active branch with `is-active` and pre-sets aria-expanded="true".
+ *   3. Deep-link disclosure — ensure every section ancestor of the active
+ *      link is expanded so a bookmarked/deep-linked page reveals its place.
+ *
+ * Why inline `style.display` for hiding: the children region
+ * (`.chirp-theme-docs-nav__section-links`) is given `display: grid` by a rule
+ * in the late `@layer chirp-theme` cascade layer, which beats any rule this
+ * theme's component layer (or a bare `[hidden]` UA rule) could add. An inline
+ * style wins over every author layer, so we set it directly and keep the
+ * `hidden` attribute in sync for semantics.
  */
 
-(function() {
+(function () {
   'use strict';
 
-  // The docs-nav enhancement is registered in interactive.js
-  // This file exists to prevent 404 errors when the enhancement system
-  // tries to auto-load enhancements/docs-nav.js
-  //
-  // Since interactive.js is loaded before this would be needed,
-  // the enhancement is already registered. This is just a placeholder
-  // to satisfy the auto-loader.
+  var ROOT_SELECTOR = '[data-chirp-theme-doc-nav="catalog"]';
+  var SIDEBAR_LABEL = 'Documentation sections';
+  var SECTION_SELECTOR = '.chirp-theme-docs-nav__section--has-toggle';
+  var TOGGLE_SELECTOR = '.chirp-theme-docs-nav__toggle';
+  var ACTIVE_SELECTOR =
+    '.chirp-theme-docs-nav__summary-link--active,' +
+    '.chirp-theme-docs-nav [aria-current="page"],' +
+    '.chirp-theme-docs-nav__link.chirpui-sidebar__link--active';
 
-  // If interactive.js hasn't loaded yet, register a minimal handler
-  // that will be replaced when interactive.js loads
-  if (window.Bengal && window.Bengal.enhance) {
-    // Check if already registered (by interactive.js)
-    if (!window.Bengal.enhance.get('docs-nav')) {
-      // Register a no-op - interactive.js will override this when it loads
-      window.Bengal.enhance.register('docs-nav', function(el, options) {
-        // No-op - functionality is in interactive.js
-        // This prevents errors if docs-nav.js loads before interactive.js
-      });
+  /**
+   * Give the docs-nav sidebar landmark a unique accessible name.
+   * @param {HTMLElement|Document} root
+   */
+  function labelSidebarLandmark(root) {
+    var nav = root.querySelector('.chirp-theme-docs-nav.chirpui-sidebar') ||
+              root.querySelector('[data-chirp-theme-doc-nav="sections"] .chirpui-sidebar');
+    if (nav && !nav.getAttribute('aria-label')) {
+      nav.setAttribute('aria-label', SIDEBAR_LABEL);
     }
   }
 
+  /**
+   * Find the children region a toggle controls (its aria-controls target,
+   * falling back to the section-links sibling within the same section).
+   * @param {HTMLElement} toggle
+   * @returns {HTMLElement|null}
+   */
+  function panelFor(toggle) {
+    var id = toggle.getAttribute('aria-controls');
+    var panel = id ? document.getElementById(id) : null;
+    if (panel) return panel;
+    var section = toggle.closest(SECTION_SELECTOR);
+    return section
+      ? section.querySelector(':scope > .chirp-theme-docs-nav__section-links')
+      : null;
+  }
+
+  /**
+   * Expand or collapse a section, keeping aria-expanded (which drives the
+   * folder glyph swap), the `hidden` attribute, and the inline display in sync.
+   * @param {HTMLElement} toggle
+   * @param {boolean} expanded
+   */
+  function setExpanded(toggle, expanded) {
+    var panel = panelFor(toggle);
+    toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    if (!panel) return;
+    if (expanded) {
+      panel.hidden = false;
+      panel.style.removeProperty('display');
+    } else {
+      panel.hidden = true;
+      // Inline style beats the `@layer chirp-theme` `display: grid` rule.
+      panel.style.display = 'none';
+    }
+  }
+
+  /**
+   * Wire each disclosure toggle and set its initial collapsed/expanded state
+   * from the server-rendered aria-expanded (true on the active trail). The
+   * folder button toggles the section open/closed WITH NO navigation.
+   * @param {HTMLElement|Document} root
+   */
+  function initToggles(root) {
+    var toggles = root.querySelectorAll(TOGGLE_SELECTOR);
+    toggles.forEach(function (toggle) {
+      // Mirror the server-rendered expanded state into actual visibility.
+      var expanded = toggle.getAttribute('aria-expanded') === 'true';
+      setExpanded(toggle, expanded);
+
+      if (toggle.dataset.docsNavBound === '1') return;
+      toggle.dataset.docsNavBound = '1';
+      toggle.addEventListener('click', function () {
+        var isOpen = toggle.getAttribute('aria-expanded') === 'true';
+        setExpanded(toggle, !isOpen);
+      });
+    });
+  }
+
+  /**
+   * Open every section ancestor of the current page's active link so a
+   * deep-linked page reveals its place in the tree.
+   * @param {HTMLElement|Document} root
+   */
+  function openActiveTrail(root) {
+    var active = root.querySelector(ACTIVE_SELECTOR);
+    if (!active) return;
+
+    var node = active.parentElement;
+    while (node && !(node.matches && node.matches(ROOT_SELECTOR))) {
+      if (node.matches && node.matches(SECTION_SELECTOR)) {
+        var toggle = node.querySelector(':scope > .chirp-theme-docs-nav__section-header > ' + TOGGLE_SELECTOR);
+        if (toggle && toggle.getAttribute('aria-expanded') !== 'true') {
+          setExpanded(toggle, true);
+        }
+      }
+      node = node.parentElement;
+    }
+  }
+
+  /**
+   * Apply all enhancements to a docs-nav root.
+   * @param {HTMLElement|Document} root
+   */
+  function enhance(root) {
+    var scope = root || document;
+    labelSidebarLandmark(scope);
+    initToggles(scope);
+    openActiveTrail(scope);
+  }
+
+  /** Find every docs-nav root in the document and enhance it. */
+  function enhanceAll() {
+    var roots = document.querySelectorAll(ROOT_SELECTOR);
+    if (roots.length === 0) return;
+    roots.forEach(function (root) {
+      enhance(root);
+    });
+  }
+
+  // Register with the Bengal enhancement system. Override the no-op/scroll-spy
+  // stub from interactive.js so the real behaviour wins when the element with
+  // data-bengal="docs-nav" is discovered.
+  if (window.Bengal && window.Bengal.enhance) {
+    window.Bengal.enhance.register('docs-nav', function (el) {
+      enhance(el || document);
+    }, { override: true });
+  }
+
+  // Self-bootstrap so the enhancements run even when this module is loaded
+  // directly. enhance() is idempotent: toggles carry a `data-docs-nav-bound`
+  // guard, and re-applying visibility state is harmless.
+  function ready(fn) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fn, { once: true });
+    } else {
+      fn();
+    }
+  }
+  ready(enhanceAll);
+
+  // Re-apply after htmx boosted navigation swaps in a fresh sidebar.
+  document.addEventListener('htmx:afterSwap', enhanceAll);
 })();

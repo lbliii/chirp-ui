@@ -8,12 +8,17 @@
 
 {% block content %}
 {% let author_key = params?.author_name ?? page?.author_name ?? page?.title ?? "Author" %}
-{% let authors_registry = site?.data?.authors ?? {} %}
+{# Bengal's site.data returns "" (empty str) for missing data files, which is
+   non-none so ?? {} won't replace it. Only treat it as a registry when it is a
+   mapping (has a callable .get), otherwise fall back to an empty dict. #}
+{% let authors_raw = site?.data?.authors %}
+{% let authors_registry = authors_raw if authors_raw is mapping else {} %}
 {% let author_data = authors_registry.get(author_key, {}) if author_key else {} %}
 {% let author_name = author_data?.name ?? page?.title ?? author_key %}
 {% let author_bio = author_data?.bio ?? params?.bio ?? page?.description ?? none %}
 {% let author_social = author_data?.social ?? params?.social ?? {} %}
-{% let author_index = site?.indexes?.author ?? {} %}
+{% let author_index_raw = site?.indexes?.author %}
+{% let author_index = author_index_raw if author_index_raw is mapping else {} %}
 {% let indexed_posts = (author_index.get(author_key) | resolve_pages) if author_index.get(author_key) else [] %}
 {% let author_posts = posts ?? indexed_posts %}
 

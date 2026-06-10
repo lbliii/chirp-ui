@@ -1,1 +1,44 @@
-{% extends "author.html" %}
+{% extends "base.html" %}
+
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/layout.html" import cluster, container, stack %}
+{% from "chirpui/profile_header.html" import profile_header %}
+{% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "chirpui/surface.html" import surface %}
+{% from "partials/taxonomy-pages.html" import social_links %}
+
+{% block content %}
+{% let name = page?.title ?? "Resume" %}
+{% let headline = params?.headline ?? params?.role ?? page?.description ?? params?.subtitle ?? none %}
+{% let location = params?.location ?? "" %}
+{% let summary = params?.summary ?? "" %}
+{% let social = params?.social ?? {} %}
+
+{% call container(cls="chirp-theme-learning-page chirp-theme-resume-page") %}
+  {% call stack(gap="lg") %}
+    {% call profile_header(name=name, use_slots=true, cls="chirp-theme-resume-header") %}
+      {% slot bio %}
+      {% if headline %}<p class="chirp-theme-resume-headline">{{ headline }}</p>{% end %}
+      {% end %}
+      {% slot stats %}
+      {% if location %}{{ badge(location, variant="muted") }}{% end %}
+      {% end %}
+      {% slot actions %}
+      {{ social_links(social) }}
+      {% end %}
+    {% end %}
+
+    {% if summary %}
+    <p class="chirp-theme-resume-summary chirpui-text-muted">{{ summary }}</p>
+    {% end %}
+
+    {% if content %}
+    {% call surface(variant="default", cls="chirp-theme-resume-body") %}
+      {% call rendered_content(compact=false, cls="chirp-theme-learning-content") %}
+      {{ content | safe }}
+      {% end %}
+    {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}

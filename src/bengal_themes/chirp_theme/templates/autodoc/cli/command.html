@@ -1,13 +1,19 @@
 {% extends "base.html" %}
 
 {% from "chirpui/layout.html" import stack %}
+{% from "chirpui/callout.html" import callout %}
 {% from "partials/navigation-components.html" import page_navigation %}
 
 {% block content %}
 {% let element = element | default(metadata?.autodoc_element ?? none) %}
+{% let source_file = element?.source_file ?? none %}
+{% let source_line = element?.line_number ?? none %}
+{% let github_edit_base = config?.params?.github_edit_base ?? config?.github_edit_base ?? none %}
+{% let repo_url = config?.params?.repo_url ?? config?.repo_url ?? none %}
+{% let source_href = (github_edit_base ~ source_file) if (github_edit_base and source_file) else ((repo_url ~ "/blob/main/" ~ source_file ~ ("#L" ~ source_line if source_line else "")) if (repo_url and source_file) else none) %}
 
 <div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if toc_items | length > 0 else '' }}" data-chirp-theme-surface="api-reference">
-<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="CLI reference navigation">
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar">
   {% include 'partials/docs-nav.html' %}
 </aside>
 <div class="chirp-theme-docs-layout__main">
@@ -17,10 +23,23 @@
 <article class="prose chirp-theme-docs-layout__article chirp-theme-reference-page chirp-theme-reference-page--cli">
   <div class="docs-content chirp-theme-docs-layout__content chirp-theme-reference-content">
     {% call stack(gap="lg") %}
+    {% include "autodoc/partials/badges.html" %}
+    {% if element?.deprecated ?? none %}
+    {% call callout(variant="warning", title="Deprecated", cls="chirp-theme-reference-deprecated") %}{{ element.deprecated | safe }}{% end %}
+    {% end %}
     {% include "autodoc/partials/usage.html" %}
     {% include "autodoc/partials/params-table.html" %}
+    {% include "autodoc/partials/returns.html" %}
+    {% include "autodoc/partials/raises.html" %}
     {% include "autodoc/partials/examples.html" %}
     {% include "autodoc/partials/members.html" %}
+    {% if source_href %}
+    <p class="chirp-theme-reference-source">
+      <a href="{{ source_href }}" class="chirp-theme-reference-source__link" target="_blank" rel="noopener">
+        {{ icon('code', size=14) }} <span>View source{% if source_file %} · {{ source_file }}{% if source_line %}:{{ source_line }}{% end %}{% end %}</span>
+      </a>
+    </p>
+    {% end %}
     {% end %}
   </div>
 </article>

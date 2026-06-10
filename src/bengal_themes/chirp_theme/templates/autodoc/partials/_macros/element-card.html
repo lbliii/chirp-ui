@@ -1,12 +1,29 @@
 {% from "chirpui/card.html" import resource_card %}
 
-{% def element_card(element) %}
+{#-
+  Compact reference card for a single documented element (a member, submodule,
+  or related symbol). Used by the function/class member overview macros and the
+  module symbol rail. Renders the element's kind as the card eyebrow and a
+  truncated description as the body.
+
+  `href` is FORCED to an in-page anchor (`#{{ name }}`) rather than using
+  `element.href`/`element.url`. Bengal's autodoc `compute_element_urls` sets
+  `element.href` to a navigable-looking `/api/<module>/<member>/` path, but that
+  page is never built — members render as anchor sections on the parent module
+  page (the detail accordion uses `id="{{ name }}"`). Linking to the computed
+  href produces ~89 H101 broken internal links; the symbol rail already uses the
+  `#name` form and does not trip H101. A Bengal-core issue will be filed for the
+  dangling-href trap in `compute_element_urls`.
+-#}
+
+{% def element_card(element, kind=none) %}
 {% let name = element?.name ?? element?.title ?? "Reference" %}
-{% let href = element?.href ?? element?.url ?? "#" ~ name %}
-{% let description = element?.description ?? none %}
-{% call resource_card(href, name, description=none, top_meta=element?.element_type ?? none, cls="chirp-theme-reference-card") %}
+{% let card_kind = kind ?? element?.element_type ?? element?.type ?? none %}
+{% let href = '#' ~ (element?.name ?? element?.title ?? 'reference') %}
+{% let description = element?.description ?? element?.summary ?? none %}
+{% call resource_card(href, name, description=none, top_meta=card_kind, cls="chirp-theme-reference-card chirp-theme-reference-card--symbol") %}
   {% if description %}
-  <div class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description chirp-theme-reference-card__description">{{ description |> markdownify |> truncatewords_html(28, '…') |> safe }}</div>
+  <div class="chirpui-text-muted chirpui-font-sm chirpui-resource-card__description chirp-theme-reference-card__description">{{ description |> markdownify |> truncatewords_html(24, '…') |> safe }}</div>
   {% end %}
 {% end %}
 {% end %}

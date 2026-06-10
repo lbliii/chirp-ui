@@ -6,6 +6,19 @@ weight: 30
 lang: en
 type: doc
 keywords: [chirp-ui, ascii, terminal, retro, box-drawing, unicode]
+tags: [components, ascii, terminal]
+search_keywords:
+  - ascii
+  - ascii art
+  - terminal
+  - tui
+  - retro
+  - box drawing
+  - ascii card
+  - ascii table
+  - seven segment
+  - knob
+  - fader
 category: components
 ---
 

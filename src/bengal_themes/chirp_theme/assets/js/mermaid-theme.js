@@ -139,9 +139,10 @@
                 textColor: textColor,
 
                 // Line and border colors
+                // Note: secondaryBorderColor / tertiaryBorderColor are set once
+                // in the Secondary/Tertiary color blocks above — duplicate keys
+                // here would be silently dropped by the object literal.
                 lineColor: borderStrong,
-                secondaryBorderColor: borderColor,
-                tertiaryBorderColor: borderColor,
                 border1: borderColor,
                 border2: borderStrong,
 

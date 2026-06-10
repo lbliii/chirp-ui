@@ -1,11 +1,22 @@
 {% from "chirpui/callout.html" import callout %}
 
-{% let raises = element?.metadata?.raises ?? element?.raises ?? [] %}
+{#-
+  Exceptions block for a documented Python function/method.
+
+  Field path verified against Bengal's autodoc Python extractor
+  (bengal/autodoc/extractors/python/extractor.py): the docstring's `Raises:`
+  section is parsed into `metadata.parsed_doc.raises`, a list of dicts with
+  `type` and `description` keys. A passed-in `raises` list (non-extractor
+  callers) is honored first.
+-#}
+
+{% let raises = raises ?? element?.metadata?.parsed_doc?.raises ?? element?.raises ?? [] %}
 {% if raises | length > 0 %}
 {% call callout(variant="warning", title="Raises", cls="chirp-theme-reference-raises") %}
-<ul>
+<ul class="chirp-theme-reference-raises__list">
   {% for item in raises %}
-  <li><code>{{ item?.type ?? item?.name ?? "Exception" }}</code>{% if item?.description %}: {{ item.description }}{% end %}</li>
+  {% let exc_type = item.get("type", "") or item.get("name", "") or "Exception" %}
+  <li><code>{{ exc_type }}</code>{% if item.get("description") %}: {{ item.description }}{% end %}</li>
   {% end %}
 </ul>
 {% end %}

@@ -54,6 +54,27 @@ parallel design systems.
   `assets/css/style.css` stays theme-owned. Templates must not link a
   nonexistent `js/bundle.js`. Evidence: `docs/theming/chirp-theme.md:132`,
   `tests/test_bengal_theme_package.py:560`.
+- **No script-Alpine in templates.** Chirp owns Alpine injection; theme
+  templates use `Alpine.safeData` / `x-data` only and never inline an Alpine
+  `<script>`. Evidence: `tests/test_bengal_theme_package.py` (`<script` guards on
+  taxonomy/learning template sets).
+- **No orphan partials.** Every template under `templates/` is referenced
+  (extends/include/import), reachable by a Bengal routing/subsystem convention,
+  or on the documented `INTENTIONALLY_RETAINED` allowlist. Deletions from Wave 1
+  (`page-hero/`, `action-bar.html`, `connect-to-ide.html`, `docs-nav-node.html`,
+  `partials/search.html`, `link-previews.html`) stay deleted. Evidence:
+  `tests/test_template_reachability.py`.
+- **No shipped cruft, no dangling icons.** The `assets/**/*` package-data glob
+  must not sweep in `*_backup`/scratch directories or non-asset docs (e.g. the
+  removed `icons_backup/` and `COMPONENT-PATTERNS.md`), and every `icon('name')`
+  in a template and every `:icon:` in site content resolves to a shipped
+  `assets/icons/<name>.svg`. Evidence: `tests/test_packaging.py`.
+- **The Pages deploy is gated on freshness + structure.** `.github/workflows/pages.yml`
+  runs `poe deploy-gate` (`verify-generated` + `theme-guards`) before the cached
+  Bengal build, and the showcase sentinel guard after assembly, so a stale
+  `chirpui.css`/`manifest.json`/`COMPONENT-OPTIONS.md`, an orphan template, a
+  missing icon, or a placeholder showcase cannot publish. Evidence:
+  `.github/workflows/pages.yml`, `pyproject.toml` (`deploy-gate`).
 
 ## Contract Checklist
 
@@ -70,10 +91,38 @@ When this domain changes, check:
 - `docs/theming/chirp-theme.md`, `docs/theming/chirp-theme-parity-matrix.md`,
   `docs/theming/bengal-theme-anatomy.md`, `site/content/docs/theming/` — public theme
   guidance and site mirrors.
-- `tests/test_bengal_theme_package.py`,
+- `tests/test_bengal_theme_package.py`, `tests/test_template_reachability.py`,
+  `tests/test_packaging.py`,
   `tests/evidence/test_bengal_library_contract_plan.py`, `tests/test_theme_token_parity.py`,
   `tests/test_docs_site.py`, `tests/browser/test_bengal_docs_chrome.py` —
-  package, docs, token, library-mode, and browser proof.
+  package, reachability, packaging/icon, docs, token, library-mode, and browser
+  proof.
+- `.github/workflows/pages.yml`, `pyproject.toml` (`deploy-gate`,
+  `theme-guards`, `verify-generated`) — the deploy gate and the poe tasks it
+  composes.
+
+## Proof Commands
+
+Run these to prove a theme change is sound. The first two are fast (no site
+build) and are exactly what the Pages deploy gate runs.
+
+- `uv run poe theme-guards` — template reachability (no orphan partials) +
+  packaging/icon-reference (no shipped cruft, every referenced icon resolves).
+  Wraps `tests/test_template_reachability.py` + `tests/test_packaging.py`.
+- `uv run poe deploy-gate` — `verify-generated` (committed `chirpui.css` /
+  `manifest.json` / `COMPONENT-OPTIONS.md` are fresh) + `theme-guards`. This is
+  the Pages pre-deploy gate; keep it cheap (no full suite, no JS lint).
+- `uv run pytest tests/test_bengal_theme_package.py tests/test_theme_token_parity.py -q`
+  — package surface contract (entry point, required templates/partials/assets,
+  standalone manifest) + `--chirpui-*` token parity.
+- `uv run poe docs-build-all` then
+  `uv run pytest tests/test_docs_site.py tests/browser/test_bengal_docs_chrome.py -q`
+  — full site build, static showcase + sentinel guard, then browser proof of
+  docs chrome (search, mobile nav, theme controls, TOC, tabs). Required when
+  template/layout/JS-hook behavior changes.
+- `uv run poe lint-js` — advisory biome lint over `assets/js` (NOT a release
+  gate; the theme JS carries known style debt, but `noUndeclaredVariables` is an
+  error, so a genuinely-missing global still fails).
 
 ## Advocate
 
@@ -105,9 +154,13 @@ When this domain changes, check:
 `src/bengal_themes/chirp_theme/assets/`.
 
 **Tests:** `tests/test_bengal_theme_package.py`,
+`tests/test_template_reachability.py`, `tests/test_packaging.py`,
 `tests/evidence/test_bengal_library_contract_plan.py`, `tests/test_theme_token_parity.py`,
 Bengal-related portions of `tests/test_docs_site.py`,
 `tests/browser/test_bengal_docs_chrome.py`.
+
+**CI / deploy:** `.github/workflows/pages.yml` deploy gate; `pyproject.toml`
+`deploy-gate` / `theme-guards` poe tasks.
 
 **Docs:** `docs/theming/chirp-theme.md`, `docs/theming/chirp-theme-parity-matrix.md`,
 `docs/theming/bengal-theme-anatomy.md`, `docs/theming/app-theme.md`,

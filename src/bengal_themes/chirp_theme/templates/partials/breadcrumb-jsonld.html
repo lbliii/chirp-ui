@@ -1,0 +1,39 @@
+{#-
+Breadcrumb JSON-LD Structured Data Component
+
+Emits a schema.org BreadcrumbList mirroring the visible breadcrumb trail
+(navigation-components.html `breadcrumbs(page)`), so search engines and AI
+crawlers understand the site hierarchy. Item URLs are absolute (origin +
+path) via `| absolute_url`, matching the canonical/og:url surface.
+
+Renders only when there are at least two crumbs (a single "Home" crumb is
+not a meaningful trail) and structured_data.breadcrumb is enabled
+(default: true).
+
+Uses: get_breadcrumbs(page) → list of {title, href, is_current}
+Uses site: baseurl (via | absolute_url)
+
+Usage in base.html head:
+  {% include "partials/breadcrumb-jsonld.html" %}
+-#}
+
+{%- set breadcrumb_enabled = (config.structured_data ?? {}).breadcrumb ?? true %}
+{%- set _crumbs = get_breadcrumbs(page) %}
+{%- if breadcrumb_enabled and (_crumbs | length) > 1 %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {%- for item in _crumbs %}
+    {
+      "@type": "ListItem",
+      "position": {{ loop.index }},
+      "name": {{ (item.title ?? '') | tojson }},
+      "item": {{ ((item.href ?? '/') | absolute_url) | tojson }}
+    }{{ "," if not loop.last else "" }}
+    {%- end %}
+  ]
+}
+</script>
+{% end %}

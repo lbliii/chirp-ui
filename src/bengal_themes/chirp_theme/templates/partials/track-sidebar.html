@@ -1,19 +1,45 @@
-{# Track navigation sidebar built from Chirp UI primitives. #}
+{#
+================================================================================
+Track Navigation Sidebar (Kida-Native)
+================================================================================
+
+Left rail for tracks/single.html: the ordered section list for the current
+track plus links to sibling tracks. Reuses the pre-computed `track_item_pages`
+map that single.html builds (so we never call get_page twice for the same
+slug); falls back to get_page when included standalone.
+
+Expected context (set by tracks/single.html before include):
+  track_id          — resolved id of the current track
+  current_track     — the track dict (or none)
+  track_item_pages  — {slug: page} map for current_track.items (optional)
+
+DOM contract (consumed by waves #141 CSS / #142 JS):
+  nav.chirp-theme-track-sidebar[data-bengal="track-nav"][data-track-id]
+    .chirp-theme-track-sidebar__list
+      .chirp-theme-track-sidebar__item
+        a.chirp-theme-track-sidebar__link[href="#track-section-{n}"]
+                                          [data-track-target="#track-section-{n}"]
+          .chirp-theme-track-sidebar__number (badge)
+
+USAGE:
+  {% include 'partials/track-sidebar.html' %}
+================================================================================
+#}
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/card.html" import card %}
 {% from "chirpui/list.html" import list_group, list_item %}
 
-{% let track_id = params?.track_id ?? page?.slug ?? '' %}
+{% let _track_id = track_id if (track_id is defined and track_id) else (params?.track_id ?? page?.slug ?? '') %}
+{% let _all_tracks = site?.data?.tracks ?? {} %}
+{% let _current_track = current_track if (current_track is defined and current_track) else (_all_tracks[_track_id] if (_track_id and _track_id in _all_tracks) else none) %}
+{% let _track_items = _current_track?.items ?? [] %}
 
-{% with site?.data?.tracks as all_tracks %}
-{% let current_track = all_tracks[track_id] if (track_id and all_tracks and track_id in all_tracks) else none %}
-
-<nav class="chirpui-stack chirpui-stack--md chirp-theme-track-sidebar" aria-label="Track navigation" data-bengal="track-nav" data-track-id="{{ track_id }}">
-  {% with current_track?.items as track_items %}
-  {% if track_items | length > 0 %}
-  {% call card(title=current_track?.title ?? t('tracks.sections', default='Sections'), cls="chirp-theme-track-sidebar__card") %}
+<nav class="chirpui-stack chirpui-stack--md chirp-theme-track-sidebar" aria-label="Track navigation"
+     data-bengal="track-nav" data-track-id="{{ _track_id }}">
+  {% if _track_items | length > 0 %}
+  {% call card(title=_current_track?.title ?? t('tracks.sections', default='Sections'), cls="chirp-theme-track-sidebar__card") %}
     {% call list_group(bordered=true, cls="chirp-theme-track-sidebar__list") %}
-      {% for item_slug in track_items %}
+      {% for item_slug in _track_items %}
       {% let item_page = track_item_pages[item_slug] if (track_item_pages is defined and item_slug in track_item_pages) else get_page(item_slug) %}
       {% if item_page %}
       {% call list_item(cls="chirp-theme-track-sidebar__item") %}
@@ -22,7 +48,7 @@
            data-track-section="{{ loop.index }}"
            data-track-target="#track-section-{{ loop.index }}">
           {{ badge(loop.index | string, variant="muted", cls="chirp-theme-track-sidebar__number") }}
-          <span>{{ item_page?.title ?? item_slug }}</span>
+          <span class="chirp-theme-track-sidebar__title">{{ item_page?.title ?? item_slug }}</span>
         </a>
       {% end %}
       {% end %}
@@ -30,27 +56,27 @@
     {% end %}
   {% end %}
   {% end %}
-  {% end %}
 
-  {% let track_count = (all_tracks ?? {}) | length %}
+  {# Sibling tracks — only when there is more than one track defined. #}
+  {% let track_count = _all_tracks | length %}
   {% if track_count > 1 %}
-  {% let all_track_pages = {} %}
+  {% let _track_page_map = {} %}
   {% for p in (site?.pages ?? []) %}
   {% let tid = p?.metadata?.track_id ?? '' %}
-  {% if tid and tid != track_id %}
-  {% let all_track_pages = all_track_pages | merge({tid: p}) %}
+  {% if tid and tid != _track_id %}
+  {% let _track_page_map = _track_page_map | merge({tid: p}) %}
   {% end %}
   {% end %}
 
-  {% call card(title=t('tracks.other', default='Other Tracks'), cls="chirp-theme-track-sidebar__card") %}
+  {% call card(title=t('tracks.other', default='Other tracks'), cls="chirp-theme-track-sidebar__card chirp-theme-track-sidebar__card--siblings") %}
     {% call list_group(bordered=true, cls="chirp-theme-track-sidebar__list") %}
-      {% for id, track in all_tracks |> items %}
-      {% if id != track_id %}
-      {% let track_page = all_track_pages[id] if id in all_track_pages else none %}
+      {% for id, track in _all_tracks | items %}
+      {% if id != _track_id %}
+      {% let track_page = _track_page_map[id] if id in _track_page_map else none %}
       {% if track_page %}
       {% call list_item(cls="chirp-theme-track-sidebar__item") %}
         <a href="{{ track_page.href }}" class="chirpui-list__link chirp-theme-track-sidebar__link"{{ route_link_attrs(track_page.href) | html_attrs }}>
-          <span>{{ track?.title ?? id }}</span>
+          <span class="chirp-theme-track-sidebar__title">{{ track?.title ?? id }}</span>
           {% let lesson_count = (track?.items ?? []) | length %}
           {{ badge(lesson_count ~ " lesson" ~ ("s" if lesson_count != 1 else ""), variant="muted") }}
         </a>
@@ -62,4 +88,3 @@
   {% end %}
   {% end %}
 </nav>
-{% end %}

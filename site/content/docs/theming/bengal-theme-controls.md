@@ -6,6 +6,7 @@ weight: 36
 lang: en
 type: doc
 keywords: [chirp-theme, Bengal theme, search modal, mobile nav, theme controls]
+tags: [theme, theming]
 category: theming
 ---
 

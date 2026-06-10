@@ -25,7 +25,7 @@ Variables:
 {% end %}
 {% let current_tag_normalized = (current_tag ?? '') | lower %}
 
-<nav class="docs-nav" aria-label="Tags">
+<nav class="docs-nav" aria-label="Browse tags">
   <div class="docs-nav-tree">
     {# Link to all tags page #}
     {% let is_all_tags = (current_tag ?? '') | length == 0 %}

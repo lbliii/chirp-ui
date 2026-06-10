@@ -6,6 +6,7 @@ weight: 20
 lang: en
 type: doc
 keywords: [chirp-ui, product pages, marketing, cta, logo cloud, story card]
+tags: [patterns, marketing, cta]
 category: patterns
 ---
 

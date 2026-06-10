@@ -1,6 +1,17 @@
 {% from "chirpui/params_table.html" import params_table %}
 
-{% let rows = parameters ?? params ?? element?.metadata?.parameters ?? element?.metadata?.args ?? [] %}
+{#-
+  Standalone parameters table. Accepts pre-normalized `parameters`/`params`
+  rows, or falls back to the autodoc element's raw extractor args
+  (`element.metadata.args`), which carry per-param prose under `docstring`.
+  Normalize each row so params_table's `description` column is populated
+  (Bengal's extractor emits `docstring`, not `description`).
+-#}
+{% let raw_rows = parameters ?? params ?? element?.metadata?.args ?? element?.metadata?.parameters ?? [] %}
+{#- Rows may be dicts (extractor arg objects) or bare strings (parameter names
+   only, as some module-level `metadata.parameters` payloads carry). Normalize
+   string rows into a name-only dict so `.get` is never called on a str. -#}
+{% let rows = [{"name": (row.get("name", "") if (row is mapping) else row), "type": (row.get("type", "") ?? "" if (row is mapping) else ""), "default": (row.get("default", "") ?? "" if (row is mapping) else ""), "description": (row.get("description", "") ?? row.get("docstring", "") ?? "" if (row is mapping) else "")} for row in raw_rows] %}
 {% if rows | length > 0 %}
 {{ params_table(rows, title=title ?? "Parameters", cls="chirp-theme-reference-params") }}
 {% end %}

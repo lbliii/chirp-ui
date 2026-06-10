@@ -24,8 +24,9 @@
           <input type="search" id="search-input" class="search-page__input"
                  placeholder="Search documentation..."
                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                 role="combobox" aria-expanded="false"
                  aria-label="Search" aria-describedby="search-status"
-                 aria-controls="search-results" aria-autocomplete="list" autofocus>
+                 aria-controls="search-results-list" aria-autocomplete="list" autofocus>
           <div class="search-page__loading hidden" id="search-loading-indicator">
             <div class="search-page__spinner"></div>
           </div>
@@ -85,6 +86,15 @@
             {{ icon('magnifying-glass', size=56, css_class='search-page__empty-icon') }}
             <p class="search-page__empty-title">Start typing to search</p>
             <p class="search-page__empty-hint">Search across documentation, marketing pages, and posts.</p>
+            {% let suggestions = ['button', 'card', 'modal', 'tabs', 'theming', 'layout'] %}
+            <div class="search-page__suggestions">
+              <span class="search-page__suggestions-label" id="search-suggestions-label">Popular searches</span>
+              <div class="search-page__suggestion-pills" role="group" aria-labelledby="search-suggestions-label">
+                {% for term in suggestions %}
+                <button type="button" class="search-page__suggestion" data-query="{{ term }}">{{ term }}</button>
+                {% end %}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -96,6 +106,37 @@
         <div class="search-page__error hidden" id="search-error">
           <p>Failed to load search index. Please try refreshing the page.</p>
         </div>
+
+        {# Server-side fallback: interactive search needs JavaScript, but every
+           indexed page is still reachable here without it. Grouped by section. #}
+        <noscript>
+          <div class="search-page__noscript prose">
+            <p>Interactive search needs JavaScript. Browse the indexed pages below.</p>
+            {% let _sections = site?.sections ?? [] %}
+            {% if _sections | length > 0 %}
+            {% for _section in _sections %}
+            {% let _section_pages = _section?.regular_pages ?? _section?.pages ?? [] %}
+            {% if _section_pages | length > 0 %}
+            <section class="search-page__noscript-group">
+              <h2 class="search-page__noscript-heading">{{ _section?.title ?? _section?.name ?? 'Pages' }}</h2>
+              <ul class="search-page__noscript-list">
+                {% for _p in _section_pages %}
+                <li><a href="{{ (_p?.href ?? _p?._path ?? '#') | absolute_url }}">{{ _p?.title ?? 'Untitled' }}</a></li>
+                {% end %}
+              </ul>
+            </section>
+            {% end %}
+            {% end %}
+            {% else %}
+            {% let _all_pages = site?.regular_pages ?? site?.pages ?? [] %}
+            <ul class="search-page__noscript-list">
+              {% for _p in _all_pages %}
+              <li><a href="{{ (_p?.href ?? _p?._path ?? '#') | absolute_url }}">{{ _p?.title ?? 'Untitled' }}</a></li>
+              {% end %}
+            </ul>
+            {% end %}
+          </div>
+        </noscript>
       </div>
     </div>
     {% end %}

@@ -1,5 +1,16 @@
 # JavaScript Theme Improvements
 
+> **Historical record.** This changelog documents a refactor performed while the
+> theme still lived at `bengal/bengal/themes/default/`. The theme now ships from
+> `src/bengal_themes/chirp_theme/assets/js/`; the `themes/default` paths below are
+> kept verbatim for provenance and do **not** describe the current tree.
+>
+> Current reality (see `base.html` `site_scripts` block): `bengal-enhance.js`
+> loads immediately after `utils.js`, so the progressive-enhancement registry
+> (`window.Bengal.enhance`) is live — `enhanceAll()` runs on DOMContentLoaded and
+> re-scans on `htmx:afterSwap` / via MutationObserver. Enhancement modules register
+> defensively against it and also keep their own `ready()` auto-init as a fallback.
+
 **Date**: 2025-01-27  
 **Status**: ✅ Completed
 

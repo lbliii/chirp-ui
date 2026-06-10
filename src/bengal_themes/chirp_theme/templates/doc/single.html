@@ -12,7 +12,7 @@
 {% let css_class = params?.css_class ?? '' %}
 
 <div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if toc_items | length > 0 else '' }}" data-chirp-theme-surface="doc">
-<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="Documentation catalog navigation">
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar">
   {% include 'partials/docs-nav.html' %}
 </aside>
 <div class="chirp-theme-docs-layout__main">

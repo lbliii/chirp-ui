@@ -1,0 +1,43 @@
+# =============================================================================
+# Learning tracks — site.data.tracks
+# =============================================================================
+#
+# A track assembles SEPARATE, already-existing documents into one ordered,
+# self-paced reading path. This is the data-file model the theme dogfoods:
+# the pages below are real docs that also stand on their own; a track just
+# gives them a guided order and an in-track prev/next + progress widget.
+#
+# Shape (the contract the theme templates read):
+#
+#   <track-id>:
+#     title:        Human-readable track name (shown on /tracks/ + pillar hero)
+#     description:  One-line lede for the LMS card + pillar subtitle
+#     items:        Ordered list of page SLUGS — each is the content-relative
+#                   path WITHOUT the .md extension (e.g. "docs/theming/chirp-theme").
+#                   Every slug must resolve to a real page via get_page(), or the
+#                   Tracks health validator flags it H805 (dangling reference).
+#
+# Each <track-id> here has a matching pillar page under site/content/tracks/
+# carrying `type: track` + `track_id: <track-id>` so:
+#   - tracks/single.html resolves site.data.tracks[track_id] and stitches the
+#     member pages into one reading view, and
+#   - tracks/list.html links each LMS card to its pillar page.
+# A track_id with no matching page (or a page whose track_id is not a key here)
+# is flagged H806.
+# =============================================================================
+
+getting-started:
+  title: "Getting Started"
+  description: "Install chirp-ui, pick up the chirp-theme, and learn the layout vocabulary — in order."
+  items:
+    - "docs/get-started/installation"
+    - "docs/theming/chirp-theme"
+    - "docs/app-shell/ui-layers"
+
+theming-deep-dive:
+  title: "Theming Deep Dive"
+  description: "Go beyond the defaults: the packaged theme, its built-in controls, and the chrome vocabulary it styles."
+  items:
+    - "docs/theming/chirp-theme"
+    - "docs/theming/bengal-theme-controls"
+    - "docs/app-shell/ui-layers"

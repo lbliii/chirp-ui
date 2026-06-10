@@ -9,7 +9,7 @@
 {% let method = meta?.method ?? element?.method ?? "GET" %}
 {% let path = meta?.path ?? element?.path ?? element?.qualified_name ?? element?.name ?? "/" %}
 <div class="chirp-theme-docs-layout{{ ' chirp-theme-docs-layout--with-toc' if toc_items | length > 0 else '' }}" data-chirp-theme-surface="api-reference">
-<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar" role="navigation" aria-label="API reference navigation">
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar">
   {% include 'partials/docs-nav.html' %}
 </aside>
 <div class="chirp-theme-docs-layout__main">

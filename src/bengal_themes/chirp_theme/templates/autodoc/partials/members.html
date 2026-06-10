@@ -4,25 +4,65 @@
 {% from "chirpui/params_table.html" import params_table %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
 
+{#-
+  Renders a class/module's documented members (methods, functions, attributes).
+
+  Field paths verified against Bengal's autodoc Python extractor
+  (bengal/autodoc/extractors/python/extractor.py): a function/method member
+  carries its detail under `member.metadata.*`:
+    signature       -> metadata.signature   (string)
+    parameters      -> metadata.args         (list of {name, type, default, docstring})
+    is_async        -> metadata.is_async     (bool)
+    is_property     -> metadata.is_property  (bool)
+    is_classmethod  -> metadata.is_classmethod (bool)
+    is_staticmethod -> metadata.is_staticmethod (bool)
+  Deprecation is the DocElement-level `member.deprecated` (a notice string),
+  not a metadata flag. The arg dicts use `docstring` for the per-param prose,
+  which we remap to params_table's `description` column below.
+
+  Returns / Raises blocks are intentionally NOT wired here (see #159).
+-#}
+
 {% let member_items = element?.children ?? [] %}
 {% if member_items | length > 0 %}
 {% call accordion(name="reference-members", cls="chirp-theme-reference-members") %}
   {% for member in member_items %}
   {% let member_name = member?.name ?? member?.title ?? "Member" %}
+  {% let member_meta = member?.metadata ?? {} %}
+  {% let member_type = member?.element_type ?? member?.type ?? "member" %}
+  {% let member_signature = member_meta?.signature ?? member?.signature ?? none %}
+  {% let member_args = member_meta?.args ?? member_meta?.parameters ?? [] %}
+  {% let member_param_rows = [{"name": arg.get("name", ""), "type": arg.get("type", "") ?? "", "default": arg.get("default", "") ?? "", "description": arg.get("docstring", "") ?? ""} for arg in member_args] %}
+  {% let member_is_async = member_meta?.is_async ?? false %}
+  {% let member_is_property = member_meta?.is_property ?? false %}
+  {% let member_is_classmethod = member_meta?.is_classmethod ?? false %}
+  {% let member_is_staticmethod = member_meta?.is_staticmethod ?? false %}
+  {% let member_deprecated = member?.deprecated ?? none %}
   {% call accordion_item(member_name, open=loop.first, cls="chirp-theme-reference-member") %}
     {% slot header_actions %}
-    {{ badge(member?.element_type ?? member?.type ?? "member", variant="muted") }}
+    {{ badge(member_type, variant="muted") }}
+    {% if member_is_async %}{{ badge("async", variant="info") }}{% end %}
+    {% if member_is_property %}{{ badge("property", variant="muted") }}{% end %}
+    {% if member_is_classmethod %}{{ badge("classmethod", variant="muted") }}{% end %}
+    {% if member_is_staticmethod %}{{ badge("staticmethod", variant="muted") }}{% end %}
+    {% if member_deprecated %}{{ badge("deprecated", variant="error") }}{% end %}
     {% end %}
     <div id="{{ member_name }}" class="chirp-theme-reference-member__body">
-      {% if member?.signature ?? none %}
-      {{ code_block(member.signature, cls="chirp-theme-reference-member__signature") }}
+      {% if member_signature %}
+      {{ code_block(member_signature, cls="chirp-theme-reference-member__signature", copy=true) }}
+      {% end %}
+      {% if member_deprecated %}
+      <p class="chirp-theme-reference-member__deprecated chirpui-text-muted chirpui-font-sm">
+        <strong>Deprecated:</strong> {{ member_deprecated }}
+      </p>
       {% end %}
       {% if member?.description ?? none %}
       {% call rendered_content(compact=true, cls="chirp-theme-reference-member__description") %}{{ member.description |> markdownify |> safe }}{% end %}
       {% end %}
-      {% let member_params = member?.metadata?.parameters ?? member?.metadata?.args ?? [] %}
-      {% if member_params | length > 0 %}
-      {{ params_table(member_params, title="Parameters", cls="chirp-theme-reference-member__params") }}
+      {% if member_param_rows | length > 0 %}
+      {{ params_table(member_param_rows, title="Parameters", cls="chirp-theme-reference-member__params") }}
+      {% elif member_signature %}
+      <p class="chirp-theme-reference-member__no-params chirpui-text-muted chirpui-font-sm">No parameters.</p>
       {% end %}
     </div>
   {% end %}

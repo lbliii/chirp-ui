@@ -207,8 +207,8 @@ test-fast = { cmd = "pytest tests/ -x -q --timeout=10", help = "Fast feedback lo
 test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov=bengal_themes --cov-report=term-missing", help = "Run tests with coverage" }
 test-js = { cmd = "npm test", help = "Run JavaScript island helper tests with Vitest" }
 test-browser = { cmd = "pytest tests/browser/ -q --timeout=30 --override-ini='addopts='", help = "Run browser integration tests (requires: uv sync --group browser && playwright install chromium)" }
-test-browser-chrome-check = { cmd = "pytest tests/browser/test_rail_to_tray_chrome.py tests/browser/test_application_chrome_gauntlet.py tests/browser/test_bengal_docs_chrome.py -q --timeout=30 --override-ini='addopts='", help = "Run focused application chrome browser proof against built docs output" }
-test-browser-chrome = { sequence = ["docs-build-all", "test-browser-chrome-check"], help = "Build docs output, then run focused application chrome browser proof" }
+test-browser-chrome-check = { cmd = "pytest tests/browser/test_rail_to_tray_chrome.py tests/browser/test_application_chrome_gauntlet.py tests/browser/test_bengal_docs_chrome.py tests/browser/test_docs_nav_labels.py tests/browser/test_docs_landmarks_a11y.py -q --timeout=30 --override-ini='addopts='", help = "Run focused application chrome + docs-nav/landmark a11y browser proof against built docs output" }
+test-browser-chrome = { sequence = ["docs-build-all", "test-browser-chrome-check"], help = "Build docs output, then run focused application chrome + docs-chrome a11y browser proof" }
 ci-browser = { sequence = ["test-browser"], help = "Browser integration tests (release gate)" }
 
 # Type Checking
@@ -220,6 +220,14 @@ lint = { cmd = "ruff check .", help = "Run ruff linter" }
 lint-fix = { cmd = "ruff check . --fix", help = "Run ruff linter with auto-fix" }
 format = { cmd = "ruff format .", help = "Format code with ruff" }
 format-check = { cmd = "ruff format . --check", help = "Check formatting" }
+# Advisory JS lint (biome) over the Bengal theme's assets/js. NOT wired into
+# `ci`/`check` on purpose: the theme JS still carries ~305 advisory warnings
+# (useArrowFunction/useTemplate/noUnusedVariables, etc.) that are not yet fixed.
+# `noUndeclaredVariables` IS an error, so this fails on a genuinely-undefined
+# global (e.g. a missing CDN library) while staying green on style debt.
+# Run via `uv run poe lint-js`; CI runs it in a separate non-required job.
+lint-js = { cmd = "npx --yes @biomejs/biome@1.9.4 check src/bengal_themes/chirp_theme/assets/js", help = "Advisory biome lint over the Bengal theme assets/js (not part of `poe ci`)" }
+lint-js-fix = { cmd = "npx --yes @biomejs/biome@1.9.4 check --write src/bengal_themes/chirp_theme/assets/js", help = "Apply biome's safe auto-fixes to the Bengal theme assets/js" }
 build-css = { cmd = "python scripts/build_chirpui_css.py", help = "Concat CSS partials into chirpui.css" }
 build-css-check = { cmd = "python scripts/build_chirpui_css.py --check", help = "Fail if chirpui.css is stale relative to partials" }
 build-manifest = { cmd = "python scripts/build_manifest.py", help = "Emit src/chirp_ui/manifest.json from the registry" }
@@ -227,6 +235,15 @@ build-manifest-check = { cmd = "python scripts/build_manifest.py --check", help 
 build-docs = { cmd = "python scripts/build_component_options.py", help = "Regenerate docs/COMPONENT-OPTIONS.md API reference section from the manifest" }
 build-docs-check = { cmd = "python scripts/build_component_options.py --check", help = "Fail if docs/COMPONENT-OPTIONS.md is stale relative to the manifest" }
 verify-generated = { sequence = ["build-css-check", "build-manifest-check", "build-docs-check"], help = "Verify committed generated CSS, manifest, and component reference docs are fresh" }
+# Fast theme guards (no site build): template reachability (no orphan partials)
+# + packaging/icon-reference (no shipped cruft, no dangling icon names).
+theme-guards = { cmd = "pytest tests/test_template_reachability.py tests/test_packaging.py -q", help = "Theme template-reachability + packaging/icon-reference guards" }
+# Pre-deploy gate for the GitHub Pages workflow: prove the committed generated
+# artifacts are fresh AND the theme is structurally sane before a public build.
+# Kept cheap on purpose (no full test suite, no JS lint) so the cached Pages
+# build flow is preserved. NOT wired into `ci`/`check` — those run the broader
+# suite already; this is the deploy-path entry point.
+deploy-gate = { sequence = ["verify-generated", "theme-guards"], help = "Gate the Pages deploy on generated-artifact freshness + theme structural guards" }
 escape-audit = { cmd = "python scripts/escape_audit.py", help = "Print Kida escape audit for trusted markup sites" }
 css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS parses cleanly" }
 css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }
@@ -239,7 +256,30 @@ docs-build = { cmd = "python scripts/docs_site.py build", help = "Build docs sit
 docs-assemble-showcase = { cmd = "bash scripts/assemble-static-showcase.sh site/public/showcase", help = "Copy static showcase into site/public/showcase (after docs-build)" }
 docs-emit-manifest.shell = "mkdir -p site/public && python -m chirp_ui.manifest --json > site/public/chirpui.manifest.json"
 docs-emit-manifest.help = "Emit chirpui component manifest to site/public/chirpui.manifest.json"
-docs-build-all = { sequence = ["docs-build", "docs-assemble-showcase", "docs-emit-manifest"], help = "Build Bengal site, assemble static showcase, and emit manifest" }
+showcase-guard.shell = """
+out="site/public/showcase/index.html"
+if [ ! -f "$out" ]; then
+  echo "ERROR: $out missing — the static showcase was not assembled." >&2
+  echo "       Run 'uv run poe docs-build-all' (docs-build + docs-assemble-showcase)." >&2
+  exit 1
+fi
+if grep -Fq 'injected here after' "$out" || grep -Fq 'No section content' "$out"; then
+  echo "ERROR: $out still contains the placeholder/empty-section sentinel." >&2
+  echo "       The real gallery was not injected over the section index." >&2
+  echo "       The /showcase/ route would serve build-command placeholder text." >&2
+  echo "       Re-run 'uv run poe docs-assemble-showcase' AFTER the Bengal build." >&2
+  exit 1
+fi
+if ! grep -Fq 'Complete Component Showcase' "$out"; then
+  echo "ERROR: $out does not contain the assembled gallery marker." >&2
+  echo "       Expected the static showcase ('Complete Component Showcase')," >&2
+  echo "       but found a fallback page. Run 'uv run poe docs-assemble-showcase'." >&2
+  exit 1
+fi
+echo "✓ /showcase/ serves the assembled gallery (no placeholder sentinels)"
+"""
+showcase-guard.help = "Fail if the published showcase HTML still serves the placeholder instead of the gallery"
+docs-build-all = { sequence = ["docs-build", "docs-assemble-showcase", "docs-emit-manifest", "showcase-guard"], help = "Build Bengal site, assemble static showcase, emit manifest, and guard against placeholder leakage" }
 
 # CI Pipeline
 ci = { sequence = [
@@ -263,6 +303,14 @@ check = { sequence = [
     "css-transition-check",
     "ty",
 ], help = "Quick check (no tests)" }
+# Pre-PR gate a contributor runs before opening a PR. Runs the full blocking
+# `ci` gate (lint/format/generated-freshness/css/ty/unit/js) AND the docs-chrome
+# browser/a11y smoke (`test-browser-chrome` = docs-build-all + the focused
+# chrome + docs-nav/landmark a11y Playwright proof). The browser suite is
+# intentionally NOT part of `ci` (it must stay fast + green for unit gating and
+# needs `--group browser` + a chromium install), so this task layers it on top.
+# CI runs the same browser smoke in a separate, NON-REQUIRED job.
+pre-pr = { sequence = ["ci", "test-browser-chrome"], help = "Pre-PR gate: full ci + docs-chrome browser/a11y smoke (browser suite is not in ci)" }
 
 # Changelog
 changelog = { cmd = "towncrier build --yes", help = "Build changelog from fragments" }

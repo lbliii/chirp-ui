@@ -4,7 +4,7 @@
 PYTHON_VERSION ?= 3.14t
 VENV_DIR ?= .venv
 
-.PHONY: all help setup install test test-js test-cov test-browser lint lint-fix format ty clean shell build publish release gh-release release-preflight showcase showcase-public
+.PHONY: all help setup install test test-js test-cov test-browser pre-pr lint lint-fix format ty clean shell build publish release gh-release release-preflight showcase showcase-public showcase-guard
 
 all: help
 
@@ -19,6 +19,7 @@ help:
 	@echo "  make test       - Run the test suite"
 	@echo "  make test-cov   - Run tests with coverage report"
 	@echo "  make test-browser - Run browser integration tests (Playwright)"
+	@echo "  make pre-pr     - Pre-PR gate: full ci + docs-chrome browser/a11y smoke"
 	@echo "  make lint       - Run ruff linter"
 	@echo "  make lint-fix   - Run ruff linter with auto-fix"
 	@echo "  make format     - Run ruff formatter"
@@ -30,6 +31,7 @@ help:
 	@echo "  make release-preflight - Verify committed manifest.json + chirpui.css are fresh"
 	@echo "  make showcase         - Assemble static showcase into _site/ for preview"
 	@echo "  make showcase-public  - Copy showcase into site/public/showcase/ (after bengal build)"
+	@echo "  make showcase-guard   - Fail if the published showcase still serves the placeholder"
 	@echo "  make clean      - Remove venv, build artifacts, and caches"
 	@echo "  make shell      - Start a shell with the environment activated"
 
@@ -56,6 +58,13 @@ test-js:
 
 test-browser:
 	uv run --group browser pytest tests/browser/ -q --timeout=30 --override-ini='addopts='
+
+# Pre-PR gate a contributor runs before opening a PR: the full blocking `ci`
+# gate plus the docs-chrome browser/a11y smoke (docs-build-all + focused chrome
+# + docs-nav/landmark axe proof). The browser suite is intentionally NOT in
+# `poe ci`; CI runs the same smoke in a separate, non-required job.
+pre-pr:
+	uv run --group browser poe pre-pr
 
 lint:
 	@echo "Running ruff linter..."
@@ -139,6 +148,31 @@ showcase:
 # Run after: uv run bengal build --source site
 showcase-public:
 	@bash scripts/assemble-static-showcase.sh "$(CURDIR)/site/public/showcase"
+	@$(MAKE) --no-print-directory showcase-guard
+
+# Fail if the published showcase HTML still serves the build-command placeholder
+# (section index "No section content yet" + "injected here after ...") instead of
+# the assembled gallery. Guards the /showcase/ home-page CTA against regressions.
+showcase-guard:
+	@out="$(CURDIR)/site/public/showcase/index.html"; \
+	if [ ! -f "$$out" ]; then \
+		echo "ERROR: $$out missing — the static showcase was not assembled." >&2; \
+		echo "       Run 'make showcase-public' after 'uv run bengal build --source site'." >&2; \
+		exit 1; \
+	fi; \
+	if grep -Fq 'injected here after' "$$out" || grep -Fq 'No section content' "$$out"; then \
+		echo "ERROR: $$out still contains the placeholder/empty-section sentinel." >&2; \
+		echo "       The real gallery was not injected over the section index;" >&2; \
+		echo "       the /showcase/ route would serve build-command placeholder text." >&2; \
+		exit 1; \
+	fi; \
+	if ! grep -Fq 'Complete Component Showcase' "$$out"; then \
+		echo "ERROR: $$out does not contain the assembled gallery marker." >&2; \
+		echo "       Expected the static showcase but found a fallback page." >&2; \
+		echo "       Run 'make showcase-public' after the Bengal build." >&2; \
+		exit 1; \
+	fi; \
+	echo "✓ /showcase/ serves the assembled gallery (no placeholder sentinels)"
 
 # =============================================================================
 # Cleanup

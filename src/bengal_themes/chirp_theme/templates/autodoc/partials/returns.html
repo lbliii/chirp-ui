@@ -1,12 +1,24 @@
 {% from "chirpui/callout.html" import callout %}
+{% from "chirpui/code.html" import code %}
 
-{% let returns = element?.metadata?.returns ?? element?.returns ?? none %}
-{% if returns %}
+{#-
+  Return value block for a documented Python function/method.
+
+  Field paths verified against Bengal's autodoc Python extractor
+  (bengal/autodoc/extractors/python/extractor.py): a function element carries
+    return type annotation -> metadata.returns        (string, e.g. "None")
+    return docstring prose  -> metadata.parsed_doc.returns (string)
+  `metadata.returns` is the *type*, not prose, so the prose comes from the
+  parsed docstring. A bare passed-in `returns` mapping with a `description`
+  key is still honored for non-extractor callers.
+-#}
+
+{% let returns = returns ?? element?.returns ?? none %}
+{% let return_type = element?.metadata?.returns ?? none %}
+{% let return_prose = returns?.description ?? returns ?? element?.metadata?.parsed_doc?.returns ?? none %}
+{% if return_prose or return_type %}
 {% call callout(variant="neutral", title="Returns", cls="chirp-theme-reference-returns") %}
-{% if returns?.description %}
-{{ returns.description | safe }}
-{% else %}
-{{ returns | safe }}
-{% end %}
+{% if return_type %}<p class="chirp-theme-reference-returns__type">{{ code(return_type) }}</p>{% end %}
+{% if return_prose %}{{ return_prose | safe }}{% end %}
 {% end %}
 {% end %}

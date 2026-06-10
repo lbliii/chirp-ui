@@ -1,0 +1,80 @@
+name: Browser Smoke (non-required)
+
+# Non-required docs-chrome browser/a11y smoke gate.
+#
+# `poe ci` (the required `test` job in tests.yml) intentionally does NOT run the
+# Playwright browser suite (tests/browser/): it needs `--group browser` + a
+# chromium install and is too slow for the fast unit gate. That gap let a
+# nested-interactive a11y defect and a code-block double-wrap ship and surface
+# only on manual review. This standalone job arms the smoke:
+# `poe test-browser-chrome` = docs-build-all + the focused chrome + docs-nav
+# folder-toggle + landmark/axe a11y proof.
+#
+# This job is deliberately STANDALONE and NON-REQUIRED — it is not added to any
+# required-status list / branch protection. It surfaces regressions on PRs that
+# touch the theme, browser tests, or the docs site without blocking merges that
+# are unrelated to docs chrome.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/bengal_themes/**"
+      - "tests/browser/**"
+      - "site/**"
+      - "src/chirp_ui/templates/**"
+      - ".github/workflows/browser-smoke.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/bengal_themes/**"
+      - "tests/browser/**"
+      - "site/**"
+      - "src/chirp_ui/templates/**"
+      - ".github/workflows/browser-smoke.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: browser-smoke-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.14t"
+
+      - name: Cache uv dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/uv
+          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            uv-${{ runner.os }}-
+
+      - name: Install dependencies (docs + browser)
+        run: uv sync --group docs --group browser
+        env:
+          PYTHON_GIL: "0"
+
+      - name: Install Playwright Chromium
+        run: uv run playwright install --with-deps chromium
+
+      - name: Run docs-chrome browser/a11y smoke
+        # poe test-browser-chrome = docs-build-all + test-browser-chrome-check
+        # (focused chrome + docs-nav folder-toggle + landmark/axe a11y proof).
+        # BENGAL_ENV=local forces a root baseurl ("") for the built test site:
+        # the browser fixtures serve site/public from "/", so a production
+        # baseurl ("/chirp-ui", auto-selected when CI=true) would 404 every
+        # asset → unstyled pages → false layout/overflow failures. Deployment
+        # still uses the production baseurl via the Pages workflow.
+        run: uv run poe test-browser-chrome
+        env:
+          CI: true
+          BENGAL_ENV: local
+          PYTHON_GIL: "0"

@@ -414,6 +414,99 @@
 }
 
 /* =============================================================================
+   RELEASE HISTORY (/releases/)
+   Differentiates feature (minor, x.y.0) vs patch releases so 18+ entries scan
+   as a timeline. Layers onto the chirp-ui timeline; uses theme tokens only.
+   ============================================================================= */
+
+/* Tighten the run so many releases scan vertically without feeling sparse. */
+.chirp-theme-release-timeline {
+  --chirp-release-accent: var(--color-text-tertiary);
+}
+
+.chirp-theme-release-entry {
+  position: relative;
+  padding-inline-start: var(--space-4);
+  border-inline-start: 2px solid color-mix(in srgb, var(--chirp-release-accent) 22%, transparent);
+  transition: border-color var(--transition-fast) var(--ease-out);
+}
+
+/* The version is the scan anchor — give it weight and a tabular feel. */
+.chirp-theme-release-entry .chirpui-timeline__title,
+.chirp-theme-release-entry .chirpui-timeline__title-link {
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--letter-spacing-tight, -0.01em);
+}
+
+.chirp-theme-release-entry .chirpui-timeline__date {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-tertiary);
+}
+
+/* The timeline dot carries the tier color so the rail itself reads the cadence. */
+.chirp-theme-release-entry .chirpui-timeline__dot {
+  background: color-mix(in srgb, var(--chirp-release-accent) 70%, var(--color-bg-elevated));
+  border-color: color-mix(in srgb, var(--chirp-release-accent) 50%, var(--color-border));
+}
+
+/* Feature (minor) releases — the milestones. Brand accent + brighter title. */
+.chirp-theme-release-entry--feature {
+  --chirp-release-accent: var(--color-primary);
+}
+
+.chirp-theme-release-entry--feature .chirpui-timeline__title-link {
+  color: var(--color-text-primary);
+}
+
+/* Patch releases recede: quieter rail, secondary title. */
+.chirp-theme-release-entry--patch {
+  --chirp-release-accent: var(--color-text-tertiary);
+}
+
+.chirp-theme-release-entry--patch .chirpui-timeline__title-link {
+  color: var(--color-text-secondary);
+}
+
+/* Latest — the "you are here" cue. */
+.chirp-theme-release-entry--latest {
+  --chirp-release-accent: var(--color-success);
+  border-inline-start-color: color-mix(in srgb, var(--color-success) 55%, transparent);
+}
+
+.chirp-theme-release-entry--latest .chirpui-timeline__dot {
+  background: var(--color-success);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-success) 18%, transparent);
+}
+
+/* One-line highlight — readable body copy, capped to a single scan line. */
+.chirp-theme-release-entry__highlight {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug, 1.4);
+  text-wrap: pretty;
+}
+
+/* Compact, inline install row inside each card. */
+.chirp-theme-release-entry__install {
+  margin-top: var(--space-2);
+}
+
+.chirp-theme-release-entry__install .chirpui-install-snippet__command {
+  font-size: var(--text-xs);
+}
+
+/* Single release page: keep the install block tidy under the hero. */
+.chirp-theme-release-single__install {
+  --chirp-release-accent: var(--color-primary);
+}
+
+.chirp-theme-release-hero__meta {
+  flex-wrap: wrap;
+}
+
+/* =============================================================================
    DARK MODE
    ============================================================================= */
 

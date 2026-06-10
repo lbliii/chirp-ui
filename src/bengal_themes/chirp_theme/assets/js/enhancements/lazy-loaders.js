@@ -203,10 +203,19 @@
         }, { timeout: 3000 });
     }
 
-    // Initialize all loaders
-    loadTabulator(); // Tables load immediately (typically above-fold)
-    setupIntersectionObserver(); // Mermaid & D3 load on scroll
-    schedulePreloads(); // Hint browser to preload during idle
+    // Dispatch: only do work for feature hooks that are actually in the DOM.
+    // base.html gates this script behind theme.features and injects
+    // BENGAL_LAZY_ASSETS, but a gated page may still have no diagrams/graphs/
+    // tables — short-circuit so we never build an observer or preload for nothing.
+    const hasTables = !!document.querySelector('.bengal-data-table-wrapper');
+    const hasDiagrams = !!document.querySelector('.mermaid');
+    const hasGraphs = !!document.querySelector('.graph-minimap, .graph-contextual, [data-graph]');
+
+    if (hasTables) loadTabulator(); // Tables load immediately (typically above-fold)
+    if (hasDiagrams || hasGraphs) {
+        setupIntersectionObserver(); // Mermaid & D3 load on scroll
+        schedulePreloads(); // Hint browser to preload during idle
+    }
 
     // Export for debugging
     window.BENGAL_LAZY_LOADERS = {

@@ -66,7 +66,6 @@ REQUIRED_PARTIALS = (
     "partials/navigation-components.html",
     "partials/docs-nav.html",
     "partials/docs-toc-sidebar.html",
-    "partials/page-hero.html",
     "partials/search-modal.html",
     "partials/theme-primitives.html",
     "partials/theme-controls.html",
@@ -164,6 +163,31 @@ REQUIRED_REFERENCE_HUB_TEMPLATES = (
 )
 ASSET_ATTR_RE = re.compile(r"""(?:href|src|content)\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+))""")
 CSS_IMPORT_RE = re.compile(r"""@import\s+url\(['"]?([^'")]+\.css)['"]?\)""")
+
+
+def _unwrap_theme_layer(css: str) -> str:
+    """Strip the outer ``@layer chirp-theme { ... }`` wrapper for content assertions.
+
+    The theme CSS now lives entirely inside a single ``@layer chirp-theme`` block
+    (the cascade contract that lets the theme restyle the chirp-ui baseline while
+    staying downstream-overridable). The wrapper indents every rule by two spaces.
+    Tests that assert exact block formatting (``.selector {\\n  decl;``) describe the
+    *authored* rule, not the layer wrapper, so we de-indent the layer body by two
+    spaces before matching. Substring/selector-presence assertions are unaffected.
+    """
+    marker = "@layer chirp-theme {"
+    start = css.find(marker)
+    if start == -1:
+        return css
+    body_start = start + len(marker)
+    end = css.rfind("}")
+    if end <= body_start:
+        return css
+    body = css[body_start:end]
+    deindented = "\n".join(
+        line[2:] if line.startswith("  ") else line for line in body.splitlines()
+    )
+    return deindented
 
 
 def _prefer_workspace_bengal() -> None:
@@ -322,7 +346,17 @@ def test_chirp_theme_literal_template_asset_urls_exist() -> None:
         text = resource.read_text(encoding="utf-8")
         referenced.update(asset_pattern.findall(text))
 
-    missing = sorted(path for path in referenced if not (assets_root / path).is_file())
+    # Bengal generates the display-font stylesheet and woff2 weights at build
+    # time from site fonts config (fonts.yaml: fonts.display). They are not
+    # committed source assets, so exclude them from the source-asset check.
+    def _is_generated(path: str) -> bool:
+        return path == "fonts.css" or (path.startswith("fonts/") and path.endswith(".woff2"))
+
+    missing = sorted(
+        path
+        for path in referenced
+        if not _is_generated(path) and not (assets_root / path).is_file()
+    )
 
     assert "css/style.css" in referenced
     assert "js/enhancements/action-bar.js" in referenced
@@ -443,7 +477,10 @@ def test_chirp_theme_theme_controls_are_appearance_only() -> None:
     assert "bengal-palette" in base
     assert "bengal-palette" in theme_js
     assert "removeItem('bengal-palette')" in base
-    assert "removeItem('bengal-palette')" in theme_js
+    # theme.js purges the legacy palette key through the guarded storage
+    # wrapper (no raw localStorage in the module), so the cleanup reads as
+    # safeStorage.remove('bengal-palette') rather than a direct removeItem.
+    assert "remove('bengal-palette')" in theme_js
 
 
 def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
@@ -457,7 +494,7 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
         encoding="utf-8"
     )
     search_modal = (templates_root / "partials" / "search-modal.html").read_text(encoding="utf-8")
-    inline_search = (templates_root / "partials" / "search.html").read_text(encoding="utf-8")
+    search_page = (templates_root / "search.html").read_text(encoding="utf-8")
     toc_sidebar = (templates_root / "partials" / "docs-toc-sidebar.html").read_text(
         encoding="utf-8"
     )
@@ -496,9 +533,8 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
     assert "window.BengalSearchModal" in search_js
     assert "#nav-search-trigger" in search_js
 
-    assert 'id="search-container"' in inline_search
-    assert 'data-variant="{{ variant }}"' in inline_search
-    assert 'id="search-input"' in inline_search
+    assert 'id="search-input"' in search_page
+    assert 'data-chirp-theme-surface="search"' in search_page
     assert "document.getElementById('search-input')" in search_js
 
     assert 'id="mobile-nav-dialog"' in base
@@ -521,7 +557,7 @@ def test_chirp_theme_interactive_control_hooks_stay_aligned() -> None:
         templates_root / "partials" / "components" / "blog-share-dropdown.html"
     ).read_text(encoding="utf-8")
     assert "'data-action': 'copy-url'" in (
-        templates_root / "partials" / "page-hero" / "_macros.html"
+        templates_root / "partials" / "components" / "social-share.html"
     ).read_text(encoding="utf-8")
     assert "querySelectorAll('[popovertarget]')" in action_bar_js
     assert "closest('[data-action^=\"copy\"]')" in action_bar_js
@@ -652,7 +688,7 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     templates_root = package_root / "templates"
     assets_root = package_root / "assets"
     base = (templates_root / "base.html").read_text(encoding="utf-8")
-    css = (assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8")
+    css = _unwrap_theme_layer((assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8"))
     style = (assets_root / "css" / "style.css").read_text(encoding="utf-8")
 
     assert 'from "chirpui/navbar.html" import navbar, navbar_link, navbar_dropdown' in base
@@ -737,9 +773,8 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     page = (templates_root / "page.html").read_text(encoding="utf-8")
     blog_shell = (templates_root / "blog" / "shell.html").read_text(encoding="utf-8")
     section_index = (templates_root / "index.html").read_text(encoding="utf-8")
-    page_hero_partial = (templates_root / "partials" / "page-hero.html").read_text(encoding="utf-8")
     page_actions = (templates_root / "partials" / "page-actions.html").read_text(encoding="utf-8")
-    css = (assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8")
+    css = _unwrap_theme_layer((assets_root / "css" / "chirp-theme.css").read_text(encoding="utf-8"))
     interactive_css = (assets_root / "css" / "components" / "interactive.css").read_text(
         encoding="utf-8"
     )
@@ -760,7 +795,11 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert 'from "partials/empty-state.html" import empty_state' not in not_found
     assert ".chirp-theme-search__panel" in css
     assert ".chirp-theme-error__panel" in css
-    assert "chirp-theme-docs-layout__hero chirp-theme-doc-hero" in page_hero_partial
+    # The bespoke doc hero is now composed via the chirpui page_hero macro with a
+    # theme cls (the old partials/page-hero.html + page-hero/_macros.html are gone).
+    assert "chirp-theme-docs-layout__hero chirp-theme-doc-hero" in doc_list
+    assert "chirp-theme-docs-layout__hero chirp-theme-doc-hero" in doc_single
+    assert ".chirp-theme-page-hero" in css
     assert "partials/page-actions.html" in doc_list
     assert "partials/page-actions.html" in doc_single
     assert "page_actions(page)" in doc_list
@@ -770,16 +809,14 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert 'data-action="copy-llm-txt"' in page_actions
     assert 'data-ai="{{ ai.id }}"' in page_actions
     assert "ensure_trailing_slash(page_url) ~ 'index.txt'" in page_actions
-    assert "cls='page-hero page-hero--chirp'" not in page_hero_partial
-    page_hero_macros = (templates_root / "partials" / "page-hero" / "_macros.html").read_text(
-        encoding="utf-8"
-    )
+    # The legacy flat page-hero markup must not reappear in the doc templates that
+    # now drive the hero through the chirpui page_hero macro.
+    assert "page-hero--chirp" not in doc_list
+    assert "page-hero--chirp" not in doc_single
     navigation = (templates_root / "partials" / "navigation-components.html").read_text(
         encoding="utf-8"
     )
     docs_nav = (templates_root / "partials" / "docs-nav.html").read_text(encoding="utf-8")
-    assert "chirp-theme-page-hero" in page_hero_macros
-    assert 'class="page-hero' not in page_hero_macros
     assert "chirpui-pagination chirp-theme-pagination" in navigation
     assert "section-navigation" not in navigation
     assert "subsection-card gradient-border fluid-combined" not in navigation
@@ -816,7 +853,28 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "chirp-theme-doc-catalog-rail__count" not in docs_nav
     assert "chirp-theme-docs-nav__link--{{ item_kind }}" in docs_nav
     assert "chirp-theme-docs-nav__branch-link" not in docs_nav
-    assert "{% if is_branch_active %} open{% end %}" in docs_nav
+    # Disclosure section is an ALWAYS-VISIBLE header row, NOT a native
+    # <details>/<summary>. The folder is a real <button> (`__toggle`) and the
+    # navigable section label is its SIBLING <a> (`__summary-link`) — neither
+    # nests in the other, so axe-core's `nested-interactive` stays clean. The
+    # server seeds aria-expanded from is_branch_active so the active trail
+    # starts expanded; JS mirrors that into the children region's visibility.
+    # The folder glyph swaps closed→open off the button's aria-expanded state.
+    assert "<details " not in docs_nav
+    assert "chirp-theme-docs-nav__section-header" in docs_nav
+    assert "chirp-theme-docs-nav__section--has-toggle" in docs_nav
+    assert 'class="chirp-theme-docs-nav__toggle"' in docs_nav
+    assert 'type="button"' in docs_nav
+    assert "aria-expanded=\"{{ 'true' if is_branch_active else 'false' }}\"" in docs_nav
+    assert "aria-controls=" in docs_nav
+    assert "chirp-theme-docs-nav__folder--closed" in docs_nav
+    assert "chirp-theme-docs-nav__folder--open" in docs_nav
+    assert "icon('folder-open'" in docs_nav
+    # No native disclosure markup or caret/chevron control.
+    assert 'chirp-theme-docs-nav__summary"' not in docs_nav
+    assert "icon('caret-right'" not in docs_nav
+    assert "chirp-theme-docs-nav__toggle-icon" not in docs_nav
+    assert "{% if is_branch_active %} open{% end %}" not in docs_nav
     assert "{{ item_kind_label }}" not in docs_nav
     assert "chirp-theme-release-index" in section_index
     assert 'sort(attribute="metadata.date,title", reverse=true)' in section_index
@@ -875,7 +933,8 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert ".chirp-theme-docs-nav__link--component .chirp-theme-docs-nav__type-icon" in css
     assert ".chirp-theme-docs-nav__summary-link" in css
     assert ".chirp-theme-docs-nav__summary-copy" in css
-    assert ".chirp-theme-docs-nav__section--depth-1.is-active" in css
+    assert ".chirp-theme-docs-nav__section-header" in css
+    assert ".chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header" in css
     assert ".chirp-theme-docs-nav__root-leaf" in css
     assert '.chirp-theme-docs-nav__root-leaf[aria-current="page"]' in css
     assert ".chirp-theme-page-actions__trigger" in css
@@ -1119,7 +1178,10 @@ def test_chirp_theme_learning_templates_use_chirpui_patterns() -> None:
     assert "partials/components/post-card.html" in combined
     assert "chirp-theme-learning-index" in combined
     assert "<script" not in combined
-    assert "track-card" not in combined
+    # Forbid the legacy un-namespaced `track-card` class while allowing the
+    # flagship `chirp-theme-track-card` BEM block (#140 Tracks flagship).
+    assert 'class="track-card' not in combined
+    assert " track-card " not in combined
     assert "tutorial-card" not in combined
     assert "notebook-cell" not in combined
     assert "card mb-4" not in combined
@@ -1585,8 +1647,16 @@ for logical_path in standalone_asset_entries:
     for candidate in {logical_path, f"assets/{normalized_path}", f"assets/{filename}"}:
         if candidate in referenced_assets and (site.output_dir / candidate).is_file():
             stable_library_assets.add(candidate)
+# Social / Open Graph cards (assets/social/*) are deliberately served at a
+# STABLE, unfingerprinted URL because social scrapers cache by URL — a hashed
+# filename would break shared cards on every rebuild. They are therefore
+# referenced raw and never appear in the fingerprint asset-manifest. Exclude
+# them from the manifest requirement; `missing_files` below still guarantees
+# the file is actually emitted to the build.
 missing_manifest_entries = [
-    path for path in missing_manifest_entries if path not in stable_library_assets
+    path
+    for path in missing_manifest_entries
+    if path not in stable_library_assets and not path.startswith("assets/social/")
 ]
 missing_files = sorted(
     asset_path for asset_path in referenced_assets if not (site.output_dir / asset_path).is_file()

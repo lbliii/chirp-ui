@@ -3,8 +3,10 @@
 {% from "chirpui/layout.html" import container %}
 {% from "chirpui/resource_index.html" import resource_index %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/card.html" import resource_card %}
 {% from "partials/navigation-components.html" import pagination %}
-{% from "partials/taxonomy-pages.html" import count_label, taxonomy_post_feed, term_resource_card %}
+{% from "partials/taxonomy-pages.html" import count_label, taxonomy_post_feed %}
 
 {% block content %}
 {% let page_title = page?.title ?? section?.title ?? title ?? "Archive" %}
@@ -42,7 +44,15 @@
     {% let sub_href = subsection?.href ?? "#" %}
     {% let sub_desc = subsection?.description ?? subsection?.params?.description ?? none %}
     {% let sub_count = subsection?.pages | length if subsection?.pages else 0 %}
-    {{ term_resource_card(sub_title, sub_href, sub_count, sub_desc, "page") }}
+    {% let sub_icon = subsection?.metadata?.icon ?? "folder" %}
+    {% call resource_card(sub_href, sub_title, description=sub_desc, cls="chirp-theme-taxonomy-card chirp-theme-taxonomy-card--section") %}
+      {% slot badges %}
+      <span class="chirpui-card__icon chirp-theme-taxonomy-card__mark" aria-hidden="true">{{ icon(sub_icon, size=18) }}</span>
+      {% end %}
+      {% slot footer %}
+      {{ badge(count_label(sub_count, "page"), variant="muted") }}
+      {% end %}
+    {% end %}
     {% end %}
     {% end %}
   {% end %}

@@ -3,7 +3,9 @@
 {% from "chirpui/layout.html" import container %}
 {% from "chirpui/resource_index.html" import resource_index %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
-{% from "partials/taxonomy-pages.html" import count_label, term_resource_card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/card.html" import resource_card %}
+{% from "partials/taxonomy-pages.html" import count_label %}
 
 {% block content %}
 {% let page_title = page?.title ?? "Tags" %}
@@ -33,7 +35,14 @@
     {% let tag_name = item?.name ?? item %}
     {% let tag_href = item?.href ?? tag_url(tag_name) %}
     {% let tag_count = item?.count ?? ((item.pages | length) if item?.pages else 0) %}
-    {{ term_resource_card(tag_name, tag_href, tag_count, "Content tagged " ~ tag_name, "post") }}
+    {% call resource_card(tag_href, tag_name, cls="chirp-theme-taxonomy-card chirp-theme-taxonomy-card--tag") %}
+      {% slot badges %}
+      <span class="chirpui-card__icon chirp-theme-taxonomy-card__mark" aria-hidden="true">{{ icon("tag", size=18) }}</span>
+      {% end %}
+      {% slot footer %}
+      {{ badge(count_label(tag_count, "post"), variant="muted") }}
+      {% end %}
+    {% end %}
     {% end %}
   {% end %}
 {% end %}

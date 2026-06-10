@@ -1,0 +1,43 @@
+{#- Shared learning/content index for chirp-theme.
+
+    One parameterized listing surface for the near-duplicate `*/list.html`
+    pages (tutorial, resume, changelog, notebook). Each caller differs only in
+    labels and feed shape, so they share this macro instead of cloning a
+    `resource_index` call per vertical.
+
+    Args:
+        title           Index heading (e.g. "Tutorials").
+        href            Section href, used as the search/filter action target.
+        subtitle        Lede under the heading.
+        items           Resolved list of child pages to render.
+        content         Optional rendered section body (markdown index page).
+        search_placeholder  Filter input placeholder.
+        results_title   Heading above the results region.
+        item_singular   Noun for the count label (e.g. "tutorial").
+        item_plural     Optional explicit plural (defaults to singular + "s").
+        empty_title     Empty-state heading.
+        empty_message   Empty-state prose.
+        layout          "grid" (resource cards) or "feed" (post-card stack).
+        card_kind       Card modifier + footer badge for grid layout.
+-#}
+{% from "chirpui/layout.html" import container %}
+{% from "chirpui/resource_index.html" import resource_index %}
+{% from "partials/learning-pages.html" import content_cards, learning_feed, rendered_body %}
+{% from "partials/taxonomy-pages.html" import count_label %}
+
+{% def learning_index(title, href, subtitle=none, items=none, content=none, search_placeholder="Filter...", results_title=none, item_singular="entry", item_plural=none, empty_title="Nothing here yet", empty_message="Entries appear here when published.", layout="grid", card_kind="page", cls="") %}
+{% let safe_items = items ?? [] %}
+{% let _layout = "grid" if layout == "grid" else "feed" %}
+{% let _results_title = results_title ?? title %}
+{% let _count = count_label(safe_items | length, item_singular, item_plural) %}
+{% call container(cls="chirp-theme-learning-page" ~ (" " ~ cls if cls else "")) %}
+  {% call resource_index(title, href, subtitle=subtitle, search_placeholder=search_placeholder, button_icon="magnifying-glass", results_title=_results_title, results_subtitle=_count, results_layout=("grid" if _layout == "grid" else "stack"), results_cols=3, has_results=safe_items | length > 0, empty_title=empty_title, empty_message=empty_message, cls="chirp-theme-learning-index") %}
+    {{ rendered_body(content) }}
+    {% if _layout == "grid" %}
+    {{ content_cards(safe_items, empty_message, card_kind) }}
+    {% else %}
+    {{ learning_feed(safe_items, empty_message) }}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}

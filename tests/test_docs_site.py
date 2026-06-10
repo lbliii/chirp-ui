@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import os
 import re
 import tomllib
@@ -9,6 +10,35 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOCS_SITE_SCRIPT = REPO_ROOT / "scripts" / "docs_site.py"
 PYPROJECT = REPO_ROOT / "pyproject.toml"
+THEME_BASE_TEMPLATE = (
+    REPO_ROOT / "src" / "bengal_themes" / "chirp_theme" / "templates" / "base.html"
+)
+THEME_AUTODOC_MEMBERS = (
+    REPO_ROOT
+    / "src"
+    / "bengal_themes"
+    / "chirp_theme"
+    / "templates"
+    / "autodoc"
+    / "partials"
+    / "members.html"
+)
+FONTS_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "fonts.yaml"
+SITE_PUBLIC = REPO_ROOT / "site" / "public"
+API_FILTERS_PAGE = SITE_PUBLIC / "api" / "filters" / "index.html"
+SITE_CONTENT = REPO_ROOT / "site" / "content"
+MENU_CONFIG = REPO_ROOT / "site" / "config" / "_default" / "menu.yaml"
+# #145 — every shipped template family needs live content so its route renders
+# instead of 404ing. Each tuple is (section dir, the type/template token its
+# _index.md must declare so Bengal resolves the family list template).
+DOGFOOD_FAMILIES = {
+    "blog": "type: blog",
+    "tutorial": "type: tutorial",
+    "changelog": "type: changelog",
+    "authors": "template: authors/list.html",
+    "resume": "template: resume/list.html",
+}
+VALID_SEARCH_PRELOAD_MODES = {"smart", "immediate", "lazy"}
 AGENT_SOURCE_INVENTORY = REPO_ROOT / "docs" / "agents" / "agent-source-inventory.md"
 AGENT_SOURCE_MAP = REPO_ROOT / "docs" / "agents" / "agent-source-map.md"
 AGENT_CURATED_SNIPPETS = REPO_ROOT / "docs" / "agents" / "agent-curated-snippets.md"
@@ -70,6 +100,33 @@ FORBIDDEN_OUTPUT_NAMES = (
     "sitemap.xml",
     "robots.txt",
 )
+
+# #165/#166 — on-site reference so users never leave for GitHub.
+THEME_TEMPLATES = REPO_ROOT / "src" / "bengal_themes" / "chirp_theme" / "templates"
+SHORTCODES_DIR = THEME_TEMPLATES / "shortcodes"
+DIRECTIVES_DIR = THEME_TEMPLATES / "directives"
+REFERENCE_DIR = SITE_CONTENT / "docs" / "reference"
+COMPONENTS_INDEX = SITE_CONTENT / "docs" / "components" / "_index.md"
+MANIFEST_JSON = REPO_ROOT / "src" / "chirp_ui" / "manifest.json"
+# The Markdown directive name differs from its template filename for child-cards.
+DIRECTIVE_TEMPLATE_TO_NAME = {"child_cards": "child-cards"}
+
+
+def _shipped_shortcode_names() -> set[str]:
+    return {p.stem for p in SHORTCODES_DIR.glob("*.html")}
+
+
+def _shipped_directive_names() -> set[str]:
+    return {DIRECTIVE_TEMPLATE_TO_NAME.get(p.stem, p.stem) for p in DIRECTIVES_DIR.glob("*.html")}
+
+
+def _manifest_public_categories() -> set[str]:
+    manifest = json.loads(MANIFEST_JSON.read_text(encoding="utf-8"))
+    return {
+        comp.get("category")
+        for comp in manifest["components"].values()
+        if comp.get("authoring") != "internal" and comp.get("category")
+    }
 
 
 def _load_docs_site_module():
@@ -477,3 +534,322 @@ def test_docs_build_tasks_do_not_override_ssg_agent_artifacts() -> None:
     assert "build_llm_endpoints" not in pyproject
     assert "docs-emit-llm" not in pyproject
     assert "docs-llm-endpoints" not in pyproject
+
+
+def _built_html_pages() -> list[Path]:
+    """Built index pages to assert head-meta correctness against (skip if unbuilt)."""
+    candidates = [SITE_PUBLIC / "index.html", SITE_PUBLIC / "search" / "index.html"]
+    return [path for path in candidates if path.is_file()]
+
+
+def test_base_template_links_fonts_css_when_display_font_configured() -> None:
+    """#135 — fonts.css must be linked, gated on a fonts-configured check, with
+    the above-the-fold Outfit weights preloaded as woff2 (font-display:swap is in
+    the generated stylesheet)."""
+    template = THEME_BASE_TEMPLATE.read_text(encoding="utf-8")
+
+    # The gate keys off the configured display font (fonts.yaml: fonts.display).
+    assert "config?.fonts?.display" in template
+    # Generated stylesheet is linked so var(--font-display) resolves to Outfit.
+    assert "asset_url('fonts.css')" in template
+    # 400 (body/headings) and 600 (section labels) are above the fold — preload both.
+    assert 'rel="preload"' in template
+    assert 'as="font"' in template
+    assert 'type="font/woff2"' in template
+    assert "asset_url('fonts/outfit-400.woff2')" in template
+    assert "asset_url('fonts/outfit-600.woff2')" in template
+    # crossorigin is required for font preloads to be reused by the @font-face fetch.
+    fonts_block = template[template.index("config?.fonts?.display") :]
+    fonts_block = fonts_block[: fonts_block.index("{% end %}")]
+    for line in fonts_block.splitlines():
+        if 'rel="preload"' in line and 'as="font"' in line:
+            assert "crossorigin" in line, line
+
+
+def test_fonts_config_defines_a_display_font() -> None:
+    """The fonts gate is only meaningful while a display font is configured."""
+    text = FONTS_CONFIG.read_text(encoding="utf-8")
+
+    # fonts.display: "Outfit:400,600,700" — the weights the preloads/stylesheet serve.
+    assert "display:" in text
+    assert "Outfit" in text
+
+
+def test_base_template_reads_real_search_preload_config_path() -> None:
+    """#139 — the meta must read search.lunr.preload (not the non-existent
+    config.search_preload) so it never leaks a stringified ConfigSection."""
+    template = THEME_BASE_TEMPLATE.read_text(encoding="utf-8")
+
+    assert "config.search?.lunr?.preload ?? 'smart'" in template
+    # The old mis-keyed path is gone for good.
+    assert "config.search_preload" not in template
+
+
+def test_built_pages_link_fonts_css() -> None:
+    """#135 — every built page links fonts.css while a display font is configured."""
+    pages = _built_html_pages()
+    if not pages:
+        pytest.skip("site/public not built; Gate rebuilds the site before verification")
+
+    for page in pages:
+        html = page.read_text(encoding="utf-8")
+        assert "fonts.css" in html, f"fonts.css not linked in {page}"
+        assert re.search(r'rel="preload"[^>]*as="font"[^>]*type="font/woff2"', html), (
+            f"no woff2 font preload in {page}"
+        )
+
+
+def test_built_pages_render_clean_search_preload_meta() -> None:
+    """#139 — bengal:search_preload renders one of the three valid modes with no
+    stringified config object, on every page including /search."""
+    pages = _built_html_pages()
+    if not pages:
+        pytest.skip("site/public not built; Gate rebuilds the site before verification")
+
+    pattern = re.compile(r'<meta\s+name="bengal:search_preload"\s+content="([^"]*)"', re.IGNORECASE)
+    for page in pages:
+        html = page.read_text(encoding="utf-8")
+        match = pattern.search(html)
+        assert match is not None, f"bengal:search_preload meta missing in {page}"
+        value = match.group(1)
+        assert "ConfigSection" not in value, f"stringified config leaked in {page}: {value!r}"
+        assert value in VALID_SEARCH_PRELOAD_MODES, f"invalid preload mode in {page}: {value!r}"
+
+
+def test_autodoc_members_read_signature_and_params_from_metadata() -> None:
+    """#158 — member detail must read the Bengal extractor's real field paths.
+
+    Bengal's Python extractor emits a member's signature/params under
+    `member.metadata.*` (signature -> metadata.signature, parameters ->
+    metadata.args). The previous template gated the signature on the
+    non-existent top-level `member.signature` and looked for
+    `metadata.parameters`/`metadata.args` without remapping the arg dicts'
+    `docstring` key to params_table's `description` column, so on real data
+    zero signatures and zero params tables rendered.
+    """
+    template = THEME_AUTODOC_MEMBERS.read_text(encoding="utf-8")
+
+    # Signature/params are sourced from metadata, not the (absent) top-level keys.
+    assert "member_meta?.signature" in template
+    assert "member_meta?.args" in template
+    # The arg dicts' per-param prose (`docstring`) is remapped to the
+    # params_table `description` column, or it would render blank.
+    assert 'arg.get("docstring"' in template
+    assert "params_table(member_param_rows" in template
+    # Member-level flags surfaced from metadata (not only the page hero).
+    assert "member_meta?.is_async" in template
+    assert "member_meta?.is_property" in template
+    assert "member_meta?.is_classmethod" in template
+    assert "member_meta?.is_staticmethod" in template
+    # Deprecation notice is a DocElement-level field, not a metadata flag.
+    assert "member?.deprecated" in template
+
+
+def test_built_api_filters_renders_typed_params_tables() -> None:
+    """#158 — a parametered member on /api/filters/ must emit a params table.
+
+    `bem`, `validate_variant`, and friends in chirp_ui.filters have typed
+    parameters; after the field-path fix the rebuilt page must surface them as
+    chirpui-params-table elements (name/type/default/description). Skipped when
+    the site is unbuilt — the Gate rebuilds the site before verification.
+    """
+    if not API_FILTERS_PAGE.is_file():
+        pytest.skip("site/public not built; Gate rebuilds the site before verification")
+
+    html = API_FILTERS_PAGE.read_text(encoding="utf-8")
+
+    # The page documents parametered filters, so at least one member's
+    # parameters must render as a chirpui-params-table.
+    assert html.count("chirpui-params-table") > 0, (
+        "no chirpui-params-table on /api/filters/ — member params are not "
+        "being read from member.metadata.args (see #158)"
+    )
+    # And the typed signature itself must be surfaced as a code block.
+    assert "chirp-theme-reference-member__signature" in html, (
+        "no member signature rendered on /api/filters/ — signature is not being "
+        "read from member.metadata.signature (see #158)"
+    )
+
+
+# ---------------------------------------------------------------------------
+# #145 — dogfood content for every shipped template family
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("section", "type_token"), sorted(DOGFOOD_FAMILIES.items()))
+def test_dogfood_family_has_section_index_with_resolving_type(
+    section: str, type_token: str
+) -> None:
+    """#145 — each family has a real section index that resolves its list template.
+
+    blog/tutorial/changelog resolve via Bengal's content-type strategies
+    (``type: <family>``); authors/resume have no strategy and resolve by section
+    auto-detection, so their index pins the template explicitly. Either way the
+    section must exist or the route 404s.
+    """
+    index = SITE_CONTENT / section / "_index.md"
+    assert index.is_file(), f"missing {section}/_index.md — /{section}/ would 404 (#145)"
+
+    text = index.read_text(encoding="utf-8")
+    assert type_token in text, (
+        f"{section}/_index.md must declare `{type_token}` so Bengal resolves "
+        f"{section}/list.html (#145)"
+    )
+    # Non-placeholder: a real title and prose body, not an empty stub.
+    assert "title:" in text
+    body = text.split("---", 2)[-1].strip()
+    assert len(body) > 40, f"{section}/_index.md has placeholder/empty body (#145)"
+
+
+@pytest.mark.parametrize("section", sorted(DOGFOOD_FAMILIES))
+def test_dogfood_family_has_child_content(section: str) -> None:
+    """#145 — each family ships at least one child page so the list is non-empty."""
+    children = [p for p in (SITE_CONTENT / section).glob("*.md") if p.name != "_index.md"]
+    assert children, f"{section}/ has no child pages — its list would render empty (#145)"
+
+
+def test_dogfood_blog_post_dogfoods_lazy_features() -> None:
+    """#145/#149 — one blog post exercises a mermaid fence and a markdown table.
+
+    This seeds content for the lazy-feature wiring (#149): the mermaid block and
+    table exist in source so a built page proves the loaders once they are wired.
+    """
+    posts = list((SITE_CONTENT / "blog").glob("*.md"))
+    text = "\n".join(p.read_text(encoding="utf-8") for p in posts)
+
+    assert "```mermaid" in text, "no mermaid code-fence in any blog post (#145/#149)"
+    # A GitHub-flavored markdown table needs a header separator row.
+    assert re.search(r"^\|[\s\-:|]+\|\s*$", text, flags=re.MULTILINE), (
+        "no markdown table in any blog post (#145/#149)"
+    )
+
+
+def test_dogfood_families_are_wired_into_menu_config() -> None:
+    """#145 — the families are reachable from navigation via the real menu.yaml.
+
+    The footer menu (rendered by the theme) names each family; the top nav also
+    auto-discovers the sections, but the explicit menu makes the wiring durable.
+    """
+    text = MENU_CONFIG.read_text(encoding="utf-8")
+    for section in DOGFOOD_FAMILIES:
+        assert f"/{section}/" in text, f"/{section}/ not wired into menu.yaml (#145)"
+
+
+@pytest.mark.parametrize("section", sorted(DOGFOOD_FAMILIES))
+def test_built_dogfood_family_route_renders_non_placeholder(section: str) -> None:
+    """#145 — each family route builds to a 200-equivalent page with real content.
+
+    Skipped when the site is unbuilt; the Gate rebuilds the site before
+    verification. A built index.html is the static-site analogue of a 200.
+    """
+    page = SITE_PUBLIC / section / "index.html"
+    if not page.is_file():
+        pytest.skip("site/public not built; Gate rebuilds the site before verification")
+
+    html = page.read_text(encoding="utf-8")
+    # Not the Bengal emergency fallback page (which means the template crashed).
+    assert "fallback-notice" not in html, f"/{section}/ rendered the fallback page (#145)"
+    # Real chrome + content rendered, not an empty body.
+    assert "<title" in html
+    assert len(html) > 2000, f"/{section}/ index.html looks like a placeholder (#145)"
+
+
+# ---------------------------------------------------------------------------
+# #165/#166 — on-site shortcode/directive reference + component catalog
+# ---------------------------------------------------------------------------
+
+
+def test_reference_section_pages_exist_as_docs() -> None:
+    """#165 — the reference section ships an index plus shortcode/directive pages."""
+    index = REFERENCE_DIR / "_index.md"
+    shortcodes = REFERENCE_DIR / "shortcodes.md"
+    directives = REFERENCE_DIR / "directives.md"
+
+    for page in (index, shortcodes, directives):
+        assert page.is_file(), f"missing reference page: {page} (#165)"
+        assert "type: doc" in page.read_text(encoding="utf-8"), page
+
+
+def test_shortcodes_reference_documents_every_shipped_shortcode() -> None:
+    """#165 — every shipped shortcode template has an on-site reference entry.
+
+    Test-guarded sync: adding a shortcode template without documenting it here
+    fails, so the reference never silently drifts from what the theme ships.
+    """
+    text = (REFERENCE_DIR / "shortcodes.md").read_text(encoding="utf-8")
+    shipped = _shipped_shortcode_names()
+
+    assert shipped, "no shortcode templates found — wrong path?"
+    for name in shipped:
+        assert name in text, f"shortcode '{name}' is shipped but not in shortcodes.md (#165)"
+
+    # component_specimen and the admonition family are first-class (issue ask).
+    assert "component_specimen" in text
+    for inline in ("tip", "warning", "danger"):
+        assert inline in text
+
+    # A rendered example, not only a syntax dump: live shortcode invocations
+    # (no comment-escape) must appear on the page.
+    assert "{{< component_specimen" in text
+    assert "{{< tip" in text
+
+
+def test_directives_reference_documents_every_shipped_directive() -> None:
+    """#165 — every shipped directive template has an on-site reference entry."""
+    text = (REFERENCE_DIR / "directives.md").read_text(encoding="utf-8")
+    shipped = _shipped_directive_names()
+
+    assert shipped, "no directive templates found — wrong path?"
+    for name in shipped:
+        assert name in text, f"directive '{name}' is shipped but not in directives.md (#165)"
+
+    # admonition is documented as a first-class authoring feature (issue ask),
+    # and a live rendered directive (not just a code fence) must appear.
+    assert "admonition" in text
+    assert ":::{tip}" in text
+    assert ":::{cards}" in text
+
+
+def test_reference_section_is_wired_into_menu_config() -> None:
+    """#165 — the reference section is reachable from the real menu.yaml."""
+    text = MENU_CONFIG.read_text(encoding="utf-8")
+    assert "/docs/reference/" in text, "/docs/reference/ not wired into menu.yaml (#165)"
+
+
+def test_components_index_is_an_onsite_catalog_not_a_github_pointer() -> None:
+    """#166 — the component catalog lives on-site, not behind a GitHub README.
+
+    The old index punted to a GitHub README anchor and `python examples/...app.py`
+    to see examples; the rebuilt catalog must keep visitors on the site.
+    """
+    text = COMPONENTS_INDEX.read_text(encoding="utf-8")
+
+    # No off-site / local-app pointers for seeing examples.
+    assert "github.com/lbliii/chirp-ui#usage" not in text
+    assert "examples/component-showcase/app.py" not in text
+    assert "localhost:8000" not in text
+
+    # On-site equivalents are present: the showcase, live specimen pages, and the
+    # generated API reference.
+    assert "/showcase/" in text
+    assert "/api/" in text
+    assert "./controls/" in text
+
+
+def test_components_catalog_covers_every_manifest_category() -> None:
+    """#166 — the catalog stays in sync with the manifest (test-guarded).
+
+    Every public component category in manifest.json must be named in the
+    catalog, so a new category cannot ship without a home in the docs.
+    """
+    text = COMPONENTS_INDEX.read_text(encoding="utf-8").lower()
+    categories = _manifest_public_categories()
+
+    assert categories, "no public categories found in manifest.json"
+    for category in categories:
+        # Catalog headings use spaced labels (e.g. "data display"); match the
+        # manifest's hyphenated category either form.
+        spaced = category.replace("-", " ")
+        assert category in text or spaced in text, (
+            f"manifest category '{category}' has no home in components/_index.md (#166)"
+        )

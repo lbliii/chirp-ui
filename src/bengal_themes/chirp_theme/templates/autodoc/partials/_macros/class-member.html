@@ -1,5 +1,11 @@
 {% from "autodoc/partials/_macros/element-card.html" import element_card %}
 
+{#-
+  Overview card for a class member. Labels the card with the class kind so a
+  module's symbol rail reads at a glance. Detailed methods/attributes render in
+  the member accordion (members.html).
+-#}
+
 {% def class_member(element, is_first=false) %}
-{{ element_card(element) }}
+{{ element_card(element, kind=element?.element_type ?? "class") }}
 {% end %}
