@@ -55,6 +55,33 @@
   margin: 0;
 }
 
+/* Editorial shell: single centered column (no docs left rail on /blog/). The
+   spine measure is governed in chirp-theme.css; here we just give the footer
+   stack (author bio, share, related) consistent editorial rhythm. */
+.chirp-theme-blog-shell {
+  width: 100%;
+}
+
+/* Byline row inside the hero metadata slot — plain muted text, no pill. */
+.chirp-theme-blog__hero .chirp-theme-blog-meta {
+  gap: var(--chirpui-spacing-xs);
+}
+
+.chirp-theme-blog-article__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--chirpui-spacing-sm);
+  align-items: center;
+}
+
+.chirp-theme-author-bio {
+  margin-top: var(--chirpui-spacing-xl);
+}
+
+.chirp-theme-social-share {
+  margin-top: var(--chirpui-spacing-lg);
+}
+
 .related-posts {
   margin-top: var(--chirpui-spacing-xl);
 }
@@ -62,6 +89,18 @@
 .related-posts h2 {
   margin: 0 0 var(--chirpui-spacing);
   color: var(--chirpui-text);
-  font-family: var(--chirpui-ui-font-family);
+  font-family: var(--font-family-serif);
   font-size: var(--chirpui-font-xl);
+  letter-spacing: -0.01em;
+}
+
+/* Related post cards carry an excerpt-only preview (never the full rendered
+   post body — see related-post-card.html). Keep the preview clamped so a long
+   excerpt never blows the card out of the editorial measure. */
+.chirp-theme-related-post-card .chirp-theme-post-card__excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

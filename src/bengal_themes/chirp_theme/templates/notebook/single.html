@@ -16,6 +16,7 @@
 {% let language = nb?.language_version ?? "" %}
 {% let nb_date = page?.metadata?.date ?? page?.date %}
 
+<div data-chirp-theme-surface="notebook">
 {% call container(cls="chirp-theme-learning-page chirp-theme-notebook-page") %}
   {% call stack(gap="lg") %}
     {% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-learning-hero chirp-theme-notebook-hero") %}
@@ -47,4 +48,5 @@
     {% end %}
   {% end %}
 {% end %}
+</div>
 {% end %}

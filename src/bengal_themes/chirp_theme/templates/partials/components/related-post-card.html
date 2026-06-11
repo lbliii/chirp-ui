@@ -18,9 +18,12 @@ Usage:
 {% let post_href = post?.href ?? post?._path ?? post?.path ?? '#' %}
 {% let post_date = post?.date %}
 {% let post_excerpt = post?.excerpt ?? post?.description ?? '' %}
-{% let post_content = post?.content ?? '' %}
 {% let post_desc = post?.description ?? '' %}
-{% let preview = post_excerpt or post_content %}
+{# Excerpt-only preview — never fall back to the full rendered post body.
+   Bengal auto-populates related_posts with tag-sharing docs pages whose
+   excerpt/description are empty; piping their entire markdown HTML through
+   card_excerpt_html injected unbalanced, overflowing markup into the card. #}
+{% let preview = post_excerpt %}
 
 {% call resource_card(
   post_href,

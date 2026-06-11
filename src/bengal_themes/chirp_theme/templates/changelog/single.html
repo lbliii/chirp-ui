@@ -47,6 +47,7 @@
 {% let changes_security = params?.security ?? [] %}
 {% let has_sections = (changes_added | length) + (changes_changed | length) + (changes_fixed | length) + (changes_deprecated | length) + (changes_removed | length) + (changes_security | length) > 0 %}
 
+<div data-chirp-theme-surface="changelog">
 {% call container(cls="chirp-theme-learning-page chirp-theme-changelog-single") %}
   {% call stack(gap="lg") %}
     {% call page_hero(title=version, subtitle=(release_name if release_name else none), variant="minimal", background="solid", cls="chirp-theme-changelog-hero") %}
@@ -101,4 +102,5 @@
     {{ page_navigation(page) }}
   {% end %}
 {% end %}
+</div>
 {% end %}

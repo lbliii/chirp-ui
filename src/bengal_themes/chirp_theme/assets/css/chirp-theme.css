@@ -46,6 +46,19 @@
     --chirpui-container-max: min(84rem, calc(100vw - 2rem));
     --chirpui-prose-max-width: 72ch;
 
+    /* Per-surface reading-measure (max-inline-size) WIDTH SCALE — consumed by
+       components/type-identity.css per-surface --type-measure assignments.
+       Theme-agnostic (ch/rem), so no [data-theme=dark] copy is needed. */
+    --type-measure-prose: 68ch;
+    --type-measure-docs: 75ch;
+    --type-measure-wide: 72rem;
+    --type-measure-log: 60ch;
+    --type-measure-document: 50rem;
+    --type-measure-profile: 64ch;
+    /* DENSITY SCALAR — default 1 (standard rhythm); per-surface blocks in
+       type-identity.css re-point it to scale the prose vertical rhythm. */
+    --type-rhythm: 1;
+
     --color-primary: var(--chirpui-accent);
     --color-primary-hover: var(--chirpui-accent-hover);
     --color-primary-active: #0f4e63;
@@ -204,6 +217,10 @@
     margin-top: 1.5rem;
   }
 
+  /* Editorial column: the docs left rail is gone on /blog/, so the blog spine
+     is a single centered measure (no docs grid). __hero / __article-shell keep
+     their own margin-inline:auto centering below; __content matches that
+     measure so the byline, share row and related grid stay aligned. */
   .chirp-theme-blog {
     display: grid;
     gap: 1.5rem;
@@ -212,9 +229,16 @@
     padding: 0;
   }
 
+  .chirp-theme-blog__spine {
+    width: 100%;
+  }
+
   .chirp-theme-blog__content {
     display: grid;
     gap: 1.25rem;
+    width: 100%;
+    max-width: calc(var(--chirpui-prose-max-width) + 3rem);
+    margin-inline: auto;
   }
 
   .chirp-theme-blog__hero,
@@ -251,11 +275,14 @@
     background: var(--color-primary);
   }
 
+  /* Stacked editorial masthead: eyebrow → serif title → subtitle → byline, all
+     full-measure. A single flex column avoids the 2-column grid that collapsed
+     the title track to ~0 and wrapped the headline one character per line. */
   .chirp-theme-blog__hero .chirpui-hero__inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-    gap: 0.35rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
     margin: 0;
     padding: 0;
     text-align: left;
@@ -268,11 +295,16 @@
     margin: 0;
   }
 
+  /* Editorial voice: serif display title. Differentiation from docs/home is
+     STRUCTURAL/typographic (serif vs the sans --font-display used elsewhere),
+     not chromatic — the teal accent spine (::before) is unchanged. */
   .chirp-theme-blog__hero .chirpui-hero__title {
     margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(1.9rem, 2.4vw, 2.75rem);
-    letter-spacing: 0;
+    font-family: var(--font-family-serif);
+    font-size: clamp(2rem, 2.6vw, 2.95rem);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: -0.01em;
+    line-height: 1.12;
   }
 
   .chirp-theme-blog__hero .chirpui-hero__subtitle {
@@ -281,20 +313,23 @@
     font-size: clamp(0.95rem, 0.42vw + 0.86rem, 1.08rem);
   }
 
+  /* Byline row, not a doc-style version pill. The metadata slot now carries a
+     blog_post_meta cluster (date · reading time), so the mono-pill chrome is
+     dropped in favour of plain muted byline text spanning the full measure. */
   .chirp-theme-blog__hero .chirpui-hero__metadata {
-    grid-column: 2;
+    grid-column: 1 / -1;
     grid-row: 2;
-    justify-self: end;
-    margin: 0.38rem 0 0;
-    padding: 0.22rem 0.5rem;
-    border-radius: 999px;
-    background: var(--color-primary-light);
-    color: var(--color-primary-dark);
-    font-family: var(--font-family-mono);
-    font-size: 0.72rem;
-    font-weight: 700;
-    line-height: 1;
-    white-space: nowrap;
+    justify-self: start;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--chirpui-text-muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--chirpui-line-height-normal);
+    white-space: normal;
   }
 
   .chirp-theme-blog__hero .chirpui-hero__actions:not(:has(*)),

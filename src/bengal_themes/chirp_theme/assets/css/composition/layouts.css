@@ -328,8 +328,12 @@ body[data-type="autodoc-rest"] .docs-main>.page-navigation {
    MOBILE SIDEBAR TOGGLE BUTTON
    ============================================ */
 
-/* Removed floating sidebar toggle button - users can access sidebar via main hamburger menu */
-.docs-sidebar-toggle {
+/* Removed floating sidebar toggle button - docs users access the sidebar via the
+   main hamburger menu. The track syllabus rail has no hamburger entry, so its
+   toggle (aria-controls="track-sidebar") is exempt here and revealed on mobile by
+   components/tracks.css. (Earlier-layer !important would otherwise beat the
+   track reveal rule, so the exemption must live with the hide.) */
+.docs-sidebar-toggle:not([aria-controls="track-sidebar"]) {
   display: none !important;
 }
 
@@ -531,7 +535,7 @@ body[data-type="autodoc-rest"] .docs-main>.page-navigation {
 
   .docs-sidebar,
   .docs-toc,
-  .docs-sidebar-toggle {
+  .docs-sidebar-toggle:not([aria-controls="track-sidebar"]) {
     display: none !important;
   }
 

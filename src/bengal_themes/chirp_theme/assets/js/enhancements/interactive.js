@@ -411,7 +411,12 @@
    */
   function setupMobileSidebar() {
     const toggleButton = document.querySelector('.docs-sidebar-toggle');
-    const sidebar = document.getElementById('docs-sidebar');
+    // Resolve the controlled rail from the button's aria-controls so the same
+    // toggle drives both the docs rail (#docs-sidebar) and the track rail
+    // (#track-sidebar, tracks/single.html). Fall back to #docs-sidebar for any
+    // legacy toggle that predates the aria-controls attribute.
+    const controls = toggleButton && toggleButton.getAttribute('aria-controls');
+    const sidebar = (controls && document.getElementById(controls)) || document.getElementById('docs-sidebar');
 
     if (!toggleButton || !sidebar) return;
 
