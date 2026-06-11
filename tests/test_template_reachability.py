@@ -97,15 +97,19 @@ ENTRY_LEAFS = frozenset(
 INTENTIONALLY_RETAINED = frozenset(
     {
         "partials/components/article.html",
-        "partials/components/author-bio.html",
-        "partials/components/blog-post-meta.html",
+        # author-bio, blog-post-meta, social-share dropped: now wired into
+        # blog/single.html by the blog-editorial dogfood pass (byline row,
+        # author bio footer, one share row). They gained live inbound edges so
+        # they no longer belong on the ship-but-do-not-wire allowlist.
         "partials/components/blog-share-dropdown.html",
         "partials/components/card-base.html",
         "partials/components/comments-section.html",
         "partials/components/helpers.html",
         "partials/components/newsletter-cta.html",
+        # related-posts.html (post-card based) stays unwired: blog/single.html
+        # and page.html both use related_posts_simple instead, so only one
+        # related component is live.
         "partials/components/related-posts.html",
-        "partials/components/social-share.html",
         "partials/components/widgets.html",
         "partials/nav-menu.html",
         "partials/tag-nav.html",

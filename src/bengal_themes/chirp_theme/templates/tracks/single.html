@@ -105,6 +105,13 @@ USAGE: set `type: track` in frontmatter, or `template: tracks/single.html`.
       {% end %}
       {% slot footer %}
       {% if item_count > 0 %}
+      {# Hero progress is an intentional static "N lessons" affordance, not a
+         live stepper: current_step is baked to 1 as the no-JS baseline. The
+         live current-section highlight is carried by the syllabus rail
+         (track-sidebar.html), which tracks.js scroll-spy updates at runtime via
+         data-track-active / data-track-visited / data-track-completed. Phase-1
+         decision — do not derive current_step here (see tracks.css scroll-spy
+         states + tracks.js updateCurrentSection). #}
       {{ track_progress_indicator(item_count, 1) }}
       {% end %}
       {% end %}

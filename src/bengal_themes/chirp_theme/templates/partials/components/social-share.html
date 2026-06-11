@@ -26,8 +26,12 @@ Usage:
 {% call surface(variant='muted', cls='chirp-theme-social-share') %}
     {{ section_header(t('blog.share_post', default='Share this post'), variant='inline') }}
     {% call cluster(gap='sm', cls='chirp-theme-social-share__actions') %}
+        {# Text-only labels: the platform glyphs (twitter-logo, linkedin-logo, …)
+           ship as theme SVGs but chirp-ui's btn(icon=) resolves the separate
+           chirp_ui glyph registry, which lacks them — passing them leaked the raw
+           name as visible text. Drop the icon until btn() can render SVG icons. #}
         {% for platform in platforms %}
-        {{ btn(platform.label, href=share_url(platform.id, page), variant='secondary', size='sm', icon=platform.icon, attrs_map={'target': '_blank', 'rel': 'noopener noreferrer', 'aria-label': 'Share on ' ~ platform.label}) }}
+        {{ btn(platform.label, href=share_url(platform.id, page), variant='secondary', size='sm', attrs_map={'target': '_blank', 'rel': 'noopener noreferrer', 'aria-label': 'Share on ' ~ platform.label}) }}
         {% end %}
         {{ btn('Copy Link', variant='secondary', size='sm', icon='link', attrs_map={'data-action': 'copy-url', 'data-url': page_href, 'aria-label': 'Copy link'}) }}
     {% end %}

@@ -1,11 +1,11 @@
 /* Chirp UI-native API reference composition. */
 
 .chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-layout__article {
-  max-width: min(100%, 72rem);
+  max-width: var(--type-measure-wide, min(100%, 72rem));
 }
 
 .chirp-theme-docs-layout[data-chirp-theme-surface^="api"] .chirp-theme-docs-layout__content {
-  max-width: min(100%, 72rem);
+  max-width: var(--type-measure-wide, min(100%, 72rem));
 }
 
 .chirp-theme-api-hero .chirpui-hero__metadata {

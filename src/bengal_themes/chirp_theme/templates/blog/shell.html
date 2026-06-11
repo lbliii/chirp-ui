@@ -3,11 +3,7 @@
 {% from 'chirpui/layout.html' import container %}
 
 {% block content %}
-<div class="chirp-theme-docs-layout chirp-theme-docs-layout--blog" data-chirp-theme-surface="blog">
-<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar">
-  {% include 'partials/docs-nav.html' %}
-</aside>
-<div class="chirp-theme-docs-layout__main">
+<div class="chirp-theme-blog-shell" data-chirp-theme-surface="blog">
 {% call container(max_width='84rem', cls='chirp-theme-blog') %}
 <div class="chirp-theme-blog__spine">
 {% block blog_hero %}{% end %}
@@ -17,7 +13,6 @@
 {% with footer_class='chirp-theme-footer chirp-theme-footer--shell' %}{% include 'partials/site-footer.html' %}{% end %}
 </div>
 {% end %}
-</div>
 </div>
 {% end %}
 

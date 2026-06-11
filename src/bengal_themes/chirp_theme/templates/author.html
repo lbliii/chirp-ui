@@ -22,6 +22,7 @@
 {% let indexed_posts = (author_index.get(author_key) | resolve_pages) if author_index.get(author_key) else [] %}
 {% let author_posts = posts ?? indexed_posts %}
 
+<div data-chirp-theme-surface="authors">
 {% call container(cls="chirp-theme-taxonomy-page chirp-theme-author-page") %}
   {% call stack(gap="lg") %}
     {% call profile_header(name=author_name, use_slots=true, cls="chirp-theme-author-header") %}
@@ -48,4 +49,5 @@
     {{ taxonomy_post_feed(author_posts, "No content has been published by this author yet.", variant="compact") }}
   {% end %}
 {% end %}
+</div>
 {% end %}

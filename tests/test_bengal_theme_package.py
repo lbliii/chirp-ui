@@ -944,9 +944,15 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "page_hero" in doc_list
     assert "chirpui/hero.html" in doc_single
     assert "page_hero" in doc_single
-    for article_template in (doc_list, doc_single, page, blog_shell, section_index):
+    # blog_shell is intentionally excluded: the blog is an editorial single
+    # column, not a docs catalog. It dropped the chirp-theme-docs-layout grid
+    # and the partials/docs-nav.html left rail (the docs nav does not belong on
+    # /blog/). It still carries data-chirp-theme-surface="blog" (asserted above).
+    for article_template in (doc_list, doc_single, page, section_index):
         assert "chirp-theme-docs-layout" in article_template
         assert "include 'partials/docs-nav.html'" in article_template
+    assert "chirp-theme-docs-layout" not in blog_shell
+    assert "include 'partials/docs-nav.html'" not in blog_shell
     assert "include 'partials/page-hero.html'" not in doc_list
     assert "include 'partials/page-hero.html'" not in doc_single
     assert 'from "partials/empty-state.html" import empty_state' not in not_found
@@ -1158,7 +1164,16 @@ def test_chirp_theme_blog_and_card_primitives_emit_chirpui_markup() -> None:
     share_css = (assets_root / "css" / "components" / "share.css").read_text(encoding="utf-8")
 
     assert "chirp-theme-blog-article" in blog_single
-    assert "blog-post" not in blog_single
+    # Guard against the legacy `blog-post` BEM block (renamed to
+    # chirp-theme-blog-article). The blog-editorial pass imports
+    # partials/components/blog-post-meta.html for the hero byline, whose path
+    # legitimately contains the substring "blog-post" — so match the legacy
+    # class usage specifically, not the bare substring.
+    assert 'class="blog-post' not in blog_single
+    assert "blog-post-card" not in blog_single
+    assert "{{ blog_post_meta(" in blog_single
+    assert "{{ author_bio(" in blog_single
+    assert "{{ social_share(" in blog_single
     assert "from 'chirpui/card.html' import resource_card" in article
     assert "chirp-theme-article-card" in article
     assert "article-card gradient-border fluid-combined" not in article

@@ -1,0 +1,94 @@
+/*
+ * type-identity.css — per-surface STRUCTURAL identity (color-neutral)
+ *
+ * Each [data-chirp-theme-surface="…"] block sets ONLY the structural identity
+ * dials: a reading measure (max-inline-size) and a vertical-rhythm scalar.
+ *
+ * Accent / hue is INTENTIONALLY NOT re-pointed here. Every surface keeps the one
+ * brand accent (teal) for cohesion. A per-type accent-hue experiment was tried
+ * and pulled back: shifting the color language per section read as disjoint, and
+ * the values predated the planned light-palette redo. Any future color identity
+ * must (a) wait for the palette work and (b) reference --color-* / --chirpui-*
+ * TOKENS, never raw hex. The guard test (tests/test_type_identity_contract.py)
+ * fails the build if a --chirpui-accent override reappears in this file.
+ *
+ * Tokens consumed:
+ *   --type-measure   reading width → article/content max-inline-size
+ *   --type-rhythm    density scalar → scales prose vertical rhythm
+ * Scale tokens (--type-measure-*, default --type-rhythm) live in chirp-theme.css :root.
+ * See docs/plans/PLAN-content-type-refinement.md (identity system → structural axes).
+ */
+
+@layer components {
+  /* ---------------------------------------------------------------------------
+   * Shared consumption: every surface's prose/content column reads --type-measure
+   * for its max width and rescales prose vertical rhythm via --type-rhythm. The
+   * `, 1` / `none` fallbacks mean an un-pointed surface behaves exactly as before.
+   * ------------------------------------------------------------------------- */
+  [data-chirp-theme-surface] .chirpui-rendered-content,
+  [data-chirp-theme-surface] .chirp-theme-learning-content,
+  [data-chirp-theme-surface] .chirp-theme-blog-article__content {
+    max-inline-size: var(--type-measure, none);
+  }
+
+  [data-chirp-theme-surface] .chirpui-rendered-content,
+  [data-chirp-theme-surface] .chirp-theme-learning-content,
+  [data-chirp-theme-surface] .chirp-theme-blog-article__content {
+    --chirpui-prose-spacing: calc(0.5em * var(--type-rhythm, 1));
+    --chirpui-prose-spacing-heading: calc(0.75em * var(--type-rhythm, 1));
+  }
+
+  /* docs / api — reference reading widths (75ch docs, wide 72rem api). */
+  [data-chirp-theme-surface="doc"],
+  [data-chirp-theme-surface="doc-list"] {
+    --type-measure: var(--type-measure-docs);
+  }
+
+  [data-chirp-theme-surface="api-reference"],
+  [data-chirp-theme-surface="api-list"] {
+    --type-measure: var(--type-measure-wide);
+  }
+
+  /* track — course reading measure + slightly tighter cadence. */
+  [data-chirp-theme-surface="track"] {
+    --type-measure: var(--type-measure-docs);
+    --type-rhythm: 0.94;
+  }
+
+  /* blog — airy editorial reading measure. */
+  [data-chirp-theme-surface="blog"] {
+    --type-measure: var(--type-measure-prose);
+    --type-rhythm: 1.15;
+  }
+
+  /* releases (index) + changelog — narrow, compact register/log measure. */
+  [data-chirp-theme-surface="release-list"],
+  [data-chirp-theme-surface="changelog"] {
+    --type-measure: var(--type-measure-log);
+    --type-rhythm: 0.88;
+  }
+
+  /* authors — profile measure. */
+  [data-chirp-theme-surface="authors"] {
+    --type-measure: var(--type-measure-profile);
+  }
+
+  /* notebook — airy reading measure (wide code regions opt back out via the
+     chirp-ui base hardening that auto-contains <pre>/<table>). */
+  [data-chirp-theme-surface="notebook"] {
+    --type-measure: var(--type-measure-prose);
+    --type-rhythm: 1.15;
+  }
+
+  /* resume — narrow single-sheet document measure, tight rhythm. */
+  [data-chirp-theme-surface="resume"] {
+    --type-measure: var(--type-measure-document);
+    --type-rhythm: 0.82;
+  }
+
+  /* tutorial — airy lesson reading measure. */
+  [data-chirp-theme-surface="tutorial"] {
+    --type-measure: var(--type-measure-prose);
+    --type-rhythm: 1.15;
+  }
+}

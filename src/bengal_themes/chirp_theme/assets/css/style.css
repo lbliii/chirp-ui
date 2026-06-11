@@ -230,6 +230,14 @@
   @import url('components/tracks.css');
 }
 
+/* Per-surface type identity (accent + reading measure + density). Loaded after
+   tracks.css so its per-surface --type-accent / --chirpui-accent assignments sit
+   above the chirp-ui baseline `components` while staying overridable by the late
+   `chirp-theme` layer and `app.overrides`. */
+@layer components {
+  @import url('components/type-identity.css');
+}
+
 @layer components {
   @import url('components/versioning.css');
   @import url('components/stale-banner.css');

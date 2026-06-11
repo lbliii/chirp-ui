@@ -59,17 +59,62 @@
   scrollbar-color: color-mix(in srgb, var(--chirpui-accent) 55%, transparent) transparent;
 }
 
-/* On narrow viewports the rails stack inline above the reading column. */
+/* On narrow viewports the right TOC rail is dropped and the left section rail
+ * becomes an off-canvas drawer driven by .docs-sidebar-toggle (the toggle JS
+ * resolves #track-sidebar from the button's aria-controls). Mirrors the docs
+ * shell's .docs-sidebar[data-open] drawer so the track mobile toggle is live. */
 @media (max-width: 59.99rem) {
-  .chirp-theme-track-layout__sidebar,
-  .chirp-theme-track-layout__toc {
-    position: static;
-    max-height: none;
-    overflow: visible;
-  }
-
   .chirp-theme-track-layout__toc {
     display: none;
+  }
+
+  .chirp-theme-track-layout__sidebar {
+    position: fixed;
+    inset-block: var(--track-header-offset) 0;
+    inset-inline-start: 0;
+    z-index: var(--chirpui-z-sticky);
+    width: min(20rem, 90vw);
+    max-width: 90vw;
+    max-height: calc(100svh - var(--track-header-offset));
+    padding: var(--chirpui-spacing-md);
+    background: var(--track-surface-tint);
+    border-inline-end: 1px solid var(--chirpui-border);
+    box-shadow: var(--chirpui-shadow-lg);
+    overflow-y: auto;
+    translate: -100% 0;
+    transition: translate var(--chirpui-transition);
+  }
+
+  .chirp-theme-track-layout__sidebar[data-open] {
+    translate: 0 0;
+  }
+
+  /* Reveal the off-canvas toggle on the track surface ONLY. The global
+   * .docs-sidebar-toggle { display:none !important } (composition/layouts.css)
+   * deliberately kills the floating toggle on docs (which use the hamburger),
+   * but tracks has no hamburger entry for its syllabus, so the drawer would be
+   * unreachable. Scope the reveal to the track page via the general sibling of
+   * the track surface so docs/autodoc are untouched. */
+  [data-chirp-theme-surface="track"] ~ .docs-sidebar-toggle {
+    display: inline-flex !important;
+    position: fixed;
+    inset-block-end: var(--chirpui-spacing-lg);
+    inset-inline-start: var(--chirpui-spacing-lg);
+    z-index: calc(var(--chirpui-z-sticky) + 1);
+    align-items: center;
+    justify-content: center;
+    padding: var(--chirpui-spacing-sm);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-full);
+    background: var(--chirpui-surface);
+    color: var(--chirpui-text);
+    box-shadow: var(--chirpui-shadow-lg);
+  }
+}
+
+@media (max-width: 59.99rem) and (prefers-reduced-motion: reduce) {
+  .chirp-theme-track-layout__sidebar {
+    transition: none;
   }
 }
 
@@ -93,7 +138,9 @@
   min-width: 0;
 }
 
-/* Distinct surface accent so the track shell never reads as the doc shell. */
+/* Distinct surface accent so the track shell never reads as the doc shell.
+ * Consumed by the mobile off-canvas rail drawer (below) so the drawer carries
+ * the track tint instead of a plain surface. */
 [data-chirp-theme-surface="track"] {
   --track-surface-tint: color-mix(in srgb, var(--chirpui-accent) 7%, var(--chirpui-surface));
 }
@@ -136,6 +183,24 @@
 .chirp-theme-tracks-index__hero .chirpui-hero__metadata {
   color: var(--chirpui-text-muted);
   font-size: var(--chirpui-ui-sm);
+}
+
+/* Left-align the editorial page_hero ONLY on the track surface so the accent
+ * spine (::before) connects to the title instead of floating beside centered
+ * text. The chirpui page_hero defaults to text-align:center with
+ * margin-inline:auto on title/subtitle (042_hero.css) — override both here,
+ * scoped to [data-chirp-theme-surface="track"] so docs/blog/marketing heroes
+ * are untouched. Inset the inner block past the spine. Token-only. */
+[data-chirp-theme-surface="track"] .chirp-theme-track-hero .chirpui-hero__inner {
+  text-align: start;
+  margin-inline: 0;
+  padding-inline-start: var(--chirpui-spacing-md);
+}
+
+[data-chirp-theme-surface="track"] .chirp-theme-track-hero .chirpui-hero__title,
+[data-chirp-theme-surface="track"] .chirp-theme-track-hero .chirpui-hero__subtitle {
+  margin-inline: 0;
+  max-inline-size: 60ch;
 }
 
 /* ---------------------------------------------------------------------------
@@ -286,26 +351,51 @@
 
 .chirp-theme-track-sidebar__card {
   min-width: 0;
+  /* Keep the framed course rail clear of the sticky header when the rail is
+   * scrolled to via an in-page anchor. The chirpui card() macro supplies the
+   * frame (border/radius/padding); we only add scroll comfort here. */
+  scroll-margin-top: calc(var(--track-header-offset) + var(--chirpui-spacing-sm));
 }
 
-/* "Other tracks" card — set apart from the current track's section list. */
+/* "Other tracks" card — set apart from the current track's syllabus list with a
+ * token divider above so it reads as a secondary section, not a second syllabus. */
 .chirp-theme-track-sidebar__card--siblings {
-  margin-block-start: var(--chirpui-spacing-md);
+  margin-block-start: var(--chirpui-spacing-lg);
+  padding-block-start: var(--chirpui-spacing-md);
+  border-block-start: 1px solid var(--chirpui-border-subtle);
 }
 
+/* Bullet kill + UA list-indent reset. The chirpui-list scope already resets
+ * list-style/margin/padding on :scope (chirpui.css:4556), but the theme
+ * `@layer chirp-theme` band is declared after chirpui.component, so at equal
+ * specificity the theme layer wins and the UA `ul{list-style:disc;
+ * padding-inline-start:40px}` defaults leak back in wherever a theme rule
+ * targets this element. Asserting the reset on the theme-scoped class kills the
+ * discs regardless of which layer wins — token-free, no color, no !important. */
 .chirp-theme-track-sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   min-width: 0;
 }
 
 .chirp-theme-track-sidebar__item {
+  list-style: none;
   min-width: 0;
 }
 
+/* Full-row tappable lesson row. The chirpui-list--bordered border/background
+ * frames the <li> (chirpui.css:4578); we make the LINK fill that row so the
+ * whole row is the hit target with a >=44px touch height. */
 .chirp-theme-track-sidebar__link {
   display: flex;
   align-items: center;
   gap: var(--chirpui-spacing-sm);
+  width: 100%;
   min-width: 0;
+  min-height: 2.75rem;
+  padding-block: var(--chirpui-spacing-xs);
+  padding-inline: var(--chirpui-spacing-sm);
   border-radius: var(--chirpui-radius-sm);
   color: var(--chirpui-text);
   text-decoration: none;
@@ -328,6 +418,10 @@
 
 .chirp-theme-track-sidebar__number {
   flex: 0 0 auto;
+  /* Center the numbered badge against the title baseline within the taller row.
+   * The badge fill is the chirpui muted badge; only the data-track-* state rules
+   * (below) recolor it — never here. */
+  align-self: center;
   transition:
     color var(--chirpui-transition),
     background var(--chirpui-transition);

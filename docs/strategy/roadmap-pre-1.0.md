@@ -433,6 +433,7 @@ parallel backlog.
 | `PLAN-pre-1.0-productization-saga.md` | Productization Coordination |
 | `PLAN-bengal-chirpui-library-contract.md` | Bengal And chirp-theme Integration |
 | `PLAN-chirp-theme-content-parity.md` | Bengal And chirp-theme Integration |
+| `PLAN-content-type-refinement.md` | Bengal And chirp-theme Integration |
 | `PLAN-component-maturity-gap-sweep.md` | Bengal-Driven Component Maturation |
 | `PLAN-css-scope-and-layer.md` | CSS Scope Hardening |
 | `PLAN-application-chrome-system.md` | Application Chrome System |

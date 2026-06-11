@@ -4,18 +4,21 @@
 {% from 'partials/navigation-components.html' import breadcrumbs %}
 {% from 'partials/components/tags.html' import tag_list %}
 {% from 'partials/components/related-posts-simple.html' import related_posts_simple %}
+{% from 'partials/components/blog-post-meta.html' import blog_post_meta %}
+{% from 'partials/components/author-bio.html' import author_bio %}
+{% from 'partials/components/social-share.html' import social_share %}
 {% from 'chirpui/hero.html' import page_hero %}
 
 {% block blog_hero %}
 {% let post_date = page?.date ?? none %}
+{% let post_author = page?.author ?? params?.author ?? none %}
+{% let post_reading_time = (page?.reading_time ?? params?.reading_time ?? 0) | coerce_int(0) %}
 {% call page_hero(title=page?.title ?? 'Post', subtitle=params?.description ?? meta_desc ?? none, variant='editorial', background='solid', cls='chirp-theme-blog__hero') %}
   {% slot eyebrow %}
   {{ breadcrumbs(page) }}
   {% end %}
   {% slot metadata %}
-  {% if post_date %}
-  {{ post_date | dateformat('%B %d, %Y') }}
-  {% end %}
+  {{ blog_post_meta(post_author, date=post_date, reading_time=post_reading_time, show_author=false) }}
   {% end %}
 {% end %}
 {% end %}
@@ -32,6 +35,22 @@
   </footer>
   {% end %}
 </article>
+
+{# Distinct local names so they never shadow the imported author_bio /
+   social_share macros (see author.html:18 shadowing footgun). #}
+{% let _author_name = page?.author ?? params?.author ?? none %}
+{% let _author_bio_text = params?.author_bio ?? page?.author_bio ?? '' %}
+{% let _author_avatar = params?.author_avatar ?? page?.author_avatar ?? '' %}
+{% let _author_title = params?.author_title ?? page?.author_title ?? '' %}
+{% let _share_href = page?.href ?? page?._path ?? page?.path ?? '#' %}
+
+{# Only render the author card when there is real content to frame — a name with
+   no bio/avatar produced an empty "About …" box. #}
+{% if _author_name and (_author_bio_text or _author_avatar) %}
+{{ author_bio(_author_name, avatar=_author_avatar, title=_author_title, bio=_author_bio_text) }}
+{% end %}
+
+{{ social_share(page, _share_href) }}
 
 {{ page_navigation(page) }}
 {{ related_posts_simple(page?.related_posts ?? [], 'More to Read') }}
