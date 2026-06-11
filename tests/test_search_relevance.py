@@ -38,7 +38,18 @@ RELEASE_SECTIONS = {"releases", "changelog"}
 
 # Sections that count as legitimate documentation destinations. A tutorial that
 # teaches you to render a button is a fine #1 for "button"; a changelog is not.
-DOC_SECTIONS = {"components", "docs", "theming", "tutorial", "guide", "patterns", "tracks"}
+# "notebook" is a first-class learning family (a "render a card from Python"
+# notebook is a fine #1 for "card") — see #146/#147.
+DOC_SECTIONS = {
+    "components",
+    "docs",
+    "theming",
+    "tutorial",
+    "notebook",
+    "guide",
+    "patterns",
+    "tracks",
+}
 
 lunr = pytest.importorskip("lunr", reason="lunr package not installed")
 from lunr.index import Index  # noqa: E402  (after importorskip)
