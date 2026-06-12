@@ -9705,7 +9705,7 @@ Workspace shell
 - **Template:** `chirpui/workspace_shell.html`
 - **Macro:** `workspace_shell`
 - **Category:** `layout`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`, `inspector`, `sidebar`, `toolbar`

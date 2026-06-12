@@ -2,6 +2,17 @@
 
 Status: active plan
 Date: 2026-05-13
+
+> **Update (2026-06-12) — Posture ADR.** The app-shell question is now governed by
+> [`../decisions/application-chrome-posture.md`](../decisions/application-chrome-posture.md),
+> which adopts a **middle path**: shell-**region** contracts (a route-context rail
+> region, a route-aware drawer, and the route→content update protocol) plus one
+> blessed composite (the rail wired into `app_shell`) are authorized, with the
+> author's own browser-tested fixtures counting as qualifying evidence. The
+> generic mega-shell macros named below stay recipe-first under the original
+> gate. `workspace_shell` was demoted `stable → experimental` to match this
+> boundary. Read the ADR first where it and this plan differ.
+
 Depends on:
 
 - [PLAN-navigation-contract-application.md](done/PLAN-navigation-contract-application.md)

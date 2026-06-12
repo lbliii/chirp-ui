@@ -57,6 +57,7 @@ usage.
 | `logo-cloud` | Promote to stable | Render tests, product/media recipe usage, token hooks, visual audit coverage. |
 | `story-card` | Promote to stable | Render tests for link/slot modes, product recipe usage, visual audit coverage. |
 | `cta-band` | Promote to stable | Render tests for standard/slot actions, product/media recipe usage, visual audit coverage. |
+| `workspace-shell` | Keep experimental | Demoted from stable per the [Application Chrome Posture ADR](../decisions/application-chrome-posture.md) (2026-06-12): a broad workbench *frame* the application-chrome plan defers, not the blessed route-context rail *region* composite. Promote only when two independent reference implementations need the same workspace/sidebar/tab/page-tool contract. |
 | `ascii-badge` | Promote to stable | Render proof covers variants and hidden decorative glyphs; visual audit/browser proof covers the static root. |
 | `ascii-border` | Promote to stable | Render proof covers variants and hidden decorative frame glyphs; visual audit/browser proof covers the static root. |
 | `ascii-checkbox` | Promote to stable | Native checkbox semantics, labelled state, disabled state, visual audit coverage, and browser checked-state proof. |

@@ -23667,7 +23667,7 @@
       "extra_emits": [],
       "lineno": 17,
       "macro": "workspace_shell",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [],
       "params": [
         {
@@ -23777,10 +23777,10 @@
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 98,
+      "experimental": 99,
       "internal": 2,
       "legacy": 39,
-      "stable": 213
+      "stable": 212
     },
     "component_requirements": {
       "alpine": 24,
