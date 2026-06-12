@@ -2361,7 +2361,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     # -- Layout & shell (Sprint 2) ------------------------------------------
     "app-shell": ComponentDescriptor(
         block="app-shell",
-        modifiers=("sidebar-collapsible", "sidebar-collapsed"),
+        modifiers=("sidebar-collapsible", "sidebar-collapsed", "has-context-rail"),
         elements=(
             "topbar",
             "brand",
@@ -2372,6 +2372,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "sidebar",
             "sidebar-resize",
             "main",
+            "context-rail",
         ),
         extra_emits=(
             "chirpui-app-shell__main--fill",
@@ -2379,13 +2380,15 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-app-shell__sidebar--muted",
             "chirpui-app-shell__topbar--glass",
             "chirpui-app-shell__topbar--gradient",
+            "chirpui-app-shell__context-rail--muted",
         ),
-        slots=("", "brand", "topbar", "topbar_end", "sidebar"),
+        slots=("", "brand", "topbar", "topbar_end", "sidebar", "context_rail"),
         tokens=(
             "--chirpui-sidebar-width",
             "--chirpui-sidebar-collapsed-width",
             "--chirpui-sidebar-expanded-width",
             "--chirpui-sidebar-max-width",
+            "--chirpui-context-rail-width",
         ),
         template="app_shell.html",
         category="layout",

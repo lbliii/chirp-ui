@@ -686,9 +686,10 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "App Shell component\n    Full-page shell with topbar, sidebar, and main content area.\n    Navigation is driven by explicit hx-boost on sidebar_link/nav_link,\n    targeting #main to keep the sidebar and topbar persistent.\n    In filesystem apps, the route/layout tree should declare matching\n    Chirp domain metadata plus an outlet of main so route-aware links and\n    boosted responses resolve to this shell consistently.\n\n    Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar, default (main content).\n    For routed apps, wrap the main slot with shell_outlet() so custom shells\n    use the same #page-content contract as app_shell_layout.html.\n\n    Usage:\n        import app_shell plus shell_outlet\n        provide brand / topbar / topbar_end / sidebar slots\n        wrap the main slot with shell_outlet() for routed shells\n        enable sidebar_collapsible=true for the resizable shell variant",
+      "description": "App Shell component\n    Full-page shell with topbar, sidebar, and main content area.\n    Navigation is driven by explicit hx-boost on sidebar_link/nav_link,\n    targeting #main to keep the sidebar and topbar persistent.\n    In filesystem apps, the route/layout tree should declare matching\n    Chirp domain metadata plus an outlet of main so route-aware links and\n    boosted responses resolve to this shell consistently.\n\n    Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar,\n    context_rail (when context_rail=true), default (main content).\n    For routed apps, wrap the main slot with shell_outlet() so custom shells\n    use the same #page-content contract as app_shell_layout.html.\n\n    Route-context rail (context_rail=true): adds an optional secondary region\n    (#chirpui-context-rail) on the trailing side, for an inspector/detail panel\n    that updates with the current route. The update protocol mirrors shell\n    actions: a route response includes an out-of-band fragment targeting the\n    rail outlet — use context_rail_oob() from chirpui/oob.html, e.g.\n        {% call context_rail_oob() %}<h2>Details for {{ item.name }}</h2>{% end %}\n    Works standalone with plain htmx OOB; under Chirp, boosted nav carries the\n    rail fragment in the same response (route_link_attrs already targets #main).\n    Below 72rem the rail stacks under main; below 48rem it joins the single\n    column. (A hamburger slide-over overlay form is a follow-up, #196.)\n\n    Usage:\n        import app_shell plus shell_outlet\n        provide brand / topbar / topbar_end / sidebar slots\n        wrap the main slot with shell_outlet() for routed shells\n        enable sidebar_collapsible=true for the resizable shell variant\n        enable context_rail=true and fill the context_rail slot for the rail",
       "elements": [
         "brand",
+        "context-rail",
         "main",
         "shell-actions",
         "sidebar",
@@ -700,9 +701,12 @@
       ],
       "emits": [
         "chirpui-app-shell",
+        "chirpui-app-shell--has-context-rail",
         "chirpui-app-shell--sidebar-collapsed",
         "chirpui-app-shell--sidebar-collapsible",
         "chirpui-app-shell__brand",
+        "chirpui-app-shell__context-rail",
+        "chirpui-app-shell__context-rail--muted",
         "chirpui-app-shell__main",
         "chirpui-app-shell__main--fill",
         "chirpui-app-shell__shell-actions",
@@ -718,16 +722,18 @@
         "chirpui-app-shell__topbar-start"
       ],
       "extra_emits": [
+        "chirpui-app-shell__context-rail--muted",
         "chirpui-app-shell__main--fill",
         "chirpui-app-shell__sidebar--glass",
         "chirpui-app-shell__sidebar--muted",
         "chirpui-app-shell__topbar--glass",
         "chirpui-app-shell__topbar--gradient"
       ],
-      "lineno": 22,
+      "lineno": 35,
       "macro": "app_shell",
       "maturity": "stable",
       "modifiers": [
+        "has-context-rail",
         "sidebar-collapsed",
         "sidebar-collapsible"
       ],
@@ -775,6 +781,21 @@
         {
           "has_default": true,
           "is_required": false,
+          "name": "context_rail"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "context_rail_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "context_rail_variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
           "name": "cls"
         }
       ],
@@ -789,6 +810,7 @@
       "slots": [
         "",
         "brand",
+        "context_rail",
         "sidebar",
         "topbar",
         "topbar_end"
@@ -796,6 +818,7 @@
       "slots_extracted": [
         "",
         "brand",
+        "context_rail",
         "sidebar",
         "topbar",
         "topbar_end"
@@ -803,6 +826,7 @@
       "slots_yielded": [],
       "template": "app_shell.html",
       "tokens": [
+        "--chirpui-context-rail-width",
         "--chirpui-sidebar-collapsed-width",
         "--chirpui-sidebar-expanded-width",
         "--chirpui-sidebar-max-width",
@@ -23812,7 +23836,7 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 126,
-      "explicit_extra_classes": 532,
+      "explicit_extra_classes": 533,
       "explicit_trim_blocks": 68,
       "explicit_trim_classes": 95
     },

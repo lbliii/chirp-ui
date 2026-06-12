@@ -6,34 +6,50 @@
     Chirp domain metadata plus an outlet of main so route-aware links and
     boosted responses resolve to this shell consistently.
 
-    Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar, default (main content).
+    Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar,
+    context_rail (when context_rail=true), default (main content).
     For routed apps, wrap the main slot with shell_outlet() so custom shells
     use the same #page-content contract as app_shell_layout.html.
+
+    Route-context rail (context_rail=true): adds an optional secondary region
+    (#chirpui-context-rail) on the trailing side, for an inspector/detail panel
+    that updates with the current route. The update protocol mirrors shell
+    actions: a route response includes an out-of-band fragment targeting the
+    rail outlet — use context_rail_oob() from chirpui/oob.html, e.g.
+        {% call context_rail_oob() %}<h2>Details for {{ item.name }}</h2>{% end %}
+    Works standalone with plain htmx OOB; under Chirp, boosted nav carries the
+    rail fragment in the same response (route_link_attrs already targets #main).
+    Below 72rem the rail stacks under main; below 48rem it joins the single
+    column. (A hamburger slide-over overlay form is a follow-up, #196.)
 
     Usage:
         import app_shell plus shell_outlet
         provide brand / topbar / topbar_end / sidebar slots
         wrap the main slot with shell_outlet() for routed shells
         enable sidebar_collapsible=true for the resizable shell variant
+        enable context_rail=true and fill the context_rail slot for the rail
 -#}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
 {% from "chirpui/shell_frame.html" import shell_runtime_script %}
 
-{% def app_shell(brand="", brand_url="/", brand_slot=false, brand_boost=true, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, cls="") %}
+{% def app_shell(brand="", brand_url="/", brand_slot=false, brand_boost=true, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, context_rail=false, context_rail_label="Context", context_rail_variant="default", cls="") %}
 {% set topbar_variant = topbar_variant | validate_variant(("default","glass","gradient"), "default") %}
 {% set sidebar_variant = sidebar_variant | validate_variant(("default","glass","muted"), "default") %}
+{% set _context_rail_variant = context_rail_variant | validate_variant(("default","muted"), "default") %}
 {% set topbar_class = " chirpui-app-shell__topbar--" ~ topbar_variant if topbar_variant != "default" else "" %}
 {% set sidebar_class = " chirpui-app-shell__sidebar--" ~ sidebar_variant if sidebar_variant != "default" else "" %}
+{% set rail_shell_class = " chirpui-app-shell--has-context-rail" if context_rail else "" %}
+{% set rail_variant_class = " chirpui-app-shell__context-rail--" ~ _context_rail_variant if _context_rail_variant != "default" else "" %}
 {% set shell_actions_target = shell_actions.target if shell_actions else "chirp-shell-actions" %}
 {% if sidebar_collapsible %}
-<div class="chirpui-app-shell chirpui-app-shell--sidebar-collapsible{{ " " ~ cls if cls else "" }}"
+<div class="chirpui-app-shell chirpui-app-shell--sidebar-collapsible{{ rail_shell_class }}{{ " " ~ cls if cls else "" }}"
      x-data="chirpuiSidebar({ collapsible: true, resizable: true })"
      x-init="init()"
      @mousemove.window="onMove($event)"
      @mouseup.window="onUp()"
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsed }">
 {% else %}
-<div class="chirpui-app-shell{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-app-shell{{ rail_shell_class }}{{ " " ~ cls if cls else "" }}">
 {% end %}
     <header class="chirpui-app-shell__topbar{{ topbar_class }}" data-chirpui-shell-topbar>
         <a href="{{ brand_url }}" class="chirpui-app-shell__brand"{{ route_link_attrs(
@@ -70,6 +86,13 @@
     </aside>
     {#- No whitespace before/after slot: stray text nodes inside grid main break layout/scroll. -#}
     <main id="main" class="chirpui-app-shell__main" data-chirp-scroll="auto" tabindex="-1">{%- slot -%}</main>
+    {%- if context_rail %}
+    {#- Route-context rail: OOB-targetable secondary region. A route response updates it
+        with an OOB fragment targeting #chirpui-context-rail (see context_rail_oob in oob.html). -#}
+    <aside id="chirpui-context-rail" class="chirpui-app-shell__context-rail{{ rail_variant_class }}"
+           aria-label="{{ context_rail_label }}" aria-live="polite" aria-atomic="true"
+           data-chirpui-shell-context-rail>{%- slot context_rail -%}</aside>
+    {%- end %}
 </div>
 {{ shell_runtime_script() }}
 {% end %}
