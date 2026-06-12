@@ -123,6 +123,86 @@
 
     var _registeredComponents = {};
 
+    // ── Alpine runtime self-check (silent-disable guard) ────────────────
+    // When Alpine never loads — a missing/blocked/misconfigured CDN script,
+    // a CSP block, a network error, or alpine=False — register()'s factories
+    // queue on an `alpine:init` event that never fires, and every chirp-ui
+    // component is silently inert with a clean console. This guard makes that
+    // failure LOUD instead. See CLAUDE.md troubleshooting:
+    // "all interactive components are dead".
+    var _alpineInitSeen = false;
+    var _alpineHealthWarned = false;
+    var ALPINE_HEALTH_CHECK_DELAY_MS = 1500;
+
+    document.addEventListener("alpine:init", function () {
+        _alpineInitSeen = true;
+    });
+
+    function chirpuiAlpineComponents() {
+        var nodes = document.querySelectorAll("[x-data]");
+        var matches = [];
+        for (var i = 0; i < nodes.length; i++) {
+            var value = nodes[i].getAttribute("x-data") || "";
+            if (/chirpui\w+\s*\(/.test(value)) {
+                matches.push(nodes[i]);
+            }
+        }
+        return matches;
+    }
+
+    function runAlpineHealthCheck() {
+        if (_alpineHealthWarned) {
+            return;
+        }
+        // Alpine is alive — nothing to warn about. These are the only honest
+        // signals that Alpine actually ran: window.Alpine is set by the core
+        // script, and alpine:init only fires once the core script executes.
+        // (Chirp's inline window._chirpAlpineData bridge is NOT a signal: it
+        // is injected alongside Alpine and merely queues registrations until
+        // an alpine:init that never comes if the core script failed to load.)
+        if (window.Alpine || _alpineInitSeen) {
+            return;
+        }
+        var needers = chirpuiAlpineComponents();
+        if (!needers.length) {
+            return;
+        }
+        _alpineHealthWarned = true;
+        console.warn(
+            "[chirp-ui] Alpine.js never initialized, but " +
+                needers.length +
+                " chirp-ui component(s) on this page require it — they are now " +
+                "INERT (dropdowns, modals, theme/style toggles, tabs, copy " +
+                "buttons, and the collapsible sidebar will not respond).\n" +
+                "Likely causes:\n" +
+                "  1. The Alpine core <script> is missing. Chirp injects it via " +
+                "use_chirp_ui(app); confirm alpine=True and that a " +
+                '<script data-chirp="alpine"> tag is in the page.\n' +
+                "  2. The Alpine CDN URL is wrong: it must end in " +
+                "/dist/cdn.min.js. A bare alpinejs@<version> resolves to a " +
+                "CommonJS build that fails silently in browsers.\n" +
+                '  3. A Content-Security-Policy or network error blocked it ' +
+                '(a "Script error." at line 0 in the console = cross-origin ' +
+                "failure masking the real error).\n" +
+                "See chirp-ui troubleshooting: \"all interactive components are " +
+                "dead\" (https://github.com/lbliii/chirp-ui)."
+        );
+    }
+
+    function scheduleAlpineHealthCheck() {
+        function arm() {
+            window.setTimeout(runAlpineHealthCheck, ALPINE_HEALTH_CHECK_DELAY_MS);
+        }
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", arm, { once: true });
+        } else {
+            arm();
+        }
+        // Components can arrive via htmx swaps after the initial check; re-run
+        // cheaply (a no-op once Alpine is alive or we've already warned).
+        document.addEventListener("htmx:afterSettle", runAlpineHealthCheck);
+    }
+
     function register(name, factory) {
         if (_registeredComponents[name]) {
             return;
@@ -568,4 +648,6 @@
             },
         };
     });
+
+    scheduleAlpineHealthCheck();
 })();

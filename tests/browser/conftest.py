@@ -90,8 +90,15 @@ async def wait_for_htmx(page, timeout: float = 5000):
     await page.wait_for_timeout(100)
 
 
-async def wait_for_alpine(page, timeout: float = 5000):
-    """Wait for Alpine.js to be initialized."""
+async def wait_for_alpine(page, timeout: float = 10000):
+    """Wait for Alpine.js to be initialized.
+
+    Alpine is fetched from the jsdelivr CDN by the test app's ``use_chirp_ui``
+    injection, so a cold/contended fetch can take several seconds. The timeout
+    is generous to absorb that network latency and keep the suite from flaking
+    on slow CDN loads (the failure mode is a ``wait_for_function`` timeout here,
+    not a logic bug).
+    """
     await page.wait_for_function(
         "() => window.Alpine && Alpine.version",
         timeout=timeout,

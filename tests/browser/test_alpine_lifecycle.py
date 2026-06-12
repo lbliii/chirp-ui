@@ -58,6 +58,7 @@ async def test_alpine_survives_boosted_nav(page, base_url):
     assert marker is True
 
 
+@pytest.mark.swap_lifecycle
 async def test_alpine_components_reinit_after_swap(page, base_url):
     """Alpine x-data components in swapped content initialize correctly."""
     await page.goto(base_url + "/modal")
@@ -74,16 +75,20 @@ async def test_alpine_components_reinit_after_swap(page, base_url):
     await page.click("a[href='/modal']")
     await wait_for_htmx(page)
 
-    # Modal trigger should work after re-initialization
+    # Modal trigger should work after re-initialization. Wait for Alpine to
+    # re-bind the swapped-in component before clicking — "visible" does not
+    # imply the x-data click handler is wired yet (mirrors the tabs test).
     trigger = page.locator("button[aria-controls]")
     await trigger.wait_for(state="visible")
+    await page.wait_for_timeout(200)
     await trigger.click()
 
     # Modal should open
     modal = page.locator(".chirpui-modal--open")
-    await modal.wait_for(state="visible", timeout=2000)
+    await modal.wait_for(state="visible", timeout=5000)
 
 
+@pytest.mark.swap_lifecycle
 async def test_modal_store_state_resets_on_nav(page, base_url):
     """Modal store state doesn't persist stale open state across navigation."""
     await page.goto(base_url + "/modal")
@@ -92,7 +97,7 @@ async def test_modal_store_state_resets_on_nav(page, base_url):
     # Open modal
     await page.click("button[aria-controls]")
     modal = page.locator(".chirpui-modal--open")
-    await modal.wait_for(state="visible", timeout=2000)
+    await modal.wait_for(state="visible", timeout=5000)
 
     # Navigate away (modal DOM replaced, but store key still true)
     await page.click("a[href='/']")
@@ -116,6 +121,7 @@ async def test_modal_store_state_resets_on_nav(page, base_url):
         pass
 
 
+@pytest.mark.swap_lifecycle
 async def test_client_tabs_work_after_nav(page, base_url):
     """Alpine-powered tabs work after being swapped in via boosted nav."""
     await page.goto(base_url + "/")
@@ -139,3 +145,50 @@ async def test_client_tabs_work_after_nav(page, base_url):
     await page.wait_for_timeout(200)
     assert await page.locator("[data-testid='panel-second']").is_visible()
     assert not await page.locator("[data-testid='panel-first']").is_visible()
+
+
+# ── Silent-disable self-check (issue #189) ───────────────────────────────
+# When Alpine never loads, chirp-ui components are inert with a clean console.
+# chirpui-alpine.js now runs a runtime self-check that turns that silent
+# failure into a loud console warning. These prove both directions.
+
+
+async def test_alpine_silent_disable_warns(page, base_url):
+    """When Alpine core never loads, chirp-ui logs a loud console warning
+    instead of leaving every interactive component silently inert."""
+    messages: list[str] = []
+    page.on("console", lambda msg: messages.append(msg.text))
+
+    async def _block(route):
+        await route.abort()
+
+    # Simulate the silent-disable footgun: the Alpine CDN never loads.
+    # chirpui-alpine.js is served locally, so its self-check still runs.
+    await page.route("**cdn.jsdelivr.net**", _block)
+
+    await page.goto(base_url + "/modal")
+
+    # The page must actually contain a chirp-ui Alpine component, else the
+    # check is correctly silent and this test would prove nothing.
+    assert await page.query_selector('[x-data*="chirpui"]') is not None
+    # Sanity: Alpine genuinely did not initialize.
+    assert await page.evaluate("window.Alpine === undefined")
+
+    # The self-check fires after a short grace window (1500ms in the runtime).
+    await page.wait_for_timeout(2200)
+    assert any("chirp-ui" in m and "Alpine" in m and "INERT" in m for m in messages), (
+        f"expected a loud Alpine self-check warning; got: {messages}"
+    )
+
+
+async def test_no_alpine_warning_on_healthy_page(page, base_url):
+    """The self-check stays silent when Alpine loads normally (no false alarm)."""
+    messages: list[str] = []
+    page.on("console", lambda msg: messages.append(msg.text))
+
+    await page.goto(base_url + "/modal")
+    await wait_for_alpine(page)
+
+    # Let the self-check grace window fully elapse; it must NOT fire.
+    await page.wait_for_timeout(2200)
+    assert not any("INERT" in m for m in messages), f"unexpected warning: {messages}"
