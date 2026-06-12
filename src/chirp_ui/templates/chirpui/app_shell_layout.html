@@ -35,9 +35,11 @@
     #page-content receives flex:1 and inner panels handle bounded scroll below
     the sticky topbar. See docs/fundamentals/layout-vertical.md.
 
-    HTMX: primary #main swap runs before out-of-band fragments; a beforeSwap
-    handler clears #chirp-shell-actions when the response includes shell-actions
-    OOB (see docs/fundamentals/ui-layers.md).
+    HTMX: primary #main swap runs before out-of-band fragments. shell_runtime_script()
+    (emitted by every shell entry point) resets the route-scoped shell regions
+    (#chirp-shell-actions, #chirpui-context-rail) on each boosted #main navigation,
+    so OOB fragments land in clean nodes and a route that ships no fragment for a
+    region empties it rather than stranding the prior route's content.
 
     page_scripts block: renders after toast/CSRF/nav scripts near </body>.
     Only templates that {% extends %} this layout can override it (inner
@@ -134,20 +136,9 @@ document.body.addEventListener("htmx:configRequest", function(event) {
   document.body.addEventListener("htmx:pushedIntoHistory", syncNav);
   document.body.addEventListener("htmx:replacedInHistory", syncNav);
 })();
-(function () {
-  function responseUpdatesShellActionsOob(xhr) {
-    if (!xhr || !xhr.responseText) return false;
-    var body = xhr.responseText;
-    return body.indexOf("chirp-shell-actions") !== -1 && body.indexOf("hx-swap-oob") !== -1;
-  }
-  document.body.addEventListener("htmx:beforeSwap", function (e) {
-    var t = e.detail && e.detail.target;
-    if (!t || t.id !== "main") return;
-    if (!responseUpdatesShellActionsOob(e.detail.xhr)) return;
-    var shell = document.getElementById("chirp-shell-actions");
-    if (shell) shell.replaceChildren();
-  });
-})();
+{#- The route-scoped shell-region reset (#chirp-shell-actions, #chirpui-context-rail)
+    now lives in shell_runtime_script() so both shell entry points share one
+    source of truth. -#}
 </script>
 {{ shell_runtime_script() }}
 {{ toast_container() }}

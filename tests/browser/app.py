@@ -477,6 +477,25 @@ def _include_shell_actions_oob(request: Request) -> bool:
     return _is_hx_target(request, "main")
 
 
+def _ctx_rail_context(
+    request: Request, path: str, main_label: str, rail_html: str
+) -> dict[str, object]:
+    """Context for the route-context rail gauntlet fixture (#195).
+
+    On a boosted #main request the fixture emits a context_rail_oob() fragment
+    (when rail_html is non-empty); on initial load the same content renders via
+    the context_rail block.
+    """
+    return {
+        "page_title": "Context Rail",
+        "context_rail": True,
+        "current_path": path,
+        "main_label": main_label,
+        "rail_html": rail_html,
+        "boosted": _is_hx_target(request, "main"),
+    }
+
+
 def _workspace_context(path: str, *, include_shell_actions_oob: bool = False) -> dict[str, object]:
     title, copy = CONSUMER_WORKSPACE_VIEWS.get(
         path, CONSUMER_WORKSPACE_VIEWS["/consumer-workspace"]
@@ -678,6 +697,33 @@ def create_app() -> App:
     @app.route("/rail-to-tray")
     async def rail_to_tray_page(request: Request):
         return Template("rail_to_tray_page.html", page_title="Rail To Drawer Chrome")
+
+    # Route-context rail gauntlet (#195): /ctx and /ctx/b carry rail content,
+    # /ctx/none ships none so the shell-runtime stale-clear must empty the rail.
+    @app.route("/ctx")
+    async def ctx_a(request: Request):
+        return Template(
+            "context_rail_page.html",
+            **_ctx_rail_context(
+                request, "/ctx", "Context A", '<h2 data-testid="rail-content">Context A</h2>'
+            ),
+        )
+
+    @app.route("/ctx/b")
+    async def ctx_b(request: Request):
+        return Template(
+            "context_rail_page.html",
+            **_ctx_rail_context(
+                request, "/ctx/b", "Context B", '<h2 data-testid="rail-content">Context B</h2>'
+            ),
+        )
+
+    @app.route("/ctx/none")
+    async def ctx_none(request: Request):
+        return Template(
+            "context_rail_page.html",
+            **_ctx_rail_context(request, "/ctx/none", "No context", ""),
+        )
 
     @app.route("/consumer-workspace")
     async def consumer_workspace_page(request: Request):

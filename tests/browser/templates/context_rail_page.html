@@ -1,0 +1,31 @@
+{#- Gauntlet fixture for the route-context rail (#195). Mirrors the shell-actions
+    OOB pattern: the route enables context_rail and, on a boosted #main request,
+    emits a context_rail_oob() fragment so the rail rides the navigation. A route
+    that ships no fragment leaves the rail to be cleared by shell_runtime_script.
+    Composed by hand here — deliberately not a reusable/importable shell. -#}
+{% extends "base.html" %}
+{% block brand %}Context Rail{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path=current_path) %}
+  {% call sidebar_section("Demo") %}
+    {{ sidebar_link("/ctx", "Context A", match="exact") }}
+    {{ sidebar_link("/ctx/b", "Context B", match="exact") }}
+    {{ sidebar_link("/ctx/none", "No context", match="exact") }}
+  {% end %}
+{% end %}
+{% end %}
+{#- Initial (non-boosted) load shows the rail via the block; on boosted nav this
+    block is outside #page-content and is discarded, so the OOB below drives it. -#}
+{% block context_rail %}{% if rail_html %}{{ rail_html | safe }}{% end %}{% end %}
+{% block content %}
+{% from "chirpui/oob.html" import context_rail_oob %}
+{% if boosted and rail_html %}
+{% call context_rail_oob() %}{{ rail_html | safe }}{% end %}
+{% end %}
+<div id="page-root">
+  <h1 data-testid="main-content">{{ main_label }}</h1>
+  <p>Boosted sidebar links swap #main; the rail rides along via an OOB fragment,
+  and a route with no fragment clears it.</p>
+</div>
+{% end %}

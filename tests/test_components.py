@@ -5150,6 +5150,24 @@ class TestAppShell:
         assert "<aside" in html
         assert "<h2>Run details</h2>" in html
 
+    def test_shell_runtime_script_resets_both_shell_regions(self, env: Environment) -> None:
+        """The route-scoped stale-clear lives in the shared runtime (emitted by both
+        shell entry points) and covers shell-actions AND the context rail."""
+        html = env.from_string(
+            '{% from "chirpui/shell_frame.html" import shell_runtime_script %}'
+            "{{ shell_runtime_script() }}"
+        ).render()
+        assert "htmx:beforeSwap" in html
+        assert "chirp-shell-actions" in html
+        assert "chirpui-context-rail" in html
+
+    def test_app_shell_layout_has_no_duplicate_region_clear(self) -> None:
+        """Regression: the region stale-clear is not duplicated in the layout's
+        inline script (it moved into shell_runtime_script). Guards the divergence
+        between the macro and layout entry points from returning."""
+        layout = Path("src/chirp_ui/templates/chirpui/app_shell_layout.html").read_text()
+        assert "responseUpdatesShellActionsOob" not in layout
+
 
 class TestLogo:
     def test_logo_text_variant(self, env: Environment) -> None:
