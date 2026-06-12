@@ -124,19 +124,75 @@ class AlpineRuntimeCheck:
     detection) OR, when *script_loaded* is False, all
     *factories_used*.
 
-    *ok* — ``True`` when no factories are used, or when the script tag
-    is present. ``False`` when at least one Alpine-requiring component
-    rendered but the script is missing.
+    *ok* — ``True`` when no factories are used, or when the
+    ``chirpui-alpine.js`` script tag is present. ``False`` when at least
+    one Alpine-requiring component rendered but the script is missing.
+    This is the narrow registration-script check; it intentionally does
+    **not** consider Alpine core (see below).
+
+    *core_loaded* — an Alpine **core** ``<script>`` is present (detected by
+    an ``alpinejs@``/``@alpinejs/csp`` src or Chirp's ``data-chirp="alpine"``
+    marker). chirp-ui factories need both ``chirpui-alpine.js`` (to register
+    them) and Alpine core (to run them).
+
+    *core_url_valid* — an Alpine core script is present **and** uses the
+    browser build (path ends in ``/dist/cdn.min.js``). A bare
+    ``alpinejs@<version>`` resolves to the CommonJS main and fails silently
+    in browsers — the exact footgun ``problems`` flags.
+
+    *core_loaded* / *core_url_valid* are only meaningful against a fully
+    **injected** response or a hand-authored page. At pre-injection layout
+    freeze time Alpine core is not in the HTML yet, so rely on *ok* /
+    *script_loaded* there.
     """
 
     script_loaded: bool
     factories_used: frozenset[str]
     missing: frozenset[str]
     ok: bool
+    core_loaded: bool = False
+    core_url_valid: bool = False
+
+    @property
+    def problems(self) -> tuple[str, ...]:
+        """Human-readable runtime problems, empty when no factories are used.
+
+        Composes the registration-script, Alpine-core, and CDN-URL findings
+        into messages a dev warning can surface. Note the core/URL items are
+        only accurate against fully-injected HTML (see class docstring).
+        """
+        if not self.factories_used:
+            return ()
+        issues: list[str] = []
+        if not self.script_loaded:
+            issues.append("chirpui-alpine.js runtime script is not in the HTML")
+        if not self.core_loaded:
+            issues.append("Alpine core script is not in the HTML")
+        elif not self.core_url_valid:
+            issues.append(
+                "Alpine core script URL is not the browser build "
+                "(it must end in /dist/cdn.min.js; a bare alpinejs@<version> "
+                "resolves to CommonJS and fails silently in browsers)"
+            )
+        return tuple(issues)
 
 
 _FACTORY_PATTERN = re.compile(r"""x-data=["'](chirpui\w+)\s*\(""")
 _SCRIPT_MARKER = "chirpui-alpine.js"
+# Alpine CORE script src: the "alpinejs" npm package or the "@alpinejs/csp"
+# build — NOT the @alpinejs/mask|intersect|focus plugins, which themselves
+# need core. ``alpinejs@`` matches the bare package; ``alpinejs/csp`` matches
+# the CSP build; neither matches ``@alpinejs/mask`` etc. (those read
+# ``alpinejs/mask``).
+_ALPINE_CORE_SRC = re.compile(
+    r"""<script\b[^>]*\bsrc=["']([^"']*alpinejs(?:@|/csp)[^"']*)["']""",
+    re.IGNORECASE,
+)
+# Chirp marks the core injection with data-chirp="alpine" (plugins use
+# alpine-mask / alpine-intersect / alpine-focus).
+_ALPINE_CORE_MARKER = re.compile(r"""data-chirp=["']alpine["']""")
+# The correct browser build always ends the path with /dist/cdn.min.js.
+_CDN_BUILD_SUFFIX = "/dist/cdn.min.js"
 
 
 def check_alpine_runtime(html: str) -> AlpineRuntimeCheck:
@@ -154,9 +210,19 @@ def check_alpine_runtime(html: str) -> AlpineRuntimeCheck:
     The script marker match is a plain substring search for
     ``chirpui-alpine.js``. Any path prefix or minification suffix is fine
     as long as the filename appears somewhere in the HTML.
+
+    Alpine **core** detection (``core_loaded`` / ``core_url_valid``) scans for
+    an ``alpinejs@``/``@alpinejs/csp`` script src or Chirp's
+    ``data-chirp="alpine"`` marker, and verifies the browser build suffix
+    ``/dist/cdn.min.js``. These are only meaningful against fully-injected
+    HTML — at pre-injection freeze time Alpine core is not in the page yet.
     """
     factories = frozenset(_FACTORY_PATTERN.findall(html))
     script_loaded = _SCRIPT_MARKER in html
+
+    core_srcs = _ALPINE_CORE_SRC.findall(html)
+    core_loaded = bool(core_srcs) or bool(_ALPINE_CORE_MARKER.search(html))
+    core_url_valid = any(_CDN_BUILD_SUFFIX in src for src in core_srcs)
 
     if not factories:
         missing: frozenset[str] = frozenset()
@@ -173,10 +239,15 @@ def check_alpine_runtime(html: str) -> AlpineRuntimeCheck:
         factories_used=factories,
         missing=missing,
         ok=ok,
+        core_loaded=core_loaded,
+        core_url_valid=core_url_valid,
     )
 
 
 # TODO(chirp): wire check_alpine_runtime() into use_chirp_ui(app) at
 # freeze time. Run against the first rendered layout response; in dev
 # (app.debug or strict="auto"), raise on result.missing; otherwise emit
-# a warning. See chirp-ui/.context/plan-dev-mode-strict.md § Sprint 3.
+# a warning. The detector now also reports Alpine core + CDN-URL problems
+# (result.problems / result.core_loaded / result.core_url_valid) for use
+# against fully-injected responses. See chirp-ui/.context/plan-dev-mode-strict.md
+# § Sprint 3.

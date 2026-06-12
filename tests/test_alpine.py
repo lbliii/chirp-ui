@@ -169,6 +169,94 @@ class TestCheckAlpineRuntime:
             result.ok = False  # type: ignore[misc]
 
 
+_FACTORY = '<div x-data="chirpuiThemeToggle()"></div>'
+_RUNTIME = '<script src="/static/chirpui-alpine.js"></script>'
+_CORE_OK = (
+    '<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.min.js" '
+    'data-chirp="alpine"></script>'
+)
+_CORE_BARE = (
+    '<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0" data-chirp="alpine"></script>'
+)
+_CORE_CSP = (
+    '<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/csp@3.14.0/dist/cdn.min.js" '
+    'data-chirp="alpine"></script>'
+)
+_PLUGIN_FOCUS = (
+    '<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.14.0/dist/cdn.min.js" '
+    'data-chirp="alpine-focus"></script>'
+)
+
+
+class TestAlpineCoreDetection:
+    def test_core_present_with_browser_build(self) -> None:
+        result = check_alpine_runtime(_CORE_OK + _FACTORY)
+        assert result.core_loaded is True
+        assert result.core_url_valid is True
+
+    def test_csp_build_counts_as_core(self) -> None:
+        result = check_alpine_runtime(_CORE_CSP + _FACTORY)
+        assert result.core_loaded is True
+        assert result.core_url_valid is True
+
+    def test_bare_version_is_the_commonjs_footgun(self) -> None:
+        """A bare alpinejs@<version> (no /dist/cdn.min.js) is detected but invalid."""
+        result = check_alpine_runtime(_CORE_BARE + _FACTORY)
+        assert result.core_loaded is True
+        assert result.core_url_valid is False
+
+    def test_core_absent(self) -> None:
+        result = check_alpine_runtime(_FACTORY)
+        assert result.core_loaded is False
+        assert result.core_url_valid is False
+
+    def test_plugins_alone_do_not_count_as_core(self) -> None:
+        """An @alpinejs/focus plugin (and its alpine-focus marker) is not core."""
+        result = check_alpine_runtime(_PLUGIN_FOCUS + _FACTORY)
+        assert result.core_loaded is False
+        assert result.core_url_valid is False
+
+    def test_data_chirp_marker_alone_marks_core_present(self) -> None:
+        html = '<script data-chirp="alpine"></script>' + _FACTORY
+        result = check_alpine_runtime(html)
+        assert result.core_loaded is True
+        # No parseable src, so the browser-build suffix cannot be confirmed.
+        assert result.core_url_valid is False
+
+    def test_defaults_are_false_for_plain_html(self) -> None:
+        result = check_alpine_runtime("<p>hello</p>")
+        assert result.core_loaded is False
+        assert result.core_url_valid is False
+
+
+class TestRuntimeProblems:
+    def test_no_problems_when_no_factories(self) -> None:
+        assert check_alpine_runtime(_CORE_OK).problems == ()
+        assert check_alpine_runtime("").problems == ()
+
+    def test_no_problems_for_fully_wired_page(self) -> None:
+        result = check_alpine_runtime(_RUNTIME + _CORE_OK + _FACTORY)
+        assert result.ok is True
+        assert result.problems == ()
+
+    def test_flags_missing_runtime_script(self) -> None:
+        problems = check_alpine_runtime(_CORE_OK + _FACTORY).problems
+        assert any("chirpui-alpine.js" in p for p in problems)
+
+    def test_flags_missing_core(self) -> None:
+        problems = check_alpine_runtime(_RUNTIME + _FACTORY).problems
+        assert any("Alpine core script is not in the HTML" in p for p in problems)
+
+    def test_flags_bad_cdn_url(self) -> None:
+        problems = check_alpine_runtime(_RUNTIME + _CORE_BARE + _FACTORY).problems
+        assert any("/dist/cdn.min.js" in p for p in problems)
+
+    def test_reports_both_runtime_and_core_missing(self) -> None:
+        problems = check_alpine_runtime(_FACTORY).problems
+        assert any("chirpui-alpine.js" in p for p in problems)
+        assert any("Alpine core" in p for p in problems)
+
+
 class TestExports:
     def test_public_api_exports(self) -> None:
         import chirp_ui
