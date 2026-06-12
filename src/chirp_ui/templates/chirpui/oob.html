@@ -39,3 +39,13 @@
 <span id="{{ id }}" class="chirpui-counter-badge{{ variant_class }}{{ " " ~ cls if cls else "" }}"{% if oob %} hx-swap-oob="true"{% end %}{% if count == 0 %} hidden{% end %}
       aria-label="{{ count }} notification{{ "s" if count != 1 else "" }}">{{ display }}</span>
 {% end %}
+
+{#- Update the app_shell route-context rail (#chirpui-context-rail) from any route
+    response. Include alongside the #main content so boosted nav swaps both:
+        {% call context_rail_oob() %}
+          {{ label_overline("Details") }}<h2>{{ item.name }}</h2>...
+        {% end %}
+    Default innerHTML swap preserves the rail wrapper + its aria landmark. -#}
+{% def context_rail_oob(swap="innerHTML") %}
+<aside id="chirpui-context-rail" hx-swap-oob="{{ swap }}">{% try %}{% slot %}{% fallback %}{% end %}</aside>
+{% end %}

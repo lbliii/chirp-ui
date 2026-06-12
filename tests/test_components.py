@@ -5102,6 +5102,54 @@ class TestAppShell:
         assert "chirpui-app-shell__topbar--" not in html
         assert "chirpui-app-shell__sidebar--" not in html
 
+    def test_app_shell_context_rail_renders_region(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand", context_rail=true, context_rail_label="Inspector") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% slot context_rail %}<p>Details</p>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell--has-context-rail" in html
+        assert 'id="chirpui-context-rail"' in html
+        assert 'aria-label="Inspector"' in html
+        assert "chirpui-app-shell__context-rail" in html
+        assert "<p>Details</p>" in html
+
+    def test_app_shell_no_context_rail_by_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell--has-context-rail" not in html
+        assert 'id="chirpui-context-rail"' not in html
+
+    def test_app_shell_context_rail_muted_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand", context_rail=true, context_rail_variant="muted") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% slot context_rail %}<p>Details</p>{% end %}"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell__context-rail--muted" in html
+
+    def test_context_rail_oob_targets_outlet(self, env: Environment) -> None:
+        """The OOB swap protocol: a route response updates #chirpui-context-rail."""
+        html = env.from_string(
+            '{% from "chirpui/oob.html" import context_rail_oob %}'
+            "{% call context_rail_oob() %}<h2>Run details</h2>{% end %}"
+        ).render()
+        assert 'id="chirpui-context-rail"' in html
+        assert 'hx-swap-oob="innerHTML"' in html
+        assert "<aside" in html
+        assert "<h2>Run details</h2>" in html
+
 
 class TestLogo:
     def test_logo_text_variant(self, env: Environment) -> None:

@@ -3880,8 +3880,8 @@ App Shell component
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`, `htmx`
-- **Slots:** `(default)`, `brand`, `sidebar`, `topbar`, `topbar_end`
-- **Modifiers:** `sidebar-collapsed`, `sidebar-collapsible`
+- **Slots:** `(default)`, `brand`, `context_rail`, `sidebar`, `topbar`, `topbar_end`
+- **Modifiers:** `has-context-rail`, `sidebar-collapsed`, `sidebar-collapsible`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -3893,6 +3893,9 @@ App Shell component
 | `topbar_variant` | no | (has default) |
 | `sidebar_variant` | no | (has default) |
 | `shell_actions` | no | (has default) |
+| `context_rail` | no | (has default) |
+| `context_rail_label` | no | (has default) |
+| `context_rail_variant` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `ascii`

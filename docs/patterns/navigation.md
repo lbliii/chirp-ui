@@ -78,6 +78,60 @@ Current promotion status:
   `application_chrome()`, `docs_shell`, `catalog_shell`,
   `compact_page_header`, `page_actions`, or shell response helper APIs.
 
+The one authorized exception is the **route-context rail** below — a shell
+*region* contract (not a whole-frame macro), blessed by
+[application-chrome-posture.md](../decisions/application-chrome-posture.md).
+
+## Route-Context Rail
+
+An optional secondary region on the trailing edge of `app_shell` for an
+inspector/detail panel that updates with the current route. It is a region
+contract: the app author still composes the shell; the rail just adds one named,
+OOB-targetable outlet and a swap convention.
+
+Enable it on either shell entry point:
+
+```jinja
+{# macro #}
+{% call app_shell(brand="Acme", context_rail=true, context_rail_label="Inspector") %}
+  {% slot sidebar %}…{% end %}
+  …main…
+  {% slot context_rail %}{{ label_overline("Inspector") }}…{% end %}
+{% end %}
+
+{# inheritance layout #}
+{% extends "chirpui/app_shell_layout.html" %}
+{# set context_rail truthy in page/route context, then: #}
+{% block context_rail %}…{% end %}
+```
+
+Both render the same outlet: `<aside id="chirpui-context-rail">` (a labelled
+`complementary` landmark, `aria-live="polite"`).
+
+**Update protocol (route → rail content).** Mirrors shell actions: a route
+response includes an out-of-band fragment targeting the outlet. Use
+`context_rail_oob()` from `chirpui/oob.html` alongside the `#main` content so a
+boosted navigation swaps both in one response:
+
+```jinja
+{% from "chirpui/oob.html" import context_rail_oob %}
+{# …the route's #main content… #}
+{% call context_rail_oob() %}
+  {{ label_overline("Details") }}<h2>{{ item.name }}</h2>…
+{% end %}
+```
+
+It works standalone with plain htmx OOB; under Chirp, `route_link_attrs` already
+targets `#main`, so the rail fragment rides the same boosted response — "works
+without Chirp, better with Chirp."
+
+**Responsive.** Below 72rem the rail leaves the side track and stacks under main
+(still in flow, reachable); below 48rem it joins the single column. A
+hamburger-triggered slide-over overlay form is a planned follow-up.
+
+Width is `--chirpui-context-rail-width` (default `20rem`); `context_rail_variant="muted"`
+tints the surface.
+
 ## ARIA And Semantics
 
 Route navigation should stay link-native:

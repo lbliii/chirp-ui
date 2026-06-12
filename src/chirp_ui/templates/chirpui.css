@@ -12813,6 +12813,32 @@ html {
     min-height: 100dvh;
 }
 
+/* Route-context rail: an optional secondary region whose content swaps with the
+   current route via an OOB fragment targeting #chirpui-context-rail. Region
+   contract only — the app author still composes the shell. See
+   docs/decisions/application-chrome-posture.md and docs/LAYOUT.md. */
+.chirpui-app-shell--has-context-rail {
+    grid-template-columns: var(--chirpui-sidebar-width, 16rem) minmax(0, 1fr) var(--chirpui-context-rail-width, 20rem);
+    grid-template-areas: "topbar topbar topbar" "sidebar main context";
+}
+
+.chirpui-app-shell__context-rail {
+    grid-area: context;
+    min-width: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    position: sticky;
+    top: var(--chirpui-shell-offset-top);
+    max-block-size: calc(100dvh - var(--chirpui-shell-offset-top));
+    padding: var(--chirpui-spacing-lg);
+    border-left: 1px solid var(--chirpui-border);
+    background: var(--chirpui-surface);
+}
+
+.chirpui-app-shell__context-rail--muted {
+    background: var(--chirpui-surface-muted, var(--chirpui-surface));
+}
+
 .chirpui-app-shell :where([id]) {
     scroll-margin-top: calc(var(--chirpui-shell-offset-top) + var(--chirpui-spacing-sm));
 }
@@ -13191,6 +13217,30 @@ body.htmx-request .chirpui-nav-progress::after {
     gap: var(--chirpui-spacing-md);
 }
 
+/* Below ~72rem the context rail leaves the side track and stacks under main —
+   still in flow and reachable. The overlay/slide-over form is a follow-up (#196). */
+@media (max-width: 72rem) {
+    .chirpui-app-shell--has-context-rail {
+        grid-template-columns: var(--chirpui-sidebar-width, 16rem) minmax(0, 1fr);
+        /* Content-height rows packed at the top so the stacked rail follows main
+           directly (not pushed below a full-viewport main, and not stretched by
+           the grid's default align-content: stretch). Leftover space sits below. */
+        grid-template-rows: auto auto auto;
+        align-content: start;
+        grid-template-areas:
+            "topbar topbar"
+            "sidebar main"
+            "context context";
+    }
+
+    .chirpui-app-shell__context-rail {
+        position: static;
+        max-block-size: none;
+        border-left: 0;
+        border-top: 1px solid var(--chirpui-border);
+    }
+}
+
 @media (max-width: 48rem) {
     .chirpui-app-shell {
         grid-template-columns: minmax(0, 1fr);
@@ -13199,6 +13249,16 @@ body.htmx-request .chirpui-nav-progress::after {
             "topbar"
             "sidebar"
             "main";
+    }
+
+    .chirpui-app-shell--has-context-rail {
+        grid-template-rows: auto auto auto auto;
+        align-content: start;
+        grid-template-areas:
+            "topbar"
+            "sidebar"
+            "main"
+            "context";
     }
 
     .chirpui-app-shell__topbar {

@@ -72,7 +72,9 @@
 {% set _collapsible = _sidebar_collapsible and _sidebar_collapsible != "false" %}
 {% set _shell_actions = shell_actions | default(none) %}
 {% set _shell_actions_target = _shell_actions.target if _shell_actions else "chirp-shell-actions" %}
-<div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}"
+{% set _context_rail = context_rail | default(false) %}
+{% set _rail_shell_class = " chirpui-app-shell--has-context-rail" if _context_rail else "" %}
+<div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}{{ _rail_shell_class }}"
      x-data="chirpuiSidebar({ collapsible: {{ 'true' if _collapsible else 'false' }}, resizable: false })"
      x-init="init()"
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsible && collapsed }">
@@ -101,6 +103,13 @@
       {% block content %}{% end %}
     {% end %}
   </main>
+  {% if _context_rail %}
+  {#- Route-context rail outlet — same contract as app_shell(): a route response
+      updates it via an OOB fragment targeting #chirpui-context-rail (context_rail_oob). -#}
+  <aside id="chirpui-context-rail" class="chirpui-app-shell__context-rail"
+         aria-label="{% block context_rail_label %}Context{% end %}" aria-live="polite" aria-atomic="true"
+         data-chirpui-shell-context-rail>{% block context_rail %}{% end %}</aside>
+  {% end %}
 </div>
 <script>
 document.body.addEventListener("htmx:configRequest", function(event) {
