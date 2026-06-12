@@ -33,14 +33,15 @@ def test_verification_gate_policy_matches_poe_tasks() -> None:
         "docs-build-all",
         "test-browser-chrome-check",
     ]
-    assert tasks["test-browser-chrome-check"]["cmd"].startswith(
-        "pytest tests/browser/test_rail_to_tray_chrome.py"
-    )
-    assert (
-        "tests/browser/test_application_chrome_gauntlet.py"
-        in tasks["test-browser-chrome-check"]["cmd"]
-    )
-    assert "tests/browser/test_bengal_docs_chrome.py" in tasks["test-browser-chrome-check"]["cmd"]
+    chrome_check_cmd = tasks["test-browser-chrome-check"]["cmd"]
+    # The chrome gate leads with the Alpine-liveness proof (regression guard for
+    # the silent-disable footgun) and deselects the timing/CDN-sensitive
+    # boosted-nav lifecycle tests, which stay in the full release suite.
+    assert chrome_check_cmd.startswith("pytest tests/browser/test_alpine_lifecycle.py")
+    assert "-m 'not swap_lifecycle'" in chrome_check_cmd
+    assert "tests/browser/test_rail_to_tray_chrome.py" in chrome_check_cmd
+    assert "tests/browser/test_application_chrome_gauntlet.py" in chrome_check_cmd
+    assert "tests/browser/test_bengal_docs_chrome.py" in chrome_check_cmd
     assert tasks["ci-browser"]["sequence"] == ["test-browser"]
     assert coverage["fail_under"] == 80
 
