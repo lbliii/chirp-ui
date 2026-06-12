@@ -87,7 +87,7 @@ _50 components._
 | `stack` | stable | Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block. |
 | `truncate` *(CSS / utility)* | legacy | - |
 | `visually-hidden` *(CSS / utility)* | legacy | - |
-| `workspace_shell` | stable | Workspace shell |
+| `workspace_shell` | experimental | Workspace shell |
 
 ## Container
 

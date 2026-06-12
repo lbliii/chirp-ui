@@ -2415,7 +2415,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         ),
         template="workspace_shell.html",
         category="layout",
-        maturity="stable",
+        # Demoted stable -> experimental (Posture ADR, 2026-06-12): the
+        # blessed composite is the route-context rail wired into app_shell,
+        # not this broader workbench frame, which PLAN-application-chrome-system
+        # still defers. See docs/decisions/application-chrome-posture.md.
+        maturity="experimental",
     ),
     "filter-rail": ComponentDescriptor(
         block="filter-rail",
