@@ -246,6 +246,23 @@ hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-
     }
     main.focus({ preventScroll: true });
   }, true);
+
+  // Route-scoped shell regions: on a boosted #main navigation, reset each region
+  // before the swap so the response's out-of-band fragments land in clean nodes,
+  // and a route that ships NO fragment for a region empties it (rather than
+  // stranding the prior route's content). Generalizes the former
+  // app_shell_layout-only #chirp-shell-actions clear to BOTH shell entry points
+  // and to the route-context rail. Safe for innerHTML (repopulated) and
+  // outerHTML (element replaced) OOB swaps alike.
+  var SHELL_REGION_IDS = ["chirp-shell-actions", "chirpui-context-rail"];
+  document.body.addEventListener("htmx:beforeSwap", function (e) {
+    if (!getMainTarget(e.detail)) return;
+    for (var i = 0; i < SHELL_REGION_IDS.length; i++) {
+      var region = document.getElementById(SHELL_REGION_IDS[i]);
+      if (region) region.replaceChildren();
+    }
+  }, true);
+
   syncShellGeometry();
 })();
 </script>
