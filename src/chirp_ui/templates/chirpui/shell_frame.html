@@ -263,6 +263,169 @@ hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-
     }
   }, true);
 
+  // Mobile shell drawers (#196): a topbar toggle turns an in-grid shell region
+  // (the sidebar, and — with context_rail — the rail) into an off-canvas
+  // slide-over below the shell's single-column breakpoint. Native-feeling modal
+  // behavior with no framework dependency: focus trap, ESC, scrim dismiss, body
+  // scroll lock, focus return, link/close dismiss, and auto-close when the
+  // viewport grows past the breakpoint (so a trapped drawer never strands focus
+  // on desktop). Inert when no toggle is present — a shell that did not opt into
+  // nav_drawer pays nothing. Persistent shell region, so wiring once survives
+  // boosted #main navigation.
+  var DRAWER_FOCUSABLE =
+    'a[href],button:not([disabled]),input:not([disabled]),' +
+    'select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+
+  function setupShellDrawers() {
+    var desktop = window.matchMedia("(min-width: 48rem)");
+    Array.prototype.forEach.call(
+      document.querySelectorAll(".chirpui-app-shell--nav-drawer"),
+      function (root) {
+        var toggles = root.querySelectorAll("[data-chirpui-shell-drawer-toggle]");
+        if (!toggles.length) return;
+        var scrim = root.querySelector("[data-chirpui-shell-scrim]");
+        var openName = null;
+        var lastFocus = null;
+
+        function panelFor(name) {
+          return root.querySelector('[data-chirpui-shell-drawer="' + name + '"]');
+        }
+        function toggleFor(name) {
+          return root.querySelector('[data-chirpui-shell-drawer-toggle="' + name + '"]');
+        }
+        function focusableIn(el) {
+          return Array.prototype.filter.call(
+            el.querySelectorAll(DRAWER_FOCUSABLE),
+            function (n) {
+              return n.offsetWidth || n.offsetHeight || n.getClientRects().length;
+            }
+          );
+        }
+        function ensureDismiss(panel) {
+          // Every open drawer must carry an in-panel close control. The sidebar
+          // renders one server-side; a headless panel (e.g. the route-context
+          // rail, whose innerHTML is owned by context_rail_oob fragments so a
+          // static head would be stranded on the first boosted swap) gets one
+          // injected here and removed on close. It also guarantees the trapped
+          // panel always has a focusable, so focus reliably lands inside.
+          if (panel.querySelector("[data-chirpui-shell-drawer-close]")) return;
+          var closeBtn = document.createElement("button");
+          closeBtn.type = "button";
+          closeBtn.className =
+            "chirpui-app-shell__drawer-close chirpui-app-shell__drawer-close--floating";
+          closeBtn.setAttribute("data-chirpui-shell-drawer-close", "");
+          closeBtn.setAttribute("data-chirpui-shell-drawer-injected", "");
+          var name = panel.getAttribute("aria-label");
+          closeBtn.setAttribute("aria-label", name ? "Close " + name : "Close");
+          closeBtn.innerHTML = "&times;";
+          panel.insertBefore(closeBtn, panel.firstChild);
+        }
+        function open(name) {
+          var panel = panelFor(name);
+          if (!panel || openName === name) return;
+          if (openName) close();
+          openName = name;
+          lastFocus = document.activeElement;
+          panel.classList.add("chirpui-app-shell__drawer--open");
+          panel.setAttribute("role", "dialog");
+          panel.setAttribute("aria-modal", "true");
+          // tabindex=-1 makes the panel itself a focus fallback for a truly
+          // empty drawer (focusableIn excludes tabindex=-1, so it never steals
+          // the first-focusable slot).
+          panel.setAttribute("tabindex", "-1");
+          ensureDismiss(panel);
+          if (scrim) scrim.hidden = false;
+          var toggle = toggleFor(name);
+          if (toggle) toggle.setAttribute("aria-expanded", "true");
+          document.documentElement.style.overflow = "hidden";
+          // rAF: the .--open class flips visibility:visible; focus only lands
+          // once that style has applied.
+          window.requestAnimationFrame(function () {
+            var f = focusableIn(panel);
+            (f[0] || panel).focus({ preventScroll: true });
+          });
+        }
+        function close() {
+          if (!openName) return;
+          var panel = panelFor(openName);
+          var toggle = toggleFor(openName);
+          if (panel) {
+            panel.classList.remove("chirpui-app-shell__drawer--open");
+            panel.removeAttribute("role");
+            panel.removeAttribute("aria-modal");
+            panel.removeAttribute("tabindex");
+            var injected = panel.querySelector("[data-chirpui-shell-drawer-injected]");
+            if (injected) injected.remove();
+          }
+          if (scrim) scrim.hidden = true;
+          if (toggle) toggle.setAttribute("aria-expanded", "false");
+          document.documentElement.style.removeProperty("overflow");
+          openName = null;
+          if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+          lastFocus = null;
+        }
+
+        Array.prototype.forEach.call(toggles, function (toggle) {
+          toggle.addEventListener("click", function () {
+            var name = toggle.getAttribute("data-chirpui-shell-drawer-toggle");
+            if (openName === name) close();
+            else open(name);
+          });
+        });
+        if (scrim) scrim.addEventListener("click", close);
+
+        // Dismiss on close button or on navigating via a link inside the drawer.
+        root.addEventListener("click", function (e) {
+          if (!openName) return;
+          var node = e.target;
+          if (!node || !node.closest) return;
+          if (node.closest("[data-chirpui-shell-drawer-close]")) {
+            close();
+            return;
+          }
+          var panel = panelFor(openName);
+          var link = node.closest("a[href]");
+          if (link && panel && panel.contains(link)) close();
+        });
+
+        // ESC closes; Tab is trapped within the open panel.
+        document.addEventListener("keydown", function (e) {
+          if (!openName) return;
+          if (e.key === "Escape") {
+            e.preventDefault();
+            close();
+            return;
+          }
+          if (e.key !== "Tab") return;
+          var panel = panelFor(openName);
+          if (!panel) return;
+          var f = focusableIn(panel);
+          if (!f.length) {
+            e.preventDefault();
+            return;
+          }
+          var first = f[0];
+          var last = f[f.length - 1];
+          var active = document.activeElement;
+          if (e.shiftKey && (active === first || !panel.contains(active))) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && (active === last || !panel.contains(active))) {
+            e.preventDefault();
+            first.focus();
+          }
+        });
+
+        function onBreakpoint() {
+          if (desktop.matches) close();
+        }
+        if (desktop.addEventListener) desktop.addEventListener("change", onBreakpoint);
+        else if (desktop.addListener) desktop.addListener(onBreakpoint);
+      }
+    );
+  }
+
+  setupShellDrawers();
   syncShellGeometry();
 })();
 </script>

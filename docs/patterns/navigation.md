@@ -126,11 +126,73 @@ targets `#main`, so the rail fragment rides the same boosted response — "works
 without Chirp, better with Chirp."
 
 **Responsive.** Below 72rem the rail leaves the side track and stacks under main
-(still in flow, reachable); below 48rem it joins the single column. A
-hamburger-triggered slide-over overlay form is a planned follow-up.
+(still in flow, reachable); below 48rem it joins the single column. Opt into
+`nav_drawer=true` (see below) to instead collapse the rail into an off-canvas
+slide-over opened from a topbar trigger.
 
 Width is `--chirpui-context-rail-width` (default `20rem`); `context_rail_variant="muted"`
 tints the surface.
+
+## Mobile Nav Drawer
+
+The default phone fallback for the shell sidebar is a horizontal-scroll strip.
+Opt into `nav_drawer=true` to replace it (below the 48rem breakpoint) with a
+hamburger-triggered, off-canvas slide-over — the Catalyst/Tailwind-UI table
+stakes. It is a **thin, additive affordance over the existing regions**: the
+same sidebar `<aside>` (and, with `context_rail`, the same rail `<aside>`) is
+repositioned as a slide-over — there is no second copy of the nav, so
+`aria-current`, `syncNav`, and OOB sidebar/rail swaps keep working unchanged.
+
+```jinja
+{# macro #}
+{% call app_shell(brand="Acme", nav_drawer=true, context_rail=true) %}
+  {% slot sidebar %}…{% end %}
+  …main…
+  {% slot context_rail %}…{% end %}
+{% end %}
+
+{# inheritance layout — set nav_drawer truthy in the page/route context #}
+{% extends "chirpui/app_shell_layout.html" %}
+{# Template("page.html", nav_drawer=True, context_rail=True) #}
+```
+
+Above 48rem the triggers are hidden and the regions are normal grid columns —
+**unset `nav_drawer` and nothing changes**, so it is safe to adopt per shell.
+
+**Behavior (no framework dependency).** The open/close logic is vanilla JS in
+`shell_runtime_script()` (emitted by both shell entry points) — it does **not**
+require Alpine, so it satisfies "works without Chirp, better with Chirp." Each
+drawer gets native-feeling modal semantics:
+
+- **Focus trap** — Tab/Shift+Tab cycle within the open panel; the closed
+  off-canvas panel is `visibility:hidden`, so it is out of the tab order and the
+  a11y tree.
+- **Dismiss** — `Esc`, scrim click, the drawer's close button, or activating a
+  link inside the drawer (which then navigates).
+- **Focus return** — focus moves into the drawer on open and back to the trigger
+  on close; body scroll is locked while open.
+- **Breakpoint safety** — growing the viewport past 48rem auto-closes any open
+  drawer, so a trap never strands focus on desktop.
+
+The open drawer is promoted to `role="dialog" aria-modal="true"` and is named:
+the sidebar via a static `aria-labelledby` pointing at its head title; the rail
+via its existing `aria-label`. The sidebar renders a head (title + close button)
+server-side. The rail has **no server-rendered head** — it is `innerHTML`-swapped
+by `context_rail_oob()` fragments (and stale-cleared), so a baked-in head would
+be stranded on the first boosted nav. Instead `shell_runtime_script()` **injects
+a floating close button** into the open rail (removed on close), so the rail
+still carries an on-screen dismiss control. Labels: `nav_drawer_label` (default
+`Navigation`) and, for the rail trigger, the macro's `context_rail_label` / the
+layout's `nav_drawer_rail_label` (independent of the rail's own
+`context_rail_label` aria-label on the layout path).
+
+Proven end-to-end in `tests/browser/test_shell_nav_drawer_gauntlet.py`
+(toggle visibility, focus trap + return, `Esc`/scrim/close/link dismiss, rail
+drawer, resize auto-close, no overflow 320→1280px).
+
+For a bespoke, fully author-composed alternative (a separate desktop rail + a
+native `<dialog>` mobile drawer + command palette), see the recipe fixture in
+`tests/browser/templates/rail_to_tray_page.html`.
 
 ## ARIA And Semantics
 

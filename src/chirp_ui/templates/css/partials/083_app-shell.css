@@ -626,3 +626,255 @@ body.htmx-request .chirpui-nav-progress::after {
     flex-direction: column;
     gap: var(--chirpui-spacing-md);
 }
+
+/* ==========================================================================
+   Mobile shell drawers (#196) — opt-in via app_shell(nav_drawer=true)
+   --------------------------------------------------------------------------
+   Below the single-column breakpoint, a topbar toggle turns an in-grid shell
+   region (the sidebar, and — with context_rail — the rail) into an accessible
+   off-canvas slide-over. The open/close/focus-trap/ESC/scrim/scroll-lock
+   behavior is vanilla JS in shell_runtime_script() (no Alpine dependency);
+   these rules are the presentation half. Every hook below is hidden until the
+   breakpoint and gated on .chirpui-app-shell--nav-drawer, so a shell that does
+   not opt in is completely unaffected (the legacy horizontal-strip fallback
+   still applies). The +1 root-class specificity reliably overrides the
+   unprefixed ≤48rem strip selectors above.
+   ========================================================================== */
+
+.chirpui-app-shell__nav-toggle,
+.chirpui-app-shell__rail-toggle {
+    display: none; /* shown only below the breakpoint — see media block */
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-inline-size: var(--chirpui-control-touch-target);
+    min-block-size: var(--chirpui-control-touch-target);
+    padding: var(--chirpui-spacing-sm);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--chirpui-radius-sm);
+    color: var(--chirpui-text-muted);
+    cursor: pointer;
+    transition: color var(--chirpui-transition), background var(--chirpui-transition),
+        border-color var(--chirpui-transition);
+}
+
+.chirpui-app-shell__rail-toggle {
+    gap: var(--chirpui-spacing-xs);
+    font-size: var(--chirpui-font-sm);
+    /* Resting border so the text trigger reads as a button next to the hamburger glyph. */
+    border-color: var(--chirpui-border);
+    background: var(--chirpui-surface);
+}
+
+.chirpui-app-shell__nav-toggle:hover,
+.chirpui-app-shell__rail-toggle:hover {
+    color: var(--chirpui-text);
+    background: var(--chirpui-state-surface-hover);
+}
+
+.chirpui-app-shell__nav-toggle:focus-visible,
+.chirpui-app-shell__rail-toggle:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+/* CSS-drawn hamburger glyph — no icon-registry dependency, inherits currentColor. */
+.chirpui-app-shell__nav-toggle-bars,
+.chirpui-app-shell__nav-toggle-bars::before,
+.chirpui-app-shell__nav-toggle-bars::after {
+    display: block;
+    inline-size: 1.125rem;
+    block-size: 2px;
+    border-radius: 1px;
+    background: currentColor;
+}
+
+.chirpui-app-shell__nav-toggle-bars {
+    position: relative;
+}
+
+.chirpui-app-shell__nav-toggle-bars::before,
+.chirpui-app-shell__nav-toggle-bars::after {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+}
+
+.chirpui-app-shell__nav-toggle-bars::before {
+    inset-block-start: -6px;
+}
+
+.chirpui-app-shell__nav-toggle-bars::after {
+    inset-block-start: 6px;
+}
+
+/* Shared scrim — dims the shell while a drawer is open (toggled via [hidden] by JS). */
+.chirpui-app-shell__scrim {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--chirpui-z-tray) - 1);
+    border: 0;
+    background: var(--chirpui-smoke-bg);
+}
+
+/* Drawer chrome (head + close) — only rendered/visible in drawer mode. */
+.chirpui-app-shell__drawer-head {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    border-bottom: 1px solid var(--chirpui-border);
+}
+
+.chirpui-app-shell__drawer-title {
+    margin: 0;
+    font-size: var(--chirpui-font-base);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+}
+
+.chirpui-app-shell__drawer-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Touch-target parity with the topbar toggles — this is a primary phone control. */
+    min-inline-size: var(--chirpui-control-touch-target);
+    min-block-size: var(--chirpui-control-touch-target);
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--chirpui-text-muted);
+    cursor: pointer;
+}
+
+.chirpui-app-shell__drawer-close:hover {
+    color: var(--chirpui-text);
+}
+
+.chirpui-app-shell__drawer-close:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+/* Floating close — injected by shell_runtime_script() into a headless drawer
+   (the route-context rail) so it always carries an on-screen dismiss control
+   without baking a head into the OOB-swapped rail content. */
+.chirpui-app-shell__drawer-close--floating {
+    position: absolute;
+    inset-block-start: var(--chirpui-spacing-sm);
+    inset-inline-end: var(--chirpui-spacing-sm);
+    z-index: 1;
+    border-radius: var(--chirpui-radius-sm);
+    background: var(--chirpui-surface);
+}
+
+@media (min-width: 48rem) {
+    /* Defensive: a scrim can never be active above the breakpoint. */
+    .chirpui-app-shell__scrim {
+        display: none;
+    }
+}
+
+@media (max-width: 48rem) {
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__nav-toggle {
+        display: inline-flex;
+    }
+
+    .chirpui-app-shell--nav-drawer.chirpui-app-shell--has-context-rail .chirpui-app-shell__rail-toggle {
+        display: inline-flex;
+    }
+
+    .chirpui-app-shell--nav-drawer [data-chirpui-shell-drawer] .chirpui-app-shell__drawer-head {
+        display: flex;
+    }
+
+    /* Sidebar + rail become off-canvas slide-overs. visibility:hidden keeps the
+       closed panel out of the tab order and a11y tree; the visibility delay on
+       the closed state lets the slide-out finish before it is removed. */
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar,
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__context-rail {
+        position: fixed;
+        inset-block: 0;
+        z-index: var(--chirpui-z-tray);
+        inline-size: min(86vw, 20rem);
+        max-block-size: 100dvh;
+        margin: 0;
+        border: 0;
+        background: var(--chirpui-surface);
+        box-shadow: var(--chirpui-elevation-overlay);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        visibility: hidden;
+        transition: transform var(--chirpui-transition),
+            visibility 0s linear var(--chirpui-motion-base);
+    }
+
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar {
+        inset-inline-start: 0;
+        transform: translateX(-100%);
+    }
+
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__context-rail {
+        inset-inline-end: 0;
+        border-top: 0;
+        transform: translateX(100%);
+    }
+
+    .chirpui-app-shell--nav-drawer [data-chirpui-shell-drawer].chirpui-app-shell__drawer--open {
+        transform: none;
+        visibility: visible;
+        transition: transform var(--chirpui-transition), visibility 0s;
+    }
+
+    /* Restore the in-drawer sidebar to its vertical desktop layout (undo the
+       ≤48rem horizontal strip). Values mirror 029_sidebar.css / 065 base. */
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar .chirpui-sidebar {
+        width: auto;
+        min-width: 0;
+        padding: var(--chirpui-spacing) 0;
+    }
+
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar .chirpui-sidebar__nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--chirpui-sidebar-section-gap);
+    }
+
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar .chirpui-sidebar__section {
+        display: block;
+        padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-sm);
+    }
+
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar .chirpui-sidebar__section-links,
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar .chirpui-sidebar__section-links :where(div, nav, ul, ol),
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar .chirpui-nav-tree__list {
+        flex-direction: column;
+        align-items: stretch;
+        flex-wrap: nowrap;
+        gap: var(--chirpui-sidebar-link-gap);
+        margin-top: var(--chirpui-spacing-xs);
+    }
+
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar .chirpui-sidebar__header,
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar .chirpui-sidebar__footer,
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar .chirpui-sidebar__section-title {
+        display: block;
+    }
+
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar :where(.chirpui-sidebar__link, .chirpui-nav-tree__link) {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 48rem) and (prefers-reduced-motion: reduce) {
+    /* The global motion cap zeroes transition-duration but not -delay, so the
+       closed panel would otherwise linger (visibility:visible) in the a11y tree
+       for the ~150ms slide-out window. Snap it shut instead. */
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__sidebar,
+    .chirpui-app-shell--nav-drawer .chirpui-app-shell__context-rail {
+        transition-delay: 0s;
+    }
+}

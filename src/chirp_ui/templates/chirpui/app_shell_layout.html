@@ -23,6 +23,14 @@
     shell or the `app_shell()` macro when you need the resizable/collapsible
     sidebar variant.
 
+    Mobile nav drawer: pass nav_drawer=True in the render context (e.g.
+    Template("page.html", nav_drawer=True)) to add a topbar hamburger that opens
+    the sidebar as an accessible off-canvas slide-over below 48rem (focus trap,
+    ESC, scrim, scroll lock, focus return — wired by shell_runtime_script()).
+    With context_rail=True a second trigger opens the rail; override its label
+    with nav_drawer_rail_label. Opt-in and additive — unset leaves the
+    horizontal-strip fallback unchanged. See docs/patterns/navigation.md.
+
     Custom brand (override brand_link for non-/ href or custom markup):
         {% block brand_link %}{% call shell_brand_link(href="/projects") %}My App{% end %}{% end %}
 
@@ -76,12 +84,15 @@
 {% set _shell_actions_target = _shell_actions.target if _shell_actions else "chirp-shell-actions" %}
 {% set _context_rail = context_rail | default(false) %}
 {% set _rail_shell_class = " chirpui-app-shell--has-context-rail" if _context_rail else "" %}
-<div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}{{ _rail_shell_class }}"
+{% set _nav_drawer = nav_drawer | default(false) %}
+{% set _nav_drawer_label = nav_drawer_label | default("Navigation") %}
+{% set _nav_drawer_class = " chirpui-app-shell--nav-drawer" if _nav_drawer else "" %}
+<div class="chirpui-app-shell{{ " chirpui-app-shell--sidebar-collapsible" if _collapsible else "" }}{{ _rail_shell_class }}{{ _nav_drawer_class }}"
      x-data="chirpuiSidebar({ collapsible: {{ 'true' if _collapsible else 'false' }}, resizable: false })"
      x-init="init()"
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsible && collapsed }">
   <header class="chirpui-app-shell__topbar" data-chirpui-shell-topbar>
-    {% if _collapsible %}<div class="chirpui-app-shell__topbar-start">{{ sidebar_toggle() }}</div>{% endif %}
+    {% if _collapsible or _nav_drawer %}<div class="chirpui-app-shell__topbar-start">{% if _nav_drawer %}<button type="button" class="chirpui-app-shell__nav-toggle" data-chirpui-shell-drawer-toggle="sidebar" aria-controls="chirpui-app-shell-sidebar" aria-expanded="false" aria-label="Open {{ _nav_drawer_label }}"><span class="chirpui-app-shell__nav-toggle-bars" aria-hidden="true"></span></button>{% endif %}{% if _collapsible %}{{ sidebar_toggle() }}{% endif %}</div>{% endif %}
     {% block brand_link %}
     {% call shell_brand_link() %}
       {% block brand %}{% end %}
@@ -89,6 +100,7 @@
     {% end %}
     <div class="chirpui-app-shell__topbar-center">{% block topbar_center %}{% end %}</div>
     <div class="chirpui-app-shell__topbar-end">
+      {% if _nav_drawer and _context_rail %}<button type="button" class="chirpui-app-shell__rail-toggle" data-chirpui-shell-drawer-toggle="rail" aria-controls="chirpui-context-rail" aria-expanded="false" aria-label="Open {{ nav_drawer_rail_label | default('Context') }}">{{ nav_drawer_rail_label | default("Context") }}</button>{% endif %}
       <div id="{{ _shell_actions_target }}" class="chirpui-app-shell__shell-actions">
         {% if _shell_actions %}
         {{ shell_actions_bar(_shell_actions) }}
@@ -97,7 +109,7 @@
       {% block topbar_end %}{% end %}
     </div>
   </header>
-  <aside class="chirpui-app-shell__sidebar">{% block sidebar %}{% end %}</aside>
+  <aside id="chirpui-app-shell-sidebar" class="chirpui-app-shell__sidebar"{% if _nav_drawer %} data-chirpui-shell-drawer="sidebar" aria-labelledby="chirpui-app-shell-drawer-title"{% end %}>{% if _nav_drawer %}<div class="chirpui-app-shell__drawer-head"><span id="chirpui-app-shell-drawer-title" class="chirpui-app-shell__drawer-title">{{ _nav_drawer_label }}</span><button type="button" class="chirpui-app-shell__drawer-close" data-chirpui-shell-drawer-close aria-label="Close {{ _nav_drawer_label }}">&times;</button></div>{% endif %}{% block sidebar %}{% end %}</aside>
   <main id="main" class="chirpui-app-shell__main{% block main_shell_class %}{% end %}"
         data-chirp-scroll="auto" tabindex="-1"
         {{ shell_outlet_attrs() }}>
@@ -110,8 +122,9 @@
       updates it via an OOB fragment targeting #chirpui-context-rail (context_rail_oob). -#}
   <aside id="chirpui-context-rail" class="chirpui-app-shell__context-rail"
          aria-label="{% block context_rail_label %}Context{% end %}" aria-live="polite" aria-atomic="true"
-         data-chirpui-shell-context-rail>{% block context_rail %}{% end %}</aside>
+         data-chirpui-shell-context-rail{% if _nav_drawer %} data-chirpui-shell-drawer="rail"{% end %}>{% block context_rail %}{% end %}</aside>
   {% end %}
+  {% if _nav_drawer %}<div class="chirpui-app-shell__scrim" data-chirpui-shell-scrim hidden></div>{% endif %}
 </div>
 <script>
 document.body.addEventListener("htmx:configRequest", function(event) {

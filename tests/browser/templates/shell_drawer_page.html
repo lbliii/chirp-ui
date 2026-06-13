@@ -1,0 +1,34 @@
+{#- Gauntlet fixture for the mobile shell nav drawer (#196). Exercises the
+    built-in app_shell affordance through the layout entry point: nav_drawer=True
+    + context_rail=True. Below 48rem a topbar hamburger opens the sidebar as an
+    off-canvas slide-over and a second trigger opens the rail; above it the
+    regions are normal grid columns and the triggers are hidden. The
+    open/close/focus-trap/ESC/scrim/scroll-lock behavior is vanilla JS in
+    shell_runtime_script() — no Alpine dependency. -#}
+{% extends "base.html" %}
+{% block brand %}Drawer Shell{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path=current_path, aria_label="Primary") %}
+  {% call sidebar_section("Workspace") %}
+    {{ sidebar_link("/shell-drawer", "Overview", match="exact") }}
+    {{ sidebar_link("/shell-drawer/deploys", "Deployments", match="prefix", badge=12) }}
+    {{ sidebar_link("/shell-drawer/settings", "Settings with a deliberately long label that must wrap", match="prefix") }}
+    {{ sidebar_link("/shell-drawer/audit", "Audit log", match="prefix") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block context_rail %}
+<div data-testid="rail-content">
+  <h2>Inspector</h2>
+  <p>Route context for {{ current_path }}. On phones this rides in an off-canvas rail drawer.</p>
+  <a href="/shell-drawer/deploys">Open deployments</a>
+</div>
+{% end %}
+{% block content %}
+<div id="page-root">
+  <h1 data-testid="main-content">{{ main_label | default("Drawer shell") }}</h1>
+  <p>Resize below 48rem: the topbar reveals a hamburger (sidebar slide-over) and a
+  Context trigger (rail slide-over). Above 48rem both regions are normal columns.</p>
+</div>
+{% end %}

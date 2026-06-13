@@ -5161,6 +5161,102 @@ class TestAppShell:
         assert "chirp-shell-actions" in html
         assert "chirpui-context-rail" in html
 
+    def test_app_shell_nav_drawer_renders_affordances(self, env: Environment) -> None:
+        """nav_drawer=true wires the hamburger, the off-canvas sidebar region,
+        the drawer head/close, and the shared scrim (#196)."""
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand", nav_drawer=true) %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert "chirpui-app-shell--nav-drawer" in html
+        # Hamburger toggle, wired to the sidebar region.
+        assert 'data-chirpui-shell-drawer-toggle="sidebar"' in html
+        assert 'aria-controls="chirpui-app-shell-sidebar"' in html
+        assert 'aria-expanded="false"' in html
+        assert "chirpui-app-shell__nav-toggle-bars" in html
+        # The sidebar aside is the off-canvas region with a stable id, named via
+        # aria-labelledby so it has an accessible name once promoted to dialog.
+        assert 'id="chirpui-app-shell-sidebar"' in html
+        assert 'data-chirpui-shell-drawer="sidebar"' in html
+        assert 'aria-labelledby="chirpui-app-shell-drawer-title"' in html
+        assert 'id="chirpui-app-shell-drawer-title"' in html
+        # Drawer chrome + scrim.
+        assert "chirpui-app-shell__drawer-head" in html
+        assert "data-chirpui-shell-drawer-close" in html
+        assert "data-chirpui-shell-scrim" in html
+        assert 'aria-label="Open Navigation"' in html
+        assert 'aria-label="Close Navigation"' in html
+
+    def test_app_shell_no_nav_drawer_by_default(self, env: Environment) -> None:
+        """Opt-in and additive: a shell that does not request nav_drawer renders
+        none of the drawer *markup* (no behavior change). Asserts on markup-only
+        strings — the vanilla controller in shell_runtime_script() always ships
+        and legitimately references the drawer data-attributes / modifier class,
+        so those substrings are present regardless."""
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        # Root carries no nav-drawer modifier.
+        assert '<div class="chirpui-app-shell">' in html
+        # None of the drawer markup is rendered (these classes are never
+        # referenced by the controller JS, so absence is meaningful).
+        assert 'class="chirpui-app-shell__nav-toggle"' not in html
+        assert "chirpui-app-shell__nav-toggle-bars" not in html
+        assert 'class="chirpui-app-shell__rail-toggle"' not in html
+        assert "chirpui-app-shell__drawer-head" not in html
+        assert 'class="chirpui-app-shell__scrim"' not in html
+
+    def test_app_shell_nav_drawer_rail_toggle_and_no_rail_head(self, env: Environment) -> None:
+        """With context_rail the rail gets a topbar trigger + drawer data hook,
+        but NO injected head — the rail is innerHTML-swapped by OOB fragments so
+        any static head would be stranded on the first boosted nav."""
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand", nav_drawer=true, context_rail=true, context_rail_label="Inspector") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% slot context_rail %}<p>Details</p>{% end %}"
+            "{% end %}"
+        ).render()
+        assert 'data-chirpui-shell-drawer-toggle="rail"' in html
+        assert 'aria-controls="chirpui-context-rail"' in html
+        assert 'aria-label="Open Inspector"' in html
+        # The rail aside is a drawer region...
+        assert 'data-chirpui-shell-drawer="rail"' in html
+        # ...but the only injected drawer head is the sidebar's.
+        assert html.count("chirpui-app-shell__drawer-head") == 1
+
+    def test_app_shell_nav_drawer_label_customizes_aria(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand", nav_drawer=true, nav_drawer_label="Menu") %}'
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert 'aria-label="Open Menu"' in html
+        assert 'aria-label="Close Menu"' in html
+        assert ">Menu</span>" in html
+
+    def test_shell_runtime_script_wires_mobile_drawers(self, env: Environment) -> None:
+        """The vanilla drawer controller ships in the shared runtime (no Alpine)."""
+        html = env.from_string(
+            '{% from "chirpui/shell_frame.html" import shell_runtime_script %}'
+            "{{ shell_runtime_script() }}"
+        ).render()
+        assert "setupShellDrawers" in html
+        assert "data-chirpui-shell-drawer-toggle" in html
+        assert "matchMedia" in html
+        assert "aria-modal" in html
+        assert 'e.key === "Escape"' in html
+
     def test_app_shell_layout_has_no_duplicate_region_clear(self) -> None:
         """Regression: the region stale-clear is not duplicated in the layout's
         inline script (it moved into shell_runtime_script). Guards the divergence
