@@ -698,6 +698,30 @@ def create_app() -> App:
     async def rail_to_tray_page(request: Request):
         return Template("rail_to_tray_page.html", page_title="Rail To Drawer Chrome")
 
+    # Mobile shell nav drawer gauntlet (#196): the built-in app_shell affordance
+    # (nav_drawer=True + context_rail=True) through the layout entry point. Two
+    # routes so the drawer-link-close path also exercises a real boosted nav.
+    def _shell_drawer_ctx(path: str, label: str) -> dict[str, object]:
+        return {
+            "page_title": "Shell Nav Drawer",
+            "nav_drawer": True,
+            "context_rail": True,
+            "current_path": path,
+            "main_label": label,
+        }
+
+    @app.route("/shell-drawer")
+    async def shell_drawer_page(request: Request):
+        return Template(
+            "shell_drawer_page.html", **_shell_drawer_ctx("/shell-drawer", "Drawer shell")
+        )
+
+    @app.route("/shell-drawer/deploys")
+    async def shell_drawer_deploys_page(request: Request):
+        return Template(
+            "shell_drawer_page.html", **_shell_drawer_ctx("/shell-drawer/deploys", "Deployments")
+        )
+
     # Route-context rail gauntlet (#195): /ctx and /ctx/b carry rail content,
     # /ctx/none ships none so the shell-runtime stale-clear must empty the rail.
     @app.route("/ctx")

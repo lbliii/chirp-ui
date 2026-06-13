@@ -20,7 +20,15 @@
     Works standalone with plain htmx OOB; under Chirp, boosted nav carries the
     rail fragment in the same response (route_link_attrs already targets #main).
     Below 72rem the rail stacks under main; below 48rem it joins the single
-    column. (A hamburger slide-over overlay form is a follow-up, #196.)
+    column.
+
+    Mobile nav drawer (nav_drawer=true): adds a topbar hamburger that opens the
+    sidebar as an accessible off-canvas slide-over below the 48rem breakpoint
+    (focus trap, ESC, scrim, scroll lock, focus return — all vanilla JS in
+    shell_runtime_script(), no Alpine dependency). With context_rail=true a
+    second topbar trigger opens the rail as a right-side slide-over. Opt-in and
+    additive: shells that do not set nav_drawer keep the horizontal-strip
+    fallback unchanged. See docs/patterns/navigation.md § Mobile nav drawer.
 
     Usage:
         import app_shell plus shell_outlet
@@ -28,30 +36,43 @@
         wrap the main slot with shell_outlet() for routed shells
         enable sidebar_collapsible=true for the resizable shell variant
         enable context_rail=true and fill the context_rail slot for the rail
+        enable nav_drawer=true for the mobile hamburger slide-over
 -#}
 {% from "chirpui/shell_actions.html" import shell_actions_bar %}
 {% from "chirpui/shell_frame.html" import shell_runtime_script %}
 
-{% def app_shell(brand="", brand_url="/", brand_slot=false, brand_boost=true, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, context_rail=false, context_rail_label="Context", context_rail_variant="default", cls="") %}
+{% def app_shell(brand="", brand_url="/", brand_slot=false, brand_boost=true, sidebar_collapsible=false, topbar_variant="default", sidebar_variant="default", shell_actions=none, context_rail=false, context_rail_label="Context", context_rail_variant="default", nav_drawer=false, nav_drawer_label="Navigation", cls="") %}
 {% set topbar_variant = topbar_variant | validate_variant(("default","glass","gradient"), "default") %}
 {% set sidebar_variant = sidebar_variant | validate_variant(("default","glass","muted"), "default") %}
 {% set _context_rail_variant = context_rail_variant | validate_variant(("default","muted"), "default") %}
 {% set topbar_class = " chirpui-app-shell__topbar--" ~ topbar_variant if topbar_variant != "default" else "" %}
 {% set sidebar_class = " chirpui-app-shell__sidebar--" ~ sidebar_variant if sidebar_variant != "default" else "" %}
 {% set rail_shell_class = " chirpui-app-shell--has-context-rail" if context_rail else "" %}
+{% set nav_drawer_class = " chirpui-app-shell--nav-drawer" if nav_drawer else "" %}
 {% set rail_variant_class = " chirpui-app-shell__context-rail--" ~ _context_rail_variant if _context_rail_variant != "default" else "" %}
 {% set shell_actions_target = shell_actions.target if shell_actions else "chirp-shell-actions" %}
 {% if sidebar_collapsible %}
-<div class="chirpui-app-shell chirpui-app-shell--sidebar-collapsible{{ rail_shell_class }}{{ " " ~ cls if cls else "" }}"
+<div class="chirpui-app-shell chirpui-app-shell--sidebar-collapsible{{ rail_shell_class }}{{ nav_drawer_class }}{{ " " ~ cls if cls else "" }}"
      x-data="chirpuiSidebar({ collapsible: true, resizable: true })"
      x-init="init()"
      @mousemove.window="onMove($event)"
      @mouseup.window="onUp()"
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsed }">
 {% else %}
-<div class="chirpui-app-shell{{ rail_shell_class }}{{ " " ~ cls if cls else "" }}">
+<div class="chirpui-app-shell{{ rail_shell_class }}{{ nav_drawer_class }}{{ " " ~ cls if cls else "" }}">
 {% end %}
     <header class="chirpui-app-shell__topbar{{ topbar_class }}" data-chirpui-shell-topbar>
+        {% if nav_drawer %}
+        {#- Mobile nav affordance: opens the sidebar as an off-canvas slide-over
+            below the breakpoint. Hidden on desktop via CSS; wired by
+            shell_runtime_script(). aria-controls points at the sidebar region. -#}
+        <button type="button" class="chirpui-app-shell__nav-toggle"
+                data-chirpui-shell-drawer-toggle="sidebar"
+                aria-controls="chirpui-app-shell-sidebar" aria-expanded="false"
+                aria-label="Open {{ nav_drawer_label }}">
+            <span class="chirpui-app-shell__nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+        {% end %}
         <a href="{{ brand_url }}" class="chirpui-app-shell__brand"{{ route_link_attrs(
             brand_url,
             boost=brand_boost,
@@ -65,6 +86,14 @@
         </a>
         <div id="chirpui-topbar-breadcrumbs" class="chirpui-app-shell__topbar-center" aria-live="polite" aria-atomic="true">{% slot topbar %}</div>
         <div class="chirpui-app-shell__topbar-end">
+            {% if nav_drawer and context_rail %}
+            {#- Mobile rail affordance: opens the context rail as an off-canvas
+                slide-over below the breakpoint. Hidden on desktop via CSS. -#}
+            <button type="button" class="chirpui-app-shell__rail-toggle"
+                    data-chirpui-shell-drawer-toggle="rail"
+                    aria-controls="chirpui-context-rail" aria-expanded="false"
+                    aria-label="Open {{ context_rail_label }}">{{ context_rail_label }}</button>
+            {% end %}
             <div id="{{ shell_actions_target }}" class="chirpui-app-shell__shell-actions">
                 {% if shell_actions %}
                 {{ shell_actions_bar(shell_actions) }}
@@ -73,7 +102,16 @@
             {% slot topbar_end %}
         </div>
     </header>
-    <aside class="chirpui-app-shell__sidebar{{ sidebar_class }}">
+    <aside id="chirpui-app-shell-sidebar" class="chirpui-app-shell__sidebar{{ sidebar_class }}"{% if nav_drawer %} data-chirpui-shell-drawer="sidebar" aria-labelledby="chirpui-app-shell-drawer-title"{% end %}>
+        {% if nav_drawer %}
+        <div class="chirpui-app-shell__drawer-head">
+            {#- The title id names the slide-over once it becomes role=dialog on mobile
+                (aria-labelledby reads display:none text, so it is correct in both states). -#}
+            <span id="chirpui-app-shell-drawer-title" class="chirpui-app-shell__drawer-title">{{ nav_drawer_label }}</span>
+            <button type="button" class="chirpui-app-shell__drawer-close"
+                    data-chirpui-shell-drawer-close aria-label="Close {{ nav_drawer_label }}">&times;</button>
+        </div>
+        {% end %}
         <div id="chirpui-sidebar-nav" aria-live="polite" aria-atomic="true">{% slot sidebar %}</div>
         {% if sidebar_collapsible %}
         <div class="chirpui-app-shell__sidebar-resize" data-chirpui-sidebar-toggle
@@ -91,7 +129,11 @@
         with an OOB fragment targeting #chirpui-context-rail (see context_rail_oob in oob.html). -#}
     <aside id="chirpui-context-rail" class="chirpui-app-shell__context-rail{{ rail_variant_class }}"
            aria-label="{{ context_rail_label }}" aria-live="polite" aria-atomic="true"
-           data-chirpui-shell-context-rail>{%- slot context_rail -%}</aside>
+           data-chirpui-shell-context-rail{% if nav_drawer %} data-chirpui-shell-drawer="rail"{% end %}>{%- slot context_rail -%}</aside>
+    {%- end %}
+    {%- if nav_drawer %}
+    {#- Shared scrim for the mobile drawers — shown by shell_runtime_script() while a drawer is open. -#}
+    <div class="chirpui-app-shell__scrim" data-chirpui-shell-scrim hidden></div>
     {%- end %}
 </div>
 {{ shell_runtime_script() }}

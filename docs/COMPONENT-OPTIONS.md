@@ -1626,7 +1626,7 @@ For compact forum/PBP metadata:
 
 ### app_shell
 
-Full-page shell with topbar, sidebar, and main content. Params: `brand`, `brand_url`, `sidebar_collapsible`, `topbar_variant`, `sidebar_variant`, `cls`.
+Full-page shell with topbar, sidebar, and main content. Params: `brand`, `brand_url`, `sidebar_collapsible`, `topbar_variant`, `sidebar_variant`, `context_rail`, `nav_drawer`, `nav_drawer_label`, `cls`.
 
 Below `48rem`, `app_shell` collapses to a single-column layout and turns its
 sidebar slot into a horizontally scrollable navigation strip. This keeps forum,
@@ -1637,8 +1637,22 @@ preserving persistent navigation.
 |-------|--------------|---------|
 | `topbar_variant` | default, glass, gradient | default |
 | `sidebar_variant` | default, glass, muted | default |
+| `nav_drawer` | bool | `false` |
+| `nav_drawer_label` | string | `Navigation` |
 
 Glass variants use `backdrop-filter`; gradient topbar uses `--chirpui-gradient-subtle`.
+
+#### Mobile nav drawer (`nav_drawer=true`)
+
+Replaces the horizontal-strip phone fallback with a hamburger-triggered,
+off-canvas slide-over below `48rem` (focus trap, `Esc`, scrim, scroll lock,
+focus return — vanilla JS in `shell_runtime_script()`, no Alpine dependency).
+With `context_rail=true` a second topbar trigger opens the rail as a right-side
+slide-over. Opt-in and additive: unset, the shell is byte-for-byte unchanged.
+The same `<aside>` regions are repositioned (no duplicated nav), so
+`aria-current`/OOB swaps keep working. On the inheritance layout, set
+`nav_drawer=True` in the render context (and `nav_drawer_rail_label` for the
+rail trigger label). Full recipe: `docs/patterns/navigation.md § Mobile Nav Drawer`.
 
 ### Collapsible sidebar
 
@@ -3881,7 +3895,7 @@ App Shell component
 - **Authoring:** `available`
 - **Requires:** `alpine`, `htmx`
 - **Slots:** `(default)`, `brand`, `context_rail`, `sidebar`, `topbar`, `topbar_end`
-- **Modifiers:** `has-context-rail`, `sidebar-collapsed`, `sidebar-collapsible`
+- **Modifiers:** `has-context-rail`, `nav-drawer`, `sidebar-collapsed`, `sidebar-collapsible`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -3896,6 +3910,8 @@ App Shell component
 | `context_rail` | no | (has default) |
 | `context_rail_label` | no | (has default) |
 | `context_rail_variant` | no | (has default) |
+| `nav_drawer` | no | (has default) |
+| `nav_drawer_label` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `ascii`
