@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block brand %}Test App{% end %}
 {% block content %}
-{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
+{% from "chirpui/command_palette.html" import command_palette, command_palette_trigger, command_palette_item %}
 
 <h1 data-testid="page-heading">Command Palette Test</h1>
 
 {{ command_palette_trigger() }}
-{% call command_palette(search_url="/search") %}
-{% end %}
+{% call command_palette(search_url="/command-palette-search") %}
+{% for r in commands %}{{ command_palette_item(r.id, r.label, href=r.get("href"), hint=r.get("hint")) }}
+{% end %}{% end %}
 {% end %}

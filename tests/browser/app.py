@@ -119,6 +119,15 @@ DATA_GRID_RECORDS = [
 _DATA_GRID_PAGE_SIZE = 3
 _DATA_GRID_ALLOWED = tuple(c.key for c in DATA_GRID_COLUMNS if c.sortable)
 
+# Command palette arrow-nav gauntlet (#201). Hash hrefs so Enter-activation is
+# observable (location.hash) without navigating away from the open dialog.
+COMMAND_PALETTE_COMMANDS = [
+    {"id": "cmd-new", "label": "New document", "href": "#cmd-new", "hint": "N"},
+    {"id": "cmd-open", "label": "Open file", "href": "#cmd-open", "hint": "O"},
+    {"id": "cmd-settings", "label": "Settings", "href": "#cmd-settings", "hint": ","},
+    {"id": "cmd-search-all", "label": "Search everywhere", "href": "#cmd-search-all", "hint": "/"},
+]
+
 
 def _data_grid_sorted_records(sort) -> list[tuple]:
     if not sort.key:
@@ -1136,7 +1145,29 @@ def create_app() -> App:
 
     @app.route("/command-palette")
     async def command_palette_page(request: Request):
-        return Template("command_palette_page.html", page_title="Command Palette")
+        return Template(
+            "command_palette_page.html",
+            page_title="Command Palette",
+            commands=COMMAND_PALETTE_COMMANDS,
+        )
+
+    @app.route("/command-palette-search")
+    async def command_palette_search(request: Request):
+        # Raw Response (not Template) so Chirp's debug middleware does not inject
+        # its htmx-debug <script> into the swapped fragment. The markup mirrors
+        # command_palette_item (role=option + ids) so the factory can rove it.
+        q = (request.query.get("q", "") or "").strip().lower()
+        results = [c for c in COMMAND_PALETTE_COMMANDS if not q or q in c["label"].lower()]
+        if not results:
+            return Response('<div class="chirpui-command-palette__empty">No results</div>')
+        html = "".join(
+            f'<a class="chirpui-command-palette__item" id="{c["id"]}" role="option" '
+            f'aria-selected="false" href="{c["href"]}">'
+            f'<span class="chirpui-command-palette__item-label">{c["label"]}</span>'
+            f'<span class="chirpui-command-palette__item-hint">{c["hint"]}</span></a>'
+            for c in results
+        )
+        return Response(html)
 
     @app.route("/search")
     async def search(request: Request):

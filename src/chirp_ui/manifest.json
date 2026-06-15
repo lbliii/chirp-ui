@@ -6381,7 +6381,7 @@
       "category": "interactive",
       "composes": [],
       "consumes": [],
-      "description": "Command Palette component\n    Cmd+K search overlay using native <dialog>.\n    Results load via htmx into the results container.\n\n    Usage:\n        from \"chirpui/command_palette.html\" import command_palette, command_palette_trigger\n\n        command_palette_trigger()\n        command_palette(search_url=\"/search\")",
+      "description": "Command Palette component\n    Cmd+K search overlay using native <dialog>. Results load via htmx into the\n    results container; render them with `command_palette_item` so the input gets\n    arrow-key result navigation.\n\n    The input is a `role=\"combobox\"` over the `role=\"listbox\"` results: ArrowDown/\n    ArrowUp rove the `role=\"option\"` items via `aria-activedescendant` (the active\n    item carries `aria-selected=\"true\"`), Enter activates the active item, and each\n    fresh htmx result set auto-highlights its first item. Requires Alpine.js;\n    arrow-nav only engages over `command_palette_item` (role=option) results —\n    legacy raw-HTML results stay Tab-navigable.\n\n    Usage:\n        from \"chirpui/command_palette.html\" import (\n            command_palette, command_palette_trigger, command_palette_item\n        )\n\n        command_palette_trigger()\n        call command_palette(search_url=\"/search\")\n          {# optional initial/recent results",
       "elements": [
         "group-title",
         "inner",
@@ -6403,6 +6403,7 @@
         "chirpui-command-palette__inner",
         "chirpui-command-palette__input",
         "chirpui-command-palette__item",
+        "chirpui-command-palette__item--active",
         "chirpui-command-palette__item-hint",
         "chirpui-command-palette__item-label",
         "chirpui-command-palette__kbd",
@@ -6413,9 +6414,10 @@
       ],
       "extra_emits": [
         "chirpui-command-palette-trigger--md",
-        "chirpui-command-palette-trigger--sm"
+        "chirpui-command-palette-trigger--sm",
+        "chirpui-command-palette__item--active"
       ],
-      "lineno": 12,
+      "lineno": 27,
       "macro": "command_palette",
       "maturity": "stable",
       "modifiers": [],
@@ -24386,7 +24388,7 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 128,
-      "explicit_extra_classes": 540,
+      "explicit_extra_classes": 541,
       "explicit_trim_blocks": 69,
       "explicit_trim_classes": 96
     },
