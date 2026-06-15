@@ -109,38 +109,17 @@ The envelope convention is the default for new components and for any partial mo
 grep -lE '^@layer chirpui\.component' src/chirp_ui/templates/css/partials/*.css
 ```
 
-**Current converted count:** 24 partials as of 2026-06-15.
-
-Converted partials currently include:
-
-- `011_media-object.css`
-- `036_list.css`
-- `039_surface.css`
-- `041_callout.css`
-- `045_card.css`
-- `046_video-card.css`
-- `047_channel-card.css`
-- `052_modal.css`
-- `053_drawer.css`
-- `065_tray.css`
-- `072_badge.css`
-- `159_resource-card.css`
-- `161_navigation-metadata-authoring.css`
-- `162_logo-cloud.css`
-- `163_story-card.css`
-- `164_cta-band.css`
-- `165_pattern-assets.css`
-- `166_dense-navigation-primitives.css`
-- `167_workspace-primitives.css`
-- `168_maturity-primitives.css`
-- `169_data-grid.css`
-- `170_context-menu.css`
-- `171_combobox.css`
-- `172_date-picker.css`
+The set of converted partials is **not mirrored here** — the grep above is the
+single source of truth. New partials are auto-discovered by the build
+(`_discover_partials` in `scripts/build_chirpui_css.py`), and conversion is
+detected by the same "starts with `@layer chirpui.component`" rule the build
+uses to opt a partial out of wrapping. Run the grep for the current set and
+count; there is deliberately no hand-maintained list or tally to keep in sync.
+`tests/evidence/test_css_scope_ratchets.py` guards that the detection rule stays
+correct.
 
 **Legacy (flat, opportunistic conversion):** all other partials in
-`src/chirp_ui/templates/css/partials/`. No global checklist is maintained —
-the grep above is the source of truth when this count drifts.
+`src/chirp_ui/templates/css/partials/`.
 
 **Epic closure signal.** The epic can close when:
 
