@@ -15,6 +15,12 @@ Following the dropdown gauntlet precedent, roving-nav is exercised by calling th
 Alpine factory methods directly (Playwright keydown does not reliably bubble
 through Alpine's @keydown in headless Chromium); open/select/escape/click-outside
 use real pointer/keyboard events.
+
+The open is asynchronous: Alpine focuses the first item in a $nextTick and the
+panel fades in via x-transition. Every assertion that depends on focus or on the
+panel being opaque (axe contrast) waits for the menu to fully *settle* first —
+otherwise CI races the transition (mid-fade opacity makes even dark-on-white text
+fail contrast, and a too-early keystroke is overwritten by the pending open-focus).
 """
 
 import pytest
@@ -35,7 +41,27 @@ ITEM = "[data-testid='context-menu-container'] .chirpui-context-menu__item"
 async def _open_page(page, base_url):
     await page.goto(base_url + "/context-menu")
     await wait_for_alpine(page)
-    await page.wait_for_timeout(50)
+
+
+async def _wait_settled(page):
+    """Wait until the menu is fully open: panel opaque (transition done) and a
+    role=menuitem focused (the $nextTick open-focus has landed)."""
+    await page.wait_for_function(
+        """() => {
+            const p = document.querySelector(
+                "[data-testid='context-menu-container'] .chirpui-context-menu__panel");
+            if (!p || parseFloat(getComputedStyle(p).opacity) < 0.99) return false;
+            const a = document.activeElement;
+            return !!(a && a.classList && a.classList.contains('chirpui-context-menu__item'));
+        }""",
+        timeout=5000,
+    )
+
+
+async def _open_via_right_click(page):
+    await page.locator(TRIGGER).click(button="right")
+    await expect(page.locator(PANEL)).to_be_visible()
+    await _wait_settled(page)
 
 
 async def _call(page, method):
@@ -46,19 +72,30 @@ async def _call(page, method):
         " el._x_dataStack[0][m](); }",
         method,
     )
-    await page.wait_for_timeout(50)
 
 
-async def _focused_text(page):
-    return await page.evaluate("() => (document.activeElement?.textContent || '').trim()")
+async def _wait_focused_contains(page, text):
+    """Wait until the focused element's text contains *text* (roving focus)."""
+    await page.wait_for_function(
+        "(t) => (document.activeElement && document.activeElement.textContent || '').includes(t)",
+        arg=text,
+        timeout=5000,
+    )
+
+
+async def _add_event_listener(page):
+    await page.evaluate(
+        "() => { window._ctxEvents = [];"
+        " document.addEventListener('chirpui:context-menu-selected',"
+        " (e) => window._ctxEvents.push(e.detail)); }"
+    )
 
 
 async def test_right_click_opens_menu_at_pointer(page, base_url):
     await _open_page(page, base_url)
     panel = page.locator(PANEL)
     await expect(panel).to_be_hidden()
-    await page.locator(TRIGGER).click(button="right")
-    await expect(panel).to_be_visible()
+    await _open_via_right_click(page)
     assert await panel.get_attribute("role") == "menu"
     # Positioned (fixed) — has a concrete top/left, inside the viewport.
     box = await panel.bounding_box()
@@ -71,8 +108,7 @@ async def test_right_click_opens_menu_at_pointer(page, base_url):
 
 async def test_menu_items_are_menuitems_with_roving_tabindex(page, base_url):
     await _open_page(page, base_url)
-    await page.locator(TRIGGER).click(button="right")
-    await expect(page.locator(PANEL)).to_be_visible()
+    await _open_via_right_click(page)
     assert await page.locator(ITEM).count() == 4
     roles = await page.eval_on_selector_all(ITEM, "els => els.map(e => e.getAttribute('role'))")
     assert all(r == "menuitem" for r in roles)
@@ -80,37 +116,32 @@ async def test_menu_items_are_menuitems_with_roving_tabindex(page, base_url):
         ITEM, "els => els.map(e => e.getAttribute('tabindex'))"
     )
     assert all(t == "-1" for t in tabindexes)
-    # First item receives focus on open.
-    assert "Open" in await _focused_text(page)
+    # First item receives focus on open (settled above).
+    await _wait_focused_contains(page, "Open")
 
 
 async def test_arrow_home_end_move_focus(page, base_url):
     await _open_page(page, base_url)
-    await page.locator(TRIGGER).click(button="right")
-    await expect(page.locator(PANEL)).to_be_visible()
+    await _open_via_right_click(page)
     await _call(page, "keyDown")  # 0 -> 1 (Rename)
-    assert "Rename" in await _focused_text(page)
+    await _wait_focused_contains(page, "Rename")
     await _call(page, "keyEnd")  # -> last (Delete)
-    assert "Delete" in await _focused_text(page)
+    await _wait_focused_contains(page, "Delete")
     await _call(page, "keyHome")  # -> first (Open)
-    assert "Open" in await _focused_text(page)
+    await _wait_focused_contains(page, "Open")
 
 
 async def test_disabled_item_stays_focusable_but_inert(page, base_url):
     await _open_page(page, base_url)
-    await page.evaluate(
-        "() => { window._ctxEvents = [];"
-        " document.addEventListener('chirpui:context-menu-selected',"
-        " (e) => window._ctxEvents.push(e.detail)); }"
-    )
-    await page.locator(TRIGGER).click(button="right")
-    await expect(page.locator(PANEL)).to_be_visible()
+    await _add_event_listener(page)
+    await _open_via_right_click(page)
     disabled = page.locator(ITEM, has_text="Duplicate")
     assert await disabled.get_attribute("aria-disabled") == "true"
     # Roving focus still reaches it (WAI-ARIA: disabled items are focusable).
     await _call(page, "keyDown")  # 0 -> 1
+    await _wait_focused_contains(page, "Rename")
     await _call(page, "keyDown")  # 1 -> 2 (Duplicate)
-    assert "Duplicate" in await _focused_text(page)
+    await _wait_focused_contains(page, "Duplicate")
     # Activating it (the factory's select path) dispatches nothing and keeps the
     # menu open — the aria-disabled guard short-circuits selectItem.
     await page.evaluate(
@@ -127,30 +158,23 @@ async def test_disabled_item_stays_focusable_but_inert(page, base_url):
 
 async def test_escape_closes_and_returns_focus_to_region(page, base_url):
     await _open_page(page, base_url)
-    await page.locator(TRIGGER).click(button="right")
+    await _open_via_right_click(page)
     panel = page.locator(PANEL)
-    await expect(panel).to_be_visible()
     await page.keyboard.press("Escape")
-    await page.wait_for_timeout(150)
-    await expect(panel).to_be_hidden()
-    is_trigger_focused = await page.evaluate(
+    # Focus returns to the trigger.
+    await page.wait_for_function(
         "() => document.activeElement === document.querySelector("
-        "\"[data-testid='context-menu-container'] .chirpui-context-menu__target\")"
+        "\"[data-testid='context-menu-container'] .chirpui-context-menu__target\")",
+        timeout=5000,
     )
-    active_info = await page.evaluate(
-        "() => { const a = document.activeElement;"
-        " return a ? a.tagName + '.' + a.className + '#' + a.id : 'none'; }"
-    )
-    assert is_trigger_focused, f"focus after escape landed on: {active_info}"
+    await expect(panel).to_be_hidden()
 
 
 async def test_click_outside_closes(page, base_url):
     await _open_page(page, base_url)
-    await page.locator(TRIGGER).click(button="right")
+    await _open_via_right_click(page)
     panel = page.locator(PANEL)
-    await expect(panel).to_be_visible()
     await page.click("[data-testid='main-content']")
-    await page.wait_for_timeout(150)
     await expect(panel).to_be_hidden()
 
 
@@ -159,31 +183,27 @@ async def test_keyboard_opens_from_focused_region(page, base_url):
     await page.locator(TRIGGER).focus()
     await _call(page, "openAtElement")
     await expect(page.locator(PANEL)).to_be_visible()
-    assert "Open" in await _focused_text(page)
+    await _wait_settled(page)
+    await _wait_focused_contains(page, "Open")
 
 
 async def test_item_select_dispatches_event_and_closes(page, base_url):
     await _open_page(page, base_url)
-    await page.evaluate(
-        "() => { window._ctxEvents = [];"
-        " document.addEventListener('chirpui:context-menu-selected',"
-        " (e) => window._ctxEvents.push(e.detail)); }"
-    )
-    await page.locator(TRIGGER).click(button="right")
+    await _add_event_listener(page)
+    await _open_via_right_click(page)
     panel = page.locator(PANEL)
-    await expect(panel).to_be_visible()
     await page.locator(ITEM, has_text="Rename").click()
-    await page.wait_for_timeout(150)
+    await expect(panel).to_be_hidden()
     events = await page.evaluate("() => window._ctxEvents")
     assert events[-1]["label"] == "Rename"
     assert events[-1]["action"] == "rename"
-    await expect(panel).to_be_hidden()
 
 
 async def test_axe_no_serious_or_critical_violations(page, base_url):
     await _open_page(page, base_url)
-    await page.locator(TRIGGER).click(button="right")
-    await expect(page.locator(PANEL)).to_be_visible()
+    # Settle first: a mid-transition (semi-transparent) panel makes axe report
+    # false color-contrast failures even for dark-on-white text.
+    await _open_via_right_click(page)
     try:
         await page.add_script_tag(url=AXE_CDN)
     except Exception:
