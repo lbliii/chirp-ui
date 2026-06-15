@@ -62,7 +62,7 @@
 {% set _cp = (consume("_nav_current_path", "") or (current_path | default(""))) if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <a class="chirpui-navbar__link{{ " chirpui-navbar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
-   href="{{ href }}"{% if _active %} aria-current="page"{% end %}{{ route_link_attrs(href) | html_attrs }}>{{ label }}</a>
+   href="{{ href }}"{% if _active %} aria-current="page"{% end %}{% if match %} data-chirpui-shell-match="{{ match }}"{% end %}{{ route_link_attrs(href) | html_attrs }}>{{ label }}</a>
 {% end %}
 
 {% def navbar_end(cls="") %}

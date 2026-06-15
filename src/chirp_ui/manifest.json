@@ -686,7 +686,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "App Shell component\n    Full-page shell with topbar, sidebar, and main content area.\n    Navigation is driven by explicit hx-boost on sidebar_link/nav_link,\n    targeting #main to keep the sidebar and topbar persistent.\n    In filesystem apps, the route/layout tree should declare matching\n    Chirp domain metadata plus an outlet of main so route-aware links and\n    boosted responses resolve to this shell consistently.\n\n    Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar,\n    context_rail (when context_rail=true), default (main content).\n    For routed apps, wrap the main slot with shell_outlet() so custom shells\n    use the same #page-content contract as app_shell_layout.html.\n\n    Route-context rail (context_rail=true): adds an optional secondary region\n    (#chirpui-context-rail) on the trailing side, for an inspector/detail panel\n    that updates with the current route. The update protocol mirrors shell\n    actions: a route response includes an out-of-band fragment targeting the\n    rail outlet — use context_rail_oob() from chirpui/oob.html, e.g.\n        {% call context_rail_oob() %}<h2>Details for {{ item.name }}</h2>{% end %}\n    Works standalone with plain htmx OOB; under Chirp, boosted nav carries the\n    rail fragment in the same response (route_link_attrs already targets #main).\n    Below 72rem the rail stacks under main; below 48rem it joins the single\n    column.\n\n    Mobile nav drawer (nav_drawer=true): adds a topbar hamburger that opens the\n    sidebar as an accessible off-canvas slide-over below the 48rem breakpoint\n    (focus trap, ESC, scrim, scroll lock, focus return — all vanilla JS in\n    shell_runtime_script(), no Alpine dependency). With context_rail=true a\n    second topbar trigger opens the rail as a right-side slide-over. Opt-in and\n    additive: shells that do not set nav_drawer keep the horizontal-strip\n    fallback unchanged. See docs/patterns/navigation.md § Mobile nav drawer.\n\n    Usage:\n        import app_shell plus shell_outlet\n        provide brand / topbar / topbar_end / sidebar slots\n        wrap the main slot with shell_outlet() for routed shells\n        enable sidebar_collapsible=true for the resizable shell variant\n        enable context_rail=true and fill the context_rail slot for the rail\n        enable nav_drawer=true for the mobile hamburger slide-over",
+      "description": "App Shell component\n    Full-page shell with topbar, sidebar, and main content area.\n    Navigation is driven by explicit hx-boost on sidebar_link/nav_link,\n    targeting #main to keep the sidebar and topbar persistent.\n    In filesystem apps, the route/layout tree should declare matching\n    Chirp domain metadata plus an outlet of main so route-aware links and\n    boosted responses resolve to this shell consistently.\n\n    Named slots: topbar_leading (always — non-anchor leading zone left of the\n    brand, for a hamburger/back/menu affordance), brand (when brand_slot=true),\n    topbar, topbar_end, sidebar, context_rail (when context_rail=true),\n    default (main content).\n    For routed apps, wrap the main slot with shell_outlet() so custom shells\n    use the same #page-content contract as app_shell_layout.html.\n\n    Route-context rail (context_rail=true): adds an optional secondary region\n    (#chirpui-context-rail) on the trailing side, for an inspector/detail panel\n    that updates with the current route. The update protocol mirrors shell\n    actions: a route response includes an out-of-band fragment targeting the\n    rail outlet — use context_rail_oob() from chirpui/oob.html, e.g.\n        {% call context_rail_oob() %}<h2>Details for {{ item.name }}</h2>{% end %}\n    Works standalone with plain htmx OOB; under Chirp, boosted nav carries the\n    rail fragment in the same response (route_link_attrs already targets #main).\n    Below 72rem the rail stacks under main; below 48rem it joins the single\n    column.\n\n    Mobile nav drawer (nav_drawer=true): adds a topbar hamburger that opens the\n    sidebar as an accessible off-canvas slide-over below the 48rem breakpoint\n    (focus trap, ESC, scrim, scroll lock, focus return — all vanilla JS in\n    shell_runtime_script(), no Alpine dependency). With context_rail=true a\n    second topbar trigger opens the rail as a right-side slide-over. Opt-in and\n    additive: shells that do not set nav_drawer keep the horizontal-strip\n    fallback unchanged. See docs/patterns/navigation.md § Mobile nav drawer.\n\n    Usage:\n        import app_shell plus shell_outlet\n        provide brand / topbar / topbar_end / sidebar slots\n        fill topbar_leading for a non-anchor leading affordance (hamburger/back/\n        menu) — it escapes the brand-anchor trap, so put interactive controls\n        there, never inside the brand slot (which nests inside the brand <a>)\n        wrap the main slot with shell_outlet() for routed shells\n        enable sidebar_collapsible=true for the resizable shell variant\n        enable context_rail=true and fill the context_rail slot for the rail\n        enable nav_drawer=true for the mobile hamburger slide-over",
       "elements": [
         "brand",
         "context-rail",
@@ -748,7 +748,7 @@
         "chirpui-app-shell__topbar--glass",
         "chirpui-app-shell__topbar--gradient"
       ],
-      "lineno": 44,
+      "lineno": 49,
       "macro": "app_shell",
       "maturity": "stable",
       "modifiers": [
@@ -843,7 +843,8 @@
         "context_rail",
         "sidebar",
         "topbar",
-        "topbar_end"
+        "topbar_end",
+        "topbar_leading"
       ],
       "slots_extracted": [
         "",
@@ -851,7 +852,8 @@
         "context_rail",
         "sidebar",
         "topbar",
-        "topbar_end"
+        "topbar_end",
+        "topbar_leading"
       ],
       "slots_yielded": [],
       "template": "app_shell.html",
@@ -18105,7 +18107,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Shell actions renderer\n    Renders resolved route-scoped shell actions into topbar-friendly controls.\n\n    Usage:\n        {% from \"chirpui/shell_actions.html\" import shell_actions_bar %}\n        {{ shell_actions_bar(shell_actions) }}\n\n    kind=\"form\" — POST form with optional HTMX (set hx_post, hx_target, … on ShellAction).\n    CSRF: {{ csrf_field() }} when include_csrf is true (Chirp provides csrf_field in globals).",
+      "description": "Shell actions renderer\n    Renders resolved route-scoped shell actions into topbar-friendly controls.\n\n    Usage:\n        {% from \"chirpui/shell_actions.html\" import shell_actions_bar %}\n        {{ shell_actions_bar(shell_actions) }}\n\n    kind=\"form\" — POST form with optional HTMX (set hx_post, hx_target, … on ShellAction).\n    CSRF: {{ csrf_field() }} when include_csrf is true (Chirp provides csrf_field in globals).\n\n    id_suffix=\"\" — append a per-instance suffix (e.g. \"-drawer\") to namespace the\n    overflow dropdown id and each menu action id when rendering the bar in two\n    regions (e.g. a topbar copy plus a mobile drawer copy). Default \"\" preserves\n    the canonical ids, keeping every single-instance render byte-identical.\n    Threaded by shell_actions_bar into shell_action.",
       "elements": [
         "group"
       ],
@@ -18114,7 +18116,7 @@
         "chirpui-shell-actions__group"
       ],
       "extra_emits": [],
-      "lineno": 53,
+      "lineno": 59,
       "macro": "shell_actions_bar",
       "maturity": "stable",
       "modifiers": [],
@@ -18128,6 +18130,11 @@
           "has_default": true,
           "is_required": false,
           "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id_suffix"
         }
       ],
       "provides": [],
@@ -18399,7 +18406,7 @@
         "chirpui-sidebar-toggle__icon"
       ],
       "extra_emits": [],
-      "lineno": 100,
+      "lineno": 101,
       "macro": "sidebar_toggle",
       "maturity": "stable",
       "modifiers": [],

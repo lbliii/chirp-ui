@@ -425,6 +425,41 @@ hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-
     );
   }
 
+  // Active-link sync: mirror the server's per-item match semantics. Links carry
+  // data-chirpui-shell-match="exact"|"prefix" ONLY when match= was set
+  // server-side; links with no attribute reflect an explicit active= decision and
+  // are left untouched (server is authoritative). Shared by BOTH shell entry
+  // points (the app_shell() macro had none; app_shell_layout.html previously had
+  // a divergent blind-prefix inline copy that this replaces). The exact/prefix
+  // rules mirror sidebar_link / navbar_link's server-side _active computation.
+  var NAV_ACTIVE = {
+    "chirpui-sidebar__link": "chirpui-sidebar__link--active",
+    "chirpui-navbar__link": "chirpui-navbar__link--active"
+  };
+  function syncNav() {
+    var p = window.location.pathname;
+    var links = document.querySelectorAll("[data-chirpui-shell-match]");
+    Array.prototype.forEach.call(links, function (a) {
+      var h = a.getAttribute("href");
+      if (!h || h.indexOf("http") === 0) return;
+      var mode = a.getAttribute("data-chirpui-shell-match");
+      var on = mode === "exact" ? p === h
+        : mode === "prefix" ? (p === h || p.indexOf(h + "/") === 0)
+        : null;
+      if (on === null) return;
+      var cls = a.classList.contains("chirpui-navbar__link")
+        ? NAV_ACTIVE["chirpui-navbar__link"]
+        : NAV_ACTIVE["chirpui-sidebar__link"];
+      a.classList.toggle(cls, on);
+      if (on) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+  }
+  document.body.addEventListener("htmx:pushedIntoHistory", syncNav);
+  document.body.addEventListener("htmx:replacedInHistory", syncNav);
+  document.body.addEventListener("htmx:afterSettle", syncNav, true);
+  syncNav();
+
   setupShellDrawers();
   syncShellGeometry();
 })();

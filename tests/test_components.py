@@ -4918,6 +4918,74 @@ class TestAppShell:
         assert 'href="/new"' in html
         assert "chirpui-dropdown" in html
 
+    def test_shell_actions_default_id_unchanged(self, env: Environment) -> None:
+        """Default id_suffix="" keeps both fixed ids byte-identical (#224)."""
+        html = env.from_string(
+            '{% from "chirpui/shell_actions.html" import shell_actions_bar %}'
+            "{{ shell_actions_bar(shell_actions) }}"
+        ).render(
+            shell_actions=ShellActionsStub(
+                primary=ShellActionZoneStub(
+                    items=(
+                        ShellActionStub(
+                            id="bulk",
+                            label="Bulk",
+                            kind="menu",
+                            menu_items=(ShellMenuItemStub(label="Delete", href="/del"),),
+                        ),
+                    )
+                ),
+                overflow=ShellActionZoneStub(
+                    items=(ShellActionStub(id="archive", label="Archive", action="archive"),)
+                ),
+            )
+        )
+        assert 'id="chirp-shell-actions-overflow"' in html
+        assert 'id="chirpui-shell-action-bulk"' in html
+
+    def test_shell_actions_id_suffix_namespaces_both(self, env: Environment) -> None:
+        """id_suffix namespaces BOTH the overflow id and per-action menu ids (#224)."""
+        html = env.from_string(
+            '{% from "chirpui/shell_actions.html" import shell_actions_bar %}'
+            '{{ shell_actions_bar(shell_actions, id_suffix="-drawer") }}'
+        ).render(
+            shell_actions=ShellActionsStub(
+                primary=ShellActionZoneStub(
+                    items=(
+                        ShellActionStub(
+                            id="bulk",
+                            label="Bulk",
+                            kind="menu",
+                            menu_items=(ShellMenuItemStub(label="Delete", href="/del"),),
+                        ),
+                    )
+                ),
+                overflow=ShellActionZoneStub(
+                    items=(ShellActionStub(id="archive", label="Archive", action="archive"),)
+                ),
+            )
+        )
+        assert 'id="chirp-shell-actions-overflow-drawer"' in html
+        assert 'id="chirpui-shell-action-bulk-drawer"' in html
+        # The un-suffixed canonical ids must NOT appear in the suffixed instance.
+        assert 'id="chirp-shell-actions-overflow"' not in html
+        assert 'id="chirpui-shell-action-bulk"' not in html
+
+    def test_shell_action_id_suffix_threaded(self, env: Environment) -> None:
+        """The suffix reaches shell_action directly, independent of the bar (#224)."""
+        html = env.from_string(
+            '{% from "chirpui/shell_actions.html" import shell_action %}'
+            '{{ shell_action(action, id_suffix="-x") }}'
+        ).render(
+            action=ShellActionStub(
+                id="go",
+                label="Go",
+                kind="menu",
+                menu_items=(ShellMenuItemStub(label="Run", href="/run"),),
+            )
+        )
+        assert 'id="chirpui-shell-action-go-x"' in html
+
     def test_shell_actions_renders_form_kind(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/shell_actions.html" import shell_actions_bar %}'
@@ -5177,6 +5245,12 @@ class TestAppShell:
         assert 'aria-controls="chirpui-app-shell-sidebar"' in html
         assert 'aria-expanded="false"' in html
         assert "chirpui-app-shell__nav-toggle-bars" in html
+        # The hamburger now lives inside the always-present leading zone (#220),
+        # which itself sits before the brand anchor.
+        start_idx = html.index('class="chirpui-app-shell__topbar-start"')
+        toggle_idx = html.index('class="chirpui-app-shell__nav-toggle"')
+        brand_idx = html.index('class="chirpui-app-shell__brand"')
+        assert start_idx < toggle_idx < brand_idx
         # The sidebar aside is the off-canvas region with a stable id, named via
         # aria-labelledby so it has an accessible name once promoted to dialog.
         assert 'id="chirpui-app-shell-sidebar"' in html
@@ -5195,7 +5269,11 @@ class TestAppShell:
         none of the drawer *markup* (no behavior change). Asserts on markup-only
         strings — the vanilla controller in shell_runtime_script() always ships
         and legitimately references the drawer data-attributes / modifier class,
-        so those substrings are present regardless."""
+        so those substrings are present regardless. Note: the
+        .chirpui-app-shell__topbar-start leading zone is now ALWAYS rendered
+        (#220) — non-meaningful chrome, not part of the drawer markup — so the
+        absent-class assertions below (nav-toggle, scrim, drawer-head) still
+        hold."""
         html = env.from_string(
             '{% from "chirpui/app_shell.html" import app_shell %}'
             '{% call app_shell(brand="Brand") %}'
@@ -5263,6 +5341,154 @@ class TestAppShell:
         between the macro and layout entry points from returning."""
         layout = Path("src/chirp_ui/templates/chirpui/app_shell_layout.html").read_text()
         assert "responseUpdatesShellActionsOob" not in layout
+
+    def test_app_shell_layout_inline_syncnav_deleted(self) -> None:
+        """#197: the divergent blind-prefix syncNav is GONE from the layout's
+        inline script (it moved into the canonical shell_runtime_script). The
+        layout-specific CSRF handler stays. Scope the read to the layout file so
+        we don't falsely match the canonical copy now in shell_frame.html."""
+        layout = Path("src/chirp_ui/templates/chirpui/app_shell_layout.html").read_text()
+        assert "function syncNav" not in layout
+        # The layout-only CSRF handler (depends on the layout's csrf-token meta)
+        # must remain.
+        assert "htmx:configRequest" in layout
+
+    def test_shell_runtime_script_ships_canonical_syncnav(self, env: Environment) -> None:
+        """#197: the canonical active-link sync ships in shell_runtime_script(),
+        the script both entry points emit. It mirrors the server's per-item match
+        via the data-chirpui-shell-match selector and toggles the right active
+        class per link family."""
+        html = env.from_string(
+            '{% from "chirpui/shell_frame.html" import shell_runtime_script %}'
+            "{{ shell_runtime_script() }}"
+        ).render()
+        assert "data-chirpui-shell-match" in html
+        assert "chirpui-sidebar__link--active" in html
+        assert "chirpui-navbar__link--active" in html
+        assert "htmx:afterSettle" in html
+
+    def test_app_shell_macro_region_announcer_wrappers(self, env: Environment) -> None:
+        """#197: the macro wraps topbar-center in #chirpui-topbar-breadcrumbs and
+        the sidebar slot in #chirpui-sidebar-nav, both aria-live announcers. This
+        is the canonical region contract the layout must mirror (the layout side
+        is not env-renderable — it extends chirp/layouts/shell.html — so layout
+        parity is proven only by the browser gauntlet)."""
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand") %}'
+            "{% slot topbar %}<nav>Crumbs</nav>{% end %}"
+            "{% slot sidebar %}<nav>Side</nav>{% end %}"
+            "Main"
+            "{% end %}"
+        ).render()
+        assert 'id="chirpui-topbar-breadcrumbs"' in html
+        assert 'id="chirpui-sidebar-nav"' in html
+        # Both carry the aria-live announcer attributes (drive the
+        # chirpui-transitions.css VT/outline-flash suppression rule).
+        bc = html.index('id="chirpui-topbar-breadcrumbs"')
+        sn = html.index('id="chirpui-sidebar-nav"')
+        assert 'aria-live="polite"' in html[bc : bc + 120]
+        assert 'aria-atomic="true"' in html[bc : bc + 120]
+        assert 'aria-live="polite"' in html[sn : sn + 120]
+
+    def test_sidebar_link_emits_match_data_attr(self, env: Environment) -> None:
+        """#197: sidebar_link emits data-chirpui-shell-match ONLY when match= is
+        set; explicit active= links stay server-authoritative (no data-attr)."""
+        # With match: data-attr present.
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import sidebar_link %}'
+            '{{ sidebar_link("/dashboard", "Dashboard", match="prefix") }}'
+        ).render(current_path="/dashboard")
+        assert 'data-chirpui-shell-match="prefix"' in html
+        # No match: no data-attr.
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import sidebar_link %}{{ sidebar_link("/x", "X") }}'
+        ).render()
+        assert "data-chirpui-shell-match" not in html
+        # Explicit active, no match: active class + aria-current but NO data-attr
+        # (server is authoritative; JS leaves it alone).
+        html = env.from_string(
+            '{% from "chirpui/sidebar.html" import sidebar_link %}'
+            '{{ sidebar_link("/x", "X", active=true) }}'
+        ).render()
+        assert "chirpui-sidebar__link--active" in html
+        assert 'aria-current="page"' in html
+        assert "data-chirpui-shell-match" not in html
+
+    def test_navbar_link_emits_match_data_attr(self, env: Environment) -> None:
+        """#197: navbar_link mirrors the sidebar_link match data-attr contract;
+        navbar_dropdown's <summary> (hrefless) must NOT carry the attr."""
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar_link %}'
+            '{{ navbar_link("/dashboard", "Dashboard", match="prefix") }}'
+        ).render(current_path="/dashboard")
+        assert 'data-chirpui-shell-match="prefix"' in html
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar_link %}{{ navbar_link("/x", "X") }}'
+        ).render()
+        assert "data-chirpui-shell-match" not in html
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar_link %}'
+            '{{ navbar_link("/x", "X", active=true) }}'
+        ).render()
+        assert "chirpui-navbar__link--active" in html
+        assert 'aria-current="page"' in html
+        assert "data-chirpui-shell-match" not in html
+        # navbar_dropdown summary has no href — it must never carry the attr
+        # (the JS skips hrefless elements; a dropdown trigger is not a link).
+        html = env.from_string(
+            '{% from "chirpui/navbar.html" import navbar_dropdown %}'
+            '{% call navbar_dropdown("Menu", match="prefix") %}items{% end %}'
+        ).render(current_path="/menu")
+        assert "data-chirpui-shell-match" not in html
+
+    def test_app_shell_topbar_leading_slot_renders_before_brand(self, env: Environment) -> None:
+        """#220: topbar_leading content renders in the leading zone, BEFORE the
+        brand <a>, and is NOT nested inside the brand anchor — the core
+        anti-footgun assertion (a <button> inside an <a> is invalid HTML and the
+        anchor would hijack the click)."""
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand") %}'
+            '{% slot topbar_leading %}<button id="lead">x</button>{% end %}'
+            "Main"
+            "{% end %}"
+        ).render()
+        assert '<button id="lead">x</button>' in html
+        lead_open = html.index('<button id="lead">')
+        lead_close = html.index("</button>", lead_open)
+        brand_open = html.index('class="chirpui-app-shell__brand"')
+        # Leading button comes before the brand, and CLOSES before the brand
+        # anchor opens (so it is a sibling, not a descendant of the <a>).
+        assert lead_open < brand_open
+        assert lead_close < brand_open
+
+    def test_app_shell_topbar_start_wrapper_always_rendered(self, env: Environment) -> None:
+        """#220: the leading zone wrapper is always present (stable layout
+        contract) even with no nav_drawer and no topbar_leading content."""
+        html = env.from_string(
+            '{% from "chirpui/app_shell.html" import app_shell %}'
+            '{% call app_shell(brand="Brand") %}Main{% end %}'
+        ).render()
+        assert 'class="chirpui-app-shell__topbar-start"' in html
+
+    def test_topbar_leading_doc_snippet_icon_resolves_to_glyph(
+        self, env: Environment, recwarn: pytest.WarningsRecorder
+    ) -> None:
+        """#220: the copyable topbar_leading affordance snippet (docstrings +
+        docs/patterns/navigation.md) uses a REAL icon-registry name so the
+        rendered control is a hamburger glyph, not literal pass-through text.
+        Guards against regressing to a non-registry name (e.g. "menu"), which
+        renders the raw string and emits a ChirpUIValidationWarning."""
+        html = env.from_string(
+            '{% from "chirpui/icon_btn.html" import icon_btn %}'
+            '{{ icon_btn("list", aria_label="Open menu") }}'
+        ).render()
+        # "list" resolves to the hamburger glyph; the raw name never leaks.
+        assert "≡" in html
+        assert ">list<" not in html
+        assert 'aria-label="Open menu"' in html
+        assert not [w for w in recwarn if issubclass(w.category, ChirpUIValidationWarning)]
 
 
 class TestLogo:

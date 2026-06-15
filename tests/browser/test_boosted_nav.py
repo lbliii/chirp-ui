@@ -55,18 +55,51 @@ async def test_boosted_nav_updates_url(page, base_url):
 
 
 async def test_boosted_nav_updates_active_link(page, base_url):
-    """After boosted nav, the active sidebar link updates via syncNav."""
+    """After boosted nav, the canonical match-driven syncNav (now in
+    shell_runtime_script) toggles --active on the match='exact' links: /page-b
+    GAINS active + aria-current, and / (Home) LOSES it. Proves the JS honors
+    server-declared match=, not blind prefix (#197)."""
     await page.goto(base_url + "/")
     await wait_for_alpine(page)
+
+    # On the home route, the exact-match Home link is active.
+    home_link = page.locator("a[href='/'].chirpui-sidebar__link")
+    await home_link.wait_for(state="visible")
+    assert "chirpui-sidebar__link--active" in (await home_link.get_attribute("class"))
 
     await page.click("a[href='/page-b']")
     await wait_for_htmx(page)
 
-    # Page B link should have active class
+    # Page B link gains active + aria-current.
     page_b_link = page.locator("a[href='/page-b'].chirpui-sidebar__link")
     await page_b_link.wait_for(state="visible")
-    classes = await page_b_link.get_attribute("class")
-    assert "chirpui-sidebar__link--active" in classes
+    assert "chirpui-sidebar__link--active" in (await page_b_link.get_attribute("class"))
+    assert await page_b_link.get_attribute("aria-current") == "page"
+
+    # Home link lost active (the exact-match no longer matches /page-b).
+    assert "chirpui-sidebar__link--active" not in (await home_link.get_attribute("class"))
+    assert await home_link.get_attribute("aria-current") is None
+
+
+async def test_boosted_nav_leaves_matchless_link_untouched(page, base_url):
+    """Negative test for #197: a sidebar link with NO match= carries no
+    data-chirpui-shell-match attribute, so the canonical syncNav never toggles
+    it — its active state is governed solely by the server's active= decision.
+    Proves the 'absent => skip / server-authoritative' rule (the old blind-prefix
+    JS would have toggled it)."""
+    await page.goto(base_url + "/")
+    await wait_for_alpine(page)
+
+    gauntlet_link = page.locator("a[href='/gauntlet'].chirpui-sidebar__link")
+    await gauntlet_link.wait_for(state="visible")
+    # No data-attr => JS skips it.
+    assert await gauntlet_link.get_attribute("data-chirpui-shell-match") is None
+    assert "chirpui-sidebar__link--active" not in (await gauntlet_link.get_attribute("class"))
+
+    # Navigate to /page-b — the match-less /gauntlet link must stay untouched.
+    await page.click("a[href='/page-b']")
+    await wait_for_htmx(page)
+    assert "chirpui-sidebar__link--active" not in (await gauntlet_link.get_attribute("class"))
 
 
 async def test_back_button_restores_previous_page(page, base_url):

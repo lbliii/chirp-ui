@@ -12,6 +12,7 @@ from chirp import App, AppConfig, ShellAction, ShellActions, ShellActionZone
 from chirp.ext.chirp_ui import use_chirp_ui
 from chirp.http.request import Request
 from chirp.http.response import Response
+from chirp.pages.shell_actions import ShellMenuItem
 from chirp.templating.returns import Template
 
 from chirp_ui.theme_packs import get_theme_pack
@@ -714,6 +715,40 @@ def create_app() -> App:
     async def shell_drawer_page(request: Request):
         return Template(
             "shell_drawer_page.html", **_shell_drawer_ctx("/shell-drawer", "Drawer shell")
+        )
+
+    # Shell-actions duplicate-id gauntlet (#224): a consumer renders the bar in
+    # two regions (canonical topbar + a drawer copy with id_suffix="-drawer"). The
+    # stub carries an overflow zone AND a kind="menu" action so BOTH fixed ids
+    # appear in both instances — the duplicate-id condition the suffix fixes.
+    def _dup_id_shell_actions() -> ShellActions:
+        return ShellActions(
+            primary=ShellActionZone(
+                items=(
+                    ShellAction(
+                        id="bulk",
+                        label="Bulk",
+                        kind="menu",
+                        menu_items=(
+                            ShellMenuItem(label="Delete", action="delete"),
+                            ShellMenuItem(label="Move", action="move"),
+                        ),
+                    ),
+                )
+            ),
+            overflow=ShellActionZone(
+                items=(ShellAction(id="archive", label="Archive", action="archive"),)
+            ),
+            target="chirp-shell-actions",
+        )
+
+    @app.route("/shell-actions-dup")
+    async def shell_actions_dup_page(request: Request):
+        return Template(
+            "shell_actions_dup_id_page.html",
+            page_title="Shell Actions Dup Id",
+            current_path="/shell-actions-dup",
+            shell_actions=_dup_id_shell_actions(),
         )
 
     @app.route("/shell-drawer/deploys")

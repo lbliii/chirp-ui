@@ -100,6 +100,16 @@ html {
     flex-shrink: 0;
 }
 
+/* The leading zone is always rendered for entry-point markup parity (#220), but
+   an empty wrapper is still a flex item — the topbar's `gap` would push the
+   brand right by one spacing unit on a default shell with no leading affordance.
+   Collapse it when it holds no element child so the brand keeps its pre-#220
+   position. `:has(> *)` keys off element children, so it ignores the macro
+   path's whitespace text nodes that defeat `:empty`. */
+.chirpui-app-shell__topbar-start:not(:has(> *)) {
+    display: none;
+}
+
 .chirpui-app-shell__topbar-center {
     flex: 1;
     min-width: 0;
