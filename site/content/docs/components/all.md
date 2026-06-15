@@ -30,7 +30,7 @@ surface with a preferred replacement. Components the manifest marks `internal`
 (Chirp UI composition infrastructure) are intentionally omitted.
 
 <!-- chirpui:generated:start -->
-_350 public components across 17 categories._
+_351 public components across 17 categories._
 
 ## Layout
 
@@ -197,7 +197,7 @@ _19 components._
 
 ## Data display
 
-_37 components._
+_38 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
@@ -212,7 +212,8 @@ _37 components._
 | `chip` | stable | Chip group |
 | `chip_group` | stable | Chip group |
 | `comment` | stable | Comment component |
-| `data_table` | stable | Data Table |
+| `data_grid` | experimental | Data Grid |
+| `data_table` | experimental | Data Table |
 | `dl` *(CSS / utility)* | stable | - |
 | `donut` | stable | Donut Chart component |
 | `file_tree` | stable | File tree |

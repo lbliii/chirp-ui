@@ -34,16 +34,32 @@
         Row with actions: pass row_actions(...) as last cell when actions_header=true
         Sticky header:
         call table(headers=[...], sticky_header=true)
+
+    Sorting note (legacy): table(sortable=true, sort_url=...) emits a plain
+    `hx-get`-on-`<th>` sort using `header|lower` as the sort key — kept
+    byte-identical for backward compatibility. For interactive grids with
+    aria-sort, stable sort keys, server sort state, row selection, sticky first
+    column, and HTMX load-more, use `data_grid` (chirpui/data_grid.html), which
+    is backed by the typed `chirp_ui.grid_state` helper.
+
+    Additive selection/sticky params (additive; default off = byte-identical):
+        table(rows=..., selectable=true, row_id="id", selection=selection_state,
+              sticky_first_col=true)
+    `selection` is a chirp_ui.grid_state.SelectionState; `row_id` is the dict
+    key (or index) used to resolve each row's stable id for the checkbox value.
 -#}
 
 {% def table(headers=none, rows=none, sortable=false, sort_url=none, hx_target=none,
              striped=false, sticky_header=false, actions_header=false,
-             align=none, widths=none, compact=false, cls="") %}
+             align=none, widths=none, compact=false, selectable=false,
+             select_name="ids", selection=none, row_id=none, sticky_first_col=false,
+             cls="") %}
 <div class="chirpui-table-wrap{{ " chirpui-table-wrap--sticky" if sticky_header else "" }}">
-    <table class="chirpui-table{{ " chirpui-table--striped" if striped else "" }}{{ " chirpui-table--compact" if compact else "" }}{{ " " ~ cls if cls else "" }}">
+    <table class="chirpui-table{{ " chirpui-table--striped" if striped else "" }}{{ " chirpui-table--compact" if compact else "" }}{{ " chirpui-table--sticky-col" if sticky_first_col else "" }}{{ " " ~ cls if cls else "" }}">
         <caption class="chirpui-table__caption">{% slot caption %}</caption>
         {% if widths %}
         <colgroup>
+            {% if selectable %}<col style="width: 1%">{% end %}
             {% for w in widths %}
             <col style="width: {{ w }}">
             {% end %}
@@ -53,6 +69,12 @@
         {% if headers %}
             <thead class="chirpui-table__head">
                 <tr>
+                    {% if selectable %}
+                    <th class="chirpui-table__th chirpui-table__th--select" scope="col">
+                        <input type="checkbox" class="chirpui-table__select-all" aria-label="Select all rows on this page"
+                               {% if selection and selection.all_selected %}checked{% end %}>
+                    </th>
+                    {% end %}
                     {% for header in headers %}
                         {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
                         <th class="chirpui-table__th{{ " chirpui-table__th--" ~ col_align if col_align else "" }}"
@@ -74,7 +96,15 @@
         <tbody class="chirpui-table__body">
             {% if rows %}
                 {% for row_data in rows %}
+                {% set _rid = (row_data[row_id] | string) if row_id is not none else (loop.index0 | string) %}
                 <tr class="chirpui-table__row">
+                    {% if selectable %}
+                    <td class="chirpui-table__td chirpui-table__td--select">
+                        <input type="checkbox" name="{{ select_name }}" value="{{ _rid }}"
+                               aria-label="Select row {{ loop.index }}"
+                               {% if selection and selection.is_selected(_rid) %}checked{% end %}>
+                    </td>
+                    {% end %}
                     {% for cell in row_data %}
                         {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
                         <td class="chirpui-table__td{{ " chirpui-table__td--" ~ col_align if col_align else "" }}">{{ cell }}</td>

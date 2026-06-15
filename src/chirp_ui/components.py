@@ -1992,13 +1992,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         composes=("filter-row", "table", "pagination"),
         category="data-display",
         role="component",
-        maturity="stable",
+        # #200: see #203 (maturity-honesty registry test). Demoted from
+        # "stable" — data_table is the deliberately-thin filter+table+pagination
+        # convenience wrapper; data_grid is now the real interactive grid.
+        maturity="experimental",
         macro="data_table",
     ),
     # -- Data display -------------------------------------------------------
     "table": ComponentDescriptor(
         block="table",
-        modifiers=("striped", "compact"),
+        modifiers=("striped", "compact", "sticky-col"),
         elements=(
             "caption",
             "body",
@@ -2007,6 +2010,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "th",
             "td",
             "sort",
+            "sort-indicator",
+            "sort-label",
+            "select-all",
+            "select-row",
             "avatar",
             "empty",
         ),
@@ -2018,13 +2025,19 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-table__td--left",
             "chirpui-table__td--mono",
             "chirpui-table__td--right",
+            "chirpui-table__td--select",
             "chirpui-table__td--truncate",
             "chirpui-table__th--actions",
             "chirpui-table__th--center",
             "chirpui-table__th--left",
             "chirpui-table__th--right",
+            "chirpui-table__th--select",
+            "chirpui-table__row--selected",
         ),
         category="data-display",
+        # #200: see #203 — table is a genuinely complete low-level primitive
+        # (real <table> semantics, alignment, widths, sticky header/col, slots),
+        # so its stable label is defensible.
         maturity="stable",
     ),
     "table-wrap": ComponentDescriptor(
@@ -2033,8 +2046,42 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "caption"),
         template="table.html",
         category="data-display",
+        # #200: see #203 — table-wrap is a complete scroll-container primitive;
+        # stable retained.
         maturity="stable",
         macro="table",
+    ),
+    "data-grid": ComponentDescriptor(
+        block="data-grid",
+        modifiers=("compact",),
+        elements=(
+            "header",
+            "title",
+            "description",
+            "filters",
+            "selection",
+            "body",
+            "table",
+            "load-more",
+            "load-more-btn",
+            "footer",
+        ),
+        slots=("", "toolbar", "caption"),
+        slot_forwards=(
+            # Default slot = bulk-action buttons forwarded into the selection bar.
+            SlotForward(slot="", target="selection-bar", target_slot=""),
+            # toolbar slot = filter controls forwarded into the filter row.
+            SlotForward(slot="toolbar", target="filter-row", target_slot=""),
+        ),
+        composes=("filter-row", "table", "selection-bar", "pagination"),
+        template="data_grid.html",
+        category="data-display",
+        role="component",
+        # #200: ships experimental; earns "stable" in a later deliberate
+        # hardening PR once the browser gauntlet + structural tests stabilize.
+        maturity="experimental",
+        requires=("alpine", "htmx"),
+        macro="data_grid",
     ),
     "pagination": ComponentDescriptor(
         block="pagination",

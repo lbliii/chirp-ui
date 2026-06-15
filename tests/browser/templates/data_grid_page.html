@@ -1,0 +1,33 @@
+{#- Gauntlet fixture for the server-driven data grid (#200). Renders data_grid
+    with sortable columns (aria-sort + server sort state via grid_state),
+    selectable rows bound to the controlled selection_bar via the
+    chirpuiGridSelection Alpine factory, sticky header + sticky first column,
+    and an HTMX load-more sentinel. The /data-grid route projects `columns`
+    (list[ColumnSort]) and `selection` (SelectionState) from grid_state, and
+    serves data_grid_rows on the load-more hx-get. -#}
+{% extends "base.html" %}
+{% block brand %}Data Grid{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path="/data-grid", aria_label="Primary") %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/data-grid", "Data Grid", match="exact") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/data_grid.html" import data_grid %}
+{% from "chirpui/button.html" import btn %}
+<div id="page-root">
+  <h1 data-testid="main-content">Data Grid</h1>
+  {% call data_grid(title="Members", description="Sortable, selectable, sticky.",
+                    columns=columns, rows=rows, row_ids=row_ids, row_labels=row_labels,
+                    sort_url="/data-grid",
+                    hx_target="#members-grid", selection_id="members", selectable=true,
+                    selection=selection, sticky_header=true, sticky_first_col=true,
+                    load_more_url=load_more_url, has_more=has_more) %}
+    <button type="button" class="chirpui-btn chirpui-btn--sm chirpui-btn--secondary"
+            data-testid="bulk-export">Export selected</button>
+  {% end %}
+</div>
+{% end %}

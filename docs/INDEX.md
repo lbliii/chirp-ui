@@ -57,6 +57,7 @@ Recipe and pattern docs compose existing primitives. They should not introduce
 new public APIs unless a linked plan or design record says so.
 
 - [NAVIGATION.md](patterns/navigation.md) — Navigation layer model, component decision matrix, and dense chrome guidance
+- [DATA-GRID.md](patterns/data-grid.md) — Server-driven data grid: the `grid_state` typed helper, sort/selection/sticky/load-more wiring, and the `data_table` vs `data_grid` decision lens
 - [DENSE-NAVIGATION-RECIPES.md](patterns/dense-navigation-recipes.md) — Copyable dense navigation recipes and layer model
 - [DENSE-NAVIGATION-SYNTHESIS.md](patterns/dense-navigation-synthesis.md) — Dense navigation recipe synthesis, primitive candidates, and anti-decisions
 - [SEARCH-SHELL-RECIPES.md](patterns/search-shell-recipes.md) — Dense catalog/search shells, scoped counts, responsive command surfaces, and HTMX/Alpine contracts

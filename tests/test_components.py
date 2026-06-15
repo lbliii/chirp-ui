@@ -8972,6 +8972,280 @@ class TestMaturityPrimitives:
         assert "No users" in html
 
 
+class TestTableSelectionStickyAdditive:
+    """Additive selectable/sticky-first-col params on the legacy table() macro.
+
+    The existing sortable=/sort_url= header|lower branch must stay byte-identical
+    (regression lock); the new params are purely additive and default off.
+    """
+
+    def test_legacy_sortable_branch_unchanged(self, env: Environment) -> None:
+        # Locks the documented-legacy <th>-as-target header|lower sort path.
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table %}'
+            '{{ table(headers=["Name", "Email"], rows=[["Ada", "a@x"]], '
+            'sortable=true, sort_url="/users", hx_target="#t") }}'
+        ).render()
+        assert 'hx-get="/users?sort=name"' in html
+        assert 'hx-get="/users?sort=email"' in html
+        assert 'hx-target="#t"' in html
+        assert 'hx-swap="innerHTML"' in html
+        assert 'style="cursor: pointer"' in html
+        # The legacy path does NOT emit aria-sort or a sort button.
+        assert "aria-sort" not in html
+        assert "chirpui-table__sort" not in html
+
+    def test_default_render_has_no_selection_or_sticky_col(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table %}'
+            '{{ table(headers=["Name"], rows=[["Ada"]]) }}'
+        ).render()
+        assert "chirpui-table--sticky-col" not in html
+        assert "chirpui-table__th--select" not in html
+        assert "chirpui-table__td--select" not in html
+
+    def test_selectable_prepends_labeled_checkbox_cells(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table %}'
+            '{{ table(headers=["Name"], rows=[["Ada"], ["Bob"]], '
+            'selectable=true, select_name="ids") }}'
+        ).render()
+        assert "chirpui-table__th--select" in html
+        assert html.count("chirpui-table__td--select") == 2
+        assert_element(html, "input", {"type": "checkbox", "class": "chirpui-table__select-all"})
+        assert 'aria-label="Select all rows on this page"' in html
+        # Row checkboxes carry the select name + a non-empty per-row aria-label.
+        assert 'name="ids"' in html
+        assert 'aria-label="Select row 1"' in html
+
+    def test_selectable_value_uses_loop_index_by_default(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table %}'
+            '{{ table(rows=[["Ada"], ["Bob"]], selectable=true) }}'
+        ).render()
+        assert 'value="0"' in html
+        assert 'value="1"' in html
+
+    def test_selectable_row_id_indexes_into_row(self, env: Environment) -> None:
+        # row_id=1 -> second column of each row tuple is the stable id.
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table %}'
+            '{{ table(rows=[["Ada", "u-7"], ["Bob", "u-9"]], '
+            "selectable=true, row_id=1) }}"
+        ).render()
+        assert 'value="u-7"' in html
+        assert 'value="u-9"' in html
+
+    def test_sticky_first_col_adds_class(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/table.html" import table %}'
+            '{{ table(headers=["Name"], rows=[["Ada"]], sticky_first_col=true) }}'
+        ).render()
+        assert "chirpui-table--sticky-col" in html
+
+
+class TestDataGrid:
+    """Server-driven interactive data grid (#200)."""
+
+    def _cols(self) -> str:
+        return (
+            "{% set cols = sort_columns(["
+            "{'key':'name','label':'Name','sortable':true},"
+            "{'key':'status','label':'Status','sortable':true,'align':'center'},"
+            "{'key':'notes','label':'Notes','sortable':false}"
+            "], parse_sort('name', default_key='name'), '/users') %}"
+        )
+
+    def _render(self, env: Environment, body: str) -> str:
+        return env.from_string(
+            '{% from "chirpui/data_grid.html" import data_grid %}' + self._cols() + body
+        ).render()
+
+    def test_sortable_header_emits_button_with_aria_sort(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{{ data_grid(title='Users', columns=cols, rows=[['Ada','Active','n']], "
+            "row_ids=['1'], sort_url='/users', selection_id='users') }}",
+        )
+        # Sortable header has a real <button class="chirpui-table__sort">.
+        assert_element(html, "button", {"class": "chirpui-table__sort"})
+        assert 'type="button"' in html
+        # The active column reflects aria-sort="ascending".
+        assert 'aria-sort="ascending"' in html
+        # Stable id for focus restoration after the swap.
+        assert 'id="users-sort-name"' in html
+
+    def test_exactly_one_active_aria_sort(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, rows=[['Ada','Active','n']], row_ids=['1'], "
+            "sort_url='/users', selection_id='g') }}",
+        )
+        non_none = re.findall(r'aria-sort="(ascending|descending)"', html)
+        assert len(non_none) == 1
+        # Every other sortable header resets to none.
+        assert html.count('aria-sort="none"') >= 1
+
+    def test_static_column_has_no_button_or_aria_sort(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, rows=[['Ada','Active','n']], row_ids=['1'], "
+            "sort_url='/users', selection_id='g') }}",
+        )
+        # The non-sortable "Notes" header renders a plain <th> (no button cell).
+        assert re.search(r'<th class="chirpui-table__th" scope="col">Notes</th>', html)
+
+    def test_sort_button_carries_toggle_url_via_build_hx_attrs(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, rows=[['Ada','Active','n']], row_ids=['1'], "
+            "sort_url='/users', selection_id='g', hx_target='#g-grid') }}",
+        )
+        # Active ascending "name" toggles to descending (sort=-name) on next click.
+        assert "sort=-name" in html
+        assert 'hx-swap="outerHTML"' in html
+        assert 'hx-target="#g-grid"' in html
+
+    def test_selectable_emits_select_all_and_indeterminate_binding(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{% set sel = selection_state(['1'], page_ids=['1','2'], total=2) %}"
+            "{{ data_grid(columns=cols, rows=[['Ada','Active','n'],['Bob','Idle','m']], "
+            "row_ids=['1','2'], sort_url='/users', selection_id='g', "
+            "selectable=true, selection=sel) }}",
+        )
+        assert "chirpui-table__select-all" in html
+        assert 'aria-label="Select all rows on this page"' in html
+        # indeterminate MUST be set via the JS DOM property (x-effect), never as
+        # an HTML attribute (which would not reflect to the IDL-only property).
+        assert 'x-effect="$el.indeterminate = someSelected"' in html
+        assert "indeterminate=" not in html
+        assert ":checked=" in html
+        # Each row checkbox is labeled and carries its stable id as value.
+        assert html.count("chirpui-table__select-row") == 2
+        assert 'value="1"' in html
+        assert 'value="2"' in html
+        # No row_labels supplied -> the label falls back to the STABLE id, never
+        # the rendered first cell (which may be markup/empty). See the dedicated
+        # row_labels tests below.
+        assert 'aria-label="Select 1"' in html
+        # Server seeds the selected row checked (JS-off correctness).
+        assert "checked" in html
+
+    def test_row_labels_supply_clean_accessible_names(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, rows=[['Ada','Active','n'],['Bob','Idle','m']], "
+            "row_ids=['1','2'], row_labels=['Ada Lovelace','Bob Jones'], "
+            "sort_url='/users', selection_id='g', selectable=true) }}",
+        )
+        assert 'aria-label="Select Ada Lovelace"' in html
+        assert 'aria-label="Select Bob Jones"' in html
+
+    def test_row_checkbox_label_does_not_leak_first_cell_markup(self, env: Environment) -> None:
+        # The first column is rich HTML (avatar + bold name). Without row_labels
+        # the label must fall back to the stable id, never the escaped markup —
+        # a screen reader would otherwise announce "less-than b greater-than".
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, "
+            "rows=[['<b>Ada</b> Lovelace','Active','n']], "
+            "row_ids=['u-1'], sort_url='/users', selection_id='g', "
+            "selectable=true) }}",
+        )
+        assert 'aria-label="Select u-1"' in html
+        assert 'aria-label="Select &lt;b&gt;' not in html
+        assert 'aria-label="Select <b>' not in html
+
+    def test_row_checkbox_label_falls_back_when_first_cell_empty(self, env: Environment) -> None:
+        # An empty/spacer first cell must not degrade the label to a bare
+        # "Select " — it falls back to the stable, distinguishing row id.
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, rows=[['','Active','n'],['','Idle','m']], "
+            "row_ids=['u-1','u-2'], sort_url='/users', selection_id='g', "
+            "selectable=true) }}",
+        )
+        assert 'aria-label="Select u-1"' in html
+        assert 'aria-label="Select u-2"' in html
+        assert 'aria-label="Select "' not in html
+
+    def test_selection_bar_controlled_mode_dropped_count_gate(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{% set sel = selection_state([], page_ids=['1'], total=1) %}"
+            "{% call data_grid(columns=cols, rows=[['Ada','Active','n']], row_ids=['1'], "
+            "sort_url='/users', selection_id='g', selectable=true, selection=sel) %}"
+            "<button id='bulk-export'>Export</button>{% end %}",
+        )
+        # Controlled bar is in the DOM even with zero selected (x-show gate).
+        assert "chirpui-selection-bar" in html
+        assert 'x-show="count &gt; 0"' in html or 'x-show="count > 0"' in html
+        assert "x-text=" in html
+        assert 'aria-live="polite"' in html
+        # Bulk-action slot content forwards into the bar.
+        assert "bulk-export" in html
+
+    def test_sticky_first_col_and_header(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, rows=[['Ada','Active','n']], row_ids=['1'], "
+            "sort_url='/users', selection_id='g', sticky_first_col=true, "
+            "sticky_header=true) }}",
+        )
+        assert "chirpui-table--sticky-col" in html
+        assert "chirpui-table-wrap--sticky" in html
+
+    def test_load_more_emits_real_button_sentinel(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, rows=[['Ada','Active','n']], row_ids=['1'], "
+            "sort_url='/users', selection_id='g', load_more_url='/users', "
+            "has_more=true) }}",
+        )
+        assert "chirpui-data-grid__load-more" in html
+        # Real <button> (not a span/disabled) carrying the load-more class.
+        assert_element(html, "button")
+        assert "chirpui-data-grid__load-more-btn" in html
+        assert 'hx-get="/users"' in html
+        assert 'hx-swap="beforeend"' in html
+        assert 'hx-target="#g-grid-body"' in html
+
+    def test_root_carries_alpine_factory_and_config(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, rows=[['Ada','Active','n']], row_ids=['1'], "
+            "sort_url='/users', selection_id='users', selectable=true, "
+            "total=5) }}",
+        )
+        assert 'x-data="chirpuiGridSelection()"' in html
+        assert 'data-selection-id="users"' in html
+        assert "data-total-rows=" in html
+
+    def test_empty_rows_renders_empty_message(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, rows=[], sort_url='/users', "
+            "selection_id='g', empty_message='No records yet') }}",
+        )
+        assert "No records yet" in html
+        assert "chirpui-table__empty" in html
+
+    def test_data_grid_rows_fragment_renders_tr_only(self, env: Environment) -> None:
+        # The load-more/OOB fragment renders bare <tr> rows for hx beforeend.
+        html = env.from_string(
+            '{% from "chirpui/data_grid.html" import data_grid_rows %}'
+            + self._cols()
+            + "{{ data_grid_rows(cols, [['Ada','Active','n'],['Bob','Idle','m']], "
+            "row_ids=['1','2'], selectable=true, select_name='ids') }}"
+        ).render()
+        # Two <tr> rows, no wrapping section/thead (pure load-more fragment).
+        assert html.count("<tr ") == 2
+        assert "<section" not in html
+        assert "<thead" not in html
+        assert html.count("chirpui-table__select-row") == 2
+
+
 class TestSplitPanel:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(

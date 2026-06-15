@@ -217,6 +217,19 @@ def test_tree_view_minimal_node(env: Environment) -> None:
     assert "chirpui-tree__item" in out
 
 
+def test_data_grid_minimal_column_dict(env: Environment) -> None:
+    # An empty {} column dict must coerce through sort_columns into a ColumnSort
+    # with empty key/label and render without UndefinedError (kida 0.7.0).
+    out = _render(
+        env,
+        '{% from "chirpui/data_grid.html" import data_grid %}'
+        "{% set cols = sort_columns([{}], parse_sort('', default_key=''), '/x') %}"
+        "{{ data_grid(columns=cols, rows=[['a']], row_ids=['1'], "
+        "sort_url='/x', selection_id='g') }}",
+    )
+    assert "chirpui-data-grid" in out
+
+
 def test_bar_chart_minimal_item(env: Environment) -> None:
     out = _render(
         env,

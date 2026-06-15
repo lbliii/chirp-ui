@@ -466,7 +466,9 @@ body {
     /* Z-index — global stacking hierarchy (local 0/1/2 within components are intentionally hardcoded) */
     --chirpui-z-dropdown: 10;
     --chirpui-z-popover: 20;
+    --chirpui-z-sticky-col: 40;
     --chirpui-z-sticky: 50;
+    --chirpui-z-sticky-corner: 60;
     --chirpui-z-toast: 100;
     --chirpui-z-tray: 1100;
     --chirpui-z-modal: 1200;

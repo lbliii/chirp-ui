@@ -503,7 +503,9 @@ body {
     /* Z-index — global stacking hierarchy (local 0/1/2 within components are intentionally hardcoded) */
     --chirpui-z-dropdown: 10;
     --chirpui-z-popover: 20;
+    --chirpui-z-sticky-col: 40;
     --chirpui-z-sticky: 50;
+    --chirpui-z-sticky-corner: 60;
     --chirpui-z-toast: 100;
     --chirpui-z-tray: 1100;
     --chirpui-z-modal: 1200;
@@ -8312,6 +8314,8 @@ a.chirpui-tag:active {
    Table
    ========================================================================== */
 
+/* .chirpui-table-wrap is the scroll container — a sibling block to
+   .chirpui-table, so it stays flat (outside the .chirpui-table @scope below). */
 .chirpui-table-wrap {
     box-sizing: border-box;
     min-inline-size: 0;
@@ -8325,142 +8329,223 @@ a.chirpui-tag:active {
 .chirpui-table-wrap--sticky .chirpui-table__head {
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: var(--chirpui-z-sticky);
     background: var(--chirpui-surface);
+    /* Directional seam (#200): a bottom shadow communicates that rows scroll
+       UNDER the pinned header — without it the band reads as a flat wireframe
+       once content slides beneath. Token-derived from --chirpui-border so it
+       tracks the theme (light/dark) with no new color token. */
+    box-shadow: 0 4px 6px -4px color-mix(in srgb, var(--chirpui-border) 70%, transparent);
+}
+
+/* Sticky first column (#200): the corner cell (top + inline-start intersection)
+   must out-stack both sticky zones, hence the dedicated --chirpui-z-sticky-corner
+   token. Pinned cells need a solid background so scrolled content does not show
+   through. These rules cross .chirpui-table-wrap and .chirpui-table boundaries,
+   so they live flat here rather than inside the .chirpui-table scope. */
+.chirpui-table-wrap--sticky .chirpui-table--sticky-col .chirpui-table__head .chirpui-table__th:first-child {
+    z-index: var(--chirpui-z-sticky-corner);
 }
 
 .chirpui-table__caption:empty {
     display: none;
 }
 
-.chirpui-table {
-    width: 100%;
-    min-width: 100%;
-    border-collapse: collapse;
-    font-size: var(--chirpui-font-sm);
-    line-height: var(--chirpui-line-height-normal);
-    overflow-wrap: anywhere;
-}
+@layer chirpui.component {
+    @scope (.chirpui-table) to (.chirpui-table .chirpui-table) {
+        :scope {
+            width: 100%;
+            min-width: 100%;
+            border-collapse: collapse;
+            font-size: var(--chirpui-font-sm);
+            line-height: var(--chirpui-line-height-normal);
+            overflow-wrap: anywhere;
+        }
 
-.chirpui-table__body {
-    vertical-align: inherit;
-}
+        .chirpui-table__body {
+            vertical-align: inherit;
+        }
 
-.chirpui-table__th,
-.chirpui-table__td {
-    box-sizing: border-box;
-    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
-    text-align: left;
-    border-bottom: 1px solid var(--chirpui-border);
-    vertical-align: top;
-}
+        .chirpui-table__th,
+        .chirpui-table__td {
+            box-sizing: border-box;
+            padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+            text-align: left;
+            border-bottom: 1px solid var(--chirpui-border);
+            vertical-align: top;
+        }
 
-.chirpui-table__th--actions,
-.chirpui-table__td--actions,
-.chirpui-table__td:has(.chirpui-row-actions__trigger) {
-    width: 1%;
-    white-space: normal;
-    text-align: right;
-}
+        .chirpui-table__th--actions,
+        .chirpui-table__td--actions,
+        .chirpui-table__td:has(.chirpui-row-actions__trigger) {
+            width: 1%;
+            white-space: normal;
+            text-align: right;
+        }
 
-.chirpui-table__td > :where(:not(script, style, template)) {
-    max-inline-size: 100%;
-    margin-block: 0;
-}
+        .chirpui-table__td > :where(:not(script, style, template)) {
+            max-inline-size: 100%;
+            margin-block: 0;
+        }
 
-.chirpui-table__td:not(.chirpui-table__td--actions):not(:has(.chirpui-row-actions__trigger))
-    > :where(:not(script, style, template))
-    + :where(:not(script, style, template)) {
-    margin-block-start: var(--chirpui-spacing-2xs);
-}
+        .chirpui-table__td:not(.chirpui-table__td--actions):not(:has(.chirpui-row-actions__trigger))
+            > :where(:not(script, style, template))
+            + :where(:not(script, style, template)) {
+            margin-block-start: var(--chirpui-spacing-2xs);
+        }
 
-.chirpui-table__td :where(a, code) {
-    overflow-wrap: anywhere;
-}
+        .chirpui-table__td :where(a, code) {
+            overflow-wrap: anywhere;
+        }
 
-.chirpui-table__td--actions > :where(.chirpui-cluster, .chirpui-dropdown, .chirpui-btn, .chirpui-icon-btn),
-.chirpui-table__td:has(.chirpui-row-actions__trigger)
-    > :where(.chirpui-cluster, .chirpui-dropdown, .chirpui-btn, .chirpui-icon-btn) {
-    display: inline-flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--chirpui-spacing-xs);
-    max-inline-size: 100%;
-    margin-block: 0;
-}
+        .chirpui-table__td--actions > :where(.chirpui-cluster, .chirpui-dropdown, .chirpui-btn, .chirpui-icon-btn),
+        .chirpui-table__td:has(.chirpui-row-actions__trigger)
+            > :where(.chirpui-cluster, .chirpui-dropdown, .chirpui-btn, .chirpui-icon-btn) {
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            gap: var(--chirpui-spacing-xs);
+            max-inline-size: 100%;
+            margin-block: 0;
+        }
 
-.chirpui-table__th {
-    font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-size: var(--chirpui-font-sm);
-    line-height: var(--chirpui-line-height-tight);
-    color: var(--chirpui-text-muted);
-}
+        .chirpui-table__th {
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+            font-size: var(--chirpui-font-sm);
+            line-height: var(--chirpui-line-height-tight);
+            color: var(--chirpui-text-muted);
+        }
 
-.chirpui-table__sort {
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-}
+        /* Sort button (#200): the click target inside a sortable <th>. The
+           orphaned hook is finally emitted by data_grid's grid_head_cell. */
+        .chirpui-table__sort {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--chirpui-spacing-2xs);
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            color: inherit;
+            cursor: pointer;
+        }
 
-.chirpui-table__sort:focus-visible {
-    outline: var(--chirpui-state-focus-outline);
-    outline-offset: var(--chirpui-state-focus-offset);
-}
+        .chirpui-table__sort:focus-visible {
+            outline: var(--chirpui-state-focus-outline);
+            outline-offset: var(--chirpui-state-focus-offset);
+        }
 
-.chirpui-table__sort:hover {
-    text-decoration: underline;
-}
+        .chirpui-table__sort:hover {
+            text-decoration: underline;
+        }
 
-.chirpui-table--striped .chirpui-table__row:nth-child(even) {
-    background: var(--chirpui-bg-subtle);
-}
+        /* aria-sort drives the caret; the glyph itself is aria-hidden so the
+           screen reader announces sort state once, via aria-sort only. */
+        .chirpui-table__sort-indicator {
+            display: inline-block;
+            inline-size: 0.75em;
+            color: var(--chirpui-text-muted);
+            transition: color var(--chirpui-motion-fast) var(--chirpui-ease-standard);
+        }
 
-.chirpui-table__avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-inline-end: var(--chirpui-spacing-xs);
-    font-size: 0.75rem;
-    background: var(--chirpui-bg-subtle);
-    border-radius: var(--chirpui-radius-sm);
-}
+        .chirpui-table__th[aria-sort="ascending"] .chirpui-table__sort-indicator::after {
+            content: "\25B2";
+            color: var(--chirpui-text);
+        }
 
-.chirpui-table--compact .chirpui-table__th,
-.chirpui-table--compact .chirpui-table__td {
-    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
-    font-size: var(--chirpui-font-sm);
-}
+        .chirpui-table__th[aria-sort="descending"] .chirpui-table__sort-indicator::after {
+            content: "\25BC";
+            color: var(--chirpui-text);
+        }
 
-/* Per-column alignment utilities */
-.chirpui-table__th--left,
-.chirpui-table__td--left { text-align: left; }
-.chirpui-table__th--center,
-.chirpui-table__td--center { text-align: center; }
-.chirpui-table__th--right,
-.chirpui-table__td--right { text-align: right; }
+        .chirpui-table__sort-label {
+            display: inline;
+        }
 
-.chirpui-table__td--right,
-.chirpui-table__th--right {
-    font-variant-numeric: tabular-nums;
-}
+        /* Selection column (#200) */
+        .chirpui-table__th--select,
+        .chirpui-table__td--select {
+            inline-size: 1%;
+            white-space: nowrap;
+            text-align: center;
+            vertical-align: middle;
+        }
 
-@media (max-width: 40rem) {
-    .chirpui-table {
-        width: max-content;
-        min-width: 100%;
-    }
+        .chirpui-table__select-all,
+        .chirpui-table__select-row {
+            cursor: pointer;
+            accent-color: var(--chirpui-accent);
+            vertical-align: middle;
+        }
 
-    .chirpui-table__th,
-    .chirpui-table__td {
-        max-width: min(18rem, 72vw);
-        padding: var(--chirpui-spacing-sm);
-        overflow-wrap: anywhere;
+        .chirpui-table__row--selected {
+            background: var(--chirpui-state-surface-active);
+        }
+
+        /* Sticky first column (#200): pin the first cell of each row. Solid
+           background prevents body content from showing through on scroll.
+           Below the sticky header; the corner override (flat, above) wins.
+           The inline-end shadow is the scroll seam — without it the pinned
+           white column is invisible against scrolled white cells (the headline
+           "premium not wireframe" gap). Token-derived from --chirpui-border so
+           it tracks the theme with no new color token. */
+        &.chirpui-table--sticky-col :is(.chirpui-table__th, .chirpui-table__td):first-child {
+            position: sticky;
+            inset-inline-start: 0;
+            z-index: var(--chirpui-z-sticky-col);
+            background: var(--chirpui-surface);
+            box-shadow: 4px 0 6px -4px color-mix(in srgb, var(--chirpui-border) 70%, transparent);
+        }
+
+        &.chirpui-table--striped .chirpui-table__row:nth-child(even) {
+            background: var(--chirpui-bg-subtle);
+        }
+
+        .chirpui-table__avatar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-inline-end: var(--chirpui-spacing-xs);
+            font-size: 0.75rem;
+            background: var(--chirpui-bg-subtle);
+            border-radius: var(--chirpui-radius-sm);
+        }
+
+        &.chirpui-table--compact .chirpui-table__th,
+        &.chirpui-table--compact .chirpui-table__td {
+            padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+            font-size: var(--chirpui-font-sm);
+        }
+
+        /* Per-column alignment utilities */
+        .chirpui-table__th--left,
+        .chirpui-table__td--left { text-align: left; }
+        .chirpui-table__th--center,
+        .chirpui-table__td--center { text-align: center; }
+        .chirpui-table__th--right,
+        .chirpui-table__td--right { text-align: right; }
+
+        .chirpui-table__td--right,
+        .chirpui-table__th--right {
+            font-variant-numeric: tabular-nums;
+        }
+
+        @media (max-width: 40rem) {
+            :scope {
+                width: max-content;
+                min-width: 100%;
+            }
+
+            .chirpui-table__th,
+            .chirpui-table__td {
+                max-width: min(18rem, 72vw);
+                padding: var(--chirpui-spacing-sm);
+                overflow-wrap: anywhere;
+            }
+        }
     }
 }
 
@@ -22142,4 +22227,77 @@ a.chirpui-chip:focus-visible {
       }
     }
   }
+}
+
+/* === partials/169_data-grid.css === */
+/* ==========================================================================
+   Data Grid (#200) — server-driven interactive grid composite
+   ========================================================================== */
+@layer chirpui.component {
+    @scope (.chirpui-data-grid) to (.chirpui-data-grid .chirpui-data-grid) {
+        :scope {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-sm);
+            box-sizing: border-box;
+            min-inline-size: 0;
+            max-inline-size: 100%;
+        }
+
+        .chirpui-data-grid__header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-2xs);
+        }
+
+        .chirpui-data-grid__title {
+            margin: 0;
+            font-size: var(--chirpui-font-lg);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+            line-height: var(--chirpui-line-height-tight);
+            overflow-wrap: anywhere;
+        }
+
+        .chirpui-data-grid__description {
+            margin: 0;
+            font-size: var(--chirpui-font-sm);
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-data-grid__filters {
+            min-inline-size: 0;
+        }
+
+        .chirpui-data-grid__selection {
+            min-inline-size: 0;
+        }
+
+        .chirpui-data-grid__body {
+            min-inline-size: 0;
+            max-inline-size: 100%;
+        }
+
+        .chirpui-data-grid__table {
+            min-inline-size: 100%;
+        }
+
+        .chirpui-data-grid__load-more {
+            display: flex;
+            justify-content: center;
+            padding-block-start: var(--chirpui-spacing-sm);
+        }
+
+        .chirpui-data-grid__load-more-btn {
+            min-inline-size: 12rem;
+        }
+
+        .chirpui-data-grid__footer {
+            display: flex;
+            justify-content: center;
+        }
+
+        &.chirpui-data-grid--compact {
+            gap: var(--chirpui-spacing-xs);
+        }
+    }
 }
