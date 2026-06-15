@@ -5553,6 +5553,7 @@ Data Grid
 | `columns` | no | (has default) |
 | `rows` | no | (has default) |
 | `row_ids` | no | (has default) |
+| `row_labels` | no | (has default) |
 | `sort` | no | (has default) |
 | `sort_url` | no | (has default) |
 | `hx_target` | no | (has default) |

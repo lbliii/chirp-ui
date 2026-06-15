@@ -224,7 +224,9 @@ native `<input type=date>`; `command_palette` has cmd+K but no arrow-key result 
 - **[P1]** Sortable columns with `aria-sort` + server sort state.
 - **[P1]** Row selection bound to `selection_bar` + sticky header/first column. *Acceptance:* the
   59-line `data_table.html` wrapper is a real grid — and is no longer labeled `stable` while thin
-  (see the maturity-honesty task).
+  (see the maturity-honesty task). **Shipped (#200):** `data_grid` is the real server-driven grid
+  (experimental, earns `stable` in a later hardening PR); `data_table` was demoted to
+  `experimental` as the deliberately-thin filter+table+pagination wrapper.
 
 ### Epic [P1] Form/overlay primitive parity — wave 1 — `epic, P1: flagship+adoption, feature, components, accessibility, keyboard`
 - **[P1]** Combobox/autocomplete with roving-tabindex keyboard nav.
@@ -239,11 +241,23 @@ native `<input type=date>`; `command_palette` has cmd+K but no arrow-key result 
 
 ### Epic [P1] Registry maturity honesty — `epic, P1: flagship+adoption, library-contract, robustness, tech-debt`
 *(Folded in from the critique — a contract-integrity bug, not cosmetics.)*
-- **[P1]** Make the `maturity` field honest — `data_table`/`table`/`calendar`/`bar_chart`/`donut`
-  ship `stable` while being thin wrappers, and 27 ASCII novelty components are also `stable`, so the
-  label can't distinguish a hardened core from a thin one. Either harden-before-stable or introduce a
-  "thin-but-shipped" tier, enforced by a registry test. The manifest **is** the product (it grounds
-  the MCP + blocks-gallery work in Saga 5); a dishonest field poisons that surface.
+- **[P1]** Make the `maturity` field honest — the original critique read
+  `data_table`/`table`/`calendar`/`bar_chart`/`donut` and "27 ASCII novelty components" as `stable`
+  while thin. **Re-verified and largely stale (#203):** `data_table` is already `experimental` (#200
+  demoted the thin filter+table+pagination wrapper); `table`/`table-wrap` are complete primitives and
+  `calendar`/`bar_chart`/`donut` are low-feature self-contained primitives — all carry `composes=()`,
+  so none is a thin wrapper; and the ASCII set (40 components: 28 stable templated + 12 experimental
+  recipe/effect helpers, none with `composes`) already went through an evidence-backed hardening pass
+  (`docs/plans/done/PLAN-ascii-maturity.md`, gated by `tests/evidence/test_ascii_promotion_readiness.py`).
+  **Deliverable (no reclassification needed):** the objective "thin composition-wrapper" signal is the
+  first-class `composes` descriptor field, so the honesty fix is a class-catching registry test —
+  `test_no_thin_composition_wrapper_is_stable_without_proof` (in
+  `tests/docs_contracts/test_public_surface_stabilization.py`) requires every `stable`-with-`composes`
+  component to carry the same proof collateral as any stable promotion (a documented `Promote to
+  stable` row or a justified allowlist entry naming its proof test). It composes with the existing
+  promote-to-stable-collateral invariant rather than adding a fifth maturity tier. The manifest **is**
+  the product (it grounds the MCP + blocks-gallery work in Saga 5); a dishonest field poisons that
+  surface.
 
 ---
 

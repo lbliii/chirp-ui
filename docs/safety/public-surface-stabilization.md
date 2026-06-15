@@ -109,6 +109,49 @@ need the evidence ledger from
 name anatomy, native semantics, keyboard, focus, runtime, motion, responsive and
 overflow behavior, security/escaping, performance, proof, and residual risk.
 
+## Stable Composition Wrappers
+
+A `stable` component that composes other registry components — i.e. carries a
+non-empty `composes` descriptor field — is a **composition wrapper**, not a
+self-contained primitive. Wrappers are the place a dishonest `stable` label
+hides: the label cannot tell a hardened core from a thin convenience wrapper. So
+a stable composition wrapper must carry the **same proof collateral as any
+stable promotion**, via exactly one of:
+
+- **(A)** a documented `| Promote to stable |` row in the Current Slice table —
+  whose manifest + render + showcase collateral the
+  `test_promoted_public_surface_rows_have_manifest_test_and_showcase_proof`
+  contract already enforces; or
+- **(B)** a `STABLE_COMPOSERS_WITH_PROOF` allowlist entry in
+  `tests/docs_contracts/test_public_surface_stabilization.py`, whose value names
+  the asserting proof test (a11y attribute / slot-forward render / browser
+  gauntlet) that defends it.
+
+This is enforced objectively by
+`test_no_thin_composition_wrapper_is_stable_without_proof`: any future component
+promoted to `stable` while carrying `composes` and lacking both (A) and (B)
+fails the test. Complete or low-feature primitives have empty `composes`
+(`table`, `table-wrap`, `calendar`, `bar-chart`, `donut`, and the ASCII set), so
+the rule provably never fires on them — a simple-but-complete primitive is not a
+thin wrapper.
+
+`data_table` is the canonical thin composition wrapper:
+`composes=("filter-row", "table", "pagination")` over a 59-line
+pure-composition template. It is intentionally `maturity=experimental` (demoted
+by #200), superseded by `data_grid` for interactive grids. Were it `stable` with
+no proof row or allowlist entry, the test above would flag it.
+
+The current stable composition wrappers and their proof:
+
+| Component | `composes` | Proof |
+| --- | --- | --- |
+| `cta-band` | `band`, `btn` | Path A: `Promote to stable` doc row (Current Slice). |
+| `document-header` | `page_header` | Path B: `test_document_header_yielded_actions_slot` (yielded-actions slot manifest proof). |
+| `empty-panel-state` | `empty-state` | Path B: `test_empty_panel_state_actions_slot` (slot-forward + modifier render proof). |
+| `file-tree` | `nav-tree`, `panel` | Path B: `test_file_tree_forwards_branch_mode_to_nav_tree` (slot-forward render proof). |
+| `saved-view-strip` | `chip` | Path B: `test_saved_view_strip_renders_selected_views` (`aria-current` a11y proof). |
+| `scope-switcher` | `btn`, `dropdown` | Path B: `test_scope_switcher_renders_dropdown_scope_control` (`aria-label` a11y proof). |
+
 ## Proof Tracks
 
 Inventory rows use these track labels so follow-up work knows which proof is
