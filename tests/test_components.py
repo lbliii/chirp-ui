@@ -9105,6 +9105,26 @@ class TestDataGrid:
         assert "sort=-name" in html
         assert 'hx-swap="outerHTML"' in html
         assert 'hx-target="#g-grid"' in html
+        # Boost-safe: the sort selects its OWN grid region from the response and
+        # disinherits the shell's hx-select="#page-content". Without this, inside a
+        # boosted app_shell the sort outerHTML-swaps the whole page into the grid,
+        # nesting page chrome on every click (#200 regression).
+        assert 'hx-select="#g-grid"' in html
+        assert 'hx-disinherit="hx-select"' in html
+
+    def test_grid_section_is_a_select_island(self, env: Environment) -> None:
+        # The grid owns its own swaps (sort replaces the section; load-more appends
+        # bare <tr> rows), so the <section> root disinherits hx-select. This keeps a
+        # load-more append into the tbody from inheriting the boosted #main's
+        # hx-select="#page-content" (which the <tr> fragment cannot satisfy).
+        html = self._render(
+            env,
+            "{{ data_grid(columns=cols, rows=[['Ada','Active','n']], row_ids=['1'], "
+            "sort_url='/users', selection_id='g') }}",
+        )
+        section = re.search(r"<section[^>]*\bclass=\"chirpui-data-grid[^>]*>", html)
+        assert section is not None
+        assert 'hx-disinherit="hx-select"' in section.group(0)
 
     def test_selectable_emits_select_all_and_indeterminate_binding(self, env: Environment) -> None:
         html = self._render(

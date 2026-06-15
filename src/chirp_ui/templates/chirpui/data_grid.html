@@ -136,6 +136,13 @@
          x-data="chirpuiGridSelection()"
          data-selection-id="{{ selection_id }}"
          data-total-rows="{{ _total_rows }}"
+         {#- Select-island boundary: the grid owns its own swaps (sort replaces the
+             section; load-more appends bare <tr> rows to the tbody), so nothing
+             inside it should inherit the shell's hx-select="#page-content". Without
+             this, a load-more append into the tbody inherits #page-content from the
+             boosted #main and trips a (false-positive) "blank swap" dev warning,
+             since the <tr> fragment has no #page-content. -#}
+         hx-disinherit="hx-select"
          {{ attrs_map | html_attrs }}>
     {% if title or description %}
     <div class="chirpui-data-grid__header">
