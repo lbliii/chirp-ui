@@ -254,6 +254,8 @@ vocabulary.
 | `composer-shell` | Keep experimental | Form interaction proof. |
 | `confetti` | Keep experimental | Motion/effects visual proof. |
 | `constellation` | Keep experimental | Motion/effects visual proof. |
+| `context-menu` | Keep experimental | Control interaction proof; right-click/keyboard menu (#202) with roving-tabindex + click-outside/Escape and axe coverage via the context-menu browser gauntlet — promote in a later deliberate hardening PR once the gauntlet stabilizes. |
+| `context-menu__item` | Keep experimental | Control interaction proof; item variant vocabulary (default/danger/muted) for `context-menu`, promoted together with its parent composite. |
 | `data-grid` | Keep experimental | Control interaction proof; server-driven grid (#200) backed by render + grid_state unit proof and the data-grid browser/a11y gauntlet — promote in a later deliberate hardening PR once the gauntlet stabilizes. |
 | `data-table` | Keep experimental | Layout recipe proof; demoted from stable per #200 as the deliberately-thin filter+table+pagination wrapper, superseded by `data-grid` for interactive grids. |
 | `detail-header` | Recipe-only | Layout recipe proof; promote only after repeated app use. |

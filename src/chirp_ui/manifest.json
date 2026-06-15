@@ -7024,6 +7024,130 @@
       "trim_emits": [],
       "variants": []
     },
+    "context-menu": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "context-menu",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "Context Menu\n    Right-click (or keyboard) menu anchored at the pointer. Wrap any\n    non-interactive region in `context_menu(items=[...])`; right-clicking inside\n    it opens a `role=\"menu\"` panel at the cursor with full keyboard support:\n    ArrowUp/Down/Home/End move focus via roving tabindex, Enter/Space activate,\n    Escape closes and returns focus to the region. When the region itself is\n    focused, Enter/Space/ArrowDown, the ContextMenu key, or Shift+F10 open the\n    menu. The native browser menu is suppressed inside the region. Requires\n    Alpine.js.\n\n    Items: list of dicts — {label, action?|href?, icon?, variant?, disabled?}.\n    `variant` is one of default/danger/muted. Selecting an item dispatches\n    `chirpui:context-menu-selected` with {label, action?, href?} (mirrors\n    dropdown_menu). Dividers are not supported in v1 (flat item list).\n\n    Accessibility: the region is a `role=\"button\"` trigger with\n    `aria-haspopup=\"menu\"`; the menu panel is a SIBLING of the trigger (never\n    nested inside it). Give the region a `label` that matches any visible\n    call-to-action text, and keep the slotted target content non-interactive\n    (no nested links/buttons), so the trigger button has no nested controls.\n\n    Usage:\n        from \"chirpui/context_menu.html\" import context_menu\n\n        {% call context_menu(items=[\n            {\"label\": \"Open\", \"action\": \"open\", \"icon\": \"↗\"},\n            {\"label\": \"Rename\", \"action\": \"rename\"},\n            {\"label\": \"Delete\", \"action\": \"delete\", \"variant\": \"danger\"},\n        ], label=\"Right-click for actions\") %}\n            <div class=\"chirpui-surface\">Right-click for actions</div>\n        {% end %}",
+      "elements": [
+        "panel",
+        "target"
+      ],
+      "emits": [
+        "chirpui-context-menu",
+        "chirpui-context-menu__icon",
+        "chirpui-context-menu__panel",
+        "chirpui-context-menu__target"
+      ],
+      "extra_emits": [
+        "chirpui-context-menu__icon"
+      ],
+      "lineno": 34,
+      "macro": "context_menu",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "context_menu.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "context-menu__item": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "context-menu__item",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "Context Menu\n    Right-click (or keyboard) menu anchored at the pointer. Wrap any\n    non-interactive region in `context_menu(items=[...])`; right-clicking inside\n    it opens a `role=\"menu\"` panel at the cursor with full keyboard support:\n    ArrowUp/Down/Home/End move focus via roving tabindex, Enter/Space activate,\n    Escape closes and returns focus to the region. When the region itself is\n    focused, Enter/Space/ArrowDown, the ContextMenu key, or Shift+F10 open the\n    menu. The native browser menu is suppressed inside the region. Requires\n    Alpine.js.\n\n    Items: list of dicts — {label, action?|href?, icon?, variant?, disabled?}.\n    `variant` is one of default/danger/muted. Selecting an item dispatches\n    `chirpui:context-menu-selected` with {label, action?, href?} (mirrors\n    dropdown_menu). Dividers are not supported in v1 (flat item list).\n\n    Accessibility: the region is a `role=\"button\"` trigger with\n    `aria-haspopup=\"menu\"`; the menu panel is a SIBLING of the trigger (never\n    nested inside it). Give the region a `label` that matches any visible\n    call-to-action text, and keep the slotted target content non-interactive\n    (no nested links/buttons), so the trigger button has no nested controls.\n\n    Usage:\n        from \"chirpui/context_menu.html\" import context_menu\n\n        {% call context_menu(items=[\n            {\"label\": \"Open\", \"action\": \"open\", \"icon\": \"↗\"},\n            {\"label\": \"Rename\", \"action\": \"rename\"},\n            {\"label\": \"Delete\", \"action\": \"delete\", \"variant\": \"danger\"},\n        ], label=\"Right-click for actions\") %}\n            <div class=\"chirpui-surface\">Right-click for actions</div>\n        {% end %}",
+      "elements": [],
+      "emits": [
+        "chirpui-context-menu__item",
+        "chirpui-context-menu__item--danger",
+        "chirpui-context-menu__item--muted"
+      ],
+      "extra_emits": [],
+      "lineno": 34,
+      "macro": "context_menu",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "context_menu.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [
+        "chirpui-context-menu__item--default"
+      ],
+      "variants": [
+        "danger",
+        "default",
+        "muted"
+      ]
+    },
     "conversation-item": {
       "appearances": [],
       "authoring": "available",
@@ -24117,7 +24241,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 302,
+      "available": 304,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -24137,31 +24261,31 @@
       "layout": 50,
       "marketing": 11,
       "media": 6,
-      "navigation": 27,
+      "navigation": 29,
       "overlay": 3,
       "social": 4,
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 101,
+      "experimental": 103,
       "internal": 2,
       "legacy": 39,
       "stable": 211
     },
     "component_requirements": {
-      "alpine": 26,
+      "alpine": 28,
       "htmx": 26
     },
     "component_roles": {
-      "component": 188,
+      "component": 190,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 250,
-    "components_with_params": 250,
+    "components_with_description": 252,
+    "components_with_params": 252,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -24169,7 +24293,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 248
+      "public_templated_components": 250
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -24177,10 +24301,10 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 126,
-      "explicit_extra_classes": 538,
-      "explicit_trim_blocks": 68,
-      "explicit_trim_classes": 95
+      "explicit_extra_blocks": 127,
+      "explicit_extra_classes": 539,
+      "explicit_trim_blocks": 69,
+      "explicit_trim_classes": 96
     },
     "token_categories": {
       "color": 142,
@@ -24192,7 +24316,7 @@
       "spacing": 30,
       "typography": 45
     },
-    "total_components": 353,
+    "total_components": 355,
     "total_theme_packs": 3,
     "total_tokens": 435
   },

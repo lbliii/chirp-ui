@@ -308,6 +308,127 @@
         };
     });
 
+    // Right-click / keyboard context menu anchored at the pointer. Roving
+    // tabindex over role="menuitem" children; opens at clientX/clientY (mouse)
+    // or the region's box (keyboard) and clamps to the viewport. Disabled items
+    // (aria-disabled) stay focusable but inert, per WAI-ARIA. $root is the
+    // focusable region; $refs.panel is the role="menu" surface.
+    register("chirpuiContextMenu", function () {
+        return {
+            open: false,
+            x: 0,
+            y: 0,
+            focusedIndex: -1,
+            itemCount: 0,
+            init: function () {
+                this.itemCount = parseInteger(this.$root.dataset.itemCount, 0);
+            },
+            openAt: function (event) {
+                event.preventDefault();
+                this._show(event.clientX, event.clientY);
+            },
+            openAtElement: function () {
+                var rect = this.$refs.trigger.getBoundingClientRect();
+                this._show(rect.left, rect.top + rect.height);
+            },
+            onTriggerKeydown: function (event) {
+                if (this.open) {
+                    return;
+                }
+                var key = event.key;
+                var isOpenKey =
+                    key === "Enter" ||
+                    key === " " ||
+                    key === "Spacebar" ||
+                    key === "ArrowDown" ||
+                    key === "ContextMenu" ||
+                    (event.shiftKey && key === "F10");
+                if (!isOpenKey) {
+                    return;
+                }
+                event.preventDefault();
+                this.openAtElement();
+            },
+            _show: function (x, y) {
+                this.x = x;
+                this.y = y;
+                this.open = true;
+                this.$nextTick(
+                    function () {
+                        this.clampToViewport();
+                        this.focusedIndex = 0;
+                        focusElement(this.$refs["item-0"]);
+                    }.bind(this)
+                );
+            },
+            close: function () {
+                if (!this.open) {
+                    return;
+                }
+                this.open = false;
+                this.focusedIndex = -1;
+                // Return focus to the trigger synchronously (mirrors dropdown):
+                // moving focus before Alpine hides the panel keeps the panel-hide
+                // blur from stranding focus on <body>.
+                focusElement(this.$refs.trigger);
+            },
+            clampToViewport: function () {
+                var panel = this.$refs.panel;
+                if (!panel) {
+                    return;
+                }
+                var rect = panel.getBoundingClientRect();
+                var pad = 8;
+                if (this.x + rect.width + pad > window.innerWidth) {
+                    this.x = Math.max(pad, window.innerWidth - rect.width - pad);
+                }
+                if (this.y + rect.height + pad > window.innerHeight) {
+                    this.y = Math.max(pad, window.innerHeight - rect.height - pad);
+                }
+                this.x = Math.max(pad, this.x);
+                this.y = Math.max(pad, this.y);
+            },
+            keyDown: function () {
+                var maxIndex = Math.max(this.itemCount - 1, 0);
+                if (this.focusedIndex < maxIndex) {
+                    this.focusedIndex += 1;
+                    focusElement(this.$refs["item-" + this.focusedIndex]);
+                }
+            },
+            keyUp: function () {
+                if (this.focusedIndex > 0) {
+                    this.focusedIndex -= 1;
+                    focusElement(this.$refs["item-" + this.focusedIndex]);
+                }
+            },
+            keyHome: function () {
+                this.focusedIndex = 0;
+                focusElement(this.$refs["item-0"]);
+            },
+            keyEnd: function () {
+                this.focusedIndex = Math.max(this.itemCount - 1, 0);
+                focusElement(this.$refs["item-" + this.focusedIndex]);
+            },
+            selectItem: function (element) {
+                if (
+                    !element ||
+                    element.getAttribute("aria-disabled") === "true"
+                ) {
+                    return;
+                }
+                var detail = { label: element.dataset.label || "" };
+                if (element.dataset.action) {
+                    detail.action = element.dataset.action;
+                }
+                if (element.dataset.href) {
+                    detail.href = element.dataset.href;
+                }
+                this.close();
+                this.$dispatch("chirpui:context-menu-selected", detail);
+            },
+        };
+    });
+
     register("chirpuiTabs", function () {
         return {
             active: "",

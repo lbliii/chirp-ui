@@ -8772,6 +8772,65 @@ class TestIconBtn:
         assert 'aria-disabled="true"' in html
 
 
+class TestContextMenu:
+    def _render(self, env: Environment, *, items: str, label: str = "Row actions") -> str:
+        return env.from_string(
+            '{% from "chirpui/context_menu.html" import context_menu %}'
+            "{% call context_menu(items=" + items + ', label="' + label + '") %}'
+            '<div class="chirpui-card">Right-click for actions</div>'
+            "{% end %}"
+        ).render()
+
+    def test_basic_structure_and_aria(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            items='[{"label": "Open", "action": "open"}, {"label": "Rename", "action": "rename"}]',
+        )
+        # Region is a focusable trigger wired to the Alpine factory.
+        assert 'class="chirpui-context-menu"' in html
+        assert 'x-data="chirpuiContextMenu()"' in html
+        assert 'role="button"' in html
+        assert 'aria-haspopup="menu"' in html
+        assert 'aria-label="Row actions"' in html
+        assert 'data-item-count="2"' in html
+        assert "openAt($event)" in html
+        # Panel is a role=menu with roving-tabindex items.
+        assert 'class="chirpui-context-menu__panel"' in html
+        assert 'role="menu"' in html
+        assert html.count('role="menuitem"') == 2
+        assert 'x-ref="item-0"' in html
+        assert 'x-ref="item-1"' in html
+        assert 'tabindex="-1"' in html
+        assert 'data-label="Open"' in html
+        assert 'data-action="rename"' in html
+        # Slotted target content is rendered inside the region.
+        assert "Right-click for actions" in html
+
+    def test_variant_href_disabled_and_icon(self, env: Environment) -> None:
+        html = self._render(
+            env,
+            items=(
+                '[{"label": "Visit", "href": "/x", "icon": "↗"},'
+                ' {"label": "Delete", "action": "delete", "variant": "danger"},'
+                ' {"label": "Paste", "action": "paste", "disabled": true}]'
+            ),
+        )
+        # href item renders an <a role="menuitem"> with the link.
+        assert 'href="/x"' in html
+        assert "chirpui-context-menu__icon" in html
+        # danger variant class is emitted.
+        assert "chirpui-context-menu__item--danger" in html
+        # disabled item is aria-disabled (focusable-but-inert), not natively disabled.
+        assert 'aria-disabled="true"' in html
+        assert "disabled>" not in html
+        assert " disabled " not in html
+
+    def test_item_count_matches_items(self, env: Environment) -> None:
+        html = self._render(env, items='[{"label": "Only", "action": "only"}]')
+        assert 'data-item-count="1"' in html
+        assert html.count('role="menuitem"') == 1
+
+
 class TestSegmentedControl:
     def test_basic(self, env: Environment) -> None:
         html = env.from_string(

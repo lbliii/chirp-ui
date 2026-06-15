@@ -1,0 +1,34 @@
+{#- Gauntlet fixture for the context menu (#202). Renders a context_menu around a
+    non-interactive target region with action/href/disabled/danger items, proving
+    right-click + keyboard open, roving-tabindex nav, Escape/click-outside close,
+    focus return, item-select event dispatch, and axe a11y. The region's visible
+    text matches its aria-label so the role="button" trigger satisfies WCAG 2.5.3
+    (label-in-name). -#}
+{% extends "base.html" %}
+{% block brand %}Context Menu{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path="/context-menu", aria_label="Primary") %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/context-menu", "Context Menu", match="exact") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/context_menu.html" import context_menu %}
+<div id="page-root">
+  <h1 data-testid="main-content">Context Menu</h1>
+  <div data-testid="context-menu-container">
+    {% call context_menu(items=[
+        {"label": "Open", "action": "open", "icon": "↗"},
+        {"label": "Rename", "action": "rename"},
+        {"label": "Duplicate", "action": "duplicate", "disabled": true},
+        {"label": "Delete", "action": "delete", "variant": "danger"},
+    ], label="Right-click for actions") %}
+      <div class="chirpui-surface" style="padding: 2rem; min-block-size: 8rem;">
+        Right-click for actions
+      </div>
+    {% end %}
+  </div>
+</div>
+{% end %}

@@ -122,6 +122,15 @@ def test_segmented_control_minimal_item(env: Environment) -> None:
     assert "chirpui-segmented__option" in out
 
 
+def test_context_menu_minimal_item(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/context_menu.html" import context_menu %}'
+        "{% call context_menu(items=[{}]) %}<span>x</span>{% end %}",
+    )
+    assert "chirpui-context-menu__item" in out
+
+
 def test_toggle_group_minimal_item(env: Environment) -> None:
     out = _render(
         env,
